@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 835C3C04FFE
-	for <igt-dev@archiver.kernel.org>; Fri, 17 May 2024 15:14:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1B25C25B79
+	for <igt-dev@archiver.kernel.org>; Fri, 17 May 2024 15:18:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2059010EF06;
-	Fri, 17 May 2024 15:14:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F32410EF08;
+	Fri, 17 May 2024 15:18:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EIQuyHpH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xajsv2wD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69BC710EF06
- for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2024 15:14:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCD3B10EF06;
+ Fri, 17 May 2024 15:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715958889; x=1747494889;
+ t=1715959119; x=1747495119;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=rQIWNRzfny8yOXDwXGfSkL1Y1oJfsbhknXFSWZG6l7M=;
- b=EIQuyHpH084N6Jmyylz3/w4nYpdorKRDt11ooPOGApuTTpnXtfCcAZUU
- L6bfTA6QX6GtTEu/ouda3fn47SL7tVpZ535n3rBZO187adyD9sTDAzs43
- j02Ry1FFIq/9vLvWadlcG00HAUBJTuHpHTZKZlAd7HYElHjGoBIBAO9+S
- LUopAY0LXjlu1x3q9Bpf/Gkc96uWo2PY0tvwLXqdmZfENo6ENXKMp1Vnl
- 0I8YQc3ecnsrV4sVXlNqMn54l7x+uHDO+tTM2Jce2OvXvncKqfrErelhh
- x8mwSxCb4MlBymTIZtkEcsDArRgR3FbnDGUVU/uwgEITFTx2AsBM8NryR A==;
-X-CSE-ConnectionGUID: Bh+1UaAeTLWPncMO/xKciw==
-X-CSE-MsgGUID: sFShhX6sQJiS7KLXh8Ebog==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="12250856"
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; d="scan'208";a="12250856"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2024 08:13:37 -0700
-X-CSE-ConnectionGUID: IuRsQ8yaQIKDE3d/vyHM/Q==
-X-CSE-MsgGUID: nHm9GFtNTOaK3mcJb9wYJA==
+ bh=v2cAhadRmLQI5s1VqR/b1Wp+44yv243+m68JVyi8Wec=;
+ b=Xajsv2wDI8EvNk1fspx1QBo6PdOY8IxwGtlRD78SPzAGZ23INUtwMsZ0
+ h2PQdSOrGZs4kljOQ5/oS1vCYZaOVVvecCPa4m0+7z+aO5kIS59/YOzBY
+ z2cXw8R8cSfdhAsObvKSoHQAJRZQV+ev0waV7BOg1Vxwts8ley07nw2TQ
+ jw1TaFW3chQQ210e4utwevEmI0O8BwUNmAuDN/z9+1M/1lkKWVakAOlxg
+ /AOeueeS3slaxoJ3SxCe5DHMfAmuIgmaiE2nUmkzEdaG7UOzUOAheF2YP
+ nZujQ7Kvrs0q1gBs7l3cGB/XK/wirWHvOEqvD6N93ukOgS+gHb3FY2cSZ A==;
+X-CSE-ConnectionGUID: stKG+qcLTxedqtTfllf++Q==
+X-CSE-MsgGUID: YLHutRSMQC+AX29dTTDjbA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="11988798"
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; d="scan'208";a="11988798"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 May 2024 08:18:38 -0700
+X-CSE-ConnectionGUID: K0N54FN3TXyBzFBN5DR9lw==
+X-CSE-MsgGUID: Gxq5JsSgRR2TZRS9yiKcwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; d="scan'208";a="55035907"
+X-IronPort-AV: E=Sophos;i="6.08,168,1712646000"; d="scan'208";a="36625544"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:13:36 -0700
-Date: Fri, 17 May 2024 17:13:19 +0200
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2024 08:18:36 -0700
+Date: Fri, 17 May 2024 17:18:33 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, francois.dugast@intel.com,
- Badal Nilawar <badal.nilawar@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-Subject: Re: [PATCH i-g-t 1/5] tests/intel/xe_pm: Update runtime pm conditions
-Message-ID: <20240517151319.zu5ldkk6i3uopnmk@kamilkon-DESK.igk.intel.com>
+Cc: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for
+ tests/intel/xe_pm: Disable display for mocs-rpm test
+Message-ID: <20240517151833.lzh52sg6huifw3kb@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, francois.dugast@intel.com,
- Badal Nilawar <badal.nilawar@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-References: <20240516181015.149824-1-rodrigo.vivi@intel.com>
+ "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20240516104513.2685597-1-janga.rahul.kumar@intel.com>
+ <171593436185.2142370.18419583168521753321@8e613ede5ea5>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240516181015.149824-1-rodrigo.vivi@intel.com>
+In-Reply-To: <171593436185.2142370.18419583168521753321@8e613ede5ea5>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,263 +74,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Rodrigo,
-On 2024-05-16 at 14:10:11 -0400, Rodrigo Vivi wrote:
-> Xe is no longer holding a runtime pm reference for the life
-> of a VM or exec_queue.
+Hi igt-dev,
+On 2024-05-17 at 08:26:01 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Also, IGT changes autosuspend time to a minimal time, so we
-> cannot guarantee that rpm is still suspended after the execution
-> has finished.
+> Series: tests/intel/xe_pm: Disable display for mocs-rpm test
+> URL   : https://patchwork.freedesktop.org/series/133688/
+> State : failure
 > 
-> So, the reference usage is not a reliable reference.
+> == Summary ==
 > 
-> Hence, start using runtime_active_time as the indicator
-> that runtime_pm resumed upon our actions.
+> CI Bug Log - changes from CI_DRM_14775_full -> IGTPW_11151_full
+> ====================================================
 > 
-> v2: Usage of runtime_active_pm and inclusion of mmap tests.
-> v3: Add doc for the exported lib function (Kamil)
+> Summary
+> -------
 > 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Badal Nilawar <badal.nilawar@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Cc: Francois Dugast <francois.dugast@intel.com>
-> Reviewed-by: Francois Dugast <francois.dugast@intel.com>
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> ---
->  lib/igt_pm.c        | 24 ++++++++++++++
->  lib/igt_pm.h        |  1 +
->  tests/intel/xe_pm.c | 77 +++++++++++++++++----------------------------
->  3 files changed, 53 insertions(+), 49 deletions(-)
+>   **FAILURE**
 > 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index fe7692960..928b72685 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -1412,6 +1412,30 @@ int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
->  	return -1;
->  }
->  
-> +/**
-> + * igt_pm_get_runtime_active_time:
-> + * @pci_dev: PCI device struct
-> + *
-> + * Return: The total time that the device has been active.
-> + */
-> +int igt_pm_get_runtime_active_time(struct pci_device *pci_dev)
--- ^^^
+>   Serious unknown changes coming with IGTPW_11151_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11151_full, please notify your bug team (&#x27;I915-ci-infra@lists.freedesktop.org&#x27;) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11151/index.html
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11151_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@drm_buddy@drm_buddy@drm_test_buddy_alloc_clear:
+>     - shard-mtlp:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14775/shard-mtlp-1/igt@drm_buddy@drm_buddy@drm_test_buddy_alloc_clear.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11151/shard-mtlp-3/igt@drm_buddy@drm_buddy@drm_test_buddy_alloc_clear.html
+> 
+>   * igt@drm_buddy@drm_buddy@drm_test_buddy_alloc_range_bias:
+>     - shard-mtlp:         [PASS][3] -> [DMESG-FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14775/shard-mtlp-1/igt@drm_buddy@drm_buddy@drm_test_buddy_alloc_range_bias.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11151/shard-mtlp-3/igt@drm_buddy@drm_buddy@drm_test_buddy_alloc_range_bias.html
+> 
+>   * igt@kms_flip@flip-vs-suspend-interruptible@b-edp1:
+>     - shard-mtlp:         [PASS][5] -> [FAIL][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14775/shard-mtlp-6/igt@kms_flip@flip-vs-suspend-interruptible@b-edp1.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11151/shard-mtlp-5/igt@kms_flip@flip-vs-suspend-interruptible@b-edp1.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-blt:
+>     - shard-snb:          [PASS][7] -> [ABORT][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14775/shard-snb2/igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-blt.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11151/shard-snb7/igt@kms_frontbuffer_tracking@fbc-rgb101010-draw-blt.html
+> 
 
-> +{
-> +	char time_str[64];
-> +	int time, time_fd;
-> +
-
-Is the time in seconds or miliseconds? From str size it looks
-like miliseconds, so why not uint64 for time?
+Unrelated to xe_pm test.
 
 Regards,
 Kamil
 
-> +	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_active_time");
-> +	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
-> +		igt_assert(sscanf(time_str, "%d", &time) > 0);
-> +
-> +		igt_debug("runtime active time for PCI '%04x:%02x:%02x.%01x' = %d\n",
-> +			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
-> +
-> +		return time;
-> +	}
-> +
-> +	return -1;
-> +}
-> +
->  /**
->   * igt_pm_get_runtime_usage:
->   * @pci_dev: pci device
-> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-> index 91ee05cd1..b71f7c440 100644
-> --- a/lib/igt_pm.h
-> +++ b/lib/igt_pm.h
-> @@ -94,6 +94,7 @@ void igt_pm_print_pci_card_runtime_status(void);
->  bool i915_is_slpc_enabled_gt(int drm_fd, int gt);
->  bool i915_is_slpc_enabled(int drm_fd);
->  int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
-> +int igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
->  int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
->  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
->  
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 9cb00c7f1..9e1f1723d 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -185,34 +185,6 @@ static bool in_d3(device_t device, enum igt_acpi_d_state state)
->  	return true;
->  }
->  
-> -static bool out_of_d3(device_t device, enum igt_acpi_d_state state)
-> -{
-> -	uint16_t val;
-> -
-> -	/* Runtime resume needs to be immediate action without any wait */
-> -	if (runtime_usage_available(device.pci_xe) &&
-> -	    igt_pm_get_runtime_usage(device.pci_xe) <= 0)
-> -		return false;
-> -
-> -	if (igt_get_runtime_pm_status() != IGT_RUNTIME_PM_STATUS_ACTIVE)
-> -		return false;
-> -
-> -	switch (state) {
-> -	case IGT_ACPI_D3Hot:
-> -		igt_assert_eq(pci_device_cfg_read_u16(device.pci_xe,
-> -						      &val, 0xd4), 0);
-> -		return (val & 0x3) == 0;
-> -	case IGT_ACPI_D3Cold:
-> -		return igt_pm_get_acpi_real_d_state(device.pci_root) ==
-> -			IGT_ACPI_D0;
-> -	default:
-> -		igt_info("Invalid D3 State\n");
-> -		igt_assert(0);
-> -	}
-> -
-> -	return true;
-> -}
-> -
->  static void close_fw_handle(int sig)
->  {
->  	if (fw_handle < 0)
-> @@ -323,27 +295,27 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
->  		uint64_t pad;
->  		uint32_t data;
->  	} *data;
-> -	int i, b, rpm_usage;
-> +	int i, b, active_time;
->  	bool check_rpm = (d_state == IGT_ACPI_D3Hot ||
->  			  d_state == IGT_ACPI_D3Cold);
->  
->  	igt_assert(n_exec_queues <= MAX_N_EXEC_QUEUES);
->  	igt_assert(n_execs > 0);
->  
-> -	if (check_rpm)
-> +	if (check_rpm) {
->  		igt_assert(in_d3(device, d_state));
-> +		active_time = igt_pm_get_runtime_active_time(device.pci_xe);
-> +	}
->  
->  	vm = xe_vm_create(device.fd_xe, 0, 0);
->  
->  	if (check_rpm)
-> -		igt_assert(out_of_d3(device, d_state));
-> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
-> +			   active_time);
->  
->  	bo_size = sizeof(*data) * n_execs;
->  	bo_size = xe_bb_size(device.fd_xe, bo_size);
->  
-> -	if (check_rpm && runtime_usage_available(device.pci_xe))
-> -		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
-> -
->  	if (flags & USERPTR) {
->  		data = aligned_alloc(xe_get_default_alignment(device.fd_xe), bo_size);
->  		memset(data, 0, bo_size);
-> @@ -381,8 +353,10 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
->  		xe_vm_prefetch_async(device.fd_xe, vm, bind_exec_queues[0], 0, addr,
->  				     bo_size, sync, 1, 0);
->  
-> -	if (check_rpm && runtime_usage_available(device.pci_xe))
-> -		igt_assert(igt_pm_get_runtime_usage(device.pci_xe) > rpm_usage);
-> +	if (check_rpm) {
-> +		igt_assert(in_d3(device, d_state));
-> +		active_time = igt_pm_get_runtime_active_time(device.pci_xe);
-> +	}
->  
->  	for (i = 0; i < n_execs; i++) {
->  		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
-> @@ -426,9 +400,6 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
->  	igt_assert(syncobj_wait(device.fd_xe, &sync[0].handle, 1, INT64_MAX, 0,
->  				NULL));
->  
-> -	if (check_rpm && runtime_usage_available(device.pci_xe))
-> -		rpm_usage = igt_pm_get_runtime_usage(device.pci_xe);
-> -
->  	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->  	if (n_vmas > 1)
->  		xe_vm_unbind_all_async(device.fd_xe, vm, 0, bo, sync, 1);
-> @@ -456,15 +427,13 @@ NULL));
->  		free(data);
->  	}
->  
-> -	if (check_rpm && runtime_usage_available(device.pci_xe))
-> -		igt_assert(igt_pm_get_runtime_usage(device.pci_xe) < rpm_usage);
-> -	if (check_rpm)
-> -		igt_assert(out_of_d3(device, d_state));
-> -
->  	xe_vm_destroy(device.fd_xe, vm);
->  
-> -	if (check_rpm)
-> +	if (check_rpm) {
-> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
-> +			   active_time);
->  		igt_assert(in_d3(device, d_state));
-> +	}
->  }
->  
->  /**
-> @@ -558,10 +527,13 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
->  	size_t bo_size = 8192;
->  	uint32_t *map = NULL;
->  	uint32_t bo;
-> -	int i;
-> +	int i, active_time;
->  
->  	igt_require_f(placement, "Device doesn't support such memory region\n");
->  
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
-> +
->  	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
->  
->  	bo = xe_bo_create(device.fd_xe, 0, bo_size, placement, flags);
-> @@ -572,7 +544,8 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
->  	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
->  
->  	igt_assert(fw_handle >= 0);
-> -	igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +	igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
-> +		   active_time);
->  
->  	for (i = 0; i < bo_size / sizeof(*map); i++)
->  		map[i] = MAGIC_1;
-> @@ -582,22 +555,28 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
->  
->  	/* Runtime suspend and validate the pattern and changed the pattern */
->  	close(fw_handle);
-> +	sleep(1);
-> +
->  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
->  
->  	for (i = 0; i < bo_size / sizeof(*map); i++)
->  		igt_assert(map[i] == MAGIC_1);
->  
->  	/* dgfx page-fault on mmaping should wake the gpu */
->  	if (xe_has_vram(device.fd_xe) && flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM)
-> -		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
-> +			   active_time);
->  
->  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
->  
->  	for (i = 0; i < bo_size / sizeof(*map); i++)
->  		map[i] = MAGIC_2;
->  
->  	if (xe_has_vram(device.fd_xe) && flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM)
-> -		igt_assert(igt_get_runtime_pm_status() == IGT_RUNTIME_PM_STATUS_ACTIVE);
-> +		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
-> +			   active_time);
->  
->  	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
->  
-> -- 
-> 2.44.0
+>   
+> New tests
+> ---------
 > 
+>   New tests have been introduced between CI_DRM_14775_full and IGTPW_11151_full:
+> 
+> ### New IGT tests (4) ###
+> 
+>   * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a-hdmi-a-1:
+>     - Statuses : 2 pass(s)
+>     - Exec time: [0.11, 0.15] s
+> 
+>   * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b-hdmi-a-1:
+>     - Statuses : 2 pass(s)
+>     - Exec time: [0.10, 0.12] s
+> 
+>   * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-c-hdmi-a-1:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.10] s
+> 
+>   * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-d-hdmi-a-1:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.11] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11151_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+
+...cut...
+
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7858 -> IGTPW_11151
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_14775: 3b6a503228b84c010794599203ac3e1e3d349bab @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11151: 11151
+>   IGT_7858: 133c90d6aabcd90871e36946317c90ee83c2f847 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11151/index.html
