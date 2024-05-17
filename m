@@ -4,50 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51972C04FFE
-	for <igt-dev@archiver.kernel.org>; Fri, 17 May 2024 11:46:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C766EC04FFE
+	for <igt-dev@archiver.kernel.org>; Fri, 17 May 2024 11:46:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CCB0D10EE82;
-	Fri, 17 May 2024 11:46:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BC1310EE83;
+	Fri, 17 May 2024 11:46:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fxFIuGw6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SR/Le5o2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28A8910EE82
- for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2024 11:46:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A15AD10EE87
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 May 2024 11:46:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715946390; x=1747482390;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=WlFuSJAfKtEKxiAJbbqJ18/b7kZAoh2XewzOEvxx2U8=;
- b=fxFIuGw6UFK0UKQErOoFBxpYRuG8za7CNFaJN9YxAuI3M8mViIlWuVL0
- lIssCxolvzJE+zR7IQ5tn1jwVBueMhWSkoaDhdZzvJe+dBtT9ciovvk66
- Xi4vcYSqVF3PJsGh2kcAs7d9oWxVuA7e6hUe9alchaeuuHoDP2WWYZDbA
- CbcJLMSrM3+IInjmjce84kNvJFgsUeqxYBk4JE+EeHu+5RjfLE12DSGPk
- REwBNLRmIwy03j1BlPIz2VtYy3mRGCngNLVjDWdFDL9h/dZc7j4hpyvXT
- SdOnXtDcFbPOkBybPoKwMBPxMWvZ9shJeO/vQP1NepStOeockJ1P23xu3 Q==;
-X-CSE-ConnectionGUID: s01TAwv+R/mDRxkdKvelwQ==
-X-CSE-MsgGUID: xsJY2BKRTX+1UmGgdBo22Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="29619976"
-X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; d="scan'208";a="29619976"
+ t=1715946397; x=1747482397;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=67kXY+4xBo+Ej9OPUsY5SR0FJQ9d0vFKppZ57w++0DA=;
+ b=SR/Le5o2RISWUu/7+QTVsqeGuxU0dm8ElFt40gmk0aH+JcHknMRQHHXm
+ baGHXbgdxT8dkmyfxxxLVFNkc/yMfI7jFP0PvylRIjI3Z9vKKCUtEoOBz
+ lLe5D1V/2CvuxN45LnKb6lEIGiFb0kQcrkp/lZIAvZVzjq2ZrQXgNTR91
+ 5QYHbxr8v6Xd3FFmDT6S6yJZj1QjHRy2cknZGR3sBv5Pfk7xT0XHk8PLd
+ DIWZ5W8/9e5UJydw++0kktxVAcAtnbAKs4vOzK+faxcLuD2yHaj/hTCTt
+ BbC4nAZpdW/I+RQq1vUBQ/76KDaCS3IFdPBxZefS162YIV8ZHSVRjoMjo Q==;
+X-CSE-ConnectionGUID: TSZR+DBfQcGn6gl/w5FsWg==
+X-CSE-MsgGUID: OhzHkRXSRcqJirqg3BMosQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="29619981"
+X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; d="scan'208";a="29619981"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2024 04:46:29 -0700
-X-CSE-ConnectionGUID: rbNkkQcaQBmX/j2veRJ26A==
-X-CSE-MsgGUID: xwSCUjzwSlytV4EYvfYF2g==
+ 17 May 2024 04:46:35 -0700
+X-CSE-ConnectionGUID: uB9UVV3OSA+ayijlfbJtlA==
+X-CSE-MsgGUID: P+UEDP8zT0OPVdjaIZdyYw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; d="scan'208";a="54977267"
+X-IronPort-AV: E=Sophos;i="6.08,167,1712646000"; d="scan'208";a="54977292"
 Received: from bommu-optiplex-5060.iind.intel.com ([10.145.169.63])
- by fmviesa002.fm.intel.com with ESMTP; 17 May 2024 04:46:28 -0700
+ by fmviesa002.fm.intel.com with ESMTP; 17 May 2024 04:46:33 -0700
 From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Subject: [PATCH i-g-t v3 00/10] tests/intel/xe_svm: Add tests for Shared
- Virtual Memory (SVM)
-Date: Fri, 17 May 2024 17:16:48 +0530
-Message-Id: <20240517114658.810283-1-krishnaiah.bommu@intel.com>
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
+ Oak Zeng <oak.zeng@intel.com>,
+ Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Subject: [PATCH i-g-t v3 03/10] tests/intel/xe_svm: Add SVM basic tests using
+ malloc and mmap
+Date: Fri, 17 May 2024 17:16:51 +0530
+Message-Id: <20240517114658.810283-4-krishnaiah.bommu@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240517114658.810283-1-krishnaiah.bommu@intel.com>
+References: <20240517114658.810283-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,56 +69,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce helper functions for object creation, binding, submission,
-and destruction, applicable for SVM and other tests
+Adds subtests to verify the basic functionality of Shared Virtual Memory (SVM)
+in the xe driver. The tests ensure that memory allocated with malloc or mmap can be correctly
+used for GPU command submission and data verification.
 
-xe-basic test is validating the helper function introduced in 'lib/xe/xe_util: helper function'
+Subtests:
+- svm-basic-malloc: Verifies SVM functionality using memory allocated with malloc.
+- svm-basic-mmap: Verifies SVM functionality using memory allocated with mmap.
 
-svm test cases:
-svm-basic-malloc
-svm-basic-mmap
-svm-random-access
-svm-huge-page
-svm-atomic-access
-svm-atomic-access
-svm_invalid_va
-svm-mprotect
-svm-benchmark
-svm-sparse-access
+The verification is done by writing a specific value to the allocated memory via GPU and
+checking if the value is correctly stored.
 
-svm kernel implimentation:
-https://gitlab.freedesktop.org/oak/xe-kernel-driver-svm.git
-branch: origin/drm-xe-next-svm-unify-userptr
+Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+Cc: Oak Zeng <oak.zeng@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ include/drm-uapi/xe_drm.h |  1 +
+ tests/intel/xe_svm.c      | 52 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 53 insertions(+)
 
-v2 igt patch: https://patchwork.freedesktop.org/series/133096/
-
-Note: xe-basic test is validated without SVM. Remaining tests are not validated because the SVM driver code is still under development
-
-Bommu Krishnaiah (10):
-  lib/xe/xe_util: Introduce helper functions for buffer creation and
-    command submission etc
-  tests/intel/xe_svm: basic xe-basic test
-  tests/intel/xe_svm: Add SVM basic tests using malloc and mmap
-  tests/intel/xe_svm: add random access test for SVM
-  tests/intel/xe_svm: add huge page access test for SVM
-  tests/intel/xe_svm: Add support for GPU atomic access test for svm
-  tests/intel/xe_svm: Add svm-invalid-va test to verify SVM
-    functionality with invalid address access
-  tests/intel/xe_svm: Add svm-benchmark test to measure SVM performance
-    with a simple benchmark
-  tests/intel/xe_svm: Add svm-mprotect test to verify SVM functionality
-    with read-only memory access
-  tests/intel/xe_svm: Add svm-sparse-access test to verify sparsely
-    accessing two memory locations with SVM
-
- include/drm-uapi/xe_drm.h |   1 +
- lib/xe/xe_util.c          | 214 +++++++++++++++++
- lib/xe/xe_util.h          |  40 ++++
- tests/intel/xe_svm.c      | 476 ++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |   1 +
- 5 files changed, 732 insertions(+)
- create mode 100644 tests/intel/xe_svm.c
-
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 0b709b374..69c8792bb 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -973,6 +973,7 @@ struct drm_xe_vm_bind_op {
+ #define DRM_XE_VM_BIND_FLAG_IMMEDIATE	(1 << 1)
+ #define DRM_XE_VM_BIND_FLAG_NULL	(1 << 2)
+ #define DRM_XE_VM_BIND_FLAG_DUMPABLE	(1 << 3)
++#define DRM_XE_VM_BIND_FLAG_SYSTEM_ALLOCATOR	(1 << 4)
+ 	/** @flags: Bind flags */
+ 	__u32 flags;
+ 
+diff --git a/tests/intel/xe_svm.c b/tests/intel/xe_svm.c
+index 6302af95b..741961529 100644
+--- a/tests/intel/xe_svm.c
++++ b/tests/intel/xe_svm.c
+@@ -21,6 +21,12 @@
+  *
+  * SUBTEST: xe-basic
+  * Description: Basic test to verify store dword functionality using helper functions
++ *
++ * SUBTEST: svm-basic-malloc
++ * Description: Verify SVM basic functionality using malloc.
++ *
++ * SUBTEST: svm-basic-mmap
++ * Description: Verify SVM basic functionality using mmap.
+  */
+ 
+ #include <fcntl.h>
+@@ -75,6 +81,44 @@ static void xe_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *e
+ 	xe_destroy_buffer(&dst_buf);
+ }
+ 
++/**
++ * @brief Tests SVM functionality using malloc or mmap.
++ *
++ * This function tests the ability to use malloc or mmap allocated memory
++ * for direct GPU command submission and data verification.
++ */
++static void svm_basic(int fd, uint32_t vm, struct drm_xe_engine_class_instance *eci, bool test_mmap)
++{
++	uint64_t gpu_va = 0x1a0000;
++	size_t bo_size = xe_bb_size(fd, PAGE_ALIGN_UFENCE);
++	uint32_t *dst;
++
++	struct xe_buffer cmd_buf = {
++		.fd = fd,
++		.gpu_addr = (void *)(uintptr_t)gpu_va,
++		.vm = vm,
++		.size = bo_size,
++		.placement = vram_if_possible(fd, eci->gt_id),
++		.flag = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++	};
++
++	if (test_mmap)
++		dst = mmap(NULL, 4, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
++	else
++		dst = aligned_alloc(xe_get_default_alignment(fd), 4);
++
++	xe_create_cmdbuf(&cmd_buf, insert_store, (uint64_t)dst, 0xc0ffee, eci);
++	xe_submit_cmd(&cmd_buf);
++
++	igt_assert_eq(*dst, 0xc0ffee);
++
++	xe_destroy_cmdbuf(&cmd_buf);
++	if (test_mmap)
++		munmap(dst, 4);
++	else
++		free(dst);
++}
++
+ igt_main
+ {
+ 	int fd;
+@@ -91,6 +135,14 @@ igt_main
+ 		xe_for_each_engine(fd, hwe)
+ 			xe_basic(fd, vm, hwe);
+ 
++	igt_subtest_f("svm-basic-malloc")
++		xe_for_each_engine(fd, hwe)
++			svm_basic(fd, vm, hwe, false);
++
++	igt_subtest_f("svm-basic-mmap")
++		xe_for_each_engine(fd, hwe)
++			svm_basic(fd, vm, hwe, true);
++
+ 	igt_fixture {
+ 		xe_vm_destroy(fd, vm);
+ 		drm_close_driver(fd);
 -- 
 2.25.1
 
