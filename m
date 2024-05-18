@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C02B0C04FFE
-	for <igt-dev@archiver.kernel.org>; Sat, 18 May 2024 00:33:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75819C25B79
+	for <igt-dev@archiver.kernel.org>; Sat, 18 May 2024 01:03:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 54D9710E081;
-	Sat, 18 May 2024 00:33:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="abshsj6u";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05A8A10E081
- for <igt-dev@lists.freedesktop.org>; Sat, 18 May 2024 00:33:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1715992429; x=1747528429;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=srbuII9z/eNcN5Cej01QCsVqOgMFuZG7ptxkfI5xmng=;
- b=abshsj6upSQOtk5pmgJRK3WRM+2V3LACgcE4YnBtsxqJjUokT5USPm5z
- KMRk2KAAwHIdXRKu2UNT17qw3ayCYAxFgWiCHgiz2RYrnjcPHhxsahyyw
- xTXJ9/TJgxcDkSiVFO3tTsh5Gk9p5ZRE00gsQjGB79mEiJCmd9MPKdvdN
- pqfOB0lXHlnsr3wPVFDphgz2vLJEK1VWdnPYSLUoxnTCUqK+5z8JsEebi
- wwq4BKN95rU/nVG8to3LQRNFOCI9ZypVMR8suYr2HFPqyEcwuYJPDoqT8
- 9uGuB9pWGwwReYtTCizDcu0vHsPw85ZzD7Z0qKKehgbchwRAQA9df/1Km Q==;
-X-CSE-ConnectionGUID: QX3GkceASwGr2XOhgnBIJA==
-X-CSE-MsgGUID: bL8ERwiHQmqpNPCP/ufvRg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11075"; a="11993733"
-X-IronPort-AV: E=Sophos;i="6.08,169,1712646000"; d="scan'208";a="11993733"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 May 2024 17:33:48 -0700
-X-CSE-ConnectionGUID: DrIOodDOQhi2S+BIapQV/Q==
-X-CSE-MsgGUID: DKFPTwpARKeS0OmCbpJL0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,169,1712646000"; d="scan'208";a="31973602"
-Received: from kialmah1-mobl1.jf.intel.com ([10.24.14.37])
- by fmviesa006.fm.intel.com with ESMTP; 17 May 2024 17:33:48 -0700
-From: Khaled Almahallawy <khaled.almahallawy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Khaled Almahallawy <khaled.almahallawy@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Mark Yacoub <markyacoub@chromium.org>, Shawn Lee <shawn.c.lee@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t] tests/kms_sysfs_edid_timing: Skip the first detect
-Date: Fri, 17 May 2024 17:33:45 -0700
-Message-Id: <20240518003345.203255-1-khaled.almahallawy@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BAF610E163;
+	Sat, 18 May 2024 01:03:54 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 861F410E163;
+ Sat, 18 May 2024 01:03:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8140195947604830551=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fsysfs=5Fedid=5Ftim?=
+ =?utf-8?q?ing=3A_Skip_the_first_detect?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Khaled Almahallawy" <khaled.almahallawy@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 18 May 2024 01:03:53 -0000
+Message-ID: <171599423350.2143812.12960389453735492991@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240518003345.203255-1-khaled.almahallawy@intel.com>
+In-Reply-To: <20240518003345.203255-1-khaled.almahallawy@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,71 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It is observed in some chrome devices that the first detect take a
-long time due to PPS. In another device it was found the eDP panel
-misbehaving and keep sending multiple long HPD during PPS which
-trigger HPD storm warning. This first detect will always exceeds the
-THRESHOLD_PER_CONNECTOR and will cause the test to fail.
+--===============8140195947604830551==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Avoid that by skipping the measurement for the first detect.
-Also adding more debug logs in the test and kernel to be able to
-correlate the results.
+== Series Details ==
 
-Fixes: VLK-52052, VLK-56861
+Series: tests/kms_sysfs_edid_timing: Skip the first detect
+URL   : https://patchwork.freedesktop.org/series/133778/
+State : success
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Mark Yacoub <markyacoub@chromium.org>
-Cc: Shawn Lee <shawn.c.lee@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
----
- tests/kms_sysfs_edid_timing.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
-index dbc66c876..b7832dd83 100644
---- a/tests/kms_sysfs_edid_timing.c
-+++ b/tests/kms_sysfs_edid_timing.c
-@@ -50,7 +50,7 @@
- #define THRESHOLD_PER_CONNECTOR		150
- #define THRESHOLD_PER_CONNECTOR_MEAN	140
- #define THRESHOLD_ALL_CONNECTORS_MEAN	100
--#define CHECK_TIMES			15
-+#define CHECK_TIMES			16
- 
- IGT_TEST_DESCRIPTION("This test checks the time it takes to reprobe each "
- 		     "connector and fails if either the time it takes for "
-@@ -89,15 +89,25 @@ igt_simple_main
- 		for (i = 0; i < CHECK_TIMES; i++) {
- 			struct timespec ts = {};
- 			int fd;
-+			uint64_t current;
- 
- 			if ((fd = open(path, O_WRONLY)) < 0)
- 				continue;
- 
-+			igt_kmsg(KMSG_DEBUG "%s: start detect\n", path);
- 			igt_nsec_elapsed(&ts);
- 			igt_ignore_warn(write(fd, "detect\n", 7));
--			igt_mean_add(&mean, igt_nsec_elapsed(&ts));
--
-+			current = igt_nsec_elapsed(&ts);
-+			igt_kmsg(KMSG_DEBUG "%s: end detect\n", path);
- 			close(fd);
-+
-+			/* Skip first detect */
-+			if(i == 0)
-+				continue;
-+
-+			igt_mean_add(&mean, current);
-+			igt_debug("%s: i=%d current=%02fdms mean.max=%02fms mean.min=%02fms\n",
-+				de->d_name, i, current/1e6,  mean.max/1e6, mean.min/1e6);
- 		}
- 
- 		igt_debug("%s: mean.max %.2fns, %.2fus, %.2fms, "
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_7862_BAT -> XEIGTPW_11157_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7862 -> IGTPW_11157
+
+  IGTPW_11157: 11157
+  IGT_7862: 29b73ddaf42dc4a41eaeabf0229aa900132a9af1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1309-5e9e7440f7d7efd64079148c738fc83600fb477b: 5e9e7440f7d7efd64079148c738fc83600fb477b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11157/index.html
+
+--===============8140195947604830551==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_sysfs_edid_timing: Skip the first detect</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133778/">https://patchwork.freedesktop.org/series/133778/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11157/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11157/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7862_BAT -&gt; XEIGTPW_11157_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7862 -&gt; IGTPW_11157</li>
+</ul>
+<p>IGTPW_11157: 11157<br />
+  IGT_7862: 29b73ddaf42dc4a41eaeabf0229aa900132a9af1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1309-5e9e7440f7d7efd64079148c738fc83600fb477b: 5e9e7440f7d7efd64079148c738fc83600fb477b</p>
+
+</body>
+</html>
+
+--===============8140195947604830551==--
