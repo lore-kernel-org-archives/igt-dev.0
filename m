@@ -4,60 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C02EC04FFE
-	for <igt-dev@archiver.kernel.org>; Mon, 20 May 2024 10:39:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 384AFC04FFE
+	for <igt-dev@archiver.kernel.org>; Mon, 20 May 2024 10:49:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C851910E505;
-	Mon, 20 May 2024 10:39:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8D0610E067;
+	Mon, 20 May 2024 10:49:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BoASLCyR";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="nsGlXdAV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C029310E505
- for <igt-dev@lists.freedesktop.org>; Mon, 20 May 2024 10:39:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716201567; x=1747737567;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=uXGpn2JNikysIWQYp27MBVmpU1vps5AjMTU4VmCw8hc=;
- b=BoASLCyRzEui2bbE8EuJ1T9Fr9TqpOcz7hbkgdigMB/oevzJpb6ohapU
- r8rOlvu545gGug95gpAXrqXQtmuMEaoGTMJlmAdiijqk5S2g/zdfcezAZ
- Dux2/kthVdpI1EdgLDTSj40lXcSlAv48Q22lNLS1Z+M5MK52lckQ9MSZr
- XtXdlhYTLBGfz7qmgMGRhK3gMR/kokjgWwx8P4kIrfotLA9zwchxE5rtr
- oqhrBAnahjaxzmVEl2ZDElQnq+i6hwuv+N+vBiPL3m0euz9ktIUKI1wSh
- wNOZ1BRkkpnLB+3m+u/laF2Fg4JkgdO2cFe5aLhTLe7diYqCcCDDuvE8g Q==;
-X-CSE-ConnectionGUID: KlPsApacQ32PLGeeUMQ+Tw==
-X-CSE-MsgGUID: MhRGYtt9QS27Fw6QNf0ZUw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11077"; a="12262128"
-X-IronPort-AV: E=Sophos;i="6.08,174,1712646000"; d="scan'208";a="12262128"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 03:39:26 -0700
-X-CSE-ConnectionGUID: MJ+QzkVJRxCxXu7HS0dz7w==
-X-CSE-MsgGUID: h+ECoTjfTAK3q8r4hi8OCQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,174,1712646000"; d="scan'208";a="32625455"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2024 03:39:25 -0700
-Date: Mon, 20 May 2024 12:39:08 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
- jeevan.b@intel.com, sameer.lattannavar@intel.com
-Subject: Re: [PATCH i-g-t v3] tests/intel/kms_big_fb: Restrict runs on
- simulation
-Message-ID: <20240520103908.u5zguzkhwxfvgqae@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
- jeevan.b@intel.com, sameer.lattannavar@intel.com
-References: <20240520050155.435110-1-pranay.samala@intel.com>
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
+ [209.85.221.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ED38F10E067
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 May 2024 10:49:20 +0000 (UTC)
+Received: by mail-wr1-f44.google.com with SMTP id
+ ffacd0b85a97d-352129e3c8eso2190294f8f.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 May 2024 03:49:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1716202159; x=1716806959; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=qthErZHBTW9i2p34yL0jpjn4PdV4VipoY9PILrRy31s=;
+ b=nsGlXdAV2srl+dbt2R49PPZ2zUaooLJ2+CllTicoQJ3EG0O7HVCnB6RWw3LKfHvoXg
+ FcGlmb+5aia8Zuo37sUhfKvHWPuDZKybOt/IfQISm5N2S39+ziU6R95Ypx76rxlFFxek
+ msTnRYxqlD/RAKokVrIGjTBp6qJSRP+47yvbAb9iuUmCEd/IX0Uk1d3aFhNDsqBWQgpR
+ gyFjAVlYxtMsmeKxOF9ZQaxAWJb09i4TjsmVZ9oVPGs6y1DY49dTcgxA+ET317uKdqHf
+ nv8IMQOQnL5ZF+vy44SFnQ99CDhOUCkvcEAcFYO2hhk8ULgdkfkA3aEFM+I8dEYfV4bd
+ IITw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716202159; x=1716806959;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qthErZHBTW9i2p34yL0jpjn4PdV4VipoY9PILrRy31s=;
+ b=Qd36UZ1JLgWMqrKYZPaybclxtOmeVza60KzxMImEeW2Gk5aiyIJ/J+C5lsZ8Ag8/nY
+ 33IEbvjPl8Nhbphce5SWhajTVWcznuk9+8YnvMzHFMiv3ErYqsrLkAjL4RhX0ihIBNeB
+ ZzKXqPwtRtUKX5nmuP8rZvCABU5+jKzklaByAt9cbAPK/l2TiMyFnSQhukiPcHQJs+z0
+ G3DrfRgKsDrDETMZSIAW+KzK5ZFG9qh18CxaX6wtpIvsROA0nOgPY/a8WjkmTj8xfMSX
+ k1zNg1oN+krPMu4o3C2rO8+6CJrGrji2aclDEwKL4+UtfsJNpkxHPFtq+uA13wxZvpl3
+ 9ZKQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVtzx1MAqeYTCBzm7d73KzbCFXUyBsW5VGB0TNQLbMol52sFxpbQG8yMuFpqMdz2XbNb8iB63lsrN52MXFb5eF0Fyzthwer0bxP4J6bDQ==
+X-Gm-Message-State: AOJu0YwHydQ+Ii9dR2OUzBH3TjiWD1MwSefrXFNEriF2KdAnhhoMZNKs
+ 6LWiv4rBprE50snYouhP8Om+q4j9w3fdpjYYerQg/D3hj2xUOxXf
+X-Google-Smtp-Source: AGHT+IG2TFBejLCFjC1jcRrUf5dRm58O2DLyvVgRVL8zLSIkXhJLXAeyrcSte11xA9yzIOL6IY8Ksg==
+X-Received: by 2002:adf:fc89:0:b0:34d:9d2c:d9e2 with SMTP id
+ ffacd0b85a97d-3504a96a650mr22984299f8f.53.1716202158800; 
+ Mon, 20 May 2024 03:49:18 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.139.78])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-3502b79bc83sm28836739f8f.16.2024.05.20.03.49.15
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 20 May 2024 03:49:17 -0700 (PDT)
+Message-ID: <50dbfa55-b7ff-42cf-88b7-ac5a73ad846b@gmail.com>
+Date: Mon, 20 May 2024 13:49:10 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240520050155.435110-1-pranay.samala@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/kms: Move kms_plane_scaling to intel directory
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Mark Yacoub <markyacoub@chromium.org>
+References: <20240520064150.2519210-1-bhanuprakash.modem@intel.com>
+ <20240520082217.agl3fz6d6d25jyhu@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240520082217.agl3fz6d6d25jyhu@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,96 +85,83 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
-On 2024-05-20 at 10:31:55 +0530, Pranay Samala wrote:
-> This test executes on only one pipe and all the available planes with
-> set of 6 coordinates. Due to this, test takes long duration to execute
-> on simulation and gets timeout.
+I didn't see why this test would need Intel HW? I see Intel hw is 
+handled with special casing, normally test uses linear tiling and checks 
+if Intel specific tiling can be used. What did I miss?
+
+/Juha-Pekka
+
+On 20.5.2024 11.22, Kamil Konieczny wrote:
+> Hi Bhanuprakash,
+> On 2024-05-20 at 12:11:50 +0530, Bhanuprakash Modem wrote:
+>> As kms_plane_scaling is limited to run on Intel hw only,
+>> move this test to tests/intel directory.
+>>
+>> Cc: Mark Yacoub <markyacoub@chromium.org>
+>> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > 
-> Restricting the test to execute only on one of the coordinates for
-> simulation.
-
-Now it looks much better, I still have one ask for improvement,
-see below.
-
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > 
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> ---
->  tests/intel/kms_big_fb.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-> index 1e45d8e42..502905974 100644
-> --- a/tests/intel/kms_big_fb.c
-> +++ b/tests/intel/kms_big_fb.c
-> @@ -529,6 +529,9 @@ static bool test_plane(data_t *data)
->  
->  		igt_assert_crc_equal(&big_crc, &small_crc);
->  		igt_pipe_crc_stop(data->pipe_crc);
-> +
-> +		if (igt_run_in_simulation())
-> +			break;
+>> ---
+>>   tests/{ => intel}/kms_plane_scaling.c | 6 ++----
+>>   tests/meson.build                     | 2 +-
+>>   2 files changed, 3 insertions(+), 5 deletions(-)
+>>   rename tests/{ => intel}/kms_plane_scaling.c (99%)
+>>
+>> diff --git a/tests/kms_plane_scaling.c b/tests/intel/kms_plane_scaling.c
+>> similarity index 99%
+>> rename from tests/kms_plane_scaling.c
+>> rename to tests/intel/kms_plane_scaling.c
+>> index acb4a1da1..620dba911 100644
+>> --- a/tests/kms_plane_scaling.c
+>> +++ b/tests/intel/kms_plane_scaling.c
+>> @@ -1291,10 +1291,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>>   	enum pipe pipe;
+>>   
+>>   	igt_fixture {
+>> -		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>>   		igt_display_require(&data.display, data.drm_fd);
+>> -		data.devid = is_intel_device(data.drm_fd) ?
+>> -			intel_get_drm_devid(data.drm_fd) : 0;
+>> +		data.devid = intel_get_drm_devid(data.drm_fd);
+>>   		igt_require(data.display.is_atomic);
+>>   	}
+>>   
+>> @@ -1464,7 +1463,6 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>>   		for (int index = 0; index < ARRAY_SIZE(intel_paramtests); index++) {
+>>   			igt_describe("Test for validating max source size.");
+>>   			igt_subtest_with_dynamic(intel_paramtests[index].testname) {
+>> -				igt_require_intel(data.drm_fd);
+>>   				for_each_pipe(&data.display, pipe) {
+>>   					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+>>   						drmModeModeInfo *mode = NULL;
+>> diff --git a/tests/meson.build b/tests/meson.build
+>> index 758ae090c..c53e3bc3c 100644
+>> --- a/tests/meson.build
+>> +++ b/tests/meson.build
+>> @@ -47,7 +47,6 @@ test_progs = [
+>>   	'kms_plane_cursor',
+>>   	'kms_plane_lowres',
+>>   	'kms_plane_multiple',
+>> -	'kms_plane_scaling',
+>>   	'kms_prime',
+>>   	'kms_prop_blob',
+>>   	'kms_properties',
+>> @@ -262,6 +261,7 @@ intel_kms_progs = [
+>>   	'kms_legacy_colorkey',
+>>   	'kms_mmap_write_crc',
+>>   	'kms_pipe_b_c_ivb',
+>> +	'kms_plane_scaling',
+>>   	'kms_pm_backlight',
+>>   	'kms_pm_dc',
+>>   	'kms_pm_lpsp',
+>> -- 
+>> 2.43.2
+>>
 
-Please move this to just after for(...) loop begins, the argument
-it is much more easier to read, second is it will allow easily
-modify it if you want to test (x,y) instead of (0,0). You could
-reuse your conscept with var here, also add comment, so imho it
-would be better:
-
-At begin of this function, put:
-	bool run_in_simulation = igt_run_in_simulation();
-
-At for loop:    
-
-for (int i = 0; i < ARRAY_SIZE(coords); i++) {
-    igt_crc_t small_crc, big_crc;
-    int x = coords[i].x;
-    int y = coords[i].y;
-
-    /* Limit running time on simulation to (0,0) */
-    if (run_in_simulation && i > 0)
-            break;
-
-So now you could also easily change this into:
-
-    int x;
-    int y;
-
-    /* Limit running time on simulation to (x,y) */
-    if (run_in_simulation)
-            i = ARRAY_SIZE(coords) - 1;
-
-    x = coords[i].x;
-    y = coords[i].y;
-
-Or use both (0,0) and (x,y) on simulation.
-
-Regards,
-Kamil
-
->  	}
->  
->  	return true;
-> @@ -540,6 +543,7 @@ static bool test_pipe(data_t *data)
->  	drmModeModeInfo *mode;
->  	igt_plane_t *primary;
->  	bool ret = false;
-> +	bool run_in_simulation = igt_run_in_simulation();
->  
->  	igt_info("Using (pipe %s + %s) to run the subtest.\n",
->  		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
-> @@ -597,7 +601,7 @@ static bool test_pipe(data_t *data)
->  
->  	for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
->  		ret = test_plane(data);
-> -		if (ret)
-> +		if (ret || run_in_simulation)
->  			break;
->  	}
->  
-> -- 
-> 2.34.1
-> 
