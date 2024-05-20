@@ -4,166 +4,165 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01258C25B77
-	for <igt-dev@archiver.kernel.org>; Mon, 20 May 2024 18:35:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CDD6C04FFE
+	for <igt-dev@archiver.kernel.org>; Mon, 20 May 2024 18:35:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6089510E1BE;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0B9810E384;
 	Mon, 20 May 2024 18:35:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dP77bWxV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UOgwAATm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 250B010E384
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E345110E63C
  for <igt-dev@lists.freedesktop.org>; Mon, 20 May 2024 18:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716230142; x=1747766142;
+ t=1716230143; x=1747766143;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:content-transfer-encoding:mime-version;
- bh=9RgIWjB0QCsPXsjNziVwUG6ZY/KcVIQxIVsutInur3g=;
- b=dP77bWxVCcsdGWnsjb48PQTGwwl7Lm5amwfLEvUirBl9ZKZHgdfDPL99
- Of78relZ7TzHROeQus+8un6uYea8uYVn6sq7MPZlj63+DZgQ2h5MGRM8R
- HigBAs8+EI5D+Np+PUHnbMZCmRJK4x/qiS2KWJHcl6ZNoZ/ZxAHRuD2pe
- dTffY8jL8qU75QKxLKNV3wwW5ld2byaSLMfbgzz1gBofq5aH4jJvfV+GA
- y5jf1Kcbi6vBCkRP3YG+OA6xkHKZ9vSw8z4jZaCNpgGCl30W8IkVd3cZq
- zr3rU++qB771uamUeKC6Me6o8rOlU+IWcB6ysdj3W78L4/YxpJBv/KnMo w==;
-X-CSE-ConnectionGUID: 9ikLfhhRRVWYMtpzLHYbew==
-X-CSE-MsgGUID: pr7648rpSZ2XY/NZ3Wmyng==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="23791020"
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="23791020"
+ bh=hiXo96o+GuGor7PsV0xHqRP8GNKv4hSPeaKcaj7wWj8=;
+ b=UOgwAATmEgHgCsBpfNkf6n2EYFjvR/sFHtHrZCMi1eQKhs7zT2DHUKpI
+ pJFSWDz7m7vMFIFIx8Uf+l4PWwxilvLaue40Jm2dl0eBBDeKGjdzhNUqf
+ pP9LPcs7zXFzymVI/TSqwdfIKs5hPwJ6xwFKCFpwOROGvSXnxDyk0HXEL
+ JxsKl0CBHNoN5ZWlUJ1WraraxPvzK0iPuu4Ax89Jq/Z4MRWPUFC4MVkWC
+ iXVRjxUinGAv6TZR12BI0ztrVOqkfieHQEB2DesqSqhtzvkw/5/oYODbf
+ SqWQbUq/mNZC7vOIrmWZevPuOpXSS+dSQoaAxHjjX742pdGRYZIzlXMOu Q==;
+X-CSE-ConnectionGUID: ulKRB2PNSUSVTqAuyf/k1Q==
+X-CSE-MsgGUID: oy8UERC2RiGPG/DIogc84A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="23791023"
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="23791023"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 11:35:42 -0700
-X-CSE-ConnectionGUID: DLOIZk0LSMSNBeMMgliDYw==
-X-CSE-MsgGUID: bt0VzOuxSKyyvRrYN3Zs6A==
+ 20 May 2024 11:35:43 -0700
+X-CSE-ConnectionGUID: ynFI/hxPSQmiaq1s+mzQSw==
+X-CSE-MsgGUID: CxTDT4YkRWKlB+O90rjWjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="32499233"
+X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="32499244"
 Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 May 2024 11:35:41 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ 20 May 2024 11:35:42 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
  ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 20 May 2024 11:35:41 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 20 May 2024 11:35:42 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 20 May 2024 11:35:40 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 20 May 2024 11:35:42 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 20 May 2024 11:35:40 -0700
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.100)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Mon, 20 May 2024 11:35:42 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.169)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 20 May 2024 11:35:40 -0700
+ 15.1.2507.39; Mon, 20 May 2024 11:35:41 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TVtQdRvOPg5BF3ybeYnCj1Y0RjMqrDsAgptH9PU6ctQYNRtodDD0gJTATNq3v4g++QpDLnMF1Ou90Z02aPRbsKb8B6ITfvJIFR1rmaQuQZxDUBeRMPbnyfCbBbjOBjYokqJFoyTkdPjlhMCP3QsDqYQ9zkLh955LkkUDe6moXHHWT65Zh8UehzHJoQBmk7qPQXz28k4y0HqoCr6jukMCga4z129aTUxO07ONvN0b6JvuMy+6fZg3oSzidKR9qVEjycYWwmtC/QVMdxV0EnpvnBwNXWgrme2mbxF+oDEi4pggXNic3rHR/1vQF3+H63EWGbCLxzWqI0UQDCvzzTiMDQ==
+ b=mhM+im/UQuyR2otGtxqYg7TD8Wv2XCnWFPFlTsh2eWtuifyzJkT2Pp7l14bosmvtBfXPDlw2J1FxYHQzCaKXmtFaEV+euo0FRDzt/Xxt2yr6aESUk8AkEyYv9L9cy3g2ybePpQs0p+rE11TkoxD8GvoW17l/B+SK8za95s/7ygkymBTsUXcdIG3psYQgC0Cc+oo4FXRvjrWBkAHsdfvWjugavr0/nh5mpCeLZ9qlKOQNveul1lCf2cCPUaKtHc/AeNiTpiQ6A92dyBL+Ey1/fLc3Y0CxXAwuo1vxgrqXyJa7d/RHVuNCZTfdzQaN/75anEqwqnDmNMoVtGKNyMaU2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Smom/bMV5utqc0fjm8WCJhoVNqvpYarAuJhNkLZ8A8s=;
- b=gXtLhjCPMWHtTnALYAO/5XTDVH7PHvaF+P9GitA6NMbaW7B0CBehxIHUNFqjb3I7sVUktJZw0ghMT0dO3GelwO0TFhaU+F1jLadBXc7l6GFxLd/aCucqbzlUAEkI5fpLi725iooT81Cv2ZPsXw+6PWm21ckzxbh3Q5VyL2xe61lKpoSD18heOq5Uht8zp107+eb5N1ONtA8DYIf0FwF247+64jGyp5bblQpmX4/6U4olzGkiBxz7AvExcwHZnwfG2mH4YZyJcWHbEUGUO00wWzNkR2v8UdzoT8RpVXh7LN4ZnqiL2qD9xFIYO88ykN7XVPYl2ot0YBJD2LkcLN6PuQ==
+ bh=iEdkJrhBbequTHT0yXIBV888/bniEL+vw42JeWnuICM=;
+ b=X1elqza2Gme3AY5TeNhCro6qbkVdS0K380/knV5BdUU1KrntHrwFzM8yRP79Z2rzE6ldtE0RryrvjCS8K721NxM+LyQkL2/fyxOzJ4KmSAxVGgM406VDuG7Iuwn1YeGSFGwN6YjsysGsDrOh/oy0OBWTRA5ufVmfCR3brlWXz1BQpGOFzoskoDyh7gsOfiyFJN/sFZZ+7hPpuEfeNXm5yPmfuSmr3FowkEBcpp7uNZR2fmy0aRyjR8SUbaI2bCcl0b+J7ypor5ITF5/2RAGNaUTn52CExwUb68sv9GkmGY/WklPHbYEmvOZAcAH5QshwtPk0KngHe2JoysJZ430IYw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from MN0PR11MB6059.namprd11.prod.outlook.com (2603:10b6:208:377::9)
- by SA1PR11MB7039.namprd11.prod.outlook.com (2603:10b6:806:2b5::16)
+ by CO1PR11MB4979.namprd11.prod.outlook.com (2603:10b6:303:99::16)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Mon, 20 May
- 2024 18:35:36 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.28; Mon, 20 May
+ 2024 18:35:33 +0000
 Received: from MN0PR11MB6059.namprd11.prod.outlook.com
  ([fe80::cf6f:eb9e:9143:f413]) by MN0PR11MB6059.namprd11.prod.outlook.com
  ([fe80::cf6f:eb9e:9143:f413%5]) with mapi id 15.20.7587.030; Mon, 20 May 2024
- 18:35:36 +0000
+ 18:35:33 +0000
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Rodrigo Vivi <rodrigo.vivi@intel.com>, Badal Nilawar
- <badal.nilawar@intel.com>, Anshuman Gupta <anshuman.gupta@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 5/5] tests/intel/xe_pm: Convert mmap tests to use
- existing d3 helpers
-Date: Mon, 20 May 2024 14:35:19 -0400
-Message-ID: <20240520183519.227167-5-rodrigo.vivi@intel.com>
+ <badal.nilawar@intel.com>, Anshuman Gupta <anshuman.gupta@intel.com>
+Subject: [PATCH i-g-t 4/5] tests/intel/xe_pm: Only check the rpm resume after
+ the first mmap operation
+Date: Mon, 20 May 2024 14:35:18 -0400
+Message-ID: <20240520183519.227167-4-rodrigo.vivi@intel.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240520183519.227167-1-rodrigo.vivi@intel.com>
 References: <20240520183519.227167-1-rodrigo.vivi@intel.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY3PR05CA0050.namprd05.prod.outlook.com
- (2603:10b6:a03:39b::25) To MN0PR11MB6059.namprd11.prod.outlook.com
+X-ClientProxiedBy: SJ0PR05CA0096.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::11) To MN0PR11MB6059.namprd11.prod.outlook.com
  (2603:10b6:208:377::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|SA1PR11MB7039:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e939674-0081-491b-ce3b-08dc78fba3f2
+X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|CO1PR11MB4979:EE_
+X-MS-Office365-Filtering-Correlation-Id: b054b57a-14a6-4b11-b7c9-08dc78fba21c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|1800799015|376005;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?RMmwtdT82qWPxVuEeaaI23GVdvnioLHXI/B+h7NuzUpR/LXfo2xy9xtmSoBM?=
- =?us-ascii?Q?C/qDm/t6YtcS5wk0AcpzU3VbS/kZ+Jo4eOmYjWOlBrBbbZS0J5mkvY93NPrk?=
- =?us-ascii?Q?xe1U9ju50rIy8wwjGlTxHp4fq72EsaGtusKR/VmfqHWoM8BiMUqAdX4mUB/L?=
- =?us-ascii?Q?Zn2KRtv4al/pwtNt9ElU2+ZCuLrN39MSFxyshn/eoVuOgoyAF9cQZMLHKv/B?=
- =?us-ascii?Q?xR5BEOf8Xzu4jZWqX0/pJZPsmDrJzsOSvKA8QwDvUmqiD8PW1ibYJEbdx28S?=
- =?us-ascii?Q?LHL3y9qMd9i66AO2BEf0CHU5h6TrkrGbOTqZs6kgDNW3zCs2mdtGjSBcG+QC?=
- =?us-ascii?Q?cmZunhvFX6RRXX7hdFA0JO3bdKUwB+xJFcVKowSzFmAP/BUXYkePM6CX+Ozj?=
- =?us-ascii?Q?FtEHz9wyUbs4NH2eVIyiQrZcu8npAmGya5nlZN6g7RJCxMIRRHN3Q34OyoC9?=
- =?us-ascii?Q?ZQ2Z0wLY4HSrkkSwhx/NrgseXGQv6AdO52lxPyenQzRalZG1bSri+2Ze+nks?=
- =?us-ascii?Q?KqGOa+L+YobNQANuXPYo5rl8DCjopY/7TPz3ZXCZTn9OA3zHMGSsYIlv9pH1?=
- =?us-ascii?Q?joK7BfXiuY/1H9NUtVeLF1h1rMiYzTODyU6HjFetztgkF3eBxfNf4uIv+2WB?=
- =?us-ascii?Q?JRzJOjXGZ0dgsrzqWYgscb7uXBGrVPBs23vb/a5AJgo+Vkbqacw25bWyZneF?=
- =?us-ascii?Q?a4JifIgSlk2EdmbYRQBuOWv/qyU7KlL78gONw0qvxiravoD/HB+Dm4Jzxq9S?=
- =?us-ascii?Q?Nbd7WYbcLAHo+QQuBm6bOPwTWVFtRLRNu8pgzu2Y15oItxTKrtNVuRQMnH5z?=
- =?us-ascii?Q?H4KLJRDYfLEvSke6OL7VQB1XN2WuStJqGfHGa81948qS+vEhscZs+E+rWBMP?=
- =?us-ascii?Q?6zXWbEp5/kNoXiW/gKdN9/KS3koMpxvus/KD6W7cbXOYb6ggw0PLO+R1QEPZ?=
- =?us-ascii?Q?IzovTkIPU8wjSuUiUdTyJiqYSqJgN1Wyh1SsCkKoxTkXljRiL4kTlg+8VEZm?=
- =?us-ascii?Q?aG9jTcmgfcC840xK/ia7WRSo8pa4mfsFtAfy5zMSFhdsmFI+s/pq3ANZSRKu?=
- =?us-ascii?Q?4Yh8Qyl2YI58JQMdZK5r/oZCrY2jbC+z3ZjxSGxKTpvB64JYkCTioJVReniZ?=
- =?us-ascii?Q?5bWVZf/eqZK5rBcWbnmlsEbM5LpPVmf1vighq0BsV8URgHURrxO8eg0O6IPj?=
- =?us-ascii?Q?yR6F8Su8ai2pmJbn7baQxl5hyWYoMVl9lBMcn2rjmPEDheDooW/kxt2dbner?=
- =?us-ascii?Q?Tf8VIo7FwpZyhC5cSaAvyby0kwGsSMt8gTmn3Er7IQ=3D=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PQA71KWXCkZuzk2lRroyI66+5jZEewfED3siIh3DGRRBMVuq4gcl7ucML4vK?=
+ =?us-ascii?Q?qLvoEkLyChIE9UMMg7Bs1yeGYX7Nnl/AACj6CzlepnDHXyHlONtnc7XsRUh2?=
+ =?us-ascii?Q?4yOn/jKMOBgxWd+4w3AS8bzaYgdoKu1vj35IpZpAmD6j6/n+zt3CcglBV+z3?=
+ =?us-ascii?Q?r1XE7OcG0hAxV2MPC1GHgPvj++0s9A8r7W1SgrfM9ysxAXgCM/2u84n3pYBg?=
+ =?us-ascii?Q?OqrkXWbZuoRlFi2sndDC9X/6Eim5LnMffLhV2GoiSW7772nL/LjnDkcmtuCF?=
+ =?us-ascii?Q?pDY3vZ7IK/UZ0TmZX9lSLhMgj5oNV2Tt96kNoVh03VBdus+f104VaOLb6rMk?=
+ =?us-ascii?Q?5pI0YosRxUPcUTyUmNNCA0SQDk7YyZ7oTAaSENkZYEqUPSVZ4ndjayqpCJo/?=
+ =?us-ascii?Q?mioty0OodXHeYLx+CMkRB4mGJ9lJ+QlCnzgnSr6HQSlgA5zShwRfa6u+WGGO?=
+ =?us-ascii?Q?qsDfAOuW9gCmsqXmyWekpPfaULASpMyDkV+waQ3nVxEwwyL0V/HuvBFyw6IX?=
+ =?us-ascii?Q?XYs8D/rntfKEYSdt+3L1F8VmIhqa+nCY55wJJaiT22HDZJPf5yv+yobE4pkt?=
+ =?us-ascii?Q?lIOYjkvz6j3ftTcJnadcl/Prr/8G7k5hEg7gaJ+OVtSt8PM45QXsVonAfMBm?=
+ =?us-ascii?Q?Nf+kd7dPyFrGzTSXjwMNeJ/YmQPJqTukAwvvdah2+DVJD4zb+pVmHCRja5wv?=
+ =?us-ascii?Q?D7zQxVwiXxBXtz2JVtz4XWSttqla+dtvLY2aauqCk4Woq0nA0tXGuewFj/TT?=
+ =?us-ascii?Q?jR2kOD7c9iJng5Y32vUoCJG1BW+d6VAuwkc/vvTG/3FLOnEGar/QtpvhlQW6?=
+ =?us-ascii?Q?Z7hmEsJQTNi9WNwMqDoHSAmyT8NXckrZ8SSzK7B1jU/yM5Xm4gstldWDoOwu?=
+ =?us-ascii?Q?mxiIJHrwMSShY95XSnYq4jyC8HNF/Dc+iD9jLIxW+d1QfZnzUGMDmGlIN0FG?=
+ =?us-ascii?Q?FOlImm7khyzM8D9j+rbuNOxIAzGCsgnKpHfk2AOeaUa0ZpvSdieh/7SVfIQs?=
+ =?us-ascii?Q?N05hXpGKhyA26lc1WIv2JF7V5kAZ3v2TO7jsCebV3RqNBna5lNoX5IfOpmqT?=
+ =?us-ascii?Q?iAZR3j9EWv1r+4AEFlUIIEsIcbLn7dAGx1wicQp/6TdpNsJzqvFmJ1Ahz11D?=
+ =?us-ascii?Q?xq/2Yqv/5FyLLn2xwJcSqLAil91fKiw3WHqcoA1XUOeUQdRzfMNyMivKdvHP?=
+ =?us-ascii?Q?5L3d7VRO3xh78nltAvt8hqunJlx/uw1y+C1VDAsuLKAPdMYdxrilj6/vA1od?=
+ =?us-ascii?Q?9f9HiMtKDUWELFwzl39yvprqeHSgmpbzs+ee2q19Ag=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MN0PR11MB6059.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(366007)(1800799015)(376005); DIR:OUT; SFP:1101; 
+ SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WIokg/QLrujkTk1A3CJIK8nEHc9pmf9J5TSU0No+wJLXqhy5UpLZRXyxZ0iN?=
- =?us-ascii?Q?7u7ozHTOac/dh3Vmum3501nOZQ51vuuPBcywPlyJKaNWwglPQ+C+DMW0Qg8w?=
- =?us-ascii?Q?PTA+RM1qZ+riy0hbOci8KDvnUwIkmBOhTky66S9ozGBozEvARDhEeWbA2z65?=
- =?us-ascii?Q?4sw5QpL4CeLEZhrTWdL9piCl0TpwbbAoBeeCGi1OmrOjEMzIKSOELxkydQRE?=
- =?us-ascii?Q?JukjDb3S7qfqVI8T/pI1hFlTjN3xg5bDGeHRa1niY/pmhiT/otKBzRqZCApg?=
- =?us-ascii?Q?aFmUlayH0XiEsR4GWEFaVCOer7+kLNPHKELos1yt1994OCA3sSecbSRE47GP?=
- =?us-ascii?Q?d/y+qstlb+XhD1Y05fZAC8AQkXE8hX6vUJoQyNZIy0I8FcCYHKC0eIX/WQKi?=
- =?us-ascii?Q?uTv0yqkV2t6ColetX51g5gyPlxDcvp6Yr71FuLXaVGbUL1Iyif/cvL+UWoKo?=
- =?us-ascii?Q?tOZwc5vKtbMsyQg2ADvHSOAveep2ThFnYhDc/GHtD3kWl6NGiZ2h+XC+aQSw?=
- =?us-ascii?Q?Q/AuEpG7BAYNEj9V6bRnffuUhUDDGal/iay4ECY0ZW09MJUdPE3NJvAyzxum?=
- =?us-ascii?Q?SoPhFJZI0KobQ3s+imHpYJ5Ij6tWGYZFCoQcqSnYdwAQe+8F7eX9h5zNV8jE?=
- =?us-ascii?Q?W1zTepct6XEs+8TEQ7dzLlCCmufNk/wvUhnAzMqslzBUbQshFdJJ2vyw1HtP?=
- =?us-ascii?Q?SDs72J5wKUNySLmEPinf7HGiKSB7CSorhnvOrk6qKS6TuyErAhVz7ZeHkc/9?=
- =?us-ascii?Q?uKf3mFwTterClpfpqs86Gw+TY3d7KZ2ahUUYs+8YPxPhPYRom6OUqx9aORj5?=
- =?us-ascii?Q?/Lm+2OoR7TFgLZ/GpOcdpXxnMlTBQF2Eu+jZF/cj6lPM90it4+H9+i7EUAzb?=
- =?us-ascii?Q?QboUVS3/uz6PA+37aoKOm6ItBNZV8VHhoPOadUFbXReugj5gwg6VKnhH2bZW?=
- =?us-ascii?Q?8jcdiICKUsoKzU8HJtdcyko2/M+GfxgaAVSu9o7padOF680IgHA+jrbJUxZZ?=
- =?us-ascii?Q?CGXHIFQJvbNTL5R8EuqAVCQsvAxsTEgVxsnNx4wXnkUu/78/m+6+k54uEnxI?=
- =?us-ascii?Q?0eJq5xQ7wrzJeEmMjSVIhhyI0lFdpsxvrAcHAC0R5rRUd3oNQgl+9pTLYG9Z?=
- =?us-ascii?Q?05BtX5XRjnugv+MqLKynIYPcfKh0RRZLTV0Q1FmSftOfmL31I9JdbBIE8+ie?=
- =?us-ascii?Q?m3xC6roOSO1ut5h5kOcYekT9XonXGC43lSOTmQHiP2QtmhWVbs0oYWZSic0m?=
- =?us-ascii?Q?RzQzIEitoodH/ZvIp3h7b0X77HYlA3EvxpRK7ABRARGptDeNclsjolorn+4i?=
- =?us-ascii?Q?A61jbtXJcqLzpfhJJMuwWB2CA66LWlskzslcz81afjkitGDq4YWkvrhe8gAw?=
- =?us-ascii?Q?oTxTwwGIvVR+nQt4rSIbcgK0NKcWoPgCIGl00rDbcDwfyhXOTpVpDRdh/LLf?=
- =?us-ascii?Q?4u/GfiTsykDrcFjkLYB9cCdX+jC+8dtdYWTF/NszydsWorHBc6PUf1XqdYfZ?=
- =?us-ascii?Q?gbxltlNn9/7CB3z8sd3QrktkMDKBRW4qUdheknEYrlb+0heZ5m0UMjenM7WF?=
- =?us-ascii?Q?vFjp3lD6dOvy2R/RYPm9L29+XNhaTQgwDoZmGKiQ?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e939674-0081-491b-ce3b-08dc78fba3f2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7lRsN/USvh6OopGEPeYFd9s2PKHZ0HQRNliZ5W0JAix450V4eNxg4H7Vbw/b?=
+ =?us-ascii?Q?BmQhYw24vJyQHWl9liWV6thUF4z63DrbUrEN/TtKfb4hqR03Qyukxg98aC2d?=
+ =?us-ascii?Q?bmQa87viQYzpe5knKPwPLjPmz/eYze7lJDdg3u7nfl1Xz/wAO4Not+YBuxKb?=
+ =?us-ascii?Q?onfj4TkQex/iHAUC4LNs8kHduYeiCjtIIOMotpwdzksHhN3QIj3fnMuakTn0?=
+ =?us-ascii?Q?o6LgC1JcF73xwD/ks3mBTmoGI1i2e9/dh2tckeiChoVHVSI7dnyjIo5TbM1p?=
+ =?us-ascii?Q?upVU15TgaJCvVx3YCpQIZrors6QLEPsLy2vo5i8APFQGu4VESkFQqT1Tn/2D?=
+ =?us-ascii?Q?wvxyqO/DQnSO8mzvNh/HjelMAvVR1rNcivxn2PQTGYVqUG6lMFpu/xt79LLp?=
+ =?us-ascii?Q?66zVX06FLWhuW4UTlMwQlsluZ8e99l64PP8bK6zfk2pJFqlboH1AWY1VcYtj?=
+ =?us-ascii?Q?CBNjtypK6Nx7VxoF4xLs1TJiwFeXGvIrPLDtAlsLXCmhggzSulN6t6+5fFkK?=
+ =?us-ascii?Q?f3C1/YARhal3J20ESHKvKy1wpcc+hfO/8XxxZWB88gRZ08/HOYa5fq4NxR5I?=
+ =?us-ascii?Q?AwXIpIBfHwDPry1qtRYSK/Ot0N0uSNp6q9+vzyBFq/fzbh+T/wrIOHtrHweB?=
+ =?us-ascii?Q?S77VTmP4Y/IScEo5Teo+Bzd7qV0ieBcFJeDy1xZDZOK7d80sS4usjQ/AVyEi?=
+ =?us-ascii?Q?ci1iZrm7h/BBtVe9mL/s9d55LLt2sRxJmFu6qByn5OJiWye5H7DZzvS9ph6T?=
+ =?us-ascii?Q?r7/mEo4OZVJpy+VCKLEjygwTHBIafkXisFe55fIAbzgrAskH8pvgwsmB/xMN?=
+ =?us-ascii?Q?7bo+klAul5gqHUhxDBD7CMFykPMrbDO0KpPPCdLi3GefQvIRoq7xze7KnXP5?=
+ =?us-ascii?Q?Uu886nap2B7GpEyGykDv7hdvkMXjEowk+rJxzrkHF8NgdN7r8C1jeoWY8Of6?=
+ =?us-ascii?Q?2IZAS3eVuDMSEjcmFwpMKA+R6EyQCBiLt7j0ErV730JrAmwUEJ0xqEzOaHze?=
+ =?us-ascii?Q?+/Ed8+FKS7wV0SRT0JXATUVrV4+sp/LWZz9f4BXvki8mbPnCxSAHgLIrS7Km?=
+ =?us-ascii?Q?7jBPWuoTdYK+YNtUgF8dw/E5aYfXJ+D7rK1lII7RFeU5BqopkelJO6kmQZFc?=
+ =?us-ascii?Q?xRM1TdRdfN0iV0+qKGJXt2oMd0j5uNZ0ZaBG6g0zFA9ldcGd/mPbafzObFlY?=
+ =?us-ascii?Q?TEvvH+U846XWGTzPXkXPXxqpj5hyleka97WKNKwtaIyamtZHMSQDjQurcWWX?=
+ =?us-ascii?Q?AgsIlMdjpvD9/jS+hevz6AcsZj5gJSulfHX/BHNjh1hIkL5cXTchGlJe7xvE?=
+ =?us-ascii?Q?A6rVdsUH2YxSdirS57psfSRcJ08VlXcFfnWGtjchI1VtIMjc9YFTMpE0l/4O?=
+ =?us-ascii?Q?JbLwDyQ//dH3XLmLXZ9/p1eABOMfWunqGfOkVQxx/i80yY4k/AZerpZ42c3W?=
+ =?us-ascii?Q?7OPq3r+qO+M2VH3ToF7qBtaMeEkBA0VXdZ0MVgk/otKMFbOR+kVTIMbwHfQH?=
+ =?us-ascii?Q?FLiL7kyhtZNh/yumg5VBfCGj5eiTgYfhTH0fyDqD0IsJDB/fDjBDNHiEPOC1?=
+ =?us-ascii?Q?dp4gA4k36glnWZgttG4vqiefCkd1pvYYx17v8xid?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b054b57a-14a6-4b11-b7c9-08dc78fba21c
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6059.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2024 18:35:36.4345 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2024 18:35:33.3355 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1SNiqLLD/YYspArH7XPUOPW/v3DI/ZrlkQucrDJHkMT/0AP2HRZU3bC7i6AR1w37SD+Z0+KMTfTtUB9IN0pHXA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB7039
+X-MS-Exchange-CrossTenant-UserPrincipalName: UlciEkz6PdGs4mbYUjgProqrHfm4aWOr+fJgnkA3Kl/Q+drf4zsS1mYEjoxp8WD6dQL9atNIPOY8ddCyxLfolA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4979
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -180,165 +179,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Standardize d3 setup and ensure that it tests with D3cold and
-D3hot.
+The very first memory operation on a mmaped region after runtime suspend,
+the device will be resumed if the memory used is vram.
+However, after this first operation with page fault, the memory
+can be migrated to the system memory.
 
-v2: rebased
-v3: rebase and fix description arguments (Francois)
+During this migration, Xe kernel will get a notification at
+xe_bo_move_notify, and the bo will be removed from the
+vram_userfault list. Then, on the next suspend, we won't mark
+bo for page fault and resume won't happen and the active count
+won't increase. This is okay, since the bo is now in the system
+memory we don't need to wake up the device. But the current
+test is wrong, because it assumes that the bo keeps forever
+in vram, what is the issue here.
+
+Only checking the resume after the first operation is the
+enough. But also, ensure that both read and write operations
+are actually validated.
 
 Cc: Badal Nilawar <badal.nilawar@intel.com>
 Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel/xe_pm.c | 82 ++++++++++++++++++++++++---------------------
- 1 file changed, 43 insertions(+), 39 deletions(-)
+ tests/intel/xe_pm.c | 36 +++++++++++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 11 deletions(-)
 
 diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index ced983d6c..90050207f 100644
+index 7e1cf2dcc..ced983d6c 100644
 --- a/tests/intel/xe_pm.c
 +++ b/tests/intel/xe_pm.c
-@@ -516,19 +516,25 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- }
+@@ -38,6 +38,11 @@
+ #define PREFETCH (0x1 << 1)
+ #define UNBIND_ALL (0x1 << 2)
  
- /**
-- * SUBTEST: d3-mmap-%s
-+ * SUBTEST: %s-mmap-%s
-  * Description:
-- *	Validate mmap memory mapping with d3 state, for %arg[1] region,
-+ *	Validate mmap memory mapping with %arg[1] state, for %arg[2] region,
-  *	if supported by device.
-+ *
-  * arg[1]:
-  *
-+ * @d3hot:	d3hot
-+ * @d3cold:	d3cold
-+ *
-+ * arg[2]:
-+ *
-  * @vram:	vram region
-  * @system:	system region
++enum mem_op {
++	READ,
++	WRITE,
++};
++
+ typedef struct {
+ 	int fd_xe;
+ 	struct pci_device *pci_xe;
+@@ -522,7 +527,8 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
   *
   * Functionality: pm-d3
   */
- static void test_mmap(device_t device, uint32_t placement, uint32_t flags,
--		      enum mem_op first_op)
-+		      enum mem_op first_op, enum igt_acpi_d_state d_state)
+-static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
++static void test_mmap(device_t device, uint32_t placement, uint32_t flags,
++		      enum mem_op first_op)
  {
  	size_t bo_size = 8192;
  	uint32_t *map = NULL;
-@@ -537,7 +543,7 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags,
- 
- 	igt_require_f(placement, "Device doesn't support such memory region\n");
- 
--	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+	igt_assert(in_d3(device, d_state));
+@@ -560,8 +566,12 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+ 	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
  	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
  
- 	bo_size = ALIGN(bo_size, xe_get_default_alignment(device.fd_xe));
-@@ -563,7 +569,7 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags,
- 	close(fw_handle);
- 	sleep(1);
+-	for (i = 0; i < bo_size / sizeof(*map); i++)
+-		igt_assert(map[i] == MAGIC_1);
++	for (i = 0; i < bo_size / sizeof(*map); i++) {
++		if (first_op == READ)
++			igt_assert(map[i] == MAGIC_1);
++		else
++			map[i] = MAGIC_2;
++	}
  
--	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+	igt_assert(in_d3(device, d_state));
+ 	/* dgfx page-fault on mmaping should wake the gpu */
+ 	if (xe_has_vram(device.fd_xe) && flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM)
+@@ -571,12 +581,12 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags)
+ 	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
  	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
  
- 	for (i = 0; i < bo_size / sizeof(*map); i++) {
-@@ -578,7 +584,7 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags,
- 		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
- 			   active_time);
- 
--	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+	igt_assert(in_d3(device, d_state));
- 	active_time = igt_pm_get_runtime_active_time(device.pci_xe);
- 
- 	for (i = 0; i < bo_size / sizeof(*map); i++) {
-@@ -588,7 +594,7 @@ static void test_mmap(device_t device, uint32_t placement, uint32_t flags,
- 			igt_assert(map[i] == MAGIC_2);
- 	}
- 
--	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-+	igt_assert(in_d3(device, d_state));
- 
- 	/* Runtime resume and check the pattern */
- 	fw_handle = igt_debugfs_open(device.fd_xe, "forcewake_all", O_RDONLY);
-@@ -783,6 +789,36 @@ igt_main
- 					  NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
- 		}
-+
-+		igt_describe_f("Validate mmap memory mappings with system region,"
-+			       "when device along with parent bridge in %s", d->name);
-+		igt_subtest_f("%s-mmap-system", d->name) {
-+			igt_assert(setup_d3(device, d->state));
-+			test_mmap(device, system_memory(device.fd_xe), 0,
-+				  READ, d->state);
-+			test_mmap(device, system_memory(device.fd_xe), 0,
-+				  WRITE, d->state);
-+			cleanup_d3(device);
-+		}
-+
-+		igt_describe_f("Validate mmap memory mappings with vram region,"
-+			     "when device along with parent bridge in %s", d->name);
-+		igt_subtest_f("%s-mmap-vram", d->name) {
-+			int delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
-+
-+			/* Give some auto suspend delay to validate rpm active during page fault */
-+			igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
-+			igt_assert(setup_d3(device, d->state));
-+			test_mmap(device, vram_memory(device.fd_xe, 0),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+				  READ, d->state);
-+			test_mmap(device, vram_memory(device.fd_xe, 0),
-+				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-+				  WRITE, d->state);
-+			cleanup_d3(device);
-+
-+			igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
-+		}
- 	}
- 
- 	igt_subtest_group {
-@@ -798,38 +834,6 @@ igt_main
- 			test_vram_d3cold_threshold(device, sysfs_fd);
- 		}
- 
--		igt_describe("Validate mmap memory mappings with system region,"
--			     "when device along with parent bridge in d3");
--		igt_subtest("d3-mmap-system") {
--			dpms_on_off(device, DRM_MODE_DPMS_OFF);
--			test_mmap(device, system_memory(device.fd_xe), 0, READ);
--			test_mmap(device, system_memory(device.fd_xe), 0, WRITE);
--			dpms_on_off(device, DRM_MODE_DPMS_ON);
--		}
+-	for (i = 0; i < bo_size / sizeof(*map); i++)
+-		map[i] = MAGIC_2;
 -
--		igt_describe("Validate mmap memory mappings with vram region,"
--			     "when device along with parent bridge in d3");
--		igt_subtest("d3-mmap-vram") {
--			int delay_ms;
--
--			if (device.pci_root != device.pci_xe) {
--				igt_pm_enable_pci_card_runtime_pm(device.pci_root, NULL);
--				igt_pm_set_d3cold_allowed(device.pci_slot_name, 1);
--			}
--
--			delay_ms = igt_pm_get_autosuspend_delay(device.pci_xe);
--
--			/* Give some auto suspend delay to validate rpm active during page fault */
--			igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
--			dpms_on_off(device, DRM_MODE_DPMS_OFF);
--			test_mmap(device, vram_memory(device.fd_xe, 0),
--				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM, READ);
--			test_mmap(device, vram_memory(device.fd_xe, 0),
--				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM, WRITE);
--			dpms_on_off(device, DRM_MODE_DPMS_ON);
--			igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
--		}
--
- 		igt_subtest("mocs-rpm") {
+-	if (xe_has_vram(device.fd_xe) && flags & DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM)
+-		igt_assert(igt_pm_get_runtime_active_time(device.pci_xe) >
+-			   active_time);
++	for (i = 0; i < bo_size / sizeof(*map); i++) {
++		if (first_op == READ)
++			map[i] = MAGIC_2;
++		else
++			igt_assert(map[i] == MAGIC_2);
++	}
+ 
+ 	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
+ 
+@@ -792,7 +802,8 @@ igt_main
+ 			     "when device along with parent bridge in d3");
+ 		igt_subtest("d3-mmap-system") {
  			dpms_on_off(device, DRM_MODE_DPMS_OFF);
- 			test_mocs_suspend_resume(device, NO_SUSPEND);
+-			test_mmap(device, system_memory(device.fd_xe), 0);
++			test_mmap(device, system_memory(device.fd_xe), 0, READ);
++			test_mmap(device, system_memory(device.fd_xe), 0, WRITE);
+ 			dpms_on_off(device, DRM_MODE_DPMS_ON);
+ 		}
+ 
+@@ -811,7 +822,10 @@ igt_main
+ 			/* Give some auto suspend delay to validate rpm active during page fault */
+ 			igt_pm_set_autosuspend_delay(device.pci_xe, 1000);
+ 			dpms_on_off(device, DRM_MODE_DPMS_OFF);
+-			test_mmap(device, vram_memory(device.fd_xe, 0), DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++			test_mmap(device, vram_memory(device.fd_xe, 0),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM, READ);
++			test_mmap(device, vram_memory(device.fd_xe, 0),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM, WRITE);
+ 			dpms_on_off(device, DRM_MODE_DPMS_ON);
+ 			igt_pm_set_autosuspend_delay(device.pci_xe, delay_ms);
+ 		}
 -- 
 2.44.0
 
