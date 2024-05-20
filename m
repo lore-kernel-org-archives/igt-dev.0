@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD8C2C04FFE
-	for <igt-dev@archiver.kernel.org>; Mon, 20 May 2024 12:31:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B8C6C04FFE
+	for <igt-dev@archiver.kernel.org>; Mon, 20 May 2024 14:05:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48F4A10E2F5;
-	Mon, 20 May 2024 12:31:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nD0WMUQs";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CE6310E3F1
- for <igt-dev@lists.freedesktop.org>; Mon, 20 May 2024 12:31:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716208281; x=1747744281;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=GjsFPGZlAgMBfZhUPSLOEkWznqbQkkJn3Qz/6J/cTmY=;
- b=nD0WMUQsYy/MUyA0PjZUmhpR+iCPRSYi9cX22cLDSXfStCy7zbPiwf+/
- 5rqDq9MtDDSbjsj2Y7m7yIhVLMq65PxI8QYB7YjTDqYTSobP05qV3ZpS3
- fPR7NyXXMTyHOUpQp0+TuzQQ2YFb88dNbfbFfcK3TXtYvP5C1y1m090wk
- rMP8HIEcM8gKVamh4Wf6jhl3Ec/bK3AWjvSmTJkOyLOflJAsw1HWcEUvG
- YAwu0jZcK6luutQEu3XyyOqpl5V8SDhC9rhLGZANJfzTXPuQprlM5XxXU
- +D6Ewif4X/zUKnVMQoV9aOd+H6eWwO+viEyCbUIggeLfTC3hxL7ngjMdW Q==;
-X-CSE-ConnectionGUID: 1K/jqx5xTHyHFT+2mDUxww==
-X-CSE-MsgGUID: WeG7Wwp/TEywRiFptMjWrQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12174166"
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="12174166"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 05:31:21 -0700
-X-CSE-ConnectionGUID: o8buPwcHSM6JFnY3k0DGkQ==
-X-CSE-MsgGUID: XUUJMyzSRrWw8USQHjaMiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,175,1712646000"; d="scan'208";a="37281573"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- localhost) ([10.245.246.76])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 May 2024 05:31:19 -0700
-Date: Mon, 20 May 2024 14:31:17 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Helen Koike <helen.koike@collabora.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-Subject: Re: [PATCH i-g-t v1] tests/core_getversion: test all drm devices
-Message-ID: <20240520123117.xxlu2rirfhsp4yy2@zkempczy-mobl2>
-References: <20240517190955.83517-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C826910E73A;
+	Mon, 20 May 2024 14:05:10 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78B3710E73A;
+ Mon, 20 May 2024 14:05:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7479399310338485521=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240517190955.83517-1-kamil.konieczny@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/kms=5Fbig=5Ffb=3A_?=
+ =?utf-8?q?Restrict_runs_on_simulation?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 20 May 2024 14:05:01 -0000
+Message-ID: <171621390149.2157358.18084031852752934297@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240520050155.435110-1-pranay.samala@intel.com>
+In-Reply-To: <20240520050155.435110-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,78 +37,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, May 17, 2024 at 09:09:55PM +0200, Kamil Konieczny wrote:
-> Check all drm devices in all-cards subtest.
-> 
-> v2: add define for number of max tested cards (Helen)
-> v3: remove define as opening function from drmtest will
->   stop after opening all existing drm cards (Kamil)
->   changed subtest name to all-cards (Kamil)
-> 
-> Cc: Helen Koike <helen.koike@collabora.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/core_getversion.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
-> index bb2e6013d..8198f5f7f 100644
-> --- a/tests/core_getversion.c
-> +++ b/tests/core_getversion.c
-> @@ -40,6 +40,9 @@
->   *
->   * SUBTEST: basic
->   * Description: Tests GET_VERSION ioctl of the first device.
-> + *
-> + * SUBTEST: all-cards
-> + * Description: Tests GET_VERSION ioctl for all drm devices.
->   */
->  
->  IGT_TEST_DESCRIPTION("Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's "
-> @@ -62,6 +65,22 @@ static void check(int fd, char *dst, int len)
->  	drmFree(v);
->  }
->  
-> +static void check_all_drm(void)
-> +{
-> +	char info[256];
-> +	int fd2;
-> +
-> +	for (int i = 0; ; i++) {
-> +		fd2 = __drm_open_driver_another(i, DRIVER_ANY);
-> +		if (fd2 == -1)
-> +			break;
-> +
-> +		check(fd2, info, sizeof(info));
-> +		igt_info("%d: %s\n", i, info);
-> +		drm_close_driver(fd2);
-> +	}
-> +}
-> +
->  igt_main
->  {
->  	char info[256];
-> @@ -78,6 +97,10 @@ igt_main
->  		igt_info("0: %s\n", info);
->  	}
->  
-> +	igt_describe("Check GET_VERSION ioctl for all drm devices.");
-> +	igt_subtest("all-cards")
-> +		check_all_drm();
-> +
->  	igt_fixture
->  		drm_close_driver(fd);
->  }
-> -- 
-> 2.42.0
-> 
+--===============7479399310338485521==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+== Series Details ==
 
---
-Zbigniew
+Series: tests/intel/kms_big_fb: Restrict runs on simulation
+URL   : https://patchwork.freedesktop.org/series/133797/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7864_BAT -> XEIGTPW_11158_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11158_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-pvc-2:          NOTRUN -> [FAIL][1] ([Intel XE#1000]) +3 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict@evict-small-external-cm:
+    - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][2] ([Intel XE#482]) +3 other tests dmesg-fail
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html
+
+  * igt@xe_gt_freq@freq_range_idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][3] ([Intel XE#1021]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_gt_freq@freq_range_idle.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#255])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_intel_bb@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#532])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_intel_bb@render.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#977]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#976])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-pvc-2:          NOTRUN -> [SKIP][8] ([Intel XE#979])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#531])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind:
+    - bat-pvc-2:          [INCOMPLETE][10] -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7864/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1000]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000
+  [Intel XE#1021]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021
+  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#976]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/976
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7864 -> IGTPW_11158
+
+  IGTPW_11158: 11158
+  IGT_7864: 8eff53c9664fa0abaa55b403c9f10f96260e44b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1310-1ba62f8cea9c797427d45108df1d453f4b343240: 1ba62f8cea9c797427d45108df1d453f4b343240
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/index.html
+
+--===============7479399310338485521==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_big_fb: Restrict runs on simulation</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133797/">https://patchwork.freedesktop.org/series/133797/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7864_BAT -&gt; XEIGTPW_11158_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11158_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000">Intel XE#1000</a>) +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-external-cm:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) +3 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_range_idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_gt_freq@freq_range_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021">Intel XE#1021</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_intel_bb@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/532">Intel XE#532</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/976">Intel XE#976</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/531">Intel XE#531</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7864/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11158/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7864 -&gt; IGTPW_11158</li>
+</ul>
+<p>IGTPW_11158: 11158<br />
+  IGT_7864: 8eff53c9664fa0abaa55b403c9f10f96260e44b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1310-1ba62f8cea9c797427d45108df1d453f4b343240: 1ba62f8cea9c797427d45108df1d453f4b343240</p>
+
+</body>
+</html>
+
+--===============7479399310338485521==--
