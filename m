@@ -4,73 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4C77C25B74
-	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 18:21:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6730DC25B74
+	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 19:00:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2175410F06F;
-	Tue, 21 May 2024 18:21:30 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="PF2w6hm8";
-	dkim-atps=neutral
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com
- [209.85.128.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F63E10F06F
- for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 18:21:29 +0000 (UTC)
-Received: by mail-wm1-f52.google.com with SMTP id
- 5b1f17b1804b1-41f9ce16ed8so47429195e9.0
- for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 11:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716315687; x=1716920487; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=z3ksLU8pzHSE6dT2xvqScqEO+w9y0rQa+a/n3xJo1Co=;
- b=PF2w6hm89llevhC63CMvuOz6PyBhSwlaW8ouRs98VepABcoKCxGMQYASTcqib1tLvE
- kpqExCcnw6yEPBiOwFHMrJzk5W50ZfLAcv6nBlbyq0aRf+Z7E6o/QeEs+w1AQ2wU6qzX
- TX68V6aQD3Zpa/SZ0yukaHJ46KN25lKECwuvcTlkr71zLHUn12rUNE7OBpUbBGE60K5Y
- b5Ipk9Ejp6Qs9/wOp2EjaHjdBRQGmwHRgu/oT+Gw/3lzYnb0v8vgux2XvmqBjzw6HtLc
- QCIppvqgFAum6TKvhCowAMBrr7prXXYUU42q3eUKJDmuyHDEv/9IJkW+lmApUjtiASsU
- aUBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716315687; x=1716920487;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=z3ksLU8pzHSE6dT2xvqScqEO+w9y0rQa+a/n3xJo1Co=;
- b=rEwj5hf1UAhgUI3YZAi6dmyHz/NDCNfdYB0x8uBPXgDjVj7Lr3VhYeIgi11Y9OcXiB
- dqgSm9apAZ8QkoOMPRX4NJcSDzX7tZRRZvpIkqzMOVkjM4uG7xpXgqsiMGT07/RLNdeY
- rIuRWKPC0AenLP2uIP9RbdRyqeSlKXOGc9RikCXm0sIapP1z8MsO2XkcSeTKx/IEHhIl
- 2d8qp8Mx4+jNXhPtO5WAQIK1huau5gYHaydFHdSbs9sZS3yWbq8+wUYHxYrIPepL5Epo
- jfHJkwWKl/WSqTIqpwMI/RtAussZZmV+YRx9iICPecJK3bVlUg2euW99uPwtcWO8T4wk
- p9Fg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW91qdlraWIdInxHCVoXGOKAH+pyLE27waIcqJxKccFiwLfngY9NNgr1dOTkIs41RIyJo/seX+5xXLEaNOGgr8amKiCVNp9kWvn7TEuRQ==
-X-Gm-Message-State: AOJu0Yw9Z776O5QcNa+rZk8Cz/oLYGiYvT2OWHzPT0+TcYXdELeyT28D
- z/dif9KeLSC87LDau9ILm/+X00l8R8867LfPCR2g6/kJVpX5GJZGiFad5Wcjapo=
-X-Google-Smtp-Source: AGHT+IFWaKFkkQO7mRKOtPsOEE4v1o13x9+vvTpAAk+ZugfoP+UOM5gu7JnJNmyg+AmXEfmVclgt7w==
-X-Received: by 2002:adf:e788:0:b0:34c:fd73:55d with SMTP id
- ffacd0b85a97d-3504aa63499mr27333578f8f.70.1716315686771; 
- Tue, 21 May 2024 11:21:26 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.89])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-351d627d6c6sm15470795f8f.95.2024.05.21.11.21.23
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 21 May 2024 11:21:26 -0700 (PDT)
-Message-ID: <32ed1356-ec30-499a-ac6e-ae3ce629e2d6@gmail.com>
-Date: Tue, 21 May 2024 21:21:20 +0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id D726710F09C;
+	Tue, 21 May 2024 19:00:29 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C51A810F09C;
+ Tue, 21 May 2024 19:00:26 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1757235029836278963=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/kms_plane: Implement dynamic level execution
- across multiple planes
-To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, jeevan.b@intel.com, sameer.lattannavar@intel.com
-References: <20240521032238.456801-1-pranay.samala@intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240521032238.456801-1-pranay.samala@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5BCI?=
+ =?utf-8?q?=2C1/6=5D_treewide=3A_Rename_engine_busyness_variables?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 21 May 2024 19:00:26 -0000
+Message-ID: <171631802680.2165162.1222029678078192486@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240521161525.159720-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240521161525.159720-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,240 +37,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
+--===============1757235029836278963==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-on quick look things seem ok, just small comments below.
+== Series Details ==
 
-On 21.5.2024 6.22, Pranay Samala wrote:
-> The test runs on all pipes on dynamic level to test all the supported
-> pixel-formats and modifiers on current plane of that pipe.
-> 
-> Updating the test to execute on multiple planes on dynamic level.
-> 
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> ---
->   tests/kms_plane.c | 107 +++++++++++++++++++++++-----------------------
->   1 file changed, 54 insertions(+), 53 deletions(-)
-> 
-> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 406aecc04..f476ed52f 100644
-> --- a/tests/kms_plane.c
-> +++ b/tests/kms_plane.c
-> @@ -275,7 +275,7 @@ test_plane_position_with_output(data_t *data,
->   	drmModeModeInfo *mode;
->   	igt_crc_t crc, crc2;
->   
-> -	igt_info("Testing connector %s using pipe %s plane %d\n",
-> +	igt_debug("Testing connector %s using pipe %s plane %d\n",
->   		 igt_output_name(output), kmstest_pipe_name(pipe), plane);
->   
->   	igt_output_set_pipe(output, pipe);
-> @@ -285,7 +285,7 @@ test_plane_position_with_output(data_t *data,
->   	sprite = igt_output_get_plane(output, plane);
->   
->   	if (primary->drm_plane->plane_id > sprite->drm_plane->plane_id) {
-> -		igt_info("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
-> +		igt_debug("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
->   				primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
+Series: series starting with [CI,1/6] treewide: Rename engine busyness variables
+URL   : https://patchwork.freedesktop.org/series/133885/
+State : success
 
-While changing these you could also fix the indentation of that 
-"primary->dr.." line to match parenthesis.
+== Summary ==
 
->   		return;
->   	}
-> @@ -352,9 +352,9 @@ test_plane_position(data_t *data, enum pipe pipe)
->   	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
->   
->   	for (int plane = 1; plane < n_planes; plane++)
-> -		test_plane_position_with_output(data, pipe, plane,
-> -						output, &reference_crc,
-> -						data->flags);
-> +		igt_dynamic_f("pipe-%s-plane-%d", kmstest_pipe_name(pipe), plane)
-> +			test_plane_position_with_output(data, pipe, plane,
-> +					output, &reference_crc,data->flags);
-                                                                ^
-space after comma
+CI Bug Log - changes from CI_DRM_14793 -> IGTPW_11172
+====================================================
 
->   
->   	test_fini(data);
->   }
-> @@ -415,7 +415,7 @@ test_plane_panning_with_output(data_t *data,
->   	mode = igt_output_get_mode(output);
->   	primary = igt_output_get_plane(output, 0);
->   
-> -	igt_info("Testing connector %s using pipe %s, mode %s\n",
-> +	igt_debug("Testing connector %s using pipe %s, mode %s\n",
->   		 igt_output_name(output), kmstest_pipe_name(pipe), mode->name);
->   
->   	create_fb_for_mode_panning(data, mode, &primary_fb);
-> @@ -449,59 +449,60 @@ test_plane_panning_with_output(data_t *data,
->   static void
->   test_plane_panning(data_t *data, enum pipe pipe)
->   {
-> -	bool mode_found = false;
-> -	uint64_t mem_size = 0;
-> -	igt_output_t *output = data->output;
-> -	igt_crc_t ref_crc;
-> -
-> -	igt_info("Using (pipe %s + %s) to run the subtest.\n",
-> -		 kmstest_pipe_name(pipe), igt_output_name(output));
-> +	igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
+Summary
+-------
 
-You could put this into small helper which will then call 
-test_plane_panning function. This way you would get away from making 
-such big change which in the end seems to be about changing indentation.
+  **SUCCESS**
 
-> +		bool mode_found = false;
-> +		uint64_t mem_size = 0;
-> +		igt_output_t *output = data->output;
-> +		igt_crc_t ref_crc;
->   
-> -	test_init(data, pipe);
-> +		igt_info("Using (pipe %s + %s) to run the subtest.\n",
-> +			 kmstest_pipe_name(pipe), igt_output_name(output));
->   
-> -	if (is_i915_device(data->drm_fd)) {
-> -		for_each_memory_region(r, data->drm_fd)
-> -			if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
-> -				mem_size = r->cpu_size;
-> +		test_init(data, pipe);
->   
-> -	}
-> +		if (is_i915_device(data->drm_fd)) {
-> +			for_each_memory_region(r, data->drm_fd)
-> +				if (r->ci.memory_class == I915_MEMORY_CLASS_DEVICE)
-> +					mem_size = r->cpu_size;
-> +		}
->   
-> -	if (is_xe_device(data->drm_fd)) {
-> -		struct drm_xe_mem_region *memregion;
-> -		uint64_t memreg = all_memory_regions(data->drm_fd), region;
-> +		if (is_xe_device(data->drm_fd)) {
-> +			struct drm_xe_mem_region *memregion;
-> +			uint64_t memreg = all_memory_regions(data->drm_fd), region;
->   
-> -		xe_for_each_mem_region(data->drm_fd, memreg, region) {
-> -			memregion = xe_mem_region(data->drm_fd, region);
-> +			xe_for_each_mem_region(data->drm_fd, memreg, region) {
-> +				memregion = xe_mem_region(data->drm_fd, region);
->   
-> -			if (XE_IS_CLASS_VRAM(memregion))
-> -				mem_size = memregion->total_size;
-> +				if (XE_IS_CLASS_VRAM(memregion))
-> +					mem_size = memregion->total_size;
-> +			}
->   		}
-> -	}
->   
-> -	for_each_connector_mode(output) {
-> -		drmModeModeInfo *m = &output->config.connector->modes[j__];
-> -		uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
-> +		for_each_connector_mode(output) {
-> +			drmModeModeInfo *m = &output->config.connector->modes[j__];
-> +			uint32_t fb_size = m->hdisplay * m->vdisplay * 4;
->   
-> -		/* test allocates 2 double-dim fbs, add one more, to be safe */
-> -		if (mem_size && 3 * 4 * fb_size > mem_size) {
-> -			igt_debug("Skipping mode %s due to low memory\n", m->name);
-> -			continue;
-> -		}
-> +			/* test allocates 2 double-dim fbs, add one more, to be safe */
-> +			if (mem_size && 3 * 4 * fb_size > mem_size) {
-> +				igt_debug("Skipping mode %s due to low memory\n", m->name);
-> +				continue;
-> +			}
->   
-> -		igt_output_override_mode(output, m);
-> -		mode_found = true;
-> -		break;
-> -	}
-> -	igt_require(mode_found);
-> +			igt_output_override_mode(output, m);
-> +			mode_found = true;
-> +			break;
-> +		}
-> +		igt_require(mode_found);
->   
-> -	if (data->flags & TEST_PANNING_TOP_LEFT)
-> -		test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
-> -	else
-> -		test_grab_crc(data, output, pipe, &blue, data->flags, &ref_crc);
-> +		if (data->flags & TEST_PANNING_TOP_LEFT)
-> +			test_grab_crc(data, output, pipe, &red, data->flags, &ref_crc);
-> +		else
-> +			test_grab_crc(data, output, pipe, &blue, data->flags, &ref_crc);
->   
-> -	test_plane_panning_with_output(data, pipe, output, &ref_crc, data->flags);
-> +		test_plane_panning_with_output(data, pipe, output, &ref_crc, data->flags);
->   
-> -	test_fini(data);
-> +		test_fini(data);
-> +	}
->   }
->   
->   static const color_t colors_extended[] = {
-> @@ -889,7 +890,7 @@ static bool test_format_plane_rgb(data_t *data, enum pipe pipe,
->   				  igt_crc_t ref_crc[],
->   				  struct igt_fb *fb)
->   {
-> -	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> +	igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
->   		 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
->   		 kmstest_pipe_name(pipe), plane->index);
->   
-> @@ -927,7 +928,7 @@ static bool test_format_plane_yuv(data_t *data, enum pipe pipe,
->   						     igt_color_range_to_str(r)))
->   				continue;
->   
-> -			igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " (%s, %s) on %s.%u\n",
-> +			igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " (%s, %s) on %s.%u\n",
->   				 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
->   				 igt_color_encoding_to_str(e),
->   				 igt_color_range_to_str(r),
+  No regressions found.
 
-Where you change igt_info to igt_debug, these following lines 
-indentation also need to match to moved parenthesis.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/index.html
 
-> @@ -1043,7 +1044,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->   
->   	igt_pipe_crc_start(data->pipe_crc);
->   
-> -	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> +	igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
->   		 IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
->   		 kmstest_pipe_name(pipe), plane->index);
->   
-> @@ -1089,7 +1090,7 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->   			};
->   
->   			if (igt_vec_index(&tested_formats, &rf) >= 0) {
-> -				igt_info("Skipping format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> +				igt_debug("Skipping format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
->   					 IGT_FORMAT_ARGS(f.format), IGT_MODIFIER_ARGS(f.modifier),
->   					 kmstest_pipe_name(pipe), plane->index);
->   				continue;
-> @@ -1211,7 +1212,8 @@ test_pixel_formats(data_t *data, enum pipe pipe)
->   	for_each_plane_on_pipe(&data->display, pipe, plane) {
->   		if (skip_plane(data, plane))
->   			continue;
-> -		result &= test_format_plane(data, pipe, output, plane, &primary_fb);
-> +		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(pipe), plane->index)
-> +			result &= test_format_plane(data, pipe, output, plane, &primary_fb);
->   	}
->   
->   	test_fini(data);
-> @@ -1317,8 +1319,7 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
->   			continue;
->   
->   		igt_output_set_pipe(data->output, PIPE_NONE);
-> -		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
-> -			test(data, pipe);
-> +		test(data, pipe);
->   
->   		if (is_pipe_limit_reached(++count))
->   			break;
+Participating hosts (40 -> 38)
+------------------------------
 
+  Missing    (2): bat-kbl-2 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_11172:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_busy@basic@flip:
+    - {bat-apl-1}:        [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-apl-1/igt@kms_busy@basic@flip.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-apl-1/igt@kms_busy@basic@flip.html
+
+  * igt@kms_busy@basic@modeset:
+    - {bat-apl-1}:        [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-apl-1/igt@kms_busy@basic@modeset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-apl-1/igt@kms_busy@basic@modeset.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11172 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-8:          [PASS][5] -> [FAIL][6] ([i915#10378])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_busy@basic@modeset:
+    - {bat-mtlp-9}:       [DMESG-FAIL][7] ([i915#11009]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-mtlp-9/igt@kms_busy@basic@modeset.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-mtlp-9/igt@kms_busy@basic@modeset.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
+  [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
+  [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
+  [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
+  [i915#6121]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7866 -> IGTPW_11172
+
+  CI-20190529: 20190529
+  CI_DRM_14793: e02ad2901cb7d6ec505c8d61f12ea9a308bb94f6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11172: a85841ffc80b7bfe3429bdf283c8e37b0762602d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7866: 2b7701838c3ebaa3c717b6521cafafe3b9ae4a4f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/index.html
+
+--===============1757235029836278963==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [CI,1/6] treewide: Rename engine busyness variables</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133885/">https://patchwork.freedesktop.org/series/133885/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14793 -&gt; IGTPW_11172</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-kbl-2 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11172:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>{bat-apl-1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-apl-1/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-apl-1/igt@kms_busy@basic@flip.html">ABORT</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@modeset:</p>
+<ul>
+<li>{bat-apl-1}:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-apl-1/igt@kms_busy@basic@modeset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-apl-1/igt@kms_busy@basic@modeset.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11172 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378">i915#10378</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_busy@basic@modeset:<ul>
+<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14793/bat-mtlp-9/igt@kms_busy@basic@modeset.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009">i915#11009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11172/bat-mtlp-9/igt@kms_busy@basic@modeset.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7866 -&gt; IGTPW_11172</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14793: e02ad2901cb7d6ec505c8d61f12ea9a308bb94f6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11172: a85841ffc80b7bfe3429bdf283c8e37b0762602d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7866: 2b7701838c3ebaa3c717b6521cafafe3b9ae4a4f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1757235029836278963==--
