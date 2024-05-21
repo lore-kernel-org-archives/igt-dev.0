@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C8F1C25B74
-	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 09:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869CBC25B75
+	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 09:16:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAC3E10E8B9;
-	Tue, 21 May 2024 09:14:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E186310E8B9;
+	Tue, 21 May 2024 09:16:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gMcVTGdu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UpBmLML5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A89C810E794;
- Tue, 21 May 2024 09:14:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B36DC10E8B9
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 09:16:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716282846; x=1747818846;
+ t=1716282966; x=1747818966;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=gDZ9hHQv7I4mGkL1wfBt1j8/8TWqLHD2CpVl/suH9VQ=;
- b=gMcVTGdumYCyVVEeafTlMyj+wUwDJqw10XdOgnNGcxYtytIi2PQukydX
- br7NmZn40ridOAhu7B3GvkSuvgzMyIvsKD2HH2iD6Xaf5GdUWXp0aJq9g
- U++gmQGRs93S5bEfAjupaX+GyDt6W/feYySdTMrTJBIr/0EXfn1AWFA6q
- GWNbhmv21XKwv1/nLoiC48tUTC9dDqj+8txBVr/zdQ/GF20udNeRYxp0g
- Cu+0NnVDTittcySdh77MTywu1YwR7imJ+ya51BY3rmK/kO2HxwMPa2a3J
- n6PiQ4m9CN+0erUus18HfykLoOIDdKMhnphI51PbTwd+by8s+22ixfc6J A==;
-X-CSE-ConnectionGUID: I/Nb0DBiQsGyBKeo6i/RGA==
-X-CSE-MsgGUID: hoYcGCEVQK2ornwo4emCfg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="34972308"
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="34972308"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 02:14:06 -0700
-X-CSE-ConnectionGUID: mqzUYXUIT4aGX0RUs6cMiA==
-X-CSE-MsgGUID: l33IWbtnSuOmaqoc47aAMA==
+ bh=pXdOFZKkFn2Ytx1LU5BbmhkTPcg8e5/eqUtUJpaH7eA=;
+ b=UpBmLML5ovkUISy489XR7psgLDxx35ZBhDIEYqyebflqd82afM/uVRfG
+ nuRACJqXv/+mjxpvMWb48K3pB14BH9/p1i04a6PCfHttrsvap/XC5Ti1e
+ mSIz//GhtTcK+fgjg2f+Bz7kEcbPqZzQaWZv4/ro3kVcN5nNES6KeBoH3
+ 9slezQeE2HLVEpE26GguayvN5PaJlWaKSMAyKoc5VpCY91T757YUcIn+A
+ kjOG7D1rA9a4w8EwbuS74DtdGd+JMZ5ALZfWLoS4hS7+BXzJCpB9CWc+c
+ MnqHZGtjkSH+336bk9nTTXeqlFbUUpFP39hYg4xwb4tD6BJGuyVNBeM9P g==;
+X-CSE-ConnectionGUID: cLzEx6U+QD+PZnJBfBmCvg==
+X-CSE-MsgGUID: vMHoPj9gQ22RR6v9PvpgkA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="29981427"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="29981427"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2024 02:16:04 -0700
+X-CSE-ConnectionGUID: 5bxgUvcCSxSgV5k7M9MIyQ==
+X-CSE-MsgGUID: AXxT3n2rQQK7BeLcDRtn6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="37694779"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="32830083"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 02:14:04 -0700
-Date: Tue, 21 May 2024 11:14:01 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 02:16:02 -0700
+Date: Tue, 21 May 2024 11:16:00 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Pranay Samala <pranay.samala@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for
- tests/intel/kms_big_fb: Restrict runs on simulation
-Message-ID: <20240521091401.w3bvbz22fiilr6mi@kamilkon-DESK.igk.intel.com>
+Cc: Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
+ jeevan.b@intel.com, sameer.lattannavar@intel.com
+Subject: Re: [PATCH i-g-t v4] tests/intel/kms_big_fb: Restrict runs on
+ simulation
+Message-ID: <20240521091600.2hhby57l5o3ovdgp@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Pranay Samala <pranay.samala@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20240520050155.435110-1-pranay.samala@intel.com>
- <171626706586.2162015.10902660744770114648@8e613ede5ea5>
+ Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
+ jeevan.b@intel.com, sameer.lattannavar@intel.com
+References: <20240520172810.455947-1-pranay.samala@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <171626706586.2162015.10902660744770114648@8e613ede5ea5>
+In-Reply-To: <20240520172810.455947-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,112 +73,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-05-21 at 04:51:05 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Pranay,
+On 2024-05-20 at 22:58:10 +0530, Pranay Samala wrote:
+> This test executes on only one pipe and all the available planes with
+> set of 6 coordinates. Due to this, test takes long duration to execute
+> on simulation and gets timeout.
 > 
-> Series: tests/intel/kms_big_fb: Restrict runs on simulation
-> URL   : https://patchwork.freedesktop.org/series/133797/
-> State : failure
+> Restricting the test to execute only on one of the coordinates for
+> simulation.
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_7864_full -> IGTPW_11158_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11158_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11158_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11158/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11158_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_vrr@seamless-rr-switch-virtual:
->     - shard-mtlp:         NOTRUN -> [SKIP][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11158/shard-mtlp-7/igt@kms_vrr@seamless-rr-switch-virtual.html
+> v4:
+> - Inserted simulation check right after for loop (Kamil)
+> - Executing only on 1 coordinate (w, h) on simulation
 > 
 
-This is unrelated, no need for respin (there is new version of patch).
+LGTM,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
->   
-> New tests
-> ---------
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> ---
+>  tests/intel/kms_big_fb.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
 > 
->   New tests have been introduced between IGT_7864_full and IGTPW_11158_full:
+> diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
+> index 1e45d8e42..605813f7f 100644
+> --- a/tests/intel/kms_big_fb.c
+> +++ b/tests/intel/kms_big_fb.c
+> @@ -443,6 +443,7 @@ static bool test_plane(data_t *data)
+>  	struct igt_fb *big_fb = &data->big_fb;
+>  	int w = data->big_fb_width - small_fb->width;
+>  	int h = data->big_fb_height - small_fb->height;
+> +	bool run_in_simulation = igt_run_in_simulation();
+>  	struct {
+>  		int x, y;
+>  	} coords[] = {
+> @@ -467,8 +468,13 @@ static bool test_plane(data_t *data)
+>  
+>  	for (int i = 0; i < ARRAY_SIZE(coords); i++) {
+>  		igt_crc_t small_crc, big_crc;
+> -		int x = coords[i].x;
+> -		int y = coords[i].y;
+> +		int x, y;
+> +
+> +		if (run_in_simulation)
+> +			i = ARRAY_SIZE(coords) - 1;
+> +
+> +		x = coords[i].x;
+> +		y = coords[i].y;
+>  
+>  		/* Hardware limitation */
+>  		if (data->format == DRM_FORMAT_RGB565 &&
+> @@ -540,6 +546,7 @@ static bool test_pipe(data_t *data)
+>  	drmModeModeInfo *mode;
+>  	igt_plane_t *primary;
+>  	bool ret = false;
+> +	bool run_in_simulation = igt_run_in_simulation();
+>  
+>  	igt_info("Using (pipe %s + %s) to run the subtest.\n",
+>  		 kmstest_pipe_name(data->pipe), igt_output_name(data->output));
+> @@ -597,7 +604,7 @@ static bool test_pipe(data_t *data)
+>  
+>  	for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
+>  		ret = test_plane(data);
+> -		if (ret)
+> +		if (ret || run_in_simulation)
+>  			break;
+>  	}
+>  
+> -- 
+> 2.34.1
 > 
-> ### New IGT tests (5) ###
-> 
->   * igt@kms_plane_lowres@tiling-4@pipe-a-hdmi-a-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [7.53] s
-> 
->   * igt@kms_plane_lowres@tiling-4@pipe-b-hdmi-a-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [7.51] s
-> 
->   * igt@kms_plane_lowres@tiling-4@pipe-c-hdmi-a-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [7.54] s
-> 
->   * igt@kms_plane_lowres@tiling-4@pipe-d-hdmi-a-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [7.50] s
-> 
->   * igt@perf@oa-exponents@1-vcs1:
->     - Statuses : 1 pass(s)
->     - Exec time: [1.83] s
-> 
-
-This patch didn't add new tests, maybe testlist was changed?
-
-Regards,
-Kamil
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_11158_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
-
-...cut...
-
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7864 -> IGTPW_11158
-> 
->   CI-20190529: 20190529
->   CI_DRM_14785: 1ba62f8cea9c797427d45108df1d453f4b343240 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_11158: 11158
->   IGT_7864: 8eff53c9664fa0abaa55b403c9f10f96260e44b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11158/index.html
