@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89C22C25B74
-	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 12:41:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 336F7C25B7A
+	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 13:04:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A110F10EBD5;
-	Tue, 21 May 2024 12:41:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8044510EB9F;
+	Tue, 21 May 2024 13:04:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h6N5Rrfn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zuo77ZZN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70A6310EBD5
- for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 12:41:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29A5F10EC11
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 13:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716295279; x=1747831279;
+ t=1716296672; x=1747832672;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=VKf7gxahHAyFvLixKXb+VRAUyVg3sw8phNTnSzc8I/c=;
- b=h6N5RrfnlMifpYJvva/lxorbylZdPiltt/1xv8IoDz/E9leV1aFoXkIq
- IyBtoayUuInhWvmt8P3Ae717t11D7SaYTgIhKsk6QI6+bvaFloW1AO7Lu
- JITTHn6MtUxidK2LJi7HDSwsWURgMEzaHZrCquXWH8dVH5cLn145lNM3w
- Pj9CSylqfSGICrTcGBgxkkz4tO6ijnIC632ZEtZjUTZpsI1QdfPL6ep24
- ODTvwNOp6wg0JWY7KW1ja8LLRcbSTmsDAGNtjj7YtIvWKIGolsrsnW0Zh
- o4nK10k4laEb+wD04Torkohhv6lAtyXsxr6kLorCJPLpt8avDx1BG2JMw g==;
-X-CSE-ConnectionGUID: mSUZ8ph7TuSMkZXET8LxoA==
-X-CSE-MsgGUID: 7VLjTOAiS5GW5Mtl+35yuw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="16272146"
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="16272146"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 05:41:18 -0700
-X-CSE-ConnectionGUID: mfkt782uSmaywk/2ewJo4g==
-X-CSE-MsgGUID: Rj1scCTpT1yw7It21mGxVQ==
+ bh=qRiaURHD/3eod1hPBY3EFvlrakToO7JoAXMF/HjFoRg=;
+ b=Zuo77ZZN/CKhT8zzKdcnbkL4UCMue/rpc71ZXoYk6/4E2o4m9OiaeXzC
+ c1XGp5lt5MccnEWHqeExfWrFhH7r8fpm446nY7eToNR11FabnXgl/plWs
+ 7s0HXDM4aQSUJbDRklg9qqym8fGfNe4dLtIeQTez/xvzLxZ+Ey4Y/scbv
+ gU9jiMpK71B932ThQQA5Cx6ivXZKK7rwEP3ndxcSDb6Ii52ShjL7b3DNz
+ ri3vT7XviwLzWC7yeRo+iQGrAWkQ7SY9gn8ZX/tCc5dTrOnBId6HQAdgv
+ 2sxO6v/tyWRieIIM6en0Xohnh7QwwXlp0fnf5p17+mXtK2JlZIqaf2Fi0 w==;
+X-CSE-ConnectionGUID: jiYWduc4S6Sz1eS4D5cdzw==
+X-CSE-MsgGUID: m5WLwkyGQYG5i02yadyDdw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="11631272"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="11631272"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2024 06:04:32 -0700
+X-CSE-ConnectionGUID: in32ycmPQkyzxgEOFX0BGg==
+X-CSE-MsgGUID: 9zpTf/deTzKnWrVIUr/Zbg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="37752319"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="32926749"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 05:41:17 -0700
-Date: Tue, 21 May 2024 14:40:57 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 06:04:30 -0700
+Date: Tue, 21 May 2024 15:04:28 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Luca Coelho <luciano.coelho@intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>
-Subject: Re: [PATCH v2 i-g-t] lib/igt_kms: add retry loop in
- igt_enable_connectors()
-Message-ID: <20240521124057.sqteznnoep6oavny@kamilkon-DESK.igk.intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: Re: [PATCH i-g-t 6/6] lib/igt_pm: Convert suspended_time from int to
+ uint64_t
+Message-ID: <20240521130428.5ytx6u6zhtw2xwya@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Luca Coelho <luciano.coelho@intel.com>,
- Jani Saarinen <jani.saarinen@intel.com>
-References: <20240520092216.150083-1-luciano.coelho@intel.com>
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20240520190347.242249-1-rodrigo.vivi@intel.com>
+ <20240520190347.242249-6-rodrigo.vivi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240520092216.150083-1-luciano.coelho@intel.com>
+In-Reply-To: <20240520190347.242249-6-rodrigo.vivi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,87 +74,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Luca,
-On 2024-05-20 at 12:22:16 +0300, Luca Coelho wrote:
-> Sometimes the connector is not fully initialized yet when we try to
-> read it in igt_enable_connectors() and this causes a warning to be
-> issued and the test to fail.  This can happen in normal situations,
-> because there's no synchronization between the driver and IGT.  In
-> some tests we load the module and immediately start reading the
-> information, but the driver may not be fully initialized at that
-> point, causing the problem.
+Hi Rodrigo,
+On 2024-05-20 at 15:03:47 -0400, Rodrigo Vivi wrote:
+> Suspended time is in miliseconds printed from u64 variable in kernel.
+> Convert to a more appropriate variable type.
 > 
-> To prevent this, add a retry loop in igt_enable_connectors() so we
-> retry a few times, after a small delay, to wait for the initialization
-> to complete.
-> 
-> The number of retries and the delay between retries were chose after
-> running lots of tests, but these values may have to be adjusted after
-> running more tests on different machines.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10436
-> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+One more nit about printing, see below.
 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 > ---
+>  lib/igt_pm.c            | 9 +++++----
+>  lib/igt_pm.h            | 2 +-
+>  tests/intel/kms_pm_dc.c | 9 +++++----
+>  3 files changed, 11 insertions(+), 9 deletions(-)
 > 
-> In v2:
->    * Changed igt_info() to igt_debug() in the retry loop (Kamil)
->    * Changed the retry logs to start from 1 instead of 0 to avoid
->      confusion.
-> 
->  lib/igt_kms.c | 29 +++++++++++++++++++++++++----
->  1 file changed, 25 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index f82102144ea1..af63d13b1da3 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -5386,7 +5386,10 @@ void igt_wait_for_vblank(int drm_fd, int crtc_offset)
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index d54549d11..057634203 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -1392,16 +1392,17 @@ bool i915_is_slpc_enabled(int drm_fd)
+>   *
+>   * Return: The total time that the device has been suspended.
 >   */
->  void igt_enable_connectors(int drm_fd)
+> -int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
+> +uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
 >  {
-> +#define MAX_TRIES	10
-> +#define SLEEP_DURATION	50000
->  	drmModeRes *res;
-> +	int tries;
+>  	char time_str[64];
+> -	int time, time_fd;
+> +	int time_fd;
+> +	uint64_t time;
 >  
->  	res = drmModeGetResources(drm_fd);
->  	if (!res)
-> @@ -5395,10 +5398,28 @@ void igt_enable_connectors(int drm_fd)
->  	for (int i = 0; i < res->count_connectors; i++) {
->  		drmModeConnector *c;
+>  	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_suspended_time");
+>  	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
+> -		igt_assert(sscanf(time_str, "%d", &time) > 0);
+> +		igt_assert(sscanf(time_str, "%ld", &time) > 0);
 >  
-> -		/* Do a probe. This may be the first action after booting */
-> -		c = drmModeGetConnector(drm_fd, res->connectors[i]);
-> -		if (!c) {
-> -			igt_warn("Could not read connector %u: %m\n", res->connectors[i]);
-> +		/*
-> +		 * The kernel returns the count of connectors before
-> +		 * they're all fully set up, so we can have a race
-> +		 * condition where we try to get the connector when
-> +		 * it's not fully set up yet.  To avoid failing here
-> +		 * in these cases, retry a few times.
-> +		 */
-> +		for (tries = 0; tries < MAX_TRIES; tries++) {
-> +			/* Do a probe. This may be the first action after booting */
-> +			c = drmModeGetConnector(drm_fd, res->connectors[i]);
-> +			if (c)
-> +				break;
-> +
-> +			igt_debug("Could not read connector %u: %m (try %d of %d)\n",
-> +				  res->connectors[i], tries + 1, MAX_TRIES);
-> +
-> +			usleep(SLEEP_DURATION);
-> +		}
-> +
-> +		if (tries == MAX_TRIES) {
-> +			igt_warn("Could not read connector %u after %d tries, skipping\n",
-> +				 res->connectors[i], MAX_TRIES);
->  			continue;
->  		}
+> -		igt_debug("runtime suspend time for PCI '%04x:%02x:%02x.%01x' = %d\n",
+> +		igt_debug("runtime suspend time for PCI '%04x:%02x:%02x.%01x' = %ld\n",
+----------------------------------------------------------------------- ^^^
+
+Instead of %ld use %" PRId64:
+
+		igt_debug("runtime suspend time for PCI '%04x:%02x:%02x.%01x' = %" PRId64 "\n",
+
+Regards,
+Kamil
+
+>  			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
 >  
+>  		return time;
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index 15e301533..6b428f53e 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -93,7 +93,7 @@ void igt_pm_restore_pci_card_runtime_pm(void);
+>  void igt_pm_print_pci_card_runtime_status(void);
+>  bool i915_is_slpc_enabled_gt(int drm_fd, int gt);
+>  bool i915_is_slpc_enabled(int drm_fd);
+> -int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
+> +uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
+>  uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
+>  int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+>  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
+> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+> index 176f7a04b..7766d34d7 100644
+> --- a/tests/intel/kms_pm_dc.c
+> +++ b/tests/intel/kms_pm_dc.c
+> @@ -488,10 +488,10 @@ static bool support_dc6(int debugfs_fd)
+>  	return strstr(buf, "DC5 -> DC6 count");
+>  }
+>  
+> -static int read_runtime_suspended_time(int drm_fd)
+> +static uint64_t read_runtime_suspended_time(int drm_fd)
+>  {
+>  	struct pci_device *i915;
+> -	int ret;
+> +	uint64_t ret;
+>  
+>  	i915 = igt_device_get_pci_device(drm_fd);
+>  	ret = igt_pm_get_runtime_suspended_time(i915);
+> @@ -500,7 +500,7 @@ static int read_runtime_suspended_time(int drm_fd)
+>  	return ret;
+>  }
+>  
+> -static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, int prev_rpm, int msecs)
+> +static bool dc9_wait_entry(data_t *data, int dc_target, int prev_dc, uint64_t prev_rpm, int msecs)
+>  {
+>  	/*
+>  	 * Runtime suspended residency should increment once DC9 is achieved;
+> @@ -522,7 +522,8 @@ static void check_dc9(data_t *data, int dc_target, int prev_dc, int prev_rpm)
+>  
+>  static void setup_dc9_dpms(data_t *data, int dc_target)
+>  {
+> -	int prev_dc = 0, prev_rpm, sysfs_fd;
+> +	uint64_t prev_rpm;
+> +	int prev_dc = 0, sysfs_fd;
+>  
+>  	igt_require((sysfs_fd = open(KMS_HELPER, O_RDONLY)) >= 0);
+>  	__igt_sysfs_get_boolean(sysfs_fd, "poll", &kms_poll_saved_state);
 > -- 
-> 2.39.2
+> 2.44.0
 > 
