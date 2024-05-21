@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EB77C41513
-	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 09:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A5F2C25B74
+	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 09:03:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0BA9510E5AB;
-	Tue, 21 May 2024 09:03:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 24BEC10E5AD;
+	Tue, 21 May 2024 09:03:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AYA7m4XZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AGHfG8HU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9A6B10E5AB
- for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 09:03:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7D75C10E5AD
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 09:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716282189; x=1747818189;
+ t=1716282190; x=1747818190;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6ocVn6ymBiu+Vh3oT0GSRfXPRY+ncHKVUxikHBFFAlk=;
- b=AYA7m4XZpP6m/XqsIXlxoEY/rfQzF/hB+8sbQOsngLBNTnG6kJ+CV1VS
- hgwpawRVJ/ZXdb/YX1N/+hrd2UE+jRtnqWTLzYI5azyFV3yX1radbhqIm
- iQLTF8X18BdB6IvM4WcPH0rrraQRQ3cYnQP7D+dmtt6unSs3rXqB5YS+b
- 570F755k7L2D814/wZIIt9d8AyR7JZdAs43+4eUCOlkXTsx49piEAtFh4
- kDMtryZLnvsL+1d8cE7BwFdtQ9/kbprwnijsxNT3WQZyxP4IzfeyKpGfn
- 7ZShkSQYnl9xpx3wOLyte0zMkz6Jkol24I+iwTjDnG3B1pXaa4oZ/aRo2 g==;
-X-CSE-ConnectionGUID: x/7Tm0OcRg+lO4ql1xF7eg==
-X-CSE-MsgGUID: fh3FJs9uRBmchnvmxf0PHg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12327360"
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="12327360"
+ bh=CWFfFe+eZdBlT/7/xioRcBBjo3bfGt0rm9hib/j9F80=;
+ b=AGHfG8HUp8hTELoAVDXNfe9zjzlU4QuBv6byAHaot/wybRBg0VGLZZLq
+ ClhXP4auq6X2Vj9R273ERm0PeWK2WI/wRBIpCGQ+KtbBvLBBr2g4z5y2a
+ HX987BErHPsnP0NQ4PU5KMKV2+q5dg2ib5oUF5hRmhMmNRvIIBR3RIehm
+ mrCJSubf++idvA5S5pVYEPv4PqR5s8T/RDn7Bvg5pc8/2QC2ntXY7CVTh
+ oUTJK56/oO4Y5q/NsGNId3REVZD5mvcm0xt7LL+26xyVRRiogj3W/4jqV
+ 2ZA3an1GfEAO56vVGxhTTTmcceqgwa+FZaiOamBOaGQ9I28UKtU1mEib+ Q==;
+X-CSE-ConnectionGUID: ohOhmRm4T6uw5TmDdGyULw==
+X-CSE-MsgGUID: AmHfVf6+RIKdmz+QGsk+RA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12327358"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="12327358"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 02:02:54 -0700
-X-CSE-ConnectionGUID: wXS1tl2zRVerlHIJfiqLtg==
-X-CSE-MsgGUID: XCEafQnZSJyjADcvisUBjA==
+ 21 May 2024 02:02:52 -0700
+X-CSE-ConnectionGUID: brtLJSX6SnaPy1vrTPKHlA==
+X-CSE-MsgGUID: nJGFyo8uRAakVENb9OINyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="37804268"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="37804227"
 Received: from mathiasj-mobl.amr.corp.intel.com (HELO
  jhogande-mobl1.intel.com) ([10.251.211.157])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 02:02:51 -0700
+ 21 May 2024 02:02:50 -0700
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com,
  =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Subject: [PATCH i-g-t 3/4] lib/igt_psr: Handle PR_MODE2_SEL_FETCH and eDP PR_*
- in psr active check
-Date: Tue, 21 May 2024 12:02:32 +0300
-Message-Id: <20240521090233.1998323-4-jouni.hogander@intel.com>
+Subject: [PATCH i-g-t 2/4] lib/igt_psr: Psr status debugfs interface print
+ "enabled" not "Enabled"
+Date: Tue, 21 May 2024 12:02:31 +0300
+Message-Id: <20240521090233.1998323-3-jouni.hogander@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240521090233.1998323-1-jouni.hogander@intel.com>
 References: <20240521090233.1998323-1-jouni.hogander@intel.com>
@@ -72,50 +72,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Panel Replay expected state is always SRDENT for DP2.0 Panel Replay.
-For eDP1.5 Panel Replay it is SLEEP. Due to this output is now mandatory
-parameter to psr_active_check if PSR mode is Panel Replay.
-
-Bspec: 68920, 68934
-
-v2: fix mode checks
+Psr status debugfs interface print "enabled" not "Enabled". Take this into
+account in psr_mode psr_get_mode.
 
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- lib/igt_psr.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ lib/igt_psr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index d1286276c..012521fc5 100644
+index 964f18487..d1286276c 100644
 --- a/lib/igt_psr.c
 +++ b/lib/igt_psr.c
-@@ -57,9 +57,25 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
- {
- 	char debugfs_file[128] = {0};
- 	char buf[PSR_STATUS_MAX_LEN];
--	const char *state = (mode == PSR_MODE_1 || mode == PR_MODE) ? "SRDENT" : "DEEP_SLEEP";
-+	drmModeConnector *c;
-+	const char *state;
- 	int ret;
+@@ -399,9 +399,9 @@ enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output)
+ 		return PSR_DISABLED;
+ 	}
  
-+	if (mode == PR_MODE || mode == PR_MODE_SEL_FETCH) {
-+		igt_assert_f(output, "Output not given\n");
-+		c = output->config.connector;
-+	}
-+
-+	if ((mode == PR_MODE || mode == PR_MODE_SEL_FETCH) &&
-+	    c && c->connector_type == DRM_MODE_CONNECTOR_eDP)
-+		state = "SLEEP";
-+	else if (mode == PSR_MODE_1 || mode == PR_MODE || mode == PR_MODE_SEL_FETCH)
-+		state = "SRDENT";
-+	else if (mode == PSR_MODE_2 || mode == PSR_MODE_2_SEL_FETCH)
-+		state = "DEEP_SLEEP";
-+	else
-+		igt_assert_f(false, "Invalid psr mode\n");
-+
- 	SET_DEBUGFS_PATH(output, debugfs_file);
- 	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file,
- 				     buf, sizeof(buf));
+-	if (strstr(buf, "Panel Replay Enabled"))
++	if (strstr(buf, "Panel Replay enabled"))
+ 		return PR_MODE;
+-	else if (strstr(buf, "Panel Replay Selective Update Enabled"))
++	else if (strstr(buf, "Panel Replay Selective Update enabled"))
+ 		return PR_MODE_SEL_FETCH;
+ 	else if (strstr(buf, "PSR2 selective fetch: enabled"))
+ 		return PSR_MODE_2_SEL_FETCH;
 -- 
 2.34.1
 
