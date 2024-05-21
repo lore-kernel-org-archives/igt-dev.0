@@ -4,27 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E1EEC25B74
-	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 04:43:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1837BC25B74
+	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 04:46:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8FFA10E39F;
-	Tue, 21 May 2024 04:43:58 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D21C10E39F;
- Tue, 21 May 2024 04:43:56 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A67310EAA8;
+	Tue, 21 May 2024 04:46:27 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="Jlvs61kv";
+	dkim-atps=neutral
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com
+ [209.85.208.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44B3110EAA8
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 04:46:26 +0000 (UTC)
+Received: by mail-ed1-f47.google.com with SMTP id
+ 4fb4d7f45d1cf-57824fa0a8fso88884a12.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 May 2024 21:46:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1716266784; x=1716871584;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=vKbRMwk2tixV7IGttBI2iED8HEIZVbP0r6bkyROO2Xw=;
+ b=Jlvs61kvFt3Akp9IjZ0uC1zOiFRnXig4ozGPeffmV+5sHNHVelbxxgOBwyNMHuWW1K
+ tahSUTVGyrdcSyhn310vYHrWx5NBLaqJDtIyLXg2yyanvGdhvBBadg1EMVGWq2cRurCc
+ whLi1BDI31wQ4XIpXDsLjrXbrZEYKHAsxw/G0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716266784; x=1716871584;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=vKbRMwk2tixV7IGttBI2iED8HEIZVbP0r6bkyROO2Xw=;
+ b=qg3jzkzZpYBzBshCoApM4b5zcIgFiW0C5hASO+aeQrKbJRHlbZPu8j8Te/W0QrokwL
+ kz79NF01awcuqruSVgQQcrVkPxWfwBnJoQwX1Gccy5jZmw/z0I84rR8Pj17lbX0k6PJB
+ 5LBG1EJgg6FIlCgdJ6cAvd8MsCGHIt0YmO5Aw1niw4JqWNCmHfsax9GharfZnpj7l+mm
+ zpn5Kt6ug3Da+q99DS7E6A/tGfs1TG18AlRcdWLmIahifBLIGltMjwQRDeC5QwZ5uO0d
+ /0V7odObhGGROb/hZBcp/eOhbP8+wMrGyxROC34JzVa+TrDhRS43q84QfIFWR0FzAr7V
+ 1kQg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV+uc4A6uOSpo+CJlWE1kbPqDQZ5J7ilrrQmfnHq8FWtmn8jpj0Gk40tf7G9IQsUdh2R2yR1gQ1LPugHDHpKsL8LSKtCkNiBaMjaskU0g==
+X-Gm-Message-State: AOJu0YwxkpqhhRmkD2ulHgi7bWX0HYUF4EEWSYozm2TWMYDHHV+rKSgz
+ S0nKZPLX90shoeoMDKGg7zwexIad/128ASTljGL4fkFQJOZZvLr4ubdnrM3rF0JXlVv+2/JQRFn
+ aTffu6Hfti80PGBDQvWaQdrJHl0Z4LeMbcQtw
+X-Google-Smtp-Source: AGHT+IFfcU/WoxQxkLgvpMyVjkkEv/mFjUQe5eoWl2NH1/zRa7pEzdhdcjdh/+g1gKjKLHQR0lFvMUwE0RJzX4gNs0s=
+X-Received: by 2002:a50:d745:0:b0:572:4702:2227 with SMTP id
+ 4fb4d7f45d1cf-5734d6de22dmr23457573a12.35.1716266784403; Mon, 20 May 2024
+ 21:46:24 -0700 (PDT)
 MIME-Version: 1.0
+References: <20240424201344.783935-1-navaremanasi@chromium.org>
+ <64cef3df-1610-4d53-a44c-905220e09b76@intel.com>
+ <CAE72mNmRsA-KcZ61F6d4Pg5_OQnpifO7AmivE2AkhN_0WT=eTw@mail.gmail.com>
+ <682dccc4-c788-4bfd-b8ef-b24d60b488d6@intel.com>
+ <DM8PR11MB565517E06CDBA9B389BA86BCE0162@DM8PR11MB5655.namprd11.prod.outlook.com>
+ <CAE72mNkYFsViPR18xcT=WZyjNrMSJ6Gq14MUbMzUVHarDfDb6Q@mail.gmail.com>
+ <6ca5030f-005f-446d-a49a-be08cc8e6e0f@intel.com>
+In-Reply-To: <6ca5030f-005f-446d-a49a-be08cc8e6e0f@intel.com>
+From: Manasi Navare <navaremanasi@chromium.org>
+Date: Mon, 20 May 2024 21:46:13 -0700
+Message-ID: <CAE72mNm6UuTO=PBhdOcCngMGoE1+6Qbku0RkaPuDetiaRPWEcA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for seamless modeset
+ to a virtual LRR mode
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Cc: "Saarinen, Jani" <jani.saarinen@intel.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ Drew Davenport <ddavenport@chromium.org>, 
+ =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+ Sean Paul <seanpaul@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/xe=3A_Add_System_?=
- =?utf-8?q?Allocator_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Brost" <matthew.brost@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 21 May 2024 04:43:56 -0000
-Message-ID: <171626663618.2162015.7828370674103851650@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240521041801.1515660-1-matthew.brost@intel.com>
-In-Reply-To: <20240521041801.1515660-1-matthew.brost@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,128 +84,305 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+Hi Bhanu,
 
-Series: tests/xe: Add System Allocator test
-URL   : https://patchwork.freedesktop.org/series/133846/
-State : warning
+Yes I have verified that, it looks good and I have also been running
+this on my Chromebook with VRR panel and it works fine.
+Could you please review and help get this landed?
 
-=3D=3D Summary =3D=3D
+Manasi
 
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1182092 f=
-or the overview.
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/58950524):
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-xe_xe_ioctl_c@sta -Il=
-ib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I..=
-/lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 =
--I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixman-1 -I/=
-usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/in=
-clude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-linux-gnueabi=
-hf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways=
- -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O=
-2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-c=
-ast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -=
-Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-nor=
-eturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointe=
-r-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wun=
-used -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializer=
-s -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-paramet=
-er -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dim=
-plicit -Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointe=
-r-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3D=
-pointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=
-=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-callo=
-c -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/sha=
-re/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DI=
-GT_LOG_DOMAIN=3D"xe/xe_ioctl"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta=
-/xe_xe_ioctl.c.o' -MF 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o.d=
-' -o 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o' -c ../lib/xe/xe_i=
-octl.c
-  ../lib/xe/xe_ioctl.c:427:7: error: conflicting types for =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-         ^~~~~~~~~~~~~~~
-  In file included from ../lib/xe/xe_ioctl.c:46:
-  ../lib/xe/xe_ioctl.h:84:7: note: previous declaration of =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99 was here
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned in=
-t addr);
-         ^~~~~~~~~~~~~~~
-  ../lib/xe/xe_ioctl.c: In function =E2=80=98xe_bo_map_fixed=E2=80=99:
-  ../lib/xe/xe_ioctl.c:433:13: error: cast to pointer from integer of diffe=
-rent size [-Werror=3Dint-to-pointer-cast]
-    map =3D mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd=
-, mmo);
-               ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1716266380:step_script
-  section_start:1716266380:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1716266381:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/58950526):
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-xe_xe_ioctl_c@sta -Ilib -I=
-../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I../lib/=
-stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/us=
-r/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/includ=
-e/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libd=
-rm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -I/usr/inclu=
-de/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_=
-OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOU=
-RCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarati=
-on-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobb=
-ered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-=
-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-=
-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
-=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=
-=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
--cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
-error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE6=
-4_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tool=
-s"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=
-=3D"xe/xe_ioctl"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.=
-c.o' -MF 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o.d' -o 'lib/76b=
-5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o' -c ../lib/xe/xe_ioctl.c
-  ../lib/xe/xe_ioctl.c:427:7: error: conflicting types for =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-         ^~~~~~~~~~~~~~~
-  In file included from ../lib/xe/xe_ioctl.c:46:
-  ../lib/xe/xe_ioctl.h:84:7: note: previous declaration of =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99 was here
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned in=
-t addr);
-         ^~~~~~~~~~~~~~~
-  ../lib/xe/xe_ioctl.c: In function =E2=80=98xe_bo_map_fixed=E2=80=99:
-  ../lib/xe/xe_ioctl.c:433:13: error: cast to pointer from integer of diffe=
-rent size [-Werror=3Dint-to-pointer-cast]
-    map =3D mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd=
-, mmo);
-               ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1716266371:step_script
-  section_start:1716266371:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1716266372:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1182092
+On Mon, May 20, 2024 at 12:54=E2=80=AFAM Modem, Bhanuprakash
+<bhanuprakash.modem@intel.com> wrote:
+>
+> Hi Manasi,
+>
+> Sorry for replying late, I was in vacation.
+>
+> On 27-04-2024 12:54 am, Manasi Navare wrote:
+> > Hi Bhanu, Jani,
+> >
+> > I do see that even the other vrr tests : seamless-rr-switch-vrr /drrs/
+> > basic-fastset are getting skipped on BAT, so its not related to this
+> > test. I am able to run it here locally and test.
+> > Could you please take a look and see why all of these would be
+> > skipped? Seems unrelated to this change.
+>
+> In case of seamless-rr-switch-(vrr|drrs), these skips are expected, as
+> we don't have any valid config. These tests are eDP specific & panel
+> should have the modes with different refresh rates & clocks with same
+> resolution.
+>
+> In case of seamless-rr-switch-virtual, it is a connector agnostic test,
+> it should run on one of the BAT machines.
+>
+> Can you please review the helper low_rr_mode_with_same_res() once, as
+> you are using this one to pick the low RR mode?
+>
+> >
+> > Regards
+> > Manasi
+> >
+> > On Fri, Apr 26, 2024 at 12:48=E2=80=AFAM Saarinen, Jani <jani.saarinen@=
+intel.com> wrote:
+> >>
+> >> Hi,
+> >>> -----Original Message-----
+> >>> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Mo=
+dem,
+> >>> Bhanuprakash
+> >>> Sent: Friday, 26 April 2024 6.44
+> >>> To: Manasi Navare <navaremanasi@chromium.org>
+> >>> Cc: igt-dev@lists.freedesktop.org; Drew Davenport
+> >>> <ddavenport@chromium.org>; Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@lin=
+ux.intel.com>;
+> >>> Sean Paul <seanpaul@chromium.org>
+> >>> Subject: Re: [PATCH v3 1/2] tests/kms_vrr: Add a subtest for seamless
+> >>> modeset to a virtual LRR mode
+> >>>
+> >>> Hi Manasi,
+> >>>
+> >>> On 25-04-2024 08:50 pm, Manasi Navare wrote:
+> >>>> Hi Bhanu,
+> >>>>
+> >>>> Thanks for the review.
+> >>>> This is not specific to edp, it applies to all connectors.
+> >>>>
+> >>>> If the BAT results look okay and I have your r-b, could we get this =
+merged?
+> >> Did you look those.
+> >>
+> >>>
+> >>> Looks, BAT results are not OK to me.
+> >> Right. To me looks so too.
+> >>
+> >>>
+> >>> The newly added test is getting skip on VRR configs:
+> >>> https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11065/bat-
+> >>> all.html?testfilter=3Dkms_vrr&hosts=3Dbat-adlp-6%7Cbat-adlp-9%7Cbat-r=
+pls-
+> >>> 4%7Cbat-adls-6
+> >>>
+> >>> - Bhanu
+> >>>
+> >>>>
+> >>>> Regards
+> >>>> Manasi
+> >>>>
+> >>>> On Thu, Apr 25, 2024 at 12:39=E2=80=AFAM Modem, Bhanuprakash
+> >>>> <bhanuprakash.modem@intel.com> wrote:
+> >>>>>
+> >>>>> Hi Manasi,
+> >>>>>
+> >>>>> On 25-04-2024 01:43 am, Manasi Navare wrote:
+> >>>>>> This subtest validates LRR fastset functionality by testing seamle=
+ss
+> >>>>>> switching without full modeset to any of the virtual LRR mode with=
+in VRR
+> >>> range.
+> >>>>>> Here we start from highest refresh rate mode and then switch to
+> >>>>>> virtual LRR modes in the steps of 10Hz within the VRR range.
+> >>>>>>
+> >>>>>> This is used to test the LRR fastset functionality of the driver.
+> >>>>>>
+> >>>>>> v5:
+> >>>>>> - Pass a reference to flip_and_measure (bhanu)
+> >>>>>> - Add a new line between between declaration and code logic
+> >>>>>>
+> >>>>>> v4:
+> >>>>>> - Change the test name to align with drrs/vrr tests (Bhanu)
+> >>>>>> - Fix some build warnings due to rebase
+> >>>>>> - Use a local virtual_mode variable
+> >>>>>>
+> >>>>>> v3:
+> >>>>>> - Fix build error due to rebase (Manasi)
+> >>>>>>
+> >>>>>> Cc: Drew Davenport <ddavenport@chromium.org>
+> >>>>>> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> >>>>>> Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> >>>>>> Cc: Sean Paul <seanpaul@chromium.org>
+> >>>>>> Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+> >>>>>> ---
+> >>>>>>     tests/kms_vrr.c | 73
+> >>> ++++++++++++++++++++++++++++++++++++++++++++++---
+> >>>>>>     1 file changed, 69 insertions(+), 4 deletions(-)
+> >>>>>>
+> >>>>>> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index
+> >>>>>> 15c62b34b..7f64d6806 100644
+> >>>>>> --- a/tests/kms_vrr.c
+> >>>>>> +++ b/tests/kms_vrr.c
+> >>>>>> @@ -66,6 +66,11 @@
+> >>>>>>      * Description: Test to switch RR seamlessly without modeset.
+> >>>>>>      * Functionality: adaptive_sync, drrs
+> >>>>>>      *
+> >>>>>> + * SUBTEST: seamless-rr-switch-virtual
+> >>>>>> + * Description: Test to create a Virtual Mode in VRR range and sw=
+itch to
+> >>> it
+> >>>>>> + *           without a full modeset.
+> >>>>>> + * Functionality: LRR
+> >>>>>> + *
+> >>>>>>      * SUBTEST: max-min
+> >>>>>>      * Description: Oscillates between highest and lowest refresh =
+each
+> >>> frame for
+> >>>>>>      *              manual flicker profiling
+> >>>>>> @@ -89,9 +94,10 @@ enum {
+> >>>>>>         TEST_FLIPLINE =3D 1 << 3,
+> >>>>>>         TEST_SEAMLESS_VRR =3D 1 << 4,
+> >>>>>>         TEST_SEAMLESS_DRRS =3D 1 << 5,
+> >>>>>> -     TEST_FASTSET =3D 1 << 6,
+> >>>>>> -     TEST_MAXMIN =3D 1 << 7,
+> >>>>>> -     TEST_NEGATIVE =3D 1 << 8,
+> >>>>>> +     TEST_SEAMLESS_VIRTUAL_RR =3D 1 << 6,
+> >>>>>> +     TEST_FASTSET =3D 1 << 7,
+> >>>>>> +     TEST_MAXMIN =3D 1 << 8,
+> >>>>>> +     TEST_NEGATIVE =3D 1 << 9,
+> >>>>>>     };
+> >>>>>>
+> >>>>>>     enum {
+> >>>>>> @@ -214,6 +220,18 @@ low_rr_mode_with_same_res(igt_output_t
+> >>> *output, unsigned int vrr_min)
+> >>>>>>         return mode;
+> >>>>>>     }
+> >>>>>>
+> >>>>>> +static drmModeModeInfo
+> >>>>>> +virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int
+> >>>>>> +virtual_refresh_rate) {
+> >>>>>> +     drmModeModeInfo mode =3D *igt_output_get_mode(output);
+> >>>>>> +     uint64_t clock_hz =3D mode.clock * 1000;
+> >>>>>> +
+> >>>>>> +     mode.vtotal =3D clock_hz / (mode.htotal * virtual_refresh_ra=
+te);
+> >>>>>> +     mode.vrefresh =3D virtual_refresh_rate;
+> >>>>>> +
+> >>>>>> +     return mode;
+> >>>>>> +}
+> >>>>>> +
+> >>>>>>     /* Read min and max vrr range from the connector debugfs. */
+> >>>>>>     static range_t
+> >>>>>>     get_vrr_range(data_t *data, igt_output_t *output) @@ -641,6
+> >>>>>> +659,49 @@ test_seamless_rr_basic(data_t *data, enum pipe pipe,
+> >>> igt_output_t *output, uint3
+> >>>>>>                      vrr ? "on" : "off", vrr ? "not reached" : "ex=
+ceeded", result);
+> >>>>>>     }
+> >>>>>>
+> >>>>>> +static void
+> >>>>>> +test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe,
+> >>>>>> +igt_output_t *output, uint32_t flags) {
+> >>>>>> +     uint32_t result;
+> >>>>>> +     unsigned int vrefresh;
+> >>>>>> +     uint64_t rate[] =3D {0};
+> >>>>>> +
+> >>>>>> +     igt_info("Use HIGH_RR Mode as default\n");
+> >>>>>> +     kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+> >>>>>> +
+> >>>>>> +     prepare_test(data, output, pipe);
+> >>>>>> +     rate[0] =3D
+> >>>>>> + rate_from_refresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
+> >>>>>> +
+> >>>>>> +     /*
+> >>>>>> +      * Sink with DRR and VRR can be in downclock mode so
+> >>>>>> +      * switch to highest refresh rate mode.
+> >>>>>> +      */
+> >>>>>> +     igt_output_override_mode(output, &data-
+> >>>> switch_modes[HIGH_RR_MODE]);
+> >>>>>> +     igt_assert(igt_display_try_commit_atomic(&data->display,
+> >>>>>> + DRM_MODE_PAGE_FLIP_EVENT, NULL) =3D=3D 0);
+> >>>>>> +
+> >>>>>> +     result =3D flip_and_measure(data, output, pipe, rate, 1,
+> >>> TEST_DURATION_NS);
+> >>>>>> +     igt_assert_f(result > 75,
+> >>>>>> +                  "Refresh rate (%u Hz) %"PRIu64"ns: Target thres=
+hold not
+> >>> reached, result was %u%%\n",
+> >>>>>> +                  data->switch_modes[HIGH_RR_MODE].vrefresh,
+> >>>>>> + rate[0], result);
+> >>>>>> +
+> >>>>>> +     /* Switch to Virtual RR */
+> >>>>>> +     for (vrefresh =3D data->range.min + 10; vrefresh < data->ran=
+ge.max;
+> >>> vrefresh +=3D 10) {
+> >>>>>> +             drmModeModeInfo virtual_mode =3D
+> >>>>>> + virtual_rr_vrr_range_mode(output, vrefresh);
+> >>>>>> +
+> >>>>>> +             igt_info("Requesting Virtual Mode with Refresh Rate =
+(%u Hz): \n",
+> >>> vrefresh);
+> >>>>>> +             kmstest_dump_mode(&virtual_mode);
+> >>>>>> +
+> >>>>>> +             igt_output_override_mode(output, &virtual_mode);
+> >>>>>> +
+> >>>>>> + igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL=
+)
+> >>>>>> + =3D=3D 0);
+> >>>>>> +
+> >>>>>> +             rate[0] =3D rate_from_refresh(vrefresh);
+> >>>>>> +             result =3D flip_and_measure(data, output, pipe, rate=
+, 1,
+> >>> TEST_DURATION_NS);
+> >>>>>> +             igt_assert_f(result > 75,
+> >>>>>> +                          "Refresh rate (%u Hz) %"PRIu64"ns: Targ=
+et threshold not
+> >>> reached, result was %u%%\n",
+> >>>>>> +                          vrefresh, rate[0], result);
+> >>>>>> +     }
+> >>>>>> +}
+> >>>>>> +
+> >>>>>>     static void test_cleanup(data_t *data, enum pipe pipe, igt_out=
+put_t
+> >>> *output)
+> >>>>>>     {
+> >>>>>>         if (vrr_capable(output))
+> >>>>>> @@ -686,7 +747,7 @@ static bool output_constraint(data_t *data,
+> >>> igt_output_t *output, uint32_t flags
+> >>>>>>         igt_output_override_mode(output,
+> >>>>>> &data->switch_modes[HIGH_RR_MODE]);
+> >>>>>>
+> >>>>>>         /* Search for a low refresh rate mode. */
+> >>>>>> -     if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)))
+> >>>>>> +     if (!(flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS |
+> >>>>>> + TEST_SEAMLESS_VIRTUAL_RR)))
+> >>>>>
+> >>>>> Does this virtual RR applicable to eDP only or supports other
+> >>>>> connector types too? If it is eDP specific [*], then we must add a =
+check for
+> >>> that.
+> >>>>>
+> >>>>> [*]:
+> >>>>> https://cgit.freedesktop.org/drm/igt-gpu-tools/tree/tests/kms_vrr.c=
+#n
+> >>>>> 660
+> >>>>>
+> >>>>> With above comment addressed, this patch is
+> >>>>> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> >>>>>
+> >>>>> - Bhanu
+> >>>>>
+> >>>>>>                 return true;
+> >>>>>>
+> >>>>>>         data->switch_modes[LOW_RR_MODE] =3D
+> >>>>>> low_rr_mode_with_same_res(output, data->range.min); @@ -841,6
+> >>> +902,10 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &d=
+ata)
+> >>>>>>                              "between flip timestamps converges to=
+ the requested
+> >>> rate");
+> >>>>>>                 igt_subtest_with_dynamic("flip-basic-fastset")
+> >>>>>>                         run_vrr_test(&data, test_basic,
+> >>>>>> TEST_FASTSET);
+> >>>>>> +
+> >>>>>> +             igt_describe("Test to switch to any custom virtual m=
+ode in VRR
+> >>> range without modeset.");
+> >>>>>> +             igt_subtest_with_dynamic("seamless-rr-switch-virtual=
+")
+> >>>>>> +                     run_vrr_test(&data,
+> >>>>>> + test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
+> >>>>>>         }
+> >>>>>>
+> >>>>>>         igt_fixture {
