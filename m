@@ -4,52 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09360C25B75
-	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 09:52:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99AC7C25B75
+	for <igt-dev@archiver.kernel.org>; Tue, 21 May 2024 10:26:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4162E10E462;
-	Tue, 21 May 2024 09:52:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0220F10E199;
+	Tue, 21 May 2024 10:26:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="czdTkpdt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GZJflL8A";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6BDE910E462
- for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 09:52:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B65EB10E199
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 May 2024 10:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716285166; x=1747821166;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cpAi6Fo+wZOjJcjlNgk+ea1DN8SpHBpAF4GVzOM5/SM=;
- b=czdTkpdtaBCtpYWC4oMI+P0k1cabZTdoHGfXOhVACtITPvGi5zXEFu6J
- ld7YT2g+7Mpe92Sd4Xp08o+5GmRSeeJZXOOdngnp2BQLoOY9MjKEJhxou
- 3R4ZZHiXgcdQQDgYBT4YetyJF38VjwA4jxECYzv18r67DEV8fIAcoKkuT
- QjS8VxbZXKwqykl14bOVk65MkA5254gF2GTRvUcJ62YcVSX4AksGv7Ydg
- sJiefsESwqxokYkgwqcATV/uqn+NJesm8k/1Q1KaSc3tyBZnHqKYYzT3L
- dtC91bM9p9cf/Q6cyigZlboo+EO9QH/gcYwUsjS4LohyqGPA7Ku9q5gdn A==;
-X-CSE-ConnectionGUID: ZbrKbESnSriGaPeSGOrpAg==
-X-CSE-MsgGUID: r8I7m7BATSqS9vGk6xAaYw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="12580540"
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="12580540"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 02:52:39 -0700
-X-CSE-ConnectionGUID: VWyGxnO/QHCLHNzcIBN/mg==
-X-CSE-MsgGUID: X5bw1Hv5QlG5V1sZsMZ7Dw==
+ t=1716287208; x=1747823208;
+ h=date:from:to:cc:subject:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=hlfg7aN9+ErnebKRQdrX+OHM89lkrewjHbhswBJnlvM=;
+ b=GZJflL8A5G8zwKhbCxSGpsbqm4Rwgj5DAxIdzD9b4QXpAbixKEhSIFgv
+ ITYaZ5UbBQesTTSQ7mHTvYFgU1tu5AzGSi8HZNR2LtV+fglEYSyqSl5Rx
+ Q6dZwC1R2rZ4/u8E2SuZNRrBcUf6NckKnJqHKYdsvKma+MgRVJwXuG0D2
+ 4KmFEq+XRVPVIK7setgRD7tdpXsU4UAzXUuSkXBQuI5YRlu9PNCE+khvg
+ t67Zu3m/9n7JDN5pi+i7IjXIAqLDIfpGaYP08XAA6Wd00swh33ZFF1Epa
+ dwRzxGXQo4tblakOcpIqaNkWEZAgOZ+J9ldkU4fO7X5aHIsjfYb8XdMtk g==;
+X-CSE-ConnectionGUID: WkgXctBPQveFp9bGqnDLrQ==
+X-CSE-MsgGUID: eqxIhstjTReeNMqit1oukg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="29989100"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="29989100"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2024 03:26:46 -0700
+X-CSE-ConnectionGUID: zlQ8jrb3S3eCHcwvJfXFZQ==
+X-CSE-MsgGUID: M+KRmvkbTluIlJ4I3CUqMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="33461036"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 May 2024 02:52:38 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t] HAX/DONOT_MERGE: Add debug prints to HDR tests.
-Date: Tue, 21 May 2024 15:15:28 +0530
-Message-ID: <20240521094528.2591672-1-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; d="scan'208";a="33040056"
+Received: from linux.intel.com ([10.54.29.200])
+ by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 May 2024 03:26:46 -0700
+Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
+ [10.245.244.246])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested)
+ by linux.intel.com (Postfix) with ESMTPS id 6A18220BF42F;
+ Tue, 21 May 2024 03:26:44 -0700 (PDT)
+Date: Tue, 21 May 2024 12:26:42 +0200
+From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Helen Koike <helen.koike@collabora.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH i-g-t v1] tests/core_getversion: test all drm devices
+Message-ID: <20240521122642.1e6383ed@maurocar-mobl2>
+In-Reply-To: <20240517190955.83517-1-kamil.konieczny@linux.intel.com>
+References: <20240517190955.83517-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,94 +75,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c   | 10 ++++++++--
- tests/kms_hdr.c | 21 +++++++++++++++++----
- 2 files changed, 25 insertions(+), 6 deletions(-)
+On Fri, 17 May 2024 21:09:55 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f82102144..df6c8f8fc 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6189,15 +6189,21 @@ bool igt_max_bpc_constraint(igt_display_t *display, enum pipe pipe,
- 	for_each_connector_mode(output) {
- 		igt_output_override_mode(output, &connector->modes[j__]);
- 
-+		kmstest_dump_mode(&connector->modes[j__]);
-+
- 		if (is_intel_device(display->drm_fd) &&
--		    !igt_check_bigjoiner_support(display))
-+		    !igt_check_bigjoiner_support(display)) {
-+			igt_info("Bigjoiner not supported, on selected combo, trying another mode\n");
- 			continue;
-+		}
- 
- 		igt_display_commit2(display, display->is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
- 		if (!igt_check_output_bpc_equal(display->drm_fd, pipe,
--						output->name, bpc))
-+						output->name, bpc)) {
-+			igt_info("Can't use this mode to match the requested bpc-%d, trying another mode\n", bpc);
- 			continue;
-+		}
- 
- 		return true;
- 	}
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 99b78f7ef..cc5a08f8c 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -621,25 +621,37 @@ static void test_hdr(data_t *data, uint32_t flags)
- 		 * set MAX_BPC property to 10bpc prior to setting
- 		 * HDR metadata property. Therefore, checking.
- 		 */
--		if (!has_max_bpc(output) || !has_hdr(output))
-+		if (!has_max_bpc(output) || !has_hdr(output)) {
-+			igt_info("Output %s: doesn't support IGT_CONNECTOR_MAX_BPC or IGT_CONNECTOR_HDR_OUTPUT_METADATA\n", output->name);
- 			continue;
-+		}
- 
- 		/* For negative test, panel should be non-hdr. */
--		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output))
-+		if ((flags & TEST_INVALID_HDR) && is_panel_hdr(data, output)) {
-+			igt_info("Output %s: Can't run negative test on HDR panel\n", output->name);
- 			continue;
-+		}
- 
--		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output))
-+		if ((flags & ~TEST_INVALID_HDR) && !is_panel_hdr(data, output)) {
-+			igt_info("Output %s: Can't run HDR tests on non-HDR panel\n", output->name);
- 			continue;
-+		}
- 
--		if (igt_get_output_max_bpc(data->fd, output->name) < 10)
-+		if (igt_get_output_max_bpc(data->fd, output->name) < 10) {
-+			igt_info("Output %s: doesn't support 10 bpc\n", output->name);
- 			continue;
-+		}
- 
- 		for_each_pipe(display, pipe) {
-+			igt_info("Using the combo: pipe-%s + %s\n", kmstest_pipe_name(pipe), output->name);
-+
- 			if (igt_pipe_connector_valid(pipe, output)) {
- 				prepare_test(data, output, pipe);
- 
- 				if (is_intel_device(data->fd) &&
- 				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
-+					igt_info("No suitable mode found to use 10 bpc.\n");
-+
- 					test_fini(data);
- 					break;
- 				}
-@@ -661,6 +673,7 @@ static void test_hdr(data_t *data, uint32_t flags)
- 				/* One pipe is enough */
- 				break;
- 			}
-+			igt_info("pipe-%s-%s: Invalid combo\n", kmstest_pipe_name(pipe), output->name);
- 		}
- 	}
- }
--- 
-2.43.2
+> Check all drm devices in all-cards subtest.
+> 
+> v2: add define for number of max tested cards (Helen)
+> v3: remove define as opening function from drmtest will
+>   stop after opening all existing drm cards (Kamil)
+>   changed subtest name to all-cards (Kamil)
+> 
+> Cc: Helen Koike <helen.koike@collabora.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
+LGTM.
+
+Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+> ---
+>  tests/core_getversion.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/tests/core_getversion.c b/tests/core_getversion.c
+> index bb2e6013d..8198f5f7f 100644
+> --- a/tests/core_getversion.c
+> +++ b/tests/core_getversion.c
+> @@ -40,6 +40,9 @@
+>   *
+>   * SUBTEST: basic
+>   * Description: Tests GET_VERSION ioctl of the first device.
+> + *
+> + * SUBTEST: all-cards
+> + * Description: Tests GET_VERSION ioctl for all drm devices.
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Tests the DRM_IOCTL_GET_VERSION ioctl and libdrm's "
+> @@ -62,6 +65,22 @@ static void check(int fd, char *dst, int len)
+>  	drmFree(v);
+>  }
+>  
+> +static void check_all_drm(void)
+> +{
+> +	char info[256];
+> +	int fd2;
+> +
+> +	for (int i = 0; ; i++) {
+> +		fd2 = __drm_open_driver_another(i, DRIVER_ANY);
+> +		if (fd2 == -1)
+> +			break;
+> +
+> +		check(fd2, info, sizeof(info));
+> +		igt_info("%d: %s\n", i, info);
+> +		drm_close_driver(fd2);
+> +	}
+> +}
+> +
+>  igt_main
+>  {
+>  	char info[256];
+> @@ -78,6 +97,10 @@ igt_main
+>  		igt_info("0: %s\n", info);
+>  	}
+>  
+> +	igt_describe("Check GET_VERSION ioctl for all drm devices.");
+> +	igt_subtest("all-cards")
+> +		check_all_drm();
+> +
+>  	igt_fixture
+>  		drm_close_driver(fd);
+>  }
