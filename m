@@ -4,62 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FB3CC25B78
-	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 14:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC944C25B7A
+	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 14:53:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A40D610F5ED;
-	Wed, 22 May 2024 14:46:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6563310E1D4;
+	Wed, 22 May 2024 14:53:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KvMKd609";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="bAynS4ss";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1671510F5ED
- for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 14:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716389192; x=1747925192;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=3itzLMEhmsQwrtpmc8UysRVRja63+2WjsS4KaAvhbfg=;
- b=KvMKd609YHaMNWqG+YngKDH0f/ktVoewUTn7L+pr0Biq+rFMpm6ifCAj
- N1jjY/e1ePwKsBi4BGzxAEDJXyxgEQmcc5v9TcwXUud3L2E+4+YPrprvZ
- JzLnNNscOoYScS6D0FunKx9McvXEdRuUcQsowKoJVr3IY0GfPIbassHN+
- qHoEkOAIZpaHSoE1VzR++FAINXBR8cDOE1Sl0b21qgdLTjX68op4xOcqS
- J9djwe53nytuvO00cB+VBRWOYslu7s0gSPYAqJX1KX0rhbvFFDTZBRPYI
- lrG1klbKmVLG41Hggc3po2XM3o97jqw2SYhtkCR11Vuq0WNRPVQZUfSkR w==;
-X-CSE-ConnectionGUID: W0xvAax8SJ6JMq+FvXF0Kg==
-X-CSE-MsgGUID: yGJ2jmX0TRO5TTaolc7oOA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="23260790"
-X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; d="scan'208";a="23260790"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2024 07:46:31 -0700
-X-CSE-ConnectionGUID: QdUwCVOYSPeliq1PfIIf9g==
-X-CSE-MsgGUID: 6N2LS9GDR0+bOHNMrZ75BQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; d="scan'208";a="33429994"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 May 2024 07:46:30 -0700
-Date: Wed, 22 May 2024 16:46:27 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- kamil.konieczny@intel.com, katarzyna.piecielska@intel.com
-Subject: Re: [PATCH i-g-t v4] tools/mk_detect_intel_gpu: add a tool to detect
- Intel GPUs from their PCI IDs
-Message-ID: <20240522144627.tdiadqyfgk67ox55@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>,
- Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
- kamil.konieczny@intel.com, katarzyna.piecielska@intel.com
-References: <20240522120240.48463-1-mauro.chehab@linux.intel.com>
- <87a5kiqa6l.fsf@intel.com> <875xv6q8ob.fsf@intel.com>
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com
+ [209.85.167.51])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46BB110E53C
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 14:53:23 +0000 (UTC)
+Received: by mail-lf1-f51.google.com with SMTP id
+ 2adb3069b0e04-523b017a5c6so9845859e87.1
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 07:53:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1716389601; x=1716994401;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=aHdX0ZqB8MgH4hxTEAcCtiBeXNnJGWlbGokNqXjsDho=;
+ b=bAynS4ssDII855abFVTZIKPBHKFr0TOHi3OZH5vhw06r5z3rr7RYhuQI8RBwsMbU7L
+ 7FrAK7Peh4ATgOR/hmIjpUyAMs6nkfUlZK2ToLXxGfdl3Unyi/w1DH9ypblEFy+Fh/gw
+ +VzPwH7bFNK+QweMbRibMV6RYAPsJzQuz7FeU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1716389601; x=1716994401;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=aHdX0ZqB8MgH4hxTEAcCtiBeXNnJGWlbGokNqXjsDho=;
+ b=C70/la+qGGcmRSpna2vSYYP1IXmkmtA/BGHnRiNrhPMc3eAp5sXdmqfhVeA5zWBiZY
+ qnfFd0ufa8w+gid1LWokhIgy/X1IoigTF69wr1Bhus3GQ1nXI6j6b5ZIVTCNyjAw1onq
+ A24AcANOlUNsOaM8QGlkTPS491ezYXsF0X0d53fAijgfdmLez9eoQOSlhPR57W7coOI2
+ Zd44pr2VujBd8QEVm3swvuAiIZVy+DnjkeLokgkk98D36aSjiL+Iy3zJIOLocCsIeLjs
+ Fp+fHTKT0YfUgahNLRzydUKTSPHU8igrruSHychdqI8GsKWjKAYuulRf4vfKkY3zyIXM
+ 8xwg==
+X-Gm-Message-State: AOJu0YygWx2RIrQJVW95HWuP5/Va1FeDkyFHsztScUlLsqJHIPT+zRtM
+ W6HdFsBdSaMwDIUHjODD3FWPLIDJEnbOobwhJpJC4m07msySJamDd+gaa0QImC9sgs/CbVR45ui
+ vEx9TywCI5LWkXgV3Txc1eqrrmYA3lWk66ih/
+X-Google-Smtp-Source: AGHT+IGDN9m8l85dix9uUNHIE37Mx8FdEQ5GU72XxE1DovMnUvKL40k9P5DAveq0ME7iig8gSD0AAyXbZ4ws0/1LR/E=
+X-Received: by 2002:a05:6512:3ba:b0:523:892c:9e0 with SMTP id
+ 2adb3069b0e04-526bfc007dcmr1962650e87.41.1716389601196; Wed, 22 May 2024
+ 07:53:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <875xv6q8ob.fsf@intel.com>
+References: <20240518003345.203255-1-khaled.almahallawy@intel.com>
+In-Reply-To: <20240518003345.203255-1-khaled.almahallawy@intel.com>
+From: Manasi Navare <navaremanasi@chromium.org>
+Date: Wed, 22 May 2024 07:53:09 -0700
+Message-ID: <CAE72mNmxxJKm1UhLz+1Riq4PYBhUOnW_UYDHPSGJKQGkW3K26A@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/kms_sysfs_edid_timing: Skip the first detect
+To: Khaled Almahallawy <khaled.almahallawy@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>, 
+ Mark Yacoub <markyacoub@chromium.org>, Shawn Lee <shawn.c.lee@intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,84 +76,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2024-05-22 at 16:26:44 +0300, Jani Nikula wrote:
-> On Wed, 22 May 2024, Jani Nikula <jani.nikula@intel.com> wrote:
-> > On Wed, 22 May 2024, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
-> >> From: Mauro Carvalho Chehab <mchehab@kernel.org>
-> >>
-> >> Such tool parses the Kernel drivers for both i915 and Xe and
-> >> generates a script that helps detecting Intel GPU models.
-> >
-> > I acknowledge the usefulness of such a tool, but to be brutally honest,
-> > this implementation is horrible in so many levels.
-> >
-> > IGT uses meson and avoids perl.
+Thanks for the patch Khaled.
 
-imho this could also be a python script.
+On Fri, May 17, 2024 at 5:33=E2=80=AFPM Khaled Almahallawy
+<khaled.almahallawy@intel.com> wrote:
+>
+> It is observed in some chrome devices that the first detect take a
+> long time due to PPS. In another device it was found the eDP panel
+> misbehaving and keep sending multiple long HPD during PPS which
+> trigger HPD storm warning. This first detect will always exceeds the
+> THRESHOLD_PER_CONNECTOR and will cause the test to fail.
+>
+> Avoid that by skipping the measurement for the first detect.
+> Also adding more debug logs in the test and kernel to be able to
+> correlate the results.
+>
+> Fixes: VLK-52052, VLK-56861
+>
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Cc: Mark Yacoub <markyacoub@chromium.org>
+> Cc: Shawn Lee <shawn.c.lee@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
+> ---
+>  tests/kms_sysfs_edid_timing.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+>
+> diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.=
+c
+> index dbc66c876..b7832dd83 100644
+> --- a/tests/kms_sysfs_edid_timing.c
+> +++ b/tests/kms_sysfs_edid_timing.c
+> @@ -50,7 +50,7 @@
+>  #define THRESHOLD_PER_CONNECTOR                150
+>  #define THRESHOLD_PER_CONNECTOR_MEAN   140
+>  #define THRESHOLD_ALL_CONNECTORS_MEAN  100
+> -#define CHECK_TIMES                    15
+> +#define CHECK_TIMES                    16
+>
+>  IGT_TEST_DESCRIPTION("This test checks the time it takes to reprobe each=
+ "
+>                      "connector and fails if either the time it takes for=
+ "
+> @@ -89,15 +89,25 @@ igt_simple_main
+>                 for (i =3D 0; i < CHECK_TIMES; i++) {
+>                         struct timespec ts =3D {};
+>                         int fd;
+> +                       uint64_t current;
+>
+>                         if ((fd =3D open(path, O_WRONLY)) < 0)
+>                                 continue;
+>
+> +                       igt_kmsg(KMSG_DEBUG "%s: start detect\n", path);
+>                         igt_nsec_elapsed(&ts);
+>                         igt_ignore_warn(write(fd, "detect\n", 7));
+> -                       igt_mean_add(&mean, igt_nsec_elapsed(&ts));
+> -
+> +                       current =3D igt_nsec_elapsed(&ts);
+> +                       igt_kmsg(KMSG_DEBUG "%s: end detect\n", path);
+>                         close(fd);
+> +
+> +                       /* Skip first detect */
 
-> >
-> > This has a makefile with perl to generate a header that's included in a
-> > C program that is built and executed to generate a perl script that's
-> > then the tool, and the generated perl script runs lspci(8).
-> >
-> > I think there's really only one reasonable way to implement this in the
-> > IGT context, and that's pure C, leveraging all the stuff in IGT, using
-> > the PCI IDs listed in the IGT repo.
-> >
-> > Or you can turn this into a separate pet project, because what you have
-> > here does not fit IGT.
-> >
-> > The i915_pciids.h parsing below is already stale, and you really can't
-> > expect to get this merged and be kept up-to-date by folks updating
-> > i915_pciids.h. IMO it's not maintainable.
+Could we add a comment that summarizes why we skip first detect for readabi=
+lity.
+Also please double check the CI failures and make sure not related to
+this change.
 
-This is for making a new script, after generation there will be
-standalone program: intel_detect_gpu.pl and imho igt is missing
-a tool like lsgpu which will work _without_ kmd gpu driver loaded,
-simple enough so one can just run it.
+Everything else looks good
 
-> 
-> An alternative is a pure bash or Python script to run something like:
-> 
-> 	lspci -d 8086::0300 -nn
-> 
+Reviewed-by: Manasi Navare <navaremanasi@chromium.org>
 
-Looks like a good idea but this is also dependancy, btw
-from man:
--nn    Show PCI vendor and device codes as both numbers and names.
+Manasi
 
-imho we should not depend on names from lspci.
-More from man:
-
--n     Show PCI vendor and device codes as numbers instead of looking them up in the PCI ID list.
--m     Dump PCI device data in a backward-compatible machine readable form.
-
-> and annotate/filter the results based on the PCI IDs from:
-> 
-> 	modinfo -F alias i915
-> 	modinfo -F alias xe
-
-But this one is creating one more dependancy, one should have
-modules compiled in current running kernel.
-
-Regards,
-Kamil
-
-> 
-> You get the fancy marketing names directly from lspci, supported kernel
-> modules from modinfo, available on the system, with zero dependency on
-> PCI ID macros or names in source code.
-> 
-> That's like a 100 lines of script that should need virtually zero
-> maintenance.
-> 
-> Additionally, the script could match the modinfo PCI IDs against
-> /usr/share/misc/pci.ids (see man pci.ds) to show the marketing names.
-> 
-> 
-> BR,
-> Jani.
-> 
-> -- 
-> Jani Nikula, Intel
+> +                       if(i =3D=3D 0)
+> +                               continue;
+> +
+> +                       igt_mean_add(&mean, current);
+> +                       igt_debug("%s: i=3D%d current=3D%02fdms mean.max=
+=3D%02fms mean.min=3D%02fms\n",
+> +                               de->d_name, i, current/1e6,  mean.max/1e6=
+, mean.min/1e6);
+>                 }
+>
+>                 igt_debug("%s: mean.max %.2fns, %.2fus, %.2fms, "
+> --
+> 2.34.1
+>
