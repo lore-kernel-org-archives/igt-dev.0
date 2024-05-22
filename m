@@ -4,33 +4,33 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95298C25B77
-	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 09:04:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 055E1C25B77
+	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 09:07:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1090610E173;
-	Wed, 22 May 2024 09:04:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D9CD10E196;
+	Wed, 22 May 2024 09:07:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZXYKG8qw";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="FQttWt3g";
 	dkim-atps=neutral
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
- [217.70.183.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92D3610EE14
- for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 09:04:15 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9ECDBFF804;
- Wed, 22 May 2024 09:04:13 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B54E10EFD8
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 09:07:38 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 617E61C0007;
+ Wed, 22 May 2024 09:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1716368654;
+ t=1716368856;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=lnP9mnswgzaKTlFf85YCkK3Gvak1rgsUIYHnG+5gdL8=;
- b=ZXYKG8qw89g1kyB46cWlQ/j3s8R4QlX/OYaaZyCJLo5wcnmN9CBpFvGpKeItnPegpR4I3X
- BNn4G/QIUkFNtO0VaJNcR7m/ADg52GfdTH3iNG1n3bmSGFNMlvjOzIiZlYYWmNsNenLzqF
- mhfXqo+oLR4rCdf2uLyKS6WaMtYKhm9YnsMT9P7m90PeWM5vuUBrcG81qxlSW16vfvFce1
- s/mG0I/a3kAjQzY1cPrhuEflEf3QeIjuLVTBzh8PeyxCL5KH29CGOOiGIYCfPp6DV0jc0o
- vmTi4YZotVrHq5PbZSIAk8GtqE+223S1U7lrjM+hYIXIglwQflBK1p286yFSdA==
-Date: Wed, 22 May 2024 11:04:12 +0200
+ bh=pxuPapdfo1l55tl8PAAAsRc5MusIkjutOb/r+9HGfwA=;
+ b=FQttWt3g9BKAw7EPyInQGsgacMC8U4hQ/F9J4mxYllIHqbtRUTWQXjw/WyrfReLFIS+KRU
+ 0cO5df2EMXLSD9zRCcbu8lpDdku5erbMPMKUCJWSsH4ZyNy3U23Yr8Q5Iuyv33nZ1eXFG5
+ Ak2dZm7ofK9p7rwweXi7H8mfDW/W0FN/fSJaok/5K1KFmikazupj7B6eB2QkwRRIlLsbwt
+ OG+tgfBGGLhMbniiAJn9Qedijiaojf/saWAZeQW8cU8Vod0UMY/MZhfAXkly/pPurnTEzN
+ UnEWA6bjqoqDIud5f4Bhi0tBWJ/HxoYABAb+nlZiK4wfoh9cDjpTfqzuODq12Q==
+Date: Wed, 22 May 2024 11:07:33 +0200
 From: Louis Chauvet <louis.chauvet@bootlin.com>
 To: Arthur Grillo <arthurgrillo@riseup.net>
 Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
@@ -40,16 +40,16 @@ Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Pekka Paalanen <pekka.paalanen@collabora.com>
-Subject: Re: [PATCH i-g-t v5 4/8] benchmarks/kms_fb_stress: Free resources on
- the stress procedure
-Message-ID: <Zk21DLrzyhyeW820@localhost.localdomain>
+Subject: Re: [PATCH i-g-t v5 5/8] benchmarks/kms_fb_stress: Move FB creation
+ to a separate function
+Message-ID: <Zk211csPypGv7IJ3@localhost.localdomain>
 References: <20240422-kms_fb_stress-dev-v5-0-0c577163dc88@riseup.net>
- <20240422-kms_fb_stress-dev-v5-4-0c577163dc88@riseup.net>
+ <20240422-kms_fb_stress-dev-v5-5-0c577163dc88@riseup.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240422-kms_fb_stress-dev-v5-4-0c577163dc88@riseup.net>
+In-Reply-To: <20240422-kms_fb_stress-dev-v5-5-0c577163dc88@riseup.net>
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,50 +70,56 @@ Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Tested-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
 Le 22/04/24 - 19:18, Arthur Grillo a écrit :
-> On the stress_driver(), the fbs and the sync file are not released. Fix
-> that by freeing all the allocated resources.
+> In the future, we want to add more logic to the FB creation. So, to
+> reduce code repetition, move the procedure to its own function.
 > 
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 > ---
->  benchmarks/kms_fb_stress.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+>  benchmarks/kms_fb_stress.c | 25 +++++++++++--------------
+>  1 file changed, 11 insertions(+), 14 deletions(-)
 > 
 > diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-> index d2d7bd12ca86..433e751273e6 100644
+> index 433e751273e6..e028424bb3e4 100644
 > --- a/benchmarks/kms_fb_stress.c
 > +++ b/benchmarks/kms_fb_stress.c
-> @@ -165,11 +165,30 @@ static void stress_driver(struct data_t *data)
->  		igt_output_set_writeback_fb(data->wb_output, &data->kms.writeback.fbs[fb_index]);
->  
->  		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +		if (data->wb_output->writeback_out_fence_fd != -1) {
-> +			close(data->wb_output->writeback_out_fence_fd);
-> +			data->wb_output->writeback_out_fence_fd = -1;
-> +		}
->  	}
->  
->  	igt_assert_eq(igt_gettime(&now), 0);
->  	elapsed = igt_time_elapsed(&then, &now);
->  
-> +	igt_plane_set_fb(data->kms.primary.base, NULL);
-> +	igt_plane_set_fb(data->kms.overlay_a.base, NULL);
-> +	igt_plane_set_fb(data->kms.overlay_b.base, NULL);
-> +	igt_output_set_writeback_fb(data->wb_output, NULL);
-> +
-> +	for (int i = 0; i < NUM_FBS; i++) {
-> +		igt_remove_fb(data->fd, &data->kms.primary.fbs[i]);
-> +		igt_remove_fb(data->fd, &data->kms.overlay_a.fbs[i]);
-> +		igt_remove_fb(data->fd, &data->kms.overlay_b.fbs[i]);
-> +		igt_remove_fb(data->fd, &data->kms.writeback.fbs[i]);
-> +	}
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
->  	igt_info("Time spent in the loop with %d frames: %lfs.\n", FRAME_COUNT, elapsed);
+> @@ -46,26 +46,23 @@ static void plane_setup(struct plane_t *plane, int index)
+>  	igt_plane_set_fb(plane->base, &plane->fbs[index]);
 >  }
 >  
+> +static void create_fb(int fd, struct plane_t *plane, int fb_index, double r, double g, double b)
+> +{
+> +	igt_create_color_fb(fd, plane->rect.width, plane->rect.height,
+> +			    plane->format, DRM_FORMAT_MOD_LINEAR,
+> +			    r, g, b,
+> +			    &plane->fbs[fb_index]);
+> +}
+> +
+>  static void gen_fbs(struct data_t *data)
+>  {
+>  	struct kms_t *kms = &data->kms;
+>  	drmModeModeInfo *mode = igt_output_get_mode(data->wb_output);
+>  
+>  	for (int i = 0; i < NUM_FBS; i++) {
+> -		igt_create_color_fb(data->fd, kms->primary.rect.width, kms->primary.rect.height,
+> -				    kms->primary.format, DRM_FORMAT_MOD_LINEAR,
+> -				    !i, i, i,
+> -				    &kms->primary.fbs[i]);
+> -
+> -		igt_create_color_fb(data->fd, kms->overlay_a.rect.width, kms->overlay_a.rect.height,
+> -				    kms->overlay_a.format, DRM_FORMAT_MOD_LINEAR,
+> -				    i, !i, i,
+> -				    &kms->overlay_a.fbs[i]);
+> -
+> -		igt_create_color_fb(data->fd, kms->overlay_b.rect.width, kms->overlay_b.rect.height,
+> -				    kms->overlay_b.format, DRM_FORMAT_MOD_LINEAR,
+> -				    i, i, !i,
+> -				    &kms->overlay_b.fbs[i]);
+> +		create_fb(data->fd, &kms->primary, i, !i, i, i);
+> +		create_fb(data->fd, &kms->overlay_a, i, i, !i, i);
+> +		create_fb(data->fd, &kms->overlay_b, i, i, i, !i);
+>  
+>  		kms->writeback.rect.width = mode->hdisplay;
+>  		kms->writeback.rect.height = mode->vdisplay;
 > 
 > -- 
 > 2.44.0
