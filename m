@@ -4,162 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBAD3C25B78
-	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 14:33:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C85C25B7D
+	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 14:33:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 11EFB10E4FD;
-	Wed, 22 May 2024 14:33:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2DEEC10EED4;
+	Wed, 22 May 2024 14:33:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KxB4KAzQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jmTIM5Cl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F56B10E4FD
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD5A210EA28
  for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 14:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1716388423; x=1747924423;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:content-transfer-encoding:mime-version;
- bh=RPwnrRsY1DxYX8mHDCRZnDPqZJWr9c5vJQJIUVisOOM=;
- b=KxB4KAzQOJ68T7WXZFOhaGXVrizhc5mgAP133HmU7vd5U++QnpIMXZ8q
- i0aINGUK+aT9RODXPp/VZf8Ci3dMVE/ovyN/kCWO0cg08aLi/PBkmKPLj
- IqGGKTvaikmGdjwYuqSjjBZq/cy6pSV3eP2AKN4AlXOGP+0DkYQlIJ+gk
- pD7lItlP8bhZB0vvmxYyhQDJPDWmCAbB1X2g2QipYf/PaQSmdkm1E8HIJ
- hUJI54d5RJjUwh7K7+bCBczWc5GkOmUP3Pj5v+LsrL0IvGeaYzLdcGE7c
- F3RN2oh6bObUsfd9Wdig3BrICnlWakMVmFFp7PRNyQALNwWvJF+eAh/o1 Q==;
-X-CSE-ConnectionGUID: Iu1I8BThSnWEuIJBlZr2xQ==
-X-CSE-MsgGUID: cBagzHzMTNyILOJASacV8Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="16475462"
-X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; d="scan'208";a="16475462"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ bh=ClB6gx5XvWJWVUf7mBrp/ztbkTewGqqajEr5+7d4OMc=;
+ b=jmTIM5Cl/Wk7Hf2P9Ibn/IRdRJ5WrsaftXSHDBrvKN469dnwbK4ew9a7
+ EQp0SIrW/RJ8qt2TJhcODO/TQdeajyQVttIZCBAzk2mxf4NsBRVhShnt0
+ 9lDU4EJL8d9GSB7r8mbImz+1Nmkuy7Lz8d5xT3auxrYJ8QcnyKWMQyx4H
+ h71ifZa9ROayyUkMYILXLMIcS0mCSPwsBjm0jUiOSnTugLlvao8b5D1kB
+ ImYqF6sZLhtx0PcHpfJLBnauSWvn+U07zwDGZgwz+vVm/lwJt1Jw8Lh1U
+ me25KJPhw/34IzMZJtA3/xzfkfYcFtFiIkHCBa4I9MlOhiHLc949LWELz g==;
+X-CSE-ConnectionGUID: qepGn2b2RLi+gd6tH1tx/w==
+X-CSE-MsgGUID: Yh+TAH3PRn2G5Jg9V8KKZA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="12496069"
+X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; d="scan'208";a="12496069"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  22 May 2024 07:33:42 -0700
-X-CSE-ConnectionGUID: Scum1VJ2R2C8TSOaVAjRlQ==
-X-CSE-MsgGUID: EKPrCdw8Rim9sOEOzGo6HQ==
+X-CSE-ConnectionGUID: CPpPJjMBSDOHcuAi0meJ5w==
+X-CSE-MsgGUID: KO+j/ohYS7uuBr+EfwaBmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; d="scan'208";a="33888425"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+X-IronPort-AV: E=Sophos;i="6.08,181,1712646000"; d="scan'208";a="33298800"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
  22 May 2024 07:33:42 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 22 May 2024 07:33:41 -0700
+ 15.1.2507.39; Wed, 22 May 2024 07:33:42 -0700
 Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 22 May 2024 07:33:41 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
+ 15.1.2507.39 via Frontend Transport; Wed, 22 May 2024 07:33:42 -0700
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
  by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 22 May 2024 07:33:41 -0700
+ 15.1.2507.39; Wed, 22 May 2024 07:33:42 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OHJTPObkSy75hYhUa5mrA/BWZq6JeV8ZN3dZtIHuo8GoBeN6wOktbd8GlLZp5/dr90XT8MyJSoIWn9nIhcdTsvw6KPpyrQF7sLwu9gbhBQlGo9SffXAWvcEMt5Iv6QcmdqZNUlF0ANW4Ufy+R1iHji/+TwMVORoyfxxqaxfvGNXXqY4mo2VZKz+ueFJcIX/b4ffUmO9W1YHRC6DcuWGiQNqLt5xGMz8voSb03euxDKaVGx9eeyAIg7kgxhnNtXhU/vFbjl49L0Hz5ovrEzgOZEg90SB6psvrFFYEv3uXDV/yj4pozbEdDAW3FspJzAibvhTDYC7AtZ3NQ3Cjf2hZzg==
+ b=HtS6a71/y7swKqWXMcZ7/EXam6uvmW3fnAtgnTwrqws9oM4gZcVyYLZhtBX2ye7nhnzEimuMPO4agKuMeaUR8y0udNOnkx1+mTn5AJfFvg6s7rlaCazbRJTq9agXZct8aM0TKIWoBmFXVL/zBcbW3WAE8+/zvP/2yoEmnwkfivedD/iipyCIC+TvM+wfGSomRW1nM8/AlH+jijvjwI3XN5pfjGSgid/j8ejN0UFabaZ1UYfxvbaXaf9VyQOFqYK5wi3NKLFfcwhqvmw+iJZJfeqXHNn/+uMe2BY6MB4GH77dvJnIZR81FJDnouO3UHP82bRJVfxk94oQ2tbwxI/xVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HoN+mOpAx2INIoALol1KIQHzxuGGeK0TZroXOV0z6A8=;
- b=UWnqqpvc5LKNb56fAguqRfOHVWUpEvZJwZ5Qti9HwNKMdTP1/NwTLrkibisyqi0u28qp4lB+x1UC1EZ6V2Q0n2h+36JSzFuVG1LD/j/WpCh9ZiKzeGJwan5ys1NsG2RQNWbkRh65PI8aV2hCdON8Kco7zw5ORramJ54XTahyfm2ZyTbgNasTpWD6poaVfr2pKkPKGiC2oOVUjhlyuGIxb573KLsona39B6VT/VnCAt+O2icZN9HOxMy8k2rFnVXNldNLqmeaj9csYmob7VYASDYb3cslhjYWPD2qlPln/gE7PKnBk/u3VLas7Wt0FbnGJqgruWXbPmVBsABxPyCZBA==
+ bh=MdaQIZqAcAVXwfY16IXTnhQ75DTYJHdenlQ1oW33RnA=;
+ b=GOrYodbCVvVBmADXIFizRnh6Go6oEthFG5qvxiDut53e8mI0VzCzxlm/z6jikXajf/rDB1fT1Jp6DVsfvLX0b0YUIhj00mI8px10clva3/WmzMmdSXn3M/3nhy06RDRh7oipNM74sZmDwl0GVF6YgrEjRMpiE+RMqxfNwX3nmPRxTRoWOnW9Ufq3vNpvyv5x8Wmp0JIl2SdJXjDKhlbMJr/hb2Qaamu9Im6BgWziBJzlW6F1GSCz3bZXfgp3hhT+twEBL+pU3kxkVX/3kmdJ+S6vKjyJ9lUOAFYiyEPVjvgN+zr5ZJH1lJI/4oZ1y/LrlnSyhcaevNO7F8OY6rVN+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from MN0PR11MB6059.namprd11.prod.outlook.com (2603:10b6:208:377::9)
- by CH3PR11MB8362.namprd11.prod.outlook.com (2603:10b6:610:175::6)
+ by PH0PR11MB5141.namprd11.prod.outlook.com (2603:10b6:510:3c::11)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36; Wed, 22 May
- 2024 14:33:38 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19; Wed, 22 May
+ 2024 14:33:40 +0000
 Received: from MN0PR11MB6059.namprd11.prod.outlook.com
  ([fe80::cf6f:eb9e:9143:f413]) by MN0PR11MB6059.namprd11.prod.outlook.com
  ([fe80::cf6f:eb9e:9143:f413%5]) with mapi id 15.20.7587.035; Wed, 22 May 2024
- 14:33:37 +0000
+ 14:33:40 +0000
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Rodrigo Vivi <rodrigo.vivi@intel.com>, Francois Dugast
- <francois.dugast@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Riana Tauro <riana.tauro@intel.com>
-Subject: [CI 2/6] lib/igt_pm: Fix and standardize IGT PM library documentation
-Date: Wed, 22 May 2024 10:33:26 -0400
-Message-ID: <20240522143330.312014-2-rodrigo.vivi@intel.com>
+CC: Rodrigo Vivi <rodrigo.vivi@intel.com>, Badal Nilawar
+ <badal.nilawar@intel.com>, Anshuman Gupta <anshuman.gupta@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [CI 3/6] tests/intel/xe_pm: Also disable display for mmap_system test
+Date: Wed, 22 May 2024 10:33:27 -0400
+Message-ID: <20240522143330.312014-3-rodrigo.vivi@intel.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240522143330.312014-1-rodrigo.vivi@intel.com>
 References: <20240522143330.312014-1-rodrigo.vivi@intel.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: BY5PR17CA0027.namprd17.prod.outlook.com
- (2603:10b6:a03:1b8::40) To MN0PR11MB6059.namprd11.prod.outlook.com
+X-ClientProxiedBy: BY5PR17CA0009.namprd17.prod.outlook.com
+ (2603:10b6:a03:1b8::22) To MN0PR11MB6059.namprd11.prod.outlook.com
  (2603:10b6:208:377::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|CH3PR11MB8362:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7751e902-5efd-4cbb-2868-08dc7a6c2a8e
+X-MS-TrafficTypeDiagnostic: MN0PR11MB6059:EE_|PH0PR11MB5141:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53684add-66fb-481c-5c5d-08dc7a6c2c78
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?1zue2E60cNd81Mv0y4rRynV0nNo67c317CWAvzhELWdnspQxANfw8I17U6od?=
- =?us-ascii?Q?4eDQ6ss+BAhrYjNhn42e8Lo/D1tdRZ1jUYKk1NYt7o7adKZWYmk+rFDaQG6U?=
- =?us-ascii?Q?HOP3jBJeyt6VH1uqkRymy8ASfA7zWw7rb4k249y1A7Rn052xN+WJiIr+D6jB?=
- =?us-ascii?Q?6htrvrY3CtYIERZj/Y+eZK6i5RgdeANOzw83opUD3OyHcG029wDowAoR+2XX?=
- =?us-ascii?Q?8CqRdEav9o/t3djizzR+I2JiocnQNvd2qh4ugYi8gImpkHGxjPrc4LOAengT?=
- =?us-ascii?Q?qOE9VxSYSb4OfeSAAPFIadxk2ZsCxW+W6wO7DiSy4olDGEovtF7XD0NH1GCA?=
- =?us-ascii?Q?FPQiGyO5sfaE4Nmw/82lq1pLe/GJ8svWe8fifHEEtjB3Kfxg5LyY8U8vuBto?=
- =?us-ascii?Q?SKJVz9aquigfjiOI4J85X0R/cpgtWrvsxi8JOav5yc5yILI438APhExnZ+U8?=
- =?us-ascii?Q?t75+CE0LEVmOv8RNUNGHFdpY41GZOV8gKi5HP3UBhOXLuOiIXvEsMwKawfFB?=
- =?us-ascii?Q?ZBIswCmQn23+to38k1skqDLXWKinugGyVf6PlALEWhmWJe7BuQoZo7Kp3EDN?=
- =?us-ascii?Q?cvjnWDD8gi1jpsgRd+tW03CFpcZUTgK8Qnx//bdcLfdT6jmV7+WBnVTzJJ1i?=
- =?us-ascii?Q?pAFtSmUyogC5yX6k7VPVH7kz+/+dAbWy1suXpaoUB76l9b21nAOWhSK8HGzL?=
- =?us-ascii?Q?xn28+YKaZ8P46+yYYQ18HbEePhDImdshR1hb3B8xWgM+Sjo/ZQRUeuW3YHsm?=
- =?us-ascii?Q?wlgnUFVN+0jUX1vdcSBxakmeWKcrpcT1AOf2i7lpKaFPA+dpiSMqmSHltf1b?=
- =?us-ascii?Q?eQhKBSzvYuZAlXKWhSdp7sWezmnTHPfuEDwv2iT4UDtquVZISwWR0hgkF3PM?=
- =?us-ascii?Q?pSZVKdGZhdp25+JhAK1+U3j2RE3ZGTpZ8pvdZNAaL0DuuB4ZYnB+j5GBviKY?=
- =?us-ascii?Q?fofV1egNglfxrQ04VIbLYg6jMxkqtBWqnO9E9UOQucrx6cTxqAl1lOt3fbJe?=
- =?us-ascii?Q?n7b3I+xr3VrAW33OecXuAYGg15DV2RjjtQtwce59rk5wYH7iHFgSLITXIUxT?=
- =?us-ascii?Q?YIl5uxnjUiQLR3I0cpJQrboIbq/gkMFmGbqRUxgbWS7m6QpmSzRl9LRhwab6?=
- =?us-ascii?Q?xTuFx/oMlyfvCugfzKrD1U8WCaw3exTg382z//IC35RKsiUUaEDOkhMUU3Hc?=
- =?us-ascii?Q?qqUN7TtnBbFpS0RbLX0WfGZbbj8/gYJffrou2UEGB2FVZ4U6KJhXgVT8q2ZC?=
- =?us-ascii?Q?sZ2qK7Bx8j8BKw1pyTMcqJucILhZOcmHcHYraA5Bxg=3D=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?FwhABL0r+8nDyglrbWCwnd8U70diBZGPrrL6h7HARC8M7wSZiRbB4/xkmdVI?=
+ =?us-ascii?Q?ka97GJ1WzxR6cHuGV05U3+fY/lNFRfUkrbKmkmLrQ3Wdt26EUmyWKUDg7Sry?=
+ =?us-ascii?Q?0HdD2tx7vaKvikVCBkElgQHcEsDhbgYNAiMuYF6SIEFPiYUsK6h5fBnQDioq?=
+ =?us-ascii?Q?Ga5H783heyI7QW24WEfzLUIRuIkTZ3pVyzf7dwywU2cFCu4MPE7/9jrSmAjZ?=
+ =?us-ascii?Q?iBTM2kd/nQON5crlqz3xNgSdFjdbwP9/Hlh1Gci4mUTrLWbkiwM24geygn6b?=
+ =?us-ascii?Q?W9N968KjCCaybuLzqUtqJEVBO+D/o6lucWp46N9qYEGH5KfjJy/yLeFqsZGb?=
+ =?us-ascii?Q?ncQRXJZ/9VUZbH5d69bNEvWHg8uUBOvJjU7msuZODdm45wcfIIiARDcQ0pFy?=
+ =?us-ascii?Q?dVHOO6+vhav6wtL2P109BaLcyn7BXeu1/YI+8iKE95OFKqd5BsUkv7pRXFqd?=
+ =?us-ascii?Q?xuC9LPaEb3Qdz8gt+v20A1Pm6+F8bi6eF+6b0/JNmsEFiAxx22EOouFGUDkb?=
+ =?us-ascii?Q?6N3ug3sEvXloF1/Z7twsNvSXlwZLHt32n0v2MGPsB5Wh9z4P5cTgWHlGqKve?=
+ =?us-ascii?Q?MgjaTOf5DTF2rJiMiTfybSD7xtD+Nnr82P/fSXyUpo02IcQCuxqjGgu3DVlv?=
+ =?us-ascii?Q?5jAYCoifhuXc9Zv/n7NffLdqu51Rjq5DQZ5G+A/DiYXcduBF/jUUMgKh/Lzh?=
+ =?us-ascii?Q?H9LTTJABNfo/hZz2dOb/R55keok71vwXNVcuDnjyVquBJFfsx54yPB6kzl4A?=
+ =?us-ascii?Q?xjx4UWL0ag4qCt+kjCdDnaEMs2FXd/FwuxbpImF83J3I9CEXmlsTHpWJvjyR?=
+ =?us-ascii?Q?Zt0lv4NVzScKK/WPTBmLanhUVsR7RL+4N5aqsTJ4FMgfxTCn7pBa6n0aTyuf?=
+ =?us-ascii?Q?SpjKohCjd5wg7KL7HIzJ4S/TJxHhYBpcicbht/NMYglxKFFwQbf/gmACQiuj?=
+ =?us-ascii?Q?kMAVOh63ku0aIapOwvdkxNo511aXcm6oxiDOtsxJz6rXuyJVJ4B+TpP6Xnux?=
+ =?us-ascii?Q?ueQxmwk3rt46cXF/T4intunHt4Ct4eb1wugXAbx/iaXdPalHpytPew2qR59R?=
+ =?us-ascii?Q?6BH9vpcRI1Uh6bBHZhSpVLTLHDO4UmQLrCtXCakxOCXVl549/+kuSnrTyHnO?=
+ =?us-ascii?Q?+a1Oq+H5UwUNkA+hQNdZCBMCMp7/rrKpzjYEfnPFVTfxoo7w7jJy773OlXqy?=
+ =?us-ascii?Q?Yn12zQnEcl9vjMsU3TNEWSQK8h87R9Dd6o92eau4AD2nHzUszCBSksvBvVc5?=
+ =?us-ascii?Q?X15pPybHV+ea7V3V8+jCum99l0aN0D323f+pXMNJ8A=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MN0PR11MB6059.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230031)(1800799015)(366007)(376005); DIR:OUT; SFP:1101; 
+ SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?jDri75M25Mi62M/Ie1/HJ7OX3nTY31gZfuuLUxQB9f7IHYAIR3uxi2yyCCcm?=
- =?us-ascii?Q?a2TX/AAOy1wFEbXlj7wwqlwS0vS3NRQYApELvcJDw7Rxw361EB0X+Lg7UJ2o?=
- =?us-ascii?Q?t+g+TRj9L6R20nGEA5J95qhKDc0R/eV1r6u38CAm6Hrc5tTQkuLE4l5M6Nv+?=
- =?us-ascii?Q?360Wq573l5hKNXch2jMF14hH0nGfojH/MggUkDxqy+Pv15yk7a5LggGzOCGb?=
- =?us-ascii?Q?UdB6tye3585sEQ8Fg30aNX54hDBggzWRXc06G6en6rUDCEXvc2WNiha+2Kp6?=
- =?us-ascii?Q?b33k5zj5Izduq4NiHbidVaLbYyR5OGcbGmyR2b+JjaqaOLPxSZgJl4zdAIj7?=
- =?us-ascii?Q?mVu6rS1Nmna+1a5VYMLk0wh9biOOsjxGeDHMrl2U3AyGRvYSfkMF1duvWFbu?=
- =?us-ascii?Q?/yk4oMffCO5vTdVhZiaJdJ0KPgYNSkDhKMBRbDpbfQIh2odVnoBnnCvgiRJJ?=
- =?us-ascii?Q?gNYRn3FCbYjLFq8FL9Qyjjmwu5xhj/TKVsbRKnxHRVKVnnpeoEy3h5HfDvPp?=
- =?us-ascii?Q?lrLNYL85DLvhH8AbHWqJ/vFomWWgeZxLFiInwe7zEaqb9wBXuc+KOiZC4h3b?=
- =?us-ascii?Q?0+t2cCmxO5tzNGs4pAlfn+rGePFxKuh3bdVDW7o7Ry0QoWsuprD9cK8W13+X?=
- =?us-ascii?Q?eHc7ggIZeYB6UFe3m3YcWvu2KayLBQbHLwWHhSuH4Q5G1HWOew7Jy4GKSSrJ?=
- =?us-ascii?Q?5ylYwNYtH0GOm59poz8++KHWCzAqkMCAhHbzfNolFpt4Ovc9Gs6X8f3qmKzA?=
- =?us-ascii?Q?Qd0YxQL9EXM4qNjU422s0WqYnR8O3AH6o57lhKX/CvxHO/Qb2L8eBLtnjgpi?=
- =?us-ascii?Q?MB0ppWw5L/ku+6AMcQHSkdI6KCnoI70eFmypjO6vC/gufRVFi6YBBrzAkcBE?=
- =?us-ascii?Q?j+D+RSJ5F9yMTwSSI8CTrNqWBNYzQMboW3C6AR920r/jNH11ZYrM+qGNQnHC?=
- =?us-ascii?Q?g2PwnLhdwaA5xW4lwbQA5ZnUY1Jfs+IHTQpdtu5ATYMXvsoQ2EyScMYezcxx?=
- =?us-ascii?Q?XDbchakihb2xtxQUlAkFN+xK3W5LuuRwudbBzacM3/u0HJBRzT+WEW+8yBi0?=
- =?us-ascii?Q?jJb71lcveeBIFfbz4XcXSiSDqim/y3Se/yAmeZeJUeHu4LKWuauAAbSr7cHV?=
- =?us-ascii?Q?4+yswxyctafC6vIQM0YXFJp9qyygKlXrwfkXY7A5N0EILXt7gqoWa1FCVip4?=
- =?us-ascii?Q?rbX1pFKuUvSyX55/7D4uGWdlqZg3/bCOtfK7+ioPIGWDGRnAWRfaoPbBI49l?=
- =?us-ascii?Q?+tXZ8kMbePVuPCuE8ILzxEipmDetDotra4ergAKiiTsgiKF9nPzKxBjmCbLF?=
- =?us-ascii?Q?1bE42cyNqFKywGEHuPIDfakKpYT6gS93CVYtx2kyqbMYVR6ERyERqVCezbUc?=
- =?us-ascii?Q?KT4OaCU1YbyQMyzgUJfocuNQ2aCLAw2eEKnOHjO+k1PfNKbcn827ZPfaNfmJ?=
- =?us-ascii?Q?TvlgN99RI2j4yGgsL8jbIvidwZi9mo+yjhRWAHjobirCeNK9YvCV/CbYii0q?=
- =?us-ascii?Q?tlHGKJQGMJIdkY+qojsap4QWX+W4WALW5IVdzGFsrvHdDKiCvxLHn3Wqkn8R?=
- =?us-ascii?Q?nx+gcnhynhDonSs+9CQcaz/HZZSwAEzQ2QISaSZb1Qokk5sXkX1j+6uf4ch3?=
- =?us-ascii?Q?kQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7751e902-5efd-4cbb-2868-08dc7a6c2a8e
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?qRgYlQCJRH817782O9l1M3LuPQjiEmDq++drpgzITl0GNXo5vCpWPKq+FqGH?=
+ =?us-ascii?Q?xVp73Znrt+EmUc4N1qrRk28ev4duYCLmSTjPaYHeYM0AdXvNzft9CqKN1njn?=
+ =?us-ascii?Q?R7JUC6ITLsN6zHL55W54v39PDEL4NlSN9t8LspWY2d+gTOqPvTwD30uYe3Pt?=
+ =?us-ascii?Q?sO9qG4nmiaOsyIfR74E36nIozEPQURAk409k4rSGC6YWGS1HNrPQLvuH0J9z?=
+ =?us-ascii?Q?fz5BNmR47D4s+YnrzQiwl+JmxR7VqYTjZSYMPXZQyFBrEQYKBiiHfpBHiTIw?=
+ =?us-ascii?Q?cJ2uSrww0l9S4he0jTJsf2qsAP6a5ThDpE9morVLr7OiMAH7FR02L/Sejmo1?=
+ =?us-ascii?Q?jOEhPvO0idCIyN6E4j1BQ4TQTiPkkgoXdWrdEu9JlGUplp6dxviyckXaS+V8?=
+ =?us-ascii?Q?PlIOT5fpndtxuE2b+24s/NJQsXfkiFDF/ACUbL1hrWQNWt2dFw6rNA4o8uC/?=
+ =?us-ascii?Q?TxN8L0XR442kCkomUDRS/fRCvDQiKUDAjaPfs+JdTKYp41mtNh2HQ2bK56km?=
+ =?us-ascii?Q?xY1a7xOfFkqAofmrD9UW45BNe5ycBK8mZLQa9fhQgONaIg1H6WTxpSmwmACj?=
+ =?us-ascii?Q?ipUodCj9yj5MFyTN1blI3eD3KCv1agbWoU+9QPPQobseD6u/H9FJlWe48TcG?=
+ =?us-ascii?Q?tFctNweuctE7NhESeiwotdHtLTh9ECjd5nrXgNSPtdZRpvYHzrugT6Ix2U4q?=
+ =?us-ascii?Q?Wv0G9tkxvd1Y10wiXbJgZ8HLZfItXgTkWdf4xshJSWkVxpBaBRQYSaE+N4tU?=
+ =?us-ascii?Q?X+AYN5D2mzBkJZ7QSaCIM4zcNJgQn3Bo6DQ6KuT8vMKqhbeHAjEXZVEjdoyj?=
+ =?us-ascii?Q?gVymfVJtiVPCPDlAwecCSpy01gXs6wcim8UMTC6rr05m5p7kd6vQyS04AQcU?=
+ =?us-ascii?Q?ICIaynXJVQUOrAszk5B/8kJmRfnJ2+wvwlUmKy+D0gcj+iEq5ZGmNmjN00fE?=
+ =?us-ascii?Q?Bi1cw7pYbD6QQDNQvZAybK4v7WVsKO3O5mHed/KQpMpMBcZIDRuThXVHP0aI?=
+ =?us-ascii?Q?Q0xWu30dqLy5/9TT7wL57ToAw61tQ73DV0X/+wbjUKwPRd/TQngmexbY+i/F?=
+ =?us-ascii?Q?D69coHUzkLI1lZdG/txzDm/utY8IYZRySvVRmRoG/PiWNUxUYdp4i8VFHo1e?=
+ =?us-ascii?Q?zSjnJ74IYQca+zhemj7tyiSOkklm7t937OUiuME3+Ee9Nb6trADXHHQAM2HJ?=
+ =?us-ascii?Q?vkf3fc6qBDV0klK/yXlt1ULFIX2JoKhuDBQT7ZMhnqFqLKMm0mpu7H9/USYr?=
+ =?us-ascii?Q?518092qDy+2D+lViuRQ/yH6YJ2I7OGTeQPtG5vXBvHs5BqV2AUuqlsmIRoe1?=
+ =?us-ascii?Q?uLYKXskQ02liKUCDzAx+CMA1ehEbQ8yB5SsK6fykb9VbrNircIbfQ/OEfMgZ?=
+ =?us-ascii?Q?bU+CtgYaNqei1dUQv9dAGbW3xzf3PV0vru6vwtapO0BUIAqrBFdPGtOvHfYi?=
+ =?us-ascii?Q?acf6YMWCkiyaCTbcksEZPy08+7J8Jsx0bdxa5l3k+ckcnCiz9/7NA3JQMCqH?=
+ =?us-ascii?Q?j/uXAKLAVQ7UznCodP//u2pYkd4lIMK2ntIwiOl2aGOFlGBcmgOnwSlBk1xV?=
+ =?us-ascii?Q?nvxZq/KORCW9J/SsAVuYtxwutHtXItjyy+HGHEuLfi2nhv3x7nmyImYvr2PG?=
+ =?us-ascii?Q?ug=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53684add-66fb-481c-5c5d-08dc7a6c2c78
 X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6059.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2024 14:33:37.0671 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2024 14:33:40.3124 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: blIRp60YUXso3pG0jIY1Wj1eql+oMHUjRgUMXbwQI9bRSt8TDbKyzSmRMZXNNCTP+QzW0lEmzFBSofA3FSpKIw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8362
+X-MS-Exchange-CrossTenant-UserPrincipalName: x4nfhVm4nK+TYll3QklkXaGDYjwE3NSw1/pm32RLF3V6dXR1iQavQzwY5Cd1oz713SGiVgPS9Qj1Hyq7F2n80A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5141
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -176,386 +176,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A revamp to get some kind of standard in the various exported
-functions in this library.
+If display is enabled, the always-on components will always
+keeps runtime pm references, unless you put DPMS_OFF.
 
-v2: s/miliseconds/milliseconds (Francois)
-
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
 Cc: Francois Dugast <francois.dugast@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- lib/igt_pm.c | 148 +++++++++++++++++++++++++--------------------------
- 1 file changed, 73 insertions(+), 75 deletions(-)
+ tests/intel/xe_pm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index cb18a88b9..ad7e13604 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -454,7 +454,7 @@ static void __igt_pm_restore_sata_link_power_management(void)
- /**
-  * igt_pm_enable_sata_link_power_management:
-  *
-- * Enable the min_power policy for SATA link power management.
-+ * Enables the min_power policy for SATA link power management.
-  * Without this we cannot reach deep runtime power states.
-  */
- void igt_pm_enable_sata_link_power_management(void)
-@@ -469,7 +469,7 @@ void igt_pm_enable_sata_link_power_management(void)
- /**
-  * igt_pm_restore_sata_link_power_management:
-  *
-- * Restore the link power management policies to the values
-+ * Restores the link power management policies to the values
-  * prior to enabling min_power.
-  *
-  * Caveat: If the system supports hotplugging and hotplugging takes
-@@ -566,8 +566,7 @@ static void __igt_pm_runtime_exit_handler(int sig)
-  * Sets up the runtime PM helper functions and enables runtime PM. To speed up
-  * tests the autosuspend delay is set to 0.
-  *
-- * Returns:
-- * True if runtime pm is available, false otherwise.
-+ * Return: True if runtime pm is available, false otherwise.
-  */
- bool igt_setup_runtime_pm(int device)
- {
-@@ -658,7 +657,7 @@ bool igt_setup_runtime_pm(int device)
- /**
-  * igt_disable_runtime_pm:
-  *
-- * Disable the runtime pm for i915 device.
-+ * Disables the runtime pm for i915 device.
-  * igt_disable_runtime_pm assumes that igt_setup_runtime_pm has already
-  * called to save runtime autosuspend and control attributes.
-  */
-@@ -683,11 +682,6 @@ void igt_disable_runtime_pm(void)
- 	close(fd);
- }
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index d301ad031..68e3dd1ec 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -793,7 +793,9 @@ igt_main
+ 		igt_describe("Validate mmap memory mappings with system region,"
+ 			     "when device along with parent bridge in d3");
+ 		igt_subtest("d3-mmap-system") {
++			dpms_on_off(device, DRM_MODE_DPMS_OFF);
+ 			test_mmap(device, system_memory(device.fd_xe), 0);
++			dpms_on_off(device, DRM_MODE_DPMS_ON);
+ 		}
  
--/**
-- * igt_get_runtime_pm_status:
-- *
-- * Returns: The current runtime PM status.
-- */
- static enum igt_runtime_pm_status __igt_get_runtime_pm_status(int fd)
- {
- 	ssize_t n_read;
-@@ -711,6 +705,11 @@ static enum igt_runtime_pm_status __igt_get_runtime_pm_status(int fd)
- 	return IGT_RUNTIME_PM_STATUS_UNKNOWN;
- }
- 
-+/**
-+ * igt_get_runtime_pm_status:
-+ *
-+ * Return: The current runtime PM status.
-+ */
- enum igt_runtime_pm_status igt_get_runtime_pm_status(void)
- {
- 	enum igt_runtime_pm_status status;
-@@ -728,12 +727,6 @@ enum igt_runtime_pm_status igt_get_runtime_pm_status(void)
- 	return status;
- }
- 
--/**
-- * _pm_status_name
-- * @status: runtime PM status to stringify
-- *
-- * Returns: The current runtime PM status as a string
-- */
- static const char *_pm_status_name(enum igt_runtime_pm_status status)
- {
- 	switch (status) {
-@@ -757,9 +750,8 @@ static const char *_pm_status_name(enum igt_runtime_pm_status status)
-  * Waits until for the driver to switch to into the desired runtime PM status,
-  * with a 10 second timeout.
-  *
-- * Returns:
-- * True if the desired runtime PM status was attained, false if the operation
-- * timed out.
-+ * Return: True if the desired runtime PM status was attained, false if the
-+ *         operation timed out.
-  */
- bool igt_wait_for_pm_status(enum igt_runtime_pm_status status)
- {
-@@ -791,15 +783,14 @@ static const char *yesno(bool x)
- }
- 
- /**
-- * dmc_loaded:
-- * @debugfs: fd to the debugfs dir.
-+ * igt_pm_dmc_loaded:
-+ * @debugfs: FD to the debugfs directory
-  *
-  * Check whether DMC FW is loaded or not. DMC FW is require for few Display C
-  * states like DC5 and DC6. FW does the Context Save and Restore during Display
-  * C States entry and exit.
-  *
-- * Returns:
-- * True if DMC FW is loaded otherwise false.
-+ * Return: True if DMC FW is loaded otherwise false.
-  */
- bool igt_pm_dmc_loaded(int debugfs)
- {
-@@ -821,11 +812,11 @@ bool igt_pm_dmc_loaded(int debugfs)
- 
- /**
-  * igt_pm_pc8_plus_residencies_enabled:
-- * @msr_fd: fd to /dev/cpu/0/msr
-+ * @msr_fd: FD to /dev/cpu/0/msr
-+ *
-  * Check whether BIOS has disabled the PC8 package deeper state.
-  *
-- * Returns:
-- * True if PC8+ package deeper state enabled on machine otherwise false.
-+ * Return: True if PC8+ package deeper state enabled on machine otherwise false.
-  */
- bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
- {
-@@ -847,10 +838,10 @@ bool igt_pm_pc8_plus_residencies_enabled(int msr_fd)
-  * i915_output_is_lpsp_capable:
-  * @drm_fd: fd to drm device
-  * @output: igt output for which lpsp capability need to be evaluated
-- * Check lpsp capability for a given output.
-  *
-- * Returns:
-- * True if given output is lpsp capable otherwise false.
-+ * Checks LPSP capability for a given output.
-+ *
-+ * Return: True if given output is LPSP  capable otherwise false.
-  */
- bool i915_output_is_lpsp_capable(int drm_fd, igt_output_t *output)
- {
-@@ -887,14 +878,13 @@ static int igt_pm_open_pci_firmware_node(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_get_pcie_acpihp_slot:
-- * @pci_dev: pci bridge device.
-- * Get pci bridge acpi hotplug slot number, if bridge's ACPI firmware_node
-+ * @pci_dev: PCI bridge device struct
-+ *
-+ * Gets PCI bridge acpi hotplug slot number, if bridge's ACPI firmware_node
-  * handle supports _SUN method.
-  *
-- * Returns:
-- * PCIe bridge Slot number.
-- * Returns -ENOENT number in case firmware_node/sun is not supported by the
-- * bridge.
-+ * Return: PCIe bridge Slot number or -ENOENT number in case firmware_node/sun
-+ *         is not supported by the bridge.
-  */
- int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev)
- {
-@@ -928,11 +918,11 @@ int igt_pm_get_pcie_acpihp_slot(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_acpi_d3cold_supported:
-- * @pci_dev: root port pci_dev.
-- * Check ACPI D3Cold support.
-+ * @pci_dev: Root port PCI device struct
-+ *
-+ * Checks ACPI D3Cold support.
-  *
-- * Returns:
-- * True if ACPI D3Cold supported otherwise false.
-+ * Return: True if ACPI D3Cold supported otherwise false.
-  */
- bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
- {
-@@ -958,11 +948,11 @@ bool igt_pm_acpi_d3cold_supported(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_get_acpi_real_d_state:
-- * @pci_dev: root port pci_dev.
-- * Get ACPI D state for a given root port.
-+ * @pci_dev: Root port PCI device struct
-  *
-- * Returns:
-- * igt_acpi_d_state state.
-+ * Gets ACPI D state for a given root port.
-+ *
-+ * Return: igt_acpi_d_state state.
-  */
- enum igt_acpi_d_state
- igt_pm_get_acpi_real_d_state(struct pci_device *pci_dev)
-@@ -1155,12 +1145,9 @@ igt_pm_setup_pci_card_power_attrs(struct pci_device *pci_dev, bool save_attrs, i
- 
- /**
-  * igt_pm_get_autosuspend_delay:
-- * @pci_dev: pci_dev.
-- *
-- * Get pci_dev autosuspend delay value from pci sysfs.
-+ * @pci_dev: PCI device struct
-  *
-- * Returns:
-- * autosuspend_delay_ms.
-+ * Return: The autosuspend delay time in milliseconds.
-  */
- int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
- {
-@@ -1177,10 +1164,10 @@ int igt_pm_get_autosuspend_delay(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_set_autosuspend_delay:
-- * @pci_dev: pci_dev.
-- * @delay_ms: autosuspend delay in ms.
-+ * @pci_dev: PCI device struct
-+ * @delay_ms: Autosuspend delay in milliseconds.
-  *
-- * Set pci_dev autosuspend delay value through pci sysfs.
-+ * Sets the autosuspend delay value for the PCI device through.
-  */
- void igt_pm_set_autosuspend_delay(struct pci_device *pci_dev, int delay_ms)
- {
-@@ -1201,26 +1188,28 @@ void igt_pm_set_autosuspend_delay(struct pci_device *pci_dev, int delay_ms)
- 
- /**
-  * igt_pm_enable_pci_card_runtime_pm:
-- * @root: root port pci_dev.
-- * @i915: i915 pci_dev.
-- * Enable runtime PM for all PCI endpoints devices for a given root port by
-+ * @root: Root port PCI device struct
-+ * @gfx: PCI device struct of graphics device
-+ *
-+ * Enables runtime PM for all PCI endpoints devices for a given root port by
-  * setting power/control attr to "auto" and setting autosuspend_delay_ms
-  * to zero.
-  */
- void igt_pm_enable_pci_card_runtime_pm(struct pci_device *root,
--				       struct pci_device *i915)
-+				       struct pci_device *gfx)
- {
- 	int delay = -1;
- 
--	if (i915)
--		delay = igt_pm_get_autosuspend_delay(i915);
-+	if (gfx)
-+		delay = igt_pm_get_autosuspend_delay(gfx);
- 
- 	igt_pm_setup_pci_card_power_attrs(root, false, delay);
- }
- 
- /**
-  * igt_pm_setup_pci_card_runtime_pm:
-- * @pci_dev: root port pci_dev.
-+ * @pci_dev: Root port PCI device struct
-+ *
-  * Setup runtime PM for all PCI endpoints devices for a given root port by
-  * enabling runtime suspend and setting autosuspend_delay_ms to zero.
-  * It also saves and restore power control attribute for all PCI endpoints
-@@ -1234,11 +1223,10 @@ void igt_pm_setup_pci_card_runtime_pm(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_get_d3cold_allowed:
-- * @pci_slot_name: slot name of the pci device
-- * @value: value to be read into
-+ * @pci_slot_name: Slot name of the PCI device
-+ * @value: Value to be read into
-  *
-- * Reads the value of d3cold_allowed attribute
-- * of the pci device
-+ * Reads the value of d3cold_allowed attribute of the PCI device.
-  */
- void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t *value)
- {
-@@ -1258,10 +1246,10 @@ void igt_pm_get_d3cold_allowed(const char *pci_slot_name, uint32_t *value)
- 
- /**
-  * igt_pm_set_d3cold_allowed:
-- * @pci_slot_name: slot name of pci device
-- * @value: value to be written
-+ * @pci_slot_name: Slot name of PCI device
-+ * @value: Value to be written
-  *
-- * writes the value to d3cold_allowed attribute of pci device
-+ * Writes the value to d3cold_allowed attribute of PCI device.
-  */
- void igt_pm_set_d3cold_allowed(const char *pci_slot_name, uint32_t value)
- {
-@@ -1294,7 +1282,8 @@ igt_pm_restore_power_attr(struct pci_device *pci_dev, const char *attr, char *va
- 
- /**
-  * igt_pm_restore_pci_card_runtime_pm:
-- * Restore control and autosuspend_delay_ms power attribute for all
-+ *
-+ * Restores control and autosuspend_delay_ms power attribute for all
-  * PCI endpoints devices under gfx root port, which were saved earlier
-  * by igt_pm_setup_pci_card_runtime_pm().
-  */
-@@ -1342,8 +1331,9 @@ static void igt_pm_print_pci_dev_runtime_status(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_print_pci_card_runtime_status:
-- * @pci_dev: root port pci_dev.
-- * Print runtime suspend status for all PCI endpoints devices for a given
-+ * @pci_dev: Root port PCI device struct
-+ *
-+ * Prints runtime suspend status for all PCI endpoints devices for a given
-  * root port.
-  */
- void igt_pm_print_pci_card_runtime_status(void)
-@@ -1361,8 +1351,9 @@ void igt_pm_print_pci_card_runtime_status(void)
- /**
-  * i915_is_slpc_enabled_gt:
-  * @drm_fd: DRM file descriptor
-- * @gt: GT id
-- * Check if SLPC is enabled on a GT
-+ * @gt: GT ID
-+ *
-+ * Return: True if SLPC is enabled on a given @gt.
-  */
- bool i915_is_slpc_enabled_gt(int drm_fd, int gt)
- {
-@@ -1387,13 +1378,20 @@ bool i915_is_slpc_enabled_gt(int drm_fd, int gt)
- /**
-  * i915_is_slpc_enabled:
-  * @drm_fd: DRM file descriptor
-- * Check if SLPC is enabled for the device
-+ *
-+ * Return: True if SLPC is enabled on the device.
-  */
- bool i915_is_slpc_enabled(int drm_fd)
- {
- 	return i915_is_slpc_enabled_gt(drm_fd, 0);
- }
- 
-+/**
-+ * igt_pm_get_runtime_suspended_time:
-+ * @pci_dev: PCI device struct
-+ *
-+ * Return: The total time that the device has been suspended.
-+ */
- int igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
- {
- 	char time_str[64];
-@@ -1439,9 +1437,9 @@ uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev)
- 
- /**
-  * igt_pm_get_runtime_usage:
-- * @pci_dev: pci device
-+ * @pci_dev: PCI device struct
-  *
-- * Reports the runtime PM usage count of a device.
-+ * Return: The runtime PM usage count of a device.
-  */
- int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
- {
-@@ -1456,12 +1454,12 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
- }
- 
- /**
-- * igt_pm_ignore_slpc_efficient_freq
-+ * igt_pm_ignore_slpc_efficient_freq:
-  * @i915: open i915 drm file descriptor
-  * @gtfd: open gt sysfs fd
-  * @val: value to set
-  *
-- * Ignores/un-ignores SLPC efficient frequency
-+ * Ignores/un-ignores SLPC efficient frequency.
-  */
- void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val)
- {
+ 		igt_describe("Validate mmap memory mappings with vram region,"
 -- 
 2.44.0
 
