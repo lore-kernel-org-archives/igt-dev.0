@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C56A3C25B77
-	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 11:55:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE5C1C25B77
+	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 11:59:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3AF4910E09D;
-	Wed, 22 May 2024 11:55:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 594BC10E1F3;
+	Wed, 22 May 2024 11:59:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E7Do4a3n";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TIqg8qIG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2FF4E10E09D
- for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 11:55:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6C3D10E1F3
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 11:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716378956; x=1747914956;
+ t=1716379184; x=1747915184;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding:sender;
- bh=WaOMUXpqJPYQ0FeWPBgfLlUrWL8WGxOSmuXvCh8SKc8=;
- b=E7Do4a3nP5SWG+PBosbQeexmzxEzJGspsZ2H869zFSm0x6lbxxb08wDg
- gad5U2kmjJ8mADgEm2dQhaJ5acvuZr9nisRF71PRFubJK+M5Ztrnc7xY8
- 9uq0yvUuY4AbzsIIGyfiB9kZjS5nvJSibBk7DAaBbk2uIENeExQcv9nAV
- LrO2JzZWpzwxKdU5tcSY2ZyPxkDfExlARK9/QcRQxsT+Xh7X4cy42LATI
- zN+D32772cmKQlZn2Xr0VYjySGFsdTYC/hYy0RQPFelkN9sepqAcM5Ieo
- Emqtg6Dpv5HzRNJ3WQMNPtWHjXxgsU6OQI87o9km2qpLizQwgSdU8fpKv w==;
-X-CSE-ConnectionGUID: i2u+cliHQNCN+D550gTcEw==
-X-CSE-MsgGUID: DgWEkE7hRXCSJ0SHaA1AqQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="12476315"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="12476315"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2024 04:55:56 -0700
-X-CSE-ConnectionGUID: wP2MPpfzRe6PwWIptypcQw==
-X-CSE-MsgGUID: wbq3t6GgS5iIIT30U4mtVg==
+ bh=fcJEZlxu+8/Y3a56CM+CXlcFPUKr+lLGBJoD0Z0w370=;
+ b=TIqg8qIG4sYyAj5wOurExIHC1Qv9dTCltz/IMk3PDYWQjNxHIsmG9GzQ
+ ref28Yu/pjiwvguZG5hevjwXaHMn96dOdePOZ6eEPGCKlR9hqH2Kgn/8f
+ rqAwBkWaYl1OabZ8+9soFylC87r7vd0dbNRmLnwzdOfVzVA6wKaqNraN3
+ w2xcBRzCLFp41TOAHSufMGOQSpqbnKbK4X6PoTZJ2kTDJIV6AdnuqSqc1
+ YxEpMFR34bggkvhYpxvI+Zz4shsTwqPgDLExcE4kp4kBeveB7Ia+nJW1v
+ HvaLTSqRUUq6UJ+s4zDscY6b6VENQksR9bQgiOlnPU/lDrrtgwf+IfyOn A==;
+X-CSE-ConnectionGUID: fxfVeJtQQZeI1CHTsRPb/Q==
+X-CSE-MsgGUID: qxFo/x6OT8y/o5JKHEo4ZA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="38007519"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="38007519"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2024 04:59:44 -0700
+X-CSE-ConnectionGUID: hUlN4hQHRn+9UiQHhHY3Lw==
+X-CSE-MsgGUID: ZJcsi4mnSu6FGkV1SqqH6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33173767"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33129175"
 Received: from linux.intel.com ([10.54.29.200])
- by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2024 04:55:55 -0700
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2024 04:59:44 -0700
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.245.118])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id 6C44C20BF42F;
- Wed, 22 May 2024 04:55:54 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id BC7D320BF42F;
+ Wed, 22 May 2024 04:59:43 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1s9kZU-00000000CUA-1NTi; Wed, 22 May 2024 13:55:52 +0200
+ id 1s9kdB-00000000CX8-2pO0; Wed, 22 May 2024 13:59:41 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@intel.com,
 	katarzyna.piecielska@intel.com
-Subject: [PATCH i-g-t v2] contrib/mk_detect_intel_gpu: add a tool to detect
+Subject: [PATCH i-g-t v3] contrib/mk_detect_intel_gpu: add a tool to detect
  Intel GPUs from their PCI IDs
-Date: Wed, 22 May 2024 13:55:51 +0200
-Message-ID: <20240522115551.47984-1-mauro.chehab@linux.intel.com>
+Date: Wed, 22 May 2024 13:59:40 +0200
+Message-ID: <20240522115940.48168-1-mauro.chehab@linux.intel.com>
 X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -85,18 +85,20 @@ generates a script that helps detecting Intel GPU models.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- contrib/mk_detect_intel_gpu/Makefile  |  55 +++++++
+ contrib/mk_detect_intel_gpu/Makefile  |  57 +++++++
  contrib/mk_detect_intel_gpu/get_gpu.c | 216 ++++++++++++++++++++++++++
- 2 files changed, 271 insertions(+)
+ 2 files changed, 273 insertions(+)
  create mode 100644 contrib/mk_detect_intel_gpu/Makefile
  create mode 100644 contrib/mk_detect_intel_gpu/get_gpu.c
 
 diff --git a/contrib/mk_detect_intel_gpu/Makefile b/contrib/mk_detect_intel_gpu/Makefile
 new file mode 100644
-index 000000000000..da84d4268b3f
+index 000000000000..ea24307ce19c
 --- /dev/null
 +++ b/contrib/mk_detect_intel_gpu/Makefile
-@@ -0,0 +1,55 @@
+@@ -0,0 +1,57 @@
++# SPDX-License-Identifier: MIT
++#
 +# Copyright © 2022-2024 Intel Corporation
 +# Author: Mauro Carvalho Chehab <mchehab@kernel.org>
 +#
