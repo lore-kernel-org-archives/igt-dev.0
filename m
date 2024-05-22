@@ -4,63 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F5D3C25B77
-	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 11:54:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C56A3C25B77
+	for <igt-dev@archiver.kernel.org>; Wed, 22 May 2024 11:55:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD4E7892AA;
-	Wed, 22 May 2024 11:54:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3AF4910E09D;
+	Wed, 22 May 2024 11:55:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nugtEZyH";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E7Do4a3n";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCCEF892AA
- for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 11:54:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FF4E10E09D
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 May 2024 11:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716378876; x=1747914876;
+ t=1716378956; x=1747914956;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding:sender;
- bh=mpGRkJFUZjDwxcprjK6cmAuykBK/23L6NqtOlhWn0mk=;
- b=nugtEZyH4uxJgpd3UUAWm9okZej4QxL2lKa4x5ImYYFA2XTqL8nebvhA
- NumsoKNNEaUmKeZrxPxyqSXDN+RI8KjJI6eknGGR0NzkOoUgP5XrZUlcC
- J3vPjbMluPOJYIMyAI2EYpwqXdUcUv/Pop9ehvOQXkOcx8mEfyJTO+ir2
- xq8AyMzEyRgXLSFUILDeGJodu5OlPKjpw6BoIHPcffcI0SSYNqI/jBLyI
- fngsrqaEBPK863cpECg8bQc2mozdK03xwECYDJOERm91Nq3m98cP+3yPZ
- 56QBuGWjKGBWrA0gVJZWzC3ZIGZ1NL965aORc3PHQu0yjnD0GBHcyn1eG w==;
-X-CSE-ConnectionGUID: AlIiTHrCRJKZE1rHJ7GzNQ==
-X-CSE-MsgGUID: s1K78/1hSsyrGbpONXHGuA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="38006630"
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="38006630"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2024 04:53:42 -0700
-X-CSE-ConnectionGUID: V/5+z7guSASnw+e1NQY4FQ==
-X-CSE-MsgGUID: cxX3mqXfRiCbqEbKHtgVAg==
+ bh=WaOMUXpqJPYQ0FeWPBgfLlUrWL8WGxOSmuXvCh8SKc8=;
+ b=E7Do4a3nP5SWG+PBosbQeexmzxEzJGspsZ2H869zFSm0x6lbxxb08wDg
+ gad5U2kmjJ8mADgEm2dQhaJ5acvuZr9nisRF71PRFubJK+M5Ztrnc7xY8
+ 9uq0yvUuY4AbzsIIGyfiB9kZjS5nvJSibBk7DAaBbk2uIENeExQcv9nAV
+ LrO2JzZWpzwxKdU5tcSY2ZyPxkDfExlARK9/QcRQxsT+Xh7X4cy42LATI
+ zN+D32772cmKQlZn2Xr0VYjySGFsdTYC/hYy0RQPFelkN9sepqAcM5Ieo
+ Emqtg6Dpv5HzRNJ3WQMNPtWHjXxgsU6OQI87o9km2qpLizQwgSdU8fpKv w==;
+X-CSE-ConnectionGUID: i2u+cliHQNCN+D550gTcEw==
+X-CSE-MsgGUID: DgWEkE7hRXCSJ0SHaA1AqQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11079"; a="12476315"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="12476315"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2024 04:55:56 -0700
+X-CSE-ConnectionGUID: wP2MPpfzRe6PwWIptypcQw==
+X-CSE-MsgGUID: wbq3t6GgS5iIIT30U4mtVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33250352"
+X-IronPort-AV: E=Sophos;i="6.08,179,1712646000"; d="scan'208";a="33173767"
 Received: from linux.intel.com ([10.54.29.200])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 May 2024 04:53:26 -0700
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 May 2024 04:55:55 -0700
 Received: from linux.intel.com (maurocar-mobl2.ger.corp.intel.com
  [10.245.245.118])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id A183320BF42F;
- Wed, 22 May 2024 04:53:25 -0700 (PDT)
+ by linux.intel.com (Postfix) with ESMTPS id 6C44C20BF42F;
+ Wed, 22 May 2024 04:55:54 -0700 (PDT)
 Received: from maurocar by linux.intel.com with local (Exim 4.97.1)
  (envelope-from <mauro.chehab@linux.intel.com>)
- id 1s9kX5-00000000CRR-2BrH; Wed, 22 May 2024 13:53:23 +0200
+ id 1s9kZU-00000000CUA-1NTi; Wed, 22 May 2024 13:55:52 +0200
 From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@intel.com,
 	katarzyna.piecielska@intel.com
-Subject: [PATCH i-g-t] contrib/mk_detect_intel_gpu: add a tool to detect Intel
- GPUs from their PCI IDs
-Date: Wed, 22 May 2024 13:53:22 +0200
-Message-ID: <20240522115322.47814-1-mauro.chehab@linux.intel.com>
+Subject: [PATCH i-g-t v2] contrib/mk_detect_intel_gpu: add a tool to detect
+ Intel GPUs from their PCI IDs
+Date: Wed, 22 May 2024 13:55:51 +0200
+Message-ID: <20240522115551.47984-1-mauro.chehab@linux.intel.com>
 X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -84,18 +85,21 @@ generates a script that helps detecting Intel GPU models.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 ---
- contrib/mk_detect_intel_gpu/Makefile  |  52 ++++++
- contrib/mk_detect_intel_gpu/get_gpu.c | 217 ++++++++++++++++++++++++++
- 2 files changed, 269 insertions(+)
+ contrib/mk_detect_intel_gpu/Makefile  |  55 +++++++
+ contrib/mk_detect_intel_gpu/get_gpu.c | 216 ++++++++++++++++++++++++++
+ 2 files changed, 271 insertions(+)
  create mode 100644 contrib/mk_detect_intel_gpu/Makefile
  create mode 100644 contrib/mk_detect_intel_gpu/get_gpu.c
 
 diff --git a/contrib/mk_detect_intel_gpu/Makefile b/contrib/mk_detect_intel_gpu/Makefile
 new file mode 100644
-index 000000000000..955646b293b3
+index 000000000000..da84d4268b3f
 --- /dev/null
 +++ b/contrib/mk_detect_intel_gpu/Makefile
-@@ -0,0 +1,52 @@
+@@ -0,0 +1,55 @@
++# Copyright © 2022-2024 Intel Corporation
++# Author: Mauro Carvalho Chehab <mchehab@kernel.org>
++#
 +# Usage: specify either:
 +#  make KERNEL_DIR=<directory to copy files for both i915 and Xe Intel drivers>
 +# or:
@@ -150,24 +154,23 @@ index 000000000000..955646b293b3
 +.PHONY: i915_id.h i915_pciids.h
 diff --git a/contrib/mk_detect_intel_gpu/get_gpu.c b/contrib/mk_detect_intel_gpu/get_gpu.c
 new file mode 100644
-index 000000000000..98f4aec6df43
+index 000000000000..44fee08d398b
 --- /dev/null
 +++ b/contrib/mk_detect_intel_gpu/get_gpu.c
-@@ -0,0 +1,217 @@
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2022-2024 Intel Corporation
++ * Author: Mauro Carvalho Chehab <mchehab@kernel.org>
++ */
++
++
 +#include "i915_pciids.h"
 +#include "xe_pciids.h"
 +
 +#include <stdio.h>
 +#include <string.h>
 +#include <stdlib.h>
-+
-+/*
-+ * 1. Update i915_pciids.h from DII;
-+ * 2. Change the macro to remove the typecast for INTEL_VGA_DEVICE and INTEL_QUANTA_VGA_DEVICE
-+ * 3. Build and run it with:
-+ *    make
-+ * 4. copy detect_gpu.pl to igt_tests git tree
-+ */
 +
 +struct pci_device_id {
 +	unsigned int vendor, device;
