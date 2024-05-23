@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 921E2C25B79
-	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 08:44:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9CB3C25B79
+	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 08:44:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D861810E5DF;
-	Thu, 23 May 2024 08:44:21 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E496010E268;
- Thu, 23 May 2024 08:44:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4520680479737224551=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE225892EA;
+	Thu, 23 May 2024 08:44:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EyiHGPH1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D909892EA
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 May 2024 08:44:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716453881; x=1747989881;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zpQif83pxm2Ws73NGmhpLcnls86rWxsUO3Y3viWbvek=;
+ b=EyiHGPH1fE9X+dKso+I7swd8UDQWY5Wk4QjD6ZOdSshcNC9EroMNRHiV
+ 136wqp6rFAxAxVWtNk2cg5fpXX/HChEtRspPzUWWmIPxMtgpc01zJJB1s
+ 0Wkt0qBeMKMFy/L9pnQnzAOgjjyZteq33Q+dyKF3rEny+YFfXDmQkyVhq
+ pMTq0JW74k9hKRt0TPzwAZ0cUu/zAYpFXreRz9TsezwSwLH0ctiYJrwFC
+ WghphZNScegP7Wv39GC7YZot1E/Cp9dianuTPCcfLz+YcSKRhkNBg757m
+ 8XE+JUS9CeSV8C2tLn6LlpDrM98i0eSwimsKJuFSzbBk6h0tEof+5p1pt A==;
+X-CSE-ConnectionGUID: 9mOttHSFSAqWyEh7aOOJYw==
+X-CSE-MsgGUID: q5z5ZualSvSKmiKkXKkkAQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="16543951"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="16543951"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2024 01:44:39 -0700
+X-CSE-ConnectionGUID: brj9pQD/RgKPy8sywVdI7A==
+X-CSE-MsgGUID: XH4qPxD8SuK979tMbbtqew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="64819777"
+Received: from shrehore-mobl2.ger.corp.intel.com (HELO
+ hazy.ger.corp.intel.com) ([10.249.36.27])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2024 01:44:37 -0700
+From: Luca Coelho <luciano.coelho@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 0/2] check drmModeGetConnector() return value in some
+ missing places
+Date: Thu, 23 May 2024 11:44:24 +0300
+Message-Id: <20240523084426.284894-1-luciano.coelho@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Introduce_SR-IOV_VM-level_t?=
- =?utf-8?q?esting_tool?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Adam Miszczak" <adam.miszczak@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 23 May 2024 08:44:15 -0000
-Message-ID: <171645385593.2169609.676423286025611004@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240523075156.181339-1-adam.miszczak@linux.intel.com>
-In-Reply-To: <20240523075156.181339-1-adam.miszczak@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,145 +63,32 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4520680479737224551==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+There are some places where the return value of calls to the
+drmModeGetConnector() function are not checked, even though it can
+return NULL in some cases.
 
-Series: Introduce SR-IOV VM-level testing tool
-URL   : https://patchwork.freedesktop.org/series/133950/
-State : success
+Fix that in lib/igt_chamelium and intel/i915_pm_rpm.
 
-== Summary ==
+Please review.
 
-CI Bug Log - changes from CI_DRM_14808 -> IGTPW_11180
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-bsw-n3050 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11180 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_lmem_swapping@basic@lmem0:
-    - bat-dg2-8:          [PASS][1] -> [FAIL][2] ([i915#10378])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14808/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_lmem_swapping@basic@lmem0:
-    - bat-dg2-9:          [FAIL][3] ([i915#10378]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14808/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
-
-  
-  [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
+Cheers,
+Luca.
 
 
-Build changes
--------------
+Luca Coelho (2):
+  lib/igt_chamelium: check drmModeGetConnector() return value in
+    wait_for_connected_state()
+  tests/intel: check drmModeGetConnector() return value in i915_pm_rpm
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7869 -> IGTPW_11180
+ lib/igt_chamelium.c       | 3 +++
+ tests/intel/i915_pm_rpm.c | 6 ++++++
+ 2 files changed, 9 insertions(+)
 
-  CI-20190529: 20190529
-  CI_DRM_14808: 7643e429e72c546f3779339624df885f6160124c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11180: 5602d6276b10863242185b3d09f410b9f3d68301 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+-- 
+2.39.2
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/index.html
-
---===============4520680479737224551==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Introduce SR-IOV VM-level testing tool</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133950/">https://patchwork.freedesktop.org/series/133950/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14808 -&gt; IGTPW_11180</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11180 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14808/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378">i915#10378</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14808/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11180/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7869 -&gt; IGTPW_11180</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14808: 7643e429e72c546f3779339624df885f6160124c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11180: 5602d6276b10863242185b3d09f410b9f3d68301 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4520680479737224551==--
