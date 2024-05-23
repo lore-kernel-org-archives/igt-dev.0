@@ -4,60 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0719C25B75
-	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 14:11:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5880CC25B79
+	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 14:14:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 08452888D9;
-	Thu, 23 May 2024 14:11:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B38E10E2AF;
+	Thu, 23 May 2024 14:14:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q4qo1E07";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OCF3k98R";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 598E4888D9;
- Thu, 23 May 2024 14:11:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A2D910E2AF
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 May 2024 14:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716473489; x=1748009489;
+ t=1716473641; x=1748009641;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=o4G7/57owSHevHldhtMjhqb0sQnG8A96DCIRBGSk92s=;
- b=Q4qo1E077fN6zvPDBgz+5onIkUmwq3iHzIBhEGJENQ3Irgy/gG1h10YM
- VzeLJGudZyHeDCeXyBOr172Z7fggXjA58eJjf8+PCvNQlDDfZAMdvsnZW
- qM5h0V6AcxSGba6WR/q2WO1GMgJTBoLfbDyCZjyqZgYlV4I4DaHgN2/13
- 63Lym47UWIkGCOhCcsbBK3YgWikl6neVHYaCCfgpsIJIO8ys2xhj+34Mi
- 5jAqTxF20NVb2WiI/m2x6w0qhnz1nwfgDfSvgxw5ijlZeToDE4HaWnnaM
- 0umQ2ES0NpEtiMUDlD0qi11HAhGJxWcRzw9FHQqHI2tsFe0yUVewQL3os w==;
-X-CSE-ConnectionGUID: xJ2b5n/hQ6yqjnxKfEOSkA==
-X-CSE-MsgGUID: peHkFVdoSIuLeiIOJUnzbw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12571381"
-X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="12571381"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2024 07:11:28 -0700
-X-CSE-ConnectionGUID: YoWCpXpKQmenAxNI8Ubmug==
-X-CSE-MsgGUID: YWy+z9GmR6qn8e8avbO+4g==
+ bh=v6pZyMkTimvRL9nhEXE0RvP5/jBZuCRyCD5K2JTQgj4=;
+ b=OCF3k98R58wxSDzXgie3qw0UAZ8QMgoRmN41zPDlV/4R5yQqXQoj8OGF
+ FUQieqwZMbvN/iaFPQLvtdWEyTZw4S8XOsoXd48kyzqfJJL90WMLUt2AD
+ Roowh5vr6CWymiV/JFLbkGjO+W27eeHgxtkpNB4RvWjAVytWKHjeNSwpM
+ PCLpv+F/4GV5jvJWQpUzyl2eTNMxjY/m0JTVunV3AuqOkAsEjG0Q53WFo
+ DvSI90mpt4mlxH6B2JuOQ0eJNLPBsQ7D+0IpcFDTCYouGAG41oSGM9Bdj
+ QuXOIXBn5+pZ6FH5+DQQP/MyyRgvftLo6vdbgU9y7XqpmRK8Kf2Cyyq8P w==;
+X-CSE-ConnectionGUID: L9DmTzdGQkqHpUIpSx1RCA==
+X-CSE-MsgGUID: NFBpTrq5QFSJmbcs6Gu/VA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="16581891"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="16581891"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2024 07:13:59 -0700
+X-CSE-ConnectionGUID: Yx7CNH9FQ/CBQr+yjPkHvw==
+X-CSE-MsgGUID: FfKqzC0cT7iTiQv1FpTDcw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="38522172"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="34294481"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 07:11:27 -0700
-Date: Thu, 23 May 2024 16:11:24 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 07:13:57 -0700
+Date: Thu, 23 May 2024 16:13:55 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jani Nikula <jani.nikula@intel.com>,
-	I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVy?= =?utf-8?Q?e?= for lib:
- sync i915_pciids.h and _local.h with kernel
-Message-ID: <20240523141124.agnwuvxuo5a3idj4@kamilkon-DESK.igk.intel.com>
+Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Gandi Ramadevi <ramadevi.gandi@intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>,
+ Girotra Himanshu <himanshu.girotra@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel: Make Mega feature field mandatory
+ in test documentation
+Message-ID: <20240523141355.5w72orzxv6zctf2q@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <cover.1716373923.git.jani.nikula@intel.com>
- <171644160176.2168809.3955013321373294230@8e613ede5ea5>
+ igt-dev@lists.freedesktop.org,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
+ Gandi Ramadevi <ramadevi.gandi@intel.com>,
+ Aditya Chauhan <aditya.chauhan@intel.com>,
+ Girotra Himanshu <himanshu.girotra@intel.com>
+References: <20240522123322.779571-1-katarzyna.piecielska@intel.com>
+ <20240522123322.779571-3-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <171644160176.2168809.3955013321373294230@8e613ede5ea5>
+In-Reply-To: <20240522123322.779571-3-katarzyna.piecielska@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,79 +78,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-05-23 at 05:20:01 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Katarzyna,
+On 2024-05-22 at 12:33:22 +0000, Katarzyna Piecielska wrote:
+> Once we have Mega feature in place for Core tests, let's make it
+> mandatory, so every new test has full needed documentation.
 > 
-> Series: lib: sync i915_pciids.h and _local.h with kernel
-> URL   : https://patchwork.freedesktop.org/series/133915/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14801_full -> IGTPW_11177_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11177_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11177_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11177/index.html
-> 
-> Participating hosts (9 -> 9)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11177_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_flip@dpms-off-confusion-interruptible@c-dp4:
->     - shard-dg2:          NOTRUN -> [INCOMPLETE][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11177/shard-dg2-11/igt@kms_flip@dpms-off-confusion-interruptible@c-dp4.html
-> 
+> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
+> Cc: Aditya Chauhan <aditya.chauhan@intel.com>
+> Cc: Girotra Himanshu <himanshu.girotra@intel.com>
 
-Unrelated,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
 
->   
-> Known issues
-> ------------
+> ---
+>  tests/intel/i915_test_config.json | 1 +
+>  tests/intel/xe_test_config.json   | 1 +
+>  2 files changed, 2 insertions(+)
 > 
->   Here are the changes found in IGTPW_11177_full that come from known issues:
-
-...cut...
-
+> diff --git a/tests/intel/i915_test_config.json b/tests/intel/i915_test_config.json
+> index 3b3afb2fd..1a1c1aafa 100644
+> --- a/tests/intel/i915_test_config.json
+> +++ b/tests/intel/i915_test_config.json
+> @@ -43,6 +43,7 @@
+>                  },
+>                  "Mega feature": {
+>                      "_properties_": {
+> +                        "mandatory": true,
+>                          "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
+>                      },
+>                      "Sub-category": {
+> diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
+> index 89c6c7ef6..4556025f7 100644
+> --- a/tests/intel/xe_test_config.json
+> +++ b/tests/intel/xe_test_config.json
+> @@ -31,6 +31,7 @@
+>                  },
+>                  "Mega feature": {
+>                      "_properties_": {
+> +                        "mandatory": true,
+>                          "description": "Contains the mega feature for end to end use case, e. g. the 'sellable' feature."
+>                      },
+>                      "Sub-category": {
+> -- 
+> 2.34.1
 > 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7867 -> IGTPW_11177
->   * Piglit: piglit_4509 -> None
-> 
->   CI-20190529: 20190529
->   CI_DRM_14801: 60134578b28bbd5dca007a0d8abaa6daaca9ddaf @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_11177: b2c2edb42403917736414e00184336a877f7cb36 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_7867: f3006a13799e3bc45d754aa8ad318394277d69ac @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11177/index.html
