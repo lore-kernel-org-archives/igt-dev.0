@@ -4,27 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A725C25B7A
-	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 09:03:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 944E4C25B75
+	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 09:10:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E707510E0F0;
-	Thu, 23 May 2024 09:03:49 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82DA510E0F0;
- Thu, 23 May 2024 09:03:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1667149095192607086=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CD7810E175;
+	Thu, 23 May 2024 09:10:28 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RPfpvDZa";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D0D3210E148
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 May 2024 09:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1716455412; x=1747991412;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=Ew8uzo/GgYr/DzbzbBRlXCteH6wIgVRBSWuP2G9W6Tw=;
+ b=RPfpvDZalVqzIegKY2ARjbWhfB6jQzHkEOO2foy2XC0B3YtgKYfrimZ5
+ hRbLttRRwpQaR4vHK8TM8l79pdbBsnHkLPxeozuHuUA+2hmaZoJs3BXMt
+ DYRsQB3xrJbGh4oPqmEoqOS5Mqc2WXv3Sl20wQoMJcyD3jRcXTRv9LvfO
+ ao+xAeX04aSWCH2PUIie8xTEk3jYGsH8Q8CL5b5ec0VEfoRbQWhAvVshP
+ aWF3b0DJ4xU7e5j3Kul/WLf5eHXfuH8VRpBehy6QTAE5pB5ab/llxRrhn
+ FQSbQXy7fBvphk4HiXG2mTmWAUNhdK4+x87tv+tWh+jL2ADqpmxoaBHWf A==;
+X-CSE-ConnectionGUID: SwG173J0STSct2bnLCeXjg==
+X-CSE-MsgGUID: FftCcxvFRMitGhUeNIIZ8w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11080"; a="12695380"
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="12695380"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2024 02:10:11 -0700
+X-CSE-ConnectionGUID: rkU8xaSUTqamMSgfkPbWBQ==
+X-CSE-MsgGUID: STiPkd5DQDGcW4R2VWvLyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,182,1712646000"; d="scan'208";a="37997040"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.57])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 May 2024 02:10:08 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ katarzyna.piecielska@intel.com
+Subject: Re: [PATCH i-g-t v4] tools/mk_detect_intel_gpu: add a tool to
+ detect Intel GPUs from their PCI IDs
+In-Reply-To: <20240523103558.42876c98@maurocar-mobl2>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240522120240.48463-1-mauro.chehab@linux.intel.com>
+ <87a5kiqa6l.fsf@intel.com> <875xv6q8ob.fsf@intel.com>
+ <20240522144627.tdiadqyfgk67ox55@kamilkon-DESK.igk.intel.com>
+ <87r0dtouhu.fsf@intel.com> <20240523103558.42876c98@maurocar-mobl2>
+Date: Thu, 23 May 2024 12:10:05 +0300
+Message-ID: <87le40q4gi.fsf@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Introduce_SR-IOV_VM-level_test?=
- =?utf-8?q?ing_tool?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Adam Miszczak" <adam.miszczak@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 23 May 2024 09:03:48 -0000
-Message-ID: <171645502853.2169609.5774946674146394222@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20240523075156.181339-1-adam.miszczak@linux.intel.com>
-In-Reply-To: <20240523075156.181339-1-adam.miszczak@linux.intel.com>
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,186 +71,126 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1667149095192607086==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, 23 May 2024, Mauro Carvalho Chehab <mauro.chehab@linux.intel.com> wrote:
+> On Thu, 23 May 2024 10:30:37 +0300
+> Jani Nikula <jani.nikula@intel.com> wrote:
+>
+>> On Wed, 22 May 2024, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+>> > Looks like a good idea but this is also dependancy, btw  
+>> 
+>> [snip]
+>> 
+>> > But this one is creating one more dependancy, one should have
+>> > modules compiled in current running kernel.  
+>> 
+>> Reading the comments about dependencies, I think this needs a different
+>> perspective.
+>> 
+>> What is the target audience of the tool? What are they expected to have
+>> around? What is the easiest for them to install?
+>
+> The target audience for the submitted changeset is to provide a way for
+> IGT developers to generate a script to detect the presence and the GPU
+> model for Device Under Test (DUT) machines.
+>
+> It was written to be generic enough to use different directories for Xe
+> and for i915 (or the same one). So, it should work properly when different
+> versions of the drivers would be used, during driver's development.
+>
+> On other words, the way it is, this is not focused on the end user. 
+>
+> The way it works is that a C file read the i915 and Xe macros, creating
+> a PCI ID database, stored as hash(dict):
+>
+> 	my %intel_pci_id = (
+> 		"8086:46d0" => "ADLN",
+> 		"8086:46d1" => "ADLN",
+> 		"8086:46d2" => "ADLN",
+> 		...
+> 	)
+> 	...
+> 	my %intel_pci_id_alt_name = (
+> 		# AML_CFL_GT2 alternative names
+> 		"8086:87ca" => "CFL",
+>
+> 		# AML_KBL_GT2 alternative names
+> 		"8086:591c" => "KBL",
+> 		"8086:87c0" => "KBL",
+> 		...
+> 	)
+>
+> 	Typically, most GPUs have two entries:
+>
+> 	$ grep 8086:9b41 ./intel_detect_gpu.pl
+> 		"8086:9b41" => "CFL",
+> 		"8086:9b41" => "CML_U_GT2",
+>
+> 	The first one is the generic name, the second one contains
+> 	an alternate name, with has additional GPU version details
+> 	(in this case, CML-U GT2). All of that obtained from the
+> 	driver's source code.
+>
+> The generated script itself doesn't require anything other than lspci to
+> run, as what the script does, on its 35 lines of code (not including the
+> PCI ID database), is:
+>
+> 	1. run lspci -nm
+>
+> 	2. If the PCI ID device is at the database, it prints:
+>
+> 		print "Detected GPU PCI device: $id$subtype, PCI ID: $pci_id\n";
+>
+> 	   For the above example, the output is:
+>
+> 		Detected GPU PCI device: CFL (CML_U_GT2), PCI ID: 8086:9b41
+>
+> 	3. If multiple Intel GPUs are found, it prints a warning, as DUT
+> 	   tests may require an extra parameter to use the right GPU:
+>
+> 		Warning: More than one Intel GPUs detected
+>
+> 	4. if no Intel GPU is found, it will print:
+>
+> 		Warning: No Intel GPUs detected
 
-== Series Details ==
+The way I see it, intel_device_info.c and igt_device_scan.c have all the
+building blocks necessary to accomplish this. As long as
+intel_device_match[] is kept up-to-date, which naturally will be, it
+needs no further maintenance. It could be added to lsgpu as an option.
 
-Series: Introduce SR-IOV VM-level testing tool
-URL   : https://patchwork.freedesktop.org/series/133950/
-State : success
+>> lspci and modinfo are trivial to install, and most people have them
+>> installed already. modinfo does not require the modules to be probed,
+>> you can also point it at the .ko under /usr/lib/modules. For a user,
+>> this gives information about the modules they actually have on their
+>> system, which may be different from kernel or igt sources.
+>
+> Once generated, intel_detect_gpu.pl would be trivial to install and
+> to be used, as the only requirements are to have perl and pci-tools
+> (due to lspci dependency) installed.
+>
+>> OTOH most people won't have kernel or igt sources available. (Let alone
+>> specific versions of the source, which match the expectations of the
+>> patch at hand.) Indeed, you can install igt via the distro package
+>> manager, with no need to check out the sources.
+>
+> If IGT maintainers think it is worth targeting end users in the future,
+> the best is for them to periodically generate the script (for example,
+> when releasing a new IGT version), adding it to scripts/ and adding a
+> target at Meson to install it under ${installprefix}/bin directory.
 
-== Summary ==
+The best is what I described above, not adding Rube Goldberg machines
+that require constant attention.
 
-CI Bug Log - changes from XEIGT_7869_BAT -> XEIGTPW_11180_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (4 -> 4)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11180_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
-    - bat-atsm-2:         NOTRUN -> [SKIP][1] ([Intel XE#288]) +32 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
-
-  * igt@xe_exec_threads@threads-mixed-fd-basic:
-    - bat-adlp-7:         [PASS][2] -> [ABORT][3] ([Intel XE#1908])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7869/bat-adlp-7/igt@xe_exec_threads@threads-mixed-fd-basic.html
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-adlp-7/igt@xe_exec_threads@threads-mixed-fd-basic.html
-
-  * igt@xe_exec_threads@threads-mixed-userptr-invalidate:
-    - bat-dg2-oem2:       [PASS][4] -> [ABORT][5] ([Intel XE#1908])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7869/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#255])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-atsm-2:         NOTRUN -> [SKIP][7] ([Intel XE#977])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-atsm-2:         NOTRUN -> [SKIP][8] ([Intel XE#979]) +1 other test skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_pat@pat-index-xehpc.html
-
-  
-  [Intel XE#1908]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908
-  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_7869 -> IGTPW_11180
-  * Linux: xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921 -> xe-1333-7643e429e72c546f3779339624df885f6160124c
-
-  IGTPW_11180: 5602d6276b10863242185b3d09f410b9f3d68301 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921: 42b9a14c5932c577019bf2f5d5ff25d208c1f921
-  xe-1333-7643e429e72c546f3779339624df885f6160124c: 7643e429e72c546f3779339624df885f6160124c
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/index.html
-
---===============1667149095192607086==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Introduce SR-IOV VM-level testing tool</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133950/">https://patchwork.freedesktop.org/series/133950/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/index.html</a></td></tr>
-
-</table>
+BR,
+Jani.
 
 
-    <h1>CI Bug Log - changes from XEIGT_7869_BAT -&gt; XEIGTPW_11180_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11180_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-mixed-fd-basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7869/bat-adlp-7/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-adlp-7/igt@xe_exec_threads@threads-mixed-fd-basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908">Intel XE#1908</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-mixed-userptr-invalidate:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7869/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908">Intel XE#1908</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11180/bat-atsm-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7869 -&gt; IGTPW_11180</li>
-<li>Linux: xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921 -&gt; xe-1333-7643e429e72c546f3779339624df885f6160124c</li>
-</ul>
-<p>IGTPW_11180: 5602d6276b10863242185b3d09f410b9f3d68301 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921: 42b9a14c5932c577019bf2f5d5ff25d208c1f921<br />
-  xe-1333-7643e429e72c546f3779339624df885f6160124c: 7643e429e72c546f3779339624df885f6160124c</p>
+>
+> Regards,
+> Mauro
 
-</body>
-</html>
-
---===============1667149095192607086==--
+-- 
+Jani Nikula, Intel
