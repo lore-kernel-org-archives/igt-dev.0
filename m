@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3668C25B75
-	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 12:23:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 874BEC25B75
+	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 12:41:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A46F10E20F;
-	Thu, 23 May 2024 12:23:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F201210E1EE;
+	Thu, 23 May 2024 12:41:54 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D97F10E1EE;
- Thu, 23 May 2024 12:23:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7B8E910E0E7;
+ Thu, 23 May 2024 12:41:53 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3075853543892798916=="
+ boundary="===============2184832721116447125=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Add_gputop_support_for_sysf?=
- =?utf-8?q?s_profiling_knob?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_gputop_support_for_sysfs_p?=
+ =?utf-8?q?rofiling_knob?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: =?utf-8?q?Adri=C3=A1n_Larumbe?= <adrian.larumbe@collabora.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 23 May 2024 12:23:35 -0000
-Message-ID: <171646701524.2170280.6825250433546872548@8e613ede5ea5>
+Date: Thu, 23 May 2024 12:41:53 -0000
+Message-ID: <171646811350.2169849.6248831469314296764@8e613ede5ea5>
 X-Patchwork-Hint: ignore
 References: <20240523114549.447126-1-adrian.larumbe@collabora.com>
 In-Reply-To: <20240523114549.447126-1-adrian.larumbe@collabora.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3075853543892798916==
+--===============2184832721116447125==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_14808 -> IGTPW_11183
+CI Bug Log - changes from XEIGT_7869_BAT -> XEIGTPW_11183_BAT
 ====================================================
 
 Summary
@@ -64,62 +64,60 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/index.html
+  
 
-Participating hosts (42 -> 38)
+Participating hosts (4 -> 2)
 ------------------------------
 
-  Additional (1): fi-cfl-8109u 
-  Missing    (5): fi-bsw-n3050 fi-snb-2520m fi-elk-e7500 bat-dg2-14 bat-mtlp-6 
+  Missing    (2): bat-atsm-2 bat-adlp-7 
 
-Known issues
-------------
+Possible new issues
+-------------------
 
-  Here are the changes found in IGTPW_11183 that come from known issues:
+  Here are the unknown changes that may have been introduced in XEIGTPW_11183_BAT:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Suppressed ####
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
 
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@i915_selftest@live@execlists:
-    - fi-bsw-nick:        [PASS][3] -> [ABORT][4] ([i915#10594])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14808/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][5] +11 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html
+  * igt@xe_dma_buf_sync@export-dma-buf-once-read-sync:
+    - {bat-lnl-1}:        [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7869/bat-lnl-1/igt@xe_dma_buf_sync@export-dma-buf-once-read-sync.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11183/bat-lnl-1/igt@xe_dma_buf_sync@export-dma-buf-once-read-sync.html
 
   
-  [i915#10594]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10594
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11183_BAT that come from known issues:
+
+### IGT changes ###
+
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_7869 -> IGTPW_11183
+  * Linux: xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921 -> xe-1333-7643e429e72c546f3779339624df885f6160124c
 
-  CI-20190529: 20190529
-  CI_DRM_14808: 7643e429e72c546f3779339624df885f6160124c @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11183: a5fc58b899ac84387965bd9ded9aada2179ceb87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921: 42b9a14c5932c577019bf2f5d5ff25d208c1f921
+  xe-1333-7643e429e72c546f3779339624df885f6160124c: 7643e429e72c546f3779339624df885f6160124c
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11183/index.html
 
---===============3075853543892798916==
+--===============2184832721116447125==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -143,60 +141,45 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133959/">https://patchwork.freedesktop.org/series/133959/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11183/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11183/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_14808 -&gt; IGTPW_11183</h1>
+    <h1>CI Bug Log - changes from XEIGT_7869_BAT -&gt; XEIGTPW_11183_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/index.html</p>
-<h2>Participating hosts (42 -&gt; 38)</h2>
-<p>Additional (1): fi-cfl-8109u <br />
-  Missing    (5): fi-bsw-n3050 fi-snb-2520m fi-elk-e7500 bat-dg2-14 bat-mtlp-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11183 that come from known issues:</p>
+<h2>Participating hosts (4 -&gt; 2)</h2>
+<p>Missing    (2): bat-atsm-2 bat-adlp-7 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11183_BAT:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
 <ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@execlists:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14808/fi-bsw-nick/igt@i915_selftest@live@execlists.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-bsw-nick/igt@i915_selftest@live@execlists.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10594">i915#10594</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11183/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> +11 other tests skip</li>
+<li>igt@xe_dma_buf_sync@export-dma-buf-once-read-sync:<ul>
+<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7869/bat-lnl-1/igt@xe_dma_buf_sync@export-dma-buf-once-read-sync.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11183/bat-lnl-1/igt@xe_dma_buf_sync@export-dma-buf-once-read-sync.html">ABORT</a></li>
 </ul>
 </li>
 </ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11183_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7869 -&gt; IGTPW_11183</li>
+<li>Linux: xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921 -&gt; xe-1333-7643e429e72c546f3779339624df885f6160124c</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14808: 7643e429e72c546f3779339624df885f6160124c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11183: a5fc58b899ac84387965bd9ded9aada2179ceb87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11183: a5fc58b899ac84387965bd9ded9aada2179ceb87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7869: e43892a30d594f8bcbcbd42ccffe298313479215 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1329-42b9a14c5932c577019bf2f5d5ff25d208c1f921: 42b9a14c5932c577019bf2f5d5ff25d208c1f921<br />
+  xe-1333-7643e429e72c546f3779339624df885f6160124c: 7643e429e72c546f3779339624df885f6160124c</p>
 
 </body>
 </html>
 
---===============3075853543892798916==--
+--===============2184832721116447125==--
