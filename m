@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F94AC25B75
-	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 17:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77ADAC25B75
+	for <igt-dev@archiver.kernel.org>; Thu, 23 May 2024 17:25:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9915310E5FE;
-	Thu, 23 May 2024 17:21:07 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bKG1n05B";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D68A010E5FE
- for <igt-dev@lists.freedesktop.org>; Thu, 23 May 2024 17:21:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716484865; x=1748020865;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=bEj73oVCuPY+iNeusfK7A3VR/iI3a8wgRRG0NRpNdGE=;
- b=bKG1n05BVPxRmlMk0o17C+AraNS27u0pWS1Mcu5Jn7ODhvzZqwgSmoBr
- zFafxQ23YyHuIqzTxSo+9RYIr4onne3dMYN65LQ2DoZap/Vl2AfPVGUZh
- R2fMXpyEC3SldMFdVzM/fqaQ+y12swtoms1PY8qHRbcQ13a0jyzY7tGgx
- UpYSPvH41+9hLUXFkVixzuha9Fc6bDt7jPKty7LQp2Lp87uptwP/kmcCo
- 6E5q/+fWw/YN/cNPjI8gb/CppthJnJuzvnPlCdEGmlToNQblLOHqMMqX0
- 5oV+bxgaPhqLDK+5cUvu4sQUESYlhrQNe3jQkLUhjJB9s9cvvHET6SQ1u Q==;
-X-CSE-ConnectionGUID: 1twTU/HQTo+uVbUN69XgAg==
-X-CSE-MsgGUID: N7BadWa9QG294Vbtp7W9gQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="12941959"
-X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; d="scan'208";a="12941959"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 May 2024 10:19:03 -0700
-X-CSE-ConnectionGUID: Y9lAqDXDRqm9bo4coN4jCg==
-X-CSE-MsgGUID: X69Jj5hJQU6jKPXVCAuZgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,183,1712646000"; d="scan'208";a="38315610"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 May 2024 10:19:00 -0700
-Date: Thu, 23 May 2024 19:18:58 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Gandi Ramadevi <ramadevi.gandi@intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-Subject: Re: [PATCH i-g-t v2 3/3] tests: Remove Sub-category duplicates after
- introducing Category=Core
-Message-ID: <20240523171858.e5m23cezekfeal2t@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Gandi Ramadevi <ramadevi.gandi@intel.com>,
- Aditya Chauhan <aditya.chauhan@intel.com>,
- Girotra Himanshu <himanshu.girotra@intel.com>
-References: <20240523151729.877971-1-katarzyna.piecielska@intel.com>
- <20240523151729.877971-4-katarzyna.piecielska@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C25710E13C;
+	Thu, 23 May 2024 17:25:30 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C2C8D10E05D;
+ Thu, 23 May 2024 17:25:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4696022874477799334=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240523151729.877971-4-katarzyna.piecielska@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_check_drmModeGetConnector=28?=
+ =?utf-8?q?=29_return_value_in_some_missing_places_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Luca Coelho" <luciano.coelho@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 23 May 2024 17:25:28 -0000
+Message-ID: <171648512879.2170280.10546372376000951039@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240523084426.284894-1-luciano.coelho@intel.com>
+In-Reply-To: <20240523084426.284894-1-luciano.coelho@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,192 +37,205 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Katarzyna,
-On 2024-05-23 at 15:17:29 +0000, Katarzyna Piecielska wrote:
-> We do not want to have the same name for Category and Sub-category or any
-> other collision in documented fields. After I unified Category field for Core
-> tests there are some duplicated names in Category and Sub-category.
-> Let's remove them.
-> When doing that change I find few tests that do not have Mega feature defined.
-> 
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
-> Cc: Aditya Chauhan <aditya.chauhan@intel.com>
-> Cc: Girotra Himanshu <himanshu.girotra@intel.com>
+--===============4696022874477799334==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-I will add 'documentation' to patch 1 and 3 at merge.
-I will also change subject from:
+Series: check drmModeGetConnector() return value in some missing places (rev2)
+URL   : https://patchwork.freedesktop.org/series/133953/
+State : success
 
-[PATCH i-g-t v2 3/3] tests: Remove Sub-category duplicates after
- introducing Category=Core
+== Summary ==
 
-to
-[PATCH i-g-t v2 3/3] tests: Fix Sub-category duplicates in documentation
+CI Bug Log - changes from XEIGT_7870_BAT -> XEIGTPW_11184_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> ---
->  tests/dmabuf_sync_file.c    | 3 ++-
->  tests/drm_read.c            | 3 ++-
->  tests/intel/i915_pciid.c    | 2 +-
->  tests/intel/i915_selftest.c | 8 ++++----
->  tests/prime_vgem.c          | 2 +-
->  tests/syncobj_eventfd.c     | 7 ++++---
->  tests/vgem_basic.c          | 2 +-
->  tests/vgem_slow.c           | 2 +-
->  8 files changed, 16 insertions(+), 13 deletions(-)
-> 
-> diff --git a/tests/dmabuf_sync_file.c b/tests/dmabuf_sync_file.c
-> index ba33f6a9d..ca9d7d579 100644
-> --- a/tests/dmabuf_sync_file.c
-> +++ b/tests/dmabuf_sync_file.c
-> @@ -13,9 +13,10 @@ IGT_TEST_DESCRIPTION("Tests for sync_file support in dma-buf");
->  /**
->   * TEST: dmabuf_sync_file
->   * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: dmabuf
->   * Description: Tests for sync_file support in dma-buf
->   * Functionality: dmabuf test
-> - * Sub-category: Core
->   *
->   * SUBTEST: export-basic
->   * SUBTEST: export-before-signal
-> diff --git a/tests/drm_read.c b/tests/drm_read.c
-> index a7f0d8702..0a9b61cd0 100644
-> --- a/tests/drm_read.c
-> +++ b/tests/drm_read.c
-> @@ -54,8 +54,9 @@ IGT_TEST_DESCRIPTION("Call read(drm) and see if it behaves.");
->   * TEST: drm read
->   * Description: boundary testing of read(drm_fd)
->   * Category: Core
-> - * Functionality: drm_mm
-> + * Mega feature: General Core features
->   * Sub-category: uapi
-> + * Functionality: drm_mm
->   *
->   * SUBTEST: invalid-buffer
->   * SUBTEST: fault-buffer
-> diff --git a/tests/intel/i915_pciid.c b/tests/intel/i915_pciid.c
-> index 42ed7151d..a8c5df9d9 100644
-> --- a/tests/intel/i915_pciid.c
-> +++ b/tests/intel/i915_pciid.c
-> @@ -33,7 +33,7 @@
->   * Description: Check that igt/i915 know about this PCI-ID
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: driver
->   * Functionality: device management
->   * Feature: core
->   * Test category: GEM_Legacy
-> diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
-> index f234ca2de..aa29eb36a 100644
-> --- a/tests/intel/i915_selftest.c
-> +++ b/tests/intel/i915_selftest.c
-> @@ -310,7 +310,7 @@
->   * Description: Validation of per-object locking patterns
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: CMD submission
->   * Functionality: per-object locking
->   * Test category: i915
->   *
-> @@ -318,7 +318,7 @@
->   * Description: User object allocation and isolation checks
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: CMD submission
->   * Functionality: objects
->   * Test category: i915
->   *
-> @@ -357,7 +357,7 @@
->   * Description: Checks the selftest infrastructure itself
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: driver
->   * Functionality: sanitycheck
->   * Test category: i915
->   *
-> @@ -531,7 +531,7 @@
->   * Description: Selftest for the selftest
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: driver
->   * Functionality: sanitycheck
->   * Test category: i915
->   *
-> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
-> index 79ea12b5c..932058d2c 100644
-> --- a/tests/prime_vgem.c
-> +++ b/tests/prime_vgem.c
-> @@ -35,7 +35,7 @@
->   * Description: Basic check of polling for prime/vgem fences.
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: DRM
->   * Functionality: mock device
->   * Feature: prime
->   * Test category: GEM_Legacy
-> diff --git a/tests/syncobj_eventfd.c b/tests/syncobj_eventfd.c
-> index a4a73f251..f8bf17e1f 100644
-> --- a/tests/syncobj_eventfd.c
-> +++ b/tests/syncobj_eventfd.c
-> @@ -13,11 +13,12 @@
->  
->  /**
->   * TEST: syncobj eventfd
-> - * Category: Core
->   * Description: Tests for the drm sync object eventfd API
-> - * Feature: synchronization
-> - * Functionality: semaphore
-> + * Category: Core
-> + * Mega feature: General Core features
->   * Sub-category: DRM
-> + * Functionality: semaphore
-> + * Feature: synchronization
->   * Test category: GEM_Legacy
->   */
->  
-> diff --git a/tests/vgem_basic.c b/tests/vgem_basic.c
-> index f30722bbe..048ad7460 100644
-> --- a/tests/vgem_basic.c
-> +++ b/tests/vgem_basic.c
-> @@ -36,7 +36,7 @@
->   * Description: Basic sanity check of Virtual GEM module (vGEM).
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: DRM
->   * Functionality: mock device
->   * Test category: GEM_Legacy
->   * Feature: vgem
-> diff --git a/tests/vgem_slow.c b/tests/vgem_slow.c
-> index 3ce0f811e..6609989c7 100644
-> --- a/tests/vgem_slow.c
-> +++ b/tests/vgem_slow.c
-> @@ -35,7 +35,7 @@
->   * Description: Extended sanity check of Virtual GEM module (vGEM).
->   * Category: Core
->   * Mega feature: General Core features
-> - * Sub-category: Core
-> + * Sub-category: DRM
->   * Functionality: mock device
->   * Feature: vgem
->   * Test category: GEM_Legacy
-> -- 
-> 2.34.1
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11184_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_exec_compute_mode@twice-basic:
+    - bat-pvc-2:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#1908])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7870/bat-pvc-2/igt@xe_exec_compute_mode@twice-basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-pvc-2/igt@xe_exec_compute_mode@twice-basic.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:
+    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#288]) +32 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html
+
+  * igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race:
+    - bat-dg2-oem2:       NOTRUN -> [ABORT][4] ([Intel XE#1908])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-atsm-2:         NOTRUN -> [SKIP][5] ([Intel XE#255])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-atsm-2:         NOTRUN -> [SKIP][6] ([Intel XE#977])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-atsm-2:         NOTRUN -> [SKIP][7] ([Intel XE#979]) +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_pat@pat-index-xehpc.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_threads@threads-mixed-userptr-invalidate:
+    - bat-dg2-oem2:       [ABORT][8] ([Intel XE#1908]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7870/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1908]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7870 -> IGTPW_11184
+  * Linux: xe-1334-8e768c3e813ab5519a85997b622edc9a2f79c083 -> xe-1335-699062dc704638034892f6114852a0ab036f7aae
+
+  IGTPW_11184: 3f0bb5b343dd5152baec42a4e4329226542a05f9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7870: ad1cea5f9b4ce0f4a036cbda2da3d8979fb1ce15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1334-8e768c3e813ab5519a85997b622edc9a2f79c083: 8e768c3e813ab5519a85997b622edc9a2f79c083
+  xe-1335-699062dc704638034892f6114852a0ab036f7aae: 699062dc704638034892f6114852a0ab036f7aae
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/index.html
+
+--===============4696022874477799334==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>check drmModeGetConnector() return value in some missing places (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133953/">https://patchwork.freedesktop.org/series/133953/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7870_BAT -&gt; XEIGTPW_11184_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11184_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_exec_compute_mode@twice-basic:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7870/bat-pvc-2/igt@xe_exec_compute_mode@twice-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-pvc-2/igt@xe_exec_compute_mode@twice-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908">Intel XE#1908</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-imm:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_exec_fault_mode@twice-userptr-invalidate-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908">Intel XE#1908</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-atsm-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-userptr-invalidate:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7870/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908">Intel XE#1908</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11184/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-userptr-invalidate.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7870 -&gt; IGTPW_11184</li>
+<li>Linux: xe-1334-8e768c3e813ab5519a85997b622edc9a2f79c083 -&gt; xe-1335-699062dc704638034892f6114852a0ab036f7aae</li>
+</ul>
+<p>IGTPW_11184: 3f0bb5b343dd5152baec42a4e4329226542a05f9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7870: ad1cea5f9b4ce0f4a036cbda2da3d8979fb1ce15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1334-8e768c3e813ab5519a85997b622edc9a2f79c083: 8e768c3e813ab5519a85997b622edc9a2f79c083<br />
+  xe-1335-699062dc704638034892f6114852a0ab036f7aae: 699062dc704638034892f6114852a0ab036f7aae</p>
+
+</body>
+</html>
+
+--===============4696022874477799334==--
