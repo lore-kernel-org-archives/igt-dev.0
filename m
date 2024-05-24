@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DF87C25B7F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B6AEC25B7C
 	for <igt-dev@archiver.kernel.org>; Fri, 24 May 2024 03:16:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD9D610E3CB;
-	Fri, 24 May 2024 03:16:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3271610E3D8;
+	Fri, 24 May 2024 03:16:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hvlRROi9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UCBIt8kn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E45410E309
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B613110E36D
  for <igt-dev@lists.freedesktop.org>; Fri, 24 May 2024 03:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1716520491; x=1748056491;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=HHNJ1tJ74Zlo5GorNL6NCzXWDaUyVWaQct1AwwijEhc=;
- b=hvlRROi99lwQqd34aHxirt6rizZ3WZS22NcgYJ9+06JVZwIODU4Z1WsK
- E6lVFPTeeh2Rnz042H3pVRH3KzXLFiDuwgUJ17ph+w+isnBneYvO4n/pY
- 0GkNikLw7pWwF2PGuioxFIJA+oF7hTFmdwKQWrfPCExAUwbgFhbgPtNJ9
- ztJ65e8JouJ8m+HkWuPPgzZicDhC7D6klkJcvsWemrBeC1yQ0w5n9F6Tm
- 3Gddl1UTodorAJFagim+VakzD1h2RSoTpt5wvhdwT9GUcEpQkZnyI0gi4
- kEWfspiVWvoE+dXXaCJe3pkTfIawLDvcZxCqUieR4ANBJ3NNPtd2ciEVe g==;
-X-CSE-ConnectionGUID: l+1OGqtzT3WAQJj3ontupw==
-X-CSE-MsgGUID: SGAs2xLrRK+G5gK/Jo9Gqg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="30384635"
-X-IronPort-AV: E=Sophos;i="6.08,184,1712646000"; d="scan'208";a="30384635"
+ bh=doPnTQyj410UsDS9xf712Ntt/IDX3TCAuvLnaMzlOaU=;
+ b=UCBIt8knMAPXvJFtAZ5NzS1pW3Fy0skbeaqqsPqv1BELyg7R1iC9UyDK
+ wuH1dgjzJjj6T3nIuKHRpwbCF3RXPzjYDHHa6/qFWv/evPwzrrNvAyDle
+ YpONe7ovTPt62AOSAtxAdvqv63IrrfJCI3gWba4GF+71KO81D1C/FnXeG
+ LEClAcClMqhQFJLe2+GwD05nkadobLWi2+xM3j3H/drWqmbFfN7gvsnw9
+ ONHw82y974XTNnKinToLTN7+5ONBnBasKMV+DvdKuqp3UD/XRvTXBcp76
+ J4QpNztORGuah3+zgyrtE0ZSrosLZ7vVK+9W/kW3Oot88WigZQtljosRZ A==;
+X-CSE-ConnectionGUID: IKtTB9pqRcy7FbDv7SEouA==
+X-CSE-MsgGUID: mTbiEb2QRrqIXMl/SvgqPw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="30384633"
+X-IronPort-AV: E=Sophos;i="6.08,184,1712646000"; d="scan'208";a="30384633"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  23 May 2024 20:14:49 -0700
-X-CSE-ConnectionGUID: bmZI1nbXSrmTBvd2PwxAkw==
-X-CSE-MsgGUID: WP98gK4KSYmI5lmOI/LloQ==
+X-CSE-ConnectionGUID: qY7N20hHQ6OFxeeO4Zp3/g==
+X-CSE-MsgGUID: 4SFaWGOdTz2M2Ra+0bBOEw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,184,1712646000"; d="scan'208";a="34413529"
+X-IronPort-AV: E=Sophos;i="6.08,184,1712646000"; d="scan'208";a="34413526"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  23 May 2024 20:14:48 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 15/23] tests/intel/xe_oa: blocking and polling tests
-Date: Thu, 23 May 2024 20:14:31 -0700
-Message-ID: <20240524031439.106332-16-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 12/23] tests/intel/xe_oa: Add "oa-formats" subtest
+Date: Thu, 23 May 2024 20:14:28 -0700
+Message-ID: <20240524031439.106332-13-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240524031439.106332-1-ashutosh.dixit@intel.com>
 References: <20240524031439.106332-1-ashutosh.dixit@intel.com>
@@ -66,417 +66,336 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-"blocking", "polling" and "polling-small-buf".
+Add "oa-formats" subtest.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 463 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 463 insertions(+)
+ tests/intel/xe_oa.c | 550 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 550 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 50f6d14670..d7f00e78b9 100644
+index 97bbd13674..b7de6f7bd2 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -431,6 +431,24 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(int fd, int n)
- 	return hwe;
+@@ -290,6 +290,9 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
+ 		.bc_report = 0 },
+ };
+ 
++/* No A counters currently reserved/undefined for gen8+ so far */
++static bool undefined_a_counters[45];
++
+ static int drm_fd = -1;
+ static int sysfs = -1;
+ static int pm_fd = -1;
+@@ -476,6 +479,57 @@ write_u64_file(const char *path, uint64_t val)
+ 	fclose(f);
  }
  
-+static char *
-+pretty_print_oa_period(uint64_t oa_period_ns)
++static uint64_t
++read_report_ticks(const uint32_t *report, enum intel_xe_oa_format_name format)
 +{
-+	static char result[100];
-+	static const char *units[4] = { "ns", "us", "ms", "s" };
-+	double val = oa_period_ns;
-+	int iter = 0;
 +
-+	while (iter < (ARRAY_SIZE(units) - 1) &&
-+	       val >= 1000.0f) {
-+		val /= 1000.0f;
-+		iter++;
-+	}
++	struct oa_format fmt = get_oa_format(format);
 +
-+	snprintf(result, sizeof(result), "%.3f%s", val, units[iter]);
-+	return result;
++	return fmt.report_hdr_64bit ? *(uint64_t *)&report[6] : report[3];
 +}
 +
- static void
- __perf_close(int fd)
++/*
++ * t0 is a value sampled before t1. width is number of bits used to represent
++ * t0/t1. Normally t1 is greater than t0. In cases where t1 < t0 use this
++ * helper. Since the size of t1/t0 is already 64 bits, no special handling is
++ * needed for width = 64.
++ */
++static uint64_t
++elapsed_delta(uint64_t t1, uint64_t t0, uint32_t width)
++{
++	uint32_t max_bits = sizeof(t1) * 8;
++
++	igt_assert(width <= max_bits);
++
++	if (t1 < t0 && width != max_bits)
++		return ((1ULL << width) - t0) + t1;
++
++	return t1 - t0;
++}
++
++static uint64_t
++oa_tick_delta(const uint32_t *report1,
++	      const uint32_t *report0,
++	      enum intel_xe_oa_format_name format)
++{
++	return elapsed_delta(read_report_ticks(report1, format),
++			     read_report_ticks(report0, format), 32);
++}
++
++static void
++read_report_clock_ratios(const uint32_t *report,
++			      uint32_t *slice_freq_mhz,
++			      uint32_t *unslice_freq_mhz)
++{
++	uint32_t unslice_freq = report[0] & 0x1ff;
++	uint32_t slice_freq_low = (report[0] >> 25) & 0x7f;
++	uint32_t slice_freq_high = (report[0] >> 9) & 0x3;
++	uint32_t slice_freq = slice_freq_low | (slice_freq_high << 7);
++
++	*slice_freq_mhz = (slice_freq * 16666) / 1000;
++	*unslice_freq_mhz = (unslice_freq * 16666) / 1000;
++}
++
+ static uint32_t
+ report_reason(const uint32_t *report)
  {
-@@ -1721,6 +1739,432 @@ static void test_invalid_oa_exponent(void)
- 	}
+@@ -483,6 +537,27 @@ report_reason(const uint32_t *report)
+ 		OAREPORT_REASON_MASK);
  }
  
-+static int64_t
-+get_time(void)
++static const char *
++read_report_reason(const uint32_t *report)
 +{
-+	struct timespec ts;
++	uint32_t reason = report_reason(report);
 +
-+	clock_gettime(CLOCK_MONOTONIC, &ts);
-+
-+	return ts.tv_sec * 1000000000 + ts.tv_nsec;
++	if (reason & (1<<0))
++		return "timer";
++	else if (reason & (1<<1))
++	      return "internal trigger 1";
++	else if (reason & (1<<2))
++	      return "internal trigger 2";
++	else if (reason & (1<<3))
++	      return "context switch";
++	else if (reason & (1<<4))
++	      return "GO 1->0 transition (enter RC6)";
++	else if (reason & (1<<5))
++		return "[un]slice clock ratio change";
++	else
++		return "unknown";
 +}
 +
-+/**
-+ * SUBTEST: blocking
-+ * Description: Test blocking reads
-+ */
-+/* Note: The interface doesn't currently provide strict guarantees or control
-+ * over the upper bound for how long it might take for a POLLIN event after
-+ * some OA report is written by the OA unit.
-+ *
-+ * The plan is to add a property later that gives some control over the maximum
-+ * latency, but for now we expect it is tuned for a fairly low latency
-+ * suitable for applications wanting to provide live feedback for captured
-+ * metrics.
-+ *
-+ * At the time of writing this test the driver was using a fixed 200Hz hrtimer
-+ * regardless of the OA sampling exponent.
-+ *
-+ * There is no lower bound since a stream configured for periodic sampling may
-+ * still contain other automatically triggered reports.
-+ *
-+ * What we try and check for here is that blocking reads don't return EAGAIN
-+ * and that we aren't spending any significant time burning the cpu in
-+ * kernelspace.
-+ */
-+static void test_blocking(uint64_t requested_oa_period,
-+			  bool set_kernel_hrtimer,
-+			  uint64_t kernel_hrtimer,
-+			  const struct drm_xe_engine_class_instance *hwe)
+ static uint64_t
+ oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
+ {
+@@ -491,6 +566,17 @@ oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
+ 	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
+ }
+ 
++static uint64_t
++oa_timestamp_delta(const uint32_t *report1,
++		   const uint32_t *report0,
++		   enum intel_xe_oa_format_name format)
 +{
-+	int oa_exponent = max_oa_exponent_for_period_lte(requested_oa_period);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-+	uint64_t props[DRM_XE_OA_PROPERTY_MAX * 2];
-+	uint64_t *idx = props;
-+	struct intel_xe_oa_open_prop param;
-+	uint8_t buf[1024 * 1024];
-+	struct tms start_times;
-+	struct tms end_times;
-+	int64_t user_ns, kernel_ns;
-+	int64_t tick_ns = 1000000000 / sysconf(_SC_CLK_TCK);
-+	int64_t test_duration_ns = tick_ns * 100;
-+	int max_iterations = (test_duration_ns / oa_period) + 2;
-+	int n_extra_iterations = 0;
-+	int perf_fd;
++	uint32_t width = intel_graphics_ver(devid) >= IP_VER(12, 55) ? 56 : 32;
 +
-+	/* It's a bit tricky to put a lower limit here, but we expect a
-+	 * relatively low latency for seeing reports, while we don't currently
-+	 * give any control over this in the api.
-+	 *
-+	 * We assume a maximum latency of 6 millisecond to deliver a POLLIN and
-+	 * read() after a new sample is written (46ms per iteration) considering
-+	 * the knowledge that that the driver uses a 200Hz hrtimer (5ms period)
-+	 * to check for data and giving some time to read().
-+	 */
-+	int min_iterations = (test_duration_ns / (oa_period + kernel_hrtimer + kernel_hrtimer / 5));
-+	int64_t start, end;
-+	int n = 0;
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
++	return elapsed_delta(oa_timestamp(report1, format),
++			     oa_timestamp(report0, format), width);
++}
 +
-+	ADD_PROPS(props, idx, SAMPLE_OA, true);
-+	ADD_PROPS(props, idx, OA_METRIC_SET, test_set->perf_oa_metrics_set);
-+	ADD_PROPS(props, idx, OA_FORMAT, __ff(test_set->perf_oa_format));
-+	ADD_PROPS(props, idx, OA_PERIOD_EXPONENT, oa_exponent);
-+	ADD_PROPS(props, idx, OA_DISABLED, true);
-+	ADD_PROPS(props, idx, OA_UNIT_ID, 0);
-+	ADD_PROPS(props, idx, OA_ENGINE_INSTANCE, hwe->engine_instance);
+ static uint64_t
+ timebase_scale(uint64_t delta)
+ {
+@@ -527,6 +613,191 @@ oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
+ 	return false;
+ }
+ 
++static uint64_t
++read_40bit_a_counter(const uint32_t *report,
++			  enum intel_xe_oa_format_name fmt, int a_id)
++{
++	struct oa_format format = get_oa_format(fmt);
++	uint8_t *a40_high = (((uint8_t *)report) + format.a40_high_off);
++	uint32_t *a40_low = (uint32_t *)(((uint8_t *)report) +
++					 format.a40_low_off);
++	uint64_t high = (uint64_t)(a40_high[a_id]) << 32;
 +
-+	param.num_properties = (idx - props) / 2;
-+	param.properties_ptr = to_user_pointer(props);
++	return a40_low[a_id] | high;
++}
 +
-+	perf_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+        set_fd_flags(perf_fd, O_CLOEXEC);
++static uint64_t
++xehpsdv_read_64bit_a_counter(const uint32_t *report, enum intel_xe_oa_format_name fmt, int a_id)
++{
++	struct oa_format format = get_oa_format(fmt);
++	uint64_t *a64 = (uint64_t *)(((uint8_t *)report) + format.a64_off);
 +
-+	times(&start_times);
++	return a64[a_id];
++}
 +
-+	igt_debug("tick length = %dns, test duration = %"PRIu64"ns, min iter. = %d,"
-+		  " estimated max iter. = %d, oa_period = %s\n",
-+		  (int)tick_ns, test_duration_ns,
-+		  min_iterations, max_iterations,
-+		  pretty_print_oa_period(oa_period));
++static uint64_t
++get_40bit_a_delta(uint64_t value0, uint64_t value1)
++{
++	if (value0 > value1)
++		return (1ULL << 40) + value1 - value0;
++	else
++		return value1 - value0;
++}
 +
-+	/* In the loop we perform blocking polls while the HW is sampling at
-+	 * ~25Hz, with the expectation that we spend most of our time blocked
-+	 * in the kernel, and shouldn't be burning cpu cycles in the kernel in
-+	 * association with this process (verified by looking at stime before
-+	 * and after loop).
-+	 *
-+	 * We're looking to assert that less than 1% of the test duration is
-+	 * spent in the kernel dealing with polling and read()ing.
-+	 *
-+	 * The test runs for a relatively long time considering the very low
-+	 * resolution of stime in ticks of typically 10 milliseconds. Since we
-+	 * don't know the fractional part of tick values we read from userspace
-+	 * so our minimum threshold needs to be >= one tick since any
-+	 * measurement might really be +- tick_ns (assuming we effectively get
-+	 * floor(real_stime)).
-+	 *
-+	 * We Loop for 1000 x tick_ns so one tick corresponds to 0.1%
-+	 *
-+	 * Also enable the stream just before poll/read to minimize
-+	 * the error delta.
-+	 */
-+	start = get_time();
-+	do_ioctl(perf_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
-+		bool timer_report_read = false;
-+		bool non_timer_report_read = false;
-+		int ret;
++static void
++accumulate_uint64(int a_index,
++		  const uint32_t *report0,
++		  const uint32_t *report1,
++		  enum intel_xe_oa_format_name format,
++		  uint64_t *delta)
++{
++	uint64_t value0 = xehpsdv_read_64bit_a_counter(report0, format, a_index),
++		 value1 = xehpsdv_read_64bit_a_counter(report1, format, a_index);
 +
-+		while ((ret = read(perf_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+		igt_assert(ret > 0);
++	*delta += (value1 - value0);
++}
 +
-+		for (int offset = 0; offset < ret; offset += format_size) {
-+			uint32_t *report = (void *)(buf + offset);
++/* The TestOa metric set is designed so */
++static void
++sanity_check_reports(const uint32_t *oa_report0, const uint32_t *oa_report1,
++		     enum intel_xe_oa_format_name fmt)
++{
++	struct oa_format format = get_oa_format(fmt);
++	uint64_t time_delta = timebase_scale(oa_timestamp_delta(oa_report1,
++								oa_report0,
++								fmt));
++	uint64_t clock_delta = oa_tick_delta(oa_report1, oa_report0, fmt);
++	uint64_t max_delta;
++	uint64_t freq;
++	uint32_t *rpt0_b = (uint32_t *)(((uint8_t *)oa_report0) +
++					format.b_off);
++	uint32_t *rpt1_b = (uint32_t *)(((uint8_t *)oa_report1) +
++					format.b_off);
++	uint32_t b;
++	uint32_t ref;
 +
-+			if (oa_report_is_periodic(oa_exponent, report))
-+				timer_report_read = true;
-+			else
-+				non_timer_report_read = true;
-+		}
++	igt_debug("report type: %s->%s\n",
++		  read_report_reason(oa_report0),
++		  read_report_reason(oa_report1));
 +
-+		if (non_timer_report_read && !timer_report_read)
-+			n_extra_iterations++;
++	freq = time_delta ? (clock_delta * 1000) / time_delta : 0;
++	igt_debug("freq = %"PRIu64"\n", freq);
 +
-+		n++;
++	igt_debug("clock delta = %"PRIu64"\n", clock_delta);
++
++	max_delta = clock_delta * intel_xe_perf->devinfo.n_eus;
++
++	/* Gen8+ has some 40bit A counters... */
++	for (int j = format.first_a40; j < format.n_a40 + format.first_a40; j++) {
++		uint64_t value0 = read_40bit_a_counter(oa_report0, fmt, j);
++		uint64_t value1 = read_40bit_a_counter(oa_report1, fmt, j);
++		uint64_t delta = get_40bit_a_delta(value0, value1);
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A40_%d: delta = %"PRIu64"\n", j, delta);
++		igt_assert_f(delta <= max_delta,
++			     "A40_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
++			     j, delta, max_delta);
 +	}
 +
-+	times(&end_times);
++	for (int j = 0; j < format.n_a64; j++) {
++		uint64_t delta = 0;
 +
-+	/* Using nanosecond units is fairly silly here, given the tick in-
-+	 * precision - ah well, it's consistent with the get_time() units.
-+	 */
-+	user_ns = (end_times.tms_utime - start_times.tms_utime) * tick_ns;
-+	kernel_ns = (end_times.tms_stime - start_times.tms_stime) * tick_ns;
++		accumulate_uint64(j, oa_report0, oa_report1, fmt, &delta);
 +
-+	igt_debug("%d blocking reads during test with %"PRIu64" Hz OA sampling (expect no more than %d)\n",
-+		  n, NSEC_PER_SEC / oa_period, max_iterations);
-+	igt_debug("%d extra iterations seen, not related to periodic sampling (e.g. context switches)\n",
-+		  n_extra_iterations);
-+	igt_debug("time in userspace = %"PRIu64"ns (+-%dns) (start utime = %d, end = %d)\n",
-+		  user_ns, (int)tick_ns,
-+		  (int)start_times.tms_utime, (int)end_times.tms_utime);
-+	igt_debug("time in kernelspace = %"PRIu64"ns (+-%dns) (start stime = %d, end = %d)\n",
-+		  kernel_ns, (int)tick_ns,
-+		  (int)start_times.tms_stime, (int)end_times.tms_stime);
++		if (undefined_a_counters[j])
++			continue;
 +
-+	/* With completely broken blocking (but also not returning an error) we
-+	 * could end up with an open loop,
-+	 */
-+	igt_assert(n <= (max_iterations + n_extra_iterations));
-+
-+	/* Make sure the driver is reporting new samples with a reasonably
-+	 * low latency...
-+	 */
-+	igt_assert(n > (min_iterations + n_extra_iterations));
-+
-+	if (!set_kernel_hrtimer)
-+		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
-+
-+	__perf_close(perf_fd);
-+}
-+
-+/**
-+ * SUBTEST: polling
-+ * Description: Test polled reads
-+ */
-+static void test_polling(uint64_t requested_oa_period,
-+			 bool set_kernel_hrtimer,
-+			 uint64_t kernel_hrtimer,
-+			 const struct drm_xe_engine_class_instance *hwe)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(requested_oa_period);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-+	uint64_t props[DRM_XE_OA_PROPERTY_MAX * 2];
-+	uint64_t *idx = props;
-+	struct intel_xe_oa_open_prop param;
-+	uint8_t buf[1024 * 1024];
-+	struct tms start_times;
-+	struct tms end_times;
-+	int64_t user_ns, kernel_ns;
-+	int64_t tick_ns = 1000000000 / sysconf(_SC_CLK_TCK);
-+	int64_t test_duration_ns = tick_ns * 100;
-+
-+	int max_iterations = (test_duration_ns / oa_period) + 2;
-+	int n_extra_iterations = 0;
-+
-+	/* It's a bit tricky to put a lower limit here, but we expect a
-+	 * relatively low latency for seeing reports.
-+	 *
-+	 * We assume a maximum latency of kernel_hrtimer + some margin
-+	 * to deliver a POLLIN and read() after a new sample is
-+	 * written (40ms + hrtimer + margin per iteration) considering
-+	 * the knowledge that that the driver uses a 200Hz hrtimer
-+	 * (5ms period) to check for data and giving some time to
-+	 * read().
-+	 */
-+	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
-+	int64_t start, end;
-+	int n = 0;
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+
-+	ADD_PROPS(props, idx, SAMPLE_OA, true);
-+	ADD_PROPS(props, idx, OA_METRIC_SET, test_set->perf_oa_metrics_set);
-+	ADD_PROPS(props, idx, OA_FORMAT, __ff(test_set->perf_oa_format));
-+	ADD_PROPS(props, idx, OA_PERIOD_EXPONENT, oa_exponent);
-+	ADD_PROPS(props, idx, OA_DISABLED, true);
-+	ADD_PROPS(props, idx, OA_UNIT_ID, 0);
-+	ADD_PROPS(props, idx, OA_ENGINE_INSTANCE, hwe->engine_instance);
-+
-+	param.num_properties = (idx - props) / 2;
-+	param.properties_ptr = to_user_pointer(props);
-+
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-+
-+	times(&start_times);
-+
-+	igt_debug("tick length = %dns, oa period = %s, "
-+		  "test duration = %"PRIu64"ns, min iter. = %d, max iter. = %d\n",
-+		  (int)tick_ns, pretty_print_oa_period(oa_period), test_duration_ns,
-+		  min_iterations, max_iterations);
-+
-+	/* In the loop we perform blocking polls while the HW is sampling at
-+	 * ~25Hz, with the expectation that we spend most of our time blocked
-+	 * in the kernel, and shouldn't be burning cpu cycles in the kernel in
-+	 * association with this process (verified by looking at stime before
-+	 * and after loop).
-+	 *
-+	 * We're looking to assert that less than 1% of the test duration is
-+	 * spent in the kernel dealing with polling and read()ing.
-+	 *
-+	 * The test runs for a relatively long time considering the very low
-+	 * resolution of stime in ticks of typically 10 milliseconds. Since we
-+	 * don't know the fractional part of tick values we read from userspace
-+	 * so our minimum threshold needs to be >= one tick since any
-+	 * measurement might really be +- tick_ns (assuming we effectively get
-+	 * floor(real_stime)).
-+	 *
-+	 * We Loop for 1000 x tick_ns so one tick corresponds to 0.1%
-+	 *
-+	 * Also enable the stream just before poll/read to minimize
-+	 * the error delta.
-+	 */
-+	start = get_time();
-+	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
-+		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
-+		bool timer_report_read = false;
-+		bool non_timer_report_read = false;
-+		int ret;
-+
-+		while ((ret = poll(&pollfd, 1, -1)) < 0 && errno == EINTR)
-+			;
-+		igt_assert_eq(ret, 1);
-+		igt_assert(pollfd.revents & POLLIN);
-+
-+		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		/* Don't expect to see EAGAIN if we've had a POLLIN event
-+		 *
-+		 * XXX: actually this is technically overly strict since we do
-+		 * knowingly allow false positive POLLIN events. At least in
-+		 * the future when supporting context filtering of metrics for
-+		 * Gen8+ handled in the kernel then POLLIN events may be
-+		 * delivered when we know there are pending reports to process
-+		 * but before we've done any filtering to know for certain that
-+		 * any reports are destined to be copied to userspace.
-+		 *
-+		 * Still, for now it's a reasonable sanity check.
-+		 */
-+		if (ret < 0)
-+			igt_debug("Unexpected error when reading after poll = %d\n", errno);
-+		igt_assert_neq(ret, -1);
-+
-+		/* For Haswell reports don't contain a well defined reason
-+		 * field we so assume all reports to be 'periodic'. For gen8+
-+		 * we want to to consider that the HW automatically writes some
-+		 * non periodic reports (e.g. on context switch) which might
-+		 * lead to more successful read()s than expected due to
-+		 * periodic sampling and we don't want these extra reads to
-+		 * cause the test to fail...
-+		 */
-+		for (int offset = 0; offset < ret; offset += format_size) {
-+			uint32_t *report = (void *)(buf + offset);
-+
-+			if (oa_report_is_periodic(oa_exponent, report))
-+				timer_report_read = true;
-+			else
-+				non_timer_report_read = true;
-+		}
-+
-+		if (non_timer_report_read && !timer_report_read)
-+			n_extra_iterations++;
-+
-+		/* At this point, after consuming pending reports (and hoping
-+		 * the scheduler hasn't stopped us for too long) we now expect
-+		 * EAGAIN on read. While this works most of the times, there are
-+		 * some rare failures when the OA period passed to this test is
-+		 * very small (say 500 us) and that results in some valid
-+		 * reports here. To weed out those rare occurences we assert
-+		 * only if the OA period is >= 40 ms because 40 ms has withstood
-+		 * the test of time on most platforms (ref: subtest: polling).
-+		 */
-+		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		if (requested_oa_period >= 40000000) {
-+			igt_assert_eq(ret, -1);
-+			igt_assert_eq(errno, EAGAIN);
-+		}
-+
-+		n++;
++		igt_debug("A64_%d: delta = %"PRIu64"\n", format.first_a + j, delta);
++		igt_assert_f(delta <= max_delta,
++			     "A64_%d: delta = %"PRIu64", max_delta = %"PRIu64"\n",
++			     format.first_a + j, delta, max_delta);
 +	}
 +
-+	times(&end_times);
++	for (int j = 0; j < format.n_a; j++) {
++		uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
++					    format.a_off);
++		uint32_t *a1 = (uint32_t *)(((uint8_t *)oa_report1) +
++					    format.a_off);
++		int a_id = format.first_a + j;
++		uint32_t delta = a1[j] - a0[j];
 +
-+	/* Using nanosecond units is fairly silly here, given the tick in-
-+	 * precision - ah well, it's consistent with the get_time() units.
++		if (undefined_a_counters[a_id])
++			continue;
++
++		igt_debug("A%d: delta = %"PRIu32"\n", a_id, delta);
++		igt_assert_f(delta <= max_delta,
++			     "A%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
++			     a_id, delta, max_delta);
++	}
++
++	/* The TestOa metric set defines all B counters to be a
++	 * multiple of the gpu clock
 +	 */
-+	user_ns = (end_times.tms_utime - start_times.tms_utime) * tick_ns;
-+	kernel_ns = (end_times.tms_stime - start_times.tms_stime) * tick_ns;
++	if (format.n_b && (format.oa_type == DRM_XE_OA_FMT_TYPE_OAG || format.oa_type == DRM_XE_OA_FMT_TYPE_OAR)) {
++		if (clock_delta > 0) {
++			b = rpt1_b[0] - rpt0_b[0];
++			igt_debug("B0: delta = %"PRIu32"\n", b);
++			igt_assert_eq(b, 0);
 +
-+	igt_debug("%d non-blocking reads during test with %"PRIu64" Hz OA sampling (expect no more than %d)\n",
-+		  n, NSEC_PER_SEC / oa_period, max_iterations);
-+	igt_debug("%d extra iterations seen, not related to periodic sampling (e.g. context switches)\n",
-+		  n_extra_iterations);
-+	igt_debug("time in userspace = %"PRIu64"ns (+-%dns) (start utime = %d, end = %d)\n",
-+		  user_ns, (int)tick_ns,
-+		  (int)start_times.tms_utime, (int)end_times.tms_utime);
-+	igt_debug("time in kernelspace = %"PRIu64"ns (+-%dns) (start stime = %d, end = %d)\n",
-+		  kernel_ns, (int)tick_ns,
-+		  (int)start_times.tms_stime, (int)end_times.tms_stime);
++			b = rpt1_b[1] - rpt0_b[1];
++			igt_debug("B1: delta = %"PRIu32"\n", b);
++			igt_assert_eq(b, clock_delta);
 +
-+	/* With completely broken blocking while polling (but still somehow
-+	 * reporting a POLLIN event) we could end up with an open loop.
-+	 */
-+	igt_assert(n <= (max_iterations + n_extra_iterations));
++			b = rpt1_b[2] - rpt0_b[2];
++			igt_debug("B2: delta = %"PRIu32"\n", b);
++			igt_assert_eq(b, clock_delta);
 +
-+	/* Make sure the driver is reporting new samples with a reasonably
-+	 * low latency...
-+	 */
-+	igt_assert(n > (min_iterations + n_extra_iterations));
++			b = rpt1_b[3] - rpt0_b[3];
++			ref = clock_delta / 2;
++			igt_debug("B3: delta = %"PRIu32"\n", b);
++			igt_assert(b >= ref - 1 && b <= ref + 1);
 +
-+	if (!set_kernel_hrtimer)
-+		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
++			b = rpt1_b[4] - rpt0_b[4];
++			ref = clock_delta / 3;
++			igt_debug("B4: delta = %"PRIu32"\n", b);
++			igt_assert(b >= ref - 1 && b <= ref + 1);
 +
-+	__perf_close(stream_fd);
++			b = rpt1_b[5] - rpt0_b[5];
++			ref = clock_delta / 3;
++			igt_debug("B5: delta = %"PRIu32"\n", b);
++			igt_assert(b >= ref - 1 && b <= ref + 1);
++
++			b = rpt1_b[6] - rpt0_b[6];
++			ref = clock_delta / 6;
++			igt_debug("B6: delta = %"PRIu32"\n", b);
++			igt_assert(b >= ref - 1 && b <= ref + 1);
++
++			b = rpt1_b[7] - rpt0_b[7];
++			ref = clock_delta * 2 / 3;
++			igt_debug("B7: delta = %"PRIu32"\n", b);
++			igt_assert(b >= ref - 1 && b <= ref + 1);
++		} else {
++			for (int j = 0; j < format.n_b; j++) {
++				b = rpt1_b[j] - rpt0_b[j];
++				igt_debug("B%i: delta = %"PRIu32"\n", j, b);
++				igt_assert_eq(b, 0);
++			}
++		}
++	}
++
++	for (int j = 0; j < format.n_c; j++) {
++		uint32_t *c0 = (uint32_t *)(((uint8_t *)oa_report0) +
++					    format.c_off);
++		uint32_t *c1 = (uint32_t *)(((uint8_t *)oa_report1) +
++					    format.c_off);
++		uint32_t delta = c1[j] - c0[j];
++
++		igt_debug("C%d: delta = %"PRIu32", max_delta=%"PRIu64"\n",
++			  j, delta, max_delta);
++		igt_assert_f(delta <= max_delta,
++			     "C%d: delta = %"PRIu32", max_delta = %"PRIu64"\n",
++			     j, delta, max_delta);
++	}
 +}
 +
-+/**
-+ * SUBTEST: polling-small-buf
-+ * Description: Test polled read with buffer size smaller than available data
-+ */
-+static void test_polling_small_buf(void)
+ static bool
+ init_sys_info(void)
+ {
+@@ -815,6 +1086,264 @@ read_2_oa_reports(int format_id,
+ 	igt_assert(!"reached");
+ }
+ 
++static void
++open_and_read_2_oa_reports(int format_id,
++			   int exponent,
++			   uint32_t *oa_report0,
++			   uint32_t *oa_report1,
++			   bool timer_only,
++			   const struct drm_xe_engine_class_instance *hwe)
 +{
-+	int oa_exponent = max_oa_exponent_for_period_lte(40 * 1000); /* 40us */
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
 +	uint64_t properties[] = {
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
 +
@@ -484,83 +403,288 @@ index 50f6d14670..d7f00e78b9 100644
 +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
 +
 +		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(format_id),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++
 +	};
 +	struct intel_xe_oa_open_prop param = {
 +		.num_properties = ARRAY_SIZE(properties) / 2,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	uint32_t test_duration = 80 * 1000 * 1000;
-+	int sample_size = get_oa_format(default_test_set->perf_oa_format).size;
-+	int n_expected_reports = test_duration / oa_exponent_to_ns(oa_exponent);
-+	int n_expect_read_bytes = n_expected_reports * sample_size;
-+	struct timespec ts = {};
-+	int n_bytes_read = 0;
-+	uint32_t n_polls = 0;
 +
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-+	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
++	stream_fd = __perf_open(drm_fd, &param, false);
++	set_fd_flags(stream_fd, O_CLOEXEC);
 +
-+	while (igt_nsec_elapsed(&ts) < test_duration) {
-+		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
-+
-+		ppoll(&pollfd, 1, NULL, NULL);
-+		if (pollfd.revents & POLLIN) {
-+			uint8_t buf[1024];
-+			int ret;
-+
-+			ret = read(stream_fd, buf, sizeof(buf));
-+			if (ret >= 0)
-+				n_bytes_read += ret;
-+		}
-+
-+		n_polls++;
-+	}
-+
-+	igt_info("Read %d expected %d (%.2f%% of the expected number), polls=%u\n",
-+		 n_bytes_read, n_expect_read_bytes,
-+		 n_bytes_read * 100.0f / n_expect_read_bytes,
-+		 n_polls);
++	read_2_oa_reports(format_id, exponent,
++			  oa_report0, oa_report1, timer_only);
 +
 +	__perf_close(stream_fd);
-+
-+	igt_assert(abs(n_expect_read_bytes - n_bytes_read) <
-+		   0.20 * n_expect_read_bytes);
 +}
 +
- /**
-  * SUBTEST: buffer-fill
-  * Description: Test filling, wraparound and overflow of OA buffer
-@@ -2551,6 +2995,25 @@ igt_main
- 		__for_one_hwe_in_oag(hwe)
- 			test_enable_disable(hwe);
- 
-+	igt_subtest_with_dynamic("blocking") {
-+		__for_one_hwe_in_oag(hwe)
-+			test_blocking(40 * 1000 * 1000 /* 40ms oa period */,
-+				      false /* set_kernel_hrtimer */,
-+				      5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
-+				      hwe);
++static void
++print_reports(uint32_t *oa_report0, uint32_t *oa_report1, int fmt)
++{
++	struct oa_format format = get_oa_format(fmt);
++	uint64_t ts0 = oa_timestamp(oa_report0, fmt);
++	uint64_t ts1 = oa_timestamp(oa_report1, fmt);
++
++	igt_debug("TIMESTAMP: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
++		  ts0, ts1, ts1 - ts0);
++
++	{
++		uint64_t clock0 = read_report_ticks(oa_report0, fmt);
++		uint64_t clock1 = read_report_ticks(oa_report1, fmt);
++
++		igt_debug("CLOCK: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
++			  clock0, clock1, clock1 - clock0);
 +	}
 +
-+	igt_subtest_with_dynamic("polling") {
-+		__for_one_hwe_in_oag(hwe)
-+			test_polling(40 * 1000 * 1000 /* 40ms oa period */,
-+				     false /* set_kernel_hrtimer */,
-+				     5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
-+				     hwe);
++	{
++		uint32_t slice_freq0, slice_freq1, unslice_freq0, unslice_freq1;
++		const char *reason0 = read_report_reason(oa_report0);
++		const char *reason1 = read_report_reason(oa_report1);
++
++		igt_debug("CTX ID: 1st = %"PRIu32", 2nd = %"PRIu32"\n",
++			  oa_report0[2], oa_report1[2]);
++
++		read_report_clock_ratios(oa_report0,
++					 &slice_freq0, &unslice_freq0);
++		read_report_clock_ratios(oa_report1,
++					 &slice_freq1, &unslice_freq1);
++
++		igt_debug("SLICE CLK: 1st = %umhz, 2nd = %umhz, delta = %d\n",
++			  slice_freq0, slice_freq1,
++			  ((int)slice_freq1 - (int)slice_freq0));
++		igt_debug("UNSLICE CLK: 1st = %umhz, 2nd = %umhz, delta = %d\n",
++			  unslice_freq0, unslice_freq1,
++			  ((int)unslice_freq1 - (int)unslice_freq0));
++
++		igt_debug("REASONS: 1st = \"%s\", 2nd = \"%s\"\n", reason0, reason1);
 +	}
 +
-+	igt_subtest("polling-small-buf")
-+		test_polling_small_buf();
++	/* Gen8+ has some 40bit A counters... */
++	for (int j = 0; j < format.n_a40; j++) {
++		uint64_t value0 = read_40bit_a_counter(oa_report0, fmt, j);
++		uint64_t value1 = read_40bit_a_counter(oa_report1, fmt, j);
++		uint64_t delta = get_40bit_a_delta(value0, value1);
 +
- 	igt_subtest("short-reads")
- 		test_short_reads();
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
++			  j, value0, value1, delta);
++	}
++
++	for (int j = 0; j < format.n_a64; j++) {
++		uint64_t value0 = xehpsdv_read_64bit_a_counter(oa_report0, fmt, j);
++		uint64_t value1 = xehpsdv_read_64bit_a_counter(oa_report1, fmt, j);
++		uint64_t delta = value1 - value0;
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A_64%d: 1st = %"PRIu64", 2nd = %"PRIu64", delta = %"PRIu64"\n",
++			  format.first_a + j, value0, value1, delta);
++	}
++
++	for (int j = 0; j < format.n_a; j++) {
++		uint32_t *a0 = (uint32_t *)(((uint8_t *)oa_report0) +
++					    format.a_off);
++		uint32_t *a1 = (uint32_t *)(((uint8_t *)oa_report1) +
++					    format.a_off);
++		int a_id = format.first_a + j;
++		uint32_t delta = a1[j] - a0[j];
++
++		if (undefined_a_counters[a_id])
++			continue;
++
++		igt_debug("A%d: 1st = %"PRIu32", 2nd = %"PRIu32", delta = %"PRIu32"\n",
++			  a_id, a0[j], a1[j], delta);
++	}
++
++	for (int j = 0; j < format.n_b; j++) {
++		uint32_t *b0 = (uint32_t *)(((uint8_t *)oa_report0) +
++					    format.b_off);
++		uint32_t *b1 = (uint32_t *)(((uint8_t *)oa_report1) +
++					    format.b_off);
++		uint32_t delta = b1[j] - b0[j];
++
++		igt_debug("B%d: 1st = %"PRIu32", 2nd = %"PRIu32", delta = %"PRIu32"\n",
++			  j, b0[j], b1[j], delta);
++	}
++
++	for (int j = 0; j < format.n_c; j++) {
++		uint32_t *c0 = (uint32_t *)(((uint8_t *)oa_report0) +
++					    format.c_off);
++		uint32_t *c1 = (uint32_t *)(((uint8_t *)oa_report1) +
++					    format.c_off);
++		uint32_t delta = c1[j] - c0[j];
++
++		igt_debug("C%d: 1st = %"PRIu32", 2nd = %"PRIu32", delta = %"PRIu32"\n",
++			  j, c0[j], c1[j], delta);
++	}
++}
++
++/* Debug function, only useful when reports don't make sense. */
++#if 0
++static void
++print_report(uint32_t *report, int fmt)
++{
++	struct oa_format format = get_oa_format(fmt);
++
++	igt_debug("TIMESTAMP: %"PRIu64"\n", oa_timestamp(report, fmt));
++
++	{
++		uint64_t clock = read_report_ticks(report, fmt);
++
++		igt_debug("CLOCK: %"PRIu64"\n", clock);
++	}
++
++	{
++		uint32_t slice_freq, unslice_freq;
++		const char *reason = read_report_reason(report);
++
++		read_report_clock_ratios(report, &slice_freq, &unslice_freq);
++
++		igt_debug("SLICE CLK: %umhz\n", slice_freq);
++		igt_debug("UNSLICE CLK: %umhz\n", unslice_freq);
++		igt_debug("REASON: \"%s\"\n", reason);
++		igt_debug("CTX ID: %"PRIu32"/%"PRIx32"\n", report[2], report[2]);
++	}
++
++	/* Gen8+ has some 40bit A counters... */
++	for (int j = 0; j < format.n_a40; j++) {
++		uint64_t value = read_40bit_a_counter(report, fmt, j);
++
++		if (undefined_a_counters[j])
++			continue;
++
++		igt_debug("A%d: %"PRIu64"\n", j, value);
++	}
++
++	for (int j = 0; j < format.n_a; j++) {
++		uint32_t *a = (uint32_t *)(((uint8_t *)report) +
++					   format.a_off);
++		int a_id = format.first_a + j;
++
++		if (undefined_a_counters[a_id])
++			continue;
++
++		igt_debug("A%d: %"PRIu32"\n", a_id, a[j]);
++	}
++
++	for (int j = 0; j < format.n_b; j++) {
++		uint32_t *b = (uint32_t *)(((uint8_t *)report) +
++					   format.b_off);
++
++		igt_debug("B%d: %"PRIu32"\n", j, b[j]);
++	}
++
++	for (int j = 0; j < format.n_c; j++) {
++		uint32_t *c = (uint32_t *)(((uint8_t *)report) +
++					   format.c_off);
++
++		igt_debug("C%d: %"PRIu32"\n", j, c[j]);
++	}
++}
++#endif
++
++static bool
++hwe_supports_oa_type(int oa_type, const struct drm_xe_engine_class_instance *hwe)
++{
++	switch (oa_type) {
++	case DRM_XE_OA_FMT_TYPE_OAM:
++	case DRM_XE_OA_FMT_TYPE_OAM_MPEC:
++		return hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE ||
++		       hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++	case DRM_XE_OA_FMT_TYPE_OAG:
++	case DRM_XE_OA_FMT_TYPE_OAR:
++		return hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER;
++	case DRM_XE_OA_FMT_TYPE_OAC:
++		return hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE;
++	case DRM_XE_OA_FMT_TYPE_PEC:
++		return hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
++		       hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE;
++	default:
++		return false;
++	}
++
++}
++
++/**
++ * SUBTEST: oa-formats
++ * Description: Test that supported OA formats work as expected
++ */
++static void test_oa_formats(const struct drm_xe_engine_class_instance *hwe)
++{
++	for (int i = 0; i < XE_OA_FORMAT_MAX; i++) {
++		struct oa_format format = get_oa_format(i);
++		uint32_t oa_report0[format.size / 4];
++		uint32_t oa_report1[format.size / 4];
++
++		if (!format.name) /* sparse, indexed by ID */
++			continue;
++
++		if (!hwe_supports_oa_type(format.oa_type, hwe))
++			continue;
++
++		igt_debug("Checking OA format %s\n", format.name);
++
++		open_and_read_2_oa_reports(i,
++					   oa_exp_1_millisec,
++					   oa_report0,
++					   oa_report1,
++					   false, /* timer reports only */
++					   hwe);
++
++		print_reports(oa_report0, oa_report1, i);
++		sanity_check_reports(oa_report0, oa_report1, i);
++	}
++}
++
++
+ static unsigned read_xe_module_ref(void)
+ {
+ 	FILE *fp = fopen("/proc/modules", "r");
+@@ -931,8 +1460,25 @@ test_sysctl_defaults(void)
+ 	igt_assert_eq(paranoid, 1);
+ }
  
++#define __for_one_render_engine_0(hwe) \
++	xe_for_each_engine(drm_fd, hwe) \
++		if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) \
++			break; \
++	for_each_if(hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) \
++		igt_dynamic_f("rcs-%d", hwe->engine_instance)
++
++#define __for_one_render_engine(hwe)	      \
++	for (int m = 0, done = 0; !done; m++) \
++		for_each_if(m < xe_number_engines(drm_fd) && \
++			    (hwe = &xe_engine(drm_fd, m)->instance) && \
++			    hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER && \
++			    (done = 1)) \
++			igt_dynamic_f("rcs-%d", hwe->engine_instance)
++
+ igt_main
+ {
++	struct drm_xe_engine_class_instance *hwe = NULL;
++
+ 	igt_fixture {
+ 		struct stat sb;
+ 
+@@ -983,6 +1529,10 @@ igt_main
+ 	igt_subtest("missing-sample-flags")
+ 		test_missing_sample_flags();
+ 
++	igt_subtest_with_dynamic("oa-formats")
++		__for_one_render_engine(hwe)
++			test_oa_formats(hwe);
++
+ 	igt_fixture {
+ 		/* leave sysctl options in their default state... */
+ 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 -- 
 2.41.0
 
