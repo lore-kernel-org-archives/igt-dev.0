@@ -4,70 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F68C25B79
-	for <igt-dev@archiver.kernel.org>; Sat, 25 May 2024 05:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 983E5C25B78
+	for <igt-dev@archiver.kernel.org>; Sat, 25 May 2024 06:02:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7322110E011;
-	Sat, 25 May 2024 05:44:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Co6Wdjal";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3711B10E011
- for <igt-dev@lists.freedesktop.org>; Sat, 25 May 2024 05:44:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716615876; x=1748151876;
- h=date:from:to:cc:subject:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=JapoDATcBZSjVzh1MbHNR+nZEex7kTZrSvfNwXn5OWg=;
- b=Co6Wdjal3H7hGyGfNccLKxWGiw/5pATiR+I6sprg6y3pJT3dFF3Rs2/v
- 1aDWkdEXmeENzHxqKhpf32hITuxphHT9uvTHMKalwICBHRAzASCHjF3X9
- RAzcrF7GZXQvrMTOdNC0qeL1XPj6qYxxncdrbzgPrQxUDDHQ/Chskz6jf
- z+cjfA/92LGGd0KYRJKb/1Va9rtes4FrGrH8ye232bSOc0F/l/3TBT2d9
- 4cMq8YIwadCtJNzQdlmTC0m4ACfXgUDHxsRLjcZ67gqZYW6OJXUa76qeF
- N493BOC0JRfujYkB0MLwSyx/IRPBpu2r8ntBTY/x1JZ5tyTSYh7mcm7S8 Q==;
-X-CSE-ConnectionGUID: 3JpUQHrfQQ6qnN9Us5RQSQ==
-X-CSE-MsgGUID: Z7TaxY45QCSQWstsT26QPw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11082"; a="12872262"
-X-IronPort-AV: E=Sophos;i="6.08,187,1712646000"; d="scan'208";a="12872262"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 May 2024 22:44:35 -0700
-X-CSE-ConnectionGUID: FDYWKmaLT+65KK9tI3UGhw==
-X-CSE-MsgGUID: fSDS1BDESgmbprPJjlbX1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,187,1712646000"; d="scan'208";a="34320213"
-Received: from linux.intel.com ([10.54.29.200])
- by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 May 2024 22:44:34 -0700
-Received: from maurocar-mobl2 (maurocar-mobl2.ger.corp.intel.com
- [10.245.244.79])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by linux.intel.com (Postfix) with ESMTPS id ED7AE20BF42F;
- Fri, 24 May 2024 22:44:32 -0700 (PDT)
-Date: Sat, 25 May 2024 07:44:30 +0200
-From: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- katarzyna.piecielska@intel.com
-Subject: Re: [PATCH i-g-t v4] tools/mk_detect_intel_gpu: add a tool to
- detect Intel GPUs from their PCI IDs
-Message-ID: <20240525074430.2cef0dbd@maurocar-mobl2>
-In-Reply-To: <87o78voaqn.fsf@intel.com>
-References: <20240522120240.48463-1-mauro.chehab@linux.intel.com>
- <87a5kiqa6l.fsf@intel.com> <875xv6q8ob.fsf@intel.com>
- <20240522144627.tdiadqyfgk67ox55@kamilkon-DESK.igk.intel.com>
- <87r0dtouhu.fsf@intel.com> <20240523103558.42876c98@maurocar-mobl2>
- <87le40q4gi.fsf@intel.com>
- <20240523173123.tu6rghsgsqkptrmm@kamilkon-DESK.igk.intel.com>
- <87o78voaqn.fsf@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7DB510E021;
+	Sat, 25 May 2024 06:02:18 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E07C710E011;
+ Sat, 25 May 2024 06:02:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3614289130776551552=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tools/mk=5Fdetect=5Fintel=5Fgp?=
+ =?utf-8?q?u=3A_add_a_tool_to_detect_Intel_GPUs_from_their_PCI_IDs_=28rev2?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mauro Carvalho Chehab" <mauro.chehab@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 25 May 2024 06:02:17 -0000
+Message-ID: <171661693787.2210639.8923913649296760274@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240525052352.11741-2-mauro.chehab@linux.intel.com>
+In-Reply-To: <20240525052352.11741-2-mauro.chehab@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,68 +38,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 24 May 2024 11:49:36 +0300
-Jani Nikula <jani.nikula@intel.com> wrote:
+--===============3614289130776551552==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> On Thu, 23 May 2024, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-> > Maybe this should/may be added to scripts?
-> > I do find it usefull to have a little script checks,
-> > without much dependancy on other libs/tools. I would
-> > also want to have a way to semi-automatically update
-> > it later on, where new devices will be added.  
-> 
-> I never questioned the usefulness of such a tool. Only the
-> implementation, and how perl/make are not aligned with the IGT project,
-> and the constant maintenance burden all of this brings.
+== Series Details ==
 
-Maintenance is required only when the macros to define PCI IDs at the
-i915 driver changes - or if Xe driver stops using INTEL_VGA_MACRO.
-This is not frequent. The only changes such approach had since when it
-was written, back in 2022 is when we added support for Xe driver, and
-now that the PCI ID macros at drm-tip for i915 changed.
+Series: tools/mk_detect_intel_gpu: add a tool to detect Intel GPUs from their PCI IDs (rev2)
+URL   : https://patchwork.freedesktop.org/series/133922/
+State : failure
 
-With regards to the latest change, the v5 of this patch solves it.
-The only change to make it compatible with the new way is to add a
-single line:
+== Summary ==
 
-	if [ "$$(grep MACRO__ i915_pciids.h)" != "" ]; then sed -E "s/(INTEL_\S+_IDS\()/\1INTEL_VGA_DEVICE, /" -i i915_id.h; fi
+CI Bug Log - changes from XEIGT_7871_BAT -> XEIGTPW_11193_BAT
+====================================================
 
-As, up to the current upstream Kernel, the macro to define a PCI ID
-inside i915_pciids.h were:
+Summary
+-------
 
-	#define INTEL_I815_IDS(info)					\
-		INTEL_VGA_DEVICE(0x1132, info)  /* I815*/
-	...
+  **FAILURE**
 
-And, on current upstream, it now requires INTEL_VGA_DEVICE to be
-passed on its first argument:
+  Serious unknown changes coming with XEIGTPW_11193_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11193_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-	#define INTEL_I815_IDS(MACRO__, ...) \
-		MACRO__(0x1132, ## __VA_ARGS__)  /* I815*/
-	...
+  
 
-So, the generated list of PCI IDs should be changed from:
+Participating hosts (4 -> 5)
+------------------------------
 
-	static struct pci_device_id pci_ids[] = {
-		INTEL_PVC_IDS("PVC"),
-		INTEL_MTL_IDS("MTL"),
-		INTEL_MTL_P_IDS("MTL_P"),
-		INTEL_MTL_M_IDS("MTL_M"),
-		...
+  Additional (1): bat-adlp-7 
 
-to:
+Possible new issues
+-------------------
 
-	static struct pci_device_id pci_ids[] = {
-		INTEL_PVC_IDS(INTEL_VGA_DEVICE, "PVC"),
-		INTEL_MTL_IDS(INTEL_VGA_DEVICE, "MTL"),
-		INTEL_MTL_P_IDS(INTEL_VGA_DEVICE, "MTL_P"),
-		INTEL_MTL_M_IDS(INTEL_VGA_DEVICE, "MTL_M"),
-		...
+  Here are the unknown changes that may have been introduced in XEIGTPW_11193_BAT:
 
-Changing PCI ID macros is something that it is not frequent.
+### IGT changes ###
 
-Regards,
-Mauro
+#### Possible regressions ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-adlp-7:         NOTRUN -> [INCOMPLETE][1]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  * igt@xe_exec_balancer@twice-parallel-userptr:
+    - bat-pvc-2:          [PASS][2] -> [INCOMPLETE][3]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7871/bat-pvc-2/igt@xe_exec_balancer@twice-parallel-userptr.html
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-pvc-2/igt@xe_exec_balancer@twice-parallel-userptr.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11193_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] ([Intel XE#455])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-adlp-7/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         NOTRUN -> [DMESG-FAIL][5] ([Intel XE#324])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_threads@threads-mixed-fd-basic:
+    - bat-dg2-oem2:       [ABORT][6] ([Intel XE#1908]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7871/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html
+
+  
+  [Intel XE#1908]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7871 -> IGTPW_11193
+  * Linux: xe-1337-1cea2d72e1159a0a7923af196458aa68e6074f90 -> xe-1341-573842e9ab57ccd8d6bb68ad55ed2e012e3d5d2f
+
+  IGTPW_11193: 11193
+  IGT_7871: 1d7b961235e345db20933c057f265898e2e96fd2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1337-1cea2d72e1159a0a7923af196458aa68e6074f90: 1cea2d72e1159a0a7923af196458aa68e6074f90
+  xe-1341-573842e9ab57ccd8d6bb68ad55ed2e012e3d5d2f: 573842e9ab57ccd8d6bb68ad55ed2e012e3d5d2f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/index.html
+
+--===============3614289130776551552==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/mk_detect_intel_gpu: add a tool to detect Intel GPUs from their PCI IDs (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133922/">https://patchwork.freedesktop.org/series/133922/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7871_BAT -&gt; XEIGTPW_11193_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11193_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11193_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (4 -&gt; 5)</h2>
+<p>Additional (1): bat-adlp-7 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11193_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">INCOMPLETE</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_balancer@twice-parallel-userptr:</p>
+<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7871/bat-pvc-2/igt@xe_exec_balancer@twice-parallel-userptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-pvc-2/igt@xe_exec_balancer@twice-parallel-userptr.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11193_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-adlp-7/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_threads@threads-mixed-fd-basic:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7871/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1908">Intel XE#1908</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11193/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-fd-basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7871 -&gt; IGTPW_11193</li>
+<li>Linux: xe-1337-1cea2d72e1159a0a7923af196458aa68e6074f90 -&gt; xe-1341-573842e9ab57ccd8d6bb68ad55ed2e012e3d5d2f</li>
+</ul>
+<p>IGTPW_11193: 11193<br />
+  IGT_7871: 1d7b961235e345db20933c057f265898e2e96fd2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1337-1cea2d72e1159a0a7923af196458aa68e6074f90: 1cea2d72e1159a0a7923af196458aa68e6074f90<br />
+  xe-1341-573842e9ab57ccd8d6bb68ad55ed2e012e3d5d2f: 573842e9ab57ccd8d6bb68ad55ed2e012e3d5d2f</p>
+
+</body>
+</html>
+
+--===============3614289130776551552==--
