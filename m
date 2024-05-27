@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19037C25B7C
-	for <igt-dev@archiver.kernel.org>; Mon, 27 May 2024 07:34:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12448C25B74
+	for <igt-dev@archiver.kernel.org>; Mon, 27 May 2024 07:34:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 525A710E9E9;
-	Mon, 27 May 2024 07:34:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2514410F3A2;
+	Mon, 27 May 2024 07:34:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fVc+4y3V";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GOlNDj8C";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC22C10E4B2
- for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 07:34:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7583610F3A2
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 07:34:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716795263; x=1748331263;
+ t=1716795269; x=1748331269;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HcwwQYR2xC0NKchI8+XJA0wTjWkgZ5qXV3+pyS8SUaM=;
- b=fVc+4y3VTgyS5/mfpOowX+CAkMFiV528gHQ7X54N7AM/lX4tGTOptk1X
- 8EhXrw5/iuIr2Oj0hJrmVsInN+XTK7a8HPc9yfWgUgy1CwXEEMiHbaRkm
- PT27GARlWVH++Z6aX8V78MAzjiCtHeizQQf66jJ7eDpkU7eZWU4c4JHe8
- jfth8zOVhgrBlVjKfPK93ASSN6q+z3onCtu/AIxZv5wjPLwm7jI6861rp
- ItL8kNt3AIJ3cAxwpSZP96x/8A8WNcmwxBrrLW8cMzUjps181neynAlG4
- EylKuYRcY8w9oE5mglyyqDipZU9ffIvEwjGtCaaAZVJfTueEYF3Wn/fPQ w==;
-X-CSE-ConnectionGUID: c9y/UG/6SCOaguaBT+g9yg==
-X-CSE-MsgGUID: 9COS7W8WRcu9R2kDBSveUg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="23700427"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="23700427"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 00:34:15 -0700
-X-CSE-ConnectionGUID: vdMa3pCIRjiDrv9AVY3P/Q==
-X-CSE-MsgGUID: UeRCzaS6Q06VTjHBPlWMcw==
+ bh=0Vk4XaAmQ7hof9cOb7DzztD0Y9xtM5qQP52LP9Zojwk=;
+ b=GOlNDj8CA+QFMmivlyIobhMnAARxfVORpVwgtKfYZyCdSurtKxKZ1e5n
+ eGN1UzXNTeahhVgjECWoScT5RXMYsTy4DwEWvrjaq9Fsjcrh+U4Vl6nmd
+ oL5Z7ibjd+FRgIhYXELqjxcUlbk+xZFRNgR1XfEPkP6kTCv7mlxuktcqR
+ yeOxZ4AUMigpWvOf9NrioLWVpDM6Wfchh9uXW94CW7IZYwF9A/0iW6OqU
+ iZVKQoH+m0mWjUkAfc2aWgsx2/JQxo1uvwq31KdA/udKvDPVtaD4SJR71
+ 2q/SuES338D/a+N4WGZKL2KTzkgSvjB8qcUvW/dtSU8g6a/A9iI3/VJgF Q==;
+X-CSE-ConnectionGUID: 8UWtiwMESnO/0HPxJHO47Q==
+X-CSE-MsgGUID: 1CQ5gQbhQJOHsdINloVrwA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="24225281"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="24225281"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2024 00:34:29 -0700
+X-CSE-ConnectionGUID: FpcenwsXSt6J1KbgJK/OcA==
+X-CSE-MsgGUID: y9d55SAzSJWlK7xUABwRfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="34569812"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="34584474"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.184])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 00:34:10 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2024 00:34:27 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 02/12] lib/intel_bufops: Fix mapping/unmapping for i915
- and xe
-Date: Mon, 27 May 2024 09:33:35 +0200
-Message-Id: <20240527073345.54729-3-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 06/12] lib/intel_blt: Add Yf tiling in block-copy
+Date: Mon, 27 May 2024 09:33:39 +0200
+Message-Id: <20240527073345.54729-7-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527073345.54729-1-zbigniew.kempczynski@intel.com>
 References: <20240527073345.54729-1-zbigniew.kempczynski@intel.com>
@@ -71,90 +70,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It looks previously there was no user of intel-buf mapping code so
-missing xe path wasn't notice. Lets add xe path along with correct
-buffer size mapping.
+For TGL and DG1 I've noticed we have Yf, not Tile4 specified in the
+documentation.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_bufops.c | 39 ++++++++++++++++++++++++---------------
- 1 file changed, 24 insertions(+), 15 deletions(-)
+ lib/intel_blt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 313c2665ae..b4ccf4c093 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -1232,37 +1232,46 @@ void intel_buf_destroy(struct intel_buf *buf)
- 
- void *intel_buf_cpu_map(struct intel_buf *buf, bool write)
- {
--	int i915 = buf_ops_get_fd(buf->bops);
-+	int fd = buf_ops_get_fd(buf->bops);
- 
- 	igt_assert(buf);
- 	igt_assert(buf->ptr == NULL); /* already mapped */
- 
- 	buf->cpu_write = write;
--	buf->ptr = gem_mmap__cpu_coherent(i915, buf->handle, 0,
--					  buf->surface[0].size,
--					  write ? PROT_WRITE : PROT_READ);
- 
--	gem_set_domain(i915, buf->handle,
--		       I915_GEM_DOMAIN_CPU,
--		       write ? I915_GEM_DOMAIN_CPU : 0);
-+	if (is_xe_device(fd)) {
-+		buf->ptr = xe_bo_map(fd, buf->handle, buf->bo_size);
-+	} else {
-+		buf->ptr = gem_mmap__cpu_coherent(fd, buf->handle, 0,
-+						  buf->bo_size,
-+						  write ? PROT_WRITE : PROT_READ);
-+
-+		gem_set_domain(fd, buf->handle,
-+			       I915_GEM_DOMAIN_CPU,
-+			       write ? I915_GEM_DOMAIN_CPU : 0);
-+	}
- 
- 	return buf->ptr;
- }
- 
- void *intel_buf_device_map(struct intel_buf *buf, bool write)
- {
--	int i915 = buf_ops_get_fd(buf->bops);
-+	int fd = buf_ops_get_fd(buf->bops);
- 
- 	igt_assert(buf);
- 	igt_assert(buf->ptr == NULL); /* already mapped */
- 
--	buf->ptr = gem_mmap__device_coherent(i915, buf->handle, 0,
--					     buf->surface[0].size,
--					     write ? PROT_WRITE : PROT_READ);
-+	if (is_xe_device(fd)) {
-+		buf->ptr = xe_bo_map(fd, buf->handle, buf->bo_size);
-+	} else {
-+		buf->ptr = gem_mmap__device_coherent(fd, buf->handle, 0,
-+						     buf->bo_size,
-+						     write ? PROT_WRITE : PROT_READ);
- 
--	gem_set_domain(i915, buf->handle,
--		       I915_GEM_DOMAIN_WC,
--		       write ? I915_GEM_DOMAIN_WC : 0);
-+		gem_set_domain(fd, buf->handle,
-+			       I915_GEM_DOMAIN_WC,
-+			       write ? I915_GEM_DOMAIN_WC : 0);
-+	}
- 
- 	return buf->ptr;
- }
-@@ -1272,7 +1281,7 @@ void intel_buf_unmap(struct intel_buf *buf)
- 	igt_assert(buf);
- 	igt_assert(buf->ptr);
- 
--	munmap(buf->ptr, buf->surface[0].size);
-+	munmap(buf->ptr, buf->bo_size);
- 	buf->ptr = NULL;
- }
- 
+diff --git a/lib/intel_blt.c b/lib/intel_blt.c
+index a8433387d2..d1200ca862 100644
+--- a/lib/intel_blt.c
++++ b/lib/intel_blt.c
+@@ -555,6 +555,7 @@ static int __block_tiling(enum blt_tiling_type tiling)
+ 	case T_XMAJOR: return 1;
+ 	case T_YMAJOR: return 1;
+ 	case T_TILE4:  return 2;
++	case T_YFMAJOR: return 2;
+ 	case T_TILE64: return 3;
+ 	default:
+ 		break;
 -- 
 2.34.1
 
