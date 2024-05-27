@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59AC8C25B7D
-	for <igt-dev@archiver.kernel.org>; Mon, 27 May 2024 13:18:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B409C25B79
+	for <igt-dev@archiver.kernel.org>; Mon, 27 May 2024 13:55:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAF0410E2A4;
-	Mon, 27 May 2024 13:18:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D6FC10E2C8;
+	Mon, 27 May 2024 13:55:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="izPoazh/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gNo52azR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B435810E2A4
- for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 13:18:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E036C10E233
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 13:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716815927; x=1748351927;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Mr0yKw7aiHPC+lHzTmhuXo7OKEzMvrMr+DotbqAACi4=;
- b=izPoazh/MkEIiSfpPt1044LksKh5NEjw3V2qsHsFkgW3XMk/lfS72ftr
- GCpAygn4hkRKvnONOsyMevodPFWwChXObmhJj/J2tuOgOH1t1zp6/18Vp
- XQHDc93tERyf2z59ga7xgHVx24Eb4VRtb9qgRi6Nu7bmI6gNEDVBbwjpt
- /EqcSBKWyDB68NgdKmrhkSt+TY/Zqf70AJR/ndgopV7EE1gMiQzpyub8d
- WYi48tZotBPGEjSJbfDA6Fk7wJAURq+ZkhG6hpZFlWXF6iiit4ID4eHk3
- V4ycYMjOWKCzbWCxN+lBjVnOoY90UVvLvvi3F1u6XMKogqTM/tmshZQ1G w==;
-X-CSE-ConnectionGUID: y90SNI8UQk6SaMVGLlYtkQ==
-X-CSE-MsgGUID: GGAvwXnLR720Ldm8gka0lQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11084"; a="13359285"
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="13359285"
+ t=1716818142; x=1748354142;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=NByH7w+HbrcAEngXHI3wjQb60yg/cCd6u3PtiI4jhfk=;
+ b=gNo52azROWIld+bUZiNMRTrRxmwmPm77mppLw4Nhols8MqTmuaRL9X81
+ XU44gObulUi9DruPhU4kbUOCm8IA5EgJ4mC7+L7HVZpSZB048cidLRZtI
+ IS6myNw2iVbahhUh1ntchXuC1Oz5h/wmqds5YbPDsoV3FEyVQsUF7JB97
+ +lqHkgV7M3o8diz7WOYbwwLWx6VmWt3GEBZwWZeDOoPLCaolDq4btivCW
+ krn6Ahq5NA1SjdMko88/k1aPrVMbDkB7KfPvA+68xNETV/tyNg2PZ37Co
+ FByQPlbUm7fC/ua891dCcJu+ANTLmfbAF7XhNPsyK7pz6glEWVK0iiT+5 g==;
+X-CSE-ConnectionGUID: ZE11YFC1QR2i+RavpnpuzA==
+X-CSE-MsgGUID: 1DpJrIQfRnaleqe5uwmA6A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="16972057"
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="16972057"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 06:18:46 -0700
-X-CSE-ConnectionGUID: 9PSbp+7LTlmEvT+udQ/C1w==
-X-CSE-MsgGUID: SBFLFU2qTjGcg9rfxNMaIg==
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 May 2024 06:55:41 -0700
+X-CSE-ConnectionGUID: nN7tzaZORIynG1fe54f5cg==
+X-CSE-MsgGUID: EL2SIATkQeWGPzpmu1Ap/A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39556738"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 May 2024 06:18:45 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,192,1712646000"; d="scan'208";a="39564797"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2024 06:55:40 -0700
+Date: Mon, 27 May 2024 15:55:24 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_module_load: Unload module if loaded
- with modparams
-Date: Mon, 27 May 2024 18:41:27 +0530
-Message-ID: <20240527131127.2860097-1-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
+Subject: Re: [PATCH i-g-t] tests/intel/xe_module_load: Unload module if
+ loaded with modparams
+Message-ID: <20240527135524.g2ghkj4srxiso6yb@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+References: <20240527131127.2860097-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240527131127.2860097-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,32 +71,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Subtests should unload the module themselves if they use modparams,
-otherwise consequent subtests amy misbehave.
+Hi Bhanuprakash,
+On 2024-05-27 at 18:41:27 +0530, Bhanuprakash Modem wrote:
+> Subtests should unload the module themselves if they use modparams,
+> otherwise consequent subtests amy misbehave.
+> 
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel/xe_module_load.c | 2 ++
- 1 file changed, 2 insertions(+)
+LGTM,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
-index 83f7df341..0856a57c8 100644
---- a/tests/intel/xe_module_load.c
-+++ b/tests/intel/xe_module_load.c
-@@ -140,11 +140,13 @@ igt_main
- 		}
- 
- 		load_and_check_xe("force_probe=*");
-+		igt_xe_driver_unload();
- 	}
- 
- 	igt_subtest("reload-no-display") {
- 		igt_xe_driver_unload();
- 		load_and_check_xe("enable_display=0");
-+		igt_xe_driver_unload();
- 	}
- 
- 	igt_subtest("many-reload") {
--- 
-2.43.2
-
+> ---
+>  tests/intel/xe_module_load.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
+> index 83f7df341..0856a57c8 100644
+> --- a/tests/intel/xe_module_load.c
+> +++ b/tests/intel/xe_module_load.c
+> @@ -140,11 +140,13 @@ igt_main
+>  		}
+>  
+>  		load_and_check_xe("force_probe=*");
+> +		igt_xe_driver_unload();
+>  	}
+>  
+>  	igt_subtest("reload-no-display") {
+>  		igt_xe_driver_unload();
+>  		load_and_check_xe("enable_display=0");
+> +		igt_xe_driver_unload();
+>  	}
+>  
+>  	igt_subtest("many-reload") {
+> -- 
+> 2.43.2
+> 
