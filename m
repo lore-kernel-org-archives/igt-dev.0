@@ -4,73 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD8DCC25B78
-	for <igt-dev@archiver.kernel.org>; Mon, 27 May 2024 15:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 573F5C25B74
+	for <igt-dev@archiver.kernel.org>; Mon, 27 May 2024 15:59:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 613E010F100;
-	Mon, 27 May 2024 15:58:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D06BC10FA60;
+	Mon, 27 May 2024 15:59:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="iG32K8Ai";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="OvyXUpEQ";
 	dkim-atps=neutral
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
- [209.85.128.48])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B49110F1D6
- for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 15:58:48 +0000 (UTC)
-Received: by mail-wm1-f48.google.com with SMTP id
- 5b1f17b1804b1-4210c9d1df6so19994735e9.2
- for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 08:58:48 -0700 (PDT)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+ [209.85.128.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFA9E10FA60
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 15:59:12 +0000 (UTC)
+Received: by mail-wm1-f45.google.com with SMTP id
+ 5b1f17b1804b1-4201986d60aso45934255e9.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 May 2024 08:59:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1716825527; x=1717430327; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1716825551; x=1717430351; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:reply-to:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=0q4V4LSljQWONb8C138a8XGxZaNQQfaU7pCdFucRz4g=;
- b=iG32K8AiSYRQedCsrrpcJG3VEsST+4szV/OzkOqC1JRlsO5BfNoZgJBToCyxvoQZ4F
- gOxT74vmoY5Q9N9OXpeNRWtp/0bPFzTZJizqJAz6lafR+loky/0IQVjpQHwXm7KclXnA
- g8hnHSbufGjDM1NVRrouMZ/i4gFKsQWPy26b/ZsuDemF7c0ushheNiJ6GCHmA41bptCI
- ZhK7Pk9eJe5EbPlvW8eonMBGC5BQ5jK4xAZjtusOZ4UZ4azc7FwS43XkA65GQZ+t7ADe
- +eFPaENSsh7ixsTHXDmhNNtpUP2Q+lscLhO8xUqRCBvwtnVBCbA0zS28X8Z8Lnm2g+2b
- 54Hw==
+ bh=+Exogv3M2QqgEoeEBCVnQa7RLI8uAsrowz6WuRjk0ew=;
+ b=OvyXUpEQc6smbBt6Zjg4nrNsi3asAxNONhbiqHS55ubGKxHmv/KhyS5GYWiKRUQyn5
+ CaKWOgHMds3zGn9dXl9NSe4doaNfsxGLv0nCF0XQjxFpSJB7YCEsZtxEy2pPVz80cMGu
+ cHL+vKKV0NQhM/loQMxUK6EUN7awvtgdIo8orGEP3Xgm4o5SRJHiAtyFAjWGC/9frG8x
+ AUylBJcVNQ7vTI2ZLk4zhEHO/ckJwv+WpZvrFa/8jGec0Zk4litg+x3Pcgl1qRVj0JAt
+ t++K/FCKQJuqXwqCsD1fDPY02v1mtcbyxaMHLjsCGvfcCj2r5lnDRraFA8gQcBVYw3kv
+ UhVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1716825527; x=1717430327;
+ d=1e100.net; s=20230601; t=1716825551; x=1717430351;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:cc:to:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=0q4V4LSljQWONb8C138a8XGxZaNQQfaU7pCdFucRz4g=;
- b=l+4CNhoIb71jhaMkBMg0GOHeeOlc4lD+80bu+ZLteZgqVl8/Ob049pFxbiPboYs72G
- g//MHtQR4zrzgahzHkzNuix5erAHsJzJRZsEaeOYJgyXHWD2blG8h01NY1PdfRA0OZiH
- CrX4u/BhuQ2yAPbXZKSwN7hqjb4+ImtTlQDTnUktoR5LZsQaNiKZNtC4d5EeAopob9PU
- AdxjvIrpF3k/CiEWdoWopX/LGkg42gkmJ9ibguC7CU4WA/PMzeoWUZRg9aDqUbam70w4
- 7PKvw4+ZejDcWWnhTQIQ+qQD6kIGCysQwqlwhNMTzwU9cSa7AH4r6YvaCNLGsyPPYVRi
- cZ9Q==
+ bh=+Exogv3M2QqgEoeEBCVnQa7RLI8uAsrowz6WuRjk0ew=;
+ b=f+4+mc9eLUkumFINYnox3QIVHeNo/s6m2VUd1K+RJ74U6pi6TwypT5YgA/nTm+hs4T
+ bX4Qsay3pt3PEuha8B5UVRKhHCKUJ8Yt+YPoDKT2+UDhbyPaJNizhmxz5aJnMr0Z0Q9/
+ NhP46uz2SvN4dSE6nzrk63iKNX5MdLNTyGesj8hR4+/GOVi2Av8dtYS4qy0jBcDYw3rV
+ hHwpoOTfZU8+TtqetuJN/FhHXIefXc/iB93ldpqO6Z/t8CyVQrvxapZY9cTHL92PHdEb
+ kIJJVzRNLQiTW6g8cWIPoDK3xNZqtlc62J7XqJdKt7mv279OWuZWZ7BlUT7pt8qDT/5M
+ 4bbg==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVk9g9b+3KiU2IpnFGwWsTDaSu1Sdv8ZjufTTr5UVMgtKajTXpHvB3VOIFgxk/6CCmAQsPCHM9UfBDc3c54yChhkqa7wu/D5dFgD+gXtQ==
-X-Gm-Message-State: AOJu0Yxpr5r/l0qyCHq8N41fLpxP/2JgEZyOFXgKyEDs2gYUyz7cNSjc
- f5ZZnNWalss75mmbDp5XRyREzioYFE1YVpa22lDn6oYvFUqqhuHp
-X-Google-Smtp-Source: AGHT+IE7v0SxPOM+FPkQavFcdoX+/f/zVBsU2QPml0VxiLEh/phn3jc6+yWn1BuD0Tk+MNKqQH15sw==
-X-Received: by 2002:a05:600c:581a:b0:41f:f957:96ac with SMTP id
- 5b1f17b1804b1-421089d9dc3mr79382795e9.13.1716825526414; 
- Mon, 27 May 2024 08:58:46 -0700 (PDT)
+ AJvYcCUUion98VgORrnVLlwHeDUxx6Ura3tC+AMktOKA1kJW2xBGT3/p4S1vpJPSACQFM0wYPPW2y8qFyGIJz4b6xQ3tgkeR/OAWIfYCQGGLyA==
+X-Gm-Message-State: AOJu0YzkTyj8VQzC35ujHnbkUlZgLWeL9z+BlhZlJRp+S3L4cDa70b8D
+ 06Hco6vH7fKr2LtPWoWOhOuBEcQIuSbFUAX7HofRZB+u5oGm6m4y
+X-Google-Smtp-Source: AGHT+IF8iQ1+X8IZvThEQDgVFW4hmp9m4z6bFGjpb0NJBvLB+uFQO6xZ8FvxmuAWwhv7U0DP3SelMQ==
+X-Received: by 2002:a1c:7902:0:b0:41b:c024:8e88 with SMTP id
+ 5b1f17b1804b1-42108a0dc79mr61125135e9.33.1716825550965; 
+ Mon, 27 May 2024 08:59:10 -0700 (PDT)
 Received: from [0.0.0.0] ([134.134.139.87])
  by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3557a1c9379sm9295533f8f.73.2024.05.27.08.58.42
+ 5b1f17b1804b1-42108971393sm112350025e9.19.2024.05.27.08.59.07
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 27 May 2024 08:58:46 -0700 (PDT)
-Message-ID: <ce096f4e-7901-4e42-a49f-749c23b2ae01@gmail.com>
-Date: Mon, 27 May 2024 18:58:37 +0300
+ Mon, 27 May 2024 08:59:10 -0700 (PDT)
+Message-ID: <5a9a9142-81ec-4221-a408-e9cdbe708cd2@gmail.com>
+Date: Mon, 27 May 2024 18:59:02 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/2] tests/kms_plane: Reduce CI logging
+Subject: Re: [PATCH i-g-t v2 2/2] tests/kms_plane: Convert to dynamic subtests
 To: Pranay Samala <pranay.samala@intel.com>, igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, jeevan.b@intel.com, sameer.lattannavar@intel.com,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
 References: <20240524084807.480971-1-pranay.samala@intel.com>
- <20240524084807.480971-2-pranay.samala@intel.com>
+ <20240524084807.480971-3-pranay.samala@intel.com>
 Content-Language: en-US
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240524084807.480971-2-pranay.samala@intel.com>
+In-Reply-To: <20240524084807.480971-3-pranay.samala@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -89,16 +89,15 @@ Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
+Look ok to me
 
-you have indentation off here in several places. You can see those with 
-checkpatch script from kernel source tree, run it with '--strict' 
-parameter against this patch.
-
-/Juha-Pekka
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
 On 24.5.2024 11.48, Pranay Samala wrote:
-> Replacing igt_info with igt_debug to reduce CI logging.
+> The test runs on all pipes on dynamic level to test all the supported
+> pixel-formats and modifiers on current plane of that pipe.
+> 
+> Updating the test to execute on multiple planes on dynamic level.
 > 
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Cc: Juha-pekka Heikkila <juha-pekka.heikkila@intel.com>
@@ -106,105 +105,83 @@ On 24.5.2024 11.48, Pranay Samala wrote:
 > 
 > Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 > ---
->   tests/kms_plane.c | 45 +++++++++++++++++++++++++--------------------
->   1 file changed, 25 insertions(+), 20 deletions(-)
+>   tests/kms_plane.c | 27 +++++++++++++++++----------
+>   1 file changed, 17 insertions(+), 10 deletions(-)
 > 
 > diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-> index 406aecc04..9062320e1 100644
+> index 9062320e1..55473f61e 100644
 > --- a/tests/kms_plane.c
 > +++ b/tests/kms_plane.c
-> @@ -275,8 +275,8 @@ test_plane_position_with_output(data_t *data,
->   	drmModeModeInfo *mode;
->   	igt_crc_t crc, crc2;
+> @@ -351,10 +351,11 @@ test_plane_position(data_t *data, enum pipe pipe)
+>   	test_init(data, pipe);
+>   	test_grab_crc(data, output, pipe, &green, data->flags, &reference_crc);
 >   
-> -	igt_info("Testing connector %s using pipe %s plane %d\n",
-> -		 igt_output_name(output), kmstest_pipe_name(pipe), plane);
-> +	igt_debug("Testing connector %s using pipe %s plane %d\n",
-> +		igt_output_name(output), kmstest_pipe_name(pipe), plane);
+> -	for (int plane = 1; plane < n_planes; plane++)
+> -		test_plane_position_with_output(data, pipe, plane,
+> -						output, &reference_crc,
+> -						data->flags);
+> +	for (int plane = 1; plane < n_planes; plane++) {
+> +		igt_dynamic_f("pipe-%s-plane-%d", kmstest_pipe_name(pipe), plane)
+> +			test_plane_position_with_output(data, pipe, plane, output,
+> +							&reference_crc, data->flags);
+> +	}
 >   
->   	igt_output_set_pipe(output, pipe);
->   
-> @@ -285,8 +285,8 @@ test_plane_position_with_output(data_t *data,
->   	sprite = igt_output_get_plane(output, plane);
->   
->   	if (primary->drm_plane->plane_id > sprite->drm_plane->plane_id) {
-> -		igt_info("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
-> -				primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
-> +		igt_debug("primary plane ID (%d) > sprite plane ID (%d), skipping plane %d\n",
-> +			primary->drm_plane->plane_id, sprite->drm_plane->plane_id, plane);
->   		return;
+>   	test_fini(data);
+>   }
+> @@ -1216,7 +1217,8 @@ test_pixel_formats(data_t *data, enum pipe pipe)
+>   	for_each_plane_on_pipe(&data->display, pipe, plane) {
+>   		if (skip_plane(data, plane))
+>   			continue;
+> -		result &= test_format_plane(data, pipe, output, plane, &primary_fb);
+> +		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(pipe), plane->index)
+> +			result &= test_format_plane(data, pipe, output, plane, &primary_fb);
 >   	}
 >   
-> @@ -415,8 +415,8 @@ test_plane_panning_with_output(data_t *data,
->   	mode = igt_output_get_mode(output);
->   	primary = igt_output_get_plane(output, 0);
+>   	test_fini(data);
+> @@ -1322,14 +1324,19 @@ static void run_test(data_t *data, void (*test)(data_t *, enum pipe))
+>   			continue;
 >   
-> -	igt_info("Testing connector %s using pipe %s, mode %s\n",
-> -		 igt_output_name(output), kmstest_pipe_name(pipe), mode->name);
-> +	igt_debug("Testing connector %s using pipe %s, mode %s\n",
-> +		igt_output_name(output), kmstest_pipe_name(pipe), mode->name);
+>   		igt_output_set_pipe(data->output, PIPE_NONE);
+> -		igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> -			test(data, pipe);
+> +		test(data, pipe);
 >   
->   	create_fb_for_mode_panning(data, mode, &primary_fb);
->   	igt_plane_set_fb(primary, &primary_fb);
-> @@ -889,9 +889,9 @@ static bool test_format_plane_rgb(data_t *data, enum pipe pipe,
->   				  igt_crc_t ref_crc[],
->   				  struct igt_fb *fb)
+>   		if (is_pipe_limit_reached(++count))
+>   			break;
+>   	}
+>   }
+>   
+> +static void dynamic_test_handler(data_t *data, enum pipe pipe)
+> +{
+> +	igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe))
+> +		test_plane_panning(data, pipe);
+> +}
+> +
+>   static void
+>   run_tests_for_pipe_plane(data_t *data)
 >   {
-> -	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> -		 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
-> -		 kmstest_pipe_name(pipe), plane->index);
-> +	igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> +		IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
-> +		kmstest_pipe_name(pipe), plane->index);
+> @@ -1366,20 +1373,20 @@ run_tests_for_pipe_plane(data_t *data)
+>   	igt_describe("verify plane panning at top-left position using primary plane");
+>   	igt_subtest_with_dynamic_f("plane-panning-top-left") {
+>   		data->flags = TEST_PANNING_TOP_LEFT;
+> -		run_test(data, test_plane_panning);
+> +		run_test(data, dynamic_test_handler);
+>   	}
 >   
->   	return test_format_plane_colors(data, pipe, plane,
->   					format, modifier,
-> @@ -927,11 +927,13 @@ static bool test_format_plane_yuv(data_t *data, enum pipe pipe,
->   						     igt_color_range_to_str(r)))
->   				continue;
+>   	igt_describe("verify plane panning at bottom-right position using primary plane");
+>   	igt_subtest_with_dynamic_f("plane-panning-bottom-right") {
+>   		data->flags = TEST_PANNING_BOTTOM_RIGHT;
+> -		run_test(data, test_plane_panning);
+> +		run_test(data, dynamic_test_handler);
+>   	}
 >   
-> -			igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " (%s, %s) on %s.%u\n",
-> -				 IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
-> -				 igt_color_encoding_to_str(e),
-> -				 igt_color_range_to_str(r),
-> -				 kmstest_pipe_name(pipe), plane->index);
-> +			igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT
-> +				" (%s, %s) on %s.%u\n", IGT_FORMAT_ARGS(format),
-> +				IGT_MODIFIER_ARGS(modifier),
-> +				igt_color_encoding_to_str(e),
-> +				igt_color_range_to_str(r),
-> +				kmstest_pipe_name(pipe),
-> +				plane->index);
+>   	igt_describe("verify plane panning at bottom-right position using primary plane and executes system"
+>   		       "suspend cycles");
+>   	igt_subtest_with_dynamic_f("plane-panning-bottom-right-suspend") {
+>   		data->flags = TEST_PANNING_BOTTOM_RIGHT | TEST_SUSPEND_RESUME;
+> -		run_test(data, test_plane_panning);
+> +		run_test(data, dynamic_test_handler);
+>   	}
 >   
->   			result &= test_format_plane_colors(data, pipe, plane,
->   							   format, modifier,
-> @@ -1043,9 +1045,9 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->   
->   	igt_pipe_crc_start(data->pipe_crc);
->   
-> -	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> -		 IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
-> -		 kmstest_pipe_name(pipe), plane->index);
-> +	igt_debug("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> +		IGT_FORMAT_ARGS(ref.format), IGT_MODIFIER_ARGS(ref.modifier),
-> +		kmstest_pipe_name(pipe), plane->index);
->   
->   	check_allowed_plane_size_64x64(data, plane, &width, &height, ref.format);
->   
-> @@ -1089,9 +1091,12 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
->   			};
->   
->   			if (igt_vec_index(&tested_formats, &rf) >= 0) {
-> -				igt_info("Skipping format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT " on %s.%u\n",
-> -					 IGT_FORMAT_ARGS(f.format), IGT_MODIFIER_ARGS(f.modifier),
-> -					 kmstest_pipe_name(pipe), plane->index);
-> +				igt_debug("Skipping format " IGT_FORMAT_FMT " / modifier "
-> +					IGT_MODIFIER_FMT " on %s.%u\n",
-> +					IGT_FORMAT_ARGS(f.format),
-> +					IGT_MODIFIER_ARGS(f.modifier),
-> +					kmstest_pipe_name(pipe),
-> +					plane->index);
->   				continue;
->   			}
->   
+>   	igt_describe("verify planar settings for pixel format are accepted or rejected correctly");
 
