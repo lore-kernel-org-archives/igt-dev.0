@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2A9CC25B78
-	for <igt-dev@archiver.kernel.org>; Tue, 28 May 2024 15:39:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67A53C25B78
+	for <igt-dev@archiver.kernel.org>; Tue, 28 May 2024 18:26:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A0A089208;
-	Tue, 28 May 2024 15:39:24 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JefMrCDE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA6A289208
- for <igt-dev@lists.freedesktop.org>; Tue, 28 May 2024 15:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716910762; x=1748446762;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+wCUu8d1XTE1mPAcVm8IpZmxjpiTEcWkI7bWi7WMHYY=;
- b=JefMrCDEmHqlyzDiuBVNMi5yFx8DIqLuJk9s+bsqiM6nO5WrHunSpkCT
- myEUMv7nf5QWlaXFgfztwFDtEGXT5f6V+6c9JtYw04yN2FN5bk64dt45p
- 4aLWISAnWcfdIHNo4tEbk3aAHomivwcZHobL0nC08osPxqo19NdgYGcnf
- ByNPpXuAkkdcwH4ZFeC4/eKxf2p/BKOX4jFf5D/5ZVYT5fMYH1fPQ1ROb
- sx87kn8I/CKKNaR9S4A/DissZHM7ww/mCJeYgPLrtGdehRfrmCzwLkag2
- z7oZZZlomIE2g94pZKhoF8//vtyPat3KKQ2i9Qu4jrcPDSLrrlFgIhNjm Q==;
-X-CSE-ConnectionGUID: EovU6RHhQ5edHhRpjAKXTw==
-X-CSE-MsgGUID: rGQrIQG3Q6q0B/1x/lBceA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="23871750"
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; d="scan'208";a="23871750"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 08:39:22 -0700
-X-CSE-ConnectionGUID: suQcqswkShCEZfDIhkZp/g==
-X-CSE-MsgGUID: e0Ol8ygoRl6or6KDTb3zpg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,195,1712646000"; d="scan'208";a="66310999"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 08:39:21 -0700
-Date: Tue, 28 May 2024 17:39:18 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: Re: [PATCH i-g-t 2/5] tests/fbdev: Add testplan documentation
-Message-ID: <20240528153918.sndsnr4k3vn2r526@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-References: <20240528054223.2945356-1-bhanuprakash.modem@intel.com>
- <20240528054223.2945356-3-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2A6010F742;
+	Tue, 28 May 2024 18:25:59 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 08F2010E31D;
+ Tue, 28 May 2024 18:25:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4260151493528810991=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240528054223.2945356-3-bhanuprakash.modem@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_check_drmModeGetConnector=28?=
+ =?utf-8?q?=29_return_value_in_some_missing_places_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Luca Coelho" <luciano.coelho@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 28 May 2024 18:25:58 -0000
+Message-ID: <171692075803.2216896.15407949088995605056@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240528075855.463729-1-luciano.coelho@intel.com>
+In-Reply-To: <20240528075855.463729-1-luciano.coelho@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,99 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2024-05-28 at 11:12:20 +0530, Bhanuprakash Modem wrote:
-> Add testplan documentation to fbdev tests.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/fbdev.c | 39 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
-> 
-> diff --git a/tests/fbdev.c b/tests/fbdev.c
-> index 794882a6a..f329e6ac6 100644
-> --- a/tests/fbdev.c
-> +++ b/tests/fbdev.c
-> @@ -21,6 +21,15 @@
->   * IN THE SOFTWARE.
->   */
->  
-> +/**
-> + * TEST: fbdev
-> + * Category: Display
-> + * Description: Sanity test for framebuffer device.
-> + * Driver requirement: i915, xe
+--===============4260151493528810991==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I am not sure we need it? I mean it can run on all gpus,
-not only Intel?
+== Series Details ==
 
-> + * Functionality: fbdev
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
+Series: check drmModeGetConnector() return value in some missing places (rev3)
+URL   : https://patchwork.freedesktop.org/series/133953/
+State : success
 
-Please sort these fields after other tests, see recent Kasia
-patchseries or look into other kms tests.
+== Summary ==
 
-Could you also fix this test? After merging locally your
-patchset I got errors from 'meson test -C build':
+CI Bug Log - changes from XEIGT_7873_BAT -> XEIGTPW_11201_BAT
+====================================================
 
-It turns out test uses in igt_main:
+Summary
+-------
 
-igt_subtest_group {
-    mode_tests(fd);
-}
+  **SUCCESS**
 
-and then defines subtests in functions. That is causing test failing.
+  No regressions found.
 
-Regards,
-Kamil
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
 
 
-> + */
->  #include "config.h"
->  
->  #include "igt.h"
-> @@ -39,6 +48,36 @@
->  
->  #include "igt.h"
->  
-> +/**
-> + * SUBTEST: eof
-> + * Description: Check framebuffer access near EOF
-> + *
-> + * SUBTEST: info
-> + * Description: Check if screeninfo is valid
-> + *
-> + * SUBTEST: nullptr
-> + * Description: Check framebuffer access with NULL
-> + *
-> + * SUBTEST: pan
-> + * Description: Check panning / page flipping
-> + *
-> + * SUBTEST: read
-> + * Description: Check read operations on framebuffer memory
-> + *
-> + * SUBTEST: write
-> + * Description: Check write operations on framebuffer memory
-> + */
-> +
-> +/**
-> + * SUBTEST: unaligned-%s
-> + * Description: Check %arg[1] operations on unaligned locations in framebuffer memory
-> + *
-> + * arg[1]:
-> + *
-> + * @read:	read
-> + * @write:	write
-> + */
-> +
->  #define PANSTEP(panstep_) \
->  	((panstep_) ? (panstep_) : 1)
->  
-> -- 
-> 2.43.2
-> 
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7873 -> IGTPW_11201
+
+  IGTPW_11201: 11201
+  IGT_7873: b9bcded9123ac56ce05748de6c4870fb49451b87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1353-abaeae202dfb4e361edd660a124e22178340725d: abaeae202dfb4e361edd660a124e22178340725d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11201/index.html
+
+--===============4260151493528810991==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>check drmModeGetConnector() return value in some missing places (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133953/">https://patchwork.freedesktop.org/series/133953/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11201/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11201/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7873_BAT -&gt; XEIGTPW_11201_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7873 -&gt; IGTPW_11201</li>
+</ul>
+<p>IGTPW_11201: 11201<br />
+  IGT_7873: b9bcded9123ac56ce05748de6c4870fb49451b87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1353-abaeae202dfb4e361edd660a124e22178340725d: abaeae202dfb4e361edd660a124e22178340725d</p>
+
+</body>
+</html>
+
+--===============4260151493528810991==--
