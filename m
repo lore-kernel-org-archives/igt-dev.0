@@ -4,56 +4,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59B95C41513
-	for <igt-dev@archiver.kernel.org>; Tue, 28 May 2024 07:47:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69BA4C25B7E
+	for <igt-dev@archiver.kernel.org>; Tue, 28 May 2024 07:50:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A661710E29F;
-	Tue, 28 May 2024 07:47:42 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NC8+JnsP";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53FD589C46
- for <igt-dev@lists.freedesktop.org>; Tue, 28 May 2024 07:47:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716882459; x=1748418459;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Stk2ueoqqGtJVQblen0oAZ9YrQLqP6WkkOH8moEQpOA=;
- b=NC8+JnsPluo+sEuxMLPiEyqkPAKlZag3LK/X+aSvxDrLLLv1J+XvxsnD
- dAtjenJx/5OEF9vWM3pehe36lQFZitMidr8Ne0PvDZ2Enzg363MiZHVl0
- RbN0JroAtu+6d3la77N6uNrrCYfg6REtvS/E9cGc8loOdkt1ZcWaRUPCB
- P1fJQ2kEkdkez9L20g6PYxz5UWIsuFaBlTxuigBM3abf4/QLGwpEyUXVG
- XRNaHDc0UmZ2mKLpGWRl1nLqXlpT9CPYPVvfla0LB2Qi10xLfmec+prGT
- KhV48siXUv6VPCT/QVrAArQc2K4+Wy1i01eywHr7dy5DIkpPrW6c4gA/J A==;
-X-CSE-ConnectionGUID: XPJ+fFJiRlC9mkHwJDUEgw==
-X-CSE-MsgGUID: BwaJtRBhSZ2NuwrV66JAdA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="24627670"
-X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="24627670"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 00:47:38 -0700
-X-CSE-ConnectionGUID: SIMyVnksRnOCO2nlmC/HMg==
-X-CSE-MsgGUID: Wv8NYh5ySyG6DMZcIFzZgQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,194,1712646000"; d="scan'208";a="39380464"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.10])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 May 2024 00:47:37 -0700
-Date: Tue, 28 May 2024 09:47:34 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] lib/igt_fb: Mark Xe framebuffers as slow access
-Message-ID: <20240528074734.bclddc3jlzbmtgrm@zkempczy-mobl2>
-References: <20240527131747.1340992-1-juhapekka.heikkila@gmail.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5B1810E3BE;
+	Tue, 28 May 2024 07:50:11 +0000 (UTC)
+Received: from coelho.fi (paleale.coelho.fi [176.9.41.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C0C610E3BE
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 May 2024 07:50:00 +0000 (UTC)
+Received: from 91-156-7-239.elisa-laajakaista.fi ([91.156.7.239]
+ helo=[192.168.100.137])
+ by coelho.fi with esmtpsa (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (Exim 4.97) (envelope-from <luca@coelho.fi>)
+ id 1sBram-00000001FO3-27QD; Tue, 28 May 2024 10:49:57 +0300
+Message-ID: <b919fe032d22b960fedc1fd18c4a5f02fe6e034d.camel@coelho.fi>
+From: Luca Coelho <luca@coelho.fi>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ igt-dev@lists.freedesktop.org
+Cc: Luca Coelho <luciano.coelho@intel.com>, Mark Yacoub
+ <markyacoub@chromium.org>, Manasi Navare <navaremanasi@chromium.org>
+Date: Tue, 28 May 2024 10:49:55 +0300
+In-Reply-To: <20240527141814.vgcpvwerqp4yapp3@kamilkon-DESK.igk.intel.com>
+References: <20240523084426.284894-1-luciano.coelho@intel.com>
+ <20240523084426.284894-2-luciano.coelho@intel.com>
+ <20240527141814.vgcpvwerqp4yapp3@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240527131747.1340992-1-juhapekka.heikkila@gmail.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/igt_chamelium: check
+ drmModeGetConnector() return value in wait_for_connected_state()
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,42 +49,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, May 27, 2024 at 04:17:47PM +0300, Juha-Pekka Heikkila wrote:
-> Reading from Xe device framebuffers is slow hence mark is as such.
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  lib/igt_fb.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 5df5cb08f..26d6957f8 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -4401,7 +4401,8 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
->  		setup_linear_mapping(&blit->base);
->  
->  		/* speed things up by working from a copy in system memory */
-> -		cvt.src.slow_reads = is_i915_device(fd) && !gem_has_mappable_ggtt(fd);
-> +		cvt.src.slow_reads = (is_i915_device(fd) && !gem_has_mappable_ggtt(fd)) ||
-> +			is_xe_device(fd);
->  	} else {
->  		blit->base.linear.fb = *fb;
->  		blit->base.linear.fb.gem_handle = 0;
-> @@ -4409,7 +4410,7 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
->  		igt_assert(blit->base.linear.map);
->  
->  		/* reading via gtt mmap is slow */
-> -		cvt.src.slow_reads = is_i915_device(fd);
-> +		cvt.src.slow_reads = is_intel_device(fd);
->  	}
->  
->  	cvt.dst.ptr = blit->shadow_ptr;
-> -- 
-> 2.43.2
-> 
+On Mon, 2024-05-27 at 16:18 +0200, Kamil Konieczny wrote:
+> Hi Luca,
+> On 2024-05-23 at 11:44:25 +0300, Luca Coelho wrote:
+> > The drmModeGetConnector() function can return NULL in some cases, so
+> > we need to check the return value before accessing it.  This is not
+> > being checked in wait_for_connected_state(), so fix that.
+> >=20
+> > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> > ---
+> >  lib/igt_chamelium.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> >=20
+> > diff --git a/lib/igt_chamelium.c b/lib/igt_chamelium.c
+> > index 016d5356630c..b1478654d02a 100644
+> > --- a/lib/igt_chamelium.c
+> > +++ b/lib/igt_chamelium.c
+> > @@ -524,6 +524,9 @@ static bool wait_for_connected_state(int drm_fd,
+> >  			drmModeConnector *connector =3D
+> >  				drmModeGetConnector(drm_fd, connectors[i]);
+> > =20
+> > +			if (!connector)
+> > +				break;
+> > +
+>=20
+> You could have first connector connected, second not connected,
+> so this should be:
+> 			if (!connector) {
+>                 connected =3D false;
+> 			    break;
+>             }
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Yes, you're right! Nice catch.  I'll change this.
 
 --
-Zbigniew
+Cheers,
+Luca.
