@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8234C25B75
-	for <igt-dev@archiver.kernel.org>; Wed, 29 May 2024 14:59:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6CE7C27C44
+	for <igt-dev@archiver.kernel.org>; Wed, 29 May 2024 15:00:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01AEE10EC5B;
-	Wed, 29 May 2024 14:59:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1A5A310EC5B;
+	Wed, 29 May 2024 15:00:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XpdfK8Y1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kWgH5kW1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B8FE10EC5B
- for <igt-dev@lists.freedesktop.org>; Wed, 29 May 2024 14:59:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D9B310FED3
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 May 2024 15:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716994758; x=1748530758;
+ t=1716994833; x=1748530833;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=MWI02Phpmmv1dtRlLEgcqtwWz8g/7O/Xwc2B+5aDQt4=;
- b=XpdfK8Y1wLxePmUlkV7SPt3wwN7L1RvJ2RqFLX8xXJXwhFQghd2RQMkV
- wuLTulnfZ8fAh1pS1ul8HWFp+COeHMW60u7rsSnCqXutBe8aDZnndWcXo
- ov8nrkNgwq+d5q29Niy9NI+A4pnveCwru6W/N+hGQi4XB6wPGNHcqa4N8
- 4+bSCMjYE7Wu9pwa/rF+5IQyeoJT1RfTXHyzZbW8loQNirxqCksp+wokW
- JTnQO+w+o26GU3BZvpV+cPjkK9nSCekhxh0VSWbrw6njfn5ufrTrYSlt9
- 5QvsWcLGzJ6I4aDspNH1zZeVU3hqDj0GkYqntqRdVCJh2ZzhGfQBY/Xi/ w==;
-X-CSE-ConnectionGUID: o2HAXtaqRr+CcEZIvBLiTA==
-X-CSE-MsgGUID: tOXnYz+/RzCw5B3di5wpjw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="24817674"
-X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="24817674"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2024 07:59:17 -0700
-X-CSE-ConnectionGUID: Y+95bCg+SpeBkK52mXH2Bg==
-X-CSE-MsgGUID: vJ8me9sFSAqDZmAdFNDazw==
+ bh=sLKupu3WFR2Kx4b6duL1BqgcONegG59vtY6GWJHXQo8=;
+ b=kWgH5kW1wfymnsD68/NLB5RnO5zniU0Je9LdrUfqtNj0/JRsYuCmo8eT
+ 4hCtRaGwBvl1YlrAPQwHL6qu1eNk1Yw0xTx0rwqBTQDmQDUJhCnYcs5I6
+ ZmfA7otx473NAwEBGFBughU39TbGWNjjkD+4+DRjLRQ7NF+2r5Htc6oi4
+ xiFjRxiz7OSzmR9K/yG7/HYm4dYpqMXIubb6eDIZcF+uOLcIcrXTnEfSg
+ sV52xLsHTgN02g306EcXw6hsbDZf8W8XoJGoNK3Hl11fPXFxCvxealaVI
+ /qDVWoCNo6ABMl35cg+f7Dml5wGDF5NFyA6NXHdqWkkDd2Zr1wsWw/QlD A==;
+X-CSE-ConnectionGUID: qZPcI14ZSbavfDmDLslr0g==
+X-CSE-MsgGUID: JhhCZIDrQr2iguuYbPvmnw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="38788208"
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="38788208"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 08:00:32 -0700
+X-CSE-ConnectionGUID: Lz3K3xt3TIycY05f5R9y7Q==
+X-CSE-MsgGUID: yp9oFeHrS/yOGDYrkVvNxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="40462570"
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="35430826"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2024 07:59:16 -0700
-Date: Wed, 29 May 2024 16:59:13 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2024 08:00:31 -0700
+Date: Wed, 29 May 2024 17:00:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: Re: [PATCH i-g-t 3/5] tests/intel/kms_test_config: Add fbdev tests
- to testplan
-Message-ID: <20240529145913.y3jyqaqewmlo5wkc@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 5/5] tests/intel-ci/xe: Add fbdev tests to XE BAT
+Message-ID: <20240529150029.r26lqj6u6hpchuy3@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 References: <20240528054223.2945356-1-bhanuprakash.modem@intel.com>
- <20240528054223.2945356-4-bhanuprakash.modem@intel.com>
+ <20240528054223.2945356-6-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240528054223.2945356-4-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240528054223.2945356-6-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,32 +72,35 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Bhanuprakash,
-On 2024-05-28 at 11:12:21 +0530, Bhanuprakash Modem wrote:
-> Add fbdev tests to KMS testplan.
+On 2024-05-28 at 11:12:23 +0530, Bhanuprakash Modem wrote:
+> Add few fbdev tests to XE BAT.
 > 
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-
 > ---
->  tests/intel/kms_test_config.json | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  tests/intel-ci/xe-fast-feedback.testlist | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/tests/intel/kms_test_config.json b/tests/intel/kms_test_config.json
-> index bca3b250f..7886b6f58 100644
-> --- a/tests/intel/kms_test_config.json
-> +++ b/tests/intel/kms_test_config.json
-> @@ -2,7 +2,7 @@
->      "description": "JSON file to be used to parse KMS documentation",
->      "name": "Display and KMS Tests for Intel i915 and Xe Drivers",
->      "drivers": [ "xe", "i915" ],
-> -    "files": [ "../chamelium/kms_*.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
-> +    "files": [ "../chamelium/kms_*.c", "../fbdev.c", "../kms_*.c", "../testdisplay.c", "kms_*.c" ],
->      "exclude_files": [ "../chamelium/kms_chamelium_helper.c", "../kms_color_helper.c",
->                         "kms_dsc_helper.c" ],
->      "fields": {
+> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> index c57706f25..aa98b37e6 100644
+> --- a/tests/intel-ci/xe-fast-feedback.testlist
+> +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> @@ -1,6 +1,12 @@
+>  # Should be the first test
+>  igt@xe_module_load@load
+>  
+> +igt@fbdev@eof
+> +igt@fbdev@info
+> +igt@fbdev@nullptr
+> +igt@fbdev@read
+> +igt@fbdev@write
+> +
+>  igt@kms_addfb_basic@addfb25-4-tiled
+>  igt@kms_addfb_basic@addfb25-bad-modifier
+>  igt@kms_addfb_basic@addfb25-modifier-no-flag
 > -- 
 > 2.43.2
 > 
