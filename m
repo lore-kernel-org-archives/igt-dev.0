@@ -4,61 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D12C25B75
-	for <igt-dev@archiver.kernel.org>; Wed, 29 May 2024 09:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E05DAC27C43
+	for <igt-dev@archiver.kernel.org>; Wed, 29 May 2024 09:22:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7850910E396;
-	Wed, 29 May 2024 09:14:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 871FF11364F;
+	Wed, 29 May 2024 09:22:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y/Zi1QiY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U19F8wXU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D54810E396;
- Wed, 29 May 2024 09:14:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F1811133B0
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 May 2024 09:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1716974075; x=1748510075;
+ t=1716974521; x=1748510521;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=2nE2kDOc0ANsndFEa2g3sEfL38s2JUUlJNnP2slroHw=;
- b=Y/Zi1QiYqJex4t6UJ7omN5bnWiG9uo2hyOoT4MUc7uWpBmfDQ1W0613x
- 7LEeBanpLsBpAmgQYxyt2vpFpUq3LrJ7SzJfsMQMh+9OUgJDYgL+T7V8v
- NVEGYVuorUZgdBpjx6HfRY6scr5RUvTR9O6ffVRkx9cXTzuMlAmnKqElF
- PXlSmaUrmKn26Higd3PsJheDvtLKaEnF/efAmQ8AKtMRZJlTzcJ9s62/b
- uMqiKMuCx5EhGj3SThU+OBcwigaaTijKnRvaqyaiPSvsSfty4Cynxpw4k
- IZBVYCnfqMa90ruWgRaq11UXf3S3qnwM+V7AbAFWFn5K7tFtW6FSpoBji A==;
-X-CSE-ConnectionGUID: PhCLOUR7Th6nZKcTrZdo9Q==
-X-CSE-MsgGUID: zEUROX29RZmqS2cTQ4cu7Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="13485683"
-X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="13485683"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2024 02:14:35 -0700
-X-CSE-ConnectionGUID: 8WJ9l09eQSW79o1M+H/DMQ==
-X-CSE-MsgGUID: fucAFs72QeqPltALmMdlzw==
+ bh=H/+RMnkWmc7CHrpY1KhEkop+F/YCz8xJPKQl41evwLU=;
+ b=U19F8wXUfY8IcLgw0SBUxAeXm2bLmEKUxiw2q1I6LhB1XoItrn+24E5k
+ adiRvW30jDFl2KspUIjftrPhQN+3yNSet626nMryMhq9GxkVsll1P9jRc
+ PHCfFKGhrhIdddmUcisCuAl8ROLchMesXByKocMsmApnxhSKSs10kPV3c
+ BPsEFWHtBZP+TaFxCUvIfSi0gtB+6qrmu6Ii9uaKZAxb9DT5taj5P5QnC
+ +AIHdKZ+sZzGm1z3V7cuVrVtl3xhnRDby/Flq8LS8VrSzPavgpq9eK6lG
+ Tc5vGmMdS3C8Q1/00q4T6BPBdzOVHrkuqHkAWY0vYPVEPWc7yQYerQJfr w==;
+X-CSE-ConnectionGUID: Ht7uE3l1Rw6nNhxMQlH04Q==
+X-CSE-MsgGUID: LK9jnUr0QmmMFRalJg/BVg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11085"; a="17198604"
+X-IronPort-AV: E=Sophos;i="6.08,198,1712646000"; d="scan'208";a="17198604"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 02:21:54 -0700
+X-CSE-ConnectionGUID: 6Ntuq5eoQhuHeeJZLbNgjw==
+X-CSE-MsgGUID: EuD1PyxmQ06u6+Zt7gEyWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="35985563"
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; d="scan'208";a="39890055"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2024 02:14:33 -0700
-Date: Wed, 29 May 2024 11:14:18 +0200
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2024 02:21:46 -0700
+Date: Wed, 29 May 2024 11:21:43 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
- lib/gpgpu: add shader support (rev5)
-Message-ID: <20240529091418.4lbjdcgycrwm54g4@kamilkon-DESK.igk.intel.com>
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Subject: Re: [PATCH v5 4/5] lib/igt_sysfs: add helpers to access engine sysfs
+ directory
+Message-ID: <20240529092143.wne456de23isnwop@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Andrzej Hajda <andrzej.hajda@intel.com>,
- I915-ci-infra@lists.freedesktop.org
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 References: <20240528-iga64_inline_ups-v5-0-fdd8e9dcd64c@intel.com>
- <171693562544.2217197.18223813109262861763@8e613ede5ea5>
+ <20240528-iga64_inline_ups-v5-4-fdd8e9dcd64c@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <171693562544.2217197.18223813109262861763@8e613ede5ea5>
+In-Reply-To: <20240528-iga64_inline_ups-v5-4-fdd8e9dcd64c@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,129 +80,128 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-05-28 at 22:33:45 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Andrzej,
+On 2024-05-28 at 16:04:50 +0200, Andrzej Hajda wrote:
+> Helpers follow convention of xe_sysfs_gt_(path|open).
 > 
-> Series: lib/gpgpu: add shader support (rev5)
-> URL   : https://patchwork.freedesktop.org/series/133020/
-> State : failure
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> ---
+>  lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_sysfs.h |  3 +++
+>  2 files changed, 74 insertions(+)
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_14840 -> IGTPW_11203
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11203 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11203, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/index.html
-> 
-> Participating hosts (40 -> 38)
-> ------------------------------
-> 
->   Additional (2): bat-kbl-2 fi-elk-e7500 
->   Missing    (4): fi-glk-j4005 fi-kbl-8809g bat-mtlp-8 bat-mtlp-6 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11203:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@hangcheck:
->     - bat-rplp-1:         [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14840/bat-rplp-1/igt@i915_selftest@live@hangcheck.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-rplp-1/igt@i915_selftest@live@hangcheck.html
-> 
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index 0c5817eb1580..e11eecc25aa1 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -40,7 +40,9 @@
+>  #include <dirent.h>
+>  #include <unistd.h>
+>  #include <fcntl.h>
+> +#include <xe_drm.h>
+>  
+> +#include "drmtest.h"
+>  #include "igt_core.h"
+>  #include "igt_sysfs.h"
+>  #include "igt_device.h"
+> @@ -263,6 +265,75 @@ int xe_sysfs_gt_open(int xe_device, int gt)
+>  	return open(path, O_RDONLY);
+>  }
+>  
+> +static const char *engine_class_to_str(__u16 class)
+> +{
+> +	const char *str[] = {
+> +		[DRM_XE_ENGINE_CLASS_RENDER] = "rcs",
+> +		[DRM_XE_ENGINE_CLASS_COPY] = "bcs",
+> +		[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = "vcs",
+> +		[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = "vecs",
+> +		[DRM_XE_ENGINE_CLASS_COMPUTE] = "ccs",
+> +	};
 
-Unrelated,
+These looks like intel-specific global helper.
+
+> +
+> +	if (class < ARRAY_SIZE(str))
+> +		return str[class];
+> +
+> +	return "unk";
+> +}
+> +
+> +/**
+> + * xe_sysfs_engine_path:
+> + * @xe_device: fd of the device
+> + * @gt: gt number
+> + * @class: engine class
+> + * @path: buffer to fill with the sysfs gt path to the device
+> + * @pathlen: length of @path buffer
+> + *
+> + * Returns:
+> + * The directory path, or NULL on failure.
+> + */
+> +char *
+> +xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
+> +{
+> +	struct stat st;
+> +	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
+> +
+> +	if (xe_device < 0)
+> +		return NULL;
+> +
+> +	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
+> +		return NULL;
+> +
+> +	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d/engines/%s",
+> +		 major(st.st_rdev), minor(st.st_rdev), tile, gt, engine_class_to_str(class));
+> +
+> +	if (!access(path, F_OK))
+> +		return path;
+> +
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * xe_sysfs_engine_open:
+> + * @xe_device: fd of the device
+> + * @gt: gt number
+> + * @class: engine class
+> + *
+> + * This opens the sysfs gt directory corresponding to device and tile for use
+> + *
+> + * Returns:
+> + * The directory fd, or -1 on failure.
+> + */
+> +int xe_sysfs_engine_open(int xe_device, int gt, int class)
+> +{
+> +	char path[96];
+------------- ^^
+Is it enough?
 
 Regards,
 Kamil
 
->   
-> Known issues
-> ------------
+> +
+> +	if (!xe_sysfs_engine_path(xe_device, gt, class, path, sizeof(path)))
+> +		return -1;
+> +
+> +	return open(path, O_RDONLY);
+> +}
+> +
+>  /**
+>   * igt_sysfs_gt_path:
+>   * @device: fd of the device
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index f37d80ec130e..6c604d939013 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -166,4 +166,7 @@ int xe_sysfs_gt_open(int xe_device, int gt);
+>  char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int pathlen);
+>  int xe_sysfs_tile_open(int xe_device, int tile);
+>  int xe_sysfs_get_num_tiles(int xe_device);
+> +char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
+> +int xe_sysfs_engine_open(int xe_device, int gt, int class);
+> +
+>  #endif /* __IGT_SYSFS_H__ */
 > 
->   Here are the changes found in IGTPW_11203 that come from known issues:
+> -- 
+> 2.34.1
 > 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@fbdev@info:
->     - bat-kbl-2:          NOTRUN -> [SKIP][3] ([i915#1849])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-kbl-2/igt@fbdev@info.html
-> 
->   * igt@gem_lmem_swapping@basic@lmem0:
->     - bat-dg2-11:         [PASS][4] -> [FAIL][5] ([i915#10378])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14840/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
->     - bat-dg2-8:          [PASS][6] -> [FAIL][7] ([i915#10378])
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14840/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-dg2-8/igt@gem_lmem_swapping@basic@lmem0.html
-> 
->   * igt@gem_lmem_swapping@parallel-random-engines:
->     - bat-kbl-2:          NOTRUN -> [SKIP][8] +39 other tests skip
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-> 
->   * igt@i915_module_load@load:
->     - bat-dg2-8:          [PASS][9] -> [DMESG-WARN][10] ([i915#10014])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14840/bat-dg2-8/igt@i915_module_load@load.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-dg2-8/igt@i915_module_load@load.html
-> 
->   * igt@kms_pm_rpm@basic-pci-d3-state:
->     - fi-elk-e7500:       NOTRUN -> [SKIP][11] +24 other tests skip
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@gem_lmem_swapping@basic@lmem0:
->     - bat-dg2-9:          [FAIL][12] ([i915#10378]) -> [PASS][13]
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14840/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@i915_selftest@live@execlists:
->     - fi-bsw-nick:        [ABORT][14] ([i915#10594]) -> [ABORT][15] ([i915#10800])
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14840/fi-bsw-nick/igt@i915_selftest@live@execlists.html
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/fi-bsw-nick/igt@i915_selftest@live@execlists.html
-> 
->   
->   [i915#10014]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10014
->   [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
->   [i915#10594]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10594
->   [i915#10800]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10800
->   [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7873 -> IGTPW_11203
-> 
->   CI-20190529: 20190529
->   CI_DRM_14840: 2f9ce87f366102c67ef40c8223e02c33244a60c0 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_11203: 11203
->   IGT_7873: b9bcded9123ac56ce05748de6c4870fb49451b87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11203/index.html
