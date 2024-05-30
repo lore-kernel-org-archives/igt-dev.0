@@ -4,68 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E649C27C43
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72664C27C4F
 	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 14:20:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB099113662;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AABCA113621;
 	Thu, 30 May 2024 14:20:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jLFjUo3D";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="idlGV5hz";
 	dkim-atps=neutral
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com
- [209.85.210.181])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA955113662
- for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 14:20:06 +0000 (UTC)
-Received: by mail-pf1-f181.google.com with SMTP id
- d2e1a72fcca58-7024063f5a9so36400b3a.1
- for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 07:20:06 -0700 (PDT)
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com
+ [209.85.161.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6443113621
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 14:20:14 +0000 (UTC)
+Received: by mail-oo1-f43.google.com with SMTP id
+ 006d021491bc7-5b53bb4bebaso542188eaf.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 07:20:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717078806; x=1717683606; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1717078813; x=1717683613; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=Setj78gsw6oEdtqR1PeWNbQ5RwL8SGGkWXVSUHtoa1g=;
- b=jLFjUo3DM7vMVW9rXFTF2iWPTucbSP6XYT/NZU4t7SjKCNk49LB+xem/l97WyKXp6i
- AmwD38S0xdJg13fArFWcFG+QB+QMOox2bzmVFsfF9aypXMSZkbbM9f2LKWV9UcS1J0Vk
- fLe+fvhuCAgh2w9eVR+c1OuGx6lfH+UwfHSJp2UyjoQSiZXxFLPKWLHuZa7ZuYYrsPDd
- Q33OfMAUaS/rzVyxdGoKTox+Q5TkREA2+T+jp8BgiWPneDWJJw+M6ISNoSFkRylgX3sc
- FF5D0plc/oDRJokgLnSHhClZql8LPcVyp1SkJyA6EhIDOhvqZhTeGJvUVVBKdQflc+lJ
- XuyA==
+ bh=oRh86uXVFfbnJIrGQD2NaEyInrp1LHKxnp1L6awZk4c=;
+ b=idlGV5hz/VYi8mFtdE+B2XqOXcSr052wspZSn47UcRyWonrABijeL20qEXqIaxAYho
+ LzQcv77vzSFEomZXIBGHT/r6THjjm3d07eru5JaIBy1J8GkaXkCTweE3rVARUbRPQHdQ
+ LiYP7uxydzlqyzMAcfBCu+LNWFzd5npD8tMtmgiSkyXMw+ZPbNxLjYY2yJbpUR/JyMu2
+ C/BECbG4SUaVpCrD4GxO4jbSIdAsaXE0XT0GORd9wAyIqnZWfKgVlij2vru+3Gb+odSM
+ 4940AGoLWVnEhYsKCdkp6JB4qiLVnTJcsIHg323B6YRSb8/B5bNtkC8mtj4g7ONvEG7j
+ QM+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717078806; x=1717683606;
+ d=1e100.net; s=20230601; t=1717078813; x=1717683613;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=Setj78gsw6oEdtqR1PeWNbQ5RwL8SGGkWXVSUHtoa1g=;
- b=XesxLdiaX9oS+JP6qUQCrdg7fK0m906KyVM4q+Vo4zNDjWblF2CkIUt2S9/+h5CEiD
- PW4LzEIoaNHQaoqQmHaNl1htYgHYX5qfQF79Hlxf1+f89PYwTARlyi3/kB5cIzrffp69
- ToPFKQRA/ZpVeZQ9st98sfBQjDXDceW7PJaCsRA89ipoOluWoFpNhmTehrMlfmJ3Jz5c
- +uo9esW6nCL4bec3cp11qOQeAuklaOlichyZ3Digr290GvG7ya28fQjJt1qRTylv0Hiu
- MUw8HdZ2ITBc0jK+f1cHKpa7DeTb/e8EBzfDodxZ2pprycVLoXpAPR473jfTBes/0HrT
- t6kw==
-X-Gm-Message-State: AOJu0YwqdKZpRToY85PAC5Yw+WZEp0B33f33cHlK7/OJcLS+rQ3i5Y8x
- Pt3L9nSnipaZ14GltYqnXoCfGaPC20HJJK1bofu9qiRSApNPxPgizkSvLr0f
-X-Google-Smtp-Source: AGHT+IHcfrYPHClFBE8ex3rnCggAlaHCINw1ZbM4Nb6sA4kJ4JVAjdQ0i+x0WDasyUoAKm4bLafv6Q==
-X-Received: by 2002:a05:6a00:4095:b0:6f9:f67:d570 with SMTP id
- d2e1a72fcca58-702311b63e0mr2527947b3a.24.1717078805832; 
- Thu, 30 May 2024 07:20:05 -0700 (PDT)
+ bh=oRh86uXVFfbnJIrGQD2NaEyInrp1LHKxnp1L6awZk4c=;
+ b=SaLkz5PAWwd9VXNZuRUa0B/gTy+esBTrM86Y+mjKAUXH3gRsfuJH5hbQDzSOy920KN
+ 5XK0HiQTjQjlaW5fdFDqd3N/VIsKPgLDrThABajJQD3Togoo7O+nTzbxhLStNw664y0n
+ 2SYOT3tAgAclsvPJzXZkjZNhfLaVPblIA98GVKdpM1OmkHF0MwAz1kComd+ig2ZNbpDp
+ sZpIFDKFFoC4dwOu1Kwlq9EtcqLSscr0zs1+iO8AYmiH69sgjR0Y8ghepK3IDyNweV06
+ VpMilHZsLOnxHDDCx9o4dpRxOLxaOp/42kAGjTmvGb9enk8E9Gck3/vbW+Ci7Dy1+YU6
+ kosA==
+X-Gm-Message-State: AOJu0Ywwzzo40O/eHEwoffvCR3+j6nxQzhf3i9H4Z31aXNgpeXpL/7GC
+ 5wv5W4Mn9/v27/wX/6OVaHPLI7dq/OdV/nlIp1wsFJZ0WYXO4UEjByk6zzMI
+X-Google-Smtp-Source: AGHT+IEtyoarbORvAmwaxTl0aKHz3OVT7CNdpf5jG1sO+gJCVh3f2Umt70GWHbGHDgdxNr4sdu4xBQ==
+X-Received: by 2002:a05:6358:6b8b:b0:199:3938:d78 with SMTP id
+ e5c5f4694b2df-199b93943edmr233559955d.13.1717078812855; 
+ Thu, 30 May 2024 07:20:12 -0700 (PDT)
 Received: from localhost ([134.134.139.78]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-701e2d1b155sm3838931b3a.184.2024.05.30.07.20.04
+ 41be03b00d2f7-6bd11192ab7sm1979098a12.79.2024.05.30.07.20.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 May 2024 07:20:05 -0700 (PDT)
+ Thu, 30 May 2024 07:20:12 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t v4 1/5] lib/igt_fb: make blt_compression_format function
- more readable
-Date: Thu, 30 May 2024 17:23:42 +0300
-Message-ID: <20240530142346.1511811-2-juhapekka.heikkila@gmail.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v4 3/5] lib/igt_fb: separate intel blitter context setup
+ from blitter function
+Date: Thu, 30 May 2024 17:23:44 +0300
+Message-ID: <20240530142346.1511811-4-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
 References: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -82,96 +80,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Intel blitter compression format getter sanitizing.
+separate context and memory region setup to setup_context_and_memory_region()
+helper to reduce blitcopy() overall size.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_fb.c | 63 ++++++++++++++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 26 deletions(-)
+ lib/igt_fb.c | 73 ++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 42 insertions(+), 31 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 5df5cb08f..707eb0a1e 100644
+index 588144579..e225b9090 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2825,6 +2825,32 @@ static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
- #define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
- 			  x.compression_type == COMPRESSION_TYPE_MEDIA)
- 
-+const struct {
-+	uint32_t key;
-+	enum blt_compression_type type;
-+	uint32_t return_value;
-+} compression_mappings[] = {
-+	{ CD_32bit, COMPRESSION_TYPE_3D, 8 },
-+	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_MEDIA, 8 },
-+	{ DRM_FORMAT_XYUV8888, COMPRESSION_TYPE_MEDIA, 9 },
-+	{ DRM_FORMAT_NV12, COMPRESSION_TYPE_MEDIA, 9 },
-+	{ DRM_FORMAT_P010, COMPRESSION_TYPE_MEDIA, 8 },
-+	{ DRM_FORMAT_P012, COMPRESSION_TYPE_MEDIA, 8 },
-+	{ DRM_FORMAT_P016, COMPRESSION_TYPE_MEDIA, 8 },
-+};
-+
-+static uint32_t get_compression_return_value(uint32_t key, enum  blt_compression_type type)
-+{
-+	for (int i = 0; i < ARRAY_SIZE(compression_mappings); i++) {
-+		if (compression_mappings[i].key == key &&
-+		    compression_mappings[i].type == type) {
-+			return compression_mappings[i].return_value;
-+		}
-+	}
-+	igt_assert_f(0, "Unknown compression type or format\n");
-+	return 0; // This line is to avoid compilation warnings, it will not be reached.
-+}
-+
- static uint32_t blt_compression_format(struct blt_copy_data *blt,
- 				       const struct igt_fb *fb)
- {
-@@ -2832,33 +2858,18 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
- 	    blt->dst.compression == COMPRESSION_DISABLED)
- 		return 0;
- 
--	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
--		switch (blt->color_depth) {
--		case CD_32bit:
--			return 8;
--		default:
--			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
--		}
--	} else if (BLT_TARGET_MC(blt->src)) {
--		switch (fb->drm_format) {
--		case DRM_FORMAT_XRGB8888:
--			return 8;
--		case DRM_FORMAT_XYUV8888:
--			return 9;
--		case DRM_FORMAT_NV12:
--			return 9;
--		case DRM_FORMAT_P010:
--		case DRM_FORMAT_P012:
--		case DRM_FORMAT_P016:
--			return 8;
--		default:
--			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
--		}
--	} else if (BLT_TARGET_MC(blt->dst)) {
-+	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst))
-+		return get_compression_return_value(blt->color_depth,
-+						    COMPRESSION_TYPE_3D);
-+
-+	if (BLT_TARGET_MC(blt->src))
-+		return get_compression_return_value(fb->drm_format,
-+						    COMPRESSION_TYPE_MEDIA);
-+
-+	if (BLT_TARGET_MC(blt->dst))
- 		igt_assert_f(0, "Destination compression not supported on mc ccs\n");
--	} else {
--		igt_assert_f(0, "unknown compression\n");
--	}
-+
-+	igt_assert_f(0, "unknown compression\n");
+@@ -2900,6 +2900,45 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+ 	igt_assert_f(0, "unknown compression\n");
  }
  
++static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *ctx,
++					    uint64_t *ahnd, uint32_t *mem_region,
++					    uint32_t *vm, uint32_t *bb,
++					    uint64_t *bb_size,
++					    const intel_ctx_t **ictx,
++					    uint32_t *exec_queue,
++					    intel_ctx_t **xe_ctx)
++{
++	struct drm_xe_engine_class_instance inst = {
++		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
++	};
++
++	if (is_i915_device(fb->fd) && !gem_has_relocations(fb->fd)) {
++		igt_require(gem_has_contexts(fb->fd));
++		*ictx = intel_ctx_create_all_physical(fb->fd);
++		*mem_region = HAS_FLATCCS(intel_get_drm_devid(fb->fd)) ?
++			REGION_LMEM(0) : REGION_SMEM;
++		*ctx = gem_context_create(fb->fd);
++		*ahnd = get_reloc_ahnd(fb->fd, *ctx);
++
++		igt_assert(__gem_create_in_memory_regions(fb->fd,
++							  bb,
++							  bb_size,
++							  *mem_region) == 0);
++	} else if (is_xe_device(fb->fd)) {
++		*vm = xe_vm_create(fb->fd, 0, 0);
++		*exec_queue = xe_exec_queue_create(fb->fd, *vm, &inst, 0);
++		*xe_ctx = intel_ctx_xe(fb->fd, *vm, *exec_queue, 0, 0, 0);
++		*mem_region = vram_if_possible(fb->fd, 0);
++
++		*ahnd = intel_allocator_open_full(fb->fd, (*xe_ctx)->vm, 0, 0,
++						 INTEL_ALLOCATOR_SIMPLE,
++						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
++
++		*bb_size = xe_bb_size(fb->fd, *bb_size);
++		*bb = xe_bo_create(fb->fd, 0, *bb_size, *mem_region, 0);
++	}
++}
++
  static void blitcopy(const struct igt_fb *dst_fb,
+ 		     const struct igt_fb *src_fb)
+ {
+@@ -2920,11 +2959,6 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	intel_ctx_t *xe_ctx;
+ 	uint32_t vm, exec_queue;
+ 	bool is_xe = is_xe_device(dst_fb->fd);
+-	bool is_i915 = is_i915_device(dst_fb->fd);
+-
+-	struct drm_xe_engine_class_instance inst = {
+-		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+-	};
+ 
+ 	igt_assert_eq(dst_fb->fd, src_fb->fd);
+ 	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
+@@ -2932,32 +2966,9 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
+ 	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+ 
+-	if (is_i915 && !gem_has_relocations(dst_fb->fd)) {
+-		igt_require(gem_has_contexts(dst_fb->fd));
+-		mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
+-			? REGION_LMEM(0) : REGION_SMEM;
+-
+-		ictx = intel_ctx_create_all_physical(src_fb->fd);
+-		ctx = gem_context_create(dst_fb->fd);
+-		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+-
+-		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
+-							  &bb,
+-							  &bb_size,
+-							  mem_region) == 0);
+-	} else if (is_xe) {
+-		vm = xe_vm_create(dst_fb->fd, 0, 0);
+-		exec_queue = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
+-		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, exec_queue, 0, 0, 0);
+-		mem_region = vram_if_possible(dst_fb->fd, 0);
+-
+-		ahnd = intel_allocator_open_full(dst_fb->fd, xe_ctx->vm, 0, 0,
+-						 INTEL_ALLOCATOR_SIMPLE,
+-						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+-
+-		bb_size = xe_bb_size(dst_fb->fd, bb_size);
+-		xe_bb = xe_bo_create(dst_fb->fd, 0, bb_size, mem_region, 0);
+-	}
++	setup_context_and_memory_region(dst_fb, &ctx, &ahnd, &mem_region,
++					&vm, &xe_bb, &bb_size, &ictx,
++					&exec_queue, &xe_ctx);
+ 
+ 	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
+ 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
 -- 
 2.43.2
 
