@@ -4,61 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93712C27C43
-	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 14:20:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E649C27C43
+	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 14:20:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 600071136D7;
-	Thu, 30 May 2024 14:20:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB099113662;
+	Thu, 30 May 2024 14:20:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="ippJPPY8";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jLFjUo3D";
 	dkim-atps=neutral
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com
- [209.85.214.174])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CE4D113621
- for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 14:20:03 +0000 (UTC)
-Received: by mail-pl1-f174.google.com with SMTP id
- d9443c01a7336-1f62a628b4cso1865655ad.1
- for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 07:20:03 -0700 (PDT)
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com
+ [209.85.210.181])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA955113662
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 14:20:06 +0000 (UTC)
+Received: by mail-pf1-f181.google.com with SMTP id
+ d2e1a72fcca58-7024063f5a9so36400b3a.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 07:20:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717078802; x=1717683602; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=zVH2j0icCFsg4tF0MQepu4yAJtKGXOobJ4jgI6cfS2Q=;
- b=ippJPPY83563hMJgE8oRR7aShvhcTtxqgMe30yQxLOHP5N9cg+VbMKvi/PTGYRf148
- uXmZ0eQFaKU8N02wznr/lzaDWwzUH4fXT1Mw2/fQwmd5sq0v1ue4nHUkZcKHWHpFxm99
- PxAoMQkyQp/2mV0/oc+940JsmuWYdA7B0JR+73mXhx8OAogv53AeVgAhWrd2arMQ8ZUd
- DT4atT+0PspGQcMq6iEvcoo/BgHiYL/ARrBF7D+AyVYCyu3PyefRGEGCQ06Yi5YltL8x
- fnLWxkicE0MgS0OSI0yHUq0lduhuSD20t+5aSKtY9HSAh5nzBHqKdEqaM0Q2i+7SNFDO
- OM4g==
+ d=gmail.com; s=20230601; t=1717078806; x=1717683606; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Setj78gsw6oEdtqR1PeWNbQ5RwL8SGGkWXVSUHtoa1g=;
+ b=jLFjUo3DM7vMVW9rXFTF2iWPTucbSP6XYT/NZU4t7SjKCNk49LB+xem/l97WyKXp6i
+ AmwD38S0xdJg13fArFWcFG+QB+QMOox2bzmVFsfF9aypXMSZkbbM9f2LKWV9UcS1J0Vk
+ fLe+fvhuCAgh2w9eVR+c1OuGx6lfH+UwfHSJp2UyjoQSiZXxFLPKWLHuZa7ZuYYrsPDd
+ Q33OfMAUaS/rzVyxdGoKTox+Q5TkREA2+T+jp8BgiWPneDWJJw+M6ISNoSFkRylgX3sc
+ FF5D0plc/oDRJokgLnSHhClZql8LPcVyp1SkJyA6EhIDOhvqZhTeGJvUVVBKdQflc+lJ
+ XuyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717078802; x=1717683602;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=zVH2j0icCFsg4tF0MQepu4yAJtKGXOobJ4jgI6cfS2Q=;
- b=NjNML+LVHlPdeavGo5hmN/2daqKOq53BjBhDs+oBliWAzjFUwrPhS4gUnzFjcb1Unf
- o55WBQx5IffmcyaaZYppDLgWRde07k4SZk3l/KjmgiivahQFmYQgN1TPRi9xWeKAmyA9
- qX/S2IRGa8Yz6ic94ccoEH9+S4vZMxaR1O6oh34hojKTf5vEk5lV9akTAWxZofM9Sh5n
- 8kgmpBEaMlx3rKrgeqitMPXA0uDQDnVAlVkhrJW/11SkzOYJPOqAjsY53V8ZAXi2zH/N
- GmMEZ0qWM9+f3LFcFfGLZXMx0sg2FUPxeKDaLDfbXWDp2/Pm1v47IuxKxfdfYotv5Iyr
- kZsg==
-X-Gm-Message-State: AOJu0YzPSzo/sVgOQPy8bwKXFGc/pgM1nmL7I5UljVEcHpPa6ojiofsS
- VtV0R+OVh/Gcy6uQT5F1vTME6HSo31ckMc789vN1gJjnJuoMen05JsncWt3x
-X-Google-Smtp-Source: AGHT+IF+kzO4G1WR33P92xQ0Cn03e8+D2Sjm6iryWgtSa4J+QOKQXCwnow1F6K5PNxxs8mCvzEMZXw==
-X-Received: by 2002:a17:902:e549:b0:1f4:5fe5:74c9 with SMTP id
- d9443c01a7336-1f61a4e4e8emr30253215ad.69.1717078802086; 
- Thu, 30 May 2024 07:20:02 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1717078806; x=1717683606;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Setj78gsw6oEdtqR1PeWNbQ5RwL8SGGkWXVSUHtoa1g=;
+ b=XesxLdiaX9oS+JP6qUQCrdg7fK0m906KyVM4q+Vo4zNDjWblF2CkIUt2S9/+h5CEiD
+ PW4LzEIoaNHQaoqQmHaNl1htYgHYX5qfQF79Hlxf1+f89PYwTARlyi3/kB5cIzrffp69
+ ToPFKQRA/ZpVeZQ9st98sfBQjDXDceW7PJaCsRA89ipoOluWoFpNhmTehrMlfmJ3Jz5c
+ +uo9esW6nCL4bec3cp11qOQeAuklaOlichyZ3Digr290GvG7ya28fQjJt1qRTylv0Hiu
+ MUw8HdZ2ITBc0jK+f1cHKpa7DeTb/e8EBzfDodxZ2pprycVLoXpAPR473jfTBes/0HrT
+ t6kw==
+X-Gm-Message-State: AOJu0YwqdKZpRToY85PAC5Yw+WZEp0B33f33cHlK7/OJcLS+rQ3i5Y8x
+ Pt3L9nSnipaZ14GltYqnXoCfGaPC20HJJK1bofu9qiRSApNPxPgizkSvLr0f
+X-Google-Smtp-Source: AGHT+IHcfrYPHClFBE8ex3rnCggAlaHCINw1ZbM4Nb6sA4kJ4JVAjdQ0i+x0WDasyUoAKm4bLafv6Q==
+X-Received: by 2002:a05:6a00:4095:b0:6f9:f67:d570 with SMTP id
+ d2e1a72fcca58-702311b63e0mr2527947b3a.24.1717078805832; 
+ Thu, 30 May 2024 07:20:05 -0700 (PDT)
 Received: from localhost ([134.134.139.78]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1f625716ec9sm8882235ad.187.2024.05.30.07.20.01
+ d2e1a72fcca58-701e2d1b155sm3838931b3a.184.2024.05.30.07.20.04
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 30 May 2024 07:20:01 -0700 (PDT)
+ Thu, 30 May 2024 07:20:05 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v4 0/5] Intel blitter framebuffer copying sanitizing
-Date: Thu, 30 May 2024 17:23:41 +0300
-Message-ID: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v4 1/5] lib/igt_fb: make blt_compression_format function
+ more readable
+Date: Thu, 30 May 2024 17:23:42 +0300
+Message-ID: <20240530142346.1511811-2-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
+References: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -77,20 +82,96 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As is framebuffer blitter copying look messy, here tried to sort out that
-mess a bit. Modifier fix patch was already merged earlier from this set.
-Here fixed Zbigniew pointed issues.
+Intel blitter compression format getter sanitizing.
 
-Juha-Pekka Heikkila (5):
-  lib/igt_fb: make blt_compression_format function more readable
-  lib/igt_fb: Sanitize blt_fb_init
-  lib/igt_fb: separate intel blitter context setup from blitter function
-  lib/igt_fb: put intel blt cleanup into its own function
-  lib/igt_fb: unify intel blitter fb block copies between xe and i915
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/igt_fb.c | 63 ++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 37 insertions(+), 26 deletions(-)
 
- lib/igt_fb.c | 353 ++++++++++++++++++++++++++++-----------------------
- 1 file changed, 196 insertions(+), 157 deletions(-)
-
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 5df5cb08f..707eb0a1e 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -2825,6 +2825,32 @@ static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
+ #define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
+ 			  x.compression_type == COMPRESSION_TYPE_MEDIA)
+ 
++const struct {
++	uint32_t key;
++	enum blt_compression_type type;
++	uint32_t return_value;
++} compression_mappings[] = {
++	{ CD_32bit, COMPRESSION_TYPE_3D, 8 },
++	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_MEDIA, 8 },
++	{ DRM_FORMAT_XYUV8888, COMPRESSION_TYPE_MEDIA, 9 },
++	{ DRM_FORMAT_NV12, COMPRESSION_TYPE_MEDIA, 9 },
++	{ DRM_FORMAT_P010, COMPRESSION_TYPE_MEDIA, 8 },
++	{ DRM_FORMAT_P012, COMPRESSION_TYPE_MEDIA, 8 },
++	{ DRM_FORMAT_P016, COMPRESSION_TYPE_MEDIA, 8 },
++};
++
++static uint32_t get_compression_return_value(uint32_t key, enum  blt_compression_type type)
++{
++	for (int i = 0; i < ARRAY_SIZE(compression_mappings); i++) {
++		if (compression_mappings[i].key == key &&
++		    compression_mappings[i].type == type) {
++			return compression_mappings[i].return_value;
++		}
++	}
++	igt_assert_f(0, "Unknown compression type or format\n");
++	return 0; // This line is to avoid compilation warnings, it will not be reached.
++}
++
+ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+ 				       const struct igt_fb *fb)
+ {
+@@ -2832,33 +2858,18 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+ 	    blt->dst.compression == COMPRESSION_DISABLED)
+ 		return 0;
+ 
+-	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst)) {
+-		switch (blt->color_depth) {
+-		case CD_32bit:
+-			return 8;
+-		default:
+-			igt_assert_f(0, "COMPRESSION_TYPE_3D unknown color depth\n");
+-		}
+-	} else if (BLT_TARGET_MC(blt->src)) {
+-		switch (fb->drm_format) {
+-		case DRM_FORMAT_XRGB8888:
+-			return 8;
+-		case DRM_FORMAT_XYUV8888:
+-			return 9;
+-		case DRM_FORMAT_NV12:
+-			return 9;
+-		case DRM_FORMAT_P010:
+-		case DRM_FORMAT_P012:
+-		case DRM_FORMAT_P016:
+-			return 8;
+-		default:
+-			igt_assert_f(0, "COMPRESSION_TYPE_MEDIA unknown format\n");
+-		}
+-	} else if (BLT_TARGET_MC(blt->dst)) {
++	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst))
++		return get_compression_return_value(blt->color_depth,
++						    COMPRESSION_TYPE_3D);
++
++	if (BLT_TARGET_MC(blt->src))
++		return get_compression_return_value(fb->drm_format,
++						    COMPRESSION_TYPE_MEDIA);
++
++	if (BLT_TARGET_MC(blt->dst))
+ 		igt_assert_f(0, "Destination compression not supported on mc ccs\n");
+-	} else {
+-		igt_assert_f(0, "unknown compression\n");
+-	}
++
++	igt_assert_f(0, "unknown compression\n");
+ }
+ 
+ static void blitcopy(const struct igt_fb *dst_fb,
 -- 
 2.43.2
 
