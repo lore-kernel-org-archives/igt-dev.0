@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B44DC25B74
-	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 05:33:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94F2C25B78
+	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 05:35:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6152810E448;
-	Thu, 30 May 2024 05:33:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 253B810E448;
+	Thu, 30 May 2024 05:35:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bu6uSlRj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YM8X/TEX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 943D910E448
- for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 05:33:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AACE610E448
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 05:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717047237; x=1748583237;
+ t=1717047338; x=1748583338;
  h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to; bh=XIwoF/qeA0vh4asG/bhm3lOmHdN9rJHecDUxekTZrr8=;
- b=bu6uSlRjkwMfiimKkgr77Tn2DVbm7qbyI0IwiFyPP0BD2pJfwoIwFsJf
- Ja1dzuLw9pTSruTRN9y0dCbAj9IofgvKPl9RmHywySjPXDVeumvrNY7CO
- SKLJa+eMP5c/rjoPFVkKZcKjr1XTqK87FNBBC4cS7Z+/NJz4ET6MrDb/g
- BiMURN3xfxNaerjGV2msb0fRQWNzJeQXKHdQOwkK3Pobvg7mTBt+XsmgH
- kD8sOb9W3Ti7cU7RoSTVWEI398cNuHg4weqLDmBYDu/ecmkZsKlsSWwdt
- km4GcxkjsBeYspOuAtkP9D5ET0ekAxo26ydg2GUBtHff6SYCYYUxdoZSc w==;
-X-CSE-ConnectionGUID: 1SMLeNnMQfmsOFBllGesdg==
-X-CSE-MsgGUID: GozYi4LCTmGbe6RtiJvNhQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="17292238"
-X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; d="scan'208,217";a="17292238"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2024 22:33:56 -0700
-X-CSE-ConnectionGUID: VVJgrN8uRByEJGUli2omRw==
-X-CSE-MsgGUID: TwzZTzF1RdGpLD88AiG81w==
+ in-reply-to; bh=ZJANrHzePO5R/WqX5ub4x7dnMyhq5IS/RcR552PlJbY=;
+ b=YM8X/TEX1ZPvgf7UmOILAr62eVVXZPeWzv0MtjzhfYmhLg3Z5Bstw23L
+ 36tEsutBRgJTrl2KFsea1583tCOj5YNOFRsG0APCiYL1VMFoMhJp1mPwo
+ Ss3Ek3OjL1R0fcLIqS0dodxRZwOTh6aK1Znyg5e+gIth4F8uH7tlopJad
+ AF3ih8a3ZNMs5/Qsw+AlRiYdnGu5I7CN22H5GqFuD7JgfjCph/Asm3d1K
+ GUu+Hjvrey1yf/tfyeLRSeGIlcus++kVf+NjmjyVGJpjd/y6H5eNgI5xR
+ qFwCW8ks4Z1Or7UstGEOKA78v3nHmP0WB9ksi6fV2xwYNt9ujmSN5O1XC Q==;
+X-CSE-ConnectionGUID: DRhOSCeRRLWtqBcAB2hspA==
+X-CSE-MsgGUID: qBDFNZi0STmTcjIqG27i1g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="17337287"
+X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; d="scan'208,217";a="17337287"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 22:35:37 -0700
+X-CSE-ConnectionGUID: IyPcKVepQGmpjLg926olhA==
+X-CSE-MsgGUID: RmxjysGJS6WCyrpEVcbw2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; d="scan'208,217";a="35633611"
+X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; d="scan'208,217";a="66550746"
 Received: from joshikun-mobl.gar.corp.intel.com (HELO [10.247.237.53])
  ([10.247.237.53])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 May 2024 22:33:54 -0700
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 May 2024 22:35:36 -0700
 Content-Type: multipart/alternative;
- boundary="------------7EqO1QNLitMhP9mEo29yatw0"
-Message-ID: <ecaebadf-13fc-48ea-8128-229bc1f440a4@intel.com>
-Date: Thu, 30 May 2024 11:03:52 +0530
+ boundary="------------6s64Yz8SXZOauNZchb7SUOPb"
+Message-ID: <ec4b6897-d705-4ad4-a978-1ca7e745f238@intel.com>
+Date: Thu, 30 May 2024 11:05:32 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,2/4] lib/igt_psr: Psr status debugfs interface print
- "enabled" not "Enabled"
+Subject: Re: [i-g-t,3/4] lib/igt_psr: Handle PR_MODE2_SEL_FETCH and eDP PR_*
+ in psr active check
 To: =?UTF-8?Q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>,
  igt-dev@lists.freedesktop.org
-References: <20240521090233.1998323-3-jouni.hogander@intel.com>
+References: <20240521090233.1998323-4-jouni.hogander@intel.com>
 Content-Language: en-US
 From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20240521090233.1998323-3-jouni.hogander@intel.com>
+In-Reply-To: <20240521090233.1998323-4-jouni.hogander@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,20 +71,23 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 This is a multi-part message in MIME format.
---------------7EqO1QNLitMhP9mEo29yatw0
+--------------6s64Yz8SXZOauNZchb7SUOPb
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 On 5/21/2024 2:32 PM, Jouni Högander wrote:
-> Psr status debugfs interface print "enabled" not "Enabled". Take this into
-> account in psr_mode psr_get_mode.
+> Panel Replay expected state is always SRDENT for DP2.0 Panel Replay.
+> For eDP1.5 Panel Replay it is SLEEP. Due to this output is now mandatory
+> parameter to psr_active_check if PSR mode is Panel Replay.
+>
+> Bspec: 68920, 68934
+>
+> v2: fix mode checks
 >
 > Signed-off-by: Jouni Högander<jouni.hogander@intel.com>
-
 Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
-
---------------7EqO1QNLitMhP9mEo29yatw0
+--------------6s64Yz8SXZOauNZchb7SUOPb
 Content-Type: text/html; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
@@ -100,17 +103,19 @@ Content-Transfer-Encoding: 8bit
       wrote:<br>
     </div>
     <blockquote type="cite">
-      <pre class="moz-quote-pre" wrap="">Psr status debugfs interface print "enabled" not "Enabled". Take this into
-account in psr_mode psr_get_mode.
+      <pre class="moz-quote-pre" wrap="">Panel Replay expected state is always SRDENT for DP2.0 Panel Replay.
+For eDP1.5 Panel Replay it is SLEEP. Due to this output is now mandatory
+parameter to psr_active_check if PSR mode is Panel Replay.
 
-Signed-off-by: Jouni Högander <a class="moz-txt-link-rfc2396E" href="mailto:jouni.hogander@intel.com">&lt;jouni.hogander@intel.com&gt;</a>
-</pre>
+Bspec: 68920, 68934
+
+v2: fix mode checks
+
+Signed-off-by: Jouni Högander <a class="moz-txt-link-rfc2396E" href="mailto:jouni.hogander@intel.com">&lt;jouni.hogander@intel.com&gt;</a></pre>
     </blockquote>
-    <br>
-    <p>Reviewed-by: Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a><span
-      style="white-space: pre-wrap">
-</span></p>
+    <span class="reviewed-by" style="box-sizing: border-box;">Reviewed-by:
+      Kunal Joshi <a class="moz-txt-link-rfc2396E" href="mailto:kunal1.joshi@intel.com">&lt;kunal1.joshi@intel.com&gt;</a></span>
   </body>
 </html>
 
---------------7EqO1QNLitMhP9mEo29yatw0--
+--------------6s64Yz8SXZOauNZchb7SUOPb--
