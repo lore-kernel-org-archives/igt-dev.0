@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC1AEC25B74
-	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 16:31:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8922DC25B74
+	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 16:54:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A56810E1BA;
-	Thu, 30 May 2024 16:31:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB10310E12B;
+	Thu, 30 May 2024 16:54:58 +0000 (UTC)
 Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1ECD710E1BA;
- Thu, 30 May 2024 16:31:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AC5E10E728;
+ Thu, 30 May 2024 16:54:57 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3630673615717912471=="
+ boundary="===============0961084733712269462=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Intel_blitter_framebuffer_copy?=
- =?utf-8?q?ing_sanitizing_=28rev7=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tools/intel=5Fvbt=5Fdecode=3A_?=
+ =?utf-8?q?vbt_defs_update?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+To: "Jani Nikula" <jani.nikula@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 30 May 2024 16:31:20 -0000
-Message-ID: <171708668011.2238782.4870682792980096770@8e613ede5ea5>
+Date: Thu, 30 May 2024 16:54:57 -0000
+Message-ID: <171708809729.2239183.13727249900262761002@8e613ede5ea5>
 X-Patchwork-Hint: ignore
-References: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
+References: <cover.1717082630.git.jani.nikula@intel.com>
+In-Reply-To: <cover.1717082630.git.jani.nikula@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3630673615717912471==
+--===============0961084733712269462==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Intel blitter framebuffer copying sanitizing (rev7)
-URL   : https://patchwork.freedesktop.org/series/132733/
+Series: tools/intel_vbt_decode: vbt defs update
+URL   : https://patchwork.freedesktop.org/series/134259/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7874_BAT -> XEIGTPW_11208_BAT
+CI Bug Log - changes from XEIGT_7874_BAT -> XEIGTPW_11209_BAT
 ====================================================
 
 Summary
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_7874 -> IGTPW_11208
+  * IGT: IGT_7874 -> IGTPW_11209
 
-  IGTPW_11208: 2d531a8b665bd13c53ef4ce39245abe3ffaff349 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11209: bc77b4bbfb068c7233ab590ad3492816edb2e9d6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_7874: 4d9b4ee12b5f0852c02818ca9a886355b43fbbff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   xe-1377-bdab4dd15a635eedc4b4d95be9d4155be46e5e4b: bdab4dd15a635eedc4b4d95be9d4155be46e5e4b
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11208/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11209/index.html
 
---===============3630673615717912471==
+--===============0961084733712269462==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,16 +111,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Intel blitter framebuffer copying sanitizing (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/132733/">https://patchwork.freedesktop.org/series/132733/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tools/intel_vbt_decode: vbt defs update</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134259/">https://patchwork.freedesktop.org/series/134259/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11208/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11208/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11209/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11209/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7874_BAT -&gt; XEIGTPW_11208_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_7874_BAT -&gt; XEIGTPW_11209_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
@@ -130,13 +130,13 @@ Content-Transfer-Encoding: 7bit
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_7874 -&gt; IGTPW_11208</li>
+<li>IGT: IGT_7874 -&gt; IGTPW_11209</li>
 </ul>
-<p>IGTPW_11208: 2d531a8b665bd13c53ef4ce39245abe3ffaff349 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_11209: bc77b4bbfb068c7233ab590ad3492816edb2e9d6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_7874: 4d9b4ee12b5f0852c02818ca9a886355b43fbbff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   xe-1377-bdab4dd15a635eedc4b4d95be9d4155be46e5e4b: bdab4dd15a635eedc4b4d95be9d4155be46e5e4b</p>
 
 </body>
 </html>
 
---===============3630673615717912471==--
+--===============0961084733712269462==--
