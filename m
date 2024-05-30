@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8922DC25B74
-	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 16:54:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF13C25B74
+	for <igt-dev@archiver.kernel.org>; Thu, 30 May 2024 19:33:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB10310E12B;
-	Thu, 30 May 2024 16:54:58 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AC5E10E728;
- Thu, 30 May 2024 16:54:57 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0961084733712269462=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E7E0012AF5D;
+	Thu, 30 May 2024 19:33:27 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EBdvUUVp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68BF512AF5D
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 May 2024 19:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717097606; x=1748633606;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=w7MBioKNTEwxaQRfjCRfx3tzBcgHEi0QuvdW/2sle+M=;
+ b=EBdvUUVp0df68JVlTb22nAvkw0Q6oX3w2sBS9IpUJhi7Bw1smXfMK9kZ
+ wNEKGVlk7X8bOWS20ihz4Zh3SWf08v3yf1Z87s004cAQBQ82OE6DPBqFI
+ WIDavmd4zf/acQDe47JDh2vgMrUh4zBVATrqYRbpL4BXiqIJBKDy7AWHc
+ tkMdDKN38cDETcR8sJWdDyASJvoWSQUTfax5r3O5LfMY8gEwAZ4/zgmcT
+ zTnu2+HekII/QXC5bRXCRm6mm0NDD8uweKb7jEKrngkgTMVcZ100iQ1em
+ l2vGI8f9yMBvCrQUiPO6fRxAoD0OgFo5/rMcLdQWm7ZxZwD9qeLZEHfaP w==;
+X-CSE-ConnectionGUID: tBT2Z8aTQt6k6J1Rfyy09w==
+X-CSE-MsgGUID: ruP53pHDQmGQ8MlINBvAsQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="13452021"
+X-IronPort-AV: E=Sophos;i="6.08,202,1712646000"; d="scan'208";a="13452021"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2024 12:33:25 -0700
+X-CSE-ConnectionGUID: w9lx3EiHROeEAeEcr/9uRw==
+X-CSE-MsgGUID: AAnHr5tNTfaI+c4PdkirFQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,202,1712646000"; d="scan'208";a="40381766"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 May 2024 12:33:25 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t] man: Add --decode to intel_reg.rst
+Date: Thu, 30 May 2024 12:33:25 -0700
+Message-ID: <20240530193325.1072381-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tools/intel=5Fvbt=5Fdecode=3A_?=
- =?utf-8?q?vbt_defs_update?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jani Nikula" <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 30 May 2024 16:54:57 -0000
-Message-ID: <171708809729.2239183.13727249900262761002@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <cover.1717082630.git.jani.nikula@intel.com>
-In-Reply-To: <cover.1717082630.git.jani.nikula@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +63,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0961084733712269462==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ man/intel_reg.rst | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-== Series Details ==
+diff --git a/man/intel_reg.rst b/man/intel_reg.rst
+index d452f7927..0e6c49927 100644
+--- a/man/intel_reg.rst
++++ b/man/intel_reg.rst
+@@ -41,8 +41,13 @@ Some options are global, and some specific to commands.
+ --binary
+     Output binary values.
+ 
++--decode
++    Decode registers. By default it only uses the raw offsets, unless
++    it's a command that would otherwise not work without it or another
++    option forces it enabled. See COMMANDS below for details.
++
+ --all
+-    Decode registers for all known platforms.
++    Decode registers for all known platforms. This option implies --decode.
+ 
+ --mmio=FILE
+     Use MMIO bar from FILE.
+@@ -53,7 +58,7 @@ Some options are global, and some specific to commands.
+ 
+ --spec=PATH
+     Read register spec from directory or file specified by PATH; see REGISTER
+-    SPEC DEFINITIONS below for details.
++    SPEC DEFINITIONS below for details. This option implies --decode.
+ 
+ --help
+     Show brief help.
+@@ -76,23 +81,18 @@ Write each VALUE to corresponding REGISTER.
+ dump [--mmio=FILE --devid=DEVID]
+ --------------------------------
+ 
+-Dump all registers specified in the register spec.
++Dump all registers specified in the register spec. The option
++--decode is implicitely enabled.
+ 
+ decode REGISTER VALUE
+ ---------------------
+ 
+-Decode REGISTER VALUE.
+-
+-snapshot
+---------
+-
+-Output the MMIO bar to stdout. The output can be used for a later invocation of
+-dump or read with the --mmio=FILE and --devid=DEVID parameters.
++Decode REGISTER VALUE. The option --decode is implicitely enabled.
+ 
+ list
+ ----
+ 
+-List the known registers.
++List the known registers. The option --decode is implicitely enabled.
+ 
+ help
+ ----
+-- 
+2.43.0
 
-Series: tools/intel_vbt_decode: vbt defs update
-URL   : https://patchwork.freedesktop.org/series/134259/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7874_BAT -> XEIGTPW_11209_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7874 -> IGTPW_11209
-
-  IGTPW_11209: bc77b4bbfb068c7233ab590ad3492816edb2e9d6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7874: 4d9b4ee12b5f0852c02818ca9a886355b43fbbff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1377-bdab4dd15a635eedc4b4d95be9d4155be46e5e4b: bdab4dd15a635eedc4b4d95be9d4155be46e5e4b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11209/index.html
-
---===============0961084733712269462==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/intel_vbt_decode: vbt defs update</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134259/">https://patchwork.freedesktop.org/series/134259/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11209/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11209/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7874_BAT -&gt; XEIGTPW_11209_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7874 -&gt; IGTPW_11209</li>
-</ul>
-<p>IGTPW_11209: bc77b4bbfb068c7233ab590ad3492816edb2e9d6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7874: 4d9b4ee12b5f0852c02818ca9a886355b43fbbff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1377-bdab4dd15a635eedc4b4d95be9d4155be46e5e4b: bdab4dd15a635eedc4b4d95be9d4155be46e5e4b</p>
-
-</body>
-</html>
-
---===============0961084733712269462==--
