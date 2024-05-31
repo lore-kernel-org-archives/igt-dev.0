@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 962FEC27C4F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAD60C27C50
 	for <igt-dev@archiver.kernel.org>; Fri, 31 May 2024 14:25:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD8CC10E221;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0FEB10E3EF;
 	Fri, 31 May 2024 14:25:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LmVMFaQD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QMw5CJ1W";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 581D710E0D3
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CD98F10E21E
  for <igt-dev@lists.freedesktop.org>; Fri, 31 May 2024 14:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717165498; x=1748701498;
+ t=1717165499; x=1748701499;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=A7WuThTp+nT9ljRG5cWEjnHI5ZZm9f9YaP+kTkoxcgo=;
- b=LmVMFaQDddNUDMHy4CWIcaDC/olWC0gynW829z/cqMUreBEmMm2yU91Z
- rV8MxD9szD45ZXz6Wqw3OrGUQz1PZCfcNGIk6jFf+qTJMUHKCErjCZjqY
- YhaLUHYXdFqqTHZIywdEsxO6+VPhFmhZIEEE1AH01renzDHJH2jcU8Isn
- NZfMSpzqBEfkDOKz2/n7S2wSW2scg2WwowjIFjz894Hj4P5c676+WLfoe
- qbyo1ljpuakPbeeu8AU+TUvaMbvGNr0yrsTNC+OXU/THNJ71vOvpM/xFm
- sCJ28eVk+YZ+iz+aM/Vu9IWk1YpzkMQ/O13Hna1AroZqmBipCNGFKtKWW Q==;
-X-CSE-ConnectionGUID: 9+GHOm+6R522/vOjgq0TSg==
-X-CSE-MsgGUID: Y4XYvdS/QvG3DHM/wvyj/g==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="25113667"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="25113667"
+ bh=+/bAh+ls9d0PG30VmCAwhSHPrYH/5I1sFBwa+LuRIiU=;
+ b=QMw5CJ1WKM0oLwMEH+5jpcxXx9M+INZfaK3/cT6vZ0X8xf4AxvIANLsX
+ ec5XO4YZ2+wJHeWM5XXfut5lPTgES56F80KUjNpTwjjub6n1qR7KCaTSu
+ ZweWPBNN5ktlT3K35jciP4Ip1+ithX4H3wlJSUIA6ZkLUwRGIJ8pCnlin
+ 5i8/a30nJWe6IT+3NBUkC2O7f2jO6OyKAF/4Yf963aNUvoT15m2Kvlo79
+ CWL20yF39uohfZNxuJSUqMq/domEcr3UW28QckAYSQ3kW32/ESR2NUJu8
+ viLqZjehioAzPbVHCaqlV5N2S0RbiqV22gy7daBapm/HSvxvCsHXV/rF+ Q==;
+X-CSE-ConnectionGUID: GVb1NXa5QrisaLKfs4TiuA==
+X-CSE-MsgGUID: vCE2s374RFOog6IPbPKE6A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="25113670"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="25113670"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2024 07:24:05 -0700
-X-CSE-ConnectionGUID: K857NTVGT3Ov1bPAUjnoig==
-X-CSE-MsgGUID: eLCDD7ntQQOGD+pi+yv1dA==
+ 31 May 2024 07:24:08 -0700
+X-CSE-ConnectionGUID: 5rgykesdTuynu5IsRVGx2Q==
+X-CSE-MsgGUID: p8IVpeg1Qo2E/PJXeEffuw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="36160806"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="36160811"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 31 May 2024 07:24:03 -0700
+ by fmviesa008.fm.intel.com with SMTP; 31 May 2024 07:24:05 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 31 May 2024 17:24:02 +0300
+ Fri, 31 May 2024 17:24:05 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 03/20] lib: Define DIV_ROUND_CLOSEST()
-Date: Fri, 31 May 2024 17:23:37 +0300
-Message-ID: <20240531142354.16528-4-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 04/20] tools/intel_vbt_decode: Fix some tabs
+Date: Fri, 31 May 2024 17:23:38 +0300
+Message-ID: <20240531142354.16528-5-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.1
 In-Reply-To: <20240531142354.16528-1-ville.syrjala@linux.intel.com>
 References: <20240531142354.16528-1-ville.syrjala@linux.intel.com>
@@ -70,25 +70,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Add a helper for integer division with round to closest behaviour.
+Remove stray tabs introduced by mistake in commit 5fd3291e45c2
+("tools/intel_vbt_decode: Decode all the driver feature bits").
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_aux.h | 1 +
- 1 file changed, 1 insertion(+)
+ tools/intel_vbt_decode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-index 4664559dca82..4b8116dc0998 100644
---- a/lib/igt_aux.h
-+++ b/lib/igt_aux.h
-@@ -335,6 +335,7 @@ void pipewire_pulse_stop_reserve(void);
- #define roundup_power_of_two(x) ((x) != 0 ? 1ULL << igt_fls((x) - 1) : 0)
+diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+index aeaee5713472..16a034e6e487 100644
+--- a/tools/intel_vbt_decode.c
++++ b/tools/intel_vbt_decode.c
+@@ -1604,9 +1604,9 @@ static void dump_driver_feature(struct context *context,
  
- #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
-+#define DIV_ROUND_CLOSEST(n, d) (((n) + (d) / 2) / (d))
- 
- uint64_t vfs_file_max(void);
- 
+ 	printf("\tPC Features field validity: %s\n",
+ 	       YESNO(feature->pc_feature_valid));
+-	printf("\t\tHpd Wake: %s\n",
++	printf("\tHpd Wake: %s\n",
+ 	       YESNO(feature->hpd_wake));
+-	printf("\t\tAssertive Display Technology (ADT): %s\n",
++	printf("\tAssertive Display Technology (ADT): %s\n",
+ 	       YESNO(feature->adt_enabled));
+ 	printf("\tDynamic Media Refresh Rate Switching (DMRRS): %s\n",
+ 	       YESNO(feature->dmrrs_enabled));
 -- 
 2.44.1
 
