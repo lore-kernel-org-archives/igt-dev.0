@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C496EC27C4F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 May 2024 14:26:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44862C25B75
+	for <igt-dev@archiver.kernel.org>; Fri, 31 May 2024 14:48:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3862D10E458;
-	Fri, 31 May 2024 14:26:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 598FD10E1F8;
+	Fri, 31 May 2024 14:48:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cRfqN2KQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b+yyit6o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8077610E221
- for <igt-dev@lists.freedesktop.org>; Fri, 31 May 2024 14:24:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7107110E1F8
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 May 2024 14:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717165498; x=1748701498;
- h=from:to:subject:date:message-id:in-reply-to:references:
+ t=1717166908; x=1748702908;
+ h=from:to:subject:in-reply-to:references:date:message-id:
  mime-version:content-transfer-encoding;
- bh=7OQ6P8IhnkLEXRy564/Brq8Iqrlgf0CrJIkJZ0Tdq3g=;
- b=cRfqN2KQ/HjK/7BROgWetK+wO3MEbFZQ5CyubKNHaHEA1lCwYetFo2OK
- BYWusjk2ygII9vFiZPC0pwCqNQ+dSScW+O2liCX6K6Wc5ZyM8siD78a3i
- di9OWIhAx3Ln2xqZ1gjdfOr5Ev4OHPPoz+c20XQpH8a0jP59QZ0GIMxun
- XSp2+QrHr6Gc2U2odJXFAnWKxcCuo65YIoif2UtogEwbs57Ps/j3bfyre
- 0+wxt06gyjN5PNlAXB70yFIeZs2ooqkaVhGoFQPr5a5yFpXktdgKh3cBx
- b3l0Y5v56JKlIIP4YxZ7/gLwvbpKPUdGXVuZ1XigfEBNPHvTfuq9O3qTJ A==;
-X-CSE-ConnectionGUID: YraMQR6LRNazT+RTRhF/oQ==
-X-CSE-MsgGUID: Jgdosx8aSqOKOfFx1AUXtg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="25113658"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="25113658"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2024 07:24:02 -0700
-X-CSE-ConnectionGUID: yzYxWHdHSMquoVwfE3xNaw==
-X-CSE-MsgGUID: kX5LcypKSUWztMr41hsaSA==
+ bh=p8BTCbmuXXokfcxImt/gWx9blLvqi4WLa6bR/sCPspU=;
+ b=b+yyit6op6H8OZ37GDu8HR2TJJLrubVdm5TP5p1gdha5nadmLmcyszqY
+ PPA9tFktLejKD4I6kRSRxtMcUkHvnhVM4X8juWGF7wdro9+cTxq1s+Cs7
+ w89BYLi9E3RCwGY4hN7GMUtw78siQyGo2FaW8l8YGFGAw9AXKuB25cuo/
+ bl2j6rOm6VlFeAEwrxgnG1WhuitxJDf/qm0eXoaXVuxz65gvwcrA0/joB
+ mcLVpGTN87oTNZSbqila1dZCWKdqrX2c6ppoDjRq56KA3byFiZTGGK43u
+ uaiqDLzI85RcIFhcogJ+HlCazB0Do+6s3hTC5oSzCoaJwq3wgUBJl2J6j Q==;
+X-CSE-ConnectionGUID: S5s16YtmR/684tgz2i8xrw==
+X-CSE-MsgGUID: wV510uMsROiMmh/KWySTdA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="25114980"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="25114980"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 May 2024 07:48:27 -0700
+X-CSE-ConnectionGUID: McJxAIv5SzGO2LVd8jNUoA==
+X-CSE-MsgGUID: 2ljSxvs3QXa2BOd8wx+HXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="36160801"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 31 May 2024 07:24:00 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 31 May 2024 17:23:59 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 02/20] tools/intel_vbt_decode:
- s/dump_sdvo_panel_dtd()/dump_sdvo_lvds_dtd()/
-Date: Fri, 31 May 2024 17:23:36 +0300
-Message-ID: <20240531142354.16528-3-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.44.1
-In-Reply-To: <20240531142354.16528-1-ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="40631313"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.190])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 May 2024 07:48:26 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 09/20] tools/intel_vbt_decode: Extract dump_pnp_id()
+In-Reply-To: <20240531142354.16528-10-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 References: <20240531142354.16528-1-ville.syrjala@linux.intel.com>
+ <20240531142354.16528-10-ville.syrjala@linux.intel.com>
+Date: Fri, 31 May 2024 17:48:21 +0300
+Message-ID: <87jzjadolm.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,42 +70,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+On Fri, 31 May 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Several different VBT blocks contain PnP IDs. Extract the
+> helper to dump them out.
 
-Rename s/dump_sdvo_panel_dtd() to dump_sdvo_lvds_dtd() so that
-it matches the struct naming scheme.
+Just nitpicking inline, can be fixed in follow-up. The patch is an
+improvement as-is.
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tools/intel_vbt_decode.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> ---
+>  tools/intel_vbt_decode.c | 20 +++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+>
+> diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
+> index 6cf6d471b5e2..2a11490eed22 100644
+> --- a/tools/intel_vbt_decode.c
+> +++ b/tools/intel_vbt_decode.c
+> @@ -1394,6 +1394,18 @@ static char *decode_pnp_id(u16 mfg_name, char str[=
+4])
+>  	return str;
+>  }
+>=20=20
+> +static void dump_pnp_id(const struct bdb_edid_pnp_id *pnp_id)
 
-diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 9d05de3f9975..aeaee5713472 100644
---- a/tools/intel_vbt_decode.c
-+++ b/tools/intel_vbt_decode.c
-@@ -1953,8 +1953,8 @@ print_detail_timing_data(const struct bdb_edid_dtd *dvo_timing)
- 	printf("\tclock: %d\n", dvo_timing->clock * 10);
- }
- 
--static void dump_sdvo_panel_dtds(struct context *context,
--				 const struct bdb_block *block)
-+static void dump_sdvo_lvds_dtd(struct context *context,
-+			       const struct bdb_block *block)
- {
- 	const struct bdb_edid_dtd *dvo_timing = block_data(block);
- 	int n, count;
-@@ -2724,8 +2724,8 @@ struct dumper dumpers[] = {
- 	},
- 	{
- 		.id = BDB_SDVO_LVDS_DTD,
--		.name = "SDVO panel dtds",
--		.dump = dump_sdvo_panel_dtds,
-+		.name = "SDVO LVDS DTD",
-+		.dump = dump_sdvo_lvds_dtd,
- 	},
- 	{
- 		.id = BDB_DRIVER_FEATURES,
--- 
-2.44.1
+Maybe pass prefix or indent level?
 
+> +{
+> +	char mfg[4];
+> +
+> +	printf("\t\t  Mfg name: %s (0x%x)\n",
+> +	       decode_pnp_id(pnp_id->mfg_name, mfg), pnp_id->mfg_name);
+> +	printf("\t\t  Product code: %u\n", pnp_id->product_code);
+> +	printf("\t\t  Serial: %u\n", pnp_id->serial);
+> +	printf("\t\t  Mfg week: %d\n", pnp_id->mfg_week);
+> +	printf("\t\t  Mfg year: %d\n", 1990 + pnp_id->mfg_year);
+
+These could be improved to match spec (see decode_date() in kernel
+drm_edid.c).
+
+> +}
+> +
+>  static void dump_lfp_data(struct context *context,
+>  			  const struct bdb_block *block)
+>  {
+> @@ -1419,7 +1431,6 @@ static void dump_lfp_data(struct context *context,
+>  			block_data(block) + ptrs->ptr[i].panel_pnp_id.offset;
+>  		const struct bdb_lfp_data_tail *tail =3D
+>  			block_data(block) + ptrs->panel_name.offset;
+> -		char mfg[4];
+>=20=20
+>  		if (!dump_panel(context, i))
+>  			continue;
+> @@ -1457,12 +1468,7 @@ static void dump_lfp_data(struct context *context,
+>  		       "BAD!" : "good");
+>=20=20
+>  		printf("\t\tPnP ID:\n");
+
+I'd do this in dump_pnp_id() too.
+
+> -		printf("\t\t  Mfg name: %s (0x%x)\n",
+> -		       decode_pnp_id(pnp_id->mfg_name, mfg), pnp_id->mfg_name);
+> -		printf("\t\t  Product code: %u\n", pnp_id->product_code);
+> -		printf("\t\t  Serial: %u\n", pnp_id->serial);
+> -		printf("\t\t  Mfg week: %d\n", pnp_id->mfg_week);
+> -		printf("\t\t  Mfg year: %d\n", 1990 + pnp_id->mfg_year);
+> +		dump_pnp_id(pnp_id);
+>=20=20
+>  		if (!ptrs->panel_name.table_size)
+>  			continue;
+
+--=20
+Jani Nikula, Intel
