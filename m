@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03A0FC27C52
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC2B2C27C4F
 	for <igt-dev@archiver.kernel.org>; Fri, 31 May 2024 14:25:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7039F10E51A;
-	Fri, 31 May 2024 14:25:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C9FF10E645;
+	Fri, 31 May 2024 14:25:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i7hYBjcD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fpHoDxIM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8B0510E3EF
- for <igt-dev@lists.freedesktop.org>; Fri, 31 May 2024 14:25:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A32E310E654
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 May 2024 14:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717165509; x=1748701509;
+ t=1717165502; x=1748701502;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=/E0A43ZdT7B6iHczIGpXoXdQXv36StVew67ZDCmGj6g=;
- b=i7hYBjcDyznRr1iOwSIAlXVKjNYntjXNtP1w7v3Xe10DbSyI8F5h9+N6
- 4OpygvdEBcoPjKI01F9RMJRNqz3OFDlVK9xiHxc83ZloPV8c5VtNnTLJq
- 3F5vNQbte0q2RsxfuplqkQQ3J+Rst6CfRxnq5DWaRUXSYuRfLdWO9wGYh
- ZJwznbMVJVlBIcI4rlmPKaEKEM5o5NzGkEhC+emd6en+vmOe4kdiicUpP
- eiYzFGSBGCWzH8+MUCSrLBzxDxNSm9tHu/OLXnv4VMJbHLBMWIPdSg31t
- 4aOiA3L47rWSVCoeHzT5DEiS06OSOkVzPyG5yN9KYY0zK3TZUetHTNKSO w==;
-X-CSE-ConnectionGUID: lMA1QQGIQjavC9sswDxMGA==
-X-CSE-MsgGUID: Onl6iYHrTRWdVundQPBV7A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="25113716"
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="25113716"
+ bh=Hgm5uwQo7EJAZ96FQY5yl3uMSeEZk9buIogLbFnYDEw=;
+ b=fpHoDxIMYjK97zvUYl1w9dFSGKwPr8/O1POgKgyKxkY55CRvRBK5p2+y
+ NUD7IDauP6t6pZ7FK8IGOr3UOrQU9wPo61swHlrD+6PrJDwU4x7Aj3eqY
+ AzIRa2/m9biNcL2vPeCc+oRfN6QocZPp8cPhZa9i2CmJmeg4+jwMLkGKP
+ 2GEECChA8ILaXNpeJdCjrpCvJm/A2Ykmocsaf7wXtDTI87abC4Ahi+2/j
+ 7cM0YRc0Hn/lj0JjIsMxdephtD2Ji9Bg8l65hgfjdxsQLV4tFEJLcBpgY
+ q8YnLXjqh5fbbj8DJ+LSAcPOe9EyOFtPddYNcQk4CYVRsOa8W93dgSp+i g==;
+X-CSE-ConnectionGUID: 92i2Tce0TK22Kkf18rgZIA==
+X-CSE-MsgGUID: t87E39mDRp2P1kLX07o8lA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="25113704"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="25113704"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 May 2024 07:24:30 -0700
-X-CSE-ConnectionGUID: GCl0jmlZS36DFOsIGBanTg==
-X-CSE-MsgGUID: TNh4s7xmS96Rze4RCFnI+Q==
+ 31 May 2024 07:24:22 -0700
+X-CSE-ConnectionGUID: +4l3Gb6RRq+LUWgW4ePkHQ==
+X-CSE-MsgGUID: 1AoFS8x0Q+m18PZLK3qNYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="36160870"
+X-IronPort-AV: E=Sophos;i="6.08,204,1712646000"; d="scan'208";a="36160846"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 31 May 2024 07:24:28 -0700
+ by fmviesa008.fm.intel.com with SMTP; 31 May 2024 07:24:19 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 31 May 2024 17:24:27 +0300
+ Fri, 31 May 2024 17:24:19 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 12/20] tools/intel_vbt_decode: Allow dumpers to delcate
- min version for the block
-Date: Fri, 31 May 2024 17:23:46 +0300
-Message-ID: <20240531142354.16528-13-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 09/20] tools/intel_vbt_decode: Extract dump_pnp_id()
+Date: Fri, 31 May 2024 17:23:43 +0300
+Message-ID: <20240531142354.16528-10-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.1
 In-Reply-To: <20240531142354.16528-1-ville.syrjala@linux.intel.com>
 References: <20240531142354.16528-1-ville.syrjala@linux.intel.com>
@@ -71,43 +70,59 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Deal with the case where the same block ID got reused for
-two different purposes by having the dumper declare a min
-and max BDB versions.
+Several different VBT blocks contain PnP IDs. Extract the
+helper to dump them out.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tools/intel_vbt_decode.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 2d627c821978..e414a1436a01 100644
+index 6cf6d471b5e2..2a11490eed22 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -2652,6 +2652,8 @@ get_device_id(unsigned char *bios, int size)
+@@ -1394,6 +1394,18 @@ static char *decode_pnp_id(u16 mfg_name, char str[4])
+ 	return str;
+ }
  
- struct dumper {
- 	uint8_t id;
-+	uint16_t min_bdb_version;
-+	uint16_t max_bdb_version;
- 	const char *name;
- 	void (*dump)(struct context *context,
- 		     const struct bdb_block *block);
-@@ -2777,6 +2779,14 @@ static bool dump_section(struct context *context, int section_id)
- 		return false;
++static void dump_pnp_id(const struct bdb_edid_pnp_id *pnp_id)
++{
++	char mfg[4];
++
++	printf("\t\t  Mfg name: %s (0x%x)\n",
++	       decode_pnp_id(pnp_id->mfg_name, mfg), pnp_id->mfg_name);
++	printf("\t\t  Product code: %u\n", pnp_id->product_code);
++	printf("\t\t  Serial: %u\n", pnp_id->serial);
++	printf("\t\t  Mfg week: %d\n", pnp_id->mfg_week);
++	printf("\t\t  Mfg year: %d\n", 1990 + pnp_id->mfg_year);
++}
++
+ static void dump_lfp_data(struct context *context,
+ 			  const struct bdb_block *block)
+ {
+@@ -1419,7 +1431,6 @@ static void dump_lfp_data(struct context *context,
+ 			block_data(block) + ptrs->ptr[i].panel_pnp_id.offset;
+ 		const struct bdb_lfp_data_tail *tail =
+ 			block_data(block) + ptrs->panel_name.offset;
+-		char mfg[4];
  
- 	for (i = 0; i < ARRAY_SIZE(dumpers); i++) {
-+		if (dumpers[i].min_bdb_version &&
-+		    context->bdb->version < dumpers[i].min_bdb_version)
-+			continue;
-+
-+		if (dumpers[i].max_bdb_version &&
-+		    context->bdb->version > dumpers[i].max_bdb_version)
-+			continue;
-+
- 		if (block->id == dumpers[i].id) {
- 			dumper = &dumpers[i];
- 			break;
+ 		if (!dump_panel(context, i))
+ 			continue;
+@@ -1457,12 +1468,7 @@ static void dump_lfp_data(struct context *context,
+ 		       "BAD!" : "good");
+ 
+ 		printf("\t\tPnP ID:\n");
+-		printf("\t\t  Mfg name: %s (0x%x)\n",
+-		       decode_pnp_id(pnp_id->mfg_name, mfg), pnp_id->mfg_name);
+-		printf("\t\t  Product code: %u\n", pnp_id->product_code);
+-		printf("\t\t  Serial: %u\n", pnp_id->serial);
+-		printf("\t\t  Mfg week: %d\n", pnp_id->mfg_week);
+-		printf("\t\t  Mfg year: %d\n", 1990 + pnp_id->mfg_year);
++		dump_pnp_id(pnp_id);
+ 
+ 		if (!ptrs->panel_name.table_size)
+ 			continue;
 -- 
 2.44.1
 
