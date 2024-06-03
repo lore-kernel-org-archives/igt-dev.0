@@ -4,74 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6A0BC25B75
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Jun 2024 07:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB7D7C25B75
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Jun 2024 07:35:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1897B10E2E1;
-	Mon,  3 Jun 2024 07:31:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2DA0610E2E8;
+	Mon,  3 Jun 2024 07:35:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="WGYBHVLw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XxQFMSJ/";
 	dkim-atps=neutral
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
- [209.85.128.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B03110E2E1
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Jun 2024 07:31:42 +0000 (UTC)
-Received: by mail-wm1-f53.google.com with SMTP id
- 5b1f17b1804b1-42138eadf64so8558765e9.3
- for <igt-dev@lists.freedesktop.org>; Mon, 03 Jun 2024 00:31:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1717399901; x=1718004701; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=dq/EIuwXcgZ3e98/Wv5a90ZC3wRt5FOimIu0E3CWJcQ=;
- b=WGYBHVLwQmTLqN69HNdkoJvnMNLuVmxDepD5ik3Iv0r1/B9Joc9/PrxWCb6y2af4M0
- sJF50VCbiyPjfor8Tn/XwtceJOVbCFClXeMTy6AIzbYxdbl1a2g92dgYF55bhFxZm4aK
- TgIzAaFXq2/4qlllXRehdQ2LvhYi70YtJy02JJO8daTwjzh37I4LCpe4duExbPeangiU
- fWlqw90Aadmc3HPJq7+WQI/EAFPV8pQiIZ/qPuL/5Dx8+yYz9xmxjM1ZRhVr8YbWywrS
- p5rJbHNqAgU2KNaPWqX4Hcjk/Tu+nCVAq+/S6HcYEBuxtwjCfOYdG0OV36X6QDgWm+1u
- i4qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1717399901; x=1718004701;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=dq/EIuwXcgZ3e98/Wv5a90ZC3wRt5FOimIu0E3CWJcQ=;
- b=gPKL77jLapRaYfXvWIxUuD/o6Is4Zc0vG07GeQS8MIixpXa/bkMhr6pdPZMkYPqjzn
- T+1ABF/6ASq7ESerCRDODDpQ/TqqUw6WpdSnQa0X7O2TEdqm/wPlYVN2EtIQjOUlVk00
- j3q//r4V/AvPX6fWDc8C9CwZUk6vGi21k7x/dh5j0YRBsA0zmgEp1MTvx1C2PMoXLx5x
- MfMXNh+/tXL8E8+B480jquyiPzgTjHc2XXR8mOYWDxdpzjDxHdgIRWjOCWoRsJl5yPYX
- r4yuclDJdSc1HPG4L2PyzBHTiFe51ZnIes1i+JHCVWqNQ9OSxNM19K4zP9BJQ99i31Lg
- cDbQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCUOm/F9CuDZdWzZZWbuv7qNRGXvi6VyB0GE+z6LsdrTUwnRQQRBnEdnvl6JdB67UUEcSiMc9Z2esIOxsSCMiB19knjxVKiKVfWB5kEJbg==
-X-Gm-Message-State: AOJu0YzHyBRWABA8AZgw3MCPCAqeoGT5cB5ijCOVlkDgh88mAGmyjhok
- 2wbdhKZ7vtqUG72sbHvZMwpYHyetRhg+W4EDAww577JtZGgn+c/X
-X-Google-Smtp-Source: AGHT+IHxxSfYjuSM8ql7Azhu8PHHcYy0eKZh6m6HZG61JORBJMUwKCJNb9mNZEv5qvaYDplISYiu5Q==
-X-Received: by 2002:a05:600c:c06:b0:421:21d2:abf5 with SMTP id
- 5b1f17b1804b1-4212e0a534dmr68995255e9.31.1717399900547; 
- Mon, 03 Jun 2024 00:31:40 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.139.73])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-4213cd1c075sm27710155e9.0.2024.06.03.00.31.38
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 03 Jun 2024 00:31:40 -0700 (PDT)
-Message-ID: <f209cd97-8370-4e00-86ac-41ddcfd3bcca@gmail.com>
-Date: Mon, 3 Jun 2024 10:31:35 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22C9410E2E8
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Jun 2024 07:35:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717400129; x=1748936129;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=bQ6MJzjaoDU7Cq5n4gC5hdD11LVttm8rf/y/QwqgV34=;
+ b=XxQFMSJ/En4jitNUQ6bduz8fN7wX425fLqkDoiif61A+Na9ABRM79lJW
+ EmRHBUG7dVfssUtXLtS6fj5wGGWpum458C3m3yJMWUkVAIOJglrwZooLB
+ 4wpm68A3iuYz1eUsJPTCxYt/fI5y7VRuymLTkHm+cYUDaVEi/YsJ3AYPT
+ X9cKoxEldEHzMs207H7940flHn4VIxFFrcfyY7Q8MJvyq7LIqNvrdzAg/
+ 5NVMw+hnNehpavV9hSuCSapRstSaUAFLCRZ+5pLs26Jv7edAeQ72SX/Kt
+ MoUX75WrT5phqQE+MbtblxLnfXuomRtsBX/zzxfrJDhFYVFK/qjY3ukpi w==;
+X-CSE-ConnectionGUID: Qvns6dfDSiGfWcaT9Jc19A==
+X-CSE-MsgGUID: aJzSm0stQ4+2vzKgRLDLWA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11091"; a="13747246"
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="13747246"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2024 00:35:24 -0700
+X-CSE-ConnectionGUID: LTAKOOtyRM+8XtuQ3z56/Q==
+X-CSE-MsgGUID: LnUbPH5vS2aTwAo9nsf9CQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,210,1712646000"; d="scan'208";a="37421815"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.24])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jun 2024 00:35:21 -0700
+Date: Mon, 3 Jun 2024 09:35:18 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ katarzyna.piecielska@intel.com
+Subject: Re: [PATCH i-g-t v4] tools/mk_detect_intel_gpu: add a tool to detect
+ Intel GPUs from their PCI IDs
+Message-ID: <20240603073518.u37dkix3rxahhdbq@zkempczy-mobl2>
+References: <20240522120240.48463-1-mauro.chehab@linux.intel.com>
+ <87a5kiqa6l.fsf@intel.com> <875xv6q8ob.fsf@intel.com>
+ <20240522144627.tdiadqyfgk67ox55@kamilkon-DESK.igk.intel.com>
+ <87r0dtouhu.fsf@intel.com> <20240523103558.42876c98@maurocar-mobl2>
+ <87le40q4gi.fsf@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 02/12] lib/intel_bufops: Fix mapping/unmapping for
- i915 and xe
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240527073345.54729-1-zbigniew.kempczynski@intel.com>
- <20240527073345.54729-3-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240527073345.54729-3-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87le40q4gi.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,95 +73,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+On Thu, May 23, 2024 at 12:10:05PM +0300, Jani Nikula wrote:
+<cut>
 
-On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
-> It looks previously there was no user of intel-buf mapping code so
-> missing xe path wasn't notice. Lets add xe path along with correct
-> buffer size mapping.
+> >
+> > The generated script itself doesn't require anything other than lspci to
+> > run, as what the script does, on its 35 lines of code (not including the
+> > PCI ID database), is:
+> >
+> > 	1. run lspci -nm
+> >
+> > 	2. If the PCI ID device is at the database, it prints:
+> >
+> > 		print "Detected GPU PCI device: $id$subtype, PCI ID: $pci_id\n";
+> >
+> > 	   For the above example, the output is:
+> >
+> > 		Detected GPU PCI device: CFL (CML_U_GT2), PCI ID: 8086:9b41
+> >
+> > 	3. If multiple Intel GPUs are found, it prints a warning, as DUT
+> > 	   tests may require an extra parameter to use the right GPU:
+> >
+> > 		Warning: More than one Intel GPUs detected
+> >
+> > 	4. if no Intel GPU is found, it will print:
+> >
+> > 		Warning: No Intel GPUs detected
 > 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->   lib/intel_bufops.c | 39 ++++++++++++++++++++++++---------------
->   1 file changed, 24 insertions(+), 15 deletions(-)
+> The way I see it, intel_device_info.c and igt_device_scan.c have all the
+> building blocks necessary to accomplish this. As long as
+> intel_device_match[] is kept up-to-date, which naturally will be, it
+> needs no further maintenance. It could be added to lsgpu as an option.
 > 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 313c2665ae..b4ccf4c093 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -1232,37 +1232,46 @@ void intel_buf_destroy(struct intel_buf *buf)
->   
->   void *intel_buf_cpu_map(struct intel_buf *buf, bool write)
->   {
-> -	int i915 = buf_ops_get_fd(buf->bops);
-> +	int fd = buf_ops_get_fd(buf->bops);
->   
->   	igt_assert(buf);
->   	igt_assert(buf->ptr == NULL); /* already mapped */
->   
->   	buf->cpu_write = write;
-> -	buf->ptr = gem_mmap__cpu_coherent(i915, buf->handle, 0,
-> -					  buf->surface[0].size,
-> -					  write ? PROT_WRITE : PROT_READ);
->   
-> -	gem_set_domain(i915, buf->handle,
-> -		       I915_GEM_DOMAIN_CPU,
-> -		       write ? I915_GEM_DOMAIN_CPU : 0);
-> +	if (is_xe_device(fd)) {
-> +		buf->ptr = xe_bo_map(fd, buf->handle, buf->bo_size);
-> +	} else {
-> +		buf->ptr = gem_mmap__cpu_coherent(fd, buf->handle, 0,
-> +						  buf->bo_size,
-> +						  write ? PROT_WRITE : PROT_READ);
-> +
-> +		gem_set_domain(fd, buf->handle,
-> +			       I915_GEM_DOMAIN_CPU,
-> +			       write ? I915_GEM_DOMAIN_CPU : 0);
-> +	}
->   
->   	return buf->ptr;
->   }
->   
->   void *intel_buf_device_map(struct intel_buf *buf, bool write)
->   {
-> -	int i915 = buf_ops_get_fd(buf->bops);
-> +	int fd = buf_ops_get_fd(buf->bops);
->   
->   	igt_assert(buf);
->   	igt_assert(buf->ptr == NULL); /* already mapped */
->   
-> -	buf->ptr = gem_mmap__device_coherent(i915, buf->handle, 0,
-> -					     buf->surface[0].size,
-> -					     write ? PROT_WRITE : PROT_READ);
-> +	if (is_xe_device(fd)) {
-> +		buf->ptr = xe_bo_map(fd, buf->handle, buf->bo_size);
-> +	} else {
-> +		buf->ptr = gem_mmap__device_coherent(fd, buf->handle, 0,
-> +						     buf->bo_size,
-> +						     write ? PROT_WRITE : PROT_READ);
->   
-> -	gem_set_domain(i915, buf->handle,
-> -		       I915_GEM_DOMAIN_WC,
-> -		       write ? I915_GEM_DOMAIN_WC : 0);
-> +		gem_set_domain(fd, buf->handle,
-> +			       I915_GEM_DOMAIN_WC,
-> +			       write ? I915_GEM_DOMAIN_WC : 0);
-> +	}
->   
->   	return buf->ptr;
->   }
-> @@ -1272,7 +1281,7 @@ void intel_buf_unmap(struct intel_buf *buf)
->   	igt_assert(buf);
->   	igt_assert(buf->ptr);
->   
-> -	munmap(buf->ptr, buf->surface[0].size);
-> +	munmap(buf->ptr, buf->bo_size);
->   	buf->ptr = NULL;
->   }
->   
 
+Currently igt_device_scan.c is limited to devices which have drm driver
+loaded (that was danvet requirement of udev scanning of drm devices, not
+pci). But if I'm not wrong it would be relatively simple to add
+scan_pci_devices() in which we would iterate over udev pci devices and
+filter out 300 class then add some switch to display it lsgpu. We would
+at least keep this simply in igt, without any additional scripting/tools
+needed.
+
+--
+Zbigniew
