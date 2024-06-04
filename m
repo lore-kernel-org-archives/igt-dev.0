@@ -4,58 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FB3EC25B7E
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Jun 2024 08:02:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AF97C25B7E
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Jun 2024 08:05:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE9C110E42C;
-	Tue,  4 Jun 2024 08:02:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7DB6510E42C;
+	Tue,  4 Jun 2024 08:05:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aBryR0s0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OqZ78RsT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01AAA10E42C
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2024 08:01:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1BF410E42C
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2024 08:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717488119; x=1749024119;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=EuI3okyy2eWcpCqssw2mcZENl+T1DOi4BCkRKJ7JF4g=;
- b=aBryR0s0yVInRvj3L86UVK2ZjYQM58OqYm00FB7P91ihbhtKpgrO3IFw
- 07WsFWtL5jED8sKbS3ScyXS5ezsi3z+DOAYR4j1GHp22Ga7qkggbpCl6G
- TJSk0wlCqctLZP4gBGILXmTRPrB0mgg6QOvjlWfSgJ0K253YJs7UXEqOW
- +TFkuC9OgekefDt3s9xZpnpaqyUyXrMw8whZNrkxTLkYrfb24drzRK639
- dAuQSlD7TbhSG5SBZgwr8s40FG0U22FubjPu/WKpWmR4NII0Wx42XQP2G
- JRNyI4iOa+z2jHK5Ww6dQpwsIXzX6peiAq+Fd/eMmHztvDjZ9GNwyq8NR w==;
-X-CSE-ConnectionGUID: APlz5W5aQcCmk7dlKaTQuQ==
-X-CSE-MsgGUID: XzHRFPg/Tv+9YQG7wDOvZw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="25415736"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="25415736"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 01:01:58 -0700
-X-CSE-ConnectionGUID: 6365Y7h0QN6FDtQX0c+x5g==
-X-CSE-MsgGUID: s+4OXKhGTNCOTh9zbwOVIQ==
+ t=1717488353; x=1749024353;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=tlyDUjI5vRHJ87WtvJ8gohAtEPNelNf7pLhpyE0sHOA=;
+ b=OqZ78RsT58+39IEW1q8/flYh7bEUlLHseRLCDvLFkdqDhWjTx3PIU0N5
+ tzFwiLplrErJZCdrUDvQtaaPAwDwlUm//MNMg0WJer9156ncjF1Eg6Ey8
+ LbiluTORF+Mw5ecePIWKUHi1Ac6aW6IPPtYrwMnMhBpfQ68Ayp94whhpY
+ btvGlCx2zqx422iIkTtOCeEe0wGgd8iHpq+tRexPUS0vELMV0sjuVFZSz
+ wSWevPR3DHX0GOrdRxpQvcieubpwXi/Ws3/q6PNxqFAqh/jjV1eymdons
+ vhuYtZRx35gPsvQsp3bXB7GbLhNfonpkX383VmV1zds7IOlVgxmW1XRtD g==;
+X-CSE-ConnectionGUID: qwRLeeTdTX++x+GKXuQTww==
+X-CSE-MsgGUID: 8y8QvCIlQomrZpKXXXqpLQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="31553459"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="31553459"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 01:05:52 -0700
+X-CSE-ConnectionGUID: 2u89GiwZSPq4J487bePw2Q==
+X-CSE-MsgGUID: Tb5gygiTS56Wd7gETLPR2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="37276339"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.87])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 01:01:57 -0700
-Date: Tue, 4 Jun 2024 10:01:55 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v4 4/5] lib/igt_fb: put intel blt cleanup into its
- own function
-Message-ID: <20240604080155.dz7cbzslhrtmad7z@zkempczy-mobl2>
-References: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
- <20240530142346.1511811-5-juhapekka.heikkila@gmail.com>
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="41618965"
+Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.102])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 01:05:50 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: Mauro Carvalho Chehab <mauro.chehab@linux.intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, igt-dev@lists.freedesktop.org,
+ kamil.konieczny@intel.com, katarzyna.piecielska@intel.com
+Subject: Re: [PATCH i-g-t v4] tools/mk_detect_intel_gpu: add a tool to
+ detect Intel GPUs from their PCI IDs
+In-Reply-To: <20240603073518.u37dkix3rxahhdbq@zkempczy-mobl2>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240522120240.48463-1-mauro.chehab@linux.intel.com>
+ <87a5kiqa6l.fsf@intel.com> <875xv6q8ob.fsf@intel.com>
+ <20240522144627.tdiadqyfgk67ox55@kamilkon-DESK.igk.intel.com>
+ <87r0dtouhu.fsf@intel.com> <20240523103558.42876c98@maurocar-mobl2>
+ <87le40q4gi.fsf@intel.com>
+ <20240603073518.u37dkix3rxahhdbq@zkempczy-mobl2>
+Date: Tue, 04 Jun 2024 11:05:47 +0300
+Message-ID: <87jzj5ceuc.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240530142346.1511811-5-juhapekka.heikkila@gmail.com>
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,72 +77,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, May 30, 2024 at 05:23:45PM +0300, Juha-Pekka Heikkila wrote:
-> make blitcopy function bit easier to handle
-> 
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/igt_fb.c | 33 +++++++++++++++++++++------------
->  1 file changed, 21 insertions(+), 12 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index e225b9090..d8608ef08 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2939,6 +2939,25 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
->  	}
->  }
->  
-> +static void cleanup_blt_resources(uint32_t ctx, uint64_t ahnd, bool is_xe,
-> +				  uint32_t xe_bb, uint32_t exec_queue,
-> +				  uint32_t vm, intel_ctx_t *xe_ctx,
-> +				  int fd, const intel_ctx_t *ictx)
-> +{
-> +	if (ctx)
-> +		gem_context_destroy(fd, ctx);
-> +	put_ahnd(ahnd);
-> +
-> +	if(is_xe) {
+On Mon, 03 Jun 2024, Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.=
+com> wrote:
+> Currently igt_device_scan.c is limited to devices which have drm driver
+> loaded (that was danvet requirement of udev scanning of drm devices, not
+> pci). But if I'm not wrong it would be relatively simple to add
+> scan_pci_devices() in which we would iterate over udev pci devices and
+> filter out 300 class then add some switch to display it lsgpu. We would
+> at least keep this simply in igt, without any additional scripting/tools
+> needed.
 
-Add space after if before merging.
+Yes.
 
---
-Zbigniew
-
-> +		gem_close(fd, xe_bb);
-> +		xe_exec_queue_destroy(fd, exec_queue);
-> +		xe_vm_destroy(fd, vm);
-> +		free(xe_ctx);
-> +	}
-> +
-> +	intel_ctx_destroy(fd, ictx);
-> +}
-> +
->  static void blitcopy(const struct igt_fb *dst_fb,
->  		     const struct igt_fb *src_fb)
->  {
-> @@ -3079,18 +3098,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
->  		}
->  	}
->  
-> -	if (ctx)
-> -		gem_context_destroy(dst_fb->fd, ctx);
-> -	put_ahnd(ahnd);
-> -
-> -	if(is_xe) {
-> -		gem_close(dst_fb->fd, xe_bb);
-> -		xe_exec_queue_destroy(dst_fb->fd, exec_queue);
-> -		xe_vm_destroy(dst_fb->fd, vm);
-> -		free(xe_ctx);
-> -	}
-> -
-> -	intel_ctx_destroy(src_fb->fd, ictx);
-> +	cleanup_blt_resources(ctx, ahnd, is_xe, bb, exec_queue, vm, xe_ctx,
-> +			      src_fb->fd, ictx);
->  }
->  
->  static void free_linear_mapping(struct fb_blit_upload *blit)
-> -- 
-> 2.43.2
-> 
+--=20
+Jani Nikula, Intel
