@@ -4,28 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828F4C27C52
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Jun 2024 07:21:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F99FC25B7E
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Jun 2024 07:43:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA3C710E21F;
-	Tue,  4 Jun 2024 07:21:15 +0000 (UTC)
-Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB29310E21F;
- Tue,  4 Jun 2024 07:21:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/intel/kms=5Fflip=5F?=
- =?utf-8?q?scaled=5Fcrc=3A_Add_support_for_FP16_format_of_MTL_compressed_mod?=
- =?utf-8?q?ifier_=28rev22=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lobo, Melanie" <melanie.lobo@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B7F1D10E3A0;
+	Tue,  4 Jun 2024 07:43:33 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eXENbusd";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3603810E3A0
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2024 07:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717487011; x=1749023011;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=uZMBvL6WexVAoa6sjsBR++7xEQDZgDWFby6h/fakQ8w=;
+ b=eXENbusdfWdU0kqAgEJOdQRcVf6sb4AXeMLA4HCJNwSFpIl4H2igo/Ky
+ ktW3s2piGLRoesM9wM9sWrJpRLSD+n8oQvM4fnmAl+NTPhN5R3P3Aarim
+ 2UgvTDCauC74XxKQmF+dALNJK4RZy/pwy4FIfcaidFDpfhy+pUU6sIvqT
+ FmSQe15eqzDROXb7aShRt+yaZ8ORKaPrB6GkbxoZ1/DkN1ycvq8yn5nfC
+ NVEePaxI667lFS2iIGLXU4hswPk7txsIUyHU6Z2wttExn2hWEzIq3zxjY
+ yuVfWtwuqw205RvS+X3HjyL6Y97yTzr0i/cd0iCigmCzZ1hB6VkHesDRB w==;
+X-CSE-ConnectionGUID: 9HuQQ5iASfSgKHWC4g/k9Q==
+X-CSE-MsgGUID: 4WvBDvIFR6uOC4kQyAs7OA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="24590632"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="24590632"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 00:43:30 -0700
+X-CSE-ConnectionGUID: gl5GC6ktTfCX1A24KrEoFA==
+X-CSE-MsgGUID: Z4mJFECHSJyzcIYbioT9KA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="42083790"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.87])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 00:43:30 -0700
+Date: Tue, 4 Jun 2024 09:43:26 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 04 Jun 2024 07:21:14 -0000
-Message-ID: <171748567482.2263376.10178490164419690039@8e613ede5ea5>
-X-Patchwork-Hint: ignore
-References: <20231010134540.28485-1-melanie.lobo@intel.com>
-In-Reply-To: <20231010134540.28485-1-melanie.lobo@intel.com>
+Subject: Re: [PATCH i-g-t v4 3/5] lib/igt_fb: separate intel blitter context
+ setup from blitter function
+Message-ID: <20240604074326.bzyuhxvbbepbfmbx@zkempczy-mobl2>
+References: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
+ <20240530142346.1511811-4-juhapekka.heikkila@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240530142346.1511811-4-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,71 +68,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+On Thu, May 30, 2024 at 05:23:44PM +0300, Juha-Pekka Heikkila wrote:
+> separate context and memory region setup to setup_context_and_memory_region()
 
-Series: tests/intel/kms_flip_scaled_crc: Add support for FP16 format of MTL compressed modifier (rev22)
-URL   : https://patchwork.freedesktop.org/series/124956/
-State : failure
+s/separate/Separate/
 
-== Summary ==
+With that nit fixed:
 
-IGT patchset build failed on latest successful build
-23b8b8a0168e1b5141e29346be1f83fdbed31037 man: Add --decode to intel_reg.rst
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Tail of build.log:
-[275/1679] Compiling C object 'tests/59830eb@@kms_atomic_transition@exe/kms_atomic_transition.c.o'.
-[276/1679] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
-[277/1679] Compiling C object 'lib/76b5a35@@igt-igt_sysfs_c@sta/igt_sysfs.c.o'.
-[278/1679] Compiling C object 'lib/76b5a35@@igt-runnercomms_c@sta/runnercomms.c.o'.
-[279/1679] Compiling C object 'lib/76b5a35@@igt-igt_ktap_c@sta/igt_ktap.c.o'.
-[280/1679] Compiling C object 'lib/76b5a35@@igt-igt_halffloat_c@sta/igt_halffloat.c.o'.
-[281/1679] Compiling C object 'lib/76b5a35@@igt-igt_eld_c@sta/igt_eld.c.o'.
-[282/1679] Compiling C object 'lib/76b5a35@@igt-igt_dsc_c@sta/igt_dsc.c.o'.
-[283/1679] Compiling C object 'lib/76b5a35@@igt-igt_psr_c@sta/igt_psr.c.o'.
-[284/1679] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
-[285/1679] Compiling C object 'lib/76b5a35@@igt-intel_allocator_simple_c@sta/intel_allocator_simple.c.o'.
-[286/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen4_c@sta/rendercopy_gen4.c.o'.
-[287/1679] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
-[288/1679] Compiling C object 'lib/76b5a35@@igt-igt_vc4_c@sta/igt_vc4.c.o'.
-[289/1679] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[290/1679] Compiling C object 'lib/76b5a35@@igt-igt_edid_c@sta/igt_edid.c.o'.
-[291/1679] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
-[292/1679] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
-[293/1679] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
-[294/1679] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
-[295/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
-[296/1679] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
-[297/1679] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
-[298/1679] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
-[299/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
-[300/1679] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[301/1679] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
-[302/1679] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
-[303/1679] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
-[304/1679] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
-[305/1679] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
-[306/1679] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
-[307/1679] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
-[308/1679] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
-[309/1679] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
-[310/1679] Generating i915-perf-registers-acmgt3 with a custom command.
-[311/1679] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
-[312/1679] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[313/1679] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
-[314/1679] Generating i915-perf-metrics-acmgt3 with a custom command.
-[315/1679] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[316/1679] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[317/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[318/1679] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[319/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[320/1679] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[321/1679] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[322/1679] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[323/1679] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+--
+Zbigniew
 
 
+> helper to reduce blitcopy() overall size.
+> 
+> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>  lib/igt_fb.c | 73 ++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 42 insertions(+), 31 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 588144579..e225b9090 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2900,6 +2900,45 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+>  	igt_assert_f(0, "unknown compression\n");
+>  }
+>  
+> +static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *ctx,
+> +					    uint64_t *ahnd, uint32_t *mem_region,
+> +					    uint32_t *vm, uint32_t *bb,
+> +					    uint64_t *bb_size,
+> +					    const intel_ctx_t **ictx,
+> +					    uint32_t *exec_queue,
+> +					    intel_ctx_t **xe_ctx)
+> +{
+> +	struct drm_xe_engine_class_instance inst = {
+> +		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +	};
+> +
+> +	if (is_i915_device(fb->fd) && !gem_has_relocations(fb->fd)) {
+> +		igt_require(gem_has_contexts(fb->fd));
+> +		*ictx = intel_ctx_create_all_physical(fb->fd);
+> +		*mem_region = HAS_FLATCCS(intel_get_drm_devid(fb->fd)) ?
+> +			REGION_LMEM(0) : REGION_SMEM;
+> +		*ctx = gem_context_create(fb->fd);
+> +		*ahnd = get_reloc_ahnd(fb->fd, *ctx);
+> +
+> +		igt_assert(__gem_create_in_memory_regions(fb->fd,
+> +							  bb,
+> +							  bb_size,
+> +							  *mem_region) == 0);
+> +	} else if (is_xe_device(fb->fd)) {
+> +		*vm = xe_vm_create(fb->fd, 0, 0);
+> +		*exec_queue = xe_exec_queue_create(fb->fd, *vm, &inst, 0);
+> +		*xe_ctx = intel_ctx_xe(fb->fd, *vm, *exec_queue, 0, 0, 0);
+> +		*mem_region = vram_if_possible(fb->fd, 0);
+> +
+> +		*ahnd = intel_allocator_open_full(fb->fd, (*xe_ctx)->vm, 0, 0,
+> +						 INTEL_ALLOCATOR_SIMPLE,
+> +						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> +
+> +		*bb_size = xe_bb_size(fb->fd, *bb_size);
+> +		*bb = xe_bo_create(fb->fd, 0, *bb_size, *mem_region, 0);
+> +	}
+> +}
+> +
+>  static void blitcopy(const struct igt_fb *dst_fb,
+>  		     const struct igt_fb *src_fb)
+>  {
+> @@ -2920,11 +2959,6 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  	intel_ctx_t *xe_ctx;
+>  	uint32_t vm, exec_queue;
+>  	bool is_xe = is_xe_device(dst_fb->fd);
+> -	bool is_i915 = is_i915_device(dst_fb->fd);
+> -
+> -	struct drm_xe_engine_class_instance inst = {
+> -		.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> -	};
+>  
+>  	igt_assert_eq(dst_fb->fd, src_fb->fd);
+>  	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
+> @@ -2932,32 +2966,9 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  	src_tiling = igt_fb_mod_to_tiling(src_fb->modifier);
+>  	dst_tiling = igt_fb_mod_to_tiling(dst_fb->modifier);
+>  
+> -	if (is_i915 && !gem_has_relocations(dst_fb->fd)) {
+> -		igt_require(gem_has_contexts(dst_fb->fd));
+> -		mem_region = HAS_FLATCCS(intel_get_drm_devid(src_fb->fd))
+> -			? REGION_LMEM(0) : REGION_SMEM;
+> -
+> -		ictx = intel_ctx_create_all_physical(src_fb->fd);
+> -		ctx = gem_context_create(dst_fb->fd);
+> -		ahnd = get_reloc_ahnd(dst_fb->fd, ctx);
+> -
+> -		igt_assert(__gem_create_in_memory_regions(src_fb->fd,
+> -							  &bb,
+> -							  &bb_size,
+> -							  mem_region) == 0);
+> -	} else if (is_xe) {
+> -		vm = xe_vm_create(dst_fb->fd, 0, 0);
+> -		exec_queue = xe_exec_queue_create(dst_fb->fd, vm, &inst, 0);
+> -		xe_ctx = intel_ctx_xe(dst_fb->fd, vm, exec_queue, 0, 0, 0);
+> -		mem_region = vram_if_possible(dst_fb->fd, 0);
+> -
+> -		ahnd = intel_allocator_open_full(dst_fb->fd, xe_ctx->vm, 0, 0,
+> -						 INTEL_ALLOCATOR_SIMPLE,
+> -						 ALLOC_STRATEGY_LOW_TO_HIGH, 0);
+> -
+> -		bb_size = xe_bb_size(dst_fb->fd, bb_size);
+> -		xe_bb = xe_bo_create(dst_fb->fd, 0, bb_size, mem_region, 0);
+> -	}
+> +	setup_context_and_memory_region(dst_fb, &ctx, &ahnd, &mem_region,
+> +					&vm, &xe_bb, &bb_size, &ictx,
+> +					&exec_queue, &xe_ctx);
+>  
+>  	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
+>  		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+> -- 
+> 2.43.2
+> 
