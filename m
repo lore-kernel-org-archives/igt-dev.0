@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C147CC25B7E
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Jun 2024 08:00:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FB3EC25B7E
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Jun 2024 08:02:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5700810E432;
-	Tue,  4 Jun 2024 08:00:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE9C110E42C;
+	Tue,  4 Jun 2024 08:02:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bOTTlW62";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aBryR0s0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91F9610E432
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2024 08:00:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01AAA10E42C
+ for <igt-dev@lists.freedesktop.org>; Tue,  4 Jun 2024 08:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717488048; x=1749024048;
+ t=1717488119; x=1749024119;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=eiwuJq68sK4Rx7I9epfvIrnM5jOdiMC0s+Qkeg7D2ic=;
- b=bOTTlW62/SYpWVnJBBIQT5cimgYE17qCoyaL5B7Onr6TRnFulu7C59dN
- TA0x4LGf1L6pXjdzDQyb2yr2Hw/9xmauzcXZlFHtM1Yr29mTeRWKzRlRY
- HUFhy4OApOYk1OwO0Jtc6BEF0ALGn21oVrzvt7kscndEvfR6Ba6OyneFh
- TvVMMczBPbzGiwVd762EXiUp1VUNbFmIsO+lUD89y0+z1YTpkDbx1YgSN
- ulD2eGqhYgLuXRJbzri6/FsOobcAYOSbH0RsjRftc4Y89nbjAeJLlYVIl
- P1mmmhZUqIiLM9/0hL3VGd/RYJb0t5TY5EA2ZeO2bDAYBdohorDB9qNyM g==;
-X-CSE-ConnectionGUID: d+e7Gv7DRvmb9ypDfiM15Q==
-X-CSE-MsgGUID: D4Sjwc82Rd2Xum91k0HyMQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="14205871"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="14205871"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 01:00:15 -0700
-X-CSE-ConnectionGUID: L01/fXFNTz6Ro12ZrRaG1w==
-X-CSE-MsgGUID: Oqxw2X1NTGi1X2QexuESmQ==
+ bh=EuI3okyy2eWcpCqssw2mcZENl+T1DOi4BCkRKJ7JF4g=;
+ b=aBryR0s0yVInRvj3L86UVK2ZjYQM58OqYm00FB7P91ihbhtKpgrO3IFw
+ 07WsFWtL5jED8sKbS3ScyXS5ezsi3z+DOAYR4j1GHp22Ga7qkggbpCl6G
+ TJSk0wlCqctLZP4gBGILXmTRPrB0mgg6QOvjlWfSgJ0K253YJs7UXEqOW
+ +TFkuC9OgekefDt3s9xZpnpaqyUyXrMw8whZNrkxTLkYrfb24drzRK639
+ dAuQSlD7TbhSG5SBZgwr8s40FG0U22FubjPu/WKpWmR4NII0Wx42XQP2G
+ JRNyI4iOa+z2jHK5Ww6dQpwsIXzX6peiAq+Fd/eMmHztvDjZ9GNwyq8NR w==;
+X-CSE-ConnectionGUID: APlz5W5aQcCmk7dlKaTQuQ==
+X-CSE-MsgGUID: XzHRFPg/Tv+9YQG7wDOvZw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="25415736"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="25415736"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 01:01:58 -0700
+X-CSE-ConnectionGUID: 6365Y7h0QN6FDtQX0c+x5g==
+X-CSE-MsgGUID: s+4OXKhGTNCOTh9zbwOVIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="74653906"
+X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; d="scan'208";a="37276339"
 Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.246.87])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 01:00:14 -0700
-Date: Tue, 4 Jun 2024 10:00:11 +0200
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jun 2024 01:01:57 -0700
+Date: Tue, 4 Jun 2024 10:01:55 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v4 2/5] lib/igt_fb: Sanitize blt_fb_init
-Message-ID: <20240604080011.vxwxys3xicobb2gp@zkempczy-mobl2>
+Subject: Re: [PATCH i-g-t v4 4/5] lib/igt_fb: put intel blt cleanup into its
+ own function
+Message-ID: <20240604080155.dz7cbzslhrtmad7z@zkempczy-mobl2>
 References: <20240530142346.1511811-1-juhapekka.heikkila@gmail.com>
- <20240530142346.1511811-3-juhapekka.heikkila@gmail.com>
+ <20240530142346.1511811-5-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240530142346.1511811-3-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240530142346.1511811-5-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,116 +71,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, May 30, 2024 at 05:23:43PM +0300, Juha-Pekka Heikkila wrote:
-> Sanitize building of Intel blitter setup
+On Thu, May 30, 2024 at 05:23:45PM +0300, Juha-Pekka Heikkila wrote:
+> make blitcopy function bit easier to handle
 > 
 > Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > ---
->  lib/igt_fb.c | 64 +++++++++++++++++++++++++++++++++++++---------------
->  1 file changed, 46 insertions(+), 18 deletions(-)
+>  lib/igt_fb.c | 33 +++++++++++++++++++++------------
+>  1 file changed, 21 insertions(+), 12 deletions(-)
 > 
 > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 707eb0a1e..588144579 100644
+> index e225b9090..d8608ef08 100644
 > --- a/lib/igt_fb.c
 > +++ b/lib/igt_fb.c
-> @@ -2760,21 +2760,18 @@ static void copy_with_engine(struct fb_blit_upload *blit,
->  	fini_buf(src);
+> @@ -2939,6 +2939,25 @@ static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *c
+>  	}
 >  }
 >  
-> -static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
-> -					   uint32_t plane, uint32_t memregion)
-> +static struct blt_copy_object *allocate_and_initialize_blt(const struct igt_fb *fb,
-> +							   uint32_t handle,
-> +							   uint32_t memregion,
-> +							   enum blt_tiling_type blt_tile,
-> +							   uint32_t plane)
->  {
-> -	uint32_t name, handle;
-> -	struct blt_copy_object *blt;
-> -	enum blt_tiling_type blt_tile;
->  	uint64_t stride;
-> +	struct blt_copy_object *blt = calloc(1, sizeof(*blt));
->  
-> -	blt = malloc(sizeof(*blt));
-> -	igt_assert(blt);
-> +	if (!blt)
-> +		return NULL;
->  
-> -	name = gem_flink(fb->fd, fb->gem_handle);
-> -	handle = gem_open(fb->fd, name);
-> -
-> -	blt_tile = fb_tile_to_blt_tile(fb->modifier);
->  	stride = blt_tile == T_LINEAR ? fb->strides[plane] : fb->strides[plane] / 4;
->  
->  	blt_set_object(blt, handle, fb->size, memregion,
-> @@ -2785,17 +2782,48 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
->  		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
->  
->  	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
-> -
->  	blt->plane_offset = fb->offsets[plane];
->  
-> -	igt_assert(fb->size);
-> +	return blt;
-> +}
->  
-> -	if (is_xe_device(fb->fd))
-> -		blt->ptr = xe_bo_mmap_ext(fb->fd, handle, fb->size,
-> -					  PROT_READ | PROT_WRITE);
-> +static void *map_buffer(int fd, uint32_t handle, size_t size)
+> +static void cleanup_blt_resources(uint32_t ctx, uint64_t ahnd, bool is_xe,
+> +				  uint32_t xe_bb, uint32_t exec_queue,
+> +				  uint32_t vm, intel_ctx_t *xe_ctx,
+> +				  int fd, const intel_ctx_t *ictx)
 > +{
-> +	if (is_xe_device(fd))
-> +		return xe_bo_mmap_ext(fd, handle, size, PROT_READ | PROT_WRITE);
->  	else
-> -		blt->ptr = gem_mmap__device_coherent(fb->fd, handle, 0, fb->size,
-> -						     PROT_READ | PROT_WRITE);
-> +		return gem_mmap__device_coherent(fd, handle, 0, size,
-> +						 PROT_READ | PROT_WRITE);
-> +}
+> +	if (ctx)
+> +		gem_context_destroy(fd, ctx);
+> +	put_ahnd(ahnd);
 > +
-> +static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
-> +					   uint32_t plane, uint32_t memregion)
-> +{
-> +	uint32_t name, handle;
-> +	enum blt_tiling_type blt_tile;
-> +	struct blt_copy_object *blt;
-> +
-> +	if (!fb)
-> +		return NULL;
-> +
-> +	name = gem_flink(fb->fd, fb->gem_handle);
-> +	handle = gem_open(fb->fd, name);
-> +
-> +	if (!handle)
-> +		return NULL;
-> +
-> +	blt_tile = fb_tile_to_blt_tile(fb->modifier);
-> +	blt = allocate_and_initialize_blt(fb, handle, memregion, blt_tile, plane);
-> +
-> +	if (!blt)
-> +		return NULL;
+> +	if(is_xe) {
 
-Memory allocation for blt is critical here. You're handling it in
-do_block_copy() but I wonder shouldn't you just assert here. I mean
-if you don't plan to add fallback path we may simply assert.
-
-Regardless of your decision, code is correct imo:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Add space after if before merging.
 
 --
 Zbigniew
 
-> +
-> +	blt->ptr = map_buffer(fb->fd, handle, fb->size);
-> +	if (!blt->ptr) {
-> +		free(blt);
-> +		return NULL;
+> +		gem_close(fd, xe_bb);
+> +		xe_exec_queue_destroy(fd, exec_queue);
+> +		xe_vm_destroy(fd, vm);
+> +		free(xe_ctx);
 > +	}
 > +
->  	return blt;
+> +	intel_ctx_destroy(fd, ictx);
+> +}
+> +
+>  static void blitcopy(const struct igt_fb *dst_fb,
+>  		     const struct igt_fb *src_fb)
+>  {
+> @@ -3079,18 +3098,8 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  		}
+>  	}
+>  
+> -	if (ctx)
+> -		gem_context_destroy(dst_fb->fd, ctx);
+> -	put_ahnd(ahnd);
+> -
+> -	if(is_xe) {
+> -		gem_close(dst_fb->fd, xe_bb);
+> -		xe_exec_queue_destroy(dst_fb->fd, exec_queue);
+> -		xe_vm_destroy(dst_fb->fd, vm);
+> -		free(xe_ctx);
+> -	}
+> -
+> -	intel_ctx_destroy(src_fb->fd, ictx);
+> +	cleanup_blt_resources(ctx, ahnd, is_xe, bb, exec_queue, vm, xe_ctx,
+> +			      src_fb->fd, ictx);
 >  }
 >  
+>  static void free_linear_mapping(struct fb_blit_upload *blit)
 > -- 
 > 2.43.2
 > 
