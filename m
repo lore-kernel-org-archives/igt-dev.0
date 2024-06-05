@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29B3CC25B76
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 04:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C638C25B76
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 05:19:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E45E10E4E1;
-	Wed,  5 Jun 2024 04:53:16 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k3cE9nSN";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B96DB10E4E1
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 04:53:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717563195; x=1749099195;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=E9VKqtVrPlfx96WNZmC+owX2xGKtiY8jgoSodW5/Gwk=;
- b=k3cE9nSNcvsuVKsyngg8uh7uZ3dTQJv6j1uqMzHxtPHswlKp1TDstjqD
- YIQG44d3G7gNKtuLDC9gksTn4tJe0Sb0hCDpX3siG+EuWhMrFzl/S8wGj
- /Bi3ZNDk2ZlkJDV0gYPAocPvJPetZje7LSfKPIFIvsCPUPB1RaY6GgcMu
- A+W9bKE5UpVUbVv+MlTQ6EoHU+ZJV7EdbsPHGLELGylJilSaejXfhCxVi
- M+vE/lrjWXxgn2lAWRGMAXqi9t4/jHo1zUC2mNcn3UBgWGiwSf9SUu7YN
- M9/L1wjvVqmgtdbOSjAI7J/uHT/RYAP4pVkIr8xvsXKaeuAFU9n+Ahhe2 g==;
-X-CSE-ConnectionGUID: OGJoV2kFQ/KJlFihEHKK+Q==
-X-CSE-MsgGUID: bGmNzfqLRJyKufKODWqtPA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="24719419"
-X-IronPort-AV: E=Sophos;i="6.08,215,1712646000"; d="scan'208";a="24719419"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 21:53:14 -0700
-X-CSE-ConnectionGUID: ZxXQCnnyRFG7HCFZPvb0Mg==
-X-CSE-MsgGUID: R/LXB2siSw+ozjoxaTBBYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,215,1712646000"; d="scan'208";a="42577357"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.179])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jun 2024 21:53:12 -0700
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH i-g-t v2] tools/lsgpu: Add switch to display gpu pci devices
-Date: Wed,  5 Jun 2024 06:53:08 +0200
-Message-Id: <20240605045308.97175-1-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF51A10E68C;
+	Wed,  5 Jun 2024 05:19:13 +0000 (UTC)
+Received: from 8e613ede5ea5 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37FAE10E68C;
+ Wed,  5 Jun 2024 05:19:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4128394675264024929=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tools/lsgpu=3A_Add_switch_to_d?=
+ =?utf-8?q?isplay_gpu_pci_devices_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 05 Jun 2024 05:19:12 -0000
+Message-ID: <171756475222.2266479.2867159899422480541@8e613ede5ea5>
+X-Patchwork-Hint: ignore
+References: <20240605045308.97175-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240605045308.97175-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,165 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Device scanning in IGT is based on iterating over udev drm devices. This
-limits to display only to devices which have driver loaded.
+--===============4128394675264024929==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-To remove this limitation add dedicated udev pci scanning in lsgpu which
-displays all gpu devices (pci class 0x30000).
+== Series Details ==
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
+Series: tools/lsgpu: Add switch to display gpu pci devices (rev2)
+URL   : https://patchwork.freedesktop.org/series/134438/
+State : success
 
----
-v2: Remove unnecessary variable
-    Add pci-id and use codename only when is pretty
----
- tools/lsgpu.c | 89 +++++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 87 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-index da84e20505..23ea8ccdd7 100644
---- a/tools/lsgpu.c
-+++ b/tools/lsgpu.c
-@@ -30,6 +30,7 @@
- #include <string.h>
- #include <signal.h>
- #include <glib.h>
-+#include <libudev.h>
- 
- /**
-  * SECTION:lsgpu
-@@ -77,12 +78,14 @@ enum {
- 	OPT_LIST_VENDORS   = 'v',
- 	OPT_LIST_FILTERS   = 'l',
- 	OPT_DEVICE         = 'd',
--	OPT_HELP           = 'h'
-+	OPT_HELP           = 'h',
-+	OPT_PCISCAN        = 'P',
- };
- 
- static bool g_show_vendors;
- static bool g_list_filters;
- static bool g_help;
-+static bool g_pciscan;
- static char *igt_device;
- 
- static const char *usage_str =
-@@ -158,6 +161,82 @@ static char *get_device_from_rc(void)
- 	return rc_device;
- }
- 
-+static int pciscan(void)
-+{
-+	struct udev *udev;
-+	struct udev_enumerate *enumerate;
-+	struct udev_list_entry *devices, *dev_list_entry;
-+	struct igt_device_card card;
-+	char pcistr[10];
-+	int ret;
-+
-+	udev = udev_new();
-+	igt_assert(udev);
-+
-+	enumerate = udev_enumerate_new(udev);
-+	igt_assert(enumerate);
-+
-+	printf("Scanning pci subsystem\n");
-+	printf("----------------------\n");
-+	ret = udev_enumerate_add_match_subsystem(enumerate, "pci");
-+	igt_assert(!ret);
-+
-+	ret = udev_enumerate_add_match_property(enumerate, "PCI_CLASS", "30000");
-+	igt_assert(!ret);
-+
-+	ret = udev_enumerate_scan_devices(enumerate);
-+	igt_assert(!ret);
-+
-+	devices = udev_enumerate_get_list_entry(enumerate);
-+	if (!devices) {
-+		printf("No pci devices with class 0x30000 found\n");
-+		return 0;
-+	}
-+
-+	udev_list_entry_foreach(dev_list_entry, devices) {
-+		const char *path;
-+		struct udev_device *udev_dev;
-+		struct udev_list_entry *entry;
-+		char *codename;
-+
-+		path = udev_list_entry_get_name(dev_list_entry);
-+		udev_dev = udev_device_new_from_syspath(udev, path);
-+		printf("[%s]\n", path);
-+
-+		strcpy(card.pci_slot_name, "-");
-+		entry = udev_device_get_properties_list_entry(udev_dev);
-+		while (entry) {
-+			const char *name = udev_list_entry_get_name(entry);
-+			const char *value = udev_list_entry_get_value(entry);
-+
-+			entry = udev_list_entry_get_next(entry);
-+			if (!strcmp(name, "ID_VENDOR_FROM_DATABASE"))
-+				printf("  vendor [db]: %s\n", value);
-+			else if (!strcmp(name, "ID_MODEL_FROM_DATABASE"))
-+				printf("  model  [db]: %s\n", value);
-+			else if (!strcmp(name, "DRIVER"))
-+				printf("  driver     : %s\n", value);
-+			else if (!strcmp(name, "PCI_ID"))
-+				igt_assert_eq(sscanf(value, "%hx:%hx",
-+						     &card.pci_vendor, &card.pci_device), 2);
-+		}
-+		snprintf(pcistr, sizeof(pcistr), "%04x:%04x",
-+			 card.pci_vendor, card.pci_device);
-+		printf("  pci id     : %s\n", pcistr);
-+		codename = igt_device_get_pretty_name(&card, false);
-+		if (strcmp(pcistr, codename))
-+			printf("  codename   : %s\n", codename);
-+		free(codename);
-+
-+		udev_device_unref(udev_dev);
-+	}
-+
-+	udev_enumerate_unref(enumerate);
-+	udev_unref(udev);
-+
-+	return 0;
-+}
-+
- int main(int argc, char *argv[])
- {
- 	static struct option long_options[] = {
-@@ -180,7 +259,7 @@ int main(int argc, char *argv[])
- 			.type = IGT_PRINT_USER,
- 	};
- 
--	while ((c = getopt_long(argc, argv, "ncspvld:h",
-+	while ((c = getopt_long(argc, argv, "ncspvld:hP",
- 				long_options, &index)) != -1) {
- 		switch(c) {
- 
-@@ -208,6 +287,9 @@ int main(int argc, char *argv[])
- 		case OPT_HELP:
- 			g_help = true;
- 			break;
-+		case OPT_PCISCAN:
-+			g_pciscan = true;
-+			break;
- 		case 0:
- 			fmt.option = IGT_PRINT_DRM;
- 			break;
-@@ -220,6 +302,9 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
-+	if (g_pciscan)
-+		return pciscan();
-+
- 	if (g_help) {
- 		printf("%s\n", usage_str);
- 		exit(0);
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_7877_BAT -> XEIGTPW_11220_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 4)
+------------------------------
+
+  Missing    (1): bat-adlp-7 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7877 -> IGTPW_11220
+  * Linux: xe-1391-692c2b76453385a04b1eef40f3cdbc0097074f62 -> xe-1399-596cf447db94909c4788fd612876520531e439b0
+
+  IGTPW_11220: 11220
+  IGT_7877: 23b8b8a0168e1b5141e29346be1f83fdbed31037 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1391-692c2b76453385a04b1eef40f3cdbc0097074f62: 692c2b76453385a04b1eef40f3cdbc0097074f62
+  xe-1399-596cf447db94909c4788fd612876520531e439b0: 596cf447db94909c4788fd612876520531e439b0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11220/index.html
+
+--===============4128394675264024929==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/lsgpu: Add switch to display gpu pci devices (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134438/">https://patchwork.freedesktop.org/series/134438/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11220/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11220/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7877_BAT -&gt; XEIGTPW_11220_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 4)</h2>
+<p>Missing    (1): bat-adlp-7 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7877 -&gt; IGTPW_11220</li>
+<li>Linux: xe-1391-692c2b76453385a04b1eef40f3cdbc0097074f62 -&gt; xe-1399-596cf447db94909c4788fd612876520531e439b0</li>
+</ul>
+<p>IGTPW_11220: 11220<br />
+  IGT_7877: 23b8b8a0168e1b5141e29346be1f83fdbed31037 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1391-692c2b76453385a04b1eef40f3cdbc0097074f62: 692c2b76453385a04b1eef40f3cdbc0097074f62<br />
+  xe-1399-596cf447db94909c4788fd612876520531e439b0: 596cf447db94909c4788fd612876520531e439b0</p>
+
+</body>
+</html>
+
+--===============4128394675264024929==--
