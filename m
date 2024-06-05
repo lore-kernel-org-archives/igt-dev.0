@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45D57C27C52
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 16:44:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB3BC27C55
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 16:49:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD12C10E033;
-	Wed,  5 Jun 2024 16:44:37 +0000 (UTC)
-Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3388010E033;
- Wed,  5 Jun 2024 16:44:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2080978936125327390=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FCF410E190;
+	Wed,  5 Jun 2024 16:49:02 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cPqPFJEB";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB23010E3B2
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 16:49:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717606141; x=1749142141;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=RPgDTLQKDP4YaT+f7OQUTrX+Qb3DPwHUAS6ubl2el70=;
+ b=cPqPFJEB2mGO8gi6L9Y98CBzRE07kyIabk2D9rsHXA+++D7Vh67Cv9O8
+ ygzyfIcnl2XhqrdjDPaQnm2VqTeOYXsh8+i6jPcQG79bLbdaGF4RBC/x1
+ WdPXZhGHHJnC1PSMPRimPOY+wYkfl1JE2XJHUcpKq2A3ztL+vWQOH68cl
+ Q6b4mNyRKypxT3dsq+6MCKMBzv1BqqQtcsuP88Cjs8zu8Kti+LqYBgFG/
+ qKe9NuLP/R1jYpS5gpLnXAEY/5WbIc04IQSnEFkUN8mstHETPDP/42vfU
+ YkX8fKEzA4bVXpsyLyLR6DDzf5RdSSBYliw8qmPcsJUT0ETfyEk1Os+H6 w==;
+X-CSE-ConnectionGUID: 72o/BBQlSx62wHCSUX7A6Q==
+X-CSE-MsgGUID: 0wqOCkk9Rzu5EnRAj2+0Sg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14072474"
+X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; d="scan'208";a="14072474"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 09:49:00 -0700
+X-CSE-ConnectionGUID: 0nCDiL0/Q0KsDW7YO6KBgA==
+X-CSE-MsgGUID: +H4Cfq7wSVyukgRVesK1kA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; d="scan'208";a="37666114"
+Received: from dut-internal-9dd7.jf.intel.com ([10.165.21.194])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 09:48:59 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com,
+ matthew.brost@intel.com, john.c.harrison@intel.com,
+ stuart.summers@intel.com
+Subject: [PATCH i-g-t v2 2/2] test/intel/xe_exec_reset: Synchronize
+ cm-gt-reset gt resets
+Date: Wed,  5 Jun 2024 09:33:44 -0700
+Message-Id: <20240605163344.2747072-3-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240605163344.2747072-1-jonathan.cavitt@intel.com>
+References: <20240605163344.2747072-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_HAX=3A_tests/kms=5Fvrr=3A_Fix_?=
- =?utf-8?q?the_logic_to_choose_low_RR_mode?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 05 Jun 2024 16:44:36 -0000
-Message-ID: <171760587619.79.15131601068071723066@a6498e030952>
-X-Patchwork-Hint: ignore
-References: <20240605111842.3252536-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240605111842.3252536-1-bhanuprakash.modem@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,195 +67,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2080978936125327390==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The cm-gt-reset test has the potential to race with itself on the gt
+reset, so force the gt reset to be synchronous here.  The race condition
+occurs because the test does not have a fencing mechanism (I.E.
+dma-fence) to protect against this race, unlike in the gt-reset test
+case, for example.
 
-== Series Details ==
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: John Harrison <john.c.harrison@intel.com>
+CC: Stuart Summers <stuart.summers@intel.com>
+---
+ tests/intel/xe_exec_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Series: HAX: tests/kms_vrr: Fix the logic to choose low RR mode
-URL   : https://patchwork.freedesktop.org/series/134498/
-State : failure
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 05d63c0ba5..817b82cdef 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -530,7 +530,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	}
+ 
+ 	if (flags & GT_RESET)
+-		xe_force_gt_reset_async(fd, eci->gt_id);
++		xe_force_gt_reset_sync(fd, eci->gt_id);
+ 
+ 	if (flags & CLOSE_FD) {
+ 		if (flags & CLOSE_EXEC_QUEUES) {
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7879_BAT -> XEIGTPW_11221_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11221_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11221_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11221_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_vrr@seamless-rr-switch-drrs:
-    - bat-adlp-7:         NOTRUN -> [WARN][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-drrs.html
-
-  * igt@kms_vrr@seamless-rr-switch-drrs@pipe-a-edp-1:
-    - bat-adlp-7:         NOTRUN -> [CRASH][2]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-drrs@pipe-a-edp-1.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11221_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_vrr@flipline:
-    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#1024]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-atsm-2/igt@kms_vrr@flipline.html
-
-  * igt@kms_vrr@seamless-rr-switch-vrr:
-    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-pvc-2/igt@kms_vrr@seamless-rr-switch-vrr.html
-    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#455]) +2 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#455]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-dg2-oem2/igt@kms_vrr@seamless-rr-switch-vrr.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#1446]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1446
-  [Intel XE#1899]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1899
-  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
-
-
-Build changes
--------------
-
-  * IGT: IGT_7879 -> IGTPW_11221
-
-  IGTPW_11221: 040a2daf87c29effad8acef9aa7f395da4b076fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7879: 08560f766a505e729dfee2846c1c11d28dd0e3d0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1405-a494545483635d3d93d19e8f483f61e7d4198383: a494545483635d3d93d19e8f483f61e7d4198383
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/index.html
-
---===============2080978936125327390==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>HAX: tests/kms_vrr: Fix the logic to choose low RR mode</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134498/">https://patchwork.freedesktop.org/series/134498/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7879_BAT -&gt; XEIGTPW_11221_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11221_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11221_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11221_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_vrr@seamless-rr-switch-drrs:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-drrs.html">WARN</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@seamless-rr-switch-drrs@pipe-a-edp-1:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-drrs@pipe-a-edp-1.html">CRASH</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11221_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_vrr@flipline:</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-atsm-2/igt@kms_vrr@flipline.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_vrr@seamless-rr-switch-vrr:</p>
-<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-pvc-2/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +3 other tests skip</li>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11221/bat-dg2-oem2/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7879 -&gt; IGTPW_11221</li>
-</ul>
-<p>IGTPW_11221: 040a2daf87c29effad8acef9aa7f395da4b076fa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7879: 08560f766a505e729dfee2846c1c11d28dd0e3d0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1405-a494545483635d3d93d19e8f483f61e7d4198383: a494545483635d3d93d19e8f483f61e7d4198383</p>
-
-</body>
-</html>
-
---===============2080978936125327390==--
