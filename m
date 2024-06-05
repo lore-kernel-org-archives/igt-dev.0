@@ -4,66 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1905BC25B76
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 13:29:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C1E5C27C5E
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 14:30:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F22410E2DF;
-	Wed,  5 Jun 2024 13:29:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8463710E694;
+	Wed,  5 Jun 2024 14:30:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OtVsJbSK";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Wt+BaAbt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E432910E7DC
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 13:29:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717594143; x=1749130143;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=HOKeX+AfCaJ8xlRx7xRCJUWZj4yGkXxrNXy4hNjDbLs=;
- b=OtVsJbSKgXpRr5zwngKzCjy8R2MFOAJX0womYGPkyUb1Gvfojj4wQvjj
- 5wLnracQNvMYQ1kBw8P3a5cyPOHEN7QblZu8F7hoUobF1Id0KwC5sjbqU
- CZ5bZoB75vRvgS4CKFZ5gK+nfM5rR+BLskJxnRNUTt8KXcdfDIXImbg/l
- C7bx7MVa7O5rCsOXyuqZHrQxHrSqwkJaL1erbKnySOxbXId3YFbRGR9c8
- t9y4FebJ2yxxiC8wuBJM+GnckiKVZnWfrN9B9HLMxsJhoOfu4xIxwD7DE
- hD9OcBeMTp95MpBsFhpqlvG3voNty2lvjflB7NHM0WuaYsOEGx7skwwTU A==;
-X-CSE-ConnectionGUID: rCa3tJoRQyW7QmH+WJfq0A==
-X-CSE-MsgGUID: ma2ihhCoQkil388cqU9HwA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11093"; a="14089139"
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="14089139"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 06:29:02 -0700
-X-CSE-ConnectionGUID: oyCQQWx6TdWAQrLO1yFdDg==
-X-CSE-MsgGUID: iBTmsL4bSqiOXMtjv0wgaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37576122"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.246.30.61])
- ([10.246.30.61])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 06:29:01 -0700
-Message-ID: <8d091de3-ef09-4052-ae06-72d66de6e270@intel.com>
-Date: Wed, 5 Jun 2024 15:28:58 +0200
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84C8810E2B0
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 14:30:20 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F088440008;
+ Wed,  5 Jun 2024 14:30:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1717597818;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=el+l/VRtpiKbhlfEIJrf7NEa2n5V0beBj0L34CtlIsY=;
+ b=Wt+BaAbtP/B0B5aUVc8iGwuml99eTmuxQNhAAb0l3FHzDtEmb78nXAbRD6AfW00qlDd1WO
+ sU2JaMfI0Vqvmx5TF9Gkj7CVEEBiVmbQRBJtghuQ7K1Ghu/78UZPh5TCByxf4pFr535Kej
+ leU6RmGPr0BD+H9MrUBpWuT1RQo0hm3aFds9Umw7Pnvucc5YDslEGcanaaFIRv6VTl8sAx
+ 2xL3s7ogkR9HrCrHWJJpxL+DY6jFqyatkzyBfsTIAmmD6CqeuhopHhA8awoOVd8c3Hbvhj
+ qYP5ivJ4hyegNEDUY7Juj6qjGTnTEcA/reK4lnx6mAjC5Poc1FpRn+dW5WUkjQ==
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: [PATCH i-g-t RFC 00/13] tests/chamelium: Integrate the chamelium
+ v3
+Date: Wed, 05 Jun 2024 16:30:12 +0200
+Message-Id: <20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] lib/igt_sysfs: add helpers to access engine sysfs
- directory
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-References: <20240528-iga64_inline_ups-v5-0-fdd8e9dcd64c@intel.com>
- <20240528-iga64_inline_ups-v5-4-fdd8e9dcd64c@intel.com>
- <20240529092143.wne456de23isnwop@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240529092143.wne456de23isnwop@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHR2YGYC/x2MywqDQAwAf0VybkBTFeu10A/otfTgI2tz0JVkW
+ Qriv7t6nIGZDYxV2KDNNlCOYuKXBMUtg+HXLROjjImBcirzighHjqg8+8hooQsy4Oo1GD7uDTn
+ X964oa0j1quzkf50/IDhhOO379YTvvh9If3BPdwAAAA==
+To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
+ thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4525;
+ i=louis.chauvet@bootlin.com; h=from:subject:message-id;
+ bh=YIrluNZPAhx+2trj+i45LJjZiKziDetf7/AEr+CN54s=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmYHZ2zJb0JhJb502c+iOW7d5WKcDX3JkZOBYht
+ HzwgexslueJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZmB2dgAKCRAgrS7GWxAs
+ 4lz+EACYVWLDQdqvrFRDwk9i1C1wUtwm4yDdE+H0tB+cZssWVnSL4JNcy1IhuZPpDiAYgf/iyMS
+ LTW3JL/gPwpFsVAyq88yqdVMzRaEvAwwD5HbeFcftpZna8+FVBtcxzfaamsDbZe6Y9Af/2fHRM0
+ MxcLatthT2yC3HJ1FXqk12ACTldxFkVzoOszx3x0cG0kTrSXpopKRWv/2qc02phyKiKLa35WyFV
+ MqLI/EmLjc9unj6I2XITEywqURWLihjI6J1VqpM0R/3jR/r6/7AiXIX+vkoFVP6d1a9TKBvmd33
+ c0VLN20c3d9p7IDvljxLwpcrW7GmW3vAt5Dr77PCEbehAE97dBw8MG7ans0owSB6LXJ34eLuqJT
+ vHPshAWGAIgrd8ITyuWp+PXfSwoHO81lpAmecGyB7sR7e/VCkErI+UhBPU9/RFkTGkhRIDIy0P6
+ Kuk6IUIcLKYaLGs+suFCT433rfqBwPwEG6v2h96oBVujIvd9hCS4x29vpiNQBE/2LNbfJVNDH9+
+ qdQCSfyGWnsqgJzLGYVvGbVng0DcBBlzryKKeaLsDkTWO0tlrV4Z97nLNPbNzTrUdFXtzxSmBid
+ yqxB/CfGec9RCMb/rIOQkCczy1/K0T6OWxssX0OXyaD1/YVo8RYNzUUUsoqATrIPejGSzosJOwA
+ XZygnLsnni8/AQg==
+X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
+ fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,141 +76,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi all,
 
+This patch series introduces a new wrapper for the Chameleon v3 board, a
+testing tool used primarily for Chromebooks, but also by community members
+to increase test coverage of graphic devices. The Chameleon v3 is an
+upgrade from its predecessor, with the ability to emulate 2 HDMI and 2
+DisplayPort devices, including MST devices.
 
-On 29.05.2024 11:21, Kamil Konieczny wrote:
-> Hi Andrzej,
-> On 2024-05-28 at 16:04:50 +0200, Andrzej Hajda wrote:
->> Helpers follow convention of xe_sysfs_gt_(path|open).
->>
->> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
->> ---
->>   lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>   lib/igt_sysfs.h |  3 +++
->>   2 files changed, 74 insertions(+)
->>
->> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
->> index 0c5817eb1580..e11eecc25aa1 100644
->> --- a/lib/igt_sysfs.c
->> +++ b/lib/igt_sysfs.c
->> @@ -40,7 +40,9 @@
->>   #include <dirent.h>
->>   #include <unistd.h>
->>   #include <fcntl.h>
->> +#include <xe_drm.h>
->>   
->> +#include "drmtest.h"
->>   #include "igt_core.h"
->>   #include "igt_sysfs.h"
->>   #include "igt_device.h"
->> @@ -263,6 +265,75 @@ int xe_sysfs_gt_open(int xe_device, int gt)
->>   	return open(path, O_RDONLY);
->>   }
->>   
->> +static const char *engine_class_to_str(__u16 class)
->> +{
->> +	const char *str[] = {
->> +		[DRM_XE_ENGINE_CLASS_RENDER] = "rcs",
->> +		[DRM_XE_ENGINE_CLASS_COPY] = "bcs",
->> +		[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = "vcs",
->> +		[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = "vecs",
->> +		[DRM_XE_ENGINE_CLASS_COMPUTE] = "ccs",
->> +	};
-> These looks like intel-specific global helper.
+The board can read and analyze any stream on the DisplayPort and HDMI
+cables, and even take captures, making it an ideal tool for testing
+hardware, driver, and user space behavior in specific situations, such as
+screen hotplugging and multiple MST screens. However, the changes between
+the v2 and v3, such as the addition of MST support and the removal of CRC
+for screen captures, would require significant modifications to the
+existing tests and wrappers.
 
-It is just static helper used only by xe_sysfs_engine_path.
-Do you want to make it global? If yes, where it should be put?
+To avoid this complexity and ensure that the Chameleon v3 is fully
+supported and the v2 is not broken, I wrote a new wrapper with
+simplicity and ease of use in mind. The Chameleon v3 wrapper should only
+manage the Chameleon itself, without the need for DRM displays, EDID
+caching/modifications, or state machines. This approach will make it
+easier for developers to use the Chameleon v3 and contribute to its
+development.
 
->
->> +
->> +	if (class < ARRAY_SIZE(str))
->> +		return str[class];
->> +
->> +	return "unk";
->> +}
->> +
->> +/**
->> + * xe_sysfs_engine_path:
->> + * @xe_device: fd of the device
->> + * @gt: gt number
->> + * @class: engine class
->> + * @path: buffer to fill with the sysfs gt path to the device
->> + * @pathlen: length of @path buffer
->> + *
->> + * Returns:
->> + * The directory path, or NULL on failure.
->> + */
->> +char *
->> +xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
->> +{
->> +	struct stat st;
->> +	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
->> +
->> +	if (xe_device < 0)
->> +		return NULL;
->> +
->> +	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
->> +		return NULL;
->> +
->> +	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d/engines/%s",
->> +		 major(st.st_rdev), minor(st.st_rdev), tile, gt, engine_class_to_str(class));
->> +
->> +	if (!access(path, F_OK))
->> +		return path;
->> +
->> +	return NULL;
->> +}
->> +
->> +/**
->> + * xe_sysfs_engine_open:
->> + * @xe_device: fd of the device
->> + * @gt: gt number
->> + * @class: engine class
->> + *
->> + * This opens the sysfs gt directory corresponding to device and tile for use
->> + *
->> + * Returns:
->> + * The directory fd, or -1 on failure.
->> + */
->> +int xe_sysfs_engine_open(int xe_device, int gt, int class)
->> +{
->> +	char path[96];
-> ------------- ^^
-> Is it enough?
+In this RFC, I did not merged the common code between the v2 and v3, but
+it is planned for the next version.
 
-Format string has 50 chars, so I guess yes, it should be enough.
+Before I continue working on this series, I want to make sure that it
+is up to the standard of the project and that I am heading in the right
+direction.
 
-Regards
-Andrzej
+This series can be splitted in three parts:
+ - PATCH 1-3: extracting the v2 wrapper and tests in its own directory
+ - PATCH 4-6: Introducing the RPC wrapper
+ - PATCH 6-12: Introduce few tests on EDID and MST
 
->
-> Regards,
-> Kamil
->
->> +
->> +	if (!xe_sysfs_engine_path(xe_device, gt, class, path, sizeof(path)))
->> +		return -1;
->> +
->> +	return open(path, O_RDONLY);
->> +}
->> +
->>   /**
->>    * igt_sysfs_gt_path:
->>    * @device: fd of the device
->> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
->> index f37d80ec130e..6c604d939013 100644
->> --- a/lib/igt_sysfs.h
->> +++ b/lib/igt_sysfs.h
->> @@ -166,4 +166,7 @@ int xe_sysfs_gt_open(int xe_device, int gt);
->>   char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int pathlen);
->>   int xe_sysfs_tile_open(int xe_device, int tile);
->>   int xe_sysfs_get_num_tiles(int xe_device);
->> +char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
->> +int xe_sysfs_engine_open(int xe_device, int gt, int class);
->> +
->>   #endif /* __IGT_SYSFS_H__ */
->>
->> -- 
->> 2.34.1
->>
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+
+---
+Louis Chauvet (13):
+      tests/chamelium: Extract chamelium v2 tests into its own directory
+      lib/chamelium: Extract chamelium v2 wrapper into its own directory
+      lib/chamelium: Change build options to split chamelium v2 and v3
+      lib/chamelium: Introduce the foundation for the chamelium v3 library
+      lib/chamelium: Implement all RPC calls for the chamelium v3
+      lib/chamelium: Introduce a simple chamelium v3 test
+      tests/chamelium: Introduce basic edid test
+      lib/monitor_edids: Introduce helpers to get EDID from a monitor EDID
+      tests/chamelium: Introduce 4k stress edid
+      tests/chamelium: Introduce non-4k stress edid
+      tests/chamelium: Introduce test resolution
+      tests/chamelium: Introduce test sleep
+      tests/chamelium: Add MST test
+
+ docs/testplan/meson.build                       |    4 +-
+ lib/{ => chamelium/v2}/igt_chamelium.c          |    2 +-
+ lib/{ => chamelium/v2}/igt_chamelium.h          |    0
+ lib/{ => chamelium/v2}/igt_chamelium_stream.c   |    2 +-
+ lib/{ => chamelium/v2}/igt_chamelium_stream.h   |    0
+ lib/chamelium/v3/igt_chamelium.c                | 1026 +++++++++++++++++++++++
+ lib/chamelium/v3/igt_chamelium.h                |  120 +++
+ lib/igt.h                                       |    6 +-
+ lib/igt_kms.c                                   |   14 +-
+ lib/meson.build                                 |   16 +-
+ lib/monitor_edids/monitor_edids_helper.c        |   61 +-
+ lib/monitor_edids/monitor_edids_helper.h        |    6 +-
+ lib/tests/meson.build                           |    8 +-
+ meson.build                                     |   45 +-
+ meson_options.txt                               |    8 +-
+ tests/chamelium/{ => v2}/kms_chamelium_audio.c  |    0
+ tests/chamelium/{ => v2}/kms_chamelium_color.c  |    0
+ tests/chamelium/{ => v2}/kms_chamelium_edid.c   |    2 +-
+ tests/chamelium/{ => v2}/kms_chamelium_frames.c |    0
+ tests/chamelium/{ => v2}/kms_chamelium_helper.c |    0
+ tests/chamelium/{ => v2}/kms_chamelium_helper.h |    0
+ tests/chamelium/{ => v2}/kms_chamelium_hpd.c    |    0
+ tests/chamelium/v3/kms_chamelium_v3_basic.c     |   30 +
+ tests/chamelium/v3/kms_chamelium_v3_edid.c      |  419 +++++++++
+ tests/kms_color_helper.h                        |    2 +-
+ tests/kms_feature_discovery.c                   |    6 +-
+ tests/kms_tiled_display.c                       |    6 +-
+ tests/meson.build                               |   61 +-
+ 28 files changed, 1785 insertions(+), 59 deletions(-)
+---
+base-commit: cea4eb0dae57dae8c21782c64ad8174c39d1df38
+change-id: 20240522-dev-remove-static-ports-9382ffbbf146
+
+Best regards,
+-- 
+Louis Chauvet <louis.chauvet@bootlin.com>
 
