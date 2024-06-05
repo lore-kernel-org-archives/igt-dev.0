@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAB47C27C53
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 14:30:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F993C27C6E
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 14:30:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4FEEF10E7AC;
-	Wed,  5 Jun 2024 14:30:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 306B610E65A;
+	Wed,  5 Jun 2024 14:30:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Vf11Gg+X";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="g96QlfcK";
 	dkim-atps=neutral
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
  [217.70.183.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96C9810E53E
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 14:30:21 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C4E3C40002;
- Wed,  5 Jun 2024 14:30:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F49A10E277
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 14:30:29 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 73F8240016;
+ Wed,  5 Jun 2024 14:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1717597820;
+ t=1717597822;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=A872K5PjWY6goFaLwoxPLOz1pvPyTt/1pReb5WHKqkU=;
- b=Vf11Gg+XaA+hebmLSetwySViQO0al54KkGFur83NvZ3A+L5lAn4Trrag+VD2NA+YAyZ0nZ
- a4lMhKJXPI4fEfGDQD0VGU9QWupwBOe6ct2WpuRGxe2juVrpwKLWntm0rnXoAqjNY6p/tj
- WPwePaoHOjp4Wbh5uRviAjLLeCLGqartHTRcDfeCYi6+ZbTQ4FicPlj4crP6niWhMcALco
- d0nSx4t1WP3IiQd7DjaAMz9jhoTniNKJ5MGVQHl3lnzShvX/Q5NapChEb4EJjxQcjKn9O6
- /tgSVh5P5N7qqWPcpUxItmNrJia20HrA5YmnQCIn9Zjv2pIE5Zd4lZGhtuTUTA==
+ bh=w4UTA+B7a08mC51p4xPcuOWbn8Ce50JK4D0PQUZvemc=;
+ b=g96QlfcKL0MTLEathmWXzKgJH4SiJDEadNKdQE2aNOuhyB+056rSfJTp08jbdf0imuNyEM
+ EbOPhzmmmoFPbp8iUkLCZP6MUkFBRhfMXG6GisoOEJLkqvH5uUrgmrlpFwbK7e/DmSoxo/
+ e48t6/OE82iHqAX08KjNKIHPbB96iB5WJgkWCrRR5oMwzIEsvgC9zFtIxC1pmnTbyqnUM3
+ jMMM9t6wczetYwtYxfnILdhUFcNm+OctU7+0etNxysnDM5qgBVHWCoa71Z9VoxmxAg99Cx
+ Wg84MD6ZE0fNIHiJ376PBMAJ5nAfauZseTs9+hdl2QDH/B9polY4Evf4V5htTA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 05 Jun 2024 16:30:16 +0200
-Subject: [PATCH i-g-t RFC 04/13] lib/chamelium: Introduce the foundation
- for the chamelium v3 library
+Date: Wed, 05 Jun 2024 16:30:23 +0200
+Subject: [PATCH i-g-t RFC 11/13] tests/chamelium: Introduce test resolution
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240605-dev-remove-static-ports-v1-4-665f25b7a4db@bootlin.com>
+Message-Id: <20240605-dev-remove-static-ports-v1-11-665f25b7a4db@bootlin.com>
 References: <20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com>
 In-Reply-To: <20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7213;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4785;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=FYJarpT/sl8OqwSWn2VZnYKScpaFzi59B53fw89VE7A=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmYHZ3nzWme8UbubSm1E8/7Y6MI+Sj+UZv+z9F2
- UlzN4CmQ3KJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZmB2dwAKCRAgrS7GWxAs
- 4lhNEACbGkvmcCzFhVzw/PzkqQ9oFGuEnmLZT/v3h19ORC7sr3z+vjey7YN/5nZm7lQT4cDnhDE
- WF5gpSWQ0POoyVioHjK2Bgy3VUWF1we3yxH5atKOtsK5r36eXFyAXe1xJIem/LLgxh5zIJt+Wrd
- XlVWxJxD21KvLM+lxMJQmeYdS1WHHi+3lBIqMT9rJ35njVwe4yrrz2jwbxGIiEFyqTmf6djRZSh
- AyBTji1zILQrGWbI1XcG+2tEvOtBIXA1ELaZ1LA3Cq7TU8/DGuCvpHN02xcbw8tnV7v+UdlUGZx
- gYkoitZDV5iwQR/VGBGMja+vOVxxVp22HzbyFs3X0/2QL3xXsTLMvvqOzYlHWYkOatt9Uf5XW5z
- 7oxU0n0ElDNgpPpKDoApHkRsAzUEWY6GhHdqxP+eaT9GC06aDad7BZ6ce3g+U64VngT136XTPXO
- dfsys9xxrEqheoDh/CPUxsrmZckQ52GCt+c7rhupezf+NHtcTn0xQ2DwSi6ugZ4kZQFr1SGePyE
- Wn2mILLErJiWIqvRdTboX8WzCZYw/ivTOZaW6G2e5vc4ME2NAu3SN2WLha9ut6Vc7GpAX9x1gyR
- Cxay1SQKD8NKeriLFXPFAsvzbJ+lSXmgZUnsgdVgX2/oFDMwuyhC8ydl3QnivKEJnVxZd311cNW
- d+Lnr728VcT+zkg==
+ bh=BountJbIMBIgvPPV64VF5IUUnoqaGfgdl5EejhZDGZs=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmYHZ5zsDQWTQoVJwUEzXu7XXjMFDjDW/wC4I/R
+ WUvwAkAiI2JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZmB2eQAKCRAgrS7GWxAs
+ 4uK8D/9V4rKaLBy1vEGsnCc4e7Ew4tPRvfg+22oX5Nm4ilg13z7UtpCcctlArDexYUZzvhUDkDQ
+ /qc3V2Gzu4AGBefylOanec/iehiyaPn8YocHA3AZ9lQelufMoeghRI9HYoLK4wItcj0DR2Sg9ZM
+ JFUuo3mz3zYJwFOpYbb7OM4KxKN073vVIHwhd0wFD5TMKR9us3JKCgOx6mOZCCrUgsm/hOHJ9fa
+ Kov7MJewKXqyhPuzdMunhisaReeatEajJMPIzuf1IJtHMnPP/J67ZqFCdbr3vEMAWj7y6YzN3GY
+ dQdXBEFWvwQxaRPxk8ZjSHjTB9UiMTWk8yodq7W//MT8J9x1gDCbpUPd4F0ClQb/6xMxdsQKliS
+ iVpzR++bQMGRY//kN26m5b/YVrB2BrMrWy4ds1WB7NSZ1w24aTcDLu1utpTmcKjZok+qD6tcl+q
+ 4UJrTj+DUZhVnTnYpSXpix6ewoPdZTJRViRrs+p0zGIIwy8gAboSGxhn7fCIB+Iz6zED8JLI+PX
+ 6FYQuYl3OOLOAocbMoocKdgK6T1KmfOdXT+ok9yLDlg4U/dwtGFqKXSR+cwb1C3vTCvwt6YlWgk
+ IgZ5jNBGb1CdmmkptxVHylWk5EUQYEGTQE/zegQnTciXgfSA0uqihLusoLX6Iv+JLS3oVIEyxVE
+ cP88JU3piH+WsoA==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -76,238 +75,151 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adds a build option to enable building the chamelium v3 wrapper.
+Introduce a new tests to ensures that the resolution listed and used by
+the DRM device is correct according to the EDID.
+
+This is inspired from the v2 version.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/chamelium/v3/igt_chamelium.c |  9 +++++++++
- lib/chamelium/v3/igt_chamelium.h |  8 ++++++++
- lib/igt_kms.c                    |  9 ++++++++-
- lib/meson.build                  |  7 +++++++
- lib/tests/meson.build            |  4 ++++
- meson.build                      | 17 +++++++++++++++-
- meson_options.txt                |  4 ++++
- tests/meson.build                | 43 +++++++++++++++++++++++++++++++---------
- 8 files changed, 90 insertions(+), 11 deletions(-)
+ tests/chamelium/v3/kms_chamelium_v3_edid.c | 103 ++++++++++++++++++++++++++++-
+ 1 file changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-new file mode 100644
-index 000000000000..9579bd2cd9f8
---- /dev/null
-+++ b/lib/chamelium/v3/igt_chamelium.c
-@@ -0,0 +1,9 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/tests/chamelium/v3/kms_chamelium_v3_edid.c b/tests/chamelium/v3/kms_chamelium_v3_edid.c
+index 836086f2dc13..a85091a3c660 100644
+--- a/tests/chamelium/v3/kms_chamelium_v3_edid.c
++++ b/tests/chamelium/v3/kms_chamelium_v3_edid.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: MIT
+ 
+ #include <igt.h>
 +
-+#include <igt_core.h>
-+#include "igt_chamelium.h"
-+
-+void chamelium_v3_init(void)
+ #include "monitor_edids/monitor_edids_helper.h"
+ #include "chamelium/v3/igt_chamelium.h"
+ 
+@@ -70,6 +71,89 @@ static void edid_stress_resolution(int drm_fd, struct igt_chamelium_rpc *chameli
+ 	}
+ }
+ 
++static void edid_resolution_list(int drm_fd, struct igt_chamelium_rpc *chamelium,
++				 struct chamelium_rpc_port_mapping *port_mapping)
 +{
-+	igt_info("Using chamelium v3\n");
++	int screen_res_w, screen_res_h;
++	drmModeConnector *connector;
++	chamelium_edid_id edid_id;
++	drmModeModeInfoPtr modes;
++	struct igt_fb fb = {0};
++	igt_display_t display;
++	bool is_video_stable;
++	igt_output_t *output;
++	igt_plane_t *primary;
++	int count_modes, i;
++	enum pipe pipe;
++
++	chamelium_reset_rpc(chamelium);
++
++	edid_id = chamelium_create_edid_rpc(chamelium,
++					    igt_kms_get_custom_edid(IGT_CUSTOM_EDID_BASE));
++	chamelium_apply_edid_rpc(chamelium, port_mapping->port_id, edid_id);
++
++	chamelium_plug_rpc(chamelium, port_mapping->port_id);
++
++	connector = chamelium_rpc_port_mapping_get_connector(port_mapping, drm_fd);
++	assert(igt_wait_for_connector_status(drm_fd, connector->connector_id, 10.0,
++					     DRM_MODE_CONNECTED));
++	drmModeFreeConnector(connector);
++
++	connector = chamelium_rpc_port_mapping_get_connector(port_mapping, drm_fd);
++	modes = connector->modes;
++	count_modes = connector->count_modes;
++
++	igt_display_require(&display, drm_fd);
++	igt_require(display.is_atomic);
++	igt_display_require_output(&display);
++
++	for (i = 0; i < count_modes; ++i)
++		igt_debug("#%d %s %uHz\n", i, modes[i].name, modes[i].vrefresh);
++
++	for (i = 0; i < count_modes; ++i) {
++		igt_info("Testing #%d %s %uHz\n", i, modes[i].name,
++			 modes[i].vrefresh);
++
++		igt_display_reset(&display);
++
++		output = igt_output_from_connector(&display, connector);
++		igt_assert(output);
++		pipe = igt_get_pipe_for_output(&display, output);
++		igt_output_set_pipe(output, pipe);
++
++		/* Set the screen mode with the one we chose. */
++		igt_create_color_fb(drm_fd, modes[i].hdisplay, modes[i].vdisplay,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fb);
++
++		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++		igt_assert(primary);
++
++		igt_plane_set_fb(primary, &fb);
++		igt_fb_set_size(&fb, primary, modes[i].hdisplay, modes[i].vdisplay);
++		igt_plane_set_size(primary, modes[i].hdisplay, modes[i].vdisplay);
++
++		igt_output_override_mode(output, &modes[i]);
++
++		igt_display_commit2(output->display, COMMIT_ATOMIC);
++
++		is_video_stable = chamelium_port_wait_video_input_stable_rpc(chamelium,
++									     port_mapping->port_id,
++									     10);
++		igt_assert(is_video_stable);
++
++		chamelium_port_get_resolution_rpc(chamelium, port_mapping->port_id, &screen_res_w, &screen_res_h);
++		igt_assert_eq(screen_res_w, modes[i].hdisplay);
++		igt_assert_eq(screen_res_h, modes[i].vdisplay);
++
++		igt_remove_fb(drm_fd, &fb);
++	}
++
++	igt_modeset_disable_all_outputs(&display);
++
++	igt_display_fini(&display);
++	drmModeFreeConnector(connector);
 +}
-diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-new file mode 100644
-index 000000000000..1848f66b574f
---- /dev/null
-+++ b/lib/chamelium/v3/igt_chamelium.h
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
 +
-+#ifndef V3_IGT_CHAMELIUM_H
-+#define V3_IGT_CHAMELIUM_H
-+
-+void chamelium_v3_init(void);
-+
-+#endif //V3_IGT_CHAMELIUM_H
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index fbb9c545e1b4..56038b82b8a0 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2882,8 +2882,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (!resources)
- 		goto out;
  
--#ifdef HAVE_CHAMELIUM
-+/*
-+ * FIXME: Dirty hack to avoid those lines when chamelium v3 is used
-+ *
-+ * Must be replaced with a configuration file information, so the end user can choose if the
-+ * chamelium must be connected or not.
-+ */
- #ifdef HAVE_CHAMELIUM_V2
-+#ifndef HAVE_CHAMELIUM_V3
- 	{
- 		struct chamelium *chamelium;
- 
-@@ -2898,6 +2904,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 			chamelium_deinit_rpc_only(chamelium);
+ igt_main {
+ 	struct igt_chamelium_rpc *chamelium;
+@@ -78,7 +162,7 @@ igt_main {
+ 	igt_fixture {
+ 		chamelium = chamelium_rpc_init_from_config();
+ 		igt_assert(chamelium);
+-		drm_fd = drm_open_driver_master(DRIVER_ANY);
++		drm_fd = drm_open_driver(DRIVER_ANY);
+ 		igt_assert(drm_fd);
+ 		chamelium_rpc_fill_port_mapping(chamelium, drm_fd);
+ 	}
+@@ -159,6 +243,23 @@ igt_main {
  		}
  	}
-+#endif
- #endif
  
- 	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
-diff --git a/lib/meson.build b/lib/meson.build
-index accf9ff41222..126bd07c1d66 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -196,6 +196,13 @@ if chamelium_v2.found()
- 	lib_sources += 'monitor_edids/monitor_edids_helper.c'
- endif
- 
-+if chamelium_v3.found()
-+	lib_deps += chamelium_v3
-+	lib_sources += [
-+		'chamelium/v3/igt_chamelium.c',
-+	]
-+endif
++	igt_describe("Set a basic EDID and check if resolution are correct");
++	igt_subtest_with_dynamic("edid-resolution-list") {
++		struct chamelium_rpc_port_mapping *port, *tmp;
 +
- if libprocps.found()
- 	lib_deps += libprocps
- else
-diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-index f98c948bc827..15f484ba0d54 100644
---- a/lib/tests/meson.build
-+++ b/lib/tests/meson.build
-@@ -39,6 +39,10 @@ if chamelium_v2.found()
- 	lib_tests += 'igt_audio'
- endif
- 
-+if chamelium_v3.found()
-+	lib_deps += chamelium_v3
-+endif
++		igt_list_for_each_entry_safe(port, tmp, chamelium_rpc_get_port_mapping(chamelium), link) {
++			igt_dynamic_f("port-%d", port->port_id) {
++				char *name;
 +
- foreach lib_test : lib_tests
- 	exec = executable(lib_test, lib_test + '.c', install : false,
- 			dependencies : igt_deps)
-diff --git a/meson.build b/meson.build
-index a6c8ddf6a128..47a509db734b 100644
---- a/meson.build
-+++ b/meson.build
-@@ -87,6 +87,7 @@ foreach cc_arg : cc_args
- endforeach
- 
- build_chamelium_v2 = get_option('chamelium_v2')
-+build_chamelium_v3 = get_option('chamelium_v3')
- build_docs = get_option('docs')
- build_tests = not get_option('tests').disabled()
- build_xe = not get_option('xe_driver').disabled()
-@@ -172,7 +173,7 @@ if not xmlrpc.found() and xmlrpc_cmd.found()
- 	endif
- endif
- 
--if build_chamelium_v2.enabled() and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
-+if (build_chamelium_v2.enabled() or build_chamelium_v3.enabled()) and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
- 	error('Chamelium build forced and required dependency xmlrpc not found')
- endif
- 
-@@ -195,6 +196,20 @@ endif
- 
- build_info += 'Build Chamelium v2 test: @0@'.format(chamelium_v2.found())
- 
++				name = chamelium_get_port_name_rpc(chamelium, port->port_id);
++				igt_info("Testing port %s (%s)\n", port->connector_name, name);
++				free(name);
 +
-+if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and libcurl.found()
-+	config.set('HAVE_CHAMELIUM_V3', 1)
-+	chamelium_v3 = declare_dependency(dependencies : [
-+										  xmlrpc,
-+										  xmlrpc_util,
-+										  xmlrpc_client,
-+										  gsl,
-+										  alsa,
-+									  ])
-+else
-+	chamelium_v3 = disabler()
-+endif
++				edid_resolution_list(drm_fd, chamelium, port);
++			}
++		}
++	}
 +
- pthreads = dependency('threads')
- math = cc.find_library('m')
- realtime = cc.find_library('rt')
-diff --git a/meson_options.txt b/meson_options.txt
-index fea91fb129aa..4d4047407854 100644
---- a/meson_options.txt
-+++ b/meson_options.txt
-@@ -12,6 +12,10 @@ option('chamelium_v2',
-        type : 'feature',
-        description : 'Build Chamelium v2 test')
- 
-+option('chamelium_v3',
-+       type : 'feature',
-+       description : 'Build Chamelium v3 tests')
-+
- option('valgrind',
-        type : 'feature',
-        description : 'Build with support for valgrind annotations')
-diff --git a/tests/meson.build b/tests/meson.build
-index 0b0a913bd878..d7c20e235325 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -334,6 +334,9 @@ chamelium_v2_progs = [
- 	'kms_chamelium_hpd',
- ]
- 
-+chamelium_v3_progs = [
-+]
-+
- test_deps = [ igt_deps ]
- 
- if libdrm_nouveau.found()
-@@ -440,25 +443,47 @@ endforeach
- if chamelium_v2.found()
- 	foreach prog : chamelium_v2_progs
- 		testexe = executable(prog,
--				 [join_paths('chamelium', 'v2', prog + '.c')] + extra_sources.get(prog, []),
--				 dependencies : test_deps + extra_dependencies.get(prog, []),
--				 install_dir : libexecdir,
--				 install_rpath : libexecdir_rpathdir,
--				 install : true)
-+							 [join_paths('chamelium', 'v2', prog + '.c')] + extra_sources.get(prog, []),
-+							 dependencies : test_deps + extra_dependencies.get(prog, []),
-+							 install_dir : libexecdir,
-+							 install_rpath : libexecdir_rpathdir,
-+							 install : true)
- 		test_list += prog
- 		test_executables += testexe
- 		name = prog.split('/').get(-1)
- 		if not meson.is_cross_build()
- 			testlist_files += custom_target(name + '.testlist',
--				    build_by_default : true,
--				    command : [testexe, '--show-testlist'],
--				    capture : true,
--				    output : name + '.testlist')
-+											build_by_default : true,
-+											command : [testexe, '--show-testlist'],
-+											capture : true,
-+											output : name + '.testlist')
- 		endif
- 	endforeach
- 	test_deps += chamelium_v2
- endif
- 
-+if chamelium_v3.found()
-+	foreach prog : chamelium_v3_progs
-+		testexe = executable(prog,
-+							 [join_paths('chamelium', 'v3', prog + '.c')],
-+							 dependencies : test_deps,
-+							 install_dir : libexecdir,
-+							 install_rpath : libexecdir_rpathdir,
-+							 install : true)
-+		test_list += prog
-+		test_executables += testexe
-+		name = prog.split('/').get(-1)
-+		if not meson.is_cross_build()
-+			testlist_files += custom_target(name + '.testlist',
-+											build_by_default : true,
-+											command : [testexe, '--show-testlist'],
-+											capture : true,
-+											output : name + '.testlist')
-+		endif
-+	endforeach
-+	test_deps += chamelium_v3
-+endif
-+
- subdir('amdgpu')
- 
- subdir('v3d')
+ 	igt_fixture {
+ 		chamelium_rpc_uninit(chamelium);
+ 		drm_close_driver(drm_fd);
 
 -- 
 2.43.2
