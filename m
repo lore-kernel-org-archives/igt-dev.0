@@ -4,167 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FF05C25B76
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 18:20:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC78AC25B76
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 18:21:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 849D510E305;
-	Wed,  5 Jun 2024 18:20:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E86F10E305;
+	Wed,  5 Jun 2024 18:21:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F2Bjj1TL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDsgOqf/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BC5310E305
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 18:20:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CC5810E305
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 18:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717611649; x=1749147649;
+ t=1717611678; x=1749147678;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=keh/keQavYG6t1PSe6YabZ70SGeFbFPFf1tvIVzd9U0=;
- b=F2Bjj1TLgCYYxQXkBtb0/MhU2LhuRlBD+Frwh8diCJimlfxGLzfaNkXp
- YaFZksPbGA8EOcp7sU9ImILMQFDXygiUB5OPOFRnNB0xSa/bea6SDUQac
- GDu0A+5+AaadEYTrcYUgG6drDX+FIat1V5VVBhHSHCLK1qleJ8c3Zb+N2
- 3RL62t43dmnooK2TCErIv8SNZKHq8KplDIJlpIWkt3wkIA9fVh3vkseh/
- irUDEDLDU6Cc2m1qUfj6uAJc73wAIMzh82/Za08H1o2KrtqX02ao9LhEh
- 4ynp6I8USeq6TDNIWsEHH1PfSw2aHreJ1dDL+4T00qofOzZRZSuLukna/ g==;
-X-CSE-ConnectionGUID: FMqBk+JwRHWHehDSwtolEQ==
-X-CSE-MsgGUID: uxCJN/rGSrmUijOqP0r5kw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="39645871"
-X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; d="scan'208";a="39645871"
+ bh=jFzoK5uKO4LLA4JlgG9Bz2SrZYGfl7d12B5a5qbwdmU=;
+ b=aDsgOqf/3RES+zEFwPmwUJqoWGpIzTxCzfohk5VvPcZlTNrFjal/Gqag
+ gGvekvi0JYEh4ujrJne6Ho49MmWbO2K6oLx1rKmnerCspBrCv+M9XyjNo
+ m2dws4aShLsAiX84PG4Boi36LuyOB7hI7yK1Qtgk6Vw16+sSKfUCCYWxM
+ bezu8hwIjzWoFDrvoH7dXF/ALvfFEhd8u/BQZu4MZp6D9vVLqjLk3+JLI
+ 8IB870xXKmmkijqZAo+6+fIXbO2IFeVvbHLh7CtJfiI4kNoMPRXmDQpV+
+ s4T6LlBSUyu4t7A+JjUN9ijeBUVGz4TxNmjwUoDXWjpGWCO/rNCwCbp1t A==;
+X-CSE-ConnectionGUID: 3rE8sRycRNuoSvxYW3rbsA==
+X-CSE-MsgGUID: eZYivf5RRT+etIcczxNthg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="39645984"
+X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; d="scan'208";a="39645984"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 11:20:49 -0700
-X-CSE-ConnectionGUID: oSfvglrVRxWm6r4TWq159g==
-X-CSE-MsgGUID: hW9E8iXjQ/SVidQq5vg8fg==
+ 05 Jun 2024 11:21:17 -0700
+X-CSE-ConnectionGUID: qvH0/0+4QYSfrMaJNABAKg==
+X-CSE-MsgGUID: zxdwEI8WTf6lIoCL9QEBUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; d="scan'208";a="42134127"
+X-IronPort-AV: E=Sophos;i="6.08,217,1712646000"; d="scan'208";a="42134242"
 Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Jun 2024 11:20:50 -0700
+ 05 Jun 2024 11:21:18 -0700
 Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
  fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 5 Jun 2024 11:20:48 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ 15.1.2507.39; Wed, 5 Jun 2024 11:21:17 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
  fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 5 Jun 2024 11:20:48 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 5 Jun 2024 11:20:48 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
- by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Wed, 5 Jun 2024 11:21:17 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.46) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 5 Jun 2024 11:20:48 -0700
+ 15.1.2507.39; Wed, 5 Jun 2024 11:21:17 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=a6quc/OlInSTw3uHxH1u2UwKkOxPCkZCuUFZEaH433zowQHyFJr/yalOmgDntDiNBZX4R2BcVKqGgcly0YxWxFlqNfFFNdFaIP/EQsWVaWqS338U9EAgK7i4zdB3DcAgr06BrBsflGZ8AsZutS6CJa/qw58VSI60ATmrR2wHMmSIOpu0yXIX4HA260Vrp540JrQcfPvIX+q1lPuOb+80ed5CfXxQ1uE/k6ERQ3eKs1B9ZKKTXEeJwbTUUu68ZFkYQ8rl4G6xST3SM4U7hmqNqoSxmeq/f4Dh663jyPWpmq+tT9ZhUl+if8w9jQHHO3eU4WCH0iFsMmrRTRBq8Y6fLA==
+ b=QTB3hk/kkQmHG/kkZieIBvHmrHA6ZQyRNAC1dtK7qzyXtNSq1sHa8Jx3oc2/Qxm6f9/CymC6FUtIL8BF09CS2RXpujNdiKiOw/2BMO9yJ1LXD7XBWOjgX9k+JvaeSc2K7yF0qEvb6VXb9g2rkcno/fKGnM0Yr6CnkjVTA+/ncvx1KLDOwi+AEJ0OSZcLplxJjp7nnSAhHc/oSPvF/089cWY/52WRMgexmV2v46T+38oZnKR7ZFcxFOHCmgR2mmK6snkc+HBxl6opVqbLJRpcvHXyynfvHCnpRMQV378nF7zW/HpW4ElJ9cS8KzJlT2KTbv31oswDgkMwumx2rf4imQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZuqTpUHcq2EiXsXo0P0JrtIr+EfJCr2TJCW2qqcuQpo=;
- b=HnKdNOaKcaGMedUwOHBSK2RUmNrHmTD0iRwONWIVuLuJC9hEuwZyT0aM7cFTWa+sQslZknDTc9+ehJ0L54d7MZdh6nQVk5u85hi1sNO2nYn8pmFQE16LzXjsJivHg7hX/oJRpGq9i0+N2sY7KY+y36WQNRR3sSopLu0gemRxqG+8ewydEkYK6NqloTGt1h70OdGfwZnli0/0iNIZxIImvexLcc9ALNBLv/sU2gsZgzF4Pw3w4LbhRy9j6Scgjy4W9pr8a/1fPokYUwgj5n9QXXmw3mKQqj+4Zj/yWeTi6BLiWbYmGEJIfCssjdSqUnM0S+27IYZ9UZtiZhTCJWgrkg==
+ bh=JODEcPpb1d+29zr/G3aUN2+N0SKgXayPVJXFgOEpkC0=;
+ b=hcL0ffttJSaalIAC0cCLjsZGwC8w+M0z6vm6wHFRD4DhQcfk2CQlyvJNk9lvtfkBufYVeDH5slZ8u6k6U6QSRC1+nyvv3T9j1Or0yugmwQ2jJ75l1MMmZF7IS+ibLIOlc9yq1r0m+N/83e1DVOl9kcYxdCQdoiEdYhIGvHQK5fsHu4naYT+YppjXiXSKVQfgXNnQxTex8G86hCFlTm2BrKIgZzy2C26NbgI8fccqInh7ohNa0zbRO6l588UZeSAD/XE++LtRcw4Wn2V5Sg5GV/B1ehmk/rkKfuBCb5NTO1z47CuY2VH4t61ZKP/4AexCnKWXlOOwONnhFjmhsP0d/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from BL3PR11MB6508.namprd11.prod.outlook.com (2603:10b6:208:38f::5)
- by SA3PR11MB7553.namprd11.prod.outlook.com (2603:10b6:806:316::8)
+ by IA1PR11MB6370.namprd11.prod.outlook.com (2603:10b6:208:3ae::8)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Wed, 5 Jun
- 2024 18:20:43 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.27; Wed, 5 Jun
+ 2024 18:21:13 +0000
 Received: from BL3PR11MB6508.namprd11.prod.outlook.com
  ([fe80::1a0f:84e3:d6cd:e51]) by BL3PR11MB6508.namprd11.prod.outlook.com
  ([fe80::1a0f:84e3:d6cd:e51%3]) with mapi id 15.20.7633.018; Wed, 5 Jun 2024
- 18:20:41 +0000
-Date: Wed, 5 Jun 2024 18:19:51 +0000
+ 18:21:12 +0000
+Date: Wed, 5 Jun 2024 18:20:20 +0000
 From: Matthew Brost <matthew.brost@intel.com>
 To: Jonathan Cavitt <jonathan.cavitt@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, <saurabhg.gupta@intel.com>,
  <john.c.harrison@intel.com>, <stuart.summers@intel.com>
-Subject: Re: [PATCH i-g-t v4 1/2] lib/xe: Add sync and async
- xe_force_gt_reset options
-Message-ID: <ZmCsRwV+stW70jTU@DUT025-TGLU.fm.intel.com>
+Subject: Re: [PATCH i-g-t v4 2/2] test/intel/xe_exec_reset: Synchronize
+ cm-gt-reset gt resets
+Message-ID: <ZmCsZK8ccLbqcUvO@DUT025-TGLU.fm.intel.com>
 References: <20240605175843.2789838-1-jonathan.cavitt@intel.com>
- <20240605175843.2789838-2-jonathan.cavitt@intel.com>
+ <20240605175843.2789838-3-jonathan.cavitt@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20240605175843.2789838-2-jonathan.cavitt@intel.com>
-X-ClientProxiedBy: BY5PR04CA0017.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::27) To BL3PR11MB6508.namprd11.prod.outlook.com
+In-Reply-To: <20240605175843.2789838-3-jonathan.cavitt@intel.com>
+X-ClientProxiedBy: SJ2PR07CA0001.namprd07.prod.outlook.com
+ (2603:10b6:a03:505::11) To BL3PR11MB6508.namprd11.prod.outlook.com
  (2603:10b6:208:38f::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL3PR11MB6508:EE_|SA3PR11MB7553:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5a0384cc-5b5f-470c-e4be-08dc858c353a
+X-MS-TrafficTypeDiagnostic: BL3PR11MB6508:EE_|IA1PR11MB6370:EE_
+X-MS-Office365-Filtering-Correlation-Id: d7475d76-b568-4ede-407f-08dc858c4790
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?VSGj52ViqvARjlxGhodAfbPV2reNsk7LxarUqroCJI9YWtcPG7uMRnTQVqYb?=
- =?us-ascii?Q?ikXj8nEqE9ptXRYn43MfD0MLq8h4mIUdviPq2WVtLBnauCrV7VHZHXIP7+NR?=
- =?us-ascii?Q?nwjn1AJEgOIXbgH2sYXEa1O3eNLowyf1EtX+cBADzf4sIhwlR2ao45kNKcsh?=
- =?us-ascii?Q?m7M6VvUQvltbEIe8QVZAV6it3pRVgYZMdc5EljV5ZM5PPrq9909jrIumSRZZ?=
- =?us-ascii?Q?4kTFhuMmKTTJf4Hv6o5z1zCadZqWHfdpNwzvSt1wU63vveDYTSBl+Ie8MDO2?=
- =?us-ascii?Q?DqonYymsSgJMz1B/BQfG7VrNovuDDrnqKiYMztrnDXldh7ecuGetKmvtjV85?=
- =?us-ascii?Q?Df3Scfsi9jAQcFpUn1scsFEZwgY8OQ1fygjaNDNxLkSbaBOSOsLaD/F1gndO?=
- =?us-ascii?Q?7IoCyA4l9/oihAmf8IUp/KwAB62Xorm2zO4pFNizux4J8qRoTabNXozQXCyk?=
- =?us-ascii?Q?lD/Ti4a0L/o4/RcHrMXQkYQ87sDK1sIikf5jauSM6lumVIbrJ+qzEKtzcZ2x?=
- =?us-ascii?Q?pj18IlM88vKWaIxwpr6cTr0PMmo2kctfwomQRpU63XcY9jnSLVriu0vouwkh?=
- =?us-ascii?Q?QeiB1cI+K8b1N6v+lRwUFsTXgwZxdiwGTTMG2om5V61LSjhuQtuNgRK+/bSn?=
- =?us-ascii?Q?iiD8UU4sLenoo1uHJKbYzNNegC2a7DvCU6zEXMhYBzfu7fYvqMPoKcb6R6PX?=
- =?us-ascii?Q?rs8nM8gtHelzk4+OL2OQR6H8PTZBx1ElSNmLrLPI6AZzBEIIbHt1pvXYxoB7?=
- =?us-ascii?Q?XEDazareOUeOvaNej/1rGagPpDeS74LyvyRGXyg+QY2Fd+RkiJKXn69fxu2z?=
- =?us-ascii?Q?hIJbf0sKo2g9vtbYD1PM129mDiTEyw1fzyrQpYyXEiZtrJmCa415MHRutnyy?=
- =?us-ascii?Q?KFcL9FaSFUbMQnq2P24kGITjCqrfnkZw6OW0hmALjqsdOFAxzmzb2OCaxaHx?=
- =?us-ascii?Q?qfAdiZqOPrOxInZKNlWGwCDkhOiaart4AdVJQYtMoAkUlQ3vjcF/BJVJotVs?=
- =?us-ascii?Q?Hio4HQbTbxZZZvoBGWClNXyTUf3raZ7AeJ+qCQlPTi5FErbv5BVOnmt1z+Wp?=
- =?us-ascii?Q?Mn3QH9Folj229/xlN0pzFXF5PbdvPwj2BGuZ0Y4jRbqkCfhviub2sI3eJsiv?=
- =?us-ascii?Q?7sT1I4QZ8Idel4ODHnjY9WBbz6kq13ptm7waY24kegMkl9e4NMxbxKt8xde0?=
- =?us-ascii?Q?clQ1A0NOupU8MjVzwc42j1fpwjiqMls5es1OxE0vVjlA2LSn0+Dn6IgJJJgM?=
- =?us-ascii?Q?R9Jh5iG25+8uGE5WVJF0p3gNI1MxLi5KeVhCG/fajnIZ4DImmBZI3A/9yUEn?=
- =?us-ascii?Q?8Ubv2wzCDQI3Fupw+5sCC+mV?=
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?iHHZwIIcRrFSsXaga0JA0lsvnNnxa82NWfO4ZtxdxJmx8e8tzGmrYwi90rLU?=
+ =?us-ascii?Q?MND4aiFPFJPxEdV79wd7x0pRn9a3Bk6L+fTky+tUXU5wRcMw/GtM4WMKGBqr?=
+ =?us-ascii?Q?pHKds8jVQ2mhERQ0ZFYK8Uy220iL7+jsdG5S/ko0uXXH2IuOd648nL2Y8ltM?=
+ =?us-ascii?Q?AUVehQ5VsbeQ8W1PgMc3akq8K3QIvhSkyg5sO1hL5ZpkXPQt2zUbMQrLGcA1?=
+ =?us-ascii?Q?U+PLR3NTg4cwwkJ92bYV2CeOuqfF6n03XD6kKc6wNv7x5Pd2zA+KuZL7Ayzo?=
+ =?us-ascii?Q?5+ZsbqcBpp+95TqI0AhpOnmZvPW5IYU7jIiqgOo3LkbyYuGVBgyKxUUhWUNN?=
+ =?us-ascii?Q?dtCrSMTkul4ZeisBqR0IJEWycoV5L80/d7aCdnxL5I1IH9xdQFBz2vNYoFNq?=
+ =?us-ascii?Q?nETfkUMvSyLy/z/x4RbPJaX/P7Mo9JyFx5JQAzTMHyeUolc3TPjNdAai6x9N?=
+ =?us-ascii?Q?U8jNpykWKpEcrZAbvR3+VL9jkVDtp72rYt4PwAWufoj4/OxLyYGbfvLmy2gw?=
+ =?us-ascii?Q?IVl+q1kAwU2X8ArE0AwTzIcae6SXNS/WePgklgSf6L93o38LFQFwx6c2F5Yg?=
+ =?us-ascii?Q?qWrZmy7sou66qJkjg5W0Jo7NpZqR8qOqmKo3Mpbkm7sXnvngVRrt2OFWTPzd?=
+ =?us-ascii?Q?zVNZRvme0i1Cms/3q9K1NSLfRtWD0nSYZLOPZ9omOSd6AFQYSnaf/zgtjSWF?=
+ =?us-ascii?Q?hse0RSkT1/yBwEbk2KFU5BIxjsDrmPIT17FYJLvREZitJTID2QbDDfibli3J?=
+ =?us-ascii?Q?1v4qd/2WOGYGJ+2JmWiPOGDmWpMHS6aLJnLP9W1fzTCJ20etlOD+8vJ1xG3V?=
+ =?us-ascii?Q?H68jNhVTZx0Xzh9R18O7DqlV3L01RxpCGvpsHr7N8wPdnHNazGvr3r6RXJg/?=
+ =?us-ascii?Q?Jt1HpUzRsBVboJbwsfyhThwwTZdCrNRctaaGlml4EVyNlE3T5CxODY/eEYja?=
+ =?us-ascii?Q?7B/nnauahoL1gd/Qu4Yh+A65F2t3l9O2UEKTffi9UFuwWCteDIRMlq8k/JXE?=
+ =?us-ascii?Q?PiTK3b4Fo/TXhUSMc0QvG6Co8qyExuXEaBhkqwjIhnQdN4ei7fOGBl4fevPt?=
+ =?us-ascii?Q?6NF5nLPb58NRa5ephP6QNMaQl13gB7SKnOcjxsSh7PpnS/XcIZfochSJkz6F?=
+ =?us-ascii?Q?jqjWr2CQtCvX/zeiURbmjO0qbDZDt4unVDy0osam3qJt/wXVQH5cRquCyuRr?=
+ =?us-ascii?Q?TbFllpVxzOg53VtcO0+wvr4zGrBF4t4qoQKJiGhLF8eERUUq4SKofSQ0ZpWS?=
+ =?us-ascii?Q?+t/uTpERXwo/RiKDjj2rn+qFtscqKxGKlasMKTGU6g=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:BL3PR11MB6508.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230031)(1800799015)(376005)(366007); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?XyqiD+OzcbHNK13xK/BXoI92CB6UfGD3CHzgVLRFZqylmAfTK8QNzn1rKRiZ?=
- =?us-ascii?Q?Z5TP6qZBA8BPm/uXv4E5ejPk4Skh1ctMaibFfLqb+76RU5U4GUDGaczYuZEo?=
- =?us-ascii?Q?qOJDpa6S6/dct9F/oPAElaMurcQ5Kzntn8BZUO2B4mc+m+LgiQgPwN72ckOi?=
- =?us-ascii?Q?6LPd0b8VEA0HiCW0Gv0u2li2KVoHuIMtSR31VIv6fXfK1wiqHKgJQIeTkMIi?=
- =?us-ascii?Q?HxCrArSqE2qHLXTHyQdIyI0D8NZbI3IakoC3KFO3UqHTPaMVkQJ0bfDKiy5H?=
- =?us-ascii?Q?Qgmz7lCejmehkaeGlg5uktq5SXaO0sqFfguF+PdGifq29xn/I3CFqIzBAxZ7?=
- =?us-ascii?Q?jbJqYSVNrirxZGD8IMRSt2IYSVqvgkhwXUOFC/j0Jz9J8Ax3bPPZYjWVkm9M?=
- =?us-ascii?Q?Jy2ua52IyGyxf/z7CBGXJaJ7iTSZfrthmoAxJzcXwhtmwM0m2ntQCT8cgQVP?=
- =?us-ascii?Q?c3yH9QaHdFfUOuWUc/SGI7jCrsxCVrjfwbxV6REXboGdkF9GMtFwy8l9sqy0?=
- =?us-ascii?Q?IPdUt2dNGBsyYm/4Suq46cCfudhwubpncvk5SNiV3StdmQ60CddBaJEnaEgq?=
- =?us-ascii?Q?1iHwAZQvviQSX561Fwfen8Kd+jTXbJiDvGhexZMPeIrGl4+EgtNEV3LBrohF?=
- =?us-ascii?Q?l92gzwKNTbHsAQUFJyEqpLrIK5PXf0v0MlY0pSjUf8OrfRx3/NymsfhCexQR?=
- =?us-ascii?Q?Xy5bVH+B4DFB0PqIRF29c8RvXMJjLlQdxs/7vIMT2Za+qFxdKUZdZKfqkeP8?=
- =?us-ascii?Q?obihf/ivAEb4dWE5TZeVDEXPT5Amm8Vsc01VlC2BQ5Wn3DZA/lr6sbE4fRAP?=
- =?us-ascii?Q?VjvDs8FQN9FzrnvefgqxKbsaLk3JxqyJi3ZDhvngi6PymQkBdgjgWSDWTMPJ?=
- =?us-ascii?Q?53urRBWPqTpiUm8SCTnlb44hDSNmWiiTrjcjpjBPkscKdyRibjZ5+1j4vD/j?=
- =?us-ascii?Q?lLvQ/MkbYfP8W71PNk0PLiflfyP3Vc6ZatBjLhghO00oGJVHHNWBio0d5w++?=
- =?us-ascii?Q?gznRMSq4VbH7UAb4TQsAYUjLPnbbOVFBVHLUdAbS/g91I375qoNmVmd/YSX9?=
- =?us-ascii?Q?NIYcwarZdqOkpOfswDGap+mKjH/x5rh1gJoPkM27I5XF3s2yuWewvpn/CsiW?=
- =?us-ascii?Q?JlMF5A8mr0ZrjmSRH8Gs5XH91Or3X0f2Olni4pKMQvveNK+Z4/UYRkk+EQTu?=
- =?us-ascii?Q?/h8w6O2yRD7tO6t6bljjV7y3qFg4kNN7q0HPLUtV1oATUJw91sGX4yuUSSR8?=
- =?us-ascii?Q?pbuiaa7fvipFFHuB9ijtfPOYq2XoiOURSjYNqu3uo0PLPZUl6kYkAsCcNs8Y?=
- =?us-ascii?Q?C9gjUn3ya+hcc5Iao6+IQRA7Tsv5Vq86w8ItIndOaz2as4gzHxZovpEH6K2V?=
- =?us-ascii?Q?gtZDNbEwlgzAbJH1jDRtgB9x8E6gTOA+PiM9eSmXeeURzB3Gr9jWPuiACKk2?=
- =?us-ascii?Q?QoS710KNQ/3UN44gdeFU0knp/k4LY3bpFyHTOyPCOnrGuKLZ/KrtmrL4poTR?=
- =?us-ascii?Q?sDAJB/a4IaOD2Wiuw5tTFyWGbLKPHSGzvnEB/TlyAl+a0Vz0H6g3YokUqa1c?=
- =?us-ascii?Q?87yTNqpmj4AM3CDztpHsD5/c1Ub5/tx9fbVesZvHk3EMhdT4B0AgLU5aVVij?=
- =?us-ascii?Q?WA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5a0384cc-5b5f-470c-e4be-08dc858c353a
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?KLdUsHeI5Q8uALm8GKlldI1OHGwPCClcvnjISCgirVTbeCG1nGqTxaPSU5ex?=
+ =?us-ascii?Q?o75ICR0yMKk6U4Kro8cYww0nhOWYtTx4ecQJ2TeU0fOMAu7iY+XZ/GLtq1rB?=
+ =?us-ascii?Q?jbbwtfAislibzGNx8RCWMUKOkm8p7OSP4pHyWaGPNK769DwFd81qI7f3VpdC?=
+ =?us-ascii?Q?jZi+05n+WXkeyo5wZezZSUgAeLDcMl1VcILePzspwkIrGRoNwZfooC+o5+hf?=
+ =?us-ascii?Q?v474YXjlXvr4kqmU9m/oRTNiqt9n7Vsu6sXokCnyiYpcWOU3Msfw+68bbR7Y?=
+ =?us-ascii?Q?V3x/pJ76ejuC0TLzdKy8htAe0BsBjVwdtdoPSmqNpAL4ckeVf+lPj7NI+5Cv?=
+ =?us-ascii?Q?Z9zuxchc06EqmPamgp65aE75KX7ANtdrzxDhiPnqblE7IKBKC18Z3nHNAzi6?=
+ =?us-ascii?Q?grWhuGtzka9mRFQgfHdjL8PXDXRqXRFpVxMB6IRamvPoBv2wVKZPT0yY0WW9?=
+ =?us-ascii?Q?RA0sS0Jev6OfSQg/PQNpCKiO4YxzpdZvhwUgTdfNqijMrSu6ubn28HT9svGK?=
+ =?us-ascii?Q?KAMs2fsBbJrm6g/qiIfqZ6gJZ5N+lnxD/b0gQN+E98vzC3wzh+xFEJZPmwNY?=
+ =?us-ascii?Q?Zo1l1TIqPaj9Y1z9mu6v0Ds5y9CBeAVy7z7T4xqGahgbnvDPyYHuURfRqHjK?=
+ =?us-ascii?Q?5hzdmUtuk+Vx37tVixrsDE77zkZgtYj/mSzCxjj1m9bsu7ooM3L6GMLHMgUD?=
+ =?us-ascii?Q?K6Zm9G24S1b2oS2S1jdI9HIVF0ZNZTaWxWjCnx2yPGGSzqtHVx2huBqOzGmS?=
+ =?us-ascii?Q?up8prMvD41lgYH+bK1QW+2Qaq7xBGkEerzmWKKnPrWuebU68wgFQUtUD2/mX?=
+ =?us-ascii?Q?/d7Pd+sSId8D86FNacjtqs+Qc6HgWaiWglMkLWYIUblUPfeG9ZlSB1b9C+pF?=
+ =?us-ascii?Q?q/gdsLelw27A02JXx0hqmS3JiwKCy0X17L+PxyADYi1dATBz0Q0bTdUToKUW?=
+ =?us-ascii?Q?pyHfL8Ak+zROxof7ccY0GZF2+EMFPtfz4dNHHYgd016z/9omdPLrzQgIuiTq?=
+ =?us-ascii?Q?cjyEQMv4NW+kYQJkL/2NWKLzWHunctjAtcWNahEr3bVrlEbKAASekVyoH7gC?=
+ =?us-ascii?Q?Gr4LxAyEhNy5nDeSg5g4yZhIiFExN7pqFAsc94ME9sTMwgLlbrQn+/f59TFD?=
+ =?us-ascii?Q?boqpaWb2RZw2CUSIC7RvwHkReaJIoCzoFGM5bf9v5v2fYN5THkmneq7XOdAK?=
+ =?us-ascii?Q?OTgpircrdxxB+mN9kf0A3n57Ufx9uTknRTWzxFOTo/hI3nFZ90xw600bF1xg?=
+ =?us-ascii?Q?RVNqlDjH9b/7gi7cJdhXdgDSrm/RLC5Di/TgRMVuhGC04z/MGfbMAWOLy4Hw?=
+ =?us-ascii?Q?D2zN6YE1qtu/qd+dN//QZ6cd5QpeCzpM8gujwbq4fB00THPEjiRhIpwIlgsd?=
+ =?us-ascii?Q?5CM21ZXzpmBqyTf4jG1f+y3BBI8obcHH/gINgiAa+T1zPgaq9CyibjVcMNsx?=
+ =?us-ascii?Q?FOI4Ubj8SU+5Z3qqXwK9KjRJ/w4AVgphTpDoMtu9kZCVfMeMpq1G86GA+d56?=
+ =?us-ascii?Q?IKlSP8TWOYqky2+INFAjvtDcdLzmPp65EsylvpvISxSbdtdRXDVir3JzV2eX?=
+ =?us-ascii?Q?GVSsJr7GBywlfsuu+CZXJAGWiLoMacF04gr5W4BAiwt6H6YkizO4XdtDRi5a?=
+ =?us-ascii?Q?8g=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d7475d76-b568-4ede-407f-08dc858c4790
 X-MS-Exchange-CrossTenant-AuthSource: BL3PR11MB6508.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2024 18:20:41.5646 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Jun 2024 18:21:12.3176 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oEAsNJw0MoVOfdSmjaa7FjvkZdDh+E7+Cjfp3SXkBCcuP7qZCw4LYLAj0N04U646a+5rIE/RFVc6dxtWEcBnVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7553
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4Wf0t2W8WOL0wv4Aku1IQty67Om7RkJ0muoRn6NsZO+5zCioAEv4F1mq/UCn8sMHbCdwvzxOnSd9XhwX49fPrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6370
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -181,27 +176,12 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jun 05, 2024 at 10:58:42AM -0700, Jonathan Cavitt wrote:
-> Add a new xe_force_gt_reset function, xe_force_gt_reset_sync, renaming
-> the original xe_force_gt_reset to xe_force_gt_reset_async.  This allows
-> the user to decide whether or not they want to initiate a synchronous or
-> asynchronous gt reset.  The asynchronous reset function was otherwise
-> unchanged, but the synchronous reset function operates by calling a new
-> debugfs function.
-> 
-> For now, default to using the asynchronous version for all current use
-> cases.
-> 
-> v2:
-> - Add *async and *sync versions of xe_force_gt_reset (Matthew Brost)
-> 
-> v3:
-> - Fix compile error
-> 
-> v4:
-> - Use helper function for xe_force_gt_reset_[sync|async] functions to
->   reduce code duplication (Matthew Brost)
-> - Add missing revision notes
+On Wed, Jun 05, 2024 at 10:58:43AM -0700, Jonathan Cavitt wrote:
+> The cm-gt-reset test has the potential to race with itself on the gt
+> reset, so force the gt reset to be synchronous here.  The race condition
+> occurs because the test does not have a fencing mechanism (I.E.
+> dma-fence) to protect against this race, unlike in the gt-reset test
+> case, for example.
 > 
 > Suggested-by: Matthew Brost <matthew.brost@intel.com>
 
@@ -211,139 +191,22 @@ Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 > CC: John Harrison <john.c.harrison@intel.com>
 > CC: Stuart Summers <stuart.summers@intel.com>
 > ---
->  lib/xe/xe_gt.c              |  2 +-
->  lib/xe/xe_ioctl.c           | 16 +++++++++++++---
->  lib/xe/xe_ioctl.h           |  3 ++-
->  tests/intel/xe_exec_reset.c |  8 ++++----
->  tests/intel/xe_gt_freq.c    |  2 +-
->  tests/intel/xe_wedged.c     |  2 +-
->  6 files changed, 22 insertions(+), 11 deletions(-)
+>  tests/intel/xe_exec_reset.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-> index 743d7a26ec..36e8fde363 100644
-> --- a/lib/xe/xe_gt.c
-> +++ b/lib/xe/xe_gt.c
-> @@ -69,7 +69,7 @@ void xe_force_gt_reset_all(int xe_fd)
->  	int gt;
->  
->  	xe_for_each_gt(xe_fd, gt)
-> -		xe_force_gt_reset(xe_fd, gt);
-> +		xe_force_gt_reset_async(xe_fd, gt);
->  }
->  
->  /**
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index 934c877ebc..ae43ffd15e 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -529,7 +529,7 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  	return timeout;
->  }
->  
-> -void xe_force_gt_reset(int fd, int gt)
-> +static void xe_force_gt_reset(int fd, int gt, bool sync)
->  {
->  	char reset_string[128];
->  	struct stat st;
-> @@ -537,7 +537,17 @@ void xe_force_gt_reset(int fd, int gt)
->  	igt_assert_eq(fstat(fd, &st), 0);
->  
->  	snprintf(reset_string, sizeof(reset_string),
-> -		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset",
-> -		 minor(st.st_rdev), gt);
-> +		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset%s",
-> +		 minor(st.st_rdev), gt, sync ? "_sync" : "");
->  	system(reset_string);
->  }
-> +
-> +void xe_force_gt_reset_async(int fd, int gt)
-> +{
-> +	xe_force_gt_reset(fd, gt, false);
-> +}
-> +
-> +void xe_force_gt_reset_sync(int fd, int gt)
-> +{
-> +	xe_force_gt_reset(fd, gt, true);
-> +}
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index 4d08402e0b..b27c0053f0 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -91,6 +91,7 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  		     uint32_t exec_queue, int64_t *timeout);
->  int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
->  		       uint32_t exec_queue, int64_t timeout);
-> -void xe_force_gt_reset(int fd, int gt);
-> +void xe_force_gt_reset_async(int fd, int gt);
-> +void xe_force_gt_reset_sync(int fd, int gt);
->  
->  #endif /* XE_IOCTL_H */
 > diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index e47c3730dd..05d63c0ba5 100644
+> index 05d63c0ba5..817b82cdef 100644
 > --- a/tests/intel/xe_exec_reset.c
 > +++ b/tests/intel/xe_exec_reset.c
-> @@ -239,7 +239,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->  	}
->  
->  	if (flags & GT_RESET)
-> -		xe_force_gt_reset(fd, gt);
-> +		xe_force_gt_reset_async(fd, gt);
->  
->  	if (flags & CLOSE_FD) {
->  		if (flags & CLOSE_EXEC_QUEUES) {
-> @@ -383,7 +383,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->  	}
->  
->  	if (flags & GT_RESET)
-> -		xe_force_gt_reset(fd, eci->gt_id);
-> +		xe_force_gt_reset_async(fd, eci->gt_id);
->  
->  	if (flags & CLOSE_FD) {
->  		if (flags & CLOSE_EXEC_QUEUES) {
 > @@ -530,7 +530,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
 >  	}
 >  
 >  	if (flags & GT_RESET)
-> -		xe_force_gt_reset(fd, eci->gt_id);
-> +		xe_force_gt_reset_async(fd, eci->gt_id);
+> -		xe_force_gt_reset_async(fd, eci->gt_id);
+> +		xe_force_gt_reset_sync(fd, eci->gt_id);
 >  
 >  	if (flags & CLOSE_FD) {
 >  		if (flags & CLOSE_EXEC_QUEUES) {
-> @@ -590,7 +590,7 @@ static void do_resets(struct gt_thread_data *t)
->  	while (!*(t->exit)) {
->  		usleep(250000);	/* 250 ms */
->  		(*t->num_reset)++;
-> -		xe_force_gt_reset(t->fd, t->gt);
-> +		xe_force_gt_reset_async(t->fd, t->gt);
->  	}
->  }
->  
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index ff99b46a08..d2e4d1a09c 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -324,7 +324,7 @@ static void test_reset(int fd, int gt_id, int cycles)
->  		igt_assert_f(get_freq(fd, gt_id, "cur") == rpn,
->  			     "Failed after %d good cycles\n", i);
->  
-> -		xe_force_gt_reset(fd, gt_id);
-> +		xe_force_gt_reset_async(fd, gt_id);
->  
->  		igt_assert_f(get_freq(fd, gt_id, "min") == rpn,
->  			     "Failed after %d good cycles\n", i);
-> diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-> index aa4a452bfc..a4fc53869e 100644
-> --- a/tests/intel/xe_wedged.c
-> +++ b/tests/intel/xe_wedged.c
-> @@ -31,7 +31,7 @@ static void force_wedged(int fd)
->  	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
->  	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
->  
-> -	xe_force_gt_reset(fd, 0);
-> +	xe_force_gt_reset_async(fd, 0);
->  	sleep(1);
->  }
->  
 > -- 
 > 2.25.1
 > 
