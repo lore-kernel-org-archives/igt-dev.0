@@ -4,60 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E453C25B76
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 15:17:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0808C27C53
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Jun 2024 15:28:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8BE0210E250;
-	Wed,  5 Jun 2024 15:17:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5501B10E0D3;
+	Wed,  5 Jun 2024 15:28:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xsm3wP9n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ioLIFo24";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAB4110E250
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 15:17:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BC1D10E1AE
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Jun 2024 15:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717600623; x=1749136623;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=cf2WGzkDXead6ejfnp7DjGlsngPJ673/o8Bh4yzS0nQ=;
- b=Xsm3wP9nQE/pc7q+G7chR/TWQd8H3yDW4GmDYOJZc+S4h4ibRc9RZANK
- YhBwRInGp8wuO7cdzAICnIlmN4Lm8GGH142N6Ojhwf8jwxSI9O7xJcUfV
- vr74nwyHGKQw2heCt3xzLhjz8iVxJVzVMRXQm1xgwzwTHrRHkdvzk5ugL
- MC3tFKWqzK21hJ+bPdqx8ZOVofMC9PcIWKGr5MrWdLYJs3xFOBUOzsZ2g
- JjFgumtYMu0g4mhe4+YGjLWSSGZsRmcuKymNXUSOJKEobeMhz25CCbxc9
- BFbvpk+hZuH1g/go0tip/Zuj8sXqR+ZmyJVNJGVkdTH9HK2hHFrfmCKqL Q==;
-X-CSE-ConnectionGUID: UNNkrh3tToiL5xYHctQDjQ==
-X-CSE-MsgGUID: CjK/vSTwT/y09IyLKt1JJw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="14338328"
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="14338328"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 08:17:02 -0700
-X-CSE-ConnectionGUID: SStMB6a1QzSKaZf3k40smA==
-X-CSE-MsgGUID: 4HhQ5BBmRnSmejPZ6uzVZQ==
+ t=1717601283; x=1749137283;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lGn5SG7ViVbk5c3yuoiSJPuxj5pGznD45sr8yfd2uSw=;
+ b=ioLIFo24JOndM8tP6iP5zuLDGVxkK86lXs5YOhlid+H1ea85Sy+aVgMB
+ pTfLz8Auo89lX4eRvPjiLvQzmiodvZjccap0l7SMarukhxRrJc9ghWdcq
+ lqcrZVyvIYD+i0oi3/+0d+J1kjMuA2PzNbrynIH0iYkXCoLzN2zSoPY6b
+ rozMbJCcecFLosWMkKlQnzbvhyWWcOG9FiJrbdcXzQDnDiEvhQxYjthUZ
+ TqF2A655J2+D8EvdfTML1cASxYM88HeWc3H5jQhJVSezd/yglgP0lyj5B
+ UPEIhVxq9HBi9no2SLDdQzXOGi6a3O50D35tXR2/rcuc8+GZsplWjJXuj g==;
+X-CSE-ConnectionGUID: hM5jjMeYTKmqri7/Fwhx0Q==
+X-CSE-MsgGUID: FSumeiW6RcWufJa9DGLV6A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="11923008"
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="11923008"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 08:28:03 -0700
+X-CSE-ConnectionGUID: NpoRDD/5Qhqws3HcJGZMtQ==
+X-CSE-MsgGUID: o8kWgCqzTa++hmUM8aBAEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="42081262"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jun 2024 08:17:00 -0700
-Date: Wed, 5 Jun 2024 17:16:42 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,216,1712646000"; d="scan'208";a="37557685"
+Received: from dut-internal-9dd7.jf.intel.com ([10.165.21.194])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Jun 2024 08:28:02 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Peter Senna Tschudin <me@petersenna.com>, andi.shyti@linux.intel.com,
- peter.senna.tschudin@intel.com
-Subject: Re: [PATCH] [PATCH i-g-t] tests/intel/gem_exec_capture: Reduce test
- size
-Message-ID: <20240605151642.lrsenbtb5cfpurqe@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Peter Senna Tschudin <me@petersenna.com>,
- andi.shyti@linux.intel.com, peter.senna.tschudin@intel.com
-References: <20240330145939.85030-1-me@petersenna.com>
+Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com,
+ matthew.brost@intel.com, john.c.harrison@intel.com,
+ stuart.summers@intel.com
+Subject: [PATCH i-g-t 1/2] lib/xe: Add sync tag to xe_force_gt_reset
+Date: Wed,  5 Jun 2024 08:12:47 -0700
+Message-Id: <20240605151248.2736694-2-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240605151248.2736694-1-jonathan.cavitt@intel.com>
+References: <20240605151248.2736694-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240330145939.85030-1-me@petersenna.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,50 +69,141 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2024-03-30 at 15:59:34 +0100, Peter Senna Tschudin wrote:
-> Before this patch, when using a chromebook-level CPU such as the N3150,
-> with 8GB of RAM, the test `gem_exec_capture --run-subtest
-> many-4K-incremental` could take 4 minutes to complete, and the
-> `gem_exec_capture --run-subtest many-4K-zero` could take a minute.
-> 
-> This patch reduces the test size by half, reducing the time to run by
-> half as well.
-> 
-> Signed-off-by: Peter Senna Tschudin <me@petersenna.com>
+Add a tag to xe_force_gt_reset that allows the user to decide whether or
+not they want the reset to be synchronous or not.  This is done by
+having the sys call target a new synchronous reset function when the tag
+is set to true.
 
-This is still running too long for almost all many-* subtests,
-one of runs took almost 600s (around 9 minutes).
+For now, default the tag to false for all current use cases of
+xe_force_gt_reset.
 
-Could you lower it below 20 seconds?
-Andi - do we need an option to make it longer if developer want it?
+Suggested-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: John Harrison <john.c.harrison@intel.com>
+CC: Stuart Summers <stuart.summers@intel.com>
+---
+ lib/xe/xe_gt.c              | 2 +-
+ lib/xe/xe_ioctl.c           | 6 +++---
+ lib/xe/xe_ioctl.h           | 2 +-
+ tests/intel/xe_exec_reset.c | 8 ++++----
+ tests/intel/xe_gt_freq.c    | 2 +-
+ tests/intel/xe_wedged.c     | 2 +-
+ 6 files changed, 11 insertions(+), 11 deletions(-)
 
-Regards,
-Kamil
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+index 743d7a26ec..36beb596b5 100644
+--- a/lib/xe/xe_gt.c
++++ b/lib/xe/xe_gt.c
+@@ -69,7 +69,7 @@ void xe_force_gt_reset_all(int xe_fd)
+ 	int gt;
+ 
+ 	xe_for_each_gt(xe_fd, gt)
+-		xe_force_gt_reset(xe_fd, gt);
++		xe_force_gt_reset(xe_fd, gt, false);
+ }
+ 
+ /**
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index 934c877ebc..a44b65e4ff 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -529,7 +529,7 @@ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 	return timeout;
+ }
+ 
+-void xe_force_gt_reset(int fd, int gt)
++void xe_force_gt_reset(int fd, int gt, bool sync)
+ {
+ 	char reset_string[128];
+ 	struct stat st;
+@@ -537,7 +537,7 @@ void xe_force_gt_reset(int fd, int gt)
+ 	igt_assert_eq(fstat(fd, &st), 0);
+ 
+ 	snprintf(reset_string, sizeof(reset_string),
+-		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset",
+-		 minor(st.st_rdev), gt);
++		 "cat /sys/kernel/debug/dri/%d/gt%d/force_reset%s",
++		 minor(st.st_rdev), gt, sync ? "_sync" : "");
+ 	system(reset_string);
+ }
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index 4d08402e0b..ff5b5d3ed0 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -91,6 +91,6 @@ int __xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		     uint32_t exec_queue, int64_t *timeout);
+ int64_t xe_wait_ufence(int fd, uint64_t *addr, uint64_t value,
+ 		       uint32_t exec_queue, int64_t timeout);
+-void xe_force_gt_reset(int fd, int gt);
++void xe_force_gt_reset(int fd, int gt, bool sync);
+ 
+ #endif /* XE_IOCTL_H */
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index e47c3730dd..ed67284800 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -239,7 +239,7 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+ 	}
+ 
+ 	if (flags & GT_RESET)
+-		xe_force_gt_reset(fd, gt);
++		xe_force_gt_reset(fd, gt, false);
+ 
+ 	if (flags & CLOSE_FD) {
+ 		if (flags & CLOSE_EXEC_QUEUES) {
+@@ -383,7 +383,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	}
+ 
+ 	if (flags & GT_RESET)
+-		xe_force_gt_reset(fd, eci->gt_id);
++		xe_force_gt_reset(fd, eci->gt_id, false);
+ 
+ 	if (flags & CLOSE_FD) {
+ 		if (flags & CLOSE_EXEC_QUEUES) {
+@@ -530,7 +530,7 @@ test_compute_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 	}
+ 
+ 	if (flags & GT_RESET)
+-		xe_force_gt_reset(fd, eci->gt_id);
++		xe_force_gt_reset(fd, eci->gt_id, false);
+ 
+ 	if (flags & CLOSE_FD) {
+ 		if (flags & CLOSE_EXEC_QUEUES) {
+@@ -590,7 +590,7 @@ static void do_resets(struct gt_thread_data *t)
+ 	while (!*(t->exit)) {
+ 		usleep(250000);	/* 250 ms */
+ 		(*t->num_reset)++;
+-		xe_force_gt_reset(t->fd, t->gt);
++		xe_force_gt_reset(t->fd, t->gt, false);
+ 	}
+ }
+ 
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index ff99b46a08..1cfc248947 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -324,7 +324,7 @@ static void test_reset(int fd, int gt_id, int cycles)
+ 		igt_assert_f(get_freq(fd, gt_id, "cur") == rpn,
+ 			     "Failed after %d good cycles\n", i);
+ 
+-		xe_force_gt_reset(fd, gt_id);
++		xe_force_gt_reset(fd, gt_id, false);
+ 
+ 		igt_assert_f(get_freq(fd, gt_id, "min") == rpn,
+ 			     "Failed after %d good cycles\n", i);
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index aa4a452bfc..4f772a0e10 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -31,7 +31,7 @@ static void force_wedged(int fd)
+ 	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+ 	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
+ 
+-	xe_force_gt_reset(fd, 0);
++	xe_force_gt_reset(fd, 0, false);
+ 	sleep(1);
+ }
+ 
+-- 
+2.25.1
 
-> ---
-> 
-> This patch is only "testable" after my other patch that fixes the test,
-> in the first place. As I write this, the other patch is here:
-> 
->   https://patchwork.freedesktop.org/series/131602/
-> 
->  tests/intel/gem_exec_capture.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
-> index 2afb84283..3f454b897 100644
-> --- a/tests/intel/gem_exec_capture.c
-> +++ b/tests/intel/gem_exec_capture.c
-> @@ -700,7 +700,7 @@ static void many(int fd, int dir, uint64_t size, unsigned int flags)
->  	igt_debug("Available objects in GTT:%"PRIu64", RAM:%"PRIu64"\n",
->  		  gtt, ram);
->  
-> -	count = min(gtt, ram) / 4;
-> +	count = min(gtt, ram) / 8;
->  	igt_require(count > 1);
->  
->  	igt_require_memory(count, size, CHECK_RAM);
-> -- 
-> 2.44.0
-> 
