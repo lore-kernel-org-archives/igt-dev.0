@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB3BEC25B75
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Jun 2024 05:11:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50832C25B75
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Jun 2024 05:42:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B30F10E165;
-	Thu,  6 Jun 2024 05:11:00 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dlx3PMr/";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 45D0010E165
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Jun 2024 05:10:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717650659; x=1749186659;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=10sX9pjMfNxE6xqjCrBzXk4lpz6y44R+J638evDr+TQ=;
- b=dlx3PMr/NEF6YyVr6BiLHGikvYFTawpAaffduMXUBNLWQTu1Uw18KfrG
- 4BlRg4tiYMEmvHul9Okx+gZ0bXHExyvbPp1EGM5ajqwioL6RDEDkIm62U
- Hdn5STAqNeROxborjStmcduSiM6RwApTNDycFWUZ3CUBMzekwfQbHx5Sz
- 4ATM2rI7jldUiORFiwjx/01exAOH2gH0jk1dWS8AZ+PW4fK98kWpDpO34
- MwNRlwhjiooRx76H5zUaelaK3MgZub23muSMF8rClpbG3ZNZepeImhj8O
- 2i5dDKUif6Ph0ioHTdcDaSzqRHqnhKyvgyDXUicsgcrNhNubzWCDIRBjS g==;
-X-CSE-ConnectionGUID: POqg2frpTG6nzlTa08iFYg==
-X-CSE-MsgGUID: QM0+NNjhRYe9L056oXiAOQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11094"; a="25695173"
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="25695173"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jun 2024 22:10:59 -0700
-X-CSE-ConnectionGUID: 3KPG3XqBQuC6C5UJThKFJw==
-X-CSE-MsgGUID: x+UYIv/TRMmLwqJkmMJVjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,218,1712646000"; d="scan'208";a="37810479"
-Received: from srr4-3-linux-106-armuthy.iind.intel.com ([10.190.238.56])
- by fmviesa006.fm.intel.com with ESMTP; 05 Jun 2024 22:10:57 -0700
-From: Arun R Murthy <arun.r.murthy@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com,
-	Arun R Murthy <arun.r.murthy@intel.com>
-Subject: [PATCH i-g-t] tests/chamelium/hpd: No need to disconnect at the
- begining of the test
-Date: Thu,  6 Jun 2024 10:31:05 +0530
-Message-Id: <20240606050105.4179950-1-arun.r.murthy@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB50B10E165;
+	Thu,  6 Jun 2024 05:42:25 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9359310E165;
+ Thu,  6 Jun 2024 05:42:24 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Support_for_RGB16161616?=
+ =?utf-8?q?=5F64B_compressed_formats_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Melanie Lobo" <melanie.lobo@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 06 Jun 2024 05:42:24 -0000
+Message-ID: <171765254459.3533.4374303841876641491@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240603081607.30930-1-melanie.lobo@intel.com>
+In-Reply-To: <20240603081607.30930-1-melanie.lobo@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,34 +37,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the subtest hpd-for-each-pipe unplug/disconnect is done to ensure
-that nothing is connected which is not required. The first subtest hpd
-doesnt do the same in the begining and disconnect/unplug is done at the
-end of each subtest.
+== Series Details ==
 
-Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
----
- tests/chamelium/kms_chamelium_hpd.c | 4 ----
- 1 file changed, 4 deletions(-)
+Series: Support for RGB16161616_64B compressed formats (rev2)
+URL   : https://patchwork.freedesktop.org/series/134353/
+State : failure
 
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index 858c595cb..3ad56c71a 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -329,10 +329,6 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 			      data->ports, data->port_count);
- 
- 	igt_hpd_storm_set_threshold(data->drm_fd, 0);
--	/* Disconnect if any port got connected */
--	chamelium_unplug(data->chamelium, port);
--	chamelium_wait_for_connector_after_hotplug(data, mon, port,
--						   DRM_MODE_DISCONNECTED);
- 
- 	for_each_pipe(&data->display, pipe) {
- 		igt_modeset_disable_all_outputs(&data->display);
--- 
-2.25.1
+== Summary ==
+
+IGT patchset build failed on latest successful build
+08560f766a505e729dfee2846c1c11d28dd0e3d0 tools/intel_vbt_decode: Decode device handle as a bitmask
+
+Tail of build.log:
+[279/1679] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
+[280/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_i830_c@sta/rendercopy_i830.c.o'.
+[281/1679] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
+[282/1679] Compiling C object 'lib/76b5a35@@igt-runnercomms_c@sta/runnercomms.c.o'.
+[283/1679] Compiling C object 'tests/59830eb@@kms_atomic_transition@exe/kms_atomic_transition.c.o'.
+[284/1679] Compiling C object 'lib/76b5a35@@igt-igt_dsc_c@sta/igt_dsc.c.o'.
+[285/1679] Compiling C object 'lib/76b5a35@@igt-igt_psr_c@sta/igt_psr.c.o'.
+[286/1679] Compiling C object 'lib/76b5a35@@igt-igt_panfrost_c@sta/igt_panfrost.c.o'.
+[287/1679] Compiling C object 'lib/76b5a35@@igt-igt_eld_c@sta/igt_eld.c.o'.
+[288/1679] Compiling C object 'lib/76b5a35@@igt-intel_allocator_simple_c@sta/intel_allocator_simple.c.o'.
+[289/1679] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
+[290/1679] Compiling C object 'lib/76b5a35@@igt-igt_msm_c@sta/igt_msm.c.o'.
+[291/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen4_c@sta/rendercopy_gen4.c.o'.
+[292/1679] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
+[293/1679] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
+[294/1679] Compiling C object 'lib/76b5a35@@igt-igt_edid_c@sta/igt_edid.c.o'.
+[295/1679] Compiling C object 'lib/76b5a35@@igt-igt_vc4_c@sta/igt_vc4.c.o'.
+[296/1679] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
+[297/1679] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
+[298/1679] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
+[299/1679] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
+[300/1679] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
+[301/1679] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
+[302/1679] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
+[303/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
+[304/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
+[305/1679] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
+[306/1679] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
+[307/1679] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
+[308/1679] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
+[309/1679] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
+[310/1679] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
+[311/1679] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
+[312/1679] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
+[313/1679] Generating i915-perf-registers-acmgt3 with a custom command.
+[314/1679] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
+[315/1679] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+[316/1679] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
+[317/1679] Generating i915-perf-metrics-acmgt3 with a custom command.
+[318/1679] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
+[319/1679] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[320/1679] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+[321/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+[322/1679] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+[323/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+[324/1679] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[325/1679] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[326/1679] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[327/1679] Generating i915-perf-equations with a custom command.
+ninja: build stopped: subcommand failed.
+
 
