@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C0CC27C65
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDD94C27C77
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB2A210ED1D;
-	Fri,  7 Jun 2024 20:09:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B66510ED20;
+	Fri,  7 Jun 2024 20:09:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I6O3t151";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EBR8aUKp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D03510ED07
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D356B10ECF8
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1717790941; x=1749326941;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=N9oJF0g4rHJ7MCwpNeWH3gsC0REWLkBHgZQOl5h7tVc=;
- b=I6O3t151YhPTjYO6ARiVRPhQSWBr5gbq2tSbmV2BK0J9ZKP+wIdcFtjg
- w5cIQhRg/ZYTajLiGUE2iGDb78QED1Xt4Y7yg0ez8jeg9ZBhzYMHmKnKP
- 2MG0WhxtgLOj5HK+S+vtagYDeJUy81pGhnEVQwUdxz/9WM8jAPUuKlXxv
- BbMae1VysIjvhsdXA0UL5hLn85ElEIMmvBtbHpkd0+LIoNmKGknQXkh+q
- 5otkeNlgP+L22Qh+gk2h0YshlKGPQ60LBYZCcy99hhp2VXQz5BmMY3Dce
- QvqkHXKCYhWKtYKEirFKa5hJ0mh3acmuIa3hvK69aAZl6qkPqgn3INCUg w==;
-X-CSE-ConnectionGUID: kETmOofoQ7WezVbHD3ZnjA==
-X-CSE-MsgGUID: YXzGW/u3S52cwvx0BZ+/qw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383239"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383239"
+ bh=U88nBbSt8XSVVOY7SQ4kAt3N8EXBRUfc/7bhdfEQam4=;
+ b=EBR8aUKpKgNXPg57ctuKg7GM5cPHdj6Mysr3xPGfhLnzAm12M8ELro79
+ oiulqzD1xPP+gD1B8ZFPoawzgoIEvccfusBPAnLJhIXhv4bWtcZWQSUQe
+ Uc1Zv1kL/fFwmKFPG9KJQjtSmefqz2Ip6ImuWdbCoJtaP+ErdumwklMg8
+ bLcyEyExFXdYhAny9dpsTaF4SafG4dRXHzCYAaNhWWEOZfogHhXU3VWBb
+ bG9WjWkaP10fFpfquHyphnvymmKpMowPT9YOUs28pHOwJ/Wa4OsdQ15iv
+ goFY36njwB/CqcRuEVqJvQ11QGYcLUFrDYUfNWPbdAK1aEx+SEY6kaIst A==;
+X-CSE-ConnectionGUID: vtksY+vRSTKbuwj4s3pSxA==
+X-CSE-MsgGUID: Z+Fk/ybBQCyv2niV7u63ow==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383233"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383233"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:09:01 -0700
-X-CSE-ConnectionGUID: G8HePIxIQMqTSvktSKkx3g==
-X-CSE-MsgGUID: x4gQIjeVTFyU9TcUnkOGHA==
+ 07 Jun 2024 13:09:00 -0700
+X-CSE-ConnectionGUID: qHT3lyUZSieItMR+yqWw7g==
+X-CSE-MsgGUID: rIghIFPRTBuBWyBDtxaLmA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373866"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373857"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:09:01 -0700
+ 07 Jun 2024 13:09:00 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 25/27] xe/oa/mdapi-xml-convert: Add support for
- 576B_PEC64LL format
-Date: Fri,  7 Jun 2024 13:08:45 -0700
-Message-ID: <20240607200847.1964629-26-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 19/27] tests/intel/xe_oa: OA buffer mmap tests
+Date: Fri,  7 Jun 2024 13:08:39 -0700
+Message-ID: <20240607200847.1964629-20-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,192 +66,288 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: José Roberto de Souza <jose.souza@intel.com>
+Add the following tests:
+* "map-oa-buffer"
+* "invalid-map-oa-buffer"
+* "non-privileged-map-oa-buffer"
+* "non-privileged-access-vaddr"
+* "privileged-forked-access-vaddr"
+* "closed-fd-and-unmapped-access"
 
-Xe2 don't use the 256bytes long format, instead it uses a 576bytes
-long with 64 PEC fields that are 64 bits long.
-This patch fixes the xe2 definition and add the parser for this format.
-
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/xe/oa-configs/codegen.py           |  5 ++
- lib/xe/oa-configs/mdapi-xml-convert.py | 76 +++++++++++++++++++++-----
- lib/xe/xe_oa.h                         |  1 +
- 3 files changed, 67 insertions(+), 15 deletions(-)
+ tests/intel/xe_oa.c | 251 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 251 insertions(+)
 
-diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
-index f078ef9498..51498f803d 100644
---- a/lib/xe/oa-configs/codegen.py
-+++ b/lib/xe/oa-configs/codegen.py
-@@ -128,6 +128,7 @@ class Set:
-         return self.xml.find(path)
- 
- 
-+#TODO add SqidiTotalCount, L3BankTotalCount, L3NodeTotalCount
- hw_vars_mapping = {
-     "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
-     "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
-@@ -159,6 +160,10 @@ hw_vars_mapping = {
-     "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
-     "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
-     "$QueryMode": { 'c': "perf->devinfo.query_mode" },
-+
-+    "$ComputeEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
-+
-+    "$CopyEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index 8e6de2db11..30d1ed329f 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -4113,6 +4113,231 @@ test_oa_unit_concurrent_oa_buffer_read(void)
+ 	igt_waitchildren();
  }
  
- def is_hw_var(name):
-diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
-index 575b53e955..602a3965af 100755
---- a/lib/xe/oa-configs/mdapi-xml-convert.py
-+++ b/lib/xe/oa-configs/mdapi-xml-convert.py
-@@ -149,12 +149,10 @@ mtl_chipset_oam_samedia_params = {
-     }
- }
- 
--# FIXME: everything except oa_report_size is incorrect here
--xe2_chipset_params = {
--    'a_offset': 16,
--    'b_offset': 192,
--    'c_offset': 224,
-+xe2_chipset_params_pec = {
-+    'pec_offset': 32,
-     'oa_report_size': 576,
-+    # TODO: Not sure about the configs below
-     'config_reg_blacklist': {
-         0x2364, # OACTXID
-     },
-@@ -183,7 +181,11 @@ mtl_chipset_oa_formats = {
- }
- 
- xe2_chipset_oa_formats = {
--    '256B_GENERIC_NOA16': xe2_chipset_params,
-+    '576B_PEC64LL': xe2_chipset_params_pec,
-+    # We only care about 576B_PEC64LL metrics in Xe2, entries below is just to
-+    # surpress warnings
-+    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
-+    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
- }
- 
- chipsets = {
-@@ -209,8 +211,6 @@ chipsets = {
- 
- xehp_plus = ( 'ACM', 'MTL' )
- 
--xe2_plus = ( 'LNL' )
--
- register_types = { 'OA', 'NOA', 'FLEX', 'PM' }
- 
- default_set_blacklist = { "RenderDX1x", # TODO: rename to something non 'DX'
-@@ -298,6 +298,46 @@ def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
- 
-     assert 0
- 
-+def read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format):
-+    width, offset_str = token.split('@')
-+    offset = int(offset_str, 16)
++static void *map_oa_buffer(u32 *size)
++{
++	void *vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
 +
-+    if width != 'qw':
-+        assert 0
++	igt_assert(vaddr != NULL);
++	*size = OA_BUFFER_SIZE;
++	return vaddr;
++}
 +
-+    if raw_offsets:
-+        pec_offset = chipsets[chipset][oa_format]['pec_offset']
++static void invalid_param_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *oa_vaddr = NULL;
 +
-+        if offset < pec_offset:
-+            if offset == 8:
-+                return "GPU_TIME 0 READ"
-+            elif offset == 24:
-+                return "GPU_CLOCK 0 READ"
-+            else:
-+                assert 0
-+        else:
-+            pec_cnt_offset = int((offset - pec_offset) / 8)
++	/* try a couple invalid mmaps */
++	/* bad prots */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_WRITE, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
 +
-+            return "PEC " + str(pec_cnt_offset) + " READ"
-+    else:
-+        # Location in the accumulated deltas
-+        idx = int(offset / 8)
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_EXEC, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
 +
-+        if idx == 0:
-+            return "GPU_TIME 0 READ"
-+        elif idx == 1:
-+            return "GPU_CLOCK 0 READ"
-+        else:
-+            idx = idx - 2;
-+            pec_cnt_offset = str(idx)
-+            pec_high_low_text = "low"
-+            if (offset % 8) > 0:
-+               pec_high_low_text = "high"
++	/* bad MAPs */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_SHARED, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
 +
-+            return "PEC " + pec_cnt_offset + " READ"
++	/* bad size */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE + 1, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
 +
-+    assert 0
++	/* do the right thing */
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
 +
- def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
-     width, offset_str = token.split('@')
- 
-@@ -374,9 +414,6 @@ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
-                 return "C " + str(idx - 48) + " READ"
-             else:
-                 return "{0} READ".format(read_value(chipset, offset, oa_format))
--        elif chipset in xe2_plus:
--            # FIXME: skip all metrics to retain just the registers
--                return "GPU_TIME 0 READ"
-         else:
-             # For Gen8+ the array of accumulated counters is
-             # assumed to start with a GPU_TIME then GPU_CLOCK,
-@@ -405,6 +442,9 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
-     if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
-         return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
- 
-+    if oa_format in ['576B_PEC64LL']:
-+        return read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format)
++	munmap(oa_vaddr, OA_BUFFER_SIZE);
++}
 +
-     assert 0
++static void unprivileged_try_to_map_oa_buffer(void)
++{
++	void *oa_vaddr;
++
++	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(oa_vaddr == MAP_FAILED);
++	igt_assert_eq(errno, EACCES);
++}
++
++static void unprivileged_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
++{
++	igt_fork(child, 1) {
++		igt_drop_root();
++		unprivileged_try_to_map_oa_buffer();
++	}
++	igt_waitchildren();
++}
++
++static jmp_buf jmp;
++static void __attribute__((noreturn)) sigtrap(int sig)
++{
++	siglongjmp(jmp, sig);
++}
++
++static void try_invalid_access(void *vaddr)
++{
++	sighandler_t old_sigsegv;
++	uint32_t dummy;
++
++	old_sigsegv = signal(SIGSEGV, sigtrap);
++	switch (sigsetjmp(jmp, SIGSEGV)) {
++	case SIGSEGV:
++		break;
++	case 0:
++		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
++		(void) dummy;
++	default:
++		igt_assert(!"reached");
++		break;
++	}
++	signal(SIGSEGV, old_sigsegv);
++}
++
++static void map_oa_buffer_unprivilege_access(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *vaddr;
++	uint32_t size;
++
++	vaddr = map_oa_buffer(&size);
++
++	igt_fork(child, 1) {
++		igt_drop_root();
++		try_invalid_access(vaddr);
++	}
++	igt_waitchildren();
++
++	munmap(vaddr, size);
++}
++
++static void map_oa_buffer_forked_access(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *vaddr;
++	uint32_t size;
++
++	vaddr = map_oa_buffer(&size);
++
++	igt_fork(child, 1) {
++		try_invalid_access(vaddr);
++	}
++	igt_waitchildren();
++
++	munmap(vaddr, size);
++}
++
++static void check_reports(void *oa_vaddr, uint32_t oa_size,
++			  const struct drm_xe_engine_class_instance *hwe)
++{
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t fmt = test_set->perf_oa_format;
++	struct oa_format format = get_oa_format(fmt);
++	size_t report_words = format.size >> 2;
++	uint32_t *reports;
++	uint32_t timer_reports = 0;
++
++	for (reports = (uint32_t *)oa_vaddr;
++	     timer_reports < 20 && reports[0] && oa_timestamp(reports, fmt);
++	     reports += report_words) {
++		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
++			continue;
++
++		timer_reports++;
++		if (timer_reports >= 3)
++			sanity_check_reports(reports - 2 * report_words,
++					     reports - report_words, fmt);
++	}
++
++	igt_assert(timer_reports >= 3);
++}
++
++static void check_reports_from_mapped_buffer(const struct drm_xe_engine_class_instance *hwe)
++{
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	vaddr = map_oa_buffer(&size);
++
++	/* wait for approx 100 reports */
++	usleep(100 * period_us);
++	check_reports(vaddr, size, hwe);
++
++	munmap(vaddr, size);
++}
++
++/**
++ * SUBTEST: closed-fd-and-unmapped-access
++ * Description: Unmap buffer, close fd and try to access
++ */
++static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_instance *hwe)
++{
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	void *vaddr;
++	uint32_t size;
++	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++	vaddr = map_oa_buffer(&size);
++
++	usleep(100 * period_us);
++	check_reports(vaddr, size, hwe);
++
++	munmap(vaddr, size);
++	__perf_close(stream_fd);
++
++	try_invalid_access(vaddr);
++}
++
++/**
++ * SUBTEST: map-oa-buffer
++ * Description: Verify mapping of oa buffer
++ *
++ * SUBTEST: invalid-map-oa-buffer
++ * Description: Verify invalid mappings of oa buffer
++ *
++ * SUBTEST: non-privileged-map-oa-buffer
++ * Description: Verify if non-privileged user can map oa buffer
++ *
++ * SUBTEST: non-privileged-access-vaddr
++ * Description: Verify if non-privileged user can map oa buffer
++ *
++ * SUBTEST: privileged-forked-access-vaddr
++ * Description: Verify that forked access to mapped buffer fails
++ */
++typedef void (*map_oa_buffer_test_t)(const struct drm_xe_engine_class_instance *hwe);
++static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
++				  const struct drm_xe_engine_class_instance *hwe)
++{
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++
++	igt_assert(test_with_fd_open);
++	test_with_fd_open(hwe);
++
++	__perf_close(stream_fd);
++}
++
+ static const char *xe_engine_class_name(uint32_t engine_class)
+ {
+ 	switch (engine_class) {
+@@ -4312,6 +4537,32 @@ igt_main
+ 	igt_subtest("whitelisted-registers-userspace-config")
+ 		test_whitelisted_registers_userspace_config();
  
- def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
-@@ -905,6 +945,8 @@ for arg in args.xml:
-                 mdapi_counter.set('NormalizationEquation', '$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV')
-                 #mdapi_counter.set('DeltaReportReadEquation', '$GpuCoreClocks $GpuTime UDIV')
- 
-+            if mdapi_counter.get('SymbolName') == "ResultUncertainty":
-+                continue
- 
-             symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_counter.get('SymbolName'))
- 
-@@ -992,11 +1034,15 @@ for arg in args.xml:
-             # XXX: As a special case, we override the raw and delta report
-             # equations for the GpuTime counters, which seem inconsistent
-             if mdapi_counter.get('SymbolName') == "GpuTime":
--                mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
--                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
--                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                if oa_format == '576B_PEC64LL':
-+                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-                 else:
--                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
-+                      mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   else:
-+                      mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
- 
-             availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
-             if availability == "":
-diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
-index c16177ec8e..f6f2768b00 100644
---- a/lib/xe/xe_oa.h
-+++ b/lib/xe/xe_oa.h
-@@ -275,6 +275,7 @@ struct intel_xe_perf_metric_set {
- 	int b_offset;
- 	int c_offset;
- 	int perfcnt_offset;
-+	int pec_offset;
- 
- 	const struct intel_xe_perf_register_prog *b_counter_regs;
- 	uint32_t n_b_counter_regs;
++	igt_subtest_group {
++		igt_subtest_with_dynamic("map-oa-buffer")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(check_reports_from_mapped_buffer, hwe);
++
++		igt_subtest_with_dynamic("invalid-map-oa-buffer")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(invalid_param_map_oa_buffer, hwe);
++
++		igt_subtest_with_dynamic("non-privileged-map-oa-buffer")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(unprivileged_map_oa_buffer, hwe);
++
++		igt_subtest_with_dynamic("non-privileged-access-vaddr")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(map_oa_buffer_unprivilege_access, hwe);
++
++		igt_subtest_with_dynamic("privileged-forked-access-vaddr")
++			__for_one_hwe_in_oag(hwe)
++				test_mapped_oa_buffer(map_oa_buffer_forked_access, hwe);
++
++		igt_subtest_with_dynamic("closed-fd-and-unmapped-access")
++			__for_one_hwe_in_oag(hwe)
++				closed_fd_and_unmapped_access(hwe);
++	}
++
+ 	igt_fixture {
+ 		/* leave sysctl options in their default state... */
+ 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 -- 
 2.41.0
 
