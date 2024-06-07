@@ -4,65 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED910C27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 14:38:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18BE1C27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 14:40:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A97110EC84;
-	Fri,  7 Jun 2024 14:38:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 84DC210E010;
+	Fri,  7 Jun 2024 14:40:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PqCDMFR5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bW4YUZTc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B66F10EC81
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 14:38:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F7F710E010
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 14:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717771104; x=1749307104;
+ t=1717771204; x=1749307204;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=b1fODSx/Ce7ivi1T5WQ/6C8Il2c0wn17JfEZU5unHLo=;
- b=PqCDMFR5O++Npjb7MtzAZLkXfMkTj/GeZLHZ/D35IUxqEficMpekm1HO
- gghppTLIV4fYwJgIlHZYAUufEfuIygwUZxYvHBEuB49xVOA3uTQaOmJkL
- /hiIkxdD9bE+KeFhqHTWukWeSVy/xzWCFAcyP1pPfMG4fhwQvRZ8JNfCU
- BG/WpOsdsLBX+jEYhXV2y26p8db6pGe0Y+rTj3tQUtkcxTmyRK37KUdf4
- mYEV6U2f7ls9BxrjLNHvmSphisoICVQy74KN+OINgBiPFLGYbBrlREvyj
- wbjGBd1fLGu1wGSRCxDJf2QW3GTJ4wBYROsJXhOakWTgXeC3S1k2GeeOh Q==;
-X-CSE-ConnectionGUID: 06rlrOYATTu9zNzmjf2Kfg==
-X-CSE-MsgGUID: erGzB7GLSwG2QPduBbT+jA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14329256"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14329256"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 07:38:24 -0700
-X-CSE-ConnectionGUID: TMVBXfWHRe+fQHdUQrf+/A==
-X-CSE-MsgGUID: YH9khvNQQjO8W+swOh0ZvA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=I2pBnZjA/9rcdXpah3+qMMzgcidqMqmzupyxeVTFUYs=;
+ b=bW4YUZTcvEKjEtc3p4PjFyhYoGKFeSQRq9yvxXnq15kvn0tfzYXR9Aur
+ UKKtAdmiFM5xV8Ae8ffeUga4fNaFZrGc3t4e4dEe2yY+KBlm4fGFyhSLi
+ FZddeK8CNqYw7P19v4GnvEWc/3KBWKz5Q1HhU+uNBSGsfHxJ4nX41tnMG
+ uI67fzuWmIEoOYPVY9cJeLc+qjS5NzFnA23Sq63zte7l8AmvTnCGp/m2A
+ qwuMvrskCdMqm6lSZFR9mxA3/9YFOpybhlwJEuy/HiW0++VjjNMGfA8t4
+ X6SHUrkZCfGc3Ja6XlDwBV60SsIduhbjEJUL+4P3XFZ2Aa4upAlOi7olM w==;
+X-CSE-ConnectionGUID: y3T/woVJSIWKZ0NkyLsGgw==
+X-CSE-MsgGUID: YWkxX8BBS7O9oN5C6OMInw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14627444"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14627444"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 07:40:03 -0700
+X-CSE-ConnectionGUID: jAPvYOLKS0SGB2yrtuIzNw==
+X-CSE-MsgGUID: bf0M2uJIQB+QxTge6G80Bg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38465863"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38272066"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 07:38:22 -0700
-Date: Fri, 7 Jun 2024 16:38:06 +0200
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 07:40:01 -0700
+Date: Fri, 7 Jun 2024 16:39:58 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Luca Coelho <luca@coelho.fi>, Luca Coelho <luciano.coelho@intel.com>,
- Mark Yacoub <markyacoub@chromium.org>,
- Manasi Navare <navaremanasi@chromium.org>
-Subject: Re: [PATCH i-g-t v2 1/2] lib/igt_chamelium: check
- drmModeGetConnector() return in wait_for_connected_state()
-Message-ID: <20240607143806.n5pxivsbfnt5ugbg@kamilkon-DESK.igk.intel.com>
+ Jani Saarinen <jani.saarinen@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: Re: [PATCH i-g-t v2 2/2] tests/intel: check drmModeGetConnector()
+ return in i915_pm_rpm
+Message-ID: <20240607143958.nx3qvnjerpyjmmuc@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, Luca Coelho <luca@coelho.fi>,
  Luca Coelho <luciano.coelho@intel.com>,
- Mark Yacoub <markyacoub@chromium.org>,
- Manasi Navare <navaremanasi@chromium.org>
+ Jani Saarinen <jani.saarinen@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 References: <20240528075855.463729-1-luciano.coelho@intel.com>
- <20240528075855.463729-2-luciano.coelho@intel.com>
- <20240529160646.nv6ovnpgw7ttzilz@kamilkon-DESK.igk.intel.com>
- <6815028c4c13d8c2d3c5080389fdfc4067dbd501.camel@coelho.fi>
+ <20240528075855.463729-3-luciano.coelho@intel.com>
+ <20240529163744.3tkyh44fcgjsxxy4@kamilkon-DESK.igk.intel.com>
+ <2d94493d7f2827c0e5d5536ef46066b72346d3b7.camel@coelho.fi>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6815028c4c13d8c2d3c5080389fdfc4067dbd501.camel@coelho.fi>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2d94493d7f2827c0e5d5536ef46066b72346d3b7.camel@coelho.fi>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,111 +82,130 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Luca,
-On 2024-05-30 at 00:13:24 +0300, Luca Coelho wrote:
-> On Wed, 2024-05-29 at 18:06 +0200, Kamil Konieczny wrote:
+On 2024-05-30 at 00:45:12 +0300, Luca Coelho wrote:
+> On Wed, 2024-05-29 at 18:37 +0200, Kamil Konieczny wrote:
 > > Hi Luca,
-> 
-> Hi Kamil,
-> 
-> > On 2024-05-28 at 10:58:54 +0300, Luca Coelho wrote:
+> > On 2024-05-28 at 10:58:55 +0300, Luca Coelho wrote:
 > > 
-> > change now looks ok but why did you ignored my suggestion
-> > about short subject?
-> 
-> Oh, sorry, but I didn't _ignore_ your suggestion.  I replied to it,
-> expressed my opinion and explained why I didn't think it needed to be
-> changed.
-> 
-> 
-> > Please see CONTRIBUTING.md about test
-> > description:
-> > The description should contain the spirit of the test (what is
-> > the general idea behind the test) and *not* the letter (C to English
-> > translation of the test).
-> 
-> This is not a new test, so I think this doesn't really apply.  This is
-> a very specific fix in a very specific place of an existing test and I
-> think getting a general idea of what was wrong in the code and why it
-> needs to be changed is the right thing to describe here.
-> 
-> This text you quoted is about what should be in igt_describe() and not
-> in the commit message, right?
-> 
-> 
-> 
-> > The same principle apply to your subject description of change,
-> > it should be short, not 'translation from C code of a change'.
-> > It should also be rather short, up to 75 chars (or maybe even 65)
-> > to keep it all in mailing list discussion.
-> > You coould also look into:
-> > https://patchwork.freedesktop.org/series/134188/
+> > this subject imho is too long:
 > > 
-> > So imho here, instead of:
-> > lib/igt_chamelium: check drmModeGetConnector() return in wait_for_connected_state()
+> > [PATCH i-g-t v2 2/2] tests/intel: check drmModeGetConnector() return in i915_pm_rpm
+> > 
+> > It should have test name at begin, not at end:
+> > 
+> > tests/intel/i915_pm_rpm: Fix bug in init_mode_set_data()
+> > 
+> > or
+> > 
+> > tests/intel/i915_pm_rpm: check drmModeGetConnector() before use
+> > 
+> > or find out something better.
 > 
-> This describes what was fixed and where.
+> This is the same as in the previous patch.  So, just tell me which one
+> of your options you want me to use and I'll do it.  No need to bike-
+> shed on this here.
 > 
+> 
+> > > The drmModeGetConnector() function can return NULL in some cases, so
+> > > we need to check the return value before accessing it.  This is not
+> > > being checked in init_mode_set_data(), so fix that.
+> > 
+> > Please cite few lines from bug report:
+> > 
+> > Starting subtest: module-reload
+> > Received signal SIGSEGV.
+> > Stack trace: 
+> > #0 [fatal_sig_handler+0x10f]
+> > #1 [killpg+0x40]
+> > #2 [setup_environment+0x33f]
+> 
+> This is one click away, in the link I added below, but I see the
 
-You can read it in patch itself after 'diff --git a/...'
-
-> 
-> > imho better:
-> > lib/igt_chamelium: Fix NULL dereferencing bug in wait_for_connected_state()
-> 
-> This describes that something was fixed and where, without specifying
-> what was fixed.
-> 
-> 
-> > or even better:
-> > lib/igt_chamelium: Fix bug in wait_for_connected_state()
-> 
-> This is even more generic and there could be several bugfixes in this
-> function which would end up with the same commit subject...
-> 
-> 
-> > or maybe:
-> > lib/igt_chamelium: check drmModeGetConnector() return value before use
-> 
-> Conversely,this describes what was fixed but not where.
-> 
-> 
-> > You could propose other subject if you find a better description.
-> 
-> I generally follow the kernel's coding style.  One important part of
-> the subject line, IMHO, is the uniqueness and identifiability of it. 
-> Like explained here[1]:
-> 
-> "[...]the ``summary phrase`` of your email becomes a
-> globally-unique identifier for that patch.  It propagates all the way
-> into the ``git`` changelog.  The ``summary phrase`` may later be used
-> in
-> developer discussions which refer to the patch.  People will want to
-> google for the ``summary phrase`` to read discussion regarding that
-> patch.  It will also be the only thing that people may quickly see
-> when, two or three months later, they are going through perhaps
-> thousands of patches using tools such as ``gitk`` or ``git log
-> --oneline``."
-> 
-> I admit that the subject is a bit long, but it actually contains only 5
-> relevant words.  The function names are rather long and, with about 20
-> characters of boilerplate ("lib/igt_chamelium: ") and 47 chars only in
-> function names, it's literally impossible to keep the subject line
-> inside the 70-75 recommended length while still keeping it descriptive
-> and unique...
-> 
-
-What will you write if you will make change in a few functions?
-Well, I agree that 70-75 is only recomendation, not strict rule.
+It is better to give such info here in patch itself,
+especially as this is needed for reproduction.
 
 Regards,
 Kamil
 
-> But this is a different project and I'm not a maintainer, so I can do
-> whatever you think is right here.  Just tell me which option you prefer
-> and I'll resubmit my patch with it.
+> potential usefulness to copy it here.  It could make it easier to find
+> patches that fix bugs in specific tests, if you use git grep, for
+> instance.  Though I'm in general of the opinion that duplicating
+> information that is already linked in one way or another.
+> 
+> But sure, I'll add it. :)
 > 
 > 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst#n652
+> > > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
+> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > 
+> > Add here also some KMS devs to Cc, I added Jani, Juha-Pekka and Bhanuprakash.
+> > 
+> > Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > Cc: Jani Saarinen <jani.saarinen@intel.com>
+> > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> 
+> Okay. :)
+> 
+> Do you have something like the kernel's get_maintainer.pl script?
+> Otherwise it's hard to know who should be justifiably spammed. ;)
+> 
+> 
+> > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+> > > ---
+> > >  tests/intel/i915_pm_rpm.c | 6 ++++++
+> > >  1 file changed, 6 insertions(+)
+> > > 
+> > > diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+> > > index 0ea5fbd8afd9..3b4034f24a57 100644
+> > > --- a/tests/intel/i915_pm_rpm.c
+> > > +++ b/tests/intel/i915_pm_rpm.c
+> > > @@ -515,6 +515,12 @@ static void init_mode_set_data(struct mode_set_data *data)
+> > >  			data->connectors[i] =
+> > >  				drmModeGetConnector(drm_fd,
+> > >  						    data->res->connectors[i]);
+> > > +			if (!data->connectors[i]) {
+> > 
+> > imho we should also check it later before using this or edids[]
+> > so maybe this should really be a warn? Or even igt_assert? Or maybe
+> > we should lower number of available connectors? Please ask KMS devs
+> > for possible solution here.
+> 
+> There probably are other places where this could be a problem, for
+> sure.  But I'm fixing a specific bug and maybe other changes should be
+> in separate patches? I actually checked all the places where
+> drmModeGetConnector() is called and only this part and the one in
+> chamelium code had to be changed.
+> 
+> I did discuss this with the kernel display driver team, I'm part of it
+> after all. ;) The driver can't guarantee the validity of a connector
+> returned in the list when we call drmModeGetConnector(), because it can
+> be disconnected at any time an return NULL.  Another option we
+> considered was to simply restart the test silently (or at least get the
+> list of connector IDs again), because this happens because of race
+> conditions.  But at this stage, I wanted a fix to prevent a crash, not
+> a full refactor of the test case.
+> 
+> One of my goals was to change the test as little as possible.  Without
+> my change, if this happened, the test would just crash.  I originally
+> made it warn, which, like the crash, would cause the test to fail,
+> making it visible.  But you asked me to change it to igt_debug(), so I
+> did.
+> 
+> 
+> > Above code should work if you also fix fini_mode_set_data() below
+> > and also at one more function:
+> > 
+> > grep -n count_connectors tests/intel/i915_pm_rpm.c
+> > 
+> > 319:    for (int i = 0; i < data->res->count_connectors; i++) {
+> > 513:            igt_assert(data->res->count_connectors <= MAX_CONNECTORS);
+> > 514:            for (int i = 0; i < data->res->count_connectors; i++) {
+> > 531:            for (int i = 0; i < data->res->count_connectors; i++) {
+> 
+> I don't think the checks should be where count_connectors is used, but
+> in the functions that may fail if the connector is (or becomse)
+> invalid.  That's where the crash can happen if we assume it returns a
+> valid pointer and not NULL.
 > 
 > --
 > Cheers,
