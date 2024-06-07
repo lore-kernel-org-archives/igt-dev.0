@@ -4,49 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5933C27C53
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69E31C2B9FB
 	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B065B10ED17;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9ECDB10ED0E;
 	Fri,  7 Jun 2024 20:09:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fInb2uxN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvTwnHze";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0027510ED07
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A195110ED04
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717790941; x=1749326941;
+ t=1717790939; x=1749326939;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=c7s47SGDGvOipU8Nax8ouzCD3oPHYg2h4mly9wexiy8=;
- b=fInb2uxNDfjs4ca7Wi+yJ56caQkxXFvikIG6rNI5TtL++7VI1X/DPfB0
- GLjZEkHG0p4UyfxpQ6hXTI1cq9ZjUNxR1AP7nW6JqHjYA6YVxCdWzTeZk
- PiXYJJWpqgW3P0L7Fhe7cWzuW5yoVGA4O8ughlug08lIc/lXu3YxxLqEo
- jcbeZdmBXojMWhAjQTlyHBfxRll/lSBwmDCySEbjeCPROCPOq1RHszt9H
- Cmrs1Z/ylIxt3v1Myuz8fWs4ZFrPM4jjF7cMW+gw2u2K/CenvVatbD3Ci
- +5ykj4HobT0zTaeKjFyjoB6Bq49OlNb6kx8w3aIgFwiDhlm2TuLGQD//z Q==;
-X-CSE-ConnectionGUID: zwWoXIF1TgqdilyVwqga7A==
-X-CSE-MsgGUID: yk8IJ+bRSiS3ywv7dfmaLg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383234"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383234"
+ bh=h4D5r1AI95EnbjoqWpsb+CNavMlRhwqTGbxckBtR5cQ=;
+ b=IvTwnHzecqFANw5uDH4gMYT5xACQ7tvDhniiu8Np4DlPST1jHtXrUVEU
+ y/ainv856a9+HUP+ltAG+36YO4IUzgNeoQTyKdYb2qZ7sW8xO7GL1N2M1
+ 9OfQodTQ88l3kYp21SzNUlr7il3RBjkgCrYLjNpRrrt3y1FIqjeItaoEZ
+ Lyjmesnz6dR5xaxNlTIPMD8nXG9NgaegxD2Lqeke9arQCq11NtlPVNLuz
+ hVqVE+/Z9IZLmP6zh9tSDbeFfWp72o7NoIwC5K+EY2EP2P3hIKfUkXLxR
+ WCj9KYZrmj+k5b7XM++hY4HJXgtmJa+4qx3oijoqzMGno3X+yc2TVYvzX g==;
+X-CSE-ConnectionGUID: lJ07UfilTFao8rZHUWBJbQ==
+X-CSE-MsgGUID: EPzrfH3QQe+vzfIi4Dbzkg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383219"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383219"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:09:00 -0700
-X-CSE-ConnectionGUID: 0Xywt/O7THu3kC0U+NfMHg==
-X-CSE-MsgGUID: cV5gs2DnQwSHUrO64Z9/HA==
+ 07 Jun 2024 13:08:59 -0700
+X-CSE-ConnectionGUID: sy8Bxv02ToqGcHN8rOY4QQ==
+X-CSE-MsgGUID: Ba3G0aLOQYGMuELwaIJE8w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373858"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373838"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:09:00 -0700
+ 07 Jun 2024 13:08:58 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 20/27] tests/intel/xe_oa: Register whitelisting and MMIO
- trigger tests
-Date: Fri,  7 Jun 2024 13:08:40 -0700
-Message-ID: <20240607200847.1964629-21-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 06/27] lib/xe/oa: Switch generated files to Xe namespace
+Date: Fri,  7 Jun 2024 13:08:26 -0700
+Message-ID: <20240607200847.1964629-7-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
@@ -67,360 +66,264 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the following tests:
-	* "oa-regs-whitelisted"
-	* "mmio-triggered-reports"
+The Xe IGT library occupies a different namespace ('intel_xe') from the
+i915 IGT library ('intel' or 'i915'). The generated files are also part of
+the Xe IGT library. Therefore make sure the functions and data structs in
+the generated files conform to Xe namespace.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 327 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 327 insertions(+)
+ lib/xe/oa-configs/codegen.py              |  6 ++--
+ lib/xe/oa-configs/oa-equations-codegen.py | 36 +++++++++++------------
+ lib/xe/oa-configs/oa-metricset-codegen.py | 26 ++++++++--------
+ lib/xe/oa-configs/oa-registers-codegen.py | 10 +++----
+ 4 files changed, 39 insertions(+), 39 deletions(-)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 30d1ed329f..ec486c3a80 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -3896,6 +3896,317 @@ test_whitelisted_registers_userspace_config(void)
- 	xe_oa_remove_config(drm_fd, config_id);
- }
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index 020e76ef4b..9a7d57a33e 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -340,13 +340,13 @@ class Gen:
+             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
+         m = re.search('\$GtSlice([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
++            return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
+         m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         return None
  
-+#define OAG_OASTATUS (0xdafc)
-+#define OAG_MMIOTRIGGER (0xdb1c)
-+
-+static const uint32_t oa_wl[] = {
-+	OAG_MMIOTRIGGER,
-+	OAG_OASTATUS,
-+};
-+
-+static const uint32_t nonpriv_slot_offsets[] = {
-+	0x4d0, 0x4d4, 0x4d8, 0x4dc, 0x4e0, 0x4e4, 0x4e8, 0x4ec,
-+	0x4f0, 0x4f4, 0x4f8, 0x4fc, 0x010, 0x014, 0x018, 0x01c,
-+	0x1e0, 0x1e4, 0x1e8, 0x1ec,
-+};
-+
-+struct test_perf {
-+	const uint32_t *slots;
-+	uint32_t num_slots;
-+	const uint32_t *wl;
-+	uint32_t num_wl;
-+} perf;
-+
-+#define HAS_OA_MMIO_TRIGGER(__d) \
-+	(IS_DG2(__d) || IS_PONTEVECCHIO(__d) || IS_METEORLAKE(__d) || \
-+	 intel_graphics_ver(devid) >= IP_VER(20, 0))
-+
-+static void perf_init_whitelist(void)
-+{
-+	perf.slots = nonpriv_slot_offsets;
-+	perf.num_slots = 20;
-+	perf.wl = oa_wl;
-+	perf.num_wl = ARRAY_SIZE(oa_wl);
-+}
-+
-+static void
-+emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
-+		 uint32_t reg)
-+{
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+
-+	intel_bb_out(ibb, MI_STORE_REGISTER_MEM | 2);
-+	intel_bb_out(ibb, reg);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION,
-+			    I915_GEM_DOMAIN_INSTRUCTION,
-+			    offset, dst->addr.offset);
-+	intel_bb_out(ibb, lower_32_bits(offset));
-+	intel_bb_out(ibb, upper_32_bits(offset));
-+}
-+
-+static void
-+emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t value)
-+{
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
-+	intel_bb_out(ibb, OAG_MMIOTRIGGER);
-+	intel_bb_out(ibb, value);
-+}
-+
-+static void dump_whitelist(uint32_t mmio_base, const char *msg)
-+{
-+	int i;
-+
-+	igt_debug("%s\n", msg);
-+
-+	for (i = 0; i < perf.num_slots; i++)
-+		igt_debug("FORCE_TO_NON_PRIV_%02d = %08x\n",
-+			  i, intel_register_read(&mmio_data,
-+						 mmio_base + perf.slots[i]));
-+}
-+
-+static bool in_whitelist(uint32_t mmio_base, uint32_t reg)
-+{
-+	int i;
-+
-+	if (reg & MMIO_BASE_OFFSET)
-+		reg = (reg & ~MMIO_BASE_OFFSET) + mmio_base;
-+
-+	for (i = 0; i < perf.num_slots; i++) {
-+		uint32_t fpriv = intel_register_read(&mmio_data,
-+						     mmio_base + perf.slots[i]);
-+
-+		if ((fpriv & RING_FORCE_TO_NONPRIV_ADDRESS_MASK) == reg)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static void oa_regs_in_whitelist(uint32_t mmio_base, bool are_present)
-+{
-+	int i;
-+
-+	if (are_present) {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(in_whitelist(mmio_base, perf.wl[i]));
-+	} else {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(!in_whitelist(mmio_base, perf.wl[i]));
-+	}
-+}
-+
-+static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	u32 mmio_base = 0x2000;
-+
-+	switch (hwe->engine_class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		mmio_base = 0x2000;
-+		break;
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		switch (hwe->engine_instance) {
-+		case 0:
-+			mmio_base = 0x1a000;
-+			break;
-+		case 1:
-+			mmio_base = 0x1c000;
-+			break;
-+		case 2:
-+			mmio_base = 0x1e000;
-+			break;
-+		case 3:
-+			mmio_base = 0x26000;
-+			break;
-+		}
-+	}
-+
-+	return mmio_base;
-+}
-+
-+/**
-+ * SUBTEST: oa-regs-whitelisted
-+ * Description: Verify that OA registers are whitelisted
-+ */
-+static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	// uint32_t mmio_base = gem_engine_mmio_base(drm_fd, e->name);
-+	u32 mmio_base;
-+
-+	/* FIXME: Add support for OAM whitelist testing */
-+	if (hwe->engine_class != DRM_XE_ENGINE_CLASS_RENDER &&
-+	    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+		return;
-+
-+	mmio_base = oa_get_mmio_base(hwe);
-+
-+	intel_register_access_init(&mmio_data,
-+				   igt_device_get_pci_device(drm_fd),
-+				   0, drm_fd);
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	dump_whitelist(mmio_base, "oa whitelisted");
-+
-+	oa_regs_in_whitelist(mmio_base, true);
-+
-+	__perf_close(stream_fd);
-+
-+	dump_whitelist(mmio_base, "oa remove whitelist");
-+
-+	/*
-+	 * after perf close, check that registers are removed from the nonpriv
-+	 * slots
-+	 * FIXME if needed: currently regs remain added forever
-+	 */
-+	// oa_regs_in_whitelist(mmio_base, false);
-+
-+	intel_register_access_fini(&mmio_data);
-+}
-+
-+static void
-+__test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_xe_perf_metric_set *test_set = default_test_set;
-+	int oa_exponent = max_oa_exponent_for_period_lte(2 * NSEC_PER_SEC);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+	uint32_t oa_buffer, offset_tail1, offset_tail2;
-+	struct intel_buf src, dst, *dst_buf;
-+	uint32_t mmio_triggered_reports = 0;
-+	uint32_t *start, *end;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t context, vm;
-+	int height = 600;
-+	int width = 800;
-+	uint8_t *buf;
-+
-+	bops = buf_ops_create(drm_fd);
-+
-+	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+				   I915_TILING_NONE,
-+				   I915_COMPRESSION_NONE);
-+	buf_map(drm_fd, dst_buf, true);
-+	memset(dst_buf->ptr, 0, 4096);
-+	intel_buf_unmap(dst_buf);
-+
-+	scratch_buf_init(bops, &src, width, height, 0xff0000ff);
-+	scratch_buf_init(bops, &dst, width, height, 0x00ff00ff);
-+
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	igt_assert(context);
-+	ibb = intel_bb_create_with_context(drm_fd, context, vm, NULL, BATCH_SZ);
-+
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	buf = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(buf != NULL);
-+
-+	emit_oa_reg_read(ibb, dst_buf, 0, OAG_OABUFFER);
-+	emit_oa_reg_read(ibb, dst_buf, 4, OAG_OATAILPTR);
-+	emit_mmio_triggered_report(ibb, 0xc0ffee11);
-+
-+	if (render_copy)
-+		render_copy(ibb,
-+			    &src, 0, 0, width, height,
-+			    &dst, 0, 0);
-+
-+	emit_mmio_triggered_report(ibb, 0xc0ffee22);
-+
-+	emit_oa_reg_read(ibb, dst_buf, 8, OAG_OATAILPTR);
-+
-+	intel_bb_flush_render(ibb);
-+	intel_bb_sync(ibb);
-+
-+	buf_map(drm_fd, dst_buf, false);
-+
-+	oa_buffer = dst_buf->ptr[0] & OAG_OATAILPTR_MASK;
-+	offset_tail1 = (dst_buf->ptr[1] & OAG_OATAILPTR_MASK) - oa_buffer;
-+	offset_tail2 = (dst_buf->ptr[2] & OAG_OATAILPTR_MASK) - oa_buffer;
-+
-+	igt_debug("oa_buffer = %08x, tail1 = %08x, tail2 = %08x\n",
-+		  oa_buffer, offset_tail1, offset_tail2);
-+
-+	start = (uint32_t *)(buf + offset_tail1);
-+	end = (uint32_t *)(buf + offset_tail2);
-+	while (start < end) {
-+		if (!report_reason(start))
-+			mmio_triggered_reports++;
-+
-+		if (get_oa_format(test_set->perf_oa_format).report_hdr_64bit) {
-+			u64 *start64 = (u64 *)start;
-+
-+			igt_debug("hdr: %016lx %016lx %016lx %016lx\n",
-+				  start64[0], start64[1], start64[2], start64[3]);
-+		} else {
-+			igt_debug("hdr: %08x %08x %08x %08x\n",
-+				  start[0], start[1], start[2], start[3]);
-+		}
-+
-+		start += format_size / 4;
-+	}
-+
-+	igt_assert_eq(mmio_triggered_reports, 2);
-+
-+	munmap(buf, OA_BUFFER_SIZE);
-+	intel_buf_close(bops, &src);
-+	intel_buf_close(bops, &dst);
-+	intel_buf_unmap(dst_buf);
-+	intel_buf_destroy(dst_buf);
-+	intel_bb_destroy(ibb);
-+	xe_exec_queue_destroy(drm_fd, context);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	__perf_close(stream_fd);
-+}
-+
-+/**
-+ * SUBTEST: mmio-triggered-reports
-+ * Description: Test MMIO trigger functionality
-+ */
-+static void
-+test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct igt_helper_process child = {};
-+	int ret;
-+
-+	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 0);
-+	igt_fork_helper(&child) {
-+		igt_drop_root();
-+
-+		__test_mmio_triggered_reports(hwe);
-+	}
-+	ret = igt_wait_helper(&child);
-+	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
-+
-+	igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+		   WEXITSTATUS(ret) == 0);
-+}
-+
- /**
-  * SUBTEST: xe-ref-count
-  * Description: Check that an open oa stream holds a reference on the xe module
-@@ -4563,6 +4874,22 @@ igt_main
- 				closed_fd_and_unmapped_access(hwe);
- 	}
+     def output_rpn_equation_code(self, set, counter, equation):
+diff --git a/lib/xe/oa-configs/oa-equations-codegen.py b/lib/xe/oa-configs/oa-equations-codegen.py
+index a4a00f46d9..de5a3337df 100644
+--- a/lib/xe/oa-configs/oa-equations-codegen.py
++++ b/lib/xe/oa-configs/oa-equations-codegen.py
+@@ -46,9 +46,9 @@ def output_counter_read(gen, set, counter):
+     read_eq = counter.get('equation')
  
-+	igt_subtest_group {
-+		igt_fixture {
-+			perf_init_whitelist();
-+		}
-+
-+		igt_subtest_with_dynamic("oa-regs-whitelisted")
-+			__for_one_hwe_in_oag(hwe)
-+				test_oa_regs_whitelist(hwe);
-+
-+		igt_subtest_with_dynamic("mmio-triggered-reports") {
-+			igt_require(HAS_OA_MMIO_TRIGGER(devid));
-+			__for_one_hwe_in_oag(hwe)
-+				test_mmio_triggered_reports(hwe);
-+		}
-+	}
-+
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
+     c(ret_ctype)
+-    c(counter.read_sym + "(const struct intel_perf *perf,\n")
++    c(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
+     c.indent(len(counter.read_sym) + 1)
+-    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("const struct intel_xe_perf_metric_set *metric_set,\n")
+     c("uint64_t *accumulator)\n")
+     c.outdent(len(counter.read_sym) + 1)
+ 
+@@ -75,9 +75,9 @@ def output_counter_read_definition(gen, set, counter):
+         read_eq = counter.get('equation')
+ 
+         h(ret_ctype)
+-        h(counter.read_sym + "(const struct intel_perf *perf,\n")
++        h(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
+         h.indent(len(counter.read_sym) + 1)
+-        h("const struct intel_perf_metric_set *metric_set,\n")
++        h("const struct intel_xe_perf_metric_set *metric_set,\n")
+         h("uint64_t *accumulator);\n")
+         h.outdent(len(counter.read_sym) + 1)
+ 
+@@ -100,9 +100,9 @@ def output_counter_max(gen, set, counter):
+     ret_ctype = data_type_to_ctype(ret_type)
+ 
+     c(ret_ctype)
+-    c(counter.max_sym + "(const struct intel_perf *perf,\n")
++    c(counter.max_sym + "(const struct intel_xe_perf *perf,\n")
+     c.indent(len(counter.max_sym) + 1)
+-    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("const struct intel_xe_perf_metric_set *metric_set,\n")
+     c("uint64_t *accumulator)\n")
+     c.outdent(len(counter.max_sym) + 1)
+ 
+@@ -135,9 +135,9 @@ def output_counter_max_definition(gen, set, counter):
+ 
+         h(ret_ctype)
+ 
+-        h(counter.max_sym + "(const struct intel_perf *perf,")
++        h(counter.max_sym + "(const struct intel_xe_perf *perf,")
+         h.indent(len(counter.max_sym) + 1)
+-        h("const struct intel_perf_metric_set *metric_set,")
++        h("const struct intel_xe_perf_metric_set *metric_set,")
+         h("uint64_t *accumulator);")
+         h.outdent(len(counter.max_sym) + 1)
+         h("\n")
+@@ -163,16 +163,16 @@ def generate_equations(args, gens):
+         #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+ 
+         double
+-        percentage_max_callback_float(const struct intel_perf *perf,
+-                                      const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_float(const struct intel_xe_perf *perf,
++                                      const struct intel_xe_perf_metric_set *metric_set,
+                                       uint64_t *accumulator)
+         {
+            return 100;
+         }
+ 
+         uint64_t
+-        percentage_max_callback_uint64(const struct intel_perf *perf,
+-                                       const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
++                                       const struct intel_xe_perf_metric_set *metric_set,
+                                        uint64_t *accumulator)
+         {
+            return 100;
+@@ -196,16 +196,16 @@ def generate_equations(args, gens):
+         #include <stdint.h>
+         #include <stdbool.h>
+ 
+-        struct intel_perf;
+-        struct intel_perf_metric_set;
++        struct intel_xe_perf;
++        struct intel_xe_perf_metric_set;
+ 
+         double
+-        percentage_max_callback_float(const struct intel_perf *perf,
+-                                      const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_float(const struct intel_xe_perf *perf,
++                                      const struct intel_xe_perf_metric_set *metric_set,
+                                       uint64_t *accumulator);
+         uint64_t
+-        percentage_max_callback_uint64(const struct intel_perf *perf,
+-                                       const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
++                                       const struct intel_xe_perf_metric_set *metric_set,
+                                        uint64_t *accumulator);
+ 
+         """ % (header_define, header_define)))
+diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
+index ea0d13cc97..f4a008d690 100644
+--- a/lib/xe/oa-configs/oa-metricset-codegen.py
++++ b/lib/xe/oa-configs/oa-metricset-codegen.py
+@@ -28,7 +28,7 @@ def availability_func_name(set, counter):
+ def output_availability_funcs(set, counter):
+     availability = counter.get('availability')
+     if availability:
+-        c("static bool " + availability_func_name(set, counter) + "(const struct intel_perf *perf) {")
++        c("static bool " + availability_func_name(set, counter) + "(const struct intel_xe_perf *perf) {")
+         c.indent(4)
+         set.gen.output_availability(set, availability, counter.get('name'))
+         c.indent(4)
+@@ -60,9 +60,9 @@ def output_counter_report(set, counter):
+     c(".name = \"{0}\",\n".format(counter.get('name')))
+     c(".symbol_name = \"{0}\",\n".format(counter.get('symbol_name')))
+     c(".desc = \"{0}\",\n".format(counter.get('description')))
+-    c(".type = INTEL_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
+-    c(".storage = INTEL_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
+-    c(".unit = INTEL_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
++    c(".type = INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
++    c(".storage = INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
++    c(".unit = INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
+     c(".read_{0} = {1},\n".format(data_type, set.read_funcs["$" + counter.get('symbol_name')]))
+     c(".max_{0} = {1},\n".format(data_type, set.max_funcs["$" + counter.get('symbol_name')]))
+     c(".group = \"{0}\",\n".format(counter.get('mdapi_group')))
+@@ -98,18 +98,18 @@ def generate_metric_sets(args, gen):
+           output_availability_funcs(set, counter)
+ 
+         c("\nstatic void\n")
+-        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_perf *perf)")
++        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_xe_perf *perf)")
+         c("{\n")
+         c.indent(4)
+ 
+-        c("struct intel_perf_metric_set *metric_set;\n")
+-        c("struct intel_perf_logical_counter *counter;\n\n")
++        c("struct intel_xe_perf_metric_set *metric_set;\n")
++        c("struct intel_xe_perf_logical_counter *counter;\n\n")
+ 
+         c("metric_set = calloc(1, sizeof(*metric_set));\n")
+         c("metric_set->name = \"" + set.name + "\";\n")
+         c("metric_set->symbol_name = \"" + set.symbol_name + "\";\n")
+         c("metric_set->hw_config_guid = \"" + set.hw_config_guid + "\";\n")
+-        c("metric_set->counters = calloc({0}, sizeof(struct intel_perf_logical_counter));\n".format(str(len(counters))))
++        c("metric_set->counters = calloc({0}, sizeof(struct intel_xe_perf_logical_counter));\n".format(str(len(counters))))
+         c("metric_set->n_counters = 0;\n")
+         c("metric_set->perf_oa_metrics_set = 0; // determined at runtime\n")
+ 
+@@ -167,12 +167,12 @@ def generate_metric_sets(args, gen):
+ 
+         c("%s_%s_add_registers(perf, metric_set);" % (gen.chipset, set.underscore_name))
+ 
+-        c("intel_perf_add_metric_set(perf, metric_set);");
++        c("intel_xe_perf_add_metric_set(perf, metric_set);");
+         c("\n")
+ 
+         c("{")
+         c.indent(4)
+-        c("static const struct intel_perf_logical_counter _counters[] = {")
++        c("static const struct intel_xe_perf_logical_counter _counters[] = {")
+         c.indent(4)
+ 
+         for counter in counters:
+@@ -190,7 +190,7 @@ def generate_metric_sets(args, gen):
+         c("counter = &metric_set->counters[metric_set->n_counters++];")
+         c("*counter = _counters[i];")
+         c("counter->metric_set = metric_set;")
+-        c("intel_perf_add_logical_counter(perf, counter, counter->group);")
++        c("intel_xe_perf_add_logical_counter(perf, counter, counter->group);")
+         c.outdent(4)
+         c("}")
+         c.outdent(4)
+@@ -201,7 +201,7 @@ def generate_metric_sets(args, gen):
+         c("}\n")
+ 
+     c("\nvoid")
+-    c("intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf)")
++    c("intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf)")
+     c("{")
+     c.indent(4)
+ 
+@@ -256,7 +256,7 @@ def main():
+         """ % (header_define, header_define)))
+ 
+     # Print out all set registration functions for each generation.
+-    h("void intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf);\n\n")
++    h("void intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf);\n\n")
+ 
+     h(textwrap.dedent("""\
+         #endif /* %s */
+diff --git a/lib/xe/oa-configs/oa-registers-codegen.py b/lib/xe/oa-configs/oa-registers-codegen.py
+index a4aa134097..08fc38a50e 100644
+--- a/lib/xe/oa-configs/oa-registers-codegen.py
++++ b/lib/xe/oa-configs/oa-registers-codegen.py
+@@ -22,7 +22,7 @@ def generate_register_configs(set):
+         'OA': 'b_counter_regs',
+     }
+ 
+-    c("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set)" %
++    c("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set)" %
+       (set.gen.chipset, set.underscore_name))
+     c("{")
+     c.indent(4)
+@@ -39,7 +39,7 @@ def generate_register_configs(set):
+ 
+         c("{")
+         c.indent(4)
+-        c("static const struct intel_perf_register_prog _%s[] = {" % t)
++        c("static const struct intel_xe_perf_register_prog _%s[] = {" % t)
+         c.indent(4)
+         for register in register_config.findall('register'):
+             c("{ .reg = %s, .val = %s }," %
+@@ -95,11 +95,11 @@ def main():
+     h("#ifndef %s" % header_define)
+     h("#define %s" % header_define)
+     h("\n")
+-    h("struct intel_perf;")
+-    h("struct intel_perf_metric_set;")
++    h("struct intel_xe_perf;")
++    h("struct intel_xe_perf_metric_set;")
+     h("\n")
+     for set in gen.sets:
+-        h("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set);" %
++        h("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set);" %
+           (gen.chipset, set.underscore_name))
+     h("\n")
+     h("#endif /* %s */" % header_define)
 -- 
 2.41.0
 
