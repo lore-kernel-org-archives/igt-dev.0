@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2ABD6C27C5F
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 13:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D34B1C27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 13:58:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD9A810EC76;
-	Fri,  7 Jun 2024 13:58:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72C6210EC77;
+	Fri,  7 Jun 2024 13:58:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OqR6Q78t";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jL+CVcCu";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D395510EC71
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 13:58:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FA0D10EC77
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 13:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717768710; x=1749304710;
+ t=1717768712; x=1749304712;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=MVVQNalVErS2nM9w4CMABsKmJe9Tvg5had/MEW6J0cg=;
- b=OqR6Q78toAry/xALvtmy37R5BYqg4R8Z5RGlCI3kEr6YH5wqgh4NuxLT
- qWJ6V0HOL1ZKBxktCLe648jS0/DhMtck6DTyFQrtAL6egNfvyldVrxQ6m
- 4XRR92o2/+Q8394TkA58CXXCwfZFUE+nvBm73ArE9Q4xLOFhMKadDC93l
- KP3op2/tHLIuBZjWr+r9GXCssBWfa2ZYZtUbDfJ4YHBjRjNIM7C0pH7/W
- fVMHRwCrSo4sg0jGpy6mQP3xTV1Jd4qULQ9nL4Ux+5yWP7UI75LmJvdoI
- ksvPX4w+RYAXNybXAZzrmZksEPM34sr70+gpXwaMKNVwnbJ8SQ97AU1B5 w==;
-X-CSE-ConnectionGUID: TLiGiFLRTFG96CgPNqfhvQ==
-X-CSE-MsgGUID: ruAADkHCRN+cXMzVcDAmcw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="25116782"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25116782"
+ bh=odHqSn7eEtUvTbfuHtlLSha4EDicVvAs3HMGClJPTPA=;
+ b=jL+CVcCuc58bxqJ7wj9qNBAgqicxoN1hMuqcYlQppxCaU4D6wfrpSvAD
+ j9wnnxNuLlJKbNr635CrefiwYundklu9h2rICbMygc1ypEovwKJHuyEdr
+ MlPl2p/l9WzpPPs040qyh7EQ4JvkoAkEBn5nrQk3IkcUebGg2B3ZcRUsF
+ t6jqcUGkrfxPAYWNb8MlsB1VWya72na3rd/Jlh3zgMj1TeYp8g9Ii2ASu
+ JPmh3xWQqMQH4FvNcJsIv08HQlL5ygtBdeXXNuuh1jt/80djFapVGFQBC
+ Iw7r7tXsUxAgCLvv30LJ1WKSNffpOD1+L0iEwtScD55KEFRtokOrSILpS A==;
+X-CSE-ConnectionGUID: Io1VFKxdSxyQ1vjw3tiKjQ==
+X-CSE-MsgGUID: NkXT1vQWRl2m3cP5niCi5w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="25116785"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25116785"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 06:58:29 -0700
-X-CSE-ConnectionGUID: RVIZggoeRlC6mm3XN/pGog==
-X-CSE-MsgGUID: JLUQWVIPQwOGKsnl7lfMdw==
+ 07 Jun 2024 06:58:32 -0700
+X-CSE-ConnectionGUID: R+rbgtESTIes7E1sz7Jg4g==
+X-CSE-MsgGUID: PxDROhrVQGuvWP9INIB9iQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38323786"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38323795"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 07 Jun 2024 06:58:28 -0700
+ by fmviesa008.fm.intel.com with SMTP; 07 Jun 2024 06:58:31 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 07 Jun 2024 16:58:27 +0300
+ Fri, 07 Jun 2024 16:58:29 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 10/27] tools/intel_vbt_decode: Decode block 15 (Dot
- Clock Override Table) and block 9 (ALM only)
-Date: Fri,  7 Jun 2024 16:57:41 +0300
-Message-ID: <20240607135758.31421-11-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 11/27] tools/intel_vbt_decode: Decode blocks 16, 29,
+ 31 (Toggle List)
+Date: Fri,  7 Jun 2024 16:57:42 +0300
+Message-ID: <20240607135758.31421-12-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
 References: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
@@ -71,280 +71,201 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Decode VBT block 15 (Dot Clock Override Table) and block 9 (ALM only).
-Entirely reverse engineered by intuition as I couldn't find any VBIOS
-sources or spec version that has this.
+Decode VBT blocks 16,29,31 (Toggle List). There are three variants:
+pre-IVB/IVB/HSW+ each of which define the device handle bitmasks
+in slightly different ways.
 
-The gen2 decoding looks solid given I had both ALM and MGM with these
-tables. The gen3+ stuff can't be 100% sure about as all my gen3+ VBTs
-have this block just filled with zeroes.
+Block 31 example output from HSW:
+BDB block 31 (92 bytes, min 12 bytes) - Display toggle list (HSW+):
+        0000: 1f 5c 00 10 00 02 01 00  09 00 08 00 02 00 05 00
+        0010: 04 00 0c 00 40 00 44 00  48 00 41 00 00 00 00 00
+        0020: 00 00 00 00 00 00 08 00  02 01 00 21 00 41 00 48
+        0030: 00 08 00 04 00 0c 00 40  00 08 00 02 01 00 48 00
+        0040: 44 00 60 00 24 00 28 00  20 00 40 00 08 00 02 01
+        0050: 00 04 00 08 00 40 00 20  00 09 00 28 00 05 00
 
-Block 9 example output from ALM:
-BDB block 9 (264 bytes, min 100 bytes) - Dot clock override (ALM):
-        0000: 09 08 01 57 62 00 00 02  12 07 8b a0 6e 00 00 03
-        0010: 14 06 88 0c 7b 00 00 02  10 0d 88 ac 8a 00 00 03
-        0020: 16 0b 87 a0 8c 00 00 02  10 04 86 40 9c 00 00 04
-        0030: 18 08 85 44 a2 00 00 02  10 05 85 64 af 00 00 03
-        0040: 16 09 85 80 bb 00 00 02  10 04 84 5c c1 00 00 02
-        0050: 10 07 84 50 c3 00 00 02  10 08 84 ba db 00 00 03
-        0060: 14 05 83 e8 fd 00 00 04  16 08 82 f8 24 01 00 02
-        0070: 10 08 82 9e 33 01 00 02  10 0d 82 24 71 01 00 03
-        0080: 14 06 81 e0 a5 01 00 02  12 06 81 58 0f 02 00 04
-        0090: 16 0d a0 14 44 02 00 02  10 07 a0 3c 67 02 00 02
-        00a0: 10 0d a0 d0 78 02 00 02  12 06 a0 8c ad 02 00 03
-        00b0: 12 08 01 f0 c6 02 00 03  12 0c 01 48 e2 02 00 03
-        00c0: 14 06 01 18 ea 02 00 03  14 07 01 04 17 03 00 02
-        00d0: 10 09 01 ce 1f 03 00 03  16 06 01 8a 54 03 00 02
-        00e0: 12 07 01 7c 80 03 00 02  12 0d 01 10 92 03 00 04
-        00f0: 14 05 20 88 fb 03 00 03  12 07 20 00 65 04 00 02
-        0100: 10 04 20 28 88 04 00 02  10 07 20
+        Toggle list #1
+                Num entries: 16
+                Entry size: 2
 
                 Entry #1:
-                        Dotclock: 25175 kHz
-                        Calculated dotclock: 25154 kHz
-                        N: 4
-                        M1: 20
-                        M2: 9
-                        M: 109
-                        P1: 13
-                        P2: 4
-                        P: 52
+                        Display select: CRT (0x0001)
                 ...
-                Entry #33:
-                        Dotclock: 297000 kHz
-                        Calculated dotclock: 297000 kHz
-                        N: 4
-                        M1: 18
-                        M2: 9
-                        M: 99
-                        P1: 2
-                        P2: 2
-                        P: 4
+                Entry #16:
+                        Display select: none (0x0000)
+        ...
+        Toggle list #4
+                Num entries: 8
+                Entry size: 2
 
-Block 15 example output from MGM:
-BDB block 15 (124 bytes, min 2 bytes) - Dot clock override:
-        0000: 0f 7c 00 08 0a 00 00 00  00 00 00 00 00 00 00 00
-        0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
-        0020: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
-        0030: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
-        0040: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
-        0050: 00 00 00 00 00 08 0a 38  c7 00 00 02 14 07 02 00
-        0060: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
-        0070: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00
-
-        Normal:
-                Row size: 8
-                Num rows: 10
                 Entry #1:
-                        Dotclock: 0 kHz
+                        Display select: CRT (0x0001)
                 ...
-                Entry #10:
-                        Dotclock: 0 kHz
-        LVDS:
-                Row size: 8
-                Num rows: 10
-                Entry #1:
-                        Dotclock: 51000 kHz
-                        Calculated dotclock: 51000 kHz
-                        N: 4
-                        M1: 22
-                        M2: 9
-                        M: 119
-                        P1: 2
-                        P2: 14
-                        P: 28
-                ...
-                Entry #5:
-                        Dotclock: 0 kHz
+                Entry #8:
+                        Display select: CRT,EFP1 (0x0005)
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 144 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 142 insertions(+), 2 deletions(-)
+ tools/intel_vbt_decode.c | 119 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 119 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index fd0753eb11d7..5c334c902966 100644
+index 5c334c902966..bff6177e27c6 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -327,8 +327,9 @@ static size_t block_min_size(const struct context *context, int section_id)
- 	case BDB_SWF_IO:
- 	case BDB_SWF_MMIO:
- 		return sizeof(struct bdb_reg_table);
--	case BDB_PSR:
--		return sizeof(struct bdb_psr);
-+	case BDB_PSR: /* nee BDB_DOT_CLOCK_OVERRIDE_ALM */
-+		return max(sizeof(struct bdb_psr),
-+			   sizeof(struct bdb_dot_clock_override_alm));
- 	case BDB_MODE_REMOVAL_TABLE:
- 		return sizeof(struct bdb_mode_removal);
- 	case BDB_CHILD_DEVICE_TABLE:
-@@ -337,6 +338,8 @@ static size_t block_min_size(const struct context *context, int section_id)
- 		return sizeof(struct bdb_driver_features);
- 	case BDB_DRIVER_PERSISTENCE:
+@@ -340,12 +340,18 @@ static size_t block_min_size(const struct context *context, int section_id)
  		return sizeof(struct bdb_driver_persistence);
-+	case BDB_DOT_CLOCK_OVERRIDE:
-+		return sizeof(struct bdb_dot_clock_override);
+ 	case BDB_DOT_CLOCK_OVERRIDE:
+ 		return sizeof(struct bdb_dot_clock_override);
++	case BDB_DISPLAY_SELECT_OLD:
++		return sizeof(struct bdb_display_select_old);
  	case BDB_SDVO_LVDS_OPTIONS:
  		return sizeof(struct bdb_sdvo_lvds_options);
  	case BDB_SDVO_LVDS_DTD:
-@@ -1900,6 +1903,132 @@ static void dump_driver_persistence(struct context *context,
- 	printf("\tPersistent max config: %d\n", persistence->persistent_max_config);
+ 		return sizeof(struct bdb_sdvo_lvds_dtd);
+ 	case BDB_EDP:
+ 		return sizeof(struct bdb_edp);
++	case BDB_DISPLAY_SELECT_IVB:
++		return sizeof(struct bdb_display_select_ivb);
++	case BDB_DISPLAY_SELECT_HSW:
++		return sizeof(struct bdb_display_select_hsw);
+ 	case BDB_LFP_OPTIONS:
+ 		return sizeof(struct bdb_lfp_options);
+ 	case BDB_LFP_DATA_PTRS:
+@@ -2029,6 +2035,104 @@ static void dump_dot_clock_override(struct context *context,
+ 	_dump_dot_clock_override(d, count, true);
  }
  
-+static void dump_dot_clock_override_entry_gen2(const struct dot_clock_override_entry_gen2 *t,
-+					       bool is_lvds)
++static void dump_display_select_old(struct context *context,
++				    const struct bdb_block *block)
 +{
-+	int ref = 48000;
-+	int m1 = t->m1 + 2;
-+	int m2 = t->m2 + 2;
-+	int m = 5 * m1 + m2;
-+	int n = t->n + 2;
-+	int p1, p2, p;
++	const void *data = block_data(block);
++	int offset = 0;
 +
-+	if (is_lvds) {
-+		p1 = igt_fls((unsigned int)t->p1);
-+		p2 = 14;
-+	} else {
-+		p1 = t->p1_div_by_2 ? 2 : (t->p1 + 2);
-+		p2 = t->p2_div_by_4 ? 4 : 2;
-+	}
++	for (int n = 0; n < 4; n++) {
++		const struct toggle_list_table_old *t = data + offset;
 +
-+	p = p1 * p2;
++		offset += sizeof(*t) + t->num_entries * t->entry_size;
 +
-+	printf("\t\t\tDotclock: %d kHz\n", t->dotclock);
++		printf("\tToggle list #%d\n", n+1);
 +
-+	if (!t->dotclock)
-+		return;
++		printf("\t\tNum entries: %d\n", t->num_entries);
++		printf("\t\tEntry size: %d\n\n", t->entry_size);
 +
-+	printf("\t\t\tCalculated dotclock: %d kHz\n",
-+	       n && p ? DIV_ROUND_CLOSEST(ref * m, n * p) : 0);
-+	printf("\t\t\tN: %d\n", n);
-+	printf("\t\t\tM1: %d\n", m1);
-+	printf("\t\t\tM2: %d\n", m2);
-+	printf("\t\t\tM: %d\n", m);
-+	printf("\t\t\tP1: %d\n", p1);
-+	printf("\t\t\tP2: %d\n", p2);
-+	printf("\t\t\tP: %d\n", p);
-+}
++		if (sizeof(t->list[0]) != t->entry_size) {
++			printf("\t\tstruct doesn't match (expected %zu, got %u), skipping\n",
++			       sizeof(t->list[0]), t->entry_size);
++			continue;
++		}
 +
-+static void dump_dot_clock_override_alm(struct context *context,
-+					const struct bdb_block *block)
-+{
-+	const struct bdb_dot_clock_override_alm *b = block_data(block);
-+	int count = block->size / sizeof(b->t[0]);
-+
-+	for (int i = 0; i < count; i++) {
-+		const struct dot_clock_override_entry_gen2 *t = &b->t[i];
-+
-+		printf("\t\tEntry #%d:\n", i + 1);
-+		dump_dot_clock_override_entry_gen2(t, false);
-+	}
-+}
-+
-+static void dump_dot_clock_override_entry_gen3(const struct dot_clock_override_entry_gen3 *t)
-+{
-+	int ref = 96000;
-+	int m1 = t->m1 + 2;
-+	int m2 = t->m2 + 2;
-+	int m = 5 * m1 + m2;
-+	int n = t->n + 2;
-+	int p1 = t->p1;
-+	int p2 = t->p2;
-+	int p = p1 * p2;
-+
-+	printf("\t\t\tDotclock: %d kHz\n", t->dotclock);
-+
-+	if (!t->dotclock)
-+		return;
-+
-+	printf("\t\t\tCalculated dotclock: %d kHz\n",
-+	       n && p ? DIV_ROUND_CLOSEST(ref * m, n * p) : 0);
-+	printf("\t\t\tN: %d\n", n);
-+	printf("\t\t\tM1: %d\n", m1);
-+	printf("\t\t\tM2: %d\n", m2);
-+	printf("\t\t\tP1: %d\n", p1);
-+	printf("\t\t\tP2: %d\n", p2);
-+}
-+
-+static void _dump_dot_clock_override(const struct bdb_dot_clock_override *d,
-+				     int count, bool is_lvds)
-+{
-+	printf("\t\tRow size: %d\n", d->row_size);
-+	printf("\t\tNum rows: %d\n", d->num_rows);
-+
-+	for (int i = 0; i < count; i++) {
-+		const struct dot_clock_override_entry_gen2 *t_gen2 =
-+			(const void *)d->table + i * d->row_size;
-+		const struct dot_clock_override_entry_gen3 *t_gen3 =
-+			(const void *)d->table + i * d->row_size;
-+
-+		printf("\t\tEntry #%d:\n", i + 1);
-+
-+		switch (d->row_size) {
-+		case 9:
-+			dump_dot_clock_override_entry_gen3(t_gen3);
-+			break;
-+		case 8:
-+			dump_dot_clock_override_entry_gen2(t_gen2, is_lvds);
-+			break;
-+		default:
-+			printf("\t\t\tDotclock: %d kHz\n", t_gen3->dotclock);
-+			break;
++		for (int i = 0 ; i < t->num_entries; i++) {
++			printf("\t\tEntry #%d:\n", i + 1);
++			printf("\t\t\tDisplay select pipe A: %s (0x%02x)\n",
++			       child_device_handle(context, t->list[i].display_select_pipe_a),
++			       t->list[i].display_select_pipe_a);
++			printf("\t\t\tDisplay select pipe B: %s (0x%02x)\n",
++			       child_device_handle(context, t->list[i].display_select_pipe_b),
++			       t->list[i].display_select_pipe_b);
++			printf("\t\t\tCapabilities: 0x%02x\n",
++			       t->list[i].caps);
 +		}
 +	}
 +}
 +
-+static void dump_dot_clock_override(struct context *context,
++static void dump_display_select_ivb(struct context *context,
 +				    const struct bdb_block *block)
 +{
-+	const struct bdb_dot_clock_override *d = block_data(block);
-+	const void *start = d->table;
-+	const void *end = (const void *)d + block->size;
-+	int count;
++	const void *data = block_data(block);
++	int offset = 0;
 +
-+	count = min((int)(end - start) / d->row_size, (int)d->num_rows);
-+	printf("\tNormal:\n");
-+	_dump_dot_clock_override(d, count, false);
++	for (int n = 0; n < 4; n++) {
++		const struct toggle_list_table_ivb *t = data + offset;
 +
-+	d = (const void *)d->table + count * d->row_size;
-+	if ((const void *)d + sizeof(*d) >= end)
-+		return;
++		offset += sizeof(*t) + t->num_entries * t->entry_size;
 +
-+	start = d->table;
++		printf("\tToggle list #%d\n", n+1);
 +
-+	count = min((int)(end - start) / d->row_size, (int)d->num_rows);
-+	printf("\tLVDS:\n");
-+	_dump_dot_clock_override(d, count, true);
++		printf("\t\tNum entries: %d\n", t->num_entries);
++		printf("\t\tEntry size: %d\n\n", t->entry_size);
++
++		if (sizeof(t->list[0]) != t->entry_size) {
++			printf("\t\tstruct doesn't match (expected %zu, got %u), skipping\n",
++			       sizeof(t->list[0]), t->entry_size);
++			continue;
++		}
++
++		for (int i = 0 ; i < t->num_entries; i++) {
++			printf("\t\tEntry #%d:\n", i + 1);
++			printf("\t\t\tDisplay select: %s (0x%02x)\n",
++			       child_device_handle(context, t->list[i].display_select),
++			       t->list[i].display_select);
++		}
++	}
++}
++
++static void dump_display_select_hsw(struct context *context,
++				    const struct bdb_block *block)
++{
++	const void *data = block_data(block);
++	int offset = 0;
++
++	for (int n = 0; n < 4; n++) {
++		const struct toggle_list_table_hsw *t = data + offset;
++
++		offset += sizeof(*t) + t->num_entries * t->entry_size;
++
++		printf("\tToggle list #%d\n", n+1);
++
++		printf("\t\tNum entries: %d\n", t->num_entries);
++		printf("\t\tEntry size: %d\n\n", t->entry_size);
++
++		if (sizeof(t->list[0]) != t->entry_size) {
++			printf("\t\tstruct doesn't match (expected %zu, got %u), skipping\n",
++			       sizeof(t->list[0]), t->entry_size);
++			continue;
++		}
++
++		for (int i = 0 ; i < t->num_entries; i++) {
++			printf("\t\tEntry #%d:\n", i + 1);
++			printf("\t\t\tDisplay select: %s (0x%04x)\n",
++			       child_device_handle(context, t->list[i].display_select),
++			       t->list[i].display_select);
++		}
++	}
 +}
 +
  static void dump_edp(struct context *context,
  		     const struct bdb_block *block)
  {
-@@ -2966,6 +3095,12 @@ struct dumper dumpers[] = {
- 		.name = "MMIO SWF register table",
- 		.dump = dump_reg_table,
+@@ -3132,6 +3236,11 @@ struct dumper dumpers[] = {
+ 		.name = "Dot clock override",
+ 		.dump = dump_dot_clock_override,
  	},
 +	{
-+		.id = BDB_DOT_CLOCK_OVERRIDE_ALM,
-+		.max_bdb_version = 164,
-+		.name = "Dot clock override (ALM)",
-+		.dump = dump_dot_clock_override_alm,
-+	},
- 	{
- 		.id = BDB_PSR,
- 		.min_bdb_version = 165,
-@@ -2992,6 +3127,11 @@ struct dumper dumpers[] = {
- 		.name = "Driver persistent algorithm",
- 		.dump = dump_driver_persistence,
- 	},
-+	{
-+		.id = BDB_DOT_CLOCK_OVERRIDE,
-+		.name = "Dot clock override",
-+		.dump = dump_dot_clock_override,
++		.id = BDB_DISPLAY_SELECT_OLD,
++		.name = "Toggle list block (pre-IVB)",
++		.dump = dump_display_select_old,
 +	},
  	{
  		.id = BDB_SDVO_LVDS_OPTIONS,
  		.name = "SDVO LVDS options block",
+@@ -3147,6 +3256,16 @@ struct dumper dumpers[] = {
+ 		.name = "eDP block",
+ 		.dump = dump_edp,
+ 	},
++	{
++		.id = BDB_DISPLAY_SELECT_IVB,
++		.name = "Display toggle list (IVB)",
++		.dump = dump_display_select_ivb,
++	},
++	{
++		.id = BDB_DISPLAY_SELECT_HSW,
++		.name = "Display toggle list (HSW+)",
++		.dump = dump_display_select_hsw,
++	},
+ 	{
+ 		.id = BDB_LFP_OPTIONS,
+ 		.name = "LFP options block",
 -- 
 2.44.2
 
