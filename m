@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F35DC27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 21:08:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6A0FC41513
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 21:30:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D325F10ED0E;
-	Fri,  7 Jun 2024 21:08:41 +0000 (UTC)
-Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B6F310ED0E;
- Fri,  7 Jun 2024 21:08:40 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4223552308149845853=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 40C5B10E1AF;
+	Fri,  7 Jun 2024 21:30:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jq8WZE5u";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3046510ED29;
+ Fri,  7 Jun 2024 21:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717795829; x=1749331829;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=C36sOMc8pqHHaYzfgFMAH5KJg3ux7ZPafsPhcwAcoLc=;
+ b=jq8WZE5u3yqrBXIXwrncoC00fCLUdVLa28M8EMWJBgLz9eUEf7r0NWVm
+ kA+tuqZAKGM+Hv94fHxHG/MTYRcqussZ5ZCcTC/QYSNNCRxmDzt3u2tz/
+ ClmooW4nEDFHBBFHL84m3XmVCF6pz06FQ5blCYorpoBpbGs0SMoFxrDGP
+ OH6sB/e2X8aC0oGTtsyfl7mN3guDRKl9QUdts85DvDOCrj1mZ166N4Tp9
+ jOgS7Ouxe+YmNBCGodoByY6L3NyrjxpvyHY8q7MEqdd2+l4SLTHRkGdNZ
+ BS1xUJwPmXymHbkOP18klmquSnWNCuJFLREa4RGf8Q0N+6x8qfoAgLebV A==;
+X-CSE-ConnectionGUID: isK3/2JlQi6xn9jeVp9Utg==
+X-CSE-MsgGUID: KlgcQ7E9R2CBGrbKjHXHuA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14770323"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14770323"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 14:30:28 -0700
+X-CSE-ConnectionGUID: I1KMTsgGQ+GxksXr5Iksdw==
+X-CSE-MsgGUID: /X4XibkMSbqLzRHe8umOAQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="69230306"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 14:30:28 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org
+Subject: [PATCH] xe_exec_reset: Add job cancel tests
+Date: Fri,  7 Jun 2024 14:31:01 -0700
+Message-Id: <20240607213101.2309048-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/i915/i915=5Fpm=5Fback?=
- =?utf-8?q?light=3A_Brightness_test_during_DPMS_on_and_off_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Jun 2024 21:08:40 -0000
-Message-ID: <171779452037.28455.8288938419594923347@a6498e030952>
-X-Patchwork-Hint: ignore
-References: <20220424005737.228759-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20220424005737.228759-1-mohammed.thasleem@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,170 +62,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4223552308149845853==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This test has pulled out when the ability to set the job timeout via
+IOCTL was removed from the uAPI while upstreaming Xe. Add this coverage
+back in but only run on a single hardware engine given by default jobs
+take 5 seconds to timeout.
 
-== Series Details ==
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ tests/intel/xe_exec_reset.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-Series: tests/i915/i915_pm_backlight: Brightness test during DPMS on and off (rev2)
-URL   : https://patchwork.freedesktop.org/series/115638/
-State : success
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 8d731e6893..5e9e48adda 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -99,6 +99,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
+ #define VIRTUAL				(0x1 << 3)
+ #define PARALLEL			(0x1 << 4)
+ #define CAT_ERROR			(0x1 << 5)
++#define PREEMPT				(0x1 << 6)
+ 
+ /**
+  * SUBTEST: %s-cat-error
+@@ -280,6 +281,12 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
+  * SUBTEST: cat-error
+  * Description: Test cat error
+  *
++ * SUBTEST: cancel
++ * Description: Test job cancel
++ *
++ * SUBTEST: cancel-preempt
++ * Description: Test job cancel with a preemptable job
++ *
+  * SUBTEST: gt-reset
+  * Description: Test GT reset
+  *
+@@ -318,7 +325,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+ 		uint64_t pad;
+ 		uint32_t data;
+ 	} *data;
+-	struct xe_spin_opts spin_opts = { .preempt = false };
++	struct xe_spin_opts spin_opts = { .preempt = flags & PREEMPT };
+ 	int i, b;
+ 
+ 	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
+@@ -727,6 +734,18 @@ igt_main
+ 		xe_for_each_engine(fd, hwe)
+ 			test_legacy_mode(fd, hwe, 2, 2, CAT_ERROR);
+ 
++	igt_subtest("cancel")
++		xe_for_each_engine(fd, hwe) {
++			test_legacy_mode(fd, hwe, 1, 1, 0);
++			break;
++		}
++
++	igt_subtest("cancel-preempt")
++		xe_for_each_engine(fd, hwe) {
++			test_legacy_mode(fd, hwe, 1, 1, PREEMPT);
++			break;
++		}
++
+ 	igt_subtest("gt-reset")
+ 		xe_for_each_engine(fd, hwe)
+ 			test_legacy_mode(fd, hwe, 2, 2, GT_RESET);
+-- 
+2.34.1
 
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14904 -> IGTPW_11234
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/index.html
-
-Participating hosts (44 -> 37)
-------------------------------
-
-  Missing    (7): bat-adlp-9 fi-snb-2520m bat-adlp-6 fi-kbl-8809g bat-dg2-14 bat-dg2-11 bat-arls-3 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11234:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-8:
-    - {bat-mtlp-9}:       [PASS][1] -> [FAIL][2] +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14904/bat-mtlp-9/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-8.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/bat-mtlp-9/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-8.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11234 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-adln-1:         [INCOMPLETE][3] ([i915#9413]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14904/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/bat-adln-1/igt@i915_selftest@live@gt_lrc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
-  [i915#10979]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10979
-  [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
-  [i915#11060]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11060
-  [i915#6121]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7880 -> IGTPW_11234
-
-  CI-20190529: 20190529
-  CI_DRM_14904: 2bea08bd31298d60d416b2a6ed346bb53dd28037 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11234: febbdbac35dcc88a47c772f363c8f9a9502e28c6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/index.html
-
---===============4223552308149845853==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/i915/i915_pm_backlight: Brightness test during DPMS on and off (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/115638/">https://patchwork.freedesktop.org/series/115638/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14904 -&gt; IGTPW_11234</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/index.html</p>
-<h2>Participating hosts (44 -&gt; 37)</h2>
-<p>Missing    (7): bat-adlp-9 fi-snb-2520m bat-adlp-6 fi-kbl-8809g bat-dg2-14 bat-dg2-11 bat-arls-3 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11234:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-8:<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14904/bat-mtlp-9/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-8.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/bat-mtlp-9/igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-8.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11234 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_lrc:<ul>
-<li>bat-adln-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14904/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11234/bat-adln-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7880 -&gt; IGTPW_11234</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14904: 2bea08bd31298d60d416b2a6ed346bb53dd28037 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11234: febbdbac35dcc88a47c772f363c8f9a9502e28c6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4223552308149845853==--
