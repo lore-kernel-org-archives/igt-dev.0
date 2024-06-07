@@ -4,59 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1607C27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 11:24:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E2ABC27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 12:22:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7189C10EBF2;
-	Fri,  7 Jun 2024 11:24:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27E7610E00A;
+	Fri,  7 Jun 2024 12:22:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LYCfMcY7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VwJDmp+T";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D80E10EBF2
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 11:24:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5ED0710E00A
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 12:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717759498; x=1749295498;
+ t=1717762919; x=1749298919;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Oql0uCgvcsrvsRUR3TIUe5/Jpv+W3OWEsyzNhA7RCE0=;
- b=LYCfMcY75gPYDEXrd2SJIQ0nZ3c5Udfny7q/sccIg8i1e0cTOK1P2cE0
- GboUSvHfT2d+9EuJpjHeog5dQFPF/4k9EvJrEDdHypwJxukREhp7Q8UZY
- 3idN68fWW4nFQ/yckAq03ORtnbucmFlNG6yUdgEIo27tBLqt4anL9wRtR
- EJFD5B/8ZW5n1yxf0jIgEWWX8p1rFsECsiMxrqIml3mw+I76SHt2gziyT
- uHz2z89w2zNx8SY63aKCOE2QByoTRoYpW3ZVeomdYHR6Tq9sKBlslNxyG
- IwzgZoaVlmQPAofZojm0igd70PZtQwsy+7HAhfxLQjU54B1b5pbgDgeZk w==;
-X-CSE-ConnectionGUID: g3BccMtuTTGTi5b2QG5A9w==
-X-CSE-MsgGUID: KjqVSnLdTY+6ZN7r1VrIGg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25103544"
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="25103544"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=AR7ZrKjw2UZtptP+g1N2wqS3pLDiijyP77IquYwOCaQ=;
+ b=VwJDmp+Tt9A+Mvduwb/cN3vWhtxpqj/bmonEyb4cVmrfCO20CiC7vhij
+ pEIKt4LOa2DHaZVzPcXVKq/+zMYwRe0KwIyHfcFVDgQaYbrad3rArkFDc
+ /nDCbvKO5FUiOymAWf1PyUfjr0cHs5qvuy4Rry3xXoYkEp7RdOCDO1tNv
+ Sk5xFHwMyDTRvocHBy4AZpAH72K91GIi0QUQGz0YdsyBIO/qaDoMuRot+
+ Mw+Idorrtsu5fAoZPjc1u6teJZiPbXanZiAdW4EP4tyFLgnIc6Vfubcod
+ u0lTRGGQBYJ95rQu7zaHaxXtvxrOSwdvFtuK2h5tEciNavBkWlZwwbrj8 g==;
+X-CSE-ConnectionGUID: 6uhHMEhvS+WU4UzkYScDwA==
+X-CSE-MsgGUID: Dm0fB+ctRaOVyd3OBBKG5A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25108060"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25108060"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 04:24:57 -0700
-X-CSE-ConnectionGUID: Nn5J5jX3T6yB8vtdxOQNpg==
-X-CSE-MsgGUID: tNksJoJ4R++RSRTOCGlXvA==
+ 07 Jun 2024 05:21:59 -0700
+X-CSE-ConnectionGUID: s4rZHFrETp6UIsDFtJhpHw==
+X-CSE-MsgGUID: NUyEV6wkT0iw8yfBJJt3yA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="42754483"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38759848"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 04:24:56 -0700
-Date: Fri, 7 Jun 2024 13:24:28 +0200
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 05:21:57 -0700
+Date: Fri, 7 Jun 2024 14:21:53 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
-Subject: Re: [PATCH] tests/intel/xe_create: Isolate performance tests
-Message-ID: <20240607112428.dl5zloect22yizt7@kamilkon-DESK.igk.intel.com>
+Cc: Melanie Lobo <melanie.lobo@intel.com>, vidya.srinivas@intel.com,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: Re: [PATCH 1/2] lib/intel_aux_pgtable: Library to add support for
+ RGB16161616_64B format
+Message-ID: <20240607122153.q7zjk4nqeyyjnxio@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
-References: <20240607094936.1564474-1-balasubramani.vivekanandan@intel.com>
+ Melanie Lobo <melanie.lobo@intel.com>, vidya.srinivas@intel.com,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20240606121523.5347-1-melanie.lobo@intel.com>
+ <20240606121523.5347-2-melanie.lobo@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240607094936.1564474-1-balasubramani.vivekanandan@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240606121523.5347-2-melanie.lobo@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,108 +79,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Balasubramani,
-On 2024-06-07 at 15:19:36 +0530, Balasubramani Vivekanandan wrote:
-
-please subscribe to igt-dev mailinglist.
-
-If you will ever send cc to kmd list, please add i-g-t after PATCH.
-
-> create_execqueues subtest is testing the time required for creating
-> execqueues along with testing the functionality.
-> Performance measurements are mostly not relevant when testing on PreSi
-> environments. Isolate the performance checks into new tests allowing it
-> to be skipped for PreSi testing.
+Hi Melanie,
+On 2024-06-06 at 17:45:22 +0530, Melanie Lobo wrote:
+> MTL supports RGB16161616_64B FP16 format which is a binary
+> floating-point computer number format that occupies 16 bits
+> in computer memory.
 > 
-> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+> This was tested with kernel patch,
+> https://patchwork.freedesktop.org/series/124957/
+> https://lore.kernel.org/all/20240605055819.9510-1-melanie.lobo@intel.com/
+> 
+> cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> cc: Swati Sharma <swati2.sharma@intel.com>
+> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
 > ---
->  tests/intel/xe_create.c | 28 +++++++++++++++++++---------
->  1 file changed, 19 insertions(+), 9 deletions(-)
+>  lib/intel_aux_pgtable.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index d41557c85..346c807c0 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -171,9 +171,11 @@ enum vm_count {
->   * @leak:				destroy exec_queues in close() path
->   * @noleak-shared:			same as noleak, but with a shared vm
->   * @leak-shared:			same as leak, but with a shared vm
-> + * @performance:			Measure time required for creating execqueues
-> + * @performance-shared:			same as performance, but with a shared vm
+> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+> index 3cbb0e26f35c..87df50e71bbd 100644
+> --- a/lib/intel_aux_pgtable.c
+> +++ b/lib/intel_aux_pgtable.c
+> @@ -22,6 +22,7 @@
+>  #define AUX_FORMAT_AYUV		0x09
+>  #define AUX_FORMAT_ARGB_8B	0x0A
+>  #define AUX_FORMAT_NV12_21	0x0F
+> +#define AUX_FORMAT_RGBA16_FLOAT        0x1
+--------------------------------- ^^^^^^^^
+There are some unprintable chars, please change that into tab/spaces
+also check compilation locally before sending:
 
-You didn't created any new test, the only thing changed is skipping
-assert.
+../lib/intel_aux_pgtable.c:25:9: warning: ISO C99 requires whitespace after the macro name
+   25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
+      |         ^~~~~~~~~~~~~~~~~~~~~~~
 
->   */
->  static void create_execqueues(int fd, enum exec_queue_destroy ed,
-> -			      enum vm_count vc)
-> +			      enum vm_count vc, bool perf)
-
-Instead of bool parameter imho it is better to check for simulation.
-
->  {
->  	struct timespec tv = { };
->  	uint32_t num_engines, exec_queues_per_process, vm;
-> @@ -237,10 +239,12 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed,
->  		drm_close_driver(fd);
->  	}
->  
-> -	seconds = igt_seconds_elapsed(&tv);
-> -	igt_assert_f(seconds < real_timeout,
-> -		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
-> -		     MAXEXECQUEUES, seconds, real_timeout);
-> +	if (perf) {
-> +		seconds = igt_seconds_elapsed(&tv);
-> +		igt_assert_f(seconds < real_timeout,
-> +			     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
-> +			     MAXEXECQUEUES, seconds, real_timeout);
-> +	}
-
-imho you could still print this info and only assert if not in simulation,
-so your change will be only here like:
-
-	seconds = igt_seconds_elapsed(&tv);
-    if (igt_run_in_simulation())
-		     igt_info("Creating %d exec_queues tooks: %d [limit: %d]\n",
-		     MAXEXECQUEUES, seconds, real_timeout);
-    else
-	        igt_assert_f(seconds < real_timeout,
-		                "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
-                        MAXEXECQUEUES, seconds, real_timeout);
+and later:
+../lib/intel_aux_pgtable.c: In function 'pgt_get_l1_flags':
+../lib/intel_aux_pgtable.c:25:32: error: stray '\302' in program
 
 Regards,
 Kamil
 
->  }
 >  
->  /**
-> @@ -410,16 +414,22 @@ igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
->  	}
->  
->  	igt_subtest("create-execqueues-noleak")
-> -		create_execqueues(xe, NOLEAK, MULTI);
-> +		create_execqueues(xe, NOLEAK, MULTI, false);
->  
->  	igt_subtest("create-execqueues-leak")
-> -		create_execqueues(xe, LEAK, MULTI);
-> +		create_execqueues(xe, LEAK, MULTI, false);
->  
->  	igt_subtest("create-execqueues-noleak-shared")
-> -		create_execqueues(xe, NOLEAK, SHARED);
-> +		create_execqueues(xe, NOLEAK, SHARED, false);
->  
->  	igt_subtest("create-execqueues-leak-shared")
-> -		create_execqueues(xe, LEAK, SHARED);
-> +		create_execqueues(xe, LEAK, SHARED, false);
-> +
-> +	igt_subtest("create-execqueues-performance")
-> +		create_execqueues(xe, NOLEAK, MULTI, true);
-> +
-> +	igt_subtest("create-execqueues-performance-shared")
-> +		create_execqueues(xe, NOLEAK, SHARED, true);
->  
->  	igt_subtest("create-massive-size") {
->  		create_massive_size(xe);
+>  struct pgtable_level_desc {
+>  	int idx_shift;
+> @@ -306,6 +307,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+>  			entry.e.format = AUX_FORMAT_ARGB_8B;
+>  			entry.e.depth = bpp_to_depth_val(32);
+>  			break;
+> +		case 64:
+> +			entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
+> +			entry.e.depth = bpp_to_depth_val(64);
+> +			break;
+>  		default:
+>  			igt_assert(0);
+>  		}
 > -- 
-> 2.25.1
+> 2.17.1
 > 
