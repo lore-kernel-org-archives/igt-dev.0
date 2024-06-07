@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E45BEC27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 06:08:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3ABBC27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 09:42:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E85D10E2C6;
-	Fri,  7 Jun 2024 06:08:24 +0000 (UTC)
-Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 935A410E2C6;
- Fri,  7 Jun 2024 06:08:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BF3510E03B;
+	Fri,  7 Jun 2024 09:42:01 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fcgqpJw3";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 312CE10EBAC
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 08:46:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1717750011; x=1749286011;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=oxJfyEM5wXnJ/LWPx9RXaHAkPhmAb6QgEMw6+HorXio=;
+ b=fcgqpJw3G2hqSsdZbWjAocgmeBns4Jn8kqY49qpq/BSYhywtDlsWJLo+
+ wiAOgpq0GiXMxJwrYtU5s31nd5mjVb19lRAGsjkvNG4EdJtLkRnArAGAW
+ R6GIMwv/DxZB6aIQHzYGpevf/R0fIpyZnRlXj2nQDfCd3b64mMgkdhIF/
+ 7Rx07IKba+59LeyN/QR18vj8stlv5P/gedOn8RTl/Sx88aj/5rpJF4Bqf
+ rfg8AFijAPROCiCyuraDvFGftULq2LLrU44b0tE/fyzdam9mtmeej71UQ
+ c2sZb3+dXj3rKqHw94DWX8AHY4M1Z3mmxou641nxUQw4aB9rK4nJITNvz w==;
+X-CSE-ConnectionGUID: qPCx+wl8ToOfePl8YhzojQ==
+X-CSE-MsgGUID: zaooIywzTa6b8uTOIrjLgQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25862918"
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="25862918"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 01:46:50 -0700
+X-CSE-ConnectionGUID: UPi3guIkRUCUkj0bqjT1xg==
+X-CSE-MsgGUID: 8ydPujhHRgmNvI2sJwaKXw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="61458985"
+Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 01:46:49 -0700
+From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+Subject: [PATCH] tests/intel/xe_create: Isolate performance tests
+Date: Fri,  7 Jun 2024 14:18:14 +0530
+Message-Id: <20240607084814.1561454-1-balasubramani.vivekanandan@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Support_for_RGB16161616?=
- =?utf-8?q?=5F64B_compressed_format_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Melanie Lobo" <melanie.lobo@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Jun 2024 06:08:23 -0000
-Message-ID: <171774050355.25386.14258754763587451632@a6498e030952>
-X-Patchwork-Hint: ignore
-References: <20240606121523.5347-1-melanie.lobo@intel.com>
-In-Reply-To: <20240606121523.5347-1-melanie.lobo@intel.com>
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Fri, 07 Jun 2024 09:41:59 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,71 +63,81 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+create_execqueues subtest is testing the time required for creating
+execqueues along with testing the functionality.
+Performance measurements are mostly not relevant when testing on PreSi
+environments. Isolate the performance checks into new tests allowing it
+to be skipped for PreSi testing.
 
-Series: Support for RGB16161616_64B compressed format (rev2)
-URL   : https://patchwork.freedesktop.org/series/134558/
-State : failure
+Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+---
+ tests/intel/xe_create.c | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
 
-== Summary ==
-
-IGT patchset build failed on latest successful build
-73618605b4370cf902267aaf1d25666ff5e26112 test/intel/xe_exec_reset: Synchronize cm-gt-reset gt resets
-
-Tail of build.log:
-[275/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_i830_c@sta/rendercopy_i830.c.o'.
-[276/1679] Compiling C object 'lib/76b5a35@@igt-uwildmat_uwildmat_c@sta/uwildmat_uwildmat.c.o'.
-[277/1679] Compiling C object 'lib/76b5a35@@igt-igt_eld_c@sta/igt_eld.c.o'.
-[278/1679] Compiling C object 'lib/76b5a35@@igt-igt_halffloat_c@sta/igt_halffloat.c.o'.
-[279/1679] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
-[280/1679] Compiling C object 'lib/76b5a35@@igt-igt_dsc_c@sta/igt_dsc.c.o'.
-[281/1679] Compiling C object 'lib/76b5a35@@igt-igt_sysfs_c@sta/igt_sysfs.c.o'.
-[282/1679] Compiling C object 'lib/76b5a35@@igt-igt_panfrost_c@sta/igt_panfrost.c.o'.
-[283/1679] Compiling C object 'lib/76b5a35@@igt-igt_ktap_c@sta/igt_ktap.c.o'.
-[284/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen4_c@sta/rendercopy_gen4.c.o'.
-[285/1679] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
-[286/1679] Compiling C object 'lib/76b5a35@@igt-igt_psr_c@sta/igt_psr.c.o'.
-[287/1679] Compiling C object 'lib/76b5a35@@igt-intel_allocator_simple_c@sta/intel_allocator_simple.c.o'.
-[288/1679] Compiling C object 'lib/76b5a35@@igt-igt_edid_c@sta/igt_edid.c.o'.
-[289/1679] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
-[290/1679] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
-[291/1679] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[292/1679] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
-[293/1679] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
-[294/1679] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
-[295/1679] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
-[296/1679] Compiling C object 'lib/76b5a35@@igt-igt_vc4_c@sta/igt_vc4.c.o'.
-[297/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
-[298/1679] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
-[299/1679] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[300/1679] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
-[301/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
-[302/1679] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
-[303/1679] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
-[304/1679] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
-[305/1679] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
-[306/1679] Generating i915-perf-registers-acmgt3 with a custom command.
-[307/1679] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
-[308/1679] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
-[309/1679] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
-[310/1679] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
-[311/1679] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
-[312/1679] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
-[313/1679] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[314/1679] Generating i915-perf-metrics-acmgt3 with a custom command.
-[315/1679] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[316/1679] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[317/1679] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[318/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[319/1679] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[320/1679] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[321/1679] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[322/1679] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[323/1679] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
-
+diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+index d41557c85..346c807c0 100644
+--- a/tests/intel/xe_create.c
++++ b/tests/intel/xe_create.c
+@@ -171,9 +171,11 @@ enum vm_count {
+  * @leak:				destroy exec_queues in close() path
+  * @noleak-shared:			same as noleak, but with a shared vm
+  * @leak-shared:			same as leak, but with a shared vm
++ * @performance:			Measure time required for creating execqueues
++ * @performance-shared:			same as performance, but with a shared vm
+  */
+ static void create_execqueues(int fd, enum exec_queue_destroy ed,
+-			      enum vm_count vc)
++			      enum vm_count vc, bool perf)
+ {
+ 	struct timespec tv = { };
+ 	uint32_t num_engines, exec_queues_per_process, vm;
+@@ -237,10 +239,12 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed,
+ 		drm_close_driver(fd);
+ 	}
+ 
+-	seconds = igt_seconds_elapsed(&tv);
+-	igt_assert_f(seconds < real_timeout,
+-		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
+-		     MAXEXECQUEUES, seconds, real_timeout);
++	if (perf) {
++		seconds = igt_seconds_elapsed(&tv);
++		igt_assert_f(seconds < real_timeout,
++			     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
++			     MAXEXECQUEUES, seconds, real_timeout);
++	}
+ }
+ 
+ /**
+@@ -410,16 +414,22 @@ igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_subtest("create-execqueues-noleak")
+-		create_execqueues(xe, NOLEAK, MULTI);
++		create_execqueues(xe, NOLEAK, MULTI, false);
+ 
+ 	igt_subtest("create-execqueues-leak")
+-		create_execqueues(xe, LEAK, MULTI);
++		create_execqueues(xe, LEAK, MULTI, false);
+ 
+ 	igt_subtest("create-execqueues-noleak-shared")
+-		create_execqueues(xe, NOLEAK, SHARED);
++		create_execqueues(xe, NOLEAK, SHARED, false);
+ 
+ 	igt_subtest("create-execqueues-leak-shared")
+-		create_execqueues(xe, LEAK, SHARED);
++		create_execqueues(xe, LEAK, SHARED, false);
++
++	igt_subtest("create-execqueues-performance")
++		create_execqueues(xe, NOLEAK, MULTI, true);
++
++	igt_subtest("create-execqueues-performance-shared")
++		create_execqueues(xe, NOLEAK, SHARED, true);
+ 
+ 	igt_subtest("create-massive-size") {
+ 		create_massive_size(xe);
+-- 
+2.25.1
 
