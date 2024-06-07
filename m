@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 470C1C27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 13:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3354AC27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 13:58:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D4C3D10EC71;
-	Fri,  7 Jun 2024 13:58:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D8F0210EC73;
+	Fri,  7 Jun 2024 13:58:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tmsx42HY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PFK/tuQl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21D3710EC71
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 13:58:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06D1D10EC73
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 13:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717768690; x=1749304690;
+ t=1717768693; x=1749304693;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=l+PWed5kc7L61+G6Laqh0LW9U76NVaBdOIz8+Sx4nhQ=;
- b=Tmsx42HYEZx444y3UviJd82r2suoq+rqdDgpDLsPcwR1AxV+5sIaY/pP
- C6lGN7764dpTBRgIfH0cUjVU0agn3KqwtS/RZ7dq8H7OC+qF8L83ATGYN
- 04I//7zdkcaSoXLRwnzYgLn0bIN7E9/qSfn+KJFxtryCnxRXY9YTgTw81
- W3xKb5LbFIqS/2TGzsbTqtneEskuih+ILm+uqMlRUk1r13HWGI+/y38Is
- iuT1YauPMyuDvLYM0Pum7ThjvBMx8jj9M7WzgkT8jI3axC1FUkgf3Dyn7
- iC0SIOrH3bEKtAs4GvGvmDY19FRNBoaCTRcr3JVCz6PaHP5lpWtnbcf1c Q==;
-X-CSE-ConnectionGUID: 2XbuO9foRWmmt8/TEL0S3Q==
-X-CSE-MsgGUID: jYz3aFN6RRac5j8+AG33Aw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="25116773"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25116773"
+ bh=4HW2JVpc4IeMNe/BVGZ4jc0X0iRZR4edlInUL+WirPw=;
+ b=PFK/tuQl0w+06p/ZjxIWkYm9n17icb2pr2qx5UVx2MYqRVVS2o+6gNqi
+ Ag7Aq8/9aOdqNTKfQhRx7M4w0z5KA2bPPqVrbe7IOK9VfLt4b2z3tNb4o
+ Yjo7vByDIqMk7+bz/rVRnWEYN031lZ8zfJyPdOv+vAsLWtGh7RS91EOtu
+ +h0xPn25siUp+5vkpC1mnpGn+skzEe6GBmuw7Rkp+ntJOw0D9jQRXB6f7
+ Zhu2XQAf6OSFWGLvdzrnciwqLzW0C2JBKVznuIGc3Zh57vQaEY85K+VE+
+ Pi5RkykF9DLmJPtz+p90ZmXDCbo58741Vz4klZ6P9yhwotH+izHq7fheK w==;
+X-CSE-ConnectionGUID: lHM1WT3aSB2AiPBSPrgzwg==
+X-CSE-MsgGUID: 3ZxXnKQARP2ImDfQAw9wEg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="25116774"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25116774"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 06:58:10 -0700
-X-CSE-ConnectionGUID: 6pKX3+JCTGS+x6tvBIL3iQ==
-X-CSE-MsgGUID: gdHCNOWcSWCimAWUDFe/Yg==
+ 07 Jun 2024 06:58:13 -0700
+X-CSE-ConnectionGUID: LjMVXOfCS3Gm7QBXq/ayEA==
+X-CSE-MsgGUID: t6mxtfg4S5aFHNEoWjY9Ig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38323734"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38323743"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 07 Jun 2024 06:58:08 -0700
+ by fmviesa008.fm.intel.com with SMTP; 07 Jun 2024 06:58:11 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 07 Jun 2024 16:58:07 +0300
+ Fri, 07 Jun 2024 16:58:10 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 03/27] tools/intel_vbt_decode: Dump MIPI config for the
- correct panel
-Date: Fri,  7 Jun 2024 16:57:34 +0300
-Message-ID: <20240607135758.31421-4-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 04/27] tools/intel_vbt_decode: Decode block 3 (Display
+ Toggle Option)
+Date: Fri,  7 Jun 2024 16:57:35 +0300
+Message-ID: <20240607135758.31421-5-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
 References: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
@@ -71,35 +71,83 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Currently dump_mipi_config() just dumps the data for the same
-panel index six times. Actually dump the data for each of the
-six possible panels as intended.
+Decode VBT block 3 (Display Toggle Option).
+
+On ALM the block appears to contain some kind of actual toggle
+list of child devices, on all more modern machines it just has
+the feature bits.
+
+Example output from ALM:
+BDB block 3 (27 bytes, min 3 bytes) - Display toggle option block:
+        0000: 03 1b 00 00 0c 00 08 00  01 00 09 00 02 00 00 00
+        0010: 00 00 00 00 00 00 00 00  00 00 00 00 00 00
+
+        Feature bits: 0x00
+        Num entries: 12
+        Toggle list #1: LFP1 (0x0008)
+        Toggle list #2: CRT (0x0001)
+        Toggle list #3: CRT,LFP1 (0x0009)
+        Toggle list #4: TV (0x0002)
+        Toggle list #5: none (0x0000)
+        Toggle list #6: none (0x0000)
+        Toggle list #7: none (0x0000)
+        Toggle list #8: none (0x0000)
+        Toggle list #9: none (0x0000)
+        Toggle list #10: none (0x0000)
+        Toggle list #11: none (0x0000)
+        Toggle list #12: none (0x0000)
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ tools/intel_vbt_decode.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 40c05fbadacb..cee1d5196a9a 100644
+index cee1d5196a9a..4281bd7e520e 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -2016,12 +2016,9 @@ static void dump_mipi_config(struct context *context,
- 	const struct bdb_mipi_config *start = block_data(block);
+@@ -316,6 +316,8 @@ static size_t block_min_size(const struct context *context, int section_id)
+ 		return sizeof(struct bdb_general_features);
+ 	case BDB_GENERAL_DEFINITIONS:
+ 		return sizeof(struct bdb_general_definitions);
++	case BDB_DISPLAY_TOGGLE:
++		return sizeof(struct bdb_display_toggle);
+ 	case BDB_PSR:
+ 		return sizeof(struct bdb_psr);
+ 	case BDB_CHILD_DEVICE_TABLE:
+@@ -1249,6 +1251,20 @@ static void dump_general_definitions(struct context *context,
+ 			   child_dev_num, defs->child_dev_size);
+ }
  
- 	for (int i = 0; i < ARRAY_SIZE(start->config); i++) {
--		const struct mipi_config *config =
--			&start->config[context->panel_type];
--		const struct mipi_pps_data *pps =
--			&start->pps[context->panel_type];
--		const struct edp_pwm_delays *pwm_delays =
--			&start->pwm_delays[context->panel_type];
-+		const struct mipi_config *config = &start->config[i];
-+		const struct mipi_pps_data *pps = &start->pps[i];
-+		const struct edp_pwm_delays *pwm_delays = &start->pwm_delays[i];
- 
- 		if (!dump_panel(context, i))
- 			continue;
++static void dump_display_toggle(struct context *context,
++				const struct bdb_block *block)
++{
++	const struct bdb_display_toggle *t = block_data(block);
++
++	printf("\tFeature bits: 0x%02x\n", t->feature_bits);
++	printf("\tNum entries: %d\n", t->num_entries);
++
++	for (int i = 0 ; i < t->num_entries; i++)
++		printf("\tToggle list #%d: %s (0x%04x)\n",
++		       i+1, child_device_handle(context, t->list[i]),
++		       t->list[i]);
++}
++
+ static void dump_legacy_child_devices(struct context *context,
+ 				      const struct bdb_block *block)
+ {
+@@ -2727,6 +2743,11 @@ struct dumper dumpers[] = {
+ 		.name = "General definitions block",
+ 		.dump = dump_general_definitions,
+ 	},
++	{
++		.id = BDB_DISPLAY_TOGGLE,
++		.name = "Display toggle option block",
++		.dump = dump_display_toggle,
++	},
+ 	{
+ 		.id = BDB_PSR,
+ 		.min_bdb_version = 165,
 -- 
 2.44.2
 
