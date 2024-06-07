@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8FDC27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 13:59:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CB3BC27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 13:59:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B3C2210EC71;
-	Fri,  7 Jun 2024 13:59:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4EF0910EC73;
+	Fri,  7 Jun 2024 13:59:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DmEUixU0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UvHCVgvg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97B9810EC7A
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 13:59:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 467B910EC75
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 13:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717768752; x=1749304752;
+ t=1717768755; x=1749304755;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=GcHUpNaueqji3Ad/RWAfL0V8hKO8/gHHTR7xbg2hltQ=;
- b=DmEUixU04sw6HuEmAKTh5YS/1JxFmOxsWJiGZBx0sIVdaWQ+DjJvPCiZ
- 0+0dPQZ8v9APdKl93sTCeL7oI5fFXkPfN4Asjf1gyaOy9Iu8K8FYxbgyR
- ryr2b+wPJRepTiLSVfvj++iwWopQh1WseeO3d6q/ryBAkD+c3+tPeu3At
- ozjD/ACc1Y4dnFvqtpXh8RauMrIAtrxVLDNai1fENQu7DtMuFt8H5cZUi
- rGMKFgq35t37x8QAc+ocMMO+lTb4TGX0Y0g/Crz8ZWTKaEW4hpIqI+Oi9
- 5vxdoDYezwhuZSkhFgLWopCoMp/TW1WxTFL89jchqvFf/ZbOdB13OqMBY g==;
-X-CSE-ConnectionGUID: 0NFYyWhOT9m8u5cd6CJZtw==
-X-CSE-MsgGUID: NNHBn5h4QMuAqHzETcXwow==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="25116831"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25116831"
+ bh=1QzbWDkVJVWw+1fS8N8lIcr8VGpF0U8J8FHXy+B8IXw=;
+ b=UvHCVgvgXl+HlKgS7uJQYi7rdbwdG2OaakZKnB2qDF0JVQSDbLaBjhE/
+ Uomi3zfHtRgK/8KdUaIE6RN501AwLSB/mlu5Fdi6Bbxn//ZjgrF7pXpY2
+ MGcBNQHh90N543YSiAPNpgc8+2VQEZDvE6ZNq06VDxvhKtGfLZ7DJj/wP
+ k546tOCvf3EqJ3NYGwV714F/THHtRzs9OXjdDLdpf4k1Lxq+6dt2Q4BSL
+ Jmnf4wAdMGiPqi7TiIF+zIDepaeokkgEhjRTitTMzLg4l+QanPkY65R37
+ v/Q1hmYpK6Cp2IPx5AEEZjwJBHMTiysmhTr7JyrKy4PHa0zGBKInZ8N2N w==;
+X-CSE-ConnectionGUID: CelxWe0JRySdplfyrQr4yA==
+X-CSE-MsgGUID: 5Dg20Al6TUWlQbXLJNv31g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="25116834"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="25116834"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 06:59:12 -0700
-X-CSE-ConnectionGUID: X4Ixt8BiSOaU1Q7r5dh6qQ==
-X-CSE-MsgGUID: 0MYttISATOi9IhWFTwg1cA==
+ 07 Jun 2024 06:59:15 -0700
+X-CSE-ConnectionGUID: +izWDvicRIyeF49hUko2mQ==
+X-CSE-MsgGUID: tCrqohk7QguLziQOUwS4Jw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38324001"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38324018"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 07 Jun 2024 06:59:10 -0700
+ by fmviesa008.fm.intel.com with SMTP; 07 Jun 2024 06:59:13 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 07 Jun 2024 16:59:09 +0300
+ Fri, 07 Jun 2024 16:59:12 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 25/27] tools/intel_vbt_decode: Decode block 58 (Generic
- DTD Block)
-Date: Fri,  7 Jun 2024 16:57:56 +0300
-Message-ID: <20240607135758.31421-26-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 26/27] tools/intel_vbt_decode: Decode block 253 (PRD
+ Table)
+Date: Fri,  7 Jun 2024 16:57:57 +0300
+Message-ID: <20240607135758.31421-27-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
 References: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
@@ -71,119 +71,124 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Decode VBT block 58 (Generic DTD Block). Spec says this has max
-24 entries (implying it can be variable?), 16 entries for LFPs,
-and 8 entries for EFPs.
+Decode VBT block 253 (PRD Table). The layout changes in a funky
+way so it looks some guesswork is needed to determine which
+way to go :(
 
 Example output from ADL:
-BDB block 58 (674 bytes, min 2 bytes) - Generic DTD:
-        0000: 3a a2 02 1c 00 ee 67 04  00 00 0a 1a 01 52 00 0c
-        0010: 00 40 06 52 00 14 00 04  00 f7 00 9a 00 c0 00 00
-        0020: 00 d6 6d 02 00 b0 04 8c  00 3c 00 04 00 80 07 3c
-        0030: 00 22 00 02 00 88 00 d9  00 c0 00 00 00 e8 fd 00
-        ...
-        0270: 00 80 02 90 00 08 00 60  00 e0 01 1d 00 02 00 02
-        0280: 00 00 00 00 00 c0 00 00  00 5c 62 00 00 80 02 90
-        0290: 00 08 00 60 00 e0 01 1d  00 02 00 02 00 00 00 00
-        02a0: 00 c0 00 00 00
+Block 253 min size 2 less than block size 66
+BDB block 253 (66 bytes, min 2 bytes) - PRD table:
+        0000: fd 42 00 10 00 08 00 40  00 08 00 20 00 08 00 00
+        0010: 00 40 00 00 00 20 00 00  00 00 00 00 00 00 00 00
+        0020: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+        0030: 00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+        0040: 00 00 00 00 00
 
-        Entry size: 28
-        Entry #1 (LFP #1): (LFP1)
-                hdisplay: 2560
-                hsync [2642, 2654] +sync
-                htotal: 2842
-                vdisplay: 1600
-                vsync [1620, 1624] +sync
-                vtotal: 1682
-                clock: 2887500
+        Num entries: 16
+        Entry #1:
+                Primary display: LFP1 (0x8)
+                Secondary display: EFP2 (0x40)
         ...
-        Entry #24 (EFP #8):
-                hdisplay: 640
-                hsync [648, 744] +sync
-                htotal: 784
-                vdisplay: 480
-                vsync [482, 484] +sync
-                vtotal: 509
-                clock: 251800
+        Entry #16:
+                Primary display: none (0x0)
+                Secondary display: none (0x0)
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tools/intel_vbt_decode.c | 52 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 51 insertions(+), 1 deletion(-)
+ tools/intel_vbt_decode.c | 70 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index 58bdba0e96d2..83c90083e1b9 100644
+index 83c90083e1b9..9d9c96f1c264 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -421,7 +421,6 @@ static size_t block_min_size(const struct context *context, int section_id)
- 	case BDB_VSWING_PREEMPH:
+@@ -422,6 +422,9 @@ static size_t block_min_size(const struct context *context, int section_id)
  		return sizeof(struct bdb_vswing_preemph);
  	case BDB_GENERIC_DTD:
--		/* FIXME check spec */
  		return sizeof(struct bdb_generic_dtd);
++	case BDB_PRD_TABLE:
++		return max(sizeof(struct bdb_prd_table_old),
++			   sizeof(struct bdb_prd_table_new));
  	default:
  		return 0;
-@@ -3449,6 +3448,52 @@ static void dump_vswing_preemphasis(struct context *context,
+ 	}
+@@ -3494,6 +3497,68 @@ static void dump_generic_dtd(struct context *context,
  	}
  }
  
-+static void dump_generic_dtd_entry(const struct generic_dtd_entry *dtd,
-+				   const char *prefix)
++static void dump_prd_table_old(struct context *context,
++			       const struct bdb_block *block)
 +{
-+	printf("%shdisplay: %d\n", prefix, dtd->hactive);
-+	printf("%shsync [%d, %d] %s\n", prefix,
-+	       dtd->hactive + dtd->hfront_porch,
-+	       dtd->hactive + dtd->hfront_porch + dtd->hsync,
-+	       dtd->hsync_positive_polarity ? "+sync" : "-sync");
-+	printf("%shtotal: %d\n", prefix, dtd->hactive + dtd->hblank);
++	const struct bdb_prd_table_old *prd =
++		block_data(block) + block->size - sizeof(*prd);
++	const struct prd_entry_old *list = block_data(block);
 +
-+	printf("%svdisplay: %d\n", prefix, dtd->vactive);
-+	printf("%svsync [%d, %d] %s\n", prefix,
-+	       dtd->vactive + dtd->vfront_porch,
-+	       dtd->vactive + dtd->vfront_porch + dtd->vsync,
-+	       dtd->vsync_positive_polarity ? "+sync" : "-sync");
-+	printf("%svtotal: %d\n", prefix, dtd->vactive + dtd->vblank);
++	for (int i = 0; i < prd->num_entries; i++) {
++		printf("\tEntry #%d:\n", i + 1);
++		printf("\t\tDisplays attached: %s (0x%x)\n",
++		       child_device_handle(context, list[i].displays_attached),
++		       list[i].displays_attached);
++		printf("\t\tDisplays in pipe A: %s (0x%x)\n",
++		       child_device_handle(context, list[i].display_in_pipe_a),
++		       list[i].display_in_pipe_a);
++		printf("\t\tDisplays in pipe B: %s (0x%x)\n",
++		       child_device_handle(context, list[i].display_in_pipe_b),
++		       list[i].display_in_pipe_b);
++	}
 +
-+	printf("%sclock: %d\n", prefix, dtd->pixel_clock * 10);
++	printf("\tNum entries: %d\n", prd->num_entries);
 +}
 +
-+static void dump_generic_dtd(struct context *context,
-+			     const struct bdb_block *block)
++static void dump_prd_table_new(struct context *context,
++			       const struct bdb_block *block)
 +{
-+	const struct bdb_generic_dtd *gdtd = block_data(block);
-+	int num_entries;
++	const struct bdb_prd_table_new *prd = block_data(block);
++	const struct prd_entry_new *list = prd->list;
 +
-+	if (sizeof(gdtd->dtd[0]) != gdtd->gdtd_size) {
-+		printf("\tDTD struct sizes don't match (expected %zu, got %u), skipping\n",
-+		       sizeof(gdtd->dtd[0]), gdtd->gdtd_size);
-+		return;
++	printf("\tNum entries: %d\n", prd->num_entries);
++
++	for (int i = 0; i < prd->num_entries; i++) {
++		printf("\tEntry #%d:\n", i + 1);
++		printf("\t\tPrimary display: %s (0x%x)\n",
++		       child_device_handle(context, list[i].primary_display),
++		       list[i].primary_display);
++		printf("\t\tSecondary display: %s (0x%x)\n",
++		       child_device_handle(context, list[i].secondary_display),
++		       list[i].secondary_display);
 +	}
++}
 +
-+	num_entries = (block->size - sizeof(*gdtd)) / gdtd->gdtd_size;
++static void dump_prd_table(struct context *context,
++			   const struct bdb_block *block)
++{
++	const struct bdb_prd_table_old *old =
++		block_data(block) + block->size - sizeof(*old);
++	const struct bdb_prd_table_new *new =
++		block_data(block);
++	int num_entries_old = (block->size - sizeof(*old)) / sizeof(*old->list);
++	int num_entries_new = (block->size - sizeof(*new)) / sizeof(*new->list);
 +
-+	printf("\tEntry size: %d\n", gdtd->gdtd_size);
-+
-+	for (int i = 0; i < num_entries; i++) {
-+		if (i < 16 && !dump_panel(context, i))
-+			continue;
-+
-+		printf("\tEntry #%d (%s #%d):%s\n", i+1, i < 16 ? "LFP" : "EFP",
-+		       i % 16 + 1, i < 16 ? panel_str(context, i) : "");
-+		dump_generic_dtd_entry(&gdtd->dtd[i], "\t\t");
-+	}
++	/*
++	 * The cutoff seems to be TGL+ w/ GOP rather than a specific
++	 * BDB version number. Just guess based on the actual data.
++	 */
++	if (num_entries_old == old->num_entries)
++		dump_prd_table_old(context, block);
++	else if (num_entries_new == new->num_entries)
++		dump_prd_table_new(context, block);
 +}
 +
  static int get_panel_type_pnpid(const struct context *context,
  				const char *edid_file)
  {
-@@ -3802,6 +3847,11 @@ struct dumper dumpers[] = {
- 		.name = "Vswing Preemph",
- 		.dump = dump_vswing_preemphasis,
+@@ -3852,6 +3917,11 @@ struct dumper dumpers[] = {
+ 		.name = "Generic DTD",
+ 		.dump = dump_generic_dtd,
  	},
 +	{
-+		.id = BDB_GENERIC_DTD,
-+		.name = "Generic DTD",
-+		.dump = dump_generic_dtd,
++		.id = BDB_PRD_TABLE,
++		.name = "PRD table",
++		.dump = dump_prd_table,
 +	},
  };
  
