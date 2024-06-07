@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36BCFC27C55
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 22:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82E08C27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 23:13:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD5A210E0AD;
-	Fri,  7 Jun 2024 22:48:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE71510E0BF;
+	Fri,  7 Jun 2024 23:13:46 +0000 (UTC)
 Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A89B10E0AD;
- Fri,  7 Jun 2024 22:48:14 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A56310E0BF;
+ Fri,  7 Jun 2024 23:13:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4537167168714445916=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Intel_Xe_OA_IGT=27s_=28?=
- =?utf-8?q?rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/core=5Fhotunplug=3A_Make?=
+ =?utf-8?q?_it_fail_in_subtests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Jun 2024 22:48:14 -0000
-Message-ID: <171780049430.28455.1471122077836704793@a6498e030952>
+Date: Fri, 07 Jun 2024 23:13:45 -0000
+Message-ID: <171780202549.29060.9213979195620862824@a6498e030952>
 X-Patchwork-Hint: ignore
-References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
-In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
+References: <20240607153629.52596-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240607153629.52596-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,61 +41,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4537167168714445916==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: Intel Xe OA IGT's (rev3)
-URL   : https://patchwork.freedesktop.org/series/130033/
-State : warning
+Series: tests/core_hotunplug: Make it fail in subtests
+URL   : https://patchwork.freedesktop.org/series/134626/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7880_BAT -> XEIGTPW_11238_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1196504 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59646626):
-         ^
-  ../lib/xe/xe_oa.c: In function ‘xe_oa_prop_to_ext’:
-  ../lib/xe/xe_oa.c:1026:16: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    __u64 *prop = (__u64 *)properties->properties_ptr;
-                  ^
-  ../lib/xe/xe_oa.c:1040:32: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-     ext[j].base.next_extension = (__u64)&ext[j + 1];
-                                  ^
-  ../lib/xe/xe_oa.c: In function ‘intel_xe_perf_ioctl’:
-  ../lib/xe/xe_oa.c:1054:12: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-     .param = (__u64)((op == DRM_XE_PERF_OP_STREAM_OPEN) ? ext : arg),
-              ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1717800108:step_script
-  section_start:1717800108:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1717800108:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59646628):
-         ^
-  ../lib/xe/xe_oa.c: In function ‘xe_oa_prop_to_ext’:
-  ../lib/xe/xe_oa.c:1026:16: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    __u64 *prop = (__u64 *)properties->properties_ptr;
-                  ^
-  ../lib/xe/xe_oa.c:1040:32: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-     ext[j].base.next_extension = (__u64)&ext[j + 1];
-                                  ^
-  ../lib/xe/xe_oa.c: In function ‘intel_xe_perf_ioctl’:
-  ../lib/xe/xe_oa.c:1054:12: error: cast from pointer to integer of different size [-Werror=pointer-to-int-cast]
-     .param = (__u64)((op == DRM_XE_PERF_OP_STREAM_OPEN) ? ext : arg),
-              ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1717800138:step_script
-  section_start:1717800138:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1717800138:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+Participating hosts (4 -> 4)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7880 -> IGTPW_11238
+  * Linux: xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c -> xe-1428-2bea08bd31298d60d416b2a6ed346bb53dd28037
+
+  IGTPW_11238: 755e4e0164dbde8a7fc84ea3e0c71dbae6263d42 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c: cb97aa28be4f4b914c751ed27bae7782e027826c
+  xe-1428-2bea08bd31298d60d416b2a6ed346bb53dd28037: 2bea08bd31298d60d416b2a6ed346bb53dd28037
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1196504
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11238/index.html
+
+--===============4537167168714445916==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/core_hotunplug: Make it fail in subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134626/">https://patchwork.freedesktop.org/series/134626/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11238/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11238/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7880_BAT -&gt; XEIGTPW_11238_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (4 -&gt; 4)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7880 -&gt; IGTPW_11238</li>
+<li>Linux: xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c -&gt; xe-1428-2bea08bd31298d60d416b2a6ed346bb53dd28037</li>
+</ul>
+<p>IGTPW_11238: 755e4e0164dbde8a7fc84ea3e0c71dbae6263d42 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c: cb97aa28be4f4b914c751ed27bae7782e027826c<br />
+  xe-1428-2bea08bd31298d60d416b2a6ed346bb53dd28037: 2bea08bd31298d60d416b2a6ed346bb53dd28037</p>
+
+</body>
+</html>
+
+--===============4537167168714445916==--
