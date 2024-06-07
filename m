@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD26C27C6E
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 14:57:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B3A6C27C5F
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 14:58:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 189A610EC95;
-	Fri,  7 Jun 2024 14:57:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 02E0110EC98;
+	Fri,  7 Jun 2024 14:58:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RROeoTGg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I38aHr2C";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5395810EC95
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 14:57:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48D2A10EC98
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 14:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717772278; x=1749308278;
+ t=1717772280; x=1749308280;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=sC7zjLOvW2fxqEvc8O5Wuh/fcUu23tL6nv0L7YDD0vQ=;
- b=RROeoTGg1SI1WdbyqhjmysWScaD8Tg0diATlC6T4/9ZCumgbLZw6dr5V
- sUCEiRF5rpyV1gJ+jdpi+1uFImnQy6SNNMW219cyFxiO75KsgzDVIIjKY
- KtRzPxCeURPscVO+sVRHrlC5DiLYq/GyjARLXIhiy3s3MsdKschdjPkE3
- phOsUU4nJnGeN63geEn/U+UWQn1yUXPjIN2toUAYRyHda8J1tQfNxHBjY
- s9pFjMlfzazGcnmCp3RZ31h/PRRg3kwSlwARLK2RYNVKXjhJgJiSzBX8f
- /48yo8KfR0H45npMWCxh0sko+/GdSSzyMTV7UIK92Ym7GyUhTmiILZFql Q==;
-X-CSE-ConnectionGUID: 1barMBeBQv+V9Po+xaCHPA==
-X-CSE-MsgGUID: 7YGgdxt1REGBG5lE69UP1Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14331624"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14331624"
+ bh=zmve+XlUgN3jMaweU0f6Py64aA0XXfQkREhaHkyfSIM=;
+ b=I38aHr2C1p1fXcNoCN7P7UkWvthTCjNj4E5NwmLO16tKWp591zxxAHKR
+ TAKioob5gttLNbLk2k0ox3Tr+DYG9Fz1FmHtXOchRZm+Sy1ExK1UgVgB5
+ GLAFrrDBl+s4n1L9UmduHyLCpb2DBQV80EWF24bPPZYMIYbZ6JXYRTUce
+ xRkTg1BCu7cqmg6jihqTk8fqMX101sqdr2Q+cPrfzm0wHq+LLHgf7bPf7
+ 4rP2TT7XokEitD62HUO0AydGVcEeIA129A+NE7xihOof1X3NndsgeBvpf
+ yxVIqy/NJBoq3ANNil+kHl7KkNdYKyJR0voAUgg7WB4/Ch/F2/cYRiPL7 g==;
+X-CSE-ConnectionGUID: Cqj4ehUwR4SuXys87xlTaw==
+X-CSE-MsgGUID: nji4w4H1SN6i+ok5crrT8A==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14331630"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14331630"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 07:57:57 -0700
-X-CSE-ConnectionGUID: wfUqSF4OST2f/k3ye1umyw==
-X-CSE-MsgGUID: b8KYGa2YQ/mp9VxbJSnRow==
+ 07 Jun 2024 07:58:00 -0700
+X-CSE-ConnectionGUID: bpgf/VxxQfiquLMIpOBIQw==
+X-CSE-MsgGUID: +54n/RRSQ1+vow3Isd4OTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38926809"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38926814"
 Received: from unknown (HELO vgovind2-mobl3..) ([10.245.244.236])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 07:57:56 -0700
+ 07 Jun 2024 07:57:59 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, juha-pekka.heikkila@intel.com,
  jouni.hogander@intel.com
-Subject: [PATCH i-g-t 3/4] tests/kms_dirtyfb: disable psr feature only if psr
- possible
-Date: Fri,  7 Jun 2024 17:57:31 +0300
-Message-Id: <20240607145732.285557-4-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t 4/4] tests/kms_dirtyfb: ensure plane size is within fbc
+ supported limit
+Date: Fri,  7 Jun 2024 17:57:32 +0300
+Message-Id: <20240607145732.285557-5-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240607145732.285557-1-vinod.govindapillai@intel.com>
 References: <20240607145732.285557-1-vinod.govindapillai@intel.com>
@@ -70,32 +70,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When kms_dirtyfb tests are executed on cases where PSR is not
-possible the tests are getting skipped. This is because igt_skip
-is use in psr_set function. So avoid calling the psr_disable if
-not necessary.
+When FBC tests are performed, ensure that plane size is within the
+FBC supported plane size limit. Skip the iteration if the plane
+size is bigger that FBC enforced restrictions.
 
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- tests/intel/kms_dirtyfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/intel/kms_dirtyfb.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index 6121599ec..2a32fab56 100644
+index 2a32fab56..83042e206 100644
 --- a/tests/intel/kms_dirtyfb.c
 +++ b/tests/intel/kms_dirtyfb.c
-@@ -169,7 +169,10 @@ static void check_feature(data_t *data)
- static void disable_features(data_t *data)
- {
- 	intel_fbc_disable(data->drm_fd);
--	psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+@@ -102,7 +102,14 @@ static bool check_support(data_t *data)
+ 	case FEATURE_NONE:
+ 		return true;
+ 	case FEATURE_FBC:
+-		return intel_fbc_supported_on_chipset(data->drm_fd, data->pipe);
++		drmModeModeInfo *mode = igt_output_get_mode(data->output);
 +
-+	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
-+		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
++		if (!intel_fbc_supported_on_chipset(data->drm_fd, data->pipe))
++			return false;
 +
- 	intel_drrs_disable(data->drm_fd, data->pipe);
- }
- 
++		return intel_fbc_plane_size_supported(data->drm_fd,
++						      mode->hdisplay,
++						      mode->vdisplay);
+ 	case FEATURE_PSR:
+ 		if (data->output->config.connector->connector_type !=
+ 		    DRM_MODE_CONNECTOR_eDP)
 -- 
 2.34.1
 
