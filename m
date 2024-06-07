@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 881AFC27C55
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F8A1C27C65
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1EAAA10ED25;
+	by gabe.freedesktop.org (Postfix) with ESMTP id A8F3A10ED1A;
 	Fri,  7 Jun 2024 20:09:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ak22v9EV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QXrCwyrT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C460A10ED0F
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 362CE10ED12
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1717790941; x=1749326941;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=IVYp3PLI/3RqiQeRBwFOHx2dOFHCHbVytZ0n4pK5oAs=;
- b=Ak22v9EV6WATb4egNNQuwLPiCWHGm3LIe67aPmnLvASwIvnLxMKWNWYk
- lCHuPZlz20ULsMZhybD86h1MvtifgQKbrk+ygl4ZTr0usTLbCQYOrsjiZ
- 5h/TS8zpqGiNe+NG/N6Xse26Sls2oQ5fgE/blJGaAOjHF8Sn9/m+XyKtM
- gPXi4zuGQt5ZJPe8zAZzB/kSH2Zvu9w2YF8gQXk3cHkDjZU7EOH8NH8TM
- q+9Cl5w361KNNlwR/0VB/w9Xr+nrJo0xJn7jwF0qjVQcDQK/rfiAqDEkK
- L2EKnBZhPxB4Xz2es0bEP/3/bsUAVnoGssEN7cDtOnSUIVf4lwfGi/iux Q==;
-X-CSE-ConnectionGUID: JHyh9l2zRTmTvDvwQeUGVg==
-X-CSE-MsgGUID: ihUJX17PTM2tRI9DMvegKQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383232"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383232"
+ bh=oNxX7CGMahaRORkHAtCUqHNWhfsGQ8IyQQKIVnT+/xE=;
+ b=QXrCwyrTcTJ9IKxDh/LXVEzbL9fvY6lK20u9BBtyQDlRNxWj7cbjCPv1
+ U6qbbV/xwr6bqa+mfq0Zja6tQNCcDBf8BLs5Za9R0Qa0q1GuFpGus97hC
+ KGiNBZYtD2eNt6IMSjJUGzBPNXrEpQp3WB/DvldYpLw0yP+s6DjfXv8Oj
+ hBlsyvaLbmcDgI2rLYSc+qXxrePIX79jXvZvI2FZmpzNnwPjjzS5D9Y3P
+ lEjMLDpGDp7xDp52I0dlGymDP7rwKt2NQt9wOxUt8D+ZI2pX4NWPTO4c2
+ Qdidc53SAFll42sVpHco8rG+LnJQpAY1CMly5b40fCQwtVREQaYLGmRRF g==;
+X-CSE-ConnectionGUID: IZ35O3d/SBSzBI/H4pUEFg==
+X-CSE-MsgGUID: jFoTHGLTSN+3cWLK1RWSFw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383237"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383237"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:09:00 -0700
-X-CSE-ConnectionGUID: az+oT9LDTmmzbvFatPCyHQ==
-X-CSE-MsgGUID: 47rVe526QzCzn6+AnR6OIg==
+ 07 Jun 2024 13:09:01 -0700
+X-CSE-ConnectionGUID: Jceqa9IZTRqxrQwZLws5yg==
+X-CSE-MsgGUID: /Kq5/zmlTruiRorzg7jDXA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373856"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373864"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:09:00 -0700
+ 07 Jun 2024 13:09:01 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 18/27] tests/intel/xe_oa: add remove OA config tests
-Date: Fri,  7 Jun 2024 13:08:38 -0700
-Message-ID: <20240607200847.1964629-19-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 23/27] tools/xe-perf: xe_perf_reader,
+ xe_perf_control and xe_perf_configs
+Date: Fri,  7 Jun 2024 13:08:43 -0700
+Message-ID: <20240607200847.1964629-24-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,375 +68,754 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the following tests:
-	* "invalid-create-userspace-config"
-	* "invalid-remove-userspace-config"
-	* "create-destroy-userspace-config"
-	* "whitelisted-registers-userspace-config"
+Add xe_perf_reader, xe_perf_control and xe_perf_configs tools, similar to
+their i915 counterparts.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 333 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 333 insertions(+)
+ tools/xe-perf/meson.build       |  17 ++
+ tools/xe-perf/xe_perf_configs.c | 247 ++++++++++++++++++++++++
+ tools/xe-perf/xe_perf_control.c | 117 ++++++++++++
+ tools/xe-perf/xe_perf_reader.c  | 325 ++++++++++++++++++++++++++++++++
+ 4 files changed, 706 insertions(+)
+ create mode 100644 tools/xe-perf/xe_perf_configs.c
+ create mode 100644 tools/xe-perf/xe_perf_control.c
+ create mode 100644 tools/xe-perf/xe_perf_reader.c
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 12a76ef4a8..8e6de2db11 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -535,6 +535,12 @@ write_u64_file(const char *path, uint64_t val)
- 	fclose(f);
- }
- 
+diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
+index a5f59a67fe..8506aa320f 100644
+--- a/tools/xe-perf/meson.build
++++ b/tools/xe-perf/meson.build
+@@ -1,5 +1,22 @@
++executable('xe-perf-configs',
++           [ 'xe_perf_configs.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt_chipset, lib_igt_xe_oa],
++           install: true)
++
+ executable('xe-perf-recorder',
+            [ 'xe_perf_recorder.c' ],
+            include_directories: inc,
+            dependencies: [lib_igt, lib_igt_xe_oa],
+            install: true)
++
++executable('xe-perf-control',
++           [ 'xe_perf_control.c' ],
++           include_directories: inc,
++           install: true)
++
++executable('xe-perf-reader',
++           [ 'xe_perf_reader.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt, lib_igt_xe_oa],
++           install: true)
+diff --git a/tools/xe-perf/xe_perf_configs.c b/tools/xe-perf/xe_perf_configs.c
+new file mode 100644
+index 0000000000..af33c0078c
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_configs.c
+@@ -0,0 +1,247 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++
++#include <assert.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/sysmacros.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "intel_chipset.h"
++#include "xe/xe_oa.h"
++
 +static bool
-+try_sysfs_read_u64(const char *path, uint64_t *val)
++read_file_uint64(const char *file, uint64_t *value)
 +{
-+	return igt_sysfs_scanf(sysfs, path, "%"PRIu64, val) == 1;
++	char buf[32];
++	int fd, n;
++
++	fd = open(file, 0);
++	if (fd < 0)
++		return false;
++	n = read(fd, buf, sizeof (buf) - 1);
++	close(fd);
++	if (n < 0)
++		return false;
++
++	buf[n] = '\0';
++	*value = strtoull(buf, 0, 0);
++
++	return true;
 +}
 +
- static unsigned long rc6_residency_ms(void)
- {
- 	unsigned long value;
-@@ -3575,6 +3581,321 @@ test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
- 	load_helper_fini();
- }
- 
-+static int __xe_oa_add_config(int fd, struct drm_xe_oa_config *config)
++static uint32_t
++read_device_param(const char *stem, int id, const char *param)
 +{
-+	int ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_ADD_CONFIG, config);
-+	if (ret < 0)
-+		ret = -errno;
-+	return ret;
++	char *name;
++	int ret = asprintf(&name, "/sys/class/drm/%s%u/device/%s", stem, id, param);
++	uint64_t value;
++	bool success;
++
++	assert(ret != -1);
++
++	success = read_file_uint64(name, &value);
++	free(name);
++
++	return success ? value : 0;
 +}
 +
-+static int xe_oa_add_config(int fd, struct drm_xe_oa_config *config)
++static int
++find_intel_render_node(void)
 +{
-+	int config_id = __xe_oa_add_config(fd, config);
-+
-+	igt_debug("config_id=%i\n", config_id);
-+	igt_assert(config_id > 0);
-+
-+	return config_id;
-+}
-+
-+static void xe_oa_remove_config(int fd, uint64_t config_id)
-+{
-+	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config_id), 0);
-+}
-+
-+static bool has_xe_oa_userspace_config(int fd)
-+{
-+	uint64_t config = 0;
-+	int ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config);
-+	igt_assert_eq(ret, -1);
-+
-+	igt_debug("errno=%i\n", errno);
-+
-+	return errno != EINVAL;
-+}
-+
-+#define SAMPLE_MUX_REG (intel_graphics_ver(devid) >= IP_VER(20, 0) ?	\
-+			0x13000 /* PES* */ : 0x9888 /* NOA_WRITE */)
-+
-+/**
-+ * SUBTEST: invalid-create-userspace-config
-+ * Description: Test invalid configs are rejected
-+ */
-+static void
-+test_invalid_create_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	const char *invalid_uuid = "blablabla-wrong";
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	uint32_t invalid_mux_regs[] = { 0x12345678 /* invalid register */, 0x0 };
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	memset(&config, 0, sizeof(config));
-+
-+	/* invalid uuid */
-+	strncpy(config.uuid, invalid_uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* invalid mux_regs */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(invalid_mux_regs);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* empty config */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 0;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* empty config with null pointer */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(NULL);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* invalid pointer */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 42;
-+	config.regs_ptr = to_user_pointer((void *) 0xDEADBEEF);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EFAULT);
-+}
-+
-+/**
-+ * SUBTEST: invalid-remove-userspace-config
-+ * Description: Test invalid remove configs are rejected
-+ */
-+static void
-+test_invalid_remove_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	uint64_t config_id, wrong_config_id = 999999999;
-+	char path[512];
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+
-+	/* Destroy previous configuration if present */
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
-+
-+	memset(&config, 0, sizeof(config));
-+
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+
-+	config_id = xe_oa_add_config(drm_fd, &config);
-+
-+	/* Removing configs without permissions should fail. */
-+	igt_fork(child, 1) {
-+		igt_drop_root();
-+
-+		intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config_id, EACCES);
++	for (int i = 128; i < (128 + 16); i++) {
++		if (read_device_param("renderD", i, "vendor") == 0x8086)
++			return i;
 +	}
-+	igt_waitchildren();
 +
-+	/* Removing invalid config ID should fail. */
-+	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &wrong_config_id, ENOENT);
-+
-+	xe_oa_remove_config(drm_fd, config_id);
++	return -1;
 +}
 +
-+/**
-+ * SUBTEST: create-destroy-userspace-config
-+ * Description: Test add/remove OA configs
-+ */
-+static void
-+test_create_destroy_userspace_config(void)
++static int
++open_render_node(uint32_t *devid)
 +{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	uint32_t regs[100];
-+	int i;
-+	uint64_t config_id;
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0, /* Filled later */
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	char path[512];
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+
-+	/* Destroy previous configuration if present */
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
-+
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	regs[0] = mux_regs[0];
-+	regs[1] = mux_regs[1];
-+	/* Flex EU counters */
-+	for (i = 1; i < ARRAY_SIZE(regs) / 2; i++) {
-+		regs[i * 2] = 0xe458; /* EU_PERF_CNTL0 */
-+		regs[i * 2 + 1] = 0x0;
-+	}
-+	config.regs_ptr = to_user_pointer(regs);
-+	config.n_regs = ARRAY_SIZE(regs) / 2;
-+
-+	/* Creating configs without permissions shouldn't work. */
-+	igt_fork(child, 1) {
-+		igt_drop_root();
-+
-+		igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EACCES);
-+	}
-+	igt_waitchildren();
-+
-+	/* Create a new config */
-+	config_id = xe_oa_add_config(drm_fd, &config);
-+
-+	/* Verify that adding the another config with the same uuid fails. */
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EADDRINUSE);
-+
-+	/* Try to use the new config */
-+	properties[3] = config_id;
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	/* Verify that destroying the config doesn't yield any error. */
-+	xe_oa_remove_config(drm_fd, config_id);
-+
-+	/* Read the config to verify shouldn't raise any issue. */
-+	config_id = xe_oa_add_config(drm_fd, &config);
-+
-+	__perf_close(stream_fd);
-+
-+	xe_oa_remove_config(drm_fd, config_id);
-+}
-+
-+/**
-+ * SUBTEST: whitelisted-registers-userspace-config
-+ * Description: Test that an OA config constructed using whitelisted register works
-+ */
-+/* Registers required by userspace. This list should be maintained by
-+ * the OA configs developers and agreed upon with kernel developers as
-+ * some of the registers have bits used by the kernel (for workarounds
-+ * for instance) and other bits that need to be set by the OA configs.
-+ */
-+static void
-+test_whitelisted_registers_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	uint32_t regs[600];
-+	uint32_t i;
-+	uint32_t oa_start_trig1, oa_start_trig8;
-+	uint32_t oa_report_trig1, oa_report_trig8;
-+	uint64_t config_id;
-+	char path[512];
++	char *name;
 +	int ret;
-+	const uint32_t flex[] = {
-+		0xe458,
-+		0xe558,
-+		0xe658,
-+		0xe758,
-+		0xe45c,
-+		0xe55c,
-+		0xe65c
-+	};
++	int fd;
 +
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
++	int render = find_intel_render_node();
++	if (render < 0)
++		return -1;
 +
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
++	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	assert(ret != -1);
 +
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
++	*devid = read_device_param("renderD", render, "device");
 +
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
++	fd = open(name, O_RDWR);
++	free(name);
 +
-+	oa_start_trig1 = 0xd900;
-+	oa_start_trig8 = 0xd91c;
-+	oa_report_trig1 = 0xd920;
-+	oa_report_trig8 = 0xd93c;
-+
-+	/* b_counters_regs: OASTARTTRIG[1-8] */
-+	for (i = oa_start_trig1; i <= oa_start_trig8; i += 4) {
-+		regs[config.n_regs * 2] = i;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+	/* b_counters_regs: OAREPORTTRIG[1-8] */
-+	for (i = oa_report_trig1; i <= oa_report_trig8; i += 4) {
-+		regs[config.n_regs * 2] = i;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+
-+	/* Flex EU registers, only from Gen8+. */
-+	for (i = 0; i < ARRAY_SIZE(flex); i++) {
-+		regs[config.n_regs * 2] = flex[i];
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+
-+	/* Mux registers (too many of them, just checking bounds) */
-+	/* NOA_WRITE */
-+	regs[config.n_regs * 2] = SAMPLE_MUX_REG;
-+	regs[config.n_regs * 2 + 1] = 0;
-+	config.n_regs++;
-+
-+	/* NOA_CONFIG */
-+	/* Prior to Xe2 */
-+	if (intel_graphics_ver(devid) < IP_VER(20, 0)) {
-+		regs[config.n_regs * 2] = 0xD04;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+		regs[config.n_regs * 2] = 0xD2C;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+	/* Prior to MTLx */
-+	if (intel_graphics_ver(devid) < IP_VER(12, 70)) {
-+		/* WAIT_FOR_RC6_EXIT */
-+		regs[config.n_regs * 2] = 0x20CC;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+
-+	config.regs_ptr = (uintptr_t) regs;
-+
-+	/* Create a new config */
-+	ret = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_ADD_CONFIG, &config);
-+	igt_assert(ret > 0); /* Config 0 should be used by the kernel */
-+	config_id = ret;
-+
-+	xe_oa_remove_config(drm_fd, config_id);
++	return fd;
 +}
 +
- /**
-  * SUBTEST: xe-ref-count
-  * Description: Check that an open oa stream holds a reference on the xe module
-@@ -3979,6 +4300,18 @@ igt_main
- 			test_stress_open_close(hwe);
- 	}
- 
-+	igt_subtest("invalid-create-userspace-config")
-+		test_invalid_create_userspace_config();
++static int
++get_card_for_fd(int fd)
++{
++	struct stat sb;
++	int mjr, mnr;
++	char buffer[128];
++	DIR *drm_dir;
++	struct dirent *entry;
++	int retval = -1;
 +
-+	igt_subtest("invalid-remove-userspace-config")
-+		test_invalid_remove_userspace_config();
++	if (fstat(fd, &sb)) {
++		fprintf(stderr, "Failed to stat DRM fd\n");
++		return -1;
++	}
 +
-+	igt_subtest("create-destroy-userspace-config")
-+		test_create_destroy_userspace_config();
++	mjr = major(sb.st_rdev);
++	mnr = minor(sb.st_rdev);
 +
-+	igt_subtest("whitelisted-registers-userspace-config")
-+		test_whitelisted_registers_userspace_config();
++	snprintf(buffer, sizeof(buffer), "/sys/dev/char/%d:%d/device/drm", mjr, mnr);
 +
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++	drm_dir = opendir(buffer);
++	assert(drm_dir != NULL);
++
++	while ((entry = readdir(drm_dir))) {
++		if (entry->d_type == DT_DIR && strncmp(entry->d_name, "card", 4) == 0) {
++			retval = strtoull(entry->d_name + 4, NULL, 10);
++			break;
++		}
++	}
++
++	closedir(drm_dir);
++
++	return retval;
++}
++
++static const char *
++metric_name(struct intel_xe_perf *perf, const char *hw_config_guid)
++{
++	struct intel_xe_perf_metric_set *metric_set;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		if (!strcmp(metric_set->hw_config_guid, hw_config_guid))
++			return metric_set->symbol_name;
++	}
++
++	return "Unknown";
++}
++
++static void
++usage(void)
++{
++	printf("Usage: xe-perf-configs [options]\n"
++	       "Manages xe-perf configurations stored in xe.\n"
++	       "     --purge, -p         Purge configurations from the kernel\n"
++	       "     --list,  -l         List configurations from the kernel\n");
++}
++
++int
++main(int argc, char *argv[])
++{
++	char metrics_path[128];
++	DIR *metrics_dir;
++	struct dirent *entry;
++	int drm_fd, drm_card;
++	int opt;
++	bool purge = false;
++	const struct option long_options[] = {
++		{"help",   no_argument, 0, 'h'},
++		{"list",   no_argument, 0, 'l'},
++		{"purge",  no_argument, 0, 'p'},
++		{0, 0, 0, 0}
++	};
++	const struct intel_device_info *devinfo;
++	struct intel_xe_perf *perf;
++	uint32_t devid = 0;
++
++	while ((opt = getopt_long(argc, argv, "hlp", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage();
++			return EXIT_SUCCESS;
++		case 'l':
++			break;
++		case 'p':
++			purge = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage();
++			return EXIT_FAILURE;
++		}
++	}
++
++	drm_fd = open_render_node(&devid);
++	drm_card = get_card_for_fd(drm_fd);
++
++	fprintf(stdout, "Found device id=0x%x\n", devid);
++
++	devinfo = intel_get_device_info(drm_fd);
++	if (!devinfo) {
++		fprintf(stderr, "No device info found.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Device graphics_ver=%i gt=%i\n", devinfo->graphics_ver, devinfo->gt);
++
++	perf = intel_xe_perf_for_fd(drm_fd, 0);
++	if (!perf) {
++		fprintf(stderr, "No perf data found.\n");
++		return EXIT_FAILURE;
++	}
++
++	snprintf(metrics_path, sizeof(metrics_path),
++		 "/sys/class/drm/card%d/metrics", drm_card);
++	metrics_dir = opendir(metrics_path);
++	if (!metrics_dir)
++		return EXIT_FAILURE;
++
++	fprintf(stdout, "Looking at metrics in %s\n", metrics_path);
++
++	while ((entry = readdir(metrics_dir))) {
++		char metric_id_path[400];
++		uint64_t metric_id;
++
++		if (entry->d_type != DT_DIR)
++			continue;
++
++		snprintf(metric_id_path, sizeof(metric_id_path),
++			 "%s/%s/id", metrics_path, entry->d_name);
++
++		if (!read_file_uint64(metric_id_path, &metric_id))
++			continue;
++
++		if (purge) {
++			if (intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &metric_id) == 0)
++				fprintf(stdout, "\tRemoved config %s id=%03" PRIu64 " name=%s\n",
++					entry->d_name, metric_id, metric_name(perf, entry->d_name));
++			else
++				fprintf(stdout, "\tFailed to remove config %s id=%03" PRIu64 " name=%s\n",
++					entry->d_name, metric_id, metric_name(perf, entry->d_name));
++		} else {
++			fprintf(stdout, "\tConfig %s id=%03" PRIu64 " name=%s\n",
++				entry->d_name, metric_id, metric_name(perf, entry->d_name));
++		}
++	}
++
++	closedir(metrics_dir);
++	close(drm_fd);
++
++	return EXIT_SUCCESS;
++}
+diff --git a/tools/xe-perf/xe_perf_control.c b/tools/xe-perf/xe_perf_control.c
+new file mode 100644
+index 0000000000..da96232bc8
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_control.c
+@@ -0,0 +1,117 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++
++#include <getopt.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "xe_perf_recorder_commands.h"
++
++static void
++usage(const char *name)
++{
++	fprintf(stdout,
++		"Usage: %s [options]\n"
++		"\n"
++		"     --help,               -h         Print this screen\n"
++		"     --command-fifo,       -f <path>  Path to a command fifo\n"
++		"     --dump,               -d <path>  Write a content of circular buffer to path\n",
++		name);
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",                       no_argument, 0, 'h'},
++		{"dump",                 required_argument, 0, 'd'},
++		{"command-fifo",         required_argument, 0, 'f'},
++		{"quit",                       no_argument, 0, 'q'},
++		{0, 0, 0, 0}
++	};
++	const char *command_fifo = XE_PERF_RECORD_FIFO_PATH, *dump_file = NULL;
++	FILE *command_fifo_file;
++	int opt;
++	bool quit = false;
++
++	while ((opt = getopt_long(argc, argv, "hd:f:q", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage(argv[0]);
++			return EXIT_SUCCESS;
++		case 'd':
++			dump_file = optarg;
++			break;
++		case 'f':
++			command_fifo = optarg;
++			break;
++		case 'q':
++			quit = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage(argv[0]);
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (!command_fifo)
++		return EXIT_FAILURE;
++
++	command_fifo_file = fopen(command_fifo, "r+");
++	if (!command_fifo_file) {
++		fprintf(stderr, "Unable to open command file\n");
++		return EXIT_FAILURE;
++	}
++
++	if (dump_file) {
++		if (dump_file[0] == '/') {
++			uint32_t total_len =
++				sizeof(struct recorder_command_base) + strlen(dump_file) + 1;
++			struct {
++				struct recorder_command_base base;
++				uint8_t dump[];
++			} *data = malloc(total_len);
++
++			data->base.command = RECORDER_COMMAND_DUMP;
++			data->base.size = total_len;
++			snprintf((char *) data->dump, strlen(dump_file) + 1, "%s", dump_file);
++
++			fwrite(data, total_len, 1, command_fifo_file);
++		} else {
++			char *cwd = getcwd(NULL, 0);
++			uint32_t path_len = strlen(cwd) + 1 + strlen(dump_file) + 1;
++			uint32_t total_len = sizeof(struct recorder_command_base) + path_len;
++			struct {
++				struct recorder_command_base base;
++				uint8_t dump[];
++			} *data = malloc(total_len);
++
++			data->base.command = RECORDER_COMMAND_DUMP;
++			data->base.size = total_len;
++			snprintf((char *) data->dump, path_len, "%s/%s", cwd, dump_file);
++
++			fwrite(data, total_len, 1, command_fifo_file);
++		}
++	}
++
++	if (quit) {
++		struct recorder_command_base base = {
++			.command = RECORDER_COMMAND_QUIT,
++			.size = sizeof(base),
++		};
++
++		fwrite(&base, sizeof(base), 1, command_fifo_file);
++	}
++
++	fclose(command_fifo_file);
++
++	return EXIT_SUCCESS;
++}
+diff --git a/tools/xe-perf/xe_perf_reader.c b/tools/xe-perf/xe_perf_reader.c
+new file mode 100644
+index 0000000000..62a4237ee4
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_reader.c
+@@ -0,0 +1,325 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#include <assert.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "igt_core.h"
++#include "intel_chipset.h"
++#include "xe/xe_oa.h"
++#include "xe/xe_oa_data_reader.h"
++
++#define MAX(a,b) ((a) > (b) ? (a) : (b))
++#define MIN(a,b) ((a) > (b) ? (b) : (a))
++
++static void
++usage(void)
++{
++	printf("Usage: xe-perf-reader [options] file\n"
++	       "Reads the content of an xe-perf recording.\n"
++	       "\n"
++	       "     --help,    -h             Print this screen\n"
++	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
++	       "                               Use 'all' to display all counters.\n"
++	       "                               Use 'list' to list available counters.\n"
++	       "     --reports, -r             Print out data per report.\n");
++}
++
++static struct intel_xe_perf_logical_counter *
++find_counter(struct intel_xe_perf_metric_set *metric_set,
++	     const char *name)
++{
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		if (!strcmp(name, metric_set->counters[i].symbol_name)) {
++			return &metric_set->counters[i];
++		}
++	}
++
++	return NULL;
++}
++
++static void
++append_counter(struct intel_xe_perf_logical_counter ***counters,
++	       int32_t *n_counters,
++	       uint32_t *n_allocated_counters,
++	       struct intel_xe_perf_logical_counter *counter)
++{
++	if (*n_counters < *n_allocated_counters) {
++		(*counters)[(*n_counters)++] = counter;
++		return;
++	}
++
++	*n_allocated_counters = MAX(2, *n_allocated_counters * 2);
++	*counters = realloc(*counters,
++			    sizeof(struct intel_xe_perf_logical_counter *) *
++			    (*n_allocated_counters));
++	(*counters)[(*n_counters)++] = counter;
++}
++
++static struct intel_xe_perf_logical_counter **
++get_logical_counters(struct intel_xe_perf_metric_set *metric_set,
++		     const char *counter_list,
++		     int32_t *out_n_counters)
++{
++	struct intel_xe_perf_logical_counter **counters = NULL, *counter;
++	uint32_t n_allocated_counters = 0;
++	const char *current, *next;
++	char counter_name[100];
++
++	if (!counter_list) {
++		*out_n_counters = 0;
++		return NULL;
++	}
++
++	if (!strcmp(counter_list, "list")) {
++		uint32_t longest_name = 0;
++
++		*out_n_counters = -1;
++		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++			longest_name = MAX(longest_name,
++					   strlen(metric_set->counters[i].symbol_name));
++		}
++
++		fprintf(stdout, "Available counters:\n");
++		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++			fprintf(stdout, "%s:%*s%s\n",
++				metric_set->counters[i].symbol_name,
++				(int)(longest_name -
++				      strlen(metric_set->counters[i].symbol_name) + 1), " ",
++				metric_set->counters[i].name);
++		}
++		return NULL;
++	}
++
++	if (!strcmp(counter_list, "all")) {
++		counters = malloc(sizeof(*counters) * metric_set->n_counters);
++		*out_n_counters = metric_set->n_counters;
++		for (uint32_t i = 0; i < metric_set->n_counters; i++)
++			counters[i] = &metric_set->counters[i];
++		return counters;
++	}
++
++	*out_n_counters = 0;
++	current = counter_list;
++	while ((next = strstr(current, ","))) {
++		snprintf(counter_name,
++			 MIN((uint32_t)(next - current) + 1, sizeof(counter_name)),
++			 "%s", current);
++
++		counter = find_counter(metric_set, counter_name);
++		if (!counter) {
++			fprintf(stderr, "Unknown counter '%s'.\n", counter_name);
++			free(counters);
++			*out_n_counters = -1;
++			return NULL;
++		}
++
++		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
++
++		current = next + 1;
++	}
++
++	if (strlen(current) > 0) {
++		counter = find_counter(metric_set, current);
++		if (!counter) {
++			fprintf(stderr, "Unknown counter '%s'.\n", current);
++			free(counters);
++			*out_n_counters = -1;
++			return NULL;
++		}
++
++		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
++	}
++
++	return counters;
++}
++
++static void
++print_report_deltas(const struct intel_xe_perf_data_reader *reader,
++		    const struct intel_xe_perf_record_header *xe_report0,
++		    const struct intel_xe_perf_record_header *xe_report1,
++		    struct intel_xe_perf_logical_counter **counters,
++		    uint32_t n_counters)
++{
++	struct intel_xe_perf_accumulator accu;
++
++	intel_xe_perf_accumulate_reports(&accu,
++				      reader->perf, reader->metric_set,
++				      xe_report0, xe_report1);
++
++	for (uint32_t c = 0; c < n_counters; c++) {
++		struct intel_xe_perf_logical_counter *counter = counters[c];
++
++		switch (counter->storage) {
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
++			fprintf(stdout, "   %s: %" PRIu64 "\n",
++				counter->symbol_name, counter->read_uint64(reader->perf,
++									   reader->metric_set,
++									   accu.deltas));
++			break;
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
++			fprintf(stdout, "   %s: %f\n",
++				counter->symbol_name, counter->read_float(reader->perf,
++									  reader->metric_set,
++									  accu.deltas));
++			break;
++		}
++	}
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",             no_argument, 0, 'h'},
++		{"counters",   required_argument, 0, 'c'},
++		{"reports",          no_argument, 0, 'r'},
++		{0, 0, 0, 0}
++	};
++	struct intel_xe_perf_data_reader reader;
++	struct intel_xe_perf_logical_counter **counters;
++	const struct intel_device_info *devinfo;
++	const char *counter_names = NULL;
++	int32_t n_counters;
++	int fd, opt;
++	bool print_reports = false;
++
++	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage();
++			return EXIT_SUCCESS;
++		case 'c':
++			counter_names = optarg;
++			break;
++		case 'r':
++			print_reports = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage();
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (optind >= argc) {
++		fprintf(stderr, "No recording file specified.\n");
++		return EXIT_FAILURE;
++	}
++
++	fd = open(argv[optind], 0, O_RDONLY);
++	if (fd < 0) {
++		fprintf(stderr, "Cannot open '%s': %s.\n",
++			argv[optind], strerror(errno));
++		return EXIT_FAILURE;
++	}
++
++	if (!intel_xe_perf_data_reader_init(&reader, fd)) {
++		fprintf(stderr, "Unable to parse '%s': %s.\n",
++			argv[optind], reader.error_msg);
++		return EXIT_FAILURE;
++	}
++
++	counters = get_logical_counters(reader.metric_set, counter_names, &n_counters);
++	if (n_counters < 0)
++		goto exit;
++
++	devinfo = intel_get_device_info(reader.devinfo.devid);
++
++	fprintf(stdout, "Recorded on device=0x%x(%s) graphics_ver=%i\n",
++		reader.devinfo.devid, devinfo->codename,
++		reader.devinfo.graphics_ver);
++	fprintf(stdout, "Metric used : %s (%s) uuid=%s\n",
++		reader.metric_set->symbol_name, reader.metric_set->name,
++		reader.metric_set->hw_config_guid);
++	fprintf(stdout, "Reports: %u\n", reader.n_records);
++	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
++	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
++
++	if (reader.n_correlations < 2) {
++		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->cpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp & 0xffffffff,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
++
++	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_xe_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[0]),
++		intel_xe_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[reader.n_records - 1]));
++	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_xe_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[0]),
++		intel_xe_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[reader.n_records - 1]));
++
++	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
++		fprintf(stdout,
++			"WARNING: Recording used a different HW configuration.\n"
++			"WARNING: This could lead to inconsistent counter values.\n");
++	}
++
++	for (uint32_t i = 0; i < reader.n_timelines; i++) {
++		const struct intel_xe_perf_timeline_item *item = &reader.timelines[i];
++
++		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
++			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
++			item->cpu_ts_start, item->cpu_ts_end,
++			item->ts_start, item->ts_end);
++		fprintf(stdout, "hw_id=0x%x %s\n",
++			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
++
++		print_report_deltas(&reader,
++				    reader.records[item->record_start],
++				    reader.records[item->record_end],
++				    counters, n_counters);
++
++		if (print_reports) {
++			for (uint32_t r = item->record_start; r < item->record_end; r++) {
++				fprintf(stdout, " report%i = %s\n",
++					r - item->record_start,
++					intel_xe_perf_read_report_reason(reader.perf, reader.records[r]));
++				print_report_deltas(&reader,
++						    reader.records[r],
++						    reader.records[r + 1],
++						    counters, n_counters);
++			}
++		}
++	}
++
++ exit:
++	intel_xe_perf_data_reader_fini(&reader);
++	close(fd);
++
++	return EXIT_SUCCESS;
++}
 -- 
 2.41.0
 
