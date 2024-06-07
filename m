@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B40B9C27C55
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C0CC27C65
 	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 44CF510ED08;
-	Fri,  7 Jun 2024 20:09:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB2A210ED1D;
+	Fri,  7 Jun 2024 20:09:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZdG+vJ2n";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I6O3t151";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DB2310ED04
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8D03510ED07
  for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1717790941; x=1749326941;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=4udvJSZq9oZ/CdG+lhLM5PYSf5x4ScbIriyucMVdYys=;
- b=ZdG+vJ2nG6YiZUY41b9oRbQcO/hw1YnfLcUYnOGQthFJiy/7uGPWv+vt
- DHFYZSo48zFMiefZilYB8nHPUp0F616MzxCFObrV7wv07ZzhbkqiOosER
- ts8UVfn41mElmIxmQhDDMndVzxX0wEHtdmUvfHrjJQ/AiJeR+1jcIja8L
- Yw/5YINFkFWUxviQMLQONugh6iBprwFt6Idi/ubvp/6TARowrBtvwca5A
- rCLFZPzRAPpEG8ZNzzb/o5MCr3nc1gfilr2/eD2KynYxTUSOyAtcO7Mrs
- Aqx67B7I4MujQ7fhWwgCbYP/gqvntY2AElswiejOcc5tidgzGoQENg+Oa g==;
-X-CSE-ConnectionGUID: B5gl8wKvTV6gRRb0GN9nzg==
-X-CSE-MsgGUID: sAqTlkoZQViAZVEeh+Fnjg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383238"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383238"
+ bh=N9oJF0g4rHJ7MCwpNeWH3gsC0REWLkBHgZQOl5h7tVc=;
+ b=I6O3t151YhPTjYO6ARiVRPhQSWBr5gbq2tSbmV2BK0J9ZKP+wIdcFtjg
+ w5cIQhRg/ZYTajLiGUE2iGDb78QED1Xt4Y7yg0ez8jeg9ZBhzYMHmKnKP
+ 2MG0WhxtgLOj5HK+S+vtagYDeJUy81pGhnEVQwUdxz/9WM8jAPUuKlXxv
+ BbMae1VysIjvhsdXA0UL5hLn85ElEIMmvBtbHpkd0+LIoNmKGknQXkh+q
+ 5otkeNlgP+L22Qh+gk2h0YshlKGPQ60LBYZCcy99hhp2VXQz5BmMY3Dce
+ QvqkHXKCYhWKtYKEirFKa5hJ0mh3acmuIa3hvK69aAZl6qkPqgn3INCUg w==;
+X-CSE-ConnectionGUID: kETmOofoQ7WezVbHD3ZnjA==
+X-CSE-MsgGUID: YXzGW/u3S52cwvx0BZ+/qw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383239"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383239"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Jun 2024 13:09:01 -0700
-X-CSE-ConnectionGUID: Lt2UMhXLSPOrJkcJzaG5kg==
-X-CSE-MsgGUID: Q67YWnDZR2ywgAGGedw2GQ==
+X-CSE-ConnectionGUID: G8HePIxIQMqTSvktSKkx3g==
+X-CSE-MsgGUID: x4gQIjeVTFyU9TcUnkOGHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373865"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373866"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Jun 2024 13:09:01 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 24/27] xe/oa: Fix invalid escape warnings
-Date: Fri,  7 Jun 2024 13:08:44 -0700
-Message-ID: <20240607200847.1964629-25-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 25/27] xe/oa/mdapi-xml-convert: Add support for
+ 576B_PEC64LL format
+Date: Fri,  7 Jun 2024 13:08:45 -0700
+Message-ID: <20240607200847.1964629-26-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
@@ -69,66 +70,190 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: José Roberto de Souza <jose.souza@intel.com>
 
-Fix this warnings:
-SyntaxWarning: invalid escape sequence '\
+Xe2 don't use the 256bytes long format, instead it uses a 576bytes
+long with 64 PEC fields that are 64 bits long.
+This patch fixes the xe2 definition and add the parser for this format.
 
 Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 ---
- lib/xe/oa-configs/codegen.py           | 12 ++++++------
- lib/xe/oa-configs/mdapi-xml-convert.py |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ lib/xe/oa-configs/codegen.py           |  5 ++
+ lib/xe/oa-configs/mdapi-xml-convert.py | 76 +++++++++++++++++++++-----
+ lib/xe/xe_oa.h                         |  1 +
+ 3 files changed, 67 insertions(+), 15 deletions(-)
 
 diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
-index 9a7d57a33e..f078ef9498 100644
+index f078ef9498..51498f803d 100644
 --- a/lib/xe/oa-configs/codegen.py
 +++ b/lib/xe/oa-configs/codegen.py
-@@ -162,13 +162,13 @@ hw_vars_mapping = {
+@@ -128,6 +128,7 @@ class Set:
+         return self.xml.find(path)
+ 
+ 
++#TODO add SqidiTotalCount, L3BankTotalCount, L3NodeTotalCount
+ hw_vars_mapping = {
+     "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+     "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+@@ -159,6 +160,10 @@ hw_vars_mapping = {
+     "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+     "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+     "$QueryMode": { 'c': "perf->devinfo.query_mode" },
++
++    "$ComputeEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
++
++    "$CopyEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
  }
  
  def is_hw_var(name):
--    m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-+    m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-     if m:
-         return True
--    m = re.search('\$GtSlice([0-9]+)$', name)
-+    m = re.search(r'\$GtSlice([0-9]+)$', name)
-     if m:
-         return True
--    m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-+    m = re.search(r'\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-     if m:
-         return True
-     return name in hw_vars_mapping
-@@ -338,13 +338,13 @@ class Gen:
-             return self.hw_vars[name]['c']
-         if name in set.counter_vars:
-             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
--        m = re.search('\$GtSlice([0-9]+)$', name)
-+        m = re.search(r'\$GtSlice([0-9]+)$', name)
-         if m:
-             return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
--        m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-+        m = re.search(r'\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-         if m:
-             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
--        m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-+        m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-         if m:
-             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-         return None
 diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
-index ab4747ddd1..575b53e955 100755
+index 575b53e955..602a3965af 100755
 --- a/lib/xe/oa-configs/mdapi-xml-convert.py
 +++ b/lib/xe/oa-configs/mdapi-xml-convert.py
-@@ -228,7 +228,7 @@ counter_blacklist = {
+@@ -149,12 +149,10 @@ mtl_chipset_oam_samedia_params = {
+     }
+ }
  
- def underscore(name):
-     s = re.sub('MHz', 'Mhz', name)
--    s = re.sub('\.', '_', s)
-+    s = re.sub(r'\.', '_', s)
-     s = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', s)
-     s = re.sub('#', '_', s)
-     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s).lower()
+-# FIXME: everything except oa_report_size is incorrect here
+-xe2_chipset_params = {
+-    'a_offset': 16,
+-    'b_offset': 192,
+-    'c_offset': 224,
++xe2_chipset_params_pec = {
++    'pec_offset': 32,
+     'oa_report_size': 576,
++    # TODO: Not sure about the configs below
+     'config_reg_blacklist': {
+         0x2364, # OACTXID
+     },
+@@ -183,7 +181,11 @@ mtl_chipset_oa_formats = {
+ }
+ 
+ xe2_chipset_oa_formats = {
+-    '256B_GENERIC_NOA16': xe2_chipset_params,
++    '576B_PEC64LL': xe2_chipset_params_pec,
++    # We only care about 576B_PEC64LL metrics in Xe2, entries below is just to
++    # surpress warnings
++    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
++    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
+ }
+ 
+ chipsets = {
+@@ -209,8 +211,6 @@ chipsets = {
+ 
+ xehp_plus = ( 'ACM', 'MTL' )
+ 
+-xe2_plus = ( 'LNL' )
+-
+ register_types = { 'OA', 'NOA', 'FLEX', 'PM' }
+ 
+ default_set_blacklist = { "RenderDX1x", # TODO: rename to something non 'DX'
+@@ -298,6 +298,46 @@ def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
+ 
+     assert 0
+ 
++def read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format):
++    width, offset_str = token.split('@')
++    offset = int(offset_str, 16)
++
++    if width != 'qw':
++        assert 0
++
++    if raw_offsets:
++        pec_offset = chipsets[chipset][oa_format]['pec_offset']
++
++        if offset < pec_offset:
++            if offset == 8:
++                return "GPU_TIME 0 READ"
++            elif offset == 24:
++                return "GPU_CLOCK 0 READ"
++            else:
++                assert 0
++        else:
++            pec_cnt_offset = int((offset - pec_offset) / 8)
++
++            return "PEC " + str(pec_cnt_offset) + " READ"
++    else:
++        # Location in the accumulated deltas
++        idx = int(offset / 8)
++
++        if idx == 0:
++            return "GPU_TIME 0 READ"
++        elif idx == 1:
++            return "GPU_CLOCK 0 READ"
++        else:
++            idx = idx - 2;
++            pec_cnt_offset = str(idx)
++            pec_high_low_text = "low"
++            if (offset % 8) > 0:
++               pec_high_low_text = "high"
++
++            return "PEC " + pec_cnt_offset + " READ"
++
++    assert 0
++
+ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
+     width, offset_str = token.split('@')
+ 
+@@ -374,9 +414,6 @@ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
+                 return "C " + str(idx - 48) + " READ"
+             else:
+                 return "{0} READ".format(read_value(chipset, offset, oa_format))
+-        elif chipset in xe2_plus:
+-            # FIXME: skip all metrics to retain just the registers
+-                return "GPU_TIME 0 READ"
+         else:
+             # For Gen8+ the array of accumulated counters is
+             # assumed to start with a GPU_TIME then GPU_CLOCK,
+@@ -405,6 +442,9 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
+     if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
+         return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
+ 
++    if oa_format in ['576B_PEC64LL']:
++        return read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format)
++
+     assert 0
+ 
+ def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
+@@ -905,6 +945,8 @@ for arg in args.xml:
+                 mdapi_counter.set('NormalizationEquation', '$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV')
+                 #mdapi_counter.set('DeltaReportReadEquation', '$GpuCoreClocks $GpuTime UDIV')
+ 
++            if mdapi_counter.get('SymbolName') == "ResultUncertainty":
++                continue
+ 
+             symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_counter.get('SymbolName'))
+ 
+@@ -992,11 +1034,15 @@ for arg in args.xml:
+             # XXX: As a special case, we override the raw and delta report
+             # equations for the GpuTime counters, which seem inconsistent
+             if mdapi_counter.get('SymbolName') == "GpuTime":
+-                mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
+-                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
+-                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                if oa_format == '576B_PEC64LL':
++                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
+                 else:
+-                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
++                      mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   else:
++                      mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
+ 
+             availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
+             if availability == "":
+diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
+index c16177ec8e..f6f2768b00 100644
+--- a/lib/xe/xe_oa.h
++++ b/lib/xe/xe_oa.h
+@@ -275,6 +275,7 @@ struct intel_xe_perf_metric_set {
+ 	int b_offset;
+ 	int c_offset;
+ 	int perfcnt_offset;
++	int pec_offset;
+ 
+ 	const struct intel_xe_perf_register_prog *b_counter_regs;
+ 	uint32_t n_b_counter_regs;
 -- 
 2.41.0
 
