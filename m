@@ -4,66 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92014C27C55
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 12:31:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64073C27C5F
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 12:56:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 42F1A10E0D0;
-	Fri,  7 Jun 2024 12:31:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EAA4210E3B9;
+	Fri,  7 Jun 2024 12:56:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="la7qfKM/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RlyhU7Ga";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 846C410E0D0
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 12:31:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 62C8C10E770
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 12:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717763480; x=1749299480;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bS9jUDEe0B2EN6OR2W6KzKHLhpEGNtyYZe2bffp+C4Q=;
- b=la7qfKM//V835+I3iUdl4c9kArS7orHY3yBV7eicXkgV5bbbkFjS1+an
- oPFdPnI4fzwm+7Czts3DdMMOPtb8Gk4bOqPu6kkj+Srd5NV9pjfDmtSLH
- j1e0o3FZWH1rLbkdCBGaxJZExSt/g5osrcdgNaCLbNbdJ2ltW1F22z1kj
- stPRsLXbh+yVZ3nR8ek3JK3RA/rE3kh8QcEy01P9To46g9b8fVKPV1dmu
- qFBPorKVB+r5eftnuv/ocZZJ/ELU2ClesmD+LTGzi1Zrdr1WXSFPF+ARV
- WyQVeXEVVui2hQRkY/IsfBv565W2mmrDzJN/hQpO+dvKaVaCknuWSeIZX g==;
-X-CSE-ConnectionGUID: 2tYA/LxZQK6I5UTcuMMwYw==
-X-CSE-MsgGUID: yj8jmIiNSli0DcRI6WV2fg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="14435056"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14435056"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 05:31:20 -0700
-X-CSE-ConnectionGUID: sI4RrdJeSDWxqs3XyNUtZQ==
-X-CSE-MsgGUID: pIVYs4SHSDK9r7fSuhRtmw==
+ t=1717764979; x=1749300979;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ks6sbT61za5pFyag548FXvPzZLQF/E6MeH0b4qChsvU=;
+ b=RlyhU7GaXGXK7VsRUOEEjBHEtxDr/Zb6THJDSOuI2A0qKXH9BTk/Qznb
+ 4vMeuv0ICAW2rC+u7abLHB/twYs+hDENobgVXELoAHpNidF6aZ6Tafnj7
+ 3PiESEWiGEVns62u9Fp3XyZkd0j+axoEeJMTfrde5Z7JUCeS8/eBDsYb+
+ qEPLoxbHtHYzJADpyhCaUmXAZ9rFh4wC3XLnvWbn0ZXHEQSH1jUz44cPv
+ DcWiA1P/jDYOxCVqrjmi3qeHNfLaK5b5KW88qR8A2W2yVfpSED3RP9D5i
+ 4hqZ/XRbPiFirlyLHntNo8JxP4hidzYflZlS0boK8gwmvRSDpjn+nApE9 g==;
+X-CSE-ConnectionGUID: BPKtZoicTbyUM3zZYDaBvg==
+X-CSE-MsgGUID: r1qPM8T9Sp2xfAiwZaPDew==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="37011349"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="37011349"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 05:56:19 -0700
+X-CSE-ConnectionGUID: IyYangs9TVSkSARs1Xj7Rw==
+X-CSE-MsgGUID: rna9fjqsR/q6nfdk8WlwaA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="42874429"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 05:31:18 -0700
-Date: Fri, 7 Jun 2024 14:31:15 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38768843"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 05:56:17 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Melanie Lobo <melanie.lobo@intel.com>, vidya.srinivas@intel.com,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH 1/2] lib/intel_aux_pgtable: Library to add support for
- RGB16161616_64B format
-Message-ID: <20240607123115.fbuxbuur6kwvnw6y@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Melanie Lobo <melanie.lobo@intel.com>, vidya.srinivas@intel.com,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-References: <20240606121523.5347-1-melanie.lobo@intel.com>
- <20240606121523.5347-2-melanie.lobo@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/kms_vrr: New subtest for CMRR
+Date: Fri,  7 Jun 2024 18:18:39 +0530
+Message-ID: <20240607124840.3405928-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240606121523.5347-2-melanie.lobo@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,63 +65,215 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Melanie,
-On 2024-06-06 at 17:45:22 +0530, Melanie Lobo wrote:
+CMRR is an variation of VRR where it varies Vtotal slightly
+(between additional 0 and 1 Vtotal scanlines) to match content
+rate exactly without frame drops using the adaptive sync framework.
 
-one more nit about subject, you wrote:
-lib/intel_aux_pgtable: Library to add support for RGB16161616_64B format
+This patch creates a new subtest to validate the CMRR as below:
+- Request flips with the refresh_rate * 1.001
+- Flips should happen at the frequency of refresh_rate.
 
-This should be:
-lib/intel_aux_pgtable: Add RGB16161616_64B FP16 compressed format
+V2:
+ - Tweak the clock if CMRR supported mode not found (Ankit)
+ - Rebase
+V3:
+ - Read flip completion events instead of Vblank evants
 
-you already have 'lib/' in begin of filename, no need to add
-that later.
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/kms_vrr.c | 130 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 128 insertions(+), 2 deletions(-)
 
-Juha-Pekka or Swati - fill free to suggest better subject, I do
-not know specification of this new format.
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 7f64d6806..f3daa55f5 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -37,6 +37,11 @@
+ #include <signal.h>
+ 
+ /**
++ * SUBTEST: cmrr
++ * Description: Test to validate the content rate to exactly match with the
++ * 		requested rate without any frame drops.
++ * Functionality: CMRR
++ *
+  * SUBTEST: flip-basic
+  * Description: Tests that VRR is enabled and that the difference between flip
+  *              timestamps converges to the requested rate
+@@ -87,6 +92,9 @@
+  */
+ #define TEST_DURATION_NS (5000000000ull)
+ 
++#define CMRR_PRECISION_TOLERANCE	10
++#define CMRR_MULTIPLIER	1.001
++
+ enum {
+ 	TEST_BASIC = 1 << 0,
+ 	TEST_DPMS = 1 << 1,
+@@ -97,7 +105,8 @@ enum {
+ 	TEST_SEAMLESS_VIRTUAL_RR = 1 << 6,
+ 	TEST_FASTSET = 1 << 7,
+ 	TEST_MAXMIN = 1 << 8,
+-	TEST_NEGATIVE = 1 << 9,
++	TEST_CMRR = 1 << 9,
++	TEST_NEGATIVE = 1 << 10,
+ };
+ 
+ enum {
+@@ -232,6 +241,21 @@ virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int virtual_refresh_rat
+ 	return mode;
+ }
+ 
++static bool
++is_cmrr_mode(drmModeModeInfoPtr mode)
++{
++	int calculated_refresh, actual_refresh, pixel_clock_per_line;
++
++	actual_refresh = mode->vrefresh * 100;
++	pixel_clock_per_line = mode->clock * 1000 / mode->htotal;
++	calculated_refresh = pixel_clock_per_line * 100 / mode->vtotal;
++
++	if ((actual_refresh - calculated_refresh) < CMRR_PRECISION_TOLERANCE)
++		return false;
++
++	return true;
++}
++
+ /* Read min and max vrr range from the connector debugfs. */
+ static range_t
+ get_vrr_range(data_t *data, igt_output_t *output)
+@@ -496,6 +520,57 @@ flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
+ 	return total_flip ? ((total_pass * 100) / total_flip) : 0;
+ }
+ 
++static uint32_t
++flip_and_measure_cmrr(data_t *data, igt_output_t *output, enum pipe pipe,
++		      uint64_t duration_ns)
++{
++	uint64_t start_ns, last_event_ns, event_ns;
++	uint32_t total_flip = 0, total_pass = 0;
++	bool front = false;
++	drmModeModeInfoPtr mode = igt_output_get_mode(output);
++	uint64_t req_rate_ns = rate_from_refresh(mode->vrefresh * CMRR_MULTIPLIER);
++	uint64_t exp_rate_ns = rate_from_refresh(mode->vrefresh);
++	uint64_t threshold_ns = exp_rate_ns / mode->vdisplay; /* Upto 1 scan line. */
++
++	igt_info("CMRR on: requested rate: %"PRIu64" ns (%f Hz) "
++		 "expected rate: %"PRIu64" ns - %"PRIu64" ns (%f-%f Hz)\n",
++		 req_rate_ns, mode->vrefresh * CMRR_MULTIPLIER,
++		 (exp_rate_ns - threshold_ns), (exp_rate_ns + threshold_ns),
++		 (float)NSECS_PER_SEC / (exp_rate_ns + threshold_ns),
++		 (float)NSECS_PER_SEC / (exp_rate_ns - threshold_ns));
++
++	do_flip(data, &data->fb[0]);
++	start_ns = last_event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
++	do {
++		int64_t target_ns, wait_ns, diff_ns = exp_rate_ns;
++
++		front = !front;
++		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
++
++		event_ns = get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
++		igt_debug("event_ns - last_event_ns: %"PRIu64" ns (%f Hz)\n",
++			  event_ns - last_event_ns, (float)NSECS_PER_SEC / (event_ns - last_event_ns));
++
++		diff_ns -= event_ns - last_event_ns;
++		if (llabs(diff_ns) <= threshold_ns)
++			total_pass += 1;
++
++		last_event_ns = event_ns;
++		total_flip += 1;
++
++		diff_ns = event_ns - start_ns;
++		wait_ns = ((diff_ns + req_rate_ns - 1) / req_rate_ns) * req_rate_ns;
++		wait_ns -= diff_ns;
++		target_ns = event_ns + wait_ns;
++		while (get_time_ns() < target_ns - 10);
++	} while (event_ns - start_ns <= duration_ns);
++
++	igt_info("Completed %u flips, %u vblanks were in threshold for (%u Hz) %"PRIu64"ns.\n",
++		 total_flip, total_pass, mode->vrefresh, req_rate_ns);
++
++	return total_flip ? ((total_pass * 100) / total_flip) : 0;
++}
++
+ /* Basic VRR flip functionality test - enable, measure, disable, measure */
+ static void
+ test_basic(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
+@@ -702,6 +777,49 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
+ 	}
+ }
+ 
++static void
++test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
++{
++	uint32_t result;
++	int i;
++	bool found = false;
++	drmModeConnectorPtr connector = output->config.connector;
++	drmModeModeInfo mode = *igt_output_get_mode(output);
++
++	igt_info("CMRR test execution on %s, PIPE_%s with VRR range: (%u-%u) Hz\n",
++		 output->name, kmstest_pipe_name(pipe), data->range.min, data->range.max);
++
++	for (i = 0; i < connector->count_modes; i++) {
++		if (is_cmrr_mode(&connector->modes[i])) {
++			mode = connector->modes[i];
++
++			found = true;
++			break;
++		}
++	}
++
++	igt_info("Selected mode: ");
++	kmstest_dump_mode(&mode);
++
++	if (!found) {
++		igt_info("No CMRR mode found on %s, try to tweak the clock.\n", output->name);
++
++		mode.clock = (mode.htotal * mode.vtotal * (mode.vrefresh * CMRR_MULTIPLIER)) / 1000;
++
++		igt_info("Tweaked mode: ");
++		kmstest_dump_mode(&mode);
++	}
++
++	igt_output_override_mode(output, &mode);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	prepare_test(data, output, pipe);
++	result = flip_and_measure_cmrr(data, output, pipe, TEST_DURATION_NS * 2);
++	igt_assert_f(result > 75,
++		     "Refresh rate (%u Hz) %"PRIu64"ns: Target CMRR on threshold not reached, result was %u%%\n",
++		     mode.vrefresh, rate_from_refresh(mode.vrefresh), result);
++}
++
+ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ {
+ 	if (vrr_capable(output))
+@@ -718,7 +836,7 @@ static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *output)
+ 
+ static bool output_constraint(data_t *data, igt_output_t *output, uint32_t flags)
+ {
+-	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
++	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS | TEST_CMRR)) &&
+ 	    output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
+ 		return false;
+ 
+@@ -906,6 +1024,14 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
+ 		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
+ 		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
+ 			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
++
++		igt_describe("Test to validate the the content rate exactly match with the "
++			     "requested rate without any frame drops.");
++		igt_subtest_with_dynamic("cmrr") {
++			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
++
++			run_vrr_test(&data, test_cmrr, TEST_CMRR);
++		}
+ 	}
+ 
+ 	igt_fixture {
+-- 
+2.43.2
 
-Regards,
-Kamil
-
-> MTL supports RGB16161616_64B FP16 format which is a binary
-> floating-point computer number format that occupies 16 bits
-> in computer memory.
-> 
-> This was tested with kernel patch,
-> https://patchwork.freedesktop.org/series/124957/
-> https://lore.kernel.org/all/20240605055819.9510-1-melanie.lobo@intel.com/
-> 
-> cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
-> ---
->  lib/intel_aux_pgtable.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-> index 3cbb0e26f35c..87df50e71bbd 100644
-> --- a/lib/intel_aux_pgtable.c
-> +++ b/lib/intel_aux_pgtable.c
-> @@ -22,6 +22,7 @@
->  #define AUX_FORMAT_AYUV		0x09
->  #define AUX_FORMAT_ARGB_8B	0x0A
->  #define AUX_FORMAT_NV12_21	0x0F
-> +#define AUX_FORMAT_RGBA16_FLOAT        0x1
->  
->  struct pgtable_level_desc {
->  	int idx_shift;
-> @@ -306,6 +307,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
->  			entry.e.format = AUX_FORMAT_ARGB_8B;
->  			entry.e.depth = bpp_to_depth_val(32);
->  			break;
-> +		case 64:
-> +			entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-> +			entry.e.depth = bpp_to_depth_val(64);
-> +			break;
->  		default:
->  			igt_assert(0);
->  		}
-> -- 
-> 2.17.1
-> 
