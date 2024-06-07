@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3ABBC27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 09:42:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F46C27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 09:48:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BF3510E03B;
-	Fri,  7 Jun 2024 09:42:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E83910E03B;
+	Fri,  7 Jun 2024 09:48:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fcgqpJw3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cn0Hbjet";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 312CE10EBAC
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 08:46:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0572710E03B
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 09:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717750011; x=1749286011;
+ t=1717753704; x=1749289704;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=oxJfyEM5wXnJ/LWPx9RXaHAkPhmAb6QgEMw6+HorXio=;
- b=fcgqpJw3G2hqSsdZbWjAocgmeBns4Jn8kqY49qpq/BSYhywtDlsWJLo+
- wiAOgpq0GiXMxJwrYtU5s31nd5mjVb19lRAGsjkvNG4EdJtLkRnArAGAW
- R6GIMwv/DxZB6aIQHzYGpevf/R0fIpyZnRlXj2nQDfCd3b64mMgkdhIF/
- 7Rx07IKba+59LeyN/QR18vj8stlv5P/gedOn8RTl/Sx88aj/5rpJF4Bqf
- rfg8AFijAPROCiCyuraDvFGftULq2LLrU44b0tE/fyzdam9mtmeej71UQ
- c2sZb3+dXj3rKqHw94DWX8AHY4M1Z3mmxou641nxUQw4aB9rK4nJITNvz w==;
-X-CSE-ConnectionGUID: qPCx+wl8ToOfePl8YhzojQ==
-X-CSE-MsgGUID: zaooIywzTa6b8uTOIrjLgQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25862918"
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="25862918"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 01:46:50 -0700
-X-CSE-ConnectionGUID: UPi3guIkRUCUkj0bqjT1xg==
-X-CSE-MsgGUID: 8ydPujhHRgmNvI2sJwaKXw==
+ b=Cn0Hbjet0x8skJhV4nCtNWEYzF42IIaVfJFoZjwlNK/Ena0WgW92pdgj
+ gbkSM8CtJer4/zZrwOn6l45fRY3eJYcYH4Q/UqYZktmdeQANHxq4SHdEA
+ nnvha33WcFD/+Uj3N94OMTxMddwj8EDmE061IFdkMPqChFnXCvH1rSX8P
+ ehI8GeTQMzHt38wPTfByp8HJPLqroU4eoBYkW0lkWTLD+17Nokbu2tCKo
+ 7M6aYW9FDQHEB0lwjpTdQJ5nblh0yKMfdLVq9Pe6Q2eZKuULrGwaDlWRc
+ S3Dkzsfz3je4t9/EDpz1BmtVNPoUJwuULorMCl0/rYXIAgYcw6InvNc94 Q==;
+X-CSE-ConnectionGUID: 5r1W6FGgSPS7dBb/2euoqg==
+X-CSE-MsgGUID: Q4acygPpREyUHbMLfmM+SA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25871639"
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="25871639"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 02:48:15 -0700
+X-CSE-ConnectionGUID: 4m+FniQZSfmwKAl2GcRY2g==
+X-CSE-MsgGUID: a0QfO5PLRMS6I5DQVeXcRQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="61458985"
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="38362791"
 Received: from bvivekan-desk.iind.intel.com ([10.190.238.63])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 01:46:49 -0700
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 02:48:14 -0700
 From: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
 Subject: [PATCH] tests/intel/xe_create: Isolate performance tests
-Date: Fri,  7 Jun 2024 14:18:14 +0530
-Message-Id: <20240607084814.1561454-1-balasubramani.vivekanandan@intel.com>
+Date: Fri,  7 Jun 2024 15:19:36 +0530
+Message-Id: <20240607094936.1564474-1-balasubramani.vivekanandan@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Fri, 07 Jun 2024 09:41:59 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
