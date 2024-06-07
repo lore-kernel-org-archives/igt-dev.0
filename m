@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28FDEC27C7B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E18FC27C77
 	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B02E10ED07;
-	Fri,  7 Jun 2024 20:09:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8F5810ED01;
+	Fri,  7 Jun 2024 20:09:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eXQhVm7K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZjcHdgU4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37DFB10ED04
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A916410ED04
  for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1717790940; x=1749326940;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=9bFiurwwpFqQhdEFXDQzMhCPqbkt7WTN//wmcQ51hCk=;
- b=eXQhVm7KiT/BFByM/QVBIBpGyq+1yQzGySDPJEBo3k5CaS4Ln8Diyu13
- 6B4Dpyq+y/k/rhWG+edd7zOPSqU7AsIv69T86zEZrEvOcPIEhkwH5I5Ul
- P02h1K597NnOSxgv1cK9C9l+szJ3eV7z677F3z4RoYWBygPbirSV8dO3r
- iSYpSPyV6IMweWGq2gu/nMLFdDjtWRbnO9IZY65USVRdCqJZw6eIs6TOv
- Tv+vz6Jg1ldEjKxckA5YHqyYXSz7veoBXMDbTIP79mLfrVO8bFhjAYAAX
- h6sM12CdynDiOjtR80w7o2FD9J2ik/4YZbFkkFKXynyZPOwMZJq9gH1eH g==;
-X-CSE-ConnectionGUID: uy4qgmUeSqCRjXubtEQ7xA==
-X-CSE-MsgGUID: YfAQCAfPSyCvbmcQXThggg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383224"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383224"
+ bh=fcg/9+vBKRRsAgM7g/vpiG0DVR7ox9wdFtSVJNYmcyw=;
+ b=ZjcHdgU4+2HLp6/2hrZ5NE0N69U6rVyziNpAXtDujUBC1vJ6fzaX5UMF
+ sPzJtQOXHhixtykKYkI2BhRZ3iiEPe9Vzl8pw7pBo/om8mHMaLuZrGLL0
+ hHLdQ79JW4ADWGDma3bqc5FGL5+xeuy5GlmID/Zsu7LV9rXQKpipARgP2
+ R9oqoZdFOPHNKR5smku0b5BuYdfOov/78RWvyil4p4HMlSx1KxZjeHbFb
+ zVnQ8Dg7pUuLh4qx5ujmZYO7EbzQQd7B6HuI76HsLc0iEGiClDnUBvZme
+ cV03VKSvDlLI0clxliL53+JdIVAaMkwYLcvzk8pYx/sX6upz+fFssHaBM w==;
+X-CSE-ConnectionGUID: 6yp9cZd8TXyyrY9TgMghtw==
+X-CSE-MsgGUID: sponqL+wTr6Y+kzSto2tzA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383230"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383230"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:08:59 -0700
-X-CSE-ConnectionGUID: c5IuhbhdRP+J9Z/hAmFddg==
-X-CSE-MsgGUID: +ogBtpwJSISsubbzdyxcKw==
+ 07 Jun 2024 13:09:00 -0700
+X-CSE-ConnectionGUID: SnqGAhHMQXuQbDrRtsLeLw==
+X-CSE-MsgGUID: AYoS9zm3Sf+ZfQz1+zZA5g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373845"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373854"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:08:59 -0700
+ 07 Jun 2024 13:09:00 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 10/27] tests/intel/xe_oa: Add first tests
-Date: Fri,  7 Jun 2024 13:08:30 -0700
-Message-ID: <20240607200847.1964629-11-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 16/27] tests/intel/xe_oa: OAR/OAC tests
+Date: Fri,  7 Jun 2024 13:08:36 -0700
+Message-ID: <20240607200847.1964629-17-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,844 +66,771 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add "xe-ref-count" and "sysctl-defaults" subtests.
+"mi-rpc", "oa-tlb-invalidate" and "unprivileged-single-ctx-counters" tests.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 803 ++++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build   |   2 +
- 2 files changed, 805 insertions(+)
- create mode 100644 tests/intel/xe_oa.c
+ tests/intel/xe_oa.c | 698 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 698 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-new file mode 100644
-index 0000000000..5c872b74b2
---- /dev/null
+index d7f00e78b9..c4a45568aa 100644
+--- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -0,0 +1,803 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+#include <stdlib.h>
-+#include <stdio.h>
-+#include <string.h>
-+#include <fcntl.h>
-+#include <inttypes.h>
-+#include <errno.h>
-+#include <signal.h>
-+#include <sys/stat.h>
-+#include <sys/time.h>
-+#include <sys/times.h>
-+#include <sys/types.h>
-+#include <dirent.h>
-+#include <time.h>
-+#include <poll.h>
-+#include <math.h>
-+
-+#include "drm.h"
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe/xe_oa.h"
-+
-+/**
-+ * TEST: perf
-+ * Description: Test the Xe OA metrics streaming interface
-+ * Category: Core
-+ * Mega feature: Performance interface
-+ * Sub-category: Performance tests
-+ * Functionality: oa
-+ * Feature: xe streaming interface, oa
-+ * Test category: Perf
-+ */
-+
-+#define OA_MI_REPORT_PERF_COUNT		((0x28 << 23) | (4 - 2))
-+
-+#define OAREPORT_REASON_MASK           0x3f
-+#define OAREPORT_REASON_SHIFT          19
-+#define OAREPORT_REASON_TIMER          (1<<0)
-+#define OAREPORT_REASON_INTERNAL       (3<<1)
-+#define OAREPORT_REASON_CTX_SWITCH     (1<<3)
-+#define OAREPORT_REASON_GO             (1<<4)
-+#define OAREPORT_REASON_CLK_RATIO      (1<<5)
-+
-+#define PIPE_CONTROL_GLOBAL_SNAPSHOT_COUNT_RESET	(1 << 19)
-+#define PIPE_CONTROL_SYNC_GFDT	  (1 << 17)
-+#define PIPE_CONTROL_NO_WRITE	   (0 << 14)
-+#define PIPE_CONTROL_WRITE_IMMEDIATE    (1 << 14)
-+#define PIPE_CONTROL_WRITE_DEPTH_COUNT  (2 << 14)
-+#define PIPE_CONTROL_RENDER_TARGET_FLUSH (1 << 12)
-+#define PIPE_CONTROL_INSTRUCTION_INVALIDATE (1 << 11)
-+#define PIPE_CONTROL_ISP_DIS	    (1 << 9)
-+#define PIPE_CONTROL_INTERRUPT_ENABLE   (1 << 8)
-+/* GT */
-+#define PIPE_CONTROL_DATA_CACHE_INVALIDATE      (1 << 5)
-+#define PIPE_CONTROL_PPGTT_WRITE	(0 << 2)
-+#define PIPE_CONTROL_GLOBAL_GTT_WRITE   (1 << 2)
-+
-+#define MAX_OA_BUF_SIZE (16 * 1024 * 1024)
-+#define OA_BUFFER_SIZE MAX_OA_BUF_SIZE
-+
-+#define RING_FORCE_TO_NONPRIV_ADDRESS_MASK 0x03fffffc
-+/*
-+ * Engine specific registers defined as offsets from engine->mmio_base. For
-+ * these registers, OR bit[0] with 1 so we can add the mmio_base when running
-+ * engine specific test.
-+ */
-+#define MMIO_BASE_OFFSET 0x1
-+
-+#define OAG_OASTATUS (0xdafc)
-+#define OAG_PERF_COUNTER_B(idx) (0xDA94 + 4 * (idx))
-+#define OAG_OATAILPTR (0xdb04)
-+#define OAG_OATAILPTR_MASK 0xffffffc0
-+#define OAG_OABUFFER (0xdb08)
-+
-+#define ADD_PROPS(_head, _tail, _key, _value) \
-+	do { \
-+		igt_assert((_tail - _head) < (DRM_XE_OA_PROPERTY_MAX * 2)); \
-+		*_tail++ = DRM_XE_OA_PROPERTY_##_key; \
-+		*_tail++ = _value; \
-+	} while (0)
-+
-+struct accumulator {
-+#define MAX_RAW_OA_COUNTERS 62
-+	enum intel_xe_oa_format_name format;
-+
-+	uint64_t deltas[MAX_RAW_OA_COUNTERS];
-+};
-+
-+/* OA unit types */
-+enum {
-+	OAG,
-+	OAR,
-+	OAM,
-+
-+	MAX_OA_TYPE,
-+};
-+
-+struct oa_format {
-+	const char *name;
-+	size_t size;
-+	int a40_high_off; /* bytes */
-+	int a40_low_off;
-+	int n_a40;
-+	int a64_off;
-+	int n_a64;
-+	int a_off;
-+	int n_a;
-+	int first_a;
-+	int first_a40;
-+	int b_off;
-+	int n_b;
-+	int c_off;
-+	int n_c;
-+	int oa_type; /* of enum intel_xe_oa_format_name */
-+	bool report_hdr_64bit;
-+	int counter_select;
-+	int counter_size;
-+	int bc_report;
-+};
-+
-+static struct oa_format gen12_oa_formats[XE_OA_FORMAT_MAX] = {
-+	[XE_OA_FORMAT_A32u40_A4u32_B8_C8] = {
-+		"A32u40_A4u32_B8_C8", .size = 256,
-+		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
-+		.a_off = 144, .n_a = 4, .first_a = 32,
-+		.b_off = 192, .n_b = 8,
-+		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAG,
-+		.counter_select = 5,
-+	},
-+};
-+
-+static struct oa_format dg2_oa_formats[XE_OA_FORMAT_MAX] = {
-+	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
-+		"A32u40_A4u32_B8_C8", .size = 256,
-+		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
-+		.a_off = 144, .n_a = 4, .first_a = 32,
-+		.b_off = 192, .n_b = 8,
-+		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAR,
-+		.counter_select = 5,
-+	},
-+	/* This format has A36 and A37 interleaved with high bytes of some A
-+	 * counters, so we will accumulate only subset of counters.
-+	 */
-+	[XE_OA_FORMAT_A24u40_A14u32_B8_C8] = {
-+		"A24u40_A14u32_B8_C8", .size = 256,
-+		/* u40: A4 - A23 */
-+		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
-+		/* u32: A0 - A3 */
-+		.a_off = 16, .n_a = 4,
-+		.b_off = 192, .n_b = 8,
-+		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAG,
-+		.counter_select = 5,
-+	},
-+	/* This format has 24 u64 counters ranging from A0 - A35. Until we come
-+	 * up with a better mechanism to define missing counters, we will use a
-+	 * subset of counters that are indexed by one-increments - A28 - A35.
-+	 */
-+	[XE_OAC_FORMAT_A24u64_B8_C8] = {
-+		"OAC_A24u64_B8_C8", .size = 320,
-+		.a64_off = 160, .n_a64 = 8,
-+		.b_off = 224, .n_b = 8,
-+		.c_off = 256, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 1, },
-+};
-+
-+static struct oa_format mtl_oa_formats[XE_OA_FORMAT_MAX] = {
-+	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
-+		"A32u40_A4u32_B8_C8", .size = 256,
-+		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
-+		.a_off = 144, .n_a = 4, .first_a = 32,
-+		.b_off = 192, .n_b = 8,
-+		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAR,
-+		.counter_select = 5,
-+	},
-+	/* This format has A36 and A37 interleaved with high bytes of some A
-+	 * counters, so we will accumulate only subset of counters.
-+	 */
-+	[XE_OA_FORMAT_A24u40_A14u32_B8_C8] = {
-+		"A24u40_A14u32_B8_C8", .size = 256,
-+		/* u40: A4 - A23 */
-+		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
-+		/* u32: A0 - A3 */
-+		.a_off = 16, .n_a = 4,
-+		.b_off = 192, .n_b = 8,
-+		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAG,
-+		.counter_select = 5,
-+	},
-+
-+	/* Treat MPEC countes as A counters for now */
-+	[XE_OAM_FORMAT_MPEC8u64_B8_C8] = {
-+		"MPEC8u64_B8_C8", .size = 192,
-+		.a64_off = 32, .n_a64 = 8,
-+		.b_off = 96, .n_b = 8,
-+		.c_off = 128, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAM_MPEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 1,
-+	},
-+	[XE_OAM_FORMAT_MPEC8u32_B8_C8] = {
-+		"MPEC8u32_B8_C8", .size = 128,
-+		.a_off = 32, .n_a = 8,
-+		.b_off = 64, .n_b = 8,
-+		.c_off = 96, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAM_MPEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 2,
-+	},
-+	/* This format has 24 u64 counters ranging from A0 - A35. Until we come
-+	 * up with a better mechanism to define missing counters, we will use a
-+	 * subset of counters that are indexed by one-increments - A28 - A35.
-+	 */
-+	[XE_OAC_FORMAT_A24u64_B8_C8] = {
-+		"OAC_A24u64_B8_C8", .size = 320,
-+		.a64_off = 160, .n_a64 = 8,
-+		.b_off = 224, .n_b = 8,
-+		.c_off = 256, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 1, },
-+};
-+
-+static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
-+	[XE_OA_FORMAT_PEC64u64] = {
-+		"PEC64u64", .size = 576,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 1,
-+		.counter_size = 1,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC64u64_B8_C8] = {
-+		"PEC64u64_B8_C8", .size = 640,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 1,
-+		.counter_size = 1,
-+		.bc_report = 1 },
-+	[XE_OA_FORMAT_PEC64u32] = {
-+		"PEC64u32", .size = 320,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 1,
-+		.counter_size = 0,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC32u64_G1] = {
-+		"PEC32u64_G1", .size = 320,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 5,
-+		.counter_size = 1,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC32u32_G1] = {
-+		"PEC32u32_G1", .size = 192,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 5,
-+		.counter_size = 0,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC32u64_G2] = {
-+		"PEC32u64_G2", .size = 320,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 6,
-+		.counter_size = 1,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC32u32_G2] = {
-+		"PEC32u64_G2", .size = 192,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 6,
-+		.counter_size = 0,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC36u64_G1_32_G2_4] = {
-+		"PEC36u64_G1_32_G2_4", .size = 320,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 3,
-+		.counter_size = 1,
-+		.bc_report = 0 },
-+	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32] = {
-+		"PEC36u64_G1_4_G2_32_G2", .size = 320,
-+		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-+		.report_hdr_64bit = true,
-+		.counter_select = 4,
-+		.counter_size = 1,
-+		.bc_report = 0 },
-+};
-+
-+static int drm_fd = -1;
-+static int sysfs = -1;
-+static int pm_fd = -1;
-+static int stream_fd = -1;
-+static uint32_t devid;
-+
-+struct drm_xe_engine_class_instance default_hwe;
-+
-+static struct intel_xe_perf *intel_xe_perf;
-+static uint64_t oa_exp_1_millisec;
-+struct intel_mmio_data mmio_data;
-+
-+static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	const char *test_set_name = NULL;
-+	struct intel_xe_perf_metric_set *metric_set_iter;
-+	struct intel_xe_perf_metric_set *test_set = NULL;
-+
-+	if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
-+	    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-+		test_set_name = "TestOa";
-+	else if ((hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE ||
-+		  hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE) &&
-+		 HAS_OAM(devid))
-+		test_set_name = "MediaSet1";
-+	else
-+		igt_assert(!"reached");
-+
-+	igt_list_for_each_entry(metric_set_iter, &intel_xe_perf->metric_sets, link) {
-+		if (strcmp(metric_set_iter->symbol_name, test_set_name) == 0) {
-+			test_set = metric_set_iter;
-+			break;
-+		}
-+	}
-+
-+	igt_assert(test_set);
-+
-+	/*
-+	 * configuration was loaded in init_sys_info() ->
-+	 * intel_xe_perf_load_perf_configs(), and test_set->perf_oa_metrics_set
-+	 * should point to metric id returned by the config add ioctl. 0 is
-+	 * invalid.
-+	 */
-+	igt_assert_neq_u64(test_set->perf_oa_metrics_set, 0);
-+
-+	igt_debug("engine %d:%d - %s metric set UUID = %s\n",
-+		  hwe->engine_class,
-+		  hwe->engine_instance,
-+		  test_set->symbol_name,
-+		  test_set->hw_config_guid);
-+
-+	return test_set;
-+}
-+#define default_test_set metric_set(&default_hwe)
-+
-+static void set_fd_flags(int fd, int flags)
-+{
-+	int old = fcntl(fd, F_GETFL, 0);
-+
-+	igt_assert_lte(0, old);
-+	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
-+}
-+
-+static u32 get_stream_status(int fd)
-+{
-+	struct drm_xe_oa_stream_status status;
-+
-+	do_ioctl(fd, DRM_XE_PERF_IOCTL_STATUS, &status);
-+
-+	return status.oa_status;
-+}
-+
-+static void
-+dump_report(const uint32_t *report, uint32_t size, const char *message) {
-+	uint32_t i;
-+	igt_debug("%s\n", message);
-+	for (i = 0; i < size; i += 4) {
-+		igt_debug("%08x %08x %08x %08x\n",
-+				report[i],
-+				report[i + 1],
-+				report[i + 2],
-+				report[i + 3]);
-+	}
-+}
-+
-+static struct oa_format
-+get_oa_format(enum intel_xe_oa_format_name format)
-+{
-+	if (IS_DG2(devid))
-+		return dg2_oa_formats[format];
-+	else if (IS_METEORLAKE(devid))
-+		return mtl_oa_formats[format];
-+	else if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-+		return lnl_oa_formats[format];
-+	else
-+		return gen12_oa_formats[format];
-+}
-+
-+static u64 oa_format_fields(u64 name)
-+{
-+#define FIELD_PREP_ULL(_mask, _val) \
-+	(((_val) << (__builtin_ffsll(_mask) - 1)) & (_mask))
-+
-+	struct oa_format f = get_oa_format(name);
-+
-+	/* 0 format name is invalid */
-+	if (!name)
-+		memset(&f, 0xff, sizeof(f));
-+
-+	return FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_FMT_TYPE, (u64)f.oa_type) |
-+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SEL, (u64)f.counter_select) |
-+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE, (u64)f.counter_size) |
-+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_BC_REPORT, (u64)f.bc_report);
-+}
-+#define __ff oa_format_fields
-+
-+static void
-+__perf_close(int fd)
-+{
-+	close(fd);
-+	stream_fd = -1;
-+
-+	if (pm_fd >= 0) {
-+		close(pm_fd);
-+		pm_fd = -1;
-+	}
-+}
-+
-+static int
-+__perf_open(int fd, struct intel_xe_oa_open_prop *param, bool prevent_pm)
-+{
-+	int ret;
-+	int32_t pm_value = 0;
-+
-+	if (stream_fd >= 0)
-+		__perf_close(stream_fd);
-+	if (pm_fd >= 0) {
-+		close(pm_fd);
-+		pm_fd = -1;
-+	}
-+
-+	ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_STREAM_OPEN, param);
-+
-+	igt_assert(ret >= 0);
-+	errno = 0;
-+
-+	if (prevent_pm) {
-+		pm_fd = open("/dev/cpu_dma_latency", O_RDWR);
-+		igt_assert(pm_fd >= 0);
-+
-+		igt_assert_eq(write(pm_fd, &pm_value, sizeof(pm_value)), sizeof(pm_value));
-+	}
-+
-+	return ret;
-+}
-+
-+static uint64_t
-+read_u64_file(const char *path)
-+{
-+	FILE *f;
-+	uint64_t val;
-+
-+	f = fopen(path, "r");
-+	igt_assert(f);
-+
-+	igt_assert_eq(fscanf(f, "%"PRIu64, &val), 1);
-+
-+	fclose(f);
-+
-+	return val;
-+}
-+
-+static void
-+write_u64_file(const char *path, uint64_t val)
-+{
-+	FILE *f;
-+
-+	f = fopen(path, "w");
-+	igt_assert(f);
-+
-+	igt_assert(fprintf(f, "%"PRIu64, val) > 0);
-+
-+	fclose(f);
-+}
-+
+@@ -597,6 +597,18 @@ read_report_reason(const uint32_t *report)
+ 		return "unknown";
+ }
+ 
 +static uint32_t
-+report_reason(const uint32_t *report)
++cs_timestamp_frequency(int fd)
 +{
-+	return ((report[0] >> OAREPORT_REASON_SHIFT) &
-+		OAREPORT_REASON_MASK);
++	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
 +}
 +
 +static uint64_t
-+oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
++cs_timebase_scale(uint32_t u32_delta)
 +{
-+	struct oa_format fmt = get_oa_format(format);
-+
-+	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
++	return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
 +}
 +
-+static uint64_t
-+timebase_scale(uint64_t delta)
-+{
-+	return (delta * NSEC_PER_SEC) / intel_xe_perf->devinfo.timestamp_frequency;
-+}
-+
-+/* Returns: the largest OA exponent that will still result in a sampling period
-+ * less than or equal to the given @period.
-+ */
+ static uint64_t
+ oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
+ {
+@@ -663,6 +675,15 @@ oa_report_get_ctx_id(uint32_t *report)
+ 	return report[2];
+ }
+ 
 +static int
-+max_oa_exponent_for_period_lte(uint64_t period)
++oar_unit_default_format(void)
 +{
-+	/* NB: timebase_scale() takes a uint64_t and an exponent of 30
-+	 * would already represent a period of ~3 minutes so there's
-+	 * really no need to consider higher exponents.
-+	 */
-+	for (int i = 0; i < 30; i++) {
-+		uint64_t oa_period = timebase_scale(2 << i);
++	if (IS_DG2(devid) || IS_METEORLAKE(devid))
++		return XE_OAR_FORMAT_A32u40_A4u32_B8_C8;
 +
-+		if (oa_period > period)
-+			return max(0, i - 1);
-+	}
-+
-+	igt_assert(!"reached");
-+	return -1;
++	return default_test_set->perf_oa_format;
 +}
 +
-+static bool
-+oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
+ static void *buf_map(int fd, struct intel_buf *buf, bool write)
+ {
+ 	void *p;
+@@ -701,6 +722,21 @@ scratch_buf_init(struct buf_ops *bops,
+ 	scratch_buf_memset(buf, width, height, color);
+ }
+ 
++static void
++emit_report_perf_count(struct intel_bb *ibb,
++		       struct intel_buf *dst,
++		       int dst_offset,
++		       uint32_t report_id)
 +{
-+	if (report_reason(report) & OAREPORT_REASON_TIMER)
-+		return true;
++	intel_bb_add_intel_buf(ibb, dst, true);
 +
-+	return false;
++	intel_bb_out(ibb, OA_MI_REPORT_PERF_COUNT);
++	intel_bb_emit_reloc(ibb, dst->handle,
++			    I915_GEM_DOMAIN_INSTRUCTION, I915_GEM_DOMAIN_INSTRUCTION,
++			    dst_offset, dst->addr.offset);
++	intel_bb_out(ibb, report_id);
 +}
 +
-+static bool
-+init_sys_info(void)
+ static bool
+ oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
+ {
+@@ -741,6 +777,31 @@ get_40bit_a_delta(uint64_t value0, uint64_t value1)
+ 		return value1 - value0;
+ }
+ 
++static void
++accumulate_uint32(size_t offset,
++		  uint32_t *report0,
++                  uint32_t *report1,
++                  uint64_t *delta)
 +{
-+	igt_assert_neq(devid, 0);
++	uint32_t value0 = *(uint32_t *)(((uint8_t *)report0) + offset);
++	uint32_t value1 = *(uint32_t *)(((uint8_t *)report1) + offset);
 +
-+	intel_xe_perf = intel_xe_perf_for_fd(drm_fd, 0);
-+	igt_require(intel_xe_perf);
-+
-+	igt_debug("n_eu_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_slices);
-+	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_sub_slices);
-+	igt_debug("n_eus: %"PRIu64"\n", intel_xe_perf->devinfo.n_eus);
-+	igt_debug("timestamp_frequency = %"PRIu64"\n",
-+		  intel_xe_perf->devinfo.timestamp_frequency);
-+	igt_assert_neq(intel_xe_perf->devinfo.timestamp_frequency, 0);
-+
-+	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
-+
-+	oa_exp_1_millisec = max_oa_exponent_for_period_lte(1000000);
-+
-+	return true;
++	*delta += (uint32_t)(value1 - value0);
 +}
 +
 +static void
-+read_2_oa_reports(int format_id,
-+		  int exponent,
-+		  uint32_t *oa_report0,
-+		  uint32_t *oa_report1,
-+		  bool timer_only)
++accumulate_uint40(int a_index,
++                  uint32_t *report0,
++                  uint32_t *report1,
++		  enum intel_xe_oa_format_name format,
++                  uint64_t *delta)
 +{
-+	size_t format_size = get_oa_format(format_id).size;
-+	uint32_t exponent_mask = (1 << (exponent + 1)) - 1;
++	uint64_t value0 = read_40bit_a_counter(report0, format, a_index),
++		 value1 = read_40bit_a_counter(report1, format, a_index);
 +
-+	/* Note: we allocate a large buffer so that each read() iteration
-+	 * should scrape *all* pending records.
-+	 *
-+	 * The largest buffer the OA unit supports is 16MB.
-+	 *
-+	 * Being sure we are fetching all buffered reports allows us to
-+	 * potentially throw away / skip all reports whenever we see
-+	 * a _REPORT_LOST notification as a way of being sure are
-+	 * measurements aren't skewed by a lost report.
-+	 *
-+	 * Note: that is is useful for some tests but also not something
-+	 * applications would be expected to resort to. Lost reports are
-+	 * somewhat unpredictable but typically don't pose a problem - except
-+	 * to indicate that the OA unit may be over taxed if lots of reports
-+	 * are being lost.
-+	 */
-+	int max_reports = MAX_OA_BUF_SIZE / format_size;
-+	int buf_size = format_size * max_reports * 1.5;
-+	uint8_t *buf = malloc(buf_size);
-+	int n = 0;
-+
-+	for (int i = 0; i < 1000; i++) {
-+		u32 oa_status = 0;
-+		ssize_t len;
-+
-+		while ((len = read(stream_fd, buf, buf_size)) < 0 && errno == EINTR)
-+			;
-+		if (errno == EIO) {
-+			oa_status = get_stream_status(stream_fd);
-+			igt_debug("oa_status %#x\n", oa_status);
-+			continue;
-+		}
-+
-+		igt_assert(len > 0);
-+		igt_debug("read %d bytes\n", (int)len);
-+
-+		/* Need at least 2 reports */
-+		if (len < 2 * format_size)
-+			continue;
-+
-+		for (size_t offset = 0; offset < len; offset += format_size) {
-+			const uint32_t *report = (void *)(buf + offset);
-+
-+			/* Currently the only test that should ever expect to
-+			 * see a _BUFFER_LOST error is the buffer_fill test,
-+			 * otherwise something bad has probably happened...
-+			 */
-+			igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
-+
-+			/* At high sampling frequencies the OA HW might not be
-+			 * able to cope with all write requests and will notify
-+			 * us that a report was lost. We restart our read of
-+			 * two sequential reports due to the timeline blip this
-+			 * implies
-+			 */
-+			if (oa_status & DRM_XE_OASTATUS_REPORT_LOST) {
-+				igt_debug("read restart: OA trigger collision / report lost\n");
-+				n = 0;
-+
-+				/* XXX: break, because we don't know where
-+				 * within the series of already read reports
-+				 * there could be a blip from the lost report.
-+				 */
-+				break;
-+			}
-+
-+			dump_report(report, format_size / 4, "oa-formats");
-+
-+			igt_debug("read report: reason = %x, timestamp = %"PRIx64", exponent mask=%x\n",
-+				  report[0], oa_timestamp(report, format_id), exponent_mask);
-+
-+			/* Don't expect zero for timestamps */
-+			igt_assert_neq_u64(oa_timestamp(report, format_id), 0);
-+
-+			if (timer_only) {
-+				if (!oa_report_is_periodic(exponent, report)) {
-+					igt_debug("skipping non timer report\n");
-+					continue;
-+				}
-+			}
-+
-+			if (n++ == 0)
-+				memcpy(oa_report0, report, format_size);
-+			else {
-+				memcpy(oa_report1, report, format_size);
-+				free(buf);
-+				return;
-+			}
-+		}
-+	}
-+
-+	free(buf);
-+
-+	igt_assert(!"reached");
++	*delta += get_40bit_a_delta(value0, value1);
 +}
 +
-+static unsigned read_xe_module_ref(void)
+ static void
+ accumulate_uint64(int a_index,
+ 		  const uint32_t *report0,
+@@ -754,6 +815,78 @@ accumulate_uint64(int a_index,
+ 	*delta += (value1 - value0);
+ }
+ 
++static void
++accumulate_reports(struct accumulator *accumulator,
++		   uint32_t *start,
++		   uint32_t *end)
 +{
-+	FILE *fp = fopen("/proc/modules", "r");
-+	char *line = NULL;
-+	size_t line_buf_size = 0;
-+	int len = 0;
-+	unsigned ref_count;
-+	char mod[8];
-+	int modn = 3;
++	struct oa_format format = get_oa_format(accumulator->format);
++	uint64_t *deltas = accumulator->deltas;
++	int idx = 0;
 +
-+	igt_assert(fp);
++	/* timestamp */
++	deltas[idx] += oa_timestamp_delta(end, start, accumulator->format);
++	idx++;
 +
-+	strcpy(mod, "xe ");
-+	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
-+		if (strncmp(line, mod, modn) == 0) {
-+			unsigned long mem;
-+			int ret = sscanf(line + 5, "%lu %u", &mem, &ref_count);
-+			igt_assert(ret == 2);
-+			goto done;
-+		}
++	/* clock cycles */
++	deltas[idx] += oa_tick_delta(end, start, accumulator->format);
++	idx++;
++
++	for (int i = 0; i < format.n_a40; i++) {
++		accumulate_uint40(i, start, end, accumulator->format,
++				  deltas + idx++);
 +	}
 +
-+	igt_assert(!"reached");
++	for (int i = 0; i < format.n_a64; i++) {
++		accumulate_uint64(i, start, end, accumulator->format,
++				  deltas + idx++);
++	}
 +
-+done:
-+	free(line);
-+	fclose(fp);
-+	return ref_count;
++	for (int i = 0; i < format.n_a; i++) {
++		accumulate_uint32(format.a_off + 4 * i,
++				  start, end, deltas + idx++);
++	}
++
++	for (int i = 0; i < format.n_b; i++) {
++		accumulate_uint32(format.b_off + 4 * i,
++				  start, end, deltas + idx++);
++	}
++
++	for (int i = 0; i < format.n_c; i++) {
++		accumulate_uint32(format.c_off + 4 * i,
++				  start, end, deltas + idx++);
++	}
++}
++
++static void
++accumulator_print(struct accumulator *accumulator, const char *title)
++{
++	struct oa_format format = get_oa_format(accumulator->format);
++	uint64_t *deltas = accumulator->deltas;
++	int idx = 0;
++
++	igt_debug("%s:\n", title);
++	igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
++	igt_debug("\tclock cycle delta = %"PRIu64"\n", deltas[idx++]);
++
++	for (int i = 0; i < format.n_a40; i++)
++		igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
++
++	for (int i = 0; i < format.n_a64; i++)
++		igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
++
++	for (int i = 0; i < format.n_a; i++) {
++		int a_id = format.first_a + i;
++		igt_debug("\tA%u = %"PRIu64"\n", a_id, deltas[idx++]);
++	}
++
++	for (int i = 0; i < format.n_a; i++)
++		igt_debug("\tB%u = %"PRIu64"\n", i, deltas[idx++]);
++
++	for (int i = 0; i < format.n_c; i++)
++		igt_debug("\tC%u = %"PRIu64"\n", i, deltas[idx++]);
++}
++
+ /* The TestOa metric set is designed so */
+ static void
+ sanity_check_reports(const uint32_t *oa_report0, const uint32_t *oa_report1,
+@@ -2165,6 +2298,92 @@ static void test_polling_small_buf(void)
+ 		   0.20 * n_expect_read_bytes);
+ }
+ 
++static int
++num_valid_reports_captured(struct intel_xe_oa_open_prop *param,
++			   int64_t *duration_ns, int fmt)
++{
++	uint8_t buf[1024 * 1024];
++	int64_t start, end;
++	int num_reports = 0;
++	size_t format_size = get_oa_format(fmt).size;
++
++	igt_debug("Expected duration = %"PRId64"\n", *duration_ns);
++
++	stream_fd = __perf_open(drm_fd, param, true);
++
++	start = get_time();
++	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
++	for (/* nop */; ((end = get_time()) - start) < *duration_ns; /* nop */) {
++		int ret;
++
++		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
++		       (errno == EINTR || errno == EIO))
++			;
++
++		igt_assert(ret > 0);
++
++		for (int offset = 0; offset < ret; offset += format_size) {
++			uint32_t *report = (void *)(buf + offset);
++
++			if (report_reason(report) & OAREPORT_REASON_TIMER)
++				num_reports++;
++		}
++	}
++	__perf_close(stream_fd);
++
++	*duration_ns = end - start;
++
++	igt_debug("Actual duration = %"PRIu64"\n", *duration_ns);
++
++	return num_reports;
 +}
 +
 +/**
-+ * SUBTEST: xe-ref-count
-+ * Description: Check that an open oa stream holds a reference on the xe module
++ * SUBTEST: oa-tlb-invalidate
++ * Description: Open OA stream twice to verify OA TLB invalidation
 + */
 +static void
-+test_xe_ref_count(void)
++test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
 +{
++	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
 +	uint64_t properties[] = {
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Include OA reports in samples */
 +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
 +
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0 /* updated below */,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0), /* update below */
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, 0, /* update below */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
 +	};
 +	struct intel_xe_oa_open_prop param = {
 +		.num_properties = ARRAY_SIZE(properties) / 2,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	unsigned baseline, ref_count0, ref_count1;
-+	uint32_t oa_report0[64];
-+	uint32_t oa_report1[64];
++	int num_reports1, num_reports2, num_expected_reports;
++	int64_t duration;
 +
-+	/* This should be the first test before the first fixture so no drm_fd
-+	 * should have been opened so far...
++	/* Capture reports for 5 seconds twice and then make sure you get around
++	 * the same number of reports. In the case of failure, the number of
++	 * reports will vary largely since the beginning of the OA buffer
++	 * will have invalid entries.
 +	 */
-+	igt_assert_eq(drm_fd, -1);
++	duration = 5LL * NSEC_PER_SEC;
++	num_reports1 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
++	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
++	igt_debug("expected num reports = %d\n", num_expected_reports);
++	igt_debug("actual num reports = %d\n", num_reports1);
++	igt_assert(num_reports1 > 0.95 * num_expected_reports);
 +
-+	baseline = read_xe_module_ref();
-+	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
++	duration = 5LL * NSEC_PER_SEC;
++	num_reports2 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
++	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
++	igt_debug("expected num reports = %d\n", num_expected_reports);
++	igt_debug("actual num reports = %d\n", num_reports2);
++	igt_assert(num_reports2 > 0.95 * num_expected_reports);
++}
 +
-+	drm_fd = __drm_open_driver(DRIVER_XE);
-+	if (is_xe_device(drm_fd))
-+		xe_device_get(drm_fd);
-+	devid = intel_get_drm_devid(drm_fd);
-+	sysfs = igt_sysfs_open(drm_fd);
+ /**
+  * SUBTEST: buffer-fill
+  * Description: Test filling, wraparound and overflow of OA buffer
+@@ -2750,6 +2969,468 @@ test_disabled_read_error(void)
+ 	__perf_close(stream_fd);
+ }
+ 
++/**
++ * SUBTEST: mi-rpc
++ * Description: Test OAR/OAC using MI_REPORT_PERF_COUNT
++ */
++static void
++test_mi_rpc(struct drm_xe_engine_class_instance *hwe)
 +
-+	/* Note: these global variables are only initialized after calling
-+	 * init_sys_info()...
-+	 */
-+	igt_require(init_sys_info());
-+	properties[5] = default_test_set->perf_oa_metrics_set;
-+	properties[7] = __ff(default_test_set->perf_oa_format);
-+	properties[9] = oa_exp_1_millisec;
++{
++	uint64_t fmt = ((IS_DG2(devid) || IS_METEORLAKE(devid)) &&
++			hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) ?
++		XE_OAC_FORMAT_A24u64_B8_C8 : oar_unit_default_format();
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
 +
-+	ref_count0 = read_xe_module_ref();
-+	igt_debug("initial ref count with drm_fd open = %u\n", ref_count0);
++		/* On Gen12, MI RPC uses OAR. OAR is configured only for the
++		 * render context that wants to measure the performance. Hence a
++		 * context must be specified in the gen12 MI RPC when compared
++		 * to previous gens.
++		 *
++		 * Have a random value here for the context id, but initialize
++		 * it once you figure out the context ID for the work to be
++		 * measured
++		 */
++		DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID, UINT64_MAX,
++
++		/* OA unit configuration:
++		 * DRM_XE_OA_PROPERTY_SAMPLE_OA is no longer required for Gen12
++		 * because the OAR unit increments counters only for the
++		 * relevant context. No other parameters are needed since we do
++		 * not rely on the OA buffer anymore to normalize the counter
++		 * values.
++		 */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	struct intel_buf *buf;
++#define INVALID_CTX_ID 0xffffffff
++	uint32_t ctx_id = INVALID_CTX_ID;
++	uint32_t vm = 0;
++	uint32_t *report32;
++	size_t format_size_32;
++	struct oa_format format = get_oa_format(fmt);
++
++	/* Ensure perf_stream_paranoid is set to 1 by default */
++	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++
++	bops = buf_ops_create(drm_fd);
++	vm = xe_vm_create(drm_fd, 0, 0);
++	ctx_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
++	igt_assert_neq(ctx_id, INVALID_CTX_ID);
++	properties[3] = ctx_id;
++
++	ibb = intel_bb_create_with_context(drm_fd, ctx_id, vm, NULL, BATCH_SZ);
++	buf = intel_buf_create(bops, 4096, 1, 8, 64,
++			       I915_TILING_NONE, I915_COMPRESSION_NONE);
++
++	buf_map(drm_fd, buf, true);
++	memset(buf->ptr, 0x80, 4096);
++	intel_buf_unmap(buf);
 +
 +	stream_fd = __perf_open(drm_fd, &param, false);
 +        set_fd_flags(stream_fd, O_CLOEXEC);
-+	ref_count1 = read_xe_module_ref();
-+	igt_debug("ref count after opening oa stream = %u\n", ref_count1);
 +
-+	drm_close_driver(drm_fd);
-+	close(sysfs);
-+	drm_fd = -1;
-+	sysfs = -1;
-+	ref_count0 = read_xe_module_ref();
-+	igt_debug("ref count after closing drm fd = %u\n", ref_count0);
++#define REPORT_ID 0xdeadbeef
++#define REPORT_OFFSET 0
++	emit_report_perf_count(ibb,
++			       buf,
++			       REPORT_OFFSET,
++			       REPORT_ID);
++	intel_bb_flush_render(ibb);
++	intel_bb_sync(ibb);
 +
-+	read_2_oa_reports(default_test_set->perf_oa_format,
-+			  oa_exp_1_millisec,
-+			  oa_report0,
-+			  oa_report1,
-+			  false); /* not just timer reports */
++	buf_map(drm_fd, buf, false);
++	report32 = buf->ptr;
++	format_size_32 = format.size >> 2;
++	dump_report(report32, format_size_32, "mi-rpc");
 +
++	/* Sanity check reports
++	 * reportX_32[0]: report id passed with mi-rpc
++	 * reportX_32[1]: timestamp. NOTE: wraps around in ~6 minutes.
++	 *
++	 * reportX_32[format.b_off]: check if the entire report was filled.
++	 * B0 counter falls in the last 64 bytes of this report format.
++	 * Since reports are filled in 64 byte blocks, we should be able to
++	 * assure that the report was filled by checking the B0 counter. B0
++	 * counter is defined to be zero, so we can easily validate it.
++	 *
++	 * reportX_32[format_size_32]: outside report, make sure only the report
++	 * size amount of data was written.
++	 */
++	igt_assert_eq(report32[0], REPORT_ID);
++	igt_assert(oa_timestamp(report32, test_set->perf_oa_format));
++	igt_assert_neq(report32[format.b_off >> 2], 0x80808080);
++	igt_assert_eq(report32[format_size_32], 0x80808080);
++
++	intel_buf_unmap(buf);
++	intel_buf_destroy(buf);
++	intel_bb_destroy(ibb);
++	xe_exec_queue_destroy(drm_fd, ctx_id);
++	xe_vm_destroy(drm_fd, vm);
++	buf_ops_destroy(bops);
 +	__perf_close(stream_fd);
-+	ref_count0 = read_xe_module_ref();
-+	igt_debug("ref count after closing oa stream fd = %u\n", ref_count0);
++}
++
++static void
++emit_stall_timestamp_and_rpc(struct intel_bb *ibb,
++			     struct intel_buf *dst,
++			     int timestamp_offset,
++			     int report_dst_offset,
++			     uint32_t report_id)
++{
++	uint32_t pipe_ctl_flags = (PIPE_CONTROL_CS_STALL |
++				   PIPE_CONTROL_RENDER_TARGET_FLUSH |
++				   PIPE_CONTROL_WRITE_TIMESTAMP);
++
++	intel_bb_add_intel_buf(ibb, dst, true);
++	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(6));
++	intel_bb_out(ibb, pipe_ctl_flags);
++	intel_bb_emit_reloc(ibb, dst->handle,
++			    I915_GEM_DOMAIN_INSTRUCTION, I915_GEM_DOMAIN_INSTRUCTION,
++			    timestamp_offset, dst->addr.offset);
++	intel_bb_out(ibb, 0); /* imm lower */
++	intel_bb_out(ibb, 0); /* imm upper */
++
++	emit_report_perf_count(ibb, dst, report_dst_offset, report_id);
++}
++
++static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
++{
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t fmt = oar_unit_default_format();
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Have a random value here for the context id, but initialize
++		 * it once you figure out the context ID for the work to be
++		 * measured
++		 */
++		DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID, UINT64_MAX,
++
++		/* OA unit configuration:
++		 * DRM_XE_OA_PROPERTY_SAMPLE_OA is no longer required for Gen12
++		 * because the OAR unit increments counters only for the
++		 * relevant context. No other parameters are needed since we do
++		 * not rely on the OA buffer anymore to normalize the counter
++		 * values.
++		 */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	struct buf_ops *bops;
++	struct intel_bb *ibb0, *ibb1;
++	struct intel_buf src[3], dst[3], *dst_buf;
++	uint32_t context0_id, context1_id, vm = 0;
++	uint32_t *report0_32, *report1_32, *report2_32, *report3_32;
++	uint64_t timestamp0_64, timestamp1_64;
++	uint64_t delta_ts64, delta_oa32;
++	uint64_t delta_ts64_ns, delta_oa32_ns;
++	uint64_t delta_delta;
++	int width = 800;
++	int height = 600;
++#define INVALID_CTX_ID 0xffffffff
++	uint32_t ctx0_id = INVALID_CTX_ID;
++	uint32_t ctx1_id = INVALID_CTX_ID;
++	int ret;
++	struct accumulator accumulator = {
++		.format = fmt
++	};
++
++	bops = buf_ops_create(drm_fd);
++
++	for (int i = 0; i < ARRAY_SIZE(src); i++) {
++		scratch_buf_init(bops, &src[i], width, height, 0xff0000ff);
++		scratch_buf_init(bops, &dst[i], width, height, 0x00ff00ff);
++	}
++
++	vm = xe_vm_create(drm_fd, 0, 0);
++	context0_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
++	context1_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
++	ibb0 = intel_bb_create_with_context(drm_fd, context0_id, vm, NULL, BATCH_SZ);
++	ibb1 = intel_bb_create_with_context(drm_fd, context1_id, vm, NULL, BATCH_SZ);
++
++	igt_debug("submitting warm up render_copy\n");
++
++	/* Submit some early, unmeasured, work to the context we want */
++	render_copy(ibb0,
++		    &src[0], 0, 0, width, height,
++		    &dst[0], 0, 0);
++
++	/* Initialize the context parameter to the perf open ioctl here */
++	properties[3] = context0_id;
++
++	igt_debug("opening xe oa stream\n");
++	stream_fd = __perf_open(drm_fd, &param, false);
++        set_fd_flags(stream_fd, O_CLOEXEC);
++
++	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
++				   I915_TILING_NONE,
++				   I915_COMPRESSION_NONE);
++
++	/* Set write domain to cpu briefly to fill the buffer with 80s */
++	buf_map(drm_fd, dst_buf, true /* write enable */);
++	memset(dst_buf->ptr, 0x80, 2048);
++	memset((uint8_t *) dst_buf->ptr + 2048, 0, 2048);
++	intel_buf_unmap(dst_buf);
++
++	/* Submit an mi-rpc to context0 before measurable work */
++#define BO_TIMESTAMP_OFFSET0 1024
++#define BO_REPORT_OFFSET0 0
++#define BO_REPORT_ID0 0xdeadbeef
++	emit_stall_timestamp_and_rpc(ibb0,
++				     dst_buf,
++				     BO_TIMESTAMP_OFFSET0,
++				     BO_REPORT_OFFSET0,
++				     BO_REPORT_ID0);
++	intel_bb_flush_render(ibb0);
++
++	/* Remove intel_buf from ibb0 added implicitly in rendercopy */
++	intel_bb_remove_intel_buf(ibb0, dst_buf);
++
++	/* This is the work/context that is measured for counter increments */
++	render_copy(ibb0,
++		    &src[0], 0, 0, width, height,
++		    &dst[0], 0, 0);
++	intel_bb_flush_render(ibb0);
++
++	/* Submit an mi-rpc to context1 before work
++	 *
++	 * On gen12, this measurement should just yield counters that are
++	 * all zeroes, since the counters will only increment for the
++	 * context passed to perf open ioctl
++	 */
++#define BO_TIMESTAMP_OFFSET2 1040
++#define BO_REPORT_OFFSET2 512
++#define BO_REPORT_ID2 0x00c0ffee
++	emit_stall_timestamp_and_rpc(ibb1,
++				     dst_buf,
++				     BO_TIMESTAMP_OFFSET2,
++				     BO_REPORT_OFFSET2,
++				     BO_REPORT_ID2);
++	intel_bb_flush_render(ibb1);
++
++	/* Submit two copies on the other context to avoid a false
++	 * positive in case the driver somehow ended up filtering for
++	 * context1
++	 */
++	render_copy(ibb1,
++		    &src[1], 0, 0, width, height,
++		    &dst[1], 0, 0);
++
++	render_copy(ibb1,
++		    &src[2], 0, 0, width, height,
++		    &dst[2], 0, 0);
++	intel_bb_flush_render(ibb1);
++
++	/* Submit an mi-rpc to context1 after all work */
++#define BO_TIMESTAMP_OFFSET3 1048
++#define BO_REPORT_OFFSET3 768
++#define BO_REPORT_ID3 0x01c0ffee
++	emit_stall_timestamp_and_rpc(ibb1,
++				     dst_buf,
++				     BO_TIMESTAMP_OFFSET3,
++				     BO_REPORT_OFFSET3,
++				     BO_REPORT_ID3);
++	intel_bb_flush_render(ibb1);
++
++	/* Remove intel_buf from ibb1 added implicitly in rendercopy */
++	intel_bb_remove_intel_buf(ibb1, dst_buf);
++
++	/* Submit an mi-rpc to context0 after all measurable work */
++#define BO_TIMESTAMP_OFFSET1 1032
++#define BO_REPORT_OFFSET1 256
++#define BO_REPORT_ID1 0xbeefbeef
++	emit_stall_timestamp_and_rpc(ibb0,
++				     dst_buf,
++				     BO_TIMESTAMP_OFFSET1,
++				     BO_REPORT_OFFSET1,
++				     BO_REPORT_ID1);
++	intel_bb_flush_render(ibb0);
++	intel_bb_sync(ibb0);
++	intel_bb_sync(ibb1);
++
++	buf_map(drm_fd, dst_buf, false);
++
++	/* Sanity check reports
++	 * reportX_32[0]: report id passed with mi-rpc
++	 * reportX_32[1]: timestamp
++	 * reportX_32[2]: context id
++	 *
++	 * report0_32: start of measurable work
++	 * report1_32: end of measurable work
++	 * report2_32: start of other work
++	 * report3_32: end of other work
++	 */
++	report0_32 = dst_buf->ptr;
++	igt_assert_eq(report0_32[0], 0xdeadbeef);
++	igt_assert(oa_timestamp(report0_32, fmt));
++	ctx0_id = report0_32[2];
++	igt_debug("MI_RPC(start) CTX ID: %u\n", ctx0_id);
++	dump_report(report0_32, 64, "report0_32");
++
++	report1_32 = report0_32 + 64;
++	igt_assert_eq(report1_32[0], 0xbeefbeef);
++	igt_assert(oa_timestamp(report1_32, fmt));
++	ctx1_id = report1_32[2];
++	igt_debug("CTX ID1: %u\n", ctx1_id);
++	dump_report(report1_32, 64, "report1_32");
++
++	/* Verify that counters in context1 are all zeroes */
++	report2_32 = report0_32 + 128;
++	igt_assert_eq(report2_32[0], 0x00c0ffee);
++	igt_assert(oa_timestamp(report2_32, fmt));
++	dump_report(report2_32, 64, "report2_32");
++	igt_assert_eq(0, memcmp(&report2_32[4],
++				(uint8_t *) dst_buf->ptr + 2048,
++				240));
++
++	report3_32 = report0_32 + 192;
++	igt_assert_eq(report3_32[0], 0x01c0ffee);
++	igt_assert(oa_timestamp(report3_32, fmt));
++	dump_report(report3_32, 64, "report3_32");
++	igt_assert_eq(0, memcmp(&report3_32[4],
++				(uint8_t *) dst_buf->ptr + 2048,
++				240));
++
++	/* Accumulate deltas for counters - A0, A21 and A26 */
++	memset(accumulator.deltas, 0, sizeof(accumulator.deltas));
++	accumulate_reports(&accumulator, report0_32, report1_32);
++	igt_debug("total: A0 = %"PRIu64", A21 = %"PRIu64", A26 = %"PRIu64"\n",
++			accumulator.deltas[2 + 0],
++			accumulator.deltas[2 + 21],
++			accumulator.deltas[2 + 26]);
++
++	igt_debug("oa_timestamp32 0 = %"PRIu64"\n", oa_timestamp(report0_32, fmt));
++	igt_debug("oa_timestamp32 1 = %"PRIu64"\n", oa_timestamp(report1_32, fmt));
++	igt_debug("ctx_id 0 = %u\n", report0_32[2]);
++	igt_debug("ctx_id 1 = %u\n", report1_32[2]);
++
++	/* The delta as calculated via the PIPE_CONTROL timestamp or
++	 * the OA report timestamps should be almost identical but
++	 * allow a 500 nanoseconds margin.
++	 */
++	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET0);
++	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET1);
++
++	igt_debug("ts_timestamp64 0 = %"PRIu64"\n", timestamp0_64);
++	igt_debug("ts_timestamp64 1 = %"PRIu64"\n", timestamp1_64);
++
++	delta_ts64 = timestamp1_64 - timestamp0_64;
++	delta_oa32 = oa_timestamp_delta(report1_32, report0_32, fmt);
++
++	/* Sanity check that we can pass the delta to timebase_scale */
++	delta_oa32_ns = timebase_scale(delta_oa32);
++	delta_ts64_ns = cs_timebase_scale(delta_ts64);
++
++	igt_debug("oa32 delta = %"PRIu64", = %"PRIu64"ns\n",
++			delta_oa32, delta_oa32_ns);
++	igt_debug("ts64 delta = %"PRIu64", = %"PRIu64"ns\n",
++			delta_ts64, delta_ts64_ns);
++
++	delta_delta = delta_ts64_ns > delta_oa32_ns ?
++		      (delta_ts64_ns - delta_oa32_ns) :
++		      (delta_oa32_ns - delta_ts64_ns);
++	if (delta_delta > 500) {
++		igt_debug("delta_delta = %"PRIu64". exceeds margin, skipping..\n",
++			  delta_delta);
++		exit(EAGAIN);
++	}
++
++	igt_debug("n samples written = %"PRIu64"/%"PRIu64" (%ix%i)\n",
++		  accumulator.deltas[2 + 21],
++		  accumulator.deltas[2 + 26],
++		  width, height);
++	accumulator_print(&accumulator, "filtered");
++
++	/* Verify that the work actually happened by comparing the src
++	 * and dst buffers
++	 */
++	buf_map(drm_fd, &src[0], false);
++	buf_map(drm_fd, &dst[0], false);
++
++	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * width * height);
++	intel_buf_unmap(&src[0]);
++	intel_buf_unmap(&dst[0]);
++
++	if (ret != 0) {
++		accumulator_print(&accumulator, "total");
++		exit(EAGAIN);
++	}
++
++	/* FIXME: can we deduce the presence of A26 from get_oa_format(fmt)? */
++	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
++		goto skip_check;
++
++	/* Check that this test passed. The test measures the number of 2x2
++	 * samples written to the render target using the counter A26. For
++	 * OAR, this counter will only have increments relevant to this specific
++	 * context. The value equals the width * height of the rendered work.
++	 */
++	igt_assert_eq(accumulator.deltas[2 + 26], width * height);
++
++ skip_check:
++	/* Clean up */
++	for (int i = 0; i < ARRAY_SIZE(src); i++) {
++		intel_buf_close(bops, &src[i]);
++		intel_buf_close(bops, &dst[i]);
++	}
++
++	intel_buf_unmap(dst_buf);
++	intel_buf_destroy(dst_buf);
++	intel_bb_destroy(ibb0);
++	intel_bb_destroy(ibb1);
++	xe_exec_queue_destroy(drm_fd, context0_id);
++	xe_exec_queue_destroy(drm_fd, context1_id);
++	xe_vm_destroy(drm_fd, vm);
++	buf_ops_destroy(bops);
++	__perf_close(stream_fd);
 +}
 +
 +/**
-+ * SUBTEST: sysctl-defaults
-+ * Description: Test that perf_stream_paranoid sysctl exists
++ * SUBTEST: unprivileged-single-ctx-counters
++ * Description: A harder test for OAR/OAC using MI_REPORT_PERF_COUNT
 + */
 +static void
-+test_sysctl_defaults(void)
++test_single_ctx_render_target_writes_a_counter(struct drm_xe_engine_class_instance *hwe)
 +{
-+	int paranoid = read_u64_file("/proc/sys/dev/xe/perf_stream_paranoid");
++	int child_ret;
++	struct igt_helper_process child = {};
 +
-+	igt_assert_eq(paranoid, 1);
++	/* Ensure perf_stream_paranoid is set to 1 by default */
++	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++
++	do {
++		igt_fork_helper(&child) {
++			/* A local device for local resources. */
++			drm_fd = drm_reopen_driver(drm_fd);
++
++			igt_drop_root();
++
++			single_ctx_helper(hwe);
++
++			drm_close_driver(drm_fd);
++		}
++		child_ret = igt_wait_helper(&child);
++		igt_assert(WEXITSTATUS(child_ret) == EAGAIN ||
++			   WEXITSTATUS(child_ret) == 0);
++	} while (WEXITSTATUS(child_ret) == EAGAIN);
 +}
 +
-+igt_main
-+{
-+	igt_fixture {
-+		struct stat sb;
-+
-+		/*
-+		 * Prior tests may have unloaded the module or failed while
-+		 * loading/unloading the module. Load xe here before we
-+		 * stat the files.
-+		 */
-+		drm_load_module(DRIVER_XE);
-+		srandom(time(NULL));
-+		igt_require(!stat("/proc/sys/dev/xe/perf_stream_paranoid", &sb));
-+	}
-+
-+	igt_subtest("xe-ref-count")
-+		test_xe_ref_count();
-+
-+	igt_subtest("sysctl-defaults")
-+		test_sysctl_defaults();
-+
-+	igt_fixture {
-+		/* leave sysctl options in their default state... */
-+		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
-+
-+		if (intel_xe_perf)
-+			intel_xe_perf_free(intel_xe_perf);
-+
-+		drm_close_driver(drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 758ae090c9..288bb7fe79 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -304,6 +304,7 @@ intel_xe_progs = [
- 	'xe_mmap',
- 	'xe_module_load',
- 	'xe_noexec_ping_pong',
-+	'xe_oa',
- 	'xe_pat',
- 	'xe_peer2peer',
- 	'xe_pm',
-@@ -378,6 +379,7 @@ extra_dependencies = {
- 	'perf': [ lib_igt_i915_perf ],
- 	'perf_pmu':  [ lib_igt_perf ],
- 	'sw_sync': [ libatomic ],
-+	'xe_oa': [ lib_igt_xe_oa ],
- }
+ static unsigned read_xe_module_ref(void)
+ {
+ 	FILE *fp = fopen("/proc/modules", "r");
+@@ -3017,6 +3698,23 @@ igt_main
+ 	igt_subtest("short-reads")
+ 		test_short_reads();
  
- test_executables = []
++	igt_subtest_group {
++		igt_subtest_with_dynamic("mi-rpc")
++			__for_one_hwe_in_oag(hwe)
++				test_mi_rpc(hwe);
++
++		igt_subtest_with_dynamic("oa-tlb-invalidate")
++			__for_one_hwe_in_oag(hwe)
++				test_oa_tlb_invalidate(hwe);
++
++		igt_subtest_with_dynamic("unprivileged-single-ctx-counters") {
++			igt_require_f(render_copy, "no render-copy function\n");
++			igt_require(intel_graphics_ver(devid) < IP_VER(20, 0));
++			__for_one_render_engine(hwe)
++				test_single_ctx_render_target_writes_a_counter(hwe);
++		}
++	}
++
+ 	igt_fixture {
+ 		/* leave sysctl options in their default state... */
+ 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 -- 
 2.41.0
 
