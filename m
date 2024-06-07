@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDA2AC27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 15:36:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4539C27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 15:36:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 86BDE10ECC1;
-	Fri,  7 Jun 2024 15:36:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 663A410ECBF;
+	Fri,  7 Jun 2024 15:36:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EWvvfv1I";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q4ljvXxm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABEEA10ECC8
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 15:36:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 69D2110ECB7
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 15:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717774614; x=1749310614;
+ t=1717774617; x=1749310617;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=x/P44GVB4lHahQWYDf2JeMO1td/YziSTA3X77SCAqiA=;
- b=EWvvfv1Ijxx4CjfvnN9V2/kWVBLS8L6NyXSV4+cHetAOdzwZWLL/jg6I
- CLbdLt+GSGU1oHlrRxQH5pkL7kXAV9ueSb5op7F7UeA7mbGeJNDbywSAJ
- IWON1K6JlGX7W/b1FjkyA084nN0bkPKOH4BjqPuCgu4tetU2aO+2nGpKK
- 2x0/Vei9HGvttC8oiKdjfpsvRz8YZIBoyf1qQWSZheoxd4TR6jl9iN5v9
- ua7fHcONYBwv5WhtCGm5kAfjagjP6TrHocHshMEk9yWUpBhawUlQ1oK9u
- yFvpFpG371HgC4H0mp8HsB5gtf6v49vhP5OVlqvZYsyS2aEjQWMRUnWvn Q==;
-X-CSE-ConnectionGUID: 4Y2Ho/uIR3+m2pTewIy2Ug==
-X-CSE-MsgGUID: n3oUo+mTTAaq3/Ry9WvvZw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14620075"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14620075"
+ bh=bAZWuwOOzDtNRzxiOV/JbaZjYqPrVG0iG66vk7DXX7M=;
+ b=Q4ljvXxmuREoIkt3qFUNWxdaEiqrPYxDlbkZISCy0/NFSP+LWJp1sqku
+ BWkV2UtkxG/TI7sJ3/4xqceRp2VLvnGoj0T+VvNajIokdNUDlmHmMzDhw
+ KDwTKKl7uYnultAZgIAUEvTfpgjRBHpzHC0A3NSyg3QUJBo6ar4cHdVk4
+ y134AYacFqtdzLnCHdb+d5B4D5d2o2nOkRluI5XoPwkccapXV628+rDcu
+ 99MxoHzTWnB0f6TFgfsPYrA6X4vMbgCCyBuS8pNKIgDfVD6J1WRV4EDAt
+ MHBvsvLYp7Zsv2DJ7pCYhxhrTlWE+LDGGLj+oVlGAgrgFDh58RuMhRBcx g==;
+X-CSE-ConnectionGUID: fir3ZDOgSJGkTjHDqrs/nA==
+X-CSE-MsgGUID: 2MyCu4CMSjCcq9WLIhaVbw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="14620079"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14620079"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 08:36:53 -0700
-X-CSE-ConnectionGUID: D9xxcHkbSSSsiJch0b5JoQ==
-X-CSE-MsgGUID: 0a7id8fUTgGRuLHk3YjCgA==
+ 07 Jun 2024 08:36:57 -0700
+X-CSE-ConnectionGUID: 6Vj39aICTduzRrIVpx1O0g==
+X-CSE-MsgGUID: EDg5fgWETCiqReO5b8aEjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38805267"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38805268"
 Received: from lfiedoro-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.246.84])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 08:36:53 -0700
+ 07 Jun 2024 08:36:57 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 5/7] tests/core_hotunplug: Open the same driver
-Date: Fri,  7 Jun 2024 17:36:17 +0200
-Message-ID: <20240607153629.52596-6-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 6/7] tests/core_hotunplug: Fix device close
+Date: Fri,  7 Jun 2024 17:36:18 +0200
+Message-ID: <20240607153629.52596-7-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240607153629.52596-1-kamil.konieczny@linux.intel.com>
 References: <20240607153629.52596-1-kamil.konieczny@linux.intel.com>
@@ -68,35 +68,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make sure any later opens will use the same driver as the first
-one. Also while at this, print driver name before test starts.
+Use __drm_device_close for closing a drm device, as for Xe driver
+it needs to call additional function.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/core_hotunplug.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/core_hotunplug.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 7ed9abd37..ddf11bb00 100644
+index ddf11bb00..3b0135fc8 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -710,11 +710,16 @@ igt_main
+@@ -146,7 +146,11 @@ static int close_device(int fd_drm, const char *when, const char *which)
+ 		return fd_drm;
  
- 	igt_fixture {
- 		int fd_drm;
-+		char driver[32] = {};
+ 	local_debug("%sclosing %sdevice instance\n", when, which);
+-	return local_close(fd_drm, "Device close failed");
++	errno = 0;
++	if (igt_warn_on_f(__drm_close_driver(fd_drm), "Device close failed\n"))
++		return -errno;	/* (never -1) */
++
++	return -1;	/* success */
+ }
  
- 		fd_drm = __drm_open_driver(DRIVER_ANY);
- 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
- 
- 		priv.chipset = drm_get_chipset(fd_drm);
-+		/* Make sure it opens the same driver */
-+		__get_drm_device_name(fd_drm, driver, sizeof(driver) - 1);
-+		__set_forced_driver(driver);
-+		igt_info("DRM driver: %s\n", driver);
- 
- 		if (is_i915_device(fd_drm)) {
- 			gem_quiescent_gpu(fd_drm);
+ static int close_sysfs(int fd_sysfs_dev)
 -- 
 2.43.0
 
