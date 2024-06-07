@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CF33C27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 11:15:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1607C27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 11:24:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E557210EBE8;
-	Fri,  7 Jun 2024 11:15:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7189C10EBF2;
+	Fri,  7 Jun 2024 11:24:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LHwkt46x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LYCfMcY7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A388A10EBE8
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 11:15:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0D80E10EBF2
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 11:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717758928; x=1749294928;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=s5dQD1VDso4maoYPFYjOgIW6iIzm6By8nsQQj1brk1Q=;
- b=LHwkt46xD6YiZV6ugqee2TXnZUQQnR1447c/I2TMvnYBtX8rcvHMvcvB
- cRBGiVjpEvYxw58f+ooHNgmGlG4SZrxW7k4GdNa2w1KSw/C3NPbov4eE5
- c3WjePcHu2VD4iwCXKRGSXnlQpLzp25ldVqXH2wf4AUHyde9kKLKvzx88
- twWEwiICBXtNA1CyNpXBgtDi1pyqq+h81HRrOk0BVmY3jdx83FmHI5QsP
- wX1Ot8tuYZP0uUQeGKCYAsfI4f39gPphDQlWXtYXY5qAB6F6wXH4BLsHK
- NGhxiV68jKBFmUvs82JeVuknmOMOwXhGORqUupNWoVVZHnrcWw6YKZrVg A==;
-X-CSE-ConnectionGUID: uCkCwO8gS0yOtORwh0cUrg==
-X-CSE-MsgGUID: ypdssQgSR6K1FJpGCH2mFA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="14217328"
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="14217328"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 04:15:27 -0700
-X-CSE-ConnectionGUID: ZdtY2RUKTBmtphukIFuBDg==
-X-CSE-MsgGUID: QXlXH8rXRKmzSPQVFc0ptQ==
+ t=1717759498; x=1749295498;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Oql0uCgvcsrvsRUR3TIUe5/Jpv+W3OWEsyzNhA7RCE0=;
+ b=LYCfMcY75gPYDEXrd2SJIQ0nZ3c5Udfny7q/sccIg8i1e0cTOK1P2cE0
+ GboUSvHfT2d+9EuJpjHeog5dQFPF/4k9EvJrEDdHypwJxukREhp7Q8UZY
+ 3idN68fWW4nFQ/yckAq03ORtnbucmFlNG6yUdgEIo27tBLqt4anL9wRtR
+ EJFD5B/8ZW5n1yxf0jIgEWWX8p1rFsECsiMxrqIml3mw+I76SHt2gziyT
+ uHz2z89w2zNx8SY63aKCOE2QByoTRoYpW3ZVeomdYHR6Tq9sKBlslNxyG
+ IwzgZoaVlmQPAofZojm0igd70PZtQwsy+7HAhfxLQjU54B1b5pbgDgeZk w==;
+X-CSE-ConnectionGUID: g3BccMtuTTGTi5b2QG5A9w==
+X-CSE-MsgGUID: KjqVSnLdTY+6ZN7r1VrIGg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="25103544"
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="25103544"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 04:24:57 -0700
+X-CSE-ConnectionGUID: Nn5J5jX3T6yB8vtdxOQNpg==
+X-CSE-MsgGUID: tNksJoJ4R++RSRTOCGlXvA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="38963506"
-Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.72])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 04:15:25 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: imre.deak@intel.com, Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/kms_pm_backlight: Brightness test
- during DPMS on and off
-In-Reply-To: <20240607103329.16841-1-mohammed.thasleem@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20220424005737.228759-1-mohammed.thasleem@intel.com>
- <20240607103329.16841-1-mohammed.thasleem@intel.com>
-Date: Fri, 07 Jun 2024 14:15:22 +0300
-Message-ID: <87zfrxknqt.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,220,1712646000"; d="scan'208";a="42754483"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 04:24:56 -0700
+Date: Fri, 7 Jun 2024 13:24:28 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+ Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_create: Isolate performance tests
+Message-ID: <20240607112428.dl5zloect22yizt7@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
+ Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
+References: <20240607094936.1564474-1-balasubramani.vivekanandan@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240607094936.1564474-1-balasubramani.vivekanandan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,107 +72,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 07 Jun 2024, Mohammed Thasleem <mohammed.thasleem@intel.com> wrote:
-> Set brightness by deviding max brightness, store and read it back.
-> The actual brightness should be same during DPMS on and off cycle.
+Hi Balasubramani,
+On 2024-06-07 at 15:19:36 +0530, Balasubramani Vivekanandan wrote:
 
-Not strictly related to the patch at hand, but please find some some
-observations about the whole test inline.
+please subscribe to igt-dev mailinglist.
 
->
-> v2: Update test path and testplan documentation.
->
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+If you will ever send cc to kmd list, please add i-g-t after PATCH.
+
+> create_execqueues subtest is testing the time required for creating
+> execqueues along with testing the functionality.
+> Performance measurements are mostly not relevant when testing on PreSi
+> environments. Isolate the performance checks into new tests allowing it
+> to be skipped for PreSi testing.
+> 
+> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
 > ---
->  tests/intel/kms_pm_backlight.c | 41 ++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
->
-> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-> index 2e691dab0..107b7d668 100644
-> --- a/tests/intel/kms_pm_backlight.c
-> +++ b/tests/intel/kms_pm_backlight.c
-> @@ -64,6 +64,10 @@
->   * SUBTEST: fade-with-suspend
->   * Description: Test the fade with suspend.
->   * Functionality: backlight, suspend
-> + *
-> + * SUBTEST: brightness-with-dpms
-> + * Description: test brightness with dpms on and off cycle.
-> + * Functionality: backlight, backlight
+>  tests/intel/xe_create.c | 28 +++++++++++++++++++---------
+>  1 file changed, 19 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> index d41557c85..346c807c0 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -171,9 +171,11 @@ enum vm_count {
+>   * @leak:				destroy exec_queues in close() path
+>   * @noleak-shared:			same as noleak, but with a shared vm
+>   * @leak-shared:			same as leak, but with a shared vm
+> + * @performance:			Measure time required for creating execqueues
+> + * @performance-shared:			same as performance, but with a shared vm
+
+You didn't created any new test, the only thing changed is skipping
+assert.
+
 >   */
->  
->  struct context {
-> @@ -217,6 +221,32 @@ check_suspend(igt_output_t *output)
->  	igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
->  }
->  
-> +static void check_dpms_cycle(igt_display_t *display, igt_output_t *output, struct context *context)
-> +{
-> +	int max, val_1, val_2;
-> +
-> +	backlight_read(&max, "max_brightness", context);
-> +	igt_assert(max);
-> +
-> +	backlight_write(max / 2, "brightness", context);
-> +	backlight_read(&val_1, "actual_brightness", context);
-> +
-> +	igt_require(igt_setup_runtime_pm(output->display->drm_fd));
-> +
-> +	kmstest_set_connector_dpms(output->display->drm_fd,
-> +				   output->config.connector,
-> +				   DRM_MODE_DPMS_OFF);
-> +	igt_require(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED));
-> +
-> +	kmstest_set_connector_dpms(output->display->drm_fd,
-> +				   output->config.connector,
-> +				   DRM_MODE_DPMS_ON);
-> +	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
-> +
-> +	backlight_read(&val_2, "actual_brightness", context);
-> +	igt_assert_eq(val_1, val_2);
-> +}
-> +
->  static void test_cleanup(igt_display_t *display, igt_output_t *output)
+>  static void create_execqueues(int fd, enum exec_queue_destroy ed,
+> -			      enum vm_count vc)
+> +			      enum vm_count vc, bool perf)
+
+Instead of bool parameter imho it is better to check for simulation.
+
 >  {
->  	igt_output_set_pipe(output, PIPE_NONE);
-> @@ -354,6 +384,17 @@ igt_main
->  		}
+>  	struct timespec tv = { };
+>  	uint32_t num_engines, exec_queues_per_process, vm;
+> @@ -237,10 +239,12 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed,
+>  		drm_close_driver(fd);
 >  	}
 >  
-> +	igt_describe("test brightness with dpms on and off cycle");
-> +	igt_subtest_with_dynamic("brightness-with-dpms") {
-> +		for (int j = 0; j < (dual_edp ? 2 : 1); j++) {
-
-The "dual_edp ? 2 : 1" is what caught my eyes here.
-
-First I thought, why don't you have "num_edp" or something here.
-
-Next I thought, backlight is not limited to eDP. Why aren't we testing
-backlight with LVDS or DSI? "num_edp" would be wrong too.
-
-Then I realized the whole dual_edp thing and backlight <-> output
-mapping is a bit fragile, and depends on things that aren't necessarily
-guaranteed to be stable. It assumes the "first" eDP connector is named
-intel_backlight and the rest card%i-%s-backlight. It probably works in
-the limited environment and systems we have, but something to keep in
-mind.
-
-
-BR,
-Jani.
-
-
-> +			test_setup(display, &contexts->output[j]);
-> +			igt_dynamic_f("%s", igt_output_name(contexts[j].output)) {
-> +				check_dpms_cycle(&display, &contexts->output[j], &contexts[j]);
-> +				test_cleanup(&display, &contexts->output[j]);
-> +			}
-> +		}
+> -	seconds = igt_seconds_elapsed(&tv);
+> -	igt_assert_f(seconds < real_timeout,
+> -		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
+> -		     MAXEXECQUEUES, seconds, real_timeout);
+> +	if (perf) {
+> +		seconds = igt_seconds_elapsed(&tv);
+> +		igt_assert_f(seconds < real_timeout,
+> +			     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
+> +			     MAXEXECQUEUES, seconds, real_timeout);
 > +	}
-> +
->  	igt_fixture {
->  		/* Restore old brightness */
->  		for (i = 0; i < (dual_edp ? 2 : 1); i++)
 
--- 
-Jani Nikula, Intel
+imho you could still print this info and only assert if not in simulation,
+so your change will be only here like:
+
+	seconds = igt_seconds_elapsed(&tv);
+    if (igt_run_in_simulation())
+		     igt_info("Creating %d exec_queues tooks: %d [limit: %d]\n",
+		     MAXEXECQUEUES, seconds, real_timeout);
+    else
+	        igt_assert_f(seconds < real_timeout,
+		                "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
+                        MAXEXECQUEUES, seconds, real_timeout);
+
+Regards,
+Kamil
+
+>  }
+>  
+>  /**
+> @@ -410,16 +414,22 @@ igt_main_args("Q:p:", NULL, help_str, opt_handler, NULL)
+>  	}
+>  
+>  	igt_subtest("create-execqueues-noleak")
+> -		create_execqueues(xe, NOLEAK, MULTI);
+> +		create_execqueues(xe, NOLEAK, MULTI, false);
+>  
+>  	igt_subtest("create-execqueues-leak")
+> -		create_execqueues(xe, LEAK, MULTI);
+> +		create_execqueues(xe, LEAK, MULTI, false);
+>  
+>  	igt_subtest("create-execqueues-noleak-shared")
+> -		create_execqueues(xe, NOLEAK, SHARED);
+> +		create_execqueues(xe, NOLEAK, SHARED, false);
+>  
+>  	igt_subtest("create-execqueues-leak-shared")
+> -		create_execqueues(xe, LEAK, SHARED);
+> +		create_execqueues(xe, LEAK, SHARED, false);
+> +
+> +	igt_subtest("create-execqueues-performance")
+> +		create_execqueues(xe, NOLEAK, MULTI, true);
+> +
+> +	igt_subtest("create-execqueues-performance-shared")
+> +		create_execqueues(xe, NOLEAK, SHARED, true);
+>  
+>  	igt_subtest("create-massive-size") {
+>  		create_massive_size(xe);
+> -- 
+> 2.25.1
+> 
