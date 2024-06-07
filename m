@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4EBEC27C55
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 12:24:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92014C27C55
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 12:31:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 661BA10E052;
-	Fri,  7 Jun 2024 12:24:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42F1A10E0D0;
+	Fri,  7 Jun 2024 12:31:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dWXwHi2B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="la7qfKM/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 07A3B10E052
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 12:24:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 846C410E0D0
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 12:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717763081; x=1749299081;
+ t=1717763480; x=1749299480;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=I7EKB6mhI/rUSk30mT9vtjPs9oIQHq6J59U5gHYj5oY=;
- b=dWXwHi2B+yaAqMMCGs+cJKWEVfapKu/LhbSE76G46eKgcgnUuC4ALlk1
- UvzOCXFHIL2eFdYsKFHRVkwIYri5IrIHKAbL1Z2rxcyx16CleRslFhhDB
- JsYFjC1MXRD4p25iZweBzoV7xsvWeOLU/wbd1vYbTz9h9bQniwuwjcGwz
- 9ibROHO6xBcLzsQ5+xCFrVpEPHN2WL6iQ6RehpLdFBAkNBxKHkPNQbrRN
- DRgZr1nbXsYBCfej1i5g9sJYnIROkrXR2dklhphO0tg6ruCi8IlQZigpR
- KBeQMAHJPf3LRFJztcvoHmJ3Hsq1WJXkq00+mXcEAw13U8sALm1zDhiGT Q==;
-X-CSE-ConnectionGUID: aWK6b8InSkSLGoCfU+zNvQ==
-X-CSE-MsgGUID: ywWUY9e7RIa/jJVv257o/A==
-X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="39880674"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="39880674"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 05:24:41 -0700
-X-CSE-ConnectionGUID: SL640ZFOSRSoJ3ckvqOm/g==
-X-CSE-MsgGUID: /avUBIjAT6Gg+rsZhl7z2A==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=bS9jUDEe0B2EN6OR2W6KzKHLhpEGNtyYZe2bffp+C4Q=;
+ b=la7qfKM//V835+I3iUdl4c9kArS7orHY3yBV7eicXkgV5bbbkFjS1+an
+ oPFdPnI4fzwm+7Czts3DdMMOPtb8Gk4bOqPu6kkj+Srd5NV9pjfDmtSLH
+ j1e0o3FZWH1rLbkdCBGaxJZExSt/g5osrcdgNaCLbNbdJ2ltW1F22z1kj
+ stPRsLXbh+yVZ3nR8ek3JK3RA/rE3kh8QcEy01P9To46g9b8fVKPV1dmu
+ qFBPorKVB+r5eftnuv/ocZZJ/ELU2ClesmD+LTGzi1Zrdr1WXSFPF+ARV
+ WyQVeXEVVui2hQRkY/IsfBv565W2mmrDzJN/hQpO+dvKaVaCknuWSeIZX g==;
+X-CSE-ConnectionGUID: 2tYA/LxZQK6I5UTcuMMwYw==
+X-CSE-MsgGUID: yj8jmIiNSli0DcRI6WV2fg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11095"; a="14435056"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="14435056"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Jun 2024 05:31:20 -0700
+X-CSE-ConnectionGUID: sI4RrdJeSDWxqs3XyNUtZQ==
+X-CSE-MsgGUID: pIVYs4SHSDK9r7fSuhRtmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="43434508"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="42874429"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 05:24:39 -0700
-Date: Fri, 7 Jun 2024 14:24:35 +0200
+ by fmviesa004-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Jun 2024 05:31:18 -0700
+Date: Fri, 7 Jun 2024 14:31:15 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Melanie Lobo <melanie.lobo@intel.com>, vidya.srinivas@intel.com,
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH 2/2] tests/intel/kms_flip_scaled_crc: Add support for
- RGB16161616_64B compressed formats
-Message-ID: <20240607122435.3dmfyn4kpuee6jej@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH 1/2] lib/intel_aux_pgtable: Library to add support for
+ RGB16161616_64B format
+Message-ID: <20240607123115.fbuxbuur6kwvnw6y@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Melanie Lobo <melanie.lobo@intel.com>, vidya.srinivas@intel.com,
@@ -58,11 +58,12 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>
 References: <20240606121523.5347-1-melanie.lobo@intel.com>
- <20240606121523.5347-3-melanie.lobo@intel.com>
+ <20240606121523.5347-2-melanie.lobo@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240606121523.5347-3-melanie.lobo@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240606121523.5347-2-melanie.lobo@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,19 +80,26 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Melanie,
-On 2024-06-06 at 17:45:23 +0530, Melanie Lobo wrote:
+On 2024-06-06 at 17:45:22 +0530, Melanie Lobo wrote:
 
-imho subject should be:
+one more nit about subject, you wrote:
+lib/intel_aux_pgtable: Library to add support for RGB16161616_64B format
 
-[PATCH 2/2] tests/intel/kms_flip_scaled_crc: Add tests for RGB16161616_64B compressed formats
+This should be:
+lib/intel_aux_pgtable: Add RGB16161616_64B FP16 compressed format
 
-There are also whitespaces error, please use checkpatch.pl
-before sending (see CONTRIBUTING.md)
+you already have 'lib/' in begin of filename, no need to add
+that later.
 
-> MTL supports RGB FP16 format which is a binary floating-point computer
-> number format that occupies 16 bits in computer memory. In this test
-> platform shall render compression in display engine to receive
-> RGB FP16 compressed formats.
+Juha-Pekka or Swati - fill free to suggest better subject, I do
+not know specification of this new format.
+
+Regards,
+Kamil
+
+> MTL supports RGB16161616_64B FP16 format which is a binary
+> floating-point computer number format that occupies 16 bits
+> in computer memory.
 > 
 > This was tested with kernel patch,
 > https://patchwork.freedesktop.org/series/124957/
@@ -102,85 +110,32 @@ before sending (see CONTRIBUTING.md)
 > cc: Swati Sharma <swati2.sharma@intel.com>
 > Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
 > ---
->  tests/intel/kms_flip_scaled_crc.c | 42 +++++++++++++++++++++++++++++++
->  1 file changed, 42 insertions(+)
+>  lib/intel_aux_pgtable.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/tests/intel/kms_flip_scaled_crc.c b/tests/intel/kms_flip_scaled_crc.c
-> index 7dc07bc8330d..65fd31c5c963 100644
-> --- a/tests/intel/kms_flip_scaled_crc.c
-> +++ b/tests/intel/kms_flip_scaled_crc.c
-> @@ -96,6 +96,16 @@
->   * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
->   *              clock programming
->   *
-> + * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccsxrgb-%s
-> + * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-> + * 		clock programming
------^^^^^^^
-Use tabs, then spaces.
-
-> + * Functionality: ccs, scaling, tiling, vblank
-> + *
-> + * SUBTEST: flip-64bpp-4tile-to-32bpp-4tilemtlrcccsargb-%s
-> + * Description: Flip from 64bpp non scaled fb to 32bpp %arg[1] fb to stress CD
-> + * 		clock programming
-
-Same here.
-
-Regards,
-Kamil
-
-> + * Functionality: ccs, scaling, tiling, vblank
-> + *
->   * arg[1]:
->   *
->   * @downscaling:        Downscaled
-> @@ -345,6 +355,22 @@ const struct {
->  		1.0,
->  		2.0,
->  	},
-> +	{
-> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccsxrgb-downscaling",
-> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
-> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-> +		1.0,
-> +		2.0,
-> +	},
-> +	{
-> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccsargb-downscaling",
-> +		"Flip from 64bpp non scaled fb to 32bpp downscaled fb to stress CD clock programming",
-> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_ARGB16161616F,
-> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_ARGB16161616F,
-> +		1.0,
-> +		2.0,
-> +	},
->  	{
->  		"flip-32bpp-ytile-to-64bpp-ytile-upscaling",
->  		"Flip from 32bpp non scaled fb to 64bpp upscaled fb to stress CD clock programming",
-> @@ -529,6 +555,22 @@ const struct {
->  		0.5,
->  		1.0,
->  	},
-> +	{
-> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccsxrgb-upscaling",
-> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
-> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_XRGB16161616F,
-> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_XRGB16161616F,
-> +		0.5,
-> +		1.0,
-> +	},
-> +	{
-> +		"flip-64bpp-4tile-to-32bpp-4tilemtlrcccsargb-upscaling",
-> +		"Flip from 64bpp non scaled fb to 32bpp upscaled fb to stress CD clock programming",
-> +		I915_FORMAT_MOD_4_TILED, DRM_FORMAT_ARGB16161616F,
-> +		I915_FORMAT_MOD_4_TILED_MTL_RC_CCS, DRM_FORMAT_ARGB16161616F,
-> +		0.5,
-> +		1.0,
-> +	},
->  };
+> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
+> index 3cbb0e26f35c..87df50e71bbd 100644
+> --- a/lib/intel_aux_pgtable.c
+> +++ b/lib/intel_aux_pgtable.c
+> @@ -22,6 +22,7 @@
+>  #define AUX_FORMAT_AYUV		0x09
+>  #define AUX_FORMAT_ARGB_8B	0x0A
+>  #define AUX_FORMAT_NV12_21	0x0F
+> +#define AUX_FORMAT_RGBA16_FLOAT        0x1
 >  
->  static void setup_fb(data_t *data, struct igt_fb *newfb, uint32_t width,
+>  struct pgtable_level_desc {
+>  	int idx_shift;
+> @@ -306,6 +307,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
+>  			entry.e.format = AUX_FORMAT_ARGB_8B;
+>  			entry.e.depth = bpp_to_depth_val(32);
+>  			break;
+> +		case 64:
+> +			entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
+> +			entry.e.depth = bpp_to_depth_val(64);
+> +			break;
+>  		default:
+>  			igt_assert(0);
+>  		}
 > -- 
 > 2.17.1
 > 
