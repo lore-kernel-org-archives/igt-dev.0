@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69E31C2B9FB
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28FDEC27C7B
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 20:09:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9ECDB10ED0E;
-	Fri,  7 Jun 2024 20:09:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B02E10ED07;
+	Fri,  7 Jun 2024 20:09:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvTwnHze";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eXQhVm7K";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A195110ED04
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:08:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37DFB10ED04
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Jun 2024 20:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1717790939; x=1749326939;
+ t=1717790940; x=1749326940;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=h4D5r1AI95EnbjoqWpsb+CNavMlRhwqTGbxckBtR5cQ=;
- b=IvTwnHzecqFANw5uDH4gMYT5xACQ7tvDhniiu8Np4DlPST1jHtXrUVEU
- y/ainv856a9+HUP+ltAG+36YO4IUzgNeoQTyKdYb2qZ7sW8xO7GL1N2M1
- 9OfQodTQ88l3kYp21SzNUlr7il3RBjkgCrYLjNpRrrt3y1FIqjeItaoEZ
- Lyjmesnz6dR5xaxNlTIPMD8nXG9NgaegxD2Lqeke9arQCq11NtlPVNLuz
- hVqVE+/Z9IZLmP6zh9tSDbeFfWp72o7NoIwC5K+EY2EP2P3hIKfUkXLxR
- WCj9KYZrmj+k5b7XM++hY4HJXgtmJa+4qx3oijoqzMGno3X+yc2TVYvzX g==;
-X-CSE-ConnectionGUID: lJ07UfilTFao8rZHUWBJbQ==
-X-CSE-MsgGUID: EPzrfH3QQe+vzfIi4Dbzkg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383219"
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383219"
+ bh=9bFiurwwpFqQhdEFXDQzMhCPqbkt7WTN//wmcQ51hCk=;
+ b=eXQhVm7KiT/BFByM/QVBIBpGyq+1yQzGySDPJEBo3k5CaS4Ln8Diyu13
+ 6B4Dpyq+y/k/rhWG+edd7zOPSqU7AsIv69T86zEZrEvOcPIEhkwH5I5Ul
+ P02h1K597NnOSxgv1cK9C9l+szJ3eV7z677F3z4RoYWBygPbirSV8dO3r
+ iSYpSPyV6IMweWGq2gu/nMLFdDjtWRbnO9IZY65USVRdCqJZw6eIs6TOv
+ Tv+vz6Jg1ldEjKxckA5YHqyYXSz7veoBXMDbTIP79mLfrVO8bFhjAYAAX
+ h6sM12CdynDiOjtR80w7o2FD9J2ik/4YZbFkkFKXynyZPOwMZJq9gH1eH g==;
+X-CSE-ConnectionGUID: uy4qgmUeSqCRjXubtEQ7xA==
+X-CSE-MsgGUID: YfAQCAfPSyCvbmcQXThggg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11096"; a="18383224"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="18383224"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  07 Jun 2024 13:08:59 -0700
-X-CSE-ConnectionGUID: sy8Bxv02ToqGcHN8rOY4QQ==
-X-CSE-MsgGUID: Ba3G0aLOQYGMuELwaIJE8w==
+X-CSE-ConnectionGUID: c5IuhbhdRP+J9Z/hAmFddg==
+X-CSE-MsgGUID: +ogBtpwJSISsubbzdyxcKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373838"
+X-IronPort-AV: E=Sophos;i="6.08,221,1712646000"; d="scan'208";a="38373845"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jun 2024 13:08:58 -0700
+ 07 Jun 2024 13:08:59 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 06/27] lib/xe/oa: Switch generated files to Xe namespace
-Date: Fri,  7 Jun 2024 13:08:26 -0700
-Message-ID: <20240607200847.1964629-7-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 10/27] tests/intel/xe_oa: Add first tests
+Date: Fri,  7 Jun 2024 13:08:30 -0700
+Message-ID: <20240607200847.1964629-11-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 References: <20240607200847.1964629-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,264 +67,844 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The Xe IGT library occupies a different namespace ('intel_xe') from the
-i915 IGT library ('intel' or 'i915'). The generated files are also part of
-the Xe IGT library. Therefore make sure the functions and data structs in
-the generated files conform to Xe namespace.
+Add "xe-ref-count" and "sysctl-defaults" subtests.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/xe/oa-configs/codegen.py              |  6 ++--
- lib/xe/oa-configs/oa-equations-codegen.py | 36 +++++++++++------------
- lib/xe/oa-configs/oa-metricset-codegen.py | 26 ++++++++--------
- lib/xe/oa-configs/oa-registers-codegen.py | 10 +++----
- 4 files changed, 39 insertions(+), 39 deletions(-)
+ tests/intel/xe_oa.c | 803 ++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build   |   2 +
+ 2 files changed, 805 insertions(+)
+ create mode 100644 tests/intel/xe_oa.c
 
-diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
-index 020e76ef4b..9a7d57a33e 100644
---- a/lib/xe/oa-configs/codegen.py
-+++ b/lib/xe/oa-configs/codegen.py
-@@ -340,13 +340,13 @@ class Gen:
-             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
-         m = re.search('\$GtSlice([0-9]+)$', name)
-         if m:
--            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
-+            return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
-         m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-         if m:
--            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-+            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-         m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-         if m:
--            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-+            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-         return None
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+new file mode 100644
+index 0000000000..5c872b74b2
+--- /dev/null
++++ b/tests/intel/xe_oa.c
+@@ -0,0 +1,803 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#include <stdlib.h>
++#include <stdio.h>
++#include <string.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <errno.h>
++#include <signal.h>
++#include <sys/stat.h>
++#include <sys/time.h>
++#include <sys/times.h>
++#include <sys/types.h>
++#include <dirent.h>
++#include <time.h>
++#include <poll.h>
++#include <math.h>
++
++#include "drm.h"
++#include "igt.h"
++#include "igt_device.h"
++#include "igt_sysfs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++#include "xe/xe_oa.h"
++
++/**
++ * TEST: perf
++ * Description: Test the Xe OA metrics streaming interface
++ * Category: Core
++ * Mega feature: Performance interface
++ * Sub-category: Performance tests
++ * Functionality: oa
++ * Feature: xe streaming interface, oa
++ * Test category: Perf
++ */
++
++#define OA_MI_REPORT_PERF_COUNT		((0x28 << 23) | (4 - 2))
++
++#define OAREPORT_REASON_MASK           0x3f
++#define OAREPORT_REASON_SHIFT          19
++#define OAREPORT_REASON_TIMER          (1<<0)
++#define OAREPORT_REASON_INTERNAL       (3<<1)
++#define OAREPORT_REASON_CTX_SWITCH     (1<<3)
++#define OAREPORT_REASON_GO             (1<<4)
++#define OAREPORT_REASON_CLK_RATIO      (1<<5)
++
++#define PIPE_CONTROL_GLOBAL_SNAPSHOT_COUNT_RESET	(1 << 19)
++#define PIPE_CONTROL_SYNC_GFDT	  (1 << 17)
++#define PIPE_CONTROL_NO_WRITE	   (0 << 14)
++#define PIPE_CONTROL_WRITE_IMMEDIATE    (1 << 14)
++#define PIPE_CONTROL_WRITE_DEPTH_COUNT  (2 << 14)
++#define PIPE_CONTROL_RENDER_TARGET_FLUSH (1 << 12)
++#define PIPE_CONTROL_INSTRUCTION_INVALIDATE (1 << 11)
++#define PIPE_CONTROL_ISP_DIS	    (1 << 9)
++#define PIPE_CONTROL_INTERRUPT_ENABLE   (1 << 8)
++/* GT */
++#define PIPE_CONTROL_DATA_CACHE_INVALIDATE      (1 << 5)
++#define PIPE_CONTROL_PPGTT_WRITE	(0 << 2)
++#define PIPE_CONTROL_GLOBAL_GTT_WRITE   (1 << 2)
++
++#define MAX_OA_BUF_SIZE (16 * 1024 * 1024)
++#define OA_BUFFER_SIZE MAX_OA_BUF_SIZE
++
++#define RING_FORCE_TO_NONPRIV_ADDRESS_MASK 0x03fffffc
++/*
++ * Engine specific registers defined as offsets from engine->mmio_base. For
++ * these registers, OR bit[0] with 1 so we can add the mmio_base when running
++ * engine specific test.
++ */
++#define MMIO_BASE_OFFSET 0x1
++
++#define OAG_OASTATUS (0xdafc)
++#define OAG_PERF_COUNTER_B(idx) (0xDA94 + 4 * (idx))
++#define OAG_OATAILPTR (0xdb04)
++#define OAG_OATAILPTR_MASK 0xffffffc0
++#define OAG_OABUFFER (0xdb08)
++
++#define ADD_PROPS(_head, _tail, _key, _value) \
++	do { \
++		igt_assert((_tail - _head) < (DRM_XE_OA_PROPERTY_MAX * 2)); \
++		*_tail++ = DRM_XE_OA_PROPERTY_##_key; \
++		*_tail++ = _value; \
++	} while (0)
++
++struct accumulator {
++#define MAX_RAW_OA_COUNTERS 62
++	enum intel_xe_oa_format_name format;
++
++	uint64_t deltas[MAX_RAW_OA_COUNTERS];
++};
++
++/* OA unit types */
++enum {
++	OAG,
++	OAR,
++	OAM,
++
++	MAX_OA_TYPE,
++};
++
++struct oa_format {
++	const char *name;
++	size_t size;
++	int a40_high_off; /* bytes */
++	int a40_low_off;
++	int n_a40;
++	int a64_off;
++	int n_a64;
++	int a_off;
++	int n_a;
++	int first_a;
++	int first_a40;
++	int b_off;
++	int n_b;
++	int c_off;
++	int n_c;
++	int oa_type; /* of enum intel_xe_oa_format_name */
++	bool report_hdr_64bit;
++	int counter_select;
++	int counter_size;
++	int bc_report;
++};
++
++static struct oa_format gen12_oa_formats[XE_OA_FORMAT_MAX] = {
++	[XE_OA_FORMAT_A32u40_A4u32_B8_C8] = {
++		"A32u40_A4u32_B8_C8", .size = 256,
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
++		.a_off = 144, .n_a = 4, .first_a = 32,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAG,
++		.counter_select = 5,
++	},
++};
++
++static struct oa_format dg2_oa_formats[XE_OA_FORMAT_MAX] = {
++	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
++		"A32u40_A4u32_B8_C8", .size = 256,
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
++		.a_off = 144, .n_a = 4, .first_a = 32,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAR,
++		.counter_select = 5,
++	},
++	/* This format has A36 and A37 interleaved with high bytes of some A
++	 * counters, so we will accumulate only subset of counters.
++	 */
++	[XE_OA_FORMAT_A24u40_A14u32_B8_C8] = {
++		"A24u40_A14u32_B8_C8", .size = 256,
++		/* u40: A4 - A23 */
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
++		/* u32: A0 - A3 */
++		.a_off = 16, .n_a = 4,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAG,
++		.counter_select = 5,
++	},
++	/* This format has 24 u64 counters ranging from A0 - A35. Until we come
++	 * up with a better mechanism to define missing counters, we will use a
++	 * subset of counters that are indexed by one-increments - A28 - A35.
++	 */
++	[XE_OAC_FORMAT_A24u64_B8_C8] = {
++		"OAC_A24u64_B8_C8", .size = 320,
++		.a64_off = 160, .n_a64 = 8,
++		.b_off = 224, .n_b = 8,
++		.c_off = 256, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAC,
++		.report_hdr_64bit = true,
++		.counter_select = 1, },
++};
++
++static struct oa_format mtl_oa_formats[XE_OA_FORMAT_MAX] = {
++	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8] = {
++		"A32u40_A4u32_B8_C8", .size = 256,
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 32,
++		.a_off = 144, .n_a = 4, .first_a = 32,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAR,
++		.counter_select = 5,
++	},
++	/* This format has A36 and A37 interleaved with high bytes of some A
++	 * counters, so we will accumulate only subset of counters.
++	 */
++	[XE_OA_FORMAT_A24u40_A14u32_B8_C8] = {
++		"A24u40_A14u32_B8_C8", .size = 256,
++		/* u40: A4 - A23 */
++		.a40_high_off = 160, .a40_low_off = 16, .n_a40 = 20, .first_a40 = 4,
++		/* u32: A0 - A3 */
++		.a_off = 16, .n_a = 4,
++		.b_off = 192, .n_b = 8,
++		.c_off = 224, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAG,
++		.counter_select = 5,
++	},
++
++	/* Treat MPEC countes as A counters for now */
++	[XE_OAM_FORMAT_MPEC8u64_B8_C8] = {
++		"MPEC8u64_B8_C8", .size = 192,
++		.a64_off = 32, .n_a64 = 8,
++		.b_off = 96, .n_b = 8,
++		.c_off = 128, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAM_MPEC,
++		.report_hdr_64bit = true,
++		.counter_select = 1,
++	},
++	[XE_OAM_FORMAT_MPEC8u32_B8_C8] = {
++		"MPEC8u32_B8_C8", .size = 128,
++		.a_off = 32, .n_a = 8,
++		.b_off = 64, .n_b = 8,
++		.c_off = 96, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAM_MPEC,
++		.report_hdr_64bit = true,
++		.counter_select = 2,
++	},
++	/* This format has 24 u64 counters ranging from A0 - A35. Until we come
++	 * up with a better mechanism to define missing counters, we will use a
++	 * subset of counters that are indexed by one-increments - A28 - A35.
++	 */
++	[XE_OAC_FORMAT_A24u64_B8_C8] = {
++		"OAC_A24u64_B8_C8", .size = 320,
++		.a64_off = 160, .n_a64 = 8,
++		.b_off = 224, .n_b = 8,
++		.c_off = 256, .n_c = 8, .oa_type = DRM_XE_OA_FMT_TYPE_OAC,
++		.report_hdr_64bit = true,
++		.counter_select = 1, },
++};
++
++static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
++	[XE_OA_FORMAT_PEC64u64] = {
++		"PEC64u64", .size = 576,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 1,
++		.counter_size = 1,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC64u64_B8_C8] = {
++		"PEC64u64_B8_C8", .size = 640,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 1,
++		.counter_size = 1,
++		.bc_report = 1 },
++	[XE_OA_FORMAT_PEC64u32] = {
++		"PEC64u32", .size = 320,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 1,
++		.counter_size = 0,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC32u64_G1] = {
++		"PEC32u64_G1", .size = 320,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 5,
++		.counter_size = 1,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC32u32_G1] = {
++		"PEC32u32_G1", .size = 192,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 5,
++		.counter_size = 0,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC32u64_G2] = {
++		"PEC32u64_G2", .size = 320,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 6,
++		.counter_size = 1,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC32u32_G2] = {
++		"PEC32u64_G2", .size = 192,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 6,
++		.counter_size = 0,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC36u64_G1_32_G2_4] = {
++		"PEC36u64_G1_32_G2_4", .size = 320,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 3,
++		.counter_size = 1,
++		.bc_report = 0 },
++	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32] = {
++		"PEC36u64_G1_4_G2_32_G2", .size = 320,
++		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
++		.report_hdr_64bit = true,
++		.counter_select = 4,
++		.counter_size = 1,
++		.bc_report = 0 },
++};
++
++static int drm_fd = -1;
++static int sysfs = -1;
++static int pm_fd = -1;
++static int stream_fd = -1;
++static uint32_t devid;
++
++struct drm_xe_engine_class_instance default_hwe;
++
++static struct intel_xe_perf *intel_xe_perf;
++static uint64_t oa_exp_1_millisec;
++struct intel_mmio_data mmio_data;
++
++static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
++{
++	const char *test_set_name = NULL;
++	struct intel_xe_perf_metric_set *metric_set_iter;
++	struct intel_xe_perf_metric_set *test_set = NULL;
++
++	if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
++	    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++		test_set_name = "TestOa";
++	else if ((hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_DECODE ||
++		  hwe->engine_class == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE) &&
++		 HAS_OAM(devid))
++		test_set_name = "MediaSet1";
++	else
++		igt_assert(!"reached");
++
++	igt_list_for_each_entry(metric_set_iter, &intel_xe_perf->metric_sets, link) {
++		if (strcmp(metric_set_iter->symbol_name, test_set_name) == 0) {
++			test_set = metric_set_iter;
++			break;
++		}
++	}
++
++	igt_assert(test_set);
++
++	/*
++	 * configuration was loaded in init_sys_info() ->
++	 * intel_xe_perf_load_perf_configs(), and test_set->perf_oa_metrics_set
++	 * should point to metric id returned by the config add ioctl. 0 is
++	 * invalid.
++	 */
++	igt_assert_neq_u64(test_set->perf_oa_metrics_set, 0);
++
++	igt_debug("engine %d:%d - %s metric set UUID = %s\n",
++		  hwe->engine_class,
++		  hwe->engine_instance,
++		  test_set->symbol_name,
++		  test_set->hw_config_guid);
++
++	return test_set;
++}
++#define default_test_set metric_set(&default_hwe)
++
++static void set_fd_flags(int fd, int flags)
++{
++	int old = fcntl(fd, F_GETFL, 0);
++
++	igt_assert_lte(0, old);
++	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
++}
++
++static u32 get_stream_status(int fd)
++{
++	struct drm_xe_oa_stream_status status;
++
++	do_ioctl(fd, DRM_XE_PERF_IOCTL_STATUS, &status);
++
++	return status.oa_status;
++}
++
++static void
++dump_report(const uint32_t *report, uint32_t size, const char *message) {
++	uint32_t i;
++	igt_debug("%s\n", message);
++	for (i = 0; i < size; i += 4) {
++		igt_debug("%08x %08x %08x %08x\n",
++				report[i],
++				report[i + 1],
++				report[i + 2],
++				report[i + 3]);
++	}
++}
++
++static struct oa_format
++get_oa_format(enum intel_xe_oa_format_name format)
++{
++	if (IS_DG2(devid))
++		return dg2_oa_formats[format];
++	else if (IS_METEORLAKE(devid))
++		return mtl_oa_formats[format];
++	else if (intel_graphics_ver(devid) >= IP_VER(20, 0))
++		return lnl_oa_formats[format];
++	else
++		return gen12_oa_formats[format];
++}
++
++static u64 oa_format_fields(u64 name)
++{
++#define FIELD_PREP_ULL(_mask, _val) \
++	(((_val) << (__builtin_ffsll(_mask) - 1)) & (_mask))
++
++	struct oa_format f = get_oa_format(name);
++
++	/* 0 format name is invalid */
++	if (!name)
++		memset(&f, 0xff, sizeof(f));
++
++	return FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_FMT_TYPE, (u64)f.oa_type) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SEL, (u64)f.counter_select) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE, (u64)f.counter_size) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_BC_REPORT, (u64)f.bc_report);
++}
++#define __ff oa_format_fields
++
++static void
++__perf_close(int fd)
++{
++	close(fd);
++	stream_fd = -1;
++
++	if (pm_fd >= 0) {
++		close(pm_fd);
++		pm_fd = -1;
++	}
++}
++
++static int
++__perf_open(int fd, struct intel_xe_oa_open_prop *param, bool prevent_pm)
++{
++	int ret;
++	int32_t pm_value = 0;
++
++	if (stream_fd >= 0)
++		__perf_close(stream_fd);
++	if (pm_fd >= 0) {
++		close(pm_fd);
++		pm_fd = -1;
++	}
++
++	ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_STREAM_OPEN, param);
++
++	igt_assert(ret >= 0);
++	errno = 0;
++
++	if (prevent_pm) {
++		pm_fd = open("/dev/cpu_dma_latency", O_RDWR);
++		igt_assert(pm_fd >= 0);
++
++		igt_assert_eq(write(pm_fd, &pm_value, sizeof(pm_value)), sizeof(pm_value));
++	}
++
++	return ret;
++}
++
++static uint64_t
++read_u64_file(const char *path)
++{
++	FILE *f;
++	uint64_t val;
++
++	f = fopen(path, "r");
++	igt_assert(f);
++
++	igt_assert_eq(fscanf(f, "%"PRIu64, &val), 1);
++
++	fclose(f);
++
++	return val;
++}
++
++static void
++write_u64_file(const char *path, uint64_t val)
++{
++	FILE *f;
++
++	f = fopen(path, "w");
++	igt_assert(f);
++
++	igt_assert(fprintf(f, "%"PRIu64, val) > 0);
++
++	fclose(f);
++}
++
++static uint32_t
++report_reason(const uint32_t *report)
++{
++	return ((report[0] >> OAREPORT_REASON_SHIFT) &
++		OAREPORT_REASON_MASK);
++}
++
++static uint64_t
++oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
++{
++	struct oa_format fmt = get_oa_format(format);
++
++	return fmt.report_hdr_64bit ? *(uint64_t *)&report[2] : report[1];
++}
++
++static uint64_t
++timebase_scale(uint64_t delta)
++{
++	return (delta * NSEC_PER_SEC) / intel_xe_perf->devinfo.timestamp_frequency;
++}
++
++/* Returns: the largest OA exponent that will still result in a sampling period
++ * less than or equal to the given @period.
++ */
++static int
++max_oa_exponent_for_period_lte(uint64_t period)
++{
++	/* NB: timebase_scale() takes a uint64_t and an exponent of 30
++	 * would already represent a period of ~3 minutes so there's
++	 * really no need to consider higher exponents.
++	 */
++	for (int i = 0; i < 30; i++) {
++		uint64_t oa_period = timebase_scale(2 << i);
++
++		if (oa_period > period)
++			return max(0, i - 1);
++	}
++
++	igt_assert(!"reached");
++	return -1;
++}
++
++static bool
++oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
++{
++	if (report_reason(report) & OAREPORT_REASON_TIMER)
++		return true;
++
++	return false;
++}
++
++static bool
++init_sys_info(void)
++{
++	igt_assert_neq(devid, 0);
++
++	intel_xe_perf = intel_xe_perf_for_fd(drm_fd, 0);
++	igt_require(intel_xe_perf);
++
++	igt_debug("n_eu_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_slices);
++	igt_debug("n_eu_sub_slices: %"PRIu64"\n", intel_xe_perf->devinfo.n_eu_sub_slices);
++	igt_debug("n_eus: %"PRIu64"\n", intel_xe_perf->devinfo.n_eus);
++	igt_debug("timestamp_frequency = %"PRIu64"\n",
++		  intel_xe_perf->devinfo.timestamp_frequency);
++	igt_assert_neq(intel_xe_perf->devinfo.timestamp_frequency, 0);
++
++	intel_xe_perf_load_perf_configs(intel_xe_perf, drm_fd);
++
++	oa_exp_1_millisec = max_oa_exponent_for_period_lte(1000000);
++
++	return true;
++}
++
++static void
++read_2_oa_reports(int format_id,
++		  int exponent,
++		  uint32_t *oa_report0,
++		  uint32_t *oa_report1,
++		  bool timer_only)
++{
++	size_t format_size = get_oa_format(format_id).size;
++	uint32_t exponent_mask = (1 << (exponent + 1)) - 1;
++
++	/* Note: we allocate a large buffer so that each read() iteration
++	 * should scrape *all* pending records.
++	 *
++	 * The largest buffer the OA unit supports is 16MB.
++	 *
++	 * Being sure we are fetching all buffered reports allows us to
++	 * potentially throw away / skip all reports whenever we see
++	 * a _REPORT_LOST notification as a way of being sure are
++	 * measurements aren't skewed by a lost report.
++	 *
++	 * Note: that is is useful for some tests but also not something
++	 * applications would be expected to resort to. Lost reports are
++	 * somewhat unpredictable but typically don't pose a problem - except
++	 * to indicate that the OA unit may be over taxed if lots of reports
++	 * are being lost.
++	 */
++	int max_reports = MAX_OA_BUF_SIZE / format_size;
++	int buf_size = format_size * max_reports * 1.5;
++	uint8_t *buf = malloc(buf_size);
++	int n = 0;
++
++	for (int i = 0; i < 1000; i++) {
++		u32 oa_status = 0;
++		ssize_t len;
++
++		while ((len = read(stream_fd, buf, buf_size)) < 0 && errno == EINTR)
++			;
++		if (errno == EIO) {
++			oa_status = get_stream_status(stream_fd);
++			igt_debug("oa_status %#x\n", oa_status);
++			continue;
++		}
++
++		igt_assert(len > 0);
++		igt_debug("read %d bytes\n", (int)len);
++
++		/* Need at least 2 reports */
++		if (len < 2 * format_size)
++			continue;
++
++		for (size_t offset = 0; offset < len; offset += format_size) {
++			const uint32_t *report = (void *)(buf + offset);
++
++			/* Currently the only test that should ever expect to
++			 * see a _BUFFER_LOST error is the buffer_fill test,
++			 * otherwise something bad has probably happened...
++			 */
++			igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
++
++			/* At high sampling frequencies the OA HW might not be
++			 * able to cope with all write requests and will notify
++			 * us that a report was lost. We restart our read of
++			 * two sequential reports due to the timeline blip this
++			 * implies
++			 */
++			if (oa_status & DRM_XE_OASTATUS_REPORT_LOST) {
++				igt_debug("read restart: OA trigger collision / report lost\n");
++				n = 0;
++
++				/* XXX: break, because we don't know where
++				 * within the series of already read reports
++				 * there could be a blip from the lost report.
++				 */
++				break;
++			}
++
++			dump_report(report, format_size / 4, "oa-formats");
++
++			igt_debug("read report: reason = %x, timestamp = %"PRIx64", exponent mask=%x\n",
++				  report[0], oa_timestamp(report, format_id), exponent_mask);
++
++			/* Don't expect zero for timestamps */
++			igt_assert_neq_u64(oa_timestamp(report, format_id), 0);
++
++			if (timer_only) {
++				if (!oa_report_is_periodic(exponent, report)) {
++					igt_debug("skipping non timer report\n");
++					continue;
++				}
++			}
++
++			if (n++ == 0)
++				memcpy(oa_report0, report, format_size);
++			else {
++				memcpy(oa_report1, report, format_size);
++				free(buf);
++				return;
++			}
++		}
++	}
++
++	free(buf);
++
++	igt_assert(!"reached");
++}
++
++static unsigned read_xe_module_ref(void)
++{
++	FILE *fp = fopen("/proc/modules", "r");
++	char *line = NULL;
++	size_t line_buf_size = 0;
++	int len = 0;
++	unsigned ref_count;
++	char mod[8];
++	int modn = 3;
++
++	igt_assert(fp);
++
++	strcpy(mod, "xe ");
++	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
++		if (strncmp(line, mod, modn) == 0) {
++			unsigned long mem;
++			int ret = sscanf(line + 5, "%lu %u", &mem, &ref_count);
++			igt_assert(ret == 2);
++			goto done;
++		}
++	}
++
++	igt_assert(!"reached");
++
++done:
++	free(line);
++	fclose(fp);
++	return ref_count;
++}
++
++/**
++ * SUBTEST: xe-ref-count
++ * Description: Check that an open oa stream holds a reference on the xe module
++ */
++static void
++test_xe_ref_count(void)
++{
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0 /* updated below */,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0), /* update below */
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, 0, /* update below */
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	unsigned baseline, ref_count0, ref_count1;
++	uint32_t oa_report0[64];
++	uint32_t oa_report1[64];
++
++	/* This should be the first test before the first fixture so no drm_fd
++	 * should have been opened so far...
++	 */
++	igt_assert_eq(drm_fd, -1);
++
++	baseline = read_xe_module_ref();
++	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
++
++	drm_fd = __drm_open_driver(DRIVER_XE);
++	if (is_xe_device(drm_fd))
++		xe_device_get(drm_fd);
++	devid = intel_get_drm_devid(drm_fd);
++	sysfs = igt_sysfs_open(drm_fd);
++
++	/* Note: these global variables are only initialized after calling
++	 * init_sys_info()...
++	 */
++	igt_require(init_sys_info());
++	properties[5] = default_test_set->perf_oa_metrics_set;
++	properties[7] = __ff(default_test_set->perf_oa_format);
++	properties[9] = oa_exp_1_millisec;
++
++	ref_count0 = read_xe_module_ref();
++	igt_debug("initial ref count with drm_fd open = %u\n", ref_count0);
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++        set_fd_flags(stream_fd, O_CLOEXEC);
++	ref_count1 = read_xe_module_ref();
++	igt_debug("ref count after opening oa stream = %u\n", ref_count1);
++
++	drm_close_driver(drm_fd);
++	close(sysfs);
++	drm_fd = -1;
++	sysfs = -1;
++	ref_count0 = read_xe_module_ref();
++	igt_debug("ref count after closing drm fd = %u\n", ref_count0);
++
++	read_2_oa_reports(default_test_set->perf_oa_format,
++			  oa_exp_1_millisec,
++			  oa_report0,
++			  oa_report1,
++			  false); /* not just timer reports */
++
++	__perf_close(stream_fd);
++	ref_count0 = read_xe_module_ref();
++	igt_debug("ref count after closing oa stream fd = %u\n", ref_count0);
++}
++
++/**
++ * SUBTEST: sysctl-defaults
++ * Description: Test that perf_stream_paranoid sysctl exists
++ */
++static void
++test_sysctl_defaults(void)
++{
++	int paranoid = read_u64_file("/proc/sys/dev/xe/perf_stream_paranoid");
++
++	igt_assert_eq(paranoid, 1);
++}
++
++igt_main
++{
++	igt_fixture {
++		struct stat sb;
++
++		/*
++		 * Prior tests may have unloaded the module or failed while
++		 * loading/unloading the module. Load xe here before we
++		 * stat the files.
++		 */
++		drm_load_module(DRIVER_XE);
++		srandom(time(NULL));
++		igt_require(!stat("/proc/sys/dev/xe/perf_stream_paranoid", &sb));
++	}
++
++	igt_subtest("xe-ref-count")
++		test_xe_ref_count();
++
++	igt_subtest("sysctl-defaults")
++		test_sysctl_defaults();
++
++	igt_fixture {
++		/* leave sysctl options in their default state... */
++		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++
++		if (intel_xe_perf)
++			intel_xe_perf_free(intel_xe_perf);
++
++		drm_close_driver(drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 758ae090c9..288bb7fe79 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -304,6 +304,7 @@ intel_xe_progs = [
+ 	'xe_mmap',
+ 	'xe_module_load',
+ 	'xe_noexec_ping_pong',
++	'xe_oa',
+ 	'xe_pat',
+ 	'xe_peer2peer',
+ 	'xe_pm',
+@@ -378,6 +379,7 @@ extra_dependencies = {
+ 	'perf': [ lib_igt_i915_perf ],
+ 	'perf_pmu':  [ lib_igt_perf ],
+ 	'sw_sync': [ libatomic ],
++	'xe_oa': [ lib_igt_xe_oa ],
+ }
  
-     def output_rpn_equation_code(self, set, counter, equation):
-diff --git a/lib/xe/oa-configs/oa-equations-codegen.py b/lib/xe/oa-configs/oa-equations-codegen.py
-index a4a00f46d9..de5a3337df 100644
---- a/lib/xe/oa-configs/oa-equations-codegen.py
-+++ b/lib/xe/oa-configs/oa-equations-codegen.py
-@@ -46,9 +46,9 @@ def output_counter_read(gen, set, counter):
-     read_eq = counter.get('equation')
- 
-     c(ret_ctype)
--    c(counter.read_sym + "(const struct intel_perf *perf,\n")
-+    c(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
-     c.indent(len(counter.read_sym) + 1)
--    c("const struct intel_perf_metric_set *metric_set,\n")
-+    c("const struct intel_xe_perf_metric_set *metric_set,\n")
-     c("uint64_t *accumulator)\n")
-     c.outdent(len(counter.read_sym) + 1)
- 
-@@ -75,9 +75,9 @@ def output_counter_read_definition(gen, set, counter):
-         read_eq = counter.get('equation')
- 
-         h(ret_ctype)
--        h(counter.read_sym + "(const struct intel_perf *perf,\n")
-+        h(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
-         h.indent(len(counter.read_sym) + 1)
--        h("const struct intel_perf_metric_set *metric_set,\n")
-+        h("const struct intel_xe_perf_metric_set *metric_set,\n")
-         h("uint64_t *accumulator);\n")
-         h.outdent(len(counter.read_sym) + 1)
- 
-@@ -100,9 +100,9 @@ def output_counter_max(gen, set, counter):
-     ret_ctype = data_type_to_ctype(ret_type)
- 
-     c(ret_ctype)
--    c(counter.max_sym + "(const struct intel_perf *perf,\n")
-+    c(counter.max_sym + "(const struct intel_xe_perf *perf,\n")
-     c.indent(len(counter.max_sym) + 1)
--    c("const struct intel_perf_metric_set *metric_set,\n")
-+    c("const struct intel_xe_perf_metric_set *metric_set,\n")
-     c("uint64_t *accumulator)\n")
-     c.outdent(len(counter.max_sym) + 1)
- 
-@@ -135,9 +135,9 @@ def output_counter_max_definition(gen, set, counter):
- 
-         h(ret_ctype)
- 
--        h(counter.max_sym + "(const struct intel_perf *perf,")
-+        h(counter.max_sym + "(const struct intel_xe_perf *perf,")
-         h.indent(len(counter.max_sym) + 1)
--        h("const struct intel_perf_metric_set *metric_set,")
-+        h("const struct intel_xe_perf_metric_set *metric_set,")
-         h("uint64_t *accumulator);")
-         h.outdent(len(counter.max_sym) + 1)
-         h("\n")
-@@ -163,16 +163,16 @@ def generate_equations(args, gens):
-         #define MAX(a, b) (((a) > (b)) ? (a) : (b))
- 
-         double
--        percentage_max_callback_float(const struct intel_perf *perf,
--                                      const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_float(const struct intel_xe_perf *perf,
-+                                      const struct intel_xe_perf_metric_set *metric_set,
-                                       uint64_t *accumulator)
-         {
-            return 100;
-         }
- 
-         uint64_t
--        percentage_max_callback_uint64(const struct intel_perf *perf,
--                                       const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
-+                                       const struct intel_xe_perf_metric_set *metric_set,
-                                        uint64_t *accumulator)
-         {
-            return 100;
-@@ -196,16 +196,16 @@ def generate_equations(args, gens):
-         #include <stdint.h>
-         #include <stdbool.h>
- 
--        struct intel_perf;
--        struct intel_perf_metric_set;
-+        struct intel_xe_perf;
-+        struct intel_xe_perf_metric_set;
- 
-         double
--        percentage_max_callback_float(const struct intel_perf *perf,
--                                      const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_float(const struct intel_xe_perf *perf,
-+                                      const struct intel_xe_perf_metric_set *metric_set,
-                                       uint64_t *accumulator);
-         uint64_t
--        percentage_max_callback_uint64(const struct intel_perf *perf,
--                                       const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
-+                                       const struct intel_xe_perf_metric_set *metric_set,
-                                        uint64_t *accumulator);
- 
-         """ % (header_define, header_define)))
-diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
-index ea0d13cc97..f4a008d690 100644
---- a/lib/xe/oa-configs/oa-metricset-codegen.py
-+++ b/lib/xe/oa-configs/oa-metricset-codegen.py
-@@ -28,7 +28,7 @@ def availability_func_name(set, counter):
- def output_availability_funcs(set, counter):
-     availability = counter.get('availability')
-     if availability:
--        c("static bool " + availability_func_name(set, counter) + "(const struct intel_perf *perf) {")
-+        c("static bool " + availability_func_name(set, counter) + "(const struct intel_xe_perf *perf) {")
-         c.indent(4)
-         set.gen.output_availability(set, availability, counter.get('name'))
-         c.indent(4)
-@@ -60,9 +60,9 @@ def output_counter_report(set, counter):
-     c(".name = \"{0}\",\n".format(counter.get('name')))
-     c(".symbol_name = \"{0}\",\n".format(counter.get('symbol_name')))
-     c(".desc = \"{0}\",\n".format(counter.get('description')))
--    c(".type = INTEL_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
--    c(".storage = INTEL_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
--    c(".unit = INTEL_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
-+    c(".type = INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
-+    c(".storage = INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
-+    c(".unit = INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
-     c(".read_{0} = {1},\n".format(data_type, set.read_funcs["$" + counter.get('symbol_name')]))
-     c(".max_{0} = {1},\n".format(data_type, set.max_funcs["$" + counter.get('symbol_name')]))
-     c(".group = \"{0}\",\n".format(counter.get('mdapi_group')))
-@@ -98,18 +98,18 @@ def generate_metric_sets(args, gen):
-           output_availability_funcs(set, counter)
- 
-         c("\nstatic void\n")
--        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_perf *perf)")
-+        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_xe_perf *perf)")
-         c("{\n")
-         c.indent(4)
- 
--        c("struct intel_perf_metric_set *metric_set;\n")
--        c("struct intel_perf_logical_counter *counter;\n\n")
-+        c("struct intel_xe_perf_metric_set *metric_set;\n")
-+        c("struct intel_xe_perf_logical_counter *counter;\n\n")
- 
-         c("metric_set = calloc(1, sizeof(*metric_set));\n")
-         c("metric_set->name = \"" + set.name + "\";\n")
-         c("metric_set->symbol_name = \"" + set.symbol_name + "\";\n")
-         c("metric_set->hw_config_guid = \"" + set.hw_config_guid + "\";\n")
--        c("metric_set->counters = calloc({0}, sizeof(struct intel_perf_logical_counter));\n".format(str(len(counters))))
-+        c("metric_set->counters = calloc({0}, sizeof(struct intel_xe_perf_logical_counter));\n".format(str(len(counters))))
-         c("metric_set->n_counters = 0;\n")
-         c("metric_set->perf_oa_metrics_set = 0; // determined at runtime\n")
- 
-@@ -167,12 +167,12 @@ def generate_metric_sets(args, gen):
- 
-         c("%s_%s_add_registers(perf, metric_set);" % (gen.chipset, set.underscore_name))
- 
--        c("intel_perf_add_metric_set(perf, metric_set);");
-+        c("intel_xe_perf_add_metric_set(perf, metric_set);");
-         c("\n")
- 
-         c("{")
-         c.indent(4)
--        c("static const struct intel_perf_logical_counter _counters[] = {")
-+        c("static const struct intel_xe_perf_logical_counter _counters[] = {")
-         c.indent(4)
- 
-         for counter in counters:
-@@ -190,7 +190,7 @@ def generate_metric_sets(args, gen):
-         c("counter = &metric_set->counters[metric_set->n_counters++];")
-         c("*counter = _counters[i];")
-         c("counter->metric_set = metric_set;")
--        c("intel_perf_add_logical_counter(perf, counter, counter->group);")
-+        c("intel_xe_perf_add_logical_counter(perf, counter, counter->group);")
-         c.outdent(4)
-         c("}")
-         c.outdent(4)
-@@ -201,7 +201,7 @@ def generate_metric_sets(args, gen):
-         c("}\n")
- 
-     c("\nvoid")
--    c("intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf)")
-+    c("intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf)")
-     c("{")
-     c.indent(4)
- 
-@@ -256,7 +256,7 @@ def main():
-         """ % (header_define, header_define)))
- 
-     # Print out all set registration functions for each generation.
--    h("void intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf);\n\n")
-+    h("void intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf);\n\n")
- 
-     h(textwrap.dedent("""\
-         #endif /* %s */
-diff --git a/lib/xe/oa-configs/oa-registers-codegen.py b/lib/xe/oa-configs/oa-registers-codegen.py
-index a4aa134097..08fc38a50e 100644
---- a/lib/xe/oa-configs/oa-registers-codegen.py
-+++ b/lib/xe/oa-configs/oa-registers-codegen.py
-@@ -22,7 +22,7 @@ def generate_register_configs(set):
-         'OA': 'b_counter_regs',
-     }
- 
--    c("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set)" %
-+    c("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set)" %
-       (set.gen.chipset, set.underscore_name))
-     c("{")
-     c.indent(4)
-@@ -39,7 +39,7 @@ def generate_register_configs(set):
- 
-         c("{")
-         c.indent(4)
--        c("static const struct intel_perf_register_prog _%s[] = {" % t)
-+        c("static const struct intel_xe_perf_register_prog _%s[] = {" % t)
-         c.indent(4)
-         for register in register_config.findall('register'):
-             c("{ .reg = %s, .val = %s }," %
-@@ -95,11 +95,11 @@ def main():
-     h("#ifndef %s" % header_define)
-     h("#define %s" % header_define)
-     h("\n")
--    h("struct intel_perf;")
--    h("struct intel_perf_metric_set;")
-+    h("struct intel_xe_perf;")
-+    h("struct intel_xe_perf_metric_set;")
-     h("\n")
-     for set in gen.sets:
--        h("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set);" %
-+        h("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set);" %
-           (gen.chipset, set.underscore_name))
-     h("\n")
-     h("#endif /* %s */" % header_define)
+ test_executables = []
 -- 
 2.41.0
 
