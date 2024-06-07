@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1664C27C53
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 19:06:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 526EAC27C53
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Jun 2024 19:06:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 73D5410ED0E;
-	Fri,  7 Jun 2024 19:06:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E750C10ED12;
+	Fri,  7 Jun 2024 19:06:58 +0000 (UTC)
 Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A205010ED0A;
- Fri,  7 Jun 2024 19:06:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D62410ED11;
+ Fri,  7 Jun 2024 19:06:57 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Support_for_RGB16161616?=
- =?utf-8?q?=5F64B_compressed_format?=
+ =?utf-8?q?=5F64B_compressed_format_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Melanie Lobo" <melanie.lobo@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 07 Jun 2024 19:06:43 -0000
-Message-ID: <171778720366.28075.2759935674788504784@a6498e030952>
+Date: Fri, 07 Jun 2024 19:06:57 -0000
+Message-ID: <171778721764.27586.8233075046859860056@a6498e030952>
 X-Patchwork-Hint: ignore
 References: <20240606121523.5347-1-melanie.lobo@intel.com>
 In-Reply-To: <20240606121523.5347-1-melanie.lobo@intel.com>
@@ -43,7 +43,7 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Support for RGB16161616_64B compressed format
+Series: Support for RGB16161616_64B compressed format (rev2)
 URL   : https://patchwork.freedesktop.org/series/134558/
 State : warning
 
@@ -51,9 +51,9 @@ State : warning
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1194995 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1195621 for the overview.
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569782):
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601545):
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
    #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -68,14 +68,14 @@ build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-c
       entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680512:step_script
-  section_start:1717680512:cleanup_file_variables
+  section_end:1717740589:step_script
+  section_start:1717740589:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680513:cleanup_file_variables
+  section_end:1717740590:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569785):
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601548):
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
    #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -90,14 +90,14 @@ build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci
       entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680541:step_script
-  section_start:1717680541:cleanup_file_variables
+  section_end:1717740590:step_script
+  section_start:1717740590:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680542:cleanup_file_variables
+  section_end:1717740591:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569784):
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601547):
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
    #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -112,14 +112,14 @@ build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci
       entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680527:step_script
-  section_start:1717680527:cleanup_file_variables
+  section_end:1717740590:step_script
+  section_start:1717740590:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680528:cleanup_file_variables
+  section_end:1717740591:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569786):
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601549):
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
    #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -134,14 +134,14 @@ build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/
       entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680535:step_script
-  section_start:1717680535:cleanup_file_variables
+  section_end:1717740581:step_script
+  section_start:1717740581:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680536:cleanup_file_variables
+  section_end:1717740582:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569783):
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601546):
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
    #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -156,14 +156,14 @@ build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt
       entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
                        ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680526:step_script
-  section_start:1717680526:cleanup_file_variables
+  section_end:1717740561:step_script
+  section_start:1717740561:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680527:cleanup_file_variables
+  section_end:1717740562:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569777):
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601540):
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
      25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -178,14 +178,14 @@ build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags
     311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680530:step_script
-  section_start:1717680530:cleanup_file_variables
+  section_end:1717740602:step_script
+  section_start:1717740602:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680532:cleanup_file_variables
+  section_end:1717740604:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569780):
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601543):
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
      25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -200,14 +200,14 @@ build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/
     311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680468:step_script
-  section_start:1717680468:cleanup_file_variables
+  section_end:1717740589:step_script
+  section_start:1717740589:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680469:cleanup_file_variables
+  section_end:1717740591:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569778):
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601541):
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
      25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -222,14 +222,14 @@ build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-c
     311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680474:step_script
-  section_start:1717680474:cleanup_file_variables
+  section_end:1717740570:step_script
+  section_start:1717740570:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680476:cleanup_file_variables
+  section_end:1717740571:cleanup_file_variables
   ERROR: Job failed: exit code 1
   
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59569779):
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59601542):
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
      25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
@@ -244,12 +244,12 @@ build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-c
     311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
         |                     ^~~~~~~~~~~~~~~~~~~~~~~
   ninja: build stopped: subcommand failed.
-  section_end:1717680526:step_script
-  section_start:1717680526:cleanup_file_variables
+  section_end:1717740569:step_script
+  section_start:1717740569:cleanup_file_variables
   Cleaning up project directory and file based variables
-  section_end:1717680528:cleanup_file_variables
+  section_end:1717740570:cleanup_file_variables
   ERROR: Job failed: exit code 1
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1194995
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1195621
