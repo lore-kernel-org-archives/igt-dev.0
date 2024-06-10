@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0619C27C55
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:42:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0D40C27C5F
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:42:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 78F6510E486;
-	Mon, 10 Jun 2024 16:42:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5EB5210E4C1;
+	Mon, 10 Jun 2024 16:42:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hb/HCx59";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B9/Q/XUK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7E2010E486
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4447810E417
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718037771; x=1749573771;
+ t=1718037773; x=1749573773;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rnOYPNWts/D/lnkKdH8WlWU5LH0a/ndPma/YwUeDTpA=;
- b=Hb/HCx594HeWe/0UEtMRJBx0qh6HnVA8lH2g5wBlqD8ubBjqkiXkED+L
- EAk3A7PF+KNX23FWoRgLvU/el8mGHmFItBCm7ATA9bsEYyAV10dBTICh0
- m0IxEJ+ie6cgjKB5wPSYPk0neiAxKDZ0+ocg4Ou7K8qKNuky7f6WAP+qg
- rvbAVbj8ghvQuhvkMP+5VApBdQ7DOdq3VwFN4ZmffRwc1LDHHwg07bGzw
- a9UBXNL/wk3N+Txgvcj4SJ8yxCpHT4ln48/k2HCmQzvRVAJzgzl8Dv2Om
- astMNtI1Pg6fdLQz+demjMpgthItdIeAHBm5oZ0FgQ32zQw+4pWLtt+72 Q==;
-X-CSE-ConnectionGUID: NxjLLbZ7TjqBcgPTBdiNYg==
-X-CSE-MsgGUID: sTInx1K8SD2NlM6Nh0i5UA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819697"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819697"
+ bh=Q0sL+AQrWg2u4WzNHdIXVP+rGrDpA/BAj8xL+RToG6o=;
+ b=B9/Q/XUKHNvdB4dbHjr1t1C7t6iOi9iI6KML3gIUKnpUBwfyiLBqzYuj
+ vJLv8yF2tchr4S1i9dSK4xkLwFpeAw7IfKFdtUbgL2jr5VDyHIM9phqO6
+ 5pY0rfAkN+I/+RqEEK5OffyuL2nywQl7pMwRW7bezb1OGr7Zc5x2Jdo6b
+ y/V/A7spvZ0lWK3DS3eAnHt1Q7BIfha1pIlEj6LBfTmea6V2l+UFBV3j0
+ DuSMHc2GDk8wHJdYDVoaAwX/cWsF6PJWvcptcOIDLsGPurI68MTHn4azt
+ mXt1FjnzWyVPjn6jIREqB75YhTLExuTEwEa0mCD4SVT2XPP6N9Xq8uK8b Q==;
+X-CSE-ConnectionGUID: 1YUXM6ZVTKq58+JbGIJTZg==
+X-CSE-MsgGUID: ZW2UlyKfRbKOX9XBNQ00xQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819701"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819701"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:51 -0700
-X-CSE-ConnectionGUID: EySI4nBiQgSzdhQgyDm9bw==
-X-CSE-MsgGUID: K6MoRYtsSeaSvJ4bN6MFZg==
+ 10 Jun 2024 09:42:53 -0700
+X-CSE-ConnectionGUID: 8P09D6jSTrudBh8w2OOpqg==
+X-CSE-MsgGUID: S0Sz0vhHTdiG+VE1x1ZvcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681334"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681338"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:50 -0700
+ 10 Jun 2024 09:42:51 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 3/9] tests/intel/kms_pwrite_crc: Test cleanup
-Date: Mon, 10 Jun 2024 22:04:51 +0530
-Message-ID: <20240610163457.3711476-4-bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 4/9] tests/kms_dp_aux_dev: Test cleanup
+Date: Mon, 10 Jun 2024 22:04:52 +0530
+Message-ID: <20240610163457.3711476-5-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
 References: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
@@ -76,60 +76,36 @@ Make sure the below points in IGT cleanup:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/kms_pwrite_crc.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ tests/kms_dp_aux_dev.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
-index 12add5da6..c6e4a29fa 100644
---- a/tests/intel/kms_pwrite_crc.c
-+++ b/tests/intel/kms_pwrite_crc.c
-@@ -125,7 +125,6 @@ static void prepare_crtc(data_t *data)
- 	igt_output_t *output = data->output;
- 	drmModeModeInfo *mode;
+diff --git a/tests/kms_dp_aux_dev.c b/tests/kms_dp_aux_dev.c
+index 3e1d8be3a..7e1d52254 100644
+--- a/tests/kms_dp_aux_dev.c
++++ b/tests/kms_dp_aux_dev.c
+@@ -152,15 +152,19 @@ igt_simple_main
+ 	drmModeRes *res;
+ 	int drm_fd;
  
--	igt_display_reset(display);
- 	/* select the pipe we want to use */
- 	igt_output_set_pipe(output, data->pipe);
- 
-@@ -161,7 +160,7 @@ static void cleanup_crtc(data_t *data)
- 
- 	igt_plane_set_fb(data->primary, NULL);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit(display);
- 
- 	igt_remove_fb(data->drm_fd, &data->fb[0]);
-@@ -195,18 +194,22 @@ static data_t data;
- 
- igt_simple_main
- {
--	data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
+-	drm_fd = drm_open_driver_master(DRIVER_ANY);
 +	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-+		kmstest_set_vt_graphics_mode();
++		drm_fd = drm_open_driver_master(DRIVER_ANY);
  
--	data.devid = intel_get_drm_devid(data.drm_fd);
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+		igt_require_pipe_crc(data.drm_fd);
- 
--	kmstest_set_vt_graphics_mode();
--
--	igt_require_pipe_crc(data.drm_fd);
--
--	igt_display_require(&data.display, data.drm_fd);
-+		data.devid = intel_get_drm_devid(data.drm_fd);
-+		data.pipe_crc = NULL;
+-	res = drmModeGetResources(drm_fd);
+-	igt_require(res);
++		res = drmModeGetResources(drm_fd);
++		igt_require(res);
 +	}
  
- 	run_test(&data);
+ 	for (int i = 0; i < res->count_connectors; i++)
+ 		valid_connectors += test(drm_fd, res->connectors[i]);
+ 	igt_require(valid_connectors);
  
--	igt_display_fini(&data.display);
--	drm_close_driver(data.drm_fd);
+-	drmModeFreeResources(res);
+-	drm_close_driver(drm_fd);
 +	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
++		drmModeFreeResources(res);
++		drm_close_driver(drm_fd);
 +	}
  }
 -- 
