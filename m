@@ -4,51 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD98C27C5E
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:42:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0619C27C55
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:42:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 13A8210E417;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 78F6510E486;
 	Mon, 10 Jun 2024 16:42:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M7v6ZkBv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Hb/HCx59";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1DD510E417
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7E2010E486
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718037770; x=1749573770;
+ t=1718037771; x=1749573771;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=7nbu411YHTBR87K7q2G1eivTYepQZYvlXpr2+LtanXM=;
- b=M7v6ZkBvdNfzyz70Dpl0pnkUzNa97bz2Tu2uqSOPylp8zL5jLSoJ9oXy
- IamkpCPKCVmmj7CRog3o04++WtimxvMeGPa5kCGJRfVUgTwsH6ZK40dw1
- safACVHRbDJj8Cd2i4j1yBZsnhQ94A16szXAzYJt3sgdQ9b8VCYVQZvhR
- w89iCrzpai2HZ3Wb7o1JkVvxUhaE/4C6/DfNssvQm/IVapJtDzNgoX9x5
- +23w2389Tm4pT+F+vitacpytalm55sXucfOlAwNd2aIehjxMSVkDuN7Ep
- 8uQ1/tbGgEZ52bL/jbHCODZbb4QNp9EVUMkc9UxTI+bFec4vXCLATlMxJ g==;
-X-CSE-ConnectionGUID: SWit9gORQgGGvBoiXtrrlQ==
-X-CSE-MsgGUID: CiiX54R8Txy0tj96U5KtDA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819693"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819693"
+ bh=rnOYPNWts/D/lnkKdH8WlWU5LH0a/ndPma/YwUeDTpA=;
+ b=Hb/HCx594HeWe/0UEtMRJBx0qh6HnVA8lH2g5wBlqD8ubBjqkiXkED+L
+ EAk3A7PF+KNX23FWoRgLvU/el8mGHmFItBCm7ATA9bsEYyAV10dBTICh0
+ m0IxEJ+ie6cgjKB5wPSYPk0neiAxKDZ0+ocg4Ou7K8qKNuky7f6WAP+qg
+ rvbAVbj8ghvQuhvkMP+5VApBdQ7DOdq3VwFN4ZmffRwc1LDHHwg07bGzw
+ a9UBXNL/wk3N+Txgvcj4SJ8yxCpHT4ln48/k2HCmQzvRVAJzgzl8Dv2Om
+ astMNtI1Pg6fdLQz+demjMpgthItdIeAHBm5oZ0FgQ32zQw+4pWLtt+72 Q==;
+X-CSE-ConnectionGUID: NxjLLbZ7TjqBcgPTBdiNYg==
+X-CSE-MsgGUID: sTInx1K8SD2NlM6Nh0i5UA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819697"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819697"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:50 -0700
-X-CSE-ConnectionGUID: f+hw/KxJS/WmqTHemh/kUA==
-X-CSE-MsgGUID: GmI2oLx8T2KqyFRvTCiK8Q==
+ 10 Jun 2024 09:42:51 -0700
+X-CSE-ConnectionGUID: EySI4nBiQgSzdhQgyDm9bw==
+X-CSE-MsgGUID: K6MoRYtsSeaSvJ4bN6MFZg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681329"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681334"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:47 -0700
+ 10 Jun 2024 09:42:50 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kunal Joshi <kunal1.joshi@intel.com>, Jeevan B <jeevan.b@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 2/9] tests/intel/kms_pipe_b_c_ivb: Test cleanup
-Date: Mon, 10 Jun 2024 22:04:50 +0530
-Message-ID: <20240610163457.3711476-3-bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 3/9] tests/intel/kms_pwrite_crc: Test cleanup
+Date: Mon, 10 Jun 2024 22:04:51 +0530
+Message-ID: <20240610163457.3711476-4-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
 References: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
@@ -69,8 +67,6 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Kunal Joshi <kunal1.joshi@intel.com>
-
 Make sure the below points in IGT cleanup:
 
  - Sanitize the state before starting the subtest.
@@ -78,84 +74,64 @@ Make sure the below points in IGT cleanup:
  - Update existing libdrm APIs with IGT kms APIs.
  - Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
 
-v2:
-- Corrected commit subject. (Swati)
-- Removed comments (Swati)
-
-v3: (Bhanu)
-- Rebase
-
-CC: Jeevan B <jeevan.b@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/intel/kms_pipe_b_c_ivb.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tests/intel/kms_pwrite_crc.c | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/kms_pipe_b_c_ivb.c b/tests/intel/kms_pipe_b_c_ivb.c
-index 71699e792..73083408a 100644
---- a/tests/intel/kms_pipe_b_c_ivb.c
-+++ b/tests/intel/kms_pipe_b_c_ivb.c
-@@ -164,7 +164,7 @@ find_outputs(data_t *data, igt_output_t **output1, igt_output_t **output2)
- 		if (pipe == PIPE_C && output != *output1 && !*output2)
- 			*output2 = output;
+diff --git a/tests/intel/kms_pwrite_crc.c b/tests/intel/kms_pwrite_crc.c
+index 12add5da6..c6e4a29fa 100644
+--- a/tests/intel/kms_pwrite_crc.c
++++ b/tests/intel/kms_pwrite_crc.c
+@@ -125,7 +125,6 @@ static void prepare_crtc(data_t *data)
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode;
  
--		igt_output_set_pipe(output, PIPE_ANY);
-+		igt_output_set_pipe(output, PIPE_NONE);
- 	}
+-	igt_display_reset(display);
+ 	/* select the pipe we want to use */
+ 	igt_output_set_pipe(output, data->pipe);
  
- 	igt_skip_on_f(!*output1 || !*output2, "Not enough connected outputs\n");
-@@ -176,6 +176,7 @@ test_dpms(data_t *data)
- 	igt_output_t *output1, *output2;
- 	int ret;
+@@ -161,7 +160,7 @@ static void cleanup_crtc(data_t *data)
  
-+	igt_display_reset(&data->display);
- 	find_outputs(data, &output1, &output2);
+ 	igt_plane_set_fb(data->primary, NULL);
  
- 	igt_info("Pipe %s will use connector %s\n",
-@@ -198,6 +199,8 @@ test_lane_reduction(data_t *data)
- 	igt_output_t *output1, *output2;
- 	int ret;
+-	igt_output_set_pipe(output, PIPE_ANY);
++	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_display_commit(display);
  
-+	igt_display_reset(&data->display);
-+
- 	find_outputs(data, &output1, &output2);
+ 	igt_remove_fb(data->drm_fd, &data->fb[0]);
+@@ -195,18 +194,22 @@ static data_t data;
  
- 	igt_info("Pipe %s will use connector %s\n",
-@@ -221,6 +224,7 @@ test_disable_pipe_B(data_t *data)
- 	igt_output_t *output1, *output2;
- 	int ret;
+ igt_simple_main
+ {
+-	data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
++		kmstest_set_vt_graphics_mode();
  
-+	igt_display_reset(&data->display);
- 	find_outputs(data, &output1, &output2);
- 
- 	igt_info("Pipe %s will use connector %s\n",
-@@ -247,6 +251,7 @@ test_from_C_to_B_with_3_lanes(data_t *data)
- 	igt_output_t *output1, *output2;
- 	int ret;
- 
-+	igt_display_reset(&data->display);
- 	find_outputs(data, &output1, &output2);
- 
- 	igt_info("Pipe %s will use connector %s\n",
-@@ -270,6 +275,7 @@ test_fail_enable_pipe_C_while_B_has_3_lanes(data_t *data)
- 	igt_output_t *output1, *output2;
- 	int ret;
- 
-+	igt_display_reset(&data->display);
- 	find_outputs(data, &output1, &output2);
- 
- 	igt_info("Pipe %s will use connector %s\n",
-@@ -296,6 +302,7 @@ igt_main
- 
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
+-	data.devid = intel_get_drm_devid(data.drm_fd);
++		igt_display_require(&data.display, data.drm_fd);
 +		igt_display_require_output(&data.display);
- 	}
++		igt_require_pipe_crc(data.drm_fd);
  
- 	igt_describe("Tests pipe-B and pipe-C interactions in IVB by enabling pipe-B with mode "
+-	kmstest_set_vt_graphics_mode();
+-
+-	igt_require_pipe_crc(data.drm_fd);
+-
+-	igt_display_require(&data.display, data.drm_fd);
++		data.devid = intel_get_drm_devid(data.drm_fd);
++		data.pipe_crc = NULL;
++	}
+ 
+ 	run_test(&data);
+ 
+-	igt_display_fini(&data.display);
+-	drm_close_driver(data.drm_fd);
++	igt_fixture {
++		igt_display_fini(&data.display);
++		drm_close_driver(data.drm_fd);
++	}
+ }
 -- 
 2.43.2
 
