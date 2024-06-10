@@ -4,60 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03716C27C55
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:40:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97995C27C55
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:42:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 36EAD10E4C1;
-	Mon, 10 Jun 2024 16:40:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0537F10E18B;
+	Mon, 10 Jun 2024 16:42:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O8LOTieM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cY2RAGQp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6393310E4C1
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:40:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1ABE10E18B
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718037609; x=1749573609;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Nl1AZeqaJ3wurEZ7ZR6+MsvmaaPG1Ljx0ZPCCxUhVbM=;
- b=O8LOTieMBj9Oh1Re6E+e28UHsTjdafvyYpjJkzMuOB/h3UDRxQPvL0EY
- FRS0cKeun/MyI/3uk08R7DnTTEzSlrxF0z1Xi+jx1xesXq++DguIT5sd1
- cEatLn3D6sEdAvx5BiBcE0sBggmXxrmj2yjMDjrKrzGRgIvhfzWypfZGn
- G5ruLeoedXRQdx41PcUfsa+pCt+GmIyJlwcNU/3Ip8sNQu1D8ErQznyoY
- Y5sK1n1EUt47J7kpqOMdqSm9aBh2/unvDEWwWgxUoP6sVWkxNd/xaSGiw
- 3BHMgf+B50uf05jqbdccGzd4LaWf9lyop2hfCWvKtuKNS8P7mFifyAnYW w==;
-X-CSE-ConnectionGUID: l11SVZtAR16H4bMw7QOVmw==
-X-CSE-MsgGUID: ShQgziSsQNOhFfVdITFpcA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819331"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819331"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ t=1718037766; x=1749573766;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=CJArEnYomi9bWubQoea6DD+1mD62bG0M2t37R/YJgQA=;
+ b=cY2RAGQpJPH6SgoIYrQjtnXz2bclFT9lN6Dnu8DGJsTo1Eg1dxmZPgXh
+ 2fRtJXdVFm6FLWUOvfHXmVm0YTi1EruNzo/Ek605AGYEVAMKbtOOiFjsa
+ eeGJ0L6nBkwi2OIiMqPdvKBwL+BtXB2kvPhP8BU7n55J+3TOB+h0eLsev
+ OVfsAbqQGR3fuiuc81OxlA0Wbo11xRcKtzduO6+LyxH7azNe/Mn6lZeWu
+ AGcBK1vpHDojuaAFtLXIIiAf7y/av+PaHe8p+FMPB+QU5eS9hzX2dnywX
+ m/F+0C8MVsAmOPWdQOW6K4bGv3XBJ9Sm0ex9EEBpzqV6ODmB9m87lniCs w==;
+X-CSE-ConnectionGUID: 0jU5VVNlSGmKQvYzNSvO8Q==
+X-CSE-MsgGUID: rjb8FaZfQ6CUx8tqs/x2tg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819682"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819682"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:40:08 -0700
-X-CSE-ConnectionGUID: NqFq28o/Q+iuH0oB7UDLXA==
-X-CSE-MsgGUID: bQxhCEa6TgWkq1ctZSK6OA==
+ 10 Jun 2024 09:42:46 -0700
+X-CSE-ConnectionGUID: W3S8UgPpRWqguaHlajPwUw==
+X-CSE-MsgGUID: RJ23IWULT9mH1hYW2gGagQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="43546168"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2024 09:40:07 -0700
-Date: Mon, 10 Jun 2024 18:39:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681315"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jun 2024 09:42:44 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
-Subject: Re: [PATCH v2 i-g-t] tests/intel/xe_create: Don't assert on presi
- execution
-Message-ID: <20240610163951.7j4c52qowi5p5dos@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- Venkata Ramana Nayana <venkata.ramana.nayana@intel.com>
-References: <20240610071320.1752770-1-balasubramani.vivekanandan@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 0/9] IGT KMS Test cleanup
+Date: Mon, 10 Jun 2024 22:04:48 +0530
+Message-ID: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240610071320.1752770-1-balasubramani.vivekanandan@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,46 +65,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Balasubramani,
-On 2024-06-10 at 12:43:20 +0530, Balasubramani Vivekanandan wrote:
-> create_execqueues subtest is testing the time required for creating
-> execqueues along with testing the functionality.
-> Presi environments are not for testing performance. We can't use the
-> same time limit set for silicon on presi environments as presi would be
-> slow.
-> Therefore the time limit check is skipped while executing on simulation.
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+Make sure the below points in IGT cleanup:
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ - Sanitize the state before starting the subtest.
+ - Clear the states before exiting the subtest.
+ - Update existing libdrm APIs with IGT kms APIs.
+ - Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
 
-> ---
->  tests/intel/xe_create.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index d41557c85..76ffdcef2 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -238,9 +238,14 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed,
->  	}
->  
->  	seconds = igt_seconds_elapsed(&tv);
-> -	igt_assert_f(seconds < real_timeout,
-> -		     "Creating %d exec_queues tooks too long: %d [limit: %d]\n",
-> -		     MAXEXECQUEUES, seconds, real_timeout);
-> +	if (seconds > real_timeout) {
-> +		if (igt_run_in_simulation())
-> +			igt_info("Creating %d exec_queues took too long: %d [limit: %d] seconds\n",
-> +				 MAXEXECQUEUES, seconds, real_timeout);
-> +		else
-> +			igt_assert_f(false, "Creating %d exec_queues took too long: %d [limit: %d] seconds\n",
-> +				     MAXEXECQUEUES, seconds, real_timeout);
-> +	}
->  }
->  
->  /**
-> -- 
-> 2.25.1
-> 
+Bhanuprakash Modem (6):
+  tests/intel/kms_fence_pin_leak: Test cleanup
+  tests/intel/kms_pwrite_crc: Test cleanup
+  tests/kms_dp_aux_dev: Test cleanup
+  tests/kms_tiled_display: Test cleanup
+  tests/kms_tv_load_detect: Test cleanup
+  tests/kms_universal_plane: Test cleanup
+
+Kunal Joshi (2):
+  tests/intel/kms_pipe_b_c_ivb: Test cleanup
+  tests/kms_hdmi_inject: Test cleanup
+
+Mohammed Thasleem (1):
+  tests/kms_properties: Create dynamic subtests
+
+ tests/intel/kms_fence_pin_leak.c |  11 +-
+ tests/intel/kms_pipe_b_c_ivb.c   |   9 +-
+ tests/intel/kms_pwrite_crc.c     |  25 ++--
+ tests/kms_dp_aux_dev.c           |  14 ++-
+ tests/kms_hdmi_inject.c          |   6 +-
+ tests/kms_properties.c           | 188 +++++++++++++++----------------
+ tests/kms_tiled_display.c        | 129 ++++++++-------------
+ tests/kms_tv_load_detect.c       |   1 +
+ tests/kms_universal_plane.c      |  10 +-
+ 9 files changed, 182 insertions(+), 211 deletions(-)
+
+-- 
+2.43.2
+
