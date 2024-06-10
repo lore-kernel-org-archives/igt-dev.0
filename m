@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A40C27C5E
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:43:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BA51C27C55
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:43:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 790F910E4D3;
-	Mon, 10 Jun 2024 16:43:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D557710E4D5;
+	Mon, 10 Jun 2024 16:43:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JM9LQgfU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="glkJ8mi2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA40F10E4C5
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCA4210E4C5
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718037779; x=1749573779;
+ t=1718037776; x=1749573776;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KVDA//xIcPQ9/ZM/bh2UYjDdwtTHPB4wCEuGFW/e2cc=;
- b=JM9LQgfUtfz6rtlu43UkXQhh4GPW9SVCzds8MRjaM495f1pXNa2Kyoox
- 9keLR/E4kGRitaXuUR04lla6iXtycI9BbkHJk882LeOzrdTcAyJ8v6mhp
- 6QscAssDpOZGnAcdym6uQIcI7x8V38VEK9FhvRiIvuM2tgNI6UfQXIpfS
- E7WX4jLZGUPOQzhbwtpfPhhLxDBye6yzYfEccHhOtyVMwH2NbZ7ordFHJ
- 4kCSTrVliEOgehiE/kXR6ByFV9qavhPh3/IrATOBRHsoQZVO7e+nT/spl
- TfH1ya2anlr980JwaugNU4wFJXDwKBO2r4r8eDAtzvhAF2G5fz6Pi7HRw w==;
-X-CSE-ConnectionGUID: Q2Ds70ZfQBqb1DUDQmPLgA==
-X-CSE-MsgGUID: +gmfH6PgQYWgN484zBwBAg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819739"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819739"
+ bh=CMI6kSewRkUEAOWSMOQXXu5iJT1fRyFsgnWbVij9u88=;
+ b=glkJ8mi2ghNRbgQnQrN/ErnyJ5KMqFFWuLiiRw88NxKCibDG4I4C5ENQ
+ QCxE+LV7zaoE1u9QbF7STEEp8M6WG6NlZszJRrMZYdlgvKB4dcE6jeBK0
+ Dv0xDVfpPibkkGncA/Yk8vC42xIDFfNn4s5Gd1vASvZtGY2NxKqLPUQsN
+ id/OyL8g/2ELWGn9ExkeRzbc+98dpd39Frivzut/oTUF9PFsDMc0k+m4f
+ 1ZoWVbo3STPgANyOvlKpGA7i7o3EZAp5pOIIbmGbgghT03406yddcnfeS
+ PwzMQl7O/aRHbJ9yxbQt12p+/Hy0r4Vc0vjT3RIAUAqMKTYqj0XKi7TnD Q==;
+X-CSE-ConnectionGUID: Zg309MNtQi6epc0PxJxD6g==
+X-CSE-MsgGUID: rpzi065jQtaZeOaRDbQaFg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819718"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819718"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:59 -0700
-X-CSE-ConnectionGUID: p96z40ArQ66pcJd/c/SBxA==
-X-CSE-MsgGUID: I0fEV9WsQMKbtL2XKxSDaQ==
+ 10 Jun 2024 09:42:56 -0700
+X-CSE-ConnectionGUID: EH6//pgIQKC8LZcvUBsjTQ==
+X-CSE-MsgGUID: Zzk4bbNvS2O8bWFl8WoSSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681363"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681352"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:57 -0700
+ 10 Jun 2024 09:42:55 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 8/9] tests/kms_universal_plane: Test cleanup
-Date: Mon, 10 Jun 2024 22:04:56 +0530
-Message-ID: <20240610163457.3711476-9-bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 6/9] tests/kms_tiled_display: Test cleanup
+Date: Mon, 10 Jun 2024 22:04:54 +0530
+Message-ID: <20240610163457.3711476-7-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
 References: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
@@ -69,65 +69,238 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Make sure the below points in IGT cleanup:
 
- - Sanitize the state before starting the subtest.
- - Clear the states before exiting the subtest.
- - Update existing libdrm APIs with IGT kms APIs.
- - Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
+- Sanitize the state before starting the subtest.
+- Clear the states before exiting the subtest.
+- Update existing libdrm APIs with IGT kms APIs.
+- Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_universal_plane.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/kms_tiled_display.c | 129 ++++++++++++++------------------------
+ 1 file changed, 48 insertions(+), 81 deletions(-)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index a6e11777d..8c1ce8143 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -139,7 +139,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
+index 3ffd6a9a4..2096a63e1 100644
+--- a/tests/kms_tiled_display.c
++++ b/tests/kms_tiled_display.c
+@@ -79,7 +79,6 @@ typedef struct {
+ 	igt_fb_t fb_test_pattern;
+ 	igt_display_t display;
+ 	data_connector_t *conns;
+-	enum igt_commit_style commit;
+ 	struct timeval first_ts;
+ 	int linetime_us;
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+@@ -188,25 +187,6 @@ reset_plane(igt_output_t *output)
+ 	igt_plane_set_fb(primary, NULL);
  }
  
-@@ -386,7 +386,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+-static void reset_output(igt_output_t *output)
+-{
+-	igt_output_set_pipe(output, PIPE_NONE);
+-}
+-
+-static void reset_mode(data_t *data)
+-{
+-	int count;
+-	igt_output_t *output;
+-	data_connector_t *conns = data->conns;
+-
+-	for (count = 0; count < data->num_h_tiles; count++) {
+-		output = igt_output_from_connector(&data->display,
+-						   conns[count].connector);
+-		igt_output_set_pipe(output, PIPE_NONE);
+-	}
+-	igt_display_commit2(&data->display, data->commit);
+-}
+-
+ static void test_cleanup(data_t *data)
+ {
+ 	int count;
+@@ -215,11 +195,11 @@ static void test_cleanup(data_t *data)
+ 	for (count = 0; count < data->num_h_tiles; count++) {
+ 		if (conns[count].output) {
+ 			reset_plane(conns[count].output);
+-			reset_output(conns[count].output);
++			igt_output_set_pipe(conns[count].output, PIPE_NONE);
+ 		}
+ 	}
+ 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
+-	igt_display_commit2(&data->display, data->commit);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
  }
  
-@@ -516,7 +516,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
+@@ -230,8 +210,8 @@ static int mode_linetime_us(const drmModeModeInfo *mode)
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+ static void setup_mode(data_t *data)
+ {
+-	int count = 0, prev = 0, i = 0;
+-	bool pipe_in_use = false, found = false;
++	int count = 0, i = 0;
++	bool found = false;
+ 	enum pipe pipe;
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+@@ -242,51 +222,45 @@ static void setup_mode(data_t *data)
+ 	 * This is done to ensure a complete modeset occures every
+ 	 * time the test is run.
+ 	 */
+-	reset_mode(data);
++	igt_display_reset(&data->display);
+ 
+ 	for (count = 0; count < data->num_h_tiles; count++) {
++		conns[count].pipe = PIPE_NONE;
+ 		output = igt_output_from_connector(&data->display,
+ 						   conns[count].connector);
+ 
+ 		for_each_pipe(&data->display, pipe) {
+-			pipe_in_use = false;
+-			found = false;
+-
+-			if (count > 0) {
+-				for (prev = count - 1; prev >= 0; prev--) {
+-					if (pipe == conns[prev].pipe) {
+-						pipe_in_use = true;
+-						break;
+-					}
++			if (output->pending_pipe == pipe)
++				continue;
++
++			igt_output_set_pipe(output, pipe);
++			for (i = 0; i < conns[count].connector->count_modes; i++) {
++				mode = &conns[count].connector->modes[i];
++				if (mode->vdisplay == conns[count].tile.tile_v_size &&
++				    mode->hdisplay == conns[count].tile.tile_h_size) {
++					found = true;
++					break;
+ 				}
+-				if (pipe_in_use)
+-					continue;
+ 			}
+ 
+-			if (igt_pipe_connector_valid(pipe, output)) {
+-				conns[count].pipe = pipe;
+-				conns[count].output = output;
+-
+-				igt_output_set_pipe(conns[count].output,
+-						    conns[count].pipe);
+-				break;
++			if (!found) {
++				igt_output_set_pipe(output, PIPE_NONE);
++				continue;
+ 			}
+-		}
+-		igt_require(conns[count].pipe != PIPE_NONE);
+ 
+-		for (i = 0; i < conns[count].connector->count_modes; i++) {
+-			mode = &conns[count].connector->modes[i];
+-			if (mode->vdisplay == conns[count].tile.tile_v_size &&
+-			    mode->hdisplay == conns[count].tile.tile_h_size) {
+-				found = true;
+-				break;
++			igt_output_override_mode(output, mode);
++			if (!intel_pipe_output_combo_valid(&data->display)) {
++				igt_output_set_pipe(output, PIPE_NONE);
++				continue;
+ 			}
++
++			conns[count].pipe = pipe;
++			conns[count].output = output;
++			break;
+ 		}
+-		igt_require(found);
+-		igt_output_override_mode(output, mode);
++		igt_require(conns[count].pipe != PIPE_NONE);
+ 		data->linetime_us = mode_linetime_us(mode);
+ 	}
+-	igt_require(intel_pipe_output_combo_valid(&data->display));
+ 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
  }
  
-@@ -603,7 +603,7 @@ cursor_leak_test_fini(data_t *data,
- 	for (i = 0; i < 10; i++)
- 		igt_remove_fb(data->drm_fd, &curs[i]);
+@@ -529,7 +503,6 @@ static void override_edid(data_t *data)
+ 	igt_output_t *output;
+ 	int num_outputs = 0;
+ 	int num_tiles = 0;
+-	drmModeResPtr res;
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
+ 	igt_require(data->display.n_pipes >= 2);
+ 
+@@ -551,10 +524,7 @@ static void override_edid(data_t *data)
+ 	num_tiles = min(num_outputs, data->display.n_pipes);
+ 
+ 	/* disable everything so that we are sure to get a full modeset */
+-	res = drmModeGetResources(data->drm_fd);
+-	igt_require(res);
+-	kmstest_unset_all_crtcs(data->drm_fd, res);
+-	drmModeFreeResources(res);
++	igt_display_reset(&data->display);
+ 
+ 	for (int i = 0; i < num_tiles; i++)
+ 		force_edid_with_tile(data, outputs[i],
+@@ -563,28 +533,24 @@ static void override_edid(data_t *data)
+ 
+ static void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
+ {
+-		int ret;
+-
+-		get_number_of_h_tiles(data);
+-		igt_debug("Number of Horizontal Tiles: %d\n",
+-			  data->num_h_tiles);
+-		igt_require(data->num_h_tiles > 0);
+-		data->conns = calloc(data->num_h_tiles,
+-				     sizeof(data_connector_t));
+-		igt_assert(data->conns);
+-
+-		get_connectors(data);
+-		setup_mode(data);
+-		setup_framebuffer(data);
+-		timerclear(&data->first_ts);
+-		igt_display_commit_atomic(&data->display,
++	int ret;
++
++	data->conns = calloc(data->num_h_tiles,
++			     sizeof(data_connector_t));
++	igt_assert(data->conns);
++
++	get_connectors(data);
++	setup_mode(data);
++	setup_framebuffer(data);
++	timerclear(&data->first_ts);
++	igt_display_commit_atomic(&data->display,
+ 			DRM_MODE_ATOMIC_NONBLOCK |
+ 			DRM_MODE_PAGE_FLIP_EVENT, data);
+-		while (!got_all_page_flips(data)) {
+-			ret = poll(pfd, 1, 1000);
+-			igt_assert(ret == 1);
+-			drmHandleEvent(data->drm_fd, drm_event);
+-		}
++	while (!got_all_page_flips(data)) {
++		ret = poll(pfd, 1, 1000);
++		igt_assert(ret == 1);
++		drmHandleEvent(data->drm_fd, drm_event);
++	}
  }
  
- static int
-@@ -752,7 +752,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
+ igt_main
+@@ -596,14 +562,15 @@ igt_main
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
++		igt_require(data.display.is_atomic);
++		igt_display_require_output(&data.display);
++
+ 		igt_display_reset(&data.display);
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
+ 		pfd.fd = data.drm_fd;
+ 		pfd.events = POLLIN;
+ 		drm_event.version = 3;
+ 		drm_event.page_flip_handler2 = page_flip_handler;
+-		data.commit = data.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
+-		igt_require(data.commit == COMMIT_ATOMIC);
  
+ 		get_number_of_h_tiles(&data);
+ 		igt_debug("Number of real horizontal tiles: %d\n", data.num_h_tiles);
 -- 
 2.43.2
 
