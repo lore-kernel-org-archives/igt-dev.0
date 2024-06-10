@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BA51C27C55
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A487DC27C65
 	for <igt-dev@archiver.kernel.org>; Mon, 10 Jun 2024 16:43:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D557710E4D5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E75A910E4D6;
 	Mon, 10 Jun 2024 16:43:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="glkJ8mi2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BvtznPYV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BCA4210E4C5
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:42:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CCCAF10E4D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Jun 2024 16:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718037776; x=1749573776;
+ t=1718037781; x=1749573781;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=CMI6kSewRkUEAOWSMOQXXu5iJT1fRyFsgnWbVij9u88=;
- b=glkJ8mi2ghNRbgQnQrN/ErnyJ5KMqFFWuLiiRw88NxKCibDG4I4C5ENQ
- QCxE+LV7zaoE1u9QbF7STEEp8M6WG6NlZszJRrMZYdlgvKB4dcE6jeBK0
- Dv0xDVfpPibkkGncA/Yk8vC42xIDFfNn4s5Gd1vASvZtGY2NxKqLPUQsN
- id/OyL8g/2ELWGn9ExkeRzbc+98dpd39Frivzut/oTUF9PFsDMc0k+m4f
- 1ZoWVbo3STPgANyOvlKpGA7i7o3EZAp5pOIIbmGbgghT03406yddcnfeS
- PwzMQl7O/aRHbJ9yxbQt12p+/Hy0r4Vc0vjT3RIAUAqMKTYqj0XKi7TnD Q==;
-X-CSE-ConnectionGUID: Zg309MNtQi6epc0PxJxD6g==
-X-CSE-MsgGUID: rpzi065jQtaZeOaRDbQaFg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819718"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819718"
+ bh=r7dRrWi/KczIW5ME01A5LmXPfD+F6TqxHXwNV0g6ZBg=;
+ b=BvtznPYV1bpJ+Pb1+5p9n7hLn8FKqf2nPP9oHgZhJNqqmpfKlJ0JE4t+
+ s7sHZtcV3ZXeoxHe8Dnhq56xw8lW4AmJNMvjbCeg5zii/6sJa+iErmEaq
+ fUxGseidsJZH8f0L26ESnPC5RHveBwOTfDPFwy4YFGVU7xu8V65JVwC4N
+ Aij64k85ZDwNLEG/1RTNJ1wp9AZDiS+EleVKFjVeuwluLqFQ3AckRSb42
+ cgXnNPQ6UeyJaMmWvYl2ZYPGGeI5jzb2ishFBNfvkl/LHeyvicFHOhfCF
+ m6w7uE04YKLj6/xhoQGfr6WmAjbXWf8IuyguG0B7eb9lSrkHFTCNCmXps A==;
+X-CSE-ConnectionGUID: qT6dxf6aSfWiQSFmCBKPZA==
+X-CSE-MsgGUID: d755/iFPTtKBoLd1lcxE6g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25819752"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="25819752"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:56 -0700
-X-CSE-ConnectionGUID: EH6//pgIQKC8LZcvUBsjTQ==
-X-CSE-MsgGUID: Zzk4bbNvS2O8bWFl8WoSSQ==
+ 10 Jun 2024 09:43:01 -0700
+X-CSE-ConnectionGUID: jQsJnLk/RJO3rzm1ipHLGA==
+X-CSE-MsgGUID: WMjlEIX+S5ea6T3mEy5ksw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681352"
+X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; d="scan'208";a="39681375"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 09:42:55 -0700
+ 10 Jun 2024 09:42:59 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 6/9] tests/kms_tiled_display: Test cleanup
-Date: Mon, 10 Jun 2024 22:04:54 +0530
-Message-ID: <20240610163457.3711476-7-bhanuprakash.modem@intel.com>
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 9/9] tests/kms_properties: Create dynamic subtests
+Date: Mon, 10 Jun 2024 22:04:57 +0530
+Message-ID: <20240610163457.3711476-10-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
 References: <20240610163457.3711476-1-bhanuprakash.modem@intel.com>
@@ -67,240 +68,311 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make sure the below points in IGT cleanup:
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 
-- Sanitize the state before starting the subtest.
-- Clear the states before exiting the subtest.
-- Update existing libdrm APIs with IGT kms APIs.
-- Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
+Modified kms_properties to include dynamic test cases.
 
+v2: Fixed compilation issue.
+v3: Removed redundant code.
+v4: Moved get_prop_sanity calls to igt_subtest_group.
+v5: Replace for loop with for_each_disconnected_output.
+v6: Moved cleanup part to igt cleanup patch.
+v7: (Bhanu)
+ - Rebase
+ - Handle disconnected outputs
+
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_tiled_display.c | 129 ++++++++++++++------------------------
- 1 file changed, 48 insertions(+), 81 deletions(-)
+ tests/kms_properties.c | 188 +++++++++++++++++++----------------------
+ 1 file changed, 88 insertions(+), 100 deletions(-)
 
-diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-index 3ffd6a9a4..2096a63e1 100644
---- a/tests/kms_tiled_display.c
-+++ b/tests/kms_tiled_display.c
-@@ -79,7 +79,6 @@ typedef struct {
- 	igt_fb_t fb_test_pattern;
- 	igt_display_t display;
- 	data_connector_t *conns;
--	enum igt_commit_style commit;
- 	struct timeval first_ts;
- 	int linetime_us;
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index bd414f534..17e6c0471 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -268,95 +268,76 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
  
-@@ -188,25 +187,6 @@ reset_plane(igt_output_t *output)
- 	igt_plane_set_fb(primary, NULL);
- }
- 
--static void reset_output(igt_output_t *output)
--{
--	igt_output_set_pipe(output, PIPE_NONE);
--}
--
--static void reset_mode(data_t *data)
--{
--	int count;
--	igt_output_t *output;
--	data_connector_t *conns = data->conns;
--
--	for (count = 0; count < data->num_h_tiles; count++) {
--		output = igt_output_from_connector(&data->display,
--						   conns[count].connector);
--		igt_output_set_pipe(output, PIPE_NONE);
--	}
--	igt_display_commit2(&data->display, data->commit);
--}
--
- static void test_cleanup(data_t *data)
+ static void plane_properties(igt_display_t *display, bool atomic)
  {
- 	int count;
-@@ -215,11 +195,11 @@ static void test_cleanup(data_t *data)
- 	for (count = 0; count < data->num_h_tiles; count++) {
- 		if (conns[count].output) {
- 			reset_plane(conns[count].output);
--			reset_output(conns[count].output);
-+			igt_output_set_pipe(conns[count].output, PIPE_NONE);
- 		}
- 	}
- 	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
--	igt_display_commit2(&data->display, data->commit);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
- }
- 
-@@ -230,8 +210,8 @@ static int mode_linetime_us(const drmModeModeInfo *mode)
- 
- static void setup_mode(data_t *data)
- {
--	int count = 0, prev = 0, i = 0;
--	bool pipe_in_use = false, found = false;
-+	int count = 0, i = 0;
-+	bool found = false;
+-	bool found_any = false, found;
+ 	igt_output_t *output;
  	enum pipe pipe;
- 	drmModeModeInfo *mode;
- 	igt_output_t *output;
-@@ -242,51 +222,45 @@ static void setup_mode(data_t *data)
- 	 * This is done to ensure a complete modeset occures every
- 	 * time the test is run.
- 	 */
--	reset_mode(data);
-+	igt_display_reset(&data->display);
  
- 	for (count = 0; count < data->num_h_tiles; count++) {
-+		conns[count].pipe = PIPE_NONE;
- 		output = igt_output_from_connector(&data->display,
- 						   conns[count].connector);
- 
- 		for_each_pipe(&data->display, pipe) {
--			pipe_in_use = false;
--			found = false;
+-	if (atomic)
+-		igt_skip_on(!display->is_atomic);
 -
--			if (count > 0) {
--				for (prev = count - 1; prev >= 0; prev--) {
--					if (pipe == conns[prev].pipe) {
--						pipe_in_use = true;
--						break;
--					}
-+			if (output->pending_pipe == pipe)
-+				continue;
-+
-+			igt_output_set_pipe(output, pipe);
-+			for (i = 0; i < conns[count].connector->count_modes; i++) {
-+				mode = &conns[count].connector->modes[i];
-+				if (mode->vdisplay == conns[count].tile.tile_v_size &&
-+				    mode->hdisplay == conns[count].tile.tile_h_size) {
-+					found = true;
-+					break;
- 				}
--				if (pipe_in_use)
--					continue;
- 			}
- 
--			if (igt_pipe_connector_valid(pipe, output)) {
--				conns[count].pipe = pipe;
--				conns[count].output = output;
+-	for_each_pipe(display, pipe) {
+-		found = false;
 -
--				igt_output_set_pipe(conns[count].output,
--						    conns[count].pipe);
--				break;
-+			if (!found) {
-+				igt_output_set_pipe(output, PIPE_NONE);
-+				continue;
- 			}
--		}
--		igt_require(conns[count].pipe != PIPE_NONE);
+-		for_each_valid_output_on_pipe(display, pipe, output) {
+-			igt_display_reset(display);
+-
+-			igt_output_set_pipe(output, pipe);
+-			if (!intel_pipe_output_combo_valid(display))
+-				continue;
++	for_each_pipe_with_single_output(display, pipe, output) {
++		igt_display_reset(display);
  
--		for (i = 0; i < conns[count].connector->count_modes; i++) {
--			mode = &conns[count].connector->modes[i];
--			if (mode->vdisplay == conns[count].tile.tile_v_size &&
--			    mode->hdisplay == conns[count].tile.tile_h_size) {
--				found = true;
--				break;
-+			igt_output_override_mode(output, mode);
-+			if (!intel_pipe_output_combo_valid(&data->display)) {
-+				igt_output_set_pipe(output, PIPE_NONE);
-+				continue;
- 			}
-+
-+			conns[count].pipe = pipe;
-+			conns[count].output = output;
-+			break;
+-			found_any = found = true;
++		igt_output_set_pipe(output, pipe);
++		if (!intel_pipe_output_combo_valid(display))
++			continue;
+ 
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++			      igt_output_name(output)) {
+ 			run_plane_property_tests(display, pipe, output, atomic);
+-			break;
  		}
--		igt_require(found);
--		igt_output_override_mode(output, mode);
-+		igt_require(conns[count].pipe != PIPE_NONE);
- 		data->linetime_us = mode_linetime_us(mode);
  	}
--	igt_require(intel_pipe_output_combo_valid(&data->display));
- 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-
+-	igt_skip_on(!found_any);
  }
  
-@@ -529,7 +503,6 @@ static void override_edid(data_t *data)
- 	igt_output_t *output;
- 	int num_outputs = 0;
- 	int num_tiles = 0;
--	drmModeResPtr res;
- 
- 	igt_require(data->display.n_pipes >= 2);
- 
-@@ -551,10 +524,7 @@ static void override_edid(data_t *data)
- 	num_tiles = min(num_outputs, data->display.n_pipes);
- 
- 	/* disable everything so that we are sure to get a full modeset */
--	res = drmModeGetResources(data->drm_fd);
--	igt_require(res);
--	kmstest_unset_all_crtcs(data->drm_fd, res);
--	drmModeFreeResources(res);
-+	igt_display_reset(&data->display);
- 
- 	for (int i = 0; i < num_tiles; i++)
- 		force_edid_with_tile(data, outputs[i],
-@@ -563,28 +533,24 @@ static void override_edid(data_t *data)
- 
- static void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
+ static void crtc_properties(igt_display_t *display, bool atomic)
  {
--		int ret;
+-	bool found_any_valid_pipe = false, found;
+ 	enum pipe pipe;
+ 	igt_output_t *output;
+ 
+-	if (atomic)
+-		igt_skip_on(!display->is_atomic);
 -
--		get_number_of_h_tiles(data);
--		igt_debug("Number of Horizontal Tiles: %d\n",
--			  data->num_h_tiles);
--		igt_require(data->num_h_tiles > 0);
--		data->conns = calloc(data->num_h_tiles,
--				     sizeof(data_connector_t));
--		igt_assert(data->conns);
+-	for_each_pipe(display, pipe) {
+-		found = false;
++	for_each_pipe_with_single_output(display, pipe, output) {
++		igt_display_reset(display);
+ 
+-		for_each_valid_output_on_pipe(display, pipe, output) {
+-			igt_display_reset(display);
 -
--		get_connectors(data);
--		setup_mode(data);
--		setup_framebuffer(data);
--		timerclear(&data->first_ts);
--		igt_display_commit_atomic(&data->display,
-+	int ret;
+-			igt_output_set_pipe(output, pipe);
+-			if (!intel_pipe_output_combo_valid(display))
+-				continue;
+-
+-			found_any_valid_pipe = found = true;
++		igt_output_set_pipe(output, pipe);
++		if (!intel_pipe_output_combo_valid(display))
++			continue;
+ 
++		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++			      igt_output_name(output)) {
+ 			run_crtc_property_tests(display, pipe, output, atomic);
+-			break;
+ 		}
+ 	}
+-
+-	igt_skip_on(!found_any_valid_pipe);
+ }
+ 
+ static void connector_properties(igt_display_t *display, bool atomic)
+ {
+-	int i;
+ 	enum pipe pipe;
+ 	igt_output_t *output;
+ 
+-	if (atomic)
+-		igt_skip_on(!display->is_atomic);
+-
+ 	for_each_connected_output(display, output) {
+-		bool found = false;
++		igt_display_reset(display);
+ 
+ 		for_each_pipe(display, pipe) {
+ 			if (!igt_pipe_connector_valid(pipe, output))
+ 				continue;
+ 
+-			igt_display_reset(display);
+-
+ 			igt_output_set_pipe(output, pipe);
+-			if (!intel_pipe_output_combo_valid(display))
++			if (!intel_pipe_output_combo_valid(display)) {
++				igt_output_set_pipe(output, PIPE_NONE);
+ 				continue;
++			}
 +
-+	data->conns = calloc(data->num_h_tiles,
-+			     sizeof(data_connector_t));
-+	igt_assert(data->conns);
++			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
++				      igt_output_name(output)) {
++				run_connector_property_tests(display, pipe, output, atomic);
++			}
+ 
+-			found = true;
+-			run_connector_property_tests(display, pipe, output, atomic);
+ 			break;
+ 		}
+-
+-		igt_assert_f(found, "Connected output should have at least 1 valid crtc\n");
+ 	}
+ 
+-	for (i = 0; i < display->n_outputs; i++)
+-		if (!igt_output_is_connected(&display->outputs[i]))
+-			run_connector_property_tests(display, PIPE_NONE, &display->outputs[i], atomic);
++	for_each_disconnected_output(display, output) {
++		igt_display_reset(display);
 +
-+	get_connectors(data);
-+	setup_mode(data);
-+	setup_framebuffer(data);
-+	timerclear(&data->first_ts);
-+	igt_display_commit_atomic(&data->display,
- 			DRM_MODE_ATOMIC_NONBLOCK |
- 			DRM_MODE_PAGE_FLIP_EVENT, data);
--		while (!got_all_page_flips(data)) {
--			ret = poll(pfd, 1, 1000);
--			igt_assert(ret == 1);
--			drmHandleEvent(data->drm_fd, drm_event);
--		}
-+	while (!got_all_page_flips(data)) {
-+		ret = poll(pfd, 1, 1000);
-+		igt_assert(ret == 1);
-+		drmHandleEvent(data->drm_fd, drm_event);
++		igt_dynamic_f("pipe-None-%s", igt_output_name(output))
++			run_connector_property_tests(display, PIPE_NONE, output, atomic);
++
 +	}
  }
  
+ static void test_invalid_properties(int fd,
+@@ -424,7 +405,6 @@ static void test_object_invalid_properties(igt_display_t *display,
+ 	igt_output_t *output;
+ 	igt_plane_t *plane;
+ 	enum pipe pipe;
+-	int i;
+ 
+ 	for_each_pipe(display, pipe)
+ 		test_invalid_properties(display->drm_fd, id, type, display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic);
+@@ -433,7 +413,7 @@ static void test_object_invalid_properties(igt_display_t *display,
+ 		for_each_plane_on_pipe(display, pipe, plane)
+ 			test_invalid_properties(display->drm_fd, id, type, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+ 
+-	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
++	for_each_output(display, output)
+ 		test_invalid_properties(display->drm_fd, id, type, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
+ }
+ 
+@@ -763,7 +743,6 @@ static void invalid_properties(igt_display_t *display, bool atomic)
+ 	igt_output_t *output;
+ 	igt_plane_t *plane;
+ 	enum pipe pipe;
+-	int i;
+ 
+ 	if (atomic)
+ 		igt_skip_on(!display->is_atomic);
+@@ -775,13 +754,33 @@ static void invalid_properties(igt_display_t *display, bool atomic)
+ 		for_each_plane_on_pipe(display, pipe, plane)
+ 			test_object_invalid_properties(display, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+ 
+-	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
++	for_each_output(display, output)
+ 		test_object_invalid_properties(display, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
+ }
+ 
  igt_main
-@@ -596,14 +562,15 @@ igt_main
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
- 		igt_display_require(&data.display, data.drm_fd);
-+		igt_require(data.display.is_atomic);
-+		igt_display_require_output(&data.display);
+ {
+ 	igt_display_t display;
++	int i;
++	static const struct {
++		const char *name;
++		void (*func)(igt_display_t *, bool);
++		const bool atomic;
++		const char *desc;
++	} tests[] = {
++		{ "plane-properties-legacy", plane_properties, false,
++		  "Tests plane properties with legacy commit" },
++		{ "plane-properties-atomic", plane_properties, true,
++		  "Tests plane properties with atomic commit" },
++		{ "crtc-properties-legacy", crtc_properties, false,
++		  "Tests crtc properties with legacy commit" },
++		{ "crtc-properties-atomic", crtc_properties, true,
++		  "Tests crtc properties with atomic commit" },
++		{ "connector-properties-legacy", connector_properties, false,
++		  "Tests connector properties with legacy commit" },
++		{ "connector-properties-atomic", connector_properties, true,
++		  "Tests connector properties with atomic commit" },
++	};
+ 
+ 	igt_fixture {
+ 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+@@ -791,59 +790,48 @@ igt_main
+ 		igt_display_require(&display, display.drm_fd);
+ 	}
+ 
+-	igt_describe("Tests plane properties with legacy commit");
+-	igt_subtest("plane-properties-legacy")
+-		plane_properties(&display, false);
+-
+-	igt_describe("Tests plane properties with atomic commit");
+-	igt_subtest("plane-properties-atomic")
+-		plane_properties(&display, true);
+-
+-	igt_describe("Tests crtc properties with legacy commit");
+-	igt_subtest("crtc-properties-legacy")
+-		crtc_properties(&display, false);
+-
+-	igt_describe("Tests crtc properties with atomic commit");
+-	igt_subtest("crtc-properties-atomic")
+-		crtc_properties(&display, true);
+-
+-	igt_describe("Tests connector properties with legacy commit");
+-	igt_subtest("connector-properties-legacy")
+-		connector_properties(&display, false);
+-
+-	igt_describe("Tests connector properties with atomic commit");
+-	igt_subtest("connector-properties-atomic")
+-		connector_properties(&display, true);
+-
+-	igt_describe("Checks each property of any type with combination of mode object with legacy "
+-		     "commit and make sure only valid properties are set to mode object else "
+-		     "return with relevant error");
+-
+-	igt_subtest("invalid-properties-legacy")
+-		invalid_properties(&display, false);
+-
+-	igt_describe("Checks each property of any type with combination of mode object with atomic "
+-		     "commit and make sure only valid properties are set to mode object else "
+-		     "return with relevant error");
++	for (i = 0; i < ARRAY_SIZE(tests); i++) {
++		igt_describe_f("%s\n", tests[i].desc);
++		igt_subtest_with_dynamic_f("%s", tests[i].name) {
++			if (tests->atomic && !display.is_atomic)
++				continue;
+ 
+-	igt_subtest("invalid-properties-atomic")
+-		invalid_properties(&display, true);
++			tests[i].func(&display, tests->atomic);
++		}
++	}
+ 
+-	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
+-	igt_subtest("get_properties-sanity-atomic") {
+-		igt_skip_on(!display.is_atomic);
+-		get_prop_sanity(&display, true);
++	igt_subtest_group {
++		igt_describe("Checks each property of any type with combination of mode object "
++			     "with legacy commit and make sure only valid properties are set to "
++			     "mode object else return with relevant error");
++		igt_subtest("invalid-properties-legacy")
++			invalid_properties(&display, false);
 +
- 		igt_display_reset(&data.display);
++		igt_describe("Checks each property of any type with combination of mode object "
++			     "with atomic commit and make sure only valid properties are set to "
++			     "mode object else return with relevant error");
++		igt_subtest("invalid-properties-atomic")
++			invalid_properties(&display, true);
+ 	}
  
- 		pfd.fd = data.drm_fd;
- 		pfd.events = POLLIN;
- 		drm_event.version = 3;
- 		drm_event.page_flip_handler2 = page_flip_handler;
--		data.commit = data.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
--		igt_require(data.commit == COMMIT_ATOMIC);
+-	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
+-	igt_subtest("get_properties-sanity-non-atomic") {
+-		if (display.is_atomic)
+-			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
++	igt_subtest_group {
++		igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
++		igt_subtest("get_properties-sanity-non-atomic") {
++			if (display.is_atomic)
++				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
++			get_prop_sanity(&display, false);
++			if (display.is_atomic)
++				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
++		}
++	}
  
- 		get_number_of_h_tiles(&data);
- 		igt_debug("Number of real horizontal tiles: %d\n", data.num_h_tiles);
+-		get_prop_sanity(&display, false);
++	igt_subtest_group {
++		igt_fixture
++			igt_require(display.is_atomic);
+ 
+-		if (display.is_atomic)
+-			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
++		igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
++		igt_subtest("get_properties-sanity-atomic")
++			get_prop_sanity(&display, true);
+ 	}
+ 
+ 	igt_fixture {
 -- 
 2.43.2
 
