@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79A4DC27C75
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 10:41:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CA4FC27C5E
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 10:41:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0010310E59F;
-	Tue, 11 Jun 2024 10:41:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C59910E5A4;
+	Tue, 11 Jun 2024 10:41:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Brm4v/az";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K+JHW5xV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0FBD10E59B
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 10:41:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A20E10E598
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 10:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718102469; x=1749638469;
+ t=1718102466; x=1749638466;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=AIJomWTUGwFXAw4IA9bOE77H/XSqZN9E+G6fWSPoFRM=;
- b=Brm4v/aza3SZ2dp8qw2QoMnedEH0phPXmWs0gzKu41S/YQBehXOJNqEz
- RBV3QsQfOHh4T5/ebG1WuANwwnVoKOVetP6uK3WcJspq8p8B/hnR1XhPa
- Zo7BHwdy4rQ4wfy1vXTFyn6Vn4of7Dh9M2YSx/LgdSyEg4hk5PcJPlo8E
- jNFif3NRRHEG32XnjN1APEwHDIIGccykqh/weySVJb8/o0cMbDO33Ndds
- WlklVdmIx+bjS9L5dhq/H0Exlel80mc9uLRQQpWawR8HkJ0hoIIXVWOiZ
- T+BobwDMMC3AdjlIgyIkAaIQ4LicjIC+/QRWhnR5+oVeNOZ5Nn+0NFnXV Q==;
-X-CSE-ConnectionGUID: YAA6p2SqQFqTQcx+bnlA/Q==
-X-CSE-MsgGUID: CbTZj22GTPOTbY1HtiW0dQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="26217724"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="26217724"
+ bh=3PMxZM4GJhxvymjVxEpBt9z/cieNjbdvNhaUn659004=;
+ b=K+JHW5xV+dl1f85ONs8HFh1/vBvKpMVB6cOtPTkeVXQPRaMs3QkpZ4WZ
+ Ajy6hALuf0RULXXgK5elXFbddpY7wpH0StR8ySWThLu7x7Zo/fblLPZzT
+ yiI+OM2AcyzEwDqzKf9oRRI6dVbtz+SEE/O6RNBcAr0Rz9eE7g8MyOj4N
+ jUFGX7wuhrBHARQJcig93T8hFj4PhUoNJR5uGxNOfly1r+EKk1DReDSqO
+ pXWetySGDY/1HKiSpvY36sSn5U6oXvoWMi/upCOsipM5uCnUbEOR+FSkt
+ OqZt5hmOCX9ewgPPi530IBle/VW1qJ1dy34VJgda//jv4+za6nwSs81uN g==;
+X-CSE-ConnectionGUID: vm4Ap7IKRje/7OsguMAM2g==
+X-CSE-MsgGUID: twj5shLqSfyljwCyYeDDYQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="26217715"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="26217715"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 03:41:09 -0700
-X-CSE-ConnectionGUID: U7LnxYRATnCh49+NH39JIQ==
-X-CSE-MsgGUID: t8rh1KuxSVyu1NopznRnqA==
+ 11 Jun 2024 03:41:05 -0700
+X-CSE-ConnectionGUID: 93ViTViOSBGBNdwN89RKeg==
+X-CSE-MsgGUID: 1g+DBWveRLCPumeFZK9CQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="62563598"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="62563543"
 Received: from lab-ah.igk.intel.com ([10.102.138.202])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 03:41:07 -0700
+ 11 Jun 2024 03:41:02 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Tue, 11 Jun 2024 12:40:53 +0200
-Subject: [PATCH v6 4/5] lib/igt_sysfs: add helpers to access engine sysfs
- directory
+Date: Tue, 11 Jun 2024 12:40:50 +0200
+Subject: [PATCH v6 1/5] lib/gpu_cmds: add Xe_LP version of emit_vfe_state
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240611-iga64_inline_ups-v6-4-b634ec43a610@intel.com>
+Message-Id: <20240611-iga64_inline_ups-v6-1-b634ec43a610@intel.com>
 References: <20240611-iga64_inline_ups-v6-0-b634ec43a610@intel.com>
 In-Reply-To: <20240611-iga64_inline_ups-v6-0-b634ec43a610@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -59,18 +58,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3077;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3716;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=AIJomWTUGwFXAw4IA9bOE77H/XSqZN9E+G6fWSPoFRM=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmaCm6BeRBYSInXME1/k3skXz7ytbbkeM1HQZZIWxS
- 1v2cEmqJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZmgpugAKCRAjYrKT3hD9179eDA
- CQsDw0KUgeEmF5pXUhwvyQ9DfjNPobZon3Jw32yMlxMtnOirfdeZ066CWAAt9kM7xTQHR9mztSaKGo
- gpAwN5MzB7DsNO8TPAZ7Er7Fg9+KmzdoEdp5mphn6litI66DfEq6+dpkProkJ0U9qy/V3aelLkP4Q9
- 0orAh6Bx9TkGWHQTqnALFezzVEuH4dUm9fJhl9y4zAQJMPOQf6q/i6Teeew1vkxEZuxdNStXpn7uZ4
- WEaK8Xrc/c6XSmOpDuwKVJJq9Ez2LxPd1oOKnfDKBKxHgdqBBmC3/ViXSH4wsLHeXwtboCXLM7o32X
- sl9rDlUIk9MEgIJbyMNQ1CS8pgEc3Cuul/qBoUVDWcfsyz5wMO/DSk4K/rGz+1LcvX4yH/ZmT6Mbyf
- 5Yaekvf8fo7mNPEhlrOUjL5nthgtvZ6iEn8fgETNx7seLMUfzlVKcgIs1cId0YKgmWFlCYMs8dTPwW
- eMwSZa/lnwGwhu+2dV7lVMRjkDHzUSPW8dc7Zfh60xW4E=
+ bh=3PMxZM4GJhxvymjVxEpBt9z/cieNjbdvNhaUn659004=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmaCm59TVhcxNXBDr+fkNC1XQ/3YLBSM03dJ9iO5qQ
+ ArDvbk6JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZmgpuQAKCRAjYrKT3hD91/biC/
+ 9DupREo6K/4GmE3U2v3uzJWWQ1KdYgTgDxCMzTCSjk8dbB9qHALvfNsAFlj4l50XbZj4ColFaTEmzp
+ i3sSe+dZQhGFAhsUyAQRGsmAdYcRMeyi0RrrsbXCmDAFO+soNMWW7MMIyICjMIsJCfbAm5bTsWqeLp
+ 4KpLsnNw4aJ9m0DRy/8Ou7L4dBDJITo7JJVAmg57icfB2TUIVBlMQaaX3KjVj0g+rXcOzudpciTQks
+ C6uxx1gbjCwaKPrVp+ysdqKMfUSMyp26IRk6no5NMro1f/P/8qe4su5kLDBdWGMptvlO3NvWu2kyEk
+ VEnSqB1H9D2OkVZSuRb77STzDgqDaH2Ufm+gQXG/pqC8PbpVqDnlcbawlAvpcKuZnPtg1mY2B82sDy
+ CnrsZwDPmCUNS7gvCCxRDwpt1jl8VHCm92I/L/5LANe422zX/Cg+qK9fFK3ATQXD+9Q3+sn4knGqax
+ WZ+y8nrVaWpP440+GpVi3c6bSa/RvJ9at1I2ksDm91NcY=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -88,116 +87,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Helpers follow convention of xe_sysfs_gt_(path|open).
+In Xe_LP version there is added argument to control EU thread
+dispatching mode. For shaders lagacy mode is used.
+
+v2: added commit description
+v6: added public function descriptions
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h |  3 +++
- 2 files changed, 74 insertions(+)
+ lib/gpu_cmds.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++------
+ lib/gpu_cmds.h |  6 ++++++
+ 2 files changed, 52 insertions(+), 6 deletions(-)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 0c5817eb1580..e11eecc25aa1 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -40,7 +40,9 @@
- #include <dirent.h>
- #include <unistd.h>
- #include <fcntl.h>
-+#include <xe_drm.h>
- 
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_sysfs.h"
- #include "igt_device.h"
-@@ -263,6 +265,75 @@ int xe_sysfs_gt_open(int xe_device, int gt)
- 	return open(path, O_RDONLY);
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index 378fa9166ab8..cd0623dc28a3 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -651,10 +651,10 @@ gen7_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 	intel_bb_out(ibb, 0);
  }
  
-+static const char *engine_class_to_str(__u16 class)
-+{
-+	const char *str[] = {
-+		[DRM_XE_ENGINE_CLASS_RENDER] = "rcs",
-+		[DRM_XE_ENGINE_CLASS_COPY] = "bcs",
-+		[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = "vcs",
-+		[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = "vecs",
-+		[DRM_XE_ENGINE_CLASS_COMPUTE] = "ccs",
-+	};
-+
-+	if (class < ARRAY_SIZE(str))
-+		return str[class];
-+
-+	return "unk";
-+}
-+
+-void
+-gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+-		    uint32_t urb_entries, uint32_t urb_size,
+-		    uint32_t curbe_size)
++static void
++__gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++		      uint32_t urb_entries, uint32_t urb_size,
++		      uint32_t curbe_size, bool legacy_mode)
+ {
+ 	intel_bb_out(ibb, GEN7_MEDIA_VFE_STATE | (9 - 2));
+ 
+@@ -662,8 +662,8 @@ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 	intel_bb_out(ibb, 0);
+ 	intel_bb_out(ibb, 0);
+ 
+-	/* number of threads & urb entries */
+-	intel_bb_out(ibb, threads << 16 | urb_entries << 8);
++	/* number of threads & urb entries & eu fusion */
++	intel_bb_out(ibb, threads << 16 | urb_entries << 8 | legacy_mode << 6);
+ 
+ 	intel_bb_out(ibb, 0);
+ 
+@@ -676,6 +676,25 @@ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 	intel_bb_out(ibb, 0);
+ }
+ 
 +/**
-+ * xe_sysfs_engine_path:
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @class: engine class
-+ * @path: buffer to fill with the sysfs gt path to the device
-+ * @pathlen: length of @path buffer
++ * gen8_emit_vfe_state:
++ * @ibb: batchbuffer
++ * @threads: maximum number of threads
++ * @urb_entries: number of URB entries
++ * @urb_size: URB entry allocation size
++ * @curbe_size: CURBE allocation size
 + *
-+ * Returns:
-+ * The directory path, or NULL on failure.
++ * Emits instruction MEDIA_VFE_STATE for Gen8+ which sets Video Front End (VFE)
++ * state.
 + */
-+char *
-+xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
++void gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++			 uint32_t urb_entries, uint32_t urb_size,
++			 uint32_t curbe_size)
 +{
-+	struct stat st;
-+	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
-+
-+	if (xe_device < 0)
-+		return NULL;
-+
-+	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
-+		return NULL;
-+
-+	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d/engines/%s",
-+		 major(st.st_rdev), minor(st.st_rdev), tile, gt, engine_class_to_str(class));
-+
-+	if (!access(path, F_OK))
-+		return path;
-+
-+	return NULL;
++	__gen8_emit_vfe_state(ibb, threads, urb_entries, urb_size, curbe_size,
++			      false);
 +}
 +
+ void
+ gen7_emit_curbe_load(struct intel_bb *ibb, uint32_t curbe_buffer)
+ {
+@@ -864,6 +883,27 @@ gen7_emit_media_objects(struct intel_bb *ibb,
+ 			gen_emit_media_object(ibb, x + i * 16, y + j * 16);
+ }
+ 
 +/**
-+ * xe_sysfs_engine_open:
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @class: engine class
++ * xelp_emit_vfe_state:
++ * @ibb: pointer to intel_bb
++ * @threads: maximum number of threads
++ * @urb_entries: number of URB entries
++ * @urb_size: URB entry allocation size
++ * @curbe_size: CURBE allocation size
++ * @legacy_mode: if set, threads are dispatched individually (legacy mode),
++ * 	otherwise they are dispatched in sets(fused EU mode)
 + *
-+ * This opens the sysfs gt directory corresponding to device and tile for use
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
++ * Emits instruction MEDIA_VFE_STATE for XeLP which sets Video Front End (VFE)
++ * state.
 + */
-+int xe_sysfs_engine_open(int xe_device, int gt, int class)
++void xelp_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++			 uint32_t urb_entries, uint32_t urb_size,
++			 uint32_t curbe_size, bool legacy_mode)
 +{
-+	char path[96];
-+
-+	if (!xe_sysfs_engine_path(xe_device, gt, class, path, sizeof(path)))
-+		return -1;
-+
-+	return open(path, O_RDONLY);
++	return __gen8_emit_vfe_state(ibb, threads, urb_entries, urb_size,
++				     curbe_size, legacy_mode);
 +}
 +
- /**
-  * igt_sysfs_gt_path:
-  * @device: fd of the device
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index f37d80ec130e..6c604d939013 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -166,4 +166,7 @@ int xe_sysfs_gt_open(int xe_device, int gt);
- char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int pathlen);
- int xe_sysfs_tile_open(int xe_device, int tile);
- int xe_sysfs_get_num_tiles(int xe_device);
-+char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
-+int xe_sysfs_engine_open(int xe_device, int gt, int class);
+ /*
+  * XEHP
+  */
+diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
+index 348c6c9453e9..1b9156a80c7c 100644
+--- a/lib/gpu_cmds.h
++++ b/lib/gpu_cmds.h
+@@ -81,6 +81,12 @@ void
+ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 		    uint32_t urb_entries, uint32_t urb_size,
+ 		    uint32_t curbe_size);
 +
- #endif /* __IGT_SYSFS_H__ */
++void
++xelp_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++		    uint32_t urb_entries, uint32_t urb_size,
++		    uint32_t curbe_size, bool legacy_mode);
++
+ void
+ gen7_emit_curbe_load(struct intel_bb *ibb, uint32_t curbe_buffer);
+ 
 
 -- 
 2.34.1
