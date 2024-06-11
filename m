@@ -4,26 +4,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEA5BC27C5E
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 10:20:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4D28C27C5E
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 10:41:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D02D10E58E;
-	Tue, 11 Jun 2024 10:20:35 +0000 (UTC)
-X-Greylist: delayed 454 seconds by postgrey-1.36 at gabe;
- Tue, 11 Jun 2024 10:20:33 UTC
-Received: from mblankhorst.nl (lankhorst.se [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9318610E58E
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 10:20:33 +0000 (UTC)
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Subject: [PATCH] tests/intel: Add xe_coredump test, v3.
-Date: Tue, 11 Jun 2024 12:13:22 +0200
-Message-ID: <20240611101323.19444-1-maarten.lankhorst@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8721110E594;
+	Tue, 11 Jun 2024 10:41:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SuBHv1FX";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D627210E594
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 10:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1718102465; x=1749638465;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=YYWZFVFMNkC0JqB8NETd4n9uby3eidNM/qDWiXEDcL4=;
+ b=SuBHv1FX9gK0hY30p3hujaG/oPq/SyKaLpPrFajFSn0M2UxI0E6ch6c0
+ oQLBtBDylBcXvfmHHjIkwDbwl/m/VbLklI77SuWh+4Hj9z3yiuEvyWDWL
+ LXwjHhXjW1FIhcX+r9xfmQDqAz7vn1QH2qeNdR4WwkJeJJX7BUBUj83dK
+ OhWJ3WxfTPIOU6jV+QIRjDwTZQoypLRM5UoHbZyeSCMpqs6mpyNkgfkji
+ NngPFPvvCKQVW7HcvvJizHvUaCa5wIgRvdpLW/cbV1cvCaZgoPbHELhje
+ 7yeAvEv3i5RCMcrQSvEnHFZyaAJjRlNsnz8rEl9G/3vyvM98xBifhI6Tt Q==;
+X-CSE-ConnectionGUID: 2ojEkJfVQhGMol5fa9cHVQ==
+X-CSE-MsgGUID: sC+XUz1tQpWPGqvetTCoMw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="26217714"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="26217714"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2024 03:41:05 -0700
+X-CSE-ConnectionGUID: vlcK0mVQRV+Othku61E5Ew==
+X-CSE-MsgGUID: xvwtjKRzRuOhO2APBeVBbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="62563538"
+Received: from lab-ah.igk.intel.com ([10.102.138.202])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2024 03:41:00 -0700
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH v6 0/5] lib/gpgpu: add shader support
+Date: Tue, 11 Jun 2024 12:40:49 +0200
+Message-Id: <20240611-iga64_inline_ups-v6-0-b634ec43a610@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALEpaGYC/4XOwWrDMBAE0F8JOletvFrJVk/9j1KCLK1jQSwHy
+ TUtwf9eOVBqEkOPc5g3c2WZUqDMXg9XlmgOOYyxBP10YK638UQ8+JIZCECBoHg4WY3HEM8h0vH
+ zkjnKxvvOawGyY6V2SdSFrxv5/lFyazPxNtno+hUqlSmRHV4GmydKa6MPeRrT9+3DXK293znzO
+ DdXXHAgYx1q1+nWvoU40fnZjQNb52b4A1S183eGAmgja5SuFaZR94DcAIA7gFwBQKh1VTvy8h7
+ A/wAsgAOSlVOKRPMAqC3Q7ACqAJ33DRnvvEa3BZZl+QE07Y2c1gEAAA==
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>, 
+ Christoph Manszewski <christoph.manszewski@intel.com>, 
+ =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
+ Andrzej Hajda <andrzej.hajda@intel.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2812;
+ i=andrzej.hajda@intel.com; h=from:subject:message-id;
+ bh=YYWZFVFMNkC0JqB8NETd4n9uby3eidNM/qDWiXEDcL4=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmaCm4tFmXBNByZhjwZzRzqqzqh9BwFkX7OcgN35Pn
+ Z0+3UFmJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZmgpuAAKCRAjYrKT3hD910vgDA
+ CpUfMQFHuxgN5h7LibH4TNJ0Axvz3kmH6w7K6uOjLFU+kksXzyYkl3rTcxIqYRNMbSX+RsCyq7aozU
+ f3iBeAiL3zbu6ca9xo711rbn5mFcgVLy5mvaoDEdvZiczs0rfNz//MBVXnAXs1/dxabuXYdqHfq2Xp
+ 2VW9tGNFUyRZo3RFQynIy7+sXijalez6zzmb6dUnZcIfUcWLET0OQ1dtXOfxe/6vsvi5Jhrd2ql7So
+ tvj9yoXSSgD0zNrEFqDzTLzh26X5BZRezJgeridQHloOOpuO1QnaPcuSYfqPHN+OooROGCmOAapvMk
+ ytEeXN0XJnsKcgTyz2KV+QahjcZVqy3ApOGlMM99XhJ6yfKcjIerqmpGBRisC6Z7jW/4W3H7cMVZrw
+ 0yCzkbBiIfxpT9pWiuhbzVsOOw/fJ2FGIT7zwQiCQ4EokXuYJ1kDNQzjhCAEtfjFnTmSPjZJS5vrDl
+ 80lsX4trPVyXfMCRkExGizjQf177GIFgz/22fxW60P2C8=
+X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
+ fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -39,291 +90,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a simple test that forces a GPU hang and then reads the resulting
-devcoredump file. Map a single userptr and BO, and dump the contents of
-those.
+This patchset adds shader support to mainline IGT.
+Together with iga64 inline assembly and demo test using both.
 
-Changes since v1:
-- Almost completely rewrite test for readability, based on feedback.
-Changes since v2:
-- Remove retrying opening fd, 1s wait was missing and test passed without.
+The patches were cherry-picked/trimmed from internal branch,
+quite painful process. I hope I have not cut off too much :)
 
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+v3:
+- bumped minimal meson version,
+- use old string literals to satisfy clang
+v4:
+- bump meson to latest version supported by CI builder
+v5:
+- just small update, to ping potential reviewers :)
+- revert back required meson version, instead use old syntax to make CI happy
+v6:
+- addressed most Kamil's comments - added docs for public functions,
+  generator script moved to scripts, added ifdef guards to iga64_macros.h,
+  fixed docs and description in xe_exec_sip test
+
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- tests/intel/xe_coredump.c | 251 ++++++++++++++++++++++++++++++++++++++
- tests/meson.build         |   1 +
- 2 files changed, 252 insertions(+)
- create mode 100644 tests/intel/xe_coredump.c
+- Link to v1: https://lore.kernel.org/r/20240429-iga64_inline_ups-v1-0-2e9ac46cf6ba@intel.com
+- Link to v2: https://lore.kernel.org/r/20240515-iga64_inline_ups-v2-0-693743cb0985@intel.com
+- Link to v3: https://lore.kernel.org/r/20240524-iga64_inline_ups-v3-0-62427617ced3@intel.com
+- Link to v4: https://lore.kernel.org/r/20240524-iga64_inline_ups-v4-0-c2e31c55e083@intel.com
+- Link to v5: https://lore.kernel.org/r/20240528-iga64_inline_ups-v5-0-fdd8e9dcd64c@intel.com
 
-diff --git a/tests/intel/xe_coredump.c b/tests/intel/xe_coredump.c
-new file mode 100644
-index 000000000..938b718db
---- /dev/null
-+++ b/tests/intel/xe_coredump.c
-@@ -0,0 +1,251 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Check devcoredump functionality
-+ * Category: Software building block
-+ * Sub-category: devcoredump
-+ * Run type: BAT
-+ * Functionality: Error dumping and readout.
-+ */
-+
-+#include <unistd.h>
-+#include <fcntl.h>
-+#include <glob.h>
-+#include <string.h>
-+#include <wchar.h>
-+#include <sys/stat.h>
-+
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "igt_io.h"
-+#include "igt_syncobj.h"
-+#include "igt_sysfs.h"
-+
-+#include "intel_pat.h"
-+
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+#ifndef DRM_XE_VM_BIND_FLAG_DUMPABLE
-+#define DRM_XE_VM_BIND_FLAG_DUMPABLE (1<<3)
-+#endif
-+
-+static struct xe_device *xe;
-+static uint32_t batch_bo;
-+static uint32_t *batch;
-+static void *userptr;
-+static uint32_t vm;
-+static int sysfd;
-+
-+#define MAX_N_ENGINES 32
-+
-+static void tryclear_hang(void)
-+{
-+	int fd = openat(sysfd, "devcoredump/data", O_RDWR);
-+	char buf[256];
-+
-+	if (fd < 0)
-+		return;
-+
-+	while (read(fd, buf, sizeof(buf)) > 0)
-+		{ }
-+	write(fd, "1", 1);
-+	close(fd);
-+}
-+
-+/*
-+ * Helper to read and clear devcore.  We want to read it completely to ensure
-+ * we catch any kernel side regressions like:
-+ * https://gitlab.freedesktop.org/drm/msm/-/issues/20
-+ */
-+static void
-+read_and_clear_hang(void)
-+{
-+	char buf[0x1000];
-+	int fd = openat(sysfd, "devcoredump/data", O_RDWR);
-+	igt_assert(fd >= 0);
-+
-+	/*
-+	 * We want to read the entire file but we can throw away the
-+	 * contents.. we just want to make sure that we exercise the
-+	 * kernel side codepaths hit when reading the devcore from
-+	 * sysfs
-+	 */
-+	igt_debug("---- begin coredump ----\n");
-+	while (1) {
-+		ssize_t ret;
-+
-+		ret = igt_readn(fd, buf, sizeof(buf) - 1);
-+		igt_assert(ret >= 0);
-+		if (ret == 0)
-+			break;
-+		buf[ret] = '\0';
-+		igt_debug("%s", buf);
-+	}
-+
-+	igt_debug("---- end coredump ----\n");
-+
-+	/* Clear the devcore: */
-+	igt_writen(fd, "1", 1);
-+
-+	close(fd);
-+}
-+
-+static void free_execqueue(void)
-+{
-+	int fd = xe->fd;
-+	xe_vm_destroy(fd, vm);
-+	vm = 0;
-+	gem_close(fd, batch_bo);
-+	munmap(batch, xe->default_alignment);
-+	munmap(userptr, xe->default_alignment);
-+	batch = userptr = NULL;
-+}
-+
-+static void recreate_execqueue(bool dumpable)
-+{
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+	};
-+	struct drm_xe_vm_bind_op bind_ops[2] = { };
-+	int fd = xe->fd;
-+	uint32_t *ptr;
-+	uint64_t offset = xe->default_alignment - 4;
-+
-+	tryclear_hang();
-+
-+	if (vm)
-+		free_execqueue();
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	batch_bo = xe_bo_create(fd, vm, xe->default_alignment, system_memory(fd), 0);
-+	ptr = batch = xe_bo_map(xe->fd, batch_bo, xe->default_alignment);
-+
-+	memset(batch, 0, xe->default_alignment);
-+	*(ptr++) = MI_SEMAPHORE_WAIT | MI_SEMAPHORE_POLL | MI_SEMAPHORE_SAD_GTE_SDD;
-+	*(ptr++) = 1;
-+	*(ptr++) = offset >> 32;
-+	*(ptr++) = offset;
-+	*(ptr++) = MI_BATCH_BUFFER_END;
-+
-+	userptr = mmap(0, xe->default_alignment, PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	wmemset(userptr, 0xf1234567, xe->default_alignment / sizeof(wchar_t));
-+
-+	bind_ops[0].op = DRM_XE_VM_BIND_OP_MAP;
-+	bind_ops[0].obj = batch_bo;
-+	bind_ops[0].addr = 0;
-+
-+	bind_ops[1].op = DRM_XE_VM_BIND_OP_MAP_USERPTR;
-+	bind_ops[1].userptr = (size_t)userptr;
-+	bind_ops[1].addr = 1ULL << 40ULL;
-+
-+	if (dumpable)
-+		bind_ops[0].flags = bind_ops[1].flags = DRM_XE_VM_BIND_FLAG_DUMPABLE;
-+	bind_ops[0].range = bind_ops[1].range = xe->default_alignment;
-+	bind_ops[0].pat_index = bind_ops[1].pat_index = intel_get_pat_idx_wb(fd);
-+
-+	sync.handle = syncobj_create(fd, 0);
-+	xe_vm_bind_array(fd, vm, 0, bind_ops, ARRAY_SIZE(bind_ops), &sync, 1);
-+	syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL);
-+	syncobj_destroy(fd, sync.handle);
-+}
-+
-+static uint32_t hang_engine(struct drm_xe_engine_class_instance *hwe)
-+{
-+	uint32_t engine;
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		.handle = syncobj_create(xe->fd, 0),
-+	};
-+
-+	engine = xe_exec_queue_create(xe->fd, vm, hwe, 0);
-+	xe_exec_sync(xe->fd, engine, 0, &sync, 1);
-+
-+	return sync.handle;
-+}
-+
-+static void test_hang_one(void)
-+{
-+	uint32_t syncobj = hang_engine(&xe_engine(xe->fd, 0)->instance);
-+
-+	syncobj_wait(xe->fd, &syncobj, 1, INT64_MAX, 0, NULL);
-+	syncobj_destroy(xe->fd, syncobj);
-+
-+	read_and_clear_hang();
-+}
-+
-+/**
-+ * SUBTEST: basic
-+ * Description: Read out a full dumped VM.
-+ * Test category: functionality test
-+ */
-+static void basic(void)
-+{
-+	recreate_execqueue(true);
-+	test_hang_one();
-+}
-+
-+/**
-+ * SUBTEST: empty-vm
-+ * Description: Create an error dump without anything in VM to dump.
-+ * Test category: functionality test
-+ */
-+static void empty_vm(void)
-+{
-+	recreate_execqueue(false);
-+	test_hang_one();
-+}
-+
-+/**
-+ * SUBTEST: all-simultaneously
-+ * Description: Hang all engines at the same time, read out the dump.
-+ * Test category: robustness test
-+ */
-+static void all_simultaneously(void)
-+{
-+	uint32_t syncobj[MAX_N_ENGINES], i = 0;
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	recreate_execqueue(true);
-+	xe_for_each_engine(xe->fd, hwe)
-+		syncobj[i++] = hang_engine(hwe);
-+
-+	syncobj_wait(xe->fd, syncobj, i, INT64_MAX, 0, NULL);
-+	while (i--)
-+		syncobj_destroy(xe->fd, syncobj[i]);
-+
-+	read_and_clear_hang();
-+}
-+
-+igt_main
-+{
-+	igt_fixture {
-+		struct stat stat;
-+		int fd = drm_open_driver_render(DRIVER_XE);
-+		char str[256];
-+		xe = xe_device_get(fd);
-+
-+		igt_assert_eq(fstat(fd, &stat), 0);
-+		sprintf(str, "/sys/dev/char/%ld:%ld/device", stat.st_rdev >> 8, stat.st_rdev & 0xff);
-+		sysfd = open(str, O_DIRECTORY);
-+		igt_assert(sysfd >= 0);
-+	}
-+
-+	igt_describe("Test that hw fault coredump readout works");
-+	igt_subtest("basic")
-+		basic();
-+
-+	igt_describe("Hang all engines simultaneously");
-+	igt_subtest("all-simultaneously")
-+		all_simultaneously();
-+
-+	igt_describe("Ensure that snapshot works without anything to capture");
-+	igt_subtest("empty-vm")
-+		empty_vm();
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 758ae090c..f611e2e2c 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -280,6 +280,7 @@ intel_xe_progs = [
- 	'xe_compute',
- 	'xe_compute_preempt',
- 	'xe_copy_basic',
-+	'xe_coredump',
- 	'xe_dma_buf_sync',
- 	'xe_debugfs',
- 	'xe_drm_fdinfo',
+---
+Andrzej Hajda (5):
+      lib/gpu_cmds: add Xe_LP version of emit_vfe_state
+      lib/gpgpu_shader: tooling for preparing and running gpgpu shaders
+      lib/gpgpu_shader: add inline support for iga64 assembly
+      lib/igt_sysfs: add helpers to access engine sysfs directory
+      intel/xe_exec_sip: add shader sanity test
+
+ lib/gpgpu_shader.c           | 313 +++++++++++++++++++++++++++++++++++++++++++
+ lib/gpgpu_shader.h           |  63 +++++++++
+ lib/gpu_cmds.c               |  52 ++++++-
+ lib/gpu_cmds.h               |   6 +
+ lib/iga64_generated_codes.c  |  87 ++++++++++++
+ lib/iga64_macros.h           |  18 +++
+ lib/igt_sysfs.c              |  71 ++++++++++
+ lib/igt_sysfs.h              |   3 +
+ lib/meson.build              |  18 +++
+ meson.build                  |   9 +-
+ scripts/generate_iga64_codes | 115 ++++++++++++++++
+ scripts/meson.build          |   1 +
+ tests/intel/xe_exec_sip.c    | 197 +++++++++++++++++++++++++++
+ tests/meson.build            |   1 +
+ 14 files changed, 944 insertions(+), 10 deletions(-)
+---
+base-commit: 73618605b4370cf902267aaf1d25666ff5e26112
+change-id: 20240425-iga64_inline_ups-438ddfd6023f
+
+Best regards,
 -- 
-2.43.0
+Andrzej Hajda <andrzej.hajda@intel.com>
 
