@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C50BC27C5E
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 05:01:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27785C25B76
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 05:01:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17C5210E4D1;
-	Tue, 11 Jun 2024 05:01:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1980A10E4B1;
+	Tue, 11 Jun 2024 05:01:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DMHDmajh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DHo8sogj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 41F2010E4B1
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 05:01:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36B6A10E465
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 05:01:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718082104; x=1749618104;
+ t=1718082103; x=1749618103;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KVDA//xIcPQ9/ZM/bh2UYjDdwtTHPB4wCEuGFW/e2cc=;
- b=DMHDmajhu5v48Tr8VP33gg2SGjqLPBTH/H+wEgR82YGqsEzdP4AOsZTu
- LhJldsga+1tt6xKD4jP5sPynCS7EXfvQpEVO7vb/hiw+pPxi/5x541ogk
- imFEgaRFOHQGlQ4tZvywF3uQjDVfPhFTJj3aakfJwo5qS5BH8dl2QKeph
- CRpI1p+0oig2U+RWvMo019dQmlOlQEBagKZM1R5vmCSmW+Axrzh34gv5T
- 5iea+yHXMLQwHYb/ZQI4pncLI+6N6AL9o30aHRDd26BTDcjNr2ZjF4GSV
- OCOjKaTfO7HMwNZot/zqsProlKKnl0E4VBl3nQtP6SwgUMXkurT7GE65Q g==;
-X-CSE-ConnectionGUID: DDPYIne7R1epGB622dpIuA==
-X-CSE-MsgGUID: vZiIWWQ1TTmk0bnM5plNkg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14997512"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="14997512"
+ bh=ap4UTm7Eu8LTGDQg2M01/yN29gzlEtd4VWUjDF0IgOA=;
+ b=DHo8sogj0ggko0se4njca13QU7UmbZnAbSAcLTLT+Y7Ll6b5eZLCDev9
+ 7jgV3/GyZfbNKiuIkNbKUS/wo5wVKs/vOgR6RJ20rprp/ebMjC9LwaYzl
+ E5oeYQtbMw5g45n6BIOytzYHel4eiLJwKT32M1zBqhSIhGA1opzw+za1m
+ nRqXEpF8i/6qrBTVYAjMaaeV6sQV528h/6xJZkKY9TAmkiqkjF+0QiQLN
+ 9WRmHIq7VIFw4HrgiX45DrEn4bFnZ9uQjozGRf4j8BWnqCMY/ImVwGntu
+ wmcQOrbzy3R6/0opcDCA3rN57Eh5xvBHx7ophWA3liYMMYL5lypP6ApkE Q==;
+X-CSE-ConnectionGUID: VJG8e2khQriBsZuNegG2SQ==
+X-CSE-MsgGUID: p0UXDELfS/qakfnFaUXZHA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14997506"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="14997506"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 22:01:44 -0700
-X-CSE-ConnectionGUID: fZCMl6X/Sp6DSQFo/lWRlA==
-X-CSE-MsgGUID: WuOm+xycQPe+xM+mVxF5SA==
+ 10 Jun 2024 22:01:43 -0700
+X-CSE-ConnectionGUID: vJWxuvmGRZG1cgANZk4Bhg==
+X-CSE-MsgGUID: EtkYHqy3SRCd2W5LfKyv9g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39981286"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39981272"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 22:01:43 -0700
+ 10 Jun 2024 22:01:42 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 7/8] tests/kms_universal_plane: Test cleanup
-Date: Tue, 11 Jun 2024 10:23:47 +0530
-Message-ID: <20240611045348.3727239-8-bhanuprakash.modem@intel.com>
+Subject: [PATCH i-g-t 6/8] tests/kms_tv_load_detect: Test cleanup
+Date: Tue, 11 Jun 2024 10:23:46 +0530
+Message-ID: <20240611045348.3727239-7-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
 References: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
@@ -76,58 +76,21 @@ Make sure the below points in IGT cleanup:
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_universal_plane.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ tests/kms_tv_load_detect.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c
-index a6e11777d..8c1ce8143 100644
---- a/tests/kms_universal_plane.c
-+++ b/tests/kms_universal_plane.c
-@@ -139,7 +139,7 @@ functional_test_fini(functional_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+diff --git a/tests/kms_tv_load_detect.c b/tests/kms_tv_load_detect.c
+index 8feed385f..9f6f4071e 100644
+--- a/tests/kms_tv_load_detect.c
++++ b/tests/kms_tv_load_detect.c
+@@ -99,6 +99,7 @@ igt_main
  
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
+ 	igt_fixture {
+ 		drmModeFreeConnector(tv_connector);
++		drmModeFreeResources(res);
+ 		drm_close_driver(drm_fd);
+ 	}
  }
- 
-@@ -386,7 +386,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -516,7 +516,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->red_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
-@@ -603,7 +603,7 @@ cursor_leak_test_fini(data_t *data,
- 	for (i = 0; i < 10; i++)
- 		igt_remove_fb(data->drm_fd, &curs[i]);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- }
- 
- static int
-@@ -752,7 +752,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t *output)
- 	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
- 	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
- 
--	igt_output_set_pipe(output, PIPE_ANY);
-+	igt_output_set_pipe(output, PIPE_NONE);
- 	igt_display_commit2(&test->data->display, COMMIT_LEGACY);
- }
- 
 -- 
 2.43.2
 
