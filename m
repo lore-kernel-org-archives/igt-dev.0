@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC9EBC27C75
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 16:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBD8C27C65
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 16:56:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3755110E13F;
-	Tue, 11 Jun 2024 16:51:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4BC1610E6ED;
+	Tue, 11 Jun 2024 16:56:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BYowJIIf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fI7OeXem";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D04C10E13F
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 16:51:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4F0A10E6ED
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 16:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718124691; x=1749660691;
+ t=1718125013; x=1749661013;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=JSqFpQnVEXbbCnsyS1dCkI27QJhN6PmqKloP1XWNk+c=;
- b=BYowJIIfP2Llccu12BNHmkSTVvUCYvAaISnPKn5IduQmNZ5QblUiYfpz
- k82S1OPX/QcELL6IzeKgdy7U5B73VTOAkVcg9ddHekF2d6xpglSW07EGy
- rng0kbyfWGNu8OAD4E+D5O9Z1hRlZ4JWH68waDZGxWV/ryA2t3p1GrOXV
- XtsnHF0xoV+lYH8a4oOz6aIwSphL+feYz9Uryf7EgJ58hLMErFiN45V+y
- /WREIycz0EEh7CGBNakWn2T9nhwDfgIRFJp2+NOsXxYdlaijGdkunufZr
- I7s3rcgI2Evz4w7MrYwjt/qyROOI081VUKOhrutrAz5ZkxSmt3Pz6YIQ1 A==;
-X-CSE-ConnectionGUID: LNHKP2SlSUKV5U6yYSyLDg==
-X-CSE-MsgGUID: ZGjiEDHFSdidLpgtpjhoBw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="40249884"
-X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="40249884"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 09:51:31 -0700
-X-CSE-ConnectionGUID: y35NL/PvRpWWZ8YbB0I8fQ==
-X-CSE-MsgGUID: nNWUDA21RQmSrBBdn60ZHA==
+ bh=uJ9t4BQvVi+zsbjNFYMJ1mkD2RCrsK708gleWZ5L+7I=;
+ b=fI7OeXemx90ewjYS4squJT9VtlJlrvy0VV5T8QkDj/guBqZGFAv3svhj
+ kEJQzxn9AJnrM8wwxtyYSMvX51/jzy5YFlme84vgiKyMJKJ6HVYq7PI4P
+ 3dzsCKjo5T2wMq9jw2iOtkC0192bDI1gbFPj1RPGz6RclKVJuWWinTIVD
+ vP1bMK24hVZys/P7+LyqYHDAaJoWEZIR3YDCmZY/3edmJaXr4R9CO2DeJ
+ GQCWkp0wgERQSHZc9iTeWIRUh7B2FgfpX5SReDt4t9qubmDrp0amglqi5
+ gm7Yh8wSkQPHODF7xBpT0RTwkyGfEhZamyXM/1vOv9bJwftFcALIGR2Mv w==;
+X-CSE-ConnectionGUID: 7ocihx4kTg6/40OSQaUFew==
+X-CSE-MsgGUID: 749XY9vqRaC7cKbIVPF9Ig==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="17773926"
+X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="17773926"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jun 2024 09:56:53 -0700
+X-CSE-ConnectionGUID: aJqZelKMSJeBo2zGpYfgEQ==
+X-CSE-MsgGUID: znKTcnFPRnOke3kLTmygkA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="40103831"
+X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="43928128"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 09:51:29 -0700
-Date: Tue, 11 Jun 2024 18:51:25 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 09:56:53 -0700
+Date: Tue, 11 Jun 2024 18:56:49 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>, ihf@google.com,
- markyacoub@google.com, thomas.petazzoni@bootlin.com
-Subject: Re: [PATCH i-g-t RFC 00/13] tests/chamelium: Integrate the chamelium
- v3
-Message-ID: <20240611165125.s4g232h2ga7vyfdy@kamilkon-DESK.igk.intel.com>
+Cc: Nidhi Gupta <nidhi1.gupta@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: Re: =?utf-8?B?4pyX?= CI.xeFULL: failure for IGT cleanup (rev10)
+Message-ID: <20240611165649.cw43ry7vzxb4ozqd@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Louis Chauvet <louis.chauvet@bootlin.com>, ihf@google.com,
- markyacoub@google.com, thomas.petazzoni@bootlin.com
-References: <20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com>
+ igt-dev@lists.freedesktop.org, Nidhi Gupta <nidhi1.gupta@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+References: <20240610080150.3610871-1-bhanuprakash.modem@intel.com>
+ <171801516514.31115.3116636002385878390@a6498e030952>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com>
+In-Reply-To: <171801516514.31115.3116636002385878390@a6498e030952>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,104 +72,446 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
-On 2024-06-05 at 16:30:12 +0200, Louis Chauvet wrote:
-> Hi all,
+Hi igt-dev,
+On 2024-06-10 at 10:26:05 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> This patch series introduces a new wrapper for the Chameleon v3 board, a
-> testing tool used primarily for Chromebooks, but also by community members
-> to increase test coverage of graphic devices. The Chameleon v3 is an
-> upgrade from its predecessor, with the ability to emulate 2 HDMI and 2
-> DisplayPort devices, including MST devices.
+> Series: IGT cleanup (rev10)
+> URL   : https://patchwork.freedesktop.org/series/100801/
+> State : failure
 > 
-> The board can read and analyze any stream on the DisplayPort and HDMI
-> cables, and even take captures, making it an ideal tool for testing
-> hardware, driver, and user space behavior in specific situations, such as
-> screen hotplugging and multiple MST screens. However, the changes between
-> the v2 and v3, such as the addition of MST support and the removal of CRC
-> for screen captures, would require significant modifications to the
-> existing tests and wrappers.
+> == Summary ==
 > 
-> To avoid this complexity and ensure that the Chameleon v3 is fully
-> supported and the v2 is not broken, I wrote a new wrapper with
-> simplicity and ease of use in mind. The Chameleon v3 wrapper should only
-> manage the Chameleon itself, without the need for DRM displays, EDID
-> caching/modifications, or state machines. This approach will make it
-> easier for developers to use the Chameleon v3 and contribute to its
-> development.
+> CI Bug Log - changes from XEIGT_7880_full -> XEIGTPW_11243_full
+> ====================================================
 > 
-> In this RFC, I did not merged the common code between the v2 and v3, but
-> it is planned for the next version.
+> Summary
+> -------
 > 
-> Before I continue working on this series, I want to make sure that it
-> is up to the standard of the project and that I am heading in the right
-> direction.
+>   **FAILURE**
 > 
-> This series can be splitted in three parts:
->  - PATCH 1-3: extracting the v2 wrapper and tests in its own directory
->  - PATCH 4-6: Introducing the RPC wrapper
->  - PATCH 6-12: Introduce few tests on EDID and MST
+>   Serious unknown changes coming with XEIGTPW_11243_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_11243_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+>   
+> 
+> Participating hosts (3 -> 2)
+> ------------------------------
+> 
+>   Missing    (1): shard-adlp 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_11243_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@suspend-read-crc:
+>     - shard-dg2-set2:     NOTRUN -> [DMESG-WARN][1] +1 other test dmesg-warn
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-dg2-432/igt@kms_pipe_crc_basic@suspend-read-crc.html
+
+This kms bug is unrelated.
+
+> 
+>   * {igt@msm/msm_shrink@copy-mmap-madvise-32} (NEW):
+>     - {shard-lnl}:        NOTRUN -> [SKIP][2] +62 other tests skip
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-7/igt@msm/msm_shrink@copy-mmap-madvise-32.html
+> 
+>   * igt@vc4/vc4_create_bo@create-bo-0:
+>     - shard-dg2-set2:     NOTRUN -> [SKIP][3] +22 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-dg2-432/igt@vc4/vc4_create_bo@create-bo-0.html
 > 
 
-Please look into compilation errors, also try to use checkpatch.pl script
-from Linux kernel (you could ignore line too long or camel case for drm
-and few others).
+Bhanu: looks like those blocklisting rules for msm and vc4
+do not worked, see also below into skips for panfrost, vmwgfx.
 
 Regards,
 Kamil
 
-> ---
-> Louis Chauvet (13):
->       tests/chamelium: Extract chamelium v2 tests into its own directory
->       lib/chamelium: Extract chamelium v2 wrapper into its own directory
->       lib/chamelium: Change build options to split chamelium v2 and v3
->       lib/chamelium: Introduce the foundation for the chamelium v3 library
->       lib/chamelium: Implement all RPC calls for the chamelium v3
->       lib/chamelium: Introduce a simple chamelium v3 test
->       tests/chamelium: Introduce basic edid test
->       lib/monitor_edids: Introduce helpers to get EDID from a monitor EDID
->       tests/chamelium: Introduce 4k stress edid
->       tests/chamelium: Introduce non-4k stress edid
->       tests/chamelium: Introduce test resolution
->       tests/chamelium: Introduce test sleep
->       tests/chamelium: Add MST test
+>   
+> #### Suppressed ####
 > 
->  docs/testplan/meson.build                       |    4 +-
->  lib/{ => chamelium/v2}/igt_chamelium.c          |    2 +-
->  lib/{ => chamelium/v2}/igt_chamelium.h          |    0
->  lib/{ => chamelium/v2}/igt_chamelium_stream.c   |    2 +-
->  lib/{ => chamelium/v2}/igt_chamelium_stream.h   |    0
->  lib/chamelium/v3/igt_chamelium.c                | 1026 +++++++++++++++++++++++
->  lib/chamelium/v3/igt_chamelium.h                |  120 +++
->  lib/igt.h                                       |    6 +-
->  lib/igt_kms.c                                   |   14 +-
->  lib/meson.build                                 |   16 +-
->  lib/monitor_edids/monitor_edids_helper.c        |   61 +-
->  lib/monitor_edids/monitor_edids_helper.h        |    6 +-
->  lib/tests/meson.build                           |    8 +-
->  meson.build                                     |   45 +-
->  meson_options.txt                               |    8 +-
->  tests/chamelium/{ => v2}/kms_chamelium_audio.c  |    0
->  tests/chamelium/{ => v2}/kms_chamelium_color.c  |    0
->  tests/chamelium/{ => v2}/kms_chamelium_edid.c   |    2 +-
->  tests/chamelium/{ => v2}/kms_chamelium_frames.c |    0
->  tests/chamelium/{ => v2}/kms_chamelium_helper.c |    0
->  tests/chamelium/{ => v2}/kms_chamelium_helper.h |    0
->  tests/chamelium/{ => v2}/kms_chamelium_hpd.c    |    0
->  tests/chamelium/v3/kms_chamelium_v3_basic.c     |   30 +
->  tests/chamelium/v3/kms_chamelium_v3_edid.c      |  419 +++++++++
->  tests/kms_color_helper.h                        |    2 +-
->  tests/kms_feature_discovery.c                   |    6 +-
->  tests/kms_tiled_display.c                       |    6 +-
->  tests/meson.build                               |   61 +-
->  28 files changed, 1785 insertions(+), 59 deletions(-)
-> ---
-> base-commit: cea4eb0dae57dae8c21782c64ad8174c39d1df38
-> change-id: 20240522-dev-remove-static-ports-9382ffbbf146
+>   The following results come from untrusted machines, tests, or statuses.
+>   They do not affect the overall result.
 > 
-> Best regards,
-> -- 
-> Louis Chauvet <louis.chauvet@bootlin.com>
+>   * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
+>     - {shard-lnl}:        NOTRUN -> [FAIL][4] +1 other test fail
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-8/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
 > 
+>   * igt@kms_fbcon_fbt@psr-suspend:
+>     - {shard-lnl}:        [FAIL][5] ([Intel XE#2028]) -> [FAIL][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7880/shard-lnl-1/igt@kms_fbcon_fbt@psr-suspend.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-3/igt@kms_fbcon_fbt@psr-suspend.html
+> 
+>   * igt@v3d/v3d_wait_bo@map-bo-1ns:
+>     - {shard-lnl}:        NOTRUN -> [SKIP][7] +87 other tests skip
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-4/igt@v3d/v3d_wait_bo@map-bo-1ns.html
+> 
+>   * igt@xe_exec_fault_mode@many-bindexecqueue-userptr-invalidate-race:
+>     - {shard-lnl}:        NOTRUN -> [ABORT][8]
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-5/igt@xe_exec_fault_mode@many-bindexecqueue-userptr-invalidate-race.html
+> 
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between XEIGT_7880_full and XEIGTPW_11243_full:
+> 
+> ### New IGT tests (81) ###
+> 
+>   * igt@msm/msm_mapping@ring:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_mapping@shadow:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_mapping@sqefw:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_recovery@gpu-fault:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_recovery@gpu-fault-parallel:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_recovery@hangcheck:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_recovery@iova-fault:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-8:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-madvise-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-madvise-8:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-oom-32:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-oom-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-sanitycheck-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-gpu-sanitycheck-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-8:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-madvise-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-madvise-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-oom-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-oom-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-sanitycheck-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-dmabuf-sanitycheck-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-madvise-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-madvise-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-oom-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-oom-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-sanitycheck-32:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_shrink@copy-mmap-sanitycheck-8:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@empty-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@invalid-cmd-idx-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@invalid-cmd-type-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@invalid-duplicate-bo-submit:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@invalid-flags-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@invalid-in-fence-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@invalid-queue-submit:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submit@valid-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-10-bos:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-10-bos-no-implicit-sync:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-100-bos:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-100-bos-no-implicit-sync:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-1000-bos:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-1000-bos-no-implicit-sync:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-250-bos:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-250-bos-no-implicit-sync:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-500-bos:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@msm/msm_submitoverhead@submitbench-500-bos-no-implicit-sync:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_gem_new@gem-new-0:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_gem_new@gem-new-4096:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_gem_new@gem-new-zeroed:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_get_param@base-params:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_get_param@get-bad-padding:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_get_param@get-bad-param:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_prime@gem-prime-import:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-reset:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit-and-close:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit-error-bad-bo-handles:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit-error-bad-in-syncs:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit-error-bad-out-sync:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit-error-bad-requirements:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-submit-error-no-jc:
+>     - Statuses :
+>     - Exec time: [None] s
+> 
+>   * igt@panfrost/panfrost_submit@pan-unhandled-pagefault:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_execution_buffer@buffer-create:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_execution_buffer@execution-buffer-submit-sync:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_execution_buffer@mob-create-map:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_mob_stress@max_mob_mem_stress:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@mob_repeated_unref:
+>     - Statuses : 1 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_alloc_ref_unref:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_explicit_mob:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_fd_dup:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_implicit_mob:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_single_surface_multiple_handle:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_two_surfaces:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_ref_count@surface_repeated_unref:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_surface_copy@test_invalid_copies:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_surface_copy@test_invalid_copies_3d:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_tri@tri:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   * igt@vmwgfx/vmw_tri@tri-no-sync-coherent:
+>     - Statuses : 2 skip(s)
+>     - Exec time: [0.0] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_11243_full that come from known issues:
+> 
+
+...cut...
+
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7880 -> IGTPW_11243
+>   * Linux: xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c -> xe-1429-c410bb641ea861fdd70c14ed8cc30d0d9a2ef587
+> 
+>   IGTPW_11243: 11243
+>   IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c: cb97aa28be4f4b914c751ed27bae7782e027826c
+>   xe-1429-c410bb641ea861fdd70c14ed8cc30d0d9a2ef587: c410bb641ea861fdd70c14ed8cc30d0d9a2ef587
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/index.html
