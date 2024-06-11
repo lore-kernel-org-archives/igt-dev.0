@@ -4,59 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEBD8C27C65
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 16:56:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 860FDC27C65
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 18:36:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4BC1610E6ED;
-	Tue, 11 Jun 2024 16:56:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 05EB110E6F9;
+	Tue, 11 Jun 2024 18:36:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fI7OeXem";
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.b="m916QIc3";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4F0A10E6ED
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 16:56:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718125013; x=1749661013;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=uJ9t4BQvVi+zsbjNFYMJ1mkD2RCrsK708gleWZ5L+7I=;
- b=fI7OeXemx90ewjYS4squJT9VtlJlrvy0VV5T8QkDj/guBqZGFAv3svhj
- kEJQzxn9AJnrM8wwxtyYSMvX51/jzy5YFlme84vgiKyMJKJ6HVYq7PI4P
- 3dzsCKjo5T2wMq9jw2iOtkC0192bDI1gbFPj1RPGz6RclKVJuWWinTIVD
- vP1bMK24hVZys/P7+LyqYHDAaJoWEZIR3YDCmZY/3edmJaXr4R9CO2DeJ
- GQCWkp0wgERQSHZc9iTeWIRUh7B2FgfpX5SReDt4t9qubmDrp0amglqi5
- gm7Yh8wSkQPHODF7xBpT0RTwkyGfEhZamyXM/1vOv9bJwftFcALIGR2Mv w==;
-X-CSE-ConnectionGUID: 7ocihx4kTg6/40OSQaUFew==
-X-CSE-MsgGUID: 749XY9vqRaC7cKbIVPF9Ig==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="17773926"
-X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="17773926"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 09:56:53 -0700
-X-CSE-ConnectionGUID: aJqZelKMSJeBo2zGpYfgEQ==
-X-CSE-MsgGUID: znKTcnFPRnOke3kLTmygkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,230,1712646000"; d="scan'208";a="43928128"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jun 2024 09:56:53 -0700
-Date: Tue, 11 Jun 2024 18:56:49 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Nidhi Gupta <nidhi1.gupta@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: Re: =?utf-8?B?4pyX?= CI.xeFULL: failure for IGT cleanup (rev10)
-Message-ID: <20240611165649.cw43ry7vzxb4ozqd@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Nidhi Gupta <nidhi1.gupta@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-References: <20240610080150.3610871-1-bhanuprakash.modem@intel.com>
- <171801516514.31115.3116636002385878390@a6498e030952>
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com
+ [209.85.166.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1FBB10E6F9
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 18:36:35 +0000 (UTC)
+Received: by mail-io1-f48.google.com with SMTP id
+ ca18e2360f4ac-7eb85e80661so106024839f.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 11:36:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=chromium.org; s=google; t=1718130994; x=1718735794;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=hJb9J/FTqJWlPBleNIJnUyoi7oMclCZyXsM7aU7BNL0=;
+ b=m916QIc3AUNnZn1HeiCtseaHMw97IOz8EQVWgrGfWvI+3VultLwW8lIMCXCpMdDrO0
+ G9eeUuSAtct2EbyJAk36FAI0a/P3zg0+bTGhmxGSFumeSq8uP7j1s0MYYqnj0cMn3F2S
+ I6M9xTWFPDVrps3Nt3lCgxMSaWO+ODynRLm/s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718130994; x=1718735794;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=hJb9J/FTqJWlPBleNIJnUyoi7oMclCZyXsM7aU7BNL0=;
+ b=qWrwPEEIYHBrfLpKO68OHBMmcJUrjDUWcp5OESnZGfIWw3NbvErLa6+RYurwUJ+OZv
+ 9L8Uz1f6TVNrJO9NrKOVB+okKccakuG0T8bxJO6b8nSQ01zZmGMLxQN420l5ZdVhanZ8
+ +BNvrghjDTScWg8NS68z7bVfEkQ0hfevgYqLuM/x/JAgszEcRZrQKL6VMF0hTlM2F4Xv
+ cyjG1tdXGZD5KsvC5pz+mZiKtzB9VCBHhDMa1B/UKqF1G1nFj+wx+3z6pfQ5TyV4k14v
+ Tk5ud0VtASXzVLQxFv3bmSLbSpGC7BNof8ZyhJqArhNeaw5AURc2Byw1Ne8thpEdaXDo
+ /oIw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVQVqFiu/1MwqiiuC+wBxgz4FN8iM4QMzrsDhqtpPX/kBSqmgV2SieazC3K5ZOLWt9GwkY2yLt39fJVilFJTYIkaH15apD7e9okrYvKfQ==
+X-Gm-Message-State: AOJu0YyqP67FGOxa8Qfns9n/Q2bicCcfCxyAd775eW31C7JbhqhM93Un
+ sqBi61Yju8H+32KxclOqwvVMOCk7sN+PFZbHrOSOkQLehRt7QKE5kTXhJfHP9BEb4VP+WftdjiO
+ BTDQGV5e7cz4cQIOcbpgxGUG80HbwjB/n6ISb
+X-Google-Smtp-Source: AGHT+IE13iugYVpppiQV0KTa7pSVfPYrB6aCYMI1iFAzg711GC9BOuP5el1mHFyv5I/PTnU6kSpY7x182h+w5J6uxhY=
+X-Received: by 2002:a05:6602:160a:b0:7eb:7ebd:1f9f with SMTP id
+ ca18e2360f4ac-7eb7ebd2365mr832663139f.9.1718130994401; Tue, 11 Jun 2024
+ 11:36:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <171801516514.31115.3116636002385878390@a6498e030952>
+References: <20240610080150.3610871-1-bhanuprakash.modem@intel.com>
+ <20240610080150.3610871-3-bhanuprakash.modem@intel.com>
+ <20240611163957.ljb3sslsarpbuuz3@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20240611163957.ljb3sslsarpbuuz3@kamilkon-DESK.igk.intel.com>
+From: Rob Clark <robdclark@chromium.org>
+Date: Tue, 11 Jun 2024 11:36:22 -0700
+Message-ID: <CAJs_Fx7gZUrHKAyc-Qmp4UenfKEksNCcGwi+fs2-BMpkWh5WiQ@mail.gmail.com>
+Subject: Re: [PATCH i-g-t 2/3] tests/msm: Move MSM tests to new dir
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, 
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Rob Clark <robdclark@chromium.org>, 
+ Helen Koike <helen.koike@collabora.com>, Emma Anholt <emma@anholt.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,446 +81,137 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-06-10 at 10:26:05 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: IGT cleanup (rev10)
-> URL   : https://patchwork.freedesktop.org/series/100801/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_7880_full -> XEIGTPW_11243_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_11243_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_11243_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (3 -> 2)
-> ------------------------------
-> 
->   Missing    (1): shard-adlp 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_11243_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_pipe_crc_basic@suspend-read-crc:
->     - shard-dg2-set2:     NOTRUN -> [DMESG-WARN][1] +1 other test dmesg-warn
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-dg2-432/igt@kms_pipe_crc_basic@suspend-read-crc.html
+On Tue, Jun 11, 2024 at 9:40=E2=80=AFAM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi Bhanuprakash,
+> On 2024-06-10 at 13:31:48 +0530, Bhanuprakash Modem wrote:
+> > Move all MSM specific tests (tests/msm_*) to new dir
+> > (tests/msm/msm_*).
+> >
+>
+> Added msm devs to Cc:
+>
+> Cc: Rob Clark <robdclark@chromium.org>
+> Cc: Helen Koike <helen.koike@collabora.com>
+> Cc: Emma Anholt <emma@anholt.net>
+>
+> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-This kms bug is unrelated.
+a-b
 
-> 
->   * {igt@msm/msm_shrink@copy-mmap-madvise-32} (NEW):
->     - {shard-lnl}:        NOTRUN -> [SKIP][2] +62 other tests skip
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-7/igt@msm/msm_shrink@copy-mmap-madvise-32.html
-> 
->   * igt@vc4/vc4_create_bo@create-bo-0:
->     - shard-dg2-set2:     NOTRUN -> [SKIP][3] +22 other tests skip
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-dg2-432/igt@vc4/vc4_create_bo@create-bo-0.html
-> 
-
-Bhanu: looks like those blocklisting rules for msm and vc4
-do not worked, see also below into skips for panfrost, vmwgfx.
-
-Regards,
-Kamil
-
->   
-> #### Suppressed ####
-> 
->   The following results come from untrusted machines, tests, or statuses.
->   They do not affect the overall result.
-> 
->   * igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions:
->     - {shard-lnl}:        NOTRUN -> [FAIL][4] +1 other test fail
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-8/igt@kms_cursor_legacy@flip-vs-cursor-atomic-transitions.html
-> 
->   * igt@kms_fbcon_fbt@psr-suspend:
->     - {shard-lnl}:        [FAIL][5] ([Intel XE#2028]) -> [FAIL][6]
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7880/shard-lnl-1/igt@kms_fbcon_fbt@psr-suspend.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-3/igt@kms_fbcon_fbt@psr-suspend.html
-> 
->   * igt@v3d/v3d_wait_bo@map-bo-1ns:
->     - {shard-lnl}:        NOTRUN -> [SKIP][7] +87 other tests skip
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-4/igt@v3d/v3d_wait_bo@map-bo-1ns.html
-> 
->   * igt@xe_exec_fault_mode@many-bindexecqueue-userptr-invalidate-race:
->     - {shard-lnl}:        NOTRUN -> [ABORT][8]
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/shard-lnl-5/igt@xe_exec_fault_mode@many-bindexecqueue-userptr-invalidate-race.html
-> 
->   
-> New tests
-> ---------
-> 
->   New tests have been introduced between XEIGT_7880_full and XEIGTPW_11243_full:
-> 
-> ### New IGT tests (81) ###
-> 
->   * igt@msm/msm_mapping@ring:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_mapping@shadow:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_mapping@sqefw:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_recovery@gpu-fault:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_recovery@gpu-fault-parallel:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_recovery@hangcheck:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_recovery@iova-fault:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-8:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-madvise-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-madvise-8:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-oom-32:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-oom-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-sanitycheck-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-gpu-sanitycheck-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-8:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-madvise-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-madvise-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-oom-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-oom-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-sanitycheck-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-dmabuf-sanitycheck-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-madvise-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-madvise-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-oom-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-oom-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-sanitycheck-32:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_shrink@copy-mmap-sanitycheck-8:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@empty-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@invalid-cmd-idx-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@invalid-cmd-type-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@invalid-duplicate-bo-submit:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@invalid-flags-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@invalid-in-fence-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@invalid-queue-submit:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submit@valid-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-10-bos:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-10-bos-no-implicit-sync:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-100-bos:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-100-bos-no-implicit-sync:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-1000-bos:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-1000-bos-no-implicit-sync:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-250-bos:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-250-bos-no-implicit-sync:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-500-bos:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@msm/msm_submitoverhead@submitbench-500-bos-no-implicit-sync:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_gem_new@gem-new-0:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_gem_new@gem-new-4096:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_gem_new@gem-new-zeroed:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_get_param@base-params:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_get_param@get-bad-padding:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_get_param@get-bad-param:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_prime@gem-prime-import:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-reset:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit-and-close:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit-error-bad-bo-handles:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit-error-bad-in-syncs:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit-error-bad-out-sync:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit-error-bad-requirements:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@panfrost/panfrost_submit@pan-submit-error-no-jc:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@panfrost/panfrost_submit@pan-unhandled-pagefault:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_execution_buffer@buffer-create:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_execution_buffer@execution-buffer-submit-sync:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_execution_buffer@mob-create-map:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_mob_stress@max_mob_mem_stress:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@mob_repeated_unref:
->     - Statuses : 1 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_alloc_ref_unref:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_explicit_mob:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_fd_dup:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_implicit_mob:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_single_surface_multiple_handle:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_prime_transfer_two_surfaces:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_ref_count@surface_repeated_unref:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_surface_copy@test_invalid_copies:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_surface_copy@test_invalid_copies_3d:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_tri@tri:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   * igt@vmwgfx/vmw_tri@tri-no-sync-coherent:
->     - Statuses : 2 skip(s)
->     - Exec time: [0.0] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_11243_full that come from known issues:
-> 
-
-...cut...
-
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_7880 -> IGTPW_11243
->   * Linux: xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c -> xe-1429-c410bb641ea861fdd70c14ed8cc30d0d9a2ef587
-> 
->   IGTPW_11243: 11243
->   IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-1413-cb97aa28be4f4b914c751ed27bae7782e027826c: cb97aa28be4f4b914c751ed27bae7782e027826c
->   xe-1429-c410bb641ea861fdd70c14ed8cc30d0d9a2ef587: c410bb641ea861fdd70c14ed8cc30d0d9a2ef587
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11243/index.html
+>
+> > ---
+> >  meson.build           |  8 ++++++++
+> >  tests/meson.build     | 19 ++-----------------
+> >  tests/msm/meson.build | 16 ++++++++++++++++
+> >  3 files changed, 26 insertions(+), 17 deletions(-)
+> >  create mode 100644 tests/msm/meson.build
+> >
+> > diff --git a/meson.build b/meson.build
+> > index 701a5cc35..6ae3c2684 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -276,6 +276,7 @@ includedir =3D get_option('includedir')
+> >  libdir =3D get_option('libdir')
+> >  libexecdir =3D join_paths(get_option('libexecdir'), 'igt-gpu-tools')
+> >  amdgpudir =3D join_paths(libexecdir, 'amdgpu')
+> > +msmdir =3D join_paths(libexecdir, 'msm')
+> >  panfrostdir =3D join_paths(libexecdir, 'panfrost')
+> >  v3ddir =3D join_paths(libexecdir, 'v3d')
+> >  vc4dir =3D join_paths(libexecdir, 'vc4')
+> > @@ -316,6 +317,12 @@ if get_option('use_rpath')
+> >       endforeach
+> >       amdgpudir_rpathdir =3D join_paths(amdgpudir_rpathdir, libdir)
+> >
+> > +     msm_rpathdir =3D '$ORIGIN'
+> > +     foreach p : msmdir.split('/')
+> > +             msm_rpathdir =3D join_paths(msm_rpathdir, '..')
+> > +     endforeach
+> > +     msm_rpathdir =3D join_paths(msm_rpathdir, libdir)
+> > +
+> >       panfrost_rpathdir =3D '$ORIGIN'
+> >       foreach p : panfrostdir.split('/')
+> >               panfrost_rpathdir =3D join_paths(panfrost_rpathdir, '..')
+> > @@ -343,6 +350,7 @@ else
+> >       bindir_rpathdir =3D ''
+> >       libexecdir_rpathdir =3D ''
+> >       amdgpudir_rpathdir =3D ''
+> > +     msm_rpathdir =3D ''
+> >       panfrost_rpathdir =3D ''
+> >       v3d_rpathdir =3D ''
+> >       vc4_rpathdir =3D ''
+> > diff --git a/tests/meson.build b/tests/meson.build
+> > index 16896de99..122fbd07c 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -314,14 +314,6 @@ intel_xe_progs =3D [
+> >       'xe_sysfs_scheduler',
+> >  ]
+> >
+> > -msm_progs =3D [
+> > -     'msm_mapping',
+> > -     'msm_recovery',
+> > -     'msm_shrink',
+> > -     'msm_submit',
+> > -     'msm_submitoverhead',
+> > -]
+> > -
+> >  chamelium_progs =3D [
+> >       'kms_chamelium_audio',
+> >       'kms_chamelium_color',
+> > @@ -424,15 +416,6 @@ foreach prog : intel_progs
+> >       endif
+> >  endforeach
+> >
+> > -foreach prog : msm_progs
+> > -     test_executables +=3D executable(prog, join_paths('msm', prog + '=
+.c'),
+> > -                                    dependencies : test_deps,
+> > -                                    install_dir : libexecdir,
+> > -                                    install_rpath : libexecdir_rpathdi=
+r,
+> > -                                    install : true)
+> > -     test_list +=3D prog
+> > -endforeach
+> > -
+> >  if chamelium.found()
+> >       foreach prog : chamelium_progs
+> >               testexe =3D executable(prog,
+> > @@ -457,6 +440,8 @@ endif
+> >
+> >  subdir('amdgpu')
+> >
+> > +subdir('msm')
+> > +
+> >  subdir('panfrost')
+> >
+> >  subdir('v3d')
+> > diff --git a/tests/msm/meson.build b/tests/msm/meson.build
+> > new file mode 100644
+> > index 000000000..74169b5b2
+> > --- /dev/null
+> > +++ b/tests/msm/meson.build
+> > @@ -0,0 +1,16 @@
+> > +msm_progs =3D [
+> > +     'msm_mapping',
+> > +     'msm_recovery',
+> > +     'msm_shrink',
+> > +     'msm_submit',
+> > +     'msm_submitoverhead',
+> > +]
+> > +
+> > +foreach prog : msm_progs
+> > +     test_executables +=3D executable(prog, prog + '.c',
+> > +                                    dependencies : test_deps,
+> > +                                    install_dir : msmdir,
+> > +                                    install_rpath : msm_rpathdir,
+> > +                                    install : true)
+> > +     test_list +=3D join_paths('msm', prog)
+> > +endforeach
+> > --
+> > 2.43.2
+> >
