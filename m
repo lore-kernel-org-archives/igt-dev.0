@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1693AC27C5E
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 08:04:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0217C25B76
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 08:04:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 949A610E56D;
-	Tue, 11 Jun 2024 08:04:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70F8D10E570;
+	Tue, 11 Jun 2024 08:04:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E6F7tkmQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UJpLBbwQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C81E10E56C
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 08:04:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8AFB810E56C
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 08:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718093074; x=1749629074;
+ t=1718093076; x=1749629076;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g71HNcvJEKVzQcCT6PoDKlBUaRfct5ikzyPFwsx6GuU=;
- b=E6F7tkmQqFLf5oGVNW26qwGODIrlnULNtH8b3obRgn4aLBO81COEe67G
- 6+pc22K/xiIyePfI4M765hnAsqDL4TileeztXDLOySD4KGkoBtrKz/pzU
- ryE0DLV+QQ/jBh2NoBNRuIwVuoGPk88UvCw3HnWXTjxYqHWJ/EiZvrdFH
- CCZKZeGsJcWgP2A/h+V5qghzbsVJS2Q23XEWlQfM2vUlACjHk6nf/YHUj
- 0wPZyRH2ZKdTYWUI2Av4TnsfRUZclUrWtx792F8PAPw5FH0zMlwOVKN+b
- NVevHlet8p38gtA2DCs1vnmT8wlhONALUAjTp0PqVNVu608KZEz7wlnM9 w==;
-X-CSE-ConnectionGUID: nuT8Q4jLRWmqYICpLRY3eg==
-X-CSE-MsgGUID: ze6QCcxHRay1jRCNU/jeXw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25907316"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="25907316"
+ bh=5H1tmi6EvdxnoYanDBuRv6XQtr9oP+VLpd3oQxZHrf0=;
+ b=UJpLBbwQ8pVRB1Tq1DnI+yh3TJ7k8Nim7cV2dRzir16iLkOmlFeqcwzh
+ gU2C9EPpPlv+pWMJGLS6Pd1kJCpupOsJqq1oT0gitfgbLnTmqoM4TX4r+
+ k4n8nIEYP5FNInuppJYjPAvvECvQD0+XCVtbfVJsS0T0HD+7PZGosvGHd
+ HKYkV0uzDBB/3bL7D4nv5z3BrBBpBcc0nFTJAZ0OQ6EnfvPPFLQo9DUek
+ hk16JLunJqxxLqfGktXoFzwciRbjVm15goumvnOT0kjAmeguJlqh1V0iX
+ kUNmkMcAoibx4Jzqihk8oWsTEMWiNZcu/xmBGOwxI9aQSVQXCodHQBG/d w==;
+X-CSE-ConnectionGUID: ypqsM32CR/ugvyHuXPBz1g==
+X-CSE-MsgGUID: /f5h+QNCRZm8Q/fb6++ZoA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25907320"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="25907320"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 01:04:34 -0700
-X-CSE-ConnectionGUID: fz53pmFXQ3KDw6z4wA6qvQ==
-X-CSE-MsgGUID: j9XyRdX6SV+OOgYLrfLJHg==
+ 11 Jun 2024 01:04:36 -0700
+X-CSE-ConnectionGUID: 6iaxhJLaSRu8lF0hTjfciQ==
+X-CSE-MsgGUID: WVnYI1FERFG9IzonwpPitg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39336141"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39336144"
 Received: from fpallare-mobl3.ger.corp.intel.com (HELO vgovind2-mobl3..)
  ([10.245.245.127])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 01:04:32 -0700
+ 11 Jun 2024 01:04:35 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, juha-pekka.heikkila@intel.com,
  jouni.hogander@intel.com, jonathan.cavitt@intel.com
-Subject: [PATCH i-g-t v3 2/5] lib/i915/fbc: add fbc frame size check helper
- functions
-Date: Tue, 11 Jun 2024 11:04:13 +0300
-Message-Id: <20240611080416.56878-3-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t v3 3/5] tests/kms_dirtyfb: disable psr feature only if
+ psr possible
+Date: Tue, 11 Jun 2024 11:04:14 +0300
+Message-Id: <20240611080416.56878-4-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240611080416.56878-1-vinod.govindapillai@intel.com>
 References: <20240611080416.56878-1-vinod.govindapillai@intel.com>
@@ -71,93 +71,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add helper functions to check maximum plane size fbc can be
-supported in a display version.
+When kms_dirtyfb tests are executed on cases where PSR is not
+possible the tests are getting skipped. This is because igt_skip
+is use in psr_set function. So avoid calling the psr_disable if
+not necessary.
 
-v2: Add function to get max plane size for FBC (Jonathan Cavitt)
-
-Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com> #v1
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- lib/i915/intel_fbc.c | 55 ++++++++++++++++++++++++++++++++++++++++++++
- lib/i915/intel_fbc.h |  2 ++
- 2 files changed, 57 insertions(+)
+ tests/intel/kms_dirtyfb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index 07ed7f469..2096bd996 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -99,3 +99,58 @@ bool intel_fbc_wait_until_enabled(int device, enum pipe pipe)
- 
- 	return enabled;
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 6121599ec..2a32fab56 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -169,7 +169,10 @@ static void check_feature(data_t *data)
+ static void disable_features(data_t *data)
+ {
+ 	intel_fbc_disable(data->drm_fd);
+-	psr_disable(data->drm_fd, data->debugfs_fd, NULL);
++
++	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
++		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
++
+ 	intel_drrs_disable(data->drm_fd, data->pipe);
  }
-+
-+/**
-+ * intel_fbc_max_plane_size
-+ *
-+ * @fd: fd of the device
-+ * @width: To get the max supported width
-+ * @height: To get the max supported height
-+ *
-+ * Function to update maximum plane size supported by FBC per platform
-+ *
-+ * Returns:
-+ * None
-+ */
-+void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height)
-+{
-+	const uint32_t dev_id = intel_get_drm_devid(fd);
-+	const struct intel_device_info *info = intel_get_device_info(dev_id);
-+	int ver = info->graphics_ver;
-+
-+	if (ver >= 10) {
-+		*width = 5120;
-+		*height = 4096;
-+	} else if (ver >= 8 || IS_HASWELL(fd)) {
-+		*width = 4096;
-+		*height = 4096;
-+	} else if (IS_G4X(fd) || ver >= 5) {
-+		*width = 4096;
-+		*height = 2048;
-+	} else {
-+		*width = 2048;
-+		*height = 1536;
-+	}
-+}
-+
-+
-+/**
-+ * intel_fbc_plane_size_supported
-+ *
-+ * @fd: fd of the device
-+ * @width: width of the plane to be checked
-+ * @height: height of the plane to be checked
-+ *
-+ * Checks if the plane size is supported for FBC
-+ *
-+ * Returns:
-+ * true if plane size is within the range as per the FBC supported size restrictions per platform
-+ */
-+bool intel_fbc_plane_size_supported(int fd, uint32_t width, uint32_t height)
-+{
-+	unsigned int max_w, max_h;
-+
-+	intel_fbc_max_plane_size(fd, &max_w, &max_h);
-+
-+	return width <= max_w && height <= max_h;
-+}
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index 995dc7f1e..5cca5dfd9 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -14,5 +14,7 @@
- bool intel_fbc_supported_on_chipset(int device, enum pipe pipe);
- bool intel_fbc_wait_until_enabled(int device, enum pipe pipe);
- bool intel_fbc_is_enabled(int device, enum pipe pipe, int log_level);
-+void intel_fbc_max_plane_size(int fd, uint32_t *width, uint32_t *height);
-+bool intel_fbc_plane_size_supported(int device, uint32_t width, uint32_t height);
  
- #endif
 -- 
 2.34.1
 
