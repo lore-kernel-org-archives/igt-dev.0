@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 828ACC27C55
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 05:01:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10D12C27C5E
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 07:14:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 11BA410E530;
-	Tue, 11 Jun 2024 05:01:51 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Atui/qr+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD8D310E4B1
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 05:01:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718082106; x=1749618106;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=r7dRrWi/KczIW5ME01A5LmXPfD+F6TqxHXwNV0g6ZBg=;
- b=Atui/qr+rbNxv9EQKJzpMuthx0Wr4uemHGpZbTPJqy669tkitQbegk4y
- WTsYWQ3kyyklp49yqeGyKxZ8WrtsHIRMkLtMbqMX7opWa6nzIcJQMm+Kp
- B+vK6xopU3K8YzLo2aHy5CXfUJKwNIO7eEJ5PbASjyeyOJDC4eAj3DC9S
- q0kqOh98iJMpOT4VH/Vtsk5LwceRfU5b8qoyypgWiACnTXFu3PdEKeK+/
- NDyu5xe9XtE7oD/cJ+TCtH5qrvu/rI+Eayix6W5jQ+8rl104IoneqYT3S
- ywORLtiLZ8aLKqq5KV19JVPW1Jq13c30uLQtCu3sqgbq33ISktkPEAzk2 Q==;
-X-CSE-ConnectionGUID: 8LSi0wKLTMura51RId9c9A==
-X-CSE-MsgGUID: qwbRNOF7QlGCmjnogo2/Pw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14997517"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="14997517"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 22:01:46 -0700
-X-CSE-ConnectionGUID: IMn2fl4TS+CyQ5slBPax3g==
-X-CSE-MsgGUID: lJklNOnZQjmBTWwxUVmQlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39981301"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jun 2024 22:01:45 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 8/8] tests/kms_properties: Create dynamic subtests
-Date: Tue, 11 Jun 2024 10:23:48 +0530
-Message-ID: <20240611045348.3727239-9-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
-References: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4645110E0F5;
+	Tue, 11 Jun 2024 07:14:27 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 124D710E0F5;
+ Tue, 11 Jun 2024 07:14:26 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8446315485174751986=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_IGT_KMS_Test_cleanup_=28rev?=
+ =?utf-8?q?2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Jun 2024 07:14:26 -0000
+Message-ID: <171809006606.66418.12676584915292791251@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,314 +37,203 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+--===============8446315485174751986==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Modified kms_properties to include dynamic test cases.
+== Series Details ==
 
-v2: Fixed compilation issue.
-v3: Removed redundant code.
-v4: Moved get_prop_sanity calls to igt_subtest_group.
-v5: Replace for loop with for_each_disconnected_output.
-v6: Moved cleanup part to igt cleanup patch.
-v7: (Bhanu)
- - Rebase
- - Handle disconnected outputs
+Series: IGT KMS Test cleanup (rev2)
+URL   : https://patchwork.freedesktop.org/series/134685/
+State : success
 
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_properties.c | 188 +++++++++++++++++++----------------------
- 1 file changed, 88 insertions(+), 100 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index bd414f534..17e6c0471 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -268,95 +268,76 @@ static void run_connector_property_tests(igt_display_t *display, enum pipe pipe,
- 
- static void plane_properties(igt_display_t *display, bool atomic)
- {
--	bool found_any = false, found;
- 	igt_output_t *output;
- 	enum pipe pipe;
- 
--	if (atomic)
--		igt_skip_on(!display->is_atomic);
--
--	for_each_pipe(display, pipe) {
--		found = false;
--
--		for_each_valid_output_on_pipe(display, pipe, output) {
--			igt_display_reset(display);
--
--			igt_output_set_pipe(output, pipe);
--			if (!intel_pipe_output_combo_valid(display))
--				continue;
-+	for_each_pipe_with_single_output(display, pipe, output) {
-+		igt_display_reset(display);
- 
--			found_any = found = true;
-+		igt_output_set_pipe(output, pipe);
-+		if (!intel_pipe_output_combo_valid(display))
-+			continue;
- 
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+			      igt_output_name(output)) {
- 			run_plane_property_tests(display, pipe, output, atomic);
--			break;
- 		}
- 	}
--
--	igt_skip_on(!found_any);
- }
- 
- static void crtc_properties(igt_display_t *display, bool atomic)
- {
--	bool found_any_valid_pipe = false, found;
- 	enum pipe pipe;
- 	igt_output_t *output;
- 
--	if (atomic)
--		igt_skip_on(!display->is_atomic);
--
--	for_each_pipe(display, pipe) {
--		found = false;
-+	for_each_pipe_with_single_output(display, pipe, output) {
-+		igt_display_reset(display);
- 
--		for_each_valid_output_on_pipe(display, pipe, output) {
--			igt_display_reset(display);
--
--			igt_output_set_pipe(output, pipe);
--			if (!intel_pipe_output_combo_valid(display))
--				continue;
--
--			found_any_valid_pipe = found = true;
-+		igt_output_set_pipe(output, pipe);
-+		if (!intel_pipe_output_combo_valid(display))
-+			continue;
- 
-+		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+			      igt_output_name(output)) {
- 			run_crtc_property_tests(display, pipe, output, atomic);
--			break;
- 		}
- 	}
--
--	igt_skip_on(!found_any_valid_pipe);
- }
- 
- static void connector_properties(igt_display_t *display, bool atomic)
- {
--	int i;
- 	enum pipe pipe;
- 	igt_output_t *output;
- 
--	if (atomic)
--		igt_skip_on(!display->is_atomic);
--
- 	for_each_connected_output(display, output) {
--		bool found = false;
-+		igt_display_reset(display);
- 
- 		for_each_pipe(display, pipe) {
- 			if (!igt_pipe_connector_valid(pipe, output))
- 				continue;
- 
--			igt_display_reset(display);
--
- 			igt_output_set_pipe(output, pipe);
--			if (!intel_pipe_output_combo_valid(display))
-+			if (!intel_pipe_output_combo_valid(display)) {
-+				igt_output_set_pipe(output, PIPE_NONE);
- 				continue;
-+			}
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+				      igt_output_name(output)) {
-+				run_connector_property_tests(display, pipe, output, atomic);
-+			}
- 
--			found = true;
--			run_connector_property_tests(display, pipe, output, atomic);
- 			break;
- 		}
--
--		igt_assert_f(found, "Connected output should have at least 1 valid crtc\n");
- 	}
- 
--	for (i = 0; i < display->n_outputs; i++)
--		if (!igt_output_is_connected(&display->outputs[i]))
--			run_connector_property_tests(display, PIPE_NONE, &display->outputs[i], atomic);
-+	for_each_disconnected_output(display, output) {
-+		igt_display_reset(display);
-+
-+		igt_dynamic_f("pipe-None-%s", igt_output_name(output))
-+			run_connector_property_tests(display, PIPE_NONE, output, atomic);
-+
-+	}
- }
- 
- static void test_invalid_properties(int fd,
-@@ -424,7 +405,6 @@ static void test_object_invalid_properties(igt_display_t *display,
- 	igt_output_t *output;
- 	igt_plane_t *plane;
- 	enum pipe pipe;
--	int i;
- 
- 	for_each_pipe(display, pipe)
- 		test_invalid_properties(display->drm_fd, id, type, display->pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic);
-@@ -433,7 +413,7 @@ static void test_object_invalid_properties(igt_display_t *display,
- 		for_each_plane_on_pipe(display, pipe, plane)
- 			test_invalid_properties(display->drm_fd, id, type, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
- 
--	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
-+	for_each_output(display, output)
- 		test_invalid_properties(display->drm_fd, id, type, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
- }
- 
-@@ -763,7 +743,6 @@ static void invalid_properties(igt_display_t *display, bool atomic)
- 	igt_output_t *output;
- 	igt_plane_t *plane;
- 	enum pipe pipe;
--	int i;
- 
- 	if (atomic)
- 		igt_skip_on(!display->is_atomic);
-@@ -775,13 +754,33 @@ static void invalid_properties(igt_display_t *display, bool atomic)
- 		for_each_plane_on_pipe(display, pipe, plane)
- 			test_object_invalid_properties(display, plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
- 
--	for (i = 0, output = &display->outputs[0]; i < display->n_outputs; output = &display->outputs[++i])
-+	for_each_output(display, output)
- 		test_object_invalid_properties(display, output->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
- }
- 
- igt_main
- {
- 	igt_display_t display;
-+	int i;
-+	static const struct {
-+		const char *name;
-+		void (*func)(igt_display_t *, bool);
-+		const bool atomic;
-+		const char *desc;
-+	} tests[] = {
-+		{ "plane-properties-legacy", plane_properties, false,
-+		  "Tests plane properties with legacy commit" },
-+		{ "plane-properties-atomic", plane_properties, true,
-+		  "Tests plane properties with atomic commit" },
-+		{ "crtc-properties-legacy", crtc_properties, false,
-+		  "Tests crtc properties with legacy commit" },
-+		{ "crtc-properties-atomic", crtc_properties, true,
-+		  "Tests crtc properties with atomic commit" },
-+		{ "connector-properties-legacy", connector_properties, false,
-+		  "Tests connector properties with legacy commit" },
-+		{ "connector-properties-atomic", connector_properties, true,
-+		  "Tests connector properties with atomic commit" },
-+	};
- 
- 	igt_fixture {
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-@@ -791,59 +790,48 @@ igt_main
- 		igt_display_require(&display, display.drm_fd);
- 	}
- 
--	igt_describe("Tests plane properties with legacy commit");
--	igt_subtest("plane-properties-legacy")
--		plane_properties(&display, false);
--
--	igt_describe("Tests plane properties with atomic commit");
--	igt_subtest("plane-properties-atomic")
--		plane_properties(&display, true);
--
--	igt_describe("Tests crtc properties with legacy commit");
--	igt_subtest("crtc-properties-legacy")
--		crtc_properties(&display, false);
--
--	igt_describe("Tests crtc properties with atomic commit");
--	igt_subtest("crtc-properties-atomic")
--		crtc_properties(&display, true);
--
--	igt_describe("Tests connector properties with legacy commit");
--	igt_subtest("connector-properties-legacy")
--		connector_properties(&display, false);
--
--	igt_describe("Tests connector properties with atomic commit");
--	igt_subtest("connector-properties-atomic")
--		connector_properties(&display, true);
--
--	igt_describe("Checks each property of any type with combination of mode object with legacy "
--		     "commit and make sure only valid properties are set to mode object else "
--		     "return with relevant error");
--
--	igt_subtest("invalid-properties-legacy")
--		invalid_properties(&display, false);
--
--	igt_describe("Checks each property of any type with combination of mode object with atomic "
--		     "commit and make sure only valid properties are set to mode object else "
--		     "return with relevant error");
-+	for (i = 0; i < ARRAY_SIZE(tests); i++) {
-+		igt_describe_f("%s\n", tests[i].desc);
-+		igt_subtest_with_dynamic_f("%s", tests[i].name) {
-+			if (tests->atomic && !display.is_atomic)
-+				continue;
- 
--	igt_subtest("invalid-properties-atomic")
--		invalid_properties(&display, true);
-+			tests[i].func(&display, tests->atomic);
-+		}
-+	}
- 
--	igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
--	igt_subtest("get_properties-sanity-atomic") {
--		igt_skip_on(!display.is_atomic);
--		get_prop_sanity(&display, true);
-+	igt_subtest_group {
-+		igt_describe("Checks each property of any type with combination of mode object "
-+			     "with legacy commit and make sure only valid properties are set to "
-+			     "mode object else return with relevant error");
-+		igt_subtest("invalid-properties-legacy")
-+			invalid_properties(&display, false);
-+
-+		igt_describe("Checks each property of any type with combination of mode object "
-+			     "with atomic commit and make sure only valid properties are set to "
-+			     "mode object else return with relevant error");
-+		igt_subtest("invalid-properties-atomic")
-+			invalid_properties(&display, true);
- 	}
- 
--	igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
--	igt_subtest("get_properties-sanity-non-atomic") {
--		if (display.is_atomic)
--			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
-+	igt_subtest_group {
-+		igt_describe("Test validates the properties of all planes, crtc and connectors with legacy commit");
-+		igt_subtest("get_properties-sanity-non-atomic") {
-+			if (display.is_atomic)
-+				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
-+			get_prop_sanity(&display, false);
-+			if (display.is_atomic)
-+				igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
-+		}
-+	}
- 
--		get_prop_sanity(&display, false);
-+	igt_subtest_group {
-+		igt_fixture
-+			igt_require(display.is_atomic);
- 
--		if (display.is_atomic)
--			igt_assert_eq(drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
-+		igt_describe("Test validates the properties of all planes, crtc and connectors with atomic commit");
-+		igt_subtest("get_properties-sanity-atomic")
-+			get_prop_sanity(&display, true);
- 	}
- 
- 	igt_fixture {
--- 
-2.43.2
+CI Bug Log - changes from CI_DRM_14917 -> IGTPW_11247
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/index.html
+
+Participating hosts (40 -> 35)
+------------------------------
+
+  Missing    (5): fi-kbl-7567u fi-bsw-n3050 fi-snb-2520m fi-glk-j4005 bat-mtlp-8 
+
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_14917 and IGTPW_11247:
+
+### New IGT tests (2) ###
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-8:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.14] s
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-b-dp-8:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.05] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11247 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - {bat-mtlp-9}:       [CRASH][1] ([i915#10911]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14917/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - bat-arls-1:         [DMESG-WARN][3] ([i915#10999]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14917/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@objects:
+    - bat-arls-1:         [DMESG-FAIL][5] ([i915#10262]) -> [PASS][6] +26 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14917/bat-arls-1/igt@i915_selftest@live@objects.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/bat-arls-1/igt@i915_selftest@live@objects.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10262]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262
+  [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
+  [i915#10911]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
+  [i915#10999]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10999
+  [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
+  [i915#11060]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11060
+  [i915#11328]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11328
+  [i915#6121]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121
+  [i915#8585]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8585
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7880 -> IGTPW_11247
+
+  CI-20190529: 20190529
+  CI_DRM_14917: 34997e6c7d5e203ee9b54b8da59270ead2a82c59 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11247: 42e1813d438fd5a17ad3e3408d712eb7beab642b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/index.html
+
+--===============8446315485174751986==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>IGT KMS Test cleanup (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134685/">https://patchwork.freedesktop.org/series/134685/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_14917 -&gt; IGTPW_11247</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/index.html</p>
+<h2>Participating hosts (40 -&gt; 35)</h2>
+<p>Missing    (5): fi-kbl-7567u fi-bsw-n3050 fi-snb-2520m fi-glk-j4005 bat-mtlp-8 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_14917 and IGTPW_11247:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-b-dp-8:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24@pipe-b-dp-8:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.05] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11247 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14917/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">CRASH</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911">i915#10911</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14917/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10999">i915#10999</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@objects:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14917/bat-arls-1/igt@i915_selftest@live@objects.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11247/bat-arls-1/igt@i915_selftest@live@objects.html">PASS</a> +26 other tests pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7880 -&gt; IGTPW_11247</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_14917: 34997e6c7d5e203ee9b54b8da59270ead2a82c59 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11247: 42e1813d438fd5a17ad3e3408d712eb7beab642b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7880: 73618605b4370cf902267aaf1d25666ff5e26112 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8446315485174751986==--
