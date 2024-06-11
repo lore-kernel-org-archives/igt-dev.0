@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0217C25B76
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 08:04:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1023C25B76
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Jun 2024 08:04:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 70F8D10E570;
-	Tue, 11 Jun 2024 08:04:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EBAF510E56C;
+	Tue, 11 Jun 2024 08:04:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UJpLBbwQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Obw1/lWR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AFB810E56C
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 08:04:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E7FB10E56C
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Jun 2024 08:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718093076; x=1749629076;
+ t=1718093079; x=1749629079;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5H1tmi6EvdxnoYanDBuRv6XQtr9oP+VLpd3oQxZHrf0=;
- b=UJpLBbwQ8pVRB1Tq1DnI+yh3TJ7k8Nim7cV2dRzir16iLkOmlFeqcwzh
- gU2C9EPpPlv+pWMJGLS6Pd1kJCpupOsJqq1oT0gitfgbLnTmqoM4TX4r+
- k4n8nIEYP5FNInuppJYjPAvvECvQD0+XCVtbfVJsS0T0HD+7PZGosvGHd
- HKYkV0uzDBB/3bL7D4nv5z3BrBBpBcc0nFTJAZ0OQ6EnfvPPFLQo9DUek
- hk16JLunJqxxLqfGktXoFzwciRbjVm15goumvnOT0kjAmeguJlqh1V0iX
- kUNmkMcAoibx4Jzqihk8oWsTEMWiNZcu/xmBGOwxI9aQSVQXCodHQBG/d w==;
-X-CSE-ConnectionGUID: ypqsM32CR/ugvyHuXPBz1g==
-X-CSE-MsgGUID: /f5h+QNCRZm8Q/fb6++ZoA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25907320"
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="25907320"
+ bh=4HOBD34iGE9/lXYJKanlVaysX8vzeOwFhxx2RdgAf/4=;
+ b=Obw1/lWRreaGpvF4dQuGndD/cgqQsFHHdeuLMYCGWOUTlb+2oD3dIYb7
+ JV7kLYrI0VMWrcngyTh1ClZajTrFZsjtlIBxEJ42XMyqBQi5V/xctMZLF
+ gHqhyiywU/TzI7sX1GoJfVY09h50ts4lWzmXtdAa9XpGuAumLgKFpg2xY
+ Xhna4lUuKSJ8tWkTLHtEkAAP6sgyJ6zar8v46baiCQkTKt4p7oC8N0IQG
+ gbqaNKRhunZl/VVsa6IFsLLckbNtw38rdTdsdu6nEp6/3QIREV7sfCHNu
+ YKcupOkXBkegc+5lk2hJlmg0Q9h5O5R0sQdOnrHTdOOAMaNsGeQTrgWog g==;
+X-CSE-ConnectionGUID: OVfGZT3NQxi0WlTYOfKfmg==
+X-CSE-MsgGUID: sBsRXgpnQie/7XjhSdDcZg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="25907330"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="25907330"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 01:04:36 -0700
-X-CSE-ConnectionGUID: 6iaxhJLaSRu8lF0hTjfciQ==
-X-CSE-MsgGUID: WVnYI1FERFG9IzonwpPitg==
+ 11 Jun 2024 01:04:39 -0700
+X-CSE-ConnectionGUID: VLWA/LU/QTq1j3b9jUJbYA==
+X-CSE-MsgGUID: tVEfdsgESAGkZiILq1tsxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39336144"
+X-IronPort-AV: E=Sophos;i="6.08,229,1712646000"; d="scan'208";a="39336147"
 Received: from fpallare-mobl3.ger.corp.intel.com (HELO vgovind2-mobl3..)
  ([10.245.245.127])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jun 2024 01:04:35 -0700
+ 11 Jun 2024 01:04:37 -0700
 From: Vinod Govindapillai <vinod.govindapillai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: vinod.govindapillai@intel.com, juha-pekka.heikkila@intel.com,
  jouni.hogander@intel.com, jonathan.cavitt@intel.com
-Subject: [PATCH i-g-t v3 3/5] tests/kms_dirtyfb: disable psr feature only if
- psr possible
-Date: Tue, 11 Jun 2024 11:04:14 +0300
-Message-Id: <20240611080416.56878-4-vinod.govindapillai@intel.com>
+Subject: [PATCH i-g-t v3 4/5] tests/kms_dirtyfb: populate modeinfo before
+ feature support check
+Date: Tue, 11 Jun 2024 11:04:15 +0300
+Message-Id: <20240611080416.56878-5-vinod.govindapillai@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240611080416.56878-1-vinod.govindapillai@intel.com>
 References: <20240611080416.56878-1-vinod.govindapillai@intel.com>
@@ -71,32 +71,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When kms_dirtyfb tests are executed on cases where PSR is not
-possible the tests are getting skipped. This is because igt_skip
-is use in psr_set function. So avoid calling the psr_disable if
-not necessary.
+Drmmmodeinfo is required to identify if there are any FBC size
+restrictions applicable to identify FBC is supported for the
+required test. So update drmmodeinfo early for each valid output.
+
+v2: Fix patch description (Jonathan Cavitt)
 
 Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
 ---
- tests/intel/kms_dirtyfb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/intel/kms_dirtyfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index 6121599ec..2a32fab56 100644
+index 2a32fab56..c0eacda9b 100644
 --- a/tests/intel/kms_dirtyfb.c
 +++ b/tests/intel/kms_dirtyfb.c
-@@ -169,7 +169,10 @@ static void check_feature(data_t *data)
- static void disable_features(data_t *data)
+@@ -180,8 +180,6 @@ static void prepare(data_t *data)
  {
- 	intel_fbc_disable(data->drm_fd);
--	psr_disable(data->drm_fd, data->debugfs_fd, NULL);
+ 	igt_plane_t *primary;
+ 
+-	data->mode = igt_output_get_mode(data->output);
+-
+ 	igt_output_set_pipe(data->output, data->pipe);
+ 
+ 	data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+@@ -328,6 +326,8 @@ igt_main
+ 				for_each_valid_output_on_pipe(&data.display,
+ 							      data.pipe,
+ 							      data.output) {
++					data.mode = igt_output_get_mode(data.output);
 +
-+	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
-+		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
-+
- 	intel_drrs_disable(data->drm_fd, data->pipe);
- }
+ 					if (!check_support(&data))
+ 						continue;
  
 -- 
 2.34.1
