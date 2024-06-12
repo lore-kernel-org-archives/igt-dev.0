@@ -4,56 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F86C27C53
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 07:11:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DBD5C27C75
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 07:17:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6528E10E7A6;
-	Wed, 12 Jun 2024 07:11:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A840610E17C;
+	Wed, 12 Jun 2024 07:17:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TTe5G6LD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DppBtP/Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 734B010E7B7
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 07:11:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA35110E17C
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 07:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718176289; x=1749712289;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1fffs1lDQHAQnrhG4MOF08oPsmyCwQg2DOvNNnRSBBc=;
- b=TTe5G6LDFlr1ZXlCj/EBBPgwBvol2OuwkY5KJv1WWnVzVOgCQKx/nDV9
- TCUCrw20DeOZPJ7pkizDHbISncWw3Y24+C6Jl5YtzbbcyWlmKgspI+EJM
- DcE2sFewRjE9lNXG+9g1W9TOeLx7GfyFzK9a8CKI4OS5pu5WXzztobzXf
- OFwTQ2cBX1HXFxYjnHhnULT8bu7yz3Q8nyXMPIFDBdwQUhpE6N2512F4C
- Qv2gzLIls2Zj3uK+QJVp6+0KulZl1UFnASnor5+2JrnTtRn2f4Nzb++yh
- e8cgENYi0fEEyRbNsi+4EfmNOgBuokIRFAJFk1Cc85KLd5P47Ui6q10IE w==;
-X-CSE-ConnectionGUID: pfQ9I4h4QsObPgE1n4YdzA==
-X-CSE-MsgGUID: boIJzUQyTouNX1Ha+tourA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="15092494"
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="15092494"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 00:11:29 -0700
-X-CSE-ConnectionGUID: zo/w8UwASJW34ha7ZHYMZA==
-X-CSE-MsgGUID: H28qZrOWS1CNQtcC0nKwng==
+ t=1718176629; x=1749712629;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=biKtbO/5jrO7AAd7uiN9EHsxsmBbKzB6B3x24W0ioGs=;
+ b=DppBtP/YY+Gyu630H76VCPirGxLsvkox3xQEu77sPL3NAhIa/Ri5bB/+
+ B4OXEWpTASgywSDOaUCRS/BAzNkn9Fjgoh7s5PB3F8Wo5UNjXWFxOmfVW
+ YomK4VJajrAdrOr/BVLzWdY45gOBHz/MP9zJLTRe0I9SWJ+9ECHh1N2nR
+ 29R4McwvSKCq8oT2ZRN0dfBPa3g/CmJ5KIOltQZd/8kZzoi651hPvWOEw
+ pGMyoqUjPNtXe74owDZbAXIulRyQQ07mpPsce1KPw7iUuiR+pTuoKa0+3
+ UZ2VbR4mYyKoWHOtKQcRU6lFvXq5aEOHqR/5dlIY9MRuIu9a6OOQ3Wjpe A==;
+X-CSE-ConnectionGUID: eOYp951HSrK9QJFhhL0R3Q==
+X-CSE-MsgGUID: QUvzHyEWSfe5B/P2h3i5Kw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="32410426"
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="32410426"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 00:17:09 -0700
+X-CSE-ConnectionGUID: RWf/ly71TLKe2iL3rSXZUQ==
+X-CSE-MsgGUID: 2qPWJ0kHSdCL0KWkHQPCBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="62868019"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 00:11:27 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Rob Clark <robdclark@chromium.org>,
- Helen Koike <helen.koike@collabora.com>, Emma Anholt <emma@anholt.net>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [i-g-t V2 2/3] tests/msm: Move MSM tests to new dir
-Date: Wed, 12 Jun 2024 12:33:34 +0530
-Message-ID: <20240612070335.3758500-3-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240612070335.3758500-1-bhanuprakash.modem@intel.com>
-References: <20240612070335.3758500-1-bhanuprakash.modem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="40402077"
+Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.246.4.197])
+ ([10.246.4.197])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 00:17:07 -0700
+Message-ID: <7a34f347-04ae-400e-82f4-3701a7e78c47@intel.com>
+Date: Wed, 12 Jun 2024 09:17:04 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v1 6/7] tests/core_hotunplug: Fix device close
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240607153629.52596-1-kamil.konieczny@linux.intel.com>
+ <20240607153629.52596-7-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240607153629.52596-7-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,122 +73,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move all MSM specific tests (tests/msm_*) to new dir
-(tests/msm/msm_*).
 
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Helen Koike <helen.koike@collabora.com>
-Cc: Emma Anholt <emma@anholt.net>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Acked-by:  Rob Clark <robdclark@chromium.org>
----
- meson.build           |  8 ++++++++
- tests/meson.build     | 19 ++-----------------
- tests/msm/meson.build | 16 ++++++++++++++++
- 3 files changed, 26 insertions(+), 17 deletions(-)
- create mode 100644 tests/msm/meson.build
 
-diff --git a/meson.build b/meson.build
-index 701a5cc35..6ae3c2684 100644
---- a/meson.build
-+++ b/meson.build
-@@ -276,6 +276,7 @@ includedir = get_option('includedir')
- libdir = get_option('libdir')
- libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
- amdgpudir = join_paths(libexecdir, 'amdgpu')
-+msmdir = join_paths(libexecdir, 'msm')
- panfrostdir = join_paths(libexecdir, 'panfrost')
- v3ddir = join_paths(libexecdir, 'v3d')
- vc4dir = join_paths(libexecdir, 'vc4')
-@@ -316,6 +317,12 @@ if get_option('use_rpath')
- 	endforeach
- 	amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, libdir)
- 
-+	msm_rpathdir = '$ORIGIN'
-+	foreach p : msmdir.split('/')
-+		msm_rpathdir = join_paths(msm_rpathdir, '..')
-+	endforeach
-+	msm_rpathdir = join_paths(msm_rpathdir, libdir)
-+
- 	panfrost_rpathdir = '$ORIGIN'
- 	foreach p : panfrostdir.split('/')
- 		panfrost_rpathdir = join_paths(panfrost_rpathdir, '..')
-@@ -343,6 +350,7 @@ else
- 	bindir_rpathdir = ''
- 	libexecdir_rpathdir = ''
- 	amdgpudir_rpathdir = ''
-+	msm_rpathdir = ''
- 	panfrost_rpathdir = ''
- 	v3d_rpathdir = ''
- 	vc4_rpathdir = ''
-diff --git a/tests/meson.build b/tests/meson.build
-index 16896de99..122fbd07c 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -314,14 +314,6 @@ intel_xe_progs = [
- 	'xe_sysfs_scheduler',
- ]
- 
--msm_progs = [
--	'msm_mapping',
--	'msm_recovery',
--	'msm_shrink',
--	'msm_submit',
--	'msm_submitoverhead',
--]
--
- chamelium_progs = [
- 	'kms_chamelium_audio',
- 	'kms_chamelium_color',
-@@ -424,15 +416,6 @@ foreach prog : intel_progs
- 	endif
- endforeach
- 
--foreach prog : msm_progs
--	test_executables += executable(prog, join_paths('msm', prog + '.c'),
--				       dependencies : test_deps,
--				       install_dir : libexecdir,
--				       install_rpath : libexecdir_rpathdir,
--				       install : true)
--	test_list += prog
--endforeach
--
- if chamelium.found()
- 	foreach prog : chamelium_progs
- 		testexe = executable(prog,
-@@ -457,6 +440,8 @@ endif
- 
- subdir('amdgpu')
- 
-+subdir('msm')
-+
- subdir('panfrost')
- 
- subdir('v3d')
-diff --git a/tests/msm/meson.build b/tests/msm/meson.build
-new file mode 100644
-index 000000000..74169b5b2
---- /dev/null
-+++ b/tests/msm/meson.build
-@@ -0,0 +1,16 @@
-+msm_progs = [
-+	'msm_mapping',
-+	'msm_recovery',
-+	'msm_shrink',
-+	'msm_submit',
-+	'msm_submitoverhead',
-+]
-+
-+foreach prog : msm_progs
-+	test_executables += executable(prog, prog + '.c',
-+				       dependencies : test_deps,
-+				       install_dir : msmdir,
-+				       install_rpath : msm_rpathdir,
-+				       install : true)
-+	test_list += join_paths('msm', prog)
-+endforeach
--- 
-2.43.2
+On 07.06.2024 17:36, Kamil Konieczny wrote:
+> Use __drm_device_close for closing a drm device, as for Xe driver
+> it needs to call additional function.
+>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>   tests/core_hotunplug.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+> index ddf11bb00..3b0135fc8 100644
+> --- a/tests/core_hotunplug.c
+> +++ b/tests/core_hotunplug.c
+> @@ -146,7 +146,11 @@ static int close_device(int fd_drm, const char *when, const char *which)
+>   		return fd_drm;
+>   
+>   	local_debug("%sclosing %sdevice instance\n", when, which);
+> -	return local_close(fd_drm, "Device close failed");
+> +	errno = 0;
+> +	if (igt_warn_on_f(__drm_close_driver(fd_drm), "Device close failed\n"))
+> +		return -errno;	/* (never -1) */
+> +
+> +	return -1;	/* success */
+
+We have:
+local_close
+close_device
+__drm_close_driver
+drm_close_driver
+
+Why do not put the code above into some of these and call here just:
+         return proper_close_variant()
+
+Up to you, could be separate patch.
+
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+Regards
+Andrzej
+
+>   }
+>   
+>   static int close_sysfs(int fd_sysfs_dev)
 
