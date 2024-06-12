@@ -4,56 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4F17C27C53
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 09:39:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45284C27C75
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 09:39:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A8C2110E7FE;
-	Wed, 12 Jun 2024 09:39:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C0EF10E801;
+	Wed, 12 Jun 2024 09:39:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fJ4XvTMl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bQHDvi1N";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC7F710E801
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 09:39:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DBD1E10E801
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 09:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718185158; x=1749721158;
- h=from:subject:date:message-id:mime-version:
- content-transfer-encoding:to:cc;
- bh=1j5Y/qmKJKDcRi9BKx/X+zHaZ/P9192u8FWMzH+dMWg=;
- b=fJ4XvTMlQ4A77il11t72HwjOwMS0t0M9Ig0ChX78izclwAp9Jah0i6KC
- RHKWqCP2eg0+7C1G1Gug8WN605JGhCkz6YRT3t7HKMzUxrwErhL4pyFvY
- 5M6yuT//C7RQZEY2UMjZ3iZ4n9pTCCWr6Ji1RDG5bfwJbza3NvPvU2Z7c
- WGslMpxOHwlbCPPfxvKhBNYbrvFGUqWmNMhH9dRsDdfgjbxzgbzQiISwM
- QO29JlDW6uQ7XGm9GFZYk/wHE8F/jkn6CE3AX/RGtoiivdnfOGtl/qFhW
- eLMd3kscam7yH7AIE2dUM9QKvUR/ny8Z87Jz/2Bj+0EBKxqAMJvodq5gf w==;
-X-CSE-ConnectionGUID: K3EQKcoRRJqzoHogdaY7bw==
-X-CSE-MsgGUID: 0mumSobQQfKax21Q4ZwE1Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="14901163"
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="14901163"
+ t=1718185159; x=1749721159;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=1i0GcTRPErELy1IeR3z7Bfb3DUMXepO3cd4Je7u7hlE=;
+ b=bQHDvi1NXCfmrcNcsaEPI9I2qt/TQrfD7O3kYVU/LfEfu7B4BpVYeK1n
+ ElRbKr6gURUJ1wA6yhIn6jwPeZCGDkztKANm/PQjJn/EhBeM//9FMU1lJ
+ prpEk9onshok7X7wYT8ixyj3jDmoQjUSbRjrfHJuXoSc0zhZfrVPvBFJg
+ 1dV93eTba4kHOokSyV55UXPWxVqKqdWI6TCxHYYOxhWi7RtQKI6fEIBmQ
+ Oko8BMCPkG5breCb44aadnwXywXMN1zjssowxkPOwttVI1c8rWZ/FQZIT
+ necvKdHCAB5k5kHGOw1SP32hMe7JQc/xdHGufhykxeDpxkzLrW4JaumiQ g==;
+X-CSE-ConnectionGUID: Pt0uiYvBTQWdFOJ7PszNlA==
+X-CSE-MsgGUID: tRKl3z+LQoWeCzcmt5CcMA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="14901168"
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="14901168"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 02:39:17 -0700
-X-CSE-ConnectionGUID: KtSyXpi9TLWT76UEbrd09w==
-X-CSE-MsgGUID: pOGsWiNZQCaiC7nsu6glyA==
+ 12 Jun 2024 02:39:19 -0700
+X-CSE-ConnectionGUID: NhZBhxUuRpafuuobv7Cvbg==
+X-CSE-MsgGUID: qQWg1txeS+O4iAWfpRk5UA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="39795066"
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="39795069"
 Received: from lab-ah.igk.intel.com ([10.102.138.202])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 02:39:15 -0700
+ 12 Jun 2024 02:39:17 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH v7 0/5] lib/gpgpu: add shader support
-Date: Wed, 12 Jun 2024 11:38:58 +0200
-Message-Id: <20240612-iga64_inline_ups-v7-0-0d4b840498c7@intel.com>
+Date: Wed, 12 Jun 2024 11:38:59 +0200
+Subject: [PATCH v7 1/5] lib/gpu_cmds: add Xe_LP version of emit_vfe_state
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIALJsaWYC/4XOzWrDMBAE4FcJOtetflZrO6e+RylBltaxIJaD5
- JqW4HevHCgxjqHHOcw3c2OJoqfEjocbizT55IeQQ/lyYLYz4UyFdzkzySVwkLrwZ4Nw8uHiA52
- +rqkAVTnXOuRStSzXrpFa/30nPz5zbkyiookm2G6BcmWMZPq33qSR4tLofBqH+HP/MIml9zdXP
- 89NouCFpNpYQNtiY959GOnyaoeeLXOTfABa7PydZAawViUo2/C60ltArQAJO4BaAAmyRFFacmo
- LwH8AZMBKUsJqTbx6AvQaqHYAnYHWuYpqZx2C3QL4AFCIHQAz0KACsqAMCr4G5nn+BZRT5qgXA
- gAA
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240612-iga64_inline_ups-v7-1-0d4b840498c7@intel.com>
+References: <20240612-iga64_inline_ups-v7-0-0d4b840498c7@intel.com>
+In-Reply-To: <20240612-iga64_inline_ups-v7-0-0d4b840498c7@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
  Dominik Grzegorzek <dominik.grzegorzek@intel.com>, 
@@ -62,18 +58,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2985;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3719;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=1j5Y/qmKJKDcRi9BKx/X+zHaZ/P9192u8FWMzH+dMWg=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmaWzACLHPT6UTlzaswADrkz19YpsGrEasUPKd06aF
- IlQt2oiJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZmlswAAKCRAjYrKT3hD91wJWC/
- 9X8FHlxYzVKtppdRDUdPsWlsUNNKKOSYeqnd+Te32Xt5zztuMZzkEhCh4PfOtZ0n2YwJ3qt2eeqSXH
- rrPle2EkHbC7AuKT1z0RWhVtoD24t7rnkNrKtWdvMQVQy8VabNhoPW1wdb66obzt8ltKFyRn1kOfey
- tMQe1jvJZ9gg28NXWFflpDRvC3yTnljO1OSYLTQlTvtBs/ulfyNqF0IrXl1K/okLVVrFNpiPB2TGQQ
- U/4TBTXrEQUycrgR7Vi4b7HwdoiZeB++caALGzxzHOfEFZZ16VZYlfpUfzLOZiRdhhm41VcCVBt0NK
- Q0zd3A3N/SffurNfltOCc1hEcczfhtZyDd8YaaSy7W9j2Fo2eXmE/sw8nucm4hk4RwB5XOmkvZTa64
- yw4xwsNN+Z29jMrmZPKM0eYOacAx7itV8OFIxEMj0MbtyWuWp15t5RaAogT3KLF3BsNVQ1mR/COs5y
- x4yyFfkLRws8AsaAj5TW9LSnEdaRDoWayWdZJ/aXbcM8I=
+ bh=1i0GcTRPErELy1IeR3z7Bfb3DUMXepO3cd4Je7u7hlE=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmaWzBWR3LX/tqZznMHS6WCEhiP/vNkzB/ZE0PoKO9
+ 5cg/cEyJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZmlswQAKCRAjYrKT3hD911RNC/
+ kByp1CGhVSetmXn6kjuiIL+RsrhsJAlNCyCYCHDP+rVSk0Ah2Jf5P4h/B5BvApH58snv4BmPlAHEJX
+ KxN/BhhexD3PkfOQnNSN75WMw4RLYzFvY4Qy/MmdjfzjjgOlwilikTQU8kc/d+iQ8OUhAuxVexPYeO
+ S9xKLqJlFy7yjYfnGzbudQ8yT1tBwM3gCyzmx1meCG9I9XvIUiAQmuhIewCge8Hm1L4lJuHAq7LcEh
+ Q79yWuir8H5eA0qVq5Qm+AIRb5S3cmOHOox5phfls+/ZfsrLeMZxlktbBI8Vkd8swOrHghIPv/QV70
+ IVfzvh6htfd54nWsyFa3qUHgfrJo+M/ICs25aOccmkU+U+K3voxMStMRrDM2i1OmnK2mtvEDXRKH+f
+ KGEdd1SHeIsDcQzPxxO6Cpe9HN4edLV59rTMk+KsRv8pFeNpVB8/mmF1t8ZLOeICw8kHGjJV6DnjzB
+ B8a+t83AJvCICXKteypP/+D3yveSdxRKmPFbotJ+iU1+M=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -91,72 +87,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This patchset adds shader support to mainline IGT.
-Together with iga64 inline assembly and demo test using both.
+In Xe_LP version there is added argument to control EU thread
+dispatching mode. For shaders lagacy mode is used.
 
-The patches were cherry-picked/trimmed from internal branch,
-quite painful process. I hope I have not cut off too much :)
-
-v3:
-- bumped minimal meson version,
-- use old string literals to satisfy clang
-v4:
-- bump meson to latest version supported by CI builder
-v5:
-- just small update, to ping potential reviewers :)
-- revert back required meson version, instead use old syntax to make CI happy
-v6:
-- addressed most Kamil's comments - added docs for public functions,
-  generator script moved to scripts, added ifdef guards to iga64_macros.h,
-  fixed docs and description in xe_exec_sip test
-v7:
-- addressed checkpatch issues,
-- removed "Driver requirement: xe" tag
-
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+v2: added commit description
+v6: added public function descriptions
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
-- Link to v1: https://lore.kernel.org/r/20240429-iga64_inline_ups-v1-0-2e9ac46cf6ba@intel.com
-- Link to v2: https://lore.kernel.org/r/20240515-iga64_inline_ups-v2-0-693743cb0985@intel.com
-- Link to v3: https://lore.kernel.org/r/20240524-iga64_inline_ups-v3-0-62427617ced3@intel.com
-- Link to v4: https://lore.kernel.org/r/20240524-iga64_inline_ups-v4-0-c2e31c55e083@intel.com
-- Link to v5: https://lore.kernel.org/r/20240528-iga64_inline_ups-v5-0-fdd8e9dcd64c@intel.com
-- Link to v6: https://lore.kernel.org/r/20240611-iga64_inline_ups-v6-0-b634ec43a610@intel.com
+ lib/gpu_cmds.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++------
+ lib/gpu_cmds.h |  6 ++++++
+ 2 files changed, 52 insertions(+), 6 deletions(-)
 
----
-Andrzej Hajda (5):
-      lib/gpu_cmds: add Xe_LP version of emit_vfe_state
-      lib/gpgpu_shader: tooling for preparing and running gpgpu shaders
-      lib/gpgpu_shader: add inline support for iga64 assembly
-      lib/igt_sysfs: add helpers to access engine sysfs directory
-      intel/xe_exec_sip: add shader sanity test
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index 378fa9166ab8..b096670b073c 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -651,10 +651,10 @@ gen7_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 	intel_bb_out(ibb, 0);
+ }
+ 
+-void
+-gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+-		    uint32_t urb_entries, uint32_t urb_size,
+-		    uint32_t curbe_size)
++static void
++__gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++		      uint32_t urb_entries, uint32_t urb_size,
++		      uint32_t curbe_size, bool legacy_mode)
+ {
+ 	intel_bb_out(ibb, GEN7_MEDIA_VFE_STATE | (9 - 2));
+ 
+@@ -662,8 +662,8 @@ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 	intel_bb_out(ibb, 0);
+ 	intel_bb_out(ibb, 0);
+ 
+-	/* number of threads & urb entries */
+-	intel_bb_out(ibb, threads << 16 | urb_entries << 8);
++	/* number of threads & urb entries & eu fusion */
++	intel_bb_out(ibb, threads << 16 | urb_entries << 8 | legacy_mode << 6);
+ 
+ 	intel_bb_out(ibb, 0);
+ 
+@@ -676,6 +676,25 @@ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 	intel_bb_out(ibb, 0);
+ }
+ 
++/**
++ * gen8_emit_vfe_state:
++ * @ibb: batchbuffer
++ * @threads: maximum number of threads
++ * @urb_entries: number of URB entries
++ * @urb_size: URB entry allocation size
++ * @curbe_size: CURBE allocation size
++ *
++ * Emits instruction MEDIA_VFE_STATE for Gen8+ which sets Video Front End (VFE)
++ * state.
++ */
++void gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++			 uint32_t urb_entries, uint32_t urb_size,
++			 uint32_t curbe_size)
++{
++	__gen8_emit_vfe_state(ibb, threads, urb_entries, urb_size, curbe_size,
++			      false);
++}
++
+ void
+ gen7_emit_curbe_load(struct intel_bb *ibb, uint32_t curbe_buffer)
+ {
+@@ -864,6 +883,27 @@ gen7_emit_media_objects(struct intel_bb *ibb,
+ 			gen_emit_media_object(ibb, x + i * 16, y + j * 16);
+ }
+ 
++/**
++ * xelp_emit_vfe_state:
++ * @ibb: pointer to intel_bb
++ * @threads: maximum number of threads
++ * @urb_entries: number of URB entries
++ * @urb_size: URB entry allocation size
++ * @curbe_size: CURBE allocation size
++ * @legacy_mode: if set, threads are dispatched individually (legacy mode),
++ *     otherwise they are dispatched in sets(fused EU mode)
++ *
++ * Emits instruction MEDIA_VFE_STATE for XeLP which sets Video Front End (VFE)
++ * state.
++ */
++void xelp_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++			 uint32_t urb_entries, uint32_t urb_size,
++			 uint32_t curbe_size, bool legacy_mode)
++{
++	return __gen8_emit_vfe_state(ibb, threads, urb_entries, urb_size,
++				     curbe_size, legacy_mode);
++}
++
+ /*
+  * XEHP
+  */
+diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
+index 348c6c9453e9..1b9156a80c7c 100644
+--- a/lib/gpu_cmds.h
++++ b/lib/gpu_cmds.h
+@@ -81,6 +81,12 @@ void
+ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
+ 		    uint32_t urb_entries, uint32_t urb_size,
+ 		    uint32_t curbe_size);
++
++void
++xelp_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
++		    uint32_t urb_entries, uint32_t urb_size,
++		    uint32_t curbe_size, bool legacy_mode);
++
+ void
+ gen7_emit_curbe_load(struct intel_bb *ibb, uint32_t curbe_buffer);
+ 
 
- lib/gpgpu_shader.c           | 312 +++++++++++++++++++++++++++++++++++++++++++
- lib/gpgpu_shader.h           |  63 +++++++++
- lib/gpu_cmds.c               |  52 +++++++-
- lib/gpu_cmds.h               |   6 +
- lib/iga64_generated_codes.c  |  87 ++++++++++++
- lib/iga64_macros.h           |  18 +++
- lib/igt_sysfs.c              |  71 ++++++++++
- lib/igt_sysfs.h              |   3 +
- lib/meson.build              |  18 +++
- meson.build                  |   9 +-
- scripts/generate_iga64_codes | 115 ++++++++++++++++
- scripts/meson.build          |   1 +
- tests/intel/xe_exec_sip.c    | 196 +++++++++++++++++++++++++++
- tests/meson.build            |   1 +
- 14 files changed, 942 insertions(+), 10 deletions(-)
----
-base-commit: 73618605b4370cf902267aaf1d25666ff5e26112
-change-id: 20240425-iga64_inline_ups-438ddfd6023f
-
-Best regards,
 -- 
-Andrzej Hajda <andrzej.hajda@intel.com>
+2.34.1
 
