@@ -4,86 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B6D1C27C53
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 11:35:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9C15C27C77
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 11:47:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D87810E21B;
-	Wed, 12 Jun 2024 11:35:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3069710E495;
+	Wed, 12 Jun 2024 11:47:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KMqvxhk4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gahNyOT5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB3EE10E035
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 11:35:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 662C910E066
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 11:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718192141; x=1749728141;
+ t=1718192844; x=1749728844;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=F9C1LIUk61lC4b5ephGDzCiUJ0RN+15leEN+Qm4zll4=;
- b=KMqvxhk4w462zLBMY88eHqG0I4qTRHuBvhMR5SURC4YGTpRIzmGLJA/P
- SFYsb6d/CIFrBRpNuYa6gwlnU4OPpMRXDk44MQXiDMz5EsdPswmF34HNo
- w8tBGKt2boUTnrsD5k7pmHRBBen0oHMHmMvkG5z7KKov5Uh+oe+v3aCAp
- 7rCoONlxgC27iVBLPBQq0gkvJ+S4Lyx92inPB9QRWacdBIvCUcWCmPJj6
- QbkqiUMYYnZQqJc6gx0PtbNIstPqVUucnYOM8jJlC2GfRUjM4zZFhXXKq
- nLmPQgf7HKYOySiS9N3imUGFcVlcVbuo0fuQCN1/6TQWxUsjTfolRTr6v w==;
-X-CSE-ConnectionGUID: 2CnxZgyBTy+1DlWkaQZGlA==
-X-CSE-MsgGUID: YG1q8IydQvS016oFXP2NnQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="26067103"
-X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="26067103"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 04:35:41 -0700
-X-CSE-ConnectionGUID: byk8QTm8SNK/o8DAb3jjcQ==
-X-CSE-MsgGUID: fXmSMIiKQjibomQeXVJA4w==
+ bh=q0DNzAD3t+gg4fKpTTZzBXEZOYK2EoVN5IdQ3xCAdX8=;
+ b=gahNyOT58axKAVXoheDwfRlq8XKO3jSUBZO/UHKRuwrYBoIvBxS8QNry
+ LxTMUZ6w8YM0oCoyos0Mgena/45saTGnSfE93cK+sI2Jxczo4Sb+G9fnc
+ eWKlA1Dn4VX3wFqZFH3LNoFqgrfaVgkBkMaNIaA6t0UbdYrmm51mvPp2+
+ UnQ7tIlivB/fpKr5H1YnbcR43ts6FpDgy6098DihXxTu6Ojk9WQ+q9ADD
+ MUwjhqaOrcgOonf9ZY5TmZBAm4TLII0hhQNsKpzjMD0yXfnEdSSI6Ce9p
+ 2Rp7blhyy2AyFRQPQOF01ia+2LXuFNW+rPHJ/tYk9YbxsnBLKRiAUkLeY g==;
+X-CSE-ConnectionGUID: HiPG+y5mTD69PPtWmz1YZQ==
+X-CSE-MsgGUID: CYmAzC/JQnyvRIJ3HE2qhQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11100"; a="32434490"
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="32434490"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 04:47:20 -0700
+X-CSE-ConnectionGUID: 0sVUXf96R1KJhz6TjgYMPQ==
+X-CSE-MsgGUID: /lhPXEIiRUWENlfdZ79yjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="39649425"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmviesa006.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 12 Jun 2024 04:35:40 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="44895867"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 12 Jun 2024 04:47:20 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 12 Jun 2024 04:35:39 -0700
+ 15.1.2507.39; Wed, 12 Jun 2024 04:47:19 -0700
 Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 12 Jun 2024 04:35:39 -0700
+ 15.1.2507.39 via Frontend Transport; Wed, 12 Jun 2024 04:47:19 -0700
 Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
  by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 12 Jun 2024 04:35:39 -0700
+ 15.1.2507.39; Wed, 12 Jun 2024 04:47:17 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UMh1zZsBsfJTx5dZo/3D2NL47VU4yNYYxdtcBPNdFJWWu520N74CyeiFJSJqYM0hIAJCylZlc5EdnnvLvSB08wzNIqwnI6J1Uxs6vArEPC4vMxzdU28MXqJ2+TmtllpT/UMkzjZBqQlBU4D/j7AUprljGZ1vTk7ZXtCWiPmNzXJewnYPap5e7p6TPryRQVR7h4h0vETgl+v4X04C44i88fiekA8KuHVOo17torvRd/Jns8YFqKJfykFHJ3DD/8qPmJ3MyEXXPX2/W5hj1405qcJi+nuTIH/ORDqYFHX1lpyMKnuvRzUOippnu9l3X6HmBt3X9pVarLSgV2NVdTRWbQ==
+ b=EEOmSq4g29fQPSqfNnU3BiUQBmqJjLzBSRjErZahexIBnyXHEcd8hiUjYmTY882386tmf2t9FNNB82a4Ath5UlTI/mQGts+ammSzCcQxfHmTTqUiLJ3Wnl0Dc1b62HtSXcfhGgth9Nk3+4QpH5vYrcgabr73L797NG9QQEJp1uSkH9C3Jv5I33/pRtIZ4Y8YreXQ+KPqlSgRH9g9tGSdok+k6WZpIU6wWMc2Kfr0j0r23MXfFECnXZdwyPahOy4CLUYkPCOYTpLptm93s1UdDKaNc80jDY85Gtlzw2MSOO2V2waygCWwBOtqarbD2Csd7UdZUrR4VmVJYo8gNsA2sQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OvfMqoXEYm7qMKLX7zyWcKVvczTj5gpuf9V1TUuYGoo=;
- b=mFBiaQldhMNplWrEuCAEW2Ab4TnBwAmkuM+Om9zGt5/P4BJu9lsY7g/QsCRPqvUVPc5I+4gLiSmO0Db3dHuLwQKX0YcZjO90FVcwjN3zHAlFnX8s7iv9LqaE+T8fwneB6bobakbwnlWdkYmRaEfw5wdAvLoxdPvo/rv+ovr8y+UfIxFCXwTTgP7ePLkX0ccQ5wU8gg05LQjSC+SpYso+wyMVulxGi2470znhm94IwBzNgy2Mg1j6iTyNoDr88zN6cPgo0ZgzNoYUjJwafvptkPIZYsAw7oionI5HzFJtgTv3YODeQTJ4G4VQ0P7WB743Gh8GhJsT43PFXd0kLPxTEg==
+ bh=CFlsX33Xv2UnUkZ+Sk/9HDpQLHik8DH0tkHFdVnHLQQ=;
+ b=g7NsDCGs4NNl7ZngsDTFJ2lz2u9dNp6egAuJV9f1NEsCbP2feAJg2V3AC1ln1YwCAKWz7+2fMSWoNyRemSAksvfr0Kh1ob2K92va9hp9da4qcQvEs+qi3hNtZQu4TDzhE6D+crw6EI5KxFeQt4lTuQT/nWJC1lqInQTYT6s6PuxOIJ+xIboCtvbF+vUGQ+BP/QMUA27hE1k3cjt8ObqySMbt2FpeXXamlRyfMkAepoeEhUpm7XaqlkBFUMFpXRqqVU0FcwEgImza1es3rLq/POUO6iapFrtcIBg5HUpCokhjPIk6CA33RSy5ZcYwW5bSYe5ULirYPvmtsXCXukUMZg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
- MW4PR11MB7006.namprd11.prod.outlook.com (2603:10b6:303:22f::14) with
+ IA0PR11MB7789.namprd11.prod.outlook.com (2603:10b6:208:400::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Wed, 12 Jun
- 2024 11:35:37 +0000
+ 2024 11:47:15 +0000
 Received: from DM4PR11MB6312.namprd11.prod.outlook.com
  ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
  ([fe80::faad:f9ae:2b45:e9ba%2]) with mapi id 15.20.7633.037; Wed, 12 Jun 2024
- 11:35:37 +0000
+ 11:47:15 +0000
 From: "B, Jeevan" <jeevan.b@intel.com>
 To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-Subject: RE: [PATCH i-g-t 7/8] tests/kms_universal_plane: Test cleanup
-Thread-Topic: [PATCH i-g-t 7/8] tests/kms_universal_plane: Test cleanup
-Thread-Index: AQHau7x+B3mHQwnTjkOde7Y/NtEcFrHEAa2w
-Date: Wed, 12 Jun 2024 11:35:37 +0000
-Message-ID: <DM4PR11MB63126430A474B5EB5545331A90C02@DM4PR11MB6312.namprd11.prod.outlook.com>
+CC: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>, "Modem, Bhanuprakash"
+ <bhanuprakash.modem@intel.com>
+Subject: RE: [PATCH i-g-t 8/8] tests/kms_properties: Create dynamic subtests
+Thread-Topic: [PATCH i-g-t 8/8] tests/kms_properties: Create dynamic subtests
+Thread-Index: AQHau7yADKb9yBPaMEWqtUMlTdJ4JrHEBPKQ
+Date: Wed, 12 Jun 2024 11:47:15 +0000
+Message-ID: <DM4PR11MB63127C67846A9C78980FABDC90C02@DM4PR11MB6312.namprd11.prod.outlook.com>
 References: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
- <20240611045348.3727239-8-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240611045348.3727239-8-bhanuprakash.modem@intel.com>
+ <20240611045348.3727239-9-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240611045348.3727239-9-bhanuprakash.modem@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -91,78 +92,78 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|MW4PR11MB7006:EE_
-x-ms-office365-filtering-correlation-id: 7b94bc35-bd14-403f-335a-08dc8ad3c79c
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|IA0PR11MB7789:EE_
+x-ms-office365-filtering-correlation-id: 7c65620b-fba9-4799-0fe2-08dc8ad567d7
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230032|1800799016|366008|376006|38070700010;
-x-microsoft-antispam-message-info: =?us-ascii?Q?4VgDhi5W4jC8IMV1w49VrAVTjcu1qvoOWIQK7Ems/8vpxTwYkS7QPY4T56Y+?=
- =?us-ascii?Q?8bUFVJ/pOrFKiN+zWox4g/GmgLoY/FJhclzkMMoxtdYHfbp9MKlLKFip/A+Y?=
- =?us-ascii?Q?85jNDQw5Afb54Ekfzsu/liFyxmK/sjP1UB5qAMay1ZtLu2fGCw+IP+H0XY7w?=
- =?us-ascii?Q?RE4/Th8K7qZllUGvELZzvDQZxuRIBd3QhPT78HQb8YOkDm4covMvZrWsyu07?=
- =?us-ascii?Q?Aduv56Rm0ggoeC8qNTukytGAoVJmkqLJbpdpBv0Enkp/q1A0bfEaQifwvNgM?=
- =?us-ascii?Q?t/ui9e8drQ3R+uA3zPhySpuwBwjDFIq0YLl8D04smJjCKETnpjOFDZYzOZPp?=
- =?us-ascii?Q?mlkMPQBTnC4i+OhEocJs3WuJ8nWGXysh89EWG3HcX/EBhjDlLaGixsTMp96v?=
- =?us-ascii?Q?PY4YjntIYMQAR5TdlHzqcJa4ZD/QcCayvweonaxdONg+nzJSm4Es2cQAKulD?=
- =?us-ascii?Q?JRSDY7JbtVvoO4/8cRClFMy5Ou+UEMq1noDxb7vEy2n2gSKSX7abQPUm5x1D?=
- =?us-ascii?Q?rBBi3VZs93wJyWydXuszubrvmKkYHnsgpemNM+bXSjkDEPOFrIgRrB8Ny4/q?=
- =?us-ascii?Q?2w1e/xn20f3fySCjCLYJUM21bh17DwlAnOxnn6MSfd6V/+Q9xfxGgVnrQE0D?=
- =?us-ascii?Q?ISul9SNv+sEhtAIRrkW3nCKyznx5qPpQ3gwxCupVkkAp/hsaiE+jtAWHCao/?=
- =?us-ascii?Q?gVIOxagucjjcTs/901kPShAYfrVNBZ8ZXYN5Mv9UGRaNxsaA/KK1UfpAPB2Q?=
- =?us-ascii?Q?3DthqlYsPuHVAA2ltxAllNGUMPGcJx/7C27Sdn7pq4/9+j676TbkXBMTkVs6?=
- =?us-ascii?Q?DocmUiHQUd7p3tNYug+FOTnjurA8mIGbA270ixmopCSG0kchCpn3rujweclG?=
- =?us-ascii?Q?mU7YTXHDIpQ+DvVUZm06kp9jcjTAJBMN2Vy0SVi0XEQzd4HQX2J6cz9R7hGA?=
- =?us-ascii?Q?98yWkeM69ytrkM5saq6XBEaoU6mV3rIV8AANSnnVtScQtyiItHy7VwsBCRku?=
- =?us-ascii?Q?4nm5XN19UbgNNLI6s7W67fxsVxWAHn4sr7oZ2RuMMsayiJG79RffnSQrugxV?=
- =?us-ascii?Q?YZn9WEbe8pUz6UN7P0rWj1HG11RMInE7yHwUv5POwr72pWL9G+zuhZxyrgLD?=
- =?us-ascii?Q?YGuFUXumDmqNQxBioW8o8T04Q8gjHMVYXggZ6cK5j3UhsUAK+gTRHDF7zxFC?=
- =?us-ascii?Q?8kqQt15m73JrgD9YKlKxjsi33wdrxArKmJ57t6fhrmnt1aR7wtZuhx0fySB4?=
- =?us-ascii?Q?dECA+KS8Kilm3Bddqm7u32oEImGVLWv03XHzGA6l75dCWcDO8Uo3tP2VAWQf?=
- =?us-ascii?Q?BiR4pmF3HfT8NZVQLZPja0EBN6BXyQh5IN55AHBpzFvXN8bRiNI/iCwX2Rvs?=
- =?us-ascii?Q?Tostum0=3D?=
+x-microsoft-antispam-message-info: =?us-ascii?Q?/YzjSyJXT94VYc04VIuFzYXCAW9KzZI4OIWrPEmmEVFAVB+0V8Li7MyP17KN?=
+ =?us-ascii?Q?LpLgIGpvWRM+qjuV0QvejVj6F8nI/RGJXGRsgEfoHUmaRZEBC4hyAgAumf4D?=
+ =?us-ascii?Q?DLcO9EG/uXIne7oOnGmRK1qGnlLziwN+f/gZTBEaAkEpSvCoLcPvQKja81Rn?=
+ =?us-ascii?Q?wNBrxqpxpUcz/uBweoW2R0bYXWfoGah40PzrSdokICu6xQkzbP/EXgCdpWDA?=
+ =?us-ascii?Q?qogDGuKboACY6p5v9jwBVvilBxJrBMD607PVkoxbDB+Kx4b5CeDeDAuzR6lL?=
+ =?us-ascii?Q?TAA0Ae+/SobBky5gULluYUw1DNKnFIzDcJl60sEegJ/MxZ8cTr32PQY28BzO?=
+ =?us-ascii?Q?fGFO4LLv3IMGVrSph5gCmTWgPUlq40ZnwHfSz58sNC8QJsaY4wgXl3vLQ+ut?=
+ =?us-ascii?Q?PoNhj/zl84K3vDYC52z88skQDIHRen/C3p2lNVntM8HXBFK6lq7TiI8QHecD?=
+ =?us-ascii?Q?gcPbiF6AkIoqBiuU3T66njlqynoyjr8RnRe+R0EbfYUSGpheYR5ILIqZJQut?=
+ =?us-ascii?Q?9dWH/sYijrA3khmJxQjNEgfn/SV+dTq5ujlkXMnOWtQI0tcNUN50lqAGmQaF?=
+ =?us-ascii?Q?OzI4DP4bJVB8jU8qImca4tvaxErXAI3W6QNBFx7xXVFusSAW650wYTmiS5Ww?=
+ =?us-ascii?Q?9ue+oIZDA3eyeLGaHUuQ4ZIBuWbwvMDzKAvxXxElVLhg06DY5pNQv+xspcuT?=
+ =?us-ascii?Q?+Rj/V5a1OkNXpFivd2xSxl4KBfRXPk632hKOgTA4Fq21+W6+nTMFm64pMpdp?=
+ =?us-ascii?Q?p6lVXermegbpPcK10HxxSi6MLZJuRUCwR7zW1iVegN5G2FI9e9LO6WCBm6eG?=
+ =?us-ascii?Q?iOQkpl/xwdI1pRanDpyCI31RTsr0j3ngYo3/a8AIplgN9OIe1zEUwD/mHg+m?=
+ =?us-ascii?Q?gJhGup1dtCDcnBoma2IJUdozIfRk8+XUF9O5PNJEjKIeYpTwV9tcYYoOFARt?=
+ =?us-ascii?Q?y9hroq1+YvXGuq9d4D51y2WVesWKXfqhEpHD3pL0MhHVL++1Q+nB+TIqlmKj?=
+ =?us-ascii?Q?q9ppogFT1zh1i3+WvklZ0o/Xbv96jgq7EFASL4jVrJg8gIWm3ZLpdIngx7mc?=
+ =?us-ascii?Q?eobypu9IfOR5AftPKhpofhoTAVyaezqXvCtOaE8o9heGUdZWc77KfqKvSNV7?=
+ =?us-ascii?Q?5gnqwEyzV0xN0BulDdeQvkkZ7n/LMez+0hjQj2vZpuFevSkpL8uRP3atjNNn?=
+ =?us-ascii?Q?mXtpLzJToeNP63JCu+k8r1DNMvnw8hXFUa7j2t1dU7KPU/m7VAHHwSahZVpY?=
+ =?us-ascii?Q?ZKAbHyjeb01XTESU2RMjIIjFXJJIiRScze6NcArWa9erFNJHowT5ET0crqf3?=
+ =?us-ascii?Q?05BqUSpe5mWIU2bCCBM6+JBHpmauuSDROqzojQARtsCxufs1pfia1q/v0y0S?=
+ =?us-ascii?Q?0ao/+cw=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230032)(1800799016)(366008)(376006)(38070700010); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?DWxBLvTuHCjejjRcRcfwQ5sxsuazvmCAiouV2f51l09VIcXLCu658n+tXK/v?=
- =?us-ascii?Q?qJ9Z2Q0w/dCynMwe6ph25kT9KQyL7JjgijXLLp/WhOMxbl6tO5/K/KgIZcWB?=
- =?us-ascii?Q?bUPRv/y+z+RkrzIyDSbotOWiFIpYnl/PNcgkmKf2wZWUmMwEvGmnSTRwdLyJ?=
- =?us-ascii?Q?zxW9YBlmbmFQWv9nCfefUMlcfGC/XEaUQ0MoQSp+YeTaA24Ub5C+aAhkl9Lh?=
- =?us-ascii?Q?eRB+lJyUibo2voAkO0/92du8RluC2YnUix+PjPkdmy/TaQNqAUm+vnfYTQes?=
- =?us-ascii?Q?+Q7iHKuM/zxQjzOI46Xt+L0JzZOowO6HzaebLIVCTNXTN1ZnP6gHvQz8mjhs?=
- =?us-ascii?Q?nnBBmbt44TEU7SMnHnk4HEtuj5HFlA0F3bcuiXJpdfnvUFnl7I5JaSt8tvOj?=
- =?us-ascii?Q?CI1FV+K05l1EebwkWy3vpYSAWjyaQ+wkw/XmNlSRXo8JqOcVYhMuAz85xXkQ?=
- =?us-ascii?Q?nM9SBLBXX8/Y6W4sdTpQbxEwVy9kVgmp9rkmgX5hw37UGvQrR2l1JVJeNImm?=
- =?us-ascii?Q?/ieCyNzk7zbUaHExCkxy5lpyo+9b1S2i1DA4xRRdL+P4kUFkc+oZLDEx0rV0?=
- =?us-ascii?Q?Tpsj+kqkVDzmxSuQXjBIid2o9g+kotDiYjhAgS7lOTqMYOBPlxT6XHu6g9Mh?=
- =?us-ascii?Q?u0jd8kzayd2FTJIL5AIvsu8hsFnw7EmPZfUBq34fBb4HNScr9a9FC8tjEBqM?=
- =?us-ascii?Q?0ds7vclQ3bh4l8aeJ2/xwHXmtL17A+5QyilbvkpYZwY1hKtgExdqGmf+XuT6?=
- =?us-ascii?Q?ukth3C88BONWsIHGTD7sDkxnjZPPgMMerdTGcSt7Teiq1yZVaG5YW10SIoWR?=
- =?us-ascii?Q?fQCtA9/Fc5Q8ep5M5BblQ7sFVx4rLtq9bx7UZ2SlhVS6Mzj9NN2ak6mLnE57?=
- =?us-ascii?Q?DbdmzrYPBPNiHbfBMbC+sVhzUDU7ycwekiDCmAIME7Dj3b4ENu0s+MGbl4NT?=
- =?us-ascii?Q?LTUqlynuZBIOrL/H3xuWhVMXQYmXQhgAFhEsVznBTLSCYfzlc4k6NuN8ldOS?=
- =?us-ascii?Q?kPMC9dgnDGU/Ql2KdgWBc8dRDvpyw3hr0BkPWQflOQugEVthuDLL/hODyzpy?=
- =?us-ascii?Q?/XT+MjcpOXXWYj9AoHP/Yxxf1H4jBbcPhZPqSawFBZ/Bel/pZI3+x0RvbMUk?=
- =?us-ascii?Q?g/qQsrM23myfUv9Kw3a+O3HF+ew/LMJFykBl1z22JPooW3Klcwd+q0cw/ARn?=
- =?us-ascii?Q?O2Vyrun++W7IBCoGvwGS5+rpqKGxxi0X9OkVYaXy0vTzpyv4sExDAeqNv0zj?=
- =?us-ascii?Q?Q1ZnXVYApabmxn89Apxc3B891k0V29cTvT/kZp+W6cMW3lyYcMlgfpqQOP1s?=
- =?us-ascii?Q?CSzJ3KutC4CG17zuMvmQCBb0lQBC6UKIWMBmJBRadRDTfxXQbroWLocyR0L8?=
- =?us-ascii?Q?e96+Ia1B1LOUpKSpmLha0YVpwMZ7KIk4bKCApUmCCACD8XD7ZsSducMgvOP5?=
- =?us-ascii?Q?1r95WFPnl3wAFk/GqRn6WlTzhobUoa/lN2o84CfFaW03BSCQJRbfQjxsn630?=
- =?us-ascii?Q?8u9R+lshoKXfFfWzgZ20CYfZ8EbRp+aJsrknufAOA91ZRzJROcae6b9Lobj9?=
- =?us-ascii?Q?Vku7r0TC+nPNmmxAf3g=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Y29s9r/ibEV/I4Vy1sul9MhrHc39QDphi2ClWGVDC8/Q6FUJMn8ncPPO01D6?=
+ =?us-ascii?Q?Cs812mkdRZXfazsDYD/6U3nwFZWAHLvBccOelhs0gMBzyVIxKPx22D7Ccz0W?=
+ =?us-ascii?Q?vuMRI439nBw+jLM46Bz8+JWD01Nk34mGHSSCNyFywFdSpkEcWJHnZI4EVAnF?=
+ =?us-ascii?Q?ITzXdiWrc5zDRsT0rjPetDUJTUoXjpXS/aApgfYeTa4/dHb4g0yPepUhrNk+?=
+ =?us-ascii?Q?AUS9kWFWD0RQ2VXUvRmvMBDEsLg2OvVpFAiRuDYgXX/6EENJtvNJtBiUsVCH?=
+ =?us-ascii?Q?jsurgYJF5UZexsesC75F97G8GPNv3zyT+QkEvZeUjfFwle/+6jlNcaf4atK3?=
+ =?us-ascii?Q?zoE7bEXeHo+s9OGxIVA3cfsjpqbgBD922csN4G5SY8oK1/cxv3i5F/KwmSq5?=
+ =?us-ascii?Q?XJ6DOi0nbfz/fjnRVNpbzidzSiFBGN/+rpHSQU5qc1OwsCMw+6gJUt/bLndG?=
+ =?us-ascii?Q?Dr49N0uoO0qYcGbvOUWsTYQ0k7gZRXGFkwGe0IBLLfmv+st8tjBxsqsRBvIR?=
+ =?us-ascii?Q?tIOtgQ6mhGgb1nEF2GI9qVGfqBT7yT1AcYdgluuHSbHJYF+AGwthN38k4Kd8?=
+ =?us-ascii?Q?TT1EvrApKVhP1hj3wyPWG95sZO739/1Dv1yXlBpmeo7Jua05Jj/ohEQqphs7?=
+ =?us-ascii?Q?IhlL8HfaDH+kZWfvG5YsJmqSGIqZwfNSzgHKK1bE8KzIUrTatnO1U9GOYFLK?=
+ =?us-ascii?Q?GrHDPXdkbT0aWI7LXUHslkKeCVqXK5N7izPKju21AVI7SBiZZrEzR1dQzSln?=
+ =?us-ascii?Q?N7K6MYw3hU4TmWVVygBqe3mHJqX5sg2yUCMps71W2//RKVyWtNwmkBTeZO4c?=
+ =?us-ascii?Q?/9HPZ+vFzMImMytABNJvokgnaZqoYJWYQYnIshQ1KxAhhgQ/l7nTJeyuFN22?=
+ =?us-ascii?Q?XPfDuSQNuN93J7eqZFua5aW4mDnW1RP1wSOIsIPUt0wXX4q+Cq9i9oFj2ahZ?=
+ =?us-ascii?Q?s9rhxxq979goqySTLy+ESTaSXxQGnb4L9xUuHB3z6I0MYFnKbcz//hon55Z9?=
+ =?us-ascii?Q?2CBZGfjwp2bLZoaNaaYqBwzqjfWspl/1btqMeytfhA93+8owlG5SlcBHLfRd?=
+ =?us-ascii?Q?nNdHufnpzFKdOEQ6HhrT24sYlzrwYUXIPcdxY1O3OLSP0Mtu4/Qu9NwzYhUw?=
+ =?us-ascii?Q?FvCLrt0Faz5CxxJPVFokRRgI9o4LWDfEQ4fGh9q5A8LjX16PNVpAEoDuobcD?=
+ =?us-ascii?Q?dG5f51Ho1tEfhbA4KD1QABHdAQENF1Ew3QSpI4k+6LqyS6/gdBeb6ruuDGUu?=
+ =?us-ascii?Q?42xqPK3TNRxNrPyBJaF5FylJ2/w23vXqa6QdIlZfT+/ukLlv+dbomI0qJbBH?=
+ =?us-ascii?Q?OHK5HOQeA8O6Q4TKdeSxiCGEHz5OUNK0HJ0+UUOXc6eZLSOcysEHmzmUCvSF?=
+ =?us-ascii?Q?CwuV4qAzFclIRvyL2sM/JSx7wxUB6qCuOzuDPCEciYViyqnR8ubQAYXzFbcF?=
+ =?us-ascii?Q?kDw6hSuSpwK17SiMsXwL0HRRgQmrrGhYYVOsFIeSzkK5i88wNDe1WA2ec+57?=
+ =?us-ascii?Q?qVDL6fYsChGp/AuHsu5I/BU1CEGPPN3oBbpkm0z22Y4oeaMdpDJb3usG8jLy?=
+ =?us-ascii?Q?TxDx33KRb2Jpelzlv6U=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b94bc35-bd14-403f-335a-08dc8ad3c79c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2024 11:35:37.1013 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7c65620b-fba9-4799-0fe2-08dc8ad567d7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2024 11:47:15.3955 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WtqtrbLhcroJPQz7Wa7f2cicP3eXHxbjmSu9eughF66pgyJe333BKUNfDE//AP/JICxma4WlobrSkHZDf7tufw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB7006
+X-MS-Exchange-CrossTenant-userprincipalname: YftxrzMaRAdc16d/NfwWgvzu54HDjIu2hGThjHarcxbJaUuLiOM813l4kgmeritHx2dv+tIMyDYnTuKan2GtDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7789
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -188,72 +189,348 @@ Reviewed-by: Jeevan B <jeevan.b@intel.com>
 > Bhanuprakash Modem
 > Sent: Tuesday, June 11, 2024 10:24 AM
 > To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Subject: [PATCH i-g-t 7/8] tests/kms_universal_plane: Test cleanup
+> Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>; Modem,
+> Bhanuprakash <bhanuprakash.modem@intel.com>
+> Subject: [PATCH i-g-t 8/8] tests/kms_properties: Create dynamic subtests
 >=20
-> Make sure the below points in IGT cleanup:
+> From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 >=20
->  - Sanitize the state before starting the subtest.
->  - Clear the states before exiting the subtest.
->  - Update existing libdrm APIs with IGT kms APIs.
->  - Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
+> Modified kms_properties to include dynamic test cases.
 >=20
+> v2: Fixed compilation issue.
+> v3: Removed redundant code.
+> v4: Moved get_prop_sanity calls to igt_subtest_group.
+> v5: Replace for loop with for_each_disconnected_output.
+> v6: Moved cleanup part to igt cleanup patch.
+> v7: (Bhanu)
+>  - Rebase
+>  - Handle disconnected outputs
+>=20
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  tests/kms_universal_plane.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  tests/kms_properties.c | 188 +++++++++++++++++++----------------------
+>  1 file changed, 88 insertions(+), 100 deletions(-)
 >=20
-> diff --git a/tests/kms_universal_plane.c b/tests/kms_universal_plane.c in=
-dex
-> a6e11777d..8c1ce8143 100644
-> --- a/tests/kms_universal_plane.c
-> +++ b/tests/kms_universal_plane.c
-> @@ -139,7 +139,7 @@ functional_test_fini(functional_test_t *test,
-> igt_output_t *output)
->  	igt_remove_fb(test->data->drm_fd, &test->red_fb);
->  	igt_remove_fb(test->data->drm_fd, &test->yellow_fb);
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c index
+> bd414f534..17e6c0471 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -268,95 +268,76 @@ static void
+> run_connector_property_tests(igt_display_t *display, enum pipe pipe,
 >=20
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
->  	igt_display_commit2(&test->data->display, COMMIT_LEGACY);  }
+>  static void plane_properties(igt_display_t *display, bool atomic)  {
+> -	bool found_any =3D false, found;
+>  	igt_output_t *output;
+>  	enum pipe pipe;
 >=20
-> @@ -386,7 +386,7 @@ sanity_test_fini(sanity_test_t *test, igt_output_t
-> *output)
->  	igt_remove_fb(test->data->drm_fd, &test->undersized_fb);
->  	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+> -	for_each_pipe(display, pipe) {
+> -		found =3D false;
+> -
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			igt_display_reset(display);
+> -
+> -			igt_output_set_pipe(output, pipe);
+> -			if (!intel_pipe_output_combo_valid(display))
+> -				continue;
+> +	for_each_pipe_with_single_output(display, pipe, output) {
+> +		igt_display_reset(display);
 >=20
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
->  	igt_display_commit2(&test->data->display, COMMIT_LEGACY);  }
+> -			found_any =3D found =3D true;
+> +		igt_output_set_pipe(output, pipe);
+> +		if (!intel_pipe_output_combo_valid(display))
+> +			continue;
 >=20
-> @@ -516,7 +516,7 @@ pageflip_test_fini(pageflip_test_t *test, igt_output_=
-t
-> *output)
->  	igt_remove_fb(test->data->drm_fd, &test->red_fb);
->  	igt_remove_fb(test->data->drm_fd, &test->blue_fb);
->=20
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
->  	igt_display_commit2(&test->data->display, COMMIT_LEGACY);  }
->=20
-> @@ -603,7 +603,7 @@ cursor_leak_test_fini(data_t *data,
->  	for (i =3D 0; i < 10; i++)
->  		igt_remove_fb(data->drm_fd, &curs[i]);
->=20
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output)) {
+>  			run_plane_property_tests(display, pipe, output,
+> atomic);
+> -			break;
+>  		}
+>  	}
+> -
+> -	igt_skip_on(!found_any);
 >  }
 >=20
->  static int
-> @@ -752,7 +752,7 @@ gen9_test_fini(gen9_test_t *test, igt_output_t
-> *output)
->  	igt_remove_fb(test->data->drm_fd, &test->smallred_fb);
->  	igt_remove_fb(test->data->drm_fd, &test->smallblue_fb);
+>  static void crtc_properties(igt_display_t *display, bool atomic)  {
+> -	bool found_any_valid_pipe =3D false, found;
+>  	enum pipe pipe;
+>  	igt_output_t *output;
 >=20
-> -	igt_output_set_pipe(output, PIPE_ANY);
-> +	igt_output_set_pipe(output, PIPE_NONE);
->  	igt_display_commit2(&test->data->display, COMMIT_LEGACY);  }
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+> -	for_each_pipe(display, pipe) {
+> -		found =3D false;
+> +	for_each_pipe_with_single_output(display, pipe, output) {
+> +		igt_display_reset(display);
 >=20
+> -		for_each_valid_output_on_pipe(display, pipe, output) {
+> -			igt_display_reset(display);
+> -
+> -			igt_output_set_pipe(output, pipe);
+> -			if (!intel_pipe_output_combo_valid(display))
+> -				continue;
+> -
+> -			found_any_valid_pipe =3D found =3D true;
+> +		igt_output_set_pipe(output, pipe);
+> +		if (!intel_pipe_output_combo_valid(display))
+> +			continue;
+>=20
+> +		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
+> +			      igt_output_name(output)) {
+>  			run_crtc_property_tests(display, pipe, output,
+> atomic);
+> -			break;
+>  		}
+>  	}
+> -
+> -	igt_skip_on(!found_any_valid_pipe);
+>  }
+>=20
+>  static void connector_properties(igt_display_t *display, bool atomic)  {
+> -	int i;
+>  	enum pipe pipe;
+>  	igt_output_t *output;
+>=20
+> -	if (atomic)
+> -		igt_skip_on(!display->is_atomic);
+> -
+>  	for_each_connected_output(display, output) {
+> -		bool found =3D false;
+> +		igt_display_reset(display);
+>=20
+>  		for_each_pipe(display, pipe) {
+>  			if (!igt_pipe_connector_valid(pipe, output))
+>  				continue;
+>=20
+> -			igt_display_reset(display);
+> -
+>  			igt_output_set_pipe(output, pipe);
+> -			if (!intel_pipe_output_combo_valid(display))
+> +			if (!intel_pipe_output_combo_valid(display)) {
+> +				igt_output_set_pipe(output, PIPE_NONE);
+>  				continue;
+> +			}
+> +
+> +			igt_dynamic_f("pipe-%s-%s",
+> kmstest_pipe_name(pipe),
+> +				      igt_output_name(output)) {
+> +				run_connector_property_tests(display, pipe,
+> output, atomic);
+> +			}
+>=20
+> -			found =3D true;
+> -			run_connector_property_tests(display, pipe, output,
+> atomic);
+>  			break;
+>  		}
+> -
+> -		igt_assert_f(found, "Connected output should have at least 1
+> valid crtc\n");
+>  	}
+>=20
+> -	for (i =3D 0; i < display->n_outputs; i++)
+> -		if (!igt_output_is_connected(&display->outputs[i]))
+> -			run_connector_property_tests(display, PIPE_NONE,
+> &display->outputs[i], atomic);
+> +	for_each_disconnected_output(display, output) {
+> +		igt_display_reset(display);
+> +
+> +		igt_dynamic_f("pipe-None-%s", igt_output_name(output))
+> +			run_connector_property_tests(display, PIPE_NONE,
+> output, atomic);
+> +
+> +	}
+>  }
+>=20
+>  static void test_invalid_properties(int fd, @@ -424,7 +405,6 @@ static v=
+oid
+> test_object_invalid_properties(igt_display_t *display,
+>  	igt_output_t *output;
+>  	igt_plane_t *plane;
+>  	enum pipe pipe;
+> -	int i;
+>=20
+>  	for_each_pipe(display, pipe)
+>  		test_invalid_properties(display->drm_fd, id, type, display-
+> >pipes[pipe].crtc_id, DRM_MODE_OBJECT_CRTC, atomic); @@ -433,7 +413,7
+> @@ static void test_object_invalid_properties(igt_display_t *display,
+>  		for_each_plane_on_pipe(display, pipe, plane)
+>  			test_invalid_properties(display->drm_fd, id, type,
+> plane->drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+>=20
+> -	for (i =3D 0, output =3D &display->outputs[0]; i < display->n_outputs;
+> output =3D &display->outputs[++i])
+> +	for_each_output(display, output)
+>  		test_invalid_properties(display->drm_fd, id, type, output->id,
+> DRM_MODE_OBJECT_CONNECTOR, atomic);  }
+>=20
+> @@ -763,7 +743,6 @@ static void invalid_properties(igt_display_t *display=
+,
+> bool atomic)
+>  	igt_output_t *output;
+>  	igt_plane_t *plane;
+>  	enum pipe pipe;
+> -	int i;
+>=20
+>  	if (atomic)
+>  		igt_skip_on(!display->is_atomic);
+> @@ -775,13 +754,33 @@ static void invalid_properties(igt_display_t
+> *display, bool atomic)
+>  		for_each_plane_on_pipe(display, pipe, plane)
+>  			test_object_invalid_properties(display, plane-
+> >drm_plane->plane_id, DRM_MODE_OBJECT_PLANE, atomic);
+>=20
+> -	for (i =3D 0, output =3D &display->outputs[0]; i < display->n_outputs;
+> output =3D &display->outputs[++i])
+> +	for_each_output(display, output)
+>  		test_object_invalid_properties(display, output->id,
+> DRM_MODE_OBJECT_CONNECTOR, atomic);  }
+>=20
+>  igt_main
+>  {
+>  	igt_display_t display;
+> +	int i;
+> +	static const struct {
+> +		const char *name;
+> +		void (*func)(igt_display_t *, bool);
+> +		const bool atomic;
+> +		const char *desc;
+> +	} tests[] =3D {
+> +		{ "plane-properties-legacy", plane_properties, false,
+> +		  "Tests plane properties with legacy commit" },
+> +		{ "plane-properties-atomic", plane_properties, true,
+> +		  "Tests plane properties with atomic commit" },
+> +		{ "crtc-properties-legacy", crtc_properties, false,
+> +		  "Tests crtc properties with legacy commit" },
+> +		{ "crtc-properties-atomic", crtc_properties, true,
+> +		  "Tests crtc properties with atomic commit" },
+> +		{ "connector-properties-legacy", connector_properties, false,
+> +		  "Tests connector properties with legacy commit" },
+> +		{ "connector-properties-atomic", connector_properties, true,
+> +		  "Tests connector properties with atomic commit" },
+> +	};
+>=20
+>  	igt_fixture {
+>  		display.drm_fd =3D drm_open_driver_master(DRIVER_ANY);
+> @@ -791,59 +790,48 @@ igt_main
+>  		igt_display_require(&display, display.drm_fd);
+>  	}
+>=20
+> -	igt_describe("Tests plane properties with legacy commit");
+> -	igt_subtest("plane-properties-legacy")
+> -		plane_properties(&display, false);
+> -
+> -	igt_describe("Tests plane properties with atomic commit");
+> -	igt_subtest("plane-properties-atomic")
+> -		plane_properties(&display, true);
+> -
+> -	igt_describe("Tests crtc properties with legacy commit");
+> -	igt_subtest("crtc-properties-legacy")
+> -		crtc_properties(&display, false);
+> -
+> -	igt_describe("Tests crtc properties with atomic commit");
+> -	igt_subtest("crtc-properties-atomic")
+> -		crtc_properties(&display, true);
+> -
+> -	igt_describe("Tests connector properties with legacy commit");
+> -	igt_subtest("connector-properties-legacy")
+> -		connector_properties(&display, false);
+> -
+> -	igt_describe("Tests connector properties with atomic commit");
+> -	igt_subtest("connector-properties-atomic")
+> -		connector_properties(&display, true);
+> -
+> -	igt_describe("Checks each property of any type with combination of
+> mode object with legacy "
+> -		     "commit and make sure only valid properties are set to
+> mode object else "
+> -		     "return with relevant error");
+> -
+> -	igt_subtest("invalid-properties-legacy")
+> -		invalid_properties(&display, false);
+> -
+> -	igt_describe("Checks each property of any type with combination of
+> mode object with atomic "
+> -		     "commit and make sure only valid properties are set to
+> mode object else "
+> -		     "return with relevant error");
+> +	for (i =3D 0; i < ARRAY_SIZE(tests); i++) {
+> +		igt_describe_f("%s\n", tests[i].desc);
+> +		igt_subtest_with_dynamic_f("%s", tests[i].name) {
+> +			if (tests->atomic && !display.is_atomic)
+> +				continue;
+>=20
+> -	igt_subtest("invalid-properties-atomic")
+> -		invalid_properties(&display, true);
+> +			tests[i].func(&display, tests->atomic);
+> +		}
+> +	}
+>=20
+> -	igt_describe("Test validates the properties of all planes, crtc and
+> connectors with atomic commit");
+> -	igt_subtest("get_properties-sanity-atomic") {
+> -		igt_skip_on(!display.is_atomic);
+> -		get_prop_sanity(&display, true);
+> +	igt_subtest_group {
+> +		igt_describe("Checks each property of any type with
+> combination of mode object "
+> +			     "with legacy commit and make sure only valid
+> properties are set to "
+> +			     "mode object else return with relevant error");
+> +		igt_subtest("invalid-properties-legacy")
+> +			invalid_properties(&display, false);
+> +
+> +		igt_describe("Checks each property of any type with
+> combination of mode object "
+> +			     "with atomic commit and make sure only valid
+> properties are set to "
+> +			     "mode object else return with relevant error");
+> +		igt_subtest("invalid-properties-atomic")
+> +			invalid_properties(&display, true);
+>  	}
+>=20
+> -	igt_describe("Test validates the properties of all planes, crtc and
+> connectors with legacy commit");
+> -	igt_subtest("get_properties-sanity-non-atomic") {
+> -		if (display.is_atomic)
+> -			igt_assert_eq(drmSetClientCap(display.drm_fd,
+> DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> +	igt_subtest_group {
+> +		igt_describe("Test validates the properties of all planes, crtc
+> and connectors with legacy commit");
+> +		igt_subtest("get_properties-sanity-non-atomic") {
+> +			if (display.is_atomic)
+> +
+> 	igt_assert_eq(drmSetClientCap(display.drm_fd,
+> DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> +			get_prop_sanity(&display, false);
+> +			if (display.is_atomic)
+> +
+> 	igt_assert_eq(drmSetClientCap(display.drm_fd,
+> DRM_CLIENT_CAP_ATOMIC, 1), 0);
+> +		}
+> +	}
+>=20
+> -		get_prop_sanity(&display, false);
+> +	igt_subtest_group {
+> +		igt_fixture
+> +			igt_require(display.is_atomic);
+>=20
+> -		if (display.is_atomic)
+> -			igt_assert_eq(drmSetClientCap(display.drm_fd,
+> DRM_CLIENT_CAP_ATOMIC, 1), 0);
+> +		igt_describe("Test validates the properties of all planes, crtc
+> and connectors with atomic commit");
+> +		igt_subtest("get_properties-sanity-atomic")
+> +			get_prop_sanity(&display, true);
+>  	}
+>=20
+>  	igt_fixture {
 > --
 > 2.43.2
 
