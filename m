@@ -4,67 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9AADC27C53
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 12:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3033C27C77
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 13:55:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D31F10E0D0;
-	Wed, 12 Jun 2024 12:59:34 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QhP4mcmp";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AE3110E0D0
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 12:59:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718197171; x=1749733171;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=kq2M+V8+m9dGipUvF1GCkGaZIiDvtldC8Lqs99dSgg8=;
- b=QhP4mcmp+Wm01qXTaC2CT5+USFB6PXkEdxhH3QV/I0dyG7+Q8CX6sl/p
- /djPTYro/a0k4cyHFpeEAdq27CYGBpw5s+ppiQYxVh82KcpeLyw/OLNFU
- IzhLf44Mh9ncNzCPjAjLpqoUHgYhBDBMtXwlB/HWwejWsDEll/H3k8rIY
- wKLVy15IsbXNW9NDozO23D2FSJrIEUjd3TaeUanx4q/MXBvdSzEgTweS1
- hy2DWYawvB3YKZs1rr94QP4KjSHjvjMEK1CmmuWLuUX2d7AEBGNi+tp1+
- bIE2ci4zvDmloBAjvNyfi0QsPTE5v1v69w9QAw75EUQPTAdeUf1WsMUAF Q==;
-X-CSE-ConnectionGUID: xZiqfCJ8QNar2f56btv37A==
-X-CSE-MsgGUID: WqUcdpdbTo69mEdv6l5shA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="17882066"
-X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="17882066"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 05:59:30 -0700
-X-CSE-ConnectionGUID: gYHleVo3Rh2vjBdZeIrsiA==
-X-CSE-MsgGUID: cfU3g0iFRcS4oWpjUbEkBw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="39894559"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 05:59:28 -0700
-Date: Wed, 12 Jun 2024 14:59:25 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: Re: [PATCH v7 4/5] lib/igt_sysfs: add helpers to access engine sysfs
- directory
-Message-ID: <20240612125925.vnz4gttwofdqqx4u@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-References: <20240612-iga64_inline_ups-v7-0-0d4b840498c7@intel.com>
- <20240612-iga64_inline_ups-v7-4-0d4b840498c7@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56C5310E858;
+	Wed, 12 Jun 2024 13:55:45 +0000 (UTC)
+Received: from coelho.fi (paleale.coelho.fi [176.9.41.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6AA0010E863
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 13:55:43 +0000 (UTC)
+Received: from 91-156-7-239.elisa-laajakaista.fi ([91.156.7.239]
+ helo=[192.168.100.137])
+ by coelho.fi with esmtpsa (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+ (Exim 4.97) (envelope-from <luca@coelho.fi>)
+ id 1sHORw-00000001aVO-15dh; Wed, 12 Jun 2024 16:55:40 +0300
+Message-ID: <484d11acf8da0ff94a5627e7fd996b75aedb063c.camel@coelho.fi>
+From: Luca Coelho <luca@coelho.fi>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ igt-dev@lists.freedesktop.org
+Cc: Mark Yacoub <markyacoub@chromium.org>, Manasi Navare
+ <navaremanasi@chromium.org>
+Date: Wed, 12 Jun 2024 16:55:38 +0300
+In-Reply-To: <20240607143806.n5pxivsbfnt5ugbg@kamilkon-DESK.igk.intel.com>
+References: <20240528075855.463729-1-luciano.coelho@intel.com>
+ <20240528075855.463729-2-luciano.coelho@intel.com>
+ <20240529160646.nv6ovnpgw7ttzilz@kamilkon-DESK.igk.intel.com>
+ <6815028c4c13d8c2d3c5080389fdfc4067dbd501.camel@coelho.fi>
+ <20240607143806.n5pxivsbfnt5ugbg@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240612-iga64_inline_ups-v7-4-0d4b840498c7@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/2] lib/igt_chamelium: check
+ drmModeGetConnector() return in wait_for_connected_state()
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,132 +51,123 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andrzej,
-On 2024-06-12 at 11:39:02 +0200, Andrzej Hajda wrote:
-> Helpers follow convention of xe_sysfs_gt_(path|open).
-> 
-> v7:
->   - staticize local const array
-> 
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-> ---
->  lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_sysfs.h |  3 +++
->  2 files changed, 74 insertions(+)
-> 
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index 0c5817eb1580..90b923a99a26 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -40,7 +40,9 @@
->  #include <dirent.h>
->  #include <unistd.h>
->  #include <fcntl.h>
-> +#include <xe_drm.h>
->  
-> +#include "drmtest.h"
->  #include "igt_core.h"
->  #include "igt_sysfs.h"
->  #include "igt_device.h"
-> @@ -263,6 +265,75 @@ int xe_sysfs_gt_open(int xe_device, int gt)
->  	return open(path, O_RDONLY);
->  }
->  
-> +static const char *engine_class_to_str(__u16 class)
+On Fri, 2024-06-07 at 16:38 +0200, Kamil Konieczny wrote:
+> Hi Luca,
+> On 2024-05-30 at 00:13:24 +0300, Luca Coelho wrote:
+> > On Wed, 2024-05-29 at 18:06 +0200, Kamil Konieczny wrote:
+> > > Hi Luca,
+> >=20
+> > Hi Kamil,
+> >=20
+> > > On 2024-05-28 at 10:58:54 +0300, Luca Coelho wrote:
+> > >=20
+> > > change now looks ok but why did you ignored my suggestion
+> > > about short subject?
+> >=20
+> > Oh, sorry, but I didn't _ignore_ your suggestion.  I replied to it,
+> > expressed my opinion and explained why I didn't think it needed to be
+> > changed.
+> >=20
+> >=20
+> > > Please see CONTRIBUTING.md about test
+> > > description:
+> > > The description should contain the spirit of the test (what is
+> > > the general idea behind the test) and *not* the letter (C to English
+> > > translation of the test).
+> >=20
+> > This is not a new test, so I think this doesn't really apply.  This is
+> > a very specific fix in a very specific place of an existing test and I
+> > think getting a general idea of what was wrong in the code and why it
+> > needs to be changed is the right thing to describe here.
+> >=20
+> > This text you quoted is about what should be in igt_describe() and not
+> > in the commit message, right?
+> >=20
+> >=20
+> >=20
+> > > The same principle apply to your subject description of change,
+> > > it should be short, not 'translation from C code of a change'.
+> > > It should also be rather short, up to 75 chars (or maybe even 65)
+> > > to keep it all in mailing list discussion.
+> > > You coould also look into:
+> > > https://patchwork.freedesktop.org/series/134188/
+> > >=20
+> > > So imho here, instead of:
+> > > lib/igt_chamelium: check drmModeGetConnector() return in wait_for_con=
+nected_state()
+> >=20
+> > This describes what was fixed and where.
+> >=20
+>=20
+> You can read it in patch itself after 'diff --git a/...'
 
-Consider changing this to xe_engine_class_to_str but as it
-is static here it can stay as is.
+Of course, the code change will show it, but it's good to know what
+it's about with a quick glance.
 
-With or without it,
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
+> > > imho better:
+> > > lib/igt_chamelium: Fix NULL dereferencing bug in wait_for_connected_s=
+tate()
+> >=20
+> > This describes that something was fixed and where, without specifying
+> > what was fixed.
+> >=20
+> >=20
+> > > or even better:
+> > > lib/igt_chamelium: Fix bug in wait_for_connected_state()
+> >=20
+> > This is even more generic and there could be several bugfixes in this
+> > function which would end up with the same commit subject...
+> >=20
+> >=20
+> > > or maybe:
+> > > lib/igt_chamelium: check drmModeGetConnector() return value before us=
+e
+> >=20
+> > Conversely,this describes what was fixed but not where.
+> >=20
+> >=20
+> > > You could propose other subject if you find a better description.
+> >=20
+> > I generally follow the kernel's coding style.  One important part of
+> > the subject line, IMHO, is the uniqueness and identifiability of it.=
+=20
+> > Like explained here[1]:
+> >=20
+> > "[...]the ``summary phrase`` of your email becomes a
+> > globally-unique identifier for that patch.  It propagates all the way
+> > into the ``git`` changelog.  The ``summary phrase`` may later be used
+> > in
+> > developer discussions which refer to the patch.  People will want to
+> > google for the ``summary phrase`` to read discussion regarding that
+> > patch.  It will also be the only thing that people may quickly see
+> > when, two or three months later, they are going through perhaps
+> > thousands of patches using tools such as ``gitk`` or ``git log
+> > --oneline``."
+> >=20
+> > I admit that the subject is a bit long, but it actually contains only 5
+> > relevant words.  The function names are rather long and, with about 20
+> > characters of boilerplate ("lib/igt_chamelium: ") and 47 chars only in
+> > function names, it's literally impossible to keep the subject line
+> > inside the 70-75 recommended length while still keeping it descriptive
+> > and unique...
+> >=20
+>=20
+> What will you write if you will make change in a few functions?
 
-> +{
-> +	static const char * const str[] = {
-> +		[DRM_XE_ENGINE_CLASS_RENDER] = "rcs",
-> +		[DRM_XE_ENGINE_CLASS_COPY] = "bcs",
-> +		[DRM_XE_ENGINE_CLASS_VIDEO_DECODE] = "vcs",
-> +		[DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE] = "vecs",
-> +		[DRM_XE_ENGINE_CLASS_COMPUTE] = "ccs",
-> +	};
-> +
-> +	if (class < ARRAY_SIZE(str))
-> +		return str[class];
-> +
-> +	return "unk";
-> +}
-> +
-> +/**
-> + * xe_sysfs_engine_path:
-> + * @xe_device: fd of the device
-> + * @gt: gt number
-> + * @class: engine class
-> + * @path: buffer to fill with the sysfs gt path to the device
-> + * @pathlen: length of @path buffer
-> + *
-> + * Returns:
-> + * The directory path, or NULL on failure.
-> + */
-> +char *
-> +xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen)
-> +{
-> +	struct stat st;
-> +	int tile = IS_PONTEVECCHIO(intel_get_drm_devid(xe_device)) ? gt : 0;
-> +
-> +	if (xe_device < 0)
-> +		return NULL;
-> +
-> +	if (igt_debug_on(fstat(xe_device, &st)) || igt_debug_on(!S_ISCHR(st.st_mode)))
-> +		return NULL;
-> +
-> +	snprintf(path, pathlen, "/sys/dev/char/%d:%d/device/tile%d/gt%d/engines/%s",
-> +		 major(st.st_rdev), minor(st.st_rdev), tile, gt, engine_class_to_str(class));
-> +
-> +	if (!access(path, F_OK))
-> +		return path;
-> +
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * xe_sysfs_engine_open:
-> + * @xe_device: fd of the device
-> + * @gt: gt number
-> + * @class: engine class
-> + *
-> + * This opens the sysfs gt directory corresponding to device and tile for use
-> + *
-> + * Returns:
-> + * The directory fd, or -1 on failure.
-> + */
-> +int xe_sysfs_engine_open(int xe_device, int gt, int class)
-> +{
-> +	char path[96];
-> +
-> +	if (!xe_sysfs_engine_path(xe_device, gt, class, path, sizeof(path)))
-> +		return -1;
-> +
-> +	return open(path, O_RDONLY);
-> +}
-> +
->  /**
->   * igt_sysfs_gt_path:
->   * @device: fd of the device
-> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-> index f37d80ec130e..6c604d939013 100644
-> --- a/lib/igt_sysfs.h
-> +++ b/lib/igt_sysfs.h
-> @@ -166,4 +166,7 @@ int xe_sysfs_gt_open(int xe_device, int gt);
->  char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int pathlen);
->  int xe_sysfs_tile_open(int xe_device, int tile);
->  int xe_sysfs_get_num_tiles(int xe_device);
-> +char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
-> +int xe_sysfs_engine_open(int xe_device, int gt, int class);
-> +
->  #endif /* __IGT_SYSFS_H__ */
-> 
-> -- 
-> 2.34.1
-> 
+It's obviously case-by-case.  And it should briefly describe what
+changed.  If it's something in many functions, there should still be a
+common theme for the change in all functions.  For instance:
+
+foo: change bar in all affected functions
+
+
+> Well, I agree that 70-75 is only recomendation, not strict rule.
+
+Everyone should always strive to fit it (or at least make sure it's as
+concise as possible), but if some symbols you want to mention there are
+very long, trying to keep it under 70-75 is moot.
+
+--
+Cheers,
+Luca.
