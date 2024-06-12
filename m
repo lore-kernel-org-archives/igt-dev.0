@@ -4,62 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37669C27C77
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 12:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9783EC27C77
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 12:29:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7076D10E081;
-	Wed, 12 Jun 2024 12:21:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E0CF89ABE;
+	Wed, 12 Jun 2024 12:29:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bRV6ikbT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NSx/yh2+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 649E710E081
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 12:21:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E169D10E846
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 12:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718194880; x=1749730880;
+ t=1718195340; x=1749731340;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=zoKsY3fnekQHN1rxeXe0I2xuuUhaUM2C6FptQcPsn/w=;
- b=bRV6ikbTL1XDVQW46VUNIQJSPpC5HSSScRSfjpbxrBlvmrtc7UxjFIC5
- HHMalFjJxp3JVMrVwvQh992oAgIxUg72siHI9gCW3NiNpKTf5kpun4Y32
- NQ1iA9KafSItHcrcF+VoPhKXZf9nUgL8B/iTq4oCFPC1zX1rBsX251CQb
- GtgKWKWvjlczYGKkLLSR5gLEjnFzUiCnF9wOChTbHuKiPWrSn33Fv/nls
- PgAuuZTXs11ft+P2HdkHi+6jUomfK3rcvjTZJxwsW034Bv1dOqmxc5NCe
- krU/gNmkIOwmn0khLnP7T3RLAJKKMIDbLVQDzmxgzkhNG4/5DcsYtroxt Q==;
-X-CSE-ConnectionGUID: 6v4Q/Hj+SCGTh+PJyLt6qw==
-X-CSE-MsgGUID: nzPVhAW1SEScmVyGUzx6Lw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11100"; a="14794318"
-X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="14794318"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 05:21:20 -0700
-X-CSE-ConnectionGUID: AOyloIGdRKWhJnGPQK86Qg==
-X-CSE-MsgGUID: rcndnO8YTaSSOLrUOijyBg==
+ bh=wt5/87gYg7FNlDh+LdiG6GfTYBsikQS0d8vdTXoVY7w=;
+ b=NSx/yh2+ZG6TUMXfAT8mFcDfl30sc+f5AiDQD4CPxVNL/KfKRRubDWaa
+ SVdWudOGWKI77aph+ndP4BMFOUFoIWd64MP4S8dyb+w8J4MIwEPSnXlOO
+ kmSv6axaDEYhgH66r4996iwV2RKH3xQAiUqUIvH9QnGxob1Z6AbriDdF7
+ c2A0NM0s7LhUZn5CQH735mIm+sV8Op9VNT8BIy5gqG8/u768b/m82OjuN
+ MOIdFmzg2yhQ36cwPniz1zeLuyXJVPmo0dE/gQaQ/PhiVtISGM7Dd2v4K
+ PrKTW8JqpypnLQHaVZmTvySem+0KUUuZdSperG8CefWsg+IyY+eLhHzTY w==;
+X-CSE-ConnectionGUID: Kba6Jn5iQvOdMz3V/V4iTw==
+X-CSE-MsgGUID: L6T3vEFkQByu5nRtz6oDng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11100"; a="25631827"
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="25631827"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 05:29:00 -0700
+X-CSE-ConnectionGUID: HQlLUgM5TQmkjmBXMO/xUA==
+X-CSE-MsgGUID: vWHc+rvRRbuD9L6NMUIVbg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="40246024"
+X-IronPort-AV: E=Sophos;i="6.08,233,1712646000"; d="scan'208";a="62956666"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 05:21:19 -0700
-Date: Wed, 12 Jun 2024 14:21:02 +0200
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2024 05:28:58 -0700
+Date: Wed, 12 Jun 2024 14:28:55 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Jeevan B <jeevan.b@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: Re: [PATCH i-g-t 5/8] tests/kms_tiled_display: Test cleanup
-Message-ID: <20240612122102.koqmwpeteslfracg@kamilkon-DESK.igk.intel.com>
+ Rob Clark <robdclark@chromium.org>,
+ Helen Koike <helen.koike@collabora.com>, Emma Anholt <emma@anholt.net>
+Subject: Re: [i-g-t V2 2/3] tests/msm: Move MSM tests to new dir
+Message-ID: <20240612122855.rwhbyzu24qq2y4qq@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Jeevan B <jeevan.b@intel.com>,
- Mohammed Thasleem <mohammed.thasleem@intel.com>
-References: <20240611045348.3727239-1-bhanuprakash.modem@intel.com>
- <20240611045348.3727239-6-bhanuprakash.modem@intel.com>
+ Rob Clark <robdclark@chromium.org>,
+ Helen Koike <helen.koike@collabora.com>,
+ Emma Anholt <emma@anholt.net>
+References: <20240612070335.3758500-1-bhanuprakash.modem@intel.com>
+ <20240612070335.3758500-3-bhanuprakash.modem@intel.com>
+ <20240612085917.fuedflaohprijgr2@kamilkon-DESK.igk.intel.com>
+ <5bd489d6-4582-4580-88bb-65c4fe2580e0@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240611045348.3727239-6-bhanuprakash.modem@intel.com>
+In-Reply-To: <5bd489d6-4582-4580-88bb-65c4fe2580e0@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,251 +78,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Bhanuprakash,
-On 2024-06-11 at 10:23:45 +0530, Bhanuprakash Modem wrote:
-> Make sure the below points in IGT cleanup:
+Hi Modem,,
+On 2024-06-12 at 16:26:43 +0530, Modem, Bhanuprakash wrote:
 > 
-> - Sanitize the state before starting the subtest.
-> - Clear the states before exiting the subtest.
-> - Update existing libdrm APIs with IGT kms APIs.
-> - Other misc (Ex: update deprecated APIs/macros/enums, FB leaks etc..)
+> On 12-06-2024 02:29 pm, Kamil Konieczny wrote:
+> > Hi Bhanuprakash,
+> > On 2024-06-12 at 12:33:34 +0530, Bhanuprakash Modem wrote:
+> > > Move all MSM specific tests (tests/msm_*) to new dir
+> > > (tests/msm/msm_*).
+> > > 
+> > > Cc: Rob Clark <robdclark@chromium.org>
+> > > Cc: Helen Koike <helen.koike@collabora.com>
+> > > Cc: Emma Anholt <emma@anholt.net>
+> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> > > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > Acked-by:  Rob Clark <robdclark@chromium.org>
+> > > ---
+> > >   meson.build           |  8 ++++++++
+> > >   tests/meson.build     | 19 ++-----------------
+> > >   tests/msm/meson.build | 16 ++++++++++++++++
+> > >   3 files changed, 26 insertions(+), 17 deletions(-)
+> > 
+> > I do not see any msm files moved, is this an ommision?
+> 
+> Yeah, we are not moving any source files, but we are storing bins in new
+> directory.
+> 
+> Can I change the commit message?
+> 
+> - Bhanu
 
-While other patches from series looks simple this one is a lot
-bigger and complicated. I suggest to split it into cleanups and
-simplifications and putting more complicated changes into
-separate patch.
+If you made a big change to patch you should remove r-b and a-b,
+as this could potentially break someones ci.
+
+For me it is ok but please resend with subject change and
+description updated and wait for ack from Rob.
+
+btw whats wrong with binaries msm_* in build/tests ?
 
 Regards,
 Kamil
 
 > 
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_tiled_display.c | 129 ++++++++++++++------------------------
->  1 file changed, 48 insertions(+), 81 deletions(-)
-> 
-> diff --git a/tests/kms_tiled_display.c b/tests/kms_tiled_display.c
-> index 3ffd6a9a4..2096a63e1 100644
-> --- a/tests/kms_tiled_display.c
-> +++ b/tests/kms_tiled_display.c
-> @@ -79,7 +79,6 @@ typedef struct {
->  	igt_fb_t fb_test_pattern;
->  	igt_display_t display;
->  	data_connector_t *conns;
-> -	enum igt_commit_style commit;
->  	struct timeval first_ts;
->  	int linetime_us;
->  
-> @@ -188,25 +187,6 @@ reset_plane(igt_output_t *output)
->  	igt_plane_set_fb(primary, NULL);
->  }
->  
-> -static void reset_output(igt_output_t *output)
-> -{
-> -	igt_output_set_pipe(output, PIPE_NONE);
-> -}
-> -
-> -static void reset_mode(data_t *data)
-> -{
-> -	int count;
-> -	igt_output_t *output;
-> -	data_connector_t *conns = data->conns;
-> -
-> -	for (count = 0; count < data->num_h_tiles; count++) {
-> -		output = igt_output_from_connector(&data->display,
-> -						   conns[count].connector);
-> -		igt_output_set_pipe(output, PIPE_NONE);
-> -	}
-> -	igt_display_commit2(&data->display, data->commit);
-> -}
-> -
->  static void test_cleanup(data_t *data)
->  {
->  	int count;
-> @@ -215,11 +195,11 @@ static void test_cleanup(data_t *data)
->  	for (count = 0; count < data->num_h_tiles; count++) {
->  		if (conns[count].output) {
->  			reset_plane(conns[count].output);
-> -			reset_output(conns[count].output);
-> +			igt_output_set_pipe(conns[count].output, PIPE_NONE);
->  		}
->  	}
->  	igt_remove_fb(data->drm_fd, &data->fb_test_pattern);
-> -	igt_display_commit2(&data->display, data->commit);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
->  	memset(conns, 0, sizeof(data_connector_t) * data->num_h_tiles);
->  }
->  
-> @@ -230,8 +210,8 @@ static int mode_linetime_us(const drmModeModeInfo *mode)
->  
->  static void setup_mode(data_t *data)
->  {
-> -	int count = 0, prev = 0, i = 0;
-> -	bool pipe_in_use = false, found = false;
-> +	int count = 0, i = 0;
-> +	bool found = false;
->  	enum pipe pipe;
->  	drmModeModeInfo *mode;
->  	igt_output_t *output;
-> @@ -242,51 +222,45 @@ static void setup_mode(data_t *data)
->  	 * This is done to ensure a complete modeset occures every
->  	 * time the test is run.
->  	 */
-> -	reset_mode(data);
-> +	igt_display_reset(&data->display);
->  
->  	for (count = 0; count < data->num_h_tiles; count++) {
-> +		conns[count].pipe = PIPE_NONE;
->  		output = igt_output_from_connector(&data->display,
->  						   conns[count].connector);
->  
->  		for_each_pipe(&data->display, pipe) {
-> -			pipe_in_use = false;
-> -			found = false;
-> -
-> -			if (count > 0) {
-> -				for (prev = count - 1; prev >= 0; prev--) {
-> -					if (pipe == conns[prev].pipe) {
-> -						pipe_in_use = true;
-> -						break;
-> -					}
-> +			if (output->pending_pipe == pipe)
-> +				continue;
-> +
-> +			igt_output_set_pipe(output, pipe);
-> +			for (i = 0; i < conns[count].connector->count_modes; i++) {
-> +				mode = &conns[count].connector->modes[i];
-> +				if (mode->vdisplay == conns[count].tile.tile_v_size &&
-> +				    mode->hdisplay == conns[count].tile.tile_h_size) {
-> +					found = true;
-> +					break;
->  				}
-> -				if (pipe_in_use)
-> -					continue;
->  			}
->  
-> -			if (igt_pipe_connector_valid(pipe, output)) {
-> -				conns[count].pipe = pipe;
-> -				conns[count].output = output;
-> -
-> -				igt_output_set_pipe(conns[count].output,
-> -						    conns[count].pipe);
-> -				break;
-> +			if (!found) {
-> +				igt_output_set_pipe(output, PIPE_NONE);
-> +				continue;
->  			}
-> -		}
-> -		igt_require(conns[count].pipe != PIPE_NONE);
->  
-> -		for (i = 0; i < conns[count].connector->count_modes; i++) {
-> -			mode = &conns[count].connector->modes[i];
-> -			if (mode->vdisplay == conns[count].tile.tile_v_size &&
-> -			    mode->hdisplay == conns[count].tile.tile_h_size) {
-> -				found = true;
-> -				break;
-> +			igt_output_override_mode(output, mode);
-> +			if (!intel_pipe_output_combo_valid(&data->display)) {
-> +				igt_output_set_pipe(output, PIPE_NONE);
-> +				continue;
->  			}
-> +
-> +			conns[count].pipe = pipe;
-> +			conns[count].output = output;
-> +			break;
->  		}
-> -		igt_require(found);
-> -		igt_output_override_mode(output, mode);
-> +		igt_require(conns[count].pipe != PIPE_NONE);
->  		data->linetime_us = mode_linetime_us(mode);
->  	}
-> -	igt_require(intel_pipe_output_combo_valid(&data->display));
->  	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->  }
->  
-> @@ -529,7 +503,6 @@ static void override_edid(data_t *data)
->  	igt_output_t *output;
->  	int num_outputs = 0;
->  	int num_tiles = 0;
-> -	drmModeResPtr res;
->  
->  	igt_require(data->display.n_pipes >= 2);
->  
-> @@ -551,10 +524,7 @@ static void override_edid(data_t *data)
->  	num_tiles = min(num_outputs, data->display.n_pipes);
->  
->  	/* disable everything so that we are sure to get a full modeset */
-> -	res = drmModeGetResources(data->drm_fd);
-> -	igt_require(res);
-> -	kmstest_unset_all_crtcs(data->drm_fd, res);
-> -	drmModeFreeResources(res);
-> +	igt_display_reset(&data->display);
->  
->  	for (int i = 0; i < num_tiles; i++)
->  		force_edid_with_tile(data, outputs[i],
-> @@ -563,28 +533,24 @@ static void override_edid(data_t *data)
->  
->  static void basic_test(data_t *data, drmEventContext *drm_event, struct pollfd *pfd)
->  {
-> -		int ret;
-> -
-> -		get_number_of_h_tiles(data);
-> -		igt_debug("Number of Horizontal Tiles: %d\n",
-> -			  data->num_h_tiles);
-> -		igt_require(data->num_h_tiles > 0);
-> -		data->conns = calloc(data->num_h_tiles,
-> -				     sizeof(data_connector_t));
-> -		igt_assert(data->conns);
-> -
-> -		get_connectors(data);
-> -		setup_mode(data);
-> -		setup_framebuffer(data);
-> -		timerclear(&data->first_ts);
-> -		igt_display_commit_atomic(&data->display,
-> +	int ret;
-> +
-> +	data->conns = calloc(data->num_h_tiles,
-> +			     sizeof(data_connector_t));
-> +	igt_assert(data->conns);
-> +
-> +	get_connectors(data);
-> +	setup_mode(data);
-> +	setup_framebuffer(data);
-> +	timerclear(&data->first_ts);
-> +	igt_display_commit_atomic(&data->display,
->  			DRM_MODE_ATOMIC_NONBLOCK |
->  			DRM_MODE_PAGE_FLIP_EVENT, data);
-> -		while (!got_all_page_flips(data)) {
-> -			ret = poll(pfd, 1, 1000);
-> -			igt_assert(ret == 1);
-> -			drmHandleEvent(data->drm_fd, drm_event);
-> -		}
-> +	while (!got_all_page_flips(data)) {
-> +		ret = poll(pfd, 1, 1000);
-> +		igt_assert(ret == 1);
-> +		drmHandleEvent(data->drm_fd, drm_event);
-> +	}
->  }
->  
->  igt_main
-> @@ -596,14 +562,15 @@ igt_main
->  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->  		kmstest_set_vt_graphics_mode();
->  		igt_display_require(&data.display, data.drm_fd);
-> +		igt_require(data.display.is_atomic);
-> +		igt_display_require_output(&data.display);
-> +
->  		igt_display_reset(&data.display);
->  
->  		pfd.fd = data.drm_fd;
->  		pfd.events = POLLIN;
->  		drm_event.version = 3;
->  		drm_event.page_flip_handler2 = page_flip_handler;
-> -		data.commit = data.display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY;
-> -		igt_require(data.commit == COMMIT_ATOMIC);
->  
->  		get_number_of_h_tiles(&data);
->  		igt_debug("Number of real horizontal tiles: %d\n", data.num_h_tiles);
-> -- 
-> 2.43.2
-> 
+> > 
+> > Regards,
+> > Kamil
+> > 
+> > >   create mode 100644 tests/msm/meson.build
+> > > 
+> > > diff --git a/meson.build b/meson.build
+> > > index 701a5cc35..6ae3c2684 100644
+> > > --- a/meson.build
+> > > +++ b/meson.build
+> > > @@ -276,6 +276,7 @@ includedir = get_option('includedir')
+> > >   libdir = get_option('libdir')
+> > >   libexecdir = join_paths(get_option('libexecdir'), 'igt-gpu-tools')
+> > >   amdgpudir = join_paths(libexecdir, 'amdgpu')
+> > > +msmdir = join_paths(libexecdir, 'msm')
+> > >   panfrostdir = join_paths(libexecdir, 'panfrost')
+> > >   v3ddir = join_paths(libexecdir, 'v3d')
+> > >   vc4dir = join_paths(libexecdir, 'vc4')
+> > > @@ -316,6 +317,12 @@ if get_option('use_rpath')
+> > >   	endforeach
+> > >   	amdgpudir_rpathdir = join_paths(amdgpudir_rpathdir, libdir)
+> > > +	msm_rpathdir = '$ORIGIN'
+> > > +	foreach p : msmdir.split('/')
+> > > +		msm_rpathdir = join_paths(msm_rpathdir, '..')
+> > > +	endforeach
+> > > +	msm_rpathdir = join_paths(msm_rpathdir, libdir)
+> > > +
+> > >   	panfrost_rpathdir = '$ORIGIN'
+> > >   	foreach p : panfrostdir.split('/')
+> > >   		panfrost_rpathdir = join_paths(panfrost_rpathdir, '..')
+> > > @@ -343,6 +350,7 @@ else
+> > >   	bindir_rpathdir = ''
+> > >   	libexecdir_rpathdir = ''
+> > >   	amdgpudir_rpathdir = ''
+> > > +	msm_rpathdir = ''
+> > >   	panfrost_rpathdir = ''
+> > >   	v3d_rpathdir = ''
+> > >   	vc4_rpathdir = ''
+> > > diff --git a/tests/meson.build b/tests/meson.build
+> > > index 16896de99..122fbd07c 100644
+> > > --- a/tests/meson.build
+> > > +++ b/tests/meson.build
+> > > @@ -314,14 +314,6 @@ intel_xe_progs = [
+> > >   	'xe_sysfs_scheduler',
+> > >   ]
+> > > -msm_progs = [
+> > > -	'msm_mapping',
+> > > -	'msm_recovery',
+> > > -	'msm_shrink',
+> > > -	'msm_submit',
+> > > -	'msm_submitoverhead',
+> > > -]
+> > > -
+> > >   chamelium_progs = [
+> > >   	'kms_chamelium_audio',
+> > >   	'kms_chamelium_color',
+> > > @@ -424,15 +416,6 @@ foreach prog : intel_progs
+> > >   	endif
+> > >   endforeach
+> > > -foreach prog : msm_progs
+> > > -	test_executables += executable(prog, join_paths('msm', prog + '.c'),
+> > > -				       dependencies : test_deps,
+> > > -				       install_dir : libexecdir,
+> > > -				       install_rpath : libexecdir_rpathdir,
+> > > -				       install : true)
+> > > -	test_list += prog
+> > > -endforeach
+> > > -
+> > >   if chamelium.found()
+> > >   	foreach prog : chamelium_progs
+> > >   		testexe = executable(prog,
+> > > @@ -457,6 +440,8 @@ endif
+> > >   subdir('amdgpu')
+> > > +subdir('msm')
+> > > +
+> > >   subdir('panfrost')
+> > >   subdir('v3d')
+> > > diff --git a/tests/msm/meson.build b/tests/msm/meson.build
+> > > new file mode 100644
+> > > index 000000000..74169b5b2
+> > > --- /dev/null
+> > > +++ b/tests/msm/meson.build
+> > > @@ -0,0 +1,16 @@
+> > > +msm_progs = [
+> > > +	'msm_mapping',
+> > > +	'msm_recovery',
+> > > +	'msm_shrink',
+> > > +	'msm_submit',
+> > > +	'msm_submitoverhead',
+> > > +]
+> > > +
+> > > +foreach prog : msm_progs
+> > > +	test_executables += executable(prog, prog + '.c',
+> > > +				       dependencies : test_deps,
+> > > +				       install_dir : msmdir,
+> > > +				       install_rpath : msm_rpathdir,
+> > > +				       install : true)
+> > > +	test_list += join_paths('msm', prog)
+> > > +endforeach
+> > > -- 
+> > > 2.43.2
+> > > 
