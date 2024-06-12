@@ -4,60 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9492C27C75
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 07:07:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EB1AC27C75
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Jun 2024 07:11:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5DBB710E29A;
-	Wed, 12 Jun 2024 07:07:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9EA2E10E7AB;
+	Wed, 12 Jun 2024 07:11:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NrICan1Q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WyM+wQ7z";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B069210E29A
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 07:07:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FC7410E7A6
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Jun 2024 07:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718176047; x=1749712047;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=ad8MC2s/r/R6jp04fhznu9zP5Tdn7DMpdPMGxNHGlVk=;
- b=NrICan1QktEBpgqmNCq0emWprkydEeyjHxCxFJxGGsj1sfh4amTms2xZ
- EPXc1lozoESGSP+dVKpkf4ROR+je4gISgxRW9/rB3WRxrgmx5SocFs8pK
- NOqn8HG8OtWV7jcyifWgT7QeG3ag+dk6i1XREw7du+LyfwX4W5FXGVjS9
- a6L5LppjareroqOMs4fa2IwD2o2Xu/DMCTX1JC+EIKpiAsCL6axB3Nznj
- jNK/GIuI10FvpJL1UFHSbuBpQ15RP0vyAO6tpkof7wjMveB+tSyT7T2oo
- 4HUP99bEtdlOanAXkiHhwmbfXgHOvVLsXdCJaEgYKxZRtIVeydQyGykDi Q==;
-X-CSE-ConnectionGUID: /ThS/waQT1GVa6KD+98XEw==
-X-CSE-MsgGUID: 2dPTm/KmQI+7hWLSfFoF5w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="37446224"
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="37446224"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 00:07:26 -0700
-X-CSE-ConnectionGUID: zUyBas7lTgOo2PTL2j2mrg==
-X-CSE-MsgGUID: A+vCglvVSiGKuQIif9Di8A==
+ t=1718176285; x=1749712285;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Oom9tDWRAJCuieD7xUMSJVqfiCIDFLtccY/Mclpx1Hs=;
+ b=WyM+wQ7zK2unYX290RhI6TrIhdqazOrKwBkTze8lDjQ4WWlAkmRDnaZ8
+ Lxr0XgOWuH9vvptlH1IqtIOnWqfc4lZQ3ve1h/hYeKJvGDtytuvgmdUgj
+ WTfBMKhBf50uIJqHTx8dkPL44DpKPgWjH/73Mmh0roYK4/P3dBb+TY1NL
+ UNzaNsMm+Gjmyp8WZ9M2wrO10cDLmVh3B2ZwNCT+FWZrFuuhgcSMqoX0i
+ ZJ+kcf7mbwkKZsMoesUC7pD70+Hp1tIPdKaagRqVGk06Wnz4n95+VBpix
+ qhwM8yYWVs6SOXTyRsZnaA78fy/F2vNSF29l6J7RVm/D+5yLDWh6Pf68y g==;
+X-CSE-ConnectionGUID: j4A+PyaxRPSvUPVLGP19ew==
+X-CSE-MsgGUID: Xv8fN+4nQjWptlsvAR0vNA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11100"; a="15092487"
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="15092487"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 00:11:25 -0700
+X-CSE-ConnectionGUID: ruwFskgnTS675ansNBArUQ==
+X-CSE-MsgGUID: 4glZkH82S+agbLh4sT5UIQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="77152246"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.246.4.197])
- ([10.246.4.197])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jun 2024 00:07:26 -0700
-Message-ID: <f93085fc-204c-4bcc-9f5e-0d18ab65d975@intel.com>
-Date: Wed, 12 Jun 2024 09:07:23 +0200
+X-IronPort-AV: E=Sophos;i="6.08,232,1712646000"; d="scan'208";a="62868003"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Jun 2024 00:11:23 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [i-g-t V2 0/3] Move non-Intel tests to new directories
+Date: Wed, 12 Jun 2024 12:33:32 +0530
+Message-ID: <20240612070335.3758500-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 5/7] tests/core_hotunplug: Open the same driver
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240607153629.52596-1-kamil.konieczny@linux.intel.com>
- <20240607153629.52596-6-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240607153629.52596-6-kamil.konieczny@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,41 +66,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Move non-Intel tests to new directories and update blocklists.
 
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-On 07.06.2024 17:36, Kamil Konieczny wrote:
-> Make sure any later opens will use the same driver as the first
-> one. Also while at this, print driver name before test starts.
->
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Bhanuprakash Modem (3):
+  tests/panfrost: Move Panfrost tests to new dir
+  tests/msm: Move MSM tests to new dir
+  tests/intel-ci: Update blocklists
 
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+ meson.build                               | 16 +++++++++++++++
+ tests/intel-ci/blacklist.txt              | 10 ++++-----
+ tests/intel-ci/xe.blocklist.txt           |  4 ++--
+ tests/meson.build                         | 25 ++++-------------------
+ tests/msm/meson.build                     | 16 +++++++++++++++
+ tests/panfrost/meson.build                | 15 ++++++++++++++
+ tests/{ => panfrost}/panfrost_gem_new.c   |  0
+ tests/{ => panfrost}/panfrost_get_param.c |  0
+ tests/{ => panfrost}/panfrost_prime.c     |  0
+ tests/{ => panfrost}/panfrost_submit.c    |  0
+ 10 files changed, 58 insertions(+), 28 deletions(-)
+ create mode 100644 tests/msm/meson.build
+ create mode 100644 tests/panfrost/meson.build
+ rename tests/{ => panfrost}/panfrost_gem_new.c (100%)
+ rename tests/{ => panfrost}/panfrost_get_param.c (100%)
+ rename tests/{ => panfrost}/panfrost_prime.c (100%)
+ rename tests/{ => panfrost}/panfrost_submit.c (100%)
 
-Regards
-Andrzej
-> ---
->   tests/core_hotunplug.c | 5 +++++
->   1 file changed, 5 insertions(+)
->
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 7ed9abd37..ddf11bb00 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -710,11 +710,16 @@ igt_main
->   
->   	igt_fixture {
->   		int fd_drm;
-> +		char driver[32] = {};
->   
->   		fd_drm = __drm_open_driver(DRIVER_ANY);
->   		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
->   
->   		priv.chipset = drm_get_chipset(fd_drm);
-> +		/* Make sure it opens the same driver */
-> +		__get_drm_device_name(fd_drm, driver, sizeof(driver) - 1);
-> +		__set_forced_driver(driver);
-> +		igt_info("DRM driver: %s\n", driver);
->   
->   		if (is_i915_device(fd_drm)) {
->   			gem_quiescent_gpu(fd_drm);
+-- 
+2.43.2
 
