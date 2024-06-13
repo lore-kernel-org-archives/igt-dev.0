@@ -4,57 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68DE0C27C4F
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Jun 2024 09:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A303C27C75
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Jun 2024 09:26:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F6E210E18E;
-	Thu, 13 Jun 2024 09:17:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BAC3610E242;
+	Thu, 13 Jun 2024 09:26:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B1MSNaMg";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gyoXxq2t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7951610E18E
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jun 2024 09:17:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A20310E9B9
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Jun 2024 09:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718270230; x=1749806230;
- h=from:to:subject:in-reply-to:references:date:message-id:
- mime-version:content-transfer-encoding;
- bh=5dp/J39kIr1HQqZA+hWfrcv5NT58b2Zi+Kg+9J+6diA=;
- b=B1MSNaMgnnG50l/278lrj+JNhyx2IGFoQI4/24kf7W2kjNuVldHEZADS
- DBe2JtMkA1U0/b4Mk5eWXZHRdEG6JKwx95fqqKb/V4xR+XwwbmXpUbXFw
- 5CtRRYNgWUwqcvTQWHs63r0l9d/nkavc/oJ792axEFCDL5AP4Bz6ofwyP
- zTB0+vWf6ifizNTeai75X3Gf9SpkDKkFCGBSVP5SyBuPGvLSc5N0kCzwv
- +7qx2678KrEB+kHxiaIwwJGa+QPV1XeGhnlJh6dPfP8G0jFo6VP2YlcHA
- 5/VD5LK+AFiLh6BQr1hjM7INvIyYNsJsmsa2mQlF9IGOxPHLDo0AS2t2L w==;
-X-CSE-ConnectionGUID: bHt+vQn/SRaXJ3rwGcoKbQ==
-X-CSE-MsgGUID: c9EDno4YRYyOauZjCD68Ig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="15245527"
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="15245527"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2024 02:17:10 -0700
-X-CSE-ConnectionGUID: Q1s6q5PqQIytBNstuZvovg==
-X-CSE-MsgGUID: 1xFfY1l5R9Gfc5zxtc2tUA==
+ t=1718270759; x=1749806759;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=+kQGm5p/noQ7xOkhNMSVlLMZAScHK+oxmjHoXRK05oM=;
+ b=gyoXxq2t+OP8owX/8cTFIv+20kVqpyeLmuYvho/nztw3+mm6F20XljV/
+ hAYr+5qmWnRIp2Si3jjQ6/IdGHBkvN6jCecsea23I/J2JyUqoyJE3VlIz
+ DET+jY1k037XDhbF7lS+HJbqNqKarEtf5VW+XjdAWspayPfhbf4GUMMU8
+ oBpNr0T7BnpMLusy96K3hSdDfmZ4XMhz7JMmJHaa3iSBuFKmp63tvNx71
+ 8fAHrMsU61RPLWnZW+Tm/siRssQlWOAvidbMpbVzulHR+VpuZ9iYM+5g6
+ ZjjAs/85kz3XBoi0+Q4YKzCtWc55jkZmxrsjzAX8/WOxIcB/p0qz9UjZh A==;
+X-CSE-ConnectionGUID: PozGNlGRROmDoV1s4kKxgQ==
+X-CSE-MsgGUID: SLl4IwswRuOjI8OrlzaYLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="18004694"
+X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="18004694"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2024 02:25:58 -0700
+X-CSE-ConnectionGUID: CHI4nZJrRU6gLh8iv1yLpg==
+X-CSE-MsgGUID: /8g+hH3dS1+WfP3HkOwn/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="44990985"
-Received: from iklimasz-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.112])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2024 02:17:09 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 00/27] tools/intel_vbt_decode: Decode almost
- everything
-In-Reply-To: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240607135758.31421-1-ville.syrjala@linux.intel.com>
-Date: Thu, 13 Jun 2024 12:17:05 +0300
-Message-ID: <87le39i4mm.fsf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,234,1712646000"; d="scan'208";a="40045497"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO jhogande-mobl1..)
+ ([10.245.244.31])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Jun 2024 02:25:28 -0700
+From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com,
+ =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
+Subject: [PATCH i-g-t v2 1/6] lib/igt_psr: Set Panel Replay disable bit for
+ PSR modes
+Date: Thu, 13 Jun 2024 12:25:09 +0300
+Message-Id: <20240613092514.1288801-2-jouni.hogander@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240613092514.1288801-1-jouni.hogander@intel.com>
+References: <20240613092514.1288801-1-jouni.hogander@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,64 +72,69 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, 07 Jun 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
-> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->
-> Decode most of the known blocks, and at least name all the
-> ones we know of but don't decode.
->
-> Also fix an issue with the MIPI config block decoding.
->
-> Note that I still have a few VBTs with completely unknown blocks:
-> - VLV with blocks 60,61,62,63,64
-> - ADL with block 212
-> So far no idea what those might contain.
+Set Panel Replay disable bit for PSR_MODE_* to prevent using Panel Replay
+for panels supporting it.
 
-I'm not going to claim I reviewed this, but quickly eyeballed through
-each patch. And I think that's enough.
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/igt_psr.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-Acked-by: Jani Nikula <jani.nikula@intel.com>
+diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+index 6008b73a6..964f18487 100644
+--- a/lib/igt_psr.c
++++ b/lib/igt_psr.c
+@@ -163,30 +163,36 @@ static bool psr_set(int device, int debugfs_fd, int mode, igt_output_t *output)
+ 		 */
+ 		ret = psr_modparam_set(device, mode >= PSR_MODE_1);
+ 	} else {
+-		const char *debug_val;
++		int debug_val = mode <= PSR_MODE_2_SEL_FETCH ? 0x40 : 0;
+ 
+ 		switch (mode) {
+ 		case PSR_MODE_1:
+-			debug_val = "0x3";
+-			break;
++		case PR_MODE:
++			debug_val |= 0x3;
++				break;
+ 		case PSR_MODE_2:
+-			debug_val = "0x2";
+-			break;
++			debug_val |= 0x2;
++				break;
+ 		case PSR_MODE_2_SEL_FETCH:
+-			debug_val = "0x4";
+-			break;
+-		case PR_MODE:
+-			debug_val = "0x5";
+-			break;
+ 		case PR_MODE_SEL_FETCH:
+-			debug_val = "0x6";
++			debug_val |= 0x4;
+ 			break;
+ 		default:
+ 			/* Disables PSR */
+-			debug_val = "0x1";
++			debug_val = 0x1;
+ 		}
+ 
+-		ret = psr_write(debugfs_fd, debug_val, output);
++		/* old debugfs interface doesn't recognize Panel Replay disable bit */
++		do {
++			char debug_str[8];
++
++			sprintf(debug_str, "0x%x", debug_val);
++			ret = psr_write(debugfs_fd, debug_str, output);
++			if (!(debug_val & 0x40))
++				break;
++
++			debug_val &= ~0x40;
++		} while (ret <= 0);
+ 		igt_require_f(ret > 0, "PSR2 SF feature not available\n");
+ 	}
+ 
+-- 
+2.34.1
 
-on the series.
-
->
-> Ville Syrj=C3=A4l=C3=A4 (27):
->   tools/intel_vbt_decode: sync intel_vbt_defs.h with kernel commit
->     80c414772d93
->   tools/intel_vbt_decode: sync intel_vbt_defs.h with kernel commit
->     3e8daf14c47d
->   tools/intel_vbt_decode: Dump MIPI config for the correct panel
->   tools/intel_vbt_decode: Decode block 3 (Display Toggle Option)
->   tools/intel_vbt_decode: Decode block 4 (Mode Support List)
->   tools/intel_vbt_decode: Decode block 5 (Generic Mode Table)
->   tools/intel_vbt_decode: Decode blocks 6,7,8 (register tables)
->   tools/intel_vbt_decode: Decode block 10 (Mode Removal Table)
->   tools/intel_vbt_decode: Decode block 12 (Driver Persistent Algorithm)
->   tools/intel_vbt_decode: Decode block 15 (Dot Clock Override Table) and
->     block 9 (ALM only)
->   tools/intel_vbt_decode: Decode blocks 16,29,31 (Toggle List)
->   tools/intel_vbt_decode: Decode blocks 19,30,32 (Display Configuration
->     Removal Table)
->   tools/intel_vbt_decode: Decode block 18 (Driver Rotation)
->   tools/intel_vbt_decode: Decode block 20 (OEM Customizable Modes)
->   tools/intel_vbt_decode: Decode block 21 (EFP List)
->   tools/intel_vbt_decode: Decode block 24 (SDVO LVDS PnP ID)
->   tools/intel_vbt_decode: Decode block 25 (SDVO LVDS PPS)
->   tools/intel_vbt_decode: Decode block 26 (TV Options)
->   tools/intel_vbt_decode: Decode block 28 (EFP DTD)
->   tools/intel_vbt_decode: Decode block 45 (eDP BFI)
->   tools/intel_vbt_decode: Decode block 46 (Chromaticity For Narrow Gamut
->     Panel)
->   tools/intel_vbt_decode: Decode block 51 (Fixed Set Mode Table)
->   tools/intel_vbt_decode: Decode block 55 (RGB Palette Table)
->   tools/intel_vbt_decode: Decode block 57 (Vswing PreEmphasis Table)
->   tools/intel_vbt_decode: Decode block 58 (Generic DTD Block)
->   tools/intel_vbt_decode: Decode block 253 (PRD Table)
->   tools/intel_vbt_decode: Name a few more VBT blocks
->
->  tools/intel_vbt_decode.c | 1180 +++++++++++++++++++++++++++++++++++++-
->  tools/intel_vbt_defs.h   |   39 +-
->  2 files changed, 1179 insertions(+), 40 deletions(-)
-
---=20
-Jani Nikula, Intel
