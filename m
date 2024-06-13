@@ -4,61 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECCAAC27C4F
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Jun 2024 13:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25B41C27C4F
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Jun 2024 13:33:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5870D10E0AD;
-	Thu, 13 Jun 2024 13:32:28 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sdq4mJGH";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C15F810E0AD
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Jun 2024 13:32:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718285547; x=1749821547;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=1p+bv7MKaCMB2PE3OLE1+AJ9zzZgLevrmCfkWkS1+LA=;
- b=Sdq4mJGHxTzb7CTtYZXLUhXfwoWgD444xtUh+uF5DaFN9Su6lytYhrcP
- StMJghH7T8U3YWUs8RldAV9KOZ7snNIY0SYNnz/7hH7hAQmyEWH0EuRNz
- /tPpORX68o1ZtcsS9AYw4rr4LmkZCi5dXZ1ac435J8OIQz8XvIPZzUuDs
- ysNjPVnspVN7EGODWurQDSm5h5k15ZoB/dexCMyR5QfaxtY5JaMpENi4R
- aLeVbShf+eIsmfV6M6Bod3jzvva8WwjEoPEuVqMpZtZUuvwnZQ28op+7I
- nhZ7vMyMCrm5TRpvlNmaiwfFAO4OBOXCXhkpamcWNV9mkcHCJOcJyeTNO g==;
-X-CSE-ConnectionGUID: heevVeKvQgWJ5M5JN0yIGQ==
-X-CSE-MsgGUID: 1cWLipB/TMKUmIH8jBLr7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11101"; a="26525558"
-X-IronPort-AV: E=Sophos;i="6.08,235,1712646000"; d="scan'208";a="26525558"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Jun 2024 06:32:27 -0700
-X-CSE-ConnectionGUID: /q6esMniTc+EXZa/rwcfww==
-X-CSE-MsgGUID: acPl84nnTTGo3yoof5c/Jw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,235,1712646000"; d="scan'208";a="40266631"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2024 06:32:25 -0700
-Date: Thu, 13 Jun 2024 15:32:05 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Coelho, Luciano" <luciano.coelho@intel.com>
-Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/i915_pm_rpm: check
- drmModeGetConnector() before use
-Message-ID: <20240613133205.ikd3kvkd7xepbufx@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Coelho, Luciano" <luciano.coelho@intel.com>
-References: <20240530085908.564733-1-luciano.coelho@intel.com>
- <20240530085908.564733-3-luciano.coelho@intel.com>
- <20240607151123.4o66krb6y4kwyg5u@kamilkon-DESK.igk.intel.com>
- <64137841cd6f4d3f0c8b994664a46798effefa8a.camel@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B37E410E0C2;
+	Thu, 13 Jun 2024 13:33:07 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A300610EA87;
+ Thu, 13 Jun 2024 13:33:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8638733703865346721=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <64137841cd6f4d3f0c8b994664a46798effefa8a.camel@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_VRR_test_cleanup_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 13 Jun 2024 13:33:05 -0000
+Message-ID: <171828558566.73458.3489897164886318257@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240613101633.3804434-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240613101633.3804434-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,130 +36,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Coelho,,
-On 2024-06-12 at 14:10:56 +0000, Coelho, Luciano wrote:
-> On Fri, 2024-06-07 at 17:11 +0200, Kamil Konieczny wrote:
-> > Hi Luca,
-> > On 2024-05-30 at 11:59:08 +0300, Luca Coelho wrote:
-> > > The drmModeGetConnector() function can return NULL in some cases, so
-> > > we need to check the return value before accessing it.  This is not
-> > > being checked in init_mode_set_data(), so fix that.
-> > > 
-> > > From the bug report:
-> > > 
-> > > Starting subtest: module-reload
-> > > Received signal SIGSEGV.
-> > > Stack trace:
-> > 
-> > Now I think that line 'Stack trace' is not needed, only those
-> > two with subtest name and signal are enough.
-> 
-> Okay... it's mostly noise IMHO, anyway.
-> 
-> 
-> > > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
-> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> > > Cc: Jani Saarinen <jani.saarinen@intel.com>
-> > > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> > > Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-> > > ---
-> > >  tests/intel/i915_pm_rpm.c | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
-> > > 
-> > > diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-> > > index 0ea5fbd8afd9..e0f395fa8a84 100644
-> > > --- a/tests/intel/i915_pm_rpm.c
-> > > +++ b/tests/intel/i915_pm_rpm.c
-> > > @@ -515,6 +515,12 @@ static void init_mode_set_data(struct mode_set_data *data)
-> > >  			data->connectors[i] =
-> > >  				drmModeGetConnector(drm_fd,
-> > >  						    data->res->connectors[i]);
-> > > +			if (!data->connectors[i]) {
-> > > +				igt_warn("Could not read connector %u\n",
-> > ----------------^^^^^^^^
-> > igt_debug
-> > 
-> > > +					 data->res->connectors[i]);
-> > > +				continue;
-> > > +			}
-> > > +
-> > 
-> > We generally do not warn and fail a test in case some prerequistics
-> > are not present, that is why it is better to igt_debug here
-> 
-> This is not about pre-requisites.  This is about a race condition where
-> we get a larger number of connectors than what is actually available
-> later.
+--===============8638733703865346721==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You didn't write that in a comment in code nor in commit message,
-looks like it could help later on when this happen.
+== Series Details ==
 
-> 
-> I think the test should fail in this case, because then we will look at
-> what is going on and try to figure out what's causing it.
-> 
-> I had igt_warn(), then you told me to change to igt_debug(), then you
-> told me to change it back to igt_warn() and now you're asking me to
-> change it to igt_debug, *again*?!
-> 
+Series: VRR test cleanup (rev2)
+URL   : https://patchwork.freedesktop.org/series/134534/
+State : success
 
-Nevermind, let it be warn.
+== Summary ==
 
-> 
-> > and make checks in few other places, like:
-> > 			if (data->connectors[i]) {
-> >                     // here we can safely use/free connector or edid
-> >             }
-> > or
-> > 			if (!data->connectors[i])
-> >                 continue;
-> 
-> I don't get it.  Can you explain in more details?
->
+CI Bug Log - changes from XEIGT_7886_BAT -> XEIGTPW_11255_BAT
+====================================================
 
-I did a check locally and it seems NULLs there are not a problem,
-so your change seems ok,
+Summary
+-------
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
-> 
-> > grep -n connectors tests/intel/i915_pm_rpm.c
-> > 139:    drmModeConnectorPtr connectors[MAX_CONNECTORS];
-> > 151:    drmModeConnectorPtr connectors[MAX_CONNECTORS];
-> > 319:    for (int i = 0; i < data->res->count_connectors; i++) {
-> > 320:            drmModeConnectorPtr c = data->connectors[i];
-> > 513:            igt_assert(data->res->count_connectors <= MAX_CONNECTORS);
-> > 514:            for (int i = 0; i < data->res->count_connectors; i++) {
-> > 515:                    data->connectors[i] =
-> > 517:                                                data->res->connectors[i]);
-> > 518:                    data->edids[i] = get_connector_edid(data->connectors[i], i);
-> > 531:            for (int i = 0; i < data->res->count_connectors; i++) {
-> > 532:                    drmModeFreeConnector(data->connectors[i]);
-> > 
-> > so all you need is add checks in lines after 320 and 531.
-> 
-> I don't think it's needed in 320, because with my change we're already
-> checking if the pointer was NULL when we _assigned_
-> data->connectors[i].  We should never get here with a NULL in the
-> table.
-> 
-> My change is about checking the return value of drmModeGetConnector(),
-> which can return NULL, so I checked all the callers and made sure they
-> check the return value.
-> 
-> 
-> > Btw test is missing final fixture with i915 module load but that
-> > should be fixed in separate patch.
-> 
-> Okay.
-> 
-> --
-> Cheers,
-> Luca.
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11255_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_vrr@seamless-rr-switch-drrs:
+    - bat-pvc-2:          NOTRUN -> [SKIP][1] ([Intel XE#1024]) +3 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-pvc-2/igt@kms_vrr@seamless-rr-switch-drrs.html
+
+  * igt@kms_vrr@seamless-rr-switch-virtual:
+    - bat-atsm-2:         NOTRUN -> [SKIP][2] ([Intel XE#1024]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-atsm-2/igt@kms_vrr@seamless-rr-switch-virtual.html
+
+  * igt@kms_vrr@seamless-rr-switch-vrr:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#455]) +2 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#455]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-dg2-oem2/igt@kms_vrr@seamless-rr-switch-vrr.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#599]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/599
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7886 -> IGTPW_11255
+
+  IGTPW_11255: 11255
+  IGT_7886: 53b62502a04bd57cbcb3ae85ffc2cdf09b2b22a9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1457-9f3ced27c8deae54c79db1743e37d2935558e048: 9f3ced27c8deae54c79db1743e37d2935558e048
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/index.html
+
+--===============8638733703865346721==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>VRR test cleanup (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134534/">https://patchwork.freedesktop.org/series/134534/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7886_BAT -&gt; XEIGTPW_11255_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11255_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-drrs:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-pvc-2/igt@kms_vrr@seamless-rr-switch-drrs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-virtual:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-atsm-2/igt@kms_vrr@seamless-rr-switch-virtual.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@seamless-rr-switch-vrr:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-adlp-7/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +2 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11255/bat-dg2-oem2/igt@kms_vrr@seamless-rr-switch-vrr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7886 -&gt; IGTPW_11255</li>
+</ul>
+<p>IGTPW_11255: 11255<br />
+  IGT_7886: 53b62502a04bd57cbcb3ae85ffc2cdf09b2b22a9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1457-9f3ced27c8deae54c79db1743e37d2935558e048: 9f3ced27c8deae54c79db1743e37d2935558e048</p>
+
+</body>
+</html>
+
+--===============8638733703865346721==--
