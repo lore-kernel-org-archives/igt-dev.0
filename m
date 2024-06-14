@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3723C27C75
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Jun 2024 11:33:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFD52C27C6E
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Jun 2024 12:36:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7CE4710ED08;
-	Fri, 14 Jun 2024 11:33:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FErFgQUw";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2714710E24C
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jun 2024 11:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718364811; x=1749900811;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vfbV6TZFsbCndUSpwfWBksEEXhB8uhvcs8QkifKxKdE=;
- b=FErFgQUwCuxGvArHw/InNonBgYOO9tu+iQDoDXWcDySfU91J6tQG1g73
- M0GYhPi+C1YUfvH5MarxFyQ4xXLTrmhJy2HBJ5W3QP8Ehc8CDZmjh1HDh
- 9cbbCALRYsgs2lU9pKwtOoz9iJ3YCJBjYog/IdfiykuqYbu8eXexOaGy8
- vArjis5Mr3nw3g3ua4q+nm3ZbL3304JpmxO1xrGU0EFo/Bw6+RMfD6QFb
- 11DW8ESBvQyh2TCKByBa3btT5Dg0KLnRUaMFd4c3/Q0thOyhX7MFzLhtc
- AqKStcHrU7muyhbRdMOGsYEP+XGLjzYJaSzxyBeiMyJJ8aZYoy1nLfWeB g==;
-X-CSE-ConnectionGUID: Gd5Bo0y2Sxm0O3vpv6FbrA==
-X-CSE-MsgGUID: ru85U31cQ8u21xKS9wqjSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11102"; a="15080228"
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; d="scan'208";a="15080228"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2024 04:33:30 -0700
-X-CSE-ConnectionGUID: B3vs/jJwQlyjROlA9XX5pA==
-X-CSE-MsgGUID: AoqWYf2BRFisyu6e+FyGWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; d="scan'208";a="44845960"
-Received: from mholzerl-mobl1.ger.corp.intel.com (HELO
- hazy.ger.corp.intel.com) ([10.251.214.25])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2024 04:33:29 -0700
-From: Luca Coelho <luciano.coelho@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/intel/i915_pm_rpm: warn and skip test if reading
- connector fails
-Date: Fri, 14 Jun 2024 14:33:20 +0300
-Message-Id: <20240614113320.197121-1-luciano.coelho@intel.com>
-X-Mailer: git-send-email 2.39.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1797210ED1D;
+	Fri, 14 Jun 2024 12:36:17 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C7B810E083;
+ Fri, 14 Jun 2024 12:36:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_lib/gpgpu=3A_add_shader?=
+ =?utf-8?q?_support_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Andrzej Hajda" <andrzej.hajda@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 14 Jun 2024 12:36:14 -0000
+Message-ID: <171836857457.77190.10649855227586450641@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240611-iga64_inline_ups-v6-0-b634ec43a610@intel.com>
+In-Reply-To: <20240611-iga64_inline_ups-v6-0-b634ec43a610@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,73 +37,241 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fail test requirements if we can't set the initial data.  This is
-usually caused by not being able to retrieve a connector due to
-possible race-conditions.  In this case, we have issued a warning to
-cause the test to fail and not just skip.
+== Series Details ==
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Cc: Jani Saarinen <jani.saarinen@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
----
- tests/intel/i915_pm_rpm.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+Series: lib/gpgpu: add shader support (rev6)
+URL   : https://patchwork.freedesktop.org/series/133020/
+State : warning
 
-diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
-index e0f395fa8a84..31758b1a5e35 100644
---- a/tests/intel/i915_pm_rpm.c
-+++ b/tests/intel/i915_pm_rpm.c
-@@ -506,7 +506,7 @@ static drmModePropertyBlobPtr get_connector_edid(drmModeConnectorPtr connector,
- 	return blob;
- }
- 
--static void init_mode_set_data(struct mode_set_data *data)
-+static bool init_mode_set_data(struct mode_set_data *data)
- {
- 	data->res = drmModeGetResources(drm_fd);
- 	if (data->res) {
-@@ -518,7 +518,7 @@ static void init_mode_set_data(struct mode_set_data *data)
- 			if (!data->connectors[i]) {
- 				igt_warn("Could not read connector %u\n",
- 					 data->res->connectors[i]);
--				continue;
-+				return false;
- 			}
- 
- 			data->edids[i] = get_connector_edid(data->connectors[i], i);
-@@ -529,6 +529,8 @@ static void init_mode_set_data(struct mode_set_data *data)
- 	}
- 
- 	init_modeset_cached_params(&ms_data);
-+
-+	return true;
- }
- 
- static void fini_mode_set_data(struct mode_set_data *data)
-@@ -598,8 +600,15 @@ static bool setup_environment(bool display_enabled)
- 
- 	ms_data.devid = intel_get_drm_devid(drm_fd);
- 
--	if (display_enabled)
--		init_mode_set_data(&ms_data);
-+	/*
-+	 * Fail test requirements if we can't set the initial data.
-+	 * This is usually caused by not being able to retrieve a
-+	 * connector due to possible race-conditions.  In this case,
-+	 * we should have issued a warning to cause the test to fail
-+	 * and not just skip.
-+	 */
-+	if (display_enabled && !init_mode_set_data(&ms_data))
-+		return false;
- 
- 	igt_pm_enable_sata_link_power_management();
- 
--- 
-2.39.2
+== Summary ==
 
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1198675 for the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747460):
+  [1802/1809] Generating i915_tests.rst with a custom command.
+  [1803/1809] Generating kms_tests.rst with a custom command.
+  [1804/1809] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/828] Generating version.h with a custom command.
+  [2/8] Linking target runner/runner_test.
+  [3/8] Linking target assembler/intel-gen4asm.
+  [4/8] Generating xe_tests.rst with a custom command.
+  FAILED: docs/testplan/xe_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107445:step_script
+  section_start:1718107445:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107446:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747464):
+  [3/13] Linking target runner/igt_runner.
+  [4/13] Linking target runner/igt_results.
+  [5/13] Linking target runner/igt_resume.
+  [6/13] Linking target runner/igt_comms_decoder.
+  [7/13] Linking target runner/runner_test.
+  [8/13] Linking target runner/runner_json_test.
+  [9/13] Generating i915_tests.html with a custom command.
+  [10/13] Generating kms_tests.html with a custom command.
+  [11/13] Generating xe_tests.rst with a custom command.
+  FAILED: docs/testplan/xe_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107432:step_script
+  section_start:1718107432:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107432:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747463):
+  [3/13] Linking target runner/igt_runner.
+  [4/13] Linking target runner/igt_results.
+  [5/13] Linking target runner/igt_resume.
+  [6/13] Linking target runner/igt_comms_decoder.
+  [7/13] Linking target runner/runner_test.
+  [8/13] Linking target runner/runner_json_test.
+  [9/13] Generating i915_tests.html with a custom command.
+  [10/13] Generating kms_tests.html with a custom command.
+  [11/13] Generating xe_tests.rst with a custom command.
+  FAILED: docs/testplan/xe_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107448:step_script
+  section_start:1718107448:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107449:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747466):
+  [3/13] Linking target runner/igt_runner.
+  [4/13] Linking target runner/igt_resume.
+  [5/13] Linking target runner/igt_results.
+  [6/13] Linking target runner/igt_comms_decoder.
+  [7/13] Linking target runner/runner_test.
+  [8/13] Linking target runner/runner_json_test.
+  [9/13] Generating i915_tests.html with a custom command.
+  [10/13] Generating kms_tests.html with a custom command.
+  [11/13] Generating xe_tests.rst with a custom command.
+  FAILED: docs/testplan/xe_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107454:step_script
+  section_start:1718107454:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107454:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747462):
+  ninja: Entering directory `build'
+  [1/107] Generating version.h with a custom command.
+  [2/9] Linking target lib/libi915_perf.so.1.5.
+  [3/9] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+  [4/9] Linking target tools/intel_gpu_top.
+  [5/9] Linking target tools/i915-perf/i915-perf-configs.
+  [6/9] Linking target tools/i915-perf/i915-perf-recorder.
+  [7/9] Linking target tools/i915-perf/i915-perf-reader.
+  [8/9] Generating xe_tests.rst with a custom command.
+  FAILED: docs/testplan/xe_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107417:step_script
+  section_start:1718107417:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107417:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747453):
+  	==> Driver requirement: xe
+  [1809/1815] Generating i915_tests.rst with a custom command.
+  [1810/1815] Generating kms_tests.rst with a custom command.
+  [1811/1815] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/830] Generating version.h with a custom command.
+  [2/7] Linking target runner/runner_test.
+  [3/7] Generating intel-ci-tests with a custom command.
+  FAILED: docs/testplan/intel-ci-tests 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107426:step_script
+  section_start:1718107426:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107428:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747459):
+  	==> Driver requirement: xe
+  [1811/1815] Generating i915_tests.rst with a custom command.
+  [1812/1815] Generating kms_tests.rst with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/830] Generating version.h with a custom command.
+  [2/6] Generating kms_tests.html with a custom command.
+  [3/6] Generating i915_tests.html with a custom command.
+  [4/6] Generating intel-ci-tests with a custom command.
+  FAILED: docs/testplan/intel-ci-tests 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107474:step_script
+  section_start:1718107474:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107474:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747457):
+  	==> Driver requirement: xe
+  [1641/1647] Generating i915_tests.rst with a custom command.
+  [1642/1647] Generating kms_tests.rst with a custom command.
+  [1643/1647] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/779] Generating version.h with a custom command.
+  [2/7] Linking target runner/runner_test.
+  [3/7] Generating intel-ci-tests with a custom command.
+  FAILED: docs/testplan/intel-ci-tests 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107427:step_script
+  section_start:1718107427:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107428:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747454):
+  	==> Driver requirement: xe
+  [1809/1815] Generating i915_tests.rst with a custom command.
+  [1810/1815] Generating kms_tests.rst with a custom command.
+  [1811/1815] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/830] Generating version.h with a custom command.
+  [2/7] Linking target runner/runner_test.
+  [3/7] Generating intel-ci-tests with a custom command.
+  FAILED: docs/testplan/intel-ci-tests 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107429:step_script
+  section_start:1718107429:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107431:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/59747456):
+  [1810/1815] Generating kms_tests.rst with a custom command.
+  [1811/1815] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/830] Generating version.h with a custom command.
+  [2/7] Linking target runner/runner_test.
+  [3/7] Generating kms_tests.html with a custom command.
+  [4/7] Generating i915_tests.html with a custom command.
+  [5/7] Generating intel-ci-tests with a custom command.
+  FAILED: docs/testplan/intel-ci-tests 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
+  /builds/gfx-ci/igt-ci-tags/tests/intel/xe_exec_sip.c:11: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json?
+  	==> Driver requirement: xe
+  ninja: build stopped: subcommand failed.
+  section_end:1718107432:step_script
+  section_start:1718107432:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1718107434:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1198675
