@@ -4,58 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CC09C27C6E
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Jun 2024 13:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56016C27C6E
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Jun 2024 13:48:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D416510E04E;
-	Fri, 14 Jun 2024 13:37:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LEkau7+a";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7306C10E04E
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Jun 2024 13:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718372246; x=1749908246;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+b4MP2bff0Y1XI2z326TfwexAqYIDIqNsrts4yEMgt8=;
- b=LEkau7+anfK10WnoA8yNwPHnfHOjs+3/hOMwDSkgnH94CqdnaixOR0Nz
- 5Qb3CXjew6yyDqT1QqRuJzRmlGGWuQ0lfVPevNx+iDLMn92lYpC5Ym+l3
- gF7YGA/VrYaQhayjlpsTD+hd7iADsRDHLBQhQAH5cLk4rwbsPzs0FXLSg
- xYtlODw7lVC10NnaquCv06EpbfADOiW39WC1I3k6KGHSFBf8WondJiYiM
- YyUzUV2LOnzll6KA/UFylXPvWhTyKG6J6imrtT9c8Drh0pedbvwHSQel8
- 37DbF/lO+NncX1ojIKd2OrcajH6wqkIW2p0ud6sDVD+WgEOAHgWIU6csw g==;
-X-CSE-ConnectionGUID: yUb+X6TkTSGc9DrOC/3K2w==
-X-CSE-MsgGUID: cFS2f2SCQf+dTF+ljiswgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11103"; a="37779302"
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; d="scan'208";a="37779302"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jun 2024 06:37:26 -0700
-X-CSE-ConnectionGUID: kC74s2yiT1ytLdJ26KKgXg==
-X-CSE-MsgGUID: /tkexHemSpGmRatimTfDog==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,237,1712646000"; d="scan'208";a="40592004"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jun 2024 06:37:25 -0700
-Date: Fri, 14 Jun 2024 15:37:22 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Badal Nilawar <badal.nilawar@intel.com>, vinay.belgaumkar@intel.com
-Subject: Re: [PATCH i-g-t 2/2] "tests/intel/xe_gt_freq: Fix freq_low_max test
-Message-ID: <20240614133722.6ok4fvliugt5pd3b@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Badal Nilawar <badal.nilawar@intel.com>, vinay.belgaumkar@intel.com
-References: <20240614100712.38276-1-badal.nilawar@intel.com>
- <20240614100712.38276-3-badal.nilawar@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id CE0C410ED4A;
+	Fri, 14 Jun 2024 13:48:44 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 984BA10ED4F;
+ Fri, 14 Jun 2024 13:48:43 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4099743923420366721=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240614100712.38276-3-badal.nilawar@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_freq=5Flow=5Fmax_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Badal Nilawar" <badal.nilawar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 14 Jun 2024 13:48:43 -0000
+Message-ID: <171837292361.77189.3026916942556224789@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240614100712.38276-1-badal.nilawar@intel.com>
+In-Reply-To: <20240614100712.38276-1-badal.nilawar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,43 +36,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Badal,
-On 2024-06-14 at 15:37:12 +0530, Badal Nilawar wrote:
-> Intention of freq_low_max is to validate GuC PC flow when max freq set
-> to less than min freq. Validating cur freq is enough as workloads are
-> not being run.
-> 
-> Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+--===============4099743923420366721==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Instead of revert and fixing revert, please send one patch
-and add there which one did you fixed.
+== Series Details ==
 
-> ---
->  tests/intel/xe_gt_freq.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index 24333612b..b3562181d 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -277,7 +277,6 @@ static void test_freq_low_max(int fd, int gt_id)
->  	rpe = get_freq(fd, gt_id, "rpe");
->  
->  	igt_assert(get_freq(fd, gt_id, "cur") == rpe);
-> -	igt_assert(get_freq(fd, gt_id, "act") == rpe);
+Series: Fix freq_low_max test
+URL   : https://patchwork.freedesktop.org/series/134881/
+State : success
 
-Why ot writing comment here why "act" frequency is not checked?
+== Summary ==
 
-Regards,
-Kamil
+CI Bug Log - changes from XEIGT_7889_BAT -> XEIGTPW_11259_BAT
+====================================================
 
->  }
->  
->  /**
-> -- 
-> 2.34.1
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11259_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7889/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11259/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7889 -> IGTPW_11259
+
+  IGTPW_11259: 11259
+  IGT_7889: 9dca15da37f2a385b04427eb39cd460224d09c25 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1470-00e9498b453447a5afe527bd0e174587b12f66d2: 00e9498b453447a5afe527bd0e174587b12f66d2
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11259/index.html
+
+--===============4099743923420366721==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Fix freq_low_max test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134881/">https://patchwork.freedesktop.org/series/134881/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11259/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11259/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7889_BAT -&gt; XEIGTPW_11259_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11259_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7889/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11259/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7889 -&gt; IGTPW_11259</li>
+</ul>
+<p>IGTPW_11259: 11259<br />
+  IGT_7889: 9dca15da37f2a385b04427eb39cd460224d09c25 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1470-00e9498b453447a5afe527bd0e174587b12f66d2: 00e9498b453447a5afe527bd0e174587b12f66d2</p>
+
+</body>
+</html>
+
+--===============4099743923420366721==--
