@@ -4,62 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E82DC2BA15
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 11:41:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9F96C27C79
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 12:02:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8C2D10E36C;
-	Mon, 17 Jun 2024 11:41:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9175710E36D;
+	Mon, 17 Jun 2024 12:02:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CwSExmtx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CMX8B6xI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26EE010E36C
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 11:41:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D239710E36D
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 12:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718624486; x=1750160486;
+ t=1718625777; x=1750161777;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=pMXm8Q5NLJFevNex0+wT8yucqo7onRKqFDxUMCm5UNM=;
- b=CwSExmtxBLHtAHy+RbynS12BLA0Xobs/bWpz9uWodAvcJGdT7bcS+n/u
- 0E+HPfbrx8h2OgY1ZMw81FMfxKA6O8YfFp1pE3emi4orqjGBiYDL0eRn3
- 1PIMFFlT+bIiCi018UFIoB4H8Jo60pzE6K50W828NawF2acUZcToY8f/q
- rsSmSF6haxGELwd7DmZIPe+ijak83QUCWoCvn0tSXYT/+nS1D6EkTNkwh
- c8nBDy58mYyLg23u2mVlIsvRsxuLSlEmLCknetyGLeJSpW5PIbWp9y6qK
- U6BUt87PmfBsilaRLxKGkPiq2+ca9ZpqrxhRVOs0KccL1bYXVH/epZm/1 g==;
-X-CSE-ConnectionGUID: fBrWmAmvT9ytzvgYsFJLqA==
-X-CSE-MsgGUID: h2Tx7gxaTt6bKDSetI0H0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="26020869"
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="26020869"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 04:41:25 -0700
-X-CSE-ConnectionGUID: 47vm83IcRvCOCKkfCw+IfA==
-X-CSE-MsgGUID: tD3fQlQhSSaMb6oRaz/1Zw==
+ mime-version:in-reply-to;
+ bh=5X2ZcgX8CLVKHahoyUpWfljfTbLOAdY0o7e6NqtZy3s=;
+ b=CMX8B6xI1bfrCbzbMpDx8ochvrEZfr5qCDm2df+ONTfeP+RFXdvW5qpx
+ ce+BYRudEPckv7lInj0L7iwrnZ7j2C+g0jjCT0fb8p7HPmNpQBRBDsrSh
+ OuQY1aTc+VCOk9MhizRh5eutwdeyDFu3cso2MGap4NofOUB7Oiv+B77SN
+ asme16nq1/NLkSSricjkP1Hu3P6aadoEEHOhyE4YD4EvJ4Z0APNRDkXb7
+ mS3ovV7d6qgDI2XjQuxBr+oM40KkDDV+baDYhWC6lBCbyWnIj/lOId+1w
+ /QvDvsddT4DSvtvi0Acva/0ABikSSH8miUxsGZ4L1zB+A2dQXCavov0A/ g==;
+X-CSE-ConnectionGUID: JvpI1zltRv6gpMpyEWIV5g==
+X-CSE-MsgGUID: HNg9FIHWSI2dIoVNXTtZGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="15163746"
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="15163746"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 05:02:56 -0700
+X-CSE-ConnectionGUID: OiFhWEPXRKaXGBtLX/3Zeg==
+X-CSE-MsgGUID: NWzINNk7QqmdXxICqYOXUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="41294167"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.58])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 04:41:23 -0700
-Date: Mon, 17 Jun 2024 13:41:20 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: Re: [PATCH v7 2/5] lib/gpgpu_shader: tooling for preparing and
- running gpgpu shaders
-Message-ID: <20240617114120.lrgzj3bqxqy6tiv6@zkempczy-mobl2>
-References: <20240612-iga64_inline_ups-v7-0-0d4b840498c7@intel.com>
- <20240612-iga64_inline_ups-v7-2-0d4b840498c7@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="72377241"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 05:02:55 -0700
+Date: Mon, 17 Jun 2024 14:02:52 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/i915_pm_rpm: warn and skip test if
+ reading connector fails
+Message-ID: <20240617115419.2i4s6k5op547hl26@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Luca Coelho <luciano.coelho@intel.com>
+References: <20240614113320.197121-1-luciano.coelho@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240612-iga64_inline_ups-v7-2-0d4b840498c7@intel.com>
+In-Reply-To: <20240614113320.197121-1-luciano.coelho@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,303 +71,75 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jun 12, 2024 at 11:39:00AM +0200, Andrzej Hajda wrote:
-> Implement tooling for building shaders for specific generations.
-> The library allows you to build and run shader from precompiled blocks
-> and provides an abstraction layer over gpgpu pipeline.
+Hi Luca,
+On 2024-06-14 at 14:33:20 +0300, Luca Coelho wrote:
+> Fail test requirements if we can't set the initial data.  This is
+> usually caused by not being able to retrieve a connector due to
+> possible race-conditions.  In this case, we have issued a warning to
+> cause the test to fail and not just skip.
 > 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10911
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Jani Saarinen <jani.saarinen@intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > ---
->  lib/gpgpu_shader.c | 210 +++++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/gpgpu_shader.h |  38 ++++++++++
->  lib/meson.build    |   1 +
->  3 files changed, 249 insertions(+)
+>  tests/intel/i915_pm_rpm.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-> new file mode 100644
-> index 000000000000..080eef2445da
-> --- /dev/null
-> +++ b/lib/gpgpu_shader.c
-> @@ -0,0 +1,210 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + *
-> + * Author: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> + */
+> diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+> index e0f395fa8a84..31758b1a5e35 100644
+> --- a/tests/intel/i915_pm_rpm.c
+> +++ b/tests/intel/i915_pm_rpm.c
+> @@ -506,7 +506,7 @@ static drmModePropertyBlobPtr get_connector_edid(drmModeConnectorPtr connector,
+>  	return blob;
+>  }
+>  
+> -static void init_mode_set_data(struct mode_set_data *data)
+> +static bool init_mode_set_data(struct mode_set_data *data)
+>  {
+>  	data->res = drmModeGetResources(drm_fd);
+>  	if (data->res) {
+> @@ -518,7 +518,7 @@ static void init_mode_set_data(struct mode_set_data *data)
+>  			if (!data->connectors[i]) {
+>  				igt_warn("Could not read connector %u\n",
+>  					 data->res->connectors[i]);
+> -				continue;
+> +				return false;
+>  			}
+>  
+>  			data->edids[i] = get_connector_edid(data->connectors[i], i);
+> @@ -529,6 +529,8 @@ static void init_mode_set_data(struct mode_set_data *data)
+>  	}
+>  
+>  	init_modeset_cached_params(&ms_data);
 > +
-> +#include <i915_drm.h>
-> +
-> +#include "ioctl_wrappers.h"
-> +#include "gpgpu_shader.h"
-> +#include "gpu_cmds.h"
-> +
-> +#define SUPPORTED_GEN_VER 1200 /* Support TGL and up */
-> +
-> +#define PAGE_SIZE 4096
-> +#define BATCH_STATE_SPLIT 2048
-> +/* VFE STATE params */
-> +#define THREADS (1 << 16) /* max value */
-> +#define GEN8_GPGPU_URB_ENTRIES 1
-> +#define GPGPU_URB_SIZE 0
-> +#define GPGPU_CURBE_SIZE 0
-> +#define GEN7_VFE_STATE_GPGPU_MODE 1
-> +
-> +static uint32_t fill_sip(struct intel_bb *ibb,
-> +			 const uint32_t sip[][4],
-> +			 const size_t size)
-> +{
-> +	uint32_t *sip_dst;
-> +	uint32_t offset;
-> +
-> +	intel_bb_ptr_align(ibb, 16);
-> +	sip_dst = intel_bb_ptr(ibb);
-> +	offset = intel_bb_offset(ibb);
-> +
-> +	memcpy(sip_dst, sip, size);
-> +
-> +	intel_bb_ptr_add(ibb, size);
-> +
-> +	return offset;
-> +}
-> +
-> +static void emit_sip(struct intel_bb *ibb, const uint64_t offset)
-> +{
-> +	intel_bb_out(ibb, GEN4_STATE_SIP | (3 - 2));
-> +	intel_bb_out(ibb, lower_32_bits(offset));
-> +	intel_bb_out(ibb, upper_32_bits(offset));
-> +}
-> +
-> +static void
-> +__xelp_gpgpu_execfunc(struct intel_bb *ibb,
-> +		      struct intel_buf *target,
-> +		      unsigned int x_dim, unsigned int y_dim,
-> +		      struct gpgpu_shader *shdr,
-> +		      struct gpgpu_shader *sip,
-> +		      uint64_t ring, bool explicit_engine)
-> +{
-> +	uint32_t interface_descriptor, sip_offset;
-> +	uint64_t engine;
-> +
-> +	intel_bb_add_intel_buf(ibb, target, true);
-> +
-> +	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
-> +
-> +	interface_descriptor = gen8_fill_interface_descriptor(ibb, target,
-> +							      shdr->instr,
-> +							      4 * shdr->size);
-> +
-> +	if (sip && sip->size)
-> +		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
-> +	else
-> +		sip_offset = 0;
-> +
-> +	intel_bb_ptr_set(ibb, 0);
-> +
-> +	/* GPGPU pipeline */
-> +	intel_bb_out(ibb, GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-> +		     PIPELINE_SELECT_GPGPU);
-> +
-> +	gen9_emit_state_base_address(ibb);
-> +
-> +	xelp_emit_vfe_state(ibb, THREADS, GEN8_GPGPU_URB_ENTRIES,
-> +			    GPGPU_URB_SIZE, GPGPU_CURBE_SIZE, true);
-> +
-> +	gen7_emit_interface_descriptor_load(ibb, interface_descriptor);
-> +
-> +	if (sip_offset)
-> +		emit_sip(ibb, sip_offset);
-> +
-> +	gen8_emit_gpgpu_walk(ibb, 0, 0, x_dim * 16, y_dim);
-> +
-> +	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
-> +	intel_bb_ptr_align(ibb, 32);
-> +
-> +	engine = explicit_engine ? ring : I915_EXEC_DEFAULT;
-> +	intel_bb_exec(ibb, intel_bb_offset(ibb),
-> +		      engine | I915_EXEC_NO_RELOC, false);
-> +}
-> +
-> +static void
-> +__xehp_gpgpu_execfunc(struct intel_bb *ibb,
-> +		      struct intel_buf *target,
-> +		      unsigned int x_dim, unsigned int y_dim,
-> +		      struct gpgpu_shader *shdr,
-> +		      struct gpgpu_shader *sip,
-> +		      uint64_t ring, bool explicit_engine)
-> +{
-> +	struct xehp_interface_descriptor_data idd;
-> +	uint32_t sip_offset;
-> +	uint64_t engine;
-> +
-> +	intel_bb_add_intel_buf(ibb, target, true);
-> +
-> +	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
-> +
-> +	xehp_fill_interface_descriptor(ibb, target, shdr->instr,
-> +				       4 * shdr->size, &idd);
-> +
-> +	if (sip && sip->size)
-> +		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
-> +	else
-> +		sip_offset = 0;
-> +
-> +	intel_bb_ptr_set(ibb, 0);
-> +
-> +	/* GPGPU pipeline */
-> +	intel_bb_out(ibb, GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
-> +		     PIPELINE_SELECT_GPGPU);
-> +	xehp_emit_state_base_address(ibb);
-> +	xehp_emit_state_compute_mode(ibb);
-> +	xehp_emit_state_binding_table_pool_alloc(ibb);
-> +	xehp_emit_cfe_state(ibb, THREADS);
-> +
-> +	if (sip_offset)
-> +		emit_sip(ibb, sip_offset);
-> +
-> +	xehp_emit_compute_walk(ibb, 0, 0, x_dim * 16, y_dim, &idd, 0x0);
-> +
-> +	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
-> +	intel_bb_ptr_align(ibb, 32);
-> +
-> +	engine = explicit_engine ? ring : I915_EXEC_DEFAULT;
-> +	intel_bb_exec(ibb, intel_bb_offset(ibb),
-> +		      engine | I915_EXEC_NO_RELOC, false);
-> +}
-> +
-> +/**
-> + * gpgpu_shader_exec:
-> + * @ibb: pointer to initialized intel_bb
-> + * @target: pointer to initialized intel_buf to be written by shader/sip
-> + * @x_dim: gpgpu/compute walker thread group width
-> + * @y_dim: gpgpu/compute walker thread group height
-> + * @shdr: shader to be executed
-> + * @sip: sip to be executed, can be NULL
-> + * @ring: engine index
-> + * @explicit_engine: whether to use provided engine index
-> + *
-> + * Execute provided shader in asynchronous fashion. To wait for completion,
-> + * caller has to use the provided ibb handle.
-> + */
-> +void gpgpu_shader_exec(struct intel_bb *ibb,
-> +		       struct intel_buf *target,
-> +		       unsigned int x_dim, unsigned int y_dim,
-> +		       struct gpgpu_shader *shdr,
-> +		       struct gpgpu_shader *sip,
-> +		       uint64_t ring, bool explicit_engine)
-> +{
-> +	igt_require(shdr->gen_ver >= SUPPORTED_GEN_VER);
-> +	igt_assert(ibb->size >= PAGE_SIZE);
-> +	igt_assert(ibb->ptr == ibb->batch);
-> +
-> +	if (shdr->gen_ver >= 1250)
-> +		__xehp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
-> +				      ring, explicit_engine);
-> +	else
-> +		__xelp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
-> +				      ring, explicit_engine);
-> +}
-> +
-> +/**
-> + * gpgpu_shader_create:
-> + * @fd: drm fd - i915 or xe
-> + *
-> + * Creates empty shader.
-> + *
-> + * Returns: pointer to empty shader struct.
-> + */
-> +struct gpgpu_shader *gpgpu_shader_create(int fd)
-> +{
-> +	struct gpgpu_shader *shdr = calloc(1, sizeof(struct gpgpu_shader));
-> +	const struct intel_device_info *info;
-> +
-> +	info = intel_get_device_info(intel_get_drm_devid(fd));
-> +	shdr->gen_ver = 100 * info->graphics_ver + info->graphics_rel;
-> +	shdr->max_size = 16 * 4;
-> +	shdr->code = malloc(4 * shdr->max_size);
-> +	return shdr;
-
-Optimistic path without memory allocation error checking. Both for shdr
-and shrd->code. At least assert on allocation failure.
-
-Rest looks correct imo, so with above nit fixed:
-
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
---
-Zbigniew
-
-> +}
-> +
-> +/**
-> + * gpgpu_shader_destroy:
-> + * @shdr: pointer to shader struct created with 'gpgpu_shader_create'
-> + *
-> + * Frees resources of gpgpu_shader struct.
-> + */
-> +void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
-> +{
-> +	free(shdr->code);
-> +	free(shdr);
-> +}
-> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-> new file mode 100644
-> index 000000000000..02f6f1aad1e3
-> --- /dev/null
-> +++ b/lib/gpgpu_shader.h
-> @@ -0,0 +1,38 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + */
-> +
-> +#ifndef GPGPU_SHADER_H
-> +#define GPGPU_SHADER_H
-> +
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +#include <stdlib.h>
-> +
-> +struct intel_bb;
-> +struct intel_buf;
-> +
-> +struct gpgpu_shader {
-> +	uint32_t gen_ver;
-> +	uint32_t size;
-> +	uint32_t max_size;
-> +	union {
-> +		uint32_t *code;
-> +		uint32_t (*instr)[4];
-> +	};
-> +};
-> +
-> +struct gpgpu_shader *gpgpu_shader_create(int fd);
-> +void gpgpu_shader_destroy(struct gpgpu_shader *shdr);
-> +
-> +void gpgpu_shader_dump(struct gpgpu_shader *shdr);
-> +
-> +void gpgpu_shader_exec(struct intel_bb *ibb,
-> +		       struct intel_buf *target,
-> +		       unsigned int x_dim, unsigned int y_dim,
-> +		       struct gpgpu_shader *shdr,
-> +		       struct gpgpu_shader *sip,
-> +		       uint64_t ring, bool explicit_engine);
-> +
-> +#endif /* GPGPU_SHADER_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index e2f740c116f8..0a3084f8aea2 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -72,6 +72,7 @@ lib_sources = [
->  	'media_spin.c',
->  	'media_fill.c',
->  	'gpgpu_fill.c',
-> +	'gpgpu_shader.c',
->  	'gpu_cmds.c',
->  	'rendercopy_i915.c',
->  	'rendercopy_i830.c',
-> 
+> +	return true;
+>  }
+>  
+>  static void fini_mode_set_data(struct mode_set_data *data)
+> @@ -598,8 +600,15 @@ static bool setup_environment(bool display_enabled)
+>  
+>  	ms_data.devid = intel_get_drm_devid(drm_fd);
+>  
+> -	if (display_enabled)
+> -		init_mode_set_data(&ms_data);
+> +	/*
+> +	 * Fail test requirements if we can't set the initial data.
+> +	 * This is usually caused by not being able to retrieve a
+> +	 * connector due to possible race-conditions.  In this case,
+> +	 * we should have issued a warning to cause the test to fail
+> +	 * and not just skip.
+> +	 */
+> +	if (display_enabled && !init_mode_set_data(&ms_data))
+> +		return false;
+>  
+>  	igt_pm_enable_sata_link_power_management();
+>  
 > -- 
-> 2.34.1
+> 2.39.2
 > 
