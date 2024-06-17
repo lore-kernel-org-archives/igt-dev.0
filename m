@@ -4,74 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4D6AC27C79
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 16:43:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB074C2BA18
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 16:59:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 485F710E462;
-	Mon, 17 Jun 2024 16:43:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Tz6OTPis";
-	dkim-atps=neutral
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
- [209.85.128.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 571DF10E462
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 16:43:45 +0000 (UTC)
-Received: by mail-wm1-f54.google.com with SMTP id
- 5b1f17b1804b1-421b9068274so40648315e9.1
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 09:43:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718642623; x=1719247423; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=Ve14bbgFIjGjtLCaVW3AC4DyIQKTmAjBDmqQrsjslSI=;
- b=Tz6OTPiskeb5EVvIzrwOUma7xyGaegxYc9fJx+uZA5ZtX4srQ/cPHLQYQwh+dELfuW
- VJ38Z4uYyzCFShg5Pwwjb1B+FOW8tk9DGMSW8wfLRnd2a/gPrGUFu6C54VvNWYj28d/d
- vJVU8CfYEInxg9zbKxrPTQGsMZlszlA3yjzk2WRafl9hRW8WsJVMQ/DZdHoCcPZMAUW/
- sOuu/s/W2ZN2U/MRjAUthIqe2wOXwBLF10ZaiDvhC8R4WwdnydfmE8UYbzROFiW+Gphv
- WZvnHPvwfXSQ6564XTyAmE/jQeijUeMxcnQkCqqBzA79Ig9jl5fifab0lSeDBpu63REn
- +fNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718642623; x=1719247423;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=Ve14bbgFIjGjtLCaVW3AC4DyIQKTmAjBDmqQrsjslSI=;
- b=r7uLFRUw/u+3CeJYgW3mgrIRyv0jYIQpCOGSkXVEc7kjjcK9EO0/vFRWcGQntYcfL/
- CRHcz1JEprpnHug61epWVI3r+CO6xkMhwkGvYy8Me5gv1/mS4yJ7axOmjOQwsGrPevuP
- p9uPwJ3VBkFCfny9MOwp76NKLCqABNalSG3vOF4kKjDXfNARHNd8P0jkn1DMDwY0xtsv
- 16L6N2eiBD8Y9lAyQ2ysWyHoan1S8zfa7gSsBp/k3m28x3LiOHCWFtMgFBBmjtomYyvJ
- ABIu+zn5p6YPKyHw4cvnhFT2FSdp4L/a16qrkReacPsJAfMriwxs9APariRcJT/Cqr63
- fMmA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXBUv3B/zNqvmcDsXEZTCrNoZR2CnQF5J+NJU1qvNqUOtWgDhZJxi/rBqOTGkRogMpGHHO+F6a2qcAWKWDytAyUmMfhvU6MBwEV0dkIiA==
-X-Gm-Message-State: AOJu0YwkPxR7JhZ50H7FgPzo2Q3yPAkBt6uR9Ig5spchgY4BMkQsXwkc
- DG3rcSITftB5xHMnQbz4Le8Pl0aSFeh40ar74YD+VgranlHWFnxJ
-X-Google-Smtp-Source: AGHT+IHGxi+axm8AZEptV3fCw/EGqX/piZIB7gFMzKg/nwY7A1LHNbdpdK5/3vdvr5QrKh1pVasEWQ==
-X-Received: by 2002:a5d:6d8c:0:b0:360:9708:6820 with SMTP id
- ffacd0b85a97d-360970868ecmr2487416f8f.7.1718642623245; 
- Mon, 17 Jun 2024 09:43:43 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.139.73])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-36075093a1esm12173764f8f.24.2024.06.17.09.43.41
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jun 2024 09:43:42 -0700 (PDT)
-Message-ID: <8a5640de-c39f-46e8-ab47-c66b741b8466@gmail.com>
-Date: Mon, 17 Jun 2024 19:43:37 +0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2906510E469;
+	Mon, 17 Jun 2024 16:59:07 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C475910E46C;
+ Mon, 17 Jun 2024 16:59:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5750630136498289506=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 11/12] lib/intel_bufops: Don't disable x and y on
- platforms without swizzling
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240527073345.54729-1-zbigniew.kempczynski@intel.com>
- <20240527073345.54729-12-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240527073345.54729-12-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/intel/xe=5Fevict=3A_Redu?=
+ =?utf-8?q?ce_allocations_to_maximum_working_set_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 17 Jun 2024 16:59:05 -0000
+Message-ID: <171864354579.99140.6579630939636296192@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240617151050.3804-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20240617151050.3804-1-thomas.hellstrom@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,43 +37,177 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============5750630136498289506==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
-> Upcoming tiling detection tool wants to produce X and Y surfaces
-> in software so we can't disable X and Y in supported tilings,
-> otherwise there's no possibility to generate reference tiled surface.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->   lib/intel_bufops.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index d0f6ab481f..1dfc12bf45 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -1720,7 +1720,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
->   		bool supported = probe_hw_tiling(bops, I915_TILING_X,
->   						 &swizzling_supported);
->   
-> -		if (!swizzling_supported) {
-> +		if (!swizzling_supported && bops->intel_gen < 12) {
->   			igt_debug("Swizzling for X is not supported\n");
->   			bops->supported_tiles &= ~TILE_X;
->   		}
-> @@ -1738,7 +1738,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
->   		bool supported = probe_hw_tiling(bops, I915_TILING_Y,
->   						 &swizzling_supported);
->   
-> -		if (!swizzling_supported) {
-> +		if (!swizzling_supported && bops->intel_gen < 12) {
->   			igt_debug("Swizzling for Y is not supported\n");
->   			bops->supported_tiles &= ~TILE_Y;
->   		}
+== Series Details ==
 
+Series: tests/intel/xe_evict: Reduce allocations to maximum working set (rev2)
+URL   : https://patchwork.freedesktop.org/series/134897/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7890_BAT -> XEIGTPW_11265_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_11265_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11265_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11265_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind:
+    - bat-pvc-2:          [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11265_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_intel_bb@blit-simple:
+    - bat-atsm-2:         [DMESG-WARN][3] ([Intel XE#2110]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_intel_bb@blit-simple.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/bat-atsm-2/igt@xe_intel_bb@blit-simple.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-atsm-2:         [SKIP][5] ([Intel XE#2109]) -> [PASS][6] +2 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+
+  
+  [Intel XE#2109]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2109
+  [Intel XE#2110]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2110
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7890 -> IGTPW_11265
+  * Linux: xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb -> xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3
+
+  IGTPW_11265: 11265
+  IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb: c00c421245452a4a82a893cd2e1bfd9663a761fb
+  xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3: 3b4eab7e82c7a1429e257890553ad571f320b8a3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/index.html
+
+--===============5750630136498289506==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_evict: Reduce allocations to maximum working set (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134897/">https://patchwork.freedesktop.org/series/134897/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7890_BAT -&gt; XEIGTPW_11265_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11265_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11265_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11265_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind:<ul>
+<li>bat-pvc-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/bat-pvc-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11265_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_intel_bb@blit-simple:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_intel_bb@blit-simple.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2110">Intel XE#2110</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/bat-atsm-2/igt@xe_intel_bb@blit-simple.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2109">Intel XE#2109</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11265/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7890 -&gt; IGTPW_11265</li>
+<li>Linux: xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb -&gt; xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3</li>
+</ul>
+<p>IGTPW_11265: 11265<br />
+  IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb: c00c421245452a4a82a893cd2e1bfd9663a761fb<br />
+  xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3: 3b4eab7e82c7a1429e257890553ad571f320b8a3</p>
+
+</body>
+</html>
+
+--===============5750630136498289506==--
