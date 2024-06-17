@@ -4,27 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49FF3C27C79
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 17:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93A9C27C79
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 19:21:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF83010E1B7;
-	Mon, 17 Jun 2024 17:42:03 +0000 (UTC)
-Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D463010E1B7;
- Mon, 17 Jun 2024 17:42:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4790302301666677870=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64D4210E4D0;
+	Mon, 17 Jun 2024 19:21:39 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="WV/EZa77";
+	dkim-atps=neutral
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+ [209.85.128.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1D4310E4CC
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 19:21:37 +0000 (UTC)
+Received: by mail-wm1-f46.google.com with SMTP id
+ 5b1f17b1804b1-42138eadf64so37792935e9.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 12:21:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1718652096; x=1719256896; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=j9UUrYxGGyXVUlia7eK8IDAu7do7IBRy7SqkBvDtTwg=;
+ b=WV/EZa77IkH+i2cRz+pmyaV2heloJfwiTynFiaDrqj/j0XsNJSKEooLxMWKxyJmA8h
+ 1/cjd64L4NRoGyNNJxcSIa7yv4tMIZH2sN+qy2+6xF5HsmXHjCyRcpOBV1lIkB6bp6fU
+ CkndZ0EIy1m9sn+AI8P/Wsd8lCKSrNXplwGHAT+lEVry585O/hraF/nP9uvx/fx9lHdt
+ iqnIrwwJefCt5YZ3Y5ESTw709ovULk2E8Zf8LEPVrPsHx7TaLQACNJ0SNPyRKDPmkroE
+ fOgNoNGqPEfTpP+VQrCxsZktNO/xH0rfY3MnJQDRPEre5aZEDBRsEgEhZSh4XotT6W1k
+ 8Tvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1718652096; x=1719256896;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=j9UUrYxGGyXVUlia7eK8IDAu7do7IBRy7SqkBvDtTwg=;
+ b=XdTfk4g1rq0kL9ABG+OVneR0wpISoT5SN2PNvSJXRJNxkNKNN61yE5JXW25K82n5c6
+ Sra6TBDJNPj1XPUXwTfOJ+C9PxE6/pBEq9F83tjC+AqAt1Z9bt9MM1M7ccUXFqpsf9LU
+ cwfPihR1vg4HcSZnVocvNbEjCPWWdShuIPo6L+dMBe+Xr9rORJRyEwaUtfi8EYjW4VT6
+ bggF6tyKpCWMPR8L5W5aJDr9NN2pjzrQjAHti9untfd1krnyu2WBm/sME+TwcETF9ipa
+ ghzZqWE/aro/fACsu+yqoV/Z8uYhaIqZE68QP5C6XJ8aGCfEO7B2Ryab7CDVi1M3r+kC
+ V7rw==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCW4dTYFmR5kYfRxtAGz8DMR0lnGwpw6Ld8CkE+AScu4IwGjVS34UR+ebUOPJzHhAlpClLwjE16lo6MFnkmKglWyNpTb6ZgAlWUrlHVbXA==
+X-Gm-Message-State: AOJu0YzYqDfgQflBXIPOjKssQgtGFq/zd8tHsiGXKJOaNAJNwKiwRZ8L
+ X61++mIw3HllmoiENnZ1PfDxm7uIpRyQKLsld6vhkvuEGJeoUaesCJUAn13l
+X-Google-Smtp-Source: AGHT+IHtvBUVfmI7yaqXrh2JKiK9PqX6vOF8ycp0O1TpsL2dcnSUVZ47UMooipzNg13CGZmmnChW8Q==
+X-Received: by 2002:a05:600c:4ece:b0:423:394:ccf7 with SMTP id
+ 5b1f17b1804b1-423048228efmr83245265e9.7.1718652095812; 
+ Mon, 17 Jun 2024 12:21:35 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.137.72])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-422f5f33bcfsm164527685e9.1.2024.06.17.12.21.32
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 17 Jun 2024 12:21:34 -0700 (PDT)
+Message-ID: <7b7de7d5-84bd-491f-87c1-141416c8df47@gmail.com>
+Date: Mon, 17 Jun 2024 22:21:29 +0300
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_add_subtest_in_kms=5Fbw_for?=
- =?utf-8?q?_connected_outputs_only_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kunal Joshi" <kunal1.joshi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Jun 2024 17:42:02 -0000
-Message-ID: <171864612285.99140.4778850061962736822@a6498e030952>
-X-Patchwork-Hint: ignore
-References: <20240617161052.1113250-1-kunal1.joshi@intel.com>
-In-Reply-To: <20240617161052.1113250-1-kunal1.joshi@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 12/12] tools/intel_tiling_detect: Introduce tiling
+ detection tool
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240527073345.54729-1-zbigniew.kempczynski@intel.com>
+ <20240527073345.54729-13-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240527073345.54729-13-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,1201 +84,500 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4790302301666677870==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Just small issues below, on the actual engine stuff I didn't spot 
+anything comment worthy.
+
+On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
+> In some tests we're incorrectly assumming we get requested tiling.
+> In blt library we defined available blitter and render tilings for
+> defined platforms to avoid being wrong and allowing iterators to walk
+> over proper tilings. Unfortunately we're not sure what's the real
+> tiling underneath as we're not validating its content.
+> 
+> Instead of blindly trusting the documentation as it might be wrong
+> or vague lets introduce tiling detection tool for Intel platforms.
+> Currently it supports detecting linear/X/Y/Yf/Ys/4 tilings (tile64
+> is queued to be added) in fast-copy, block-copy and render-copy
+> commands.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> ---
+>   tools/intel_tiling_detect.c | 432 ++++++++++++++++++++++++++++++++++++
+>   tools/meson.build           |   1 +
+>   2 files changed, 433 insertions(+)
+>   create mode 100644 tools/intel_tiling_detect.c
+> 
+> diff --git a/tools/intel_tiling_detect.c b/tools/intel_tiling_detect.c
+> new file mode 100644
+> index 0000000000..ea5ea5eae6
+> --- /dev/null
+> +++ b/tools/intel_tiling_detect.c
+> @@ -0,0 +1,432 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +#include <errno.h>
+> +#include <glib.h>
+> +#include <sys/ioctl.h>
+> +#include <sys/time.h>
+> +#include <malloc.h>
+> +#include "drm.h"
+> +#include "igt.h"
+> +#include "igt_syncobj.h"
+> +#include "i915/gem_create.h"
+> +#include "intel_blt.h"
+> +#include "intel_common.h"
+> +#include "intel_mocs.h"
+> +#include "intel_pat.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_util.h"
+> +
+> +IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
+
+cut'n'paste description? :)
+
+> +
+> +static struct param {
+> +	int tiling;
+> +	bool write_png;
+> +	bool print_bb;
+> +	bool print_surface_info;
+> +	int width;
+> +	int height;
+> +	int incdim_width;
+> +} param = {
+> +	.tiling = -1,
+> +	.write_png = false,
+> +	.print_bb = false,
+> +	.print_surface_info = false,
+> +	.width = 256,
+> +	.height = 256,
+> +	.incdim_width = 1,
+> +};
+> +
+> +struct intel_buf refs[I915_TILING_64] = {};
+
+I think this should be structured somehow differently as that 
+I915_TILING_64 already defined as MAX_TILING + n. Though, just now I 
+have no good suggestion.
+
+> +
+> +#define PRINT_SURFACE_INFO(name, obj) do { \
+> +	if (param.print_surface_info) \
+> +		blt_surface_info((name), (obj)); } while (0)
+> +
+> +#define WRITE_PNG(fd, id, name, obj, w, h, bpp) do { \
+> +	if (param.write_png) \
+> +		blt_surface_to_png((fd), (id), (name), (obj), (w), (h), (bpp)); } while (0)
+> +
+> +const char *help_str =
+> +	"  -b\tPrint bb\n"
+> +	"  -s\tPrint surface info\n"
+> +	"  -p\tWrite PNG\n"
+> +	"  -W\tWidth (default 256)\n"
+> +	"  -H\tHeight (default 256)\n"
+> +	"  -h\tHelp"
+> +	;
+> +
+> +enum copy_fn {
+> +	FAST_COPY,
+> +	BLOCK_COPY,
+> +	RENDER_COPY,
+> +};
+> +
+> +static const char * const copy_fn_name[] = {
+> +	[FAST_COPY] = "fast-copy",
+> +	[BLOCK_COPY] = "block-copy",
+> +	[RENDER_COPY] = "render-copy",
+> +};
+> +
+> +static void detect_blt_tiling(const struct blt_copy_object *buf)
+> +{
+> +	bool detected = false;
+> +	int i;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(refs); i++) {
+> +		if (!refs[i].bops)
+> +			continue;
+> +
+> +		if (!memcmp(buf->ptr, refs[i].ptr, buf->size)) {
+> +			detected = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	igt_info("buffer tiling (claimed): %s, detected: %s\n",
+> +		 blt_tiling_name(buf->tiling),
+> +		 detected ? blt_tiling_name(i915_tile_to_blt_tile(i)) : "unknown");
+> +}
+> +
+> +static void blt_copy(int fd,
+> +		     intel_ctx_t *ctx,
+> +		     const struct intel_execution_engine2 *e,
+> +		     uint32_t width, uint32_t height,
+> +		     enum blt_tiling_type tiling,
+> +		     enum copy_fn fn)
+> +{
+> +	struct blt_copy_data blt = {};
+> +	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+> +	struct blt_copy_object *src, *dst;
+> +	const uint32_t bpp = 32;
+> +	uint64_t bb_size;
+> +	uint64_t ahnd = intel_allocator_open(fd, ctx->vm, INTEL_ALLOCATOR_RELOC);
+> +	uint32_t run_id = tiling;
+> +	uint32_t src_region, dst_region;
+> +	uint32_t bb;
+> +	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
+> +	bool is_xe = is_xe_device(fd);
+> +
+> +	if (is_xe) {
+> +		bb_size = xe_bb_size(fd, SZ_4K);
+> +		src_region = system_memory(fd);
+> +		dst_region = vram_if_possible(fd, 0);
+> +		bb = xe_bo_create(fd, 0, bb_size, src_region, 0);
+> +	} else {
+> +		bb_size = SZ_4K;
+> +		src_region = REGION_SMEM;
+> +		dst_region = gem_has_lmem(fd) ? REGION_LMEM(0) : REGION_SMEM;
+> +		igt_assert(__gem_create_in_memory_regions(fd, &bb, &bb_size, src_region) == 0);
+> +	}
+> +
+> +	if (!blt_uses_extended_block_copy(fd))
+> +		pext = NULL;
+> +
+> +	blt_copy_init(fd, &blt);
+> +
+> +	src = blt_create_object(&blt, src_region, width, height, bpp, uc_mocs,
+> +				T_LINEAR, COMPRESSION_DISABLED,
+> +				COMPRESSION_TYPE_3D, true);
+> +	dst = blt_create_object(&blt, dst_region, width, height, bpp, uc_mocs,
+> +				tiling, COMPRESSION_DISABLED,
+> +				COMPRESSION_TYPE_3D, true);
+> +	PRINT_SURFACE_INFO("src", src);
+> +	PRINT_SURFACE_INFO("dst", dst);
+> +
+> +	blt_surface_fill_rect(fd, src, width, height);
+> +
+> +	blt.color_depth = CD_32bit;
+> +	blt.print_bb = param.print_bb;
+> +	blt_set_copy_object(&blt.src, src);
+> +	blt_set_copy_object(&blt.dst, dst);
+> +	blt_set_object_ext(&ext.src, 0, width, height, SURFACE_TYPE_2D);
+> +	blt_set_object_ext(&ext.dst, 0, width, height, SURFACE_TYPE_2D);
+> +	blt_set_batch(&blt.bb, bb, bb_size, src_region);
+> +	if (fn == BLOCK_COPY)
+> +		blt_block_copy(fd, ctx, e, ahnd, &blt, pext);
+> +	else if (fn == FAST_COPY)
+> +		blt_fast_copy(fd, ctx, e, ahnd, &blt);
+> +	if (is_xe)
+> +		intel_ctx_xe_sync(ctx, true);
+> +	else
+> +		gem_sync(fd, dst->handle);
+> +
+> +	WRITE_PNG(fd, run_id, copy_fn_name[fn], &blt.dst, width, height, bpp);
+> +
+> +	detect_blt_tiling(dst);
+> +
+> +	/* Politely clean vm */
+> +	put_offset(ahnd, src->handle);
+> +	put_offset(ahnd, dst->handle);
+> +	put_offset(ahnd, bb);
+> +	intel_allocator_bind(ahnd, 0, 0);
+> +	blt_destroy_object(fd, src);
+> +	blt_destroy_object(fd, dst);
+> +	gem_close(fd, bb);
+> +	put_ahnd(ahnd);
+> +}
+> +
+> +static void detect_render_tiling(struct intel_buf *buf)
+> +{
+> +	bool detected = false;
+> +	int i;
+> +
+> +	intel_buf_device_map(buf, false);
+> +
+> +	for (i = 0; i < ARRAY_SIZE(refs); i++) {
+> +		if (!refs[i].bops)
+> +			continue;
+> +
+> +		if (!memcmp(buf->ptr, refs[i].ptr, buf->size)) {
+> +			detected = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	intel_buf_unmap(buf);
+> +
+> +	igt_info("buffer tiling (claimed): %s, detected: %s\n",
+> +		 blt_tiling_name(buf->tiling),
+> +		 detected ? blt_tiling_name(i915_tile_to_blt_tile(i)) : "unknown");
+> +}
+> +
+> +static void scratch_buf_init(struct buf_ops *bops,
+> +			     struct intel_buf *buf,
+> +			     int width, int height,
+> +			     uint32_t tiling,
+> +			     enum i915_compression compression)
+> +{
+> +	int fd = buf_ops_get_fd(bops);
+> +	int bpp = 32;
+> +
+> +	/*
+> +	 * We use system memory even if vram is possible because wc mapping
+> +	 * is extremely slow.
+> +	 */
+> +	intel_buf_init_in_region(bops, buf, width, height, bpp, 0,
+> +				 tiling, compression,
+> +				 is_xe_device(fd) ? system_memory(fd) : REGION_SMEM);
+> +
+> +	igt_assert(intel_buf_width(buf) == width);
+> +	igt_assert(intel_buf_height(buf) == height);
+> +}
+> +
+> +static void render(int fd, uint32_t width, uint32_t height, uint32_t tiling)
+> +{
+> +	struct buf_ops *bops;
+> +	struct intel_bb *ibb;
+> +	struct intel_buf src, dst;
+> +	uint32_t devid = intel_get_drm_devid(fd);
+> +	igt_render_copyfunc_t render_copy = NULL;
+> +
+> +	bops = buf_ops_create(fd);
+> +
+> +	igt_debug("%s() gen: %d\n", __func__, intel_gen(devid));
+> +
+> +	ibb = intel_bb_create(fd, SZ_4K);
+> +
+> +	scratch_buf_init(bops, &src, width, height, I915_TILING_NONE,
+> +			 I915_COMPRESSION_NONE);
+> +	scratch_buf_init(bops, &dst, width, height, tiling,
+> +			 I915_COMPRESSION_NONE);
+> +
+> +	/* Copy reference linear image */
+> +	intel_buf_device_map(&src, true);
+> +	memcpy(src.ptr, refs[0].ptr, src.bo_size);
+> +	intel_buf_unmap(&src);
+> +
+> +	render_copy = igt_get_render_copyfunc(devid);
+> +	igt_assert(render_copy);
+> +
+> +	render_copy(ibb,
+> +		    &src,
+> +		    0, 0, width, height,
+> +		    &dst,
+> +		    0, 0);
+> +
+> +	intel_bb_sync(ibb);
+> +	intel_bb_destroy(ibb);
+> +
+> +	detect_render_tiling(&dst);
+> +
+> +	if (param.write_png)
+> +		intel_buf_raw_write_to_png(&dst, "render-tile-%s.png",
+> +					   blt_tiling_name(i915_tile_to_blt_tile(tiling)));
+> +
+> +	intel_buf_close(bops, &src);
+> +	intel_buf_close(bops, &dst);
+> +
+> +	buf_ops_destroy(bops);
+> +}
+> +
+> +static void single_copy(int fd,
+> +			uint32_t width, uint32_t height,
+> +			int tiling, enum copy_fn fn)
+> +{
+> +	/* for potential hangs */
+> +	fd = drm_reopen_driver(fd);
+> +
+> +	switch (fn) {
+> +	case BLOCK_COPY:
+> +	case FAST_COPY:
+> +		if (is_xe_device(fd)) {
+> +			struct drm_xe_engine_class_instance inst = {
+> +				.engine_class = DRM_XE_ENGINE_CLASS_COPY,
+> +			};
+> +			uint32_t vm, exec_queue;
+> +			intel_ctx_t *ctx;
+> +
+> +			vm = xe_vm_create(fd, 0, 0);
+> +			exec_queue = xe_exec_queue_create(fd, vm, &inst, 0);
+> +			ctx = intel_ctx_xe(fd, vm, exec_queue, 0, 0, 0);
+> +
+> +			blt_copy(fd, ctx, NULL, width, height, tiling, fn);
+> +
+> +			xe_exec_queue_destroy(fd, exec_queue);
+> +			xe_vm_destroy(fd, vm);
+> +			free(ctx);
+> +		} else {
+> +			const struct intel_execution_engine2 *e;
+> +			const intel_ctx_t *ctx;
+> +
+> +			ctx = intel_ctx_create_all_physical(fd);
+> +			for_each_ctx_engine(fd, ctx, e) {
+> +				if (e->class != I915_ENGINE_CLASS_COPY)
+> +					continue;
+> +
+> +				if (fn == BLOCK_COPY && !gem_engine_can_block_copy(fd, e))
+> +					continue;
+> +
+> +				blt_copy(fd, (intel_ctx_t *)ctx, e,
+> +					 width, height, tiling, fn);
+> +				break;
+> +			}
+> +			intel_ctx_destroy(fd, ctx);
+> +		}
+> +		break;
+> +
+> +	case RENDER_COPY:
+> +		render(fd, width, height, blt_tile_to_i915_tile(tiling));
+> +		break;
+> +	}
+> +
+> +	drm_close_driver(fd);
+> +}
+> +
+> +static void soft_tile(struct buf_ops *bops, struct intel_buf *buf,
+> +		      uint32_t width, uint32_t height, uint32_t tiling)
+> +{
+> +	struct blt_copy_data blt = {};
+> +	struct blt_copy_object *src;
+> +	int fd = buf_ops_get_fd(bops);
+> +	uint8_t uc_mocs = intel_get_uc_mocs_index(fd);
+> +	enum blt_compression_type comp_type = COMPRESSION_TYPE_3D;
+> +	uint64_t sys_region;
+> +	const int bpp = 32;
+> +
+> +	sys_region = is_xe_device(fd) ? system_memory(fd) : REGION_SMEM;
+> +	blt_copy_init(fd, &blt);
+> +	src = blt_create_object(&blt, sys_region, width, height, bpp, uc_mocs,
+> +				T_LINEAR, COMPRESSION_DISABLED, comp_type, true);
+> +	blt_surface_fill_rect(fd, src, width, height);
+> +
+> +	intel_buf_init(bops, buf, width, height, bpp, 0, tiling, false);
+> +	buf_ops_set_software_tiling(bops, tiling, true);
+> +
+> +	linear_to_intel_buf(bops, buf, src->ptr);
+> +
+> +	if (param.write_png)
+> +		intel_buf_raw_write_to_png(buf, "reference-tile-%s.png",
+> +					   blt_tiling_name(i915_tile_to_blt_tile(tiling)));
+> +}
+> +
+> +static bool try_tile[] = {
+> +	[I915_TILING_NONE] = true,
+> +	[I915_TILING_X] = true,
+> +	[I915_TILING_Y] = true,
+> +	[I915_TILING_4] = true,
+> +	[I915_TILING_Yf] = true,
+> +	[I915_TILING_64] = false,
+> +};
+
+I think you have hole in this list? You don't have Ys here when you'll 
+be missing I915_TILING_LAST + 3 while you do have I915_TILING_LAST + 4
+
+Maybe create struct to encapsulate these and the use list of those 
+structs? Then there would be no holes.
+
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +	struct buf_ops *bops;
+> +	int fd, i, fn, opt;
+> +
+> +	while ((opt = getopt(argc, argv, "bpsW:H:h")) != -1) {
+> +		switch (opt) {
+> +		case 'b':
+> +			param.print_bb = true;
+> +			break;
+> +
+> +		case 'p':
+> +			param.write_png = true;
+> +			break;
+> +
+> +		case 's':
+> +			param.print_surface_info = true;
+> +			break;
+> +
+> +		case 'W':
+> +			param.width = atoi(optarg);
+> +			break;
+> +
+> +		case 'H':
+> +			param.height = atoi(optarg);
+> +			break;
+> +
+> +		case 'h':
+> +			igt_info("%s\n", help_str);
+> +			exit(0);
+> +			break;
+> +
+> +		default:
+> +			break;
+> +		}
+> +	}
+> +
+> +	fd = drm_open_driver(DRIVER_INTEL | DRIVER_XE);
+> +	if (is_xe_device(fd))
+> +		xe_device_get(fd);
+> +
+> +	bops = buf_ops_create(fd);
+> +
+> +	for (i = 0; i <= I915_TILING_64; i++) {
+
+why not ARRAY_SIZE() ?
+
+> +		igt_info("Building reference tile[%-7s] = %s\n",
+> +			 blt_tiling_name(i915_tile_to_blt_tile(i)),
+> +			 try_tile[i] ? "yes" : "no");
+> +		if (try_tile[i]) {
+> +			soft_tile(bops, &refs[i],
+> +				  param.width, param.height, i);
+> +			intel_buf_device_map(&refs[i], false);
+> +		}
+> +	}
+> +
+> +	for (fn = FAST_COPY; fn <= RENDER_COPY; fn++) {
+> +		if (fn == FAST_COPY && !blt_has_fast_copy(fd))
+> +			continue;
+> +
+> +		if (fn == BLOCK_COPY && !blt_has_block_copy(fd))
+> +			continue;
+> +
+> +		igt_info("[%s]:\n", copy_fn_name[fn]);
+> +
+> +		for (i = 0; i <= I915_TILING_64; i++)
+> +			if (try_tile[i])
+> +				single_copy(fd, param.width, param.height,
+> +					    i915_tile_to_blt_tile(i), fn);
+> +	}
+> +
+> +	for (i = 0; i <= I915_TILING_64; i++) {
+> +		if (try_tile[i])
+> +			intel_buf_unmap(&refs[i]);
+> +	}
+> +
+> +	if (is_xe_device(fd))
+> +		xe_device_put(fd);
+> +	close(fd);
+> +}
+> diff --git a/tools/meson.build b/tools/meson.build
+> index ac79d8b584..1656355eef 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -36,6 +36,7 @@ tools_progs = [
+>   	'intel_reg_checker',
+>   	'intel_residency',
+>   	'intel_stepping',
+> +	'intel_tiling_detect',
+>   	'intel_vbt_decode',
+>   	'intel_watermark',
+>   	'intel_gem_info',
 
-== Series Details ==
-
-Series: add subtest in kms_bw for connected outputs only (rev2)
-URL   : https://patchwork.freedesktop.org/series/134822/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_14957 -> IGTPW_11266
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_11266 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11266, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/index.html
-
-Participating hosts (41 -> 41)
-------------------------------
-
-  Additional (3): fi-kbl-7567u bat-kbl-2 fi-elk-e7500 
-  Missing    (3): bat-adlp-9 bat-dg2-11 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11266:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * {igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p} (NEW):
-    - bat-dg2-14:         NOTRUN -> [SKIP][1] +63 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg2-14/igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p.html
-
-  * {igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p} (NEW):
-    - {bat-arls-5}:       NOTRUN -> [SKIP][2] +43 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-5/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html
-
-  * {igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p} (NEW):
-    - bat-dg2-8:          NOTRUN -> [SKIP][3] +55 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg2-8/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html
-    - bat-adls-6:         NOTRUN -> [SKIP][4] +51 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adls-6/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html
-
-  * {igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p} (NEW):
-    - bat-jsl-3:          NOTRUN -> [SKIP][5] +55 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-jsl-3/igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p.html
-
-  * {igt@kms_bw@connected-linear-tiling-5-displays-1920x1080p} (NEW):
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6] +57 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-tgl-1115g4/igt@kms_bw@connected-linear-tiling-5-displays-1920x1080p.html
-
-  * {igt@kms_bw@connected-linear-tiling-7-displays-3840x2160p} (NEW):
-    - {bat-arlh-2}:       NOTRUN -> [SKIP][7] +47 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-2/igt@kms_bw@connected-linear-tiling-7-displays-3840x2160p.html
-
-  * {igt@kms_bw@connected-linear-tiling-8-displays-2160x1440p} (NEW):
-    - bat-adln-1:         NOTRUN -> [SKIP][8] +52 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adln-1/igt@kms_bw@connected-linear-tiling-8-displays-2160x1440p.html
-
-  * igt@kms_bw@linear-tiling-2-displays-2560x1440p:
-    - bat-jsl-1:          NOTRUN -> [SKIP][9] +55 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-jsl-1/igt@kms_bw@linear-tiling-2-displays-2560x1440p.html
-
-  * igt@kms_bw@linear-tiling-2-displays-3840x2160p:
-    - bat-adlp-6:         NOTRUN -> [SKIP][10] +52 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adlp-6/igt@kms_bw@linear-tiling-2-displays-3840x2160p.html
-
-  * igt@kms_bw@linear-tiling-4-displays-3840x2160p:
-    - bat-arls-1:         NOTRUN -> [SKIP][11] +59 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-1/igt@kms_bw@linear-tiling-4-displays-3840x2160p.html
-
-  * {igt@kms_bw@linear-tiling-5-displays-2160x1440p} (NEW):
-    - bat-mtlp-8:         NOTRUN -> [SKIP][12] +63 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-8/igt@kms_bw@linear-tiling-5-displays-2160x1440p.html
-
-  * igt@kms_bw@linear-tiling-6-displays-1920x1080p (NEW):
-    - fi-rkl-11600:       NOTRUN -> [SKIP][13] +57 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-rkl-11600/igt@kms_bw@linear-tiling-6-displays-1920x1080p.html
-
-  * {igt@kms_bw@linear-tiling-6-displays-2160x1440p} (NEW):
-    - {bat-rpls-4}:       NOTRUN -> [SKIP][14] +44 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-rpls-4/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html
-    - {bat-twl-1}:        NOTRUN -> [SKIP][15] +43 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-twl-1/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][16] +55 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-rplp-1/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html
-
-  * {igt@kms_bw@linear-tiling-7-displays-1920x1080p} (NEW):
-    - bat-arls-2:         NOTRUN -> [SKIP][17] +55 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-2/igt@kms_bw@linear-tiling-7-displays-1920x1080p.html
-
-  * {igt@kms_bw@linear-tiling-7-displays-2560x1440p} (NEW):
-    - bat-dg1-7:          NOTRUN -> [SKIP][18] +60 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg1-7/igt@kms_bw@linear-tiling-7-displays-2560x1440p.html
-
-  * {igt@kms_bw@linear-tiling-7-displays-3840x2160p} (NEW):
-    - {bat-arlh-1}:       NOTRUN -> [SKIP][19] +43 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-1/igt@kms_bw@linear-tiling-7-displays-3840x2160p.html
-    - {bat-mtlp-9}:       NOTRUN -> [SKIP][20] +43 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_bw@linear-tiling-7-displays-3840x2160p.html
-
-  
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@i915_pm_rpm@module-reload:
-    - {bat-mtlp-9}:       [PASS][21] -> [FAIL][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live@gt_engines:
-    - {bat-arlh-1}:       [PASS][23] -> [INCOMPLETE][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-arlh-1/igt@i915_selftest@live@gt_engines.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-1/igt@i915_selftest@live@gt_engines.html
-
-  * igt@kms_bw@linear-tiling-3-displays-2160x1440p:
-    - {bat-rpls-4}:       NOTRUN -> [SKIP][25] +15 other tests skip
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-rpls-4/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html
-    - {bat-twl-1}:        NOTRUN -> [SKIP][26] +8 other tests skip
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-twl-1/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html
-    - {bat-arls-5}:       NOTRUN -> [SKIP][27] +15 other tests skip
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-5/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html
-
-  * igt@kms_bw@linear-tiling-4-displays-2560x1440p:
-    - {bat-arlh-2}:       NOTRUN -> [SKIP][28] +15 other tests skip
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-2/igt@kms_bw@linear-tiling-4-displays-2560x1440p.html
-
-  * igt@kms_bw@linear-tiling-4-displays-3840x2160p:
-    - {bat-arlh-1}:       NOTRUN -> [SKIP][29] +11 other tests skip
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-1/igt@kms_bw@linear-tiling-4-displays-3840x2160p.html
-    - {bat-mtlp-9}:       NOTRUN -> [SKIP][30] +16 other tests skip
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_bw@linear-tiling-4-displays-3840x2160p.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_14957 and IGTPW_11266:
-
-### New IGT tests (48) ###
-
-  * igt@kms_bw@connected-linear-tiling-1-displays-1920x1080p:
-    - Statuses : 27 pass(s) 13 skip(s)
-    - Exec time: [0.0, 0.63] s
-
-  * igt@kms_bw@connected-linear-tiling-1-displays-2160x1440p:
-    - Statuses : 26 pass(s) 14 skip(s)
-    - Exec time: [0.0, 1.60] s
-
-  * igt@kms_bw@connected-linear-tiling-1-displays-2560x1440p:
-    - Statuses : 24 pass(s) 16 skip(s)
-    - Exec time: [0.0, 1.60] s
-
-  * igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:
-    - Statuses : 17 pass(s) 23 skip(s)
-    - Exec time: [0.0, 1.69] s
-
-  * igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-2-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-3-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-4-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-5-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-5-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_bw@connected-linear-tiling-5-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-6-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-6-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_bw@connected-linear-tiling-6-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-6-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-7-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-7-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-7-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-7-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-8-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-8-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-8-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@connected-linear-tiling-8-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-5-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-5-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-5-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-5-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-6-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-6-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-6-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-6-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-7-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-7-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-7-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-7-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-8-displays-1920x1080p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-8-displays-2160x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-8-displays-2560x1440p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_bw@linear-tiling-8-displays-3840x2160p:
-    - Statuses : 40 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11266 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-kbl-2:          NOTRUN -> [SKIP][31] ([i915#1849])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][32] ([i915#2190])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][33] +103 other tests skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][34] ([i915#4613]) +3 other tests skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * {igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p} (NEW):
-    - fi-elk-e7500:       NOTRUN -> [SKIP][35] +83 other tests skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-elk-e7500/igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p.html
-
-  * {igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p} (NEW):
-    - fi-kbl-guc:         NOTRUN -> [SKIP][36] +63 other tests skip
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-guc/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html
-
-  * {igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p} (NEW):
-    - bat-dg2-9:          NOTRUN -> [SKIP][37] ([i915#9197]) +63 other tests skip
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg2-9/igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][38] +63 other tests skip
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-x1275/igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][39] ([i915#10470]) +63 other tests skip
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adlp-11/igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p.html
-
-  * {igt@kms_bw@connected-linear-tiling-6-displays-2160x1440p} (NEW):
-    - fi-bsw-nick:        NOTRUN -> [SKIP][40] +59 other tests skip
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-bsw-nick/igt@kms_bw@connected-linear-tiling-6-displays-2160x1440p.html
-
-  * {igt@kms_bw@connected-linear-tiling-8-displays-1920x1080p} (NEW):
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][41] +57 other tests skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-cfl-8700k/igt@kms_bw@connected-linear-tiling-8-displays-1920x1080p.html
-
-  * igt@kms_bw@linear-tiling-2-displays-2160x1440p:
-    - fi-blb-e6850:       NOTRUN -> [SKIP][42] +63 other tests skip
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-blb-e6850/igt@kms_bw@linear-tiling-2-displays-2160x1440p.html
-
-  * igt@kms_bw@linear-tiling-2-displays-2560x1440p:
-    - bat-adlm-1:         NOTRUN -> [SKIP][43] ([i915#9900]) +63 other tests skip
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adlm-1/igt@kms_bw@linear-tiling-2-displays-2560x1440p.html
-
-  * igt@kms_bw@linear-tiling-3-displays-3840x2160p:
-    - fi-pnv-d510:        NOTRUN -> [SKIP][44] +63 other tests skip
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-pnv-d510/igt@kms_bw@linear-tiling-3-displays-3840x2160p.html
-
-  * igt@kms_bw@linear-tiling-4-displays-1920x1080p:
-    - fi-cfl-guc:         NOTRUN -> [SKIP][45] +57 other tests skip
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-cfl-guc/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][46] ([i915#9792]) +63 other tests skip
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-6/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html
-
-  * igt@kms_bw@linear-tiling-4-displays-2560x1440p:
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][47] +59 other tests skip
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-bsw-n3050/igt@kms_bw@linear-tiling-4-displays-2560x1440p.html
-
-  * igt@kms_bw@linear-tiling-5-displays-3840x2160p (NEW):
-    - fi-ivb-3770:        NOTRUN -> [SKIP][48] +55 other tests skip
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-ivb-3770/igt@kms_bw@linear-tiling-5-displays-3840x2160p.html
-
-  * {igt@kms_bw@linear-tiling-6-displays-2160x1440p} (NEW):
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][49] +67 other tests skip
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-7567u/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html
-    - {bat-apl-1}:        NOTRUN -> [SKIP][50] +43 other tests skip
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-apl-1/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html
-
-  * igt@kms_bw@linear-tiling-6-displays-2560x1440p (NEW):
-    - fi-ilk-650:         NOTRUN -> [SKIP][51] +55 other tests skip
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-ilk-650/igt@kms_bw@linear-tiling-6-displays-2560x1440p.html
-
-  * {igt@kms_bw@linear-tiling-7-displays-2560x1440p} (NEW):
-    - fi-glk-j4005:       NOTRUN -> [SKIP][52] +47 other tests skip
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-glk-j4005/igt@kms_bw@linear-tiling-7-displays-2560x1440p.html
-
-  * {igt@kms_bw@linear-tiling-7-displays-3840x2160p} (NEW):
-    - bat-atsm-1:         NOTRUN -> [SKIP][53] ([i915#6078]) +63 other tests skip
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-atsm-1/igt@kms_bw@linear-tiling-7-displays-3840x2160p.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-    - {bat-mtlp-9}:       [DMESG-WARN][54] ([i915#11009]) -> [PASS][55] +4 other tests pass
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - {bat-mtlp-9}:       [SKIP][56] ([i915#10580]) -> [PASS][57] +1 other test pass
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-   [57]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dp7:
-    - {bat-mtlp-9}:       [FAIL][58] ([i915#6121]) -> [PASS][59] +3 other tests pass
-   [58]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html
-   [59]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-arls-2:         [DMESG-WARN][60] ([i915#7507]) -> [PASS][61]
-   [60]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-   [61]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10470]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470
-  [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#10979]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10979
-  [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
-  [i915#11060]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11060
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#6121]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121
-  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
-  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
-  [i915#9224]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9224
-  [i915#9673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
-  [i915#9900]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7890 -> IGTPW_11266
-
-  CI-20190529: 20190529
-  CI_DRM_14957: 3b4eab7e82c7a1429e257890553ad571f320b8a3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11266: 11266
-  IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/index.html
-
---===============4790302301666677870==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>add subtest in kms_bw for connected outputs only (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134822/">https://patchwork.freedesktop.org/series/134822/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_14957 -&gt; IGTPW_11266</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11266 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11266, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/index.html</p>
-<h2>Participating hosts (41 -&gt; 41)</h2>
-<p>Additional (3): fi-kbl-7567u bat-kbl-2 fi-elk-e7500 <br />
-  Missing    (3): bat-adlp-9 bat-dg2-11 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11266:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg2-14/igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p.html">SKIP</a> +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>{bat-arls-5}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-5/igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p.html">SKIP</a> +43 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p} (NEW):</p>
-<ul>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg2-8/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html">SKIP</a> +55 other tests skip</li>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adls-6/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html">SKIP</a> +51 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-jsl-3/igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p.html">SKIP</a> +55 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-5-displays-1920x1080p} (NEW):</p>
-<ul>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-tgl-1115g4/igt@kms_bw@connected-linear-tiling-5-displays-1920x1080p.html">SKIP</a> +57 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-7-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>{bat-arlh-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-2/igt@kms_bw@connected-linear-tiling-7-displays-3840x2160p.html">SKIP</a> +47 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-8-displays-2160x1440p} (NEW):</p>
-<ul>
-<li>bat-adln-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adln-1/igt@kms_bw@connected-linear-tiling-8-displays-2160x1440p.html">SKIP</a> +52 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-2-displays-2560x1440p:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-jsl-1/igt@kms_bw@linear-tiling-2-displays-2560x1440p.html">SKIP</a> +55 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-2-displays-3840x2160p:</p>
-<ul>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adlp-6/igt@kms_bw@linear-tiling-2-displays-3840x2160p.html">SKIP</a> +52 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-4-displays-3840x2160p:</p>
-<ul>
-<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-1/igt@kms_bw@linear-tiling-4-displays-3840x2160p.html">SKIP</a> +59 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-5-displays-2160x1440p} (NEW):</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-8/igt@kms_bw@linear-tiling-5-displays-2160x1440p.html">SKIP</a> +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-6-displays-1920x1080p (NEW):</p>
-<ul>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-rkl-11600/igt@kms_bw@linear-tiling-6-displays-1920x1080p.html">SKIP</a> +57 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-6-displays-2160x1440p} (NEW):</p>
-<ul>
-<li>{bat-rpls-4}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-rpls-4/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html">SKIP</a> +44 other tests skip</li>
-<li>{bat-twl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-twl-1/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html">SKIP</a> +43 other tests skip</li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-rplp-1/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html">SKIP</a> +55 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-7-displays-1920x1080p} (NEW):</p>
-<ul>
-<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-2/igt@kms_bw@linear-tiling-7-displays-1920x1080p.html">SKIP</a> +55 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-7-displays-2560x1440p} (NEW):</p>
-<ul>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg1-7/igt@kms_bw@linear-tiling-7-displays-2560x1440p.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-7-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>{bat-arlh-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-1/igt@kms_bw@linear-tiling-7-displays-3840x2160p.html">SKIP</a> +43 other tests skip</li>
-<li>{bat-mtlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_bw@linear-tiling-7-displays-3840x2160p.html">SKIP</a> +43 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">FAIL</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_engines:</p>
-<ul>
-<li>{bat-arlh-1}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-arlh-1/igt@i915_selftest@live@gt_engines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-1/igt@i915_selftest@live@gt_engines.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-3-displays-2160x1440p:</p>
-<ul>
-<li>{bat-rpls-4}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-rpls-4/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html">SKIP</a> +15 other tests skip</li>
-<li>{bat-twl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-twl-1/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html">SKIP</a> +8 other tests skip</li>
-<li>{bat-arls-5}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-5/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html">SKIP</a> +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-4-displays-2560x1440p:</p>
-<ul>
-<li>{bat-arlh-2}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-2/igt@kms_bw@linear-tiling-4-displays-2560x1440p.html">SKIP</a> +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-4-displays-3840x2160p:</p>
-<ul>
-<li>{bat-arlh-1}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arlh-1/igt@kms_bw@linear-tiling-4-displays-3840x2160p.html">SKIP</a> +11 other tests skip</li>
-<li>{bat-mtlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_bw@linear-tiling-4-displays-3840x2160p.html">SKIP</a> +16 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_14957 and IGTPW_11266:</p>
-<h3>New IGT tests (48)</h3>
-<ul>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-1-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 27 pass(s) 13 skip(s)</li>
-<li>Exec time: [0.0, 0.63] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-1-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 26 pass(s) 14 skip(s)</li>
-<li>Exec time: [0.0, 1.60] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-1-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 24 pass(s) 16 skip(s)</li>
-<li>Exec time: [0.0, 1.60] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 17 pass(s) 23 skip(s)</li>
-<li>Exec time: [0.0, 1.69] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-2-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-3-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-4-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-5-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-5-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-5-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-6-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-6-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-6-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-6-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-7-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-7-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-7-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-7-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-8-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-8-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-8-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@connected-linear-tiling-8-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-5-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-5-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-5-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-5-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-6-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-6-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-6-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-6-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-7-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-7-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-7-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-7-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-8-displays-1920x1080p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-8-displays-2160x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-8-displays-2560x1440p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-8-displays-3840x2160p:</p>
-<ul>
-<li>Statuses : 40 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11266 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-7567u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> +103 other tests skip</li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-7567u/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-elk-e7500/igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p.html">SKIP</a> +83 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p} (NEW):</p>
-<ul>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-guc/igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p.html">SKIP</a> +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p} (NEW):</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-dg2-9/igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197">i915#9197</a>) +63 other tests skip</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-x1275/igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p.html">SKIP</a> +63 other tests skip</li>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adlp-11/igt@kms_bw@connected-linear-tiling-5-displays-2160x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10470">i915#10470</a>) +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-6-displays-2160x1440p} (NEW):</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-bsw-nick/igt@kms_bw@connected-linear-tiling-6-displays-2160x1440p.html">SKIP</a> +59 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@connected-linear-tiling-8-displays-1920x1080p} (NEW):</p>
-<ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-cfl-8700k/igt@kms_bw@connected-linear-tiling-8-displays-1920x1080p.html">SKIP</a> +57 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-2-displays-2160x1440p:</p>
-<ul>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-blb-e6850/igt@kms_bw@linear-tiling-2-displays-2160x1440p.html">SKIP</a> +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-2-displays-2560x1440p:</p>
-<ul>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-adlm-1/igt@kms_bw@linear-tiling-2-displays-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-3-displays-3840x2160p:</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-pnv-d510/igt@kms_bw@linear-tiling-3-displays-3840x2160p.html">SKIP</a> +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-4-displays-1920x1080p:</p>
-<ul>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-cfl-guc/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html">SKIP</a> +57 other tests skip</li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-6/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +63 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-4-displays-2560x1440p:</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-bsw-n3050/igt@kms_bw@linear-tiling-4-displays-2560x1440p.html">SKIP</a> +59 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-5-displays-3840x2160p (NEW):</p>
-<ul>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-ivb-3770/igt@kms_bw@linear-tiling-5-displays-3840x2160p.html">SKIP</a> +55 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-6-displays-2160x1440p} (NEW):</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-kbl-7567u/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html">SKIP</a> +67 other tests skip</li>
-<li>{bat-apl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-apl-1/igt@kms_bw@linear-tiling-6-displays-2160x1440p.html">SKIP</a> +43 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_bw@linear-tiling-6-displays-2560x1440p (NEW):</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-ilk-650/igt@kms_bw@linear-tiling-6-displays-2560x1440p.html">SKIP</a> +55 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-7-displays-2560x1440p} (NEW):</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/fi-glk-j4005/igt@kms_bw@linear-tiling-7-displays-2560x1440p.html">SKIP</a> +47 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_bw@linear-tiling-7-displays-3840x2160p} (NEW):</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-atsm-1/igt@kms_bw@linear-tiling-7-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +63 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009">i915#11009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> +4 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580">i915#10580</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@b-dp7:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html">PASS</a> +3 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11266/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7890 -&gt; IGTPW_11266</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14957: 3b4eab7e82c7a1429e257890553ad571f320b8a3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11266: 11266<br />
-  IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4790302301666677870==--
