@@ -4,74 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93A9C27C79
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 19:21:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A802BC27C79
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 19:46:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 64D4210E4D0;
-	Mon, 17 Jun 2024 19:21:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48AE810E4D4;
+	Mon, 17 Jun 2024 19:46:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="WV/EZa77";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jLy5yjSr";
 	dkim-atps=neutral
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
- [209.85.128.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1D4310E4CC
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 19:21:37 +0000 (UTC)
-Received: by mail-wm1-f46.google.com with SMTP id
- 5b1f17b1804b1-42138eadf64so37792935e9.3
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 12:21:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1718652096; x=1719256896; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=j9UUrYxGGyXVUlia7eK8IDAu7do7IBRy7SqkBvDtTwg=;
- b=WV/EZa77IkH+i2cRz+pmyaV2heloJfwiTynFiaDrqj/j0XsNJSKEooLxMWKxyJmA8h
- 1/cjd64L4NRoGyNNJxcSIa7yv4tMIZH2sN+qy2+6xF5HsmXHjCyRcpOBV1lIkB6bp6fU
- CkndZ0EIy1m9sn+AI8P/Wsd8lCKSrNXplwGHAT+lEVry585O/hraF/nP9uvx/fx9lHdt
- iqnIrwwJefCt5YZ3Y5ESTw709ovULk2E8Zf8LEPVrPsHx7TaLQACNJ0SNPyRKDPmkroE
- fOgNoNGqPEfTpP+VQrCxsZktNO/xH0rfY3MnJQDRPEre5aZEDBRsEgEhZSh4XotT6W1k
- 8Tvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1718652096; x=1719256896;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=j9UUrYxGGyXVUlia7eK8IDAu7do7IBRy7SqkBvDtTwg=;
- b=XdTfk4g1rq0kL9ABG+OVneR0wpISoT5SN2PNvSJXRJNxkNKNN61yE5JXW25K82n5c6
- Sra6TBDJNPj1XPUXwTfOJ+C9PxE6/pBEq9F83tjC+AqAt1Z9bt9MM1M7ccUXFqpsf9LU
- cwfPihR1vg4HcSZnVocvNbEjCPWWdShuIPo6L+dMBe+Xr9rORJRyEwaUtfi8EYjW4VT6
- bggF6tyKpCWMPR8L5W5aJDr9NN2pjzrQjAHti9untfd1krnyu2WBm/sME+TwcETF9ipa
- ghzZqWE/aro/fACsu+yqoV/Z8uYhaIqZE68QP5C6XJ8aGCfEO7B2Ryab7CDVi1M3r+kC
- V7rw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCW4dTYFmR5kYfRxtAGz8DMR0lnGwpw6Ld8CkE+AScu4IwGjVS34UR+ebUOPJzHhAlpClLwjE16lo6MFnkmKglWyNpTb6ZgAlWUrlHVbXA==
-X-Gm-Message-State: AOJu0YzYqDfgQflBXIPOjKssQgtGFq/zd8tHsiGXKJOaNAJNwKiwRZ8L
- X61++mIw3HllmoiENnZ1PfDxm7uIpRyQKLsld6vhkvuEGJeoUaesCJUAn13l
-X-Google-Smtp-Source: AGHT+IHtvBUVfmI7yaqXrh2JKiK9PqX6vOF8ycp0O1TpsL2dcnSUVZ47UMooipzNg13CGZmmnChW8Q==
-X-Received: by 2002:a05:600c:4ece:b0:423:394:ccf7 with SMTP id
- 5b1f17b1804b1-423048228efmr83245265e9.7.1718652095812; 
- Mon, 17 Jun 2024 12:21:35 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.72])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-422f5f33bcfsm164527685e9.1.2024.06.17.12.21.32
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 17 Jun 2024 12:21:34 -0700 (PDT)
-Message-ID: <7b7de7d5-84bd-491f-87c1-141416c8df47@gmail.com>
-Date: Mon, 17 Jun 2024 22:21:29 +0300
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7EB4B10E0E9
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 19:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1718653599; x=1750189599;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=LGjJ02w59Vec8av8JPIROLs4Xc+6Kq5CslRqKq/hK4U=;
+ b=jLy5yjSrGPA5Oeh6DUTyn/D01mykApyhuI3Kl0H1I5Huh4GLvMWOE+SL
+ 0fPW/TUaKogfMhiBUHyxrsXJRfXoYR7/M77fO92XH4MiJt6iUIXfKEQIY
+ v3f6N+bvLSqza0JZVRNmzvOE6SnRN8XAZglWaSkIl7XH5svufRdb6mTl0
+ GE+/zZWFqd11WI0ttkzASd/IrPzUP9aAbfg29kj/Xcrw/uYUoJokFamP7
+ 3CZKpRUx2dDgqKaSiyGG5vrLThgTqUXrdPDt3ty0mPuxqD1bV0N9RZVDT
+ 6PffAgpHZDaJP5gc2qmpAKEFBEcnSIaCJ9dB1tAG6NzrWDOnjoesSD/SA g==;
+X-CSE-ConnectionGUID: IDdzyOjmRb++VKMy2GzMiQ==
+X-CSE-MsgGUID: zakNEWiPR+Osn5aQ7GVG4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26077061"
+X-IronPort-AV: E=Sophos;i="6.08,245,1712646000"; d="scan'208";a="26077061"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 12:46:39 -0700
+X-CSE-ConnectionGUID: gv2xAiFDRGaIObyAPDE4Tw==
+X-CSE-MsgGUID: vY20H2V2SsSXHSWqNHfJ3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,245,1712646000"; d="scan'208";a="41400888"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 12:46:38 -0700
+Date: Mon, 17 Jun 2024 21:46:20 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Subject: Re: [PATCH i-g-t 12/12] tools/intel_tiling_detect: Introduce tiling
  detection tool
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
+Message-ID: <20240617194620.dllglfgctdpfbft5@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 References: <20240527073345.54729-1-zbigniew.kempczynski@intel.com>
  <20240527073345.54729-13-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240527073345.54729-13-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240527073345.54729-13-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,14 +72,11 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Just small issues below, on the actual engine stuff I didn't spot 
-anything comment worthy.
-
-On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
+Hi Zbigniew,
+On 2024-05-27 at 09:33:45 +0200, Zbigniew Kempczyński wrote:
 > In some tests we're incorrectly assumming we get requested tiling.
 > In blt library we defined available blitter and render tilings for
 > defined platforms to avoid being wrong and allowing iterators to walk
@@ -107,10 +92,10 @@ On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
 > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 > ---
->   tools/intel_tiling_detect.c | 432 ++++++++++++++++++++++++++++++++++++
->   tools/meson.build           |   1 +
->   2 files changed, 433 insertions(+)
->   create mode 100644 tools/intel_tiling_detect.c
+>  tools/intel_tiling_detect.c | 432 ++++++++++++++++++++++++++++++++++++
+>  tools/meson.build           |   1 +
+>  2 files changed, 433 insertions(+)
+>  create mode 100644 tools/intel_tiling_detect.c
 > 
 > diff --git a/tools/intel_tiling_detect.c b/tools/intel_tiling_detect.c
 > new file mode 100644
@@ -128,10 +113,18 @@ On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
 > +#include <sys/ioctl.h>
 > +#include <sys/time.h>
 > +#include <malloc.h>
+-------------^
+Sort it alphabetically.
+
+Add newline here.
+
 > +#include "drm.h"
 > +#include "igt.h"
 > +#include "igt_syncobj.h"
 > +#include "i915/gem_create.h"
+-------------^^
+Sort it alphabetically.
+
 > +#include "intel_blt.h"
 > +#include "intel_common.h"
 > +#include "intel_mocs.h"
@@ -141,9 +134,6 @@ On 27.5.2024 10.33, Zbigniew Kempczyński wrote:
 > +#include "xe/xe_util.h"
 > +
 > +IGT_TEST_DESCRIPTION("Exercise gen12 blitter with and without flatccs compression on Xe");
-
-cut'n'paste description? :)
-
 > +
 > +static struct param {
 > +	int tiling;
@@ -164,11 +154,6 @@ cut'n'paste description? :)
 > +};
 > +
 > +struct intel_buf refs[I915_TILING_64] = {};
-
-I think this should be structured somehow differently as that 
-I915_TILING_64 already defined as MAX_TILING + n. Though, just now I 
-have no good suggestion.
-
 > +
 > +#define PRINT_SURFACE_INFO(name, obj) do { \
 > +	if (param.print_surface_info) \
@@ -185,7 +170,18 @@ have no good suggestion.
 > +	"  -W\tWidth (default 256)\n"
 > +	"  -H\tHeight (default 256)\n"
 > +	"  -h\tHelp"
+---------------^
+No final '\n'?
+
 > +	;
+
+Could you also add some examples for usage?
+Do you allow to specify which /dev/driN device will be tested?
+Or maybe just allow user to specify path for device?
+
+Regards,
+Kamil
+
 > +
 > +enum copy_fn {
 > +	FAST_COPY,
@@ -479,13 +475,6 @@ have no good suggestion.
 > +	[I915_TILING_Yf] = true,
 > +	[I915_TILING_64] = false,
 > +};
-
-I think you have hole in this list? You don't have Ys here when you'll 
-be missing I915_TILING_LAST + 3 while you do have I915_TILING_LAST + 4
-
-Maybe create struct to encapsulate these and the use list of those 
-structs? Then there would be no holes.
-
 > +
 > +int main(int argc, char *argv[])
 > +{
@@ -531,9 +520,6 @@ structs? Then there would be no holes.
 > +	bops = buf_ops_create(fd);
 > +
 > +	for (i = 0; i <= I915_TILING_64; i++) {
-
-why not ARRAY_SIZE() ?
-
 > +		igt_info("Building reference tile[%-7s] = %s\n",
 > +			 blt_tiling_name(i915_tile_to_blt_tile(i)),
 > +			 try_tile[i] ? "yes" : "no");
@@ -573,11 +559,13 @@ why not ARRAY_SIZE() ?
 > --- a/tools/meson.build
 > +++ b/tools/meson.build
 > @@ -36,6 +36,7 @@ tools_progs = [
->   	'intel_reg_checker',
->   	'intel_residency',
->   	'intel_stepping',
+>  	'intel_reg_checker',
+>  	'intel_residency',
+>  	'intel_stepping',
 > +	'intel_tiling_detect',
->   	'intel_vbt_decode',
->   	'intel_watermark',
->   	'intel_gem_info',
-
+>  	'intel_vbt_decode',
+>  	'intel_watermark',
+>  	'intel_gem_info',
+> -- 
+> 2.34.1
+> 
