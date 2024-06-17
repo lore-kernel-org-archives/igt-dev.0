@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D21C27C79
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 17:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AA01C2BB85
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 17:38:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A914710E2A3;
-	Mon, 17 Jun 2024 17:10:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6D4710E0D9;
+	Mon, 17 Jun 2024 17:38:41 +0000 (UTC)
 Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2841310E132;
- Mon, 17 Jun 2024 17:10:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B9F1810E0D9;
+ Mon, 17 Jun 2024 17:38:40 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6753114236979881764=="
+ boundary="===============2294877136143874352=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fevict=3A_R?=
- =?utf-8?q?educe_allocations_to_maximum_working_set_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_add_subtest_in_kms=5Fbw_for_co?=
+ =?utf-8?q?nnected_outputs_only_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Jun 2024 17:10:49 -0000
-Message-ID: <171864424915.97967.15634656573875583995@a6498e030952>
+Date: Mon, 17 Jun 2024 17:38:40 -0000
+Message-ID: <171864592075.97967.14626448211838236426@a6498e030952>
 X-Patchwork-Hint: ignore
-References: <20240617151050.3804-1-thomas.hellstrom@linux.intel.com>
-In-Reply-To: <20240617151050.3804-1-thomas.hellstrom@linux.intel.com>
+References: <20240617161052.1113250-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240617161052.1113250-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,141 +41,194 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6753114236979881764==
+--===============2294877136143874352==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_evict: Reduce allocations to maximum working set (rev2)
-URL   : https://patchwork.freedesktop.org/series/134897/
-State : failure
+Series: add subtest in kms_bw for connected outputs only (rev2)
+URL   : https://patchwork.freedesktop.org/series/134822/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_14957 -> IGTPW_11265
+CI Bug Log - changes from XEIGT_7890_BAT -> XEIGTPW_11266_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_11265 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11265, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/index.html
-
-Participating hosts (41 -> 40)
+Participating hosts (5 -> 5)
 ------------------------------
 
-  Additional (1): fi-kbl-8809g 
-  Missing    (2): bat-dg2-11 fi-snb-2520m 
+  No changes in participating hosts
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_11265:
+  Here are the unknown changes that may have been introduced in XEIGTPW_11266_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-dg2-9:          [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-dg2-9/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-dg2-9/igt@i915_selftest@live@workarounds.html
+  * {igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p} (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] +11 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-adlp-7/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] +11 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-dg2-oem2/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html
+
+  * {igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p} (NEW):
+    - {bat-lnl-1}:        NOTRUN -> [SKIP][3] +11 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-lnl-1/igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p.html
 
   
-#### Suppressed ####
+New tests
+---------
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
+  New tests have been introduced between XEIGT_7890_BAT and XEIGTPW_11266_BAT:
 
-  * igt@i915_pm_rpm@module-reload:
-    - {bat-mtlp-9}:       [PASS][3] -> [FAIL][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+### New IGT tests (16) ###
 
-  * igt@i915_selftest@live:
-    - {bat-mtlp-9}:       NOTRUN -> [SKIP][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@i915_selftest@live.html
+  * igt@kms_bw@connected-linear-tiling-1-displays-1920x1080p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.48] s
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-2160x1440p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.49] s
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-2560x1440p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.50] s
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.56] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-2560x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-2160x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-2160x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0] s
 
   
+
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_11265 that come from known issues:
+  Here are the changes found in XEIGTPW_11266_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][6] ([i915#2190])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+  * {igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p} (NEW):
+    - bat-atsm-2:         NOTRUN -> [SKIP][4] ([Intel XE#1024]) +31 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-atsm-2/igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p.html
 
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([i915#4613]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
+  * igt@kms_bw@linear-tiling-3-displays-2160x1440p:
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#367]) +8 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-adlp-7/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html
 
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][8] +30 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
+  * igt@kms_bw@linear-tiling-3-displays-3840x2160p:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#367]) +15 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-dg2-oem2/igt@kms_bw@linear-tiling-3-displays-3840x2160p.html
+
+  * igt@kms_bw@linear-tiling-4-displays-1920x1080p:
+    - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#1024]) +31 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-pvc-2/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html
 
   
 #### Possible fixes ####
 
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-    - {bat-mtlp-9}:       [DMESG-WARN][9] ([i915#11009]) -> [PASS][10] +4 other tests pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+  * igt@xe_intel_bb@blit-simple:
+    - bat-atsm-2:         [DMESG-WARN][8] ([Intel XE#2110]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_intel_bb@blit-simple.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-atsm-2/igt@xe_intel_bb@blit-simple.html
 
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - {bat-mtlp-9}:       [SKIP][11] ([i915#10580]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-dp7:
-    - {bat-mtlp-9}:       [FAIL][13] ([i915#6121]) -> [PASS][14] +3 other tests pass
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-atsm-2:         [SKIP][10] ([Intel XE#2109]) -> [PASS][11] +2 other tests pass
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [i915#10580]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#11009]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#6121]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121
-  [i915#9673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#1512]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1512
+  [Intel XE#2109]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2109
+  [Intel XE#2110]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2110
+  [Intel XE#367]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/367
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7890 -> IGTPW_11265
+  * IGT: IGT_7890 -> IGTPW_11266
+  * Linux: xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb -> xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3
 
-  CI-20190529: 20190529
-  CI_DRM_14957: 3b4eab7e82c7a1429e257890553ad571f320b8a3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11265: 11265
+  IGTPW_11266: 11266
   IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb: c00c421245452a4a82a893cd2e1bfd9663a761fb
+  xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3: 3b4eab7e82c7a1429e257890553ad571f320b8a3
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/index.html
 
---===============6753114236979881764==
+--===============2294877136143874352==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -195,96 +248,199 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_evict: Reduce allocations to maximum working set (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134897/">https://patchwork.freedesktop.org/series/134897/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>add subtest in kms_bw for connected outputs only (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/134822/">https://patchwork.freedesktop.org/series/134822/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_14957 -&gt; IGTPW_11265</h1>
+    <h1>CI Bug Log - changes from XEIGT_7890_BAT -&gt; XEIGTPW_11266_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11265 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11265, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/index.html</p>
-<h2>Participating hosts (41 -&gt; 40)</h2>
-<p>Additional (1): fi-kbl-8809g <br />
-  Missing    (2): bat-dg2-11 fi-snb-2520m </p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11265:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11266_BAT:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-dg2-9/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-dg2-9/igt@i915_selftest@live@workarounds.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
 <li>
-<p>igt@i915_pm_rpm@module-reload:</p>
+<p>{igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p} (NEW):</p>
 <ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">FAIL</a></li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-adlp-7/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-dg2-oem2/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html">SKIP</a> +11 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live:</p>
+<p>{igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p} (NEW):</p>
 <ul>
-<li>{bat-mtlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@i915_selftest@live.html">SKIP</a></li>
+<li>{bat-lnl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-lnl-1/igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7890_BAT and XEIGTPW_11266_BAT:</p>
+<h3>New IGT tests (16)</h3>
+<ul>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.56] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11265 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_11266_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>{igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p} (NEW):</p>
 <ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-atsm-2/igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +31 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@basic:</p>
+<p>igt@kms_bw@linear-tiling-3-displays-2160x1440p:</p>
 <ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-adlp-7/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>) +8 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<p>igt@kms_bw@linear-tiling-3-displays-3840x2160p:</p>
 <ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-dg2-oem2/igt@kms_bw@linear-tiling-3-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-4-displays-1920x1080p:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-pvc-2/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +31 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<p>igt@xe_intel_bb@blit-simple:</p>
 <ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11009">i915#11009</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> +4 other tests pass</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_intel_bb@blit-simple.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2110">Intel XE#2110</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-atsm-2/igt@xe_intel_bb@blit-simple.html">PASS</a></li>
 </ul>
 </li>
 <li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<p>igt@xe_live_ktest@xe_migrate:</p>
 <ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10580">i915#10580</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@b-dp7:</p>
-<ul>
-<li>{bat-mtlp-9}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_14957/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6121">i915#6121</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11265/bat-mtlp-9/igt@kms_flip@basic-flip-vs-dpms@b-dp7.html">PASS</a> +3 other tests pass</li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7890/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2109">Intel XE#2109</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11266/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html">PASS</a> +2 other tests pass</li>
 </ul>
 </li>
 </ul>
@@ -292,15 +448,15 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7890 -&gt; IGTPW_11265</li>
+<li>IGT: IGT_7890 -&gt; IGTPW_11266</li>
+<li>Linux: xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb -&gt; xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_14957: 3b4eab7e82c7a1429e257890553ad571f320b8a3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11265: 11265<br />
-  IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11266: 11266<br />
+  IGT_7890: a137e386eba9f46f838315f5d93b87561691d45e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1482-c00c421245452a4a82a893cd2e1bfd9663a761fb: c00c421245452a4a82a893cd2e1bfd9663a761fb<br />
+  xe-1484-3b4eab7e82c7a1429e257890553ad571f320b8a3: 3b4eab7e82c7a1429e257890553ad571f320b8a3</p>
 
 </body>
 </html>
 
---===============6753114236979881764==--
+--===============2294877136143874352==--
