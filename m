@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE9EC27C77
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 08:34:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CB7CC27C6E
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Jun 2024 08:38:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1EB0B10E2FB;
-	Mon, 17 Jun 2024 08:34:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E86410E2B4;
+	Mon, 17 Jun 2024 08:38:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="INwONdIU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kqZU7vgj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F21FE10E2FB
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 08:34:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 85E3310E2B4
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Jun 2024 08:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718613276; x=1750149276;
+ t=1718613502; x=1750149502;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=I/UUoQsJMstWayQRPAC1le5n0xu5thJyYM0TvpdgsUY=;
- b=INwONdIUafWPt1l4NpPQyNw2c6N8ES9GkwA+Qw2GOwTtQgvkizfwZFiA
- TWyedwqJtnAe9NQ/ClAvtXJ+uiZbkqCTZmGsVXwESm1qOsQfkz9cecAbX
- QnPJ2YnYHdPWW+uVx8iOE0K7yCprzp4NLcafIJ4XdVk5cJplYxfICsnLe
- qn87TQWMk7YBP0iPTNItpiqJP6fZgZhF/YgWbP9MJm8fK3PiB43HqOuzH
- HOziRrhNNmLGfQme8LWK+pPHf6u+YFReH5/r6F50kFMm2oMFukrldH+6B
- nwWJld5xOQIVx7AUpAn2I3EPnItKa8rn1W9CAqX+ShJdZpLrnIPDYOIR4 Q==;
-X-CSE-ConnectionGUID: GYvPemLVQX6ozvVf3AsNGA==
-X-CSE-MsgGUID: uoh7acGfTsy+NSJPdG0bTw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="40843284"
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="40843284"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 01:34:35 -0700
-X-CSE-ConnectionGUID: OGEhDIc9Swu3zoHxVtd3BA==
-X-CSE-MsgGUID: bQRN0UFPQPC5ahJV7Fn94Q==
+ bh=vFpbCP5OBMdfmOgEfuQVzrtTL/yoaQF7lXRkb+jaspE=;
+ b=kqZU7vgjOyYjk3A9omkIHK1vAB7Gv7bkQN36t+5sFM7E+Qj4leqjZaxd
+ a9Z3RbLqeKFaPqZkT+eRUUemvm6CMGGNy/TuM6fcoJ94g4cvA9UrWJOLi
+ nznXgTGzmc2uk9aSaDVuhCyu5cQAgjzxaNmoDRH4m0NTfJ6tEPjzWzOuy
+ bFd+zrFvvBVV5Xo9r1/rACOSHcAw7NH1YRQ23IwfPH3iou1w+aUCbRwj8
+ 3l/p5njqg2ump58rmavyRe4SNrSYPl9DXpOkB1w2Zt9nsW2zGh7ooRoS8
+ QjapsnJJ8VVph7b8itjLIwPR3TcS+uYtERJWpU6LUPTtlkTmDEaHGPUXN g==;
+X-CSE-ConnectionGUID: AuzuQlunSfmmW+SSJvaFMw==
+X-CSE-MsgGUID: tLbBCoQaRDyShYyrg1hnSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="26823501"
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="26823501"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 01:38:21 -0700
+X-CSE-ConnectionGUID: aYBbez8AQJGoZGWypoppTg==
+X-CSE-MsgGUID: Az94R1dCSA2sm+jedUH/Pw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="41227513"
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; d="scan'208";a="41845953"
 Received: from opintica-mobl1 (HELO [10.245.244.234]) ([10.245.244.234])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 01:34:34 -0700
-Message-ID: <0ece7dbe-046e-4549-935b-cb80037299bd@intel.com>
-Date: Mon, 17 Jun 2024 09:34:31 +0100
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 01:38:19 -0700
+Message-ID: <ea23d6da-e054-4c16-a431-6981190c878c@intel.com>
+Date: Mon, 17 Jun 2024 09:38:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] lib: sync xe_pciids.h with kernel
+Subject: Re: [PATCH 2/2] lib/intel_chipset: add Battlemage support
 To: Andrzej Hajda <andrzej.hajda@intel.com>, igt-dev@lists.freedesktop.org
 Cc: Ewelina Musial <ewelina.musial@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "Roper, Matthew D" <matthew.d.roper@intel.com>
 References: <20240617-bmg_chipset_info-v1-0-289e3215141e@intel.com>
- <20240617-bmg_chipset_info-v1-1-289e3215141e@intel.com>
+ <20240617-bmg_chipset_info-v1-2-289e3215141e@intel.com>
 Content-Language: en-GB
 From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20240617-bmg_chipset_info-v1-1-289e3215141e@intel.com>
+In-Reply-To: <20240617-bmg_chipset_info-v1-2-289e3215141e@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,30 +73,66 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On 17/06/2024 08:51, Andrzej Hajda wrote:
-> This synchronizes with kernel commit
-> e54700f7d6aa ("drm/xe/bmg: Add PCI IDs")
+> Add basic definition for the Battlemage platform.
+> Follow Lunar Lake convention.
 > 
 > Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
 Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
 > ---
->   lib/xe_pciids.h | 7 +++++++
->   1 file changed, 7 insertions(+)
+>   lib/intel_chipset.h     |  2 ++
+>   lib/intel_device_info.c | 12 ++++++++++++
+>   2 files changed, 14 insertions(+)
 > 
-> diff --git a/lib/xe_pciids.h b/lib/xe_pciids.h
-> index c7fc288dacee..73d972a8aca1 100644
-> --- a/lib/xe_pciids.h
-> +++ b/lib/xe_pciids.h
-> @@ -208,4 +208,11 @@
->   	MACRO__(0x64A0, ## __VA_ARGS__), \
->   	MACRO__(0x64B0, ## __VA_ARGS__)
+> diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+> index 3f25345199b6..270392c83c2a 100644
+> --- a/lib/intel_chipset.h
+> +++ b/lib/intel_chipset.h
+> @@ -91,6 +91,7 @@ struct intel_device_info {
+>   	bool is_meteorlake : 1;
+>   	bool is_pontevecchio : 1;
+>   	bool is_lunarlake : 1;
+> +	bool is_battlemage : 1;
+>   	const struct intel_cmds_info *cmds_info;
+>   	const char *codename;
+>   };
+> @@ -205,6 +206,7 @@ void intel_check_pch(void);
+>   #define IS_METEORLAKE(devid)	(intel_get_device_info(devid)->is_meteorlake)
+>   #define IS_PONTEVECCHIO(devid)	(intel_get_device_info(devid)->is_pontevecchio)
+>   #define IS_LUNARLAKE(devid)	(intel_get_device_info(devid)->is_lunarlake)
+> +#define IS_BATTLEMAGE(devid)	(intel_get_device_info(devid)->is_battlemage)
 >   
-> +#define XE_BMG_IDS(MACRO__, ...) \
-> +	MACRO__(0xE202, ## __VA_ARGS__), \
-> +	MACRO__(0xE20B, ## __VA_ARGS__), \
-> +	MACRO__(0xE20C, ## __VA_ARGS__), \
-> +	MACRO__(0xE20D, ## __VA_ARGS__), \
-> +	MACRO__(0xE212, ## __VA_ARGS__)
+>   #define IS_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver == x)
+>   #define AT_LEAST_GEN(devid, x)	(intel_get_device_info(devid)->graphics_ver >= x)
+> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> index e80ea54707de..9250abd444db 100644
+> --- a/lib/intel_device_info.c
+> +++ b/lib/intel_device_info.c
+> @@ -515,6 +515,16 @@ static const struct intel_device_info intel_lunarlake_info = {
+>   	.cmds_info = &xe2_cmds_info,
+>   };
+>   
+> +static const struct intel_device_info intel_battlemage_info = {
+> +	.graphics_ver = 20,
+> +	.graphics_rel = 1,
+> +	.display_ver = 14,
+> +	.has_4tile = true,
+> +	.has_flatccs = true,
+> +	.is_battlemage = true,
+> +	.codename = "battlemage"
+> +};
 > +
->   #endif
+>   static const struct pci_id_match intel_device_match[] = {
+>   	INTEL_I810_IDS(INTEL_VGA_DEVICE, &intel_i810_info),
+>   	INTEL_I815_IDS(INTEL_VGA_DEVICE, &intel_i815_info),
+> @@ -621,6 +631,8 @@ static const struct pci_id_match intel_device_match[] = {
+>   
+>   	XE_LNL_IDS(INTEL_VGA_DEVICE, &intel_lunarlake_info),
+>   
+> +	XE_BMG_IDS(INTEL_VGA_DEVICE, &intel_battlemage_info),
+> +
+>   	INTEL_VGA_DEVICE(PCI_MATCH_ANY, &intel_generic_info),
+>   };
+>   
 > 
