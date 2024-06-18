@@ -4,52 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74FE2C2BA15
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 08:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F2CC27C4F
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 08:31:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 13A2010E5FD;
-	Tue, 18 Jun 2024 08:31:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C28EB10E5EE;
+	Tue, 18 Jun 2024 08:31:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y0LxLdWN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b5e0lYqS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5675B10E5F5
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 08:31:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE80710E5FB
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 08:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718699466; x=1750235466;
+ t=1718699467; x=1750235467;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=DuT5X8C+xNx7LBkcm8BrKbfgeTSnwSEvZRGMcfpxuRg=;
- b=Y0LxLdWNsMubma9ceYuhLXZRDflBTMbR0fqULTg1d4XswFHsm4Ypword
- dTXQ3TNmMCkkMMfVg6pINa8juZFPu9xzM5BXxqrXfRnjRZmBCoMEkRrIf
- zUSV2WhlofP1zBebGSasBQQlVCY8B+FXDEyAceYiuLI8XLPlsCnHEuvz9
- OKb6sFJmo7wKDvNlnlqLa4tKNT3rddQ00UpgxIeQBdc6XvH0KFm1OspJE
- eSJeEbXk2+dGyQtk67vSfd1UDUyfT4CQMofgMABdLO3MkaNuVgXo7NVqS
- EOmozEhgqGylfb3CXolNFCn++N39fu5sWje7z/kH33QWEhHQs8x792ONo A==;
-X-CSE-ConnectionGUID: ev3+T+5eTQeJtZ9v/7hAEg==
-X-CSE-MsgGUID: h6LNSX+hQDqNQl6iH7GpLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="38082202"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="38082202"
+ bh=T34oCcwOeV8sgSoQIuQOIaYDXM9jcQRvlIPeaUxlRok=;
+ b=b5e0lYqSm9A9+x9yqMWroOkRGkrva6CHn9+WQDeV1jRb430drCAO9uEU
+ T1dCrh+zNh8YA4L6bwVd8ORLeGQbZjPgQM2WWWUT+GhsaIgJde3i1Xy0i
+ 3YMYNKmBt3rsju0y66nLXNhbRJV2YmvxUad8z/t81DXhDtIiA24687ETZ
+ frmU+jJUk09avyMik/vIVUDflSP1Wi8iE2B0PEKqU25hurtbrXJ3sNBXX
+ ZgPhzFtNbKyqaFglteKK4YeiOR94WVf7TZxrI4yZvYMbuXXHF/LZ7xhCK
+ w3A0gYFq1AKHCyLcDgn6nB9goxH0q4tn9s6CeaU5ufotFnqmyw7EyA5CR A==;
+X-CSE-ConnectionGUID: lYXdMensRB61/BI4sPqUyw==
+X-CSE-MsgGUID: 9oucP97pSm6QENNxatt62g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="38082207"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="38082207"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2024 01:31:06 -0700
-X-CSE-ConnectionGUID: KCDB3z2dQ1+7PSmjiVGkdg==
-X-CSE-MsgGUID: kuI8o1ubRYqEX3nAobRSwQ==
+ 18 Jun 2024 01:31:07 -0700
+X-CSE-ConnectionGUID: a4hip+voTReNbfdLdWYq0w==
+X-CSE-MsgGUID: Umrhnc4qRNSn8LwodASFhQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="64699605"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="64699608"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2024 01:31:03 -0700
+ 18 Jun 2024 01:31:05 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	jeevan.b@intel.com
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [i-g-t V6 7/8] tests/kms_setmode: Force joiner support in bigjoiner
- checks
-Date: Tue, 18 Jun 2024 13:52:47 +0530
-Message-ID: <20240618082248.4070611-8-bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t V6 8/8] HAX: Test force joiner on BAT
+Date: Tue, 18 Jun 2024 13:52:48 +0530
+Message-ID: <20240618082248.4070611-9-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240618082248.4070611-1-bhanuprakash.modem@intel.com>
 References: <20240618082248.4070611-1-bhanuprakash.modem@intel.com>
@@ -70,65 +68,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As we recently introduced the option (through debugfs) to
-force the bigjoiner, needs to extend the support in bigjoiner
-checks to handle the force joiner.
+Expectation: All pipe-D tests should skip.
 
-V2: - Fix connector name
-
-Cc: Kunal Joshi <kunal1.joshi@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_setmode.c | 22 ++++++++++++++++++----
- 1 file changed, 18 insertions(+), 4 deletions(-)
+ tests/kms_flip.c           | 9 ++++++++-
+ tests/kms_pipe_crc_basic.c | 6 ++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
-index 490bfd3dd..95c5bfadc 100644
---- a/tests/kms_setmode.c
-+++ b/tests/kms_setmode.c
-@@ -709,24 +709,38 @@ static void test_one_combination(const struct test_config *tconf,
+diff --git a/tests/kms_flip.c b/tests/kms_flip.c
+index cbabbe74f..326fd7130 100755
+--- a/tests/kms_flip.c
++++ b/tests/kms_flip.c
+@@ -1748,12 +1748,17 @@ static void run_test_on_crtc_set(struct test_output *o, int *crtc_idxs,
+ 			 "%s-%d",
+ 			 kmstest_connector_type_str(o->kconnector[i]->connector_type),
+ 			 o->kconnector[i]->connector_type_id);
++		if (igt_has_force_joiner_debugfs(drm_fd, conn_name))
++			kmstest_force_connector_bigjoiner(drm_fd, o->kconnector[i]);
  
- 		for (i = 0; i < crtc_count; i++) {
- 			struct crtc_config *crtc = &crtcs[i];
-+			char conn_name[24], prev_conn_name[24];
-+
-+			snprintf(conn_name, sizeof(conn_name),
-+				 "%s-%d",
-+				 kmstest_connector_type_str(crtcs[i].cconfs->connector->connector_type),
-+				 crtcs[i].cconfs->connector->connector_type_id);
-+
-+			if (i > 0)
-+				snprintf(prev_conn_name, sizeof(prev_conn_name),
-+					 "%s-%d",
-+					 kmstest_connector_type_str(crtcs[i - 1].cconfs->connector->connector_type),
-+					 crtcs[i - 1].cconfs->connector->connector_type_id);
+-		if (i > 0)
++		if (i > 0) {
+ 			snprintf(prev_conn_name, sizeof(prev_conn_name),
+ 				 "%s-%d",
+ 				 kmstest_connector_type_str(o->kconnector[i - 1]->connector_type),
+ 				 o->kconnector[i - 1]->connector_type_id);
++			if (igt_has_force_joiner_debugfs(drm_fd, prev_conn_name))
++				kmstest_force_connector_bigjoiner(drm_fd, o->kconnector[i - 1]);
++		}
  
- 			/*
- 			 * Handle BW limitations on intel hardware:
- 			 *
--			 * if mode resolution > 5K (or) mode clock > max_dotclock,
-+			 * if force joiner (or) mode resolution > 5K (or) mode clock > max_dotclock,
- 			 * then ignore
- 			 *   - last crtc in single/multi-connector config
- 			 *   - consecutive crtcs in multi-connector config
- 			 *
- 			 * in multi-connector config ignore if
--			 *   - previous crtc (mode resolution > 5K (or)
-+			 *   - previous crtc (force joiner (or) mode resolution > 5K (or)
- 			 *     mode clock > max_dotclock) and
- 			 *   - current & previous crtcs are consecutive
- 			 */
--			if ((igt_bigjoiner_possible(&crtc->mode, max_dotclock) &&
-+			if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
-+			      igt_bigjoiner_possible(&crtc->mode, max_dotclock)) &&
- 			     ((crtc->crtc_idx >= (tconf->resources->count_crtcs - 1)) ||
- 			      ((i < (crtc_count - 1)) && (abs(crtcs[i + 1].crtc_idx - crtc->crtc_idx) <= 1)))) ||
--			    ((i > 0) && igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock) &&
-+			    ((i > 0) && (igt_check_force_joiner_status(drm_fd, prev_conn_name) ||
-+					 igt_bigjoiner_possible(&crtc[i - 1].mode, max_dotclock)) &&
- 			     (abs(crtc->crtc_idx - crtcs[i - 1].crtc_idx) <= 1))) {
- 				igt_info("Combo: %s is not possible with selected mode(s).\n", test_name);
- 				goto out;
+ 		if (((igt_check_force_joiner_status(drm_fd, conn_name) ||
+ 		      igt_bigjoiner_possible(&o->kmode[i], max_dotclock)) &&
+@@ -2124,6 +2129,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	igt_stop_signal_helper();
+ 
+ 	igt_fixture {
++		igt_reset_connectors();
++
+ 		igt_display_fini(&display);
+ 		drm_close_driver(drm_fd);
+ 	}
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 0c19745bc..e5e5264b5 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -411,6 +411,11 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 
+ 		data.debugfs = igt_debugfs_dir(data.drm_fd);
+ 
++		for_each_connected_output(&data.display, output) {
++			if (igt_has_force_joiner_debugfs(data.drm_fd, output->name))
++				kmstest_force_connector_bigjoiner(data.drm_fd, output->config.connector);
++		}
++
+ 		/* Get active pipes. */
+ 		for_each_pipe(&data.display, pipe)
+ 			active_pipes[last_pipe++] = pipe;
+@@ -499,6 +504,7 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture {
++		igt_reset_connectors();
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
+ 	}
 -- 
 2.43.2
 
