@@ -4,54 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01393C2BA18
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 06:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B30C2BA18
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 06:32:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 99BD110E589;
-	Tue, 18 Jun 2024 06:29:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C43B10E582;
+	Tue, 18 Jun 2024 06:32:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FayVMNXD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TJ3b3tyx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3951510E586
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 06:29:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFFDE10E570
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 06:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718692198; x=1750228198;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HBY1AWRv6/gQbWQfksW6Yu3YnoaKgW0EcGIw5qK08qU=;
- b=FayVMNXD+j1RiIdRFawKdD0dSZcuNQ9+mpqCQsUEMpOU1WRXHUN/b8h2
- W5avQGqDvkcG0G76/RNKe1QRzQVjTi79xlGiV0MX4oevhUpYKrXfbTeGg
- /GxMAt9h6OkmgYD0Nwymw8UchTe+PlC9mjKWVeBfPs6bnMIBNiPPcdOxV
- OU0obcXiAlxLLb8+qivVCSqFW9JxV1j3WMw4homNR872RAMHsfs01iSkz
- kl8bConnNxXmiz4UX5WeiBSW0NxMdF9BDrXLakMkIfYlQY8UsQyZ1Svpy
- LzqT8Sa3gSbd7BDAV1vW6HkWO6T79PWgA8j1HHg8zufMKgrNyOco3zTsk w==;
-X-CSE-ConnectionGUID: tzXC5LkfRtGYRi662n2Z/A==
-X-CSE-MsgGUID: KDPwxWmmRB+M5F623AikiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26177411"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="26177411"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 23:29:58 -0700
-X-CSE-ConnectionGUID: RJDsxiYXQbGrCr0iRofldg==
-X-CSE-MsgGUID: o09iWAqrRx66hfR6Adk7yQ==
+ t=1718692323; x=1750228323;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=iOSPpt0qQxIuQut9D34duLIfBAuKQDu0tkg/eS57jB0=;
+ b=TJ3b3tyx1BortFwVenWdMGFWeKbJFElXKVQ8w4wlv+jtbuqLKvFyu1Kg
+ GjaLLEn0vvQdRM84PDHDcFo3IdqbAe2Xduai7lxvy3Bhenh+YkfoggnZl
+ lo4/rHoz4b6hTUxGo854YOyoPJMrrj9rekN94JViT22x5xhFEkLkgaun3
+ 3Ixg+1ZGH6XqPayMBnuq2SlHKLevu9CWHforG6RK6JkzZW33cJIbHyTxv
+ ZiQjF9NAnWqwvx2qFaflvXGqrJqTeLzqWzsg/vRCUPg7Va1y88MH4nkel
+ W4PXxUZEhXJpvJrCxShmkCQ1f6E3OpgxNIrIEZjQjt/Wz0btsVO+TQks8 g==;
+X-CSE-ConnectionGUID: SGZl8OExQACVTKmsRoBd5g==
+X-CSE-MsgGUID: 0epgUdpqStWREJvVkYYAlg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26960436"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="26960436"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 23:32:03 -0700
+X-CSE-ConnectionGUID: /LqueLblT5S51k+5Xz5h8Q==
+X-CSE-MsgGUID: 5rqBh3EdSkSeyuvd/LmP6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41360337"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41304940"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 23:29:58 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 23:32:01 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Jeevan B <jeevan.b@intel.com>
-Subject: [i-g-t V6 6/6] tests/kms_hdr: Use lib helper to check the pipe/output
- combo validity
-Date: Tue, 18 Jun 2024 11:51:50 +0530
-Message-ID: <20240618062150.4004768-7-bhanuprakash.modem@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t V6 0/6] Check the validity of selected pipe/output combo
+Date: Tue, 18 Jun 2024 11:53:59 +0530
+Message-ID: <20240618062405.4004955-1-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240618062150.4004768-1-bhanuprakash.modem@intel.com>
-References: <20240618062150.4004768-1-bhanuprakash.modem@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,144 +65,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use IGT lib helper intel_pipe_output_combo_valid() to make sure the
-selected pipe/output/mode combo is valid.
+Use IGT lib helper to make sure the selected pipe/output/mode combo is valid.
 
-Cc: Jeevan B <jeevan.b@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/kms_hdr.c | 90 ++++++++++++++++++++++++++++---------------------
- 1 file changed, 51 insertions(+), 39 deletions(-)
+Bhanuprakash Modem (6):
+  lib/igt_kms: Check validity of the selcted pipe/output combo
+  tests/kms: Drop redundant check for pipe/output combo validity
+  tests/chamelium: Use lib helper to check the pipe/output combo
+    validity
+  tests/intel/kms: Use lib helper to check the pipe/output combo
+    validity
+  tests/kms_dither: Use lib helper to check the pipe/output combo
+    validity
+  tests/kms_hdr: Use lib helper to check the pipe/output combo validity
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index 99b78f7ef..475463c21 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -261,6 +261,8 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 
-+	igt_display_reset(display);
-+
- 	for_each_connected_output(display, output) {
- 		enum pipe pipe;
- 
-@@ -271,26 +273,30 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 			continue;
- 
- 		for_each_pipe(display, pipe) {
--			if (igt_pipe_connector_valid(pipe, output)) {
--				prepare_test(data, output, pipe);
--
--				if (is_intel_device(data->fd) &&
--				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
--					test_fini(data);
--					break;
--				}
--
--				data->mode = igt_output_get_mode(output);
--				data->w = data->mode->hdisplay;
--				data->h = data->mode->vdisplay;
-+			igt_output_set_pipe(output, pipe);
-+			if (intel_pipe_output_combo_valid(display)) {
-+				igt_output_set_pipe(output, PIPE_NONE);
-+				continue;
-+			}
- 
--				igt_dynamic_f("pipe-%s-%s",
--					      kmstest_pipe_name(pipe), output->name)
--					test_bpc_switch_on_output(data, pipe, output, flags);
-+			prepare_test(data, output, pipe);
- 
--				/* One pipe is enough */
-+			if (is_intel_device(data->fd) &&
-+			    !igt_max_bpc_constraint(display, pipe, output, 10)) {
-+				test_fini(data);
- 				break;
- 			}
-+
-+			data->mode = igt_output_get_mode(output);
-+			data->w = data->mode->hdisplay;
-+			data->h = data->mode->vdisplay;
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+				      kmstest_pipe_name(pipe), output->name)
-+				test_bpc_switch_on_output(data, pipe, output, flags);
-+
-+			/* One pipe is enough */
-+			break;
- 		}
- 	}
- }
-@@ -614,6 +620,8 @@ static void test_hdr(data_t *data, uint32_t flags)
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
- 
-+	igt_display_reset(display);
-+
- 	for_each_connected_output(display, output) {
- 		enum pipe pipe;
- 
-@@ -635,32 +643,36 @@ static void test_hdr(data_t *data, uint32_t flags)
- 			continue;
- 
- 		for_each_pipe(display, pipe) {
--			if (igt_pipe_connector_valid(pipe, output)) {
--				prepare_test(data, output, pipe);
-+			igt_output_set_pipe(output, pipe);
-+			if (!intel_pipe_output_combo_valid(display)) {
-+				igt_output_set_pipe(output, PIPE_NONE);
-+				continue;
-+			}
- 
--				if (is_intel_device(data->fd) &&
--				    !igt_max_bpc_constraint(display, pipe, output, 10)) {
--					test_fini(data);
--					break;
--				}
--
--				data->mode = igt_output_get_mode(output);
--				data->w = data->mode->hdisplay;
--				data->h = data->mode->vdisplay;
--
--				igt_dynamic_f("pipe-%s-%s",
--					      kmstest_pipe_name(pipe), output->name) {
--					if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND | TEST_INVALID_HDR))
--						test_static_toggle(data, pipe, output, flags);
--					if (flags & TEST_SWAP)
--						test_static_swap(data, pipe, output);
--					if (flags & TEST_INVALID_METADATA_SIZES)
--						test_invalid_metadata_sizes(data, output);
--				}
--
--				/* One pipe is enough */
-+			prepare_test(data, output, pipe);
-+
-+			if (is_intel_device(data->fd) &&
-+			    !igt_max_bpc_constraint(display, pipe, output, 10)) {
-+				test_fini(data);
- 				break;
- 			}
-+
-+			data->mode = igt_output_get_mode(output);
-+			data->w = data->mode->hdisplay;
-+			data->h = data->mode->vdisplay;
-+
-+			igt_dynamic_f("pipe-%s-%s",
-+				      kmstest_pipe_name(pipe), output->name) {
-+				if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND | TEST_INVALID_HDR))
-+					test_static_toggle(data, pipe, output, flags);
-+				if (flags & TEST_SWAP)
-+					test_static_swap(data, pipe, output);
-+				if (flags & TEST_INVALID_METADATA_SIZES)
-+					test_invalid_metadata_sizes(data, output);
-+			}
-+
-+			/* One pipe is enough */
-+			break;
- 		}
- 	}
- }
+ lib/igt_kms.c                          |  9 ++-
+ tests/chamelium/kms_chamelium_helper.c | 12 +++-
+ tests/chamelium/kms_chamelium_hpd.c    |  5 +-
+ tests/intel/kms_pm_backlight.c         |  7 +-
+ tests/intel/kms_psr.c                  | 17 +++--
+ tests/kms_content_protection.c         |  3 -
+ tests/kms_dither.c                     | 24 ++++---
+ tests/kms_hdr.c                        | 90 +++++++++++++++-----------
+ tests/kms_properties.c                 |  3 -
+ tests/kms_vrr.c                        | 22 +++----
+ 10 files changed, 108 insertions(+), 84 deletions(-)
+
 -- 
 2.43.2
 
