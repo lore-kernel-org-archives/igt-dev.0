@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72BB3C2BA18
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 05:24:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8DCEC27C4F
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 05:24:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2CE2910E562;
-	Tue, 18 Jun 2024 05:24:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 67AD410E56F;
+	Tue, 18 Jun 2024 05:24:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OTJ6tpe4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TYAtQtV+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB55610E570
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 05:24:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9FA410E56D
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 05:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718688247; x=1750224247;
+ t=1718688250; x=1750224250;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+IN45k5VOg1XWUfCWBoAS+K/xdoZSXJUzKMxU/JX0pk=;
- b=OTJ6tpe4p6BpBxsiES/dV4VwEIxz/KTPzSDMCnXMIbow3ivPMKh33/Vl
- 044TcNuq3uX1B610iXhqplGWjqhpKwgtYhgZOppBmrs/yERZ6bma/bRoO
- Tm4VJEJpsbMxePkJu6Yvti2xfjs30kR9Fus0qoWcztv+vHYA4Ilw0UsQD
- PIbI9UfQXoSnqEa64QlgJxTGfnB2VVU8QC2J1rou4xvyaWqaKfjN2A8qg
- Ls5enalTuSzs1TuuQTl1ciObksmn3aOayCutX7uDmyfvxAAVQ3/32Z1Te
- DpM74XRXP1Ojd1qeJf9brOr2hsRWGMBsgXVer8aQd1fLwO6auipnwvZ/E w==;
-X-CSE-ConnectionGUID: GRp14eV4R/6LXtVDDVeK+g==
-X-CSE-MsgGUID: IR6Nw0DUS4O/TsStOQ2zlg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26660117"
-X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="26660117"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 22:24:07 -0700
-X-CSE-ConnectionGUID: wR7VrZF6SRWMTjExH0BV8g==
-X-CSE-MsgGUID: uWrzqi4cTsiVKWQu9YAdxg==
+ bh=mNCaW9x8sF5J1zDzhbTmXWgiLcwkANuRy4Z/5cAkoeQ=;
+ b=TYAtQtV+McvJsBE0ziZNPar3b/iQ/WVXQu7bdcRrhB9jyzsuUHdOiR4N
+ f4ssGbSE7jk0Yr5bYIToeYzaWJMbtNp33+mQWnH2kXO41DLlg7eH8CWDM
+ FLZ5ggaHm2NpoaY1S+qTNVNr2CPYT3fX8UTSHaYypzz926EiwojHJLLbD
+ xJcz3FSPo+oJ9SMopditGg62gsKRpgZsL1tleG1jmq3jnIy9TQxbe+gMf
+ k0GTTsPK6QDv6zqPIZorE7aLjcMr0EuJLl5pCwLPIshf256fkc1E5YTJE
+ ci/mIoslSP5f50IslhJJyk+qAdaTRSSKEXJkBjNF2sHMmtevFKIbd0puL Q==;
+X-CSE-ConnectionGUID: 1RVT91RISKGvtv6hRS391w==
+X-CSE-MsgGUID: OH/8XSHwQ5aw+SfFWfIfWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="15666153"
+X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="15666153"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 22:24:10 -0700
+X-CSE-ConnectionGUID: WpXOYIXyT9Gup7GvvUejYA==
+X-CSE-MsgGUID: iB0HnyogQY2EPtLR3Um3yQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="41525230"
+X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="41286618"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.150])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 22:24:05 -0700
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 22:24:09 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 07/12] lib/intel_bufops: Add Ys tiling in linear_to
- and to_linear path
-Date: Tue, 18 Jun 2024 07:23:30 +0200
-Message-Id: <20240618052335.152588-8-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 08/12] lib/intel_bufops: Drop unnecessary Tile4
+ function assignment
+Date: Tue, 18 Jun 2024 07:23:31 +0200
+Message-Id: <20240618052335.152588-9-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240618052335.152588-1-zbigniew.kempczynski@intel.com>
 References: <20240618052335.152588-1-zbigniew.kempczynski@intel.com>
@@ -71,82 +71,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To iterate over all tilings we need to have each case addressed
-in the code. Add missing Ys case.
+Initialization is executed in bufops creation using appropriate
+template in which all functions are already assigned so there's
+no sense to assign them one more time for xe.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_blt.c       | 3 +++
- lib/intel_bufops.c    | 6 ++++--
- lib/intel_cmds_info.h | 1 +
- 3 files changed, 8 insertions(+), 2 deletions(-)
+ lib/intel_bufops.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-index d1200ca862..20c42eec14 100644
---- a/lib/intel_blt.c
-+++ b/lib/intel_blt.c
-@@ -540,6 +540,7 @@ const char *blt_tiling_name(enum blt_tiling_type tiling)
- 	case T_TILE4:  return "tile4";
- 	case T_TILE64: return "tile64";
- 	case T_YFMAJOR: return "yfmajor";
-+	case T_YSMAJOR: return "ysmajor";
- 	default:
- 		break;
- 	}
-@@ -582,6 +583,7 @@ int blt_tile_to_i915_tile(enum blt_tiling_type tiling)
- 	case T_TILE4:  return I915_TILING_4;
- 	case T_TILE64: return I915_TILING_64;
- 	case T_YFMAJOR: return I915_TILING_Yf;
-+	case T_YSMAJOR: return I915_TILING_Ys;
- 	default:
- 		break;
- 	}
-@@ -606,6 +608,7 @@ enum blt_tiling_type i915_tile_to_blt_tile(uint32_t tiling)
- 	case I915_TILING_4:	return T_TILE4;
- 	case I915_TILING_64:	return T_TILE64;
- 	case I915_TILING_Yf:	return T_YFMAJOR;
-+	case I915_TILING_Ys:	return T_YSMAJOR;
- 	default:
- 		igt_assert_f(0, "Unknown tiling!\n");
- 	}
 diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 36b9aa2a8c..38b720624e 100644
+index 38b720624e..70f70bfa9e 100644
 --- a/lib/intel_bufops.c
 +++ b/lib/intel_bufops.c
-@@ -1697,8 +1697,6 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+@@ -1695,8 +1695,6 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 		bops->x_to_linear = copy_x_to_linear;
+ 		bops->linear_to_y = copy_linear_to_y;
  		bops->y_to_linear = copy_y_to_linear;
- 		bops->linear_to_tile4 = copy_linear_to_tile4;
- 		bops->tile4_to_linear = copy_tile4_to_linear;
--		bops->linear_to_ys = NULL;
--		bops->ys_to_linear = NULL;
+-		bops->linear_to_tile4 = copy_linear_to_tile4;
+-		bops->tile4_to_linear = copy_tile4_to_linear;
  
  		return bops;
  	}
-@@ -1956,6 +1954,10 @@ bool buf_ops_set_software_tiling(struct buf_ops *bops,
- 		igt_debug("-> use SW on tiling Yf\n");
- 		break;
- 
-+	case I915_TILING_Ys:
-+		igt_debug("-> use SW on tiling Ys\n");
-+		break;
-+
- 	default:
- 		igt_warn("Invalid tiling: %d\n", tiling);
- 		was_changed = false;
-diff --git a/lib/intel_cmds_info.h b/lib/intel_cmds_info.h
-index 6f7d655083..7960e0412e 100644
---- a/lib/intel_cmds_info.h
-+++ b/lib/intel_cmds_info.h
-@@ -14,6 +14,7 @@ enum blt_tiling_type {
- 	T_YMAJOR,
- 	T_TILE4,
- 	T_YFMAJOR,
-+	T_YSMAJOR,
- 	T_TILE64,
- 	__BLT_MAX_TILING
- };
 -- 
 2.34.1
 
