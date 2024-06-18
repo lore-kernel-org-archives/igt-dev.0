@@ -4,166 +4,186 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D011C2BA15
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 09:27:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9536BC27C4F
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 09:55:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B282610E5FA;
-	Tue, 18 Jun 2024 09:27:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B57A10E242;
+	Tue, 18 Jun 2024 09:55:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nH0cvbw6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OiL3MGBz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 555FD10E5FC
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 09:27:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4B1210E242;
+ Tue, 18 Jun 2024 09:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718702872; x=1750238872;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=K4EwlxmSh59P7UmIPm8c/VRTPYWnQIUIm5ZxPPAxRDc=;
- b=nH0cvbw6i71F83MbZ1KvL9VsRNiYAergd6wpKjBiloSklzacVRVtmmvB
- SHakC727cbIqXDkZXgLV8yrZkah+us4UKJrd3vmpJfzRUK/WEWnNnXxPN
- YzgPbKmzLQdf/GBRO+iyL1xyW5bJ7G6tcubEjU7B4MN3K3u3E9L6Tz6nR
- Hc/R1bJgcK0DrfX3CeA3DUHegZrv73d0iqXDFbwtD/k4Yx8AEhbXLHwz1
- VlgSOWEuwc+hjsovVfHrYPYSCflGfqcRkqxQONvSpPNjmYTTcVPV+3xCk
- vQrK6Dihhdc0CEFq9mjYQlrsICEJRCG2QJJoq1YG0/Mhsj763tXEUGai/ A==;
-X-CSE-ConnectionGUID: CJ5509akTSqDZkZYu6Z4Hw==
-X-CSE-MsgGUID: 305C8mMqSBGznYyTUP7W1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="19386162"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="19386162"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2024 02:27:51 -0700
-X-CSE-ConnectionGUID: sqd2bMeqS5SBTn/bRp6UmQ==
-X-CSE-MsgGUID: Du8fEYG0TyCE3bOfoFsjiQ==
+ t=1718704557; x=1750240557;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=7J7AHDEgeq5yjdqb8X1el073PCNP3Cr2I6vU7I8HsXY=;
+ b=OiL3MGBzHM3n+g4y7fO3qIBYmUUxLzXdveCbCPQ+Zmc2oCu0qKlbp8wC
+ QfSxbtejDuU1b9ux57TExe435uycPgEcIPXfBwIoTLP6Z3h+YqS4a/ghp
+ gRXn3jN9qBi1lpmzN6Qog3zVoCXNjjNWUDO0qGguplMJyDUvsUcz4YpHm
+ ps/5cV9mBIIHzIhDNKSQKZ6EusvWDbA6ojpfRodyF/7PjB5F+EvubmyCP
+ mDbuWwimETBa1iK3bgKJ1zGq3y6stKoE8A5zrDVegBUvOQu0T/lXyQC6V
+ BzXAXpmR4U9HeaZLU9ORopy8AqOI7H9hM5gHGTM/0sXYCgybykZoqmeig A==;
+X-CSE-ConnectionGUID: MZWWSW3wTJSqJExQWGgjgQ==
+X-CSE-MsgGUID: yZQM+GSJTeOYg5TrYc7TyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="15805293"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="15805293"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2024 02:55:55 -0700
+X-CSE-ConnectionGUID: J+NaKwNGTF2uMevSVtBvCA==
+X-CSE-MsgGUID: JcAWMKZ/QMaZmMQJXNJ7fA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="46613944"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 18 Jun 2024 02:27:51 -0700
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41606449"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 18 Jun 2024 02:55:56 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 18 Jun 2024 02:27:50 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ 15.1.2507.39; Tue, 18 Jun 2024 02:55:55 -0700
+Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 18 Jun 2024 02:27:50 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.169)
- by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ 15.1.2507.39; Tue, 18 Jun 2024 02:55:54 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 18 Jun 2024 02:55:54 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 18 Jun 2024 02:27:49 -0700
+ 15.1.2507.39; Tue, 18 Jun 2024 02:55:54 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EyWYSIUR3Wvbq6zL/L9s3yKDy7OTD4Lyuj7UDBHJ8xRIJBrmySc602GzsrEGyTtegCD3kdUTL55IKFqsQDu1AC477qBe6UzVea/SLnszO2lWeB6YYHBUeDfsG5UQxOtPSRptfhiLUoOqArLLeRsGHiBdrWC4Dt40dFnIpjwmjpWdj9rJeVn2KyApLksTkjlcSmN5lhi1l2M7P2l3Ke5XG8MSHlj99tVZ9AVTnTl9p2lO8LnU9DdPw1ikEBNPIXM3r+kCNlo7pKUUHYOnLGuDUgJIyDgBGPIGqrxd/2dL5CF+UfwDQOw6WrNroQ7VXYNu1YMxLj9NN+WBQlS8mdsZPg==
+ b=iX7BJ0JyymMk7+VM2jhSdaeEylqixa4/fBdeVXCIDzkTMlyFx62i6FoR/m5Dyc+HalFZZKIw1cEFRz36eVmGyllNgcMIFykSYf6sVT5S93g6etz/YXdlUzTRoQK+eWQuu1aVX82+WpLRKQ+5AmPLmG32T9A4/ExVpc95El8eFBtFmr4zWDBJO458soEZ4/JPChrZfV6l1+w5tDrcrGZg6QhXtDYKeaJTEZTFUlQSnx+s2HDXCyp8L1M6tk5GiMGDK1tMpDm+vf2kInhjmmtRl4H/aFTdz7HJU1cL3dtWkWgSzzO0kSrT9sGktkJjO0loVq8M+ZSCD8nE95uTnmy1jQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=v+ukXSURJP8OL/6l7URrDdfNVjHJZKfdswLleQK4NUs=;
- b=YWEIYn6IOGXEQR3rsXyubyV97KOAQ0WnsmcIlVY2lRu2inLaXY5AsA9oj3+5gbWSBpqT7JuxOZExYeo+5S5zWKlGdxQiEarIOQ0dm5WOZwWrKnW9bRQcgLxCtHl3VlE/kMWOoQVYQ4C1sGwhBihIfeHcnAGqFJvb8EFyZK7fAejA91I69Xdjc7sXIL/o8rjOQ2tt0GJ856xHlVid49wldWnth0D4G71TVID3Vwrgydb4k2PsRqXzdZU/bsQXzeNeyh3/zzdIp6XwtdqGSOCs+I4MxBmyD5JwDY9p9j5G5xRu7D5xEsixcJuhJZCyrjBkf2mtbRHCMjBT3Qz9IxvXrw==
+ bh=y1vYshtj5rRlO2bWqpRqnPhW8N648M3JFcfkH9TecD0=;
+ b=AWCKymQRdR+yKdCRAfLD6QL9tg5avcTpU7NKpbbPS7kkoAwVN4V9gFbm5cDjFLzRb0A+DkcBeMWnrSwPBZVVMtjWMBzk/CvTP8EOtz3GfL1rvPW2+AKHKjB75mHyspVeclyOUz3Gc4ix2j21sSPxOQKEA2TrpuAmgVFgADvFhS5NHjEqcJyehQgQJh5bmWUrIQTNlJEGXm4r7D5nEdR3sVPQG5Caj53brDR8NWWXN0cYoL96XVzaDafvafSnCicZXOIOqsePh/ct0eX/cdp/HpHbIOHtY9zrd+LKMnDPRo+NsjzvfTdIXaNOTJkPZ7US30XWg38FKLJbfVwcj+gQCQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from CY5PR11MB6344.namprd11.prod.outlook.com (2603:10b6:930:3b::6)
- by LV3PR11MB8481.namprd11.prod.outlook.com (2603:10b6:408:1b7::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31; Tue, 18 Jun
- 2024 09:27:42 +0000
-Received: from CY5PR11MB6344.namprd11.prod.outlook.com
- ([fe80::3ac4:e20e:84f1:f826]) by CY5PR11MB6344.namprd11.prod.outlook.com
- ([fe80::3ac4:e20e:84f1:f826%5]) with mapi id 15.20.7677.030; Tue, 18 Jun 2024
- 09:27:42 +0000
-From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
-To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
-Subject: RE: [i-g-t V2 1/2] tests/kms_vrr: New subtest for CMRR
-Thread-Topic: [i-g-t V2 1/2] tests/kms_vrr: New subtest for CMRR
-Thread-Index: AQHawVQ+EjiMX5x/okSdsZ3e/rZR07HNQDtA
-Date: Tue, 18 Jun 2024 09:27:42 +0000
-Message-ID: <CY5PR11MB6344E9AD40960F882F266F1FB2CE2@CY5PR11MB6344.namprd11.prod.outlook.com>
-References: <20240607124840.3405928-1-bhanuprakash.modem@intel.com>
- <20240618074225.4047523-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240618074225.4047523-1-bhanuprakash.modem@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
+Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR11MB6344:EE_|LV3PR11MB8481:EE_
-x-ms-office365-filtering-correlation-id: 52be1bb8-05b9-459d-f480-08dc8f78e7ad
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230037|366013|376011|1800799021|38070700015;
-x-microsoft-antispam-message-info: =?us-ascii?Q?9luJlNLuX7E/0yOBOAyt/Go2VWKQ5NUllqqLECq7BNOX36N/1Iy/p7wAre6d?=
- =?us-ascii?Q?9rRpjxB9hJv3MyBk9zcCiFtMigZ48v4iGF/ldPBsZTAH+a7R/VqLkCokVo0C?=
- =?us-ascii?Q?TnqtqtE/apwPee3rl5xRTWdbMKzJSbjjv77Vlwy1P/H4HGWFIty7HWHwiyBQ?=
- =?us-ascii?Q?EE4Dtv1H35HmPvD1RToRDpCbl21U6WOXNd2rJuRrKTIDNzP9ixS6ug4DzP3e?=
- =?us-ascii?Q?lY7qrHqVm7oMu8ZR/kdZadmRpH/jdt0Jdkswp4RYtSSWt379QhvuUIvYWHdF?=
- =?us-ascii?Q?CX9VvrvmeKGFqCHA4u75JWcXMNnTXCO82o9PX027iO8Ge298B+ILVpixAw4C?=
- =?us-ascii?Q?M3oDsv52a8l7Ob1wlONkfXTK1n4/9WtAJ5oWyBXGknxWpxWAlIB4Wed205De?=
- =?us-ascii?Q?nUdqsheQiL5G7DDP2jSU0R7klN/hnoV4GislODHuDFvvkykpTb800Aj+fXHo?=
- =?us-ascii?Q?8nhf4SjJnw/uYclVg6Skx2dgsPkJFspzZAljuSTf725l/1Qvct9PRTUaCJU+?=
- =?us-ascii?Q?3J+rXz/Sp0Utv3+s96DTiE04QO0PSTl8vvZa+xc77ykuiwR+jQ2+Uu4y5NJ4?=
- =?us-ascii?Q?UgFAmvP5RBy54XphhHYHLGagdllFmgH6V0Ps/gEQTRUIn/pr9BJwIxC+SmVz?=
- =?us-ascii?Q?68IGGCbNq1PmX0i3ySc3RevHg+5Lib8hvR4l52QsQemOhZqQMZQXfngXWb1B?=
- =?us-ascii?Q?7RogC1wQiA145pRzvT1OHjz34OlOdFxPaxWCEL5GoM13M27uHD2a46px0jIZ?=
- =?us-ascii?Q?B9LFFa44c+i4s7r1zMLEoZkUINTvDBkpZjgWdnbP8vHc6X41YAQ4QHkiaUQr?=
- =?us-ascii?Q?BporfMyJogjqr1AxQ0z5wJ9dKqPoMOWf3aYgcNxbJ/pAQefNGoYI58A6KFdn?=
- =?us-ascii?Q?Yg3sqmES6KLCpFH8qgHp0E8EgWlYMZVDxuwaVLAgsrM9dLqMAL1W2/BiIK9n?=
- =?us-ascii?Q?dqrHMy6JFmZ798tfBCXVSPaZ0YrdaqgWohGtefzCVjCZitVUtsIfzqDMwOHN?=
- =?us-ascii?Q?DlLHsbsbAj9sNf0FsYNj6BiL78IAgjD+As2OICia/qSBGZVASzYZZ5gl5d+L?=
- =?us-ascii?Q?3IyviFAm/8H2Q1oinWAOeCU57NUr5SAgQvlCJRgE1PhT4IlpGQt9JV5q2V32?=
- =?us-ascii?Q?5l+70dABZhONFui3p3a0FeDVR0I7piEAY2X9fyupTwL2Alu7PJmxglxz6GA2?=
- =?us-ascii?Q?JFBVzMFZ866LlVMz7yfy59qACy8DnIKEuGOdmy+p2yu5p0zwLDp7sTEITMyI?=
- =?us-ascii?Q?6I9Sd+bRyut2n8BLYwdgRG4aeBYQMLdkXIlG8QCg4wYWnwLS3KT9DcYrlomw?=
- =?us-ascii?Q?UIs6tTa5YGNREwgq8srfSCJeQZv8npKK36DQ9LLnEgFgith32OLlpQgKByGc?=
- =?us-ascii?Q?seHuMRM=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY5PR11MB6344.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230037)(366013)(376011)(1800799021)(38070700015); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5PXReXSoXN/90tbPJKj4KO3k2icE9aIP9WjnjVIW40hqaoftpbaArQtjgyfs?=
- =?us-ascii?Q?NyaRWjqQgvDIeWq6ZhXpgTJc4svhh7PetKDE6KS8UGtISog8aXEqeSEBIXwY?=
- =?us-ascii?Q?I/iWaOuW6Ty0UxqMrKP/+MrCA3UNPJ3ivgiYuQCJSHWScUIgizNR/Dw9IyjS?=
- =?us-ascii?Q?ThKXhFbr7ZaEzGcEmz3KzlhI3wqAf0WdqQpNP8pJXjgL7YfBcej7MprNgy+C?=
- =?us-ascii?Q?f3TVOjMbHK7lps9MfN4URyOpDzw96TolTjUZ80Kus4z+hBvwMWBj7t2r1GYc?=
- =?us-ascii?Q?BLsgwX1c0mzpe34S7hm/wwXWKjr2xKdm3Ntmyc3P+XK9d0CAAnyQ9JtEcy+R?=
- =?us-ascii?Q?kKJbGLg15JYxgQpGU7u4oYJly5c9lyb/w8kISOOGBNBarOxjYYYD8aEGAPi6?=
- =?us-ascii?Q?2MkC2Xpdns1Jpu71O2dzuA57S5nZuic+obz9YYt+jPqX5J+HxH7zRgOMdPoX?=
- =?us-ascii?Q?cDo91gY8yty7HnGQFJm/EN4Om84UQi7utBptO4GGniE+q+6o4s2sNRqXIQSL?=
- =?us-ascii?Q?Y0uo/PUPPpyAMJzB404YhEQwFnoNnJva/T3KAQ3vJ/K4uYKMBPkew9EoY/on?=
- =?us-ascii?Q?4jt7FpImM+mVuSiDJWWn42TBWhLkAO+DoJllJjJCd7/QZ5jV4iPCC5rSvfhn?=
- =?us-ascii?Q?j4Imzp/lHwiDASXZ8o1FguNWGBhfQ/dLU4hRq7SJeOCzooRFmcTft0LJMMRY?=
- =?us-ascii?Q?7sZ9YR2MUJcA7VOz0bmqmGjanTGVUkNQZM0FjtGaKyHR0k/HO3PrJXFKbtKS?=
- =?us-ascii?Q?Lqrafgs2k0mBqQuZzaX9D3DVorwEkwVsmW+0IheK+B2oizdiAayEE3bFXWCH?=
- =?us-ascii?Q?FSwNj/9LtrjksAMN9SyrMQfnCIzL9VOqtkKQrW2NEfqrCU0e5AJfACy99IL3?=
- =?us-ascii?Q?86Lh63emrlgsdtaGSmlrKPnRDfviQ37kD/MbtdWVMc4jmguY96ZiWd4tCMFo?=
- =?us-ascii?Q?doy4c2PK/bZEd7zgBvWrXnqOgipgKNiEImaglJQDqXnE4iBjUjZH9Odoser+?=
- =?us-ascii?Q?SDrXvlN3/MLjAkZDxb6Jf75QtCn6h5jvt102yZWJcqBnoKEiMeGD+Pc4QSqm?=
- =?us-ascii?Q?f1v5Dl90WXIred/p5dfTV7zAfrk/Nldkj+l4YG5qgDN/ebPyQ18oSD8Vi0q5?=
- =?us-ascii?Q?FV9jlbSycQzBBK3sZnBGGIBlaAdPXEMe3ilYXzOadbCPWmBAIiYTVzJCPSFr?=
- =?us-ascii?Q?g8kyvFvq0YCzUjiTJDrxHt2ve9ExPuw/tfTSDfoZ4nxDK21QcbZQ4hkQSxoh?=
- =?us-ascii?Q?PTKOetzqmgTpPG2Myi9scUUtBHplHRA8v87GVY/fh7f2HAPo6KqaOhoOJyd5?=
- =?us-ascii?Q?TaCpRD9yG2FSDg7sPnGvKpNglowKpG4X1WLpjiW0YufA0TAz1pbGpd0AB2VD?=
- =?us-ascii?Q?cf934OGw04iZxI3d9ZPaip48CgYNnl9qkUNKmbrbxdCEpIX10JwY5kKjml1I?=
- =?us-ascii?Q?CHZCBfwPBz56Mly6MqaYsKotyMqaAKS2SSw4xCC1QSZq4Rp/YZo2KbrLvQr1?=
- =?us-ascii?Q?jODW7eKWfnlTirFdXmuIvHloqnayWAT7HruWuqoRjIReLIv9Q8PEgvijMswb?=
- =?us-ascii?Q?2C5wnuONI5W1sl/JoDjH2lwDD9Eqg5dPzi2TjX7CJ/ghpIetZyWWzoaE5DFo?=
- =?us-ascii?Q?XWgFni19m7XUkLD9gSq4CaM=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from DM8PR11MB5719.namprd11.prod.outlook.com (2603:10b6:8:10::6) by
+ PH7PR11MB6956.namprd11.prod.outlook.com (2603:10b6:510:207::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.33; Tue, 18 Jun
+ 2024 09:55:51 +0000
+Received: from DM8PR11MB5719.namprd11.prod.outlook.com
+ ([fe80::9996:d2ce:a20:d9bf]) by DM8PR11MB5719.namprd11.prod.outlook.com
+ ([fe80::9996:d2ce:a20:d9bf%4]) with mapi id 15.20.7677.030; Tue, 18 Jun 2024
+ 09:55:51 +0000
+Message-ID: <03c9094e-1fb6-4cba-8da3-2628a967c4b5@intel.com>
+Date: Tue, 18 Jun 2024 15:25:30 +0530
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/gpgpu=3A_ad?=
+ =?UTF-8?Q?d_shader_support_=28rev7=29?=
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Andrzej Hajda <andrzej.hajda@intel.com>,
+ <I915-ci-infra@lists.freedesktop.org>, Jari Tahvanainen
+ <jari.tahvanainen@intel.com>
+References: <20240612-iga64_inline_ups-v7-0-0d4b840498c7@intel.com>
+ <171818753213.68617.8043397927356476587@a6498e030952>
+ <20240614132731.vizhnvphj22kyek5@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20240614132731.vizhnvphj22kyek5@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2P153CA0027.APCP153.PROD.OUTLOOK.COM (2603:1096:4:c7::14)
+ To DM8PR11MB5719.namprd11.prod.outlook.com
+ (2603:10b6:8:10::6)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM8PR11MB5719:EE_|PH7PR11MB6956:EE_
+X-MS-Office365-Filtering-Correlation-Id: fa64bcd1-ae4e-4912-6249-08dc8f7cd60a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230037|1800799021|376011|366013;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?eTRLUUJ1dXl0am9Eb3M1ZGt2MFFsUzhpREVLcXBPQ3U5YTFhNXpnd1orUzBz?=
+ =?utf-8?B?R1h1MU5xWVNoZzNRUWFKYVZVUTlaWWduWW5OR2NsTHl1dzAzMlp4bDhZOXJD?=
+ =?utf-8?B?S1VKOG0xR1pKYjVtSFF5VUo4VUdOSGtReDRnZHBYVGNRNFVxM0svNmxJbUpS?=
+ =?utf-8?B?bnlRaXdZa0VhSFVYbEUyOEpZOWVIbElXaXFydkx2NTZIR2VqUGMzQXJkeUV0?=
+ =?utf-8?B?U0pzTU9LQVk4MGUrcmsxZXVQMEMyZFpNNDEvam5iNHNva25nUkdBOTdMM0sw?=
+ =?utf-8?B?MWZvb29HNktKYVhqWmdtenhkSXovWW85VVBqL3lTU1kyN1RvUC96R29kbmdr?=
+ =?utf-8?B?aFJvQWpSWlZiUm9VRWpzTHh3eEJnVDJSTThwUzZCOVM1REV0dHowNkY2NkVa?=
+ =?utf-8?B?WTNVeFRQQ2dhMlc3cStENWZIZktNbFRnTnVIMGgrVWdaSzRCM2F6UkRlUVFI?=
+ =?utf-8?B?TEVqYVovaWJHR3VGQlc5MzlGSzVIb1E4VjE0WmRCQy8vbG9YeHlkSWQraXhw?=
+ =?utf-8?B?RE5CbGl5SGJQSkpLSTRSVHBmbk1BNDJ2VWhFTENBS1pTVGZqS1JxYmZqQlpI?=
+ =?utf-8?B?dW45Q0xQZjhCa0ZqMllsZEJJamdJMENza2lCaWp6WXV2SVJacWZtWFc4ZW9j?=
+ =?utf-8?B?bUFwcWw4TCtUV0VEVjFJY0t1MHAzTXd5TEtTeW1rZHd5ZHB2Umd5N2Mrc1kx?=
+ =?utf-8?B?OGFaTDFla1NPUWJkSWZMNGtXTXpwVXcvMTRHSTFXOEE3bmc3dkt0ZXdXZVMx?=
+ =?utf-8?B?TUY1MUpnd2FQV1JjR3U5OXRvanBDOFNDelNqVjVjNnA1b2E2QjRBUFJ3TzF1?=
+ =?utf-8?B?NTBDaGJSZlhva2owczhUNUZjeXdraGEzTVhMVTQ2Rkw2b1pxeElhbTFCWjU3?=
+ =?utf-8?B?ZExkSG5XSVl6M0gxUEhtS2hyaklwR0I4SThrby9oN0ZjbldWQkI4TXVXVmpW?=
+ =?utf-8?B?cEg1V0hIQ2JlZG1zcWZ0alljcE90SFhUVysxbGRhOS9yM2hTMUQyQUViQTFN?=
+ =?utf-8?B?WGJMM050Sk84U2p2THhXUm1TOFltYk1IamVBdG1Rd0o0MlRsZlpzekc1NHJH?=
+ =?utf-8?B?UU5haExoR2c3YnJXa2xTajJrV1lEbFp6SmZzbjd0b0ZuemVWTEhmdkEzbDdv?=
+ =?utf-8?B?djhwYVFwU1ZuVWV0QmVvdVR0TVdTL2J1U3Zyc3B4cktBbnlzOElZVW5CcWhX?=
+ =?utf-8?B?Q0s1S3JBdzM2MCtjMFg2dS9Jb2Q2Y0ZXZjJNZ0kyZCsweHZsdzBnVXJuMTEr?=
+ =?utf-8?B?TXl3TVB4TFdNRTZPUFAwd1RmWk1yV081NzEzWFhPQkxkWWJna09kV0NRMXlJ?=
+ =?utf-8?B?dWJSSHUzVG5PdTk2UEtrbURNa0xaS3VYU2FQSnpMQWpFZ28yaFlqWE9zTjVM?=
+ =?utf-8?B?TVBZbVFMZUwvQ2RudUYwbDBDMlNGTE84VXVYVVJaMm4xOFEvUVc0QzRid0w0?=
+ =?utf-8?B?S2NDYmgyaEJmYWQ0N2l1R2ozb3c5YW5QWWVPcW81WE10NjBBckk1a05GRkJZ?=
+ =?utf-8?B?WmpGMlhtSDhFdVA4RElMK05zVVZUZFM5bVNPeGtZNSt5SnBtNDgzTzNHZGNS?=
+ =?utf-8?B?RWZPOW9laHlRREY0REJZdVU2d29EV3JiOHk1Qml2YUIyMGVIRzNLaHo2bDNM?=
+ =?utf-8?B?M1dXUGhRL0lzRWo1empVQXJkRlZrWm1TaFdoczBGSklYWGxXa01Ea09yU2RQ?=
+ =?utf-8?Q?ohKafeAo+U4TYGNNfk2L?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR11MB5719.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230037)(1800799021)(376011)(366013); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R0FkYmthdG1wWnNNME1HUUs4K2xZTTMyRlM1d3MyRXVhenZtbloxQUR1RldL?=
+ =?utf-8?B?STRqQnpNeE1kS09ndnFteGhZcDJBb1NLTGNjYWJFazdRaGxwTVNVbHB2Qi92?=
+ =?utf-8?B?YUNmek9TbDlTQVZUQm5yL1FCVnlyczBDRm9Ja255cGh1Y3lKOVJBK3RaeHpQ?=
+ =?utf-8?B?SGRWSEpxWnlyRXJRd0hPKytXd0RxRkJOMzlac2Z6Z3I2QW1Jek9TMytsQXZy?=
+ =?utf-8?B?NGxxc1pwVkhxanM0VU1FNjkrK1VYanRwT01UeDVtZWFlTWIrWGk0M1FkVGZr?=
+ =?utf-8?B?cW9tWEdtMVpZYno0aWRwOHgvUVltY3UyaTRYdy9xUW9EMGp2a3hkM3J4UU5k?=
+ =?utf-8?B?c2tmSXNIV3krcUJNdTVwSVdiVVFHTCtWdkE4cnNXUlBLdnhmOTE2THhETUVq?=
+ =?utf-8?B?QjV4c3hiSi9UdERYMkYvcmV2YzhFd3NhMTl1Q3NhM2NIRzY5VmNjbVpnZlZk?=
+ =?utf-8?B?aFZuWVhRNDNzSWd5aFd5cnF5U1JqT0F2M0ZGem9FR2d1bkRoVDVEbksxd3Ez?=
+ =?utf-8?B?WWpBTkJXZFhXc0dIRmYvTDNKY0NCemJjcjh4NmNpbHk5QTNvR1JIdjFIeVdW?=
+ =?utf-8?B?V2tBR2hZYmd3WUorRDF2eS9UR0MzMG5tdm02dVlicmVxRjZhUlhldzRwSXBk?=
+ =?utf-8?B?N3VaVW05QVd6YUtwVncwZDNaYlk4MEtESFYwaEkvcXpYdTBGVE9MYm5obzhD?=
+ =?utf-8?B?RUlkZjZydGVvM3FSLzdPaWxHM2dRK3RjaVUxTGtlN1pnTjNoRFdJQVMvNjdV?=
+ =?utf-8?B?RFczV0lsSUFML2RZb3VPSmdtMmNnYmdzL0N6cCtwYWJhK0hpd3lTL214eFJp?=
+ =?utf-8?B?MGJFdGxseHhDL0pVM1c2Sno1VXo5NzE0QVZQcndhaVE2OVZ6cFY4dVdsa0dL?=
+ =?utf-8?B?VmtTYUZocG5rRkJXUVZwM1h2akxaRk85NjR3L3VMV0QwSStTZjl3NHpqQ2Uw?=
+ =?utf-8?B?UVBSeldXRW0yUTFqWGRLbmFDZGhodnl3Q1RxR2ZjamV4MXB2L01sendZUnhl?=
+ =?utf-8?B?dzZHcGkyWUtwc1htcGlybXZCQnBLNkpSVUFST1ZOcnUwRVhWOXpCWElkSEV6?=
+ =?utf-8?B?VlFkakV5Y2hJTWNUSjF0Umd1VnZJVlFBZDJZSDBPZDNwdU1IRVo5RVpEdW0r?=
+ =?utf-8?B?d0lPbXhBQm5KSmNMV2o1NmY0akNoMys2eGdiU2RvWmE4cnFKVWlhR01NT0dy?=
+ =?utf-8?B?TW5WbXQycC9ESmtNZWdlbVlyMGRnNGh6aUd0YVI1Wnp3SHhPMGtONkxDVHFD?=
+ =?utf-8?B?TnczM0E5eEZERDFhN3VzRjY1Q3VGa0dRZDNRb09SdXhIenBpTC9sdmMvUGlp?=
+ =?utf-8?B?YWxWQjlFWFdJaHhPb3NvMlVKcDM2RFhLMWtlTTdKbmpDb0FsQnFYV2pvTVBw?=
+ =?utf-8?B?YWRUbVNDMHB4TEtkeXE4dEhjWnBkZWIyNGdNc0FzWG5JTHZ0cnhRanhIWUwv?=
+ =?utf-8?B?MUE5dDFYVHdaaktBTnFPRDNPUjBLZXB4THFDRFhYOVorL292QkV0aVFMZEdp?=
+ =?utf-8?B?WXpsTzFqRjVBbUFCVTRJd2F1bGxPT1BxVFZWMmprV1ZWaVpBM29yNkNsYmJC?=
+ =?utf-8?B?SWU0QzlZQUM4M0Z1VEJHMDJaWjIzS3B2b0s2ZXdjaG9oNFY2Q3BSMS9OZVFr?=
+ =?utf-8?B?RG04REl2aHhIT1ZYREJUZ2toUUpqWFozeG5rUnVUS1J4Z0RVQVBQeWFRRm02?=
+ =?utf-8?B?VVdHWHBYeklja1pRRkNxT2NzWC9RVTU5eU9CQStlcGNDSW42TkFxSkpUR0tG?=
+ =?utf-8?B?VjJxeHVxVTNpZkRia3RRbk5McU50ZlZmNGcvbFE0U2hYaFg0b3d5cmd3aVV4?=
+ =?utf-8?B?dWdmOXVuOG5vbGtoTWwrb0RYQ3FDQjIvUyt6ckdnS1QyYVo1VEJZR1dZT213?=
+ =?utf-8?B?Vko1VUgwUUQ1eVoyeVpQd0xXdmxqRGlFVi9ybFYwbGlKWWQ4WS8vSlhRSGRB?=
+ =?utf-8?B?Z1kzWGZiejR1T1kxYVdoQmhxVU5zNzFra1MzWDg0dnhsT1V3SVEzeWZUaVdI?=
+ =?utf-8?B?b2w0azFnRXFkQ2FFWEZEaTQwaFlKTCtYZE1GNCs3T0wwS25XVm9EVktBZGIv?=
+ =?utf-8?B?aWJ1Ym4xbk5UbzVxemFwNXRRdVBYcTFFSzVSZ3lSS0FvR2szSnplK3ZvVTdT?=
+ =?utf-8?B?eE1oVTJDK0FHYVB2c0ZYeWtQYTZSd0o1WG9CQmZUWExkZEEyTEcyVm1HSlp5?=
+ =?utf-8?B?MHc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa64bcd1-ae4e-4912-6249-08dc8f7cd60a
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5719.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6344.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52be1bb8-05b9-459d-f480-08dc8f78e7ad
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2024 09:27:42.5153 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RH1RASFM1/6TcKL0xhSzxBNhvc+6StD9bUFbh9i6SZqDnfYYqjJDGEK1O4bBIDhn0JPG8MYTD0rm+XfE78sM7rZy2Va7OzAhzTbNPQylIdnsHSBpxCZvYB4RVhTFSLa9
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8481
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jun 2024 09:55:51.2569 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iDOKQJQizLf6z9f+H1lHwRxwoCdNtQZHQ83L9gpG85omoQ7v0UbiD8FuF/3KssfNkj6gNdAiiwx9FMhTFivBRLRLadlcqzhd5NvhmobYmXY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6956
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -182,274 +202,170 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-> -----Original Message-----
-> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
-> Sent: Tuesday, June 18, 2024 1:12 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Nautiyal,
-> Ankit K <ankit.k.nautiyal@intel.com>; Golani, Mitulkumar Ajitkumar
-> <mitulkumar.ajitkumar.golani@intel.com>
-> Subject: [i-g-t V2 1/2] tests/kms_vrr: New subtest for CMRR
->=20
-> CMRR is an variation of VRR where it varies Vtotal slightly (between addi=
-tional
-> 0 and 1 Vtotal scanlines) to match content rate exactly without frame dro=
-ps
-> using the adaptive sync framework.
->=20
-> This patch creates a new subtest to validate the CMRR as below:
-> - Request flips with the refresh_rate * 1.001
-> - Flips should happen at the frequency of refresh_rate.
->=20
-> V2:
->  - Tweak the clock if CMRR supported mode not found (Ankit)
->  - Rebase
-> V3:
->  - Read flip completion events instead of Vblank evants
-> V4:
->  - Fix clock calculation
->  - Other minor improvements
+On 14-06-2024 06:57 pm, Kamil Konieczny wrote:
+> Hi igt-dev,
+> On 2024-06-12 at 10:18:52 -0000, Patchwork wrote:
+>> == Series Details ==
+>>
+>> Series: lib/gpgpu: add shader support (rev7)
+>> URL   : https://patchwork.freedesktop.org/series/133020/
+>> State : failure
+>>
+>> == Summary ==
+>>
+>> CI Bug Log - changes from XEIGT_7882_BAT -> XEIGTPW_11252_BAT
+>> ====================================================
+>>
+>> Summary
+>> -------
+>>
+>>    **FAILURE**
+>>
+>>    Serious unknown changes coming with XEIGTPW_11252_BAT absolutely need to be
+>>    verified manually.
+>>    
+>>    If you think the reported changes have nothing to do with the changes
+>>    introduced in XEIGTPW_11252_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>>    to document this new failure mode, which will reduce false positives in CI.
+>>
+>>    
+>>
+>> Participating hosts (4 -> 1)
+>> ------------------------------
+>>
+>>    ERROR: It appears as if the changes made in XEIGTPW_11252_BAT prevented too many machines from booting.
+>>
+>>    Additional (1): bat-pvc-2
+>>    Missing    (4): bat-atsm-2 bat-dg2-oem2 bat-lnl-1 bat-adlp-7
+> 
+> This is unlikly.
+> 
+>>
+>> Known issues
+>> ------------
+>>
+>>    Here are the changes found in XEIGTPW_11252_BAT that come from known issues:
+>>
+>> ### IGT changes ###
+>>
+>> #### Issues hit ####
+>>
+>>    * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][1] ([i915#6077]) +30 other tests skip
+>>     [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+>>
+> 
+> imho PVC has no display so all kms tests should be blocklisted
+> for this particular GPU. Adding Bhanu and Jari to cc.
 
-With Addressed above comments,
+I'm not sure we have a platform specific blocklist?
 
-Changes LGTM.
-Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+- Bhanu
 
->=20
-> Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-> Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> ---
->  tests/kms_vrr.c | 130
-> +++++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 128 insertions(+), 2 deletions(-)
->=20
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index 7f64d6806..ecbea1bc7
-> 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -37,6 +37,11 @@
->  #include <signal.h>
->=20
->  /**
-> + * SUBTEST: cmrr
-> + * Description: Test to validate the content rate to exactly match with =
-the
-> + * 		requested rate without any frame drops.
-> + * Functionality: CMRR
-> + *
->   * SUBTEST: flip-basic
->   * Description: Tests that VRR is enabled and that the difference betwee=
-n flip
->   *              timestamps converges to the requested rate
-> @@ -87,6 +92,9 @@
->   */
->  #define TEST_DURATION_NS (5000000000ull)
->=20
-> +#define CMRR_PRECISION_TOLERANCE	10
-> +#define VREFRESH_MODIFIER	0.1
-> +
->  enum {
->  	TEST_BASIC =3D 1 << 0,
->  	TEST_DPMS =3D 1 << 1,
-> @@ -97,7 +105,8 @@ enum {
->  	TEST_SEAMLESS_VIRTUAL_RR =3D 1 << 6,
->  	TEST_FASTSET =3D 1 << 7,
->  	TEST_MAXMIN =3D 1 << 8,
-> -	TEST_NEGATIVE =3D 1 << 9,
-> +	TEST_CMRR =3D 1 << 9,
-> +	TEST_NEGATIVE =3D 1 << 10,
->  };
->=20
->  enum {
-> @@ -232,6 +241,21 @@ virtual_rr_vrr_range_mode(igt_output_t *output,
-> unsigned int virtual_refresh_rat
->  	return mode;
->  }
->=20
-> +static bool
-> +is_cmrr_mode(drmModeModeInfoPtr mode)
-> +{
-> +	int calculated_refresh, actual_refresh, pixel_clock_per_line;
-> +
-> +	actual_refresh =3D mode->vrefresh * 100;
-> +	pixel_clock_per_line =3D mode->clock * 1000 / mode->htotal;
-> +	calculated_refresh =3D pixel_clock_per_line * 100 / mode->vtotal;
-> +
-> +	if ((actual_refresh - calculated_refresh) <
-> CMRR_PRECISION_TOLERANCE)
-> +		return false;
-> +
-> +	return true;
-> +}
-> +
->  /* Read min and max vrr range from the connector debugfs. */  static ran=
-ge_t
-> get_vrr_range(data_t *data, igt_output_t *output) @@ -496,6 +520,57 @@
-> flip_and_measure(data_t *data, igt_output_t *output, enum pipe pipe,
->  	return total_flip ? ((total_pass * 100) / total_flip) : 0;  }
->=20
-> +static uint32_t
-> +flip_and_measure_cmrr(data_t *data, igt_output_t *output, enum pipe pipe=
-,
-> +		      uint64_t duration_ns)
-> +{
-> +	uint64_t start_ns, last_event_ns, event_ns;
-> +	uint32_t total_flip =3D 0, total_pass =3D 0;
-> +	bool front =3D false;
-> +	drmModeModeInfoPtr mode =3D igt_output_get_mode(output);
-> +	uint64_t req_rate_ns =3D rate_from_refresh(mode->vrefresh +
-> VREFRESH_MODIFIER);
-> +	uint64_t exp_rate_ns =3D rate_from_refresh(mode->vrefresh);
-> +	uint64_t threshold_ns =3D exp_rate_ns / mode->vdisplay; /* Upto 1 scan
-> +line. */
-> +
-> +	igt_info("CMRR on: requested rate: %"PRIu64" ns (%.2f Hz) "
-> +		 "expected rate: %"PRIu64" ns - %"PRIu64" ns (%.2f-%.2f
-> Hz)\n",
-> +		 req_rate_ns, (mode->vrefresh + VREFRESH_MODIFIER),
-> +		 (exp_rate_ns - threshold_ns), (exp_rate_ns + threshold_ns),
-> +		 (float)NSECS_PER_SEC / (exp_rate_ns + threshold_ns),
-> +		 (float)NSECS_PER_SEC / (exp_rate_ns - threshold_ns));
-> +
-> +	do_flip(data, &data->fb[0]);
-> +	start_ns =3D last_event_ns =3D get_kernel_event_ns(data,
-> DRM_EVENT_FLIP_COMPLETE);
-> +	do {
-> +		int64_t target_ns, wait_ns, diff_ns =3D exp_rate_ns;
-> +
-> +		front =3D !front;
-> +		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
-> +
-> +		event_ns =3D get_kernel_event_ns(data,
-> DRM_EVENT_FLIP_COMPLETE);
-> +		igt_debug("event_ns - last_event_ns: %"PRIu64" ns (%.2f
-> Hz)\n",
-> +			  event_ns - last_event_ns, (float)NSECS_PER_SEC /
-> (event_ns -
-> +last_event_ns));
-> +
-> +		diff_ns -=3D event_ns - last_event_ns;
-> +		if (llabs(diff_ns) <=3D threshold_ns)
-> +			total_pass +=3D 1;
-> +
-> +		last_event_ns =3D event_ns;
-> +		total_flip +=3D 1;
-> +
-> +		diff_ns =3D event_ns - start_ns;
-> +		wait_ns =3D ((diff_ns + req_rate_ns - 1) / req_rate_ns) *
-> req_rate_ns;
-> +		wait_ns -=3D diff_ns;
-> +		target_ns =3D event_ns + wait_ns;
-> +		while (get_time_ns() < target_ns - 10);
-> +	} while (event_ns - start_ns <=3D duration_ns);
-> +
-> +	igt_info("Completed %u flips, %u vblanks were in threshold for (%.2f
-> Hz) %"PRIu64"ns.\n",
-> +		 total_flip, total_pass, (mode->vrefresh +
-> VREFRESH_MODIFIER),
-> +req_rate_ns);
-> +
-> +	return total_flip ? ((total_pass * 100) / total_flip) : 0; }
-> +
->  /* Basic VRR flip functionality test - enable, measure, disable, measure=
- */
-> static void  test_basic(data_t *data, enum pipe pipe, igt_output_t *outpu=
-t,
-> uint32_t flags) @@ -702,6 +777,49 @@
-> test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t
-> *outpu
->  	}
->  }
->=20
-> +static void
-> +test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t
-> +flags) {
-> +	uint32_t result;
-> +	int i;
-> +	bool found =3D false;
-> +	drmModeConnectorPtr connector =3D output->config.connector;
-> +	drmModeModeInfo mode =3D *igt_output_get_mode(output);
-> +
-> +	igt_info("CMRR test execution on %s, PIPE_%s with VRR range: (%u-
-> %u) Hz\n",
-> +		 output->name, kmstest_pipe_name(pipe), data->range.min,
-> +data->range.max);
-> +
-> +	for (i =3D 0; i < connector->count_modes; i++) {
-> +		if (is_cmrr_mode(&connector->modes[i])) {
-> +			mode =3D connector->modes[i];
-> +
-> +			found =3D true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_info("Selected mode: ");
-> +	kmstest_dump_mode(&mode);
-> +
-> +	if (!found) {
-> +		igt_info("No CMRR mode found on %s, try to tweak the
-> clock.\n",
-> +output->name);
-> +
-> +		mode.clock =3D (mode.htotal * mode.vtotal * (mode.vrefresh +
-> +VREFRESH_MODIFIER)) / 1000;
-> +
-> +		igt_info("Tweaked mode: ");
-> +		kmstest_dump_mode(&mode);
-> +	}
-> +
-> +	igt_output_override_mode(output, &mode);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	prepare_test(data, output, pipe);
-> +	result =3D flip_and_measure_cmrr(data, output, pipe,
-> TEST_DURATION_NS * 2);
-> +	igt_assert_f(result > 75,
-> +		     "Refresh rate (%u Hz) %"PRIu64"ns: Target CMRR on
-> threshold not reached, result was %u%%\n",
-> +		     mode.vrefresh, rate_from_refresh(mode.vrefresh), result);
-> }
-> +
->  static void test_cleanup(data_t *data, enum pipe pipe, igt_output_t *out=
-put)
-> {
->  	if (vrr_capable(output))
-> @@ -718,7 +836,7 @@ static void test_cleanup(data_t *data, enum pipe
-> pipe, igt_output_t *output)
->=20
->  static bool output_constraint(data_t *data, igt_output_t *output, uint32=
-_t
-> flags)  {
-> -	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS)) &&
-> +	if ((flags & (TEST_SEAMLESS_VRR | TEST_SEAMLESS_DRRS |
-> TEST_CMRR)) &&
->  	    output->config.connector->connector_type !=3D
-> DRM_MODE_CONNECTOR_eDP)
->  		return false;
->=20
-> @@ -906,6 +1024,14 @@ igt_main_args("drs:", long_opts, help_str,
-> opt_handler, &data)
->  		igt_describe("Test to switch to any custom virtual mode in
-> VRR range without modeset.");
->  		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
->  			run_vrr_test(&data, test_seamless_virtual_rr_basic,
-> TEST_SEAMLESS_VIRTUAL_RR);
-> +
-> +		igt_describe("Test to validate the the content rate exactly
-> match with the "
-> +			     "requested rate without any frame drops.");
-> +		igt_subtest_with_dynamic("cmrr") {
-> +
-> 	igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >=3D
-> +20);
-> +
-> +			run_vrr_test(&data, test_cmrr, TEST_CMRR);
-> +		}
->  	}
->=20
->  	igt_fixture {
-> --
-> 2.43.2
-
+> 
+> Regards,
+> Kamil
+> 
+>>    * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][2] ([Intel XE#1024] / [Intel XE#782]) +5 other tests skip
+>>     [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+>>
+>>    * igt@kms_dsc@dsc-basic:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][3] ([Intel XE#1024] / [Intel XE#784])
+>>     [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_dsc@dsc-basic.html
+>>
+>>    * igt@kms_flip@basic-flip-vs-dpms:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024] / [Intel XE#947]) +3 other tests skip
+>>     [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_flip@basic-flip-vs-dpms.html
+>>
+>>    * igt@kms_force_connector_basic@force-connector-state:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][5] ([Intel XE#540]) +3 other tests skip
+>>     [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html
+>>
+>>    * igt@kms_frontbuffer_tracking@basic:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][6] ([Intel XE#1024] / [Intel XE#783])
+>>     [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html
+>>
+>>    * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#829]) +6 other tests skip
+>>     [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+>>
+>>    * igt@kms_prop_blob@basic:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][8] ([Intel XE#780])
+>>     [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_prop_blob@basic.html
+>>
+>>    * igt@kms_psr@psr-cursor-plane-move:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#1024]) +2 other tests skip
+>>     [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@kms_psr@psr-cursor-plane-move.html
+>>
+>>    * igt@xe_evict@evict-beng-small-external:
+>>      - bat-pvc-2:          NOTRUN -> [FAIL][10] ([Intel XE#1000]) +3 other tests fail
+>>     [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+>>
+>>    * igt@xe_evict@evict-small-cm:
+>>      - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][11] ([Intel XE#482]) +3 other tests dmesg-fail
+>>     [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_evict@evict-small-cm.html
+>>
+>>    * igt@xe_gt_freq@freq_range_idle:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][12] ([Intel XE#1021]) +1 other test skip
+>>     [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_gt_freq@freq_range_idle.html
+>>
+>>    * igt@xe_huc_copy@huc_copy:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][13] ([Intel XE#255])
+>>     [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+>>
+>>    * igt@xe_intel_bb@render:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][14] ([Intel XE#532])
+>>     [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_intel_bb@render.html
+>>
+>>    * igt@xe_pat@pat-index-xe2:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][15] ([Intel XE#977]) +1 other test skip
+>>     [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_pat@pat-index-xe2.html
+>>
+>>    * igt@xe_pat@pat-index-xehpc@render:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][16] ([Intel XE#976])
+>>     [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html
+>>
+>>    * igt@xe_pat@pat-index-xelpg:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][17] ([Intel XE#979])
+>>     [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html
+>>
+>>    * igt@xe_pm_residency@gt-c6-on-idle:
+>>      - bat-pvc-2:          NOTRUN -> [SKIP][18] ([Intel XE#531])
+>>     [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+>>
+>>    
+>>    [Intel XE#1000]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000
+>>    [Intel XE#1021]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021
+>>    [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+>>    [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+>>    [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+>>    [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+>>    [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+>>    [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+>>    [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+>>    [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+>>    [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+>>    [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+>>    [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
+>>    [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
+>>    [Intel XE#976]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/976
+>>    [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+>>    [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+>>    [i915#6077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077
+>>
+>>
+>> Build changes
+>> -------------
+>>
+>>    * IGT: IGT_7882 -> IGTPW_11252
+>>    * Linux: xe-1444-950ce28fe0b31a24c5bddcc337aba9554a41cbb3 -> xe-1447-86b413568d7dbde6078f6c40341f5ae1ae63c552
+>>
+>>    IGTPW_11252: 11252
+>>    IGT_7882: 257418cba11c724111fe0e983649763c407e5bc9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>>    xe-1444-950ce28fe0b31a24c5bddcc337aba9554a41cbb3: 950ce28fe0b31a24c5bddcc337aba9554a41cbb3
+>>    xe-1447-86b413568d7dbde6078f6c40341f5ae1ae63c552: 86b413568d7dbde6078f6c40341f5ae1ae63c552
+>>
+>> == Logs ==
+>>
+>> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11252/index.html
