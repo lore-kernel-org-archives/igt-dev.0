@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79233C27C4F
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 05:28:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FEE2C2BA18
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 06:29:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1051810E0D1;
-	Tue, 18 Jun 2024 05:28:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 051DE10E570;
+	Tue, 18 Jun 2024 06:29:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hwhmfiFk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DH4bgmRc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F58C10E0D1
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 05:28:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A453010E570
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 06:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718688518; x=1750224518;
+ t=1718692189; x=1750228189;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=8X/WbXf9/oTjGbEkGokECCWWcBg96Df5NYC4n4pk+J4=;
- b=hwhmfiFkwlBH1ekOWyyAuTziS97vQAUHHkHulfB8xDUJV5lG1jYn/JfM
- mb6OVooTK7eKbENpfV4PCnQMk35KKto12KMkfowhRe+E8eaEW213Ct35r
- 0Rs8sxKUbqILMb0Y6Kb91A2TGBEXfLmo3H37ojA3b3+hDobV727Hh1IZJ
- uVoFhWg+YnD9iEN+1WtRof2nFpebGFM4EyOYrS9nkKA3Ju9PI87K66RH6
- fRe8skcng4sHsu6CUnvrg9v6MwASZd3ROK9jVqKbY5ko37XKV6mWmLWGS
- Jy26YUqU+I9Q/BEjzrV+eMUt3gbDvLpzoAW8x1jFEqzW7RW1/Eo7OlHm9 A==;
-X-CSE-ConnectionGUID: s0eHHjMZTGGx4wNdARQVwg==
-X-CSE-MsgGUID: E9WD5GRsSSW8qe2g4aM5Og==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="19360710"
-X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="19360710"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 22:28:33 -0700
-X-CSE-ConnectionGUID: MLxD0szZTrW3l+8MDx9Wkw==
-X-CSE-MsgGUID: mjmLhKPESUWwxrNxvIimxA==
+ bh=8WqjClTbr/5oEJeZpXMHggkohyWwPys/Pbli/svItIw=;
+ b=DH4bgmRcdHn/ChUe8jV4hqQ+SzmbdXFVWlIPH4WDoN4giDv4UNU03In8
+ m+4hHud315A+1YSfuaEGFiuZaF/YWCAerfrYHeLYHrrAEm81JD6HDIMH6
+ /vRhbQyoFRQkn18gG8ra6l1N54UtprfpcJC6FawE3XbqsXEyQabDCbLOt
+ wKkjKvNbGhW/4ibZKhB8MBsynqugOgRqsaFXxPtjIh84aFtBrO3lOHftH
+ NtRGawYAjZ3cDA6omeWvDbvdWquEc9wiZIqdeMCHnK6IEjzjOb/Dz+tYU
+ QuATkywaC2GhsfCKR6zalg5ojKJUGKy++qannHr5zlq6b9lCUpYKIINDV g==;
+X-CSE-ConnectionGUID: 0Slc8oPyRJ6n5n1+//7deQ==
+X-CSE-MsgGUID: W/BfhF5FSLOeebAI2F8kPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26177398"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="26177398"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 23:29:48 -0700
+X-CSE-ConnectionGUID: TnwXHh6QS/6k2f1lrbrcVQ==
+X-CSE-MsgGUID: PlZyusZWRwOcVywizp/NYA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="46340248"
-Received: from tglu-tiger-lake-client-platform.iind.intel.com ([10.145.169.74])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 22:28:32 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41360309"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jun 2024 23:29:48 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t] add tests to check crc for supported formats
-Date: Tue, 18 Jun 2024 10:56:52 +0530
-Message-ID: <20240618052652.411119-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t V6 0/6] Force joiner support in bigjoiner checks
+Date: Tue, 18 Jun 2024 11:51:44 +0530
+Message-ID: <20240618062150.4004768-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,103 +65,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
----
- tests/kms_pipe_crc_basic.c | 61 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+As we recently introduced the option (through debugfs) to
+force the bigjoiner, needs to extend the support in bigjoiner
+checks to handle the force joiner.
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 0c19745bc..b8a0689e4 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -82,6 +82,11 @@
-  *              CRTC does not cause issues.
-  */
- 
-+/**
-+ * SUBTEST: compare-crc-sanitycheck-supported-formats
-+ * Description: Basic sanity check for CRC mismatches with supported formats.
-+ */
-+
- static bool extended;
- static enum pipe active_pipes[IGT_MAX_PIPES];
- static uint32_t last_pipe;
-@@ -357,6 +362,33 @@ static bool pipe_output_combo_valid(igt_display_t *display,
- 
- data_t data = {0, };
- 
-+/**
-+ * @brief Retrieves the supported formats for a given output and pipe.
-+ *
-+ * This function returns an array of supported formats for a specific output and pipe.
-+ *
-+ * @param output The output for which to retrieve the supported formats.
-+ * @param count  A pointer to store the number of supported formats.
-+ * @param pipe   The pipe for which to retrieve the supported formats.
-+ *
-+ * @return An array of supported formats for the given output and pipe.
-+ */
-+static uint32_t* get_supported_formats(igt_output_t *output, uint32_t *count, enum pipe pipe)
-+{
-+	igt_plane_t *primary;
-+	uint32_t *formats = NULL;
-+
-+	igt_output_set_pipe(output, pipe);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	*count = primary->format_mod_count;
-+	formats = (uint32_t *) malloc(sizeof(uint32_t) * (*count + 1));
-+	for (uint32_t i = 0; i < *count; i++) {
-+		formats[i] = primary->formats[i];
-+	}
-+	return formats;
-+}
-+
- static int opt_handler(int opt, int opt_index, void *_data)
- {
- 	switch (opt) {
-@@ -377,6 +409,8 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	enum pipe pipe;
- 	igt_output_t *output;
-+	uint32_t *supported_formats = NULL;
-+	uint32_t count = 0;
- 	struct {
- 		const char *name;
- 		unsigned flags;
-@@ -498,6 +532,33 @@ igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 		}
- 	}
- 
-+	igt_describe("Basic sanity check for CRC mismatches with supported formats");
-+	igt_subtest_with_dynamic("compare-crc-sanitycheck-supported-formats") {
-+		for_each_pipe_with_single_output(&data.display, pipe, output) {
-+			if (simulation_constraint(pipe))
-+				continue;
-+
-+			if(!pipe_output_combo_valid(&data.display, pipe, output))
-+				continue;
-+
-+			supported_formats = get_supported_formats(output, &count, pipe);
-+			for (i=0; i<count; i++) {
-+
-+				// Skip the formats that are not supported
-+				if (supported_formats[i] == DRM_FORMAT_NV12 || supported_formats[i] == DRM_FORMAT_XRGB8888 \
-+						|| supported_formats[i] == DRM_FORMAT_C8) {
-+					igt_info("Skipping format "IGT_FORMAT_FMT" \n", IGT_FORMAT_ARGS(supported_formats[i]));
-+					continue;
-+				}
-+
-+				igt_info("Testing format "IGT_FORMAT_FMT" \n", IGT_FORMAT_ARGS(supported_formats[i]));
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
-+					test_compare_crc(&data, pipe, output, supported_formats[i]);
-+				}
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
+Bhanuprakash Modem (6):
+  lib/igt_kms: Check validity of the selcted pipe/output combo
+  tests/kms: Drop redundant check for pipe/output combo validity
+  tests/chamelium: Use lib helper to check the pipe/output combo
+    validity
+  tests/intel/kms: Use lib helper to check the pipe/output combo
+    validity
+  tests/kms_dither: Use lib helper to check the pipe/output combo
+    validity
+  tests/kms_hdr: Use lib helper to check the pipe/output combo validity
+
+ lib/igt_kms.c                          |  9 ++-
+ tests/chamelium/kms_chamelium_helper.c | 12 +++-
+ tests/chamelium/kms_chamelium_hpd.c    |  5 +-
+ tests/intel/kms_pm_backlight.c         |  7 +-
+ tests/intel/kms_psr.c                  | 17 +++--
+ tests/kms_content_protection.c         |  3 -
+ tests/kms_dither.c                     | 24 ++++---
+ tests/kms_hdr.c                        | 90 +++++++++++++++-----------
+ tests/kms_properties.c                 |  3 -
+ tests/kms_vrr.c                        | 22 +++----
+ 10 files changed, 108 insertions(+), 84 deletions(-)
+
 -- 
-2.43.0
+2.43.2
 
