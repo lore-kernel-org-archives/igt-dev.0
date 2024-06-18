@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E6CC2BC81
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 17:46:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C1EEC27C4F
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 17:47:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8030A10E775;
-	Tue, 18 Jun 2024 17:46:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F21AC10E084;
+	Tue, 18 Jun 2024 17:47:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M9Mx76eP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qg/82tja";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D06C10E769;
- Tue, 18 Jun 2024 17:46:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BB7910E084
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 17:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718732812; x=1750268812;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=QkoqZAMAq/q3T/tF7cORjXPjeB5HXAtymHB7/mDFirM=;
- b=M9Mx76ePg/z4hPXM6I1TF+3nhKXcVsK8YDxDDJ2pdQaCOU0BJ3KH05Kk
- 90P+21VvmE6bwlDZXeJFmoH3wGVQ9fotbOIM6WJJtSpsZfHlWYQFO56cj
- pvvDdT4DvmF9W3eFGpOtNOiTWVaSMhcI8BEFGlcBY8mGVIBRXNYSSnWjK
- bTDwZ0FAj+La6xUYsO+a8HWPZ5m37GtzwwSCVe3MsOplHhbBPaP3NjgTe
- PKlFDItBBcNrXJ1VcUPW3K/JgquG99TrVf3dZvwVGrsnoLpWt8dz8L3rJ
- J23dT6ftomckHnGtbUbKFJacP4NLJjIlsNsGhBRkFtfHmekhEoa9l10wc w==;
-X-CSE-ConnectionGUID: ZiQtWgejR2uZadmV0AJ6CA==
-X-CSE-MsgGUID: vhplU4XVTJW4xSK2AM9pgQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="15603469"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="15603469"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2024 10:46:52 -0700
-X-CSE-ConnectionGUID: E8MyB6GYRYSULntRZBRk+Q==
-X-CSE-MsgGUID: r2Wer4AJQ1a0LCJ55YhERw==
+ t=1718732866; x=1750268866;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BiiK14fVP1S52iVXyqUHp7ckJA847A0+ai9Z3HGFy4s=;
+ b=Qg/82tjax04ClW96ZujqaR38zojvuCsr/j0hP7IHOlw/eUCPTTNxWcb5
+ 3LxxwiJ3h5XuDC3AtM1ds7XLigf9h/5hSqzeH7az6YBoy3H/h37dtJYds
+ qzK9RNAt5DMzFgEyd3WB4lzSHzB7x1P5aP7kH1WVdo7VqILTOcWym5NDG
+ RAVSWbEH6RTwzIo8gkM6/19jF5tFzmmLuc9WrWe8en00+JGEt+aj8GWoL
+ wZ2/V+6QShEwXKjNLSUcxUcL9GFrt/epLjTkNF0KGgeQ6JJQ0r61B4BbX
+ CTkPdm7+CIo0AadcvAp/tESRm1WsLiptODXqxd6XJiyu2deZEcRkaSGD6 g==;
+X-CSE-ConnectionGUID: U6cyw0/kTHawssChxs+h5Q==
+X-CSE-MsgGUID: N1llJ7YkQQS4hZGg+iW2vQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="15468384"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="15468384"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2024 10:47:46 -0700
+X-CSE-ConnectionGUID: sP0HGjK/RYOsZsLT9twGZw==
+X-CSE-MsgGUID: iFiWnj3jR6OM3EoJmAeRMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="46004931"
-Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jun 2024 10:46:51 -0700
-From: Matthew Brost <matthew.brost@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41760245"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jun 2024 10:47:44 -0700
+From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org
-Subject: [PATCH i-g-t v3 2/2] xe_exec_reset: Add timeslice preempt test
-Date: Tue, 18 Jun 2024 10:47:28 -0700
-Message-Id: <20240618174728.3336865-3-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240618174728.3336865-1-matthew.brost@intel.com>
-References: <20240618174728.3336865-1-matthew.brost@intel.com>
+Cc: kamil.konieczny@linux.intel.com,
+	Nirmoy Das <nirmoy.das@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/xe_exec_store: Add basic_inst_benchmark
+Date: Tue, 18 Jun 2024 19:32:47 +0200
+Message-ID: <20240618173247.8233-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
+ 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,80 +68,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests in which submit multiple preemptable spinners to same hardware
-engine ensuring a cumulative longer timeout and validating the restart
-paths in the DRM scheduler TDR (Timeout Detection and Recovery).
+Add basic_inst_benchmark to benchmark this basic operation
+for BO sizes to get basic understanding how long it takes
+bind a BO and run simple GPU command on it.
 
-v3:
- - Spell out TDR (Kamal)
+This not a CI test but rather for developer to identify various
+bottleneck/regression in  BO binding.
 
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 ---
- tests/intel/xe_exec_reset.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ tests/intel/xe_exec_store.c | 110 ++++++++++++++++++++++++++++++------
+ 1 file changed, 92 insertions(+), 18 deletions(-)
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 5e9e48adda..144e3b3884 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -100,6 +100,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci)
- #define PARALLEL			(0x1 << 4)
- #define CAT_ERROR			(0x1 << 5)
- #define PREEMPT				(0x1 << 6)
-+#define CANCEL				(0x1 << 7)
+diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+index c872c22d5..4b1c619e0 100644
+--- a/tests/intel/xe_exec_store.c
++++ b/tests/intel/xe_exec_store.c
+@@ -93,15 +93,10 @@ static void persistance_batch(struct data *data, uint64_t addr)
+ 	data->addr = batch_addr;
  
+ }
+-/**
+- * SUBTEST: basic-store
+- * Description: Basic test to verify store dword.
+- * SUBTEST: basic-cond-batch
+- * Description: Basic test to verify cond batch end instruction.
+- * SUBTEST: basic-all
+- * Description: Test to verify store dword on all available engines.
+- */
+-static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci)
++
++static void basic_inst_size(int fd, int inst_type,
++			    struct drm_xe_engine_class_instance *eci,
++			    uint16_t cpu_caching, size_t bo_size)
+ {
+ 	struct drm_xe_sync sync[2] = {
+ 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+@@ -117,7 +112,6 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 	uint32_t exec_queue;
+ 	uint32_t bind_engine;
+ 	uint32_t syncobj;
+-	size_t bo_size;
+ 	int value = 0x123456;
+ 	uint64_t addr = 0x100000;
+ 	uint32_t bo = 0;
+@@ -127,12 +121,16 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 	sync[1].handle = syncobj;
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+-	bo_size = sizeof(*data);
+-	bo_size = xe_bb_size(fd, bo_size);
+ 
+-	bo = xe_bo_create(fd, vm, bo_size,
+-			  vram_if_possible(fd, eci->gt_id),
+-			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	if (cpu_caching)
++		bo = xe_bo_create_caching(fd, vm, bo_size,
++					  vram_if_possible(fd, eci->gt_id),
++					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
++					  cpu_caching);
++	else
++		bo = xe_bo_create(fd, vm, bo_size,
++				  vram_if_possible(fd, eci->gt_id),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+ 
+ 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+ 	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
+@@ -167,6 +165,66 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++
++/**
++ * SUBTEST: basic-store
++ * Description: Basic test to verify store dword.
++ * SUBTEST: basic-cond-batch
++ * Description: Basic test to verify cond batch end instruction.
++ * SUBTEST: basic-all
++ * Description: Test to verify store dword on all available engines.
++ */
++static void basic_inst(int fd, int inst_type,
++		       struct drm_xe_engine_class_instance *eci,
++		       uint16_t cpu_caching)
++{
++	size_t bo_size;
++
++	bo_size = sizeof(struct data);
++	bo_size = xe_bb_size(fd, bo_size);
++
++	basic_inst_size(fd, inst_type, eci, cpu_caching, bo_size);
++}
++
++/**
++ * SUBTEST: basic-store-benchmark
++ * Description: Basic test to verify time taken for doing store dword with various size.
++ */
++static void basic_inst_benchmark(int fd, int inst_type,
++				 struct drm_xe_engine_class_instance *eci,
++				 uint16_t cpu_caching)
++{
++	struct {
++		size_t size;
++		const char *name;
++	} sizes[] = {
++		{SZ_4K, "SZ_4K"},
++		{SZ_2M, "SZ_2M"},
++		{SZ_64M, "SZ_64M"},
++		{SZ_128M, "SZ_128M"},
++		{SZ_256M, "SZ_256M"},
++		{SZ_1G, "SZ_1G"}
++	};
++
++	struct timeval start, end;
++	long seconds, useconds, mtime;
++
++	for (size_t i = 0; i < ARRAY_SIZE(sizes); ++i) {
++		size_t bo_size = sizes[i].size;
++		const char *size_name = sizes[i].name;
++
++		gettimeofday(&start, NULL);
++		basic_inst_size(fd, inst_type, eci, cpu_caching, bo_size);
++		gettimeofday(&end, NULL);
++
++		seconds = end.tv_sec - start.tv_sec;
++		useconds = end.tv_usec - start.tv_usec;
++		mtime = ((seconds) * 1000 + useconds / 1000.0) + 0.5;
++
++		igt_info("Time taken for size %s: %ld ms\n", size_name, mtime);
++	}
++}
++
+ #define PAGES 1
+ #define NCACHELINES (4096/64)
  /**
-  * SUBTEST: %s-cat-error
-@@ -287,6 +288,12 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
-  * SUBTEST: cancel-preempt
-  * Description: Test job cancel with a preemptable job
-  *
-+ * SUBTEST: cancel-timeslice-preempt
-+ * Description: Test job cancel with 2 preemptable jobs
-+ *
-+ * SUBTEST: cancel-timeslice-many-preempt
-+ * Description: Test job cancel with many preemptable jobs
-+ *
-  * SUBTEST: gt-reset
-  * Description: Test GT reset
-  *
-@@ -361,7 +368,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 		uint64_t exec_addr;
- 		int e = i % n_exec_queues;
+@@ -342,12 +400,28 @@ igt_main
  
--		if (!i) {
-+		if (!i || flags & CANCEL) {
- 			spin_opts.addr = base_addr + spin_offset;
- 			xe_spin_init(&data[i].spin, &spin_opts);
- 			exec_addr = spin_opts.addr;
-@@ -411,7 +418,7 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
- 
--	if (!(flags & GT_RESET)) {
-+	if (!(flags & (GT_RESET | CANCEL))) {
- 		for (i = 1; i < n_execs; i++)
- 			igt_assert_eq(data[i].data, 0xc0ffee);
+ 	igt_subtest("basic-store") {
+ 		engine = xe_engine(fd, 1);
+-		basic_inst(fd, STORE, &engine->instance);
++		basic_inst(fd, COND_BATCH, &engine->instance, 0);
++	}
++
++	igt_subtest_with_dynamic("basic-store-benchmark") {
++		struct dyn {
++			const char *name;
++			int cache;
++		} tests[] = {
++			{"WC", DRM_XE_GEM_CPU_CACHING_WC},
++			{"WB", DRM_XE_GEM_CPU_CACHING_WB}
++		};
++
++		for (int i = 0; i < ARRAY_SIZE(tests); i++) {
++			igt_dynamic_f("%s", tests[i].name);
++			engine = xe_engine(fd, 1);
++			basic_inst_benchmark(fd, STORE, &engine->instance, tests[i].cache);
++		}
  	}
-@@ -746,6 +753,18 @@ igt_main
- 			break;
- 		}
  
-+	igt_subtest("cancel-timeslice-preempt")
-+		xe_for_each_engine(fd, hwe) {
-+			test_legacy_mode(fd, hwe, 2, 2, CANCEL | PREEMPT);
-+			break;
-+		}
-+
-+	igt_subtest("cancel-timeslice-many-preempt")
-+		xe_for_each_engine(fd, hwe) {
-+			test_legacy_mode(fd, hwe, 4, 4, CANCEL | PREEMPT);
-+			break;
-+		}
-+
- 	igt_subtest("gt-reset")
- 		xe_for_each_engine(fd, hwe)
- 			test_legacy_mode(fd, hwe, 2, 2, GT_RESET);
+ 	igt_subtest("basic-cond-batch") {
+ 		engine = xe_engine(fd, 1);
+-		basic_inst(fd, COND_BATCH, &engine->instance);
++		basic_inst(fd, COND_BATCH, &engine->instance, 0);
+ 	}
+ 
+ 	igt_subtest_with_dynamic("basic-all") {
+@@ -356,7 +430,7 @@ igt_main
+ 				      xe_engine_class_string(hwe->engine_class),
+ 				      hwe->engine_instance,
+ 				      hwe->gt_id);
+-			basic_inst(fd, STORE, hwe);
++			basic_inst(fd, STORE, hwe, 0);
+ 		}
+ 	}
+ 
 -- 
-2.34.1
+2.42.0
 
