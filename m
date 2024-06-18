@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45287C27C4F
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 05:24:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6036DC2BA18
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 05:24:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9F8C10E1B9;
-	Tue, 18 Jun 2024 05:24:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F3D5010E102;
+	Tue, 18 Jun 2024 05:24:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NPirkIzf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="esR0GtFH";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9628810E1B9
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 05:24:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 00A4510E102
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 05:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718688257; x=1750224257;
+ t=1718688266; x=1750224266;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iKGjLVVgixbaTE/6/bJaudknE9obz34VZMLOjE8GvtU=;
- b=NPirkIzfIkJs377dpmHUypOQT0oo2EZv2sg7JPj9S4dAtB31Ur+doEzX
- yS8r+XRJA7K6KaQtXJhJ6PzBsTfsuZf2nRhHNcPdgRiiN7ussf13F/AFC
- /hA9mOnpVOrgQ1XuGiEdb+8oqBRsfNt5bhpMbWhH5PZDqLn0vgBRLb+sD
- rA+eLDptp8vKr3hvbiVKRlCEVax+RuN9TsqzJoK+F3plw/j+CcEgnL801
- Bnp/cSzN1AQMi9T5ISP99HhabUQc5chRDABSCWgNXTDnFM5g6WQSENedk
- 8HpxHqcjG+FcAp5INcG8MBLGOz3eJLrF4bLlLduGIFvrXmXBLo1lkU2oo g==;
-X-CSE-ConnectionGUID: mi39HPbsT1SPgbtoSW9rfw==
-X-CSE-MsgGUID: EmcrLcZUQiCHeaLOv463oA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="15666161"
-X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="15666161"
+ bh=8hpgooPsS9gbsV1GX4y3tNxsnanv6PsN9WGT/ocqJno=;
+ b=esR0GtFH+EJnp6wH/LXxGcEEObicKDD2nKs9W+mXiZRmHo6xVMgti/wz
+ /TQDHAgTvtPlS04mGzYzQw093BSd0Z5BmbgJ6BmdGioG+20X1h7meaVX9
+ 8idY3an2bmwI8Pc9sC7zRxKwVaagj2YSmoxrF4rBUt1OnYAa6L4eBpNTd
+ tkBJhXui/mHNW+3nsN2y20ffPpYP8xlsfXdjKzecvhAHlKROkVI0OPS3R
+ 4TtGB9ZSohkelnoGCts08kdAzaQE9pumTrM3Cs+KIJgOOHnVFYqRN+8lt
+ G2yklIuh5XFJhm97QL6E0RAydhQruErjSPVhQm/jQ4vEDFr22TUNTcMaN g==;
+X-CSE-ConnectionGUID: k2Wdi80zTAqZdFxbphBX6Q==
+X-CSE-MsgGUID: 4ZocSY9oRheAXR2RavfPNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="15666167"
+X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="15666167"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 22:24:17 -0700
-X-CSE-ConnectionGUID: SDtgIRoWSi2CriJvPAgbVg==
-X-CSE-MsgGUID: ekfL5lR8S5iOw1UtX6ljfg==
+ 17 Jun 2024 22:24:21 -0700
+X-CSE-ConnectionGUID: /55PP73VS0WOADzcXsa16A==
+X-CSE-MsgGUID: RL/85toNTUuw/DkR1Rk4fQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="41286636"
+X-IronPort-AV: E=Sophos;i="6.08,246,1712646000"; d="scan'208";a="41286643"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.150])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 22:24:16 -0700
+ 17 Jun 2024 22:24:20 -0700
 From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 10/12] lib/intel_bufops: Drop Tile4 swizzling
-Date: Tue, 18 Jun 2024 07:23:33 +0200
-Message-Id: <20240618052335.152588-11-zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v2 11/12] lib/intel_bufops: Don't disable x and y on
+ platforms without swizzling
+Date: Tue, 18 Jun 2024 07:23:34 +0200
+Message-Id: <20240618052335.152588-12-zbigniew.kempczynski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240618052335.152588-1-zbigniew.kempczynski@intel.com>
 References: <20240618052335.152588-1-zbigniew.kempczynski@intel.com>
@@ -70,96 +71,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Swizzling is used only on older platforms and for X and Y tilings.
+Upcoming tiling detection tool wants to produce X and Y surfaces
+in software so we can't disable X and Y in supported tilings,
+otherwise there's no possibility to generate reference tiled surface.
 
 Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- lib/intel_bufops.c | 38 +++++++-------------------------------
- 1 file changed, 7 insertions(+), 31 deletions(-)
+ lib/intel_bufops.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index eb367be2f3..d0f6ab481f 100644
+index d0f6ab481f..1dfc12bf45 100644
 --- a/lib/intel_bufops.c
 +++ b/lib/intel_bufops.c
-@@ -121,7 +121,6 @@ struct buf_ops {
- 	uint32_t supported_hw_tiles;
- 	uint32_t swizzle_x;
- 	uint32_t swizzle_y;
--	uint32_t swizzle_tile4;
- 	bo_copy linear_to;
- 	bo_copy linear_to_x;
- 	bo_copy linear_to_y;
-@@ -654,7 +653,7 @@ static void copy_linear_to_tile4(struct buf_ops *bops, struct intel_buf *buf,
- 				 uint32_t *linear)
- {
- 	DEBUGFN();
--	__copy_linear_to(bops->fd, buf, linear, I915_TILING_4, bops->swizzle_tile4);
-+	__copy_linear_to(bops->fd, buf, linear, I915_TILING_4, 0);
- }
+@@ -1720,7 +1720,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 		bool supported = probe_hw_tiling(bops, I915_TILING_X,
+ 						 &swizzling_supported);
  
- static void __copy_to_linear(int fd, struct intel_buf *buf,
-@@ -1531,7 +1530,7 @@ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
- #define DEFAULT_BUFOPS(__gen_start, __gen_end) \
- 	.gen_start          = __gen_start, \
- 	.gen_end            = __gen_end, \
--	.supported_hw_tiles = TILE_X | TILE_Y | TILE_4, \
-+	.supported_hw_tiles = TILE_X | TILE_Y, \
- 	.linear_to          = copy_linear_to_wc, \
- 	.linear_to_x        = copy_linear_to_gtt, \
- 	.linear_to_y        = copy_linear_to_gtt, \
-@@ -1586,8 +1585,6 @@ static bool probe_hw_tiling(struct buf_ops *bops, uint32_t tiling,
- 			bops->swizzle_x = buf_swizzle;
- 		else if (tiling == I915_TILING_Y)
- 			bops->swizzle_y = buf_swizzle;
--		else if (tiling == I915_TILING_4)
--			bops->swizzle_tile4 = buf_swizzle;
- 
- 		*swizzling_supported = buf_swizzle == phys_swizzle;
- 	}
-@@ -1754,36 +1751,15 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
- 		}
- 	}
- 
--	if (is_hw_tiling_supported(bops, I915_TILING_4)) {
--		bool swizzling_supported;
--		bool supported = probe_hw_tiling(bops, I915_TILING_4,
--						 &swizzling_supported);
--
 -		if (!swizzling_supported) {
--			igt_debug("Swizzling for 4 is not supported\n");
--			bops->supported_tiles &= ~TILE_4;
--		}
--
--		igt_debug("4 fence support: %s\n", bool_str(supported));
--		if (!supported) {
--			bops->supported_hw_tiles &= ~TILE_4;
--			bops->linear_to_tile4 = copy_linear_to_tile4;
--			bops->tile4_to_linear = copy_tile4_to_linear;
--		}
--	}
--
- 	/* Disable other tiling format functions if not supported */
--	if (!is_tiling_supported(bops, I915_TILING_Yf)) {
-+	if (!is_tiling_supported(bops, I915_TILING_Yf))
- 		igt_debug("Yf format not supported\n");
--		bops->linear_to_yf = NULL;
--		bops->yf_to_linear = NULL;
--	}
++		if (!swizzling_supported && bops->intel_gen < 12) {
+ 			igt_debug("Swizzling for X is not supported\n");
+ 			bops->supported_tiles &= ~TILE_X;
+ 		}
+@@ -1738,7 +1738,7 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+ 		bool supported = probe_hw_tiling(bops, I915_TILING_Y,
+ 						 &swizzling_supported);
  
--	if (!is_tiling_supported(bops, I915_TILING_Ys)) {
-+	if (!is_tiling_supported(bops, I915_TILING_Ys))
- 		igt_debug("Ys format not supported\n");
--		bops->linear_to_ys = NULL;
--		bops->ys_to_linear = NULL;
--	}
-+
-+	if (!is_tiling_supported(bops, I915_TILING_4))
-+		igt_debug("Tile4 format not supported\n");
- 
- 	if (check_idempotency) {
- 		idempotency_selftest(bops, I915_TILING_X);
+-		if (!swizzling_supported) {
++		if (!swizzling_supported && bops->intel_gen < 12) {
+ 			igt_debug("Swizzling for Y is not supported\n");
+ 			bops->supported_tiles &= ~TILE_Y;
+ 		}
 -- 
 2.34.1
 
