@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDC3C27C4F
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 06:32:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4113C2BA1A
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Jun 2024 06:32:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2728C10E1DE;
-	Tue, 18 Jun 2024 06:32:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8491510E585;
+	Tue, 18 Jun 2024 06:32:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kX0+BsWm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mTyr7z0l";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1D8AA10E58F
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 06:32:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA35810E57A
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Jun 2024 06:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718692328; x=1750228328;
+ t=1718692329; x=1750228329;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SDazcbG+ia5oXKIDMrGOB5SrDE5AWS/hQT2p0xo5Wqc=;
- b=kX0+BsWmSYsyNPQt7n4n8nMJVZ8LlPgP+c3QawQ014MCuhyXiJfrB9jI
- iTscED9XFgWQyJimG/DuvvXUy7b+7bv8jYlQ6Q1VUNlKWYaH07ov41XgF
- 0POVJ2SUXciF34vV2aYruIkgCUoXK/n79CwosZVnl4cJWTnaMnk4A2/Jd
- fXWSIhA7En4LYfzbGdm54qIsLgzJiKrcTRjFcWGswgzFSzdYoMRwKiM+p
- xM70FatAFWs6+iB8CAGvJdZy30Cva33mE1mpzEMCKPQA4aARGlSv3JOlP
- W164K9K0KaxvbJsXjJxx1SQRdw02MncbJi5uq1ku+ztWR9QOPUWvpyqae w==;
-X-CSE-ConnectionGUID: GkAnv4gPRBGyf9mGnEUSFA==
-X-CSE-MsgGUID: Xnr6FQGZQeirczGjI8hGew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26960453"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="26960453"
+ bh=C0mi/eP2YiX9jeACtgQ3b7thhoX3LyiXaSElEV/VGSM=;
+ b=mTyr7z0lYYJqzwtldvsab72YHEEFoB/NUrZlcvRQ916iaBvSEv/sRRCx
+ O6D63NPbgIAazORxCWuDx1G0/coFuBUTMj+IA45eHG5flAMu4y3OzSToQ
+ MB+bC3u2PI9qKEIFnKjiE0AgtrA2Im5RoT91K+1+PC3lF/xAf/F/54BE0
+ 9L4ikpmIJohWSe0kmFxunNnya+mOemFGvlAzAtiLQSDrdoqx8vXSxpZZJ
+ HKqw+qD51LNANm7gDvJAHm6OdYftBnTkF5F45I0j1jq9nIfvstLGqGmek
+ NjH0kxtTtB7u09LtZVONpioigs7mnJjXpVpdrAf1JXKyBF8A7l25z2ko1 Q==;
+X-CSE-ConnectionGUID: WWEzV/71R4+uZqLC569H7w==
+X-CSE-MsgGUID: nEfBJTo0Qm2t2lwrKm1nAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11106"; a="26960465"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="26960465"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 23:32:07 -0700
-X-CSE-ConnectionGUID: 5KuyJeTdR3CZ2pBBOzVUow==
-X-CSE-MsgGUID: rYYadYL0SYehLwwoQglLzw==
+ 17 Jun 2024 23:32:09 -0700
+X-CSE-ConnectionGUID: EbnV+Jn3RsKlHEWMvY+TkQ==
+X-CSE-MsgGUID: +jyuk0aySSaPK4Tg+rblPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41304970"
+X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; d="scan'208";a="41304979"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jun 2024 23:32:05 -0700
+ 17 Jun 2024 23:32:07 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Jeevan B <jeevan.b@intel.com>
-Subject: [i-g-t V6 3/6] tests/chamelium: Use lib helper to check the
+Subject: [i-g-t V6 4/6] tests/intel/kms: Use lib helper to check the
  pipe/output combo validity
-Date: Tue, 18 Jun 2024 11:54:02 +0530
-Message-ID: <20240618062405.4004955-4-bhanuprakash.modem@intel.com>
+Date: Tue, 18 Jun 2024 11:54:03 +0530
+Message-ID: <20240618062405.4004955-5-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240618062405.4004955-1-bhanuprakash.modem@intel.com>
 References: <20240618062405.4004955-1-bhanuprakash.modem@intel.com>
@@ -75,15 +75,34 @@ selected pipe/output/mode combo is valid.
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/chamelium/kms_chamelium_helper.c | 12 +++++++++---
- tests/chamelium/kms_chamelium_hpd.c    |  5 ++---
- 2 files changed, 11 insertions(+), 6 deletions(-)
+ tests/intel/kms_pm_backlight.c |  7 ++++---
+ tests/intel/kms_psr.c          | 17 ++++++++++++-----
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/kms_chamelium_helper.c
-index 197d29be9..26c5f87f1 100644
---- a/tests/chamelium/kms_chamelium_helper.c
-+++ b/tests/chamelium/kms_chamelium_helper.c
-@@ -207,9 +207,15 @@ enum pipe chamelium_get_pipe_for_output(igt_display_t *display,
+diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+index 2e691dab0..8672afa7a 100644
+--- a/tests/intel/kms_pm_backlight.c
++++ b/tests/intel/kms_pm_backlight.c
+@@ -234,10 +234,11 @@ static void test_setup(igt_display_t display, igt_output_t *output)
+ 	igt_display_reset(&display);
+ 
+ 	for_each_pipe(&display, pipe) {
+-		if (!igt_pipe_connector_valid(pipe, output))
+-			continue;
+-
+ 		igt_output_set_pipe(output, pipe);
++		if (!intel_pipe_output_combo_valid(&display)) {
++			igt_output_set_pipe(output, PIPE_NONE);
++			continue;
++		}
+ 		mode = igt_output_get_mode(output);
+ 
+ 		igt_create_pattern_fb(display.drm_fd,
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index c90612426..f3caa9ecc 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -728,9 +728,14 @@ static enum pipe get_pipe_for_output(igt_display_t *display,
  	enum pipe pipe;
  
  	for_each_pipe(display, pipe) {
@@ -96,35 +115,32 @@ index 197d29be9..26c5f87f1 100644
 +			continue;
  		}
 +
-+		igt_output_set_pipe(output, PIPE_NONE);
 +		return pipe;
  	}
  
  	igt_assert_f(false, "No pipe found for output %s\n",
-@@ -344,4 +350,4 @@ bool chamelium_check_analog_bridge(chamelium_data_t *data,
- 		return true;
+@@ -750,9 +755,6 @@ static void test_setup(data_t *data)
+ 			      "Can't test FBC with PSR\n");
  
- 	return false;
--}
-\ No newline at end of file
-+}
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index 858c595cb..52e758087 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -345,10 +345,9 @@ static void test_hotplug_for_each_pipe(chamelium_data_t *data,
- 		output = chamelium_get_output_for_port(data, port);
+ 	pipe = get_pipe_for_output(&data->display, data->output);
+-	igt_output_set_pipe(data->output, pipe);
+-	igt_require_f(intel_pipe_output_combo_valid(&data->display),
+-		      "output pipe combo not valid\n");
+ 	data->crtc_id = data->output->config.crtc->crtc_id;
+ 	connector = data->output->config.connector;
  
- 		/* If pipe is valid for output then set it */
--		if (igt_pipe_connector_valid(pipe, output)) {
--			igt_output_set_pipe(output, pipe);
-+		igt_output_set_pipe(output, pipe);
-+		if (intel_pipe_output_combo_valid(&data->display))
- 			igt_display_commit2(&data->display, COMMIT_ATOMIC);
--		}
+@@ -763,6 +765,11 @@ static void test_setup(data_t *data)
  
- 		chamelium_unplug(data->chamelium, port);
- 		chamelium_wait_for_connector_after_hotplug(
+ 		igt_output_override_mode(data->output, data->mode);
+ 
++		if (!intel_pipe_output_combo_valid(&data->display)) {
++			igt_info("Skipping mode, not compatible with selected pipe/output\n");
++			continue;
++		}
++
+ 		psr_enable_if_enabled(data);
+ 		setup_test_plane(data, data->test_plane_id);
+ 		if (psr_wait_entry_if_enabled(data)) {
 -- 
 2.43.2
 
