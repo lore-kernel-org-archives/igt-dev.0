@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A7ADC27C53
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Jun 2024 19:26:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D727C27C53
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Jun 2024 19:30:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E03610E1D4;
-	Wed, 19 Jun 2024 19:26:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 886C110EDA9;
+	Wed, 19 Jun 2024 19:30:06 +0000 (UTC)
 Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7399F10E1D4;
- Wed, 19 Jun 2024 19:26:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4735210EDA9;
+ Wed, 19 Jun 2024 19:30:05 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7177456138697325963=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Support_for_RGB16161616?=
- =?utf-8?q?=5F64B_compressed_formats_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_add_subtest_in_kms=5Fbw_for_co?=
+ =?utf-8?q?nnected_outputs_only?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Melanie Lobo" <melanie.lobo@intel.com>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Jun 2024 19:26:25 -0000
-Message-ID: <171882518546.125140.6931179204641826553@a6498e030952>
+Date: Wed, 19 Jun 2024 19:30:05 -0000
+Message-ID: <171882540527.124989.7247464152846038411@a6498e030952>
 X-Patchwork-Hint: ignore
-References: <20240603081607.30930-1-melanie.lobo@intel.com>
-In-Reply-To: <20240603081607.30930-1-melanie.lobo@intel.com>
+References: <20240619080408.1161329-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240619080408.1161329-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,67 +41,404 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7177456138697325963==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: Support for RGB16161616_64B compressed formats (rev3)
-URL   : https://patchwork.freedesktop.org/series/134353/
-State : failure
+Series: add subtest in kms_bw for connected outputs only
+URL   : https://patchwork.freedesktop.org/series/135049/
+State : success
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-a1840ca4270b765883d3b71a710b6af85ded8235 tools/intel_tiling_detect: Introduce tiling detection tool
+CI Bug Log - changes from XEIGT_7893_BAT -> XEIGTPW_11280_BAT
+====================================================
 
-Tail of build.log:
-[283/1681] Compiling C object 'lib/76b5a35@@igt-runnercomms_c@sta/runnercomms.c.o'.
-[284/1681] Compiling C object 'lib/76b5a35@@igt-igt_msm_c@sta/igt_msm.c.o'.
-[285/1681] Compiling C object 'lib/76b5a35@@igt-xe_xe_gt_c@sta/xe_xe_gt.c.o'.
-[286/1681] Compiling C object 'lib/76b5a35@@igt-igt_eld_c@sta/igt_eld.c.o'.
-[287/1681] Compiling C object 'lib/76b5a35@@igt-igt_dsc_c@sta/igt_dsc.c.o'.
-[288/1681] Compiling C object 'lib/76b5a35@@igt-igt_panfrost_c@sta/igt_panfrost.c.o'.
-[289/1681] Compiling C object 'lib/76b5a35@@igt-igt_psr_c@sta/igt_psr.c.o'.
-[290/1681] Compiling C object 'lib/76b5a35@@igt-intel_allocator_simple_c@sta/intel_allocator_simple.c.o'.
-[291/1681] Compiling C object 'lib/76b5a35@@igt-intel_allocator_c@sta/intel_allocator.c.o'.
-[292/1681] Compiling C object 'lib/76b5a35@@igt-xe_xe_util_c@sta/xe_xe_util.c.o'.
-[293/1681] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen4_c@sta/rendercopy_gen4.c.o'.
-[294/1681] Compiling C object 'lib/76b5a35@@igt-igt_dummyload_c@sta/igt_dummyload.c.o'.
-[295/1681] Compiling C object 'lib/76b5a35@@igt-instdone_c@sta/instdone.c.o'.
-[296/1681] Compiling C object 'lib/76b5a35@@igt-igt_vc4_c@sta/igt_vc4.c.o'.
-[297/1681] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
-[298/1681] Compiling C object 'lib/76b5a35@@igt-igt_edid_c@sta/igt_edid.c.o'.
-[299/1681] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
-[300/1681] Compiling C object 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o'.
-[301/1681] Compiling C object 'lib/76b5a35@@igt-ioctl_wrappers_c@sta/ioctl_wrappers.c.o'.
-[302/1681] Compiling C object 'lib/76b5a35@@igt-veboxcopy_gen12_c@sta/veboxcopy_gen12.c.o'.
-[303/1681] Compiling C object 'lib/76b5a35@@igt-igt_aux_c@sta/igt_aux.c.o'.
-[304/1681] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
-[305/1681] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
-[306/1681] Compiling C object 'lib/76b5a35@@igt-xe_xe_spin_c@sta/xe_xe_spin.c.o'.
-[307/1681] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
-[308/1681] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
-[309/1681] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
-[310/1681] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
-[311/1681] Compiling C object 'lib/76b5a35@@igt-igt_device_scan_c@sta/igt_device_scan.c.o'.
-[312/1681] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
-[313/1681] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
-[314/1681] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
-[315/1681] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
-[316/1681] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
-[317/1681] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
-[318/1681] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
-[319/1681] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
-[320/1681] Generating i915-perf-registers-acmgt3 with a custom command.
-[321/1681] Generating i915-perf-metrics-acmgt3 with a custom command.
-[322/1681] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
-[323/1681] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
-[324/1681] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
-[325/1681] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
-[326/1681] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
-[327/1681] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
-[328/1681] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
-[329/1681] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
-[330/1681] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
-[331/1681] Generating i915-perf-equations with a custom command.
-ninja: build stopped: subcommand failed.
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11280_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * {igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p} (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] +11 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-adlp-7/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] +11 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-dg2-oem2/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html
+
+  * {igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p} (NEW):
+    - {bat-lnl-1}:        NOTRUN -> [SKIP][3] +11 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-lnl-1/igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7893_BAT and XEIGTPW_11280_BAT:
+
+### New IGT tests (16) ###
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-1920x1080p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.48] s
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-2160x1440p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.49] s
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-2560x1440p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.49] s
+
+  * igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:
+    - Statuses : 3 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.55] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-2560x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-2160x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-2160x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:
+    - Statuses : 5 skip(s)
+    - Exec time: [0.0, 0.00] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11280_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * {igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p} (NEW):
+    - bat-atsm-2:         NOTRUN -> [SKIP][4] ([Intel XE#1024]) +31 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-atsm-2/igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p.html
+
+  * igt@kms_bw@linear-tiling-3-displays-2160x1440p:
+    - bat-adlp-7:         NOTRUN -> [SKIP][5] ([Intel XE#367]) +8 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-adlp-7/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html
+
+  * igt@kms_bw@linear-tiling-3-displays-3840x2160p:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#367]) +15 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-dg2-oem2/igt@kms_bw@linear-tiling-3-displays-3840x2160p.html
+
+  * igt@kms_bw@linear-tiling-4-displays-1920x1080p:
+    - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#1024]) +31 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-pvc-2/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][8] ([Intel XE#324]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7893/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#1512]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1512
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+  [Intel XE#367]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/367
 
 
+Build changes
+-------------
+
+  * IGT: IGT_7893 -> IGTPW_11280
+
+  IGTPW_11280: 57f4b82dfe38488fca5b1c3f1fe173b46efb28d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7893: a1840ca4270b765883d3b71a710b6af85ded8235 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1500-66d8ec4c6e7d124a021a3a8d038ed9e739cc9359: 66d8ec4c6e7d124a021a3a8d038ed9e739cc9359
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/index.html
+
+--===============7177456138697325963==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>add subtest in kms_bw for connected outputs only</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135049/">https://patchwork.freedesktop.org/series/135049/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7893_BAT -&gt; XEIGTPW_11280_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11280_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>{igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p} (NEW):</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-adlp-7/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-dg2-oem2/igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p} (NEW):</p>
+<ul>
+<li>{bat-lnl-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-lnl-1/igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7893_BAT and XEIGTPW_11280_BAT:</p>
+<h3>New IGT tests (16)</h3>
+<ul>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-1-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 3 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-2-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-1920x1080p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-2160x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-2560x1440p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-3840x2160p:</p>
+<ul>
+<li>Statuses : 5 skip(s)</li>
+<li>Exec time: [0.0, 0.00] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11280_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>{igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p} (NEW):</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-atsm-2/igt@kms_bw@connected-linear-tiling-2-displays-1920x1080p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +31 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-3-displays-2160x1440p:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-adlp-7/igt@kms_bw@linear-tiling-3-displays-2160x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-3-displays-3840x2160p:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-dg2-oem2/igt@kms_bw@linear-tiling-3-displays-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-4-displays-1920x1080p:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-pvc-2/igt@kms_bw@linear-tiling-4-displays-1920x1080p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +31 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7893/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11280/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7893 -&gt; IGTPW_11280</li>
+</ul>
+<p>IGTPW_11280: 57f4b82dfe38488fca5b1c3f1fe173b46efb28d1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7893: a1840ca4270b765883d3b71a710b6af85ded8235 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1500-66d8ec4c6e7d124a021a3a8d038ed9e739cc9359: 66d8ec4c6e7d124a021a3a8d038ed9e739cc9359</p>
+
+</body>
+</html>
+
+--===============7177456138697325963==--
