@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F424C27C53
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Jun 2024 19:31:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17FB3C2BA1A
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Jun 2024 19:51:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9562710EDA1;
-	Wed, 19 Jun 2024 19:31:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 96A4D10EDAE;
+	Wed, 19 Jun 2024 19:51:53 +0000 (UTC)
 Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13C5A10EDA1;
- Wed, 19 Jun 2024 19:31:51 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B975210EDAE;
+ Wed, 19 Jun 2024 19:51:51 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2966009807696356830=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Support_for_RGB16161616?=
- =?utf-8?q?=5F64B_compressed_formats_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2C1/2=5D_lib/intel=5Fpat=3A_account_for_Wa=5F16023588340?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Melanie Lobo" <melanie.lobo@intel.com>
+To: "Matthew Auld" <matthew.auld@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 19 Jun 2024 19:31:51 -0000
-Message-ID: <171882551107.125140.4391994855697001965@a6498e030952>
+Date: Wed, 19 Jun 2024 19:51:51 -0000
+Message-ID: <171882671175.125140.2938428170532070652@a6498e030952>
 X-Patchwork-Hint: ignore
-References: <20240603081607.30930-1-melanie.lobo@intel.com>
-In-Reply-To: <20240603081607.30930-1-melanie.lobo@intel.com>
+References: <20240619143542.110461-1-matthew.auld@intel.com>
+In-Reply-To: <20240619143542.110461-1-matthew.auld@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,215 +41,102 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============2966009807696356830==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: Support for RGB16161616_64B compressed formats (rev3)
-URL   : https://patchwork.freedesktop.org/series/134353/
-State : warning
+Series: series starting with [i-g-t,1/2] lib/intel_pat: account for Wa_16023588340
+URL   : https://patchwork.freedesktop.org/series/135064/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7893_BAT -> XEIGTPW_11282_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1205442 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103846):
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                              ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                               ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825247:step_script
-  section_start:1718825247:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825248:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103849):
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                              ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                               ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825251:step_script
-  section_start:1718825251:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825251:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Participating hosts (5 -> 5)
+------------------------------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103848):
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                              ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                               ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825249:step_script
-  section_start:1718825249:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825250:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  No changes in participating hosts
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103850):
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                              ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                               ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825254:step_script
-  section_start:1718825254:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825255:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103847):
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                              ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-   #define AUX_FORMAT_RGBA16_FLOAT        0x1
-                                               ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-      entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-                       ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825238:step_script
-  section_start:1718825238:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825238:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Changes
+-------
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103841):
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                            ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                             ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825244:step_script
-  section_start:1718825244:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825245:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  No changes found
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103844):
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                            ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                             ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825245:step_script
-  section_start:1718825245:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825246:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103842):
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                            ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                             ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825249:step_script
-  section_start:1718825249:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825250:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Build changes
+-------------
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60103843):
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:44: error: stray ‘\302’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                            ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ../lib/intel_aux_pgtable.c:25:45: error: stray ‘\240’ in program
-     25 | #define AUX_FORMAT_RGBA16_FLOAT        0x1
-        |                                             ^
-  ../lib/intel_aux_pgtable.c:311:21: note: in expansion of macro ‘AUX_FORMAT_RGBA16_FLOAT’
-    311 |    entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-        |                     ^~~~~~~~~~~~~~~~~~~~~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1718825244:step_script
-  section_start:1718825244:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1718825245:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  * IGT: IGT_7893 -> IGTPW_11282
+
+  IGTPW_11282: 11282
+  IGT_7893: a1840ca4270b765883d3b71a710b6af85ded8235 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1500-66d8ec4c6e7d124a021a3a8d038ed9e739cc9359: 66d8ec4c6e7d124a021a3a8d038ed9e739cc9359
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1205442
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11282/index.html
+
+--===============2966009807696356830==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/intel_pat: account for Wa_16023588340</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135064/">https://patchwork.freedesktop.org/series/135064/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11282/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11282/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7893_BAT -&gt; XEIGTPW_11282_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7893 -&gt; IGTPW_11282</li>
+</ul>
+<p>IGTPW_11282: 11282<br />
+  IGT_7893: a1840ca4270b765883d3b71a710b6af85ded8235 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1500-66d8ec4c6e7d124a021a3a8d038ed9e739cc9359: 66d8ec4c6e7d124a021a3a8d038ed9e739cc9359</p>
+
+</body>
+</html>
+
+--===============2966009807696356830==--
