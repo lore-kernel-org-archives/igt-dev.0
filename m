@@ -4,57 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C66BC2BA18
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 14:20:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20900C2BA1A
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 14:39:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97A5910EA23;
-	Thu, 20 Jun 2024 14:20:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A78F110EA50;
+	Thu, 20 Jun 2024 14:39:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n9vsJYk7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bG0EAZmm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3179910EA23
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 14:20:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C6B9210EA5B
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 14:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718893240; x=1750429240;
+ t=1718894376; x=1750430376;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=L7si0VTquPMjHKioxucjMPhAqMvmK6DgTAKBns4DZLc=;
- b=n9vsJYk7dENZNFjg9ZwXU9Vpe7KbBMkI1nEOvqe98RwSDzD2+jPNbnxs
- LJX6+mEeJuA4DpQMJrbour4RNHR+ZB4vU8MzriQjVWoY67od9BGzFlrfL
- gUd85oNxBvb5DEYISXdey8GVrHNcmhnCT5DSmutLIeEHAvMWYxZx3Tjab
- FcyUMUl1LQWk8vYA9DxFhmoieUYdZ+0MZ+u4mIoU37V3nEKCp2ziwivUz
- TdwDyKVzsdghQdrzTb1l9MZUC9/nVHH8PCGHYsuGdW3uxfQWpEg+NwUtx
- PPGObWAU/hJtAJeUZtwiNG9HZwdAJv+buUWNn4+uHf21aLFVtqfO7pSfd w==;
-X-CSE-ConnectionGUID: YeS2YY9hRzqqn3Zlqpkw/Q==
-X-CSE-MsgGUID: idAysuhzQri4dozctP7L/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15702685"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="15702685"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 07:20:26 -0700
-X-CSE-ConnectionGUID: u1yQB01vQs+7vTF/sLwVyw==
-X-CSE-MsgGUID: Q8FYslaBRxC931MmCYGRKg==
+ bh=9NMm0DrvjNQKo/vbIRU1Ya/uLPHUw3r1EH5qmzobJC8=;
+ b=bG0EAZmmy6MbDO0lZMQ+JLtQx380HUu+xLCaQhKKy3q1g7HfZSG9TKay
+ itGnKOv4H3IlJnbt6mT+ZL9Qkwb5YUFbJQ7N8YOoLbt+hwX3Sh6/4iMcp
+ fJWc9i59X1nkxr2Gpk7MB5Ogh8vUIzriGFGVc9v2WAaDQ7GwG9iQwnhaC
+ yz82nvHGDeMm6t8hte3gQd/bSFCJ19Mpi4lfKtVsufk4UFyRwm6sTP9Sf
+ yfMTck/tHU1cgr4QnZLBkQRn0BJiVc2u6uZ8tlVES8vthZ6DufRSy9jG6
+ F62kiq2mXrG9eCQ1uSsBdoa0ggnEdjKuxWsesC3KgwTgT6TAhJKPRPTXo w==;
+X-CSE-ConnectionGUID: pVZ8p9C9RAqckfDzqJLlHw==
+X-CSE-MsgGUID: +tw9KJLnQkKF1TMoqU5r7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="19690315"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="19690315"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 07:39:35 -0700
+X-CSE-ConnectionGUID: T2pN1K+XTfWObqarTTmr8w==
+X-CSE-MsgGUID: 5gQwkFfnSUa15KN69GCIQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="47178612"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="79754247"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2024 07:20:25 -0700
-Date: Thu, 20 Jun 2024 16:20:07 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 07:39:34 -0700
+Date: Thu, 20 Jun 2024 16:39:31 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/intel/xe_exec_store: Add
- basic_inst_benchmark
-Message-ID: <20240620142007.ywhmpjokrnnpbhnv@kamilkon-DESK.igk.intel.com>
+Cc: Jesse Zhang <jesse.zhang@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+Subject: Re: [PATCH 1/3] lib/amdgpu: add new asic support
+Message-ID: <20240620143931.gabqwrm7mq4jcwer@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
-References: <20240618173247.8233-1-nirmoy.das@intel.com>
+ igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>
+References: <20240620061438.2218484-1-jesse.zhang@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240618173247.8233-1-nirmoy.das@intel.com>
+In-Reply-To: <20240620061438.2218484-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,213 +74,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nirmoy,
-On 2024-06-18 at 19:32:47 +0200, Nirmoy Das wrote:
-
-[PATCH i-g-t v2] tests/intel/xe_exec_store: Add basic_inst_benchmark
------------------------------------------------------^
-
-You should use '-', also your subtest has 'store', so:
-
-[PATCH i-g-t v2] tests/intel/xe_exec_store: Add basic-store-benchmark
-
-> Add basic_inst_benchmark to benchmark this basic operation
-> for BO sizes to get basic understanding how long it takes
-> bind a BO and run simple GPU command on it.
+Hi Jesse,
+On 2024-06-20 at 14:14:38 +0800, Jesse Zhang wrote:
+> Add gfx12 family id
 > 
-> This not a CI test but rather for developer to identify various
-> bottleneck/regression in  BO binding.
-> 
-> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  tests/intel/xe_exec_store.c | 110 ++++++++++++++++++++++++++++++------
->  1 file changed, 92 insertions(+), 18 deletions(-)
-> 
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 
-This didn't work on my ATS-M machine:
-
-sudo build/tests/xe_exec_store --r basic-store-benchmark
-IGT-Version: 1.28-g64414e4da (x86_64) (Linux: 6.9.0-rc6-xe-public-513ea833c201+ x86_64)
-Using IGT_SRANDOM=1718890917 for randomisation
-Opened device: /dev/dri/card0
-Starting subtest: basic-store-benchmark
-Starting dynamic subtest: WC
-Dynamic subtest WC: SUCCESS (0.000s)
-(xe_exec_store:15881) xe/xe_ioctl-CRITICAL: Test assertion failure function xe_bo_create_caching, file ../lib/xe/xe_ioctl.c:311:
-(xe_exec_store:15881) xe/xe_ioctl-CRITICAL: Failed assertion: __xe_bo_create_caching(fd, vm, size, placement, flags, cpu_caching, &handle) == 0
-(xe_exec_store:15881) xe/xe_ioctl-CRITICAL: Last errno: 22, Invalid argument
-(xe_exec_store:15881) xe/xe_ioctl-CRITICAL: error: -1 != 0
-
-Also, where are benchmarks? Do you print them only after
-WC and WB runs? See also one nit below.
-
-> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-> index c872c22d5..4b1c619e0 100644
-> --- a/tests/intel/xe_exec_store.c
-> +++ b/tests/intel/xe_exec_store.c
-> @@ -93,15 +93,10 @@ static void persistance_batch(struct data *data, uint64_t addr)
->  	data->addr = batch_addr;
->  
->  }
-> -/**
-> - * SUBTEST: basic-store
-> - * Description: Basic test to verify store dword.
-> - * SUBTEST: basic-cond-batch
-> - * Description: Basic test to verify cond batch end instruction.
-> - * SUBTEST: basic-all
-> - * Description: Test to verify store dword on all available engines.
-> - */
-> -static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci)
-> +
-> +static void basic_inst_size(int fd, int inst_type,
-> +			    struct drm_xe_engine_class_instance *eci,
-> +			    uint16_t cpu_caching, size_t bo_size)
->  {
->  	struct drm_xe_sync sync[2] = {
->  		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> @@ -117,7 +112,6 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
->  	uint32_t exec_queue;
->  	uint32_t bind_engine;
->  	uint32_t syncobj;
-> -	size_t bo_size;
->  	int value = 0x123456;
->  	uint64_t addr = 0x100000;
->  	uint32_t bo = 0;
-> @@ -127,12 +121,16 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
->  	sync[1].handle = syncobj;
->  
->  	vm = xe_vm_create(fd, 0, 0);
-> -	bo_size = sizeof(*data);
-> -	bo_size = xe_bb_size(fd, bo_size);
->  
-> -	bo = xe_bo_create(fd, vm, bo_size,
-> -			  vram_if_possible(fd, eci->gt_id),
-> -			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	if (cpu_caching)
-> +		bo = xe_bo_create_caching(fd, vm, bo_size,
-> +					  vram_if_possible(fd, eci->gt_id),
-> +					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
-> +					  cpu_caching);
-> +	else
-> +		bo = xe_bo_create(fd, vm, bo_size,
-> +				  vram_if_possible(fd, eci->gt_id),
-> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->  
->  	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
->  	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
-> @@ -167,6 +165,66 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
->  	xe_vm_destroy(fd, vm);
->  }
->  
-> +
-
-Remove extra line.
+Please send this as a series with new uniqe subject in cover letter.
 
 Regards,
 Kamil
 
-> +/**
-> + * SUBTEST: basic-store
-> + * Description: Basic test to verify store dword.
-> + * SUBTEST: basic-cond-batch
-> + * Description: Basic test to verify cond batch end instruction.
-> + * SUBTEST: basic-all
-> + * Description: Test to verify store dword on all available engines.
-> + */
-> +static void basic_inst(int fd, int inst_type,
-> +		       struct drm_xe_engine_class_instance *eci,
-> +		       uint16_t cpu_caching)
-> +{
-> +	size_t bo_size;
-> +
-> +	bo_size = sizeof(struct data);
-> +	bo_size = xe_bb_size(fd, bo_size);
-> +
-> +	basic_inst_size(fd, inst_type, eci, cpu_caching, bo_size);
-> +}
-> +
-> +/**
-> + * SUBTEST: basic-store-benchmark
-> + * Description: Basic test to verify time taken for doing store dword with various size.
-> + */
-> +static void basic_inst_benchmark(int fd, int inst_type,
-> +				 struct drm_xe_engine_class_instance *eci,
-> +				 uint16_t cpu_caching)
-> +{
-> +	struct {
-> +		size_t size;
-> +		const char *name;
-> +	} sizes[] = {
-> +		{SZ_4K, "SZ_4K"},
-> +		{SZ_2M, "SZ_2M"},
-> +		{SZ_64M, "SZ_64M"},
-> +		{SZ_128M, "SZ_128M"},
-> +		{SZ_256M, "SZ_256M"},
-> +		{SZ_1G, "SZ_1G"}
-> +	};
-> +
-> +	struct timeval start, end;
-> +	long seconds, useconds, mtime;
-> +
-> +	for (size_t i = 0; i < ARRAY_SIZE(sizes); ++i) {
-> +		size_t bo_size = sizes[i].size;
-> +		const char *size_name = sizes[i].name;
-> +
-> +		gettimeofday(&start, NULL);
-> +		basic_inst_size(fd, inst_type, eci, cpu_caching, bo_size);
-> +		gettimeofday(&end, NULL);
-> +
-> +		seconds = end.tv_sec - start.tv_sec;
-> +		useconds = end.tv_usec - start.tv_usec;
-> +		mtime = ((seconds) * 1000 + useconds / 1000.0) + 0.5;
-> +
-> +		igt_info("Time taken for size %s: %ld ms\n", size_name, mtime);
-> +	}
-> +}
-> +
->  #define PAGES 1
->  #define NCACHELINES (4096/64)
->  /**
-> @@ -342,12 +400,28 @@ igt_main
+> ---
+>  lib/amdgpu/amd_family.h       | 1 +
+>  lib/amdgpu/amd_ip_blocks.c    | 3 +++
+>  lib/amdgpu/amdgpu_asic_addr.h | 3 +++
+>  3 files changed, 7 insertions(+)
+> 
+> diff --git a/lib/amdgpu/amd_family.h b/lib/amdgpu/amd_family.h
+> index bce2c6c2e..4a5731dbf 100644
+> --- a/lib/amdgpu/amd_family.h
+> +++ b/lib/amdgpu/amd_family.h
+> @@ -106,6 +106,7 @@ enum radeon_family {
+>  	CHIP_GFX1103_R2,
+>  	CHIP_GFX1150,
+>  	CHIP_GFX1151,
+> +	CHIP_GFX1200,
+>  	CHIP_LAST,
+>  };
 >  
->  	igt_subtest("basic-store") {
->  		engine = xe_engine(fd, 1);
-> -		basic_inst(fd, STORE, &engine->instance);
-> +		basic_inst(fd, COND_BATCH, &engine->instance, 0);
-> +	}
-> +
-> +	igt_subtest_with_dynamic("basic-store-benchmark") {
-> +		struct dyn {
-> +			const char *name;
-> +			int cache;
-> +		} tests[] = {
-> +			{"WC", DRM_XE_GEM_CPU_CACHING_WC},
-> +			{"WB", DRM_XE_GEM_CPU_CACHING_WB}
-> +		};
-> +
-> +		for (int i = 0; i < ARRAY_SIZE(tests); i++) {
-> +			igt_dynamic_f("%s", tests[i].name);
-> +			engine = xe_engine(fd, 1);
-> +			basic_inst_benchmark(fd, STORE, &engine->instance, tests[i].cache);
-> +		}
+> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+> index 2ee94105c..ff7e55525 100644
+> --- a/lib/amdgpu/amd_ip_blocks.c
+> +++ b/lib/amdgpu/amd_ip_blocks.c
+> @@ -695,6 +695,9 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+>  		identify_chip(GFX1150);
+>  		identify_chip(GFX1151);
+>  		break;
+> +	case FAMILY_GFX1200:
+> +		identify_chip(GFX1200);
+> +		break;
 >  	}
+>  	if (!info->name) {
+>  		igt_info("amdgpu: unknown (family_id, chip_external_rev): (%u, %u)\n",
+> diff --git a/lib/amdgpu/amdgpu_asic_addr.h b/lib/amdgpu/amdgpu_asic_addr.h
+> index cbe02871e..0ecb0b803 100644
+> --- a/lib/amdgpu/amdgpu_asic_addr.h
+> +++ b/lib/amdgpu/amdgpu_asic_addr.h
+> @@ -31,6 +31,7 @@
+>  #define FAMILY_GFX1036 0x95
+>  #define FAMILY_GFX1150 0x96
+>  #define FAMILY_GFX1037 0x97
+> +#define FAMILY_GFX1200 0x98
 >  
->  	igt_subtest("basic-cond-batch") {
->  		engine = xe_engine(fd, 1);
-> -		basic_inst(fd, COND_BATCH, &engine->instance);
-> +		basic_inst(fd, COND_BATCH, &engine->instance, 0);
->  	}
+>  // AMDGPU_FAMILY_IS(familyId, familyName)
+>  #define FAMILY_IS(f, fn)     (f == FAMILY_##fn)
+> @@ -108,6 +109,7 @@
+>  #define AMDGPU_GFX1103_R2_RANGE  0x80, 0xFF //# 128 <= x < max
+>  #define AMDGPU_GFX1150_RANGE     0x01, 0xc0 //# 01 <= x < c0
+>  #define AMDGPU_GFX1151_RANGE     0xc1, 0xFF //# c1 <= x < 255
+> +#define AMDGPU_GFX1200_RANGE     0x01, 0xFF //# 01 <= x < 255
 >  
->  	igt_subtest_with_dynamic("basic-all") {
-> @@ -356,7 +430,7 @@ igt_main
->  				      xe_engine_class_string(hwe->engine_class),
->  				      hwe->engine_instance,
->  				      hwe->gt_id);
-> -			basic_inst(fd, STORE, hwe);
-> +			basic_inst(fd, STORE, hwe, 0);
->  		}
->  	}
+>  #define AMDGPU_EXPAND_FIX(x) x
+>  #define AMDGPU_RANGE_HELPER(val, min, max) ((val >= min) && (val < max))
+> @@ -173,5 +175,6 @@
+>  #define ASICREV_IS_GFX1103_R2(r)       ASICREV_IS(r, GFX1103_R2)
+>  #define ASICREV_IS_GFX1150(r)          ASICREV_IS(r, GFX1150)
+>  #define ASICREV_IS_GFX1151(r)          ASICREV_IS(r, GFX1151)
+> +#define ASICREV_IS_GFX1200(r)          ASICREV_IS(r, GFX1200)
 >  
+>  #endif // _AMDGPU_ASIC_ADDR_H
 > -- 
-> 2.42.0
+> 2.25.1
 > 
