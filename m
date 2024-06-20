@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7CBAC2BA18
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 12:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E9AFC2BA18
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 13:02:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88E2E10E162;
-	Thu, 20 Jun 2024 12:37:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E60EB10E99B;
+	Thu, 20 Jun 2024 13:02:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kDmvbeVJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MDQT6guE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9FDF10E95E
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 12:37:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D426E10E99B
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 13:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718887051; x=1750423051;
+ t=1718888543; x=1750424543;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=OSBbo3dJnobga/PoIPvCGpncp5kOQ0PpORwm1YqD/og=;
- b=kDmvbeVJeGMGI+jYMz7vwaWl+l4IxaFhwO61FGXNVqkODZX9kCR70g+A
- zqw7adFOpb+g59boXvFQOXTT+RxV8dAIXHclWKl3OnSNtU1iy4BI3uG/4
- 0Py4usQFZSE7QF8bvMpIGx8UNS789uMWHnYIMeMIQTzTRBXbTxdymkzC2
- zDDT8Vzqa6wmt5lwvU/u0unRT2dmanjT7Nbp9GXRYFWMMO6xSlfBKD+8w
- JBjDpWUFOWdNZ3U6kxA8rrf+pbgL6IaQAshJWycb+1dkvOACR+t9fc+Rl
- t6NUMWAMDKcTv6vBYZaOKThn6Hh85ZIEPlU/jsIgSyd8DRrSKpOPJ3KsG w==;
-X-CSE-ConnectionGUID: 3n1coT4KToihroUpqfqSdw==
-X-CSE-MsgGUID: SPWN++RDT2uU4t7BUZ5bEQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15978388"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="15978388"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 05:37:30 -0700
-X-CSE-ConnectionGUID: TRXx5aUORu+5oECZ1KC5sw==
-X-CSE-MsgGUID: hWFq0td0RFyC/rUVRSGI9Q==
+ bh=KZGfFaU+WiKEkU2S2N60A1mcITkc0Ulc+dxRWoYzphI=;
+ b=MDQT6guEjhDBsAwKikItkFWIxiQ8UMvrUyRyGsu+qYEc7VOUww3c7djc
+ X2QBJpnWUn3Yz3POGbQcfCCIdm95sTDZbifH0Wth9COjmaKpFEJhGPexY
+ 1PjQdic/6oKkYrPijIGb35CIktU7fNSYylGjNofGaTd5gTvGslVIAGePu
+ X7xrPGVInl7vDjdyHl7p/Wk/yJqWe6zscG5zoHOMyJyorH6C/tIHbiAWI
+ DOl/THM6aXkhw1LZZtMDv6SkW4Yia58nKHRcClGrfvKJlzmqP09aNkArX
+ 9Xfvb7RUoj4jBn0l2HFpvo1q1WVP5ESKF94IfSoWE62G3Kt0UhcelnGBZ A==;
+X-CSE-ConnectionGUID: Ckzi7ovFTxSJPe7n8ERNWA==
+X-CSE-MsgGUID: DdGsifmsRnuMCs4KC1Qj2Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="19640675"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="19640675"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 06:02:23 -0700
+X-CSE-ConnectionGUID: f9KIxyvYQGuN3CVEkzJAxg==
+X-CSE-MsgGUID: Y6Bz4fOOSV+rAT87EiTywQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="65480696"
-Received: from bnilawar-desk1.iind.intel.com ([10.145.169.59])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 05:37:28 -0700
-From: Badal Nilawar <badal.nilawar@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="73440522"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.75])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 06:02:22 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: vinay.belgaumkar@intel.com, kamil.konieczny@linux.intel.com,
- riana.tauro@intel.com
-Subject: [PATCH i-g-t] test/intel/xe_gt_freq: Remove act freq check from
- freq_low_max test
-Date: Thu, 20 Jun 2024 18:24:37 +0530
-Message-Id: <20240620125437.181215-1-badal.nilawar@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ Helen Koike <helen.koike@collabora.com>,
+ Jari Tahvanainen <jari.tahvanainen@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>, Rob Clark <robdclark@gmail.com>
+Subject: [PATCH i-g-t] runner/settings: set PRUNE_KEEP_ALL as default
+Date: Thu, 20 Jun 2024 15:02:16 +0200
+Message-ID: <20240620130216.85074-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,32 +70,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-First we check gt idle status and then check act freq. However, it’s
-important to note that there may be a race condition where the gt
-transitions to c6 before we complete the act freq check.
+In testing drm-tip it is helpful to have reported all tests
+results, especially when one have many dynamic ones we want
+to get a parent result.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1045
-Fixes: 1a1e668e774e ("tests/intel/xe_gt_freq: Fix freq_low_max test")
-Cc: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Signed-off-by: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Ewelina Musial <ewelina.musial@intel.com>
+Cc: Helen Koike <helen.koike@collabora.com>
+Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Rob Clark <robdclark@gmail.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_gt_freq.c | 3 ---
- 1 file changed, 3 deletions(-)
+ runner/settings.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index d2e4d1a09..b3562181d 100644
---- a/tests/intel/xe_gt_freq.c
-+++ b/tests/intel/xe_gt_freq.c
-@@ -277,9 +277,6 @@ static void test_freq_low_max(int fd, int gt_id)
- 	rpe = get_freq(fd, gt_id, "rpe");
+diff --git a/runner/settings.c b/runner/settings.c
+index 42d8137f1..eecadaf80 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -274,11 +274,11 @@ static const char *usage_str =
+ 	"                        results that are removed from the final results set.\n"
+ 	"                        Possible options:\n"
+ 	"                         keep-dynamic-subtests  - Remove subtests that have dynamic\n"
+-	"                                                  subtests. (default)\n"
++	"                                                  subtests.\n"
+ 	"                         keep-dynamic           - Alias for the above\n"
+ 	"                         keep-subtests          - Remove dynamic subtests,\n"
+ 	"                                                  leaving just the parent subtest.\n"
+-	"                         keep-all               - Don't remove anything\n"
++	"                         keep-all               - Don't remove anything (default)\n"
+ 	"                         keep-requested         - Remove reported results that are\n"
+ 	"                                                  not in the requested test set.\n"
+ 	"                                                  Useful when you have a hand-written\n"
+@@ -672,6 +672,7 @@ bool parse_options(int argc, char **argv,
+ 	optind = 1;
  
- 	igt_assert(get_freq(fd, gt_id, "cur") == rpe);
--
--	if (!xe_is_gt_in_c6(fd, gt_id))
--		igt_assert(get_freq(fd, gt_id, "act") == rpe);
- }
+ 	settings->dmesg_warn_level = -1;
++	settings->prune_mode = -1;
  
- /**
+ 	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
+ 				long_options, NULL)) != -1) {
+@@ -791,6 +792,9 @@ bool parse_options(int argc, char **argv,
+ 	if (settings->dmesg_warn_level < 0)
+ 		settings->dmesg_warn_level = 4; /* KERN_WARN */
+ 
++	if (settings->prune_mode < 0)
++		settings->prune_mode = PRUNE_KEEP_ALL;
++
+ 	if (settings->list_all) { /* --list-all doesn't require results path */
+ 		switch (argc - optind) {
+ 		case 1:
 -- 
-2.34.1
+2.43.0
 
