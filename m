@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECFFAC3065B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F0B5C3065A
 	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 054BF10EC0F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 156ED10EC11;
 	Thu, 20 Jun 2024 20:01:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QkfMPoaN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dc+wlm+d";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 02DBE10EB7B
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D85B10E998
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1718913661; x=1750449661;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=/AM/0Yh6nrlsGOu6+LOucmPNjzpSX5fLa9WUVqnMuSw=;
- b=QkfMPoaNH4NDAono7cMSsfHCOhHcMd47Iocu10i2tqKrPILxLyv6GMv2
- 5s/50NlPJw+LLEUspzYRCY7r6OzCWbKulgKeAyiCiDQhBomc3CrvDLRaX
- tbWMy1VtXBGzxlPx5Pvjkz57G+661kwQIQ2MBbHWL71MEuPVoHWUgtu5P
- Ry8U/cAzNdBbjc8BTEPxG2pfGN/7bz4tiLwYs+AF0Z4VLQbcP6VMePHmx
- l2bIepkuqwNboC7y5ceJBraN/ToOvdUg0Se+9Uh0gaOF0UmD66niJIXQr
- vUkL+c0A7CXHn16z4WU9S0qw/7ycWqOjz0efU6j1ESteveLWqQwtQFa13 w==;
-X-CSE-ConnectionGUID: iIS0WhcYSkmDUPELxuIopw==
-X-CSE-MsgGUID: igXOX3sXQB6iU8PY9dur9Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329339"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329339"
+ bh=oNxX7CGMahaRORkHAtCUqHNWhfsGQ8IyQQKIVnT+/xE=;
+ b=dc+wlm+d68RaPqYxeX7k4p01tVF5DhVqWtbm7NjiDx+kRfswO1RFBGqa
+ W4xU4Gvmbhge/0YBT24rDVWPyl+5vuxPUAHqB+tXdCK517oiF30BmaoZH
+ hpT2zs29lnRNLe29+qsHrBO8mNq8QB9I/e9blINRYSVrClHaxDeRxXW14
+ 9SYsBRRxKxDSJiWLUjd6xaUtbPXf/uANF50sL3UoPOoYQcwanoOY1vfjr
+ 1kLjv7OnztSLBUMfuknrNc6WrIF04HsRjz+FBU3G3pFt1ft9L2GLMoNvU
+ M46ZVsnmB2/4GDyzaBFe0nElGFfWLMq5oR8EYNQoVtWtPld3l7ft9Rgvt A==;
+X-CSE-ConnectionGUID: Q4LzwL7ZTi2PDorjxTJ0Aw==
+X-CSE-MsgGUID: TztCLh3ZRIq5SLindGA9cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329341"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329341"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:59 -0700
-X-CSE-ConnectionGUID: lkySmUreSQilxK6rEZaw3g==
-X-CSE-MsgGUID: 3D+IjMSaT6KHEhfCzbFUCQ==
+ 20 Jun 2024 13:01:00 -0700
+X-CSE-ConnectionGUID: e78GSb03Ro6VJBf011raGQ==
+X-CSE-MsgGUID: oWOtsebBQsW2LGZnvKfMGg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459862"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459867"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:59 -0700
+ 20 Jun 2024 13:01:00 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 21/28] lib/xe/oa: Add xe_oa_data_reader to IGT lib
-Date: Thu, 20 Jun 2024 13:00:46 -0700
-Message-ID: <20240620200054.3550653-22-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 23/28] tools/xe-perf: xe_perf_reader,
+ xe_perf_control and xe_perf_configs
+Date: Thu, 20 Jun 2024 13:00:48 -0700
+Message-ID: <20240620200054.3550653-24-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
@@ -67,155 +68,429 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_oa_data_reader is used to interpret data recorded by xe_perf_recorder
-and contains common functionality used by xe_perf_reader and applications
-like gpuvis.
+Add xe_perf_reader, xe_perf_control and xe_perf_configs tools, similar to
+their i915 counterparts.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/meson.build            |   3 +
- lib/xe/xe_oa_data.h        | 101 ++++++++++
- lib/xe/xe_oa_data_reader.c | 369 +++++++++++++++++++++++++++++++++++++
- lib/xe/xe_oa_data_reader.h |  87 +++++++++
- 4 files changed, 560 insertions(+)
- create mode 100644 lib/xe/xe_oa_data.h
- create mode 100644 lib/xe/xe_oa_data_reader.c
- create mode 100644 lib/xe/xe_oa_data_reader.h
+ tools/xe-perf/meson.build       |  17 ++
+ tools/xe-perf/xe_perf_configs.c | 247 ++++++++++++++++++++++++
+ tools/xe-perf/xe_perf_control.c | 117 ++++++++++++
+ tools/xe-perf/xe_perf_reader.c  | 325 ++++++++++++++++++++++++++++++++
+ 4 files changed, 706 insertions(+)
+ create mode 100644 tools/xe-perf/xe_perf_configs.c
+ create mode 100644 tools/xe-perf/xe_perf_control.c
+ create mode 100644 tools/xe-perf/xe_perf_reader.c
 
-diff --git a/lib/meson.build b/lib/meson.build
-index 02b86a77ff..4d51402163 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -380,6 +380,7 @@ install_headers(
- xe_oa_files = [
-   'igt_list.c',
-   'xe/xe_oa.c',
-+  'xe/xe_oa_data_reader.c',
- ]
- 
- xe_oa_hardware = [
-@@ -453,6 +454,8 @@ install_headers(
-   'igt_list.h',
-   'intel_chipset.h',
-   'xe/xe_oa.h',
-+  'xe/xe_oa_data.h',
-+  'xe/xe_oa_data_reader.h',
-   subdir : 'xe-oa'
- )
- 
-diff --git a/lib/xe/xe_oa_data.h b/lib/xe/xe_oa_data.h
+diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
+index a5f59a67fe..8506aa320f 100644
+--- a/tools/xe-perf/meson.build
++++ b/tools/xe-perf/meson.build
+@@ -1,5 +1,22 @@
++executable('xe-perf-configs',
++           [ 'xe_perf_configs.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt_chipset, lib_igt_xe_oa],
++           install: true)
++
+ executable('xe-perf-recorder',
+            [ 'xe_perf_recorder.c' ],
+            include_directories: inc,
+            dependencies: [lib_igt, lib_igt_xe_oa],
+            install: true)
++
++executable('xe-perf-control',
++           [ 'xe_perf_control.c' ],
++           include_directories: inc,
++           install: true)
++
++executable('xe-perf-reader',
++           [ 'xe_perf_reader.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt, lib_igt_xe_oa],
++           install: true)
+diff --git a/tools/xe-perf/xe_perf_configs.c b/tools/xe-perf/xe_perf_configs.c
 new file mode 100644
-index 0000000000..82d9019a9a
+index 0000000000..af33c0078c
 --- /dev/null
-+++ b/lib/xe/xe_oa_data.h
-@@ -0,0 +1,101 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/tools/xe-perf/xe_perf_configs.c
+@@ -0,0 +1,247 @@
++// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2024 Intel Corporation
 + */
 +
-+#ifndef XE_OA_DATA_H
-+#define XE_OA_DATA_H
 +
-+#ifdef __cplusplus
-+extern "C" {
-+#endif
-+
++#include <assert.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <stdbool.h>
 +#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/sysmacros.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
 +
-+/* For now this enum is the same as i915 intel_perf_record_type/drm_i915_perf_record_type */
-+enum intel_xe_perf_record_type {
-+	/* An packet/record of OA data */
-+	INTEL_XE_PERF_RECORD_TYPE_SAMPLE = 1,
++#include "intel_chipset.h"
++#include "xe/xe_oa.h"
 +
-+	/* Indicates one or more OA reports were not written by HW */
-+	INTEL_XE_PERF_RECORD_OA_TYPE_REPORT_LOST,
++static bool
++read_file_uint64(const char *file, uint64_t *value)
++{
++	char buf[32];
++	int fd, n;
 +
-+	/* An error occurred that resulted in all pending OA reports being lost */
-+	INTEL_XE_PERF_RECORD_OA_TYPE_BUFFER_LOST,
++	fd = open(file, 0);
++	if (fd < 0)
++		return false;
++	n = read(fd, buf, sizeof (buf) - 1);
++	close(fd);
++	if (n < 0)
++		return false;
 +
-+	INTEL_XE_PERF_RECORD_TYPE_VERSION,
++	buf[n] = '\0';
++	*value = strtoull(buf, 0, 0);
 +
-+	/* intel_xe_perf_record_device_info */
-+	INTEL_XE_PERF_RECORD_TYPE_DEVICE_INFO,
++	return true;
++}
 +
-+	/* intel_xe_perf_record_device_topology */
-+	INTEL_XE_PERF_RECORD_TYPE_DEVICE_TOPOLOGY,
++static uint32_t
++read_device_param(const char *stem, int id, const char *param)
++{
++	char *name;
++	int ret = asprintf(&name, "/sys/class/drm/%s%u/device/%s", stem, id, param);
++	uint64_t value;
++	bool success;
 +
-+	/* intel_xe_perf_record_timestamp_correlation */
-+	INTEL_XE_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION,
++	assert(ret != -1);
 +
-+	INTEL_XE_PERF_RECORD_MAX /* non-ABI */
-+};
++	success = read_file_uint64(name, &value);
++	free(name);
 +
-+/* This structure cannot ever change. */
-+struct intel_xe_perf_record_version {
-+	/* Version of the xe-perf file recording format (effectively
-+	 * versioning this file).
-+	 */
-+	uint32_t version;
++	return success ? value : 0;
++}
 +
-+#define INTEL_XE_PERF_RECORD_VERSION (1)
++static int
++find_intel_render_node(void)
++{
++	for (int i = 128; i < (128 + 16); i++) {
++		if (read_device_param("renderD", i, "vendor") == 0x8086)
++			return i;
++	}
 +
-+	uint32_t pad;
-+} __attribute__((packed));
++	return -1;
++}
 +
-+struct intel_xe_perf_record_device_info {
-+	/* Frequency of the timestamps in the records. */
-+	uint64_t timestamp_frequency;
++static int
++open_render_node(uint32_t *devid)
++{
++	char *name;
++	int ret;
++	int fd;
 +
-+	/* PCI ID */
-+	uint32_t device_id;
++	int render = find_intel_render_node();
++	if (render < 0)
++		return -1;
 +
-+	/* Stepping */
-+	uint32_t device_revision;
++	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	assert(ret != -1);
 +
-+	/* GT min/max frequencies */
-+	uint32_t gt_min_frequency;
-+	uint32_t gt_max_frequency;
++	*devid = read_device_param("renderD", render, "device");
 +
-+	/* Engine */
-+	uint32_t engine_class;
-+	uint32_t engine_instance;
++	fd = open(name, O_RDWR);
++	free(name);
 +
-+	/* enum intel_xe_oa_format_name */
-+	uint32_t oa_format;
++	return fd;
++}
 +
-+	/* Metric set name */
-+	char metric_set_name[256];
++static int
++get_card_for_fd(int fd)
++{
++	struct stat sb;
++	int mjr, mnr;
++	char buffer[128];
++	DIR *drm_dir;
++	struct dirent *entry;
++	int retval = -1;
 +
-+	/* Configuration identifier */
-+	char metric_set_uuid[40];
++	if (fstat(fd, &sb)) {
++		fprintf(stderr, "Failed to stat DRM fd\n");
++		return -1;
++	}
 +
-+	uint32_t pad;
-+ } __attribute__((packed));
++	mjr = major(sb.st_rdev);
++	mnr = minor(sb.st_rdev);
 +
-+/* Topology as filled by xe_fill_topology_info (variable length, aligned by
-+ * the recorder). */
-+struct intel_xe_perf_record_device_topology {
-+	struct intel_xe_topology_info topology;
-+};
++	snprintf(buffer, sizeof(buffer), "/sys/dev/char/%d:%d/device/drm", mjr, mnr);
 +
-+/* Timestamp correlation between CPU/GPU. */
-+struct intel_xe_perf_record_timestamp_correlation {
-+	/* In CLOCK_MONOTONIC */
-+	uint64_t cpu_timestamp;
++	drm_dir = opendir(buffer);
++	assert(drm_dir != NULL);
 +
-+	/* Engine timestamp associated with the OA unit */
-+	uint64_t gpu_timestamp;
-+} __attribute__((packed));
++	while ((entry = readdir(drm_dir))) {
++		if (entry->d_type == DT_DIR && strncmp(entry->d_name, "card", 4) == 0) {
++			retval = strtoull(entry->d_name + 4, NULL, 10);
++			break;
++		}
++	}
 +
-+#ifdef __cplusplus
-+};
-+#endif
++	closedir(drm_dir);
 +
-+#endif /* XE_OA_DATA_H */
-diff --git a/lib/xe/xe_oa_data_reader.c b/lib/xe/xe_oa_data_reader.c
++	return retval;
++}
++
++static const char *
++metric_name(struct intel_xe_perf *perf, const char *hw_config_guid)
++{
++	struct intel_xe_perf_metric_set *metric_set;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		if (!strcmp(metric_set->hw_config_guid, hw_config_guid))
++			return metric_set->symbol_name;
++	}
++
++	return "Unknown";
++}
++
++static void
++usage(void)
++{
++	printf("Usage: xe-perf-configs [options]\n"
++	       "Manages xe-perf configurations stored in xe.\n"
++	       "     --purge, -p         Purge configurations from the kernel\n"
++	       "     --list,  -l         List configurations from the kernel\n");
++}
++
++int
++main(int argc, char *argv[])
++{
++	char metrics_path[128];
++	DIR *metrics_dir;
++	struct dirent *entry;
++	int drm_fd, drm_card;
++	int opt;
++	bool purge = false;
++	const struct option long_options[] = {
++		{"help",   no_argument, 0, 'h'},
++		{"list",   no_argument, 0, 'l'},
++		{"purge",  no_argument, 0, 'p'},
++		{0, 0, 0, 0}
++	};
++	const struct intel_device_info *devinfo;
++	struct intel_xe_perf *perf;
++	uint32_t devid = 0;
++
++	while ((opt = getopt_long(argc, argv, "hlp", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage();
++			return EXIT_SUCCESS;
++		case 'l':
++			break;
++		case 'p':
++			purge = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage();
++			return EXIT_FAILURE;
++		}
++	}
++
++	drm_fd = open_render_node(&devid);
++	drm_card = get_card_for_fd(drm_fd);
++
++	fprintf(stdout, "Found device id=0x%x\n", devid);
++
++	devinfo = intel_get_device_info(drm_fd);
++	if (!devinfo) {
++		fprintf(stderr, "No device info found.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Device graphics_ver=%i gt=%i\n", devinfo->graphics_ver, devinfo->gt);
++
++	perf = intel_xe_perf_for_fd(drm_fd, 0);
++	if (!perf) {
++		fprintf(stderr, "No perf data found.\n");
++		return EXIT_FAILURE;
++	}
++
++	snprintf(metrics_path, sizeof(metrics_path),
++		 "/sys/class/drm/card%d/metrics", drm_card);
++	metrics_dir = opendir(metrics_path);
++	if (!metrics_dir)
++		return EXIT_FAILURE;
++
++	fprintf(stdout, "Looking at metrics in %s\n", metrics_path);
++
++	while ((entry = readdir(metrics_dir))) {
++		char metric_id_path[400];
++		uint64_t metric_id;
++
++		if (entry->d_type != DT_DIR)
++			continue;
++
++		snprintf(metric_id_path, sizeof(metric_id_path),
++			 "%s/%s/id", metrics_path, entry->d_name);
++
++		if (!read_file_uint64(metric_id_path, &metric_id))
++			continue;
++
++		if (purge) {
++			if (intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &metric_id) == 0)
++				fprintf(stdout, "\tRemoved config %s id=%03" PRIu64 " name=%s\n",
++					entry->d_name, metric_id, metric_name(perf, entry->d_name));
++			else
++				fprintf(stdout, "\tFailed to remove config %s id=%03" PRIu64 " name=%s\n",
++					entry->d_name, metric_id, metric_name(perf, entry->d_name));
++		} else {
++			fprintf(stdout, "\tConfig %s id=%03" PRIu64 " name=%s\n",
++				entry->d_name, metric_id, metric_name(perf, entry->d_name));
++		}
++	}
++
++	closedir(metrics_dir);
++	close(drm_fd);
++
++	return EXIT_SUCCESS;
++}
+diff --git a/tools/xe-perf/xe_perf_control.c b/tools/xe-perf/xe_perf_control.c
 new file mode 100644
-index 0000000000..b463f63c45
+index 0000000000..da96232bc8
 --- /dev/null
-+++ b/lib/xe/xe_oa_data_reader.c
-@@ -0,0 +1,369 @@
++++ b/tools/xe-perf/xe_perf_control.c
+@@ -0,0 +1,117 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++
++#include <getopt.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "xe_perf_recorder_commands.h"
++
++static void
++usage(const char *name)
++{
++	fprintf(stdout,
++		"Usage: %s [options]\n"
++		"\n"
++		"     --help,               -h         Print this screen\n"
++		"     --command-fifo,       -f <path>  Path to a command fifo\n"
++		"     --dump,               -d <path>  Write a content of circular buffer to path\n",
++		name);
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",                       no_argument, 0, 'h'},
++		{"dump",                 required_argument, 0, 'd'},
++		{"command-fifo",         required_argument, 0, 'f'},
++		{"quit",                       no_argument, 0, 'q'},
++		{0, 0, 0, 0}
++	};
++	const char *command_fifo = XE_PERF_RECORD_FIFO_PATH, *dump_file = NULL;
++	FILE *command_fifo_file;
++	int opt;
++	bool quit = false;
++
++	while ((opt = getopt_long(argc, argv, "hd:f:q", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage(argv[0]);
++			return EXIT_SUCCESS;
++		case 'd':
++			dump_file = optarg;
++			break;
++		case 'f':
++			command_fifo = optarg;
++			break;
++		case 'q':
++			quit = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage(argv[0]);
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (!command_fifo)
++		return EXIT_FAILURE;
++
++	command_fifo_file = fopen(command_fifo, "r+");
++	if (!command_fifo_file) {
++		fprintf(stderr, "Unable to open command file\n");
++		return EXIT_FAILURE;
++	}
++
++	if (dump_file) {
++		if (dump_file[0] == '/') {
++			uint32_t total_len =
++				sizeof(struct recorder_command_base) + strlen(dump_file) + 1;
++			struct {
++				struct recorder_command_base base;
++				uint8_t dump[];
++			} *data = malloc(total_len);
++
++			data->base.command = RECORDER_COMMAND_DUMP;
++			data->base.size = total_len;
++			snprintf((char *) data->dump, strlen(dump_file) + 1, "%s", dump_file);
++
++			fwrite(data, total_len, 1, command_fifo_file);
++		} else {
++			char *cwd = getcwd(NULL, 0);
++			uint32_t path_len = strlen(cwd) + 1 + strlen(dump_file) + 1;
++			uint32_t total_len = sizeof(struct recorder_command_base) + path_len;
++			struct {
++				struct recorder_command_base base;
++				uint8_t dump[];
++			} *data = malloc(total_len);
++
++			data->base.command = RECORDER_COMMAND_DUMP;
++			data->base.size = total_len;
++			snprintf((char *) data->dump, path_len, "%s/%s", cwd, dump_file);
++
++			fwrite(data, total_len, 1, command_fifo_file);
++		}
++	}
++
++	if (quit) {
++		struct recorder_command_base base = {
++			.command = RECORDER_COMMAND_QUIT,
++			.size = sizeof(base),
++		};
++
++		fwrite(&base, sizeof(base), 1, command_fifo_file);
++	}
++
++	fclose(command_fifo_file);
++
++	return EXIT_SUCCESS;
++}
+diff --git a/tools/xe-perf/xe_perf_reader.c b/tools/xe-perf/xe_perf_reader.c
+new file mode 100644
+index 0000000000..62a4237ee4
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_reader.c
+@@ -0,0 +1,325 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2024 Intel Corporation
@@ -223,461 +498,324 @@ index 0000000000..b463f63c45
 +
 +#include <assert.h>
 +#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdint.h>
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
-+#include <sys/mman.h>
 +#include <sys/types.h>
 +#include <sys/stat.h>
 +#include <unistd.h>
 +
-+#include <xe_drm.h>
-+
++#include "igt_core.h"
 +#include "intel_chipset.h"
-+#include "xe_oa.h"
-+#include "xe_oa_data_reader.h"
++#include "xe/xe_oa.h"
++#include "xe/xe_oa_data_reader.h"
 +
 +#define MAX(a,b) ((a) > (b) ? (a) : (b))
-+#define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]))
-+
-+static inline bool
-+oa_report_ctx_is_valid(const struct intel_xe_perf_devinfo *devinfo,
-+		       const uint8_t *_report)
-+{
-+	const uint32_t *report = (const uint32_t *) _report;
-+
-+	if (devinfo->graphics_ver < 8)
-+		return false; /* TODO */
-+	if (devinfo->graphics_ver >= 12)
-+		return true; /* Always valid */
-+	if (devinfo->graphics_ver == 8)
-+		return report[0] & (1ul << 25);
-+	if (devinfo->graphics_ver > 8)
-+		return report[0] & (1ul << 16);
-+
-+	return false;
-+}
-+
-+static uint32_t
-+oa_report_ctx_id(struct intel_xe_perf_data_reader *reader, const uint8_t *report)
-+{
-+	if (!oa_report_ctx_is_valid(&reader->devinfo, report))
-+		return 0xffffffff;
-+
-+	if (reader->metric_set->perf_oa_format == XE_OA_FORMAT_PEC64u64)
-+		return ((const uint32_t *) report)[4];
-+	else
-+		return ((const uint32_t *) report)[2];
-+}
++#define MIN(a,b) ((a) > (b) ? (b) : (a))
 +
 +static void
-+append_record(struct intel_xe_perf_data_reader *reader,
-+	      const struct intel_xe_perf_record_header *header)
++usage(void)
 +{
-+	if (reader->n_records >= reader->n_allocated_records) {
-+		reader->n_allocated_records = MAX(100, 2 * reader->n_allocated_records);
-+		reader->records =
-+			(const struct intel_xe_perf_record_header **)
-+			realloc((void *) reader->records,
-+				reader->n_allocated_records *
-+				sizeof(struct intel_xe_perf_record_header *));
-+		assert(reader->records);
-+	}
-+
-+	reader->records[reader->n_records++] = header;
++	printf("Usage: xe-perf-reader [options] file\n"
++	       "Reads the content of an xe-perf recording.\n"
++	       "\n"
++	       "     --help,    -h             Print this screen\n"
++	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
++	       "                               Use 'all' to display all counters.\n"
++	       "                               Use 'list' to list available counters.\n"
++	       "     --reports, -r             Print out data per report.\n");
 +}
 +
-+static void
-+append_timestamp_correlation(struct intel_xe_perf_data_reader *reader,
-+			     const struct intel_xe_perf_record_timestamp_correlation *corr)
++static struct intel_xe_perf_logical_counter *
++find_counter(struct intel_xe_perf_metric_set *metric_set,
++	     const char *name)
 +{
-+	if (reader->n_correlations >= reader->n_allocated_correlations) {
-+		reader->n_allocated_correlations = MAX(100, 2 * reader->n_allocated_correlations);
-+		reader->correlations =
-+			(const struct intel_xe_perf_record_timestamp_correlation **)
-+			realloc((void *) reader->correlations,
-+				reader->n_allocated_correlations *
-+				sizeof(*reader->correlations));
-+		assert(reader->correlations);
-+	}
-+
-+	reader->correlations[reader->n_correlations++] = corr;
-+}
-+
-+static struct intel_xe_perf_metric_set *
-+find_metric_set(struct intel_xe_perf *perf, const char *symbol_name)
-+{
-+	struct intel_xe_perf_metric_set *metric_set;
-+
-+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
-+		if (!strcmp(symbol_name, metric_set->symbol_name))
-+			return metric_set;
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		if (!strcmp(name, metric_set->counters[i].symbol_name)) {
++			return &metric_set->counters[i];
++		}
 +	}
 +
 +	return NULL;
 +}
 +
-+static bool
-+parse_data(struct intel_xe_perf_data_reader *reader)
++static void
++append_counter(struct intel_xe_perf_logical_counter ***counters,
++	       int32_t *n_counters,
++	       uint32_t *n_allocated_counters,
++	       struct intel_xe_perf_logical_counter *counter)
 +{
-+	const struct intel_xe_perf_record_device_info *record_info;
-+	const struct intel_xe_perf_record_device_topology *record_topology;
-+	const uint8_t *end = reader->mmap_data + reader->mmap_size;
-+	const uint8_t *iter = reader->mmap_data;
++	if (*n_counters < *n_allocated_counters) {
++		(*counters)[(*n_counters)++] = counter;
++		return;
++	}
 +
-+	while (iter < end) {
-+		const struct intel_xe_perf_record_header *header =
-+			(const struct intel_xe_perf_record_header *) iter;
++	*n_allocated_counters = MAX(2, *n_allocated_counters * 2);
++	*counters = realloc(*counters,
++			    sizeof(struct intel_xe_perf_logical_counter *) *
++			    (*n_allocated_counters));
++	(*counters)[(*n_counters)++] = counter;
++}
 +
-+		switch (header->type) {
-+		case INTEL_XE_PERF_RECORD_TYPE_SAMPLE:
-+			append_record(reader, header);
++static struct intel_xe_perf_logical_counter **
++get_logical_counters(struct intel_xe_perf_metric_set *metric_set,
++		     const char *counter_list,
++		     int32_t *out_n_counters)
++{
++	struct intel_xe_perf_logical_counter **counters = NULL, *counter;
++	uint32_t n_allocated_counters = 0;
++	const char *current, *next;
++	char counter_name[100];
++
++	if (!counter_list) {
++		*out_n_counters = 0;
++		return NULL;
++	}
++
++	if (!strcmp(counter_list, "list")) {
++		uint32_t longest_name = 0;
++
++		*out_n_counters = -1;
++		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++			longest_name = MAX(longest_name,
++					   strlen(metric_set->counters[i].symbol_name));
++		}
++
++		fprintf(stdout, "Available counters:\n");
++		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++			fprintf(stdout, "%s:%*s%s\n",
++				metric_set->counters[i].symbol_name,
++				(int)(longest_name -
++				      strlen(metric_set->counters[i].symbol_name) + 1), " ",
++				metric_set->counters[i].name);
++		}
++		return NULL;
++	}
++
++	if (!strcmp(counter_list, "all")) {
++		counters = malloc(sizeof(*counters) * metric_set->n_counters);
++		*out_n_counters = metric_set->n_counters;
++		for (uint32_t i = 0; i < metric_set->n_counters; i++)
++			counters[i] = &metric_set->counters[i];
++		return counters;
++	}
++
++	*out_n_counters = 0;
++	current = counter_list;
++	while ((next = strstr(current, ","))) {
++		snprintf(counter_name,
++			 MIN((uint32_t)(next - current) + 1, sizeof(counter_name)),
++			 "%s", current);
++
++		counter = find_counter(metric_set, counter_name);
++		if (!counter) {
++			fprintf(stderr, "Unknown counter '%s'.\n", counter_name);
++			free(counters);
++			*out_n_counters = -1;
++			return NULL;
++		}
++
++		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
++
++		current = next + 1;
++	}
++
++	if (strlen(current) > 0) {
++		counter = find_counter(metric_set, current);
++		if (!counter) {
++			fprintf(stderr, "Unknown counter '%s'.\n", current);
++			free(counters);
++			*out_n_counters = -1;
++			return NULL;
++		}
++
++		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
++	}
++
++	return counters;
++}
++
++static void
++print_report_deltas(const struct intel_xe_perf_data_reader *reader,
++		    const struct intel_xe_perf_record_header *xe_report0,
++		    const struct intel_xe_perf_record_header *xe_report1,
++		    struct intel_xe_perf_logical_counter **counters,
++		    uint32_t n_counters)
++{
++	struct intel_xe_perf_accumulator accu;
++
++	intel_xe_perf_accumulate_reports(&accu,
++				      reader->perf, reader->metric_set,
++				      xe_report0, xe_report1);
++
++	for (uint32_t c = 0; c < n_counters; c++) {
++		struct intel_xe_perf_logical_counter *counter = counters[c];
++
++		switch (counter->storage) {
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
++			fprintf(stdout, "   %s: %" PRIu64 "\n",
++				counter->symbol_name, counter->read_uint64(reader->perf,
++									   reader->metric_set,
++									   accu.deltas));
 +			break;
-+
-+		case INTEL_XE_PERF_RECORD_OA_TYPE_REPORT_LOST:
-+		case INTEL_XE_PERF_RECORD_OA_TYPE_BUFFER_LOST:
-+			assert(header->size == sizeof(*header));
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
++			fprintf(stdout, "   %s: %f\n",
++				counter->symbol_name, counter->read_float(reader->perf,
++									  reader->metric_set,
++									  accu.deltas));
 +			break;
++		}
++	}
++}
 +
-+		case INTEL_XE_PERF_RECORD_TYPE_VERSION: {
-+			struct intel_xe_perf_record_version *version =
-+				(struct intel_xe_perf_record_version*) (header + 1);
-+			if (version->version != INTEL_XE_PERF_RECORD_VERSION) {
-+				snprintf(reader->error_msg, sizeof(reader->error_msg),
-+					 "Unsupported recording version (%u, expected %u)",
-+					 version->version, INTEL_XE_PERF_RECORD_VERSION);
-+				return false;
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",             no_argument, 0, 'h'},
++		{"counters",   required_argument, 0, 'c'},
++		{"reports",          no_argument, 0, 'r'},
++		{0, 0, 0, 0}
++	};
++	struct intel_xe_perf_data_reader reader;
++	struct intel_xe_perf_logical_counter **counters;
++	const struct intel_device_info *devinfo;
++	const char *counter_names = NULL;
++	int32_t n_counters;
++	int fd, opt;
++	bool print_reports = false;
++
++	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage();
++			return EXIT_SUCCESS;
++		case 'c':
++			counter_names = optarg;
++			break;
++		case 'r':
++			print_reports = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage();
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (optind >= argc) {
++		fprintf(stderr, "No recording file specified.\n");
++		return EXIT_FAILURE;
++	}
++
++	fd = open(argv[optind], 0, O_RDONLY);
++	if (fd < 0) {
++		fprintf(stderr, "Cannot open '%s': %s.\n",
++			argv[optind], strerror(errno));
++		return EXIT_FAILURE;
++	}
++
++	if (!intel_xe_perf_data_reader_init(&reader, fd)) {
++		fprintf(stderr, "Unable to parse '%s': %s.\n",
++			argv[optind], reader.error_msg);
++		return EXIT_FAILURE;
++	}
++
++	counters = get_logical_counters(reader.metric_set, counter_names, &n_counters);
++	if (n_counters < 0)
++		goto exit;
++
++	devinfo = intel_get_device_info(reader.devinfo.devid);
++
++	fprintf(stdout, "Recorded on device=0x%x(%s) graphics_ver=%i\n",
++		reader.devinfo.devid, devinfo->codename,
++		reader.devinfo.graphics_ver);
++	fprintf(stdout, "Metric used : %s (%s) uuid=%s\n",
++		reader.metric_set->symbol_name, reader.metric_set->name,
++		reader.metric_set->hw_config_guid);
++	fprintf(stdout, "Reports: %u\n", reader.n_records);
++	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
++	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
++
++	if (reader.n_correlations < 2) {
++		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->cpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp & 0xffffffff,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
++
++	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_xe_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[0]),
++		intel_xe_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[reader.n_records - 1]));
++	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_xe_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[0]),
++		intel_xe_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[reader.n_records - 1]));
++
++	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
++		fprintf(stdout,
++			"WARNING: Recording used a different HW configuration.\n"
++			"WARNING: This could lead to inconsistent counter values.\n");
++	}
++
++	for (uint32_t i = 0; i < reader.n_timelines; i++) {
++		const struct intel_xe_perf_timeline_item *item = &reader.timelines[i];
++
++		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
++			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
++			item->cpu_ts_start, item->cpu_ts_end,
++			item->ts_start, item->ts_end);
++		fprintf(stdout, "hw_id=0x%x %s\n",
++			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
++
++		print_report_deltas(&reader,
++				    reader.records[item->record_start],
++				    reader.records[item->record_end],
++				    counters, n_counters);
++
++		if (print_reports) {
++			for (uint32_t r = item->record_start; r < item->record_end; r++) {
++				fprintf(stdout, " report%i = %s\n",
++					r - item->record_start,
++					intel_xe_perf_read_report_reason(reader.perf, reader.records[r]));
++				print_report_deltas(&reader,
++						    reader.records[r],
++						    reader.records[r + 1],
++						    counters, n_counters);
 +			}
-+			break;
 +		}
-+
-+		case INTEL_XE_PERF_RECORD_TYPE_DEVICE_INFO: {
-+			reader->record_info = header + 1;
-+			assert(header->size == (sizeof(struct intel_xe_perf_record_device_info) +
-+						sizeof(*header)));
-+			break;
-+		}
-+
-+		case INTEL_XE_PERF_RECORD_TYPE_DEVICE_TOPOLOGY: {
-+			reader->record_topology = header + 1;
-+			break;
-+		}
-+
-+		case INTEL_XE_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION: {
-+			append_timestamp_correlation(reader,
-+						     (const struct intel_xe_perf_record_timestamp_correlation *) (header + 1));
-+			break;
-+		}
-+		}
-+
-+		iter += header->size;
 +	}
 +
-+	if (!reader->record_info ||
-+	    !reader->record_topology) {
-+		snprintf(reader->error_msg, sizeof(reader->error_msg),
-+			 "Invalid file, missing device or topology info");
-+		return false;
-+	}
++ exit:
++	intel_xe_perf_data_reader_fini(&reader);
++	close(fd);
 +
-+	record_info = reader->record_info;
-+	record_topology = reader->record_topology;
-+
-+	reader->perf = intel_xe_perf_for_devinfo(record_info->device_id,
-+						 record_info->device_revision,
-+						 record_info->timestamp_frequency,
-+						 record_info->gt_min_frequency,
-+						 record_info->gt_max_frequency,
-+						 &record_topology->topology);
-+	if (!reader->perf) {
-+		snprintf(reader->error_msg, sizeof(reader->error_msg),
-+			 "Recording occured on unsupported device (0x%x)",
-+			 record_info->device_id);
-+		return false;
-+	}
-+
-+	reader->devinfo = reader->perf->devinfo;
-+
-+	reader->metric_set_name = record_info->metric_set_name;
-+	reader->metric_set_uuid = record_info->metric_set_uuid;
-+	reader->metric_set = find_metric_set(reader->perf, record_info->metric_set_name);
-+
-+	return true;
++	return EXIT_SUCCESS;
 +}
-+
-+static uint64_t
-+correlate_gpu_timestamp(struct intel_xe_perf_data_reader *reader,
-+			uint64_t gpu_ts)
-+{
-+	/* OA reports only have the lower 32bits of the timestamp
-+	 * register, while our correlation data has the whole 36bits.
-+	 * Try to figure what portion of the correlation data the
-+	 * 32bit timestamp belongs to.
-+	 */
-+	uint64_t mask = reader->perf->devinfo.oa_timestamp_mask;
-+	int corr_idx = -1;
-+
-+	/* On some OA formats, gpu_ts is a 64 bit value and the shift can
-+	 * result in bit[31] being set. This throws off the correlation and the
-+	 * timelines. Apply the mask on gpu_ts as well.
-+	 */
-+	gpu_ts = gpu_ts & mask;
-+
-+	for (uint32_t i = 0; i < reader->n_correlation_chunks; i++) {
-+		if (gpu_ts >= (reader->correlation_chunks[i].gpu_ts_begin & mask) &&
-+		    gpu_ts <= (reader->correlation_chunks[i].gpu_ts_end & mask)) {
-+			corr_idx = reader->correlation_chunks[i].idx;
-+			break;
-+		}
-+	}
-+
-+	/* Not found? Assume prior to the first timestamp correlation.
-+	 */
-+	if (corr_idx < 0) {
-+		return reader->correlations[0]->cpu_timestamp -
-+			((reader->correlations[0]->gpu_timestamp & mask) - gpu_ts) *
-+			(reader->correlations[1]->cpu_timestamp - reader->correlations[0]->cpu_timestamp) /
-+			(reader->correlations[1]->gpu_timestamp - reader->correlations[0]->gpu_timestamp);
-+	}
-+
-+	for (uint32_t i = corr_idx; i < (reader->n_correlations - 1); i++) {
-+		if (gpu_ts >= (reader->correlations[i]->gpu_timestamp & mask) &&
-+		    gpu_ts < (reader->correlations[i + 1]->gpu_timestamp & mask)) {
-+			return reader->correlations[i]->cpu_timestamp +
-+				(gpu_ts - (reader->correlations[i]->gpu_timestamp & mask)) *
-+				(reader->correlations[i + 1]->cpu_timestamp - reader->correlations[i]->cpu_timestamp) /
-+				(reader->correlations[i + 1]->gpu_timestamp - reader->correlations[i]->gpu_timestamp);
-+		}
-+	}
-+
-+	/* This is a bit harsh, but the recording tool should ensure we have
-+	 * sampling points on either side of the bag of OA reports.
-+	 */
-+	assert(0);
-+}
-+
-+static void
-+append_timeline_event(struct intel_xe_perf_data_reader *reader,
-+		      uint64_t ts_start, uint64_t ts_end,
-+		      uint32_t record_start, uint32_t record_end,
-+		      uint32_t hw_id)
-+{
-+	if (reader->n_timelines >= reader->n_allocated_timelines) {
-+		reader->n_allocated_timelines = MAX(100, 2 * reader->n_allocated_timelines);
-+		reader->timelines =
-+			(struct intel_xe_perf_timeline_item *)
-+			realloc((void *) reader->timelines,
-+				reader->n_allocated_timelines *
-+				sizeof(*reader->timelines));
-+		assert(reader->timelines);
-+	}
-+
-+	reader->timelines[reader->n_timelines].ts_start = ts_start;
-+	reader->timelines[reader->n_timelines].ts_end = ts_end;
-+	reader->timelines[reader->n_timelines].cpu_ts_start =
-+		correlate_gpu_timestamp(reader, ts_start);
-+	reader->timelines[reader->n_timelines].cpu_ts_end =
-+		correlate_gpu_timestamp(reader, ts_end);
-+	reader->timelines[reader->n_timelines].record_start = record_start;
-+	reader->timelines[reader->n_timelines].record_end = record_end;
-+	reader->timelines[reader->n_timelines].hw_id = hw_id;
-+	reader->n_timelines++;
-+}
-+
-+static void
-+generate_cpu_events(struct intel_xe_perf_data_reader *reader)
-+{
-+	uint32_t last_header_idx = 0;
-+	const struct intel_xe_perf_record_header *last_header = reader->records[0],
-+		*current_header = reader->records[0];
-+	const uint8_t *start_report, *end_report;
-+	uint32_t last_ctx_id, current_ctx_id;
-+	uint64_t gpu_ts_start, gpu_ts_end;
-+
-+	for (uint32_t i = 1; i < reader->n_records; i++) {
-+		current_header = reader->records[i];
-+
-+		start_report = (const uint8_t *) (last_header + 1);
-+		end_report = (const uint8_t *) (current_header + 1);
-+
-+		last_ctx_id = oa_report_ctx_id(reader, start_report);
-+		current_ctx_id = oa_report_ctx_id(reader, end_report);
-+
-+		gpu_ts_start = intel_xe_perf_read_record_timestamp(reader->perf,
-+								reader->metric_set,
-+								last_header);
-+		gpu_ts_end = intel_xe_perf_read_record_timestamp(reader->perf,
-+							      reader->metric_set,
-+							      current_header);
-+
-+		if (last_ctx_id == current_ctx_id)
-+			continue;
-+
-+		append_timeline_event(reader, gpu_ts_start, gpu_ts_end, last_header_idx, i, last_ctx_id);
-+
-+		last_header = current_header;
-+		last_header_idx = i;
-+	}
-+
-+	if (last_header != current_header)
-+		append_timeline_event(reader, gpu_ts_start, gpu_ts_end, last_header_idx, reader->n_records - 1, last_ctx_id);
-+}
-+
-+static void
-+compute_correlation_chunks(struct intel_xe_perf_data_reader *reader)
-+{
-+	uint64_t mask = ~(0xffffffff);
-+	uint32_t last_idx = 0;
-+	uint64_t last_ts = reader->correlations[last_idx]->gpu_timestamp;
-+
-+	for (uint32_t i = 0; i < reader->n_correlations; i++) {
-+		if (!reader->n_correlation_chunks ||
-+		    (last_ts & mask) != (reader->correlations[i]->gpu_timestamp & mask)) {
-+			assert(reader->n_correlation_chunks < ARRAY_SIZE(reader->correlation_chunks));
-+			reader->correlation_chunks[reader->n_correlation_chunks].gpu_ts_begin = last_ts;
-+			reader->correlation_chunks[reader->n_correlation_chunks].gpu_ts_end = last_ts | ~mask;
-+			reader->correlation_chunks[reader->n_correlation_chunks].idx = last_idx;
-+			last_ts = reader->correlation_chunks[reader->n_correlation_chunks].gpu_ts_end + 1;
-+			last_idx = i;
-+			reader->n_correlation_chunks++;
-+		}
-+	}
-+}
-+
-+bool
-+intel_xe_perf_data_reader_init(struct intel_xe_perf_data_reader *reader,
-+			       int perf_file_fd)
-+{
-+	struct stat st;
-+	if (fstat(perf_file_fd, &st) != 0) {
-+		snprintf(reader->error_msg, sizeof(reader->error_msg),
-+			 "Unable to access file (%s)", strerror(errno));
-+		return false;
-+	}
-+
-+	memset(reader, 0, sizeof(*reader));
-+
-+	reader->mmap_size = st.st_size;
-+	reader->mmap_data = (const uint8_t *) mmap(NULL, st.st_size,
-+						   PROT_READ, MAP_PRIVATE,
-+						   perf_file_fd, 0);
-+	if (reader->mmap_data == MAP_FAILED) {
-+		snprintf(reader->error_msg, sizeof(reader->error_msg),
-+			 "Unable to access file (%s)", strerror(errno));
-+		return false;
-+	}
-+
-+	if (!parse_data(reader))
-+		return false;
-+
-+	compute_correlation_chunks(reader);
-+	generate_cpu_events(reader);
-+
-+	return true;
-+}
-+
-+void
-+intel_xe_perf_data_reader_fini(struct intel_xe_perf_data_reader *reader)
-+{
-+	intel_xe_perf_free(reader->perf);
-+	free(reader->records);
-+	free(reader->timelines);
-+	free(reader->correlations);
-+	munmap((void *)reader->mmap_data, reader->mmap_size);
-+}
-diff --git a/lib/xe/xe_oa_data_reader.h b/lib/xe/xe_oa_data_reader.h
-new file mode 100644
-index 0000000000..dcb734bab8
---- /dev/null
-+++ b/lib/xe/xe_oa_data_reader.h
-@@ -0,0 +1,87 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+#ifndef XE_OA_DATA_READER_H
-+#define XE_OA_DATA_READER_H
-+
-+#ifdef __cplusplus
-+extern "C" {
-+#endif
-+
-+/* Helper to read a xe-perf recording. */
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+#include "xe_oa_data.h"
-+
-+struct intel_xe_perf_timeline_item {
-+	uint64_t ts_start;
-+	uint64_t ts_end;
-+	uint64_t cpu_ts_start;
-+	uint64_t cpu_ts_end;
-+
-+	/* Offsets into intel_xe_perf_data_reader.records */
-+	uint32_t record_start;
-+	uint32_t record_end;
-+
-+	uint32_t hw_id;
-+
-+	/* User associated data with a given item on the xe perf
-+	 * timeline.
-+	 */
-+	void *user_data;
-+};
-+
-+struct intel_xe_perf_data_reader {
-+	/* Array of pointers into the mmapped xe perf file. */
-+	const struct intel_xe_perf_record_header **records;
-+	uint32_t n_records;
-+	uint32_t n_allocated_records;
-+
-+	/**/
-+	struct intel_xe_perf_timeline_item *timelines;
-+	uint32_t n_timelines;
-+	uint32_t n_allocated_timelines;
-+
-+	/**/
-+	const struct intel_xe_perf_record_timestamp_correlation **correlations;
-+	uint32_t n_correlations;
-+	uint32_t n_allocated_correlations;
-+
-+	struct {
-+		uint64_t gpu_ts_begin;
-+		uint64_t gpu_ts_end;
-+		uint32_t idx;
-+	} correlation_chunks[4];
-+	uint32_t n_correlation_chunks;
-+
-+	const char *metric_set_uuid;
-+	const char *metric_set_name;
-+
-+	struct intel_xe_perf_devinfo devinfo;
-+
-+	struct intel_xe_perf *perf;
-+	struct intel_xe_perf_metric_set *metric_set;
-+
-+	char error_msg[256];
-+
-+	/**/
-+	const void *record_info;
-+	const void *record_topology;
-+
-+	const uint8_t *mmap_data;
-+	size_t mmap_size;
-+};
-+
-+bool intel_xe_perf_data_reader_init(struct intel_xe_perf_data_reader *reader,
-+				    int perf_file_fd);
-+void intel_xe_perf_data_reader_fini(struct intel_xe_perf_data_reader *reader);
-+
-+#ifdef __cplusplus
-+};
-+#endif
-+
-+#endif /* XE_OA_DATA_READER_H */
 -- 
 2.41.0
 
