@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0AC0C2D0CF
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5566C2BB85
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16D9F10EBE8;
-	Thu, 20 Jun 2024 20:01:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E2EA110EBE0;
+	Thu, 20 Jun 2024 20:01:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CrNRxhDw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cQfyinWs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD2D610E99A
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6109610E884
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718913660; x=1750449660;
+ t=1718913661; x=1750449661;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=IVYp3PLI/3RqiQeRBwFOHx2dOFHCHbVytZ0n4pK5oAs=;
- b=CrNRxhDw5HuY8XNUmaLFhTXoYGpnqBUCgbMZy3KTciQuWBE/Vtm9aZFz
- l0vLA7EskgI5Ow6OTsKHCBpUArzkTC6ZwEiv04gX4UjTB8f/V/700ln1T
- idxXQEnX7P8QBMdQvbj/izzp0nafA/TT80DXP3PpvFp2O9H9dtjlfU+mm
- 6JZp2j2R52Mx1k7rine7wD64Cv9+YmxhOZarcNTsAZFn08PouYejFNtlV
- +INXirBWFievc7GFs8xXDiSwunMIjlhwP1lROWHSIeDB4lgbboGa6O9TM
- 4lN4ngUR+AfPdq/SC2/nPbpYcu9qWU5Tojo8neklIgFIhtPYIFatxQycl g==;
-X-CSE-ConnectionGUID: p/GhPQs4QWivClpkuekE8w==
-X-CSE-MsgGUID: VSOX+H07TTed5XnHqU4L/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329336"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329336"
+ bh=N9oJF0g4rHJ7MCwpNeWH3gsC0REWLkBHgZQOl5h7tVc=;
+ b=cQfyinWsXTmqvORlTBwSyvUFWu91EMb2Htp3vXozorI4nM5wTzQ5miEE
+ nEy/vUJAMWuHH8DnSgJJJ3zM9YVwi/PLQmGSdzd6JlOUAq+0qRum11epe
+ fN6yBBlXsfQaHvuqERz8APBExUKOxMwOVzPwVOAM90Al6YXJIQd0nKCab
+ 35eziOGpbqVue1duI/7Fg+wlvsyS8Ljfl8p/MPm4pA1vBVkfh2by5FkMK
+ QIgqoxXEbfon90CjErd+hPqXFE6PWo/cwY3oqfxN74/NxyQTEn4Ss3tIL
+ ionHlBY/mcRTe1NpMq/doLUY/r2iwy2qqlYO6aLdACwnsGHfFAC64gCOj A==;
+X-CSE-ConnectionGUID: 7IGEvu0pQNeYVlsXHjKMzg==
+X-CSE-MsgGUID: cKXRfoHJRguFV4F0zhFQOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329343"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329343"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:59 -0700
-X-CSE-ConnectionGUID: zjj1pEj9SW2dwxjIKVKEVw==
-X-CSE-MsgGUID: rb/962HcQ6W5ANmlURf7DA==
+ 20 Jun 2024 13:01:00 -0700
+X-CSE-ConnectionGUID: 1P0L2uWqTAik2o82VWMjjw==
+X-CSE-MsgGUID: GtPaUTFsRYC7nh0ugW0OWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459858"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459871"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:59 -0700
+ 20 Jun 2024 13:01:00 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 18/28] tests/intel/xe_oa: add remove OA config tests
-Date: Thu, 20 Jun 2024 13:00:43 -0700
-Message-ID: <20240620200054.3550653-19-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 25/28] xe/oa/mdapi-xml-convert: Add support for
+ 576B_PEC64LL format
+Date: Thu, 20 Jun 2024 13:00:50 -0700
+Message-ID: <20240620200054.3550653-26-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,375 +68,192 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the following tests:
-	* "invalid-create-userspace-config"
-	* "invalid-remove-userspace-config"
-	* "create-destroy-userspace-config"
-	* "whitelisted-registers-userspace-config"
+From: José Roberto de Souza <jose.souza@intel.com>
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Xe2 don't use the 256bytes long format, instead it uses a 576bytes
+long with 64 PEC fields that are 64 bits long.
+This patch fixes the xe2 definition and add the parser for this format.
+
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 ---
- tests/intel/xe_oa.c | 333 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 333 insertions(+)
+ lib/xe/oa-configs/codegen.py           |  5 ++
+ lib/xe/oa-configs/mdapi-xml-convert.py | 76 +++++++++++++++++++++-----
+ lib/xe/xe_oa.h                         |  1 +
+ 3 files changed, 67 insertions(+), 15 deletions(-)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 12a76ef4a8..8e6de2db11 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -535,6 +535,12 @@ write_u64_file(const char *path, uint64_t val)
- 	fclose(f);
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index f078ef9498..51498f803d 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -128,6 +128,7 @@ class Set:
+         return self.xml.find(path)
+ 
+ 
++#TODO add SqidiTotalCount, L3BankTotalCount, L3NodeTotalCount
+ hw_vars_mapping = {
+     "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+     "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+@@ -159,6 +160,10 @@ hw_vars_mapping = {
+     "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+     "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+     "$QueryMode": { 'c': "perf->devinfo.query_mode" },
++
++    "$ComputeEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
++
++    "$CopyEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
  }
  
-+static bool
-+try_sysfs_read_u64(const char *path, uint64_t *val)
-+{
-+	return igt_sysfs_scanf(sysfs, path, "%"PRIu64, val) == 1;
-+}
-+
- static unsigned long rc6_residency_ms(void)
- {
- 	unsigned long value;
-@@ -3575,6 +3581,321 @@ test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
- 	load_helper_fini();
+ def is_hw_var(name):
+diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
+index 575b53e955..602a3965af 100755
+--- a/lib/xe/oa-configs/mdapi-xml-convert.py
++++ b/lib/xe/oa-configs/mdapi-xml-convert.py
+@@ -149,12 +149,10 @@ mtl_chipset_oam_samedia_params = {
+     }
  }
  
-+static int __xe_oa_add_config(int fd, struct drm_xe_oa_config *config)
-+{
-+	int ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_ADD_CONFIG, config);
-+	if (ret < 0)
-+		ret = -errno;
-+	return ret;
-+}
-+
-+static int xe_oa_add_config(int fd, struct drm_xe_oa_config *config)
-+{
-+	int config_id = __xe_oa_add_config(fd, config);
-+
-+	igt_debug("config_id=%i\n", config_id);
-+	igt_assert(config_id > 0);
-+
-+	return config_id;
-+}
-+
-+static void xe_oa_remove_config(int fd, uint64_t config_id)
-+{
-+	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config_id), 0);
-+}
-+
-+static bool has_xe_oa_userspace_config(int fd)
-+{
-+	uint64_t config = 0;
-+	int ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config);
-+	igt_assert_eq(ret, -1);
-+
-+	igt_debug("errno=%i\n", errno);
-+
-+	return errno != EINVAL;
-+}
-+
-+#define SAMPLE_MUX_REG (intel_graphics_ver(devid) >= IP_VER(20, 0) ?	\
-+			0x13000 /* PES* */ : 0x9888 /* NOA_WRITE */)
-+
-+/**
-+ * SUBTEST: invalid-create-userspace-config
-+ * Description: Test invalid configs are rejected
-+ */
-+static void
-+test_invalid_create_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	const char *invalid_uuid = "blablabla-wrong";
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	uint32_t invalid_mux_regs[] = { 0x12345678 /* invalid register */, 0x0 };
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	memset(&config, 0, sizeof(config));
-+
-+	/* invalid uuid */
-+	strncpy(config.uuid, invalid_uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* invalid mux_regs */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(invalid_mux_regs);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* empty config */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 0;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* empty config with null pointer */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(NULL);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
-+
-+	/* invalid pointer */
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+	config.n_regs = 42;
-+	config.regs_ptr = to_user_pointer((void *) 0xDEADBEEF);
-+
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EFAULT);
-+}
-+
-+/**
-+ * SUBTEST: invalid-remove-userspace-config
-+ * Description: Test invalid remove configs are rejected
-+ */
-+static void
-+test_invalid_remove_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	uint64_t config_id, wrong_config_id = 999999999;
-+	char path[512];
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+
-+	/* Destroy previous configuration if present */
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
-+
-+	memset(&config, 0, sizeof(config));
-+
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	config.n_regs = 1;
-+	config.regs_ptr = to_user_pointer(mux_regs);
-+
-+	config_id = xe_oa_add_config(drm_fd, &config);
-+
-+	/* Removing configs without permissions should fail. */
-+	igt_fork(child, 1) {
-+		igt_drop_root();
-+
-+		intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config_id, EACCES);
-+	}
-+	igt_waitchildren();
-+
-+	/* Removing invalid config ID should fail. */
-+	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &wrong_config_id, ENOENT);
-+
-+	xe_oa_remove_config(drm_fd, config_id);
-+}
-+
-+/**
-+ * SUBTEST: create-destroy-userspace-config
-+ * Description: Test add/remove OA configs
-+ */
-+static void
-+test_create_destroy_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
-+	uint32_t regs[100];
-+	int i;
-+	uint64_t config_id;
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0, /* Filled later */
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	char path[512];
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+
-+	/* Destroy previous configuration if present */
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
-+
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	regs[0] = mux_regs[0];
-+	regs[1] = mux_regs[1];
-+	/* Flex EU counters */
-+	for (i = 1; i < ARRAY_SIZE(regs) / 2; i++) {
-+		regs[i * 2] = 0xe458; /* EU_PERF_CNTL0 */
-+		regs[i * 2 + 1] = 0x0;
-+	}
-+	config.regs_ptr = to_user_pointer(regs);
-+	config.n_regs = ARRAY_SIZE(regs) / 2;
-+
-+	/* Creating configs without permissions shouldn't work. */
-+	igt_fork(child, 1) {
-+		igt_drop_root();
-+
-+		igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EACCES);
-+	}
-+	igt_waitchildren();
-+
-+	/* Create a new config */
-+	config_id = xe_oa_add_config(drm_fd, &config);
-+
-+	/* Verify that adding the another config with the same uuid fails. */
-+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EADDRINUSE);
-+
-+	/* Try to use the new config */
-+	properties[3] = config_id;
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	/* Verify that destroying the config doesn't yield any error. */
-+	xe_oa_remove_config(drm_fd, config_id);
-+
-+	/* Read the config to verify shouldn't raise any issue. */
-+	config_id = xe_oa_add_config(drm_fd, &config);
-+
-+	__perf_close(stream_fd);
-+
-+	xe_oa_remove_config(drm_fd, config_id);
-+}
-+
-+/**
-+ * SUBTEST: whitelisted-registers-userspace-config
-+ * Description: Test that an OA config constructed using whitelisted register works
-+ */
-+/* Registers required by userspace. This list should be maintained by
-+ * the OA configs developers and agreed upon with kernel developers as
-+ * some of the registers have bits used by the kernel (for workarounds
-+ * for instance) and other bits that need to be set by the OA configs.
-+ */
-+static void
-+test_whitelisted_registers_userspace_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	uint32_t regs[600];
-+	uint32_t i;
-+	uint32_t oa_start_trig1, oa_start_trig8;
-+	uint32_t oa_report_trig1, oa_report_trig8;
-+	uint64_t config_id;
-+	char path[512];
-+	int ret;
-+	const uint32_t flex[] = {
-+		0xe458,
-+		0xe558,
-+		0xe658,
-+		0xe758,
-+		0xe45c,
-+		0xe55c,
-+		0xe65c
-+	};
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
-+
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	oa_start_trig1 = 0xd900;
-+	oa_start_trig8 = 0xd91c;
-+	oa_report_trig1 = 0xd920;
-+	oa_report_trig8 = 0xd93c;
-+
-+	/* b_counters_regs: OASTARTTRIG[1-8] */
-+	for (i = oa_start_trig1; i <= oa_start_trig8; i += 4) {
-+		regs[config.n_regs * 2] = i;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+	/* b_counters_regs: OAREPORTTRIG[1-8] */
-+	for (i = oa_report_trig1; i <= oa_report_trig8; i += 4) {
-+		regs[config.n_regs * 2] = i;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+
-+	/* Flex EU registers, only from Gen8+. */
-+	for (i = 0; i < ARRAY_SIZE(flex); i++) {
-+		regs[config.n_regs * 2] = flex[i];
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+
-+	/* Mux registers (too many of them, just checking bounds) */
-+	/* NOA_WRITE */
-+	regs[config.n_regs * 2] = SAMPLE_MUX_REG;
-+	regs[config.n_regs * 2 + 1] = 0;
-+	config.n_regs++;
-+
-+	/* NOA_CONFIG */
-+	/* Prior to Xe2 */
-+	if (intel_graphics_ver(devid) < IP_VER(20, 0)) {
-+		regs[config.n_regs * 2] = 0xD04;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+		regs[config.n_regs * 2] = 0xD2C;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+	/* Prior to MTLx */
-+	if (intel_graphics_ver(devid) < IP_VER(12, 70)) {
-+		/* WAIT_FOR_RC6_EXIT */
-+		regs[config.n_regs * 2] = 0x20CC;
-+		regs[config.n_regs * 2 + 1] = 0;
-+		config.n_regs++;
-+	}
-+
-+	config.regs_ptr = (uintptr_t) regs;
-+
-+	/* Create a new config */
-+	ret = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_ADD_CONFIG, &config);
-+	igt_assert(ret > 0); /* Config 0 should be used by the kernel */
-+	config_id = ret;
-+
-+	xe_oa_remove_config(drm_fd, config_id);
-+}
-+
- /**
-  * SUBTEST: xe-ref-count
-  * Description: Check that an open oa stream holds a reference on the xe module
-@@ -3979,6 +4300,18 @@ igt_main
- 			test_stress_open_close(hwe);
- 	}
+-# FIXME: everything except oa_report_size is incorrect here
+-xe2_chipset_params = {
+-    'a_offset': 16,
+-    'b_offset': 192,
+-    'c_offset': 224,
++xe2_chipset_params_pec = {
++    'pec_offset': 32,
+     'oa_report_size': 576,
++    # TODO: Not sure about the configs below
+     'config_reg_blacklist': {
+         0x2364, # OACTXID
+     },
+@@ -183,7 +181,11 @@ mtl_chipset_oa_formats = {
+ }
  
-+	igt_subtest("invalid-create-userspace-config")
-+		test_invalid_create_userspace_config();
+ xe2_chipset_oa_formats = {
+-    '256B_GENERIC_NOA16': xe2_chipset_params,
++    '576B_PEC64LL': xe2_chipset_params_pec,
++    # We only care about 576B_PEC64LL metrics in Xe2, entries below is just to
++    # surpress warnings
++    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
++    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
+ }
+ 
+ chipsets = {
+@@ -209,8 +211,6 @@ chipsets = {
+ 
+ xehp_plus = ( 'ACM', 'MTL' )
+ 
+-xe2_plus = ( 'LNL' )
+-
+ register_types = { 'OA', 'NOA', 'FLEX', 'PM' }
+ 
+ default_set_blacklist = { "RenderDX1x", # TODO: rename to something non 'DX'
+@@ -298,6 +298,46 @@ def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
+ 
+     assert 0
+ 
++def read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format):
++    width, offset_str = token.split('@')
++    offset = int(offset_str, 16)
 +
-+	igt_subtest("invalid-remove-userspace-config")
-+		test_invalid_remove_userspace_config();
++    if width != 'qw':
++        assert 0
 +
-+	igt_subtest("create-destroy-userspace-config")
-+		test_create_destroy_userspace_config();
++    if raw_offsets:
++        pec_offset = chipsets[chipset][oa_format]['pec_offset']
 +
-+	igt_subtest("whitelisted-registers-userspace-config")
-+		test_whitelisted_registers_userspace_config();
++        if offset < pec_offset:
++            if offset == 8:
++                return "GPU_TIME 0 READ"
++            elif offset == 24:
++                return "GPU_CLOCK 0 READ"
++            else:
++                assert 0
++        else:
++            pec_cnt_offset = int((offset - pec_offset) / 8)
 +
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++            return "PEC " + str(pec_cnt_offset) + " READ"
++    else:
++        # Location in the accumulated deltas
++        idx = int(offset / 8)
++
++        if idx == 0:
++            return "GPU_TIME 0 READ"
++        elif idx == 1:
++            return "GPU_CLOCK 0 READ"
++        else:
++            idx = idx - 2;
++            pec_cnt_offset = str(idx)
++            pec_high_low_text = "low"
++            if (offset % 8) > 0:
++               pec_high_low_text = "high"
++
++            return "PEC " + pec_cnt_offset + " READ"
++
++    assert 0
++
+ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
+     width, offset_str = token.split('@')
+ 
+@@ -374,9 +414,6 @@ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
+                 return "C " + str(idx - 48) + " READ"
+             else:
+                 return "{0} READ".format(read_value(chipset, offset, oa_format))
+-        elif chipset in xe2_plus:
+-            # FIXME: skip all metrics to retain just the registers
+-                return "GPU_TIME 0 READ"
+         else:
+             # For Gen8+ the array of accumulated counters is
+             # assumed to start with a GPU_TIME then GPU_CLOCK,
+@@ -405,6 +442,9 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
+     if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
+         return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
+ 
++    if oa_format in ['576B_PEC64LL']:
++        return read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format)
++
+     assert 0
+ 
+ def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
+@@ -905,6 +945,8 @@ for arg in args.xml:
+                 mdapi_counter.set('NormalizationEquation', '$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV')
+                 #mdapi_counter.set('DeltaReportReadEquation', '$GpuCoreClocks $GpuTime UDIV')
+ 
++            if mdapi_counter.get('SymbolName') == "ResultUncertainty":
++                continue
+ 
+             symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_counter.get('SymbolName'))
+ 
+@@ -992,11 +1034,15 @@ for arg in args.xml:
+             # XXX: As a special case, we override the raw and delta report
+             # equations for the GpuTime counters, which seem inconsistent
+             if mdapi_counter.get('SymbolName') == "GpuTime":
+-                mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
+-                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
+-                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                if oa_format == '576B_PEC64LL':
++                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
+                 else:
+-                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
++                      mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   else:
++                      mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
+ 
+             availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
+             if availability == "":
+diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
+index c16177ec8e..f6f2768b00 100644
+--- a/lib/xe/xe_oa.h
++++ b/lib/xe/xe_oa.h
+@@ -275,6 +275,7 @@ struct intel_xe_perf_metric_set {
+ 	int b_offset;
+ 	int c_offset;
+ 	int perfcnt_offset;
++	int pec_offset;
+ 
+ 	const struct intel_xe_perf_register_prog *b_counter_regs;
+ 	uint32_t n_b_counter_regs;
 -- 
 2.41.0
 
