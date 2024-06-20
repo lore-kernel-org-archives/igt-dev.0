@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5566C2BB85
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 366BDC2D0D0
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2EA110EBE0;
-	Thu, 20 Jun 2024 20:01:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1848D10EBF1;
+	Thu, 20 Jun 2024 20:01:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cQfyinWs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YAGjtREB";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6109610E884
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E0FC10E998
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718913661; x=1750449661;
+ t=1718913660; x=1750449660;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=N9oJF0g4rHJ7MCwpNeWH3gsC0REWLkBHgZQOl5h7tVc=;
- b=cQfyinWsXTmqvORlTBwSyvUFWu91EMb2Htp3vXozorI4nM5wTzQ5miEE
- nEy/vUJAMWuHH8DnSgJJJ3zM9YVwi/PLQmGSdzd6JlOUAq+0qRum11epe
- fN6yBBlXsfQaHvuqERz8APBExUKOxMwOVzPwVOAM90Al6YXJIQd0nKCab
- 35eziOGpbqVue1duI/7Fg+wlvsyS8Ljfl8p/MPm4pA1vBVkfh2by5FkMK
- QIgqoxXEbfon90CjErd+hPqXFE6PWo/cwY3oqfxN74/NxyQTEn4Ss3tIL
- ionHlBY/mcRTe1NpMq/doLUY/r2iwy2qqlYO6aLdACwnsGHfFAC64gCOj A==;
-X-CSE-ConnectionGUID: 7IGEvu0pQNeYVlsXHjKMzg==
-X-CSE-MsgGUID: cKXRfoHJRguFV4F0zhFQOQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329343"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329343"
+ bh=vyYPfaVhGQXgmFWLGaPiKa+3SnB/Cvr75niX2UgqgBo=;
+ b=YAGjtREBd1tRUVnxt4XA+ZwMHlN1dZgCpPtYkxkIemed0jmIdnUrWLhe
+ tnWKO4g+kUKwosEE11YG25B7qt63K59iMAPetiMk2dt76lKivrR8p86Hm
+ 8a+N9gFP+hiEMoCfNM07SgRLQlWmQumgkFfP15IHo5PodOfKliXG3jDLG
+ YV3QUBgUkt/xiPc3H183t5kCH/4urhoIHKMCkiIIn988aVm1nXDD3L2bq
+ cHO02I4RzeI6xKlRTCKjPKxioAAnt9I+69LsL4boMzYSjssZiYdOUTOPg
+ cyri3NK6G1D+d66CcLIX+xMHuuxB2zGulcsF+HTolms3GQGW6gcrt8/DC w==;
+X-CSE-ConnectionGUID: p46aewJPS169CPiK86yVnA==
+X-CSE-MsgGUID: qWZn6uw3QZuB5g8LYKQSog==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329332"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329332"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:01:00 -0700
-X-CSE-ConnectionGUID: 1P0L2uWqTAik2o82VWMjjw==
-X-CSE-MsgGUID: GtPaUTFsRYC7nh0ugW0OWA==
+ 20 Jun 2024 13:00:59 -0700
+X-CSE-ConnectionGUID: 6me4cNGGQlWxLrYyJ4IaeQ==
+X-CSE-MsgGUID: l5cJCl5MQbOUlO+DXQd1eQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459871"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459852"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:01:00 -0700
+ 20 Jun 2024 13:00:59 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 25/28] xe/oa/mdapi-xml-convert: Add support for
- 576B_PEC64LL format
-Date: Thu, 20 Jun 2024 13:00:50 -0700
-Message-ID: <20240620200054.3550653-26-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 14/28] tests/intel/xe_oa: buffer-fill, non-zero-reason,
+ enable-disable
+Date: Thu, 20 Jun 2024 13:00:39 -0700
+Message-ID: <20240620200054.3550653-15-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,192 +67,642 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: José Roberto de Souza <jose.souza@intel.com>
+Add the following tests:
+	"buffer-fill"
+	"non-zero-reason"
+	"disabled-read-error"
+	"enable-disable"
+	"short-reads"
 
-Xe2 don't use the 256bytes long format, instead it uses a 576bytes
-long with 64 PEC fields that are 64 bits long.
-This patch fixes the xe2 definition and add the parser for this format.
-
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- lib/xe/oa-configs/codegen.py           |  5 ++
- lib/xe/oa-configs/mdapi-xml-convert.py | 76 +++++++++++++++++++++-----
- lib/xe/xe_oa.h                         |  1 +
- 3 files changed, 67 insertions(+), 15 deletions(-)
+ tests/intel/xe_oa.c | 606 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 606 insertions(+)
 
-diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
-index f078ef9498..51498f803d 100644
---- a/lib/xe/oa-configs/codegen.py
-+++ b/lib/xe/oa-configs/codegen.py
-@@ -128,6 +128,7 @@ class Set:
-         return self.xml.find(path)
- 
- 
-+#TODO add SqidiTotalCount, L3BankTotalCount, L3NodeTotalCount
- hw_vars_mapping = {
-     "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
-     "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
-@@ -159,6 +160,10 @@ hw_vars_mapping = {
-     "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
-     "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
-     "$QueryMode": { 'c': "perf->devinfo.query_mode" },
-+
-+    "$ComputeEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
-+
-+    "$CopyEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index 46bfd1d16e..50f6d14670 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -1721,6 +1721,591 @@ static void test_invalid_oa_exponent(void)
+ 	}
  }
  
- def is_hw_var(name):
-diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
-index 575b53e955..602a3965af 100755
---- a/lib/xe/oa-configs/mdapi-xml-convert.py
-+++ b/lib/xe/oa-configs/mdapi-xml-convert.py
-@@ -149,12 +149,10 @@ mtl_chipset_oam_samedia_params = {
-     }
- }
- 
--# FIXME: everything except oa_report_size is incorrect here
--xe2_chipset_params = {
--    'a_offset': 16,
--    'b_offset': 192,
--    'c_offset': 224,
-+xe2_chipset_params_pec = {
-+    'pec_offset': 32,
-     'oa_report_size': 576,
-+    # TODO: Not sure about the configs below
-     'config_reg_blacklist': {
-         0x2364, # OACTXID
-     },
-@@ -183,7 +181,11 @@ mtl_chipset_oa_formats = {
- }
- 
- xe2_chipset_oa_formats = {
--    '256B_GENERIC_NOA16': xe2_chipset_params,
-+    '576B_PEC64LL': xe2_chipset_params_pec,
-+    # We only care about 576B_PEC64LL metrics in Xe2, entries below is just to
-+    # surpress warnings
-+    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
-+    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
- }
- 
- chipsets = {
-@@ -209,8 +211,6 @@ chipsets = {
- 
- xehp_plus = ( 'ACM', 'MTL' )
- 
--xe2_plus = ( 'LNL' )
--
- register_types = { 'OA', 'NOA', 'FLEX', 'PM' }
- 
- default_set_blacklist = { "RenderDX1x", # TODO: rename to something non 'DX'
-@@ -298,6 +298,46 @@ def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
- 
-     assert 0
- 
-+def read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format):
-+    width, offset_str = token.split('@')
-+    offset = int(offset_str, 16)
++/**
++ * SUBTEST: buffer-fill
++ * Description: Test filling, wraparound and overflow of OA buffer
++ */
++static void
++test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
++{
++	/* ~5 micro second period */
++	int oa_exponent = max_oa_exponent_for_period_lte(5000);
++	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t fmt = test_set->perf_oa_format;
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
 +
-+    if width != 'qw':
-+        assert 0
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
 +
-+    if raw_offsets:
-+        pec_offset = chipsets[chipset][oa_format]['pec_offset']
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	size_t report_size = get_oa_format(fmt).size;
++	int buf_size = 65536 * report_size;
++	uint8_t *buf = malloc(buf_size);
++	int len;
++	size_t oa_buf_size = MAX_OA_BUF_SIZE;
++	int n_full_oa_reports = oa_buf_size / report_size;
++	uint64_t fill_duration = n_full_oa_reports * oa_period;
++	uint32_t *last_periodic_report = malloc(report_size);
++	u32 oa_status;
 +
-+        if offset < pec_offset:
-+            if offset == 8:
-+                return "GPU_TIME 0 READ"
-+            elif offset == 24:
-+                return "GPU_CLOCK 0 READ"
-+            else:
-+                assert 0
-+        else:
-+            pec_cnt_offset = int((offset - pec_offset) / 8)
++	igt_assert(fill_duration < 1000000000);
 +
-+            return "PEC " + str(pec_cnt_offset) + " READ"
-+    else:
-+        # Location in the accumulated deltas
-+        idx = int(offset / 8)
++	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
++        set_fd_flags(stream_fd, O_CLOEXEC);
 +
-+        if idx == 0:
-+            return "GPU_TIME 0 READ"
-+        elif idx == 1:
-+            return "GPU_CLOCK 0 READ"
-+        else:
-+            idx = idx - 2;
-+            pec_cnt_offset = str(idx)
-+            pec_high_low_text = "low"
-+            if (offset % 8) > 0:
-+               pec_high_low_text = "high"
++	for (int i = 0; i < 5; i++) {
++		bool overflow_seen;
++		uint32_t n_periodic_reports;
++		uint32_t first_timestamp = 0, last_timestamp = 0;
 +
-+            return "PEC " + pec_cnt_offset + " READ"
++		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
 +
-+    assert 0
++		nanosleep(&(struct timespec){ .tv_sec = 0,
++					      .tv_nsec = fill_duration * 1.25 },
++			  NULL);
++again:
++		oa_status = 0;
++		while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
++			;
 +
- def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
-     width, offset_str = token.split('@')
- 
-@@ -374,9 +414,6 @@ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
-                 return "C " + str(idx - 48) + " READ"
-             else:
-                 return "{0} READ".format(read_value(chipset, offset, oa_format))
--        elif chipset in xe2_plus:
--            # FIXME: skip all metrics to retain just the registers
--                return "GPU_TIME 0 READ"
-         else:
-             # For Gen8+ the array of accumulated counters is
-             # assumed to start with a GPU_TIME then GPU_CLOCK,
-@@ -405,6 +442,9 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
-     if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
-         return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
- 
-+    if oa_format in ['576B_PEC64LL']:
-+        return read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format)
++		if (errno == EIO) {
++			oa_status = get_stream_status(stream_fd);
++			igt_debug("oa_status %#x\n", oa_status);
++			overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
++			igt_assert_eq(overflow_seen, true);
++			goto again;
++		}
++		igt_assert_neq(len, -1);
 +
-     assert 0
++		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
++
++		igt_debug("fill_duration = %"PRIu64"ns, oa_exponent = %u\n",
++			  fill_duration, oa_exponent);
++
++		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
++
++		nanosleep(&(struct timespec){ .tv_sec = 0,
++					.tv_nsec = fill_duration / 2 },
++			NULL);
++
++		n_periodic_reports = 0;
++
++		/* Because of the race condition between notification of new
++		 * reports and reports landing in memory, we need to rely on
++		 * timestamps to figure whether we've read enough of them.
++		 */
++		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
++
++			igt_debug("dts=%u elapsed=%"PRIu64" duration=%"PRIu64"\n",
++				  last_timestamp - first_timestamp,
++				  (last_timestamp - first_timestamp) * oa_period,
++				  fill_duration / 2);
++again_1:
++			oa_status = 0;
++			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
++				;
++			if (errno == EIO) {
++				oa_status = get_stream_status(stream_fd);
++				igt_debug("oa_status %#x\n", oa_status);
++				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
++				goto again_1;
++			}
++			igt_assert_neq(len, -1);
++
++			for (int offset = 0; offset < len; offset += report_size) {
++				uint32_t *report = (void *) (buf + offset);
++
++				igt_debug(" > report ts=%"PRIu64""
++					  " ts_delta_last_periodic=%"PRIu64" is_timer=%i ctx_id=%8x nb_periodic=%u\n",
++					  oa_timestamp(report, fmt),
++					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
++					  oa_report_is_periodic(oa_exponent, report),
++					  oa_report_get_ctx_id(report),
++					  n_periodic_reports);
++
++				if (first_timestamp == 0)
++					first_timestamp = oa_timestamp(report, fmt);
++				last_timestamp = oa_timestamp(report, fmt);
++
++				if (oa_report_is_periodic(oa_exponent, report)) {
++					memcpy(last_periodic_report, report, report_size);
++					n_periodic_reports++;
++				}
++			}
++		}
++
++		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
++
++		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
++
++		igt_debug("%f < %zu < %f\n",
++			  report_size * n_full_oa_reports * 0.45,
++			  n_periodic_reports * report_size,
++			  report_size * n_full_oa_reports * 0.55);
++
++		igt_assert(n_periodic_reports * report_size >
++			   report_size * n_full_oa_reports * 0.45);
++		igt_assert(n_periodic_reports * report_size <
++			   report_size * n_full_oa_reports * 0.55);
++	}
++
++	free(last_periodic_report);
++	free(buf);
++
++	__perf_close(stream_fd);
++}
++
++/**
++ * SUBTEST: non-zero-reason
++ * Description: Test reason field is non-zero. Can also check OA buffer wraparound issues
++ */
++static void
++test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
++{
++	/* ~20 micro second period */
++	int oa_exponent = max_oa_exponent_for_period_lte(20000);
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t fmt = test_set->perf_oa_format;
++	size_t report_size = get_oa_format(fmt).size;
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	uint32_t buf_size = 3 * 65536 * report_size;
++	uint8_t *buf = malloc(buf_size);
++	uint32_t total_len = 0;
++	const uint32_t *last_report;
++	int len;
++	u32 oa_status;
++
++	igt_assert(buf);
++
++	igt_debug("Ready to read about %u bytes\n", buf_size);
++
++	load_helper_init();
++	load_helper_run(HIGH);
++
++	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
++        set_fd_flags(stream_fd, O_CLOEXEC);
++
++	while (total_len < buf_size &&
++	       ((len = read(stream_fd, &buf[total_len], buf_size - total_len)) > 0 ||
++		(len == -1 && (errno == EINTR || errno == EIO)))) {
++		if (errno == EIO) {
++			oa_status = get_stream_status(stream_fd);
++			igt_debug("oa_status %#x\n", oa_status);
++			igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
++		}
++		if (len > 0)
++			total_len += len;
++	}
++
++	__perf_close(stream_fd);
++
++	load_helper_stop();
++	load_helper_fini();
++
++	igt_debug("Got %u bytes\n", total_len);
++
++	last_report = NULL;
++	for (uint32_t offset = 0; offset < total_len; offset += report_size) {
++		const uint32_t *report = (void *) (buf + offset);
++		uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
++
++		igt_assert_neq(reason, 0);
++
++		if (last_report)
++			sanity_check_reports(last_report, report, fmt);
++
++		last_report = report;
++	}
++
++	free(buf);
++}
++
++/**
++ * SUBTEST: enable-disable
++ * Description: Test that OA stream enable/disable works as expected
++ */
++static void
++test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
++{
++	/* ~5 micro second period */
++	int oa_exponent = max_oa_exponent_for_period_lte(5000);
++	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	uint64_t fmt = test_set->perf_oa_format;
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	size_t report_size = get_oa_format(fmt).size;
++	int buf_size = 65536 * report_size;
++	uint8_t *buf = malloc(buf_size);
++	size_t oa_buf_size = MAX_OA_BUF_SIZE;
++	int n_full_oa_reports = oa_buf_size / report_size;
++	uint64_t fill_duration = n_full_oa_reports * oa_period;
++	uint32_t *last_periodic_report = malloc(report_size);
++
++	load_helper_init();
++	load_helper_run(HIGH);
++
++	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
++        set_fd_flags(stream_fd, O_CLOEXEC);
++
++	for (int i = 0; i < 5; i++) {
++		int len;
++		uint32_t n_periodic_reports;
++		uint64_t first_timestamp = 0, last_timestamp = 0;
++		u32 oa_status;
++
++		/* Giving enough time for an overflow might help catch whether
++		 * the OA unit has been enabled even if the driver might at
++		 * least avoid copying reports while disabled.
++		 */
++		nanosleep(&(struct timespec){ .tv_sec = 0,
++					      .tv_nsec = fill_duration * 1.25 },
++			  NULL);
++
++		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
++		       (errno == EINTR || errno == EIO))
++			;
++
++		igt_assert_eq(len, -1);
++		igt_assert_eq(errno, EINVAL);
++
++		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
++
++		nanosleep(&(struct timespec){ .tv_sec = 0,
++					      .tv_nsec = fill_duration / 2 },
++			NULL);
++
++		n_periodic_reports = 0;
++
++		/* Because of the race condition between notification of new
++		 * reports and reports landing in memory, we need to rely on
++		 * timestamps to figure whether we've read enough of them.
++		 */
++		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
++
++			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
++				;
++			if (errno == EIO) {
++				oa_status = get_stream_status(stream_fd);
++				igt_debug("oa_status %#x\n", oa_status);
++				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
++				continue;
++			}
++			igt_assert_neq(len, -1);
++
++			for (int offset = 0; offset < len; offset += report_size) {
++				uint32_t *report = (void *) (buf + offset);
++
++				if (first_timestamp == 0)
++					first_timestamp = oa_timestamp(report, fmt);
++				last_timestamp = oa_timestamp(report, fmt);
++
++				igt_debug(" > report ts=%"PRIx64""
++					  " ts_delta_last_periodic=%s%"PRIu64""
++					  " is_timer=%i ctx_id=0x%8x\n",
++					  oa_timestamp(report, fmt),
++					  oa_report_is_periodic(oa_exponent, report) ? " " : "*",
++					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
++					  oa_report_is_periodic(oa_exponent, report),
++					  oa_report_get_ctx_id(report));
++
++				if (oa_report_is_periodic(oa_exponent, report)) {
++					memcpy(last_periodic_report, report, report_size);
++
++					/* We want to measure only the periodic reports,
++					 * ctx-switch might inflate the content of the
++					 * buffer and skew or measurement.
++					 */
++					n_periodic_reports++;
++				}
++			}
++		}
++
++		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
++
++		igt_debug("first ts = %lu, last ts = %lu\n", first_timestamp, last_timestamp);
++
++		igt_debug("%f < %zu < %f\n",
++			  report_size * n_full_oa_reports * 0.45,
++			  n_periodic_reports * report_size,
++			  report_size * n_full_oa_reports * 0.55);
++
++		igt_assert((n_periodic_reports * report_size) >
++			   (report_size * n_full_oa_reports * 0.45));
++		igt_assert((n_periodic_reports * report_size) <
++			   report_size * n_full_oa_reports * 0.55);
++
++
++		/* It's considered an error to read a stream while it's disabled
++		 * since it would block indefinitely...
++		 */
++		len = read(stream_fd, buf, buf_size);
++
++		igt_assert_eq(len, -1);
++		igt_assert_eq(errno, EINVAL);
++	}
++
++	free(last_periodic_report);
++	free(buf);
++
++	__perf_close(stream_fd);
++
++	load_helper_stop();
++	load_helper_fini();
++}
++
++/**
++ * SUBTEST: short-reads
++ * Description: Test behavior for short reads
++ */
++static void
++test_short_reads(void)
++{
++	int oa_exponent = max_oa_exponent_for_period_lte(5000);
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	size_t record_size = get_oa_format(default_test_set->perf_oa_format).size;
++	size_t page_size = sysconf(_SC_PAGE_SIZE);
++	int zero_fd = open("/dev/zero", O_RDWR|O_CLOEXEC);
++	uint8_t *pages = mmap(NULL, page_size * 2,
++			      PROT_READ|PROT_WRITE, MAP_PRIVATE, zero_fd, 0);
++	u8 *header;
++	int ret, errnum;
++	u32 oa_status;
++
++	igt_assert_neq(zero_fd, -1);
++	close(zero_fd);
++	zero_fd = -1;
++
++	igt_assert(pages);
++
++	ret = mprotect(pages + page_size, page_size, PROT_NONE);
++	igt_assert_eq(ret, 0);
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++
++	nanosleep(&(struct timespec){ .tv_sec = 0, .tv_nsec = 5000000 }, NULL);
++
++	/* At this point there should be lots of pending reports to read */
++
++	/* A read that can return at least one record should result in a short
++	 * read not an EFAULT if the buffer is smaller than the requested read
++	 * size...
++	 *
++	 * Expect to see a sample record here, but at least skip over any
++	 * _RECORD_LOST notifications.
++	 */
++	do {
++		header = (void *)(pages + page_size - record_size);
++		oa_status = 0;
++		ret = read(stream_fd, header, page_size);
++		if (ret < 0 && errno == EIO)
++			oa_status = get_stream_status(stream_fd);
++
++	} while (oa_status & DRM_XE_OASTATUS_REPORT_LOST);
++
++	igt_assert_eq(ret, record_size);
++
++	/* A read that can't return a single record because it would result
++	 * in a fault on buffer overrun should result in an EFAULT error...
++	 *
++	 * Make sure to weed out all report lost errors before verifying EFAULT.
++	 */
++	header = (void *)(pages + page_size - 16);
++	do {
++		oa_status = 0;
++		ret = read(stream_fd, header, page_size);
++		errnum = errno;
++		if (ret < 0 && errno == EIO)
++			oa_status = get_stream_status(stream_fd);
++		errno = errnum;
++	} while (oa_status & DRM_XE_OASTATUS_REPORT_LOST);
++
++	igt_assert_eq(ret, -1);
++	igt_assert_eq(errno, EFAULT);
++
++	/* A read that can't return a single record because the buffer is too
++	 * small should result in an ENOSPC error..
++	 *
++	 * Again, skip over _RECORD_LOST records (smaller than record_size/2)
++	 */
++	do {
++		header = (void *)(pages + page_size - record_size / 2);
++		oa_status = 0;
++		ret = read(stream_fd, header, record_size / 2);
++		errnum = errno;
++		if (ret < 0 && errno == EIO)
++			oa_status = get_stream_status(stream_fd);
++		errno = errnum;
++	} while (oa_status & DRM_XE_OASTATUS_REPORT_LOST);
++
++	igt_assert_eq(ret, -1);
++	igt_assert_eq(errno, ENOSPC);
++
++	__perf_close(stream_fd);
++
++	munmap(pages, page_size * 2);
++}
++
++/**
++ * SUBTEST: non-sampling-read-error
++ * Description: Test that a stream without periodic sampling (no exponent) cannot be read
++ */
++static void
++test_non_sampling_read_error(void)
++{
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* XXX: even without periodic sampling we have to
++		 * specify at least one sample layout property...
++		 */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++
++		/* XXX: no sampling exponent */
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	int ret;
++	uint8_t buf[1024];
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++        set_fd_flags(stream_fd, O_CLOEXEC);
++
++	ret = read(stream_fd, buf, sizeof(buf));
++	igt_assert_eq(ret, -1);
++	igt_assert_eq(errno, EINVAL);
++
++	__perf_close(stream_fd);
++}
++
++/**
++ * SUBTEST: disabled-read-error
++ * Description: Test that attempts to read from a stream while it is disable
++ *		will return EINVAL instead of blocking indefinitely
++ */
++static void
++test_disabled_read_error(void)
++{
++	int oa_exponent = 5; /* 5 micro seconds */
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* XXX: even without periodic sampling we have to
++		 * specify at least one sample layout property...
++		 */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++	uint32_t oa_report0[64];
++	uint32_t oa_report1[64];
++	uint32_t buf[128] = { 0 };
++	int ret;
++
++	stream_fd = __perf_open(drm_fd, &param, false);
++
++	ret = read(stream_fd, buf, sizeof(buf));
++	igt_assert_eq(ret, -1);
++	igt_assert_eq(errno, EINVAL);
++
++	__perf_close(stream_fd);
++
++	properties[ARRAY_SIZE(properties) - 1] = false; /* Set DISABLED to false */
++	stream_fd = __perf_open(drm_fd, &param, false);
++        set_fd_flags(stream_fd, O_CLOEXEC);
++
++	read_2_oa_reports(default_test_set->perf_oa_format,
++			  oa_exponent,
++			  oa_report0,
++			  oa_report1,
++			  false); /* not just timer reports */
++
++	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
++
++	ret = read(stream_fd, buf, sizeof(buf));
++	igt_assert_eq(ret, -1);
++	igt_assert_eq(errno, EINVAL);
++
++	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
++
++	read_2_oa_reports(default_test_set->perf_oa_format,
++			  oa_exponent,
++			  oa_report0,
++			  oa_report1,
++			  false); /* not just timer reports */
++
++	__perf_close(stream_fd);
++}
++
+ static unsigned read_xe_module_ref(void)
+ {
+ 	FILE *fp = fopen("/proc/modules", "r");
+@@ -1948,6 +2533,27 @@ igt_main
+ 		__for_one_hwe_in_oag(hwe)
+ 			test_oa_exponents(hwe);
  
- def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
-@@ -905,6 +945,8 @@ for arg in args.xml:
-                 mdapi_counter.set('NormalizationEquation', '$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV')
-                 #mdapi_counter.set('DeltaReportReadEquation', '$GpuCoreClocks $GpuTime UDIV')
- 
-+            if mdapi_counter.get('SymbolName') == "ResultUncertainty":
-+                continue
- 
-             symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_counter.get('SymbolName'))
- 
-@@ -992,11 +1034,15 @@ for arg in args.xml:
-             # XXX: As a special case, we override the raw and delta report
-             # equations for the GpuTime counters, which seem inconsistent
-             if mdapi_counter.get('SymbolName') == "GpuTime":
--                mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
--                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
--                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                if oa_format == '576B_PEC64LL':
-+                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-                 else:
--                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
-+                      mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
-+                   else:
-+                      mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
- 
-             availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
-             if availability == "":
-diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
-index c16177ec8e..f6f2768b00 100644
---- a/lib/xe/xe_oa.h
-+++ b/lib/xe/xe_oa.h
-@@ -275,6 +275,7 @@ struct intel_xe_perf_metric_set {
- 	int b_offset;
- 	int c_offset;
- 	int perfcnt_offset;
-+	int pec_offset;
- 
- 	const struct intel_xe_perf_register_prog *b_counter_regs;
- 	uint32_t n_b_counter_regs;
++	igt_subtest_with_dynamic("buffer-fill")
++		__for_one_hwe_in_oag(hwe)
++			test_buffer_fill(hwe);
++
++	igt_subtest_with_dynamic("non-zero-reason") {
++		__for_one_hwe_in_oag(hwe)
++			test_non_zero_reason(hwe);
++	}
++
++	igt_subtest("disabled-read-error")
++		test_disabled_read_error();
++	igt_subtest("non-sampling-read-error")
++		test_non_sampling_read_error();
++
++	igt_subtest_with_dynamic("enable-disable")
++		__for_one_hwe_in_oag(hwe)
++			test_enable_disable(hwe);
++
++	igt_subtest("short-reads")
++		test_short_reads();
++
+ 	igt_fixture {
+ 		/* leave sysctl options in their default state... */
+ 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 -- 
 2.41.0
 
