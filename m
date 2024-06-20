@@ -4,62 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F295C2BA18
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 23:38:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 922C6C2BA18
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 23:39:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C0A210E870;
-	Thu, 20 Jun 2024 23:38:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CCB810E870;
+	Thu, 20 Jun 2024 23:39:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JaPDRzt7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dAPIQKtP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5ECE110E2FE
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 23:38:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 457EA10E870
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 23:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718926734; x=1750462734;
+ t=1718926782; x=1750462782;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=3knbKN5K+RGhEON4+tk2QRteCVcql70bn/YFTedMmJ8=;
- b=JaPDRzt7860YiBLIvzCyZt6k/HTYVCgvzijZ1Ih9f6/D9wgRLmNvNKRI
- 2pu/i2tO9cs9x8FhYI9gzbd1Lqi1qA3cEXrP3n5ZnmuFwAJZ0hcET9OcH
- pyKW+9LHDUJI0sSMgrvxg4B+R/+TpZ7u2PI1WDep5C+/tQfTjqZJeFchx
- zp7G1f8TGKUomMF+X+9bFULgA58RHNHIUDG2KLLrwiwyix7EnF5jEdBa8
- O60v+hxUoC/gyx46EkVfSDCDgr0PVsA8a4uKkdJUIiZibiPuA2lW4qzOd
- OyKu8Xl3kaHGuW9aL6MhFsv7t7WiaKdEUiSvwlF9Ah0LY5ClzO1HOni+2 A==;
-X-CSE-ConnectionGUID: 3f4jDMk8SMKcnbCGQEvi1A==
-X-CSE-MsgGUID: Ux+tC1V3R8KhRSbvrTPISw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="16056101"
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="16056101"
+ bh=MeaIuojxUvl0QcLlguXe7Ovk1f3Qo5lKGG3esYANzSg=;
+ b=dAPIQKtPp5N5CN1KfGUHjiU06vF/pjy0MWcDe0kY1DEWuBGcqnQRYB2q
+ ucWOrw6eN9Y8Mg7UQlplrUXfumLlmGrG81PQ/QqqaLGAUyg699HlFhr7M
+ hoFrLS4fOC7Ubhvh2kQEZihWcHXD4JOCPbSWKLlOrduZAJgqhy3PK+ciq
+ H/s4YQ7H7Nz95T5DKn6mWt77DK4JvdbL4qRvEnt4RPVPZy3RHdMelny2V
+ 7xV9OpboPPP/3nA+giPyEzVVp6yeAP2UsKMckylmpzQTUUgVuFFBmceuY
+ 5hMjJ0xjW/XSPSx25z+qfd4DcRUfWZXLXjRe0z8H99dCS4ImZLTnrGd84 g==;
+X-CSE-ConnectionGUID: 1iVltFpeTi+te1PJVK5MuA==
+X-CSE-MsgGUID: nTAwFrqpTQ+KwFeekUBRPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="16056154"
+X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="16056154"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 16:38:54 -0700
-X-CSE-ConnectionGUID: xSDXxCBYQpSAIu4ClzqVTA==
-X-CSE-MsgGUID: 7NEufw0KRwCpGn++Mfvbzg==
+ 20 Jun 2024 16:39:42 -0700
+X-CSE-ConnectionGUID: bDUTaF9EQaeWrXrPbZrnig==
+X-CSE-MsgGUID: ffde41mERDiuVSQOoT3cCg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="43083271"
+X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="43083372"
 Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
  by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Jun 2024 16:38:54 -0700
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ 20 Jun 2024 16:39:39 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
  ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 20 Jun 2024 16:38:53 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ 15.1.2507.39; Thu, 20 Jun 2024 16:39:38 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 20 Jun 2024 16:38:53 -0700
+ 15.1.2507.39; Thu, 20 Jun 2024 16:39:37 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 20 Jun 2024 16:39:37 -0700
 Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
  by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Jun 2024 16:38:53 -0700
+ 15.1.2507.39; Thu, 20 Jun 2024 16:39:37 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n1oE5/7JcK0ILpQG34d1wQJAxCJwIKawkzrUXYkLMehGNBjNUpH3E4wNERMVqqXePGUHkxoiN3Ssn1EWW0H2POsRNfwP0qufbgcCR5F2kP/kb1G5KIwR9utbYWzR9BW+IHkKAJEjUIPhd3FptKiASajRzyu79XUj3eRNZYDE8DaNZQ4tqDnLYPA3XwfqcT76qVReTMM8u6lyHFSpaP5btoj6X5HHC3+F+T0sPtT6Hy2HhtaBL8cqeO9ZMhzOCJRBhL3CXiOeqzJ55DLSE9W5OIMnZf1J7xCQnW88EV4NSekI1Mcy2/7wOQAkEcmU1KMUmn/+kffri3tGW05hJYqINg==
+ b=IDQ3vzkxiTVtSiWMB04ZSgrdpfr9Hp3U+zl6GfGN1edot/gxRKhP5HCZ+ZvIGEhNCQgoI08+8Yqp+Cdtx3+ATkGCjDWH4EP5JF7XlnPtMHTiNfvYdJd0Ruj0GM3t5AROm/7SpFXoG7FOK7yI8TLGwqDtfKJnQaGAUA1S34ssz/PCCSgbj07/40E4fJCCyGZcz6Kl/V942vGMrHDzhwUvCSJLMEPlZDY/qSbn2W7SQ3iZdRxJnX9TCqBcc9LccMLwk65HZr3r/RuOYDc4KX69+L8sjm2FjDjbi8PnEwkTwptpPqrJXUun9CfDQ4/GDU01WnmIc7pihEF0M2CQayTrJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WGFwnFTwoxeUWEzZAeaZWiYAXNf6Tvqp3NfZeuIUREs=;
- b=JTMVC27QtkNT+Gf0pkigAO9KjbtTJH/pgGRPCVqeoYBZoZELEsutYBQvDMZMRn79maXg+UmVN/9tiZpJNbI8EMu2HgFNuWB7BVHSRifaLXjynJ4WVQjdJ5S+GJ9QTVizdUArzycyLQ3LaimcoOn30xpNfvNs7HvBztaG2DIJWorzXryGYZeExHYCBzeYAFVgNxf87v5ruuL11LdkAPJt4kvjQ7h0rD1EyFBX/fyHF/a5gXVwQOYF7MpifnNoIpmuIdJpjxQy7/3azrrtRmskYLnPtljQtnoDHRIX9roO6nRvpjJkHdrpjWhwZMBdD61Geht+VHY5GEfoyMVGcBbnOg==
+ bh=UZd6p1bSqHb56kpKojQpbw0Gj54WPqzjB+iKD8GN4HY=;
+ b=mOX65gOPAKaLUHhfn8pHONV6iEHW9q72+mpvE0Fc0q1HoO6oa8F9SjU2T0tAEE2EQ7vO3wwc5sYjXVxFIaOWHMTC8aoqE+S4BMgMLAO1+VDbbvr3FIyB6g2+WfQhZcdvnzSDg/AHbLA+09vp1q5fskFGm2F7cj/SOMKSDjbRfz93LRiUjU1ZEwm0qB3RcF0n7Jpj+/kdNRh5FnFmSUiN1rd4gKpgYMYorA0PVJVCX1lnk+JMWDlDUGyy3+N7B7TjiQc2IIjDeO8AsTcWUwRYigl/sXHzG3+6IdLifV/6Fe4MgwIuzqAUlJn9voNrfCHlHzerWkhdRH0Y18c7LmXfdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,111 +73,111 @@ Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
  by SA0PR11MB4704.namprd11.prod.outlook.com (2603:10b6:806:9b::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Thu, 20 Jun
- 2024 23:38:46 +0000
+ 2024 23:39:35 +0000
 Received: from DS0PR11MB7408.namprd11.prod.outlook.com
  ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
  ([fe80::6387:4b73:8906:7543%5]) with mapi id 15.20.7698.017; Thu, 20 Jun 2024
- 23:38:46 +0000
-Date: Thu, 20 Jun 2024 16:38:44 -0700
+ 23:39:35 +0000
+Date: Thu, 20 Jun 2024 16:39:33 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: Ashutosh Dixit <ashutosh.dixit@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 18/28] tests/intel/xe_oa: add remove OA config tests
-Message-ID: <ZnS9hBZhYipFySka@orsosgc001>
+Subject: Re: [PATCH i-g-t 19/28] tests/intel/xe_oa: OA buffer mmap tests
+Message-ID: <ZnS9tc7PNj9HqXEx@orsosgc001>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
- <20240620200054.3550653-19-ashutosh.dixit@intel.com>
+ <20240620200054.3550653-20-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240620200054.3550653-19-ashutosh.dixit@intel.com>
-X-ClientProxiedBy: MW4PR04CA0204.namprd04.prod.outlook.com
- (2603:10b6:303:86::29) To DS0PR11MB7408.namprd11.prod.outlook.com
+In-Reply-To: <20240620200054.3550653-20-ashutosh.dixit@intel.com>
+X-ClientProxiedBy: MW2PR16CA0063.namprd16.prod.outlook.com
+ (2603:10b6:907:1::40) To DS0PR11MB7408.namprd11.prod.outlook.com
  (2603:10b6:8:136::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|SA0PR11MB4704:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55faa27e-3473-4d45-4f58-08dc918220b6
+X-MS-Office365-Filtering-Correlation-Id: 0fac6677-abd3-4fed-c367-08dc91823dfe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230037|376011|1800799021|366013;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?b2VKa0xyWkxTUk1vbzlERHA3KzgrTkpST2lZck9GbHhxOWVKVGlKMXFPRjda?=
- =?utf-8?B?ZlZuNDllSDUyOUxXN05KM3F5YWpPZzJlbGxBYnZKYWRHekxrSWFQZ3NTWHF2?=
- =?utf-8?B?VzhqdDZsUjRIMTVWN0xDa3ZaMmVXTHpGM01WMW9YVS9WRVMyY0ViUGxDVEc5?=
- =?utf-8?B?SGhoT3I5UWUvazBvU3NNMnpZNEpENlBpZE9XY0RMc1RZVEhHVCtlS2hMcnBQ?=
- =?utf-8?B?TGJIR0ZFSEZzN09FajVjWG1XclU0ZmxnaDN2Q3BrUUtTL1VLbEpGRzJyVnl6?=
- =?utf-8?B?ZlhiVHV3R01OeHpseWtGU1BhaXIxRjRoaGpUcDhRR2E5RVlwMVBkT1BJb0Mv?=
- =?utf-8?B?RG5FdmExa2NKTGNMRGRTSHFkc251aEJQNmFZSkxKRzRacE5zc3UxcnpBSFVy?=
- =?utf-8?B?d2xhSFZFanI0R1ZoTTZZQjJ6YllTQ0I2a3JlaVE0ckhYVnZzYUM2eGs3Uk5N?=
- =?utf-8?B?N3VHV21WNS9hb2ZLUkRpZnplaTZuQWFvR1U2Rm1CZzM4WTBPM0Q4akxQd2k1?=
- =?utf-8?B?Mk5RM251aGEwMHdjSC9jQlZBMmpoSE8rWEpWeEE3d0REdnZnYzEwbkVOeHE3?=
- =?utf-8?B?RWZ4bXRONnUvSWpQNnNXelp3N0phWnMzd2EwNDJhSDBNenNJY3hBb3o4UE1P?=
- =?utf-8?B?RlpTUjlQdFVaN1NnUmU3L2ZXQ0w1bEhRRTlyVDF0dkt5S3JpeUxGLzNPc3Iy?=
- =?utf-8?B?VDhMREJPcmVmWVhBVEhMc2JaRzBIT3V3WDRiTWcrRTlGa2MyUS8yckZzd0I4?=
- =?utf-8?B?SnZVTTd5ZXlPZncvSTQvRm15ZG1hbFhiLzc2bGRsRWlYS1daRmhJU3pKV09H?=
- =?utf-8?B?N1VqSjE0bElaTi9WYTU0RGxjUFpXUzluK0ozRHhzby9CN3NiL3o0YVE1bm1z?=
- =?utf-8?B?UW12MXhXR0lpRmFwM1A4SmthWHRXdlhadTRRWTJCcHhETC9oLzM2RUFWbURl?=
- =?utf-8?B?MXZ6Sk9VSHNaU3REa01EaG1kSzBYVjVnWmN1UlhFemFISUtWU3RsU3dNeTRF?=
- =?utf-8?B?V1RKT25lT1ZpcGdBQnBQbkpiTW1qdGJVQ0h3ZnlXdkFneEJVUWQxRFpyZ0pR?=
- =?utf-8?B?RWkvM1kxeHpxMVRtbTZMRmp2NWt0VVc1OE9jUmhRVDgrU1VDQitwL1REMVZS?=
- =?utf-8?B?Z21ndTF0MnBHZ1JNVWh4cy9jM0VoLzZTaTVwZ0RXdTQrZzhSQ2VxeTdSTTc1?=
- =?utf-8?B?bm5ZWllRaTRwZjJZVnVORmRUTkt5M1hrSWU4V0tOMzd3cFg4R1FYSzJva1dX?=
- =?utf-8?B?WXpjSmwzOG5DbE9qcmtSS2NOOTZEc052MUZSYjI0SzJGd3JkMDl3VFQzakxH?=
- =?utf-8?B?QVFzNllKUmxaUm91a2Rzd0lnb3dWR0FZdjdlbkxXTDFMZTBTOHA1bDVXaWhS?=
- =?utf-8?B?ZnFiYXhvdnJhdm5aeGJZb1VNbzB4N0RhcUJid1Q1UFJLeTBNSk14VW9zV042?=
- =?utf-8?B?VlcrSCs3UWRXa3BVNjMrZWdJSldxWVc3SUM4dWViZ1RINTVTbGcrTGYxMitP?=
- =?utf-8?B?TEs0b2VMNVg5YldWNHdjUGZaWmxTWWJBVGlXQXRzQUsyR3F0d3c2MmdTOHNR?=
- =?utf-8?B?YnZuZWlQUXZmeU1GdTdaa1E3QVdFd3JTT3pyb0U4MDZPRGtES2liYm8wSHZL?=
- =?utf-8?B?Zlh2eUkrcndiajJFcmRpdmJuSjlpbkdrbnZOcFc1Vld3TEZHd0xXeE5qZFAv?=
- =?utf-8?B?aUV0K29vbHdwWnl5c3ZnUVB6ZGdmUGxxT1FNS0h4TkhvUUo3OWV0Wk9iN05L?=
- =?utf-8?Q?uLZtYmb2TpIc3JfLRxHPiVKS0vY9gYlNiu3H5aL?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?MWdtMm55Y0RqY2JrREhabHVPTzBVanNrTU9jZUs0M2V6TmJ4V2hQNk9pcWpz?=
+ =?utf-8?B?YWU3NkNZL05GcGR1c21IMUNIYjlwZFNQNlFsUFRtS2RsVFBQOUx3VHZsb3o1?=
+ =?utf-8?B?aEovM1czRC94WlpkK3BlcUwzVWgzRVUyUHM0SVg4eFgyWjF2M2puWWZ1Wjlh?=
+ =?utf-8?B?TmtEb21NbmFqRmJkejIxZGRmTmF0UE9Xdmd5eFc4Yy9SdU5pOVJabU9yQWdF?=
+ =?utf-8?B?dTZGU0FNdHI1dTVHRzBocDIrYUNsK3p6bmhIM2dqNTBrM0xUWVpGRWpLZ0xQ?=
+ =?utf-8?B?OUpOa2o2M0FWazZFWUY2NFZMMyswUXBLaTlXN0ZyaFByZDUvME1tSERhK1hO?=
+ =?utf-8?B?Uk5nbmFPbWJwUkNQcWE0eUtWZ0Y3S1kvelJFNE05WG5ueUlYOGtSYnh1ZFYr?=
+ =?utf-8?B?OURQNVVRU1dQalpQKzNSVi91d1RHdVJ6VUNRQW9jbDhUQklnem1uYk84RkZG?=
+ =?utf-8?B?VTN0dUFscitpWWNKUTFYQ2hsakFnT3AyR01TWWZwb2lPYWNKeGZkdWw5ZDQ3?=
+ =?utf-8?B?ZXNWSDF2S3c5MnVGcFFCUGFYdmQzbG12c2pYdHRtZHJ5NFNFcXVURXJOVWxo?=
+ =?utf-8?B?Yk9qN3lrSElvRDd1M3htSy81VVFMZjBsVXJMclRrU2dhMkFjU0g4Z3NNYVFZ?=
+ =?utf-8?B?UHBXV24zMUc2UzQwWnhGZFNDSnBwd3BxZCthSnhpNi85eC9melVxSkVCUlV2?=
+ =?utf-8?B?OHZnSHNoK1JGU09Jb2lTZVc5YlZ6MnNDdUdZSy9jd2FkZzM1M3FmaGtRd0hp?=
+ =?utf-8?B?ZCtXQlI4U2RpK2J6L3hXTFhTWTVQbklZY3FTb0puWlJGdzN4Z3o1RWY3M3Bs?=
+ =?utf-8?B?Y2VEYkdrcjFDMERTcVgwc2Y2KzlHcEJpck5GV2tRelNnQmIvZktUcTlmbW9Q?=
+ =?utf-8?B?NWhSR1hjdSs1VnJKTlF0N20zZFNiVlozUHplZ2txeXRYUHYzdnZoTGcvakVo?=
+ =?utf-8?B?SmxSbkk2YUJsUjJVUEJaTjJTQnMzMWx3c2c2ZTZ4emJWRDJMNE5DdzZ5RXJo?=
+ =?utf-8?B?Ry8xb3JCdlBwWjBzTDFTNyttRjYvNGdtNGVkS3B1Y0VKdndtZVUxRDZIL2R4?=
+ =?utf-8?B?dEMwT0Y2QkptZEFUbXFxQytpQTBUUzR6TU9JMDdTQ3ZVeFpoUFVPdkg3QlVZ?=
+ =?utf-8?B?eVZibDlyRTRQQ0VyaHNMbUphWGdUUWU3QTEwOE5Na0FIRUhGNlk5Q0d0OEdh?=
+ =?utf-8?B?MTlRS0U0ZEhSdmZsbUNzNjNiZlNwTXZJekNySytMNFVvazhCdTErVjJFRFhU?=
+ =?utf-8?B?YURENWJOZGVlQkZlZys5d2JpSmJta1huc2g0NFV4b1ViQmtYT0RWYnR1M1Y1?=
+ =?utf-8?B?YTF0MFFma25zL3dSbklmOHEzS0c0cThqK292QTJqWUdOVTdXeDlDTGx0WGl1?=
+ =?utf-8?B?R05PSGI1UDA4cnoyZFNCRy9vajQrajQ2S0htN01yRUhLYlE4UURZU2RmV2xB?=
+ =?utf-8?B?dVJDdlRESExtQlRNeGNjMU4zQ1dmTWJBRnZNSnNSN1VyWG9WTjBvZ3RqWXR6?=
+ =?utf-8?B?Z1puM3RDbGRFd0F0MHQza2E5czU4WXBDYmdEWVR1TXM3SnZpSVlvRDgrZHQy?=
+ =?utf-8?B?MnNYMEFYRjNkQVB3WHV1aHU1dVlGOHlxMEdwRmdNZEVVN0tpbjhjTmMwTUZ5?=
+ =?utf-8?B?bE1GS3VZaEhoNndtZXdjV01FMDkrQWoyb01TVndzWnBLeHdCMDB5VmZHdGJ1?=
+ =?utf-8?B?TmR0NEc1VzhHTk9uNDFVSEVDQ2duZHlRdllwaFFuZ3BTZ05uQVZIOGVKQnVZ?=
+ =?utf-8?Q?CL+xx6ZxPYpYkWR60cejAOmAd6D25/XywuudYHM?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230037)(376011)(1800799021)(366013); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d09iZWtXNndrKy9yL1pmV2IwSXFmc054N0t2U093MGZhc1R1cFdjZVArM2pS?=
- =?utf-8?B?ckNSYWFka3MveThSVjFEK2lVbUVDOEtqSHNYeU1ueTBqNmZPYUp4RU45Uzli?=
- =?utf-8?B?alFxRUEzWWpRM1Jxd2wvN0VPMldEeHpjbnovZFozQ2cyOXZwekZORURVY0FO?=
- =?utf-8?B?WnJxeEZRT3lpWG4vVFRQeEJRaWpMR1pYTnpRaDhOOUVWVUlYMTJKOE1JdURR?=
- =?utf-8?B?OGtiWktUWkQzK0V5M29hSmJKZkRUdXAxcExIT0o2ZWZleDdmdlU1VnpGYTUr?=
- =?utf-8?B?Zkk5YTN5RVVKQWcyTFFtb1dNR2dUN3lQZVRCejV6SnhTZm1TMEZLWncwVU5y?=
- =?utf-8?B?bE40UlFIOWEzZTF2TzlqcU90TUlkZDl5U3V4c1FLbDQxeHBwWVlTU3BTMk5F?=
- =?utf-8?B?Y2xETW50aVdIVTZETUlRb1dkcnd4dXQ1d3N5U3BjUUg2ZUNpRFRhTm1BUlY3?=
- =?utf-8?B?UGN2a3BLRG9LZ2lSOC92YmhDZUVFcktsTUo3NUcvNGdVT2RiZFZCY1BpbzBj?=
- =?utf-8?B?TGJTc2FqdFVxVmtmcEZ6S0xTNGRPV1BXcXljUVFwc0N5K2MvY09oK0pScDJ1?=
- =?utf-8?B?Y0FrYVBMSEFWSnRxK3JSdFEyRng1TUZDUC9EalZqL3VKMUFWU3g2NG5rL2I4?=
- =?utf-8?B?V2FkRlNBSmhxTHVsK2U0Z1J0UFhiR3Q5ODJmekZQTE5JeVYxY3F3eUJNZURu?=
- =?utf-8?B?dGVqQnpOZjMzbXF4ekVoNjU4Y0FORWxkQytyaEdNYTM0YktKMGswOWtZSGdr?=
- =?utf-8?B?K0lBTm1jdUlLdnJ3aXI5OHRVTmxiZmNveDR2U2hQVjZwaS91OE9SU2FEeThu?=
- =?utf-8?B?YU1VbDFDMXU4NFF0Nlp0N0lrQlh6cUtPNWErMk53ckJES2srWFBBVkNIZkx1?=
- =?utf-8?B?N0RBaHVJcXhwRUFPSFZ1Q0t3MmVzaENZTmE1eFVTWEErZys0RlJrVE44djFK?=
- =?utf-8?B?dGZvWXF6c1V5WVlQa0N3NVdia1BZUEFDNFRrRFZhTy9Bbm5uNWhhZ2RNTjZ2?=
- =?utf-8?B?elMybGpNV01sUlQ1eWJreG9sazMvMmhzWW4vdHcvaFZwbmJrQnRrT3gxVkwv?=
- =?utf-8?B?Q3l2cE9RMXp0RVppVTBJempobWxpTG05VXU4N1ZUUk1IdFZyY0U1bTdXNTBj?=
- =?utf-8?B?dkRhNzNES3FhSGFhN1FlY08rVWtXbGJxZkJEeW9jUm83ejZ4TWFsS3BBTXI0?=
- =?utf-8?B?WmxzY1Via29MTXJyRXZZKzJnNkZHcndwZG1jYTV6WVdKR0JxZ0dKSFBCaVNJ?=
- =?utf-8?B?TC9XUTBGTHJpT3RHT1dnSDBVTUhJNlFBM0g4TEJzZ2JuVHNUc1ZGNmhWb3Bx?=
- =?utf-8?B?OVJYWXYzd2NQUmhvSUxxSzZwTkxVRmdmeDluM0ZOeGtrL0pkL0VRclYzbDFq?=
- =?utf-8?B?aVllY1NDWGg3RnJwWEllUHB4NDNpQ3NENzdnRDNTNERpRHZmUmpvcTFmL3pP?=
- =?utf-8?B?ajhjWlA1SHp1RFhFYkhwUkFIZWRvZ0FTdS90Qlg0U0ttcDF1cWtybS9USXp4?=
- =?utf-8?B?cFZhbXgrck1JYXVlcDBabHFKeGc3eXA1Q2tGM2pBRGhqUG5yY3hwMVVEWnM3?=
- =?utf-8?B?MFV5TXo5ZC8vc1BnbEdOb0JoVk1zY2UyQVN1Q2RoNFg2aUN3SVhEZUdlUWc2?=
- =?utf-8?B?aUZyb1p0Y3JmQkRIemgrSHhKbmRuSGJHSWpRK0sxQk9jdndBeUVNNjY5Wk93?=
- =?utf-8?B?U0M3NU9NVkw1V25ieU9abGh4TGRSeFVEcTRJeVJkd3pFTi9EdXBaZU9XMHNS?=
- =?utf-8?B?M0hyT0JlbHVjb1NCQWV2M1pXMi8weDIvOWIydzdnRHFRMENPOWhvaTdUdVhT?=
- =?utf-8?B?TnJkWDl5L2xzUm5aTzJZeTJDbk1Gd3NJSU1UYmpwM0xRbHJUTzlkZ0JaUGp6?=
- =?utf-8?B?dUpxbmhIUkIzQzJsWHhjSmNURFpjdEdwWEtaYjZmYmRvdVUwMWhBSU9OTzVI?=
- =?utf-8?B?c21jRjFyeW9qM3M5L3ZVUXdZcHhXQktWSUU5WHlVL0x5NmFOajRzUmFBd0Fs?=
- =?utf-8?B?UVlJN0ZyT3ZEWFVERDJ6MXc1ellIWEJWZE9ubjFURnQ1SEFPYWJuMlhvNFY3?=
- =?utf-8?B?Nkp4dEdCNTlBWmNzb3Y1UWdQWTlrRDRKc1JjeTVJd00wYzJPQWVMOFEycTdz?=
- =?utf-8?B?dFgvNHJJc2lvczVGUlJSeG5ua2NwL1diMEdocmlRTDB6UWZ4RlpTcUN6NXUv?=
- =?utf-8?Q?dvxJg6scFdUqgT269LpG2SU=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55faa27e-3473-4d45-4f58-08dc918220b6
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bTRlZmN1VEh2a1YreVZaNitEOUVTYnZaQUIrcER5RW9TS25FcThFemFHY0Nm?=
+ =?utf-8?B?Q2o4b3Z0aXFCaXh3UktBTEtFZ0ZSMTFOa0pBWFJGck1VMHFFNnVMYTVrRGlH?=
+ =?utf-8?B?d2RwSlhWUUxZSTdMbEhhYzlzNGZjWmhxamQ3WWkvTDJiUTdiMFFxL1NpYk9Q?=
+ =?utf-8?B?MmNBLzRQMklQVmZkRGhISmRra3hsWWMvbFNrTG5ibTdBMnN2Wjh5b3R6T0cw?=
+ =?utf-8?B?Y1dWQ2lUUmR3aXYzZU5VdlFwdnVvSldvRnJ5cXh5TEFlTkY0UjdObDNXVXMy?=
+ =?utf-8?B?bzFzeVRPaUM4OWlMWkJ3VnBrbU9DYlYwUjFKMjRRZEdwdlNKVXlLSWtBdWJr?=
+ =?utf-8?B?Q1VhblRWN1QwN2JQUExWOWM4SE9hMUZ3Q1ZPQUhoQTZRb1ZOa3A4ZU9iMkpP?=
+ =?utf-8?B?bldQR1F3cm9HVUc3VDRlSlJFRTNTZlg0ZFNZbU02YUpqcHMzMXc3UGkzaDV2?=
+ =?utf-8?B?dUE5QWdpR1ZBU0dvSTJ2Q1hNWXFka2pscGpYWExUcHZMZXptSU1pUFZvd1RD?=
+ =?utf-8?B?dnI3Rk1RRmNjRWNFZ3M1WmhibkwwaEtmVDQzSDJJTXNLRXg0Y0RiTmJwTjdw?=
+ =?utf-8?B?NE1PdE43bVdUckE0azNUS1RNbituSERJTDJhRHoxVXdBdXhMVk44VStpc3Rl?=
+ =?utf-8?B?U05LTnhOUVd5TFdVamhiWEFyZk54bXhSekJRaGZpYXpBWi84aHFlR1hIOVJo?=
+ =?utf-8?B?eUM3Z0hUdnFjOVlJWWdVZWlRRjZyamEyZTU3eDI4dzFiTGJxbHRWZ0RGWC9Q?=
+ =?utf-8?B?Z3IvUmtTdnB0Sm1EU3R5cjlvSzVMZlcyWnZYOFNDRDk2cE16VVluOFRkZlhU?=
+ =?utf-8?B?MU41YXlCOTVoMDA1U0hTUjFQVmpCWE1LZGtucUFYTC92b29BaGVCMjcrVmJY?=
+ =?utf-8?B?SlZoZ005bkNibWJkV3Q5Tko3QmZYVUJEWWFKT2EyaXNDYjBQNXo0eVlRdXBa?=
+ =?utf-8?B?aEtQZGdHOWY3NWxLNU9IMUtIMzcyNGowcHpJVVhTaXRqc09COXdJaktzQkw5?=
+ =?utf-8?B?SUMxMU55U3NlQXRMY1cwV2YvckFWVTJnQitCeUttQ0JxMzdrUEwyS3VmOXNo?=
+ =?utf-8?B?QzFNeUF3OGh2cTNEUHg2RUpHWmlFWk5jMlN3RzZMNmpNWHRpbUl0TnFXZ3FH?=
+ =?utf-8?B?QUZFeERBK215YlVCdmtCVGlmUGd6UGN4SWN6bmNXNDB1U3BpK3FvR1NySVNS?=
+ =?utf-8?B?WEVVNTMwY3FrdWxXeWp3bnIzcnhFZ0RCY053SjNkQ3k2UkVubGZrN2E3b05h?=
+ =?utf-8?B?WDFVYWhFK1hXeGw5ZXVSSENSamZBMEp6bkpLeFRpUVFjRkFrYWtZNUk5Smwv?=
+ =?utf-8?B?ZDE4Qk41QzFhNnpSQVhoMTh6ZkgxVzFZMDJJMW1HNmFkOXdOM1ZCNktOV3Iv?=
+ =?utf-8?B?Q2JqN3M3TG1uVWNzNmF5SWxUL2FVa2ZlUVNJU2JjWUFzN1VPbGpVQ3VvQlJS?=
+ =?utf-8?B?Z3VNSmx6WDB2ZWFXMkR0dmlKWU5tSFhqQ28zMytKeUlqVjR2WEhydnVjQVJV?=
+ =?utf-8?B?R0x6MWp0TnpoS0JEeFpVcnkyQ0JZQkJ3b1VqUDhQYVNOM01jbVJLYU5VaXdm?=
+ =?utf-8?B?MHJMR3hlQ1dpMmJYTFFkdjRLYmc5T0JnS0Q4WTdVT0ZZSForNXZjMlZ5dm92?=
+ =?utf-8?B?SlBxQ1RCZlpic2dKZUNLclF4bDQrY3IvVSszcXNQeGVUbXpEVzJxc1N0clpz?=
+ =?utf-8?B?WEFTdC9ZSFV4S1hwZTFKL2Yzc1l2MGViZ0dzbnliTWdMR255QkRlVTR2WWxx?=
+ =?utf-8?B?cSt6LzJLQnpRNjZzNzNlSnpMTmhWV3dRQndRczExMjlqRG4yQ2MyTEIzS3Jh?=
+ =?utf-8?B?MGdpUVB5UUkyMzJFdlc5TUUvTFllcjQvczk1WDhTVVAxVEttS1RYTzdaQ0px?=
+ =?utf-8?B?bEN0Q3NKcnB0UEIyVTZiZHNGSGNWbTJVZEQvT0Rza1Z4blM3OUtCTFN4clRT?=
+ =?utf-8?B?WUN1NzZkMzk0VWg4aWRydEYrZWc4ZEVxT3ZFWGpyZDFBZUNPcHluQ09kc2xj?=
+ =?utf-8?B?ZVByYmp3WU8reDI3Rmx3OVBEOTY1V1UwQnY5K2Qvb0VSZ3RlMlhSVWRpUVV3?=
+ =?utf-8?B?M3Jma2pSWEZJbmduOG1OSkNMdWZWUHNPc1pNWmZhUlVBTkZESFFSYjkvV0ZE?=
+ =?utf-8?B?RTlEZ0FySjRROWNoY0lPeG52NHpsYkxFTElCSis4dDFKbHBzTDdBYkFPQm1N?=
+ =?utf-8?Q?58Xrxj8NNBMYELpeI8DeIc4=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fac6677-abd3-4fed-c367-08dc91823dfe
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 23:38:46.2521 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 23:39:35.3215 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: C4qkLTvipckmsuQis/bVS+K2XALTgzqs25uQPf9+Z2IAfY1IXb/fdijLEjHiZUJXnH6nLwN8cBRX6P8XlVuyPp+RMLDOlWAH7vb8z3QyzcI=
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZxWphW0Rm4kIjxUa9ayG2TLoy6WhIT/vQG0b9M28o9cS//vFSUvyknt350EyLBl655Akex1SkUNeGNleQ6JPw3qlnyFKIzpuniatzo90w8U=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4704
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -191,375 +195,287 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jun 20, 2024 at 01:00:43PM -0700, Ashutosh Dixit wrote:
+On Thu, Jun 20, 2024 at 01:00:44PM -0700, Ashutosh Dixit wrote:
 >Add the following tests:
->	* "invalid-create-userspace-config"
->	* "invalid-remove-userspace-config"
->	* "create-destroy-userspace-config"
->	* "whitelisted-registers-userspace-config"
+>* "map-oa-buffer"
+>* "invalid-map-oa-buffer"
+>* "non-privileged-map-oa-buffer"
+>* "non-privileged-access-vaddr"
+>* "privileged-forked-access-vaddr"
+>* "closed-fd-and-unmapped-access"
 >
 >Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
 >---
-> tests/intel/xe_oa.c | 333 ++++++++++++++++++++++++++++++++++++++++++++
-> 1 file changed, 333 insertions(+)
+> tests/intel/xe_oa.c | 251 ++++++++++++++++++++++++++++++++++++++++++++
+> 1 file changed, 251 insertions(+)
 >
 >diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
->index 12a76ef4a8..8e6de2db11 100644
+>index 8e6de2db11..30d1ed329f 100644
 >--- a/tests/intel/xe_oa.c
 >+++ b/tests/intel/xe_oa.c
->@@ -535,6 +535,12 @@ write_u64_file(const char *path, uint64_t val)
-> 	fclose(f);
+>@@ -4113,6 +4113,231 @@ test_oa_unit_concurrent_oa_buffer_read(void)
+> 	igt_waitchildren();
 > }
 >
->+static bool
->+try_sysfs_read_u64(const char *path, uint64_t *val)
+>+static void *map_oa_buffer(u32 *size)
 >+{
->+	return igt_sysfs_scanf(sysfs, path, "%"PRIu64, val) == 1;
+>+	void *vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+>+
+>+	igt_assert(vaddr != NULL);
+>+	*size = OA_BUFFER_SIZE;
+>+	return vaddr;
 >+}
 >+
-> static unsigned long rc6_residency_ms(void)
-> {
-> 	unsigned long value;
->@@ -3575,6 +3581,321 @@ test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
-> 	load_helper_fini();
-> }
->
->+static int __xe_oa_add_config(int fd, struct drm_xe_oa_config *config)
+>+static void invalid_param_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
 >+{
->+	int ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_ADD_CONFIG, config);
->+	if (ret < 0)
->+		ret = -errno;
->+	return ret;
+>+	void *oa_vaddr = NULL;
+>+
+>+	/* try a couple invalid mmaps */
+>+	/* bad prots */
+>+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_WRITE, MAP_PRIVATE, stream_fd, 0);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_EXEC, MAP_PRIVATE, stream_fd, 0);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* bad MAPs */
+>+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_SHARED, stream_fd, 0);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* bad size */
+>+	oa_vaddr = mmap(0, OA_BUFFER_SIZE + 1, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+
+>+	/* do the right thing */
+>+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+>+	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
+>+
+>+	munmap(oa_vaddr, OA_BUFFER_SIZE);
 >+}
 >+
->+static int xe_oa_add_config(int fd, struct drm_xe_oa_config *config)
+>+static void unprivileged_try_to_map_oa_buffer(void)
 >+{
->+	int config_id = __xe_oa_add_config(fd, config);
+>+	void *oa_vaddr;
 >+
->+	igt_debug("config_id=%i\n", config_id);
->+	igt_assert(config_id > 0);
->+
->+	return config_id;
+>+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+>+	igt_assert(oa_vaddr == MAP_FAILED);
+>+	igt_assert_eq(errno, EACCES);
 >+}
 >+
->+static void xe_oa_remove_config(int fd, uint64_t config_id)
+>+static void unprivileged_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
 >+{
->+	igt_assert_eq(intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config_id), 0);
->+}
->+
->+static bool has_xe_oa_userspace_config(int fd)
->+{
->+	uint64_t config = 0;
->+	int ret = intel_xe_perf_ioctl(fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config);
->+	igt_assert_eq(ret, -1);
->+
->+	igt_debug("errno=%i\n", errno);
->+
->+	return errno != EINVAL;
->+}
->+
->+#define SAMPLE_MUX_REG (intel_graphics_ver(devid) >= IP_VER(20, 0) ?	\
->+			0x13000 /* PES* */ : 0x9888 /* NOA_WRITE */)
->+
->+/**
->+ * SUBTEST: invalid-create-userspace-config
->+ * Description: Test invalid configs are rejected
->+ */
->+static void
->+test_invalid_create_userspace_config(void)
->+{
->+	struct drm_xe_oa_config config;
->+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
->+	const char *invalid_uuid = "blablabla-wrong";
->+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
->+	uint32_t invalid_mux_regs[] = { 0x12345678 /* invalid register */, 0x0 };
->+
->+	igt_require(has_xe_oa_userspace_config(drm_fd));
->+
->+	memset(&config, 0, sizeof(config));
->+
->+	/* invalid uuid */
->+	strncpy(config.uuid, invalid_uuid, sizeof(config.uuid));
->+	config.n_regs = 1;
->+	config.regs_ptr = to_user_pointer(mux_regs);
->+
->+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
->+
->+	/* invalid mux_regs */
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+	config.n_regs = 1;
->+	config.regs_ptr = to_user_pointer(invalid_mux_regs);
->+
->+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
->+
->+	/* empty config */
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+	config.n_regs = 0;
->+	config.regs_ptr = to_user_pointer(mux_regs);
->+
->+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
->+
->+	/* empty config with null pointer */
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+	config.n_regs = 1;
->+	config.regs_ptr = to_user_pointer(NULL);
->+
->+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EINVAL);
->+
->+	/* invalid pointer */
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+	config.n_regs = 42;
->+	config.regs_ptr = to_user_pointer((void *) 0xDEADBEEF);
->+
->+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EFAULT);
->+}
->+
->+/**
->+ * SUBTEST: invalid-remove-userspace-config
->+ * Description: Test invalid remove configs are rejected
->+ */
->+static void
->+test_invalid_remove_userspace_config(void)
->+{
->+	struct drm_xe_oa_config config;
->+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
->+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
->+	uint64_t config_id, wrong_config_id = 999999999;
->+	char path[512];
->+
->+	igt_require(has_xe_oa_userspace_config(drm_fd));
->+
->+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
->+
->+	/* Destroy previous configuration if present */
->+	if (try_sysfs_read_u64(path, &config_id))
->+		xe_oa_remove_config(drm_fd, config_id);
->+
->+	memset(&config, 0, sizeof(config));
->+
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+
->+	config.n_regs = 1;
->+	config.regs_ptr = to_user_pointer(mux_regs);
->+
->+	config_id = xe_oa_add_config(drm_fd, &config);
->+
->+	/* Removing configs without permissions should fail. */
 >+	igt_fork(child, 1) {
 >+		igt_drop_root();
+>+		unprivileged_try_to_map_oa_buffer();
+>+	}
+>+	igt_waitchildren();
+>+}
 >+
->+		intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &config_id, EACCES);
+>+static jmp_buf jmp;
+>+static void __attribute__((noreturn)) sigtrap(int sig)
+>+{
+>+	siglongjmp(jmp, sig);
+>+}
+>+
+>+static void try_invalid_access(void *vaddr)
+>+{
+>+	sighandler_t old_sigsegv;
+>+	uint32_t dummy;
+>+
+>+	old_sigsegv = signal(SIGSEGV, sigtrap);
+>+	switch (sigsetjmp(jmp, SIGSEGV)) {
+>+	case SIGSEGV:
+>+		break;
+>+	case 0:
+>+		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
+>+		(void) dummy;
+>+	default:
+>+		igt_assert(!"reached");
+>+		break;
+>+	}
+>+	signal(SIGSEGV, old_sigsegv);
+>+}
+>+
+>+static void map_oa_buffer_unprivilege_access(const struct drm_xe_engine_class_instance *hwe)
+>+{
+>+	void *vaddr;
+>+	uint32_t size;
+>+
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	igt_fork(child, 1) {
+>+		igt_drop_root();
+>+		try_invalid_access(vaddr);
 >+	}
 >+	igt_waitchildren();
 >+
->+	/* Removing invalid config ID should fail. */
->+	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &wrong_config_id, ENOENT);
+>+	munmap(vaddr, size);
+>+}
 >+
->+	xe_oa_remove_config(drm_fd, config_id);
+>+static void map_oa_buffer_forked_access(const struct drm_xe_engine_class_instance *hwe)
+>+{
+>+	void *vaddr;
+>+	uint32_t size;
+>+
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	igt_fork(child, 1) {
+>+		try_invalid_access(vaddr);
+>+	}
+>+	igt_waitchildren();
+>+
+>+	munmap(vaddr, size);
+>+}
+>+
+>+static void check_reports(void *oa_vaddr, uint32_t oa_size,
+>+			  const struct drm_xe_engine_class_instance *hwe)
+>+{
+>+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+>+	uint64_t fmt = test_set->perf_oa_format;
+>+	struct oa_format format = get_oa_format(fmt);
+>+	size_t report_words = format.size >> 2;
+>+	uint32_t *reports;
+>+	uint32_t timer_reports = 0;
+>+
+>+	for (reports = (uint32_t *)oa_vaddr;
+>+	     timer_reports < 20 && reports[0] && oa_timestamp(reports, fmt);
+>+	     reports += report_words) {
+>+		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
+>+			continue;
+>+
+>+		timer_reports++;
+>+		if (timer_reports >= 3)
+>+			sanity_check_reports(reports - 2 * report_words,
+>+					     reports - report_words, fmt);
+>+	}
+>+
+>+	igt_assert(timer_reports >= 3);
+>+}
+>+
+>+static void check_reports_from_mapped_buffer(const struct drm_xe_engine_class_instance *hwe)
+>+{
+>+	void *vaddr;
+>+	uint32_t size;
+>+	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
+>+
+>+	vaddr = map_oa_buffer(&size);
+>+
+>+	/* wait for approx 100 reports */
+>+	usleep(100 * period_us);
+>+	check_reports(vaddr, size, hwe);
+>+
+>+	munmap(vaddr, size);
 >+}
 >+
 >+/**
->+ * SUBTEST: create-destroy-userspace-config
->+ * Description: Test add/remove OA configs
+>+ * SUBTEST: closed-fd-and-unmapped-access
+>+ * Description: Unmap buffer, close fd and try to access
 >+ */
->+static void
->+test_create_destroy_userspace_config(void)
+>+static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_instance *hwe)
 >+{
->+	struct drm_xe_oa_config config;
->+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
->+	uint32_t mux_regs[] = { SAMPLE_MUX_REG, 0x0 };
->+	uint32_t regs[100];
->+	int i;
->+	uint64_t config_id;
 >+	uint64_t properties[] = {
 >+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
->+
->+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0, /* Filled later */
->+
->+		/* OA unit configuration */
 >+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+>+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
 >+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
 >+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
->+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
->+		DRM_XE_OA_PROPERTY_OA_METRIC_SET
 >+	};
 >+	struct intel_xe_oa_open_prop param = {
 >+		.num_properties = ARRAY_SIZE(properties) / 2,
 >+		.properties_ptr = to_user_pointer(properties),
 >+	};
->+	char path[512];
+>+	void *vaddr;
+>+	uint32_t size;
+>+	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
 >+
->+	igt_require(has_xe_oa_userspace_config(drm_fd));
->+
->+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
->+
->+	/* Destroy previous configuration if present */
->+	if (try_sysfs_read_u64(path, &config_id))
->+		xe_oa_remove_config(drm_fd, config_id);
->+
->+	memset(&config, 0, sizeof(config));
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+
->+	regs[0] = mux_regs[0];
->+	regs[1] = mux_regs[1];
->+	/* Flex EU counters */
->+	for (i = 1; i < ARRAY_SIZE(regs) / 2; i++) {
->+		regs[i * 2] = 0xe458; /* EU_PERF_CNTL0 */
->+		regs[i * 2 + 1] = 0x0;
->+	}
->+	config.regs_ptr = to_user_pointer(regs);
->+	config.n_regs = ARRAY_SIZE(regs) / 2;
->+
->+	/* Creating configs without permissions shouldn't work. */
->+	igt_fork(child, 1) {
->+		igt_drop_root();
->+
->+		igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EACCES);
->+	}
->+	igt_waitchildren();
->+
->+	/* Create a new config */
->+	config_id = xe_oa_add_config(drm_fd, &config);
->+
->+	/* Verify that adding the another config with the same uuid fails. */
->+	igt_assert_eq(__xe_oa_add_config(drm_fd, &config), -EADDRINUSE);
->+
->+	/* Try to use the new config */
->+	properties[3] = config_id;
 >+	stream_fd = __perf_open(drm_fd, &param, false);
+>+	vaddr = map_oa_buffer(&size);
 >+
->+	/* Verify that destroying the config doesn't yield any error. */
->+	xe_oa_remove_config(drm_fd, config_id);
+>+	usleep(100 * period_us);
+>+	check_reports(vaddr, size, hwe);
 >+
->+	/* Read the config to verify shouldn't raise any issue. */
->+	config_id = xe_oa_add_config(drm_fd, &config);
->+
+>+	munmap(vaddr, size);
 >+	__perf_close(stream_fd);
 >+
->+	xe_oa_remove_config(drm_fd, config_id);
+>+	try_invalid_access(vaddr);
 >+}
 >+
 >+/**
->+ * SUBTEST: whitelisted-registers-userspace-config
->+ * Description: Test that an OA config constructed using whitelisted register works
+>+ * SUBTEST: map-oa-buffer
+>+ * Description: Verify mapping of oa buffer
+>+ *
+>+ * SUBTEST: invalid-map-oa-buffer
+>+ * Description: Verify invalid mappings of oa buffer
+>+ *
+>+ * SUBTEST: non-privileged-map-oa-buffer
+>+ * Description: Verify if non-privileged user can map oa buffer
+>+ *
+>+ * SUBTEST: non-privileged-access-vaddr
+>+ * Description: Verify if non-privileged user can map oa buffer
+>+ *
+>+ * SUBTEST: privileged-forked-access-vaddr
+>+ * Description: Verify that forked access to mapped buffer fails
 >+ */
->+/* Registers required by userspace. This list should be maintained by
->+ * the OA configs developers and agreed upon with kernel developers as
->+ * some of the registers have bits used by the kernel (for workarounds
->+ * for instance) and other bits that need to be set by the OA configs.
->+ */
->+static void
->+test_whitelisted_registers_userspace_config(void)
+>+typedef void (*map_oa_buffer_test_t)(const struct drm_xe_engine_class_instance *hwe);
+>+static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
+>+				  const struct drm_xe_engine_class_instance *hwe)
 >+{
->+	struct drm_xe_oa_config config;
->+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
->+	uint32_t regs[600];
->+	uint32_t i;
->+	uint32_t oa_start_trig1, oa_start_trig8;
->+	uint32_t oa_report_trig1, oa_report_trig8;
->+	uint64_t config_id;
->+	char path[512];
->+	int ret;
->+	const uint32_t flex[] = {
->+		0xe458,
->+		0xe558,
->+		0xe658,
->+		0xe758,
->+		0xe45c,
->+		0xe55c,
->+		0xe65c
+>+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+>+	uint64_t properties[] = {
+>+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+>+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+>+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+>+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+>+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
+>+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
+>+	};
+>+	struct intel_xe_oa_open_prop param = {
+>+		.num_properties = ARRAY_SIZE(properties) / 2,
+>+		.properties_ptr = to_user_pointer(properties),
 >+	};
 >+
->+	igt_require(has_xe_oa_userspace_config(drm_fd));
+>+	stream_fd = __perf_open(drm_fd, &param, false);
 >+
->+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
+>+	igt_assert(test_with_fd_open);
+>+	test_with_fd_open(hwe);
 >+
->+	if (try_sysfs_read_u64(path, &config_id))
->+		xe_oa_remove_config(drm_fd, config_id);
->+
->+	memset(&config, 0, sizeof(config));
->+	memcpy(config.uuid, uuid, sizeof(config.uuid));
->+
->+	oa_start_trig1 = 0xd900;
->+	oa_start_trig8 = 0xd91c;
->+	oa_report_trig1 = 0xd920;
->+	oa_report_trig8 = 0xd93c;
->+
->+	/* b_counters_regs: OASTARTTRIG[1-8] */
->+	for (i = oa_start_trig1; i <= oa_start_trig8; i += 4) {
->+		regs[config.n_regs * 2] = i;
->+		regs[config.n_regs * 2 + 1] = 0;
->+		config.n_regs++;
->+	}
->+	/* b_counters_regs: OAREPORTTRIG[1-8] */
->+	for (i = oa_report_trig1; i <= oa_report_trig8; i += 4) {
->+		regs[config.n_regs * 2] = i;
->+		regs[config.n_regs * 2 + 1] = 0;
->+		config.n_regs++;
->+	}
->+
->+	/* Flex EU registers, only from Gen8+. */
->+	for (i = 0; i < ARRAY_SIZE(flex); i++) {
->+		regs[config.n_regs * 2] = flex[i];
->+		regs[config.n_regs * 2 + 1] = 0;
->+		config.n_regs++;
->+	}
->+
->+	/* Mux registers (too many of them, just checking bounds) */
->+	/* NOA_WRITE */
->+	regs[config.n_regs * 2] = SAMPLE_MUX_REG;
->+	regs[config.n_regs * 2 + 1] = 0;
->+	config.n_regs++;
->+
->+	/* NOA_CONFIG */
->+	/* Prior to Xe2 */
->+	if (intel_graphics_ver(devid) < IP_VER(20, 0)) {
->+		regs[config.n_regs * 2] = 0xD04;
->+		regs[config.n_regs * 2 + 1] = 0;
->+		config.n_regs++;
->+		regs[config.n_regs * 2] = 0xD2C;
->+		regs[config.n_regs * 2 + 1] = 0;
->+		config.n_regs++;
->+	}
->+	/* Prior to MTLx */
->+	if (intel_graphics_ver(devid) < IP_VER(12, 70)) {
->+		/* WAIT_FOR_RC6_EXIT */
->+		regs[config.n_regs * 2] = 0x20CC;
->+		regs[config.n_regs * 2 + 1] = 0;
->+		config.n_regs++;
->+	}
->+
->+	config.regs_ptr = (uintptr_t) regs;
->+
->+	/* Create a new config */
->+	ret = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_ADD_CONFIG, &config);
->+	igt_assert(ret > 0); /* Config 0 should be used by the kernel */
->+	config_id = ret;
->+
->+	xe_oa_remove_config(drm_fd, config_id);
+>+	__perf_close(stream_fd);
 >+}
 >+
-> /**
->  * SUBTEST: xe-ref-count
->  * Description: Check that an open oa stream holds a reference on the xe module
->@@ -3979,6 +4300,18 @@ igt_main
-> 			test_stress_open_close(hwe);
-> 	}
+> static const char *xe_engine_class_name(uint32_t engine_class)
+> {
+> 	switch (engine_class) {
+>@@ -4312,6 +4537,32 @@ igt_main
+> 	igt_subtest("whitelisted-registers-userspace-config")
+> 		test_whitelisted_registers_userspace_config();
 >
->+	igt_subtest("invalid-create-userspace-config")
->+		test_invalid_create_userspace_config();
+>+	igt_subtest_group {
+>+		igt_subtest_with_dynamic("map-oa-buffer")
+>+			__for_one_hwe_in_oag(hwe)
+>+				test_mapped_oa_buffer(check_reports_from_mapped_buffer, hwe);
 >+
->+	igt_subtest("invalid-remove-userspace-config")
->+		test_invalid_remove_userspace_config();
+>+		igt_subtest_with_dynamic("invalid-map-oa-buffer")
+>+			__for_one_hwe_in_oag(hwe)
+>+				test_mapped_oa_buffer(invalid_param_map_oa_buffer, hwe);
 >+
->+	igt_subtest("create-destroy-userspace-config")
->+		test_create_destroy_userspace_config();
+>+		igt_subtest_with_dynamic("non-privileged-map-oa-buffer")
+>+			__for_one_hwe_in_oag(hwe)
+>+				test_mapped_oa_buffer(unprivileged_map_oa_buffer, hwe);
 >+
->+	igt_subtest("whitelisted-registers-userspace-config")
->+		test_whitelisted_registers_userspace_config();
+>+		igt_subtest_with_dynamic("non-privileged-access-vaddr")
+>+			__for_one_hwe_in_oag(hwe)
+>+				test_mapped_oa_buffer(map_oa_buffer_unprivilege_access, hwe);
+>+
+>+		igt_subtest_with_dynamic("privileged-forked-access-vaddr")
+>+			__for_one_hwe_in_oag(hwe)
+>+				test_mapped_oa_buffer(map_oa_buffer_forked_access, hwe);
+>+
+>+		igt_subtest_with_dynamic("closed-fd-and-unmapped-access")
+>+			__for_one_hwe_in_oag(hwe)
+>+				closed_fd_and_unmapped_access(hwe);
+>+	}
 >+
 > 	igt_fixture {
 > 		/* leave sysctl options in their default state... */
