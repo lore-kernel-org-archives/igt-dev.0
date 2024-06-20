@@ -4,120 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC536C27C79
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 06:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4D1BC27C79
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 06:15:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B05E10E2D7;
-	Thu, 20 Jun 2024 06:15:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 59A6910E2D7;
+	Thu, 20 Jun 2024 06:15:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="2PPTj0Gm";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="oSn/Xrmw";
 	dkim-atps=neutral
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2045.outbound.protection.outlook.com [40.107.102.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4D7510E2E0
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 06:15:25 +0000 (UTC)
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2083.outbound.protection.outlook.com [40.107.92.83])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C7F1E10E2D7
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 06:15:53 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Oz03OoojCpPeuWU8Ot4kDFglaNd0Cp6xiUN52jCH3d6eWV/+s8M1pC+IvLP1952RGQfkwaqefnTKwRBFlx8gphp7I78FrBXN+1Y6FEC9CGIRxpPYwv0KwLweFB1GYhw1f7CcBS1wNh8NwIdgOROwNgJqNnBksvms2VH71blldqZNfIovisautL7K0CtBbq+WfdmqyHW4O3WAPif6OlVtOqcLWJde/MbfFg6AfKsSZqUhffhX4BanAQyfKCbb/FacaM4S6CncgHsmhnW3sZQIMit6tTxXXZkxM2QDxJ47cCpCjq7iTusa+mNq7nSAYjLoBpTx5OBnjWrEB4TLdufSUw==
+ b=IuTNeuITW7ZIMo/Raa3HsFhYL6SWx205UxoM9ZbBL4Kwy2kX4HNxiBBAxfXUL5BaI+WMumzppfRPmjheLEZHUdp0FBQuL2Tn8R6FHwwYyyD75nlcmGCDjZvoNCkR4kIhSfW+5/nMqxYoLW0p/cOxevB/ry7XeyP/xqk35VNfASQxpv2jkNazXtd2Na8J4Iy+g4gunFVouJRSnJ2+HuVOP1BBqz05Y0LEH1TeLBQlLgQDJPvj+5iNd8j3uy65R+wVfX4QbaIEHQHF6iQ9ZDk9QXyhbj8p/PjMgsoxuVYifFLenZ4dwT0CUEGufWCAdLIiuz5Rw3Vv9goWVZHCiUB/bQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IHaF38A4FuC6rSDgRQdLALaRFcdNvoJiUEdiYYITjWE=;
- b=ihUT/E7PJj6JSPf4zS19PYgVbvUSWFd4pj1rXliXhYj1Fbwzco8nEJLyt5lLITEJ3OErkHPgwifeKgZztSg6B2YIaweQMugz8t5y0LXbs1TZ8ATAYIUzBxJj04F8c4lomhuLNBUmpv15RczpJwGEewz1yn0ouQ+XhxtQ6f+IYw+ouAmBLoJ3pAFvhMD0FB2dgrdJZMBhsTaHJDrimK+dZ15zf+/nENaKAnhZnNjKlN0S4al9YjBB9FWPB7LNdze0vXKbqTgPKi02ZI6Scg89eGK794Gcwk+AEsM3wO/d4Ib6BpTI3croC+mo4koc6G1c9EBNtPTXuihD72by/NosLQ==
+ bh=P0yQXhwTXT1lXa+jySSFkmJrVaRgE2zN61vq7qs3CF4=;
+ b=YtEoGWHyjleUe0TLFAYzenUEfnh5BkqBdNX5q2LBQNp8nRmEXgW1q5IBns/7mrNUwOXrjzxnyQKKCFMR3lsaV2Gz+sQC0REOzHiFHVGEebw2//AqOZLw+HKzwhOOGp8yV+6HjllLgz4U7xiz7PZ5GLBklXyncYuEfX6a6fvWP0dX23tpkm2C/PrdgsvRFENOTAYBwoL+iDyFkY/E2+rIIOusUySMA3lS4/j1JKIWZH0EIjRNuvpW2O4n6gQ9ceT/+0CCW6oS8x4G1stN0CVwm/EcF6gow3Oxa7WHjlWsdIKVEgQ+KUQUIIkMzR0Vw+5jHl5DNxBB6PFJkzzWNN3EYQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=IHaF38A4FuC6rSDgRQdLALaRFcdNvoJiUEdiYYITjWE=;
- b=2PPTj0Gm7wo9sIn0/3p1xAAj15WiRBNgsvz3MesErOiXa+/acEBOEq74EXN3xBQkrMbkiu7F7z+e5a0X9nZN27v45991G/dEnDOEJc+ahXs16HY18hzIFQxprKd/uol6hcwIwgNFrhxZWb/dkrAUSn5ApMey9jv4raOFQVEnzCc=
-Received: from BYAPR01CA0048.prod.exchangelabs.com (2603:10b6:a03:94::25) by
- PH0PR12MB7862.namprd12.prod.outlook.com (2603:10b6:510:26d::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7677.31; Thu, 20 Jun 2024 06:15:22 +0000
-Received: from SJ1PEPF00002314.namprd03.prod.outlook.com
- (2603:10b6:a03:94:cafe::bd) by BYAPR01CA0048.outlook.office365.com
- (2603:10b6:a03:94::25) with Microsoft SMTP Server (version=TLS1_2,
+ bh=P0yQXhwTXT1lXa+jySSFkmJrVaRgE2zN61vq7qs3CF4=;
+ b=oSn/XrmwB2I+nUq1OaXdzHoOf44O3SsLVFGq8x6y7AiwE9BFqXE9nX/M5aTjnH3pPmso4oSaQohQ3Zu/60FqK0W3T7fQVLpT0ZEACTIsSzYcAdN+noZPnH8upVH5HFOmGvC9WM9unjxt5oSAwt+FU6rNw5GhcqYsG01eD1lAWQs=
+Received: from DM6PR05CA0039.namprd05.prod.outlook.com (2603:10b6:5:335::8) by
+ PH7PR12MB6633.namprd12.prod.outlook.com (2603:10b6:510:1ff::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Thu, 20 Jun
+ 2024 06:15:50 +0000
+Received: from DS3PEPF0000C37B.namprd04.prod.outlook.com
+ (2603:10b6:5:335:cafe::cc) by DM6PR05CA0039.outlook.office365.com
+ (2603:10b6:5:335::8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.33 via Frontend
- Transport; Thu, 20 Jun 2024 06:15:22 +0000
+ Transport; Thu, 20 Jun 2024 06:15:50 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00002314.mail.protection.outlook.com (10.167.242.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7677.15 via Frontend Transport; Thu, 20 Jun 2024 06:15:22 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ DS3PEPF0000C37B.mail.protection.outlook.com (10.167.23.5) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.15 via Frontend Transport; Thu, 20 Jun 2024 06:15:50 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Jun
- 2024 01:15:21 -0500
+ 2024 01:15:49 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Jun
+ 2024 01:15:49 -0500
 Received: from JesseDEV.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Thu, 20 Jun 2024 01:15:14 -0500
+ Transport; Thu, 20 Jun 2024 01:15:42 -0500
 From: Jesse Zhang <jesse.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, Jesse Zhang
- <jesse.zhang@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH 2/3] lib/amdgpu: add gfx12 to amd_dispatch test
-Date: Thu, 20 Jun 2024 14:15:13 +0800
-Message-ID: <20240620061513.2218555-1-jesse.zhang@amd.com>
+ <jesse.zhang@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>, Jiadong Zhu
+ <Jiadong.Zhu@amd.com>
+Subject: [PATCH 3/3] lib/amdgpu: fix gfx11 issue about amd_dispatch
+Date: Thu, 20 Jun 2024 14:15:41 +0800
+Message-ID: <20240620061541.2218620-1-jesse.zhang@amd.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: jesse.zhang@amd.com does not designate
+Received-SPF: None (SATLEXMB05.amd.com: jesse.zhang@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002314:EE_|PH0PR12MB7862:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1efcd5b7-adf6-4f39-3970-08dc90f05e0f
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C37B:EE_|PH7PR12MB6633:EE_
+X-MS-Office365-Filtering-Correlation-Id: 575505c1-943c-467a-379a-08dc90f06e98
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230037|36860700010|376011|1800799021|82310400023; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?nU0a17/LyZV0tqp7QJbU855ec61LTLG2K4PiUSNMPZxnzK3Xp6+YN+LK6Czq?=
- =?us-ascii?Q?oRZr7RkedlD3WqUaCzOEraZeYoyuMXh2Z/2HTnmTIBpH+xfjuUbIPB/MKR3H?=
- =?us-ascii?Q?YaPYt+Hzzu4nwsrG+3xkk6MYX0DyTBcEMT0iubQ9MPrxJk+TkBXGjdsh2API?=
- =?us-ascii?Q?XPQPNz5JXQLhMT/VTHnLw7i0pSDEInHZ4KoRBbBMuJ5RXKaNXOe8z4RCnJPz?=
- =?us-ascii?Q?M2AFOpvLDfIWk5KHKpkkngi2BcMf3tDOb7LR1gmZnSRHNx3fzlTfw8Z8ehlB?=
- =?us-ascii?Q?Hz93wuNtgJE2NekmWEexirPFYthboi64iv4qqG2xbACUwwR0v2GH3VdbtW70?=
- =?us-ascii?Q?Fp3js1BaVwV5DE/fz/WJz21ymhnZ+fHMZEUl9WoAB9BHWeqT+3ct5umu7UTe?=
- =?us-ascii?Q?2PMBkaRWRwWXVQ4TAC3G/u8oiewKqSfzPrzOTyYu0r4n/d0neTiyi786zhJn?=
- =?us-ascii?Q?mw23RIDJB3yL9iAQZezJ47ay1WkUmyQROR8RKQKti5ZmZTiqZPvNEyqftBGd?=
- =?us-ascii?Q?2QUCrecOMIM0ZqTpA4seB4ijQsu9JQfl4sOWYlFpMV/QQq2QotrWgNZmvIr5?=
- =?us-ascii?Q?/hz2w07LY9qNQLlTPJE1u+MCqdOgJdm/3omSGpA/bmJLbdY1CTWymrAZrOfF?=
- =?us-ascii?Q?8Yg17kgZsxWXWmp5C5DozBAXMlRHBzrc+oT7ogcx3VWjtb8k52iDuv3mhd/F?=
- =?us-ascii?Q?mLdKQNs/mp+GGJb+sltCLfC1j1/dqipC6+d2rMrl576a05sVWqxNR2JTdCC3?=
- =?us-ascii?Q?Ymiogg7d3IWSdqC/PsW87kNHFPR2mMjies3V4OHDvDjG1EsafAgPh0DLddjQ?=
- =?us-ascii?Q?cl0ni8D9QCwFASUP8DLPlH/7CEt0+vKM9PVOPjuVsbjMHuBbDAOCAIV6Delh?=
- =?us-ascii?Q?PKxyNTCLkm+HeskeMNVEAoFGdAYD6mKfKxCeD1L+iSLcdHX/sloLr58P1CVW?=
- =?us-ascii?Q?kPkAv9cREpAOI1tdgNG1ztx0oQjpeKhkkSpIJfr5tY7tRFSx32ufNAlgrzxk?=
- =?us-ascii?Q?BK4+ZC7wEpx9ruwd87svpx4ouDgtdK2XOtNv3GYKmUITfdXOQOmsYbHVF3l+?=
- =?us-ascii?Q?d6CiRG2+dZsVpEwW2PEvmAaRtiWQzZTtge5Kh06UBgV/6tDIkK910alXyvPp?=
- =?us-ascii?Q?IDJXyaoWiqnXqW2pnO24B7kHGVGN2Y0zw9df3nNeE0rB3aKEl8L463Wnb2X2?=
- =?us-ascii?Q?xDiqcX66wvpiJR3FzAVdMAaCHAKq7NrOl9HOXa22itu5nuYV9NrxYGxpKY8L?=
- =?us-ascii?Q?BKy5JFj4qA7oE5tPfOp3tbTrq3doyM0o+uFQUzaBDIZnRJjkLZA6vrw9klEH?=
- =?us-ascii?Q?ITuFieEp/2u1dh93KjJTu/Kvwzayb4sfp3UqQo3d4pw7chdKYMw2yVmE85Ni?=
- =?us-ascii?Q?eNji1p4B5ZvsNAbaH44AdMJUyNA6B/luVp0uRD+sea4FK82jtQ=3D=3D?=
+ ARA:13230037|36860700010|1800799021|82310400023|376011; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?oZYDoh7YzO9GKwm+fbqFhyrBlNJXwfL5dPxRXcVhI4PJEJm9Qv2dpJrsm2dz?=
+ =?us-ascii?Q?yFCbC4N1Qpz3zsW5XkzHI+JkSmLnIMBHlp421YnhAkrixiy+C40lWAJiQj7h?=
+ =?us-ascii?Q?byuFp+rpGlSqsWykLitPr/5Ew0k4r83TG+85xeAwpmBZR7HbnzAv0tPJgSfG?=
+ =?us-ascii?Q?odwJR8YEKDp7BLq7XLI831gip0hnPnVFGTMxdz+jc6qBHt6EtgLg3ew+7WVS?=
+ =?us-ascii?Q?IaZT0P+qFWZ6xFghAEWX+NqcihzaVGaaSebrQRK5iWjM7ZGADEcKf6KvxnOc?=
+ =?us-ascii?Q?GCLqsvQLF9smMymUAtwJ1p23MGWJW/c45gQBmsQGNJdTHCMnnNut3PMlJ20f?=
+ =?us-ascii?Q?9SXQbbHjdxvnt3qTMxoKUbco3edpbT3ONwYsNhAAD38Mum10oABsa6hlH8FW?=
+ =?us-ascii?Q?iY2Siw+Ah2cMqM79s48dD6y0j2/5i2EB0p/9xeWe0i8D3+DipvgmVYJmSoRh?=
+ =?us-ascii?Q?lE2fZRZfuF3KtWuOdoJFKB8HsBVlqpOLanREOvIt2xE3Pr1KEdOPFhjx2SGa?=
+ =?us-ascii?Q?xxjjeQvChIwtHeJ6Iaa6XUuWsMF1T3BUTtGgPIVb+i5cBHC6kNpFvVz3HtL2?=
+ =?us-ascii?Q?8lxXFHqrjIamRQ0IJ6j18bVb/ekIvdAGtMhsQi4EJXEEFzS3/FmHoABbduFd?=
+ =?us-ascii?Q?YsijFSrxhiyhtG9DW5Vk+cY1TVIo32jqcEafL2y/QMNBp/T5qCRK9X2ie2vv?=
+ =?us-ascii?Q?i/KRCxOntjudS7HNjtTHGBVrlIidvCQjViTC8pvRAvDrV1JYUTo7s8ERPXn0?=
+ =?us-ascii?Q?j9w6qlKwc9jgegwQc1Rj54l5Fbq6egldJ2QBMDr9jytgE5rDJLoDH8p+S4sU?=
+ =?us-ascii?Q?vO6NQaCoXQYH77qkY1B6Ttpj13T2s989HQz8NQ0JQAU/HA/gPkvggieAulUa?=
+ =?us-ascii?Q?XT3/FWYvgt/QUlN/7Ymuy/EoKhG3beOt98SGRzER81Wo2m7Za0X344lnBzpS?=
+ =?us-ascii?Q?UiIrMXE8TBRas8a9e4aFntnMapAOaxnJlW2GoVCPZsRo+WVDHTvgIn5e7sbW?=
+ =?us-ascii?Q?xM067loKnbwK1hp1G17zD7Wg4EDOwYeFKKJwQx7t2GdzihuQZAIM8hsv6TVf?=
+ =?us-ascii?Q?UO9dBnrTQtLRajO1e7e36kGfhy7L6rmStleMhKRznWcireo++oMBndffhDMr?=
+ =?us-ascii?Q?B8FbV+3damjH3/q2UOg/G4A4zqNWrVjxjnxb0B0PRmVF8h6lSxDtEjMkV0G3?=
+ =?us-ascii?Q?s4py95u+KJt3sQKhh7LZ2wPm4ZtP9L2ZVoxwnRkJnOwjXfCYFNFH50gsrxbf?=
+ =?us-ascii?Q?yTm4xjSqBvN/4zTjcN6/b8ho2LkRq8x4fA0x0a9hm/d7C1YQiP2WmQLK5bmI?=
+ =?us-ascii?Q?tzZTrJ7T2jKBSb6z8AyWKuyAZFZzEIXunyTfRdLQOolQlDSbqwVo0wux6LhL?=
+ =?us-ascii?Q?9ig+dHJ1Wc1cMrWNi8T+gSebjm7MDCA8tCZIMR5V34yRnUyVAQ=3D=3D?=
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230037)(36860700010)(376011)(1800799021)(82310400023); DIR:OUT;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230037)(36860700010)(1800799021)(82310400023)(376011); DIR:OUT;
  SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 06:15:22.2968 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1efcd5b7-adf6-4f39-3970-08dc90f05e0f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 06:15:50.0694 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 575505c1-943c-467a-379a-08dc90f06e98
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002314.namprd03.prod.outlook.com
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF0000C37B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7862
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6633
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -133,181 +139,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Enable gfx12 amd_dispatch test
+add some initialized register and fix some uncorrected register setting.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
 ---
- lib/amdgpu/amd_dispatch.c         | 16 ++++++++--
- lib/amdgpu/amd_dispatch_helpers.c |  2 +-
- lib/amdgpu/amd_shaders.c          | 52 +++++++++++++++++++++++++++++++
- 3 files changed, 67 insertions(+), 3 deletions(-)
+ lib/amdgpu/amd_dispatch.c         |  2 +-
+ lib/amdgpu/amd_dispatch_helpers.c | 34 ++++++++++++++++++++-----------
+ lib/amdgpu/amd_shaders.c          |  3 +--
+ 3 files changed, 24 insertions(+), 15 deletions(-)
 
 diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
-index 040381a11..b739ce64d 100644
+index b739ce64d..df7d56ea7 100644
 --- a/lib/amdgpu/amd_dispatch.c
 +++ b/lib/amdgpu/amd_dispatch.c
-@@ -87,6 +87,8 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
- 		base_cmd->emit(base_cmd, 0x1104bfac);
- 	else if (version == 11)
- 		base_cmd->emit(base_cmd, 0x1003dfac);
-+	else if (version == 12)
-+		base_cmd->emit(base_cmd, 0x1203dfac);
+@@ -345,7 +345,7 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
+ 	int r, r2;
  
- 	/* Sets a range of pixel shader constants */
- 	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
-@@ -239,6 +241,8 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 		base_cmd->emit(base_cmd, 0x1104bfac);
- 	else if (version == 11)
- 		base_cmd->emit(base_cmd, 0x1003dfac);
-+	else if (version == 12)
-+		base_cmd->emit(base_cmd, 0x1203dfac);
+ 	int bo_dst_size = 0x4000000;
+-	int bo_shader_size = 0x400000;
++	int bo_shader_size = 0x4000000;
+ 	int bo_cmd_size = 4096;
  
- 	/* Writes the UAV constant data to the SGPRs. */
- 	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
-@@ -252,6 +256,8 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 		base_cmd->emit(base_cmd, 0x1104bfac);
- 	else if (version == 11)
- 		base_cmd->emit(base_cmd, 0x1003dfac);
-+	else if (version == 12)
-+		base_cmd->emit(base_cmd, 0x1203dfac);
- 
- 	/* clear mmCOMPUTE_RESOURCE_LIMITS */
- 	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-@@ -410,6 +416,8 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
- 		base_cmd->emit(base_cmd, 0x1104bfac);
- 	else if (version == 11)
- 		base_cmd->emit(base_cmd, 0x1003dfac);
-+	else if (version == 12)
-+		base_cmd->emit(base_cmd, 0x1203dfac);
- 
- 
- 	/* Writes the UAV constant data to the SGPRs. */
-@@ -422,6 +430,10 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
- 		base_cmd->emit(base_cmd, 0x74fac);
- 	else if (version == 10)
- 		base_cmd->emit(base_cmd, 0x1104bfac);
-+	else if (version == 11)
-+		base_cmd->emit(base_cmd, 0x1003dfac);
-+	else if (version == 12)
-+		base_cmd->emit(base_cmd, 0x1203dfac);
- 
- 
- 	/* clear mmCOMPUTE_RESOURCE_LIMITS */
-@@ -509,7 +521,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
- 
- 	version = info.hw_ip_version_major;
--	if (version != 9 && version != 10 && version != 11) {
-+	if (version != 9 && version != 10 && version != 11 && version != 12) {
- 		igt_info("SKIP ... unsupported gfx version %d\n", version);
- 		return;
- 	}
-@@ -536,7 +548,7 @@ void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_ty
- 		igt_info("SKIP ... as there's no graphics ring\n");
- 
- 	version = info.hw_ip_version_major;
--	if (version != 9 && version != 10 && version != 11) {
-+	if (version != 9 && version != 10 && version != 11 && version != 12) {
- 		igt_info("SKIP ... unsupported gfx version %d\n", version);
- 		return;
- 	}
+ 	struct amdgpu_cs_request ibs_request = {0};
 diff --git a/lib/amdgpu/amd_dispatch_helpers.c b/lib/amdgpu/amd_dispatch_helpers.c
-index 11ce8284a..1c7413922 100644
+index 1c7413922..b0a5f550e 100644
 --- a/lib/amdgpu/amd_dispatch_helpers.c
 +++ b/lib/amdgpu/amd_dispatch_helpers.c
-@@ -138,7 +138,7 @@ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr
- 	base->emit(base, shader_addr >> 8);
- 	base->emit(base, shader_addr >> 40);
- 	/* write sh regs */
--	if (version == 11) {
-+	if ((version == 11) || (version == 12)) {
- 		for (j = 0; j < bufferclear_cs_shader_registers_num_gfx11; j++) {
- 			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
- 			/* - Gfx11ShRegBase */
+@@ -70,8 +70,20 @@
+ 		base->emit(base, PACKET3(PACKET3_SET_UCONFIG_REG, 1));
+ 		base->emit(base, 0x7b);
+ 		base->emit(base, 0x20);
++	} else if (version == 11) {
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		base->emit(base, 0x222);
++		base->emit(base, 0);
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++		base->emit(base, 0x224);
++		base->emit(base, 0);
++		base->emit(base, 0);
++		base->emit(base, 0);
++		base->emit(base, 0);
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		base->emit(base, 0x22a);
++		base->emit(base, 0);
+ 	}
+-
+ 	return base->cdw - i;
+ }
+ 
+@@ -85,27 +97,20 @@ int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base * base, uint32_t version
+  		base->emit(base, 0x216);
+  		base->emit(base, 0xffffffff);
+  		base->emit(base, 0xffffffff);
+- 	} else if(version == 10) {
++	} else if((version == 10) || (version == 11)) {
+ 		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
+  		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
+  		base->emit(base, 0x30000216);
+  		base->emit(base, 0xffffffff);
+  		base->emit(base, 0xffffffff);
+-		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
+- 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
+- 		base->emit(base, 0x30000219);
+- 		base->emit(base, 0xffffffff);
+- 		base->emit(base, 0xffffffff);
+ 	}
+-
+-
+- 	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
+- 	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
++	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
++	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
+  	base->emit(base, 0x219);
+  	base->emit(base, 0xffffffff);
+  	base->emit(base, 0xffffffff);
+ 
+- 	return base->cdw - offset_prev;
++	return base->cdw - offset_prev;
+  }
+ 
+ 
+@@ -161,6 +166,11 @@ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr
+ 		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
+ 		base->emit(base,0x228);
+ 		base->emit(base, 0 );
++	} else if (version == 11) {
++		/* mmCOMPUTE_PGM_RSRC3 */
++		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		base->emit(base,0x228);
++		base->emit(base, 0x3f0 );
+ 	}
+ 	return base->cdw - offset_prev;
+ }
 diff --git a/lib/amdgpu/amd_shaders.c b/lib/amdgpu/amd_shaders.c
-index cbea12827..fad6dbced 100644
+index fad6dbced..e4931961c 100644
 --- a/lib/amdgpu/amd_shaders.c
 +++ b/lib/amdgpu/amd_shaders.c
-@@ -314,6 +314,29 @@ int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
- 		0xBF9F0000, 0xBF9F0000, 0xBF9F0000
+@@ -132,7 +132,6 @@ int amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id)
+ 	    0xd7460000, 0x04010c08, 0xe00c2000, 0x80000100,
+ 	    0xbf8c0f70, 0xe01ca000, 0x80010100, 0xbf810000
  	};
- 
-+	static const uint32_t bufferclear_cs_shader_gfx12[] =
-+	{
-+		0xB0802009, 0xBF930006, 0x360000FF, 0x000003FF,
-+		0x7E020205, 0x7E040206, 0x7E060207, 0xBF870004,
-+		0xD6460004, 0x04010C75, 0x7E000204, 0xC401C07C,
-+		0x80000000, 0x00000004, 0xBFB60003, 0xBFB00000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000
-+	};
- 	/**
- 	 * shader main
- 	 * asic(GFX11)
-@@ -352,6 +375,29 @@ int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
- 		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
- 		0xBF9F0000, 0xBF9F0000
+-
+ 	struct amdgpu_test_shader memcpy_cs_hang_slow_nv = {
+ 	        memcpy_cs_hang_slow_nv_codes,
+ 	        4,
+@@ -140,7 +139,7 @@ int amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id)
+ 	        1
  	};
-+	static const uint32_t buffercopy_cs_shader_gfx12[] =
-+	{
-+		0xB0802009, 0xBF930011, 0x360000FF, 0x000003FF,
-+		0xBF870001, 0xD6460002, 0x04010C75, 0xC400C07C,
-+		0x80000003, 0x00000002, 0xBFC00000, 0xC401C07C,
-+		0x80000803, 0x00000002, 0xBFB60003, 0xBFB00000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000,
-+		0xBF9F0000, 0xBF9F0000, 0xBF9F0000, 0xBF9F0000
-+	};
+ 	struct amdgpu_test_shader *shader;
+-	int i, loop = 0x10000;
++	int i, loop = 0x100000;
  
- 	uint32_t shader_size;
- 	const uint32_t *shader;
-@@ -367,6 +413,9 @@ int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
- 			} else if (version == 11) {
- 				shader = bufferclear_cs_shader_gfx11;
- 				shader_size = sizeof(bufferclear_cs_shader_gfx11);
-+			} else if (version == 12) {
-+				shader = bufferclear_cs_shader_gfx12;
-+				shader_size = sizeof(bufferclear_cs_shader_gfx12);
- 			}
- 			break;
- 		case CS_BUFFERCOPY:
-@@ -379,6 +428,9 @@ int  amdgpu_dispatch_load_cs_shader(uint8_t *ptr, int cs_type, uint32_t version)
- 			} else if (version == 11) {
- 				shader = buffercopy_cs_shader_gfx11;
- 				shader_size = sizeof(buffercopy_cs_shader_gfx11);
-+			} else if (version == 12) {
-+				shader = buffercopy_cs_shader_gfx12;
-+				shader_size = sizeof(buffercopy_cs_shader_gfx12);
- 			}
- 			break;
- 		case CS_HANG:
+ 	switch (family_id) {
+ 		case AMDGPU_FAMILY_AI:
 -- 
 2.25.1
 
