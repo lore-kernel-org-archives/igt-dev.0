@@ -4,62 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 059F6C2BA1A
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 12:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D87FBC27C79
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 12:37:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 948B910E983;
-	Thu, 20 Jun 2024 12:28:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46D7810E162;
+	Thu, 20 Jun 2024 12:37:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PQDMZMKT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MJAxEsEM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0208B10E95E
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 12:28:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88E3B10E162
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 12:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718886494; x=1750422494;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=51NvHjTLRmp2TucK1ZaFnYbfAuN+dPdzICx5kYvRBSQ=;
- b=PQDMZMKTaDBpiTYE0wjgwxXs6ruFDpLrqDSgCnfZlmOzcFdjHTJlQDUO
- UUqecgghfxC2rKH7kbeCJ9TWSaqwg1EzFd80LlHpvSwpB6OvqGx5PJiMN
- oBGIJEDKMI5YbPDlezDZZUowQW8RuHZ7ITnTUv8Wpf5b6u11zzBPJL8Tk
- tNfsopVE0wPppFnwATiLDXB0Uw5/z9JWIuMrgwDBpwhBbulUkkF1I0y5U
- V3+k4aYnOLBsNIabyNEd58SYlxWVsFvHSdQKiVh834WyONbKsBuAV8ezh
- pwRHZRFhjfORcaakUR6WSyvOEHQb0sgeNQ+0IW21j1/5JmL0jVn5hGTy8 w==;
-X-CSE-ConnectionGUID: L2AVM5ARSJWODjcTKl9Mjg==
-X-CSE-MsgGUID: 9VVDa0TiTgexDU1ZiD5DlQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="19634968"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="19634968"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 05:28:14 -0700
-X-CSE-ConnectionGUID: vsU0CpESSD64K9AtgUEJKQ==
-X-CSE-MsgGUID: 2E1pGDVvRsyJpEEqCnS6Dw==
+ t=1718887027; x=1750423027;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9+KNdiVIqarlg/BJaWDPq3MnYXKqe+4e0W2aZfLTvQ4=;
+ b=MJAxEsEMF/B78m4Xa+Bmd64Ft+xhcTldrvITIt6FShlN2xJ0FMWbf8bt
+ RgMn50lj8tEMEk8ptQ6J0OYQCViwxYRh271TEBouvmFmOIJ/To2lCAGRZ
+ eEgIvqPjA5epyXx5bbzDipHI8b7vCxDPEXr41+1QzXMBjWMmGdLnIuEV7
+ 8017IEQJREgvcCS+sLR2fITbmgaCLI1XHyYIdewFky9K3JgY6e/7buk14
+ 6qSEyq24cGCxSmQKT9iBxz+w4IZr8cdbfRRwAPSvzlribWIqjdd1Ninn5
+ 3FHopAyJrVK4GxhcoJ0xd6qQ+DbwCP1SENYEiVmpYMhluQ6DMkJsw92HK A==;
+X-CSE-ConnectionGUID: nnLLRvlZSRyk8lyV2Qy0aA==
+X-CSE-MsgGUID: 8KmLctrDSsmpFZe/vejHIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15566352"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="15566352"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 05:36:47 -0700
+X-CSE-ConnectionGUID: 2yu8hybKT5usgHz0MudeJw==
+X-CSE-MsgGUID: wS/S0aCMQLyhCi41guijnQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="46576991"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.245.80.70])
- ([10.245.80.70])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 05:28:12 -0700
-Message-ID: <3ab018ec-4c7a-407e-9d6a-652081589aa2@intel.com>
-Date: Thu, 20 Jun 2024 14:28:10 +0200
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="73431705"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 05:36:45 -0700
+Date: Thu, 20 Jun 2024 14:36:30 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>,
+ kunal1.joshi@intel.com
+Subject: Re: [PATCH i-g-t 1/2] tests/kms_3d: "1080p-left.png": No such file
+ or directory fix
+Message-ID: <20240620123630.fa56r36b36zwgfpb@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>,
+ kunal1.joshi@intel.com
+References: <20240618121638.231181-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/2] lib/intel_device_info: Add blitter/render
- definition for BMG
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20240620094822.524239-1-zbigniew.kempczynski@intel.com>
- <20240620094822.524239-2-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240620094822.524239-2-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240618121638.231181-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,33 +73,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Naladala,,
+On 2024-06-18 at 17:46:37 +0530, Naladala, Ramanaidu wrote:
+
+files are present after 'meson install' but if you also want them
+in <build> path, you can add something like this to tests/meson.build:
+
+foreach file : image_files
+    # put PNG files also in build folder
+    configure_file(input: file, output: file, copy: true)
+endforeach
+
+Nit.1: please create also coverletter and send it with all you patches
+
+Nit.2: do not send mails to 'Naladala@freedesktop.org', put in your
+global git config file (on Linux it is ~/.gitconfig )
+
+[user]
+        email = ramanaidu.naladala@intel.com
+        name = Ramanaidu Naladala
 
 
-On 20.06.2024 11:48, Zbigniew Kempczyński wrote:
-> Xe2 definition used for LNL works either for BMG so lets use it.
->
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-
-Regards
-Andrzej
-> ---
->   lib/intel_device_info.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
-> index 9250abd444..298047e741 100644
-> --- a/lib/intel_device_info.c
-> +++ b/lib/intel_device_info.c
-> @@ -522,7 +522,8 @@ static const struct intel_device_info intel_battlemage_info = {
->   	.has_4tile = true,
->   	.has_flatccs = true,
->   	.is_battlemage = true,
-> -	.codename = "battlemage"
-> +	.codename = "battlemage",
-> +	.cmds_info = &xe2_cmds_info,
->   };
->   
->   static const struct pci_id_match intel_device_match[] = {
-
+Regards,
+Kamil
+> [...cut...]
