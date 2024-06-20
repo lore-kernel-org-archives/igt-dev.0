@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AAD3C41513
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78586C3065E
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 971FD10EC0B;
-	Thu, 20 Jun 2024 20:01:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27FBB10EC5C;
+	Thu, 20 Jun 2024 20:01:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D/ozf/lG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Iyl8WIeh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C8F4710E884
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 536AF10EBCA
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718913660; x=1750449660;
+ t=1718913661; x=1750449661;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=UysXp0OydzeMCJ00T6h3GmWL5c5Qw306r/qIWs4Lnc8=;
- b=D/ozf/lGMl3Zdcxv8K4xduzK4Wu6vjlQwI//kgw/0Azf5S9c/KelDMEI
- R0pswy+kFhUrNsyIkHJp7Qabv6O0H4UZcj7hAPSnjH4z6lsf623h+XcLe
- SyPREMEGhDbaOPyeyGEu5l0LQI6MWFIe0TI29VWmlZkajPZQKvdnU68vm
- Yw2VVRm5Ubtn7rFiM72B14yt+Snk/cpipYjc+GEZfBhJiQVZzv5+Q87oW
- R6NP4GaVNGw5qprufKaWB7I3bR8Hp6ThyImIPWVgw0xQFEIhcuumj7NYr
- DTh4/2JonGE1050hn7bm5E9Glzs55NRlPVVi6TLND9pmfXv2gt5qQCMLx Q==;
-X-CSE-ConnectionGUID: N80FcCdyRCqoKxZReQeedQ==
-X-CSE-MsgGUID: jqbYPnrNThmPU6/YWrlWiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329335"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329335"
+ bh=4udvJSZq9oZ/CdG+lhLM5PYSf5x4ScbIriyucMVdYys=;
+ b=Iyl8WIehD/SLaLHEHWykP5vDPnAHwT973rAlxT7oFeP6fXXec4fOu4mM
+ t0MnfpnXszr0CEs+0tfwZTwEm9Mr/3fEEJJJkpHa3ATd7hit4s+L1FgLM
+ eE9SQgEW5C2tQPORxp+dJ+fDkwP3sT99qi+JIXPVahp1eNjL1Ge2vo4z7
+ ePye4TKrPeo+IPMal3mNuisinqiViJCjCJNRygDzAv7gRtAQnirX9WlBo
+ EfwhSMltHzgZjWoJep8iBOihE8/QhllNpBKgfp+djk6rPvd0/Ujhci0Xh
+ B+wZpEQCdHyY/29LVw27ZRs6xh6cfGG+WW5LxG0ekSdfU/HvH2ixTKxqD A==;
+X-CSE-ConnectionGUID: eVBbYvxtTKKijd1FULLjjQ==
+X-CSE-MsgGUID: sXSMHxtfTnCzv1oA81C7HQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329342"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329342"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:59 -0700
-X-CSE-ConnectionGUID: 0HV+8BQxQG6pwriGVxHM8Q==
-X-CSE-MsgGUID: tOHJT1vwQviTPEflgXqD2w==
+ 20 Jun 2024 13:01:00 -0700
+X-CSE-ConnectionGUID: p5EeOLzmRmmhuOmSuIZSLg==
+X-CSE-MsgGUID: YXX+vjg7T1uBw2AgcxI7pw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459856"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459869"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:59 -0700
+ 20 Jun 2024 13:01:00 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 17/28] tests/intel/xe_oa: Exclusive/concurrent access,
- rc6 and stress open close
-Date: Thu, 20 Jun 2024 13:00:42 -0700
-Message-ID: <20240620200054.3550653-18-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 24/28] xe/oa: Fix invalid escape warnings
+Date: Thu, 20 Jun 2024 13:00:49 -0700
+Message-ID: <20240620200054.3550653-25-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,321 +67,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the following tests:
-* "oa-unit-exclusive-stream-sample-oa"
-* "oa-unit-exclusive-stream-exec-q"
-* "oa-unit-concurrent-oa-buffer-read"
-* "rc6-disable"
-* "stress-open-close"
+From: José Roberto de Souza <jose.souza@intel.com>
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Fix this warnings:
+SyntaxWarning: invalid escape sequence '\
+
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 ---
- tests/intel/xe_oa.c | 264 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 264 insertions(+)
+ lib/xe/oa-configs/codegen.py           | 12 ++++++------
+ lib/xe/oa-configs/mdapi-xml-convert.py |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index c4a45568aa..12a76ef4a8 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -431,6 +431,23 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(int fd, int n)
- 	return hwe;
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index 9a7d57a33e..f078ef9498 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -162,13 +162,13 @@ hw_vars_mapping = {
  }
  
-+static struct drm_xe_oa_unit *nth_oa_unit(int fd, int n)
-+{
-+	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
-+	struct drm_xe_oa_unit *oau;
-+	u8 *poau;
-+
-+	poau = (u8 *)&qoa->oa_units[0];
-+	for (int i = 0; i < qoa->num_oa_units; i++) {
-+		oau = (struct drm_xe_oa_unit *)poau;
-+		if (i == n)
-+			return oau;
-+		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
-+	}
-+
-+	return NULL;
-+}
-+
- static char *
- pretty_print_oa_period(uint64_t oa_period_ns)
- {
-@@ -518,6 +535,14 @@ write_u64_file(const char *path, uint64_t val)
- 	fclose(f);
- }
+ def is_hw_var(name):
+-    m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
++    m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+     if m:
+         return True
+-    m = re.search('\$GtSlice([0-9]+)$', name)
++    m = re.search(r'\$GtSlice([0-9]+)$', name)
+     if m:
+         return True
+-    m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
++    m = re.search(r'\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+     if m:
+         return True
+     return name in hw_vars_mapping
+@@ -338,13 +338,13 @@ class Gen:
+             return self.hw_vars[name]['c']
+         if name in set.counter_vars:
+             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
+-        m = re.search('\$GtSlice([0-9]+)$', name)
++        m = re.search(r'\$GtSlice([0-9]+)$', name)
+         if m:
+             return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
+-        m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
++        m = re.search(r'\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+         if m:
+             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+-        m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
++        m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+         if m:
+             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         return None
+diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
+index ab4747ddd1..575b53e955 100755
+--- a/lib/xe/oa-configs/mdapi-xml-convert.py
++++ b/lib/xe/oa-configs/mdapi-xml-convert.py
+@@ -228,7 +228,7 @@ counter_blacklist = {
  
-+static unsigned long rc6_residency_ms(void)
-+{
-+	unsigned long value;
-+
-+	igt_assert(igt_sysfs_scanf(sysfs, "device/tile0/gt0/gtidle/idle_residency_ms", "%lu", &value) == 1);
-+	return value;
-+}
-+
- static uint64_t
- read_report_ticks(const uint32_t *report, enum intel_xe_oa_format_name format)
- {
-@@ -3461,6 +3486,95 @@ done:
- 	return ref_count;
- }
- 
-+/**
-+ * SUBTEST: rc6-disable
-+ * Description: Check that opening an OA stream disables RC6
-+ */
-+static void
-+test_rc6_disable(void)
-+{
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Include OA reports in samples */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	unsigned long rc6_start, rc6_end;
-+
-+	/* Verify rc6 is functional by measuring residency while idle */
-+	rc6_start = rc6_residency_ms();
-+	usleep(50000);
-+	rc6_end = rc6_residency_ms();
-+	igt_require(rc6_end != rc6_start);
-+
-+	/* While OA is active, we keep rc6 disabled so we don't lose metrics */
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	rc6_start = rc6_residency_ms();
-+	usleep(50000);
-+	rc6_end = rc6_residency_ms();
-+	igt_assert_eq(rc6_end - rc6_start, 0);
-+
-+	__perf_close(stream_fd);
-+
-+	/* But once OA is closed, we expect the device to sleep again */
-+	rc6_start = rc6_residency_ms();
-+	usleep(50000);
-+	rc6_end = rc6_residency_ms();
-+	igt_assert_neq(rc6_end - rc6_start, 0);
-+}
-+
-+/**
-+ * SUBTEST: stress-open-close
-+ * Description: Open/close OA streams in a tight loop
-+ */
-+static void
-+test_stress_open_close(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+
-+	load_helper_init();
-+	load_helper_run(HIGH);
-+
-+	igt_until_timeout(2) {
-+		int oa_exponent = 5; /* 5 micro seconds */
-+		uint64_t properties[] = {
-+			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+			/* XXX: even without periodic sampling we have to
-+			 * specify at least one sample layout property...
-+			 */
-+			DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+			/* OA unit configuration */
-+			DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+			DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+			DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+			DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+		};
-+		struct intel_xe_oa_open_prop param = {
-+			.num_properties = ARRAY_SIZE(properties) / 2,
-+			.properties_ptr = to_user_pointer(properties),
-+		};
-+
-+		stream_fd = __perf_open(drm_fd, &param, false);
-+		__perf_close(stream_fd);
-+	}
-+
-+	load_helper_stop();
-+	load_helper_fini();
-+}
-+
- /**
-  * SUBTEST: xe-ref-count
-  * Description: Check that an open oa stream holds a reference on the xe module
-@@ -3547,6 +3661,137 @@ test_sysctl_defaults(void)
- 	igt_assert_eq(paranoid, 1);
- }
- 
-+/**
-+ * SUBTEST: oa-unit-exclusive-stream-sample-oa
-+ * Description: Check that only a single stream can be opened on an OA unit (with sampling)
-+ *
-+ * SUBTEST: oa-unit-exclusive-stream-exec-q
-+ * Description: Check that only a single stream can be opened on an OA unit (for OAR/OAC)
-+*/
-+/*
-+ * Test if OA buffer streams can be independently opened on OA unit. Once a user
-+ * opens a stream, that oa unit is exclusive to the user, other users get -EBUSY on
-+ * trying to open a stream.
-+ */
-+static void
-+test_oa_unit_exclusive_stream(bool exponent)
-+{
-+	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-+	struct drm_xe_oa_unit *oau;
-+	u8 *poau = (u8 *)&qoa->oa_units[0];
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0),
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, 0,
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	uint32_t *exec_q = calloc(qoa->num_oa_units, sizeof(u32));
-+	uint32_t *perf_fd = calloc(qoa->num_oa_units, sizeof(u32));
-+	u32 vm = xe_vm_create(drm_fd, 0, 0);
-+	struct intel_xe_perf_metric_set *test_set;
-+	uint32_t i;
-+
-+	/* for each oa unit, open one random perf stream with sample OA */
-+	for (i = 0; i < qoa->num_oa_units; i++) {
-+		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, i);
-+
-+		oau = (struct drm_xe_oa_unit *)poau;
-+		if (oau->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
-+			continue;
-+		test_set = metric_set(hwe);
-+
-+		igt_debug("opening OA buffer with c:i %d:%d\n",
-+			  hwe->engine_class, hwe->engine_instance);
-+		exec_q[i] = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+		if (!exponent) {
-+			properties[10] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
-+			properties[11] = exec_q[i];
-+		}
-+
-+		properties[1] = oau->oa_unit_id;
-+		properties[5] = test_set->perf_oa_metrics_set;
-+		properties[7] = __ff(test_set->perf_oa_format);
-+		properties[9] = hwe->engine_instance;
-+		perf_fd[i] = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
-+		igt_assert(perf_fd[i] >= 0);
-+		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
-+	}
-+
-+	/* Xe KMD holds reference to the exec_q's so they shouldn't be really destroyed */
-+	for (i = 0; i < qoa->num_oa_units; i++)
-+		if (exec_q[i])
-+			xe_exec_queue_destroy(drm_fd, exec_q[i]);
-+
-+	/* for each oa unit make sure no other streams can be opened */
-+	poau = (u8 *)&qoa->oa_units[0];
-+	for (i = 0; i < qoa->num_oa_units; i++) {
-+		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, i);
-+		int err;
-+
-+		oau = (struct drm_xe_oa_unit *)poau;
-+		if (oau->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
-+			continue;
-+		test_set = metric_set(hwe);
-+
-+		igt_debug("try with exp with c:i %d:%d\n",
-+			  hwe->engine_class, hwe->engine_instance);
-+		/* case 1: concurrent access to OAG should fail */
-+		properties[1] = oau->oa_unit_id;
-+		properties[5] = test_set->perf_oa_metrics_set;
-+		properties[7] = __ff(test_set->perf_oa_format);
-+		properties[9] = hwe->engine_instance;
-+		properties[10] = DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT;
-+		properties[11] = oa_exp_1_millisec;
-+		intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EBUSY);
-+
-+		/* case 2: concurrent access to non-OAG unit should fail */
-+		igt_debug("try with exec_q with c:i %d:%d\n",
-+			  hwe->engine_class, hwe->engine_instance);
-+		exec_q[i] = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+		properties[10] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
-+		properties[11] = exec_q[i];
-+		errno = 0;
-+		err = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
-+		igt_assert(err < 0);
-+		igt_assert(errno == EBUSY || errno == ENODEV);
-+		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
-+	}
-+
-+	for (i = 0; i < qoa->num_oa_units; i++) {
-+		if (perf_fd[i])
-+			close(perf_fd[i]);
-+		if (exec_q[i])
-+			xe_exec_queue_destroy(drm_fd, exec_q[i]);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: oa-unit-concurrent-oa-buffer-read
-+ * Description: Test that we can read streams concurrently on all OA units
-+ */
-+static void
-+test_oa_unit_concurrent_oa_buffer_read(void)
-+{
-+	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-+
-+	igt_fork(child, qoa->num_oa_units) {
-+		struct drm_xe_engine_class_instance *hwe = oa_unit_engine(drm_fd, child);
-+
-+		/* No OAM support yet */
-+		if (nth_oa_unit(drm_fd, child)->oa_unit_type != DRM_XE_OA_UNIT_TYPE_OAG)
-+			exit(0);
-+
-+		test_blocking(40 * 1000 * 1000, false, 5 * 1000 * 1000, hwe);
-+	}
-+	igt_waitchildren();
-+}
-+
- static const char *xe_engine_class_name(uint32_t engine_class)
- {
- 	switch (engine_class) {
-@@ -3715,6 +3960,25 @@ igt_main
- 		}
- 	}
- 
-+	igt_subtest_group {
-+		igt_subtest("oa-unit-exclusive-stream-sample-oa")
-+			test_oa_unit_exclusive_stream(true);
-+
-+		igt_subtest("oa-unit-exclusive-stream-exec-q")
-+			test_oa_unit_exclusive_stream(false);
-+
-+		igt_subtest("oa-unit-concurrent-oa-buffer-read")
-+			test_oa_unit_concurrent_oa_buffer_read();
-+	}
-+
-+	igt_subtest("rc6-disable")
-+		test_rc6_disable();
-+
-+	igt_subtest_with_dynamic("stress-open-close") {
-+		__for_one_hwe_in_oag(hwe)
-+			test_stress_open_close(hwe);
-+	}
-+
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
+ def underscore(name):
+     s = re.sub('MHz', 'Mhz', name)
+-    s = re.sub('\.', '_', s)
++    s = re.sub(r'\.', '_', s)
+     s = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', s)
+     s = re.sub('#', '_', s)
+     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s).lower()
 -- 
 2.41.0
 
