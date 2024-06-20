@@ -4,66 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1150DC2BA18
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 23:41:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F6AC2BA18
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 23:41:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AAD6710E8D0;
-	Thu, 20 Jun 2024 23:41:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C78010E870;
+	Thu, 20 Jun 2024 23:41:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J4AP8mw5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QpSC05lN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BA2A10E870
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 23:41:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D818810E870
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 23:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718926874; x=1750462874;
+ t=1718926896; x=1750462896;
  h=date:from:to:cc:subject:message-id:references:
  content-transfer-encoding:in-reply-to:mime-version;
- bh=YvwDj5I3PR4AA8mfJ+J6NWhq2dyY+D4EjhQ0/pQqpN8=;
- b=J4AP8mw5iBLP/arLf/lt4mPJemzCbCTnysx3KYrbLqabK6R1hXikL6Og
- 2AefGM8y5jXVh/zprkB5dstG3I+PwunQvE0WChykm+MQyTOGfbmUj+nLN
- yFo53UDfzZtQhEATteEGNlXAl6jzsGPKmzSM24gaY1i33d4lCj1mO8YdP
- Xcq/0sMLjfrciFcKLlLBvT5tZOzKd8mXdRjZrUQcy7mKfMj+fptx8w3sj
- pPBDfmsYdZ39yviIF7zxFGmaSpuMZdB2SQ/2P7Admykh15Wo8qbioSh6I
- AEpLElx2wwTcbG+vE0cNOG4pWcCFMloXMXoRm5cDfvpZaV16YJbUrvhUd A==;
-X-CSE-ConnectionGUID: Ow1JIU62TYmJt7Ye61rHlg==
-X-CSE-MsgGUID: deZfw3sBQVqSk9vKdmuuxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="15770947"
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="15770947"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 16:41:14 -0700
-X-CSE-ConnectionGUID: RRVPf6L6QQCBFXKVirznqg==
-X-CSE-MsgGUID: BXAmqFyQRfKkpQJHKYPnAQ==
+ bh=Mo6U1Fky/eOh31dHK2QxbcFXNArmdQ9PFIIq6XCG2CA=;
+ b=QpSC05lNFlZjZLNAamEWu6YvkbxJwp0jXZE7jaJrKWfaW8gfw00Fh2lu
+ V4q6QkAdopODLmMileGSsFDty8V6Sw6oOrhMjtwJ/GIdQsBvkahVpIbLu
+ Uq3X+vSUMBoX/n7M570nGiIHrJF5u9//lJzUdwS5pNrCrOJLSN7Xi8I9m
+ cygl1ai8RGtszQgJoHGtwKC9td+1Qy7jtORis0mdOpfLFxaFWC+CFzHlQ
+ PZduU1LCClfiIRuSJ9SeSnpZJz4pOIZKjDEUmyVFDOzupUBx3syC2s7Cc
+ OHYvlD7OSb7I/OVacRpQyk429kk30dJNJwX6+FxC02MuHmBuqNps4AJri A==;
+X-CSE-ConnectionGUID: Wm6EirS6RfaDVX64bMEX4g==
+X-CSE-MsgGUID: sLGFbjmWRpuJ32hMkECWGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="16056337"
+X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="16056337"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jun 2024 16:41:36 -0700
+X-CSE-ConnectionGUID: 2n0icpZfStGbCFTt3atv+w==
+X-CSE-MsgGUID: pwCeZ9mfQbCq4Tsj2a9WyQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="65653222"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 20 Jun 2024 16:41:13 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; d="scan'208";a="43083935"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 20 Jun 2024 16:41:36 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 20 Jun 2024 16:41:13 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.39; Thu, 20 Jun 2024 16:41:35 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 20 Jun 2024 16:41:12 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 20 Jun 2024 16:41:12 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.175)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Thu, 20 Jun 2024 16:41:35 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.176)
+ by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 20 Jun 2024 16:41:12 -0700
+ 15.1.2507.39; Thu, 20 Jun 2024 16:41:34 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IRcLxXUzhwzT+DozSwwBW8cS2GhjGtpg9LR4WwtnWlFAxxKnI2IKQUwmZ31gencV94wgNNP/eXjNGQAEgilgotJT3zeSY4/PhwjT0ECAc6S6ugv4WxxiQgqi2jb4jL+8N+LFQiEnRPCtjqhkc2vi2bTtMuwfx+zvTFClevUk90LnxLddmFtlY7o8YKvfQN55n+QMBeitKxaOh0egUV1jdzfPfY/YdvqirU0kshYK3IEZzl7Y5bS6rWrsr9QSf5YF0QBDEs1T21Mxt6X6PnPXk+OiznpEZojplPtgdvhDUwZ02DTAAxaQO0tq9Lodn0+jJVQMrbtaKna5QjqpTpnqYg==
+ b=m3P2K9tSeRezjiHWiOvfPNL6iW0C3j33jZABoykP2Ucj10tK8rn71x+8hhWEMDsFy9ZRTjoyjHWzMt5xOps2OG2BvnMw6JPLMjM3Z7Ydp4Y1yMJSjo6RdsWpvorlxSv4HHGpmnGwfwFfk9dXmObDMEqGLTKCsPeLmVJafutaXn1XewXf1IU5bhx2vB2UDHgiww7TR9q8wS+HNLgkY8hEE469W7Qqn2oFpLpBUWaYdhcvfDr/R6Hj67iGA95yr2D95VCbeyYqncY+6QH4nplkFqWygN6pJh1KGJuspdRwVMepeAGcJgSqRfLmeBbuKuEEYcH+3w6hV9vghB37tyNfHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uwUZW7UXa7ZKQSfry6Piz6XNydQp8r+jVmUgCGNT2Js=;
- b=nOPs5gIDqC1osSeETdY66QhAXNO4I2LE6kLKcFPoN7Zx23eJ9xt97fIxzELGTEtawrpR2lQp6eh+wzD9x8QfzQPbcPM6E3qP7wUkM+hFdI/am8E9G/Gi09bFgricIqoqyJb/gusjtXlWZr5EMderT9gqLjc7yEpc//Dyo+bCBmlvO2KCMGg97StFxRwgRlqCojN/gc7Ai0/veu8XzEBD6eJmZWSugpQRfPyB8JAC0kb2Jqh+7KHh5DU1uJ5ywocM+w0AZ+DebYxYu9nUDG2QggczZjVFASNi3kLiv5P7O8nTrHZlCtfYNBpAX/4nHY8iAOAfREt36wPQ+N8jbf6aqw==
+ bh=8HiNe75VU8sActCJXEbCWeT6vgrhc/SX8dv6YntPiC0=;
+ b=XDd2i07aGpiVanxUkrVBFMhBizslCorJ3n+mdFLLPSlGxZlJ1YDRWHvFuNQbHjENdM/ad4Vx/fAxtLSzhNLl57rrXyIcrgfSWUGhzNdOQqL9KG9ya5fJ5GaLykQy/+0u16aEO4gUaJR4y8JVWcnslqEAMr1mwhjYpmo5Km+pUVtJgVN40yedX/9NbNqOvebf4Hdr1HP+V8W+AK2uAt/GLgDPSu1Sej/BsWhTrhwGJ9l6L1hF0BxJKKMGK9P7/r2XiQhi64+U3ufyew9J2vPHVQiSjd/rjq9phVqhm4nGUgJSzBp94zWC7FoxprY14s5T3kvdSmbLSzzDP+v090tVHw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -73,112 +69,113 @@ Received: from DS0PR11MB7408.namprd11.prod.outlook.com (2603:10b6:8:136::15)
  by SA0PR11MB4704.namprd11.prod.outlook.com (2603:10b6:806:9b::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Thu, 20 Jun
- 2024 23:41:04 +0000
+ 2024 23:41:27 +0000
 Received: from DS0PR11MB7408.namprd11.prod.outlook.com
  ([fe80::6387:4b73:8906:7543]) by DS0PR11MB7408.namprd11.prod.outlook.com
  ([fe80::6387:4b73:8906:7543%5]) with mapi id 15.20.7698.017; Thu, 20 Jun 2024
- 23:41:04 +0000
-Date: Thu, 20 Jun 2024 16:41:02 -0700
+ 23:41:27 +0000
+Date: Thu, 20 Jun 2024 16:41:25 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: Ashutosh Dixit <ashutosh.dixit@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t 22/28] tools/xe-perf: Add xe_perf_recorder
-Message-ID: <ZnS+DvumpQHfjTMv@orsosgc001>
+Subject: Re: [PATCH i-g-t 23/28] tools/xe-perf: xe_perf_reader,
+ xe_perf_control and xe_perf_configs
+Message-ID: <ZnS+JZ3SnQACfRfe@orsosgc001>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
- <20240620200054.3550653-23-ashutosh.dixit@intel.com>
+ <20240620200054.3550653-24-ashutosh.dixit@intel.com>
 Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240620200054.3550653-23-ashutosh.dixit@intel.com>
-X-ClientProxiedBy: MW4PR04CA0326.namprd04.prod.outlook.com
- (2603:10b6:303:82::31) To DS0PR11MB7408.namprd11.prod.outlook.com
+In-Reply-To: <20240620200054.3550653-24-ashutosh.dixit@intel.com>
+X-ClientProxiedBy: MW4PR04CA0239.namprd04.prod.outlook.com
+ (2603:10b6:303:87::34) To DS0PR11MB7408.namprd11.prod.outlook.com
  (2603:10b6:8:136::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7408:EE_|SA0PR11MB4704:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7ccf2da1-2181-4d8f-d85f-08dc91827355
+X-MS-Office365-Filtering-Correlation-Id: 61e6816a-756d-4264-db92-08dc918280c1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230037|376011|1800799021|366013;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MUdFeWU4R2NFVEp4T3d3MEVZcEF4SkcxUGtWTSszeHRSMi9qTC9oU1VNN1RK?=
- =?utf-8?B?STVxTTFEM2UwUmUwb2E3b0FuNTRYRmlKSlV6bVVReWtyTjlPVStqQm5iV1hM?=
- =?utf-8?B?RTV6TE1IdndXYzIxdWdZbjZZRWZuZXAzc2ZRM1doL1REdmRZa004ZEVYcEZL?=
- =?utf-8?B?ZTF0YVR4SERGWGtEMFc0clBxanJBaWtIcmtNL2dXRFRZeXpEQTdpUzRSZlNa?=
- =?utf-8?B?aXBmSFRGcHErakxMNWN3VWxkckl4NTBxMHhGQ0ZZREpuNElDdkd4dUpmMVVz?=
- =?utf-8?B?Ry9iRWZ4VzJvRmtwTXlKckNLdkU5emhhRWttekM2QmljaDkybW5uenAwMlZV?=
- =?utf-8?B?ckUrVDM0Ykkwc3Y4WmgvRDBvZ2gzaFpPaEJvSjZlREgxckJ0Tmx1QjFNY2F3?=
- =?utf-8?B?ZFBTTnBDL0Z3MXZZQjVwM09oRWwwSHNPb3JobTZvdFRlSGd6NUJvZVB3Z1d5?=
- =?utf-8?B?YzNGb0J2UEVzemJySXdqODNlaUhlclA3aU1JRExRSzhDWGZ3ckt1cnNPY3F6?=
- =?utf-8?B?TVlEK1FyOXJJVXRaaGxUaTA2V28vTjdTWDNMc2JHTVVXN1c4d0Q0MFN5bkJt?=
- =?utf-8?B?cUpiYUY2dVVtMWF1UjI1c1B2QVdjZUVRWVFiNXRYQWcydzdhamxEbWVyM3JK?=
- =?utf-8?B?OWFTWDFDaTF2dC8rMXk1RWNzUU9KUFJIQnRqbU9zWXhmaXJ6ZUF5RUw5Q1lm?=
- =?utf-8?B?U3NrdC9YU1FKTEg1bldqN0kzUXp0ZCswekNXMWhUNGhGOWNyVEliUWlPZ0p1?=
- =?utf-8?B?SENVbkN6eUU2TGNURXg1eDJoVVNJM25Fd3hsRnpsZmZ3emMyekIrbkU1aGlY?=
- =?utf-8?B?NWFLVUY5MjFkdFNFZksrM3dTc1VTNDE0aTNmamFFMTZLZjBwN3pJaGQ0RnAr?=
- =?utf-8?B?bzFveUV1eFRXdDJNakNyYkI0ZXRXVld0RUJ4cUg5QUFWYm1LT2tVS2VTNW55?=
- =?utf-8?B?WGpxUklWbUpicnNQeVA4N3B4RUpSTXBpd0tibjRmL3NiVDh0NVdvRVdZaUpt?=
- =?utf-8?B?Rk9xQlExRDY2eVBOMUd3SmkwejFEaElhV05YZ2JiVUpEVitvQkpGQ3YyWHho?=
- =?utf-8?B?ZWxCcTFESVY0a0pDUXdiSXExU0lqUkMyeXFTV0JLazR0ZlUxa1BQaFNNSkNn?=
- =?utf-8?B?QzJ5RGJ5YXJ3eGJiN0Q4OG1nQk52K2t4UVJZdzYvVGExaGpDcnFHYzB4L015?=
- =?utf-8?B?VUNYOXZOVHZMYXk5ZzI3eXYxTDcyWXAwclVkRG11cVdoUG9LZVdHZm5iSkx4?=
- =?utf-8?B?SnNhRFZYRDlnWjJCL0pHRDdPRmpkRWRaNkNrbUVFeFJkV2RlQUNmS2QvTVJM?=
- =?utf-8?B?VTVhNmR3YjdqRzU5TVYwV3Y0OGhvK1FRK0J2cW1ZM1Q3aEhqOVBKb1Y0elVp?=
- =?utf-8?B?L0R3MW1pclBQL3d1NHBaMjNDbDdSZFRWdzMySlY2RVJSeERackdoSExqbndH?=
- =?utf-8?B?SE50RHdNYVgxMkdxUmZnQm9obzlmSnVaMTVDVmlHVXlqakU0YXdDQWRmQVgv?=
- =?utf-8?B?VkhldFM2U095Q0huODJGYW9qLzlJOFpXRHVKUklVN3VjNUdneHlLV2pkWC9r?=
- =?utf-8?B?RGdzdXRmd0VlNVFiR210bitMbGZTUTNWbWRqbkh5UVBGeVRWTGVvdEQ4M3ps?=
- =?utf-8?B?NURGQzk2K0JXNDFPeW5pWHJLbDdQU0t0Tjh5dWZ1Q0lFQ21XQVRtZE94TFVG?=
- =?utf-8?B?OXEyQzZaNG9oZ3lFZ2hiOW5tbW1wOVR3elljeVkyNkIvb1l5UUZtZ3lHcXk1?=
- =?utf-8?Q?+fxkq59h2oVkBqPXoCnmHauri4HwFkWsyP50HOM?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?V0lwRkIrcTkzR3cwZW9RZlJYSzFLMTMrU3RIdm5EZ2FiL3gvaWlJKzA1Q1ZZ?=
+ =?utf-8?B?eTRIdi9qK0NvRGI3SjlNMitGNjRJZFlXNy8vSmlvTnc4aFFZb1NxdSthR0Za?=
+ =?utf-8?B?SXM3Qm1UTEZvWXlXbVhDejJLVVN1d3YzOS8xTW9GNHdBaHkwd1ZaaXNlM2JB?=
+ =?utf-8?B?QVVOZVJpeTJyVldFM3hxNXhCNnFuVGJUNVJkRE5vYmZWY0gxaWtEU2ptYnhy?=
+ =?utf-8?B?LzUwTnRZZHFvUW05R0Qzd001OE1hajhSbTBZTG9qYzVVb1VMSmk3RllEdUxk?=
+ =?utf-8?B?TjBnS29yak1qYmR0QTB2eDl5dlc2aWFjajF1RjFIdGJLeTNrTFlNblVRakha?=
+ =?utf-8?B?S2tudFBoRWtWdURNRXNNUzJLRVc0bHZFNGhYdmVRUVZhSk5EYUhNSzArU2I4?=
+ =?utf-8?B?WmtJT1I2c3VqMkhRSGtzeFJmZEtZVi9WTVBvbzBkajA5SjRsSnFZbjFvblZu?=
+ =?utf-8?B?bW4vRThDNEFXSE9VdnV1VVZVZ0xkOER1VzNZcVVqMjFaRTdVTW5JL3NFbVQ1?=
+ =?utf-8?B?VUZzVG4wNWdqMkgwQU5qYytEbjNrYUFpejBpZjhnbUd0VDQ4b1ZndlFSWjdh?=
+ =?utf-8?B?RE91N04yZlZYcDZjRDRBK1FiKytvc3RPRnp6QkhNeWprQytyQTBiOVJlVEhw?=
+ =?utf-8?B?WFE4QTNISFh5QmN2MlZyaTJyTmlQY3BacXM0c2VEZ3FsWHZaMThoU2pWZjVN?=
+ =?utf-8?B?QVlxczdPOEdnS2dEdFV6Uk1xUmV6bzlVbmpwbnAvbHpPWXZsNzdJYVhLekpp?=
+ =?utf-8?B?cDZFbUlWdE80T2tHdW1TNzk1NHFJNVFUblh5NFBUaE51QktQMjkvdndKOFU1?=
+ =?utf-8?B?UVk0N29NYitJNGJvREFlYlNnbytJOUd0L280blBSSHhSWWZsR2dIUGZZL1ow?=
+ =?utf-8?B?RDYvTDFZdTZ6d1lkWmJzSWxaNEMwb0QxYTNpK0JOTUxZelRhNVgzWGFKWUhl?=
+ =?utf-8?B?QUlzaG54YSs3eGJwZk1MU2ZrZ2xuamNDL2lZNkwvbzVvZnRITGh4cWlJZ0RI?=
+ =?utf-8?B?TUFBSk5PSDBxVWt0K0tRQmdWMzFjbC9adFhZOEs2aU9iai9YYVdiWFZhQVg5?=
+ =?utf-8?B?N05DZ1VUek1aa2NGd3BBN2NCUkFIUHIxV3Q0bmM0T2RPeG02WDROUFhBVVl5?=
+ =?utf-8?B?YjJ5aDJJdytZRE9EWCtlL21lNXZvdDlPb3UwUlJxaEZ2eTM1Qmd0blA3dkt0?=
+ =?utf-8?B?dHlMTTdQcnZKU2ZXNFEzbFdYaFpKRXpIVFkxamRXZFNiczZTbVJTSzFuUlVw?=
+ =?utf-8?B?QnIzZ2t5L1FWZEZ1Rmp0UXdGeUFUQ2dXYmFEVkUzYmlLcFI5Q2FzeTA5NWVC?=
+ =?utf-8?B?eTZKN3liUDg3cHhVUkpCM05yMk9oclB6d0ZJdmpXL3lqaVU2RGRMdjJSVy9p?=
+ =?utf-8?B?MzlWamtZNFJIM3pqQ3NjSEczMEloRzNmb3oyY3Z3Wmxpb2JPQzJEMXYwZ0JM?=
+ =?utf-8?B?dm1wcHhXa3hFRng3U2k3SVNLWlR3Z1c0Q1IzVjJ0VVRhOHB6SXREV3VxZnhI?=
+ =?utf-8?B?NG80c2VVTitlMVVkUlIwVVM4Z09vWVhBeE5kOFpCL0NiRnJ3YjlvKzJQSlFI?=
+ =?utf-8?B?ZE1kczdsUUh2bkUwcFlXNHRtR1I5YXdxbVh2N3dJTUwzQ0htUnV5WjVHNTRL?=
+ =?utf-8?B?VmY3MVRTZ3FhM2JrdTR1OGhhaEJSaVhXOGNlcDJBdk1OTU9ORTlVNDhINy81?=
+ =?utf-8?B?dCtlanhERjMzZlB5NzBDaG5KWVhpa1FodWZURXB3VC9oRWRsQjJaVmJjdCtD?=
+ =?utf-8?Q?UfrcQmeGvq75/5cjeQ7TC5wWZeUjCf0ZzBGypD1?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7408.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230037)(376011)(1800799021)(366013); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YU1pblRVQTdrdUNjNEVibkYxenRVNUZVN0pjQVpmWHM0V0J2QjFDYnJGc0VI?=
- =?utf-8?B?WkJFZTNUWk9sTk9CUERTbWcvV3ozVVEvRDl6YVR1dWVid1hhdTU2N2hiRnhu?=
- =?utf-8?B?WFBTZHJCMDI4WDd4aVljRk81ZGlibWJCb08vVmorVSt2emE0dUdDNCtzYTVW?=
- =?utf-8?B?WEc3ek0yQmVaRU4vTHFmd3Nrd3pjRjJZVFpjMHdESXFyeXY2SmFQSkpHcDRt?=
- =?utf-8?B?OWRnUWROOVRicTk0TTBoYmVleTEza0Z2aUdQY24xUzJJV2wwOTdPSTIzL0Ru?=
- =?utf-8?B?U1lLUzVUeWQ4SVhnRXRFcWJlOFM1bE10d1VqQVMyQUVZb2pnYk0zYlBQWFQ4?=
- =?utf-8?B?N1hoNTNFTWlDY1R0T0lZdEdNam5raVJ2bk5NY2tMcE1SclY1dDhTbGt2NnpV?=
- =?utf-8?B?THhUb2ZSR2RhY1kvNGphdWtBL016YTdnZXN6ZlEzZEJtSnBwQmNBWDltOHJm?=
- =?utf-8?B?VWtVQ2FIeHV0MFlBRktxRXp6YUgxdjZjSVhaMXJzcmFUZ3hSWVRuOWREaWtG?=
- =?utf-8?B?WVJNYy9PUmxTdTF1Q2tkdXNzU3dXVFd1TTFNcUJXbE9lSWtpRkxiYXNYT1VT?=
- =?utf-8?B?WUlHK1N6bm9yQm9DbmU1RUIyTXZtRys5cTIrZEx5UnVWRGgvdmFjVTE0UUZp?=
- =?utf-8?B?Z2RDQytPVi82RUI1Rk9nU1pUV09IRmhJV3NLVFRzTTlRRHQ0R25SS1cxOEZt?=
- =?utf-8?B?ejhDVDRKbDdlQnQ1MFhUWWIwWHVRTHdPcFh4UGZOZjFrR0UwMWJCWUNFU1Vv?=
- =?utf-8?B?MURrWEV0eXh1amRHaWpkMXdUb3d1RklJQ3NIWUtoTksxZGwvTVlSVVd2KzZi?=
- =?utf-8?B?TTZoWlNZWlFTMGZWbUJvZEExRGdjN0RoZUtNR1p1Uk5ZVzZtNXVKWUpzUEZH?=
- =?utf-8?B?RG56QVltRGZmU2FqTEg1SyswL1pIdWkyZHdnYjI5UXU3b1oyOHI4amp6cWRN?=
- =?utf-8?B?UmowaFYrdzFCTHN5cEk2UklWdzNNMmFXNnp2QjlyaTZxMVVjZVFwTXVYUlBN?=
- =?utf-8?B?c2JXRzlNenh2Qm1CNDNIQnZIME9oTDhhNU9pcHJ5cmYxcHowR3ZHNS92OGpL?=
- =?utf-8?B?RE05WXd2WTJVY1JwS2xJc0g1VVdrOThrdkptNnBlaGJtd0hpdlhvdmxqNnpN?=
- =?utf-8?B?dlRJN3psalFXTGpiSXdhcjMzcWVBcnN3TFlnSE11V2k5Vjc2SE9WR1lsQWpl?=
- =?utf-8?B?RkU1ejlYVHBMU2xpZVVsbkpHeGtOU2xLTE1iNzFMY0gwS1dvdjFpK2VHNzlL?=
- =?utf-8?B?dGJjRFM2WlJ2OU1hZ2czUnZJUUVBNHlYWUZiVGtVeldydzJ2d29MaExNMmMr?=
- =?utf-8?B?NEF0cU5iWENjTFhsVlVhbGxhMnFMREZ4eFZZZmF5Qkp1Zk4rVUFqV0EzZk1h?=
- =?utf-8?B?TUc5ek5mb1BSUVEzTUZUb1l2OWJCeFpNdTMyZWpNb2c0ZVVWN1ZiMGNLNi9v?=
- =?utf-8?B?cEtJRkVZSGxzb1ViNGhMVllqVUpjSkJ2VDZWZUR2YmcvL1hhdVJBa0RjelB3?=
- =?utf-8?B?QVQ0NEliNDdydHhueWpZaXlZQyszaEc0d2c2QjczUlZISUllMmVVa3hSb0NK?=
- =?utf-8?B?bDUvWVRQR1FWRVptZ1JlMjdkSk14MXFTRHpmYzliNlFTUlpjMWlrWXdVRUtK?=
- =?utf-8?B?T1F2b2ZwT2toZUJ3SXJtMVMzM09IajJkWjdrQlBSSFVURUdCbnFKcHl5T2pD?=
- =?utf-8?B?WFU3MEtJdXlFNjdWTkh0Q1NzU2N5NjUwa04zV1hPdTI5cXhJcFR4S0NqamxE?=
- =?utf-8?B?SVQwbjlCcEx4OEljYWx3MEp1UGE2U3hlazgzWmNTQW55WENNNUtpM1k0UmdP?=
- =?utf-8?B?QXUybWUzTVU2eGxteFM0Tkh1RHoyK3krTkJ4QWtZUVlrY3liZVVsY1ZOTkcw?=
- =?utf-8?B?eWVNQkt5QmNqRm1HTlhFOHdqVFVnWlNGTE5Hem80UmxqaU41dHdTMlRQYXg4?=
- =?utf-8?B?cFBvYjk0dXpSTy9DazVkU3VPTEx5cFRaYlFsRi96b0gzNllNTzNXU0s4QUsv?=
- =?utf-8?B?eDFYbzZaZkJwRmdYSWJYUmtYREpEdi9TaTd3Z3l4S2pPa2VFRnhGSVNJTHZI?=
- =?utf-8?B?cGJGbHpPbFV0NzdoTGVySjI3YnNsN2dQUk5WU0gyUStQVC96Zmh4cEJYdm9s?=
- =?utf-8?B?V2h5MDlIYVpyZmVTWmFmMXcrSThDaHBuMGVyRXlqQWRUWkZrVHpHUGFvejE5?=
- =?utf-8?Q?78KxNKmdFu8AGTtPR2tZGAM=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ccf2da1-2181-4d8f-d85f-08dc91827355
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bXU0bzBwM01Db3VublhBdzNCNCtmSm9YZVN5dFpSWTVMV3ZvUzJhR2l3cktY?=
+ =?utf-8?B?U3pvRm5YSDYxK2RldFArM0Y1QXYvUkNlOGpDNHFYOE9PNDdJK3p4Ylo5czlI?=
+ =?utf-8?B?TVUyYTNEK1U4NXpYb0RQajA4TEdRRU5GSzZnTlRhN0JlSVMwOGZ1ejRvV2pL?=
+ =?utf-8?B?N2M4Rk54K0x1VFZtMVhuRCtiOVlEQnNjTEtWa1VZbWtqWlNWU0RyaWRzd1Vm?=
+ =?utf-8?B?akE3YUUvaVNwS3RucHk1NjZpRUtCbmoyWFJOcUZxTFpTUXh0TVZjQU95Z3BG?=
+ =?utf-8?B?RWVHS1R3YkFqVlFTdkc3TjhYa0ZJQjIxaEhyNjVZY2I5bXhOSHlZeVRlMEsy?=
+ =?utf-8?B?UmRzdkFzd0MwT1NONFRmV1Z6V0lLaGFZaFdsSnpBdmc3V3hXMmpMOTAwVjE3?=
+ =?utf-8?B?RXA5R1pmTDN3WVlYS0lSdUZ6aENlOFB1eHIvcmZweERtWmpENUhZUVBHUXRq?=
+ =?utf-8?B?U0xPK3NNT2xsMGZSa0pVVXlsTGU0RWtNMS9KbldLSFZ1SjA3M0E2OTF5YzBY?=
+ =?utf-8?B?RVYxaWFWWHdyZTRUSjV4amRMWUViZk0yMkJSUUl1ZnBzYStzOXd5U3Z1K2R0?=
+ =?utf-8?B?K1M2Q2NmbTZZVUlmT2tCeFJwOVVTclEzZGpsTmFTaHBDbEhmTWZYSXdWT1NU?=
+ =?utf-8?B?SkNyZXFpUU1ZcU5PTjF3cjVWSXNoaWIwWERyWUNDUDhLbUVLRWlMT1FXVFR1?=
+ =?utf-8?B?RHlOTkJMOGh2VkV2SVpDZFVvWkVybC9BczFPNExDVjR5cmV6TzhKMVllUTZN?=
+ =?utf-8?B?ZE9VeUR1L0M1U2pKcmVvMUh0YW9najZON2hwK2pEQlpOMVRXVW1YUjhVK2Ra?=
+ =?utf-8?B?ZlRPTUl6V25SeHpadzNiS1ZDOEh6d0lTRHpCdG1WL2VRM1RMTDRZVGx0REZ3?=
+ =?utf-8?B?dE1oa2Y0eDhZUG14K21GcDlZZHhIbU05TDZ4ZXlmZlBURTlLU0lXVllVeGl4?=
+ =?utf-8?B?VVhuekRGWDFoSmN6NFFPMko3dHp3QTNBVjBFZzhSNnZaUkl6Uy9zTi9tZkx6?=
+ =?utf-8?B?eWNGNk5nbFErK3FrSDlaR2lWZ09RRStJL3N4MmZaV3RhZnRSdDhBVEdnZVAr?=
+ =?utf-8?B?dHNYYk00dmJiWjFOSjJyUXhnNEgvdkF2Z0NlTEpIeFZBVVpzcW5VbVJxV3gx?=
+ =?utf-8?B?OWN1ZDNucnB2OUw0Vlp6S29MVUdYMmhLMTJhUFNjUGFpNGVVWVFPek5nR3Ja?=
+ =?utf-8?B?RDRiajFxQmZxRFordjk4cXdFR3ZsMVlVOVdiMGxSV3pudUQ1S1NGbEFOdkhr?=
+ =?utf-8?B?Wms3bU9oOS90Mm4vZXNqUm5RakV4eHZzWldDeXpPdEgwWW9YSENIR2hXWW80?=
+ =?utf-8?B?REVNOGMwK0lPSTlyMTlyL3RXSGI0NzZGbEdSREk4NU01WTFWVGJKY01CUVJF?=
+ =?utf-8?B?S3VjS2VGR1JMdFhIdGtEelVSTUZ1em9LRUVZMEJUbTdweEhGN0tpWHlVaitz?=
+ =?utf-8?B?dVl6TExOYS9tOW5mMG5DK3ZPZjVjdy9ibTBGTmFPcjhERVo5UGVwNWFIdGhE?=
+ =?utf-8?B?NzQxNjNXaEtiSUxuQnNuTzVQWHVaTGcwUFFJNHdGcmczMUx5MHpMbEtqamFF?=
+ =?utf-8?B?cGlaMVlHOXJWcXR6WFRrRUNKdFVWbTM2T2V5RlpMN1FmRlJqMTNySHkyWWJN?=
+ =?utf-8?B?VXN0cjAyeDJLVFM2cS9iY25HQWVQK2FtL25XTGp2NURXT2dNMUFweERaYjFr?=
+ =?utf-8?B?WlZYem1rdGc3Y2F1ditucStxSEFFcWJpdmlpWExPZlYzNS9KcFJtYnorUmFR?=
+ =?utf-8?B?NFh2S0xYWCttZnQ3aGRLY2YreGVZMnJwTXU0cHptaWdZaVJudEh3Y2NzR0Z0?=
+ =?utf-8?B?QVhQSklSRjBRd1dLTWNHVzd6RWFOeER0c0MzZUpuSURTRXExL2pjYnZQbkdL?=
+ =?utf-8?B?a3hRQ0JnZUJzbXhzNXZjM2wwWXRZMHBsN0xlcm9nVmtQaGVvOUkrSldCN0VD?=
+ =?utf-8?B?YXFzZThoUVlPOXBYK3BEVDUrRmxkVWp1bUtMTnRWaTlJeUptM0dUN051REU0?=
+ =?utf-8?B?T3R2VEZvRERzeTlwaENLdEJYY2MwbndhYUxiKzNJSFcxQjlRdDFsaEZvVzIy?=
+ =?utf-8?B?bk16aGtuWC9kM3l0OU03dVNlWlNtME5HVDNaM2tCRGIyUEJQTnR6ZGdFY3NE?=
+ =?utf-8?B?NFk0M0ZKSGF0a2tSNEFISDB1T2RDUDN3R2ZnSlgwYlFIcXI2Njlya1doVlB3?=
+ =?utf-8?Q?ekAPoLK64yrGNOtXnGXtofk=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61e6816a-756d-4264-db92-08dc918280c1
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7408.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 23:41:04.7871 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 23:41:27.2996 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p57DkfNcPcUQD1IaRN7GW8mwAenc2Y/9O9nAP/TvmKlW2+tOx3Z0NVAiQsm1oKrGBCB64mDXXdTyUPdFd34r5vK29nXEumkuFb6k3V4erUc=
+X-MS-Exchange-CrossTenant-UserPrincipalName: I4bjOeg+LqbfjeKLqi3+maisswSB5/a7dv15T5MwiwEymUaleySp8PYEaPwpNft+ZgCxbbQ6mlXmIK1klh1u5yKzgypLwEo/UU7T/EePszc=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4704
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -196,54 +193,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jun 20, 2024 at 01:00:47PM -0700, Ashutosh Dixit wrote:
->Add xe_perf_recorder. The recorder exercises the Xe OA uapi to capture OAG
->data in a specific format, similar to i915_perf_recorder.
+On Thu, Jun 20, 2024 at 01:00:48PM -0700, Ashutosh Dixit wrote:
+>Add xe_perf_reader, xe_perf_control and xe_perf_configs tools, similar to
+>their i915 counterparts.
 >
 >Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
 >---
-> tools/meson.build                         |    1 +
-> tools/xe-perf/meson.build                 |    5 +
-> tools/xe-perf/xe_perf_recorder.c          | 1227 +++++++++++++++++++++
-> tools/xe-perf/xe_perf_recorder_commands.h |   31 +
-> 4 files changed, 1264 insertions(+)
-> create mode 100644 tools/xe-perf/meson.build
-> create mode 100644 tools/xe-perf/xe_perf_recorder.c
-> create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
+> tools/xe-perf/meson.build       |  17 ++
+> tools/xe-perf/xe_perf_configs.c | 247 ++++++++++++++++++++++++
+> tools/xe-perf/xe_perf_control.c | 117 ++++++++++++
+> tools/xe-perf/xe_perf_reader.c  | 325 ++++++++++++++++++++++++++++++++
+> 4 files changed, 706 insertions(+)
+> create mode 100644 tools/xe-perf/xe_perf_configs.c
+> create mode 100644 tools/xe-perf/xe_perf_control.c
+> create mode 100644 tools/xe-perf/xe_perf_reader.c
 >
->diff --git a/tools/meson.build b/tools/meson.build
->index 1656355eef..c02c020d0b 100644
->--- a/tools/meson.build
->+++ b/tools/meson.build
->@@ -113,4 +113,5 @@ if libudev.found()
-> endif
->
-> subdir('i915-perf')
->+subdir('xe-perf')
-> subdir('null_state_gen')
 >diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
->new file mode 100644
->index 0000000000..a5f59a67fe
->--- /dev/null
+>index a5f59a67fe..8506aa320f 100644
+>--- a/tools/xe-perf/meson.build
 >+++ b/tools/xe-perf/meson.build
->@@ -0,0 +1,5 @@
->+executable('xe-perf-recorder',
->+           [ 'xe_perf_recorder.c' ],
+>@@ -1,5 +1,22 @@
+>+executable('xe-perf-configs',
+>+           [ 'xe_perf_configs.c' ],
+>+           include_directories: inc,
+>+           dependencies: [lib_igt_chipset, lib_igt_xe_oa],
+>+           install: true)
+>+
+> executable('xe-perf-recorder',
+>            [ 'xe_perf_recorder.c' ],
+>            include_directories: inc,
+>            dependencies: [lib_igt, lib_igt_xe_oa],
+>            install: true)
+>+
+>+executable('xe-perf-control',
+>+           [ 'xe_perf_control.c' ],
+>+           include_directories: inc,
+>+           install: true)
+>+
+>+executable('xe-perf-reader',
+>+           [ 'xe_perf_reader.c' ],
 >+           include_directories: inc,
 >+           dependencies: [lib_igt, lib_igt_xe_oa],
 >+           install: true)
->diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+>diff --git a/tools/xe-perf/xe_perf_configs.c b/tools/xe-perf/xe_perf_configs.c
 >new file mode 100644
->index 0000000000..bd2d645fa1
+>index 0000000000..af33c0078c
 >--- /dev/null
->+++ b/tools/xe-perf/xe_perf_recorder.c
->@@ -0,0 +1,1227 @@
+>+++ b/tools/xe-perf/xe_perf_configs.c
+>@@ -0,0 +1,247 @@
 >+// SPDX-License-Identifier: MIT
 >+/*
 >+ * Copyright © 2024 Intel Corporation
 >+ */
+>+
 >+
 >+#include <assert.h>
 >+#include <dirent.h>
@@ -251,184 +255,19 @@ Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 >+#include <fcntl.h>
 >+#include <getopt.h>
 >+#include <inttypes.h>
->+#include <limits.h>
->+#include <poll.h>
->+#include <signal.h>
 >+#include <stdbool.h>
 >+#include <stdint.h>
 >+#include <stdio.h>
 >+#include <stdlib.h>
 >+#include <string.h>
 >+#include <sys/ioctl.h>
->+#include <sys/stat.h>
 >+#include <sys/sysmacros.h>
->+#include <sys/time.h>
 >+#include <sys/types.h>
->+#include <time.h>
+>+#include <sys/stat.h>
 >+#include <unistd.h>
 >+
->+#include "igt_core.h"
 >+#include "intel_chipset.h"
->+#include "ioctl_wrappers.h"
->+#include "linux_scaffold.h"
 >+#include "xe/xe_oa.h"
->+#include "xe/xe_oa_data.h"
->+#include "xe/xe_query.h"
->+
->+#include "xe_perf_recorder_commands.h"
->+
->+#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
->+#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
->+#define MAX(a,b) ((a) > (b) ? (a) : (b))
->+#define MIN(a,b) ((a) < (b) ? (a) : (b))
->+
->+struct circular_buffer {
->+	char   *data;
->+	size_t  allocated_size;
->+	size_t  size;
->+	size_t  beginpos;
->+	size_t  endpos;
->+};
->+
->+struct chunk {
->+	char *data;
->+	size_t len;
->+};
->+
->+static size_t
->+circular_available_size(const struct circular_buffer *buffer)
->+{
->+	assert(buffer->size <= buffer->allocated_size);
->+	return buffer->allocated_size - buffer->size;
->+}
->+
->+static void
->+get_chunks(struct chunk *chunks, struct circular_buffer *buffer, bool write, size_t len)
->+{
->+	size_t offset = write ? buffer->endpos : buffer->beginpos;
->+
->+	if (write)
->+		assert(circular_available_size(buffer) >= len);
->+	else
->+		assert(buffer->size >= len);
->+
->+	chunks[0].data = &buffer->data[offset];
->+
->+	if ((offset + len) > buffer->allocated_size) {
->+		chunks[0].len = buffer->allocated_size - offset;
->+		chunks[1].data = buffer->data;
->+		chunks[1].len = len - (buffer->allocated_size - offset);
->+	} else {
->+		chunks[0].len = len;
->+		chunks[1].data = NULL;
->+		chunks[1].len = 0;
->+	}
->+}
->+
->+static ssize_t
->+circular_buffer_read(void *c, char *buf, size_t size)
->+{
->+	struct circular_buffer *buffer = c;
->+	struct chunk chunks[2];
->+
->+	if (buffer->size < size)
->+		return -1;
->+
->+	get_chunks(chunks, buffer, false, size);
->+
->+	memcpy(buf, chunks[0].data, chunks[0].len);
->+	memcpy(buf + chunks[0].len, chunks[1].data, chunks[1].len);
->+	buffer->beginpos = (buffer->beginpos + size) % buffer->allocated_size;
->+	buffer->size -= size;
->+
->+	return size;
->+}
->+
->+static size_t
->+peek_item_size(struct circular_buffer *buffer)
->+{
->+	struct intel_xe_perf_record_header header;
->+	struct chunk chunks[2];
->+
->+	if (!buffer->size)
->+		return 0;
->+
->+	assert(buffer->size >= sizeof(header));
->+
->+	get_chunks(chunks, buffer, false, sizeof(header));
->+	memcpy(&header, chunks[0].data, chunks[0].len);
->+	memcpy((char *) &header + chunks[0].len, chunks[1].data, chunks[1].len);
->+
->+	return header.size;
->+}
->+
->+static void
->+circular_shrink(struct circular_buffer *buffer, size_t size)
->+{
->+	size_t shrank = 0, item_size;
->+
->+	assert(size <= buffer->allocated_size);
->+
->+	while (shrank < size && buffer->size > (item_size = peek_item_size(buffer))) {
->+		assert(item_size > 0 && item_size <= buffer->allocated_size);
->+
->+		buffer->beginpos = (buffer->beginpos + item_size) % buffer->allocated_size;
->+		buffer->size -= item_size;
->+
->+		shrank += item_size;
->+	}
->+}
->+
->+static ssize_t
->+circular_buffer_write(void *c, const char *buf, size_t _size)
->+{
->+	struct circular_buffer *buffer = c;
->+	size_t size = _size;
->+
->+	while (size) {
->+		size_t avail = circular_available_size(buffer), item_size;
->+		struct chunk chunks[2];
->+
->+		/* Make space in the buffer if there is too much data. */
->+		if (avail < size)
->+			circular_shrink(buffer, size - avail);
->+
->+		item_size = MIN(circular_available_size(buffer), size);
->+
->+		get_chunks(chunks, buffer, true, item_size);
->+
->+		memcpy(chunks[0].data, buf, chunks[0].len);
->+		memcpy(chunks[1].data, buf + chunks[0].len, chunks[1].len);
->+
->+		buf += item_size;
->+		size -= item_size;
->+
->+		buffer->endpos = (buffer->endpos + item_size) % buffer->allocated_size;
->+		buffer->size += item_size;
->+	}
->+
->+	return _size;
->+}
->+
->+static int
->+circular_buffer_seek(void *c, off64_t *offset, int whence)
->+{
->+	return -1;
->+}
->+
->+static int
->+circular_buffer_close(void *c)
->+{
->+	return 0;
->+}
->+
->+cookie_io_functions_t circular_buffer_functions = {
->+	.read  = circular_buffer_read,
->+	.write = circular_buffer_write,
->+	.seek  = circular_buffer_seek,
->+	.close = circular_buffer_close,
->+};
->+
 >+
 >+static bool
 >+read_file_uint64(const char *file, uint64_t *value)
@@ -477,37 +316,16 @@ Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 >+	return -1;
 >+}
 >+
->+static void
->+print_intel_devices(void)
->+{
->+	fprintf(stdout, "Available devices:\n");
->+	for (int i = 0; i < 128; i++) {
->+		if (read_device_param("card", i, "vendor") == 0x8086) {
->+			uint32_t devid = read_device_param("card", i, "device");
->+			const struct intel_device_info *devinfo =
->+				intel_get_device_info(devid);
->+			fprintf(stdout, "   %i: %s (0x%04hx)\n", i,
->+				devinfo ? devinfo->codename : "unknwon",
->+				devid);
->+		}
->+	}
->+}
->+
 >+static int
->+open_render_node(uint32_t *devid, int card)
+>+open_render_node(uint32_t *devid)
 >+{
 >+	char *name;
 >+	int ret;
 >+	int fd;
->+	int render;
 >+
->+	if (card < 0) {
->+		render = find_intel_render_node();
->+		if (render < 0)
->+			return -1;
->+	} else {
->+		render = 128 + card;
->+	}
+>+	int render = find_intel_render_node();
+>+	if (render < 0)
+>+		return -1;
 >+
 >+	ret = asprintf(&name, "/dev/dri/renderD%u", render);
 >+	assert(ret != -1);
@@ -520,711 +338,219 @@ Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 >+	return fd;
 >+}
 >+
->+static uint32_t
->+oa_exponent_for_period(uint64_t device_timestamp_frequency, double period)
+>+static int
+>+get_card_for_fd(int fd)
 >+{
->+	uint64_t period_ns = 1000 * 1000 * 1000 * period;
->+	uint64_t device_periods[32];
+>+	struct stat sb;
+>+	int mjr, mnr;
+>+	char buffer[128];
+>+	DIR *drm_dir;
+>+	struct dirent *entry;
+>+	int retval = -1;
 >+
->+	for (uint32_t i = 0; i < ARRAY_SIZE(device_periods); i++)
->+		device_periods[i] = 1000000000ull * (1u << i) / device_timestamp_frequency;
+>+	if (fstat(fd, &sb)) {
+>+		fprintf(stderr, "Failed to stat DRM fd\n");
+>+		return -1;
+>+	}
 >+
->+	for (uint32_t i = 1; i < ARRAY_SIZE(device_periods); i++) {
->+		if (period_ns >= device_periods[i - 1] &&
->+		    period_ns < device_periods[i]) {
->+			if ((device_periods[i] - period_ns) >
->+			    (period_ns - device_periods[i - 1]))
->+				return i - 1;
->+			return i;
+>+	mjr = major(sb.st_rdev);
+>+	mnr = minor(sb.st_rdev);
+>+
+>+	snprintf(buffer, sizeof(buffer), "/sys/dev/char/%d:%d/device/drm", mjr, mnr);
+>+
+>+	drm_dir = opendir(buffer);
+>+	assert(drm_dir != NULL);
+>+
+>+	while ((entry = readdir(drm_dir))) {
+>+		if (entry->d_type == DT_DIR && strncmp(entry->d_name, "card", 4) == 0) {
+>+			retval = strtoull(entry->d_name + 4, NULL, 10);
+>+			break;
 >+		}
 >+	}
 >+
->+	return -1;
+>+	closedir(drm_dir);
+>+
+>+	return retval;
 >+}
->+
->+static int
->+perf_ioctl(int fd, unsigned long request, void *arg)
->+{
->+	int ret;
->+
->+	do {
->+		ret = ioctl(fd, request, arg);
->+	} while (ret == -1 && (errno == EINTR || errno == EAGAIN));
->+
->+	return ret;
->+}
->+
->+static uint64_t
->+get_device_cs_timestamp_frequency(int drm_fd)
->+{
->+	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
->+}
->+
->+static uint64_t
->+get_device_oa_timestamp_frequency(int drm_fd)
->+{
->+	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
->+	struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
->+
->+	return oau->oa_timestamp_freq;
->+}
->+
->+struct recording_context {
->+	int drm_fd;
->+	int perf_fd;
->+
->+	uint32_t devid;
->+	uint64_t oa_timestamp_frequency;
->+	uint64_t cs_timestamp_frequency;
->+
->+	const struct intel_device_info *devinfo;
->+
->+	struct intel_xe_topology_info *topology;
->+	uint32_t topology_size;
->+
->+	struct intel_xe_perf *perf;
->+	struct intel_xe_perf_metric_set *metric_set;
->+
->+	uint32_t oa_exponent;
->+
->+	struct circular_buffer circular_buffer;
->+	FILE *output_stream;
->+
->+	const char *command_fifo;
->+	int command_fifo_fd;
->+
->+	int gt;
->+	struct drm_xe_engine_class_instance eci;
->+	struct drm_xe_engine_class_instance *hwe;
->+	struct drm_xe_oa_unit *oa_unit;
->+};
->+
->+static void set_fd_flags(int fd, int flags)
->+{
->+	int old = fcntl(fd, F_GETFL, 0);
->+
->+	igt_assert_lte(0, old);
->+	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
->+}
->+
->+enum xe_oa_report_header {
->+	HDR_32_BIT = 0,
->+	HDR_64_BIT,
->+};
->+
->+struct xe_oa_format {
->+	uint32_t counter_select;
->+	int size;
->+	int oa_type;
->+	enum xe_oa_report_header header;
->+	uint16_t counter_size;
->+	uint16_t bc_report;
->+};
->+
->+#define DRM_FMT(x) DRM_XE_OA_FMT_TYPE_##x
->+
->+static const struct xe_oa_format oa_formats[] = {
->+	[XE_OA_FORMAT_C4_B8]			= { 7, 64,  DRM_FMT(OAG) },
->+	[XE_OA_FORMAT_A12]			= { 0, 64,  DRM_FMT(OAG) },
->+	[XE_OA_FORMAT_A12_B8_C8]		= { 2, 128, DRM_FMT(OAG) },
->+	[XE_OA_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
->+	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAR) },
->+	[XE_OA_FORMAT_A24u40_A14u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
->+	[XE_OAC_FORMAT_A24u64_B8_C8]		= { 1, 320, DRM_FMT(OAC), HDR_64_BIT },
->+	[XE_OAC_FORMAT_A22u32_R2u32_B8_C8]	= { 2, 192, DRM_FMT(OAC), HDR_64_BIT },
->+	[XE_OAM_FORMAT_MPEC8u64_B8_C8]		= { 1, 192, DRM_FMT(OAM_MPEC), HDR_64_BIT },
->+	[XE_OAM_FORMAT_MPEC8u32_B8_C8]		= { 2, 128, DRM_FMT(OAM_MPEC), HDR_64_BIT },
->+	[XE_OA_FORMAT_PEC64u64]			= { 1, 576, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
->+	[XE_OA_FORMAT_PEC64u64_B8_C8]		= { 1, 640, DRM_FMT(PEC), HDR_64_BIT, 1, 1 },
->+	[XE_OA_FORMAT_PEC64u32]			= { 1, 320, DRM_FMT(PEC), HDR_64_BIT },
->+	[XE_OA_FORMAT_PEC32u64_G1]		= { 5, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
->+	[XE_OA_FORMAT_PEC32u32_G1]		= { 5, 192, DRM_FMT(PEC), HDR_64_BIT },
->+	[XE_OA_FORMAT_PEC32u64_G2]		= { 6, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
->+	[XE_OA_FORMAT_PEC32u32_G2]		= { 6, 192, DRM_FMT(PEC), HDR_64_BIT },
->+	[XE_OA_FORMAT_PEC36u64_G1_32_G2_4]	= { 3, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
->+	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32]	= { 4, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
->+};
->+
->+static uint64_t oa_format_fields(uint64_t name)
->+{
->+#define FIELD_PREP_ULL(_mask, _val) \
->+	(((_val) << (__builtin_ffsll(_mask) - 1)) & (_mask))
->+
->+	struct xe_oa_format f = oa_formats[name];
->+
->+	/* 0 format name is invalid */
->+	if (!name)
->+		memset(&f, 0xff, sizeof(f));
->+
->+	return FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_FMT_TYPE, (u64)f.oa_type) |
->+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SEL, (u64)f.counter_select) |
->+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE, (u64)f.counter_size) |
->+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_BC_REPORT, (u64)f.bc_report);
->+#undef FIELD_PREP_ULL
->+}
->+#define __ff oa_format_fields
->+
->+static int
->+perf_open(struct recording_context *ctx)
->+{
->+	int stream_fd;
->+
->+	uint64_t properties[] = {
->+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
->+
->+		/* Include OA reports in samples */
->+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
->+
->+		/* OA unit configuration */
->+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, ctx->metric_set->perf_oa_metrics_set,
->+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
->+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
->+	};
->+	struct intel_xe_oa_open_prop param = {
->+		.num_properties = ARRAY_SIZE(properties) / 2,
->+		.properties_ptr = to_user_pointer(properties),
->+	};
->+
->+	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
->+	if (stream_fd < 0) {
->+		errno = 0;
->+		goto exit;
->+	}
->+
->+	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
->+exit:
->+	return stream_fd;
->+}
->+
->+static bool quit = false;
->+
->+static void
->+sigint_handler(int val)
->+{
->+	quit = true;
->+}
->+
->+static bool
->+write_version(FILE *output, struct recording_context *ctx)
->+{
->+	struct intel_xe_perf_record_version version = {
->+		.version = INTEL_XE_PERF_RECORD_VERSION,
->+	};
->+	struct intel_xe_perf_record_header header = {
->+		.type = INTEL_XE_PERF_RECORD_TYPE_VERSION,
->+		.size = sizeof(header) + sizeof(version),
->+	};
->+
->+	if (fwrite(&header, sizeof(header), 1, output) != 1)
->+		return false;
->+
->+	if (fwrite(&version, sizeof(version), 1, output) != 1)
->+		return false;
->+
->+	return true;
->+}
->+
->+static bool
->+write_header(FILE *output, struct recording_context *ctx)
->+{
->+	struct intel_xe_perf_record_device_info info = {
->+		.timestamp_frequency = ctx->oa_timestamp_frequency,
->+		.device_id = ctx->perf->devinfo.devid,
->+		.device_revision = ctx->perf->devinfo.revision,
->+		.gt_min_frequency = ctx->perf->devinfo.gt_min_freq,
->+		.gt_max_frequency = ctx->perf->devinfo.gt_max_freq,
->+		.oa_format = ctx->metric_set->perf_oa_format,
->+		.engine_class = ctx->hwe->engine_class,
->+		.engine_instance = ctx->hwe->engine_instance,
->+	};
->+	struct intel_xe_perf_record_header header = {
->+		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_INFO,
->+		.size = sizeof(header) + sizeof(info),
->+	};
->+
->+	snprintf(info.metric_set_name, sizeof(info.metric_set_name),
->+		 "%s", ctx->metric_set->symbol_name);
->+	snprintf(info.metric_set_uuid, sizeof(info.metric_set_uuid),
->+		 "%s", ctx->metric_set->hw_config_guid);
->+
->+	if (fwrite(&header, sizeof(header), 1, output) != 1)
->+		return false;
->+
->+	if (fwrite(&info, sizeof(info), 1, output) != 1)
->+		return false;
->+
->+	return true;
->+}
->+
->+static struct intel_xe_topology_info *get_topology(struct recording_context *ctx)
->+{
->+	return xe_fill_topology_info(ctx->drm_fd, ctx->devid, &ctx->topology_size);
->+}
->+
->+static bool
->+write_topology(FILE *output, struct recording_context *ctx)
->+{
->+	struct intel_xe_perf_record_header header = {
->+		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_TOPOLOGY,
->+	};
->+
->+	header.size = sizeof(header) + ctx->topology_size;
->+	if (fwrite(&header, sizeof(header), 1, output) != 1)
->+		return false;
->+
->+	if (fwrite(ctx->topology, ctx->topology_size, 1, output) != 1)
->+		return false;
->+
->+	return true;
->+}
->+
->+static int get_stream_status(int perf_fd, u32 *oa_status)
->+{
->+	struct drm_xe_oa_stream_status status;
->+	int ret;
->+
->+	ret = perf_ioctl(perf_fd, DRM_XE_PERF_IOCTL_STATUS, &status);
->+	if (ret)
->+		return ret;
->+
->+	*oa_status = status.oa_status;
->+	return 0;
->+}
->+
->+static bool write_stream_status(struct recording_context *ctx, FILE *output)
->+{
->+	u32 oa_status;
->+
->+	if (!get_stream_status(ctx->perf_fd, &oa_status)) {
->+		struct intel_xe_perf_record_header header = { .size = sizeof(header) };
->+
->+		if (oa_status & DRM_XE_OASTATUS_REPORT_LOST)
->+			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_REPORT_LOST;
->+		else if (oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW)
->+			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_BUFFER_LOST;
->+		else
->+			return true;
->+
->+		if (fwrite(&header, sizeof(header), 1, output) != 1)
->+			return false;
->+	}
->+
->+	return true;
->+}
->+
->+static bool write_stream_data(struct recording_context *ctx,
->+			      char *data, ssize_t size, FILE *output)
->+{
->+	ssize_t format_size = oa_formats[ctx->metric_set->perf_oa_format].size;
->+
->+	assert(!(size % format_size));
->+
->+	for (int i = 0; i < size / format_size; i++) {
->+		struct intel_xe_perf_record_header header = {
->+			.type = INTEL_XE_PERF_RECORD_TYPE_SAMPLE,
->+			.size = sizeof(header) + format_size,
->+		};
->+
->+		if (fwrite(&header, sizeof(header), 1, output) != 1)
->+			return false;
->+
->+		if (fwrite(data, format_size, 1, output) != 1)
->+			return false;
->+	}
->+
->+	return true;
->+}
->+
->+static bool write_perf_data(FILE *output, struct recording_context *ctx)
->+{
->+	char data[4096];
->+	ssize_t len;
->+	bool ret;
->+
->+	while (1) {
->+		len = read(ctx->perf_fd, data, sizeof(data));
->+
->+		if (len < 0) {
->+			switch (errno) {
->+			case EIO:
->+				ret = write_stream_status(ctx, output);
->+				if (!ret)
->+					return ret;
->+				break;
->+			case EAGAIN:
->+			case EINTR:
->+				return true;
->+			default:
->+				/* Not expecting -EFAULT, -ENOSPC, -EINVAL */
->+				assert(0);
->+			}
->+		} else {
->+			ret = write_stream_data(ctx, data, len, output);
->+			if (!ret)
->+				return ret;
->+		}
->+	}
->+
->+	/* Should not reach here */
->+	return false;
->+}
->+
->+static clock_t correlation_clock_id = CLOCK_MONOTONIC;
 >+
 >+static const char *
->+get_correlation_clock_name(clock_t clock_id)
+>+metric_name(struct intel_xe_perf *perf, const char *hw_config_guid)
 >+{
->+	switch (clock_id) {
->+	case CLOCK_BOOTTIME:      return "bootime";
->+	case CLOCK_MONOTONIC:     return "monotonic";
->+	case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
->+	default:                  return "*unknown*";
+>+	struct intel_xe_perf_metric_set *metric_set;
+>+
+>+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
+>+		if (!strcmp(metric_set->hw_config_guid, hw_config_guid))
+>+			return metric_set->symbol_name;
 >+	}
->+}
 >+
->+static int query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *ts)
->+{
->+	struct drm_xe_device_query query = {
->+		.extensions = 0,
->+		.query = DRM_XE_DEVICE_QUERY_ENGINE_CYCLES,
->+		.size = sizeof(*ts),
->+		.data = (uintptr_t)ts,
->+	};
->+
->+	return perf_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
->+}
->+
->+static bool get_correlation_timestamps(struct recording_context *ctx,
->+				       struct intel_xe_perf_record_timestamp_correlation *corr)
->+{
->+	struct drm_xe_query_engine_cycles ts = {};
->+
->+	ts.eci = *ctx->hwe;
->+	ts.clockid = correlation_clock_id;
->+
->+	if (query_engine_cycles(ctx->drm_fd, &ts))
->+		return false;
->+
->+	corr->cpu_timestamp = ts.cpu_timestamp + ts.cpu_delta / 2;
->+	corr->gpu_timestamp = ts.engine_cycles;
->+
->+	return true;
->+}
->+
->+static bool
->+write_saved_correlation_timestamps(FILE *output,
->+				   const struct intel_xe_perf_record_timestamp_correlation *corr)
->+{
->+	struct intel_xe_perf_record_header header = {
->+		.type = INTEL_XE_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION,
->+		.size = sizeof(header) + sizeof(*corr),
->+	};
->+
->+	if (fwrite(&header, sizeof(header), 1, output) != 1)
->+		return false;
->+
->+	if (fwrite(corr, sizeof(*corr), 1, output) != 1)
->+		return false;
->+
->+	return true;
->+}
->+
->+static bool
->+write_correlation_timestamps(struct recording_context *ctx, FILE *output)
->+{
->+	struct intel_xe_perf_record_timestamp_correlation corr;
->+
->+	if (!get_correlation_timestamps(ctx, &corr))
->+		return false;
->+
->+	return write_saved_correlation_timestamps(output, &corr);
+>+	return "Unknown";
 >+}
 >+
 >+static void
->+read_command_file(struct recording_context *ctx)
+>+usage(void)
 >+{
->+	struct recorder_command_base header;
->+	ssize_t ret = read(ctx->command_fifo_fd, &header, sizeof(header));
+>+	printf("Usage: xe-perf-configs [options]\n"
+>+	       "Manages xe-perf configurations stored in xe.\n"
+>+	       "     --purge, -p         Purge configurations from the kernel\n"
+>+	       "     --list,  -l         List configurations from the kernel\n");
+>+}
 >+
->+	if (ret < 0)
->+		return;
+>+int
+>+main(int argc, char *argv[])
+>+{
+>+	char metrics_path[128];
+>+	DIR *metrics_dir;
+>+	struct dirent *entry;
+>+	int drm_fd, drm_card;
+>+	int opt;
+>+	bool purge = false;
+>+	const struct option long_options[] = {
+>+		{"help",   no_argument, 0, 'h'},
+>+		{"list",   no_argument, 0, 'l'},
+>+		{"purge",  no_argument, 0, 'p'},
+>+		{0, 0, 0, 0}
+>+	};
+>+	const struct intel_device_info *devinfo;
+>+	struct intel_xe_perf *perf;
+>+	uint32_t devid = 0;
 >+
->+	switch (header.command) {
->+	case RECORDER_COMMAND_DUMP: {
->+		uint32_t len = header.size - sizeof(header), offset = 0;
->+		uint8_t *dump = malloc(len);
->+		FILE *file;
->+
->+		while (offset < len &&
->+		       ((ret = read(ctx->command_fifo_fd,
->+				    (void *) dump + offset, len - offset)) > 0
->+			|| errno == EAGAIN)) {
->+			if (ret > 0)
->+				offset += ret;
+>+	while ((opt = getopt_long(argc, argv, "hlp", long_options, NULL)) != -1) {
+>+		switch (opt) {
+>+		case 'h':
+>+			usage();
+>+			return EXIT_SUCCESS;
+>+		case 'l':
+>+			break;
+>+		case 'p':
+>+			purge = true;
+>+			break;
+>+		default:
+>+			fprintf(stderr, "Internal error: "
+>+				"unexpected getopt value: %d\n", opt);
+>+			usage();
+>+			return EXIT_FAILURE;
 >+		}
->+
->+		fprintf(stdout, "Writing circular buffer to %s\n", dump);
->+
->+		file = fopen((const char *) dump, "w+");
->+		if (file) {
->+			struct chunk chunks[2];
->+
->+			fflush(ctx->output_stream);
->+			get_chunks(chunks, &ctx->circular_buffer,
->+				   false, ctx->circular_buffer.size);
->+
->+			if (!write_version(file, ctx) ||
->+			    !write_header(file, ctx) ||
->+			    !write_topology(file, ctx) ||
->+			    fwrite(chunks[0].data, chunks[0].len, 1, file) != 1 ||
->+			    (chunks[1].len > 0 &&
->+			     fwrite(chunks[1].data, chunks[1].len, 1, file) != 1) ||
->+			    !write_correlation_timestamps(ctx, file)) {
->+				fprintf(stderr, "Unable to write circular buffer data in file '%s'\n",
->+					dump);
->+			}
->+			fclose(file);
->+		} else
->+			fprintf(stderr, "Unable to write dump file '%s'\n", dump);
->+
->+		free(dump);
->+		break;
 >+	}
->+	case RECORDER_COMMAND_QUIT:
->+		quit = true;
->+		break;
->+	default:
->+		fprintf(stderr, "Unknown command 0x%x\n", header.command);
->+		break;
+>+
+>+	drm_fd = open_render_node(&devid);
+>+	drm_card = get_card_for_fd(drm_fd);
+>+
+>+	fprintf(stdout, "Found device id=0x%x\n", devid);
+>+
+>+	devinfo = intel_get_device_info(drm_fd);
+>+	if (!devinfo) {
+>+		fprintf(stderr, "No device info found.\n");
+>+		return EXIT_FAILURE;
 >+	}
+>+
+>+	fprintf(stdout, "Device graphics_ver=%i gt=%i\n", devinfo->graphics_ver, devinfo->gt);
+>+
+>+	perf = intel_xe_perf_for_fd(drm_fd, 0);
+>+	if (!perf) {
+>+		fprintf(stderr, "No perf data found.\n");
+>+		return EXIT_FAILURE;
+>+	}
+>+
+>+	snprintf(metrics_path, sizeof(metrics_path),
+>+		 "/sys/class/drm/card%d/metrics", drm_card);
+>+	metrics_dir = opendir(metrics_path);
+>+	if (!metrics_dir)
+>+		return EXIT_FAILURE;
+>+
+>+	fprintf(stdout, "Looking at metrics in %s\n", metrics_path);
+>+
+>+	while ((entry = readdir(metrics_dir))) {
+>+		char metric_id_path[400];
+>+		uint64_t metric_id;
+>+
+>+		if (entry->d_type != DT_DIR)
+>+			continue;
+>+
+>+		snprintf(metric_id_path, sizeof(metric_id_path),
+>+			 "%s/%s/id", metrics_path, entry->d_name);
+>+
+>+		if (!read_file_uint64(metric_id_path, &metric_id))
+>+			continue;
+>+
+>+		if (purge) {
+>+			if (intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &metric_id) == 0)
+>+				fprintf(stdout, "\tRemoved config %s id=%03" PRIu64 " name=%s\n",
+>+					entry->d_name, metric_id, metric_name(perf, entry->d_name));
+>+			else
+>+				fprintf(stdout, "\tFailed to remove config %s id=%03" PRIu64 " name=%s\n",
+>+					entry->d_name, metric_id, metric_name(perf, entry->d_name));
+>+		} else {
+>+			fprintf(stdout, "\tConfig %s id=%03" PRIu64 " name=%s\n",
+>+				entry->d_name, metric_id, metric_name(perf, entry->d_name));
+>+		}
+>+	}
+>+
+>+	closedir(metrics_dir);
+>+	close(drm_fd);
+>+
+>+	return EXIT_SUCCESS;
 >+}
+>diff --git a/tools/xe-perf/xe_perf_control.c b/tools/xe-perf/xe_perf_control.c
+>new file mode 100644
+>index 0000000000..da96232bc8
+>--- /dev/null
+>+++ b/tools/xe-perf/xe_perf_control.c
+>@@ -0,0 +1,117 @@
+>+// SPDX-License-Identifier: MIT
+>+/*
+>+ * Copyright © 2024 Intel Corporation
+>+ */
 >+
->+static void
->+print_metric_sets(const struct intel_xe_perf *perf)
->+{
->+	struct intel_xe_perf_metric_set *metric_set;
->+	uint32_t longest_name = 0;
 >+
->+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
->+		longest_name = MAX(longest_name, strlen(metric_set->symbol_name));
->+	}
+>+#include <getopt.h>
+>+#include <stdbool.h>
+>+#include <stdio.h>
+>+#include <stdlib.h>
+>+#include <string.h>
+>+#include <unistd.h>
 >+
->+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
->+		fprintf(stdout, "%s:%*s%s\n",
->+			metric_set->symbol_name,
->+			(int) (longest_name - strlen(metric_set->symbol_name) + 1), " ",
->+			metric_set->name);
->+	}
->+}
->+
->+static void
->+print_metric_set_counters(const struct intel_xe_perf_metric_set *metric_set)
->+{
->+	uint32_t longest_name = 0;
->+
->+	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
->+		longest_name = MAX(longest_name, strlen(metric_set->counters[i].name));
->+	}
->+
->+	fprintf(stdout, "%s (%s):\n", metric_set->symbol_name, metric_set->name);
->+	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
->+		struct intel_xe_perf_logical_counter *counter = &metric_set->counters[i];
->+
->+		fprintf(stdout, "  %s:%*s%s\n",
->+			counter->name,
->+			(int)(longest_name - strlen(counter->name) + 1), " ",
->+			counter->desc);
->+	}
->+}
->+
->+static void
->+print_metric_sets_counters(struct intel_xe_perf *perf)
->+{
->+	struct intel_xe_perf_metric_set *metric_set;
->+
->+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link)
->+		print_metric_set_counters(metric_set);
->+}
+>+#include "xe_perf_recorder_commands.h"
 >+
 >+static void
 >+usage(const char *name)
 >+{
 >+	fprintf(stdout,
 >+		"Usage: %s [options]\n"
->+		"Recording tool for xe-oa\n"
 >+		"\n"
->+		"     --help,               -h          Print this screen\n"
->+		"     --device,             -d <value>  Device to use\n"
->+		"                                       (value=list to list devices\n"
->+		"                                        value=1 to use /dev/dri/card1)\n"
->+		"     --correlation-period, -c <value>  Time period of timestamp correlation in seconds\n"
->+		"                                       (default = 1.0)\n"
->+		"     --perf-period,        -p <value>  Time period of xe-oa reports in seconds\n"
->+		"                                       (default = 0.001)\n"
->+		"     --metric,             -m <value>  xe-oa metric to sample with (use value=list to list all metrics)\n"
->+		"     --counters,           -C          List counters for a given metric and exit\n"
->+		"     --size,               -s <value>  Size of circular buffer to use in kilobytes\n"
->+		"                                       If specified, a maximum amount of <value> data will\n"
->+		"                                       be recorded.\n"
->+		"     --command-fifo,       -f <path>   Path to a command fifo, implies circular buffer\n"
->+		"                                       (To use with xe-perf-control)\n"
->+		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
->+		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
->+		"                                       Values: boot, mono, mono_raw (default = mono)\n"
->+		"     --engine-class        -e <value>  Engine class used for the OA capture.\n"
->+		"     --engine-instance     -i <value>  Engine instance used for the OA capture.\n",
+>+		"     --help,               -h         Print this screen\n"
+>+		"     --command-fifo,       -f <path>  Path to a command fifo\n"
+>+		"     --dump,               -d <path>  Write a content of circular buffer to path\n",
 >+		name);
->+}
->+
->+static void
->+teardown_recording_context(struct recording_context *ctx)
->+{
->+	if (ctx->topology)
->+		free(ctx->topology);
->+
->+	if (ctx->perf)
->+		intel_xe_perf_free(ctx->perf);
->+
->+	if (ctx->command_fifo)
->+		unlink(ctx->command_fifo);
->+	if (ctx->command_fifo_fd != -1)
->+		close(ctx->command_fifo_fd);
->+
->+	if (ctx->output_stream)
->+		fclose(ctx->output_stream);
->+
->+	free(ctx->circular_buffer.data);
->+
->+	if (ctx->perf_fd != -1)
->+		close(ctx->perf_fd);
->+	if (ctx->drm_fd != -1)
->+		close(ctx->drm_fd);
->+}
->+
->+static int assign_oa_unit(int fd, struct recording_context *ctx)
->+{
->+	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
->+	struct drm_xe_oa_unit *oau;
->+	uint8_t *poau;
->+
->+	poau = (uint8_t *)&qoa->oa_units[0];
->+	for (int i = 0; i < qoa->num_oa_units; i++) {
->+		oau = (struct drm_xe_oa_unit *)poau;
->+
->+		for (int j = 0; j < oau->num_engines; j++) {
->+			if (oau->eci[j].engine_class == ctx->eci.engine_class &&
->+			    oau->eci[j].engine_instance == ctx->eci.engine_instance) {
->+				ctx->hwe = &oau->eci[j];
->+				ctx->oa_unit = oau;
->+				return 0;
->+			}
->+		}
->+
->+		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
->+	}
->+
->+	return -1;
 >+}
 >+
 >+int
 >+main(int argc, char *argv[])
 >+{
 >+	const struct option long_options[] = {
->+		{"help",		no_argument, 0, 'h'},
->+		{"device",		required_argument, 0, 'd'},
->+		{"correlation-period",	required_argument, 0, 'c'},
->+		{"perf-period",		required_argument, 0, 'p'},
->+		{"metric",		required_argument, 0, 'm'},
->+		{"counters",		no_argument, 0, 'C'},
->+		{"output",		required_argument, 0, 'o'},
->+		{"size",		required_argument, 0, 's'},
->+		{"command-fifo",	required_argument, 0, 'f'},
->+		{"cpu-clock",		required_argument, 0, 'k'},
->+		{"engine-class",	required_argument, 0, 'e'},
->+		{"engine-instance",	required_argument, 0, 'i'},
+>+		{"help",                       no_argument, 0, 'h'},
+>+		{"dump",                 required_argument, 0, 'd'},
+>+		{"command-fifo",         required_argument, 0, 'f'},
+>+		{"quit",                       no_argument, 0, 'q'},
 >+		{0, 0, 0, 0}
 >+	};
->+	const struct {
->+		clock_t id;
->+		const char *name;
->+	} clock_names[] = {
->+		{ CLOCK_BOOTTIME,	"boot" },
->+		{ CLOCK_MONOTONIC,	"mono" },
->+		{ CLOCK_MONOTONIC_RAW,	"mono_raw" },
->+	};
->+	double corr_period = 1.0, perf_period = 0.001;
->+	const char *metric_name = NULL, *output_file = "xe_perf.record";
->+	struct intel_xe_perf_metric_set *metric_set;
->+	struct intel_xe_perf_record_timestamp_correlation initial_correlation;
->+	struct timespec now;
->+	uint64_t corr_period_ns, poll_time_ns;
->+	uint32_t circular_size = 0;
->+	int opt, dev_node_id = -1;
->+	bool list_counters = false;
->+	FILE *output = NULL;
->+	struct recording_context ctx = {
->+		.drm_fd = -1,
->+		.perf_fd = -1,
+>+	const char *command_fifo = XE_PERF_RECORD_FIFO_PATH, *dump_file = NULL;
+>+	FILE *command_fifo_file;
+>+	int opt;
+>+	bool quit = false;
 >+
->+		.command_fifo = XE_PERF_RECORD_FIFO_PATH,
->+		.command_fifo_fd = -1,
->+
->+		.eci = { DRM_XE_ENGINE_CLASS_RENDER, 0 },
->+	};
->+
->+	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:e:i:", long_options, NULL)) != -1) {
+>+	while ((opt = getopt_long(argc, argv, "hd:f:q", long_options, NULL)) != -1) {
 >+		switch (opt) {
 >+		case 'h':
 >+			usage(argv[0]);
 >+			return EXIT_SUCCESS;
->+		case 'c':
->+			corr_period = atof(optarg);
->+			break;
 >+		case 'd':
->+			if (!strcmp(optarg, "list"))
->+				dev_node_id = -2;
->+			else
->+				dev_node_id = atoi(optarg);
->+			break;
->+		case 'p':
->+			perf_period = atof(optarg);
->+			break;
->+		case 'm':
->+			metric_name = optarg;
->+			break;
->+		case 'C':
->+			list_counters = true;
->+			break;
->+		case 'o':
->+			output_file = optarg;
->+			break;
->+		case 's':
->+			circular_size = MAX(8, atoi(optarg)) * 1024;
+>+			dump_file = optarg;
 >+			break;
 >+		case 'f':
->+			ctx.command_fifo = optarg;
->+			circular_size = 8 * 1024 * 1024;
+>+			command_fifo = optarg;
 >+			break;
->+		case 'k': {
->+			bool found = false;
->+			for (uint32_t i = 0; i < ARRAY_SIZE(clock_names); i++) {
->+				if (!strcmp(clock_names[i].name, optarg)) {
->+					correlation_clock_id = clock_names[i].id;
->+					found = true;
->+					break;
->+				}
->+			}
->+			if (!found) {
->+				fprintf(stderr, "Unknown clock name '%s'\n", optarg);
->+				return EXIT_FAILURE;
->+			}
->+			break;
->+		}
->+		case 'e':
->+			ctx.eci.engine_class = atoi(optarg);
->+			break;
->+		case 'i':
->+			ctx.eci.engine_instance = atoi(optarg);
+>+		case 'q':
+>+			quit = true;
 >+			break;
 >+		default:
 >+			fprintf(stderr, "Internal error: "
@@ -1234,276 +560,390 @@ Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 >+		}
 >+	}
 >+
->+	if (dev_node_id == -2) {
->+		print_intel_devices();
->+		return EXIT_SUCCESS;
->+	}
+>+	if (!command_fifo)
+>+		return EXIT_FAILURE;
 >+
->+	ctx.drm_fd = open_render_node(&ctx.devid, dev_node_id);
->+	if (ctx.drm_fd < 0) {
->+		fprintf(stderr, "Unable to open device.\n");
+>+	command_fifo_file = fopen(command_fifo, "r+");
+>+	if (!command_fifo_file) {
+>+		fprintf(stderr, "Unable to open command file\n");
 >+		return EXIT_FAILURE;
 >+	}
 >+
->+	xe_device_get(ctx.drm_fd);
+>+	if (dump_file) {
+>+		if (dump_file[0] == '/') {
+>+			uint32_t total_len =
+>+				sizeof(struct recorder_command_base) + strlen(dump_file) + 1;
+>+			struct {
+>+				struct recorder_command_base base;
+>+				uint8_t dump[];
+>+			} *data = malloc(total_len);
 >+
->+	ctx.devinfo = intel_get_device_info(ctx.devid);
->+	if (!ctx.devinfo) {
->+		fprintf(stderr, "No device info found.\n");
->+		goto fail;
->+	}
+>+			data->base.command = RECORDER_COMMAND_DUMP;
+>+			data->base.size = total_len;
+>+			snprintf((char *) data->dump, strlen(dump_file) + 1, "%s", dump_file);
 >+
->+	if (assign_oa_unit(ctx.drm_fd, &ctx) < 0) {
->+		fprintf(stderr, "assign_oa_unit failed\n");
->+		goto fail;
->+	}
->+
->+	fprintf(stdout, "Device name=%s gen=%i id=0x%x oa_unit=%i gt=%i\n",
->+		ctx.devinfo->codename, ctx.devinfo->graphics_ver, ctx.devid,
->+		ctx.oa_unit->oa_unit_id, ctx.hwe->gt_id);
->+
->+	ctx.topology = get_topology(&ctx);
->+	if (!ctx.topology) {
->+		fprintf(stderr, "Unable to retrieve GPU topology\n");
->+		goto fail;
->+	}
->+
->+	ctx.perf = intel_xe_perf_for_fd(ctx.drm_fd, ctx.hwe->gt_id);
->+	if (!ctx.perf) {
->+		fprintf(stderr, "No perf data found.\n");
->+		goto fail;
->+	}
->+
->+	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
->+
->+	if (metric_name) {
->+		if (!strcmp(metric_name, "list")) {
->+			print_metric_sets(ctx.perf);
->+			return EXIT_SUCCESS;
->+		}
->+
->+		igt_list_for_each_entry(metric_set, &ctx.perf->metric_sets, link) {
->+			if (!strcasecmp(metric_set->symbol_name, metric_name)) {
->+				ctx.metric_set = metric_set;
->+				break;
->+			}
->+		}
->+	}
->+
->+	if (list_counters) {
->+		if (!ctx.metric_set)
->+			print_metric_sets_counters(ctx.perf);
->+		else
->+			print_metric_set_counters(ctx.metric_set);
->+		teardown_recording_context(&ctx);
->+		return EXIT_SUCCESS;
->+	}
->+
->+	if (!ctx.metric_set) {
->+		if (!metric_name)
->+			fprintf(stderr, "No metric set specified.\n");
->+		else
->+			fprintf(stderr, "Unknown metric set '%s'.\n", metric_name);
->+		print_metric_sets(ctx.perf);
->+		goto fail;
->+	}
->+
->+	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
->+
->+	ctx.oa_timestamp_frequency = get_device_oa_timestamp_frequency(ctx.drm_fd);
->+	ctx.cs_timestamp_frequency = get_device_cs_timestamp_frequency(ctx.drm_fd);
->+
->+	signal(SIGINT, sigint_handler);
->+
->+	if (ctx.command_fifo) {
->+		if (mkfifo(ctx.command_fifo,
->+			   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH) != 0) {
->+			fprintf(stderr, "Unable to create command fifo '%s': %s\n",
->+				ctx.command_fifo, strerror(errno));
->+			goto fail;
->+		}
->+
->+		ctx.command_fifo_fd = open(ctx.command_fifo, O_RDWR);
->+		if (ctx.command_fifo_fd < 0) {
->+			fprintf(stderr, "Unable to open command fifo '%s': %s\n",
->+				ctx.command_fifo, strerror(errno));
->+			goto fail;
->+		}
->+	}
->+
->+	if (circular_size) {
->+		ctx.circular_buffer.allocated_size = circular_size;
->+		ctx.circular_buffer.data = malloc(circular_size);
->+		if (!ctx.circular_buffer.data) {
->+			fprintf(stderr, "Unable to allocate circular buffer\n");
->+			goto fail;
->+		}
->+
->+		ctx.output_stream = fopencookie(&ctx.circular_buffer, "w+",
->+						circular_buffer_functions);
->+		if (!ctx.output_stream) {
->+			fprintf(stderr, "Unable to create circular buffer\n");
->+			goto fail;
->+		}
->+
->+		if (!get_correlation_timestamps(&ctx, &initial_correlation)) {
->+			fprintf(stderr, "Unable to correlation timestamps\n");
->+			goto fail;
->+		}
->+
->+		write_correlation_timestamps(&ctx, ctx.output_stream);
->+		fprintf(stdout,
->+			"Recoding in internal circular buffer.\n"
->+			"Use xe-perf-control to snapshot into file.\n");
->+	} else {
->+		output = fopen(output_file, "w+");
->+		if (!output) {
->+			fprintf(stderr, "Unable to open output file '%s'\n",
->+				output_file);
->+			goto fail;
->+		}
->+
->+		if (!write_version(output, &ctx) ||
->+		    !write_header(output, &ctx) ||
->+		    !write_topology(output, &ctx) ||
->+		    !write_correlation_timestamps(&ctx, output)) {
->+			fprintf(stderr, "Unable to write header in file '%s'\n",
->+				output_file);
->+			goto fail;
->+		}
->+
->+		ctx.output_stream = output;
->+		fprintf(stdout, "Writing recoding to %s\n", output_file);
->+	}
->+
->+	if (ctx.metric_set->perf_oa_metrics_set == 0) {
->+		fprintf(stderr,
->+			"Unable to load performance configuration, consider running:\n"
->+			"   sysctl dev.xe.perf_stream_paranoid=0\n");
->+		goto fail;
->+	}
->+
->+	fprintf(stdout, "Using correlation clock: %s\n",
->+		get_correlation_clock_name(correlation_clock_id));
->+
->+	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
->+	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
->+		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
->+		ctx.metric_set->perf_oa_format);
->+
->+	ctx.perf_fd = perf_open(&ctx);
->+	if (ctx.perf_fd < 0) {
->+		fprintf(stderr, "Unable to open xe oa stream: %s\n",
->+			strerror(errno));
->+		goto fail;
->+	}
->+
->+	corr_period_ns = corr_period * 1000000000ul;
->+	poll_time_ns = corr_period_ns;
->+
->+	while (!quit) {
->+		struct pollfd pollfd[2] = {
->+			{         ctx.perf_fd, POLLIN, 0 },
->+			{ ctx.command_fifo_fd, POLLIN, 0 },
->+		};
->+		uint64_t elapsed_ns;
->+		int ret;
->+
->+		igt_gettime(&now);
->+		ret = poll(pollfd, ctx.command_fifo_fd != -1 ? 2 : 1, poll_time_ns / 1000000);
->+		if (ret < 0 && errno != EINTR) {
->+			fprintf(stderr, "Failed to poll xe-oa stream: %s\n",
->+				strerror(errno));
->+			break;
->+		}
->+
->+		if (ret > 0) {
->+			if (pollfd[0].revents & POLLIN) {
->+				if (!write_perf_data(ctx.output_stream, &ctx)) {
->+					fprintf(stderr, "Failed to write xe-oa data: %s\n",
->+						strerror(errno));
->+					break;
->+				}
->+			}
->+
->+			if (pollfd[1].revents & POLLIN) {
->+				read_command_file(&ctx);
->+			}
->+		}
->+
->+		elapsed_ns = igt_nsec_elapsed(&now);
->+		if (elapsed_ns > poll_time_ns) {
->+			poll_time_ns = corr_period_ns;
->+			if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
->+				fprintf(stderr,
->+					"Failed to write xe timestamp correlation data: %s\n",
->+					strerror(errno));
->+				break;
->+			}
+>+			fwrite(data, total_len, 1, command_fifo_file);
 >+		} else {
->+			poll_time_ns -= elapsed_ns;
+>+			char *cwd = getcwd(NULL, 0);
+>+			uint32_t path_len = strlen(cwd) + 1 + strlen(dump_file) + 1;
+>+			uint32_t total_len = sizeof(struct recorder_command_base) + path_len;
+>+			struct {
+>+				struct recorder_command_base base;
+>+				uint8_t dump[];
+>+			} *data = malloc(total_len);
+>+
+>+			data->base.command = RECORDER_COMMAND_DUMP;
+>+			data->base.size = total_len;
+>+			snprintf((char *) data->dump, path_len, "%s/%s", cwd, dump_file);
+>+
+>+			fwrite(data, total_len, 1, command_fifo_file);
 >+		}
 >+	}
 >+
->+	fprintf(stdout, "Exiting...\n");
+>+	if (quit) {
+>+		struct recorder_command_base base = {
+>+			.command = RECORDER_COMMAND_QUIT,
+>+			.size = sizeof(base),
+>+		};
 >+
->+	if (!write_perf_data(ctx.output_stream, &ctx)) {
->+		fprintf(stderr, "Failed to write xe-oa data: %s\n",
->+			strerror(errno));
+>+		fwrite(&base, sizeof(base), 1, command_fifo_file);
 >+	}
 >+
->+	if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
->+		fprintf(stderr,
->+			"Failed to write final xe timestamp correlation data: %s\n",
->+			strerror(errno));
->+	}
->+
->+	teardown_recording_context(&ctx);
+>+	fclose(command_fifo_file);
 >+
 >+	return EXIT_SUCCESS;
->+
->+ fail:
->+	teardown_recording_context(&ctx);
->+
->+	return EXIT_FAILURE;
 >+}
->diff --git a/tools/xe-perf/xe_perf_recorder_commands.h b/tools/xe-perf/xe_perf_recorder_commands.h
+>diff --git a/tools/xe-perf/xe_perf_reader.c b/tools/xe-perf/xe_perf_reader.c
 >new file mode 100644
->index 0000000000..528813d2dc
+>index 0000000000..62a4237ee4
 >--- /dev/null
->+++ b/tools/xe-perf/xe_perf_recorder_commands.h
->@@ -0,0 +1,31 @@
->+/* SPDX-License-Identifier: MIT */
+>+++ b/tools/xe-perf/xe_perf_reader.c
+>@@ -0,0 +1,325 @@
+>+// SPDX-License-Identifier: MIT
 >+/*
->+ * Copyright © 2023 Intel Corporation
+>+ * Copyright © 2024 Intel Corporation
 >+ */
 >+
->+#ifndef XE_PERF_RECORDER_COMMANDS_H
->+#define XE_PERF_RECORDER_COMMANDS_H
->+
+>+#include <assert.h>
+>+#include <errno.h>
+>+#include <fcntl.h>
+>+#include <getopt.h>
+>+#include <inttypes.h>
+>+#include <stdbool.h>
 >+#include <stdint.h>
+>+#include <stdio.h>
+>+#include <stdlib.h>
+>+#include <string.h>
+>+#include <sys/types.h>
+>+#include <sys/stat.h>
+>+#include <unistd.h>
 >+
->+#define XE_PERF_RECORD_FIFO_PATH "/tmp/.xe-perf-record"
+>+#include "igt_core.h"
+>+#include "intel_chipset.h"
+>+#include "xe/xe_oa.h"
+>+#include "xe/xe_oa_data_reader.h"
 >+
->+enum recorder_command {
->+	RECORDER_COMMAND_DUMP = 1,
->+	RECORDER_COMMAND_QUIT,
->+};
+>+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+>+#define MIN(a,b) ((a) > (b) ? (b) : (a))
 >+
->+struct recorder_command_base {
->+	uint32_t command;
->+	uint32_t size; /* size of recorder_command_base + dump in bytes */
->+};
+>+static void
+>+usage(void)
+>+{
+>+	printf("Usage: xe-perf-reader [options] file\n"
+>+	       "Reads the content of an xe-perf recording.\n"
+>+	       "\n"
+>+	       "     --help,    -h             Print this screen\n"
+>+	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
+>+	       "                               Use 'all' to display all counters.\n"
+>+	       "                               Use 'list' to list available counters.\n"
+>+	       "     --reports, -r             Print out data per report.\n");
+>+}
 >+
->+/*
->+ The dump after the recorder_command_base header:
+>+static struct intel_xe_perf_logical_counter *
+>+find_counter(struct intel_xe_perf_metric_set *metric_set,
+>+	     const char *name)
+>+{
+>+	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
+>+		if (!strcmp(name, metric_set->counters[i].symbol_name)) {
+>+			return &metric_set->counters[i];
+>+		}
+>+	}
 >+
->+struct recorder_command_dump {
->+	uint8_t path[0];
->+};
->+*/
+>+	return NULL;
+>+}
 >+
->+#endif
+>+static void
+>+append_counter(struct intel_xe_perf_logical_counter ***counters,
+>+	       int32_t *n_counters,
+>+	       uint32_t *n_allocated_counters,
+>+	       struct intel_xe_perf_logical_counter *counter)
+>+{
+>+	if (*n_counters < *n_allocated_counters) {
+>+		(*counters)[(*n_counters)++] = counter;
+>+		return;
+>+	}
+>+
+>+	*n_allocated_counters = MAX(2, *n_allocated_counters * 2);
+>+	*counters = realloc(*counters,
+>+			    sizeof(struct intel_xe_perf_logical_counter *) *
+>+			    (*n_allocated_counters));
+>+	(*counters)[(*n_counters)++] = counter;
+>+}
+>+
+>+static struct intel_xe_perf_logical_counter **
+>+get_logical_counters(struct intel_xe_perf_metric_set *metric_set,
+>+		     const char *counter_list,
+>+		     int32_t *out_n_counters)
+>+{
+>+	struct intel_xe_perf_logical_counter **counters = NULL, *counter;
+>+	uint32_t n_allocated_counters = 0;
+>+	const char *current, *next;
+>+	char counter_name[100];
+>+
+>+	if (!counter_list) {
+>+		*out_n_counters = 0;
+>+		return NULL;
+>+	}
+>+
+>+	if (!strcmp(counter_list, "list")) {
+>+		uint32_t longest_name = 0;
+>+
+>+		*out_n_counters = -1;
+>+		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
+>+			longest_name = MAX(longest_name,
+>+					   strlen(metric_set->counters[i].symbol_name));
+>+		}
+>+
+>+		fprintf(stdout, "Available counters:\n");
+>+		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
+>+			fprintf(stdout, "%s:%*s%s\n",
+>+				metric_set->counters[i].symbol_name,
+>+				(int)(longest_name -
+>+				      strlen(metric_set->counters[i].symbol_name) + 1), " ",
+>+				metric_set->counters[i].name);
+>+		}
+>+		return NULL;
+>+	}
+>+
+>+	if (!strcmp(counter_list, "all")) {
+>+		counters = malloc(sizeof(*counters) * metric_set->n_counters);
+>+		*out_n_counters = metric_set->n_counters;
+>+		for (uint32_t i = 0; i < metric_set->n_counters; i++)
+>+			counters[i] = &metric_set->counters[i];
+>+		return counters;
+>+	}
+>+
+>+	*out_n_counters = 0;
+>+	current = counter_list;
+>+	while ((next = strstr(current, ","))) {
+>+		snprintf(counter_name,
+>+			 MIN((uint32_t)(next - current) + 1, sizeof(counter_name)),
+>+			 "%s", current);
+>+
+>+		counter = find_counter(metric_set, counter_name);
+>+		if (!counter) {
+>+			fprintf(stderr, "Unknown counter '%s'.\n", counter_name);
+>+			free(counters);
+>+			*out_n_counters = -1;
+>+			return NULL;
+>+		}
+>+
+>+		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
+>+
+>+		current = next + 1;
+>+	}
+>+
+>+	if (strlen(current) > 0) {
+>+		counter = find_counter(metric_set, current);
+>+		if (!counter) {
+>+			fprintf(stderr, "Unknown counter '%s'.\n", current);
+>+			free(counters);
+>+			*out_n_counters = -1;
+>+			return NULL;
+>+		}
+>+
+>+		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
+>+	}
+>+
+>+	return counters;
+>+}
+>+
+>+static void
+>+print_report_deltas(const struct intel_xe_perf_data_reader *reader,
+>+		    const struct intel_xe_perf_record_header *xe_report0,
+>+		    const struct intel_xe_perf_record_header *xe_report1,
+>+		    struct intel_xe_perf_logical_counter **counters,
+>+		    uint32_t n_counters)
+>+{
+>+	struct intel_xe_perf_accumulator accu;
+>+
+>+	intel_xe_perf_accumulate_reports(&accu,
+>+				      reader->perf, reader->metric_set,
+>+				      xe_report0, xe_report1);
+>+
+>+	for (uint32_t c = 0; c < n_counters; c++) {
+>+		struct intel_xe_perf_logical_counter *counter = counters[c];
+>+
+>+		switch (counter->storage) {
+>+		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
+>+		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
+>+		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
+>+			fprintf(stdout, "   %s: %" PRIu64 "\n",
+>+				counter->symbol_name, counter->read_uint64(reader->perf,
+>+									   reader->metric_set,
+>+									   accu.deltas));
+>+			break;
+>+		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
+>+		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
+>+			fprintf(stdout, "   %s: %f\n",
+>+				counter->symbol_name, counter->read_float(reader->perf,
+>+									  reader->metric_set,
+>+									  accu.deltas));
+>+			break;
+>+		}
+>+	}
+>+}
+>+
+>+int
+>+main(int argc, char *argv[])
+>+{
+>+	const struct option long_options[] = {
+>+		{"help",             no_argument, 0, 'h'},
+>+		{"counters",   required_argument, 0, 'c'},
+>+		{"reports",          no_argument, 0, 'r'},
+>+		{0, 0, 0, 0}
+>+	};
+>+	struct intel_xe_perf_data_reader reader;
+>+	struct intel_xe_perf_logical_counter **counters;
+>+	const struct intel_device_info *devinfo;
+>+	const char *counter_names = NULL;
+>+	int32_t n_counters;
+>+	int fd, opt;
+>+	bool print_reports = false;
+>+
+>+	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
+>+		switch (opt) {
+>+		case 'h':
+>+			usage();
+>+			return EXIT_SUCCESS;
+>+		case 'c':
+>+			counter_names = optarg;
+>+			break;
+>+		case 'r':
+>+			print_reports = true;
+>+			break;
+>+		default:
+>+			fprintf(stderr, "Internal error: "
+>+				"unexpected getopt value: %d\n", opt);
+>+			usage();
+>+			return EXIT_FAILURE;
+>+		}
+>+	}
+>+
+>+	if (optind >= argc) {
+>+		fprintf(stderr, "No recording file specified.\n");
+>+		return EXIT_FAILURE;
+>+	}
+>+
+>+	fd = open(argv[optind], 0, O_RDONLY);
+>+	if (fd < 0) {
+>+		fprintf(stderr, "Cannot open '%s': %s.\n",
+>+			argv[optind], strerror(errno));
+>+		return EXIT_FAILURE;
+>+	}
+>+
+>+	if (!intel_xe_perf_data_reader_init(&reader, fd)) {
+>+		fprintf(stderr, "Unable to parse '%s': %s.\n",
+>+			argv[optind], reader.error_msg);
+>+		return EXIT_FAILURE;
+>+	}
+>+
+>+	counters = get_logical_counters(reader.metric_set, counter_names, &n_counters);
+>+	if (n_counters < 0)
+>+		goto exit;
+>+
+>+	devinfo = intel_get_device_info(reader.devinfo.devid);
+>+
+>+	fprintf(stdout, "Recorded on device=0x%x(%s) graphics_ver=%i\n",
+>+		reader.devinfo.devid, devinfo->codename,
+>+		reader.devinfo.graphics_ver);
+>+	fprintf(stdout, "Metric used : %s (%s) uuid=%s\n",
+>+		reader.metric_set->symbol_name, reader.metric_set->name,
+>+		reader.metric_set->hw_config_guid);
+>+	fprintf(stdout, "Reports: %u\n", reader.n_records);
+>+	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
+>+	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
+>+
+>+	if (reader.n_correlations < 2) {
+>+		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
+>+		return EXIT_FAILURE;
+>+	}
+>+
+>+	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
+>+		reader.correlations[0]->cpu_timestamp,
+>+		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
+>+	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
+>+		reader.correlations[0]->gpu_timestamp,
+>+		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
+>+	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
+>+		reader.correlations[0]->gpu_timestamp & 0xffffffff,
+>+		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
+>+
+>+	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
+>+		intel_xe_perf_read_record_timestamp(reader.perf,
+>+						 reader.metric_set,
+>+						 reader.records[0]),
+>+		intel_xe_perf_read_record_timestamp(reader.perf,
+>+						 reader.metric_set,
+>+						 reader.records[reader.n_records - 1]));
+>+	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
+>+		intel_xe_perf_read_record_timestamp_raw(reader.perf,
+>+						     reader.metric_set,
+>+						     reader.records[0]),
+>+		intel_xe_perf_read_record_timestamp_raw(reader.perf,
+>+						     reader.metric_set,
+>+						     reader.records[reader.n_records - 1]));
+>+
+>+	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
+>+		fprintf(stdout,
+>+			"WARNING: Recording used a different HW configuration.\n"
+>+			"WARNING: This could lead to inconsistent counter values.\n");
+>+	}
+>+
+>+	for (uint32_t i = 0; i < reader.n_timelines; i++) {
+>+		const struct intel_xe_perf_timeline_item *item = &reader.timelines[i];
+>+
+>+		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
+>+			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
+>+			item->cpu_ts_start, item->cpu_ts_end,
+>+			item->ts_start, item->ts_end);
+>+		fprintf(stdout, "hw_id=0x%x %s\n",
+>+			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
+>+
+>+		print_report_deltas(&reader,
+>+				    reader.records[item->record_start],
+>+				    reader.records[item->record_end],
+>+				    counters, n_counters);
+>+
+>+		if (print_reports) {
+>+			for (uint32_t r = item->record_start; r < item->record_end; r++) {
+>+				fprintf(stdout, " report%i = %s\n",
+>+					r - item->record_start,
+>+					intel_xe_perf_read_report_reason(reader.perf, reader.records[r]));
+>+				print_report_deltas(&reader,
+>+						    reader.records[r],
+>+						    reader.records[r + 1],
+>+						    counters, n_counters);
+>+			}
+>+		}
+>+	}
+>+
+>+ exit:
+>+	intel_xe_perf_data_reader_fini(&reader);
+>+	close(fd);
+>+
+>+	return EXIT_SUCCESS;
+>+}
 >-- 
 >2.41.0
 >
