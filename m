@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 201F9C2BD05
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEC69C30659
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D5BB810EC2F;
-	Thu, 20 Jun 2024 20:01:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 453D910EC01;
+	Thu, 20 Jun 2024 20:01:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MKo1v+Ew";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VRHW3g9R";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F097910EB6E
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 250B510E945
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1718913661; x=1750449661;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=c7s47SGDGvOipU8Nax8ouzCD3oPHYg2h4mly9wexiy8=;
- b=MKo1v+Ew4DHxX9eWX8pYXYgTA+iVpHCDnRYuMc0aeeBSZ7+iHFk+nBqU
- DAyFfyuoO8lt6KDk3DHX5OmGks8ZZoJU39qJO1Xjnd2alP+33Gqch9Y2F
- Ag13FiGT7tfRXICH/q5qDgKp8YnkjLDTBIowiMX26sfPIOL13T7JypFZJ
- Jk7nEjVPzKxIdisiqp2OhoYXScrCTBSOOZrnLqHXE0F9voAlwtlSg1O8H
- 6tWbL3L/D1bMJv5GVO7MpC+rBiORtBZhszxKZUc9xhMOk24b31ITw+amq
- 4hnMmNOmkq/A2HTZthF3rb5wixR86B5RZDN9JLYF9W3makjh8MCyMLRO3 w==;
-X-CSE-ConnectionGUID: 4nyP7rHyTpSFrDL2aJ5/Ng==
-X-CSE-MsgGUID: wPxvErkcS121+M1rWp4FhA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329338"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329338"
+ bh=6IDno1/g4G2Xy/6XKhzA7/TZpqitqL7Q+Zjx2PfaiUQ=;
+ b=VRHW3g9RfKfa+0MGIy3dCVISIdc3wUamY0aftzZY+pkiQ8Ml+2ev1k8d
+ DQWD2N5/9ZD8JgmpGbJjzAVNoSWr8M+QEPpNgZxnNlaqp2iqfDm0jXvWc
+ FuEk4OBV/8hJSfdQvxmWhb77GfnU8xO9oG2lNF70p2jticcxe9+RM6XYC
+ E/mNl57C944vUefaTdiEWLV+D+lWmpS+WsCTd1/O1O8g0i9nmoXesyfV0
+ dCvKQpVMm5h7fQhAFdZiSG5eYRCHPPeHeHnUi4vq0tdIRrYeM5v1c9XfJ
+ ecu+sxJdzbfFSXOIMeabLFk4cv/g+T171gcgfH7SeQgOb1Z5F9NiBv0h0 w==;
+X-CSE-ConnectionGUID: 4TO9350TS3iPb0Qf24yiQA==
+X-CSE-MsgGUID: jivyQ69OTVSSKuhuNs0IHQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329340"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329340"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Jun 2024 13:00:59 -0700
-X-CSE-ConnectionGUID: R8asDqSdQdqsAPuctUkImA==
-X-CSE-MsgGUID: aCygBVLmRLKw4idlyPQ+Bw==
+X-CSE-ConnectionGUID: c6/DLHFoTwOSubiR3bPQcQ==
+X-CSE-MsgGUID: cadWB4HKQr+yXrnoP0jW0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459861"
+X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459864"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  20 Jun 2024 13:00:59 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 20/28] tests/intel/xe_oa: Register whitelisting and MMIO
- trigger tests
-Date: Thu, 20 Jun 2024 13:00:45 -0700
-Message-ID: <20240620200054.3550653-21-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 22/28] tools/xe-perf: Add xe_perf_recorder
+Date: Thu, 20 Jun 2024 13:00:47 -0700
+Message-ID: <20240620200054.3550653-23-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,360 +67,1311 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the following tests:
-	* "oa-regs-whitelisted"
-	* "mmio-triggered-reports"
+Add xe_perf_recorder. The recorder exercises the Xe OA uapi to capture OAG
+data in a specific format, similar to i915_perf_recorder.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- tests/intel/xe_oa.c | 327 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 327 insertions(+)
+ tools/meson.build                         |    1 +
+ tools/xe-perf/meson.build                 |    5 +
+ tools/xe-perf/xe_perf_recorder.c          | 1227 +++++++++++++++++++++
+ tools/xe-perf/xe_perf_recorder_commands.h |   31 +
+ 4 files changed, 1264 insertions(+)
+ create mode 100644 tools/xe-perf/meson.build
+ create mode 100644 tools/xe-perf/xe_perf_recorder.c
+ create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 30d1ed329f..ec486c3a80 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -3896,6 +3896,317 @@ test_whitelisted_registers_userspace_config(void)
- 	xe_oa_remove_config(drm_fd, config_id);
- }
+diff --git a/tools/meson.build b/tools/meson.build
+index 1656355eef..c02c020d0b 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -113,4 +113,5 @@ if libudev.found()
+ endif
  
-+#define OAG_OASTATUS (0xdafc)
-+#define OAG_MMIOTRIGGER (0xdb1c)
+ subdir('i915-perf')
++subdir('xe-perf')
+ subdir('null_state_gen')
+diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
+new file mode 100644
+index 0000000000..a5f59a67fe
+--- /dev/null
++++ b/tools/xe-perf/meson.build
+@@ -0,0 +1,5 @@
++executable('xe-perf-recorder',
++           [ 'xe_perf_recorder.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt, lib_igt_xe_oa],
++           install: true)
+diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+new file mode 100644
+index 0000000000..bd2d645fa1
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_recorder.c
+@@ -0,0 +1,1227 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
 +
-+static const uint32_t oa_wl[] = {
-+	OAG_MMIOTRIGGER,
-+	OAG_OASTATUS,
++#include <assert.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <limits.h>
++#include <poll.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <sys/sysmacros.h>
++#include <sys/time.h>
++#include <sys/types.h>
++#include <time.h>
++#include <unistd.h>
++
++#include "igt_core.h"
++#include "intel_chipset.h"
++#include "ioctl_wrappers.h"
++#include "linux_scaffold.h"
++#include "xe/xe_oa.h"
++#include "xe/xe_oa_data.h"
++#include "xe/xe_query.h"
++
++#include "xe_perf_recorder_commands.h"
++
++#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
++#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
++#define MAX(a,b) ((a) > (b) ? (a) : (b))
++#define MIN(a,b) ((a) < (b) ? (a) : (b))
++
++struct circular_buffer {
++	char   *data;
++	size_t  allocated_size;
++	size_t  size;
++	size_t  beginpos;
++	size_t  endpos;
 +};
 +
-+static const uint32_t nonpriv_slot_offsets[] = {
-+	0x4d0, 0x4d4, 0x4d8, 0x4dc, 0x4e0, 0x4e4, 0x4e8, 0x4ec,
-+	0x4f0, 0x4f4, 0x4f8, 0x4fc, 0x010, 0x014, 0x018, 0x01c,
-+	0x1e0, 0x1e4, 0x1e8, 0x1ec,
++struct chunk {
++	char *data;
++	size_t len;
 +};
 +
-+struct test_perf {
-+	const uint32_t *slots;
-+	uint32_t num_slots;
-+	const uint32_t *wl;
-+	uint32_t num_wl;
-+} perf;
-+
-+#define HAS_OA_MMIO_TRIGGER(__d) \
-+	(IS_DG2(__d) || IS_PONTEVECCHIO(__d) || IS_METEORLAKE(__d) || \
-+	 intel_graphics_ver(devid) >= IP_VER(20, 0))
-+
-+static void perf_init_whitelist(void)
++static size_t
++circular_available_size(const struct circular_buffer *buffer)
 +{
-+	perf.slots = nonpriv_slot_offsets;
-+	perf.num_slots = 20;
-+	perf.wl = oa_wl;
-+	perf.num_wl = ARRAY_SIZE(oa_wl);
++	assert(buffer->size <= buffer->allocated_size);
++	return buffer->allocated_size - buffer->size;
 +}
 +
 +static void
-+emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
-+		 uint32_t reg)
++get_chunks(struct chunk *chunks, struct circular_buffer *buffer, bool write, size_t len)
 +{
-+	intel_bb_add_intel_buf(ibb, dst, true);
++	size_t offset = write ? buffer->endpos : buffer->beginpos;
 +
-+	intel_bb_out(ibb, MI_STORE_REGISTER_MEM | 2);
-+	intel_bb_out(ibb, reg);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION,
-+			    I915_GEM_DOMAIN_INSTRUCTION,
-+			    offset, dst->addr.offset);
-+	intel_bb_out(ibb, lower_32_bits(offset));
-+	intel_bb_out(ibb, upper_32_bits(offset));
++	if (write)
++		assert(circular_available_size(buffer) >= len);
++	else
++		assert(buffer->size >= len);
++
++	chunks[0].data = &buffer->data[offset];
++
++	if ((offset + len) > buffer->allocated_size) {
++		chunks[0].len = buffer->allocated_size - offset;
++		chunks[1].data = buffer->data;
++		chunks[1].len = len - (buffer->allocated_size - offset);
++	} else {
++		chunks[0].len = len;
++		chunks[1].data = NULL;
++		chunks[1].len = 0;
++	}
++}
++
++static ssize_t
++circular_buffer_read(void *c, char *buf, size_t size)
++{
++	struct circular_buffer *buffer = c;
++	struct chunk chunks[2];
++
++	if (buffer->size < size)
++		return -1;
++
++	get_chunks(chunks, buffer, false, size);
++
++	memcpy(buf, chunks[0].data, chunks[0].len);
++	memcpy(buf + chunks[0].len, chunks[1].data, chunks[1].len);
++	buffer->beginpos = (buffer->beginpos + size) % buffer->allocated_size;
++	buffer->size -= size;
++
++	return size;
++}
++
++static size_t
++peek_item_size(struct circular_buffer *buffer)
++{
++	struct intel_xe_perf_record_header header;
++	struct chunk chunks[2];
++
++	if (!buffer->size)
++		return 0;
++
++	assert(buffer->size >= sizeof(header));
++
++	get_chunks(chunks, buffer, false, sizeof(header));
++	memcpy(&header, chunks[0].data, chunks[0].len);
++	memcpy((char *) &header + chunks[0].len, chunks[1].data, chunks[1].len);
++
++	return header.size;
 +}
 +
 +static void
-+emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t value)
++circular_shrink(struct circular_buffer *buffer, size_t size)
 +{
-+	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
-+	intel_bb_out(ibb, OAG_MMIOTRIGGER);
-+	intel_bb_out(ibb, value);
++	size_t shrank = 0, item_size;
++
++	assert(size <= buffer->allocated_size);
++
++	while (shrank < size && buffer->size > (item_size = peek_item_size(buffer))) {
++		assert(item_size > 0 && item_size <= buffer->allocated_size);
++
++		buffer->beginpos = (buffer->beginpos + item_size) % buffer->allocated_size;
++		buffer->size -= item_size;
++
++		shrank += item_size;
++	}
 +}
 +
-+static void dump_whitelist(uint32_t mmio_base, const char *msg)
++static ssize_t
++circular_buffer_write(void *c, const char *buf, size_t _size)
 +{
-+	int i;
++	struct circular_buffer *buffer = c;
++	size_t size = _size;
 +
-+	igt_debug("%s\n", msg);
++	while (size) {
++		size_t avail = circular_available_size(buffer), item_size;
++		struct chunk chunks[2];
 +
-+	for (i = 0; i < perf.num_slots; i++)
-+		igt_debug("FORCE_TO_NON_PRIV_%02d = %08x\n",
-+			  i, intel_register_read(&mmio_data,
-+						 mmio_base + perf.slots[i]));
-+}
++		/* Make space in the buffer if there is too much data. */
++		if (avail < size)
++			circular_shrink(buffer, size - avail);
 +
-+static bool in_whitelist(uint32_t mmio_base, uint32_t reg)
-+{
-+	int i;
++		item_size = MIN(circular_available_size(buffer), size);
 +
-+	if (reg & MMIO_BASE_OFFSET)
-+		reg = (reg & ~MMIO_BASE_OFFSET) + mmio_base;
++		get_chunks(chunks, buffer, true, item_size);
 +
-+	for (i = 0; i < perf.num_slots; i++) {
-+		uint32_t fpriv = intel_register_read(&mmio_data,
-+						     mmio_base + perf.slots[i]);
++		memcpy(chunks[0].data, buf, chunks[0].len);
++		memcpy(chunks[1].data, buf + chunks[0].len, chunks[1].len);
 +
-+		if ((fpriv & RING_FORCE_TO_NONPRIV_ADDRESS_MASK) == reg)
-+			return true;
++		buf += item_size;
++		size -= item_size;
++
++		buffer->endpos = (buffer->endpos + item_size) % buffer->allocated_size;
++		buffer->size += item_size;
 +	}
 +
++	return _size;
++}
++
++static int
++circular_buffer_seek(void *c, off64_t *offset, int whence)
++{
++	return -1;
++}
++
++static int
++circular_buffer_close(void *c)
++{
++	return 0;
++}
++
++cookie_io_functions_t circular_buffer_functions = {
++	.read  = circular_buffer_read,
++	.write = circular_buffer_write,
++	.seek  = circular_buffer_seek,
++	.close = circular_buffer_close,
++};
++
++
++static bool
++read_file_uint64(const char *file, uint64_t *value)
++{
++	char buf[32];
++	int fd, n;
++
++	fd = open(file, 0);
++	if (fd < 0)
++		return false;
++	n = read(fd, buf, sizeof (buf) - 1);
++	close(fd);
++	if (n < 0)
++		return false;
++
++	buf[n] = '\0';
++	*value = strtoull(buf, 0, 0);
++
++	return true;
++}
++
++static uint32_t
++read_device_param(const char *stem, int id, const char *param)
++{
++	char *name;
++	int ret = asprintf(&name, "/sys/class/drm/%s%u/device/%s", stem, id, param);
++	uint64_t value;
++	bool success;
++
++	assert(ret != -1);
++
++	success = read_file_uint64(name, &value);
++	free(name);
++
++	return success ? value : 0;
++}
++
++static int
++find_intel_render_node(void)
++{
++	for (int i = 128; i < (128 + 16); i++) {
++		if (read_device_param("renderD", i, "vendor") == 0x8086)
++			return i;
++	}
++
++	return -1;
++}
++
++static void
++print_intel_devices(void)
++{
++	fprintf(stdout, "Available devices:\n");
++	for (int i = 0; i < 128; i++) {
++		if (read_device_param("card", i, "vendor") == 0x8086) {
++			uint32_t devid = read_device_param("card", i, "device");
++			const struct intel_device_info *devinfo =
++				intel_get_device_info(devid);
++			fprintf(stdout, "   %i: %s (0x%04hx)\n", i,
++				devinfo ? devinfo->codename : "unknwon",
++				devid);
++		}
++	}
++}
++
++static int
++open_render_node(uint32_t *devid, int card)
++{
++	char *name;
++	int ret;
++	int fd;
++	int render;
++
++	if (card < 0) {
++		render = find_intel_render_node();
++		if (render < 0)
++			return -1;
++	} else {
++		render = 128 + card;
++	}
++
++	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	assert(ret != -1);
++
++	*devid = read_device_param("renderD", render, "device");
++
++	fd = open(name, O_RDWR);
++	free(name);
++
++	return fd;
++}
++
++static uint32_t
++oa_exponent_for_period(uint64_t device_timestamp_frequency, double period)
++{
++	uint64_t period_ns = 1000 * 1000 * 1000 * period;
++	uint64_t device_periods[32];
++
++	for (uint32_t i = 0; i < ARRAY_SIZE(device_periods); i++)
++		device_periods[i] = 1000000000ull * (1u << i) / device_timestamp_frequency;
++
++	for (uint32_t i = 1; i < ARRAY_SIZE(device_periods); i++) {
++		if (period_ns >= device_periods[i - 1] &&
++		    period_ns < device_periods[i]) {
++			if ((device_periods[i] - period_ns) >
++			    (period_ns - device_periods[i - 1]))
++				return i - 1;
++			return i;
++		}
++	}
++
++	return -1;
++}
++
++static int
++perf_ioctl(int fd, unsigned long request, void *arg)
++{
++	int ret;
++
++	do {
++		ret = ioctl(fd, request, arg);
++	} while (ret == -1 && (errno == EINTR || errno == EAGAIN));
++
++	return ret;
++}
++
++static uint64_t
++get_device_cs_timestamp_frequency(int drm_fd)
++{
++	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
++}
++
++static uint64_t
++get_device_oa_timestamp_frequency(int drm_fd)
++{
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
++	struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
++
++	return oau->oa_timestamp_freq;
++}
++
++struct recording_context {
++	int drm_fd;
++	int perf_fd;
++
++	uint32_t devid;
++	uint64_t oa_timestamp_frequency;
++	uint64_t cs_timestamp_frequency;
++
++	const struct intel_device_info *devinfo;
++
++	struct intel_xe_topology_info *topology;
++	uint32_t topology_size;
++
++	struct intel_xe_perf *perf;
++	struct intel_xe_perf_metric_set *metric_set;
++
++	uint32_t oa_exponent;
++
++	struct circular_buffer circular_buffer;
++	FILE *output_stream;
++
++	const char *command_fifo;
++	int command_fifo_fd;
++
++	int gt;
++	struct drm_xe_engine_class_instance eci;
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_oa_unit *oa_unit;
++};
++
++static void set_fd_flags(int fd, int flags)
++{
++	int old = fcntl(fd, F_GETFL, 0);
++
++	igt_assert_lte(0, old);
++	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
++}
++
++enum xe_oa_report_header {
++	HDR_32_BIT = 0,
++	HDR_64_BIT,
++};
++
++struct xe_oa_format {
++	uint32_t counter_select;
++	int size;
++	int oa_type;
++	enum xe_oa_report_header header;
++	uint16_t counter_size;
++	uint16_t bc_report;
++};
++
++#define DRM_FMT(x) DRM_XE_OA_FMT_TYPE_##x
++
++static const struct xe_oa_format oa_formats[] = {
++	[XE_OA_FORMAT_C4_B8]			= { 7, 64,  DRM_FMT(OAG) },
++	[XE_OA_FORMAT_A12]			= { 0, 64,  DRM_FMT(OAG) },
++	[XE_OA_FORMAT_A12_B8_C8]		= { 2, 128, DRM_FMT(OAG) },
++	[XE_OA_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
++	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAR) },
++	[XE_OA_FORMAT_A24u40_A14u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
++	[XE_OAC_FORMAT_A24u64_B8_C8]		= { 1, 320, DRM_FMT(OAC), HDR_64_BIT },
++	[XE_OAC_FORMAT_A22u32_R2u32_B8_C8]	= { 2, 192, DRM_FMT(OAC), HDR_64_BIT },
++	[XE_OAM_FORMAT_MPEC8u64_B8_C8]		= { 1, 192, DRM_FMT(OAM_MPEC), HDR_64_BIT },
++	[XE_OAM_FORMAT_MPEC8u32_B8_C8]		= { 2, 128, DRM_FMT(OAM_MPEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC64u64]			= { 1, 576, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC64u64_B8_C8]		= { 1, 640, DRM_FMT(PEC), HDR_64_BIT, 1, 1 },
++	[XE_OA_FORMAT_PEC64u32]			= { 1, 320, DRM_FMT(PEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC32u64_G1]		= { 5, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC32u32_G1]		= { 5, 192, DRM_FMT(PEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC32u64_G2]		= { 6, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC32u32_G2]		= { 6, 192, DRM_FMT(PEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC36u64_G1_32_G2_4]	= { 3, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32]	= { 4, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++};
++
++static uint64_t oa_format_fields(uint64_t name)
++{
++#define FIELD_PREP_ULL(_mask, _val) \
++	(((_val) << (__builtin_ffsll(_mask) - 1)) & (_mask))
++
++	struct xe_oa_format f = oa_formats[name];
++
++	/* 0 format name is invalid */
++	if (!name)
++		memset(&f, 0xff, sizeof(f));
++
++	return FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_FMT_TYPE, (u64)f.oa_type) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SEL, (u64)f.counter_select) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE, (u64)f.counter_size) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_BC_REPORT, (u64)f.bc_report);
++#undef FIELD_PREP_ULL
++}
++#define __ff oa_format_fields
++
++static int
++perf_open(struct recording_context *ctx)
++{
++	int stream_fd;
++
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
++
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, ctx->metric_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++
++	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
++	if (stream_fd < 0) {
++		errno = 0;
++		goto exit;
++	}
++
++	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
++exit:
++	return stream_fd;
++}
++
++static bool quit = false;
++
++static void
++sigint_handler(int val)
++{
++	quit = true;
++}
++
++static bool
++write_version(FILE *output, struct recording_context *ctx)
++{
++	struct intel_xe_perf_record_version version = {
++		.version = INTEL_XE_PERF_RECORD_VERSION,
++	};
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_VERSION,
++		.size = sizeof(header) + sizeof(version),
++	};
++
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(&version, sizeof(version), 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static bool
++write_header(FILE *output, struct recording_context *ctx)
++{
++	struct intel_xe_perf_record_device_info info = {
++		.timestamp_frequency = ctx->oa_timestamp_frequency,
++		.device_id = ctx->perf->devinfo.devid,
++		.device_revision = ctx->perf->devinfo.revision,
++		.gt_min_frequency = ctx->perf->devinfo.gt_min_freq,
++		.gt_max_frequency = ctx->perf->devinfo.gt_max_freq,
++		.oa_format = ctx->metric_set->perf_oa_format,
++		.engine_class = ctx->hwe->engine_class,
++		.engine_instance = ctx->hwe->engine_instance,
++	};
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_INFO,
++		.size = sizeof(header) + sizeof(info),
++	};
++
++	snprintf(info.metric_set_name, sizeof(info.metric_set_name),
++		 "%s", ctx->metric_set->symbol_name);
++	snprintf(info.metric_set_uuid, sizeof(info.metric_set_uuid),
++		 "%s", ctx->metric_set->hw_config_guid);
++
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(&info, sizeof(info), 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static struct intel_xe_topology_info *get_topology(struct recording_context *ctx)
++{
++	return xe_fill_topology_info(ctx->drm_fd, ctx->devid, &ctx->topology_size);
++}
++
++static bool
++write_topology(FILE *output, struct recording_context *ctx)
++{
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_TOPOLOGY,
++	};
++
++	header.size = sizeof(header) + ctx->topology_size;
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(ctx->topology, ctx->topology_size, 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static int get_stream_status(int perf_fd, u32 *oa_status)
++{
++	struct drm_xe_oa_stream_status status;
++	int ret;
++
++	ret = perf_ioctl(perf_fd, DRM_XE_PERF_IOCTL_STATUS, &status);
++	if (ret)
++		return ret;
++
++	*oa_status = status.oa_status;
++	return 0;
++}
++
++static bool write_stream_status(struct recording_context *ctx, FILE *output)
++{
++	u32 oa_status;
++
++	if (!get_stream_status(ctx->perf_fd, &oa_status)) {
++		struct intel_xe_perf_record_header header = { .size = sizeof(header) };
++
++		if (oa_status & DRM_XE_OASTATUS_REPORT_LOST)
++			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_REPORT_LOST;
++		else if (oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW)
++			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_BUFFER_LOST;
++		else
++			return true;
++
++		if (fwrite(&header, sizeof(header), 1, output) != 1)
++			return false;
++	}
++
++	return true;
++}
++
++static bool write_stream_data(struct recording_context *ctx,
++			      char *data, ssize_t size, FILE *output)
++{
++	ssize_t format_size = oa_formats[ctx->metric_set->perf_oa_format].size;
++
++	assert(!(size % format_size));
++
++	for (int i = 0; i < size / format_size; i++) {
++		struct intel_xe_perf_record_header header = {
++			.type = INTEL_XE_PERF_RECORD_TYPE_SAMPLE,
++			.size = sizeof(header) + format_size,
++		};
++
++		if (fwrite(&header, sizeof(header), 1, output) != 1)
++			return false;
++
++		if (fwrite(data, format_size, 1, output) != 1)
++			return false;
++	}
++
++	return true;
++}
++
++static bool write_perf_data(FILE *output, struct recording_context *ctx)
++{
++	char data[4096];
++	ssize_t len;
++	bool ret;
++
++	while (1) {
++		len = read(ctx->perf_fd, data, sizeof(data));
++
++		if (len < 0) {
++			switch (errno) {
++			case EIO:
++				ret = write_stream_status(ctx, output);
++				if (!ret)
++					return ret;
++				break;
++			case EAGAIN:
++			case EINTR:
++				return true;
++			default:
++				/* Not expecting -EFAULT, -ENOSPC, -EINVAL */
++				assert(0);
++			}
++		} else {
++			ret = write_stream_data(ctx, data, len, output);
++			if (!ret)
++				return ret;
++		}
++	}
++
++	/* Should not reach here */
 +	return false;
 +}
 +
-+static void oa_regs_in_whitelist(uint32_t mmio_base, bool are_present)
-+{
-+	int i;
++static clock_t correlation_clock_id = CLOCK_MONOTONIC;
 +
-+	if (are_present) {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(in_whitelist(mmio_base, perf.wl[i]));
-+	} else {
-+		for (i = 0; i < perf.num_wl; i++)
-+			igt_assert(!in_whitelist(mmio_base, perf.wl[i]));
++static const char *
++get_correlation_clock_name(clock_t clock_id)
++{
++	switch (clock_id) {
++	case CLOCK_BOOTTIME:      return "bootime";
++	case CLOCK_MONOTONIC:     return "monotonic";
++	case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
++	default:                  return "*unknown*";
 +	}
 +}
 +
-+static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
++static int query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *ts)
 +{
-+	u32 mmio_base = 0x2000;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_ENGINE_CYCLES,
++		.size = sizeof(*ts),
++		.data = (uintptr_t)ts,
++	};
 +
-+	switch (hwe->engine_class) {
-+	case DRM_XE_ENGINE_CLASS_RENDER:
-+		mmio_base = 0x2000;
-+		break;
-+	case DRM_XE_ENGINE_CLASS_COMPUTE:
-+		switch (hwe->engine_instance) {
-+		case 0:
-+			mmio_base = 0x1a000;
-+			break;
-+		case 1:
-+			mmio_base = 0x1c000;
-+			break;
-+		case 2:
-+			mmio_base = 0x1e000;
-+			break;
-+		case 3:
-+			mmio_base = 0x26000;
-+			break;
-+		}
-+	}
-+
-+	return mmio_base;
++	return perf_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
 +}
 +
-+/**
-+ * SUBTEST: oa-regs-whitelisted
-+ * Description: Verify that OA registers are whitelisted
-+ */
-+static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hwe)
++static bool get_correlation_timestamps(struct recording_context *ctx,
++				       struct intel_xe_perf_record_timestamp_correlation *corr)
 +{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	// uint32_t mmio_base = gem_engine_mmio_base(drm_fd, e->name);
-+	u32 mmio_base;
++	struct drm_xe_query_engine_cycles ts = {};
 +
-+	/* FIXME: Add support for OAM whitelist testing */
-+	if (hwe->engine_class != DRM_XE_ENGINE_CLASS_RENDER &&
-+	    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++	ts.eci = *ctx->hwe;
++	ts.clockid = correlation_clock_id;
++
++	if (query_engine_cycles(ctx->drm_fd, &ts))
++		return false;
++
++	corr->cpu_timestamp = ts.cpu_timestamp + ts.cpu_delta / 2;
++	corr->gpu_timestamp = ts.engine_cycles;
++
++	return true;
++}
++
++static bool
++write_saved_correlation_timestamps(FILE *output,
++				   const struct intel_xe_perf_record_timestamp_correlation *corr)
++{
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION,
++		.size = sizeof(header) + sizeof(*corr),
++	};
++
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(corr, sizeof(*corr), 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static bool
++write_correlation_timestamps(struct recording_context *ctx, FILE *output)
++{
++	struct intel_xe_perf_record_timestamp_correlation corr;
++
++	if (!get_correlation_timestamps(ctx, &corr))
++		return false;
++
++	return write_saved_correlation_timestamps(output, &corr);
++}
++
++static void
++read_command_file(struct recording_context *ctx)
++{
++	struct recorder_command_base header;
++	ssize_t ret = read(ctx->command_fifo_fd, &header, sizeof(header));
++
++	if (ret < 0)
 +		return;
 +
-+	mmio_base = oa_get_mmio_base(hwe);
++	switch (header.command) {
++	case RECORDER_COMMAND_DUMP: {
++		uint32_t len = header.size - sizeof(header), offset = 0;
++		uint8_t *dump = malloc(len);
++		FILE *file;
 +
-+	intel_register_access_init(&mmio_data,
-+				   igt_device_get_pci_device(drm_fd),
-+				   0, drm_fd);
-+	stream_fd = __perf_open(drm_fd, &param, false);
++		while (offset < len &&
++		       ((ret = read(ctx->command_fifo_fd,
++				    (void *) dump + offset, len - offset)) > 0
++			|| errno == EAGAIN)) {
++			if (ret > 0)
++				offset += ret;
++		}
 +
-+	dump_whitelist(mmio_base, "oa whitelisted");
++		fprintf(stdout, "Writing circular buffer to %s\n", dump);
 +
-+	oa_regs_in_whitelist(mmio_base, true);
++		file = fopen((const char *) dump, "w+");
++		if (file) {
++			struct chunk chunks[2];
 +
-+	__perf_close(stream_fd);
++			fflush(ctx->output_stream);
++			get_chunks(chunks, &ctx->circular_buffer,
++				   false, ctx->circular_buffer.size);
 +
-+	dump_whitelist(mmio_base, "oa remove whitelist");
++			if (!write_version(file, ctx) ||
++			    !write_header(file, ctx) ||
++			    !write_topology(file, ctx) ||
++			    fwrite(chunks[0].data, chunks[0].len, 1, file) != 1 ||
++			    (chunks[1].len > 0 &&
++			     fwrite(chunks[1].data, chunks[1].len, 1, file) != 1) ||
++			    !write_correlation_timestamps(ctx, file)) {
++				fprintf(stderr, "Unable to write circular buffer data in file '%s'\n",
++					dump);
++			}
++			fclose(file);
++		} else
++			fprintf(stderr, "Unable to write dump file '%s'\n", dump);
 +
-+	/*
-+	 * after perf close, check that registers are removed from the nonpriv
-+	 * slots
-+	 * FIXME if needed: currently regs remain added forever
-+	 */
-+	// oa_regs_in_whitelist(mmio_base, false);
-+
-+	intel_register_access_fini(&mmio_data);
++		free(dump);
++		break;
++	}
++	case RECORDER_COMMAND_QUIT:
++		quit = true;
++		break;
++	default:
++		fprintf(stderr, "Unknown command 0x%x\n", header.command);
++		break;
++	}
 +}
 +
 +static void
-+__test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
++print_metric_sets(const struct intel_xe_perf *perf)
 +{
-+	struct intel_xe_perf_metric_set *test_set = default_test_set;
-+	int oa_exponent = max_oa_exponent_for_period_lte(2 * NSEC_PER_SEC);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++	struct intel_xe_perf_metric_set *metric_set;
++	uint32_t longest_name = 0;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		longest_name = MAX(longest_name, strlen(metric_set->symbol_name));
++	}
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		fprintf(stdout, "%s:%*s%s\n",
++			metric_set->symbol_name,
++			(int) (longest_name - strlen(metric_set->symbol_name) + 1), " ",
++			metric_set->name);
++	}
++}
++
++static void
++print_metric_set_counters(const struct intel_xe_perf_metric_set *metric_set)
++{
++	uint32_t longest_name = 0;
++
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		longest_name = MAX(longest_name, strlen(metric_set->counters[i].name));
++	}
++
++	fprintf(stdout, "%s (%s):\n", metric_set->symbol_name, metric_set->name);
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		struct intel_xe_perf_logical_counter *counter = &metric_set->counters[i];
++
++		fprintf(stdout, "  %s:%*s%s\n",
++			counter->name,
++			(int)(longest_name - strlen(counter->name) + 1), " ",
++			counter->desc);
++	}
++}
++
++static void
++print_metric_sets_counters(struct intel_xe_perf *perf)
++{
++	struct intel_xe_perf_metric_set *metric_set;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link)
++		print_metric_set_counters(metric_set);
++}
++
++static void
++usage(const char *name)
++{
++	fprintf(stdout,
++		"Usage: %s [options]\n"
++		"Recording tool for xe-oa\n"
++		"\n"
++		"     --help,               -h          Print this screen\n"
++		"     --device,             -d <value>  Device to use\n"
++		"                                       (value=list to list devices\n"
++		"                                        value=1 to use /dev/dri/card1)\n"
++		"     --correlation-period, -c <value>  Time period of timestamp correlation in seconds\n"
++		"                                       (default = 1.0)\n"
++		"     --perf-period,        -p <value>  Time period of xe-oa reports in seconds\n"
++		"                                       (default = 0.001)\n"
++		"     --metric,             -m <value>  xe-oa metric to sample with (use value=list to list all metrics)\n"
++		"     --counters,           -C          List counters for a given metric and exit\n"
++		"     --size,               -s <value>  Size of circular buffer to use in kilobytes\n"
++		"                                       If specified, a maximum amount of <value> data will\n"
++		"                                       be recorded.\n"
++		"     --command-fifo,       -f <path>   Path to a command fifo, implies circular buffer\n"
++		"                                       (To use with xe-perf-control)\n"
++		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
++		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
++		"                                       Values: boot, mono, mono_raw (default = mono)\n"
++		"     --engine-class        -e <value>  Engine class used for the OA capture.\n"
++		"     --engine-instance     -i <value>  Engine instance used for the OA capture.\n",
++		name);
++}
++
++static void
++teardown_recording_context(struct recording_context *ctx)
++{
++	if (ctx->topology)
++		free(ctx->topology);
++
++	if (ctx->perf)
++		intel_xe_perf_free(ctx->perf);
++
++	if (ctx->command_fifo)
++		unlink(ctx->command_fifo);
++	if (ctx->command_fifo_fd != -1)
++		close(ctx->command_fifo_fd);
++
++	if (ctx->output_stream)
++		fclose(ctx->output_stream);
++
++	free(ctx->circular_buffer.data);
++
++	if (ctx->perf_fd != -1)
++		close(ctx->perf_fd);
++	if (ctx->drm_fd != -1)
++		close(ctx->drm_fd);
++}
++
++static int assign_oa_unit(int fd, struct recording_context *ctx)
++{
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
++	struct drm_xe_oa_unit *oau;
++	uint8_t *poau;
++
++	poau = (uint8_t *)&qoa->oa_units[0];
++	for (int i = 0; i < qoa->num_oa_units; i++) {
++		oau = (struct drm_xe_oa_unit *)poau;
++
++		for (int j = 0; j < oau->num_engines; j++) {
++			if (oau->eci[j].engine_class == ctx->eci.engine_class &&
++			    oau->eci[j].engine_instance == ctx->eci.engine_instance) {
++				ctx->hwe = &oau->eci[j];
++				ctx->oa_unit = oau;
++				return 0;
++			}
++		}
++
++		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
++	}
++
++	return -1;
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",		no_argument, 0, 'h'},
++		{"device",		required_argument, 0, 'd'},
++		{"correlation-period",	required_argument, 0, 'c'},
++		{"perf-period",		required_argument, 0, 'p'},
++		{"metric",		required_argument, 0, 'm'},
++		{"counters",		no_argument, 0, 'C'},
++		{"output",		required_argument, 0, 'o'},
++		{"size",		required_argument, 0, 's'},
++		{"command-fifo",	required_argument, 0, 'f'},
++		{"cpu-clock",		required_argument, 0, 'k'},
++		{"engine-class",	required_argument, 0, 'e'},
++		{"engine-instance",	required_argument, 0, 'i'},
++		{0, 0, 0, 0}
 +	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = sizeof(properties) / 16,
-+		.properties_ptr = to_user_pointer(properties),
++	const struct {
++		clock_t id;
++		const char *name;
++	} clock_names[] = {
++		{ CLOCK_BOOTTIME,	"boot" },
++		{ CLOCK_MONOTONIC,	"mono" },
++		{ CLOCK_MONOTONIC_RAW,	"mono_raw" },
 +	};
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+	uint32_t oa_buffer, offset_tail1, offset_tail2;
-+	struct intel_buf src, dst, *dst_buf;
-+	uint32_t mmio_triggered_reports = 0;
-+	uint32_t *start, *end;
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	uint32_t context, vm;
-+	int height = 600;
-+	int width = 800;
-+	uint8_t *buf;
++	double corr_period = 1.0, perf_period = 0.001;
++	const char *metric_name = NULL, *output_file = "xe_perf.record";
++	struct intel_xe_perf_metric_set *metric_set;
++	struct intel_xe_perf_record_timestamp_correlation initial_correlation;
++	struct timespec now;
++	uint64_t corr_period_ns, poll_time_ns;
++	uint32_t circular_size = 0;
++	int opt, dev_node_id = -1;
++	bool list_counters = false;
++	FILE *output = NULL;
++	struct recording_context ctx = {
++		.drm_fd = -1,
++		.perf_fd = -1,
 +
-+	bops = buf_ops_create(drm_fd);
++		.command_fifo = XE_PERF_RECORD_FIFO_PATH,
++		.command_fifo_fd = -1,
 +
-+	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+				   I915_TILING_NONE,
-+				   I915_COMPRESSION_NONE);
-+	buf_map(drm_fd, dst_buf, true);
-+	memset(dst_buf->ptr, 0, 4096);
-+	intel_buf_unmap(dst_buf);
++		.eci = { DRM_XE_ENGINE_CLASS_RENDER, 0 },
++	};
 +
-+	scratch_buf_init(bops, &src, width, height, 0xff0000ff);
-+	scratch_buf_init(bops, &dst, width, height, 0x00ff00ff);
++	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:e:i:", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage(argv[0]);
++			return EXIT_SUCCESS;
++		case 'c':
++			corr_period = atof(optarg);
++			break;
++		case 'd':
++			if (!strcmp(optarg, "list"))
++				dev_node_id = -2;
++			else
++				dev_node_id = atoi(optarg);
++			break;
++		case 'p':
++			perf_period = atof(optarg);
++			break;
++		case 'm':
++			metric_name = optarg;
++			break;
++		case 'C':
++			list_counters = true;
++			break;
++		case 'o':
++			output_file = optarg;
++			break;
++		case 's':
++			circular_size = MAX(8, atoi(optarg)) * 1024;
++			break;
++		case 'f':
++			ctx.command_fifo = optarg;
++			circular_size = 8 * 1024 * 1024;
++			break;
++		case 'k': {
++			bool found = false;
++			for (uint32_t i = 0; i < ARRAY_SIZE(clock_names); i++) {
++				if (!strcmp(clock_names[i].name, optarg)) {
++					correlation_clock_id = clock_names[i].id;
++					found = true;
++					break;
++				}
++			}
++			if (!found) {
++				fprintf(stderr, "Unknown clock name '%s'\n", optarg);
++				return EXIT_FAILURE;
++			}
++			break;
++		}
++		case 'e':
++			ctx.eci.engine_class = atoi(optarg);
++			break;
++		case 'i':
++			ctx.eci.engine_instance = atoi(optarg);
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage(argv[0]);
++			return EXIT_FAILURE;
++		}
++	}
 +
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	igt_assert(context);
-+	ibb = intel_bb_create_with_context(drm_fd, context, vm, NULL, BATCH_SZ);
++	if (dev_node_id == -2) {
++		print_intel_devices();
++		return EXIT_SUCCESS;
++	}
 +
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
++	ctx.drm_fd = open_render_node(&ctx.devid, dev_node_id);
++	if (ctx.drm_fd < 0) {
++		fprintf(stderr, "Unable to open device.\n");
++		return EXIT_FAILURE;
++	}
 +
-+	buf = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(buf != NULL);
++	xe_device_get(ctx.drm_fd);
 +
-+	emit_oa_reg_read(ibb, dst_buf, 0, OAG_OABUFFER);
-+	emit_oa_reg_read(ibb, dst_buf, 4, OAG_OATAILPTR);
-+	emit_mmio_triggered_report(ibb, 0xc0ffee11);
++	ctx.devinfo = intel_get_device_info(ctx.devid);
++	if (!ctx.devinfo) {
++		fprintf(stderr, "No device info found.\n");
++		goto fail;
++	}
 +
-+	if (render_copy)
-+		render_copy(ibb,
-+			    &src, 0, 0, width, height,
-+			    &dst, 0, 0);
++	if (assign_oa_unit(ctx.drm_fd, &ctx) < 0) {
++		fprintf(stderr, "assign_oa_unit failed\n");
++		goto fail;
++	}
 +
-+	emit_mmio_triggered_report(ibb, 0xc0ffee22);
++	fprintf(stdout, "Device name=%s gen=%i id=0x%x oa_unit=%i gt=%i\n",
++		ctx.devinfo->codename, ctx.devinfo->graphics_ver, ctx.devid,
++		ctx.oa_unit->oa_unit_id, ctx.hwe->gt_id);
 +
-+	emit_oa_reg_read(ibb, dst_buf, 8, OAG_OATAILPTR);
++	ctx.topology = get_topology(&ctx);
++	if (!ctx.topology) {
++		fprintf(stderr, "Unable to retrieve GPU topology\n");
++		goto fail;
++	}
 +
-+	intel_bb_flush_render(ibb);
-+	intel_bb_sync(ibb);
++	ctx.perf = intel_xe_perf_for_fd(ctx.drm_fd, ctx.hwe->gt_id);
++	if (!ctx.perf) {
++		fprintf(stderr, "No perf data found.\n");
++		goto fail;
++	}
 +
-+	buf_map(drm_fd, dst_buf, false);
++	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
 +
-+	oa_buffer = dst_buf->ptr[0] & OAG_OATAILPTR_MASK;
-+	offset_tail1 = (dst_buf->ptr[1] & OAG_OATAILPTR_MASK) - oa_buffer;
-+	offset_tail2 = (dst_buf->ptr[2] & OAG_OATAILPTR_MASK) - oa_buffer;
++	if (metric_name) {
++		if (!strcmp(metric_name, "list")) {
++			print_metric_sets(ctx.perf);
++			return EXIT_SUCCESS;
++		}
 +
-+	igt_debug("oa_buffer = %08x, tail1 = %08x, tail2 = %08x\n",
-+		  oa_buffer, offset_tail1, offset_tail2);
++		igt_list_for_each_entry(metric_set, &ctx.perf->metric_sets, link) {
++			if (!strcasecmp(metric_set->symbol_name, metric_name)) {
++				ctx.metric_set = metric_set;
++				break;
++			}
++		}
++	}
 +
-+	start = (uint32_t *)(buf + offset_tail1);
-+	end = (uint32_t *)(buf + offset_tail2);
-+	while (start < end) {
-+		if (!report_reason(start))
-+			mmio_triggered_reports++;
++	if (list_counters) {
++		if (!ctx.metric_set)
++			print_metric_sets_counters(ctx.perf);
++		else
++			print_metric_set_counters(ctx.metric_set);
++		teardown_recording_context(&ctx);
++		return EXIT_SUCCESS;
++	}
 +
-+		if (get_oa_format(test_set->perf_oa_format).report_hdr_64bit) {
-+			u64 *start64 = (u64 *)start;
++	if (!ctx.metric_set) {
++		if (!metric_name)
++			fprintf(stderr, "No metric set specified.\n");
++		else
++			fprintf(stderr, "Unknown metric set '%s'.\n", metric_name);
++		print_metric_sets(ctx.perf);
++		goto fail;
++	}
 +
-+			igt_debug("hdr: %016lx %016lx %016lx %016lx\n",
-+				  start64[0], start64[1], start64[2], start64[3]);
++	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
++
++	ctx.oa_timestamp_frequency = get_device_oa_timestamp_frequency(ctx.drm_fd);
++	ctx.cs_timestamp_frequency = get_device_cs_timestamp_frequency(ctx.drm_fd);
++
++	signal(SIGINT, sigint_handler);
++
++	if (ctx.command_fifo) {
++		if (mkfifo(ctx.command_fifo,
++			   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH) != 0) {
++			fprintf(stderr, "Unable to create command fifo '%s': %s\n",
++				ctx.command_fifo, strerror(errno));
++			goto fail;
++		}
++
++		ctx.command_fifo_fd = open(ctx.command_fifo, O_RDWR);
++		if (ctx.command_fifo_fd < 0) {
++			fprintf(stderr, "Unable to open command fifo '%s': %s\n",
++				ctx.command_fifo, strerror(errno));
++			goto fail;
++		}
++	}
++
++	if (circular_size) {
++		ctx.circular_buffer.allocated_size = circular_size;
++		ctx.circular_buffer.data = malloc(circular_size);
++		if (!ctx.circular_buffer.data) {
++			fprintf(stderr, "Unable to allocate circular buffer\n");
++			goto fail;
++		}
++
++		ctx.output_stream = fopencookie(&ctx.circular_buffer, "w+",
++						circular_buffer_functions);
++		if (!ctx.output_stream) {
++			fprintf(stderr, "Unable to create circular buffer\n");
++			goto fail;
++		}
++
++		if (!get_correlation_timestamps(&ctx, &initial_correlation)) {
++			fprintf(stderr, "Unable to correlation timestamps\n");
++			goto fail;
++		}
++
++		write_correlation_timestamps(&ctx, ctx.output_stream);
++		fprintf(stdout,
++			"Recoding in internal circular buffer.\n"
++			"Use xe-perf-control to snapshot into file.\n");
++	} else {
++		output = fopen(output_file, "w+");
++		if (!output) {
++			fprintf(stderr, "Unable to open output file '%s'\n",
++				output_file);
++			goto fail;
++		}
++
++		if (!write_version(output, &ctx) ||
++		    !write_header(output, &ctx) ||
++		    !write_topology(output, &ctx) ||
++		    !write_correlation_timestamps(&ctx, output)) {
++			fprintf(stderr, "Unable to write header in file '%s'\n",
++				output_file);
++			goto fail;
++		}
++
++		ctx.output_stream = output;
++		fprintf(stdout, "Writing recoding to %s\n", output_file);
++	}
++
++	if (ctx.metric_set->perf_oa_metrics_set == 0) {
++		fprintf(stderr,
++			"Unable to load performance configuration, consider running:\n"
++			"   sysctl dev.xe.perf_stream_paranoid=0\n");
++		goto fail;
++	}
++
++	fprintf(stdout, "Using correlation clock: %s\n",
++		get_correlation_clock_name(correlation_clock_id));
++
++	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
++	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
++		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
++		ctx.metric_set->perf_oa_format);
++
++	ctx.perf_fd = perf_open(&ctx);
++	if (ctx.perf_fd < 0) {
++		fprintf(stderr, "Unable to open xe oa stream: %s\n",
++			strerror(errno));
++		goto fail;
++	}
++
++	corr_period_ns = corr_period * 1000000000ul;
++	poll_time_ns = corr_period_ns;
++
++	while (!quit) {
++		struct pollfd pollfd[2] = {
++			{         ctx.perf_fd, POLLIN, 0 },
++			{ ctx.command_fifo_fd, POLLIN, 0 },
++		};
++		uint64_t elapsed_ns;
++		int ret;
++
++		igt_gettime(&now);
++		ret = poll(pollfd, ctx.command_fifo_fd != -1 ? 2 : 1, poll_time_ns / 1000000);
++		if (ret < 0 && errno != EINTR) {
++			fprintf(stderr, "Failed to poll xe-oa stream: %s\n",
++				strerror(errno));
++			break;
++		}
++
++		if (ret > 0) {
++			if (pollfd[0].revents & POLLIN) {
++				if (!write_perf_data(ctx.output_stream, &ctx)) {
++					fprintf(stderr, "Failed to write xe-oa data: %s\n",
++						strerror(errno));
++					break;
++				}
++			}
++
++			if (pollfd[1].revents & POLLIN) {
++				read_command_file(&ctx);
++			}
++		}
++
++		elapsed_ns = igt_nsec_elapsed(&now);
++		if (elapsed_ns > poll_time_ns) {
++			poll_time_ns = corr_period_ns;
++			if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
++				fprintf(stderr,
++					"Failed to write xe timestamp correlation data: %s\n",
++					strerror(errno));
++				break;
++			}
 +		} else {
-+			igt_debug("hdr: %08x %08x %08x %08x\n",
-+				  start[0], start[1], start[2], start[3]);
++			poll_time_ns -= elapsed_ns;
 +		}
-+
-+		start += format_size / 4;
 +	}
 +
-+	igt_assert_eq(mmio_triggered_reports, 2);
++	fprintf(stdout, "Exiting...\n");
 +
-+	munmap(buf, OA_BUFFER_SIZE);
-+	intel_buf_close(bops, &src);
-+	intel_buf_close(bops, &dst);
-+	intel_buf_unmap(dst_buf);
-+	intel_buf_destroy(dst_buf);
-+	intel_bb_destroy(ibb);
-+	xe_exec_queue_destroy(drm_fd, context);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	__perf_close(stream_fd);
++	if (!write_perf_data(ctx.output_stream, &ctx)) {
++		fprintf(stderr, "Failed to write xe-oa data: %s\n",
++			strerror(errno));
++	}
++
++	if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
++		fprintf(stderr,
++			"Failed to write final xe timestamp correlation data: %s\n",
++			strerror(errno));
++	}
++
++	teardown_recording_context(&ctx);
++
++	return EXIT_SUCCESS;
++
++ fail:
++	teardown_recording_context(&ctx);
++
++	return EXIT_FAILURE;
 +}
-+
-+/**
-+ * SUBTEST: mmio-triggered-reports
-+ * Description: Test MMIO trigger functionality
+diff --git a/tools/xe-perf/xe_perf_recorder_commands.h b/tools/xe-perf/xe_perf_recorder_commands.h
+new file mode 100644
+index 0000000000..528813d2dc
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_recorder_commands.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
 + */
-+static void
-+test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct igt_helper_process child = {};
-+	int ret;
 +
-+	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 0);
-+	igt_fork_helper(&child) {
-+		igt_drop_root();
++#ifndef XE_PERF_RECORDER_COMMANDS_H
++#define XE_PERF_RECORDER_COMMANDS_H
 +
-+		__test_mmio_triggered_reports(hwe);
-+	}
-+	ret = igt_wait_helper(&child);
-+	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++#include <stdint.h>
 +
-+	igt_assert(WEXITSTATUS(ret) == EAGAIN ||
-+		   WEXITSTATUS(ret) == 0);
-+}
++#define XE_PERF_RECORD_FIFO_PATH "/tmp/.xe-perf-record"
 +
- /**
-  * SUBTEST: xe-ref-count
-  * Description: Check that an open oa stream holds a reference on the xe module
-@@ -4563,6 +4874,22 @@ igt_main
- 				closed_fd_and_unmapped_access(hwe);
- 	}
- 
-+	igt_subtest_group {
-+		igt_fixture {
-+			perf_init_whitelist();
-+		}
++enum recorder_command {
++	RECORDER_COMMAND_DUMP = 1,
++	RECORDER_COMMAND_QUIT,
++};
 +
-+		igt_subtest_with_dynamic("oa-regs-whitelisted")
-+			__for_one_hwe_in_oag(hwe)
-+				test_oa_regs_whitelist(hwe);
++struct recorder_command_base {
++	uint32_t command;
++	uint32_t size; /* size of recorder_command_base + dump in bytes */
++};
 +
-+		igt_subtest_with_dynamic("mmio-triggered-reports") {
-+			igt_require(HAS_OA_MMIO_TRIGGER(devid));
-+			__for_one_hwe_in_oag(hwe)
-+				test_mmio_triggered_reports(hwe);
-+		}
-+	}
++/*
++ The dump after the recorder_command_base header:
 +
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++struct recorder_command_dump {
++	uint8_t path[0];
++};
++*/
++
++#endif
 -- 
 2.41.0
 
