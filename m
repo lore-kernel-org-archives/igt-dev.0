@@ -4,173 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4633FC27C79
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 05:50:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF653C2BA18
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 06:14:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9194010E2E0;
-	Thu, 20 Jun 2024 05:50:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E4DAD10E2D7;
+	Thu, 20 Jun 2024 06:14:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FfRd2dMX";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="EvgHq9Sz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34FAE10E2D4
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 05:49:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718862599; x=1750398599;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=UTKOaplVJec81ZJtePBcDp5ClHd36ZNCTZESUNHNfKs=;
- b=FfRd2dMXUZ+fpdyKo1AQP1eqRjYhnjPrFvc71ZfH0C4/2GM3ojFeh/YZ
- Mrn7PnKcaox/KgHiDrOR59KQdTBpzOOKHs4tsH795XLjrN1oZa8W4zJG7
- qmUhSGuX8XBt4NSvmTAf6IfV160ejC+/P0KKG4lIIJl9Z6c09oXBepNFa
- 82yXjdibp8S2qvyO+OTQUnQ+JVEogSSVRul545XcXJRraWBtzCx4j3eI4
- gq/VtlS1guulH8MIrt6uS4gsa1H2DL08cWTGnyJoUks+P/VUfTFqDb1Zr
- C0XggtZ4Lndk+rBsB60crHYK3cStN+y8KoYY3kNhTD0PVFw8CrV9i9xnG A==;
-X-CSE-ConnectionGUID: vMmcOlWOTwmidPeDCFVQug==
-X-CSE-MsgGUID: KHns3YTRT4eGjKsVYDWLSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11108"; a="15584494"
-X-IronPort-AV: E=Sophos;i="6.08,251,1712646000"; d="scan'208";a="15584494"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jun 2024 22:49:58 -0700
-X-CSE-ConnectionGUID: yYQG/OvASVefavtByh6udA==
-X-CSE-MsgGUID: 0AL6F7mOSXWnaQB4rMHIHw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,251,1712646000"; d="scan'208";a="42791804"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 19 Jun 2024 22:49:58 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 19 Jun 2024 22:49:57 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 19 Jun 2024 22:49:57 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.42) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 19 Jun 2024 22:49:57 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam04on2060.outbound.protection.outlook.com [40.107.102.60])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F9C210E2D7
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 06:14:54 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IsxBYaZ4NPrZjVQe4VMPKWP+pjNOytatVlLoZ0IdLb6FKmW5hJAlirDYd+RyGPMKY6nqaoFOYLBNeERBJTB9JbA4Soe/VeY6b+lERzAhoGOvvvkyP8PjModA9wTmqjWKQjqQ2L3pAbWz/Rvtx8h0wH0fbF6fOFLqkV/iHMtQC+BFjqeZ0Q30lwSqSIzwYYMD+phPhqIbe8FybbWO4kP97nQLS2/XmTn0i1SWSTkuEDZKipHfijgdNsBfRm+gCuntPa5Jar2dcmJnBBAqSD7DC8NL3hIMTdJutlBPO9NmeWoTxfkPpiHw1zWVbUcwwiSftZWShYNDvHGjnUhw0+urqw==
+ b=gJ42LqpGuhdXjOKagpDFhf2AghucIV6tPLXRkQfuKMNFjL22ACKV8KlaRlZNG4fYSi5i3ZqugdKId19EqKCmuAX8Ajog0Odtd1e5zLzeSqZ1labfaCkkhqygT9FJhp2zLajf9P8yiWWS3bvSO36nwfUc1gD+42BIY08XPpaibHj9qUFvojdCLCd/AhAuasppp5oZdLWzxjQ4crONIyBCPaG1PxXStWMjghwEL4/90xj1prcOTzOlD4A8HjCKBl0LXGLoCr+zqs+SHo4EYVLq+gEIiss1Bvr/k6/5iPLMk831IvK+vPFrCYoQFn6S51Y9eJ1SfbUZHPfXz6jG2BJbuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8+oXGXCCRpCHpzO8R7GJAxhUaGrLp2xuE3/NKfNi/WI=;
- b=K0W6CQiznfBvJrzvy2fMbuk8TAFAXIXn1ztmUPwj+gVxHTwPukc+FMHU/ZzOyi2J+lK89SCIKwNjkKzm6aNDdjNiNExvrC5QEvSvE9mtUpdH0FPP4MB+K8Zfk/ojFvCm6GAitJeiAHDwhVLpBIraN1NWjxhGs8gfAB0R/EwVPbfPnK35PSgbDH3l6VHkYwe9pal53Mx2iJ8qbgcvm4wPNOu6BvD/At2/zN6CJSPZHQ52WMPBdbKzCT/lCBKeYctRiHDkkJPJGnGzFrgvZuOcJPHNFm0J8ODjYgBLy4qSH7Kj2kUGqn2Lptd+pajpWI22WK/RO7p63ujospCMQpNRMg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
- by CO1PR11MB5009.namprd11.prod.outlook.com (2603:10b6:303:9e::11)
+ bh=alQ5nK22FoRxRcg7sTiJRClilaeJOJywRbDsZoC8pMM=;
+ b=D3BYXOsM3TPeS6TpBxtudq+hD+z3gSKr/36NS9K8WRwT91tYDoXs67ubfke7TDFQqPHqLF6Jc8Utf4+9grJjF2lB7DO0lPp/kvI4nUfmQpvZ5JQeouRXH9rJk4u68B84y3ay518cYM2EQLDmDPPbWonmF6ESilau247H3Zu+RCVDwRn13fRPQT+8GP9LKDR5Iys8td8gedEytIWepwZrecWwruqsXvK1Rw9ne937cTH5Dc6evz8AJyfI0lxWQiQt6+6Utl4t+yxOfmpHtQHzCwNcU6bVNLNVE6HebAUjaTk3CbEKZuLfj9DgiP823a6D3SxRamVj8FMsxx0q5LtI2w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=alQ5nK22FoRxRcg7sTiJRClilaeJOJywRbDsZoC8pMM=;
+ b=EvgHq9SzoZE/hh/xgPm1IZwowGlq0NViQWWCZpjGDBpyXlexuIhoqQiaG9ZeoDjy4v2ZDbpXJ2ypQLJ/h9FpyO4H82SJvADJ0uecJOY50pvJCt8s1uhoAaHn5EdgFsVjFv1NRk5aywFd+KeWcLVy5MhShN/AkYKNgRjNaIj+ehk=
+Received: from SJ0PR05CA0081.namprd05.prod.outlook.com (2603:10b6:a03:332::26)
+ by SA0PR12MB7089.namprd12.prod.outlook.com (2603:10b6:806:2d5::18)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Thu, 20 Jun
- 2024 05:49:47 +0000
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::1670:23da:3abe:c525]) by CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::1670:23da:3abe:c525%5]) with mapi id 15.20.7677.030; Thu, 20 Jun 2024
- 05:49:47 +0000
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Peter Senna Tschudin <me@petersenna.com>,
- "Gandi, Ramadevi" <ramadevi.gandi@intel.com>, "Girotra, Himanshu"
- <himanshu.girotra@intel.com>
-Subject: RE: [PATCH i-g-t 2/4] tests: Unify 'Test category' in Core tests for
- i915 and Xe
-Thread-Topic: [PATCH i-g-t 2/4] tests: Unify 'Test category' in Core tests for
- i915 and Xe
-Thread-Index: AQHawYuu2bZxpJMe20yGjE/2hCYGNLHQJ21A
-Date: Thu, 20 Jun 2024 05:49:46 +0000
-Message-ID: <CH3PR11MB8434D36E2C41A58FD26850FC8DC82@CH3PR11MB8434.namprd11.prod.outlook.com>
-References: <20240618142650.1991834-1-katarzyna.piecielska@intel.com>
- <20240618142650.1991834-3-katarzyna.piecielska@intel.com>
-In-Reply-To: <20240618142650.1991834-3-katarzyna.piecielska@intel.com>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|CO1PR11MB5009:EE_
-x-ms-office365-filtering-correlation-id: 9fa052c4-b271-4a41-740a-08dc90eccacd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230037|1800799021|376011|366013|38070700015;
-x-microsoft-antispam-message-info: =?us-ascii?Q?iRGClpIHiCP42vjigAr3C2OTzGvgItXQJyVA0F+w20HwAxGgG5Wm7lBXI+5r?=
- =?us-ascii?Q?40aI0T0z5IamCus1NRvVUBtmgAxC2vIYHfzV1zB1zkcqIKf9b1jv8SEHB83j?=
- =?us-ascii?Q?SwRC03HtJSsQOMj8yypE+7vxipLcvmJGqxegTvAU5g4ZYq1dUFgsahj6/bcm?=
- =?us-ascii?Q?Y6lnWveYcNKLXq/FpD/BW6vDRc5zFsJsNJxOCM5Slp4bz3cOtDbcSki0PxnK?=
- =?us-ascii?Q?bmW4kDoVwvVBNmw4DRVn1jeGId8OHA1GM8433wLUptp3QcT9lgYbCXaoNySu?=
- =?us-ascii?Q?oltan3J1jwQ2IkrdMEegI7F5Rgh7fNTMImaYjD0SmBa6/FriPYisxGIDWZ+A?=
- =?us-ascii?Q?kVvv6kVSSIHibGBKZ3PszET8fehY69RmSNDnY9XzoIE12phpzkU3KswZpyyl?=
- =?us-ascii?Q?EYKfJgpB/pINUlr3eC710sbJGjr9/7naXa5M3jLhJF0qrkQaVPyhEfi4ckAa?=
- =?us-ascii?Q?PGvgDpsSLKbbw4p5dis9OGu8ND5/HwUX9VXMObrC6bjcPuSv+HJarQZ96AeJ?=
- =?us-ascii?Q?EFFVJfRfMpXB6ZzsWLBAmEAA1loiIQRaKQY9qijuZ4HRLZSr98LNtSgHejia?=
- =?us-ascii?Q?Z3auIaZq1TdJwCnsXC0ovugTPPAu4+WLqsELqYoH7qB00dmn86hL/MI7bSl4?=
- =?us-ascii?Q?p+V/+0WjFarb2t5jlyNB+QBpkgVZP2j7TWOW4S2N/ukjJAS7Joq8bwebT0iK?=
- =?us-ascii?Q?84VILje/ItZNFup5eUbjBFzcwm5uk8ew5sP87NfTcbsd7coedVMT7osJfubx?=
- =?us-ascii?Q?RE6fApjYluWaIBp1NSwc/pZchD0IF3Mk5qyFvPuYkIUxtJ2OQ7WemW5YfLce?=
- =?us-ascii?Q?iayXTHReIx1CxpEnjIK+ZkQA7PMaU0Hin4fpOC8Nx+w7S2i27NFbtkvVasKq?=
- =?us-ascii?Q?Pg5g8Ye/ItprXIzJCiW3Dm8OE7HZVIq4naRJcmk4gNTw1n++46LTmT+bb1ZE?=
- =?us-ascii?Q?3zwrQVUEvSERlSo2TjpEoi9KGWNIjscHbV1DvHRwDy5kSHtLtkfjjfwmyaL2?=
- =?us-ascii?Q?ZjHe++zN3Gtn999Wi4zyAvOkmZjk6E7LDqyHCa6Zel14VWE6/J6cAKoYP1X9?=
- =?us-ascii?Q?3mYXitv/7ozhLGC9bgT4pS2wHTWnvTx9s9ue9bFk42jf6GyAafL7caITKuE0?=
- =?us-ascii?Q?17gOfR0fPUBL5IGb/NVTp/V0UaM+1yXMuAtird94BFECHxRjsIV9Ui2GW+eU?=
- =?us-ascii?Q?qjZn2lZtmTW/KSAop0heve72GOx2m4uDle6axdhRHdID83VS4SUSXw00iZc/?=
- =?us-ascii?Q?zzvevPpQY5vO6i9vfd+oI527C+0xxTfz0TF2ugbc1l5VYavpJkCwoKITkU6d?=
- =?us-ascii?Q?6joqRg4IYeeW2LQcBd1flpSTbGLU57LQoFSEtMdzaedtOHxruRVxLkjeXq/f?=
- =?us-ascii?Q?/hN6EaQ=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230037)(1800799021)(376011)(366013)(38070700015); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Q3eicPPzYfAHa6h3FMTWAAwCAUSXkMDZOmuk9mgoyFxldbX79EceCQcyf6dW?=
- =?us-ascii?Q?TfQnSrLV0L3Uj46aMZfD//l7W97l/DoT/6hJz/DYTm831S8xinyhqT5x6fkv?=
- =?us-ascii?Q?i+hIcOwMKlXiB7V2ekAWVRLutuBr80wWhazwiUJvUqnbBZI0BqByQ+JtbiXJ?=
- =?us-ascii?Q?8k6wfAr/bl4Ligshw7ApXMyQNoqOIFgu4dYl4Q2bTlb7WSGTfc5nfGnVcGCQ?=
- =?us-ascii?Q?6JcWbxTdvq3udc6wBDp1aHg05fSmv2azSoXJqtRwX31+eTInXgRum4mYN4v5?=
- =?us-ascii?Q?j+/OQYv2Ii7ASVAyHVlVY/iwjQjOKuDrqs+k9UhCY0RPDMO7faXKaavzi5SS?=
- =?us-ascii?Q?4+fvZfIsJQny/SN6BsWyGbI+PCS9eUsOLkXLu0AoEEkLl8095QV0MryJ1G38?=
- =?us-ascii?Q?BvqlInB3ooaAEXABOPpvANoux88o3v7N06yi2DXYq3MnKrnOVssTO+YUrTU7?=
- =?us-ascii?Q?p2qqIedGk1PKI7iAcjdnYP+CwkVgVCVWuRsqWCDQ5s1gD+f3KKB63HReHKw+?=
- =?us-ascii?Q?S2ewHkoycbnYQ0X2agEyY2NPveFd6u/+NXsN9+6owe6g3+/XeBF/zbgH49oe?=
- =?us-ascii?Q?v9l7sgZxWxhMiyQ7fDmTk153yeuiK1uO7J7uYiZo8TomAoQGMBLFuRQbu9ZX?=
- =?us-ascii?Q?P9SKdoTqadLsoJwzDC5DMciIsWw6cMISSmBFy3PFazXHYgwlE2AlhiJOQBSV?=
- =?us-ascii?Q?/qTbuj0fmiQ9oSqsmH5wfwWX3QMUuJC/rpJ25TCvsOqtr+0HWvravUwjmTtY?=
- =?us-ascii?Q?/hJTgYdpuuNoGQUjv3Kua/18wqI5QFplw1C4Sy8TcdUENuBOK621h1U+F1sl?=
- =?us-ascii?Q?rpLK2k/JPEcmckcKXSB7cwZjH98d4N1vmNll6hS85Wsr6s/FEifHzSGI2LNb?=
- =?us-ascii?Q?QLoBNdUMWNvlYDZqW6gmpsJcjtBNHqnyBQJ1J/wITWrpOGFsWjffCwfQ2dfi?=
- =?us-ascii?Q?/KnqMf0gAr8XW6WgrDoCOGJnYeq2txBLJxe8b0hu/OlNSu4yCsoMOU+izI9I?=
- =?us-ascii?Q?cIgYoyUX9/jxb7P2fTMTQk5iOxb4Pl/hQxCxF9neFNSH064SV1vtA4dQXUHZ?=
- =?us-ascii?Q?VL6AvP1Bvnm+C5bJjsMyAxTX+TpIBdeOKzumYKKKH0GcpwS3I6poO2VepbU/?=
- =?us-ascii?Q?EgazwyJQwxAe5v7KupCSgpZT+xgsWKAJzXJt8f1ZmKjsXMTqvfTmyER90Qu2?=
- =?us-ascii?Q?MfQRBghxfwsXAJwJKMxEyEkCOEXZPRJXDSVSX7HeuFTRaJVMvOtmsCvnFPYz?=
- =?us-ascii?Q?Cy8Wtme+SIZ9Tc6EFrl3lJCrVdmZW3QdJYR37yhmIN5jn1Ne1S/MWft31t20?=
- =?us-ascii?Q?6y3kKcibk0oQ4pN7pfr8b6CLuEiDRVGY9XzrXwU9UEPLwSRlrl7+aLRZB8po?=
- =?us-ascii?Q?btP3JpGrwrCQSge5ThvM/Kzq9wkZH6q+pz3mgvNmYQ7tEfRBEORGQo/VBrGv?=
- =?us-ascii?Q?uA+r+cQEq677qQ0+s1Fh+T7Z94Mu89O+k4VPdvcCcYLWXqgRMM7CkQji5ouB?=
- =?us-ascii?Q?ktDUSAr8WyQArqcbD1ewSVtQL/8EkJ5U1eN1FEpZ6BlIYUJjdLjHu6s82Nqx?=
- =?us-ascii?Q?YzWGcIjSWakGp0ci+iSFhHYnAkV21bnb1l1XvETGPG420NDniJqU9jJwJU7+?=
- =?us-ascii?Q?A9gqFKplJCiI/OZ9JDUdEksOv4zGL1ZiLxNRV18WUDYqwIphiW1NnPLxeFpl?=
- =?us-ascii?Q?NTrRiQ=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ 2024 06:14:50 +0000
+Received: from SJ1PEPF00002311.namprd03.prod.outlook.com
+ (2603:10b6:a03:332:cafe::76) by SJ0PR05CA0081.outlook.office365.com
+ (2603:10b6:a03:332::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.31 via Frontend
+ Transport; Thu, 20 Jun 2024 06:14:50 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00002311.mail.protection.outlook.com (10.167.242.165) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7677.15 via Frontend Transport; Thu, 20 Jun 2024 06:14:48 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 20 Jun
+ 2024 01:14:46 -0500
+Received: from JesseDEV.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Thu, 20 Jun 2024 01:14:39 -0500
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, Jesse Zhang
+ <jesse.zhang@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>
+Subject: [PATCH 1/3] lib/amdgpu: add new asic support
+Date: Thu, 20 Jun 2024 14:14:38 +0800
+Message-ID: <20240620061438.2218484-1-jesse.zhang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9fa052c4-b271-4a41-740a-08dc90eccacd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jun 2024 05:49:46.8443 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: iMYBm6aq+NOd4P1Ok+l7RnelF25LbWRRt1fSJLxPEb4GNi9KrU6ENAXLxVIXCZKs2NUIF/uVCzLf60F4dyQ5RZEjv4SfFOZ93DVdnStL6uA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5009
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: jesse.zhang@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002311:EE_|SA0PR12MB7089:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3f29e14-9141-4b16-af57-08dc90f04a28
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230037|36860700010|376011|82310400023|1800799021; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?h7yjmNhn3LVt718AAMqFGF2J/ftumc+aNKIpwa40/40LTiIZVX9/b/XC+RFI?=
+ =?us-ascii?Q?3Gy4ndro04BffYKWNDqzwK+G6R0tJ0bYrScQnm2r7y+z8YHsj78BuORpSVQz?=
+ =?us-ascii?Q?Mt/orlnEy5AfvN5HnmIrHyuQlXWjMQWH4qqu3hVeHtI1dV/qTmlQn9B+ojqj?=
+ =?us-ascii?Q?CBH0Nm/Yu3gstM3rxJ1WZ3LWG5n2GqFA1USAmCxC5MeWF4pIqEKh2QtwmAif?=
+ =?us-ascii?Q?w39GfAFev6sGdbux2++vZFGTlyMdfMueDVPuwu7/6JuTwW9KMrqHfixDKBBo?=
+ =?us-ascii?Q?JifM1CUB06KZylIZ9gpaBLRP/7dffTTI6u5CacQD0WEEvdmDoDImJui5Ypib?=
+ =?us-ascii?Q?EmnZpYd4uxtORhSdBMpxHE3JLZWFdMCG5wvExVJcCax2XEz3BjAZNXxtkr/L?=
+ =?us-ascii?Q?ZsFsLPsljQ0PjnfCwL6GXPY7kKQDuTwi/duJUa2LXa/YBkGwjf3DVeE3GC4u?=
+ =?us-ascii?Q?fZP9J6fSGTFPYPjIELBC7z5GMKK9rVSNW1+otO7o1mvhbFz9G4j+3QFLomos?=
+ =?us-ascii?Q?M+tx2rWi4MwOUzVa/8kqU4ft4Abap4KSNw/3YmAaLbe7eikVI+DFG9GypGkN?=
+ =?us-ascii?Q?MxUu70VmiobfGXGCWJJFPj+6CFReLnD8IiKwV5i5mcAsMA1Z2h/egxUd1l6E?=
+ =?us-ascii?Q?EA2GNgUZ+WK0mxTv5K0LakOnx2NKD/mH1qykO/vnhqdJcwBD+tHGP7qEJqeR?=
+ =?us-ascii?Q?fa5LO2KBo3bgLGUuzg8lYGsIIPxLRHitlzw4IZO9IPLs1Ule45UvT8yDyk57?=
+ =?us-ascii?Q?ctM/YinnfwQP69ojtcHXnztEwvsVmr9FENS1hMoRwLUzkFQG1S8uefmopLfj?=
+ =?us-ascii?Q?Vl9EXfj11PilG65JQIFuTSi93C3Wm/sTnqrBTkwezopMMML17MuS3ofSZ+iS?=
+ =?us-ascii?Q?GEjYxhZfT5t9O+D7SHc5hRn37N4S5WUyx9VVHow9YVKjpETuDcNiir9NaNxm?=
+ =?us-ascii?Q?gbb/KW7NEaCMQVhbZXXlzvUPWiYMz8IHQ7MuBp2dSgetFIrCdh68A23cefii?=
+ =?us-ascii?Q?NJ3LGCAU3XPQpPhYxXh3/7Tr+XIiK8pjz62hyX/xkXEbNm/5f1aGIaPSwZlJ?=
+ =?us-ascii?Q?GQPpBGRzAp/+llKCmh8ztFBRtWLXKnNTiGuLcLbi56rWobpzXbQsszEzda8s?=
+ =?us-ascii?Q?kOfmRfnEhYRRy4cxQaKHGljUcKYV/WPee5YQFquoVgwNdCH3r4W2a7EIbiM4?=
+ =?us-ascii?Q?wxMR2DY4+7ZC7fbnAteK+/0mT6geAdBnaXgMJyGv1pxkQOzPbljASUJco2nu?=
+ =?us-ascii?Q?X/lLhG79hr0tiadCAr45EjK439LCopiSd3UT0EHoloqVjUyfkyNfz6J9/gCa?=
+ =?us-ascii?Q?TGtWyVSo2+EZDYolqAqaUBWmDV/BbHrYLO5RpTV+PMnc6VblTsZlfzLLkXTv?=
+ =?us-ascii?Q?y/D28zIBETeQpT/Y1ajAVlhffNqRzIEPnzU2kfYEYt/vivywlw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230037)(36860700010)(376011)(82310400023)(1800799021); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 06:14:48.9092 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3f29e14-9141-4b16-af57-08dc90f04a28
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF00002311.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7089
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -186,391 +134,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-I have a doubt over here for some subtests you are mentioning as negative t=
-est and for some tests you are mentioning functionality test for the whole =
-test.
-Example: sysfs_preempt_timeout you updated entire Test category to function=
-ality test but one of the subtest is negative test in this case it also fal=
-l under functionality test
-As you are generalising for all. Can you please look into it.
---Priyanka
+Add gfx12 family id
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Katarzyna Piecielska
-> Sent: Tuesday, June 18, 2024 7:57 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Piecielska, Katarzyna <katarzyna.piecielska@intel.com>; Kamil Koniecz=
-ny
-> <kamil.konieczny@linux.intel.com>; Peter Senna Tschudin
-> <me@petersenna.com>; Gandi, Ramadevi <ramadevi.gandi@intel.com>;
-> Girotra, Himanshu <himanshu.girotra@intel.com>
-> Subject: [PATCH i-g-t 2/4] tests: Unify 'Test category' in Core tests for=
- i915 and
-> Xe
->=20
-> Change 'Test category' documentation field from:
->  Compositor, uapi, Media & Compute, Compute, i915, pm_rpm, pm_rps,
-> suspend, Perf, SysMan, xe to one of values: functionality test, stress te=
-st,
-> negative test.
->=20
-> Test category should reflect main test purpose:
->  * functionality test - all testing for driver, HW or uapi that are not a=
- stress or
-> negative testing
->  * stress test - stress cases to reveal corner cases, e.g. huge memory us=
-age,
-> many parallel operations, races etc.
->  * negative test - check that invalid behaviors will not break anything
->=20
-> In some please there was a need to change s/functionality test/negative t=
-est/.
->=20
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Peter Senna Tschudin <me@petersenna.com>
-> Cc: Gandi Ramadevi <ramadevi.gandi@intel.com>
-> Cc: Girotra Himanshu <himanshu.girotra@intel.com>
-> ---
->  tests/core_hotunplug.c                 | 2 +-
->  tests/dumb_buffer.c                    | 4 +++-
->  tests/intel/debugfs_test.c             | 2 +-
->  tests/intel/gem_exec_balancer.c        | 2 +-
->  tests/intel/gem_exec_endless.c         | 2 +-
->  tests/intel/i915_pm_freq_mult.c        | 2 +-
->  tests/intel/i915_pm_rpm.c              | 2 +-
->  tests/intel/i915_pm_rps.c              | 2 +-
->  tests/intel/i915_suspend.c             | 2 +-
->  tests/intel/intel_hwmon.c              | 2 +-
->  tests/intel/perf.c                     | 2 +-
->  tests/intel/perf_pmu.c                 | 2 +-
->  tests/intel/sysfs_heartbeat_interval.c | 3 ++-
->  tests/intel/sysfs_preempt_timeout.c    | 2 +-
->  tests/intel/sysfs_timeslice_duration.c | 2 +-
->  tests/intel/xe_drm_fdinfo.c            | 2 +-
->  tests/intel/xe_exec_compute_mode.c     | 2 +-
->  tests/intel/xe_exec_fault_mode.c       | 4 ++--
->  tests/intel/xe_exec_queue_property.c   | 4 ++--
->  tests/intel/xe_peer2peer.c             | 2 +-
->  20 files changed, 25 insertions(+), 22 deletions(-)
->=20
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c index
-> db7a5c5e8..b13088976 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -47,7 +47,7 @@
->   * Sub-category: driver
->   * Functionality: device hotplug
->   * Feature: SMI, core
-> - * Test category: functionality test
-> + * Test category: stress test
->   *
->   * SUBTEST: hotrebind
->   * Description: Check if the driver can be cleanly rebound to a device w=
-ith a
-> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c index
-> 1d4bf296c..b3c4882e6 100644
-> --- a/tests/dumb_buffer.c
-> +++ b/tests/dumb_buffer.c
-> @@ -57,15 +57,17 @@
->   * Sub-category: uapi
->   * Functionality: ioctl
->   * Feature: prime
-> - * Test category: Compositor
-> + * Test category: functionality test
->   *
->   * SUBTEST: create-clear
->   *
->   * SUBTEST: create-valid-dumb
->   *
->   * SUBTEST: invalid-bpp
-> + * Test category: negative test
->   *
->   * SUBTEST: map-invalid-size
-> + * Test category: negative test
->   *
->   * SUBTEST: map-uaf
->   *
-> diff --git a/tests/intel/debugfs_test.c b/tests/intel/debugfs_test.c inde=
-x
-> f2b6fb334..b71ffad7d 100644
-> --- a/tests/intel/debugfs_test.c
-> +++ b/tests/intel/debugfs_test.c
-> @@ -37,7 +37,7 @@
->   * Sub-category: uapi
->   * Functionality: debugfs
->   * Feature: core
-> - * Test category: uapi
-> + * Test category: functionality test
->   *
->   * SUBTEST: basic-hwmon
->   * Description: Read all entries from hwmon path validating debugfs entr=
-ies
-> diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balan=
-cer.c
-> index 20e31baf0..209c54e7a 100644
-> --- a/tests/intel/gem_exec_balancer.c
-> +++ b/tests/intel/gem_exec_balancer.c
-> @@ -46,7 +46,7 @@
->   * Sub-category: CMD submission
->   * Functionality: load balancing
->   * Feature: cmd_submission, media_scalability
-> - * Test category: Media & Compute
-> + * Test category: functionality test
->   *
->   * SUBTEST: bonded-chain
->   *
-> diff --git a/tests/intel/gem_exec_endless.c b/tests/intel/gem_exec_endles=
-s.c
-> index 6b2c56382..9bae9bcc2 100644
-> --- a/tests/intel/gem_exec_endless.c
-> +++ b/tests/intel/gem_exec_endless.c
-> @@ -36,7 +36,7 @@
->   * Mega feature: General Core features
->   * Sub-category: CMD submission
->   * Functionality: compute test
-> - * Test category: Compute
-> + * Test category: functionality test
->   * Feature: cmd_submission
->   *
->   * SUBTEST: dispatch
-> diff --git a/tests/intel/i915_pm_freq_mult.c b/tests/intel/i915_pm_freq_m=
-ult.c
-> index fa68be220..7e77fd1df 100644
-> --- a/tests/intel/i915_pm_freq_mult.c
-> +++ b/tests/intel/i915_pm_freq_mult.c
-> @@ -18,7 +18,7 @@
->   * Mega feature: Power management
->   * Sub-category: Power management tests
->   * Functionality: freg multipliers
-> - * Test category: i915
-> + * Test category: functionality test
->   *
->   * SUBTEST: media-freq
->   * Description: Tests for media frequency factor sysfs diff --git
-> a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c index
-> 31758b1a5..709eb1dbc 100644
-> --- a/tests/intel/i915_pm_rpm.c
-> +++ b/tests/intel/i915_pm_rpm.c
-> @@ -46,7 +46,7 @@
->   * Mega feature: Power management
->   * Sub-category: Power management tests
->   * Functionality: D3 state entry-exit
-> - * Test category: pm_rpm
-> + * Test category: functionality test
->   * Feature: pm_rpm
->   *
->   * SUBTEST: debugfs-forcewake-user
-> diff --git a/tests/intel/i915_pm_rps.c b/tests/intel/i915_pm_rps.c index
-> 99b83f315..f9788f9a9 100644
-> --- a/tests/intel/i915_pm_rps.c
-> +++ b/tests/intel/i915_pm_rps.c
-> @@ -52,7 +52,7 @@
->   * Sub-category: Power management tests
->   * Functionality: pm_rps
->   * Feature: pm_rps
-> - * Test category: pm_rps
-> + * Test category: functionality test
->   *
->   * SUBTEST: basic-api
->   *
-> diff --git a/tests/intel/i915_suspend.c b/tests/intel/i915_suspend.c inde=
-x
-> 3398b372b..337f121e1 100644
-> --- a/tests/intel/i915_suspend.c
-> +++ b/tests/intel/i915_suspend.c
-> @@ -50,7 +50,7 @@
->   * Mega feature: Power management
->   * Sub-category: Power management tests
->   * Functionality: s2idle w/o i915
-> - * Test category: suspend
-> + * Test category: functionality test
->   * Feature: suspend
->   *
->   * SUBTEST: basic-s2idle-without-i915
-> diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c index
-> e4272e0a0..299efcf1c 100644
-> --- a/tests/intel/intel_hwmon.c
-> +++ b/tests/intel/intel_hwmon.c
-> @@ -15,7 +15,7 @@
->   * Mega feature: RAS
->   * Sub-category: RAS tests
->   * Functionality: hwmon
-> - * Test category: functionality
-> + * Test category: functionality test
->   *
->   * SUBTEST: hwmon-read
->   * Description: Verify we can read all hwmon attributes diff --git
-> a/tests/intel/perf.c b/tests/intel/perf.c index 95b17f522..5b579f9b1 1006=
-44
-> --- a/tests/intel/perf.c
-> +++ b/tests/intel/perf.c
-> @@ -53,7 +53,7 @@
->   * Sub-category: Performance tests
->   * Functionality: oa
->   * Feature: i915 streaming interface, oa
-> - * Test category: Perf
-> + * Test category: functionality test
->   *
->   * SUBTEST: blocking
->   * Description: Test blocking read with default hrtimer frequency diff -=
--git
-> a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c index
-> e3f51d0c7..ebefa3eef 100644
-> --- a/tests/intel/perf_pmu.c
-> +++ b/tests/intel/perf_pmu.c
-> @@ -57,7 +57,7 @@
->   * Sub-category: Performance tests
->   * Functionality: pmu
->   * Feature: i915 pmu perf interface, pmu
-> - * Test category: Perf
-> + * Test category: functionality test
->   *
->   * SUBTEST: all-busy-check-all
->   * Description: Test the i915 pmu perf interface diff --git
-> a/tests/intel/sysfs_heartbeat_interval.c
-> b/tests/intel/sysfs_heartbeat_interval.c
-> index 486a1514d..87102a253 100644
-> --- a/tests/intel/sysfs_heartbeat_interval.c
-> +++ b/tests/intel/sysfs_heartbeat_interval.c
-> @@ -48,13 +48,14 @@
->   * Sub-category: SysMan tests
->   * Functionality: sysfs heartbeat
->   * Feature: SMI, cmd_submission
-> - * Test category: SysMan
-> + * Test category: functionality test
->   *
->   * SUBTEST: idempotent
->   * Description: Test to check whether the heartbeat parameter reports th=
-e
-> values set.
->   *
->   * SUBTEST: invalid
->   * Description: Test to check if heartbeat parameter rejects any
-> unrepresentable intervals.
-> + * Test category: negative test
->   *
->   * SUBTEST: long
->   *
-> diff --git a/tests/intel/sysfs_preempt_timeout.c
-> b/tests/intel/sysfs_preempt_timeout.c
-> index 18e000405..51dac116a 100644
-> --- a/tests/intel/sysfs_preempt_timeout.c
-> +++ b/tests/intel/sysfs_preempt_timeout.c
-> @@ -47,7 +47,7 @@
->   * Sub-category: SysMan tests
->   * Functionality: sysfs preempt timeout
->   * Feature: SMI, context
-> - * Test category: SysMan
-> + * Test category: functionality test
->   *
->   * SUBTEST: idempotent
->   * Description: Test to check whether the preempt_timeout parameter
-> reports the diff --git a/tests/intel/sysfs_timeslice_duration.c
-> b/tests/intel/sysfs_timeslice_duration.c
-> index 026d12b85..dcc231465 100644
-> --- a/tests/intel/sysfs_timeslice_duration.c
-> +++ b/tests/intel/sysfs_timeslice_duration.c
-> @@ -50,7 +50,7 @@
->   * Sub-category: SysMan tests
->   * Functionality: timeslise sysfs
->   * Feature: SMI, cmd_submission
-> - * Test category: SysMan
-> + * Test category: functionality test
->   *
->   * SUBTEST: duration
->   * Description: Test to measure the timeslice duration by watching the d=
-iff --
-> git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c index
-> 2ceafba24..0d4d37f51 100644
-> --- a/tests/intel/xe_drm_fdinfo.c
-> +++ b/tests/intel/xe_drm_fdinfo.c
-> @@ -20,7 +20,7 @@
->   * Sub-category: driver
->   * Functionality: Per client memory statistics
->   * Feature: SMI, core
-> - * Test category: SysMan
-> + * Test category: functionality test
->   *
->   * SUBTEST: basic
->   * Description: Check if basic fdinfo content is present diff --git
-> a/tests/intel/xe_exec_compute_mode.c
-> b/tests/intel/xe_exec_compute_mode.c
-> index 389de7ca4..539e2ed8a 100644
-> --- a/tests/intel/xe_exec_compute_mode.c
-> +++ b/tests/intel/xe_exec_compute_mode.c
-> @@ -405,7 +405,7 @@ static void non_block(int fd, int expect)
->  /**
->   * SUBTEST: lr-mode-workload
->   * Description: Stress LR mode workload for 30s.
-> - * Test category: functionality test
-> + * Test category: stress test
->   */
->  static void lr_mode_workload(int fd)
->  {
-> diff --git a/tests/intel/xe_exec_fault_mode.c
-> b/tests/intel/xe_exec_fault_mode.c
-> index b022f97d3..8f412779f 100644
-> --- a/tests/intel/xe_exec_fault_mode.c
-> +++ b/tests/intel/xe_exec_fault_mode.c
-> @@ -39,11 +39,11 @@
->  /**
->   * SUBTEST: invalid-va
->   * Description: Access invalid va and check for EIO through user fence.
-> - * Test category: functionality test
-> + * Test category: negative test
->   *
->   * SUBTEST: invalid-va-scratch-nopagefault
->   * Description: Access invalid va without pageafault with scratch page
-> enabled.
-> - * Test category: functionality test
-> + * Test category: negative test
->   *
->   * SUBTEST: once-%s
->   * Description: Run %arg[1] fault mode test only once diff --git
-> a/tests/intel/xe_exec_queue_property.c
-> b/tests/intel/xe_exec_queue_property.c
-> index 3edab0af5..908a4c7fd 100644
-> --- a/tests/intel/xe_exec_queue_property.c
-> +++ b/tests/intel/xe_exec_queue_property.c
-> @@ -94,7 +94,7 @@ static void test_property_min_max(int xe, int engine,
-> const char **property)
->  /**
->   * SUBTEST: Invalid-exec-queue
->   * Description: Negative test to check the expected behaviour with inval=
-id
-> exec_queue_id.
-> - * Test category: functionality test
-> + * Test category: negative test
->   */
->  static void Invalid_exec_queue_id(int xe)  { @@ -109,7 +109,7 @@ static =
-void
-> Invalid_exec_queue_id(int xe)
->  /**
->   * SUBTEST: non-zero-reserved
->   * Description: Negative test to check the expected behaviour with non-z=
-ero
-> reserved.
-> - * Test category: functionality test
-> + * Test category: negative test
->   */
->  static void non_zero_reserved(int xe)
->  {
-> diff --git a/tests/intel/xe_peer2peer.c b/tests/intel/xe_peer2peer.c inde=
-x
-> 6ff4774bb..00aee010b 100644
-> --- a/tests/intel/xe_peer2peer.c
-> +++ b/tests/intel/xe_peer2peer.c
-> @@ -22,7 +22,7 @@
->   * Mega feature: General Core features
->   * Sub-category: MultiGPU
->   * Functionality: dma buf copy
-> - * Test category: xe
-> + * Test category: functionality test
->   *
->   * SUBTEST: read
->   * Description:
-> --
-> 2.34.1
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+---
+ lib/amdgpu/amd_family.h       | 1 +
+ lib/amdgpu/amd_ip_blocks.c    | 3 +++
+ lib/amdgpu/amdgpu_asic_addr.h | 3 +++
+ 3 files changed, 7 insertions(+)
+
+diff --git a/lib/amdgpu/amd_family.h b/lib/amdgpu/amd_family.h
+index bce2c6c2e..4a5731dbf 100644
+--- a/lib/amdgpu/amd_family.h
++++ b/lib/amdgpu/amd_family.h
+@@ -106,6 +106,7 @@ enum radeon_family {
+ 	CHIP_GFX1103_R2,
+ 	CHIP_GFX1150,
+ 	CHIP_GFX1151,
++	CHIP_GFX1200,
+ 	CHIP_LAST,
+ };
+ 
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 2ee94105c..ff7e55525 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -695,6 +695,9 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
+ 		identify_chip(GFX1150);
+ 		identify_chip(GFX1151);
+ 		break;
++	case FAMILY_GFX1200:
++		identify_chip(GFX1200);
++		break;
+ 	}
+ 	if (!info->name) {
+ 		igt_info("amdgpu: unknown (family_id, chip_external_rev): (%u, %u)\n",
+diff --git a/lib/amdgpu/amdgpu_asic_addr.h b/lib/amdgpu/amdgpu_asic_addr.h
+index cbe02871e..0ecb0b803 100644
+--- a/lib/amdgpu/amdgpu_asic_addr.h
++++ b/lib/amdgpu/amdgpu_asic_addr.h
+@@ -31,6 +31,7 @@
+ #define FAMILY_GFX1036 0x95
+ #define FAMILY_GFX1150 0x96
+ #define FAMILY_GFX1037 0x97
++#define FAMILY_GFX1200 0x98
+ 
+ // AMDGPU_FAMILY_IS(familyId, familyName)
+ #define FAMILY_IS(f, fn)     (f == FAMILY_##fn)
+@@ -108,6 +109,7 @@
+ #define AMDGPU_GFX1103_R2_RANGE  0x80, 0xFF //# 128 <= x < max
+ #define AMDGPU_GFX1150_RANGE     0x01, 0xc0 //# 01 <= x < c0
+ #define AMDGPU_GFX1151_RANGE     0xc1, 0xFF //# c1 <= x < 255
++#define AMDGPU_GFX1200_RANGE     0x01, 0xFF //# 01 <= x < 255
+ 
+ #define AMDGPU_EXPAND_FIX(x) x
+ #define AMDGPU_RANGE_HELPER(val, min, max) ((val >= min) && (val < max))
+@@ -173,5 +175,6 @@
+ #define ASICREV_IS_GFX1103_R2(r)       ASICREV_IS(r, GFX1103_R2)
+ #define ASICREV_IS_GFX1150(r)          ASICREV_IS(r, GFX1150)
+ #define ASICREV_IS_GFX1151(r)          ASICREV_IS(r, GFX1151)
++#define ASICREV_IS_GFX1200(r)          ASICREV_IS(r, GFX1200)
+ 
+ #endif // _AMDGPU_ASIC_ADDR_H
+-- 
+2.25.1
 
