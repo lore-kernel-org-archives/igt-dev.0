@@ -4,163 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AB5BC27C4F
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 15:01:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7568BC27C4F
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 17:09:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AFE5D10F1DE;
-	Fri, 21 Jun 2024 15:01:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F399910EB7B;
+	Fri, 21 Jun 2024 17:08:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KrW4RNNE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E7P9IAlW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 927D010F1DC
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 15:00:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E0AB10EB7B
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 17:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718982058; x=1750518058;
+ t=1718989739; x=1750525739;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=VlWVV4ohgjNHlHSG1DFO/fj+LC2pZjsXER2hkLQ2GWc=;
- b=KrW4RNNEXy6UaGM1H8efQupwB+BeYe0TVTfKA7KN2KXhjLbliq/vhQNF
- C1/EVQkVL1sU9dwClp83FO926Uo9IUF2rp8h4sdSuQNwtJv86Ji8db+CJ
- d39MsCbkFWctUOkwZ/PcxtYd81RtotT7V1dv/EPB/EJfgoH262UgmOxpm
- Jwc1PmSunST5NuMOMPr8NgUliYXHSO47ZmSszhLBjpD/1biubQtZFKme5
- kw57CVav7rsaLQ6zlNvjI8Wsi9NjsOwMIHIRkUtVgINQt4mcMqx2kIrZx
- Y1VySc4hovIcVxJ9b8cDXQ9jdWKbp+Usogg0OJ+VOsibsl5bQOGSizi/a w==;
-X-CSE-ConnectionGUID: fJFbxheITsakYYCoejfcTA==
-X-CSE-MsgGUID: 1KeVLlavRFK8cJlw2K0tIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="26705126"
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="26705126"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 08:00:57 -0700
-X-CSE-ConnectionGUID: atUcGR9YTF6bv6MJ3guwtQ==
-X-CSE-MsgGUID: JH/T7sm1SWucbQ8IOVW2YQ==
+ bh=po0FzsvmyIsTyu7W8eECdlMU8VGqyKEPGcCI8NtMi+o=;
+ b=E7P9IAlWJnBcLj5YszcL6eo7wnKC0AoXUyKFGGvd/BsOAQ1709KyaBiL
+ rNtwWB1UGwzU9RrTG4abHCmGKW3HWpxBvVUSBsIyHLFXWHzYtpxDyWgGE
+ MdcpX50KFuXVbNFZeYhf6gQgIvEKX5CrkUFuNgcgTxjkvctq91l7ScnA1
+ Bhj45LOWM04Om1H3mzVA6rtYvNNXCs6d/nTFna8iBOqDD6984LgtX87iV
+ 9dn3Nz+OHZpTG++M0tcTTJqLc+Hiw6cSeULWtjz6Xviq3MdB+0ne8B/xY
+ 4jqAbmQ7LjH4N5iPuPVDc3Zg/Qz1dd6O9m2yqk/YW6rOz8kWgvAyhbizK w==;
+X-CSE-ConnectionGUID: iKsotdqpQeSaFbLOdan9uA==
+X-CSE-MsgGUID: EIrnfMUTR4yfm0bMqVeX+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15864606"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15864606"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jun 2024 10:08:58 -0700
+X-CSE-ConnectionGUID: vNlydioKQ/WpS2U2GDgO/A==
+X-CSE-MsgGUID: 1I6Vz9YNSkeFg92J7yEGTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="42720512"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Jun 2024 08:00:57 -0700
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="47100914"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 21 Jun 2024 10:08:57 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 21 Jun 2024 08:00:57 -0700
+ 15.1.2507.39; Fri, 21 Jun 2024 10:08:56 -0700
 Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 21 Jun 2024 08:00:57 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
+ 15.1.2507.39 via Frontend Transport; Fri, 21 Jun 2024 10:08:56 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
  by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 21 Jun 2024 08:00:56 -0700
+ 15.1.2507.39; Fri, 21 Jun 2024 10:08:55 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NN5zQp0cWBLqcyFJ8oOwqH3EIMXaItkrZLPWW6DS8ijp2A6RYkFfxejprUR/5VELXYuIDv4L38TNly3dnE/sdKJF5GTVijMhrAQVVE3YTn97mF19R8+3U6tIiFPjAU4l0fLFCxhLnuB8XiZnl8ZOhffP1wTGtql9Bv0Z/YTJqRPvPMsoFsZJYXuH3IsNY2Z1CsAV3LZy95CCzq0/SGZR/4J2AIZLyN2xJnYMkw1F42k8w6ZZNsoNdNRVSJazJKXd+YMfm+/8NIsumUu5vIKi3EEWcdowjBbOJ11tnrL8dQ79OHFL2LD+RhInZM/2CnwsdrhJmvLlUW14bGNZM9Oqxg==
+ b=kSguPaOxrYsXJO+i33jFfeuwsZGLcj/nwDwhCcnUy5epI3Ww1mfv4WwfJA6HbzTfMK4qNERy5hDy13jxqVMxROMDSGwX1agqsq6lh+WU7TGhU2uH70cFECbcivprhNoZp2dP2FAhtm8aUyJX73qYF883kn9JR7NyCiLmjzOoYCQPkOgK0MbGPhIXsRh8dlHh/R2SbvGrfz+2W6D3At33sjqd6VFxIgNG1a9wY01X/6aJvZQ3uXUBm3R5Zg92DgdeYMscw76TxmX1w4h+EaTvhOAWuZZgfm7N0hseM6Ul15iuqUrXik8JPlfPFxggSTCt5Pm8fesovUZAr1r7WZmrgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=s/w9qIkdOjG4oteb91l1/i6gnPVo0rBb5UdQn6spSe4=;
- b=AJlmtXJq7IKlbmdAXVOLYjzrtnGN5FrUvXVBy6d57xr+A75JFKa9g9Dwdzo3nSt8WezNVe7STXnGZPh6C/qGyiOd15aExFtueWks52EE+Teq+UFmZ7rcxF1uMVFunQVIM+68Xc0EZlswRy2XSMWc28UpnPom+NKkvcmwDLCLU/aMGhws9ihefsbvFpRS7qWdqAJlcdavcBkvyvsGiN7KnmWWKjMLiGQplD3axD0dtj2WYTAN81xDNMly2pejVuZLUho5R9tlr9jMoV6ixfoYLzWe6dF8ygJSfdFlov8GpP9pddC5sdSvsNEPwxwAFmdeQhebj1lA9fcZetF/nYudrA==
+ bh=Xo1IzHQVdA+eIr7+pEoLQVuS7F7O7WGW+D7r2jYJIPs=;
+ b=ILKChxIvL5QXtYwV2AkAYmtUCOaE9kFReSvhyRAFGf0pbGhm6zLvoLBM5cIp98Anvl0GSgWdt3CJn3PTJ7sY+e6yXW7aOJAyEb2tBO2Ujx31ADweLGwD7d6Hw7jB6YCzGmCJKjSlqbz4n/InfiygnJJI0D/WPK2lj4tL9cxl515IItd095HHLeoHyX9mm9WJ2/P0KON13bMMOogQ7cPAYl/dpjicIpfnuvMohi5PmLCVGffXKR12KZnRCN/f2xQ2woSqCeIxz78Lal+g09BmagRRIASMHEnhDvQsCdVT0TxSlIYek4qYJOSSF351YlmTeD9UzgJkWsuAvkDsZJrbig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com (2603:10b6:930:78::8)
- by SJ0PR11MB4895.namprd11.prod.outlook.com (2603:10b6:a03:2de::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.24; Fri, 21 Jun
- 2024 15:00:53 +0000
-Received: from CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::5461:fa8c:58b8:e10d]) by CY8PR11MB7828.namprd11.prod.outlook.com
- ([fe80::5461:fa8c:58b8:e10d%4]) with mapi id 15.20.7698.020; Fri, 21 Jun 2024
- 15:00:53 +0000
-Date: Fri, 21 Jun 2024 17:00:46 +0200
-From: Francois Dugast <francois.dugast@intel.com>
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by MW4PR11MB5824.namprd11.prod.outlook.com (2603:10b6:303:187::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.21; Fri, 21 Jun
+ 2024 17:08:53 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%4]) with mapi id 15.20.7677.033; Fri, 21 Jun 2024
+ 17:08:53 +0000
+Date: Fri, 21 Jun 2024 17:08:17 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
 CC: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_spin_batch: Check duration of
- preempter execution
-Message-ID: <ZnWVnoPjhDdrVNNy@fdugast-desk>
-References: <20240621115303.1772645-1-francois.dugast@intel.com>
- <ZnWODQqe4o8vhXaJ@intel.com>
+Subject: Re: [PATCH] xe_vm: Add bind array -ENOBUFS section
+Message-ID: <ZnWzgZdevdoHLe9d@DUT025-TGLU.fm.intel.com>
+References: <20240620235437.3722232-1-matthew.brost@intel.com>
+ <96953a51-cb66-46cf-a346-065153ad01d1@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <ZnWODQqe4o8vhXaJ@intel.com>
-Organization: Intel Corporation
-X-ClientProxiedBy: ZR2P278CA0032.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:47::8) To CY8PR11MB7828.namprd11.prod.outlook.com
- (2603:10b6:930:78::8)
+In-Reply-To: <96953a51-cb66-46cf-a346-065153ad01d1@intel.com>
+X-ClientProxiedBy: SJ0PR13CA0042.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::17) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7828:EE_|SJ0PR11MB4895:EE_
-X-MS-Office365-Filtering-Correlation-Id: a6c4add3-de4e-4399-b260-08dc9202f258
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|MW4PR11MB5824:EE_
+X-MS-Office365-Filtering-Correlation-Id: d3571317-2e8a-4e96-143a-08dc9214d3fb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230037|1800799021|366013|376011;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?oBoEymlvgcfTHRU9Eg7q/uXW22fgngEaF68x8e8hqYbHBMTTvtMgxNUJPeCq?=
- =?us-ascii?Q?uUQW2v7LNUTwPH/heov38ZLUVEs5MKcMWq+WZr6gS53iZhFMCSmr2IeNSP3d?=
- =?us-ascii?Q?tGlfh/xthpFM1W1B0DqX7ZMzRH7fmJ1Mx/kci7dOunhkicPu3anCuw9OYCk1?=
- =?us-ascii?Q?k4l2C+xcN0hBbESOQgPyvLiEHSUqlwBjaQEYbYmIiDwnA6CUUmirFGVTK6Vh?=
- =?us-ascii?Q?F+ijx6250D3fJ7BZmLCZvhUInlckURAOkgwE0FAXwEVFALi+Ls3Q32AtM8te?=
- =?us-ascii?Q?mGCWqh1EEW2aEcbbWyECATeohkl11WQawU703F7f7IjAsZmfsg3uR4jad+Ax?=
- =?us-ascii?Q?oEARsKaUHLvAomKmTmkaRPPdbML7kYyU11TK5wYRteI+gB3phVzsyB7OCg30?=
- =?us-ascii?Q?TVhDAjAjIW4ypG1Tw+kpCkbke4M5cgmB0NIJExoPd1BzIGIkcLSQ2gRJO6Iw?=
- =?us-ascii?Q?J/aC4DilPWsJpP2ROvUsIuXEe0uVHQ93mfEb/LV7jMWjhOLnBO5daEXHtKBJ?=
- =?us-ascii?Q?lQYiDeCJ1flvJ7bRVL2vrpXj8PSoD8jJ84GV2x0qZRJHlloi/i01TLNZ7mrD?=
- =?us-ascii?Q?Burpp+Ibz/kw4XnTmSH1FLDZIiopuhZGFw9tEGZ/FEi6zQXPzgn3lu3ZODfR?=
- =?us-ascii?Q?DwyF+Od6560VyOb4jKMUk+rr+Fx3YheUGaUmbecWRTHC1CEiyjkNykIdiMWk?=
- =?us-ascii?Q?bRTEcTvchW35S8H3EPaOOmCQcnylKSSlPxpnyo7mVu2hTo8eUBmtBp2SmU9y?=
- =?us-ascii?Q?GwIFbHyY2vNrTjJElTmHqtHXWEVrjxGZw7YaqySm9/AvrWpQgGeTcbqlTqkH?=
- =?us-ascii?Q?1ac0hriAS7J01OjS/0joUhdvG37K6U3qML1TwkM/8pFKfsIH2DOZE+6brTvM?=
- =?us-ascii?Q?+DasctiIQSeSURXV8fbWi3JneifS3ePlCCbi7mJwoirjWmTcm8Du0EJc72g9?=
- =?us-ascii?Q?/vGTXIRuKa9gx0F77MEzQpyprHJViHVSeHKNNDbwaAVH0E4rFaBNx1NpSNBh?=
- =?us-ascii?Q?0l6lu8HLwGhD6hHXkTtpE208vUAZUxP1etmAQ5PHOmmj8SdufAH/YMFYjAmB?=
- =?us-ascii?Q?mKz96K8qNop6+BVRHM9pSZIEMMXk7i8jou4Huo2ClHeq/9OI/dfL8H/G5xTT?=
- =?us-ascii?Q?CWfOR8qvxWqkHGYLQIQhYrUGQaVchOugsnG8JX1kwpdMda5HLoAtFWtUS2k2?=
- =?us-ascii?Q?ttPgoPvoGKm+dbamUxgwIOsPedXvhLpVIv2UmSKJJst1FVZhRWPP7bSmpi4N?=
- =?us-ascii?Q?B+YmyTGb7hH72Slus/mMBlvQizY3E1AWLybAHxUpjgapTKmyohnnS8O0Ibc8?=
- =?us-ascii?Q?HmfybuY/zfq/2FpjGzx/AUYD?=
+X-Microsoft-Antispam: BCL:0;ARA:13230037|366013|376011|1800799021;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?yHuEJ4CPEpnmOHOvn7+ckOnEG1uJq6MUJWMF4gqpId9d7yRnI+rQCG3zwBAp?=
+ =?us-ascii?Q?DuxWjwdW6s7CE7/40/TxPeJxLEmBW+udaXXRlty44B0CsUMDse/qLEBxdu42?=
+ =?us-ascii?Q?igv+bin3QSkqRawCVgV3cNCOkUaGVUKz5PacfXKsut2wSi7EZ+Sggo9T4ai4?=
+ =?us-ascii?Q?+jeUGUjyTm4GqjjeTIL1Z73PmY+KP9mXZNgmb2rAzesfIk8zt4mf8XyafYxk?=
+ =?us-ascii?Q?znyVd57f1MpzVjFqAsrwKMxfZgkRlc1QwB9hlCgVTNQcROe2Fxy9mVDjptt8?=
+ =?us-ascii?Q?1qb8veWkENVvrU+MMgojwrzB22Em0ehPz9e5gIEX+Et+BBgiHZGTQRvEABQI?=
+ =?us-ascii?Q?+8DfrzbQMocnXWK9M60U//GBz9O4EQajMD8yo8YLcJ8OTYA12bblz/5NeEW/?=
+ =?us-ascii?Q?Vs/n/liQ+ghLtbbscH3aqOZK6D1gZNiEZvmGUy/5a1OgqWt4zW3MQqYnF2Uu?=
+ =?us-ascii?Q?LVHsBds8oPnq7oJxOlnrOtc7cL3zsdtIW52d7CPHhNTAjSkIhh0tG9IkqMrC?=
+ =?us-ascii?Q?0pDVpr796Kp4QFDJk29+uUjEYIZFBZs/8y/qNaqNmrY1HXk+oLWEds+HoHTl?=
+ =?us-ascii?Q?iOyEo0NGnbNJxdoYgnB4yY9NY0kU32x3LlTbssTpYR6U+KhJYrbladdetMep?=
+ =?us-ascii?Q?Zvq8v1bDvYMPTZlEn8LOXci7Wv4dDUi0T9H7Si0KHzS7T3AkNQ8dXNrxzl2z?=
+ =?us-ascii?Q?tBpuLkccZEUv4dWY/fKeGt9lSAFqSItG3x+UJuN6CrahBtsdFrBak5N7h02e?=
+ =?us-ascii?Q?lh86wYASx2+zIYS5JrkdsB27DgNTnJzvlbdcaUKhQbw88ztReTK2upIUJJDV?=
+ =?us-ascii?Q?Fqe1DglKB28vlBsvYViim3wyTRwgN5xTYUx2K8W/YyUyCHv92H8mzRr380GI?=
+ =?us-ascii?Q?oux27J8MysusI8ySlJNxMq2PQUQ5ojQfwGcudYeTCYKqVEwmLp7WzG6qQlYP?=
+ =?us-ascii?Q?asmM6KJl8Xu4vrVytslGjjKvuZNnUbRnhz+vCDLugErbKpVmHmBm8Tyr5WLN?=
+ =?us-ascii?Q?9q/j6R1gBWYG5jSQRlKPdwqgx8sZwSIiwwXc5Q4QL/J+4f38UvUmVh2cQ5vA?=
+ =?us-ascii?Q?O/gAetG/PgVDy9wEOl0IMwMFHXSa1M+eJ0gib4Nk9ERgcCIXaNgxuUUZorqc?=
+ =?us-ascii?Q?yvNaycWm+4RjdjOM/6q8mBDMDwLBYjHre//kYBQ/KzmKhBh2jeTB/JJgmq4J?=
+ =?us-ascii?Q?/mNtFBgY2l0NuhNIEVYXmvQOo2Q2mCxbH3bz4uxa7efI0Q+CiB+Dhj6y+hM/?=
+ =?us-ascii?Q?r61c1YRvA5eG5A5ZsvvY2PhGpz9B/1tTqetqd7uRZBSHPBqte7m0ejIYa7Ho?=
+ =?us-ascii?Q?cRPuzvuhtDhQUDzCSfe0EMll?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CY8PR11MB7828.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230037)(1800799021)(366013)(376011); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6522.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230037)(366013)(376011)(1800799021); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lJjy5CcnQLiFQ4mxQ03QMGfUEsJXB+JpiBNsF6qivi5WrHMtjKXCr7P/dGos?=
- =?us-ascii?Q?MUcFyurYo+DLLCb0K7E03MWwDJgcVRUD8PiuEuH+UUduuWzc0IJoFUXtsnxF?=
- =?us-ascii?Q?qmTpVbjsNp6pA8+DhEo5CA7nm3VN8774GNqaGjHa+3gv/Kg/s5TujPI6LnnB?=
- =?us-ascii?Q?UBvEtkUE0dyeqyxHCHaMx9C1/I0NVEjTB/MK3p81AXh2GDBSTcM0GCueY8bb?=
- =?us-ascii?Q?Qv+bNdoLq7tMvM6erjb39yEDuS7BUrDiYvEDECbF+r0Nmm3EgUrjx5+MOR4z?=
- =?us-ascii?Q?eJGfe1ayzgaCof2Tv0czuX8FMkgmO9G2uFCXAvYEFqafBF8QiDq5/oAFiL8G?=
- =?us-ascii?Q?6bb7nkfOesmMAq5+qjde6vNju60Nig6wDtgtKk0C2ud9TWm3TSfWbbv5D0zf?=
- =?us-ascii?Q?rw2OxkRZhlV9CdrUfYJW9IrF3R202WJaeRP9jeiI+joqu/72LdL5oiIiqL2R?=
- =?us-ascii?Q?91XvWHlIVRNWX5HoWFYf1j/G0KcuVNeDxj4EynNz2OKFMkGqlgkVkzs76ZPC?=
- =?us-ascii?Q?5+9NYnUuv63m4PZQl3E0e2yykBB6BPedR7Q7W3YbTne/6L7OcOKhtKG8OWIt?=
- =?us-ascii?Q?z/yvPfnctKDIvwtndjedI03WHICW3dEs6zsLyeUSbTnC4v8WVkGfsEe87qIS?=
- =?us-ascii?Q?N69MIwlhw7gbK+SYxYBwmNZcf7ITkcrHE3akiVVA2tBn5IhhPn072JJ1ZQEC?=
- =?us-ascii?Q?mdkTRQyyU/+FDrDIO3/tITQzvciMTboCkhQ26viDOTGxb3gNqkx9Oj01vBfg?=
- =?us-ascii?Q?lYVsxp2Ha1LLm1wSnAI609U3NxQunZfj1U/1Xa1XN9rxD9Gy4lgqmzFDxGgY?=
- =?us-ascii?Q?rLKiCADESWvG2iGMys4ucwAyxck1jbZVvpb9L/QvOXh04mHnIWLHSV6jtISw?=
- =?us-ascii?Q?+7x+mPaAYoZ1el7ej+bUeWRWSiG1LkfKVGvAYiL+cOWhvTcJHVxTSt6u0B63?=
- =?us-ascii?Q?f6AvkQn316gGqjuDsEeVMKNsCOE/Qt/d7FoaG0DidIsvJFjnmBSqoCV25v9d?=
- =?us-ascii?Q?WK3Bbfd1MS+kqXEd/CcjHBP/NX0oLVL0Hp26WLOnfnQMvxP1nf3VoeoVlcx/?=
- =?us-ascii?Q?ZHqZng3jjvhxvElofqwpWcw/JnqOkRiUSbQhcFurx3mluU33PnGatuP0Zbsw?=
- =?us-ascii?Q?S7b/oQ/dM6PqSzG9HcX7SCs/OC9wGdhhudl9b9T8eT7wv8Zev8TeqQAoizUR?=
- =?us-ascii?Q?PkPTthJrAKjP1rYGfRjo06JO0KXrggFw4iFH4rhtugYgOj+UioHz7zd1Y8+Y?=
- =?us-ascii?Q?9QDnnBmqIJEeiqPqQ2WIpwzO1knHqWnAozSGejRqDGv1L4FsTiRkTTjZdCdD?=
- =?us-ascii?Q?O7jDu6Z6bQgUxcheMce0PYfjfoi92aDQlghvYXeC9bUpjNLdxXh6io3YCLsC?=
- =?us-ascii?Q?tyAb9TnB4aNoxNqfkaLnysDoOSfeFU/u576IqrvF1Wf7Yev2ns1nb7uijsd6?=
- =?us-ascii?Q?YLC+kFZx7ljmN/sEhYogXjmDWO85aoJzOb/n+UY0sAmA2jD/c0Sns+dGCgVB?=
- =?us-ascii?Q?m157yKOzMRwu91iHDnLypnTTaGUmWpfDosKMbxZlJIhdPXZ1EjmzJ9i1ekv0?=
- =?us-ascii?Q?+Pr/YHam/0rDXL0yzFDCLJVYMKqp5XesEfs0llZREnSN6N+Tt/Da/y+X+SPo?=
- =?us-ascii?Q?3g=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: a6c4add3-de4e-4399-b260-08dc9202f258
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7828.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8IpNx16Ei9c73Ac1pPwDnSuFd2zz9nG2L7KB8jCsKN+udaDhlXL3jBq3paFb?=
+ =?us-ascii?Q?FF9/277IVkdGyzVDHTYRbWpZTh0N+iT9EEOV9bZOu+7iuy8bM+LppyF2PziE?=
+ =?us-ascii?Q?EqozY4NepvjYcOrBSRIppELKwA+ITIGLr3Mv2ZVGqU2+QyOTVqm8tbMXAhnO?=
+ =?us-ascii?Q?typhmhYq1inxiskWMDVa36HeVZ8J+f/OqRyXYMj+BufYXf2Mh23dMOjAgrt3?=
+ =?us-ascii?Q?jlkhEjvblQRrbgpFcTBUCi7w/bgK1Pt22Zhl3a7zzY5eTLxm1vp/PsZVQqqi?=
+ =?us-ascii?Q?0NoGdiVTxRgzgC1awEGw4ONrAEU92O/luhw1fY+bxjhmD7PRlRg0HwVK6nfL?=
+ =?us-ascii?Q?ZP0f1Nxq6tWzvHkuQ7Qlbf2EtHGvjFkn91RApkxl2TJrYlemLIEy0RX9YJbo?=
+ =?us-ascii?Q?MYtVFA2zcBGQdYZLhGgNceuWXvUpmX3/CILNbZ8lMxFZtLEPd8BuD5dF8Q3K?=
+ =?us-ascii?Q?pw1fKPSy3CoSdfN1BpHcTitgPAn9A5r2IwtSLK+lOKYI69xLLdbT50KTrxKK?=
+ =?us-ascii?Q?a3tbzQXoxVDtFsSg9fJblE3gh1moplESUTZRHumr9Da0wkn7G7upG/hTBtQ6?=
+ =?us-ascii?Q?gOZqprtUJA02dgz7pid7jEMM4jFqvna67LnJpgNRcP6ZH1a55SrQeIf6hgQk?=
+ =?us-ascii?Q?2hUOIDTJUt/gnGTj2YceTuU+7wpXYrJj55uZA5jHLqBSm2/Ps3JFcPmvXa1m?=
+ =?us-ascii?Q?/vp7kCk19sBhtCKdwagioXzvWLoQmm87/9z2bB2TbWcL7NniPcNRy9h0eL4x?=
+ =?us-ascii?Q?uxzqeOYsGQkGmkg1qX/iZtdzDAx62ZHRpI7p89d1IUYJAewssU16kJkbD6Y7?=
+ =?us-ascii?Q?3IpHDUHcjxlqMCLogQoGRssUdrmY9Zncaev+01Q6/6dxTuyupv3kiTJfmqe/?=
+ =?us-ascii?Q?vY8zF03r5wBOoNP7RKLS9eCDkoYxzRi/HLEgRl+o4Om1JUWsq4lBrCwHgsXg?=
+ =?us-ascii?Q?IbqTVbxSdYDWbOZJU1tvf2MTz19apN0ThqN2hFcxvW523YpPJh8FkTnubPng?=
+ =?us-ascii?Q?9pSa76X1bInZI8Mzw3LV/lSP4Mj+SnnQQbIZ83yWKtM+kQKZ53c/fe6L2pec?=
+ =?us-ascii?Q?Ulyt56SO+B9cFQE1UEWN1HVnLAAzabLhHwTOBmUsRxByW+B4Vu8s1CNXnLH7?=
+ =?us-ascii?Q?l9z/1ZgDjouem4m8fwaaNc0p1OWKEKaFguTT8DlALbODDlELkTMd6w/dY0W5?=
+ =?us-ascii?Q?yL7uHuhZPHN4IANBtX0tD7pWXtxbZqbh4aBumyahdP7NSStVh0IrqTuj4zcA?=
+ =?us-ascii?Q?IGxtrwSag69kCrCqzI2gycYS8oN5HwXj2JeLuSgfJc+VyEEK0VMuF3ZD5i83?=
+ =?us-ascii?Q?IE/wTnmdktAF5vrCKEUlAwkyZdIeu/c6vSQQ0X799l6OkXWeXrbZlAoPmV2k?=
+ =?us-ascii?Q?CYvxH//yOZplfXEEHjmzNMek/6FuchQ16LJOL6sGt+9nnaYMnuUZhh9F1Cef?=
+ =?us-ascii?Q?L9BbW52rBZd0TAuoRRWOM2hOd5mVfFaODUed/Zy+PaGRNCBp70rgbybY5Y5Z?=
+ =?us-ascii?Q?MlmMDSNwHjYKPQzcv3EmOHxYmg9B2LP74pidVAlbT7bnMhylAIlxI3kM7Y85?=
+ =?us-ascii?Q?IsE+HohyuW9zk8wjbFnqN64gkv6fQpkMWuYT0WyTQg+DgWrlXWACZTWv9Ll7?=
+ =?us-ascii?Q?2w=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: d3571317-2e8a-4e96-143a-08dc9214d3fb
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 15:00:53.4775 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Jun 2024 17:08:53.4791 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HSp5KffgJBdesZAHk1Ci9spe9Tff/8JZ0fgfWCk1IBjkEsleXodmjJgKg7EDpkMRegBgw3ibGunq/7urm5DlnV8E7toxarvtrMBfCvv68uE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4895
+X-MS-Exchange-CrossTenant-UserPrincipalName: OMl6p0bojr7ffoNIS4jUrUmmKQZPVwk2OGSrCUV3hkODkxbu26ojHVrSPVGzxKNjG0yasNQWWL4OJDrHaPl+aQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5824
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -177,72 +175,198 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jun 21, 2024 at 10:28:29AM -0400, Rodrigo Vivi wrote:
-> On Fri, Jun 21, 2024 at 01:53:03PM +0200, Francois Dugast wrote:
-> > The preempter is expected to execute without waiting, in a short
-> > time. The synchronous call takes roughly 1 ms under normal
-> > conditions.
-> 
-> is this true for any platform?
-> 
-> I'm asking this because sometimes we add things like this and this
-> becomes a 'committed KPI' and later when things start failing on
-> a platform we have regressions and escalations on a thing that
-> may be normal on that platform.
-
-The batch is minimalistic but I agree with your objection, magic
-values for duration and synchronization are not a good idea. Let
-us drop this patch.
-
-> 
->  This duration will be higher if the preempter is
-> > waiting. For example if the priorities are reversed in this test
-> > then this duration will be close to duration_ns (currently set
-> > to 100 ms) which was undetected by the test without this change.
-> 
-> Okay, so the goal of this change is to actually ensure that we
-> do not mess up with the test order itself? Any link reference
-> to this undetected case mentioned?
-
-The goal of this check was an extra verification of the order of
-completion of the 2 tasks. This would have been preparation work
-to extend this test later but it makes more sense to create a
-separate test, which I do now.
-
-> 
+On Fri, Jun 21, 2024 at 12:09:39PM +0100, Matthew Auld wrote:
+> On 21/06/2024 00:54, Matthew Brost wrote:
+> > Add section which has a large enough array of binds which triggers BB
+> > suballocation failure. Verify -ENOBUFS is returned in this case.
 > > 
-> > Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> > Cc: Matthew Auld <matthew.auld@intel.com>
+> > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> 
+> tests/intel/xe_vm: or similar for the commit title prefix.
+> 
+
+Wil adjust.
+
 > > ---
-> >  tests/intel/xe_spin_batch.c | 8 +++++---
-> >  1 file changed, 5 insertions(+), 3 deletions(-)
+> >   lib/xe/xe_ioctl.c   | 19 +++++++++++++++++
+> >   lib/xe/xe_ioctl.h   |  4 ++++
+> >   tests/intel/xe_vm.c | 50 ++++++++++++++++++++++++++++++++++-----------
+> >   3 files changed, 61 insertions(+), 12 deletions(-)
 > > 
-> > diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-> > index 4e95060d3..e57318801 100644
-> > --- a/tests/intel/xe_spin_batch.c
-> > +++ b/tests/intel/xe_spin_batch.c
-> > @@ -253,7 +253,7 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
-> >  	uint64_t ext = 0;
-> >  	size_t bo_size;
-> >  	struct xe_spin *spin;
-> > -	struct timespec tv;
-> > +	struct timespec tv, tv_preempter;
-> >  	double elapsed_ms;
-> >  	igt_stats_t stats;
-> >  	int i;
-> > @@ -289,9 +289,11 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
-> >  		igt_gettime(&tv);
-> >  		xe_exec(fd, &exec);
-> >  		xe_spin_wait_started(spin);
-> > -		if (flags & SPIN_FIX_DURATION_PREEMPT)
-> > +		if (flags & SPIN_FIX_DURATION_PREEMPT) {
-> > +			igt_gettime(&tv_preempter);
-> >  			preempter(fd, hwe);
+> > diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+> > index a437fd828a..9072801ce1 100644
+> > --- a/lib/xe/xe_ioctl.c
+> > +++ b/lib/xe/xe_ioctl.c
+> > @@ -115,6 +115,25 @@ void xe_vm_bind_array_enospc(int fd, uint32_t vm, uint32_t exec_queue,
+> >   	igt_assert_eq(-errno, -ENOSPC);
+> >   }
+> > +void xe_vm_bind_array_enobufs(int fd, uint32_t vm, uint32_t exec_queue,
+> > +			      struct drm_xe_vm_bind_op *bind_ops,
+> > +			      uint32_t num_bind, struct drm_xe_sync *sync,
+> > +			      uint32_t num_syncs)
+> > +{
+> > +	struct drm_xe_vm_bind bind = {
+> > +		.vm_id = vm,
+> > +		.num_binds = num_bind,
+> > +		.vector_of_binds = (uintptr_t)bind_ops,
+> > +		.num_syncs = num_syncs,
+> > +		.syncs = (uintptr_t)sync,
+> > +		.exec_queue_id = exec_queue,
+> > +	};
+> > +
+> > +	igt_assert(num_bind > 1);
+> > +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind), -1);
+> > +	igt_assert_eq(-errno, -ENOBUFS);
+> 
+> I think we can replace with:
+> 
+> do_ioctl_err(fd, DRM_IOCTL_XE_VM_BIND, &bind, ENOBUFS);
+> 
+
+I figured we had something like this. Let me use this.
+
+> Do we really need this in lib/ ? Are we expecting other users?
+> 
+> Anyway, having a test like this to ensure we don't trigger any kernel
+> warnings or similar makes sense to me,
+>
+
+I have similar function for ENOSPC on an array will move both locally in
+xe_vm.c and share code.
+
+Matt
+ 
+> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+> 
+> > +}
+> > +
+> >   int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+> >   		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
+> >   		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
+> > diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+> > index 2c7506caaf..a9954d0d41 100644
+> > --- a/lib/xe/xe_ioctl.h
+> > +++ b/lib/xe/xe_ioctl.h
+> > @@ -61,6 +61,10 @@ void xe_vm_bind_array_enospc(int fd, uint32_t vm, uint32_t exec_queue,
+> >   			     struct drm_xe_vm_bind_op *bind_ops,
+> >   			     uint32_t num_bind, struct drm_xe_sync *sync,
+> >   			     uint32_t num_syncs);
+> > +void xe_vm_bind_array_enobufs(int fd, uint32_t vm, uint32_t exec_queue,
+> > +			      struct drm_xe_vm_bind_op *bind_ops,
+> > +			      uint32_t num_bind, struct drm_xe_sync *sync,
+> > +			      uint32_t num_syncs);
+> >   void xe_vm_unbind_all_async(int fd, uint32_t vm, uint32_t exec_queue,
+> >   			    uint32_t bo, struct drm_xe_sync *sync,
+> >   			    uint32_t num_syncs);
+> > diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> > index 7be85da62f..b116d7da1b 100644
+> > --- a/tests/intel/xe_vm.c
+> > +++ b/tests/intel/xe_vm.c
+> > @@ -728,7 +728,7 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+> >   }
+> >   #define BIND_ARRAY_BIND_EXEC_QUEUE_FLAG	(0x1 << 0)
 > > -
-> > +			igt_assert(igt_nsec_elapsed(&tv_preempter) * 1e-6 < 10);
-> > +		}
-> >  		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-> >  		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
-> >  		syncobj_reset(fd, &sync.handle, 1);
-> > -- 
-> > 2.43.0
-> > 
+> > +#define BIND_ARRAY_ENOBUFS_FLAG		(0x1 << 1)
+> >   /**
+> >    * SUBTEST: bind-array-twice
+> > @@ -741,6 +741,11 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+> >    * Functionality: bind exec_queues
+> >    * Test category: functionality test
+> >    *
+> > + * SUBTEST: bind-array-enobufs
+> > + * Description: Test bind array which too large are trigger -ENOBUFs error
+> > + * Functionality: bind exec_queues
+> > + * Test category: functionality test
+> > + *
+> >    * SUBTEST: bind-array-exec_queue-twice
+> >    * Description: Test bind array exec_queue twice
+> >    * Functionality: bind exec_queues
+> > @@ -753,10 +758,10 @@ test_bind_execqueues_independent(int fd, struct drm_xe_engine_class_instance *ec
+> >    */
+> >   static void
+> >   test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+> > -		unsigned int flags)
+> > +		uint64_t addr, size_t bo_size, unsigned int flags)
+> >   {
+> >   	uint32_t vm;
+> > -	uint64_t addr = 0x1a0000, base_addr = 0x1a0000;
+> > +	uint64_t base_addr = addr;
+> >   	struct drm_xe_sync sync[2] = {
+> >   		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+> >   		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+> > @@ -766,9 +771,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+> >   		.syncs = to_user_pointer(sync),
+> >   	};
+> >   	uint32_t exec_queue, bind_exec_queue = 0;
+> > -#define BIND_ARRAY_MAX_N_EXEC	16
+> > -	struct drm_xe_vm_bind_op bind_ops[BIND_ARRAY_MAX_N_EXEC] = { };
+> > -	size_t bo_size;
+> > +	struct drm_xe_vm_bind_op *bind_ops;
+> >   	uint32_t bo = 0;
+> >   	struct {
+> >   		uint32_t batch[16];
+> > @@ -777,10 +780,11 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+> >   	} *data;
+> >   	int i, b;
+> > -	igt_assert(n_execs <= BIND_ARRAY_MAX_N_EXEC);
+> > +	bind_ops = malloc(sizeof(*bind_ops) * n_execs);
+> > +	igt_assert(bind_ops);
+> >   	vm = xe_vm_create(fd, 0, 0);
+> > -	bo_size = sizeof(*data) * n_execs;
+> > +	bo_size = bo_size ?: sizeof(*data) * n_execs;
+> >   	bo_size = xe_bb_size(fd, bo_size);
+> >   	bo = xe_bo_create(fd, vm, bo_size,
+> > @@ -808,6 +812,22 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+> >   	}
+> >   	sync[0].handle = syncobj_create(fd, 0);
+> > +	if (flags & BIND_ARRAY_ENOBUFS_FLAG) {
+> > +		struct xe_cork cork;
+> > +
+> > +		xe_cork_init(fd, eci, &cork);
+> > +
+> > +		sync[1].handle = xe_cork_sync_handle(&cork);
+> > +		sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> > +
+> > +		xe_vm_bind_array_enobufs(fd, vm, bind_exec_queue, bind_ops,
+> > +					 n_execs, sync, 2);
+> > +		xe_cork_end(&cork);
+> > +		xe_cork_wait_done(&cork);
+> > +		xe_cork_fini(&cork);
+> > +		n_execs = n_execs / 2;
+> > +	}
+> > +
+> >   	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync, 1);
+> >   	addr = base_addr;
+> > @@ -867,6 +887,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+> >   	munmap(data, bo_size);
+> >   	gem_close(fd, bo);
+> >   	xe_vm_destroy(fd, vm);
+> > +	free(bind_ops);
+> >   }
+> >   /**
+> > @@ -2251,20 +2272,25 @@ igt_main
+> >   	igt_subtest("bind-array-twice")
+> >   		xe_for_each_engine(fd, hwe)
+> > -			test_bind_array(fd, hwe, 2, 0);
+> > +			test_bind_array(fd, hwe, 2, 0x1a0000, 0, 0);
+> >   	igt_subtest("bind-array-many")
+> >   		xe_for_each_engine(fd, hwe)
+> > -			test_bind_array(fd, hwe, 16, 0);
+> > +			test_bind_array(fd, hwe, 16, 0x1a0000, 0, 0);
+> > +
+> > +	igt_subtest("bind-array-enobufs")
+> > +		xe_for_each_engine(fd, hwe)
+> > +			test_bind_array(fd, hwe, 512, 0x1a0000, SZ_2M,
+> > +					BIND_ARRAY_ENOBUFS_FLAG);
+> >   	igt_subtest("bind-array-exec_queue-twice")
+> >   		xe_for_each_engine(fd, hwe)
+> > -			test_bind_array(fd, hwe, 2,
+> > +			test_bind_array(fd, hwe, 2, 0x1a0000, 0,
+> >   					BIND_ARRAY_BIND_EXEC_QUEUE_FLAG);
+> >   	igt_subtest("bind-array-exec_queue-many")
+> >   		xe_for_each_engine(fd, hwe)
+> > -			test_bind_array(fd, hwe, 16,
+> > +			test_bind_array(fd, hwe, 16, 0x1a0000, 0,
+> >   					BIND_ARRAY_BIND_EXEC_QUEUE_FLAG);
+> >   	igt_subtest("bind-array-conflict")
