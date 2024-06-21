@@ -4,53 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 829A1C27C4F
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 19:52:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A488C27C4F
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 19:53:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 080C510E07E;
-	Fri, 21 Jun 2024 19:52:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1755310E07E;
+	Fri, 21 Jun 2024 19:53:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ymd7v8me";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GO6ih4p7";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C69210E07E
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 19:52:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5554010E07E
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 19:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718999550; x=1750535550;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+1AyPa0u/sBpbt16JRsV6tO5ZYxHAF2ABhAAS55l62U=;
- b=Ymd7v8meFUVFq2+XcMjRhcatNmQJZGDi3ZCLt8KEOh65ArjMqqScxxpp
- 2BB9SaV4TLKYksPgcmLtqAW+dAnSJzQLuNC1JYK39K4WL+D35TH8becDs
- o/as4EaHDXz3vchtSZQF8KrpHWssu6I5XxtfNV89ThCyVCH6+mBkbCgO8
- j/7JGW46E5W1STHGWYxoidZ+mA9Ht80NgB+wYBYGaPB6sBpdU+c7TBnXF
- 55B/eHK5+tv+3Il+RUFTcVvG29SrfxJEwDrLtrnsBSkf4OP6ddBiJbguG
- 0d6HLMnh5rm1qwHSeE/LR9Ubm5YuTEGBYpD7TKoDtJFk+sS9wcLinmbvg Q==;
-X-CSE-ConnectionGUID: la6z/tvOTHSArtPiRvAMaw==
-X-CSE-MsgGUID: qR4T/lJ9QgqWPBnhE9SuxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15925513"
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15925513"
+ t=1718999579; x=1750535579;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=VvhFKzdvTZjnS5M69iGdijqXncvc6N+5Lr3xSQfgfHg=;
+ b=GO6ih4p75xhvZ8HzZfQf+5Z6FCpLgfkOGU7ItNS4bLo1awZmIC9d9Fxp
+ 4tcPw9eVid83aikEVPMdjg6ySXEGLTyxmNkRaFvanedH08Vl94DQf/spD
+ zse+DzP7uT6hBzIc/CgJNbV5X1E4xS2QG8WPQpf0fjkoolCJLnWAW7AXN
+ MhfFiVaZoqUeW6mX2PeL2JOZ3ObmcQ0IMxolATmpJG06s5E+vldJT2LBX
+ 2NV5m20nZJOSDfDKPjoUVquRc09Cng3+ezJu2iLBJGBeAu8t31b6suDba
+ I6ISkGoOrly/PU7JlIJeS5qVFXZviAf2mkrMH/maZFr7PNb42y1e0aUGP g==;
+X-CSE-ConnectionGUID: 0kP//aZKQzeEQmxguH2DTA==
+X-CSE-MsgGUID: e4nc8pXDQcWjeeaUk/JsrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15925547"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15925547"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 12:52:30 -0700
-X-CSE-ConnectionGUID: Y660rIGPRQWpyQota2rDhA==
-X-CSE-MsgGUID: +Uodymm0RpO/GNHOZX1ZHA==
+ 21 Jun 2024 12:52:59 -0700
+X-CSE-ConnectionGUID: 3nj/8ZDaRouWF0HDevd3xA==
+X-CSE-MsgGUID: KsDhXlIeQ/ubAQXv2juAjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="73432086"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="73432149"
 Received: from dgramcko-desk.amr.corp.intel.com (HELO gjsousa-mobl2.intel.com)
  ([10.124.221.63])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 12:52:28 -0700
+ 21 Jun 2024 12:52:57 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>
-Subject: [PATCH i-g-t v2 0/7] Add support for hook script
-Date: Fri, 21 Jun 2024 16:51:43 -0300
-Message-ID: <20240621195150.390462-1-gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t v2 1/7] igt_hook: Add feature
+Date: Fri, 21 Jun 2024 16:51:46 -0300
+Message-ID: <20240621195150.390462-4-gustavo.sousa@intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240621195150.390462-1-gustavo.sousa@intel.com>
+References: <20240621195150.390462-1-gustavo.sousa@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -78,45 +80,1351 @@ test with the correct actions before and after execution, we can provide
 a better experience by adding built-in support for running hooks during
 test execution.
 
-This series adds support for running a hook script during test
-execution. The feature is exposed to users via option --hook, which is
-made available for regular test binaries as well as for igt_runner.
+That would be even better when adding the same kind of support for
+igt_runner (which is done in an upcoming change), since the user can
+also nicely resume with igt_resume with the hook already setup in case a
+crash happens during execution of the test list.
+
+As such provide implement support for hooks, integrate it into
+igt_core and expose the functionality via --hook CLI option on test
+executables.
 
 v2:
-  - Updated first patch to address review commands.
-  - Added support for multiple instances of --hook options with 4 extra
-    patches appended to the series. I thought about squashing them to
-    the original patches, but I preferred to keep them separated, since
-    supporting multiple --hook options can be seen as an extension and
-    should make the series easier to follow.
+  - s/igt_hook_init/igt_hook_create/ (Lucas)
+  - Use SPDX License Identifier instead of license text. (Lucas)
+  - Do not rely on hard-coded length 3 when generating full test name.
+    (Lucas)
+  - Do not pollute current environment variables when running hooks.
+    (Lucas)
+  - Change hook string in run_tests_and_match_env() to use "printf"
+    instead of "echo" to be compatible with CI environment.
 
-Gustavo Sousa (7):
-  igt_hook: Add feature
-  runner: Make it easier to extend argv
-  runner: Add option --hook
-  igt_hook: Implement and use set_fake_argv() in test
-  igt_hook: Allow multiple hook descriptors
-  runner: Use dynamic vector for test argv
-  runner: Allow multiple --hook options
-
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
  .../igt-gpu-tools/igt-gpu-tools-docs.xml      |   1 +
- lib/igt_core.c                                | 121 +++-
- lib/igt_hook.c                                | 524 ++++++++++++++++++
- lib/igt_hook.h                                |  70 +++
+ lib/igt_core.c                                | 116 ++++-
+ lib/igt_hook.c                                | 489 ++++++++++++++++++
+ lib/igt_hook.h                                |  69 +++
  lib/meson.build                               |   1 +
- lib/tests/igt_hook.c                          | 180 ++++++
- lib/tests/igt_hook_integration.c              | 374 +++++++++++++
+ lib/tests/igt_hook.c                          | 170 ++++++
+ lib/tests/igt_hook_integration.c              | 281 ++++++++++
  lib/tests/meson.build                         |   2 +
- runner/executor.c                             |  61 +-
- runner/runner_tests.c                         |  18 +
- runner/settings.c                             | 168 +++++-
- runner/settings.h                             |   2 +
- 12 files changed, 1492 insertions(+), 30 deletions(-)
+ 8 files changed, 1120 insertions(+), 9 deletions(-)
  create mode 100644 lib/igt_hook.c
  create mode 100644 lib/igt_hook.h
  create mode 100644 lib/tests/igt_hook.c
  create mode 100644 lib/tests/igt_hook_integration.c
 
+diff --git a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+index 9085eb924e85..11458c68124b 100644
+--- a/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
++++ b/docs/reference/igt-gpu-tools/igt-gpu-tools-docs.xml
+@@ -32,6 +32,7 @@
+     <xi:include href="xml/igt_fb.xml"/>
+     <xi:include href="xml/igt_frame.xml"/>
+     <xi:include href="xml/igt_gt.xml"/>
++    <xi:include href="xml/igt_hook.xml"/>
+     <xi:include href="xml/igt_io.xml"/>
+     <xi:include href="xml/igt_kmod.xml"/>
+     <xi:include href="xml/igt_kms.xml"/>
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 3ff3e0392316..6463a5bdcae5 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -70,6 +70,7 @@
+ 
+ #include "igt_core.h"
+ #include "igt_aux.h"
++#include "igt_hook.h"
+ #include "igt_sysfs.h"
+ #include "igt_sysrq.h"
+ #include "igt_rc.h"
+@@ -241,6 +242,9 @@
+  * - '*,!basic*' match any subtest not starting basic
+  * - 'basic*,!basic-render*' match any subtest starting basic but not starting basic-render
+  *
++ * It is possible to run a shell script at certain points of test execution with
++ * "--hook". See the usage description with "--help-hook" for details.
++ *
+  * # Configuration
+  *
+  * Some of IGT's behavior can be configured through a configuration file.
+@@ -273,6 +277,8 @@ static unsigned int exit_handler_count;
+ const char *igt_interactive_debug;
+ bool igt_skip_crc_compare;
+ 
++static struct igt_hook *igt_hook = NULL;
++
+ /* subtests helpers */
+ static bool show_testlist = false;
+ static bool list_subtests = false;
+@@ -338,6 +344,8 @@ enum {
+ 	OPT_INTERACTIVE_DEBUG,
+ 	OPT_SKIP_CRC,
+ 	OPT_TRACE_OOPS,
++	OPT_HOOK,
++	OPT_HELP_HOOK,
+ 	OPT_DEVICE,
+ 	OPT_VERSION,
+ 	OPT_HELP = 'h'
+@@ -810,6 +818,8 @@ static void common_exit_handler(int sig)
+ 		bind_fbcon(true);
+ 	}
+ 
++	igt_hook_free(igt_hook);
++
+ 	/* When not killed by a signal check that igt_exit() has been properly
+ 	 * called. */
+ 	assert(sig != 0 || igt_exit_called || igt_is_aborting);
+@@ -907,6 +917,8 @@ static void print_usage(const char *help_str, bool output_on_stderr)
+ 		   "  --interactive-debug[=domain]\n"
+ 		   "  --skip-crc-compare\n"
+ 		   "  --trace-on-oops\n"
++		   "  --hook [<events>:]<cmd>\n"
++		   "  --help-hook\n"
+ 		   "  --help-description\n"
+ 		   "  --describe\n"
+ 		   "  --device filters\n"
+@@ -1090,6 +1102,8 @@ static int common_init(int *argc, char **argv,
+ 		{"interactive-debug", optional_argument, NULL, OPT_INTERACTIVE_DEBUG},
+ 		{"skip-crc-compare",  no_argument,       NULL, OPT_SKIP_CRC},
+ 		{"trace-on-oops",     no_argument,       NULL, OPT_TRACE_OOPS},
++		{"hook",              required_argument, NULL, OPT_HOOK},
++		{"help-hook",         no_argument,       NULL, OPT_HELP_HOOK},
+ 		{"device",            required_argument, NULL, OPT_DEVICE},
+ 		{"version",           no_argument,       NULL, OPT_VERSION},
+ 		{"help",              no_argument,       NULL, OPT_HELP},
+@@ -1225,6 +1239,24 @@ static int common_init(int *argc, char **argv,
+ 		case OPT_TRACE_OOPS:
+ 			show_ftrace = true;
+ 			break;
++		case OPT_HOOK:
++			assert(optarg);
++			if (igt_hook) {
++				igt_warn("Overriding previous hook descriptor\n");
++				igt_hook_free(igt_hook);
++			}
++			igt_hook = igt_hook_create(optarg, &ret);
++			if (!igt_hook) {
++				igt_critical("Failed to initialize hook data: %s\n",
++					     igt_hook_error_str(ret));
++				ret = ret > 0 ? -2 : -3;
++				goto out;
++			}
++			break;
++		case OPT_HELP_HOOK:
++			igt_hook_print_help(stdout, "--hook");
++			ret = -1;
++			goto out;
+ 		case OPT_DEVICE:
+ 			assert(optarg);
+ 			/* if set by env IGT_DEVICE we need to free it */
+@@ -1274,9 +1306,24 @@ out:
+ 			exit(IGT_EXIT_INVALID);
+ 	}
+ 
+-	if (ret < 0)
+-		/* exit with no error for -h/--help */
+-		exit(ret == -1 ? 0 : IGT_EXIT_INVALID);
++	if (ret < 0) {
++		free(igt_hook);
++		igt_hook = NULL;
++
++		switch (ret) {
++		case -1: /* exit with no error for -h/--help */
++			exit(0);
++			break;
++		case -2:
++			exit(IGT_EXIT_INVALID);
++			break;
++		case -3:
++			exit(IGT_EXIT_ABORT);
++			break;
++		default:
++			assert(0);
++		}
++	}
+ 
+ 	if (!igt_only_list_subtests()) {
+ 		bind_fbcon(false);
+@@ -1284,6 +1331,15 @@ out:
+ 		print_version();
+ 		igt_srandom();
+ 
++		if (igt_hook) {
++			struct igt_hook_evt hook_evt = {
++				.evt_type = IGT_HOOK_PRE_TEST,
++				.target_name = command_str,
++			};
++
++			igt_hook_push_evt(igt_hook, &hook_evt);
++		}
++
+ 		sync();
+ 		oom_adjust_for_doom();
+ 		ftrace_dump_on_oops(show_ftrace);
+@@ -1487,6 +1543,16 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
+ 	igt_thread_clear_fail_state();
+ 
+ 	igt_gettime(&subtest_time);
++
++	if (igt_hook) {
++		struct igt_hook_evt hook_evt = {
++			.evt_type = IGT_HOOK_PRE_SUBTEST,
++			.target_name = subtest_name,
++		};
++
++		igt_hook_push_evt(igt_hook, &hook_evt);
++	}
++
+ 	return (in_subtest = subtest_name);
+ }
+ 
+@@ -1517,6 +1583,16 @@ bool __igt_run_dynamic_subtest(const char *dynamic_subtest_name)
+ 	_igt_dynamic_tests_executed++;
+ 
+ 	igt_gettime(&dynamic_subtest_time);
++
++	if (igt_hook) {
++		struct igt_hook_evt hook_evt = {
++			.evt_type = IGT_HOOK_PRE_DYN_SUBTEST,
++			.target_name = dynamic_subtest_name,
++		};
++
++		igt_hook_push_evt(igt_hook, &hook_evt);
++	}
++
+ 	return (in_dynamic_subtest = dynamic_subtest_name);
+ }
+ 
+@@ -1602,6 +1678,17 @@ __noreturn static void exit_subtest(const char *result)
+ 	struct timespec *thentime = in_dynamic_subtest ? &dynamic_subtest_time : &subtest_time;
+ 	jmp_buf *jmptarget = in_dynamic_subtest ? &igt_dynamic_jmpbuf : &igt_subtest_jmpbuf;
+ 
++	if (igt_hook) {
++		struct igt_hook_evt hook_evt = {
++			.evt_type = (in_dynamic_subtest
++					? IGT_HOOK_POST_DYN_SUBTEST
++					: IGT_HOOK_POST_SUBTEST),
++			.result = result,
++		};
++
++		igt_hook_push_evt(igt_hook, &hook_evt);
++	}
++
+ 	if (!igt_thread_is_main()) {
+ 		igt_thread_fail();
+ 		pthread_exit(NULL);
+@@ -2274,6 +2361,7 @@ void __igt_abort(const char *domain, const char *file, const int line,
+ void igt_exit(void)
+ {
+ 	int tmp;
++	const char *result;
+ 
+ 	if (!test_with_subtests)
+ 		igt_thread_assert_no_failures();
+@@ -2318,12 +2406,7 @@ void igt_exit(void)
+ 
+ 	assert(waitpid(-1, &tmp, WNOHANG) == -1 && errno == ECHILD);
+ 
+-	if (!test_with_subtests) {
+-		struct timespec now;
+-		const char *result;
+-
+-		igt_gettime(&now);
+-
++	if (!test_with_subtests || igt_hook) {
+ 		switch (igt_exitcode) {
+ 			case IGT_EXIT_SUCCESS:
+ 				result = "SUCCESS";
+@@ -2334,6 +2417,12 @@ void igt_exit(void)
+ 			default:
+ 				result = "FAIL";
+ 		}
++	}
++
++	if (!test_with_subtests) {
++		struct timespec now;
++
++		igt_gettime(&now);
+ 
+ 		if (test_multi_fork_child) /* parent will do the yelling */
+ 			_log_line_fprintf(stdout, "dyn_child pid:%d (%.3fs) ends with err=%d\n",
+@@ -2344,6 +2433,15 @@ void igt_exit(void)
+ 					  result, igt_time_elapsed(&subtest_time, &now));
+ 	}
+ 
++	if (igt_hook) {
++		struct igt_hook_evt hook_evt = {
++			.evt_type = IGT_HOOK_POST_TEST,
++			.result = result,
++		};
++
++		igt_hook_push_evt(igt_hook, &hook_evt);
++	}
++
+ 	exit(igt_exitcode);
+ }
+ 
+diff --git a/lib/igt_hook.c b/lib/igt_hook.c
+new file mode 100644
+index 000000000000..a4421e2b1543
+--- /dev/null
++++ b/lib/igt_hook.c
+@@ -0,0 +1,489 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2024 Intel Corporation. All rights reserved.
++ */
++
++#include <assert.h>
++#include <errno.h>
++#include <limits.h>
++#include <stdbool.h>
++#include <stddef.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "igt_core.h"
++#include "igt_hook.h"
++
++/**
++ * SECTION:igt_hook
++ * @short_description: Support for running a hook script on test execution
++ * @title: Hook support
++ *
++ * IGT provides support for running a hook script when executing tests. This
++ * support is provided to users via CLI option `--hook` available in test
++ * binaries. Users should use `--help-hook` for detailed usaged description of
++ * the feature.
++ *
++ * The sole user of the exposed API is `igt_core`, which calls @igt_hook_create()
++ * when initializing a test case, then calls @igt_hook_push_evt() for each event
++ * that occurs during that test's execution and finally calls @igt_hook_free()
++ * to clean up at the end.
++ */
++
++#define TEST_NAME_INITIAL_SIZE 16
++
++typedef uint16_t evt_mask_t;
++
++struct igt_hook {
++	evt_mask_t evt_mask;
++	char *cmd;
++	char *test_name;
++	size_t test_name_size;
++	char *subtest_name;
++	size_t subtest_name_size;
++	char *dyn_subtest_name;
++	size_t dyn_subtest_name_size;
++	char *test_fullname;
++};
++
++enum igt_hook_error {
++	IGT_HOOK_EVT_EMPTY_NAME = 1,
++	IGT_HOOK_EVT_NO_MATCH,
++};
++
++static_assert(IGT_HOOK_NUM_EVENTS <= sizeof(evt_mask_t) * CHAR_BIT,
++	      "Number of event types does not fit event type mask");
++
++static const char *igt_hook_evt_type_to_name(enum igt_hook_evt_type evt_type)
++{
++	switch (evt_type) {
++	case IGT_HOOK_PRE_TEST:
++		return "pre-test";
++	case IGT_HOOK_PRE_SUBTEST:
++		return "pre-subtest";
++	case IGT_HOOK_PRE_DYN_SUBTEST:
++		return "pre-dyn-subtest";
++	case IGT_HOOK_POST_DYN_SUBTEST:
++		return "post-dyn-subtest";
++	case IGT_HOOK_POST_SUBTEST:
++		return "post-subtest";
++	case IGT_HOOK_POST_TEST:
++		return "post-test";
++	case IGT_HOOK_NUM_EVENTS:
++		break;
++	/* No "default:" case, to force a warning from -Wswitch in case we miss
++	 * any new event type. */
++	}
++	return "?";
++}
++
++static int igt_hook_parse_hook_str(const char *hook_str, evt_mask_t *evt_mask, const char **cmd)
++{
++	const char *s;
++
++	if (!strchr(hook_str, ':')) {
++		*evt_mask = ~0;
++		*cmd = hook_str;
++		return 0;
++	}
++
++	s = hook_str;
++	*evt_mask = 0;
++
++	while (1) {
++		const char *evt_name;
++		bool has_match;
++		bool is_star;
++		enum igt_hook_evt_type evt_type;
++
++		evt_name = s;
++
++		while (*s != ':' && *s != ',')
++			s++;
++
++		if (evt_name == s)
++			return IGT_HOOK_EVT_EMPTY_NAME;
++
++		has_match = false;
++		is_star = *evt_name == '*' && evt_name + 1 == s;
++
++		for (evt_type = IGT_HOOK_PRE_TEST; evt_type < IGT_HOOK_NUM_EVENTS; evt_type++) {
++			if (!is_star) {
++				const char *this_event_name = igt_hook_evt_type_to_name(evt_type);
++				size_t len = s - evt_name;
++
++				if (len != strlen(this_event_name))
++					continue;
++
++				if (strncmp(evt_name, this_event_name, len))
++					continue;
++			}
++
++			*evt_mask |= 1 << evt_type;
++			has_match = true;
++
++			if (!is_star)
++				break;
++		}
++
++		if (!has_match)
++			return IGT_HOOK_EVT_NO_MATCH;
++
++		if (*s++ == ':')
++			break;
++	}
++
++	*cmd = s;
++
++	return 0;
++}
++
++static size_t igt_hook_calc_test_fullname_size(struct igt_hook *igt_hook) {
++	/* The maximum size of test_fullname will be the maximum length of
++	 * "igt@<test_name>@<subtest_name>@<dyn_subtest_name>" plus 1 for the
++	 * null byte. */
++	return (igt_hook->test_name_size +
++		igt_hook->subtest_name_size +
++		igt_hook->dyn_subtest_name_size) + 4;
++}
++
++static void igt_hook_update_test_fullname(struct igt_hook *igt_hook)
++{
++	int i;
++	char *s;
++	const char *values[] = {
++		igt_hook->test_name,
++		igt_hook->subtest_name,
++		igt_hook->dyn_subtest_name,
++		NULL,
++	};
++
++	if (igt_hook->test_name[0] == '\0') {
++		igt_hook->test_fullname[0] = '\0';
++		return;
++	}
++
++	s = stpcpy(igt_hook->test_fullname, "igt");
++	for (i = 0; values[i] && values[i][0] != '\0'; i++) {
++		*s++ = '@';
++		s = stpcpy(s, values[i]);
++	}
++}
++
++/**
++ * igt_hook_create:
++ * @hook_str: Hook descriptor string.
++ * @error: Pointer to error number.
++ *
++ * Allocate and initialize an #igt_hook structure.
++ *
++ * This function parses the hook descriptor @hook_str and initializes the struct
++ * to be returned.
++ *
++ * The hook descriptor comes from the argument to `--hook` of the test
++ * executable being run.
++ *
++ * If not #NULL, @error is used to store a non-zero error number if an error
++ * happens. A human-readable string for that error number can be obtained with
++ * @igt_hook_error_str().
++ *
++ * Returns: The pointer to the #igt_hook structure on success or #NULL on error.
++ */
++struct igt_hook *igt_hook_create(const char *hook_str, int *error)
++{
++	int err;
++	evt_mask_t evt_mask;
++	const char *cmd;
++	struct igt_hook *igt_hook = NULL;
++
++
++	err = igt_hook_parse_hook_str(hook_str, &evt_mask, &cmd);
++	if (err)
++		goto out;
++
++	igt_hook = calloc(1, sizeof(*igt_hook));
++	igt_hook->evt_mask = evt_mask;
++
++	igt_hook->cmd = strdup(cmd);
++	if (!igt_hook->cmd) {
++		err = -errno;
++		goto out;
++	}
++
++	igt_hook->test_name = malloc(TEST_NAME_INITIAL_SIZE);
++	igt_hook->test_name_size = TEST_NAME_INITIAL_SIZE;
++	igt_hook->subtest_name = malloc(TEST_NAME_INITIAL_SIZE);
++	igt_hook->subtest_name_size = TEST_NAME_INITIAL_SIZE;
++	igt_hook->dyn_subtest_name = malloc(TEST_NAME_INITIAL_SIZE);
++	igt_hook->dyn_subtest_name_size = TEST_NAME_INITIAL_SIZE;
++	igt_hook->test_fullname = malloc(igt_hook_calc_test_fullname_size(igt_hook));
++
++	igt_hook->test_name[0] = '\0';
++	igt_hook->subtest_name[0] = '\0';
++	igt_hook->dyn_subtest_name[0] = '\0';
++	igt_hook->test_fullname[0] = '\0';
++
++out:
++	if (err) {
++		if (error)
++			*error = err;
++
++		igt_hook_free(igt_hook);
++
++		return NULL;
++	}
++
++	return igt_hook;
++}
++
++/**
++ * igt_hook_free:
++ * @igt_hook: The igt_hook struct.
++ *
++ * De-initialize an igt_hook struct returned by @igt_hook_create().
++ *
++ * This is a no-op if @igt_hook is #NULL.
++ */
++void igt_hook_free(struct igt_hook *igt_hook)
++{
++	if (!igt_hook)
++		return;
++
++	free(igt_hook->cmd);
++	free(igt_hook->test_name);
++	free(igt_hook->subtest_name);
++	free(igt_hook->dyn_subtest_name);
++	free(igt_hook);
++}
++
++static void igt_hook_update_test_name_pre_call(struct igt_hook *igt_hook, struct igt_hook_evt *evt)
++{
++	char **name_ptr;
++	size_t *size_ptr;
++	size_t len;
++
++	switch (evt->evt_type) {
++	case IGT_HOOK_PRE_TEST:
++		name_ptr = &igt_hook->test_name;
++		size_ptr = &igt_hook->test_name_size;
++		break;
++	case IGT_HOOK_PRE_SUBTEST:
++		name_ptr = &igt_hook->subtest_name;
++		size_ptr = &igt_hook->subtest_name_size;
++		break;
++	case IGT_HOOK_PRE_DYN_SUBTEST:
++		name_ptr = &igt_hook->dyn_subtest_name;
++		size_ptr = &igt_hook->dyn_subtest_name_size;
++		break;
++	default:
++		return;
++	}
++
++	len = strlen(evt->target_name);
++	if (len + 1 > *size_ptr) {
++		size_t fullname_size;
++
++		*size_ptr *= 2;
++		*name_ptr = realloc(*name_ptr, *size_ptr);
++
++		fullname_size = igt_hook_calc_test_fullname_size(igt_hook);
++		igt_hook->test_fullname = realloc(igt_hook->test_fullname, fullname_size);
++	}
++
++	strcpy(*name_ptr, evt->target_name);
++	igt_hook_update_test_fullname(igt_hook);
++}
++
++static void igt_hook_update_test_name_post_call(struct igt_hook *igt_hook, struct igt_hook_evt *evt)
++{
++	switch (evt->evt_type) {
++	case IGT_HOOK_POST_TEST:
++		igt_hook->test_name[0] = '\0';
++		break;
++	case IGT_HOOK_POST_SUBTEST:
++		igt_hook->subtest_name[0] = '\0';
++		break;
++	case IGT_HOOK_POST_DYN_SUBTEST:
++		igt_hook->dyn_subtest_name[0] = '\0';
++		break;
++	default:
++		return;
++	}
++
++	igt_hook_update_test_fullname(igt_hook);
++}
++
++static void igt_hook_update_env_vars(struct igt_hook *igt_hook, struct igt_hook_evt *evt)
++{
++	setenv("IGT_HOOK_EVENT", igt_hook_evt_type_to_name(evt->evt_type), 1);
++	setenv("IGT_HOOK_TEST_FULLNAME", igt_hook->test_fullname, 1);
++	setenv("IGT_HOOK_TEST", igt_hook->test_name, 1);
++	setenv("IGT_HOOK_SUBTEST", igt_hook->subtest_name, 1);
++	setenv("IGT_HOOK_DYN_SUBTEST", igt_hook->dyn_subtest_name, 1);
++	setenv("IGT_HOOK_RESULT", evt->result ?: "", 1);
++}
++
++/**
++ * igt_hook_push_evt:
++ * @igt_hook: The igt_hook structure.
++ * @evt: The event to be pushed.
++ *
++ * Push a new igt_hook event.
++ *
++ * This function must be used to register a new igt_hook event. Calling it will
++ * cause execution of the hook script if the event type matches the filters
++ * provided during initialization of @igt_hook.
++ */
++void igt_hook_push_evt(struct igt_hook *igt_hook, struct igt_hook_evt *evt)
++{
++	evt_mask_t evt_bit = (1 << evt->evt_type);
++
++	igt_hook_update_test_name_pre_call(igt_hook, evt);
++
++	if ((evt_bit & igt_hook->evt_mask)) {
++		struct igt_helper_process proc = {};
++
++		igt_fork_helper(&proc) {
++			igt_hook_update_env_vars(igt_hook, evt);
++			system(igt_hook->cmd);
++		}
++		igt_wait_helper(&proc);
++	}
++
++	igt_hook_update_test_name_post_call(igt_hook, evt);
++}
++
++/**
++ * igt_hook_error_str:
++ * @error: Non-zero error number.
++ *
++ * Return a human-readable string containing a description of an error number
++ * generated by one of the `igt_hook_*` functions.
++ *
++ * The string will be the result of strerror() for errors from the C standard
++ * library or a custom description specific to igt_hook.
++ */
++const char *igt_hook_error_str(int error)
++{
++	if (!error)
++		return "No error";
++
++	if (error > 0) {
++		enum igt_hook_error hook_error = error;
++
++		switch (hook_error) {
++		case IGT_HOOK_EVT_EMPTY_NAME:
++			return "Empty name in event descriptor";
++		case IGT_HOOK_EVT_NO_MATCH:
++			return "Event name in event descriptor does not match any event type";
++		default:
++			return "Unknown error";
++		}
++	} else {
++		return strerror(-error);
++	}
++}
++
++/**
++ * igt_hook_print_help:
++ * @f: File pointer where to write the output.
++ * @option_name: Name of the CLI option that accepts the hook descriptor.
++ *
++ * Print a detailed user help text on hook usage.
++ */
++void igt_hook_print_help(FILE *f, const char *option_name)
++{
++	fprintf(f, "\
++The option %1$s receives as argument a \"hook descriptor\" and allows the\n\
++execution of a shell command at different points during execution of tests. Each\n\
++such a point is called a \"hook event\".\n\
++\n\
++Examples:\n\
++\n\
++  # Prints hook-specic env vars for every event.\n\
++  %1$s 'printenv | grep ^IGT_HOOK_'\n\
++\n\
++  # Equivalent to the above. Useful if command contains ':'.\n\
++  %1$s '*:printenv | grep ^IGT_HOOK_'\n\
++\n\
++  # Adds a line to out.txt containing the result of each test case.\n\
++  %1$s 'post-test:echo $IGT_HOOK_TEST_FULLNAME $IGT_HOOK_RESULT >> out.txt'\n\
++\n\
++The accepted format for a hook descriptor is `[<events>:]<cmd>`, where:\n\
++\n\
++  - <events> is a comma-separated list of event descriptors, which defines the\n\
++    set of events be tracked. If omitted, all events are tracked.\n\
++\n\
++  - <cmd> is a shell command to be executed on the occurrence each tracked\n\
++    event. If the command contains ':', then passing <events> is required,\n\
++    otherwise part of the command would be treated as an event descriptor.\n\
++\n\
++", option_name);
++
++	fprintf(f, "\
++An \"event descriptor\" is either the name of an event or the string '*'. The\n\
++latter matches all event names. The list of possible event names is provided\n\
++below:\n\
++\n\
++");
++
++	for (enum igt_hook_evt_type et = 0; et < IGT_HOOK_NUM_EVENTS; et++) {
++		const char *desc;
++
++		switch (et) {
++		case IGT_HOOK_PRE_TEST:
++			desc = "Occurs before a test case starts.";
++			break;
++		case IGT_HOOK_PRE_SUBTEST:
++			desc = "Occurs before the execution of a subtest.";
++			break;
++		case IGT_HOOK_PRE_DYN_SUBTEST:
++			desc = "Occurs before the execution of a dynamic subtest.";
++			break;
++		case IGT_HOOK_POST_DYN_SUBTEST:
++			desc = "Occurs after the execution of a dynamic subtest.";
++			break;
++		case IGT_HOOK_POST_SUBTEST:
++			desc = "Occurs after the execution of a subtest.";
++			break;
++		case IGT_HOOK_POST_TEST:
++			desc = "Occurs after a test case has finished.";
++			break;
++		default:
++			desc = "MISSING DESCRIPTION";
++		}
++
++		fprintf(f, "  %s\n  %s\n\n", igt_hook_evt_type_to_name(et), desc);
++	}
++
++	fprintf(f, "\
++For each event matched by <events>, <cmd> is executed as a shell command. The\n\
++exit status of the command is ignored. The following environment variables are\n\
++available to the command:\n\
++\n\
++  IGT_HOOK_EVENT\n\
++  Name of the current event.\n\
++\n\
++  IGT_HOOK_TEST_FULLNAME\n\
++  Full name of the test in the format `igt@<test>[@<subtest>[@<dyn_subtest>]]`.\n\
++\n\
++  IGT_HOOK_TEST\n\
++  Name of the current test.\n\
++\n\
++  IGT_HOOK_SUBTEST\n\
++  Name of the current subtest. Will be the empty string if not running a\n\
++  subtest.\n\
++\n\
++  IGT_HOOK_DYN_SUBTEST\n\
++  Name of the current dynamic subtest. Will be the empty string if not running a\n\
++  dynamic subtest.\n\
++\n\
++  IGT_HOOK_RESULT\n\
++  String representing the result of the test/subtest/dynamic subtest. Possible\n\
++  values are: SUCCESS, SKIP or FAIL. This is only applicable on \"post-*\"\n\
++  events and will be the empty string for other types of events.\n\
++\n\
++");
++}
+diff --git a/lib/igt_hook.h b/lib/igt_hook.h
+new file mode 100644
+index 000000000000..a7b67837e5a4
+--- /dev/null
++++ b/lib/igt_hook.h
+@@ -0,0 +1,69 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2024 Intel Corporation. All rights reserved.
++ */
++
++#ifndef IGT_HOOK_H
++#define IGT_HOOK_H
++
++#include <stdio.h>
++
++/**
++ * igt_hook:
++ *
++ * Opaque struct to hold data related to hook support.
++ */
++struct igt_hook;
++
++/**
++ * igt_hook_evt_type:
++ * @IGT_HOOK_PRE_TEST: Occurs before a test case (executable) starts the
++ * test code.
++ * @IGT_HOOK_PRE_SUBTEST: Occurs before the execution of a subtest.
++ * @IGT_HOOK_PRE_DYN_SUBTEST: Occurs before the execution of a dynamic subtest.
++ * @IGT_HOOK_POST_DYN_SUBTEST: Occurs after the execution of a dynamic subtest.
++ * @IGT_HOOK_POST_SUBTEST: Occurs after the execution of a subtest..
++ * @IGT_HOOK_POST_TEST: Occurs after a test case (executable) is finished with
++ * the test code.
++ * @IGT_HOOK_NUM_EVENTS: This is not really an event and represents the number
++ * of possible events tracked by igt_hook.
++ *
++ * Events tracked by igt_hook. Those events occur at specific points during the
++ * execution of a test.
++ */
++enum igt_hook_evt_type {
++	IGT_HOOK_PRE_TEST,
++	IGT_HOOK_PRE_SUBTEST,
++	IGT_HOOK_PRE_DYN_SUBTEST,
++	IGT_HOOK_POST_DYN_SUBTEST,
++	IGT_HOOK_POST_SUBTEST,
++	IGT_HOOK_POST_TEST,
++	IGT_HOOK_NUM_EVENTS /* This must always be the last one. */
++};
++
++/**
++ * igt_hook_evt:
++ * @evt_type: Type of event.
++ * @target_name: A string pointing to the name of the test, subtest or dynamic
++ * subtest, depending on @evt_type.
++ * @result: A string containing the result of the test, subtest or dynamic
++ * subtest. This is only applicable for the `IGT_HOOK_POST_\*' event types;
++ * other types must initialize this to #NULL.
++ *
++ * An event tracked by igt_hook, which is done with @igt_hook_push_evt(). This must
++ * be zero initialized and fields relevant to the event type must be set before
++ * passing its reference to @igt_hook_push_evt().
++ */
++struct igt_hook_evt {
++	enum igt_hook_evt_type evt_type;
++	const char *target_name;
++	const char *result;
++};
++
++struct igt_hook *igt_hook_create(const char *hook_str, int *error);
++void igt_hook_free(struct igt_hook *igt_hook);
++void igt_hook_push_evt(struct igt_hook *igt_hook, struct igt_hook_evt *evt);
++const char *igt_hook_error_str(int error);
++void igt_hook_print_help(FILE *f, const char *option_name);
++
++#endif /* IGT_HOOK_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index e2f740c116f8..10b8066647f2 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -109,6 +109,7 @@ lib_sources = [
+ 	'veboxcopy_gen12.c',
+ 	'igt_msm.c',
+ 	'igt_dsc.c',
++	'igt_hook.c',
+ 	'xe/xe_gt.c',
+ 	'xe/xe_ioctl.c',
+ 	'xe/xe_mmio.c',
+diff --git a/lib/tests/igt_hook.c b/lib/tests/igt_hook.c
+new file mode 100644
+index 000000000000..c8a93952abed
+--- /dev/null
++++ b/lib/tests/igt_hook.c
+@@ -0,0 +1,170 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2024 Intel Corporation. All rights reserved.
++ */
++
++#include <stdbool.h>
++#include <stdio.h>
++#include <unistd.h>
++
++#include "igt_core.h"
++#include "igt_hook.h"
++
++static const char *env_var_names[] = {
++	"IGT_HOOK_EVENT",
++	"IGT_HOOK_TEST_FULLNAME",
++	"IGT_HOOK_TEST",
++	"IGT_HOOK_SUBTEST",
++	"IGT_HOOK_DYN_SUBTEST",
++	"IGT_HOOK_RESULT",
++};
++
++#define num_env_vars (sizeof(env_var_names) / sizeof(env_var_names[0]))
++
++static int env_var_name_lookup(char *line)
++{
++	int i;
++	char *c;
++
++	c = strchr(line, '=');
++	if (c)
++		*c = '\0';
++
++	for (i = 0; i < num_env_vars; i++)
++		if (!strcmp(line, env_var_names[i]))
++			goto out;
++
++	i = -1;
++out:
++	if (c)
++		*c = '=';
++
++	return i;
++}
++
++static void test_null_error_pointer(void)
++{
++	struct igt_hook *igt_hook;
++
++	/* Ensure passing NULL error pointer does not cause issues. */
++	igt_hook = igt_hook_create("invalid:echo hello", NULL);
++	igt_assert(igt_hook == NULL);
++}
++
++static void test_invalid_hook_descriptors(void)
++{
++	struct {
++		const char *name;
++		const char *hook_desc;
++	} invalid_cases[] = {
++		{"invalid-event-name", "invalid-event:echo hello"},
++		{"invalid-empty-event-name", ":echo hello"},
++		{"invalid-colon-in-cmd", "echo hello:world"},
++		{},
++	};
++
++	for (int i = 0; invalid_cases[i].name; i++) {
++		igt_subtest(invalid_cases[i].name) {
++			int err = 0;
++			struct igt_hook *igt_hook;
++
++			igt_hook = igt_hook_create(invalid_cases[i].hook_desc, &err);
++			igt_assert(igt_hook == NULL);
++			igt_assert(err != 0);
++		}
++	}
++}
++
++static void test_print_help(void)
++{
++	char *buf;
++	size_t len;
++	FILE *f;
++	const char expected_initial_text[] = "The option --hook receives as argument a \"hook descriptor\"";
++
++	f = open_memstream(&buf, &len);
++	igt_assert(f);
++
++	igt_hook_print_help(f, "--hook");
++	fclose(f);
++
++	igt_assert(!strncmp(buf, expected_initial_text, sizeof(expected_initial_text) - 1));
++
++	/* This is an extra check to catch a case where an event type is added
++	 * without a proper description. */
++	igt_assert(!strstr(buf, "MISSING DESCRIPTION"));
++
++	free(buf);
++}
++
++static void test_all_env_vars(void)
++{
++	struct igt_hook_evt evt = {
++		.evt_type = IGT_HOOK_PRE_SUBTEST,
++		.target_name = "foo",
++	};
++	bool env_vars_checklist[num_env_vars] = {};
++	struct igt_hook *igt_hook;
++	char *hook_str;
++	FILE *f;
++	int pipefd[2];
++	int ret;
++	int i;
++	char *line;
++	size_t line_size;
++
++	ret = pipe(pipefd);
++	igt_assert(ret == 0);
++
++	/* Use grep to filter only env var set by us. This should ensure that
++	 * writing to the pipe will not block due to capacity, since we only
++	 * read from the pipe after the shell command is done. */
++	ret = asprintf(&hook_str, "printenv -0 | grep -z ^IGT_HOOK >&%d", pipefd[1]);
++	igt_assert(ret > 0);
++
++	igt_hook = igt_hook_create(hook_str, NULL);
++	igt_assert(igt_hook);
++
++	igt_hook_push_evt(igt_hook, &evt);
++
++	close(pipefd[1]);
++	f = fdopen(pipefd[0], "r");
++	igt_assert(f);
++
++	line = NULL;
++	line_size = 0;
++
++	while (getdelim(&line, &line_size, '\0', f) != -1) {
++		ret = env_var_name_lookup(line);
++		igt_assert_f(ret >= 0, "Unexpected env var %s\n", line);
++		env_vars_checklist[ret] = true;
++	}
++
++	for (i = 0; i < num_env_vars; i++)
++		igt_assert_f(env_vars_checklist[i], "Missing env var %s\n", env_var_names[i]);
++
++	fclose(f);
++	igt_hook_free(igt_hook);
++	free(hook_str);
++	free(line);
++}
++
++igt_main
++{
++	igt_subtest("null-error-pointer")
++		test_null_error_pointer();
++
++	test_invalid_hook_descriptors();
++
++	igt_subtest("help-description")
++		test_print_help();
++
++	igt_subtest_group {
++		igt_fixture {
++			igt_require_f(system(NULL), "Shell seems not to be available\n");
++		}
++
++		igt_subtest("all-env-vars")
++			test_all_env_vars();
++	}
++}
+diff --git a/lib/tests/igt_hook_integration.c b/lib/tests/igt_hook_integration.c
+new file mode 100644
+index 000000000000..f5ba25e92897
+--- /dev/null
++++ b/lib/tests/igt_hook_integration.c
+@@ -0,0 +1,281 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright(c) 2024 Intel Corporation. All rights reserved.
++ */
++
++#include <stdbool.h>
++#include <stdio.h>
++#include <string.h>
++
++#include "igt_core.h"
++
++#include "igt_tests_common.h"
++
++char prog[] = "igt_hook_integration";
++char hook_opt[] = "--hook";
++char hook_str[128];
++char *fake_argv[] = {prog, hook_opt, hook_str};
++int fake_argc = sizeof(fake_argv) / sizeof(fake_argv[0]);
++
++#define ENV_ARRAY(evt_name, fullname_suffix, subtest, dyn_subtest, result) \
++{ \
++	"IGT_HOOK_EVENT=" evt_name, \
++	"IGT_HOOK_TEST_FULLNAME=igt@igt_hook_integration" fullname_suffix, \
++	"IGT_HOOK_TEST=igt_hook_integration", \
++	"IGT_HOOK_SUBTEST=" subtest, \
++	"IGT_HOOK_DYN_SUBTEST=" dyn_subtest, \
++	"IGT_HOOK_RESULT=" result, \
++}
++
++#define TEST_ENV(evt_name, result) \
++	ENV_ARRAY(evt_name, "", "", "", result)
++
++#define SUBTEST_ENV(evt_name, subtest, result) \
++	ENV_ARRAY(evt_name, "@" subtest, subtest, "", result)
++
++#define DYN_SUBTEST_ENV(evt_name, subtest, dyn_subtest, result) \
++	ENV_ARRAY(evt_name, "@" subtest "@" dyn_subtest, subtest, dyn_subtest, result)
++
++const char *pre_test_env[] = TEST_ENV("pre-test", "");
++const char *pre_subtest_a_env[] = SUBTEST_ENV("pre-subtest", "a", "");
++const char *pre_dyn_subtest_a_success_env[] = DYN_SUBTEST_ENV("pre-dyn-subtest", "a", "success", "");
++const char *post_dyn_subtest_a_success_env[] = DYN_SUBTEST_ENV("post-dyn-subtest", "a", "success", "SUCCESS");
++const char *pre_dyn_subtest_a_failed_env[] = DYN_SUBTEST_ENV("pre-dyn-subtest", "a", "failed", "");
++const char *post_dyn_subtest_a_failed_env[] = DYN_SUBTEST_ENV("post-dyn-subtest", "a", "failed", "FAIL");
++const char *pre_dyn_subtest_a_skipped_env[] = DYN_SUBTEST_ENV("pre-dyn-subtest", "a", "skipped", "");
++const char *post_dyn_subtest_a_skipped_env[] = DYN_SUBTEST_ENV("post-dyn-subtest", "a", "skipped", "SKIP");
++const char *post_subtest_a_env[] = SUBTEST_ENV("post-subtest", "a", "FAIL");
++const char *pre_subtest_b_env[] = SUBTEST_ENV("pre-subtest", "b", "");
++const char *post_subtest_b_env[] = SUBTEST_ENV("post-subtest", "b", "SUCCESS");
++const char *post_test_env[] = TEST_ENV("post-test", "FAIL");
++
++#define num_env_vars (sizeof(pre_test_env) / sizeof(pre_test_env[0]))
++
++__noreturn static void fake_main(void)
++{
++	igt_subtest_init(fake_argc, fake_argv);
++
++	igt_subtest_with_dynamic("a") {
++		igt_dynamic("success") {
++			igt_info("...@a@success\n");
++		}
++
++		igt_dynamic("failed") {
++			igt_assert_f(false, "Fail on purpose\n");
++			igt_info("...@a@failed\n");
++		}
++
++		igt_dynamic("skipped") {
++			igt_require_f(false, "Skip on purpose\n");
++			igt_info("...@a@skipped\n");
++		}
++	}
++
++	igt_subtest("b") {
++		igt_info("...@b\n");
++	}
++
++	igt_exit();
++}
++
++static void test_invalid_hook_str(void)
++{
++	int status;
++	pid_t pid;
++	static char err[4096];
++	int errfd;
++
++	sprintf(hook_str, "invalid-event:echo hello");
++
++	pid = do_fork_bg_with_pipes(fake_main, NULL, &errfd);
++
++	read_whole_pipe(errfd, err, sizeof(err));
++
++	internal_assert(safe_wait(pid, &status) != -1);
++	internal_assert_wexited(status, IGT_EXIT_INVALID);
++
++	internal_assert(strstr(err, "Failed to initialize hook data:"));
++
++	close(errfd);
++}
++
++static bool match_env(FILE *hook_out_stream, const char **expected_env)
++{
++	int i;
++	char hook_env_buf[4096];
++	size_t buf_len = 0;
++	char *line = NULL;
++	size_t line_size;
++	bool env_checklist[num_env_vars] = {};
++	bool has_unexpected = false;
++	bool has_missing = false;
++
++	/* Store env from hook so we can show it in case of errors */
++	while (getdelim(&line, &line_size, '\0', hook_out_stream) != -1) {
++		internal_assert(buf_len + strlen(line) + 1 <= sizeof(hook_env_buf));
++		strcpy(hook_env_buf + buf_len, line);
++		buf_len += strlen(line) + 1;
++
++		if (!strcmp(line, "---"))
++			break;
++	}
++
++	if (!expected_env && !buf_len) {
++		/* We have consumed everything and we are done now. */
++		return false;
++	}
++
++
++	if (!expected_env) {
++		printf("Detected unexpected hook execution\n");
++		has_unexpected = true;
++		goto out;
++	}
++
++	if (!buf_len) {
++		printf("Expected more hook execution, but none found\n");
++		has_missing = true;
++		goto out;
++	}
++
++
++	line = hook_env_buf;
++	while (strcmp(line, "---")) {
++		for (i = 0; i < num_env_vars; i++) {
++			if (!strcmp(line, expected_env[i])) {
++				env_checklist[i] = true;
++				break;
++			}
++		}
++
++		if (i == num_env_vars) {
++			printf("Unexpected envline from hook: %s\n", line);
++			has_unexpected = true;
++		}
++
++		line += strlen(line) + 1;
++	}
++
++	for (i = 0; i < num_env_vars; i++) {
++		if (!env_checklist[i]) {
++			has_missing = true;
++			printf("Missing expected envline: %s\n", expected_env[i]);
++		}
++	}
++
++out:
++	if (has_unexpected || has_missing) {
++		if (expected_env) {
++			printf("Expected environment:\n");
++			for (i = 0; i < num_env_vars; i++)
++				printf("  %s\n", expected_env[i]);
++		}
++
++		if (buf_len) {
++			printf("Environment from hook:\n");
++			line = hook_env_buf;
++			while (strcmp(line, "---")) {
++				printf("  %s\n", line);
++				line += strlen(line) + 1;
++			}
++		} else {
++			printf("No hook execution found\n");
++		}
++	}
++
++	internal_assert(!has_unexpected);
++	internal_assert(!has_missing);
++
++	/* Ready to consume next hook output. */
++	return true;
++}
++
++static void run_tests_and_match_env(const char *evt_descriptors, const char **expected_envs[])
++{
++	int i;
++	int ret;
++	int pipefd[2];
++	pid_t pid;
++	FILE *f;
++
++	ret = pipe(pipefd);
++	internal_assert(ret == 0);
++
++	/* Use grep to filter only env var set by us. This should ensure that
++	 * writing to the pipe will not block due to capacity, since we only
++	 * read from the pipe after the shell command is done. */
++	sprintf(hook_str,
++		"%1$s:printenv -0 | grep -z ^IGT_HOOK >&%2$d; printf -- ---\\\\00 >&%2$d",
++		evt_descriptors,
++		pipefd[1]);
++
++	pid = do_fork_bg_with_pipes(fake_main, NULL, NULL);
++	internal_assert(safe_wait(pid, &ret) != -1);
++	internal_assert_wexited(ret, IGT_EXIT_FAILURE);
++
++	close(pipefd[1]);
++	f = fdopen(pipefd[0], "r");
++	internal_assert(f);
++
++	i = 0;
++	while (match_env(f, expected_envs[i]))
++		i++;
++
++	fclose(f);
++
++}
++
++int main(int argc, char **argv)
++{
++	{
++		printf("Check invalid hook string\n");
++		test_invalid_hook_str();
++	}
++
++	{
++		const char **expected_envs[] = {
++			pre_test_env,
++			pre_subtest_a_env,
++			pre_dyn_subtest_a_success_env,
++			post_dyn_subtest_a_success_env,
++			pre_dyn_subtest_a_failed_env,
++			post_dyn_subtest_a_failed_env,
++			pre_dyn_subtest_a_skipped_env,
++			post_dyn_subtest_a_skipped_env,
++			post_subtest_a_env,
++			pre_subtest_b_env,
++			post_subtest_b_env,
++			post_test_env,
++			NULL,
++		};
++
++		printf("Check full event tracking\n");
++		run_tests_and_match_env("*", expected_envs);
++	}
++
++	{
++		const char **expected_envs[] = {
++			pre_dyn_subtest_a_success_env,
++			pre_dyn_subtest_a_failed_env,
++			pre_dyn_subtest_a_skipped_env,
++			NULL,
++		};
++
++		printf("Check single event type tracking\n");
++		run_tests_and_match_env("pre-dyn-subtest", expected_envs);
++	}
++
++	{
++		const char **expected_envs[] = {
++			pre_subtest_a_env,
++			post_dyn_subtest_a_success_env,
++			post_dyn_subtest_a_failed_env,
++			post_dyn_subtest_a_skipped_env,
++			pre_subtest_b_env,
++			NULL,
++		};
++
++		printf("Check multiple event types tracking\n");
++		run_tests_and_match_env("post-dyn-subtest,pre-subtest", expected_envs);
++	}
++}
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index fa3d81de6cef..df8092638eca 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -10,6 +10,8 @@ lib_tests = [
+ 	'igt_exit_handler',
+ 	'igt_fork',
+ 	'igt_fork_helper',
++	'igt_hook',
++	'igt_hook_integration',
+         'igt_ktap_parser',
+ 	'igt_list_only',
+ 	'igt_invalid_subtest_name',
 -- 
 2.45.2
 
