@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B0BDC27C4F
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 11:53:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1323C27C4F
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 12:36:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D8CDF10F167;
-	Fri, 21 Jun 2024 11:53:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VCH3ZEsq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B97510F167
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 11:53:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718970799; x=1750506799;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=fj424aKmYqtf7uWCsUBTBq8kDAUde99Jn7aInJDo0XA=;
- b=VCH3ZEsqtRprGsxeVZxgwK9OBhgKlmAO864fR1xaDwbo3tV8jR0ASCPO
- 6PhfPj6egCik+9Ow7edaaC//2vwvixdxAc14xosvx8wUx7uPv9U5HQIe7
- Jqck5qtmob0YM5+nYp366LKEvNd2vtU6+hoDYXWj7hS6mG6GxUL+ZYMsx
- rQ35xV4/lb+rRPEOIXlbc+1TLvoY+CbRl6dJESaVFEM6DbqFAFaGrYZX3
- EhlkJX9vgaxvswUaH0aSWmbgVW/MXoUnnI8SXycGRq8mvtryh7jVT0S5z
- 7Piy3gljf5wTUBzEtykhyYLxYJ+lR/FXoaoJ58SflaW4Kljtzb/0+RUwo g==;
-X-CSE-ConnectionGUID: V+cazuIlSVKWOdmDVPJjTw==
-X-CSE-MsgGUID: naf7Sc8bT/+MAnPOq8YLSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="16142331"
-X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; d="scan'208";a="16142331"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 04:53:18 -0700
-X-CSE-ConnectionGUID: tfxhb9F5Sr6itYzQvRIz/A==
-X-CSE-MsgGUID: CeXyV6f/SoKTmdGGDK/wUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; d="scan'208";a="65807633"
-Received: from smousa-mobl.amr.corp.intel.com (HELO fdugast-desk.intel.com)
- ([10.251.214.62])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 04:53:16 -0700
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_spin_batch: Check duration of preempter
- execution
-Date: Fri, 21 Jun 2024 13:53:03 +0200
-Message-ID: <20240621115303.1772645-1-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FEC010F174;
+	Fri, 21 Jun 2024 12:36:55 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A6CC10E06B;
+ Fri, 21 Jun 2024 12:36:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3079171331462658302=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fspin=5Fbatch?=
+ =?utf-8?q?=3A_Check_duration_of_preempter_execution?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Francois Dugast" <francois.dugast@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 21 Jun 2024 12:36:54 -0000
+Message-ID: <171897341423.132081.5855806885798553715@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240621115303.1772645-1-francois.dugast@intel.com>
+In-Reply-To: <20240621115303.1772645-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,48 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The preempter is expected to execute without waiting, in a short
-time. The synchronous call takes roughly 1 ms under normal
-conditions. This duration will be higher if the preempter is
-waiting. For example if the priorities are reversed in this test
-then this duration will be close to duration_ns (currently set
-to 100 ms) which was undetected by the test without this change.
+--===============3079171331462658302==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
----
- tests/intel/xe_spin_batch.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_spin_batch.c b/tests/intel/xe_spin_batch.c
-index 4e95060d3..e57318801 100644
---- a/tests/intel/xe_spin_batch.c
-+++ b/tests/intel/xe_spin_batch.c
-@@ -253,7 +253,7 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
- 	uint64_t ext = 0;
- 	size_t bo_size;
- 	struct xe_spin *spin;
--	struct timespec tv;
-+	struct timespec tv, tv_preempter;
- 	double elapsed_ms;
- 	igt_stats_t stats;
- 	int i;
-@@ -289,9 +289,11 @@ static void xe_spin_fixed_duration(int fd, int gt, int class, int flags)
- 		igt_gettime(&tv);
- 		xe_exec(fd, &exec);
- 		xe_spin_wait_started(spin);
--		if (flags & SPIN_FIX_DURATION_PREEMPT)
-+		if (flags & SPIN_FIX_DURATION_PREEMPT) {
-+			igt_gettime(&tv_preempter);
- 			preempter(fd, hwe);
--
-+			igt_assert(igt_nsec_elapsed(&tv_preempter) * 1e-6 < 10);
-+		}
- 		igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
- 		igt_stats_push_float(&stats, igt_nsec_elapsed(&tv) * 1e-6);
- 		syncobj_reset(fd, &sync.handle, 1);
--- 
-2.43.0
+Series: tests/intel/xe_spin_batch: Check duration of preempter execution
+URL   : https://patchwork.freedesktop.org/series/135173/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7895_BAT -> XEIGTPW_11294_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11294_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7895/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11294/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7895 -> IGTPW_11294
+
+  IGTPW_11294: 11294
+  IGT_7895: 7895
+  xe-1512-40deb379b103746ee4c9df5f0f1919bd4703c9cc: 40deb379b103746ee4c9df5f0f1919bd4703c9cc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11294/index.html
+
+--===============3079171331462658302==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_spin_batch: Check duration of preempter execution</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135173/">https://patchwork.freedesktop.org/series/135173/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11294/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11294/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7895_BAT -&gt; XEIGTPW_11294_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11294_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7895/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11294/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7895 -&gt; IGTPW_11294</li>
+</ul>
+<p>IGTPW_11294: 11294<br />
+  IGT_7895: 7895<br />
+  xe-1512-40deb379b103746ee4c9df5f0f1919bd4703c9cc: 40deb379b103746ee4c9df5f0f1919bd4703c9cc</p>
+
+</body>
+</html>
+
+--===============3079171331462658302==--
