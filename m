@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E57EC2BB85
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 08:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D08FC27C4F
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 08:55:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2420010F0DE;
-	Fri, 21 Jun 2024 08:55:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 32FAE10F0DF;
+	Fri, 21 Jun 2024 08:55:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QzJfdJkN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bzb4yvdX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0EEA10F0DD
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 08:55:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8639010F0DF
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 08:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718960122; x=1750496122;
+ t=1718960124; x=1750496124;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vqe+qbgGrFyeHdz3+vo/k+sn295VzixT7joIEpQuPLo=;
- b=QzJfdJkN/gNnJSeGpkzXGXWX3B+wEenzlBHGBaxtUkxk4aoGlxWyU0xD
- 9axWuwA/on/J+DuWmUmLV7axnrer6/NZzGE4ZjnrB0O02X1p/mX9R7fhj
- FRpVW3vZ53IxDGqrVO2zzxWDuwN8jW5HCx0Pa23vC9njPGP2AEZz6+pIt
- ql+dmtCALfx3z3XUcEUBeDXCp1aBBDWNtPe4uJ+1Y/s6pxIZeP0aLCyMW
- qRwC9qIdi6WzSSPj5KhoxZXCeRB+xYZvYGYwPjSHy7RMnFRR8aNtK/okS
- 7lh05YGvFHXOPmvdC/yYFx09QTL59wVOZoCKvC0tDmNWsLlbip0wbXDvA Q==;
-X-CSE-ConnectionGUID: E4WXtkwfRmGOGY6BQLjWWQ==
-X-CSE-MsgGUID: krvXg0TuTiC+wUlzHcAiPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41387671"
-X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; d="scan'208";a="41387671"
+ bh=YZc59ptspheW2KpP8Hx86MoOIVX4my75cIt0z4F6+0g=;
+ b=bzb4yvdXKtdt6LwLVAAvyVYfXt+jsyi1gqXy9oG30/FD//su6JnH3aZq
+ Q8L9RHpi7rI/TJrpCuN6vfHwGgVaWjhXM+A0wjgsRGsoPo/MZ6RKWRLHY
+ eoME5aeOsTfooC/ZwJTT84KJPd9CRrGJzKr1ydwMUYkpIvmcySdyYAz0V
+ 8M7ZyrwK3n4s6QpcOf4y8uayB9gpwmEEb77z3RRXMw8DrdDlICbiF3uRi
+ O5DPzryHBHd+OA2XpnECmOkppXUnmLdfESsvpWI0nElsGusVPBFK9OqDd
+ c+JO5eHa/jcR3owwZ/Kk5qLgnMSeQu9/hbXL0n84esV87Y2PRyXwYlpEK w==;
+X-CSE-ConnectionGUID: r1qUUnsRQ6+roSOqMItnYA==
+X-CSE-MsgGUID: 9tRTWVmZSrGAlYFkUzSgSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41387673"
+X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; d="scan'208";a="41387673"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 01:55:22 -0700
-X-CSE-ConnectionGUID: jU3lfP9eQY2zrlYgsPB9Tg==
-X-CSE-MsgGUID: TwGG/TIWQfKnkTi0ne5Pnw==
+ 21 Jun 2024 01:55:24 -0700
+X-CSE-ConnectionGUID: 8p1T/fu2SfKp5TSwYxjxfQ==
+X-CSE-MsgGUID: NrzRLOmPT3SZT8YBfv5g/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; d="scan'208";a="42609055"
+X-IronPort-AV: E=Sophos;i="6.08,254,1712646000"; d="scan'208";a="42609065"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 01:55:20 -0700
+ 21 Jun 2024 01:55:22 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
  Manasi Navare <navaremanasi@chromium.org>,
  Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Subject: [i-g-t 2/4] tests/kms_vrr: Fix hardcoded step size
-Date: Fri, 21 Jun 2024 14:17:09 +0530
-Message-ID: <20240621084711.68444-3-bhanuprakash.modem@intel.com>
+Subject: [i-g-t 3/4] tests/kms_vrr: Cleanup in creating the virtual mode
+Date: Fri, 21 Jun 2024 14:17:10 +0530
+Message-ID: <20240621084711.68444-4-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240621084711.68444-1-bhanuprakash.modem@intel.com>
 References: <20240621084711.68444-1-bhanuprakash.modem@intel.com>
@@ -69,56 +69,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In seamless-virtual subtest we are trying different Vrefresh
-values between Vmin & Vmax by incrementing the Vrefresh by
-by 10 Hz (hardcoded).
-
-With this approach:
-- We'll achieve less no. of refresh rates if VRR range is low
-    Ex: We can achieve only 1 step between 40 to 60 Hz.
-- Execution time will increase in case of high VRR range.
-    Ex: We need 30 steps to reach 60 Hz to 360 Hz.
-
-Instead of hardcoding the step size (10 Hz), allow test to
-execute fixed number of steps (say 5 steps to reach Vmin to
-Vmax) will guarantee to test (5) different refresh rates
-between Vmin & Vmax irrespective of the VRR range.
+Cleanup the function to create the virtual mode, so
+that it could be re-used.
 
 Cc: Manasi Navare <navaremanasi@chromium.org>
 Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- tests/kms_vrr.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tests/kms_vrr.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 6fd04505e..2ea90cd8e 100644
+index 2ea90cd8e..6f90f4729 100644
 --- a/tests/kms_vrr.c
 +++ b/tests/kms_vrr.c
-@@ -740,6 +740,7 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
- 	uint32_t result;
+@@ -229,16 +229,13 @@ low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
+ 	return mode;
+ }
+ 
+-static drmModeModeInfo
+-virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int virtual_refresh_rate)
++static void
++virtual_rr_vrr_range_mode(drmModeModeInfo *mode, unsigned int virtual_refresh_rate)
+ {
+-	drmModeModeInfo mode = *igt_output_get_mode(output);
+-	uint64_t clock_hz = mode.clock * 1000;
++	uint64_t clock_hz = mode->clock * 1000;
+ 
+-	mode.vtotal = clock_hz / (mode.htotal * virtual_refresh_rate);
+-	mode.vrefresh = virtual_refresh_rate;
+-
+-	return mode;
++	mode->vtotal = clock_hz / (mode->htotal * virtual_refresh_rate);
++	mode->vrefresh = virtual_refresh_rate;
+ }
+ 
+ static bool
+@@ -741,6 +738,7 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
  	unsigned int vrefresh;
  	uint64_t rate[] = {0};
-+	uint32_t step_size;
+ 	uint32_t step_size;
++	drmModeModeInfo virtual_mode;
  
  	igt_info("Use HIGH_RR Mode as default\n");
  	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-@@ -759,8 +760,14 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
- 		     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
- 		     data->switch_modes[HIGH_RR_MODE].vrefresh, rate[0], result);
+@@ -767,8 +765,10 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
+ 	step_size = (data->range.max - data->range.min) / 5;
  
-+	/*
-+	 * Calculate step size by considering the no. of steps required to
-+	 * reach Vmin to Vmax as 5.
-+	 */
-+	step_size = (data->range.max - data->range.min) / 5;
-+
  	/* Switch to Virtual RR */
--	for (vrefresh = data->range.min + 10; vrefresh < data->range.max; vrefresh += 10) {
-+	for (vrefresh = data->range.min + step_size; vrefresh < data->range.max; vrefresh += step_size) {
- 		drmModeModeInfo virtual_mode = virtual_rr_vrr_range_mode(output, vrefresh);
++	virtual_mode = *igt_output_get_mode(output);
++
+ 	for (vrefresh = data->range.min + step_size; vrefresh < data->range.max; vrefresh += step_size) {
+-		drmModeModeInfo virtual_mode = virtual_rr_vrr_range_mode(output, vrefresh);
++		virtual_rr_vrr_range_mode(&virtual_mode, vrefresh);
  
  		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
+ 		kmstest_dump_mode(&virtual_mode);
 -- 
 2.43.2
 
