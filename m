@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE86CC27C4F
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 19:53:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F0C4C2BD05
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 19:53:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6651710E198;
+	by gabe.freedesktop.org (Postfix) with ESMTP id B1F6810E0D6;
 	Fri, 21 Jun 2024 19:53:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CjAqaWio";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Au+V8s1p";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B912A10E0D6
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 19:53:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1908610E15E
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 19:53:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718999590; x=1750535590;
+ t=1718999588; x=1750535588;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PMDLeR1dAX/ZV/5LbsMEzfu5nNaW2z6g7h3SegUCz3g=;
- b=CjAqaWio8yADOixkYoGnslvmqZNKS7+y5Pw6mCfK5G9IibxHrW7xNiPI
- Fmy65gX8+pLBAkAhrQSi0q8MMTPLqd7C4x/cvAMw+U1hJuc9SWFPXfG9x
- f6X1imNszm/GnZAfdWtakJjYLuDJ4rtyAziXbBY+yHHQVN1wrC7JrT6Zw
- gEz+qYAxhO0W9eRzyp7WHDw2tXE9pqIiuyPJpc93KGG0YcdXtwrVuop3R
- sLC32LUH7d04lhtKnWvIwAkuLPrrOKjjicNAcWs4lxf8mZaS0eDObTC8B
- 5/XPmYeZi+ULxM2NC+TsSoOEhQtV7c2Kp6dT3yO2eNCGSRzoYszbTOqiu w==;
-X-CSE-ConnectionGUID: rsTQ0is8TsOgmsaHNl5osQ==
-X-CSE-MsgGUID: 0O2nX8+MTpOOlc0D+jh16Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15925566"
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15925566"
+ bh=MXfgIM0tHNqUubJT61VzRUw65ZQ+uB7Y9eRJ9J2jhHg=;
+ b=Au+V8s1pAv5bh7XGDG66SMq70fcBEsqGxOUi1sluhL9ad3UPZnxAkede
+ HMWmz1LTjTEYDrQVkkQ6xtXX4yq2GGRziOeO5pqkQpdEd8a/Te8+38Tee
+ 4HFEcM+xjbyeoMnOjqREgOIxttlVgmAuE0tPsvvQaY75NCzyNvovsgLek
+ QMRNw52lh68whRWItSEo0I2tphLQ9VzDa8SfCpKuTm0cwKVxqZbxWA3Th
+ mCLvNIAOxvGttBKAos4OF719N2N+RpbBegIPErs+gTXFGOFe1KRXjNKmC
+ lx1nDOToNunsv1hr5Cj81PdcYXJv2V1Ptnvf8qGKCL7UfXEF6vGdqJiCd A==;
+X-CSE-ConnectionGUID: e1hNj3aTSXKFjyPri4J2Kg==
+X-CSE-MsgGUID: 9mHcP7npQ9aBtNhALiF5Pg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15925562"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15925562"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 12:53:10 -0700
-X-CSE-ConnectionGUID: GcKHOnb+RxCJZ9lKh43xWg==
-X-CSE-MsgGUID: Eg09F2gIQ3qddjD0zFp9lQ==
+ 21 Jun 2024 12:53:08 -0700
+X-CSE-ConnectionGUID: +PGCdQ4HRVu4wNpcCrTVnA==
+X-CSE-MsgGUID: mgnPWDPoScm1jX7wPOVNBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="73432168"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="73432165"
 Received: from dgramcko-desk.amr.corp.intel.com (HELO gjsousa-mobl2.intel.com)
  ([10.124.221.63])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 12:53:08 -0700
+ 21 Jun 2024 12:53:07 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>
-Subject: [PATCH i-g-t v2 6/7] runner: Use dynamic vector for test argv
-Date: Fri, 21 Jun 2024 16:51:51 -0300
-Message-ID: <20240621195150.390462-9-gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t v2 5/7] igt_hook: Allow multiple hook descriptors
+Date: Fri, 21 Jun 2024 16:51:50 -0300
+Message-ID: <20240621195150.390462-8-gustavo.sousa@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240621195150.390462-1-gustavo.sousa@intel.com>
 References: <20240621195150.390462-1-gustavo.sousa@intel.com>
@@ -70,151 +70,423 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With an upcoming update to allow multiple hook options, we need to allow
-for a dynamicly sized argument vector in execute_test_process(). Do that
-by using a struct igt_vec.
+Extend the current hook functionality to allow using multiple hook
+descriptors. That allows running a test binary like the following:
+
+    my-test --hook pre-subtest:do-something \
+            --hook post-subtest:do-somthing-else
+
+Which is more convenient to the user than having to implement a script
+that checks the value of IGT_HOOK_EVENT environment variable.
+
+Note that we still need to add the same support for igt_runner, which is
+left for a followup change.
 
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- runner/executor.c | 77 +++++++++++++++++++++++------------------------
- 1 file changed, 37 insertions(+), 40 deletions(-)
+ lib/igt_core.c                   | 27 ++++++-----
+ lib/igt_hook.c                   | 77 +++++++++++++++++++++++---------
+ lib/igt_hook.h                   |  3 +-
+ lib/tests/igt_hook.c             | 16 +++++--
+ lib/tests/igt_hook_integration.c | 74 +++++++++++++++++++++++++++---
+ runner/settings.c                |  1 +
+ 6 files changed, 157 insertions(+), 41 deletions(-)
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 92dee6e32f6f..a23cd58c0781 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -31,6 +31,7 @@
- #include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_taints.h"
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 6463a5bdcae5..3764525d4a66 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -78,6 +78,7 @@
+ #include "igt_map.h"
+ #include "igt_device_scan.h"
+ #include "igt_thread.h"
 +#include "igt_vec.h"
- #include "executor.h"
- #include "output_strings.h"
  #include "runnercomms.h"
-@@ -1506,21 +1507,8 @@ execute_test_process(int outfd, int errfd, int socketfd,
- 		     struct settings *settings,
- 		     struct job_list_entry *entry)
- {
--	char *arg0;
--	char *arg_run_subtest[2] = {};
--	char *arg_dyn_subtest[2] = {};
--	char *arg_hook[2] = {};
--	char **argv_refs[] = {
--		&arg0,
--		&arg_run_subtest[0],
--		&arg_run_subtest[1],
--		&arg_dyn_subtest[0],
--		&arg_dyn_subtest[1],
--		&arg_hook[0],
--		&arg_hook[1],
--		NULL,
--	};
--	char *argv[sizeof(argv_refs) / sizeof(argv_refs[0])] = {};
-+	struct igt_vec arg_vec;
-+	char *arg;
- 	size_t rootlen;
  
- 	dup2(outfd, STDOUT_FILENO);
-@@ -1528,32 +1516,31 @@ execute_test_process(int outfd, int errfd, int socketfd,
+ #define UNW_LOCAL_ONLY
+@@ -1115,10 +1116,12 @@ static int common_init(int *argc, char **argv,
+ 	struct option *combined_opts;
+ 	int extra_opt_count;
+ 	int all_opt_count;
++	struct igt_vec hook_strs;
+ 	int ret = 0;
  
- 	setpgid(0, 0);
+ 	common_init_env();
+ 	IGT_INIT_LIST_HEAD(&subgroup_descriptions);
++	igt_vec_init(&hook_strs, sizeof(char *));
  
-+	igt_vec_init(&arg_vec, sizeof(char *));
+ 	command_str = argv[0];
+ 	if (strrchr(command_str, '/'))
+@@ -1241,17 +1244,7 @@ static int common_init(int *argc, char **argv,
+ 			break;
+ 		case OPT_HOOK:
+ 			assert(optarg);
+-			if (igt_hook) {
+-				igt_warn("Overriding previous hook descriptor\n");
+-				igt_hook_free(igt_hook);
+-			}
+-			igt_hook = igt_hook_create(optarg, &ret);
+-			if (!igt_hook) {
+-				igt_critical("Failed to initialize hook data: %s\n",
+-					     igt_hook_error_str(ret));
+-				ret = ret > 0 ? -2 : -3;
+-				goto out;
+-			}
++			igt_vec_push(&hook_strs, &optarg);
+ 			break;
+ 		case OPT_HELP_HOOK:
+ 			igt_hook_print_help(stdout, "--hook");
+@@ -1285,11 +1278,23 @@ static int common_init(int *argc, char **argv,
+ 		}
+ 	}
+ 
++	if (igt_vec_length(&hook_strs)) {
++		igt_hook = igt_hook_create(hook_strs.elems, igt_vec_length(&hook_strs), &ret);
 +
- 	rootlen = strlen(settings->test_root);
--	arg0 = malloc(rootlen + strlen(entry->binary) + 2);
--	strcpy(arg0, settings->test_root);
--	arg0[rootlen] = '/';
--	strcpy(arg0 + rootlen + 1, entry->binary);
-+	arg = malloc(rootlen + strlen(entry->binary) + 2);
-+	strcpy(arg, settings->test_root);
-+	arg[rootlen] = '/';
-+	strcpy(arg + rootlen + 1, entry->binary);
-+	igt_vec_push(&arg_vec, &arg);
++		if (!igt_hook) {
++			igt_critical("Failed to initialize hook data: %s\n",
++				     igt_hook_error_str(ret));
++			ret = ret > 0 ? -2 : -3;
++			goto out;
++		}
++	}
++
+ 	common_init_config();
  
- 	if (entry->subtest_count) {
- 		size_t argsize;
- 		const char *dynbegin;
- 		size_t i;
+ out:
+ 	free(short_opts);
+ 	free(combined_opts);
++	igt_vec_fini(&hook_strs);
  
--		arg_run_subtest[0] = strdup("--run-subtest");
-+		arg = strdup("--run-subtest");
-+		igt_vec_push(&arg_vec, &arg);
+ 	/* exit immediately if this test has no subtests and a subtest or the
+ 	 * list of subtests has been requested */
+diff --git a/lib/igt_hook.c b/lib/igt_hook.c
+index a4421e2b1543..4a7c598e5d43 100644
+--- a/lib/igt_hook.c
++++ b/lib/igt_hook.c
+@@ -36,9 +36,13 @@
  
- 		if ((dynbegin = strchr(entry->subtests[0], '@')) != NULL)
- 			argsize = dynbegin - entry->subtests[0];
- 		else
- 			argsize = strlen(entry->subtests[0]);
+ typedef uint16_t evt_mask_t;
  
--		arg_run_subtest[1] = malloc(argsize + 1);
--		memcpy(arg_run_subtest[1], entry->subtests[0], argsize);
--		arg_run_subtest[1][argsize] = '\0';
--
--		if (dynbegin) {
--			arg_dyn_subtest[0] = strdup("--dynamic-subtest");
--			arg_dyn_subtest[1] = strdup(dynbegin + 1);
--		}
-+		arg = malloc(argsize + 1);
-+		memcpy(arg, entry->subtests[0], argsize);
-+		arg[argsize] = '\0';
+-struct igt_hook {
++struct igt_hook_descriptor {
+ 	evt_mask_t evt_mask;
+ 	char *cmd;
++};
++
++struct igt_hook {
++	struct igt_hook_descriptor *descriptors;
+ 	char *test_name;
+ 	size_t test_name_size;
+ 	char *subtest_name;
+@@ -174,15 +178,16 @@ static void igt_hook_update_test_fullname(struct igt_hook *igt_hook)
  
- 		for (i = 1; i < entry->subtest_count; i++) {
- 			char *sub = entry->subtests[i];
-@@ -1561,32 +1548,42 @@ execute_test_process(int outfd, int errfd, int socketfd,
+ /**
+  * igt_hook_create:
+- * @hook_str: Hook descriptor string.
++ * @hook_str: Array of hook strings.
++ * @n: Number of element in @hook_strs.
+  * @error: Pointer to error number.
+  *
+  * Allocate and initialize an #igt_hook structure.
+  *
+- * This function parses the hook descriptor @hook_str and initializes the struct
+- * to be returned.
++ * This function parses the hook descriptors in @hook_strs and initializes the
++ * struct to be returned.
+  *
+- * The hook descriptor comes from the argument to `--hook` of the test
++ * Each hook descriptor comes from the argument to `--hook` of the test
+  * executable being run.
+  *
+  * If not #NULL, @error is used to store a non-zero error number if an error
+@@ -191,25 +196,41 @@ static void igt_hook_update_test_fullname(struct igt_hook *igt_hook)
+  *
+  * Returns: The pointer to the #igt_hook structure on success or #NULL on error.
+  */
+-struct igt_hook *igt_hook_create(const char *hook_str, int *error)
++struct igt_hook *igt_hook_create(const char **hook_strs, size_t n, int *error)
+ {
+ 	int err;
+-	evt_mask_t evt_mask;
+-	const char *cmd;
++	size_t cmd_buffer_size;
++	char *cmd_buffer;
+ 	struct igt_hook *igt_hook = NULL;
  
- 			assert(dynbegin == NULL);
++	/* Parse hook descriptors the first time to learn the needed size. */
++	cmd_buffer_size = 0;
++	for (size_t i = 0; i < n; i++) {
++		evt_mask_t evt_mask;
++		const char *cmd;
  
--			arg_run_subtest[1] = realloc(arg_run_subtest[1], argsize + sublen + 2);
--			arg_run_subtest[1][argsize] = ',';
--			strcpy(arg_run_subtest[1] + argsize + 1, sub);
-+			arg = realloc(arg, argsize + sublen + 2);
-+			arg[argsize] = ',';
-+			strcpy(arg + argsize + 1, sub);
- 			argsize += sublen + 1;
+-	err = igt_hook_parse_hook_str(hook_str, &evt_mask, &cmd);
+-	if (err)
+-		goto out;
++		err = igt_hook_parse_hook_str(hook_strs[i], &evt_mask, &cmd);
++		if (err)
++			goto out;
+ 
+-	igt_hook = calloc(1, sizeof(*igt_hook));
+-	igt_hook->evt_mask = evt_mask;
++		cmd_buffer_size += strlen(cmd) + 1;
++	}
+ 
+-	igt_hook->cmd = strdup(cmd);
+-	if (!igt_hook->cmd) {
+-		err = -errno;
+-		goto out;
++	igt_hook = calloc(1, (sizeof(*igt_hook) + (n + 1) * sizeof(*igt_hook->descriptors) +
++			      cmd_buffer_size));
++
++	/* Now parse hook descriptors a second time and store the result. */
++	igt_hook->descriptors = (void *)igt_hook + sizeof(*igt_hook);
++	cmd_buffer = (void *)igt_hook->descriptors + (n + 1) * sizeof(*igt_hook->descriptors);
++	for (size_t i = 0; i < n; i++) {
++		evt_mask_t evt_mask;
++		const char *cmd;
++
++		igt_hook_parse_hook_str(hook_strs[i], &evt_mask, &cmd);
++		strcpy(cmd_buffer, cmd);
++		igt_hook->descriptors[i].evt_mask = evt_mask;
++		igt_hook->descriptors[i].cmd = cmd_buffer;
++		cmd_buffer += strlen(cmd) + 1;
+ 	}
+ 
+ 	igt_hook->test_name = malloc(TEST_NAME_INITIAL_SIZE);
+@@ -251,7 +272,6 @@ void igt_hook_free(struct igt_hook *igt_hook)
+ 	if (!igt_hook)
+ 		return;
+ 
+-	free(igt_hook->cmd);
+ 	free(igt_hook->test_name);
+ 	free(igt_hook->subtest_name);
+ 	free(igt_hook->dyn_subtest_name);
+@@ -338,17 +358,29 @@ static void igt_hook_update_env_vars(struct igt_hook *igt_hook, struct igt_hook_
+  */
+ void igt_hook_push_evt(struct igt_hook *igt_hook, struct igt_hook_evt *evt)
+ {
++	bool has_match = false;
+ 	evt_mask_t evt_bit = (1 << evt->evt_type);
+ 
+ 	igt_hook_update_test_name_pre_call(igt_hook, evt);
+ 
+-	if ((evt_bit & igt_hook->evt_mask)) {
++	for (size_t i = 0; igt_hook->descriptors[i].cmd; i++) {
++		if (evt_bit & igt_hook->descriptors[i].evt_mask) {
++			has_match = true;
++			break;
++		}
++	}
++
++	if (has_match) {
+ 		struct igt_helper_process proc = {};
+ 
+ 		igt_fork_helper(&proc) {
+ 			igt_hook_update_env_vars(igt_hook, evt);
+-			system(igt_hook->cmd);
++
++			for (size_t i = 0; igt_hook->descriptors[i].cmd; i++)
++				if (evt_bit & igt_hook->descriptors[i].evt_mask)
++					system(igt_hook->descriptors[i].cmd);
  		}
 +
-+		igt_vec_push(&arg_vec, &arg);
-+
-+		if (dynbegin) {
-+			arg = strdup("--dynamic-subtest");
-+			igt_vec_push(&arg_vec, &arg);
-+			arg = strdup(dynbegin + 1);
-+			igt_vec_push(&arg_vec, &arg);
-+		}
+ 		igt_wait_helper(&proc);
  	}
  
- 	if (settings->hook_str) {
--		arg_hook[0] = strdup("--hook");
--		arg_hook[1] = strdup(settings->hook_str);
-+		arg = strdup("--hook");
-+		igt_vec_push(&arg_vec, &arg);
-+		arg = strdup(settings->hook_str);
-+		igt_vec_push(&arg_vec, &arg);
- 	}
+@@ -485,5 +517,8 @@ available to the command:\n\
+   values are: SUCCESS, SKIP or FAIL. This is only applicable on \"post-*\"\n\
+   events and will be the empty string for other types of events.\n\
+ \n\
+-");
++\n\
++Note that %s can be passed multiple times. Each descriptor is evaluated in turn\n\
++when matching events and running hook commands.\n\
++", option_name);
+ }
+diff --git a/lib/igt_hook.h b/lib/igt_hook.h
+index a7b67837e5a4..e5b57260e3cb 100644
+--- a/lib/igt_hook.h
++++ b/lib/igt_hook.h
+@@ -6,6 +6,7 @@
+ #ifndef IGT_HOOK_H
+ #define IGT_HOOK_H
  
--	/* Build argv with only stuff that is set. */
--	for (size_t i = 0, j = 0; argv_refs[i]; i++)
--		if (*argv_refs[i])
--			argv[j++] = *argv_refs[i];
-+	arg = NULL;
-+	igt_vec_push(&arg_vec, &arg);
++#include <stddef.h>
+ #include <stdio.h>
  
- 	if (socketfd >= 0) {
- 		struct runnerpacket *packet;
+ /**
+@@ -60,7 +61,7 @@ struct igt_hook_evt {
+ 	const char *result;
+ };
  
--		packet = runnerpacket_exec(argv);
-+		packet = runnerpacket_exec(arg_vec.elems);
- 		write(socketfd, packet, packet->size);
- 	}
- 
--	execv(argv[0], argv);
--	fprintf(stderr, "Cannot execute %s\n", argv[0]);
-+	arg = *((char **)igt_vec_elem(&arg_vec, 0));
-+	execv(arg, arg_vec.elems);
-+	fprintf(stderr, "Cannot execute %s\n", arg);
- 	exit(IGT_EXIT_INVALID);
+-struct igt_hook *igt_hook_create(const char *hook_str, int *error);
++struct igt_hook *igt_hook_create(const char **hook_strs, size_t n, int *error);
+ void igt_hook_free(struct igt_hook *igt_hook);
+ void igt_hook_push_evt(struct igt_hook *igt_hook, struct igt_hook_evt *evt);
+ const char *igt_hook_error_str(int error);
+diff --git a/lib/tests/igt_hook.c b/lib/tests/igt_hook.c
+index c8a93952abed..a2def893d7f7 100644
+--- a/lib/tests/igt_hook.c
++++ b/lib/tests/igt_hook.c
+@@ -42,12 +42,22 @@ out:
+ 	return i;
  }
  
++
++static struct igt_hook *igt_single_hook(const char *hook_str, int *error)
++{
++	const char *hook_strs[] = {
++		hook_str,
++	};
++
++	return igt_hook_create(hook_strs, 1, error);
++}
++
+ static void test_null_error_pointer(void)
+ {
+ 	struct igt_hook *igt_hook;
+ 
+ 	/* Ensure passing NULL error pointer does not cause issues. */
+-	igt_hook = igt_hook_create("invalid:echo hello", NULL);
++	igt_hook = igt_single_hook("invalid:echo hello", NULL);
+ 	igt_assert(igt_hook == NULL);
+ }
+ 
+@@ -68,7 +78,7 @@ static void test_invalid_hook_descriptors(void)
+ 			int err = 0;
+ 			struct igt_hook *igt_hook;
+ 
+-			igt_hook = igt_hook_create(invalid_cases[i].hook_desc, &err);
++			igt_hook = igt_single_hook(invalid_cases[i].hook_desc, &err);
+ 			igt_assert(igt_hook == NULL);
+ 			igt_assert(err != 0);
+ 		}
+@@ -122,7 +132,7 @@ static void test_all_env_vars(void)
+ 	ret = asprintf(&hook_str, "printenv -0 | grep -z ^IGT_HOOK >&%d", pipefd[1]);
+ 	igt_assert(ret > 0);
+ 
+-	igt_hook = igt_hook_create(hook_str, NULL);
++	igt_hook = igt_single_hook(hook_str, NULL);
+ 	igt_assert(igt_hook);
+ 
+ 	igt_hook_push_evt(igt_hook, &evt);
+diff --git a/lib/tests/igt_hook_integration.c b/lib/tests/igt_hook_integration.c
+index c552d5a4e796..8dffa0819f9b 100644
+--- a/lib/tests/igt_hook_integration.c
++++ b/lib/tests/igt_hook_integration.c
+@@ -215,6 +215,14 @@ out:
+ 	return true;
+ }
+ 
++
++#define checked_snprintf(char_array, format...) \
++	({\
++		int ret__ = snprintf(char_array, sizeof(char_array), format); \
++		internal_assert(0 < ret__ && ret__ < sizeof(char_array)); \
++		ret__; \
++	})
++
+ static void run_tests_and_match_env(const char *evt_descriptors, const char **expected_envs[])
+ {
+ 	int i;
+@@ -230,11 +238,9 @@ static void run_tests_and_match_env(const char *evt_descriptors, const char **ex
+ 	/* Use grep to filter only env var set by us. This should ensure that
+ 	 * writing to the pipe will not block due to capacity, since we only
+ 	 * read from the pipe after the shell command is done. */
+-	ret = snprintf(hook_str, sizeof(hook_str),
+-		     "%1$s:printenv -0 | grep -z ^IGT_HOOK >&%2$d; printf -- ---\\\\00 >&%2$d",
+-		     evt_descriptors,
+-		     pipefd[1]);
+-	internal_assert(0 < ret && ret < sizeof(hook_str));
++	checked_snprintf(hook_str,
++			 "%1$s:printenv -0 | grep -z ^IGT_HOOK >&%2$d; printf -- ---\\\\00 >&%2$d",
++			 evt_descriptors, pipefd[1]);
+ 
+ 	set_fake_argv("igt_hook_integration", "--hook", hook_str, NULL);
+ 
+@@ -254,6 +260,59 @@ static void run_tests_and_match_env(const char *evt_descriptors, const char **ex
+ 
+ }
+ 
++static void test_multiple_hook_options(void)
++{
++	int ret;
++	int pipefd[2];
++	pid_t pid;
++	char hook_strs[3][128];
++	char hook_out[4096] = {};
++	char expected_output[] = (
++		"  hook-2 pre-subtest igt@igt_hook_integration@a\n"
++		"  hook-0 post-subtest igt@igt_hook_integration@a\n"
++		"  hook-1 post-subtest igt@igt_hook_integration@a\n"
++		"  hook-2 pre-subtest igt@igt_hook_integration@b\n"
++		"  hook-0 post-subtest igt@igt_hook_integration@b\n"
++		"  hook-1 post-subtest igt@igt_hook_integration@b\n"
++		"  hook-0 post-test igt@igt_hook_integration\n"
++	);
++
++	ret = pipe(pipefd);
++	internal_assert(ret == 0);
++
++	checked_snprintf(hook_strs[0],
++			 "post-test,post-subtest:echo '  hook-0' $IGT_HOOK_EVENT $IGT_HOOK_TEST_FULLNAME >&%d",
++			 pipefd[1]);
++
++	checked_snprintf(hook_strs[1],
++			 "post-subtest:echo '  hook-1' $IGT_HOOK_EVENT $IGT_HOOK_TEST_FULLNAME >&%d",
++			 pipefd[1]);
++
++	checked_snprintf(hook_strs[2],
++			 "pre-subtest:echo '  hook-2' $IGT_HOOK_EVENT $IGT_HOOK_TEST_FULLNAME >&%d",
++			 pipefd[1]);
++
++	set_fake_argv("igt_hook_integration",
++		      "--hook", hook_strs[0],
++		      "--hook", hook_strs[1],
++		      "--hook", hook_strs[2],
++		      NULL);
++
++	pid = do_fork_bg_with_pipes(fake_main, NULL, NULL);
++	internal_assert(safe_wait(pid, &ret) != -1);
++	internal_assert_wexited(ret, IGT_EXIT_FAILURE);
++
++	close(pipefd[1]);
++	read_whole_pipe(pipefd[0], hook_out, sizeof(hook_out));
++	close(pipefd[0]);
++
++	if (strcmp(hook_out, expected_output)) {
++		printf("Expected output:\n%s\n\n", expected_output);
++		printf("Output from hook:\n%s\n", hook_out);
++	}
++	internal_assert(strcmp(hook_out, expected_output) == 0);
++}
++
+ int main(int argc, char **argv)
+ {
+ 	{
+@@ -307,4 +366,9 @@ int main(int argc, char **argv)
+ 		printf("Check multiple event types tracking\n");
+ 		run_tests_and_match_env("post-dyn-subtest,pre-subtest", expected_envs);
+ 	}
++
++	{
++		printf("Check multiple hook options\n");
++		test_multiple_hook_options();
++	}
+ }
+diff --git a/runner/settings.c b/runner/settings.c
+index e554a5c70776..6fd742cc826d 100644
+--- a/runner/settings.c
++++ b/runner/settings.c
+@@ -758,6 +758,7 @@ bool parse_options(int argc, char **argv,
+ 				fprintf(stderr, "Newlines in --hook are currently unsupported.\n");
+ 				goto error;
+ 			}
++			/* FIXME: Allow as many options as allowed by test binaries. */
+ 			settings->hook_str = optarg;
+ 			break;
+ 		case OPT_HELP_HOOK:
 -- 
 2.45.2
 
