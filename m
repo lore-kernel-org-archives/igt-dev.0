@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5458C2BB85
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 19:53:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05E4FC27C4F
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Jun 2024 19:53:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CE7910E12C;
-	Fri, 21 Jun 2024 19:53:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6431D10E15E;
+	Fri, 21 Jun 2024 19:53:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l/fSpzqk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G3qrawwT";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CDC3410E12C
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 19:53:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7079D10E15E
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Jun 2024 19:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718999585; x=1750535585;
+ t=1718999587; x=1750535587;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=jSKYUMCBewf/+myX5XeW0l5F8WW7uxjXqE5XAupvQTY=;
- b=l/fSpzqkaIqkhGh0JBaGxzPXOkCEKIVmjYSyhaYATZ/3b/0fwsxpknMj
- eSd1A9pTSQ+bvEmxd3o2jiqidv3wht7TG6d//uCziIYNymthqXRGXvzRs
- tZgyoaFN6Hda4aJTYGDDiTijq6VWV5yqDKtsMXMEpzhRr+GtUPWljVNLf
- CD0zjw8JkrYiXHlKilkUSm1TMrCU9qBrBkfpofa0GJbcKz8fMkByPb32k
- cLzbs6yqGN1f1zIbNgVKt+3C78P9Wu5FvDsDY3kiuEX5dM76aJUNYqnLF
- 7pn7dkBJWJTcDURG9zV1VXovVD4KtWurgxoDjibnf4Hg9fX9SHG+3r5dJ Q==;
-X-CSE-ConnectionGUID: OkE/JUO0SOKGYexbaLEuKA==
-X-CSE-MsgGUID: VCVi9oD+TwqG57bJEqnNrw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15925557"
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15925557"
+ bh=kq8pxNQFjARl5IPVgceKhj4pQqI/oh6iXS0vSK5N7J8=;
+ b=G3qrawwTfyGFj4m9W/lwhpEoUQ6U5ZGfux6LeDY8AZi0zZYvrYAluidR
+ RMpWE1i6PxAKzCJHR6Hafw/JBea1j8dXLb5crXBfA19jyM7eDFhWSAg2A
+ PssX+l6uUM8FRL8LDP6cLCY4GRm0L34xPNHDR8wZY4VoieTFrupa//Fu4
+ +Dp8b1JqcqvEqgQNDn2xmMCLwusJralzjhvD51Oe2rz4hT3ki72YIYvHF
+ Qulwaffl/dvYIubU0sYXLvJHj/j+7A+SsIm1XJQefV1++gQuxi0/Gk3o2
+ GOrsXjpdYmwWgpXJpAmK9W2mcMuNIGAGs5Ve/zudkU4MfJD5GfFx5thbA g==;
+X-CSE-ConnectionGUID: VIRlEBThTdi3cMn5iNvJ8g==
+X-CSE-MsgGUID: WiNa4ldRR8GkUZpDqAeVKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11110"; a="15925560"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="15925560"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 12:53:05 -0700
-X-CSE-ConnectionGUID: vA1pOH4aRJG0lQC1hVaIJQ==
-X-CSE-MsgGUID: ijAmA3RwQqitQN4Uv/0mfw==
+ 21 Jun 2024 12:53:06 -0700
+X-CSE-ConnectionGUID: mm6qQWbBRDmFafxHgQtchA==
+X-CSE-MsgGUID: XJ6dn2nkRzGOT18B4A8DrA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="73432158"
+X-IronPort-AV: E=Sophos;i="6.08,255,1712646000"; d="scan'208";a="73432161"
 Received: from dgramcko-desk.amr.corp.intel.com (HELO gjsousa-mobl2.intel.com)
  ([10.124.221.63])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jun 2024 12:53:03 -0700
+ 21 Jun 2024 12:53:05 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>
-Subject: [PATCH i-g-t v2 3/7] runner: Add option --hook
-Date: Fri, 21 Jun 2024 16:51:48 -0300
-Message-ID: <20240621195150.390462-6-gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t v2 4/7] igt_hook: Implement and use set_fake_argv() in
+ test
+Date: Fri, 21 Jun 2024 16:51:49 -0300
+Message-ID: <20240621195150.390462-7-gustavo.sousa@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240621195150.390462-1-gustavo.sousa@intel.com>
 References: <20240621195150.390462-1-gustavo.sousa@intel.com>
@@ -70,181 +71,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Now that we have support for setting a hook script for test cases, let's
-also add the option --hook to igt_runner, which forwards it to test
-executables.
+In upcoming changes, fake_argv will need to allow a variable number of
+elements. As such, implement the variadic function set_fake_argv() to
+allow that.
 
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- runner/executor.c     |  8 ++++++++
- runner/runner_tests.c |  5 +++++
- runner/settings.c     | 25 ++++++++++++++++++++++++-
- runner/settings.h     |  1 +
- 4 files changed, 38 insertions(+), 1 deletion(-)
+ lib/tests/igt_hook_integration.c | 49 +++++++++++++++++++++++++-------
+ 1 file changed, 39 insertions(+), 10 deletions(-)
 
-diff --git a/runner/executor.c b/runner/executor.c
-index e9b037ebcaf9..92dee6e32f6f 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -1509,12 +1509,15 @@ execute_test_process(int outfd, int errfd, int socketfd,
- 	char *arg0;
- 	char *arg_run_subtest[2] = {};
- 	char *arg_dyn_subtest[2] = {};
-+	char *arg_hook[2] = {};
- 	char **argv_refs[] = {
- 		&arg0,
- 		&arg_run_subtest[0],
- 		&arg_run_subtest[1],
- 		&arg_dyn_subtest[0],
- 		&arg_dyn_subtest[1],
-+		&arg_hook[0],
-+		&arg_hook[1],
- 		NULL,
- 	};
- 	char *argv[sizeof(argv_refs) / sizeof(argv_refs[0])] = {};
-@@ -1565,6 +1568,11 @@ execute_test_process(int outfd, int errfd, int socketfd,
- 		}
- 	}
+diff --git a/lib/tests/igt_hook_integration.c b/lib/tests/igt_hook_integration.c
+index f5ba25e92897..c552d5a4e796 100644
+--- a/lib/tests/igt_hook_integration.c
++++ b/lib/tests/igt_hook_integration.c
+@@ -3,6 +3,7 @@
+  * Copyright(c) 2024 Intel Corporation. All rights reserved.
+  */
  
-+	if (settings->hook_str) {
-+		arg_hook[0] = strdup("--hook");
-+		arg_hook[1] = strdup(settings->hook_str);
++#include <stdarg.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -11,11 +12,9 @@
+ 
+ #include "igt_tests_common.h"
+ 
+-char prog[] = "igt_hook_integration";
+-char hook_opt[] = "--hook";
+-char hook_str[128];
+-char *fake_argv[] = {prog, hook_opt, hook_str};
+-int fake_argc = sizeof(fake_argv) / sizeof(fake_argv[0]);
++char fake_argv_buffer[1024];
++char *fake_argv[64];
++int fake_argc;
+ 
+ #define ENV_ARRAY(evt_name, fullname_suffix, subtest, dyn_subtest, result) \
+ { \
+@@ -51,6 +50,32 @@ const char *post_test_env[] = TEST_ENV("post-test", "FAIL");
+ 
+ #define num_env_vars (sizeof(pre_test_env) / sizeof(pre_test_env[0]))
+ 
++static void set_fake_argv(const char *arg0, ...)
++{
++	va_list ap;
++	const char *arg;
++	size_t buf_size;
++
++	fake_argc = 0;
++	buf_size = 0;
++
++	va_start(ap, arg0);
++
++	arg = arg0;
++	while (arg != NULL) {
++		internal_assert(buf_size + strlen(arg) < sizeof(fake_argv_buffer));
++		internal_assert((size_t)fake_argc < sizeof(fake_argv) / sizeof(fake_argv[0]));
++
++		strcpy(fake_argv_buffer + buf_size, arg);
++		fake_argv[fake_argc++] = fake_argv_buffer + buf_size;
++		buf_size += strlen(arg) + 1;
++
++		arg = va_arg(ap, typeof(arg));
 +	}
 +
- 	/* Build argv with only stuff that is set. */
- 	for (size_t i = 0, j = 0; argv_refs[i]; i++)
- 		if (*argv_refs[i])
-diff --git a/runner/runner_tests.c b/runner/runner_tests.c
-index 0aa7dd6626b7..7470cc24052f 100644
---- a/runner/runner_tests.c
-+++ b/runner/runner_tests.c
-@@ -202,6 +202,7 @@ static void assert_settings_equal(struct settings *one, struct settings *two)
- 	igt_assert_eq(one->piglit_style_dmesg, two->piglit_style_dmesg);
- 	igt_assert_eq(one->dmesg_warn_level, two->dmesg_warn_level);
- 	igt_assert_eq(one->prune_mode, two->prune_mode);
-+	igt_assert_eqstr(one->hook_str, two->hook_str);
- }
++	va_end(ap);
++}
++
+ __noreturn static void fake_main(void)
+ {
+ 	igt_subtest_init(fake_argc, fake_argv);
+@@ -85,7 +110,7 @@ static void test_invalid_hook_str(void)
+ 	static char err[4096];
+ 	int errfd;
  
- static void assert_job_list_equal(struct job_list *one, struct job_list *two)
-@@ -302,6 +303,7 @@ igt_main
- 		igt_assert_eq(settings->overall_timeout, 0);
- 		igt_assert(!settings->use_watchdog);
- 		igt_assert_eq(settings->prune_mode, 0);
-+		igt_assert(!settings->hook_str);
- 		igt_assert(strstr(settings->test_root, "test-root-dir") != NULL);
- 		igt_assert(strstr(settings->results_path, "path-to-results") != NULL);
+-	sprintf(hook_str, "invalid-event:echo hello");
++	set_fake_argv("igt_hook_integration", "--hook", "invalid-event:echo hello", NULL);
  
-@@ -464,6 +466,7 @@ igt_main
- 				       "--collect-code-cov",
- 				       "--coverage-per-test",
- 				       "--collect-script", "/usr/bin/true",
-+				       "--hook", "echo hello",
- 				       "--prune-mode=keep-subtests",
- 				       "test-root-dir",
- 				       "path-to-results",
-@@ -511,6 +514,7 @@ igt_main
- 		igt_assert_eq(settings->per_test_timeout, 72);
- 		igt_assert_eq(settings->overall_timeout, 360);
- 		igt_assert(settings->use_watchdog);
-+		igt_assert_eqstr(settings->hook_str, "echo hello");
- 		igt_assert_eq(settings->prune_mode, PRUNE_KEEP_SUBTESTS);
- 		igt_assert(strstr(settings->test_root, "test-root-dir") != NULL);
- 		igt_assert(strstr(settings->results_path, "path-to-results") != NULL);
-@@ -961,6 +965,7 @@ igt_main
- 					       "--use-watchdog",
- 					       "--piglit-style-dmesg",
- 					       "--prune-mode=keep-all",
-+					       "--hook", "echo hello",
- 					       testdatadir,
- 					       dirname,
- 			};
-diff --git a/runner/settings.c b/runner/settings.c
-index 42d8137f18e9..e554a5c70776 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -1,3 +1,4 @@
-+#include "igt_hook.h"
- #include "settings.h"
- #include "version.h"
+ 	pid = do_fork_bg_with_pipes(fake_main, NULL, &errfd);
  
-@@ -28,6 +29,8 @@ enum {
- 	OPT_CODE_COV_SCRIPT,
- 	OPT_ENABLE_CODE_COVERAGE,
- 	OPT_COV_RESULTS_PER_TEST,
-+	OPT_HOOK,
-+	OPT_HELP_HOOK,
- 	OPT_VERSION,
- 	OPT_PRUNE_MODE,
- 	OPT_HELP = 'h',
-@@ -297,6 +300,10 @@ static const char *usage_str =
- 	"                        Requires --collect-script FILENAME\n"
- 	"  --collect-script FILENAME\n"
- 	"                        Use FILENAME as script to collect code coverage data.\n"
-+	"  --hook HOOK_STR\n"
-+	"                        Forward HOOK_STR to the --hook option of each test.\n"
-+	"  --help-hook\n"
-+	"                        Show detailed usage information for --hook.\n"
- 	"\n"
- 	"  [test_root]           Directory that contains the IGT tests. The environment\n"
- 	"                        variable IGT_TEST_ROOT will be used if set, overriding\n"
-@@ -654,6 +661,8 @@ bool parse_options(int argc, char **argv,
- 		{"collect-code-cov", no_argument, NULL, OPT_ENABLE_CODE_COVERAGE},
- 		{"coverage-per-test", no_argument, NULL, OPT_COV_RESULTS_PER_TEST},
- 		{"collect-script", required_argument, NULL, OPT_CODE_COV_SCRIPT},
-+		{"hook", required_argument, NULL, OPT_HOOK},
-+		{"help-hook", no_argument, NULL, OPT_HELP_HOOK},
- 		{"multiple-mode", no_argument, NULL, OPT_MULTIPLE},
- 		{"inactivity-timeout", required_argument, NULL, OPT_TIMEOUT},
- 		{"per-test-timeout", required_argument, NULL, OPT_PER_TEST_TIMEOUT},
-@@ -741,7 +750,19 @@ bool parse_options(int argc, char **argv,
- 		case OPT_CODE_COV_SCRIPT:
- 			settings->code_coverage_script = bin_path(optarg);
- 			break;
--
-+		case OPT_HOOK:
-+			/* FIXME: In order to allow line breaks, we should
-+			 * change the format of settings serialization. Maybe
-+			 * use JSON instead of our own format? */
-+			if (strchr(optarg, '\n')) {
-+				fprintf(stderr, "Newlines in --hook are currently unsupported.\n");
-+				goto error;
-+			}
-+			settings->hook_str = optarg;
-+			break;
-+		case OPT_HELP_HOOK:
-+			igt_hook_print_help(stdout, "--hook");
-+			goto error;
- 		case OPT_MULTIPLE:
- 			settings->multiple_mode = true;
- 			break;
-@@ -1040,6 +1061,7 @@ bool serialize_settings(struct settings *settings)
- 	SERIALIZE_LINE(f, settings, enable_code_coverage, "%d");
- 	SERIALIZE_LINE(f, settings, cov_results_per_test, "%d");
- 	SERIALIZE_LINE(f, settings, code_coverage_script, "%s");
-+	SERIALIZE_LINE(f, settings, hook_str, "%s");
+@@ -196,6 +221,7 @@ static void run_tests_and_match_env(const char *evt_descriptors, const char **ex
+ 	int ret;
+ 	int pipefd[2];
+ 	pid_t pid;
++	char hook_str[128];
+ 	FILE *f;
  
- 	if (settings->sync) {
- 		fflush(f);
-@@ -1103,6 +1125,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_LINE(settings, name, val, enable_code_coverage, numval);
- 		PARSE_LINE(settings, name, val, cov_results_per_test, numval);
- 		PARSE_LINE(settings, name, val, code_coverage_script, val ? strdup(val) : NULL);
-+		PARSE_LINE(settings, name, val, hook_str, val ? strdup(val) : NULL);
+ 	ret = pipe(pipefd);
+@@ -204,10 +230,13 @@ static void run_tests_and_match_env(const char *evt_descriptors, const char **ex
+ 	/* Use grep to filter only env var set by us. This should ensure that
+ 	 * writing to the pipe will not block due to capacity, since we only
+ 	 * read from the pipe after the shell command is done. */
+-	sprintf(hook_str,
+-		"%1$s:printenv -0 | grep -z ^IGT_HOOK >&%2$d; printf -- ---\\\\00 >&%2$d",
+-		evt_descriptors,
+-		pipefd[1]);
++	ret = snprintf(hook_str, sizeof(hook_str),
++		     "%1$s:printenv -0 | grep -z ^IGT_HOOK >&%2$d; printf -- ---\\\\00 >&%2$d",
++		     evt_descriptors,
++		     pipefd[1]);
++	internal_assert(0 < ret && ret < sizeof(hook_str));
++
++	set_fake_argv("igt_hook_integration", "--hook", hook_str, NULL);
  
- 		printf("Warning: Unknown field in settings file: %s = %s\n",
- 		       name, val);
-diff --git a/runner/settings.h b/runner/settings.h
-index 819c346027ed..d3afb56de039 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -72,6 +72,7 @@ struct settings {
- 	char *code_coverage_script;
- 	bool enable_code_coverage;
- 	bool cov_results_per_test;
-+	char *hook_str;
- };
- 
- /**
+ 	pid = do_fork_bg_with_pipes(fake_main, NULL, NULL);
+ 	internal_assert(safe_wait(pid, &ret) != -1);
 -- 
 2.45.2
 
