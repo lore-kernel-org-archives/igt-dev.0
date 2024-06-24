@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802C2C2BD05
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 09:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 857BDC2D0D1
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 09:17:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2193110E3C5;
-	Mon, 24 Jun 2024 09:11:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 38E9610E3C6;
+	Mon, 24 Jun 2024 09:17:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jAjmw7qX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CHY2reqJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E4E010E3C5
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jun 2024 09:11:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D076010E3C6
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jun 2024 09:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719220264; x=1750756264;
+ t=1719220655; x=1750756655;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0sk/g2kUEbopLl9ByaziSjpfV/WGSE0cx+sfBs9pCOk=;
- b=jAjmw7qXwT8BBfeDSZhcQpAFqTIk+JaQgZHda7IcOqiJ83lI+64WweAf
- sOTXNheJxmpUuu5zgQagv4RNXtrdmay/ai6bI5S3s4tShBZuuHCdtgiI1
- Fqm03XlAA/d47h8hxJz9APRZnZMgics9hjTVanc3WMxs4YgpUNDW//gdu
- +xZ/b21w+5Dv8lSaYETobkgcOmiAwiPtqHY/6eabZ8/ZU+u5FE1Qzil/5
- balpBjY11xoE0icEMu3kf+xCAAzaID7aKRH0A2eM8HNQZmd7z9aJSvxyR
- CQl/oKk0vJm3kviPxtPBLtIjoyuxHeWLHPh+dt/zV62KICC8Cpbwl6vmi g==;
-X-CSE-ConnectionGUID: zew4wj3rSj+ecu3eGioLTQ==
-X-CSE-MsgGUID: WgS9pjoHRI+Gv+rCLV6BPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="12209404"
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="12209404"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 02:11:04 -0700
-X-CSE-ConnectionGUID: xxxLrbBsSlCi+P8mvXYIig==
-X-CSE-MsgGUID: fvYuMbGGTJ6r4UiBdrtHnw==
+ bh=eTSiLJN1+4XgE0YOM+0dmQl9mZq+gpQLe2exgcaxR8I=;
+ b=CHY2reqJtGo5dBdC+g0Fs42zh2NCm6Xcu8yluoHEBVplvujcXstBG8/C
+ 3mHSnOKD640NECLd8dqkLezCTGnZpPWuG6hXH0dLIYNs86mZicBIkEBZy
+ JDpClBouC2m+6tq3OKDEZ/wZb8PdDi5JukcgmLEQfLxtWplUnV7oto/w0
+ ZB/m/iRAGj/GXzLuQaCp4QcpE4JRDS/iOj+IrOTzznSBTzMx4RTqqObR7
+ IlVY1mq4bwLi4NjyKQAVmJ5LXuRHh5EfmL100zmnCqIifTznhemXtE3PR
+ B5CYM0K12VnzusXRNnYyrNE6Ef4fhcqvVBgqmlMCVCQaW6w8yBzOO7Uo9 g==;
+X-CSE-ConnectionGUID: 3+7dRscLRpWnLYDUMeozqA==
+X-CSE-MsgGUID: 5CVFz56yQ3i7Oi48HHDgBg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="26771089"
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="26771089"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2024 02:17:35 -0700
+X-CSE-ConnectionGUID: cO+8IZMuQJGJNWqQUknMuw==
+X-CSE-MsgGUID: 5nEfLs0sQhacq5guwvkr7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="47692203"
-Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 02:11:03 -0700
-From: Jeevan B <jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="43353951"
+Received: from melanie-nuc10i7fnh.iind.intel.com ([10.223.167.49])
+ by fmviesa010.fm.intel.com with ESMTP; 24 Jun 2024 02:17:31 -0700
+From: Melanie Lobo <melanie.lobo@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jouni.hogander@intel.com, kamil.konieczny@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/kms_psr2_sf: Add checks for early
- transport
-Date: Mon, 24 Jun 2024 14:49:43 +0530
-Message-Id: <20240624091943.1583273-3-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240624091943.1583273-1-jeevan.b@intel.com>
-References: <20240624091943.1583273-1-jeevan.b@intel.com>
+Cc: juha-pekka.heikkila@intel.com, vidya.srinivas@intel.com,
+ ville.syrjala@intel.com, Melanie Lobo <melanie.lobo@intel.com>
+Subject: [PATCH 0/2] Support for RGB16161616_64B compressed formats
+Date: Mon, 24 Jun 2024 20:12:46 +0530
+Message-Id: <20240624144248.216308-1-melanie.lobo@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240603081607.30930-1-melanie.lobo@intel.com>
+References: <20240603081607.30930-1-melanie.lobo@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,61 +67,18 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add checks weather early transport if supported then
-we check if early trasport is working.
+Support XRGB16161616_64B and ARGB16161616_64B compressed formats
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/intel/kms_psr2_sf.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+Melanie Lobo (2):
+  lib/intel_aux_pgtable: Library to add support for RGB16161616_64B
+    format
+  tests/intel/kms_flip_scaled_crc: Add support for RGB16161616_64B
+    compressed formats
 
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 4c3e34aa0..e612b8266 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -168,6 +168,7 @@ typedef struct {
- 	igt_plane_t *test_plane;
- 	bool big_fb_test;
- 	bool fbc_flag;
-+	bool et_flag;
- 	cairo_t *cr;
- 	uint32_t screen_changes;
- 	int cur_x, cur_y;
-@@ -184,11 +185,23 @@ static bool set_sel_fetch_mode_for_output(data_t *data)
- {
- 	bool supported = false;
- 
-+	data->et_flag = false;
-+
- 	if (psr_sink_support(data->drm_fd, data->debugfs_fd,
--						 PR_MODE_SEL_FETCH, data->output)) {
-+						 PR_MODE_SEL_FETCH_ET, data->output)) {
-+		supported = true;
-+		data->psr_mode = PR_MODE_SEL_FETCH;
-+		data->et_flag = true;
-+	} else if (psr_sink_support(data->drm_fd, data->debugfs_fd,
-+							PR_MODE_SEL_FETCH, data->output)) {
- 		supported = true;
- 		data->psr_mode = PR_MODE_SEL_FETCH;
- 	} else if (psr_sink_support(data->drm_fd, data->debugfs_fd,
-+							PSR_MODE_2_ET, data->output)) {
-+		supported = true;
-+		data->psr_mode = PSR_MODE_2;
-+		data->et_flag = true;
-+	} else	if (psr_sink_support(data->drm_fd, data->debugfs_fd,
- 							  PSR_MODE_2, data->output)) {
- 		supported = true;
- 		data->psr_mode = PSR_MODE_2;
-@@ -916,6 +929,9 @@ static void run(data_t *data)
- 		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
- 							  data->pipe),
- 							  "FBC still disabled\n");
-+	if (data->et_flag)
-+		igt_assert_f(early_transport_check(data->debugfs_fd),
-+			     "Early Trasport Disbaled\n");
- 
- 	data->screen_changes = 0;
- 
+ lib/intel_aux_pgtable.c           |  5 ++++
+ tests/intel/kms_flip_scaled_crc.c | 39 +++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
+
 -- 
-2.25.1
+2.34.1
 
