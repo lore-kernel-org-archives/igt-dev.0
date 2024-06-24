@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E802EC2BD05
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 09:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 802C2C2BD05
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 09:11:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A84A10E3C4;
-	Mon, 24 Jun 2024 09:11:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2193110E3C5;
+	Mon, 24 Jun 2024 09:11:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fOWCLLqW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jAjmw7qX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9519410E3C5
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Jun 2024 09:11:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E4E010E3C5
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jun 2024 09:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719220261; x=1750756261;
+ t=1719220264; x=1750756264;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iHw6rdKrKDUnUkiDah5RcLeek6NYgr4DSFl+GydAUlc=;
- b=fOWCLLqWC8Lf+tviPhEdrKSu/YV5S1g3DCnMm8ecZCs7uiiLxqCG3aLm
- oifpKs50i0JqEUtlPSlcWKAYWQxWzAZiRGYjFvGElskDEjE+oDW7wqgPk
- Mc1ox5OQ52peQC83xge3EO6aVZgHmE5XjuMxNox/D7WJ+AsD4y56YN8CK
- C3El1ZQtppQ6Xe/EsBRpeM5n76Ku/LzkGp75SzAuu4RPBUAXs2sm6ZIv7
- oL1sVim7JEnbfyCpgeA02kwlGTRZAR9o73S0qgWsw8yITBesUpbdGicmc
- RsTnMluFDmRZ4VDsgrpcPSqAP27svDpZ544tsBnZAqsQn0tceqLOaPpLU Q==;
-X-CSE-ConnectionGUID: sfUOks2lThGR/BZyhLynUQ==
-X-CSE-MsgGUID: FrILt7DATnKnr5qS1iaqDQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="12209403"
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="12209403"
+ bh=0sk/g2kUEbopLl9ByaziSjpfV/WGSE0cx+sfBs9pCOk=;
+ b=jAjmw7qXwT8BBfeDSZhcQpAFqTIk+JaQgZHda7IcOqiJ83lI+64WweAf
+ sOTXNheJxmpUuu5zgQagv4RNXtrdmay/ai6bI5S3s4tShBZuuHCdtgiI1
+ Fqm03XlAA/d47h8hxJz9APRZnZMgics9hjTVanc3WMxs4YgpUNDW//gdu
+ +xZ/b21w+5Dv8lSaYETobkgcOmiAwiPtqHY/6eabZ8/ZU+u5FE1Qzil/5
+ balpBjY11xoE0icEMu3kf+xCAAzaID7aKRH0A2eM8HNQZmd7z9aJSvxyR
+ CQl/oKk0vJm3kviPxtPBLtIjoyuxHeWLHPh+dt/zV62KICC8Cpbwl6vmi g==;
+X-CSE-ConnectionGUID: zew4wj3rSj+ecu3eGioLTQ==
+X-CSE-MsgGUID: WgS9pjoHRI+Gv+rCLV6BPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11112"; a="12209404"
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="12209404"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 02:11:01 -0700
-X-CSE-ConnectionGUID: xszf2gv+TKOfIgz+JiuxTw==
-X-CSE-MsgGUID: T+LzsUJATPC2ru4r/0vfZQ==
+ 24 Jun 2024 02:11:04 -0700
+X-CSE-ConnectionGUID: xxxLrbBsSlCi+P8mvXYIig==
+X-CSE-MsgGUID: fvYuMbGGTJ6r4UiBdrtHnw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="47692155"
+X-IronPort-AV: E=Sophos;i="6.08,261,1712646000"; d="scan'208";a="47692203"
 Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 02:11:00 -0700
+ 24 Jun 2024 02:11:03 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jouni.hogander@intel.com, kamil.konieczny@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 1/2] lib/igt_psr: Added library functions for early
- trasport
-Date: Mon, 24 Jun 2024 14:49:42 +0530
-Message-Id: <20240624091943.1583273-2-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/kms_psr2_sf: Add checks for early
+ transport
+Date: Mon, 24 Jun 2024 14:49:43 +0530
+Message-Id: <20240624091943.1583273-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240624091943.1583273-1-jeevan.b@intel.com>
 References: <20240624091943.1583273-1-jeevan.b@intel.com>
@@ -69,83 +69,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added helper functions to check sink support for early transport and
-check early transport active check.
-
-v2: Add early trasport for PR and PSR2.
-v3: Fix check strings.
-v4: Add description to library function and correctstring logic.
+Add checks weather early transport if supported then
+we check if early trasport is working.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- lib/igt_psr.c | 19 +++++++++++++++++++
- lib/igt_psr.h |  3 +++
- 2 files changed, 22 insertions(+)
+ tests/intel/kms_psr2_sf.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 6008b73a6..279acdf7d 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -53,6 +53,19 @@ bool selective_fetch_check(int debugfs_fd, igt_output_t *output)
- 	return strstr(buf, "PSR2 selective fetch: enabled");
- }
- 
-+/*
-+ * Checks if Early Transport is enabled in PSR status by reading the debugfs.
-+ */
-+bool early_transport_check(int debugfs_fd)
-+{
-+	char buf[PSR_STATUS_MAX_LEN];
-+
-+	igt_debugfs_simple_read(debugfs_fd, "i915_edp_psr_status", buf,
-+				sizeof(buf));
-+
-+	return strstr(buf, "enabled (Early Transport)");
-+}
-+
- static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index 4c3e34aa0..e612b8266 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -168,6 +168,7 @@ typedef struct {
+ 	igt_plane_t *test_plane;
+ 	bool big_fb_test;
+ 	bool fbc_flag;
++	bool et_flag;
+ 	cairo_t *cr;
+ 	uint32_t screen_changes;
+ 	int cur_x, cur_y;
+@@ -184,11 +185,23 @@ static bool set_sel_fetch_mode_for_output(data_t *data)
  {
- 	char debugfs_file[128] = {0};
-@@ -247,10 +260,16 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
- 		       strstr(buf, "Sink support: yes [0x04]") ||
- 		       (strstr(line, "PSR = yes") &&
- 		       (strstr(line, "[0x03]") || strstr(line, "[0x04]")));
-+	case PSR_MODE_2_ET:
-+		return strstr(buf, "Sink support: yes [0x04]") ||
-+		       (strstr(line, "PSR = yes") &&
-+			 strstr(line, "[0x04]"))
- 	case PR_MODE:
- 		return strstr(line, "Panel Replay = yes, Panel Replay Selective Update = no");
- 	case PR_MODE_SEL_FETCH:
- 		return strstr(line, "Panel Replay = yes, Panel Replay Selective Update = yes");
-+	case PR_MODE_SEL_FETCH_ET:
-+		return strstr(line, "Panel Replay Selective Update = yes (Early Transport)");
- 	default:
- 		igt_assert_f(false, "Invalid psr mode\n");
- 		return false;
-diff --git a/lib/igt_psr.h b/lib/igt_psr.h
-index e8595fd8c..a7ebd0739 100644
---- a/lib/igt_psr.h
-+++ b/lib/igt_psr.h
-@@ -35,8 +35,10 @@ enum psr_mode {
- 	PSR_MODE_1,
- 	PSR_MODE_2,
- 	PSR_MODE_2_SEL_FETCH,
-+	PSR_MODE_2_ET,
- 	PR_MODE,
- 	PR_MODE_SEL_FETCH,
-+	PR_MODE_SEL_FETCH_ET,
- 	PSR_DISABLED,
- };
+ 	bool supported = false;
  
-@@ -47,6 +49,7 @@ enum fbc_mode {
++	data->et_flag = false;
++
+ 	if (psr_sink_support(data->drm_fd, data->debugfs_fd,
+-						 PR_MODE_SEL_FETCH, data->output)) {
++						 PR_MODE_SEL_FETCH_ET, data->output)) {
++		supported = true;
++		data->psr_mode = PR_MODE_SEL_FETCH;
++		data->et_flag = true;
++	} else if (psr_sink_support(data->drm_fd, data->debugfs_fd,
++							PR_MODE_SEL_FETCH, data->output)) {
+ 		supported = true;
+ 		data->psr_mode = PR_MODE_SEL_FETCH;
+ 	} else if (psr_sink_support(data->drm_fd, data->debugfs_fd,
++							PSR_MODE_2_ET, data->output)) {
++		supported = true;
++		data->psr_mode = PSR_MODE_2;
++		data->et_flag = true;
++	} else	if (psr_sink_support(data->drm_fd, data->debugfs_fd,
+ 							  PSR_MODE_2, data->output)) {
+ 		supported = true;
+ 		data->psr_mode = PSR_MODE_2;
+@@ -916,6 +929,9 @@ static void run(data_t *data)
+ 		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
+ 							  data->pipe),
+ 							  "FBC still disabled\n");
++	if (data->et_flag)
++		igt_assert_f(early_transport_check(data->debugfs_fd),
++			     "Early Trasport Disbaled\n");
  
- bool psr_disabled_check(int debugfs_fd);
- bool selective_fetch_check(int debugfs_fd, igt_output_t *output);
-+bool early_transport_check(int debugfs_fd);
- bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
- bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
- bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+ 	data->screen_changes = 0;
+ 
 -- 
 2.25.1
 
