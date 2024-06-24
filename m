@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3EE3C2D0D1
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 18:05:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AAF1C2BD09
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 18:06:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6B1F210E265;
-	Mon, 24 Jun 2024 18:05:55 +0000 (UTC)
-Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A378B10E265;
- Mon, 24 Jun 2024 18:05:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1744555224800814126=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A82C310E265;
+	Mon, 24 Jun 2024 18:06:48 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FnGvjeVG";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D9B3810E265
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jun 2024 18:06:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719252407; x=1750788407;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=c+xrHk83f/vauflNai1cMdFfVkHSHygHk2U1ug7zTDg=;
+ b=FnGvjeVGCICrgoA7vuCVWuQrdjqhOlNi5m92XWIVL6uLD0UVenjSAvjx
+ kD2ciSc7XV7teYK2J8lyevVCv4cl7jJdxjym6doGSnZ6AtI4AeEtB+KqQ
+ xRyIzDahk6mBGCy45rFu8VdIyEtdiMKcDSNzEa6ht1IgyXBLzZ0msWj0j
+ mixh7/FHWepGexxGcqKCfxFjHom3OM+4N6QhN+K0hMtc+iUlc1mqVUJy5
+ YVrbh073UdqlkIvxsV7E1cSN5lWc7pRu9Xy+ZkT5ZBpanCXLIa2fBSNGh
+ Gucl0CY2hsJBVwI+LTabOjZgni+LJfbPvt3HfbsRjyI/ClV346BFvqQJ/ w==;
+X-CSE-ConnectionGUID: 1AYo44+dQoyOEyfJUYfigw==
+X-CSE-MsgGUID: QNsvkvftRjGGZvKsNsm5sQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="15930171"
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; d="scan'208";a="15930171"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2024 11:06:46 -0700
+X-CSE-ConnectionGUID: x8Xr/oMMR4O+vU7E4rGSeQ==
+X-CSE-MsgGUID: d7DJqzHaRe+wsvYuCG32Aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; d="scan'208";a="80919388"
+Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2024 11:06:45 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jouni.hogander@intel.com, kamil.konieczny@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t 0/2] Early Transport Support
+Date: Mon, 24 Jun 2024 23:45:31 +0530
+Message-Id: <20240624181533.1600552-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fkms=3A_Format_cleanu?=
- =?utf-8?q?p_in_DRM_mode_printing?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 24 Jun 2024 18:05:53 -0000
-Message-ID: <171925235366.153309.11636748177823697445@a6498e030952>
-X-Patchwork-Hint: ignore
-References: <20240624151028.205562-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240624151028.205562-1-bhanuprakash.modem@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +63,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1744555224800814126==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add early trasport helper and checks to validate early trasport support
+on the supported display.
 
-== Series Details ==
+Jeevan B (2):
+  lib/igt_psr: Added library functions for early trasport
+  tests/intel/kms_psr2_sf: Add checks for early transport
 
-Series: lib/igt_kms: Format cleanup in DRM mode printing
-URL   : https://patchwork.freedesktop.org/series/135308/
-State : success
+ lib/igt_psr.c             | 19 +++++++++++++++++++
+ lib/igt_psr.h             |  3 +++
+ tests/intel/kms_psr2_sf.c | 18 +++++++++++++++++-
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-== Summary ==
+-- 
+2.25.1
 
-CI Bug Log - changes from XEIGT_7898_BAT -> XEIGTPW_11304_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11304_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7898/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11304/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
-
-
-Build changes
--------------
-
-  * IGT: IGT_7898 -> IGTPW_11304
-  * Linux: xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195 -> xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b
-
-  IGTPW_11304: b18da74545758f0e91b4cad7a28a12bd3ab155b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7898: a2600953b16d6628855b89ac40f477b58933b37b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195: 31d8e23bbf793469d597f3a17888fa55fffe7195
-  xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b: cf83cd8ff370955a504fdf1388ea6e257da76a8b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11304/index.html
-
---===============1744555224800814126==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_kms: Format cleanup in DRM mode printing</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135308/">https://patchwork.freedesktop.org/series/135308/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11304/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11304/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7898_BAT -&gt; XEIGTPW_11304_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11304_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7898/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11304/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7898 -&gt; IGTPW_11304</li>
-<li>Linux: xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195 -&gt; xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b</li>
-</ul>
-<p>IGTPW_11304: b18da74545758f0e91b4cad7a28a12bd3ab155b2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7898: a2600953b16d6628855b89ac40f477b58933b37b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195: 31d8e23bbf793469d597f3a17888fa55fffe7195<br />
-  xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b: cf83cd8ff370955a504fdf1388ea6e257da76a8b</p>
-
-</body>
-</html>
-
---===============1744555224800814126==--
