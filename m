@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D3ABC2D0D1
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 14:16:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 030ABC2D0D1
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 15:18:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 407F610E252;
-	Mon, 24 Jun 2024 14:16:28 +0000 (UTC)
-Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D15310E252;
- Mon, 24 Jun 2024 14:16:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0478727666150615764=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E0ED10E481;
+	Mon, 24 Jun 2024 15:18:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QaH5hbFS";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5D87D10E481
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Jun 2024 15:18:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719242318; x=1750778318;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=OFOJXzWzKcedGfntSIg1ccU0Ek3Uwcwo85EoEJ9HqEI=;
+ b=QaH5hbFSla79fxaqUoeh7FbHDaJTxv59DMrzaVywW6u1BQXpWvchxdfr
+ OY3chQayXJgOI/aM5dPqWKu6+B9hZu7D9S6KTCL5BQjn3wvQwzusHbBtU
+ AE7mwJPEEz9sNzEPWOej0oMYKVmUsJdlLfVqnfNRcuGpfsA/MEorAjbdO
+ 0z9apHPSmxAJLQGmP/8k7NEuQSHscqV9Jf0YRyJzxkQ9/8w5D3cDveSNy
+ ejIK9AGcYUqpr9m2b21Qx+FvLapYJcB/CwBUBKMA4aeYbscJLZea7SaFf
+ ttgpNK/RMxo2K3rs0c/WlgK/QTQcwfzcZ0oO78xJ6rT7QRjXX3H9F2aRD g==;
+X-CSE-ConnectionGUID: a99riDZOQxWwxKMixzMVYA==
+X-CSE-MsgGUID: 9CBhLiOFQ4ul0j3I5BYg7A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="16184792"
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; d="scan'208";a="16184792"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2024 08:18:37 -0700
+X-CSE-ConnectionGUID: ZRndc9k6Shqa6lwdmg43bg==
+X-CSE-MsgGUID: Z1TqUp5PSGm6P1xtByk/iA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,262,1712646000"; d="scan'208";a="66557256"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Jun 2024 08:18:35 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t] lib/igt_kms: Format cleanup in DRM mode printing
+Date: Mon, 24 Jun 2024 20:40:28 +0530
+Message-ID: <20240624151028.205562-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/gpu=5Fcmds=3A_Fix_hardcode?=
- =?utf-8?q?d_buffer_size?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Dominik Karol Piatkowski" <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 24 Jun 2024 14:16:27 -0000
-Message-ID: <171923858704.153309.4990904772489042271@a6498e030952>
-X-Patchwork-Hint: ignore
-References: <20240624113949.6846-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20240624113949.6846-1-dominik.karol.piatkowski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,146 +62,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0478727666150615764==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+While printing the DRM mode, align the style with the
+Kernel logs, so that it would be easy to compare & debug.
 
-== Series Details ==
+Example:
+ Old:- 2880x1800 60 2880 2928 2960 3040 1800 1803 1809 1906 0xa 0x48 347710
+ New:- "2880x1800": 60 347710 2880 2928 2960 3040 1800 1803 1809 1906 0x48 0xa
 
-Series: lib/gpu_cmds: Fix hardcoded buffer size
-URL   : https://patchwork.freedesktop.org/series/135294/
-State : success
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ lib/igt_kms.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 2e6f44e3c..1c096ec5b 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -1144,13 +1144,13 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
+ 	const char *stereo = mode_stereo_name(mode);
+ 	const char *aspect = mode_picture_aspect_name(mode);
+ 
+-	igt_info("  %s %d %d %d %d %d %d %d %d %d 0x%x 0x%x %d%s%s%s%s%s%s\n",
+-		 mode->name, mode->vrefresh,
++	igt_info("  \"%s\": %d %d %d %d %d %d %d %d %d %d 0x%x 0x%x %s%s%s%s%s%s\n",
++		 mode->name, mode->vrefresh, mode->clock,
+ 		 mode->hdisplay, mode->hsync_start,
+ 		 mode->hsync_end, mode->htotal,
+ 		 mode->vdisplay, mode->vsync_start,
+ 		 mode->vsync_end, mode->vtotal,
+-		 mode->flags, mode->type, mode->clock,
++		 mode->type, mode->flags,
+ 		 stereo ? " (3D:" : "",
+ 		 stereo ? stereo : "", stereo ? ")" : "",
+ 		 aspect ? " (PAR:" : "",
+-- 
+2.43.2
 
-CI Bug Log - changes from XEIGT_7897_BAT -> XEIGTPW_11303_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (5 -> 5)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11303_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7897/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
-    - {bat-lnl-1}:        [FAIL][3] ([Intel XE#886]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7897/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
-
-
-Build changes
--------------
-
-  * IGT: IGT_7897 -> IGTPW_11303
-
-  IGTPW_11303: cf4606250ddbea375b0be1fd093015b4e6bf1cb0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7897: 9119f9c5dbbb969438b3424dc2f3b30f3b442aab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1521-c0c1c2d3681c4a653c6b2122a8e8ef9fbaaa4398: c0c1c2d3681c4a653c6b2122a8e8ef9fbaaa4398
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/index.html
-
---===============0478727666150615764==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/gpu_cmds: Fix hardcoded buffer size</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135294/">https://patchwork.freedesktop.org/series/135294/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7897_BAT -&gt; XEIGTPW_11303_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11303_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7897/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
-<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7897/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11303/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7897 -&gt; IGTPW_11303</li>
-</ul>
-<p>IGTPW_11303: cf4606250ddbea375b0be1fd093015b4e6bf1cb0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7897: 9119f9c5dbbb969438b3424dc2f3b30f3b442aab @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1521-c0c1c2d3681c4a653c6b2122a8e8ef9fbaaa4398: c0c1c2d3681c4a653c6b2122a8e8ef9fbaaa4398</p>
-
-</body>
-</html>
-
---===============0478727666150615764==--
