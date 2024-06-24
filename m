@@ -4,95 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09045C2BD09
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 22:56:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 135BCC30653
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Jun 2024 23:04:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 952D210E155;
-	Mon, 24 Jun 2024 22:56:14 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="MmHifq85";
-	dkim-atps=neutral
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFE5210E155;
- Mon, 24 Jun 2024 22:56:13 +0000 (UTC)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45OHVsIg001878;
- Mon, 24 Jun 2024 22:55:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
- 3E/g0gscuSG5pGPTNlXdT0z8AMhyDwzyCrtpE2W1+HI=; b=MmHifq85x2p9k6TO
- Xa8EkKt7JJrNE3LsqrEvv/jTJ6TB8yBLBRxARji5On7zlfhH4O468ucDobMEPjJj
- 1/oeAaT/A4KNT1QE3uLOR7gbzlwqZoqQCZmowJzsx185HqS/uVaEss+rMid1j8pn
- TDE4lj/E2LOGI6KLNRgtBk/MeioDZE9b4cTmuth0oujlBDIdKe0A9PrC9MAw2KBf
- bgI3Raw2skhOmiHcJ1UBUKIowKqV83iSMDkPM61nTPncbUDYAdcSPYwSU9ShqlyF
- 3TSgedpo/I36yij2UnLJLHNye+k4NGA4s4onxauXV/7N0QF3Qs4bD4DPfHyitgVR
- S2MxMA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ywmaew6je-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jun 2024 22:55:59 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com
- [10.47.209.196])
- by NALASPPMTA05.qualcomm.com (8.17.1.19/8.17.1.19) with ESMTPS id
- 45OMtwtx013076
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Mon, 24 Jun 2024 22:55:58 GMT
-Received: from [10.110.106.13] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 24 Jun
- 2024 15:55:57 -0700
-Message-ID: <30fa4e53-5a03-4030-2be5-f383a1c60077@quicinc.com>
-Date: Mon, 24 Jun 2024 15:55:56 -0700
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACF6110E26C;
+	Mon, 24 Jun 2024 23:04:05 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D915810E1F3;
+ Mon, 24 Jun 2024 23:04:04 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH v2 2/2] drm/connector: automatically set immutable flag
- for max_bpc property
-Content-Language: en-US
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- Petri Latvala <adrinael@adrinael.net>, Kamil
- Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>, <dri-devel@lists.freedesktop.org>,
- <freedreno@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
-References: <20240623-drm-bridge-connector-fix-hdmi-reset-v2-0-8590d44912ce@linaro.org>
- <20240623-drm-bridge-connector-fix-hdmi-reset-v2-2-8590d44912ce@linaro.org>
- <99ff549c-f5c4-dc9c-42f3-396dc3d29d6b@quicinc.com>
- <CAA8EJppcH-z275m6xDQaigsxmVhnfJkLVsq68GHLFoAq_p_2GA@mail.gmail.com>
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
-In-Reply-To: <CAA8EJppcH-z275m6xDQaigsxmVhnfJkLVsq68GHLFoAq_p_2GA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: lyDjhoTlWdnbej9hMddkGvrd0JwJCu4R
-X-Proofpoint-GUID: lyDjhoTlWdnbej9hMddkGvrd0JwJCu4R
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-24_20,2024-06-24_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0
- suspectscore=0 spamscore=0 bulkscore=0 phishscore=0 malwarescore=0
- clxscore=1015 mlxscore=0 lowpriorityscore=0 priorityscore=1501
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2406140001 definitions=main-2406240184
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_xe=5Fexec=5Fcapture=3A_Ad?=
+ =?utf-8?q?d_xe=5Fexec=5Fcapture_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zhanjun Dong" <zhanjun.dong@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 24 Jun 2024 23:04:04 -0000
+Message-ID: <171927024488.153309.3384132610481388672@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240624224537.3239118-1-zhanjun.dong@intel.com>
+In-Reply-To: <20240624224537.3239118-1-zhanjun.dong@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -105,80 +37,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+== Series Details ==
+
+Series: xe_exec_capture: Add xe_exec_capture test
+URL   : https://patchwork.freedesktop.org/series/135328/
+State : failure
+
+== Summary ==
+
+IGT patchset build failed on latest successful build
+a2600953b16d6628855b89ac40f477b58933b37b tests/amdgpu/gang_cs: skip test for some chips
+
+Tail of build.log:
+[1640/1684] Linking target tools/intel_gvtg_test.
+[1641/1684] Linking target tools/msm_dp_compliance.
+[1642/1684] Linking target runner/testdata/skippers.
+[1643/1684] Linking target tools/intel_vbt_decode.
+[1644/1684] Linking target runner/testdata/abort-dynamic.
+[1645/1684] Linking target tools/intel_dp_compliance.
+[1646/1684] Linking target runner/testdata/abort-fixture.
+[1647/1684] Linking target runner/testdata/successtest.
+[1648/1684] Linking target runner/testdata/no-subtests.
+[1649/1684] Linking target runner/testdata/abort.
+[1650/1684] Linking target runner/testdata/dynamic.
+[1651/1684] Linking target tools/lsgpu.
+[1652/1684] Linking target runner/igt_resume.
+[1653/1684] Linking target runner/testdata/abort-simple.
+[1654/1684] Linking target tools/amd_hdmi_compliance.
+[1655/1684] Linking target runner/igt_runner.
+[1656/1684] Linking target runner/igt_comms_decoder.
+[1657/1684] Linking target runner/igt_results.
+[1658/1684] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1659/1684] Linking target runner/runner_json_test.
+[1660/1684] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
+[1661/1684] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1662/1684] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1663/1684] Linking target runner/runner_test.
+[1664/1684] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1665/1684] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1666/1684] Linking target lib/libi915_perf.so.1.5.
+[1667/1684] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1668/1684] Linking target tools/i915-perf/i915-perf-configs.
+[1669/1684] Linking target tools/i915-perf/i915-perf-reader.
+[1670/1684] Linking target tools/i915-perf/i915-perf-recorder.
+[1671/1684] Linking target tests/gem_barrier_race.
+[1672/1684] Linking target tests/core_hotunplug.
+[1673/1684] Linking target tests/perf.
+[1674/1684] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1675/1684] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1676/1684] Generating perf.testlist with a meson_exe.py custom command.
+[1677/1684] Generating xe_tests.rst with a custom command.
+FAILED: docs/testplan/xe_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /opt/igt/build
+/usr/src/igt-gpu-tools/tests/intel/xe_exec_capture.c:72: Error: unrecognized line. Need to add field at /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json?
+	==> range
+[1678/1684] Generating intel-ci-tests with a custom command.
+FAILED: docs/testplan/intel-ci-tests 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/i915_test_config.json /usr/src/igt-gpu-tools/tests/intel/kms_test_config.json /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
+/usr/src/igt-gpu-tools/tests/intel/xe_exec_capture.c:72: Error: unrecognized line. Need to add field at /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json?
+	==> range
+[1679/1684] Generating i915_tests.rst with a custom command.
+[1680/1684] Generating kms_tests.rst with a custom command.
+ninja: build stopped: subcommand failed.
 
 
-On 6/24/2024 3:46 PM, Dmitry Baryshkov wrote:
-> On Tue, 25 Jun 2024 at 01:39, Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
->>
->> + IGT dev
->>
->> On 6/22/2024 10:40 PM, Dmitry Baryshkov wrote:
->>> With the introduction of the HDMI Connector framework the driver might
->>> end up creating the max_bpc property with min = max = 8. IGT insists
->>> that such properties carry the 'immutable' flag. Automatically set the
->>> flag if the driver asks for the max_bpc property with min == max.
->>>
->>
->> This change does not look right to me.
->>
->> I wonder why we need this check because DRM_MODE_PROP_IMMUTABLE means
->> that as per the doc, userspace cannot change the property.
->>
->>            * DRM_MODE_PROP_IMMUTABLE
->>            *     Set for properties whose values cannot be changed by
->>            *     userspace. The kernel is allowed to update the value of
->> these
->>            *     properties. This is generally used to expose probe state to
->>            *     userspace, e.g. the EDID, or the connector path property
->> on DP
->>            *     MST sinks. Kernel can update the value of an immutable
->> property
->>            *     by calling drm_object_property_set_value().
->>            */
->>
->> Here we are allowing userspace to change max_bpc
->>
->>
->> drm_atomic_connector_set_property()
->> {
->>          **********
->>
->>           } else if (property == connector->max_bpc_property) {
->>                   state->max_requested_bpc = val;
->>
->>          **********
->> }
->>
->> I believe you are referring to this IGT check right?
->>
->> https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_properties.c#L428
-> 
-> Yes
-> 
->>
->> I think we should fix IGT in this case unless there is some reason we
->> are missing. Because just because it has the same min and max does not
->> mean its immutable by the doc of the IMMUTABLE flag.
-> 
-> Well, having the same min and max means that it is impossible to
-> change the property. So the property is immutable, but doesn't have
-> the flag.
-> 
-
-True, then does DRM_MODE_PROP_IMMUTABLE need a doc update too indicating 
-that even if the min and max is same, property will be interpreted as 
-immutable.
-
->>
->>
->>> Fixes: aadb3e16b8f3 ("drm/connector: hdmi: Add output BPC to the connector state")
->>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
->>> ---
->>>    drivers/gpu/drm/drm_connector.c | 7 ++++++-
->>>    1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> With best wishes
-> Dmitry
