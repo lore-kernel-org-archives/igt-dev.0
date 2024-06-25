@@ -4,72 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E329AC2BBCA
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 10:05:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98877C30653
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 10:08:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5453810E40C;
-	Tue, 25 Jun 2024 10:05:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Rnf5i5zM";
-	dkim-atps=neutral
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
- [209.85.128.43])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C10D10E07C
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 10:05:11 +0000 (UTC)
-Received: by mail-wm1-f43.google.com with SMTP id
- 5b1f17b1804b1-424798859dfso44626735e9.0
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 03:05:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1719309910; x=1719914710; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=PiHiZzOrhzLSwgQMThMAzBM8UFxQEmX8t3X3yi8y370=;
- b=Rnf5i5zMSvWOuoHinUiTBmM7Nq1+EVHC7nOpopacbFAd3Uu5UW9qEdZ5K9JgL//XKA
- MBPfGh0uW7tRvB6fSvNMkiSRMaEsgyUtBoH8Y5QrQ7XAlBlIDtYiAD66yImkrkLIr5K8
- Ven1thqi1+bC+ku29gxJ/oxNR0eUMcmwqgAcN1Vw3+mRuNcYNYfTG7OSTefWNoltOsXA
- gvRgH/ZIr5j0h+wpwLmEuWwxON/MfH5op9u3diqGLSOKbaq/3KJSsqZHKE5VSv7lgd/Z
- a9G7aHIrRaIFvHqNdD7+MKNrgnmfMsMJpa0nniTY1x5IgKtpWMoWZaiwxdQ8YbFlsnQI
- EicA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719309910; x=1719914710;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=PiHiZzOrhzLSwgQMThMAzBM8UFxQEmX8t3X3yi8y370=;
- b=MO/LOABbf2Sj4VwtlRiVgId3gTUtgkHP8DOtTydUIvN6yI2qvy9HKFCuKwqZOF90mD
- 9CqxaNDjhpueTvm5sKeYfMn3dhHiIsUiLbxVuLSHdb6z6qCP66+pK24q1okadoBA4GqA
- pqZWU0AL+/exdToTMmHRIgqjFC61oPWkf9bGTM26TaTvJBc5g2bf1avp8xfvrTzXxAHJ
- 1P1dwp4RDenFMyZmZAyHtGI3VIuu7fMt7mYYeJNMTIIiVko/brU/JewhKdZq7PN7mmHW
- 2VkVIb3XrULsSW+NdkekR0S75c/IjgJ0waJAeWgwTzMJg5e82e3SCnLBj+23qAL8Sf0W
- 2qpw==
-X-Forwarded-Encrypted: i=1;
- AJvYcCU3vsrHMNwasupFu7/TKHfcHp67z/SgBORw3u0mGhnwPR1P2534lx1XnwOYF8YgG0PW6ZWHO7I8dPvC0MoJEOmdTzfB1Ew6G5+xSgH4ZQ==
-X-Gm-Message-State: AOJu0YwLDgwLKBpTfE5KxXUVB6MBgpZ+umgnhwjDDK5hs53pV22qwWCl
- X4tuj1H9Ieg1ks8sSsUt2q0JoIqgLap7eET5Ww76VbYQCoEfsM/OqHhyMFUIBws=
-X-Google-Smtp-Source: AGHT+IE/Fk2N/1vfLqnLtJsfIh2EXFWW5IH2HmqHGQNgyaXy8yTPJCpR61bA+oE1p1n1N9GRXzzhOw==
-X-Received: by 2002:a05:600c:993:b0:424:a5d6:6512 with SMTP id
- 5b1f17b1804b1-424a5d665f9mr4500935e9.20.1719309909339; 
- Tue, 25 Jun 2024 03:05:09 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.76])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-4248191fac8sm164992665e9.42.2024.06.25.03.05.06
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 25 Jun 2024 03:05:08 -0700 (PDT)
-Message-ID: <5c41a11e-a4a6-48f5-8f51-a9934a537ce7@gmail.com>
-Date: Tue, 25 Jun 2024 13:05:00 +0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D70710E40C;
+	Tue, 25 Jun 2024 10:08:36 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B24010E40C;
+ Tue, 25 Jun 2024 10:08:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3220829901244762297=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/intel_blt: Fix printing mocs on Xe2+
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240625091847.134707-1-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240625091847.134707-1-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/rendercopy=5Fgen9=3A_Use_A?=
+ =?utf-8?q?UX=5FNONE_for_platforms_with_unified_compression?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 25 Jun 2024 10:08:34 -0000
+Message-ID: <171931011437.154922.5846597380480085335@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240625091651.131301-1-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20240625091651.131301-1-zbigniew.kempczynski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,71 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============3220829901244762297==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 25.6.2024 12.18, Zbigniew Kempczyński wrote:
-> Due to different bit meanings dumping mocs indices displays incorrect
-> values for Xe2+. Fix this and print those indices according to platform.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->   lib/intel_blt.c | 17 +++++++++++++----
->   1 file changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/intel_blt.c b/lib/intel_blt.c
-> index 20c42eec14..a21df1e8cf 100644
-> --- a/lib/intel_blt.c
-> +++ b/lib/intel_blt.c
-> @@ -847,9 +847,18 @@ static void fill_data_ext(struct gen12_block_copy_data_ext *dext,
->   	dext->dw21.src_array_index = ext->src.array_index;
->   }
->   
-> -static void dump_bb_cmd(struct gen12_block_copy_data *data)
-> +static void dump_bb_cmd(struct gen12_block_copy_data *data, unsigned int ip_ver)
->   {
->   	uint32_t *cmd = (uint32_t *) data;
-> +	int src_mocs_idx, dst_mocs_idx;
-> +
-> +	if (ip_ver >= IP_VER(20, 0)) {
-> +		src_mocs_idx = data->dw08_xe2.src_mocs_index;
-> +		dst_mocs_idx = data->dw01_xe2.dst_mocs_index;
-> +	} else {
-> +		src_mocs_idx = data->dw08.src_mocs_index;
-> +		dst_mocs_idx = data->dw01.dst_mocs_index;
-> +	}
->   
->   	igt_info("details:\n");
->   	igt_info(" dw00: [%08x] <client: 0x%x, opcode: 0x%x, color depth: %d, "
-> @@ -860,7 +869,7 @@ static void dump_bb_cmd(struct gen12_block_copy_data *data)
->   	igt_info(" dw01: [%08x] dst <pitch: %d, aux: %d, mocs_idx: %d, compr: %d, "
->   		 "tiling: %d, ctrl surf type: %d>\n",
->   		 cmd[1], data->dw01.dst_pitch, data->dw01.dst_aux_mode,
-> -		 data->dw01.dst_mocs_index, data->dw01.dst_compression,
-> +		 dst_mocs_idx, data->dw01.dst_compression,
->   		 data->dw01.dst_tiling, data->dw01.dst_ctrl_surface_type);
->   	igt_info(" dw02: [%08x] dst geom <x1: %d, y1: %d>\n",
->   		 cmd[2], data->dw02.dst_x1, data->dw02.dst_y1);
-> @@ -878,7 +887,7 @@ static void dump_bb_cmd(struct gen12_block_copy_data *data)
->   	igt_info(" dw08: [%08x] src <pitch: %d, aux: %d, mocs_idx: %d, compr: %d, "
->   		 "tiling: %d, ctrl surf type: %d>\n",
->   		 cmd[8], data->dw08.src_pitch, data->dw08.src_aux_mode,
-> -		 data->dw08.src_mocs_index, data->dw08.src_compression,
-> +		 src_mocs_idx, data->dw08.src_compression,
->   		 data->dw08.src_tiling, data->dw08.src_ctrl_surface_type);
->   	igt_info(" dw09: [%08x] src offset lo (0x%x)\n",
->   		 cmd[9], data->dw09.src_address_lo);
-> @@ -1034,7 +1043,7 @@ uint64_t emit_blt_block_copy(int fd,
->   			 ", bb offset: %" PRIx64 "\n",
->   			 src_offset, dst_offset, bb_offset);
->   
-> -		dump_bb_cmd(&data);
-> +		dump_bb_cmd(&data, ip_ver);
->   		if (ext)
->   			dump_bb_ext(&dext);
->   	}
+== Series Details ==
 
+Series: lib/rendercopy_gen9: Use AUX_NONE for platforms with unified compression
+URL   : https://patchwork.freedesktop.org/series/135343/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7898_BAT -> XEIGTPW_11310_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11310_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#324])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7898/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11310/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7898 -> IGTPW_11310
+  * Linux: xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195 -> xe-1524-5e45785f315938951d86af616d35a5ba08bfeabc
+
+  IGTPW_11310: 11310
+  IGT_7898: a2600953b16d6628855b89ac40f477b58933b37b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195: 31d8e23bbf793469d597f3a17888fa55fffe7195
+  xe-1524-5e45785f315938951d86af616d35a5ba08bfeabc: 5e45785f315938951d86af616d35a5ba08bfeabc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11310/index.html
+
+--===============3220829901244762297==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/rendercopy_gen9: Use AUX_NONE for platforms with unified compression</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135343/">https://patchwork.freedesktop.org/series/135343/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11310/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11310/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7898_BAT -&gt; XEIGTPW_11310_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11310_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7898/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11310/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7898 -&gt; IGTPW_11310</li>
+<li>Linux: xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195 -&gt; xe-1524-5e45785f315938951d86af616d35a5ba08bfeabc</li>
+</ul>
+<p>IGTPW_11310: 11310<br />
+  IGT_7898: a2600953b16d6628855b89ac40f477b58933b37b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195: 31d8e23bbf793469d597f3a17888fa55fffe7195<br />
+  xe-1524-5e45785f315938951d86af616d35a5ba08bfeabc: 5e45785f315938951d86af616d35a5ba08bfeabc</p>
+
+</body>
+</html>
+
+--===============3220829901244762297==--
