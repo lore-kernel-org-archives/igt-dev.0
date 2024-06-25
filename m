@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36CA2C2BBCA
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 05:19:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09874C3064D
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 05:21:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 957EE10E1C8;
-	Tue, 25 Jun 2024 05:19:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WDi1L3M7";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6560A10E1C8
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 05:19:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719292740; x=1750828740;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=SHVWpghCyBT8cMJXkL7FxruJEheyw936gjhKwx8umqc=;
- b=WDi1L3M7TF2C+YEFLqXnK9NGWCD6pShndRUf8wzJrMLpumB6FlkUs++A
- HOyHLQ16/DUvnqlaxvCfokvseWck3lgyKkS8GB/O3JYvnKauLdreqpQss
- L0kcZ2/DvpHfYIgLz0jyL9Zc+gCepzekkdJxF5jPaA6eBH+9kBSvxR02G
- CjiAJo/wci/dmozI+G+hR7RnQKsoWRpH0qUCwLaNnmFwvW2B1iFP1oJnC
- rllwdINtJUws0ChOTH+N8Lfy7DU1FMrYxrD3q4Q0EzfLy5EkUEFCnRRQI
- //k/43vpGrXTFF2Chc1iQz6pUKH2Xn1li4ELA0FG5b1+QFvA8aKrvmUzZ Q==;
-X-CSE-ConnectionGUID: b+HoLc3lReGd4DJkz7crzA==
-X-CSE-MsgGUID: bQ7AITD5T8yXee3xsOFgfA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11113"; a="26911545"
-X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; d="scan'208";a="26911545"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 22:19:00 -0700
-X-CSE-ConnectionGUID: WchwU3N9TQi6vH+3ZZdRPQ==
-X-CSE-MsgGUID: 6oN0Bz6PRySAiT1T8vBjoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,263,1712646000"; d="scan'208";a="48436324"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jun 2024 22:18:59 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [i-g-t] tests/intel-ci: Update i915 blocklist
-Date: Tue, 25 Jun 2024 10:40:48 +0530
-Message-ID: <20240625051049.275346-1-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id A005710E1C8;
+	Tue, 25 Jun 2024 05:21:40 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 720DE10E1C8;
+ Tue, 25 Jun 2024 05:21:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8311442882401745044=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2C1/2=5D_tests/kms=5Fhdr=3A_Fix_bpc-switch_subtests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 25 Jun 2024 05:21:39 -0000
+Message-ID: <171929289945.154922.15773005221168769544@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240625043136.257253-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240625043136.257253-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,34 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Block KMS tests those are specific to (display_ver > 14)
-are not applicable for i915.
+--===============8311442882401745044==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Karthik B S <karthik.b.s@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- tests/intel-ci/blacklist.txt | 7 +++++++
- 1 file changed, 7 insertions(+)
+== Series Details ==
 
-diff --git a/tests/intel-ci/blacklist.txt b/tests/intel-ci/blacklist.txt
-index d01ef5e16..b35633c5a 100644
---- a/tests/intel-ci/blacklist.txt
-+++ b/tests/intel-ci/blacklist.txt
-@@ -142,4 +142,11 @@ igt@device_reset@reset-bound
- igt@kms_bw@.*
- 
- # Tests specific to (Display_ver > 14) are not applicable for i915
-+igt@kms_ccs@bad-rotation-90-4-tiled-xe2-ccs
-+igt@kms_ccs@crc-primary-basic-4-tiled-xe2-ccs
-+igt@kms_ccs@crc-primary-rotation-180-4-tiled-xe2-ccs
-+igt@kms_ccs@crc-sprite-planes-basic-4-tiled-xe2-ccs
-+igt@kms_ccs@random-ccs-data-4-tiled-xe2-ccs
-+igt@kms_frontbuffer_tracking@plane-fbc-rte
-+igt@kms_pm_dc@deep-pkgc
- igt@kms_vrr@cmrr
--- 
-2.43.2
+Series: series starting with [i-g-t,1/2] tests/kms_hdr: Fix bpc-switch subtests
+URL   : https://patchwork.freedesktop.org/series/135334/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7898_BAT -> XEIGTPW_11308_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11308_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7898/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11308/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7898 -> IGTPW_11308
+  * Linux: xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195 -> xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b
+
+  IGTPW_11308: 11308
+  IGT_7898: a2600953b16d6628855b89ac40f477b58933b37b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195: 31d8e23bbf793469d597f3a17888fa55fffe7195
+  xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b: cf83cd8ff370955a504fdf1388ea6e257da76a8b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11308/index.html
+
+--===============8311442882401745044==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_hdr: Fix bpc-switch subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135334/">https://patchwork.freedesktop.org/series/135334/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11308/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11308/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7898_BAT -&gt; XEIGTPW_11308_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11308_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7898/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11308/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7898 -&gt; IGTPW_11308</li>
+<li>Linux: xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195 -&gt; xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b</li>
+</ul>
+<p>IGTPW_11308: 11308<br />
+  IGT_7898: a2600953b16d6628855b89ac40f477b58933b37b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1522-31d8e23bbf793469d597f3a17888fa55fffe7195: 31d8e23bbf793469d597f3a17888fa55fffe7195<br />
+  xe-1523-cf83cd8ff370955a504fdf1388ea6e257da76a8b: cf83cd8ff370955a504fdf1388ea6e257da76a8b</p>
+
+</body>
+</html>
+
+--===============8311442882401745044==--
