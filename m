@@ -4,93 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 416E7C2BBCA
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 14:31:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CD3EC2BBCA
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 15:41:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D01D110E67F;
-	Tue, 25 Jun 2024 14:31:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="k5FZh0WJ";
-	dkim-atps=neutral
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com
- [209.85.167.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7195910E680
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 14:31:28 +0000 (UTC)
-Received: by mail-lf1-f46.google.com with SMTP id
- 2adb3069b0e04-52cdf579dd2so3072081e87.3
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 07:31:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1719325886; x=1719930686; darn=lists.freedesktop.org;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
- bh=terD6+QvpMZ2X6sUQUwDmG2WaJEp4OJC722UlqzDSBk=;
- b=k5FZh0WJce3uXXW4BDLqAgD1WdHqsdZjtBkhlUvRJHTfSvFADaKnNDM21of2ugdaBK
- q9m4HImdtkKhd8RJ+vbiuKeXCavN11ZBRmDFzsFEUFlKAT0C4NACZVmkNrizfJIlzN9y
- sJRy00Hv9GSpZiRj3mb3g/bVe3ONj00m18eJJjGT1CFIytYoTPUxT8AqRWlLqd1oD9BX
- sudD+DTOrB1CuUqOKvSAKdWUofAYP9BD90qMu/4N0tCid8SvnZO3vtsZ30AavgRqM29+
- FBQv2m4OAU1nVAJE2K0VyK+tt7P0IyyJqa5AvIUgGSPYlYLAplKCgs4nsAZJ71VvrY/3
- MZag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719325886; x=1719930686;
- h=in-reply-to:content-disposition:mime-version:references:message-id
- :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to;
- bh=terD6+QvpMZ2X6sUQUwDmG2WaJEp4OJC722UlqzDSBk=;
- b=DIjwXrwJmRaxbU3vz6YF7KjD9DjE8CbEIUWTbFsd2/SwfiYDCXCU3A4BEW5VOHeVkh
- RSp65lH9s6/b79ZxdWDof0lxjxyEuGStdQ4UouOV7thsb/Ie5HYbiBfCu6sR0BnoF79F
- gmxIrbvAlbIXsPEB9SMbz+NJFjrFUUdaFA9yvatk/kzdUjhMBAuBK9t7QzT5O3aGE5Nc
- ZtbV6t8+pRRb4grst+5TpSpWsAS30zOZ20YusjikZW++Gj+H016C8lGMwLNXMLxmsBAc
- gvQPwDrv4G4ykxFBA8N+xktf5H2t1HQWjY8BEeQdhkXxWRLxGKbxXQ5/nT26tEV6rn/7
- UwBQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVKe5NM16ux0WtLRpcXaKmzERoZce+uNapoHz2XUmt/81pUeld2rK7KNzj3OhlUhnxMO99ah3VpQ20wzIh7c2mKsQvh93jN/zzjQyQh0w==
-X-Gm-Message-State: AOJu0YzSnbPuQJWgxjZalA68HmZ+e5mg2sX6yNZYVkrAHvEI+p7wKvQo
- 4dyqz0euJd5Ec0CD1fZrRTbk+J7SepmEpvc4MUMeqgNls7JW1f3wboc1/OwnZoM=
-X-Google-Smtp-Source: AGHT+IEGzmjKZJbYhPPc3fbe7PHSu8pPNkw01sUFTND10FididG1OaZlj/O83Pz/ya65Uve+U0qYSQ==
-X-Received: by 2002:a19:6452:0:b0:52c:7fc7:f40d with SMTP id
- 2adb3069b0e04-52cdf7f108bmr4688866e87.21.1719325886353; 
- Tue, 25 Jun 2024 07:31:26 -0700 (PDT)
-Received: from eriador.lumag.spb.ru
- (dzdbxzyyyyyyyyyyybrhy-3.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
- by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-52cd63be24dsm1250303e87.95.2024.06.25.07.31.25
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 25 Jun 2024 07:31:25 -0700 (PDT)
-Date: Tue, 25 Jun 2024 17:31:24 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Maxime Ripard <mripard@kernel.org>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
- Petri Latvala <adrinael@adrinael.net>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] drm/connector: automatically set immutable flag
- for max_bpc property
-Message-ID: <qwcinsvam4xydeytbmpnbhssywyuiblri4pknuocec7ze6622f@yakhawuucf7v>
-References: <20240623-drm-bridge-connector-fix-hdmi-reset-v2-0-8590d44912ce@linaro.org>
- <20240623-drm-bridge-connector-fix-hdmi-reset-v2-2-8590d44912ce@linaro.org>
- <99ff549c-f5c4-dc9c-42f3-396dc3d29d6b@quicinc.com>
- <CAA8EJppcH-z275m6xDQaigsxmVhnfJkLVsq68GHLFoAq_p_2GA@mail.gmail.com>
- <30fa4e53-5a03-4030-2be5-f383a1c60077@quicinc.com>
- <CAA8EJpo_dBDqLUVH-SkufhFchu64rhC+vkhVBFdt++E4pdCrQg@mail.gmail.com>
- <20240625-yellow-shrimp-of-genius-17c662@houat>
- <CAA8EJpr_kn=x080KLGfwsLi3PnnNhTjJhvL=hiRNLBD=WqSuZQ@mail.gmail.com>
- <20240625-enlightened-optimistic-fossa-fdd128@houat>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 945B710E6A0;
+	Tue, 25 Jun 2024 15:41:23 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDE1010E6A0;
+ Tue, 25 Jun 2024 15:41:22 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6507778334543533527=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240625-enlightened-optimistic-fossa-fdd128@houat>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/chamelium=3A_fixes_for_c?=
+ =?utf-8?q?hamelium_tests_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 25 Jun 2024 15:41:22 -0000
+Message-ID: <171933008290.153309.2816724055419644176@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240625140605.1420518-1-kunal1.joshi@intel.com>
+In-Reply-To: <20240625140605.1420518-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -103,97 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Jun 25, 2024 at 03:58:25PM GMT, Maxime Ripard wrote:
-> On Tue, Jun 25, 2024 at 10:23:14AM GMT, Dmitry Baryshkov wrote:
-> > On Tue, 25 Jun 2024 at 10:19, Maxime Ripard <mripard@kernel.org> wrote:
-> > >
-> > > Hi,
-> > >
-> > > On Tue, Jun 25, 2024 at 09:21:27AM GMT, Dmitry Baryshkov wrote:
-> > > > On Tue, 25 Jun 2024 at 01:56, Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
-> > > > >
-> > > > >
-> > > > >
-> > > > > On 6/24/2024 3:46 PM, Dmitry Baryshkov wrote:
-> > > > > > On Tue, 25 Jun 2024 at 01:39, Abhinav Kumar <quic_abhinavk@quicinc.com> wrote:
-> > > > > >>
-> > > > > >> + IGT dev
-> > > > > >>
-> > > > > >> On 6/22/2024 10:40 PM, Dmitry Baryshkov wrote:
-> > > > > >>> With the introduction of the HDMI Connector framework the driver might
-> > > > > >>> end up creating the max_bpc property with min = max = 8. IGT insists
-> > > > > >>> that such properties carry the 'immutable' flag. Automatically set the
-> > > > > >>> flag if the driver asks for the max_bpc property with min == max.
-> > > > > >>>
-> > > > > >>
-> > > > > >> This change does not look right to me.
-> > > > > >>
-> > > > > >> I wonder why we need this check because DRM_MODE_PROP_IMMUTABLE means
-> > > > > >> that as per the doc, userspace cannot change the property.
-> > > > > >>
-> > > > > >>            * DRM_MODE_PROP_IMMUTABLE
-> > > > > >>            *     Set for properties whose values cannot be changed by
-> > > > > >>            *     userspace. The kernel is allowed to update the value of
-> > > > > >> these
-> > > > > >>            *     properties. This is generally used to expose probe state to
-> > > > > >>            *     userspace, e.g. the EDID, or the connector path property
-> > > > > >> on DP
-> > > > > >>            *     MST sinks. Kernel can update the value of an immutable
-> > > > > >> property
-> > > > > >>            *     by calling drm_object_property_set_value().
-> > > > > >>            */
-> > > > > >>
-> > > > > >> Here we are allowing userspace to change max_bpc
-> > > > > >>
-> > > > > >>
-> > > > > >> drm_atomic_connector_set_property()
-> > > > > >> {
-> > > > > >>          **********
-> > > > > >>
-> > > > > >>           } else if (property == connector->max_bpc_property) {
-> > > > > >>                   state->max_requested_bpc = val;
-> > > > > >>
-> > > > > >>          **********
-> > > > > >> }
-> > > > > >>
-> > > > > >> I believe you are referring to this IGT check right?
-> > > > > >>
-> > > > > >> https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/kms_properties.c#L428
-> > > > > >
-> > > > > > Yes
-> > > > > >
-> > > > > >>
-> > > > > >> I think we should fix IGT in this case unless there is some reason we
-> > > > > >> are missing. Because just because it has the same min and max does not
-> > > > > >> mean its immutable by the doc of the IMMUTABLE flag.
-> > > > > >
-> > > > > > Well, having the same min and max means that it is impossible to
-> > > > > > change the property. So the property is immutable, but doesn't have
-> > > > > > the flag.
-> > > > > >
-> > > > >
-> > > > > True, then does DRM_MODE_PROP_IMMUTABLE need a doc update too indicating
-> > > > > that even if the min and max is same, property will be interpreted as
-> > > > > immutable.
-> > > >
-> > > > Granted that I'm only doing it for max_bpc property I don't think so.
-> > >
-> > > Yeah, I have to agree with Abhinav here, it does look fishy to me too,
-> > > even more so that it's only ever "documented" through an igt routine
-> > > that has never documented why we want that.
-> > >
-> > > I'm fine with the change if it's indeed what we expect, and it might
-> > > very well be, but I'd like to clear that up and document it first.
-> > 
-> > Should I also move the setting of the IMMUTABLE flag to a more generic code?
-> 
-> Possibly, but I guess that will depend on the outcome of that discussion
+--===============6507778334543533527==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Agreed, I'll post it later today. Could you please ack or comment the first patch?
+== Series Details ==
 
--- 
-With best wishes
-Dmitry
+Series: tests/chamelium: fixes for chamelium tests (rev2)
+URL   : https://patchwork.freedesktop.org/series/135270/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7899_BAT -> XEIGTPW_11314_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7899 -> IGTPW_11314
+
+  IGTPW_11314: 11314
+  IGT_7899: b7c817491859610fd003fff0cae9daa649e9ab26 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1525-61dfb30a52fac9b1bb455a250799611682334cc3: 61dfb30a52fac9b1bb455a250799611682334cc3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11314/index.html
+
+--===============6507778334543533527==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/chamelium: fixes for chamelium tests (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135270/">https://patchwork.freedesktop.org/series/135270/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11314/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11314/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7899_BAT -&gt; XEIGTPW_11314_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7899 -&gt; IGTPW_11314</li>
+</ul>
+<p>IGTPW_11314: 11314<br />
+  IGT_7899: b7c817491859610fd003fff0cae9daa649e9ab26 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1525-61dfb30a52fac9b1bb455a250799611682334cc3: 61dfb30a52fac9b1bb455a250799611682334cc3</p>
+
+</body>
+</html>
+
+--===============6507778334543533527==--
