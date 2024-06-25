@@ -4,67 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7631EC2BBCA
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 13:58:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65E98C3064D
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 14:08:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2BCDF10E655;
-	Tue, 25 Jun 2024 13:58:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA03B10E655;
+	Tue, 25 Jun 2024 14:08:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.b="BFVo98BP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I32O1mFF";
 	dkim-atps=neutral
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28AC110E655;
- Tue, 25 Jun 2024 13:58:30 +0000 (UTC)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by dfw.source.kernel.org (Postfix) with ESMTP id 14BF96147D;
- Tue, 25 Jun 2024 13:58:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F6C0C32781;
- Tue, 25 Jun 2024 13:58:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1719323908;
- bh=z/SrKzFh8FsvTvW1LfwzGcSQlXiVohodF0eVYwHlPW0=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=BFVo98BP1EpOONpMW26fOQOBm4cwNPwIzH9LM1svSb4OgBjgSQwmp6/8tZtb9wyHO
- 3AGWJAcLChikXIa9hIxaiUmhBt9h4/mtqaobnzZ69jT7iP0/lYDBT+SV0YWEeCd4+X
- iSsTiCOzeTpniz+UG3sEkP2HU+mXi+iSN6UErJq6R5CisZsXohrQoFREAO5MoGbkad
- lMFjuCsQJyRU7Qii7T5EXB06nR73vO/sEYZ+15We3a6Dd7emnQGGDJPnF2plMCEJxX
- e6JvhXyitPLMXkyP4L0u7ALWPLYjpomcP0dju74JPHqomGJxsOdH0UJR72Vph3oArd
- J1iMXM9gs3vgA==
-Date: Tue, 25 Jun 2024 15:58:25 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Robert Foss <rfoss@kernel.org>,
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Dave Stevenson <dave.stevenson@raspberrypi.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
- Petri Latvala <adrinael@adrinael.net>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>, dri-devel@lists.freedesktop.org, 
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] drm/connector: automatically set immutable flag
- for max_bpc property
-Message-ID: <20240625-enlightened-optimistic-fossa-fdd128@houat>
-References: <20240623-drm-bridge-connector-fix-hdmi-reset-v2-0-8590d44912ce@linaro.org>
- <20240623-drm-bridge-connector-fix-hdmi-reset-v2-2-8590d44912ce@linaro.org>
- <99ff549c-f5c4-dc9c-42f3-396dc3d29d6b@quicinc.com>
- <CAA8EJppcH-z275m6xDQaigsxmVhnfJkLVsq68GHLFoAq_p_2GA@mail.gmail.com>
- <30fa4e53-5a03-4030-2be5-f383a1c60077@quicinc.com>
- <CAA8EJpo_dBDqLUVH-SkufhFchu64rhC+vkhVBFdt++E4pdCrQg@mail.gmail.com>
- <20240625-yellow-shrimp-of-genius-17c662@houat>
- <CAA8EJpr_kn=x080KLGfwsLi3PnnNhTjJhvL=hiRNLBD=WqSuZQ@mail.gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA70010E655
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 14:08:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719324535; x=1750860535;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=XTxyo1f+h17jHHwK/0fuMaUdFsM44/H3jiQbykWzGI4=;
+ b=I32O1mFF+lW9dz4403Ok3hQf93js921ZYkQGxzRJMIKX6cm1VjsGcnro
+ caBF5oIIXkixhsYWBWVRUO6M2vSP/s9fmiJb6i1YpAuWTXLGOLHwF7ptw
+ ytbIvlgIgyVXsbedNZcw8RgXzyaBlZ5J+K8KogM407erdMQGcf+xAAa0g
+ UIl448/EJ+xBSyfctpfitJvCdxKPeYdSzAIHjaBzAFr1ItPyug0Ol5bJh
+ NL69r2je/8FoXA+YxjQrM1BF0eORnJlsc/vBCC6ZFUQt4qsDK0jfSpCmN
+ DY/NQvY7OvlEmAeF4+rVxTKEeoyqLjQ0d0/Z5/zgsoEva1QHoedEEfi0U g==;
+X-CSE-ConnectionGUID: IuxddZVbSO+njz422kYGcw==
+X-CSE-MsgGUID: du70mXNFSoaIvDuYUKuDtQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="16571927"
+X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="16571927"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jun 2024 07:08:55 -0700
+X-CSE-ConnectionGUID: rQvHpwEYQ+SF+s91NJpu/g==
+X-CSE-MsgGUID: TphQ6exMQBKhjGZB0qHGJA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="48104608"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 25 Jun 2024 07:08:55 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 25 Jun 2024 07:08:54 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 25 Jun 2024 07:08:54 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 25 Jun 2024 07:08:54 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cWN6T/Hf2JL2iEJaayG6/wB1tcQhkrn+T8BOSO8fG4PTOljoPzqPobHXEGxE2OdX/F/UqTJXwlYbtqZRe8W5HN8MlmtvY9Yn7kf4DYzKseayjwTB8FGXOYzviRvIbT5JDq41iVSiUEf3ZAyYQXrD6mHYxHkdphF9PGTlwcVK6SymLsBnqBqi8xUO4Vk+8vC37nPOHGA6d92Mg17VceglNQClIxbI3TudET97MiDBkHV5MQHcOjGk72xzfQgd2tskr9LmhnueFc4ssauIYRYllDu9tAP3q0dLLlNEl9siyPrdzp7ETmFQxPobvqCCkruTzXywo261tt6wTkprF8/IIw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SBmxQQEr3nIQfwdkn+pfDWrffsNdM180CWlGhoMtqes=;
+ b=djAbgd3ctLyL7HfpJflYEkDwMNiCRt20Lc4sZFrYiI4w/kri3/n+Hq1+Zrh4zS8wMWkkH8OIuv5TZd4e93PbJ9wU2K0BUZoskQNzJbhFFm2ib2Hcql4XYZCCPkf6Rzi1S3YRq4+HAnoHEJKy3DvovZ1UO/W0D8wsfwn4rUAQalygjxiIXvtyFI1KvwS+8Rpy6bg0dxjMy1nkYDRjSjFicl7q/gLYfsUQbdIbU2jPKyRGdyOSzszfSTggEKOtgM5zAODe0YuXDdX4pFHBZ5JYus3HZQk+ypgKBX1F1XRjcIgM4YZPiohx0W4DM2/4GjphgnVz0IG2bP7yRlNqh0bt4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM8PR11MB5719.namprd11.prod.outlook.com (2603:10b6:8:10::6) by
+ CY5PR11MB6113.namprd11.prod.outlook.com (2603:10b6:930:2e::22) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7698.31; Tue, 25 Jun 2024 14:08:51 +0000
+Received: from DM8PR11MB5719.namprd11.prod.outlook.com
+ ([fe80::9996:d2ce:a20:d9bf]) by DM8PR11MB5719.namprd11.prod.outlook.com
+ ([fe80::9996:d2ce:a20:d9bf%4]) with mapi id 15.20.7698.025; Tue, 25 Jun 2024
+ 14:08:50 +0000
+Message-ID: <8950a599-a4d7-44e5-89ab-65ae4ca97be3@intel.com>
+Date: Tue, 25 Jun 2024 19:38:38 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: prefer
+ HDMI port for color tests to avoid DP FSM failures
+To: Kunal Joshi <kunal1.joshi@intel.com>, <igt-dev@lists.freedesktop.org>,
+ Mark Yacoub <markyacoub@chromium.org>
+References: <20240625140605.1420518-1-kunal1.joshi@intel.com>
+ <20240625140605.1420518-4-kunal1.joshi@intel.com>
+Content-Language: en-US
+From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+In-Reply-To: <20240625140605.1420518-4-kunal1.joshi@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SI2PR01CA0004.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:191::22) To DM8PR11MB5719.namprd11.prod.outlook.com
+ (2603:10b6:8:10::6)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="2wb3bjjqeq4p5mtd"
-Content-Disposition: inline
-In-Reply-To: <CAA8EJpr_kn=x080KLGfwsLi3PnnNhTjJhvL=hiRNLBD=WqSuZQ@mail.gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM8PR11MB5719:EE_|CY5PR11MB6113:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0eaea87d-b3c9-48af-6b73-08dc952056d9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230037|366013|1800799021|376011;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?dStVeDgxZlJSdjlRaHNsSnJ1SXREcm1YdCtkUzFpYnZ0Zm54VU1raW5kOFNC?=
+ =?utf-8?B?K2l6RjFoK1BKVmxGQ1MvalpzYThhenYvenlISGw5Z08wanZablZhVDFPblQ3?=
+ =?utf-8?B?OHpXbUZod3hpYlRiRVpOeGJ1NmNVZnl1Y0tDbUI5SzRwNE1oZlBqYkFsZWoy?=
+ =?utf-8?B?UHVWMWIzRlhLOXU1Ukx3QUQxS3plSGMybFpSOERwN0NlUXlOZkZyemhoRGg3?=
+ =?utf-8?B?TVZES0RhSGxRK0E0YzNMQVZQRURMaHBXaFBMYU5OWlpncmF0cXlDZkNPcTNZ?=
+ =?utf-8?B?RVpaSGZoVUY2YjgwRWhCMXhRZFZnTjcvM09FdTB4djNEdUxsK1pySmFnSTNP?=
+ =?utf-8?B?QWtScWF6Tjh2Y0ZUcG5tWXlPeEIxUG14Titmbmp0QnRqMnl2TkovajFBNUZC?=
+ =?utf-8?B?WFpjOHlKMU0wK3Q1blZ1bmhYcGJHZmR5czU5R09Vemw3TUhrN00yRGJzQXBO?=
+ =?utf-8?B?Y3F4bTRhVU9qTGU3d1F5N09hUmR4OG5aWW52ODJlOXZ1ZGpKQ3JPRWNDQlVs?=
+ =?utf-8?B?eFJ3aHZxSFgyOUtoSTk1SE56YjZ6dG1yNEJMby9OSWc0OVVUd0xrY3I1TExn?=
+ =?utf-8?B?bER0TlRnL2ROdHdWY1JWeVh3VmRITXAxRjhQRndENll2TDFlckg1WjNVRHJy?=
+ =?utf-8?B?cG1kZ1kxUmZhRFZ4aGVudWp5Sit2R1JkWmphTlBoemQyK3pZWlUzNklEeVFm?=
+ =?utf-8?B?MVk3VTFSTHdraW1BaU1jNTBweWdtd2Znb0c4c0h6aFhkRnVyZTNvMm9QTldT?=
+ =?utf-8?B?OFZic2RBSTFvTzdDVURPeGpmTlN5bGNMWFBxMERSUUFhcE5JSXk4MGRFMWlz?=
+ =?utf-8?B?bHh3a0ZMdkdraVZXdmZReVBLKzdHOHV0TUhKVnVMaGJSb2hxeVFTN1llRHNo?=
+ =?utf-8?B?UVIyZlpUOGZmWk51OEpvK3hPMkVteDdJWmxnY3NNZUd4T285MHlIY2swMzR3?=
+ =?utf-8?B?dWo3S0c0SEFyUGx2SDFQTkFPb3M1QS9QRDB2RjlaSUlLNXJya3RMUEZEWGVN?=
+ =?utf-8?B?UnptNFJodzU0MDJOZ2p0RkdRd1NZRXJzZDAwODhWRzBKQktNYlY0N2RWQUZC?=
+ =?utf-8?B?K3JvTmJJM01qZTRaTDh3ZE9WUFMwenhmekhwa0Nia1hMY0N2b3hma216dHoy?=
+ =?utf-8?B?QXBzSUt1OGJDemsyc1lEQTlxNmRWa1c2a1A2UTJsZG1QTzY3SkdOUGJJeU94?=
+ =?utf-8?B?NklsZUNyVzNqamgyZmNEdHltSnh6SDVtcnpuQUMvNVN5UlFpRG9MOVZMT1c3?=
+ =?utf-8?B?QW1BOWxHSmJvVDdZdEFyTFptMFY2Z0tKVW1BT0VMNVhsTjlRNFIwWjBxK0FP?=
+ =?utf-8?B?M05pS2syWmZSNGNyVTJHYzhUR3JyaEJhaC9ESjhYZWxtVHNZUjI5a2VtbWxu?=
+ =?utf-8?B?RzJMSnlKRXdzbEw3WUJQT2NnSlA5dFFSeFlzTkFpNGM2bVJIRW52ZXZnU0Y1?=
+ =?utf-8?B?ZisxRVJSY00reHRhZER0cTI5akxoYTBJQ0lVT1liVzJUUVZ5cTlWWU1rYUQr?=
+ =?utf-8?B?Vkd2em1zREVtSkw0MEhJZmJiRnJiUzJQUng5RWlRTzkwNWRQRjZXVlBFWE1J?=
+ =?utf-8?B?djE5dFVmajVlN056aEVxRHlUaTZubkpmd1d6ODRYakdtbnBWck9OeGJKMHhz?=
+ =?utf-8?B?RmVqZG5valViMUM2bndhd2kyaHRyMVBCdEdCN0FXSm1qWFg4VC9iMy80aW5G?=
+ =?utf-8?B?Wm8vUFJnVFhKWkdJNlFjRWtVWTNqTVV4amJUNUdXUUkwRGp1clkvQ01hUUli?=
+ =?utf-8?Q?LeDeLkjeyonjFZmcpDvqboJRRFxbyoq4KC6F1ZH?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM8PR11MB5719.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230037)(366013)(1800799021)(376011); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dkx2V3Fzb0xlYVhRR2RvQlIzNnhGTU9DcW9BcVVtUGlqU2Z1VElKL2lpSFZ3?=
+ =?utf-8?B?emdoc3VJa0NKS2ttVkY2czhmLzJwc2hyTEIrR1U5Lzc1cUNuY2xVWkxMVFpU?=
+ =?utf-8?B?SGk0bEdFTGVTVkJEdzVCMENCRzJzNDBaTXlhU1hmb3d3WkRhbTlNT25vb2xP?=
+ =?utf-8?B?Yk5zOU4vdGkrVU1WTXRBb0xUOUI5d3NYMUhjeEttYitsVjVSOWVhZEdjSHZl?=
+ =?utf-8?B?LzFMN01iRUFWR3JBSHMzRlRxM1JwdDcydjJlMmV0bUNuQWlzaVdRMGJRb0kv?=
+ =?utf-8?B?MnNNVFJyVSs3RXZYak5YcHZCNWNxcFROZUxBOHlGdU5UenNxa0dXWXdwZFFV?=
+ =?utf-8?B?K0dwQ0dHZG16YjZ4TlQ1bjhSQ2d1bktETTNZQVRRQ1VqdkxYSm9LY0NHVitR?=
+ =?utf-8?B?dFhlRmxoVHNMUEpVelRUMTJUVWJ5bzBZQm93VERmaklGcEs2QTlDT01pVFNi?=
+ =?utf-8?B?dVNVa3NNak5ZSmFXOXBWNWdlUHc3a3h5bWZZRjRzb2Y3c2FpMHRHSkl0b3kr?=
+ =?utf-8?B?bmlOVVlYMnY2RHhJOGtuVnZFdzBZSlMycjhVMFVUcWJxVFJFcm84WFJVamJD?=
+ =?utf-8?B?eXVRdDJMSkNRZ0wzS0prVGZIU2ErUUs5ZlFLYVlqeU9wU0hMYTcxVGkwN2Nt?=
+ =?utf-8?B?OXMwa3FVcmxxVlZBNDlOMjFSZ1V0Q1l6S1RtWUt0MnF2WG16dlAvN3VLMjU1?=
+ =?utf-8?B?T1J4MWFKQ3dVWGRFaWNJTDZHVXF4eDJpSzk5WEdsOE5RU2UycEFycStCbGR3?=
+ =?utf-8?B?WmpIaXkySmQ0cVpCdGxaMWtSMy9vcE1LRThaUGRDbUF1Q0Q3RUwzR2w0eGI1?=
+ =?utf-8?B?Qnc2QUlZbVdBNWVnQVdQMGtqS2xvL0pLQWNvODNZZ3FjWEZob2YxSGU4YTg5?=
+ =?utf-8?B?Vko0L3d1U2xTYlpYRG1SQzA4Z1B6RTNDYUdDcVN2bTg4QnNZUzRSMTNHUlVE?=
+ =?utf-8?B?Ylh1ajREbWhwS1VoZW9zVGhCRGFUL0hVS1RKZUxudnhQUU9OdzJLaFRLc1BU?=
+ =?utf-8?B?QkNTTi9nTGxOZDcxaThmYkx3SVZBM2dodkNMY3hZclBKaEw1bGJFaStOTk1W?=
+ =?utf-8?B?dXhvSEdyNkxoYkloNmhaL0NWSHBJU1Q5UjFZY2NwNnRLR2VXQTNNVjBhNmlh?=
+ =?utf-8?B?bUxKWWMwRzB1MHh0aGM1UXVTR3RzWWxNdzVoNDZGWmE5MHlZaitrclVtUVFK?=
+ =?utf-8?B?eGVMVzM2Wm10WHdtTk5vR2w5NjU4K1duUEZmV2tyN0lzM0VIWk90elpjWDJq?=
+ =?utf-8?B?WjRkeGpOUzhCc0dVQlpHeWJUVjZZbzhDVVJhMlNtTFlsOWg1bTZuRGFUQjkx?=
+ =?utf-8?B?N2hmYzFqQnZ4RTZ4NXM3cWw2VU9YZGVxOG5XZEF6eGdrV1BBYnpJOFlHM3NI?=
+ =?utf-8?B?NTgvQm12MTBHOHlkMTIrcklFak53UWVLWDJZcHcvQnpUR3haVFlXZkJ4bTB4?=
+ =?utf-8?B?djQ0Y1BLVDVpb2hTVXJGak5wOUoxZTNqMzB3NzRPRmlUQ3VEei84MC9oUEZz?=
+ =?utf-8?B?bGswcXBraFFGajJiR3JjS00wYVMxUE9PRHJGYldrR1A3dFRGQzg2WVFLc1lC?=
+ =?utf-8?B?ZVk0QXJSVWhCREtTQjIxQnVFUkluK3JEQ1BLSDdoWlh3dXhESmZmVmE5dXcx?=
+ =?utf-8?B?ZVlld1owT3dNcU10QjRFbmNzRjlBNGxpUVpsaXA0RUx2dVVkbnlzV3hOMDk1?=
+ =?utf-8?B?Q2FhbVJManNmSmlOZkFCWGFpZjhyQ0pmbGxUVDRaZ2grcE8xOSt2MmpwenBG?=
+ =?utf-8?B?aUkrWkd0dVZyV0tvUGI1THZyOThmYS9BUHFlSFdnOWRGRVEzUUZUZXFzV3pQ?=
+ =?utf-8?B?L3QvR1RYTDNUNHJKck8xNXo2aUUrMVJTcW05U2kzZG9TSm5LZTdJQUxsK2VX?=
+ =?utf-8?B?N2V1bXBjSTA2QjZqQTBxOCtkYUZSOHBUM3doU3RrbE9nRUluS096TFpBazR2?=
+ =?utf-8?B?dmM0bms2T1VtYk9OSTlDKzdsLzdtU09mMUYxenR3Q1VDdE9iTU5NaEdSVE5R?=
+ =?utf-8?B?RlJoR0JTd3ljQkdYcTFPeUdkMDlRS3p6eUdRYUJ1SitmY1RHK3NpL1U2RDg5?=
+ =?utf-8?B?WTg3WXFSbm5UQnV5cHBtdVhDR3BjME1IS1BESTAxNFZrMEpleC91WUYwb05t?=
+ =?utf-8?B?bGFITjNGcnQ0RUtqb2JkcGErUzU0NlJ4VER4MGNWa2t5cjhGM1hWbXVnRHNI?=
+ =?utf-8?B?Z1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0eaea87d-b3c9-48af-6b73-08dc952056d9
+X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5719.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jun 2024 14:08:50.9257 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 523PsDpxhZDAWQG4H0PHEZfLn7jKk2YIMkcvFAhqezU81Cs9FxM6WOwNjVdQmfKoq0PQPRgfbKRHJUaXTjdBhQpSq7S+zPs0nslrs+YA4sk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6113
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,127 +195,44 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
---2wb3bjjqeq4p5mtd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 25-06-2024 07:36 pm, Kunal Joshi wrote:
+> Both DP and HDMI connectors are fine to capture, just we are more
+> stable on HDMI and sometimes face DP FSM failures, for color tests
+> prefer HDMI if its present, else use DP
+> 
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 
-On Tue, Jun 25, 2024 at 10:23:14AM GMT, Dmitry Baryshkov wrote:
-> On Tue, 25 Jun 2024 at 10:19, Maxime Ripard <mripard@kernel.org> wrote:
-> >
-> > Hi,
-> >
-> > On Tue, Jun 25, 2024 at 09:21:27AM GMT, Dmitry Baryshkov wrote:
-> > > On Tue, 25 Jun 2024 at 01:56, Abhinav Kumar <quic_abhinavk@quicinc.co=
-m> wrote:
-> > > >
-> > > >
-> > > >
-> > > > On 6/24/2024 3:46 PM, Dmitry Baryshkov wrote:
-> > > > > On Tue, 25 Jun 2024 at 01:39, Abhinav Kumar <quic_abhinavk@quicin=
-c.com> wrote:
-> > > > >>
-> > > > >> + IGT dev
-> > > > >>
-> > > > >> On 6/22/2024 10:40 PM, Dmitry Baryshkov wrote:
-> > > > >>> With the introduction of the HDMI Connector framework the drive=
-r might
-> > > > >>> end up creating the max_bpc property with min =3D max =3D 8. IG=
-T insists
-> > > > >>> that such properties carry the 'immutable' flag. Automatically =
-set the
-> > > > >>> flag if the driver asks for the max_bpc property with min =3D=
-=3D max.
-> > > > >>>
-> > > > >>
-> > > > >> This change does not look right to me.
-> > > > >>
-> > > > >> I wonder why we need this check because DRM_MODE_PROP_IMMUTABLE =
-means
-> > > > >> that as per the doc, userspace cannot change the property.
-> > > > >>
-> > > > >>            * DRM_MODE_PROP_IMMUTABLE
-> > > > >>            *     Set for properties whose values cannot be chang=
-ed by
-> > > > >>            *     userspace. The kernel is allowed to update the =
-value of
-> > > > >> these
-> > > > >>            *     properties. This is generally used to expose pr=
-obe state to
-> > > > >>            *     userspace, e.g. the EDID, or the connector path=
- property
-> > > > >> on DP
-> > > > >>            *     MST sinks. Kernel can update the value of an im=
-mutable
-> > > > >> property
-> > > > >>            *     by calling drm_object_property_set_value().
-> > > > >>            */
-> > > > >>
-> > > > >> Here we are allowing userspace to change max_bpc
-> > > > >>
-> > > > >>
-> > > > >> drm_atomic_connector_set_property()
-> > > > >> {
-> > > > >>          **********
-> > > > >>
-> > > > >>           } else if (property =3D=3D connector->max_bpc_property=
-) {
-> > > > >>                   state->max_requested_bpc =3D val;
-> > > > >>
-> > > > >>          **********
-> > > > >> }
-> > > > >>
-> > > > >> I believe you are referring to this IGT check right?
-> > > > >>
-> > > > >> https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/t=
-ests/kms_properties.c#L428
-> > > > >
-> > > > > Yes
-> > > > >
-> > > > >>
-> > > > >> I think we should fix IGT in this case unless there is some reas=
-on we
-> > > > >> are missing. Because just because it has the same min and max do=
-es not
-> > > > >> mean its immutable by the doc of the IMMUTABLE flag.
-> > > > >
-> > > > > Well, having the same min and max means that it is impossible to
-> > > > > change the property. So the property is immutable, but doesn't ha=
-ve
-> > > > > the flag.
-> > > > >
-> > > >
-> > > > True, then does DRM_MODE_PROP_IMMUTABLE need a doc update too indic=
-ating
-> > > > that even if the min and max is same, property will be interpreted =
-as
-> > > > immutable.
-> > >
-> > > Granted that I'm only doing it for max_bpc property I don't think so.
-> >
-> > Yeah, I have to agree with Abhinav here, it does look fishy to me too,
-> > even more so that it's only ever "documented" through an igt routine
-> > that has never documented why we want that.
-> >
-> > I'm fine with the change if it's indeed what we expect, and it might
-> > very well be, but I'd like to clear that up and document it first.
->=20
-> Should I also move the setting of the IMMUTABLE flag to a more generic co=
-de?
+Cc: Mark Yacoub <markyacoub@chromium.org>
 
-Possibly, but I guess that will depend on the outcome of that discussion
+LGTM:
+Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 
-Maxime
-
---2wb3bjjqeq4p5mtd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZnrNAQAKCRDj7w1vZxhR
-xVzsAQCnu6DC0Ka/hvDQ2v8nWmyLROciJ0aE03Y99+Psr1oDQwD+JlXJWLZr4PzM
-VUzEa4rZRsI9MAKL3N5mWA5QF0rn5AY=
-=3G09
------END PGP SIGNATURE-----
-
---2wb3bjjqeq4p5mtd--
+> ---
+>   tests/chamelium/kms_chamelium_color.c | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
+> 
+> diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
+> index 392eaf1f4..5550cec22 100644
+> --- a/tests/chamelium/kms_chamelium_color.c
+> +++ b/tests/chamelium/kms_chamelium_color.c
+> @@ -468,6 +468,19 @@ static int test_setup(data_t *data, enum pipe p)
+>   
+>   	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+>   
+> +	/*
+> +	 * Prefer to run this test on HDMI connector if its connected, since on DP we
+> +	 * sometimes face DP FSM issue
+> +	 */
+> +        for_each_valid_output_on_pipe(&data->display, p, data->output) {
+> +                for (i = 0; i < data->port_count; i++) {
+> +                        if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
+> +			    data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
+> +			    strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
+> +                                return i;
+> +                }
+> +        }
+> +
+>   	for_each_valid_output_on_pipe(&data->display, p, data->output) {
+>   		for (i = 0; i < data->port_count; i++) {
+>   			if (strcmp(data->output->name,
