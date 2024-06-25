@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DB94C2BBCA
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 13:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5716C3064D
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Jun 2024 13:54:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3DF3310E1D2;
-	Tue, 25 Jun 2024 13:54:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4496810E653;
+	Tue, 25 Jun 2024 13:54:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DDvDanm/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="naDXEe1v";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53AFA10E1D2
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 13:54:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5F1110E19D
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Jun 2024 13:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719323654; x=1750859654;
+ t=1719323653; x=1750859653;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JnCyvnQKz8ySLCZzmRlh+wSfEDJ7LBPdh7TVwKfx7zI=;
- b=DDvDanm/v4uw0eyu3ghxkGjJXSCFS2655ZxRaQchGoKYO+IJ33rweFJ/
- 5IVUIhv/I4oIJ9kFiik/897k6aIdiiXus9pPtPzIQoGNgSEqSyIjSfIer
- LhV3de+XUDOKTMISA/HSRoHEL8gNRyn6TLxVzfX53xyH15dmB2janVCno
- A6fK+zmOaOJJpuGGwu9Ji7/BP7Yhqcc8C2Z7H+NC+1ju6ZhDKb37gYb7n
- 6erjn1L9MxxlUw5YjK50GtlJqB1TauunaCR7Qlktl7DoXA2cdZUim4fR6
- +m4KqDi9uKc94PsP39l/TjYSSeFm5QpSn4acmEClIWsklciqyQg27E8/+ g==;
-X-CSE-ConnectionGUID: ozvVKIqdQAOeR6t5SkwUqA==
-X-CSE-MsgGUID: doOnxrQ7R++mbzc55HcZyw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="16486705"
-X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="16486705"
+ bh=tC7D1hpKg/IaW2w+t6XodAWL0Ve2s9eZG+iR+BbZ1sw=;
+ b=naDXEe1vjoGC/W7QgLUldh4/NoyH/aMMVR26P+ie5Q2ax054q798Ap58
+ F8lkDf+n3UjHLkZVkL0tOANXfxTft/eIS2azodjdajtFHoTq508jR+wlI
+ SLhlqKXdrMfRGu7KeIPTieopgXV1X2GreLqLsdfX9pKTZzyGuzFcywSvB
+ +3AkhtKCRSMWirlw3lKSRtSI59ZEKy5+2LBlDH02cknzrRtDuKGthZZDk
+ rE6XPr8oo/PqMOu24JOQMYThLnDhHqC9QggOfpQr5rUZ2y3y1TidB8h+X
+ uwztpkdaYf4yUHeQLVZiK/bLUZ3Kv9aIEoiMuyI/wG2/th+jBqbN8eiJD A==;
+X-CSE-ConnectionGUID: n/c7fnyIRJmVlBNxbS+V/g==
+X-CSE-MsgGUID: e9cOnQeQQsK9cDq6h9zt7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11114"; a="16486702"
+X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="16486702"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jun 2024 06:54:14 -0700
-X-CSE-ConnectionGUID: BVJqvjWeTGi9Sonh0x8KXQ==
-X-CSE-MsgGUID: GtdKrtHASQecv9fgafprDQ==
+ 25 Jun 2024 06:54:12 -0700
+X-CSE-ConnectionGUID: y+o6wGeoQsC9fjxPjrrriQ==
+X-CSE-MsgGUID: ZETDnjIrSzmxvXxtM2V1dw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="48644184"
+X-IronPort-AV: E=Sophos;i="6.08,264,1712646000"; d="scan'208";a="48644180"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 06:54:14 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2024 06:54:12 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/chamelium/kms_chamelium_color: prefer HDMI
- port for color tests to avoid DP FSM failures
-Date: Tue, 25 Jun 2024 19:36:05 +0530
-Message-Id: <20240625140605.1420518-4-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/chamelium/kms_chamelium_color: plug ports
+ before starting the test
+Date: Tue, 25 Jun 2024 19:36:04 +0530
+Message-Id: <20240625140605.1420518-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240625140605.1420518-1-kunal1.joshi@intel.com>
 References: <20240625140605.1420518-1-kunal1.joshi@intel.com>
@@ -69,40 +69,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Both DP and HDMI connectors are fine to capture, just we are more
-stable on HDMI and sometimes face DP FSM failures, for color tests
-prefer HDMI if its present, else use DP
+There is no harm in plugging discovered ports,
+just incase they are not plugged we skip in test_setup
 
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/chamelium/kms_chamelium_color.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
 diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 392eaf1f4..5550cec22 100644
+index 4156023da..392eaf1f4 100644
 --- a/tests/chamelium/kms_chamelium_color.c
 +++ b/tests/chamelium/kms_chamelium_color.c
-@@ -468,6 +468,19 @@ static int test_setup(data_t *data, enum pipe p)
+@@ -709,6 +709,7 @@ run_tests_for_pipe(data_t *data)
  
- 	data->primary = igt_pipe_get_plane_type(pipe, DRM_PLANE_TYPE_PRIMARY);
+ igt_main
+ {
++	int i;
+ 	data_t data = {};
  
-+	/*
-+	 * Prefer to run this test on HDMI connector if its connected, since on DP we
-+	 * sometimes face DP FSM issue
-+	 */
-+        for_each_valid_output_on_pipe(&data->display, p, data->output) {
-+                for (i = 0; i < data->port_count; i++) {
-+                        if ((data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-+			    data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_HDMIB) &&
-+			    strcmp(data->output->name, chamelium_port_get_name(data->ports[i])) == 0)
-+                                return i;
-+                }
-+        }
-+
- 	for_each_valid_output_on_pipe(&data->display, p, data->output) {
- 		for (i = 0; i < data->port_count; i++) {
- 			if (strcmp(data->output->name,
+ 	igt_fixture {
+@@ -730,6 +731,13 @@ igt_main
+ 
+ 		if (!data.port_count)
+ 			igt_skip("No ports connected\n");
++		/*
++		 * We don't cause any harm by plugging
++		 * discovered ports, just incase they are not plugged
++		 * we currently skip in test_setup
++		 */
++		for( i = 0; i < data.port_count; i++)
++			chamelium_plug(data.chamelium, data.ports[i]);
+ 
+ 		kmstest_set_vt_graphics_mode();
+ 	}
 -- 
 2.25.1
 
