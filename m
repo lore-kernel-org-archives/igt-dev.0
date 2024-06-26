@@ -2,52 +2,52 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD414C3065C
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Jun 2024 20:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABA8CC30659
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8319110EC0D;
-	Thu, 20 Jun 2024 20:01:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5725010E15D;
+	Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A0EtSQ2m";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BaXN/a5s";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E918C10E998
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Jun 2024 20:00:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D22F210E0B1
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1718913659; x=1750449659;
+ t=1719435290; x=1750971290;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=aVQXHd47HY5Z0gqPEKkQmCLcG+pMhMHoBZ1eYcZDfAY=;
- b=A0EtSQ2meF4akOvx4UEUdANw4KRLQc5i304poHcm16EHUwD/GhFUJqhy
- c7DvgF0wuL8254/0nEl3Ecp9fjQQP3cAtINe5vR3jKcKdm4AznACeY3ul
- OtM5jcfs/OXB2CzXaDQz+/R6w8QEkZ3f10eZjUL4juvZ/H/z008rMhUA+
- ZgI72AFQF+H9meGpc/bMrfdgVjNkaI2tGpnfMQD4TahuauRSSKJaJ3K2p
- AH9pk/KJSH2sK3cumQaKdWQYM7dsUo9bOMNQrBaTlUXkDBDwrmG03uMrq
- K4ajHY71n50yaRFVEiq8Pt4VVFpPiNOOBe3QpMpcZimCSO2BO5Ha0JV6e Q==;
-X-CSE-ConnectionGUID: E4gA+d0kT96h115Gwh2mig==
-X-CSE-MsgGUID: GDiwiqoIRMaHfTEzeLHTxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="41329316"
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="41329316"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:58 -0700
-X-CSE-ConnectionGUID: +UySDr5ITmu1e3wW1x3dXQ==
-X-CSE-MsgGUID: 2LsnnomHTFCdfV+YkAWllg==
+ bh=ZOvxgTGWH9NR50ZuMFiwjxr4T50OSaGjrnS2HXDWWFs=;
+ b=BaXN/a5sDIUTnstuk6TPZP9U6jHsvty0XitpbgPtaehUf2yKo/PZfg8J
+ gYlHOXSj2ok1npoN/3sfqBOsM8WOU36sZAeVRYC008A7VQpQ5Y8nFvqp0
+ Ah3jXg+LvmcBZ3EkqJEWJ/LSGk5r/cWnEsJDcXUDHLzt3gV7EFuHwSjE4
+ 3YoT/t56ueBQ0+emHzlp0QF9w4MNy83OS77lq1Jg4Vo8SJv/Z52SkS1b7
+ Cjs65DeeDLkBBaNUSEHYPjaXprLAazzmmvQeYF+3mcF0wc8nxHYjOTXQF
+ hvi2zRS1jKmBJ3QGGWQaS+6sZQV0GSnuP/Ww1rm82uD8rRYGqSP+DDrot Q==;
+X-CSE-ConnectionGUID: ML70MaUdSReOGEYmVeVPKw==
+X-CSE-MsgGUID: 0BxtBgWIS/CoPqc010LryQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670986"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670986"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2024 13:54:49 -0700
+X-CSE-ConnectionGUID: ev/X0fk1Rn29UhXn2+7+oQ==
+X-CSE-MsgGUID: 4vaL3sC/SCGV7PDbR4zH/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,252,1712646000"; d="scan'208";a="42459825"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018910"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jun 2024 13:00:58 -0700
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jun 2024 13:54:48 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 01/28] lib/xe/oa: Import OA metric generation files from
+Subject: [PATCH i-g-t 01/16] lib/xe/oa: Import OA metric generation files from
  i915
-Date: Thu, 20 Jun 2024 13:00:26 -0700
-Message-ID: <20240620200054.3550653-2-ashutosh.dixit@intel.com>
+Date: Wed, 26 Jun 2024 13:54:28 -0700
+Message-ID: <20240626205443.1560171-2-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
-References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
+References: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
@@ -70,6 +70,7 @@ Import OA metric generation files from i915 to provide a starting point for
 Xe OA XML processing code.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
  lib/xe/oa-configs/README.md               |  115 +
  lib/xe/oa-configs/codegen.py              |  444 ++++
