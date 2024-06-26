@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 159EEC3065D
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:55:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 878FEC30653
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:55:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5059710E9CE;
-	Wed, 26 Jun 2024 20:55:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 67F9710E9CB;
+	Wed, 26 Jun 2024 20:55:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JkuCfKSj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dNCATHvM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 538DC10E0B1
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30FA110E0B1
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1719435291; x=1750971291;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=o90gbROuguf6zGiUP6yYs9e5wwEkfK3xxNRut0b+fX0=;
- b=JkuCfKSjXCgLv5Z4cNWLflvtjZGZ+KyQF7FZ2KuiD+lHxI/dsX922Hhs
- 1Ges8mPbbDJPuw6qrdjelpX5I8wmw+nqkLyQg3ZHhMSmK1VT7MrReG5eg
- tWLeVApolMou1hiLaRqc9HkqPRamDs47DSbH7LKHs5wtDPNRBiJ3Hg2qP
- 1ku9W3/1iPy6tSd+gcbXmoMuZkuVHCQNq6qwfTc9TMuz/XzvEU41IbZYA
- ukUPC7qxwjVKah362u9pMQ0ZCOwNVeoALwUGFx+x3p79dj24J5BdMZXhO
- NLG0e7Wf4r3tQlo3MmYSYvJUtU+cr06dySvpLLUaKLlI7oA+QVHqHc0fW Q==;
-X-CSE-ConnectionGUID: gfjKbk9wSYuZLA11FHSf/A==
-X-CSE-MsgGUID: yk3rKqW8T2+06fMPDZrfaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670993"
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670993"
+ bh=Z4qlGafG3JaUWBxW2b+EKGM7UrvRbCNUlMksnXSJRzg=;
+ b=dNCATHvMtlDc51wI5F6L753cDQo0YBFPNCjRMIDn9oN0ZdIdK7u38YKn
+ 5wVnAFj2CFURbGe9OMfPcnN4su0bghDNK+YORiowunO0LxINKGRZr1n5/
+ jSlkfVQamaW8wOOtjwlZ/LUbTlD+FV0Hm4E6vcM9h5XGxwIRCQmDNqvOE
+ U6DOtD5e0eJFbVWXnIraoCwpG72SY88RK+uuOMvDkgfP6dFOv2LsnBKA7
+ eHN0GXuQbNy6JSEV3NL3JPfBFb8H6nHhIt5Nxp64fiZcvxy+SNNOmjFmN
+ SSZp1MWvytvTl6LYjOa3J37f7OnQKtNSXlnUZcdG1/ySyYhKUHZKrezWC w==;
+X-CSE-ConnectionGUID: qCbA8vxZTnyG8X9kPksA/A==
+X-CSE-MsgGUID: s+pSASHGTKquJAKn7iUbtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27671002"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27671002"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:50 -0700
-X-CSE-ConnectionGUID: JPqYdT8+TKuQAKygssAzxQ==
-X-CSE-MsgGUID: 2qMrRyZiSgGICMBEQnYbbw==
+ 26 Jun 2024 13:54:51 -0700
+X-CSE-ConnectionGUID: c1lAmgrSQr+RV5zUdN0NqA==
+X-CSE-MsgGUID: 0w4O9H7BQrGO8oq52vvr0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018921"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018930"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:50 -0700
+ 26 Jun 2024 13:54:51 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 07/16] drm-uapi/xe: Sync with Perf/OA changes
-Date: Wed, 26 Jun 2024 13:54:34 -0700
-Message-ID: <20240626205443.1560171-8-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 14/16] xe/oa/mdapi-xml-convert: Add support for
+ 576B_PEC64LL format
+Date: Wed, 26 Jun 2024 13:54:41 -0700
+Message-ID: <20240626205443.1560171-15-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 References: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,363 +68,193 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Align with kernel commit edc9abaf17ad ("drm/xe/oa/uapi: Allow preemption to
-be disabled on the stream exec queue") to bring in Perf/OA changes from the
-kernel.
+From: José Roberto de Souza <jose.souza@intel.com>
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Xe2 don't use the 256bytes long format, instead it uses a 576bytes
+long with 64 PEC fields that are 64 bits long.
+This patch fixes the xe2 definition and add the parser for this format.
+
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- include/drm-uapi/xe_drm.h | 308 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 308 insertions(+)
+ lib/xe/oa-configs/codegen.py           |  5 ++
+ lib/xe/oa-configs/mdapi-xml-convert.py | 76 +++++++++++++++++++++-----
+ lib/xe/xe_oa.h                         |  1 +
+ 3 files changed, 67 insertions(+), 15 deletions(-)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 1100dfe1ff..a5f94bb625 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -80,6 +80,7 @@ extern "C" {
-  *  - &DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY
-  *  - &DRM_IOCTL_XE_EXEC
-  *  - &DRM_IOCTL_XE_WAIT_USER_FENCE
-+ *  - &DRM_IOCTL_XE_PERF
-  */
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index f078ef9498..51498f803d 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -128,6 +128,7 @@ class Set:
+         return self.xml.find(path)
  
- /*
-@@ -100,6 +101,8 @@ extern "C" {
- #define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x08
- #define DRM_XE_EXEC			0x09
- #define DRM_XE_WAIT_USER_FENCE		0x0a
-+#define DRM_XE_PERF			0x0b
-+
- /* Must be kept compact -- no holes */
  
- #define DRM_IOCTL_XE_DEVICE_QUERY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
-@@ -113,6 +116,7 @@ extern "C" {
- #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
- #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
- #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
-+#define DRM_IOCTL_XE_PERF			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_PERF, struct drm_xe_perf_param)
- 
- /**
-  * DOC: Xe IOCTL Extensions
-@@ -685,6 +689,7 @@ struct drm_xe_device_query {
- #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
- #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
- #define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
-+#define DRM_XE_DEVICE_QUERY_OA_UNITS		8
- 	/** @query: The type of data to query */
- 	__u32 query;
- 
-@@ -1370,6 +1375,309 @@ struct drm_xe_wait_user_fence {
- 	__u64 reserved[2];
- };
- 
-+/**
-+ * enum drm_xe_perf_type - Perf stream types
-+ */
-+enum drm_xe_perf_type {
-+	/** @DRM_XE_PERF_TYPE_OA: OA perf stream type */
-+	DRM_XE_PERF_TYPE_OA,
-+};
++#TODO add SqidiTotalCount, L3BankTotalCount, L3NodeTotalCount
+ hw_vars_mapping = {
+     "$EuCoresTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
+     "$EuSlicesTotalCount": { 'c': "perf->devinfo.n_eu_slices" },
+@@ -159,6 +160,10 @@ hw_vars_mapping = {
+     "$GpuMaxFrequency": { 'c': "perf->devinfo.gt_max_freq" },
+     "$SkuRevisionId": { 'c': "perf->devinfo.revision" },
+     "$QueryMode": { 'c': "perf->devinfo.query_mode" },
 +
-+/**
-+ * enum drm_xe_perf_op - Perf stream ops
-+ */
-+enum drm_xe_perf_op {
-+	/** @DRM_XE_PERF_OP_STREAM_OPEN: Open a perf counter stream */
-+	DRM_XE_PERF_OP_STREAM_OPEN,
++    "$ComputeEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
 +
-+	/** @DRM_XE_PERF_OP_ADD_CONFIG: Add perf stream config */
-+	DRM_XE_PERF_OP_ADD_CONFIG,
-+
-+	/** @DRM_XE_PERF_OP_REMOVE_CONFIG: Remove perf stream config */
-+	DRM_XE_PERF_OP_REMOVE_CONFIG,
-+};
-+
-+/**
-+ * struct drm_xe_perf_param - Input of &DRM_XE_PERF
-+ *
-+ * The perf layer enables multiplexing perf counter streams of multiple
-+ * types. The actual params for a particular stream operation are supplied
-+ * via the @param pointer (use __copy_from_user to get these params).
-+ */
-+struct drm_xe_perf_param {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+	/** @perf_type: Perf stream type, of enum @drm_xe_perf_type */
-+	__u64 perf_type;
-+	/** @perf_op: Perf op, of enum @drm_xe_perf_op */
-+	__u64 perf_op;
-+	/** @param: Pointer to actual stream params */
-+	__u64 param;
-+};
-+
-+/**
-+ * enum drm_xe_perf_ioctls - Perf fd ioctl's
-+ *
-+ * Information exchanged between userspace and kernel for perf fd ioctl's
-+ * is stream type specific
-+ */
-+enum drm_xe_perf_ioctls {
-+	/** @DRM_XE_PERF_IOCTL_ENABLE: Enable data capture for a stream */
-+	DRM_XE_PERF_IOCTL_ENABLE = _IO('i', 0x0),
-+
-+	/** @DRM_XE_PERF_IOCTL_DISABLE: Disable data capture for a stream */
-+	DRM_XE_PERF_IOCTL_DISABLE = _IO('i', 0x1),
-+
-+	/** @DRM_XE_PERF_IOCTL_CONFIG: Change stream configuration */
-+	DRM_XE_PERF_IOCTL_CONFIG = _IO('i', 0x2),
-+
-+	/** @DRM_XE_PERF_IOCTL_STATUS: Return stream status */
-+	DRM_XE_PERF_IOCTL_STATUS = _IO('i', 0x3),
-+
-+	/** @DRM_XE_PERF_IOCTL_INFO: Return stream info */
-+	DRM_XE_PERF_IOCTL_INFO = _IO('i', 0x4),
-+};
-+
-+/**
-+ * enum drm_xe_oa_unit_type - OA unit types
-+ */
-+enum drm_xe_oa_unit_type {
-+	/**
-+	 * @DRM_XE_OA_UNIT_TYPE_OAG: OAG OA unit. OAR/OAC are considered
-+	 * sub-types of OAG. For OAR/OAC, use OAG.
-+	 */
-+	DRM_XE_OA_UNIT_TYPE_OAG,
-+
-+	/** @DRM_XE_OA_UNIT_TYPE_OAM: OAM OA unit */
-+	DRM_XE_OA_UNIT_TYPE_OAM,
-+};
-+
-+/**
-+ * struct drm_xe_oa_unit - describe OA unit
-+ */
-+struct drm_xe_oa_unit {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	/** @oa_unit_id: OA unit ID */
-+	__u32 oa_unit_id;
-+
-+	/** @oa_unit_type: OA unit type of @drm_xe_oa_unit_type */
-+	__u32 oa_unit_type;
-+
-+	/** @capabilities: OA capabilities bit-mask */
-+	__u64 capabilities;
-+#define DRM_XE_OA_CAPS_BASE		(1 << 0)
-+
-+	/** @oa_timestamp_freq: OA timestamp freq */
-+	__u64 oa_timestamp_freq;
-+
-+	/** @reserved: MBZ */
-+	__u64 reserved[4];
-+
-+	/** @num_engines: number of engines in @eci array */
-+	__u64 num_engines;
-+
-+	/** @eci: engines attached to this OA unit */
-+	struct drm_xe_engine_class_instance eci[];
-+};
-+
-+/**
-+ * struct drm_xe_query_oa_units - describe OA units
-+ *
-+ * If a query is made with a struct drm_xe_device_query where .query
-+ * is equal to DRM_XE_DEVICE_QUERY_OA_UNITS, then the reply uses struct
-+ * drm_xe_query_oa_units in .data.
-+ *
-+ * OA unit properties for all OA units can be accessed using a code block
-+ * such as the one below:
-+ *
-+ * .. code-block:: C
-+ *
-+ *	struct drm_xe_query_oa_units *qoa;
-+ *	struct drm_xe_oa_unit *oau;
-+ *	u8 *poau;
-+ *
-+ *	// malloc qoa and issue DRM_XE_DEVICE_QUERY_OA_UNITS. Then:
-+ *	poau = (u8 *)&qoa->oa_units[0];
-+ *	for (int i = 0; i < qoa->num_oa_units; i++) {
-+ *		oau = (struct drm_xe_oa_unit *)poau;
-+ *		// Access 'struct drm_xe_oa_unit' fields here
-+ *		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
-+ *	}
-+ */
-+struct drm_xe_query_oa_units {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+	/** @num_oa_units: number of OA units returned in oau[] */
-+	__u32 num_oa_units;
-+	/** @pad: MBZ */
-+	__u32 pad;
-+	/**
-+	 * @oa_units: struct @drm_xe_oa_unit array returned for this device.
-+	 * Written below as a u64 array to avoid problems with nested flexible
-+	 * arrays with some compilers
-+	 */
-+	__u64 oa_units[];
-+};
-+
-+/**
-+ * enum drm_xe_oa_format_type - OA format types as specified in PRM/Bspec
-+ * 52198/60942
-+ */
-+enum drm_xe_oa_format_type {
-+	/** @DRM_XE_OA_FMT_TYPE_OAG: OAG report format */
-+	DRM_XE_OA_FMT_TYPE_OAG,
-+	/** @DRM_XE_OA_FMT_TYPE_OAR: OAR report format */
-+	DRM_XE_OA_FMT_TYPE_OAR,
-+	/** @DRM_XE_OA_FMT_TYPE_OAM: OAM report format */
-+	DRM_XE_OA_FMT_TYPE_OAM,
-+	/** @DRM_XE_OA_FMT_TYPE_OAC: OAC report format */
-+	DRM_XE_OA_FMT_TYPE_OAC,
-+	/** @DRM_XE_OA_FMT_TYPE_OAM_MPEC: OAM SAMEDIA or OAM MPEC report format */
-+	DRM_XE_OA_FMT_TYPE_OAM_MPEC,
-+	/** @DRM_XE_OA_FMT_TYPE_PEC: PEC report format */
-+	DRM_XE_OA_FMT_TYPE_PEC,
-+};
-+
-+/**
-+ * enum drm_xe_oa_property_id - OA stream property id's
-+ *
-+ * Stream params are specified as a chain of @drm_xe_ext_set_property
-+ * struct's, with @property values from enum @drm_xe_oa_property_id and
-+ * @drm_xe_user_extension base.name set to @DRM_XE_OA_EXTENSION_SET_PROPERTY.
-+ * @param field in struct @drm_xe_perf_param points to the first
-+ * @drm_xe_ext_set_property struct.
-+ *
-+ * Exactly the same mechanism is also used for stream reconfiguration using
-+ * the @DRM_XE_PERF_IOCTL_CONFIG perf fd ioctl, though only a subset of
-+ * properties below can be specified for stream reconfiguration.
-+ */
-+enum drm_xe_oa_property_id {
-+#define DRM_XE_OA_EXTENSION_SET_PROPERTY	0
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_OA_UNIT_ID: ID of the OA unit on which to open
-+	 * the OA stream, see @oa_unit_id in 'struct
-+	 * drm_xe_query_oa_units'. Defaults to 0 if not provided.
-+	 */
-+	DRM_XE_OA_PROPERTY_OA_UNIT_ID = 1,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_SAMPLE_OA: A value of 1 requests inclusion of raw
-+	 * OA unit reports or stream samples in a global buffer attached to an
-+	 * OA unit.
-+	 */
-+	DRM_XE_OA_PROPERTY_SAMPLE_OA,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_OA_METRIC_SET: OA metrics defining contents of OA
-+	 * reports, previously added via @DRM_XE_PERF_OP_ADD_CONFIG.
-+	 */
-+	DRM_XE_OA_PROPERTY_OA_METRIC_SET,
-+
-+	/** @DRM_XE_OA_PROPERTY_OA_FORMAT: Perf counter report format */
-+	DRM_XE_OA_PROPERTY_OA_FORMAT,
-+	/*
-+	 * OA_FORMAT's are specified the same way as in PRM/Bspec 52198/60942,
-+	 * in terms of the following quantities: a. enum @drm_xe_oa_format_type
-+	 * b. Counter select c. Counter size and d. BC report. Also refer to the
-+	 * oa_formats array in drivers/gpu/drm/xe/xe_oa.c.
-+	 */
-+#define DRM_XE_OA_FORMAT_MASK_FMT_TYPE		(0xff << 0)
-+#define DRM_XE_OA_FORMAT_MASK_COUNTER_SEL	(0xff << 8)
-+#define DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE	(0xff << 16)
-+#define DRM_XE_OA_FORMAT_MASK_BC_REPORT		(0xff << 24)
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT: Requests periodic OA unit
-+	 * sampling with sampling frequency proportional to 2^(period_exponent + 1)
-+	 */
-+	DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_OA_DISABLED: A value of 1 will open the OA
-+	 * stream in a DISABLED state (see @DRM_XE_PERF_IOCTL_ENABLE).
-+	 */
-+	DRM_XE_OA_PROPERTY_OA_DISABLED,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID: Open the stream for a specific
-+	 * @exec_queue_id. Perf queries can be executed on this exec queue.
-+	 */
-+	DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE: Optional engine instance to
-+	 * pass along with @DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID or will default to 0.
-+	 */
-+	DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_NO_PREEMPT: Allow preemption and timeslicing
-+	 * to be disabled for the stream exec queue.
-+	 */
-+	DRM_XE_OA_PROPERTY_NO_PREEMPT,
-+};
-+
-+/**
-+ * struct drm_xe_oa_config - OA metric configuration
-+ *
-+ * Multiple OA configs can be added using @DRM_XE_PERF_OP_ADD_CONFIG. A
-+ * particular config can be specified when opening an OA stream using
-+ * @DRM_XE_OA_PROPERTY_OA_METRIC_SET property.
-+ */
-+struct drm_xe_oa_config {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	/** @uuid: String formatted like "%\08x-%\04x-%\04x-%\04x-%\012x" */
-+	char uuid[36];
-+
-+	/** @n_regs: Number of regs in @regs_ptr */
-+	__u32 n_regs;
-+
-+	/**
-+	 * @regs_ptr: Pointer to (register address, value) pairs for OA config
-+	 * registers. Expected length of buffer is: (2 * sizeof(u32) * @n_regs).
-+	 */
-+	__u64 regs_ptr;
-+};
-+
-+/**
-+ * struct drm_xe_oa_stream_status - OA stream status returned from
-+ * @DRM_XE_PERF_IOCTL_STATUS perf fd ioctl. Userspace can call the ioctl to
-+ * query stream status in response to EIO errno from perf fd read().
-+ */
-+struct drm_xe_oa_stream_status {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	/** @oa_status: OA stream status (see Bspec 46717/61226) */
-+	__u64 oa_status;
-+#define DRM_XE_OASTATUS_MMIO_TRG_Q_FULL		(1 << 3)
-+#define DRM_XE_OASTATUS_COUNTER_OVERFLOW	(1 << 2)
-+#define DRM_XE_OASTATUS_BUFFER_OVERFLOW		(1 << 1)
-+#define DRM_XE_OASTATUS_REPORT_LOST		(1 << 0)
-+
-+	/** @reserved: reserved for future use */
-+	__u64 reserved[3];
-+};
-+
-+/**
-+ * struct drm_xe_oa_stream_info - OA stream info returned from
-+ * @DRM_XE_PERF_IOCTL_INFO perf fd ioctl
-+ */
-+struct drm_xe_oa_stream_info {
-+	/** @extensions: Pointer to the first extension struct, if any */
-+	__u64 extensions;
-+
-+	/** @oa_buf_size: OA buffer size */
-+	__u64 oa_buf_size;
-+
-+	/** @reserved: reserved for future use */
-+	__u64 reserved[3];
-+};
-+
- #if defined(__cplusplus)
++    "$CopyEngineTotalCount": { 'c': "perf->devinfo.n_eus", 'desc': "The total number of execution units" },
  }
- #endif
+ 
+ def is_hw_var(name):
+diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
+index 575b53e955..602a3965af 100755
+--- a/lib/xe/oa-configs/mdapi-xml-convert.py
++++ b/lib/xe/oa-configs/mdapi-xml-convert.py
+@@ -149,12 +149,10 @@ mtl_chipset_oam_samedia_params = {
+     }
+ }
+ 
+-# FIXME: everything except oa_report_size is incorrect here
+-xe2_chipset_params = {
+-    'a_offset': 16,
+-    'b_offset': 192,
+-    'c_offset': 224,
++xe2_chipset_params_pec = {
++    'pec_offset': 32,
+     'oa_report_size': 576,
++    # TODO: Not sure about the configs below
+     'config_reg_blacklist': {
+         0x2364, # OACTXID
+     },
+@@ -183,7 +181,11 @@ mtl_chipset_oa_formats = {
+ }
+ 
+ xe2_chipset_oa_formats = {
+-    '256B_GENERIC_NOA16': xe2_chipset_params,
++    '576B_PEC64LL': xe2_chipset_params_pec,
++    # We only care about 576B_PEC64LL metrics in Xe2, entries below is just to
++    # surpress warnings
++    '256B_GENERIC_NOA16': xehpsdv_chipset_params,
++    '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
+ }
+ 
+ chipsets = {
+@@ -209,8 +211,6 @@ chipsets = {
+ 
+ xehp_plus = ( 'ACM', 'MTL' )
+ 
+-xe2_plus = ( 'LNL' )
+-
+ register_types = { 'OA', 'NOA', 'FLEX', 'PM' }
+ 
+ default_set_blacklist = { "RenderDX1x", # TODO: rename to something non 'DX'
+@@ -298,6 +298,46 @@ def read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format):
+ 
+     assert 0
+ 
++def read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format):
++    width, offset_str = token.split('@')
++    offset = int(offset_str, 16)
++
++    if width != 'qw':
++        assert 0
++
++    if raw_offsets:
++        pec_offset = chipsets[chipset][oa_format]['pec_offset']
++
++        if offset < pec_offset:
++            if offset == 8:
++                return "GPU_TIME 0 READ"
++            elif offset == 24:
++                return "GPU_CLOCK 0 READ"
++            else:
++                assert 0
++        else:
++            pec_cnt_offset = int((offset - pec_offset) / 8)
++
++            return "PEC " + str(pec_cnt_offset) + " READ"
++    else:
++        # Location in the accumulated deltas
++        idx = int(offset / 8)
++
++        if idx == 0:
++            return "GPU_TIME 0 READ"
++        elif idx == 1:
++            return "GPU_CLOCK 0 READ"
++        else:
++            idx = idx - 2;
++            pec_cnt_offset = str(idx)
++            pec_high_low_text = "low"
++            if (offset % 8) > 0:
++               pec_high_low_text = "high"
++
++            return "PEC " + pec_cnt_offset + " READ"
++
++    assert 0
++
+ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
+     width, offset_str = token.split('@')
+ 
+@@ -374,9 +414,6 @@ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
+                 return "C " + str(idx - 48) + " READ"
+             else:
+                 return "{0} READ".format(read_value(chipset, offset, oa_format))
+-        elif chipset in xe2_plus:
+-            # FIXME: skip all metrics to retain just the registers
+-                return "GPU_TIME 0 READ"
+         else:
+             # For Gen8+ the array of accumulated counters is
+             # assumed to start with a GPU_TIME then GPU_CLOCK,
+@@ -405,6 +442,9 @@ def read_token_to_rpn_read(chipset, token, raw_offsets, oa_format):
+     if oa_format in ['192B_MPEC8LL_NOA16', '128B_MPEC8_NOA16']:
+         return read_token_to_rpn_read_oam(chipset, token, raw_offsets, oa_format)
+ 
++    if oa_format in ['576B_PEC64LL']:
++        return read_token_to_rpn_read_pec(chipset, token, raw_offsets, oa_format)
++
+     assert 0
+ 
+ def replace_read_tokens_with_rpn_read_ops(chipset, oa_format, equation, raw_offsets):
+@@ -905,6 +945,8 @@ for arg in args.xml:
+                 mdapi_counter.set('NormalizationEquation', '$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV')
+                 #mdapi_counter.set('DeltaReportReadEquation', '$GpuCoreClocks $GpuTime UDIV')
+ 
++            if mdapi_counter.get('SymbolName') == "ResultUncertainty":
++                continue
+ 
+             symbol_name = oa_registry.Registry.sanitize_symbol_name(mdapi_counter.get('SymbolName'))
+ 
+@@ -992,11 +1034,15 @@ for arg in args.xml:
+             # XXX: As a special case, we override the raw and delta report
+             # equations for the GpuTime counters, which seem inconsistent
+             if mdapi_counter.get('SymbolName') == "GpuTime":
+-                mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
+-                if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
+-                    mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                if oa_format == '576B_PEC64LL':
++                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
+                 else:
+-                    mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   mdapi_counter.set('DeltaReportReadEquation', "qw@0x0 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   if chipset == 'MTL' and oa_format != '256B_GENERIC_NOA16':
++                      mdapi_counter.set('SnapshotReportReadEquation', "qw@0x08 1000000000 UMUL $GpuTimestampFrequency UDIV")
++                   else:
++                      mdapi_counter.set('SnapshotReportReadEquation', "dw@0x04 1000000000 UMUL $GpuTimestampFrequency UDIV")
+ 
+             availability = fixup_equation(mdapi_counter.get('AvailabilityEquation'))
+             if availability == "":
+diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
+index c16177ec8e..f6f2768b00 100644
+--- a/lib/xe/xe_oa.h
++++ b/lib/xe/xe_oa.h
+@@ -275,6 +275,7 @@ struct intel_xe_perf_metric_set {
+ 	int b_offset;
+ 	int c_offset;
+ 	int perfcnt_offset;
++	int pec_offset;
+ 
+ 	const struct intel_xe_perf_register_prog *b_counter_regs;
+ 	uint32_t n_b_counter_regs;
 -- 
 2.41.0
 
