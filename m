@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B2FDC30659
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D77AC3065B
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6626410E269;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E6DCA10E9B7;
 	Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ViJYqVmV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Y0AZU4CS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 543D910E15D
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D4F710E15D
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719435290; x=1750971290;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=QTcEEddMC3WNJ4j/DtyFGgPvrxXMTdTVHdEUpv1R7ec=;
- b=ViJYqVmV/4Va0XCQrf3e7cQFHTtx+jTnEVUJY0j+VoFrRgLXimn5U/i6
- F94WCZ6ioajdN/5HFyengCORmUdn3Fj8lHNsUNL2IiSkhIuHZu+GwR92v
- 6YXFHc87gC1iBtOJ+bw941zHEeo7pPoeEti2KI/zRnpyDSLo+MuMVxlfK
- otUKr6u2xUeS4ixlVPDS0OaFEuH4f5r6hSETtbs1fTtWX6FxTrnYbdyb+
- q3RtkJjVGWOujPRZILUvQdYDecwX9kpzcKcCnH+Qwri4Fg9jQOTGt9mmS
- 3vR7tZbbJGWpwlj4fTmiyQrzqRMpQvD/Vf4KkD1XVVDzfCgOlB1RMRtSZ g==;
-X-CSE-ConnectionGUID: mjSC2Cg4Tvir8OiTjWSGwg==
-X-CSE-MsgGUID: cEjNIY5nSguhVjpeumL9SA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670984"
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670984"
+ t=1719435291; x=1750971291;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=rOjYu5HB+nYIDiEAevu70NbIJ462YGvu8uqVON0fSD4=;
+ b=Y0AZU4CSLvUBLbWFPOmrikvsjS/fQUrn3Q+TdpbqXvTd2F2UT9pw4suH
+ e10SpOni+Ngo2h0p4zKar/J1Oo8SX48GNaNcvyp28zGPEq5kisBnaItPn
+ mz26sQj7b+m2uOrF+1Z8oNNQUS2lNZGw6U5JBBZ4bU6jFs2fp/SKB1G2b
+ zDZH2jDaiVG+E2LzxOK7Nivx0rA5uJKBE3avY7FfAPaKZn8LTXvJZ16Ry
+ HyWIhOkHhtw9QKWdISWaJtA4ON+hmYo+737kZv5y2TaoOOsgdm7RvMa8Z
+ DRNiIl8+GxbLOtl5rg7KJT/Akqp0gFgFmtUfPNPb9MF9ZNf7imRZTxkJT g==;
+X-CSE-ConnectionGUID: l35TvqIWTOW5rJ0ThDo09w==
+X-CSE-MsgGUID: 2Q3OF8DMTmqWQgJ5dwf5Dw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670991"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670991"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:49 -0700
-X-CSE-ConnectionGUID: oh6dLsqcQty5Tgm9OPPrlw==
-X-CSE-MsgGUID: FFcFvWawTgObGntiazgV5Q==
+ 26 Jun 2024 13:54:50 -0700
+X-CSE-ConnectionGUID: kFG9yhjkTvKwX6/B/awJOw==
+X-CSE-MsgGUID: DsNUqSmyRnyU7F0XqWir9g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018908"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018920"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:48 -0700
+ 26 Jun 2024 13:54:50 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 00/16] Intel Xe OA IGT lib and tools
-Date: Wed, 26 Jun 2024 13:54:27 -0700
-Message-ID: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 06/16] lib/xe/oa: Switch generated files to Xe namespace
+Date: Wed, 26 Jun 2024 13:54:33 -0700
+Message-ID: <20240626205443.1560171-7-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
+References: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,109 +66,265 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Originally posted as part of
-https://patchwork.freedesktop.org/series/130033/, separate out the IGT lib
-and tools and try to merge these first, before merging the OA IGT's so that
-we have some more time to review the tests before merging.
+The Xe IGT library occupies a different namespace ('intel_xe') from the
+i915 IGT library ('intel' or 'i915'). The generated files are also part of
+the Xe IGT library. Therefore make sure the functions and data structs in
+the generated files conform to Xe namespace.
 
-Gpuvis support for perf traces from Intel Xe driver is based on tools and
-IGT lib changes included here.
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ lib/xe/oa-configs/codegen.py              |  6 ++--
+ lib/xe/oa-configs/oa-equations-codegen.py | 36 +++++++++++------------
+ lib/xe/oa-configs/oa-metricset-codegen.py | 26 ++++++++--------
+ lib/xe/oa-configs/oa-registers-codegen.py | 10 +++----
+ 4 files changed, 39 insertions(+), 39 deletions(-)
 
-All patches here have R-b without any outstanding issues.
-
-Ashutosh Dixit (12):
-  lib/xe/oa: Import OA metric generation files from i915
-  lib/xe/oa: Add LNL metric guids
-  lib/xe/oa: Add OA LNL metrics (oa_lnl.xml)
-  lib/xe/oa: Add truncated legacy Xe1 metrics XML's
-  lib/xe/oa: Generate LNL metrics/registers files
-  lib/xe/oa: Switch generated files to Xe namespace
-  drm-uapi/xe: Sync with Perf/OA changes
-  lib/xe: Complete xe_oa lib functionality
-  tests/intel/xe_query: Add OA units query test
-  lib/xe/oa: Add xe_oa_data_reader to IGT lib
-  tools/xe-perf: Add xe_perf_recorder
-  tools/xe-perf: xe_perf_reader, xe_perf_control and xe_perf_configs
-
-José Roberto de Souza (4):
-  xe/oa: Fix invalid escape warnings
-  xe/oa/mdapi-xml-convert: Add support for 576B_PEC64LL format
-  xe/oa: Regenerate oa-lnl.xml now parsing all counters
-  xe/oa/oa-metricset-codegen: Fix XE_OA_FORMAT_PEC64u64 offsets
-
- include/drm-uapi/xe_drm.h                 |  308 +
- lib/intel_device_info.c                   |    1 +
- lib/meson.build                           |   89 +
- lib/xe-oa.pc.in                           |   11 +
- lib/xe/oa-configs/README.md               |  115 +
- lib/xe/oa-configs/codegen.py              |  449 ++
- lib/xe/oa-configs/guids.xml               | 2763 ++++++++
- lib/xe/oa-configs/mdapi-xml-convert.py    | 1267 ++++
- lib/xe/oa-configs/oa-acmgt1.xml           |  710 +++
- lib/xe/oa-configs/oa-acmgt2.xml           |  828 +++
- lib/xe/oa-configs/oa-acmgt3.xml           |  824 +++
- lib/xe/oa-configs/oa-adl.xml              |  816 +++
- lib/xe/oa-configs/oa-dg1.xml              |  823 +++
- lib/xe/oa-configs/oa-equations-codegen.py |  261 +
- lib/xe/oa-configs/oa-lnl.xml              | 6984 +++++++++++++++++++++
- lib/xe/oa-configs/oa-metricset-codegen.py |  266 +
- lib/xe/oa-configs/oa-mtlgt2.xml           |  789 +++
- lib/xe/oa-configs/oa-mtlgt3.xml           |  803 +++
- lib/xe/oa-configs/oa-registers-codegen.py |  118 +
- lib/xe/oa-configs/oa-rkl.xml              |  824 +++
- lib/xe/oa-configs/oa-tglgt1.xml           |  819 +++
- lib/xe/oa-configs/oa-tglgt2.xml           |  818 +++
- lib/xe/oa-configs/oa_guid_registry.py     |  119 +
- lib/xe/oa-configs/update-guids.py         |  223 +
- lib/xe/xe_oa.c                            | 1074 ++++
- lib/xe/xe_oa.h                            |  408 ++
- lib/xe/xe_oa_data.h                       |  101 +
- lib/xe/xe_oa_data_reader.c                |  369 ++
- lib/xe/xe_oa_data_reader.h                |   87 +
- lib/xe/xe_query.c                         |   38 +
- lib/xe/xe_query.h                         |    5 +
- tests/intel/xe_query.c                    |   53 +
- tools/meson.build                         |    1 +
- tools/xe-perf/meson.build                 |   22 +
- tools/xe-perf/xe_perf_configs.c           |  247 +
- tools/xe-perf/xe_perf_control.c           |  117 +
- tools/xe-perf/xe_perf_reader.c            |  325 +
- tools/xe-perf/xe_perf_recorder.c          | 1227 ++++
- tools/xe-perf/xe_perf_recorder_commands.h |   31 +
- 39 files changed, 25133 insertions(+)
- create mode 100644 lib/xe-oa.pc.in
- create mode 100644 lib/xe/oa-configs/README.md
- create mode 100644 lib/xe/oa-configs/codegen.py
- create mode 100644 lib/xe/oa-configs/guids.xml
- create mode 100755 lib/xe/oa-configs/mdapi-xml-convert.py
- create mode 100644 lib/xe/oa-configs/oa-acmgt1.xml
- create mode 100644 lib/xe/oa-configs/oa-acmgt2.xml
- create mode 100644 lib/xe/oa-configs/oa-acmgt3.xml
- create mode 100644 lib/xe/oa-configs/oa-adl.xml
- create mode 100644 lib/xe/oa-configs/oa-dg1.xml
- create mode 100644 lib/xe/oa-configs/oa-equations-codegen.py
- create mode 100644 lib/xe/oa-configs/oa-lnl.xml
- create mode 100644 lib/xe/oa-configs/oa-metricset-codegen.py
- create mode 100644 lib/xe/oa-configs/oa-mtlgt2.xml
- create mode 100644 lib/xe/oa-configs/oa-mtlgt3.xml
- create mode 100644 lib/xe/oa-configs/oa-registers-codegen.py
- create mode 100644 lib/xe/oa-configs/oa-rkl.xml
- create mode 100644 lib/xe/oa-configs/oa-tglgt1.xml
- create mode 100644 lib/xe/oa-configs/oa-tglgt2.xml
- create mode 100644 lib/xe/oa-configs/oa_guid_registry.py
- create mode 100755 lib/xe/oa-configs/update-guids.py
- create mode 100644 lib/xe/xe_oa.c
- create mode 100644 lib/xe/xe_oa.h
- create mode 100644 lib/xe/xe_oa_data.h
- create mode 100644 lib/xe/xe_oa_data_reader.c
- create mode 100644 lib/xe/xe_oa_data_reader.h
- create mode 100644 tools/xe-perf/meson.build
- create mode 100644 tools/xe-perf/xe_perf_configs.c
- create mode 100644 tools/xe-perf/xe_perf_control.c
- create mode 100644 tools/xe-perf/xe_perf_reader.c
- create mode 100644 tools/xe-perf/xe_perf_recorder.c
- create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
-
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index 020e76ef4b..9a7d57a33e 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -340,13 +340,13 @@ class Gen:
+             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
+         m = re.search('\$GtSlice([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
++            return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
+         m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         return None
+ 
+     def output_rpn_equation_code(self, set, counter, equation):
+diff --git a/lib/xe/oa-configs/oa-equations-codegen.py b/lib/xe/oa-configs/oa-equations-codegen.py
+index a4a00f46d9..de5a3337df 100644
+--- a/lib/xe/oa-configs/oa-equations-codegen.py
++++ b/lib/xe/oa-configs/oa-equations-codegen.py
+@@ -46,9 +46,9 @@ def output_counter_read(gen, set, counter):
+     read_eq = counter.get('equation')
+ 
+     c(ret_ctype)
+-    c(counter.read_sym + "(const struct intel_perf *perf,\n")
++    c(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
+     c.indent(len(counter.read_sym) + 1)
+-    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("const struct intel_xe_perf_metric_set *metric_set,\n")
+     c("uint64_t *accumulator)\n")
+     c.outdent(len(counter.read_sym) + 1)
+ 
+@@ -75,9 +75,9 @@ def output_counter_read_definition(gen, set, counter):
+         read_eq = counter.get('equation')
+ 
+         h(ret_ctype)
+-        h(counter.read_sym + "(const struct intel_perf *perf,\n")
++        h(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
+         h.indent(len(counter.read_sym) + 1)
+-        h("const struct intel_perf_metric_set *metric_set,\n")
++        h("const struct intel_xe_perf_metric_set *metric_set,\n")
+         h("uint64_t *accumulator);\n")
+         h.outdent(len(counter.read_sym) + 1)
+ 
+@@ -100,9 +100,9 @@ def output_counter_max(gen, set, counter):
+     ret_ctype = data_type_to_ctype(ret_type)
+ 
+     c(ret_ctype)
+-    c(counter.max_sym + "(const struct intel_perf *perf,\n")
++    c(counter.max_sym + "(const struct intel_xe_perf *perf,\n")
+     c.indent(len(counter.max_sym) + 1)
+-    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("const struct intel_xe_perf_metric_set *metric_set,\n")
+     c("uint64_t *accumulator)\n")
+     c.outdent(len(counter.max_sym) + 1)
+ 
+@@ -135,9 +135,9 @@ def output_counter_max_definition(gen, set, counter):
+ 
+         h(ret_ctype)
+ 
+-        h(counter.max_sym + "(const struct intel_perf *perf,")
++        h(counter.max_sym + "(const struct intel_xe_perf *perf,")
+         h.indent(len(counter.max_sym) + 1)
+-        h("const struct intel_perf_metric_set *metric_set,")
++        h("const struct intel_xe_perf_metric_set *metric_set,")
+         h("uint64_t *accumulator);")
+         h.outdent(len(counter.max_sym) + 1)
+         h("\n")
+@@ -163,16 +163,16 @@ def generate_equations(args, gens):
+         #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+ 
+         double
+-        percentage_max_callback_float(const struct intel_perf *perf,
+-                                      const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_float(const struct intel_xe_perf *perf,
++                                      const struct intel_xe_perf_metric_set *metric_set,
+                                       uint64_t *accumulator)
+         {
+            return 100;
+         }
+ 
+         uint64_t
+-        percentage_max_callback_uint64(const struct intel_perf *perf,
+-                                       const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
++                                       const struct intel_xe_perf_metric_set *metric_set,
+                                        uint64_t *accumulator)
+         {
+            return 100;
+@@ -196,16 +196,16 @@ def generate_equations(args, gens):
+         #include <stdint.h>
+         #include <stdbool.h>
+ 
+-        struct intel_perf;
+-        struct intel_perf_metric_set;
++        struct intel_xe_perf;
++        struct intel_xe_perf_metric_set;
+ 
+         double
+-        percentage_max_callback_float(const struct intel_perf *perf,
+-                                      const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_float(const struct intel_xe_perf *perf,
++                                      const struct intel_xe_perf_metric_set *metric_set,
+                                       uint64_t *accumulator);
+         uint64_t
+-        percentage_max_callback_uint64(const struct intel_perf *perf,
+-                                       const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
++                                       const struct intel_xe_perf_metric_set *metric_set,
+                                        uint64_t *accumulator);
+ 
+         """ % (header_define, header_define)))
+diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
+index ea0d13cc97..f4a008d690 100644
+--- a/lib/xe/oa-configs/oa-metricset-codegen.py
++++ b/lib/xe/oa-configs/oa-metricset-codegen.py
+@@ -28,7 +28,7 @@ def availability_func_name(set, counter):
+ def output_availability_funcs(set, counter):
+     availability = counter.get('availability')
+     if availability:
+-        c("static bool " + availability_func_name(set, counter) + "(const struct intel_perf *perf) {")
++        c("static bool " + availability_func_name(set, counter) + "(const struct intel_xe_perf *perf) {")
+         c.indent(4)
+         set.gen.output_availability(set, availability, counter.get('name'))
+         c.indent(4)
+@@ -60,9 +60,9 @@ def output_counter_report(set, counter):
+     c(".name = \"{0}\",\n".format(counter.get('name')))
+     c(".symbol_name = \"{0}\",\n".format(counter.get('symbol_name')))
+     c(".desc = \"{0}\",\n".format(counter.get('description')))
+-    c(".type = INTEL_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
+-    c(".storage = INTEL_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
+-    c(".unit = INTEL_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
++    c(".type = INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
++    c(".storage = INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
++    c(".unit = INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
+     c(".read_{0} = {1},\n".format(data_type, set.read_funcs["$" + counter.get('symbol_name')]))
+     c(".max_{0} = {1},\n".format(data_type, set.max_funcs["$" + counter.get('symbol_name')]))
+     c(".group = \"{0}\",\n".format(counter.get('mdapi_group')))
+@@ -98,18 +98,18 @@ def generate_metric_sets(args, gen):
+           output_availability_funcs(set, counter)
+ 
+         c("\nstatic void\n")
+-        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_perf *perf)")
++        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_xe_perf *perf)")
+         c("{\n")
+         c.indent(4)
+ 
+-        c("struct intel_perf_metric_set *metric_set;\n")
+-        c("struct intel_perf_logical_counter *counter;\n\n")
++        c("struct intel_xe_perf_metric_set *metric_set;\n")
++        c("struct intel_xe_perf_logical_counter *counter;\n\n")
+ 
+         c("metric_set = calloc(1, sizeof(*metric_set));\n")
+         c("metric_set->name = \"" + set.name + "\";\n")
+         c("metric_set->symbol_name = \"" + set.symbol_name + "\";\n")
+         c("metric_set->hw_config_guid = \"" + set.hw_config_guid + "\";\n")
+-        c("metric_set->counters = calloc({0}, sizeof(struct intel_perf_logical_counter));\n".format(str(len(counters))))
++        c("metric_set->counters = calloc({0}, sizeof(struct intel_xe_perf_logical_counter));\n".format(str(len(counters))))
+         c("metric_set->n_counters = 0;\n")
+         c("metric_set->perf_oa_metrics_set = 0; // determined at runtime\n")
+ 
+@@ -167,12 +167,12 @@ def generate_metric_sets(args, gen):
+ 
+         c("%s_%s_add_registers(perf, metric_set);" % (gen.chipset, set.underscore_name))
+ 
+-        c("intel_perf_add_metric_set(perf, metric_set);");
++        c("intel_xe_perf_add_metric_set(perf, metric_set);");
+         c("\n")
+ 
+         c("{")
+         c.indent(4)
+-        c("static const struct intel_perf_logical_counter _counters[] = {")
++        c("static const struct intel_xe_perf_logical_counter _counters[] = {")
+         c.indent(4)
+ 
+         for counter in counters:
+@@ -190,7 +190,7 @@ def generate_metric_sets(args, gen):
+         c("counter = &metric_set->counters[metric_set->n_counters++];")
+         c("*counter = _counters[i];")
+         c("counter->metric_set = metric_set;")
+-        c("intel_perf_add_logical_counter(perf, counter, counter->group);")
++        c("intel_xe_perf_add_logical_counter(perf, counter, counter->group);")
+         c.outdent(4)
+         c("}")
+         c.outdent(4)
+@@ -201,7 +201,7 @@ def generate_metric_sets(args, gen):
+         c("}\n")
+ 
+     c("\nvoid")
+-    c("intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf)")
++    c("intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf)")
+     c("{")
+     c.indent(4)
+ 
+@@ -256,7 +256,7 @@ def main():
+         """ % (header_define, header_define)))
+ 
+     # Print out all set registration functions for each generation.
+-    h("void intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf);\n\n")
++    h("void intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf);\n\n")
+ 
+     h(textwrap.dedent("""\
+         #endif /* %s */
+diff --git a/lib/xe/oa-configs/oa-registers-codegen.py b/lib/xe/oa-configs/oa-registers-codegen.py
+index a4aa134097..08fc38a50e 100644
+--- a/lib/xe/oa-configs/oa-registers-codegen.py
++++ b/lib/xe/oa-configs/oa-registers-codegen.py
+@@ -22,7 +22,7 @@ def generate_register_configs(set):
+         'OA': 'b_counter_regs',
+     }
+ 
+-    c("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set)" %
++    c("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set)" %
+       (set.gen.chipset, set.underscore_name))
+     c("{")
+     c.indent(4)
+@@ -39,7 +39,7 @@ def generate_register_configs(set):
+ 
+         c("{")
+         c.indent(4)
+-        c("static const struct intel_perf_register_prog _%s[] = {" % t)
++        c("static const struct intel_xe_perf_register_prog _%s[] = {" % t)
+         c.indent(4)
+         for register in register_config.findall('register'):
+             c("{ .reg = %s, .val = %s }," %
+@@ -95,11 +95,11 @@ def main():
+     h("#ifndef %s" % header_define)
+     h("#define %s" % header_define)
+     h("\n")
+-    h("struct intel_perf;")
+-    h("struct intel_perf_metric_set;")
++    h("struct intel_xe_perf;")
++    h("struct intel_xe_perf_metric_set;")
+     h("\n")
+     for set in gen.sets:
+-        h("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set);" %
++        h("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set);" %
+           (gen.chipset, set.underscore_name))
+     h("\n")
+     h("#endif /* %s */" % header_define)
 -- 
 2.41.0
 
