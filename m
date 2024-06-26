@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D55D1C30659
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 159EEC3065D
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:55:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52DAF10E12C;
-	Wed, 26 Jun 2024 20:54:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5059710E9CE;
+	Wed, 26 Jun 2024 20:55:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UnyjeRaq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JkuCfKSj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D0EF110E0B1
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 538DC10E0B1
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719435292; x=1750971292;
+ t=1719435291; x=1750971291;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=QwkuohqoWzcnusmhqayY0Ug61NcGn5C9Zu125N7kOn8=;
- b=UnyjeRaqQNPxSKMHPly19dHOIe0VCbXqUoituFte53LQZvmhQq/VUjLz
- o+WLgG6IQnrOF6Flx8HzN/nzMiwQwe5dDB/VT/4jejnW/nwCe7jKZwSyG
- sE8+Dj2Kth69K5D8m4XuC3gVr5OnVI+46O1oqR7fKWeTDYvGjTBjhQXxC
- 2lMZTlqtuITHhx/KOCYiR43MudddOq3I5QhF4tojYafwCXvcfvaiRCBOq
- 07qHBeNnqz14VFRpL15bWZ6oMU0tGX/UlXs7vpCSuOr55I/82VceLTmb1
- HFPeLqtz47wYmrgFI0/XV+ocNrVlkchODllwe2vnZ3D2QytWw4tSJZWhL w==;
-X-CSE-ConnectionGUID: oA2+wiZ/Tj2IZ5NSUdFRcw==
-X-CSE-MsgGUID: JYk6Wod8RRmsCLwMv/WUNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27671005"
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27671005"
+ bh=o90gbROuguf6zGiUP6yYs9e5wwEkfK3xxNRut0b+fX0=;
+ b=JkuCfKSjXCgLv5Z4cNWLflvtjZGZ+KyQF7FZ2KuiD+lHxI/dsX922Hhs
+ 1Ges8mPbbDJPuw6qrdjelpX5I8wmw+nqkLyQg3ZHhMSmK1VT7MrReG5eg
+ tWLeVApolMou1hiLaRqc9HkqPRamDs47DSbH7LKHs5wtDPNRBiJ3Hg2qP
+ 1ku9W3/1iPy6tSd+gcbXmoMuZkuVHCQNq6qwfTc9TMuz/XzvEU41IbZYA
+ ukUPC7qxwjVKah362u9pMQ0ZCOwNVeoALwUGFx+x3p79dj24J5BdMZXhO
+ NLG0e7Wf4r3tQlo3MmYSYvJUtU+cr06dySvpLLUaKLlI7oA+QVHqHc0fW Q==;
+X-CSE-ConnectionGUID: gfjKbk9wSYuZLA11FHSf/A==
+X-CSE-MsgGUID: yk3rKqW8T2+06fMPDZrfaA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670993"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670993"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:52 -0700
-X-CSE-ConnectionGUID: QM7wGF9ITOWHPgSUV1wd/g==
-X-CSE-MsgGUID: 3fpdgVNuQ7aNfXpzJEzKQw==
+ 26 Jun 2024 13:54:50 -0700
+X-CSE-ConnectionGUID: JPqYdT8+TKuQAKygssAzxQ==
+X-CSE-MsgGUID: 2qMrRyZiSgGICMBEQnYbbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018934"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018921"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:51 -0700
+ 26 Jun 2024 13:54:50 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 16/16] xe/oa/oa-metricset-codegen: Fix
- XE_OA_FORMAT_PEC64u64 offsets
-Date: Wed, 26 Jun 2024 13:54:43 -0700
-Message-ID: <20240626205443.1560171-17-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 07/16] drm-uapi/xe: Sync with Perf/OA changes
+Date: Wed, 26 Jun 2024 13:54:34 -0700
+Message-ID: <20240626205443.1560171-8-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 References: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,33 +66,363 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: José Roberto de Souza <jose.souza@intel.com>
+Align with kernel commit edc9abaf17ad ("drm/xe/oa/uapi: Allow preemption to
+be disabled on the stream exec queue") to bring in Perf/OA changes from the
+kernel.
 
-XE_OA_FORMAT_PEC64u64 only has pec_offset.
-
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/xe/oa-configs/oa-metricset-codegen.py | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ include/drm-uapi/xe_drm.h | 308 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 308 insertions(+)
 
-diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
-index f4a008d690..5fa12f9caf 100644
---- a/lib/xe/oa-configs/oa-metricset-codegen.py
-+++ b/lib/xe/oa-configs/oa-metricset-codegen.py
-@@ -145,11 +145,7 @@ def generate_metric_sets(args, gen):
-                 metric_set->perf_raw_size = 576;
-                 metric_set->gpu_time_offset = 0;
-                 metric_set->gpu_clock_offset = 1;
--                metric_set->a_offset = 2;
--                // metric_set->b_offset = metric_set->a_offset + 38;
--                // metric_set->c_offset = metric_set->b_offset + 8;
--                metric_set->perfcnt_offset = metric_set->a_offset + 64;
--
-+                metric_set->pec_offset = 2;
-             """))
-         else:
-             c(textwrap.dedent("""\
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 1100dfe1ff..a5f94bb625 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -80,6 +80,7 @@ extern "C" {
+  *  - &DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY
+  *  - &DRM_IOCTL_XE_EXEC
+  *  - &DRM_IOCTL_XE_WAIT_USER_FENCE
++ *  - &DRM_IOCTL_XE_PERF
+  */
+ 
+ /*
+@@ -100,6 +101,8 @@ extern "C" {
+ #define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x08
+ #define DRM_XE_EXEC			0x09
+ #define DRM_XE_WAIT_USER_FENCE		0x0a
++#define DRM_XE_PERF			0x0b
++
+ /* Must be kept compact -- no holes */
+ 
+ #define DRM_IOCTL_XE_DEVICE_QUERY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
+@@ -113,6 +116,7 @@ extern "C" {
+ #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
+ #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
+ #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
++#define DRM_IOCTL_XE_PERF			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_PERF, struct drm_xe_perf_param)
+ 
+ /**
+  * DOC: Xe IOCTL Extensions
+@@ -685,6 +689,7 @@ struct drm_xe_device_query {
+ #define DRM_XE_DEVICE_QUERY_GT_TOPOLOGY		5
+ #define DRM_XE_DEVICE_QUERY_ENGINE_CYCLES	6
+ #define DRM_XE_DEVICE_QUERY_UC_FW_VERSION	7
++#define DRM_XE_DEVICE_QUERY_OA_UNITS		8
+ 	/** @query: The type of data to query */
+ 	__u32 query;
+ 
+@@ -1370,6 +1375,309 @@ struct drm_xe_wait_user_fence {
+ 	__u64 reserved[2];
+ };
+ 
++/**
++ * enum drm_xe_perf_type - Perf stream types
++ */
++enum drm_xe_perf_type {
++	/** @DRM_XE_PERF_TYPE_OA: OA perf stream type */
++	DRM_XE_PERF_TYPE_OA,
++};
++
++/**
++ * enum drm_xe_perf_op - Perf stream ops
++ */
++enum drm_xe_perf_op {
++	/** @DRM_XE_PERF_OP_STREAM_OPEN: Open a perf counter stream */
++	DRM_XE_PERF_OP_STREAM_OPEN,
++
++	/** @DRM_XE_PERF_OP_ADD_CONFIG: Add perf stream config */
++	DRM_XE_PERF_OP_ADD_CONFIG,
++
++	/** @DRM_XE_PERF_OP_REMOVE_CONFIG: Remove perf stream config */
++	DRM_XE_PERF_OP_REMOVE_CONFIG,
++};
++
++/**
++ * struct drm_xe_perf_param - Input of &DRM_XE_PERF
++ *
++ * The perf layer enables multiplexing perf counter streams of multiple
++ * types. The actual params for a particular stream operation are supplied
++ * via the @param pointer (use __copy_from_user to get these params).
++ */
++struct drm_xe_perf_param {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++	/** @perf_type: Perf stream type, of enum @drm_xe_perf_type */
++	__u64 perf_type;
++	/** @perf_op: Perf op, of enum @drm_xe_perf_op */
++	__u64 perf_op;
++	/** @param: Pointer to actual stream params */
++	__u64 param;
++};
++
++/**
++ * enum drm_xe_perf_ioctls - Perf fd ioctl's
++ *
++ * Information exchanged between userspace and kernel for perf fd ioctl's
++ * is stream type specific
++ */
++enum drm_xe_perf_ioctls {
++	/** @DRM_XE_PERF_IOCTL_ENABLE: Enable data capture for a stream */
++	DRM_XE_PERF_IOCTL_ENABLE = _IO('i', 0x0),
++
++	/** @DRM_XE_PERF_IOCTL_DISABLE: Disable data capture for a stream */
++	DRM_XE_PERF_IOCTL_DISABLE = _IO('i', 0x1),
++
++	/** @DRM_XE_PERF_IOCTL_CONFIG: Change stream configuration */
++	DRM_XE_PERF_IOCTL_CONFIG = _IO('i', 0x2),
++
++	/** @DRM_XE_PERF_IOCTL_STATUS: Return stream status */
++	DRM_XE_PERF_IOCTL_STATUS = _IO('i', 0x3),
++
++	/** @DRM_XE_PERF_IOCTL_INFO: Return stream info */
++	DRM_XE_PERF_IOCTL_INFO = _IO('i', 0x4),
++};
++
++/**
++ * enum drm_xe_oa_unit_type - OA unit types
++ */
++enum drm_xe_oa_unit_type {
++	/**
++	 * @DRM_XE_OA_UNIT_TYPE_OAG: OAG OA unit. OAR/OAC are considered
++	 * sub-types of OAG. For OAR/OAC, use OAG.
++	 */
++	DRM_XE_OA_UNIT_TYPE_OAG,
++
++	/** @DRM_XE_OA_UNIT_TYPE_OAM: OAM OA unit */
++	DRM_XE_OA_UNIT_TYPE_OAM,
++};
++
++/**
++ * struct drm_xe_oa_unit - describe OA unit
++ */
++struct drm_xe_oa_unit {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @oa_unit_id: OA unit ID */
++	__u32 oa_unit_id;
++
++	/** @oa_unit_type: OA unit type of @drm_xe_oa_unit_type */
++	__u32 oa_unit_type;
++
++	/** @capabilities: OA capabilities bit-mask */
++	__u64 capabilities;
++#define DRM_XE_OA_CAPS_BASE		(1 << 0)
++
++	/** @oa_timestamp_freq: OA timestamp freq */
++	__u64 oa_timestamp_freq;
++
++	/** @reserved: MBZ */
++	__u64 reserved[4];
++
++	/** @num_engines: number of engines in @eci array */
++	__u64 num_engines;
++
++	/** @eci: engines attached to this OA unit */
++	struct drm_xe_engine_class_instance eci[];
++};
++
++/**
++ * struct drm_xe_query_oa_units - describe OA units
++ *
++ * If a query is made with a struct drm_xe_device_query where .query
++ * is equal to DRM_XE_DEVICE_QUERY_OA_UNITS, then the reply uses struct
++ * drm_xe_query_oa_units in .data.
++ *
++ * OA unit properties for all OA units can be accessed using a code block
++ * such as the one below:
++ *
++ * .. code-block:: C
++ *
++ *	struct drm_xe_query_oa_units *qoa;
++ *	struct drm_xe_oa_unit *oau;
++ *	u8 *poau;
++ *
++ *	// malloc qoa and issue DRM_XE_DEVICE_QUERY_OA_UNITS. Then:
++ *	poau = (u8 *)&qoa->oa_units[0];
++ *	for (int i = 0; i < qoa->num_oa_units; i++) {
++ *		oau = (struct drm_xe_oa_unit *)poau;
++ *		// Access 'struct drm_xe_oa_unit' fields here
++ *		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
++ *	}
++ */
++struct drm_xe_query_oa_units {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++	/** @num_oa_units: number of OA units returned in oau[] */
++	__u32 num_oa_units;
++	/** @pad: MBZ */
++	__u32 pad;
++	/**
++	 * @oa_units: struct @drm_xe_oa_unit array returned for this device.
++	 * Written below as a u64 array to avoid problems with nested flexible
++	 * arrays with some compilers
++	 */
++	__u64 oa_units[];
++};
++
++/**
++ * enum drm_xe_oa_format_type - OA format types as specified in PRM/Bspec
++ * 52198/60942
++ */
++enum drm_xe_oa_format_type {
++	/** @DRM_XE_OA_FMT_TYPE_OAG: OAG report format */
++	DRM_XE_OA_FMT_TYPE_OAG,
++	/** @DRM_XE_OA_FMT_TYPE_OAR: OAR report format */
++	DRM_XE_OA_FMT_TYPE_OAR,
++	/** @DRM_XE_OA_FMT_TYPE_OAM: OAM report format */
++	DRM_XE_OA_FMT_TYPE_OAM,
++	/** @DRM_XE_OA_FMT_TYPE_OAC: OAC report format */
++	DRM_XE_OA_FMT_TYPE_OAC,
++	/** @DRM_XE_OA_FMT_TYPE_OAM_MPEC: OAM SAMEDIA or OAM MPEC report format */
++	DRM_XE_OA_FMT_TYPE_OAM_MPEC,
++	/** @DRM_XE_OA_FMT_TYPE_PEC: PEC report format */
++	DRM_XE_OA_FMT_TYPE_PEC,
++};
++
++/**
++ * enum drm_xe_oa_property_id - OA stream property id's
++ *
++ * Stream params are specified as a chain of @drm_xe_ext_set_property
++ * struct's, with @property values from enum @drm_xe_oa_property_id and
++ * @drm_xe_user_extension base.name set to @DRM_XE_OA_EXTENSION_SET_PROPERTY.
++ * @param field in struct @drm_xe_perf_param points to the first
++ * @drm_xe_ext_set_property struct.
++ *
++ * Exactly the same mechanism is also used for stream reconfiguration using
++ * the @DRM_XE_PERF_IOCTL_CONFIG perf fd ioctl, though only a subset of
++ * properties below can be specified for stream reconfiguration.
++ */
++enum drm_xe_oa_property_id {
++#define DRM_XE_OA_EXTENSION_SET_PROPERTY	0
++	/**
++	 * @DRM_XE_OA_PROPERTY_OA_UNIT_ID: ID of the OA unit on which to open
++	 * the OA stream, see @oa_unit_id in 'struct
++	 * drm_xe_query_oa_units'. Defaults to 0 if not provided.
++	 */
++	DRM_XE_OA_PROPERTY_OA_UNIT_ID = 1,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_SAMPLE_OA: A value of 1 requests inclusion of raw
++	 * OA unit reports or stream samples in a global buffer attached to an
++	 * OA unit.
++	 */
++	DRM_XE_OA_PROPERTY_SAMPLE_OA,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_OA_METRIC_SET: OA metrics defining contents of OA
++	 * reports, previously added via @DRM_XE_PERF_OP_ADD_CONFIG.
++	 */
++	DRM_XE_OA_PROPERTY_OA_METRIC_SET,
++
++	/** @DRM_XE_OA_PROPERTY_OA_FORMAT: Perf counter report format */
++	DRM_XE_OA_PROPERTY_OA_FORMAT,
++	/*
++	 * OA_FORMAT's are specified the same way as in PRM/Bspec 52198/60942,
++	 * in terms of the following quantities: a. enum @drm_xe_oa_format_type
++	 * b. Counter select c. Counter size and d. BC report. Also refer to the
++	 * oa_formats array in drivers/gpu/drm/xe/xe_oa.c.
++	 */
++#define DRM_XE_OA_FORMAT_MASK_FMT_TYPE		(0xff << 0)
++#define DRM_XE_OA_FORMAT_MASK_COUNTER_SEL	(0xff << 8)
++#define DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE	(0xff << 16)
++#define DRM_XE_OA_FORMAT_MASK_BC_REPORT		(0xff << 24)
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT: Requests periodic OA unit
++	 * sampling with sampling frequency proportional to 2^(period_exponent + 1)
++	 */
++	DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_OA_DISABLED: A value of 1 will open the OA
++	 * stream in a DISABLED state (see @DRM_XE_PERF_IOCTL_ENABLE).
++	 */
++	DRM_XE_OA_PROPERTY_OA_DISABLED,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID: Open the stream for a specific
++	 * @exec_queue_id. Perf queries can be executed on this exec queue.
++	 */
++	DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE: Optional engine instance to
++	 * pass along with @DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID or will default to 0.
++	 */
++	DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_NO_PREEMPT: Allow preemption and timeslicing
++	 * to be disabled for the stream exec queue.
++	 */
++	DRM_XE_OA_PROPERTY_NO_PREEMPT,
++};
++
++/**
++ * struct drm_xe_oa_config - OA metric configuration
++ *
++ * Multiple OA configs can be added using @DRM_XE_PERF_OP_ADD_CONFIG. A
++ * particular config can be specified when opening an OA stream using
++ * @DRM_XE_OA_PROPERTY_OA_METRIC_SET property.
++ */
++struct drm_xe_oa_config {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @uuid: String formatted like "%\08x-%\04x-%\04x-%\04x-%\012x" */
++	char uuid[36];
++
++	/** @n_regs: Number of regs in @regs_ptr */
++	__u32 n_regs;
++
++	/**
++	 * @regs_ptr: Pointer to (register address, value) pairs for OA config
++	 * registers. Expected length of buffer is: (2 * sizeof(u32) * @n_regs).
++	 */
++	__u64 regs_ptr;
++};
++
++/**
++ * struct drm_xe_oa_stream_status - OA stream status returned from
++ * @DRM_XE_PERF_IOCTL_STATUS perf fd ioctl. Userspace can call the ioctl to
++ * query stream status in response to EIO errno from perf fd read().
++ */
++struct drm_xe_oa_stream_status {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @oa_status: OA stream status (see Bspec 46717/61226) */
++	__u64 oa_status;
++#define DRM_XE_OASTATUS_MMIO_TRG_Q_FULL		(1 << 3)
++#define DRM_XE_OASTATUS_COUNTER_OVERFLOW	(1 << 2)
++#define DRM_XE_OASTATUS_BUFFER_OVERFLOW		(1 << 1)
++#define DRM_XE_OASTATUS_REPORT_LOST		(1 << 0)
++
++	/** @reserved: reserved for future use */
++	__u64 reserved[3];
++};
++
++/**
++ * struct drm_xe_oa_stream_info - OA stream info returned from
++ * @DRM_XE_PERF_IOCTL_INFO perf fd ioctl
++ */
++struct drm_xe_oa_stream_info {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @oa_buf_size: OA buffer size */
++	__u64 oa_buf_size;
++
++	/** @reserved: reserved for future use */
++	__u64 reserved[3];
++};
++
+ #if defined(__cplusplus)
+ }
+ #endif
 -- 
 2.41.0
 
