@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B91C30653
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACFDC27C4F
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC4E910E105;
-	Wed, 26 Jun 2024 20:54:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6148710E1CC;
+	Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ebpm4yKB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WSzLuMK2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8A0B10E15D
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5516410E9B5
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719435290; x=1750971290;
+ t=1719435291; x=1750971291;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=c3XQ+tJfVZOF/QP3/bTWqHtT34YgEmFx8/TmEuvcyN0=;
- b=Ebpm4yKB5AB8VU/oJmT3OXpAXPF0jykcF+AW8LV4iV52OWyDc9EEAhdk
- EONCnAprMTPOwQdEDW3Egwy4fXHokzS5BbJdNqboB+v/p8hDEAyCz/3zP
- GNeTcI9ezXgbPfYHxeWulhIhZUHZNJeYNXijgX8lrwacY+X/6nmGNSsks
- YoYEpWDQdYCPZN/2aClJdob8eADH6YoqOu5OSXov4Wfo/z+0SI/77xMUI
- hnm4IsUswn3bh2avNXcR+UozovyGD7LBxcBbbkrABsuCL1qFb8RNfdase
- pd6GNDEkG3Y9t2DBZQTwN/fcsKchKwTWu8Z8KW/nvsrYs3+YDW0gp86b7 Q==;
-X-CSE-ConnectionGUID: prZyf7nXTuyCpmSUaotK8Q==
-X-CSE-MsgGUID: U+YQkwflQmCygwQJlN2VQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670987"
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670987"
+ bh=C/I4YVXzlAWLgyYTBj/0t0uvqGURHISlGuvj1Ibmhuo=;
+ b=WSzLuMK2IVYTXpQGA/3qo3mNV8o2DCaPQG0gGFcoOYix4mbcJyXHHA3N
+ pnhuQCTndu/9V2BIVT6cDoEDRk0zMRw9RYmC9o6ASRSUsDr+ugQNUZAhY
+ apNXJpxIgczI0inAN+Gj2srJAFDLGs7TBS6xUMQ80A1QPLZaG+d54Fb5t
+ YNQLLBxNm0SzIF1qqnzobJDmdPtWlvL70ffNtaFMmG/arXFRMukxNv0xy
+ WfwzoYeXVqVhfdrfrtS43xEY+Ql//DiUnX6ZrvneiM+BUnu9QBjKITLJT
+ xLLp1xdggnLfhxEkrX2qnRghnG/ovKepdaFZ/1IbRazft3cr3ZZZH1pNq w==;
+X-CSE-ConnectionGUID: 3xltCu5YTP6LT0SXTgrDmA==
+X-CSE-MsgGUID: 0wt1KL53SUmgYwln/pf1aA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670995"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670995"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:49 -0700
-X-CSE-ConnectionGUID: moArUfDYRf6DeCGHAds10A==
-X-CSE-MsgGUID: pRq2DuMiS7KEKxj2xXv1jw==
+ 26 Jun 2024 13:54:50 -0700
+X-CSE-ConnectionGUID: G3I+9nt1TW2vtxZ1y8iXfQ==
+X-CSE-MsgGUID: WHI3Q64wSfm01Jv2VKFggA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018912"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018924"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:49 -0700
+ 26 Jun 2024 13:54:50 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 02/16] lib/xe/oa: Add LNL metric guids
-Date: Wed, 26 Jun 2024 13:54:29 -0700
-Message-ID: <20240626205443.1560171-3-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 09/16] tests/intel/xe_query: Add OA units query test
+Date: Wed, 26 Jun 2024 13:54:36 -0700
+Message-ID: <20240626205443.1560171-10-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 References: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
@@ -66,76 +66,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-$ update-guids.py --guids=guids.xml MetricsXML_P31.xml > guids.xml2
-
-And copying the new guids to guids.xml (as per the README).
-
-Note: as mentioned in update-guids.py and README.md, in order to generate
-config_hash in guids.xml, mdapi-convert-xml.py must first be run (as
-outline in the next commit) and then update-guids.py command above should
-be repeated.
-
-Note: LNL media guids had issues after running mdapi-convert-xml.py so have
-not been added, revisit this.
+Add test to exercise OA units query.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/xe/oa-configs/guids.xml           | 14 ++++++++++++++
- lib/xe/oa-configs/oa_guid_registry.py |  4 +++-
- lib/xe/oa-configs/update-guids.py     |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ tests/intel/xe_query.c | 53 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/lib/xe/oa-configs/guids.xml b/lib/xe/oa-configs/guids.xml
-index 510450f87a..27330edd3d 100644
---- a/lib/xe/oa-configs/guids.xml
-+++ b/lib/xe/oa-configs/guids.xml
-@@ -2746,4 +2746,18 @@
-     <guid config_hash="482cebdeeb78bb56e67b42d24644c8db" mdapi_config_hash="11e33e01a371bf15e59b9786f4fe1050" id="4d9b2817-19b9-4461-a54b-dc9fdb7d69cb" chipset="mtlgt3" name="MediaSet1" />
-     <guid config_hash="5bfab887a79b99cf34a606dcca5f4f8a" mdapi_config_hash="1c238e39e5c73eefd870cef2fb7a18af" id="651a6694-0ac1-4bd5-a4a1-94bcf479d4f4" chipset="mtlgt3" name="MediaSet2" />
-     <guid config_hash="44bcb438bea8b46b57779739bebfbd69" mdapi_config_hash="fbbd97d1f3b60c17eae57bbd3c42e7fe" id="bac01106-5869-489c-a306-67303a434173" chipset="mtlgt3" name="TestOam" />
-+    <guid config_hash="208c3c79f1b4db2f86277292566d3f10" mdapi_config_hash="1fbaf5ad061ccf96ff7d4e108cbcf3ae" id="12f20772-0044-44ff-bcc0-d2bc252d140e" chipset="lnl" name="RenderBasic" />
-+    <guid config_hash="b781b616d31187e7f4982f3a238b0ecd" mdapi_config_hash="35c121ef361006ca639d1e3377b5c6d7" id="72539be3-67d9-4101-b067-766b7811d2bb" chipset="lnl" name="ComputeBasic" />
-+    <guid config_hash="955739b43332e61729e0a7a032188c02" mdapi_config_hash="d9be0378dd2dd6a5f85f71d156d21b43" id="cae0b2ca-c52a-4111-b8bf-5af070677d57" chipset="lnl" name="DepthProfile" />
-+    <guid config_hash="55ecb5067bca7d99769a30a14eaceba5" mdapi_config_hash="e444af605670c2230a5796b4ad65b2c0" id="70cc56cf-3a37-4f6c-8911-4455fe441b2a" chipset="lnl" name="DeviceCacheProfile" />
-+    <guid config_hash="e4a38cb223b20b9c28c5941b2f4979cb" mdapi_config_hash="952b726980ff7e836089c7651070f44f" id="01ffd51d-a6d6-4ff4-93d0-619f04c3a547" chipset="lnl" name="MemoryProfile" />
-+    <guid config_hash="5d38d137356ca80dca2ea337449675be" mdapi_config_hash="07f0aa1a93f77bc7b6771ba2b68c8325" id="6791470f-f1e6-4f77-9013-bcb0c4be6f57" chipset="lnl" name="RenderPipeProfile" />
-+    <guid config_hash="72e3ab9e7d727f97c5ea29bef23be40e" mdapi_config_hash="e6b78fe68f406ee2a0cc25293c60bc62" id="d66ce633-4ae5-4de2-8678-9705adfd45bc" chipset="lnl" name="RTProfile" />
-+    <guid config_hash="6dc1bd4e8d8b49cc9776701db836ffe9" mdapi_config_hash="cee63b3642783febd3bcbf45629c5e1c" id="e7338926-568c-4424-bc44-f90318a6b472" chipset="lnl" name="VectorEngineProfile" />
-+    <guid config_hash="b87d3a3dfab7193309deb13aeb595589" mdapi_config_hash="1950d62ef4b729af4494d76ca3ec8101" id="4ccd6535-fb9a-440f-b0f5-882879dc4cb0" chipset="lnl" name="VectorEngineStalls" />
-+    <guid config_hash="9df6fd1c4fd100b5e50cd97e16bd1cb8" mdapi_config_hash="47c19557fd9591c3fc3955e46db4565c" id="24c33f2c-f8d9-40d9-b2db-64e863b4d625" chipset="lnl" name="TestOa" />
-+    <guid config_hash="9bfa717fd19e8d5b99062ca0101113dd" mdapi_config_hash="f390ce860d404c3f22f9d1a3159ec58e" id="0af24f48-05bc-467b-b561-33dec252e651" chipset="lnl" name="MetricSet1" />
-+    <guid config_hash="d635631df97322be3d97b9c4e38152e9" mdapi_config_hash="68c19075e48e5128b456a91cd7b95286" id="914ad901-832a-4ccd-a21e-ddc7690ed213" chipset="lnl" name="MetricSet2" />
-+    <guid config_hash="d63d186f5b83e91f8c0680847bbf4b24" mdapi_config_hash="d31ec4eaa11c8be0d8d72ecece53434f" id="3b3c9f55-e34b-423d-8c05-7b1af03b6685" chipset="lnl" name="MetricSet3" />
-+    <guid config_hash="76b7587d047c30ecde26e3f6253b4165" mdapi_config_hash="e39d956ed7b8d0cbe7d354cff234af7d" id="e6f21065-a6f5-4ea4-a545-80d6aebaab56" chipset="lnl" name="MetricSet4" />
- </guids>
-diff --git a/lib/xe/oa-configs/oa_guid_registry.py b/lib/xe/oa-configs/oa_guid_registry.py
-index ab14b398f3..969d40e568 100644
---- a/lib/xe/oa-configs/oa_guid_registry.py
-+++ b/lib/xe/oa-configs/oa_guid_registry.py
-@@ -100,7 +100,9 @@ class Registry:
-                            'DG1',
-                            'ACM',
-                            'PVC',
--                           'MTL', )
-+                           'MTL',
-+                           'LNL',
-+                          )
-         if name in known_chipsets:
-             return name
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 5b0db4d28b..92f82f6eef 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -995,6 +995,58 @@ test_query_uc_fw_version_huc(int fd)
+ 	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_HUC);
+ }
  
-diff --git a/lib/xe/oa-configs/update-guids.py b/lib/xe/oa-configs/update-guids.py
-index 0c7d129404..18f3458e84 100755
---- a/lib/xe/oa-configs/update-guids.py
-+++ b/lib/xe/oa-configs/update-guids.py
-@@ -165,6 +165,7 @@ chipsets = [ 'hsw',
-              'tglgt1', 'tglgt2', 'rkl', 'dg1', 'adl',
-              'acmgt1', 'acmgt2', 'acmgt3',
-              'mtlgt2', 'mtlgt3',
-+             'lnl',
- ]
- 
- for chipset in chipsets:
++/**
++ * SUBTEST: query-oa-units
++ * Description: Display fields for OA unit query
++ *
++ * SUBTEST: multigpu-query-oa-units
++ * Description: Display fields for OA unit query for all GPU devices
++ * Sub-category: MultiGPU
++ */
++static void test_query_oa_units(int fd)
++{
++	struct drm_xe_query_oa_units *qoa;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_OA_UNITS,
++		.size = 0,
++		.data = 0,
++	};
++	struct drm_xe_oa_unit *oau;
++	int i, j;
++	u8 *poau;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qoa = malloc(query.size);
++	igt_assert(qoa);
++
++	query.data = to_user_pointer(qoa);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	igt_info("num_oa_units %d\n", qoa->num_oa_units);
++
++	poau = (u8 *)&qoa->oa_units[0];
++	for (i = 0; i < qoa->num_oa_units; i++) {
++		oau = (struct drm_xe_oa_unit *)poau;
++
++		igt_info("-------------------------------\n");
++		igt_info("oa_unit %d\n", i);
++		igt_info("-------------------------------\n");
++		igt_info("oa_unit_id %d\n", oau->oa_unit_id);
++		igt_info("oa_unit_type %d\n", oau->oa_unit_type);
++		igt_info("capabilities %#llx\n", oau->capabilities);
++		igt_info("oa_timestamp_freq %lld\n", oau->oa_timestamp_freq);
++		igt_info("num_engines %lld\n", oau->num_engines);
++		igt_info("Engines:");
++		for (j = 0; j < oau->num_engines; j++)
++			igt_info(" (%d, %d)", oau->eci[j].engine_class,
++				 oau->eci[j].engine_instance);
++		igt_info("\n");
++		poau += sizeof(*oau) + j * sizeof(oau->eci[0]);
++	}
++}
++
+ igt_main
+ {
+ 	const struct {
+@@ -1011,6 +1063,7 @@ igt_main
+ 		{ "query-cs-cycles", test_query_engine_cycles },
+ 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
+ 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
++		{ "query-oa-units", test_query_oa_units },
+ 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
+ 		{ "query-invalid-query", test_query_invalid_query },
+ 		{ "query-invalid-size", test_query_invalid_size },
 -- 
 2.41.0
 
