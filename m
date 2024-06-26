@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ACFDC27C4F
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B2FDC30659
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Jun 2024 20:54:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6148710E1CC;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6626410E269;
 	Wed, 26 Jun 2024 20:54:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WSzLuMK2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ViJYqVmV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5516410E9B5
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:50 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 543D910E15D
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Jun 2024 20:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719435291; x=1750971291;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=C/I4YVXzlAWLgyYTBj/0t0uvqGURHISlGuvj1Ibmhuo=;
- b=WSzLuMK2IVYTXpQGA/3qo3mNV8o2DCaPQG0gGFcoOYix4mbcJyXHHA3N
- pnhuQCTndu/9V2BIVT6cDoEDRk0zMRw9RYmC9o6ASRSUsDr+ugQNUZAhY
- apNXJpxIgczI0inAN+Gj2srJAFDLGs7TBS6xUMQ80A1QPLZaG+d54Fb5t
- YNQLLBxNm0SzIF1qqnzobJDmdPtWlvL70ffNtaFMmG/arXFRMukxNv0xy
- WfwzoYeXVqVhfdrfrtS43xEY+Ql//DiUnX6ZrvneiM+BUnu9QBjKITLJT
- xLLp1xdggnLfhxEkrX2qnRghnG/ovKepdaFZ/1IbRazft3cr3ZZZH1pNq w==;
-X-CSE-ConnectionGUID: 3xltCu5YTP6LT0SXTgrDmA==
-X-CSE-MsgGUID: 0wt1KL53SUmgYwln/pf1aA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670995"
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670995"
+ t=1719435290; x=1750971290;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QTcEEddMC3WNJ4j/DtyFGgPvrxXMTdTVHdEUpv1R7ec=;
+ b=ViJYqVmV/4Va0XCQrf3e7cQFHTtx+jTnEVUJY0j+VoFrRgLXimn5U/i6
+ F94WCZ6ioajdN/5HFyengCORmUdn3Fj8lHNsUNL2IiSkhIuHZu+GwR92v
+ 6YXFHc87gC1iBtOJ+bw941zHEeo7pPoeEti2KI/zRnpyDSLo+MuMVxlfK
+ otUKr6u2xUeS4ixlVPDS0OaFEuH4f5r6hSETtbs1fTtWX6FxTrnYbdyb+
+ q3RtkJjVGWOujPRZILUvQdYDecwX9kpzcKcCnH+Qwri4Fg9jQOTGt9mmS
+ 3vR7tZbbJGWpwlj4fTmiyQrzqRMpQvD/Vf4KkD1XVVDzfCgOlB1RMRtSZ g==;
+X-CSE-ConnectionGUID: mjSC2Cg4Tvir8OiTjWSGwg==
+X-CSE-MsgGUID: cEjNIY5nSguhVjpeumL9SA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="27670984"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="27670984"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:50 -0700
-X-CSE-ConnectionGUID: G3I+9nt1TW2vtxZ1y8iXfQ==
-X-CSE-MsgGUID: WHI3Q64wSfm01Jv2VKFggA==
+ 26 Jun 2024 13:54:49 -0700
+X-CSE-ConnectionGUID: oh6dLsqcQty5Tgm9OPPrlw==
+X-CSE-MsgGUID: FFcFvWawTgObGntiazgV5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018924"
+X-IronPort-AV: E=Sophos;i="6.08,268,1712646000"; d="scan'208";a="44018908"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jun 2024 13:54:50 -0700
+ 26 Jun 2024 13:54:48 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 09/16] tests/intel/xe_query: Add OA units query test
-Date: Wed, 26 Jun 2024 13:54:36 -0700
-Message-ID: <20240626205443.1560171-10-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 00/16] Intel Xe OA IGT lib and tools
+Date: Wed, 26 Jun 2024 13:54:27 -0700
+Message-ID: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
-References: <20240626205443.1560171-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,85 +65,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to exercise OA units query.
+Originally posted as part of
+https://patchwork.freedesktop.org/series/130033/, separate out the IGT lib
+and tools and try to merge these first, before merging the OA IGT's so that
+we have some more time to review the tests before merging.
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/xe_query.c | 53 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+Gpuvis support for perf traces from Intel Xe driver is based on tools and
+IGT lib changes included here.
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 5b0db4d28b..92f82f6eef 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -995,6 +995,58 @@ test_query_uc_fw_version_huc(int fd)
- 	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_HUC);
- }
- 
-+/**
-+ * SUBTEST: query-oa-units
-+ * Description: Display fields for OA unit query
-+ *
-+ * SUBTEST: multigpu-query-oa-units
-+ * Description: Display fields for OA unit query for all GPU devices
-+ * Sub-category: MultiGPU
-+ */
-+static void test_query_oa_units(int fd)
-+{
-+	struct drm_xe_query_oa_units *qoa;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_OA_UNITS,
-+		.size = 0,
-+		.data = 0,
-+	};
-+	struct drm_xe_oa_unit *oau;
-+	int i, j;
-+	u8 *poau;
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	qoa = malloc(query.size);
-+	igt_assert(qoa);
-+
-+	query.data = to_user_pointer(qoa);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	igt_info("num_oa_units %d\n", qoa->num_oa_units);
-+
-+	poau = (u8 *)&qoa->oa_units[0];
-+	for (i = 0; i < qoa->num_oa_units; i++) {
-+		oau = (struct drm_xe_oa_unit *)poau;
-+
-+		igt_info("-------------------------------\n");
-+		igt_info("oa_unit %d\n", i);
-+		igt_info("-------------------------------\n");
-+		igt_info("oa_unit_id %d\n", oau->oa_unit_id);
-+		igt_info("oa_unit_type %d\n", oau->oa_unit_type);
-+		igt_info("capabilities %#llx\n", oau->capabilities);
-+		igt_info("oa_timestamp_freq %lld\n", oau->oa_timestamp_freq);
-+		igt_info("num_engines %lld\n", oau->num_engines);
-+		igt_info("Engines:");
-+		for (j = 0; j < oau->num_engines; j++)
-+			igt_info(" (%d, %d)", oau->eci[j].engine_class,
-+				 oau->eci[j].engine_instance);
-+		igt_info("\n");
-+		poau += sizeof(*oau) + j * sizeof(oau->eci[0]);
-+	}
-+}
-+
- igt_main
- {
- 	const struct {
-@@ -1011,6 +1063,7 @@ igt_main
- 		{ "query-cs-cycles", test_query_engine_cycles },
- 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
- 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
-+		{ "query-oa-units", test_query_oa_units },
- 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
- 		{ "query-invalid-query", test_query_invalid_query },
- 		{ "query-invalid-size", test_query_invalid_size },
+All patches here have R-b without any outstanding issues.
+
+Ashutosh Dixit (12):
+  lib/xe/oa: Import OA metric generation files from i915
+  lib/xe/oa: Add LNL metric guids
+  lib/xe/oa: Add OA LNL metrics (oa_lnl.xml)
+  lib/xe/oa: Add truncated legacy Xe1 metrics XML's
+  lib/xe/oa: Generate LNL metrics/registers files
+  lib/xe/oa: Switch generated files to Xe namespace
+  drm-uapi/xe: Sync with Perf/OA changes
+  lib/xe: Complete xe_oa lib functionality
+  tests/intel/xe_query: Add OA units query test
+  lib/xe/oa: Add xe_oa_data_reader to IGT lib
+  tools/xe-perf: Add xe_perf_recorder
+  tools/xe-perf: xe_perf_reader, xe_perf_control and xe_perf_configs
+
+José Roberto de Souza (4):
+  xe/oa: Fix invalid escape warnings
+  xe/oa/mdapi-xml-convert: Add support for 576B_PEC64LL format
+  xe/oa: Regenerate oa-lnl.xml now parsing all counters
+  xe/oa/oa-metricset-codegen: Fix XE_OA_FORMAT_PEC64u64 offsets
+
+ include/drm-uapi/xe_drm.h                 |  308 +
+ lib/intel_device_info.c                   |    1 +
+ lib/meson.build                           |   89 +
+ lib/xe-oa.pc.in                           |   11 +
+ lib/xe/oa-configs/README.md               |  115 +
+ lib/xe/oa-configs/codegen.py              |  449 ++
+ lib/xe/oa-configs/guids.xml               | 2763 ++++++++
+ lib/xe/oa-configs/mdapi-xml-convert.py    | 1267 ++++
+ lib/xe/oa-configs/oa-acmgt1.xml           |  710 +++
+ lib/xe/oa-configs/oa-acmgt2.xml           |  828 +++
+ lib/xe/oa-configs/oa-acmgt3.xml           |  824 +++
+ lib/xe/oa-configs/oa-adl.xml              |  816 +++
+ lib/xe/oa-configs/oa-dg1.xml              |  823 +++
+ lib/xe/oa-configs/oa-equations-codegen.py |  261 +
+ lib/xe/oa-configs/oa-lnl.xml              | 6984 +++++++++++++++++++++
+ lib/xe/oa-configs/oa-metricset-codegen.py |  266 +
+ lib/xe/oa-configs/oa-mtlgt2.xml           |  789 +++
+ lib/xe/oa-configs/oa-mtlgt3.xml           |  803 +++
+ lib/xe/oa-configs/oa-registers-codegen.py |  118 +
+ lib/xe/oa-configs/oa-rkl.xml              |  824 +++
+ lib/xe/oa-configs/oa-tglgt1.xml           |  819 +++
+ lib/xe/oa-configs/oa-tglgt2.xml           |  818 +++
+ lib/xe/oa-configs/oa_guid_registry.py     |  119 +
+ lib/xe/oa-configs/update-guids.py         |  223 +
+ lib/xe/xe_oa.c                            | 1074 ++++
+ lib/xe/xe_oa.h                            |  408 ++
+ lib/xe/xe_oa_data.h                       |  101 +
+ lib/xe/xe_oa_data_reader.c                |  369 ++
+ lib/xe/xe_oa_data_reader.h                |   87 +
+ lib/xe/xe_query.c                         |   38 +
+ lib/xe/xe_query.h                         |    5 +
+ tests/intel/xe_query.c                    |   53 +
+ tools/meson.build                         |    1 +
+ tools/xe-perf/meson.build                 |   22 +
+ tools/xe-perf/xe_perf_configs.c           |  247 +
+ tools/xe-perf/xe_perf_control.c           |  117 +
+ tools/xe-perf/xe_perf_reader.c            |  325 +
+ tools/xe-perf/xe_perf_recorder.c          | 1227 ++++
+ tools/xe-perf/xe_perf_recorder_commands.h |   31 +
+ 39 files changed, 25133 insertions(+)
+ create mode 100644 lib/xe-oa.pc.in
+ create mode 100644 lib/xe/oa-configs/README.md
+ create mode 100644 lib/xe/oa-configs/codegen.py
+ create mode 100644 lib/xe/oa-configs/guids.xml
+ create mode 100755 lib/xe/oa-configs/mdapi-xml-convert.py
+ create mode 100644 lib/xe/oa-configs/oa-acmgt1.xml
+ create mode 100644 lib/xe/oa-configs/oa-acmgt2.xml
+ create mode 100644 lib/xe/oa-configs/oa-acmgt3.xml
+ create mode 100644 lib/xe/oa-configs/oa-adl.xml
+ create mode 100644 lib/xe/oa-configs/oa-dg1.xml
+ create mode 100644 lib/xe/oa-configs/oa-equations-codegen.py
+ create mode 100644 lib/xe/oa-configs/oa-lnl.xml
+ create mode 100644 lib/xe/oa-configs/oa-metricset-codegen.py
+ create mode 100644 lib/xe/oa-configs/oa-mtlgt2.xml
+ create mode 100644 lib/xe/oa-configs/oa-mtlgt3.xml
+ create mode 100644 lib/xe/oa-configs/oa-registers-codegen.py
+ create mode 100644 lib/xe/oa-configs/oa-rkl.xml
+ create mode 100644 lib/xe/oa-configs/oa-tglgt1.xml
+ create mode 100644 lib/xe/oa-configs/oa-tglgt2.xml
+ create mode 100644 lib/xe/oa-configs/oa_guid_registry.py
+ create mode 100755 lib/xe/oa-configs/update-guids.py
+ create mode 100644 lib/xe/xe_oa.c
+ create mode 100644 lib/xe/xe_oa.h
+ create mode 100644 lib/xe/xe_oa_data.h
+ create mode 100644 lib/xe/xe_oa_data_reader.c
+ create mode 100644 lib/xe/xe_oa_data_reader.h
+ create mode 100644 tools/xe-perf/meson.build
+ create mode 100644 tools/xe-perf/xe_perf_configs.c
+ create mode 100644 tools/xe-perf/xe_perf_control.c
+ create mode 100644 tools/xe-perf/xe_perf_reader.c
+ create mode 100644 tools/xe-perf/xe_perf_recorder.c
+ create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
+
 -- 
 2.41.0
 
