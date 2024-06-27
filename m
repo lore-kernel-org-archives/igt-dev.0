@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE0FBC2BD09
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Jun 2024 07:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E11FC30658
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Jun 2024 07:25:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7704710EA55;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA45C10EA56;
 	Thu, 27 Jun 2024 07:25:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QgewjzUy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DCMD+Xw1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1047D10EA55
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Jun 2024 07:25:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEF3210EA55
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Jun 2024 07:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719473122; x=1751009122;
+ t=1719473124; x=1751009124;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=gfuhmNXzB1jHiONWQ9Gb6nOB54dAUDuvTAwhMBd9VxE=;
- b=QgewjzUyf7JHr6cywhPsuA+f2NwwQ5H9ue9GFJ6eLNmFW+sNSJVw9zq4
- 22m1QN5SBsdoVy4VuBEm4T1uKE77AUR8ZxtCiaqQBA2tTJkB+FyNE6WLD
- c/Ium1WWNlZSl5sNzbWrltVgslHzsLpVVfSfgbnvsGbob0xILDYYzCPG/
- MaHgcLHJWiKCh68Fi4QnOJVyfDkehNd9gn/vmF+BTKBP93YIxxXl1GTAW
- tn0sFOccFUN5B4c69YPSGm9c+uOHaCiaA566MqfwK65xwu6/aDYCrvl+e
- e6WYTV9hSj96RhXE31xr2EG5Cvz7vtUIJN+ZtcspkCemnPyMBVF2GCagG Q==;
-X-CSE-ConnectionGUID: hb3737C6RoSTUluPUXYnwA==
-X-CSE-MsgGUID: gum8/mQxS96borVJbXDypA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="20466237"
-X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="20466237"
+ bh=1NyT8LdBLPCSt2jk7vRv/ndHSz1JG7v5lMPAQer1u+U=;
+ b=DCMD+Xw1uxLXPFAZOYbyc2kZW7fANWBs+1AkvkERISebxRBKP498AR5/
+ PDjHSQHtYCt3p+7DKkYZO4hdAseTHBzrO/IbgUVr/G1km9Mz+XQY34onl
+ Nu01hsuyG9qQuxUwEVi8vC7H9asQIvBPZVO7B6qZ9n3GfJeRzx0VA4/FU
+ 35iBqPF7QN55jXpEs/xFjQBt0nH67RuOp2WF0QGVT+bYmryI/rAecCq3P
+ k2Sc0Q2MzzDyGIBiWN6FgjYlvOg/s0juqjDUJzssmWx72jfFE78g6ixuS
+ HlJy4piierjy99+q1Yx7ix6vd4PZMf95KZnXGzTJqZ65cCVaXz7sFuvjd Q==;
+X-CSE-ConnectionGUID: Q2t3I79yTNyUXd9ht3SNbA==
+X-CSE-MsgGUID: eUR0F1nbTWifYdFQBaoiVQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="20466239"
+X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="20466239"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2024 00:25:22 -0700
-X-CSE-ConnectionGUID: e+C+Its0TLaVbM99EomMfQ==
-X-CSE-MsgGUID: 8FuEatpuQvm7FPy1uTO5xg==
+ 27 Jun 2024 00:25:24 -0700
+X-CSE-ConnectionGUID: gQiO2mBfQsaTNxyPd+tjmw==
+X-CSE-MsgGUID: RB1c4kkrTmmn1vm4qUajQA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="49221715"
+X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="49221721"
 Received: from lab-ah.igk.intel.com ([10.102.138.202])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2024 00:25:21 -0700
+ 27 Jun 2024 00:25:23 -0700
 From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 27 Jun 2024 09:25:00 +0200
-Subject: [PATCH v8 1/5] lib/gpu_cmds: add Xe_LP version of emit_vfe_state
+Date: Thu, 27 Jun 2024 09:25:01 +0200
+Subject: [PATCH v8 2/5] lib/gpgpu_shader: tooling for preparing and running
+ gpgpu shaders
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240627-iga64_inline_ups-v8-1-08605c9360d3@intel.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240627-iga64_inline_ups-v8-2-08605c9360d3@intel.com>
 References: <20240627-iga64_inline_ups-v8-0-08605c9360d3@intel.com>
 In-Reply-To: <20240627-iga64_inline_ups-v8-0-08605c9360d3@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -58,18 +59,18 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
  Andrzej Hajda <andrzej.hajda@intel.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3757;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8209;
  i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=gfuhmNXzB1jHiONWQ9Gb6nOB54dAUDuvTAwhMBd9VxE=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmfRPcj9TzK+Kf3I5KXwQMMAKyW1or64Wg7oGEonR5
- zLqAsJ2JAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZn0T3AAKCRAjYrKT3hD91+iiC/
- 4o8nu+qWtyqmPso3iMwnAfWndicZ4DUd/I7v3J/u0hgibKFP3tNbjH7ETUT49PkG73n8MUYfRoGvCp
- SD0AV1fEZvgCgVpRndvUYZllwSLeLIRsXl0Bq6udPZrHfEY8ZJsgJMayYQsJgryvUob5S5HNero41T
- ajD0xofsQsuMp7nSO4c4mbbYPDVi5BP9g7yDRtI5hG6i+5hhhFMZ9IWUwzuMpHAakCoa6khtl3vQ9E
- nLu7UzNTn3G3Bw6yXHEsKReCgaIatOvC3U0JZSI2UiM0BKlZAor0nAyHmRrU14eek+JSmMLyLEPHjh
- c7w8BuLIJ/OZ7ttYc3BynngMPFLiahzqQjnf+WdMRnEYK0JAWkYbYd9/x//uRZ7UxZ6qVHeABGALIP
- TvCnxqc8F81qs9NBribNmGjUv4/s4ErI7fqfPqgcPLaGA5LR2nKuYjhC8GLxZKiVShxIjgf7lv6GSU
- oJRvCAxYq19P+vZn9zhNwSN3OhwRrDJVpX8fQQoQNCTJc=
+ bh=1NyT8LdBLPCSt2jk7vRv/ndHSz1JG7v5lMPAQer1u+U=;
+ b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmfRPcCSL705gStL/nfIc6scTj53uyZc3yCU3a4+4s
+ qI72azaJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZn0T3AAKCRAjYrKT3hD9122IDA
+ C3U2USqpoXuC+s+m4aEmnwGxdKIB7sntIN67mqYMtSZzxwS7j1CRrEqAGb0rTBgqMYhOYiCPc90aij
+ l3DKH36y9qGSaVH0PDNuU4TcdsLchbPWQZ0PHD6KQZQ1kvCqh8dZOecF9ahQAmvaPPIqcL9Dg2Kx7q
+ BX4H5+lmZNGVadPL9DdEfCNPDxyP09wtzzt0vDOCvNL2oWj+l+vMLee/7STBh3B3FvLIQxUdesmZuI
+ kjcqnkyKj2O4YeGzavsiQZl2pkWvo8Jh6GGVAueOtyjS+sAj+pPuFCwt/AQTP7OG/wYG3w6UmEyXfW
+ koZMrKp1vJEdFfdgW36qW2Ciek81g3GOmHq+2I7VSrAwY8GZaif/nvgQbWkIIAXzPDzA1th5sBYgde
+ 4QF1UW2VBbZy8rHZ2Gp4TTticZqjNTm9U/p2YfnIVV5NUlx9dQ8zyoBRyAvw/70fhbZJgTDJCHkKVC
+ BLnbbXSo0HdJhqlP7Ygb+PUI89iRIFOYKqmzMf0y7FwnQ=
 X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
  fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -87,121 +88,296 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In Xe_LP version there is added argument to control EU thread
-dispatching mode. For shaders lagacy mode is used.
+Implement tooling for building shaders for specific generations.
+The library allows you to build and run shader from precompiled blocks
+and provides an abstraction layer over gpgpu pipeline.
 
-v2: added commit description
-v6: added public function descriptions
-v8: removed spare return from void function
+v8: added asserts after memory allocations.
 
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/gpu_cmds.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++------
- lib/gpu_cmds.h |  6 ++++++
- 2 files changed, 52 insertions(+), 6 deletions(-)
+ lib/gpgpu_shader.c | 212 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/gpgpu_shader.h |  38 ++++++++++
+ lib/meson.build    |   1 +
+ 3 files changed, 251 insertions(+)
 
-diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
-index 2e29cc6c4650..c44b24c79bd1 100644
---- a/lib/gpu_cmds.c
-+++ b/lib/gpu_cmds.c
-@@ -651,10 +651,10 @@ gen7_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
- 	intel_bb_out(ibb, 0);
- }
- 
--void
--gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
--		    uint32_t urb_entries, uint32_t urb_size,
--		    uint32_t curbe_size)
+diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+new file mode 100644
+index 000000000000..3b5ba82223b2
+--- /dev/null
++++ b/lib/gpgpu_shader.c
+@@ -0,0 +1,212 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ *
++ * Author: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
++ */
++
++#include <i915_drm.h>
++
++#include "ioctl_wrappers.h"
++#include "gpgpu_shader.h"
++#include "gpu_cmds.h"
++
++#define SUPPORTED_GEN_VER 1200 /* Support TGL and up */
++
++#define PAGE_SIZE 4096
++#define BATCH_STATE_SPLIT 2048
++/* VFE STATE params */
++#define THREADS (1 << 16) /* max value */
++#define GEN8_GPGPU_URB_ENTRIES 1
++#define GPGPU_URB_SIZE 0
++#define GPGPU_CURBE_SIZE 0
++#define GEN7_VFE_STATE_GPGPU_MODE 1
++
++static uint32_t fill_sip(struct intel_bb *ibb,
++			 const uint32_t sip[][4],
++			 const size_t size)
++{
++	uint32_t *sip_dst;
++	uint32_t offset;
++
++	intel_bb_ptr_align(ibb, 16);
++	sip_dst = intel_bb_ptr(ibb);
++	offset = intel_bb_offset(ibb);
++
++	memcpy(sip_dst, sip, size);
++
++	intel_bb_ptr_add(ibb, size);
++
++	return offset;
++}
++
++static void emit_sip(struct intel_bb *ibb, const uint64_t offset)
++{
++	intel_bb_out(ibb, GEN4_STATE_SIP | (3 - 2));
++	intel_bb_out(ibb, lower_32_bits(offset));
++	intel_bb_out(ibb, upper_32_bits(offset));
++}
++
 +static void
-+__gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
-+		      uint32_t urb_entries, uint32_t urb_size,
-+		      uint32_t curbe_size, bool legacy_mode)
- {
- 	intel_bb_out(ibb, GEN7_MEDIA_VFE_STATE | (9 - 2));
- 
-@@ -662,8 +662,8 @@ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
- 	intel_bb_out(ibb, 0);
- 	intel_bb_out(ibb, 0);
- 
--	/* number of threads & urb entries */
--	intel_bb_out(ibb, threads << 16 | urb_entries << 8);
-+	/* number of threads & urb entries & eu fusion */
-+	intel_bb_out(ibb, threads << 16 | urb_entries << 8 | legacy_mode << 6);
- 
- 	intel_bb_out(ibb, 0);
- 
-@@ -676,6 +676,25 @@ gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
- 	intel_bb_out(ibb, 0);
- }
- 
-+/**
-+ * gen8_emit_vfe_state:
-+ * @ibb: batchbuffer
-+ * @threads: maximum number of threads
-+ * @urb_entries: number of URB entries
-+ * @urb_size: URB entry allocation size
-+ * @curbe_size: CURBE allocation size
-+ *
-+ * Emits instruction MEDIA_VFE_STATE for Gen8+ which sets Video Front End (VFE)
-+ * state.
-+ */
-+void gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
-+			 uint32_t urb_entries, uint32_t urb_size,
-+			 uint32_t curbe_size)
++__xelp_gpgpu_execfunc(struct intel_bb *ibb,
++		      struct intel_buf *target,
++		      unsigned int x_dim, unsigned int y_dim,
++		      struct gpgpu_shader *shdr,
++		      struct gpgpu_shader *sip,
++		      uint64_t ring, bool explicit_engine)
 +{
-+	__gen8_emit_vfe_state(ibb, threads, urb_entries, urb_size, curbe_size,
-+			      false);
++	uint32_t interface_descriptor, sip_offset;
++	uint64_t engine;
++
++	intel_bb_add_intel_buf(ibb, target, true);
++
++	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
++
++	interface_descriptor = gen8_fill_interface_descriptor(ibb, target,
++							      shdr->instr,
++							      4 * shdr->size);
++
++	if (sip && sip->size)
++		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
++	else
++		sip_offset = 0;
++
++	intel_bb_ptr_set(ibb, 0);
++
++	/* GPGPU pipeline */
++	intel_bb_out(ibb, GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
++		     PIPELINE_SELECT_GPGPU);
++
++	gen9_emit_state_base_address(ibb);
++
++	xelp_emit_vfe_state(ibb, THREADS, GEN8_GPGPU_URB_ENTRIES,
++			    GPGPU_URB_SIZE, GPGPU_CURBE_SIZE, true);
++
++	gen7_emit_interface_descriptor_load(ibb, interface_descriptor);
++
++	if (sip_offset)
++		emit_sip(ibb, sip_offset);
++
++	gen8_emit_gpgpu_walk(ibb, 0, 0, x_dim * 16, y_dim);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 32);
++
++	engine = explicit_engine ? ring : I915_EXEC_DEFAULT;
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      engine | I915_EXEC_NO_RELOC, false);
 +}
 +
- void
- gen7_emit_curbe_load(struct intel_bb *ibb, uint32_t curbe_buffer)
- {
-@@ -864,6 +883,27 @@ gen7_emit_media_objects(struct intel_bb *ibb,
- 			gen_emit_media_object(ibb, x + i * 16, y + j * 16);
- }
- 
-+/**
-+ * xelp_emit_vfe_state:
-+ * @ibb: pointer to intel_bb
-+ * @threads: maximum number of threads
-+ * @urb_entries: number of URB entries
-+ * @urb_size: URB entry allocation size
-+ * @curbe_size: CURBE allocation size
-+ * @legacy_mode: if set, threads are dispatched individually (legacy mode),
-+ *     otherwise they are dispatched in sets(fused EU mode)
-+ *
-+ * Emits instruction MEDIA_VFE_STATE for XeLP which sets Video Front End (VFE)
-+ * state.
-+ */
-+void xelp_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
-+			 uint32_t urb_entries, uint32_t urb_size,
-+			 uint32_t curbe_size, bool legacy_mode)
++static void
++__xehp_gpgpu_execfunc(struct intel_bb *ibb,
++		      struct intel_buf *target,
++		      unsigned int x_dim, unsigned int y_dim,
++		      struct gpgpu_shader *shdr,
++		      struct gpgpu_shader *sip,
++		      uint64_t ring, bool explicit_engine)
 +{
-+	__gen8_emit_vfe_state(ibb, threads, urb_entries, urb_size,
-+			      curbe_size, legacy_mode);
++	struct xehp_interface_descriptor_data idd;
++	uint32_t sip_offset;
++	uint64_t engine;
++
++	intel_bb_add_intel_buf(ibb, target, true);
++
++	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
++
++	xehp_fill_interface_descriptor(ibb, target, shdr->instr,
++				       4 * shdr->size, &idd);
++
++	if (sip && sip->size)
++		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
++	else
++		sip_offset = 0;
++
++	intel_bb_ptr_set(ibb, 0);
++
++	/* GPGPU pipeline */
++	intel_bb_out(ibb, GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
++		     PIPELINE_SELECT_GPGPU);
++	xehp_emit_state_base_address(ibb);
++	xehp_emit_state_compute_mode(ibb);
++	xehp_emit_state_binding_table_pool_alloc(ibb);
++	xehp_emit_cfe_state(ibb, THREADS);
++
++	if (sip_offset)
++		emit_sip(ibb, sip_offset);
++
++	xehp_emit_compute_walk(ibb, 0, 0, x_dim * 16, y_dim, &idd, 0x0);
++
++	intel_bb_out(ibb, MI_BATCH_BUFFER_END);
++	intel_bb_ptr_align(ibb, 32);
++
++	engine = explicit_engine ? ring : I915_EXEC_DEFAULT;
++	intel_bb_exec(ibb, intel_bb_offset(ibb),
++		      engine | I915_EXEC_NO_RELOC, false);
 +}
 +
- /*
-  * XEHP
-  */
-diff --git a/lib/gpu_cmds.h b/lib/gpu_cmds.h
-index 348c6c9453e9..1b9156a80c7c 100644
---- a/lib/gpu_cmds.h
-+++ b/lib/gpu_cmds.h
-@@ -81,6 +81,12 @@ void
- gen8_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
- 		    uint32_t urb_entries, uint32_t urb_size,
- 		    uint32_t curbe_size);
++/**
++ * gpgpu_shader_exec:
++ * @ibb: pointer to initialized intel_bb
++ * @target: pointer to initialized intel_buf to be written by shader/sip
++ * @x_dim: gpgpu/compute walker thread group width
++ * @y_dim: gpgpu/compute walker thread group height
++ * @shdr: shader to be executed
++ * @sip: sip to be executed, can be NULL
++ * @ring: engine index
++ * @explicit_engine: whether to use provided engine index
++ *
++ * Execute provided shader in asynchronous fashion. To wait for completion,
++ * caller has to use the provided ibb handle.
++ */
++void gpgpu_shader_exec(struct intel_bb *ibb,
++		       struct intel_buf *target,
++		       unsigned int x_dim, unsigned int y_dim,
++		       struct gpgpu_shader *shdr,
++		       struct gpgpu_shader *sip,
++		       uint64_t ring, bool explicit_engine)
++{
++	igt_require(shdr->gen_ver >= SUPPORTED_GEN_VER);
++	igt_assert(ibb->size >= PAGE_SIZE);
++	igt_assert(ibb->ptr == ibb->batch);
 +
-+void
-+xelp_emit_vfe_state(struct intel_bb *ibb, uint32_t threads,
-+		    uint32_t urb_entries, uint32_t urb_size,
-+		    uint32_t curbe_size, bool legacy_mode);
++	if (shdr->gen_ver >= 1250)
++		__xehp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
++				      ring, explicit_engine);
++	else
++		__xelp_gpgpu_execfunc(ibb, target, x_dim, y_dim, shdr, sip,
++				      ring, explicit_engine);
++}
 +
- void
- gen7_emit_curbe_load(struct intel_bb *ibb, uint32_t curbe_buffer);
- 
++/**
++ * gpgpu_shader_create:
++ * @fd: drm fd - i915 or xe
++ *
++ * Creates empty shader.
++ *
++ * Returns: pointer to empty shader struct.
++ */
++struct gpgpu_shader *gpgpu_shader_create(int fd)
++{
++	struct gpgpu_shader *shdr = calloc(1, sizeof(struct gpgpu_shader));
++	const struct intel_device_info *info;
++
++	igt_assert(shdr);
++	info = intel_get_device_info(intel_get_drm_devid(fd));
++	shdr->gen_ver = 100 * info->graphics_ver + info->graphics_rel;
++	shdr->max_size = 16 * 4;
++	shdr->code = malloc(4 * shdr->max_size);
++	igt_assert(shdr->code);
++	return shdr;
++}
++
++/**
++ * gpgpu_shader_destroy:
++ * @shdr: pointer to shader struct created with 'gpgpu_shader_create'
++ *
++ * Frees resources of gpgpu_shader struct.
++ */
++void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
++{
++	free(shdr->code);
++	free(shdr);
++}
+diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+new file mode 100644
+index 000000000000..02f6f1aad1e3
+--- /dev/null
++++ b/lib/gpgpu_shader.h
+@@ -0,0 +1,38 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#ifndef GPGPU_SHADER_H
++#define GPGPU_SHADER_H
++
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdlib.h>
++
++struct intel_bb;
++struct intel_buf;
++
++struct gpgpu_shader {
++	uint32_t gen_ver;
++	uint32_t size;
++	uint32_t max_size;
++	union {
++		uint32_t *code;
++		uint32_t (*instr)[4];
++	};
++};
++
++struct gpgpu_shader *gpgpu_shader_create(int fd);
++void gpgpu_shader_destroy(struct gpgpu_shader *shdr);
++
++void gpgpu_shader_dump(struct gpgpu_shader *shdr);
++
++void gpgpu_shader_exec(struct intel_bb *ibb,
++		       struct intel_buf *target,
++		       unsigned int x_dim, unsigned int y_dim,
++		       struct gpgpu_shader *shdr,
++		       struct gpgpu_shader *sip,
++		       uint64_t ring, bool explicit_engine);
++
++#endif /* GPGPU_SHADER_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index e2f740c116f8..0a3084f8aea2 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -72,6 +72,7 @@ lib_sources = [
+ 	'media_spin.c',
+ 	'media_fill.c',
+ 	'gpgpu_fill.c',
++	'gpgpu_shader.c',
+ 	'gpu_cmds.c',
+ 	'rendercopy_i915.c',
+ 	'rendercopy_i830.c',
 
 -- 
 2.34.1
