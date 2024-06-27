@@ -4,74 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BE25C2BD09
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Jun 2024 07:25:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFDC8C2BD09
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Jun 2024 07:28:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 25C0410EA57;
-	Thu, 27 Jun 2024 07:25:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D79810EA50;
+	Thu, 27 Jun 2024 07:28:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VTo2x0vH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fSWPEDA5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB2C10EA57
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Jun 2024 07:25:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4BCF10EA50
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Jun 2024 07:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719473130; x=1751009130;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:references:in-reply-to:to:cc;
- bh=+U5nprr5/IOYPjJKgJwWPvbIUEXvL9O8rpqjeADyOzg=;
- b=VTo2x0vHLNCXLwBW/6oMKxugoAX0cBJLjgRnrkNcLDK93QtpE4PI6AaA
- UXNaxKGo+zg3a4YsbI21YQObIFjCC8Op27BKxbjgRLLnD49aJ+0SOfKwX
- XilwuvoVRQPXB6gb4mdU1sORJzl/zrSNwsjv4d6JWrtD3aYAVVVdLkeBa
- YCxGsVb25tN0gnK/0/NPRRnKQuJ1/OhyPeyWud4grZjpzi98c2R2iLWZL
- /Qvkw7F+6MUss6M4n1Yez5430hZoSvvKmxkHLAeTO/GSKONPXPqCEb/2+
- xHAvTFD1mJ6BunZDljG7OHhF4iH+PUHad3PvfubL63dn+89QTAK9lPxkM Q==;
-X-CSE-ConnectionGUID: Q2/I7v73Rd6Lud4ky9iNvw==
-X-CSE-MsgGUID: SDOMFxIvSWOI3ipP9tRLSw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="20466249"
-X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="20466249"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2024 00:25:29 -0700
-X-CSE-ConnectionGUID: pQUuDxOvQOCGcOpuj4ROXw==
-X-CSE-MsgGUID: DBQWC1DrR56DThFktB+8kg==
+ t=1719473308; x=1751009308;
+ h=message-id:subject:from:to:cc:date:in-reply-to:
+ references:content-transfer-encoding:mime-version;
+ bh=60XG4iXdggEeueHoL6byoRg65wxkZ4bLFFGDQuGf9/E=;
+ b=fSWPEDA5YVNLvryYo1/K7rwM48aNcfhovDvfP3voAL1o2nbFamwSrcjs
+ qV2ZdWfaoNOzz9dhNygBb0Ou2nP17HdASKB/KPkdbPpLYtPik0IopwjVB
+ yl4hhyeHqPiwcqn9XJfIBfvIjs/WBTjU9ZUvSMXKg8pi4R4OihaucP2Vt
+ LHAdTtlrbzC6UNWm73OJnCzAN4cjJ7dTOkFQcjX9n70OXlBctfQfFUIuL
+ 1utYW9ywK7R/aBICFMJmCf64aLrw0eOVDEpsysazufRb9W6ZkhPU0DBQx
+ M+CX3AN4xtgtH0De9cEpz2VAeGXFoeKN9tddE50Qmj3KJaoMJHYVYbM6k Q==;
+X-CSE-ConnectionGUID: aQQDmTDEQti9NqKomeq6LQ==
+X-CSE-MsgGUID: BFNufVlfSyi7qYZTf9qvgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11115"; a="16540411"
+X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="16540411"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2024 00:28:27 -0700
+X-CSE-ConnectionGUID: RLT6JiAGR4+HTs8FcTsJoQ==
+X-CSE-MsgGUID: h1PZexfSTl2cpZxKNItYNQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="49221735"
-Received: from lab-ah.igk.intel.com ([10.102.138.202])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jun 2024 00:25:28 -0700
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Thu, 27 Jun 2024 09:25:04 +0200
-Subject: [PATCH v8 5/5] intel/xe_exec_sip: add shader sanity test
+X-IronPort-AV: E=Sophos;i="6.08,269,1712646000"; d="scan'208";a="48747192"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.245.245.82])
+ ([10.245.245.82])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jun 2024 00:28:26 -0700
+Message-ID: <be5b00d7cdaba6ba4b8bab66a9581fcff7a8b226.camel@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_evict: Reduce allocations to
+ maximum working set
+From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
+To: Matthew Brost <matthew.brost@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Zbigniew =?UTF-8?Q?Kempczy=C5=84ski?=
+ <zbigniew.kempczynski@intel.com>
+Date: Thu, 27 Jun 2024 09:28:23 +0200
+In-Reply-To: <Zn0GvXZ/laQtVesC@DUT025-TGLU.fm.intel.com>
+References: <20240626123833.3164-1-thomas.hellstrom@linux.intel.com>
+ <20240626123833.3164-2-thomas.hellstrom@linux.intel.com>
+ <Zn0GvXZ/laQtVesC@DUT025-TGLU.fm.intel.com>
+Autocrypt: addr=thomas.hellstrom@linux.intel.com; prefer-encrypt=mutual;
+ keydata=mDMEZaWU6xYJKwYBBAHaRw8BAQdAj/We1UBCIrAm9H5t5Z7+elYJowdlhiYE8zUXgxcFz360SFRob21hcyBIZWxsc3Ryw7ZtIChJbnRlbCBMaW51eCBlbWFpbCkgPHRob21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPoiTBBMWCgA7FiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQuBaTVQrGBr/yQAD/Z1B+Kzy2JTuIy9LsKfC9FJmt1K/4qgaVeZMIKCAxf2UBAJhmZ5jmkDIf6YghfINZlYq6ixyWnOkWMuSLmELwOsgPuDgEZaWU6xIKKwYBBAGXVQEFAQEHQF9v/LNGegctctMWGHvmV/6oKOWWf/vd4MeqoSYTxVBTAwEIB4h4BBgWCgAgFiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwwACgkQuBaTVQrGBr/P2QD9Gts6Ee91w3SzOelNjsus/DcCTBb3fRugJoqcfxjKU0gBAKIFVMvVUGbhlEi6EFTZmBZ0QIZEIzOOVfkaIgWelFEH
+Organization: Intel Sweden AB, Registration Number: 556189-6027
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240627-iga64_inline_ups-v8-5-08605c9360d3@intel.com>
-References: <20240627-iga64_inline_ups-v8-0-08605c9360d3@intel.com>
-In-Reply-To: <20240627-iga64_inline_ups-v8-0-08605c9360d3@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>, 
- Christoph Manszewski <christoph.manszewski@intel.com>, 
- =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=13855;
- i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=+U5nprr5/IOYPjJKgJwWPvbIUEXvL9O8rpqjeADyOzg=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBmfRPdH4wOYVfW6hJTpKCmI50jIjkJqzZrItBWIu3r
- fsQvgHCJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCZn0T3QAKCRAjYrKT3hD910xBDA
- CVIhlKYPLtAPQZal+VAE/6UAPJheECKrTF66pa825DTv+21oVr5yfGAetocgWOwl+ekn0Ye9+lP62t
- sCcrg0dKpI2/h6L818mDqKsj2z39yXg6a3fXrl74kipF3yGpmxAkQO2Bp1Jm7WgDzUHLM8EipcHkh8
- MazAjf8C75cl5mSFF7T9sH8JmtW7xEmkgkTotEZGegwAClb0S7dJyXxdQAvM57x51sgYQW9h/UElNa
- vglO4GMATuDhZWAQt3IRFZCr12iHo+G84M3TLZJGaXt6Vb33n3/UXn/oC5BobKA8YF8aet8LCpSnDn
- 8J4Y0NCjSvXeZEq0W9unE1EYMPmAuXumK25DWJM2RrPtDkmWUJ5vRpkiorg7ZXoppBHfWV8x03KQQT
- aSc3tLRXAW/yinDcusFQsHioYL2o3PIs69ArSG15Ox2w9+hT5U2swdBZFN9tDpzVDOX4WpJOzEcyjU
- hbxgkuUQDJB5IvqQGwHwrGHGhsRXUzziYvkpBnDhjl4f0=
-X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
- fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,409 +77,269 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_exec_sip will contain tests for shader and system routine (SIP)
-interaction. Shaders (also called kernels) are programs running on
-execution units(EUs).
-They can generate exceptions, which should be handled by SIP.
-For starters let's implement test checking if shader runs correctly.
+On Thu, 2024-06-27 at 06:29 +0000, Matthew Brost wrote:
+> On Wed, Jun 26, 2024 at 02:38:32PM +0200, Thomas Hellstr=C3=B6m wrote:
+> > Current xe kmd allows for a maximum working set of VRAM plus
+> > half of system memory, or if the working set is allowed only in
+> > VRAM, the working set is limited to VRAM.
+> >=20
+> > Some subtests attempt to exceed that. Detect when that happens
+> > and limit the working set accordingly.
+> >=20
+> > v2:
+> > - The determination for which flags system bos are allowed in the
+> > =C2=A0 working set was incorrect. Fix. (Zbigniew Kempczy=C5=84ski)
+> > - Fix a typo.
+> > - Add an assert that vram_size is indeed > 0.
+> > =C2=A0 (Zbigniew Kempczy=C5=84ski, Thomas)
+> > - Add asserts and make sure that the bo is bound to the same
+> > =C2=A0 vm the exec_queue is using.
+> > - Increase the allowed set size for the multi-vm test.
+> >=20
+> > Cc: Matthew Brost <matthew.brost@intel.com>
+> > Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> > Cc: Zbigniew Kempczy=C5=84ski <zbigniew.kempczynski@intel.com>
+> > Signed-off-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+> > ---
+> > =C2=A0tests/intel/xe_evict.c | 89 ++++++++++++++++++++++++++++++++++++-=
+-
+> > ----
+> > =C2=A01 file changed, 76 insertions(+), 13 deletions(-)
+> >=20
+> > diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+> > index eebdbc84b..5691ad021 100644
+> > --- a/tests/intel/xe_evict.c
+> > +++ b/tests/intel/xe_evict.c
+> > @@ -97,6 +97,7 @@ test_evict(int fd, struct
+> > drm_xe_engine_class_instance *eci,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ uint32_t _vm =3D (flags & EXTERNAL_OBJ) &&
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i < n_execs / 8 ? 0 : vm;
+> > =C2=A0
+> > +			igt_assert((e & 1) =3D=3D (i & 1));
+> > =C2=A0			if (flags & MULTI_VM) {
+> > =C2=A0				__bo =3D bo[i] =3D xe_bo_create(fd, 0,
+> > =C2=A0							=C2=A0=C2=A0=C2=A0
+> > bo_size,
+> > @@ -115,6 +116,7 @@ test_evict(int fd, struct
+> > drm_xe_engine_class_instance *eci,
+> > =C2=A0							=C2=A0=C2=A0=C2=A0
+> > DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > =C2=A0			}
+> > =C2=A0		} else {
+> > +			igt_assert((e & 1) =3D=3D ((i % (n_execs / 2))
+> > & 1));
+> > =C2=A0			__bo =3D bo[i % (n_execs / 2)];
+> > =C2=A0		}
+> > =C2=A0		if (i)
+> > @@ -273,6 +275,7 @@ test_evict_cm(int fd, struct
+> > drm_xe_engine_class_instance *eci,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ uint32_t _vm =3D (flags & EXTERNAL_OBJ) &&
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i < n_execs / 8 ? 0 : vm;
+> > =C2=A0
+> > +			igt_assert((e & 1) =3D=3D (i & 1));
+> > =C2=A0			if (flags & MULTI_VM) {
+> > =C2=A0				__bo =3D bo[i] =3D xe_bo_create(fd, 0,
+> > =C2=A0							=C2=A0=C2=A0=C2=A0
+> > bo_size,
+> > @@ -291,6 +294,7 @@ test_evict_cm(int fd, struct
+> > drm_xe_engine_class_instance *eci,
+> > =C2=A0							=C2=A0=C2=A0=C2=A0
+> > DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > =C2=A0			}
+> > =C2=A0		} else {
+> > +			igt_assert((e & 1) =3D=3D ((i % (n_execs / 2))
+> > & 1));
+> > =C2=A0			__bo =3D bo[i % (n_execs / 2)];
+> > =C2=A0		}
+> > =C2=A0		if (i)
+> > @@ -458,6 +462,46 @@ static uint64_t calc_bo_size(uint64_t
+> > vram_size, int mul, int div)
+> > =C2=A0		return (ALIGN(vram_size, SZ_256M)=C2=A0 * mul) / div;
+> > /* small-bar */
+> > =C2=A0}
+> > =C2=A0
+> > +static unsigned int working_set(uint64_t vram_size, uint64_t
+> > system_size,
+> > +				uint64_t bo_size, unsigned int
+> > num_threads,
+> > +				unsigned int flags)
+> > +{
+> > +	uint64_t set_size;
+> > +	uint64_t total_size;
+> > +
+> > +	igt_assert(vram_size > 0);
+> > +
+> > +	set_size =3D (vram_size - 1) / bo_size;
+> > +
+> > +	/*
+> > +	 * Working set resides also in system?
+> > +	 * Currently system graphics memory is limited to 50% of
+> > total.
+> > +	 */
+> > +	if (!(flags & (THREADED | MULTI_VM)))
+> > +		set_size +=3D (system_size / 2) / bo_size;
+> > +
+> > +	/* Set sizes are per vm. In the multi-vm case we use 2
+> > vms. */
+> > +	if (flags & MULTI_VM)
+> > +		set_size *=3D 2;
+> > +
+> > +	/* All bos must fit in memory, assuming no swapping */
+> > +	total_size =3D ((vram_size - 1) / bo_size + system_size /
+> > bo_size) /
+>=20
+> Should this not be '(system_size / 2) / bo_size'?
 
-v2:
- - use introduced helper to access sysfs attributes,
- - remove redundant xe_device_get,
- - use drm_close_driver
-v3:
- - switched to old style multiline string literals to satisfy clang
-v6:
- - updated test description and commit subject
-v7:
- - fix comment tags
+No, bos swapped out to shmem are allowed to fill system memory.
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
----
- lib/gpgpu_shader.c          |  63 ++++++++++++++
- lib/iga64_generated_codes.c |  83 ++++++++++++++++++-
- tests/intel/xe_exec_sip.c   | 196 ++++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build           |   1 +
- 4 files changed, 342 insertions(+), 1 deletion(-)
+However, system_size is a bit aggressive if there is no swap-space...
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 62171952ec21..991455c49619 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -250,3 +250,66 @@ void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
- 	free(shdr->code);
- 	free(shdr);
- }
-+
-+/**
-+ * gpgpu_shader__eot:
-+ * @shdr: shader to be modified
-+ *
-+ * Append end of thread instruction to @shdr.
-+ */
-+void gpgpu_shader__eot(struct gpgpu_shader *shdr)
-+{
-+	emit_iga64_code(shdr, eot, "						\n\
-+(W)	mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud			\n\
-+#if GEN_VER < 1250								\n\
-+(W)	send.ts (16|M0)          null r112 null 0x10000000 0x02000010 {EOT,@1}	\n\
-+#else										\n\
-+(W)	send.gtwy (8|M0)         null r112 src1_null     0 0x02000000 {EOT}	\n\
-+#endif										\n\
-+	");
-+}
-+
-+/**
-+ * gpgpu_shader__write_dword:
-+ * @shdr: shader to be modified
-+ * @value: dword to be written
-+ * @y_offset: write target offset within the surface in rows
-+ *
-+ * Fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
-+ */
-+void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
-+			       uint32_t y_offset)
-+{
-+	emit_iga64_code(shdr, media_block_write, "				\n\
-+	// Payload								\n\
-+(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud			\n\
-+(W)	mov (1|M0)               r5.1<1>:ud    ARG(4):ud			\n\
-+(W)	mov (1|M0)               r5.2<1>:ud    ARG(5):ud			\n\
-+(W)	mov (1|M0)               r5.3<1>:ud    ARG(6):ud			\n\
-+#if GEN_VER < 2000 // Media Block Write						\n\
-+	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
-+(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud	\n\
-+	// Y offset of the block in rows := thread group id Y			\n\
-+(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud			\n\
-+(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud	\n\
-+	// block width [0,63] representing 1 to 64 bytes			\n\
-+(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud			\n\
-+	// FFTID := FFTID from R0 header					\n\
-+(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud			\n\
-+(W)	send.dc1 (16|M0)         null     r4   src1_null 0    0x40A8000		\n\
-+#else // Typed 2D Block Store							\n\
-+	// Load r2.0-3 with tg id X << ARG(0)					\n\
-+(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud	\n\
-+	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
-+(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
-+(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud	\n\
-+	// payload setup							\n\
-+(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
-+	// Store X and Y block start (160:191 and 192:223)			\n\
-+(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
-+	// Store X and Y block max_size (224:231 and 232:239)			\n\
-+(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud			\n\
-+(W)	send.tgm (16|M0)         null     r4   null:0    0    0x64000007	\n\
-+#endif										\n\
-+	", 2, y_offset, 3, value, value, value, value);
-+}
-diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-index 452d4b3dae53..f609ad711b4b 100644
---- a/lib/iga64_generated_codes.c
-+++ b/lib/iga64_generated_codes.c
-@@ -3,4 +3,85 @@
- 
- #include "gpgpu_shader.h"
- 
--#define MD5_SUM_IGA64_ASMS 68b329da9893e34099c7d8ad5cb9c940
-+#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
-+
-+struct iga64_template const iga64_code_media_block_write[] = {
-+	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
-+		0x80000061, 0x02150220, 0x00000064, 0x00000000,
-+		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
-+		0x80100061, 0x04054220, 0x00000000, 0x00000000,
-+		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
-+		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
-+		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1272, .size = 52, .code = (const uint32_t []) {
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
-+		0x80000061, 0x04150220, 0x00000064, 0x00000000,
-+		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
-+		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04450220, 0x00000054, 0x00000000,
-+		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
-+		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
-+		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
-+		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
-+		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_eot[] = {
-+	{ .gen_ver = 1272, .size = 8, .code = (const uint32_t []) {
-+		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
-+		0x800f2031, 0x00000004, 0x3000700c, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 12, .code = (const uint32_t []) {
-+		0x80030061, 0x70050220, 0x00460005, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x80034031, 0x00000004, 0x3000700c, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
-+		0x80030061, 0x70050220, 0x00460005, 0x00000000,
-+		0x80049031, 0x00000004, 0x7020700c, 0x10000000,
-+	}}
-+};
-diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
-new file mode 100644
-index 000000000000..4b599e7f62d8
---- /dev/null
-+++ b/tests/intel/xe_exec_sip.c
-@@ -0,0 +1,196 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Tests for GPGPU shader and system routine (SIP) execution
-+ * Category: Software building block
-+ * Description: Exercise interaction between GPGPU shader and system routine
-+ *              (SIP), which should handle exceptions raised on Execution Unit.
-+ * Functionality: system routine
-+ * Mega feature: Compute
-+ * Sub-category: GPGPU tests
-+ * Test category: functionality test
-+ */
-+
-+#include <dirent.h>
-+#include <fcntl.h>
-+#include <stdio.h>
-+
-+#include "gpgpu_shader.h"
-+#include "igt.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+#define WIDTH 64
-+#define HEIGHT 64
-+
-+#define COLOR_C4 0xc4
-+
-+#define SHADER_CANARY 0x01010101
-+
-+#define NSEC_PER_MSEC (1000 * 1000ull)
-+
-+static struct intel_buf *
-+create_fill_buf(int fd, int width, int height, uint8_t color)
-+{
-+	struct intel_buf *buf;
-+	uint8_t *ptr;
-+
-+	buf = calloc(1, sizeof(*buf));
-+	igt_assert(buf);
-+
-+	intel_buf_init(buf_ops_create(fd), buf, width / 4, height, 32, 0,
-+		       I915_TILING_NONE, 0);
-+
-+	ptr = xe_bo_map(fd, buf->handle, buf->surface[0].size);
-+	memset(ptr, color, buf->surface[0].size);
-+	munmap(ptr, buf->surface[0].size);
-+
-+	return buf;
-+}
-+
-+static struct gpgpu_shader *get_shader(int fd)
-+{
-+	static struct gpgpu_shader *shader;
-+
-+	shader = gpgpu_shader_create(fd);
-+	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
-+	gpgpu_shader__eot(shader);
-+	return shader;
-+}
-+
-+static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, unsigned int threads,
-+			     unsigned int width, unsigned int height)
-+{
-+	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
-+	struct gpgpu_shader *shader = get_shader(fd);
-+
-+	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
-+	gpgpu_shader_destroy(shader);
-+	return buf->handle;
-+}
-+
-+static void check_fill_buf(uint8_t *ptr, const int width, const int x,
-+			   const int y, const uint8_t color)
-+{
-+	const uint8_t val = ptr[y * width + x];
-+
-+	igt_assert_f(val == color,
-+		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
-+		     color, val, x, y);
-+}
-+
-+static void check_buf(int fd, uint32_t handle, int width, int height,
-+		      uint8_t poison_c)
-+{
-+	unsigned int sz = ALIGN(width * height, 4096);
-+	int thread_count = 0;
-+	uint32_t *ptr;
-+	int i, j;
-+
-+	ptr = xe_bo_mmap_ext(fd, handle, sz, PROT_READ);
-+
-+	for (i = 0, j = 0; j < height / 2; ++j) {
-+		if (ptr[j * width / 4] == SHADER_CANARY) {
-+			++thread_count;
-+			i = 4;
-+		}
-+
-+		for (; i < width; i++)
-+			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
-+
-+		i = 0;
-+	}
-+
-+	igt_assert(thread_count);
-+
-+	munmap(ptr, sz);
-+}
-+
-+static uint64_t
-+xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	int engine_fd = -1;
-+	uint64_t ret;
-+
-+	engine_fd = xe_sysfs_engine_open(fd, eci->gt_id, eci->engine_class);
-+	ret = igt_sysfs_get_u64(engine_fd, "job_timeout_ms");
-+	close(engine_fd);
-+
-+	return ret;
-+}
-+
-+/**
-+ * SUBTEST: sanity
-+ * Description: check basic shader with write operation
-+ * Run type: BAT
-+ *
-+ */
-+static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
-+{
-+	unsigned int threads = 512;
-+	unsigned int height = max_t(threads, HEIGHT, threads * 2);
-+	uint32_t exec_queue_id, handle, vm_id;
-+	unsigned int width = WIDTH;
-+	struct timespec ts = { };
-+	uint64_t timeout;
-+	struct intel_bb *ibb;
-+	int fd;
-+
-+	igt_debug("Using %s\n", xe_engine_class_string(eci->engine_class));
-+
-+	fd = drm_open_driver(DRIVER_XE);
-+	xe_device_get(fd);
-+
-+	vm_id = xe_vm_create(fd, 0, 0);
-+
-+	/* Get timeout for job, and add 4s to ensure timeout processes in subtest. */
-+	timeout = xe_sysfs_get_job_timeout_ms(fd, eci) + 4ull * MSEC_PER_SEC;
-+	timeout *= NSEC_PER_MSEC;
-+	timeout *= igt_run_in_simulation() ? 10 : 1;
-+
-+	exec_queue_id = xe_exec_queue_create(fd, vm_id, eci, 0);
-+	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
-+
-+	igt_nsec_elapsed(&ts);
-+	handle = gpgpu_shader(fd, ibb, threads, width, height);
-+
-+	intel_bb_sync(ibb);
-+	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
-+
-+	check_buf(fd, handle, width, height, COLOR_C4);
-+
-+	gem_close(fd, handle);
-+	intel_bb_destroy(ibb);
-+
-+	xe_exec_queue_destroy(fd, exec_queue_id);
-+	xe_vm_destroy(fd, vm_id);
-+	xe_device_put(fd);
-+	close(fd);
-+}
-+
-+#define test_render_and_compute(t, __fd, __eci) \
-+	igt_subtest_with_dynamic(t) \
-+		xe_for_each_engine(__fd, __eci) \
-+			if (__eci->engine_class == DRM_XE_ENGINE_CLASS_RENDER || \
-+			    __eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) \
-+				igt_dynamic_f("%s%d", xe_engine_class_string(__eci->engine_class), \
-+					      __eci->engine_instance)
-+
-+igt_main
-+{
-+	struct drm_xe_engine_class_instance *eci;
-+	int fd;
-+
-+	igt_fixture
-+		fd = drm_open_driver(DRIVER_XE);
-+
-+	test_render_and_compute("sanity", fd, eci)
-+		test_sip(eci, 0);
-+
-+	igt_fixture
-+		drm_close_driver(fd);
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 122fbd07ca9a..5a7db3923e47 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -288,6 +288,7 @@ intel_xe_progs = [
- 	'xe_exec_fault_mode',
- 	'xe_exec_queue_property',
- 	'xe_exec_reset',
-+	'xe_exec_sip',
- 	'xe_exec_store',
- 	'xe_exec_threads',
- 	'xe_exercise_blt',
+/Thomas
 
--- 
-2.34.1
+
+
+>=20
+> Matt
+>=20
+> > +		num_threads;
+> > +
+> > +	if (set_size > total_size)
+> > +		set_size =3D total_size;
+> > +
+> > +	/* bos are only created on half of the execs. */
+> > +	set_size *=3D 2;
+> > +
+> > +	/*
+> > +	 * Align down to ensure the vm the bo is bound to matches
+> > the vm
+> > +	 * used by the exec_queue, fulfilling the asserts in the
+> > +	 * tests.
+> > +	 */
+> > +	return ALIGN_DOWN(set_size, 4);
+> > +}
+> > +
+> > =C2=A0/**
+> > =C2=A0 * SUBTEST: evict-%s
+> > =C2=A0 * Description:=C2=A0 %arg[1] evict test.
+> > @@ -748,6 +792,7 @@ igt_main
+> > =C2=A0		{ NULL },
+> > =C2=A0	};
+> > =C2=A0	uint64_t vram_size;
+> > +	uint64_t system_size;
+> > =C2=A0	int fd;
+> > =C2=A0
+> > =C2=A0	igt_fixture {
+> > @@ -755,14 +800,16 @@ igt_main
+> > =C2=A0		igt_require(xe_has_vram(fd));
+> > =C2=A0		vram_size =3D xe_visible_vram_size(fd, 0);
+> > =C2=A0		igt_assert(vram_size);
+> > +		system_size =3D igt_get_avail_ram_mb() << 20;
+> > =C2=A0
+> > =C2=A0		/* Test requires SRAM to about as big as VRAM. For
+> > example, small-cm creates
+> > =C2=A0		 * (448 / 2) BOs with a size (1 / 128) of the
+> > total VRAM size. For
+> > =C2=A0		 * simplicity ensure the SRAM size >=3D VRAM before
+> > running this test.
+> > =C2=A0		 */
+> > -		igt_skip_on_f(igt_get_avail_ram_mb() < (vram_size
+> > >> 20),
+> > -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "System memory %lu MiB is less than
+> > local memory %lu MiB\n",
+> > -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 igt_get_avail_ram_mb(), vram_size >>
+> > 20);
+> > +		igt_skip_on_f(system_size < vram_size,
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "System memory %llu MiB is less than
+> > local memory %llu MiB\n",
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (unsigned long long)system_size >>
+> > 20,
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (unsigned long long)vram_size >>
+> > 20);
+> > =C2=A0
+> > =C2=A0		xe_for_each_engine(fd, hwe)
+> > =C2=A0			if (hwe->engine_class !=3D
+> > DRM_XE_ENGINE_CLASS_COPY)
+> > @@ -770,25 +817,41 @@ igt_main
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	for (const struct section *s =3D sections; s->name; s++) {
+> > -		igt_subtest_f("evict-%s", s->name)
+> > -			test_evict(fd, hwe, s->n_exec_queues, s-
+> > >n_execs,
+> > -				=C2=A0=C2=A0 calc_bo_size(vram_size, s->mul,
+> > s->div),
+> > +		igt_subtest_f("evict-%s", s->name) {
+> > +			uint64_t bo_size =3D calc_bo_size(vram_size,
+> > s->mul, s->div);
+> > +			int ws =3D working_set(vram_size,
+> > system_size, bo_size,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0 1, s->flags);
+> > +
+> > +			igt_debug("Max working set %d n_execs
+> > %d\n", ws, s->n_execs);
+> > +			test_evict(fd, hwe, s->n_exec_queues,
+> > +				=C2=A0=C2=A0 min(ws, s->n_execs), bo_size,
+> > =C2=A0				=C2=A0=C2=A0 s->flags, NULL);
+> > +		}
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	for (const struct section_cm *s =3D sections_cm; s->name;
+> > s++) {
+> > -		igt_subtest_f("evict-%s", s->name)
+> > -			test_evict_cm(fd, hwe, s->n_exec_queues,
+> > s->n_execs,
+> > -				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 calc_bo_size(vram_size, s-
+> > >mul, s->div),
+> > +		igt_subtest_f("evict-%s", s->name) {
+> > +			uint64_t bo_size =3D calc_bo_size(vram_size,
+> > s->mul, s->div);
+> > +			int ws =3D working_set(vram_size,
+> > system_size, bo_size,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0 1, s->flags);
+> > +
+> > +			igt_debug("Max working set %d n_execs
+> > %d\n", ws, s->n_execs);
+> > +			test_evict_cm(fd, hwe, s->n_exec_queues,
+> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 min(ws, s->n_execs),
+> > bo_size,
+> > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 s->flags, NULL);
+> > +		}
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	for (const struct section_threads *s =3D sections_threads;
+> > s->name; s++) {
+> > -		igt_subtest_f("evict-%s", s->name)
+> > +		igt_subtest_f("evict-%s", s->name) {
+> > +			uint64_t bo_size =3D calc_bo_size(vram_size,
+> > s->mul, s->div);
+> > +			int ws =3D working_set(vram_size,
+> > system_size, bo_size,
+> > +					=C2=A0=C2=A0=C2=A0=C2=A0 s->n_threads, s-
+> > >flags);
+> > +
+> > +			igt_debug("Max working set %d n_execs
+> > %d\n", ws, s->n_execs);
+> > =C2=A0			threads(fd, hwe, s->n_threads, s-
+> > >n_exec_queues,
+> > -				 s->n_execs,
+> > -				 calc_bo_size(vram_size, s->mul,
+> > s->div),
+> > -				 s->flags);
+> > +				min(ws, s->n_execs), bo_size, s-
+> > >flags);
+> > +		}
+> > =C2=A0	}
+> > =C2=A0
+> > =C2=A0	igt_fixture
+> > --=20
+> > 2.44.0
+> >=20
 
