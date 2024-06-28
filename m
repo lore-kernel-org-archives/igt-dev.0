@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A03DC2BD09
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D1FDC3065A
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:43:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C293010E1C1;
-	Fri, 28 Jun 2024 20:43:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4097C10E0C8;
+	Fri, 28 Jun 2024 20:43:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bNhJTh/H";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OoayD6Q9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67C9710E0A8
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D939F10E0BB
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719607433; x=1751143433;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+CupIQRNkNQ6JnPkuep8tOGMHxnbMhYitvIHRU++cpI=;
- b=bNhJTh/HyoDlOjza5o+ghL7EJHg/rWQOJoLLWdeHNBdWwMpuYAzy0Rgx
- 3vt8yYGki0mdqR9verfoKsu2e22z40ljE6AnYnz+7uJKnxUGns4YHiER8
- RUW+ADYbbzpUnXBbjdeyaUdlJWyGqqwmhQ8qG1Ub+bNFDw78JMy8Gv10f
- C5BzNKHwPj7hCdyiTbr4/YAowvE0JKOd1k/9IOnC2+aYL3ZocvlkBbhTa
- neJWOxHNbjCg6eVCr38sjgeSLvzIUslZzJvXp+qdLD6OnKIkw+Lxn7D+t
- 9A+o0JhBJ0AZIQBoDe4d20R5Lr4LlL+O/97iYFOAOPmu6SvzluVgG/f3/ g==;
-X-CSE-ConnectionGUID: I4Z7TZWYQz6oQ2rc8RddLw==
-X-CSE-MsgGUID: R66OrWhbQLuWVGvTgQZbjw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427477"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427477"
+ t=1719607435; x=1751143435;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=fc5THwZc5kq9PjdfoK8OWHRdLG0vIyVWLWa9nzz83tE=;
+ b=OoayD6Q9gd1S1oO8TU1fXXcpgoeBidIssq7CE+2PziSgCrjs2HrqpPBt
+ JE6nPIVUlIGRwW8r59doqjTZbgPqwCe02r2wfgcJnMgCtqcOLKnw6ObQO
+ krpD7bKhwZk0FqSdVHJkTPoPL0+NOarwkkrIW+VesRSUepEwfIRBc16Bx
+ iR23SafQ5XqqC+0Zw5Q9p+6aVX/i70DzyUX6o2Obmt5NkzeeD83m6tlpB
+ n43X0rAti+m4hHrPiI5VOwixVBU8pn10XAsjTzD+K084nanuNyf6xqyMC
+ y/VdCRdQX/N6DGtVlOJ85ApAvBFbopWEZbXl5A7QNiKyjMzqKswKwWqFU A==;
+X-CSE-ConnectionGUID: Z2kLgY/RRe+S40HWlQz7Hw==
+X-CSE-MsgGUID: c7im5UGWT5GPeYGYx7IJ9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427485"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427485"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:53 -0700
-X-CSE-ConnectionGUID: wL7cdaMSS22OrIuaunuNeQ==
-X-CSE-MsgGUID: 10D1VXWXRaWION53J+pkOw==
+ 28 Jun 2024 13:43:54 -0700
+X-CSE-ConnectionGUID: 9Tshu2thQjuQncR+KqV/mw==
+X-CSE-MsgGUID: wAq1dU+DTue35eIuL+3WNg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465189"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465199"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:53 -0700
+ 28 Jun 2024 13:43:54 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 00/16] Intel Xe OA IGT lib and tools
-Date: Fri, 28 Jun 2024 13:43:32 -0700
-Message-ID: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 05/16] lib/xe/oa: Generate LNL metrics/registers files
+Date: Fri, 28 Jun 2024 13:43:37 -0700
+Message-ID: <20240628204348.2142940-6-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
+References: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,112 +66,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
- Originally posted as part of
-https://patchwork.freedesktop.org/series/130033/, separate out the IGT lib
-and tools and try to merge these first, before merging the OA IGT's so that
-we have some more time to review the tests before merging.
+Generate metrics/registers .c and .h files with the XE_OA_FORMAT_PEC64u64
+format (called 576B_PEC64LL) used in MetricsXML_P31.xml.
 
-Gpuvis support for perf traces from Intel Xe driver is based on tools and
-IGT lib changes included here.
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ lib/xe/oa-configs/oa-metricset-codegen.py | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-All patches here have R-b without any outstanding issues.
-
-v2: Try to fix Gitlab.Pipeline failures with v1 (using to/from_user_pointer
-    in intel_xe_perf_ioctl and xe_oa_prop_to_ext
-
-Ashutosh Dixit (12):
-  lib/xe/oa: Import OA metric generation files from i915
-  lib/xe/oa: Add LNL metric guids
-  lib/xe/oa: Add OA LNL metrics (oa_lnl.xml)
-  lib/xe/oa: Add truncated legacy Xe1 metrics XML's
-  lib/xe/oa: Generate LNL metrics/registers files
-  lib/xe/oa: Switch generated files to Xe namespace
-  drm-uapi/xe: Sync with Perf/OA changes
-  lib/xe: Complete xe_oa lib functionality
-  tests/intel/xe_query: Add OA units query test
-  lib/xe/oa: Add xe_oa_data_reader to IGT lib
-  tools/xe-perf: Add xe_perf_recorder
-  tools/xe-perf: xe_perf_reader, xe_perf_control and xe_perf_configs
-
-José Roberto de Souza (4):
-  xe/oa: Fix invalid escape warnings
-  xe/oa/mdapi-xml-convert: Add support for 576B_PEC64LL format
-  xe/oa: Regenerate oa-lnl.xml now parsing all counters
-  xe/oa/oa-metricset-codegen: Fix XE_OA_FORMAT_PEC64u64 offsets
-
- include/drm-uapi/xe_drm.h                 |  308 +
- lib/intel_device_info.c                   |    1 +
- lib/meson.build                           |   89 +
- lib/xe-oa.pc.in                           |   11 +
- lib/xe/oa-configs/README.md               |  115 +
- lib/xe/oa-configs/codegen.py              |  449 ++
- lib/xe/oa-configs/guids.xml               | 2763 ++++++++
- lib/xe/oa-configs/mdapi-xml-convert.py    | 1267 ++++
- lib/xe/oa-configs/oa-acmgt1.xml           |  710 +++
- lib/xe/oa-configs/oa-acmgt2.xml           |  828 +++
- lib/xe/oa-configs/oa-acmgt3.xml           |  824 +++
- lib/xe/oa-configs/oa-adl.xml              |  816 +++
- lib/xe/oa-configs/oa-dg1.xml              |  823 +++
- lib/xe/oa-configs/oa-equations-codegen.py |  261 +
- lib/xe/oa-configs/oa-lnl.xml              | 6984 +++++++++++++++++++++
- lib/xe/oa-configs/oa-metricset-codegen.py |  266 +
- lib/xe/oa-configs/oa-mtlgt2.xml           |  789 +++
- lib/xe/oa-configs/oa-mtlgt3.xml           |  803 +++
- lib/xe/oa-configs/oa-registers-codegen.py |  118 +
- lib/xe/oa-configs/oa-rkl.xml              |  824 +++
- lib/xe/oa-configs/oa-tglgt1.xml           |  819 +++
- lib/xe/oa-configs/oa-tglgt2.xml           |  818 +++
- lib/xe/oa-configs/oa_guid_registry.py     |  119 +
- lib/xe/oa-configs/update-guids.py         |  223 +
- lib/xe/xe_oa.c                            | 1074 ++++
- lib/xe/xe_oa.h                            |  408 ++
- lib/xe/xe_oa_data.h                       |  101 +
- lib/xe/xe_oa_data_reader.c                |  369 ++
- lib/xe/xe_oa_data_reader.h                |   87 +
- lib/xe/xe_query.c                         |   38 +
- lib/xe/xe_query.h                         |    5 +
- tests/intel/xe_query.c                    |   53 +
- tools/meson.build                         |    1 +
- tools/xe-perf/meson.build                 |   22 +
- tools/xe-perf/xe_perf_configs.c           |  247 +
- tools/xe-perf/xe_perf_control.c           |  117 +
- tools/xe-perf/xe_perf_reader.c            |  325 +
- tools/xe-perf/xe_perf_recorder.c          | 1227 ++++
- tools/xe-perf/xe_perf_recorder_commands.h |   31 +
- 39 files changed, 25133 insertions(+)
- create mode 100644 lib/xe-oa.pc.in
- create mode 100644 lib/xe/oa-configs/README.md
- create mode 100644 lib/xe/oa-configs/codegen.py
- create mode 100644 lib/xe/oa-configs/guids.xml
- create mode 100755 lib/xe/oa-configs/mdapi-xml-convert.py
- create mode 100644 lib/xe/oa-configs/oa-acmgt1.xml
- create mode 100644 lib/xe/oa-configs/oa-acmgt2.xml
- create mode 100644 lib/xe/oa-configs/oa-acmgt3.xml
- create mode 100644 lib/xe/oa-configs/oa-adl.xml
- create mode 100644 lib/xe/oa-configs/oa-dg1.xml
- create mode 100644 lib/xe/oa-configs/oa-equations-codegen.py
- create mode 100644 lib/xe/oa-configs/oa-lnl.xml
- create mode 100644 lib/xe/oa-configs/oa-metricset-codegen.py
- create mode 100644 lib/xe/oa-configs/oa-mtlgt2.xml
- create mode 100644 lib/xe/oa-configs/oa-mtlgt3.xml
- create mode 100644 lib/xe/oa-configs/oa-registers-codegen.py
- create mode 100644 lib/xe/oa-configs/oa-rkl.xml
- create mode 100644 lib/xe/oa-configs/oa-tglgt1.xml
- create mode 100644 lib/xe/oa-configs/oa-tglgt2.xml
- create mode 100644 lib/xe/oa-configs/oa_guid_registry.py
- create mode 100755 lib/xe/oa-configs/update-guids.py
- create mode 100644 lib/xe/xe_oa.c
- create mode 100644 lib/xe/xe_oa.h
- create mode 100644 lib/xe/xe_oa_data.h
- create mode 100644 lib/xe/xe_oa_data_reader.c
- create mode 100644 lib/xe/xe_oa_data_reader.h
- create mode 100644 tools/xe-perf/meson.build
- create mode 100644 tools/xe-perf/xe_perf_configs.c
- create mode 100644 tools/xe-perf/xe_perf_control.c
- create mode 100644 tools/xe-perf/xe_perf_reader.c
- create mode 100644 tools/xe-perf/xe_perf_recorder.c
- create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
-
+diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
+index be9483af02..ea0d13cc97 100644
+--- a/lib/xe/oa-configs/oa-metricset-codegen.py
++++ b/lib/xe/oa-configs/oa-metricset-codegen.py
+@@ -116,7 +116,7 @@ def generate_metric_sets(args, gen):
+         if gen.chipset.startswith("acm") or gen.chipset.startswith("mtl"):
+             if set.oa_format == "128B_MPEC8_NOA16":
+                 c(textwrap.dedent("""\
+-                    metric_set->perf_oa_format = I915_OAM_FORMAT_MPEC8u32_B8_C8;
++                    metric_set->perf_oa_format = XE_OAM_FORMAT_MPEC8u32_B8_C8;
+ 
+                     metric_set->perf_raw_size = 128;
+                     metric_set->gpu_time_offset = 0;
+@@ -128,7 +128,7 @@ def generate_metric_sets(args, gen):
+                 """))
+             else:
+                 c(textwrap.dedent("""\
+-                    metric_set->perf_oa_format = I915_OA_FORMAT_A24u40_A14u32_B8_C8;
++                    metric_set->perf_oa_format = XE_OA_FORMAT_A24u40_A14u32_B8_C8;
+ 
+                     metric_set->perf_raw_size = 256;
+                     metric_set->gpu_time_offset = 0;
+@@ -138,9 +138,22 @@ def generate_metric_sets(args, gen):
+                     metric_set->c_offset = metric_set->b_offset + 8;
+                     metric_set->perfcnt_offset = metric_set->c_offset + 8;
+                 """))
++        elif gen.chipset == "lnl":
++            c(textwrap.dedent("""\
++                metric_set->perf_oa_format = XE_OA_FORMAT_PEC64u64;
++
++                metric_set->perf_raw_size = 576;
++                metric_set->gpu_time_offset = 0;
++                metric_set->gpu_clock_offset = 1;
++                metric_set->a_offset = 2;
++                // metric_set->b_offset = metric_set->a_offset + 38;
++                // metric_set->c_offset = metric_set->b_offset + 8;
++                metric_set->perfcnt_offset = metric_set->a_offset + 64;
++
++            """))
+         else:
+             c(textwrap.dedent("""\
+-                metric_set->perf_oa_format = I915_OA_FORMAT_A32u40_A4u32_B8_C8;
++                metric_set->perf_oa_format = XE_OA_FORMAT_A32u40_A4u32_B8_C8;
+ 
+                 metric_set->perf_raw_size = 256;
+                 metric_set->gpu_time_offset = 0;
 -- 
 2.41.0
 
