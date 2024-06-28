@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1B24C30658
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E47C3065F
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F32D610E31C;
-	Fri, 28 Jun 2024 22:24:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E581C10ED64;
+	Fri, 28 Jun 2024 22:24:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c1rkAYEl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TJesFjks";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 292CF10E31F
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3010B10ED55
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719613444; x=1751149444;
+ t=1719613446; x=1751149446;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=F7RS27jfrb8unqnFpL9oG7FN1jIfUpL5ngJ4P3b+0so=;
- b=c1rkAYElC15FYHeVSNG3GKc+lajzBkFkjt8EScGhV+7JD+xY+gEmeehe
- TGgYtkrxdp5aHdiZh8psTdBfOCjC+a83gJF+zfHZxXglM9O/o57VyF/Bl
- X+0CeaQ9bk7kEHht7Cbdk0vKGI4aqo/Cx21JNhPvdJiUh1iuYULul9pck
- Yn+FDriMNJlAKVZfG/1KYz+YgES3bF/mVJwFD9HFv8nvmr9z/ZP7vXXML
- J7Z/gxUPQyCqwSxAmQPz7nWgD02waClinK1nkC72ttpyc7W+i+oF1WGC7
- 8GBV+B/LkmI8uFCJAeAPFeYQ/P6jiPBAFWyWeI/bG4U+bohhCom1xDoXt g==;
-X-CSE-ConnectionGUID: D3nN7ie0RHSwzZQ7D0Zzdw==
-X-CSE-MsgGUID: C46HNVPARC+0Cre0MsKRow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232681"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232681"
+ bh=P82Dz4LtsUrza4X/L4LwJPYW1jzuzfvo+35yR6d9ycU=;
+ b=TJesFjks085w6eXkpZKZ4EnRbP3cAX8ubtiSY3vqIK+/CtJBLGHBh9sv
+ l56xktt219COyuUdQPYWp0sSZYFeG2sySbSPRrocGXGuS0qPR6o199AQU
+ NmROnx3vN4W3/p43li4MeapH+u8rDqFmpPPCO2RLd6ROCuFLb4ZrIU+Id
+ NamPY+3aYfT7W4vKXVx56ImNHrwcRdVqNmNAcbvP4KXfhXZUAZQqRhsPK
+ regQ3mWKI1uewScOiI4ufJk9yLkcIuhCUzkj1cT44FAxQRpT4wL5ruBZY
+ nIpf/VP6yMqPAVeUPSwiluOCnNdh2al0Ew5ybAdWYbl8RAAuQn69MB60t A==;
+X-CSE-ConnectionGUID: xFlMToP3QG2XH4ab1c1+qA==
+X-CSE-MsgGUID: OfbyjFLcTcaieDr47ebF0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232690"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232690"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 15:24:03 -0700
-X-CSE-ConnectionGUID: VrWnH8f7TXq2PAksx2C4aA==
-X-CSE-MsgGUID: sFML4qFOSk6jFac6VNcsaA==
+ 28 Jun 2024 15:24:04 -0700
+X-CSE-ConnectionGUID: P8buAR7FRGSe+/QbXaPcjw==
+X-CSE-MsgGUID: XF5eFRq9QEC/m9db8jC8uw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616191"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616208"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Jun 2024 15:24:03 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 03/16] lib/xe/oa: Add OA LNL metrics (oa_lnl.xml)
-Date: Fri, 28 Jun 2024 15:23:45 -0700
-Message-ID: <20240628222358.2151036-4-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 11/16] tools/xe-perf: Add xe_perf_recorder
+Date: Fri, 28 Jun 2024 15:23:53 -0700
+Message-ID: <20240628222358.2151036-12-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
 References: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,2894 +67,1312 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-$ mdapi-xml-convert.py --guids=guids.xml MetricsXML_P31.xml > oa-lnl.xml
-
-Note: The metrics XML's consist of (a) the registers (in this case NOA or
-mux registers) to be programmed (b) the metrics themselves which specify
-how the counters in the reports should be combined to construct the
-metrics.  The changes in mdapi-xml-convert.py in this patch completely
-ignore (b) since they are not relevant for IGT. (a) is needed for IGT LNL
-OAG uses "576B_PEC64LL" format which is not available on previous platforms
-so we cannot use metrics for a previous platform such as MTL to generate
-LNL OAG data.
-
-Note: LNL media guids had issues after running mdapi-convert-xml.py so have
-not been added, revisit this.
+Add xe_perf_recorder. The recorder exercises the Xe OA uapi to capture OAG
+data in a specific format, similar to i915_perf_recorder.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/xe/oa-configs/mdapi-xml-convert.py |   25 +
- lib/xe/oa-configs/oa-lnl.xml           | 2799 ++++++++++++++++++++++++
- 2 files changed, 2824 insertions(+)
- create mode 100644 lib/xe/oa-configs/oa-lnl.xml
+ tools/meson.build                         |    1 +
+ tools/xe-perf/meson.build                 |    5 +
+ tools/xe-perf/xe_perf_recorder.c          | 1227 +++++++++++++++++++++
+ tools/xe-perf/xe_perf_recorder_commands.h |   31 +
+ 4 files changed, 1264 insertions(+)
+ create mode 100644 tools/xe-perf/meson.build
+ create mode 100644 tools/xe-perf/xe_perf_recorder.c
+ create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
 
-diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
-index 5903ef4d35..ab4747ddd1 100755
---- a/lib/xe/oa-configs/mdapi-xml-convert.py
-+++ b/lib/xe/oa-configs/mdapi-xml-convert.py
-@@ -149,6 +149,21 @@ mtl_chipset_oam_samedia_params = {
-     }
- }
+diff --git a/tools/meson.build b/tools/meson.build
+index 1656355eef..c02c020d0b 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -113,4 +113,5 @@ if libudev.found()
+ endif
  
-+# FIXME: everything except oa_report_size is incorrect here
-+xe2_chipset_params = {
-+    'a_offset': 16,
-+    'b_offset': 192,
-+    'c_offset': 224,
-+    'oa_report_size': 576,
-+    'config_reg_blacklist': {
-+        0x2364, # OACTXID
-+    },
-+    'register_offsets': {
-+        0x1b0: 'PERFCNT 0',
-+        0x1b8: 'PERFCNT 1',
-+    }
-+}
-+
- hsw_chipset_oa_formats = {
-     '256B_GENERIC_NOA16': hsw_chipset_params,
- }
-@@ -167,6 +182,10 @@ mtl_chipset_oa_formats = {
-     '128B_MPEC8_NOA16': mtl_chipset_oam_samedia_params,
- }
- 
-+xe2_chipset_oa_formats = {
-+    '256B_GENERIC_NOA16': xe2_chipset_params,
-+}
-+
- chipsets = {
-     'HSW': hsw_chipset_oa_formats,
-     'BDW': gen8_11_chipset_oa_formats,
-@@ -185,10 +204,13 @@ chipsets = {
-     'ADL': gen8_11_chipset_oa_formats,
-     'ACM': xehpsdv_chipset_oa_formats,
-     'MTL': mtl_chipset_oa_formats,
-+    'LNL': xe2_chipset_oa_formats,
- }
- 
- xehp_plus = ( 'ACM', 'MTL' )
- 
-+xe2_plus = ( 'LNL' )
-+
- register_types = { 'OA', 'NOA', 'FLEX', 'PM' }
- 
- default_set_blacklist = { "RenderDX1x", # TODO: rename to something non 'DX'
-@@ -352,6 +374,9 @@ def read_token_to_rpn_read_oag(chipset, token, raw_offsets, oa_format):
-                 return "C " + str(idx - 48) + " READ"
-             else:
-                 return "{0} READ".format(read_value(chipset, offset, oa_format))
-+        elif chipset in xe2_plus:
-+            # FIXME: skip all metrics to retain just the registers
-+                return "GPU_TIME 0 READ"
-         else:
-             # For Gen8+ the array of accumulated counters is
-             # assumed to start with a GPU_TIME then GPU_CLOCK,
-diff --git a/lib/xe/oa-configs/oa-lnl.xml b/lib/xe/oa-configs/oa-lnl.xml
+ subdir('i915-perf')
++subdir('xe-perf')
+ subdir('null_state_gen')
+diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
 new file mode 100644
-index 0000000000..3576ca2827
+index 0000000000..a5f59a67fe
 --- /dev/null
-+++ b/lib/xe/oa-configs/oa-lnl.xml
-@@ -0,0 +1,2799 @@
-+<?xml version="1.0"?>
-+<metrics version="1697079501" merge_md5="">
-+  <set name="RenderBasic"
-+       chipset="LNL"
-+       symbol_name="RenderBasic"
-+       underscore_name="render_basic"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="12f20772-0044-44ff-bcc0-d2bc252d140e"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000402" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000400" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000A0D" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00000002" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000006" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000601" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x0000060F" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x0000060F" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x0000060F" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000603" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000603" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000603" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000604" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x00013078" value="0x0000060B" />
-+        <register type="OA" address="0x0001307C" value="0x00000000" />
-+        <register type="OA" address="0x00013080" value="0x00000A13" />
-+        <register type="OA" address="0x00013084" value="0x00000000" />
-+        <register type="OA" address="0x00013088" value="0x00000A14" />
-+        <register type="OA" address="0x0001308C" value="0x00000000" />
-+        <register type="OA" address="0x00013090" value="0x00000A15" />
-+        <register type="OA" address="0x00013094" value="0x00000000" />
-+        <register type="OA" address="0x00013098" value="0x00000A16" />
-+        <register type="OA" address="0x0001309C" value="0x00000000" />
-+        <register type="OA" address="0x000130A0" value="0x00000606" />
-+        <register type="OA" address="0x000130A4" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00000005" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000622" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000623" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000605" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x0000060F" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000603" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000600" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000C10" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000C18" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000A0A" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000A0B" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00004001" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00004001" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00004001" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00004000" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00004000" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00004000" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x0000600F" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x0000600F" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x0000600F" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00006010" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00006010" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00006010" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00005009" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00005009" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00005009" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00005013" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00005013" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00005013" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00005000" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00005000" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00005000" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00006603" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00006603" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00006603" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00006601" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00006601" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00006601" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00006606" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00006606" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00006606" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00006605" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00006605" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00006605" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00004404" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00004404" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00004404" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00004402" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00004402" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00004402" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00006611" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00006611" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00006611" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00006612" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00006612" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00006612" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00004400" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00004400" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00004400" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00004600" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00004600" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00004600" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00004601" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00004601" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00004601" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00005C00" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00005C00" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00005C00" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00005E04" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00005E04" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00005E04" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00004A00" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00004A00" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00004A00" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00004A01" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00004A01" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00004A01" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x00005E0A" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x00005E0A" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x00005E0A" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+        <register type="OA" address="0x000133D0" value="0x00005E0B" />
-+        <register type="OA" address="0x000133D4" value="0x00000000" />
-+        <register type="OA" address="0x000135D0" value="0x00005E0B" />
-+        <register type="OA" address="0x000135D4" value="0x00000000" />
-+        <register type="OA" address="0x000137D0" value="0x00005E0B" />
-+        <register type="OA" address="0x000137D4" value="0x00000000" />
-+    </register_config>
-+    <register_config type="FLEX">
-+        <register type="FLEX" address="0x0000E458" value="0x00060000" />
-+        <register type="FLEX" address="0x0000E558" value="0x00010050" />
-+        <register type="FLEX" address="0x0000E658" value="0x00050060" />
-+        <register type="FLEX" address="0x0000E758" value="0x00000010" />
-+        <register type="FLEX" address="0x0000E65C" value="0x00000000" />
-+    </register_config>
-+  </set>
++++ b/tools/xe-perf/meson.build
+@@ -0,0 +1,5 @@
++executable('xe-perf-recorder',
++           [ 'xe_perf_recorder.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt, lib_igt_xe_oa],
++           install: true)
+diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+new file mode 100644
+index 0000000000..bd2d645fa1
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_recorder.c
+@@ -0,0 +1,1227 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
 +
-+  <set name="ComputeBasic"
-+       chipset="LNL"
-+       symbol_name="ComputeBasic"
-+       underscore_name="compute_basic"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="72539be3-67d9-4101-b067-766b7811d2bb"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000622" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000623" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000605" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x0000060F" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000603" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000601" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00000604" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00000A0B" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000A0A" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00001804" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00001600" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000625" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000626" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x0000060B" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000600" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000606" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000614" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00000624" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000A0E" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000A0D" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000A15" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000A16" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000A13" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000A14" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00006002" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00006002" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00006002" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00006012" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00006012" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00006012" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00006011" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00006011" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00006011" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x0000600F" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x0000600F" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x0000600F" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00006010" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00006010" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00006010" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00006015" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00006015" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00006015" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00004600" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00004600" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00004600" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00004601" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00004601" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00004601" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00005E0A" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00005E0A" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00005E0A" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00005E0B" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00005E0B" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00005E0B" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00005E00" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00005E00" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00005E00" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00005E01" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00005E01" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00005E01" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00005E04" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00005E04" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00005E04" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00005C00" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00005C00" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00005C00" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00005009" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00005009" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00005009" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00005008" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00005008" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00005008" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00005000" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00005000" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00005000" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00005010" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00005010" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00005010" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00005013" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00005013" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00005013" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00005012" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00005012" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00005012" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+    </register_config>
-+    <register_config type="FLEX">
-+        <register type="FLEX" address="0x0000E458" value="0x00000000" />
-+    </register_config>
-+  </set>
++#include <assert.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <limits.h>
++#include <poll.h>
++#include <signal.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <sys/sysmacros.h>
++#include <sys/time.h>
++#include <sys/types.h>
++#include <time.h>
++#include <unistd.h>
 +
-+  <set name="DepthProfile"
-+       chipset="LNL"
-+       symbol_name="DepthProfile"
-+       underscore_name="depth_profile"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="cae0b2ca-c52a-4111-b8bf-5af070677d57"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00004C23" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00004C23" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00004C23" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00004C22" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00004C22" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00004C22" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00004C04" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00004C04" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00004C04" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00004C02" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00004C02" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00004C02" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00004C05" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00004C05" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00004C05" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00004C03" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00004C03" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00004C03" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00004C01" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00004C01" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00004C01" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00004C00" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00004C00" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00004C00" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00004C24" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00004C24" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00004C24" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00004C20" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00004C20" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00004C20" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00004C21" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00004C21" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00004C21" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00004003" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00004003" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00004003" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00004004" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00004004" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00004004" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00004005" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00004005" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00004005" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00004006" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00004006" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00004006" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00004A02" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00004A02" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00004A02" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00006801" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00006801" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00006801" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00006802" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00006802" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00006802" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00005E05" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00005E05" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00005E05" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+    </register_config>
-+  </set>
++#include "igt_core.h"
++#include "intel_chipset.h"
++#include "ioctl_wrappers.h"
++#include "linux_scaffold.h"
++#include "xe/xe_oa.h"
++#include "xe/xe_oa_data.h"
++#include "xe/xe_query.h"
 +
-+  <set name="DeviceCacheProfile"
-+       chipset="LNL"
-+       symbol_name="DeviceCacheProfile"
-+       underscore_name="device_cache_profile"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="70cc56cf-3a37-4f6c-8911-4455fe441b2a"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00006017" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00006017" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00006017" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00006019" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00006019" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00006019" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00006016" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00006016" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00006016" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00006018" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00006018" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00006018" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x0000600B" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x0000600B" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x0000600B" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x0000600C" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x0000600C" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x0000600C" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00006008" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00006008" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00006008" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00006007" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00006007" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00006007" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x0000601C" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x0000601C" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x0000601C" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x0000601A" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x0000601A" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x0000601A" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x0000601B" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x0000601B" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x0000601B" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x0000600A" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x0000600A" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x0000600A" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00006009" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00006009" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00006009" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x0000600D" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x0000600D" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x0000600D" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x0000600E" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x0000600E" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x0000600E" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00006014" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00006014" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00006014" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00006000" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00006000" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00006000" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00006001" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00006001" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00006001" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00006013" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00006013" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00006013" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00006002" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00006002" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00006002" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00006012" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00006012" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00006012" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00006011" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00006011" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00006011" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x0000600F" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x0000600F" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x0000600F" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+        <register type="OA" address="0x000133D0" value="0x00006015" />
-+        <register type="OA" address="0x000133D4" value="0x00000000" />
-+        <register type="OA" address="0x000135D0" value="0x00006015" />
-+        <register type="OA" address="0x000135D4" value="0x00000000" />
-+        <register type="OA" address="0x000137D0" value="0x00006015" />
-+        <register type="OA" address="0x000137D4" value="0x00000000" />
-+        <register type="OA" address="0x000133D8" value="0x00006010" />
-+        <register type="OA" address="0x000133DC" value="0x00000000" />
-+        <register type="OA" address="0x000135D8" value="0x00006010" />
-+        <register type="OA" address="0x000135DC" value="0x00000000" />
-+        <register type="OA" address="0x000137D8" value="0x00006010" />
-+        <register type="OA" address="0x000137DC" value="0x00000000" />
-+        <register type="OA" address="0x000133E0" value="0x00005E00" />
-+        <register type="OA" address="0x000133E4" value="0x00000000" />
-+        <register type="OA" address="0x000135E0" value="0x00005E00" />
-+        <register type="OA" address="0x000135E4" value="0x00000000" />
-+        <register type="OA" address="0x000137E0" value="0x00005E00" />
-+        <register type="OA" address="0x000137E4" value="0x00000000" />
-+        <register type="OA" address="0x000133E8" value="0x00005E01" />
-+        <register type="OA" address="0x000133EC" value="0x00000000" />
-+        <register type="OA" address="0x000135E8" value="0x00005E01" />
-+        <register type="OA" address="0x000135EC" value="0x00000000" />
-+        <register type="OA" address="0x000137E8" value="0x00005E01" />
-+        <register type="OA" address="0x000137EC" value="0x00000000" />
-+        <register type="OA" address="0x000133F0" value="0x00005E02" />
-+        <register type="OA" address="0x000133F4" value="0x00000000" />
-+        <register type="OA" address="0x000135F0" value="0x00005E02" />
-+        <register type="OA" address="0x000135F4" value="0x00000000" />
-+        <register type="OA" address="0x000137F0" value="0x00005E02" />
-+        <register type="OA" address="0x000137F4" value="0x00000000" />
-+        <register type="OA" address="0x000133F8" value="0x00005E03" />
-+        <register type="OA" address="0x000133FC" value="0x00000000" />
-+        <register type="OA" address="0x000135F8" value="0x00005E03" />
-+        <register type="OA" address="0x000135FC" value="0x00000000" />
-+        <register type="OA" address="0x000137F8" value="0x00005E03" />
-+        <register type="OA" address="0x000137FC" value="0x00000000" />
-+    </register_config>
-+  </set>
++#include "xe_perf_recorder_commands.h"
 +
-+  <set name="MemoryProfile"
-+       chipset="LNL"
-+       symbol_name="MemoryProfile"
-+       underscore_name="memory_profile"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="01ffd51d-a6d6-4ff4-93d0-619f04c3a547"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000A0B" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000A13" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000A14" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00000A0A" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000A11" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000A10" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00000A01" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00000A06" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000A07" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000A04" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000A05" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00000A0C" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000A12" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000A0E" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000A17" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00000A0D" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000A15" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000A16" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000A02" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000A03" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000A00" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000A0F" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00004600" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00004600" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00004600" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00004601" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00004601" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00004601" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00005E08" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00005E08" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00005E08" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00005E09" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00005E09" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00005E09" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00005E06" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00005E06" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00005E06" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00005E07" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00005E07" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00005E07" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00005E0A" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00005E0A" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00005E0A" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00005E0B" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00005E0B" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00005E0B" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00005E00" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00005E00" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00005E00" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00005E01" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00005E01" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00005E01" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00005E04" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00005E04" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00005E04" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00005C00" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00005C00" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00005C00" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00006002" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00006002" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00006002" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00006014" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00006014" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00006014" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00006012" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00006012" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00006012" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00006000" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00006000" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00006000" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00006011" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00006011" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00006011" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00006001" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00006001" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00006001" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x0000600F" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x0000600F" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x0000600F" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00006015" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00006015" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00006015" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00006013" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00006013" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00006013" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00006010" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00006010" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00006010" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x00006E00" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x00006E00" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x00006E00" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+        <register type="OA" address="0x000133D0" value="0x00006E02" />
-+        <register type="OA" address="0x000133D4" value="0x00000000" />
-+        <register type="OA" address="0x000135D0" value="0x00006E02" />
-+        <register type="OA" address="0x000135D4" value="0x00000000" />
-+        <register type="OA" address="0x000137D0" value="0x00006E02" />
-+        <register type="OA" address="0x000137D4" value="0x00000000" />
-+        <register type="OA" address="0x000133D8" value="0x00006E01" />
-+        <register type="OA" address="0x000133DC" value="0x00000000" />
-+        <register type="OA" address="0x000135D8" value="0x00006E01" />
-+        <register type="OA" address="0x000135DC" value="0x00000000" />
-+        <register type="OA" address="0x000137D8" value="0x00006E01" />
-+        <register type="OA" address="0x000137DC" value="0x00000000" />
-+    </register_config>
-+  </set>
++#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
++#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
++#define MAX(a,b) ((a) > (b) ? (a) : (b))
++#define MIN(a,b) ((a) < (b) ? (a) : (b))
 +
-+  <set name="RenderPipeProfile"
-+       chipset="LNL"
-+       symbol_name="RenderPipeProfile"
-+       underscore_name="render_pipe_profile"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="6791470f-f1e6-4f77-9013-bcb0c4be6f57"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000401" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000007" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000003" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00000001" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000004" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00001803" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00001800" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00001605" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00001603" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00001601" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00001604" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00001602" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00001606" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00001807" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00001808" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00006600" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00006600" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00006600" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00006604" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00006604" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00006604" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00006602" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00006602" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00006602" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00004401" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00004401" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00004401" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00006610" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00006610" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00006610" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00004407" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00004407" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00004407" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00004406" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00004406" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00004406" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00004403" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00004403" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00004403" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00004201" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00004201" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00004201" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00004002" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00004002" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00004002" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00004202" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00004202" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00004202" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00004200" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00004200" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00004200" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00004007" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00004007" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00004007" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00004008" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00004008" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00004008" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00004E04" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00004E04" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00004E04" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00004E03" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00004E03" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00004E03" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00006800" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00006800" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00006800" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00006803" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00006803" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00006803" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00006804" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00006804" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00006804" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00005011" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00005011" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00005011" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00004E00" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00004E00" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00004E00" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00004E01" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00004E01" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00004E01" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x00004E02" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x00004E02" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x00004E02" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+    </register_config>
-+  </set>
++struct circular_buffer {
++	char   *data;
++	size_t  allocated_size;
++	size_t  size;
++	size_t  beginpos;
++	size_t  endpos;
++};
 +
-+  <set name="RTProfile"
-+       chipset="LNL"
-+       symbol_name="RTProfile"
-+       underscore_name="rt_profile"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="d66ce633-4ae5-4de2-8678-9705adfd45bc"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000C03" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000C04" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000C00" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00000C1A" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000C2F" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000C1D" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00000C2A" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x0000060F" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x0000060F" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x0000060F" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000603" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000603" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000603" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x00013078" value="0x00000604" />
-+        <register type="OA" address="0x0001307C" value="0x00000000" />
-+        <register type="OA" address="0x00013080" value="0x00000C10" />
-+        <register type="OA" address="0x00013084" value="0x00000000" />
-+        <register type="OA" address="0x00013088" value="0x00000C18" />
-+        <register type="OA" address="0x0001308C" value="0x00000000" />
-+        <register type="OA" address="0x00013090" value="0x00000A08" />
-+        <register type="OA" address="0x00013094" value="0x00000000" />
-+        <register type="OA" address="0x00013098" value="0x00000A09" />
-+        <register type="OA" address="0x0001309C" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00000C2D" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000C02" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000C19" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000C01" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00000C2E" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000C30" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000C2B" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000C20" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000C2C" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000C28" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000C29" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+    </register_config>
-+    <register_config type="FLEX">
-+        <register type="FLEX" address="0x0000E558" value="0x000D00C0" />
-+        <register type="FLEX" address="0x0000E658" value="0x000C00E0" />
-+        <register type="FLEX" address="0x0000E758" value="0x000E00D0" />
-+        <register type="FLEX" address="0x0000E45C" value="0x00000000" />
-+    </register_config>
-+  </set>
++struct chunk {
++	char *data;
++	size_t len;
++};
 +
-+  <set name="VectorEngineProfile"
-+       chipset="LNL"
-+       symbol_name="VectorEngineProfile"
-+       underscore_name="vector_engine_profile"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="e7338926-568c-4424-bc44-f90318a6b472"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000622" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000623" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000605" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x0000060F" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000603" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x0000060E" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x0000060A" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00000609" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000601" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000616" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000615" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000619" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000618" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x00013078" value="0x00000617" />
-+        <register type="OA" address="0x0001307C" value="0x00000000" />
-+        <register type="OA" address="0x00013080" value="0x0000060B" />
-+        <register type="OA" address="0x00013084" value="0x00000000" />
-+        <register type="OA" address="0x00013088" value="0x00000624" />
-+        <register type="OA" address="0x0001308C" value="0x00000000" />
-+        <register type="OA" address="0x00013090" value="0x00000625" />
-+        <register type="OA" address="0x00013094" value="0x00000000" />
-+        <register type="OA" address="0x00013098" value="0x00000626" />
-+        <register type="OA" address="0x0001309C" value="0x00000000" />
-+        <register type="OA" address="0x000130A0" value="0x00000604" />
-+        <register type="OA" address="0x000130A4" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00000614" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000608" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000607" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000602" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00000611" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000610" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000612" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000629" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x0000060C" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x0000060D" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000613" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00006002" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00006002" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00006002" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00006014" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00006014" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00006014" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00006012" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00006012" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00006012" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00006000" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00006000" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00006000" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00006011" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00006011" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00006011" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00006001" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00006001" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00006001" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x0000600F" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x0000600F" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x0000600F" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00006015" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00006015" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00006015" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00006013" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00006013" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00006013" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00006010" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00006010" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00006010" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00005009" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00005009" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00005009" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00005008" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00005008" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00005008" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00005013" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00005013" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00005013" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00005012" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00005012" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00005012" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00004600" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00004600" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00004600" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00004601" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00004601" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00004601" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00005E0A" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00005E0A" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00005E0A" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00005E0B" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00005E0B" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00005E0B" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00005C00" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00005C00" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00005C00" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00005E04" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00005E04" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00005E04" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+    </register_config>
-+    <register_config type="FLEX">
-+        <register type="FLEX" address="0x0000E458" value="0x00000000" />
-+        <register type="FLEX" address="0x0000E558" value="0x00000000" />
-+        <register type="FLEX" address="0x0000E658" value="0x00000000" />
-+        <register type="FLEX" address="0x0000E758" value="0x00000000" />
-+        <register type="FLEX" address="0x0000E45C" value="0x00000000" />
-+        <register type="FLEX" address="0x0000E65C" value="0x00000000" />
-+    </register_config>
-+  </set>
++static size_t
++circular_available_size(const struct circular_buffer *buffer)
++{
++	assert(buffer->size <= buffer->allocated_size);
++	return buffer->allocated_size - buffer->size;
++}
 +
-+  <set name="VectorEngineStalls"
-+       chipset="LNL"
-+       symbol_name="VectorEngineStalls"
-+       underscore_name="vector_engine_stalls"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="4ccd6535-fb9a-440f-b0f5-882879dc4cb0"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x0000061D" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x0000061B" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000620" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x0000061A" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000621" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000600" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00000606" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00000604" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000624" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000625" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000626" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x0000061F" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000628" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x0000061C" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x0000061E" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00001601" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00001604" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00001602" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00001606" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00001807" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00001808" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000605" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+    </register_config>
-+    <register_config type="FLEX">
-+        <register type="FLEX" address="0x0000E458" value="0x00000000" />
-+        <register type="FLEX" address="0x0000E558" value="0x00000000" />
-+    </register_config>
-+  </set>
++static void
++get_chunks(struct chunk *chunks, struct circular_buffer *buffer, bool write, size_t len)
++{
++	size_t offset = write ? buffer->endpos : buffer->beginpos;
 +
-+  <set name="TestOa"
-+       chipset="LNL"
-+       symbol_name="TestOa"
-+       underscore_name="test_oa"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="24c33f2c-f8d9-40d9-b2db-64e863b4d625"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001801" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001802" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00003E00" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00005A00" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00005A00" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00005A00" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004405" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004405" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004405" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006805" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006805" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006805" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00007E00" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00007E00" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00007E00" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+    </register_config>
-+  </set>
++	if (write)
++		assert(circular_available_size(buffer) >= len);
++	else
++		assert(buffer->size >= len);
 +
-+  <set name="MetricSet1"
-+       chipset="LNL"
-+       symbol_name="MetricSet1"
-+       underscore_name="metric_set1"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="0af24f48-05bc-467b-b561-33dec252e651"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00000001" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00000002" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000003" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000004" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000005" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00000006" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000007" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000400" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00000401" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00000402" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000600" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000601" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000602" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000603" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000604" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x00013078" value="0x00000605" />
-+        <register type="OA" address="0x0001307C" value="0x00000000" />
-+        <register type="OA" address="0x00013080" value="0x00000606" />
-+        <register type="OA" address="0x00013084" value="0x00000000" />
-+        <register type="OA" address="0x00013088" value="0x00000607" />
-+        <register type="OA" address="0x0001308C" value="0x00000000" />
-+        <register type="OA" address="0x00013090" value="0x00000608" />
-+        <register type="OA" address="0x00013094" value="0x00000000" />
-+        <register type="OA" address="0x00013098" value="0x00000609" />
-+        <register type="OA" address="0x0001309C" value="0x00000000" />
-+        <register type="OA" address="0x000130A0" value="0x0000060A" />
-+        <register type="OA" address="0x000130A4" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x0000060B" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x0000060C" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x0000060D" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x0000060E" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x0000060F" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000610" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000611" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000612" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000613" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000614" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000615" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00004000" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00004000" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00004000" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004001" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004001" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004001" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00004002" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00004002" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00004002" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00004003" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00004003" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00004003" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00004004" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00004004" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00004004" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00004005" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00004005" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00004005" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00004006" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00004006" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00004006" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00004007" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00004007" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00004007" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00004008" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00004008" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00004008" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00004200" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00004200" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00004200" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00004201" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00004201" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00004201" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00004202" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00004202" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00004202" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00004400" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00004400" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00004400" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00004401" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00004401" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00004401" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00004402" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00004402" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00004402" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00004403" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00004403" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00004403" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00004404" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00004404" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00004404" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00004405" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00004405" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00004405" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00004406" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00004406" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00004406" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00004407" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00004407" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00004407" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00004600" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00004600" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00004600" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00004601" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00004601" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00004601" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00004A00" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00004A00" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00004A00" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00004A01" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00004A01" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00004A01" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00004A02" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00004A02" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00004A02" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x00004C00" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x00004C00" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x00004C00" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+        <register type="OA" address="0x000133D0" value="0x00004C01" />
-+        <register type="OA" address="0x000133D4" value="0x00000000" />
-+        <register type="OA" address="0x000135D0" value="0x00004C01" />
-+        <register type="OA" address="0x000135D4" value="0x00000000" />
-+        <register type="OA" address="0x000137D0" value="0x00004C01" />
-+        <register type="OA" address="0x000137D4" value="0x00000000" />
-+        <register type="OA" address="0x000133D8" value="0x00004C02" />
-+        <register type="OA" address="0x000133DC" value="0x00000000" />
-+        <register type="OA" address="0x000135D8" value="0x00004C02" />
-+        <register type="OA" address="0x000135DC" value="0x00000000" />
-+        <register type="OA" address="0x000137D8" value="0x00004C02" />
-+        <register type="OA" address="0x000137DC" value="0x00000000" />
-+        <register type="OA" address="0x000133E0" value="0x00004C03" />
-+        <register type="OA" address="0x000133E4" value="0x00000000" />
-+        <register type="OA" address="0x000135E0" value="0x00004C03" />
-+        <register type="OA" address="0x000135E4" value="0x00000000" />
-+        <register type="OA" address="0x000137E0" value="0x00004C03" />
-+        <register type="OA" address="0x000137E4" value="0x00000000" />
-+        <register type="OA" address="0x000133E8" value="0x00004C04" />
-+        <register type="OA" address="0x000133EC" value="0x00000000" />
-+        <register type="OA" address="0x000135E8" value="0x00004C04" />
-+        <register type="OA" address="0x000135EC" value="0x00000000" />
-+        <register type="OA" address="0x000137E8" value="0x00004C04" />
-+        <register type="OA" address="0x000137EC" value="0x00000000" />
-+        <register type="OA" address="0x000133F0" value="0x00004C05" />
-+        <register type="OA" address="0x000133F4" value="0x00000000" />
-+        <register type="OA" address="0x000135F0" value="0x00004C05" />
-+        <register type="OA" address="0x000135F4" value="0x00000000" />
-+        <register type="OA" address="0x000137F0" value="0x00004C05" />
-+        <register type="OA" address="0x000137F4" value="0x00000000" />
-+        <register type="OA" address="0x000133F8" value="0x00004C20" />
-+        <register type="OA" address="0x000133FC" value="0x00000000" />
-+        <register type="OA" address="0x000135F8" value="0x00004C20" />
-+        <register type="OA" address="0x000135FC" value="0x00000000" />
-+        <register type="OA" address="0x000137F8" value="0x00004C20" />
-+        <register type="OA" address="0x000137FC" value="0x00000000" />
-+    </register_config>
-+  </set>
++	chunks[0].data = &buffer->data[offset];
 +
-+  <set name="MetricSet2"
-+       chipset="LNL"
-+       symbol_name="MetricSet2"
-+       underscore_name="metric_set2"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="914ad901-832a-4ccd-a21e-ddc7690ed213"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00000616" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00000617" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000618" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000619" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x0000061A" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x0000061B" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x0000061C" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x0000061D" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x0000061E" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x0000061F" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000620" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000621" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000622" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000623" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000624" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x00013078" value="0x00000625" />
-+        <register type="OA" address="0x0001307C" value="0x00000000" />
-+        <register type="OA" address="0x00013080" value="0x00000626" />
-+        <register type="OA" address="0x00013084" value="0x00000000" />
-+        <register type="OA" address="0x00013088" value="0x00000628" />
-+        <register type="OA" address="0x0001308C" value="0x00000000" />
-+        <register type="OA" address="0x00013090" value="0x00000629" />
-+        <register type="OA" address="0x00013094" value="0x00000000" />
-+        <register type="OA" address="0x00013098" value="0x00000A00" />
-+        <register type="OA" address="0x0001309C" value="0x00000000" />
-+        <register type="OA" address="0x000130A0" value="0x00000A01" />
-+        <register type="OA" address="0x000130A4" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00000A02" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000A03" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000A04" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000A05" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00000A06" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000A07" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000A08" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000A09" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000A0A" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000A0B" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00000A0C" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00004C21" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00004C21" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00004C21" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00004C22" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00004C22" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00004C22" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00004C23" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00004C23" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00004C23" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00004C24" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00004C24" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00004C24" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00004E00" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00004E00" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00004E00" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00004E01" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00004E01" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00004E01" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00004E02" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00004E02" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00004E02" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00004E03" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00004E03" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00004E03" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00004E04" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00004E04" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00004E04" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00005000" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00005000" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00005000" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00005008" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00005008" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00005008" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00005009" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00005009" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00005009" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00005010" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00005010" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00005010" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00005011" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00005011" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00005011" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00005012" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00005012" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00005012" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00005013" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00005013" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00005013" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00005A00" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00005A00" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00005A00" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00005C00" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00005C00" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00005C00" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00005E00" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00005E00" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00005E00" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00005E01" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00005E01" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00005E01" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x00005E02" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x00005E02" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x00005E02" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x00005E03" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x00005E03" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x00005E03" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x00005E04" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x00005E04" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x00005E04" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00005E05" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00005E05" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00005E05" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00005E06" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00005E06" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00005E06" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x00005E07" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x00005E07" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x00005E07" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+        <register type="OA" address="0x000133D0" value="0x00005E08" />
-+        <register type="OA" address="0x000133D4" value="0x00000000" />
-+        <register type="OA" address="0x000135D0" value="0x00005E08" />
-+        <register type="OA" address="0x000135D4" value="0x00000000" />
-+        <register type="OA" address="0x000137D0" value="0x00005E08" />
-+        <register type="OA" address="0x000137D4" value="0x00000000" />
-+        <register type="OA" address="0x000133D8" value="0x00005E09" />
-+        <register type="OA" address="0x000133DC" value="0x00000000" />
-+        <register type="OA" address="0x000135D8" value="0x00005E09" />
-+        <register type="OA" address="0x000135DC" value="0x00000000" />
-+        <register type="OA" address="0x000137D8" value="0x00005E09" />
-+        <register type="OA" address="0x000137DC" value="0x00000000" />
-+        <register type="OA" address="0x000133E0" value="0x00005E0A" />
-+        <register type="OA" address="0x000133E4" value="0x00000000" />
-+        <register type="OA" address="0x000135E0" value="0x00005E0A" />
-+        <register type="OA" address="0x000135E4" value="0x00000000" />
-+        <register type="OA" address="0x000137E0" value="0x00005E0A" />
-+        <register type="OA" address="0x000137E4" value="0x00000000" />
-+        <register type="OA" address="0x000133E8" value="0x00005E0B" />
-+        <register type="OA" address="0x000133EC" value="0x00000000" />
-+        <register type="OA" address="0x000135E8" value="0x00005E0B" />
-+        <register type="OA" address="0x000135EC" value="0x00000000" />
-+        <register type="OA" address="0x000137E8" value="0x00005E0B" />
-+        <register type="OA" address="0x000137EC" value="0x00000000" />
-+        <register type="OA" address="0x000133F0" value="0x00006000" />
-+        <register type="OA" address="0x000133F4" value="0x00000000" />
-+        <register type="OA" address="0x000135F0" value="0x00006000" />
-+        <register type="OA" address="0x000135F4" value="0x00000000" />
-+        <register type="OA" address="0x000137F0" value="0x00006000" />
-+        <register type="OA" address="0x000137F4" value="0x00000000" />
-+        <register type="OA" address="0x000133F8" value="0x00006001" />
-+        <register type="OA" address="0x000133FC" value="0x00000000" />
-+        <register type="OA" address="0x000135F8" value="0x00006001" />
-+        <register type="OA" address="0x000135FC" value="0x00000000" />
-+        <register type="OA" address="0x000137F8" value="0x00006001" />
-+        <register type="OA" address="0x000137FC" value="0x00000000" />
-+    </register_config>
-+  </set>
++	if ((offset + len) > buffer->allocated_size) {
++		chunks[0].len = buffer->allocated_size - offset;
++		chunks[1].data = buffer->data;
++		chunks[1].len = len - (buffer->allocated_size - offset);
++	} else {
++		chunks[0].len = len;
++		chunks[1].data = NULL;
++		chunks[1].len = 0;
++	}
++}
 +
-+  <set name="MetricSet3"
-+       chipset="LNL"
-+       symbol_name="MetricSet3"
-+       underscore_name="metric_set3"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="3b3c9f55-e34b-423d-8c05-7b1af03b6685"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00000A0D" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00000A0E" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00000A0F" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00000A10" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00000A11" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00000A12" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00000A13" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00000A14" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00000A15" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00000A16" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00000A17" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00000C00" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00000C01" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00000C02" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013070" value="0x00000C03" />
-+        <register type="OA" address="0x00013074" value="0x00000000" />
-+        <register type="OA" address="0x00013078" value="0x00000C04" />
-+        <register type="OA" address="0x0001307C" value="0x00000000" />
-+        <register type="OA" address="0x00013080" value="0x00000C10" />
-+        <register type="OA" address="0x00013084" value="0x00000000" />
-+        <register type="OA" address="0x00013088" value="0x00000C18" />
-+        <register type="OA" address="0x0001308C" value="0x00000000" />
-+        <register type="OA" address="0x00013090" value="0x00000C19" />
-+        <register type="OA" address="0x00013094" value="0x00000000" />
-+        <register type="OA" address="0x00013098" value="0x00000C1A" />
-+        <register type="OA" address="0x0001309C" value="0x00000000" />
-+        <register type="OA" address="0x000130A0" value="0x00000C1D" />
-+        <register type="OA" address="0x000130A4" value="0x00000000" />
-+        <register type="OA" address="0x000130A8" value="0x00000C20" />
-+        <register type="OA" address="0x000130AC" value="0x00000000" />
-+        <register type="OA" address="0x000130B0" value="0x00000C28" />
-+        <register type="OA" address="0x000130B4" value="0x00000000" />
-+        <register type="OA" address="0x000130B8" value="0x00000C29" />
-+        <register type="OA" address="0x000130BC" value="0x00000000" />
-+        <register type="OA" address="0x000130C0" value="0x00000C2A" />
-+        <register type="OA" address="0x000130C4" value="0x00000000" />
-+        <register type="OA" address="0x000130C8" value="0x00000C2B" />
-+        <register type="OA" address="0x000130CC" value="0x00000000" />
-+        <register type="OA" address="0x000130D0" value="0x00000C2C" />
-+        <register type="OA" address="0x000130D4" value="0x00000000" />
-+        <register type="OA" address="0x000130D8" value="0x00000C2D" />
-+        <register type="OA" address="0x000130DC" value="0x00000000" />
-+        <register type="OA" address="0x000130E0" value="0x00000C2E" />
-+        <register type="OA" address="0x000130E4" value="0x00000000" />
-+        <register type="OA" address="0x000130E8" value="0x00000C2F" />
-+        <register type="OA" address="0x000130EC" value="0x00000000" />
-+        <register type="OA" address="0x000130F0" value="0x00000C30" />
-+        <register type="OA" address="0x000130F4" value="0x00000000" />
-+        <register type="OA" address="0x000130F8" value="0x00001600" />
-+        <register type="OA" address="0x000130FC" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00006002" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00006002" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00006002" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00006007" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00006007" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00006007" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006008" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006008" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006008" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00006009" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00006009" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00006009" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x0000600A" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x0000600A" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x0000600A" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x0000600B" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x0000600B" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x0000600B" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x0000600C" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x0000600C" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x0000600C" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x0000600D" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x0000600D" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x0000600D" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x0000600E" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x0000600E" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x0000600E" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x0000600F" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x0000600F" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x0000600F" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00006010" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00006010" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00006010" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00006011" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00006011" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00006011" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00006012" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00006012" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00006012" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00006013" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00006013" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00006013" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00006014" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00006014" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00006014" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+        <register type="OA" address="0x00013378" value="0x00006015" />
-+        <register type="OA" address="0x0001337C" value="0x00000000" />
-+        <register type="OA" address="0x00013578" value="0x00006015" />
-+        <register type="OA" address="0x0001357C" value="0x00000000" />
-+        <register type="OA" address="0x00013778" value="0x00006015" />
-+        <register type="OA" address="0x0001377C" value="0x00000000" />
-+        <register type="OA" address="0x00013380" value="0x00006016" />
-+        <register type="OA" address="0x00013384" value="0x00000000" />
-+        <register type="OA" address="0x00013580" value="0x00006016" />
-+        <register type="OA" address="0x00013584" value="0x00000000" />
-+        <register type="OA" address="0x00013780" value="0x00006016" />
-+        <register type="OA" address="0x00013784" value="0x00000000" />
-+        <register type="OA" address="0x00013388" value="0x00006017" />
-+        <register type="OA" address="0x0001338C" value="0x00000000" />
-+        <register type="OA" address="0x00013588" value="0x00006017" />
-+        <register type="OA" address="0x0001358C" value="0x00000000" />
-+        <register type="OA" address="0x00013788" value="0x00006017" />
-+        <register type="OA" address="0x0001378C" value="0x00000000" />
-+        <register type="OA" address="0x00013390" value="0x00006018" />
-+        <register type="OA" address="0x00013394" value="0x00000000" />
-+        <register type="OA" address="0x00013590" value="0x00006018" />
-+        <register type="OA" address="0x00013594" value="0x00000000" />
-+        <register type="OA" address="0x00013790" value="0x00006018" />
-+        <register type="OA" address="0x00013794" value="0x00000000" />
-+        <register type="OA" address="0x00013398" value="0x00006019" />
-+        <register type="OA" address="0x0001339C" value="0x00000000" />
-+        <register type="OA" address="0x00013598" value="0x00006019" />
-+        <register type="OA" address="0x0001359C" value="0x00000000" />
-+        <register type="OA" address="0x00013798" value="0x00006019" />
-+        <register type="OA" address="0x0001379C" value="0x00000000" />
-+        <register type="OA" address="0x000133A0" value="0x0000601A" />
-+        <register type="OA" address="0x000133A4" value="0x00000000" />
-+        <register type="OA" address="0x000135A0" value="0x0000601A" />
-+        <register type="OA" address="0x000135A4" value="0x00000000" />
-+        <register type="OA" address="0x000137A0" value="0x0000601A" />
-+        <register type="OA" address="0x000137A4" value="0x00000000" />
-+        <register type="OA" address="0x000133A8" value="0x0000601B" />
-+        <register type="OA" address="0x000133AC" value="0x00000000" />
-+        <register type="OA" address="0x000135A8" value="0x0000601B" />
-+        <register type="OA" address="0x000135AC" value="0x00000000" />
-+        <register type="OA" address="0x000137A8" value="0x0000601B" />
-+        <register type="OA" address="0x000137AC" value="0x00000000" />
-+        <register type="OA" address="0x000133B0" value="0x0000601C" />
-+        <register type="OA" address="0x000133B4" value="0x00000000" />
-+        <register type="OA" address="0x000135B0" value="0x0000601C" />
-+        <register type="OA" address="0x000135B4" value="0x00000000" />
-+        <register type="OA" address="0x000137B0" value="0x0000601C" />
-+        <register type="OA" address="0x000137B4" value="0x00000000" />
-+        <register type="OA" address="0x000133B8" value="0x00006400" />
-+        <register type="OA" address="0x000133BC" value="0x00000000" />
-+        <register type="OA" address="0x000135B8" value="0x00006400" />
-+        <register type="OA" address="0x000135BC" value="0x00000000" />
-+        <register type="OA" address="0x000137B8" value="0x00006400" />
-+        <register type="OA" address="0x000137BC" value="0x00000000" />
-+        <register type="OA" address="0x000133C0" value="0x00006401" />
-+        <register type="OA" address="0x000133C4" value="0x00000000" />
-+        <register type="OA" address="0x000135C0" value="0x00006401" />
-+        <register type="OA" address="0x000135C4" value="0x00000000" />
-+        <register type="OA" address="0x000137C0" value="0x00006401" />
-+        <register type="OA" address="0x000137C4" value="0x00000000" />
-+        <register type="OA" address="0x000133C8" value="0x00006402" />
-+        <register type="OA" address="0x000133CC" value="0x00000000" />
-+        <register type="OA" address="0x000135C8" value="0x00006402" />
-+        <register type="OA" address="0x000135CC" value="0x00000000" />
-+        <register type="OA" address="0x000137C8" value="0x00006402" />
-+        <register type="OA" address="0x000137CC" value="0x00000000" />
-+        <register type="OA" address="0x000133D0" value="0x00006403" />
-+        <register type="OA" address="0x000133D4" value="0x00000000" />
-+        <register type="OA" address="0x000135D0" value="0x00006403" />
-+        <register type="OA" address="0x000135D4" value="0x00000000" />
-+        <register type="OA" address="0x000137D0" value="0x00006403" />
-+        <register type="OA" address="0x000137D4" value="0x00000000" />
-+        <register type="OA" address="0x000133D8" value="0x00006600" />
-+        <register type="OA" address="0x000133DC" value="0x00000000" />
-+        <register type="OA" address="0x000135D8" value="0x00006600" />
-+        <register type="OA" address="0x000135DC" value="0x00000000" />
-+        <register type="OA" address="0x000137D8" value="0x00006600" />
-+        <register type="OA" address="0x000137DC" value="0x00000000" />
-+        <register type="OA" address="0x000133E0" value="0x00006601" />
-+        <register type="OA" address="0x000133E4" value="0x00000000" />
-+        <register type="OA" address="0x000135E0" value="0x00006601" />
-+        <register type="OA" address="0x000135E4" value="0x00000000" />
-+        <register type="OA" address="0x000137E0" value="0x00006601" />
-+        <register type="OA" address="0x000137E4" value="0x00000000" />
-+        <register type="OA" address="0x000133E8" value="0x00006602" />
-+        <register type="OA" address="0x000133EC" value="0x00000000" />
-+        <register type="OA" address="0x000135E8" value="0x00006602" />
-+        <register type="OA" address="0x000135EC" value="0x00000000" />
-+        <register type="OA" address="0x000137E8" value="0x00006602" />
-+        <register type="OA" address="0x000137EC" value="0x00000000" />
-+        <register type="OA" address="0x000133F0" value="0x00006603" />
-+        <register type="OA" address="0x000133F4" value="0x00000000" />
-+        <register type="OA" address="0x000135F0" value="0x00006603" />
-+        <register type="OA" address="0x000135F4" value="0x00000000" />
-+        <register type="OA" address="0x000137F0" value="0x00006603" />
-+        <register type="OA" address="0x000137F4" value="0x00000000" />
-+        <register type="OA" address="0x000133F8" value="0x00006604" />
-+        <register type="OA" address="0x000133FC" value="0x00000000" />
-+        <register type="OA" address="0x000135F8" value="0x00006604" />
-+        <register type="OA" address="0x000135FC" value="0x00000000" />
-+        <register type="OA" address="0x000137F8" value="0x00006604" />
-+        <register type="OA" address="0x000137FC" value="0x00000000" />
-+    </register_config>
-+  </set>
++static ssize_t
++circular_buffer_read(void *c, char *buf, size_t size)
++{
++	struct circular_buffer *buffer = c;
++	struct chunk chunks[2];
 +
-+  <set name="MetricSet4"
-+       chipset="LNL"
-+       symbol_name="MetricSet4"
-+       underscore_name="metric_set4"
-+       mdapi_supported_apis="VK OGL OCL IO"
-+       oa_format="256B_GENERIC_NOA16"
-+       hw_config_guid="e6f21065-a6f5-4ea4-a545-80d6aebaab56"
-+       >
-+    <counter name="GPU Time Elapsed"
-+             symbol_name="GpuTime"
-+             underscore_name="gpu_time"
-+             description="Time elapsed on the GPU during the measurement."
-+             data_type="uint64"
-+             units="ns"
-+             semantic_type="event"
-+             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
-+             mdapi_group="GPU"
-+             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
-+             mdapi_supported_apis=""
-+             mdapi_hw_unit_type="gpu"
-+             />
-+    <register_config type="OA">
-+        <register type="OA" address="0x00013000" value="0x00001601" />
-+        <register type="OA" address="0x00013004" value="0x00000000" />
-+        <register type="OA" address="0x00013008" value="0x00001602" />
-+        <register type="OA" address="0x0001300C" value="0x00000000" />
-+        <register type="OA" address="0x00013010" value="0x00001603" />
-+        <register type="OA" address="0x00013014" value="0x00000000" />
-+        <register type="OA" address="0x00013018" value="0x00001604" />
-+        <register type="OA" address="0x0001301C" value="0x00000000" />
-+        <register type="OA" address="0x00013020" value="0x00001605" />
-+        <register type="OA" address="0x00013024" value="0x00000000" />
-+        <register type="OA" address="0x00013028" value="0x00001606" />
-+        <register type="OA" address="0x0001302C" value="0x00000000" />
-+        <register type="OA" address="0x00013030" value="0x00001800" />
-+        <register type="OA" address="0x00013034" value="0x00000000" />
-+        <register type="OA" address="0x00013038" value="0x00001801" />
-+        <register type="OA" address="0x0001303C" value="0x00000000" />
-+        <register type="OA" address="0x00013040" value="0x00001802" />
-+        <register type="OA" address="0x00013044" value="0x00000000" />
-+        <register type="OA" address="0x00013048" value="0x00001803" />
-+        <register type="OA" address="0x0001304C" value="0x00000000" />
-+        <register type="OA" address="0x00013050" value="0x00001804" />
-+        <register type="OA" address="0x00013054" value="0x00000000" />
-+        <register type="OA" address="0x00013058" value="0x00001807" />
-+        <register type="OA" address="0x0001305C" value="0x00000000" />
-+        <register type="OA" address="0x00013060" value="0x00001808" />
-+        <register type="OA" address="0x00013064" value="0x00000000" />
-+        <register type="OA" address="0x00013068" value="0x00003E00" />
-+        <register type="OA" address="0x0001306C" value="0x00000000" />
-+        <register type="OA" address="0x00013300" value="0x00006605" />
-+        <register type="OA" address="0x00013304" value="0x00000000" />
-+        <register type="OA" address="0x00013500" value="0x00006605" />
-+        <register type="OA" address="0x00013504" value="0x00000000" />
-+        <register type="OA" address="0x00013700" value="0x00006605" />
-+        <register type="OA" address="0x00013704" value="0x00000000" />
-+        <register type="OA" address="0x00013308" value="0x00006606" />
-+        <register type="OA" address="0x0001330C" value="0x00000000" />
-+        <register type="OA" address="0x00013508" value="0x00006606" />
-+        <register type="OA" address="0x0001350C" value="0x00000000" />
-+        <register type="OA" address="0x00013708" value="0x00006606" />
-+        <register type="OA" address="0x0001370C" value="0x00000000" />
-+        <register type="OA" address="0x00013310" value="0x00006610" />
-+        <register type="OA" address="0x00013314" value="0x00000000" />
-+        <register type="OA" address="0x00013510" value="0x00006610" />
-+        <register type="OA" address="0x00013514" value="0x00000000" />
-+        <register type="OA" address="0x00013710" value="0x00006610" />
-+        <register type="OA" address="0x00013714" value="0x00000000" />
-+        <register type="OA" address="0x00013318" value="0x00006611" />
-+        <register type="OA" address="0x0001331C" value="0x00000000" />
-+        <register type="OA" address="0x00013518" value="0x00006611" />
-+        <register type="OA" address="0x0001351C" value="0x00000000" />
-+        <register type="OA" address="0x00013718" value="0x00006611" />
-+        <register type="OA" address="0x0001371C" value="0x00000000" />
-+        <register type="OA" address="0x00013320" value="0x00006612" />
-+        <register type="OA" address="0x00013324" value="0x00000000" />
-+        <register type="OA" address="0x00013520" value="0x00006612" />
-+        <register type="OA" address="0x00013524" value="0x00000000" />
-+        <register type="OA" address="0x00013720" value="0x00006612" />
-+        <register type="OA" address="0x00013724" value="0x00000000" />
-+        <register type="OA" address="0x00013328" value="0x00006800" />
-+        <register type="OA" address="0x0001332C" value="0x00000000" />
-+        <register type="OA" address="0x00013528" value="0x00006800" />
-+        <register type="OA" address="0x0001352C" value="0x00000000" />
-+        <register type="OA" address="0x00013728" value="0x00006800" />
-+        <register type="OA" address="0x0001372C" value="0x00000000" />
-+        <register type="OA" address="0x00013330" value="0x00006801" />
-+        <register type="OA" address="0x00013334" value="0x00000000" />
-+        <register type="OA" address="0x00013530" value="0x00006801" />
-+        <register type="OA" address="0x00013534" value="0x00000000" />
-+        <register type="OA" address="0x00013730" value="0x00006801" />
-+        <register type="OA" address="0x00013734" value="0x00000000" />
-+        <register type="OA" address="0x00013338" value="0x00006802" />
-+        <register type="OA" address="0x0001333C" value="0x00000000" />
-+        <register type="OA" address="0x00013538" value="0x00006802" />
-+        <register type="OA" address="0x0001353C" value="0x00000000" />
-+        <register type="OA" address="0x00013738" value="0x00006802" />
-+        <register type="OA" address="0x0001373C" value="0x00000000" />
-+        <register type="OA" address="0x00013340" value="0x00006803" />
-+        <register type="OA" address="0x00013344" value="0x00000000" />
-+        <register type="OA" address="0x00013540" value="0x00006803" />
-+        <register type="OA" address="0x00013544" value="0x00000000" />
-+        <register type="OA" address="0x00013740" value="0x00006803" />
-+        <register type="OA" address="0x00013744" value="0x00000000" />
-+        <register type="OA" address="0x00013348" value="0x00006804" />
-+        <register type="OA" address="0x0001334C" value="0x00000000" />
-+        <register type="OA" address="0x00013548" value="0x00006804" />
-+        <register type="OA" address="0x0001354C" value="0x00000000" />
-+        <register type="OA" address="0x00013748" value="0x00006804" />
-+        <register type="OA" address="0x0001374C" value="0x00000000" />
-+        <register type="OA" address="0x00013350" value="0x00006805" />
-+        <register type="OA" address="0x00013354" value="0x00000000" />
-+        <register type="OA" address="0x00013550" value="0x00006805" />
-+        <register type="OA" address="0x00013554" value="0x00000000" />
-+        <register type="OA" address="0x00013750" value="0x00006805" />
-+        <register type="OA" address="0x00013754" value="0x00000000" />
-+        <register type="OA" address="0x00013358" value="0x00006E00" />
-+        <register type="OA" address="0x0001335C" value="0x00000000" />
-+        <register type="OA" address="0x00013558" value="0x00006E00" />
-+        <register type="OA" address="0x0001355C" value="0x00000000" />
-+        <register type="OA" address="0x00013758" value="0x00006E00" />
-+        <register type="OA" address="0x0001375C" value="0x00000000" />
-+        <register type="OA" address="0x00013360" value="0x00006E01" />
-+        <register type="OA" address="0x00013364" value="0x00000000" />
-+        <register type="OA" address="0x00013560" value="0x00006E01" />
-+        <register type="OA" address="0x00013564" value="0x00000000" />
-+        <register type="OA" address="0x00013760" value="0x00006E01" />
-+        <register type="OA" address="0x00013764" value="0x00000000" />
-+        <register type="OA" address="0x00013368" value="0x00006E02" />
-+        <register type="OA" address="0x0001336C" value="0x00000000" />
-+        <register type="OA" address="0x00013568" value="0x00006E02" />
-+        <register type="OA" address="0x0001356C" value="0x00000000" />
-+        <register type="OA" address="0x00013768" value="0x00006E02" />
-+        <register type="OA" address="0x0001376C" value="0x00000000" />
-+        <register type="OA" address="0x00013370" value="0x00007E00" />
-+        <register type="OA" address="0x00013374" value="0x00000000" />
-+        <register type="OA" address="0x00013570" value="0x00007E00" />
-+        <register type="OA" address="0x00013574" value="0x00000000" />
-+        <register type="OA" address="0x00013770" value="0x00007E00" />
-+        <register type="OA" address="0x00013774" value="0x00000000" />
-+    </register_config>
-+  </set>
++	if (buffer->size < size)
++		return -1;
 +
-+</metrics>
++	get_chunks(chunks, buffer, false, size);
++
++	memcpy(buf, chunks[0].data, chunks[0].len);
++	memcpy(buf + chunks[0].len, chunks[1].data, chunks[1].len);
++	buffer->beginpos = (buffer->beginpos + size) % buffer->allocated_size;
++	buffer->size -= size;
++
++	return size;
++}
++
++static size_t
++peek_item_size(struct circular_buffer *buffer)
++{
++	struct intel_xe_perf_record_header header;
++	struct chunk chunks[2];
++
++	if (!buffer->size)
++		return 0;
++
++	assert(buffer->size >= sizeof(header));
++
++	get_chunks(chunks, buffer, false, sizeof(header));
++	memcpy(&header, chunks[0].data, chunks[0].len);
++	memcpy((char *) &header + chunks[0].len, chunks[1].data, chunks[1].len);
++
++	return header.size;
++}
++
++static void
++circular_shrink(struct circular_buffer *buffer, size_t size)
++{
++	size_t shrank = 0, item_size;
++
++	assert(size <= buffer->allocated_size);
++
++	while (shrank < size && buffer->size > (item_size = peek_item_size(buffer))) {
++		assert(item_size > 0 && item_size <= buffer->allocated_size);
++
++		buffer->beginpos = (buffer->beginpos + item_size) % buffer->allocated_size;
++		buffer->size -= item_size;
++
++		shrank += item_size;
++	}
++}
++
++static ssize_t
++circular_buffer_write(void *c, const char *buf, size_t _size)
++{
++	struct circular_buffer *buffer = c;
++	size_t size = _size;
++
++	while (size) {
++		size_t avail = circular_available_size(buffer), item_size;
++		struct chunk chunks[2];
++
++		/* Make space in the buffer if there is too much data. */
++		if (avail < size)
++			circular_shrink(buffer, size - avail);
++
++		item_size = MIN(circular_available_size(buffer), size);
++
++		get_chunks(chunks, buffer, true, item_size);
++
++		memcpy(chunks[0].data, buf, chunks[0].len);
++		memcpy(chunks[1].data, buf + chunks[0].len, chunks[1].len);
++
++		buf += item_size;
++		size -= item_size;
++
++		buffer->endpos = (buffer->endpos + item_size) % buffer->allocated_size;
++		buffer->size += item_size;
++	}
++
++	return _size;
++}
++
++static int
++circular_buffer_seek(void *c, off64_t *offset, int whence)
++{
++	return -1;
++}
++
++static int
++circular_buffer_close(void *c)
++{
++	return 0;
++}
++
++cookie_io_functions_t circular_buffer_functions = {
++	.read  = circular_buffer_read,
++	.write = circular_buffer_write,
++	.seek  = circular_buffer_seek,
++	.close = circular_buffer_close,
++};
++
++
++static bool
++read_file_uint64(const char *file, uint64_t *value)
++{
++	char buf[32];
++	int fd, n;
++
++	fd = open(file, 0);
++	if (fd < 0)
++		return false;
++	n = read(fd, buf, sizeof (buf) - 1);
++	close(fd);
++	if (n < 0)
++		return false;
++
++	buf[n] = '\0';
++	*value = strtoull(buf, 0, 0);
++
++	return true;
++}
++
++static uint32_t
++read_device_param(const char *stem, int id, const char *param)
++{
++	char *name;
++	int ret = asprintf(&name, "/sys/class/drm/%s%u/device/%s", stem, id, param);
++	uint64_t value;
++	bool success;
++
++	assert(ret != -1);
++
++	success = read_file_uint64(name, &value);
++	free(name);
++
++	return success ? value : 0;
++}
++
++static int
++find_intel_render_node(void)
++{
++	for (int i = 128; i < (128 + 16); i++) {
++		if (read_device_param("renderD", i, "vendor") == 0x8086)
++			return i;
++	}
++
++	return -1;
++}
++
++static void
++print_intel_devices(void)
++{
++	fprintf(stdout, "Available devices:\n");
++	for (int i = 0; i < 128; i++) {
++		if (read_device_param("card", i, "vendor") == 0x8086) {
++			uint32_t devid = read_device_param("card", i, "device");
++			const struct intel_device_info *devinfo =
++				intel_get_device_info(devid);
++			fprintf(stdout, "   %i: %s (0x%04hx)\n", i,
++				devinfo ? devinfo->codename : "unknwon",
++				devid);
++		}
++	}
++}
++
++static int
++open_render_node(uint32_t *devid, int card)
++{
++	char *name;
++	int ret;
++	int fd;
++	int render;
++
++	if (card < 0) {
++		render = find_intel_render_node();
++		if (render < 0)
++			return -1;
++	} else {
++		render = 128 + card;
++	}
++
++	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	assert(ret != -1);
++
++	*devid = read_device_param("renderD", render, "device");
++
++	fd = open(name, O_RDWR);
++	free(name);
++
++	return fd;
++}
++
++static uint32_t
++oa_exponent_for_period(uint64_t device_timestamp_frequency, double period)
++{
++	uint64_t period_ns = 1000 * 1000 * 1000 * period;
++	uint64_t device_periods[32];
++
++	for (uint32_t i = 0; i < ARRAY_SIZE(device_periods); i++)
++		device_periods[i] = 1000000000ull * (1u << i) / device_timestamp_frequency;
++
++	for (uint32_t i = 1; i < ARRAY_SIZE(device_periods); i++) {
++		if (period_ns >= device_periods[i - 1] &&
++		    period_ns < device_periods[i]) {
++			if ((device_periods[i] - period_ns) >
++			    (period_ns - device_periods[i - 1]))
++				return i - 1;
++			return i;
++		}
++	}
++
++	return -1;
++}
++
++static int
++perf_ioctl(int fd, unsigned long request, void *arg)
++{
++	int ret;
++
++	do {
++		ret = ioctl(fd, request, arg);
++	} while (ret == -1 && (errno == EINTR || errno == EAGAIN));
++
++	return ret;
++}
++
++static uint64_t
++get_device_cs_timestamp_frequency(int drm_fd)
++{
++	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
++}
++
++static uint64_t
++get_device_oa_timestamp_frequency(int drm_fd)
++{
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
++	struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
++
++	return oau->oa_timestamp_freq;
++}
++
++struct recording_context {
++	int drm_fd;
++	int perf_fd;
++
++	uint32_t devid;
++	uint64_t oa_timestamp_frequency;
++	uint64_t cs_timestamp_frequency;
++
++	const struct intel_device_info *devinfo;
++
++	struct intel_xe_topology_info *topology;
++	uint32_t topology_size;
++
++	struct intel_xe_perf *perf;
++	struct intel_xe_perf_metric_set *metric_set;
++
++	uint32_t oa_exponent;
++
++	struct circular_buffer circular_buffer;
++	FILE *output_stream;
++
++	const char *command_fifo;
++	int command_fifo_fd;
++
++	int gt;
++	struct drm_xe_engine_class_instance eci;
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_oa_unit *oa_unit;
++};
++
++static void set_fd_flags(int fd, int flags)
++{
++	int old = fcntl(fd, F_GETFL, 0);
++
++	igt_assert_lte(0, old);
++	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
++}
++
++enum xe_oa_report_header {
++	HDR_32_BIT = 0,
++	HDR_64_BIT,
++};
++
++struct xe_oa_format {
++	uint32_t counter_select;
++	int size;
++	int oa_type;
++	enum xe_oa_report_header header;
++	uint16_t counter_size;
++	uint16_t bc_report;
++};
++
++#define DRM_FMT(x) DRM_XE_OA_FMT_TYPE_##x
++
++static const struct xe_oa_format oa_formats[] = {
++	[XE_OA_FORMAT_C4_B8]			= { 7, 64,  DRM_FMT(OAG) },
++	[XE_OA_FORMAT_A12]			= { 0, 64,  DRM_FMT(OAG) },
++	[XE_OA_FORMAT_A12_B8_C8]		= { 2, 128, DRM_FMT(OAG) },
++	[XE_OA_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
++	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAR) },
++	[XE_OA_FORMAT_A24u40_A14u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
++	[XE_OAC_FORMAT_A24u64_B8_C8]		= { 1, 320, DRM_FMT(OAC), HDR_64_BIT },
++	[XE_OAC_FORMAT_A22u32_R2u32_B8_C8]	= { 2, 192, DRM_FMT(OAC), HDR_64_BIT },
++	[XE_OAM_FORMAT_MPEC8u64_B8_C8]		= { 1, 192, DRM_FMT(OAM_MPEC), HDR_64_BIT },
++	[XE_OAM_FORMAT_MPEC8u32_B8_C8]		= { 2, 128, DRM_FMT(OAM_MPEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC64u64]			= { 1, 576, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC64u64_B8_C8]		= { 1, 640, DRM_FMT(PEC), HDR_64_BIT, 1, 1 },
++	[XE_OA_FORMAT_PEC64u32]			= { 1, 320, DRM_FMT(PEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC32u64_G1]		= { 5, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC32u32_G1]		= { 5, 192, DRM_FMT(PEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC32u64_G2]		= { 6, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC32u32_G2]		= { 6, 192, DRM_FMT(PEC), HDR_64_BIT },
++	[XE_OA_FORMAT_PEC36u64_G1_32_G2_4]	= { 3, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32]	= { 4, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
++};
++
++static uint64_t oa_format_fields(uint64_t name)
++{
++#define FIELD_PREP_ULL(_mask, _val) \
++	(((_val) << (__builtin_ffsll(_mask) - 1)) & (_mask))
++
++	struct xe_oa_format f = oa_formats[name];
++
++	/* 0 format name is invalid */
++	if (!name)
++		memset(&f, 0xff, sizeof(f));
++
++	return FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_FMT_TYPE, (u64)f.oa_type) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SEL, (u64)f.counter_select) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE, (u64)f.counter_size) |
++		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_BC_REPORT, (u64)f.bc_report);
++#undef FIELD_PREP_ULL
++}
++#define __ff oa_format_fields
++
++static int
++perf_open(struct recording_context *ctx)
++{
++	int stream_fd;
++
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
++
++		/* Include OA reports in samples */
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, ctx->metric_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++
++	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
++	if (stream_fd < 0) {
++		errno = 0;
++		goto exit;
++	}
++
++	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
++exit:
++	return stream_fd;
++}
++
++static bool quit = false;
++
++static void
++sigint_handler(int val)
++{
++	quit = true;
++}
++
++static bool
++write_version(FILE *output, struct recording_context *ctx)
++{
++	struct intel_xe_perf_record_version version = {
++		.version = INTEL_XE_PERF_RECORD_VERSION,
++	};
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_VERSION,
++		.size = sizeof(header) + sizeof(version),
++	};
++
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(&version, sizeof(version), 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static bool
++write_header(FILE *output, struct recording_context *ctx)
++{
++	struct intel_xe_perf_record_device_info info = {
++		.timestamp_frequency = ctx->oa_timestamp_frequency,
++		.device_id = ctx->perf->devinfo.devid,
++		.device_revision = ctx->perf->devinfo.revision,
++		.gt_min_frequency = ctx->perf->devinfo.gt_min_freq,
++		.gt_max_frequency = ctx->perf->devinfo.gt_max_freq,
++		.oa_format = ctx->metric_set->perf_oa_format,
++		.engine_class = ctx->hwe->engine_class,
++		.engine_instance = ctx->hwe->engine_instance,
++	};
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_INFO,
++		.size = sizeof(header) + sizeof(info),
++	};
++
++	snprintf(info.metric_set_name, sizeof(info.metric_set_name),
++		 "%s", ctx->metric_set->symbol_name);
++	snprintf(info.metric_set_uuid, sizeof(info.metric_set_uuid),
++		 "%s", ctx->metric_set->hw_config_guid);
++
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(&info, sizeof(info), 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static struct intel_xe_topology_info *get_topology(struct recording_context *ctx)
++{
++	return xe_fill_topology_info(ctx->drm_fd, ctx->devid, &ctx->topology_size);
++}
++
++static bool
++write_topology(FILE *output, struct recording_context *ctx)
++{
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_TOPOLOGY,
++	};
++
++	header.size = sizeof(header) + ctx->topology_size;
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(ctx->topology, ctx->topology_size, 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static int get_stream_status(int perf_fd, u32 *oa_status)
++{
++	struct drm_xe_oa_stream_status status;
++	int ret;
++
++	ret = perf_ioctl(perf_fd, DRM_XE_PERF_IOCTL_STATUS, &status);
++	if (ret)
++		return ret;
++
++	*oa_status = status.oa_status;
++	return 0;
++}
++
++static bool write_stream_status(struct recording_context *ctx, FILE *output)
++{
++	u32 oa_status;
++
++	if (!get_stream_status(ctx->perf_fd, &oa_status)) {
++		struct intel_xe_perf_record_header header = { .size = sizeof(header) };
++
++		if (oa_status & DRM_XE_OASTATUS_REPORT_LOST)
++			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_REPORT_LOST;
++		else if (oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW)
++			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_BUFFER_LOST;
++		else
++			return true;
++
++		if (fwrite(&header, sizeof(header), 1, output) != 1)
++			return false;
++	}
++
++	return true;
++}
++
++static bool write_stream_data(struct recording_context *ctx,
++			      char *data, ssize_t size, FILE *output)
++{
++	ssize_t format_size = oa_formats[ctx->metric_set->perf_oa_format].size;
++
++	assert(!(size % format_size));
++
++	for (int i = 0; i < size / format_size; i++) {
++		struct intel_xe_perf_record_header header = {
++			.type = INTEL_XE_PERF_RECORD_TYPE_SAMPLE,
++			.size = sizeof(header) + format_size,
++		};
++
++		if (fwrite(&header, sizeof(header), 1, output) != 1)
++			return false;
++
++		if (fwrite(data, format_size, 1, output) != 1)
++			return false;
++	}
++
++	return true;
++}
++
++static bool write_perf_data(FILE *output, struct recording_context *ctx)
++{
++	char data[4096];
++	ssize_t len;
++	bool ret;
++
++	while (1) {
++		len = read(ctx->perf_fd, data, sizeof(data));
++
++		if (len < 0) {
++			switch (errno) {
++			case EIO:
++				ret = write_stream_status(ctx, output);
++				if (!ret)
++					return ret;
++				break;
++			case EAGAIN:
++			case EINTR:
++				return true;
++			default:
++				/* Not expecting -EFAULT, -ENOSPC, -EINVAL */
++				assert(0);
++			}
++		} else {
++			ret = write_stream_data(ctx, data, len, output);
++			if (!ret)
++				return ret;
++		}
++	}
++
++	/* Should not reach here */
++	return false;
++}
++
++static clock_t correlation_clock_id = CLOCK_MONOTONIC;
++
++static const char *
++get_correlation_clock_name(clock_t clock_id)
++{
++	switch (clock_id) {
++	case CLOCK_BOOTTIME:      return "bootime";
++	case CLOCK_MONOTONIC:     return "monotonic";
++	case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
++	default:                  return "*unknown*";
++	}
++}
++
++static int query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *ts)
++{
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_ENGINE_CYCLES,
++		.size = sizeof(*ts),
++		.data = (uintptr_t)ts,
++	};
++
++	return perf_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
++}
++
++static bool get_correlation_timestamps(struct recording_context *ctx,
++				       struct intel_xe_perf_record_timestamp_correlation *corr)
++{
++	struct drm_xe_query_engine_cycles ts = {};
++
++	ts.eci = *ctx->hwe;
++	ts.clockid = correlation_clock_id;
++
++	if (query_engine_cycles(ctx->drm_fd, &ts))
++		return false;
++
++	corr->cpu_timestamp = ts.cpu_timestamp + ts.cpu_delta / 2;
++	corr->gpu_timestamp = ts.engine_cycles;
++
++	return true;
++}
++
++static bool
++write_saved_correlation_timestamps(FILE *output,
++				   const struct intel_xe_perf_record_timestamp_correlation *corr)
++{
++	struct intel_xe_perf_record_header header = {
++		.type = INTEL_XE_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION,
++		.size = sizeof(header) + sizeof(*corr),
++	};
++
++	if (fwrite(&header, sizeof(header), 1, output) != 1)
++		return false;
++
++	if (fwrite(corr, sizeof(*corr), 1, output) != 1)
++		return false;
++
++	return true;
++}
++
++static bool
++write_correlation_timestamps(struct recording_context *ctx, FILE *output)
++{
++	struct intel_xe_perf_record_timestamp_correlation corr;
++
++	if (!get_correlation_timestamps(ctx, &corr))
++		return false;
++
++	return write_saved_correlation_timestamps(output, &corr);
++}
++
++static void
++read_command_file(struct recording_context *ctx)
++{
++	struct recorder_command_base header;
++	ssize_t ret = read(ctx->command_fifo_fd, &header, sizeof(header));
++
++	if (ret < 0)
++		return;
++
++	switch (header.command) {
++	case RECORDER_COMMAND_DUMP: {
++		uint32_t len = header.size - sizeof(header), offset = 0;
++		uint8_t *dump = malloc(len);
++		FILE *file;
++
++		while (offset < len &&
++		       ((ret = read(ctx->command_fifo_fd,
++				    (void *) dump + offset, len - offset)) > 0
++			|| errno == EAGAIN)) {
++			if (ret > 0)
++				offset += ret;
++		}
++
++		fprintf(stdout, "Writing circular buffer to %s\n", dump);
++
++		file = fopen((const char *) dump, "w+");
++		if (file) {
++			struct chunk chunks[2];
++
++			fflush(ctx->output_stream);
++			get_chunks(chunks, &ctx->circular_buffer,
++				   false, ctx->circular_buffer.size);
++
++			if (!write_version(file, ctx) ||
++			    !write_header(file, ctx) ||
++			    !write_topology(file, ctx) ||
++			    fwrite(chunks[0].data, chunks[0].len, 1, file) != 1 ||
++			    (chunks[1].len > 0 &&
++			     fwrite(chunks[1].data, chunks[1].len, 1, file) != 1) ||
++			    !write_correlation_timestamps(ctx, file)) {
++				fprintf(stderr, "Unable to write circular buffer data in file '%s'\n",
++					dump);
++			}
++			fclose(file);
++		} else
++			fprintf(stderr, "Unable to write dump file '%s'\n", dump);
++
++		free(dump);
++		break;
++	}
++	case RECORDER_COMMAND_QUIT:
++		quit = true;
++		break;
++	default:
++		fprintf(stderr, "Unknown command 0x%x\n", header.command);
++		break;
++	}
++}
++
++static void
++print_metric_sets(const struct intel_xe_perf *perf)
++{
++	struct intel_xe_perf_metric_set *metric_set;
++	uint32_t longest_name = 0;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		longest_name = MAX(longest_name, strlen(metric_set->symbol_name));
++	}
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		fprintf(stdout, "%s:%*s%s\n",
++			metric_set->symbol_name,
++			(int) (longest_name - strlen(metric_set->symbol_name) + 1), " ",
++			metric_set->name);
++	}
++}
++
++static void
++print_metric_set_counters(const struct intel_xe_perf_metric_set *metric_set)
++{
++	uint32_t longest_name = 0;
++
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		longest_name = MAX(longest_name, strlen(metric_set->counters[i].name));
++	}
++
++	fprintf(stdout, "%s (%s):\n", metric_set->symbol_name, metric_set->name);
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		struct intel_xe_perf_logical_counter *counter = &metric_set->counters[i];
++
++		fprintf(stdout, "  %s:%*s%s\n",
++			counter->name,
++			(int)(longest_name - strlen(counter->name) + 1), " ",
++			counter->desc);
++	}
++}
++
++static void
++print_metric_sets_counters(struct intel_xe_perf *perf)
++{
++	struct intel_xe_perf_metric_set *metric_set;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link)
++		print_metric_set_counters(metric_set);
++}
++
++static void
++usage(const char *name)
++{
++	fprintf(stdout,
++		"Usage: %s [options]\n"
++		"Recording tool for xe-oa\n"
++		"\n"
++		"     --help,               -h          Print this screen\n"
++		"     --device,             -d <value>  Device to use\n"
++		"                                       (value=list to list devices\n"
++		"                                        value=1 to use /dev/dri/card1)\n"
++		"     --correlation-period, -c <value>  Time period of timestamp correlation in seconds\n"
++		"                                       (default = 1.0)\n"
++		"     --perf-period,        -p <value>  Time period of xe-oa reports in seconds\n"
++		"                                       (default = 0.001)\n"
++		"     --metric,             -m <value>  xe-oa metric to sample with (use value=list to list all metrics)\n"
++		"     --counters,           -C          List counters for a given metric and exit\n"
++		"     --size,               -s <value>  Size of circular buffer to use in kilobytes\n"
++		"                                       If specified, a maximum amount of <value> data will\n"
++		"                                       be recorded.\n"
++		"     --command-fifo,       -f <path>   Path to a command fifo, implies circular buffer\n"
++		"                                       (To use with xe-perf-control)\n"
++		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
++		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
++		"                                       Values: boot, mono, mono_raw (default = mono)\n"
++		"     --engine-class        -e <value>  Engine class used for the OA capture.\n"
++		"     --engine-instance     -i <value>  Engine instance used for the OA capture.\n",
++		name);
++}
++
++static void
++teardown_recording_context(struct recording_context *ctx)
++{
++	if (ctx->topology)
++		free(ctx->topology);
++
++	if (ctx->perf)
++		intel_xe_perf_free(ctx->perf);
++
++	if (ctx->command_fifo)
++		unlink(ctx->command_fifo);
++	if (ctx->command_fifo_fd != -1)
++		close(ctx->command_fifo_fd);
++
++	if (ctx->output_stream)
++		fclose(ctx->output_stream);
++
++	free(ctx->circular_buffer.data);
++
++	if (ctx->perf_fd != -1)
++		close(ctx->perf_fd);
++	if (ctx->drm_fd != -1)
++		close(ctx->drm_fd);
++}
++
++static int assign_oa_unit(int fd, struct recording_context *ctx)
++{
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
++	struct drm_xe_oa_unit *oau;
++	uint8_t *poau;
++
++	poau = (uint8_t *)&qoa->oa_units[0];
++	for (int i = 0; i < qoa->num_oa_units; i++) {
++		oau = (struct drm_xe_oa_unit *)poau;
++
++		for (int j = 0; j < oau->num_engines; j++) {
++			if (oau->eci[j].engine_class == ctx->eci.engine_class &&
++			    oau->eci[j].engine_instance == ctx->eci.engine_instance) {
++				ctx->hwe = &oau->eci[j];
++				ctx->oa_unit = oau;
++				return 0;
++			}
++		}
++
++		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
++	}
++
++	return -1;
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",		no_argument, 0, 'h'},
++		{"device",		required_argument, 0, 'd'},
++		{"correlation-period",	required_argument, 0, 'c'},
++		{"perf-period",		required_argument, 0, 'p'},
++		{"metric",		required_argument, 0, 'm'},
++		{"counters",		no_argument, 0, 'C'},
++		{"output",		required_argument, 0, 'o'},
++		{"size",		required_argument, 0, 's'},
++		{"command-fifo",	required_argument, 0, 'f'},
++		{"cpu-clock",		required_argument, 0, 'k'},
++		{"engine-class",	required_argument, 0, 'e'},
++		{"engine-instance",	required_argument, 0, 'i'},
++		{0, 0, 0, 0}
++	};
++	const struct {
++		clock_t id;
++		const char *name;
++	} clock_names[] = {
++		{ CLOCK_BOOTTIME,	"boot" },
++		{ CLOCK_MONOTONIC,	"mono" },
++		{ CLOCK_MONOTONIC_RAW,	"mono_raw" },
++	};
++	double corr_period = 1.0, perf_period = 0.001;
++	const char *metric_name = NULL, *output_file = "xe_perf.record";
++	struct intel_xe_perf_metric_set *metric_set;
++	struct intel_xe_perf_record_timestamp_correlation initial_correlation;
++	struct timespec now;
++	uint64_t corr_period_ns, poll_time_ns;
++	uint32_t circular_size = 0;
++	int opt, dev_node_id = -1;
++	bool list_counters = false;
++	FILE *output = NULL;
++	struct recording_context ctx = {
++		.drm_fd = -1,
++		.perf_fd = -1,
++
++		.command_fifo = XE_PERF_RECORD_FIFO_PATH,
++		.command_fifo_fd = -1,
++
++		.eci = { DRM_XE_ENGINE_CLASS_RENDER, 0 },
++	};
++
++	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:e:i:", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage(argv[0]);
++			return EXIT_SUCCESS;
++		case 'c':
++			corr_period = atof(optarg);
++			break;
++		case 'd':
++			if (!strcmp(optarg, "list"))
++				dev_node_id = -2;
++			else
++				dev_node_id = atoi(optarg);
++			break;
++		case 'p':
++			perf_period = atof(optarg);
++			break;
++		case 'm':
++			metric_name = optarg;
++			break;
++		case 'C':
++			list_counters = true;
++			break;
++		case 'o':
++			output_file = optarg;
++			break;
++		case 's':
++			circular_size = MAX(8, atoi(optarg)) * 1024;
++			break;
++		case 'f':
++			ctx.command_fifo = optarg;
++			circular_size = 8 * 1024 * 1024;
++			break;
++		case 'k': {
++			bool found = false;
++			for (uint32_t i = 0; i < ARRAY_SIZE(clock_names); i++) {
++				if (!strcmp(clock_names[i].name, optarg)) {
++					correlation_clock_id = clock_names[i].id;
++					found = true;
++					break;
++				}
++			}
++			if (!found) {
++				fprintf(stderr, "Unknown clock name '%s'\n", optarg);
++				return EXIT_FAILURE;
++			}
++			break;
++		}
++		case 'e':
++			ctx.eci.engine_class = atoi(optarg);
++			break;
++		case 'i':
++			ctx.eci.engine_instance = atoi(optarg);
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage(argv[0]);
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (dev_node_id == -2) {
++		print_intel_devices();
++		return EXIT_SUCCESS;
++	}
++
++	ctx.drm_fd = open_render_node(&ctx.devid, dev_node_id);
++	if (ctx.drm_fd < 0) {
++		fprintf(stderr, "Unable to open device.\n");
++		return EXIT_FAILURE;
++	}
++
++	xe_device_get(ctx.drm_fd);
++
++	ctx.devinfo = intel_get_device_info(ctx.devid);
++	if (!ctx.devinfo) {
++		fprintf(stderr, "No device info found.\n");
++		goto fail;
++	}
++
++	if (assign_oa_unit(ctx.drm_fd, &ctx) < 0) {
++		fprintf(stderr, "assign_oa_unit failed\n");
++		goto fail;
++	}
++
++	fprintf(stdout, "Device name=%s gen=%i id=0x%x oa_unit=%i gt=%i\n",
++		ctx.devinfo->codename, ctx.devinfo->graphics_ver, ctx.devid,
++		ctx.oa_unit->oa_unit_id, ctx.hwe->gt_id);
++
++	ctx.topology = get_topology(&ctx);
++	if (!ctx.topology) {
++		fprintf(stderr, "Unable to retrieve GPU topology\n");
++		goto fail;
++	}
++
++	ctx.perf = intel_xe_perf_for_fd(ctx.drm_fd, ctx.hwe->gt_id);
++	if (!ctx.perf) {
++		fprintf(stderr, "No perf data found.\n");
++		goto fail;
++	}
++
++	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
++
++	if (metric_name) {
++		if (!strcmp(metric_name, "list")) {
++			print_metric_sets(ctx.perf);
++			return EXIT_SUCCESS;
++		}
++
++		igt_list_for_each_entry(metric_set, &ctx.perf->metric_sets, link) {
++			if (!strcasecmp(metric_set->symbol_name, metric_name)) {
++				ctx.metric_set = metric_set;
++				break;
++			}
++		}
++	}
++
++	if (list_counters) {
++		if (!ctx.metric_set)
++			print_metric_sets_counters(ctx.perf);
++		else
++			print_metric_set_counters(ctx.metric_set);
++		teardown_recording_context(&ctx);
++		return EXIT_SUCCESS;
++	}
++
++	if (!ctx.metric_set) {
++		if (!metric_name)
++			fprintf(stderr, "No metric set specified.\n");
++		else
++			fprintf(stderr, "Unknown metric set '%s'.\n", metric_name);
++		print_metric_sets(ctx.perf);
++		goto fail;
++	}
++
++	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
++
++	ctx.oa_timestamp_frequency = get_device_oa_timestamp_frequency(ctx.drm_fd);
++	ctx.cs_timestamp_frequency = get_device_cs_timestamp_frequency(ctx.drm_fd);
++
++	signal(SIGINT, sigint_handler);
++
++	if (ctx.command_fifo) {
++		if (mkfifo(ctx.command_fifo,
++			   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH) != 0) {
++			fprintf(stderr, "Unable to create command fifo '%s': %s\n",
++				ctx.command_fifo, strerror(errno));
++			goto fail;
++		}
++
++		ctx.command_fifo_fd = open(ctx.command_fifo, O_RDWR);
++		if (ctx.command_fifo_fd < 0) {
++			fprintf(stderr, "Unable to open command fifo '%s': %s\n",
++				ctx.command_fifo, strerror(errno));
++			goto fail;
++		}
++	}
++
++	if (circular_size) {
++		ctx.circular_buffer.allocated_size = circular_size;
++		ctx.circular_buffer.data = malloc(circular_size);
++		if (!ctx.circular_buffer.data) {
++			fprintf(stderr, "Unable to allocate circular buffer\n");
++			goto fail;
++		}
++
++		ctx.output_stream = fopencookie(&ctx.circular_buffer, "w+",
++						circular_buffer_functions);
++		if (!ctx.output_stream) {
++			fprintf(stderr, "Unable to create circular buffer\n");
++			goto fail;
++		}
++
++		if (!get_correlation_timestamps(&ctx, &initial_correlation)) {
++			fprintf(stderr, "Unable to correlation timestamps\n");
++			goto fail;
++		}
++
++		write_correlation_timestamps(&ctx, ctx.output_stream);
++		fprintf(stdout,
++			"Recoding in internal circular buffer.\n"
++			"Use xe-perf-control to snapshot into file.\n");
++	} else {
++		output = fopen(output_file, "w+");
++		if (!output) {
++			fprintf(stderr, "Unable to open output file '%s'\n",
++				output_file);
++			goto fail;
++		}
++
++		if (!write_version(output, &ctx) ||
++		    !write_header(output, &ctx) ||
++		    !write_topology(output, &ctx) ||
++		    !write_correlation_timestamps(&ctx, output)) {
++			fprintf(stderr, "Unable to write header in file '%s'\n",
++				output_file);
++			goto fail;
++		}
++
++		ctx.output_stream = output;
++		fprintf(stdout, "Writing recoding to %s\n", output_file);
++	}
++
++	if (ctx.metric_set->perf_oa_metrics_set == 0) {
++		fprintf(stderr,
++			"Unable to load performance configuration, consider running:\n"
++			"   sysctl dev.xe.perf_stream_paranoid=0\n");
++		goto fail;
++	}
++
++	fprintf(stdout, "Using correlation clock: %s\n",
++		get_correlation_clock_name(correlation_clock_id));
++
++	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
++	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
++		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
++		ctx.metric_set->perf_oa_format);
++
++	ctx.perf_fd = perf_open(&ctx);
++	if (ctx.perf_fd < 0) {
++		fprintf(stderr, "Unable to open xe oa stream: %s\n",
++			strerror(errno));
++		goto fail;
++	}
++
++	corr_period_ns = corr_period * 1000000000ul;
++	poll_time_ns = corr_period_ns;
++
++	while (!quit) {
++		struct pollfd pollfd[2] = {
++			{         ctx.perf_fd, POLLIN, 0 },
++			{ ctx.command_fifo_fd, POLLIN, 0 },
++		};
++		uint64_t elapsed_ns;
++		int ret;
++
++		igt_gettime(&now);
++		ret = poll(pollfd, ctx.command_fifo_fd != -1 ? 2 : 1, poll_time_ns / 1000000);
++		if (ret < 0 && errno != EINTR) {
++			fprintf(stderr, "Failed to poll xe-oa stream: %s\n",
++				strerror(errno));
++			break;
++		}
++
++		if (ret > 0) {
++			if (pollfd[0].revents & POLLIN) {
++				if (!write_perf_data(ctx.output_stream, &ctx)) {
++					fprintf(stderr, "Failed to write xe-oa data: %s\n",
++						strerror(errno));
++					break;
++				}
++			}
++
++			if (pollfd[1].revents & POLLIN) {
++				read_command_file(&ctx);
++			}
++		}
++
++		elapsed_ns = igt_nsec_elapsed(&now);
++		if (elapsed_ns > poll_time_ns) {
++			poll_time_ns = corr_period_ns;
++			if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
++				fprintf(stderr,
++					"Failed to write xe timestamp correlation data: %s\n",
++					strerror(errno));
++				break;
++			}
++		} else {
++			poll_time_ns -= elapsed_ns;
++		}
++	}
++
++	fprintf(stdout, "Exiting...\n");
++
++	if (!write_perf_data(ctx.output_stream, &ctx)) {
++		fprintf(stderr, "Failed to write xe-oa data: %s\n",
++			strerror(errno));
++	}
++
++	if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
++		fprintf(stderr,
++			"Failed to write final xe timestamp correlation data: %s\n",
++			strerror(errno));
++	}
++
++	teardown_recording_context(&ctx);
++
++	return EXIT_SUCCESS;
++
++ fail:
++	teardown_recording_context(&ctx);
++
++	return EXIT_FAILURE;
++}
+diff --git a/tools/xe-perf/xe_perf_recorder_commands.h b/tools/xe-perf/xe_perf_recorder_commands.h
+new file mode 100644
+index 0000000000..528813d2dc
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_recorder_commands.h
+@@ -0,0 +1,31 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#ifndef XE_PERF_RECORDER_COMMANDS_H
++#define XE_PERF_RECORDER_COMMANDS_H
++
++#include <stdint.h>
++
++#define XE_PERF_RECORD_FIFO_PATH "/tmp/.xe-perf-record"
++
++enum recorder_command {
++	RECORDER_COMMAND_DUMP = 1,
++	RECORDER_COMMAND_QUIT,
++};
++
++struct recorder_command_base {
++	uint32_t command;
++	uint32_t size; /* size of recorder_command_base + dump in bytes */
++};
++
++/*
++ The dump after the recorder_command_base header:
++
++struct recorder_command_dump {
++	uint8_t path[0];
++};
++*/
++
++#endif
 -- 
 2.41.0
 
