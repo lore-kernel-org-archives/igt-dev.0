@@ -4,67 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05DFDC2BD09
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 19:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED61C2BD09
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 19:31:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C472D10ED30;
-	Fri, 28 Jun 2024 19:03:28 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="Vxs4Wjj9";
-	dkim-atps=neutral
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com
- [209.85.219.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 587D510ED30
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 19:03:28 +0000 (UTC)
-Received: by mail-qv1-f44.google.com with SMTP id
- 6a1803df08f44-6b5834b3a95so4598266d6.2
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 12:03:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=broadcom.com; s=google; t=1719601407; x=1720206207;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=eE2zwcUR0JoOPGNnXs9CbrqNpPm/DIqILekXLYrLVQU=;
- b=Vxs4Wjj9Yl17Bw8hPMVBiVpifP7MewzRtAltdj4qg2Q0cndxxzcuyU7RERxlx7BX78
- ME9LCUTdC1DY69DdOvZhD7p6UuEMs2oChSJdkcv/tKVeG03kcYiD8Tr7JXYslBnxcfxH
- cBA8eX5tcivuOeqsvxWzZjv/rRgLp37uBIX/c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1719601407; x=1720206207;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=eE2zwcUR0JoOPGNnXs9CbrqNpPm/DIqILekXLYrLVQU=;
- b=gvQXXV/0zPin6mTjYuRFK37GxCaF53vTkBTrZJuUXUSAAn/33SzhVGPSwV7O4q3C0S
- MoGjlOSI5M0msedgpP5tP7TjmIusL6Tqf6S6QIoTukGMUHsMjJ1dNBk7te7bfoj5Dc4k
- txqUDJ0oABw54qfQjsXZrpNY+TJQpJi9+GWnpD9rSkoS7ZFoi3am/XZBQMoGiat6IPpM
- cY1fCdh/+dH7yruFmD3Kkh4paRcHR9KCE6dKAcPN0oKGuJixRJX3X3okmR2rh3Giv17N
- mA7EQRGubTt1ewt2FQgdnCTlrKFe8DNhcqTJWJSyZxiz+19NVA6VDvFKZFNkYe7JPG6X
- cJDg==
-X-Gm-Message-State: AOJu0Yw2nY9HIB2ZRA/6WvaAfe2tBVHMRL93BgdazN4YEeTpxAkYiWLc
- xRTno+DbnXt6JAFaLpmNBX3WQ7qvRmd2IPm4smvs+up/B9S7XUU4gGaWDltM/OXgok7sZRe1UpO
- fnUm0b17LaMPr9qcZQMXwHigCjFwXlzr3p2jZjnkqJvUpVZtKormTCrSjRQGJKn7sD+fAld072w
- jNvbhwJ1eYEDfTydtZ8s0v8YZ9hdcmQ3YV1tGdXBWDbAci0H3Lgg==
-X-Google-Smtp-Source: AGHT+IH9YFT/uRglHBPf+X8CPmggmnLsMgtPtmGtIYNUheuXMCJXPiXh4g33L3/v3slgmLkLwpWhNQ==
-X-Received: by 2002:a05:6214:a87:b0:6b0:6dba:c947 with SMTP id
- 6a1803df08f44-6b5409c70b6mr147143886d6.18.1719601406983; 
- Fri, 28 Jun 2024 12:03:26 -0700 (PDT)
-Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net.
- [173.49.113.140]) by smtp.gmail.com with ESMTPSA id
- 6a1803df08f44-6b59e74144bsm10100016d6.141.2024.06.28.12.03.26
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Fri, 28 Jun 2024 12:03:26 -0700 (PDT)
-From: Zack Rusin <zack.rusin@broadcom.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ian.forbes@broadcom.com, martin.krastev@broadcom.com,
- maaz.mombasawala@broadcom.com, kamil.konieczny@linux.intel.com,
- Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH i-g-t] tests/dumb_buffer: Add subtests for mixing dumb buffers
- with prime
-Date: Fri, 28 Jun 2024 15:03:18 -0400
-Message-Id: <20240628190318.700537-1-zack.rusin@broadcom.com>
-X-Mailer: git-send-email 2.40.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2E81E10ED1D;
+	Fri, 28 Jun 2024 19:31:19 +0000 (UTC)
+Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E20010ED1D;
+ Fri, 28 Jun 2024 19:31:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6477792549128396726=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_vmwgfx_prime_tests_=28rev3?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zack Rusin" <zack.rusin@broadcom.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 28 Jun 2024 19:31:17 -0000
+Message-ID: <171960307731.186331.595524171326618201@a6498e030952>
+X-Patchwork-Hint: ignore
+References: <20240628190243.695367-1-zack.rusin@broadcom.com>
+In-Reply-To: <20240628190243.695367-1-zack.rusin@broadcom.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,137 +37,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New versions of KWin are extensively using dumb buffers with prime. Add
-some basic tests to verify that mixing the dumb buffer interface
-with prime ends up with a well formed buffer.
+--===============6477792549128396726==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
----
- tests/dumb_buffer.c | 94 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+== Series Details ==
 
-diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-index 8e243459c..62e9b419d 100644
---- a/tests/dumb_buffer.c
-+++ b/tests/dumb_buffer.c
-@@ -69,6 +69,18 @@
-  * SUBTEST: map-uaf
-  *
-  * SUBTEST: map-valid
-+ *
-+ * SUBTEST: dmabuf-read
-+ * Description: Make a dumb buffer, map it using the dumb buffer interface,
-+ *              export it via prime, mmap the prime buffer and check
-+ *              that its contents matches what we wrote to the dumb
-+ *              buffer.
-+ *
-+ * SUBTEST: dmabuf-write
-+ * Description: Make a dumb buffer, map and write to it using the prime
-+ *              interface, than map it using the dumb buffer interface
-+ *              and check whether its contents matches what we wrote using
-+ * 		the prime interface.
-  */
- 
- IGT_TEST_DESCRIPTION("This is a test for the generic dumb buffer interface.");
-@@ -388,6 +400,82 @@ static void always_clear(int fd, int timeout)
- 	igt_info("Checked %'lu page allocations\n", checked);
- }
- 
-+static const uint32_t pattern[] = {
-+	0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff,
-+	0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000,
-+	0x00ffff00, 0xff0000ff, 0x00ff00ff, 0xff00ff00,
-+	0xff0000ff, 0x00ff00ff, 0x00ffff00, 0xff00ff00
-+};
-+
-+static void dmabuf_read(int fd)
-+{
-+	struct drm_mode_create_dumb create = {
-+		.width = 64,
-+		.height = 64,
-+		.bpp = 32,
-+	};
-+	int dma_buf_fd;
-+	uint32_t *ptr;
-+
-+	dumb_create(fd, &create);
-+	ptr = dumb_map(fd, create.handle, create.size, PROT_WRITE);
-+	igt_assert(ptr != MAP_FAILED);
-+	igt_assert(ptr != NULL);
-+	igt_assert(create.size > sizeof(pattern));
-+	memcpy(ptr, pattern, sizeof(pattern));
-+	munmap(ptr, create.size);
-+
-+	dma_buf_fd = prime_handle_to_fd_for_mmap(fd, create.handle);
-+
-+	/* Skip if DRM_RDWR is not supported */
-+	igt_skip_on(errno == EINVAL);
-+
-+	ptr = mmap(NULL, create.size, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd, 0);
-+	igt_assert(ptr != MAP_FAILED);
-+
-+	/* Check pattern correctness */
-+	igt_assert(memcmp(ptr, pattern, sizeof(pattern)) == 0);
-+
-+	munmap(ptr, create.size);
-+	close(dma_buf_fd);
-+
-+	dumb_destroy(fd, create.handle);
-+}
-+
-+static void dmabuf_write(int fd)
-+{
-+	struct drm_mode_create_dumb create = {
-+		.width = 64,
-+		.height = 64,
-+		.bpp = 32,
-+	};
-+	int dma_buf_fd;
-+	uint32_t *ptr;
-+
-+	dumb_create(fd, &create);
-+
-+	dma_buf_fd = prime_handle_to_fd_for_mmap(fd, create.handle);
-+	/* Skip if DRM_RDWR is not supported */
-+	igt_skip_on(errno == EINVAL);
-+
-+	ptr = mmap(NULL, create.size, PROT_READ | PROT_WRITE, MAP_SHARED, dma_buf_fd, 0);
-+	igt_assert(ptr != MAP_FAILED);
-+	memcpy(ptr, pattern, sizeof(pattern));
-+	munmap(ptr, create.size);
-+
-+
-+	ptr = dumb_map(fd, create.handle, create.size, PROT_READ);
-+	igt_assert(ptr != MAP_FAILED);
-+	igt_assert(ptr != NULL);
-+	igt_assert(create.size > sizeof(pattern));
-+	igt_assert(memcmp(ptr, pattern, sizeof(pattern)) == 0);
-+	munmap(ptr, create.size);
-+
-+	close(dma_buf_fd);
-+
-+	dumb_destroy(fd, create.handle);
-+}
-+
- igt_main
- {
- 	int fd = -1;
-@@ -414,6 +502,12 @@ igt_main
- 	igt_subtest("create-clear")
- 		always_clear(fd, 30);
- 
-+	igt_subtest("dmabuf-read")
-+		dmabuf_read(fd);
-+
-+	igt_subtest("dmabuf-write")
-+		dmabuf_write(fd);
-+
- 	igt_fixture {
- 		drm_close_driver(fd);
- 	}
--- 
-2.40.1
+Series: Add vmwgfx prime tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/133402/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7907_BAT -> XEIGTPW_11332_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11332_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - {bat-lnl-1}:        [FAIL][1] ([Intel XE#886]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7907/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11332/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7907 -> IGTPW_11332
+  * Linux: xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c -> xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299
+
+  IGTPW_11332: 11332
+  IGT_7907: 676b8e660cadae8ffb29a45b12ad5b53ef228b6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c: 42f35e623e6590cf8ec493373e4664ae4e32123c
+  xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11332/index.html
+
+--===============6477792549128396726==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add vmwgfx prime tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133402/">https://patchwork.freedesktop.org/series/133402/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11332/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11332/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7907_BAT -&gt; XEIGTPW_11332_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11332_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:<ul>
+<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7907/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11332/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7907 -&gt; IGTPW_11332</li>
+<li>Linux: xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c -&gt; xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299</li>
+</ul>
+<p>IGTPW_11332: 11332<br />
+  IGT_7907: 676b8e660cadae8ffb29a45b12ad5b53ef228b6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c: 42f35e623e6590cf8ec493373e4664ae4e32123c<br />
+  xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299</p>
+
+</body>
+</html>
+
+--===============6477792549128396726==--
