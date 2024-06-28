@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56697C30658
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 21:44:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F7BC2BD09
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 21:58:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1736210E1C1;
-	Fri, 28 Jun 2024 21:44:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B058610E1C6;
+	Fri, 28 Jun 2024 21:58:57 +0000 (UTC)
 Received: from a6498e030952 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CA04710E1C1;
- Fri, 28 Jun 2024 21:44:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64B0B10E1C6;
+ Fri, 28 Jun 2024 21:58:56 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5880888929992800051=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Intel_Xe_OA_IGT_lib_and?=
- =?utf-8?q?_tools_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Intel_Xe_OA_IGT_lib_and_tools_?=
+ =?utf-8?q?=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 28 Jun 2024 21:44:34 -0000
-Message-ID: <171961107482.186685.9931805101279682394@a6498e030952>
+Date: Fri, 28 Jun 2024 21:58:56 -0000
+Message-ID: <171961193640.186685.10822606354894047984@a6498e030952>
 X-Patchwork-Hint: ignore
 References: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 In-Reply-To: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
@@ -41,106 +41,144 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============5880888929992800051==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
 
 Series: Intel Xe OA IGT lib and tools (rev2)
 URL   : https://patchwork.freedesktop.org/series/135451/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7907_BAT -> XEIGTPW_11335_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1213077 f=
-or the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/60509148):
-  [45/1073] Linking target lib/libi915_perf.so.1.5.
-  [46/1073] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf=
-.so.1.5.symbols'.
-  [47/1073] Compiling C object 'lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o'.
-  FAILED: lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@xe_oa@sha -Ilib -I../lib =
--I../include -I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/s=
-yscalls -I. -I../ -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D=
-64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include c=
-onfig.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-state=
-ment -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declara=
-tions -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -W=
-nested-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Ws=
-hadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-mayb=
-e-uninitialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sig=
-n-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=
-=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -W=
-error=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=
-=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=
-=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite=
--strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 =
--fPIC  -MD -MQ 'lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o' -MF 'lib/76b5a35@@xe_o=
-a@sha/xe_xe_oa.c.o.d' -o 'lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o' -c ../lib/xe=
-/xe_oa.c
-  ../lib/xe/xe_oa.c: In function =E2=80=98load_metric_set_config=E2=80=99:
-  ../lib/xe/xe_oa.c:682:9: error: cast to pointer from integer of different=
- size [-Werror=3Dint-to-pointer-cast]
-    regs =3D (u8 *)config.regs_ptr;
-           ^
-  ../lib/xe/xe_oa.c:695:7: error: cast to pointer from integer of different=
- size [-Werror=3Dint-to-pointer-cast]
-    free((void *)config.regs_ptr);
-         ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1719610644:step_script
-  section_start:1719610644:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719610644:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/60509150):
-  [56/1073] Linking target lib/libi915_perf.so.1.5.
-  [57/1073] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf=
-.so.1.5.symbols'.
-  [58/1073] Compiling C object 'lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o'.
-  FAILED: lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@xe_oa@sha -Ilib -I../lib -I../=
-include -I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/syscal=
-ls -I. -I../ -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -W=
-all -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config=
-.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement =
--Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations=
- -Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wneste=
-d-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow=
- -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uni=
-nitialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-com=
-pare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dad=
-dress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
-=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmi=
-ssing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretu=
-rn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-string=
-s -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -fPIC  =
--MD -MQ 'lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o' -MF 'lib/76b5a35@@xe_oa@sha/x=
-e_xe_oa.c.o.d' -o 'lib/76b5a35@@xe_oa@sha/xe_xe_oa.c.o' -c ../lib/xe/xe_oa.c
-  ../lib/xe/xe_oa.c: In function =E2=80=98load_metric_set_config=E2=80=99:
-  ../lib/xe/xe_oa.c:682:9: error: cast to pointer from integer of different=
- size [-Werror=3Dint-to-pointer-cast]
-    regs =3D (u8 *)config.regs_ptr;
-           ^
-  ../lib/xe/xe_oa.c:695:7: error: cast to pointer from integer of different=
- size [-Werror=3Dint-to-pointer-cast]
-    free((void *)config.regs_ptr);
-         ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1719610650:step_script
-  section_start:1719610650:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719610651:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No regressions found.
 
-=3D=3D Logs =3D=3D
+  
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1213077
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11335_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - {bat-lnl-1}:        [FAIL][1] ([Intel XE#886]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7907/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#324]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7907/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7907 -> IGTPW_11335
+  * Linux: xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c -> xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299
+
+  IGTPW_11335: 11335
+  IGT_7907: 676b8e660cadae8ffb29a45b12ad5b53ef228b6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c: 42f35e623e6590cf8ec493373e4664ae4e32123c
+  xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/index.html
+
+--===============5880888929992800051==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Intel Xe OA IGT lib and tools (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135451/">https://patchwork.freedesktop.org/series/135451/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7907_BAT -&gt; XEIGTPW_11335_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11335_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7907/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7907/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11335/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7907 -&gt; IGTPW_11335</li>
+<li>Linux: xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c -&gt; xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299</li>
+</ul>
+<p>IGTPW_11335: 11335<br />
+  IGT_7907: 676b8e660cadae8ffb29a45b12ad5b53ef228b6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1538-42f35e623e6590cf8ec493373e4664ae4e32123c: 42f35e623e6590cf8ec493373e4664ae4e32123c<br />
+  xe-1542-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299</p>
+
+</body>
+</html>
+
+--===============5880888929992800051==--
