@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39E52C3065F
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D20F4C3065E
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF77810ED50;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5844C10ED4B;
 	Fri, 28 Jun 2024 20:44:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SLHtQb/K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LxzwkdAD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0720910E0A8
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 609CF10E0A8
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719607435; x=1751143435;
+ t=1719607436; x=1751143436;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=rOjYu5HB+nYIDiEAevu70NbIJ462YGvu8uqVON0fSD4=;
- b=SLHtQb/KRsk6O6i7d9+H/FFpAwbAbKtzcE7KnmJrGSdq8FgTaYA2coFB
- 94Sj/uC1lOCrpZqpxI+Ja3SaSbaCteg+a0svqYmlpzHWpMQg0/AlzbTDI
- hUmIW/OKY+e6fqEYV3QdVKj4zcb4BsmLjjMjM7dOwncNN38DxUwNFcnwB
- 8aAYLDO7YTsnmM3i1fR89onSl71IsBR2/abXhsTogp+foAuJ1/l+fOkvC
- W7Mx+aQgTc0JGBQz9VzWO5KeNRnMDLSnQdILafjHR9uA8JjtjTYyayWMB
- 6bouGTtIZFaG+J8UBkXg33j8hZLUX0GWSf+MZOUuf1r+HHG5PoTu7VVag A==;
-X-CSE-ConnectionGUID: nBcy/QCfQoSq6FWsnc2n2A==
-X-CSE-MsgGUID: QFI/9IT6TfCAXuWBy3YLgg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427486"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427486"
+ bh=fFMzwPS7qW5r49onQ0UQ7AEZihYvYNyl6nFhxiCZNMk=;
+ b=LxzwkdAD7XAlJQlRivn2q3u7cMkKBZnJKlpn7SbEWakSB/7lXYWZ8V2l
+ wZyhCZKuFWFRjW4iXdhtF9ntElWc5yvjXyKtsphTzQ07Q+WXeRDgz1Sm+
+ O4nsnwuc5Hd8lYVUG4WX2XpfBvkN+q2D67slhQ6cYWpzL53ztFRk5tAGx
+ KLy6ORXpxcmW2LKRW9sdyRudENfmmTHjU7gh4pn8RfBvk0RJ2c26WJehb
+ LZioDTT5JOrotm6LeSu1hb0PhXWY6nmyP/GzbfWf/nsjfhr8nw+rbZ1qO
+ i4dhFX8hKVxG6VX8jTL/r5XQG+xGsbNwCXJ/5UBkPNeaDcrjjcVu0QaWE g==;
+X-CSE-ConnectionGUID: vhZMsMqXT7GucQNGcHy7dA==
+X-CSE-MsgGUID: 5CDbdEhARYyLEOSLcAj10A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427493"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427493"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:54 -0700
-X-CSE-ConnectionGUID: PdBuOqo3TA6g+HqoTQfRyg==
-X-CSE-MsgGUID: u5FO1g19R7qkN3x0rQHY4g==
+ 28 Jun 2024 13:43:55 -0700
+X-CSE-ConnectionGUID: yDdxp4KJRtaQ03oZUJiQYA==
+X-CSE-MsgGUID: S+0+qWxaQFuU6Sw/kQBi+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465200"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465211"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:54 -0700
+ 28 Jun 2024 13:43:55 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 06/16] lib/xe/oa: Switch generated files to Xe namespace
-Date: Fri, 28 Jun 2024 13:43:38 -0700
-Message-ID: <20240628204348.2142940-7-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 12/16] tools/xe-perf: xe_perf_reader,
+ xe_perf_control and xe_perf_configs
+Date: Fri, 28 Jun 2024 13:43:44 -0700
+Message-ID: <20240628204348.2142940-13-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 References: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,265 +68,755 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The Xe IGT library occupies a different namespace ('intel_xe') from the
-i915 IGT library ('intel' or 'i915'). The generated files are also part of
-the Xe IGT library. Therefore make sure the functions and data structs in
-the generated files conform to Xe namespace.
+Add xe_perf_reader, xe_perf_control and xe_perf_configs tools, similar to
+their i915 counterparts.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/xe/oa-configs/codegen.py              |  6 ++--
- lib/xe/oa-configs/oa-equations-codegen.py | 36 +++++++++++------------
- lib/xe/oa-configs/oa-metricset-codegen.py | 26 ++++++++--------
- lib/xe/oa-configs/oa-registers-codegen.py | 10 +++----
- 4 files changed, 39 insertions(+), 39 deletions(-)
+ tools/xe-perf/meson.build       |  17 ++
+ tools/xe-perf/xe_perf_configs.c | 247 ++++++++++++++++++++++++
+ tools/xe-perf/xe_perf_control.c | 117 ++++++++++++
+ tools/xe-perf/xe_perf_reader.c  | 325 ++++++++++++++++++++++++++++++++
+ 4 files changed, 706 insertions(+)
+ create mode 100644 tools/xe-perf/xe_perf_configs.c
+ create mode 100644 tools/xe-perf/xe_perf_control.c
+ create mode 100644 tools/xe-perf/xe_perf_reader.c
 
-diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
-index 020e76ef4b..9a7d57a33e 100644
---- a/lib/xe/oa-configs/codegen.py
-+++ b/lib/xe/oa-configs/codegen.py
-@@ -340,13 +340,13 @@ class Gen:
-             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
-         m = re.search('\$GtSlice([0-9]+)$', name)
-         if m:
--            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
-+            return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
-         m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-         if m:
--            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-+            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-         m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-         if m:
--            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-+            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-         return None
- 
-     def output_rpn_equation_code(self, set, counter, equation):
-diff --git a/lib/xe/oa-configs/oa-equations-codegen.py b/lib/xe/oa-configs/oa-equations-codegen.py
-index a4a00f46d9..de5a3337df 100644
---- a/lib/xe/oa-configs/oa-equations-codegen.py
-+++ b/lib/xe/oa-configs/oa-equations-codegen.py
-@@ -46,9 +46,9 @@ def output_counter_read(gen, set, counter):
-     read_eq = counter.get('equation')
- 
-     c(ret_ctype)
--    c(counter.read_sym + "(const struct intel_perf *perf,\n")
-+    c(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
-     c.indent(len(counter.read_sym) + 1)
--    c("const struct intel_perf_metric_set *metric_set,\n")
-+    c("const struct intel_xe_perf_metric_set *metric_set,\n")
-     c("uint64_t *accumulator)\n")
-     c.outdent(len(counter.read_sym) + 1)
- 
-@@ -75,9 +75,9 @@ def output_counter_read_definition(gen, set, counter):
-         read_eq = counter.get('equation')
- 
-         h(ret_ctype)
--        h(counter.read_sym + "(const struct intel_perf *perf,\n")
-+        h(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
-         h.indent(len(counter.read_sym) + 1)
--        h("const struct intel_perf_metric_set *metric_set,\n")
-+        h("const struct intel_xe_perf_metric_set *metric_set,\n")
-         h("uint64_t *accumulator);\n")
-         h.outdent(len(counter.read_sym) + 1)
- 
-@@ -100,9 +100,9 @@ def output_counter_max(gen, set, counter):
-     ret_ctype = data_type_to_ctype(ret_type)
- 
-     c(ret_ctype)
--    c(counter.max_sym + "(const struct intel_perf *perf,\n")
-+    c(counter.max_sym + "(const struct intel_xe_perf *perf,\n")
-     c.indent(len(counter.max_sym) + 1)
--    c("const struct intel_perf_metric_set *metric_set,\n")
-+    c("const struct intel_xe_perf_metric_set *metric_set,\n")
-     c("uint64_t *accumulator)\n")
-     c.outdent(len(counter.max_sym) + 1)
- 
-@@ -135,9 +135,9 @@ def output_counter_max_definition(gen, set, counter):
- 
-         h(ret_ctype)
- 
--        h(counter.max_sym + "(const struct intel_perf *perf,")
-+        h(counter.max_sym + "(const struct intel_xe_perf *perf,")
-         h.indent(len(counter.max_sym) + 1)
--        h("const struct intel_perf_metric_set *metric_set,")
-+        h("const struct intel_xe_perf_metric_set *metric_set,")
-         h("uint64_t *accumulator);")
-         h.outdent(len(counter.max_sym) + 1)
-         h("\n")
-@@ -163,16 +163,16 @@ def generate_equations(args, gens):
-         #define MAX(a, b) (((a) > (b)) ? (a) : (b))
- 
-         double
--        percentage_max_callback_float(const struct intel_perf *perf,
--                                      const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_float(const struct intel_xe_perf *perf,
-+                                      const struct intel_xe_perf_metric_set *metric_set,
-                                       uint64_t *accumulator)
-         {
-            return 100;
-         }
- 
-         uint64_t
--        percentage_max_callback_uint64(const struct intel_perf *perf,
--                                       const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
-+                                       const struct intel_xe_perf_metric_set *metric_set,
-                                        uint64_t *accumulator)
-         {
-            return 100;
-@@ -196,16 +196,16 @@ def generate_equations(args, gens):
-         #include <stdint.h>
-         #include <stdbool.h>
- 
--        struct intel_perf;
--        struct intel_perf_metric_set;
-+        struct intel_xe_perf;
-+        struct intel_xe_perf_metric_set;
- 
-         double
--        percentage_max_callback_float(const struct intel_perf *perf,
--                                      const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_float(const struct intel_xe_perf *perf,
-+                                      const struct intel_xe_perf_metric_set *metric_set,
-                                       uint64_t *accumulator);
-         uint64_t
--        percentage_max_callback_uint64(const struct intel_perf *perf,
--                                       const struct intel_perf_metric_set *metric_set,
-+        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
-+                                       const struct intel_xe_perf_metric_set *metric_set,
-                                        uint64_t *accumulator);
- 
-         """ % (header_define, header_define)))
-diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
-index ea0d13cc97..f4a008d690 100644
---- a/lib/xe/oa-configs/oa-metricset-codegen.py
-+++ b/lib/xe/oa-configs/oa-metricset-codegen.py
-@@ -28,7 +28,7 @@ def availability_func_name(set, counter):
- def output_availability_funcs(set, counter):
-     availability = counter.get('availability')
-     if availability:
--        c("static bool " + availability_func_name(set, counter) + "(const struct intel_perf *perf) {")
-+        c("static bool " + availability_func_name(set, counter) + "(const struct intel_xe_perf *perf) {")
-         c.indent(4)
-         set.gen.output_availability(set, availability, counter.get('name'))
-         c.indent(4)
-@@ -60,9 +60,9 @@ def output_counter_report(set, counter):
-     c(".name = \"{0}\",\n".format(counter.get('name')))
-     c(".symbol_name = \"{0}\",\n".format(counter.get('symbol_name')))
-     c(".desc = \"{0}\",\n".format(counter.get('description')))
--    c(".type = INTEL_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
--    c(".storage = INTEL_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
--    c(".unit = INTEL_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
-+    c(".type = INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
-+    c(".storage = INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
-+    c(".unit = INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
-     c(".read_{0} = {1},\n".format(data_type, set.read_funcs["$" + counter.get('symbol_name')]))
-     c(".max_{0} = {1},\n".format(data_type, set.max_funcs["$" + counter.get('symbol_name')]))
-     c(".group = \"{0}\",\n".format(counter.get('mdapi_group')))
-@@ -98,18 +98,18 @@ def generate_metric_sets(args, gen):
-           output_availability_funcs(set, counter)
- 
-         c("\nstatic void\n")
--        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_perf *perf)")
-+        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_xe_perf *perf)")
-         c("{\n")
-         c.indent(4)
- 
--        c("struct intel_perf_metric_set *metric_set;\n")
--        c("struct intel_perf_logical_counter *counter;\n\n")
-+        c("struct intel_xe_perf_metric_set *metric_set;\n")
-+        c("struct intel_xe_perf_logical_counter *counter;\n\n")
- 
-         c("metric_set = calloc(1, sizeof(*metric_set));\n")
-         c("metric_set->name = \"" + set.name + "\";\n")
-         c("metric_set->symbol_name = \"" + set.symbol_name + "\";\n")
-         c("metric_set->hw_config_guid = \"" + set.hw_config_guid + "\";\n")
--        c("metric_set->counters = calloc({0}, sizeof(struct intel_perf_logical_counter));\n".format(str(len(counters))))
-+        c("metric_set->counters = calloc({0}, sizeof(struct intel_xe_perf_logical_counter));\n".format(str(len(counters))))
-         c("metric_set->n_counters = 0;\n")
-         c("metric_set->perf_oa_metrics_set = 0; // determined at runtime\n")
- 
-@@ -167,12 +167,12 @@ def generate_metric_sets(args, gen):
- 
-         c("%s_%s_add_registers(perf, metric_set);" % (gen.chipset, set.underscore_name))
- 
--        c("intel_perf_add_metric_set(perf, metric_set);");
-+        c("intel_xe_perf_add_metric_set(perf, metric_set);");
-         c("\n")
- 
-         c("{")
-         c.indent(4)
--        c("static const struct intel_perf_logical_counter _counters[] = {")
-+        c("static const struct intel_xe_perf_logical_counter _counters[] = {")
-         c.indent(4)
- 
-         for counter in counters:
-@@ -190,7 +190,7 @@ def generate_metric_sets(args, gen):
-         c("counter = &metric_set->counters[metric_set->n_counters++];")
-         c("*counter = _counters[i];")
-         c("counter->metric_set = metric_set;")
--        c("intel_perf_add_logical_counter(perf, counter, counter->group);")
-+        c("intel_xe_perf_add_logical_counter(perf, counter, counter->group);")
-         c.outdent(4)
-         c("}")
-         c.outdent(4)
-@@ -201,7 +201,7 @@ def generate_metric_sets(args, gen):
-         c("}\n")
- 
-     c("\nvoid")
--    c("intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf)")
-+    c("intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf)")
-     c("{")
-     c.indent(4)
- 
-@@ -256,7 +256,7 @@ def main():
-         """ % (header_define, header_define)))
- 
-     # Print out all set registration functions for each generation.
--    h("void intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf);\n\n")
-+    h("void intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf);\n\n")
- 
-     h(textwrap.dedent("""\
-         #endif /* %s */
-diff --git a/lib/xe/oa-configs/oa-registers-codegen.py b/lib/xe/oa-configs/oa-registers-codegen.py
-index a4aa134097..08fc38a50e 100644
---- a/lib/xe/oa-configs/oa-registers-codegen.py
-+++ b/lib/xe/oa-configs/oa-registers-codegen.py
-@@ -22,7 +22,7 @@ def generate_register_configs(set):
-         'OA': 'b_counter_regs',
-     }
- 
--    c("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set)" %
-+    c("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set)" %
-       (set.gen.chipset, set.underscore_name))
-     c("{")
-     c.indent(4)
-@@ -39,7 +39,7 @@ def generate_register_configs(set):
- 
-         c("{")
-         c.indent(4)
--        c("static const struct intel_perf_register_prog _%s[] = {" % t)
-+        c("static const struct intel_xe_perf_register_prog _%s[] = {" % t)
-         c.indent(4)
-         for register in register_config.findall('register'):
-             c("{ .reg = %s, .val = %s }," %
-@@ -95,11 +95,11 @@ def main():
-     h("#ifndef %s" % header_define)
-     h("#define %s" % header_define)
-     h("\n")
--    h("struct intel_perf;")
--    h("struct intel_perf_metric_set;")
-+    h("struct intel_xe_perf;")
-+    h("struct intel_xe_perf_metric_set;")
-     h("\n")
-     for set in gen.sets:
--        h("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set);" %
-+        h("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set);" %
-           (gen.chipset, set.underscore_name))
-     h("\n")
-     h("#endif /* %s */" % header_define)
+diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
+index a5f59a67fe..8506aa320f 100644
+--- a/tools/xe-perf/meson.build
++++ b/tools/xe-perf/meson.build
+@@ -1,5 +1,22 @@
++executable('xe-perf-configs',
++           [ 'xe_perf_configs.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt_chipset, lib_igt_xe_oa],
++           install: true)
++
+ executable('xe-perf-recorder',
+            [ 'xe_perf_recorder.c' ],
+            include_directories: inc,
+            dependencies: [lib_igt, lib_igt_xe_oa],
+            install: true)
++
++executable('xe-perf-control',
++           [ 'xe_perf_control.c' ],
++           include_directories: inc,
++           install: true)
++
++executable('xe-perf-reader',
++           [ 'xe_perf_reader.c' ],
++           include_directories: inc,
++           dependencies: [lib_igt, lib_igt_xe_oa],
++           install: true)
+diff --git a/tools/xe-perf/xe_perf_configs.c b/tools/xe-perf/xe_perf_configs.c
+new file mode 100644
+index 0000000000..af33c0078c
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_configs.c
+@@ -0,0 +1,247 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++
++#include <assert.h>
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/sysmacros.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "intel_chipset.h"
++#include "xe/xe_oa.h"
++
++static bool
++read_file_uint64(const char *file, uint64_t *value)
++{
++	char buf[32];
++	int fd, n;
++
++	fd = open(file, 0);
++	if (fd < 0)
++		return false;
++	n = read(fd, buf, sizeof (buf) - 1);
++	close(fd);
++	if (n < 0)
++		return false;
++
++	buf[n] = '\0';
++	*value = strtoull(buf, 0, 0);
++
++	return true;
++}
++
++static uint32_t
++read_device_param(const char *stem, int id, const char *param)
++{
++	char *name;
++	int ret = asprintf(&name, "/sys/class/drm/%s%u/device/%s", stem, id, param);
++	uint64_t value;
++	bool success;
++
++	assert(ret != -1);
++
++	success = read_file_uint64(name, &value);
++	free(name);
++
++	return success ? value : 0;
++}
++
++static int
++find_intel_render_node(void)
++{
++	for (int i = 128; i < (128 + 16); i++) {
++		if (read_device_param("renderD", i, "vendor") == 0x8086)
++			return i;
++	}
++
++	return -1;
++}
++
++static int
++open_render_node(uint32_t *devid)
++{
++	char *name;
++	int ret;
++	int fd;
++
++	int render = find_intel_render_node();
++	if (render < 0)
++		return -1;
++
++	ret = asprintf(&name, "/dev/dri/renderD%u", render);
++	assert(ret != -1);
++
++	*devid = read_device_param("renderD", render, "device");
++
++	fd = open(name, O_RDWR);
++	free(name);
++
++	return fd;
++}
++
++static int
++get_card_for_fd(int fd)
++{
++	struct stat sb;
++	int mjr, mnr;
++	char buffer[128];
++	DIR *drm_dir;
++	struct dirent *entry;
++	int retval = -1;
++
++	if (fstat(fd, &sb)) {
++		fprintf(stderr, "Failed to stat DRM fd\n");
++		return -1;
++	}
++
++	mjr = major(sb.st_rdev);
++	mnr = minor(sb.st_rdev);
++
++	snprintf(buffer, sizeof(buffer), "/sys/dev/char/%d:%d/device/drm", mjr, mnr);
++
++	drm_dir = opendir(buffer);
++	assert(drm_dir != NULL);
++
++	while ((entry = readdir(drm_dir))) {
++		if (entry->d_type == DT_DIR && strncmp(entry->d_name, "card", 4) == 0) {
++			retval = strtoull(entry->d_name + 4, NULL, 10);
++			break;
++		}
++	}
++
++	closedir(drm_dir);
++
++	return retval;
++}
++
++static const char *
++metric_name(struct intel_xe_perf *perf, const char *hw_config_guid)
++{
++	struct intel_xe_perf_metric_set *metric_set;
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		if (!strcmp(metric_set->hw_config_guid, hw_config_guid))
++			return metric_set->symbol_name;
++	}
++
++	return "Unknown";
++}
++
++static void
++usage(void)
++{
++	printf("Usage: xe-perf-configs [options]\n"
++	       "Manages xe-perf configurations stored in xe.\n"
++	       "     --purge, -p         Purge configurations from the kernel\n"
++	       "     --list,  -l         List configurations from the kernel\n");
++}
++
++int
++main(int argc, char *argv[])
++{
++	char metrics_path[128];
++	DIR *metrics_dir;
++	struct dirent *entry;
++	int drm_fd, drm_card;
++	int opt;
++	bool purge = false;
++	const struct option long_options[] = {
++		{"help",   no_argument, 0, 'h'},
++		{"list",   no_argument, 0, 'l'},
++		{"purge",  no_argument, 0, 'p'},
++		{0, 0, 0, 0}
++	};
++	const struct intel_device_info *devinfo;
++	struct intel_xe_perf *perf;
++	uint32_t devid = 0;
++
++	while ((opt = getopt_long(argc, argv, "hlp", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage();
++			return EXIT_SUCCESS;
++		case 'l':
++			break;
++		case 'p':
++			purge = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage();
++			return EXIT_FAILURE;
++		}
++	}
++
++	drm_fd = open_render_node(&devid);
++	drm_card = get_card_for_fd(drm_fd);
++
++	fprintf(stdout, "Found device id=0x%x\n", devid);
++
++	devinfo = intel_get_device_info(drm_fd);
++	if (!devinfo) {
++		fprintf(stderr, "No device info found.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Device graphics_ver=%i gt=%i\n", devinfo->graphics_ver, devinfo->gt);
++
++	perf = intel_xe_perf_for_fd(drm_fd, 0);
++	if (!perf) {
++		fprintf(stderr, "No perf data found.\n");
++		return EXIT_FAILURE;
++	}
++
++	snprintf(metrics_path, sizeof(metrics_path),
++		 "/sys/class/drm/card%d/metrics", drm_card);
++	metrics_dir = opendir(metrics_path);
++	if (!metrics_dir)
++		return EXIT_FAILURE;
++
++	fprintf(stdout, "Looking at metrics in %s\n", metrics_path);
++
++	while ((entry = readdir(metrics_dir))) {
++		char metric_id_path[400];
++		uint64_t metric_id;
++
++		if (entry->d_type != DT_DIR)
++			continue;
++
++		snprintf(metric_id_path, sizeof(metric_id_path),
++			 "%s/%s/id", metrics_path, entry->d_name);
++
++		if (!read_file_uint64(metric_id_path, &metric_id))
++			continue;
++
++		if (purge) {
++			if (intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &metric_id) == 0)
++				fprintf(stdout, "\tRemoved config %s id=%03" PRIu64 " name=%s\n",
++					entry->d_name, metric_id, metric_name(perf, entry->d_name));
++			else
++				fprintf(stdout, "\tFailed to remove config %s id=%03" PRIu64 " name=%s\n",
++					entry->d_name, metric_id, metric_name(perf, entry->d_name));
++		} else {
++			fprintf(stdout, "\tConfig %s id=%03" PRIu64 " name=%s\n",
++				entry->d_name, metric_id, metric_name(perf, entry->d_name));
++		}
++	}
++
++	closedir(metrics_dir);
++	close(drm_fd);
++
++	return EXIT_SUCCESS;
++}
+diff --git a/tools/xe-perf/xe_perf_control.c b/tools/xe-perf/xe_perf_control.c
+new file mode 100644
+index 0000000000..da96232bc8
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_control.c
+@@ -0,0 +1,117 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++
++#include <getopt.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "xe_perf_recorder_commands.h"
++
++static void
++usage(const char *name)
++{
++	fprintf(stdout,
++		"Usage: %s [options]\n"
++		"\n"
++		"     --help,               -h         Print this screen\n"
++		"     --command-fifo,       -f <path>  Path to a command fifo\n"
++		"     --dump,               -d <path>  Write a content of circular buffer to path\n",
++		name);
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",                       no_argument, 0, 'h'},
++		{"dump",                 required_argument, 0, 'd'},
++		{"command-fifo",         required_argument, 0, 'f'},
++		{"quit",                       no_argument, 0, 'q'},
++		{0, 0, 0, 0}
++	};
++	const char *command_fifo = XE_PERF_RECORD_FIFO_PATH, *dump_file = NULL;
++	FILE *command_fifo_file;
++	int opt;
++	bool quit = false;
++
++	while ((opt = getopt_long(argc, argv, "hd:f:q", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage(argv[0]);
++			return EXIT_SUCCESS;
++		case 'd':
++			dump_file = optarg;
++			break;
++		case 'f':
++			command_fifo = optarg;
++			break;
++		case 'q':
++			quit = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage(argv[0]);
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (!command_fifo)
++		return EXIT_FAILURE;
++
++	command_fifo_file = fopen(command_fifo, "r+");
++	if (!command_fifo_file) {
++		fprintf(stderr, "Unable to open command file\n");
++		return EXIT_FAILURE;
++	}
++
++	if (dump_file) {
++		if (dump_file[0] == '/') {
++			uint32_t total_len =
++				sizeof(struct recorder_command_base) + strlen(dump_file) + 1;
++			struct {
++				struct recorder_command_base base;
++				uint8_t dump[];
++			} *data = malloc(total_len);
++
++			data->base.command = RECORDER_COMMAND_DUMP;
++			data->base.size = total_len;
++			snprintf((char *) data->dump, strlen(dump_file) + 1, "%s", dump_file);
++
++			fwrite(data, total_len, 1, command_fifo_file);
++		} else {
++			char *cwd = getcwd(NULL, 0);
++			uint32_t path_len = strlen(cwd) + 1 + strlen(dump_file) + 1;
++			uint32_t total_len = sizeof(struct recorder_command_base) + path_len;
++			struct {
++				struct recorder_command_base base;
++				uint8_t dump[];
++			} *data = malloc(total_len);
++
++			data->base.command = RECORDER_COMMAND_DUMP;
++			data->base.size = total_len;
++			snprintf((char *) data->dump, path_len, "%s/%s", cwd, dump_file);
++
++			fwrite(data, total_len, 1, command_fifo_file);
++		}
++	}
++
++	if (quit) {
++		struct recorder_command_base base = {
++			.command = RECORDER_COMMAND_QUIT,
++			.size = sizeof(base),
++		};
++
++		fwrite(&base, sizeof(base), 1, command_fifo_file);
++	}
++
++	fclose(command_fifo_file);
++
++	return EXIT_SUCCESS;
++}
+diff --git a/tools/xe-perf/xe_perf_reader.c b/tools/xe-perf/xe_perf_reader.c
+new file mode 100644
+index 0000000000..62a4237ee4
+--- /dev/null
++++ b/tools/xe-perf/xe_perf_reader.c
+@@ -0,0 +1,325 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++#include <assert.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <getopt.h>
++#include <inttypes.h>
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "igt_core.h"
++#include "intel_chipset.h"
++#include "xe/xe_oa.h"
++#include "xe/xe_oa_data_reader.h"
++
++#define MAX(a,b) ((a) > (b) ? (a) : (b))
++#define MIN(a,b) ((a) > (b) ? (b) : (a))
++
++static void
++usage(void)
++{
++	printf("Usage: xe-perf-reader [options] file\n"
++	       "Reads the content of an xe-perf recording.\n"
++	       "\n"
++	       "     --help,    -h             Print this screen\n"
++	       "     --counters, -c c1,c2,...  List of counters to display values for.\n"
++	       "                               Use 'all' to display all counters.\n"
++	       "                               Use 'list' to list available counters.\n"
++	       "     --reports, -r             Print out data per report.\n");
++}
++
++static struct intel_xe_perf_logical_counter *
++find_counter(struct intel_xe_perf_metric_set *metric_set,
++	     const char *name)
++{
++	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++		if (!strcmp(name, metric_set->counters[i].symbol_name)) {
++			return &metric_set->counters[i];
++		}
++	}
++
++	return NULL;
++}
++
++static void
++append_counter(struct intel_xe_perf_logical_counter ***counters,
++	       int32_t *n_counters,
++	       uint32_t *n_allocated_counters,
++	       struct intel_xe_perf_logical_counter *counter)
++{
++	if (*n_counters < *n_allocated_counters) {
++		(*counters)[(*n_counters)++] = counter;
++		return;
++	}
++
++	*n_allocated_counters = MAX(2, *n_allocated_counters * 2);
++	*counters = realloc(*counters,
++			    sizeof(struct intel_xe_perf_logical_counter *) *
++			    (*n_allocated_counters));
++	(*counters)[(*n_counters)++] = counter;
++}
++
++static struct intel_xe_perf_logical_counter **
++get_logical_counters(struct intel_xe_perf_metric_set *metric_set,
++		     const char *counter_list,
++		     int32_t *out_n_counters)
++{
++	struct intel_xe_perf_logical_counter **counters = NULL, *counter;
++	uint32_t n_allocated_counters = 0;
++	const char *current, *next;
++	char counter_name[100];
++
++	if (!counter_list) {
++		*out_n_counters = 0;
++		return NULL;
++	}
++
++	if (!strcmp(counter_list, "list")) {
++		uint32_t longest_name = 0;
++
++		*out_n_counters = -1;
++		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++			longest_name = MAX(longest_name,
++					   strlen(metric_set->counters[i].symbol_name));
++		}
++
++		fprintf(stdout, "Available counters:\n");
++		for (uint32_t i = 0; i < metric_set->n_counters; i++) {
++			fprintf(stdout, "%s:%*s%s\n",
++				metric_set->counters[i].symbol_name,
++				(int)(longest_name -
++				      strlen(metric_set->counters[i].symbol_name) + 1), " ",
++				metric_set->counters[i].name);
++		}
++		return NULL;
++	}
++
++	if (!strcmp(counter_list, "all")) {
++		counters = malloc(sizeof(*counters) * metric_set->n_counters);
++		*out_n_counters = metric_set->n_counters;
++		for (uint32_t i = 0; i < metric_set->n_counters; i++)
++			counters[i] = &metric_set->counters[i];
++		return counters;
++	}
++
++	*out_n_counters = 0;
++	current = counter_list;
++	while ((next = strstr(current, ","))) {
++		snprintf(counter_name,
++			 MIN((uint32_t)(next - current) + 1, sizeof(counter_name)),
++			 "%s", current);
++
++		counter = find_counter(metric_set, counter_name);
++		if (!counter) {
++			fprintf(stderr, "Unknown counter '%s'.\n", counter_name);
++			free(counters);
++			*out_n_counters = -1;
++			return NULL;
++		}
++
++		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
++
++		current = next + 1;
++	}
++
++	if (strlen(current) > 0) {
++		counter = find_counter(metric_set, current);
++		if (!counter) {
++			fprintf(stderr, "Unknown counter '%s'.\n", current);
++			free(counters);
++			*out_n_counters = -1;
++			return NULL;
++		}
++
++		append_counter(&counters, out_n_counters, &n_allocated_counters, counter);
++	}
++
++	return counters;
++}
++
++static void
++print_report_deltas(const struct intel_xe_perf_data_reader *reader,
++		    const struct intel_xe_perf_record_header *xe_report0,
++		    const struct intel_xe_perf_record_header *xe_report1,
++		    struct intel_xe_perf_logical_counter **counters,
++		    uint32_t n_counters)
++{
++	struct intel_xe_perf_accumulator accu;
++
++	intel_xe_perf_accumulate_reports(&accu,
++				      reader->perf, reader->metric_set,
++				      xe_report0, xe_report1);
++
++	for (uint32_t c = 0; c < n_counters; c++) {
++		struct intel_xe_perf_logical_counter *counter = counters[c];
++
++		switch (counter->storage) {
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT64:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT32:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_BOOL32:
++			fprintf(stdout, "   %s: %" PRIu64 "\n",
++				counter->symbol_name, counter->read_uint64(reader->perf,
++									   reader->metric_set,
++									   accu.deltas));
++			break;
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE:
++		case INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_FLOAT:
++			fprintf(stdout, "   %s: %f\n",
++				counter->symbol_name, counter->read_float(reader->perf,
++									  reader->metric_set,
++									  accu.deltas));
++			break;
++		}
++	}
++}
++
++int
++main(int argc, char *argv[])
++{
++	const struct option long_options[] = {
++		{"help",             no_argument, 0, 'h'},
++		{"counters",   required_argument, 0, 'c'},
++		{"reports",          no_argument, 0, 'r'},
++		{0, 0, 0, 0}
++	};
++	struct intel_xe_perf_data_reader reader;
++	struct intel_xe_perf_logical_counter **counters;
++	const struct intel_device_info *devinfo;
++	const char *counter_names = NULL;
++	int32_t n_counters;
++	int fd, opt;
++	bool print_reports = false;
++
++	while ((opt = getopt_long(argc, argv, "hc:r", long_options, NULL)) != -1) {
++		switch (opt) {
++		case 'h':
++			usage();
++			return EXIT_SUCCESS;
++		case 'c':
++			counter_names = optarg;
++			break;
++		case 'r':
++			print_reports = true;
++			break;
++		default:
++			fprintf(stderr, "Internal error: "
++				"unexpected getopt value: %d\n", opt);
++			usage();
++			return EXIT_FAILURE;
++		}
++	}
++
++	if (optind >= argc) {
++		fprintf(stderr, "No recording file specified.\n");
++		return EXIT_FAILURE;
++	}
++
++	fd = open(argv[optind], 0, O_RDONLY);
++	if (fd < 0) {
++		fprintf(stderr, "Cannot open '%s': %s.\n",
++			argv[optind], strerror(errno));
++		return EXIT_FAILURE;
++	}
++
++	if (!intel_xe_perf_data_reader_init(&reader, fd)) {
++		fprintf(stderr, "Unable to parse '%s': %s.\n",
++			argv[optind], reader.error_msg);
++		return EXIT_FAILURE;
++	}
++
++	counters = get_logical_counters(reader.metric_set, counter_names, &n_counters);
++	if (n_counters < 0)
++		goto exit;
++
++	devinfo = intel_get_device_info(reader.devinfo.devid);
++
++	fprintf(stdout, "Recorded on device=0x%x(%s) graphics_ver=%i\n",
++		reader.devinfo.devid, devinfo->codename,
++		reader.devinfo.graphics_ver);
++	fprintf(stdout, "Metric used : %s (%s) uuid=%s\n",
++		reader.metric_set->symbol_name, reader.metric_set->name,
++		reader.metric_set->hw_config_guid);
++	fprintf(stdout, "Reports: %u\n", reader.n_records);
++	fprintf(stdout, "Context switches: %u\n", reader.n_timelines);
++	fprintf(stdout, "Timestamp correlation points: %u\n", reader.n_correlations);
++
++	if (reader.n_correlations < 2) {
++		fprintf(stderr, "Less than 2 CPU/GPU timestamp correlation points.\n");
++		return EXIT_FAILURE;
++	}
++
++	fprintf(stdout, "Timestamp correlation CPU range:       0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->cpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->cpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (64b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp);
++	fprintf(stdout, "Timestamp correlation GPU range (32b): 0x%016"PRIx64"-0x%016"PRIx64"\n",
++		reader.correlations[0]->gpu_timestamp & 0xffffffff,
++		reader.correlations[reader.n_correlations - 1]->gpu_timestamp & 0xffffffff);
++
++	fprintf(stdout, "OA data timestamp range:               0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_xe_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[0]),
++		intel_xe_perf_read_record_timestamp(reader.perf,
++						 reader.metric_set,
++						 reader.records[reader.n_records - 1]));
++	fprintf(stdout, "OA raw data timestamp range:           0x%016"PRIx64"-0x%016"PRIx64"\n",
++		intel_xe_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[0]),
++		intel_xe_perf_read_record_timestamp_raw(reader.perf,
++						     reader.metric_set,
++						     reader.records[reader.n_records - 1]));
++
++	if (strcmp(reader.metric_set_uuid, reader.metric_set->hw_config_guid)) {
++		fprintf(stdout,
++			"WARNING: Recording used a different HW configuration.\n"
++			"WARNING: This could lead to inconsistent counter values.\n");
++	}
++
++	for (uint32_t i = 0; i < reader.n_timelines; i++) {
++		const struct intel_xe_perf_timeline_item *item = &reader.timelines[i];
++
++		fprintf(stdout, "Time: CPU=0x%016" PRIx64 "-0x%016" PRIx64
++			" GPU=0x%016" PRIx64 "-0x%016" PRIx64"\n",
++			item->cpu_ts_start, item->cpu_ts_end,
++			item->ts_start, item->ts_end);
++		fprintf(stdout, "hw_id=0x%x %s\n",
++			item->hw_id, item->hw_id == 0xffffffff ? "(idle)" : "");
++
++		print_report_deltas(&reader,
++				    reader.records[item->record_start],
++				    reader.records[item->record_end],
++				    counters, n_counters);
++
++		if (print_reports) {
++			for (uint32_t r = item->record_start; r < item->record_end; r++) {
++				fprintf(stdout, " report%i = %s\n",
++					r - item->record_start,
++					intel_xe_perf_read_report_reason(reader.perf, reader.records[r]));
++				print_report_deltas(&reader,
++						    reader.records[r],
++						    reader.records[r + 1],
++						    counters, n_counters);
++			}
++		}
++	}
++
++ exit:
++	intel_xe_perf_data_reader_fini(&reader);
++	close(fd);
++
++	return EXIT_SUCCESS;
++}
 -- 
 2.41.0
 
