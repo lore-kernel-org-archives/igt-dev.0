@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79475C30658
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8A35C31D97
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0017410E0A8;
-	Fri, 28 Jun 2024 20:43:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB38E10ED56;
+	Fri, 28 Jun 2024 20:44:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iPQwBTa+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EboClXft";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1859A10E0A8
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D734F10ED40
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719607434; x=1751143434;
+ t=1719607437; x=1751143437;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=c3XQ+tJfVZOF/QP3/bTWqHtT34YgEmFx8/TmEuvcyN0=;
- b=iPQwBTa+eFUl360uKdGuNWXCRvLjNJctGBC94aXaadoVorXnmOiJHoV9
- bjLGdDqWwb6y/PfbXpxKxB74ZF5mku0N54JHm0TzNL057QEQZiK9yJTsH
- YyYufgKV5BzLdlz1nEf+hz7mNUhIEX8FS5KITNkZkl0DFbzuQA1HczISQ
- paVdMK6BmnRqZKJ1oqaj8TFKUn4x/Dufl0IkEFFpiEe/bvVc/qF+yjcp8
- 1tyVBlINTGGXYJY7arPdmTs3t1TmsDIokns8kxcIeVWAXYLpEf1VfD472
- mI4+5yRwGRPWSdWed5w0/MqXG8iwvUWj1Q67+oSCVFcS5ByOsrBluPukI Q==;
-X-CSE-ConnectionGUID: LpYkYZAKQdOemjDdn+d9xA==
-X-CSE-MsgGUID: L4WzuSKqQGGtpXk6VYfaBQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427479"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427479"
+ bh=QwkuohqoWzcnusmhqayY0Ug61NcGn5C9Zu125N7kOn8=;
+ b=EboClXftUCUlAA+KZDtlFtUNwggQQwzOZOrI08xadqaQmXjuAf97h8tY
+ 6H79EB1KGdSI8A0IQcBgaKNoEJvwoJAGS6ABc6yO6hoi0KLJLF6xGTKVP
+ ckLpz5WtTrMLzrYGFi31jFpkIUdrA63nvXSAjqgq3dltv+QlwNLQlhiiL
+ zO2ReyufEhrTjqGhGRq0wchPDmSgJqfFOYy7DYvoeT51VE1GXFXiGZd7W
+ Eu20PJy8Fp21NqsYaa7P2lg+g/sJnP6aHcKjjFxrEOXYo8csY009k7qkm
+ CQeJpit7xyf5F+D/O4bmJfbw0q95nsbXb7qePDpONHUo/9bZ1L1n1WWF/ g==;
+X-CSE-ConnectionGUID: XIjG2j0iRBuwvWRB4nnGlw==
+X-CSE-MsgGUID: QdHlJNqEQRCcT8Vqt3kHkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427499"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427499"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:54 -0700
-X-CSE-ConnectionGUID: 0mcSlxOcRIuJmUmPyQOpYg==
-X-CSE-MsgGUID: Xbv7SfWFQ4K5SHVoKETnGw==
+ 28 Jun 2024 13:43:56 -0700
+X-CSE-ConnectionGUID: lSvwjUVaTs6Yy99/BtQetQ==
+X-CSE-MsgGUID: PkKi9OyBSTis/bTubOBIsw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465191"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465219"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:53 -0700
+ 28 Jun 2024 13:43:56 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 02/16] lib/xe/oa: Add LNL metric guids
-Date: Fri, 28 Jun 2024 13:43:34 -0700
-Message-ID: <20240628204348.2142940-3-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 16/16] xe/oa/oa-metricset-codegen: Fix
+ XE_OA_FORMAT_PEC64u64 offsets
+Date: Fri, 28 Jun 2024 13:43:48 -0700
+Message-ID: <20240628204348.2142940-17-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 References: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,76 +68,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-$ update-guids.py --guids=guids.xml MetricsXML_P31.xml > guids.xml2
+From: José Roberto de Souza <jose.souza@intel.com>
 
-And copying the new guids to guids.xml (as per the README).
+XE_OA_FORMAT_PEC64u64 only has pec_offset.
 
-Note: as mentioned in update-guids.py and README.md, in order to generate
-config_hash in guids.xml, mdapi-convert-xml.py must first be run (as
-outline in the next commit) and then update-guids.py command above should
-be repeated.
-
-Note: LNL media guids had issues after running mdapi-convert-xml.py so have
-not been added, revisit this.
-
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/xe/oa-configs/guids.xml           | 14 ++++++++++++++
- lib/xe/oa-configs/oa_guid_registry.py |  4 +++-
- lib/xe/oa-configs/update-guids.py     |  1 +
- 3 files changed, 18 insertions(+), 1 deletion(-)
+ lib/xe/oa-configs/oa-metricset-codegen.py | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/lib/xe/oa-configs/guids.xml b/lib/xe/oa-configs/guids.xml
-index 510450f87a..27330edd3d 100644
---- a/lib/xe/oa-configs/guids.xml
-+++ b/lib/xe/oa-configs/guids.xml
-@@ -2746,4 +2746,18 @@
-     <guid config_hash="482cebdeeb78bb56e67b42d24644c8db" mdapi_config_hash="11e33e01a371bf15e59b9786f4fe1050" id="4d9b2817-19b9-4461-a54b-dc9fdb7d69cb" chipset="mtlgt3" name="MediaSet1" />
-     <guid config_hash="5bfab887a79b99cf34a606dcca5f4f8a" mdapi_config_hash="1c238e39e5c73eefd870cef2fb7a18af" id="651a6694-0ac1-4bd5-a4a1-94bcf479d4f4" chipset="mtlgt3" name="MediaSet2" />
-     <guid config_hash="44bcb438bea8b46b57779739bebfbd69" mdapi_config_hash="fbbd97d1f3b60c17eae57bbd3c42e7fe" id="bac01106-5869-489c-a306-67303a434173" chipset="mtlgt3" name="TestOam" />
-+    <guid config_hash="208c3c79f1b4db2f86277292566d3f10" mdapi_config_hash="1fbaf5ad061ccf96ff7d4e108cbcf3ae" id="12f20772-0044-44ff-bcc0-d2bc252d140e" chipset="lnl" name="RenderBasic" />
-+    <guid config_hash="b781b616d31187e7f4982f3a238b0ecd" mdapi_config_hash="35c121ef361006ca639d1e3377b5c6d7" id="72539be3-67d9-4101-b067-766b7811d2bb" chipset="lnl" name="ComputeBasic" />
-+    <guid config_hash="955739b43332e61729e0a7a032188c02" mdapi_config_hash="d9be0378dd2dd6a5f85f71d156d21b43" id="cae0b2ca-c52a-4111-b8bf-5af070677d57" chipset="lnl" name="DepthProfile" />
-+    <guid config_hash="55ecb5067bca7d99769a30a14eaceba5" mdapi_config_hash="e444af605670c2230a5796b4ad65b2c0" id="70cc56cf-3a37-4f6c-8911-4455fe441b2a" chipset="lnl" name="DeviceCacheProfile" />
-+    <guid config_hash="e4a38cb223b20b9c28c5941b2f4979cb" mdapi_config_hash="952b726980ff7e836089c7651070f44f" id="01ffd51d-a6d6-4ff4-93d0-619f04c3a547" chipset="lnl" name="MemoryProfile" />
-+    <guid config_hash="5d38d137356ca80dca2ea337449675be" mdapi_config_hash="07f0aa1a93f77bc7b6771ba2b68c8325" id="6791470f-f1e6-4f77-9013-bcb0c4be6f57" chipset="lnl" name="RenderPipeProfile" />
-+    <guid config_hash="72e3ab9e7d727f97c5ea29bef23be40e" mdapi_config_hash="e6b78fe68f406ee2a0cc25293c60bc62" id="d66ce633-4ae5-4de2-8678-9705adfd45bc" chipset="lnl" name="RTProfile" />
-+    <guid config_hash="6dc1bd4e8d8b49cc9776701db836ffe9" mdapi_config_hash="cee63b3642783febd3bcbf45629c5e1c" id="e7338926-568c-4424-bc44-f90318a6b472" chipset="lnl" name="VectorEngineProfile" />
-+    <guid config_hash="b87d3a3dfab7193309deb13aeb595589" mdapi_config_hash="1950d62ef4b729af4494d76ca3ec8101" id="4ccd6535-fb9a-440f-b0f5-882879dc4cb0" chipset="lnl" name="VectorEngineStalls" />
-+    <guid config_hash="9df6fd1c4fd100b5e50cd97e16bd1cb8" mdapi_config_hash="47c19557fd9591c3fc3955e46db4565c" id="24c33f2c-f8d9-40d9-b2db-64e863b4d625" chipset="lnl" name="TestOa" />
-+    <guid config_hash="9bfa717fd19e8d5b99062ca0101113dd" mdapi_config_hash="f390ce860d404c3f22f9d1a3159ec58e" id="0af24f48-05bc-467b-b561-33dec252e651" chipset="lnl" name="MetricSet1" />
-+    <guid config_hash="d635631df97322be3d97b9c4e38152e9" mdapi_config_hash="68c19075e48e5128b456a91cd7b95286" id="914ad901-832a-4ccd-a21e-ddc7690ed213" chipset="lnl" name="MetricSet2" />
-+    <guid config_hash="d63d186f5b83e91f8c0680847bbf4b24" mdapi_config_hash="d31ec4eaa11c8be0d8d72ecece53434f" id="3b3c9f55-e34b-423d-8c05-7b1af03b6685" chipset="lnl" name="MetricSet3" />
-+    <guid config_hash="76b7587d047c30ecde26e3f6253b4165" mdapi_config_hash="e39d956ed7b8d0cbe7d354cff234af7d" id="e6f21065-a6f5-4ea4-a545-80d6aebaab56" chipset="lnl" name="MetricSet4" />
- </guids>
-diff --git a/lib/xe/oa-configs/oa_guid_registry.py b/lib/xe/oa-configs/oa_guid_registry.py
-index ab14b398f3..969d40e568 100644
---- a/lib/xe/oa-configs/oa_guid_registry.py
-+++ b/lib/xe/oa-configs/oa_guid_registry.py
-@@ -100,7 +100,9 @@ class Registry:
-                            'DG1',
-                            'ACM',
-                            'PVC',
--                           'MTL', )
-+                           'MTL',
-+                           'LNL',
-+                          )
-         if name in known_chipsets:
-             return name
- 
-diff --git a/lib/xe/oa-configs/update-guids.py b/lib/xe/oa-configs/update-guids.py
-index 0c7d129404..18f3458e84 100755
---- a/lib/xe/oa-configs/update-guids.py
-+++ b/lib/xe/oa-configs/update-guids.py
-@@ -165,6 +165,7 @@ chipsets = [ 'hsw',
-              'tglgt1', 'tglgt2', 'rkl', 'dg1', 'adl',
-              'acmgt1', 'acmgt2', 'acmgt3',
-              'mtlgt2', 'mtlgt3',
-+             'lnl',
- ]
- 
- for chipset in chipsets:
+diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
+index f4a008d690..5fa12f9caf 100644
+--- a/lib/xe/oa-configs/oa-metricset-codegen.py
++++ b/lib/xe/oa-configs/oa-metricset-codegen.py
+@@ -145,11 +145,7 @@ def generate_metric_sets(args, gen):
+                 metric_set->perf_raw_size = 576;
+                 metric_set->gpu_time_offset = 0;
+                 metric_set->gpu_clock_offset = 1;
+-                metric_set->a_offset = 2;
+-                // metric_set->b_offset = metric_set->a_offset + 38;
+-                // metric_set->c_offset = metric_set->b_offset + 8;
+-                metric_set->perfcnt_offset = metric_set->a_offset + 64;
+-
++                metric_set->pec_offset = 2;
+             """))
+         else:
+             c(textwrap.dedent("""\
 -- 
 2.41.0
 
