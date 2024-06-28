@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A73C41513
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61337C3065B
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB0CA10ED5A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C83510ED5D;
 	Fri, 28 Jun 2024 22:24:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kHEjsOVp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cILrfr71";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21AA010E31C
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FF5D10E317
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1719613445; x=1751149445;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=C/I4YVXzlAWLgyYTBj/0t0uvqGURHISlGuvj1Ibmhuo=;
- b=kHEjsOVpSQMsgeQmW3H26E8lDbQbxx/9ScK/JzKGBz7+j6PxdXfymq6M
- GwcV7p86B+go751XKsErrET/HmNrvDFoBsm6CkeZC7ZFDxklLCr5fNUu5
- SWtGOAKU3Erebuoq1ima96vd9IMP8TXGirJHKxgl+a+6Hp15ruwVTqq5Q
- YFAlYw3xgATS++trs1VD83F3oFy2rgM0hawpLZM8yC6/PlnoZf2IrFROP
- 5QIajAHVy6wJ2ubBRD5v7mrRl0nrPqWKKVyDMjeGBKAv9rgXlv7NQ7f7C
- Piyn6a7HN+009EwAzS72NmSxSK6SrJY9wxSq3Prww1p1FudT+3TPz1cnq g==;
-X-CSE-ConnectionGUID: uNyb9Z1wQqy1gu5K2EZiGA==
-X-CSE-MsgGUID: 1X4HbOcAQPeAV9NMKnCZnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232688"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232688"
+ bh=rOjYu5HB+nYIDiEAevu70NbIJ462YGvu8uqVON0fSD4=;
+ b=cILrfr71vrsREaKxjV8LaxnffYkD1+1YtXLLbsWzIR84F27KbCUtswzI
+ ClZx3D9Zh/tWbiTJdGqxc6rSFhzx8krtnAT7t7n8SmKbXmA1nKQ0n0a6L
+ MM297D5B2HJeQW12K/iXGOBFwjghZOW7+ctPYxgjhIMIixxeYXOsuGNNS
+ D+y/R6zL77A8/3z5+vGmCwruZGjaXZgYmXESufVlyoonF3ar+LOiV2ujT
+ HtWbRBFX+30g8e9Oih8My//sczaHegPZNDPoN7N0mQY1V8Vw6Dzov+lz1
+ FWVgustnhik/kI1Tqz2RaVFgDeZPPfkPJb3OiP29RE0RHyECMi4O1HTJ7 w==;
+X-CSE-ConnectionGUID: 1qaftSnbS6O1l8jOI/A+/g==
+X-CSE-MsgGUID: avDfefFTSGKC9+tehdPFjg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232685"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232685"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 15:24:04 -0700
-X-CSE-ConnectionGUID: NimBoKdsRW+8vqAHZH2HhA==
-X-CSE-MsgGUID: RfSCOeZoQ1O/5rOsTJYovg==
+ 28 Jun 2024 15:24:03 -0700
+X-CSE-ConnectionGUID: c8jyeVQ+RUyfM+iFzhXEhQ==
+X-CSE-MsgGUID: inzUC5K7QBuuXCPaPAZrEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616205"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616199"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Jun 2024 15:24:03 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 09/16] tests/intel/xe_query: Add OA units query test
-Date: Fri, 28 Jun 2024 15:23:51 -0700
-Message-ID: <20240628222358.2151036-10-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 06/16] lib/xe/oa: Switch generated files to Xe namespace
+Date: Fri, 28 Jun 2024 15:23:48 -0700
+Message-ID: <20240628222358.2151036-7-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
 References: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
@@ -66,85 +66,265 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test to exercise OA units query.
+The Xe IGT library occupies a different namespace ('intel_xe') from the
+i915 IGT library ('intel' or 'i915'). The generated files are also part of
+the Xe IGT library. Therefore make sure the functions and data structs in
+the generated files conform to Xe namespace.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_query.c | 53 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
+ lib/xe/oa-configs/codegen.py              |  6 ++--
+ lib/xe/oa-configs/oa-equations-codegen.py | 36 +++++++++++------------
+ lib/xe/oa-configs/oa-metricset-codegen.py | 26 ++++++++--------
+ lib/xe/oa-configs/oa-registers-codegen.py | 10 +++----
+ 4 files changed, 39 insertions(+), 39 deletions(-)
 
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 5b0db4d28b..92f82f6eef 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -995,6 +995,58 @@ test_query_uc_fw_version_huc(int fd)
- 	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_HUC);
- }
+diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
+index 020e76ef4b..9a7d57a33e 100644
+--- a/lib/xe/oa-configs/codegen.py
++++ b/lib/xe/oa-configs/codegen.py
+@@ -340,13 +340,13 @@ class Gen:
+             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
+         m = re.search('\$GtSlice([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
++            return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
+         m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
+         if m:
+-            return 'intel_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
++            return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
+         return None
  
-+/**
-+ * SUBTEST: query-oa-units
-+ * Description: Display fields for OA unit query
-+ *
-+ * SUBTEST: multigpu-query-oa-units
-+ * Description: Display fields for OA unit query for all GPU devices
-+ * Sub-category: MultiGPU
-+ */
-+static void test_query_oa_units(int fd)
-+{
-+	struct drm_xe_query_oa_units *qoa;
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_OA_UNITS,
-+		.size = 0,
-+		.data = 0,
-+	};
-+	struct drm_xe_oa_unit *oau;
-+	int i, j;
-+	u8 *poau;
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	qoa = malloc(query.size);
-+	igt_assert(qoa);
-+
-+	query.data = to_user_pointer(qoa);
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+
-+	igt_info("num_oa_units %d\n", qoa->num_oa_units);
-+
-+	poau = (u8 *)&qoa->oa_units[0];
-+	for (i = 0; i < qoa->num_oa_units; i++) {
-+		oau = (struct drm_xe_oa_unit *)poau;
-+
-+		igt_info("-------------------------------\n");
-+		igt_info("oa_unit %d\n", i);
-+		igt_info("-------------------------------\n");
-+		igt_info("oa_unit_id %d\n", oau->oa_unit_id);
-+		igt_info("oa_unit_type %d\n", oau->oa_unit_type);
-+		igt_info("capabilities %#llx\n", oau->capabilities);
-+		igt_info("oa_timestamp_freq %lld\n", oau->oa_timestamp_freq);
-+		igt_info("num_engines %lld\n", oau->num_engines);
-+		igt_info("Engines:");
-+		for (j = 0; j < oau->num_engines; j++)
-+			igt_info(" (%d, %d)", oau->eci[j].engine_class,
-+				 oau->eci[j].engine_instance);
-+		igt_info("\n");
-+		poau += sizeof(*oau) + j * sizeof(oau->eci[0]);
-+	}
-+}
-+
- igt_main
- {
- 	const struct {
-@@ -1011,6 +1063,7 @@ igt_main
- 		{ "query-cs-cycles", test_query_engine_cycles },
- 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
- 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
-+		{ "query-oa-units", test_query_oa_units },
- 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
- 		{ "query-invalid-query", test_query_invalid_query },
- 		{ "query-invalid-size", test_query_invalid_size },
+     def output_rpn_equation_code(self, set, counter, equation):
+diff --git a/lib/xe/oa-configs/oa-equations-codegen.py b/lib/xe/oa-configs/oa-equations-codegen.py
+index a4a00f46d9..de5a3337df 100644
+--- a/lib/xe/oa-configs/oa-equations-codegen.py
++++ b/lib/xe/oa-configs/oa-equations-codegen.py
+@@ -46,9 +46,9 @@ def output_counter_read(gen, set, counter):
+     read_eq = counter.get('equation')
+ 
+     c(ret_ctype)
+-    c(counter.read_sym + "(const struct intel_perf *perf,\n")
++    c(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
+     c.indent(len(counter.read_sym) + 1)
+-    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("const struct intel_xe_perf_metric_set *metric_set,\n")
+     c("uint64_t *accumulator)\n")
+     c.outdent(len(counter.read_sym) + 1)
+ 
+@@ -75,9 +75,9 @@ def output_counter_read_definition(gen, set, counter):
+         read_eq = counter.get('equation')
+ 
+         h(ret_ctype)
+-        h(counter.read_sym + "(const struct intel_perf *perf,\n")
++        h(counter.read_sym + "(const struct intel_xe_perf *perf,\n")
+         h.indent(len(counter.read_sym) + 1)
+-        h("const struct intel_perf_metric_set *metric_set,\n")
++        h("const struct intel_xe_perf_metric_set *metric_set,\n")
+         h("uint64_t *accumulator);\n")
+         h.outdent(len(counter.read_sym) + 1)
+ 
+@@ -100,9 +100,9 @@ def output_counter_max(gen, set, counter):
+     ret_ctype = data_type_to_ctype(ret_type)
+ 
+     c(ret_ctype)
+-    c(counter.max_sym + "(const struct intel_perf *perf,\n")
++    c(counter.max_sym + "(const struct intel_xe_perf *perf,\n")
+     c.indent(len(counter.max_sym) + 1)
+-    c("const struct intel_perf_metric_set *metric_set,\n")
++    c("const struct intel_xe_perf_metric_set *metric_set,\n")
+     c("uint64_t *accumulator)\n")
+     c.outdent(len(counter.max_sym) + 1)
+ 
+@@ -135,9 +135,9 @@ def output_counter_max_definition(gen, set, counter):
+ 
+         h(ret_ctype)
+ 
+-        h(counter.max_sym + "(const struct intel_perf *perf,")
++        h(counter.max_sym + "(const struct intel_xe_perf *perf,")
+         h.indent(len(counter.max_sym) + 1)
+-        h("const struct intel_perf_metric_set *metric_set,")
++        h("const struct intel_xe_perf_metric_set *metric_set,")
+         h("uint64_t *accumulator);")
+         h.outdent(len(counter.max_sym) + 1)
+         h("\n")
+@@ -163,16 +163,16 @@ def generate_equations(args, gens):
+         #define MAX(a, b) (((a) > (b)) ? (a) : (b))
+ 
+         double
+-        percentage_max_callback_float(const struct intel_perf *perf,
+-                                      const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_float(const struct intel_xe_perf *perf,
++                                      const struct intel_xe_perf_metric_set *metric_set,
+                                       uint64_t *accumulator)
+         {
+            return 100;
+         }
+ 
+         uint64_t
+-        percentage_max_callback_uint64(const struct intel_perf *perf,
+-                                       const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
++                                       const struct intel_xe_perf_metric_set *metric_set,
+                                        uint64_t *accumulator)
+         {
+            return 100;
+@@ -196,16 +196,16 @@ def generate_equations(args, gens):
+         #include <stdint.h>
+         #include <stdbool.h>
+ 
+-        struct intel_perf;
+-        struct intel_perf_metric_set;
++        struct intel_xe_perf;
++        struct intel_xe_perf_metric_set;
+ 
+         double
+-        percentage_max_callback_float(const struct intel_perf *perf,
+-                                      const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_float(const struct intel_xe_perf *perf,
++                                      const struct intel_xe_perf_metric_set *metric_set,
+                                       uint64_t *accumulator);
+         uint64_t
+-        percentage_max_callback_uint64(const struct intel_perf *perf,
+-                                       const struct intel_perf_metric_set *metric_set,
++        percentage_max_callback_uint64(const struct intel_xe_perf *perf,
++                                       const struct intel_xe_perf_metric_set *metric_set,
+                                        uint64_t *accumulator);
+ 
+         """ % (header_define, header_define)))
+diff --git a/lib/xe/oa-configs/oa-metricset-codegen.py b/lib/xe/oa-configs/oa-metricset-codegen.py
+index ea0d13cc97..f4a008d690 100644
+--- a/lib/xe/oa-configs/oa-metricset-codegen.py
++++ b/lib/xe/oa-configs/oa-metricset-codegen.py
+@@ -28,7 +28,7 @@ def availability_func_name(set, counter):
+ def output_availability_funcs(set, counter):
+     availability = counter.get('availability')
+     if availability:
+-        c("static bool " + availability_func_name(set, counter) + "(const struct intel_perf *perf) {")
++        c("static bool " + availability_func_name(set, counter) + "(const struct intel_xe_perf *perf) {")
+         c.indent(4)
+         set.gen.output_availability(set, availability, counter.get('name'))
+         c.indent(4)
+@@ -60,9 +60,9 @@ def output_counter_report(set, counter):
+     c(".name = \"{0}\",\n".format(counter.get('name')))
+     c(".symbol_name = \"{0}\",\n".format(counter.get('symbol_name')))
+     c(".desc = \"{0}\",\n".format(counter.get('description')))
+-    c(".type = INTEL_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
+-    c(".storage = INTEL_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
+-    c(".unit = INTEL_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
++    c(".type = INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_{0},\n".format(semantic_type_uc))
++    c(".storage = INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_{0},\n".format(data_type_uc))
++    c(".unit = INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_{0},\n".format(output_units(counter.get('units'))))
+     c(".read_{0} = {1},\n".format(data_type, set.read_funcs["$" + counter.get('symbol_name')]))
+     c(".max_{0} = {1},\n".format(data_type, set.max_funcs["$" + counter.get('symbol_name')]))
+     c(".group = \"{0}\",\n".format(counter.get('mdapi_group')))
+@@ -98,18 +98,18 @@ def generate_metric_sets(args, gen):
+           output_availability_funcs(set, counter)
+ 
+         c("\nstatic void\n")
+-        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_perf *perf)")
++        c(gen.chipset + "_add_" + set.underscore_name + "_metric_set(struct intel_xe_perf *perf)")
+         c("{\n")
+         c.indent(4)
+ 
+-        c("struct intel_perf_metric_set *metric_set;\n")
+-        c("struct intel_perf_logical_counter *counter;\n\n")
++        c("struct intel_xe_perf_metric_set *metric_set;\n")
++        c("struct intel_xe_perf_logical_counter *counter;\n\n")
+ 
+         c("metric_set = calloc(1, sizeof(*metric_set));\n")
+         c("metric_set->name = \"" + set.name + "\";\n")
+         c("metric_set->symbol_name = \"" + set.symbol_name + "\";\n")
+         c("metric_set->hw_config_guid = \"" + set.hw_config_guid + "\";\n")
+-        c("metric_set->counters = calloc({0}, sizeof(struct intel_perf_logical_counter));\n".format(str(len(counters))))
++        c("metric_set->counters = calloc({0}, sizeof(struct intel_xe_perf_logical_counter));\n".format(str(len(counters))))
+         c("metric_set->n_counters = 0;\n")
+         c("metric_set->perf_oa_metrics_set = 0; // determined at runtime\n")
+ 
+@@ -167,12 +167,12 @@ def generate_metric_sets(args, gen):
+ 
+         c("%s_%s_add_registers(perf, metric_set);" % (gen.chipset, set.underscore_name))
+ 
+-        c("intel_perf_add_metric_set(perf, metric_set);");
++        c("intel_xe_perf_add_metric_set(perf, metric_set);");
+         c("\n")
+ 
+         c("{")
+         c.indent(4)
+-        c("static const struct intel_perf_logical_counter _counters[] = {")
++        c("static const struct intel_xe_perf_logical_counter _counters[] = {")
+         c.indent(4)
+ 
+         for counter in counters:
+@@ -190,7 +190,7 @@ def generate_metric_sets(args, gen):
+         c("counter = &metric_set->counters[metric_set->n_counters++];")
+         c("*counter = _counters[i];")
+         c("counter->metric_set = metric_set;")
+-        c("intel_perf_add_logical_counter(perf, counter, counter->group);")
++        c("intel_xe_perf_add_logical_counter(perf, counter, counter->group);")
+         c.outdent(4)
+         c("}")
+         c.outdent(4)
+@@ -201,7 +201,7 @@ def generate_metric_sets(args, gen):
+         c("}\n")
+ 
+     c("\nvoid")
+-    c("intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf)")
++    c("intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf)")
+     c("{")
+     c.indent(4)
+ 
+@@ -256,7 +256,7 @@ def main():
+         """ % (header_define, header_define)))
+ 
+     # Print out all set registration functions for each generation.
+-    h("void intel_perf_load_metrics_" + gen.chipset + "(struct intel_perf *perf);\n\n")
++    h("void intel_xe_perf_load_metrics_" + gen.chipset + "(struct intel_xe_perf *perf);\n\n")
+ 
+     h(textwrap.dedent("""\
+         #endif /* %s */
+diff --git a/lib/xe/oa-configs/oa-registers-codegen.py b/lib/xe/oa-configs/oa-registers-codegen.py
+index a4aa134097..08fc38a50e 100644
+--- a/lib/xe/oa-configs/oa-registers-codegen.py
++++ b/lib/xe/oa-configs/oa-registers-codegen.py
+@@ -22,7 +22,7 @@ def generate_register_configs(set):
+         'OA': 'b_counter_regs',
+     }
+ 
+-    c("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set)" %
++    c("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set)" %
+       (set.gen.chipset, set.underscore_name))
+     c("{")
+     c.indent(4)
+@@ -39,7 +39,7 @@ def generate_register_configs(set):
+ 
+         c("{")
+         c.indent(4)
+-        c("static const struct intel_perf_register_prog _%s[] = {" % t)
++        c("static const struct intel_xe_perf_register_prog _%s[] = {" % t)
+         c.indent(4)
+         for register in register_config.findall('register'):
+             c("{ .reg = %s, .val = %s }," %
+@@ -95,11 +95,11 @@ def main():
+     h("#ifndef %s" % header_define)
+     h("#define %s" % header_define)
+     h("\n")
+-    h("struct intel_perf;")
+-    h("struct intel_perf_metric_set;")
++    h("struct intel_xe_perf;")
++    h("struct intel_xe_perf_metric_set;")
+     h("\n")
+     for set in gen.sets:
+-        h("void %s_%s_add_registers(struct intel_perf *perf, struct intel_perf_metric_set *metric_set);" %
++        h("void %s_%s_add_registers(struct intel_xe_perf *perf, struct intel_xe_perf_metric_set *metric_set);" %
+           (gen.chipset, set.underscore_name))
+     h("\n")
+     h("#endif /* %s */" % header_define)
 -- 
 2.41.0
 
