@@ -2,52 +2,52 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76BB5C3065D
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57A74C30658
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A60510ED40;
-	Fri, 28 Jun 2024 20:44:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF27610E317;
+	Fri, 28 Jun 2024 22:24:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FeXeexv0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ePC8zOmK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3ADD010E0BB
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99C0410E317
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719607434; x=1751143434;
+ t=1719613444; x=1751149444;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
  bh=ZOvxgTGWH9NR50ZuMFiwjxr4T50OSaGjrnS2HXDWWFs=;
- b=FeXeexv0kOAAxW8onk5NPcmCAJVOHIMj6QbW7CE6Mi6PaSYiZmWDqzVl
- wYRQThItHSiiHYOT3Vs2s/pprqRYNOvB1Wb99/o1s8pNUKlveWhzXAUhq
- cpLMofLQeuukVt9vQjLV4CxuQZbGddvdRVyb9nEsMxiHK3BDTGIom/ZBX
- YES2r6rkcusYVscUm847g2qYSIm+DylsULcxtQHwVc7Bh4UzJ21Esj/X7
- Djpk19WkEABsR03B65toOmu7ZwSTkcojQmIrmbGdHvMnFpgdZkV0UGInc
- V8qG0gVDDLZ2dor+ZWlbMxC2gqrZGtpXPVtnow0BIm5l9KPniJiEeDo4D A==;
-X-CSE-ConnectionGUID: gEg2Bq7BSj27XmbvQsJCOQ==
-X-CSE-MsgGUID: KR2sKhYVQayCINV/sHo/Qg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427478"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427478"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:53 -0700
-X-CSE-ConnectionGUID: jI1+k1shTyedWwI1luCduA==
-X-CSE-MsgGUID: PdxPQ4M+Tvm/EQrLLjd2sQ==
+ b=ePC8zOmKsQs/E3+SLEqgc7v8lrycOskM+SCpTkSeszSXdlN00Ros6jVZ
+ 5EzjtzTU8yvy/0qKtE+7APUJJv1yS1mU8Qi6P/I8pCTrBXAowB9zxDWK2
+ UxDbdWJhhM3bp2dsxAy4bROSwfyAh33FcIeVDh5A8voGr8+1OJG2Nxap9
+ tsCnOXkp60LE7cMS2nWk5goeDKCZlV/URKcC84+8Z3ytx0Kn93DL27XG0
+ XPR8JQEUpCxefGpLp7awZ/MEV46glyUIs3tZ243S14NipSqxLwTO7wOKQ
+ sbS0yPWi3vuSb0P7BVYHrJLZvr8d7P1RMzj+Q+b/eJ+wIznECZdO3pj09 A==;
+X-CSE-ConnectionGUID: SPFSG7CySKaecQEdw9fbNw==
+X-CSE-MsgGUID: OVDir9RmQVSmC1z/w07q8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232679"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232679"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jun 2024 15:24:02 -0700
+X-CSE-ConnectionGUID: Slh8kYlISsqtyYd8Pl06pA==
+X-CSE-MsgGUID: lrvYl//nT96FNr2kQIXSfw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465190"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616187"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:53 -0700
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jun 2024 15:24:02 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
 Subject: [PATCH i-g-t 01/16] lib/xe/oa: Import OA metric generation files from
  i915
-Date: Fri, 28 Jun 2024 13:43:33 -0700
-Message-ID: <20240628204348.2142940-2-ashutosh.dixit@intel.com>
+Date: Fri, 28 Jun 2024 15:23:43 -0700
+Message-ID: <20240628222358.2151036-2-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
-References: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
+References: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
