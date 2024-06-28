@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83608C3065D
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A73C41513
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 22:24:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0CBC910ED5E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB0CA10ED5A;
 	Fri, 28 Jun 2024 22:24:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NK9jJhdS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kHEjsOVp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3789C10ED56
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21AA010E31C
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 22:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719613446; x=1751149446;
+ t=1719613445; x=1751149445;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=el8xU5V77z5LsgmwyONNKnR/P30+1j/MAp10Vw4GvHk=;
- b=NK9jJhdSL83uBVrSKg+p4LkypGTLhPUv/1o1faD0dCcVhKb1z+zeN/BE
- GH+aA0ySYfNnrwaGmk0lE480yzPhwPLWJPCiGVuowzeL8AaFR+2UpJYJ0
- JD4CUaDy6j3RNgqWhMcnl4BTtWRp6CWPyFxV/dLJRArbymKZAUcGEothH
- qvh6PrkcKCvggahK36eH7oBTNHAhUW9CYLMrtDqg8XWlMn5HrCjqz8cVV
- LNzDHgtNf2uPDq12f2Iykmo5x7PEkeWiHBRaV6z1h2DL5ab0MQZMwlE/6
- SYiEftQTDTx/tW4RigMfAKzytR7+dUTLLeLlv6lhWtV9SmswbieUeWJYI g==;
-X-CSE-ConnectionGUID: A/DusLLlRemWAzNNnAKa2g==
-X-CSE-MsgGUID: oNOSFARQStW2l3wASsIXIg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232692"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232692"
+ bh=C/I4YVXzlAWLgyYTBj/0t0uvqGURHISlGuvj1Ibmhuo=;
+ b=kHEjsOVpSQMsgeQmW3H26E8lDbQbxx/9ScK/JzKGBz7+j6PxdXfymq6M
+ GwcV7p86B+go751XKsErrET/HmNrvDFoBsm6CkeZC7ZFDxklLCr5fNUu5
+ SWtGOAKU3Erebuoq1ima96vd9IMP8TXGirJHKxgl+a+6Hp15ruwVTqq5Q
+ YFAlYw3xgATS++trs1VD83F3oFy2rgM0hawpLZM8yC6/PlnoZf2IrFROP
+ 5QIajAHVy6wJ2ubBRD5v7mrRl0nrPqWKKVyDMjeGBKAv9rgXlv7NQ7f7C
+ Piyn6a7HN+009EwAzS72NmSxSK6SrJY9wxSq3Prww1p1FudT+3TPz1cnq g==;
+X-CSE-ConnectionGUID: uNyb9Z1wQqy1gu5K2EZiGA==
+X-CSE-MsgGUID: 1X4HbOcAQPeAV9NMKnCZnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="42232688"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="42232688"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Jun 2024 15:24:04 -0700
-X-CSE-ConnectionGUID: IM5xbMV2R6iXRTRmBxLr/g==
-X-CSE-MsgGUID: dMlOJHHqQbqVCTUwJjVvGg==
+X-CSE-ConnectionGUID: NimBoKdsRW+8vqAHZH2HhA==
+X-CSE-MsgGUID: RfSCOeZoQ1O/5rOsTJYovg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616212"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="45616205"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 15:24:04 -0700
+ 28 Jun 2024 15:24:03 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 13/16] xe/oa: Fix invalid escape warnings
-Date: Fri, 28 Jun 2024 15:23:55 -0700
-Message-ID: <20240628222358.2151036-14-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 09/16] tests/intel/xe_query: Add OA units query test
+Date: Fri, 28 Jun 2024 15:23:51 -0700
+Message-ID: <20240628222358.2151036-10-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
 References: <20240628222358.2151036-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,69 +66,85 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: José Roberto de Souza <jose.souza@intel.com>
+Add test to exercise OA units query.
 
-Fix this warnings:
-SyntaxWarning: invalid escape sequence '\
-
-Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- lib/xe/oa-configs/codegen.py           | 12 ++++++------
- lib/xe/oa-configs/mdapi-xml-convert.py |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ tests/intel/xe_query.c | 53 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/lib/xe/oa-configs/codegen.py b/lib/xe/oa-configs/codegen.py
-index 9a7d57a33e..f078ef9498 100644
---- a/lib/xe/oa-configs/codegen.py
-+++ b/lib/xe/oa-configs/codegen.py
-@@ -162,13 +162,13 @@ hw_vars_mapping = {
+diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
+index 5b0db4d28b..92f82f6eef 100644
+--- a/tests/intel/xe_query.c
++++ b/tests/intel/xe_query.c
+@@ -995,6 +995,58 @@ test_query_uc_fw_version_huc(int fd)
+ 	test_query_uc_fw_version(fd, XE_QUERY_UC_TYPE_HUC);
  }
  
- def is_hw_var(name):
--    m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-+    m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-     if m:
-         return True
--    m = re.search('\$GtSlice([0-9]+)$', name)
-+    m = re.search(r'\$GtSlice([0-9]+)$', name)
-     if m:
-         return True
--    m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-+    m = re.search(r'\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-     if m:
-         return True
-     return name in hw_vars_mapping
-@@ -338,13 +338,13 @@ class Gen:
-             return self.hw_vars[name]['c']
-         if name in set.counter_vars:
-             return set.read_funcs[name] + "(perf, metric_set, accumulator)"
--        m = re.search('\$GtSlice([0-9]+)$', name)
-+        m = re.search(r'\$GtSlice([0-9]+)$', name)
-         if m:
-             return 'intel_xe_perf_devinfo_slice_available(&perf->devinfo, {0})'.format(m.group(1))
--        m = re.search('\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-+        m = re.search(r'\$GtSlice([0-9]+)DualSubslice([0-9]+)$', name)
-         if m:
-             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
--        m = re.search('\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-+        m = re.search(r'\$GtSlice([0-9]+)XeCore([0-9]+)$', name)
-         if m:
-             return 'intel_xe_perf_devinfo_subslice_available(&perf->devinfo, {0}, {1})'.format(m.group(1), m.group(2))
-         return None
-diff --git a/lib/xe/oa-configs/mdapi-xml-convert.py b/lib/xe/oa-configs/mdapi-xml-convert.py
-index ab4747ddd1..575b53e955 100755
---- a/lib/xe/oa-configs/mdapi-xml-convert.py
-+++ b/lib/xe/oa-configs/mdapi-xml-convert.py
-@@ -228,7 +228,7 @@ counter_blacklist = {
- 
- def underscore(name):
-     s = re.sub('MHz', 'Mhz', name)
--    s = re.sub('\.', '_', s)
-+    s = re.sub(r'\.', '_', s)
-     s = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', s)
-     s = re.sub('#', '_', s)
-     return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s).lower()
++/**
++ * SUBTEST: query-oa-units
++ * Description: Display fields for OA unit query
++ *
++ * SUBTEST: multigpu-query-oa-units
++ * Description: Display fields for OA unit query for all GPU devices
++ * Sub-category: MultiGPU
++ */
++static void test_query_oa_units(int fd)
++{
++	struct drm_xe_query_oa_units *qoa;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_OA_UNITS,
++		.size = 0,
++		.data = 0,
++	};
++	struct drm_xe_oa_unit *oau;
++	int i, j;
++	u8 *poau;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	qoa = malloc(query.size);
++	igt_assert(qoa);
++
++	query.data = to_user_pointer(qoa);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	igt_info("num_oa_units %d\n", qoa->num_oa_units);
++
++	poau = (u8 *)&qoa->oa_units[0];
++	for (i = 0; i < qoa->num_oa_units; i++) {
++		oau = (struct drm_xe_oa_unit *)poau;
++
++		igt_info("-------------------------------\n");
++		igt_info("oa_unit %d\n", i);
++		igt_info("-------------------------------\n");
++		igt_info("oa_unit_id %d\n", oau->oa_unit_id);
++		igt_info("oa_unit_type %d\n", oau->oa_unit_type);
++		igt_info("capabilities %#llx\n", oau->capabilities);
++		igt_info("oa_timestamp_freq %lld\n", oau->oa_timestamp_freq);
++		igt_info("num_engines %lld\n", oau->num_engines);
++		igt_info("Engines:");
++		for (j = 0; j < oau->num_engines; j++)
++			igt_info(" (%d, %d)", oau->eci[j].engine_class,
++				 oau->eci[j].engine_instance);
++		igt_info("\n");
++		poau += sizeof(*oau) + j * sizeof(oau->eci[0]);
++	}
++}
++
+ igt_main
+ {
+ 	const struct {
+@@ -1011,6 +1063,7 @@ igt_main
+ 		{ "query-cs-cycles", test_query_engine_cycles },
+ 		{ "query-uc-fw-version-guc", test_query_uc_fw_version_guc },
+ 		{ "query-uc-fw-version-huc", test_query_uc_fw_version_huc },
++		{ "query-oa-units", test_query_oa_units },
+ 		{ "query-invalid-cs-cycles", test_engine_cycles_invalid },
+ 		{ "query-invalid-query", test_query_invalid_query },
+ 		{ "query-invalid-size", test_query_invalid_size },
 -- 
 2.41.0
 
