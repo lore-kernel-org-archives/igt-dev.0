@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07B6BC3065C
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A0BFC3065D
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Jun 2024 20:44:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 13BA910E31B;
+	by gabe.freedesktop.org (Postfix) with ESMTP id D3D8F10ED5A;
 	Fri, 28 Jun 2024 20:44:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FbeUS+sA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hGAZwdp2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 38B3C10E0BB
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE74710E0A8
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Jun 2024 20:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719607436; x=1751143436;
+ t=1719607435; x=1751143435;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=P82Dz4LtsUrza4X/L4LwJPYW1jzuzfvo+35yR6d9ycU=;
- b=FbeUS+sAQ+fYTj+KuNcHkjVjGcchn/ePwJ3PKzRE+wnx8w6X1Kioqg2z
- XnRL+T6z5ZdhyEjYKsN04jR7oxRicFbuwlpCUasUJ8363YDTWnm8JnAlV
- rfZovD6o59ZTPrNX2/MX6TVFZSMlEbR5qrECVNP9ckGd9fKTHCWtaIK7H
- IEcUPLF61hlIprVIy7B8WheKbPdJ/RiZMIVgTKAeqTgimZ1JPGEkUBLJ1
- y7t87bBdglxl2W5YL8DX8wmtNulSRGW8yBubbQk9byT8OI0kxUQuBz8Pd
- YrW6tziWjlK7dZuCXRfwOiLANMzzD7I43q06dDL8W1f1pGtsoRz8qiYMG Q==;
-X-CSE-ConnectionGUID: e7uFl/UhTouOmCvL/awBcA==
-X-CSE-MsgGUID: SYJtRpyYTvKNCGTHC0Sx8Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427491"
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427491"
+ bh=7FCM/qMsgJdr+BKQoemrHbxpc2p4e6g0mPYGDUMR0xw=;
+ b=hGAZwdp2RLRViIE0+wd4jbUguIxqnfhSQIVBggSnVA8b++cxtk2bJzCw
+ GCBxKnu5BZElZ8d/nS/1if4IOgweLYYm8AEXD1MmUCdKvvf/zPSLODTLF
+ tmyHTvKlBU23SNINTIcaBlpk3hbV0u07Zlrvd8PGD43h0GzwwWoIebGf7
+ cIYbzkd0FciUEidLjmh4zn+NDe7djAAx2tYe2e4WVqRiYoSfBEe5B1aGY
+ b11jADn19d+BvGSXaotWCIc2WPIePQnVSMVD6od16HlK16E57lEP41gEL
+ TrIdw8KToNoPgm9LPNk5/knxL9FNgxB9TSaVhNE9XYBDLY0viJeiDjA69 A==;
+X-CSE-ConnectionGUID: +10lyizDR+G1G2G/02gP2w==
+X-CSE-MsgGUID: u6EeQC6vRMi9CRgQRu38jA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11117"; a="27427488"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="27427488"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Jun 2024 13:43:55 -0700
-X-CSE-ConnectionGUID: inO+xpWrRouU8IxNZXehoA==
-X-CSE-MsgGUID: Gs9XPUmpTgeUQnSk+DsdKg==
+X-CSE-ConnectionGUID: q3SHU1LbRVmt6O8dL8WINw==
+X-CSE-MsgGUID: Ppla+OpvQnWP+E6JsBaeRw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465210"
+X-IronPort-AV: E=Sophos;i="6.09,170,1716274800"; d="scan'208";a="49465203"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jun 2024 13:43:55 -0700
+ 28 Jun 2024 13:43:54 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 11/16] tools/xe-perf: Add xe_perf_recorder
-Date: Fri, 28 Jun 2024 13:43:43 -0700
-Message-ID: <20240628204348.2142940-12-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 08/16] lib/xe: Complete xe_oa lib functionality
+Date: Fri, 28 Jun 2024 13:43:40 -0700
+Message-ID: <20240628204348.2142940-9-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
 References: <20240628204348.2142940-1-ashutosh.dixit@intel.com>
@@ -67,48 +67,172 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add xe_perf_recorder. The recorder exercises the Xe OA uapi to capture OAG
-data in a specific format, similar to i915_perf_recorder.
+Add various functionality in lib/xe for OA. This includes:
+* Support for OA metrics generation
+* intel_xe_perf_for_devinfo and intel_xe_perf_for_fd support
+* intel_xe_perf_load_perf_configs
+* intel_xe_perf_ioctl
+* drm_xe_query_oa_units
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tools/meson.build                         |    1 +
- tools/xe-perf/meson.build                 |    5 +
- tools/xe-perf/xe_perf_recorder.c          | 1227 +++++++++++++++++++++
- tools/xe-perf/xe_perf_recorder_commands.h |   31 +
- 4 files changed, 1264 insertions(+)
- create mode 100644 tools/xe-perf/meson.build
- create mode 100644 tools/xe-perf/xe_perf_recorder.c
- create mode 100644 tools/xe-perf/xe_perf_recorder_commands.h
+ lib/intel_device_info.c |    1 +
+ lib/meson.build         |   86 ++++
+ lib/xe-oa.pc.in         |   11 +
+ lib/xe/xe_oa.c          | 1074 +++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_oa.h          |  407 +++++++++++++++
+ lib/xe/xe_query.c       |   38 ++
+ lib/xe/xe_query.h       |    5 +
+ 7 files changed, 1622 insertions(+)
+ create mode 100644 lib/xe-oa.pc.in
+ create mode 100644 lib/xe/xe_oa.c
+ create mode 100644 lib/xe/xe_oa.h
 
-diff --git a/tools/meson.build b/tools/meson.build
-index 1656355eef..c02c020d0b 100644
---- a/tools/meson.build
-+++ b/tools/meson.build
-@@ -113,4 +113,5 @@ if libudev.found()
- endif
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 298047e741..01e7ba2863 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -510,6 +510,7 @@ static const struct intel_device_info intel_lunarlake_info = {
+ 	.display_ver = 20,
+ 	.has_4tile = true,
+ 	.has_flatccs = true,
++	.has_oam = true,
+ 	.is_lunarlake = true,
+ 	.codename = "lunarlake",
+ 	.cmds_info = &xe2_cmds_info,
+diff --git a/lib/meson.build b/lib/meson.build
+index e2f740c116..02b86a77ff 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -377,6 +377,85 @@ install_headers(
+   subdir : 'i915-perf'
+ )
  
- subdir('i915-perf')
-+subdir('xe-perf')
- subdir('null_state_gen')
-diff --git a/tools/xe-perf/meson.build b/tools/xe-perf/meson.build
++xe_oa_files = [
++  'igt_list.c',
++  'xe/xe_oa.c',
++]
++
++xe_oa_hardware = [
++  'tglgt1', 'tglgt2',
++  'dg1',
++  'rkl',
++  'adl',
++  'acmgt1', 'acmgt2', 'acmgt3',
++  'mtlgt2', 'mtlgt3',
++  'lnl',
++]
++
++xe_xml_files = []
++foreach hw : xe_oa_hardware
++  xe_xml_files += files('xe/oa-configs/oa-@0@.xml'.format(hw))
++endforeach
++
++xe_oa_files += custom_target(
++  'xe-oa-equations',
++  input : [ 'xe/oa-configs/oa-equations-codegen.py' ] + xe_xml_files,
++  output : [ 'xe_oa_equations.c', 'xe_oa_equations.h' ],
++  command : [
++    python3, '@INPUT0@',
++    '--code', '@OUTPUT0@',
++    '--header', '@OUTPUT1@',
++    xe_xml_files,
++  ])
++
++foreach hw : xe_oa_hardware
++  xe_oa_files += custom_target(
++    'xe-oa-registers-@0@'.format(hw),
++    input : [ 'xe/oa-configs/oa-registers-codegen.py',
++              'xe/oa-configs/oa-@0@.xml'.format(hw) ],
++    output : [ 'xe_oa_registers_@0@.c'.format(hw),
++               'xe_oa_registers_@0@.h'.format(hw), ],
++    command : [
++      python3, '@INPUT0@',
++      '--code', '@OUTPUT0@',
++      '--header', '@OUTPUT1@',
++      '--xml-file', '@INPUT1@'
++    ])
++  xe_oa_files += custom_target(
++    'xe-oa-metrics-@0@'.format(hw),
++    input : [ 'xe/oa-configs/oa-metricset-codegen.py',
++              'xe/oa-configs/oa-@0@.xml'.format(hw) ],
++    output : [ 'xe_oa_metrics_@0@.c'.format(hw),
++               'xe_oa_metrics_@0@.h'.format(hw), ],
++    command : [
++      python3, '@INPUT0@',
++      '--code', '@OUTPUT0@',
++      '--header', '@OUTPUT1@',
++      '--equations-include', 'xe_oa_equations.h',
++      '--registers-include', 'xe_oa_registers_@0@.h'.format(hw),
++      '--xml-file', '@INPUT1@',
++    ])
++endforeach
++
++lib_igt_xe_oa_build = shared_library(
++  'xe_oa',
++  xe_oa_files,
++  dependencies: [lib_igt_chipset,lib_igt,pciaccess],
++  include_directories : inc,
++  install: true,
++  soversion: '1.5')
++
++lib_igt_xe_oa = declare_dependency(
++  link_with : lib_igt_xe_oa_build,
++  include_directories : inc)
++
++install_headers(
++  'igt_list.h',
++  'intel_chipset.h',
++  'xe/xe_oa.h',
++  subdir : 'xe-oa'
++)
++
+ pkgconf = configuration_data()
+ 
+ pkgconf.set('prefix', get_option('prefix'))
+@@ -384,6 +463,7 @@ pkgconf.set('exec_prefix', '${prefix}')
+ pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
+ pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
+ pkgconf.set('i915_perf_version', '1.5.1')
++pkgconf.set('xe_oa_version', '1.0.0')
+ 
+ configure_file(
+   input : 'i915-perf.pc.in',
+@@ -391,4 +471,10 @@ configure_file(
+   configuration : pkgconf,
+   install_dir : pkgconfigdir)
+ 
++configure_file(
++  input : 'xe-oa.pc.in',
++  output : 'xe-oa.pc',
++  configuration : pkgconf,
++  install_dir : pkgconfigdir)
++
+ subdir('tests')
+diff --git a/lib/xe-oa.pc.in b/lib/xe-oa.pc.in
 new file mode 100644
-index 0000000000..a5f59a67fe
+index 0000000000..e08fa5220f
 --- /dev/null
-+++ b/tools/xe-perf/meson.build
-@@ -0,0 +1,5 @@
-+executable('xe-perf-recorder',
-+           [ 'xe_perf_recorder.c' ],
-+           include_directories: inc,
-+           dependencies: [lib_igt, lib_igt_xe_oa],
-+           install: true)
-diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
++++ b/lib/xe-oa.pc.in
+@@ -0,0 +1,11 @@
++prefix=@prefix@
++exec_prefix=@exec_prefix@
++libdir=@libdir@
++includedir=@includedir@
++
++Name: xe-oa
++Description: Xe OA library
++Version: @xe_oa_version@
++Requires: libdrm >= 2.4.92
++Libs: -L${libdir} -lxe_oa
++Cflags: -I${includedir}/xe-oa
+diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
 new file mode 100644
-index 0000000000..bd2d645fa1
+index 0000000000..0cb193ddff
 --- /dev/null
-+++ b/tools/xe-perf/xe_perf_recorder.c
-@@ -0,0 +1,1227 @@
++++ b/lib/xe/xe_oa.c
+@@ -0,0 +1,1074 @@
 +// SPDX-License-Identifier: MIT
 +/*
 + * Copyright © 2024 Intel Corporation
@@ -118,1261 +242,1570 @@ index 0000000000..bd2d645fa1
 +#include <dirent.h>
 +#include <errno.h>
 +#include <fcntl.h>
-+#include <getopt.h>
-+#include <inttypes.h>
-+#include <limits.h>
-+#include <poll.h>
-+#include <signal.h>
-+#include <stdbool.h>
-+#include <stdint.h>
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
 +#include <sys/ioctl.h>
 +#include <sys/stat.h>
 +#include <sys/sysmacros.h>
-+#include <sys/time.h>
 +#include <sys/types.h>
-+#include <time.h>
 +#include <unistd.h>
 +
-+#include "igt_core.h"
++#include "drmtest.h"
 +#include "intel_chipset.h"
++#include "intel_hwconfig_types.h"
 +#include "ioctl_wrappers.h"
 +#include "linux_scaffold.h"
-+#include "xe/xe_oa.h"
-+#include "xe/xe_oa_data.h"
-+#include "xe/xe_query.h"
++#include "xe_ioctl.h"
++#include "xe_oa.h"
++#include "xe_pciids.h"
++#include "xe_query.h"
 +
-+#include "xe_perf_recorder_commands.h"
++#include "xe_oa_metrics_tglgt1.h"
++#include "xe_oa_metrics_tglgt2.h"
++#include "xe_oa_metrics_rkl.h"
++#include "xe_oa_metrics_dg1.h"
++#include "xe_oa_metrics_adl.h"
++#include "xe_oa_metrics_acmgt1.h"
++#include "xe_oa_metrics_acmgt2.h"
++#include "xe_oa_metrics_acmgt3.h"
++#include "xe_oa_metrics_mtlgt2.h"
++#include "xe_oa_metrics_mtlgt3.h"
++#include "xe_oa_metrics_lnl.h"
 +
-+#define ALIGN(v, a) (((v) + (a)-1) & ~((a)-1))
-+#define ARRAY_SIZE(arr) (sizeof(arr)/sizeof((arr)[0]))
-+#define MAX(a,b) ((a) > (b) ? (a) : (b))
-+#define MIN(a,b) ((a) < (b) ? (a) : (b))
-+
-+struct circular_buffer {
-+	char   *data;
-+	size_t  allocated_size;
-+	size_t  size;
-+	size_t  beginpos;
-+	size_t  endpos;
-+};
-+
-+struct chunk {
-+	char *data;
-+	size_t len;
-+};
-+
-+static size_t
-+circular_available_size(const struct circular_buffer *buffer)
++static struct intel_xe_perf_logical_counter_group *
++intel_xe_perf_logical_counter_group_new(struct intel_xe_perf *perf,
++					struct intel_xe_perf_logical_counter_group *parent,
++					const char *name)
 +{
-+	assert(buffer->size <= buffer->allocated_size);
-+	return buffer->allocated_size - buffer->size;
-+}
++	struct intel_xe_perf_logical_counter_group *group = calloc(1, sizeof(*group));
 +
-+static void
-+get_chunks(struct chunk *chunks, struct circular_buffer *buffer, bool write, size_t len)
-+{
-+	size_t offset = write ? buffer->endpos : buffer->beginpos;
++	group->name = strdup(name);
 +
-+	if (write)
-+		assert(circular_available_size(buffer) >= len);
++	IGT_INIT_LIST_HEAD(&group->counters);
++	IGT_INIT_LIST_HEAD(&group->groups);
++
++	if (parent)
++		igt_list_add_tail(&group->link, &parent->groups);
 +	else
-+		assert(buffer->size >= len);
++		IGT_INIT_LIST_HEAD(&group->link);
 +
-+	chunks[0].data = &buffer->data[offset];
-+
-+	if ((offset + len) > buffer->allocated_size) {
-+		chunks[0].len = buffer->allocated_size - offset;
-+		chunks[1].data = buffer->data;
-+		chunks[1].len = len - (buffer->allocated_size - offset);
-+	} else {
-+		chunks[0].len = len;
-+		chunks[1].data = NULL;
-+		chunks[1].len = 0;
-+	}
-+}
-+
-+static ssize_t
-+circular_buffer_read(void *c, char *buf, size_t size)
-+{
-+	struct circular_buffer *buffer = c;
-+	struct chunk chunks[2];
-+
-+	if (buffer->size < size)
-+		return -1;
-+
-+	get_chunks(chunks, buffer, false, size);
-+
-+	memcpy(buf, chunks[0].data, chunks[0].len);
-+	memcpy(buf + chunks[0].len, chunks[1].data, chunks[1].len);
-+	buffer->beginpos = (buffer->beginpos + size) % buffer->allocated_size;
-+	buffer->size -= size;
-+
-+	return size;
-+}
-+
-+static size_t
-+peek_item_size(struct circular_buffer *buffer)
-+{
-+	struct intel_xe_perf_record_header header;
-+	struct chunk chunks[2];
-+
-+	if (!buffer->size)
-+		return 0;
-+
-+	assert(buffer->size >= sizeof(header));
-+
-+	get_chunks(chunks, buffer, false, sizeof(header));
-+	memcpy(&header, chunks[0].data, chunks[0].len);
-+	memcpy((char *) &header + chunks[0].len, chunks[1].data, chunks[1].len);
-+
-+	return header.size;
++	return group;
 +}
 +
 +static void
-+circular_shrink(struct circular_buffer *buffer, size_t size)
++intel_xe_perf_logical_counter_group_free(struct intel_xe_perf_logical_counter_group *group)
 +{
-+	size_t shrank = 0, item_size;
++	struct intel_xe_perf_logical_counter_group *child, *tmp;
 +
-+	assert(size <= buffer->allocated_size);
-+
-+	while (shrank < size && buffer->size > (item_size = peek_item_size(buffer))) {
-+		assert(item_size > 0 && item_size <= buffer->allocated_size);
-+
-+		buffer->beginpos = (buffer->beginpos + item_size) % buffer->allocated_size;
-+		buffer->size -= item_size;
-+
-+		shrank += item_size;
-+	}
-+}
-+
-+static ssize_t
-+circular_buffer_write(void *c, const char *buf, size_t _size)
-+{
-+	struct circular_buffer *buffer = c;
-+	size_t size = _size;
-+
-+	while (size) {
-+		size_t avail = circular_available_size(buffer), item_size;
-+		struct chunk chunks[2];
-+
-+		/* Make space in the buffer if there is too much data. */
-+		if (avail < size)
-+			circular_shrink(buffer, size - avail);
-+
-+		item_size = MIN(circular_available_size(buffer), size);
-+
-+		get_chunks(chunks, buffer, true, item_size);
-+
-+		memcpy(chunks[0].data, buf, chunks[0].len);
-+		memcpy(chunks[1].data, buf + chunks[0].len, chunks[1].len);
-+
-+		buf += item_size;
-+		size -= item_size;
-+
-+		buffer->endpos = (buffer->endpos + item_size) % buffer->allocated_size;
-+		buffer->size += item_size;
++	igt_list_for_each_entry_safe(child, tmp, &group->groups, link) {
++		igt_list_del(&child->link);
++		intel_xe_perf_logical_counter_group_free(child);
 +	}
 +
-+	return _size;
++	free(group->name);
++	free(group);
 +}
 +
-+static int
-+circular_buffer_seek(void *c, off64_t *offset, int whence)
++static void
++intel_xe_perf_metric_set_free(struct intel_xe_perf_metric_set *metric_set)
 +{
-+	return -1;
++	free(metric_set->counters);
++	free(metric_set);
 +}
-+
-+static int
-+circular_buffer_close(void *c)
-+{
-+	return 0;
-+}
-+
-+cookie_io_functions_t circular_buffer_functions = {
-+	.read  = circular_buffer_read,
-+	.write = circular_buffer_write,
-+	.seek  = circular_buffer_seek,
-+	.close = circular_buffer_close,
-+};
-+
 +
 +static bool
-+read_file_uint64(const char *file, uint64_t *value)
++slice_available(const struct intel_xe_topology_info *topo,
++		int s)
++{
++	return (topo->data[s / 8] >> (s % 8)) & 1;
++}
++
++static bool
++subslice_available(const struct intel_xe_topology_info *topo,
++		   int s, int ss)
++{
++	return (topo->data[topo->subslice_offset +
++			   s * topo->subslice_stride +
++			   ss / 8] >> (ss % 8)) & 1;
++}
++
++static bool
++eu_available(const struct intel_xe_topology_info *topo,
++	     int s, int ss, int eu)
++{
++	return (topo->data[topo->eu_offset +
++			   (s * topo->max_subslices + ss) * topo->eu_stride +
++			   eu / 8] >> (eu % 8)) & 1;
++}
++
++static struct intel_xe_perf *
++unsupported_xe_oa_platform(struct intel_xe_perf *perf)
++{
++	intel_xe_perf_free(perf);
++	return NULL;
++}
++
++static bool
++is_acm_gt1(const struct intel_xe_perf_devinfo *devinfo)
++{
++#undef INTEL_VGA_DEVICE
++#define INTEL_VGA_DEVICE(_id, _info) _id
++	static const uint32_t devids[] = {
++		XE_DG2_G11_IDS(INTEL_VGA_DEVICE, NULL),
++		XE_ATS_M75_IDS(INTEL_VGA_DEVICE, NULL),
++	};
++#undef INTEL_VGA_DEVICE
++	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
++		if (devids[i] == devinfo->devid)
++			return true;
++	}
++
++	return false;
++}
++
++static bool
++is_acm_gt2(const struct intel_xe_perf_devinfo *devinfo)
++{
++#undef INTEL_VGA_DEVICE
++#define INTEL_VGA_DEVICE(_id, _info) _id
++	static const uint32_t devids[] = {
++		XE_DG2_G12_IDS(INTEL_VGA_DEVICE, NULL),
++	};
++#undef INTEL_VGA_DEVICE
++	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
++		if (devids[i] == devinfo->devid)
++			return true;
++	}
++
++	return false;
++}
++
++static bool
++is_acm_gt3(const struct intel_xe_perf_devinfo *devinfo)
++{
++#undef INTEL_VGA_DEVICE
++#define INTEL_VGA_DEVICE(_id, _info) _id
++	static const uint32_t devids[] = {
++		XE_DG2_G10_IDS(INTEL_VGA_DEVICE, NULL),
++		XE_ATS_M150_IDS(INTEL_VGA_DEVICE, NULL),
++	};
++#undef INTEL_VGA_DEVICE
++	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
++		if (devids[i] == devinfo->devid)
++			return true;
++	}
++
++	return false;
++}
++
++struct intel_xe_perf *
++intel_xe_perf_for_devinfo(uint32_t device_id,
++			  uint32_t revision,
++			  uint64_t timestamp_frequency,
++			  uint64_t gt_min_freq,
++			  uint64_t gt_max_freq,
++			  const struct intel_xe_topology_info *topology)
++{
++	const struct intel_device_info *devinfo = intel_get_device_info(device_id);
++	struct intel_xe_perf *perf;
++	uint32_t subslice_mask_len;
++	uint32_t eu_mask_len;
++	uint32_t half_max_subslices;
++	uint64_t half_subslices_mask;
++	int bits_per_subslice;
++
++	if (!devinfo)
++		return NULL;
++
++	perf = calloc(1, sizeof(*perf));;
++	perf->root_group = intel_xe_perf_logical_counter_group_new(perf, NULL, "");
++
++	IGT_INIT_LIST_HEAD(&perf->metric_sets);
++
++	/* Initialize the device characterists first. Loading the
++	 * metrics uses that information to detect whether some
++	 * counters are available on a given device (for example BXT
++	 * 2x6 does not have 2 samplers).
++	 */
++	perf->devinfo.devid = device_id;
++	perf->devinfo.graphics_ver = devinfo->graphics_ver;
++	perf->devinfo.revision = revision;
++	perf->devinfo.timestamp_frequency = timestamp_frequency;
++	perf->devinfo.gt_min_freq = gt_min_freq;
++	perf->devinfo.gt_max_freq = gt_max_freq;
++
++	if (devinfo->codename) {
++		snprintf(perf->devinfo.devname, sizeof(perf->devinfo.devname),
++			 "%s", devinfo->codename);
++	}
++
++	/* Store topology. */
++	perf->devinfo.max_slices = topology->max_slices;
++	perf->devinfo.max_subslices_per_slice = topology->max_subslices;
++	perf->devinfo.max_eu_per_subslice = topology->max_eus_per_subslice;
++
++	subslice_mask_len =
++		topology->max_slices * topology->subslice_stride;
++	igt_assert(sizeof(perf->devinfo.subslice_masks) >= subslice_mask_len);
++	memcpy(perf->devinfo.subslice_masks,
++	       &topology->data[topology->subslice_offset],
++	       subslice_mask_len);
++
++	eu_mask_len = topology->eu_stride *
++		topology->max_subslices * topology->max_slices;
++	igt_assert(sizeof(perf->devinfo.eu_masks) >= eu_mask_len);
++	memcpy(perf->devinfo.eu_masks,
++	       &topology->data[topology->eu_offset],
++	       eu_mask_len);
++
++	bits_per_subslice = 8;
++	for (uint32_t s = 0; s < topology->max_slices; s++) {
++		if (!slice_available(topology, s))
++			continue;
++
++		perf->devinfo.slice_mask |= 1ULL << s;
++		for (uint32_t ss = 0; ss < topology->max_subslices; ss++) {
++			if (!subslice_available(topology, s, ss))
++				continue;
++
++			perf->devinfo.subslice_mask |= 1ULL << (s * bits_per_subslice + ss);
++
++			for (uint32_t eu = 0; eu < topology->max_eus_per_subslice; eu++) {
++				if (eu_available(topology, s, ss, eu))
++					perf->devinfo.n_eus++;
++			}
++		}
++	}
++
++	perf->devinfo.n_eu_slices = __builtin_popcount(perf->devinfo.slice_mask);
++	perf->devinfo.n_eu_sub_slices = __builtin_popcount(perf->devinfo.subslice_mask);
++
++	/* Compute number of subslices/dualsubslices in first half of
++	 * the GPU.
++	 */
++	half_max_subslices = topology->max_subslices / 2;
++	half_subslices_mask = perf->devinfo.subslice_mask &
++		((1 << half_max_subslices) - 1);
++	perf->devinfo.n_eu_sub_slices_half_slices = __builtin_popcount(half_subslices_mask);
++
++	/* Valid on most generations except Gen9LP. */
++	perf->devinfo.eu_threads_count = 7;
++
++	/* Most platforms have full 32bit timestamps. */
++	perf->devinfo.oa_timestamp_mask = 0xffffffff;
++	perf->devinfo.oa_timestamp_shift = 0;
++
++	if (devinfo->is_tigerlake) {
++		switch (devinfo->gt) {
++		case 1:
++			intel_xe_perf_load_metrics_tglgt1(perf);
++			break;
++		case 2:
++			intel_xe_perf_load_metrics_tglgt2(perf);
++			break;
++		default:
++			return unsupported_xe_oa_platform(perf);
++		}
++	} else if (devinfo->is_rocketlake) {
++		intel_xe_perf_load_metrics_rkl(perf);
++	} else if (devinfo->is_dg1) {
++		intel_xe_perf_load_metrics_dg1(perf);
++	} else if (devinfo->is_alderlake_s || devinfo->is_alderlake_p ||
++		   devinfo->is_raptorlake_s || devinfo->is_alderlake_n) {
++		intel_xe_perf_load_metrics_adl(perf);
++	} else if (devinfo->is_dg2) {
++		perf->devinfo.eu_threads_count = 8;
++		/* OA reports have the timestamp value shifted to the
++		 * right by 1 bits, it also means we cannot use the
++		 * top bit for comparison.
++		 */
++		perf->devinfo.oa_timestamp_shift = -1;
++		perf->devinfo.oa_timestamp_mask = 0x7fffffff;
++
++		if (is_acm_gt1(&perf->devinfo))
++			intel_xe_perf_load_metrics_acmgt1(perf);
++		else if (is_acm_gt2(&perf->devinfo))
++			intel_xe_perf_load_metrics_acmgt2(perf);
++		else if (is_acm_gt3(&perf->devinfo))
++			intel_xe_perf_load_metrics_acmgt3(perf);
++		else
++			return unsupported_xe_oa_platform(perf);
++	} else if (intel_graphics_ver(device_id) >= IP_VER(20, 0)) {
++		intel_xe_perf_load_metrics_lnl(perf);
++	} else {
++		return unsupported_xe_oa_platform(perf);
++	}
++
++	return perf;
++}
++
++static bool
++read_fd_uint64(int fd, uint64_t *out_value)
 +{
 +	char buf[32];
-+	int fd, n;
++	int n;
 +
-+	fd = open(file, 0);
-+	if (fd < 0)
-+		return false;
 +	n = read(fd, buf, sizeof (buf) - 1);
-+	close(fd);
 +	if (n < 0)
 +		return false;
 +
 +	buf[n] = '\0';
-+	*value = strtoull(buf, 0, 0);
++	*out_value = strtoull(buf, 0, 0);
 +
 +	return true;
 +}
 +
-+static uint32_t
-+read_device_param(const char *stem, int id, const char *param)
++static bool
++read_sysfs(int sysfs_dir_fd, const char *file_path, uint64_t *out_value)
 +{
-+	char *name;
-+	int ret = asprintf(&name, "/sys/class/drm/%s%u/device/%s", stem, id, param);
-+	uint64_t value;
-+	bool success;
++	int fd = openat(sysfs_dir_fd, file_path, O_RDONLY);
++	bool res;
 +
-+	assert(ret != -1);
++	if (fd < 0)
++		return false;
 +
-+	success = read_file_uint64(name, &value);
-+	free(name);
++	res = read_fd_uint64(fd, out_value);
++	close(fd);
 +
-+	return success ? value : 0;
++	return res;
 +}
 +
 +static int
-+find_intel_render_node(void)
++open_master_sysfs_dir(int drm_fd)
 +{
-+	for (int i = 128; i < (128 + 16); i++) {
-+		if (read_device_param("renderD", i, "vendor") == 0x8086)
-+			return i;
-+	}
++	char path[128];
++	struct stat st;
++	int sysfs;
 +
-+	return -1;
-+}
++	if (fstat(drm_fd, &st) || !S_ISCHR(st.st_mode))
++                return -1;
 +
-+static void
-+print_intel_devices(void)
-+{
-+	fprintf(stdout, "Available devices:\n");
-+	for (int i = 0; i < 128; i++) {
-+		if (read_device_param("card", i, "vendor") == 0x8086) {
-+			uint32_t devid = read_device_param("card", i, "device");
-+			const struct intel_device_info *devinfo =
-+				intel_get_device_info(devid);
-+			fprintf(stdout, "   %i: %s (0x%04hx)\n", i,
-+				devinfo ? devinfo->codename : "unknwon",
-+				devid);
++	snprintf(path, sizeof(path), "/sys/dev/char/%d:%d", major(st.st_rdev), minor(st.st_rdev));
++	sysfs = open(path, O_DIRECTORY);
++	if (sysfs < 0)
++		return sysfs;
++
++	if (minor(st.st_rdev) >= 128) {
++		/* If we were given a renderD* drm_fd, find it's associated cardX node. */
++		char device[100], cmp[100];
++		int device_len, cmp_len, i;
++
++		device_len = readlinkat(sysfs, "device", device, sizeof(device));
++		close(sysfs);
++		if (device_len < 0)
++			return device_len;
++
++		for (i = 0; i < 64; i++) {
++
++			snprintf(path, sizeof(path), "/sys/dev/char/%d:%d", major(st.st_rdev), i);
++			sysfs = open(path, O_DIRECTORY);
++			if (sysfs < 0)
++				continue;
++
++			cmp_len = readlinkat(sysfs, "device", cmp, sizeof(cmp));
++			if (cmp_len == device_len && !memcmp(cmp, device, cmp_len))
++				break;
++
++			close(sysfs);
++			sysfs = -1;
 +		}
 +	}
++
++	return sysfs;
 +}
 +
-+static int
-+open_render_node(uint32_t *devid, int card)
++static void process_hwconfig(void *data, uint32_t len,
++			     struct intel_xe_topology_info *topinfo)
 +{
-+	char *name;
-+	int ret;
-+	int fd;
-+	int render;
 +
-+	if (card < 0) {
-+		render = find_intel_render_node();
-+		if (render < 0)
-+			return -1;
++	uint32_t *d = (uint32_t*)data;
++	uint32_t l = len / 4;
++	uint32_t pos = 0;
++
++	while (pos + 2 < l) {
++		if (d[pos + 1] == 1) {
++			switch (d[pos]) {
++			case INTEL_HWCONFIG_MAX_SLICES_SUPPORTED:
++				topinfo->max_slices = d[pos + 2];
++				igt_debug("hwconfig: max_slices %d\n", topinfo->max_slices);
++				break;
++			case INTEL_HWCONFIG_MAX_SUBSLICE:
++			case INTEL_HWCONFIG_MAX_DUAL_SUBSLICES_SUPPORTED:
++				topinfo->max_subslices = d[pos + 2];
++				igt_debug("hwconfig: max_subslices %d\n", topinfo->max_subslices);
++				break;
++			case INTEL_HWCONFIG_MAX_EU_PER_SUBSLICE:
++			case INTEL_HWCONFIG_MAX_NUM_EU_PER_DSS:
++				topinfo->max_eus_per_subslice = d[pos + 2];
++				igt_debug("hwconfig: max_eus_per_subslice %d\n",
++					  topinfo->max_eus_per_subslice);
++				break;
++			default:
++				break;
++			}
++		}
++		pos += 2 + d[pos + 1];
++	}
++}
++
++static void query_hwconfig(int fd, struct intel_xe_topology_info *topinfo)
++{
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_HWCONFIG,
++		.size = 0,
++		.data = 0,
++	};
++	void *hwconfig;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_assert(query.size);
++
++	hwconfig = malloc(query.size);
++	igt_assert(hwconfig);
++
++	query.data = to_user_pointer(hwconfig);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	process_hwconfig(hwconfig, query.size, topinfo);
++	free(hwconfig);
++}
++
++struct intel_xe_topology_info *
++xe_fill_topology_info(int drm_fd, uint32_t device_id, uint32_t *topology_size)
++{
++	const struct intel_device_info *devinfo = intel_get_device_info(device_id);
++	struct intel_xe_topology_info topinfo = {};
++	struct intel_xe_topology_info *ptopo;
++	struct drm_xe_query_topology_mask *xe_topo;
++	int pos = 0;
++	u8 *ptr;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_GT_TOPOLOGY,
++		.size = 0,
++		.data = 0,
++	};
++
++	/* Only ADL-P, DG2 and newer ip support hwconfig, use hardcoded values for previous */
++	if (intel_graphics_ver(device_id) >= IP_VER(12, 55) || devinfo->is_alderlake_p) {
++		query_hwconfig(drm_fd, &topinfo);
 +	} else {
-+		render = 128 + card;
++		topinfo.max_slices = 1;
++		topinfo.max_subslices = 6;
++		topinfo.max_eus_per_subslice = 16;
 +	}
 +
-+	ret = asprintf(&name, "/dev/dri/renderD%u", render);
-+	assert(ret != -1);
++	topinfo.subslice_offset = 1;		/* always 1 */
++	topinfo.subslice_stride = DIV_ROUND_UP(topinfo.max_subslices, 8);
++	topinfo.eu_offset = topinfo.subslice_offset + topinfo.subslice_stride;
++	topinfo.eu_stride = DIV_ROUND_UP(topinfo.max_eus_per_subslice, 8);
 +
-+	*devid = read_device_param("renderD", render, "device");
++	/* Allocate and start filling the struct to return */
++	*topology_size = sizeof(topinfo) + topinfo.eu_offset +
++		topinfo.max_subslices * topinfo.eu_stride;
++	*topology_size = ALIGN(*topology_size, 8);
++	ptopo = malloc(*topology_size);
++	igt_assert(ptopo);
 +
-+	fd = open(name, O_RDWR);
-+	free(name);
++	memcpy(ptopo, &topinfo, sizeof(topinfo));
++	ptr = (u8 *)ptopo + sizeof(topinfo);
++	*ptr++ = 0x1;					/* slice mask */
 +
-+	return fd;
-+}
++	/* Get xe topology masks */
++	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_assert_neq(query.size, 0);
 +
-+static uint32_t
-+oa_exponent_for_period(uint64_t device_timestamp_frequency, double period)
-+{
-+	uint64_t period_ns = 1000 * 1000 * 1000 * period;
-+	uint64_t device_periods[32];
++	xe_topo = malloc(query.size);
++	igt_assert(xe_topo);
 +
-+	for (uint32_t i = 0; i < ARRAY_SIZE(device_periods); i++)
-+		device_periods[i] = 1000000000ull * (1u << i) / device_timestamp_frequency;
++	query.data = to_user_pointer(xe_topo);
++	igt_assert_eq(igt_ioctl(drm_fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	igt_debug("Topology size: %d\n", query.size);
 +
-+	for (uint32_t i = 1; i < ARRAY_SIZE(device_periods); i++) {
-+		if (period_ns >= device_periods[i - 1] &&
-+		    period_ns < device_periods[i]) {
-+			if ((device_periods[i] - period_ns) >
-+			    (period_ns - device_periods[i - 1]))
-+				return i - 1;
-+			return i;
++	while (query.size >= sizeof(struct drm_xe_query_topology_mask)) {
++		struct drm_xe_query_topology_mask *topo =
++			(struct drm_xe_query_topology_mask*)((unsigned char*)xe_topo + pos);
++		int i, sz = sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes;
++		u64 geom_mask, compute_mask;
++
++		igt_debug(" gt_id: %d type: %d n:%d [%d] ", topo->gt_id, topo->type, topo->num_bytes, sz);
++		for (int j=0; j< topo->num_bytes; j++)
++			igt_debug(" %02x", topo->mask[j]);
++		igt_debug("\n");
++
++		/* i915 only returns topology for gt 0, do the same here */
++		if (topo->gt_id)
++			goto next;
++
++		/* Follow the same order as in xe query_gt_topology() */
++		switch (topo->type) {
++		case DRM_XE_TOPO_DSS_GEOMETRY:
++			igt_assert_lte(ptopo->subslice_stride, 8);	/* Fit in u64 mask */
++			memcpy(&geom_mask, topo->mask, ptopo->subslice_stride);
++			break;
++		case DRM_XE_TOPO_DSS_COMPUTE:
++			memcpy(&compute_mask, topo->mask, ptopo->subslice_stride);
++			geom_mask |= compute_mask;
++			memcpy(ptr, &geom_mask, ptopo->subslice_stride);
++			ptr += ptopo->subslice_stride;
++			break;
++		case DRM_XE_TOPO_EU_PER_DSS:
++			for (i = 0; i < ptopo->max_subslices; i++) {
++				memcpy(ptr, topo->mask, ptopo->eu_stride);
++				ptr += ptopo->eu_stride;
++			}
++			break;
++		case DRM_XE_TOPO_L3_BANK:
++			break;
++		default:
++			igt_assert(0);
 +		}
++next:
++		query.size -= sz;
++		pos += sz;
 +	}
 +
-+	return -1;
++	free(xe_topo);
++
++	return ptopo;
 +}
 +
-+static int
-+perf_ioctl(int fd, unsigned long request, void *arg)
++static struct intel_xe_perf *
++xe_perf_for_fd(int drm_fd, int gt)
 +{
-+	int ret;
++	uint32_t device_id;
++	uint32_t device_revision = 0;
++	uint32_t topology_size;
++	uint64_t gt_min_freq = 0;
++	uint64_t gt_max_freq = 0;
++	struct intel_xe_topology_info *topology;
++	struct intel_xe_perf *ret;
++	int sysfs_dir_fd = open_master_sysfs_dir(drm_fd);
++	char path_min[64], path_max[64];
++	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
++	struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
 +
-+	do {
-+		ret = ioctl(fd, request, arg);
-+	} while (ret == -1 && (errno == EINTR || errno == EAGAIN));
++	if (sysfs_dir_fd < 0) {
++		igt_warn("open_master_sysfs_dir failed\n");
++		return NULL;
++	}
++
++	if (IS_PONTEVECCHIO(xe_dev_id(drm_fd))) {
++		sprintf(path_min, "device/tile%d/gt%d/freq%d/min_freq", gt, gt, gt);
++		sprintf(path_max, "device/tile%d/gt%d/freq%d/max_freq", gt, gt, gt);
++	} else {
++		sprintf(path_min, "device/tile0/gt%d/freq%d/min_freq", gt, gt);
++		sprintf(path_max, "device/tile0/gt%d/freq%d/max_freq", gt, gt);
++	}
++
++	if (!read_sysfs(sysfs_dir_fd, path_min, &gt_min_freq) ||
++	    !read_sysfs(sysfs_dir_fd, path_max, &gt_max_freq)) {
++		igt_warn("Unable to read freqs from sysfs\n");
++		close(sysfs_dir_fd);
++		return NULL;
++	}
++	close(sysfs_dir_fd);
++
++	device_id = intel_get_drm_devid(drm_fd);
++
++	topology = xe_fill_topology_info(drm_fd, device_id, &topology_size);
++	if (!topology) {
++		igt_warn("xe_fill_topology_info failed\n");
++		return NULL;
++	}
++
++	ret = intel_xe_perf_for_devinfo(device_id,
++				     device_revision,
++				     oau->oa_timestamp_freq,
++				     gt_min_freq * 1000000,
++				     gt_max_freq * 1000000,
++				     topology);
++	if (!ret)
++		igt_warn("intel_xe_perf_for_devinfo failed\n");
++
++	free(topology);
 +
 +	return ret;
 +}
 +
-+static uint64_t
-+get_device_cs_timestamp_frequency(int drm_fd)
++struct intel_xe_perf *
++intel_xe_perf_for_fd(int drm_fd, int gt)
 +{
-+	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
++	if (!is_xe_device(drm_fd))
++		return NULL;
++
++	return xe_perf_for_fd(drm_fd, gt);
 +}
 +
-+static uint64_t
-+get_device_oa_timestamp_frequency(int drm_fd)
++void
++intel_xe_perf_free(struct intel_xe_perf *perf)
 +{
-+	struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-+	struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
++	struct intel_xe_perf_metric_set *metric_set, *tmp;
 +
-+	return oau->oa_timestamp_freq;
-+}
++	intel_xe_perf_logical_counter_group_free(perf->root_group);
 +
-+struct recording_context {
-+	int drm_fd;
-+	int perf_fd;
-+
-+	uint32_t devid;
-+	uint64_t oa_timestamp_frequency;
-+	uint64_t cs_timestamp_frequency;
-+
-+	const struct intel_device_info *devinfo;
-+
-+	struct intel_xe_topology_info *topology;
-+	uint32_t topology_size;
-+
-+	struct intel_xe_perf *perf;
-+	struct intel_xe_perf_metric_set *metric_set;
-+
-+	uint32_t oa_exponent;
-+
-+	struct circular_buffer circular_buffer;
-+	FILE *output_stream;
-+
-+	const char *command_fifo;
-+	int command_fifo_fd;
-+
-+	int gt;
-+	struct drm_xe_engine_class_instance eci;
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct drm_xe_oa_unit *oa_unit;
-+};
-+
-+static void set_fd_flags(int fd, int flags)
-+{
-+	int old = fcntl(fd, F_GETFL, 0);
-+
-+	igt_assert_lte(0, old);
-+	igt_assert_eq(0, fcntl(fd, F_SETFL, old | flags));
-+}
-+
-+enum xe_oa_report_header {
-+	HDR_32_BIT = 0,
-+	HDR_64_BIT,
-+};
-+
-+struct xe_oa_format {
-+	uint32_t counter_select;
-+	int size;
-+	int oa_type;
-+	enum xe_oa_report_header header;
-+	uint16_t counter_size;
-+	uint16_t bc_report;
-+};
-+
-+#define DRM_FMT(x) DRM_XE_OA_FMT_TYPE_##x
-+
-+static const struct xe_oa_format oa_formats[] = {
-+	[XE_OA_FORMAT_C4_B8]			= { 7, 64,  DRM_FMT(OAG) },
-+	[XE_OA_FORMAT_A12]			= { 0, 64,  DRM_FMT(OAG) },
-+	[XE_OA_FORMAT_A12_B8_C8]		= { 2, 128, DRM_FMT(OAG) },
-+	[XE_OA_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
-+	[XE_OAR_FORMAT_A32u40_A4u32_B8_C8]	= { 5, 256, DRM_FMT(OAR) },
-+	[XE_OA_FORMAT_A24u40_A14u32_B8_C8]	= { 5, 256, DRM_FMT(OAG) },
-+	[XE_OAC_FORMAT_A24u64_B8_C8]		= { 1, 320, DRM_FMT(OAC), HDR_64_BIT },
-+	[XE_OAC_FORMAT_A22u32_R2u32_B8_C8]	= { 2, 192, DRM_FMT(OAC), HDR_64_BIT },
-+	[XE_OAM_FORMAT_MPEC8u64_B8_C8]		= { 1, 192, DRM_FMT(OAM_MPEC), HDR_64_BIT },
-+	[XE_OAM_FORMAT_MPEC8u32_B8_C8]		= { 2, 128, DRM_FMT(OAM_MPEC), HDR_64_BIT },
-+	[XE_OA_FORMAT_PEC64u64]			= { 1, 576, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
-+	[XE_OA_FORMAT_PEC64u64_B8_C8]		= { 1, 640, DRM_FMT(PEC), HDR_64_BIT, 1, 1 },
-+	[XE_OA_FORMAT_PEC64u32]			= { 1, 320, DRM_FMT(PEC), HDR_64_BIT },
-+	[XE_OA_FORMAT_PEC32u64_G1]		= { 5, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
-+	[XE_OA_FORMAT_PEC32u32_G1]		= { 5, 192, DRM_FMT(PEC), HDR_64_BIT },
-+	[XE_OA_FORMAT_PEC32u64_G2]		= { 6, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
-+	[XE_OA_FORMAT_PEC32u32_G2]		= { 6, 192, DRM_FMT(PEC), HDR_64_BIT },
-+	[XE_OA_FORMAT_PEC36u64_G1_32_G2_4]	= { 3, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
-+	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32]	= { 4, 320, DRM_FMT(PEC), HDR_64_BIT, 1, 0 },
-+};
-+
-+static uint64_t oa_format_fields(uint64_t name)
-+{
-+#define FIELD_PREP_ULL(_mask, _val) \
-+	(((_val) << (__builtin_ffsll(_mask) - 1)) & (_mask))
-+
-+	struct xe_oa_format f = oa_formats[name];
-+
-+	/* 0 format name is invalid */
-+	if (!name)
-+		memset(&f, 0xff, sizeof(f));
-+
-+	return FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_FMT_TYPE, (u64)f.oa_type) |
-+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SEL, (u64)f.counter_select) |
-+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE, (u64)f.counter_size) |
-+		FIELD_PREP_ULL(DRM_XE_OA_FORMAT_MASK_BC_REPORT, (u64)f.bc_report);
-+#undef FIELD_PREP_ULL
-+}
-+#define __ff oa_format_fields
-+
-+static int
-+perf_open(struct recording_context *ctx)
-+{
-+	int stream_fd;
-+
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
-+
-+		/* Include OA reports in samples */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, ctx->metric_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+
-+	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
-+	if (stream_fd < 0) {
-+		errno = 0;
-+		goto exit;
++	igt_list_for_each_entry_safe(metric_set, tmp, &perf->metric_sets, link) {
++		igt_list_del(&metric_set->link);
++		intel_xe_perf_metric_set_free(metric_set);
 +	}
 +
-+	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-+exit:
-+	return stream_fd;
++	free(perf);
 +}
 +
-+static bool quit = false;
++void
++intel_xe_perf_add_logical_counter(struct intel_xe_perf *perf,
++				  struct intel_xe_perf_logical_counter *counter,
++				  const char *group_path)
++{
++	const char *group_path_end = group_path + strlen(group_path);
++	struct intel_xe_perf_logical_counter_group *group = perf->root_group, *child_group = NULL;
++	const char *name = group_path;
++
++	while (name < group_path_end) {
++		const char *name_end = strstr(name, "/");
++		char group_name[128] = { 0, };
++		struct intel_xe_perf_logical_counter_group *iter_group;
++
++		if (!name_end)
++			name_end = group_path_end;
++
++		memcpy(group_name, name, name_end - name);
++
++		child_group = NULL;
++		igt_list_for_each_entry(iter_group, &group->groups, link) {
++			if (!strcmp(iter_group->name, group_name)) {
++				child_group = iter_group;
++				break;
++			}
++		}
++
++		if (!child_group)
++			child_group = intel_xe_perf_logical_counter_group_new(perf, group, group_name);
++
++		name = name_end + 1;
++		group = child_group;
++	}
++
++	igt_list_add_tail(&counter->link, &child_group->counters);
++}
++
++void
++intel_xe_perf_add_metric_set(struct intel_xe_perf *perf,
++			     struct intel_xe_perf_metric_set *metric_set)
++{
++	igt_list_add_tail(&metric_set->link, &perf->metric_sets);
++}
 +
 +static void
-+sigint_handler(int val)
++load_metric_set_config(struct intel_xe_perf_metric_set *metric_set, int drm_fd)
 +{
-+	quit = true;
-+}
-+
-+static bool
-+write_version(FILE *output, struct recording_context *ctx)
-+{
-+	struct intel_xe_perf_record_version version = {
-+		.version = INTEL_XE_PERF_RECORD_VERSION,
-+	};
-+	struct intel_xe_perf_record_header header = {
-+		.type = INTEL_XE_PERF_RECORD_TYPE_VERSION,
-+		.size = sizeof(header) + sizeof(version),
-+	};
-+
-+	if (fwrite(&header, sizeof(header), 1, output) != 1)
-+		return false;
-+
-+	if (fwrite(&version, sizeof(version), 1, output) != 1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool
-+write_header(FILE *output, struct recording_context *ctx)
-+{
-+	struct intel_xe_perf_record_device_info info = {
-+		.timestamp_frequency = ctx->oa_timestamp_frequency,
-+		.device_id = ctx->perf->devinfo.devid,
-+		.device_revision = ctx->perf->devinfo.revision,
-+		.gt_min_frequency = ctx->perf->devinfo.gt_min_freq,
-+		.gt_max_frequency = ctx->perf->devinfo.gt_max_freq,
-+		.oa_format = ctx->metric_set->perf_oa_format,
-+		.engine_class = ctx->hwe->engine_class,
-+		.engine_instance = ctx->hwe->engine_instance,
-+	};
-+	struct intel_xe_perf_record_header header = {
-+		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_INFO,
-+		.size = sizeof(header) + sizeof(info),
-+	};
-+
-+	snprintf(info.metric_set_name, sizeof(info.metric_set_name),
-+		 "%s", ctx->metric_set->symbol_name);
-+	snprintf(info.metric_set_uuid, sizeof(info.metric_set_uuid),
-+		 "%s", ctx->metric_set->hw_config_guid);
-+
-+	if (fwrite(&header, sizeof(header), 1, output) != 1)
-+		return false;
-+
-+	if (fwrite(&info, sizeof(info), 1, output) != 1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static struct intel_xe_topology_info *get_topology(struct recording_context *ctx)
-+{
-+	return xe_fill_topology_info(ctx->drm_fd, ctx->devid, &ctx->topology_size);
-+}
-+
-+static bool
-+write_topology(FILE *output, struct recording_context *ctx)
-+{
-+	struct intel_xe_perf_record_header header = {
-+		.type = INTEL_XE_PERF_RECORD_TYPE_DEVICE_TOPOLOGY,
-+	};
-+
-+	header.size = sizeof(header) + ctx->topology_size;
-+	if (fwrite(&header, sizeof(header), 1, output) != 1)
-+		return false;
-+
-+	if (fwrite(ctx->topology, ctx->topology_size, 1, output) != 1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int get_stream_status(int perf_fd, u32 *oa_status)
-+{
-+	struct drm_xe_oa_stream_status status;
++	struct drm_xe_oa_config config;
++	u8 *regs;
 +	int ret;
 +
-+	ret = perf_ioctl(perf_fd, DRM_XE_PERF_IOCTL_STATUS, &status);
-+	if (ret)
-+		return ret;
++	memset(&config, 0, sizeof(config));
 +
-+	*oa_status = status.oa_status;
-+	return 0;
++	memcpy(config.uuid, metric_set->hw_config_guid, sizeof(config.uuid));
++
++	config.n_regs = metric_set->n_mux_regs +
++		metric_set->n_b_counter_regs +
++		metric_set->n_flex_regs;
++	config.regs_ptr = to_user_pointer(malloc(2 * config.n_regs * sizeof(u32)));
++	igt_assert(config.regs_ptr);
++	regs = (u8 *)config.regs_ptr;
++
++	memcpy(regs, metric_set->mux_regs, 2 * metric_set->n_mux_regs * sizeof(u32));
++	regs += 2 * metric_set->n_mux_regs * sizeof(u32);
++	memcpy(regs, metric_set->b_counter_regs, 2 * metric_set->n_b_counter_regs * sizeof(u32));
++	regs += 2 * metric_set->n_b_counter_regs * sizeof(u32);
++	memcpy(regs, metric_set->flex_regs, 2 * metric_set->n_flex_regs * sizeof(u32));
++	regs += 2 * metric_set->n_flex_regs * sizeof(u32);
++
++	ret = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_ADD_CONFIG, &config);
++	if (ret >= 0)
++		metric_set->perf_oa_metrics_set = ret;
++
++	free((void *)config.regs_ptr);
 +}
 +
-+static bool write_stream_status(struct recording_context *ctx, FILE *output)
++void
++intel_xe_perf_load_perf_configs(struct intel_xe_perf *perf, int drm_fd)
 +{
-+	u32 oa_status;
++	int sysfs_dir_fd = open_master_sysfs_dir(drm_fd);
++	struct dirent *entry;
++	int metrics_dir_fd;
++	DIR *metrics_dir;
++	struct intel_xe_perf_metric_set *metric_set;
 +
-+	if (!get_stream_status(ctx->perf_fd, &oa_status)) {
-+		struct intel_xe_perf_record_header header = { .size = sizeof(header) };
-+
-+		if (oa_status & DRM_XE_OASTATUS_REPORT_LOST)
-+			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_REPORT_LOST;
-+		else if (oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW)
-+			header.type = INTEL_XE_PERF_RECORD_OA_TYPE_BUFFER_LOST;
-+		else
-+			return true;
-+
-+		if (fwrite(&header, sizeof(header), 1, output) != 1)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static bool write_stream_data(struct recording_context *ctx,
-+			      char *data, ssize_t size, FILE *output)
-+{
-+	ssize_t format_size = oa_formats[ctx->metric_set->perf_oa_format].size;
-+
-+	assert(!(size % format_size));
-+
-+	for (int i = 0; i < size / format_size; i++) {
-+		struct intel_xe_perf_record_header header = {
-+			.type = INTEL_XE_PERF_RECORD_TYPE_SAMPLE,
-+			.size = sizeof(header) + format_size,
-+		};
-+
-+		if (fwrite(&header, sizeof(header), 1, output) != 1)
-+			return false;
-+
-+		if (fwrite(data, format_size, 1, output) != 1)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
-+static bool write_perf_data(FILE *output, struct recording_context *ctx)
-+{
-+	char data[4096];
-+	ssize_t len;
-+	bool ret;
-+
-+	while (1) {
-+		len = read(ctx->perf_fd, data, sizeof(data));
-+
-+		if (len < 0) {
-+			switch (errno) {
-+			case EIO:
-+				ret = write_stream_status(ctx, output);
-+				if (!ret)
-+					return ret;
-+				break;
-+			case EAGAIN:
-+			case EINTR:
-+				return true;
-+			default:
-+				/* Not expecting -EFAULT, -ENOSPC, -EINVAL */
-+				assert(0);
-+			}
-+		} else {
-+			ret = write_stream_data(ctx, data, len, output);
-+			if (!ret)
-+				return ret;
-+		}
-+	}
-+
-+	/* Should not reach here */
-+	return false;
-+}
-+
-+static clock_t correlation_clock_id = CLOCK_MONOTONIC;
-+
-+static const char *
-+get_correlation_clock_name(clock_t clock_id)
-+{
-+	switch (clock_id) {
-+	case CLOCK_BOOTTIME:      return "bootime";
-+	case CLOCK_MONOTONIC:     return "monotonic";
-+	case CLOCK_MONOTONIC_RAW: return "monotonic_raw";
-+	default:                  return "*unknown*";
-+	}
-+}
-+
-+static int query_engine_cycles(int fd, struct drm_xe_query_engine_cycles *ts)
-+{
-+	struct drm_xe_device_query query = {
-+		.extensions = 0,
-+		.query = DRM_XE_DEVICE_QUERY_ENGINE_CYCLES,
-+		.size = sizeof(*ts),
-+		.data = (uintptr_t)ts,
-+	};
-+
-+	return perf_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query);
-+}
-+
-+static bool get_correlation_timestamps(struct recording_context *ctx,
-+				       struct intel_xe_perf_record_timestamp_correlation *corr)
-+{
-+	struct drm_xe_query_engine_cycles ts = {};
-+
-+	ts.eci = *ctx->hwe;
-+	ts.clockid = correlation_clock_id;
-+
-+	if (query_engine_cycles(ctx->drm_fd, &ts))
-+		return false;
-+
-+	corr->cpu_timestamp = ts.cpu_timestamp + ts.cpu_delta / 2;
-+	corr->gpu_timestamp = ts.engine_cycles;
-+
-+	return true;
-+}
-+
-+static bool
-+write_saved_correlation_timestamps(FILE *output,
-+				   const struct intel_xe_perf_record_timestamp_correlation *corr)
-+{
-+	struct intel_xe_perf_record_header header = {
-+		.type = INTEL_XE_PERF_RECORD_TYPE_TIMESTAMP_CORRELATION,
-+		.size = sizeof(header) + sizeof(*corr),
-+	};
-+
-+	if (fwrite(&header, sizeof(header), 1, output) != 1)
-+		return false;
-+
-+	if (fwrite(corr, sizeof(*corr), 1, output) != 1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool
-+write_correlation_timestamps(struct recording_context *ctx, FILE *output)
-+{
-+	struct intel_xe_perf_record_timestamp_correlation corr;
-+
-+	if (!get_correlation_timestamps(ctx, &corr))
-+		return false;
-+
-+	return write_saved_correlation_timestamps(output, &corr);
-+}
-+
-+static void
-+read_command_file(struct recording_context *ctx)
-+{
-+	struct recorder_command_base header;
-+	ssize_t ret = read(ctx->command_fifo_fd, &header, sizeof(header));
-+
-+	if (ret < 0)
++	if (sysfs_dir_fd < 0)
 +		return;
 +
-+	switch (header.command) {
-+	case RECORDER_COMMAND_DUMP: {
-+		uint32_t len = header.size - sizeof(header), offset = 0;
-+		uint8_t *dump = malloc(len);
-+		FILE *file;
++	metrics_dir_fd = openat(sysfs_dir_fd, "metrics", O_DIRECTORY);
++	close(sysfs_dir_fd);
++	if (metrics_dir_fd < -1)
++		return;
 +
-+		while (offset < len &&
-+		       ((ret = read(ctx->command_fifo_fd,
-+				    (void *) dump + offset, len - offset)) > 0
-+			|| errno == EAGAIN)) {
-+			if (ret > 0)
-+				offset += ret;
-+		}
-+
-+		fprintf(stdout, "Writing circular buffer to %s\n", dump);
-+
-+		file = fopen((const char *) dump, "w+");
-+		if (file) {
-+			struct chunk chunks[2];
-+
-+			fflush(ctx->output_stream);
-+			get_chunks(chunks, &ctx->circular_buffer,
-+				   false, ctx->circular_buffer.size);
-+
-+			if (!write_version(file, ctx) ||
-+			    !write_header(file, ctx) ||
-+			    !write_topology(file, ctx) ||
-+			    fwrite(chunks[0].data, chunks[0].len, 1, file) != 1 ||
-+			    (chunks[1].len > 0 &&
-+			     fwrite(chunks[1].data, chunks[1].len, 1, file) != 1) ||
-+			    !write_correlation_timestamps(ctx, file)) {
-+				fprintf(stderr, "Unable to write circular buffer data in file '%s'\n",
-+					dump);
-+			}
-+			fclose(file);
-+		} else
-+			fprintf(stderr, "Unable to write dump file '%s'\n", dump);
-+
-+		free(dump);
-+		break;
++	metrics_dir = fdopendir(metrics_dir_fd);
++	if (!metrics_dir) {
++		close(metrics_dir_fd);
++		return;
 +	}
-+	case RECORDER_COMMAND_QUIT:
-+		quit = true;
++
++	while ((entry = readdir(metrics_dir))) {
++		bool metric_id_read;
++		uint64_t metric_id;
++		char path[256 + 4];
++		int id_fd;
++
++		if (entry->d_type != DT_DIR)
++			continue;
++
++		snprintf(path, sizeof(path), "%s/id", entry->d_name);
++
++		id_fd = openat(metrics_dir_fd, path, O_RDONLY);
++		if (id_fd < 0)
++			continue;
++
++		metric_id_read = read_fd_uint64(id_fd, &metric_id);
++		close(id_fd);
++
++		if (!metric_id_read)
++			continue;
++
++		igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++			if (!strcmp(metric_set->hw_config_guid, entry->d_name)) {
++				metric_set->perf_oa_metrics_set = metric_id;
++				break;
++			}
++		}
++	}
++
++	closedir(metrics_dir);
++
++	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
++		if (metric_set->perf_oa_metrics_set)
++			continue;
++
++		load_metric_set_config(metric_set, drm_fd);
++	}
++}
++
++static void
++accumulate_uint32(const uint32_t *report0,
++                  const uint32_t *report1,
++                  uint64_t *deltas)
++{
++	*deltas += (uint32_t)(*report1 - *report0);
++}
++
++static void
++accumulate_uint40(int a_index,
++                  const uint32_t *report0,
++                  const uint32_t *report1,
++                  uint64_t *deltas)
++{
++	const uint8_t *high_bytes0 = (uint8_t *)(report0 + 40);
++	const uint8_t *high_bytes1 = (uint8_t *)(report1 + 40);
++	uint64_t high0 = (uint64_t)(high_bytes0[a_index]) << 32;
++	uint64_t high1 = (uint64_t)(high_bytes1[a_index]) << 32;
++	uint64_t value0 = report0[a_index + 4] | high0;
++	uint64_t value1 = report1[a_index + 4] | high1;
++	uint64_t delta;
++
++	if (value0 > value1)
++		delta = (1ULL << 40) + value1 - value0;
++	else
++		delta = value1 - value0;
++
++	*deltas += delta;
++}
++
++void intel_xe_perf_accumulate_reports(struct intel_xe_perf_accumulator *acc,
++				      const struct intel_xe_perf *perf,
++				      const struct intel_xe_perf_metric_set *metric_set,
++				      const struct intel_xe_perf_record_header *record0,
++				      const struct intel_xe_perf_record_header *record1)
++{
++	const uint32_t *start = (const uint32_t *)(record0 + 1);
++	const uint32_t *end = (const uint32_t *)(record1 + 1);
++	const uint64_t *start64 = (const uint64_t *)(record0 + 1);
++	const uint64_t *end64 = (const uint64_t *)(record1 + 1);
++	uint64_t *deltas = acc->deltas;
++	int idx = 0;
++	int i;
++
++	memset(acc, 0, sizeof(*acc));
++
++	switch (metric_set->perf_oa_format) {
++	case XE_OA_FORMAT_A24u40_A14u32_B8_C8:
++		/* timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
++		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
++
++		/* 4x 32bit A0-3 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 4 + i, end + 4 + i, deltas + idx++);
++
++		/* 20x 40bit A4-23 counters... */
++		for (i = 0; i < 20; i++)
++			accumulate_uint40(i + 4, start, end, deltas + idx++);
++
++		/* 4x 32bit A24-27 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 28 + i, end + 28 + i, deltas + idx++);
++
++		/* 4x 40bit A28-31 counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint40(i + 28, start, end, deltas + idx++);
++
++		/* 5x 32bit A32-36 counters... */
++		for (i = 0; i < 5; i++)
++			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
++
++		/* 1x 32bit A37 counter... */
++		accumulate_uint32(start + 46, end + 46, deltas + idx++);
++
++		/* 8x 32bit B counters + 8x 32bit C counters... */
++		for (i = 0; i < 16; i++)
++			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
 +		break;
++
++	case XE_OAR_FORMAT_A32u40_A4u32_B8_C8:
++	case XE_OA_FORMAT_A32u40_A4u32_B8_C8:
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end[1] - start[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end[1] - start[1]) >> (-perf->devinfo.oa_timestamp_shift);
++		accumulate_uint32(start + 3, end + 3, deltas + idx++); /* clock */
++
++		/* 32x 40bit A counters... */
++		for (i = 0; i < 32; i++)
++			accumulate_uint40(i, start, end, deltas + idx++);
++
++		/* 4x 32bit A counters... */
++		for (i = 0; i < 4; i++)
++			accumulate_uint32(start + 36 + i, end + 36 + i, deltas + idx++);
++
++		/* 8x 32bit B counters + 8x 32bit C counters... */
++		for (i = 0; i < 16; i++)
++			accumulate_uint32(start + 48 + i, end + 48 + i, deltas + idx++);
++		break;
++
++	case XE_OAM_FORMAT_MPEC8u32_B8_C8:
++		/* 64 bit timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end64[1] - start64[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end64[1] - start64[1]) >> (-perf->devinfo.oa_timestamp_shift);
++
++		/* 64 bit clock */
++		deltas[idx++] += end64[3] - start64[3];
++
++		/* 8x 32bit MPEC counters */
++		for (i = 0; i < 8; i++)
++			accumulate_uint32(start + 8 + i, end + 8 + i, deltas + idx++);
++
++		/* 8x 32bit B counters */
++		for (i = 0; i < 8; i++)
++			accumulate_uint32(start + 16 + i, end + 16 + i, deltas + idx++);
++
++		/* 8x 32bit C counters */
++		for (i = 0; i < 8; i++)
++			accumulate_uint32(start + 24 + i, end + 24 + i, deltas + idx++);
++
++		break;
++
++	case XE_OA_FORMAT_PEC64u64:
++		/* 64 bit timestamp */
++		if (perf->devinfo.oa_timestamp_shift >= 0)
++			deltas[idx++] += (end64[1] - start64[1]) << perf->devinfo.oa_timestamp_shift;
++		else
++			deltas[idx++] += (end64[1] - start64[1]) >> (-perf->devinfo.oa_timestamp_shift);
++
++		/* 64 bit clock */
++		deltas[idx++] += end64[3] - start64[3];
++
++		/* 64x 64bit PEC counters */
++		for (i = 0; i < 64; i++)
++			deltas[idx++] += end64[4 + i] - start64[4 + i];
++
++		break;
++
 +	default:
-+		fprintf(stderr, "Unknown command 0x%x\n", header.command);
-+		break;
++		assert(0);
 +	}
 +}
 +
-+static void
-+print_metric_sets(const struct intel_xe_perf *perf)
++uint64_t intel_xe_perf_read_record_timestamp(const struct intel_xe_perf *perf,
++					     const struct intel_xe_perf_metric_set *metric_set,
++					     const struct intel_xe_perf_record_header *record)
 +{
-+	struct intel_xe_perf_metric_set *metric_set;
-+	uint32_t longest_name = 0;
++       const uint32_t *report32 = (const uint32_t *)(record + 1);
++       const uint64_t *report64 = (const uint64_t *)(record + 1);
++       uint64_t ts;
 +
-+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
-+		longest_name = MAX(longest_name, strlen(metric_set->symbol_name));
++       switch (metric_set->perf_oa_format) {
++       case XE_OA_FORMAT_A24u40_A14u32_B8_C8:
++       case XE_OA_FORMAT_A32u40_A4u32_B8_C8:
++               ts = report32[1];
++               break;
++
++       case XE_OAM_FORMAT_MPEC8u32_B8_C8:
++       case XE_OA_FORMAT_PEC64u64:
++               ts = report64[1];
++               break;
++
++       default:
++               assert(0);
++       }
++
++       if (perf->devinfo.oa_timestamp_shift >= 0)
++	       ts <<= perf->devinfo.oa_timestamp_shift;
++       else
++	       ts >>= -perf->devinfo.oa_timestamp_shift;
++
++       return ts;
++}
++
++uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *perf,
++						 const struct intel_xe_perf_metric_set *metric_set,
++						 const struct intel_xe_perf_record_header *record)
++{
++       const uint32_t *report32 = (const uint32_t *)(record + 1);
++       const uint64_t *report64 = (const uint64_t *)(record + 1);
++       uint64_t ts;
++
++       switch (metric_set->perf_oa_format) {
++       case XE_OA_FORMAT_A24u40_A14u32_B8_C8:
++       case XE_OA_FORMAT_A32u40_A4u32_B8_C8:
++               ts = report32[1];
++               break;
++
++       case XE_OAM_FORMAT_MPEC8u32_B8_C8:
++       case XE_OA_FORMAT_PEC64u64:
++               ts = report64[1];
++               break;
++
++       default:
++               assert(0);
++       }
++
++       if (perf->devinfo.oa_timestamp_shift >= 0)
++	       ts <<= perf->devinfo.oa_timestamp_shift;
++       else
++	       ts >>= -perf->devinfo.oa_timestamp_shift;
++
++       return ts;
++}
++
++const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
++					     const struct intel_xe_perf_record_header *record)
++{
++	const uint32_t *report = (const uint32_t *) (record + 1);
++
++	/* Not really documented on Gfx7/7.5*/
++	if (perf->devinfo.graphics_ver < 8)
++		return "timer";
++
++	/* Gfx8-11 */
++	if (perf->devinfo.graphics_ver < 12) {
++		uint32_t reason = report[0] >> 19;
++		if (reason & (1u << 0))
++			return "timer";
++		if (reason & (1u << 1))
++			return "trigger1";
++		if (reason & (1u << 2))
++			return "trigger2";
++		if (reason & (1u << 3))
++			return "context-switch";
++		if (reason & (1u << 4))
++			return "go-transition";
++
++		if (perf->devinfo.graphics_ver >= 9 &&
++		    reason & (1u << 5))
++			return "clock-ratio-change";
++
++		return "unknown";
 +	}
 +
-+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link) {
-+		fprintf(stdout, "%s:%*s%s\n",
-+			metric_set->symbol_name,
-+			(int) (longest_name - strlen(metric_set->symbol_name) + 1), " ",
-+			metric_set->name);
-+	}
-+}
++	/* Gfx12 */
++	if (perf->devinfo.graphics_ver <= 12) {
++		uint32_t reason = report[0] >> 19;
++		if (reason & (1u << 0))
++			return "timer";
++		if (reason & (1u << 1))
++			return "trigger1";
++		if (reason & (1u << 2))
++			return "trigger2";
++		if (reason & (1u << 3))
++			return "context-switch";
++		if (reason & (1u << 4))
++			return "go-transition";
++		if (reason & (1u << 5))
++			return "clock-ratio-change";
++		if (reason & (1u << 6))
++			return "mmio-trigger";
 +
-+static void
-+print_metric_set_counters(const struct intel_xe_perf_metric_set *metric_set)
-+{
-+	uint32_t longest_name = 0;
-+
-+	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
-+		longest_name = MAX(longest_name, strlen(metric_set->counters[i].name));
-+	}
-+
-+	fprintf(stdout, "%s (%s):\n", metric_set->symbol_name, metric_set->name);
-+	for (uint32_t i = 0; i < metric_set->n_counters; i++) {
-+		struct intel_xe_perf_logical_counter *counter = &metric_set->counters[i];
-+
-+		fprintf(stdout, "  %s:%*s%s\n",
-+			counter->name,
-+			(int)(longest_name - strlen(counter->name) + 1), " ",
-+			counter->desc);
-+	}
-+}
-+
-+static void
-+print_metric_sets_counters(struct intel_xe_perf *perf)
-+{
-+	struct intel_xe_perf_metric_set *metric_set;
-+
-+	igt_list_for_each_entry(metric_set, &perf->metric_sets, link)
-+		print_metric_set_counters(metric_set);
-+}
-+
-+static void
-+usage(const char *name)
-+{
-+	fprintf(stdout,
-+		"Usage: %s [options]\n"
-+		"Recording tool for xe-oa\n"
-+		"\n"
-+		"     --help,               -h          Print this screen\n"
-+		"     --device,             -d <value>  Device to use\n"
-+		"                                       (value=list to list devices\n"
-+		"                                        value=1 to use /dev/dri/card1)\n"
-+		"     --correlation-period, -c <value>  Time period of timestamp correlation in seconds\n"
-+		"                                       (default = 1.0)\n"
-+		"     --perf-period,        -p <value>  Time period of xe-oa reports in seconds\n"
-+		"                                       (default = 0.001)\n"
-+		"     --metric,             -m <value>  xe-oa metric to sample with (use value=list to list all metrics)\n"
-+		"     --counters,           -C          List counters for a given metric and exit\n"
-+		"     --size,               -s <value>  Size of circular buffer to use in kilobytes\n"
-+		"                                       If specified, a maximum amount of <value> data will\n"
-+		"                                       be recorded.\n"
-+		"     --command-fifo,       -f <path>   Path to a command fifo, implies circular buffer\n"
-+		"                                       (To use with xe-perf-control)\n"
-+		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
-+		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
-+		"                                       Values: boot, mono, mono_raw (default = mono)\n"
-+		"     --engine-class        -e <value>  Engine class used for the OA capture.\n"
-+		"     --engine-instance     -i <value>  Engine instance used for the OA capture.\n",
-+		name);
-+}
-+
-+static void
-+teardown_recording_context(struct recording_context *ctx)
-+{
-+	if (ctx->topology)
-+		free(ctx->topology);
-+
-+	if (ctx->perf)
-+		intel_xe_perf_free(ctx->perf);
-+
-+	if (ctx->command_fifo)
-+		unlink(ctx->command_fifo);
-+	if (ctx->command_fifo_fd != -1)
-+		close(ctx->command_fifo_fd);
-+
-+	if (ctx->output_stream)
-+		fclose(ctx->output_stream);
-+
-+	free(ctx->circular_buffer.data);
-+
-+	if (ctx->perf_fd != -1)
-+		close(ctx->perf_fd);
-+	if (ctx->drm_fd != -1)
-+		close(ctx->drm_fd);
-+}
-+
-+static int assign_oa_unit(int fd, struct recording_context *ctx)
-+{
-+	struct drm_xe_query_oa_units *qoa = xe_oa_units(fd);
-+	struct drm_xe_oa_unit *oau;
-+	uint8_t *poau;
-+
-+	poau = (uint8_t *)&qoa->oa_units[0];
-+	for (int i = 0; i < qoa->num_oa_units; i++) {
-+		oau = (struct drm_xe_oa_unit *)poau;
-+
-+		for (int j = 0; j < oau->num_engines; j++) {
-+			if (oau->eci[j].engine_class == ctx->eci.engine_class &&
-+			    oau->eci[j].engine_instance == ctx->eci.engine_instance) {
-+				ctx->hwe = &oau->eci[j];
-+				ctx->oa_unit = oau;
-+				return 0;
-+			}
-+		}
-+
-+		poau += sizeof(*oau) + oau->num_engines * sizeof(oau->eci[0]);
++		return "unknown";
 +	}
 +
-+	return -1;
++	return "unknown";
 +}
 +
-+int
-+main(int argc, char *argv[])
++static void xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
++			      struct drm_xe_ext_set_property *extn)
 +{
-+	const struct option long_options[] = {
-+		{"help",		no_argument, 0, 'h'},
-+		{"device",		required_argument, 0, 'd'},
-+		{"correlation-period",	required_argument, 0, 'c'},
-+		{"perf-period",		required_argument, 0, 'p'},
-+		{"metric",		required_argument, 0, 'm'},
-+		{"counters",		no_argument, 0, 'C'},
-+		{"output",		required_argument, 0, 'o'},
-+		{"size",		required_argument, 0, 's'},
-+		{"command-fifo",	required_argument, 0, 'f'},
-+		{"cpu-clock",		required_argument, 0, 'k'},
-+		{"engine-class",	required_argument, 0, 'e'},
-+		{"engine-instance",	required_argument, 0, 'i'},
-+		{0, 0, 0, 0}
-+	};
-+	const struct {
-+		clock_t id;
-+		const char *name;
-+	} clock_names[] = {
-+		{ CLOCK_BOOTTIME,	"boot" },
-+		{ CLOCK_MONOTONIC,	"mono" },
-+		{ CLOCK_MONOTONIC_RAW,	"mono_raw" },
-+	};
-+	double corr_period = 1.0, perf_period = 0.001;
-+	const char *metric_name = NULL, *output_file = "xe_perf.record";
-+	struct intel_xe_perf_metric_set *metric_set;
-+	struct intel_xe_perf_record_timestamp_correlation initial_correlation;
-+	struct timespec now;
-+	uint64_t corr_period_ns, poll_time_ns;
-+	uint32_t circular_size = 0;
-+	int opt, dev_node_id = -1;
-+	bool list_counters = false;
-+	FILE *output = NULL;
-+	struct recording_context ctx = {
-+		.drm_fd = -1,
-+		.perf_fd = -1,
++	__u64 *prop = from_user_pointer(properties->properties_ptr);
++	struct drm_xe_ext_set_property *ext = extn;
++	int i, j;
 +
-+		.command_fifo = XE_PERF_RECORD_FIFO_PATH,
-+		.command_fifo_fd = -1,
++	for (i = 0; i < properties->num_properties; i++) {
++		ext->base.name = DRM_XE_OA_EXTENSION_SET_PROPERTY;
++		ext->property = *prop++;
++		ext->value = *prop++;
++		ext++;
++	}
 +
-+		.eci = { DRM_XE_ENGINE_CLASS_RENDER, 0 },
++	igt_assert_lte(1, i);
++	ext = extn;
++	for (j = 0; j < i - 1; j++)
++		ext[j].base.next_extension = to_user_pointer(&ext[j + 1]);
++}
++
++int intel_xe_perf_ioctl(int fd, enum drm_xe_perf_op op, void *arg)
++{
++#define XE_OA_MAX_SET_PROPERTIES 16
++
++	struct drm_xe_ext_set_property ext[XE_OA_MAX_SET_PROPERTIES] = {};
++
++	/* Chain the PERF layer struct */
++	struct drm_xe_perf_param p = {
++		.extensions = 0,
++		.perf_type = DRM_XE_PERF_TYPE_OA,
++		.perf_op = op,
++		.param = to_user_pointer((op == DRM_XE_PERF_OP_STREAM_OPEN) ? ext : arg),
 +	};
 +
-+	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:e:i:", long_options, NULL)) != -1) {
-+		switch (opt) {
-+		case 'h':
-+			usage(argv[0]);
-+			return EXIT_SUCCESS;
-+		case 'c':
-+			corr_period = atof(optarg);
-+			break;
-+		case 'd':
-+			if (!strcmp(optarg, "list"))
-+				dev_node_id = -2;
-+			else
-+				dev_node_id = atoi(optarg);
-+			break;
-+		case 'p':
-+			perf_period = atof(optarg);
-+			break;
-+		case 'm':
-+			metric_name = optarg;
-+			break;
-+		case 'C':
-+			list_counters = true;
-+			break;
-+		case 'o':
-+			output_file = optarg;
-+			break;
-+		case 's':
-+			circular_size = MAX(8, atoi(optarg)) * 1024;
-+			break;
-+		case 'f':
-+			ctx.command_fifo = optarg;
-+			circular_size = 8 * 1024 * 1024;
-+			break;
-+		case 'k': {
-+			bool found = false;
-+			for (uint32_t i = 0; i < ARRAY_SIZE(clock_names); i++) {
-+				if (!strcmp(clock_names[i].name, optarg)) {
-+					correlation_clock_id = clock_names[i].id;
-+					found = true;
-+					break;
-+				}
-+			}
-+			if (!found) {
-+				fprintf(stderr, "Unknown clock name '%s'\n", optarg);
-+				return EXIT_FAILURE;
-+			}
-+			break;
-+		}
-+		case 'e':
-+			ctx.eci.engine_class = atoi(optarg);
-+			break;
-+		case 'i':
-+			ctx.eci.engine_instance = atoi(optarg);
-+			break;
-+		default:
-+			fprintf(stderr, "Internal error: "
-+				"unexpected getopt value: %d\n", opt);
-+			usage(argv[0]);
-+			return EXIT_FAILURE;
-+		}
++	if (op == DRM_XE_PERF_OP_STREAM_OPEN) {
++		struct intel_xe_oa_open_prop *oprop = (struct intel_xe_oa_open_prop *)arg;
++
++		igt_assert_lte(oprop->num_properties, XE_OA_MAX_SET_PROPERTIES);
++		xe_oa_prop_to_ext(oprop, ext);
 +	}
 +
-+	if (dev_node_id == -2) {
-+		print_intel_devices();
-+		return EXIT_SUCCESS;
-+	}
-+
-+	ctx.drm_fd = open_render_node(&ctx.devid, dev_node_id);
-+	if (ctx.drm_fd < 0) {
-+		fprintf(stderr, "Unable to open device.\n");
-+		return EXIT_FAILURE;
-+	}
-+
-+	xe_device_get(ctx.drm_fd);
-+
-+	ctx.devinfo = intel_get_device_info(ctx.devid);
-+	if (!ctx.devinfo) {
-+		fprintf(stderr, "No device info found.\n");
-+		goto fail;
-+	}
-+
-+	if (assign_oa_unit(ctx.drm_fd, &ctx) < 0) {
-+		fprintf(stderr, "assign_oa_unit failed\n");
-+		goto fail;
-+	}
-+
-+	fprintf(stdout, "Device name=%s gen=%i id=0x%x oa_unit=%i gt=%i\n",
-+		ctx.devinfo->codename, ctx.devinfo->graphics_ver, ctx.devid,
-+		ctx.oa_unit->oa_unit_id, ctx.hwe->gt_id);
-+
-+	ctx.topology = get_topology(&ctx);
-+	if (!ctx.topology) {
-+		fprintf(stderr, "Unable to retrieve GPU topology\n");
-+		goto fail;
-+	}
-+
-+	ctx.perf = intel_xe_perf_for_fd(ctx.drm_fd, ctx.hwe->gt_id);
-+	if (!ctx.perf) {
-+		fprintf(stderr, "No perf data found.\n");
-+		goto fail;
-+	}
-+
-+	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
-+
-+	if (metric_name) {
-+		if (!strcmp(metric_name, "list")) {
-+			print_metric_sets(ctx.perf);
-+			return EXIT_SUCCESS;
-+		}
-+
-+		igt_list_for_each_entry(metric_set, &ctx.perf->metric_sets, link) {
-+			if (!strcasecmp(metric_set->symbol_name, metric_name)) {
-+				ctx.metric_set = metric_set;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (list_counters) {
-+		if (!ctx.metric_set)
-+			print_metric_sets_counters(ctx.perf);
-+		else
-+			print_metric_set_counters(ctx.metric_set);
-+		teardown_recording_context(&ctx);
-+		return EXIT_SUCCESS;
-+	}
-+
-+	if (!ctx.metric_set) {
-+		if (!metric_name)
-+			fprintf(stderr, "No metric set specified.\n");
-+		else
-+			fprintf(stderr, "Unknown metric set '%s'.\n", metric_name);
-+		print_metric_sets(ctx.perf);
-+		goto fail;
-+	}
-+
-+	intel_xe_perf_load_perf_configs(ctx.perf, ctx.drm_fd);
-+
-+	ctx.oa_timestamp_frequency = get_device_oa_timestamp_frequency(ctx.drm_fd);
-+	ctx.cs_timestamp_frequency = get_device_cs_timestamp_frequency(ctx.drm_fd);
-+
-+	signal(SIGINT, sigint_handler);
-+
-+	if (ctx.command_fifo) {
-+		if (mkfifo(ctx.command_fifo,
-+			   S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH) != 0) {
-+			fprintf(stderr, "Unable to create command fifo '%s': %s\n",
-+				ctx.command_fifo, strerror(errno));
-+			goto fail;
-+		}
-+
-+		ctx.command_fifo_fd = open(ctx.command_fifo, O_RDWR);
-+		if (ctx.command_fifo_fd < 0) {
-+			fprintf(stderr, "Unable to open command fifo '%s': %s\n",
-+				ctx.command_fifo, strerror(errno));
-+			goto fail;
-+		}
-+	}
-+
-+	if (circular_size) {
-+		ctx.circular_buffer.allocated_size = circular_size;
-+		ctx.circular_buffer.data = malloc(circular_size);
-+		if (!ctx.circular_buffer.data) {
-+			fprintf(stderr, "Unable to allocate circular buffer\n");
-+			goto fail;
-+		}
-+
-+		ctx.output_stream = fopencookie(&ctx.circular_buffer, "w+",
-+						circular_buffer_functions);
-+		if (!ctx.output_stream) {
-+			fprintf(stderr, "Unable to create circular buffer\n");
-+			goto fail;
-+		}
-+
-+		if (!get_correlation_timestamps(&ctx, &initial_correlation)) {
-+			fprintf(stderr, "Unable to correlation timestamps\n");
-+			goto fail;
-+		}
-+
-+		write_correlation_timestamps(&ctx, ctx.output_stream);
-+		fprintf(stdout,
-+			"Recoding in internal circular buffer.\n"
-+			"Use xe-perf-control to snapshot into file.\n");
-+	} else {
-+		output = fopen(output_file, "w+");
-+		if (!output) {
-+			fprintf(stderr, "Unable to open output file '%s'\n",
-+				output_file);
-+			goto fail;
-+		}
-+
-+		if (!write_version(output, &ctx) ||
-+		    !write_header(output, &ctx) ||
-+		    !write_topology(output, &ctx) ||
-+		    !write_correlation_timestamps(&ctx, output)) {
-+			fprintf(stderr, "Unable to write header in file '%s'\n",
-+				output_file);
-+			goto fail;
-+		}
-+
-+		ctx.output_stream = output;
-+		fprintf(stdout, "Writing recoding to %s\n", output_file);
-+	}
-+
-+	if (ctx.metric_set->perf_oa_metrics_set == 0) {
-+		fprintf(stderr,
-+			"Unable to load performance configuration, consider running:\n"
-+			"   sysctl dev.xe.perf_stream_paranoid=0\n");
-+		goto fail;
-+	}
-+
-+	fprintf(stdout, "Using correlation clock: %s\n",
-+		get_correlation_clock_name(correlation_clock_id));
-+
-+	ctx.oa_exponent = oa_exponent_for_period(ctx.oa_timestamp_frequency, perf_period);
-+	fprintf(stdout, "Opening perf stream with metric_id=%"PRIu64" oa_exponent=%u oa_format=%u\n",
-+		ctx.metric_set->perf_oa_metrics_set, ctx.oa_exponent,
-+		ctx.metric_set->perf_oa_format);
-+
-+	ctx.perf_fd = perf_open(&ctx);
-+	if (ctx.perf_fd < 0) {
-+		fprintf(stderr, "Unable to open xe oa stream: %s\n",
-+			strerror(errno));
-+		goto fail;
-+	}
-+
-+	corr_period_ns = corr_period * 1000000000ul;
-+	poll_time_ns = corr_period_ns;
-+
-+	while (!quit) {
-+		struct pollfd pollfd[2] = {
-+			{         ctx.perf_fd, POLLIN, 0 },
-+			{ ctx.command_fifo_fd, POLLIN, 0 },
-+		};
-+		uint64_t elapsed_ns;
-+		int ret;
-+
-+		igt_gettime(&now);
-+		ret = poll(pollfd, ctx.command_fifo_fd != -1 ? 2 : 1, poll_time_ns / 1000000);
-+		if (ret < 0 && errno != EINTR) {
-+			fprintf(stderr, "Failed to poll xe-oa stream: %s\n",
-+				strerror(errno));
-+			break;
-+		}
-+
-+		if (ret > 0) {
-+			if (pollfd[0].revents & POLLIN) {
-+				if (!write_perf_data(ctx.output_stream, &ctx)) {
-+					fprintf(stderr, "Failed to write xe-oa data: %s\n",
-+						strerror(errno));
-+					break;
-+				}
-+			}
-+
-+			if (pollfd[1].revents & POLLIN) {
-+				read_command_file(&ctx);
-+			}
-+		}
-+
-+		elapsed_ns = igt_nsec_elapsed(&now);
-+		if (elapsed_ns > poll_time_ns) {
-+			poll_time_ns = corr_period_ns;
-+			if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
-+				fprintf(stderr,
-+					"Failed to write xe timestamp correlation data: %s\n",
-+					strerror(errno));
-+				break;
-+			}
-+		} else {
-+			poll_time_ns -= elapsed_ns;
-+		}
-+	}
-+
-+	fprintf(stdout, "Exiting...\n");
-+
-+	if (!write_perf_data(ctx.output_stream, &ctx)) {
-+		fprintf(stderr, "Failed to write xe-oa data: %s\n",
-+			strerror(errno));
-+	}
-+
-+	if (!write_correlation_timestamps(&ctx, ctx.output_stream)) {
-+		fprintf(stderr,
-+			"Failed to write final xe timestamp correlation data: %s\n",
-+			strerror(errno));
-+	}
-+
-+	teardown_recording_context(&ctx);
-+
-+	return EXIT_SUCCESS;
-+
-+ fail:
-+	teardown_recording_context(&ctx);
-+
-+	return EXIT_FAILURE;
++	return igt_ioctl(fd, DRM_IOCTL_XE_PERF, &p);
 +}
-diff --git a/tools/xe-perf/xe_perf_recorder_commands.h b/tools/xe-perf/xe_perf_recorder_commands.h
++
++void intel_xe_perf_ioctl_err(int fd, enum drm_xe_perf_op op, void *arg, int err)
++{
++	igt_assert_eq(intel_xe_perf_ioctl(fd, op, arg), -1);
++	igt_assert_eq(errno, err);
++	errno = 0;
++}
+diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
 new file mode 100644
-index 0000000000..528813d2dc
+index 0000000000..c16177ec8e
 --- /dev/null
-+++ b/tools/xe-perf/xe_perf_recorder_commands.h
-@@ -0,0 +1,31 @@
++++ b/lib/xe/xe_oa.h
+@@ -0,0 +1,407 @@
 +/* SPDX-License-Identifier: MIT */
 +/*
-+ * Copyright © 2023 Intel Corporation
++ * Copyright © 2024 Intel Corporation
 + */
 +
-+#ifndef XE_PERF_RECORDER_COMMANDS_H
-+#define XE_PERF_RECORDER_COMMANDS_H
++#ifndef XE_OA_H
++#define XE_OA_H
 +
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++#include <stdbool.h>
 +#include <stdint.h>
 +
-+#define XE_PERF_RECORD_FIFO_PATH "/tmp/.xe-perf-record"
++#include "igt_list.h"
++#include <xe_drm.h>
 +
-+enum recorder_command {
-+	RECORDER_COMMAND_DUMP = 1,
-+	RECORDER_COMMAND_QUIT,
++#define _DIV_ROUND_UP(a, b)  (((a) + (b) - 1) / (b))
++
++#define INTEL_XE_DEVICE_MAX_SLICES           (8)
++#define INTEL_XE_DEVICE_MAX_SUBSLICES        (32)
++#define INTEL_XE_DEVICE_MAX_EUS_PER_SUBSLICE (16) /* Maximum on gfx12 */
++
++enum intel_xe_oa_format_name {
++	XE_OA_FORMAT_C4_B8 = 1,
++
++	/* Gen8+ */
++	XE_OA_FORMAT_A12,
++	XE_OA_FORMAT_A12_B8_C8,
++	XE_OA_FORMAT_A32u40_A4u32_B8_C8,
++
++	/* DG2 */
++	XE_OAR_FORMAT_A32u40_A4u32_B8_C8,
++	XE_OA_FORMAT_A24u40_A14u32_B8_C8,
++
++	/* DG2/MTL OAC */
++	XE_OAC_FORMAT_A24u64_B8_C8,
++	XE_OAC_FORMAT_A22u32_R2u32_B8_C8,
++
++	/* MTL OAM */
++	XE_OAM_FORMAT_MPEC8u64_B8_C8,
++	XE_OAM_FORMAT_MPEC8u32_B8_C8,
++
++	/* Xe2+ */
++	XE_OA_FORMAT_PEC64u64,
++	XE_OA_FORMAT_PEC64u64_B8_C8,
++	XE_OA_FORMAT_PEC64u32,
++	XE_OA_FORMAT_PEC32u64_G1,
++	XE_OA_FORMAT_PEC32u32_G1,
++	XE_OA_FORMAT_PEC32u64_G2,
++	XE_OA_FORMAT_PEC32u32_G2,
++	XE_OA_FORMAT_PEC36u64_G1_32_G2_4,
++	XE_OA_FORMAT_PEC36u64_G1_4_G2_32,
++
++	XE_OA_FORMAT_MAX,
 +};
 +
-+struct recorder_command_base {
-+	uint32_t command;
-+	uint32_t size; /* size of recorder_command_base + dump in bytes */
++struct intel_xe_perf_devinfo {
++	char devname[20];
++	char prettyname[100];
++
++	/*
++	 * Always false for gputop, we don't have the additional
++	 * snapshots of register values, only the OA reports.
++	 */
++	bool query_mode;
++
++	bool has_dynamic_configs;
++
++	/* The following fields are prepared for equations from the XML files.
++	 * Their values are build up from the topology fields.
++	 */
++	uint32_t devid;
++	uint32_t graphics_ver;
++	uint32_t revision;
++	/**
++	 * Bit shifting required to put OA report timestamps into
++	 * timestamp_frequency (some HW generations can shift
++	 * timestamp values to the right by a number of bits).
++	 */
++	int32_t  oa_timestamp_shift;
++	/**
++	 * On some platforms only part of the timestamp bits are valid
++	 * (on previous platforms we would get full 32bits, newer
++	 * platforms can have fewer). It's important to know when
++	 * correlating the full 36bits timestamps to the OA report
++	 * timestamps.
++	 */
++	uint64_t  oa_timestamp_mask;
++	/* Frequency of the timestamps in Hz */
++	uint64_t timestamp_frequency;
++	uint64_t gt_min_freq;
++	uint64_t gt_max_freq;
++
++	/* Total number of EUs */
++	uint64_t n_eus;
++	/* Total number of EUs in a slice */
++	uint64_t n_eu_slices;
++	/* Total number of subslices/dualsubslices */
++	uint64_t n_eu_sub_slices;
++	/* Number of subslices/dualsubslices in the first half of the
++	 * slices.
++	 */
++	uint64_t n_eu_sub_slices_half_slices;
++	/* Mask of available subslices/dualsubslices */
++	uint64_t subslice_mask;
++	/* Mask of available slices */
++	uint64_t slice_mask;
++	/* Number of threads in one EU */
++	uint64_t eu_threads_count;
++
++	/**
++	 * Maximu number of slices present on this device (can be more than
++	 * num_slices if some slices are fused).
++	 */
++	uint16_t max_slices;
++
++	/**
++	 * Maximu number of subslices per slice present on this device (can be more
++	 * than the maximum value in the num_subslices[] array if some subslices are
++	 * fused).
++	 */
++	uint16_t max_subslices_per_slice;
++
++	/**
++	 * Stride to access subslice_masks[].
++	 */
++	uint16_t subslice_slice_stride;
++
++	/**
++	 * Maximum number of EUs per subslice (can be more than
++	 * num_eu_per_subslice if some EUs are fused off).
++	 */
++	uint16_t max_eu_per_subslice;
++
++	/**
++	 * Strides to access eu_masks[].
++	 */
++	uint16_t eu_slice_stride;
++	uint16_t eu_subslice_stride;
++
++	/**
++	 * A bit mask of the slices available.
++	 */
++	uint8_t slice_masks[_DIV_ROUND_UP(INTEL_XE_DEVICE_MAX_SLICES, 8)];
++
++	/**
++	 * An array of bit mask of the subslices available, use subslice_slice_stride
++	 * to access this array.
++	 */
++	uint8_t subslice_masks[INTEL_XE_DEVICE_MAX_SLICES *
++			       _DIV_ROUND_UP(INTEL_XE_DEVICE_MAX_SUBSLICES, 8)];
++
++	/**
++	 * An array of bit mask of EUs available, use eu_slice_stride &
++	 * eu_subslice_stride to access this array.
++	 */
++	uint8_t eu_masks[INTEL_XE_DEVICE_MAX_SLICES *
++			 INTEL_XE_DEVICE_MAX_SUBSLICES *
++			 _DIV_ROUND_UP(INTEL_XE_DEVICE_MAX_EUS_PER_SUBSLICE, 8)];
 +};
 +
-+/*
-+ The dump after the recorder_command_base header:
++typedef enum {
++	INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT64,
++	INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_UINT32,
++	INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_DOUBLE,
++	INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_FLOAT,
++	INTEL_XE_PERF_LOGICAL_COUNTER_STORAGE_BOOL32,
++} intel_xe_perf_logical_counter_storage_t;
 +
-+struct recorder_command_dump {
-+	uint8_t path[0];
++typedef enum {
++	INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_RAW,
++	INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_DURATION_RAW,
++	INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_DURATION_NORM,
++	INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_EVENT,
++	INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_THROUGHPUT,
++	INTEL_XE_PERF_LOGICAL_COUNTER_TYPE_TIMESTAMP,
++} intel_xe_perf_logical_counter_type_t;
++
++typedef enum {
++	/* size */
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_BYTES,
++
++	/* frequency */
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_HZ,
++
++	/* time */
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_NS,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_US,
++
++	/**/
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_PIXELS,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_TEXELS,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_THREADS,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_PERCENT,
++
++	/* events */
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_MESSAGES,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_NUMBER,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_CYCLES,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_EVENTS,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_UTILIZATION,
++
++	/**/
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_EU_SENDS_TO_L3_CACHE_LINES,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_EU_ATOMIC_REQUESTS_TO_L3_CACHE_LINES,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_EU_REQUESTS_TO_L3_CACHE_LINES,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_EU_BYTES_PER_L3_CACHE_LINE,
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_GBPS,
++
++	INTEL_XE_PERF_LOGICAL_COUNTER_UNIT_MAX
++} intel_xe_perf_logical_counter_unit_t;
++
++/* Hold deltas of raw performance counters. */
++struct intel_xe_perf_accumulator {
++#define INTEL_XE_PERF_MAX_RAW_OA_COUNTERS 128
++	uint64_t deltas[INTEL_XE_PERF_MAX_RAW_OA_COUNTERS];
 +};
-+*/
 +
++struct intel_xe_perf;
++struct intel_xe_perf_metric_set;
++struct intel_xe_perf_logical_counter {
++	const struct intel_xe_perf_metric_set *metric_set;
++	const char *name;
++	const char *symbol_name;
++	const char *desc;
++	const char *group;
++	bool (*availability)(const struct intel_xe_perf *perf);
++	intel_xe_perf_logical_counter_storage_t storage;
++	intel_xe_perf_logical_counter_type_t type;
++	intel_xe_perf_logical_counter_unit_t unit;
++	union {
++		uint64_t (*max_uint64)(const struct intel_xe_perf *perf,
++				       const struct intel_xe_perf_metric_set *metric_set,
++				       uint64_t *deltas);
++		double (*max_float)(const struct intel_xe_perf *perf,
++				    const struct intel_xe_perf_metric_set *metric_set,
++				    uint64_t *deltas);
++	};
++
++	union {
++		uint64_t (*read_uint64)(const struct intel_xe_perf *perf,
++					const struct intel_xe_perf_metric_set *metric_set,
++					uint64_t *deltas);
++		double (*read_float)(const struct intel_xe_perf *perf,
++				     const struct intel_xe_perf_metric_set *metric_set,
++				     uint64_t *deltas);
++	};
++
++	struct igt_list_head link; /* list from intel_xe_perf_logical_counter_group.counters */
++};
++
++struct intel_xe_perf_register_prog {
++	uint32_t reg;
++	uint32_t val;
++};
++
++struct intel_xe_perf_metric_set {
++	const char *name;
++	const char *symbol_name;
++	const char *hw_config_guid;
++
++	struct intel_xe_perf_logical_counter *counters;
++	int n_counters;
++
++	uint64_t perf_oa_metrics_set;
++	int perf_oa_format;
++	int perf_raw_size;
++
++	/* For indexing into accumulator->deltas[] ... */
++	int gpu_time_offset;
++	int gpu_clock_offset;
++	int a_offset;
++	int b_offset;
++	int c_offset;
++	int perfcnt_offset;
++
++	const struct intel_xe_perf_register_prog *b_counter_regs;
++	uint32_t n_b_counter_regs;
++
++	const struct intel_xe_perf_register_prog *mux_regs;
++	uint32_t n_mux_regs;
++
++	const struct intel_xe_perf_register_prog *flex_regs;
++	uint32_t n_flex_regs;
++
++	struct igt_list_head link;
++};
++
++/* A tree structure with group having subgroups and counters. */
++struct intel_xe_perf_logical_counter_group {
++	char *name;
++
++	struct igt_list_head counters;
++	struct igt_list_head groups;
++
++	struct igt_list_head link;  /* link for intel_xe_perf_logical_counter_group.groups */
++};
++
++struct intel_xe_perf {
++	const char *name;
++
++	struct intel_xe_perf_logical_counter_group *root_group;
++
++	struct igt_list_head metric_sets;
++
++	struct intel_xe_perf_devinfo devinfo;
++};
++
++/* This is identical to 'struct drm_i915_query_topology_info' at present */
++struct intel_xe_topology_info {
++	uint16_t flags;
++	uint16_t max_slices;
++	uint16_t max_subslices;
++	uint16_t max_eus_per_subslice;
++	uint16_t subslice_offset;
++	uint16_t subslice_stride;
++	uint16_t eu_offset;
++	uint16_t eu_stride;
++	uint8_t data[];
++};
++
++struct intel_xe_perf_record_header {
++	uint32_t type;
++	uint16_t pad;
++	uint16_t size;
++};
++
++static inline bool
++intel_xe_perf_devinfo_slice_available(const struct intel_xe_perf_devinfo *devinfo,
++				      int slice)
++{
++	return (devinfo->slice_masks[slice / 8] & (1U << (slice % 8))) != 0;
++}
++
++static inline bool
++intel_xe_perf_devinfo_subslice_available(const struct intel_xe_perf_devinfo *devinfo,
++					 int slice, int subslice)
++{
++	return (devinfo->subslice_masks[slice * devinfo->subslice_slice_stride +
++					subslice / 8] & (1U << (subslice % 8))) != 0;
++}
++
++static inline bool
++intel_xe_perf_devinfo_eu_available(const struct intel_xe_perf_devinfo *devinfo,
++				   int slice, int subslice, int eu)
++{
++	unsigned subslice_offset = slice * devinfo->eu_slice_stride +
++		subslice * devinfo->eu_subslice_stride;
++
++	return (devinfo->eu_masks[subslice_offset + eu / 8] & (1U << eu % 8)) != 0;
++}
++
++struct intel_xe_topology_info *
++xe_fill_topology_info(int drm_fd, uint32_t device_id, uint32_t *topology_size);
++
++struct intel_xe_perf *intel_xe_perf_for_fd(int drm_fd, int gt);
++struct intel_xe_perf *intel_xe_perf_for_devinfo(uint32_t device_id,
++						uint32_t revision,
++						uint64_t timestamp_frequency,
++						uint64_t gt_min_freq,
++						uint64_t gt_max_freq,
++						const struct intel_xe_topology_info *topology);
++void intel_xe_perf_free(struct intel_xe_perf *perf);
++
++void intel_xe_perf_add_logical_counter(struct intel_xe_perf *perf,
++				       struct intel_xe_perf_logical_counter *counter,
++				       const char *group);
++
++void intel_xe_perf_add_metric_set(struct intel_xe_perf *perf,
++				  struct intel_xe_perf_metric_set *metric_set);
++
++void intel_xe_perf_load_perf_configs(struct intel_xe_perf *perf, int drm_fd);
++
++
++struct intel_xe_oa_open_prop {
++	uint32_t num_properties;
++	uint32_t reserved;
++	uint64_t properties_ptr;
++};
++
++void intel_xe_perf_accumulate_reports(struct intel_xe_perf_accumulator *acc,
++				      const struct intel_xe_perf *perf,
++				      const struct intel_xe_perf_metric_set *metric_set,
++				      const struct intel_xe_perf_record_header *record0,
++				      const struct intel_xe_perf_record_header *record1);
++
++uint64_t intel_xe_perf_read_record_timestamp(const struct intel_xe_perf *perf,
++					     const struct intel_xe_perf_metric_set *metric_set,
++					     const struct intel_xe_perf_record_header *record);
++
++uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *perf,
++						 const struct intel_xe_perf_metric_set *metric_set,
++						 const struct intel_xe_perf_record_header *record);
++
++const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
++					     const struct intel_xe_perf_record_header *record);
++
++int intel_xe_perf_ioctl(int fd, enum drm_xe_perf_op op, void *arg);
++void intel_xe_perf_ioctl_err(int fd, enum drm_xe_perf_op op, void *arg, int err);
++
++#ifdef __cplusplus
++};
 +#endif
++
++#endif /* XE_OA_H */
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 145dee8142..84eaaac967 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -114,6 +114,27 @@ static struct drm_xe_query_mem_regions *xe_query_mem_regions_new(int fd)
+ 	return mem_regions;
+ }
+ 
++static struct drm_xe_query_oa_units *xe_query_oa_units_new(int fd)
++{
++	struct drm_xe_query_oa_units *oa_units;
++	struct drm_xe_device_query query = {
++		.extensions = 0,
++		.query = DRM_XE_DEVICE_QUERY_OA_UNITS,
++		.size = 0,
++		.data = 0,
++	};
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	oa_units = malloc(query.size);
++	igt_assert(oa_units);
++
++	query.data = to_user_pointer(oa_units);
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++
++	return oa_units;
++}
++
+ static uint64_t native_region_for_gt(const struct drm_xe_query_gt_list *gt_list, int gt)
+ {
+ 	uint64_t region;
+@@ -251,6 +272,7 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->memory_regions = __memory_regions(xe_dev->gt_list);
+ 	xe_dev->engines = xe_query_engines(fd);
+ 	xe_dev->mem_regions = xe_query_mem_regions_new(fd);
++	xe_dev->oa_units = xe_query_oa_units_new(fd);
+ 	xe_dev->vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->vram_size));
+ 	xe_dev->visible_vram_size = calloc(xe_dev->gt_list->num_gt, sizeof(*xe_dev->visible_vram_size));
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
+@@ -525,6 +547,22 @@ uint32_t xe_min_page_size(int fd, uint64_t region)
+  */
+ xe_dev_FN(xe_config, config, struct drm_xe_query_config *);
+ 
++/**
++ * xe_gt_list:
++ * @fd: xe device fd
++ *
++ * Returns query gts of xe device @fd.
++ */
++xe_dev_FN(xe_gt_list, gt_list, struct drm_xe_query_gt_list *);
++
++/**
++ * xe_oa_units:
++ * @fd: xe device fd
++ *
++ * Returns query gts of xe device @fd.
++ */
++xe_dev_FN(xe_oa_units, oa_units, struct drm_xe_query_oa_units *);
++
+ /**
+  * xe_number_engine:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 54115f8f7c..c33f91ca11 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -38,6 +38,9 @@ struct xe_device {
+ 	/** @mem_regions: regions memory information and usage */
+ 	struct drm_xe_query_mem_regions *mem_regions;
+ 
++	/** @oa_units: information about OA units */
++	struct drm_xe_query_oa_units *oa_units;
++
+ 	/** @vram_size: array of vram sizes for all gt_list */
+ 	uint64_t *vram_size;
+ 
+@@ -85,6 +88,8 @@ const char *xe_region_name(uint64_t region);
+ uint16_t xe_region_class(int fd, uint64_t region);
+ uint32_t xe_min_page_size(int fd, uint64_t region);
+ struct drm_xe_query_config *xe_config(int fd);
++struct drm_xe_query_gt_list *xe_gt_list(int fd);
++struct drm_xe_query_oa_units *xe_oa_units(int fd);
+ unsigned int xe_number_engines(int fd);
+ bool xe_has_vram(int fd);
+ uint64_t xe_vram_size(int fd, int gt);
 -- 
 2.41.0
 
