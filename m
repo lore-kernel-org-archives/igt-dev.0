@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5103CC30653
-	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 22:59:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D87C30653
+	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 23:00:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1429910E080;
-	Sun, 30 Jun 2024 22:59:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D41610E0D7;
+	Sun, 30 Jun 2024 23:00:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P8CREbCL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BrDpLn/I";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E000610E080
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 22:59:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C3A210E0D7
+ for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 23:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719788392; x=1751324392;
+ t=1719788407; x=1751324407;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=AQ3yfTPEk2HuYRjqs4jlHxMzwlLCxBmsYrKkYGeuX4o=;
- b=P8CREbCLrLpU05sYUDv/nq+IeLMvvl6syGQmF91N2qR0W9bSaFsL8Vxx
- GH7/VEvZ6Unsr98J38rL//NUUZm59aroix9cgCzcvHsvyEG3PW0VPKkim
- NqFR3SgBHodxLw5ivg7UJns/1clUL7ldD8SiW9fqLo9qszPQFbWXjqP5D
- 9qcCjwRHL1kSyYhNMEZRluIErvaqhZP+echsN9IMIaxqKPVrmojjx4VwO
- +ewvG4KU1aMhjD2tUXG3Ivu8FY+oWzyMLPr0hzMkLebVpLI+dq0ZzvTFN
- fh7/EOalkSJW0vQ0eqN+mXKBMSNp5IKWUqdLD3lpWVCxu31qnhg7vjAwq Q==;
-X-CSE-ConnectionGUID: iF2E6VovRb+/C7ONpkvbpQ==
-X-CSE-MsgGUID: ttWMrcMbQ4m+cv0B9eQkCQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="28292818"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="28292818"
+ bh=xiddbXJfQpubreym9d61e0xT+tIe+lkO04pjoiWdIOk=;
+ b=BrDpLn/Ish3TK5E1iKc1Dt3XrQIGlCjGGYajDw7SLNNl9sXS3R/7m8ZL
+ OBlsu6lvMryJoKaDpLnSSAZs5B344B72MsF0pQoOSTwiR1R5alq6+Z1SA
+ jzV/ann1Y5ZJ+FNfnHjTGka5QbGqlDRk7T6WLZEbczqbS/F11ZqyJh3ZA
+ NCYrN044BLz4F3+urDKxRlD65nmdq6aknzGhdZLjVmaVyuOYCWIhoIGdH
+ FDl5V/Fbo4wWidb9gMssDBU/98Pxw7WXUV6krDEyz3MpTjSBJHb+FMXTF
+ bl3BuqxdlNt1nNO5CuyDSLitfyvoCYhp8ylnaWIgezchU6q6VvBeV2SdG A==;
+X-CSE-ConnectionGUID: MH8c/mGxTdGPMr62kL0rWg==
+X-CSE-MsgGUID: ZYZvLzmJSnGsEposq97+rg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="28292847"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="28292847"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 15:59:51 -0700
-X-CSE-ConnectionGUID: EPlsPoTbQUWgQUB4HRH9HA==
-X-CSE-MsgGUID: zPDOg9llRnyXPC2hS8N/XA==
+ 30 Jun 2024 16:00:06 -0700
+X-CSE-ConnectionGUID: kyxG1F+TQum6+7IeBC9rng==
+X-CSE-MsgGUID: gdUrOtQ1R3usjs9DqZcWlA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45993645"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45993689"
 Received: from lmeganx-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.125.32.7])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 15:59:52 -0700
-Date: Sun, 30 Jun 2024 15:43:04 -0700
-Message-ID: <875xtqaw7b.wl-ashutosh.dixit@intel.com>
+ 30 Jun 2024 16:00:07 -0700
+Date: Sun, 30 Jun 2024 15:43:11 -0700
+Message-ID: <874j9aaw74.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 12/28] tests/intel/xe_oa: Add "oa-formats" subtest
-In-Reply-To: <ZnS4LPN5MX2Lg95C@orsosgc001>
-References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>	<20240620200054.3550653-13-ashutosh.dixit@intel.com>	<ZnS4LPN5MX2Lg95C@orsosgc001>
+Subject: Re: [PATCH i-g-t 13/28] tests/intel/xe_oa: Add oa exponent tests
+In-Reply-To: <ZnS4xqr0ylt3mTh5@orsosgc001>
+References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>	<20240620200054.3550653-14-ashutosh.dixit@intel.com>	<ZnS4xqr0ylt3mTh5@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.3 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,111 +70,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 20 Jun 2024 16:15:56 -0700, Umesh Nerlige Ramappa wrote:
+On Thu, 20 Jun 2024 16:18:30 -0700, Umesh Nerlige Ramappa wrote:
 >
-
-Hi Umesh,
-
-> On Thu, Jun 20, 2024 at 01:00:37PM -0700, Ashutosh Dixit wrote:
-> > Add "oa-formats" subtest.
+> On Thu, Jun 20, 2024 at 01:00:38PM -0700, Ashutosh Dixit wrote:
+> > Add "invalid-oa-exponent" and "oa-exponents".
 > >
 > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 >
-> Some nits to clean up, but otherwise looks good.
+> one nit. with or without
 >
 > Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Thanks!
+Thanks.
 
->
-> > ---
-> > tests/intel/xe_oa.c | 550 ++++++++++++++++++++++++++++++++++++++++++++
-> > 1 file changed, 550 insertions(+)
-> >
-> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> > index 97bbd13674..b7de6f7bd2 100644
-> > --- a/tests/intel/xe_oa.c
-> > +++ b/tests/intel/xe_oa.c
-> > @@ -290,6 +290,9 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
-> >		.bc_report = 0 },
-> > };
-> >
-> > +/* No A counters currently reserved/undefined for gen8+ so far */
-> > +static bool undefined_a_counters[45];
->
-> As the comment says, we can drop undefined_a_counters.
-
-Done.
-
-> > +/* Debug function, only useful when reports don't make sense. */
-> > +#if 0
->
-> Let's get rid of this #if 0 block as well.
-
-Done.
-
->
-> > +static void
-> > +print_report(uint32_t *report, int fmt)
+> > +static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta)
 > > +{
-> > +	struct oa_format format = get_oa_format(fmt);
-> > +
-> > +	igt_debug("TIMESTAMP: %"PRIu64"\n", oa_timestamp(report, fmt));
-> > +
-> > +	{
-> > +		uint64_t clock = read_report_ticks(report, fmt);
-> > +
-> > +		igt_debug("CLOCK: %"PRIu64"\n", clock);
-> > +	}
-> > +
-> > +	{
-> > +		uint32_t slice_freq, unslice_freq;
-> > +		const char *reason = read_report_reason(report);
-> > +
-> > +		read_report_clock_ratios(report, &slice_freq, &unslice_freq);
-> > +
-> > +		igt_debug("SLICE CLK: %umhz\n", slice_freq);
-> > +		igt_debug("UNSLICE CLK: %umhz\n", unslice_freq);
-> > +		igt_debug("REASON: \"%s\"\n", reason);
-> > +		igt_debug("CTX ID: %"PRIu32"/%"PRIx32"\n", report[2], report[2]);
-> > +	}
-> > +
-> > +	/* Gen8+ has some 40bit A counters... */
-> > +	for (int j = 0; j < format.n_a40; j++) {
-> > +		uint64_t value = read_40bit_a_counter(report, fmt, j);
-> > +
-> > +		if (undefined_a_counters[j])
-> > +			continue;
-> > +
-> > +		igt_debug("A%d: %"PRIu64"\n", j, value);
-> > +	}
-> > +
-> > +	for (int j = 0; j < format.n_a; j++) {
-> > +		uint32_t *a = (uint32_t *)(((uint8_t *)report) +
-> > +					   format.a_off);
-> > +		int a_id = format.first_a + j;
-> > +
-> > +		if (undefined_a_counters[a_id])
-> > +			continue;
-> > +
-> > +		igt_debug("A%d: %"PRIu32"\n", a_id, a[j]);
-> > +	}
-> > +
-> > +	for (int j = 0; j < format.n_b; j++) {
-> > +		uint32_t *b = (uint32_t *)(((uint8_t *)report) +
-> > +					   format.b_off);
-> > +
-> > +		igt_debug("B%d: %"PRIu32"\n", j, b[j]);
-> > +	}
-> > +
-> > +	for (int j = 0; j < format.n_c; j++) {
-> > +		uint32_t *c = (uint32_t *)(((uint8_t *)report) +
-> > +					   format.c_off);
-> > +
-> > +		igt_debug("C%d: %"PRIu32"\n", j, c[j]);
-> > +	}
-> > +}
-> > +#endif
+> > +	/*
+> > +	 * On ICL, the OA unit appears to be a bit more relaxed about
+> > +	 * its timing for emitting OA reports (often missing the
+> > +	 * deadline by 1 timestamp).
+> > +	 */
+> > +	if (IS_ICELAKE(devid))
+> > +		return delta <= (expected_delta + 3);
+> > +	else
+>
+> can drop ICL stuff
+
+Done.
 
 Thanks.
 --
