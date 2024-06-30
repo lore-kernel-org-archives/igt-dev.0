@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D29C3064D
-	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 18:05:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0601C27C4F
+	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 18:44:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE62D10E2AE;
-	Sun, 30 Jun 2024 18:05:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QesrPl76";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 040A810E2AE
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 18:05:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719770745; x=1751306745;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=udMNmUpyylBwZJnr3Fketi+37ndzpAWXgFBXVbIV7pA=;
- b=QesrPl76/7G5+rVoo24GTdzpRHoQYjX1EMhAQe6/Q8fFGP2T882KmdGf
- bwnATaI8hJXivVNIUinyLu0d19RjTKeqYzPMQSrRLdLV2Jug0NbbjnWzc
- VAr8VZ1cHOlBUqwOiNMFOljIT3vhPh8D+maiJ2nDX27INQ4EE9FhysW6q
- Q03i9rhneoxaVoMLXINplhxAAF9pMfoAyezfDj9SAEbPAoW5MijJeHbTl
- iK/3yVFq9wuCRppSGd/5msu5RnA8YSZ5G8W+blHXDOs9sKjeUUnRjeSyA
- sVPrHJRkXl+mvyUtes8RYRx2zVUf49OWr6grRQvdHEhbuSrUAQJXe+vA7 Q==;
-X-CSE-ConnectionGUID: d/XIz4e3RmeGCEcaIEx1FQ==
-X-CSE-MsgGUID: URfdxt1gRvGESj6hdkGXXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="20756550"
-X-IronPort-AV: E=Sophos;i="6.09,174,1716274800"; d="scan'208";a="20756550"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 11:05:45 -0700
-X-CSE-ConnectionGUID: XKkBm+/eS3WESNT6gIBnlg==
-X-CSE-MsgGUID: v9dy1KSTSxmh185A3nKmQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,174,1716274800"; d="scan'208";a="50170191"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO fedora..)
- ([10.245.244.1])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 11:05:44 -0700
-From: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Subject: [PATCH i-g-t v3 2/2] tests/intel/xe_evict: Reduce the "large" bo size
- for threaded eviction
-Date: Sun, 30 Jun 2024 20:05:02 +0200
-Message-ID: <20240630180502.81556-3-thomas.hellstrom@linux.intel.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240630180502.81556-1-thomas.hellstrom@linux.intel.com>
-References: <20240630180502.81556-1-thomas.hellstrom@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9BF5A10E12A;
+	Sun, 30 Jun 2024 18:44:02 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A55B810E2AD;
+ Sun, 30 Jun 2024 18:44:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2763769447612654340=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fevict=3A_A?=
+ =?utf-8?q?dapt_the_working_set_to_memory_size_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sun, 30 Jun 2024 18:44:00 -0000
+Message-ID: <171977304067.459.5231844678182344557@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240630180502.81556-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20240630180502.81556-1-thomas.hellstrom@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,137 +37,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When calculating the number of bos that simultaneously fits in
-VRAM + system memory, account for eviction pipelining by subtracting
-one bo for ongoing pipelined evictions per thread.
+--===============2763769447612654340==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-With large bos this may lead to us not being able to use a working
-set of 2 bos, which is the minimum, so reduce the large bo size for
-threaded evictions, and instead increase the default number of bos.
+== Series Details ==
 
-v3:
-- Fix up number of bo calculation to *really* subtract one bo per
-  thread. (Matthew Brost)
+Series: tests/intel/xe_evict: Adapt the working set to memory size (rev2)
+URL   : https://patchwork.freedesktop.org/series/135427/
+State : success
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- tests/intel/xe_evict.c | 39 +++++++++++++++++++++++----------------
- 1 file changed, 23 insertions(+), 16 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-index 601c02ff7..9b71b6b74 100644
---- a/tests/intel/xe_evict.c
-+++ b/tests/intel/xe_evict.c
-@@ -486,10 +486,14 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
- 
- 	/*
- 	 * All bos must fit in, say 4 / 5 of memory to be sure.
--	 * Assume no swap-space available.
-+	 * Assume no swap-space available. Subtract one bo per thread
-+	 * for an active eviction.
- 	 */
- 	total_size = ((vram_size - 1) / bo_size + system_size * 4 / 5 / bo_size) /
--		num_threads;
-+		num_threads - 1;
-+
-+	igt_debug("num_threads: %d bo_size : %lu total_size : %lu\n", num_threads,
-+		  bo_size, total_size);
- 
- 	if (set_size > total_size)
- 		set_size = total_size;
-@@ -744,13 +748,13 @@ igt_main
- 			MIXED_THREADS | THREADED },
- 		{ "mixed-many-threads-small", 3, 16, 128, 1, 128,
- 			THREADED },
--		{ "threads-large", 2, 2, 4, 3, 8,
-+		{ "threads-large", 2, 2, 16, 3, 32,
- 			THREADED },
--		{ "cm-threads-large", 2, 2, 4, 3, 8,
-+		{ "cm-threads-large", 2, 2, 16, 3, 32,
- 			COMPUTE_THREAD | THREADED },
--		{ "mixed-threads-large", 2, 2, 4, 3, 8,
-+		{ "mixed-threads-large", 2, 2, 16, 3, 32,
- 			MIXED_THREADS | THREADED },
--		{ "mixed-many-threads-large", 3, 2, 4, 3, 8,
-+		{ "mixed-many-threads-large", 3, 2, 16, 3, 32,
- 			THREADED },
- 		{ "threads-small-multi-vm", 2, 16, 128, 1, 128,
- 			MULTI_VM | THREADED },
-@@ -758,11 +762,11 @@ igt_main
- 			COMPUTE_THREAD | MULTI_VM | THREADED },
- 		{ "mixed-threads-small-multi-vm", 2, 16, 128, 1, 128,
- 			MIXED_THREADS | MULTI_VM | THREADED },
--		{ "threads-large-multi-vm", 2, 2, 4, 3, 8,
-+		{ "threads-large-multi-vm", 2, 2, 16, 3, 32,
- 			MULTI_VM | THREADED },
--		{ "cm-threads-large-multi-vm", 2, 2, 4, 3, 8,
-+		{ "cm-threads-large-multi-vm", 2, 2, 16, 3, 32,
- 			COMPUTE_THREAD | MULTI_VM | THREADED },
--		{ "mixed-threads-large-multi-vm", 2, 2, 4, 3, 8,
-+		{ "mixed-threads-large-multi-vm", 2, 2, 16, 3, 32,
- 			MIXED_THREADS | MULTI_VM | THREADED },
- 		{ "beng-threads-small", 2, 16, 128, 1, 128,
- 			THREADED | BIND_EXEC_QUEUE },
-@@ -772,13 +776,13 @@ igt_main
- 			MIXED_THREADS | THREADED | BIND_EXEC_QUEUE },
- 		{ "beng-mixed-many-threads-small", 3, 16, 128, 1, 128,
- 			THREADED | BIND_EXEC_QUEUE },
--		{ "beng-threads-large", 2, 2, 4, 3, 8,
-+		{ "beng-threads-large", 2, 2, 16, 3, 32,
- 			THREADED | BIND_EXEC_QUEUE },
--		{ "beng-cm-threads-large", 2, 2, 4, 3, 8,
-+		{ "beng-cm-threads-large", 2, 2, 16, 3, 32,
- 			COMPUTE_THREAD | THREADED | BIND_EXEC_QUEUE },
--		{ "beng-mixed-threads-large", 2, 2, 4, 3, 8,
-+		{ "beng-mixed-threads-large", 2, 2, 16, 3, 32,
- 			MIXED_THREADS | THREADED | BIND_EXEC_QUEUE },
--		{ "beng-mixed-many-threads-large", 3, 2, 4, 3, 8,
-+		{ "beng-mixed-many-threads-large", 3, 2, 16, 3, 32,
- 			THREADED | BIND_EXEC_QUEUE },
- 		{ "beng-threads-small-multi-vm", 2, 16, 128, 1, 128,
- 			MULTI_VM | THREADED | BIND_EXEC_QUEUE },
-@@ -786,11 +790,11 @@ igt_main
- 			COMPUTE_THREAD | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
- 		{ "beng-mixed-threads-small-multi-vm", 2, 16, 128, 1, 128,
- 			MIXED_THREADS | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
--		{ "beng-threads-large-multi-vm", 2, 2, 4, 3, 8,
-+		{ "beng-threads-large-multi-vm", 2, 2, 16, 3, 32,
- 			MULTI_VM | THREADED | BIND_EXEC_QUEUE },
--		{ "beng-cm-threads-large-multi-vm", 2, 2, 4, 3, 8,
-+		{ "beng-cm-threads-large-multi-vm", 2, 2, 16, 3, 32,
- 			COMPUTE_THREAD | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
--		{ "beng-mixed-threads-large-multi-vm", 2, 2, 4, 3, 8,
-+		{ "beng-mixed-threads-large-multi-vm", 2, 2, 16, 3, 32,
- 			MIXED_THREADS | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
- 		{ NULL },
- 	};
-@@ -826,6 +830,7 @@ igt_main
- 					     1, s->flags);
- 
- 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
-+			igt_skip_on_f(!ws, "System memory size is too small.\n");
- 			test_evict(fd, hwe, s->n_exec_queues,
- 				   min(ws, s->n_execs), bo_size,
- 				   s->flags, NULL);
-@@ -839,6 +844,7 @@ igt_main
- 					     1, s->flags);
- 
- 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
-+			igt_skip_on_f(!ws, "System memory size is too small.\n");
- 			test_evict_cm(fd, hwe, s->n_exec_queues,
- 				      min(ws, s->n_execs), bo_size,
- 				      s->flags, NULL);
-@@ -852,6 +858,7 @@ igt_main
- 					     s->n_threads, s->flags);
- 
- 			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
-+			igt_skip_on_f(!ws, "System memory size is too small.\n");
- 			threads(fd, hwe, s->n_threads, s->n_exec_queues,
- 				min(ws, s->n_execs), bo_size, s->flags);
- 		}
--- 
-2.44.0
+CI Bug Log - changes from IGT_7908 -> IGTPW_11340
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/index.html
+
+Participating hosts (41 -> 38)
+------------------------------
+
+  Missing    (3): bat-arls-1 fi-snb-2520m fi-kbl-8809g 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11340 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-adlp-11:        [PASS][1] -> [INCOMPLETE][2] ([i915#9413])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-adlp-11/igt@i915_selftest@live@workarounds.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-adlp-11/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-2:         [ABORT][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-arls-2:         [DMESG-WARN][5] ([i915#7507]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1:
+    - bat-dg2-8:          [FAIL][7] ([i915#11379]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html
+
+  
+  [i915#11379]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11379
+  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7908 -> IGTPW_11340
+
+  CI-20190529: 20190529
+  CI_DRM_15013: 0318a12ff6fb8c321458aa2b373e9322896ee951 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11340: 11340
+  IGT_7908: 7908
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/index.html
+
+--===============2763769447612654340==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_evict: Adapt the working set to memory size (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135427/">https://patchwork.freedesktop.org/series/135427/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7908 -&gt; IGTPW_11340</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/index.html</p>
+<h2>Participating hosts (41 -&gt; 38)</h2>
+<p>Missing    (3): bat-arls-1 fi-snb-2520m fi-kbl-8809g </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11340 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-adlp-11/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-adlp-11/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-arls-2/igt@i915_selftest@live@hangcheck.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7908/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11379">i915#11379</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11340/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7908 -&gt; IGTPW_11340</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15013: 0318a12ff6fb8c321458aa2b373e9322896ee951 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11340: 11340<br />
+  IGT_7908: 7908</p>
+
+</body>
+</html>
+
+--===============2763769447612654340==--
