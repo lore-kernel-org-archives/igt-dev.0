@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C573C27C4F
-	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 22:59:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5103CC30653
+	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 22:59:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CDA8E10E080;
-	Sun, 30 Jun 2024 22:59:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1429910E080;
+	Sun, 30 Jun 2024 22:59:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nZl3nho0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P8CREbCL";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDD2C10E080
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 22:59:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E000610E080
+ for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 22:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719788357; x=1751324357;
+ t=1719788392; x=1751324392;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=1+EtyYqUjG/Co2jdRWU/9NmpQYWzzHsla24Lodxs1wY=;
- b=nZl3nho0+wDa0xSnJR6in2CEdBE8jAwjNk0fwNjMkTmu+Ko80O2IGq9g
- WX5yaOZs3xAQffGrDiJJ/Qao8r3fwT2M5iD5Df1qa3sAczr26BiRbCDD6
- /hcl4VutcJTYc/eMWx6jZzu1J5m1hjE0boLa0PZV6nDxEsIF2R3bkZgPZ
- TzCEfWDp1bXJUaXs5VGrMlz2NNBW5M4sJbBkBwzdNcinX+KOFPKxkj+A3
- vd679TxxVfDXr5guUfPPzb0PJJ17xrNBbmzYS9bwjUyJEF3wyr4Z/h+1K
- A/qDo5b/VfWzn4iiFLAgUy9GB2xRan1uV0GWkpqfO5kzBDkfqOlzvq7r7 w==;
-X-CSE-ConnectionGUID: /diUh7q0TDKRyPFbRZnBJg==
-X-CSE-MsgGUID: h7sg7sUMT0mZ1JGAU64ggA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="17026589"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="17026589"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 15:59:17 -0700
-X-CSE-ConnectionGUID: Yp1DJyyTQcaqXOXSg1fzbg==
-X-CSE-MsgGUID: mxhLAoLrTBee1Cz/04Cv7Q==
+ bh=AQ3yfTPEk2HuYRjqs4jlHxMzwlLCxBmsYrKkYGeuX4o=;
+ b=P8CREbCLrLpU05sYUDv/nq+IeLMvvl6syGQmF91N2qR0W9bSaFsL8Vxx
+ GH7/VEvZ6Unsr98J38rL//NUUZm59aroix9cgCzcvHsvyEG3PW0VPKkim
+ NqFR3SgBHodxLw5ivg7UJns/1clUL7ldD8SiW9fqLo9qszPQFbWXjqP5D
+ 9qcCjwRHL1kSyYhNMEZRluIErvaqhZP+echsN9IMIaxqKPVrmojjx4VwO
+ +ewvG4KU1aMhjD2tUXG3Ivu8FY+oWzyMLPr0hzMkLebVpLI+dq0ZzvTFN
+ fh7/EOalkSJW0vQ0eqN+mXKBMSNp5IKWUqdLD3lpWVCxu31qnhg7vjAwq Q==;
+X-CSE-ConnectionGUID: iF2E6VovRb+/C7ONpkvbpQ==
+X-CSE-MsgGUID: ttWMrcMbQ4m+cv0B9eQkCQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="28292818"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="28292818"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2024 15:59:51 -0700
+X-CSE-ConnectionGUID: EPlsPoTbQUWgQUB4HRH9HA==
+X-CSE-MsgGUID: zPDOg9llRnyXPC2hS8N/XA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45733635"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45993645"
 Received: from lmeganx-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.125.32.7])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 15:59:16 -0700
-Date: Sun, 30 Jun 2024 15:42:48 -0700
-Message-ID: <877ce6aw7r.wl-ashutosh.dixit@intel.com>
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2024 15:59:52 -0700
+Date: Sun, 30 Jun 2024 15:43:04 -0700
+Message-ID: <875xtqaw7b.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 10/28] tests/intel/xe_oa: Add first tests
-In-Reply-To: <ZnS3GWwaHI9Q6VJe@orsosgc001>
-References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>	<20240620200054.3550653-11-ashutosh.dixit@intel.com>	<ZnS3GWwaHI9Q6VJe@orsosgc001>
+Subject: Re: [PATCH i-g-t 12/28] tests/intel/xe_oa: Add "oa-formats" subtest
+In-Reply-To: <ZnS4LPN5MX2Lg95C@orsosgc001>
+References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>	<20240620200054.3550653-13-ashutosh.dixit@intel.com>	<ZnS4LPN5MX2Lg95C@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.3 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,110 +70,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 20 Jun 2024 16:11:21 -0700, Umesh Nerlige Ramappa wrote:
+On Thu, 20 Jun 2024 16:15:56 -0700, Umesh Nerlige Ramappa wrote:
 >
 
 Hi Umesh,
 
-> > +/**
-> > + * SUBTEST: xe-ref-count
-> > + * Description: Check that an open oa stream holds a reference on the xe module
-> > + */
-> > +static void
-> > +test_xe_ref_count(void)
-> > +{
-> > +	uint64_t properties[] = {
-> > +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> > +
-> > +		/* Include OA reports in samples */
-> > +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-> > +
-> > +		/* OA unit configuration */
-> > +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0 /* updated below */,
-> > +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0), /* update below */
-> > +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, 0, /* update below */
-> > +	};
-> > +	struct intel_xe_oa_open_prop param = {
-> > +		.num_properties = ARRAY_SIZE(properties) / 2,
-> > +		.properties_ptr = to_user_pointer(properties),
-> > +	};
-> > +	unsigned baseline, ref_count0, ref_count1;
-> > +	uint32_t oa_report0[64];
-> > +	uint32_t oa_report1[64];
-> > +
-> > +	/* This should be the first test before the first fixture so no drm_fd
-> > +	 * should have been opened so far...
-> > +	 */
-> > +	igt_assert_eq(drm_fd, -1);
-> > +
-> > +	baseline = read_xe_module_ref();
-> > +	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
-> > +
-> > +	drm_fd = __drm_open_driver(DRIVER_XE);
-> > +	if (is_xe_device(drm_fd))
-> > +		xe_device_get(drm_fd);
-> > +	devid = intel_get_drm_devid(drm_fd);
-> > +	sysfs = igt_sysfs_open(drm_fd);
-> > +
-> > +	/* Note: these global variables are only initialized after calling
-> > +	 * init_sys_info()...
-> > +	 */
-> > +	igt_require(init_sys_info());
-> > +	properties[5] = default_test_set->perf_oa_metrics_set;
-> > +	properties[7] = __ff(default_test_set->perf_oa_format);
-> > +	properties[9] = oa_exp_1_millisec;
-> > +
-> > +	ref_count0 = read_xe_module_ref();
-> > +	igt_debug("initial ref count with drm_fd open = %u\n", ref_count0);
-> > +
-> > +	stream_fd = __perf_open(drm_fd, &param, false);
-> > +        set_fd_flags(stream_fd, O_CLOEXEC);
-> > +	ref_count1 = read_xe_module_ref();
-> > +	igt_debug("ref count after opening oa stream = %u\n", ref_count1);
-> > +
-> > +	drm_close_driver(drm_fd);
-> > +	close(sysfs);
-> > +	drm_fd = -1;
-> > +	sysfs = -1;
-> > +	ref_count0 = read_xe_module_ref();
-> > +	igt_debug("ref count after closing drm fd = %u\n", ref_count0);
-> > +
-> > +	read_2_oa_reports(default_test_set->perf_oa_format,
-> > +			  oa_exp_1_millisec,
-> > +			  oa_report0,
-> > +			  oa_report1,
-> > +			  false); /* not just timer reports */
-> > +
-> > +	__perf_close(stream_fd);
-> > +	ref_count0 = read_xe_module_ref();
-> > +	igt_debug("ref count after closing oa stream fd = %u\n", ref_count0);
+> On Thu, Jun 20, 2024 at 01:00:37PM -0700, Ashutosh Dixit wrote:
+> > Add "oa-formats" subtest.
+> >
+> > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 >
-> Looks like the asserts are removed, so we will never know if this failed
-> :). I think we should drop the test and create an issue to make it more
-> robust.
+> Some nits to clean up, but otherwise looks good.
+>
+> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-Unfortunately I don't want to drop the test in this patch, since it will
-mean moving several other functions called by this code to other patches
-etc. (to make sure this patch continues to compile). It is a non trivial
-amount of work, not worth it IMO. So instead, I have added a patch at the
-end deleting the "xe-ref-count" subtest.
+Thanks!
 
-I have also created an issue to re-add the test back after making it
-robust.
+>
+> > ---
+> > tests/intel/xe_oa.c | 550 ++++++++++++++++++++++++++++++++++++++++++++
+> > 1 file changed, 550 insertions(+)
+> >
+> > diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> > index 97bbd13674..b7de6f7bd2 100644
+> > --- a/tests/intel/xe_oa.c
+> > +++ b/tests/intel/xe_oa.c
+> > @@ -290,6 +290,9 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
+> >		.bc_report = 0 },
+> > };
+> >
+> > +/* No A counters currently reserved/undefined for gen8+ so far */
+> > +static bool undefined_a_counters[45];
+>
+> As the comment says, we can drop undefined_a_counters.
 
-I have already merged the IGT library and tools. So it is just the Xe OA
-IGT test patches left to merge. So now only the first and the second-last
-patches don't have a R-b. You can see these here:
+Done.
 
-https://patchwork.freedesktop.org/series/130033/#rev5
+> > +/* Debug function, only useful when reports don't make sense. */
+> > +#if 0
+>
+> Let's get rid of this #if 0 block as well.
+
+Done.
+
+>
+> > +static void
+> > +print_report(uint32_t *report, int fmt)
+> > +{
+> > +	struct oa_format format = get_oa_format(fmt);
+> > +
+> > +	igt_debug("TIMESTAMP: %"PRIu64"\n", oa_timestamp(report, fmt));
+> > +
+> > +	{
+> > +		uint64_t clock = read_report_ticks(report, fmt);
+> > +
+> > +		igt_debug("CLOCK: %"PRIu64"\n", clock);
+> > +	}
+> > +
+> > +	{
+> > +		uint32_t slice_freq, unslice_freq;
+> > +		const char *reason = read_report_reason(report);
+> > +
+> > +		read_report_clock_ratios(report, &slice_freq, &unslice_freq);
+> > +
+> > +		igt_debug("SLICE CLK: %umhz\n", slice_freq);
+> > +		igt_debug("UNSLICE CLK: %umhz\n", unslice_freq);
+> > +		igt_debug("REASON: \"%s\"\n", reason);
+> > +		igt_debug("CTX ID: %"PRIu32"/%"PRIx32"\n", report[2], report[2]);
+> > +	}
+> > +
+> > +	/* Gen8+ has some 40bit A counters... */
+> > +	for (int j = 0; j < format.n_a40; j++) {
+> > +		uint64_t value = read_40bit_a_counter(report, fmt, j);
+> > +
+> > +		if (undefined_a_counters[j])
+> > +			continue;
+> > +
+> > +		igt_debug("A%d: %"PRIu64"\n", j, value);
+> > +	}
+> > +
+> > +	for (int j = 0; j < format.n_a; j++) {
+> > +		uint32_t *a = (uint32_t *)(((uint8_t *)report) +
+> > +					   format.a_off);
+> > +		int a_id = format.first_a + j;
+> > +
+> > +		if (undefined_a_counters[a_id])
+> > +			continue;
+> > +
+> > +		igt_debug("A%d: %"PRIu32"\n", a_id, a[j]);
+> > +	}
+> > +
+> > +	for (int j = 0; j < format.n_b; j++) {
+> > +		uint32_t *b = (uint32_t *)(((uint8_t *)report) +
+> > +					   format.b_off);
+> > +
+> > +		igt_debug("B%d: %"PRIu32"\n", j, b[j]);
+> > +	}
+> > +
+> > +	for (int j = 0; j < format.n_c; j++) {
+> > +		uint32_t *c = (uint32_t *)(((uint8_t *)report) +
+> > +					   format.c_off);
+> > +
+> > +		igt_debug("C%d: %"PRIu32"\n", j, c[j]);
+> > +	}
+> > +}
+> > +#endif
 
 Thanks.
 --
 Ashutosh
-
->
-> Ideally we should take a snapshot of the entire /proc/modules file and
-> ensure that no new driver has added a reference to xe while we are running
-> this test. That way, we know that an assert may fail due to a new driver
-> taking up a drm ref or dropping one. If we can attribute the failure to
-> such an event, we can re-run the test.
