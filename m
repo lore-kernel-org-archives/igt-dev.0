@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D87C30653
-	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 23:00:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA89C30653
+	for <igt-dev@archiver.kernel.org>; Sun, 30 Jun 2024 23:00:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3D41610E0D7;
-	Sun, 30 Jun 2024 23:00:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F89B10E0D7;
+	Sun, 30 Jun 2024 23:00:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BrDpLn/I";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IEqDPt2y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C3A210E0D7
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 23:00:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CC9E10E080
+ for <igt-dev@lists.freedesktop.org>; Sun, 30 Jun 2024 23:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719788407; x=1751324407;
+ t=1719788428; x=1751324428;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=xiddbXJfQpubreym9d61e0xT+tIe+lkO04pjoiWdIOk=;
- b=BrDpLn/Ish3TK5E1iKc1Dt3XrQIGlCjGGYajDw7SLNNl9sXS3R/7m8ZL
- OBlsu6lvMryJoKaDpLnSSAZs5B344B72MsF0pQoOSTwiR1R5alq6+Z1SA
- jzV/ann1Y5ZJ+FNfnHjTGka5QbGqlDRk7T6WLZEbczqbS/F11ZqyJh3ZA
- NCYrN044BLz4F3+urDKxRlD65nmdq6aknzGhdZLjVmaVyuOYCWIhoIGdH
- FDl5V/Fbo4wWidb9gMssDBU/98Pxw7WXUV6krDEyz3MpTjSBJHb+FMXTF
- bl3BuqxdlNt1nNO5CuyDSLitfyvoCYhp8ylnaWIgezchU6q6VvBeV2SdG A==;
-X-CSE-ConnectionGUID: MH8c/mGxTdGPMr62kL0rWg==
-X-CSE-MsgGUID: ZYZvLzmJSnGsEposq97+rg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="28292847"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="28292847"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 16:00:06 -0700
-X-CSE-ConnectionGUID: kyxG1F+TQum6+7IeBC9rng==
-X-CSE-MsgGUID: gdUrOtQ1R3usjs9DqZcWlA==
+ bh=k7LOmEW7pY/gxCqF1M4GQGpJGgxiYYmNnHxfztAD5HY=;
+ b=IEqDPt2ytWMIOd6OjQk4bOdy4vdnfMV/SFhSZa/TklISRV/DkgCQzrUP
+ qYiG1QEkCh+ACgWC4DhRZNo+Ekxy5S3gPILV5/CVJ+RXO0boNGZHsqpqK
+ LmdgS2IKYZ9bi9Yl0CcrZ3xqKljzJL/dNBDh+mXupsYjsJTJCYumkiuE+
+ zQLgdQDBAJ9Yf6iMQ94mLl9zXyid4UgaaLWAZV90MPSWdqt0eDkfweQzD
+ FY78Qsf4Dl021089nJg+fQIVREzJ9KNrXXGaYwcW5SD3XkZEPXsnoMKxJ
+ JArvT5Yw/LwgxxLQjnvUsa8B7kq1w744wbZ49wMWpaDJECtbDWMB1cnbN w==;
+X-CSE-ConnectionGUID: UoIXTYayRMis/zRXEHyVFw==
+X-CSE-MsgGUID: 2/mtXYZPQdqOKQyImmRuug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="20711040"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="20711040"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2024 16:00:28 -0700
+X-CSE-ConnectionGUID: REv5PVxCQhqSZdqL/Au+Hg==
+X-CSE-MsgGUID: VhWA9C+8QAy2XOfVNDGC1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="45993689"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="68539329"
 Received: from lmeganx-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.125.32.7])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 16:00:07 -0700
-Date: Sun, 30 Jun 2024 15:43:11 -0700
-Message-ID: <874j9aaw74.wl-ashutosh.dixit@intel.com>
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jun 2024 16:00:27 -0700
+Date: Sun, 30 Jun 2024 15:43:21 -0700
+Message-ID: <8734ouaw6u.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 13/28] tests/intel/xe_oa: Add oa exponent tests
-In-Reply-To: <ZnS4xqr0ylt3mTh5@orsosgc001>
-References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>	<20240620200054.3550653-14-ashutosh.dixit@intel.com>	<ZnS4xqr0ylt3mTh5@orsosgc001>
+Subject: Re: [PATCH i-g-t 28/28] HAX: Add Xe OA tests to
+ xe-fast-feedback.testlist
+In-Reply-To: <ZnS/GocWYczKtbwX@orsosgc001>
+References: <20240620200054.3550653-1-ashutosh.dixit@intel.com>	<20240620200054.3550653-29-ashutosh.dixit@intel.com>	<ZnS/GocWYczKtbwX@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.3 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -70,34 +71,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 20 Jun 2024 16:18:30 -0700, Umesh Nerlige Ramappa wrote:
+On Thu, 20 Jun 2024 16:45:30 -0700, Umesh Nerlige Ramappa wrote:
 >
-> On Thu, Jun 20, 2024 at 01:00:38PM -0700, Ashutosh Dixit wrote:
-> > Add "invalid-oa-exponent" and "oa-exponents".
-> >
+> On Thu, Jun 20, 2024 at 01:00:53PM -0700, Ashutosh Dixit wrote:
 > > Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> > tests/intel-ci/xe-fast-feedback.testlist | 41 ++++++++++++++++++++++++
+> > 1 file changed, 41 insertions(+)
+> >
+> > diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+> > index aa98b37e64..a577452179 100644
+> > --- a/tests/intel-ci/xe-fast-feedback.testlist
+> > +++ b/tests/intel-ci/xe-fast-feedback.testlist
+> > @@ -65,6 +65,47 @@ igt@kms_prop_blob@basic
+> > igt@kms_psr@psr-primary-page-flip
+> > igt@kms_psr@psr-cursor-plane-move
+> > igt@kms_psr@psr-sprite-plane-onoff
 >
-> one nit. with or without
+> Does this mean they will run with BAT?
+
+It's a HAX patch so will not be merged.
+
 >
 > Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-
-Thanks.
-
-> > +static bool expected_report_timing_delta(uint32_t delta, uint32_t expected_delta)
-> > +{
-> > +	/*
-> > +	 * On ICL, the OA unit appears to be a bit more relaxed about
-> > +	 * its timing for emitting OA reports (often missing the
-> > +	 * deadline by 1 timestamp).
-> > +	 */
-> > +	if (IS_ICELAKE(devid))
-> > +		return delta <= (expected_delta + 3);
-> > +	else
 >
-> can drop ICL stuff
-
-Done.
-
-Thanks.
---
-Ashutosh
+> > +
+> > +# oa tests
+> > +igt@xe_oa@xe-ref-count
+> > +igt@xe_oa@sysctl-defaults
+> > +igt@xe_oa@non-system-wide-paranoid
+> > +igt@xe_oa@invalid-oa-metric-set-id
+> > +igt@xe_oa@invalid-oa-format-id
+> > +igt@xe_oa@missing-sample-flags
+> > +igt@xe_oa@oa-formats
+> > +igt@xe_oa@invalid-oa-exponent
+> > +igt@xe_oa@oa-exponents
+> > +igt@xe_oa@buffer-fill
+> > +igt@xe_oa@non-zero-reason
+> > +igt@xe_oa@disabled-read-error
+> > +igt@xe_oa@non-sampling-read-error
+> > +igt@xe_oa@enable-disable
+> > +igt@xe_oa@blocking
+> > +igt@xe_oa@polling
+> > +igt@xe_oa@polling-small-buf
+> > +igt@xe_oa@short-reads
+> > +igt@xe_oa@mi-rpc
+> > +igt@xe_oa@oa-tlb-invalidate
+> > +igt@xe_oa@unprivileged-single-ctx-counters
+> > +igt@xe_oa@oa-unit-exclusive-stream-sample-oa
+> > +igt@xe_oa@oa-unit-exclusive-stream-exec-q
+> > +igt@xe_oa@oa-unit-concurrent-oa-buffer-read
+> > +igt@xe_oa@rc6-disable
+> > +igt@xe_oa@stress-open-close
+> > +igt@xe_oa@invalid-create-userspace-config
+> > +igt@xe_oa@invalid-remove-userspace-config
+> > +igt@xe_oa@create-destroy-userspace-config
+> > +igt@xe_oa@whitelisted-registers-userspace-config
+> > +igt@xe_oa@map-oa-buffer
+> > +igt@xe_oa@invalid-map-oa-buffer
+> > +igt@xe_oa@non-privileged-map-oa-buffer
+> > +igt@xe_oa@non-privileged-access-vaddr
+> > +igt@xe_oa@privileged-forked-access-vaddr
+> > +igt@xe_oa@closed-fd-and-unmapped-access
+> > +igt@xe_oa@oa-regs-whitelisted
+> > +igt@xe_oa@mmio-triggered-reports
+> > +
+> > igt@xe_compute@compute-square
+> > igt@xe_create@create-execqueues-noleak
+> > igt@xe_create@create-execqueues-leak
+> > --
+> > 2.41.0
+> >
