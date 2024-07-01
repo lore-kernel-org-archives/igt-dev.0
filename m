@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D80D7C3065B
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 01:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38C62C41513
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 01:41:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9006110E136;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C6B010E2D1;
 	Mon,  1 Jul 2024 01:41:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eDsY9rGZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mBZTPn5Y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F225410E28C
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 01:41:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A58610E2AF
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 01:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719798105; x=1751334105;
+ t=1719798106; x=1751334106;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=6WbI9CWTFecXagwIiQ2M4fsQyP9eFyou/ju7fHpsbeY=;
- b=eDsY9rGZjFJVxEEY8L3ycojDkEbXlDMSyoHJOrnwbW2jVbcaQ7DmgsFp
- rqIIyH6bFW2+XtdhPzXMiHt23ziD5p/b05Tl+qHfx6Muu96uz/5PSoonI
- 5JgCkwcExKX88xB/qFbz0+EDBB/X3NflYaDLVDlFxZtcLpvrLqVrX9WKP
- t4wK5rlk0pZTBmPWoKmyGs/fMPdPXOLexUAbW7Tx9pErAOAQZ46V0PKNz
- pbNkzDPssxrSZM5zWs852bki4phlmKwM8qsTmh0WCEPoxUbnyZ78fwFpk
- WDYT1yiE2eJ3YCmzpv/5eiTHyky9IfIqjtElTLePcB2SvXSS/GxFjpowL w==;
-X-CSE-ConnectionGUID: JGu4H3llTayPiTbyy9QlWQ==
-X-CSE-MsgGUID: nEiZBSIgQqCrKYyXg2LBKg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="19801050"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="19801050"
+ bh=lSUjxKXQzXfJXt6cyM2NTDFCGBoWj0en1MdYqmT+IyI=;
+ b=mBZTPn5YRO4V8MXg1IVbe0/7/dNs6BShLiOE4d5jhNFCqjxCg7oql2JN
+ EDI4gopFtKb6KsTfgNcGRXaA+Ny6tgsCuJP5ig1vgmxQln9Q4Tc8cBJZF
+ okLukXZktaRg5UutFhIMKRmU1/968t0qGQ6RKkasrAZOdBLwZsk7TklYk
+ sl6tz6E3k71IiHjPaOtm/3my0z9o6A8UvLREOPZJ5Y1hCgICXqOBldZB8
+ NBqxjRo1oiTq7LrSvKilRJXWOzSlVWXKIpyZSoMXq5K2IK5cFtZNY6Ykh
+ 7yezcKTL1gpEnz7vfvl5yQWDfHtP35TRgoTXvFtr89YakGhfUTW1wRJSG w==;
+X-CSE-ConnectionGUID: VTDEae6MTDy7mPMR8FtNtg==
+X-CSE-MsgGUID: PQ78ul0gSSm5QaD0i1sltg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="19801056"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="19801056"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 18:41:44 -0700
-X-CSE-ConnectionGUID: EWATT9WFQoqhydcrfb3P+Q==
-X-CSE-MsgGUID: PmJ6Xlr+Ts60A5PrFVITwg==
+ 30 Jun 2024 18:41:45 -0700
+X-CSE-ConnectionGUID: /h+LjIZESEua8sluHkywaw==
+X-CSE-MsgGUID: rEK0F0I+S86AfDtineC1kg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46091835"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46091841"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Jun 2024 18:41:44 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 06/13] tests/intel/xe_oa: blocking and polling tests
-Date: Sun, 30 Jun 2024 18:41:28 -0700
-Message-ID: <20240701014135.2412560-7-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 12/13] tests/intel/xe_oa: Drop "xe-ref-count" subtest
+Date: Sun, 30 Jun 2024 18:41:34 -0700
+Message-ID: <20240701014135.2412560-13-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240701014135.2412560-1-ashutosh.dixit@intel.com>
 References: <20240701014135.2412560-1-ashutosh.dixit@intel.com>
@@ -66,501 +66,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-"blocking", "polling" and "polling-small-buf".
+Sometime other modules (such as those for child devices) take or drop
+references on the xe module. This results in "xe-ref-count" subtest unable
+to accurately predict what the module refcount should be, resulting in
+frequent false positives in the test.
+
+Drop the test till we are able to devise a robust method to predict xe
+module refcount.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 463 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 463 insertions(+)
+ tests/intel/xe_oa.c | 107 --------------------------------------------
+ 1 file changed, 107 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index c40a632b76..a1eb1dafeb 100644
+index 965ea05d9a..9d4402d9bf 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -430,6 +430,24 @@ static struct drm_xe_engine_class_instance *oa_unit_engine(int fd, int n)
- 	return hwe;
+@@ -3371,36 +3371,6 @@ test_single_ctx_render_target_writes_a_counter(struct drm_xe_engine_class_instan
+ 	} while (WEXITSTATUS(child_ret) == EAGAIN);
  }
  
-+static char *
-+pretty_print_oa_period(uint64_t oa_period_ns)
-+{
-+	static char result[100];
-+	static const char *units[4] = { "ns", "us", "ms", "s" };
-+	double val = oa_period_ns;
-+	int iter = 0;
-+
-+	while (iter < (ARRAY_SIZE(units) - 1) &&
-+	       val >= 1000.0f) {
-+		val /= 1000.0f;
-+		iter++;
-+	}
-+
-+	snprintf(result, sizeof(result), "%.3f%s", val, units[iter]);
-+	return result;
-+}
-+
- static void
- __perf_close(int fd)
- {
-@@ -1630,6 +1648,432 @@ static void test_invalid_oa_exponent(void)
- 	}
- }
- 
-+static int64_t
-+get_time(void)
-+{
-+	struct timespec ts;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &ts);
-+
-+	return ts.tv_sec * 1000000000 + ts.tv_nsec;
-+}
-+
-+/**
-+ * SUBTEST: blocking
-+ * Description: Test blocking reads
-+ */
-+/* Note: The interface doesn't currently provide strict guarantees or control
-+ * over the upper bound for how long it might take for a POLLIN event after
-+ * some OA report is written by the OA unit.
-+ *
-+ * The plan is to add a property later that gives some control over the maximum
-+ * latency, but for now we expect it is tuned for a fairly low latency
-+ * suitable for applications wanting to provide live feedback for captured
-+ * metrics.
-+ *
-+ * At the time of writing this test the driver was using a fixed 200Hz hrtimer
-+ * regardless of the OA sampling exponent.
-+ *
-+ * There is no lower bound since a stream configured for periodic sampling may
-+ * still contain other automatically triggered reports.
-+ *
-+ * What we try and check for here is that blocking reads don't return EAGAIN
-+ * and that we aren't spending any significant time burning the cpu in
-+ * kernelspace.
-+ */
-+static void test_blocking(uint64_t requested_oa_period,
-+			  bool set_kernel_hrtimer,
-+			  uint64_t kernel_hrtimer,
-+			  const struct drm_xe_engine_class_instance *hwe)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(requested_oa_period);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-+	uint64_t props[XE_OA_MAX_SET_PROPERTIES * 2];
-+	uint64_t *idx = props;
-+	struct intel_xe_oa_open_prop param;
-+	uint8_t buf[1024 * 1024];
-+	struct tms start_times;
-+	struct tms end_times;
-+	int64_t user_ns, kernel_ns;
-+	int64_t tick_ns = 1000000000 / sysconf(_SC_CLK_TCK);
-+	int64_t test_duration_ns = tick_ns * 100;
-+	int max_iterations = (test_duration_ns / oa_period) + 2;
-+	int n_extra_iterations = 0;
-+	int perf_fd;
-+
-+	/* It's a bit tricky to put a lower limit here, but we expect a
-+	 * relatively low latency for seeing reports, while we don't currently
-+	 * give any control over this in the api.
-+	 *
-+	 * We assume a maximum latency of 6 millisecond to deliver a POLLIN and
-+	 * read() after a new sample is written (46ms per iteration) considering
-+	 * the knowledge that that the driver uses a 200Hz hrtimer (5ms period)
-+	 * to check for data and giving some time to read().
-+	 */
-+	int min_iterations = (test_duration_ns / (oa_period + kernel_hrtimer + kernel_hrtimer / 5));
-+	int64_t start, end;
-+	int n = 0;
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+
-+	ADD_PROPS(props, idx, SAMPLE_OA, true);
-+	ADD_PROPS(props, idx, OA_METRIC_SET, test_set->perf_oa_metrics_set);
-+	ADD_PROPS(props, idx, OA_FORMAT, __ff(test_set->perf_oa_format));
-+	ADD_PROPS(props, idx, OA_PERIOD_EXPONENT, oa_exponent);
-+	ADD_PROPS(props, idx, OA_DISABLED, true);
-+	ADD_PROPS(props, idx, OA_UNIT_ID, 0);
-+	ADD_PROPS(props, idx, OA_ENGINE_INSTANCE, hwe->engine_instance);
-+
-+	param.num_properties = (idx - props) / 2;
-+	param.properties_ptr = to_user_pointer(props);
-+
-+	perf_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+        set_fd_flags(perf_fd, O_CLOEXEC);
-+
-+	times(&start_times);
-+
-+	igt_debug("tick length = %dns, test duration = %"PRIu64"ns, min iter. = %d,"
-+		  " estimated max iter. = %d, oa_period = %s\n",
-+		  (int)tick_ns, test_duration_ns,
-+		  min_iterations, max_iterations,
-+		  pretty_print_oa_period(oa_period));
-+
-+	/* In the loop we perform blocking polls while the HW is sampling at
-+	 * ~25Hz, with the expectation that we spend most of our time blocked
-+	 * in the kernel, and shouldn't be burning cpu cycles in the kernel in
-+	 * association with this process (verified by looking at stime before
-+	 * and after loop).
-+	 *
-+	 * We're looking to assert that less than 1% of the test duration is
-+	 * spent in the kernel dealing with polling and read()ing.
-+	 *
-+	 * The test runs for a relatively long time considering the very low
-+	 * resolution of stime in ticks of typically 10 milliseconds. Since we
-+	 * don't know the fractional part of tick values we read from userspace
-+	 * so our minimum threshold needs to be >= one tick since any
-+	 * measurement might really be +- tick_ns (assuming we effectively get
-+	 * floor(real_stime)).
-+	 *
-+	 * We Loop for 1000 x tick_ns so one tick corresponds to 0.1%
-+	 *
-+	 * Also enable the stream just before poll/read to minimize
-+	 * the error delta.
-+	 */
-+	start = get_time();
-+	do_ioctl(perf_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
-+		bool timer_report_read = false;
-+		bool non_timer_report_read = false;
-+		int ret;
-+
-+		while ((ret = read(perf_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+		igt_assert(ret > 0);
-+
-+		for (int offset = 0; offset < ret; offset += format_size) {
-+			uint32_t *report = (void *)(buf + offset);
-+
-+			if (oa_report_is_periodic(oa_exponent, report))
-+				timer_report_read = true;
-+			else
-+				non_timer_report_read = true;
-+		}
-+
-+		if (non_timer_report_read && !timer_report_read)
-+			n_extra_iterations++;
-+
-+		n++;
-+	}
-+
-+	times(&end_times);
-+
-+	/* Using nanosecond units is fairly silly here, given the tick in-
-+	 * precision - ah well, it's consistent with the get_time() units.
-+	 */
-+	user_ns = (end_times.tms_utime - start_times.tms_utime) * tick_ns;
-+	kernel_ns = (end_times.tms_stime - start_times.tms_stime) * tick_ns;
-+
-+	igt_debug("%d blocking reads during test with %"PRIu64" Hz OA sampling (expect no more than %d)\n",
-+		  n, NSEC_PER_SEC / oa_period, max_iterations);
-+	igt_debug("%d extra iterations seen, not related to periodic sampling (e.g. context switches)\n",
-+		  n_extra_iterations);
-+	igt_debug("time in userspace = %"PRIu64"ns (+-%dns) (start utime = %d, end = %d)\n",
-+		  user_ns, (int)tick_ns,
-+		  (int)start_times.tms_utime, (int)end_times.tms_utime);
-+	igt_debug("time in kernelspace = %"PRIu64"ns (+-%dns) (start stime = %d, end = %d)\n",
-+		  kernel_ns, (int)tick_ns,
-+		  (int)start_times.tms_stime, (int)end_times.tms_stime);
-+
-+	/* With completely broken blocking (but also not returning an error) we
-+	 * could end up with an open loop,
-+	 */
-+	igt_assert(n <= (max_iterations + n_extra_iterations));
-+
-+	/* Make sure the driver is reporting new samples with a reasonably
-+	 * low latency...
-+	 */
-+	igt_assert(n > (min_iterations + n_extra_iterations));
-+
-+	if (!set_kernel_hrtimer)
-+		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
-+
-+	__perf_close(perf_fd);
-+}
-+
-+/**
-+ * SUBTEST: polling
-+ * Description: Test polled reads
-+ */
-+static void test_polling(uint64_t requested_oa_period,
-+			 bool set_kernel_hrtimer,
-+			 uint64_t kernel_hrtimer,
-+			 const struct drm_xe_engine_class_instance *hwe)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(requested_oa_period);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-+	uint64_t props[XE_OA_MAX_SET_PROPERTIES * 2];
-+	uint64_t *idx = props;
-+	struct intel_xe_oa_open_prop param;
-+	uint8_t buf[1024 * 1024];
-+	struct tms start_times;
-+	struct tms end_times;
-+	int64_t user_ns, kernel_ns;
-+	int64_t tick_ns = 1000000000 / sysconf(_SC_CLK_TCK);
-+	int64_t test_duration_ns = tick_ns * 100;
-+
-+	int max_iterations = (test_duration_ns / oa_period) + 2;
-+	int n_extra_iterations = 0;
-+
-+	/* It's a bit tricky to put a lower limit here, but we expect a
-+	 * relatively low latency for seeing reports.
-+	 *
-+	 * We assume a maximum latency of kernel_hrtimer + some margin
-+	 * to deliver a POLLIN and read() after a new sample is
-+	 * written (40ms + hrtimer + margin per iteration) considering
-+	 * the knowledge that that the driver uses a 200Hz hrtimer
-+	 * (5ms period) to check for data and giving some time to
-+	 * read().
-+	 */
-+	int min_iterations = (test_duration_ns / (oa_period + (kernel_hrtimer + kernel_hrtimer / 5)));
-+	int64_t start, end;
-+	int n = 0;
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
-+
-+	ADD_PROPS(props, idx, SAMPLE_OA, true);
-+	ADD_PROPS(props, idx, OA_METRIC_SET, test_set->perf_oa_metrics_set);
-+	ADD_PROPS(props, idx, OA_FORMAT, __ff(test_set->perf_oa_format));
-+	ADD_PROPS(props, idx, OA_PERIOD_EXPONENT, oa_exponent);
-+	ADD_PROPS(props, idx, OA_DISABLED, true);
-+	ADD_PROPS(props, idx, OA_UNIT_ID, 0);
-+	ADD_PROPS(props, idx, OA_ENGINE_INSTANCE, hwe->engine_instance);
-+
-+	param.num_properties = (idx - props) / 2;
-+	param.properties_ptr = to_user_pointer(props);
-+
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-+
-+	times(&start_times);
-+
-+	igt_debug("tick length = %dns, oa period = %s, "
-+		  "test duration = %"PRIu64"ns, min iter. = %d, max iter. = %d\n",
-+		  (int)tick_ns, pretty_print_oa_period(oa_period), test_duration_ns,
-+		  min_iterations, max_iterations);
-+
-+	/* In the loop we perform blocking polls while the HW is sampling at
-+	 * ~25Hz, with the expectation that we spend most of our time blocked
-+	 * in the kernel, and shouldn't be burning cpu cycles in the kernel in
-+	 * association with this process (verified by looking at stime before
-+	 * and after loop).
-+	 *
-+	 * We're looking to assert that less than 1% of the test duration is
-+	 * spent in the kernel dealing with polling and read()ing.
-+	 *
-+	 * The test runs for a relatively long time considering the very low
-+	 * resolution of stime in ticks of typically 10 milliseconds. Since we
-+	 * don't know the fractional part of tick values we read from userspace
-+	 * so our minimum threshold needs to be >= one tick since any
-+	 * measurement might really be +- tick_ns (assuming we effectively get
-+	 * floor(real_stime)).
-+	 *
-+	 * We Loop for 1000 x tick_ns so one tick corresponds to 0.1%
-+	 *
-+	 * Also enable the stream just before poll/read to minimize
-+	 * the error delta.
-+	 */
-+	start = get_time();
-+	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+	for (/* nop */; ((end = get_time()) - start) < test_duration_ns; /* nop */) {
-+		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
-+		bool timer_report_read = false;
-+		bool non_timer_report_read = false;
-+		int ret;
-+
-+		while ((ret = poll(&pollfd, 1, -1)) < 0 && errno == EINTR)
-+			;
-+		igt_assert_eq(ret, 1);
-+		igt_assert(pollfd.revents & POLLIN);
-+
-+		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		/* Don't expect to see EAGAIN if we've had a POLLIN event
-+		 *
-+		 * XXX: actually this is technically overly strict since we do
-+		 * knowingly allow false positive POLLIN events. At least in
-+		 * the future when supporting context filtering of metrics for
-+		 * Gen8+ handled in the kernel then POLLIN events may be
-+		 * delivered when we know there are pending reports to process
-+		 * but before we've done any filtering to know for certain that
-+		 * any reports are destined to be copied to userspace.
-+		 *
-+		 * Still, for now it's a reasonable sanity check.
-+		 */
-+		if (ret < 0)
-+			igt_debug("Unexpected error when reading after poll = %d\n", errno);
-+		igt_assert_neq(ret, -1);
-+
-+		/* For Haswell reports don't contain a well defined reason
-+		 * field we so assume all reports to be 'periodic'. For gen8+
-+		 * we want to to consider that the HW automatically writes some
-+		 * non periodic reports (e.g. on context switch) which might
-+		 * lead to more successful read()s than expected due to
-+		 * periodic sampling and we don't want these extra reads to
-+		 * cause the test to fail...
-+		 */
-+		for (int offset = 0; offset < ret; offset += format_size) {
-+			uint32_t *report = (void *)(buf + offset);
-+
-+			if (oa_report_is_periodic(oa_exponent, report))
-+				timer_report_read = true;
-+			else
-+				non_timer_report_read = true;
-+		}
-+
-+		if (non_timer_report_read && !timer_report_read)
-+			n_extra_iterations++;
-+
-+		/* At this point, after consuming pending reports (and hoping
-+		 * the scheduler hasn't stopped us for too long) we now expect
-+		 * EAGAIN on read. While this works most of the times, there are
-+		 * some rare failures when the OA period passed to this test is
-+		 * very small (say 500 us) and that results in some valid
-+		 * reports here. To weed out those rare occurences we assert
-+		 * only if the OA period is >= 40 ms because 40 ms has withstood
-+		 * the test of time on most platforms (ref: subtest: polling).
-+		 */
-+		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		if (requested_oa_period >= 40000000) {
-+			igt_assert_eq(ret, -1);
-+			igt_assert_eq(errno, EAGAIN);
-+		}
-+
-+		n++;
-+	}
-+
-+	times(&end_times);
-+
-+	/* Using nanosecond units is fairly silly here, given the tick in-
-+	 * precision - ah well, it's consistent with the get_time() units.
-+	 */
-+	user_ns = (end_times.tms_utime - start_times.tms_utime) * tick_ns;
-+	kernel_ns = (end_times.tms_stime - start_times.tms_stime) * tick_ns;
-+
-+	igt_debug("%d non-blocking reads during test with %"PRIu64" Hz OA sampling (expect no more than %d)\n",
-+		  n, NSEC_PER_SEC / oa_period, max_iterations);
-+	igt_debug("%d extra iterations seen, not related to periodic sampling (e.g. context switches)\n",
-+		  n_extra_iterations);
-+	igt_debug("time in userspace = %"PRIu64"ns (+-%dns) (start utime = %d, end = %d)\n",
-+		  user_ns, (int)tick_ns,
-+		  (int)start_times.tms_utime, (int)end_times.tms_utime);
-+	igt_debug("time in kernelspace = %"PRIu64"ns (+-%dns) (start stime = %d, end = %d)\n",
-+		  kernel_ns, (int)tick_ns,
-+		  (int)start_times.tms_stime, (int)end_times.tms_stime);
-+
-+	/* With completely broken blocking while polling (but still somehow
-+	 * reporting a POLLIN event) we could end up with an open loop.
-+	 */
-+	igt_assert(n <= (max_iterations + n_extra_iterations));
-+
-+	/* Make sure the driver is reporting new samples with a reasonably
-+	 * low latency...
-+	 */
-+	igt_assert(n > (min_iterations + n_extra_iterations));
-+
-+	if (!set_kernel_hrtimer)
-+		igt_assert(kernel_ns <= (test_duration_ns / 100ull));
-+
-+	__perf_close(stream_fd);
-+}
-+
-+/**
-+ * SUBTEST: polling-small-buf
-+ * Description: Test polled read with buffer size smaller than available data
-+ */
-+static void test_polling_small_buf(void)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(40 * 1000); /* 40us */
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Include OA reports in samples */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	uint32_t test_duration = 80 * 1000 * 1000;
-+	int sample_size = get_oa_format(default_test_set->perf_oa_format).size;
-+	int n_expected_reports = test_duration / oa_exponent_to_ns(oa_exponent);
-+	int n_expect_read_bytes = n_expected_reports * sample_size;
-+	struct timespec ts = {};
-+	int n_bytes_read = 0;
-+	uint32_t n_polls = 0;
-+
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+	set_fd_flags(stream_fd, O_CLOEXEC | O_NONBLOCK);
-+	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+
-+	while (igt_nsec_elapsed(&ts) < test_duration) {
-+		struct pollfd pollfd = { .fd = stream_fd, .events = POLLIN };
-+
-+		ppoll(&pollfd, 1, NULL, NULL);
-+		if (pollfd.revents & POLLIN) {
-+			uint8_t buf[1024];
-+			int ret;
-+
-+			ret = read(stream_fd, buf, sizeof(buf));
-+			if (ret >= 0)
-+				n_bytes_read += ret;
-+		}
-+
-+		n_polls++;
-+	}
-+
-+	igt_info("Read %d expected %d (%.2f%% of the expected number), polls=%u\n",
-+		 n_bytes_read, n_expect_read_bytes,
-+		 n_bytes_read * 100.0f / n_expect_read_bytes,
-+		 n_polls);
-+
-+	__perf_close(stream_fd);
-+
-+	igt_assert(abs(n_expect_read_bytes - n_bytes_read) <
-+		   0.20 * n_expect_read_bytes);
-+}
-+
+-static unsigned read_xe_module_ref(void)
+-{
+-	FILE *fp = fopen("/proc/modules", "r");
+-	char *line = NULL;
+-	size_t line_buf_size = 0;
+-	int len = 0;
+-	unsigned ref_count;
+-	char mod[8];
+-	int modn = 3;
+-
+-	igt_assert(fp);
+-
+-	strcpy(mod, "xe ");
+-	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
+-		if (strncmp(line, mod, modn) == 0) {
+-			unsigned long mem;
+-			int ret = sscanf(line + 5, "%lu %u", &mem, &ref_count);
+-			igt_assert(ret == 2);
+-			goto done;
+-		}
+-	}
+-
+-	igt_assert(!"reached");
+-
+-done:
+-	free(line);
+-	fclose(fp);
+-	return ref_count;
+-}
+-
  /**
-  * SUBTEST: buffer-fill
-  * Description: Test filling, wraparound and overflow of OA buffer
-@@ -2460,6 +2904,25 @@ igt_main
- 		__for_one_hwe_in_oag(hwe)
- 			test_enable_disable(hwe);
+  * SUBTEST: rc6-disable
+  * Description: Check that opening an OA stream disables RC6
+@@ -4116,80 +4086,6 @@ test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
+ 		   WEXITSTATUS(ret) == 0);
+ }
  
-+	igt_subtest_with_dynamic("blocking") {
-+		__for_one_hwe_in_oag(hwe)
-+			test_blocking(40 * 1000 * 1000 /* 40ms oa period */,
-+				      false /* set_kernel_hrtimer */,
-+				      5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
-+				      hwe);
-+	}
-+
-+	igt_subtest_with_dynamic("polling") {
-+		__for_one_hwe_in_oag(hwe)
-+			test_polling(40 * 1000 * 1000 /* 40ms oa period */,
-+				     false /* set_kernel_hrtimer */,
-+				     5 * 1000 * 1000 /* default 5ms/200Hz hrtimer */,
-+				     hwe);
-+	}
-+
-+	igt_subtest("polling-small-buf")
-+		test_polling_small_buf();
-+
- 	igt_subtest("short-reads")
- 		test_short_reads();
+-/**
+- * SUBTEST: xe-ref-count
+- * Description: Check that an open oa stream holds a reference on the xe module
+- */
+-static void
+-test_xe_ref_count(void)
+-{
+-	uint64_t properties[] = {
+-		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+-
+-		/* Include OA reports in samples */
+-		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+-
+-		/* OA unit configuration */
+-		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0 /* updated below */,
+-		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0), /* update below */
+-		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, 0, /* update below */
+-	};
+-	struct intel_xe_oa_open_prop param = {
+-		.num_properties = ARRAY_SIZE(properties) / 2,
+-		.properties_ptr = to_user_pointer(properties),
+-	};
+-	unsigned baseline, ref_count0, ref_count1;
+-	uint32_t oa_report0[64];
+-	uint32_t oa_report1[64];
+-
+-	/* This should be the first test before the first fixture so no drm_fd
+-	 * should have been opened so far...
+-	 */
+-	igt_assert_eq(drm_fd, -1);
+-
+-	baseline = read_xe_module_ref();
+-	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
+-
+-	drm_fd = __drm_open_driver(DRIVER_XE);
+-	if (is_xe_device(drm_fd))
+-		xe_device_get(drm_fd);
+-	devid = intel_get_drm_devid(drm_fd);
+-	sysfs = igt_sysfs_open(drm_fd);
+-
+-	/* Note: these global variables are only initialized after calling
+-	 * init_sys_info()...
+-	 */
+-	igt_require(init_sys_info());
+-	properties[5] = default_test_set->perf_oa_metrics_set;
+-	properties[7] = __ff(default_test_set->perf_oa_format);
+-	properties[9] = oa_exp_1_millisec;
+-
+-	ref_count0 = read_xe_module_ref();
+-	igt_debug("initial ref count with drm_fd open = %u\n", ref_count0);
+-
+-	stream_fd = __perf_open(drm_fd, &param, false);
+-        set_fd_flags(stream_fd, O_CLOEXEC);
+-	ref_count1 = read_xe_module_ref();
+-	igt_debug("ref count after opening oa stream = %u\n", ref_count1);
+-
+-	drm_close_driver(drm_fd);
+-	close(sysfs);
+-	drm_fd = -1;
+-	sysfs = -1;
+-	ref_count0 = read_xe_module_ref();
+-	igt_debug("ref count after closing drm fd = %u\n", ref_count0);
+-
+-	read_2_oa_reports(default_test_set->perf_oa_format,
+-			  oa_exp_1_millisec,
+-			  oa_report0,
+-			  oa_report1,
+-			  false); /* not just timer reports */
+-
+-	__perf_close(stream_fd);
+-	ref_count0 = read_xe_module_ref();
+-	igt_debug("ref count after closing oa stream fd = %u\n", ref_count0);
+-}
+-
+ /**
+  * SUBTEST: sysctl-defaults
+  * Description: Test that perf_stream_paranoid sysctl exists
+@@ -4621,9 +4517,6 @@ igt_main
+ 		igt_require(!stat("/proc/sys/dev/xe/perf_stream_paranoid", &sb));
+ 	}
+ 
+-	igt_subtest("xe-ref-count")
+-		test_xe_ref_count();
+-
+ 	igt_subtest("sysctl-defaults")
+ 		test_sysctl_defaults();
  
 -- 
 2.41.0
