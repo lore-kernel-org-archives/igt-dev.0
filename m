@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F098C3065A
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 01:41:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C0DCC3065D
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 01:41:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 948B410E2AF;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD90010E2DB;
 	Mon,  1 Jul 2024 01:41:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WClBGTcW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NysfwiAY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCA5810E2A8
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 01:41:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5453010E2A8
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 01:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719798105; x=1751334105;
+ t=1719798106; x=1751334106;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=3c/g4ymPvDu5KQFmKVJ+dEPSWsa/yhT32ViTfUiwFyw=;
- b=WClBGTcWrW7UvmTN+7gzjdrysOwIlLJ+juMq9dJkqosreZnyrLxvgrXw
- auqQ6heq7hzZbdejDB9s1NpiX9BTM/TtWX3fMX+CJ5gcF0TOQa61+qUrN
- iSdgv8+Vp8vxa9rygYaufdqwHROO+ExwqNjtQ4g2cxg6YJhUcetWvQp6T
- SRpkksFUTvUGg00WjE58pEw+9c0jrZHcfJO/YyNvK8Fn41hznXPtzbFfP
- MriSSMclBzL6a27e7Pnuh1LNUeOHtuSowASbsipileIFmPNVINiVn8WfB
- xwysffopUeuz1Fu+tVFdNVmPSk4xObFQSnrt7kC29C2Ll7KnFevuLuTX4 w==;
-X-CSE-ConnectionGUID: PSQwitFvSIebSy4RNkrmfg==
-X-CSE-MsgGUID: T4PdmC8LR5GPanmPIjucyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="19801049"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="19801049"
+ bh=FvZ79Fx3IAKVVk8AjPPRpo6yGYxry1Mw3h/ltFcWhf0=;
+ b=NysfwiAYn4J/HyBYPEkUjjckAclJm+4w+4S7nypGEo21xgTg+Vl8T47n
+ ggyzeUbGZdkJ6jFO1Z2Hnbb9p8Rr8AYTis7ROL58HfmOh5IaTk5UsqAln
+ p/mzr7Zkk1NvVcr8h7FQow1RUCy5seSxjf65R9lzHlfALrUqkEynY7QDC
+ +jfeIMlK8ibKTtrB4XqqZNKznx1r2U87cSBr6Ein/NZyiwcqAFnNa4JkC
+ k+AppQcKjROtTTrcQS3PAYSYBlis+cHXI8YknADMKjv/JcQcNI6VaIOVX
+ Z9Fv/VMmOx8L2qIRGoo47t48XkwsgyNJwRHUcNbdzp08TwYo+//ALruKK g==;
+X-CSE-ConnectionGUID: TQs002x2SPy2UyQrXIKqfQ==
+X-CSE-MsgGUID: 3T/hhSq+Sb+9qJruxbcIlw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="19801055"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="19801055"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Jun 2024 18:41:44 -0700
-X-CSE-ConnectionGUID: XNuIzBmcQJKMuJ+Rt1m/dg==
-X-CSE-MsgGUID: BfvxV/maRm6EXaSQrW+VSQ==
+X-CSE-ConnectionGUID: zK6nPNyrTy2UBB0EG7RJ6w==
+X-CSE-MsgGUID: K981poN9TmmrZCSoGszr1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46091832"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46091840"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Jun 2024 18:41:44 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 05/13] tests/intel/xe_oa: buffer-fill, non-zero-reason,
- enable-disable
-Date: Sun, 30 Jun 2024 18:41:27 -0700
-Message-ID: <20240701014135.2412560-6-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 11/13] tests/intel/xe_oa: Register whitelisting and MMIO
+ trigger tests
+Date: Sun, 30 Jun 2024 18:41:33 -0700
+Message-ID: <20240701014135.2412560-12-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240701014135.2412560-1-ashutosh.dixit@intel.com>
 References: <20240701014135.2412560-1-ashutosh.dixit@intel.com>
@@ -68,638 +68,356 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Add the following tests:
-	"buffer-fill"
-	"non-zero-reason"
-	"disabled-read-error"
-	"enable-disable"
-	"short-reads"
+	* "oa-regs-whitelisted"
+	* "mmio-triggered-reports"
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 606 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 606 insertions(+)
+ tests/intel/xe_oa.c | 327 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 327 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 4b6c448c04..c40a632b76 100644
+index 67d8701953..965ea05d9a 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -1630,6 +1630,591 @@ static void test_invalid_oa_exponent(void)
- 	}
+@@ -3805,6 +3805,317 @@ test_whitelisted_registers_userspace_config(void)
+ 	xe_oa_remove_config(drm_fd, config_id);
  }
  
-+/**
-+ * SUBTEST: buffer-fill
-+ * Description: Test filling, wraparound and overflow of OA buffer
-+ */
-+static void
-+test_buffer_fill(const struct drm_xe_engine_class_instance *hwe)
++#define OAG_OASTATUS (0xdafc)
++#define OAG_MMIOTRIGGER (0xdb1c)
++
++static const uint32_t oa_wl[] = {
++	OAG_MMIOTRIGGER,
++	OAG_OASTATUS,
++};
++
++static const uint32_t nonpriv_slot_offsets[] = {
++	0x4d0, 0x4d4, 0x4d8, 0x4dc, 0x4e0, 0x4e4, 0x4e8, 0x4ec,
++	0x4f0, 0x4f4, 0x4f8, 0x4fc, 0x010, 0x014, 0x018, 0x01c,
++	0x1e0, 0x1e4, 0x1e8, 0x1ec,
++};
++
++struct test_perf {
++	const uint32_t *slots;
++	uint32_t num_slots;
++	const uint32_t *wl;
++	uint32_t num_wl;
++} perf;
++
++#define HAS_OA_MMIO_TRIGGER(__d) \
++	(IS_DG2(__d) || IS_PONTEVECCHIO(__d) || IS_METEORLAKE(__d) || \
++	 intel_graphics_ver(devid) >= IP_VER(20, 0))
++
++static void perf_init_whitelist(void)
 +{
-+	/* ~5 micro second period */
-+	int oa_exponent = max_oa_exponent_for_period_lte(5000);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t fmt = test_set->perf_oa_format;
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++	perf.slots = nonpriv_slot_offsets;
++	perf.num_slots = 20;
++	perf.wl = oa_wl;
++	perf.num_wl = ARRAY_SIZE(oa_wl);
++}
 +
-+		/* Include OA reports in samples */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++static void
++emit_oa_reg_read(struct intel_bb *ibb, struct intel_buf *dst, uint32_t offset,
++		 uint32_t reg)
++{
++	intel_bb_add_intel_buf(ibb, dst, true);
 +
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	size_t report_size = get_oa_format(fmt).size;
-+	int buf_size = 65536 * report_size;
-+	uint8_t *buf = malloc(buf_size);
-+	int len;
-+	size_t oa_buf_size = MAX_OA_BUF_SIZE;
-+	int n_full_oa_reports = oa_buf_size / report_size;
-+	uint64_t fill_duration = n_full_oa_reports * oa_period;
-+	uint32_t *last_periodic_report = malloc(report_size);
-+	u32 oa_status;
++	intel_bb_out(ibb, MI_STORE_REGISTER_MEM | 2);
++	intel_bb_out(ibb, reg);
++	intel_bb_emit_reloc(ibb, dst->handle,
++			    I915_GEM_DOMAIN_INSTRUCTION,
++			    I915_GEM_DOMAIN_INSTRUCTION,
++			    offset, dst->addr.offset);
++	intel_bb_out(ibb, lower_32_bits(offset));
++	intel_bb_out(ibb, upper_32_bits(offset));
++}
 +
-+	igt_assert(fill_duration < 1000000000);
++static void
++emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t value)
++{
++	intel_bb_out(ibb, MI_LOAD_REGISTER_IMM(1));
++	intel_bb_out(ibb, OAG_MMIOTRIGGER);
++	intel_bb_out(ibb, value);
++}
 +
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
++static void dump_whitelist(uint32_t mmio_base, const char *msg)
++{
++	int i;
 +
-+	for (int i = 0; i < 5; i++) {
-+		bool overflow_seen;
-+		uint32_t n_periodic_reports;
-+		uint32_t first_timestamp = 0, last_timestamp = 0;
++	igt_debug("%s\n", msg);
 +
-+		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
++	for (i = 0; i < perf.num_slots; i++)
++		igt_debug("FORCE_TO_NON_PRIV_%02d = %08x\n",
++			  i, intel_register_read(&mmio_data,
++						 mmio_base + perf.slots[i]));
++}
 +
-+		nanosleep(&(struct timespec){ .tv_sec = 0,
-+					      .tv_nsec = fill_duration * 1.25 },
-+			  NULL);
-+again:
-+		oa_status = 0;
-+		while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
-+			;
++static bool in_whitelist(uint32_t mmio_base, uint32_t reg)
++{
++	int i;
 +
-+		if (errno == EIO) {
-+			oa_status = get_stream_status(stream_fd);
-+			igt_debug("oa_status %#x\n", oa_status);
-+			overflow_seen = oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW;
-+			igt_assert_eq(overflow_seen, true);
-+			goto again;
-+		}
-+		igt_assert_neq(len, -1);
++	if (reg & MMIO_BASE_OFFSET)
++		reg = (reg & ~MMIO_BASE_OFFSET) + mmio_base;
 +
-+		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
++	for (i = 0; i < perf.num_slots; i++) {
++		uint32_t fpriv = intel_register_read(&mmio_data,
++						     mmio_base + perf.slots[i]);
 +
-+		igt_debug("fill_duration = %"PRIu64"ns, oa_exponent = %u\n",
-+			  fill_duration, oa_exponent);
-+
-+		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+
-+		nanosleep(&(struct timespec){ .tv_sec = 0,
-+					.tv_nsec = fill_duration / 2 },
-+			NULL);
-+
-+		n_periodic_reports = 0;
-+
-+		/* Because of the race condition between notification of new
-+		 * reports and reports landing in memory, we need to rely on
-+		 * timestamps to figure whether we've read enough of them.
-+		 */
-+		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
-+
-+			igt_debug("dts=%u elapsed=%"PRIu64" duration=%"PRIu64"\n",
-+				  last_timestamp - first_timestamp,
-+				  (last_timestamp - first_timestamp) * oa_period,
-+				  fill_duration / 2);
-+again_1:
-+			oa_status = 0;
-+			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
-+				;
-+			if (errno == EIO) {
-+				oa_status = get_stream_status(stream_fd);
-+				igt_debug("oa_status %#x\n", oa_status);
-+				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
-+				goto again_1;
-+			}
-+			igt_assert_neq(len, -1);
-+
-+			for (int offset = 0; offset < len; offset += report_size) {
-+				uint32_t *report = (void *) (buf + offset);
-+
-+				igt_debug(" > report ts=%"PRIu64""
-+					  " ts_delta_last_periodic=%"PRIu64" is_timer=%i ctx_id=%8x nb_periodic=%u\n",
-+					  oa_timestamp(report, fmt),
-+					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
-+					  oa_report_is_periodic(oa_exponent, report),
-+					  oa_report_get_ctx_id(report),
-+					  n_periodic_reports);
-+
-+				if (first_timestamp == 0)
-+					first_timestamp = oa_timestamp(report, fmt);
-+				last_timestamp = oa_timestamp(report, fmt);
-+
-+				if (oa_report_is_periodic(oa_exponent, report)) {
-+					memcpy(last_periodic_report, report, report_size);
-+					n_periodic_reports++;
-+				}
-+			}
-+		}
-+
-+		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
-+
-+		igt_debug("first ts = %u, last ts = %u\n", first_timestamp, last_timestamp);
-+
-+		igt_debug("%f < %zu < %f\n",
-+			  report_size * n_full_oa_reports * 0.45,
-+			  n_periodic_reports * report_size,
-+			  report_size * n_full_oa_reports * 0.55);
-+
-+		igt_assert(n_periodic_reports * report_size >
-+			   report_size * n_full_oa_reports * 0.45);
-+		igt_assert(n_periodic_reports * report_size <
-+			   report_size * n_full_oa_reports * 0.55);
++		if ((fpriv & RING_FORCE_TO_NONPRIV_ADDRESS_MASK) == reg)
++			return true;
 +	}
 +
-+	free(last_periodic_report);
-+	free(buf);
++	return false;
++}
 +
-+	__perf_close(stream_fd);
++static void oa_regs_in_whitelist(uint32_t mmio_base, bool are_present)
++{
++	int i;
++
++	if (are_present) {
++		for (i = 0; i < perf.num_wl; i++)
++			igt_assert(in_whitelist(mmio_base, perf.wl[i]));
++	} else {
++		for (i = 0; i < perf.num_wl; i++)
++			igt_assert(!in_whitelist(mmio_base, perf.wl[i]));
++	}
++}
++
++static u32 oa_get_mmio_base(const struct drm_xe_engine_class_instance *hwe)
++{
++	u32 mmio_base = 0x2000;
++
++	switch (hwe->engine_class) {
++	case DRM_XE_ENGINE_CLASS_RENDER:
++		mmio_base = 0x2000;
++		break;
++	case DRM_XE_ENGINE_CLASS_COMPUTE:
++		switch (hwe->engine_instance) {
++		case 0:
++			mmio_base = 0x1a000;
++			break;
++		case 1:
++			mmio_base = 0x1c000;
++			break;
++		case 2:
++			mmio_base = 0x1e000;
++			break;
++		case 3:
++			mmio_base = 0x26000;
++			break;
++		}
++	}
++
++	return mmio_base;
 +}
 +
 +/**
-+ * SUBTEST: non-zero-reason
-+ * Description: Test reason field is non-zero. Can also check OA buffer wraparound issues
++ * SUBTEST: oa-regs-whitelisted
++ * Description: Verify that OA registers are whitelisted
 + */
-+static void
-+test_non_zero_reason(const struct drm_xe_engine_class_instance *hwe)
++static void test_oa_regs_whitelist(const struct drm_xe_engine_class_instance *hwe)
 +{
-+	/* ~20 micro second period */
-+	int oa_exponent = max_oa_exponent_for_period_lte(20000);
 +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t fmt = test_set->perf_oa_format;
-+	size_t report_size = get_oa_format(fmt).size;
 +	uint64_t properties[] = {
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Include OA reports in samples */
 +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
 +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
 +	};
 +	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
++		.num_properties = sizeof(properties) / 16,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	uint32_t buf_size = 3 * 65536 * report_size;
-+	uint8_t *buf = malloc(buf_size);
-+	uint32_t total_len = 0;
-+	const uint32_t *last_report;
-+	int len;
-+	u32 oa_status;
++	// uint32_t mmio_base = gem_engine_mmio_base(drm_fd, e->name);
++	u32 mmio_base;
 +
-+	igt_assert(buf);
++	/* FIXME: Add support for OAM whitelist testing */
++	if (hwe->engine_class != DRM_XE_ENGINE_CLASS_RENDER &&
++	    hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++		return;
 +
-+	igt_debug("Ready to read about %u bytes\n", buf_size);
++	mmio_base = oa_get_mmio_base(hwe);
 +
-+	load_helper_init();
-+	load_helper_run(HIGH);
-+
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	while (total_len < buf_size &&
-+	       ((len = read(stream_fd, &buf[total_len], buf_size - total_len)) > 0 ||
-+		(len == -1 && (errno == EINTR || errno == EIO)))) {
-+		if (errno == EIO) {
-+			oa_status = get_stream_status(stream_fd);
-+			igt_debug("oa_status %#x\n", oa_status);
-+			igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
-+		}
-+		if (len > 0)
-+			total_len += len;
-+	}
-+
-+	__perf_close(stream_fd);
-+
-+	load_helper_stop();
-+	load_helper_fini();
-+
-+	igt_debug("Got %u bytes\n", total_len);
-+
-+	last_report = NULL;
-+	for (uint32_t offset = 0; offset < total_len; offset += report_size) {
-+		const uint32_t *report = (void *) (buf + offset);
-+		uint32_t reason = (report[0] >> OAREPORT_REASON_SHIFT) & OAREPORT_REASON_MASK;
-+
-+		igt_assert_neq(reason, 0);
-+
-+		if (last_report)
-+			sanity_check_reports(last_report, report, fmt);
-+
-+		last_report = report;
-+	}
-+
-+	free(buf);
-+}
-+
-+/**
-+ * SUBTEST: enable-disable
-+ * Description: Test that OA stream enable/disable works as expected
-+ */
-+static void
-+test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	/* ~5 micro second period */
-+	int oa_exponent = max_oa_exponent_for_period_lte(5000);
-+	uint64_t oa_period = oa_exponent_to_ns(oa_exponent);
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t fmt = test_set->perf_oa_format;
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Include OA reports in samples */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	size_t report_size = get_oa_format(fmt).size;
-+	int buf_size = 65536 * report_size;
-+	uint8_t *buf = malloc(buf_size);
-+	size_t oa_buf_size = MAX_OA_BUF_SIZE;
-+	int n_full_oa_reports = oa_buf_size / report_size;
-+	uint64_t fill_duration = n_full_oa_reports * oa_period;
-+	uint32_t *last_periodic_report = malloc(report_size);
-+
-+	load_helper_init();
-+	load_helper_run(HIGH);
-+
-+	stream_fd = __perf_open(drm_fd, &param, true /* prevent_pm */);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	for (int i = 0; i < 5; i++) {
-+		int len;
-+		uint32_t n_periodic_reports;
-+		uint64_t first_timestamp = 0, last_timestamp = 0;
-+		u32 oa_status;
-+
-+		/* Giving enough time for an overflow might help catch whether
-+		 * the OA unit has been enabled even if the driver might at
-+		 * least avoid copying reports while disabled.
-+		 */
-+		nanosleep(&(struct timespec){ .tv_sec = 0,
-+					      .tv_nsec = fill_duration * 1.25 },
-+			  NULL);
-+
-+		while ((len = read(stream_fd, buf, buf_size)) == -1 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		igt_assert_eq(len, -1);
-+		igt_assert_eq(errno, EINVAL);
-+
-+		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+
-+		nanosleep(&(struct timespec){ .tv_sec = 0,
-+					      .tv_nsec = fill_duration / 2 },
-+			NULL);
-+
-+		n_periodic_reports = 0;
-+
-+		/* Because of the race condition between notification of new
-+		 * reports and reports landing in memory, we need to rely on
-+		 * timestamps to figure whether we've read enough of them.
-+		 */
-+		while (((last_timestamp - first_timestamp) * oa_period) < (fill_duration / 2)) {
-+
-+			while ((len = read(stream_fd, buf, buf_size)) == -1 && errno == EINTR)
-+				;
-+			if (errno == EIO) {
-+				oa_status = get_stream_status(stream_fd);
-+				igt_debug("oa_status %#x\n", oa_status);
-+				igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
-+				continue;
-+			}
-+			igt_assert_neq(len, -1);
-+
-+			for (int offset = 0; offset < len; offset += report_size) {
-+				uint32_t *report = (void *) (buf + offset);
-+
-+				if (first_timestamp == 0)
-+					first_timestamp = oa_timestamp(report, fmt);
-+				last_timestamp = oa_timestamp(report, fmt);
-+
-+				igt_debug(" > report ts=%"PRIx64""
-+					  " ts_delta_last_periodic=%s%"PRIu64""
-+					  " is_timer=%i ctx_id=0x%8x\n",
-+					  oa_timestamp(report, fmt),
-+					  oa_report_is_periodic(oa_exponent, report) ? " " : "*",
-+					  n_periodic_reports > 0 ?  oa_timestamp_delta(report, last_periodic_report, fmt) : 0,
-+					  oa_report_is_periodic(oa_exponent, report),
-+					  oa_report_get_ctx_id(report));
-+
-+				if (oa_report_is_periodic(oa_exponent, report)) {
-+					memcpy(last_periodic_report, report, report_size);
-+
-+					/* We want to measure only the periodic reports,
-+					 * ctx-switch might inflate the content of the
-+					 * buffer and skew or measurement.
-+					 */
-+					n_periodic_reports++;
-+				}
-+			}
-+		}
-+
-+		do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
-+
-+		igt_debug("first ts = %lu, last ts = %lu\n", first_timestamp, last_timestamp);
-+
-+		igt_debug("%f < %zu < %f\n",
-+			  report_size * n_full_oa_reports * 0.45,
-+			  n_periodic_reports * report_size,
-+			  report_size * n_full_oa_reports * 0.55);
-+
-+		igt_assert((n_periodic_reports * report_size) >
-+			   (report_size * n_full_oa_reports * 0.45));
-+		igt_assert((n_periodic_reports * report_size) <
-+			   report_size * n_full_oa_reports * 0.55);
-+
-+
-+		/* It's considered an error to read a stream while it's disabled
-+		 * since it would block indefinitely...
-+		 */
-+		len = read(stream_fd, buf, buf_size);
-+
-+		igt_assert_eq(len, -1);
-+		igt_assert_eq(errno, EINVAL);
-+	}
-+
-+	free(last_periodic_report);
-+	free(buf);
-+
-+	__perf_close(stream_fd);
-+
-+	load_helper_stop();
-+	load_helper_fini();
-+}
-+
-+/**
-+ * SUBTEST: short-reads
-+ * Description: Test behavior for short reads
-+ */
-+static void
-+test_short_reads(void)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(5000);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Include OA reports in samples */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	size_t record_size = get_oa_format(default_test_set->perf_oa_format).size;
-+	size_t page_size = sysconf(_SC_PAGE_SIZE);
-+	int zero_fd = open("/dev/zero", O_RDWR|O_CLOEXEC);
-+	uint8_t *pages = mmap(NULL, page_size * 2,
-+			      PROT_READ|PROT_WRITE, MAP_PRIVATE, zero_fd, 0);
-+	u8 *header;
-+	int ret, errnum;
-+	u32 oa_status;
-+
-+	igt_assert_neq(zero_fd, -1);
-+	close(zero_fd);
-+	zero_fd = -1;
-+
-+	igt_assert(pages);
-+
-+	ret = mprotect(pages + page_size, page_size, PROT_NONE);
-+	igt_assert_eq(ret, 0);
-+
++	intel_register_access_init(&mmio_data,
++				   igt_device_get_pci_device(drm_fd),
++				   0, drm_fd);
 +	stream_fd = __perf_open(drm_fd, &param, false);
 +
-+	nanosleep(&(struct timespec){ .tv_sec = 0, .tv_nsec = 5000000 }, NULL);
++	dump_whitelist(mmio_base, "oa whitelisted");
 +
-+	/* At this point there should be lots of pending reports to read */
-+
-+	/* A read that can return at least one record should result in a short
-+	 * read not an EFAULT if the buffer is smaller than the requested read
-+	 * size...
-+	 *
-+	 * Expect to see a sample record here, but at least skip over any
-+	 * _RECORD_LOST notifications.
-+	 */
-+	do {
-+		header = (void *)(pages + page_size - record_size);
-+		oa_status = 0;
-+		ret = read(stream_fd, header, page_size);
-+		if (ret < 0 && errno == EIO)
-+			oa_status = get_stream_status(stream_fd);
-+
-+	} while (oa_status & DRM_XE_OASTATUS_REPORT_LOST);
-+
-+	igt_assert_eq(ret, record_size);
-+
-+	/* A read that can't return a single record because it would result
-+	 * in a fault on buffer overrun should result in an EFAULT error...
-+	 *
-+	 * Make sure to weed out all report lost errors before verifying EFAULT.
-+	 */
-+	header = (void *)(pages + page_size - 16);
-+	do {
-+		oa_status = 0;
-+		ret = read(stream_fd, header, page_size);
-+		errnum = errno;
-+		if (ret < 0 && errno == EIO)
-+			oa_status = get_stream_status(stream_fd);
-+		errno = errnum;
-+	} while (oa_status & DRM_XE_OASTATUS_REPORT_LOST);
-+
-+	igt_assert_eq(ret, -1);
-+	igt_assert_eq(errno, EFAULT);
-+
-+	/* A read that can't return a single record because the buffer is too
-+	 * small should result in an ENOSPC error..
-+	 *
-+	 * Again, skip over _RECORD_LOST records (smaller than record_size/2)
-+	 */
-+	do {
-+		header = (void *)(pages + page_size - record_size / 2);
-+		oa_status = 0;
-+		ret = read(stream_fd, header, record_size / 2);
-+		errnum = errno;
-+		if (ret < 0 && errno == EIO)
-+			oa_status = get_stream_status(stream_fd);
-+		errno = errnum;
-+	} while (oa_status & DRM_XE_OASTATUS_REPORT_LOST);
-+
-+	igt_assert_eq(ret, -1);
-+	igt_assert_eq(errno, ENOSPC);
++	oa_regs_in_whitelist(mmio_base, true);
 +
 +	__perf_close(stream_fd);
 +
-+	munmap(pages, page_size * 2);
++	dump_whitelist(mmio_base, "oa remove whitelist");
++
++	/*
++	 * after perf close, check that registers are removed from the nonpriv
++	 * slots
++	 * FIXME if needed: currently regs remain added forever
++	 */
++	// oa_regs_in_whitelist(mmio_base, false);
++
++	intel_register_access_fini(&mmio_data);
 +}
 +
-+/**
-+ * SUBTEST: non-sampling-read-error
-+ * Description: Test that a stream without periodic sampling (no exponent) cannot be read
-+ */
 +static void
-+test_non_sampling_read_error(void)
++__test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
 +{
++	struct intel_xe_perf_metric_set *test_set = default_test_set;
++	int oa_exponent = max_oa_exponent_for_period_lte(2 * NSEC_PER_SEC);
 +	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* XXX: even without periodic sampling we have to
-+		 * specify at least one sample layout property...
-+		 */
 +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+
-+		/* XXX: no sampling exponent */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
++		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
 +	};
 +	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
++		.num_properties = sizeof(properties) / 16,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	int ret;
-+	uint8_t buf[1024];
++	size_t format_size = get_oa_format(test_set->perf_oa_format).size;
++	uint32_t oa_buffer, offset_tail1, offset_tail2;
++	struct intel_buf src, dst, *dst_buf;
++	uint32_t mmio_triggered_reports = 0;
++	uint32_t *start, *end;
++	struct buf_ops *bops;
++	struct intel_bb *ibb;
++	uint32_t context, vm;
++	int height = 600;
++	int width = 800;
++	uint8_t *buf;
++
++	bops = buf_ops_create(drm_fd);
++
++	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
++				   I915_TILING_NONE,
++				   I915_COMPRESSION_NONE);
++	buf_map(drm_fd, dst_buf, true);
++	memset(dst_buf->ptr, 0, 4096);
++	intel_buf_unmap(dst_buf);
++
++	scratch_buf_init(bops, &src, width, height, 0xff0000ff);
++	scratch_buf_init(bops, &dst, width, height, 0x00ff00ff);
++
++	vm = xe_vm_create(drm_fd, 0, 0);
++	context = xe_exec_queue_create(drm_fd, vm, hwe, 0);
++	igt_assert(context);
++	ibb = intel_bb_create_with_context(drm_fd, context, vm, NULL, BATCH_SZ);
 +
 +	stream_fd = __perf_open(drm_fd, &param, false);
 +        set_fd_flags(stream_fd, O_CLOEXEC);
 +
-+	ret = read(stream_fd, buf, sizeof(buf));
-+	igt_assert_eq(ret, -1);
-+	igt_assert_eq(errno, EINVAL);
++	buf = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
++	igt_assert(buf != NULL);
 +
++	emit_oa_reg_read(ibb, dst_buf, 0, OAG_OABUFFER);
++	emit_oa_reg_read(ibb, dst_buf, 4, OAG_OATAILPTR);
++	emit_mmio_triggered_report(ibb, 0xc0ffee11);
++
++	if (render_copy)
++		render_copy(ibb,
++			    &src, 0, 0, width, height,
++			    &dst, 0, 0);
++
++	emit_mmio_triggered_report(ibb, 0xc0ffee22);
++
++	emit_oa_reg_read(ibb, dst_buf, 8, OAG_OATAILPTR);
++
++	intel_bb_flush_render(ibb);
++	intel_bb_sync(ibb);
++
++	buf_map(drm_fd, dst_buf, false);
++
++	oa_buffer = dst_buf->ptr[0] & OAG_OATAILPTR_MASK;
++	offset_tail1 = (dst_buf->ptr[1] & OAG_OATAILPTR_MASK) - oa_buffer;
++	offset_tail2 = (dst_buf->ptr[2] & OAG_OATAILPTR_MASK) - oa_buffer;
++
++	igt_debug("oa_buffer = %08x, tail1 = %08x, tail2 = %08x\n",
++		  oa_buffer, offset_tail1, offset_tail2);
++
++	start = (uint32_t *)(buf + offset_tail1);
++	end = (uint32_t *)(buf + offset_tail2);
++	while (start < end) {
++		if (!report_reason(start))
++			mmio_triggered_reports++;
++
++		if (get_oa_format(test_set->perf_oa_format).report_hdr_64bit) {
++			u64 *start64 = (u64 *)start;
++
++			igt_debug("hdr: %016lx %016lx %016lx %016lx\n",
++				  start64[0], start64[1], start64[2], start64[3]);
++		} else {
++			igt_debug("hdr: %08x %08x %08x %08x\n",
++				  start[0], start[1], start[2], start[3]);
++		}
++
++		start += format_size / 4;
++	}
++
++	igt_assert_eq(mmio_triggered_reports, 2);
++
++	munmap(buf, OA_BUFFER_SIZE);
++	intel_buf_close(bops, &src);
++	intel_buf_close(bops, &dst);
++	intel_buf_unmap(dst_buf);
++	intel_buf_destroy(dst_buf);
++	intel_bb_destroy(ibb);
++	xe_exec_queue_destroy(drm_fd, context);
++	xe_vm_destroy(drm_fd, vm);
++	buf_ops_destroy(bops);
 +	__perf_close(stream_fd);
 +}
 +
 +/**
-+ * SUBTEST: disabled-read-error
-+ * Description: Test that attempts to read from a stream while it is disable
-+ *		will return EINVAL instead of blocking indefinitely
++ * SUBTEST: mmio-triggered-reports
++ * Description: Test MMIO trigger functionality
 + */
 +static void
-+test_disabled_read_error(void)
++test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
 +{
-+	int oa_exponent = 5; /* 5 micro seconds */
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* XXX: even without periodic sampling we have to
-+		 * specify at least one sample layout property...
-+		 */
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		/* OA unit configuration */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	uint32_t oa_report0[64];
-+	uint32_t oa_report1[64];
-+	uint32_t buf[128] = { 0 };
++	struct igt_helper_process child = {};
 +	int ret;
 +
-+	stream_fd = __perf_open(drm_fd, &param, false);
++	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 0);
++	igt_fork_helper(&child) {
++		igt_drop_root();
 +
-+	ret = read(stream_fd, buf, sizeof(buf));
-+	igt_assert_eq(ret, -1);
-+	igt_assert_eq(errno, EINVAL);
++		__test_mmio_triggered_reports(hwe);
++	}
++	ret = igt_wait_helper(&child);
++	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 +
-+	__perf_close(stream_fd);
-+
-+	properties[ARRAY_SIZE(properties) - 1] = false; /* Set DISABLED to false */
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	read_2_oa_reports(default_test_set->perf_oa_format,
-+			  oa_exponent,
-+			  oa_report0,
-+			  oa_report1,
-+			  false); /* not just timer reports */
-+
-+	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_DISABLE, 0);
-+
-+	ret = read(stream_fd, buf, sizeof(buf));
-+	igt_assert_eq(ret, -1);
-+	igt_assert_eq(errno, EINVAL);
-+
-+	do_ioctl(stream_fd, DRM_XE_PERF_IOCTL_ENABLE, 0);
-+
-+	read_2_oa_reports(default_test_set->perf_oa_format,
-+			  oa_exponent,
-+			  oa_report0,
-+			  oa_report1,
-+			  false); /* not just timer reports */
-+
-+	__perf_close(stream_fd);
++	igt_assert(WEXITSTATUS(ret) == EAGAIN ||
++		   WEXITSTATUS(ret) == 0);
 +}
 +
- static unsigned read_xe_module_ref(void)
- {
- 	FILE *fp = fopen("/proc/modules", "r");
-@@ -1857,6 +2442,27 @@ igt_main
- 		__for_one_hwe_in_oag(hwe)
- 			test_oa_exponents(hwe);
+ /**
+  * SUBTEST: xe-ref-count
+  * Description: Check that an open oa stream holds a reference on the xe module
+@@ -4475,6 +4786,22 @@ igt_main
+ 				closed_fd_and_unmapped_access(hwe);
+ 	}
  
-+	igt_subtest_with_dynamic("buffer-fill")
-+		__for_one_hwe_in_oag(hwe)
-+			test_buffer_fill(hwe);
++	igt_subtest_group {
++		igt_fixture {
++			perf_init_whitelist();
++		}
 +
-+	igt_subtest_with_dynamic("non-zero-reason") {
-+		__for_one_hwe_in_oag(hwe)
-+			test_non_zero_reason(hwe);
++		igt_subtest_with_dynamic("oa-regs-whitelisted")
++			__for_one_hwe_in_oag(hwe)
++				test_oa_regs_whitelist(hwe);
++
++		igt_subtest_with_dynamic("mmio-triggered-reports") {
++			igt_require(HAS_OA_MMIO_TRIGGER(devid));
++			__for_one_hwe_in_oag(hwe)
++				test_mmio_triggered_reports(hwe);
++		}
 +	}
-+
-+	igt_subtest("disabled-read-error")
-+		test_disabled_read_error();
-+	igt_subtest("non-sampling-read-error")
-+		test_non_sampling_read_error();
-+
-+	igt_subtest_with_dynamic("enable-disable")
-+		__for_one_hwe_in_oag(hwe)
-+			test_enable_disable(hwe);
-+
-+	igt_subtest("short-reads")
-+		test_short_reads();
 +
  	igt_fixture {
  		/* leave sysctl options in their default state... */
