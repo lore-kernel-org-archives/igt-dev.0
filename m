@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F544C3814E
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D236C3271F
 	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 01:41:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 06EC510E2E6;
-	Mon,  1 Jul 2024 01:41:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E601D10E2E5;
+	Mon,  1 Jul 2024 01:41:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M0+VddaO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ehCNE+47";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C4BD10E136
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 01:41:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 963C710E136
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 01:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1719798105; x=1751334105;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=ARfEnwTnPCGZVUHlQ2EPOmMRe1jbyrdvdMBgnNOSe5A=;
- b=M0+VddaOqBuVofGZH/6FBzOYnh3R6W01w9zcegcI7NXZH4etC0psR20e
- nlHDS3BX+0NxFbH7jDzQRj0A0MC5VC9jPey/ZcWv7h9YqL/4wUR0971n3
- 1IA/tVnEQFryR1xV+ysdM3LZyxwJWxPgMb8LdYqcpRVaBgZaa4koG1LnI
- XGPU0AGAhNaoA5EemchQTJmPULB9WSafOKf8JRKz21U7LHcVXWC77Kzxm
- P4k2wNCHp5+l23Oj9g7YEnxJLtrxQPCH2x0YimNOY23Dh+D0TufcsMvVh
- 7Jfu7oxY97uZNVLl31dO6DxbsDNNfjufcm30EXgF+fJsqX5UVOHQxlpvn Q==;
-X-CSE-ConnectionGUID: 2wTb4lr9TUyB3lwdwARKEw==
-X-CSE-MsgGUID: exjz0t1aR4uSy/5usdqYrA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="19801054"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="19801054"
+ bh=+C3LjNIq+yY/bmhY1QEoT64rsvGFiVADaAE60zEx+C4=;
+ b=ehCNE+47FX1DGqa6z1KjTgsb62CNBsc/d/1/OqBoBILdEbM+zU9xuixm
+ eOMXNZO+cuJNmztzL7ZltuyQXzLy877DRjGqEuE1fZK/5cdZkPc7v8nJl
+ TPtYIaWEk9mGa6viZahbj71NxybwaXhXX8mBRNT/Cvgd1xKZaCSL7c831
+ wJWHwpNQSXASFhOYepkH1W3a2q1DSaJoBhES3erp+GNOtIef5TbrmZEol
+ bhxiqnbI8eoiA7t0BmFmU3shefrhcs1vr41O3nnPFN14L2ztbTh1X+X5c
+ +8lOVzgeEVo+aFb7/V3gimQccpL/N1aomGBSJWdhP0+hhYIAqKrGsem6D w==;
+X-CSE-ConnectionGUID: c+tPZy/eTBqpFl5427h8JA==
+X-CSE-MsgGUID: HknVe3RnQYaagmV6PT+nSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="19801046"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="19801046"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Jun 2024 18:41:44 -0700
-X-CSE-ConnectionGUID: LoYrOSOxR+ydETh5U39+mg==
-X-CSE-MsgGUID: KP0IDCdSSy2yCTNF7LFpzQ==
+X-CSE-ConnectionGUID: iLXc+coXSR+Nu3ltPKIBVw==
+X-CSE-MsgGUID: ui3+SwAeRGW5ydJ0cSu8rw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46091839"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46091829"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Jun 2024 18:41:44 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 10/13] tests/intel/xe_oa: OA buffer mmap tests
-Date: Sun, 30 Jun 2024 18:41:32 -0700
-Message-ID: <20240701014135.2412560-11-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 02/13] tests/intel/xe_oa: Add some negative tests
+Date: Sun, 30 Jun 2024 18:41:24 -0700
+Message-ID: <20240701014135.2412560-3-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240701014135.2412560-1-ashutosh.dixit@intel.com>
 References: <20240701014135.2412560-1-ashutosh.dixit@intel.com>
@@ -66,285 +66,231 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the following tests:
-* "map-oa-buffer"
-* "invalid-map-oa-buffer"
-* "non-privileged-map-oa-buffer"
-* "non-privileged-access-vaddr"
-* "privileged-forked-access-vaddr"
-* "closed-fd-and-unmapped-access"
+Add:
+	"non-system-wide-paranoid"
+	"invalid-oa-metric-set-id"
+	"invalid-oa-format-id"
+	"missing-sample-flags"
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 251 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 251 insertions(+)
+ tests/intel/xe_oa.c | 192 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 192 insertions(+)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index cc0a09da1e..67d8701953 100644
+index 2b5044b116..9a59350b16 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -4022,6 +4022,231 @@ test_oa_unit_concurrent_oa_buffer_read(void)
- 	igt_waitchildren();
+@@ -303,6 +303,7 @@ struct drm_xe_engine_class_instance default_hwe;
+ static struct intel_xe_perf *intel_xe_perf;
+ static uint64_t oa_exp_1_millisec;
+ struct intel_mmio_data mmio_data;
++static igt_render_copyfunc_t render_copy;
+ 
+ static struct intel_xe_perf_metric_set *metric_set(const struct drm_xe_engine_class_instance *hwe)
+ {
+@@ -550,6 +551,166 @@ init_sys_info(void)
+ 	return true;
  }
  
-+static void *map_oa_buffer(u32 *size)
-+{
-+	void *vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+
-+	igt_assert(vaddr != NULL);
-+	*size = OA_BUFFER_SIZE;
-+	return vaddr;
-+}
-+
-+static void invalid_param_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	void *oa_vaddr = NULL;
-+
-+	/* try a couple invalid mmaps */
-+	/* bad prots */
-+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_WRITE, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(oa_vaddr == MAP_FAILED);
-+
-+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_EXEC, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(oa_vaddr == MAP_FAILED);
-+
-+	/* bad MAPs */
-+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_SHARED, stream_fd, 0);
-+	igt_assert(oa_vaddr == MAP_FAILED);
-+
-+	/* bad size */
-+	oa_vaddr = mmap(0, OA_BUFFER_SIZE + 1, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(oa_vaddr == MAP_FAILED);
-+
-+	/* do the right thing */
-+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(oa_vaddr != MAP_FAILED && oa_vaddr != NULL);
-+
-+	munmap(oa_vaddr, OA_BUFFER_SIZE);
-+}
-+
-+static void unprivileged_try_to_map_oa_buffer(void)
-+{
-+	void *oa_vaddr;
-+
-+	oa_vaddr = mmap(0, OA_BUFFER_SIZE, PROT_READ, MAP_PRIVATE, stream_fd, 0);
-+	igt_assert(oa_vaddr == MAP_FAILED);
-+	igt_assert_eq(errno, EACCES);
-+}
-+
-+static void unprivileged_map_oa_buffer(const struct drm_xe_engine_class_instance *hwe)
++/**
++ * SUBTEST: non-system-wide-paranoid
++ * Description: CAP_SYS_ADMIN is required to open system wide metrics, unless
++ *		sysctl parameter dev.xe.perf_stream_paranoid == 0
++ */
++static void test_system_wide_paranoid(void)
 +{
 +	igt_fork(child, 1) {
++		uint64_t properties[] = {
++			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++			/* Include OA reports in samples */
++			DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++			/* OA unit configuration */
++			DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++			DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
++		};
++		struct intel_xe_oa_open_prop param = {
++			.num_properties = ARRAY_SIZE(properties) / 2,
++			.properties_ptr = to_user_pointer(properties),
++		};
++
++		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
++
 +		igt_drop_root();
-+		unprivileged_try_to_map_oa_buffer();
++
++		intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EACCES);
 +	}
++
 +	igt_waitchildren();
-+}
-+
-+static jmp_buf jmp;
-+static void __attribute__((noreturn)) sigtrap(int sig)
-+{
-+	siglongjmp(jmp, sig);
-+}
-+
-+static void try_invalid_access(void *vaddr)
-+{
-+	sighandler_t old_sigsegv;
-+	uint32_t dummy;
-+
-+	old_sigsegv = signal(SIGSEGV, sigtrap);
-+	switch (sigsetjmp(jmp, SIGSEGV)) {
-+	case SIGSEGV:
-+		break;
-+	case 0:
-+		dummy = READ_ONCE(*((uint32_t *)vaddr + 1));
-+		(void) dummy;
-+	default:
-+		igt_assert(!"reached");
-+		break;
-+	}
-+	signal(SIGSEGV, old_sigsegv);
-+}
-+
-+static void map_oa_buffer_unprivilege_access(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	void *vaddr;
-+	uint32_t size;
-+
-+	vaddr = map_oa_buffer(&size);
 +
 +	igt_fork(child, 1) {
++		uint64_t properties[] = {
++			DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++			/* Include OA reports in samples */
++			DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++
++			/* OA unit configuration */
++			DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++			DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++			DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
++		};
++		struct intel_xe_oa_open_prop param = {
++			.num_properties = ARRAY_SIZE(properties) / 2,
++			.properties_ptr = to_user_pointer(properties),
++		};
++		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 0);
++
 +		igt_drop_root();
-+		try_invalid_access(vaddr);
++
++		stream_fd = __perf_open(drm_fd, &param, false);
++		__perf_close(stream_fd);
 +	}
++
 +	igt_waitchildren();
 +
-+	munmap(vaddr, size);
-+}
-+
-+static void map_oa_buffer_forked_access(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	void *vaddr;
-+	uint32_t size;
-+
-+	vaddr = map_oa_buffer(&size);
-+
-+	igt_fork(child, 1) {
-+		try_invalid_access(vaddr);
-+	}
-+	igt_waitchildren();
-+
-+	munmap(vaddr, size);
-+}
-+
-+static void check_reports(void *oa_vaddr, uint32_t oa_size,
-+			  const struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t fmt = test_set->perf_oa_format;
-+	struct oa_format format = get_oa_format(fmt);
-+	size_t report_words = format.size >> 2;
-+	uint32_t *reports;
-+	uint32_t timer_reports = 0;
-+
-+	for (reports = (uint32_t *)oa_vaddr;
-+	     timer_reports < 20 && reports[0] && oa_timestamp(reports, fmt);
-+	     reports += report_words) {
-+		if (!oa_report_is_periodic(oa_exp_1_millisec, reports))
-+			continue;
-+
-+		timer_reports++;
-+		if (timer_reports >= 3)
-+			sanity_check_reports(reports - 2 * report_words,
-+					     reports - report_words, fmt);
-+	}
-+
-+	igt_assert(timer_reports >= 3);
-+}
-+
-+static void check_reports_from_mapped_buffer(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	void *vaddr;
-+	uint32_t size;
-+	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
-+
-+	vaddr = map_oa_buffer(&size);
-+
-+	/* wait for approx 100 reports */
-+	usleep(100 * period_us);
-+	check_reports(vaddr, size, hwe);
-+
-+	munmap(vaddr, size);
++	/* leave in paranoid state */
++	write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 +}
 +
 +/**
-+ * SUBTEST: closed-fd-and-unmapped-access
-+ * Description: Unmap buffer, close fd and try to access
++ * SUBTEST: invalid-oa-metric-set-id
++ * Description: Test behavior for invalid metric set id's
 + */
-+static void closed_fd_and_unmapped_access(const struct drm_xe_engine_class_instance *hwe)
++static void test_invalid_oa_metric_set_id(void)
 +{
 +	uint64_t properties[] = {
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Include OA reports in samples */
 +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++
++		/* OA unit configuration */
 +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
 +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, UINT64_MAX,
 +	};
 +	struct intel_xe_oa_open_prop param = {
 +		.num_properties = ARRAY_SIZE(properties) / 2,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
-+	void *vaddr;
-+	uint32_t size;
-+	uint32_t period_us = oa_exponent_to_ns(oa_exp_1_millisec) / 1000;
 +
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
++
++	properties[ARRAY_SIZE(properties) - 1] = 0; /* ID 0 is also be reserved as invalid */
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
++
++	/* Check that we aren't just seeing false positives... */
++	properties[ARRAY_SIZE(properties) - 1] = default_test_set->perf_oa_metrics_set;
 +	stream_fd = __perf_open(drm_fd, &param, false);
-+	vaddr = map_oa_buffer(&size);
-+
-+	usleep(100 * period_us);
-+	check_reports(vaddr, size, hwe);
-+
-+	munmap(vaddr, size);
 +	__perf_close(stream_fd);
 +
-+	try_invalid_access(vaddr);
++	/* There's no valid default OA metric set ID... */
++	param.num_properties--;
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
 +}
 +
 +/**
-+ * SUBTEST: map-oa-buffer
-+ * Description: Verify mapping of oa buffer
-+ *
-+ * SUBTEST: invalid-map-oa-buffer
-+ * Description: Verify invalid mappings of oa buffer
-+ *
-+ * SUBTEST: non-privileged-map-oa-buffer
-+ * Description: Verify if non-privileged user can map oa buffer
-+ *
-+ * SUBTEST: non-privileged-access-vaddr
-+ * Description: Verify if non-privileged user can map oa buffer
-+ *
-+ * SUBTEST: privileged-forked-access-vaddr
-+ * Description: Verify that forked access to mapped buffer fails
++ * SUBTEST: invalid-oa-format-id
++ * Description: Test behavior for invalid OA format fields
 + */
-+typedef void (*map_oa_buffer_test_t)(const struct drm_xe_engine_class_instance *hwe);
-+static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
-+				  const struct drm_xe_engine_class_instance *hwe)
++static void test_invalid_oa_format_id(void)
 +{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
 +	uint64_t properties[] = {
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* Include OA reports in samples */
 +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
 +		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, UINT64_MAX, /* No __ff() here */
 +	};
 +	struct intel_xe_oa_open_prop param = {
 +		.num_properties = ARRAY_SIZE(properties) / 2,
 +		.properties_ptr = to_user_pointer(properties),
 +	};
 +
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
++
++	properties[ARRAY_SIZE(properties) - 1] = __ff(0); /* ID 0 is also be reserved as invalid */
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
++
++	/* Check that we aren't just seeing false positives... */
++	properties[ARRAY_SIZE(properties) - 1] = __ff(default_test_set->perf_oa_format);
 +	stream_fd = __perf_open(drm_fd, &param, false);
-+
-+	igt_assert(test_with_fd_open);
-+	test_with_fd_open(hwe);
-+
 +	__perf_close(stream_fd);
++	/* There's no valid default OA format... */
++	param.num_properties--;
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
 +}
 +
- static const char *xe_engine_class_name(uint32_t engine_class)
- {
- 	switch (engine_class) {
-@@ -4224,6 +4449,32 @@ igt_main
- 	igt_subtest("whitelisted-registers-userspace-config")
- 		test_whitelisted_registers_userspace_config();
++/**
++ * SUBTEST: missing-sample-flags
++ * Description: Test behavior for no SAMPLE_OA and no EXEC_QUEUE_ID
++ */
++static void test_missing_sample_flags(void)
++{
++	uint64_t properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++
++		/* No _PROP_SAMPLE_xyz flags */
++
++		/* OA unit configuration */
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, default_test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exp_1_millisec,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(default_test_set->perf_oa_format),
++	};
++	struct intel_xe_oa_open_prop param = {
++		.num_properties = ARRAY_SIZE(properties) / 2,
++		.properties_ptr = to_user_pointer(properties),
++	};
++
++	intel_xe_perf_ioctl_err(drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param, EINVAL);
++}
++
+ static void
+ read_2_oa_reports(int format_id,
+ 		  int exponent,
+@@ -793,6 +954,37 @@ igt_main
+ 	igt_subtest("sysctl-defaults")
+ 		test_sysctl_defaults();
  
-+	igt_subtest_group {
-+		igt_subtest_with_dynamic("map-oa-buffer")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mapped_oa_buffer(check_reports_from_mapped_buffer, hwe);
++	igt_fixture {
++		/* We expect that the ref count test before these fixtures
++		 * should have closed drm_fd...
++		 */
++		igt_assert_eq(drm_fd, -1);
 +
-+		igt_subtest_with_dynamic("invalid-map-oa-buffer")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mapped_oa_buffer(invalid_param_map_oa_buffer, hwe);
++		drm_fd = drm_open_driver(DRIVER_XE);
++		xe_device_get(drm_fd);
 +
-+		igt_subtest_with_dynamic("non-privileged-map-oa-buffer")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mapped_oa_buffer(unprivileged_map_oa_buffer, hwe);
++		devid = intel_get_drm_devid(drm_fd);
++		sysfs = igt_sysfs_open(drm_fd);
 +
-+		igt_subtest_with_dynamic("non-privileged-access-vaddr")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mapped_oa_buffer(map_oa_buffer_unprivilege_access, hwe);
++		igt_require(init_sys_info());
 +
-+		igt_subtest_with_dynamic("privileged-forked-access-vaddr")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mapped_oa_buffer(map_oa_buffer_forked_access, hwe);
++		write_u64_file("/proc/sys/dev/xe/perf_stream_paranoid", 1);
 +
-+		igt_subtest_with_dynamic("closed-fd-and-unmapped-access")
-+			__for_one_hwe_in_oag(hwe)
-+				closed_fd_and_unmapped_access(hwe);
++		render_copy = igt_get_render_copyfunc(devid);
 +	}
++
++	igt_subtest("non-system-wide-paranoid")
++		test_system_wide_paranoid();
++
++	igt_subtest("invalid-oa-metric-set-id")
++		test_invalid_oa_metric_set_id();
++
++	igt_subtest("invalid-oa-format-id")
++		test_invalid_oa_format_id();
++
++	igt_subtest("missing-sample-flags")
++		test_missing_sample_flags();
 +
  	igt_fixture {
  		/* leave sysctl options in their default state... */
