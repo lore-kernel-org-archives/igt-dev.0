@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83824C2BD09
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 05:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 450ADC3065B
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 05:14:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37D8C10E2E3;
-	Mon,  1 Jul 2024 05:14:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0724C10E2E5;
+	Mon,  1 Jul 2024 05:14:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PAyKjQbd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RuiJAWFA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97FEC10E23B
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 05:14:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2741510E2E5
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 05:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719810880; x=1751346880;
+ t=1719810882; x=1751346882;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tol9H8tnoA5gDDgsnX/146wAzumPXe78sk9SCJWLJjw=;
- b=PAyKjQbd6psgKkzU2kxFqYM9/u5T/255FBT9awB0Tl2ykVLoPxzzxWTK
- U7RsvrIhUwdT2EW+jpwWFVwUhFcHUrVyY8/jQDqY+i5V6fpT9qQJCjqa2
- 8WbuMDK05zJ4e9lZgM131D/xDtyNO6zB+vWL1B+8IusDGgvadPMDeW/mI
- 22g/Zzsy4zofLnCmB+AcF96sZ/wwyi824gCiRNrTuzHW0i6HluAotZksj
- 6DdhS61yLvoTtfANgYOjWnGk6rKeytb4Ht4kA9qkaEGgKp+jVKhzdi/UD
- H+cBQWCqSFZSE+qNgzroKMRHhdkjPdnvp5EOGK8pK2gji1mg1IhxMaRaM A==;
-X-CSE-ConnectionGUID: CElZ+xWwTXmkL73yWRW/dQ==
-X-CSE-MsgGUID: 79NapC/YRVKPGEMjyZMiIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="17046098"
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="17046098"
+ bh=RbFNMS8qadP8BP9/0K6zhvTXrr1zrH8+fqVWKmcOeAI=;
+ b=RuiJAWFA0B3GSjK/FF1j6johaGa/uN63N6oZ2sK9miUdQe462bpQNJPY
+ xEucUZDpzY9SJL64xWarRuZU35E4aOSLfcxGfmRfeQkXIQN4b5MkqcLB9
+ oh7enyr2JP1iHLsJYVh+FNOY12BKj95npTAoOcfCRMCixrEwZ30Y0rT1X
+ 0xINiTRn9wkfybsPwYN4wYLbbHKf3eqxyhCmAzo6cRk07kGT18ihqNmvR
+ Rjfyt1or+Rss6Pes7aiyrrROxGPt3FQiAsyA3+DSrqzbTbFSjdEAuXcdq
+ L2kLgDduccFfGVj63/KU+dsqdA6S8YXfl96nUVWoLv3HvXvtap+5RdHvn A==;
+X-CSE-ConnectionGUID: ZqaNlxOAQlOI3h6oHbxP/A==
+X-CSE-MsgGUID: XO8Va97gTi2HuJ7yjHeSsw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11119"; a="17046099"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="17046099"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 22:14:40 -0700
-X-CSE-ConnectionGUID: AnfkTaXxQY62+8ZvlveTqQ==
-X-CSE-MsgGUID: MjJTapfDREmqxNIWf/Y28A==
+ 30 Jun 2024 22:14:42 -0700
+X-CSE-ConnectionGUID: GFr71wHST5+NvDSOPZEOiw==
+X-CSE-MsgGUID: eVtkLiytREu+WfaH8Hnk8g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46129563"
+X-IronPort-AV: E=Sophos;i="6.09,175,1716274800"; d="scan'208";a="46129567"
 Received: from pgcooper-mobl3.ger.corp.intel.com (HELO jhogande-mobl1..)
  ([10.245.244.15])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jun 2024 22:14:39 -0700
+ 30 Jun 2024 22:14:40 -0700
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com,
  =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Subject: [PATCH i-g-t 2/3] tests/intel/kms_psr*: Add psr_sink_error_check to
- PSR tests
-Date: Mon,  1 Jul 2024 08:13:00 +0300
-Message-Id: <20240701051301.3344927-3-jouni.hogander@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/intel/kms_dirtyfb: Check features after
+ rendering
+Date: Mon,  1 Jul 2024 08:13:01 +0300
+Message-Id: <20240701051301.3344927-4-jouni.hogander@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240701051301.3344927-1-jouni.hogander@intel.com>
 References: <20240701051301.3344927-1-jouni.hogander@intel.com>
@@ -72,108 +72,79 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently we are ignoring possible errors detected by the sink in our PSR
-testcases. Fix this by add psr_sink_error_check to each of them.
+Check each feature after rendering and flush. Also add new check for
+possible PSR errors.
 
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 5 +++--
- tests/intel/kms_pm_dc.c                | 2 ++
- tests/intel/kms_psr.c                  | 2 ++
- tests/intel/kms_psr2_sf.c              | 2 ++
- tests/intel/kms_psr2_su.c              | 2 ++
- tests/intel/kms_psr_stress_test.c      | 1 +
- 6 files changed, 12 insertions(+), 2 deletions(-)
+ tests/intel/kms_dirtyfb.c | 33 +++++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index e45d17dd6..913c7b234 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -2722,10 +2722,11 @@ static void do_status_assertions(int flags)
- 						   prim_mode_params.pipe));
+diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
+index 75047ec63..35df9be3b 100644
+--- a/tests/intel/kms_dirtyfb.c
++++ b/tests/intel/kms_dirtyfb.c
+@@ -145,7 +145,7 @@ static void enable_feature(data_t *data)
  	}
- 
--	if (flags & ASSERT_PSR_ENABLED)
-+	if (flags & ASSERT_PSR_ENABLED) {
- 		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
--	else if (flags & ASSERT_PSR_DISABLED)
-+		psr_sink_error_check(drm.debugfs, PSR_MODE_1, prim_mode_params.output);
-+	} else if (flags & ASSERT_PSR_DISABLED)
- 		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still enabled\n");
- }
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index e1318bfa6..d5753ad32 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -407,6 +407,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
- 	igt_require(!psr_disabled_check(data->debugfs_fd));
- 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
- 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
-+	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
- 	cleanup_dc_psr(data);
  }
  
-@@ -675,6 +676,7 @@ static void test_pkgc_state_psr(data_t *data)
- 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
- 		  timeout_sec * 1000, 100);
- 	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieved.\n");
-+	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
- 	psr_dpms(data, DRM_MODE_DPMS_ON);
- 	cleanup_dc_psr(data);
- }
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index f3caa9ecc..c59476137 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -650,6 +650,8 @@ static void test_cleanup(data_t *data)
+-static void check_feature(data_t *data)
++static void check_feature_enabled(data_t *data)
  {
- 	igt_plane_t *primary;
- 
-+	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
-+
- 	igt_output_override_mode(data->output, NULL);
- 
- 	primary = igt_output_get_plane_type(data->output,
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index 03ff1cddb..a9be1a1ec 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -972,6 +972,8 @@ static void run(data_t *data)
- 	default:
- 		igt_assert(false);
+ 	switch (data->feature) {
+ 	case FEATURE_NONE:
+@@ -171,6 +171,33 @@ static void check_feature(data_t *data)
  	}
+ }
+ 
++static void check_feature(data_t *data)
++{
++	switch (data->feature) {
++	case FEATURE_NONE:
++		break;
++	case FEATURE_FBC:
++		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
++							  data->pipe),
++			     "FBC disabled\n");
++		/* TODO: Add compression check here */
++		break;
++	case FEATURE_PSR:
++		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, data->output),
++			     "No PSR entry\n");
++		psr_sink_error_check(data->debugfs_fd, PSR_MODE_1, data->output);
++		break;
++	case FEATURE_DRRS:
++		igt_assert_f(!intel_is_drrs_inactive(data->drm_fd, data->pipe),
++			     "DRRS INACTIVE\n");
++		break;
++	case FEATURE_DEFAULT:
++		break;
++	default:
++		igt_assert(false);
++	}
++}
 +
-+	psr_sink_error_check(data->debugfs_fd, data->psr_mode, data->output);
+ static void disable_features(data_t *data)
+ {
+ 	intel_fbc_disable(data->drm_fd);
+@@ -232,7 +259,7 @@ static void prepare(data_t *data)
+ 
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
+-	check_feature(data);
++	check_feature_enabled(data);
  }
  
  static void cleanup(data_t *data)
-diff --git a/tests/intel/kms_psr2_su.c b/tests/intel/kms_psr2_su.c
-index 437ee36f6..0099daf1d 100644
---- a/tests/intel/kms_psr2_su.c
-+++ b/tests/intel/kms_psr2_su.c
-@@ -273,6 +273,8 @@ static void run(data_t *data, igt_output_t *output)
+@@ -298,6 +325,8 @@ static void run_test(data_t *data)
+ 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
+ 	igt_assert_crc_equal(&crc, &data->ref_crc);
  
- 	igt_assert_f(result,
- 		     "No matching selective update blocks read from debugfs\n");
++	check_feature(data);
 +
-+	psr_sink_error_check(data->debugfs_fd, PSR_MODE_2, output);
- }
- 
- static void cleanup(data_t *data, igt_output_t *output)
-diff --git a/tests/intel/kms_psr_stress_test.c b/tests/intel/kms_psr_stress_test.c
-index d6e2340b8..73a6eb56d 100644
---- a/tests/intel/kms_psr_stress_test.c
-+++ b/tests/intel/kms_psr_stress_test.c
-@@ -344,6 +344,7 @@ static void run(data_t *data)
- 
- 	/* Check if after all this stress the PSR is still in the same state */
- 	igt_assert(psr_get_mode(data->debugfs_fd, NULL) == data->initial_state);
-+	psr_sink_error_check(data->debugfs_fd, data->initial_state, data->output);
- }
- 
- igt_main
+ 	igt_spin_free(data->drm_fd, spin);
+ 	intel_bb_destroy(ibb);
+ 	intel_buf_destroy(src);
 -- 
 2.34.1
 
