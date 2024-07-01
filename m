@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D303C2BD09
-	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 22:36:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10368C2BD09
+	for <igt-dev@archiver.kernel.org>; Mon,  1 Jul 2024 23:13:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C39BF10E02C;
-	Mon,  1 Jul 2024 22:36:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8EA7010E05B;
+	Mon,  1 Jul 2024 23:13:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AvHn12r3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WV8DOaPK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F43410E02C
- for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 22:36:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E03410E05B
+ for <igt-dev@lists.freedesktop.org>; Mon,  1 Jul 2024 23:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719873386; x=1751409386;
+ t=1719875636; x=1751411636;
  h=date:message-id:from:to:cc:subject:in-reply-to:
- references:mime-version;
- bh=s43GbvujAGZ8uYmm2uXn9cS2Kwq7/xDaGF7JvjPy0ow=;
- b=AvHn12r32+N0hC5pLiOunzUY0rl6Mq8ZsOEBbGnvYjEdLs6X5T0K4GJh
- st28K90mlbthniS+jamigS5E3Vx9hMZ/HCaSouVjiBEPEZmHqA1hRP+Uy
- tGezpi1Hxi2gyHv3kI2wUG4hg46yVyb2nhBlcqQ9iW7y3mc2ceYok8Dfm
- H6+nw4NQreIJDOxG8trayWTgPWHc4iMio5YCvPtA1uR9et/1/Xxw/1Vt+
- 1WeSXiNYsVbIk6MCBOz6IjM9lzPUpmwVQGpAOeJsEZy3xx8axrLfyROKv
- M6PArxkMYPCWcKLAJZdPi9QnP683ZlGScH258wlUhCAryy+fXpurVfytZ Q==;
-X-CSE-ConnectionGUID: If/14GWVR4urxcMqLNhu7A==
-X-CSE-MsgGUID: gxYK2D8lRse4ZFPYB4JUwQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11120"; a="42454055"
-X-IronPort-AV: E=Sophos;i="6.09,177,1716274800"; d="scan'208";a="42454055"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2024 15:36:25 -0700
-X-CSE-ConnectionGUID: 7J9wT7InRlu0XE4u5irOzg==
-X-CSE-MsgGUID: TTMhZSYgQtqawa9d05Nb1A==
+ references:mime-version:content-transfer-encoding;
+ bh=4L+VLxs4jpC2+fzRycJxdbs9Y/sIyh5DBpimGt5cS1w=;
+ b=WV8DOaPKSTdZU1fElB1rT3hoda6Nuj/fxIS8OYqvB+2NlJ2S52HLAM0u
+ OqFL/TRuM10g5PfOnv8HCE5SzQM5Ybp3KZcRfskSd6DaBNscnlITBV+Xr
+ BJ4JY9AbaIOqGeCXn7Vc+eiIVnX6FTiDsbtqxP6hFtBFStkeAV+1Af2w2
+ ZQB8JxGR2D+0ucNH33O6reFlWqjxyrsEqHo5m6W96K9Hc64n+O/bm31En
+ CC1hZ5mNZ54P6g+681lSFrRkxbLebWI00TXjJgSKrNujDR+KDljN4NS2R
+ gWdTJXbgAOwhkK/LpV9rdAzsX7x/qwHDyfhBZ+/W05wzsVgtExbAtCN3S g==;
+X-CSE-ConnectionGUID: QnBHteDkShKI57zR1OxeLQ==
+X-CSE-MsgGUID: 5rbHwKmJTSO18qYRnZ/ZTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11120"; a="17154638"
+X-IronPort-AV: E=Sophos;i="6.09,177,1716274800"; d="scan'208";a="17154638"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2024 16:13:55 -0700
+X-CSE-ConnectionGUID: pFyAKy7FTSiGsaUWbnIEUQ==
+X-CSE-MsgGUID: gFDZT6IqTjyJvDH4lGthfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,177,1716274800"; d="scan'208";a="50626631"
+X-IronPort-AV: E=Sophos;i="6.09,177,1716274800"; d="scan'208";a="45763389"
 Received: from smuley-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.125.32.45])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Jul 2024 15:36:23 -0700
-Date: Mon, 01 Jul 2024 15:31:37 -0700
-Message-ID: <87wmm4agmu.wl-ashutosh.dixit@intel.com>
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Jul 2024 16:13:54 -0700
+Date: Mon, 01 Jul 2024 16:08:52 -0700
+Message-ID: <87v81oaewr.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 02/14] tests/intel/xe_oa: Add first tests
-In-Reply-To: <ZoMH4REHm7g336aE@orsosgc001>
-References: <20240701025309.2416653-1-ashutosh.dixit@intel.com>
- <20240701025309.2416653-3-ashutosh.dixit@intel.com>
- <ZoMH4REHm7g336aE@orsosgc001>
+Subject: Re: =?UTF-8?B?4pyX?= CI.xeFULL: failure for Intel Xe OA IGT's (rev7)
+In-Reply-To: <ZoMJ7KGCzPeR+M06@orsosgc001>
+References: <20240701025309.2416653-1-ashutosh.dixit@intel.com>	<171981000526.459.15402300389873156169@2413ebb6fbb6>	<ZoMJ7KGCzPeR+M06@orsosgc001>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.3 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,28 +71,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 01 Jul 2024 12:47:45 -0700, Umesh Nerlige Ramappa wrote:
+On Mon, 01 Jul 2024 12:56:28 -0700, Umesh Nerlige Ramappa wrote:
 >
-> > +	[XE_OA_FORMAT_PEC36u64_G1_4_G2_32] = {
-> > +		"PEC36u64_G1_4_G2_32_G2", .size = 320,
-> > +		.oa_type = DRM_XE_OA_FMT_TYPE_PEC,
-> > +		.report_hdr_64bit = true,
-> > +		.counter_select = 4,
-> > +		.counter_size = 1,
-> > +		.bc_report = 0 },
-> > +};
+> >  IGT changes
+> >
+> >    Possible regressions
+> >
+> >     *=A0igt@kms_pm_rpm@i2c:
+> >
+> >          *=A0shard-dg2-set2: [3]PASS -> [4]FAIL
+> >
+> >     *=A0{igt@xe_oa@non-zero-reason@rcs-0} (NEW):
+> >
+> >          *=A0shard-dg2-set2: NOTRUN -> [5]FAIL +1 other test fail
 >
-> I think we should do away with the per platform arrays and instead do
-> something similar to what the KMD does - have a platform mask or something
-> because really the same format does not have a new definition for another
-> platform. It should just indicate what platforms the format is supported
-> on. Maybe please create an issue to track this and we can look at it later
-> sometime.
+> This is something that is an open bug even in i915 and will fail with Xe =
+as
+> well. Should we even merge this test as it will create a bunch of JIRAs
+> every now and then.
 
-Thanks Umesh, yup it's a good idea. I have created an issue about this.
+I am also thinking what to do about these failures. There are more in
+"CI.xeBAT" (since the HAX patch added the tests to
+xe-fast-feedback.testlist, though this will not happen in real CI):
 
->
-> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+	Possible regressions
+
+	* {igt@xe_oa@mi-rpc} (NEW):
+
+	 * bat-atsm-2: NOTRUN -> INCOMPLETE +1 other test incomplete
+
+	* {igt@xe_oa@mi-rpc@ccs-0} (NEW):
+
+	 * bat-pvc-2: NOTRUN -> INCOMPLETE +1 other test incomplete
+	 * bat-dg2-oem2: NOTRUN -> INCOMPLETE +1 other test incomplete
+
+	* {igt@xe_oa@mmio-triggered-reports} (NEW):
+
+	 * bat-adlp-7: NOTRUN -> SKIP
+
+	* {igt@xe_oa@non-zero-reason} (NEW):
+
+	 * bat-pvc-2: NOTRUN -> FAIL +6 other tests fail
+	 * bat-dg2-oem2: NOTRUN -> FAIL +1 other test fail
+
+	* {igt@xe_oa@oa-formats} (NEW):
+
+	 * bat-pvc-2: NOTRUN -> TIMEOUT +1 other test timeout
+
+	* {igt@xe_oa@oa-tlb-invalidate} (NEW):
+
+	 * {bat-lnl-1}: NOTRUN -> SKIP +1 other test skip
+	 * bat-pvc-2: NOTRUN -> SKIP +1 other test skip
+
+	* {igt@xe_oa@polling-small-buf} (NEW):
+
+	 * bat-atsm-2: NOTRUN -> FAIL
+
+	* {igt@xe_oa@rc6-disable} (NEW):
+
+	 * bat-atsm-2: NOTRUN -> SKIP
+
+Mostly similar to those we see in i915 for Xe1.
+
+One idea is to run these xe_oa IGT's only for Xe2 where things seem to be
+more stable, that is only for xe KMD supported platforms. Things seem to be
+more stable for Xe2, maybe because we don't know how to check Xe2 PEC
+counters, like we do for Xe1 in sanity_check_reports. Or simplify the
+checks for Xe1, e.g. get rid of sanity_check_reports? And simplify some of
+the other asserts.
+
+Or merge these first and as part of fixing the bugs see what to do for the
+tests, so that we'll have a record in git of what we did and why?
 
 Thanks.
 --
