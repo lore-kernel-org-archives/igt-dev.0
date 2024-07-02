@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27F50C30658
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:30:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59CEEC3065C
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:30:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DCDF410E501;
-	Tue,  2 Jul 2024 23:30:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CCAE10E6F7;
+	Tue,  2 Jul 2024 23:30:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KhiglFnE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e2ZetZpR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAE7910E501
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A8BEE10E6F7
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719963000; x=1751499000;
+ t=1719963003; x=1751499003;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=amGYvdiojWzvgRQVMQDoxhf2IKKKIHIozt4u5iPZpa8=;
- b=KhiglFnE/EnDBgvAHZGs+PWag0rv8Ys4L9zVYWQRessBN+GVhrdpZ6LU
- dpLAODtc5rra4uzZkkFXF7J8iKoiLVcyMMNMQmOfXiY4Tm0G1y6J4OT9C
- 3dX/d/3gnsW0iVDBCghf1MM+NrHa/uXqO4WOSPpvBrr12UzYMgs/VRGwy
- eR6ondfsz9IGSTfB/zkHZuCokEk2GvAtln0YDolsrTHnQzRtADLVqcTnT
- VI21k8aYvJWpHTSNL6XqzKk5vIG23o04CEPjFvSS5ymaKmO/g/X8/WnJC
- MsZ6ZL0SQRlDx/1xvkVXE+LjRp1gBFq+T7ijQvu6/61a3rCn2+I8jv9QF Q==;
-X-CSE-ConnectionGUID: RIR1kfWbQa+LjK6aDc7H0Q==
-X-CSE-MsgGUID: Ja+U1n7GQ5eC9Hhi3KAnzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559714"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559714"
+ bh=itTAwv83Ul77Fx0pFm8XA4HNvtmYEk1m1VURNkMnipI=;
+ b=e2ZetZpRdDPvWcRoHVbSESDrRlbHOGKbLbezIACAUvt+zkyq65X4zWyu
+ 9mCzXFykiuhmk++xxZzYU/D2ZejLL+AXVD7TFt4WsVwpENhJXmUNRpp+S
+ BC2v1d5jrzX5yKEhscWfpzbNgYhzS39sJXWihFN8zD4GKX9eWzLfH+RaJ
+ oSqG1QFkix7n3ybr/A2MgVZ0bHZvolf6PUQIHx/TCaicEIqS65nkHiVuK
+ 7c4rNPE267sYzb1y/cdXhgU0U0LU17z5Eh3dXnmKI7hfM2slI/N+ntftn
+ hC6HUJptdaj+/Z5YE14N3FPpkQw3okZfjAnTKbTB+LikcvqvE8HGQ6qj9 w==;
+X-CSE-ConnectionGUID: T5fP7kTISlSuaVE5IARPgA==
+X-CSE-MsgGUID: 7iPL0SppS4yrJjgc8Fnp8A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559716"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559716"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 16:30:00 -0700
-X-CSE-ConnectionGUID: fZlsciu2Rs2cgAFoVla8bQ==
-X-CSE-MsgGUID: yMFRxk7BT22nNQk/qlUizQ==
+ 02 Jul 2024 16:30:03 -0700
+X-CSE-ConnectionGUID: G6JynbgpSqijIoSCylSo9g==
+X-CSE-MsgGUID: XvwzGq7DRL2yQoekhfKA1g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043943"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043946"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:57 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:30:00 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 03 Jul 2024 02:29:57 +0300
+ Wed, 03 Jul 2024 02:29:59 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 36/37] tests/kms_ccs: Skip testing on identical plane
- types
-Date: Wed,  3 Jul 2024 02:28:16 +0300
-Message-ID: <20240702232817.31147-37-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 37/37] tests/kms_ccs: Provide a hint as to what we're
+ testing
+Date: Wed,  3 Jul 2024 02:28:17 +0300
+Message-ID: <20240702232817.31147-38-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
@@ -71,54 +71,32 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-On icl+ each plane type (HDR,SDR UV,SDR Y) have identical
-capabilities, so only test one plane of each type. Makes the
-test quite a bit faster:
+Log the currently tested pixel format + modifier. Makes it
+a bit easier to figure out what actually failed when it did.
+
+TODO: would be nicer to also indicate if we actually test
+      anything or just skip the whole thing, but that would
+      require a bit of restructuring of the test...
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_ccs.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ tests/intel/kms_ccs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 60d8dc132105..8d3932de093e 100644
+index 8d3932de093e..3ed270a84c50 100644
 --- a/tests/intel/kms_ccs.c
 +++ b/tests/intel/kms_ccs.c
-@@ -977,6 +977,24 @@ static int test_ccs(data_t *data)
- 	return valid_tests;
- }
+@@ -944,6 +944,9 @@ static int test_ccs(data_t *data)
+ 	igt_crc_t crc, ref_crc;
+ 	enum test_fb_flags fb_flags = 0;
  
-+static bool skip_plane(data_t *data, igt_plane_t *plane)
-+{
-+	int index = plane->index;
++	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT "\n",
++		 IGT_FORMAT_ARGS(data->format), IGT_MODIFIER_ARGS(data->ccs_modifier));
 +
-+	if (intel_display_ver(intel_get_drm_devid(data->drm_fd)) < 11)
-+		return false;
-+
-+	/*
-+	 * Test 1 HDR plane, 1 SDR UV plane, 1 SDR Y plane.
-+	 *
-+	 * Kernel registers planes in the hardware Z order:
-+	 * 0,1,2 HDR planes
-+	 * 3,4 SDR UV planes
-+	 * 5,6 SDR Y planes
-+	 */
-+	return index != 0 && index != 3 && index != 5;
-+}
-+
- static void test_output(data_t *data, const int testnum)
- {
- 	uint16_t dev_id;
-@@ -1025,6 +1043,9 @@ static void test_output(data_t *data, const int testnum)
- 						igt_display_require_output_on_pipe(&data->display, data->pipe);
- 
- 						for_each_plane_on_pipe(&data->display, data->pipe, data->plane) {
-+							if (skip_plane(data, data->plane))
-+								continue;
-+
- 							for (int j = 0; j < ARRAY_SIZE(formats); j++) {
- 								data->format = formats[j];
- 								valid_tests += test_ccs(data);
+ 	if (data->flags & TEST_CRC) {
+ 		data->pipe_crc = igt_pipe_crc_new(data->drm_fd, data->pipe,
+ 						  IGT_PIPE_CRC_SOURCE_AUTO);
 -- 
 2.44.2
 
