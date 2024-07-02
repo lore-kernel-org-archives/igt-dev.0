@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2CACC30658
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:29:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA97C30658
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:29:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96A6610E6F9;
-	Tue,  2 Jul 2024 23:29:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE38510E702;
+	Tue,  2 Jul 2024 23:29:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Trtyl0UO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lm7VY1dX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5963510E6F9
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A65510E702
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719962987; x=1751498987;
+ t=1719962990; x=1751498990;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=8lbgLQHnh6jlBS9ORHZfUWZl8l2fC8ZzD9ozYP+LYeo=;
- b=Trtyl0UO25MseaOFI+jLY8uBsvjo2kFiFo5KbrXF1ONu5R3SrFMiq5X5
- 0CDg5F9KQ8DpefM/aJkqye8+oSuvXu7OXx2qphoS8QOyAiZH/P//OF6/y
- Hk1R7VRpPshkHu0IOZjqBfwdJYpyhlX9C1t0HQLbNIEZbj5Mqk6ihLMxj
- a+xSaJ72SgxjG74FX1AAKCmUZqnI1dor60oaoByYGwy2oOpWzpNaOVwr4
- /6HI9P9S0ZN+THsqp/olJYGT2fy4nzeJ+oOyS3PE8n0+df5NpO26kvUbY
- rZDHoPEs0C/q5zrdOx460H9Btv0ti9TGZGIKiGZkxefdVnN74RabMIkvI g==;
-X-CSE-ConnectionGUID: dJSk/oDWQAi+KYl/QltY1g==
-X-CSE-MsgGUID: 5fzdNhvURrKWsMzR+LKlsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559686"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559686"
+ bh=fpEOrUtnSh8tLGAmu7wPqGdPg43DuUJgAXvRy5UURZs=;
+ b=Lm7VY1dXDHwAw4A6IkaoySbokiu8YypZunvco6rfYxjHOt/SP0Kg+xOZ
+ ZMlY8/+VkNcz9vjuLlccuRe/z0FMN1cCLH/TsXnTzlyO1ik8lkQfUw8U2
+ QBv4w4Pg/5l2iD3jdO0eGZRRIdbs2MGReHeky/XRcUxrixle3ZNQWgGkG
+ DnWp7v9OOMWjHTdsEA3zOj3z3Vek/2UL9Uqh+rylCbBGHbevv2gRrc/jw
+ qWDpeF0//mcL8uvG3i3mZT3A3gbNxLueLhwTHDYvaS5+FnPrmHDAUBeeN
+ 1NERR/2XLVZ0Jioi/h7F8f/O9ExY7lLlFOVr6ylwHxrdldxB9RWm7WLuD A==;
+X-CSE-ConnectionGUID: CinNu5J/SPipwNyWJn5mgA==
+X-CSE-MsgGUID: kwQ1dvxrSCe7cljO5HxnPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559693"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559693"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 16:29:46 -0700
-X-CSE-ConnectionGUID: qbQjBS1nRxa7hA1JlYFwlA==
-X-CSE-MsgGUID: QKUnhlbLQYeBTEgiuoeohg==
+ 02 Jul 2024 16:29:49 -0700
+X-CSE-ConnectionGUID: K5hKk2XmSjSMrAcSpzWYiA==
+X-CSE-MsgGUID: jAO7wFXzSAmqbNsKDgnEsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043919"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043924"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:44 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:47 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 03 Jul 2024 02:29:43 +0300
+ Wed, 03 Jul 2024 02:29:46 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 31/37] tests/kms_plane: Skip 10bpc formats with media
- compression
-Date: Wed,  3 Jul 2024 02:28:11 +0300
-Message-ID: <20240702232817.31147-32-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 32/37] tests/kms_ccs: Reuse
+ igt_fb_is_gen12_rc_ccs_cc_modifier()
+Date: Wed,  3 Jul 2024 02:28:12 +0300
+Message-ID: <20240702232817.31147-33-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
@@ -71,31 +71,50 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-The VEBOX just hangs if we try to use a 10bpc format.
-Skip 10bpc with media compression as that would require
-using the VEBOX.
+Replace the hand rolled version of igt_fb_is_gen12_rc_ccs_cc_modifier()
+with the real thing.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_plane.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/intel/kms_ccs.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 8b6fc1cf6aa4..6b5fb7266ef3 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1011,6 +1011,11 @@ static bool skip_format_mod(data_t *data,
- 	    modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
- 		return true;
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index c91370a9abe7..30b61f132834 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -277,13 +277,6 @@ create_fb_prepare_add(int drm_fd, int width, int height,
+ 	addfb_init(fb, f);
+ }
  
-+	/* VEBOX just hangs with an actual 10bpc format */
-+	if (igt_fb_is_gen12_mc_ccs_modifier(modifier) &&
-+	    igt_reduce_format(format) == DRM_FORMAT_XRGB2101010)
-+		return true;
-+
- 	/* test each format "class" only once in non-extended tests */
- 	if (!data->extended && modifier != DRM_FORMAT_MOD_LINEAR) {
- 		struct format_mod rf = {
+-static bool is_ccs_cc_modifier(uint64_t modifier)
+-{
+-	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+-	       modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
+-	       modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+-}
+-
+ /*
+  * The CCS planes of compressed framebuffers contain non-zero bytes if the
+  * engine compressed effectively the framebuffer. The actual encoding of these
+@@ -752,7 +745,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
+ 		srand(data->seed);
+ 		fill_fb_random(data->drm_fd, fb);
+ 	} else {
+-		bool do_fast_clear = is_ccs_cc_modifier(data->ccs_modifier);
++		bool do_fast_clear = igt_fb_is_gen12_rc_ccs_cc_modifier(data->ccs_modifier);
+ 		bool do_solid_fill = do_fast_clear || data->plane;
+ 		int c = !!data->plane;
+ 
+@@ -850,7 +843,7 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+ 				      data->ccs_modifier))
+ 		return false;
+ 
+-	if (is_ccs_cc_modifier(data->ccs_modifier) &&
++	if (igt_fb_is_gen12_rc_ccs_cc_modifier(data->ccs_modifier) &&
+ 	    data->format != DRM_FORMAT_XRGB8888 &&
+ 	    data->format != DRM_FORMAT_XRGB2101010)
+ 		return false;
 -- 
 2.44.2
 
