@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9CC8C30658
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 11:51:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D1E7C3064D
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 12:22:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74B0110E0CB;
-	Tue,  2 Jul 2024 11:51:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CBE2F10E1CE;
+	Tue,  2 Jul 2024 12:22:24 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AC4610E034;
- Tue,  2 Jul 2024 11:51:22 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27EFF10E1CE;
+ Tue,  2 Jul 2024 12:22:23 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4018347509326636435=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_series_starting_with_?=
- =?utf-8?q?=5Bi-g-t=2C1/2=5D_tests/intel/xe=5Fpm=3A_Install_fw_close_exit_ha?=
- =?utf-8?q?ndler_before_rpm_tests?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_test/xe=5Fgt=5Ffreq=3A_Add_hel?=
+ =?utf-8?q?per_to_read_RPe_freq_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Badal Nilawar" <badal.nilawar@intel.com>
+To: "Vinay Belgaumkar" <vinay.belgaumkar@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 02 Jul 2024 11:51:22 -0000
-Message-ID: <171992108203.21227.7168407991418417752@2413ebb6fbb6>
+Date: Tue, 02 Jul 2024 12:22:23 -0000
+Message-ID: <171992294315.21226.6134484075080514915@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240701145439.91038-1-badal.nilawar@intel.com>
-In-Reply-To: <20240701145439.91038-1-badal.nilawar@intel.com>
+References: <20240701164444.2435408-1-vinay.belgaumkar@intel.com>
+In-Reply-To: <20240701164444.2435408-1-vinay.belgaumkar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,237 +41,146 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4018347509326636435==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] tests/intel/xe_pm: Install fw close exit handler before rpm tests
-URL   : https://patchwork.freedesktop.org/series/135601/
-State : warning
+Series: test/xe_gt_freq: Add helper to read RPe freq (rev2)
+URL   : https://patchwork.freedesktop.org/series/135202/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7908_BAT -> XEIGTPW_11346_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1215289 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595848):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 380, in main
-      (testlist, gpu_set) = tests.gen_intelci_testlist()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 91, in gen_intelci_testlist
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920852:step_script
-  section_start:1719920852:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920853:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595851):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 370, in main
-      tests.print_nested_rest(parse_args.rest)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 933, in print_nested_rest
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920852:step_script
-  section_start:1719920852:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920853:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Participating hosts (5 -> 5)
+------------------------------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595850):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 370, in main
-      tests.print_nested_rest(parse_args.rest)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 933, in print_nested_rest
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920819:step_script
-  section_start:1719920819:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920820:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  No changes in participating hosts
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595852):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 370, in main
-      tests.print_nested_rest(parse_args.rest)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 933, in print_nested_rest
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920830:step_script
-  section_start:1719920830:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920831:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Known issues
+------------
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595849):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 370, in main
-      tests.print_nested_rest(parse_args.rest)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 933, in print_nested_rest
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920766:step_script
-  section_start:1719920766:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920766:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  Here are the changes found in XEIGTPW_11346_BAT that come from known issues:
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595843):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 380, in main
-      (testlist, gpu_set) = tests.gen_intelci_testlist()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 91, in gen_intelci_testlist
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920842:step_script
-  section_start:1719920842:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920843:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+### IGT changes ###
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595847):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 380, in main
-      (testlist, gpu_set) = tests.gen_intelci_testlist()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 91, in gen_intelci_testlist
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920877:step_script
-  section_start:1719920877:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920877:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+#### Issues hit ####
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595846):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 380, in main
-      (testlist, gpu_set) = tests.gen_intelci_testlist()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 91, in gen_intelci_testlist
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920844:step_script
-  section_start:1719920844:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920845:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7908/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595844):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 380, in main
-      (testlist, gpu_set) = tests.gen_intelci_testlist()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 91, in gen_intelci_testlist
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920841:step_script
-  section_start:1719920841:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920842:cleanup_file_variables
-  ERROR: Job failed: exit code 1
   
+#### Possible fixes ####
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/60595845):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  Traceback (most recent call last):
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 386, in <module>
-      main()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 380, in main
-      (testlist, gpu_set) = tests.gen_intelci_testlist()
-    File "/builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py", line 91, in gen_intelci_testlist
-      subtest_dict = self.expand_dictionary(True)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 749, in expand_dictionary
-      subtest_array = self.expand_subtest(fname, name, test, subtest_only)
-    File "/builds/gfx-ci/igt-ci-tags/scripts/test_list.py", line 655, in expand_subtest
-      if arg_array[j] is None:
-  KeyError: 0
-  ninja: build stopped: subcommand failed.
-  section_end:1719920851:step_script
-  section_start:1719920851:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1719920852:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  * igt@xe_exec_compute_mode@twice-userptr-invalidate:
+    - {bat-lnl-1}:        [FAIL][3] ([Intel XE#1069]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7908/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7908 -> IGTPW_11346
+  * Linux: xe-1546-886eeb6d89b58f914ee5045fcac54b59a73d8299 -> xe-1548-886eeb6d89b58f914ee5045fcac54b59a73d8299
+
+  IGTPW_11346: 11346
+  IGT_7908: 7908
+  xe-1546-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299
+  xe-1548-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1215289
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/index.html
+
+--===============4018347509326636435==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/xe_gt_freq: Add helper to read RPe freq (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135202/">https://patchwork.freedesktop.org/series/135202/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7908_BAT -&gt; XEIGTPW_11346_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11346_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7908/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-userptr-invalidate:<ul>
+<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7908/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069">Intel XE#1069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11346/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7908 -&gt; IGTPW_11346</li>
+<li>Linux: xe-1546-886eeb6d89b58f914ee5045fcac54b59a73d8299 -&gt; xe-1548-886eeb6d89b58f914ee5045fcac54b59a73d8299</li>
+</ul>
+<p>IGTPW_11346: 11346<br />
+  IGT_7908: 7908<br />
+  xe-1546-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299<br />
+  xe-1548-886eeb6d89b58f914ee5045fcac54b59a73d8299: 886eeb6d89b58f914ee5045fcac54b59a73d8299</p>
+
+</body>
+</html>
+
+--===============4018347509326636435==--
