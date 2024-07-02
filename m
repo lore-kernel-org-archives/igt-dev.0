@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA97C30658
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5112C30658
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:29:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE38510E702;
-	Tue,  2 Jul 2024 23:29:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9FB3D10E705;
+	Tue,  2 Jul 2024 23:29:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lm7VY1dX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N70W1TIk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A65510E702
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAF2110E714
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719962990; x=1751498990;
+ t=1719962992; x=1751498992;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=fpEOrUtnSh8tLGAmu7wPqGdPg43DuUJgAXvRy5UURZs=;
- b=Lm7VY1dXDHwAw4A6IkaoySbokiu8YypZunvco6rfYxjHOt/SP0Kg+xOZ
- ZMlY8/+VkNcz9vjuLlccuRe/z0FMN1cCLH/TsXnTzlyO1ik8lkQfUw8U2
- QBv4w4Pg/5l2iD3jdO0eGZRRIdbs2MGReHeky/XRcUxrixle3ZNQWgGkG
- DnWp7v9OOMWjHTdsEA3zOj3z3Vek/2UL9Uqh+rylCbBGHbevv2gRrc/jw
- qWDpeF0//mcL8uvG3i3mZT3A3gbNxLueLhwTHDYvaS5+FnPrmHDAUBeeN
- 1NERR/2XLVZ0Jioi/h7F8f/O9ExY7lLlFOVr6ylwHxrdldxB9RWm7WLuD A==;
-X-CSE-ConnectionGUID: CinNu5J/SPipwNyWJn5mgA==
-X-CSE-MsgGUID: kwQ1dvxrSCe7cljO5HxnPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559693"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559693"
+ bh=lgGSm0ed3BWeu+KeV37WXP0Hlnod2lb94HiE2YhdOX4=;
+ b=N70W1TIkMZRI9HXLzJ+9KmIpbnF8oROni8rgOFuwuTgAXgo7oACY3U6t
+ 8LCoQeGIuXnoKcnZ6sgD/VA4UA1LnieDHAa6As3lK48h5+mVgZ7MbIw4w
+ v8alN35iGcWyEemsU1lbmJUtQuWGQjfgOClt5ckycAFSB31ydILwuj9ZY
+ sogX6sXQabV1Znzz915uSXpu3IHBEI2PsB0CaWaVFoStBR0Bd5mmwU+zB
+ tLkRBpu1EU9TCSzbG+yqif3qqlbR8MgnoYHt45qfi4nPmv+jdAk/iGKTM
+ aPs39TmwXxKrC+brG6OvJxkRW1DdFqP9Aj/L7PYrKzmi2TezLTt7Pbi4t g==;
+X-CSE-ConnectionGUID: 7z5DXcI4QBSw0ZIpXiAQ5g==
+X-CSE-MsgGUID: PAyTwDzPSdu2jDKgSg8CTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559696"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559696"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 16:29:49 -0700
-X-CSE-ConnectionGUID: K5hKk2XmSjSMrAcSpzWYiA==
-X-CSE-MsgGUID: jAO7wFXzSAmqbNsKDgnEsQ==
+ 02 Jul 2024 16:29:52 -0700
+X-CSE-ConnectionGUID: zVjPqfBMSjmUz3AaMa/Uvg==
+X-CSE-MsgGUID: hy8iJEwAQN61uicwGlPCMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043924"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043928"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:47 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:49 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 03 Jul 2024 02:29:46 +0300
+ Wed, 03 Jul 2024 02:29:49 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 32/37] tests/kms_ccs: Reuse
- igt_fb_is_gen12_rc_ccs_cc_modifier()
-Date: Wed,  3 Jul 2024 02:28:12 +0300
-Message-ID: <20240702232817.31147-33-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 33/37] tests/kms_ccs: Correctly check clear color for
+ 10bpc formats
+Date: Wed,  3 Jul 2024 02:28:13 +0300
+Message-ID: <20240702232817.31147-34-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
@@ -71,50 +71,55 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Replace the hand rolled version of igt_fb_is_gen12_rc_ccs_cc_modifier()
-with the real thing.
+The hardware generated clear color will be in the native
+pixel format. Generate the reference correctly for 10bpc
+formats.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_ccs.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ tests/intel/kms_ccs.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
 diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index c91370a9abe7..30b61f132834 100644
+index 30b61f132834..4c1c78ee4e58 100644
 --- a/tests/intel/kms_ccs.c
 +++ b/tests/intel/kms_ccs.c
-@@ -277,13 +277,6 @@ create_fb_prepare_add(int drm_fd, int width, int height,
- 	addfb_init(fb, f);
- }
+@@ -321,7 +321,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float
+ 		uint32_t d;
+ 	} *cc_p;
+ 	void *map;
+-	uint32_t native_color;
++	uint32_t native_color = 0;
  
--static bool is_ccs_cc_modifier(uint64_t modifier)
--{
--	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
--	       modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
--	       modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
--}
--
- /*
-  * The CCS planes of compressed framebuffers contain non-zero bytes if the
-  * engine compressed effectively the framebuffer. The actual encoding of these
-@@ -752,7 +745,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
- 		srand(data->seed);
- 		fill_fb_random(data->drm_fd, fb);
- 	} else {
--		bool do_fast_clear = is_ccs_cc_modifier(data->ccs_modifier);
-+		bool do_fast_clear = igt_fb_is_gen12_rc_ccs_cc_modifier(data->ccs_modifier);
- 		bool do_solid_fill = do_fast_clear || data->plane;
- 		int c = !!data->plane;
+ 	if (is_i915_device(drm_fd)) {
+ 		gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
+@@ -336,10 +336,22 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float
+ 		   cc_color[2] == cc_p[2].f &&
+ 		   cc_color[3] == cc_p[3].f);
  
-@@ -850,7 +843,7 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 				      data->ccs_modifier))
- 		return false;
+-	native_color = (uint8_t)(cc_color[3] * 0xff) << 24 |
+-		       (uint8_t)(cc_color[0] * 0xff) << 16 |
+-		       (uint8_t)(cc_color[1] * 0xff) << 8 |
+-		       (uint8_t)(cc_color[2] * 0xff);
++	switch (fb->drm_format) {
++	case DRM_FORMAT_XRGB8888:
++		native_color = (uint32_t)(cc_color[3] * 0xff) << 24 |
++			(uint32_t)(cc_color[0] * 0xff) << 16 |
++			(uint32_t)(cc_color[1] * 0xff) << 8 |
++			(uint32_t)(cc_color[2] * 0xff);
++		break;
++	case DRM_FORMAT_XRGB2101010:
++		native_color = (uint32_t)(cc_color[3] * 0x3) << 30 |
++			(uint32_t)(cc_color[0] * 0x3ff) << 20 |
++			(uint32_t)(cc_color[1] * 0x3ff) << 10 |
++			(uint32_t)(cc_color[2] * 0x3ff);
++		break;
++	default:
++		break;
++	}
  
--	if (is_ccs_cc_modifier(data->ccs_modifier) &&
-+	if (igt_fb_is_gen12_rc_ccs_cc_modifier(data->ccs_modifier) &&
- 	    data->format != DRM_FORMAT_XRGB8888 &&
- 	    data->format != DRM_FORMAT_XRGB2101010)
- 		return false;
+ 	igt_assert(native_color == cc_p[4].d);
+ 
 -- 
 2.44.2
 
