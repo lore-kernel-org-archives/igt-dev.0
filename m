@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80D8DC30658
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 09:48:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5316C3065C
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 09:49:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76E0010E59D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E732B10E59C;
 	Tue,  2 Jul 2024 09:48:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="tlOmttAt";
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="Bjih1vuk";
 	dkim-atps=neutral
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com
- [209.85.208.169])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65D0D10E598
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 09:48:57 +0000 (UTC)
-Received: by mail-lj1-f169.google.com with SMTP id
- 38308e7fff4ca-2ebe785b234so40264621fa.1
- for <igt-dev@lists.freedesktop.org>; Tue, 02 Jul 2024 02:48:57 -0700 (PDT)
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com
+ [209.85.208.177])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B882B10E58E
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 09:48:56 +0000 (UTC)
+Received: by mail-lj1-f177.google.com with SMTP id
+ 38308e7fff4ca-2ec408c6d94so40736921fa.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 02 Jul 2024 02:48:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=linaro.org; s=google; t=1719913735; x=1720518535; darn=lists.freedesktop.org;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:from:to:cc:subject:date:message-id
- :reply-to; bh=hbJUOmvW24quAtGM4HEWCKTnos6XbtfhPM+nK5+e2Tw=;
- b=tlOmttAtRm/muqrq+pwH/Al8VmW074OPO62xbDWneG4Xou592I/ydnFW2LK+ANn8pk
- ShwafTvEuO9QGRcvrmYIkEd0DdhjqTiUzm+kmweHQ9WimIopAE/YA2AQfxvCq9fh7UN0
- aN/pNOhK1ZEI4VUBrNB4HLheBhVu2fUp4Vh3E3DafD01IHZ5CD4G9PxfisHZ7BMquVK5
- 7iSYHaY5pDGUB8ceyOppIwnpMSRSALRJ4nGBObplLkTVnoQcm7mRB2R7oyleH9kQSIkM
- 0Qfv2Htssni3tpnzLGuX9tC1y3BYZVkFH5RgXBhWbKzs1DjcHqPMzlDKphe24rtALBWZ
- 0Wvg==
+ :reply-to; bh=grKYh+BySNj5dd16DxXRdwU80BL8FOK+kLgksXgznTg=;
+ b=Bjih1vukAyVx50HcJBIJLW/wzZMdUi7HVC1AdK89rpW96FNMgPpBGx0S8QU+Km+N89
+ 7zRESZ9gYmegGv49a8+LsBSbqb91v5ZRzzLe3Ys3Rw2AbmUes+nhNHv1YwjDGfsUe+3+
+ OdUenIlzdU4uGQYSUjUJ5+4VMY0xuOchb+c5rT0hrksAsm4zgmNbeC872LaMIp/sm1bc
+ AXm8/f2tsDX1gnQpsJChb+otAeWgVOonBKOu9U/Co1U8uNGaJftir7zTFPBhVyQJ7AAO
+ uh7Vak9EVuCRys5VFkVlXr7aOw7VlJKD3Rlr07eXfKv7J0epJQBtamUhvTzn/Uzis3Hm
+ 3F3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=1e100.net; s=20230601; t=1719913735; x=1720518535;
  h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
  :mime-version:subject:date:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=hbJUOmvW24quAtGM4HEWCKTnos6XbtfhPM+nK5+e2Tw=;
- b=FXlMqY3DntA+YRRzZa4QAPJaltrLWROPxSsAeK4JppFhxdwaHAa+wXOsgbVz/OvIlT
- RuskCbSCK/cfXcr4VzNloYxEUv0CN6z7Pf1gtDJQgZKnjgDDG2pC2mCyM9xSHnZM16R+
- QzwXfGPiNJlxHM6nwuSed92T3sD/2NkCDEsW69Qgb0hrHJ48DNwjnc8qk7WADmj2Vl2m
- 1cpT4t2g06jOhrMjrM6GLoa2DckRBfB+5Ancj2/S+FCqlHiwEqReI6PRyMWB/iIC0DLt
- bhd5osEcST96xXvNBdPRONaijou83zmDL0YldD2jRDDcKoTUL0aYl5uNIlfCy4brTFXY
- 2Y6Q==
+ bh=grKYh+BySNj5dd16DxXRdwU80BL8FOK+kLgksXgznTg=;
+ b=OAc5Dj4uA+SsGmmPkh4yB0n8NaHgmgim45jxWc+uhp8QtJWiIF4ypBtGWRCwGop8Bc
+ JEVjJ8lGjg8dPv8ggoWc+XEs880O88FSE7Pr9L5Ai27/NOXCXLMO/GqQ4ShoRirdZUB2
+ 2ZB9Y/IMovFko/q6PuRLcw7YN9t+n1AUDsQS+GZ7Ps8TishK1dDY6e/BoOMr/Jtjigmy
+ vJ2qh4Heji+NJvnXlEXkuKGv2GQxyU47CrRBHBw0byKllPxxv8P6SRz9iKv6gEB+rRWK
+ Ku2zb7FlsNF3wJJWTNcEGKhUaQvZDax0/GGHmDfXMKjpuXxR3+C42Xj2KlM5MwZkzRoH
+ aUpw==
 X-Forwarded-Encrypted: i=1;
- AJvYcCV9OoTxjyBYLWFLR3996wLTotjZq1L3JXcD/R88/Fkz5sHp2H+8m1txT79sSQKUTsMAOnH6lEJoxPvUgrtJCTAxlg267V3oEWM43CMwug==
-X-Gm-Message-State: AOJu0YysYY57Kci24dSNAtFvRLQ2gYg5cPvJJOTeoZIhNOkd9ZPlBVUj
- Gxed0535tXi1OoVhmD4B7XEoWO8y/QE6Q7GyM+SB/i3V0nnmMkduG1OJj2QMGZg=
-X-Google-Smtp-Source: AGHT+IGfmdHB+8edC65CU37es9H6R49dvRUzRUlXwIzKM7NUfhJMiOkS6U7fLphVNhqcxMt5+DlouQ==
-X-Received: by 2002:a2e:b53a:0:b0:2ec:6cbe:5e4c with SMTP id
- 38308e7fff4ca-2ee5e4c38c3mr48178251fa.26.1719913735592; 
- Tue, 02 Jul 2024 02:48:55 -0700 (PDT)
+ AJvYcCWTy3J+TO8Ex1oCIrN5Emux6KHlDQYiJO5/wLbPcN/YFHor9WMQsL7JK5yvqGhKjpSfdzmYsAJoQ5PYW6E0zDvtXNnDiW5s7KiHfJSNDg==
+X-Gm-Message-State: AOJu0YxtNltk8YBTLDQbHC9scuob6TDGvF3EDKyTIppAp3MB/cWLs2RL
+ Cw1KCRWHjRuNS3im+3eXwJ+ye1NS2Cn0h3HImQkYIX4E/yRpP3+Dn524UrBg1HU=
+X-Google-Smtp-Source: AGHT+IEHYPqBRlSa4/s9XNTLhrSpJ2d7hL4YRvX3igF6c2N0POyPLUNHv3ogsHuGow9fTT7WHEO5lg==
+X-Received: by 2002:a2e:a9a8:0:b0:2ee:4c66:6828 with SMTP id
+ 38308e7fff4ca-2ee5e4bb786mr66677251fa.24.1719913734882; 
+ Tue, 02 Jul 2024 02:48:54 -0700 (PDT)
 Received: from umbar.lan ([192.130.178.91]) by smtp.gmail.com with ESMTPSA id
- 38308e7fff4ca-2ee5160e333sm16231161fa.5.2024.07.02.02.48.55
+ 38308e7fff4ca-2ee5160e333sm16231161fa.5.2024.07.02.02.48.54
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 02 Jul 2024 02:48:55 -0700 (PDT)
+ Tue, 02 Jul 2024 02:48:54 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Tue, 02 Jul 2024 12:48:53 +0300
-Subject: [PATCH v3 2/4] drm/connector: automatically set immutable flag for
- max_bpc property
+Date: Tue, 02 Jul 2024 12:48:52 +0300
+Subject: [PATCH v3 1/4] drm/drm_property: require DRM_MODE_PROP_IMMUTABLE
+ for single-value props
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240702-drm-bridge-connector-fix-hdmi-reset-v3-2-12b0e3124ca4@linaro.org>
+Message-Id: <20240702-drm-bridge-connector-fix-hdmi-reset-v3-1-12b0e3124ca4@linaro.org>
 References: <20240702-drm-bridge-connector-fix-hdmi-reset-v3-0-12b0e3124ca4@linaro.org>
 In-Reply-To: <20240702-drm-bridge-connector-fix-hdmi-reset-v3-0-12b0e3124ca4@linaro.org>
 To: Andrzej Hajda <andrzej.hajda@intel.com>, 
@@ -78,16 +78,16 @@ Cc: Rob Clark <robdclark@gmail.com>,
  dri-devel@lists.freedesktop.org, igt-dev@lists.freedesktop.org, 
  freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1164;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1072;
  i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=Ogj1qgSBFy5LiaMGrph8HSRVcootU6FeEO747BTFj9E=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmg80FIFlpwZSuAMcVaex64ulawWVazh4lwSquc
- qTrBGjVLnSJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZoPNBQAKCRCLPIo+Aiko
- 1ZPXB/9JSHXBoeLLdgKIA/GlpIadryusEgR3jFySCJuDELdNN4OuXdoem3dSd9kjIC+JcMsHNNF
- I0fK75E2EybrRE6uduTV2Z7e3+27bJvncgqo+vguR701/L5k7SQ10eqZ4FDg702uh9jSg635tsB
- 0sYf7ed+6tCdPoy7PrfIWzke9XSTRvyh6pcqDgJIX3f4cXnKnBJzk5QIrQPnghLIwS38Pw9PXW5
- /F4+fMCjdCYjVO2i4L6ZfF5b9km3s/i6agBdI2/h6nOuaW+mh24ZOOPhQWhPu3olMMXl2W+3RSL
- t/HhQjnpdsmUS7Tbx2PKaDZWepo+M9RjijPg5dCK8NdkCJqE
+ bh=ZHzhL2qDJx6VCsIqQPH6DPvSD0dOn8r7tcbnzboUaz4=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBmg80EWZj1pah8UzMX2/G4UNqFRNqb0JlRO93Ms
+ RRkSO6Hv/KJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZoPNBAAKCRCLPIo+Aiko
+ 1Q1+CACxdDwVSgOIcrD5yaAYfHuWsZQlYwFDxYyvGJAOp18OWx0WYgryw6qDB4Kv6Am94YL8chA
+ rzWgZDP7Fh4hmHGMQfPYqu5jd3h2jA45NJamjWWdXMWmVzFsrHBIlr/MqN4K+c1mcW8qAPM4Aut
+ LQkdGUHQ936Kwhec384brroKfge+MO1h9dgB7wxbVvnPQapQTOibV0b3aISdjN8fkI/SBR5WEKE
+ 61amWsXJ1hCW3zNZuGyFOepos7d/6vkL4gaCQ3svBPeNQPYHOxjH2EpaiW3Nmeh+x2C0+GhnVEV
+ a/WFgjPVG7wSHgFk78J3uoewD+jjE5VNy14bP8PoznvUJzhS
 X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -105,34 +105,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With the introduction of the HDMI Connector framework the driver might
-end up creating the max_bpc property with min = max = 8. IGT insists
-that such properties carry the 'immutable' flag. Automatically set the
-flag if the driver asks for the max_bpc property with min == max.
+Document that DRM_MODE_PROP_IMMUTABLE must be set for the properties
+that are immutable by definition - e.g. ranges with min == max or enums
+with a single value. This matches the behaviour of the IGT tests, see
+kms_properties.c / validate_range_prop(), validate_enum_prop(),
+validate_bitmask_prop().
 
-Fixes: aadb3e16b8f3 ("drm/connector: hdmi: Add output BPC to the connector state")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 ---
- drivers/gpu/drm/drm_connector.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/drm/drm_property.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index ab6ab7ff7ea8..33847fd63628 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -2610,7 +2610,12 @@ int drm_connector_attach_max_bpc_property(struct drm_connector *connector,
- 
- 	prop = connector->max_bpc_property;
- 	if (!prop) {
--		prop = drm_property_create_range(dev, 0, "max bpc", min, max);
-+		u32 flags = 0;
-+
-+		if (min == max)
-+			flags |= DRM_MODE_PROP_IMMUTABLE;
-+
-+		prop = drm_property_create_range(dev, flags, "max bpc", min, max);
- 		if (!prop)
- 			return -ENOMEM;
+diff --git a/include/drm/drm_property.h b/include/drm/drm_property.h
+index 082f29156b3e..7d0f793f50ca 100644
+--- a/include/drm/drm_property.h
++++ b/include/drm/drm_property.h
+@@ -162,6 +162,9 @@ struct drm_property {
+ 	 *     userspace, e.g. the EDID, or the connector path property on DP
+ 	 *     MST sinks. Kernel can update the value of an immutable property
+ 	 *     by calling drm_object_property_set_value().
++	 *     This flag should be set for all properties that have only a
++	 *     single value (e.g. min == max or if enum has only a single
++	 *     value).
+ 	 */
+ 	uint32_t flags;
  
 
 -- 
