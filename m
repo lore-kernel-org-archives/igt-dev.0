@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9E81C3065C
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:29:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49F13C30658
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 23:29:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8345710E1C7;
-	Tue,  2 Jul 2024 23:29:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E78C010E2AA;
+	Tue,  2 Jul 2024 23:29:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H6//GmCy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lkR2CJex";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 05EDE10E1C7
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41E7F10E4A1
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 23:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719962976; x=1751498976;
+ t=1719962979; x=1751498979;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=L9XyNsGkQWY9i8CigvWzwSmmHbu4pJ3JcBrJj15hTNE=;
- b=H6//GmCy+9wJls8I9qaoOb+c0URDwfW/jvZhQ4lwh/DlsliXTj0B4Lvh
- KKrI3wWdYmJ0/ECuVPfmWObZIt4JAlQuipQSwH1BLgGH0zqnNHqjHVBZi
- dGoDDoiVUrlLKeJdXLuB1/od48Yai0ONMyZgjUVCSkv1TPBxAlsONnvkg
- U7Pyu5ckpRGNHyunxTjVl5Y0hpWqtFOJqZ3EcbGvfB4U2woU8OeltIBMG
- l2qmLCvOkXjw+UuYsz7EAfm7fUlmFMrKbTvfxLaymV3fLXwJ5Pv6xayYI
- m8H49KFc08s4FD0htT9hIm/W9C4eBh2cpoZLPGWO6LsfceKudKbwVBc1O w==;
-X-CSE-ConnectionGUID: t5wWpfIQQhSWKMiB3gCKZw==
-X-CSE-MsgGUID: n0Af9QvuS2SE6hulvhN2mg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559668"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559668"
+ bh=Ko1QdR0Pq10kHlViWCCZhpFeXs15e1Arlu8Ai2T/nDM=;
+ b=lkR2CJexGBygraMhlFnW9aaxEyyMiN4q2gXmNwCrmahiTKx3/gOjoS3r
+ ZESfyFDBSiwS3yY6rfA647zQtq2sOw4bebw7+uqd4iyeJZPnX1F7k/qMX
+ GJaPnUS6pr7mcaZapv4tCJ9VlKyB1ny28x4XY/OvpCVTl9PtoPM13yE/D
+ NrRxqn34/DmBBOZIBSgOuBzfmr2StO+vEnwIo2AzfS0Zf/6Veiun1JXVQ
+ tU6rvfw7wTONVSyxTAlF9oibJ9uSAITY2MudteiDRl3WXy3vvLAcXOh4G
+ 91dBM8Xxe3HLoJnrSUebq/TMQpN+F3i0ckrnJl+Rv/IPXcIQsuHj4xzIK w==;
+X-CSE-ConnectionGUID: vE4KY+vBShaa67tGnVbs0g==
+X-CSE-MsgGUID: oqcJg9D1R+iWkQ7SIgv4vQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28559673"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="28559673"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 16:29:36 -0700
-X-CSE-ConnectionGUID: eF0wlPg9TDKttblCuTBUDg==
-X-CSE-MsgGUID: tl3jDcuhTX6sxP7DwWDY4A==
+ 02 Jul 2024 16:29:38 -0700
+X-CSE-ConnectionGUID: ZR5r23T9TH+EvdRk4ebm0g==
+X-CSE-MsgGUID: m953aCYRTvyQy2+Yo7HHKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043905"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46043912"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:33 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 16:29:36 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 03 Jul 2024 02:29:32 +0300
+ Wed, 03 Jul 2024 02:29:35 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 27/37] lib/vebox: Add support for fp16 RGB formats
-Date: Wed,  3 Jul 2024 02:28:07 +0300
-Message-ID: <20240702232817.31147-28-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 28/37] lib/vebox: Add 10bpc support
+Date: Wed,  3 Jul 2024 02:28:08 +0300
+Message-ID: <20240702232817.31147-29-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
@@ -70,46 +70,50 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Support VEBOX copies with fp16 RGB formats.
+Add specific 10bpc support for VEBOX.
+
+FIXME: This just hangs the VEBOX :(
+       Bspec did have some notes that this is only
+       supported for IECP on earlier platforms, but
+       that restriction is no longer listed for more modern
+       stuff, but maybe it's still there?
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/veboxcopy_gen12.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ lib/veboxcopy_gen12.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
-index 44c914e7f2bf..af52a96578d9 100644
+index af52a96578d9..fedefb0842a2 100644
 --- a/lib/veboxcopy_gen12.c
 +++ b/lib/veboxcopy_gen12.c
-@@ -32,6 +32,7 @@
+@@ -29,6 +29,7 @@
+ #define YCRCB_NORMAL	0
+ #define PLANAR_420_8	4
+ #define PACKED_444A_8	5
++#define R10G10B10A2_UNORM	7
  #define R8G8B8A8_UNORM	8
  #define PACKED_444_16	9
  #define PLANAR_420_16	12
-+#define R16G16B16A16	13
- 
- struct vebox_surface_state {
- 	struct {
-@@ -165,6 +166,8 @@ static uint32_t compression_format(int format, struct intel_buf *buf)
- 		return 0;
- 
+@@ -168,6 +169,8 @@ static uint32_t compression_format(int format, struct intel_buf *buf)
  	switch (format) {
-+	case R16G16B16A16:
-+		return 0x1;
+ 	case R16G16B16A16:
+ 		return 0x1;
++	case R10G10B10A2_UNORM:
++		return 0xe;
  	case R8G8B8A8_UNORM:
  		return 0xa;
  	case PLANAR_420_8:
-@@ -344,8 +347,9 @@ void gen12_vebox_copyfunc(struct intel_bb *ibb,
- 					      R8G8B8A8_UNORM;
+@@ -344,7 +347,8 @@ void gen12_vebox_copyfunc(struct intel_bb *ibb,
+ 	case 32:
+ 		igt_assert(!src->format_is_yuv_semiplanar);
+ 		format = src->format_is_yuv ? PACKED_444A_8 :
+-					      R8G8B8A8_UNORM;
++			 src->depth == 30 ? R10G10B10A2_UNORM :
++					    R8G8B8A8_UNORM;
  		break;
  	case 64:
--		igt_assert(!src->format_is_yuv_semiplanar && src->format_is_yuv);
--		format = PACKED_444_16;
-+		igt_assert(!src->format_is_yuv_semiplanar);
-+		format = src->format_is_yuv ? PACKED_444_16 :
-+					      R16G16B16A16;
- 		break;
- 	default:
- 		igt_assert_f(0, "Unsupported bpp: %u\n", src->bpp);
+ 		igt_assert(!src->format_is_yuv_semiplanar);
 -- 
 2.44.2
 
