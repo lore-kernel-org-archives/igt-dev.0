@@ -4,57 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B0CEC30658
-	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 17:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB551C30658
+	for <igt-dev@archiver.kernel.org>; Tue,  2 Jul 2024 17:29:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07FA110E14E;
-	Tue,  2 Jul 2024 17:20:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A20DA10E14E;
+	Tue,  2 Jul 2024 17:29:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Fi7hRlG7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SbbBLYqF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DBC710E14E
- for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 17:20:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2F7010E663
+ for <igt-dev@lists.freedesktop.org>; Tue,  2 Jul 2024 17:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719940827; x=1751476827;
- h=date:from:to:subject:message-id:references:mime-version:
- content-transfer-encoding:in-reply-to;
- bh=Pq6zasG898dm7DpE3CAZtRBVHMAWaVMXwRXROt9cPwY=;
- b=Fi7hRlG7SBaqvrchxZYNHroqT+0msPyL9Z83KBW7tlrau4Ot09nTLrof
- u+24PcPGT1NyG14JDRP7ypvxa+jPedURvsoPkYSEtr1zjyTiB8oo+WDMH
- 1KIs0PoM/74Q1LVFk4fWayUwRfHOyall5o4HqnWYFnYPBv+kR78pUBH70
- IWvomrEy4vXvJ+eGkhE/qyY9Z2tCHS36rmaFQ1ReJ2+8QcX1HBaCjaC0P
- vWTyPS7zltS3CAEuDNaYm+Q3pLlLkZ2QVGvJx/MHEDT0ZQ058eETBVvXF
- n6YlTr7oIKrVEBraJ3R8V8v+41t8uFJteoIzbPqcuLQyJrvPEeC4VkDde Q==;
-X-CSE-ConnectionGUID: QzPgdRTfSmmXFV1PVz3Heg==
-X-CSE-MsgGUID: 3UOLzfoMTfS4DF0n4noZUg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20999782"
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; d="scan'208";a="20999782"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 10:20:27 -0700
-X-CSE-ConnectionGUID: DtbL43HbRt6Nb0NvHv2IKw==
-X-CSE-MsgGUID: XVcuOpaqT6u+IYqmjpR69A==
+ t=1719941397; x=1751477397;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=E+I7UgGEpq+zsYZMErG0fggqZCYiLPQ7ZY1KOrJYJQI=;
+ b=SbbBLYqF16cQiUjYxXjoTNuRWTE83WG/WsdNz4dOddZbmPRwaA6amqja
+ LZLZ8BM99DoyQK/GqGIx1hXYFUV8s3d8hX3QcEuqY0nRpIanyf9uyT2FJ
+ JhXYflUGzIMUkXXtRbbTYHdcnVwKPud2Sae8MAnnwwRnBkMCvzw0Q1Xxc
+ 0UpZQAjKfmufoI2Io9xrX88TtEQ0u22AtIpE8cZo3oTMJDLZoI23ExCSK
+ ff2/TEiZQNaaU01TbprVUGYo78C16c29YM8o/8QruMTB1JoXNWcjn3T+5
+ 0Tu2COMsk6pgWXvK1kf9/11XjFJxSMoqGmOfiAEbEI4Xxrz1A0zmE2XLx Q==;
+X-CSE-ConnectionGUID: 1xrjvy5XStS4nMcOZ1qg/g==
+X-CSE-MsgGUID: URM2KhIgR4qhagO6PRXK3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="17265094"
+X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; d="scan'208";a="17265094"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2024 10:29:57 -0700
+X-CSE-ConnectionGUID: JqaGAmzuQj6C1CofdP57YQ==
+X-CSE-MsgGUID: mZq7G16jSQOCjLxMH4ywXA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; d="scan'208";a="45958168"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Jul 2024 10:20:25 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Tue, 02 Jul 2024 20:20:24 +0300
-Date: Tue, 2 Jul 2024 20:20:24 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; d="scan'208";a="46628261"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 10:29:55 -0700
+Date: Tue, 2 Jul 2024 19:29:30 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 6/6] lib/rendercopy: Enable clear color consistently
-Message-ID: <ZoQ22BIzDwNizpWM@intel.com>
-References: <20240625174032.10398-1-ville.syrjala@linux.intel.com>
- <20240625174032.10398-7-ville.syrjala@linux.intel.com>
+Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ jouni.hogander@intel.com
+Subject: Re: [PATCH i-g-t] tests/km_pm_brightness.c: check for flickers while
+ adjusting the brightness.
+Message-ID: <20240702172930.sat7bilrj7geanjj@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
+ jouni.hogander@intel.com
+References: <20240627030211.164110-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240625174032.10398-7-ville.syrjala@linux.intel.com>
-X-Patchwork-Hint: comment
+In-Reply-To: <20240627030211.164110-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,62 +73,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Jun 25, 2024 at 08:40:32PM +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> We are computing the clear color enable bit differently
-> for the reloc vs. what we stuff into the surface state
-> directly. Unify.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Hi Santhosh,
+On 2024-06-27 at 08:32:11 +0530, Santhosh Reddy Guddati wrote:
+
+First concers is subject, please do not use '.c' from filename,
+also drop dot from end of sentence:
+
+[PATCH i-g-t] tests/km_pm_brightness: check for flickers while adjusting the brightness
+
+Please improve description:
+
+> The test is added to check for flickers on the panel while
+> changing brightness.Though changing the brightness doesn't have impact
+
+s/brightness.Though/brightness. Though/
+
+> on CRC,but if there is a flicker observed , the crc will change
+
+s/CRC,but/CRC but/
+s/, the/ then/
+
+> and this test validates the crc.
+
+s/and this test validates the crc././
+
+Third concern is this comment:
+
+/* Some rounding may happen depending on hw */
+
+Are you sure exact checks are ok?
+Also I do not see any pm (power management) in the test?
+But maybe I am missing something here.
+
 > ---
->  lib/rendercopy_gen9.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+>  tests/intel/kms_pm_backlight.c | 44 ++++++++++++++++++++++++++++++++++
+>  1 file changed, 44 insertions(+)
 > 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 04ec7ec99d9a..b4d34bc6864f 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -146,6 +146,12 @@ static const uint32_t xe2_render_copy[][4] = {
->  	{ 0x8010c031, 0x00000004, 0x58000c24, 0x00c40000 },
->  };
+> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+> index 8672afa7a..e29fd7320 100644
+> --- a/tests/intel/kms_pm_backlight.c
+> +++ b/tests/intel/kms_pm_backlight.c
+> @@ -64,6 +64,10 @@
+>   * SUBTEST: fade-with-suspend
+>   * Description: Test the fade with suspend.
+>   * Functionality: backlight, suspend
+> + *
+> + * SUBTEST: brightness-crc-change
+> + * Description: Test the brightness change with CRC.
+> + * Functionality: backlight, CRC
+>   */
 >  
-> +static bool cc_enable(struct intel_bb *ibb,
-> +		      const struct intel_buf *buf, bool fast_clear)
+>  struct context {
+> @@ -255,6 +259,44 @@ static void test_setup(igt_display_t display, igt_output_t *output)
+>  	}
+>  }
+>  
+> +static void test_brightness_crc(struct context *context)
 > +{
-> +	return fast_clear || (buf->cc.offset && !HAS_FLATCCS(ibb->devid));
+> +	int min = 0;
+> +	int max = context->max;
+> +	int step = (max - min) / 10;
+> +	int brightness;
+> +	igt_crc_t out_crc_before, out_crc_after;
+> +	igt_display_t *display = context->output->display;
+> +	char *crc_str;
+> +	igt_pipe_crc_t *ref_crc;
+> +
+> +	// Get the CRC before changing brightness
+> +	ref_crc = igt_pipe_crc_new(display->drm_fd, context->output->config.pipe, IGT_PIPE_CRC_SOURCE_AUTO);
+> +	igt_assert(ref_crc);
+> +
+> +	for (brightness = min; brightness <= max; brightness += step) {
+> +		igt_info("Brightness: %d\n", brightness);
+> +
+> +		igt_pipe_crc_collect_crc(ref_crc, &out_crc_before);
+> +		crc_str = igt_crc_to_string(&out_crc_before);
+> +		igt_debug("CRC before write: %s\n", crc_str);
+> +
+> +		igt_assert_eq(backlight_write(brightness, "brightness", context), 0);
+> +		igt_debug("Brightness after write: %d\n", brightness);
+> +
+> +		igt_pipe_crc_collect_crc(ref_crc, &out_crc_after);
+> +		crc_str = igt_crc_to_string(&out_crc_after);
+> +		igt_debug("CRC after write: %s\n", crc_str);
+> +
 
-This whole thing is actually wrong. We just want the
-buf->cc.offset!=0 check and nothing else, regardless of
-platform. Otherwise sampling from previously fast
-cleared buffers will not work correctly on dg2/etc.
+Print igt_info (or better - igt_debug) here.
 
+> +		// Compare the CRC values
+> +		if (igt_check_crc_equal(&out_crc_before, &out_crc_after)) {
+> +			igt_info("CRC values are same for brightness: %d\n", brightness);
+> +		} else {
+> +			igt_info("CRC values are different for brightness: %d\n", brightness);
+
+Why igt_info and not igt_assert_f here? Or drop 'if ... else ...'
+and use something like:
+
+		crc_ok = igt_check_crc_equal(&out_crc_before, &out_crc_after);
+        igt_debug("brightness: %d flicker: %s\n", brightness, crc_ok ? "none" : "detected");
+        igt_assert_f(crc_ok, "Flicker observed for brightness %d\n", brightness);
+
+Regards,
+Kamil
+
+> +		}
+> +	}
 > +}
 > +
->  /* Mostly copy+paste from gen6, except height, width, pitch moved */
->  static uint32_t
->  gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> @@ -238,7 +244,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+>  igt_main
+>  {
+>  	int fd;
+> @@ -275,6 +317,7 @@ igt_main
+>  		{ "fade", "test basic fade.", test_fade, TEST_NONE },
+>  		{ "fade-with-dpms", "test the fade with DPMS.", test_fade, TEST_DPMS },
+>  		{ "fade-with-suspend", "test the fade with suspend.", test_fade, TEST_SUSPEND },
+> +		{ "brightness-crc-change", "test the brightness change with CRC.", test_brightness_crc, TEST_NONE },
+>  	};
 >  
->  			address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
->  								   read_domain, write_domain,
-> -								   (buf->cc.offset ? (1 << 10) : 0)
-> +								   (cc_enable(ibb, buf, fast_clear) ? (1 << 10) : 0)
->  								   | buf->ccs[0].offset,
->  								   intel_bb_offset(ibb) + 4 * 10,
->  								   buf->addr.offset);
-> @@ -246,7 +252,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->  			ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
->  		}
+>  	igt_fixture {
+> @@ -288,6 +331,7 @@ igt_main
+>  		 */
+>  		kmstest_set_vt_graphics_mode();
+>  		igt_display_require(&display, drm_open_driver(DRIVER_INTEL | DRIVER_XE));
+> +		igt_require_pipe_crc(display.drm_fd);
 >  
-> -		if (fast_clear || (buf->cc.offset && !HAS_FLATCCS(ibb->devid))) {
-> +		if (cc_enable(ibb, buf, fast_clear)) {
->  			igt_assert(buf->compression == I915_COMPRESSION_RENDER);
->  
->  			ss->ss10.clearvalue_addr_enable = 1;
+>  		for_each_connected_output(&display, output) {
+>  			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
 > -- 
-> 2.44.2
-
--- 
-Ville Syrjälä
-Intel
+> 2.34.1
+> 
