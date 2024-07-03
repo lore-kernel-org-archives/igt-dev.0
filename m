@@ -4,149 +4,171 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94E0DC30658
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 03:14:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95203C2BD09
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 05:11:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52C0C10E0DF;
-	Wed,  3 Jul 2024 03:14:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C00810E52E;
+	Wed,  3 Jul 2024 05:11:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="oAy/uqhf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TgVj3uRa";
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2070.outbound.protection.outlook.com [40.107.237.70])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EEBF410E0DF
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 03:14:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52BDC10E71B
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 05:11:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1719983516; x=1751519516;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=2/7uNsBJx0WuCy+3zQnyLVYh6gO555aDCRYBrbAnq64=;
+ b=TgVj3uRaypYDPBVy8+vSp4wt84cBn2++vcZCz5Qph5P6HaD2U0aoqJig
+ XzLxBJC91e8LzblAXoFM8VJGWH84RlaYOdXRzRPyovcXAmmStAW+DHyUq
+ xYnlsIWecKC64ZDOccqX2er6E5XeLCCVEthaDErmvYaSjD1teMmIP/gxl
+ jMp2V15/C7HBqAHvIIwoKj+To9EILQdi8wKUqxh8iLMedkmqXNT7VJxJ0
+ bFIheuChQz9uU2R9rklmioCn9/pC1/iQfezhXT4rCJqqF2pq6TOhboY52
+ bXvHj5q0MyknzMwU8S0YsM2f7EAfvJ0r2ckTGHKPkBeiIZ52hrKIsmufN A==;
+X-CSE-ConnectionGUID: +YbvXcOES3uY8he+n8pqHg==
+X-CSE-MsgGUID: 5J9a8jfwQYWADXWGYCiamA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28585029"
+X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; d="scan'208";a="28585029"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Jul 2024 22:11:55 -0700
+X-CSE-ConnectionGUID: kxQXzCbARUKTyA9JWV2GFw==
+X-CSE-MsgGUID: Wk3gQcT2S6+LBlUQl17ICg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,181,1716274800"; d="scan'208";a="76870644"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 02 Jul 2024 22:11:55 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 2 Jul 2024 22:11:53 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 2 Jul 2024 22:11:53 -0700
+Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 2 Jul 2024 22:11:53 -0700
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.169)
+ by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 2 Jul 2024 22:11:53 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UVBXe/neEck56KuhLoGSm5kAJ1riJJy648cwtS+F/z1l2N8R5jw/zM36Ltfk3bfu1k9pXJPhRBadVaZpHVFdNwAdvDOOwT+Uu4boQ8bJ3hSNJsoGZjV2IXIQO2rbC14ajrqOKUO9JqWXJt8Tx04DVoTzDBe8WVUmNSHfhUoGtIgq+OubeYeZoBCSsWlv4Cqaz3P3GsVbbIBT+vrS9K0midd971T2A7YTKAV1CdRvMpW3QujPF+peFuu8jTlAJ4I5T6dl8W/obILbZ6Uj7FU+8IiN2vFOvfavTxuIYJGrcP2g0RdXiAhlFPi+XQREFUf9FAWLHlonsDSQN9s8qegNEQ==
+ b=buD8/4WRO53ZNSURbMkCyOg/HXDw44GHzsTa2SNdUPs8JsP0dEHv6+35unW6eq1rmTZCag8Vsb6KxRupEeDv+0jLaHd1L/85FDUkz0bCiPSmEZO2sBmi2tV8DlYYTtl6w7UhJwSVi1QuAmE4SRxRQLe5a5fhaybuQkXMd42MA+xMk+F+p0Cax1LzApgVX8U7MO0QqXkyTOUdH6V95zPLH/YQBTgm88imRka7XL+r102ZaKIwxlNWj33mBfSoWISb2WY2fv21NJjlc5GhxzLtEhIQO0V+Ts5/6+4zj7qd9mEYJMXfV/b12YdQvrP/oaEfLlpE3kWBWpQGej+0nBRejg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GmZUrVpGfEJ59lRSIXAvY5onhgzud1PIFsQEvvzVRQk=;
- b=M4ojymt1rztT8QhkKYbVsKlZEPHSpVFBEb/Si0YYcOmFHBku1LA5NYLFhObzZ2OJjz77uxgaYJZ4ytvQVjVkfzt95Qr0boMjkHBw+l8V9OKDzYBU5snvEIC6VjfkLifGB6u8w/V6TdE3l8SXidEYWQk0nSlqOCc3kjyvRBBUyaP9Uj1i0IMneUmdIuztnTRE3IJPQt31tghoyfiFm0kmq29BNOjpLocw0OF4zWc31cVIoOWwkmNHwc2st7ofKQjFCi+39p/Bl0MQFe8VWzk4Z9zwVgMgPAgP7hxUTgBlDPFj591CVXBRRDEayWQ7li4aFrbGzJ6vt5apZUx2QSx9Ew==
+ bh=bfon7ZI9HO3XVJZvX1uPqxXuw3YMfYeP49xztl1VD/k=;
+ b=KqN5PaYvWbp0JM9l0pCbvvDtqqdmDs5vsSnYPW6VvgamJZbOANfAr+or8VItltksE2FA9yymNBmwFQ22t1wLZUHcsaq4SiWXmrktwTVB43wc073FPcIwmsq6aq/P3ZdaY9B1EpGC12fAc7Og+3XZZbXHpf5ktmN3rR5IFmdrZOLHLHmMpkzTtzSp4CLFc4N9Y3jR/PgweD9y3mlfUQcEOs5KKQilU2rOF6hIxYc3Lq9f5s/4qIxWI2bjSE8TXLsuFYUKBiWhJ1WL9BRJRXZD0ONI88W9lTD6Kuq98/qMR/2jlMQwQEyeAzSNNqvSHtYPetabToWdn9KykS54q0yGbQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GmZUrVpGfEJ59lRSIXAvY5onhgzud1PIFsQEvvzVRQk=;
- b=oAy/uqhf/EvE0PfHS2JXcYHCEmaFf++++dRZqux0zUv5o7OAccE7a7Ypcq7RFiVG6zDX9kMSY7tKLuh+UZwiwC/Ay8gj2WOthA2YCPwmL1Bm1HNRyt+tgiUrkD9Fi6IFqlWsMSF8yRVkSdVbJDPsfGcgFLBZkQyBbXfG/amlBpQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
- by PH0PR12MB7095.namprd12.prod.outlook.com (2603:10b6:510:21d::9)
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6348.namprd11.prod.outlook.com (2603:10b6:208:3af::16)
+ by SJ2PR11MB7574.namprd11.prod.outlook.com (2603:10b6:a03:4ca::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.32; Wed, 3 Jul
- 2024 03:14:02 +0000
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::e0e7:bd76:e99:43af%6]) with mapi id 15.20.7741.017; Wed, 3 Jul 2024
- 03:14:01 +0000
-Message-ID: <506bdf60-47c4-41a8-aec4-b9a21dbdd17a@amd.com>
-Date: Tue, 2 Jul 2024 23:13:53 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/amdgpu: add amd dispatch subtest
-To: Jesse Zhang <jesse.zhang@amd.com>, igt-dev@lists.freedesktop.org
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Jiadong Zhu <Jiadong.Zhu@amd.com>
-References: <20240703030931.925386-1-jesse.zhang@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.33; Wed, 3 Jul
+ 2024 05:11:45 +0000
+Received: from IA1PR11MB6348.namprd11.prod.outlook.com
+ ([fe80::4db5:b0d9:b6b3:bb52]) by IA1PR11MB6348.namprd11.prod.outlook.com
+ ([fe80::4db5:b0d9:b6b3:bb52%2]) with mapi id 15.20.7719.028; Wed, 3 Jul 2024
+ 05:11:45 +0000
+From: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: RE: [i-g-t V2 3/4] tests/kms_vrr: Cleanup in creating the virtual mode
+Thread-Topic: [i-g-t V2 3/4] tests/kms_vrr: Cleanup in creating the virtual
+ mode
+Thread-Index: AQHaxe0AQvrAO9FMdEuOcz3cmfCyQLHkgrqQ
+Date: Wed, 3 Jul 2024 05:11:45 +0000
+Message-ID: <IA1PR11MB6348528AD031C37CCB83A6A9B2DD2@IA1PR11MB6348.namprd11.prod.outlook.com>
+References: <20240621084711.68444-4-bhanuprakash.modem@intel.com>
+ <20240624040611.172063-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240624040611.172063-1-bhanuprakash.modem@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20240703030931.925386-1-jesse.zhang@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YT4PR01CA0462.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:d6::13) To PH7PR12MB6420.namprd12.prod.outlook.com
- (2603:10b6:510:1fc::18)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6348:EE_|SJ2PR11MB7574:EE_
+x-ms-office365-filtering-correlation-id: a16786cb-5b2b-410a-7318-08dc9b1ea26e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?7RDQAQyTPjtte59afeC45d5WOG8KI8B9OVmXUUPbL01unKVMyyqnL6FPs6bb?=
+ =?us-ascii?Q?k+EPlvIH3r5m2PlkXvF+oQKrBeMC3B2PkzJGsRdqz8dXe6IY4PfK9Qc743x6?=
+ =?us-ascii?Q?4ubAUes3vZnmHTDshTEuLyyavJx1su0wadWALFIFxNht7BV9N5aiQuU8TSaG?=
+ =?us-ascii?Q?W8LtIMitDDSwGyRG0hNzvto0SFv+2R+pYh2Qbbtir5oKjm0Hl2i6oQ088/AH?=
+ =?us-ascii?Q?wbSYGU1xAaQs/cVoh7pc0Y3Erm7KxFE5A+Wy1CM5YeqtTjmVQXXSTGMOCryL?=
+ =?us-ascii?Q?e0zH9Ubp/CtVLJfJVamDdWCVRZWSi4fQ9bw0CUmNUPh2jM64Gi/3J5gARC9t?=
+ =?us-ascii?Q?bvrLJZAHTQYEFcXaGsnSWCqueWyxGJR8XsyHeIVPPrAcuSx6nPf3MNX7N4K+?=
+ =?us-ascii?Q?EpHbLpP0xPANrQ+xwosAbRrr28YKvxOIin7e7jwzoniWffQIT2lBe6KNxWv0?=
+ =?us-ascii?Q?QM0rz3SiTcrcB/bS/AafiA5heDNa6WRS1KcINXNI849bSNXYoDG7+15tSuUH?=
+ =?us-ascii?Q?HUHn+php8e4ffQ52lt1C8yBwfa8L87G2VRAsY5onZ6Bwrwa3YA0MD6oDl7mZ?=
+ =?us-ascii?Q?YSW3sys8rlVk+qyvII9lYi5Ed2/OFtjne83X584NNpKN4bYPw5EI2rnWfvWS?=
+ =?us-ascii?Q?S0ttd5NQGe3A2rqD+M4FNGoKvG6Hv3W2sikuvmCUON4330ZosnkG1wXJadCN?=
+ =?us-ascii?Q?76ScOP8kRIKptSIBW2L6gCSwpTel8XfiK1arhNLNkWVhH38c0QneC2ieEY56?=
+ =?us-ascii?Q?E+jB5TQD4K17CuyxZozjG1aMLA7/bmjsgrsX98y035+8i25p5yNfj094pJBu?=
+ =?us-ascii?Q?y0dTww7gq2htY3nmGy453chNcudpU4TAuKNjNj9V7/mP8yk7YCnW0x0rnN7n?=
+ =?us-ascii?Q?Ry17+ZYnYP5+Ch9cwg3J/Smdh1lXG7Vi73HWsaDlHdfE8fQan/banKKk4O3q?=
+ =?us-ascii?Q?70NTSkgb6Is5FDePMX0yLAzWnuxPq5BB+VclGBQPFD4HTBIsKTjohA12W2rW?=
+ =?us-ascii?Q?PxfdrQqFV3L6gyCTg3yI26pa1MgZkyb6tY4/J2XCdZjFazm51NOmYNIsxsSZ?=
+ =?us-ascii?Q?fIlLI9dfUdsphMw8reEKG1ljQ3m2kVRGIbi5BecobRWdOlWhS+e8DRDGkuM6?=
+ =?us-ascii?Q?M8mciPhH9Lt/6kqH0U3O2eX5DUMT85uQOxZkLSMBlfpKwhtKT34RNIaJ00Ye?=
+ =?us-ascii?Q?Z6BzLnMjKTipynD+kkNeFxWT8Gz305xi5If77RW41BBcC+d6ijOtC2aCi/iX?=
+ =?us-ascii?Q?o2gYBU2BN+Fk8OI64Sjs1FMlPY7hmAWWRDVdfCuiZdYuFmu/dOMXP5jtHLlo?=
+ =?us-ascii?Q?Mm5QZyeSh51MlZul+jqo+xuZnnuWP15mpeCEv/WPfS0yO0b/sPdvyKTkvZHP?=
+ =?us-ascii?Q?9shfplJcN95ihTx4UXBiyIDtlECivHy5j40mvjwPovur16sl3g=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR11MB6348.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?agDws7ZCle0MyXN5LI6untOKJcW/MPz8BrUXKEy3jZZPFK12XrUVjUqfa2op?=
+ =?us-ascii?Q?LC0cr0znssBAeKNaAWXBAfsrNW8nah1r5FrMt1MPBfqhWv2kmGPwyrAgXmeZ?=
+ =?us-ascii?Q?vpfj4DodzysM061VsGceR3bZPBTT11CWqme57z6GYf42tl4ppe9SdsdG21iz?=
+ =?us-ascii?Q?JYnHmqiFJvX0u+5IEd6gyVnqFKr+6EEyGIrO0DGtQ5OyphSyW3b2LgejgKbp?=
+ =?us-ascii?Q?24WHCAx3DSiL1SN0G7wp+F0aIszcrP/57jJrrmGsdRadxHyYPGaZh2GpZ4gN?=
+ =?us-ascii?Q?ssYjd7pFuR9GvhO8r2tiwJCbbaKbqR7s0+9/c8uv4U2pG3n5QNHnn95QIpbo?=
+ =?us-ascii?Q?/jp3DN0zUaI6zb1BvnnmAqKrlCVpvRo/onlhoPDguoORmnY5CpQKtRkl4NLc?=
+ =?us-ascii?Q?5peKzoL1cMV9fXLAjM92GnbxqJq3CI9E2IsBShL9SF6BYHFcKCZD2jTwuqyj?=
+ =?us-ascii?Q?MN2eth3942yEtpL0qfWJ/GnkpkTFp1glkawLPn6hgnDK3DC6kpJq2y24OeVk?=
+ =?us-ascii?Q?A8O3fizAaCVwZKfnjc54UBk1F91+Yk1/cqEsZ5eboZIxqmHaQ5LhuvX1dCJx?=
+ =?us-ascii?Q?Ty4+riAztrw6DkjyARktSI30wNAtkyRLus72rcuG6NhR7d+KaX5XGZrcMZTQ?=
+ =?us-ascii?Q?mWt+ecDvVpWhcDVBZyX6MFg7ZxXv0n0F4UnLXIESL4Mr9RrV4Cdgruy8+ci7?=
+ =?us-ascii?Q?4zFh8UtjprPwGyfRq+Xu21ijz/A5Fa/8SBSx6Idam9EpK1JjOTwMSb3keqwK?=
+ =?us-ascii?Q?t+Mq0BFP4QM2zlVrfJykrLHuyWQzxrPaL8d6gqkSbWRO6eS/Jw9Y74jRkDS4?=
+ =?us-ascii?Q?oEKbQAOKnxRac3biUVCy3/x/dfGdIHmHEMI4sGQgt9fSVM+hQ3BzZrbBOEm/?=
+ =?us-ascii?Q?eyQF4C01vHZeqNHyNIJxldyLuZbILZ0DCxc859S/vi/AerKzVP0vVtDcdv7b?=
+ =?us-ascii?Q?BK3C30JiY8TAr6zpNCx6h9Bai3qScfr4oQucw+P4Bj65EB18PjsENlRem0II?=
+ =?us-ascii?Q?L5rZCn1apEnfB+wXgMe/G54Dew/UEyTXQXgfnYiN4tGZlNcdOeXR0wNvlksg?=
+ =?us-ascii?Q?bGb/v44tpGnFD3VJUKGId0as4O+rCmc2X8mRAp5/cDR2uYeQQtKj+QfwvyKc?=
+ =?us-ascii?Q?reJw44WNCzUyOtdhBa3ZfULU14H1XoAENXratnQqEan6CDfMuAnhkkoDFdZw?=
+ =?us-ascii?Q?7IXLjg2W8JPiNBoJEeflnbrlm1Qi5JjhPxDkWQiPTx+CiitwBzLxFNjidkyX?=
+ =?us-ascii?Q?g6dxMfsVcNULo56z0FLICz/NYGlOsEl7nazs+Vv2IuqPa2oQxDOFbJrnPdGg?=
+ =?us-ascii?Q?CfrBfLhTmnGz+UQf/gllYrsPvuzXRTK8R7dlUFb3DmDQcdsdRntLQiPtevuG?=
+ =?us-ascii?Q?M9G/04Ci38GXolJnzU/7nB160AHAGyhE1KobqFHLEj5q7zIGpFmqK0WXlD3O?=
+ =?us-ascii?Q?QSwYl1pWuaGwyKQlhyKJewo2Dt14d8Xysj8vCS+dBTZCERskGlzpHGRbRsed?=
+ =?us-ascii?Q?c9nAjpQ61VYAGJLUkVDKyCh4BRcoSvy9FXoazsPR6DSIVEz7A5FPvE1JKPUC?=
+ =?us-ascii?Q?ci7YWBOMS7NcDELJng/Co43JYCd/Ej4xF6o1KFeHy0X37gTsdeZ1mwFl2D92?=
+ =?us-ascii?Q?rWhWuFNk6cY4Ovg4ZMRNxjA=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|PH0PR12MB7095:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc329767-5e97-4138-ca27-08dc9b0e2fa3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?Rk5NT1dlM05vbmtFR28yYlNxcmhjdFJPdkI0Y2QxaGIxYmxnTTgyTTRZUlQ1?=
- =?utf-8?B?c2RHRFUybnduenBhRHVLMEIyOHNnQkNsQWprdHlRbjRnWElnN3dGRE1wRkp1?=
- =?utf-8?B?TE9sQmt6ZXAvby9uTmN0cU9CaEN3SmhRaCtKL1A1Y0VsaEx2Q2lRcVFJUi9t?=
- =?utf-8?B?VkRZRHNCcWpIdlhqYU5mN0xibCtFek82YjB1R2d2M3d2SnJINXpROHJkakdx?=
- =?utf-8?B?dkZnY0FycHlXN3Vvd3NaNXlPeU9jNDRwT2ZlQjNjWHdLYStRZE1rdXJPN1Iv?=
- =?utf-8?B?TGt6bFlmZ2hpbmpIRi92R0hlSFQ2S2p3dnVwSDdzR3AreUo0Y3ZRSkdhRUpj?=
- =?utf-8?B?czFrb3NlaTFjM1BaTWovckNpZ3JQT1NlWVpzOVdLZzVxUmpSY1c2dTlBQWNq?=
- =?utf-8?B?Q2tpRFduMjQ1T2ZOc1F1M2w5cmFiR3JMSzNnZ0ZKUFJTTHlESm5JeTVpTUgy?=
- =?utf-8?B?K1BqZTkwZk5MdkI2RHh4eTQ3Ym1xVjhLL1ZSRlVaQjNmUE1uZ3VETDErNFhL?=
- =?utf-8?B?RnF1emJoTXU0ak5ld1ZEdHhFU3pqTy8za1lSK0FZRFB3dlpmUmNPNzhwc2p4?=
- =?utf-8?B?clhuU1BFd0lFbXgwcjNtYjhmanloOGs2cC81Uy9KRzlaR3FJSFppSWlBWW1x?=
- =?utf-8?B?NUlycDZuUWh2dWpvbmZKK3JVVDJSbGxJSEM5ejQrTmRjT1l2ZVlHVngyVE1U?=
- =?utf-8?B?ZDV3WGUwcmVUN3JJcFFMbnNETG96cy9VT3lNK3VncDZTRzFHMkVjVHE2N1hH?=
- =?utf-8?B?NnN5aWNEUzN6aDdtQW9LZFNNSG0xS1ZMRFpBUFFuVE9GQUlHYitUcUc5bVNS?=
- =?utf-8?B?UkZvOTgwaHdlT0VBZEVLazJiZzZaVWJWMGRPNnFrNTZjbEZibDhkUDV4NzMr?=
- =?utf-8?B?R1BHYlBFdlo1NUFTazNoc2JCR3RVUkRUc081NTZFb0JINUVJWnBLSHZwOXRO?=
- =?utf-8?B?MHNkREVXN3k2SXNaVDFDRGlRYjBTek83Qk9Wd1hSeDVlY2poMCtHSDVGWkpq?=
- =?utf-8?B?VEF0YjhOQUNoM2ZHanZydktNamxxMTBSckNTQ2ZqNFVwdUNFVlhyZjZoeUYv?=
- =?utf-8?B?cmFIcGZKYUZtZm9rWm9PTUE1R3NxWm9DbWN1T0F2cnhwRGpMS3dBVktYaXIz?=
- =?utf-8?B?VHg5eWxWenBVUTl1MjdjVlZzZzdHQUdicW5YT0NZWkpkRkNzQkthZ0FOZ3JN?=
- =?utf-8?B?Z2pXSjA2UE9aNE1WRy84dkNRcEZoK3hid09CY04wOWpHUlNUcHBlcFovU3Nz?=
- =?utf-8?B?Wk41eWtmdmp5TS8yOVVVbmhSQTY1VmxlbVNnZFhTcFkzNE41ancrOU1pUzFs?=
- =?utf-8?B?Y1hEU2owaGdEcnhibTY3Szg3cXA0dmZVWHpoaG15K2FEMGVNV0Vlem9jRTQ3?=
- =?utf-8?B?U0NlZllzT0tLSUdCR3hxMHBOSkxFNkREVURSbTN6dUo0Zy9MUEtVb0pFSFlG?=
- =?utf-8?B?SElmR0hGcU51c1F2a2Jmc0x4UG0ybk1ia2hzWk5IUGtFS25lbWNrVStGa0pS?=
- =?utf-8?B?azJlcGdMdElmV1JmQ2x0MEVHSytZaU5rVHkxdzU4TFZwREtPSTVGVWMvYUQy?=
- =?utf-8?B?Q1pKS1ZoWGhiWDZYdDN1UEdYWVFyNGpVUmNWdGlFSldNYzJXODBTQnY1REFt?=
- =?utf-8?B?ckVlamhjeEdXWFZZQmJJWXVNNlcrNzhTdHJBRVdMaTdUWVpNSUg1UUlyRTc3?=
- =?utf-8?B?cmk0eldyZWxRd21UT29xM1A1M3J3bTg4WHpIM1EvUk5aZmptWDJGMlRnbGFG?=
- =?utf-8?B?Y0JpOHg1S2dSRVpQOHdJdmNZRlJUdFI3WlFhSEZHUVVRUGdUY1d3UmdaZVEy?=
- =?utf-8?B?cllXaFVCemZKL2VxR3Mrdz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q0c2T095VHhzZ0c0Q2k3NXc3N1FQWHRYa0NiZjFzZzAxNjJnV3VXaHczVWtw?=
- =?utf-8?B?bWFveDBiTHlnaXhBUEJ3YVhmV1dQQVBuQmhnTVhvQXZ2SFRkNDh4NFI0TGRm?=
- =?utf-8?B?SDFweFp5bXRBUVltWkVaRmg2Ym5DTmYyckFQdnh3ZXI3Q3VlTHBsREtHYlBJ?=
- =?utf-8?B?TWdFV3lRb2hYWFZEdE1TTEpNNGgxVHJxWG1XU1pGaGNkT09sWUczUkY5Rlpa?=
- =?utf-8?B?cFR4Ums5SGVzN3FZMGExZWFGRmRZcmRET3lIQkNuWlpUY3dDOG9nYWo3d3Bl?=
- =?utf-8?B?MUdQbklabWc1RmJyRTNkazdtODNSRG5KdXlvdGo0ZXVxaEFvL1VMSFQyY2ZP?=
- =?utf-8?B?dmhsOEJ5N3dXenBzUnN5eU5VbFJKQkZhYSsxcjcvWkZXUW84b2JiRU5SdkE5?=
- =?utf-8?B?OFliTGFZTmhkMVl2c3lndWFpa1o4elA2Y0Jua2orMnluem1LSDhmZ0ZoaHh5?=
- =?utf-8?B?ME5LTXBxa1B0N3VIU1lnRVB6TFl4NE42NFp3RjN3WjlzQWFkN1hja2lQc2tG?=
- =?utf-8?B?bFkwUG01N1NHZk5DczZVRGJuazRqT1NPRm1zVUE5M0kvcHVqZDZTUVFNN1Ez?=
- =?utf-8?B?d01QTnVHSkJRMFdxSXBWZk5LMG5EMU5sMW02OWh3RWVqaHBQN3ZKV1FzWGVC?=
- =?utf-8?B?U2x1ajJEYVVDL0g4dS90clNCbnlITXZZOVJNSXd1MG0rdzkra2Rsc2NjbjlX?=
- =?utf-8?B?OGJyQk9PMFRYelZUL3E3czhpNnpOcEt3eWtZYnYwdnFmb2IxYno0ZWh4cGlB?=
- =?utf-8?B?SVFGbndLM3RHa1g2NkJoQlV2K2J1M1pENjBhZlNaOUJ6S0I3UVhBekpJSUdU?=
- =?utf-8?B?Q0NNdlFDclRTdnkzcE5ObFF5SGg0L3hFbUFLRldkeE96R3BYSExldmUrZld3?=
- =?utf-8?B?d25iKzErMURuZnRNdkdQb0FvbE1nSzBxdlJZNytwNTdMempJbVBtVDNzWExE?=
- =?utf-8?B?SmpJVTJpd0VVYXJubTlZYTYzUGFuYzkwTVd3TFRVSG52MUphakNzMktVaHBL?=
- =?utf-8?B?K1J2Y25YeW5wRWlQckIzS1Q4K2llVzRBQkNvbDZUcGZlbTd5UnMzSGN6Y3pk?=
- =?utf-8?B?M3dBR1l4MUt3bEhJVDJhVlRLUUNwdWh5QWk5L2tDN1FMdUJ2TmdMUzVZQzRY?=
- =?utf-8?B?WFVCU1RqTm5CVkN0Sjdodm12Qnh3aC9vUFN1emFGOU5HQTh4VXJWdFlMNVg4?=
- =?utf-8?B?UWxTMWlhOUgwRGlENWZWWXpVRFJlVFpjWTZEM1BESm1WUVAyVGp3SjBwQ3Jr?=
- =?utf-8?B?YVFxc3ZycDgxMUtWMEVEZXY5SFE4UnZiOXZJUDhCa1lUSCtsT0Z5UWowd3JJ?=
- =?utf-8?B?eVZodlQrWmJTTmRmaGxwcCtIRlVPWDdoRXhTWVVtMFd6U3pCcTRjampQcXNF?=
- =?utf-8?B?OURxTWVHTDdvb1BIKzVHUEtwRCtNakhhRkFNS2hwUG44N0ZETzlQcjg3V2Jp?=
- =?utf-8?B?bHFpN1o4TjNqbGgxNE9ZNm5oeHByVVRTd2ZMN3ljS2ZGQ1I4bkEzc3N1N3dk?=
- =?utf-8?B?dDc1VVdQT0hBZzFsMmVRTnU3VjJDN3BPNEdIdEFmOFFlSTJwTTlvWU9jaXVK?=
- =?utf-8?B?QWRxc2ZGeU56d0VEVENSenFpMk44eDVHb1hxcUZHaEM3MERTbTY0cGZGdGRU?=
- =?utf-8?B?RTlOcXNDNVdESXVjdTBtSFU4QVdtWmNrcnRaWHAxSzdlTE4xV3VNa1FnbkpQ?=
- =?utf-8?B?aFF2Tk1YNGFHRW5rZklHaTNqYjVqNUY3K1ZxY1FKckRkVEtUN09udG8vQm9w?=
- =?utf-8?B?ejNjTnh1Q0NDdW5KY1FaMm5VQnVveGgrQUp5c0xPaCtFN1JOMDFwR1NWSUMv?=
- =?utf-8?B?MUpsbW5aR1Yzb0ZQc05VNEc0cVlNUERiUzYwb2pvV21ITUxvUGIvMTdhZGFZ?=
- =?utf-8?B?RXlUcUJoSC8yMjNoR3pUU1FHc2xVa3NxSHBMTU5iTFYwZ1dwK1VhM0RRZTlP?=
- =?utf-8?B?UTlHZ2xIM3ZPdDJpZ0hKcXp5V0NZWkRWbGxFdDdwMlFvY0EzVWdjZCs2WnhI?=
- =?utf-8?B?aHZLa2NlRkJENUZGSjdtT1dlRFIwTEhzcklkYkRDZmh5aTFIYW1XLzRnTm5G?=
- =?utf-8?B?cGUwNm1XWld4VW5mR0JhSUY3TjNrK3pGeGpjbmdNUWlhY2dZbzBlQkZ4b0Nh?=
- =?utf-8?Q?Gfe82GnXhpeseF/tgSUMyZCX3?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc329767-5e97-4138-ca27-08dc9b0e2fa3
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jul 2024 03:14:01.5648 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: emmh/xSVPsTJ3t43Qg0QV4aP8utwJIsXBc4t4gz3aSic3VgSDyg4Fek5StXzj08cPcRuAoGXSrXx6Ikrgkdb8w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7095
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6348.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a16786cb-5b2b-410a-7318-08dc9b1ea26e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Jul 2024 05:11:45.6090 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zKWL+ov7tmJM6xTUkkEchiwhB68d+9A+4h2BNHpHPOfrjMUeYD/nhIPohF4v8f1iscuK4hcgZJXqv9r3y8AwVryYPVOvukHixxFEfdF58JdOVQUPsxVQLX4FnmugQOjk
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7574
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -162,307 +184,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The change looks good to me.
 
-Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-On 2024-07-02 23:09, Jesse Zhang wrote:
-> Add more cases to trigger gpu reset.
-> 1. Using invalid user data to trigger a gpu reset.
-> 2. Use invalid shadow program address to trigger gpu reset.
-> 3. Use invalid shader settings to trigger a gpu reset.
->
-> V2: Rename cases and map them for easier maintenance.(Vitaly)
->
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> Signed-off-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
+> -----Original Message-----
+> From: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Sent: Monday, June 24, 2024 9:36 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>; Manasi
+> Navare <navaremanasi@chromium.org>; Golani, Mitulkumar Ajitkumar
+> <mitulkumar.ajitkumar.golani@intel.com>
+> Subject: [i-g-t V2 3/4] tests/kms_vrr: Cleanup in creating the virtual mo=
+de
+>=20
+> Cleanup the function to create the virtual mode, so that it could be re-u=
+sed.
+>=20
+> V2: - Fix argument type (Bhanu)
+>=20
+> Cc: Manasi Navare <navaremanasi@chromium.org>
+> Cc: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 > ---
->  lib/amdgpu/amd_dispatch.c         | 35 +++++++++++++++++----------
->  lib/amdgpu/amd_dispatch.h         |  5 ++--
->  lib/amdgpu/amd_dispatch_helpers.c | 39 ++++++++++++++++++++++++-------
->  lib/amdgpu/amd_dispatch_helpers.h |  9 ++++++-
->  tests/amdgpu/amd_dispatch.c       | 31 +++++++++++++++++++++---
->  5 files changed, 93 insertions(+), 26 deletions(-)
->
-> diff --git a/lib/amdgpu/amd_dispatch.c b/lib/amdgpu/amd_dispatch.c
-> index df7d56ea7..12ef7874c 100644
-> --- a/lib/amdgpu/amd_dispatch.c
-> +++ b/lib/amdgpu/amd_dispatch.c
-> @@ -70,7 +70,7 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
->  	amdgpu_dispatch_write_cumask(base_cmd, version);
->  
->  	/* Writes shader state to HW */
-> -	amdgpu_dispatch_write2hw(base_cmd, mc_address_shader, version);
-> +	amdgpu_dispatch_write2hw(base_cmd, mc_address_shader, version, 0);
->  
->  	/* Write constant data */
->  	/* Writes the UAV constant data to the SGPRs. */
-> @@ -162,7 +162,7 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
->  void
->  amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  			    uint32_t ip_type, uint32_t ring, uint32_t version,
-> -			    int hang)
-> +			    enum shader_error_type hang)
+>  tests/kms_vrr.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index 2ea90cd8e..7e8885f16
+> 100644
+> --- a/tests/kms_vrr.c
+> +++ b/tests/kms_vrr.c
+> @@ -229,16 +229,13 @@ low_rr_mode_with_same_res(igt_output_t
+> *output, unsigned int vrr_min)
+>  	return mode;
+>  }
+>=20
+> -static drmModeModeInfo
+> -virtual_rr_vrr_range_mode(igt_output_t *output, unsigned int
+> virtual_refresh_rate)
+> +static void
+> +virtual_rr_vrr_range_mode(drmModeModeInfo *mode, float
+> +virtual_refresh_rate)
 >  {
->  	amdgpu_context_handle context_handle;
->  	amdgpu_bo_handle bo_src, bo_dst, bo_shader, bo_cmd, resources[4];
-> @@ -202,7 +202,7 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  	igt_assert_eq(r, 0);
->  	memset(ptr_shader, 0, bo_shader_size);
->  
-> -	cs_type = hang ? CS_HANG : CS_BUFFERCOPY;
-> +	cs_type = hang == BACKEND_SE_GC_SHADER_INVALID_SHADER ? CS_HANG : CS_BUFFERCOPY;
->  	r = amdgpu_dispatch_load_cs_shader(ptr_shader, cs_type, version);
->  	igt_assert_eq(r, 0);
->  
-> @@ -217,22 +217,28 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  					&bo_dst, (void **)&ptr_dst,
->  					&mc_address_dst, &va_dst);
->  	igt_assert_eq(r, 0);
+> -	drmModeModeInfo mode =3D *igt_output_get_mode(output);
+> -	uint64_t clock_hz =3D mode.clock * 1000;
+> +	uint64_t clock_hz =3D mode->clock * 1000;
+>=20
+> -	mode.vtotal =3D clock_hz / (mode.htotal * virtual_refresh_rate);
+> -	mode.vrefresh =3D virtual_refresh_rate;
 > -
->  	///TODO helper function for this bloc
->  	amdgpu_dispatch_init(ip_type, base_cmd,  version);
->  	/*  Issue commands to set cu mask used in current dispatch */
->  	amdgpu_dispatch_write_cumask(base_cmd, version);
-> +
-> +	if (hang == BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR)
-> +		mc_address_shader = 0;
->  	/* Writes shader state to HW */
-> -	amdgpu_dispatch_write2hw(base_cmd, mc_address_shader, version);
-> +	amdgpu_dispatch_write2hw(base_cmd, mc_address_shader, version, hang);
->  	memset(ptr_src, 0x55, bo_dst_size);
->  
->  	/* Write constant data */
->  	/* Writes the texture resource constants data to the SGPRs */
->  	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
->  	base_cmd->emit(base_cmd, 0x240);
-> -	base_cmd->emit(base_cmd, mc_address_src);
-> -
-> -	base_cmd->emit(base_cmd, (mc_address_src >> 32) | 0x100000);
-> +	if (hang == BACKEND_SE_GC_SHADER_INVALID_USER_DATA) {
-> +		base_cmd->emit(base_cmd, mc_address_src);
-> +		base_cmd->emit(base_cmd, 0);
-> +	} else {
-> +		base_cmd->emit(base_cmd, mc_address_src);
-> +		base_cmd->emit(base_cmd, (mc_address_src >> 32) | 0x100000);
-> +	}
->  
->  	base_cmd->emit(base_cmd, 0x400);
->  	if (version == 9)
-> @@ -247,8 +253,13 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  	/* Writes the UAV constant data to the SGPRs. */
->  	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
->  	base_cmd->emit(base_cmd, 0x244);
-> -	base_cmd->emit(base_cmd, mc_address_dst);
-> -	base_cmd->emit(base_cmd, (mc_address_dst >> 32) | 0x100000);
-> +	if (hang == BACKEND_SE_GC_SHADER_INVALID_USER_DATA) {
-> +		base_cmd->emit(base_cmd, mc_address_src);
-> +		base_cmd->emit(base_cmd, 0);
-> +	} else {
-> +		base_cmd->emit(base_cmd, mc_address_src);
-> +		base_cmd->emit(base_cmd, (mc_address_src >> 32) | 0x100000);
-> +	}
->  	base_cmd->emit(base_cmd, 0x400);
->  	if (version == 9)
->  		base_cmd->emit(base_cmd, 0x74fac);
-> @@ -401,7 +412,7 @@ amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
->  	amdgpu_dispatch_write_cumask(base_cmd, version);
->  
->  	/* Writes shader state to HW */
-> -	amdgpu_dispatch_write2hw(base_cmd, mc_address_shader, version);
-> +	amdgpu_dispatch_write2hw(base_cmd, mc_address_shader, version, 0);
->  
->  	/* Write constant data */
->  	/* Writes the texture resource constants data to the SGPRs */
-> @@ -536,7 +547,7 @@ amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
->  	}
+> -	return mode;
+> +	mode->vtotal =3D clock_hz / (mode->htotal * virtual_refresh_rate);
+> +	mode->vrefresh =3D virtual_refresh_rate;
 >  }
->  
-> -void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type, int hang)
-> +void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle, uint32_t ip_type, enum shader_error_type hang)
->  {
->  	int r;
->  	struct drm_amdgpu_info_hw_ip info;
-> diff --git a/lib/amdgpu/amd_dispatch.h b/lib/amdgpu/amd_dispatch.h
-> index 4df8b1355..5f05ee693 100644
-> --- a/lib/amdgpu/amd_dispatch.h
-> +++ b/lib/amdgpu/amd_dispatch.h
-> @@ -25,15 +25,16 @@
->  #define AMD_DISPATCH_H
->  
->  #include <amdgpu.h>
-> +#include "amd_dispatch_helpers.h"
->  
->  void amdgpu_gfx_dispatch_test(amdgpu_device_handle device_handle,
-> -			      uint32_t ip_type, int hang);
-> +			      uint32_t ip_type, enum shader_error_type hang);
->  
->  void amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
->  					uint32_t ip_type,
->  					uint32_t ring,
->  					uint32_t version,
-> -					int hang);
-> +					enum shader_error_type hang);
->  
->  void amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
->  				      uint32_t ip_type);
-> diff --git a/lib/amdgpu/amd_dispatch_helpers.c b/lib/amdgpu/amd_dispatch_helpers.c
-> index b0a5f550e..6b2e8f39f 100644
-> --- a/lib/amdgpu/amd_dispatch_helpers.c
-> +++ b/lib/amdgpu/amd_dispatch_helpers.c
-> @@ -114,7 +114,7 @@ int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base * base, uint32_t version
->   }
->  
->  
-> -int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr, uint32_t version)
-> +int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr, uint32_t version, enum shader_error_type hang)
->  {
->  	static const uint32_t bufferclear_cs_shader_registers_gfx9[][2] = {
->  		{0x2e12, 0x000C0041},	//{ mmCOMPUTE_PGM_RSRC1,	0x000C0041 },
-> @@ -123,6 +123,7 @@ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr
->  		{0x2e08, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Y,	0x00000001 },
->  		{0x2e09, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Z,	0x00000001 }
->  	};
+>=20
+>  static bool
+> @@ -741,6 +738,7 @@ test_seamless_virtual_rr_basic(data_t *data, enum
+> pipe pipe, igt_output_t *outpu
+>  	unsigned int vrefresh;
+>  	uint64_t rate[] =3D {0};
+>  	uint32_t step_size;
+> +	drmModeModeInfo virtual_mode;
+>=20
+>  	igt_info("Use HIGH_RR Mode as default\n");
+>  	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
+> @@ -767,8 +765,10 @@ test_seamless_virtual_rr_basic(data_t *data, enum
+> pipe pipe, igt_output_t *outpu
+>  	step_size =3D (data->range.max - data->range.min) / 5;
+>=20
+>  	/* Switch to Virtual RR */
+> +	virtual_mode =3D *igt_output_get_mode(output);
 > +
->  	static uint32_t bufferclear_cs_shader_registers_gfx11[][2] = {
->  		{0x2e12, 0x600C0041},	//{ mmCOMPUTE_PGM_RSRC1,	  0x600C0041 },
->  		{0x2e13, 0x00000090},	//{ mmCOMPUTE_PGM_RSRC2,	  0x00000090 },
-> @@ -131,6 +132,14 @@ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr
->  		{0x2e09, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Z, 0x00000001 }
->  	};
->  
-> +	static uint32_t bufferclear_cs_shader_invalid_registers[][2] = {
-> +		{0x2e12, 0xffffffff},	//{ mmCOMPUTE_PGM_RSRC1,	  0x600C0041 },
-> +		{0x2e13, 0xffffffff},	//{ mmCOMPUTE_PGM_RSRC2,	  0x00000090 },
-> +		{0x2e07, 0x00000040},	//{ mmCOMPUTE_NUM_THREAD_X, 0x00000040 },
-> +		{0x2e08, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Y, 0x00000001 },
-> +		{0x2e09, 0x00000001},	//{ mmCOMPUTE_NUM_THREAD_Z, 0x00000001 }
-> +	};
-> +
->  	static const uint32_t bufferclear_cs_shader_registers_num_gfx9 = ARRAY_SIZE(bufferclear_cs_shader_registers_gfx9);
->  	static const uint32_t bufferclear_cs_shader_registers_num_gfx11 = ARRAY_SIZE(bufferclear_cs_shader_registers_gfx11);
->  	int offset_prev = base->cdw;
-> @@ -146,19 +155,33 @@ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base * base, uint64_t shader_addr
->  	if ((version == 11) || (version == 12)) {
->  		for (j = 0; j < bufferclear_cs_shader_registers_num_gfx11; j++) {
->  			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-> -			/* - Gfx11ShRegBase */
-> -			base->emit(base,bufferclear_cs_shader_registers_gfx11[j][0] - 0x2c00);
-> -			if (bufferclear_cs_shader_registers_gfx11[j][0] ==0x2E12)
-> -				bufferclear_cs_shader_registers_gfx11[j][1] &= ~(1<<29);
-> +			if (hang == BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING) {
-> +				/* - Gfx11ShRegBase */
-> +				base->emit(base,bufferclear_cs_shader_invalid_registers[j][0] - 0x2c00);
-> +				if (bufferclear_cs_shader_invalid_registers[j][0] ==0x2E12)
-> +					bufferclear_cs_shader_invalid_registers[j][1] &= ~(1<<29);
-> +
-> +				base->emit(base,bufferclear_cs_shader_invalid_registers[j][1]);
-> +			} else {
-> +				/* - Gfx11ShRegBase */
-> +				base->emit(base,bufferclear_cs_shader_registers_gfx11[j][0] - 0x2c00);
-> +				if (bufferclear_cs_shader_registers_gfx11[j][0] ==0x2E12)
-> +					bufferclear_cs_shader_registers_gfx11[j][1] &= ~(1<<29);
->  
-> -			base->emit(base,bufferclear_cs_shader_registers_gfx11[j][1]);
-> +				base->emit(base,bufferclear_cs_shader_registers_gfx11[j][1]);
-> +			}
->  		}
->  	} else {
->  		for (j = 0; j < bufferclear_cs_shader_registers_num_gfx9; j++) {
->  			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
->  			/* - Gfx9ShRegBase */
-> -			base->emit(base,bufferclear_cs_shader_registers_gfx9[j][0] - 0x2c00);
-> -			base->emit(base,bufferclear_cs_shader_registers_gfx9[j][1]);
-> +			if (hang == BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING) {
-> +				base->emit(base, bufferclear_cs_shader_invalid_registers[j][0] - 0x2c00);
-> +				base->emit(base, bufferclear_cs_shader_invalid_registers[j][1]);
-> +			} else {
-> +				base->emit(base,bufferclear_cs_shader_registers_gfx9[j][0] - 0x2c00);
-> +				base->emit(base,bufferclear_cs_shader_registers_gfx9[j][1]);
-> +			}
->  		}
->  	}
->  	if (version == 10) {
-> diff --git a/lib/amdgpu/amd_dispatch_helpers.h b/lib/amdgpu/amd_dispatch_helpers.h
-> index a129e8e07..7ae88cd78 100644
-> --- a/lib/amdgpu/amd_dispatch_helpers.h
-> +++ b/lib/amdgpu/amd_dispatch_helpers.h
-> @@ -25,6 +25,13 @@
->  #define AMD_DISPATCH_HELPERS_H
->  
->  #include <amdgpu.h>
-> +enum  shader_error_type {
-> +	BACKEND_SE_GC_SHADER_EXECSUCESS,
-> +	BACKEND_SE_GC_SHADER_INVALID_SHADER,
-> +	BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,    /* COMPUTE_PGM */
-> +	BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING, /* COMPUTE_PGM_RSRC */
-> +	BACKEND_SE_GC_SHADER_INVALID_USER_DATA /* COMPUTE_USER_DATA */
-> +};
->  
->  struct amdgpu_cmd_base;
->  
-> @@ -32,6 +39,6 @@ int amdgpu_dispatch_init( uint32_t ip_type,struct amdgpu_cmd_base *base_cmd, uin
->  
->  int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
->  
-> -int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version);
-> +int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version, enum shader_error_type);
->  
->  #endif
-> diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-> index 323284306..00564903f 100644
-> --- a/tests/amdgpu/amd_dispatch.c
-> +++ b/tests/amdgpu/amd_dispatch.c
-> @@ -10,6 +10,7 @@
->  #include <sys/sysmacros.h>
->  #include "lib/amdgpu/amd_memory.h"
->  #include "lib/amdgpu/amd_command_submission.h"
-> +#include "lib/amdgpu/amd_dispatch_helpers.h"
->  #include "lib/amdgpu/amd_dispatch.h"
->  
->  static void
-> @@ -31,9 +32,9 @@ amdgpu_dispatch_hang_gfx(amdgpu_device_handle device_handle)
->  }
->  
->  static void
-> -amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle)
-> +amdgpu_dispatch_hang_compute(amdgpu_device_handle device_handle, enum shader_error_type error)
->  {
-> -	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, 1);
-> +	amdgpu_gfx_dispatch_test(device_handle, AMDGPU_HW_IP_COMPUTE, error);
->  }
->  
->  static void
-> @@ -125,7 +126,31 @@ igt_main
->  	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE") {
->  		if (arr_cap[AMD_IP_COMPUTE]) {
->  			igt_dynamic_f("amdgpu-dispatch-hang-test-compute")
-> -			amdgpu_dispatch_hang_compute(device);
-> +			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_SHADER);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test GPU reset using a invalid shader program address to hang the job on compute ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-program-addr-test-compute-with-IP-COMPUTE") {
-> +		if (arr_cap[AMD_IP_COMPUTE]) {
-> +			igt_dynamic_f("amdgpu-dispatch-invalid-program-addr-test-compute")
-> +			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test GPU reset using a invalid shader program setting to hang the job on compute ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-setting-test-compute-with-IP-COMPUTE") {
-> +		if (arr_cap[AMD_IP_COMPUTE]) {
-> +			igt_dynamic_f("amdgpu-dispatch-invalid-setting-test-compute")
-> +			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test GPU reset using a invalid shader user data to hang the job on compute ring");
-> +	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-user-data-test-compute-with-IP-COMPUTE") {
-> +		if (arr_cap[AMD_IP_COMPUTE]) {
-> +			igt_dynamic_f("amdgpu-dispatch-invalid-user-data-test-compute")
-> +			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_USER_DATA);
->  		}
->  	}
->  
+>  	for (vrefresh =3D data->range.min + step_size; vrefresh < data-
+> >range.max; vrefresh +=3D step_size) {
+> -		drmModeModeInfo virtual_mode =3D
+> virtual_rr_vrr_range_mode(output, vrefresh);
+> +		virtual_rr_vrr_range_mode(&virtual_mode, vrefresh);
+>=20
+
+Changes LGTM.
+Reviewed-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+
+>  		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz):
+> \n", vrefresh);
+>  		kmstest_dump_mode(&virtual_mode);
+> --
+> 2.43.2
+
