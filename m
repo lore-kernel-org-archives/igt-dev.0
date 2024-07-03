@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCBFBC2BD09
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 14:41:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A222C2BD09
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 14:42:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 816B210E021;
-	Wed,  3 Jul 2024 14:41:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E2DAF10E135;
+	Wed,  3 Jul 2024 14:42:45 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E88AF10E021;
- Wed,  3 Jul 2024 14:41:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15C5510E123;
+ Wed,  3 Jul 2024 14:42:45 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Add_per-client_engine_uti?=
- =?utf-8?q?lization_tests_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_docs/chamelium=3A_update_?=
+ =?utf-8?q?broken_links_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
+To: "Vignesh Raman" <vignesh.raman@collabora.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 03 Jul 2024 14:41:20 -0000
-Message-ID: <172001768094.25710.16924288807987968337@2413ebb6fbb6>
+Date: Wed, 03 Jul 2024 14:42:45 -0000
+Message-ID: <172001776508.24496.1715834972731264331@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
+References: <20240703015514.688088-1-vignesh.raman@collabora.com>
+In-Reply-To: <20240703015514.688088-1-vignesh.raman@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -43,8 +43,8 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: Add per-client engine utilization tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/135204/
+Series: docs/chamelium: update broken links (rev2)
+URL   : https://patchwork.freedesktop.org/series/135589/
 State : failure
 
 == Summary ==
