@@ -4,53 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA648C38150
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 00:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F18A3C30658
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 01:56:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0C5710E71A;
-	Wed,  3 Jul 2024 00:25:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9363A10E012;
+	Wed,  3 Jul 2024 01:56:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TBPl7d/Q";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="DE88h9Yr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B423210E6F9
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 00:25:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719966339; x=1751502339;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=VvFsgnQZ4jHSWjVRicCcjlyTT5GdsnDpiRdb9qV6vJo=;
- b=TBPl7d/QHccjpQqY9x2ay0yZK75sa4fh0mEYDPFQcDSxuFy69IPMtD9g
- Sy3zIZY/ZgJhsq03kAYG1zRER4RN+82S1XWaJQQixviJHICoAT5owRuBv
- Tp3EAQncNnwcSDuBNs1sGOODssDqqk4bgT0vIxcCdwCydEJfm5FIDHlE0
- BMTGz6NxQinUWXGVzMyrn51VO+Fo80E+R5QG4MVc8CKQL3Wn0eFJCUK8z
- /GiXumolqLUwKJ1YTGI6GNgT0OsYUAOsCMv4p/sF5DsMWGj6eD1my8pC0
- meAMSpb8WHpbz30kue0qpLuCeW+3VrmmtTpGaEsMbVHbVO40/bpKXoRBE w==;
-X-CSE-ConnectionGUID: mH2iiMfBToGeXVPdIDSAxQ==
-X-CSE-MsgGUID: /I+bvTDOQyyfEZpKBIARXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20074288"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="20074288"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 17:25:38 -0700
-X-CSE-ConnectionGUID: FysG7gafTzCCU0XU1w0slw==
-X-CSE-MsgGUID: LOMiTQ6lRLeMd1xQX+QbOg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46072888"
-Received: from unerlige-desk.jf.intel.com ([10.165.21.199])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 17:25:38 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	lucas.demarchi@intel.com
-Subject: [PATCH i-g-t v2 09/10] tests/intel/xe_drm_fdinfo: Add tests for
- parallel engines
-Date: Tue,  2 Jul 2024 17:25:31 -0700
-Message-Id: <20240703002532.3156277-10-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
-References: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
+ [46.235.227.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9345510E518
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 01:56:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1719971788;
+ bh=facNx/IxLHim5Y/t4wDRDCy+xbtIE7yEn6FuujSxbjs=;
+ h=From:To:Cc:Subject:Date:From;
+ b=DE88h9YrojrMBcxY132kqEBhchg9sOQxRA9QtUOo7vsORJy+lAo88bih3Lv+ljHyf
+ 8Bc3rbma9AQxeqzggzg7O4R7uxGJjPTKcdu8uzXYS47QhC99NcKf9hdsZl7SW5JbPW
+ R1Qw178mlKrRCsCE9pXOl0Ri4Zby5KMpyuh0YZ9+sqVgQtFYxE8IOZ1/NwNNEMrdPm
+ CgTYz3TbsMPnmR/n5clQSpadeY5279t+AuUVN/DyE7ohXNkOccMdVpGeM+F5XKlxko
+ w5vFKqMKi00RdDlY4KXSggjczmck5z89PvYUqykEtelCxWZc9oNP89fHi+zjFy9N3H
+ ZRKsHoPvDVsBg==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: vignesh)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 9C6B637811EB;
+ Wed,  3 Jul 2024 01:56:26 +0000 (UTC)
+From: Vignesh Raman <vignesh.raman@collabora.com>
+To: igt-dev@lists.freedesktop.org
+Cc: robdclark@gmail.com, robdclark@chromium.org, helen.koike@collabora.com,
+ daniels@collabora.com, kamil.konieczny@linux.intel.com
+Subject: [PATCH i-g-t v2] docs/chamelium: update broken links
+Date: Wed,  3 Jul 2024 07:25:14 +0530
+Message-Id: <20240703015514.688088-1-vignesh.raman@collabora.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,90 +57,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests to verify utilization on parallel engines.
+The previous links to the chamelium documentation
+and setup instructions were no longer working.
+Update with new valid links.
 
-v2:
-- s/measured_usleep/usleep
-- remove xe_ prefix from helpers/structures
-
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Rob Clark <robdclark@chromium.org>
+Cc: Helen Koike <helen.koike@collabora.com>
+Cc: Daniel Stone <daniels@collabora.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 34 +++++++++++++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 3 deletions(-)
+ docs/chamelium.txt | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 5a3cd776c..f1e06991c 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -58,6 +58,18 @@
-  * SUBTEST: drm-virtual-busy-idle-isolation
-  * Description: Check that virtual engine load does not spill over to other drm clients
-  *
-+ * SUBTEST: drm-parallel-idle
-+ * Description: Check that parallel engines show no load when idle
-+ *
-+ * SUBTEST: drm-parallel-busy-idle
-+ * Description: Check that parallel engines show load when idle after busy
-+ *
-+ * SUBTEST: drm-parallel-all-busy-idle-check-all
-+ * Description: Check that all parallel engines show busy when loaded
-+ *
-+ * SUBTEST: drm-parallel-busy-idle-isolation
-+ * Description: Check that parallel engine load does not spill over to other drm clients
-+ *
-  * SUBTEST: drm-total-resident
-  * Description: Create and compare total and resident memory consumption by client
-  *
-@@ -76,6 +88,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine u
- #define TEST_BUSY		(1 << 0)
- #define TEST_TRAILING_IDLE	(1 << 1)
- #define TEST_ISOLATION		(1 << 2)
-+#define EXEC_PARALLEL		(1 << 16)
+diff --git a/docs/chamelium.txt b/docs/chamelium.txt
+index f82c8b0c3..64f851c28 100644
+--- a/docs/chamelium.txt
++++ b/docs/chamelium.txt
+@@ -47,15 +47,16 @@ Chamelium V2 Documentation
+ --------------------------
  
- struct pceu_cycles {
- 	uint64_t cycles;
-@@ -723,8 +736,8 @@ multi_all_busy_check_all(int fd, unsigned int flags)
- 		xe_for_each_multi_engine(fd, hwe, count) {
- 			class = hwe->engine_class;
- 			ctx[class] = spin_ctx_init(fd, hwe, vm,
--						      1,
--						      count);
-+						   flags & EXEC_PARALLEL ? count : 1,
-+						   flags & EXEC_PARALLEL ? 1 : count);
- 			spin_sync_start(fd, ctx[class]);
- 		}
- 	}
-@@ -741,7 +754,7 @@ multi_all_busy_check_all(int fd, unsigned int flags)
- 	xe_for_each_multi_engine(fd, hwe, count) {
- 		class = hwe->engine_class;
- 		check_results(pceu1, pceu2, class,
--			      1,
-+			      flags & EXEC_PARALLEL ? count : 1,
- 			      flags);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
-@@ -809,6 +822,21 @@ igt_main
- 		xe_for_each_multi_engine(xe, hwe, count)
- 			single(xe, hwe, 1, count, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
+ Documentation about the Chamelium is made available by Google through the
+-ChromiumOS projet wiki: https://www.chromium.org/chromium-os/testing/chamelium
++ChromiumOS projet wiki:
++https://www.chromium.org/chromium-os/developer-library/guides/hardware-schematics/chamelium/
  
-+	igt_subtest("drm-parallel-idle")
-+		xe_for_each_multi_engine(xe, hwe, count)
-+			single(xe, hwe, count, 1, 0);
-+
-+	igt_subtest("drm-parallel-busy-idle")
-+		xe_for_each_multi_engine(xe, hwe, count)
-+			single(xe, hwe, count, 1, TEST_BUSY | TEST_TRAILING_IDLE);
-+
-+	igt_subtest("drm-parallel-all-busy-idle-check-all")
-+		multi_all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE | EXEC_PARALLEL);
-+
-+	igt_subtest("drm-parallel-busy-idle-isolation")
-+		xe_for_each_multi_engine(xe, hwe, count)
-+			single(xe, hwe, count, 1, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
-+
- 	igt_describe("Create and compare total and resident memory consumption by client");
- 	igt_subtest("drm-total-resident")
- 		test_total_resident(xe);
+ Setting up Chamelium V2
+ -----------------------
+ 
+ Instructions from the ChromiumOS wiki detail how to setup the Chamelium:
+-https://www.chromium.org/chromium-os/testing/chamelium#TOC-Setting-up-Chamelium
++https://www.chromium.org/chromium-os/developer-library/guides/hardware-schematics/chamelium/#setting-up-chamelium
+ 
+-The should be followed up until the "Setup your Linux host, DUT and the FPGA"
++It should be followed up until the "Setup your Linux host, DUT and the FPGA"
+ section. At this point, IGT has to be configured to connect to the Chamelium.
+ 
+ It may be necessary to give the Chamelium a static IP address, depending on
 -- 
-2.38.1
+2.40.1
 
