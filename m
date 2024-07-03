@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 661E7C2BD09
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 13:17:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D804AC2BD09
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 14:30:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B6EF10E84E;
-	Wed,  3 Jul 2024 13:17:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C45310E8C6;
+	Wed,  3 Jul 2024 14:30:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UatEYqZG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bs8o1fIo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 505F810E84E;
- Wed,  3 Jul 2024 13:17:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4A3310E8C6
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 14:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720012640; x=1751548640;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=vVnBLafCPdvdrC1xUakYYRR0nyzEP+iXzXM57cz8ICI=;
- b=UatEYqZG2PZiq9TrPEWpWUUlO7m36ic/1zlRQvc2QPIKj78mL7WWbEZc
- /uIPEoXfKywsa+h6n0UcTdfWtFV77w12lLD4ofCO7rc9xCQ4XeocQ7bhy
- bAhYOEg7ohjV5mt+VBmMCEukudi08cRjhPAS4jbWkVxIf/EGNv5QErbtv
- ewAoaHk7aKiCw4WC3z4qr9EBgX0y83fj/cO2uo6UU7yx75UX5pDijKWrf
- l7KIAfCad0NAH06YW9yttE1zd4MdgIFU/XQ04Lkur0Ds3acTuOV2pSP33
- LBCFjB87sa9iFM144TTtmWltfTwnhoYHMaQxXL23DK1LeCUpecs9XTWtI g==;
-X-CSE-ConnectionGUID: 7CfPKAjLSEK3BhXgkD2VTA==
-X-CSE-MsgGUID: +T1UqzT0Te+NYA15BzGmeA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="28378419"
-X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; d="scan'208";a="28378419"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2024 06:17:20 -0700
-X-CSE-ConnectionGUID: pDzXCEOfQO+5o3NvjMPmWA==
-X-CSE-MsgGUID: EI/Ng+p2RVqWGoCSQBq5Mw==
+ t=1720017024; x=1751553024;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=1Jnb50cXrfP4bG/PjeNs3sfau5C/KU5/doVEXYbqir0=;
+ b=bs8o1fIoCZl0ojql3+xgJ3pMtObhaTNct/lrsTh2HFpxOWA3C/sPImA+
+ wyxrbP2mUcRfiDJ8nxgav+clbXTvQiZoaJow7ENLvDAAW4ez8vt281jq+
+ 5H3x2agN4CAGgNOKND3XCGOLxhIZyGYvC1F8dpRz/1lflja5SkMwXLl68
+ FzWu/DtZYrSaKFinZ6nuFEqe4Hg5+5IWUe10eoNHG+MS0ejXOubxAuENn
+ u3702SFffvSEQhNM65Un2wtbzDT6hmVMDSzSfqOZ//qm7YeEE2TiyRX/A
+ BX+8h09NY42ph/wHJV9xip0updVwOknylAUFFRtWn0Q2Y2wbv/3y05kUT w==;
+X-CSE-ConnectionGUID: Av8ycAZpRdi2W3asVdGD8w==
+X-CSE-MsgGUID: Wy9azOxUSUipmLO9rkSgvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="21059969"
+X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; d="scan'208";a="21059969"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 07:30:23 -0700
+X-CSE-ConnectionGUID: BPB2Mth3Rk2eDJ0zHMzPqA==
+X-CSE-MsgGUID: 3vq04j5uTKeHzMVP//iaZw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; d="scan'208";a="46225954"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 03 Jul 2024 06:17:18 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 03 Jul 2024 16:17:17 +0300
-Date: Wed, 3 Jul 2024 16:17:17 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
- Intel CCS + 10bpc/fp16 stuff
-Message-ID: <ZoVPXbrzR180bZk3@intel.com>
-References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <172001224456.24495.14126036622716074179@2413ebb6fbb6>
+X-IronPort-AV: E=Sophos;i="6.09,182,1716274800"; d="scan'208";a="50867124"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.49.200])
+ ([10.246.49.200])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Jul 2024 07:30:22 -0700
+Message-ID: <a6f918bf-db74-4fa2-9d2c-92b4ed5acb3f@linux.intel.com>
+Date: Wed, 3 Jul 2024 16:30:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <172001224456.24495.14126036622716074179@2413ebb6fbb6>
-X-Patchwork-Hint: comment
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3] tests/intel/xe_exec_store: Add
+ basic_inst_benchmark
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>
+References: <20240625130816.4338-1-nirmoy.das@intel.com>
+ <20240628170230.6wqbesoeoz7ezpsl@kamilkon-DESK.igk.intel.com>
+ <c38392bd-8a07-43fc-9fbc-ecec20373f7c@linux.intel.com>
+ <20240701181213.jkdyenmwirpmyzkb@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20240701181213.jkdyenmwirpmyzkb@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,57 +74,263 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jul 03, 2024 at 01:10:44PM -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: Intel CCS + 10bpc/fp16 stuff
-> URL   : https://patchwork.freedesktop.org/series/135670/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_7911 -> IGTPW_11352
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11352 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11352, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11352/index.html
-> 
-> Participating hosts (39 -> 41)
-> ------------------------------
-> 
->   Additional (3): bat-kbl-2 fi-cfl-8109u bat-jsl-3 
->   Missing    (1): fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11352:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@gem_contexts:
->     - bat-jsl-1:          [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7911/bat-jsl-1/igt@i915_selftest@live@gem_contexts.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11352/bat-jsl-1/igt@i915_selftest@live@gem_contexts.html
+Hi Kamil,
 
-<4>[  520.753491] nvme nvme0: I/O tag 717 (72cd) QID 3 timeout, completion polled
-<4>[  551.089459] nvme nvme0: I/O tag 718 (22ce) QID 3 timeout, completion polled
+On 7/1/2024 8:12 PM, Kamil Konieczny wrote:
+> Hi Nirmoy,
+> On 2024-07-01 at 09:59:28 +0200, Nirmoy Das wrote:
+>> Hi Kamil,
+>>
+>> On 6/28/2024 7:02 PM, Kamil Konieczny wrote:
+>>> Hi Nirmoy,
+>>> On 2024-06-25 at 15:08:16 +0200, Nirmoy Das wrote:
+>>>
+>>> test names should use '-' as separator, you also used other
+>>> name so:
+>>> [PATCH i-g-t v3] tests/intel/xe_exec_store: Add basic_inst_benchmark
+>>>
+>>> should be:
+>>> [PATCH i-g-t v3] tests/intel/xe_exec_store: Add basic-store-benchmark
+>> Looks like I misunderstood your last comment. Will fix it.
+>>>> Add basic_inst_benchmark to benchmark this basic operation
+>>> ---------- ^----^
+>>> Same here, use '-' as separator, s/_inst_/-store-/
+>>>
+>>>> for BO sizes to get basic understanding how long it takes
+>>>> bind a BO and run simple GPU command on it.
+>>>>
+>>>> This not a CI test but rather for developer to identify various
+>>>> bottleneck/regression in  BO binding.
+>>>>
+>>>> Signed-off-by: Nirmoy Das<nirmoy.das@intel.com>
+>>>> ---
+>>>>    tests/intel/xe_exec_store.c | 112 ++++++++++++++++++++++++++++++------
+>>>>    1 file changed, 94 insertions(+), 18 deletions(-)
+>>>>
+>>>> diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
+>>>> index c872c22d5..aaabdbec3 100644
+>>>> --- a/tests/intel/xe_exec_store.c
+>>>> +++ b/tests/intel/xe_exec_store.c
+>>>> @@ -93,15 +93,10 @@ static void persistance_batch(struct data *data, uint64_t addr)
+>>>>    	data->addr = batch_addr;
+>>>>    }
+>>>> -/**
+>>>> - * SUBTEST: basic-store
+>>>> - * Description: Basic test to verify store dword.
+>>>> - * SUBTEST: basic-cond-batch
+>>>> - * Description: Basic test to verify cond batch end instruction.
+>>>> - * SUBTEST: basic-all
+>>>> - * Description: Test to verify store dword on all available engines.
+>>>> - */
+>>>> -static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci)
+>>>> +
+>>>> +static void basic_inst_size(int fd, int inst_type,
+>>>> +			    struct drm_xe_engine_class_instance *eci,
+>>>> +			    uint16_t cpu_caching, size_t bo_size)
+>>>>    {
+>>>>    	struct drm_xe_sync sync[2] = {
+>>>>    		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+>>>> @@ -117,7 +112,6 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+>>>>    	uint32_t exec_queue;
+>>>>    	uint32_t bind_engine;
+>>>>    	uint32_t syncobj;
+>>>> -	size_t bo_size;
+>>>>    	int value = 0x123456;
+>>>>    	uint64_t addr = 0x100000;
+>>>>    	uint32_t bo = 0;
+>>>> @@ -127,12 +121,16 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+>>>>    	sync[1].handle = syncobj;
+>>>>    	vm = xe_vm_create(fd, 0, 0);
+>>>> -	bo_size = sizeof(*data);
+>>>> -	bo_size = xe_bb_size(fd, bo_size);
+>>>> -	bo = xe_bo_create(fd, vm, bo_size,
+>>>> -			  vram_if_possible(fd, eci->gt_id),
+>>>> -			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>>>> +	if (cpu_caching)
+>>>> +		bo = xe_bo_create_caching(fd, vm, bo_size,
+>>>> +					  vram_if_possible(fd, eci->gt_id),
+>>>> +					  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
+>>>> +					  cpu_caching);
+>>>> +	else
+>>>> +		bo = xe_bo_create(fd, vm, bo_size,
+>>>> +				  vram_if_possible(fd, eci->gt_id),
+>>>> +				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+>>>>    	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+>>>>    	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
+>>>> @@ -167,6 +165,66 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+>>>>    	xe_vm_destroy(fd, vm);
+>>>>    }
+>>>> +
+>>>> +/**
+>>>> + * SUBTEST: basic-store
+>>>> + * Description: Basic test to verify store dword.
+>>>> + * SUBTEST: basic-cond-batch
+>>>> + * Description: Basic test to verify cond batch end instruction.
+>>>> + * SUBTEST: basic-all
+>>>> + * Description: Test to verify store dword on all available engines.
+>>>> + */
+>>>> +static void basic_inst(int fd, int inst_type,
+>>>> +		       struct drm_xe_engine_class_instance *eci,
+>>>> +		       uint16_t cpu_caching)
+>>>> +{
+>>>> +	size_t bo_size;
+>>>> +
+>>>> +	bo_size = sizeof(struct data);
+>>>> +	bo_size = xe_bb_size(fd, bo_size);
+>>>> +
+>>>> +	basic_inst_size(fd, inst_type, eci, cpu_caching, bo_size);
+>>>> +}
+>>>> +
+>>>> +/**
+>>>> + * SUBTEST: basic-store-benchmark
+>>>> + * Description: Basic test to verify time taken for doing store dword with various size.
+>>>> + */
+>>>> +static void basic_inst_benchmark(int fd, int inst_type,
+>>>> +				 struct drm_xe_engine_class_instance *eci,
+>>>> +				 uint16_t cpu_caching)
+>>>> +{
+>>>> +	struct {
+>>>> +		size_t size;
+>>>> +		const char *name;
+>>>> +	} sizes[] = {
+>>>> +		{SZ_4K, "SZ_4K"},
+>>>> +		{SZ_2M, "SZ_2M"},
+>>>> +		{SZ_64M, "SZ_64M"},
+>>>> +		{SZ_128M, "SZ_128M"},
+>>>> +		{SZ_256M, "SZ_256M"},
+>>>> +		{SZ_1G, "SZ_1G"}
+>>> Could you use more human-friendly strings here? 4KB, 2MB, ...1GB
+>> Sure, will do that.
+>>>> +	};
+>>>> +
+>>>> +	struct timeval start, end;
+>>>> +	long seconds, useconds, utime;
+>>>> +
+>>>> +	for (size_t i = 0; i < ARRAY_SIZE(sizes); ++i) {
+>>>> +		size_t bo_size = sizes[i].size;
+>>>> +		const char *size_name = sizes[i].name;
+>>>> +
+>>>> +		gettimeofday(&start, NULL);
+>>>> +		basic_inst_size(fd, inst_type, eci, cpu_caching, bo_size);
+>>>> +		gettimeofday(&end, NULL);
+>>>> +
+>>>> +		seconds = end.tv_sec - start.tv_sec;
+>>>> +		useconds = end.tv_usec - start.tv_usec;
+>>>> +		utime = (seconds * 1000000) + useconds;
+>>> imho there is igt function for such time measure.
+>> Do you mean igt_nsec_elapsed()
+> There are:
+>
+> igt_core.h:double igt_time_elapsed(struct timespec *then,
+>
+> igt_core.h:uint64_t igt_nsec_elapsed(struct timespec *start);
+>
+> igt_core.h:static inline uint32_t igt_seconds_elapsed(struct timespec *start)
+>
+> Choose what you need.
+>
+>>>> +
+>>>> +		igt_info("Time taken for size %s: %ld us\n", size_name, utime);
+>>>> +	}
+>>>> +}
+>>>> +
+>>>>    #define PAGES 1
+>>>>    #define NCACHELINES (4096/64)
+>>>>    /**
+>>>> @@ -342,12 +400,30 @@ igt_main
+>>>>    	igt_subtest("basic-store") {
+>>>>    		engine = xe_engine(fd, 1);
+>>>> -		basic_inst(fd, STORE, &engine->instance);
+>>>> +		basic_inst(fd, COND_BATCH, &engine->instance, 0);
+>>>> +	}
+>>>> +
+>>>> +	igt_subtest_with_dynamic("basic-store-benchmark") {
+>>>> +		struct dyn {
+>>>> +			const char *name;
+>>>> +			int cache;
+>>>> +		} tests[] = {
+>>>> +			{"WC", DRM_XE_GEM_CPU_CACHING_WC},
+>>>> +			{"WB", DRM_XE_GEM_CPU_CACHING_WB}
+>>>> +		};
+>>>> +		/* Enable for iGFX only for now */
+>>>> +		igt_require(! xe_has_vram(fd));
+>>> -------------------- ^
+>>> Please use checkpatch.pl for similar hints.
+>> Took me a while find the issue :D. I tend to do that but I guess I have to
+>> add a alias that will do a check patch before sending.
+>>> Could you test with 0 for dGFX?
+>> with fd == 0 ?
+>>
+>> I think DRM_XE_GEM_CPU_CACHING_WB doesn't work for dGPU. I have to check
+>> that on live machine.
+>>
+>>>> +
+>>>> +		for (int i = 0; i < ARRAY_SIZE(tests); i++) {
+>>>> +			igt_dynamic_f("%s", tests[i].name);
+>>> ----------------------------------------------^
+>>> This is the reason you didn't see dynamic tests running with
+>>> --dyn WC, it should be:
+>> it should be what ? You are keep a secret :)
+> I see, I should explicitly point semicolon there ';'
+> This will run empty dynamic subtest:
+>
+> 	igt_dynamic_f("%s", tests[i].name);
+>
+> While what you wanted was written below, let me copy-paste:
+>
+>      igt_dynamic_f("%s", tests[i].name) {
+>          engine = xe_engine(fd, 1);
+>          basic_inst_benchmark(fd, STORE, &engine->instance, tests[i].cache);
+>      }
+Ah, now I see my stupidity!
+>
+> What I was asking was does it make sense to benchmark with
+> cache value 0 on dGPU?
 
-Is the disk dying?
+Yes, with 0 then a default value will be picked which for dGPU is WC. I 
+will disable WB cache on dGPU.
 
--- 
-Ville Syrjälä
-Intel
+
+Thanks,
+
+Nirmoy
+
+>
+> Regards,
+> Kamil
+>
+>>>> +			engine = xe_engine(fd, 1);
+>>>> +			basic_inst_benchmark(fd, STORE, &engine->instance, tests[i].cache);
+>>>> +		}
+>>> 			igt_dynamic_f("%s", tests[i].name) {
+>>>       			engine = xe_engine(fd, 1);
+>>> 	    		basic_inst_benchmark(fd, STORE, &engine->instance, tests[i].cache);
+>>>               }
+>>>
+>>> Btw should you add a skip if engine == NULL?
+>> Yes, that should be safer.
+>>
+>>
+>> Thanks,
+>>
+>> Nirmoy
+>>
+>>>> +		}
+>>>>    	}
+>>>>    	igt_subtest("basic-cond-batch") {
+>>>>    		engine = xe_engine(fd, 1);
+>>>> -		basic_inst(fd, COND_BATCH, &engine->instance);
+>>>> +		basic_inst(fd, COND_BATCH, &engine->instance, 0);
+>>>>    	}
+>>>>    	igt_subtest_with_dynamic("basic-all") {
+>>>> @@ -356,7 +432,7 @@ igt_main
+>>>>    				      xe_engine_class_string(hwe->engine_class),
+>>>>    				      hwe->engine_instance,
+>>>>    				      hwe->gt_id);
+>>>> -			basic_inst(fd, STORE, hwe);
+>>>> +			basic_inst(fd, STORE, hwe, 0);
+>>>>    		}
+>>>>    	}
+>>>> -- 
+>>>> 2.42.0
+>>>>
