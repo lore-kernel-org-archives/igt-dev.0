@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF73C3DA41
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 00:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA648C38150
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 00:25:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C8B4610E71B;
-	Wed,  3 Jul 2024 00:25:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F0C5710E71A;
+	Wed,  3 Jul 2024 00:25:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NpghlFIw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TBPl7d/Q";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A119310E6F8
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B423210E6F9
  for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 00:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1719966339; x=1751502339;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=qJoHu+U8PoAl+UNRVnMztRKjGNzSQhKUxZo5oASjikc=;
- b=NpghlFIwREG3nOIO5J7021cQaWIKaQmun3PpadgwNOa+aKM2NT/TdtRa
- +++BM1DGkZkR6BgJ9Q8+YKVFEfv2Wf2fGTaoDUA9xA/jD0aVDHuwuaacr
- pQaGoQJJZegaWDoyPUj8ZgWxX9Fn2bFCNigXvrQVGJGF15xILPaFQ9ePg
- cGnj6SsM/oJy83ZMgGlntSnBIEZQurTsUx4ncVQ/dELDRnOIg2cz4Gb67
- tQgFE38g41wReJP5na6HdSPryGdJCpG38zSBZhL79Cseoo+jnRus7ouJT
- eCQiQQEYeGOJ6byRQgs3JXuTtRqYXNCkCAaL5zyYgmBNvDXxaVnknTUVk Q==;
-X-CSE-ConnectionGUID: DyZLqRP/Tey24OZnToE6Ew==
-X-CSE-MsgGUID: 0ayJf12uRu+yPWt7bf/oSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20074287"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="20074287"
+ bh=VvFsgnQZ4jHSWjVRicCcjlyTT5GdsnDpiRdb9qV6vJo=;
+ b=TBPl7d/QHccjpQqY9x2ay0yZK75sa4fh0mEYDPFQcDSxuFy69IPMtD9g
+ Sy3zIZY/ZgJhsq03kAYG1zRER4RN+82S1XWaJQQixviJHICoAT5owRuBv
+ Tp3EAQncNnwcSDuBNs1sGOODssDqqk4bgT0vIxcCdwCydEJfm5FIDHlE0
+ BMTGz6NxQinUWXGVzMyrn51VO+Fo80E+R5QG4MVc8CKQL3Wn0eFJCUK8z
+ /GiXumolqLUwKJ1YTGI6GNgT0OsYUAOsCMv4p/sF5DsMWGj6eD1my8pC0
+ meAMSpb8WHpbz30kue0qpLuCeW+3VrmmtTpGaEsMbVHbVO40/bpKXoRBE w==;
+X-CSE-ConnectionGUID: mH2iiMfBToGeXVPdIDSAxQ==
+X-CSE-MsgGUID: /I+bvTDOQyyfEZpKBIARXA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20074288"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="20074288"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Jul 2024 17:25:38 -0700
-X-CSE-ConnectionGUID: mgGNvkU/STCGVWgc7q1KyA==
-X-CSE-MsgGUID: 2VvWTQonQGCNZWHprDVehQ==
+X-CSE-ConnectionGUID: FysG7gafTzCCU0XU1w0slw==
+X-CSE-MsgGUID: LOMiTQ6lRLeMd1xQX+QbOg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46072885"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46072888"
 Received: from unerlige-desk.jf.intel.com ([10.165.21.199])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  02 Jul 2024 17:25:38 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	lucas.demarchi@intel.com
-Subject: [PATCH i-g-t v2 08/10] tests/intel/xe_drm_fdinfo: Add tests for
- virtual engines
-Date: Tue,  2 Jul 2024 17:25:30 -0700
-Message-Id: <20240703002532.3156277-9-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 09/10] tests/intel/xe_drm_fdinfo: Add tests for
+ parallel engines
+Date: Tue,  2 Jul 2024 17:25:31 -0700
+Message-Id: <20240703002532.3156277-10-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
 References: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
@@ -68,113 +68,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add tests to verify utilization on virtual engines.
+Add tests to verify utilization on parallel engines.
 
 v2:
 - s/measured_usleep/usleep
-- Remove xe_ prefix from helpers/structures
-- Remove ISOLATION case for multi_all_busy_check_all
+- remove xe_ prefix from helpers/structures
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 71 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 70 insertions(+), 1 deletion(-)
+ tests/intel/xe_drm_fdinfo.c | 34 +++++++++++++++++++++++++++++++---
+ 1 file changed, 31 insertions(+), 3 deletions(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 9d3d1b285..5a3cd776c 100644
+index 5a3cd776c..f1e06991c 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -46,6 +46,18 @@
-  * SUBTEST: drm-all-busy-idle-check-all
-  * Description: Check that all engines show busy when all are loaded
+@@ -58,6 +58,18 @@
+  * SUBTEST: drm-virtual-busy-idle-isolation
+  * Description: Check that virtual engine load does not spill over to other drm clients
   *
-+ * SUBTEST: drm-virtual-idle
-+ * Description: Check that virtual engines show no load when idle
++ * SUBTEST: drm-parallel-idle
++ * Description: Check that parallel engines show no load when idle
 + *
-+ * SUBTEST: drm-virtual-busy-idle
-+ * Description: Check that virtual engines show load when idle after busy
++ * SUBTEST: drm-parallel-busy-idle
++ * Description: Check that parallel engines show load when idle after busy
 + *
-+ * SUBTEST: drm-virtual-all-busy-idle-check-all
-+ * Description: Check that all virtual engines show busy when loaded
++ * SUBTEST: drm-parallel-all-busy-idle-check-all
++ * Description: Check that all parallel engines show busy when loaded
 + *
-+ * SUBTEST: drm-virtual-busy-idle-isolation
-+ * Description: Check that virtual engine load does not spill over to other drm clients
++ * SUBTEST: drm-parallel-busy-idle-isolation
++ * Description: Check that parallel engine load does not spill over to other drm clients
 + *
   * SUBTEST: drm-total-resident
   * Description: Create and compare total and resident memory consumption by client
   *
-@@ -695,10 +707,52 @@ all_busy_check_all(int fd, unsigned int flags)
+@@ -76,6 +88,7 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine u
+ #define TEST_BUSY		(1 << 0)
+ #define TEST_TRAILING_IDLE	(1 << 1)
+ #define TEST_ISOLATION		(1 << 2)
++#define EXEC_PARALLEL		(1 << 16)
+ 
+ struct pceu_cycles {
+ 	uint64_t cycles;
+@@ -723,8 +736,8 @@ multi_all_busy_check_all(int fd, unsigned int flags)
+ 		xe_for_each_multi_engine(fd, hwe, count) {
+ 			class = hwe->engine_class;
+ 			ctx[class] = spin_ctx_init(fd, hwe, vm,
+-						      1,
+-						      count);
++						   flags & EXEC_PARALLEL ? count : 1,
++						   flags & EXEC_PARALLEL ? 1 : count);
+ 			spin_sync_start(fd, ctx[class]);
+ 		}
  	}
- 	xe_vm_destroy(fd, vm);
- }
-+
-+static void
-+multi_all_busy_check_all(int fd, unsigned int flags)
-+{
-+	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-+	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-+	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
-+	struct drm_xe_engine_class_instance *hwe;
-+	int count, class;
-+	uint32_t vm;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	if (flags & TEST_BUSY) {
-+		xe_for_each_multi_engine(fd, hwe, count) {
-+			class = hwe->engine_class;
-+			ctx[class] = spin_ctx_init(fd, hwe, vm,
-+						      1,
-+						      count);
-+			spin_sync_start(fd, ctx[class]);
-+		}
-+	}
-+
-+	read_engine_cycles(fd, pceu1);
-+	usleep(batch_duration_ns / 1000);
-+	if (flags & TEST_TRAILING_IDLE) {
-+		xe_for_each_multi_engine(fd, hwe, count) {
-+			spin_sync_end(fd, ctx[hwe->engine_class]);
-+		}
-+	}
-+	read_engine_cycles(fd, pceu2);
-+
-+	xe_for_each_multi_engine(fd, hwe, count) {
-+		class = hwe->engine_class;
-+		check_results(pceu1, pceu2, class,
-+			      1,
-+			      flags);
-+		spin_sync_end(fd, ctx[class]);
-+		spin_ctx_destroy(fd, ctx[class]);
-+	}
-+	xe_vm_destroy(fd, vm);
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
--	int xe;
-+	int xe, count;
+@@ -741,7 +754,7 @@ multi_all_busy_check_all(int fd, unsigned int flags)
+ 	xe_for_each_multi_engine(fd, hwe, count) {
+ 		class = hwe->engine_class;
+ 		check_results(pceu1, pceu2, class,
+-			      1,
++			      flags & EXEC_PARALLEL ? count : 1,
+ 			      flags);
+ 		spin_sync_end(fd, ctx[class]);
+ 		spin_ctx_destroy(fd, ctx[class]);
+@@ -809,6 +822,21 @@ igt_main
+ 		xe_for_each_multi_engine(xe, hwe, count)
+ 			single(xe, hwe, 1, count, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
  
- 	igt_fixture {
- 		struct drm_client_fdinfo info = { };
-@@ -740,6 +794,21 @@ igt_main
- 	igt_subtest("drm-all-busy-idle-check-all")
- 		all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
- 
-+	igt_subtest("drm-virtual-idle")
++	igt_subtest("drm-parallel-idle")
 +		xe_for_each_multi_engine(xe, hwe, count)
-+			single(xe, hwe, 1, count, 0);
++			single(xe, hwe, count, 1, 0);
 +
-+	igt_subtest("drm-virtual-busy-idle")
++	igt_subtest("drm-parallel-busy-idle")
 +		xe_for_each_multi_engine(xe, hwe, count)
-+			single(xe, hwe, 1, count, TEST_BUSY | TEST_TRAILING_IDLE);
++			single(xe, hwe, count, 1, TEST_BUSY | TEST_TRAILING_IDLE);
 +
-+	igt_subtest("drm-virtual-all-busy-idle-check-all")
-+		multi_all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
++	igt_subtest("drm-parallel-all-busy-idle-check-all")
++		multi_all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE | EXEC_PARALLEL);
 +
-+	igt_subtest("drm-virtual-busy-idle-isolation")
++	igt_subtest("drm-parallel-busy-idle-isolation")
 +		xe_for_each_multi_engine(xe, hwe, count)
-+			single(xe, hwe, 1, count, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
++			single(xe, hwe, count, 1, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
 +
  	igt_describe("Create and compare total and resident memory consumption by client");
  	igt_subtest("drm-total-resident")
