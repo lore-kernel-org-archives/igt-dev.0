@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A58EEC30658
-	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 00:25:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BF73C3DA41
+	for <igt-dev@archiver.kernel.org>; Wed,  3 Jul 2024 00:25:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAA2C10E718;
-	Wed,  3 Jul 2024 00:25:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C8B4610E71B;
+	Wed,  3 Jul 2024 00:25:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A39x/1RS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NpghlFIw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D42EB10E6F8
- for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 00:25:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A119310E6F8
+ for <igt-dev@lists.freedesktop.org>; Wed,  3 Jul 2024 00:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1719966338; x=1751502338;
+ t=1719966339; x=1751502339;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=F6TgbLgbDH6Uu/wpGckbFLSuecPDbbPZcjpmrxv6Ns8=;
- b=A39x/1RSCT93mQ4gao9zsuVE3G73GR18lYCQWO+E0GD4MOi6nW05fPsh
- gfqZcx13s4T07ZuLC8eCzJr2Le/buKHj8XYZPWBPZ3OS16mxSUSjQu3XG
- n64sDquAp98BcG6mZcPAr/VUN/LgUUmgeOr1J/T49AiK8hILS7bNMdUak
- UGaY+AfLccYTQq/w7NmXQefWmzSslYda00M3tUL6ZHj//tRUDJhv4wY4v
- vt4b0dbCQhAiNEL8UUbmggEtOOJUcBPK1vE2VN5xEYTLPqFqzzdejtR1N
- dz7U+eStJzOrUeU4tnr7d+VelFF2UCofy1yofGixwWpgfVpdgNYKYs4hV g==;
-X-CSE-ConnectionGUID: IphEV1feRjKSals0MVr5JQ==
-X-CSE-MsgGUID: ONcWz0YWSy+uXbFgD3Y9EQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20074281"
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="20074281"
+ bh=qJoHu+U8PoAl+UNRVnMztRKjGNzSQhKUxZo5oASjikc=;
+ b=NpghlFIwREG3nOIO5J7021cQaWIKaQmun3PpadgwNOa+aKM2NT/TdtRa
+ +++BM1DGkZkR6BgJ9Q8+YKVFEfv2Wf2fGTaoDUA9xA/jD0aVDHuwuaacr
+ pQaGoQJJZegaWDoyPUj8ZgWxX9Fn2bFCNigXvrQVGJGF15xILPaFQ9ePg
+ cGnj6SsM/oJy83ZMgGlntSnBIEZQurTsUx4ncVQ/dELDRnOIg2cz4Gb67
+ tQgFE38g41wReJP5na6HdSPryGdJCpG38zSBZhL79Cseoo+jnRus7ouJT
+ eCQiQQEYeGOJ6byRQgs3JXuTtRqYXNCkCAaL5zyYgmBNvDXxaVnknTUVk Q==;
+X-CSE-ConnectionGUID: DyZLqRP/Tey24OZnToE6Ew==
+X-CSE-MsgGUID: 0ayJf12uRu+yPWt7bf/oSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="20074287"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="20074287"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 17:25:37 -0700
-X-CSE-ConnectionGUID: pXsn5PSDQ0OQk3uPFXdiTA==
-X-CSE-MsgGUID: ttGJGeegS1+RNA0/N9c9lQ==
+ 02 Jul 2024 17:25:38 -0700
+X-CSE-ConnectionGUID: mgGNvkU/STCGVWgc7q1KyA==
+X-CSE-MsgGUID: 2VvWTQonQGCNZWHprDVehQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46072865"
+X-IronPort-AV: E=Sophos;i="6.09,180,1716274800"; d="scan'208";a="46072885"
 Received: from unerlige-desk.jf.intel.com ([10.165.21.199])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Jul 2024 17:25:37 -0700
+ 02 Jul 2024 17:25:38 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	lucas.demarchi@intel.com
-Subject: [PATCH i-g-t v2 02/10] tests/intel/xe_drm_fdinfo: Add
- basic-engine-utilization test
-Date: Tue,  2 Jul 2024 17:25:24 -0700
-Message-Id: <20240703002532.3156277-3-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH i-g-t v2 08/10] tests/intel/xe_drm_fdinfo: Add tests for
+ virtual engines
+Date: Tue,  2 Jul 2024 17:25:30 -0700
+Message-Id: <20240703002532.3156277-9-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
 References: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
@@ -68,85 +68,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the basic test for engine utilization.
+Add tests to verify utilization on virtual engines.
+
+v2:
+- s/measured_usleep/usleep
+- Remove xe_ prefix from helpers/structures
+- Remove ISOLATION case for multi_all_busy_check_all
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 32 +++++++++++++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 71 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 70 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index f0aa23e2f..b64bef339 100644
+index 9d3d1b285..5a3cd776c 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -14,17 +14,20 @@
- #include "xe/xe_spin.h"
- /**
-  * TEST: xe drm fdinfo
-- * Description: Read and verify drm client memory consumption using fdinfo
-+ * Description: Read and verify drm client memory consumption and engine utilization using fdinfo
-  * Category: Core
-  * Mega feature: General Core features
-  * Sub-category: driver
-- * Functionality: Per client memory statistics
-+ * Functionality: Per client memory and engine utilization statistics
-  * Feature: SMI, core
-  * Test category: SysMan
+@@ -46,6 +46,18 @@
+  * SUBTEST: drm-all-busy-idle-check-all
+  * Description: Check that all engines show busy when all are loaded
   *
-  * SUBTEST: basic-memory
-  * Description: Check if basic fdinfo content is present for memory
-  *
-+ * SUBTEST: basic-engine-utilization
-+ * Description: Check if basic fdinfo content is present for engine utilization
++ * SUBTEST: drm-virtual-idle
++ * Description: Check that virtual engines show no load when idle
++ *
++ * SUBTEST: drm-virtual-busy-idle
++ * Description: Check that virtual engines show load when idle after busy
++ *
++ * SUBTEST: drm-virtual-all-busy-idle-check-all
++ * Description: Check that all virtual engines show busy when loaded
++ *
++ * SUBTEST: drm-virtual-busy-idle-isolation
++ * Description: Check that virtual engine load does not spill over to other drm clients
 + *
   * SUBTEST: drm-total-resident
   * Description: Create and compare total and resident memory consumption by client
   *
-@@ -35,10 +38,17 @@
-  * Description: Create and compare active memory consumption by client
-  */
- 
--IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo");
-+IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine utilization using fdinfo");
- 
- #define BO_SIZE (65536)
- 
-+static const char *engine_map[] = {
-+	"rcs",
-+	"bcs",
-+	"vcs",
-+	"vecs",
-+	"ccs",
-+};
- /* Subtests */
- static void test_active(int fd, struct drm_xe_engine *engine)
- {
-@@ -287,6 +297,18 @@ static void basic_memory(int xe)
+@@ -695,10 +707,52 @@ all_busy_check_all(int fd, unsigned int flags)
  	}
+ 	xe_vm_destroy(fd, vm);
  }
- 
-+static void basic_engine_utilization(int xe)
-+{
-+	struct drm_client_fdinfo info = { };
-+	unsigned int ret;
 +
-+	ret = igt_parse_drm_fdinfo(xe, &info, engine_map,
-+				   ARRAY_SIZE(engine_map), NULL, 0);
-+	igt_assert_f(ret != 0, "failed with err:%d\n", errno);
-+	igt_assert(!strcmp(info.driver, "xe"));
-+	igt_require(info.num_engines);
++static void
++multi_all_busy_check_all(int fd, unsigned int flags)
++{
++	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
++	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
++	struct spin_ctx *ctx[DRM_XE_ENGINE_CLASS_COMPUTE + 1] = {};
++	struct drm_xe_engine_class_instance *hwe;
++	int count, class;
++	uint32_t vm;
++
++	vm = xe_vm_create(fd, 0, 0);
++	if (flags & TEST_BUSY) {
++		xe_for_each_multi_engine(fd, hwe, count) {
++			class = hwe->engine_class;
++			ctx[class] = spin_ctx_init(fd, hwe, vm,
++						      1,
++						      count);
++			spin_sync_start(fd, ctx[class]);
++		}
++	}
++
++	read_engine_cycles(fd, pceu1);
++	usleep(batch_duration_ns / 1000);
++	if (flags & TEST_TRAILING_IDLE) {
++		xe_for_each_multi_engine(fd, hwe, count) {
++			spin_sync_end(fd, ctx[hwe->engine_class]);
++		}
++	}
++	read_engine_cycles(fd, pceu2);
++
++	xe_for_each_multi_engine(fd, hwe, count) {
++		class = hwe->engine_class;
++		check_results(pceu1, pceu2, class,
++			      1,
++			      flags);
++		spin_sync_end(fd, ctx[class]);
++		spin_ctx_destroy(fd, ctx[class]);
++	}
++	xe_vm_destroy(fd, vm);
 +}
 +
  igt_main
  {
- 	int xe;
-@@ -303,6 +325,10 @@ igt_main
- 	igt_subtest("basic-memory")
- 		basic_memory(xe);
+ 	struct drm_xe_engine_class_instance *hwe;
+-	int xe;
++	int xe, count;
  
-+	igt_describe("Check if basic fdinfo content is present for engine utilization");
-+	igt_subtest("basic-engine-utilization")
-+		basic_engine_utilization(xe);
+ 	igt_fixture {
+ 		struct drm_client_fdinfo info = { };
+@@ -740,6 +794,21 @@ igt_main
+ 	igt_subtest("drm-all-busy-idle-check-all")
+ 		all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
+ 
++	igt_subtest("drm-virtual-idle")
++		xe_for_each_multi_engine(xe, hwe, count)
++			single(xe, hwe, 1, count, 0);
++
++	igt_subtest("drm-virtual-busy-idle")
++		xe_for_each_multi_engine(xe, hwe, count)
++			single(xe, hwe, 1, count, TEST_BUSY | TEST_TRAILING_IDLE);
++
++	igt_subtest("drm-virtual-all-busy-idle-check-all")
++		multi_all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
++
++	igt_subtest("drm-virtual-busy-idle-isolation")
++		xe_for_each_multi_engine(xe, hwe, count)
++			single(xe, hwe, 1, count, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
 +
  	igt_describe("Create and compare total and resident memory consumption by client");
  	igt_subtest("drm-total-resident")
