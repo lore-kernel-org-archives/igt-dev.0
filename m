@@ -4,52 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A456C2BD09
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 00:24:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E38C2BD09
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 00:29:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EDD3E10E00B;
-	Thu,  4 Jul 2024 00:24:31 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n/6MYI6L";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FA5210E00B
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Jul 2024 00:24:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720052671; x=1751588671;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=n0DnwhexYBKnZyqNoVNjGapW29XkQrpywgljLydXr3g=;
- b=n/6MYI6LeoRF7DfzIqs0AZsX9nlmz9Z3HcJIHKl6pWVwZ350qrD7EtHr
- f5PAFVd8PLB7Td1+bDqmihf2llA5ZgdXUKK4CNPK7vVWtnHdgDI1YKAQh
- +PQy+6qp0KtCRNwCBaXiDzgp1Y932BDxF++zShewWRJ4KTlDu3Evahbwt
- B631qc+zAJ84GMMilCj8swBTWrL0wrrT+HDjimnHeFNluEk8bgrZ+hACC
- VtJo95bnH5ac4Pnw4Q61SS9u8SuXqCVr3EC5PLTrQCGzMgigMF4Dx7Dqh
- /Sn30/2atk+5jJEfXn3LgCXsDo4Og3g2LUkvGEayAbLFsYi+v2urW9EGn w==;
-X-CSE-ConnectionGUID: V83jJfQKQJyZho8I90DQnw==
-X-CSE-MsgGUID: Gv8vzcwFQvK/TZsHLrh4cw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17148670"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17148670"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2024 17:24:31 -0700
-X-CSE-ConnectionGUID: DG4OG3s/Qp2d1LB9X9dA0w==
-X-CSE-MsgGUID: iN+S0FJLTU+mqaIE9vXOPg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="69617213"
-Received: from orsosgc001.jf.intel.com ([10.165.21.138])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2024 17:24:32 -0700
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] drm-uapi/xe: Sync with Perf/Observation layer uapi
- updates
-Date: Wed,  3 Jul 2024 17:24:25 -0700
-Message-ID: <20240704002425.2604948-1-ashutosh.dixit@intel.com>
-X-Mailer: git-send-email 2.41.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2506310E1C1;
+	Thu,  4 Jul 2024 00:29:15 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10A0A10E1C1;
+ Thu,  4 Jul 2024 00:29:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_drm-uapi/xe=3A_Sync_with_?=
+ =?utf-8?q?Perf/Observation_layer_uapi_updates?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Ashutosh Dixit" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 04 Jul 2024 00:29:14 -0000
+Message-ID: <172005295406.27329.10963725117993883292@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240704002425.2604948-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20240704002425.2604948-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,337 +37,21 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Align with kernel commit 8169b2097d88 ("drm/xe/uapi: Rename xe perf layer
-as xe observation layer") which changes uapi to rename perf streams to
-observation streams.
+== Series Details ==
 
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
----
- include/drm-uapi/xe_drm.h        | 102 ++++++++++++++++---------------
- lib/xe/xe_oa.c                   |  18 +++---
- lib/xe/xe_oa.h                   |   4 +-
- tools/xe-perf/xe_perf_configs.c  |   2 +-
- tools/xe-perf/xe_perf_recorder.c |   4 +-
- 5 files changed, 66 insertions(+), 64 deletions(-)
+Series: drm-uapi/xe: Sync with Perf/Observation layer uapi updates
+URL   : https://patchwork.freedesktop.org/series/135728/
+State : failure
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index a5f94bb625..3bab3fdaa8 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -80,7 +80,7 @@ extern "C" {
-  *  - &DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY
-  *  - &DRM_IOCTL_XE_EXEC
-  *  - &DRM_IOCTL_XE_WAIT_USER_FENCE
-- *  - &DRM_IOCTL_XE_PERF
-+ *  - &DRM_IOCTL_XE_OBSERVATION
-  */
- 
- /*
-@@ -101,7 +101,7 @@ extern "C" {
- #define DRM_XE_EXEC_QUEUE_GET_PROPERTY	0x08
- #define DRM_XE_EXEC			0x09
- #define DRM_XE_WAIT_USER_FENCE		0x0a
--#define DRM_XE_PERF			0x0b
-+#define DRM_XE_OBSERVATION		0x0b
- 
- /* Must be kept compact -- no holes */
- 
-@@ -116,7 +116,7 @@ extern "C" {
- #define DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY	DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EXEC_QUEUE_GET_PROPERTY, struct drm_xe_exec_queue_get_property)
- #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
- #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
--#define DRM_IOCTL_XE_PERF			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_PERF, struct drm_xe_perf_param)
-+#define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
- 
- /**
-  * DOC: Xe IOCTL Extensions
-@@ -1376,66 +1376,67 @@ struct drm_xe_wait_user_fence {
- };
- 
- /**
-- * enum drm_xe_perf_type - Perf stream types
-+ * enum drm_xe_observation_type - Observation stream types
-  */
--enum drm_xe_perf_type {
--	/** @DRM_XE_PERF_TYPE_OA: OA perf stream type */
--	DRM_XE_PERF_TYPE_OA,
-+enum drm_xe_observation_type {
-+	/** @DRM_XE_OBSERVATION_TYPE_OA: OA observation stream type */
-+	DRM_XE_OBSERVATION_TYPE_OA,
- };
- 
- /**
-- * enum drm_xe_perf_op - Perf stream ops
-+ * enum drm_xe_observation_op - Observation stream ops
-  */
--enum drm_xe_perf_op {
--	/** @DRM_XE_PERF_OP_STREAM_OPEN: Open a perf counter stream */
--	DRM_XE_PERF_OP_STREAM_OPEN,
-+enum drm_xe_observation_op {
-+	/** @DRM_XE_OBSERVATION_OP_STREAM_OPEN: Open an observation stream */
-+	DRM_XE_OBSERVATION_OP_STREAM_OPEN,
- 
--	/** @DRM_XE_PERF_OP_ADD_CONFIG: Add perf stream config */
--	DRM_XE_PERF_OP_ADD_CONFIG,
-+	/** @DRM_XE_OBSERVATION_OP_ADD_CONFIG: Add observation stream config */
-+	DRM_XE_OBSERVATION_OP_ADD_CONFIG,
- 
--	/** @DRM_XE_PERF_OP_REMOVE_CONFIG: Remove perf stream config */
--	DRM_XE_PERF_OP_REMOVE_CONFIG,
-+	/** @DRM_XE_OBSERVATION_OP_REMOVE_CONFIG: Remove observation stream config */
-+	DRM_XE_OBSERVATION_OP_REMOVE_CONFIG,
- };
- 
- /**
-- * struct drm_xe_perf_param - Input of &DRM_XE_PERF
-+ * struct drm_xe_observation_param - Input of &DRM_XE_OBSERVATION
-  *
-- * The perf layer enables multiplexing perf counter streams of multiple
-- * types. The actual params for a particular stream operation are supplied
-- * via the @param pointer (use __copy_from_user to get these params).
-+ * The observation layer enables multiplexing observation streams of
-+ * multiple types. The actual params for a particular stream operation are
-+ * supplied via the @param pointer (use __copy_from_user to get these
-+ * params).
-  */
--struct drm_xe_perf_param {
-+struct drm_xe_observation_param {
- 	/** @extensions: Pointer to the first extension struct, if any */
- 	__u64 extensions;
--	/** @perf_type: Perf stream type, of enum @drm_xe_perf_type */
--	__u64 perf_type;
--	/** @perf_op: Perf op, of enum @drm_xe_perf_op */
--	__u64 perf_op;
-+	/** @observation_type: observation stream type, of enum @drm_xe_observation_type */
-+	__u64 observation_type;
-+	/** @observation_op: observation stream op, of enum @drm_xe_observation_op */
-+	__u64 observation_op;
- 	/** @param: Pointer to actual stream params */
- 	__u64 param;
- };
- 
- /**
-- * enum drm_xe_perf_ioctls - Perf fd ioctl's
-+ * enum drm_xe_observation_ioctls - Observation stream fd ioctl's
-  *
-- * Information exchanged between userspace and kernel for perf fd ioctl's
-- * is stream type specific
-+ * Information exchanged between userspace and kernel for observation fd
-+ * ioctl's is stream type specific
-  */
--enum drm_xe_perf_ioctls {
--	/** @DRM_XE_PERF_IOCTL_ENABLE: Enable data capture for a stream */
--	DRM_XE_PERF_IOCTL_ENABLE = _IO('i', 0x0),
-+enum drm_xe_observation_ioctls {
-+	/** @DRM_XE_OBSERVATION_IOCTL_ENABLE: Enable data capture for an observation stream */
-+	DRM_XE_OBSERVATION_IOCTL_ENABLE = _IO('i', 0x0),
- 
--	/** @DRM_XE_PERF_IOCTL_DISABLE: Disable data capture for a stream */
--	DRM_XE_PERF_IOCTL_DISABLE = _IO('i', 0x1),
-+	/** @DRM_XE_OBSERVATION_IOCTL_DISABLE: Disable data capture for a observation stream */
-+	DRM_XE_OBSERVATION_IOCTL_DISABLE = _IO('i', 0x1),
- 
--	/** @DRM_XE_PERF_IOCTL_CONFIG: Change stream configuration */
--	DRM_XE_PERF_IOCTL_CONFIG = _IO('i', 0x2),
-+	/** @DRM_XE_OBSERVATION_IOCTL_CONFIG: Change observation stream configuration */
-+	DRM_XE_OBSERVATION_IOCTL_CONFIG = _IO('i', 0x2),
- 
--	/** @DRM_XE_PERF_IOCTL_STATUS: Return stream status */
--	DRM_XE_PERF_IOCTL_STATUS = _IO('i', 0x3),
-+	/** @DRM_XE_OBSERVATION_IOCTL_STATUS: Return observation stream status */
-+	DRM_XE_OBSERVATION_IOCTL_STATUS = _IO('i', 0x3),
- 
--	/** @DRM_XE_PERF_IOCTL_INFO: Return stream info */
--	DRM_XE_PERF_IOCTL_INFO = _IO('i', 0x4),
-+	/** @DRM_XE_OBSERVATION_IOCTL_INFO: Return observation stream info */
-+	DRM_XE_OBSERVATION_IOCTL_INFO = _IO('i', 0x4),
- };
- 
- /**
-@@ -1546,12 +1547,12 @@ enum drm_xe_oa_format_type {
-  * Stream params are specified as a chain of @drm_xe_ext_set_property
-  * struct's, with @property values from enum @drm_xe_oa_property_id and
-  * @drm_xe_user_extension base.name set to @DRM_XE_OA_EXTENSION_SET_PROPERTY.
-- * @param field in struct @drm_xe_perf_param points to the first
-+ * @param field in struct @drm_xe_observation_param points to the first
-  * @drm_xe_ext_set_property struct.
-  *
-- * Exactly the same mechanism is also used for stream reconfiguration using
-- * the @DRM_XE_PERF_IOCTL_CONFIG perf fd ioctl, though only a subset of
-- * properties below can be specified for stream reconfiguration.
-+ * Exactly the same mechanism is also used for stream reconfiguration using the
-+ * @DRM_XE_OBSERVATION_IOCTL_CONFIG observation stream fd ioctl, though only a
-+ * subset of properties below can be specified for stream reconfiguration.
-  */
- enum drm_xe_oa_property_id {
- #define DRM_XE_OA_EXTENSION_SET_PROPERTY	0
-@@ -1571,11 +1572,11 @@ enum drm_xe_oa_property_id {
- 
- 	/**
- 	 * @DRM_XE_OA_PROPERTY_OA_METRIC_SET: OA metrics defining contents of OA
--	 * reports, previously added via @DRM_XE_PERF_OP_ADD_CONFIG.
-+	 * reports, previously added via @DRM_XE_OBSERVATION_OP_ADD_CONFIG.
- 	 */
- 	DRM_XE_OA_PROPERTY_OA_METRIC_SET,
- 
--	/** @DRM_XE_OA_PROPERTY_OA_FORMAT: Perf counter report format */
-+	/** @DRM_XE_OA_PROPERTY_OA_FORMAT: OA counter report format */
- 	DRM_XE_OA_PROPERTY_OA_FORMAT,
- 	/*
- 	 * OA_FORMAT's are specified the same way as in PRM/Bspec 52198/60942,
-@@ -1596,13 +1597,13 @@ enum drm_xe_oa_property_id {
- 
- 	/**
- 	 * @DRM_XE_OA_PROPERTY_OA_DISABLED: A value of 1 will open the OA
--	 * stream in a DISABLED state (see @DRM_XE_PERF_IOCTL_ENABLE).
-+	 * stream in a DISABLED state (see @DRM_XE_OBSERVATION_IOCTL_ENABLE).
- 	 */
- 	DRM_XE_OA_PROPERTY_OA_DISABLED,
- 
- 	/**
- 	 * @DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID: Open the stream for a specific
--	 * @exec_queue_id. Perf queries can be executed on this exec queue.
-+	 * @exec_queue_id. OA queries can be executed on this exec queue.
- 	 */
- 	DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID,
- 
-@@ -1622,7 +1623,7 @@ enum drm_xe_oa_property_id {
- /**
-  * struct drm_xe_oa_config - OA metric configuration
-  *
-- * Multiple OA configs can be added using @DRM_XE_PERF_OP_ADD_CONFIG. A
-+ * Multiple OA configs can be added using @DRM_XE_OBSERVATION_OP_ADD_CONFIG. A
-  * particular config can be specified when opening an OA stream using
-  * @DRM_XE_OA_PROPERTY_OA_METRIC_SET property.
-  */
-@@ -1645,8 +1646,9 @@ struct drm_xe_oa_config {
- 
- /**
-  * struct drm_xe_oa_stream_status - OA stream status returned from
-- * @DRM_XE_PERF_IOCTL_STATUS perf fd ioctl. Userspace can call the ioctl to
-- * query stream status in response to EIO errno from perf fd read().
-+ * @DRM_XE_OBSERVATION_IOCTL_STATUS observation stream fd ioctl. Userspace can
-+ * call the ioctl to query stream status in response to EIO errno from
-+ * observation fd read().
-  */
- struct drm_xe_oa_stream_status {
- 	/** @extensions: Pointer to the first extension struct, if any */
-@@ -1665,7 +1667,7 @@ struct drm_xe_oa_stream_status {
- 
- /**
-  * struct drm_xe_oa_stream_info - OA stream info returned from
-- * @DRM_XE_PERF_IOCTL_INFO perf fd ioctl
-+ * @DRM_XE_OBSERVATION_IOCTL_INFO observation stream fd ioctl
-  */
- struct drm_xe_oa_stream_info {
- 	/** @extensions: Pointer to the first extension struct, if any */
-diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
-index 576358fe22..98c53620d3 100644
---- a/lib/xe/xe_oa.c
-+++ b/lib/xe/xe_oa.c
-@@ -688,7 +688,7 @@ load_metric_set_config(struct intel_xe_perf_metric_set *metric_set, int drm_fd)
- 	memcpy(regs, metric_set->flex_regs, 2 * metric_set->n_flex_regs * sizeof(u32));
- 	regs += 2 * metric_set->n_flex_regs * sizeof(u32);
- 
--	ret = intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_ADD_CONFIG, &config);
-+	ret = intel_xe_perf_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_ADD_CONFIG, &config);
- 	if (ret >= 0)
- 		metric_set->perf_oa_metrics_set = ret;
- 
-@@ -1042,31 +1042,31 @@ static void xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
- 		ext[j].base.next_extension = to_user_pointer(&ext[j + 1]);
- }
- 
--int intel_xe_perf_ioctl(int fd, enum drm_xe_perf_op op, void *arg)
-+int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg)
- {
- #define XE_OA_MAX_SET_PROPERTIES 16
- 
- 	struct drm_xe_ext_set_property ext[XE_OA_MAX_SET_PROPERTIES] = {};
- 
- 	/* Chain the PERF layer struct */
--	struct drm_xe_perf_param p = {
-+	struct drm_xe_observation_param p = {
- 		.extensions = 0,
--		.perf_type = DRM_XE_PERF_TYPE_OA,
--		.perf_op = op,
--		.param = to_user_pointer((op == DRM_XE_PERF_OP_STREAM_OPEN) ? ext : arg),
-+		.observation_type = DRM_XE_OBSERVATION_TYPE_OA,
-+		.observation_op = op,
-+		.param = to_user_pointer((op == DRM_XE_OBSERVATION_OP_STREAM_OPEN) ? ext : arg),
- 	};
- 
--	if (op == DRM_XE_PERF_OP_STREAM_OPEN) {
-+	if (op == DRM_XE_OBSERVATION_OP_STREAM_OPEN) {
- 		struct intel_xe_oa_open_prop *oprop = (struct intel_xe_oa_open_prop *)arg;
- 
- 		igt_assert_lte(oprop->num_properties, XE_OA_MAX_SET_PROPERTIES);
- 		xe_oa_prop_to_ext(oprop, ext);
- 	}
- 
--	return igt_ioctl(fd, DRM_IOCTL_XE_PERF, &p);
-+	return igt_ioctl(fd, DRM_IOCTL_XE_OBSERVATION, &p);
- }
- 
--void intel_xe_perf_ioctl_err(int fd, enum drm_xe_perf_op op, void *arg, int err)
-+void intel_xe_perf_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err)
- {
- 	igt_assert_eq(intel_xe_perf_ioctl(fd, op, arg), -1);
- 	igt_assert_eq(errno, err);
-diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
-index f6f2768b00..d5f59a3815 100644
---- a/lib/xe/xe_oa.h
-+++ b/lib/xe/xe_oa.h
-@@ -398,8 +398,8 @@ uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *per
- const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
- 					     const struct intel_xe_perf_record_header *record);
- 
--int intel_xe_perf_ioctl(int fd, enum drm_xe_perf_op op, void *arg);
--void intel_xe_perf_ioctl_err(int fd, enum drm_xe_perf_op op, void *arg, int err);
-+int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg);
-+void intel_xe_perf_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err);
- 
- #ifdef __cplusplus
- };
-diff --git a/tools/xe-perf/xe_perf_configs.c b/tools/xe-perf/xe_perf_configs.c
-index af33c0078c..bd37fef5c7 100644
---- a/tools/xe-perf/xe_perf_configs.c
-+++ b/tools/xe-perf/xe_perf_configs.c
-@@ -228,7 +228,7 @@ main(int argc, char *argv[])
- 			continue;
- 
- 		if (purge) {
--			if (intel_xe_perf_ioctl(drm_fd, DRM_XE_PERF_OP_REMOVE_CONFIG, &metric_id) == 0)
-+			if (intel_xe_perf_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_REMOVE_CONFIG, &metric_id) == 0)
- 				fprintf(stdout, "\tRemoved config %s id=%03" PRIu64 " name=%s\n",
- 					entry->d_name, metric_id, metric_name(perf, entry->d_name));
- 			else
-diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
-index bd2d645fa1..9cf51f3e15 100644
---- a/tools/xe-perf/xe_perf_recorder.c
-+++ b/tools/xe-perf/xe_perf_recorder.c
-@@ -443,7 +443,7 @@ perf_open(struct recording_context *ctx)
- 		.properties_ptr = to_user_pointer(properties),
- 	};
- 
--	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_PERF_OP_STREAM_OPEN, &param);
-+	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param);
- 	if (stream_fd < 0) {
- 		errno = 0;
- 		goto exit;
-@@ -541,7 +541,7 @@ static int get_stream_status(int perf_fd, u32 *oa_status)
- 	struct drm_xe_oa_stream_status status;
- 	int ret;
- 
--	ret = perf_ioctl(perf_fd, DRM_XE_PERF_IOCTL_STATUS, &status);
-+	ret = perf_ioctl(perf_fd, DRM_XE_OBSERVATION_IOCTL_STATUS, &status);
- 	if (ret)
- 		return ret;
- 
--- 
-2.41.0
+== Summary ==
+
+IGT patchset build failed on latest successful build
+d0d71f374c95a89a3bdcd104c7d8c2043f79e37a tests/intel/xe_intel_bb: Reduce render subtest execution time
+
+Tail of build.log:
+
 
