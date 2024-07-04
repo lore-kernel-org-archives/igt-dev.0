@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1E33C3DA40
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44C40C38150
 	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 01:11:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02B4510E327;
-	Thu,  4 Jul 2024 01:11:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EEFAA10E1C1;
+	Thu,  4 Jul 2024 01:11:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YUeL0xIK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QDVpUqoz";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C9AB10E02A
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Jul 2024 01:11:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C511810E1C1
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Jul 2024 01:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720055507; x=1751591507;
+ t=1720055506; x=1751591506;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=lgpgT2zFN+QI2uQltlG1l4cT8ekGOp0P/CS5G0DwUYw=;
- b=YUeL0xIKEz2FwBF5PgxXRqeloN7XroGudaxIbqEsT7b7Bmx+83TILYVg
- Zyd22SqBn1egT5vW6o0ndSmVbOqcuKU0Bj/fwRoZqrAmBqOqwzFBnLBs3
- WA6nXME0uwB/GSoLwCxv2h++bC7u6jVKVGuWkRv7Pu267bnBSTkNOPh2Y
- AORYAamICp0V/5sN01QH19/miOSj2qFb4SqNpLW4dQDFbdGiCjTqVmoGk
- 16lBO/eTNVpH9xsU2RPH/Cbh2IJQi5m2M87dtsC9O+1FolONTU2rQNYgf
- chom7705Adh0Ze5pG/yfc6+Cm7dmFYDNp5LZ6QkIfjNRnjrPdauzVy7A1 A==;
-X-CSE-ConnectionGUID: PINY0MGTRASt4mXjK+fk1Q==
-X-CSE-MsgGUID: GHiyduhOSc2JyvuIjR+kkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17450017"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17450017"
+ bh=dJKCg6kdQkCzyczSjFQoNJ5hagiWH+wC/RXMfuXGtAA=;
+ b=QDVpUqozdDIDSQXDhryWcpl7MfntAnevsJjRXLG2Tyy9pwHYSS2SrTYY
+ Zao3hcioJJO/ISIYo/VQiWf9sJzxG4lx41c87Zdogd9mLxTLfnLwiZPlp
+ WU7G5CtKC7CytzZqcM7Q6Aol+kN0wgoWWmdE/cJgnw4vXGSxVd7TEYlQP
+ GhC5e8ce+vJooTRd2kQPwIkNMamo9FmuDcgQuKWoNKUWyQWl33/oVyUgU
+ 22vVW/3+It2VIWOY58g4hMoNa67pXnc2fkIsNobT1jV8LLW39cWu85gsc
+ Ny4cIfyQLjKEWBOBavMd5RdPFCj355a/YRnmJ04+ivo5y4wg3WgDlT69S A==;
+X-CSE-ConnectionGUID: 3DUQmyTMTOCghnb5DlNWBg==
+X-CSE-MsgGUID: fNDsIGWWR/uY0NztnaPK/A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11122"; a="17450010"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17450010"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Jul 2024 18:11:47 -0700
-X-CSE-ConnectionGUID: 4J5LfckSSe6/h86tIk6L2Q==
-X-CSE-MsgGUID: c+Pg/uraTSK2UpWlJ7gFkw==
+ 03 Jul 2024 18:11:46 -0700
+X-CSE-ConnectionGUID: cnYV+VWrTW2ZMieyrkcNSQ==
+X-CSE-MsgGUID: SAhzNboSQKSmCXdlUicuNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46320141"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="46320129"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Jul 2024 18:11:45 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 09/15] tests/intel/xe_oa: OAR/OAC tests
-Date: Wed,  3 Jul 2024 18:11:36 -0700
-Message-ID: <20240704011142.2618968-10-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 02/15] lib/xe/oa: Add PVC support
+Date: Wed,  3 Jul 2024 18:11:29 -0700
+Message-ID: <20240704011142.2618968-3-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240704011142.2618968-1-ashutosh.dixit@intel.com>
 References: <20240704011142.2618968-1-ashutosh.dixit@intel.com>
@@ -66,778 +66,1080 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-"mi-rpc", "oa-tlb-invalidate" and "unprivileged-single-ctx-counters" tests.
-
-v2: Run "oa-tlb-invalidate" only for specific product versions (Umesh)
-v3: Rename xe perf layer as xe observation layer
+Add oa-pvc.xml and enable support for PVC.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 701 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 701 insertions(+)
+ lib/meson.build              |    5 +-
+ lib/xe/oa-configs/oa-pvc.xml | 1018 ++++++++++++++++++++++++++++++++++
+ lib/xe/xe_oa.c               |    4 +
+ 3 files changed, 1024 insertions(+), 3 deletions(-)
+ create mode 100644 lib/xe/oa-configs/oa-pvc.xml
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index a554ed189a..49f1fc905d 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -596,6 +596,18 @@ read_report_reason(const uint32_t *report)
- 		return "unknown";
- }
+diff --git a/lib/meson.build b/lib/meson.build
+index 8c032cbb66..7577bee9d3 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -403,10 +403,9 @@ xe_oa_files = [
  
-+static uint32_t
-+cs_timestamp_frequency(int fd)
-+{
-+	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
-+}
+ xe_oa_hardware = [
+   'tglgt1', 'tglgt2',
+-  'dg1',
+-  'rkl',
+-  'adl',
++  'dg1', 'rkl', 'adl',
+   'acmgt1', 'acmgt2', 'acmgt3',
++  'pvc',
+   'mtlgt2', 'mtlgt3',
+   'lnl',
+ ]
+diff --git a/lib/xe/oa-configs/oa-pvc.xml b/lib/xe/oa-configs/oa-pvc.xml
+new file mode 100644
+index 0000000000..9d212e65ad
+--- /dev/null
++++ b/lib/xe/oa-configs/oa-pvc.xml
+@@ -0,0 +1,1018 @@
++<?xml version="1.0"?>
++<metrics version="1619079818" merge_md5="">
++  <set name="Compute Metrics Basic"
++       chipset="PVC"
++       symbol_name="ComputeBasic"
++       underscore_name="compute_basic"
++       mdapi_supported_apis="VK OGL OCL IO"
++       hw_config_guid="8d637649-e8f5-4f80-83a4-6575b05d52d8"
++       >
++    <counter name="GPU Time Elapsed"
++             symbol_name="GpuTime"
++             underscore_name="gpu_time"
++             description="Time elapsed on the GPU during the measurement."
++             data_type="uint64"
++             units="ns"
++             semantic_type="duration"
++             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Core Clocks"
++             symbol_name="GpuCoreClocks"
++             underscore_name="gpu_core_clocks"
++             description="The total number of GPU core clocks elapsed during the measurement."
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="GPU_CLOCK 0 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="AVG GPU Core Frequency"
++             symbol_name="AvgGpuCoreFrequency"
++             underscore_name="avg_gpu_core_frequency"
++             description="Average GPU Core Frequency in the measurement."
++             data_type="uint64"
++             max_equation="$GpuMaxFrequency"
++             units="hz"
++             semantic_type="event"
++             equation="$GpuCoreClocks 1000000000 UMUL $GpuTime UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Busy"
++             symbol_name="GpuBusy"
++             underscore_name="gpu_busy"
++             description="The percentage of time in which the GPU has been processing GPU commands."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 0 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="CS Threads Dispatched"
++             symbol_name="CsThreads"
++             underscore_name="cs_threads"
++             description="The total number of compute shader hardware threads dispatched."
++             data_type="uint64"
++             units="threads"
++             semantic_type="event"
++             equation="A 4 READ"
++             mdapi_group="EU Array/Compute Shader"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Shader Memory Accesses"
++             symbol_name="ShaderMemoryAccesses"
++             underscore_name="shader_memory_accesses"
++             description="The total number of shader memory accesses to L3."
++             data_type="uint64"
++             units="messages"
++             semantic_type="event"
++             equation="A 32 READ"
++             mdapi_group="L3/Data Port"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Shader Atomic Memory Accesses"
++             symbol_name="ShaderAtomics"
++             underscore_name="shader_atomics"
++             description="The total number of shader atomic memory accesses."
++             data_type="uint64"
++             units="messages"
++             semantic_type="event"
++             equation="A 34 READ"
++             mdapi_group="L3/Data Port/Atomics"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Shader Barrier Messages"
++             symbol_name="ShaderBarriers"
++             underscore_name="shader_barriers"
++             description="The total number of shader barrier messages."
++             data_type="uint64"
++             units="messages"
++             semantic_type="event"
++             equation="A 35 READ"
++             mdapi_group="EU Array/Barrier"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SLM Reads"
++             symbol_name="SlmReads"
++             underscore_name="slm_reads"
++             description="The total number of reads from shared local memory."
++             data_type="uint64"
++             max_equation="$GpuCoreClocks $EuSubslicesTotalCount UMUL"
++             units="events"
++             semantic_type="event"
++             equation="A 30 READ"
++             mdapi_group="L3/Data Port/SLM"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SLM Writes"
++             symbol_name="SlmWrites"
++             underscore_name="slm_writes"
++             description="The total number of writes to shared local memory."
++             data_type="uint64"
++             max_equation="$GpuCoreClocks $EuSubslicesTotalCount UMUL"
++             units="events"
++             semantic_type="event"
++             equation="A 31 READ"
++             mdapi_group="L3/Data Port/SLM"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GTI Read Throughput"
++             symbol_name="GtiReadThroughput"
++             underscore_name="gti_read_throughput"
++             description="The total number of GPU memory bytes read from GTI."
++             data_type="uint64"
++             max_equation="$GpuCoreClocks 64 UMUL"
++             units="bytes"
++             semantic_type="throughput"
++             equation="128  A 36 READ UMUL"
++             mdapi_group="GTI"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GTI Write Throughput"
++             symbol_name="GtiWriteThroughput"
++             underscore_name="gti_write_throughput"
++             description="The total number of GPU memory bytes written to GTI."
++             data_type="uint64"
++             max_equation="$GpuCoreClocks 64 UMUL"
++             units="bytes"
++             semantic_type="throughput"
++             equation="128  A 37 READ UMUL"
++             mdapi_group="GTI"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU Active"
++             symbol_name="EU_ACTIVE_CYCLES"
++             underscore_name="eu_active_cycles"
++             description="The percentage of time in which the Execution Units were actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 7 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier2 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU Stall"
++             symbol_name="EU_STALL_CYCLES"
++             underscore_name="eu_stall_cycles"
++             description="The percentage of time in which the Execution Units were stalled."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 8 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier2 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU FPU Pipe Active"
++             symbol_name="EU_INST_EXECUTED_ALU0_ALL"
++             underscore_name="eu_inst_executed_alu0_all"
++             description="The percentage of time in which EU FPU INT64 pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 9 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EM Pipe Active"
++             symbol_name="EU_INST_EXECUTED_ALU1_ALL"
++             underscore_name="eu_inst_executed_alu1_all"
++             description="The percentage of time in which EU EM INT pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 10 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SYS Pipe Active"
++             symbol_name="EU_INST_EXECUTED_SYSTOLIC_ALL"
++             underscore_name="eu_inst_executed_systolic_all"
++             description="The percentage of time in which EU SYS pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 13 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Send Pipe Active"
++             symbol_name="EU_INST_EXECUTED_SEND_ALL"
++             underscore_name="eu_inst_executed_send_all"
++             description="The percentage of time in which EU send pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 11 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EM JEU Instruction"
++             symbol_name="EU_INST_EXECUTED_CONTROL_ALL"
++             underscore_name="eu_inst_executed_control_all"
++             description="The percentage of time in which JEU instruction were processed actively on EM INT pipeline."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 12 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EM And FPU Pipes Active"
++             symbol_name="EU_PIPE_ALU0_AND_ALU1_ACTIVE_CYCLES"
++             underscore_name="eu_pipe_alu0_and_alu1_active_cycles"
++             description="The percentage of time in which EU EM INT and FPU INT64 pipelines were actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 15 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SYS And FPU Pipes Active"
++             symbol_name="EU_PIPE_ALU0_AND_SYSTOLIC_ACTIVE_CYCLES"
++             underscore_name="eu_pipe_alu0_and_systolic_active_cycles"
++             description="The percentage of time in which EU Systolic and FPU INT64 pipelines were actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 14 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU Thread Occupancy"
++             symbol_name="EU_THREADS_OCCUPANCY_ALL"
++             underscore_name="eu_threads_occupancy_all"
++             description="The percentage of time in which hardware threads occupied EUs."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="8 A 16 READ FMUL $EuThreadsCount FDIV $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier2 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SYSMEM_TRANSACTION_READ"
++             symbol_name="SYSMEM_TRANSACTION_READ"
++             underscore_name="sysmem_transaction_read"
++             description="The number of system memory reads (upstream)"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 7 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SYSMEM_TRANSACTION_WRITE"
++             symbol_name="SYSMEM_TRANSACTION_WRITE"
++             underscore_name="sysmem_transaction_write"
++             description="The number of system memory writes  (upstream)"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 6 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="HOST_TO_GPUMEM_TRANSACTION_READ"
++             symbol_name="HOST_TO_GPUMEM_TRANSACTION_READ"
++             underscore_name="host_to_gpumem_transaction_read"
++             description="Host reads to GPU local (HBM) memory (downstream)"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 5 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="HOST_TO_GPUMEM_TRANSACTION_WRITE"
++             symbol_name="HOST_TO_GPUMEM_TRANSACTION_WRITE"
++             underscore_name="host_to_gpumem_transaction_write"
++             description="Host writes to GPU local (HBM) memory (downstream)"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 4 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI0"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI0"
++             underscore_name="gpu_memory_request_queue_full_sqidi0"
++             description="The The percentage of time in which SQ 0 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="C 3 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI1"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI1"
++             underscore_name="gpu_memory_request_queue_full_sqidi1"
++             description="The The percentage of time in which SQ 1 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="C 2 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI2"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI2"
++             underscore_name="gpu_memory_request_queue_full_sqidi2"
++             description="The The percentage of time in which SQ 2 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="C 1 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI3"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI3"
++             underscore_name="gpu_memory_request_queue_full_sqidi3"
++             description="The The percentage of time in which SQ 3 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="C 0 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI4"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI4"
++             underscore_name="gpu_memory_request_queue_full_sqidi4"
++             description="The The percentage of time in which SQ 4 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="B 7 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI8"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI8"
++             underscore_name="gpu_memory_request_queue_full_sqidi8"
++             description="The The percentage of time in which SQ 8 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="B 6 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU_MEMORY_REQUEST_QUEUE_FULL _SQIDI12"
++             symbol_name="GPU_MEMORY_REQUEST_QUEUE_FULL_SQIDI12"
++             underscore_name="gpu_memory_request_queue_full_sqidi12"
++             description="The The percentage of time in which SQ 12 is filled above a threshold (usually 48 entries)"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="B 5 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <register_config type="NOA">
++        <register type="NOA" address="0x00000D04" value="0x00000200" />
++        <register type="NOA" address="0x00009884" value="0x0000000C" />
++        <register type="NOA" address="0x00009888" value="0x14307FC0" />
++        <register type="NOA" address="0x00009888" value="0x04306000" />
++        <register type="NOA" address="0x00009888" value="0x14003400" />
++        <register type="NOA" address="0x00009888" value="0x14013400" />
++        <register type="NOA" address="0x00009888" value="0x14023400" />
++        <register type="NOA" address="0x00009888" value="0x14033400" />
++        <register type="NOA" address="0x00009888" value="0x14083400" />
++        <register type="NOA" address="0x00009888" value="0x140C3400" />
++        <register type="NOA" address="0x00009888" value="0x14043400" />
++        <register type="NOA" address="0x00009888" value="0x1A100090" />
++        <register type="NOA" address="0x00009888" value="0x1A110009" />
++        <register type="NOA" address="0x00009888" value="0x00142000" />
++        <register type="NOA" address="0x00009888" value="0x0050FFE0" />
++        <register type="NOA" address="0x00009888" value="0x00300240" />
++        <register type="NOA" address="0x00009888" value="0x0E300695" />
++        <register type="NOA" address="0x00009888" value="0x10300824" />
++        <register type="NOA" address="0x00009888" value="0x02300000" />
++        <register type="NOA" address="0x00009888" value="0x00000002" />
++        <register type="NOA" address="0x00009888" value="0x0E000080" />
++        <register type="NOA" address="0x00009888" value="0x04000000" />
++        <register type="NOA" address="0x00009888" value="0x00010002" />
++        <register type="NOA" address="0x00009888" value="0x0E010002" />
++        <register type="NOA" address="0x00009888" value="0x04010000" />
++        <register type="NOA" address="0x00009888" value="0x00020002" />
++        <register type="NOA" address="0x00009888" value="0x0C020080" />
++        <register type="NOA" address="0x00009888" value="0x04020000" />
++        <register type="NOA" address="0x00009888" value="0x00030002" />
++        <register type="NOA" address="0x00009888" value="0x0C030002" />
++        <register type="NOA" address="0x00009888" value="0x04030000" />
++        <register type="NOA" address="0x00009888" value="0x00080002" />
++        <register type="NOA" address="0x00009888" value="0x0A080002" />
++        <register type="NOA" address="0x00009888" value="0x04080000" />
++        <register type="NOA" address="0x00009888" value="0x00128000" />
++        <register type="NOA" address="0x00009888" value="0x00160800" />
++        <register type="NOA" address="0x00009888" value="0x000C0002" />
++        <register type="NOA" address="0x00009888" value="0x080C0080" />
++        <register type="NOA" address="0x00009888" value="0x040C0000" />
++        <register type="NOA" address="0x00009888" value="0x00040002" />
++        <register type="NOA" address="0x00009888" value="0x0A040080" />
++        <register type="NOA" address="0x00009888" value="0x04040000" />
++        <register type="NOA" address="0x00009888" value="0x2C500000" />
++        <register type="NOA" address="0x00009888" value="0x2E500400" />
++        <register type="NOA" address="0x00009888" value="0x30500000" />
++        <register type="NOA" address="0x00009888" value="0x18500000" />
++        <register type="NOA" address="0x00009888" value="0x32500A05" />
++        <register type="NOA" address="0x00009888" value="0x20500030" />
++        <register type="NOA" address="0x00009888" value="0x22500603" />
++        <register type="NOA" address="0x00009888" value="0x24500030" />
++        <register type="NOA" address="0x00009888" value="0x26500603" />
++        <register type="NOA" address="0x00009884" value="0x00000008" />
++        <register type="NOA" address="0x00009888" value="0x01404400" />
++        <register type="NOA" address="0x00009888" value="0x01414400" />
++        <register type="NOA" address="0x00009888" value="0x030755A0" />
++        <register type="NOA" address="0x00009888" value="0x0308AA00" />
++        <register type="NOA" address="0x00009888" value="0x01000040" />
++        <register type="NOA" address="0x00009888" value="0x01010040" />
++        <register type="NOA" address="0x00009888" value="0x01021000" />
++        <register type="NOA" address="0x00009888" value="0x01036400" />
++        <register type="NOA" address="0x00009888" value="0x0104A800" />
++        <register type="NOA" address="0x00009888" value="0x03045555" />
++        <register type="NOA" address="0x00009888" value="0x0305555A" />
++        <register type="NOA" address="0x00009888" value="0x0106FC00" />
++        <register type="NOA" address="0x00009888" value="0x01190400" />
++        <register type="NOA" address="0x00009888" value="0x011B0400" />
++        <register type="NOA" address="0x00009888" value="0x011C4800" />
++        <register type="NOA" address="0x00009888" value="0x011E4000" />
++        <register type="NOA" address="0x00009888" value="0x01108000" />
++    </register_config>
++    <register_config type="OA">
++        <register type="OA" address="0x0000D920" value="0x00000000" />
++        <register type="OA" address="0x0000D900" value="0x00000000" />
++        <register type="OA" address="0x0000D904" value="0x00800000" />
++        <register type="OA" address="0x0000D910" value="0x00000000" />
++        <register type="OA" address="0x0000D914" value="0x00800000" />
++        <register type="OA" address="0x0000DC40" value="0x00000000" />
++        <register type="OA" address="0x00002B2C" value="0x00000000" />
++    </register_config>
++    <register_config type="FLEX">
++        <register type="FLEX" address="0x0000E458" value="0x00005004" />
++        <register type="FLEX" address="0x0000E558" value="0x00001000" />
++        <register type="FLEX" address="0x0000E658" value="0x00001002" />
++        <register type="FLEX" address="0x0000E758" value="0x0000A009" />
++        <register type="FLEX" address="0x0000E45C" value="0x00008003" />
++    </register_config>
++  </set>
 +
-+static uint64_t
-+cs_timebase_scale(uint32_t u32_delta)
-+{
-+	return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
-+}
++  <set name="TestOa"
++       chipset="PVC"
++       symbol_name="TestOa"
++       underscore_name="test_oa"
++       mdapi_supported_apis="VK OGL OCL IO"
++       hw_config_guid="339a376a-4696-4e0d-812a-5fd13b0e1aa8"
++       >
++    <counter name="GPU Time Elapsed"
++             symbol_name="GpuTime"
++             underscore_name="gpu_time"
++             description="Time elapsed on the GPU during the measurement."
++             data_type="uint64"
++             units="ns"
++             semantic_type="duration"
++             equation="GPU_TIME 0 READ 1000000000 UMUL $GpuTimestampFrequency UDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Core Clocks"
++             symbol_name="GpuCoreClocks"
++             underscore_name="gpu_core_clocks"
++             description="The total number of GPU core clocks elapsed during the measurement."
++             data_type="uint64"
++             units="cycles"
++             semantic_type="event"
++             equation="GPU_CLOCK 0 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="TestCounter0"
++             symbol_name="Counter0"
++             underscore_name="counter0"
++             description="HW test counter 0. Factor: 0.0"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="B 0 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="TestCounter1"
++             symbol_name="Counter1"
++             underscore_name="counter1"
++             description="HW test counter 1. Factor: 1.0"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="B 1 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="TestCounter3"
++             symbol_name="Counter3"
++             underscore_name="counter3"
++             description="HW test counter 3. Factor: 0.5"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="B 2 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="TestCounter4"
++             symbol_name="Counter4"
++             underscore_name="counter4"
++             description="HW test counter 4. Factor: 0.3333"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="B 3 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="TestCounter5"
++             symbol_name="Counter5"
++             underscore_name="counter5"
++             description="HW test counter 5. Factor: 0.3333"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="B 4 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="TestCounter8"
++             symbol_name="Counter8"
++             underscore_name="counter8"
++             description="HW test counter 8. Should be equal to 1 in IOStream or in OAG query mode"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 7 READ"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="L3_BANK_INPUT_AVAILABLE _L3BANK0"
++             symbol_name="L3_BANK_INPUT_AVAILABLE_L3BANK0"
++             underscore_name="l3_bank_input_available_l3_bank0"
++             description="The percentage of time in which l3 bank 0 input is available"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="C 6 READ 100 UMUL $GpuCoreClocks FDIV"
++             availability="1"
++             mdapi_group="GTI/L3"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="subslice_bank"
++             />
++    <counter name="L3_OUTPUT_READY _L3BANK0"
++             symbol_name="L3_OUTPUT_READY_L3BANK0"
++             underscore_name="l3_output_ready_l3_bank0"
++             description="The percentage of time in which l3 bank 0 output is ready"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="C 3 READ 100 UMUL $GpuCoreClocks FDIV"
++             availability="1"
++             mdapi_group="GTI/L3"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="subslice_bank"
++             />
++    <counter name="L3_READ _L3BANK0"
++             symbol_name="L3_READ_L3BANK0"
++             underscore_name="l3_read_l3_bank0"
++             description="The number of L3 bank 0 read requests"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 5 READ"
++             availability="1"
++             mdapi_group="GTI/L3"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="subslice_bank"
++             />
++    <counter name="L3_WRITE _L3BANK0"
++             symbol_name="L3_WRITE_L3BANK0"
++             underscore_name="l3_write_l3_bank0"
++             description="The number of L3 Bank 0 write requests"
++             data_type="uint64"
++             units="events"
++             semantic_type="event"
++             equation="C 4 READ"
++             availability="1"
++             mdapi_group="GTI/L3"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="subslice_bank"
++             />
++    <counter name="THREADGROUP_DISPATCH_QUEUE0_ACTIVE_CYCLES _DUALSUBSLICE0"
++             symbol_name="THREADGROUP_DISPATCH_QUEUE0_ACTIVE_CYCLES_DUALSUBSLICE0"
++             underscore_name="threadgroup_dispatch_queue0_active_cycles_dualsubslice0"
++             description="The percentage of time in which non-PS thread is ready for dispatch in thread dispatcher 0 queue 0"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="B 5 READ 100 UMUL $GpuCoreClocks FDIV"
++             availability="$DualSubsliceMask 1 AND"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="dualsubslice"
++             />
++    <counter name="THREADGROUP_DISPATCH_QUEUE1_ACTIVE_CYCLES _DUALSUBSLICE0"
++             symbol_name="THREADGROUP_DISPATCH_QUEUE1_ACTIVE_CYCLES_DUALSUBSLICE0"
++             underscore_name="threadgroup_dispatch_queue1_active_cycles_dualsubslice0"
++             description="The percentage of time in which non-PS thread is ready for dispatch in thread dispatcher 0 queue 1"
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="B 6 READ 100 UMUL $GpuCoreClocks FDIV"
++             availability="$DualSubsliceMask 1 AND"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="dualsubslice"
++             />
++    <counter name="EU Active"
++             symbol_name="EuActive"
++             underscore_name="eu_active"
++             description="The percentage of time in which the Execution Units were actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 7 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier2 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU Stall"
++             symbol_name="EuStall"
++             underscore_name="eu_stall"
++             description="The percentage of time in which the Execution Units were stalled."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 8 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier2 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU Thread Occupancy"
++             symbol_name="EuThreadOccupancy"
++             underscore_name="eu_thread_occupancy"
++             description="The percentage of time in which hardware threads occupied EUs."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="8 A 10 READ FMUL $EuThreadsCount FDIV $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array"
++             mdapi_usage_flags="Tier2 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EU FPU Pipe Active"
++             symbol_name="FpuActive"
++             underscore_name="fpu_active"
++             description="The percentage of time in which EU FPU INT64 pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 11 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EM Pipe Active"
++             symbol_name="EmActive"
++             underscore_name="em_active"
++             description="The percentage of time in which EU EM INT pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 12 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SYS Pipe Active"
++             symbol_name="SysActive"
++             underscore_name="sys_active"
++             description="The percentage of time in which EU SYS pipeline was actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 13 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="EM And FPU Pipes Active"
++             symbol_name="EmFpuActive"
++             underscore_name="em_fpu_active"
++             description="The percentage of time in which EU EM INT and FPU INT64 pipelines were actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 9 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="SYS And FPU Pipes Active"
++             symbol_name="SysFpuActive"
++             underscore_name="sys_fpu_active"
++             description="The percentage of time in which EU Systolic and FPU INT64 pipelines were actively processing."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 14 READ $EuCoresTotalCount UDIV 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="EU Array/Pipes"
++             mdapi_usage_flags="Tier3 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="CS Threads Dispatched"
++             symbol_name="CsThreads"
++             underscore_name="cs_threads"
++             description="The total number of compute shader hardware threads dispatched."
++             data_type="uint64"
++             units="threads"
++             semantic_type="event"
++             equation="A 4 READ"
++             mdapi_group="EU Array/Compute Shader"
++             mdapi_usage_flags="Tier3 Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GPU Busy"
++             symbol_name="GpuBusy"
++             underscore_name="gpu_busy"
++             description="The percentage of time in which the GPU has been processing GPU commands."
++             data_type="float"
++             max_equation="100"
++             units="percent"
++             semantic_type="duration"
++             equation="A 0 READ 100 UMUL $GpuCoreClocks FDIV"
++             mdapi_group="GPU"
++             mdapi_usage_flags="Tier1 Overview System Frame"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="Gti Read Transactions"
++             symbol_name="GtiReadTransactions"
++             underscore_name="gti_read_transactions"
++             description="The total number of read transactions sent to GTI interfaces"
++             data_type="uint64"
++             max_equation="$GpuCoreClocks $EuSlicesTotalCount 4 UGT 8 UMUL $EuSlicesTotalCount 4 ULTE $EuSlicesTotalCount 1 UADD 0x6 AND UMUL UADD UMUL"
++             units="messages"
++             semantic_type="event"
++             equation="A 36 READ"
++             mdapi_group="GTI"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <counter name="GTI Write Transactions"
++             symbol_name="GtiWriteTransactions"
++             underscore_name="gti_write_transactions"
++             description="The total number of write transactions sent to GTI interfaces"
++             data_type="uint64"
++             max_equation="$GpuCoreClocks $EuSlicesTotalCount 4 UGT 8 UMUL $EuSlicesTotalCount 4 ULTE $EuSlicesTotalCount 1 UADD 0x6 AND UMUL UADD UMUL"
++             units="messages"
++             semantic_type="event"
++             equation="A 37 READ"
++             mdapi_group="GTI"
++             mdapi_usage_flags="Tier1 Overview System Frame Batch Draw"
++             mdapi_supported_apis=""
++             mdapi_hw_unit_type="gpu"
++             />
++    <register_config type="NOA">
++        <register type="NOA" address="0x00000D04" value="0x00000200" />
++        <register type="NOA" address="0x00009884" value="0x00000008" />
++        <register type="NOA" address="0x00009888" value="0x3B410000" />
++        <register type="NOA" address="0x00009888" value="0x0140000A" />
++        <register type="NOA" address="0x00009888" value="0x33406A80" />
++        <register type="NOA" address="0x00009888" value="0x07410006" />
++        <register type="NOA" address="0x00009888" value="0x17410033" />
++        <register type="NOA" address="0x00009888" value="0x03410000" />
++        <register type="NOA" address="0x00009888" value="0x4F410000" />
++        <register type="NOA" address="0x00009888" value="0x01030005" />
++        <register type="NOA" address="0x00009888" value="0x03035540" />
++        <register type="NOA" address="0x00009888" value="0x0104000A" />
++        <register type="NOA" address="0x00009888" value="0x0304AA80" />
++        <register type="NOA" address="0x00009888" value="0x1D500003" />
++        <register type="NOA" address="0x00009888" value="0x02E71540" />
++        <register type="NOA" address="0x00009888" value="0x02EA2A80" />
++        <register type="NOA" address="0x00009888" value="0x02E82A80" />
++        <register type="NOA" address="0x00009888" value="0x00F07803" />
++        <register type="NOA" address="0x00009888" value="0x00F10005" />
++        <register type="NOA" address="0x00009888" value="0x02F12A80" />
++        <register type="NOA" address="0x00009888" value="0x00F20003" />
++        <register type="NOA" address="0x00009888" value="0x22F30012" />
++        <register type="NOA" address="0x00009888" value="0x26F32490" />
++        <register type="NOA" address="0x00009888" value="0x00F4000A" />
++        <register type="NOA" address="0x00009888" value="0x22D3003F" />
++        <register type="NOA" address="0x00009884" value="0x00000004" />
++        <register type="NOA" address="0x00009888" value="0x044C2000" />
++        <register type="NOA" address="0x00009888" value="0x064C6000" />
++        <register type="NOA" address="0x00009888" value="0x004C0010" />
++        <register type="NOA" address="0x00009888" value="0x0E4C0180" />
++        <register type="NOA" address="0x00009888" value="0x104C0305" />
++        <register type="NOA" address="0x00009888" value="0x124C0007" />
++        <register type="NOA" address="0x00009884" value="0x0000000C" />
++        <register type="NOA" address="0x00009888" value="0x0050F803" />
++        <register type="NOA" address="0x00009888" value="0x1C500000" />
++        <register type="NOA" address="0x00009888" value="0x1E500000" />
++        <register type="NOA" address="0x00009888" value="0x28500000" />
++        <register type="NOA" address="0x00009888" value="0x18500000" />
++        <register type="NOA" address="0x00009888" value="0x20500000" />
++        <register type="NOA" address="0x00009888" value="0x22500C06" />
++        <register type="NOA" address="0x00009888" value="0x24500060" />
++        <register type="NOA" address="0x00009888" value="0x26501606" />
++        <register type="NOA" address="0x00009884" value="0x00000000" />
++        <register type="NOA" address="0x00009888" value="0x28036400" />
++        <register type="NOA" address="0x00009888" value="0x2A030080" />
++        <register type="NOA" address="0x00009888" value="0x06031300" />
++        <register type="NOA" address="0x00009888" value="0x08030FB0" />
++        <register type="NOA" address="0x00009888" value="0x00030000" />
++        <register type="NOA" address="0x00009888" value="0x00C00005" />
++        <register type="NOA" address="0x00009888" value="0x00C1000F" />
++        <register type="NOA" address="0x00009888" value="0x00C2000F" />
++        <register type="NOA" address="0x00009888" value="0x00C3001B" />
++        <register type="NOA" address="0x00009884" value="0x00000000" />
++        <register type="NOA" address="0x00009888" value="0x5C030002" />
++    </register_config>
++    <register_config type="OA">
++        <register type="OA" address="0x0000D920" value="0x00000000" />
++        <register type="OA" address="0x0000D900" value="0x00000000" />
++        <register type="OA" address="0x0000D904" value="0xF0800000" />
++        <register type="OA" address="0x0000D910" value="0x00000000" />
++        <register type="OA" address="0x0000D914" value="0x70800000" />
++        <register type="OA" address="0x0000DC40" value="0x007F0000" />
++        <register type="OA" address="0x0000D940" value="0x00000004" />
++        <register type="OA" address="0x0000D944" value="0x0000FFFF" />
++        <register type="OA" address="0x0000DC00" value="0x00000004" />
++        <register type="OA" address="0x0000DC04" value="0x0000FFFF" />
++        <register type="OA" address="0x0000D948" value="0x00000003" />
++        <register type="OA" address="0x0000D94C" value="0x0000FFFF" />
++        <register type="OA" address="0x0000DC08" value="0x00000003" />
++        <register type="OA" address="0x0000DC0C" value="0x0000FFFF" />
++        <register type="OA" address="0x0000D950" value="0x00100002" />
++        <register type="OA" address="0x0000D954" value="0x0000FFFB" />
++        <register type="OA" address="0x0000DC10" value="0x00100002" />
++        <register type="OA" address="0x0000DC14" value="0x0000FFFB" />
++        <register type="OA" address="0x0000D958" value="0x00100002" />
++        <register type="OA" address="0x0000D95C" value="0x0000FFE7" />
++        <register type="OA" address="0x0000DC18" value="0x00100002" />
++        <register type="OA" address="0x0000DC1C" value="0x0000FFE7" />
++        <register type="OA" address="0x0000D960" value="0x00100042" />
++        <register type="OA" address="0x0000D964" value="0x0000FFF7" />
++        <register type="OA" address="0x0000DC20" value="0x00100042" />
++        <register type="OA" address="0x0000DC24" value="0x0000FFF7" />
++        <register type="OA" address="0x0000D968" value="0x00000002" />
++        <register type="OA" address="0x0000D96C" value="0x0000FFFE" />
++        <register type="OA" address="0x0000DC28" value="0x00000002" />
++        <register type="OA" address="0x0000DC2C" value="0x0000FFFE" />
++        <register type="OA" address="0x0000D970" value="0x00000002" />
++        <register type="OA" address="0x0000D974" value="0x0000FFFD" />
++        <register type="OA" address="0x0000DC30" value="0x00000002" />
++        <register type="OA" address="0x0000DC34" value="0x0000FFFD" />
++        <register type="OA" address="0x00002B2C" value="0x00000000" />
++    </register_config>
++    <register_config type="FLEX">
++        <register type="FLEX" address="0x0000E458" value="0x00005004" />
++        <register type="FLEX" address="0x0000E558" value="0x00008003" />
++        <register type="FLEX" address="0x0000E658" value="0x00001000" />
++        <register type="FLEX" address="0x0000E758" value="0x0000A009" />
++    </register_config>
++  </set>
 +
- static uint64_t
- oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
- {
-@@ -662,6 +674,15 @@ oa_report_get_ctx_id(uint32_t *report)
- 	return report[2];
- }
++</metrics>
+diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
+index 98c53620d3..7974584392 100644
+--- a/lib/xe/xe_oa.c
++++ b/lib/xe/xe_oa.c
+@@ -36,6 +36,7 @@
+ #include "xe_oa_metrics_acmgt3.h"
+ #include "xe_oa_metrics_mtlgt2.h"
+ #include "xe_oa_metrics_mtlgt3.h"
++#include "xe_oa_metrics_pvc.h"
+ #include "xe_oa_metrics_lnl.h"
  
-+static int
-+oar_unit_default_format(void)
-+{
-+	if (IS_DG2(devid) || IS_METEORLAKE(devid))
-+		return XE_OAR_FORMAT_A32u40_A4u32_B8_C8;
-+
-+	return default_test_set->perf_oa_format;
-+}
-+
- static void *buf_map(int fd, struct intel_buf *buf, bool write)
- {
- 	void *p;
-@@ -700,6 +721,21 @@ scratch_buf_init(struct buf_ops *bops,
- 	scratch_buf_memset(buf, width, height, color);
- }
- 
-+static void
-+emit_report_perf_count(struct intel_bb *ibb,
-+		       struct intel_buf *dst,
-+		       int dst_offset,
-+		       uint32_t report_id)
-+{
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+
-+	intel_bb_out(ibb, OA_MI_REPORT_PERF_COUNT);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION, I915_GEM_DOMAIN_INSTRUCTION,
-+			    dst_offset, dst->addr.offset);
-+	intel_bb_out(ibb, report_id);
-+}
-+
- static bool
- oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
- {
-@@ -740,6 +776,31 @@ get_40bit_a_delta(uint64_t value0, uint64_t value1)
- 		return value1 - value0;
- }
- 
-+static void
-+accumulate_uint32(size_t offset,
-+		  uint32_t *report0,
-+                  uint32_t *report1,
-+                  uint64_t *delta)
-+{
-+	uint32_t value0 = *(uint32_t *)(((uint8_t *)report0) + offset);
-+	uint32_t value1 = *(uint32_t *)(((uint8_t *)report1) + offset);
-+
-+	*delta += (uint32_t)(value1 - value0);
-+}
-+
-+static void
-+accumulate_uint40(int a_index,
-+                  uint32_t *report0,
-+                  uint32_t *report1,
-+		  enum intel_xe_oa_format_name format,
-+                  uint64_t *delta)
-+{
-+	uint64_t value0 = read_40bit_a_counter(report0, format, a_index),
-+		 value1 = read_40bit_a_counter(report1, format, a_index);
-+
-+	*delta += get_40bit_a_delta(value0, value1);
-+}
-+
- static void
- accumulate_uint64(int a_index,
- 		  const uint32_t *report0,
-@@ -753,6 +814,78 @@ accumulate_uint64(int a_index,
- 	*delta += (value1 - value0);
- }
- 
-+static void
-+accumulate_reports(struct accumulator *accumulator,
-+		   uint32_t *start,
-+		   uint32_t *end)
-+{
-+	struct oa_format format = get_oa_format(accumulator->format);
-+	uint64_t *deltas = accumulator->deltas;
-+	int idx = 0;
-+
-+	/* timestamp */
-+	deltas[idx] += oa_timestamp_delta(end, start, accumulator->format);
-+	idx++;
-+
-+	/* clock cycles */
-+	deltas[idx] += oa_tick_delta(end, start, accumulator->format);
-+	idx++;
-+
-+	for (int i = 0; i < format.n_a40; i++) {
-+		accumulate_uint40(i, start, end, accumulator->format,
-+				  deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_a64; i++) {
-+		accumulate_uint64(i, start, end, accumulator->format,
-+				  deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_a; i++) {
-+		accumulate_uint32(format.a_off + 4 * i,
-+				  start, end, deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_b; i++) {
-+		accumulate_uint32(format.b_off + 4 * i,
-+				  start, end, deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_c; i++) {
-+		accumulate_uint32(format.c_off + 4 * i,
-+				  start, end, deltas + idx++);
-+	}
-+}
-+
-+static void
-+accumulator_print(struct accumulator *accumulator, const char *title)
-+{
-+	struct oa_format format = get_oa_format(accumulator->format);
-+	uint64_t *deltas = accumulator->deltas;
-+	int idx = 0;
-+
-+	igt_debug("%s:\n", title);
-+	igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
-+	igt_debug("\tclock cycle delta = %"PRIu64"\n", deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_a40; i++)
-+		igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_a64; i++)
-+		igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_a; i++) {
-+		int a_id = format.first_a + i;
-+		igt_debug("\tA%u = %"PRIu64"\n", a_id, deltas[idx++]);
-+	}
-+
-+	for (int i = 0; i < format.n_a; i++)
-+		igt_debug("\tB%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_c; i++)
-+		igt_debug("\tC%u = %"PRIu64"\n", i, deltas[idx++]);
-+}
-+
- /* The TestOa metric set is designed so */
- static void
- sanity_check_reports(const uint32_t *oa_report0, const uint32_t *oa_report1,
-@@ -2074,6 +2207,92 @@ static void test_polling_small_buf(void)
- 		   0.20 * n_expect_read_bytes);
- }
- 
-+static int
-+num_valid_reports_captured(struct intel_xe_oa_open_prop *param,
-+			   int64_t *duration_ns, int fmt)
-+{
-+	uint8_t buf[1024 * 1024];
-+	int64_t start, end;
-+	int num_reports = 0;
-+	size_t format_size = get_oa_format(fmt).size;
-+
-+	igt_debug("Expected duration = %"PRId64"\n", *duration_ns);
-+
-+	stream_fd = __perf_open(drm_fd, param, true);
-+
-+	start = get_time();
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-+	for (/* nop */; ((end = get_time()) - start) < *duration_ns; /* nop */) {
-+		int ret;
-+
-+		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		igt_assert(ret > 0);
-+
-+		for (int offset = 0; offset < ret; offset += format_size) {
-+			uint32_t *report = (void *)(buf + offset);
-+
-+			if (report_reason(report) & OAREPORT_REASON_TIMER)
-+				num_reports++;
-+		}
-+	}
-+	__perf_close(stream_fd);
-+
-+	*duration_ns = end - start;
-+
-+	igt_debug("Actual duration = %"PRIu64"\n", *duration_ns);
-+
-+	return num_reports;
-+}
-+
-+/**
-+ * SUBTEST: oa-tlb-invalidate
-+ * Description: Open OA stream twice to verify OA TLB invalidation
-+ */
-+static void
-+test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	int num_reports1, num_reports2, num_expected_reports;
-+	int64_t duration;
-+
-+	/* Capture reports for 5 seconds twice and then make sure you get around
-+	 * the same number of reports. In the case of failure, the number of
-+	 * reports will vary largely since the beginning of the OA buffer
-+	 * will have invalid entries.
-+	 */
-+	duration = 5LL * NSEC_PER_SEC;
-+	num_reports1 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
-+	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-+	igt_debug("expected num reports = %d\n", num_expected_reports);
-+	igt_debug("actual num reports = %d\n", num_reports1);
-+	igt_assert(num_reports1 > 0.95 * num_expected_reports);
-+
-+	duration = 5LL * NSEC_PER_SEC;
-+	num_reports2 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
-+	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-+	igt_debug("expected num reports = %d\n", num_expected_reports);
-+	igt_debug("actual num reports = %d\n", num_reports2);
-+	igt_assert(num_reports2 > 0.95 * num_expected_reports);
-+}
-+
- /**
-  * SUBTEST: buffer-fill
-  * Description: Test filling, wraparound and overflow of OA buffer
-@@ -2659,6 +2878,468 @@ test_disabled_read_error(void)
- 	__perf_close(stream_fd);
- }
- 
-+/**
-+ * SUBTEST: mi-rpc
-+ * Description: Test OAR/OAC using MI_REPORT_PERF_COUNT
-+ */
-+static void
-+test_mi_rpc(struct drm_xe_engine_class_instance *hwe)
-+
-+{
-+	uint64_t fmt = ((IS_DG2(devid) || IS_METEORLAKE(devid)) &&
-+			hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) ?
-+		XE_OAC_FORMAT_A24u64_B8_C8 : oar_unit_default_format();
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* On Gen12, MI RPC uses OAR. OAR is configured only for the
-+		 * render context that wants to measure the performance. Hence a
-+		 * context must be specified in the gen12 MI RPC when compared
-+		 * to previous gens.
-+		 *
-+		 * Have a random value here for the context id, but initialize
-+		 * it once you figure out the context ID for the work to be
-+		 * measured
-+		 */
-+		DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID, UINT64_MAX,
-+
-+		/* OA unit configuration:
-+		 * DRM_XE_OA_PROPERTY_SAMPLE_OA is no longer required for Gen12
-+		 * because the OAR unit increments counters only for the
-+		 * relevant context. No other parameters are needed since we do
-+		 * not rely on the OA buffer anymore to normalize the counter
-+		 * values.
-+		 */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	struct intel_buf *buf;
-+#define INVALID_CTX_ID 0xffffffff
-+	uint32_t ctx_id = INVALID_CTX_ID;
-+	uint32_t vm = 0;
-+	uint32_t *report32;
-+	size_t format_size_32;
-+	struct oa_format format = get_oa_format(fmt);
-+
-+	/* Ensure observation_paranoid is set to 1 by default */
-+	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
-+
-+	bops = buf_ops_create(drm_fd);
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	ctx_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	igt_assert_neq(ctx_id, INVALID_CTX_ID);
-+	properties[3] = ctx_id;
-+
-+	ibb = intel_bb_create_with_context(drm_fd, ctx_id, vm, NULL, BATCH_SZ);
-+	buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+			       I915_TILING_NONE, I915_COMPRESSION_NONE);
-+
-+	buf_map(drm_fd, buf, true);
-+	memset(buf->ptr, 0x80, 4096);
-+	intel_buf_unmap(buf);
-+
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+#define REPORT_ID 0xdeadbeef
-+#define REPORT_OFFSET 0
-+	emit_report_perf_count(ibb,
-+			       buf,
-+			       REPORT_OFFSET,
-+			       REPORT_ID);
-+	intel_bb_flush_render(ibb);
-+	intel_bb_sync(ibb);
-+
-+	buf_map(drm_fd, buf, false);
-+	report32 = buf->ptr;
-+	format_size_32 = format.size >> 2;
-+	dump_report(report32, format_size_32, "mi-rpc");
-+
-+	/* Sanity check reports
-+	 * reportX_32[0]: report id passed with mi-rpc
-+	 * reportX_32[1]: timestamp. NOTE: wraps around in ~6 minutes.
-+	 *
-+	 * reportX_32[format.b_off]: check if the entire report was filled.
-+	 * B0 counter falls in the last 64 bytes of this report format.
-+	 * Since reports are filled in 64 byte blocks, we should be able to
-+	 * assure that the report was filled by checking the B0 counter. B0
-+	 * counter is defined to be zero, so we can easily validate it.
-+	 *
-+	 * reportX_32[format_size_32]: outside report, make sure only the report
-+	 * size amount of data was written.
-+	 */
-+	igt_assert_eq(report32[0], REPORT_ID);
-+	igt_assert(oa_timestamp(report32, test_set->perf_oa_format));
-+	igt_assert_neq(report32[format.b_off >> 2], 0x80808080);
-+	igt_assert_eq(report32[format_size_32], 0x80808080);
-+
-+	intel_buf_unmap(buf);
-+	intel_buf_destroy(buf);
-+	intel_bb_destroy(ibb);
-+	xe_exec_queue_destroy(drm_fd, ctx_id);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	__perf_close(stream_fd);
-+}
-+
-+static void
-+emit_stall_timestamp_and_rpc(struct intel_bb *ibb,
-+			     struct intel_buf *dst,
-+			     int timestamp_offset,
-+			     int report_dst_offset,
-+			     uint32_t report_id)
-+{
-+	uint32_t pipe_ctl_flags = (PIPE_CONTROL_CS_STALL |
-+				   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-+				   PIPE_CONTROL_WRITE_TIMESTAMP);
-+
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(6));
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION, I915_GEM_DOMAIN_INSTRUCTION,
-+			    timestamp_offset, dst->addr.offset);
-+	intel_bb_out(ibb, 0); /* imm lower */
-+	intel_bb_out(ibb, 0); /* imm upper */
-+
-+	emit_report_perf_count(ibb, dst, report_dst_offset, report_id);
-+}
-+
-+static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t fmt = oar_unit_default_format();
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Have a random value here for the context id, but initialize
-+		 * it once you figure out the context ID for the work to be
-+		 * measured
-+		 */
-+		DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID, UINT64_MAX,
-+
-+		/* OA unit configuration:
-+		 * DRM_XE_OA_PROPERTY_SAMPLE_OA is no longer required for Gen12
-+		 * because the OAR unit increments counters only for the
-+		 * relevant context. No other parameters are needed since we do
-+		 * not rely on the OA buffer anymore to normalize the counter
-+		 * values.
-+		 */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb0, *ibb1;
-+	struct intel_buf src[3], dst[3], *dst_buf;
-+	uint32_t context0_id, context1_id, vm = 0;
-+	uint32_t *report0_32, *report1_32, *report2_32, *report3_32;
-+	uint64_t timestamp0_64, timestamp1_64;
-+	uint64_t delta_ts64, delta_oa32;
-+	uint64_t delta_ts64_ns, delta_oa32_ns;
-+	uint64_t delta_delta;
-+	int width = 800;
-+	int height = 600;
-+#define INVALID_CTX_ID 0xffffffff
-+	uint32_t ctx0_id = INVALID_CTX_ID;
-+	uint32_t ctx1_id = INVALID_CTX_ID;
-+	int ret;
-+	struct accumulator accumulator = {
-+		.format = fmt
-+	};
-+
-+	bops = buf_ops_create(drm_fd);
-+
-+	for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+		scratch_buf_init(bops, &src[i], width, height, 0xff0000ff);
-+		scratch_buf_init(bops, &dst[i], width, height, 0x00ff00ff);
-+	}
-+
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	context0_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	context1_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	ibb0 = intel_bb_create_with_context(drm_fd, context0_id, vm, NULL, BATCH_SZ);
-+	ibb1 = intel_bb_create_with_context(drm_fd, context1_id, vm, NULL, BATCH_SZ);
-+
-+	igt_debug("submitting warm up render_copy\n");
-+
-+	/* Submit some early, unmeasured, work to the context we want */
-+	render_copy(ibb0,
-+		    &src[0], 0, 0, width, height,
-+		    &dst[0], 0, 0);
-+
-+	/* Initialize the context parameter to the perf open ioctl here */
-+	properties[3] = context0_id;
-+
-+	igt_debug("opening xe oa stream\n");
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+				   I915_TILING_NONE,
-+				   I915_COMPRESSION_NONE);
-+
-+	/* Set write domain to cpu briefly to fill the buffer with 80s */
-+	buf_map(drm_fd, dst_buf, true /* write enable */);
-+	memset(dst_buf->ptr, 0x80, 2048);
-+	memset((uint8_t *) dst_buf->ptr + 2048, 0, 2048);
-+	intel_buf_unmap(dst_buf);
-+
-+	/* Submit an mi-rpc to context0 before measurable work */
-+#define BO_TIMESTAMP_OFFSET0 1024
-+#define BO_REPORT_OFFSET0 0
-+#define BO_REPORT_ID0 0xdeadbeef
-+	emit_stall_timestamp_and_rpc(ibb0,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET0,
-+				     BO_REPORT_OFFSET0,
-+				     BO_REPORT_ID0);
-+	intel_bb_flush_render(ibb0);
-+
-+	/* Remove intel_buf from ibb0 added implicitly in rendercopy */
-+	intel_bb_remove_intel_buf(ibb0, dst_buf);
-+
-+	/* This is the work/context that is measured for counter increments */
-+	render_copy(ibb0,
-+		    &src[0], 0, 0, width, height,
-+		    &dst[0], 0, 0);
-+	intel_bb_flush_render(ibb0);
-+
-+	/* Submit an mi-rpc to context1 before work
-+	 *
-+	 * On gen12, this measurement should just yield counters that are
-+	 * all zeroes, since the counters will only increment for the
-+	 * context passed to perf open ioctl
-+	 */
-+#define BO_TIMESTAMP_OFFSET2 1040
-+#define BO_REPORT_OFFSET2 512
-+#define BO_REPORT_ID2 0x00c0ffee
-+	emit_stall_timestamp_and_rpc(ibb1,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET2,
-+				     BO_REPORT_OFFSET2,
-+				     BO_REPORT_ID2);
-+	intel_bb_flush_render(ibb1);
-+
-+	/* Submit two copies on the other context to avoid a false
-+	 * positive in case the driver somehow ended up filtering for
-+	 * context1
-+	 */
-+	render_copy(ibb1,
-+		    &src[1], 0, 0, width, height,
-+		    &dst[1], 0, 0);
-+
-+	render_copy(ibb1,
-+		    &src[2], 0, 0, width, height,
-+		    &dst[2], 0, 0);
-+	intel_bb_flush_render(ibb1);
-+
-+	/* Submit an mi-rpc to context1 after all work */
-+#define BO_TIMESTAMP_OFFSET3 1048
-+#define BO_REPORT_OFFSET3 768
-+#define BO_REPORT_ID3 0x01c0ffee
-+	emit_stall_timestamp_and_rpc(ibb1,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET3,
-+				     BO_REPORT_OFFSET3,
-+				     BO_REPORT_ID3);
-+	intel_bb_flush_render(ibb1);
-+
-+	/* Remove intel_buf from ibb1 added implicitly in rendercopy */
-+	intel_bb_remove_intel_buf(ibb1, dst_buf);
-+
-+	/* Submit an mi-rpc to context0 after all measurable work */
-+#define BO_TIMESTAMP_OFFSET1 1032
-+#define BO_REPORT_OFFSET1 256
-+#define BO_REPORT_ID1 0xbeefbeef
-+	emit_stall_timestamp_and_rpc(ibb0,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET1,
-+				     BO_REPORT_OFFSET1,
-+				     BO_REPORT_ID1);
-+	intel_bb_flush_render(ibb0);
-+	intel_bb_sync(ibb0);
-+	intel_bb_sync(ibb1);
-+
-+	buf_map(drm_fd, dst_buf, false);
-+
-+	/* Sanity check reports
-+	 * reportX_32[0]: report id passed with mi-rpc
-+	 * reportX_32[1]: timestamp
-+	 * reportX_32[2]: context id
-+	 *
-+	 * report0_32: start of measurable work
-+	 * report1_32: end of measurable work
-+	 * report2_32: start of other work
-+	 * report3_32: end of other work
-+	 */
-+	report0_32 = dst_buf->ptr;
-+	igt_assert_eq(report0_32[0], 0xdeadbeef);
-+	igt_assert(oa_timestamp(report0_32, fmt));
-+	ctx0_id = report0_32[2];
-+	igt_debug("MI_RPC(start) CTX ID: %u\n", ctx0_id);
-+	dump_report(report0_32, 64, "report0_32");
-+
-+	report1_32 = report0_32 + 64;
-+	igt_assert_eq(report1_32[0], 0xbeefbeef);
-+	igt_assert(oa_timestamp(report1_32, fmt));
-+	ctx1_id = report1_32[2];
-+	igt_debug("CTX ID1: %u\n", ctx1_id);
-+	dump_report(report1_32, 64, "report1_32");
-+
-+	/* Verify that counters in context1 are all zeroes */
-+	report2_32 = report0_32 + 128;
-+	igt_assert_eq(report2_32[0], 0x00c0ffee);
-+	igt_assert(oa_timestamp(report2_32, fmt));
-+	dump_report(report2_32, 64, "report2_32");
-+	igt_assert_eq(0, memcmp(&report2_32[4],
-+				(uint8_t *) dst_buf->ptr + 2048,
-+				240));
-+
-+	report3_32 = report0_32 + 192;
-+	igt_assert_eq(report3_32[0], 0x01c0ffee);
-+	igt_assert(oa_timestamp(report3_32, fmt));
-+	dump_report(report3_32, 64, "report3_32");
-+	igt_assert_eq(0, memcmp(&report3_32[4],
-+				(uint8_t *) dst_buf->ptr + 2048,
-+				240));
-+
-+	/* Accumulate deltas for counters - A0, A21 and A26 */
-+	memset(accumulator.deltas, 0, sizeof(accumulator.deltas));
-+	accumulate_reports(&accumulator, report0_32, report1_32);
-+	igt_debug("total: A0 = %"PRIu64", A21 = %"PRIu64", A26 = %"PRIu64"\n",
-+			accumulator.deltas[2 + 0],
-+			accumulator.deltas[2 + 21],
-+			accumulator.deltas[2 + 26]);
-+
-+	igt_debug("oa_timestamp32 0 = %"PRIu64"\n", oa_timestamp(report0_32, fmt));
-+	igt_debug("oa_timestamp32 1 = %"PRIu64"\n", oa_timestamp(report1_32, fmt));
-+	igt_debug("ctx_id 0 = %u\n", report0_32[2]);
-+	igt_debug("ctx_id 1 = %u\n", report1_32[2]);
-+
-+	/* The delta as calculated via the PIPE_CONTROL timestamp or
-+	 * the OA report timestamps should be almost identical but
-+	 * allow a 500 nanoseconds margin.
-+	 */
-+	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET0);
-+	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET1);
-+
-+	igt_debug("ts_timestamp64 0 = %"PRIu64"\n", timestamp0_64);
-+	igt_debug("ts_timestamp64 1 = %"PRIu64"\n", timestamp1_64);
-+
-+	delta_ts64 = timestamp1_64 - timestamp0_64;
-+	delta_oa32 = oa_timestamp_delta(report1_32, report0_32, fmt);
-+
-+	/* Sanity check that we can pass the delta to timebase_scale */
-+	delta_oa32_ns = timebase_scale(delta_oa32);
-+	delta_ts64_ns = cs_timebase_scale(delta_ts64);
-+
-+	igt_debug("oa32 delta = %"PRIu64", = %"PRIu64"ns\n",
-+			delta_oa32, delta_oa32_ns);
-+	igt_debug("ts64 delta = %"PRIu64", = %"PRIu64"ns\n",
-+			delta_ts64, delta_ts64_ns);
-+
-+	delta_delta = delta_ts64_ns > delta_oa32_ns ?
-+		      (delta_ts64_ns - delta_oa32_ns) :
-+		      (delta_oa32_ns - delta_ts64_ns);
-+	if (delta_delta > 500) {
-+		igt_debug("delta_delta = %"PRIu64". exceeds margin, skipping..\n",
-+			  delta_delta);
-+		exit(EAGAIN);
-+	}
-+
-+	igt_debug("n samples written = %"PRIu64"/%"PRIu64" (%ix%i)\n",
-+		  accumulator.deltas[2 + 21],
-+		  accumulator.deltas[2 + 26],
-+		  width, height);
-+	accumulator_print(&accumulator, "filtered");
-+
-+	/* Verify that the work actually happened by comparing the src
-+	 * and dst buffers
-+	 */
-+	buf_map(drm_fd, &src[0], false);
-+	buf_map(drm_fd, &dst[0], false);
-+
-+	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * width * height);
-+	intel_buf_unmap(&src[0]);
-+	intel_buf_unmap(&dst[0]);
-+
-+	if (ret != 0) {
-+		accumulator_print(&accumulator, "total");
-+		exit(EAGAIN);
-+	}
-+
-+	/* FIXME: can we deduce the presence of A26 from get_oa_format(fmt)? */
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-+		goto skip_check;
-+
-+	/* Check that this test passed. The test measures the number of 2x2
-+	 * samples written to the render target using the counter A26. For
-+	 * OAR, this counter will only have increments relevant to this specific
-+	 * context. The value equals the width * height of the rendered work.
-+	 */
-+	igt_assert_eq(accumulator.deltas[2 + 26], width * height);
-+
-+ skip_check:
-+	/* Clean up */
-+	for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+		intel_buf_close(bops, &src[i]);
-+		intel_buf_close(bops, &dst[i]);
-+	}
-+
-+	intel_buf_unmap(dst_buf);
-+	intel_buf_destroy(dst_buf);
-+	intel_bb_destroy(ibb0);
-+	intel_bb_destroy(ibb1);
-+	xe_exec_queue_destroy(drm_fd, context0_id);
-+	xe_exec_queue_destroy(drm_fd, context1_id);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	__perf_close(stream_fd);
-+}
-+
-+/**
-+ * SUBTEST: unprivileged-single-ctx-counters
-+ * Description: A harder test for OAR/OAC using MI_REPORT_PERF_COUNT
-+ */
-+static void
-+test_single_ctx_render_target_writes_a_counter(struct drm_xe_engine_class_instance *hwe)
-+{
-+	int child_ret;
-+	struct igt_helper_process child = {};
-+
-+	/* Ensure observation_paranoid is set to 1 by default */
-+	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
-+
-+	do {
-+		igt_fork_helper(&child) {
-+			/* A local device for local resources. */
-+			drm_fd = drm_reopen_driver(drm_fd);
-+
-+			igt_drop_root();
-+
-+			single_ctx_helper(hwe);
-+
-+			drm_close_driver(drm_fd);
-+		}
-+		child_ret = igt_wait_helper(&child);
-+		igt_assert(WEXITSTATUS(child_ret) == EAGAIN ||
-+			   WEXITSTATUS(child_ret) == 0);
-+	} while (WEXITSTATUS(child_ret) == EAGAIN);
-+}
-+
- static unsigned read_xe_module_ref(void)
- {
- 	FILE *fp = fopen("/proc/modules", "r");
-@@ -2926,6 +3607,26 @@ igt_main
- 	igt_subtest("short-reads")
- 		test_short_reads();
- 
-+	igt_subtest_group {
-+		igt_subtest_with_dynamic("mi-rpc")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mi_rpc(hwe);
-+
-+		igt_subtest_with_dynamic("oa-tlb-invalidate") {
-+			igt_require(intel_graphics_ver(devid) <= IP_VER(12, 70) &&
-+				    intel_graphics_ver(devid) != IP_VER(12, 60));
-+			__for_one_hwe_in_oag(hwe)
-+				test_oa_tlb_invalidate(hwe);
-+		}
-+
-+		igt_subtest_with_dynamic("unprivileged-single-ctx-counters") {
-+			igt_require_f(render_copy, "no render-copy function\n");
-+			igt_require(intel_graphics_ver(devid) < IP_VER(20, 0));
-+			__for_one_render_engine(hwe)
-+				test_single_ctx_render_target_writes_a_counter(hwe);
-+		}
-+	}
-+
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
+ static struct intel_xe_perf_logical_counter_group *
+@@ -296,6 +297,9 @@ intel_xe_perf_for_devinfo(uint32_t device_id,
+ 			intel_xe_perf_load_metrics_acmgt3(perf);
+ 		else
+ 			return unsupported_xe_oa_platform(perf);
++	} else if (devinfo->is_pontevecchio) {
++		perf->devinfo.eu_threads_count = 8;
++		intel_xe_perf_load_metrics_pvc(perf);
+ 	} else if (intel_graphics_ver(device_id) >= IP_VER(20, 0)) {
+ 		intel_xe_perf_load_metrics_lnl(perf);
+ 	} else {
 -- 
 2.41.0
 
