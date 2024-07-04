@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C9B2C30653
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 16:22:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EC90C30653
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 16:44:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A0EC10E073;
-	Thu,  4 Jul 2024 16:22:22 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1507810E116;
- Thu,  4 Jul 2024 16:22:21 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1323875710526202372=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7A2A10EA0E;
+	Thu,  4 Jul 2024 16:44:45 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cClFPac1";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D413A10EA0E
+ for <igt-dev@lists.freedesktop.org>; Thu,  4 Jul 2024 16:44:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1720111485; x=1751647485;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XINKBNRCkZBDDfXuIfamvN7CYxs6kXiRWnpmNgY1adQ=;
+ b=cClFPac1QxKgwtLU0s5RGh6ueboX0P6xs5gU7ltnz+jS870prLVzpQsB
+ SiYSCrdmBO0wJ1nw+FqD6BIRLR1x1HXmiA9MPBJr2mL9hcKctcZokTmR9
+ 2HfqT4FCTMF4Kf+3jSWUt6SlBt2UdskH5646qGy0VWfC0J2WQEySuQ1Zz
+ TS71Xq9lAJYvNarPMCNKoJt4iI6h7DY2CrNYnWVFjA79Q2a/Kz103IAed
+ LAOP05DeLCYtL2MUnSqd2nKcy7hoqF9OZ8O+if40vBbyyI56nqiOtcu10
+ 7RElWeMsPneS1qudjZTgEe+xz1KB94UmdQbz/DvNOCUEmyvY7NhgdKxMF g==;
+X-CSE-ConnectionGUID: 0Y14iN6oQ5uZk/JNx1W/aQ==
+X-CSE-MsgGUID: rTdp1P96TvO6Jg8NbN0V2g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17543959"
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17543959"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2024 09:44:44 -0700
+X-CSE-ConnectionGUID: M8EhJhmJTHm1iPxAAWfbwA==
+X-CSE-MsgGUID: AWrKgcepQ2qEcO1B7boRAg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="51508266"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.84.149])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Jul 2024 09:44:41 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com, kamil.konieczny@linux.intel.com,
+ michal.wajdeczko@intel.com
+Subject: [PATCH i-g-t] lib/igt_device_scan: Skip attributes in subdirectories
+Date: Thu,  4 Jul 2024 18:44:37 +0200
+Message-Id: <20240704164437.1543161-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib/i915/perf=3A_Add_ARL_su?=
- =?utf-8?q?pport_in_IGT_perf_library_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Umesh Nerlige Ramappa" <umesh.nerlige.ramappa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 04 Jul 2024 16:22:21 -0000
-Message-ID: <172011014107.29683.99307876353107143@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240703224405.3172164-1-umesh.nerlige.ramappa@intel.com>
-In-Reply-To: <20240703224405.3172164-1-umesh.nerlige.ramappa@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,145 +65,70 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1323875710526202372==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Skip attributes in subdirectories as they are not used for filtering.
+This change improves speed and reduces the impact of non-DRM related
+component bugs on testing, such as ASPM issues.
 
-== Series Details ==
+Rename function is_on_blacklist to is_on_blocklist to promote more
+inclusive language.
 
-Series: lib/i915/perf: Add ARL support in IGT perf library (rev2)
-URL   : https://patchwork.freedesktop.org/series/135724/
-State : success
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ lib/igt_device_scan.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
+index 9a2da3d62..6473ca7ad 100644
+--- a/lib/igt_device_scan.c
++++ b/lib/igt_device_scan.c
+@@ -433,7 +433,7 @@ static enum dev_type __pci_devtype(uint16_t vendor, uint16_t device, const char
+ /* Reading sysattr values can take time (even seconds),
+  * we want to avoid reading such keys.
+  */
+-static bool is_on_blacklist(const char *what)
++static bool is_on_blocklist(const char *what)
+ {
+ 	static const char *keys[] = { "config", "modalias", "modes",
+ 				      "resource",
+@@ -442,16 +442,18 @@ static bool is_on_blacklist(const char *what)
+ 				      "resource0_wc", "resource1_wc", "resource2_wc",
+ 				      "resource3_wc", "resource4_wc", "resource5_wc",
+ 				      "uevent", NULL};
+-	const char *key;
+-	int i = 0;
++	const char **key;
+ 
+ 	if (what == NULL)
+ 		return false;
+ 
+-	while ((key = keys[i++])) {
+-		if (strcmp(key, what) == 0)
++	/* Skip attributes in subdirectories */
++	if (strchr(what, '/') != NULL)
++		return true;
++
++	for (key = keys; *key; key++)
++		if (strcmp(*key, what) == 0)
+ 			return true;
+-	}
+ 
+ 	return false;
+ 
+@@ -553,7 +555,7 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
+ 		const char *key = udev_list_entry_get_name(entry);
+ 		const char *value;
+ 
+-		if (is_on_blacklist(key)) {
++		if (is_on_blocklist(key)) {
+ 			entry = udev_list_entry_get_next(entry);
+ 			continue;
+ 		}
+-- 
+2.31.1
 
-CI Bug Log - changes from CI_DRM_15034 -> IGTPW_11365
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): fi-snb-2520m bat-jsl-3 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11365 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-arls-5:         NOTRUN -> [INCOMPLETE][1] ([i915#11320])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-arls-2:         [DMESG-WARN][2] ([i915#7507]) -> [PASS][3]
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15034/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [i915#11320]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320
-  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7916 -> IGTPW_11365
-
-  CI-20190529: 20190529
-  CI_DRM_15034: 55e18f9be7b75c5226a57eff4a3b3eb6110815c6 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11365: 11365
-  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/index.html
-
---===============1323875710526202372==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/i915/perf: Add ARL support in IGT perf library (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135724/">https://patchwork.freedesktop.org/series/135724/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15034 -&gt; IGTPW_11365</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): fi-snb-2520m bat-jsl-3 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11365 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc:<ul>
-<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320">i915#11320</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15034/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11365/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7916 -&gt; IGTPW_11365</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15034: 55e18f9be7b75c5226a57eff4a3b3eb6110815c6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11365: 11365<br />
-  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1323875710526202372==--
