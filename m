@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BFA7C30653
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 14:20:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F2FC30653
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 14:48:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C3F0410EB1D;
-	Thu,  4 Jul 2024 14:20:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X18VArw+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98D0410EB1D
- for <igt-dev@lists.freedesktop.org>; Thu,  4 Jul 2024 14:20:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720102840; x=1751638840;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=scmeaKUDCjsBRXKmjn1b2ASWEUbr1EcG4rUUSzOToEw=;
- b=X18VArw+3wpNiUX64n9AhnEo+GqDkRmPnQhslHgbtxDRIV/sTc96X91d
- SvKVFYwCjOW7YKtFsNWxYMxjnSszXQtrFglM+lF3BXNRw/xGox3PB272z
- ZR15h0TJGCTnK0/SZNKKbYwyiAKSvLWFM9qtrpB2GQ7S4fKGIMrHQukWl
- V2kSTDX5ejPSKZgHrRiG6b8OszIxeWrxU+2bquejWzOrvmOCPwQCZyY93
- sQvdEGHSCaYfLIIUnVXKQHcypt3z3MupiT0i3auiO9lN8r9MSC46jQIpL
- VM9I6td18gQtnAozOYgx5iEZNsUWgEgvOLuU4GOBD/2q+qoow5j+xUAnR Q==;
-X-CSE-ConnectionGUID: J75GvHehQ4OWlPjHQ2osTQ==
-X-CSE-MsgGUID: d5BabL0zRuqxoKjk4PyuxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17594700"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="17594700"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 07:20:40 -0700
-X-CSE-ConnectionGUID: jpup8gwFRjGFElptS9JPnw==
-X-CSE-MsgGUID: qdjKTDCeS7OlTgyKTo2nQw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="51199262"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
- by fmviesa004.fm.intel.com with ESMTP; 04 Jul 2024 07:20:38 -0700
-Received: from [10.245.82.99] (unknown [10.245.82.99])
- by irvmail002.ir.intel.com (Postfix) with ESMTP id 94AE52878B;
- Thu,  4 Jul 2024 15:20:36 +0100 (IST)
-Message-ID: <047f72ab-e531-4d0d-8c6c-31d11c3b7ba6@intel.com>
-Date: Thu, 4 Jul 2024 16:20:35 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id 78F6810EA3C;
+	Thu,  4 Jul 2024 14:48:28 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAEED10EA3C;
+ Thu,  4 Jul 2024 14:48:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3676127137414653508=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel-ci/fast-feedback: Add SR-IOV tests
-To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20240703111221.616274-1-jakub1.kolakowski@intel.com>
-Content-Language: en-US
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <20240703111221.616274-1-jakub1.kolakowski@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_drm-uapi/xe=3A_Sync_with_Perf/?=
+ =?utf-8?q?Observation_layer_uapi_updates_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 04 Jul 2024 14:48:27 -0000
+Message-ID: <172010450782.29530.8354265881867724840@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240704002425.2604948-1-ashutosh.dixit@intel.com>
+In-Reply-To: <20240704002425.2604948-1-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,57 +37,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============3676127137414653508==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: drm-uapi/xe: Sync with Perf/Observation layer uapi updates (rev2)
+URL   : https://patchwork.freedesktop.org/series/135728/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7916_BAT -> XEIGTPW_11364_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11364_BAT:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+    - {bat-lnl-1}:        [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11364_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_gt_freq@freq_basic_api:
+    - bat-adlp-7:         [FAIL][3] -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
 
-On 03.07.2024 13:12, Jakub Kolakowski wrote:
-> This commit adds SR-IOV tests to fast-feedback testlist so that
 
-nit: not sure about IGT rules, but usually we don't start commit message
-with "This commit", from [1]
+Build changes
+-------------
 
-"Describe your changes in imperative mood, e.g. “make xyzzy do frotz”
-instead of “[This patch] makes xyzzy do frotz” or “[I] changed xyzzy to
-do frotz”, as if you are giving orders to the codebase to change its
-behaviour."
+  * IGT: IGT_7916 -> IGTPW_11364
+  * Linux: xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6 -> xe-1563-52ee15a4449ee179eb9f0182952f978bae3563a8
+
+  IGTPW_11364: 11364
+  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6: 2bf4c5214910654a6a50082c90f0f4596ea6b0c6
+  xe-1563-52ee15a4449ee179eb9f0182952f978bae3563a8: 52ee15a4449ee179eb9f0182952f978bae3563a8
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/index.html
+
+--===============3676127137414653508==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-[1] https://docs.kernel.org/process/submitting-patches.html
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
 
-> they will be executed in BAT runs. Added tests are about basic
-> single VF enablement with and without autoprobe.
-> 
-> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Adam Miszczak <adam.miszczak@intel.com>
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index aa98b37e6..fc312a123 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -65,6 +65,8 @@ igt@kms_prop_blob@basic
->  igt@kms_psr@psr-primary-page-flip
->  igt@kms_psr@psr-cursor-plane-move
->  igt@kms_psr@psr-sprite-plane-onoff
-> +igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-1
 
-maybe instead of numvfs-1 we should select numvfs-all variant:
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>drm-uapi/xe: Sync with Perf/Observation layer uapi updates (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135728/">https://patchwork.freedesktop.org/series/135728/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-	igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/index.html</a></td></tr>
 
-as otherwise this case will be fully duplicated by the test below (where
-auto-provisioning of one VF will be exactly the same, just a VF driver
-will be probed on that config), while with numvfs-all variant we will
-check auto-provisioning for all available VFs
+</table>
 
-> +igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
->  igt@xe_compute@compute-square
->  igt@xe_create@create-execqueues-noleak
->  igt@xe_create@create-execqueues-leak
+
+    <h1>CI Bug Log - changes from XEIGT_7916_BAT -&gt; XEIGTPW_11364_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11364_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:<ul>
+<li>{bat-lnl-1}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11364_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_gt_freq@freq_basic_api:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11364/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7916 -&gt; IGTPW_11364</li>
+<li>Linux: xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6 -&gt; xe-1563-52ee15a4449ee179eb9f0182952f978bae3563a8</li>
+</ul>
+<p>IGTPW_11364: 11364<br />
+  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6: 2bf4c5214910654a6a50082c90f0f4596ea6b0c6<br />
+  xe-1563-52ee15a4449ee179eb9f0182952f978bae3563a8: 52ee15a4449ee179eb9f0182952f978bae3563a8</p>
+
+</body>
+</html>
+
+--===============3676127137414653508==--
