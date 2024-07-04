@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B883C30653
-	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 12:56:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BF7BC30653
+	for <igt-dev@archiver.kernel.org>; Thu,  4 Jul 2024 13:06:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 480BF10EADF;
-	Thu,  4 Jul 2024 12:56:52 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.b="RqGnOcgY";
-	dkim-atps=neutral
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0126810EAD7;
- Thu,  4 Jul 2024 12:56:49 +0000 (UTC)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
- by sin.source.kernel.org (Postfix) with ESMTP id E7441CE3467;
- Thu,  4 Jul 2024 12:56:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7268C3277B;
- Thu,  4 Jul 2024 12:56:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
- s=k20201202; t=1720097807;
- bh=PVroVr5VS+tv2unXGroLj7wH6BRx+DmoasU5vVT6qLI=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=RqGnOcgYwZ4oi1+bFCrkwSYSjnxslsfvgCnM91eu3i8YszOa5kuzhMvNnYIs4ZsiY
- NIy1PScgBGrwy6x2GMBOZIpoNEcUeZ0hi5HpBUrZqMrKiH/KhyOdCsehGimmynDdsk
- dNGi24wLnqPuKeBup5dIKJMun9IhC0HWLRLIfIfS/wt4dM5uFWPOpJJip5SYqxuLWF
- 64i7GMNADdv3Iyb4WYoAfdNPSXrGlMd7Mbp6qhKOfP1ZjljOQv04xcnHXfgVUzGDih
- IIX+edxeQzsC4ZnPSQNevoejUTgaavvsAgud2AygURl+E3Sc4Q2BGsuVXhul+XW0Fa
- 3/CdFAUftT52Q==
-Date: Thu, 4 Jul 2024 14:56:44 +0200
-From: Maxime Ripard <mripard@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
- Jonas Karlman <jonas@kwiboo.se>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
- Daniel Vetter <daniel@ffwll.ch>,
- Dave Stevenson <dave.stevenson@raspberrypi.com>, 
- Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>, 
- dri-devel@lists.freedesktop.org, igt-dev@lists.freedesktop.org,
- freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 4/4] drm/bridge-connector: reset the HDMI connector
- state
-Message-ID: <20240704-jumping-saffron-shrew-d5f3b7@houat>
-References: <20240702-drm-bridge-connector-fix-hdmi-reset-v3-0-12b0e3124ca4@linaro.org>
- <20240702-drm-bridge-connector-fix-hdmi-reset-v3-4-12b0e3124ca4@linaro.org>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E643F10EAD0;
+	Thu,  4 Jul 2024 13:06:16 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E4D2810E06C;
+ Thu,  4 Jul 2024 13:06:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6592630605402977634=="
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
- protocol="application/pgp-signature"; boundary="7vwtwdy7kgdsohoy"
-Content-Disposition: inline
-In-Reply-To: <20240702-drm-bridge-connector-fix-hdmi-reset-v3-4-12b0e3124ca4@linaro.org>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/amdgpu=3A_fix_query_ip_inf?=
+ =?utf-8?q?o_issue_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 04 Jul 2024 13:06:15 -0000
+Message-ID: <172009837593.29225.3851180029110537741@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240704033545.1078807-1-jesse.zhang@amd.com>
+In-Reply-To: <20240704033545.1078807-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,67 +37,124 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============6592630605402977634==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
---7vwtwdy7kgdsohoy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+== Series Details ==
 
-hi,
+Series: lib/amdgpu: fix query ip info issue (rev2)
+URL   : https://patchwork.freedesktop.org/series/135730/
+State : success
 
-On Tue, Jul 02, 2024 at 12:48:55PM GMT, Dmitry Baryshkov wrote:
-> On HDMI connectors which use drm_bridge_connector and DRM_BRIDGE_OP_HDMI
-> IGT chokes on the max_bpc property in several kms_properties tests due
-> to the the drm_bridge_connector failing to reset HDMI-related
-> properties.
->=20
-> Call __drm_atomic_helper_connector_hdmi_reset() if the
-> drm_bridge_connector has bridge_hdmi.
->=20
-> It is impossible to call this function from HDMI bridges, there is is no
-> function that corresponds to the drm_connector_funcs::reset().
->=20
-> Fixes: 6b4468b0c6ba ("drm/bridge-connector: implement glue code for HDMI =
-connector")
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> ---
->  drivers/gpu/drm/display/Kconfig                |  1 +
->  drivers/gpu/drm/display/drm_bridge_connector.c | 13 ++++++++++++-
->  2 files changed, 13 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/display/Kconfig b/drivers/gpu/drm/display/Kc=
-onfig
-> index 1a192a45961b..bfd025f8c7b5 100644
-> --- a/drivers/gpu/drm/display/Kconfig
-> +++ b/drivers/gpu/drm/display/Kconfig
-> @@ -9,6 +9,7 @@ config DRM_DISPLAY_HELPER
->  config DRM_BRIDGE_CONNECTOR
->  	bool
->  	depends on DRM && DRM_BRIDGE && DRM_DISPLAY_HELPER
-> +	select DRM_DISPLAY_HDMI_STATE_HELPER
+== Summary ==
 
-Sorry, I notice it on that patch, but it's really on the previous one:
-both DRM_BRIDGE and DRM_DISPLAY_HELPER are meant to be selected, not
-depended on.
+CI Bug Log - changes from XEIGT_7916_BAT -> XEIGTPW_11362_BAT
+====================================================
 
-Otherwise,
+Summary
+-------
 
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
+  **SUCCESS**
 
-Maxime
+  No regressions found.
 
---7vwtwdy7kgdsohoy
-Content-Type: application/pgp-signature; name="signature.asc"
+  
 
------BEGIN PGP SIGNATURE-----
+Participating hosts (5 -> 5)
+------------------------------
 
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZoacCwAKCRDj7w1vZxhR
-xanRAQColvBTOI0QEUf8DcGVNjKDA1/UU+PpylKjFBS+1Af3UwD+NRXO6kyzueZq
-/yJoJX5gAP4jYt81QeQl/Vb8tObX3g8=
-=F6fl
------END PGP SIGNATURE-----
+  No changes in participating hosts
 
---7vwtwdy7kgdsohoy--
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11362_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_gt_freq@freq_basic_api:
+    - bat-adlp-7:         [FAIL][1] -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11362/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7916 -> IGTPW_11362
+
+  IGTPW_11362: 11362
+  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6: 2bf4c5214910654a6a50082c90f0f4596ea6b0c6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11362/index.html
+
+--===============6592630605402977634==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/amdgpu: fix query ip info issue (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135730/">https://patchwork.freedesktop.org/series/135730/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11362/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11362/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7916_BAT -&gt; XEIGTPW_11362_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11362_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_gt_freq@freq_basic_api:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11362/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7916 -&gt; IGTPW_11362</li>
+</ul>
+<p>IGTPW_11362: 11362<br />
+  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6: 2bf4c5214910654a6a50082c90f0f4596ea6b0c6</p>
+
+</body>
+</html>
+
+--===============6592630605402977634==--
