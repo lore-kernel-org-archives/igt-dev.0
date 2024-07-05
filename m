@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30497C30658
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Jul 2024 04:45:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F29E1C3271F
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Jul 2024 05:39:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C9A6B10E205;
-	Fri,  5 Jul 2024 04:45:09 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FEIjKTcH";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C33D10E0D9
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jul 2024 04:45:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720154708; x=1751690708;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=I+Ug1dkmqLrTVl6zpVnz9rFGx0Qm0ZKeW0bMUw9BnGY=;
- b=FEIjKTcHDe+BBAan1lvfmC5MR+HETLrTxTO2W/iwn7xF8r2eHQLKAJoT
- +pZbWFJRSF7ECFY9zp2PkchH4GDFTAYKV55D7/6Z0basc8HchA+ACG70c
- Pp0U3X8YULBEvZTsGHXrsLMIJxp6c1wm0WWAM17s+gKX0eLRJML2b1nE+
- HvYyjOPWsRkmrhmZsQocMdtQ6Stvhnr0OWl+sCyDik7qvcAEkgEOogjub
- FqhJPTSjsY6rxAJ4H4xThdFqFxuPiDxaDcB/Z47+trvEbzNOfWa9JYYRD
- FEbGmyyaIcXcrzQa3PaBuIP4V4E8b/1056zFQohwMhdJju3sZakG+rkT+ Q==;
-X-CSE-ConnectionGUID: vKBSVDbQT2G2Si1SQ7UOvA==
-X-CSE-MsgGUID: 6b6twrx5S4e7DcL+Cqlxag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28828542"
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="28828542"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Jul 2024 21:45:07 -0700
-X-CSE-ConnectionGUID: MdHy5Gz8ROmMsS8dTSxLpw==
-X-CSE-MsgGUID: D94arCtXSvOfkV4ZjTCfIA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,183,1716274800"; d="scan'208";a="77507942"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa002.jf.intel.com with ESMTP; 04 Jul 2024 21:45:06 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t v2] tests/kms_getfb: Skip getfb2-accept-ccs subtest on
- Xe2 platforms
-Date: Fri,  5 Jul 2024 10:15:15 +0530
-Message-Id: <20240705044515.700219-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8971D10E077;
+	Fri,  5 Jul 2024 05:39:24 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 571F510E06C;
+ Fri,  5 Jul 2024 05:39:23 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7398286788583219627=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fgetfb=3A_Skip_getf?=
+ =?utf-8?q?b2-accept-ccs_subtest_on_Xe2_platforms_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 05 Jul 2024 05:39:23 -0000
+Message-ID: <172015796334.29962.17253570006621686698@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240705044515.700219-1-pranay.samala@intel.com>
+In-Reply-To: <20240705044515.700219-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,38 +37,319 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The getfb2-accept-ccs subtest tests on ccs modifiers.
-With Xe2 platforms we no more have the ccs modifiers.
+--===============7398286788583219627==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Adding a check to verify the platform. If it is
-Xe2 platform then test will skip, otherwise it
-will execute further.
+== Series Details ==
 
-v2: modified the check as 
-    intel_graphics_ver(devid) < IP_VER(20, 0) (Juha-pekka)
+Series: tests/kms_getfb: Skip getfb2-accept-ccs subtest on Xe2 platforms (rev3)
+URL   : https://patchwork.freedesktop.org/series/135150/
+State : success
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_getfb.c | 3 +++
- 1 file changed, 3 insertions(+)
+== Summary ==
 
-diff --git a/tests/kms_getfb.c b/tests/kms_getfb.c
-index bb9679bc9..9cc783776 100644
---- a/tests/kms_getfb.c
-+++ b/tests/kms_getfb.c
-@@ -161,6 +161,9 @@ static void get_ccs_fb(int fd, struct drm_mode_fb_cmd2 *ret)
- 	igt_require(has_addfb2_iface(fd));
- 	devid = intel_get_drm_devid(fd);
- 
-+	igt_require_f(intel_graphics_ver(devid) < IP_VER(20, 0),
-+		      "No ccs modifiers on Xe2\n");
-+
- 	if (HAS_FLATCCS(devid)) {
- 		add.modifier[0] = I915_FORMAT_MOD_4_TILED_DG2_RC_CCS;
- 		add.pitches[0] = ALIGN(add.width * 4, 4 * 512);
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_7916_BAT -> XEIGTPW_11373_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 5)
+------------------------------
+
+  No changes in participating hosts
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7916_BAT and XEIGTPW_11373_BAT:
+
+### New IGT tests (16) ###
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.75] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@b-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.68] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.70] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@d-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.68] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.76] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.68] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.69] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@d-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.68] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.03] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.02] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.03] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.03] s
+
+  * igt@kms_flip@basic-plain-flip@a-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.75] s
+
+  * igt@kms_flip@basic-plain-flip@b-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.74] s
+
+  * igt@kms_flip@basic-plain-flip@c-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.74] s
+
+  * igt@kms_flip@basic-plain-flip@d-dp3:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.74] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11373_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#324]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11373/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7916 -> IGTPW_11373
+  * Linux: xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6 -> xe-1565-55e18f9be7b75c5226a57eff4a3b3eb6110815c6
+
+  IGTPW_11373: 11373
+  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6: 2bf4c5214910654a6a50082c90f0f4596ea6b0c6
+  xe-1565-55e18f9be7b75c5226a57eff4a3b3eb6110815c6: 55e18f9be7b75c5226a57eff4a3b3eb6110815c6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11373/index.html
+
+--===============7398286788583219627==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_getfb: Skip getfb2-accept-ccs subtest on Xe2 platforms (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135150/">https://patchwork.freedesktop.org/series/135150/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11373/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11373/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7916_BAT -&gt; XEIGTPW_11373_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 5)</h2>
+<p>No changes in participating hosts</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7916_BAT and XEIGTPW_11373_BAT:</p>
+<h3>New IGT tests (16)</h3>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@b-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@c-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@d-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@c-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.69] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@d-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@b-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@c-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@d-dp3:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.74] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11373_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7916/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11373/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7916 -&gt; IGTPW_11373</li>
+<li>Linux: xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6 -&gt; xe-1565-55e18f9be7b75c5226a57eff4a3b3eb6110815c6</li>
+</ul>
+<p>IGTPW_11373: 11373<br />
+  IGT_7916: 971cfc9d6afc8242db25d1eabd4ae00890d9144a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1562-2bf4c5214910654a6a50082c90f0f4596ea6b0c6: 2bf4c5214910654a6a50082c90f0f4596ea6b0c6<br />
+  xe-1565-55e18f9be7b75c5226a57eff4a3b3eb6110815c6: 55e18f9be7b75c5226a57eff4a3b3eb6110815c6</p>
+
+</body>
+</html>
+
+--===============7398286788583219627==--
