@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DE08C3DA49
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Jul 2024 18:26:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B56B7C3271E
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Jul 2024 18:32:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CCDE810EC31;
-	Fri,  5 Jul 2024 18:26:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iGh06QdV";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4CAF10E2BC
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jul 2024 18:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720204001; x=1751740001;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=CYcY6GmUALAKKQXH6UNip6zurHOkwYck7SNfHGIe714=;
- b=iGh06QdV4cypFekAfDA6bSUjqWo4uX2dBKOlqIaLQ81jqBsHCABwiz4m
- amTkvw71vvuJ1h2/pVoSsAd3ylqY7TGCVJ6RiBFPtqKV2EmvMh935NlLn
- CYV0xKvVvzruRdIq9VFTKikepAUtqDJBQonxnS2ie7/c49DZzEwEl5SVV
- qkHaWtjyfOqHik7UVb3vZI8q7+TzEACF9psmoT/u21L064V6xTEGnraB+
- syz6DFrj7bdY6B92d/1LW7vLcU1z2v1q/zsfce/PjLeany98kZuJB5L4d
- 5kK7AN8dIsYlDPag0QjUIpwphJ4RflL/q1LbdkSy+bQBYBavC9q+y7oYj w==;
-X-CSE-ConnectionGUID: omdzU6ZrTLOxj61kR1yfQw==
-X-CSE-MsgGUID: uhFjsVcjRRqGH1phboeSNQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="17146546"
-X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; d="scan'208";a="17146546"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2024 11:26:41 -0700
-X-CSE-ConnectionGUID: MMMDFZ6OTvKhWacsnOqvOA==
-X-CSE-MsgGUID: V2RUeHZSQzW7uJha465NzA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,185,1716274800"; d="scan'208";a="47011699"
-Received: from orsosgc001.jf.intel.com ([10.165.21.138])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2024 11:26:41 -0700
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 09/15] tests/intel/xe_oa: OAR/OAC tests
-Date: Fri,  5 Jul 2024 11:26:30 -0700
-Message-ID: <20240705182637.2679730-10-ashutosh.dixit@intel.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240705182637.2679730-1-ashutosh.dixit@intel.com>
-References: <20240705182637.2679730-1-ashutosh.dixit@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 749E810E0C5;
+	Fri,  5 Jul 2024 18:32:16 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0C6710E0C5;
+ Fri,  5 Jul 2024 18:32:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5718748353911866804=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeFULL=3A_success_for_lib/igt=5Fdevice=5Fscan=3A_Sk?=
+ =?utf-8?q?ip_attributes_in_subdirectories_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 05 Jul 2024 18:32:15 -0000
+Message-ID: <172020433591.31861.12101555817633761528@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240705141044.115059-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20240705141044.115059-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,781 +37,496 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-"mi-rpc", "oa-tlb-invalidate" and "unprivileged-single-ctx-counters" tests.
+--===============5718748353911866804==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Run "oa-tlb-invalidate" only for specific product versions (Umesh)
-v3: Rename xe perf layer as xe observation layer
+== Series Details ==
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
----
- tests/intel/xe_oa.c | 701 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 701 insertions(+)
+Series: lib/igt_device_scan: Skip attributes in subdirectories (rev2)
+URL   : https://patchwork.freedesktop.org/series/135769/
+State : success
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 1e18740a68..b2f18ee402 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -596,6 +596,18 @@ read_report_reason(const uint32_t *report)
- 		return "unknown";
- }
- 
-+static uint32_t
-+cs_timestamp_frequency(int fd)
-+{
-+	return xe_gt_list(drm_fd)->gt_list[0].reference_clock;
-+}
-+
-+static uint64_t
-+cs_timebase_scale(uint32_t u32_delta)
-+{
-+	return ((uint64_t)u32_delta * NSEC_PER_SEC) / cs_timestamp_frequency(drm_fd);
-+}
-+
- static uint64_t
- oa_timestamp(const uint32_t *report, enum intel_xe_oa_format_name format)
- {
-@@ -662,6 +674,15 @@ oa_report_get_ctx_id(uint32_t *report)
- 	return report[2];
- }
- 
-+static int
-+oar_unit_default_format(void)
-+{
-+	if (IS_DG2(devid) || IS_METEORLAKE(devid))
-+		return XE_OAR_FORMAT_A32u40_A4u32_B8_C8;
-+
-+	return default_test_set->perf_oa_format;
-+}
-+
- static void *buf_map(int fd, struct intel_buf *buf, bool write)
- {
- 	void *p;
-@@ -700,6 +721,21 @@ scratch_buf_init(struct buf_ops *bops,
- 	scratch_buf_memset(buf, width, height, color);
- }
- 
-+static void
-+emit_report_perf_count(struct intel_bb *ibb,
-+		       struct intel_buf *dst,
-+		       int dst_offset,
-+		       uint32_t report_id)
-+{
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+
-+	intel_bb_out(ibb, OA_MI_REPORT_PERF_COUNT);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION, I915_GEM_DOMAIN_INSTRUCTION,
-+			    dst_offset, dst->addr.offset);
-+	intel_bb_out(ibb, report_id);
-+}
-+
- static bool
- oa_report_is_periodic(uint32_t oa_exponent, const uint32_t *report)
- {
-@@ -740,6 +776,31 @@ get_40bit_a_delta(uint64_t value0, uint64_t value1)
- 		return value1 - value0;
- }
- 
-+static void
-+accumulate_uint32(size_t offset,
-+		  uint32_t *report0,
-+                  uint32_t *report1,
-+                  uint64_t *delta)
-+{
-+	uint32_t value0 = *(uint32_t *)(((uint8_t *)report0) + offset);
-+	uint32_t value1 = *(uint32_t *)(((uint8_t *)report1) + offset);
-+
-+	*delta += (uint32_t)(value1 - value0);
-+}
-+
-+static void
-+accumulate_uint40(int a_index,
-+                  uint32_t *report0,
-+                  uint32_t *report1,
-+		  enum intel_xe_oa_format_name format,
-+                  uint64_t *delta)
-+{
-+	uint64_t value0 = read_40bit_a_counter(report0, format, a_index),
-+		 value1 = read_40bit_a_counter(report1, format, a_index);
-+
-+	*delta += get_40bit_a_delta(value0, value1);
-+}
-+
- static void
- accumulate_uint64(int a_index,
- 		  const uint32_t *report0,
-@@ -753,6 +814,78 @@ accumulate_uint64(int a_index,
- 	*delta += (value1 - value0);
- }
- 
-+static void
-+accumulate_reports(struct accumulator *accumulator,
-+		   uint32_t *start,
-+		   uint32_t *end)
-+{
-+	struct oa_format format = get_oa_format(accumulator->format);
-+	uint64_t *deltas = accumulator->deltas;
-+	int idx = 0;
-+
-+	/* timestamp */
-+	deltas[idx] += oa_timestamp_delta(end, start, accumulator->format);
-+	idx++;
-+
-+	/* clock cycles */
-+	deltas[idx] += oa_tick_delta(end, start, accumulator->format);
-+	idx++;
-+
-+	for (int i = 0; i < format.n_a40; i++) {
-+		accumulate_uint40(i, start, end, accumulator->format,
-+				  deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_a64; i++) {
-+		accumulate_uint64(i, start, end, accumulator->format,
-+				  deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_a; i++) {
-+		accumulate_uint32(format.a_off + 4 * i,
-+				  start, end, deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_b; i++) {
-+		accumulate_uint32(format.b_off + 4 * i,
-+				  start, end, deltas + idx++);
-+	}
-+
-+	for (int i = 0; i < format.n_c; i++) {
-+		accumulate_uint32(format.c_off + 4 * i,
-+				  start, end, deltas + idx++);
-+	}
-+}
-+
-+static void
-+accumulator_print(struct accumulator *accumulator, const char *title)
-+{
-+	struct oa_format format = get_oa_format(accumulator->format);
-+	uint64_t *deltas = accumulator->deltas;
-+	int idx = 0;
-+
-+	igt_debug("%s:\n", title);
-+	igt_debug("\ttime delta = %"PRIu64"\n", deltas[idx++]);
-+	igt_debug("\tclock cycle delta = %"PRIu64"\n", deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_a40; i++)
-+		igt_debug("\tA%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_a64; i++)
-+		igt_debug("\tA64_%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_a; i++) {
-+		int a_id = format.first_a + i;
-+		igt_debug("\tA%u = %"PRIu64"\n", a_id, deltas[idx++]);
-+	}
-+
-+	for (int i = 0; i < format.n_a; i++)
-+		igt_debug("\tB%u = %"PRIu64"\n", i, deltas[idx++]);
-+
-+	for (int i = 0; i < format.n_c; i++)
-+		igt_debug("\tC%u = %"PRIu64"\n", i, deltas[idx++]);
-+}
-+
- /* The TestOa metric set is designed so */
- static void
- sanity_check_reports(const uint32_t *oa_report0, const uint32_t *oa_report1,
-@@ -2074,6 +2207,92 @@ static void test_polling_small_buf(void)
- 		   0.20 * n_expect_read_bytes);
- }
- 
-+static int
-+num_valid_reports_captured(struct intel_xe_oa_open_prop *param,
-+			   int64_t *duration_ns, int fmt)
-+{
-+	uint8_t buf[1024 * 1024];
-+	int64_t start, end;
-+	int num_reports = 0;
-+	size_t format_size = get_oa_format(fmt).size;
-+
-+	igt_debug("Expected duration = %"PRId64"\n", *duration_ns);
-+
-+	stream_fd = __perf_open(drm_fd, param, true);
-+
-+	start = get_time();
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-+	for (/* nop */; ((end = get_time()) - start) < *duration_ns; /* nop */) {
-+		int ret;
-+
-+		while ((ret = read(stream_fd, buf, sizeof(buf))) < 0 &&
-+		       (errno == EINTR || errno == EIO))
-+			;
-+
-+		igt_assert(ret > 0);
-+
-+		for (int offset = 0; offset < ret; offset += format_size) {
-+			uint32_t *report = (void *)(buf + offset);
-+
-+			if (report_reason(report) & OAREPORT_REASON_TIMER)
-+				num_reports++;
-+		}
-+	}
-+	__perf_close(stream_fd);
-+
-+	*duration_ns = end - start;
-+
-+	igt_debug("Actual duration = %"PRIu64"\n", *duration_ns);
-+
-+	return num_reports;
-+}
-+
-+/**
-+ * SUBTEST: oa-tlb-invalidate
-+ * Description: Open OA stream twice to verify OA TLB invalidation
-+ */
-+static void
-+test_oa_tlb_invalidate(const struct drm_xe_engine_class_instance *hwe)
-+{
-+	int oa_exponent = max_oa_exponent_for_period_lte(30000000);
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	int num_reports1, num_reports2, num_expected_reports;
-+	int64_t duration;
-+
-+	/* Capture reports for 5 seconds twice and then make sure you get around
-+	 * the same number of reports. In the case of failure, the number of
-+	 * reports will vary largely since the beginning of the OA buffer
-+	 * will have invalid entries.
-+	 */
-+	duration = 5LL * NSEC_PER_SEC;
-+	num_reports1 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
-+	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-+	igt_debug("expected num reports = %d\n", num_expected_reports);
-+	igt_debug("actual num reports = %d\n", num_reports1);
-+	igt_assert(num_reports1 > 0.95 * num_expected_reports);
-+
-+	duration = 5LL * NSEC_PER_SEC;
-+	num_reports2 = num_valid_reports_captured(&param, &duration, test_set->perf_oa_format);
-+	num_expected_reports = duration / oa_exponent_to_ns(oa_exponent);
-+	igt_debug("expected num reports = %d\n", num_expected_reports);
-+	igt_debug("actual num reports = %d\n", num_reports2);
-+	igt_assert(num_reports2 > 0.95 * num_expected_reports);
-+}
-+
- /**
-  * SUBTEST: buffer-fill
-  * Description: Test filling, wraparound and overflow of OA buffer
-@@ -2659,6 +2878,468 @@ test_disabled_read_error(void)
- 	__perf_close(stream_fd);
- }
- 
-+/**
-+ * SUBTEST: mi-rpc
-+ * Description: Test OAR/OAC using MI_REPORT_PERF_COUNT
-+ */
-+static void
-+test_mi_rpc(struct drm_xe_engine_class_instance *hwe)
-+
-+{
-+	uint64_t fmt = ((IS_DG2(devid) || IS_METEORLAKE(devid)) &&
-+			hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) ?
-+		XE_OAC_FORMAT_A24u64_B8_C8 : oar_unit_default_format();
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* On Gen12, MI RPC uses OAR. OAR is configured only for the
-+		 * render context that wants to measure the performance. Hence a
-+		 * context must be specified in the gen12 MI RPC when compared
-+		 * to previous gens.
-+		 *
-+		 * Have a random value here for the context id, but initialize
-+		 * it once you figure out the context ID for the work to be
-+		 * measured
-+		 */
-+		DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID, UINT64_MAX,
-+
-+		/* OA unit configuration:
-+		 * DRM_XE_OA_PROPERTY_SAMPLE_OA is no longer required for Gen12
-+		 * because the OAR unit increments counters only for the
-+		 * relevant context. No other parameters are needed since we do
-+		 * not rely on the OA buffer anymore to normalize the counter
-+		 * values.
-+		 */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb;
-+	struct intel_buf *buf;
-+#define INVALID_CTX_ID 0xffffffff
-+	uint32_t ctx_id = INVALID_CTX_ID;
-+	uint32_t vm = 0;
-+	uint32_t *report32;
-+	size_t format_size_32;
-+	struct oa_format format = get_oa_format(fmt);
-+
-+	/* Ensure observation_paranoid is set to 1 by default */
-+	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
-+
-+	bops = buf_ops_create(drm_fd);
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	ctx_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	igt_assert_neq(ctx_id, INVALID_CTX_ID);
-+	properties[3] = ctx_id;
-+
-+	ibb = intel_bb_create_with_context(drm_fd, ctx_id, vm, NULL, BATCH_SZ);
-+	buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+			       I915_TILING_NONE, I915_COMPRESSION_NONE);
-+
-+	buf_map(drm_fd, buf, true);
-+	memset(buf->ptr, 0x80, 4096);
-+	intel_buf_unmap(buf);
-+
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+#define REPORT_ID 0xdeadbeef
-+#define REPORT_OFFSET 0
-+	emit_report_perf_count(ibb,
-+			       buf,
-+			       REPORT_OFFSET,
-+			       REPORT_ID);
-+	intel_bb_flush_render(ibb);
-+	intel_bb_sync(ibb);
-+
-+	buf_map(drm_fd, buf, false);
-+	report32 = buf->ptr;
-+	format_size_32 = format.size >> 2;
-+	dump_report(report32, format_size_32, "mi-rpc");
-+
-+	/* Sanity check reports
-+	 * reportX_32[0]: report id passed with mi-rpc
-+	 * reportX_32[1]: timestamp. NOTE: wraps around in ~6 minutes.
-+	 *
-+	 * reportX_32[format.b_off]: check if the entire report was filled.
-+	 * B0 counter falls in the last 64 bytes of this report format.
-+	 * Since reports are filled in 64 byte blocks, we should be able to
-+	 * assure that the report was filled by checking the B0 counter. B0
-+	 * counter is defined to be zero, so we can easily validate it.
-+	 *
-+	 * reportX_32[format_size_32]: outside report, make sure only the report
-+	 * size amount of data was written.
-+	 */
-+	igt_assert_eq(report32[0], REPORT_ID);
-+	igt_assert(oa_timestamp(report32, test_set->perf_oa_format));
-+	igt_assert_neq(report32[format.b_off >> 2], 0x80808080);
-+	igt_assert_eq(report32[format_size_32], 0x80808080);
-+
-+	intel_buf_unmap(buf);
-+	intel_buf_destroy(buf);
-+	intel_bb_destroy(ibb);
-+	xe_exec_queue_destroy(drm_fd, ctx_id);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	__perf_close(stream_fd);
-+}
-+
-+static void
-+emit_stall_timestamp_and_rpc(struct intel_bb *ibb,
-+			     struct intel_buf *dst,
-+			     int timestamp_offset,
-+			     int report_dst_offset,
-+			     uint32_t report_id)
-+{
-+	uint32_t pipe_ctl_flags = (PIPE_CONTROL_CS_STALL |
-+				   PIPE_CONTROL_RENDER_TARGET_FLUSH |
-+				   PIPE_CONTROL_WRITE_TIMESTAMP);
-+
-+	intel_bb_add_intel_buf(ibb, dst, true);
-+	intel_bb_out(ibb, GFX_OP_PIPE_CONTROL(6));
-+	intel_bb_out(ibb, pipe_ctl_flags);
-+	intel_bb_emit_reloc(ibb, dst->handle,
-+			    I915_GEM_DOMAIN_INSTRUCTION, I915_GEM_DOMAIN_INSTRUCTION,
-+			    timestamp_offset, dst->addr.offset);
-+	intel_bb_out(ibb, 0); /* imm lower */
-+	intel_bb_out(ibb, 0); /* imm upper */
-+
-+	emit_report_perf_count(ibb, dst, report_dst_offset, report_id);
-+}
-+
-+static void single_ctx_helper(struct drm_xe_engine_class_instance *hwe)
-+{
-+	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-+	uint64_t fmt = oar_unit_default_format();
-+	uint64_t properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-+
-+		/* Have a random value here for the context id, but initialize
-+		 * it once you figure out the context ID for the work to be
-+		 * measured
-+		 */
-+		DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID, UINT64_MAX,
-+
-+		/* OA unit configuration:
-+		 * DRM_XE_OA_PROPERTY_SAMPLE_OA is no longer required for Gen12
-+		 * because the OAR unit increments counters only for the
-+		 * relevant context. No other parameters are needed since we do
-+		 * not rely on the OA buffer anymore to normalize the counter
-+		 * values.
-+		 */
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE, hwe->engine_instance,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	struct buf_ops *bops;
-+	struct intel_bb *ibb0, *ibb1;
-+	struct intel_buf src[3], dst[3], *dst_buf;
-+	uint32_t context0_id, context1_id, vm = 0;
-+	uint32_t *report0_32, *report1_32, *report2_32, *report3_32;
-+	uint64_t timestamp0_64, timestamp1_64;
-+	uint64_t delta_ts64, delta_oa32;
-+	uint64_t delta_ts64_ns, delta_oa32_ns;
-+	uint64_t delta_delta;
-+	int width = 800;
-+	int height = 600;
-+#define INVALID_CTX_ID 0xffffffff
-+	uint32_t ctx0_id = INVALID_CTX_ID;
-+	uint32_t ctx1_id = INVALID_CTX_ID;
-+	int ret;
-+	struct accumulator accumulator = {
-+		.format = fmt
-+	};
-+
-+	bops = buf_ops_create(drm_fd);
-+
-+	for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+		scratch_buf_init(bops, &src[i], width, height, 0xff0000ff);
-+		scratch_buf_init(bops, &dst[i], width, height, 0x00ff00ff);
-+	}
-+
-+	vm = xe_vm_create(drm_fd, 0, 0);
-+	context0_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	context1_id = xe_exec_queue_create(drm_fd, vm, hwe, 0);
-+	ibb0 = intel_bb_create_with_context(drm_fd, context0_id, vm, NULL, BATCH_SZ);
-+	ibb1 = intel_bb_create_with_context(drm_fd, context1_id, vm, NULL, BATCH_SZ);
-+
-+	igt_debug("submitting warm up render_copy\n");
-+
-+	/* Submit some early, unmeasured, work to the context we want */
-+	render_copy(ibb0,
-+		    &src[0], 0, 0, width, height,
-+		    &dst[0], 0, 0);
-+
-+	/* Initialize the context parameter to the perf open ioctl here */
-+	properties[3] = context0_id;
-+
-+	igt_debug("opening xe oa stream\n");
-+	stream_fd = __perf_open(drm_fd, &param, false);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	dst_buf = intel_buf_create(bops, 4096, 1, 8, 64,
-+				   I915_TILING_NONE,
-+				   I915_COMPRESSION_NONE);
-+
-+	/* Set write domain to cpu briefly to fill the buffer with 80s */
-+	buf_map(drm_fd, dst_buf, true /* write enable */);
-+	memset(dst_buf->ptr, 0x80, 2048);
-+	memset((uint8_t *) dst_buf->ptr + 2048, 0, 2048);
-+	intel_buf_unmap(dst_buf);
-+
-+	/* Submit an mi-rpc to context0 before measurable work */
-+#define BO_TIMESTAMP_OFFSET0 1024
-+#define BO_REPORT_OFFSET0 0
-+#define BO_REPORT_ID0 0xdeadbeef
-+	emit_stall_timestamp_and_rpc(ibb0,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET0,
-+				     BO_REPORT_OFFSET0,
-+				     BO_REPORT_ID0);
-+	intel_bb_flush_render(ibb0);
-+
-+	/* Remove intel_buf from ibb0 added implicitly in rendercopy */
-+	intel_bb_remove_intel_buf(ibb0, dst_buf);
-+
-+	/* This is the work/context that is measured for counter increments */
-+	render_copy(ibb0,
-+		    &src[0], 0, 0, width, height,
-+		    &dst[0], 0, 0);
-+	intel_bb_flush_render(ibb0);
-+
-+	/* Submit an mi-rpc to context1 before work
-+	 *
-+	 * On gen12, this measurement should just yield counters that are
-+	 * all zeroes, since the counters will only increment for the
-+	 * context passed to perf open ioctl
-+	 */
-+#define BO_TIMESTAMP_OFFSET2 1040
-+#define BO_REPORT_OFFSET2 512
-+#define BO_REPORT_ID2 0x00c0ffee
-+	emit_stall_timestamp_and_rpc(ibb1,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET2,
-+				     BO_REPORT_OFFSET2,
-+				     BO_REPORT_ID2);
-+	intel_bb_flush_render(ibb1);
-+
-+	/* Submit two copies on the other context to avoid a false
-+	 * positive in case the driver somehow ended up filtering for
-+	 * context1
-+	 */
-+	render_copy(ibb1,
-+		    &src[1], 0, 0, width, height,
-+		    &dst[1], 0, 0);
-+
-+	render_copy(ibb1,
-+		    &src[2], 0, 0, width, height,
-+		    &dst[2], 0, 0);
-+	intel_bb_flush_render(ibb1);
-+
-+	/* Submit an mi-rpc to context1 after all work */
-+#define BO_TIMESTAMP_OFFSET3 1048
-+#define BO_REPORT_OFFSET3 768
-+#define BO_REPORT_ID3 0x01c0ffee
-+	emit_stall_timestamp_and_rpc(ibb1,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET3,
-+				     BO_REPORT_OFFSET3,
-+				     BO_REPORT_ID3);
-+	intel_bb_flush_render(ibb1);
-+
-+	/* Remove intel_buf from ibb1 added implicitly in rendercopy */
-+	intel_bb_remove_intel_buf(ibb1, dst_buf);
-+
-+	/* Submit an mi-rpc to context0 after all measurable work */
-+#define BO_TIMESTAMP_OFFSET1 1032
-+#define BO_REPORT_OFFSET1 256
-+#define BO_REPORT_ID1 0xbeefbeef
-+	emit_stall_timestamp_and_rpc(ibb0,
-+				     dst_buf,
-+				     BO_TIMESTAMP_OFFSET1,
-+				     BO_REPORT_OFFSET1,
-+				     BO_REPORT_ID1);
-+	intel_bb_flush_render(ibb0);
-+	intel_bb_sync(ibb0);
-+	intel_bb_sync(ibb1);
-+
-+	buf_map(drm_fd, dst_buf, false);
-+
-+	/* Sanity check reports
-+	 * reportX_32[0]: report id passed with mi-rpc
-+	 * reportX_32[1]: timestamp
-+	 * reportX_32[2]: context id
-+	 *
-+	 * report0_32: start of measurable work
-+	 * report1_32: end of measurable work
-+	 * report2_32: start of other work
-+	 * report3_32: end of other work
-+	 */
-+	report0_32 = dst_buf->ptr;
-+	igt_assert_eq(report0_32[0], 0xdeadbeef);
-+	igt_assert(oa_timestamp(report0_32, fmt));
-+	ctx0_id = report0_32[2];
-+	igt_debug("MI_RPC(start) CTX ID: %u\n", ctx0_id);
-+	dump_report(report0_32, 64, "report0_32");
-+
-+	report1_32 = report0_32 + 64;
-+	igt_assert_eq(report1_32[0], 0xbeefbeef);
-+	igt_assert(oa_timestamp(report1_32, fmt));
-+	ctx1_id = report1_32[2];
-+	igt_debug("CTX ID1: %u\n", ctx1_id);
-+	dump_report(report1_32, 64, "report1_32");
-+
-+	/* Verify that counters in context1 are all zeroes */
-+	report2_32 = report0_32 + 128;
-+	igt_assert_eq(report2_32[0], 0x00c0ffee);
-+	igt_assert(oa_timestamp(report2_32, fmt));
-+	dump_report(report2_32, 64, "report2_32");
-+	igt_assert_eq(0, memcmp(&report2_32[4],
-+				(uint8_t *) dst_buf->ptr + 2048,
-+				240));
-+
-+	report3_32 = report0_32 + 192;
-+	igt_assert_eq(report3_32[0], 0x01c0ffee);
-+	igt_assert(oa_timestamp(report3_32, fmt));
-+	dump_report(report3_32, 64, "report3_32");
-+	igt_assert_eq(0, memcmp(&report3_32[4],
-+				(uint8_t *) dst_buf->ptr + 2048,
-+				240));
-+
-+	/* Accumulate deltas for counters - A0, A21 and A26 */
-+	memset(accumulator.deltas, 0, sizeof(accumulator.deltas));
-+	accumulate_reports(&accumulator, report0_32, report1_32);
-+	igt_debug("total: A0 = %"PRIu64", A21 = %"PRIu64", A26 = %"PRIu64"\n",
-+			accumulator.deltas[2 + 0],
-+			accumulator.deltas[2 + 21],
-+			accumulator.deltas[2 + 26]);
-+
-+	igt_debug("oa_timestamp32 0 = %"PRIu64"\n", oa_timestamp(report0_32, fmt));
-+	igt_debug("oa_timestamp32 1 = %"PRIu64"\n", oa_timestamp(report1_32, fmt));
-+	igt_debug("ctx_id 0 = %u\n", report0_32[2]);
-+	igt_debug("ctx_id 1 = %u\n", report1_32[2]);
-+
-+	/* The delta as calculated via the PIPE_CONTROL timestamp or
-+	 * the OA report timestamps should be almost identical but
-+	 * allow a 500 nanoseconds margin.
-+	 */
-+	timestamp0_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET0);
-+	timestamp1_64 = *(uint64_t *)(((uint8_t *)dst_buf->ptr) + BO_TIMESTAMP_OFFSET1);
-+
-+	igt_debug("ts_timestamp64 0 = %"PRIu64"\n", timestamp0_64);
-+	igt_debug("ts_timestamp64 1 = %"PRIu64"\n", timestamp1_64);
-+
-+	delta_ts64 = timestamp1_64 - timestamp0_64;
-+	delta_oa32 = oa_timestamp_delta(report1_32, report0_32, fmt);
-+
-+	/* Sanity check that we can pass the delta to timebase_scale */
-+	delta_oa32_ns = timebase_scale(delta_oa32);
-+	delta_ts64_ns = cs_timebase_scale(delta_ts64);
-+
-+	igt_debug("oa32 delta = %"PRIu64", = %"PRIu64"ns\n",
-+			delta_oa32, delta_oa32_ns);
-+	igt_debug("ts64 delta = %"PRIu64", = %"PRIu64"ns\n",
-+			delta_ts64, delta_ts64_ns);
-+
-+	delta_delta = delta_ts64_ns > delta_oa32_ns ?
-+		      (delta_ts64_ns - delta_oa32_ns) :
-+		      (delta_oa32_ns - delta_ts64_ns);
-+	if (delta_delta > 500) {
-+		igt_debug("delta_delta = %"PRIu64". exceeds margin, skipping..\n",
-+			  delta_delta);
-+		exit(EAGAIN);
-+	}
-+
-+	igt_debug("n samples written = %"PRIu64"/%"PRIu64" (%ix%i)\n",
-+		  accumulator.deltas[2 + 21],
-+		  accumulator.deltas[2 + 26],
-+		  width, height);
-+	accumulator_print(&accumulator, "filtered");
-+
-+	/* Verify that the work actually happened by comparing the src
-+	 * and dst buffers
-+	 */
-+	buf_map(drm_fd, &src[0], false);
-+	buf_map(drm_fd, &dst[0], false);
-+
-+	ret = memcmp(src[0].ptr, dst[0].ptr, 4 * width * height);
-+	intel_buf_unmap(&src[0]);
-+	intel_buf_unmap(&dst[0]);
-+
-+	if (ret != 0) {
-+		accumulator_print(&accumulator, "total");
-+		exit(EAGAIN);
-+	}
-+
-+	/* FIXME: can we deduce the presence of A26 from get_oa_format(fmt)? */
-+	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
-+		goto skip_check;
-+
-+	/* Check that this test passed. The test measures the number of 2x2
-+	 * samples written to the render target using the counter A26. For
-+	 * OAR, this counter will only have increments relevant to this specific
-+	 * context. The value equals the width * height of the rendered work.
-+	 */
-+	igt_assert_eq(accumulator.deltas[2 + 26], width * height);
-+
-+ skip_check:
-+	/* Clean up */
-+	for (int i = 0; i < ARRAY_SIZE(src); i++) {
-+		intel_buf_close(bops, &src[i]);
-+		intel_buf_close(bops, &dst[i]);
-+	}
-+
-+	intel_buf_unmap(dst_buf);
-+	intel_buf_destroy(dst_buf);
-+	intel_bb_destroy(ibb0);
-+	intel_bb_destroy(ibb1);
-+	xe_exec_queue_destroy(drm_fd, context0_id);
-+	xe_exec_queue_destroy(drm_fd, context1_id);
-+	xe_vm_destroy(drm_fd, vm);
-+	buf_ops_destroy(bops);
-+	__perf_close(stream_fd);
-+}
-+
-+/**
-+ * SUBTEST: unprivileged-single-ctx-counters
-+ * Description: A harder test for OAR/OAC using MI_REPORT_PERF_COUNT
-+ */
-+static void
-+test_single_ctx_render_target_writes_a_counter(struct drm_xe_engine_class_instance *hwe)
-+{
-+	int child_ret;
-+	struct igt_helper_process child = {};
-+
-+	/* Ensure observation_paranoid is set to 1 by default */
-+	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
-+
-+	do {
-+		igt_fork_helper(&child) {
-+			/* A local device for local resources. */
-+			drm_fd = drm_reopen_driver(drm_fd);
-+
-+			igt_drop_root();
-+
-+			single_ctx_helper(hwe);
-+
-+			drm_close_driver(drm_fd);
-+		}
-+		child_ret = igt_wait_helper(&child);
-+		igt_assert(WEXITSTATUS(child_ret) == EAGAIN ||
-+			   WEXITSTATUS(child_ret) == 0);
-+	} while (WEXITSTATUS(child_ret) == EAGAIN);
-+}
-+
- static unsigned read_xe_module_ref(void)
- {
- 	FILE *fp = fopen("/proc/modules", "r");
-@@ -2929,6 +3610,26 @@ igt_main
- 	igt_subtest("short-reads")
- 		test_short_reads();
- 
-+	igt_subtest_group {
-+		igt_subtest_with_dynamic("mi-rpc")
-+			__for_one_hwe_in_oag(hwe)
-+				test_mi_rpc(hwe);
-+
-+		igt_subtest_with_dynamic("oa-tlb-invalidate") {
-+			igt_require(intel_graphics_ver(devid) <= IP_VER(12, 70) &&
-+				    intel_graphics_ver(devid) != IP_VER(12, 60));
-+			__for_one_hwe_in_oag(hwe)
-+				test_oa_tlb_invalidate(hwe);
-+		}
-+
-+		igt_subtest_with_dynamic("unprivileged-single-ctx-counters") {
-+			igt_require_f(render_copy, "no render-copy function\n");
-+			igt_require(intel_graphics_ver(devid) < IP_VER(20, 0));
-+			__for_one_render_engine(hwe)
-+				test_single_ctx_render_target_writes_a_counter(hwe);
-+		}
-+	}
-+
- 	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
--- 
-2.41.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7917_full -> XEIGTPW_11375_full
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11375_full:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_cursor_crc@cursor-offscreen-128x128:
+    - {shard-lnl}:        [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_cursor_crc@cursor-offscreen-128x128.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-5/igt@kms_cursor_crc@cursor-offscreen-128x128.html
+
+  * igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race:
+    - {shard-lnl}:        [PASS][3] -> [FAIL][4] +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race.html
+
+  * igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race:
+    - {shard-lnl}:        NOTRUN -> [INCOMPLETE][5]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-7/igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11375_full that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@2x-flip-vs-panning:
+    - shard-dg2-set2:     [PASS][6] -> [DMESG-WARN][7] ([Intel XE#1214] / [Intel XE#877])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@kms_flip@2x-flip-vs-panning.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-433/igt@kms_flip@2x-flip-vs-panning.html
+
+  * igt@kms_flip@2x-flip-vs-panning@bd-hdmi-a6-dp4:
+    - shard-dg2-set2:     [PASS][8] -> [DMESG-WARN][9] ([Intel XE#1214]) +3 other tests dmesg-warn
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@kms_flip@2x-flip-vs-panning@bd-hdmi-a6-dp4.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-433/igt@kms_flip@2x-flip-vs-panning@bd-hdmi-a6-dp4.html
+
+  * igt@xe_evict@evict-cm-threads-large:
+    - shard-dg2-set2:     [PASS][10] -> [TIMEOUT][11] ([Intel XE#1473] / [Intel XE#392])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@xe_evict@evict-cm-threads-large.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-466/igt@xe_evict@evict-cm-threads-large.html
+
+  * igt@xe_evict@evict-mixed-many-threads-small:
+    - shard-dg2-set2:     [PASS][12] -> [TIMEOUT][13] ([Intel XE#1473]) +1 other test timeout
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@xe_evict@evict-mixed-many-threads-small.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-466/igt@xe_evict@evict-mixed-many-threads-small.html
+
+  * igt@xe_exec_reset@gt-reset-stress:
+    - shard-dg2-set2:     [PASS][14] -> [DMESG-WARN][15] ([Intel XE#1214] / [Intel XE#2046])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@xe_exec_reset@gt-reset-stress.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-463/igt@xe_exec_reset@gt-reset-stress.html
+
+  * igt@xe_live_ktest@xe_mocs@xe_live_mocs_kernel_kunit:
+    - shard-dg2-set2:     NOTRUN -> [FAIL][16] ([Intel XE#1999]) +1 other test fail
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-435/igt@xe_live_ktest@xe_mocs@xe_live_mocs_kernel_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_big_fb@4-tiled-64bpp-rotate-0:
+    - {shard-lnl}:        [FAIL][17] ([Intel XE#1659]) -> [PASS][18] +1 other test pass
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_big_fb@4-tiled-64bpp-rotate-0.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@kms_big_fb@4-tiled-64bpp-rotate-0.html
+
+  * igt@kms_fbcon_fbt@psr-suspend:
+    - {shard-lnl}:        [INCOMPLETE][19] -> [PASS][20] +1 other test pass
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_fbcon_fbt@psr-suspend.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-7/igt@kms_fbcon_fbt@psr-suspend.html
+
+  * igt@kms_flip@flip-vs-suspend@a-hdmi-a6:
+    - shard-dg2-set2:     [DMESG-WARN][21] ([Intel XE#1214] / [Intel XE#1551]) -> [PASS][22] +1 other test pass
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@kms_flip@flip-vs-suspend@a-hdmi-a6.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-436/igt@kms_flip@flip-vs-suspend@a-hdmi-a6.html
+
+  * igt@kms_flip@wf_vblank-ts-check@a-edp1:
+    - {shard-lnl}:        [FAIL][23] ([Intel XE#886]) -> [PASS][24] +2 other tests pass
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_flip@wf_vblank-ts-check@a-edp1.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@kms_flip@wf_vblank-ts-check@a-edp1.html
+
+  * igt@kms_hdr@invalid-hdr:
+    - shard-dg2-set2:     [SKIP][25] ([Intel XE#1201] / [Intel XE#455]) -> [PASS][26]
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@kms_hdr@invalid-hdr.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-463/igt@kms_hdr@invalid-hdr.html
+
+  * {igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4}:
+    - {shard-lnl}:        [DMESG-WARN][27] ([Intel XE#324]) -> [PASS][28] +7 other tests pass
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4.html
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-8/igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4.html
+
+  * {igt@kms_plane@plane-position-hole@pipe-a-plane-3}:
+    - {shard-lnl}:        [DMESG-FAIL][29] ([Intel XE#324]) -> [PASS][30] +1 other test pass
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-5/igt@kms_plane@plane-position-hole@pipe-a-plane-3.html
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@kms_plane@plane-position-hole@pipe-a-plane-3.html
+
+  * igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-4:
+    - shard-dg2-set2:     [FAIL][31] ([Intel XE#361]) -> [PASS][32] +1 other test pass
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-436/igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-4.html
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-463/igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-4.html
+
+  * igt@kms_pm_backlight@fade-with-suspend:
+    - {shard-lnl}:        [SKIP][33] ([Intel XE#870]) -> [PASS][34]
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@kms_pm_backlight@fade-with-suspend.html
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-8/igt@kms_pm_backlight@fade-with-suspend.html
+
+  * igt@kms_pm_dc@dc5-dpms:
+    - {shard-lnl}:        [FAIL][35] ([Intel XE#718]) -> [PASS][36]
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@kms_pm_dc@dc5-dpms.html
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-1/igt@kms_pm_dc@dc5-dpms.html
+
+  * igt@kms_universal_plane@cursor-fb-leak@pipe-c-edp-1:
+    - {shard-lnl}:        [FAIL][37] ([Intel XE#899]) -> [PASS][38] +1 other test pass
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-5/igt@kms_universal_plane@cursor-fb-leak@pipe-c-edp-1.html
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-1/igt@kms_universal_plane@cursor-fb-leak@pipe-c-edp-1.html
+
+  * igt@xe_evict@evict-beng-large-multi-vm-cm:
+    - shard-dg2-set2:     [FAIL][39] ([Intel XE#1600]) -> [PASS][40]
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@xe_evict@evict-beng-large-multi-vm-cm.html
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-435/igt@xe_evict@evict-beng-large-multi-vm-cm.html
+
+  * igt@xe_pm@s4-exec-after:
+    - {shard-lnl}:        [ABORT][41] ([Intel XE#1358] / [Intel XE#1607]) -> [PASS][42]
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@xe_pm@s4-exec-after.html
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-8/igt@xe_pm@s4-exec-after.html
+
+  * igt@xe_pm@s4-mocs:
+    - {shard-lnl}:        [ABORT][43] ([Intel XE#1794]) -> [PASS][44]
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@xe_pm@s4-mocs.html
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-1/igt@xe_pm@s4-mocs.html
+
+  
+#### Warnings ####
+
+  * igt@kms_content_protection@mei-interface:
+    - shard-dg2-set2:     [SKIP][45] ([Intel XE#1201] / [Intel XE#455]) -> [SKIP][46] ([Intel XE#1201])
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@kms_content_protection@mei-interface.html
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-436/igt@kms_content_protection@mei-interface.html
+
+  * igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b:
+    - shard-dg2-set2:     [DMESG-FAIL][47] ([Intel XE#1551]) -> [FAIL][48] ([Intel XE#616]) +1 other test fail
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-466/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-436/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html
+
+  * igt@xe_live_ktest@xe_mocs:
+    - shard-dg2-set2:     [SKIP][49] ([Intel XE#1192] / [Intel XE#1201]) -> [FAIL][50] ([Intel XE#1999])
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-464/igt@xe_live_ktest@xe_mocs.html
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-435/igt@xe_live_ktest@xe_mocs.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1124]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124
+  [Intel XE#1127]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1127
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1201]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201
+  [Intel XE#1214]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1214
+  [Intel XE#1358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1358
+  [Intel XE#1392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392
+  [Intel XE#1397]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1397
+  [Intel XE#1399]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1399
+  [Intel XE#1401]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1401
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#1407]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407
+  [Intel XE#1413]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1413
+  [Intel XE#1421]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1421
+  [Intel XE#1424]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1424
+  [Intel XE#1430]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1430
+  [Intel XE#1435]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1435
+  [Intel XE#1437]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1437
+  [Intel XE#1439]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1439
+  [Intel XE#1462]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1462
+  [Intel XE#1473]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473
+  [Intel XE#1551]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1551
+  [Intel XE#1600]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1600
+  [Intel XE#1607]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1607
+  [Intel XE#1659]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1659
+  [Intel XE#1745]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1745
+  [Intel XE#1794]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1794
+  [Intel XE#1829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1829
+  [Intel XE#1948]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1948
+  [Intel XE#1960]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1960
+  [Intel XE#1999]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1999
+  [Intel XE#2046]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2046
+  [Intel XE#2052]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2052
+  [Intel XE#2155]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2155
+  [Intel XE#305]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/305
+  [Intel XE#306]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/306
+  [Intel XE#309]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/309
+  [Intel XE#323]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/323
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+  [Intel XE#346]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/346
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#361]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/361
+  [Intel XE#373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/373
+  [Intel XE#392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/392
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#584]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/584
+  [Intel XE#599]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/599
+  [Intel XE#616]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/616
+  [Intel XE#651]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/651
+  [Intel XE#656]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/656
+  [Intel XE#660]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/660
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#718]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/718
+  [Intel XE#870]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/870
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+  [Intel XE#899]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/899
+  [Intel XE#944]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/944
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7917 -> IGTPW_11375
+
+  IGTPW_11375: 11375
+  IGT_7917: a1743ac7ed91ce40d742a351b1600da4f75972b1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1567-cdd1a80a2d16d5213af20a29eb7570a7651db7dc: cdd1a80a2d16d5213af20a29eb7570a7651db7dc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/index.html
+
+--===============5718748353911866804==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_device_scan: Skip attributes in subdirectories (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135769/">https://patchwork.freedesktop.org/series/135769/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7917_full -&gt; XEIGTPW_11375_full</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11375_full:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@kms_cursor_crc@cursor-offscreen-128x128:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_cursor_crc@cursor-offscreen-128x128.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-5/igt@kms_cursor_crc@cursor-offscreen-128x128.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@xe_exec_basic@many-bindexecqueue-userptr-invalidate-race.html">FAIL</a> +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race:</p>
+<ul>
+<li>{shard-lnl}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-7/igt@xe_exec_basic@no-exec-bindexecqueue-userptr-invalidate-race.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11375_full that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@2x-flip-vs-panning:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@kms_flip@2x-flip-vs-panning.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-433/igt@kms_flip@2x-flip-vs-panning.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1214">Intel XE#1214</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-panning@bd-hdmi-a6-dp4:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@kms_flip@2x-flip-vs-panning@bd-hdmi-a6-dp4.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-433/igt@kms_flip@2x-flip-vs-panning@bd-hdmi-a6-dp4.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1214">Intel XE#1214</a>) +3 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-cm-threads-large:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@xe_evict@evict-cm-threads-large.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-466/igt@xe_evict@evict-cm-threads-large.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473">Intel XE#1473</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/392">Intel XE#392</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-mixed-many-threads-small:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@xe_evict@evict-mixed-many-threads-small.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-466/igt@xe_evict@evict-mixed-many-threads-small.html">TIMEOUT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1473">Intel XE#1473</a>) +1 other test timeout</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_reset@gt-reset-stress:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-435/igt@xe_exec_reset@gt-reset-stress.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-463/igt@xe_exec_reset@gt-reset-stress.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1214">Intel XE#1214</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2046">Intel XE#2046</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_mocs@xe_live_mocs_kernel_kunit:</p>
+<ul>
+<li>shard-dg2-set2:     NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-435/igt@xe_live_ktest@xe_mocs@xe_live_mocs_kernel_kunit.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1999">Intel XE#1999</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_big_fb@4-tiled-64bpp-rotate-0:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_big_fb@4-tiled-64bpp-rotate-0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1659">Intel XE#1659</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@kms_big_fb@4-tiled-64bpp-rotate-0.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbcon_fbt@psr-suspend:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_fbcon_fbt@psr-suspend.html">INCOMPLETE</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-7/igt@kms_fbcon_fbt@psr-suspend.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-suspend@a-hdmi-a6:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@kms_flip@flip-vs-suspend@a-hdmi-a6.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1214">Intel XE#1214</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1551">Intel XE#1551</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-436/igt@kms_flip@flip-vs-suspend@a-hdmi-a6.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check@a-edp1:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@kms_flip@wf_vblank-ts-check@a-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@kms_flip@wf_vblank-ts-check@a-edp1.html">PASS</a> +2 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@invalid-hdr:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@kms_hdr@invalid-hdr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-463/igt@kms_hdr@invalid-hdr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4}:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-8/igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4.html">PASS</a> +7 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>{igt@kms_plane@plane-position-hole@pipe-a-plane-3}:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-5/igt@kms_plane@plane-position-hole@pipe-a-plane-3.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-3/igt@kms_plane@plane-position-hole@pipe-a-plane-3.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-4:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-436/igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-4.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/361">Intel XE#361</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-463/igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-4.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@fade-with-suspend:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@kms_pm_backlight@fade-with-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/870">Intel XE#870</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-8/igt@kms_pm_backlight@fade-with-suspend.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc5-dpms:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-4/igt@kms_pm_dc@dc5-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/718">Intel XE#718</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-1/igt@kms_pm_dc@dc5-dpms.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_universal_plane@cursor-fb-leak@pipe-c-edp-1:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-5/igt@kms_universal_plane@cursor-fb-leak@pipe-c-edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/899">Intel XE#899</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-1/igt@kms_universal_plane@cursor-fb-leak@pipe-c-edp-1.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-large-multi-vm-cm:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@xe_evict@evict-beng-large-multi-vm-cm.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1600">Intel XE#1600</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-435/igt@xe_evict@evict-beng-large-multi-vm-cm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s4-exec-after:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@xe_pm@s4-exec-after.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1358">Intel XE#1358</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1607">Intel XE#1607</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-8/igt@xe_pm@s4-exec-after.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s4-mocs:</p>
+<ul>
+<li>{shard-lnl}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-lnl-2/igt@xe_pm@s4-mocs.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1794">Intel XE#1794</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-lnl-1/igt@xe_pm@s4-mocs.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_content_protection@mei-interface:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-434/igt@kms_content_protection@mei-interface.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-436/igt@kms_content_protection@mei-interface.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-466/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1551">Intel XE#1551</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-436/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-b.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/616">Intel XE#616</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_mocs:</p>
+<ul>
+<li>shard-dg2-set2:     <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7917/shard-dg2-464/igt@xe_live_ktest@xe_mocs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1201">Intel XE#1201</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11375/shard-dg2-435/igt@xe_live_ktest@xe_mocs.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1999">Intel XE#1999</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7917 -&gt; IGTPW_11375</li>
+</ul>
+<p>IGTPW_11375: 11375<br />
+  IGT_7917: a1743ac7ed91ce40d742a351b1600da4f75972b1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1567-cdd1a80a2d16d5213af20a29eb7570a7651db7dc: cdd1a80a2d16d5213af20a29eb7570a7651db7dc</p>
+
+</body>
+</html>
+
+--===============5718748353911866804==--
