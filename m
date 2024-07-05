@@ -4,49 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7288C3271E
-	for <igt-dev@archiver.kernel.org>; Fri,  5 Jul 2024 21:43:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5194AC3DA40
+	for <igt-dev@archiver.kernel.org>; Fri,  5 Jul 2024 21:43:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A7C910E023;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D42110E08A;
 	Fri,  5 Jul 2024 21:43:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J7LsP7Iw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="btua0bHP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DBB7010E023
- for <igt-dev@lists.freedesktop.org>; Fri,  5 Jul 2024 21:43:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB2A510E221
+ for <igt-dev@lists.freedesktop.org>; Fri,  5 Jul 2024 21:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720215808; x=1751751808;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=BPHslyraYKjj9qSYCdwh5rLdCahL8RwO7GiK2Vj1SM4=;
- b=J7LsP7IwMn8KttNehrSMakNWOvqzx9xXHVIvzUo7X266SDs2n2joz4e0
- pqsZ5dmqSAtZiHyozWN0xakifpmIYCmJacouqPAx1pPVJ113skGCqul75
- Btnc0nHTcRknH4A/bmitNLbD8S5WoWuPCQMc9V9i1tLxs3J2J3aAiwI91
- jIvF6h1dYVD28JEsTB3NwyMNDPPhkK4m6/1pMZBCn6pkGF7FujIss/shr
- Lfcn5OASeGCM2/tW8cdQwUuTY1iLUvY+GNvsGOXcXpFIGDKRcc2M6jyPx
- MWAutULpBn3l8YI+6/i0gofrm+OXVbPwsz6rCntEnoHPNzRQ1zUqZyn/9 g==;
-X-CSE-ConnectionGUID: xa0EW9rIT6SvFdHioa5jXA==
-X-CSE-MsgGUID: BcZuHd5TSuGZrFEtFA69lQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28907011"
-X-IronPort-AV: E=Sophos;i="6.09,186,1716274800"; d="scan'208";a="28907011"
+ t=1720215809; x=1751751809;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=gczRXM40ct5pjLxdi/H4erGXH5mFX2ufdx72YlUNXEk=;
+ b=btua0bHP+NLrNRM+NQw5TxcSs1R4BmK5L8yoOgxmxnMWu2eoHrotNpuG
+ NOxrR0k6CS0lyrLHqC8QnyXMAtCopuspc5Jx1LPe5kUdRzz0f9NyrDMjB
+ d4IbUsBn5sIdzxWMX8mnDhT0k8tu4TmGRtmltUrlsgILnPCQkZI258e4L
+ X/12wRdO8EhWGuxTP3wz+KY6+DgqMRKIQObYj3y1EwtWIMin52IGBIkMY
+ GeglxdMHa2qrZjEMDqk49kjqiS+B8RO+meDbuVphtCWSyuqpkfC3jB9d1
+ MyWQUGL5SZ9o3WlqdJs9H6OMFLdj/hjLHE2JsFUcT4YYAdslJozFoHnCG Q==;
+X-CSE-ConnectionGUID: 6Yd+eukbSBK2lhp4x5ZB9Q==
+X-CSE-MsgGUID: CyBXF7hFSSy8n2+NYwD1cw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28907025"
+X-IronPort-AV: E=Sophos;i="6.09,186,1716274800"; d="scan'208";a="28907025"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  05 Jul 2024 14:43:28 -0700
-X-CSE-ConnectionGUID: PPzGfp+yRhSlAa0i4vyDqw==
-X-CSE-MsgGUID: +5qBgA7hROKxlSYzfEjZwA==
+X-CSE-ConnectionGUID: xhEElTCySrOOdb+GBQ1UOA==
+X-CSE-MsgGUID: GurYrkEnTy+yneYgc6Sp0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,186,1716274800"; d="scan'208";a="46902532"
+X-IronPort-AV: E=Sophos;i="6.09,186,1716274800"; d="scan'208";a="46902546"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Jul 2024 14:43:28 -0700
+ 05 Jul 2024 14:43:29 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v11 00/15] Intel Xe OA IGT's
-Date: Fri,  5 Jul 2024 14:43:01 -0700
-Message-ID: <20240705214316.2695090-1-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 14/15] tests/intel/xe_oa: Drop "xe-ref-count" subtest
+Date: Fri,  5 Jul 2024 14:43:15 -0700
+Message-ID: <20240705214316.2695090-15-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240705214316.2695090-1-ashutosh.dixit@intel.com>
+References: <20240705214316.2695090-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,48 +66,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The Xe OA lib's and tools have already been merged. This series now
-contains the remaining Xe OA IGT's which are yet to be merged.
+Sometime other modules (such as those for child devices) take or drop
+references on the xe module. This results in "xe-ref-count" subtest unable
+to accurately predict what the module refcount should be, resulting in
+frequent false positives in the test.
 
-v7: Add PVC support in IGT lib
-v8: Sync with kernel uapi change to rename xe perf layer as xe observation
-    layer
-v9: Re-test
-v10: Run on Xe2+ only
-v11: Fix bug in v10
+Drop the test till we are able to devise a robust method to predict xe
+module refcount.
 
-Ashutosh Dixit (15):
-  drm-uapi/xe: Sync with Perf/Observation layer uapi updates
-  lib/xe/oa: Add PVC support
-  tests/intel/xe_oa: Add first tests
-  tests/intel/xe_oa: Add some negative tests
-  tests/intel/xe_oa: Add "oa-formats" subtest
-  tests/intel/xe_oa: Add oa exponent tests
-  tests/intel/xe_oa: buffer-fill, non-zero-reason, enable-disable
-  tests/intel/xe_oa: blocking and polling tests
-  tests/intel/xe_oa: OAR/OAC tests
-  tests/intel/xe_oa: Exclusive/concurrent access, rc6 and stress open
-    close
-  tests/intel/xe_oa: add remove OA config tests
-  tests/intel/xe_oa: OA buffer mmap tests
-  tests/intel/xe_oa: Register whitelisting and MMIO trigger tests
-  tests/intel/xe_oa: Drop "xe-ref-count" subtest
-  HAX: Add Xe OA tests to xe-fast-feedback.testlist
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/intel/xe_oa.c | 107 --------------------------------------------
+ 1 file changed, 107 deletions(-)
 
- include/drm-uapi/xe_drm.h                |  102 +-
- lib/meson.build                          |    5 +-
- lib/xe/oa-configs/oa-pvc.xml             | 1018 +++++
- lib/xe/xe_oa.c                           |   22 +-
- lib/xe/xe_oa.h                           |    6 +-
- tests/intel-ci/xe-fast-feedback.testlist |   40 +
- tests/intel/xe_oa.c                      | 4710 ++++++++++++++++++++++
- tests/meson.build                        |    2 +
- tools/xe-perf/xe_perf_configs.c          |    2 +-
- tools/xe-perf/xe_perf_recorder.c         |    4 +-
- 10 files changed, 5843 insertions(+), 68 deletions(-)
- create mode 100644 lib/xe/oa-configs/oa-pvc.xml
- create mode 100644 tests/intel/xe_oa.c
-
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index b83e7f5eab..ff2218300a 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -3371,36 +3371,6 @@ test_single_ctx_render_target_writes_a_counter(struct drm_xe_engine_class_instan
+ 	} while (WEXITSTATUS(child_ret) == EAGAIN);
+ }
+ 
+-static unsigned read_xe_module_ref(void)
+-{
+-	FILE *fp = fopen("/proc/modules", "r");
+-	char *line = NULL;
+-	size_t line_buf_size = 0;
+-	int len = 0;
+-	unsigned ref_count;
+-	char mod[8];
+-	int modn = 3;
+-
+-	igt_assert(fp);
+-
+-	strcpy(mod, "xe ");
+-	while ((len = getline(&line, &line_buf_size, fp)) > 0) {
+-		if (strncmp(line, mod, modn) == 0) {
+-			unsigned long mem;
+-			int ret = sscanf(line + 5, "%lu %u", &mem, &ref_count);
+-			igt_assert(ret == 2);
+-			goto done;
+-		}
+-	}
+-
+-	igt_assert(!"reached");
+-
+-done:
+-	free(line);
+-	fclose(fp);
+-	return ref_count;
+-}
+-
+ /**
+  * SUBTEST: rc6-disable
+  * Description: Check that opening an OA stream disables RC6
+@@ -4116,80 +4086,6 @@ test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
+ 		   WEXITSTATUS(ret) == 0);
+ }
+ 
+-/**
+- * SUBTEST: xe-ref-count
+- * Description: Check that an open oa stream holds a reference on the xe module
+- */
+-static void
+-test_xe_ref_count(void)
+-{
+-	uint64_t properties[] = {
+-		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+-
+-		/* Include OA reports in samples */
+-		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+-
+-		/* OA unit configuration */
+-		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0 /* updated below */,
+-		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(0), /* update below */
+-		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, 0, /* update below */
+-	};
+-	struct intel_xe_oa_open_prop param = {
+-		.num_properties = ARRAY_SIZE(properties) / 2,
+-		.properties_ptr = to_user_pointer(properties),
+-	};
+-	unsigned baseline, ref_count0, ref_count1;
+-	uint32_t oa_report0[64];
+-	uint32_t oa_report1[64];
+-
+-	/* This should be the first test before the first fixture so no drm_fd
+-	 * should have been opened so far...
+-	 */
+-	igt_assert_eq(drm_fd, -1);
+-
+-	baseline = read_xe_module_ref();
+-	igt_debug("baseline ref count (drm fd closed) = %u\n", baseline);
+-
+-	drm_fd = __drm_open_driver(DRIVER_XE);
+-	if (is_xe_device(drm_fd))
+-		xe_device_get(drm_fd);
+-	devid = intel_get_drm_devid(drm_fd);
+-	sysfs = igt_sysfs_open(drm_fd);
+-
+-	/* Note: these global variables are only initialized after calling
+-	 * init_sys_info()...
+-	 */
+-	igt_require(init_sys_info());
+-	properties[5] = default_test_set->perf_oa_metrics_set;
+-	properties[7] = __ff(default_test_set->perf_oa_format);
+-	properties[9] = oa_exp_1_millisec;
+-
+-	ref_count0 = read_xe_module_ref();
+-	igt_debug("initial ref count with drm_fd open = %u\n", ref_count0);
+-
+-	stream_fd = __perf_open(drm_fd, &param, false);
+-        set_fd_flags(stream_fd, O_CLOEXEC);
+-	ref_count1 = read_xe_module_ref();
+-	igt_debug("ref count after opening oa stream = %u\n", ref_count1);
+-
+-	drm_close_driver(drm_fd);
+-	close(sysfs);
+-	drm_fd = -1;
+-	sysfs = -1;
+-	ref_count0 = read_xe_module_ref();
+-	igt_debug("ref count after closing drm fd = %u\n", ref_count0);
+-
+-	read_2_oa_reports(default_test_set->perf_oa_format,
+-			  oa_exp_1_millisec,
+-			  oa_report0,
+-			  oa_report1,
+-			  false); /* not just timer reports */
+-
+-	__perf_close(stream_fd);
+-	ref_count0 = read_xe_module_ref();
+-	igt_debug("ref count after closing oa stream fd = %u\n", ref_count0);
+-}
+-
+ /**
+  * SUBTEST: sysctl-defaults
+  * Description: Test that observation_paranoid sysctl exists
+@@ -4621,9 +4517,6 @@ igt_main
+ 		igt_require(!stat("/proc/sys/dev/xe/observation_paranoid", &sb));
+ 	}
+ 
+-	igt_subtest("xe-ref-count")
+-		test_xe_ref_count();
+-
+ 	igt_subtest("sysctl-defaults")
+ 		test_sysctl_defaults();
+ 
 -- 
 2.41.0
 
