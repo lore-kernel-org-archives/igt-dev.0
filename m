@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A0CFC30653
-	for <igt-dev@archiver.kernel.org>; Sun,  7 Jul 2024 15:39:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1BF3C30653
+	for <igt-dev@archiver.kernel.org>; Sun,  7 Jul 2024 15:40:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B025A10E066;
-	Sun,  7 Jul 2024 15:39:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7ABFC10E03C;
+	Sun,  7 Jul 2024 15:40:28 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E75D10E066;
- Sun,  7 Jul 2024 15:38:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E11010E066;
+ Sun,  7 Jul 2024 15:40:27 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5447896478631436758=="
+ boundary="===============7247179378959015352=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Runtime_alteration_of_debuglog?=
- =?utf-8?q?_level?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Runtime_alteration_of_debug?=
+ =?utf-8?q?log_level?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Pranay Samala" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Sun, 07 Jul 2024 15:38:59 -0000
-Message-ID: <172036673951.49182.13618904407776397068@2413ebb6fbb6>
+Date: Sun, 07 Jul 2024 15:40:27 -0000
+Message-ID: <172036682705.49182.18044779804608399533@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240707150457.715471-1-pranay.samala@intel.com>
 In-Reply-To: <20240707150457.715471-1-pranay.samala@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5447896478631436758==
+--===============7247179378959015352==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7918_BAT -> XEIGTPW_11381_BAT
+CI Bug Log - changes from CI_DRM_15037 -> IGTPW_11381
 ====================================================
 
 Summary
@@ -64,47 +64,87 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/index.html
 
-Participating hosts (5 -> 5)
+Participating hosts (41 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): fi-kbl-7567u fi-snb-2520m bat-jsl-3 
+
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_15037 and IGTPW_11381:
+
+### New IGT tests (4) ###
+
+  * igt@kms_flip@basic-flip-vs-dpms@d-hdmi-a2:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.73, 0.85] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@d-hdmi-a2:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.73, 0.86] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-hdmi-a2:
+    - Statuses : 5 pass(s)
+    - Exec time: [1.00, 1.59] s
+
+  * igt@kms_flip@basic-plain-flip@d-hdmi-a2:
+    - Statuses : 5 pass(s)
+    - Exec time: [0.70, 0.86] s
+
+  
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_11381_BAT that come from known issues:
+  Here are the changes found in IGTPW_11381 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible fixes ####
+#### Issues hit ####
 
   * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [DMESG-FAIL][1] ([Intel XE#324]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7918/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11381/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+    - bat-arls-2:         [PASS][1] -> [DMESG-WARN][2] ([i915#7507])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15037/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1:
+    - bat-dg2-8:          [PASS][3] -> [FAIL][4] ([i915#11379])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15037/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html
 
   
-  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+#### Possible fixes ####
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-11:         [FAIL][5] ([i915#10378]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15037/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html
+
+  
+  [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
+  [i915#11379]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11379
+  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7918 -> IGTPW_11381
-  * Linux: xe-1567-cdd1a80a2d16d5213af20a29eb7570a7651db7dc -> xe-1568-451dfb0fe5a5872ebb2e2bf060057b91aa624e17
 
+  CI-20190529: 20190529
+  CI_DRM_15037: 451dfb0fe5a5872ebb2e2bf060057b91aa624e17 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11381: 30a7dc23077ad8bb3f0bb8703a76d360bce8ca73 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_7918: aab1a4b6a9b7855fe6e38ea3b3987a1399ee5816 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1567-cdd1a80a2d16d5213af20a29eb7570a7651db7dc: cdd1a80a2d16d5213af20a29eb7570a7651db7dc
-  xe-1568-451dfb0fe5a5872ebb2e2bf060057b91aa624e17: 451dfb0fe5a5872ebb2e2bf060057b91aa624e17
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11381/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/index.html
 
---===============5447896478631436758==
+--===============7247179378959015352==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,38 +168,87 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135823/">https://patchwork.freedesktop.org/series/135823/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11381/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11381/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7918_BAT -&gt; XEIGTPW_11381_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15037 -&gt; IGTPW_11381</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (5 -&gt; 5)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/index.html</p>
+<h2>Participating hosts (41 -&gt; 38)</h2>
+<p>Missing    (3): fi-kbl-7567u fi-snb-2520m bat-jsl-3 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_15037 and IGTPW_11381:</p>
+<h3>New IGT tests (4)</h3>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@d-hdmi-a2:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.73, 0.85] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@d-hdmi-a2:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.73, 0.86] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-hdmi-a2:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [1.00, 1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@d-hdmi-a2:</p>
+<ul>
+<li>Statuses : 5 pass(s)</li>
+<li>Exec time: [0.70, 0.86] s</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11381_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_11381 that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15037/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1:</p>
+<ul>
+<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15037/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/bat-dg2-8/igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11379">i915#11379</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7918/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11381/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15037/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11381/bat-dg2-11/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7918 -&gt; IGTPW_11381</li>
-<li>Linux: xe-1567-cdd1a80a2d16d5213af20a29eb7570a7651db7dc -&gt; xe-1568-451dfb0fe5a5872ebb2e2bf060057b91aa624e17</li>
 </ul>
-<p>IGTPW_11381: 30a7dc23077ad8bb3f0bb8703a76d360bce8ca73 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7918: aab1a4b6a9b7855fe6e38ea3b3987a1399ee5816 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1567-cdd1a80a2d16d5213af20a29eb7570a7651db7dc: cdd1a80a2d16d5213af20a29eb7570a7651db7dc<br />
-  xe-1568-451dfb0fe5a5872ebb2e2bf060057b91aa624e17: 451dfb0fe5a5872ebb2e2bf060057b91aa624e17</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15037: 451dfb0fe5a5872ebb2e2bf060057b91aa624e17 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11381: 30a7dc23077ad8bb3f0bb8703a76d360bce8ca73 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7918: aab1a4b6a9b7855fe6e38ea3b3987a1399ee5816 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============5447896478631436758==--
+--===============7247179378959015352==--
