@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CA84C3271E
-	for <igt-dev@archiver.kernel.org>; Mon,  8 Jul 2024 06:58:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99472C3271E
+	for <igt-dev@archiver.kernel.org>; Mon,  8 Jul 2024 07:00:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C584310E226;
-	Mon,  8 Jul 2024 06:58:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C7C110E048;
+	Mon,  8 Jul 2024 07:00:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lckdytvK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KjE3LXqw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D11110E226
- for <igt-dev@lists.freedesktop.org>; Mon,  8 Jul 2024 06:58:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6389110E048
+ for <igt-dev@lists.freedesktop.org>; Mon,  8 Jul 2024 07:00:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720421896; x=1751957896;
+ t=1720422036; x=1751958036;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=KdVJ3k7gDAMAVq9vMcf3mWXrS3ssldD6wUsiqa3ZQEU=;
- b=lckdytvKPPQ5JitReF2dGAaxKS9Wpc7Ecsm9SL3FIpRrEAI4BUv0AyS2
- JZmXgSDLlXZEV3rfz3Rj8ZWPEgGmKgUPsAeNDWUIYVhGEHPK/buGL6gI6
- Yz4/fpiFX3G/8Rm5whEbPOYoWkhO8GIA0y031txUFnQWxXpkO8C+TIlQz
- 8wijGLfFXeapk8b8ZIggj8TynMWuuJJnUuvhv2M/4vaZQCySwd8NZwNNu
- FpaKM3iTKMAPHhEK0JhQPJ6QlHd1jGWnCXlKaKBGE0YMK4pLi076NexcK
- owB4KR951g60eb5fUuvsfugTNZ7Z/PI/EK4Qy3TofkV0y5AQkSSuOPBmH Q==;
-X-CSE-ConnectionGUID: 9TecURsLTfaRudi+K9P+qQ==
-X-CSE-MsgGUID: qzbWNuGGTS+Q/c4b/YlFGg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11126"; a="21418598"
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="21418598"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jul 2024 23:58:16 -0700
-X-CSE-ConnectionGUID: zXWDN3ltSoWUdfLAon7mbg==
-X-CSE-MsgGUID: h3uq/Z/lTfKL9/3AP752cQ==
+ bh=6IpBwJM/YURcpKz1VYL3oeii0qwehJ6MdyPaEBTiMXE=;
+ b=KjE3LXqwBakxZchYaqnDY1uiVx9K1z8mHIy59xWzDgWRQvNaPSonOz8x
+ nx2p58xd+7w5kqBeGjIy/TzlFgoDNylgQZ+V72YC5Lc80gpbnMeHH2oes
+ HEJtlvxIkXAaML0y/615sdEN1Xl1n1cgJYmuZodPz0wroAAVgx6m9lz5S
+ FXxHzgp0+r2w5i0YWz7JuU2HlEhvWcFm+NwKpEVxYhuYceTL6JERvMsfq
+ w/yV7shluX63ZYwvS0wyjO0Jso1vM2stqhe8XAFc7R61m50DRHlRXqxDd
+ BoYjizvCyv5EPbFRq3jLHO2MTc2bl+zhIcZUb0xnsxxin1j92j9TMH71C A==;
+X-CSE-ConnectionGUID: BN2mUyuBSA6ZSaMrDWQbOA==
+X-CSE-MsgGUID: uCdCEwx8QKqqhTe4CRampw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11126"; a="17320008"
+X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="17320008"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2024 00:00:35 -0700
+X-CSE-ConnectionGUID: U9PfpqzZS1uXnGzVKLZi+g==
+X-CSE-MsgGUID: zNJr9Vv4TyOMjCyiajsdOA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="52603473"
+X-IronPort-AV: E=Sophos;i="6.09,191,1716274800"; d="scan'208";a="47372686"
 Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.246.237])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Jul 2024 23:58:14 -0700
-Date: Mon, 8 Jul 2024 08:58:11 +0200
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Jul 2024 00:00:29 -0700
+Date: Mon, 8 Jul 2024 09:00:26 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
  michal.wajdeczko@intel.com
 Subject: Re: [PATCH i-g-t] lib/igt_device_scan: Skip attributes in
  subdirectories
-Message-ID: <20240708065811.6uu7tahrzkoysojp@zkempczy-mobl2>
-References: <20240704164437.1543161-1-marcin.bernatowicz@linux.intel.com>
+Message-ID: <20240708070026.h5jtg3gnk3rewpt7@zkempczy-mobl2>
+References: <20240705141044.115059-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240704164437.1543161-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20240705141044.115059-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,83 +71,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jul 04, 2024 at 06:44:37PM +0200, Marcin Bernatowicz wrote:
-> Skip attributes in subdirectories as they are not used for filtering.
-> This change improves speed and reduces the impact of non-DRM related
-> component bugs on testing, such as ASPM issues.
+On Fri, Jul 05, 2024 at 04:10:44PM +0200, Marcin Bernatowicz wrote:
+> Skip reading attributes in subdirectories as they are not used for
+> filtering. This change improves speed and reduces the impact of
+> non-DRM related component bugs on testing, such as the ASPM exposed
+> link/l1_aspm attribute issue. After removing a Virtual Function (VF),
+> accessing the link/l1_aspm attribute on the Physical Function (PF)
+> leads to NPD.
 > 
-> Rename function is_on_blacklist to is_on_blocklist to promote more
-> inclusive language.
+> v2: removed unrelated changes, improved description (Michal)
 > 
 > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 > ---
->  lib/igt_device_scan.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
+>  lib/igt_device_scan.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
 > diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 9a2da3d62..6473ca7ad 100644
+> index 9a2da3d62..8e2297087 100644
 > --- a/lib/igt_device_scan.c
 > +++ b/lib/igt_device_scan.c
-> @@ -433,7 +433,7 @@ static enum dev_type __pci_devtype(uint16_t vendor, uint16_t device, const char
->  /* Reading sysattr values can take time (even seconds),
->   * we want to avoid reading such keys.
->   */
-> -static bool is_on_blacklist(const char *what)
-> +static bool is_on_blocklist(const char *what)
->  {
->  	static const char *keys[] = { "config", "modalias", "modes",
->  				      "resource",
-> @@ -442,16 +442,18 @@ static bool is_on_blacklist(const char *what)
->  				      "resource0_wc", "resource1_wc", "resource2_wc",
->  				      "resource3_wc", "resource4_wc", "resource5_wc",
->  				      "uevent", NULL};
-> -	const char *key;
-> -	int i = 0;
-> +	const char **key;
->  
+> @@ -448,6 +448,10 @@ static bool is_on_blacklist(const char *what)
 >  	if (what == NULL)
 >  		return false;
 >  
-> -	while ((key = keys[i++])) {
-> -		if (strcmp(key, what) == 0)
 > +	/* Skip attributes in subdirectories */
 > +	if (strchr(what, '/') != NULL)
 > +		return true;
+> +
+>  	while ((key = keys[i++])) {
+>  		if (strcmp(key, what) == 0)
+>  			return true;
+> -- 
+> 2.31.1
+> 
 
-As we already drop some attributes I have nothing against further
-list expanding. I've checked what attributes I see on 'lsgpu -p'
-on devices I have an access to and it is mostly 'power/*'. Only
-doubt I have is if someone is using this for its scripting but
-we can revert this change then.
-
-So from me:
+Already r-b'd in first version, so copy it here:
 
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
 --
 Zbigniew
-
-
-> +
-> +	for (key = keys; *key; key++)
-> +		if (strcmp(*key, what) == 0)
->  			return true;
-> -	}
->  
->  	return false;
->  
-> @@ -553,7 +555,7 @@ static void get_attrs(struct udev_device *dev, struct igt_device *idev)
->  		const char *key = udev_list_entry_get_name(entry);
->  		const char *value;
->  
-> -		if (is_on_blacklist(key)) {
-> +		if (is_on_blocklist(key)) {
->  			entry = udev_list_entry_get_next(entry);
->  			continue;
->  		}
-> -- 
-> 2.31.1
-> 
