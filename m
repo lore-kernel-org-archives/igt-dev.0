@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52778C3DA41
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 09:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 513BEC2BD09
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 09:36:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2E6E10E4CA;
-	Tue,  9 Jul 2024 09:18:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC0C610E4DA;
+	Tue,  9 Jul 2024 09:36:19 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9DAFE10E4CA;
- Tue,  9 Jul 2024 09:18:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ADB789BF4;
+ Tue,  9 Jul 2024 09:36:17 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4642393779010401843=="
+ boundary="===============6330902850556267913=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/amdgpu=3A_fix_amd_dispatch?=
- =?utf-8?q?_issue?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_fix_amd_dispa?=
+ =?utf-8?q?tch_issue?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jesse Zhang" <jesse.zhang@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 09 Jul 2024 09:18:48 -0000
-Message-ID: <172051672863.85573.8373531666155294877@2413ebb6fbb6>
+Date: Tue, 09 Jul 2024 09:36:17 -0000
+Message-ID: <172051777716.85397.245454397248672985@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240709082322.1873739-1-jesse.zhang@amd.com>
 In-Reply-To: <20240709082322.1873739-1-jesse.zhang@amd.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4642393779010401843==
+--===============6330902850556267913==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7920_BAT -> XEIGTPW_11384_BAT
+CI Bug Log - changes from CI_DRM_15047 -> IGTPW_11384
 ====================================================
 
 Summary
@@ -64,36 +64,46 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/index.html
 
-Participating hosts (4 -> 4)
+Participating hosts (40 -> 37)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): bat-kbl-2 bat-dg2-11 fi-snb-2520m 
 
+Known issues
+------------
 
-Changes
--------
+  Here are the changes found in IGTPW_11384 that come from known issues:
 
-  No changes found
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-arls-5:         NOTRUN -> [INCOMPLETE][1] ([i915#11320])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  
+  [i915#11320]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7920 -> IGTPW_11384
-  * Linux: xe-1576-1b010bec39a554cbbd0b51cbf49142e2f218013d -> xe-1578-fe74acc80d474524b2da613714a8d1a25adf648c
 
+  CI-20190529: 20190529
+  CI_DRM_15047: fe74acc80d474524b2da613714a8d1a25adf648c @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11384: 11384
   IGT_7920: 7920
-  xe-1576-1b010bec39a554cbbd0b51cbf49142e2f218013d: 1b010bec39a554cbbd0b51cbf49142e2f218013d
-  xe-1578-fe74acc80d474524b2da613714a8d1a25adf648c: fe74acc80d474524b2da613714a8d1a25adf648c
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11384/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/index.html
 
---===============4642393779010401843==
+--===============6330902850556267913==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,30 +127,39 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135885/">https://patchwork.freedesktop.org/series/135885/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11384/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11384/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7920_BAT -&gt; XEIGTPW_11384_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15047 -&gt; IGTPW_11384</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (4 -&gt; 4)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Missing    (3): bat-kbl-2 bat-dg2-11 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11384 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@nonblocking-crc:<ul>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11384/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320">i915#11320</a>)</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7920 -&gt; IGTPW_11384</li>
-<li>Linux: xe-1576-1b010bec39a554cbbd0b51cbf49142e2f218013d -&gt; xe-1578-fe74acc80d474524b2da613714a8d1a25adf648c</li>
 </ul>
-<p>IGTPW_11384: 11384<br />
-  IGT_7920: 7920<br />
-  xe-1576-1b010bec39a554cbbd0b51cbf49142e2f218013d: 1b010bec39a554cbbd0b51cbf49142e2f218013d<br />
-  xe-1578-fe74acc80d474524b2da613714a8d1a25adf648c: fe74acc80d474524b2da613714a8d1a25adf648c</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15047: fe74acc80d474524b2da613714a8d1a25adf648c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11384: 11384<br />
+  IGT_7920: 7920</p>
 
 </body>
 </html>
 
---===============4642393779010401843==--
+--===============6330902850556267913==--
