@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B20C3DA49
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A43D5C3DA50
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7FDF910E5BE;
+	by gabe.freedesktop.org (Postfix) with ESMTP id EA99510E5D1;
 	Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="HTaz1qlN";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ThScAkYy";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F9B810E5BE
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D36BA20018;
- Tue,  9 Jul 2024 15:35:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F142B10E5B8
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:06 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 77EA92000D;
+ Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539304;
+ t=1720539305;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=mRZpk2oRq0AIAjSRqHKk59KEmaJ8wNZQcqFm91FlnCc=;
- b=HTaz1qlNNRkeaV3kzAkOtyYndpdS8BX8fR8rjtPy+zjC8fpAnQIwnki3YjJNHY0gmnPTMQ
- 6WWK5zp3HI14tTsjfkIW/2c+MeMdpj6j7YI34yY7T3jEQrMbFj32Mdw33ZYj2Y0tGZstBi
- UOJ0UrH6XP5HQATTf/KHRw4iZHx1EEJWoqTY+NjabxnJfICcUVskX04LMcr5vdobA2LbjK
- bx2dB/psOmrkW3oT9sZRwgrsHQMzyyOAk4D0aOxSeuaO1mQ/eByM0AoLNWXti4tnI9d6VR
- RLFasxPwJ7vKNwEGJVxV9XE7WXykmuq9Cs1NuUOhh2dNayxGgWpFN4zFLW4GIQ==
+ bh=Mt8Jg4qsvZGatJMXnTCVUxnxBc5u5rHjzMKREZ7BYfY=;
+ b=ThScAkYyuAMYKZ3tBIIlCtPMKzYYPUrX/ucp0llPQlY7rhOicZZLHaVdWzSGgavBueFsnU
+ Kh/EvIHuFL0Zmc+JBAZda4Zx9eSXFtwhS+IoR1KLY+eXrXEw/5VIMF0eNO/x3GnEVewS82
+ rmQVsIPMs/A+nwcyxXEE92QvQy6kcPRPvs6vddnMmkJR+Iz2HR5lxE/WRxNEf41KuCE3Du
+ 2Imhcp9X6/Gu94qqz8cJ6daMMKYtPHvx6ywY2S6K8S/jKTkNT8fqys1afq1lfTR/wwDO2d
+ n68cIoVPvg6oVqmaikAXONMA0/m5MUuP8roBDOz3KL9InQHdm0emv6ob9X4L8g==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:47 +0200
-Subject: [PATCH i-g-t v2 31/39] tests/chamelium/v3: Implement basic EDID
- handling test
+Date: Tue, 09 Jul 2024 17:34:51 +0200
+Subject: [PATCH i-g-t v2 35/39] tests/chamelium/v3: Implement test for DRM
+ device resolution
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-31-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-35-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4115;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4368;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=9IEK/0HJ4+yzA+JssR6c3PqurcrB786RfaaAt+UP7Bw=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjVia3XClNBu5l0YAJ4GMdahyBfcm8Z4lUjj21
- gdfrnkFYlaJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmgAKCRAgrS7GWxAs
- 4kwCEAC1w40fL/rIfv6RXbq8Qw1+pl+JatLYkCeBYRxAf9Hbk/WREf1xphTWe7O8pNzQAOj3daR
- YhpICFJT+DEMxnR3b11IjJAfDXzM6djyodALofW8rFv4fp9ovoHydS15mxBRI+kgX7C5f7dClZ1
- fxhlVQkptoUvKVGEs3k2jy87hA28p3mfV8pOi79cdEOIaOEagmF6bFIKzMzXeQo1T2EIvSqTHsL
- gK9nqr7IIbNslksknDnI0COrwkUYMZJUVlLEGpiFJcF41Ls68usUYZETTFpVhRXsavWlp1zw8il
- BvJqsefFFsZB0sDIOStnA75J5jcbHmoZb+JtJLJqvVoEMOnrTIzRaHsPgyac/NWdoG0YL6Ebm8v
- OSspUg8omFaUYNz89qiWFOIxvvfLhvXZMQ3DwcxITd/3Rq0jQupEvtvWqaQJ3x1RQoXpM3ghVs8
- Fz0SQwppJVPAjSzCJKEd3/40fIfQyJADzmduYtQ3z2Pw5IgyIpey2HrMQMh5G6hxBvqzUP6ITqv
- d4Yyo1X6MP3RBAoWG6UhqSe8CEwlHXCKoiCYnEq3sjW+5zug7yvhih7ge2gThtefTgKyx1HGI2c
- KZGpEYiASO/ySfAusXMcHUHnN299M7tB3GClrbJuPymGQE6UOTPlFKf5u2UbSOQd1dOiSrmZHRn
- PEpVRIuHFXpJJJw==
+ bh=gpSVl0ZCr4/axVN1XN3lF0/n3W1aSA1gRgbOFaIGBjo=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjVia5GzD2lOAdp6XVM4HGEfnHqvRPWyJ1DoY/
+ BMZ1c0wRxeJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmgAKCRAgrS7GWxAs
+ 4tUPEACprIHTp1etrSJanZn0lICPmnCOJp5gTyT7N8+GkbWbDadBzQ0ckM+ZvyJQ4AymV9MkFZY
+ qIf0p0ZuOz/M1EKgOc1Hz3xEAfFSuYHyCFeFeMQfA1xBDaGus5ZKAi6jLNTl40oNXuvtdIyzHzN
+ JRTfYai4N3wUFUDp5fRAXFQoAPmB2O2s/iJK4FHlsvCiEGZksVHQl/YSAmG07VfyM/CSceLIfbe
+ NSbT65TsaYmWTOgLTDO3lUQqA3Dn4Wdh1qPzAlb1ehDo00VUphujffO3MLcfdV7kou74GVzIK3m
+ uqywOvW/1u0g8faMYwS1MDquPITNh99/dN1eIwYN7lK4F1mRcTwZaSkkiW8Rv3vxypK0H0LQe+C
+ bes4eesSraQzLBW9i/tCKe/i+e30q97BTZiMcpvXkoj9FPsHvSb6zyD+ap6xHFFCcjxlaTSILaG
+ uvnheUdlhzbk14QBJoiTqw7MLUpv57xonDuzrLgLriBfJlmgzwpeJ80+YbxU0/b6Qin5UAfg3/F
+ PtjrS/pnsQusoASlWC9wppUXpv4t21eJhPGFjuV1IP1zU5DNfHbbaPEj/hnN/ry/c8wp5uAfDm+
+ C/JqlDp1RGChrtb5OFyhmflPMAQdGymdhWAatmdlbzEwM3DDZ/f2vmFyfLoZSA3jgm6J/LdXXQp
+ sk1srFNeXZIG/Xw==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,94 +77,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit introduces a new Chamelium v3 test to validate the proper
-handling of EDID data. The test uploads a custom EDID to the Chamelium and
-then confirms that the EDID data can be accurately read back from the
-kernel.
+This commit introduces a new test to verify that the resolution listed and
+used by the DRM device is accurate according to the EDID.
 
-This test is adapted from the v2 version.
+The test is inspired by the v2 version.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/chamelium/v3/kms_chamelium_v3_edid.c | 95 ++++++++++++++++++++++++++++++
- tests/meson.build                          |  1 +
- 2 files changed, 96 insertions(+)
+ tests/chamelium/v3/kms_chamelium_v3_edid.c | 104 +++++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
 diff --git a/tests/chamelium/v3/kms_chamelium_v3_edid.c b/tests/chamelium/v3/kms_chamelium_v3_edid.c
-new file mode 100644
-index 000000000000..b8d750ad771d
---- /dev/null
+index b6660769897f..c03829b43aca 100644
+--- a/tests/chamelium/v3/kms_chamelium_v3_edid.c
 +++ b/tests/chamelium/v3/kms_chamelium_v3_edid.c
-@@ -0,0 +1,95 @@
-+// SPDX-License-Identifier: MIT
-+
-+#include <igt.h>
-+#include "chamelium/v3/igt_chamelium.h"
-+
-+static void collect_and_compare_edid(int drm_fd,
-+				     const struct chamelium_v3_port_mapping *port_mapping,
-+				     const struct edid *edid)
+@@ -69,6 +69,90 @@ static void edid_stress_resolution(int drm_fd, struct igt_chamelium_v3 *chameliu
+ 	}
+ }
+ 
++static void edid_resolution_list(int drm_fd, struct igt_chamelium_v3 *chamelium,
++				 struct chamelium_v3_port_mapping *port_mapping)
 +{
-+	drmModePropertyBlobPtr edid_blob = NULL;
-+	uint64_t edid_blob_id;
-+
-+	uint32_t connector_id = chamelium_v3_port_mapping_get_connector_id(port_mapping, drm_fd);
-+
-+	/* Force refresh of properties */
-+	drmModeFreeConnector(drmModeGetConnector(drm_fd, connector_id));
-+	igt_assert(kmstest_get_property(drm_fd, connector_id,
-+					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
-+					&edid_blob_id, NULL));
-+	igt_assert(edid_blob_id);
-+	edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id);
-+	igt_assert(edid_blob);
-+	igt_assert(memcmp(edid, edid_blob->data, edid_get_size(edid)) == 0);
-+
-+	drmModeFreePropertyBlob(edid_blob);
-+}
-+
-+static void upload_and_read_edid(int drm_fd, struct igt_chamelium_v3 *chamelium,
-+				 const struct chamelium_v3_port_mapping *port_mapping,
-+				 const struct edid *edid)
-+{
++	int screen_res_w, screen_res_h;
++	drmModeConnector *connector;
++	chamelium_edid_id edid_id;
++	drmModeModeInfoPtr modes;
++	struct igt_fb fb = {0};
++	igt_display_t display;
++	bool is_video_stable;
++	igt_output_t *output;
++	igt_plane_t *primary;
++	int count_modes, i;
++	enum pipe pipe;
 +	uint32_t connector_id;
 +
-+	int edid_id;
-+
 +	chamelium_v3_reset(chamelium);
-+	edid_id = chamelium_v3_create_edid(chamelium, edid);
++
++	edid_id = chamelium_v3_create_edid(chamelium,
++					   igt_kms_get_custom_edid(IGT_CUSTOM_EDID_BASE));
 +	chamelium_v3_apply_edid(chamelium, port_mapping->port_id, edid_id);
++
 +	chamelium_v3_plug(chamelium, port_mapping->port_id);
 +
 +	connector_id = chamelium_v3_port_mapping_get_connector_id(port_mapping, drm_fd);
 +	igt_assert(igt_wait_for_connector_status(drm_fd, connector_id, 10.0,
 +						 DRM_MODE_CONNECTED));
 +
-+	collect_and_compare_edid(drm_fd, port_mapping, edid);
-+}
++	connector = chamelium_v3_port_mapping_get_connector(port_mapping, drm_fd);
++	modes = connector->modes;
++	count_modes = connector->count_modes;
 +
-+static void igt_custom_edid_type_read(int drm_fd, struct igt_chamelium_v3 *chamelium,
-+				      struct chamelium_v3_port_mapping *port_mapping,
-+				      enum igt_custom_edid_type edid)
-+{
-+	upload_and_read_edid(drm_fd, chamelium, port_mapping, igt_kms_get_custom_edid(edid));
-+}
++	igt_display_require(&display, drm_fd);
++	igt_require(display.is_atomic);
++	igt_display_require_output(&display);
 +
-+igt_main
-+{
-+	struct igt_chamelium_v3 *chamelium;
-+	int drm_fd;
++	for (i = 0; i < count_modes; ++i)
++		igt_debug("#%d %s %uHz\n", i, modes[i].name, modes[i].vrefresh);
 +
-+	igt_fixture {
-+		chamelium = chamelium_v3_init_from_config();
-+		igt_assert(chamelium);
-+		drm_fd = drm_open_driver(DRIVER_ANY);
-+		igt_assert(drm_fd);
-+		chamelium_v3_fill_port_mapping(chamelium, drm_fd);
++	for (i = 0; i < count_modes; ++i) {
++		igt_info("Testing #%d %s %uHz\n", i, modes[i].name,
++			 modes[i].vrefresh);
++
++		igt_display_reset(&display);
++
++		output = igt_output_from_connector(&display, connector);
++		igt_assert(output);
++		pipe = igt_get_pipe_for_output(&display, output);
++		igt_output_set_pipe(output, pipe);
++
++		/* Set the screen mode with the one we chose. */
++		igt_create_color_fb(drm_fd, modes[i].hdisplay, modes[i].vdisplay,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, 1, 0, 0, &fb);
++
++		primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++		igt_assert(primary);
++
++		igt_plane_set_fb(primary, &fb);
++		igt_fb_set_size(&fb, primary, modes[i].hdisplay, modes[i].vdisplay);
++		igt_plane_set_size(primary, modes[i].hdisplay, modes[i].vdisplay);
++
++		igt_output_override_mode(output, &modes[i]);
++
++		igt_display_commit2(output->display, COMMIT_ATOMIC);
++
++		is_video_stable = chamelium_v3_port_wait_video_input_stable(chamelium,
++									    port_mapping->port_id,
++									    10);
++		igt_assert(is_video_stable);
++
++		chamelium_v3_port_get_resolution(chamelium, port_mapping->port_id, &screen_res_w,
++						 &screen_res_h);
++		igt_assert_eq(screen_res_w, modes[i].hdisplay);
++		igt_assert_eq(screen_res_h, modes[i].vdisplay);
++
++		igt_remove_fb(drm_fd, &fb);
 +	}
 +
-+	igt_describe("Read basic EDID from the chamelium.");
-+	igt_subtest_with_dynamic("edid-read-basic") {
++	igt_modeset_disable_all_outputs(&display);
++
++	igt_display_fini(&display);
++	drmModeFreeConnector(connector);
++}
++
+ igt_main
+ {
+ 	struct igt_chamelium_v3 *chamelium;
+@@ -163,6 +247,26 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_describe("Set a basic EDID and check if resolution are correct");
++	igt_subtest_with_dynamic("edid-resolution-list") {
 +		struct chamelium_v3_port_mapping *port, *tmp;
 +
 +		igt_list_for_each_entry_safe(port, tmp, chamelium_v3_get_port_mapping(chamelium),
@@ -178,31 +201,14 @@ index 000000000000..b8d750ad771d
 +				igt_info("Testing port %s (%s)\n", port->connector_name, name);
 +				free(name);
 +
-+				igt_custom_edid_type_read(drm_fd, chamelium, port,
-+							  IGT_CUSTOM_EDID_BASE);
-+				igt_custom_edid_type_read(drm_fd, chamelium, port,
-+							  IGT_CUSTOM_EDID_ALT);
++				edid_resolution_list(drm_fd, chamelium, port);
 +			}
 +		}
 +	}
 +
-+	igt_fixture {
-+		chamelium_v3_uninit(chamelium);
-+		drm_close_driver(drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index e36ae9b18ffc..ebaf1cb9ebb2 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -326,6 +326,7 @@ chamelium_v2_progs = [
- 
- chamelium_v3_progs = [
- 	'kms_chamelium_v3_basic',
-+	'kms_chamelium_v3_edid',
- ]
- 
- test_deps = [ igt_deps ]
+ 	igt_fixture {
+ 		chamelium_v3_uninit(chamelium);
+ 		drm_close_driver(drm_fd);
 
 -- 
 2.44.2
