@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25FB2C3DA4C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A454DC3DA52
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 869A310E5CD;
+	by gabe.freedesktop.org (Postfix) with ESMTP id C3CA110E5D0;
 	Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="AfHjSnJG";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="B6AWGcWP";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 542E510E5B8
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:06 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A6DAA2001E;
- Tue,  9 Jul 2024 15:35:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E7F710E5BE
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:07 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D594320017;
+ Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539305;
+ t=1720539306;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=R3XfzBoo6EARH9YFDtdcRJXSBvnnhDjVIEIpsoMb4yQ=;
- b=AfHjSnJGgLy+MGYRfOdTGLsYH7/pS2zubL48+oD8v/9MQzPdIh7qB0q9XcoCzUQ/aLX5S9
- 3cjTqjnQtLmt8BEs/i6ZCt8Rmxi+cmaqwIqkyBSgENSnHn8FoOvJXvxKSRDmU9CFGzZ4Zn
- 8DByTfcWxkdU7WtfsBbgtrCdAgZKc6sJcXx0BCkr5PoQhyydgr7NabUorE7+FKNA1wsd7J
- f44858IiDjHYZeeqqkROahdPMTzMdg/+fbSNbs4isQZYVH5g0BdBcp/6LJpI5GeVYYS4gB
- MTlzIXbQyLHFBEc+44UibKkOip+eQQmiZKjhSs1/p1+Gdd86Ly+9g734YXX/bQ==
+ bh=zFkAyvRDD/04QwZxSTV88DKZSAOoEkF9NaaQ3O3BVbY=;
+ b=B6AWGcWPwcMvE9QdWPEivTcayvipUrolUx1PLmYTqqWygxd+nOrKiH8CZ5xzkAhQr6kM7z
+ 9G376wAbcD8eLOCwsUygUScCW+EHWC1Yh9bx9d98U4NBkpiHcO9+7umQqqZEbY2kNBc2+U
+ ZcQ9tR4bAuzkmib7Px1RTNUgvs6Wz+vFScrD59USWdlzdiuTfVgFEuqlulILo9A7t7E/e4
+ Fx1cypEVOjqiU9iT1re21yiMIl6NWhss+LU6YB6nBOqihQtNpeRhBvfWbnxcAbdWD7anIW
+ Sn7XULIyubKFBbajx+onlm2O+s2FFS1U62DA8lgCg3BhrYgrEx04zSSG2zFQBw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:49 +0200
-Subject: [PATCH i-g-t v2 33/39] tests/chamelium/v3: Implement non-4K EDID
- stress test
+Date: Tue, 09 Jul 2024 17:34:52 +0200
+Subject: [PATCH i-g-t v2 36/39] lib/chamelium/v3: Implement hot plug toggle
+ scheduling method
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-33-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-36-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1718;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2155;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=cPqaqc1qiTlEvZTMK3PAbBHovpjLJGnX22eo+a+Jc/Q=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjVianEyHBiMEJ9vDmSqovjWI2vmcziUIAjzO/
- 31Lkjvc+pSJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmgAKCRAgrS7GWxAs
- 4sM8D/94XCLG5gPmuPvRCcLnFlJAlch/P2lx11wYou5i2VCtF/v1DC3yoyk+gh91gjbXwRQH165
- 9UMTZeTn+Q5ZlOKuRjMmUIXL/pAmxx+UBaBEYWXpz3fXEp9KnlrJW+jNFAfqqpWjFrOHmYUFv98
- g7xuy79wcFZ5CHtjQI3cwx+GYaMDVJ1muN/9scs4s41qMXTn6ZEhuAYNmSZ9d2YyEXg/Vog0qpG
- vKjSIMf9REUuGFDiph5YJo9TwTcR2CoWeX9bTcoumvQVp4GTCR9PgPO9wlw93XP4H5M5mvUiojZ
- W/u98LbOC69IEukrZFA1t8xpVgZK8A+6pM3wmVXnrlXtpMZTWiNusaYyngvzLbWRu3h1iS3py3S
- racAyvl7HIZkdQ4YW5sGiyixNhNx0Gp7S8XnVfodPlZ+pdyfLMTNsAvFcN0F4GQnIC5AULFwqCi
- UkDuBO06IaKgZtJS6D3IwqMNvKueDLa45VFUQsOjAfzEjB2GNAROo/xhgfiSWxy7r7S/jeNlfW0
- lbYPwnsnufcVgsDB3O8k/B4FHtYxa0eVK4UB9ugEDlQFbHWfL1OMALdlDCj4ALtV1ZBKhXfCnbW
- lP/RZ1QlEEX1UuYPqnUa2piewsuSreayIXFS5hBf4soT1lU7hMYebpCGZFBrkSyJZdTbzdNSI1z
- JW35iqP4omqsPGQ==
+ bh=IgFADBXNQ+OvqUy86iNEd+M6inm7HHsVfS7IaK0OxRU=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViaRoFYlE74ActsVJNF2gg9k+QGvES4aPvDu
+ IwWC3pMMqKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmgAKCRAgrS7GWxAs
+ 4jkhEACX6OErZ0IsZDIO1IzFvflJiTmkdu9rCaJvW6hFp8iG6oxMrSuveP4lYcnrMI7pUd+ClQi
+ AOMOHcG6JYUQVnntFGzz5NJXnRbBlOPf2q2rmUUuqYzX6Sd8d9QLsyYozoEOTjXN7ZJisdaA8gf
+ pZ83t8eFCetm7qkealr00ehL6qjJEvqox03gC8JCV46TZFTh7AyDSivVFZQGu3U/4l4HdV6Ho9G
+ 8y/6x/L2ZsBPhgvu66DUiKcO9CcB7+K1MzGrifFgtjUshFyDV7tMlW3js6PGd0ot0nLeUStqjlG
+ iVYU+T0CcrKyrvtvWFdMBgM7XjRJ81aKkzQ35psNQlVnsjKvYeUO7FkNN3oc2sG4WRdO3Ihk1HA
+ z5jAeRAPbyTPi9jpefmH3NgInDPvmiZfoqrnPgBjnqtMQk3exWBxsZt6Y0Ts3nyRLMDa/r3sWNk
+ gR/AJuIpohp88FF2mv5M3J3mcAu5msYrZlcA++Rq0dPtWKeIwZ+McddtXBFuZ2KMOaheE0CGwAG
+ UoeKFu6tXX2pW3OeIOC7xZrcsQ8Az/nRsuv/A8GZ8+0kvkUhwc5TGqgsDg3Iug3dIb/WCUpDXnm
+ ImdoeEXDl8Mw+H1JLWOobpHs8cwdM1JgwNCODWSf3oryG3zlmBEFSzuLuh8yyFCytEiw9ZF7B+e
+ ILeAygU/0NnvHXg==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,54 +77,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The existing EDID test has been enhanced to also test non-4K screens. The
-current EDID database includes entries for HDMI and DP ports.
+This commit adds a new method to the Chameleon V3 wrapper to schedule hot
+plug detect (HPD) toggle events. This feature is useful for testing
+suspend and resume behaviors, as it allows the simulation of device
+connection and disconnection events at specified times.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/chamelium/v3/kms_chamelium_v3_edid.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ lib/chamelium/v3/igt_chamelium.c | 16 ++++++++++++++++
+ lib/chamelium/v3/igt_chamelium.h |  2 ++
+ 2 files changed, 18 insertions(+)
 
-diff --git a/tests/chamelium/v3/kms_chamelium_v3_edid.c b/tests/chamelium/v3/kms_chamelium_v3_edid.c
-index deef04d97bec..b6660769897f 100644
---- a/tests/chamelium/v3/kms_chamelium_v3_edid.c
-+++ b/tests/chamelium/v3/kms_chamelium_v3_edid.c
-@@ -134,6 +134,35 @@ igt_main
- 		}
- 	}
+diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
+index 436a3cba139e..fa70e2c1e296 100644
+--- a/lib/chamelium/v3/igt_chamelium.c
++++ b/lib/chamelium/v3/igt_chamelium.c
+@@ -1173,3 +1173,19 @@ bool chamelium_v3_port_wait_video_input_stable(struct igt_chamelium_v3 *chameliu
  
-+	igt_describe("Read many different non-4k EDID from the chamelium");
-+	igt_subtest_with_dynamic("edid-stress-non-4k") {
-+		struct chamelium_v3_port_mapping *port, *tmp;
+ 	return is_on;
+ }
 +
-+		igt_list_for_each_entry_safe(port, tmp, chamelium_v3_get_port_mapping(chamelium),
-+					     link) {
-+			igt_dynamic_f("port-%d", port->port_id) {
-+				drmModeConnectorPtr connector;
-+				size_t edid_count = 0;
-+				char *name;
-+
-+				igt_require(!chamelium_v3_is_mst(chamelium, port->port_id));
-+
-+				name = chamelium_v3_get_port_name(chamelium, port->port_id);
-+				igt_info("Testing port %s (%s)\n", port->connector_name, name);
-+				free(name);
-+
-+				connector = chamelium_v3_port_mapping_get_connector(port, drm_fd);
-+				igt_assert(connector);
-+				edid_stress_resolution(drm_fd, chamelium, port,
-+						       get_edids_for_connector_type(connector->connector_type,
-+										    &edid_count,
-+										    false),
-+						       edid_count);
-+				drmModeFreeConnector(connector);
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		chamelium_v3_uninit(chamelium);
- 		drm_close_driver(drm_fd);
++/**
++ * chamelium_v3_schedule_hpd_toggle - Schedule an hotplug detect toggle
++ *
++ * @chamelium: Chamelium to use
++ * @port_id: Port to schedule the hpd toggle
++ * @delay_ms: Delay before triggering the toggle
++ * @end_level: HPD status after the toggle, where true is connected
++ */
++void chamelium_v3_schedule_hpd_toggle(struct igt_chamelium_v3 *chamelium,
++				      chamelium_v3_port_id port_id, int delay_ms, bool end_level)
++{
++	igt_debug("RPC ScheduleHpdToggle(%d, %d, %d)\n", port_id, delay_ms, end_level);
++	xmlrpc_DECREF(__chamelium_rpc(chamelium, "ScheduleHpdToggle", "(iib)", port_id,
++				      delay_ms, end_level));
++}
+diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
+index bc0645f882c0..fb600e1d771f 100644
+--- a/lib/chamelium/v3/igt_chamelium.h
++++ b/lib/chamelium/v3/igt_chamelium.h
+@@ -84,4 +84,6 @@ void chamelium_v3_port_get_resolution(struct igt_chamelium_v3 *chamelium,
+ 				      chamelium_v3_port_id port_id, int *x, int *y);
+ bool chamelium_v3_port_wait_video_input_stable(struct igt_chamelium_v3 *chamelium,
+ 					       chamelium_v3_port_id port_id, int timeout_secs);
++void chamelium_v3_schedule_hpd_toggle(struct igt_chamelium_v3 *chamelium,
++				      chamelium_v3_port_id port_id, int delay_ms, bool end_level);
+ #endif //V3_IGT_CHAMELIUM_H
 
 -- 
 2.44.2
