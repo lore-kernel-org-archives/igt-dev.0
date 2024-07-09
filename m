@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2517C3DA4A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB994C3DA4E
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4582510E5A6;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6654310E5C9;
 	Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="OXzU3S3D";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZVaK5l2H";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFBA810E5B8
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:03 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4566220016;
- Tue,  9 Jul 2024 15:35:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BCFC910E5BE
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:02 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 29D1B20011;
+ Tue,  9 Jul 2024 15:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539302;
+ t=1720539301;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=2+74UYdB/MYQMAwiD0LNh6P5E+TxnQBRvd+ikYi10MA=;
- b=OXzU3S3D28D+qyW6IullBCOORjgAvKr8q3NRZ1jeAReslY114/Z5/QsmIUocFj34BiovvE
- 5Y0s2gLkOAEzoqP1Px12O497AhWg1Mv2cHz+TLAbZMMQDPphzPGBTBMC4JZ4QWJGaGDVQx
- fjrSaA3o1F/nF3Znkrj87ElJYSoHyWD8M7osOMXiB72Xvj+QRZRyNWA7QY2ZZ3Iu1vM1qZ
- sk5U8gJ2mG5e9w1Lv3CRXLZ2Ch/6v0pET4xnHZcD97HQ6Y2ZvoyTaf5gnFfC4R8P9Gyz1X
- 6sQlyD+1o8CN3hcVBFx/BBVq7zyhG99cFTp1VUwHFQYWZjIwo9ojpx26rrH6IA==
+ bh=Fq2DNpgdCwBUOLsEaPuCQ0NWO2ZDnTQ6rsqTFg92/iA=;
+ b=ZVaK5l2HLm3fprOuYmzf2B2c4jWvGXeP0clVRIqikMOtagoknma4BGk98lq64/qZHeWz7a
+ 4XsHcoQP8nmYLWgAQfo0yn9ghKXfoE3m0Cns3lzqNu5eONIe9/aJCPIm6zk+UHhC8AL9ck
+ 8hKv5fI18gk9dsbkKyDposUeSclKQz2fbZ2iXFEm/yVcDw/ltgjN98VSCAfMaKSjM7Fnp/
+ /enR/hz21ac/MUJ/XcDRA5TeT2VI8PRnxU+pUDGhcXoRQm0X81e0bFKyR4noG3O/hpaMzx
+ v1eCnCeFr8XJltaOKb/2i1KxWwGvvikfIiNZJmguuj+EnFHvjzqoSDNcRi1ZWg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:43 +0200
-Subject: [PATCH i-g-t v2 27/39] lib/chamelium/v3: Implement helper function
- to retrieve connector from port mapping
+Date: Tue, 09 Jul 2024 17:34:40 +0200
+Subject: [PATCH i-g-t v2 24/39] lib/chamelium/v3: Introduce new
+ configuration format for MST support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-27-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-24-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3494;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6353;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=6g5DsUcDlZpfBXpyO6oGZX1po6U4psXoHVxNP+s0b4E=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViZO5UEIrQlfukvLAY74oeLKvSiEiCJkIbru
- iiAA0txC46JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmQAKCRAgrS7GWxAs
- 4lNPEACE4ECvcosYin8+hjGN8kfNXhc1VaJ8oG4ZgnO4cKmBqdkHgHQKY3gT3MtoLrVtmVGHR38
- Gl/Ikmn2J4pJcsDWIE3QVqLO4ZTxftTi01i6quFZjIiunHB5fVWgXV9GdCZF9F2qpBWYBHRiz1D
- o/fIoSrJTHkQEnS+diaoTd3qfyjQPriG43ABIKOAYMciPQo6LPzUXO8RiKX9gCU+SbsBGjPzoXc
- 5CQWb0TuYBTFOwuc6uJEFkFqlyNbAmXqN+RSg1i56osiqazJMbPdYC1xHgA9KyIuFMbhdWdtGOg
- IC/T/OWEDnlU3SG2heEoLQORtkNUU+70MHgFyC7iUF3ok+BdWdQZotsn5jd6MYvQBG75Q2HWGv9
- waMK94gX5wAIWnnUgQwQ5TGN6OCC0QASKeKgCahL01+Zfu/uPTlSm7pm35QPh+vdBwC8iukHqVs
- 53X3gaE96y1Z93lkGTz0rC1U9hq3tXyycJEjzUaUh7dtmpCX3tpA2NWzzHTfy0Wro16Ft8Y0XF4
- UrX6aWfMfr5kpUwUhaqeYT8ZsAKcwbrW8hqr+5PXH6PIZpY/vNtDKNDeiMEm885+qAov89gPmi8
- 9jIYjmUUfdEISnP0t2fjpp6MnFcld2gOQgXJgQxzQDrqHVhNQoKhPFOZuqcvzJuwMPD/l4qQw2a
- eXdald1l1PTSMsg==
+ bh=w8N2YQfk0y+iRe3fk4z8aPnw3Yq5aRzLqsB1IehwaOs=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViZUjhUIV/rguwDP7BFJaEJvDjlsg1oQ5dNZ
+ 9bxk547XQyJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmQAKCRAgrS7GWxAs
+ 4r+PD/wM6/LGBPTdHcqV25BNovQdY/UEYEuYOR/p/lbScFNf33x/M9I/Jv4AoFjNBcK4liU7opJ
+ 5/008q4eSRbjBxhHiaWlBxS2RZj9GazVs3RIz0hCrZe/8OopISfgNjNQe/u6B8X0gYkhaTNEmzl
+ QXaFFvqVQzaQu8bMMVsGAu9CuVObipDXLLWj8E1S0G4OqUHt+zjAVHbYvsj1nMZCBd5mx9OSj2K
+ 28AH9JRw5h9AYOvEQqzWVt4sVM3t//XwpybTxC/XasUKFi4BUTORe1YZ4vFUfzu/DOfRBrjbpkh
+ hmtB2fjwTVbPIHuE5hv+RFGbP5wsEJOXcoEfiDHo+FSvsx+ALcA3NGPQUPndPZYuipmBD/nv2u6
+ m4XMEMRj1sfONf84Lq/LCcwuM4cLm+YPfhTbf5AOOLdbTFDSmcvvNzcTqfu7E5Vs/HffUoxTLc+
+ SkL1Q/zI0MUWhOQYyrEAVuiw4/cVx502Mf0VGkSgwzcnXBUoihJP3HrUnRtYWbUIjupdk8xrbTJ
+ 8Hz2eUSk2zcLHiJYQ0YJB6LPp9ahC9+S497hVJH5BERy/a+edOeUSbWDRrlVtxTG0ldGFe8dL4I
+ rpnXr6S5HrcTw3vo71NKvurxWVielahq7Jqq4ympW6nJ8LsZ3SBrgVOnpVCfb9JkLLh+KFktzAV
+ WClwNwq7sX3VgxQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,95 +77,181 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit introduces a helper function that utilizes igt_kms helpers to
-easily obtain the connector object from a given port mapping in Chamelium,
-simplifying the process for users.
+The current Chamelium v2 configuration format does not accommodate MST
+usage. To maintain compatibility with existing configuration files, this
+commit introduces a new format with a distinct prefix for Chamelium v3
+port mapping.
+
+Support for the Chamelium v2 format is retained to facilitate the
+transition between Chamelium v2 and v3. The v2 format will be used if the
+v3 format is not present in the file.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/chamelium/v3/igt_chamelium.c | 43 ++++++++++++++++++++++++++++++++++++++++
- lib/chamelium/v3/igt_chamelium.h |  7 +++++++
- 2 files changed, 50 insertions(+)
+ lib/chamelium/v3/igt_chamelium.c | 126 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 123 insertions(+), 3 deletions(-)
 
 diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-index fc9520466de5..51b3a610e358 100644
+index d528b40ca0c7..26f6b83cd10a 100644
 --- a/lib/chamelium/v3/igt_chamelium.c
 +++ b/lib/chamelium/v3/igt_chamelium.c
-@@ -5,6 +5,7 @@
+@@ -13,6 +13,11 @@
+ #define CHAMELIUM_V2_CONFIG_PREFIX "Chamelium"
+ #define CHAMELIUM_V2_CONFIG_PORT_ID "ChameliumPortID"
  
- #include "igt_chamelium.h"
- #include "igt_core.h"
-+#include "igt_kms.h"
- #include "igt_rc.h"
- 
- #define CHAMELIUM_CONFIG_SECTION "Chameliumv3"
-@@ -392,6 +393,48 @@ struct igt_list_head *chamelium_v3_get_port_mapping(struct igt_chamelium_v3 *cha
- 	return &chamelium->port_mapping;
++#define CHAMELIUM_V3_CONFIG_PORT_NAME "PortName"
++#define CHAMELIUM_V3_CONFIG_MST_PATH "MstPath"
++#define CHAMELIUM_V3_CONFIG_PARENT_ID "ChameliumParentID"
++#define CHAMELIUM_V3_CONFIG_AUTODETECT_SAVE "ChameliumAutodetectSave"
++
+ struct igt_chamelium_v3 {
+ 	xmlrpc_env env;
+ 	xmlrpc_client *client;
+@@ -172,7 +177,7 @@ static void chamelium_v3_fill_port_mapping_from_config_v2(struct igt_chamelium_v
+ 				}
+ 			} else {
+ 				igt_warn("Skipping malformed entry %s: Missing "
+-					 CHAMELIUM_V2_CONFIG_PORT_ID "\n",
++					     CHAMELIUM_V2_CONFIG_PORT_ID "\n",
+ 					 group_list[group_idx]);
+ 				chamelium_v3_port_mapping_free(port_mapping);
+ 			}
+@@ -186,6 +191,115 @@ static void chamelium_v3_fill_port_mapping_from_config_v2(struct igt_chamelium_v
+ 	free(group_list);
  }
  
 +/**
-+ * chamelium_v3_port_mapping_get_connector - Get a drm connector from a port mapping
++ * chamelium_v3_fill_port_mapping_from_config_v2() - Read the configuration file using the chamelium
++ *	v3 format
 + *
-+ * @port_mapping: Port mapping to retrieve the connector from
-+ * @drm_fd: drm file descriptor to use when requesting the connector
++ * @chamelium: chamelium to store the port mapping into
 + *
-+ * This function only works with non-MST port mapping.
-+ *
-+ * Returns a drm connector that must be freed with drmModeConnectorFree when not needed anymore.
-+ * A null pointer means that the connector can't be found.
++ * Read the configuration file to search a chamelium configuration, using the Cv3 format. It will
++ * ignore any malformed entry.
 + */
-+drmModeConnectorPtr
-+chamelium_v3_port_mapping_get_connector(const struct chamelium_v3_port_mapping *port_mapping,
-+					int drm_fd)
++static void chamelium_v3_fill_port_mapping_from_config_v3(struct igt_chamelium_v3 *chamelium)
 +{
-+	if (port_mapping->mst_path) {
-+		igt_warn("Directly getting a connector from its MST path is not supported");
-+		return NULL;
-+	} else {
-+		return igt_get_connector_from_name(drm_fd, port_mapping->connector_name);
-+	}
-+}
++	char **group_list;
 +
-+/**
-+ * chamelium_v3_port_mapping_get_connector_id - Get a drm connector id from a port mapping
-+ *
-+ * @port_mapping: Port mapping to retrieve the connector id from
-+ * @drm_fd: drm file descriptor to use when requesting the connector id
-+ *
-+ * Returns a drm connector id that represent the port mapping given in parameter. A connector id of
-+ * zero means that the connector is not found.
-+ */
-+uint32_t
-+chamelium_v3_port_mapping_get_connector_id(const struct chamelium_v3_port_mapping *port_mapping,
-+					   int drm_fd)
-+{
-+	if (port_mapping->mst_path)
-+		return igt_get_connector_id_from_mst_path(drm_fd, port_mapping->mst_path);
-+	else
-+		return igt_get_connector_id_from_name(drm_fd, port_mapping->connector_name);
++	igt_assert(igt_key_file);
++
++	group_list = g_key_file_get_groups(igt_key_file, NULL);
++	for (int group_idx = 0; group_list[group_idx]; group_idx++) {
++		if (strstr(group_list[group_idx], CHAMELIUM_CONFIG_SECTION ":")) {
++			struct chamelium_v3_port_mapping *port_mapping = NULL;
++			uint32_t chamelium_port_id;
++			char *tmp_end;
++			GError *error = NULL;
++			char *chamelium_port_id_str =
++			    group_list[group_idx] + (sizeof(CHAMELIUM_CONFIG_SECTION ":") - 1);
++
++			errno = 0;
++			chamelium_port_id = strtoul(chamelium_port_id_str, &tmp_end, 0);
++
++			if (chamelium_port_id_str == tmp_end) {
++				igt_warn("Failed to read config file, expecting ["
++					     CHAMELIUM_CONFIG_SECTION ":<int>], found %s\n",
++					 group_list[group_idx]);
++				goto exit_loop;
++			} else if (errno == ERANGE) {
++				igt_warn("Range error during parsing of number, expecting \"%.*s\", strtolu returned %d",
++					 (int)(tmp_end - chamelium_port_id_str),
++					 chamelium_port_id_str, chamelium_port_id);
++				goto exit_loop;
++			}
++
++			port_mapping = chamelium_v3_port_mapping_alloc();
++			port_mapping->port_id = chamelium_port_id;
++
++			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
++					       CHAMELIUM_V3_CONFIG_PORT_NAME, NULL)) {
++				port_mapping->connector_name = g_key_file_get_string(igt_key_file,
++										     group_list[group_idx],
++										     CHAMELIUM_V3_CONFIG_PORT_NAME,
++										     &error);
++				if (error) {
++					igt_info("Skipping malformed entry %s: %s\n",
++						 group_list[group_idx], error->message);
++					goto exit_loop;
++				}
++			}
++
++			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
++					       CHAMELIUM_V3_CONFIG_MST_PATH, NULL)) {
++				port_mapping->mst_path = g_key_file_get_string(igt_key_file,
++									       group_list[group_idx],
++									       CHAMELIUM_V3_CONFIG_MST_PATH,
++									       &error);
++				if (error) {
++					igt_warn("Skipping malformed entry %s: %s\n",
++						 group_list[group_idx], error->message);
++					goto exit_loop;
++				}
++			}
++
++			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
++					       CHAMELIUM_V3_CONFIG_PARENT_ID, NULL)) {
++				port_mapping->parent_id = g_key_file_get_integer(igt_key_file,
++										 group_list[group_idx],
++										 CHAMELIUM_V3_CONFIG_PARENT_ID,
++										 &error);
++				port_mapping->is_children = true;
++				if (error) {
++					igt_warn("Skipping malformed entry %s: %s\n",
++						 group_list[group_idx],
++						 error->message);
++					goto exit_loop;
++				}
++			}
++
++			if (port_mapping->is_children && !port_mapping->mst_path) {
++				igt_warn("If the port have a " CHAMELIUM_V3_CONFIG_PARENT_ID
++					     ", it must also have an " CHAMELIUM_V3_CONFIG_MST_PATH
++					     ". Skipping malformed entry %s.\n",
++					 group_list[group_idx]);
++				goto exit_loop;
++			}
++
++			igt_list_add(&port_mapping->link, &chamelium->port_mapping);
++
++			if (error)
++				free(error);
++			continue;
++exit_loop:
++			if (error)
++				free(error);
++			if (port_mapping)
++				chamelium_v3_port_mapping_free(port_mapping);
++		}
++
++		free(group_list[group_idx]);
++	}
++	free(group_list);
 +}
 +
  /**
-  * __chamelium_rpc - Call a remote function on the chamelium
+  * chamelium_v3_port_mapping_info_list() - Display the current configured port mapping for the
+  *	chamelium
+@@ -212,11 +326,17 @@ static void chamelium_v3_port_mapping_info_list(struct igt_list_head *head)
+  *	structure.
   *
-diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-index 5e035bdd10bf..90d2a7473894 100644
---- a/lib/chamelium/v3/igt_chamelium.h
-+++ b/lib/chamelium/v3/igt_chamelium.h
-@@ -49,6 +49,13 @@ struct igt_list_head *chamelium_v3_get_port_mapping(struct igt_chamelium_v3 *cha
- struct chamelium_v3_port_mapping *
- chamelium_v3_get_port_mapping_for_chamelium_port_id(struct igt_chamelium_v3 *chamelium,
- 						    chamelium_v3_port_id port_id);
-+uint32_t
-+chamelium_v3_port_mapping_get_connector_id(const struct chamelium_v3_port_mapping *port_mapping,
-+					   int drm_fd);
-+drmModeConnectorPtr
-+chamelium_v3_port_mapping_get_connector(const struct chamelium_v3_port_mapping *port_mapping,
-+					int drm_fd);
-+
- void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium);
+  * @chamelium: chamelium to store the port mapping into
++ *
++ * It will read the configuration file searching for a Cv3 configuration. If this configuration does
++ * not exist or is empty, it will try to read a Cv2 configuration.
+  */
+ void chamelium_v3_fill_port_mapping(struct igt_chamelium_v3 *chamelium)
+ {
+-	if (igt_key_file)
+-		chamelium_v3_fill_port_mapping_from_config_v2(chamelium);
++	if (igt_key_file) {
++		chamelium_v3_fill_port_mapping_from_config_v3(chamelium);
++		if (igt_list_length(&chamelium->port_mapping) == 0)
++			chamelium_v3_fill_port_mapping_from_config_v2(chamelium);
++	}
  
- void chamelium_v3_reset(struct igt_chamelium_v3 *chamelium);
+ 	chamelium_v3_port_mapping_info_list(&chamelium->port_mapping);
+ }
 
 -- 
 2.44.2
