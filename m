@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A66C3DA41
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A99C3DA49
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1798B10E5C5;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1EE6610E5C8;
 	Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="CfA7mOE0";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Ixizde2C";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14E2C10E5AE
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:34:56 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5AEB120018;
- Tue,  9 Jul 2024 15:34:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C5FD410E5B5
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:00 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B6C820013;
+ Tue,  9 Jul 2024 15:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539295;
+ t=1720539299;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Ez7F8+5uRxZDbRxExu0c416eKC4ILbOtRS3JP9TVoiI=;
- b=CfA7mOE0pJY9I6aLL2hwirYDFBxlNSQUPqO4Eu9g1OUHAx5f0HU5dcBoqcnAIoClcJxk9S
- 25kdmdMYSEewjFAX3a6YtUURGA+Q2En+QDRP12MiAlHOiYuSllmidLcJ+plWzMq5htwX5h
- c7TUepuU9tysXp1UYFNKMlcAzV90Hh32qG+pWyX+vF6C4F60acsIF6ScnT1vR8V1o9AHH6
- 4X193cLBQOuuQMa3j39lahV5Q+zpZIH8Kco/XE3Ur2Ms6HT2nKEvjGc70mGtkrCUaRw5sI
- 5S8mgNPErvr3bu+P0dgYSwnHNOqjcFgtaElnJOFZRdtEDDsz3pD0RatS3ieN0w==
+ bh=2ElgABbOthdhMiW3al955H1XzM9cOw2onwYIOqrb4ns=;
+ b=Ixizde2Cq+1kOfByqEJM6awfFjsMwk3eVcoWMCHVFEQSNXkcPBSv8yto4qLEUOq0rlMS9p
+ SiCJfIZj1t+I+9OXMAQ89EYA+VLP/zu+JeMcKfWeSeeMBlucUdRjLDClbK9YtKLjOyaUi4
+ EqdER5W1RC21mJGK9iQtMMpag5FXy8FX/McU6a3UhAppHeTWXgsaAz8S6BG6rwMx+iBSCM
+ v7vGZtP//zYBRtrlDzsvfjgswbu8+v8xFFayN4XTE/YqZvnISHfSrOtROoMuG8KtFhG7GD
+ Oh85Qcijho/ZNPvSpXjMUP9nsENvST6/hvvrf91sjt+yGJcmJawuKssgTc1pfA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:26 +0200
-Subject: [PATCH i-g-t v2 10/39] lib/monitor_edids: Add new EDID for HDMI 4k
+Date: Tue, 09 Jul 2024 17:34:35 +0200
+Subject: [PATCH i-g-t v2 19/39] lib/chamelium/v3: Implement Chamelium
+ reinitialization via Reset RPC call
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-10-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-19-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1358;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2016;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=W7JkUSvNMr++kfa+yw5Cacgt13n5GUbPs146+Z6dXo0=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViXjw/XJhz6/8TmpeIgPxWlbsq4iaexx480N
- wlKi1cN77WJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YlwAKCRAgrS7GWxAs
- 4vVCD/9uf3HBLQJnZU/eMDCucORdLWGosaACt+zQqVCsoZSt/6Dq42PmkxOkSrfWUt36TRGDGak
- TDGvSm57rlijRaPR3PSKGZjIJwxiaXg2AP8Ww2LQX/OVv0Dyv4y5krM+J3p1KcGr6dIR6DORApp
- aG2afKOtqTfhS2ouAx7ZPdqyhFgaelN43uuYkZELrfiQTCAN7ubG0wheG7RXExmf7ivuQscqwjG
- Z7+PW1ELNok7vesgCsVmeNveGqy8a/S6oMU3ddum2uOrPJREp1WnRBWp/3OSU3umuGNiMS8T/hm
- yvsmzDLm2AMFPNWkKKsMpeW9bwr6+iCNN16AXz1CguezuHeJtFY9cT4ue2ZXeyfAjNwttPIjb9F
- j3LipPglKjWrCp5as/37j4n6cpY8Wc5jINsdlA0KNeS27LJCyM+Pv46EQOk2oUhbuqDyFvQx4aI
- 0fVoW72VjJQuvY0Uv7uWgsobIy4xSVL5KzC1l46HsD0crs4eXh/MFkhL1MFmvRH1UFL+OemQEOg
- yNTU+MJFn/6/kGzPQNSQCn849DJn5pqFuHmzALlJF/6Erc9g9O74NVUF/AUtBTI/ackRaObBGmz
- OB6u5z4GsllL8VTPaTurNQe32WYuMzmNzJkU/+Q7oeLNaCqrUbwXMmPlLtPkLhzy95EwhJyn8if
- C3K6x+by28AwN3Q==
+ bh=CX55wilyYm0xnzuhwUaK0ZJG4X5Q7y0HDB6Y9C4mCvM=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViYazoHMR29MHqzUAakXESfFeY4hg4iLJQBD
+ Rfs3igEt7iJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmAAKCRAgrS7GWxAs
+ 4sfJEACHghCS7iDIbcSLyhLYfsXGVrfIWeVQWnhbBX4BU2nWUOou3irRSiAjPMDBn44mZqjITZ3
+ 4IxXab4bJ4ykyIt08TsjyzEGNiUAyTLSlpTdhcYx4BE44itaunzOlr3Bs/LmkUOY8g2s7OGWJtn
+ jFtrCQ6WIwMrOGdvqCYYETczKrrrAj92f3Y7yNEuVl0QU/lw8jZZ8Kl79UfWcx4mRFTZgxaIKDC
+ 7yF4urgIaywxakVqDiXKmfgdZeOGTPy5AZSUOqfgZN0bI9bGAVoZszx905dElbeeDsAAJun3ZSE
+ vVwAse8CX/4nIQcTrmLof3VjPgKLc6J2oIaZtAxsXUEmccs1vXhuouUjfK6rcF+CGiJ/qFUzDIs
+ E6M/pkmkQvyzEqq+FhsjT5VsOamH17AevikXidsPYk0cT8isIjKND8YYiXLVq0uieWobXtlTw8B
+ ND0A/RdtqxhfVDSoQmIz2g81W3RZfLtrdwpig3uvZr0kvhY1kFs8EqvcDep+k2T27gooxrDL0bC
+ d++WEmbSj9l3EXJl8SR5X1ezYwSoYQmGF131ZkeF68qY42anJoITjbP4nqzRZkdkFq8ZPzsFUF+
+ 5L+9CWKnmM6HCnKiunxy26bstT7+kKD1+8SmDCzt8NSrTZDPkwIHiGcodLKvvRqSrZ2KPTm81Ts
+ 7tt1GDCUnKD+cPQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -76,42 +77,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add EDID for the HDMI screen LG HDR 4K.
+Introduce the Reset RPC function to reinitialize the Chamelium, ensuring
+it returns to a known state. This feature is particularly useful for
+testing and debugging purposes.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/hdmi_edids.h | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ lib/chamelium/v3/igt_chamelium.c | 16 ++++++++++++++++
+ lib/chamelium/v3/igt_chamelium.h |  1 +
+ 2 files changed, 17 insertions(+)
 
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index 8bcd1f31b458..cc6820d96231 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -49,7 +49,23 @@ monitor_edid HDMI_EDIDS_4K[] = {
- 		  "5E00A0A0A0295030203500C48F210000"
- 		  "1EEF5100A0F070198030203500C48F21"
- 		  "00001E000000000000000000000000A8" },
--
-+	{ .name = "4K_GSM_LG_HDR_4K_HDMI",
-+	  .edid = "00ffffffffffff001e6d4f77c75f1500"
-+		  "0521010380462878ea7ba1ae4f44a926"
-+		  "0c5054210800d1c06140454001010101"
-+		  "010101010101a0cb0046f0703e802010"
-+		  "3500b9882100001a000000fd00283c1e"
-+		  "873c000a202020202020000000fc004c"
-+		  "472048445220344b0a202020000000ff"
-+		  "003330354d414e4a43335a37350a01e4"
-+		  "0203427223090707830100004d010304"
-+		  "10121f202261605f5e5d6d030c001000"
-+		  "b83c20006001020367d85dc401788003"
-+		  "e30f0003e2006ae305c000e606050159"
-+		  "5952a36600a0f0701f8030203500b988"
-+		  "2100001a565e00a0a0a0295030203500"
-+		  "b9882100001a023a801871382d40582c"
-+		  "4500b9882100001a00000000000000af" },
- };
+diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
+index 5a7e42334e81..af6ab5c6c9b7 100644
+--- a/lib/chamelium/v3/igt_chamelium.c
++++ b/lib/chamelium/v3/igt_chamelium.c
+@@ -188,6 +188,22 @@ static xmlrpc_value *__chamelium_rpc(struct igt_chamelium_v3 *chamelium,
+  * [1]: https://chromium.googlesource.com/chromiumos/platform/chameleon/+/refs/heads/main/v3/chameleond/v3.py
+  */
  
- monitor_edid HDMI_EDIDS_NON_4K[] = {
++/**
++ * chamelium_v3_reset - Reset the chamelium
++ *
++ * @chamelium: Chamelium to reset
++ *
++ * Reset the chamelium to a know state (no plugged ports, no EDID applied...).
++ *
++ * Note: The current chamelium firmware does not reset scheduled hot plug, this may cause issue in
++ * some situations.
++ */
++void chamelium_v3_reset(struct igt_chamelium_v3 *chamelium)
++{
++	igt_debug("RPC Reset()\n");
++	xmlrpc_DECREF(__chamelium_rpc(chamelium, "Reset", "()"));
++}
++
+ /**
+  * chamelium_v3_get_supported_ports - Get the list of ports on the chamelium
+  *
+diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
+index ae3225873bfb..88b407dfd1ae 100644
+--- a/lib/chamelium/v3/igt_chamelium.h
++++ b/lib/chamelium/v3/igt_chamelium.h
+@@ -42,6 +42,7 @@ struct igt_chamelium_v3 *chamelium_v3_init_from_config(void);
+ 
+ void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium);
+ 
++void chamelium_v3_reset(struct igt_chamelium_v3 *chamelium);
+ int chamelium_v3_get_supported_ports(struct igt_chamelium_v3 *chamelium,
+ 				     chamelium_v3_port_id **port_ids);
+ int chamelium_v3_get_children(struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id,
 
 -- 
 2.44.2
