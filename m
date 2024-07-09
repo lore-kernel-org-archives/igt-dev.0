@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD7B0C3DA4A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88EA7C3DA49
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:34:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5C40710E5B1;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CC4910E5AC;
 	Tue,  9 Jul 2024 15:34:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="dieaXzvC";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="coKNjtLt";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F76610E5AE
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:34:54 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0C80B20011;
- Tue,  9 Jul 2024 15:34:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 55DE810E5AA
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:34:55 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CC58C20013;
+ Tue,  9 Jul 2024 15:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539293;
+ t=1720539294;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=nmrxAwOp9UNfC5PGDNgY8Gqtw65xUvpvQl0mVsQ2L1o=;
- b=dieaXzvCGh38YpkxXZVP5fx8BTQWeJs7OYAFYd+yORN5bONVm9jrI7sTwRjqZ2zxEqWYTJ
- iajryWsm9ITAqjyyiReBuXAqQA9uU3tLoXzfayBTfi/l/yeusyUyVoPoA/tTArFPfr+3Bh
- DxnAJItKLS84cBIXK8t1spVHkY5bjZ+imafBF6PXrXyN7DSImxDK32RMualqTT4LyFgFyq
- F/j03gKsMb1+B87qDZBF0h/CB/8P10lGe5vWnoyq62Tmz33DkHTmwm99Y6MlkNrA2ox4nH
- dlPxP3ntDE7aDhyp3E+I9P+DllJSWwbNfa45wHOjQkuj/Pxx2uMx074Wkc9/ag==
+ bh=HTUZkf8kNYw7VUKNqNz3Vs/pTH9gjMRGx8JmyCTLRsU=;
+ b=coKNjtLtjTtRnh9UVnhBNr+N9IVL/wuVev11487SwtjUke2FMyA1/huk6oZ+RO7+YfDxeu
+ Du4/b/k2mRhskOp9cGwg/wNbp9xY0C5sSZchGpJygflyg3xDimVQPrW6owB1wo1QcwKOTS
+ fJR94DN4458VjgwkoyEe7MRarJXOlpJC51tHfi4e8fiJZlf5l1VcSb3E+q1I1pku+Tv9iC
+ PHuCJYj+lovI9uZkQddJWmzff5Pfmqc/jyqGGO2R/M6Jspp+YybnlHcC9+3F+jdEGmE/Oa
+ xWb8IeCRKgkOdEyLoboqCbdF2kmGVz7BE8jJB8zi+A9GQ3sPJVDzItsPzinhrA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:20 +0200
-Subject: [PATCH i-g-t v2 04/39] lib/igt_kms: Add helper to obtain a
- connector by its name or MST path
+Date: Tue, 09 Jul 2024 17:34:22 +0200
+Subject: [PATCH i-g-t v2 06/39] lib/monitor_edids: Add helper functions for
+ using monitor_edid objects
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-4-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-6-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4532;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3725;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=ngiV9suAGw2r4E3i329z+uANHLWDx6mnImHAjEGvNIA=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViWbeXrmGfEW5cAf6G2ugtEHfZ9XYnVSdmgF
- Gi0BlaOf9WJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YlgAKCRAgrS7GWxAs
- 4irED/95FJYurjUUv2yFpcpbXFPtywjHv/EUDVEd5paO/31t5xq51RhJX4AqiOm2IWl9qqbie17
- pqjwwPrNN7tMUIBC8N9dBltQ5P2jR4v8JCY3GgqYMPh+5QpqAC1uoyITfURiHcF7/+dlJ02nMn0
- 4demfExIr+f/VyinsaGO3tSU/F2UVvHZkeDYTLhHf4VMUbF1dTGXsU6q5q+Yu8LPD/DB6k7e/sj
- kQIfnZZExHgGqUMHU8IEcwEQQ0Q6yPNOdZMWzlRDTUvP5wT55j6JpstXpD914tQZdPprAjqJZBJ
- lNtRgJFTHGPhUr+Zk8bg5Y6SNpdq4FFWmCrJZrzrgRzP4rmRmcyRrPwIw5dcZ6ck8dtjctleaL9
- 6NPvLtE9t6LuAhis+3jtBQjzw9ITwliPL6U3TfpC+y8kD4ZA69b/xDgqu8cFKquRVb9WB+NlzdA
- zKs4YZaSenjEs7FSpnRgtWMVZLPpFpZ8Ai3EBK2/SwcXrCPkYk3gaKwWrpTzSjH3kv8lxv2zDkT
- IVBErQkfCt8qvyEZ2EqK0Z0SNT7/TS/HQXSNOl14DQPpUrYnirjmmAK4knnnAIjtFf85ggmcJ2J
- mp33It4exDlvJtn0bESOf6FwgbxsWX/fjSQvHaOObiQqkmqzvCxspcykBC2jtVQ0eA6hCElJy0H
- OYvC6JMGg49sk2Q==
+ bh=t9+h2+Sc+5WWCZkZM9T/PCSD9qItEfI/7ctnHOnYnzQ=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViWAv0b5u41g1T8aNZFNfOqZHhhZe4uRic94
+ fJhbvQNKaaJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YlgAKCRAgrS7GWxAs
+ 4pPKD/9GUzx301HQstFUWKmWGntkLVlgWT/99+7DKRDwxwnwzxt6hQ3+A3oIWDloUHGmMVUvD37
+ s9qEnHLSog1qLFGS5O90QkY5oao4WBtUurRLggU/RsOKarhxJf274hg7zH+W2cLXLshCC6G4CDr
+ dCObkZAdFeuwstpORu6ovcdC+90yKmEFlnK+hbmwOEsUrjFdLARpSvgiizn8Fr5KuOKE8aY1kzT
+ SXCN+tCkVgOIsV6Ov5jn7YuAv5h8TUOcAkMZ/+boBteO8ruBd1Ry2FoAE4IGBY99Zp6Fe8NKWsw
+ YSIKekwDllE2kWP4wfOnErQ+q1Ogg9DJWrRrXX/UERORCa605NW16eS4yngNpC/KaVoLCP5xB6B
+ iYwl0SxeFCEdXozeYyC3P+kYeptpUfaI3e82kAGMolUzoXCg8Uji+HfdpzSCy8Aptuno3qhUtB6
+ EcnZbOAGP4/4PAAMa3nWXTOfGmhTULnPQdRhjx2NoKs6zjn6o1Uhf45cqzyz2cmVEut3ZDPLBYA
+ qFkekDIiWI3n4ZbXOyADi+H5Y4EUukt1fc9p+wqw4J6Ig3Uz2UfDagb5WPYqHu1XAoUmImZs4yV
+ pPSwrNeLTNu8pjpcwdKgIgpd9VI6w8Gnj950VOJXlrTXHxasQ8Gk4AOiocRQj6qWWyIYpehh/6n
+ eAYZ+0sZ8xGokFQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,143 +77,116 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the functions igt_get_connector_from_name() and
-igt_get_connector_id_from_mst_path(). These functions serve to retrieve
-the connector object using a connector name and a connector ID from its
-MST path, respectively.
-
-Given that the connector id may not be consistent, especially with MST
-connectors, these functions are essential to recognize each connector even
-after system reboots and plug/unplug events.
-
-The function igt_get_connector_id_from_name() is a convenient wrapper for
-igt_get_connector_from_name() to streamline its usage when the caller only
-requires the connector id.
+Introduce the functions edid_from_monitor_edid() and
+get_edids_for_connector_type(). The former converts a monitor_edid object
+to a struct edid, which can then be utilized by igt_kms helpers. The
+latter returns a list of monitor_edid objects for a specific connector
+with certain characteristics
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 ++
- 2 files changed, 100 insertions(+)
+ lib/monitor_edids/monitor_edids_helper.c | 61 +++++++++++++++++++++++++++++++-
+ lib/monitor_edids/monitor_edids_helper.h |  5 +++
+ 2 files changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f1eadf190168..9669b5004e39 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6778,3 +6778,100 @@ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
- 	return
- 	    connected_count;
+diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+index 1cbf1c22f0bb..0e0c2a9badcf 100644
+--- a/lib/monitor_edids/monitor_edids_helper.c
++++ b/lib/monitor_edids/monitor_edids_helper.c
+@@ -14,7 +14,10 @@
+ #include <string.h>
+ #include <assert.h>
+ 
+-#include "igt_core.h"
++#include "igt.h"
++#include "igt_edid.h"
++#include "dp_edids.h"
++#include "hdmi_edids.h"
+ 
+ static uint8_t convert_hex_char_to_byte(char c)
+ {
+@@ -90,3 +93,59 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
+ 	free(edid);
+ 	edid = NULL;
  }
 +
-+drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name)
++struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
 +{
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
-+	struct timespec start, end;
++	uint8_t *raw_edid;
++	size_t edid_size;
 +	int i;
 +
-+	if (!res)
-+		return 0;
++	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
++	raw_edid = malloc(edid_size);
++	igt_assert(raw_edid);
 +
-+	for (i = 0; i < res->count_connectors; i++) {
-+		char name[50];
-+
-+		drmModeConnectorPtr connector = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		/*
-+		 * This time is required as sometimes some id in the connector list are not totally
-+		 * ready or can disappear
-+		 */
-+		clock_gettime(CLOCK_MONOTONIC, &start);
-+		clock_gettime(CLOCK_MONOTONIC, &end);
-+		while (!connector &&
-+		       igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
-+			connector = drmModeGetConnector(drm_fd, res->connectors[i]);
-+			clock_gettime(CLOCK_MONOTONIC, &end);
-+		}
-+
-+		if (igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
-+			igt_assert(connector);
-+
-+			/* We have to generate the connector name on our own */
-+			snprintf(name, 50, "%s-%u",
-+				 kmstest_connector_type_str(connector->connector_type),
-+				 connector->connector_type_id);
-+
-+			if (strcmp(port_name, name) == 0) {
-+				drmModeFreeResources(res);
-+				return connector;
-+			}
-+			drmModeFreeConnector(connector);
-+		}
++	for (i = 0; i < edid_size; i++) {
++		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
++			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
 +	}
-+	drmModeFreeResources(res);
-+	return NULL;
++
++	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
++		uint8_t *new_edid;
++
++		igt_warn("The edid size stored in the raw edid is shorter than the edid stored in the table.");
++		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
++		igt_assert(new_edid);
++		raw_edid = new_edid;
++	}
++
++	return (struct edid *)raw_edid;
 +}
 +
-+/**
-+ * igt_get_connector_id_from_name - Get a connector ID from a connector name
-+ * @drm_fd: DRM file descriptor
-+ * @port_name: Port name to find in the connector
-+ *
-+ * Returns 0 when no connector is found with the correct name
-+ */
-+uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name)
++struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
 +{
-+	drmModeConnectorPtr connector = igt_get_connector_from_name(drm_fd, port_name);
-+
-+	if (connector) {
-+		int connector_id = connector->connector_id;
-+
-+		drmModeFreeConnector(connector);
-+		return connector_id;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * igt_get_connector_id_from_mst_path - Get a connector ID from a mst path
-+ * @drm_fd: DRM file descriptor
-+ * @mst_path: MST path to find in the connector
-+ *
-+ * Returns 0 when no connector is found with the correct mst path
-+ */
-+uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
-+{
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
-+	int i;
-+
-+	if (!res)
-+		return 0;
-+
-+	for (i = 0; i < res->count_connectors; i++) {
-+		uint32_t connector_id = res->connectors[i];
-+
-+		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd, connector_id);
-+
-+		if (path_blob) {
-+			if (strcmp(path_blob->data, mst_path) == 0) {
-+				drmModeFreePropertyBlob(path_blob);
-+				drmModeFreeResources(res);
-+				return connector_id;
-+			}
-+			drmModeFreePropertyBlob(path_blob);
++	if (four_k) {
++		switch (type) {
++		case DRM_MODE_CONNECTOR_DisplayPort:
++			*count = ARRAY_SIZE(DP_EDIDS_4K);
++			return DP_EDIDS_4K;
++		case DRM_MODE_CONNECTOR_HDMIA:
++			*count = ARRAY_SIZE(HDMI_EDIDS_4K);
++			return HDMI_EDIDS_4K;
++		default:
++			igt_assert_f(0, "No 4k EDID for the connector %s\n",
++				     kmstest_connector_type_str(type));
++		}
++	} else {
++		switch (type) {
++		case DRM_MODE_CONNECTOR_DisplayPort:
++			*count = ARRAY_SIZE(DP_EDIDS_NON_4K);
++			return DP_EDIDS_NON_4K;
++		case DRM_MODE_CONNECTOR_HDMIA:
++			*count = ARRAY_SIZE(HDMI_EDIDS_NON_4K);
++			return HDMI_EDIDS_NON_4K;
++		default:
++			igt_assert_f(0, "No EDID for the connector %s\n",
++				     kmstest_connector_type_str(type));
 +		}
 +	}
-+	drmModeFreeResources(res);
-+	return 0;
 +}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 1964c725161e..a7c80372ec6b 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1236,5 +1236,8 @@ float igt_default_detect_timeout(void);
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
- int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
-+drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name);
-+uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
-+uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
+diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+index 05679f0897f3..2ec7aee5f13f 100644
+--- a/lib/monitor_edids/monitor_edids_helper.h
++++ b/lib/monitor_edids/monitor_edids_helper.h
+@@ -12,6 +12,8 @@
+ #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
  
- #endif /* __IGT_KMS_H__ */
+ #include <stdint.h>
++#include <stddef.h>
++#include <stdbool.h>
+ 
+ #include "igt_chamelium.h"
+ 
+@@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
+ 				     const monitor_edid *edid);
+ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+ 
++struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
++struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
++
+ #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+\ No newline at end of file
 
 -- 
 2.44.2
