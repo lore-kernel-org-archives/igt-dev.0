@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F660C3DA4D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11794C41513
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1684A10E5D4;
-	Tue,  9 Jul 2024 15:35:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C0B6010E5C0;
+	Tue,  9 Jul 2024 15:35:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="p46Cm3Nc";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="dpem74Pb";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F39E910E5BE
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:01 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 582A420003;
- Tue,  9 Jul 2024 15:35:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B44F610E5C0
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1812F20011;
+ Tue,  9 Jul 2024 15:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539300;
+ t=1720539307;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=djtlA9yhEj3iXmRwEVQuy9AWEP8CQN5EfUE+rjw4CwY=;
- b=p46Cm3NcE/kf0UL5zfus5VX2b6u2ry9XtP82jQNm8yKHaxcazcFMoCbtTYmJhukYoZC0IH
- KVsm12OW2SNTvd1Vr9eiDXJJhUkdy5zik9wW3BFnk8piLH2dClvS8IHJaVTPLVgWiBStfv
- 6fgWdvcssM9ezjd4hNtY6DtYTfE/CK7HuhXFRPQ4H8CAO7h+qsWoCgm7bMGg2eX8YfM9dz
- 65GLzDRdYg9nx06CRgT86iLdkMwRx2BMZy2wOTfzmYU/vmdjvmjNRXsU4egPAjzoMZLthf
- wOgxEjFkl2DhCPiaeHvPNTXyQJ3a3TTlzxT5D7RsUlxY/H9BoXSCpGjVf4Is2A==
+ bh=kXJKZ5+cpLwuUC7xNqLYfjYSEHw0OEracmPrQV0T86A=;
+ b=dpem74PbCtqQuNP0M0B6NORD7tBu7w+c4HuUwUEEfI5O9vHeKi/JcExFWM3tCjT4qUOUUc
+ SuAwb29X1nPL0e6a0DgByu8Fg4JlrTfSl37LZuQ3qs3ZcaSpMhH+9ZsJtGxqo1fvU8KfNo
+ P5keQN0Y23sCw1CLnJ2ZrEiUipLDhy6mnHBQ5ULxXxAu18u7fTdUtzQkaymadTLQYbF8ib
+ 8K0yVmhCdt8mJ04vUIAvjQqS4p8LBLvXy022wTKPN3AH95MfA1TwHmghljEw9unBK16d6C
+ y2J7Brcg0H7nOrNfYhy2wBbp1W6smdqqxMAwGRR5mdixlDdYc125REecCylacQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:38 +0200
-Subject: [PATCH i-g-t v2 22/39] lib/chamelium/v3: Implement Chamelium
- configuration parsing
+Date: Tue, 09 Jul 2024 17:34:55 +0200
+Subject: [PATCH i-g-t v2 39/39] docs: Add Chamelium v3
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-22-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-39-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4052;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5884;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=kfo7F7aJEYJDaJTNvRa3lArTHd7isanibxoKnB7dxYE=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViYQ6W+pjIvo/vtbDk5pi7H342X+vto2Ds2X
- Y6FEIu0GZSJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmAAKCRAgrS7GWxAs
- 4iIQD/96Ln50SZD+4MibPG83Unmzuy8RX6x4ZyZ4Z2ZdVFUQZ1pNCIsLRr6CQ8/mUfRTdri0T2S
- pKsU3eKx033QpruqR/7A8Ikmcq+A6hcSJbGit68EnnUZjvqzozLNDB+NWINhLKQy4Krrz7Ot8BT
- KmJfT6XYk5/G1d/tCNnz7HVXVxAiaUTigzt/Im6rWdQPICOCgy3ZtvAzgm4ENtPibBOqDG+PIjd
- bmBiyAZZ43FJgZNlduAWDiF8shjLbYrgNtVUGlV6DFbHNNfqiv0m/Sr9ngwgj3gXlA2/NG+6UYb
- 6B042PIszCDDBGu6ilpuoObOxJgzvF+3POMQerUghzD/LgqBowGOTDUEF7X8yUFWzX8Uo0WuEKp
- DlyzfBca8dGws9NCf7V4OkOUW0EzeyNizW+5VIhQ7lTykTx2cmBX81mD8HFhTQwl/F+4nEnohUN
- 7f4hk+l9i1m/xTmA+FiHInzTmJslfdGbzlScm+G+2aDDYJFPUc9WsTQbzb+e+X5eQE++gY3iNUp
- xx/bmZUGI2lSxVWxw+JvI7EAHywinogexfR15kfP9HARFxUyOyeG9NuzKgApCTyX+AkQnzlEx6n
- UFc+SgRi1l3G9cpoTjZp8bfcMeSA6Rcz+Ni8zOt2WDL0d/6oD9De3ntk2Ibzaa1iry7z2PuV0Ik
- SA0xGK0W3fPJ7OQ==
+ bh=/Y70a23YsNO7vCVeJubTMJXCRrdRy2fwH2hwHJxOSL0=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjVibMp4EKXE4K6qsJBowULIkdWJ4rkrkXTkok
+ KPzXoqzUpyJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmwAKCRAgrS7GWxAs
+ 4gXAEACVQM6pyu1MnP10SvStUSTTaSiVbFENNqM0QoRRXK3R6TlUdTTu8kqLS5Akdt7dvPErE3Y
+ ArUUFd8bU1cV28Sk9skhEYfZMx97SUQ0Z+6ybk+9pTx7GrutskiSOlWILLWY2xaAIHEexl7AuLd
+ SnTNm/X1TFtwfsNlQAL0pZmjuY2J3+jdAy+LkqW22W52hckwrDxNorTQVJeAQrNoTS7ev0Sg5hB
+ yy/KiU5QsnA6cXUwGDueUJdVcV7PYva23Omlf6jQn8HjKXAcfkmHgcAol8+cI2dcLAWEaOnkYDZ
+ 2lmC+pavFNAH0DXM21Lx3JvxbvJOudsilH1r7942xTAOjRjqHVmJjSstVhj08nRqnTW1RWj+Jw9
+ MqfFqvzvW7/84Cp1lt+3QPZEAuunKEJ60KM8i53IsRb9o5hDvrjYbILVdTowqZRXu2eEOR9CB0W
+ +iSresSLO8bEfXJvLWa4+vIbpNFtQoR1OILmn/keR3x0dksEWxpgm/NJtMVu5C2TH57QiwvV820
+ bePg1WljNaVJ0Ol8P/hrNfS8BtA/F1/wXqkxuEStE0mYUvDAQwVHziA2NpSokJ3eEVAFK8u5Rok
+ 5GLVepL05LRv2tMpjH6pFGVfPFr0yCogp7KC2XawURTJuq+sXn+V6OO+X3kcV0SGI+l7ppppFfm
+ +Aqw9ECylScy5fQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,120 +76,158 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The mapping between DRM connectors and Chamelium ports can differ among
-setups. To avoid using a time-consuming algorithm for auto-detecting the
-configuration, this commit introduces parsing of the port mapping from a
-configuration file. The format used is the same as in Chamelium v2.
+Add documentation around the Chamelium v3, its new features and its
+capabilities.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/chamelium/v3/igt_chamelium.c | 72 ++++++++++++++++++++++++++++++++++++++++
- lib/chamelium/v3/igt_chamelium.h |  2 ++
- 2 files changed, 74 insertions(+)
+ docs/chamelium.txt | 90 +++++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 83 insertions(+), 7 deletions(-)
 
-diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-index 767dfcfcb182..e5a6a438924d 100644
---- a/lib/chamelium/v3/igt_chamelium.c
-+++ b/lib/chamelium/v3/igt_chamelium.c
-@@ -10,6 +10,9 @@
- #define CHAMELIUM_CONFIG_SECTION "Chameliumv3"
- #define CHAMELIUM_CONFIG_URL "URL"
+diff --git a/docs/chamelium.txt b/docs/chamelium.txt
+index 64f851c2841c..3179b39dc155 100644
+--- a/docs/chamelium.txt
++++ b/docs/chamelium.txt
+@@ -19,7 +19,10 @@ part of the ChromeOS effort under the name Chameleon and was later made external
+ as part of the ChromiumOS effort, under the name Chamelium.
  
-+#define CHAMELIUM_V2_CONFIG_PREFIX "Chamelium"
-+#define CHAMELIUM_V2_CONFIG_PORT_ID "ChameliumPortID"
-+
- struct igt_chamelium_v3 {
- 	xmlrpc_env env;
- 	xmlrpc_client *client;
-@@ -126,6 +129,75 @@ struct igt_chamelium_v3 *chamelium_v3_init_from_config(void)
- 	return chamelium;
- }
+ A new Chamelium V3 (Cv3) was released in 2022, which is built with different
+-hardware while maintaining software backwards compatibility with v2.
++hardware, using almost the same API with chamelium v2. Some features are not
++present in the chamelium v3: plug all ports at the same time, take a screen
++capture of a small part of the screen, audio recording... The main goal of the
++Cv3 is to bring MST support.
  
-+/**
-+ * chamelium_v3_fill_port_mapping_from_config_v2() - Read the configuration file using the chamelium
-+ *	v2 format
-+ *
-+ * @chamelium: chamelium to store the port mapping into
-+ *
-+ * Read the configuration file to search a chamelium configuration, using the Cv2 format. It will
-+ * ignore any malformed entry.
-+ */
-+static void chamelium_v3_fill_port_mapping_from_config_v2(struct igt_chamelium_v3 *chamelium)
-+{
-+	char **group_list;
-+
-+	igt_assert(igt_key_file);
-+
-+	group_list = g_key_file_get_groups(igt_key_file, NULL);
-+	for (int group_idx = 0; group_list[group_idx]; group_idx++) {
-+		if (strstr(group_list[group_idx], CHAMELIUM_V2_CONFIG_PREFIX ":")) {
-+			struct chamelium_v3_port_mapping *port_mapping = NULL;
-+			GError *error = NULL;
-+			char *port_name_str =
-+			    group_list[group_idx] + (sizeof(CHAMELIUM_V2_CONFIG_PREFIX ":") - 1);
-+
-+			errno = 0;
-+
-+			port_mapping = chamelium_v3_port_mapping_alloc();
-+			port_mapping->connector_name = strdup(port_name_str);
-+
-+			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
-+					       CHAMELIUM_V2_CONFIG_PORT_ID, NULL)) {
-+				port_mapping->port_id = g_key_file_get_integer(igt_key_file,
-+									       group_list[group_idx],
-+									       CHAMELIUM_V2_CONFIG_PORT_ID,
-+									       &error);
-+				if (error) {
-+					igt_info("Skipping malformed entry %s: %s\n",
-+						 group_list[group_idx], error->message);
-+					chamelium_v3_port_mapping_free(port_mapping);
-+				} else {
-+					igt_list_add(&port_mapping->link, &chamelium->port_mapping);
-+				}
-+			} else {
-+				igt_warn("Skipping malformed entry %s: Missing "
-+					 CHAMELIUM_V2_CONFIG_PORT_ID "\n",
-+					 group_list[group_idx]);
-+				chamelium_v3_port_mapping_free(port_mapping);
-+			}
-+
-+			if (error)
-+				free(error);
-+		}
-+
-+		free(group_list[group_idx]);
-+	}
-+	free(group_list);
-+}
-+
-+/**
-+ * chamelium_v3_fill_port_mapping() - Read the configuration file and fill the port_mapping
-+ *	structure.
-+ *
-+ * @chamelium: chamelium to store the port mapping into
-+ */
-+void chamelium_v3_fill_port_mapping(struct igt_chamelium_v3 *chamelium)
-+{
-+	if (igt_key_file)
-+		chamelium_v3_fill_port_mapping_from_config_v2(chamelium);
-+}
-+
- /**
-  * chamelium_v3_uninit() - Free the resources used by a chamelium
-  *
-diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-index cab33e43aadd..3aaf51dd38db 100644
---- a/lib/chamelium/v3/igt_chamelium.h
-+++ b/lib/chamelium/v3/igt_chamelium.h
-@@ -44,6 +44,8 @@ struct chamelium_v3_port_mapping {
- struct igt_chamelium_v3 *chamelium_v3_init(char *url);
- struct igt_chamelium_v3 *chamelium_v3_init_from_config(void);
+ Chamelium V2
+ ------------
+@@ -41,7 +44,7 @@ While the FPGA is used for logic control, the CPU runs daemons that allow the
+ board to be controlled over the network via a XMLRPC interface.
  
-+void chamelium_v3_fill_port_mapping(struct igt_chamelium_v3 *chamelium);
-+
- void chamelium_v3_uninit(struct igt_chamelium_v3 *chamelium);
+ [Current limitation] Cv3 hardware uses an ITE chip which allows only 1 port to
+-be plugged in a time. This limitation will be fixed in the upcoming iteration. 
++be plugged in a time. This limitation will be fixed in the upcoming iteration.
  
- void chamelium_v3_reset(struct igt_chamelium_v3 *chamelium);
+ Chamelium V2 Documentation
+ --------------------------
+@@ -50,6 +53,12 @@ Documentation about the Chamelium is made available by Google through the
+ ChromiumOS projet wiki:
+ https://www.chromium.org/chromium-os/developer-library/guides/hardware-schematics/chamelium/
+ 
++Chamelium V2 Documentation
++--------------------------
++
++Documentation about the Cv3 is made available by Google directly in the git
++repository: https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/chameleon/v3/doc/
++
+ Setting up Chamelium V2
+ -----------------------
+ 
+@@ -76,6 +85,16 @@ and then configure eth0 like so:
+ This document supposes that target PC's network IP has "192.168.1.1/24" and
+ the Chamelium's network IP has "192.168.1.2/24".
+ 
++Setting up Chamelium V3
++-----------------------
++
++To setup the chamelium software, you can refer to the chamelium documentation:
++https://source.chromium.org/chromiumos/chromiumos/codesearch/+/main:src/platform/chameleon/v3/doc/first_boot.md
++
++Once setup you can define a static IP address with network manager (a nice TUI
++is installed: `nmtui`) or use DHCP to set a stable one. It is required as the IGT
++tests will need to communicate with the chamelium.
++
+ Deploying the Chamelium With IGT
+ --------------------------------
+ 
+@@ -115,6 +134,16 @@ example (only Chamelium.URL is mandatory):
+     # The URL used for connecting to the Chamelium's RPC server
+     URL=http://192.168.1.2:9992
+ 
++
++By default, the IGT tests will perform autodiscovery. As it can take some time, you can
++manually define a static configuration. This configuration will be trusted by the test
++and no autodetection will be performed, so if the physical connexion is not exactly
++the same the tests will fail.
++
++As the Cv3 brings support for MST, two different configuration format are used.
++
++For chamelium v2:
++
+     # The rest of the sections are used for defining connector mappings. This
+     # is optional if the same connector type (ex. DP-DP) is used on both sides,
+     # the mappings will be discovered automatically.
+@@ -142,6 +171,38 @@ example (only Chamelium.URL is mandatory):
+     [Chamelium:VGA-1]
+     ChameliumPortID=4
+ 
++For chamelium v3:
++
++    # For physical ports
++    [Chameliumv3:<port_id>]
++    PortName=<drm connector name>
++
++    # For MST parent ports
++    [Chameliumv3:<port_id>]
++    MstPath=<mst path of this port>
++
++    # For MST children ports
++    [Chameliumv3:<port_id>]
++    MstPath=<mst path of this port>
++    ChameliumParentID=<parent id on the chamelium side>
++
++To generate the Cv3 configuration, you can use this minimal file, the
++first chamelium test will perform an autodetection and save the result in igtrc:
++
++    [Chamelium]
++    # The URL used for connecting to the Chamelium's RPC server
++    URL=http://192.168.1.2:9992
++    ChameliumAutodetectSave=1
++
++As the chamelium is also used for emulating display, it can be useful to plug some ports during "normal" testings. To do
++so, you have to use the options ConnectOnAnyTest and, if needed, EDID. This does not work yet for MST.
++
++    [Chameliumv3:<port_id>]
++    PortName=<drm connector name>
++    ConnectOnAnyTest=true
++    EDID=<EDID name you want to plug, leave empty to get the list of supported EDID>
++
++
+ Chamelium V2 Port IDs
+ ---------------------
+ defined at: https://chromium.googlesource.com/chromiumos/platform/chameleon/+/master/chameleond/utils/ids.py
+@@ -150,12 +211,27 @@ DP2 (located next to the VGA connector) = 2
+ HDMI = 3
+ VGA = 4
+ 
+-Cv3 Port IDs
++Chamelium V3 Port IDs
+ ---------------------
+-DP1 (top left) = 0
+-DP2 (top right) = 1
+-HDMI1 (bottom left) = 2
+-HDMI2 (bottom right) = 3
++
++Four ports are available with the Cv3: 2 DP and 2 HDMI. With MST, 4 more virtual ports
++are available. Obviously, as the same physical port is connected to different hardware
++emulation, you can't plug all the chamelium ports at the same time.
++
++
++DP1, at the top left, can be used as:
++- Physical DP, port_id = 0
++- Emulated DP, port_id = 4
++
++DP2, at the top right can be used as:
++- Physical DP, port_id = 1
++- MST DP, port_id = 5, and its children 6, 7, 8
++
++HDMI1 (bottom left):
++- Physical HDMI, port_id = 2
++
++HDMI2 (bottom right):
++- Physical HDMI, port_id = 3
+ 
+ Running the Chamelium With IGT
+ ------------------------------
 
 -- 
 2.44.2
