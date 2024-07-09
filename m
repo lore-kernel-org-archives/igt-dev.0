@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED816C3DA4A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9B20C3DA49
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8030B10E5CC;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FDF910E5BE;
 	Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="WEmtkxmS";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="HTaz1qlN";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34DAF10E5A6
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:04 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A8B0420009;
- Tue,  9 Jul 2024 15:35:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F9B810E5BE
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:05 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D36BA20018;
+ Tue,  9 Jul 2024 15:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539303;
+ t=1720539304;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=aL0VKzjxDMjL7k3Lr5kIDtQyrHeL3kjS+ijmT4A8DVI=;
- b=WEmtkxmS85api16aL9P+dES7IZO2s0V1S1uIZZlg6UZoNYJLpvCFrX8awySymT08gVadN3
- GhTKwCvFg+C6OM2qBoqL4cR36Ic3vjBW+UtRfXgl3Rekv4piE4L1GQ/qfn//Pi3/nwsMuD
- gq39wHvXiq67Y2vMpKJIPA+KKog0GN+y+Nvm6kCe/5GqhSYyxL7HkVqhL3T4+yXBv6HDTM
- +tkCt706YLlQHkaq2/nSfj5TmPvwpBG5gATrdgQfkDXSgVofgCnxo/AIxidTXyec0X5dW9
- tMzAs+AekLbvvcsGubLO4O7DXGf41BzJcL96rkP6a5kWwOlz33kEYI4R2mFPRQ==
+ bh=mRZpk2oRq0AIAjSRqHKk59KEmaJ8wNZQcqFm91FlnCc=;
+ b=HTaz1qlNNRkeaV3kzAkOtyYndpdS8BX8fR8rjtPy+zjC8fpAnQIwnki3YjJNHY0gmnPTMQ
+ 6WWK5zp3HI14tTsjfkIW/2c+MeMdpj6j7YI34yY7T3jEQrMbFj32Mdw33ZYj2Y0tGZstBi
+ UOJ0UrH6XP5HQATTf/KHRw4iZHx1EEJWoqTY+NjabxnJfICcUVskX04LMcr5vdobA2LbjK
+ bx2dB/psOmrkW3oT9sZRwgrsHQMzyyOAk4D0aOxSeuaO1mQ/eByM0AoLNWXti4tnI9d6VR
+ RLFasxPwJ7vKNwEGJVxV9XE7WXykmuq9Cs1NuUOhh2dNayxGgWpFN4zFLW4GIQ==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:44 +0200
-Subject: [PATCH i-g-t v2 28/39] lib/chamelium/v3: Plug specific ports for
- all tests
+Date: Tue, 09 Jul 2024 17:34:47 +0200
+Subject: [PATCH i-g-t v2 31/39] tests/chamelium/v3: Implement basic EDID
+ handling test
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-28-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-31-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5716;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4115;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=ovphJivpyTQzOSbIOGJbH8eThCsj5IRHkUefY4/n5/Q=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViZSeIlp6Zi/lOpl4h/wsSSFxsmMRcwI2fRZ
- lxVYZDyMWeJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmQAKCRAgrS7GWxAs
- 4n3MEADWHU9EjNByLfecmc07AM06llQC5GI58eIaRuBDXmLM2uEgafWbocrieOU7phE/PSlmgjH
- LP5rVlfupRqFjSdq0KkjFOlHjWbew9FhcL8nYf/QcpHIXzfPicRZsXZnkygi0NxnoZDNXQAexuY
- GU7k9ByAXWFfYY2wbG4tfzKfTXXUAvSreQmDN01lFOHTLBOVApDir7zNh5+Itn0keMnXxPgeEuY
- Y+B7mBYfVbsNXRO4x0KQe6ztpuQ39dR5ZkOVkQvRPWfNymQTeQS599b4vqZJG4yu2X31emghNcP
- n4GwxDO7i1ItI9mFRojplAcvcj51PgGKjM7znhiz4SEktKJ/bv3EKWONahLSVt/1MFJoF0/cFB4
- Eh+qmGpggEFTv/li+t5HQDNH6GCeBuPjf9pH167RtLNAOewT4dAp+g377FR7h8v6z0aVujj3swg
- xqD+yaQikr7f23ezRKqeugtSh2550C/eQwdT0Aq+JgvYTdFmnyzEOidIhUCIlHUMMzyMCYJAyWK
- bvBMal4g8d2wNpcuvVT5oRsBZ+nT1pUyKzaTFX2fXVfuzKtU7G+P01I58as1NnHWuVnjn6WzYHW
- 1u6tljZkaYYkuluY8v0XDHKs79bc5x8RlpZiMJVdsTkB877b0i2e+anldBYN8HoBFLFBthKy5Aw
- 9LnSGHzoEj9DVOw==
+ bh=9IEK/0HJ4+yzA+JssR6c3PqurcrB786RfaaAt+UP7Bw=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjVia3XClNBu5l0YAJ4GMdahyBfcm8Z4lUjj21
+ gdfrnkFYlaJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmgAKCRAgrS7GWxAs
+ 4kwCEAC1w40fL/rIfv6RXbq8Qw1+pl+JatLYkCeBYRxAf9Hbk/WREf1xphTWe7O8pNzQAOj3daR
+ YhpICFJT+DEMxnR3b11IjJAfDXzM6djyodALofW8rFv4fp9ovoHydS15mxBRI+kgX7C5f7dClZ1
+ fxhlVQkptoUvKVGEs3k2jy87hA28p3mfV8pOi79cdEOIaOEagmF6bFIKzMzXeQo1T2EIvSqTHsL
+ gK9nqr7IIbNslksknDnI0COrwkUYMZJUVlLEGpiFJcF41Ls68usUYZETTFpVhRXsavWlp1zw8il
+ BvJqsefFFsZB0sDIOStnA75J5jcbHmoZb+JtJLJqvVoEMOnrTIzRaHsPgyac/NWdoG0YL6Ebm8v
+ OSspUg8omFaUYNz89qiWFOIxvvfLhvXZMQ3DwcxITd/3Rq0jQupEvtvWqaQJ3x1RQoXpM3ghVs8
+ Fz0SQwppJVPAjSzCJKEd3/40fIfQyJADzmduYtQ3z2Pw5IgyIpey2HrMQMh5G6hxBvqzUP6ITqv
+ d4Yyo1X6MP3RBAoWG6UhqSe8CEwlHXCKoiCYnEq3sjW+5zug7yvhih7ge2gThtefTgKyx1HGI2c
+ KZGpEYiASO/ySfAusXMcHUHnN299M7tB3GClrbJuPymGQE6UOTPlFKf5u2UbSOQd1dOiSrmZHRn
+ PEpVRIuHFXpJJJw==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,164 +77,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As the chamelium v3 does not support plugging all ports at the same time,
-something is required to identify which port must be plugged during
-non-chamelium specific tests.
+This commit introduces a new Chamelium v3 test to validate the proper
+handling of EDID data. The test uploads a custom EDID to the Chamelium and
+then confirms that the EDID data can be accurately read back from the
+kernel.
 
-Add two options in port configuration:
-- ConnectOnAnyTest: force this port to be plugged during any test
-- EDID: Set a specific EDID for this port
+This test is adapted from the v2 version.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/chamelium/v3/igt_chamelium.c | 19 ++++++++++++++
- lib/chamelium/v3/igt_chamelium.h |  7 +++++
- lib/igt_kms.c                    | 55 +++++++++++++++++++++++++++++++++++-----
- 3 files changed, 74 insertions(+), 7 deletions(-)
+ tests/chamelium/v3/kms_chamelium_v3_edid.c | 95 ++++++++++++++++++++++++++++++
+ tests/meson.build                          |  1 +
+ 2 files changed, 96 insertions(+)
 
-diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-index 51b3a610e358..736e593a465e 100644
---- a/lib/chamelium/v3/igt_chamelium.c
-+++ b/lib/chamelium/v3/igt_chamelium.c
-@@ -18,6 +18,8 @@
- #define CHAMELIUM_V3_CONFIG_MST_PATH "MstPath"
- #define CHAMELIUM_V3_CONFIG_PARENT_ID "ChameliumParentID"
- #define CHAMELIUM_V3_CONFIG_AUTODETECT_SAVE "ChameliumAutodetectSave"
-+#define CHAMELIUM_V3_CONFIG_CONNECT_ON_ANY_TEST "ConnectOnAnyTest"
-+#define CHAMELIUM_V3_CONFIG_EDID "EDID"
- 
- struct igt_chamelium_v3 {
- 	xmlrpc_env env;
-@@ -234,6 +236,23 @@ static void chamelium_v3_fill_port_mapping_from_config_v3(struct igt_chamelium_v
- 
- 			port_mapping = chamelium_v3_port_mapping_alloc();
- 			port_mapping->port_id = chamelium_port_id;
-+			port_mapping->connect_on_any_test = g_key_file_get_boolean(igt_key_file,
-+										   group_list[group_idx],
-+										   CHAMELIUM_V3_CONFIG_CONNECT_ON_ANY_TEST,
-+										   NULL);
+diff --git a/tests/chamelium/v3/kms_chamelium_v3_edid.c b/tests/chamelium/v3/kms_chamelium_v3_edid.c
+new file mode 100644
+index 000000000000..b8d750ad771d
+--- /dev/null
++++ b/tests/chamelium/v3/kms_chamelium_v3_edid.c
+@@ -0,0 +1,95 @@
++// SPDX-License-Identifier: MIT
 +
-+			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
-+					       CHAMELIUM_V3_CONFIG_EDID, NULL)) {
-+				port_mapping->edid_name = g_key_file_get_string(igt_key_file,
-+										group_list[group_idx],
-+										CHAMELIUM_V3_CONFIG_EDID,
-+										&error);
-+				if (error) {
-+					igt_info("Skipping malformed entry %s: %s\n",
-+						 group_list[group_idx], error->message);
-+					goto exit_loop;
-+				}
++#include <igt.h>
++#include "chamelium/v3/igt_chamelium.h"
++
++static void collect_and_compare_edid(int drm_fd,
++				     const struct chamelium_v3_port_mapping *port_mapping,
++				     const struct edid *edid)
++{
++	drmModePropertyBlobPtr edid_blob = NULL;
++	uint64_t edid_blob_id;
++
++	uint32_t connector_id = chamelium_v3_port_mapping_get_connector_id(port_mapping, drm_fd);
++
++	/* Force refresh of properties */
++	drmModeFreeConnector(drmModeGetConnector(drm_fd, connector_id));
++	igt_assert(kmstest_get_property(drm_fd, connector_id,
++					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
++					&edid_blob_id, NULL));
++	igt_assert(edid_blob_id);
++	edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id);
++	igt_assert(edid_blob);
++	igt_assert(memcmp(edid, edid_blob->data, edid_get_size(edid)) == 0);
++
++	drmModeFreePropertyBlob(edid_blob);
++}
++
++static void upload_and_read_edid(int drm_fd, struct igt_chamelium_v3 *chamelium,
++				 const struct chamelium_v3_port_mapping *port_mapping,
++				 const struct edid *edid)
++{
++	uint32_t connector_id;
++
++	int edid_id;
++
++	chamelium_v3_reset(chamelium);
++	edid_id = chamelium_v3_create_edid(chamelium, edid);
++	chamelium_v3_apply_edid(chamelium, port_mapping->port_id, edid_id);
++	chamelium_v3_plug(chamelium, port_mapping->port_id);
++
++	connector_id = chamelium_v3_port_mapping_get_connector_id(port_mapping, drm_fd);
++	igt_assert(igt_wait_for_connector_status(drm_fd, connector_id, 10.0,
++						 DRM_MODE_CONNECTED));
++
++	collect_and_compare_edid(drm_fd, port_mapping, edid);
++}
++
++static void igt_custom_edid_type_read(int drm_fd, struct igt_chamelium_v3 *chamelium,
++				      struct chamelium_v3_port_mapping *port_mapping,
++				      enum igt_custom_edid_type edid)
++{
++	upload_and_read_edid(drm_fd, chamelium, port_mapping, igt_kms_get_custom_edid(edid));
++}
++
++igt_main
++{
++	struct igt_chamelium_v3 *chamelium;
++	int drm_fd;
++
++	igt_fixture {
++		chamelium = chamelium_v3_init_from_config();
++		igt_assert(chamelium);
++		drm_fd = drm_open_driver(DRIVER_ANY);
++		igt_assert(drm_fd);
++		chamelium_v3_fill_port_mapping(chamelium, drm_fd);
++	}
++
++	igt_describe("Read basic EDID from the chamelium.");
++	igt_subtest_with_dynamic("edid-read-basic") {
++		struct chamelium_v3_port_mapping *port, *tmp;
++
++		igt_list_for_each_entry_safe(port, tmp, chamelium_v3_get_port_mapping(chamelium),
++					     link) {
++			igt_dynamic_f("port-%d", port->port_id) {
++				char *name;
++
++				igt_require(!chamelium_v3_is_mst(chamelium, port->port_id));
++
++				name = chamelium_v3_get_port_name(chamelium, port->port_id);
++				igt_info("Testing port %s (%s)\n", port->connector_name, name);
++				free(name);
++
++				igt_custom_edid_type_read(drm_fd, chamelium, port,
++							  IGT_CUSTOM_EDID_BASE);
++				igt_custom_edid_type_read(drm_fd, chamelium, port,
++							  IGT_CUSTOM_EDID_ALT);
 +			}
- 
- 			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
- 					       CHAMELIUM_V3_CONFIG_PORT_NAME, NULL)) {
-diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-index 90d2a7473894..834f446f4317 100644
---- a/lib/chamelium/v3/igt_chamelium.h
-+++ b/lib/chamelium/v3/igt_chamelium.h
-@@ -18,6 +18,9 @@ typedef int chamelium_edid_id;
-  * the chamelium
-  *
-  * @port_id: Chamelium port ID.
-+ * @connect_on_any_test: if true, this port will be connected, even for tests that are not
-+ *                       chamelium-specific
-+ * @edid_name: When using @connect_on_any_test, set this specific EDID to the port
-  * @connector_name: DRM connector name, used to identify the connector in DRM, mutually exclusive
-  *		    with @mst_path
-  * @mst_path: MST path property, used to identify the connector in DRM, mutually exclusive with
-@@ -29,6 +32,10 @@ typedef int chamelium_edid_id;
- struct chamelium_v3_port_mapping {
- 	chamelium_v3_port_id port_id;
- 
-+	/* Using chamelium to emulate a display */
-+	bool connect_on_any_test;
-+	char *edid_name;
-+
- 	/* For normal DRM connector */
- 	char *connector_name;
- 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 6c2b7cc4f5bd..a30bb483594c 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -49,6 +49,8 @@
- #include <time.h>
- 
- #include <i915_drm.h>
-+#include <chamelium/v3/igt_chamelium.h>
-+#include <monitor_edids/monitor_edids_helper.h>
- 
- #include "drmtest.h"
- #include "igt_kms.h"
-@@ -2883,14 +2885,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (!resources)
- 		goto out;
- 
--/*
-- * FIXME: Dirty hack to avoid those lines when chamelium v3 is used
-- *
-- * Must be replaced with a configuration file information, so the end user can choose if the
-- * chamelium must be connected or not.
-- */
- #ifdef HAVE_CHAMELIUM_V2
--#ifndef HAVE_CHAMELIUM_V3
- 	{
- 		struct chamelium *chamelium;
- 
-@@ -2906,6 +2901,52 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 		}
- 	}
- #endif
-+
-+#ifdef HAVE_CHAMELIUM_V3
-+	{
-+		struct igt_chamelium_v3 *chamelium = chamelium_v3_init_from_config();
-+
-+		if (chamelium) {
-+			struct chamelium_v3_port_mapping *mapping, *tmp;
-+
-+			chamelium_v3_reset(chamelium);
-+			chamelium_v3_fill_port_mapping(chamelium);
-+
-+			igt_list_for_each_entry_safe(mapping, tmp,
-+						     chamelium_v3_get_port_mapping(chamelium),
-+						     link) {
-+				if (mapping->connect_on_any_test && !chamelium_v3_is_mst(chamelium, mapping->port_id)) {
-+					int edid_id = CHAMELIUM_DEFAULT_EDID;
-+
-+					igt_info("Plugging port %s\n", mapping->connector_name);
-+					if (mapping->edid_name) {
-+						struct edid *edid = get_edid_by_name(mapping->edid_name);
-+
-+						if (edid)
-+							edid_id = chamelium_v3_create_edid(chamelium,
-+											   edid);
-+						else
-+							igt_warn("Impossible to find an edid named \"%s\". Available names:\n",
-+								 mapping->edid_name);
-+							list_edid_names(IGT_LOG_WARN);
-+					}
-+					if (edid_id == CHAMELIUM_DEFAULT_EDID)
-+						igt_info("\tUsing default EDID\n");
-+					else
-+						igt_info("\tUsing edid: %s\n", mapping->edid_name);
-+
-+					chamelium_v3_apply_edid(chamelium, mapping->port_id,
-+								edid_id);
-+					chamelium_v3_plug(chamelium, mapping->port_id);
-+					igt_require(igt_wait_for_connector_status(drm_fd,
-+										  chamelium_v3_port_mapping_get_connector_id(mapping, drm_fd),
-+										  igt_default_detect_timeout(),
-+										  DRM_MODE_CONNECTED));
-+				}
-+			}
-+			chamelium_v3_uninit(chamelium);
 +		}
 +	}
- #endif
++
++	igt_fixture {
++		chamelium_v3_uninit(chamelium);
++		drm_close_driver(drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index e36ae9b18ffc..ebaf1cb9ebb2 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -326,6 +326,7 @@ chamelium_v2_progs = [
  
- 	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+ chamelium_v3_progs = [
+ 	'kms_chamelium_v3_basic',
++	'kms_chamelium_v3_edid',
+ ]
+ 
+ test_deps = [ igt_deps ]
 
 -- 
 2.44.2
