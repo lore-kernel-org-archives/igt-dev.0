@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B334C3DA47
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D892FC3DA4B
 	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:34:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0355110E599;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91D2D10E5B2;
 	Tue,  9 Jul 2024 15:34:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="U9RVQsJE";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Bou0feu5";
 	dkim-atps=neutral
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA75710E5A7
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:34:53 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4413420007;
- Tue,  9 Jul 2024 15:34:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBAD410E5A6
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:34:54 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6FAA420012;
+ Tue,  9 Jul 2024 15:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539292;
+ t=1720539293;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=Cp9KN+ph0UvbHzFYhJ7nXT8Pw9+WmbAGSVRDQomKCEI=;
- b=U9RVQsJER+ACHSZg31gMLlXvtIjjOQ1xNQA+8h3aEW7VFuXZF5h81U6MaqIgnLlGQdSOa3
- cCxAmKatBhLQ1+LTMo3pg+RG8crBQNrliF6yLjf+4xAHt1koNcX795FOxrO77tzrqRqdV6
- OWPIi4NOQRRotaMy/uSEkhsdjWraV4618u8epyTgRxUCU1QjFp4fKRVe6f1pKZmoadsTQc
- bhNt+hZzA8lar0UfhPzbNZcdqCEk/dkd42+LZiuq/htMyDZFKw1ruV8ZG36jpVlEaqEoC0
- 71Rfmlzzzy9IXCtF1AfO+3oUHaT34biy2psnHEDAwZrZbZ9VG+VSIa2vqQfsIw==
+ bh=zhNHJ9J4xx7gXKTDgECd1PVaiUqutfIKNzAYByyRWTo=;
+ b=Bou0feu5CECpn9wIIa7y6q3hPlUXZn3eFkb1psYQSBRvanyUvKzxaQ4eqngmKvywlfWuSF
+ a/1OmnCldrEqeQBlV/HgFdle3Pv5IqGGT2QkF6cH8AqqAKvjwRNy/oMGmI3vWPUIDvjF2f
+ 9c1E5COv/yagbEv8wWn27SHC4QE2smPMRboPPi3ujUEQCaarOfX6A9yLkYnKgGPVLSRTBE
+ xYhw7iosdxGGIju1bHnuSwtYiJkfeLJESmGIBxbxcv3Aadu4xflcZQNMhlvekrwe1rjKwt
+ JRD3XNiRAg8YNrO+hyQu8K7CpOvSoPBy7SgL5ITLwegVo4e9WdL8R/+P1OtXXg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:18 +0200
-Subject: [PATCH i-g-t v2 02/39] lib/igt_kms: Add helper to wait for a
- specific status on a connector
+Date: Tue, 09 Jul 2024 17:34:21 +0200
+Subject: [PATCH i-g-t v2 05/39] lib/igt_kms: Add function to get valid pipe
+ for specific output
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-2-5adfc6985778@bootlin.com>
+Message-Id: <20240709-dev-remove-static-ports-v2-5-5adfc6985778@bootlin.com>
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
 Cc: Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2286;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1717;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=ScAMIwFiMzNbIH8QJW3RAmR9a6BRZTet8OAqzadB7mk=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViW6u+b+6Erkr54EiNrlztpd2wbeVo7b18fK
- 7X+mbPu4K2JAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YlgAKCRAgrS7GWxAs
- 4ilQD/9p2LmXjzof6FZ9k/kLi8el4XAipDBXHTn4H4ePYlR3qMIt2Y6YUHK863qUJyYRyR2Yd9n
- LqSc0/mtYybehAhjLbig8yrKVNrN97VIi79ALHHiYBewKIrTUFyQKyxhG05tcFMzvsY/Ju5qn2Z
- mstQ84X8inOsxGa1xEhuE6eq7qCMoag5EWFbSQThv1LaYqP4/Rq5D89yYk4CzmftLOENRucMUjT
- rNOETUeCPzrqoKdywVu2BJMxWg75aBQDxZQlYGYq1ZVzF2ScrmzFe0FXJs/z+Oq2vuO7mTYpO4P
- MPf2pzWUVpcq4jzIUz6kYq9kBlOC+ZHmz7Qi5Gywb/xGadURpDCEOARepmgosZECml6UXSEcfMq
- 6LyvyuDsLfYc5bQ8gbEY83JfdF3ZXKF7HyQQweTxK3Vg03+++nghP9H5JypTS+/aNEhbu7fnPwL
- o3clTUoVkL6YjXmQ4dXp4vSsYWjLVcrR9BXDIOvYGR/jQm3HN2NHjQ1wkO/7Ix3pthZSg+aIou/
- GDCVrBr1lO3v97ndm1zxmdBZMbaYdIR0TIz6pErJ4kD3g6iPg7FexXEyvsgZiMbFHGGT3URFaNm
- mmck1YHWOd5ZHfUwhad+O1+ZPjSIYnzZnR6CaFSCfu6rC6oBWhiBa3ViwPAgRxZX6dLDTMEbRfz
- F3b3zN1A4uzBA1g==
+ bh=VI2y28qRl3Tw7s/vAvA8kxHqymWNiHTmXdkrqVqYIlU=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViWckFLEpu2J+h55shqR9SigF3CNRv7MyMkx
+ Ux/A49YekKJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YlgAKCRAgrS7GWxAs
+ 4juvD/4o/5qe+kgqoxUy5ueUTEJZ3KloeQhyv1Kragw4VM9jeieC/Q9KYmcua6RZesZAIdYm8+N
+ UJ1ExBkhztf46/JVaz+MP8Lx1dxXUPZSyi56n8IM6Sbapyd7FSvy9PJNiOuFDsigVvtwkZiDgJl
+ amejZVxWUZHmck1VLWcj+bVQ3brS1Mc5+epCgSUUOY5GEF2Xz4dYpl+47whnJQA7DFOm1gQBs7J
+ bPlieNJZDEAXJ5mtwPsFit0Nq/spkI4MwZU5Xvz+jgnSphgP/P8nHS3dSFEgNSP65D4IL3tF4bU
+ 8gQiEaqdka/hHwLVyXvhXwFx+dDWHlGinRn17Ni/nw2WcxZ9I9N3vDRGB87d+Xc0OviQO7x+sLa
+ 7Vzrs7f2aw4dR64kiwi+qf9/qqQp+ocgWyRkIK5mmMDIyUr87zwhOiz4ukp/VS5JYDOkun/t9Cy
+ svuYsSEK/ezaHJWO/1BZ6iTHLrwRAVy4Y36Gaf6SSonNGxZF3WWfECGvgQO0tFAAn8tCBZSFQs8
+ zGN+N3ek1smT264yaz7QZmXaza7aJ8PL1SzbVAnBBzzBUxJnZEdeI6A56rDnqoQ1M75m4GXsHQN
+ MeiP5OHSWDwlS2OirlaUoHtFqKta9xNBI+/PExO9Fa0ubs4h6Ct2I4u80kKxDqS1ToqWShCZUIU
+ /ytW1AxHxTEg6iQ==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -77,75 +77,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-During testing with chamelium, it is frequent to wait for a specific
-connector status. This new helper is polling the DRM API to wait for this
-status. This allows detecting new status without notifier systems (which
-can fail if hot plug detection is not working properly on the device under
-test.
+Introduces a new function igt_get_pipe_for_output in igt_kms. The function
+is designed to retrieve a valid pipe for a specific output in a display.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/igt_kms.c | 38 ++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 +++
- 2 files changed, 41 insertions(+)
+ lib/igt_kms.c | 19 +++++++++++++++++++
+ lib/igt_kms.h |  1 +
+ 2 files changed, 20 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 4877da4c6c9d..bb4c065ab4ed 100644
+index 9669b5004e39..45e0eec72d12 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -6686,3 +6686,41 @@ float igt_default_detect_timeout(void)
- 
- 	return timeout;
+@@ -6875,3 +6875,22 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
+ 	drmModeFreeResources(res);
+ 	return 0;
  }
 +
 +/**
-+ * igt_wait_for_connector_status - Wait for at most @timeout that the connector @connector_id
-+ * status become @drm_mode
-+ *
-+ * @drm_fd: drm file descriptor
-+ * @connector_id: connector to monitor
-+ * @timeout: maximum duration to wait, in second
-+ * @drm_mode: mode to wait for, see enum drmModeConnection
-+ *
-+ * Returns: true when the status is reached, false if there is a timeout
++ * igt_get_pipe_for_output - Get a valid pipe for a specific output
++ * @display: display to fetch the pipes
++ * @output: output to use
 + */
-+bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-+				   int drm_mode)
++enum pipe igt_get_pipe_for_output(igt_display_t *display,
++				  igt_output_t *output)
 +{
-+	drmModeConnector *connector;
-+	struct timespec start, end;
++	enum pipe pipe;
 +
-+	if (timeout == 0.0)
-+		timeout = igt_default_detect_timeout();
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+	clock_gettime(CLOCK_MONOTONIC, &end);
-+
-+	while (igt_time_elapsed(&start, &end) <= timeout) {
-+		connector = drmModeGetConnector(drm_fd, connector_id);
-+		if (connector && connector->connection == drm_mode) {
-+			free(connector);
-+			return true;
-+		}
-+		free(connector);
-+		clock_gettime(CLOCK_MONOTONIC, &end);
++	for_each_pipe(display, pipe) {
++		if ((igt_output_is_connected((output)) &&
++		     (output->config.valid_crtc_idx_mask & (1 << (pipe)))))
++			return pipe;
 +	}
 +
-+	igt_debug("Timeout waiting for connection status %d on connector %d\n", drm_mode,
-+		  connector_id);
-+	return false;
++	igt_assert_f(false, "No pipe found for output %s\n", igt_output_name(output));
 +}
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f89e1be86b30..ba8658ce45e5 100644
+index a7c80372ec6b..bfa1ca41e5a4 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -1233,4 +1233,7 @@ int get_num_scalers(int drm_fd, enum pipe pipe);
+@@ -1239,5 +1239,6 @@ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
+ drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name);
+ uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
+ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
++enum pipe igt_get_pipe_for_output(igt_display_t *display, igt_output_t *output);
  
- float igt_default_detect_timeout(void);
- 
-+bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
-+				   int drm_mode);
-+
  #endif /* __IGT_KMS_H__ */
 
 -- 
