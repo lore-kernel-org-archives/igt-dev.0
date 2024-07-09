@@ -4,27 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6298BC2BD09
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 14:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C688DC3DA41
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:34:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2045F10E099;
-	Tue,  9 Jul 2024 14:24:57 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3E4DF10E099;
- Tue,  9 Jul 2024 14:24:56 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4279153790030629534=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6955B10E5A7;
+	Tue,  9 Jul 2024 15:34:54 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="fb+v27dd";
+	dkim-atps=neutral
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F5D510E5AE
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:34:53 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 538BE20005;
+ Tue,  9 Jul 2024 15:34:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1720539291;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=I/4yx7VgLnepYCJ35U3YFLIvqUjVci/AWz6KOjIZHcc=;
+ b=fb+v27dd0Wh8PIws/fHDvlbq20XMXHX1XtSsBqmkPrcNlfJeqTyhdoClR6L5MGclBiaj5E
+ FsLVD34tTrOXfLfGfmkiQtqlcnEA1SqD3azzFx0VzdfBMOg0ISSf28f5sKXEFvOsr9UpaM
+ IcNxTt1+o9R1SHn/P47fxZIxeVfYrv4ea0V7ehOb+vLjZUjrV/NK1HJkEp7bBRO9qkc7d+
+ afuTxmjX7Z/yOM7V0AYtDXmlGePyHQjtL2ARMVbA7vUYzET7Dmk6foQ4Rh+dvEE+IcLHS5
+ EOCFETB+JE65ijCU6jkwMVThWKupENRitMLWQEaTtDxfLP5lrLI1ra93uW4MYg==
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: [PATCH i-g-t v2 00/39] tests/chamelium: Integrate the chamelium v3
+Date: Tue, 09 Jul 2024 17:34:16 +0200
+Message-Id: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel-ci/xe=2Eblockli?=
- =?utf-8?q?st=3A_Add_SR-IOV_tests_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jakub Kolakowski" <jakub1.kolakowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 09 Jul 2024 14:24:56 -0000
-Message-ID: <172053509624.86477.13651319625845938549@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240709134224.653830-1-jakub1.kolakowski@intel.com>
-In-Reply-To: <20240709134224.653830-1-jakub1.kolakowski@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHhYjWYC/3WNzQ6DIBCEX8XsudsgFfpz6ns0HkAX3aSKAULaG
+ N+9hHuP30zmmx0iBaYIj2aHQJkj+7WAPDUwzGadCHksDFLITigpcaSMgRafCWMyiQfcfEgR75e
+ bdM5a13YaynoL5PhTzS9gnDBBX+KZY/LhW/9yW8uq1kL9VecWBWqtnFT2arrRPq336c3refAL9
+ Mdx/ACRPJwYxwAAAA==
+To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
+ thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7262;
+ i=louis.chauvet@bootlin.com; h=from:subject:message-id;
+ bh=B3eECCix2qrqZfTYkSzwuOuG4yioXRdzswywCnh9EhM=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjViRGyQfQvCxUWaMKCVAHHOr52Jy5GsRZLDBA
+ /i5xkBtmvGJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YkQAKCRAgrS7GWxAs
+ 4i3OEACnbXt32MsqviBCbvtAKOh5dryO9n0Y7M6teTtl+EOoTkrU/kojOM5yqQn4K5OsPkWvZ1E
+ VXaNZOIR84JRFajWFyEqZA5t+Lpdx5reGWWaS0UNlIQOJQTNekBGx9xGVPzeLNFRjrKPUluZWv+
+ v/J6t09GdPAUH2V/0xL3K2Yig3d8NRnybS3NcBZutFy7Kn4USRcG3XAdbCc4+whL8MBBvjY+MSr
+ m0qhExdjpRN/rmh1NZ49MD2iuyWFt0+LPgl+Xj61dtm6/XSmT484z0vMv14Bd/k287pCqy/Aiyy
+ +Qtnaj+na9hyfDQmGe9JcBfXKRsoGXjcRBwmM9slmztazuRpcuz1xk1nzBcyMpplxbbh2VqVzK+
+ B9n6joVuxZri9SRXm4mn+7ZKCzrbAHY/JGKDnk0zkffuWUdLLVtge0AGj2Lp5jALiLVswC9k3tS
+ mPiadAV3/dfFhdJbmIErTTwlNi4xcLPhltkFYxjBRfZaHbhNoCfqgmUApZ8EsPRbpv+vcEFOUOs
+ czpv1HEqWhBTa0l/iFEZMQq+2SznHSlbbIKKazN2BmR6rQ5+qD+ADNlytLd7jGRpKhThiBsjVqR
+ gFd55vBm841p9vF1cI9ohxaTIcotwep6NygGCjJbck68idErOXG+47WKkmvmPqy7UUPivSY+02Z
+ iQZtLvQa4kbg5SA==
+X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
+ fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,264 +74,141 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4279153790030629534==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi all,
 
-== Series Details ==
+This patch series introduces a new wrapper for the Chameleon v3 board, a
+testing tool used primarily for Chromebooks, but also by community members
+to increase test coverage of graphic devices. The Chameleon v3 is an
+upgrade from its predecessor, with the ability to emulate 2 HDMI and 2
+DisplayPort devices, including MST devices.
 
-Series: tests/intel-ci/xe.blocklist: Add SR-IOV tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/135893/
-State : success
+The board can read and analyze any stream on the DisplayPort and HDMI
+cables, and even take captures, making it an ideal tool for testing
+hardware, driver, and user space behavior in specific situations, such as
+screen hotplugging and multiple MST screens. However, the changes between
+the v2 and v3, such as the addition of MST support and the removal of CRC
+for screen captures, would require significant modifications to the
+existing tests and wrappers.
 
-== Summary ==
+To avoid this complexity and ensure that the Chameleon v3 is fully
+supported and the v2 is not broken, I wrote a new wrapper with
+simplicity and ease of use in mind. The Chameleon v3 wrapper should only
+manage the Chameleon itself, without the need for DRM displays, EDID
+caching/modifications, or state machines. This approach will make it
+easier for developers to use the Chameleon v3 and contribute to its
+development.
 
-CI Bug Log - changes from CI_DRM_15048 -> IGTPW_11387
-====================================================
+I will use this work to create many new tests (that will come in future
+series):
+- MST managment
+- Tiled displays emulation
+- Suspend/Resume
+- Hardware overlay planes
 
-Summary
--------
+This series can be divided in multiple parts:
+ - PATCH 1-5: Adding few helpers to igt_kms
+ - PATCH 6-10: Add few helpers to minotor_edid
+ - PATCH 10-14: Split chamelium v2 and chamelium v3 support
+ - PATCH 15-18: Create a basic test listing available port on the
+   chamelium
+ - PATCH 19-27: Add port mapping configuration and autodetection
+ - PATCH 28-38: Add basic EDID tests
+ - PATCH 39: Add documentation
 
-  **SUCCESS**
+As most of the series is preparation work, I sent all the patches today,
+but if required I can split the series in multiple smallest series.
 
-  No regressions found.
+---
+Changes in v2:
+- Mainly splitting and cleaning work since the RFC,
+EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v1: https://lore.kernel.org/r/20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/index.html
+---
+Louis Chauvet (39):
+      lib/igt_kms: Add a detect timeout value
+      lib/igt_kms: Add helper to wait for a specific status on a connector
+      lib/igt_kms: Add function to list connected connectors
+      lib/igt_kms: Add helper to obtain a connector by its name or MST path
+      lib/igt_kms: Add function to get valid pipe for specific output
+      lib/monitor_edids: Add helper functions for using monitor_edid objects
+      lib/monitor_edids: Add helper to get an EDID by its name
+      lib/monitor_edids: Add helper to print all available EDID names
+      lib/monitor_edids: Fix missing names in some monitor EDID
+      lib/monitor_edids: Add new EDID for HDMI 4k
+      tests/chamelium: Extract Chamelium v2 tests into a separate directory
+      lib/chamelium/v2: Extract chamelium v2 wrapper into its own directory
+      lib/chamelium/v2: Modify build options to separate Chamelium v2 and v3
+      lib/chamelium/v3: Introduce the foundation for the Chamelium v3 wrapper
+      lib/chamelium/v3: Introduce initialization and cleanup of Chamelium-related structures
+      lib/chamelium/v3: Add method to discover Chamelium ports
+      lib/chamelium/v3: Implement method to retrieve Chamelium port names
+      tests/chamelium/v3: Implement a basic Chamelium v3 accessibility test
+      lib/chamelium/v3: Implement Chamelium reinitialization via Reset RPC call
+      lib/chamelium/v3: Implement methods for plugging Chamelium ports
+      lib/chamelium/v3: Implement methods for managing Chamelium EDID
+      lib/chamelium/v3: Implement Chamelium configuration parsing
+      lib/chamelium/v3: Log port mapping for debugging purposes
+      lib/chamelium/v3: Introduce new configuration format for MST support
+      lib/chamelium/v3: Provide access to port_mapping via method call
+      lib/chamelium/v3: Implement helper function to get port mapping from Chameleon port id
+      lib/chamelium/v3: Implement helper function to retrieve connector from port mapping
+      lib/chamelium/v3: Plug specific ports for all tests
+      lib/chamelium/v3: Implement Chamelium port autodetection algorithm
+      lib/chamelium/v3: Add save option to avoid doing autodetection every time
+      tests/chamelium/v3: Implement basic EDID handling test
+      tests/chamelium/v3: Implement 4K EDID stress test
+      tests/chamelium/v3: Implement non-4K EDID stress test
+      lib/chamelium/v3: Implement method to discover video signal status
+      tests/chamelium/v3: Implement test for DRM device resolution
+      lib/chamelium/v3: Implement hot plug toggle scheduling method
+      tests/chamelium/v3: Add test for display change detection during sleep
+      tests/chamelium/v3: Add MST EDID reading test
+      docs: Add Chamelium v3
 
-Participating hosts (39 -> 38)
-------------------------------
+ docs/chamelium.txt                              |   90 +-
+ docs/testplan/meson.build                       |    4 +-
+ lib/{ => chamelium/v2}/igt_chamelium.c          |    2 +-
+ lib/{ => chamelium/v2}/igt_chamelium.h          |    0
+ lib/{ => chamelium/v2}/igt_chamelium_stream.c   |    2 +-
+ lib/{ => chamelium/v2}/igt_chamelium_stream.h   |    0
+ lib/chamelium/v3/igt_chamelium.c                | 1191 +++++++++++++++++++++++
+ lib/chamelium/v3/igt_chamelium.h                |   89 ++
+ lib/igt.h                                       |    6 +-
+ lib/igt_core.c                                  |    3 +
+ lib/igt_kms.c                                   |  287 +++++-
+ lib/igt_kms.h                                   |   17 +
+ lib/meson.build                                 |   16 +-
+ lib/monitor_edids/dp_edids.h                    |    3 +
+ lib/monitor_edids/hdmi_edids.h                  |   27 +-
+ lib/monitor_edids/monitor_edids_helper.c        |   92 +-
+ lib/monitor_edids/monitor_edids_helper.h        |   10 +-
+ lib/tests/meson.build                           |    8 +-
+ meson.build                                     |   45 +-
+ meson_options.txt                               |    8 +-
+ tests/chamelium/{ => v2}/kms_chamelium_audio.c  |    0
+ tests/chamelium/{ => v2}/kms_chamelium_color.c  |    0
+ tests/chamelium/{ => v2}/kms_chamelium_edid.c   |    2 +-
+ tests/chamelium/{ => v2}/kms_chamelium_frames.c |    0
+ tests/chamelium/{ => v2}/kms_chamelium_helper.c |    0
+ tests/chamelium/{ => v2}/kms_chamelium_helper.h |    0
+ tests/chamelium/{ => v2}/kms_chamelium_hpd.c    |    0
+ tests/chamelium/v3/kms_chamelium_v3_basic.c     |   30 +
+ tests/chamelium/v3/kms_chamelium_v3_edid.c      |  419 ++++++++
+ tests/kms_color_helper.h                        |    2 +-
+ tests/kms_feature_discovery.c                   |    6 +-
+ tests/kms_tiled_display.c                       |    6 +-
+ tests/meson.build                               |   45 +-
+ 33 files changed, 2348 insertions(+), 62 deletions(-)
+---
+base-commit: 9683de1314f7fb9204fc4d8baf193a52adda9b59
+change-id: 20240522-dev-remove-static-ports-9382ffbbf146
 
-  Additional (2): bat-atsm-1 fi-elk-e7500 
-  Missing    (3): bat-dg1-7 bat-dg2-11 fi-snb-2520m 
+Best regards,
+-- 
+Louis Chauvet <louis.chauvet@bootlin.com>
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11387 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_mmap@basic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][1] ([i915#4083])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@gem_mmap@basic.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][2] ([i915#4079]) +1 other test skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-atsm-1:         NOTRUN -> [SKIP][3] ([i915#6621])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@i915_pm_rps@basic-api.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-adlp-6:         [PASS][4] -> [INCOMPLETE][5] ([i915#9413])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15048/bat-adlp-6/igt@i915_selftest@live@workarounds.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-adlp-6/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_addfb_basic@size-max:
-    - bat-atsm-1:         NOTRUN -> [SKIP][6] ([i915#6077]) +37 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_addfb_basic@size-max.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][7] ([i915#6078]) +22 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-
-  * igt@kms_force_connector_basic@prune-stale-modes:
-    - bat-atsm-1:         NOTRUN -> [SKIP][8] ([i915#6093]) +4 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_force_connector_basic@prune-stale-modes.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-atsm-1:         NOTRUN -> [SKIP][9] ([i915#1836]) +6 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-elk-e7500:       NOTRUN -> [SKIP][10] +24 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  * igt@kms_prop_blob@basic:
-    - bat-atsm-1:         NOTRUN -> [SKIP][11] ([i915#7357])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_prop_blob@basic.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-atsm-1:         NOTRUN -> [SKIP][12] ([i915#6094])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-mmap:
-    - bat-atsm-1:         NOTRUN -> [SKIP][13] ([i915#4077]) +4 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@prime_vgem@basic-fence-mmap.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-atsm-1:         NOTRUN -> [SKIP][14] +2 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@prime_vgem@basic-write.html
-
-  
-  [i915#1836]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1836
-  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
-  [i915#6077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#6093]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6093
-  [i915#6094]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6094
-  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
-  [i915#7357]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7357
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7920 -> IGTPW_11387
-
-  CI-20190529: 20190529
-  CI_DRM_15048: b517815c3f82589b802e2dccb11c8585fda13979 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11387: 11387
-  IGT_7920: 7920
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/index.html
-
---===============4279153790030629534==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel-ci/xe.blocklist: Add SR-IOV tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135893/">https://patchwork.freedesktop.org/series/135893/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15048 -&gt; IGTPW_11387</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Additional (2): bat-atsm-1 fi-elk-e7500 <br />
-  Missing    (3): bat-dg1-7 bat-dg2-11 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11387 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_mmap@basic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15048/bat-adlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-adlp-6/igt@i915_selftest@live@workarounds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@size-max:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_addfb_basic@size-max.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077">i915#6077</a>) +37 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +22 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6093">i915#6093</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1836">i915#1836</a>) +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html">SKIP</a> +24 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_prop_blob@basic:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7357">i915#7357</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6094">i915#6094</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-mmap:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11387/bat-atsm-1/igt@prime_vgem@basic-write.html">SKIP</a> +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7920 -&gt; IGTPW_11387</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15048: b517815c3f82589b802e2dccb11c8585fda13979 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11387: 11387<br />
-  IGT_7920: 7920</p>
-
-</body>
-</html>
-
---===============4279153790030629534==--
