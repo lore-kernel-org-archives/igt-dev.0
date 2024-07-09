@@ -4,62 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A06F7C3DA41
-	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:35:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EA64C2BD09
+	for <igt-dev@archiver.kernel.org>; Tue,  9 Jul 2024 15:47:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60A1D10E5D2;
-	Tue,  9 Jul 2024 15:35:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1AB410E5C2;
+	Tue,  9 Jul 2024 15:47:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Uxr2UQXN";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="SO5BApn3";
 	dkim-atps=neutral
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
- [217.70.183.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 326FE10E5C0
- for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:35:08 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A779620010;
- Tue,  9 Jul 2024 15:35:06 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
+ [217.70.183.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8913810E59C
+ for <igt-dev@lists.freedesktop.org>; Tue,  9 Jul 2024 15:47:09 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7B82760003;
+ Tue,  9 Jul 2024 15:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1720539307;
+ t=1720540027;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=9iLdbcaX83bzc+WhrzNb3+OUwT8KIY9uztI5JvL6ReQ=;
- b=Uxr2UQXNqYgSWWL90ngyb5E2ETyvZQcOeeNyx2+pODXzwzSK4qRYDLw9AyoHQ4V96lmPXm
- WOWxcwIi6NFZGROdDaWFMu2tIFAU2RaY0y/UzjUVIDDdX4Knwedcoqx5IxE2rhXDmamgN7
- sOUwKsKGp1HLZ8yVnUl2TysKpd6SKbmsDqpVWtI2n56MNv8f2W1jeh/27k29iAD/HfuuS8
- /GvbnQRoYUMvptoPYaQ9pR0cPK0+/320GYqLgiQNQFSXnRmikIU4a62FUGXH1jYuxa6kKo
- QUSNTuZKmRXqn2vkVd14djT/05J3mCG36T0ZWLpdJFxug111kTR2Q/YA9QQKEw==
+ bh=HAjKl3esPqgJZ26Lwx0lwcA5nL4UmIffgQ+G7WqWQo8=;
+ b=SO5BApn3wpXbXwZaSFt1IrdD0c06VAFq2a+vihIuTRXKOUMVrgGPd0SReOD0TDoDoKBQ6a
+ BcxK1D06g1Wcue36Y7fjcR5iTLTME5BpI6iXONOEf/+wudc/BakiOPzwQrFyoxSN5xo8Ht
+ j8bs4N4ATdF56VfWXm3RTFoz0FpeiV5SFz3SBT2kGeXgcfDmHl/ITxPJ7ZgsSaNSHPuLZq
+ U/2ONu/EPPdA1QiPDhbsEaU/x6WvdDFb8qELZKhqHoZLUlS/mURKPZG/qOPJVT63iRchnA
+ fO8e/IO1lfv4rJT//py5ZD4dQkINrVwysUqA3aN2oAIwFk0ktbHRNWZTXOO40Q==
+Date: Tue, 9 Jul 2024 17:47:05 +0200
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 09 Jul 2024 17:34:54 +0200
-Subject: [PATCH i-g-t v2 38/39] tests/chamelium/v3: Add MST EDID reading test
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240709-dev-remove-static-ports-v2-38-5adfc6985778@bootlin.com>
-References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
-In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
-To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
+To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com,
  thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3901;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=GZgECYoO17zsIwTWLY4nFc/5USeIYbN0PNDXhT0vngw=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjVia3qPfOwNDcYpwOXswpFHPnRSGgUNME7itm
- de+QQCrEgWJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo1YmgAKCRAgrS7GWxAs
- 4rFTD/wLPFMl3Qsb3khKDw7DNPgv7DCiEy4rd+aopeIOvlUoCEZjPno2vMqNvg3xGmYQ/rHsy9A
- WhA/18yE2LtgARVU9hK/h6F6gl9eBnUAzM7W3PYWIbw67Vs/12kccJ0RFxLDPDs1vd2X7ETJJlZ
- H+uFB3hPOJ2tZUjmGj1CI1HHDHGwQDOT6wiEZ9gQoPmn6EX0t6E+X3UsnWGGfBWAGqGcblHJwZP
- VDSDT1c6RiidUBBVsXCQ+5Lc0kBU1p28ZnEJ0yCYGubRk6P7z/1yJzTFgL3oHcbgxT8UyzVEruI
- U1eKgQ3x5u0JNOuVD/h2T+JBPGba+VuPasje3z1blROWnhVLribIDK34HPKUzESAi2k43ZLjL4P
- QmZAQ8abrdiCl73WOP+tisWrSnJr5JeZLZXM3ISRLH3KmRB0M3+7S61nZhSUvC12SgB6BnHpiLX
- NNFgxY9V9EbSGE89oic1M8HUc4PR80K+7T7DofrlR00hlP0XXZX1xQE+lSf3amQR36wsGPVvRxG
- Ruv8esYjN0wg3TD7iVqpq6P3ABUjAu+KWKnEMYDyywuo2h0dpdh2iJUrnBw8d1ID8fAwuxXJXNc
- KfKuuz11LdYs9zEc7R51emjvifNFL5wmLtdgQ5qeq1d1vSFaBl0eUTqNGWAsTF/SMs/zCOvWfaV
- GCfRUrbYMQJ3W+w==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+Subject: Re: [PATCH i-g-t v2 00/39] tests/chamelium: Integrate the chamelium v3
+Message-ID: <Zo1bedM3zWHGd3g3@louis-chauvet-laptop>
+References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
 X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -76,119 +58,150 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This commit introduces a new test for the Chameleon V3 display adapter to
-ensure that EDID is correctly read from MST ports.
+Le 09/07/24 - 17:34, Louis Chauvet a écrit :
+> Hi all,
+> 
+> This patch series introduces a new wrapper for the Chameleon v3 board, a
+> testing tool used primarily for Chromebooks, but also by community members
+> to increase test coverage of graphic devices. The Chameleon v3 is an
+> upgrade from its predecessor, with the ability to emulate 2 HDMI and 2
+> DisplayPort devices, including MST devices.
+> 
+> The board can read and analyze any stream on the DisplayPort and HDMI
+> cables, and even take captures, making it an ideal tool for testing
+> hardware, driver, and user space behavior in specific situations, such as
+> screen hotplugging and multiple MST screens. However, the changes between
+> the v2 and v3, such as the addition of MST support and the removal of CRC
+> for screen captures, would require significant modifications to the
+> existing tests and wrappers.
+> 
+> To avoid this complexity and ensure that the Chameleon v3 is fully
+> supported and the v2 is not broken, I wrote a new wrapper with
+> simplicity and ease of use in mind. The Chameleon v3 wrapper should only
+> manage the Chameleon itself, without the need for DRM displays, EDID
+> caching/modifications, or state machines. This approach will make it
+> easier for developers to use the Chameleon v3 and contribute to its
+> development.
+> 
+> I will use this work to create many new tests (that will come in future
+> series):
+> - MST managment
+> - Tiled displays emulation
+> - Suspend/Resume
+> - Hardware overlay planes
+> 
+> This series can be divided in multiple parts:
+>  - PATCH 1-5: Adding few helpers to igt_kms
+>  - PATCH 6-10: Add few helpers to minotor_edid
+>  - PATCH 10-14: Split chamelium v2 and chamelium v3 support
+>  - PATCH 15-18: Create a basic test listing available port on the
+>    chamelium
+>  - PATCH 19-27: Add port mapping configuration and autodetection
+>  - PATCH 28-38: Add basic EDID tests
+>  - PATCH 39: Add documentation
+> 
+> As most of the series is preparation work, I sent all the patches today,
+> but if required I can split the series in multiple smallest series.
+> 
+> ---
+> Changes in v2:
+> - Mainly splitting and cleaning work since the RFC,
+> EDITME: describe what is new in this series revision.
+> - EDITME: use bulletpoints and terse descriptions.
+> - Link to v1: https://lore.kernel.org/r/20240605-dev-remove-static-ports-v1-0-665f25b7a4db@bootlin.com
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- tests/chamelium/v3/kms_chamelium_v3_edid.c | 86 ++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
 
-diff --git a/tests/chamelium/v3/kms_chamelium_v3_edid.c b/tests/chamelium/v3/kms_chamelium_v3_edid.c
-index a73875214915..51dcdcb9e892 100644
---- a/tests/chamelium/v3/kms_chamelium_v3_edid.c
-+++ b/tests/chamelium/v3/kms_chamelium_v3_edid.c
-@@ -190,6 +190,70 @@ static void test_suspend_resume_edid_change(int drm_fd, struct igt_chamelium_v3
- 	collect_and_compare_edid(drm_fd, port_mapping, igt_kms_get_alt_edid());
- }
+Ooops, I forgot to edit this part, sorry
+
+Changes in v2:
+- Since the RFC, a lot of work has been done to split commits, document 
+  functions, configuration format and cleanup
+- Changed the autodetection algorithm to make it a bit faster and less 
+  complex
+- Introduce new setting to plug specific port during "normal" tests
+- Solved build failures, this should be bissectable 
  
-+static void edid_mst(int drm_fd, struct igt_chamelium_v3 *chamelium, chamelium_v3_port_id port_id)
-+{
-+	const struct edid *edid = igt_kms_get_base_edid();
-+	chamelium_v3_port_id *children_port_ids;
-+	struct chamelium_v3_port_mapping *chamelium_port_mapping;
-+	drmModeResPtr res;
-+	int edid_id;
-+	int children_port_count = chamelium_v3_get_children(chamelium, port_id,
-+							    &children_port_ids);
-+
-+	struct edid **modified_edids;
-+
-+	modified_edids = calloc(children_port_count + 1, sizeof(*modified_edids));
-+	igt_assert(modified_edids);
-+
-+	for (int i = 0; i <= children_port_count; i++) {
-+		modified_edids[i] = malloc(edid_get_size(edid));
-+		memcpy(modified_edids[i], edid, edid_get_size(edid));
-+		modified_edids[i]->serial[0] = i;
-+		modified_edids[i]->serial[1] = i;
-+		modified_edids[i]->serial[2] = i;
-+		modified_edids[i]->serial[3] = i;
-+		edid_update_checksum(modified_edids[i]);
-+	}
-+
-+	chamelium_v3_reset(chamelium);
-+
-+	edid_id = chamelium_v3_create_edid(chamelium, modified_edids[0]);
-+	igt_assert(edid_id);
-+	chamelium_v3_apply_edid(chamelium, port_id, edid_id);
-+
-+	for (int i = 0; i < children_port_count; i++) {
-+		edid_id = chamelium_v3_create_edid(chamelium, modified_edids[i + 1]);
-+		igt_assert(edid_id);
-+		chamelium_v3_apply_edid(chamelium, children_port_ids[i], edid_id);
-+	}
-+
-+	chamelium_v3_plug_with_children(chamelium, port_id, children_port_ids,
-+					children_port_count);
-+	sleep(3);
-+
-+	res = drmModeGetResources(drm_fd);
-+
-+	chamelium_port_mapping = chamelium_v3_get_port_mapping_for_chamelium_port_id(chamelium,
-+										     port_id);
-+	igt_assert(chamelium_port_mapping);
-+	igt_assert(chamelium_port_mapping->mst_path);
-+	collect_and_compare_edid(drm_fd, chamelium_port_mapping, modified_edids[0]);
-+	free(modified_edids[0]);
-+
-+	for (int i = 0; i < children_port_count; i++) {
-+		chamelium_port_mapping = chamelium_v3_get_port_mapping_for_chamelium_port_id(chamelium,
-+											     children_port_ids[i]);
-+		igt_assert(chamelium_port_mapping);
-+		igt_assert(chamelium_port_mapping->mst_path);
-+		collect_and_compare_edid(drm_fd, chamelium_port_mapping, modified_edids[i + 1]);
-+		free(modified_edids[i + 1]);
-+	}
-+
-+	drmModeFreeResources(res);
-+	free(modified_edids);
-+	free(children_port_ids);
-+}
-+
- igt_main
- {
- 	struct igt_chamelium_v3 *chamelium;
-@@ -326,6 +390,28 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Check if hotplug during sleeping are correctly handled");
-+	igt_subtest_with_dynamic("DP-MST-edid-read") {
-+		chamelium_v3_port_id *port_ids;
-+		int port_count;
-+
-+		port_count = chamelium_v3_get_supported_ports(chamelium, &port_ids);
-+		for (int j = 0; j < port_count; j++) {
-+			igt_dynamic_f("port-%d", port_ids[j]) {
-+				char *name;
-+
-+				igt_require(chamelium_v3_is_mst(chamelium, port_ids[j]));
-+
-+				name = chamelium_v3_get_port_name(chamelium, port_ids[j]);
-+				igt_info("Testing port %s\n", name);
-+				free(name);
-+
-+				edid_mst(drm_fd, chamelium, port_ids[j]);
-+			}
-+		}
-+		free(port_ids);
-+	}
-+
- 	igt_fixture {
- 		chamelium_v3_uninit(chamelium);
- 		drm_close_driver(drm_fd);
-
--- 
-2.44.2
-
+> ---
+> Louis Chauvet (39):
+>       lib/igt_kms: Add a detect timeout value
+>       lib/igt_kms: Add helper to wait for a specific status on a connector
+>       lib/igt_kms: Add function to list connected connectors
+>       lib/igt_kms: Add helper to obtain a connector by its name or MST path
+>       lib/igt_kms: Add function to get valid pipe for specific output
+>       lib/monitor_edids: Add helper functions for using monitor_edid objects
+>       lib/monitor_edids: Add helper to get an EDID by its name
+>       lib/monitor_edids: Add helper to print all available EDID names
+>       lib/monitor_edids: Fix missing names in some monitor EDID
+>       lib/monitor_edids: Add new EDID for HDMI 4k
+>       tests/chamelium: Extract Chamelium v2 tests into a separate directory
+>       lib/chamelium/v2: Extract chamelium v2 wrapper into its own directory
+>       lib/chamelium/v2: Modify build options to separate Chamelium v2 and v3
+>       lib/chamelium/v3: Introduce the foundation for the Chamelium v3 wrapper
+>       lib/chamelium/v3: Introduce initialization and cleanup of Chamelium-related structures
+>       lib/chamelium/v3: Add method to discover Chamelium ports
+>       lib/chamelium/v3: Implement method to retrieve Chamelium port names
+>       tests/chamelium/v3: Implement a basic Chamelium v3 accessibility test
+>       lib/chamelium/v3: Implement Chamelium reinitialization via Reset RPC call
+>       lib/chamelium/v3: Implement methods for plugging Chamelium ports
+>       lib/chamelium/v3: Implement methods for managing Chamelium EDID
+>       lib/chamelium/v3: Implement Chamelium configuration parsing
+>       lib/chamelium/v3: Log port mapping for debugging purposes
+>       lib/chamelium/v3: Introduce new configuration format for MST support
+>       lib/chamelium/v3: Provide access to port_mapping via method call
+>       lib/chamelium/v3: Implement helper function to get port mapping from Chameleon port id
+>       lib/chamelium/v3: Implement helper function to retrieve connector from port mapping
+>       lib/chamelium/v3: Plug specific ports for all tests
+>       lib/chamelium/v3: Implement Chamelium port autodetection algorithm
+>       lib/chamelium/v3: Add save option to avoid doing autodetection every time
+>       tests/chamelium/v3: Implement basic EDID handling test
+>       tests/chamelium/v3: Implement 4K EDID stress test
+>       tests/chamelium/v3: Implement non-4K EDID stress test
+>       lib/chamelium/v3: Implement method to discover video signal status
+>       tests/chamelium/v3: Implement test for DRM device resolution
+>       lib/chamelium/v3: Implement hot plug toggle scheduling method
+>       tests/chamelium/v3: Add test for display change detection during sleep
+>       tests/chamelium/v3: Add MST EDID reading test
+>       docs: Add Chamelium v3
+> 
+>  docs/chamelium.txt                              |   90 +-
+>  docs/testplan/meson.build                       |    4 +-
+>  lib/{ => chamelium/v2}/igt_chamelium.c          |    2 +-
+>  lib/{ => chamelium/v2}/igt_chamelium.h          |    0
+>  lib/{ => chamelium/v2}/igt_chamelium_stream.c   |    2 +-
+>  lib/{ => chamelium/v2}/igt_chamelium_stream.h   |    0
+>  lib/chamelium/v3/igt_chamelium.c                | 1191 +++++++++++++++++++++++
+>  lib/chamelium/v3/igt_chamelium.h                |   89 ++
+>  lib/igt.h                                       |    6 +-
+>  lib/igt_core.c                                  |    3 +
+>  lib/igt_kms.c                                   |  287 +++++-
+>  lib/igt_kms.h                                   |   17 +
+>  lib/meson.build                                 |   16 +-
+>  lib/monitor_edids/dp_edids.h                    |    3 +
+>  lib/monitor_edids/hdmi_edids.h                  |   27 +-
+>  lib/monitor_edids/monitor_edids_helper.c        |   92 +-
+>  lib/monitor_edids/monitor_edids_helper.h        |   10 +-
+>  lib/tests/meson.build                           |    8 +-
+>  meson.build                                     |   45 +-
+>  meson_options.txt                               |    8 +-
+>  tests/chamelium/{ => v2}/kms_chamelium_audio.c  |    0
+>  tests/chamelium/{ => v2}/kms_chamelium_color.c  |    0
+>  tests/chamelium/{ => v2}/kms_chamelium_edid.c   |    2 +-
+>  tests/chamelium/{ => v2}/kms_chamelium_frames.c |    0
+>  tests/chamelium/{ => v2}/kms_chamelium_helper.c |    0
+>  tests/chamelium/{ => v2}/kms_chamelium_helper.h |    0
+>  tests/chamelium/{ => v2}/kms_chamelium_hpd.c    |    0
+>  tests/chamelium/v3/kms_chamelium_v3_basic.c     |   30 +
+>  tests/chamelium/v3/kms_chamelium_v3_edid.c      |  419 ++++++++
+>  tests/kms_color_helper.h                        |    2 +-
+>  tests/kms_feature_discovery.c                   |    6 +-
+>  tests/kms_tiled_display.c                       |    6 +-
+>  tests/meson.build                               |   45 +-
+>  33 files changed, 2348 insertions(+), 62 deletions(-)
+> ---
+> base-commit: 9683de1314f7fb9204fc4d8baf193a52adda9b59
+> change-id: 20240522-dev-remove-static-ports-9382ffbbf146
+> 
+> Best regards,
+> -- 
+> Louis Chauvet <louis.chauvet@bootlin.com>
+> 
