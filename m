@@ -4,56 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B41B7C3DA45
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Jul 2024 08:47:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB15BC3DA45
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Jul 2024 09:05:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 70DD510E6CD;
-	Wed, 10 Jul 2024 08:47:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91BA610E146;
+	Wed, 10 Jul 2024 09:05:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PeGJd9Cq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eFnskD7o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBE2410E6CD
- for <igt-dev@lists.freedesktop.org>; Wed, 10 Jul 2024 08:47:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 842C810E71E
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jul 2024 09:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720601254; x=1752137254;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=CKN5iFNq4TlxSNSxQ5RGFTmPNcdKf5OrKVpKhQKQ2UA=;
- b=PeGJd9CqDG0hSW72CDq2kiRajk8tk3XOPpsYaZQYAicQZY+f0Kaj0K30
- PU82ST3tABFEk53gnittChkb/jSzVZmrvrrqQw9Aarh6/hdb+YjSk9MD2
- 7AguZCUKWj5CvBysuXEnemXdPwdxhc7KZh4mSsfVWdbhAyq4NfuIeLNnm
- LN2Il2gxJfW03be/HQ9PLI6Lk6mSsVP+BE/TYlVYKwAL8nyvDUjpnHvvG
- z96EEim8INJOObxi9R6M7R4+Q9ZQWWM90moo4mPytcv63bZzntlKH5hUV
- /3ZTqsKpsZTQbuLTehiZbw59CUjldf0zITsrIan8gFRtdmVxo7gw3fvMC Q==;
-X-CSE-ConnectionGUID: ed1eS4N5S1iQ0UJXF4H2tg==
-X-CSE-MsgGUID: ShomdderTzS/wDOMWLP0VQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="35341128"
-X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; d="scan'208";a="35341128"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2024 01:43:56 -0700
-X-CSE-ConnectionGUID: 4u0HvhGaS0aWIlFdwi59cw==
-X-CSE-MsgGUID: m3GV1JDQQA2f73cwVijoXg==
+ t=1720602337; x=1752138337;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=9p0NK97ZRyJWuarmNAvhtsZY6pFDuAlbrRubOGR6W5s=;
+ b=eFnskD7omSyw/Om2DDjWH1HAMZiueSbt5VRl/WO953yYlRBdbvbLKqQ5
+ ppdg5MnLOkIIdkD+Ypfae+GbzmWCMDPxXMaMJV3oz6aP49dWDmMb8NvcD
+ KUvI66wn9mu25+uj8dkcMV0eZbmrX73g2LumwYH/iXD+cMtXdyafrVS/z
+ rt0peKuhoqZxWpsTO86n/ulUsD6FdVCM8W+CX45ozmBlithqiOzYLp/63
+ AQku8elQoZ4pGbAzjK5L08B+xuFo4hJkhX7GskgCSO+idkKN9EKUIbotT
+ 8+I+NXP+M3NOoGM8TeYZ1cmss0HT39T8SiXWsCcTcY1CQPpnYqqZlksWS A==;
+X-CSE-ConnectionGUID: r50UR9oyQFWhWa6nIzYYiA==
+X-CSE-MsgGUID: i1a43KQxQWaIe9h1yzet6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11128"; a="18048021"
+X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; d="scan'208";a="18048021"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2024 02:05:36 -0700
+X-CSE-ConnectionGUID: IeA+OkX5SpiSS6JQuUalyQ==
+X-CSE-MsgGUID: cxRoojaWTeSj+frIr1kAGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; d="scan'208";a="48120822"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa008.fm.intel.com with ESMTP; 10 Jul 2024 01:43:54 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
- bhanuprakash.modem@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t v2 2/2] tests/kms_atomic_transition: Reducing debug
- loglevel dynamically
-Date: Wed, 10 Jul 2024 14:13:58 +0530
-Message-Id: <20240710084358.744278-3-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240710084358.744278-1-pranay.samala@intel.com>
-References: <20240710084358.744278-1-pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,197,1716274800"; d="scan'208";a="52745069"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.245.96.225])
+ ([10.245.96.225])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2024 02:05:34 -0700
+Message-ID: <91eb1789-8125-4610-add8-1c599d69b3b0@linux.intel.com>
+Date: Wed, 10 Jul 2024 11:05:31 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel-ci/xe.blocklist: Add SR-IOV tests
+To: Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Adam Miszczak <adam.miszczak@intel.com>,
+ Marcin Bernatowicz <marcin.bernatowicz@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+References: <20240709112736.652364-1-jakub1.kolakowski@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20240709112736.652364-1-jakub1.kolakowski@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,45 +74,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test is debug logs are too much and was killed
-due to exceeding disk usage limit on the less disk
-space machines.
+Hi Jakub,
 
-So dynamically reducing the debug log level to 13.
+On 7/9/2024 1:27 PM, Jakub Kolakowski wrote:
+> Add SR-IOV tests to xe blocklist so that only desired tests will be run
+> in CI.
+> SR-IOV tests that should be running are as follows:
+> - sriov_basic@enable-vfs-autoprobe-off (all dynamic subtests)
+> - sriov_basic@enable-vfs-autoprobe-on@numvfs-all
+> - sriov_basic@enable-vfs-bind-unbind-each@numvfs-all
+> - sriov_basic@bind-unbind-vf@vf-1
+> - sriov_basic@bind-unbind-vf@vf-last
+> 
+> Signed-off-by: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Adam Miszczak <adam.miszczak@intel.com>
+> Cc: Marcin Bernatowicz <marcin.bernatowicz@intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+> ---
+>   tests/intel-ci/xe.blocklist.txt | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+> index 828baf324..57e550885 100644
+> --- a/tests/intel-ci/xe.blocklist.txt
+> +++ b/tests/intel-ci/xe.blocklist.txt
+> @@ -83,3 +83,9 @@ igt@kms_prime@.*
+>   ##################################################################
+>   igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot
+>   ##################################################################
+> +# SR-IOV tests
+> +##################################################################
+> +igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-(?!all).*
+> +igt@sriov_basic@enable-vfs-bind-unbind-each@numvfs-(?!all).*
+> +igt@sriov_basic@bind-unbind-vf@vf-(?!(1$|last)).*
+> +##################################################################
 
-v2:
-- Using "" for the defined header file (Bhanu)
-- Not using exit handler in this file (Bhanu)
-- Not using any magic number (Bhanu)
-
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/kms_atomic_transition.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 29dd8ac4e..ee3a067b7 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -34,6 +34,7 @@
- #include "igt_rand.h"
- #include "drmtest.h"
- #include "sw_sync.h"
-+#include "igt_sysfs.h"
- #include <errno.h>
- #include <pthread.h>
- #include <stdbool.h>
-@@ -1176,6 +1177,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 
-+		int current_debug_level = igt_debug_level_init();
-+
-+		igt_drm_debug_level_decrement(2);
-+
- 		kmstest_set_vt_graphics_mode();
- 
- 		igt_display_require(&data.display, data.drm_fd);
--- 
-2.34.1
-
+Does it work as described ?
