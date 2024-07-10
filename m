@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0144FC3DA41
-	for <igt-dev@archiver.kernel.org>; Wed, 10 Jul 2024 12:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B566CC3DA42
+	for <igt-dev@archiver.kernel.org>; Wed, 10 Jul 2024 13:25:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B395110E791;
-	Wed, 10 Jul 2024 12:46:59 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7541610E791;
- Wed, 10 Jul 2024 12:46:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3078498410732433124=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DED110E79C;
+	Wed, 10 Jul 2024 13:25:10 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="aPzlGASm";
+	dkim-atps=neutral
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF0F710E79D
+ for <igt-dev@lists.freedesktop.org>; Wed, 10 Jul 2024 13:25:07 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 67B25C0005;
+ Wed, 10 Jul 2024 13:25:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+ t=1720617906;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:mime-version:mime-version:content-type:content-type:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=UNYlpmJeS5atnYU/8OEz5KxkcD/Dqhb6F9ENFRZtE5M=;
+ b=aPzlGASme8bHzQ8ZV4fFOlqQcokAtUiw5nRZ6GN+T28j8oBfjn3VIzraUk0Cmo5sQMBHFG
+ ggA5vVUnTp9plpBCdDSHK55hxS4bguIAebRP56j3DAi2eU2UPQKQ+9QeN5MTX9oL96r4Zm
+ uAfEkD8jehzSlHqX+fqfIStznzYv821pq3LnkC+smoYUrfayyrqifZh8Sr3CQq098Q4rBW
+ Y/Qnhyw2H+FyNZ5gKy//lFRezN1IiK8UTGw2RO0h+3yOQqJN4u3QlFEJqnp21yGyNWb9OI
+ DSCkOTuhwqZ8Y7UgtPLzZ1TuvNRMAeMoAFM2/wPXpjMMtirGewMl1utEz+nRyg==
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Date: Wed, 10 Jul 2024 15:22:12 +0200
+Subject: [PATCH i-g-t] .gitlab-ci: Add explaination to run CI locally
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Runtime_alteration_of_debug?=
- =?utf-8?q?log_level_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 10 Jul 2024 12:46:58 -0000
-Message-ID: <172061561847.105350.4787248143394166235@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240710084358.744278-1-pranay.samala@intel.com>
-In-Reply-To: <20240710084358.744278-1-pranay.samala@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240710-gitlab-ci-local-v1-1-9c8d1dabeeeb@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAAOLjmYC/x3MTQqAIBBA4avErBtQsR+6SrSwabQBqdCIILp70
+ vJbvPdA5iScYageSHxJln0r0HUFtLotMMpSDEYZqzqtMMgZ3YwkGHdyEU3XaN+T9aYlKNWR2Mv
+ 9H0cQDHjC9L4ftmMCsWgAAAA=
+To: igt-dev@lists.freedesktop.org, ihf@google.com, markyacoub@google.com, 
+ thomas.petazzoni@bootlin.com, jeremie.dautheribes@bootlin.com
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4820;
+ i=louis.chauvet@bootlin.com; h=from:subject:message-id;
+ bh=9AV77if3tQ5iR9wbTxWfr2vxXZBFyjt5CcwCeIpYebg=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmjoux1nWr9wZIiDR9qglqVao4z4iL7aG/1RtSe
+ RtqlWfbw9eJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZo6LsQAKCRAgrS7GWxAs
+ 4l/dEADSolsvpcWKGqzuhzTOSBBu0vCIsQqurEcmCYWM7CaWbn2UgGCUyYmFB4/+53JQvIr4HHD
+ 2lo7x2/VLikXrq6BF9z/JiGfx8KJuSJ7Slj7H5hDt9EQXoYsDLcSoD+4vduRf7CerF6ENIiq3pu
+ Bn4xTIXKl8/8w73vh3QICQQFOE1G6Q/hkdAXNApN7lsFO9CunJOKIgb25FCLl+Hnl8INsJqr9Bt
+ nFcdHAExUU50DnLPL0Ms8hrjb/h9cVFYI+YEShrXhf7hTuJNIWJNatjURRdMmKr4pM4FjyMVM3J
+ rjqVOMNthgqlDr8d9QayoiinEfm2GET+UUgBAuhlC/kUqEXI/WKURBwp+g8fwVzki48JTcgwCRp
+ KdmLsjBw+25R9G9zI4WPunQMA+h714X1Y9XVzR4m8Oo/2xoNqK+otlOfSRjgWHwpVRcVINNaIfx
+ x+oo7aiphFjzYHk23DQVtOynVGQUKeN1tAJYdD+qr2a/aoVeRGMHcHE27QXdgXYi80hLrI7J75V
+ Mf/nsD4aogzUC/mcwl1HTAxv3J3wdSfhgvgzpBJyOxtaBrTUaloFtUbT0bckM3wVzvDTC9WjT+g
+ CXXnS8CCsYJJJHt8Uk4Jet5dNCY+4jcS2ICJq58UvJvq60wp7TBtx7DDBCgXo8Fa/hJpBYAv++0
+ /PBmRvz5TRV9Tbg==
+X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
+ fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,170 +72,165 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3078498410732433124==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Currently, the CI can only be run on the mailing list. To avoid flooding
+because of error in certain configurations, add a new .gitlab-ci-local.yml
+file and some explanation to run some part of the CI locally.
 
-== Series Details ==
+Added some instruction in CONTRIBUTING.md to explain how to use this new
+pipeline locally.
 
-Series: Runtime alteration of debuglog level (rev2)
-URL   : https://patchwork.freedesktop.org/series/135823/
-State : success
+---
+The "normal" .gitlab-ci.yml can't be used as it uses prebuild docker
+images, only available for gitlab runners.
 
-== Summary ==
+I did not include any debian build as I was not able to rebuild the docker
+images.
+---
+ .gitlab-ci-local.yml | 99 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ CONTRIBUTING.md      | 16 +++++++++
+ 2 files changed, 115 insertions(+)
 
-CI Bug Log - changes from CI_DRM_15057 -> IGTPW_11391
-====================================================
+diff --git a/.gitlab-ci-local.yml b/.gitlab-ci-local.yml
+new file mode 100644
+index 000000000000..21d4468379c8
+--- /dev/null
++++ b/.gitlab-ci-local.yml
+@@ -0,0 +1,99 @@
++image: igt-build-fedora
++variables:
++  BUILDAH_FORMAT: docker
++  BUILDAH_ISOLATION: chroot
++  MESON_OPTIONS: >
++    -Dlibdrm_drivers=intel,nouveau,amdgpu
++    -Doverlay=enabled
++    -Dchamelium=enabled
++    -Dvalgrind=enabled
++    -Dman=enabled
++    -Dtests=enabled
++    -Drunner=enabled
++    -Dlibunwind=enabled
++  LANG: "C.UTF-8"
++
++stages:
++  - build
++  - test
++
++#################### BUILD #########################
++
++build:tests-fedora:
++  stage: build
++  script:
++    - meson --prefix=/opt/igt $MESON_OPTIONS build
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++    - DESTDIR="$PWD/installdir" ninja -C build install
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
++  artifacts:
++    paths:
++      - build
++      - installdir
++
++build:tests-fedora-no-libunwind:
++  stage: build
++  script:
++    - dnf remove -y libunwind-devel
++    - meson -Dlibunwind=disabled build
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++
++# documentation building is different with meson<0.47
++build:tests-fedora-oldest-meson:
++  stage: build
++  script:
++    - dnf remove -y meson
++    - pip install /usr/src/meson-*.tar.gz
++    - meson $MESON_OPTIONS build
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} igt-gpu-tools-doc
++
++# ensure igt_nouveau stubs build when nouveau support for libdrm is disabled
++build:tests-fedora-no-libdrm-nouveau:
++  stage: build
++  script:
++    - meson -Dlibdrm_drivers= build
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++
++build:tests-fedora-clang:
++  stage: build
++  variables:
++    CC: clang
++  script:
++    - meson $MESON_OPTIONS build
++    - ninja -C build -j${FDO_CI_CONCURRENT:-4} || ninja -C build -j 1
++  artifacts:
++    paths:
++      - build
++
++
++test:ninja-test:
++  retry: 2
++  dependencies:
++    - build:tests-fedora
++  stage: test
++  script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
++
++test:ninja-test-clang:
++  retry: 2
++  dependencies:
++    - build:tests-fedora-clang
++  variables:
++    CC: clang
++  stage: test
++  script: meson test -C build --num-processes ${FDO_CI_CONCURRENT:-4}
++
++test:list-undocumented-tests:
++  dependencies:
++    - build:tests-fedora
++  stage: test
++  script: .gitlab-ci/list_undocumented_tests.py build/tests/test-list.txt > undocumented_tests.txt
++  artifacts:
++    paths:
++      - undocumented_tests.txt
++
++test:verify-blacklists:
++  dependencies:
++    - build:tests-fedora
++  stage: test
++  script: for bl in tests/intel-ci/blacklist{,-pre-merge}.txt; do scripts/verify-blacklist.sh build/runner/igt_runner build/tests "$bl" || exit 1; done
+diff --git a/CONTRIBUTING.md b/CONTRIBUTING.md
+index 2ab8a48f6ae9..721fc6035b77 100644
+--- a/CONTRIBUTING.md
++++ b/CONTRIBUTING.md
+@@ -78,6 +78,22 @@ Sending Patches
+ - Changes to the testcases are automatically tested. Take the results into
+   account before merging.
+ 
++- When pushing a new series, your series will be build-tested by the CI. It is
++  useful to avoid merging broken stuff. You can run this CI locally by using the
++  project https://github.com/firecow/gitlab-ci-local. To install it, please
++  refer to its README (on debian, the package gitlab-ci-local can be used).
++
++  To run the CI, you need to build docker images:
++
++    docker build . -f Dockerfile.build-fedora -t igt-build-fedora:latest
++
++  Now you should be able to run the CI:
++
++    gitlab-ci-local --file .gitlab-ci-local.yml
++
++  If you want to run a specific stage, you can add it to the command line:
++
++    gitlab-ci-local --file .gitlab-ci-local.yml <stage>
+ 
+ Commit Rights
+ -------------
 
-Summary
--------
+---
+base-commit: f48806ee249015e967bb220eba8559c5e829d609
+change-id: 20240710-gitlab-ci-local-2751f8c4f26c
 
-  **SUCCESS**
+Best regards,
+-- 
+Louis Chauvet <louis.chauvet@bootlin.com>
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/index.html
-
-Participating hosts (42 -> 37)
-------------------------------
-
-  Missing    (5): fi-bsw-n3050 fi-snb-2520m fi-elk-e7500 fi-kbl-8809g bat-dg2-11 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11391 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-arls-2:         [PASS][1] -> [DMESG-WARN][2] ([i915#7507])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15057/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - bat-arls-1:         [DMESG-WARN][3] ([i915#10341] / [i915#11570]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15057/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@objects:
-    - bat-arls-1:         [DMESG-FAIL][5] ([i915#10262]) -> [PASS][6] +26 other tests pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15057/bat-arls-1/igt@i915_selftest@live@objects.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/bat-arls-1/igt@i915_selftest@live@objects.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10062]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10062
-  [i915#10262]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262
-  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
-  [i915#11328]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11328
-  [i915#11570]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11570
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7921 -> IGTPW_11391
-
-  CI-20190529: 20190529
-  CI_DRM_15057: dcbd1ba3189efd3be0e0dacfdc37cada014c38eb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11391: 11391
-  IGT_7921: f547de980dca43c6630ced36e98af7f2a9c70ae7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/index.html
-
---===============3078498410732433124==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Runtime alteration of debuglog level (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135823/">https://patchwork.freedesktop.org/series/135823/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15057 -&gt; IGTPW_11391</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/index.html</p>
-<h2>Participating hosts (42 -&gt; 37)</h2>
-<p>Missing    (5): fi-bsw-n3050 fi-snb-2520m fi-elk-e7500 fi-kbl-8809g bat-dg2-11 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11391 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15057/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15057/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11570">i915#11570</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/bat-arls-1/igt@i915_selftest@live@gt_heartbeat.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@objects:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15057/bat-arls-1/igt@i915_selftest@live@objects.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11391/bat-arls-1/igt@i915_selftest@live@objects.html">PASS</a> +26 other tests pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7921 -&gt; IGTPW_11391</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15057: dcbd1ba3189efd3be0e0dacfdc37cada014c38eb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11391: 11391<br />
-  IGT_7921: f547de980dca43c6630ced36e98af7f2a9c70ae7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3078498410732433124==--
