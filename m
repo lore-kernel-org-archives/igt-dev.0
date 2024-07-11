@@ -4,186 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16E0AC3DA41
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jul 2024 05:48:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CDABC3271E
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jul 2024 06:27:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CD1D210E943;
-	Thu, 11 Jul 2024 05:48:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6119010E958;
+	Thu, 11 Jul 2024 06:27:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aE4/GiXZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U8DJjR3T";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E163F10E943
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jul 2024 05:48:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0B61D10E97A
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jul 2024 06:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720676895; x=1752212895;
+ t=1720679238; x=1752215238;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=lOVriIZ3R32f9BEjH0otSs2GeRd52T2r0v3NDSnkNFw=;
- b=aE4/GiXZmgJcW/A2XP7Er+m5Tsf2GA7w94lcBgkgp+J+AaG/Pk2Akv1q
- VYdOH+B7NLc6x2dBqD61d9r9/PO3BNwe3FmpLlo76THY1f90MjONFSo12
- YqtemKjdGbVCcLrt0Fnvc+kHBlYPiqa9PnUyULQDsXjHCmL6XDokdCaeE
- AadxAluwZLJQTJh4Ub/aj445Xp/fvKpQOnYQl4NW9ISkeWiuq1ee/FlLe
- WaxW5vF0IEzIp5ywwlAeGSAszqUw81YetL8dIuGn3LNGtb93LZTpa3WQh
- Q40unmFIOqbtFmPUpfKt9KZpuR08+i1plDh3WIveynqZ92ySSF5m5Siog A==;
-X-CSE-ConnectionGUID: chi6T0UWTs+iqGKQION9PQ==
-X-CSE-MsgGUID: 8ECR2/P4Q2+QaFEiev3+nA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18176391"
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="18176391"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Jul 2024 22:48:14 -0700
-X-CSE-ConnectionGUID: 5rZPrIa3SCuIkcbzY3AFAQ==
-X-CSE-MsgGUID: CjOfz+vmSfOuU+b1KGWSfg==
+ bh=93Gnp8WlHDrmZ4u8OBFkDROej20l/3vTDDpKBpyWlKU=;
+ b=U8DJjR3TEb4MXq9WtK+zzvBPmrLW0Nw4SmOsDfPAGccS7jNwf8QxWEcG
+ PFGNcdtpjB6MmNHSpbPRbhrnbcOnf44EK1yjxVo/Q9+/O8wz1xeRY+Tt3
+ uKyQJqQxIg+MO+lbE4koUZL7EmEmv1W1MTPb/U5ggcF+nrkugyErBeKrv
+ iR1J08oOT8l5p7iSnx6bDOV5h5lQ5Acu4BjFXnmRVf5UqzhnktYCTCCL3
+ qcWlMcetGqowVi6raSEAory1ZDd/RIx8SibFFjt4kqY6F5NHUSAc7UHTA
+ 4o1W+s+Q8JzYWqbmhwXBlUFfPBc8syJZrHmVtPF7NQpuc8bDvQgva/IUD A==;
+X-CSE-ConnectionGUID: l3RDEV7kSPehU0xLHCr2tw==
+X-CSE-MsgGUID: qOA0jFuGQEeckvf4skX1IQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18173924"
+X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="18173924"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Jul 2024 23:26:09 -0700
+X-CSE-ConnectionGUID: C9KxFQmORzWW36DBRl9IKw==
+X-CSE-MsgGUID: j2SDQwKCTEWoAEj8xYC8Qg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="79581833"
+X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="52842142"
 Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 10 Jul 2024 22:48:14 -0700
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 10 Jul 2024 23:26:08 -0700
 Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
  ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 10 Jul 2024 22:48:13 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 10 Jul 2024 22:48:13 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ 15.1.2507.39; Wed, 10 Jul 2024 23:26:07 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
  orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 10 Jul 2024 22:48:13 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.48) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Wed, 10 Jul 2024 23:26:07 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.177)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 10 Jul 2024 22:48:12 -0700
+ 15.1.2507.39; Wed, 10 Jul 2024 23:26:06 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fXlDAZL98SifpvUurSez+HFIbyYtVe/wYnF/dXjYn/B/spzlk85PcWBSv32kkh2nn9GsLuIovEaeTb45yj78jQ5KsvyKvKVLorhgz6MojxEhPs8zTE3zeisFxi1d8egljgBHMD+ggVvCpwDJZqiniueQIczgnkvJsnMNHO9zYInNM0RTJjlz+rv+kbY9LhUwRzcwFvMoPWe/s4FcKkOuSo8ZQ3NPhPYoGjUMaSfHWGPsxxAvXsAgjAXBG5jdmDAxWQsgmMHUuxqsCSP5TyIGjMVgdwtHXUSYAgMuRuSbMqZzdEey52EYkK1Kz0F92O51QNXYpBTzzuxkDmMCft04uw==
+ b=cUDZ0wxu/KLlTHUdOaREKmfD4crD34oeaDEoFEj8oUhtrMD+LcS4WcihaOJZP2LSawvFeTdC1I7MujewFbUsXjVDMHJ/XUo/XMN2t1+PgTIi60dCzv8i+eWYq8xHD2PBVflMB57cGAkQzDo+RrrExRidiukTxxhuyCPtcUAXqNSgeIx/+dQmyyQJevYJVLE3fBEZnLB3UBLmivu9hvnA/IHkM1DdbAOAx8DHuzAzQiYUCdgZ+8quF2MYbJn6a1R5hriYURNccF84OQsNL4POfS66MhU42F37x38GpzIqNU/JOQc0x9XOavnXK+A4UA0Swa31RKGjVHVFFOiU/vuvoA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ckw5iB7w5NU7aq9z51OLI3vvnONXskm7DEk8yJHHd6Y=;
- b=oTPbhTo6Rhp2voG8fG2dMnpJv72JyNJlmCj0fDVWuM38TG6v/cw6UUj24Eplh8SiXn6UdyzoFnFJzBc1wFxXirmLuhm2gg1ISoUO+QGzLU9x6ZqVu2BOR4ry3kjVZJEkV5H/GWDdnfZhO8Q/+bqeFDFp1U/y9Bm/kKbYEN0/0ZMt4BdloLeoefI3qS3WIaIF3etmG7DsR7NGAwyyxOTUcWEn3tzHdwMaS11iqAywuY8JrbQp5/B2lqBsL+YnskYWt/dpjkGfALCnFVNvL8B3kF/ci5FGtL/vF7HoOQnxxBgPhXBjHZni3UYJUBSjCXw40+PGYfMl1KwTEd+OOYRp0Q==
+ bh=0B2Q8ZA003aV4pxxWtoJGCPo3XPyJmi0yUmXu5wTvmc=;
+ b=PoHDV6pUA0cLMHlURSa4kKUTA2MEkjz1h55SK7pXuLlNM+4re5EjEccDYiY+BqjDfKBq6W2SIOawmPRiE+EihZ7tZGVOEocOwoowZTZCsSj9g4DAVDv/9U7e7wLqUosyqCkQBn/JVNIUqy6KzQrK4zu+zFVy9kISRjAgn2lsMr49KOUPLrPdsHyD3jacChfCMsneN4peBd3L8TkKXKanvxemnyOpCHAtJIN0NrNgBlehu/RG3XnXGQ4BYZSc0qrsCxJG+JnB3WYpcjFwkMH/RPJSWcwYRU1apGQleTAzwuhJIq64FUue80VFsHjEVJjuPFVxjlcHqZ72AOmPU3j7SA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN0PR11MB5726.namprd11.prod.outlook.com (2603:10b6:408:164::23)
- by IA0PR11MB7882.namprd11.prod.outlook.com (2603:10b6:208:40f::10)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.40; Thu, 11 Jul
- 2024 05:48:06 +0000
-Received: from BN0PR11MB5726.namprd11.prod.outlook.com
- ([fe80::e484:b723:d325:e5e0]) by BN0PR11MB5726.namprd11.prod.outlook.com
- ([fe80::e484:b723:d325:e5e0%5]) with mapi id 15.20.7762.016; Thu, 11 Jul 2024
- 05:48:06 +0000
-Message-ID: <585347be-9483-4c49-97d6-bef9d4bdb7f8@intel.com>
-Date: Thu, 11 Jul 2024 11:17:59 +0530
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com (2603:10b6:5:390::22)
+ by MN6PR11MB8169.namprd11.prod.outlook.com (2603:10b6:208:47d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.22; Thu, 11 Jul
+ 2024 06:25:59 +0000
+Received: from DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839]) by DM4PR11MB5341.namprd11.prod.outlook.com
+ ([fe80::397:7566:d626:e839%6]) with mapi id 15.20.7762.016; Thu, 11 Jul 2024
+ 06:25:58 +0000
+Message-ID: <da609bfb-214c-4e24-ad74-509536bf292b@intel.com>
+Date: Thu, 11 Jul 2024 11:55:51 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 2/3] tests/kms_atomic_transition: Reducing debug
- loglevel dynamically
-To: Pranay Samala <pranay.samala@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <karthik.b.s@intel.com>, <kunal1.joshi@intel.com>,
- <sameer.lattannavar@intel.com>
-References: <20240711041355.749937-1-pranay.samala@intel.com>
- <20240711041355.749937-3-pranay.samala@intel.com>
+Subject: Re: [PATCH i-g-t 1/2] tests/kms_plane_scaling: Improvise the scaling
+ BW issues.
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <kunal1.joshi@intel.com>
+References: <20240709130321.455906-1-ramanaidu.naladala@intel.com>
+ <20240709130321.455906-2-ramanaidu.naladala@intel.com>
 Content-Language: en-US
-From: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
-In-Reply-To: <20240711041355.749937-3-pranay.samala@intel.com>
+From: "Nautiyal, Ankit K" <ankit.k.nautiyal@intel.com>
+In-Reply-To: <20240709130321.455906-2-ramanaidu.naladala@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA1PR01CA0183.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:d::6) To BN0PR11MB5726.namprd11.prod.outlook.com
- (2603:10b6:408:164::23)
+X-ClientProxiedBy: MA1P287CA0001.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a00:35::14) To DM4PR11MB5341.namprd11.prod.outlook.com
+ (2603:10b6:5:390::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR11MB5726:EE_|IA0PR11MB7882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 258a4475-5fe8-400b-4a13-08dca16d0922
+X-MS-TrafficTypeDiagnostic: DM4PR11MB5341:EE_|MN6PR11MB8169:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4de1f3a-ae95-4cec-41f3-08dca172540a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TUh2eUFaUWU4OUtiaWF3eGpWV1FQTE5sN1NhK2ZGRzVnSXNtNDhMUmMzSTJu?=
- =?utf-8?B?Wm1BK1o2TkhtemhQenBHcVYwMDdoSTFxYVk5bVdoT0JtUGtKOWx1Mlh1MTJZ?=
- =?utf-8?B?OFVwa3hoejlBai9VdjY4UFphdjlhM0R2eUdVR05BWVovZ3kvQTcydGxDM2tS?=
- =?utf-8?B?VEl0T0F2S3oxcFU4NXFvRTlrZ0dTVGNxS1ZaR3VrVElsVUJZMFB1bnVsNDY5?=
- =?utf-8?B?c0JOSitNNEQvc2RRdU54RUpseUxCVWxMb1ZCZk01dU5DWlhaUVgwbFJaeU5R?=
- =?utf-8?B?dkszMHo1aXdGb2dGMHlrdW11ZkVVZ1lTY3Q0MW45bWIxNnBKUnJPUmNuWDBh?=
- =?utf-8?B?eUhReFA5U0Zhb2IrVE5lL05IRFEvWkpBNDEwL1k2WGxwTy9hV2ZNZ1VzaTRa?=
- =?utf-8?B?K0QwUXRsSXNPK0hwY1pUdlhwKzE3cFhkRTVuT2ZGUHpUcEVwckIwTm54bjFV?=
- =?utf-8?B?WjMyUzJha0ZrRWdiTzdZMkE2WW9tc3hWeThQdWx4aWxiRVl0TDhUUElNV21Y?=
- =?utf-8?B?dUU2VVU0Wmd2cHZlM1NjV3hlUmVFOGRQU2o3b24rdStTMEJZWWw1dlFzNWJI?=
- =?utf-8?B?KzMrb3pQSTNZbnFIM0FYM3JOWnhFTUVQbHRTenRwaEZRa2x0TVBDWG9iUzdM?=
- =?utf-8?B?TkxtZzljeHdYN29UZDVoNlp1NG5NaWNacTM1Mjd1dnE1bFdkVGs0ak9FMFBt?=
- =?utf-8?B?QUljUjFNSDBwTVd5UW9Iejd4Wk1zOUYyQ2VzUmN3RktuN2VjME54UUF4YzNH?=
- =?utf-8?B?blJrVzREZUZUZkNHRmtxeTdLelo0ZUhQU0pKK1BxWlp0M1pESUxrOHhhOEg2?=
- =?utf-8?B?U1pLUFRQS0JCTGtoMG1xTGp1dVdETVRuZUZTWHVJOWJKZHVDd0NYYWxsWkwz?=
- =?utf-8?B?ZmlZNHN3dzFKbDA5WVV1SExGdnlnUFkwajl0Y1YxYzF1bFpmeVBTZVVLaXIz?=
- =?utf-8?B?Zi9vTjViTTFjT3JvK0RHU3JnaVB6SFJoZlpFWFMwY0dCNmxvampQdC9Ga3RP?=
- =?utf-8?B?b1g3RDRoWi83M3dQVFhhOEZkRDNwYlI4Y0NmRHpPNFptMW9pNk01bFpLa0ta?=
- =?utf-8?B?cFNSTFJyTlh1eVVIUlBIWm1rVno5eEtqc1VMejdNa2dGY003cUpHeVhpNkp6?=
- =?utf-8?B?eXJ1N0dBeGhIbUlHWU0xYTMwSWRLZDdwV3ZGblA3ZmJPNVRVaTd5VWFwQmd1?=
- =?utf-8?B?WCtDVUNWRFpSelhmS0ZPMjduTVU3c3YrdGl3Nkd4RTgwTllHZDhjVXVFZGZY?=
- =?utf-8?B?MlZtU0duMGZBM05uNVBaL3U4emFCVW5wei9EZ2g2WE1PM1I1dm5OMDhNWmVE?=
- =?utf-8?B?NGV3YlMwYjFFTEZQdHFqUURmQWxCWHVMcFBMc25RNDVpRlVDYW1ScWlJTkdx?=
- =?utf-8?B?N0lObm1YOUIzNUhpZHE0N2w4TC9FSGpnNG9EVUdmaExuUHU2LzBaUmI4T3d3?=
- =?utf-8?B?YURrbUNYRjNCVHFxVVdhNzF0R0lZQnM5dG9JRk1wSlhzVHNLQnRJRXo4aUhU?=
- =?utf-8?B?UzkzWFlpL3JOS0tweEMyd0gyWm1SL0dNWGwxcWxYaDU1dXYwVkdFV3pBTmFY?=
- =?utf-8?B?NUVOUUt3aktHci9McW54bkpWUGdpYS9MZUFUNWhtSFJ1Z2EvYVpISnVtVkNK?=
- =?utf-8?B?bWM3QzRqOTAvRi9hdHB4WDJybTRmVFdUdThqVEZHWGc5MDRyTkxKQWREZXVI?=
- =?utf-8?B?dWp3NXdWeW8vTEtnSERRV1JYaEdhWDVMWDR5L3ZHdkh0V05NbVMvSmhkeTVz?=
- =?utf-8?B?V1V5NTNjYVFOcmJmVmpmampIY256cXZNbENxNUhWVFAvaHAxOFNBdk9Majda?=
- =?utf-8?B?UW9qNlBhc0QrQlhoV1hXdz09?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?NE1SK3FxQnQ0QUJOeFdOS0FYaTgrWXIwOE5EOExzSms3bWU5MnJCODFYbHpz?=
+ =?utf-8?B?Zy9CZlJYQVdXYWZ2MWdwSmRmdzdTSUJXQ2taT3Zjb3RrNWxZblMrWUthaXhY?=
+ =?utf-8?B?QjloM1E3amtxRDhwUmpJMzBpWEpHdmMrU1BSdzRkVGVVYlhIS1pseGptSWV6?=
+ =?utf-8?B?MTlMVUNkOTJ2RStoNTA0NmI0RlVycVdQQlgwY0MvUFYvTU5iQk5WeC80N1p5?=
+ =?utf-8?B?cmNyZG8xOC80dmpHY0FzZlUxQWp6dWlIWkt2MGNqL0YxMjYrMGNnbzNrYWhi?=
+ =?utf-8?B?T2pncytiTlVCaTRyckpjemxxM0lOa1ZyUTc4Mk1xbkZmWGpYNlI3dm5BVzBY?=
+ =?utf-8?B?Rk9XNkltN1VmemFMdVZmM3RLcmpmNHEvN1dqaDJtZ0Z4NXpQTm9XTmZFMEJJ?=
+ =?utf-8?B?K2cvWCtJNmx6bEhVU1hDYWV2TnJzZUVYL3RrUE5pM0xwYmhuVTNPSWxKbTNB?=
+ =?utf-8?B?V0wxelBWQ3ZqQlNLZzN1TFBwTnRRK2tzRzFORzJoZFlYbzZuZmVkL3ZjOE5B?=
+ =?utf-8?B?cHF0NnhSVE81R0JtOTdTZWVLY1R5YnBDZVRQZFR4N3JUN21GUnFBRTZUTnpY?=
+ =?utf-8?B?M1hJZDhsZEpqQ3Zkam5odXJGL1dKV2tUekExVkxCeWRUMlp3TUZkMzNGRDhk?=
+ =?utf-8?B?UzRMVU5IQ2lwa3FvUXRuVU1yMG5VMTFTQU1vRVVNTm82NzBncHB1TkVkSHR1?=
+ =?utf-8?B?RXRYNHlZWHpTQWcxVzFPazJtY2JYWWN5eVdWTTBaYW5DaGhEdzZUMDNJZVNV?=
+ =?utf-8?B?TmM5QmludGRodndzT0d6cWlQREFjRlQ5dGhqM29HWFRNdDdHcVpTZENHcDNB?=
+ =?utf-8?B?Z01GYjdRaGNNNE1kVGF2NmxGc0EzejA4dHNNOHBtUnRyYjdQQU55d29VOFZp?=
+ =?utf-8?B?Y0lDMmozSUgzSHh3YjJsNHUzNHRGTFgrd01xUy93bitacDgyYkVTd2VPYVRW?=
+ =?utf-8?B?VkQ2N1AxVGMrZWpxQ0J3NjY2UkJyVzlYL2dPTHVGYkJTdjY5RWpwK1FCZEpY?=
+ =?utf-8?B?aVlwcUdrZFFoZjRabjl0TER4bmhOOVBmRTh4OVR6aEJrRCtnUjRGZU9sZm8w?=
+ =?utf-8?B?cjVEQXJHVm1xbUYzYkZTTVJFVWpxNWZCYzRzM1NyZFBkbGw1UTVnRkc1ZnN1?=
+ =?utf-8?B?d1lyamZobms5LzI2VlVlOEFIWWswWlcrc2Z0YTJ1dWh4ck5FTTB6QXRmTTcv?=
+ =?utf-8?B?S2ZCYWhCUE5iekhtKy9tamZwdUpMNkhzN1JUQjNrRVVkeEowT21GTnM1clk3?=
+ =?utf-8?B?MGRRVzRDYTNCc3NOZ1Q5NW40Q3A4TzI5UlFMU2NhTVhtZGRzU1R3bmw2YlJX?=
+ =?utf-8?B?NU1sa0laSGN1d2szYzlsUjNsWkJmTmFOMmJsVnlLazFNNisrRVhWZkZVWm9v?=
+ =?utf-8?B?TVBEM3QwWmpWeW54c01oTGJuTTd1R01RVmQ5Q1p5d01JcHM5THZMQnhtVFRp?=
+ =?utf-8?B?UGY3WVJWclJkcWVmQktUSHRyd3pFYnBLYXg0b01JWGJFeStxeXhwaENTQW5u?=
+ =?utf-8?B?aVZOZU9UVVQ2UU9hYkpSWVZVMm8xL2IyWWl4Wkd2MThMKzhMeTBjeWQrbkhr?=
+ =?utf-8?B?aFpHWG1FRmlKbEtjOGU5QkM5MWRyTjlYblA2cUVYNnoxR1Z0VVFsc2Y5eHcz?=
+ =?utf-8?B?UGlPY293anVJdU0vTExrNUpxY3ZJQmNkeEJpVkFDVE5QWElBQ3IyRm5QTjVI?=
+ =?utf-8?B?RmNUN0hiM2xYY1FpZklRR2VTQ29ZODVFdENBdEZkL29pWk51elZFa0NtQmRl?=
+ =?utf-8?B?UDFqRDM3OVdFNlBIMXhXOU5hMm5uU0pJa1ZNQ0lraEdxUm4xTHFVU2d3aXFB?=
+ =?utf-8?B?UEJ2eDdTOHh3b09Qa0Jmdz09?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:BN0PR11MB5726.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5341.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZjZwczllOC9WRE5qb09COVNabkVZN3NUQUlUWjlueDM3RUlmV1J0L0ZiQ0NQ?=
- =?utf-8?B?Yy9UVWhaOEYraDVDQ1g3U3ZiVFVteVdnckVhZStpOGtuTkwxK2RsaE43ZDhl?=
- =?utf-8?B?eGluYkJadTdTMEZTRWtxcWY3Y1JIbDg0WGF3UEtOT0tXQVhuTmIzU1pPS2Iy?=
- =?utf-8?B?YzhTM2JvVUVpQjQ4UFdVSjNJOUVKNjE0MVFXaVRDZzFvb0Qzd2JiMDlMbEJy?=
- =?utf-8?B?RE5IWnI4aVRwVSs4bzlicld4RldxYUdiUUdRaUYwcWM2dTJuVTlmZ3BFMjly?=
- =?utf-8?B?ZUl1YktWYUJvMGJLSy9YQ1pYMXE1NS9iaG5IV0IyL3E2SHJVem1qR05yWVI0?=
- =?utf-8?B?a29ZTkk3SDZpa2NUN2RWTVY1Q0RYRFBGaUIxUW5DU2o4S3ZpcXh3b3BRcVBx?=
- =?utf-8?B?Q2xyZmcvN0I4eS82ZzhRbVZaVy9hQytPOTAyQjBzY3laRVdWRnhJeGJncmNz?=
- =?utf-8?B?ajF5Sks4N3U0R205bmRCZFJJQkQrZUJqYjBrdWl1bzFZZ3ZLNThxQ0hKSnM5?=
- =?utf-8?B?cnNRTmdQQmdTYUF1c25kYlVhT1ZZNnFmczUrQWhCVzVIV3FwSWYyUW54ZFZz?=
- =?utf-8?B?cmRTUkRBVjBoRHVnS2NqN055dnFQZ09idWtsb0tVQUUyRlNRYVkvZCtkbENt?=
- =?utf-8?B?UjNpaUYrUGs4V3R3ZDdXb0dic0pXeHk0RytMdVV0MHFTbVFTeHJzYndkWWtC?=
- =?utf-8?B?WFQ2cXBuSXkyOFh6YTlyWk5Sb1JQMmtuOVdoenFBMW5UTDlKdjVBNjdMZ0tw?=
- =?utf-8?B?bFRDdFptdHJKZjhGR1lwL21lMEloQXlSc3hWdVBESlR1Qmh0Y2pFZmNHb0gr?=
- =?utf-8?B?ZzVrTkNweXFJczROQTNNVXZnZTFudURQUTMzVjVtVFhJeDFWdVpUR1JXNjBl?=
- =?utf-8?B?TzA3MTIyb2N4bGdueWs1dXhTM2pvYVBCLzd6ckNGYnN1ZzJJcW5sZGtvVFhq?=
- =?utf-8?B?d0xxSnFQeUFRRk9MbnNjcmpBZWJGWS9vekRCVU1ST2RVMmR3S20wSUFLTUdB?=
- =?utf-8?B?dGFYcExKcnE0NlhRZmZaNXMxQUtvUEh3L0prcmRFcEE0V2M5dC8rREwzR1M2?=
- =?utf-8?B?RW1TZjZmbnJHZWlRTGJBS3hTTVEvUzVIcEJKdC9qS2hYVVN2dG9xL0FFVi9F?=
- =?utf-8?B?VVBzYkRmWUcvdEJxeHdLNElMWlBWeVpKdUZEOHpGTEQ3UDJzeDR4NUR3V0pQ?=
- =?utf-8?B?WElVSUdKb2RUd2ZPM0Y5ZVNYNUlzRUI0MzB0bVk4WlI1ZXpCTURhRlR5RG9P?=
- =?utf-8?B?T3dMZnlxOGNBMUE2WDZiK3Z2aHg2elhjQ3R6d1puTUlPMjRBWVBGbFAxeUFI?=
- =?utf-8?B?b1BESnNVTEhFTXBzN3g5c0o4Mmlwbk9kT2t0ci9SVW9LVHgrbEhzZmZqQU51?=
- =?utf-8?B?N2VuaXRLVFh5eUxobnZ1ZU1WKzhEc1BjZ0s2UUFsWXlQVWV5U0ptdjhSbmNa?=
- =?utf-8?B?TDY2blBEK2tPVjVwbW5YcDhrVGpBb3I5c3lYSitXUFAycWtBYzZCYnd4cWhQ?=
- =?utf-8?B?NUpCUEhkSUF1OG5KcExFcDB3bGh6V2RGVG1ydW1vRTlUQ2hoM3ZOa3A4Snly?=
- =?utf-8?B?dkkyMGp5aktaMkRFeWM2Y1g0OW5yRzMvTHZjZkdoZS91Q2hqQXlFeGJHRzhV?=
- =?utf-8?B?Wk9DQUxESjF4ZGVtTEYxc2VEYng3a1NvSWxnMmNramxlRzVPY3F2d2o0NjZv?=
- =?utf-8?B?SzNkaDFFVjEydnZzREg5dnd3SFdMQ0tRT1RROVhEaGpVUTA1RFF0MDRIbzZt?=
- =?utf-8?B?WXIrVmtVaE11Y1M2V0lUMFVBK2YwSGJnQnlrUy8zN2g4Z3BQc0NaeG9ZcHhU?=
- =?utf-8?B?cGZXU0Y2U2NCT2k2QXF5Um1VNWRndllQK2hlTHZpbHd5aHQxblEwV0tleU5V?=
- =?utf-8?B?VGVyR2NOOXI5eStFN2k4R1ZBVkRER3NlTTBEUWNFU2pqbWdSd0FQQUtRS2RP?=
- =?utf-8?B?aGN4TkN3c2ZZa3FzcWZNNFdrNk82WndzK29qZE1XL2ZkbEtYQnM1VmdsUnh0?=
- =?utf-8?B?cDhMb0phMGlEdlhROVVVZkVtQzh1R3d2R0hEV1V4c2UvSlFFVjlmazc1aDNz?=
- =?utf-8?B?REZhVy9VbWx2V1FWTHk0WjE1aHZWU3lKQStVeGhMODIycVBPRmhlbklnRTJS?=
- =?utf-8?B?L3RENEdDSDlNcFdMN3lPUjd6L1FIV3BkSUEwaVhIdU0xdzBtK1A1eXp6R01t?=
- =?utf-8?B?ZkE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 258a4475-5fe8-400b-4a13-08dca16d0922
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR11MB5726.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ckwrVk5EQVVGcW5ZTTR6M1JsNzNJTjNpLzhqa05yTlFQcUZlU0VRbUFoK0dI?=
+ =?utf-8?B?SzViaFBoRi93cmJYYVNjRlM1VnJCY3J5clNSb1IzUStXM1Qxd3BTd0dRNFIz?=
+ =?utf-8?B?dGlvWHBwc1dSelhpaXFoZVUvb0txRlh4RU0rdjBEREtBRXZQYTFuZ2daVzdC?=
+ =?utf-8?B?TXB5akt3dlY3bEJsWEs5K0VkWDlJQTh3VG5waytpT0xwMWlHdU9lZzAycThJ?=
+ =?utf-8?B?NElIZWsrL1pxMU1MaXFiNFU1M205c2VqcDAyRjNvSHg1TTUrbFpsQklJN2lu?=
+ =?utf-8?B?cnlCZzNzTlpXMW9NdVVXVnJTaTJwSGxBUFdReklueDlycUU3SlhyOUQxN2Ji?=
+ =?utf-8?B?QlBNeXRSdXhwTldkQy8vbkttVG5BREZ4azByeFdGRHhKUnU2ZjNsMzBkK2ZV?=
+ =?utf-8?B?WUk3VGoxMlFVcFBGMHNVbit4K3dLR3VoOXh5VFZEbVNjL2hycndnT1V3NS9Y?=
+ =?utf-8?B?QXJSdmFZYmlySGdIZFRERE1IdkpZdGJmOU1uTnBjNWwxWUdqZTdZUDl0Zm9w?=
+ =?utf-8?B?R1VWNzRoeGdTOUI1UGd6Wnc1SUJ3aXZuaExGSS9qckUzVWRiWFl1NjJJWUc4?=
+ =?utf-8?B?OVFoNjFFWksvZXA5S0gwK09pMVZIRXlsOVIwV3dTTno5TXo2TGZBOHhzY0J3?=
+ =?utf-8?B?VjliTkN3UHpVbEpxWnFka2YzVjVEVUZlU1owQXNPb0RVK1hzTmYzazFndm1X?=
+ =?utf-8?B?dlZOQ1l5OEZkbDRvNExoQnVKZ2F6VEVRaWVicGxWK2VVWXJlOWw3dm5ZM25y?=
+ =?utf-8?B?M3lRaWR3TUZwZmtxSzMwZ3huUWtmU29LclNGWFZWSmNTVDQzVy8xeFNqT0k0?=
+ =?utf-8?B?UlVBY0hKUG5xbW5xOFhRRU5vbzhwOXZGZ0Y0OWxtUUl2NHprVHBWL1BQWVV2?=
+ =?utf-8?B?NFZUK05GQStmck1xVVN2SjFQQUlXclNZQ1BaZi8yVGNTYkFFN0VJSW51OUg1?=
+ =?utf-8?B?aXlVa2tuWVJ3Y0dQWCtXbFVhK0tOS1AvRnJiYzJCU0ZIYzlvVDZSeXd4NllI?=
+ =?utf-8?B?V1A3RkIvRVB0TXBzQzliWkV6UGU5RktTYk85bDlSaHRFelFWTGo5Y1E2aitH?=
+ =?utf-8?B?czhYTENIeWVOaHJTVTR5bXdMdHc0OStOV294VzBkbGlRRmNoQVcwTzRxWWNi?=
+ =?utf-8?B?OENnTmtqaGd5Z28xS3Y3ZmtxUWJhR1JpN3NWTTJndlV3c2YvN21hWnV1N3dh?=
+ =?utf-8?B?NWhPWEpxbHhqTzFKaWthMDNobE5QaWdmNEhLTUR3VS8xOUtrN0x0dHdLWndk?=
+ =?utf-8?B?eDFJMlVxdzU3TlNoOHB1N1FDbmZsVHNWNmo5M09QQ1o4WkJNWmZOdjJKQ0xP?=
+ =?utf-8?B?UkJLM2U3MkEvMkxoeHZwSk9LdTQ4MVE3WU13K0tsRHBTczJBTmJlR0I4d1Zt?=
+ =?utf-8?B?WlFsc29BRnVlZmpIK2s2S01WY25HcXZtb0xGNC8rdjU1OFhrWnJmV2Rjbnd0?=
+ =?utf-8?B?UUFNeTNoQmRUemlxampONm9YNk5tRFVGUktuWGFlS0ZFTDFPUWcxTUJzaUVY?=
+ =?utf-8?B?T3NVOXpRZG9pcUJtSkc2ZWZwK3l5QzhJVVlrOW5vYmdLY0ZERmg3MG1nUDcw?=
+ =?utf-8?B?WXIzS3krWklPRnNSYUI1SWw5ODJvd3IvNG5id01ib3R2Tk5ORGxqcEpwQVZU?=
+ =?utf-8?B?R1lJVnFqdVNNZzJGSUhUaTkzWHlGV1phSTF4eFg4eXJ4U01MeFhQRmxvYUJn?=
+ =?utf-8?B?WXhXYlo3SWd6L2dabzR1ZldMNllFR1drbDdidlJOTlNyOEFUMlIwbXdqTGdH?=
+ =?utf-8?B?MHE4UThFcnM0aDFQMHhFQUdUejQ2RXQxbGpYaXUwLzdqRmttSVNlTFo4MTFR?=
+ =?utf-8?B?bGRsc0kzaWpZYnRIMU5rNUF2RVA2V0ZrU0RCWUl0cWsyUVFHenBhZ1ZIbFhU?=
+ =?utf-8?B?Tlh2MDJ5VjdhMTRyZnpkVlViSmdTUlhaUnJHTVFYZEZ1dVFiUkxsMk52MDdL?=
+ =?utf-8?B?ZTVEd2NqV1A2Z0xRcHNTYlpGQWlFQlZWTlU1eDZicjgvRXFJTlJ3UlZJR3Y5?=
+ =?utf-8?B?QjBEcUNZeE1rZXVHdGJHSThnY0lmNHV3c3hmaWJrMWZvTWIvZnMrY0JxRWhv?=
+ =?utf-8?B?U2pWS2VhUUlEcm9GcmRLUzFob05ydTBLQXlIa0lTdVdNQVAxRXEvVlppb1hG?=
+ =?utf-8?B?SVNQR29YSWRNeE5sWlFZZVp6alB0WE9XaW01dFNDb01QQktHSllWWXNVSzJO?=
+ =?utf-8?B?UWc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4de1f3a-ae95-4cec-41f3-08dca172540a
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5341.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 05:48:05.9350 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 06:25:58.8901 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: p+F9EhEu0MECFO6nYFTYd+rI8hJbJUIPuWtwYa633LO99FFSrPZzLdJHOwYzMkkETj9y3WogzZ4vrV7jU5FCe3uMf3v+5HbkwlC1g1VQa38=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7882
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ugzube3sx2AilJZ+UraUTYEGTS2xYq1JOwa91t3ssf09QANtmNJwcO93b0NPDzY9nqgMv5rir2q1xWXaZgNUSVvEV3fbVu2f4ujsHi1S/Eg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8169
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -201,58 +197,309 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 11-07-2024 09:43 am, Pranay Samala wrote:
-> This test is debug logs are too much and was killed
-> due to exceeding disk usage limit on the less disk
-> space machines.
-> 
-> So dynamically reducing the debug log level to 13.
-> 
-> v3:
-> - Calling loglevel init functionality in lib file (Bhanu)
-> - Here 2 means the log level will be reduced by 2 (Bhanu)
-
-Please keep maintain the rev history (v2 is missing).
-
-> 
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+On 7/9/2024 6:33 PM, Naladala Ramanaidu wrote:
+> Many tests are failing due to Bandwidth issues.
+> To eliminate this failures we change the least
+> working display modes.
+>
+> - Observed, for higher modes Bandwidth is not sufficient
+>    to downscale operation and multi-plane scaling operations.
+> - Add a fix, when Bandwidth is not sufficent for higher
+>    modes it will try the next lower display mode.
+> - Fixed some styling issues in the patch.
+>
+> v2: Fix some styling issues in the patch . (Ankit)
+>
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 > ---
->   tests/kms_atomic_transition.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-> index 29dd8ac4e..f89cd0814 100644
-> --- a/tests/kms_atomic_transition.c
-> +++ b/tests/kms_atomic_transition.c
-> @@ -34,6 +34,7 @@
->   #include "igt_rand.h"
->   #include "drmtest.h"
->   #include "sw_sync.h"
-> +#include "igt_sysfs.h"
->   #include <errno.h>
->   #include <pthread.h>
->   #include <stdbool.h>
-> @@ -1176,6 +1177,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+>   tests/kms_plane_scaling.c | 181 ++++++++++++++++++++++----------------
+>   1 file changed, 106 insertions(+), 75 deletions(-)
+>
+> diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+> index 3f63d3cf4..3296f98e8 100644
+> --- a/tests/kms_plane_scaling.c
+> +++ b/tests/kms_plane_scaling.c
+> @@ -210,6 +210,9 @@ typedef struct {
+>   	igt_display_t display;
+>   	struct igt_fb fb[4];
+>   	bool extended;
+> +	double sf_plane1;
+> +	double sf_plane2;
+> +	bool flag;
+>   } data_t;
 >   
-> +		igt_drm_debug_level_update(2);
+>   struct invalid_paramtests {
+> @@ -579,48 +582,57 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
 
-Comments in Rev 2 is not addressed.
+I think we can just change the functions to pass scaling factor instead 
+of width and height.
 
-Probably, you can read the current debug level & take the decision.
+More details below.
 
-Ex:
-if (igt_drm_debug_level_get() > <your magic number>)
-	igt_drm_debug_level_update(2);
-
-Also, please move this logic to end of the igt_fixture.
-Ex: If there is valid connector found, then there is no point to update 
-the debug level.
-
-- Bhanu
-
+>   	drmModeModeInfo *mode;
+>   	int commit_ret;
+>   	int w, h;
+> +	bool mode_support = false;
 > +
->   		kmstest_set_vt_graphics_mode();
+> +	for_each_connector_mode(output) {
+> +		mode = &output->config.connector->modes[j__];
+> +		if (is_upscale) {
+> +			w = width;
+> +			h = height;
+> +		} else {
+> +			if (d->flag == true) {
+> +				width = mode->hdisplay + 100;
+> +				height = mode->vdisplay + 100;
+> +			} else {
+> +				width = get_width(mode, d->sf_plane1);
+> +				height = get_height(mode, d->sf_plane1);
+> +			}
+> +			w = mode->hdisplay;
+> +			h = mode->vdisplay;
+> +		}
 >   
->   		igt_display_require(&data.display, data.drm_fd);
+> -	mode = igt_output_get_mode(output);
+> -
+> -	if (is_upscale) {
+> -		w = width;
+> -		h = height;
+> -	} else {
+> -		w = mode->hdisplay;
+> -		h = mode->vdisplay;
+> +		/*
+> +		 * guarantee even value width/height to avoid fractional
+> +		 * uv component in chroma subsampling for yuv 4:2:0 formats
+> +		 */
+> +		w = ALIGN(w, 2);
+> +		h = ALIGN(h, 2);
+> +		igt_create_fb(display->drm_fd, w, h, pixel_format, modifier, &d->fb[0]);
+> +		igt_plane_set_fb(plane, &d->fb[0]);
+> +		igt_fb_set_position(&d->fb[0], plane, 0, 0);
+> +		igt_fb_set_size(&d->fb[0], plane, w, h);
+> +		igt_plane_set_position(plane, 0, 0);
+> +		commit_ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+> +		igt_skip_on_f(commit_ret == -ERANGE || commit_ret == -EINVAL,
+> +				"Unsupported resolution parameters  %dx%d\n",
+> +				 w, h);
+> +		if (is_upscale)
+> +			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> +		else
+> +			igt_plane_set_size(plane, width, height);
+> +
+> +		if (rot != IGT_ROTATION_0)
+> +			igt_plane_set_rotation(plane, rot);
+> +
+> +		if (igt_display_try_commit2(display, COMMIT_ATOMIC) >= 0) {
+> +			igt_plane_set_fb(plane, NULL);
+> +			igt_plane_set_position(plane, 0, 0);
+> +			cleanup_fbs(d);
+> +			mode_support = true;
+> +			break;
+> +		}
+>   	}
+> -
+> -	/*
+> -	 * guarantee even value width/height to avoid fractional
+> -	 * uv component in chroma subsampling for yuv 4:2:0 formats
+> -	 * */
+> -	w = ALIGN(w, 2);
+> -	h = ALIGN(h, 2);
+> -
+> -	igt_create_fb(display->drm_fd, w, h, pixel_format, modifier, &d->fb[0]);
+> -
+> -	igt_plane_set_fb(plane, &d->fb[0]);
+> -	igt_fb_set_position(&d->fb[0], plane, 0, 0);
+> -	igt_fb_set_size(&d->fb[0], plane, w, h);
+> -	igt_plane_set_position(plane, 0, 0);
+> -
+> -	if (is_upscale)
+> -		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
+> -	else
+> -		igt_plane_set_size(plane, width, height);
+> -
+> -	if (rot != IGT_ROTATION_0)
+> -		igt_plane_set_rotation(plane, rot);
+> -	commit_ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+> -
+> -	igt_plane_set_fb(plane, NULL);
+> -	igt_plane_set_position(plane, 0, 0);
+> -	cleanup_fbs(d);
+> -
+> -	igt_skip_on_f(commit_ret == -ERANGE || commit_ret == -EINVAL,
+> -		      "Unsupported scaling factor with fb size %dx%d\n",
+> -		      w, h);
+> -	igt_assert_eq(commit_ret, 0);
+> +	igt_skip_on_f(!mode_support, "Band Width not sufficent for scaling\n");
+>   }
+>   
+>   static const igt_rotation_t rotations[] = {
+> @@ -847,41 +859,52 @@ __test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+
+I think we should do away with w1,h1,w2,h2 and just pass scaling factor1 
+and 2 in these functions.
+
+We are anyway overwriting these. With that, we will not be required to 
+add extra members sf_plane1/2 in data.
+
+Also we might want to split into smaller patches.
+
+Otherwise the approach looks good to me.
+
+Regards,
+
+Ankit
+
+>   	igt_display_t *display = &d->display;
+>   	drmModeModeInfo *mode;
+>   	int ret;
+> -
+> -	mode = igt_output_get_mode(output);
+> -
+> -	igt_plane_set_fb(p1, fb1);
+> -	igt_plane_set_fb(p2, fb2);
+> -
+> -	switch (test_type) {
+> -	case TEST_PLANES_UPSCALE:
+> -		igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
+> -		igt_plane_set_size(p2, mode->hdisplay - 20, mode->vdisplay - 20);
+> -		break;
+> -	case TEST_PLANES_DOWNSCALE:
+> -		igt_plane_set_size(p1, w1, h1);
+> -		igt_plane_set_size(p2, w2, h2);
+> -		break;
+> -	case TEST_PLANES_UPSCALE_DOWNSCALE:
+> -		igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
+> -		igt_plane_set_size(p2, w2, h2);
+> -		break;
+> -	case TEST_PLANES_DOWNSCALE_UPSCALE:
+> -		igt_plane_set_size(p1, w1, h1);
+> -		igt_plane_set_size(p2, mode->hdisplay, mode->vdisplay);
+> -		break;
+> -	default:
+> -		igt_assert(0);
+> +	bool mode_support = false;
+> +
+> +	for_each_connector_mode(output) {
+> +		mode = &output->config.connector->modes[j__];
+> +		w1 = get_width(mode, d->sf_plane1);
+> +		h1 = get_height(mode, d->sf_plane1);
+> +		w2 = get_width(mode, d->sf_plane2);
+> +		h2 = get_height(mode, d->sf_plane2);
+> +
+> +		igt_output_override_mode(output, mode);
+> +		igt_plane_set_fb(p1, fb1);
+> +		igt_plane_set_fb(p2, fb2);
+> +		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +		igt_skip_on_f(ret == -EINVAL || ret == -ERANGE,
+> +				"Resolution not supported by driver\n");
+> +
+> +		switch (test_type) {
+> +		case TEST_PLANES_UPSCALE:
+> +			igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
+> +			igt_plane_set_size(p2, mode->hdisplay - 20, mode->vdisplay - 20);
+> +			break;
+> +		case TEST_PLANES_DOWNSCALE:
+> +			igt_plane_set_size(p1, w1, h1);
+> +			igt_plane_set_size(p2, w2, h2);
+> +			break;
+> +		case TEST_PLANES_UPSCALE_DOWNSCALE:
+> +			igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
+> +			igt_plane_set_size(p2, w2, h2);
+> +			break;
+> +		case TEST_PLANES_DOWNSCALE_UPSCALE:
+> +			igt_plane_set_size(p1, w1, h1);
+> +			igt_plane_set_size(p2, mode->hdisplay, mode->vdisplay);
+> +			break;
+> +		default:
+> +			igt_assert(0);
+> +		}
+> +		ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +		if (ret >= 0) {
+> +			mode_support = true;
+> +			igt_plane_set_fb(p1, NULL);
+> +			igt_plane_set_fb(p2, NULL);
+> +			igt_assert_eq(ret, 0);
+> +			break;
+> +		}
+>   	}
+> -
+> -	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> -
+> -	igt_plane_set_fb(p1, NULL);
+> -	igt_plane_set_fb(p2, NULL);
+> -
+> -	igt_skip_on_f(ret == -EINVAL || ret == -ERANGE,
+> -		      "Scaling op not supported by driver\n");
+> -	igt_assert_eq(ret, 0);
+> +	igt_skip_on_f(!mode_support, "Band Width not sufficent for Multi Plane\n");
+>   }
+>   
+>   static void setup_fb(int fd, int width, int height, struct igt_fb *fb)
+> @@ -902,9 +925,9 @@ test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+>   	int n_planes;
+>   
+>   	cleanup_crtc(d);
+> +	mode = igt_output_get_mode(output);
+>   
+>   	igt_output_set_pipe(output, pipe);
+> -	mode = igt_output_get_mode(output);
+>   
+>   	n_planes = display->pipes[pipe].n_planes;
+>   	igt_require(n_planes >= 2);
+> @@ -1308,6 +1331,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   							drmModeModeInfo *mode = igt_output_get_mode(output);
+> +							data.sf_plane1 = scaler_with_pixel_format_tests[index].sf;
+>   
+>   							test_scaler_with_pixel_format_pipe(&data,
+>   								get_width(mode, scaler_with_pixel_format_tests[index].sf),
+> @@ -1333,6 +1357,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   							drmModeModeInfo *mode = igt_output_get_mode(output);
+> +							data.sf_plane1 = scaler_with_rotation_tests[index].sf;
+>   
+>   							test_scaler_with_rotation_pipe(&data,
+>   								get_width(mode, scaler_with_rotation_tests[index].sf),
+> @@ -1358,6 +1383,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   							drmModeModeInfo *mode = igt_output_get_mode(output);
+> +							data.sf_plane1 = scaler_with_modifiers_tests[index].sf;
+>   
+>   							test_scaler_with_modifier_pipe(&data,
+>   								get_width(mode, scaler_with_modifiers_tests[index].sf),
+> @@ -1382,6 +1408,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   						drmModeModeInfo *mode = igt_output_get_mode(output);
+> +						data.flag = true;
+>   
+>   						test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
+>   							mode->vdisplay + 100, false, pipe, output);
+> @@ -1402,6 +1429,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   						drmModeModeInfo *mode = igt_output_get_mode(output);
+> +						data.flag = true;
+>   
+>   						test_scaler_with_rotation_pipe(&data, mode->hdisplay + 100,
+>   							mode->vdisplay + 100, false, pipe, output);
+> @@ -1422,6 +1450,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   						drmModeModeInfo *mode = igt_output_get_mode(output);
+> +						data.flag = true;
+>   						test_scaler_with_modifier_pipe(&data, mode->hdisplay + 100,
+>   							mode->vdisplay + 100, false, pipe, output);
+>   					}
+> @@ -1442,6 +1471,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+>   
+>   					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+>   						drmModeModeInfo *mode = igt_output_get_mode(output);
+> +						data.sf_plane1 = scaler_with_2_planes_tests[index].sf_plane1;
+> +						data.sf_plane2 = scaler_with_2_planes_tests[index].sf_plane2;
+>   
+>   						test_planes_scaling_combo(&data,
+>   							get_width(mode, scaler_with_2_planes_tests[index].sf_plane1),
