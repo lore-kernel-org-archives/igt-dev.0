@@ -4,166 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D9AC3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jul 2024 20:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC786C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jul 2024 21:35:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EAA3410E061;
-	Thu, 11 Jul 2024 20:36:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 690D910EBAC;
+	Thu, 11 Jul 2024 21:35:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q73K/1nS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n/6TNv52";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5675B10E061
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jul 2024 20:36:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 157FA10EBAC
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jul 2024 21:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720730185; x=1752266185;
+ t=1720733702; x=1752269702;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=j/W8GsmlzgnZendd1HDxJn+k8W+KBD3pRQ/ZBpWU9N8=;
- b=Q73K/1nSJmCTOMTE5Cft3B+Hf1o/zv2areEFaQQKlwVgQuh5Khie8kn2
- PECtprswUAo4F+I1Tln6FNgc4XUU9urO6BmScysssXRSNRjj/akKd64xg
- iIXzZJI6oaCUoUjdhq7c5bodgD4wS4UD/ak0rVXutb435j6qiaMCUOgBL
- Vsi/oOyc/OAqXQq2usp8F50JnIgLIbvP2jgVZPsRJwJo72IeWnvafL5sl
- bstd5Irn/iXvjF746XyQsGN/OaOgcLZ4MPr3XpK0sQ1jUv+GD+XOP5Dfb
- aBnCCZbfFaoM0DlPZs79cd/H9qAQD6ocGRufefg/k1PfJENJTHcFVXj0I w==;
-X-CSE-ConnectionGUID: RIBzuZ6nQsibdhnM8ehs2w==
-X-CSE-MsgGUID: zqCd6+c2SvKYVtSo+pvmiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18283069"
-X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; d="scan'208";a="18283069"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2024 13:36:24 -0700
-X-CSE-ConnectionGUID: qqMv7u5lRBqKD5TbtDIQhQ==
-X-CSE-MsgGUID: 6khMZnhGSjibydDiz6D8xw==
+ bh=qPZXDTLGr2SJH3vO/OC8qIZkA7mAFxa0WOMc+NmB850=;
+ b=n/6TNv52BT+lL7v2sfa4+UjbEh0Amt1t94533I8mhHhnkqrWgOTFLMMk
+ /RQToEkp3xgqps/i+UqxxzKWaThD8D7o2a6PeiJ9Ggd5ok7z61q0g783u
+ /OB7cBT1Li6ZylsSN8dkX1iKUoCfir07WdtMJ4LxKtirLMLvb177v12AG
+ UWuwjHj6waipn+EIXXSh3L59Iz8IxRaFqM4dxz0NysXr1PWwJ+vZrUOfU
+ vkX7QSYfpRzsaSrnkmLO16qv/8U8OoyyNrRkdb1H1pjXlArZ2h6pE7XhA
+ VOjMNz0PnCh1Lkq5iyQGchw/ZBXC2ZNO5tVjGowlBUN/2/t3IbF2LDjMt Q==;
+X-CSE-ConnectionGUID: w9COAV5eTo22avxCnBMSjw==
+X-CSE-MsgGUID: oHIZrYheR52aqCvIii4CPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18104430"
+X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; d="scan'208";a="18104430"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Jul 2024 14:35:02 -0700
+X-CSE-ConnectionGUID: loR1HJy8SiWHk6q+l/kuVg==
+X-CSE-MsgGUID: 0hNgZkRGQgSWxErZ9nJRBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; d="scan'208";a="48566487"
+X-IronPort-AV: E=Sophos;i="6.09,201,1716274800"; d="scan'208";a="53885042"
 Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 11 Jul 2024 13:36:24 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 11 Jul 2024 14:35:02 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
  fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 11 Jul 2024 13:36:23 -0700
+ 15.1.2507.39; Thu, 11 Jul 2024 14:35:01 -0700
 Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 11 Jul 2024 13:36:23 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Thu, 11 Jul 2024 14:35:01 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.40) by
+ edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 11 Jul 2024 13:36:23 -0700
+ 15.1.2507.39; Thu, 11 Jul 2024 14:35:01 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TD20Cm0fwKrLw/PVFW7A+59E000qtq5SMhWj6b0qo0LPHwwjGUD1/OuFsdBT5B+HukVsIKlFVRagwJC73XSHpw0OjaT/lT+xLCfcwwDwKSZnCEL1D8A12RE/ox9HQx2AC5HwUrodCfXKupTB4QZUk/kAXsdOAqEpFQvjGMdxAXLZkBUqGW01wb7wYRxHdwBAvTYok8l/GiXLJ0mIHA9OFWFC1MFPk2ey0+CxmL+4+h0i5DRWIeqgknGVAGsGQi6F5Rzv0Ds1WYTJG/Ar0hpJciqV+rHUJXpWJMxzQ2IetZI2HlxIjSHoE08wEhuFHS3aOy9H8xgQO40Jzpms84Siww==
+ b=xQog4CUBl+G7x7RDmYPIKbUUsWwLZzSUqUyy/uA9NhORatrdZ0r+oGGQoE57B4wMXBikJ1xqbASdymp7Oi/OgrjqTjaF2g0WBG5jSSg6fBvdrxVa0yWGv/w3vsD4D6zRDKUyzrPUQ+Wg9Hqbmn7FLkn2izpPo1XzCiLDbrl23C77QgygJlmgdBjErWw1ko+dtz5pHB31Q7RjWBIQOapZk3ztdAQFq7sirLRvvPorZZZTdL151UNKejP0RsEPc9Pw5djroQzxDglTKrOXJhqD8d9hSugqr2jhNu4BCI0DM1f0eK2ekUd+LXx/Kr0f67fZiRCI4MPEEYenU3NWLYgzMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9/G3HgTF603Y6ql2E5A4fSsrZfNzM//9oYy/mEwtZxE=;
- b=Saz6tkIrefGi4/DaBSzGaSEecs1J5bpUpUAUl7uYCrjT82Sw1W5arQTChHOsZ1dM+aRhJ/tUD7aJUr3SrW7WN+OF6yKgjMzsSKbKqyCe8B+JRcdfdqUXERFOiczuXEE8QJYJuGL4wCyJnIfhGFX8quFkMC50jYnSyx0hOLSa63QbAs60l7BA1HV9WQAFl13u/q4HHg3SY1TSRy7wG/LDSN4IueEpZJ9FlTwOBxYOR9cg3iQ1zfHujuhrJz8Hk20YTYVVWcCxsviWz/GNWLDe2ngizCJtTP1e8iSxlvhViE19EQhhX7ndYKO3nzYM//vwao9aluiCHRUayH7OHCOYcA==
+ bh=EfDMQZJs1JtpcTm8sm01FU/KCf+JuFEn5Z97ubsr3fI=;
+ b=ibrnw6qVXpOyEstf/j3+HimYUhzIkvcToSAqCWG7N3ATa2EBKQZGkvf/vBiLYpKeLt/hr6mZzhtBa4wnzsnGna7OwhdMvvQ05dh7Qcf5q9hXIBUtr76DyUN9dh/G8dQNBrzpfltQsFTaS5Jw0CFTDNmZOJAPrJMgqr2MJpHjtXsCQvoAaBdwDp5/nbgsld6f8l1G8DhHBJZLiZYZ4PTmTllTQKyLJy81v9bO0Ehio1t4rXOmGhlwLdvU+GdwOxcjzontklaiuCwQegXD6TQiYwwJ+hoQe5ywzoA4nHIozu7plqDzLr9zWXUbNWtkEvyqJTW3tAz0tgm1hAakCkLW3Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
- by CO1PR11MB4802.namprd11.prod.outlook.com (2603:10b6:303:94::8) with
+ by DS0PR11MB7579.namprd11.prod.outlook.com (2603:10b6:8:14d::5) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.20; Thu, 11 Jul
- 2024 20:36:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.35; Thu, 11 Jul
+ 2024 21:34:56 +0000
 Received: from CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
  ([fe80::7141:316f:77a0:9c44%6]) with mapi id 15.20.7762.020; Thu, 11 Jul 2024
- 20:36:20 +0000
-Date: Thu, 11 Jul 2024 15:36:16 -0500
+ 21:34:56 +0000
+Date: Thu, 11 Jul 2024 16:34:53 -0500
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Katarzyna Piecielska
- <katarzyna.piecielska@intel.com>, Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: Re: [PATCH i-g-t v2 01/10] tests/intel/xe_drm_fdinfo: Rename basic
- to basic-memory test
-Message-ID: <cpkpadnhngra4rud52uypibg4d3theudfhz7nwqvkexumuelzx@bghu5paxdchc>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2 05/10] tests/intel/xe_drm_fdinfo: Add single
+ engine tests
+Message-ID: <noettlh7nsb3cpnlrgd3qjocjrnhd5gxbfzqdvvrlmfvg2bufn@4t3diblziurw>
 References: <20240703002532.3156277-1-umesh.nerlige.ramappa@intel.com>
- <20240703002532.3156277-2-umesh.nerlige.ramappa@intel.com>
- <7dw4w7s2sxkf4axlllqtpgf2m4v7fkxpb5tfhlgswvwrvxtity@gnkyeyww3qcy>
- <ZpAY0M6uBVka2lyR@orsosgc001>
+ <20240703002532.3156277-6-umesh.nerlige.ramappa@intel.com>
+ <fjpk7jck3tv5vz63n2n4c4jayo4gt5folbfrnncrpdrblb6kgf@hg3exp46jfx6>
+ <ZpAu0p+1DX5Yn7wA@orsosgc001>
 Content-Type: text/plain; charset="us-ascii"; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZpAY0M6uBVka2lyR@orsosgc001>
-X-ClientProxiedBy: MW4P221CA0025.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:303:8b::30) To CY5PR11MB6139.namprd11.prod.outlook.com
+In-Reply-To: <ZpAu0p+1DX5Yn7wA@orsosgc001>
+X-ClientProxiedBy: MW4PR02CA0007.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::33) To CY5PR11MB6139.namprd11.prod.outlook.com
  (2603:10b6:930:29::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CO1PR11MB4802:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9acb6bfa-7258-4c58-29db-08dca1e91ef2
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|DS0PR11MB7579:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3649cbdb-f34e-48ff-7278-08dca1f14eb3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7G/rvk/00yquAJ27BH7PzqedhwZyKT7VFZ+f/u7mEOl+Ue+81E3HoyF7GxdX?=
- =?us-ascii?Q?8fLPMHa6socLT4XEVaYpLuRZUSfmpxby8rFG7Zv0XnIv1oIiMlOkXIFWQpAz?=
- =?us-ascii?Q?WHWYOfc07BOnb+d05iS6L7DCYumTW/4CtArhpCm5O3BaXMJwS/hLVDzMe8Xp?=
- =?us-ascii?Q?Ihosd8l3bt6B5DLE10JiX4CKnL7ThQ8WhSKHcEPx2JuzFQZB2EcC+9C5eKMm?=
- =?us-ascii?Q?bmsGZSRodJDmtMnxtRxpV3U7Wf2Ll/0H5EapAcv0/dgG13TPfjeyrpkXgOVr?=
- =?us-ascii?Q?YvMVAxnJk3dXMgIZd+wexJNR+2UXWV5axysP65c94px5AdjhW9M8umYIIKTf?=
- =?us-ascii?Q?R9fCIXKdBhVjvhGrGvLU0cJ2C0LkmUvrNDvXIKvrKa20edSk2zVM79uQk3J/?=
- =?us-ascii?Q?2mDLYPxqHUjtRSK4wgspzREk3Xz4mZjdTaWTMeqbdtCxF5PnR0/jP9EBrbUV?=
- =?us-ascii?Q?pj3O+axa6eM1SYoFcNmUtosrsNtBrwx0oMS8YMPNgd7SymTUxmjHVVrG7+GB?=
- =?us-ascii?Q?hFhZHRo02e1HjRLGRseguhGWeNgi+V9Bqvm2qDrRv48CmGfd0fwIacmtUpz5?=
- =?us-ascii?Q?XchZRM+U4VbY99PUyWh196TMKlCw97dl4EhDQr0vrkV6yyrzdPgGympSxZK4?=
- =?us-ascii?Q?0zWgA4nL4LoJQupD5RAviGPQCxYOs75bxHxLqCNWP529lUo30LD1YZHh3sZZ?=
- =?us-ascii?Q?eKy64r4rF9nsUhZPIj5cuYKPHrFh0kBijBken/NVS54cw0XkfxkAThye45ZS?=
- =?us-ascii?Q?o0B9/qlU2xbk86G859Gj/CqkxUzurBhR1APquZuav0gjQhaH8Kj+r8PRa19U?=
- =?us-ascii?Q?wnNVUt00KvugLuNHFAYAkWIwe+x0BK41rLddThIz6PPW9PLV3LDkJBs9+7/6?=
- =?us-ascii?Q?lBtoDaieG2rWHF1ma4RoLb8alF+bNI6HoOyBOD4BTHLHLq8miNE56e0sICLT?=
- =?us-ascii?Q?aWsTY3gue2ynD+PYBlWsUH2jxCIMQ49laYwIgbqWzo4qJtpqf/wXPkZTYfNG?=
- =?us-ascii?Q?9yYT23RVr7XggY3dMgdEQaxQAFSXx23sAhVQK6sCueHTNmP4jDlxyL4pxqHk?=
- =?us-ascii?Q?egMahXkufNAlJNETS3gZY22O8JoUeifawUsIpcZG486uydGf6NTqaz43covG?=
- =?us-ascii?Q?5zl6yJIflDasaaIMMmGbYqblK05DDTSXtzZ9cbmWFtBgEJu3sxPPtWwseC0e?=
- =?us-ascii?Q?hUg9OThYcQ1XKs3G+116Zs9GDNixqT6R4UaLZFkT0M7652Vzdqm2t+mAne0U?=
- =?us-ascii?Q?/k6GDwWw99zHm7MOZbqRV7v4u+/KX5vq2PFrp6xaW/k8rMYbMYo8S8WlnYnV?=
- =?us-ascii?Q?uMc=3D?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?O4vp9atCkYbqKZtY5HMx1jL2K/dgGljDVzhleIG3HIpxxqKKpiortpIpfFsJ?=
+ =?us-ascii?Q?8fjArGVeMWaoDgEOeUQ1NjCZ6n493W5Q0KSEKhHaVL9ppEw2phDkgyXJQbbo?=
+ =?us-ascii?Q?03Oviy3PUalZEaRWut4jYmiG6Jo5sPLZyaaN/Mk7zG7ruYnk6jx1hNXFNSFX?=
+ =?us-ascii?Q?XvTMIO24jdyYrN9eG55+HnN75t4JYu3h0um4XWVUR8Kfx4rBU4QYBZLOMKZ/?=
+ =?us-ascii?Q?qV+ncRMkjv6b3FNcKo3OOScyIQqY8SggzB+NklxviT3wKjJCnhoCV7+Xe4ch?=
+ =?us-ascii?Q?3lbFOv0jhIPr3ZSN+DhGQQowkde/c2VzP+RDVeKmOSJkgSznINIrSLcNeUHK?=
+ =?us-ascii?Q?grte6waCPIzsr/bwsppE3KCfT7swgW2nIsPIhCLkvUnYGLCPLVSi8caGyY5A?=
+ =?us-ascii?Q?MrlU1KsZ1vzwTW8Mhiuew+Se1AcMrV9JjogrorGuMrJLEK/JLTBylCTTn/sk?=
+ =?us-ascii?Q?2HKRXLW8PnWn7V5PW0H5uPf/cqHfppdiVZWnGeCofVT1b8Q5wvHvw4AnO72o?=
+ =?us-ascii?Q?Jt13LBGohYIi898ygS2eMrg8q7fhxrxlD8kIrW9lR+hWe/vcO7743xoaCwjx?=
+ =?us-ascii?Q?31/WUzVzV/gb0/mHlVC174HEQiQ9C94NBfnTpXPqwMhCS1905MCarLFRsYNw?=
+ =?us-ascii?Q?68VexWp0z7ce5Q4Vi/OG2WwuDgQBroY3S7CsfC+D3ZRIPdXsxHRLjDhZlSvo?=
+ =?us-ascii?Q?pMAExfJJBqI/fARksPYCC8XV/NMBHE1vKbqNeCTT+sEEDjzOZj+Oepa1SSI6?=
+ =?us-ascii?Q?e1f2bsmDkSCr/Zra/bwewhDYBRmeRj0YwwMIb5AsMwhQzUf2J2PfhHwwrNcS?=
+ =?us-ascii?Q?ZZaLn/4J//zzezZjTjUlvZctI1ZXodfNGWpFfGXdt0vLjHThjEclmcS7khkJ?=
+ =?us-ascii?Q?jc6yJLXC1AozVbIgIFt92wUZ4Z2lXnXrAnSWdW9Q8lRvRHwY1u+8kEQxNzYg?=
+ =?us-ascii?Q?wbDyW3ZawWVY18ROHqEzq6vHSoj+9SJkycaNZ9mQwiLHzsEW+1ftKl//NYuz?=
+ =?us-ascii?Q?I6NJVG0hhxQKHLqWilQ9rFXY9VhfDzmpi8VVvLnHVKnke758G5XaTsK6Hh9r?=
+ =?us-ascii?Q?/fFJ+mleWylT8juZq/Dujy8xzliiQ+2oRfSZWBGTjbG/CrrMyiGS6VLRz8Nw?=
+ =?us-ascii?Q?kjKRzV06jEAN3BqyE8tVZmYue90o74ivgGRn9xrbnxejgBCTVDNqinj+e93M?=
+ =?us-ascii?Q?SFwEUXtH4a7C8rTNcFzCVZdEQNEuTaSa8y77VkW0bsjz2xoyZi2ct3g7P5Gs?=
+ =?us-ascii?Q?WNKNQ89Y4bNqu9/I7stVmjNDXp16VuHVvUFybO9EaiNyGWsempJnMp4vezTw?=
+ =?us-ascii?Q?qi2fIDfrBzzCuzQlC7QfYnxc8VekprLQH7cZwSxwiL2c+A=3D=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cVQlcWSQlwi6DuxU9NgptSZqnH/F6mAUZu7odXNhTAub0uifqDd8DFZ4S663?=
- =?us-ascii?Q?k4lQCASHD7G4HeaZScHVF1BmUl2gUmEzPBxbwnMESOJCyPx5CVwn4SsLW/In?=
- =?us-ascii?Q?LFW/MVBnF/gMZ6q4dWL/Rt1e7+1zHl+PeBc/qfcYsvFKnmnIdpaeVJrdirxn?=
- =?us-ascii?Q?Jdwt23zWhMzcX8LuoKgkG74cp1AD2xDsPf4GkUMSJEfsVk6xmkQ7fm7EsjdR?=
- =?us-ascii?Q?9KE19P7EQPQlEa6ceiGj6nrGbJQM3MbX8qtRowWNqupnODhSsBFwEed1GxX3?=
- =?us-ascii?Q?9JcaTigPlUH01kBJP6V309+Kp+bBX/cuH5FKOY6yYz2NHWwiD8epBrSlcTUY?=
- =?us-ascii?Q?7fcpCBOb7w0M/9ecRtMYJRUoAuaM9pxkyRNePGbYClxBpcbNbw3Tcci5NpMB?=
- =?us-ascii?Q?6Cu1N8eLT30e16JA2Yg2bHczdu1C23lAGf2NSHRjlYv1BIYCUeB58k5PmRNf?=
- =?us-ascii?Q?Qqyvi96xfimsicasksQXCzarqbppZHd3VMzR5rces3PMmLn1ufSIDZ4835Rx?=
- =?us-ascii?Q?L+4ZFzd55fc0ucke/YGSooylU/9GYWKUA6YIIv2fEliUG3XqVt+Rx3XczWjn?=
- =?us-ascii?Q?Wy12vmPgV80v8jFWMFdUNgQL6eOXh2ekqw1Xx9Ece3FBuZ96oIs/PhDyw9X1?=
- =?us-ascii?Q?MLyDsJcwRMiepwVNYaWZzt9Eg4GzhRbNl5ub1egGSMQXKbHsXZgCx8v5Xa/a?=
- =?us-ascii?Q?+EV63HiqtK85toPp077rViedMMmh582ieWyarod+xlP+l70mFBX1iLxKIEvp?=
- =?us-ascii?Q?LdKKVQP0bTbk/OwtUZJDqJTNoovUCEzlSjToLaEPfCw8xcwOZ1lNemKxFd2X?=
- =?us-ascii?Q?L6QOdsP0b6i6kfPEpsuKEHQ2V0O38F6ktLsSu0401Qt+DztrSYBSgv8Q+k5y?=
- =?us-ascii?Q?ZR9XmaE6j0iOjL+s9Iou4cDMwqrBc9Ax3F4uW6RJ3GJ5sqVLS3C6bz/Bct/4?=
- =?us-ascii?Q?CDN9SisahWPxdAJV8bS+AXyGJut++V0ZjDxcL43TtnZEkd4rCjm4OeoMu1s/?=
- =?us-ascii?Q?igfwUavreCAVj+oI0Sb7Xt6O8ePPT89VqZ+FzqDUW6D/YAhKWobEyJFcEZHP?=
- =?us-ascii?Q?iu17S+fWhbCbSTuedWI+OtGtJWfysgNF4Ass9pPm+pSdiLxuvTIhPqx5eyuW?=
- =?us-ascii?Q?uwosTom14XSNSmf/36DXUB5rhLxVOVYUe6vmzyJy8dJ4Pz7W4FJj5wKGAwzi?=
- =?us-ascii?Q?LCRUuDAZn3Gwkg0j4ckZQFzM3BSSTYgXcNZXpNX5Gv5B4OpLuoYvVqWUX9Gw?=
- =?us-ascii?Q?alrCCqgqvo4qCOjjbgal+/L3uirxjrIYjqEOtEORziQhmXqoL4JwRHBJJCOU?=
- =?us-ascii?Q?U2zdjDkABBsUCEsHJbDB7hcnSr0kaMGg0Bh54K9TXAyYjYMbRWee35KnFHdP?=
- =?us-ascii?Q?fkCZ1T/a2AyDiG9OxxXfrBG7pKL09oN0Bl6Y+dwf2Ku+q0e1spFRplTDGHQJ?=
- =?us-ascii?Q?sWHcAl0N5B3knqDGxYV5l5vbziFrPsg843yQ9pGw4vsoBvQp+ybIveQqhmx+?=
- =?us-ascii?Q?YHF8/VsfjJw82eMTParujWBSx8tVOiR5L7837wfHpi+tUWDqUyfLMYwgBvt4?=
- =?us-ascii?Q?to6kXXrlVM4TNjWEqrxS3hd9Dji1LUSOTfTxjmECwmNGjFbcU+7Vl8k4n97o?=
- =?us-ascii?Q?sQ=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9acb6bfa-7258-4c58-29db-08dca1e91ef2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zvFp3hrK/u4NBSY3SOo0ljtSJhPB0SgRh5PWAuPOdzZzGB2t3prCDkmv9Wc9?=
+ =?us-ascii?Q?kUuBHlfethbsqycaTElBZcrkLN36vD/52htPZRzJ+GjYSx+PE7PxzQFSbGev?=
+ =?us-ascii?Q?AJ7HIJB0Yg8cDC+qJx1PiRqgD7I5ckg1YyJ8zMAUewoX8HpVM4pL4T/Ec5WN?=
+ =?us-ascii?Q?2+dYoWjJ8+SznBRa8cQ94qvirS1TetMsUxsirxrJN2hD52qAJhBr4ofurjz3?=
+ =?us-ascii?Q?h5TbQ0BQ00yqURFaOuLwhaUNFmaIXpHLRrkCDll1vd/qE1HP5bNHDxEnX0Dm?=
+ =?us-ascii?Q?KCeiWr49cqgyFjTR9TR8wFr51eKkepEd22mnkbIZvhUzGF7s5LEME6/W7o6x?=
+ =?us-ascii?Q?PJL2mkWuS7Xc9hLxxsgoO9YTaFt8X5y2dGuezVeJXYJiXCxUCXvouuJrK32Q?=
+ =?us-ascii?Q?Sk55Zt9FT4aBe6EImQELy7A8mX83n6Uwhfq+7dksVD96xiG3pLIv9w6b+ICD?=
+ =?us-ascii?Q?4FaTlnOoNDc48IsdOLmLmuKQGhRG3n2lI5ua/nV7w4FZaxI0qnEWoXd3URQF?=
+ =?us-ascii?Q?sK7d06mYU8ncyTo+qlJTXJnC/AVL0DjMAy8b1vTOTpnUEMGDEOUPYXo0dd2/?=
+ =?us-ascii?Q?R8O+IaZth8MVmp3Ecp1a/KVlWqkcDil70IwBfAc8GUYMKw8P0WE6cqn4CnBB?=
+ =?us-ascii?Q?Ns2MB6D9VSnY+RDrkjhAAkP0tgOGy90sZiiragVNhuu5HS3CbjVq8L76Qpl2?=
+ =?us-ascii?Q?uvZgse/k9E1WbQzbpE/ZIZS2ZgnsU/8V9mhXq0TP2dnU6vYg5TowDfyWUAwW?=
+ =?us-ascii?Q?Lpku2LBRKEVFe9k/MlqJknnzp6CcfhzcX2/FiBxZtzMrQbZUVf8IFHgN6pbF?=
+ =?us-ascii?Q?cwyyvW26xdTOUB5vjrm4h9pEiboCgbDg/Q4aunRktsC97FIdGEp+olO6K/Sg?=
+ =?us-ascii?Q?1p/1Qn+XR8TTlWBZXjOBoOpH9OXZmV2oqX8HEbQVbsuO/zhXHf0zoR5ieiYW?=
+ =?us-ascii?Q?9RSVhnG/ahHoaXXVuXi/OmcMtsnu418KwtjKNk6dYz58qs/8MInQQrudOjsR?=
+ =?us-ascii?Q?uA63YD6+Bv7GMxX+N7ImwBOZ5Pj78kxOyV/Vn5mbLjP+Wr87c4NCVmvXhc5e?=
+ =?us-ascii?Q?ujVvu8ZUXbklBsXC3rniBRsNOCSAA7KpMOn1FaSVGvtrOhBRoarB4wonCVCp?=
+ =?us-ascii?Q?JWC5w0qe1NOPjz4Kqn2dt++9ix+HicMZqZkmvlpOr88DRNuN4vu3smlGRaSI?=
+ =?us-ascii?Q?jCD8lwmXUFlnTEziSTbcaK/AflOk2Q2cUUXurGEA8fJtyWoosoeGbErMEN5D?=
+ =?us-ascii?Q?yqWC7vWa3lCCrQwO/acOM3xPdOGNstozYFfKbUt0xLJiAWBOCwJ5Bpv+c6xD?=
+ =?us-ascii?Q?qCD6zbcoZZcnngzhcYkJpdxqaf24cuQCruiN45EPUT8gPVyDfZuVXLBOeJzB?=
+ =?us-ascii?Q?T7aqdbrpRl2dVSaa72/IM0oaVt4fXWNKNJ3Fji2CY16K/RJbKmRMcmoOMiVS?=
+ =?us-ascii?Q?EYDnC1GKCVIp8avxxA1e7rXazcVzqL9ALAvrdSaP58aO5gFW6NLK9CLGH0zU?=
+ =?us-ascii?Q?uy4aArJPBLMl0mpy4Cd4LYZPdF62/1jK7lCKnbk+UbAvjEz85OLAvFn/Ooew?=
+ =?us-ascii?Q?ELkyI7Rc4R+LVjfJsDpU7/QKE6KU1ovh/2+Z7uIKUnQAaWTev+rTFHhwEyTW?=
+ =?us-ascii?Q?dQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3649cbdb-f34e-48ff-7278-08dca1f14eb3
 X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 20:36:20.0757 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Jul 2024 21:34:56.1094 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hWhKvEPnz+JTF5h30n/njt2/geCVW5RhnbHuDWdF0VtQpzZnGFOk+rVKG3Tte0wL0keaPDHIxgmb08eStExJFJtbBFP9eylO/NhsNCseqrU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4802
+X-MS-Exchange-CrossTenant-UserPrincipalName: dXpCNCLQEapCm6EAOG9gmfptK6YrHgtvcAaT6t2DWywD0+7C8WgUl73kNrACdPa1NHhCpsH0utzXes8lXlr08yPyio7P+hmtPEfM6zyC/AY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7579
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -180,82 +178,336 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jul 11, 2024 at 10:39:28AM GMT, Umesh Nerlige Ramappa wrote:
->On Thu, Jul 11, 2024 at 07:00:40AM -0500, Lucas De Marchi wrote:
->>On Tue, Jul 02, 2024 at 05:25:23PM GMT, Umesh Nerlige Ramappa wrote:
->>>Existing basic test is checking memory info in fdinfo. Rename
->>>accordingly.
+On Thu, Jul 11, 2024 at 12:13:22PM GMT, Umesh Nerlige Ramappa wrote:
+>On Thu, Jul 11, 2024 at 08:20:17AM -0500, Lucas De Marchi wrote:
+>>On Tue, Jul 02, 2024 at 05:25:27PM GMT, Umesh Nerlige Ramappa wrote:
+>>>Add simple tests that submit work to one engine and measure utilization
+>>>per class.
+>>>
+>>>v2:
+>>>- Drop measured_usleep since return value is not used
+>>>- s/parallel engines/parallel submission/ in comment
+>>>- Use NSEC_PER_SEC for batch_duration_ns
+>>>- Percent should not be > 100
+>>
+>>but as we chatted later in the review, it's actually possible to have it
+>>greater than 100, so I think we need to leave some room
+>>
+>>>- Check utilization for both clients for isolation case
 >>>
 >>>Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 >>>---
->>>tests/intel/xe_drm_fdinfo.c | 12 ++++++------
->>>1 file changed, 6 insertions(+), 6 deletions(-)
+>>>tests/intel/xe_drm_fdinfo.c | 97 +++++++++++++++++++++++++++++++++++++
+>>>1 file changed, 97 insertions(+)
 >>>
 >>>diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
->>>index 2ceafba24..f0aa23e2f 100644
+>>>index 037f25e53..410c885e7 100644
 >>>--- a/tests/intel/xe_drm_fdinfo.c
 >>>+++ b/tests/intel/xe_drm_fdinfo.c
+>>>@@ -28,6 +28,15 @@
+>>>* SUBTEST: basic-engine-utilization
+>>>* Description: Check if basic fdinfo content is present for engine utilization
+>>>*
+>>>+ * SUBTEST: drm-idle
+>>>+ * Description: Check that engines show no load when idle
+>>>+ *
+>>>+ * SUBTEST: drm-busy-idle
+>>>+ * Description: Check that engines show load when idle after busy
+>>>+ *
+>>>+ * SUBTEST: drm-busy-idle-isolation
+>>>+ * Description: Check that engine load does not spill over to other drm clients
+>>>+ *
+>>>* SUBTEST: drm-total-resident
+>>>* Description: Create and compare total and resident memory consumption by client
+>>>*
+>>>@@ -42,11 +51,18 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine u
+>>>
+>>>#define BO_SIZE (65536)
+>>>
+>>>+/* flag masks */
+>>>+#define TEST_BUSY		(1 << 0)
+>>>+#define TEST_TRAILING_IDLE	(1 << 1)
+>>>+#define TEST_ISOLATION		(1 << 2)
+>>>+
+>>>struct pceu_cycles {
+>>>	uint64_t cycles;
+>>>	uint64_t total_cycles;
+>>>};
+>>>
+>>>+const unsigned long batch_duration_ns = (1 * NSEC_PER_SEC) / 2;
+>>>+
+>>>static const char *engine_map[] = {
+>>>	"rcs",
+>>>	"bcs",
+>>>@@ -464,8 +480,77 @@ spin_ctx_destroy(int fd, struct spin_ctx *ctx)
+>>>	free(ctx);
+>>>}
+>>>
+>>>+static void
+>>>+check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+>>>+	      int class, int width, unsigned int flags)
+>>>+{
+>>>+	double percent;
+>>>+
+>>>+	igt_debug("%s: sample 1: cycles %lu, total_cycles %lu\n",
+>>>+		  engine_map[class], s1[class].cycles, s1[class].total_cycles);
+>>>+	igt_debug("%s: sample 2: cycles %lu, total_cycles %lu\n",
+>>>+		  engine_map[class], s2[class].cycles, s2[class].total_cycles);
+>>>+
+>>>+	percent = ((s2[class].cycles - s1[class].cycles) * 100) /
+>>>+		  ((s2[class].total_cycles + 1) - s1[class].total_cycles);
+>>>+
+>>>+	/* for parallel submission scale the busyness with width */
+>>>+	percent = percent / width;
+>>>+
+>>>+	igt_debug("%s: percent: %f\n", engine_map[class], percent);
+>>>+
+>>>+	if (flags & TEST_BUSY)
+>>>+		igt_assert(percent >= 95 && percent <= 100);
 >>
->>I was also expecting a change to the testlist... but it seems we don't
->>really have this there.
+>><= 105 like you had before seems good, otherwise we may have too much
+>>noise in CI.  What are the typical numbers you're seeing?
+>
+>I see 101 whenever it fails. Also I see it only when I run batches on 
+>all classes (all_busy_all/most_busy_all etc.). The difference in 
+>numerator and denominator deltas is close to 5ms though. Not convinced 
+>that we should see 100 still because we are ending the spinners (and 
+>waiting for fences and all) before taking sample 2. Still debugging a 
+>little more on this one.
+>
 >>
->>https://intel-gfx-ci.01.org/tree/intel-xe/index.html?testfilter=xe_drm_fdinfo
->>returns an empty result so it seems we are not even running these tests?
+>>>+	else
+>>>+		igt_assert(!percent);
+>>>+}
+>>>+
+>>>+static void
+>>>+single(int fd, struct drm_xe_engine_class_instance *hwe, int width, int count,
+>>>+       unsigned int flags)
+>>>+{
+>>>+	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>>>+	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+>>
+>>nit: either name it pceu_start/pceu_end:
+>>
+>>pceu_start[0] is the pceu for client0 on start
+>>pceu_start[1] is the pceu for client1 on start
+>>pceu_end[0] is the pceu for client0 on end
+>>pceu_end[1] is the pceu for client1 on end
+>>
+>>or pceu_client0/pceu_client1 if grouping by client
+>>
+>>pceu_client0[0] is the pceu for client0 on start
+>>pceu_client0[1] is the pceu for client0 on end
+>>pceu_client1[1] is the pceu for client1 on start
+>>pceu_client1[2] is the pceu for client1 on end
+>>
+>>... this makes it less prone to typos.
+>>
+>>But see below as I think 2 samples are not sufficient.
+>>
+>>>+	struct spin_ctx *ctx = NULL;
+>>>+	uint32_t vm;
+>>>+	int new_fd;
+>>>+
+>>>+	if (flags & TEST_ISOLATION)
+>>>+		new_fd = drm_reopen_driver(fd);
+>>>+
+>>>+	vm = xe_vm_create(fd, 0, 0);
+>>>+	if (flags & TEST_BUSY) {
+>>>+		ctx = spin_ctx_init(fd, hwe, vm, width, count);
+>>>+		spin_sync_start(fd, ctx);
+>>>+	}
+>>>+
+>>>+	read_engine_cycles(fd, pceu1[0]);
+>>>+	if (flags & TEST_ISOLATION)
+>>>+		read_engine_cycles(new_fd, pceu1[1]);
+>>>+
+>>>+	usleep(batch_duration_ns / 1000);
+>>
+>>NSEC_PER_USEC
+>>
+>>>+	if (flags & TEST_TRAILING_IDLE)
+>>>+		spin_sync_end(fd, ctx);
+>>>+
+>>>+	read_engine_cycles(fd, pceu2[0]);
+>>
+>>... and here we have another source of noise.... when doing
+>>TEST_TRAILING_IDLE, should we read the first sample after the spin
+>>ended, sleep, and read the second sample?
 >
->Strange, for rev2 I actually saw these new tests run in the shards 
->list and was expecting the same for newer revs.
+>That would always make utilization = 0% (numerator delta is 0). We 
+>should take sample 1 when the spinner has started and sample 2 when it 
+>has ended (for PCEU).
 >
->https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11334/shards-all.html?testfilter=xe_drm_fdinfo
+>TEST_TRAILING_IDLE is only valid when TEST_BUSY is also specified.  
+>Maybe I should enforce that in the test. This is the flow for common 
+>flag configs:
+>
+>1) flag = TEST_BUSY | TEST_TRAILING_IDLE
+>- wait till spinner starts
+>- take sample 1
+>- usleep
+>- end the batch
+>- take sample 2.
+>- check_results (expected 100% util)
 
-yeah... if I use the shards-all.html I can see it.. and that one doesn't
-need a testlist since it's actually "all the tests".
+I think the way the test is written, the expectation is wrong.
+By absurd:
+
+1) flag = TEST_BUSY | TEST_TRAILING_IDLE
+- wait till spinner starts
+- take sample 1
+- usleep
+- end the batch
+		<--- long preempt here emulated with
+		     usleep(500000)
+- take sample 2.
+- check_results
+
+So we'd still expect the same ballpark number of delta ticks, but
+utilization overall would go down as now you are ending the batch
+and sleeping a little more before taking another sample. In the example
+above I'd expect utilization to be 50%
+
+>
+>2) flag = TEST_BUSY
+>- wait till spinner starts
+>- take sample 1
+>- usleep
+>- take sample 2.
+>- end the batch
+>- check_results (expected 100% util)
+>
+>3) flag = 0 means truly IDLE since there is no spinner.
+>
+>>
+>>but then how are we testing all at the same time here? I can't see any
+>>igt_assert() for the trailing idle test and it will actually impact the
+>>busy test since it will wait the spin to end.... Am I missing anything
+>>here?
+>
+>Case (2) above does not exist for PCEU tests because CTX_TIMESTAMP is 
+>only updates when the context switches out, which means we must end 
+>the spinner before taking the second sample (or preempt it, but ending 
+>is simpler). This series only has tests for case (1) and (3) 
+>implemented.
+
+true, we are only reading the value from the context image, but does the
+hardware update it only on context switch? What I had understood was
+that the value was updated while the context was running. Otherwise I
+think it's utterly broken:
+
+Considering
+	s* are the samples
+	c* are the context timestamps
+	g* are the gpu timestamps
+
+	- not running
+	| running
+
+
+          g0 g1                    g2        g3   g4 
+          c0 c1                    c2        c3   c4
+ctx0 ----||||||||||||||||||||||||||||||||||||-------
+             ^                     ^              ^
+             s0                    s1             s3                    
+
+For simplicity, assuming g0 == c0 == 0
+
+in s0: g1 == 3
+        c1 == 0
+
+in s1: g2 == 25
+        c2 == 0
+
+-> utilization returns 0%
+
+in s3: g4 == 40
+        c4 == c3 == 35
+
+
+-> utilization returns 35 / (40 - 25) == 233%
+
+how can we get this right if the value is not updated for running
+contexts?
 
 Lucas De Marchi
 
 >
->Umesh
+>Case (2) is applicable for a completely different feature which is 
+>still wip - per engine utilization via kernel perf framework.
 >
+>>I think we need to add a third sample when testing trailing idle
+>>and ensure:
 >>
->>Cc'ing some people. For the changes here:
+>>considering the indexing as sample[client][idx]
 >>
->>Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>>	sample[0][1] - sample[0][0] == 100% if BUSY else 0%
+>>	sample[0][2] - sample[0][1] == 0%  -> idle on trailing test
 >>
->>thanks
+>>and for isolation:
+>>
+>>	sample[1][1] - sample[0][0] == 0%
+>>	sample[1][2] - sample[1][1] == 0%
+>>
+>>>+	if (flags & TEST_ISOLATION)
+>>>+		read_engine_cycles(new_fd, pceu2[1]);
+>>>+
+>>>+	check_results(pceu1[0], pceu2[0], hwe->engine_class, width, flags);
+>
+>This check_results will check for TEST_BUSY case.
+>
+>>>+
+>>>+	if (flags & TEST_ISOLATION) {
+>>>+		check_results(pceu1[1], pceu2[1], hwe->engine_class, width, 0);
+>
+>This check_results will check for idle case (flags = 0).
+>
+>>>+		close(new_fd);
+>>>+	}
+>>>+
+>>>+	spin_sync_end(fd, ctx);
+>>>+	spin_ctx_destroy(fd, ctx);
+>>
+>>if !BUSY you are not even calling spin_ctx_init()
+>
+>:) yeah, sorry about the readability here. The spin_sync_end and 
+>spin_ctx_destroy bail out if the ctx is NULL which is the case for 
+>!BUSY. I can add and explicit check to not call these instead.
+>
+>Thanks,
+>Umesh
+>>
 >>Lucas De Marchi
 >>
->>>@@ -22,8 +22,8 @@
->>>* Feature: SMI, core
->>>* Test category: SysMan
->>>*
->>>- * SUBTEST: basic
->>>- * Description: Check if basic fdinfo content is present
->>>+ * SUBTEST: basic-memory
->>>+ * Description: Check if basic fdinfo content is present for memory
->>>*
->>>* SUBTEST: drm-total-resident
->>>* Description: Create and compare total and resident memory consumption by client
->>>@@ -259,7 +259,7 @@ static void test_total_resident(int xe)
->>>	xe_vm_destroy(xe, vm);
->>>}
->>>
->>>-static void basic(int xe)
->>>+static void basic_memory(int xe)
+>>>+	xe_vm_destroy(fd, vm);
+>>>+}
+>>>+
+>>>igt_main
 >>>{
->>>	struct drm_xe_mem_region *memregion;
->>>	uint64_t memreg = all_memory_regions(xe), region;
->>>@@ -299,9 +299,9 @@ igt_main
->>>		igt_require(igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0));
->>>	}
+>>>+	struct drm_xe_engine_class_instance *hwe;
+>>>	int xe;
 >>>
->>>-	igt_describe("Check if basic fdinfo content is present");
->>>-	igt_subtest("basic")
->>>-		basic(xe);
->>>+	igt_describe("Check if basic fdinfo content is present for memory");
->>>+	igt_subtest("basic-memory")
->>>+		basic_memory(xe);
+>>>	igt_fixture {
+>>>@@ -484,6 +569,18 @@ igt_main
+>>>	igt_subtest("basic-engine-utilization")
+>>>		basic_engine_utilization(xe);
 >>>
+>>>+	igt_subtest("drm-idle")
+>>>+		xe_for_each_engine(xe, hwe)
+>>>+			single(xe, hwe, 1, 1, 0);
+>>>+
+>>>+	igt_subtest("drm-busy-idle")
+>>>+		xe_for_each_engine(xe, hwe)
+>>>+			single(xe, hwe, 1, 1, TEST_BUSY | TEST_TRAILING_IDLE);
+>>>+
+>>>+	igt_subtest("drm-busy-idle-isolation")
+>>>+		xe_for_each_engine(xe, hwe)
+>>>+			single(xe, hwe, 1, 1, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
+>>>+
 >>>	igt_describe("Create and compare total and resident memory consumption by client");
 >>>	igt_subtest("drm-total-resident")
+>>>		test_total_resident(xe);
 >>>-- 
 >>>2.38.1
 >>>
