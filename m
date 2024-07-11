@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6B59C3DA41
-	for <igt-dev@archiver.kernel.org>; Thu, 11 Jul 2024 10:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A86BC3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu, 11 Jul 2024 10:18:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90B5E10EA1B;
-	Thu, 11 Jul 2024 10:18:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4620D10EA1F;
+	Thu, 11 Jul 2024 10:18:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="chskLE6v";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fuKdjijp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8C2F910EA1B
- for <igt-dev@lists.freedesktop.org>; Thu, 11 Jul 2024 10:18:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49A5A10EA29
+ for <igt-dev@lists.freedesktop.org>; Thu, 11 Jul 2024 10:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720693119; x=1752229119;
+ t=1720693122; x=1752229122;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=TgMjPa2o1SRnC+o2JV4PY0vNxmHjW0rzCfIzYuflb9E=;
- b=chskLE6vnnmReOnEDLThoDVJjMqO2lcNUYAziwO8RcozSYbQaVkox/uj
- dgr7Getyc2h9FsXq03S+B0YXJxk7obpKPemCGVYCJtBowomgnHhkVyBdT
- WPtqvtPFLMQZ9p2ROdS9kirL1fwM9oiD3ad9VWt5vkD65Bo6sopW+fsI9
- 3lDpkxU68WgKQLZ/G8bPS49ANtPSVrMqWY7x8ShshOq2BwM1f1krzvGy0
- GNhrIeQg13cXiWSAmRBn5jVrRDvOYH9fwLlEUNIJiAt1kCxNNvDRFDwXP
- +8Fwn1+SoGe0Jb3ivtnSzkits5NZsgEsqRC+q03tKR/lE5dqDUzFkOmzv A==;
-X-CSE-ConnectionGUID: MzCg7Z66SkSKelWOAX26Ew==
-X-CSE-MsgGUID: bF334iGpTa2w34CvYFr/2w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18009672"
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="18009672"
+ bh=EifF1XCSP29ZseEm1IsnO7/K88PrlMHjbgZ+7EPJMKs=;
+ b=fuKdjijpNqFCRa5dIT9FC5l77rIyOjsE9hHz/D6eIWUuNRjskBtAqEH9
+ 1woxF4dvMCtOK6iAR6lvGx2H67r/dZuBfmUmiL0KVTzRJMIeMMMreRTig
+ DLQ5yiqICT5oJE3BdjFdcOzrBs/g7k7XeorfXksIS7ZexXzYwrKcfio2K
+ WvWktNwd9OKB2BUjMVoC+5APRvUqO77YEElb217gsbpEu2dsV644vHIU7
+ RosOA65NMxJE5Otr9aY85GVIClVqBXXYkFxKI6YcOzf8GrA1aQ0m9WVwR
+ 8kwHPeMsQNblJ52AhcHcPfRlDR7WX8DU/3+GJ0+yvPzhsOFRlKZyMiOeI g==;
+X-CSE-ConnectionGUID: a+f2PF1SQ0uf7Sw5Cbe70A==
+X-CSE-MsgGUID: Uxrp9CDeR26zfUQ6hUWVYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11129"; a="18009676"
+X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="18009676"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Jul 2024 03:18:39 -0700
-X-CSE-ConnectionGUID: S0CPgYITTg+zYixDpBPJqg==
-X-CSE-MsgGUID: dbtbe6HBReCegc3lzPYBCg==
+ 11 Jul 2024 03:18:42 -0700
+X-CSE-ConnectionGUID: LxscVEJDRFyUKXAahCB/EA==
+X-CSE-MsgGUID: DLeiafs7Q3a68UKnOQ9LCA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="53325839"
+X-IronPort-AV: E=Sophos;i="6.09,199,1716274800"; d="scan'208";a="53325843"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa003.jf.intel.com with ESMTP; 11 Jul 2024 03:18:36 -0700
+ by orviesa003.jf.intel.com with ESMTP; 11 Jul 2024 03:18:39 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
  bhanuprakash.modem@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t v4 1/2] lib/igt_sysfs: Implement dynamic adjustment of
- debug log level
-Date: Thu, 11 Jul 2024 15:48:42 +0530
-Message-Id: <20240711101843.760796-2-pranay.samala@intel.com>
+Subject: [PATCH i-g-t v4 2/2] tests/kms_atomic_transition: Reducing debug
+ loglevel dynamically
+Date: Thu, 11 Jul 2024 15:48:43 +0530
+Message-Id: <20240711101843.760796-3-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240711101843.760796-1-pranay.samala@intel.com>
 References: <20240711101843.760796-1-pranay.samala@intel.com>
@@ -69,168 +69,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Adjust debug log levels dynamically to prevent machine
-disk overflow during excessive test debug logs.
+This test is debug logs are too much and was killed
+due to exceeding disk usage limit on the less disk
+space machines.
 
-Introduce function to modify log levels as needed,
-with an exit handler restoring default settings post-test.
+So dynamically reducing the debug log level to 13.
 
 v2:
-- Using proper function name to represent its
-  functionality (Bhanu)
-- Added Documentation for each functions (Bhanu)
-- Removed the magic number and instead reading the
-  default value first (Bhanu)
-- Using recommended apis for better handling (Bhanu)
+- Using "" for the defined header file (Bhanu)
+- Not using exit handler in this file (Bhanu)
+- Not using any magic number (Bhanu)
 
 v3:
-- Adding module drm_open_param function to open
-  the sysfs directory (Bhanu)
-- Reducing the current drm loglevel by step value
-  to make it more robust (Bhanu)
+- Calling loglevel init functionality in lib file (Bhanu)
+- Here 2 means the log level will be reduced by 2 (Bhanu)
 
 v4:
-- Remove all the extra new lines (Bhanu)
-- Remove the unused declaration (Bhanu)
-- Edit API to only update the requested drm debug
-  log value from the caller (Bhanu)
+- Send the required debuglevel to directly to api only if debug
+  log level is greater than 10 (Bhanu)
 
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- lib/igt_sysfs.c | 103 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h |   5 +++
- 2 files changed, 108 insertions(+)
+ tests/kms_atomic_transition.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index ffeec1ca2..84d6d8f9a 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -412,6 +412,109 @@ int igt_sysfs_get_num_gt(int device)
- 	return num_gts;
- }
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 29dd8ac4e..618fef8dc 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -34,6 +34,7 @@
+ #include "igt_rand.h"
+ #include "drmtest.h"
+ #include "sw_sync.h"
++#include "igt_sysfs.h"
+ #include <errno.h>
+ #include <pthread.h>
+ #include <stdbool.h>
+@@ -1174,6 +1175,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	int pipe_count = 0;
  
-+/**
-+ * igt_sysfs_drm_module_params_open:
-+ *
-+ * This opens the sysfs directory corresponding to drm module
-+ * parameters.
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
-+ */
-+int igt_sysfs_drm_module_params_open(void)
-+{
-+	char path[] = "/sys/module/drm/parameters";
+ 	igt_fixture {
++		int dir, current_log_level;
 +
-+	if (access(path, F_OK))
-+		return -1;
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+ 		kmstest_set_vt_graphics_mode();
+@@ -1185,6 +1188,13 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 		for_each_connected_output(&data.display, output)
+ 			count++;
 +
-+	return open(path, O_RDONLY);
-+}
-+
-+static int log_level = -1;
-+
-+/**
-+ * igt_drm_debug_level_get:
-+ *
-+ * This reads the current debug log level of the machine on
-+ * which the test is currently executing.
-+ *
-+ * Returns:
-+ * The current log level, or -1 on error.
-+ */
-+int igt_drm_debug_level_get(int dir)
-+{
-+	char buf[20];
-+
-+	if (log_level >= 0)
-+		return log_level;
-+
-+	if (igt_sysfs_read(dir, "debug", buf, sizeof(buf) - 1) < 0)
-+		return -1;
-+
-+	return atoi(buf);
-+}
-+
-+/**
-+ * igt_drm_debug_level_reset:
-+ *
-+ * This modifies the current debug log level of the machine
-+ * to the default value post-test.
-+ *
-+ */
-+void igt_drm_debug_level_reset(void)
-+{
-+	char buf[20];
-+	int dir;
-+
-+	if (log_level < 0)
-+		return;
-+
-+	dir = igt_sysfs_drm_module_params_open();
-+	if (dir < 0)
-+		return;
-+
-+	igt_debug("Resetting DRM debug level to %d\n", log_level);
-+	snprintf(buf, sizeof(buf), "%d", log_level);
-+	igt_assert(igt_sysfs_set(dir, "debug", buf));
-+
-+	close(dir);
-+}
-+
-+static void igt_drm_debug_level_reset_exit_handler(int sig)
-+{
-+	igt_drm_debug_level_reset();
-+}
-+
-+/**
-+ * igt_drm_debug_level_update:
-+ * @debug_level: new debug level to set
-+ *
-+ * This modifies the current drm debug log level to the new value.
-+ */
-+void igt_drm_debug_level_update(unsigned int new_log_level)
-+{
-+	char buf[20];
-+	int dir;
-+
-+	dir = igt_sysfs_drm_module_params_open();
-+	if (dir < 0)
-+		return;
-+
-+	log_level = igt_drm_debug_level_get(dir);
-+	if (log_level < 0) {
++		dir = igt_sysfs_drm_module_params_open();
++		current_log_level = igt_drm_debug_level_get(dir);
 +		close(dir);
-+		return;
-+	}
 +
-+	igt_debug("Setting DRM debug level to %d\n", new_log_level);
-+	snprintf(buf, sizeof(buf), "%d", new_log_level);
-+	igt_assert(igt_sysfs_set(dir, "debug", buf));
-+
-+	close(dir);
-+	igt_install_exit_handler(igt_drm_debug_level_reset_exit_handler);
-+}
-+
- /**
-  * igt_sysfs_write:
-  * @dir: sysfs directory
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 6c604d939..5d050c786 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -138,6 +138,11 @@ void igt_sysfs_set_boolean(int dir, const char *attr, bool value);
- void bind_fbcon(bool enable);
- void fbcon_blink_enable(bool enable);
++		if (current_log_level > 10)
++			igt_drm_debug_level_update(10);
+ 	}
  
-+void igt_drm_debug_level_update(unsigned int new_log_level);
-+void igt_drm_debug_level_reset(void);
-+int igt_drm_debug_level_get(int dir);
-+int igt_sysfs_drm_module_params_open(void);
-+
- /**
-  * igt_sysfs_rw_attr:
-  * @dir: file descriptor for parent directory
+ 	igt_describe("Check toggling of primary plane with vblank");
 -- 
 2.34.1
 
