@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AD80C2BD09
-	for <igt-dev@archiver.kernel.org>; Fri, 12 Jul 2024 08:29:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DCCEC2BD09
+	for <igt-dev@archiver.kernel.org>; Fri, 12 Jul 2024 08:29:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C339D10EC4B;
-	Fri, 12 Jul 2024 08:29:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F133110EC4C;
+	Fri, 12 Jul 2024 08:29:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T5FjIbRF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iv/bGRhU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB34E10EC4C
- for <igt-dev@lists.freedesktop.org>; Fri, 12 Jul 2024 08:29:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C25710EC4C
+ for <igt-dev@lists.freedesktop.org>; Fri, 12 Jul 2024 08:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1720772960; x=1752308960;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=B2v3kONtlkDs2VtxCn4972hSB76q5UtLTIPBKrbOEIY=;
- b=T5FjIbRFJtnNzRRVXHT/0ocEZDIpQowp6z5vuXgJS/p2YjQzdO8fPiOT
- 4Sb6W9r5d9cgdCFRViaIgLXJceV3zYTvOO/qjDK5X1GFnPwf2vgkA5ClA
- CCfEB9tqA7w3Nomn1X1u3ZB/RH0e8agFKvcSttTsIkWN1GAAojbjIuHIB
- dn+dGRsKuoVVTtb4yvXNtKaMhYzaA9xmABAdXG0WcgWg2z4JFq93cjZhx
- 6JhJIS754xLRtTyOj15XBcvlgGHBsQVMPsFQczLEo3+lTm1ZFDPUZY3I9
- GY7ShTnGikYUrMjrl3BSKT10i8z83RHVC6FV/1XSQIBkhhqJzlKl751JM w==;
-X-CSE-ConnectionGUID: u6ecsEL1TVa6+5qPe0rr2g==
-X-CSE-MsgGUID: gZLwL2gcT8u04HfOe/livg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18337363"
-X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; d="scan'208";a="18337363"
+ t=1720772964; x=1752308964;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=FoOfOiQmjr6eZisUiXpJrPo0t+kHUKvS1xBs6ZPdxOw=;
+ b=iv/bGRhUEybjtTSyWNmVZUE5dK4mQIKcfImKyvTpQ5bZpHdkQnnWtMbc
+ 51nIWf6/onlYt4ezTELtBoRn//Vmhsn+nqI/aFnKGzR5X71gpocgWoeJP
+ yoSO1zuLg9vkq2RVTvp/nDif2E3M6HUmM6URyf9PhuRx12LQnxiroiEnh
+ 7hZcLRiNbdgBpvTBLDZ0JIG7CjR+Qtoaa/vk1f4el/TbTdFkiQNw+PrBx
+ 3XKY1A2voRhzxT9ZZK8SUe5TBc34ooFTlnQrnt2HDsKcq754ng1G8zBX3
+ 0XzvhZCOYk+9kcOF2dmz1rNqnOuqoqlXGV4Co2Nbca+CQAi1j300zTIXo w==;
+X-CSE-ConnectionGUID: hMrtcr7UQXGOZtodIkRSMQ==
+X-CSE-MsgGUID: 7m92OJmtT1yBOsbEQpmJoA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11130"; a="18337368"
+X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; d="scan'208";a="18337368"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Jul 2024 01:29:19 -0700
-X-CSE-ConnectionGUID: 0nt/xk0oSE6vq+9NeVuUJw==
-X-CSE-MsgGUID: TM6QlTP8T1Os9Qq8Z9AxmA==
+ 12 Jul 2024 01:29:24 -0700
+X-CSE-ConnectionGUID: JW3uFxv+QnOgXz4B8iivGw==
+X-CSE-MsgGUID: 3Dgq8L+fTGOeiVnpSV78dw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; d="scan'208";a="49607961"
+X-IronPort-AV: E=Sophos;i="6.09,202,1716274800"; d="scan'208";a="49607979"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by orviesa008.jf.intel.com with ESMTP; 12 Jul 2024 01:29:18 -0700
+ by orviesa008.jf.intel.com with ESMTP; 12 Jul 2024 01:29:22 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
  bhanuprakash.modem@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t v6 0/2] Runtime alteration of debuglog level
-Date: Fri, 12 Jul 2024 13:59:26 +0530
-Message-Id: <20240712082928.762514-1-pranay.samala@intel.com>
+Subject: [PATCH i-g-t v6 2/2] tests/kms_atomic_transition: Reducing debug
+ loglevel dynamically
+Date: Fri, 12 Jul 2024 13:59:28 +0530
+Message-Id: <20240712082928.762514-3-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240712082928.762514-1-pranay.samala@intel.com>
+References: <20240712082928.762514-1-pranay.samala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,26 +69,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In certain scenarios, tests may fail due to insufficient disk space, 
-even though they fulfill all requirements.
+This test is debug logs are too much and was killed
+due to exceeding disk usage limit on the less disk
+space machines.
 
-To resolve this issue, adjust the debug log level before initiating 
-the test. Rather than manually editing the debug log level each time, 
-aim to dynamically adjust it.
+So dynamically reducing the debug log level to 13.
 
-This approach involves modifying the log level within the test using 
-the debugfs entry, with an exit handler ensuring default settings are 
-restored after testing.
+v2:
+- Using "" for the defined header file (Bhanu)
+- Not using exit handler in this file (Bhanu)
+- Not using any magic number (Bhanu)
 
-Pranay Samala (2):
-  lib/igt_sysfs: Implement dynamic adjustment of debug log level
-  tests/kms_atomic_transition: Reducing debug loglevel dynamically
+v3:
+- Calling loglevel init functionality in lib file (Bhanu)
+- Here 2 means the log level will be reduced by 2 (Bhanu)
 
- lib/igt_sysfs.c               | 108 ++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h               |   5 ++
- tests/kms_atomic_transition.c |  12 ++++
- 3 files changed, 125 insertions(+)
+v4:
+- Send the required debuglevel to directly to api only if debug
+  log level is greater than 10 (Bhanu)
 
+v5:
+- Add a check to open_params function as it may return -1
+  on failure (Bhanu)
+
+v6:
+- Editing the check added in v5 (Bhanu)
+
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+---
+ tests/kms_atomic_transition.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+index 29dd8ac4e..89348f435 100644
+--- a/tests/kms_atomic_transition.c
++++ b/tests/kms_atomic_transition.c
+@@ -34,6 +34,7 @@
+ #include "igt_rand.h"
+ #include "drmtest.h"
+ #include "sw_sync.h"
++#include "igt_sysfs.h"
+ #include <errno.h>
+ #include <pthread.h>
+ #include <stdbool.h>
+@@ -1174,6 +1175,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	int pipe_count = 0;
+ 
+ 	igt_fixture {
++		int dir, current_log_level;
++
+ 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+ 
+ 		kmstest_set_vt_graphics_mode();
+@@ -1185,6 +1188,15 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 		for_each_connected_output(&data.display, output)
+ 			count++;
++
++		dir = igt_sysfs_drm_module_params_open();
++		if (dir >= 0) {
++			current_log_level = igt_drm_debug_level_get(dir);
++			close(dir);
++
++			if (current_log_level > 10)
++				igt_drm_debug_level_update(10);
++		}
+ 	}
+ 
+ 	igt_describe("Check toggling of primary plane with vblank");
 -- 
 2.34.1
 
