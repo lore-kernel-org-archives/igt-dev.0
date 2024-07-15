@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B58C3C3DA4B
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jul 2024 18:22:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E6AC3DA4B
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jul 2024 18:30:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74BDC10E4AF;
-	Mon, 15 Jul 2024 18:22:14 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22D3D10E4AF;
- Mon, 15 Jul 2024 18:22:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/gem=5Fctx=5Fexec?=
- =?utf-8?q?=3A_Fix_failing_preempt_timeout_updates?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 06DBD10E00D;
+	Mon, 15 Jul 2024 18:30:01 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZDhwPoL0";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E42F710E00D
+ for <igt-dev@lists.freedesktop.org>; Mon, 15 Jul 2024 18:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721068199; x=1752604199;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=FzrjkNHTr43iGnDM7gSvDW7RPCDATmqN64cxYNOvPHk=;
+ b=ZDhwPoL0gOj6iQeMd741KcZRcE5HoBjMi+XucVLFhZVEvFdpgcflQDHC
+ GOUkQAv0JsWmRt4ZPv5ZHdWBbdXHOlsmpVDrzBOF/pR/8hBDkdyZB/EZ9
+ g4Wjpcx+TZ3U9S31kB8fwIPjWUW9nagjd+Mp5iV5Iz7gts3v1Nd3WH5RZ
+ EI/PFoWMHTXmirXLHtJ3tXlAiiIx4F7pYbkfzQ4d0P8tk/y2anwjJPCi2
+ Ad+S35aEhNxmShCI6WFYFd2a9djRvktAimDzNbH0i8aQK6aEFG2F3T/Rq
+ reSJKmVrOqhejopAuWEgVQZudzBitpPZH0IzRFLCGbCZukoGvm7BWwc84 g==;
+X-CSE-ConnectionGUID: 1jlmolOATqCngEGhzgZEsg==
+X-CSE-MsgGUID: 1BtPPG1sRlaUB769ugefkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="18311916"
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="18311916"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 11:29:58 -0700
+X-CSE-ConnectionGUID: UzPHMHqvSO2krQMxfqqXfQ==
+X-CSE-MsgGUID: b/dqGztnTUCLxtGBZgelOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="49466489"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.26.74])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Jul 2024 11:27:07 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 15 Jul 2024 18:22:13 -0000
-Message-ID: <172106773313.231758.2204924278042256093@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
+Subject: Re: =?UTF-8?B?4pyX?= GitLab.Pipeline: warning for tests/gem_ctx_exec:
+ Fix failing preempt timeout updates
+Date: Mon, 15 Jul 2024 20:27:04 +0200
+Message-ID: <8119861.DvuYhMxLoT@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <172106773313.231758.2204924278042256093@2413ebb6fbb6>
 References: <20240715181523.2825921-7-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20240715181523.2825921-7-janusz.krzysztofik@linux.intel.com>
+ <172106773313.231758.2204924278042256093@2413ebb6fbb6>
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,320 +68,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+U29ycnksIEkgaGF2ZW4ndCByZS10ZXN0ZWQgYWZ0ZXIgZmluYWwgY2xlYW51cHMgYW5kIHRoZSBz
+ZXJpZXMgZmFpbHMgdG8gYnVpbGQuICAKUGxlYXNlIGV4cGVjdCB2MiB2ZXJ5IHNvb24uCgpUaGFu
+a3MsCkphbnVzegoKCk9uIE1vbmRheSwgMTUgSnVseSAyMDI0IDIwOjIyOjEzIEdNVCsyIFBhdGNo
+d29yayB3cm90ZToKPiA9PSBTZXJpZXMgRGV0YWlscyA9PQo+IAo+IFNlcmllczogdGVzdHMvZ2Vt
+X2N0eF9leGVjOiBGaXggZmFpbGluZyBwcmVlbXB0IHRpbWVvdXQgdXBkYXRlcwo+IFVSTCAgIDog
+aHR0cHM6Ly9wYXRjaHdvcmsuZnJlZWRlc2t0b3Aub3JnL3Nlcmllcy8xMzYxMDkvCj4gU3RhdGUg
+OiB3YXJuaW5nCj4gCj4gPT0gU3VtbWFyeSA9PQo+IAo+IFBpcGVsaW5lIHN0YXR1czogRkFJTEVE
+Lgo+IAo+IHNlZSBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10
+YWdzLy0vcGlwZWxpbmVzLzEyMjQ3NjEgZm9yIHRoZSBvdmVydmlldy4KPiAKPiBidWlsZDp0ZXN0
+cy1kZWJpYW4tbWVzb24gaGFzIGZhaWxlZCAoaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
+L2dmeC1jaS9pZ3QtY2ktdGFncy8tL2pvYnMvNjEwNTQ0NDUpOgo+ICAgLi4vbGliL2k5MTUvZ2Vt
+X2VuZ2luZV90b3BvbG9neS5jOiBJbiBmdW5jdGlvbiDigJhfX29wZW5fcHJpbWFyeeKAmToKPiAg
+IC4uL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYzo0ODI6MzY6IGVycm9yOiBleHBlY3Rl
+ZCDigJgp4oCZIGJlZm9yZSDigJhicmVha+KAmQo+ICAgICAgICAgICFzdHJuY21wKGRldmljZSwg
+dGFyZ2V0LCBsZW4pCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeCj4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICApCj4gICAgICAgYnJlYWs7Cj4g
+ICAgICAgfn5+fn4gICAgICAgICAgICAgICAgICAgICAgICAgICAgCj4gICAuLi9saWIvaTkxNS9n
+ZW1fZW5naW5lX3RvcG9sb2d5LmM6NDgxOjY6IG5vdGU6IHRvIG1hdGNoIHRoaXMg4oCYKOKAmQo+
+ICAgICAgaWYgKHJlYWRsaW5rYXQoZGlyLCAiZGV2aWNlIiwgZGV2aWNlLCBzaXplb2YoZGV2aWNl
+KSkgPT0gbGVuICYmCj4gICAgICAgICBeCj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9s
+b2d5LmM6NDg3OjI6IGVycm9yOiBleHBlY3RlZCBleHByZXNzaW9uIGJlZm9yZSDigJh94oCZIHRv
+a2VuCj4gICAgIH0KPiAgICAgXgo+ICAgbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQg
+ZmFpbGVkLgo+ICAgc2VjdGlvbl9lbmQ6MTcyMTA2NzcwMDpzdGVwX3NjcmlwdAo+ICAgc2VjdGlv
+bl9zdGFydDoxNzIxMDY3NzAwOmNsZWFudXBfZmlsZV92YXJpYWJsZXMKPiAgIENsZWFuaW5nIHVw
+IHByb2plY3QgZGlyZWN0b3J5IGFuZCBmaWxlIGJhc2VkIHZhcmlhYmxlcwo+ICAgc2VjdGlvbl9l
+bmQ6MTcyMTA2NzcwMTpjbGVhbnVwX2ZpbGVfdmFyaWFibGVzCj4gICBFUlJPUjogSm9iIGZhaWxl
+ZDogZXhpdCBjb2RlIDEKPiAgIAo+IAo+IGJ1aWxkOnRlc3RzLWRlYmlhbi1tZXNvbi1hcm02NCBo
+YXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10
+YWdzLy0vam9icy82MTA1NDQ0OCk6Cj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5
+LmM6IEluIGZ1bmN0aW9uIOKAmF9fb3Blbl9wcmltYXJ54oCZOgo+ICAgLi4vbGliL2k5MTUvZ2Vt
+X2VuZ2luZV90b3BvbG9neS5jOjQ4MjozNjogZXJyb3I6IGV4cGVjdGVkIOKAmCnigJkgYmVmb3Jl
+IOKAmGJyZWFr4oCZCj4gICAgICAgICAgIXN0cm5jbXAoZGV2aWNlLCB0YXJnZXQsIGxlbikKPiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIF4KPiAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICkKPiAgICAgICBicmVhazsKPiAgICAgICB+fn5+fiAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAKPiAgIC4uL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xv
+Z3kuYzo0ODE6Njogbm90ZTogdG8gbWF0Y2ggdGhpcyDigJgo4oCZCj4gICAgICBpZiAocmVhZGxp
+bmthdChkaXIsICJkZXZpY2UiLCBkZXZpY2UsIHNpemVvZihkZXZpY2UpKSA9PSBsZW4gJiYKPiAg
+ICAgICAgIF4KPiAgIC4uL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYzo0ODc6MjogZXJy
+b3I6IGV4cGVjdGVkIGV4cHJlc3Npb24gYmVmb3JlIOKAmH3igJkgdG9rZW4KPiAgICAgfQo+ICAg
+ICBeCj4gICBuaW5qYTogYnVpbGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCj4gICBzZWN0
+aW9uX2VuZDoxNzIxMDY3NzAwOnN0ZXBfc2NyaXB0Cj4gICBzZWN0aW9uX3N0YXJ0OjE3MjEwNjc3
+MDA6Y2xlYW51cF9maWxlX3ZhcmlhYmxlcwo+ICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3Rv
+cnkgYW5kIGZpbGUgYmFzZWQgdmFyaWFibGVzCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3NzAxOmNs
+ZWFudXBfZmlsZV92YXJpYWJsZXMKPiAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNvZGUgMQo+
+ICAgCj4gCj4gYnVpbGQ6dGVzdHMtZGViaWFuLW1lc29uLWFybWhmIGhhcyBmYWlsZWQgKGh0dHBz
+Oi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9qb2JzLzYxMDU0
+NDQ3KToKPiAgIC4uL2xpYi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYzogSW4gZnVuY3Rpb24g
+4oCYX19vcGVuX3ByaW1hcnnigJk6Cj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5
+LmM6NDgyOjM2OiBlcnJvcjogZXhwZWN0ZWQg4oCYKeKAmSBiZWZvcmUg4oCYYnJlYWvigJkKPiAg
+ICAgICAgICAhc3RybmNtcChkZXZpY2UsIHRhcmdldCwgbGVuKQo+ICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgXgo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgKQo+ICAgICAgIGJyZWFrOwo+ICAgICAgIH5+fn5+ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIAo+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4MTo2OiBub3Rl
+OiB0byBtYXRjaCB0aGlzIOKAmCjigJkKPiAgICAgIGlmIChyZWFkbGlua2F0KGRpciwgImRldmlj
+ZSIsIGRldmljZSwgc2l6ZW9mKGRldmljZSkpID09IGxlbiAmJgo+ICAgICAgICAgXgo+ICAgLi4v
+bGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4NzoyOiBlcnJvcjogZXhwZWN0ZWQgZXhw
+cmVzc2lvbiBiZWZvcmUg4oCYfeKAmSB0b2tlbgo+ICAgICB9Cj4gICAgIF4KPiAgIG5pbmphOiBi
+dWlsZCBzdG9wcGVkOiBzdWJjb21tYW5kIGZhaWxlZC4KPiAgIHNlY3Rpb25fZW5kOjE3MjEwNjc3
+MTA6c3RlcF9zY3JpcHQKPiAgIHNlY3Rpb25fc3RhcnQ6MTcyMTA2NzcxMDpjbGVhbnVwX2ZpbGVf
+dmFyaWFibGVzCj4gICBDbGVhbmluZyB1cCBwcm9qZWN0IGRpcmVjdG9yeSBhbmQgZmlsZSBiYXNl
+ZCB2YXJpYWJsZXMKPiAgIHNlY3Rpb25fZW5kOjE3MjEwNjc3MTI6Y2xlYW51cF9maWxlX3Zhcmlh
+Ymxlcwo+ICAgRVJST1I6IEpvYiBmYWlsZWQ6IGV4aXQgY29kZSAxCj4gICAKPiAKPiBidWlsZDp0
+ZXN0cy1kZWJpYW4tbWVzb24tbWlwcyBoYXMgZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVz
+a3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy82MTA1NDQ0OSk6Cj4gICAuLi9saWIv
+aTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6IEluIGZ1bmN0aW9uIOKAmF9fb3Blbl9wcmltYXJ5
+4oCZOgo+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4MjozNjogZXJyb3I6
+IGV4cGVjdGVkIOKAmCnigJkgYmVmb3JlIOKAmGJyZWFr4oCZCj4gICAgICAgICAgIXN0cm5jbXAo
+ZGV2aWNlLCB0YXJnZXQsIGxlbikKPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgIF4KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICkKPiAgICAgICBi
+cmVhazsKPiAgICAgICB+fn5+fiAgICAgICAgICAgICAgICAgICAgICAgICAgICAKPiAgIC4uL2xp
+Yi9pOTE1L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYzo0ODE6Njogbm90ZTogdG8gbWF0Y2ggdGhpcyDi
+gJgo4oCZCj4gICAgICBpZiAocmVhZGxpbmthdChkaXIsICJkZXZpY2UiLCBkZXZpY2UsIHNpemVv
+ZihkZXZpY2UpKSA9PSBsZW4gJiYKPiAgICAgICAgIF4KPiAgIC4uL2xpYi9pOTE1L2dlbV9lbmdp
+bmVfdG9wb2xvZ3kuYzo0ODc6MjogZXJyb3I6IGV4cGVjdGVkIGV4cHJlc3Npb24gYmVmb3JlIOKA
+mH3igJkgdG9rZW4KPiAgICAgfQo+ICAgICBeCj4gICBuaW5qYTogYnVpbGQgc3RvcHBlZDogc3Vi
+Y29tbWFuZCBmYWlsZWQuCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3Njk5OnN0ZXBfc2NyaXB0Cj4g
+ICBzZWN0aW9uX3N0YXJ0OjE3MjEwNjc2OTk6Y2xlYW51cF9maWxlX3ZhcmlhYmxlcwo+ICAgQ2xl
+YW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5kIGZpbGUgYmFzZWQgdmFyaWFibGVzCj4gICBz
+ZWN0aW9uX2VuZDoxNzIxMDY3Njk5OmNsZWFudXBfZmlsZV92YXJpYWJsZXMKPiAgIEVSUk9SOiBK
+b2IgZmFpbGVkOiBleGl0IGNvZGUgMQo+ICAgCj4gCj4gYnVpbGQ6dGVzdHMtZGViaWFuLW1pbmlt
+YWwgaGFzIGZhaWxlZCAoaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2dmeC1jaS9pZ3Qt
+Y2ktdGFncy8tL2pvYnMvNjEwNTQ0NDYpOgo+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3Bv
+bG9neS5jOiBJbiBmdW5jdGlvbiDigJhfX29wZW5fcHJpbWFyeeKAmToKPiAgIC4uL2xpYi9pOTE1
+L2dlbV9lbmdpbmVfdG9wb2xvZ3kuYzo0ODI6MzY6IGVycm9yOiBleHBlY3RlZCDigJgp4oCZIGJl
+Zm9yZSDigJhicmVha+KAmQo+ICAgICAgICAgICFzdHJuY21wKGRldmljZSwgdGFyZ2V0LCBsZW4p
+Cj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeCj4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICApCj4gICAgICAgYnJlYWs7Cj4gICAgICAgfn5+fn4g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgCj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3Rv
+cG9sb2d5LmM6NDgxOjY6IG5vdGU6IHRvIG1hdGNoIHRoaXMg4oCYKOKAmQo+ICAgICAgaWYgKHJl
+YWRsaW5rYXQoZGlyLCAiZGV2aWNlIiwgZGV2aWNlLCBzaXplb2YoZGV2aWNlKSkgPT0gbGVuICYm
+Cj4gICAgICAgICBeCj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6NDg3OjI6
+IGVycm9yOiBleHBlY3RlZCBleHByZXNzaW9uIGJlZm9yZSDigJh94oCZIHRva2VuCj4gICAgIH0K
+PiAgICAgXgo+ICAgbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQgZmFpbGVkLgo+ICAg
+c2VjdGlvbl9lbmQ6MTcyMTA2NzY5NzpzdGVwX3NjcmlwdAo+ICAgc2VjdGlvbl9zdGFydDoxNzIx
+MDY3Njk3OmNsZWFudXBfZmlsZV92YXJpYWJsZXMKPiAgIENsZWFuaW5nIHVwIHByb2plY3QgZGly
+ZWN0b3J5IGFuZCBmaWxlIGJhc2VkIHZhcmlhYmxlcwo+ICAgc2VjdGlvbl9lbmQ6MTcyMTA2NzY5
+ODpjbGVhbnVwX2ZpbGVfdmFyaWFibGVzCj4gICBFUlJPUjogSm9iIGZhaWxlZDogZXhpdCBjb2Rl
+IDEKPiAgIAo+IAo+IGJ1aWxkOnRlc3RzLWZlZG9yYSBoYXMgZmFpbGVkIChodHRwczovL2dpdGxh
+Yi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy82MTA1NDQ0MCk6Cj4g
+ICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6IEluIGZ1bmN0aW9uIOKAmF9fb3Bl
+bl9wcmltYXJ54oCZOgo+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4Mjoz
+NjogZXJyb3I6IGV4cGVjdGVkIOKAmCnigJkgYmVmb3JlIOKAmGJyZWFr4oCZCj4gICAgIDQ4MiB8
+ICAgICAgICFzdHJuY21wKGRldmljZSwgdGFyZ2V0LCBsZW4pCj4gICAgICAgICB8ICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgXgo+ICAgICAgICAgfCAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICkKPiAgICAgNDgzIHwgICAgYnJlYWs7Cj4gICAgICAgICB8ICAg
+IH5+fn5+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo+ICAgLi4vbGliL2k5MTUvZ2VtX2Vu
+Z2luZV90b3BvbG9neS5jOjQ4MTo2OiBub3RlOiB0byBtYXRjaCB0aGlzIOKAmCjigJkKPiAgICAg
+NDgxIHwgICBpZiAocmVhZGxpbmthdChkaXIsICJkZXZpY2UiLCBkZXZpY2UsIHNpemVvZihkZXZp
+Y2UpKSA9PSBsZW4gJiYKPiAgICAgICAgIHwgICAgICBeCj4gICAuLi9saWIvaTkxNS9nZW1fZW5n
+aW5lX3RvcG9sb2d5LmM6NDg3OjI6IGVycm9yOiBleHBlY3RlZCBleHByZXNzaW9uIGJlZm9yZSDi
+gJh94oCZIHRva2VuCj4gICAgIDQ4NyB8ICB9Cj4gICAgICAgICB8ICBeCj4gICBuaW5qYTogYnVp
+bGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3NzA3
+OnN0ZXBfc2NyaXB0Cj4gICBzZWN0aW9uX3N0YXJ0OjE3MjEwNjc3MDc6Y2xlYW51cF9maWxlX3Zh
+cmlhYmxlcwo+ICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5kIGZpbGUgYmFzZWQg
+dmFyaWFibGVzCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3NzA4OmNsZWFudXBfZmlsZV92YXJpYWJs
+ZXMKPiAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNvZGUgMQo+ICAgCj4gCj4gYnVpbGQ6dGVz
+dHMtZmVkb3JhLWNsYW5nIGhhcyBmYWlsZWQgKGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9y
+Zy9nZngtY2kvaWd0LWNpLXRhZ3MvLS9qb2JzLzYxMDU0NDQ0KToKPiAgIG5pbmphOiBFbnRlcmlu
+ZyBkaXJlY3RvcnkgYGJ1aWxkJwo+ICAgWzEvMTg0N10gR2VuZXJhdGluZyB2ZXJzaW9uLmggd2l0
+aCBhIGN1c3RvbSBjb21tYW5kLgo+ICAgWzIvMTg0NV0gTGlua2luZyBzdGF0aWMgdGFyZ2V0IGxp
+Yi9saWJpZ3QtaTkxNV9nZW1fY29udGV4dF9jLmEuCj4gICBbMy8xODQ1XSBDb21waWxpbmcgQyBv
+YmplY3QgJ2xpYi83NmI1YTM1QEBpZ3QtaTkxNV9nZW1fZW5naW5lX3RvcG9sb2d5X2NAc3RhL2k5
+MTVfZ2VtX2VuZ2luZV90b3BvbG9neS5jLm8nLgo+ICAgRkFJTEVEOiBsaWIvNzZiNWEzNUBAaWd0
+LWk5MTVfZ2VtX2VuZ2luZV90b3BvbG9neV9jQHN0YS9pOTE1X2dlbV9lbmdpbmVfdG9wb2xvZ3ku
+Yy5vIAo+ICAgY2xhbmcgLUlsaWIvNzZiNWEzNUBAaWd0LWk5MTVfZ2VtX2VuZ2luZV90b3BvbG9n
+eV9jQHN0YSAtSWxpYiAtSS4uL2xpYiAtSS4uL2luY2x1ZGUgLUkuLi9pbmNsdWRlL2RybS11YXBp
+IC1JLi4vaW5jbHVkZS9saW51eC11YXBpIC1JLi4vbGliL3N0dWJzL3N5c2NhbGxzIC1JLiAtSS4u
+LyAtSS91c3IvaW5jbHVkZS9jYWlybyAtSS91c3IvaW5jbHVkZS9nbGliLTIuMCAtSS91c3IvbGli
+NjQvZ2xpYi0yLjAvaW5jbHVkZSAtSS91c3IvaW5jbHVkZS9waXhtYW4tMSAtSS91c3IvaW5jbHVk
+ZS9mcmVldHlwZTIgLUkvdXNyL2luY2x1ZGUvbGlicG5nMTYgLUkvdXNyL2luY2x1ZGUvbGliZHJt
+IC1JL3Vzci9pbmNsdWRlL2xpYmRybS9ub3V2ZWF1IC1JL3Vzci9pbmNsdWRlL3ZhbGdyaW5kIC1Y
+Y2xhbmcgLWZjb2xvci1kaWFnbm9zdGljcyAtcGlwZSAtRF9GSUxFX09GRlNFVF9CSVRTPTY0IC1X
+YWxsIC1XaW52YWxpZC1wY2ggLVdleHRyYSAtc3RkPWdudTExIC1PMiAtZyAtRF9HTlVfU09VUkNF
+IC1pbmNsdWRlIGNvbmZpZy5oIC1EX0ZPUlRJRllfU09VUkNFPTIgLVdiYWQtZnVuY3Rpb24tY2Fz
+dCAtV2RlY2xhcmF0aW9uLWFmdGVyLXN0YXRlbWVudCAtV2Zvcm1hdD0yIC1XbWlzc2luZy1kZWNs
+YXJhdGlvbnMgLVdtaXNzaW5nLWZvcm1hdC1hdHRyaWJ1dGUgLVdtaXNzaW5nLW5vcmV0dXJuIC1X
+bWlzc2luZy1wcm90b3R5cGVzIC1XbmVzdGVkLWV4dGVybnMgLVdvbGQtc3R5bGUtZGVmaW5pdGlv
+biAtV3BvaW50ZXItYXJpdGggLVdyZWR1bmRhbnQtZGVjbHMgLVdzaGFkb3cgLVdzdHJpY3QtcHJv
+dG90eXBlcyAtV3VuaW5pdGlhbGl6ZWQgLVd1bnVzZWQgLVduby1taXNzaW5nLWZpZWxkLWluaXRp
+YWxpemVycyAtV25vLXBvaW50ZXItYXJpdGggLVduby1hZGRyZXNzLW9mLXBhY2tlZC1tZW1iZXIg
+LVduby1zaWduLWNvbXBhcmUgLVduby10eXBlLWxpbWl0cyAtV25vLXVudXNlZC1wYXJhbWV0ZXIg
+LVduby11bnVzZWQtcmVzdWx0IC1XZXJyb3I9YWRkcmVzcyAtV2Vycm9yPWFycmF5LWJvdW5kcyAt
+V2Vycm9yPWltcGxpY2l0IC1XZXJyb3I9aW5pdC1zZWxmIC1XZXJyb3I9aW50LWNvbnZlcnNpb24g
+LVdlcnJvcj1pbnQtdG8tcG9pbnRlci1jYXN0IC1XZXJyb3I9bWFpbiAtV2Vycm9yPW1pc3Npbmct
+YnJhY2VzIC1XZXJyb3I9bm9ubnVsbCAtV2Vycm9yPXBvaW50ZXItdG8taW50LWNhc3QgLVdlcnJv
+cj1yZXR1cm4tdHlwZSAtV2Vycm9yPXNlcXVlbmNlLXBvaW50IC1XZXJyb3I9dHJpZ3JhcGhzIC1X
+ZXJyb3I9d3JpdGUtc3RyaW5ncyAtZm5vLWJ1aWx0aW4tbWFsbG9jIC1mbm8tYnVpbHRpbi1jYWxs
+b2MgLURfTEFSR0VGSUxFNjRfU09VUkNFPTEgLWZQSUMgLXB0aHJlYWQgJy1ESUdUX0RBVEFESVI9
+Ii91c3IvbG9jYWwvc2hhcmUvaWd0LWdwdS10b29scyInICctRElHVF9TUkNESVI9Ii9idWlsZHMv
+Z2Z4LWNpL2lndC1jaS10YWdzL3Rlc3RzIicgJy1ESUdUX0xPR19ET01BSU49Imk5MTUvZ2VtX2Vu
+Z2luZV90b3BvbG9neSInIC1NRCAtTVEgJ2xpYi83NmI1YTM1QEBpZ3QtaTkxNV9nZW1fZW5naW5l
+X3RvcG9sb2d5X2NAc3RhL2k5MTVfZ2VtX2VuZ2luZV90b3BvbG9neS5jLm8nIC1NRiAnbGliLzc2
+YjVhMzVAQGlndC1pOTE1X2dlbV9lbmdpbmVfdG9wb2xvZ3lfY0BzdGEvaTkxNV9nZW1fZW5naW5l
+X3RvcG9sb2d5LmMuby5kJyAtbyAnbGliLzc2YjVhMzVAQGlndC1pOTE1X2dlbV9lbmdpbmVfdG9w
+b2xvZ3lfY0BzdGEvaTkxNV9nZW1fZW5naW5lX3RvcG9sb2d5LmMubycgLWMgLi4vbGliL2k5MTUv
+Z2VtX2VuZ2luZV90b3BvbG9neS5jCj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5
+LmM6NDgzOjQ6IGVycm9yOiBleHBlY3RlZCAnKScKPiAgICAgICAgICAgICAgICAgICAgICAgICAg
+IGJyZWFrOwo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgXgo+ICAgLi4vbGliL2k5MTUvZ2Vt
+X2VuZ2luZV90b3BvbG9neS5jOjQ4MTo2OiBub3RlOiB0byBtYXRjaCB0aGlzICcoJwo+ICAgICAg
+ICAgICAgICAgICAgIGlmIChyZWFkbGlua2F0KGRpciwgImRldmljZSIsIGRldmljZSwgc2l6ZW9m
+KGRldmljZSkpID09IGxlbiAmJgo+ICAgICAgICAgICAgICAgICAgICAgIF4KPiAgIDEgZXJyb3Ig
+Z2VuZXJhdGVkLgo+ICAgbmluamE6IGJ1aWxkIHN0b3BwZWQ6IHN1YmNvbW1hbmQgZmFpbGVkLgo+
+ICAgc2VjdGlvbl9lbmQ6MTcyMTA2NzcxMDpzdGVwX3NjcmlwdAo+ICAgc2VjdGlvbl9zdGFydDox
+NzIxMDY3NzEwOmNsZWFudXBfZmlsZV92YXJpYWJsZXMKPiAgIENsZWFuaW5nIHVwIHByb2plY3Qg
+ZGlyZWN0b3J5IGFuZCBmaWxlIGJhc2VkIHZhcmlhYmxlcwo+ICAgc2VjdGlvbl9lbmQ6MTcyMTA2
+NzcxMTpjbGVhbnVwX2ZpbGVfdmFyaWFibGVzCj4gICBFUlJPUjogSm9iIGZhaWxlZDogZXhpdCBj
+b2RlIDEKPiAgIAo+IAo+IGJ1aWxkOnRlc3RzLWZlZG9yYS1uby1saWJkcm0tbm91dmVhdSBoYXMg
+ZmFpbGVkIChodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdz
+Ly0vam9icy82MTA1NDQ0Myk6Cj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6
+IEluIGZ1bmN0aW9uIOKAmF9fb3Blbl9wcmltYXJ54oCZOgo+ICAgLi4vbGliL2k5MTUvZ2VtX2Vu
+Z2luZV90b3BvbG9neS5jOjQ4MjozNjogZXJyb3I6IGV4cGVjdGVkIOKAmCnigJkgYmVmb3JlIOKA
+mGJyZWFr4oCZCj4gICAgIDQ4MiB8ICAgICAgICFzdHJuY21wKGRldmljZSwgdGFyZ2V0LCBsZW4p
+Cj4gICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXgo+ICAgICAg
+ICAgfCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICkKPiAgICAgNDgzIHwgICAg
+YnJlYWs7Cj4gICAgICAgICB8ICAgIH5+fn5+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo+
+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4MTo2OiBub3RlOiB0byBtYXRj
+aCB0aGlzIOKAmCjigJkKPiAgICAgNDgxIHwgICBpZiAocmVhZGxpbmthdChkaXIsICJkZXZpY2Ui
+LCBkZXZpY2UsIHNpemVvZihkZXZpY2UpKSA9PSBsZW4gJiYKPiAgICAgICAgIHwgICAgICBeCj4g
+ICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6NDg3OjI6IGVycm9yOiBleHBlY3Rl
+ZCBleHByZXNzaW9uIGJlZm9yZSDigJh94oCZIHRva2VuCj4gICAgIDQ4NyB8ICB9Cj4gICAgICAg
+ICB8ICBeCj4gICBuaW5qYTogYnVpbGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCj4gICBz
+ZWN0aW9uX2VuZDoxNzIxMDY3Njk2OnN0ZXBfc2NyaXB0Cj4gICBzZWN0aW9uX3N0YXJ0OjE3MjEw
+Njc2OTY6Y2xlYW51cF9maWxlX3ZhcmlhYmxlcwo+ICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJl
+Y3RvcnkgYW5kIGZpbGUgYmFzZWQgdmFyaWFibGVzCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3Njk3
+OmNsZWFudXBfZmlsZV92YXJpYWJsZXMKPiAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNvZGUg
+MQo+ICAgCj4gCj4gYnVpbGQ6dGVzdHMtZmVkb3JhLW5vLWxpYnVud2luZCBoYXMgZmFpbGVkICho
+dHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy82
+MTA1NDQ0MSk6Cj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6IEluIGZ1bmN0
+aW9uIOKAmF9fb3Blbl9wcmltYXJ54oCZOgo+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3Bv
+bG9neS5jOjQ4MjozNjogZXJyb3I6IGV4cGVjdGVkIOKAmCnigJkgYmVmb3JlIOKAmGJyZWFr4oCZ
+Cj4gICAgIDQ4MiB8ICAgICAgICFzdHJuY21wKGRldmljZSwgdGFyZ2V0LCBsZW4pCj4gICAgICAg
+ICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXgo+ICAgICAgICAgfCAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICkKPiAgICAgNDgzIHwgICAgYnJlYWs7Cj4g
+ICAgICAgICB8ICAgIH5+fn5+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo+ICAgLi4vbGli
+L2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4MTo2OiBub3RlOiB0byBtYXRjaCB0aGlzIOKA
+mCjigJkKPiAgICAgNDgxIHwgICBpZiAocmVhZGxpbmthdChkaXIsICJkZXZpY2UiLCBkZXZpY2Us
+IHNpemVvZihkZXZpY2UpKSA9PSBsZW4gJiYKPiAgICAgICAgIHwgICAgICBeCj4gICAuLi9saWIv
+aTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6NDg3OjI6IGVycm9yOiBleHBlY3RlZCBleHByZXNz
+aW9uIGJlZm9yZSDigJh94oCZIHRva2VuCj4gICAgIDQ4NyB8ICB9Cj4gICAgICAgICB8ICBeCj4g
+ICBuaW5qYTogYnVpbGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCj4gICBzZWN0aW9uX2Vu
+ZDoxNzIxMDY3Njk4OnN0ZXBfc2NyaXB0Cj4gICBzZWN0aW9uX3N0YXJ0OjE3MjEwNjc2OTg6Y2xl
+YW51cF9maWxlX3ZhcmlhYmxlcwo+ICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5k
+IGZpbGUgYmFzZWQgdmFyaWFibGVzCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3Njk5OmNsZWFudXBf
+ZmlsZV92YXJpYWJsZXMKPiAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNvZGUgMQo+ICAgCj4g
+Cj4gYnVpbGQ6dGVzdHMtZmVkb3JhLW9sZGVzdC1tZXNvbiBoYXMgZmFpbGVkIChodHRwczovL2dp
+dGxhYi5mcmVlZGVza3RvcC5vcmcvZ2Z4LWNpL2lndC1jaS10YWdzLy0vam9icy82MTA1NDQ0Mik6
+Cj4gICAuLi9saWIvaTkxNS9nZW1fZW5naW5lX3RvcG9sb2d5LmM6IEluIGZ1bmN0aW9uIOKAmF9f
+b3Blbl9wcmltYXJ54oCZOgo+ICAgLi4vbGliL2k5MTUvZ2VtX2VuZ2luZV90b3BvbG9neS5jOjQ4
+MjozNjogZXJyb3I6IGV4cGVjdGVkIOKAmCnigJkgYmVmb3JlIOKAmGJyZWFr4oCZCj4gICAgIDQ4
+MiB8ICAgICAgICFzdHJuY21wKGRldmljZSwgdGFyZ2V0LCBsZW4pCj4gICAgICAgICB8ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXgo+ICAgICAgICAgfCAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICkKPiAgICAgNDgzIHwgICAgYnJlYWs7Cj4gICAgICAgICB8
+ICAgIH5+fn5+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIAo+ICAgLi4vbGliL2k5MTUvZ2Vt
+X2VuZ2luZV90b3BvbG9neS5jOjQ4MTo2OiBub3RlOiB0byBtYXRjaCB0aGlzIOKAmCjigJkKPiAg
+ICAgNDgxIHwgICBpZiAocmVhZGxpbmthdChkaXIsICJkZXZpY2UiLCBkZXZpY2UsIHNpemVvZihk
+ZXZpY2UpKSA9PSBsZW4gJiYKPiAgICAgICAgIHwgICAgICBeCj4gICAuLi9saWIvaTkxNS9nZW1f
+ZW5naW5lX3RvcG9sb2d5LmM6NDg3OjI6IGVycm9yOiBleHBlY3RlZCBleHByZXNzaW9uIGJlZm9y
+ZSDigJh94oCZIHRva2VuCj4gICAgIDQ4NyB8ICB9Cj4gICAgICAgICB8ICBeCj4gICBuaW5qYTog
+YnVpbGQgc3RvcHBlZDogc3ViY29tbWFuZCBmYWlsZWQuCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3
+Njg4OnN0ZXBfc2NyaXB0Cj4gICBzZWN0aW9uX3N0YXJ0OjE3MjEwNjc2ODg6Y2xlYW51cF9maWxl
+X3ZhcmlhYmxlcwo+ICAgQ2xlYW5pbmcgdXAgcHJvamVjdCBkaXJlY3RvcnkgYW5kIGZpbGUgYmFz
+ZWQgdmFyaWFibGVzCj4gICBzZWN0aW9uX2VuZDoxNzIxMDY3Njg4OmNsZWFudXBfZmlsZV92YXJp
+YWJsZXMKPiAgIEVSUk9SOiBKb2IgZmFpbGVkOiBleGl0IGNvZGUgMQo+IAo+ID09IExvZ3MgPT0K
+PiAKPiBGb3IgbW9yZSBkZXRhaWxzIHNlZTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
+L2dmeC1jaS9pZ3QtY2ktdGFncy8tL3BpcGVsaW5lcy8xMjI0NzYxCj4gCgo=
 
-Series: tests/gem_ctx_exec: Fix failing preempt timeout updates
-URL   : https://patchwork.freedesktop.org/series/136109/
-State : warning
 
-=3D=3D Summary =3D=3D
 
-Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1224761 f=
-or the overview.
-
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/61054445):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-         !strncmp(device, target, len)
-                                      ^
-                                      )
-      break;
-      ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-     if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D len &&
-        ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    }
-    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067700:step_script
-  section_start:1721067700:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067701:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/61054448):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-         !strncmp(device, target, len)
-                                      ^
-                                      )
-      break;
-      ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-     if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D len &&
-        ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    }
-    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067700:step_script
-  section_start:1721067700:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067701:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/61054447):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-         !strncmp(device, target, len)
-                                      ^
-                                      )
-      break;
-      ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-     if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D len &&
-        ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    }
-    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067710:step_script
-  section_start:1721067710:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067712:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/61054449):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-         !strncmp(device, target, len)
-                                      ^
-                                      )
-      break;
-      ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-     if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D len &&
-        ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    }
-    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067699:step_script
-  section_start:1721067699:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067699:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-c=
-i/igt-ci-tags/-/jobs/61054446):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-         !strncmp(device, target, len)
-                                      ^
-                                      )
-      break;
-      ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-     if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D len &&
-        ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    }
-    ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067697:step_script
-  section_start:1721067697:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067698:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci=
--tags/-/jobs/61054440):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-    482 |       !strncmp(device, target, len)
-        |                                    ^
-        |                                    )
-    483 |    break;
-        |    ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-    481 |   if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D le=
-n &&
-        |      ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    487 |  }
-        |  ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067707:step_script
-  section_start:1721067707:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067708:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/61054444):
-  ninja: Entering directory `build'
-  [1/1847] Generating version.h with a custom command.
-  [2/1845] Linking static target lib/libigt-i915_gem_context_c.a.
-  [3/1845] Compiling C object 'lib/76b5a35@@igt-i915_gem_engine_topology_c@=
-sta/i915_gem_engine_topology.c.o'.
-  FAILED: lib/76b5a35@@igt-i915_gem_engine_topology_c@sta/i915_gem_engine_t=
-opology.c.o=20
-  clang -Ilib/76b5a35@@igt-i915_gem_engine_topology_c@sta -Ilib -I../lib -I=
-../include -I../include/drm-uapi -I../include/linux-uapi -I../lib/stubs/sys=
-calls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/g=
-lib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/inc=
-lude/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/in=
-clude/valgrind -Xclang -fcolor-diagnostics -pipe -D_FILE_OFFSET_BITS=3D64 -=
-Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include confi=
-g.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement=
- -Wformat=3D2 -Wmissing-declarations -Wmissing-format-attribute -Wmissing-n=
-oreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpoin=
-ter-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -W=
-unused -Wno-missing-field-initializers -Wno-pointer-arith -Wno-address-of-p=
-acked-member -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-=
-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -=
-Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast -=
-Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-=
-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigra=
-phs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARG=
-EFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gp=
-u-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DO=
-MAIN=3D"i915/gem_engine_topology"' -MD -MQ 'lib/76b5a35@@igt-i915_gem_engin=
-e_topology_c@sta/i915_gem_engine_topology.c.o' -MF 'lib/76b5a35@@igt-i915_g=
-em_engine_topology_c@sta/i915_gem_engine_topology.c.o.d' -o 'lib/76b5a35@@i=
-gt-i915_gem_engine_topology_c@sta/i915_gem_engine_topology.c.o' -c ../lib/i=
-915/gem_engine_topology.c
-  ../lib/i915/gem_engine_topology.c:483:4: error: expected ')'
-                          break;
-                          ^
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this '('
-                  if (readlinkat(dir, "device", device, sizeof(device)) =3D=
-=3D len &&
-                     ^
-  1 error generated.
-  ninja: build stopped: subcommand failed.
-  section_end:1721067710:step_script
-  section_start:1721067710:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067711:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop=
-.org/gfx-ci/igt-ci-tags/-/jobs/61054443):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-    482 |       !strncmp(device, target, len)
-        |                                    ^
-        |                                    )
-    483 |    break;
-        |    ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-    481 |   if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D le=
-n &&
-        |      ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    487 |  }
-        |  ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067696:step_script
-  section_start:1721067696:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067697:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/61054441):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-    482 |       !strncmp(device, target, len)
-        |                                    ^
-        |                                    )
-    483 |    break;
-        |    ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-    481 |   if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D le=
-n &&
-        |      ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    487 |  }
-        |  ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067698:step_script
-  section_start:1721067698:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067699:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/=
-gfx-ci/igt-ci-tags/-/jobs/61054442):
-  ../lib/i915/gem_engine_topology.c: In function =E2=80=98__open_primary=E2=
-=80=99:
-  ../lib/i915/gem_engine_topology.c:482:36: error: expected =E2=80=98)=E2=
-=80=99 before =E2=80=98break=E2=80=99
-    482 |       !strncmp(device, target, len)
-        |                                    ^
-        |                                    )
-    483 |    break;
-        |    ~~~~~                           =20
-  ../lib/i915/gem_engine_topology.c:481:6: note: to match this =E2=80=98(=
-=E2=80=99
-    481 |   if (readlinkat(dir, "device", device, sizeof(device)) =3D=3D le=
-n &&
-        |      ^
-  ../lib/i915/gem_engine_topology.c:487:2: error: expected expression befor=
-e =E2=80=98}=E2=80=99 token
-    487 |  }
-        |  ^
-  ninja: build stopped: subcommand failed.
-  section_end:1721067688:step_script
-  section_start:1721067688:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721067688:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-=3D=3D Logs =3D=3D
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1224761
