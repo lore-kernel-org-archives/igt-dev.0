@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE14C3DA4B
-	for <igt-dev@archiver.kernel.org>; Mon, 15 Jul 2024 15:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C78BFC3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 15 Jul 2024 16:12:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2D8A10E42D;
-	Mon, 15 Jul 2024 15:42:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UHr1ERID";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 210FE10E427
- for <igt-dev@lists.freedesktop.org>; Mon, 15 Jul 2024 15:42:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721058153; x=1752594153;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=bM2/u/NzcJspoaOF6vuJbJm8rPpIhOxqLs+N/wEF/ek=;
- b=UHr1ERIDWCMLlR76BmoQVydAJydcZCSikNRnvJ8vYgqRFjIn5BS3ZX1G
- UEmnVHriND2Zn4XrzqFVxrB+W8GHZDqy3wzQarA+L3a953jdZfH0L7RK6
- sXkK0uuPKRuD7ZKbxzttWcDJKj4+lbrJ5yrguncj4K0YQtZLV5XZR1opA
- C2/A6MCeX92HKE24HNi7B97FFLdMicAeIUu10yM9KSEAsTR1JL3a01cB8
- /Nh5pbdyteM7uGrDiR/MociSjPRh8bqgu1ZXMP0XcuYkMC3N1SjY9Jjtn
- m9Y3U7ZFSkhzyNSXx542YAhQbWh9d7L0akaWr5Sx9HMrKM8ZblP6l57GD g==;
-X-CSE-ConnectionGUID: 4frfESsFSeeAkokakwYLsA==
-X-CSE-MsgGUID: HtGpW2vfRleXLpQGBDtyXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11134"; a="35987970"
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="35987970"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Jul 2024 08:42:26 -0700
-X-CSE-ConnectionGUID: cVL9LJvRSCSVUz4ZopQMfA==
-X-CSE-MsgGUID: trOz59fVQRa2BkRx1M2Gyw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,210,1716274800"; d="scan'208";a="49408728"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jul 2024 08:42:24 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, kunal1.joshi@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t 4/5] tests/kms_plane_scaling: Improvise the plane
- scaling BW issues
-Date: Mon, 15 Jul 2024 21:16:27 +0530
-Message-ID: <20240715154628.583682-5-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240715154628.583682-1-ramanaidu.naladala@intel.com>
-References: <20240715154628.583682-1-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69E1410E434;
+	Mon, 15 Jul 2024 16:12:35 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8717B10E434;
+ Mon, 15 Jul 2024 16:12:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4186140470363771210=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/kms=5Fplane=5Fscaling=3A?=
+ =?utf-8?q?_Improvise_the_scaling_BW_issues=2E_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 15 Jul 2024 16:12:34 -0000
+Message-ID: <172105995454.231691.18190265481128627037@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240715154628.583682-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20240715154628.583682-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,121 +37,303 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Anticipating bandwidth issues, we expect many tests to fail. To
-address these failures, we will switch to the next lowest display
-modes. Higher display modes will be identified as insufficient for
-downscaling operations on plane scaling. As a solution, we
-will implement a fix: when bandwidth is inadequate for current
-modes, the system will automatically attempt the next lower
-display mode.
+--===============4186140470363771210==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_plane_scaling.c | 82 +++++++++++++++++++--------------------
- 1 file changed, 40 insertions(+), 42 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 1702ec8c8..020d72953 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -582,54 +582,52 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
- 	int w, h;
- 	int width, height;
- 
--	mode = igt_output_get_mode(output);
--
--	if (is_clip_clamp == true) {
--		width = mode->hdisplay + 100;
--		height = mode->vdisplay + 100;
--	} else {
--		width = get_width(mode, sf_plane1);
--		height = get_height(mode, sf_plane1);
--	}
--
--	if (is_upscale) {
--		w = width;
--		h = height;
--	} else {
--		w = mode->hdisplay;
--		h = mode->vdisplay;
-+	for_each_connector_mode(output) {
-+		mode = &output->config.connector->modes[j__];
-+		if (is_upscale) {
-+			w = get_width(mode, sf_plane1);
-+			h = get_height(mode, sf_plane1);
-+		} else {
-+			if (is_clip_clamp == true) {
-+				width = mode->hdisplay + 100;
-+				height = mode->vdisplay + 100;
-+			} else {
-+				width = get_width(mode, sf_plane1);
-+				height = get_height(mode, sf_plane1);
-+			}
-+			w = mode->hdisplay;
-+			h = mode->vdisplay;
-+		}
-+		/*
-+		 * guarantee even value width/height to avoid fractional
-+		 * uv component in chroma subsampling for yuv 4:2:0 formats
-+		 */
-+		w = ALIGN(w, 2);
-+		h = ALIGN(h, 2);
-+		igt_create_fb(display->drm_fd, w, h, pixel_format,
-+				modifier, &d->fb[0]);
-+		igt_plane_set_fb(plane, &d->fb[0]);
-+		igt_fb_set_position(&d->fb[0], plane, 0, 0);
-+		igt_fb_set_size(&d->fb[0], plane, w, h);
-+		igt_plane_set_position(plane, 0, 0);
-+
-+		if (is_upscale)
-+			igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
-+		else
-+			igt_plane_set_size(plane, width, height);
-+
-+		if (rot != IGT_ROTATION_0)
-+			igt_plane_set_rotation(plane, rot);
-+		commit_ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
-+		if (commit_ret == 0)
-+			break;
- 	}
- 
--	/*
--	 * guarantee even value width/height to avoid fractional
--	 * uv component in chroma subsampling for yuv 4:2:0 formats
--	 * */
--	w = ALIGN(w, 2);
--	h = ALIGN(h, 2);
--
--	igt_create_fb(display->drm_fd, w, h, pixel_format, modifier, &d->fb[0]);
--
--	igt_plane_set_fb(plane, &d->fb[0]);
--	igt_fb_set_position(&d->fb[0], plane, 0, 0);
--	igt_fb_set_size(&d->fb[0], plane, w, h);
--	igt_plane_set_position(plane, 0, 0);
--
--	if (is_upscale)
--		igt_plane_set_size(plane, mode->hdisplay, mode->vdisplay);
--	else
--		igt_plane_set_size(plane, width, height);
--
--	if (rot != IGT_ROTATION_0)
--		igt_plane_set_rotation(plane, rot);
--	commit_ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
--
- 	igt_plane_set_fb(plane, NULL);
- 	igt_plane_set_position(plane, 0, 0);
- 	cleanup_fbs(d);
--
- 	igt_skip_on_f(commit_ret == -ERANGE || commit_ret == -EINVAL,
--		      "Unsupported scaling factor with fb size %dx%d\n",
--		      w, h);
-+			"Unsupported scaling factor with fb size %dx%d\n", w, h);
- 	igt_assert_eq(commit_ret, 0);
- }
- 
--- 
-2.43.0
+Series: tests/kms_plane_scaling: Improvise the scaling BW issues. (rev4)
+URL   : https://patchwork.freedesktop.org/series/135806/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7926_BAT -> XEIGTPW_11409_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_11409_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11409_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (6 -> 5)
+------------------------------
+
+  Additional (1): bat-adlp-7 
+  Missing    (2): bat-lnl-2 bat-lnl-1 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11409_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b-edp-1:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] +71 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b-edp-1.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] +71 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-dp-3.html
+
+  
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-a-hdmi-a-3:
+    - {bat-bmg-1}:        NOTRUN -> [DMESG-WARN][3] +46 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-bmg-1/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-a-hdmi-a-3.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a-hdmi-a-3:
+    - {bat-bmg-1}:        NOTRUN -> [SKIP][4] +150 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-bmg-1/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a-hdmi-a-3.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11409_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_plane_scaling@2x-scaler-multi-pipe:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#309])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@2x-scaler-multi-pipe.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#309])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@2x-scaler-multi-pipe.html
+
+  * igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [FAIL][7] ([Intel XE#361]) +1 other test fail
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-3.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a-edp-1:
+    - bat-adlp-7:         NOTRUN -> [SKIP][8] ([Intel XE#498]) +17 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a-edp-1.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:
+    - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#1024]) +48 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-pvc-2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][10] ([Intel XE#455] / [Intel XE#498]) +11 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][11] ([Intel XE#498]) +17 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c-dp-3.html
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-d-edp-1:
+    - bat-adlp-7:         NOTRUN -> [SKIP][12] ([Intel XE#455] / [Intel XE#498]) +11 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-d-edp-1.html
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:
+    - bat-atsm-2:         NOTRUN -> [SKIP][13] ([Intel XE#1024]) +48 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-atsm-2/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-d-dp-3:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][14] ([Intel XE#455]) +47 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-d-dp-3.html
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1:
+    - bat-adlp-7:         NOTRUN -> [SKIP][15] ([Intel XE#455]) +47 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#309]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/309
+  [Intel XE#361]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/361
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#498]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/498
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7926 -> IGTPW_11409
+  * Linux: xe-1603-12d7fd45f021d2077e3381a79dc8bbdff419e4ea -> xe-1612-9c881256c5489c72b35d18e2dc56792959f1eb1f
+
+  IGTPW_11409: 11409
+  IGT_7926: 9c28c27d4d48cecf8b7692a2975bde1cc1632096 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1603-12d7fd45f021d2077e3381a79dc8bbdff419e4ea: 12d7fd45f021d2077e3381a79dc8bbdff419e4ea
+  xe-1612-9c881256c5489c72b35d18e2dc56792959f1eb1f: 9c881256c5489c72b35d18e2dc56792959f1eb1f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/index.html
+
+--===============4186140470363771210==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Improvise the scaling BW issues. (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135806/">https://patchwork.freedesktop.org/series/135806/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7926_BAT -&gt; XEIGTPW_11409_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11409_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11409_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (6 -&gt; 5)</h2>
+<p>Additional (1): bat-adlp-7 <br />
+  Missing    (2): bat-lnl-2 bat-lnl-1 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11409_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b-edp-1:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b-edp-1.html">SKIP</a> +71 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b-dp-3.html">SKIP</a> +71 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-a-hdmi-a-3:</p>
+<ul>
+<li>{bat-bmg-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-bmg-1/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-a-hdmi-a-3.html">DMESG-WARN</a> +46 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a-hdmi-a-3:</p>
+<ul>
+<li>{bat-bmg-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-bmg-1/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a-hdmi-a-3.html">SKIP</a> +150 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11409_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@2x-scaler-multi-pipe:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@2x-scaler-multi-pipe.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/309">Intel XE#309</a>)</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@2x-scaler-multi-pipe.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/309">Intel XE#309</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@intel-max-src-size@pipe-a-dp-3.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/361">Intel XE#361</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a-edp-1:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/498">Intel XE#498</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-pvc-2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +48 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/498">Intel XE#498</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c-dp-3.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/498">Intel XE#498</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-d-edp-1:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-d-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/498">Intel XE#498</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-atsm-2/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +48 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-d-dp-3:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-dg2-oem2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-d-dp-3.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +47 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11409/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d-edp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +47 other tests skip</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7926 -&gt; IGTPW_11409</li>
+<li>Linux: xe-1603-12d7fd45f021d2077e3381a79dc8bbdff419e4ea -&gt; xe-1612-9c881256c5489c72b35d18e2dc56792959f1eb1f</li>
+</ul>
+<p>IGTPW_11409: 11409<br />
+  IGT_7926: 9c28c27d4d48cecf8b7692a2975bde1cc1632096 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1603-12d7fd45f021d2077e3381a79dc8bbdff419e4ea: 12d7fd45f021d2077e3381a79dc8bbdff419e4ea<br />
+  xe-1612-9c881256c5489c72b35d18e2dc56792959f1eb1f: 9c881256c5489c72b35d18e2dc56792959f1eb1f</p>
+
+</body>
+</html>
+
+--===============4186140470363771210==--
