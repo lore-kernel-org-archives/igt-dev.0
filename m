@@ -4,34 +4,34 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 449AFC41513
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 412CEC3DA59
 	for <igt-dev@archiver.kernel.org>; Tue, 16 Jul 2024 20:58:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DE6D910E637;
+	by gabe.freedesktop.org (Postfix) with ESMTP id DAF8610E633;
 	Tue, 16 Jul 2024 20:58:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="rpjxRcxy";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="dgQ4HfF0";
 	dkim-atps=neutral
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
  [46.235.227.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A48EB10E633
- for <igt-dev@lists.freedesktop.org>; Tue, 16 Jul 2024 20:58:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 37EA410E637
+ for <igt-dev@lists.freedesktop.org>; Tue, 16 Jul 2024 20:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1721163482;
- bh=XQK02RymmowS/WOPC99hF7AeVwH4QBldG/8r5mXUY2g=;
- h=From:To:Cc:Subject:Date:From;
- b=rpjxRcxymrw31yOAQhp/tm/Zb50FCZY7lpf1UUb1Od9P8cC83/l0aGHjXjBTVvW0+
- fYS50TK1AITATLEUwHSFnipPG/t9I6wgZlnaVGv7ArHb80tihV1Ciz5CHXllmtgTei
- a6gJADAnA9UWB1yUdMNZX+98BXJIZVGohc9V9g12m+WFUFv1xzgFYY6swMklTGuec4
- PqKb0kwdTrsK+22k5QBuTIGoNF5oJ+F+U0kLjcjOsa24vcKbn+wC1CIrjZ0cctUm8V
- ENxfcQps6tZcUwAK9dWdm8iCwGTP/tk1wFbws42xoVSlhhEuH/Sc1esf9wqzK5qD8r
- WaAg8fVaGt90A==
+ s=mail; t=1721163483;
+ bh=BPXNwXYePlematIifRuI6MvmYQP5529Adu4GUMmWT+U=;
+ h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+ b=dgQ4HfF0MVtVSQrVgQhu+IWbWQZnndDjVsU9rGycB8800/rbcmfcGKlzY9IwcHtha
+ a4J34eHKntfuZPnxtu6L5GKbNj4RKq4Ux6GH6YNPXLGre2ocYDuHezMcc62IUFbQ6c
+ Aa1cjfCs3N2/0KOyup8ajqxXVYbI9wp5KXuGdXUk3Ftt9Wzu6Xp9itqhHTPqKnOYoA
+ LJzxSvlbYD8A2E4Q8fxUCz0p9D1eCNhQgB8weXxTYZNaq+pP37ZFlYvYjMPK1mb5aS
+ 4VFlkOvZuIpZLvGw1tFvCDr58reXi+mQQLyTUSvRnlMvv36OiI+AwksxrNp5sMO6qz
+ lOWPVVKDoIubA==
 Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
  (No client certificate requested) (Authenticated sender: alarumbe)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id EA0543780EC6;
- Tue, 16 Jul 2024 20:58:01 +0000 (UTC)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id 903E437821D8;
+ Tue, 16 Jul 2024 20:58:02 +0000 (UTC)
 From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
 To: tursulin@ursulin.net, robdclark@chromium.org,
  kamil.konieczny@linux.intel.com, lucas.demarchi@intel.com,
@@ -39,10 +39,13 @@ To: tursulin@ursulin.net, robdclark@chromium.org,
 Cc: healych@amazon.com, adrian.larumbe@collabora.com,
  Daniel Vetter <daniel@ffwll.ch>,
  =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH v5 0/2] Add gputop support for sysfs profiling knob
-Date: Tue, 16 Jul 2024 21:57:22 +0100
-Message-ID: <20240716205756.2973341-1-adrian.larumbe@collabora.com>
+Subject: [PATCH v5 1/2] lib: Add DRM driver sysfs profiling knob toggling
+ functions
+Date: Tue, 16 Jul 2024 21:57:23 +0100
+Message-ID: <20240716205756.2973341-2-adrian.larumbe@collabora.com>
 X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240716205756.2973341-1-adrian.larumbe@collabora.com>
+References: <20240716205756.2973341-1-adrian.larumbe@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -61,47 +64,274 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some GPUs like Panfrost need a sysfs file to be toggled before the HW can
-initiate the job accounting necessary to feed fdinfo with engine and cycle
-data. This sysfs knob has to be disabled when the profiler is done, to save
-power.
+Some DRM drivers need to have their accounting HW toggled on demand from
+user space so that fdinfo's drm-engine and drm-cycles tags can be updated
+upon job completion.
 
-Changelog:
-v5:
- - Deleted unnecesary blank line and added Ack tags
-v4:
- - Improve error handling *igt_devices_profiled
- - Changed name of some symbols to better reflect their semantics
- - Changed header with copyright notice
- - Added documentation for public functions in igt_profiling.c
-v3:
- - Created separate lib_igt_profiling to avoid dynamic linking
- of gputop with igt_lib, which also meant isolating the functions
- therein from the rest of igt_lib.
- - Make gputop check the sysfs knob state at the end of every period
- in case other instances of itself or other profilers might have
- changed it, so that the knob can be returned to its original state.
-v2:
- - Added header file guards around igt_profiling.h
- - Modified licensing information to comply with SPDX format
- - Sorted included header files in alphabetic order
- - Added volatile qualifier to gputop stop variable
+A profiler such as gputop should be able to check which DRM devices have
+such a sysfs knob, record its original state, toggle-enable it and revert
+this operation right before exiting.
 
-Adrián Larumbe (2):
-  lib: Add DRM driver sysfs profiling knob toggling functions
-  tools/gputop: toggle sysfs profiling knob if available for device
+Also create a new static library dependency for this family of functions so
+that it can later be linked against gputop.
 
+Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
  lib/igt_profiling.c | 189 ++++++++++++++++++++++++++++++++++++++++++++
  lib/igt_profiling.h |  22 ++++++
  lib/meson.build     |   8 ++
- tools/gputop.c      |  33 +++++++-
- tools/meson.build   |   2 +-
- 5 files changed, 252 insertions(+), 2 deletions(-)
+ 3 files changed, 219 insertions(+)
  create mode 100644 lib/igt_profiling.c
  create mode 100644 lib/igt_profiling.h
 
-
-base-commit: a2ab0ec12ef447c96c67dc539813462b6b39f857
+diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+new file mode 100644
+index 000000000000..b615067422e7
+--- /dev/null
++++ b/lib/igt_profiling.c
+@@ -0,0 +1,189 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Collabora Ltd.
++ *
++ * Author: Adrian Larumbe <adrian.larumbe@collabora.com>
++ *
++ */
++
++#include <unistd.h>
++#include <assert.h>
++#include <dirent.h>
++#include <fcntl.h>
++#include <stdbool.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "igt_profiling.h"
++
++#define SYSFS_DRM	"/sys/class/drm"
++#define NUM_DEVICES	10
++
++/**
++ * igt_devices_profiled
++ *
++ * Gives us an array of igt_profiled_device structures, each of which contains
++ * the full path of the DRM device's sysfs profiling knob and its original
++ * state, so that it can be restored later on.
++ *
++ * Returns: NULL-terminated array of struct igt_profiled_device pointers, or
++ * NULL on failure.
++ */
++struct igt_profiled_device *igt_devices_profiled(void)
++{
++	struct igt_profiled_device *profiled_devices;
++	unsigned int devlist_len = NUM_DEVICES;
++	unsigned int i = 0;
++	struct dirent *entry;
++	DIR *dev_dir;
++
++	/* The return array will be resized in case there are too many devices */
++	profiled_devices = malloc(devlist_len * sizeof(struct igt_profiled_device));
++	if (!profiled_devices)
++		return NULL;
++
++	dev_dir = opendir(SYSFS_DRM);
++	if (!dev_dir)
++		goto end;
++
++	while ((entry = readdir(dev_dir)) != NULL) {
++		char path[PATH_MAX];
++		char orig_state;
++		int sysfs_fd;
++
++		/* All DRM device entries are symlinks to other paths within sysfs */
++		if (entry->d_type != DT_LNK)
++			continue;
++
++		/* We're only interested in render nodes */
++		if (strstr(entry->d_name, "render") != entry->d_name)
++			continue;
++
++		snprintf(path, sizeof(path), "%s/%s/device/%s",
++			 SYSFS_DRM, entry->d_name, "profiling");
++
++		if (access(path, F_OK))
++			continue;
++
++		sysfs_fd = open(path, O_RDONLY);
++		if (sysfs_fd == -1)
++			continue;
++
++		if (read(sysfs_fd, &orig_state, 1) <= 0) {
++			close(sysfs_fd);
++			continue;
++		}
++
++		if (i == (devlist_len - 1)) {
++			struct igt_profiled_device *new_profiled_devices;
++
++			devlist_len += NUM_DEVICES;
++			new_profiled_devices = realloc(profiled_devices, devlist_len);
++			if (!new_profiled_devices)
++				goto end;
++			profiled_devices = new_profiled_devices;
++		}
++
++		profiled_devices[i].syspath = strdup(path);
++		profiled_devices[i++].original_state = orig_state;
++
++		close(sysfs_fd);
++	}
++
++	if (i == 0)
++		goto end;
++	else
++		profiled_devices[i].syspath = NULL; /* Array terminator */
++
++	return profiled_devices;
++
++end:
++	free(profiled_devices);
++	return NULL;
++}
++
++/**
++ * igt_devices_configure_profiling
++ * @devices: NULL-terminated array of igt_profiled_device structures.
++ * @enable: If True, then enable profiling, otherwise restore to original state
++ *
++ * For every single device's profiling knob sysfs path in the NULL-terminated
++ * 'devices' array, set it to '1' if bool equals true. Otherwise set it to
++ * its original state at the time it was first probed in igt_devices_profiled
++ *
++ */
++void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable)
++{
++	assert(devices);
++
++	for (unsigned int i = 0; devices[i].syspath; i++) {
++		int sysfs_fd = open(devices[i].syspath, O_WRONLY);
++
++		if (sysfs_fd < 0)
++			continue;
++
++		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
++		close(sysfs_fd);
++	}
++}
++
++/**
++ * igt_devices_configure_profiling
++ * @devices: NULL-terminated array of igt_profiled_device structures.
++ *
++ * For every single struct igt_profiled_device in the 'devices' array,
++ * free its duplicated syspath string, and then free the array itself.
++ *
++ */
++void igt_devices_free_profiling(struct igt_profiled_device *devices)
++{
++	assert(devices);
++
++	for (unsigned int i = 0; devices[i].syspath; i++)
++		free(devices[i].syspath);
++
++	free(devices);
++}
++
++/**
++ * igt_devices_configure_profiling
++ * @devices: NULL-terminated array of igt_profiled_device structures.
++ *
++ * For every single struct igt_profiled_device in the 'devices' array,
++ * check whether the sysfs profiling knob has changed its state since
++ * the last time its original state was registered, and then update it
++ * accordingly. This is usually a symptom that there are other profilers
++ * currently trying to toggle the sysfs knob, or perhaps more than one
++ * instance of the same profiler.
++ * The goal of this function is ensuring the sysfs knob is eventually
++ * restored to a coherent state, even though a small race window is
++ * possible. There's nothing we can do about this, so this function
++ * tries to mitigate that situation in a best-effort fashion.
++ *
++ */
++void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices)
++{
++	assert(devices);
++
++	for (unsigned int i = 0; devices[i].syspath; i++) {
++		char new_state;
++		int sysfs_fd;
++
++		sysfs_fd = open(devices[i].syspath, O_RDWR);
++		if (sysfs_fd == -1)
++			continue;
++
++		if (!read(sysfs_fd, &new_state, 1)) {
++			close(sysfs_fd);
++			continue;
++		}
++
++		if (new_state == '0') {
++			write(sysfs_fd, "1", 1);
++			devices[i].original_state = new_state;
++		}
++
++		close(sysfs_fd);
++	}
++}
+diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
+new file mode 100644
+index 000000000000..b711d2cd2d19
+--- /dev/null
++++ b/lib/igt_profiling.h
+@@ -0,0 +1,22 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Collabora Ltd.
++ *
++ * Author: Adrian Larumbe <adrian.larumbe@collabora.com>
++ *
++ */
++
++#ifndef IGT_PROFILING_H
++#define IGT_PROFILING_H
++
++struct igt_profiled_device {
++	char *syspath;
++	char original_state;
++};
++
++void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable);
++struct igt_profiled_device *igt_devices_profiled(void);
++void igt_devices_free_profiling(struct igt_profiled_device *devices);
++void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices);
++
++#endif /* IGT_PROFILING_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index 7577bee9d35e..f711e60a736a 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -309,6 +309,14 @@ lib_igt_drm_fdinfo_build = static_library('igt_drm_fdinfo',
+ 
+ lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
+ 				  include_directories : inc)
++
++lib_igt_profiling_build = static_library('igt_profiling',
++	['igt_profiling.c'],
++	include_directories : inc)
++
++lib_igt_profiling = declare_dependency(link_with : lib_igt_profiling_build,
++				        include_directories : inc)
++
+ i915_perf_files = [
+   'igt_list.c',
+   'i915/perf.c',
 -- 
 2.45.1
 
