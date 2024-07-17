@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18E6BC3DA4B
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 15:31:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C78C3DA42
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 15:31:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8F9310E05F;
-	Wed, 17 Jul 2024 15:31:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C11810E148;
+	Wed, 17 Jul 2024 15:31:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PLZKVhQ8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Esba1mnv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E24910E05F
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 15:31:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3759310E148
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 15:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721230266; x=1752766266;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=6ND/bJijc08/HJ2ZvTY7scA2hwzzhmN3nNApvPwDj6Y=;
- b=PLZKVhQ8Tlg0FD9Pels2hUTAOt0yrtp8PzSdESyNUc0Ctj47Z6D13mct
- Z92PJ7tRyZeHfD9cGusvHzev0+nbGkc+45sFNmqf+YPT9v1dXkbV5hqc9
- UnJX39N4L465E/z6ByvL6T2rMfbQDSQuZFr0KGULNRobCx6JfHtCOZrHp
- ZjPMfG462Vbv/S6/vJYOWFN/N+hZgoMHMFloSPWlQC9chYhb82d4ElxqW
- okI63/a2O0eh/IlwDGq+BPm3r1VdZZvp9zeQyM6LtMQUK9h9JnJ/1V46o
- SPVUw/HWcD+2sWOHScxWj7H0HGWBEkzq6xD5Bb1HzUxE1XqSXSOO1oViT w==;
-X-CSE-ConnectionGUID: hhouDQFuQLGFU1xIiFeLSQ==
-X-CSE-MsgGUID: V/dzlJu4T7+XYw3pgTbU0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="30129543"
-X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; d="scan'208";a="30129543"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2024 08:31:06 -0700
-X-CSE-ConnectionGUID: VB3S8CtCQyuLA6blIhniUg==
-X-CSE-MsgGUID: 4fvYLjk6SeehsmVXDYxjRw==
+ t=1721230271; x=1752766271;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5qEF/wDX0KCy5xWU/lP/11pIjAv4pjBFcn/Jb8znS4k=;
+ b=Esba1mnvSRPO+325uC9OZxoXHYEjcv1F32cLKxV2Cwuism+jDI1uAkzx
+ GUVcpw4wuN1ESV3t+v0Vef7frrleUxrYfgIw0NKO1zKIQhulB6Ur5BMPU
+ Xy3U4aUeKE9WDV42W1fC7nQA+nkz4m/mL2bH/ym/3G5c7jHHcpPrsWCzY
+ VhS5/gbbaBGaYEJBttFgp6E/4aEOV2UTg/F0/cX7rP8e0rRgoyJk/6+9W
+ hihDsHnvjmH4wzR/0oe33YYP4Cv1WJOJmJSPdTYopo0OBZq+ZOg6tx6we
+ AjHgzadG6LoHvxF1FOpzNmaYf6QgdrYCdw6aQ80VTJmD/J7MNd2BST5Ff w==;
+X-CSE-ConnectionGUID: 2a7YD7LXSkuvZ1TWAtMB0Q==
+X-CSE-MsgGUID: QJt6LlJ2SOa5184XB05ApQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="18856297"
+X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; d="scan'208";a="18856297"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2024 08:31:03 -0700
+X-CSE-ConnectionGUID: 2zmmkRKmQ3aosD4tken2Ug==
+X-CSE-MsgGUID: 5Pccnw3vTGeRTt72784Jrw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; d="scan'208";a="51147745"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 08:31:04 -0700
-Date: Wed, 17 Jul 2024 17:31:01 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,215,1716274800"; d="scan'208";a="50162457"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.96.225])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2024 08:31:00 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>, jeevan.b@intel.com,
- suraj.kandpal@intel.com
-Subject: Re: [PATCH i-g-t 2/3] tests/intel/kms_pm_dc: Update deep-pkgc function
-Message-ID: <20240717153101.v4kddn4v7jlvzkpm@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
- jeevan.b@intel.com, suraj.kandpal@intel.com
-References: <20240717140556.640124-1-ramanaidu.naladala@intel.com>
- <20240717140556.640124-3-ramanaidu.naladala@intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Michal Wajdeczko <Michal.Wajdeczko@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist for
+ SR-IOV VF BAT runs
+Date: Wed, 17 Jul 2024 17:30:51 +0200
+Message-Id: <20240717153051.1000030-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240717140556.640124-3-ramanaidu.naladala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,95 +72,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Naladala,
-On 2024-07-17 at 19:35:55 +0530, Naladala Ramanaidu wrote:
-> Increased the C-state polling time from its previous value
+Blocklist tests not applicable for Virtual Function (VF) BAT runs.
+The list extends xe.blocklist.txt to enable xe-fast-feedback.testlist
+execution on VF device.
 
-Why?
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/intel-ci/meson.build               |  1 +
+ tests/intel-ci/xe-sriov-vf.blocklist.txt | 21 +++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
+ create mode 100644 tests/intel-ci/xe-sriov-vf.blocklist.txt
 
-> to 4 sec.Implement polling for PKG-C10 counters for every
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index f16243cbb..59323eda9 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -11,6 +11,7 @@ intelci_files = [
+   'xe.blocklist.txt',
+   'xe-fast-feedback.testlist',
+   'xe-fast-feedback-chamelium-only.testlist',
++  'xe-sriov-vf.blocklist.txt',
+ ]
+ 
+ install_data(sources : intelci_files, install_dir : datadir)
+diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+new file mode 100644
+index 000000000..dae20bc6c
+--- /dev/null
++++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+@@ -0,0 +1,21 @@
++##################################################################
++# Block list for VF xe-fast-feedback runs
++##################################################################
++# The module is already loaded when VF is created
++##################################################################
++igt@xe_module_load
++##################################################################
++# Not applicable on VF
++##################################################################
++igt@fbdev
++igt@sriov_basic
++igt@kms.*
++igt@xe_gt_freq
++igt@xe_live_ktest
++igt@xe_pm_residency
++##################################################################
++# Under investigation
++##################################################################
++igt@xe_debugfs@gt
++igt@xe_evict_ccs@evict-overcommit-simple
++igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
+-- 
+2.31.1
 
-Add space after dot '.', s/sec.Implement/sec. Implement/
-
-> 5ms up to 16ms.
-
-Same here, write why you need this change.
-
-Also, imho you should split this into two patches and update subjects:
-
-[PATCH i-g-t 2/4] tests/intel/kms_pm_dc: Increase C-state polling
-
-[PATCH i-g-t 3/4] tests/intel/kms_pm_dc: Add polling for deep-pkgc
-
-Regards,
-Kamil
-
-> 
-> v2: Address and correct review comments (Suraj, Jeevan)
-> 
-> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-> ---
->  tests/intel/kms_pm_dc.c | 18 +++++++++++-------
->  1 file changed, 11 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-> index 8fb35a2df..c1ca3acc0 100644
-> --- a/tests/intel/kms_pm_dc.c
-> +++ b/tests/intel/kms_pm_dc.c
-> @@ -592,7 +592,7 @@ static unsigned int read_pkgc_counter(int debugfs_root_fd)
->  static void test_deep_pkgc_state(data_t *data)
->  {
->  	unsigned int pre_val = 0, cur_val = 0;
-> -	time_t start = time(NULL), duration = 2, vb_delay, delay;
-> +	time_t start = time(NULL), duration = 4, vb_delay, delay;
->  	enum pipe pipe;
->  	bool pkgc_flag = false;
->  	bool flip = true;
-> @@ -623,10 +623,10 @@ static void test_deep_pkgc_state(data_t *data)
->  		data->mode = &output->config.connector->modes[j__];
->  		vb_delay = 1 * (MSECS / (data->mode->vrefresh));
->  		/*
-> -		 * At least 5ms vblank time required to program higher
-> +		 * At least 5ms vblank time for programming higher
->  		 * watermark levels
->  		 */
-> -		if (vb_delay > (5 * MSEC))
-> +		if (vb_delay > (5 * MSECS))
->  			break;
->  	}
->  
-> @@ -635,23 +635,27 @@ static void test_deep_pkgc_state(data_t *data)
->  	setup_videoplayback(data);
->  
->  	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-> -	pre_val = read_pkgc_counter(data->debugfs_root_fd);
-> -	delay = 1 * (MSECS / (data->mode->vrefresh - 10));
-> +	delay = vb_delay * 0.5;
->  
->  	igt_plane_set_fb(primary, &data->fb_rgb);
->  	igt_display_commit(&data->display);
->  
-> +	/* Waiting for the vblank to sync the frame time */
-> +	igt_wait_for_vblank_count(data->drm_fd, data->display.pipes[pipe].crtc_offset, 1);
-> +	usleep(delay);
-> +	pre_val = read_pkgc_counter(data->debugfs_root_fd);
-> +
->  	while (time(NULL) - start < duration) {
->  		flip = !flip;
->  		igt_plane_set_fb(primary, flip ? &data->fb_rgb : &data->fb_rgr);
->  		igt_display_commit(&data->display);
->  
-> -		cur_val = read_pkgc_counter(data->debugfs_root_fd);
-> +		igt_wait((cur_val = read_pkgc_counter(data->debugfs_root_fd)) > pre_val,
-> +			  vb_delay * 2, 5);
->  		if (cur_val > pre_val) {
->  			pkgc_flag = true;
->  			break;
->  		}
-> -		usleep(delay);
->  	}
->  
->  	cleanup_dc3co_fbs(data);
-> -- 
-> 2.43.0
-> 
