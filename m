@@ -4,68 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5837C3DA4B
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 13:58:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3874DC3DA4B
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 14:00:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B60610E0EF;
-	Wed, 17 Jul 2024 13:58:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XbkAuM1F";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 617C810E0EF
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 13:58:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721224733; x=1752760733;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=X/j6Orej1EGEdhRZmYHcjp/EXpjBgHjYi6FJhbZPvKw=;
- b=XbkAuM1FCjdeYBw44oGHkJFiVFXcIBEbIGgd4uQ3mkOv9gG6GjaWN3jr
- CQiSDJEfHCV91abuXNVcNQL5lzcHzWO4/0AJdPqgiTgGP0rgfZZJ0KXGT
- aML5JOAc5T7a6sKyKlUEz+9pNlHnNL2VvhXGXWBaJUhnrAcu9XA4TtFID
- e0yfDFF26zJxRSuHsMuTkbzODsMDzkjVUwAbxijw2+TJMMpQjjCOOT9G6
- 4YEs5RmUTDUJrAWMTNjvyKySuWyMcl0Pv+Jcv2Iz6SS5CvXxg29ljvu3x
- H/28qqMJof4M4JMQSlDur02Xn6ahbWzL5uPr0gPtCnoFm6TpEyzwJ2HoC A==;
-X-CSE-ConnectionGUID: 4R9olpx/StCGQ0DmIiGpmg==
-X-CSE-MsgGUID: 1uhWSKmYS8ufSY6OpB748Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="12588450"
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="12588450"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2024 06:58:52 -0700
-X-CSE-ConnectionGUID: KjLzz1MVTWu7M9lXLKvUeg==
-X-CSE-MsgGUID: ezzQ9oKsQ8OdvjLBMA6RdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="81063926"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 06:58:50 -0700
-Date: Wed, 17 Jul 2024 15:58:47 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- tursulin@ursulin.net, robdclark@chromium.org,
- lucas.demarchi@intel.com, healych@amazon.com,
- Daniel Vetter <daniel@ffwll.ch>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH v5 2/2] tools/gputop: toggle sysfs profiling knob if
- available for device
-Message-ID: <20240717135847.irocdiqdwpxufbry@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- tursulin@ursulin.net, robdclark@chromium.org,
- lucas.demarchi@intel.com, healych@amazon.com,
- Daniel Vetter <daniel@ffwll.ch>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240716205756.2973341-1-adrian.larumbe@collabora.com>
- <20240716205756.2973341-3-adrian.larumbe@collabora.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE47410E094;
+	Wed, 17 Jul 2024 14:00:34 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF96610E010;
+ Wed, 17 Jul 2024 14:00:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7790288140790012106=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240716205756.2973341-3-adrian.larumbe@collabora.com>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/gem=5Fctx=5Fexec=3A_F?=
+ =?utf-8?q?ix_failing_preempt_timeout_updates?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 17 Jul 2024 14:00:28 -0000
+Message-ID: <172122482884.269472.13573974499014741289@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240717122836.3481656-7-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240717122836.3481656-7-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,126 +37,176 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Adrián,
-On 2024-07-16 at 21:57:24 +0100, Adrián Larumbe wrote:
-> For every DRM device that enables its job accounting HW from user space,
-> toggle it right before obtaining per-client fdinfo numbers.
-> 
-> Make sure profiling status is returned to its original state before
-> exiting, by handling the SIGINT signal just like in intel_gpu_top.
-> 
-> Also add the static IGT profiling library to gputop's list of build
-> dependencies.
-> 
-> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  tools/gputop.c    | 33 ++++++++++++++++++++++++++++++++-
->  tools/meson.build |  2 +-
->  2 files changed, 33 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tools/gputop.c b/tools/gputop.c
-> index 6c7cf6927464..23388c92b63a 100644
-> --- a/tools/gputop.c
-> +++ b/tools/gputop.c
-> @@ -29,6 +29,7 @@
->  #include "igt_core.h"
->  #include "igt_drm_clients.h"
->  #include "igt_drm_fdinfo.h"
-> +#include "igt_profiling.h"
->  #include "drmtest.h"
->  
->  enum utilization_type {
-> @@ -391,10 +392,19 @@ static int parse_args(int argc, char * const argv[], struct gputop_args *args)
->  	return 1;
->  }
->  
-> +static volatile bool stop_top;
-> +
-> +static void sigint_handler(int sig)
-> +{
-> +	(void) sig;
-> +	stop_top = true;
-> +}
-> +
->  int main(int argc, char **argv)
->  {
->  	struct gputop_args args;
->  	unsigned int period_us;
-> +	struct igt_profiled_device *profiled_devices = NULL;
->  	struct igt_drm_clients *clients = NULL;
->  	int con_w = -1, con_h = -1;
->  	int ret;
-> @@ -413,9 +423,22 @@ int main(int argc, char **argv)
->  	if (!clients)
->  		exit(1);
->  
-> +
+--===============7790288140790012106==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Spurious line, rest looks ok.
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+== Series Details ==
 
-Regards,
-Kamil
+Series: tests/gem_ctx_exec: Fix failing preempt timeout updates
+URL   : https://patchwork.freedesktop.org/series/136190/
+State : success
 
-> +	profiled_devices = igt_devices_profiled();
-> +	if (profiled_devices != NULL) {
-> +		igt_devices_configure_profiling(profiled_devices, true);
-> +
-> +		if (signal(SIGINT, sigint_handler) == SIG_ERR) {
-> +			fprintf(stderr, "Failed to install signal handler!\n");
-> +			igt_devices_configure_profiling(profiled_devices, false);
-> +			igt_devices_free_profiling(profiled_devices);
-> +			profiled_devices = NULL;
-> +		}
-> +	}
-> +
->  	igt_drm_clients_scan(clients, NULL, NULL, 0, NULL, 0);
->  
-> -	while (n != 0) {
-> +	while ((n != 0) && !stop_top) {
->  		struct igt_drm_client *c, *prevc = NULL;
->  		int i, engine_w = 0, lines = 0;
->  
-> @@ -443,9 +466,17 @@ int main(int argc, char **argv)
->  		usleep(period_us);
->  		if (n > 0)
->  			n--;
-> +
-> +		if (profiled_devices != NULL)
-> +			igt_devices_update_original_profiling_state(profiled_devices);
->  	}
->  
->  	igt_drm_clients_free(clients);
->  
-> +	if (profiled_devices != NULL) {
-> +		igt_devices_configure_profiling(profiled_devices, false);
-> +		igt_devices_free_profiling(profiled_devices);
-> +	}
-> +
->  	return 0;
->  }
-> diff --git a/tools/meson.build b/tools/meson.build
-> index c02c020d0b31..df26c4b95e3f 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -69,7 +69,7 @@ endif
->  executable('gputop', 'gputop.c',
->             install : true,
->             install_rpath : bindir_rpathdir,
-> -           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,math])
-> +           dependencies : [lib_igt_drm_clients,lib_igt_drm_fdinfo,lib_igt_profiling,math])
->  
->  intel_l3_parity_src = [ 'intel_l3_parity.c', 'intel_l3_udev_listener.c' ]
->  executable('intel_l3_parity', sources : intel_l3_parity_src,
-> -- 
-> 2.45.1
-> 
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_15086 -> IGTPW_11417
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Additional (2): fi-cfl-8109u fi-elk-e7500 
+  Missing    (3): bat-dg2-11 bat-jsl-1 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11417 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@verify-random:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-arls-2:         [PASS][3] -> [DMESG-WARN][4] ([i915#7507])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15086/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][5] +11 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][6] +24 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7927 -> IGTPW_11417
+
+  CI-20190529: 20190529
+  CI_DRM_15086: cf52b34c47ed2a05c46193f0b9807ffd8838dbd8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11417: 11417
+  IGT_7927: a2ab0ec12ef447c96c67dc539813462b6b39f857 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/index.html
+
+--===============7790288140790012106==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/gem_ctx_exec: Fix failing preempt timeout updates</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136190/">https://patchwork.freedesktop.org/series/136190/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_15086 -&gt; IGTPW_11417</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Additional (2): fi-cfl-8109u fi-elk-e7500 <br />
+  Missing    (3): bat-dg2-11 bat-jsl-1 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11417 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15086/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11417/fi-elk-e7500/igt@kms_pm_rpm@basic-pci-d3-state.html">SKIP</a> +24 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7927 -&gt; IGTPW_11417</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15086: cf52b34c47ed2a05c46193f0b9807ffd8838dbd8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11417: 11417<br />
+  IGT_7927: a2ab0ec12ef447c96c67dc539813462b6b39f857 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7790288140790012106==--
