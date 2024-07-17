@@ -4,48 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E79F7C3DA4B
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 10:58:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC104C3DA4B
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 12:22:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8934A10E0CD;
-	Wed, 17 Jul 2024 10:58:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="BxQ1EAr0";
-	dkim-atps=neutral
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
- [46.235.227.194])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71EB310EA61
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 10:58:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1721213933;
- bh=EdgVTC9mwn/uE7dO4pwg1gNZTdOh/OK4yKOhc1s2sok=;
- h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
- b=BxQ1EAr0xrf6AzibLKy4aVpRo3G1BscNDFzxTRh4ObTxojbXhHwyt/hlemfpIOSm3
- eTic2F/wjPpV6e9t0g7ztbGmAY4AkWcIOeNhSof+3pPv6O44aEi2iXHF3LGmzubJ6P
- z7aGRS+Cjp80nVfMd1lJqULsmwJxh4aHe9ZrZkPT3n2wh0HufZfDeOL08txaXUoCbf
- Vegcnwjtc3ta7EQipDcJxJ0LahxCRQ8IzEjV6bQeOEyAjaMlE+Z+26ZmYlZlas8nf4
- fBtg1E7GXewy8FVfpK/Vp2mr+5ize79p1mtV0T+z3pbB2Fyw6AurTCEslbWVVxP5pv
- XFE4OMrjsL4NA==
-Received: from [100.95.196.25] (cola.collaboradmins.com [195.201.22.229])
- (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
- key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested) (Authenticated sender: koike)
- by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4FD9F3780BC9;
- Wed, 17 Jul 2024 10:58:51 +0000 (UTC)
-Message-ID: <5a5b64bc-4aad-4f7a-a549-890a912ef03a@collabora.com>
-Date: Wed, 17 Jul 2024 07:58:49 -0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7895E10EAA6;
+	Wed, 17 Jul 2024 12:22:54 +0000 (UTC)
+Received: from mblankhorst.nl (lankhorst.se [141.105.120.124])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA56710EAA6
+ for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 12:22:51 +0000 (UTC)
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Subject: [PATCH] tests/xe: Add test waiting for ufence signaling
+Date: Wed, 17 Jul 2024 14:23:02 +0200
+Message-ID: <20240717122302.192806-1-maarten.lankhorst@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] docs/chamelium: update broken links
-To: Vignesh Raman <vignesh.raman@collabora.com>, igt-dev@lists.freedesktop.org
-Cc: robdclark@gmail.com, robdclark@chromium.org, daniels@collabora.com,
- kamil.konieczny@linux.intel.com
-References: <20240703015514.688088-1-vignesh.raman@collabora.com>
-Content-Language: en-US
-From: Helen Koike <helen.koike@collabora.com>
-In-Reply-To: <20240703015514.688088-1-vignesh.raman@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,53 +36,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Create a single VM_BIND that signals a valid and invalid ufence,
+to see what happens..
 
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+---
+ tests/intel/xe_vm.c | 67 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
-On 02/07/2024 22:55, Vignesh Raman wrote:
-> The previous links to the chamelium documentation
-> and setup instructions were no longer working.
-> Update with new valid links.
-> 
-> Cc: Rob Clark <robdclark@gmail.com>
-> Cc: Rob Clark <robdclark@chromium.org>
-> Cc: Helen Koike <helen.koike@collabora.com>
-> Cc: Daniel Stone <daniels@collabora.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-
-(in case this wans't applied already)
-
-Reviewed-by: Helen Koike <helen.koike@collabora.com>
-
-Thanks
-Helen
-
-> ---
->   docs/chamelium.txt | 7 ++++---
->   1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/docs/chamelium.txt b/docs/chamelium.txt
-> index f82c8b0c3..64f851c28 100644
-> --- a/docs/chamelium.txt
-> +++ b/docs/chamelium.txt
-> @@ -47,15 +47,16 @@ Chamelium V2 Documentation
->   --------------------------
->   
->   Documentation about the Chamelium is made available by Google through the
-> -ChromiumOS projet wiki: https://www.chromium.org/chromium-os/testing/chamelium
-> +ChromiumOS projet wiki:
-> +https://www.chromium.org/chromium-os/developer-library/guides/hardware-schematics/chamelium/
->   
->   Setting up Chamelium V2
->   -----------------------
->   
->   Instructions from the ChromiumOS wiki detail how to setup the Chamelium:
-> -https://www.chromium.org/chromium-os/testing/chamelium#TOC-Setting-up-Chamelium
-> +https://www.chromium.org/chromium-os/developer-library/guides/hardware-schematics/chamelium/#setting-up-chamelium
->   
-> -The should be followed up until the "Setup your Linux host, DUT and the FPGA"
-> +It should be followed up until the "Setup your Linux host, DUT and the FPGA"
->   section. At this point, IGT has to be configured to connect to the Chamelium.
->   
->   It may be necessary to give the Chamelium a static IP address, depending on
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index a4f6c7a0b..aba2e1b82 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -1839,6 +1839,70 @@ static void bind_flag_invalid(int fd)
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++/**
++ * SUBTEST: ufence-invalid
++ * Description:
++ *	Test what happens when trying to signal completion with read-only
++ * 	ufence address.
++ * Functionality: bind
++ * Test category: functionality test
++ */
++static void ufence_invalid(int fd)
++{
++	uint32_t bo, bo_size = xe_get_default_alignment(fd);
++	uint64_t addr = 0x1a0000;
++	uint32_t vm;
++	uint64_t *ro_ufence = mmap(NULL, sysconf(_SC_PAGESIZE), PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	uint64_t ufence = 0;
++	struct drm_xe_vm_bind bind;
++	struct drm_xe_sync sync[] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.timeline_value = 0x1234567890abcdef,
++		}
++	};
++
++	igt_assert(ro_ufence != MAP_FAILED);
++
++	vm = xe_vm_create(fd, 0, 0);
++	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
++	sync[0].handle = syncobj_create(fd, 0);
++
++	memset(&bind, 0, sizeof(bind));
++	bind.vm_id = vm;
++	bind.num_binds = 1;
++	bind.bind.obj = bo;
++	bind.bind.range = bo_size;
++	bind.bind.addr = addr;
++	bind.bind.op = DRM_XE_VM_BIND_OP_MAP;
++	bind.bind.pat_index = intel_get_pat_idx_wb(fd);
++	bind.num_syncs = ARRAY_SIZE(sync);
++	bind.syncs = to_user_pointer(sync);
++
++	/* Using valid with valid ufence should work */
++	sync[1].addr = (uintptr_t)&ufence;
++	bind.bind.flags = 0;
++	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++	syncobj_reset(fd, &sync[0].handle, 1);
++	/* Small sleep to allow some time for async kernel worker to run */
++	usleep(100000);
++	igt_assert_eq_u64(ufence, sync[1].timeline_value);
++
++	/* Also with ro_ufence, but it should remain unsignaled */
++	sync[1].addr = (uintptr_t)ro_ufence;
++	bind.bind.flags = DRM_XE_VM_BIND_FLAG_READONLY;
++	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++	syncobj_reset(fd, &sync[0].handle, 1);
++	usleep(100000);
++	igt_assert_eq_u64(*ro_ufence, 0);
++
++	syncobj_destroy(fd, sync[0].handle);
++	xe_vm_destroy(fd, vm);
++	munmap(ro_ufence, sysconf(_SC_PAGESIZE));
++}
++
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
+@@ -1973,6 +2037,9 @@ igt_main
+ 	igt_subtest("bind-flag-invalid")
+ 		bind_flag_invalid(fd);
+ 
++	igt_subtest("ufence-invalid")
++		ufence_invalid(fd);
++
+ 	igt_subtest("shared-pte-page")
+ 		xe_for_each_engine(fd, hwe)
+ 			shared_pte_page(fd, hwe, 4,
+-- 
+2.45.2
 
