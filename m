@@ -4,21 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC104C3DA4B
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 12:22:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B93F0C3DA5D
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 12:30:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7895E10EAA6;
-	Wed, 17 Jul 2024 12:22:54 +0000 (UTC)
-Received: from mblankhorst.nl (lankhorst.se [141.105.120.124])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AA56710EAA6
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 12:22:51 +0000 (UTC)
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10F4E10EAB1;
+	Wed, 17 Jul 2024 12:30:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YkM/KLgz";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1611A10EAAC;
+ Wed, 17 Jul 2024 12:30:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721219439; x=1752755439;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=OdcC5j5gEsZi6xR3dsc+gT7jIr0rKH50GZpmZ0IzhlA=;
+ b=YkM/KLgzGVj/N1tOhrx8OUe/u8a7uHMIw7+f18Pk42kx4YYhkR3pXo51
+ dueXk1kRNcy2Mf1f9EESt0+LqT7sC/fYAKyWFlc5DX2BG+EInnp57E4uA
+ 4+APtZxFunSsPYnTQmnLY2EbdBVSxz8hOwBviPjOLC43nCt6lFjRwsuA/
+ EUOVsqzWKoTIRry7d1ZY15qfUhZtNUgmkMBwNSmPtdJ0y2FDLje7K60G1
+ qDG07bN3Izb3Ygo0HAjv+J9EPId1yZxFzK4Z9HX6vLwqVvqoev9EIUwVN
+ klq3BkXxh1FehgB9um5S5vbxafMtb3dTtUOMK0kjn9vG/6COiSiiDVakk w==;
+X-CSE-ConnectionGUID: ZxBxogJISEWlXvP3XL7G5g==
+X-CSE-MsgGUID: QoxVnYLcQUK+5VlybXFu4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11135"; a="18856393"
+X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="18856393"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2024 05:30:39 -0700
+X-CSE-ConnectionGUID: ycA2hmpUS0qPLcab/kLCrQ==
+X-CSE-MsgGUID: y7tHvV3CTwKBIA0H3CfXSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="50165232"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO
+ jkrzyszt-mobl2.intranet) ([10.213.26.163])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2024 05:28:59 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Subject: [PATCH] tests/xe: Add test waiting for ufence signaling
-Date: Wed, 17 Jul 2024 14:23:02 +0200
-Message-ID: <20240717122302.192806-1-maarten.lankhorst@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t v3 1/5] tests/gem_ctx_exec: Fail on unsuccessful preempt
+ timeout update
+Date: Wed, 17 Jul 2024 14:26:12 +0200
+Message-ID: <20240717122836.3481656-8-janusz.krzysztofik@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240717122836.3481656-7-janusz.krzysztofik@linux.intel.com>
+References: <20240717122836.3481656-7-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -36,99 +72,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create a single VM_BIND that signals a valid and invalid ufence,
-to see what happens..
+CI reports the following failures from basic-nohangcheck subtest:
 
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+(gem_ctx_exec:1115) CRITICAL: Test assertion failure function nohangcheck_hostile, file ../../../usr/src/igt-gpu-tools/tests/intel/gem_ctx_exec.c:374:
+(gem_ctx_exec:1115) CRITICAL: Failed assertion: err == 0
+(gem_ctx_exec:1115) CRITICAL: Last errno: 2, No such file or directory
+(gem_ctx_exec:1115) CRITICAL: Hostile unpreemptable context was not cancelled immediately upon closure
+
+The subtest sets 50 ms preempt timeout on each engine before proceding
+with submission of spins, then it waits up to 1 second for those spins to
+be terminated.  However, dump of engines' debugfs data performed by the
+subtest after the failure shows preempt timeouts still at their default
+values: 7500 ms on rcs0 and 640 ms on other class engines.  Dmesg records
+confirm preemption timeouts triggered on other engines after 640 ms and
+not on rcs0 within the 1 second limit.
+
+As a first step, let the subtest verify return values of function calls
+supposed to update the preempt timeouts with the new values.  If failed
+on any engine then report that at debug level as a useful hint displayed
+when the test times out on waiting for spin termination.
+
+v2: No changes.
+v3: Don't fail on unsuccessful update of preempt_timeout_ms, older
+    platforms don't support it but can still succeed.
+
+Link: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6268
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 ---
- tests/intel/xe_vm.c | 67 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ tests/intel/gem_ctx_exec.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index a4f6c7a0b..aba2e1b82 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -1839,6 +1839,70 @@ static void bind_flag_invalid(int fd)
- 	xe_vm_destroy(fd, vm);
- }
+diff --git a/tests/intel/gem_ctx_exec.c b/tests/intel/gem_ctx_exec.c
+index d6aa8ba0aa..f3e252d10e 100644
+--- a/tests/intel/gem_ctx_exec.c
++++ b/tests/intel/gem_ctx_exec.c
+@@ -308,8 +308,7 @@ static void nohangcheck_hostile(int i915)
+ 	igt_hang_t hang;
+ 	int fence = -1;
+ 	const intel_ctx_t *ctx;
+-	int err = 0;
+-	int dir;
++	int dir, err;
+ 	uint64_t ahnd;
  
-+/**
-+ * SUBTEST: ufence-invalid
-+ * Description:
-+ *	Test what happens when trying to signal completion with read-only
-+ * 	ufence address.
-+ * Functionality: bind
-+ * Test category: functionality test
-+ */
-+static void ufence_invalid(int fd)
-+{
-+	uint32_t bo, bo_size = xe_get_default_alignment(fd);
-+	uint64_t addr = 0x1a0000;
-+	uint32_t vm;
-+	uint64_t *ro_ufence = mmap(NULL, sysconf(_SC_PAGESIZE), PROT_READ, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	uint64_t ufence = 0;
-+	struct drm_xe_vm_bind bind;
-+	struct drm_xe_sync sync[] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = 0x1234567890abcdef,
-+		}
-+	};
-+
-+	igt_assert(ro_ufence != MAP_FAILED);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, 0), 0);
-+	sync[0].handle = syncobj_create(fd, 0);
-+
-+	memset(&bind, 0, sizeof(bind));
-+	bind.vm_id = vm;
-+	bind.num_binds = 1;
-+	bind.bind.obj = bo;
-+	bind.bind.range = bo_size;
-+	bind.bind.addr = addr;
-+	bind.bind.op = DRM_XE_VM_BIND_OP_MAP;
-+	bind.bind.pat_index = intel_get_pat_idx_wb(fd);
-+	bind.num_syncs = ARRAY_SIZE(sync);
-+	bind.syncs = to_user_pointer(sync);
-+
-+	/* Using valid with valid ufence should work */
-+	sync[1].addr = (uintptr_t)&ufence;
-+	bind.bind.flags = 0;
-+	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	syncobj_reset(fd, &sync[0].handle, 1);
-+	/* Small sleep to allow some time for async kernel worker to run */
-+	usleep(100000);
-+	igt_assert_eq_u64(ufence, sync[1].timeline_value);
-+
-+	/* Also with ro_ufence, but it should remain unsignaled */
-+	sync[1].addr = (uintptr_t)ro_ufence;
-+	bind.bind.flags = DRM_XE_VM_BIND_FLAG_READONLY;
-+	igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind);
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+	syncobj_reset(fd, &sync[0].handle, 1);
-+	usleep(100000);
-+	igt_assert_eq_u64(*ro_ufence, 0);
-+
-+	syncobj_destroy(fd, sync[0].handle);
-+	xe_vm_destroy(fd, vm);
-+	munmap(ro_ufence, sysconf(_SC_PAGESIZE));
-+}
-+
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe, *hwe_non_copy = NULL;
-@@ -1973,6 +2037,9 @@ igt_main
- 	igt_subtest("bind-flag-invalid")
- 		bind_flag_invalid(fd);
+ 	/*
+@@ -333,8 +332,11 @@ static void nohangcheck_hostile(int i915)
+ 		int new;
  
-+	igt_subtest("ufence-invalid")
-+		ufence_invalid(fd);
-+
- 	igt_subtest("shared-pte-page")
- 		xe_for_each_engine(fd, hwe)
- 			shared_pte_page(fd, hwe, 4,
+ 		/* Set a fast hang detection for a dead context */
+-		gem_engine_property_printf(i915, e->name,
+-					   "preempt_timeout_ms", "%d", 50);
++		err = gem_engine_property_printf(i915, e->name,
++						 "preempt_timeout_ms", "%d", 50);
++		igt_debug_on_f(err < 0,
++			       "%s preempt_timeout_ms update failed: %d\n",
++			       e->name, err);
+ 
+ 		spin = __igt_spin_new(i915,
+ 				      .ahnd = ahnd,
+@@ -362,6 +364,7 @@ static void nohangcheck_hostile(int i915)
+ 	intel_ctx_destroy(i915, ctx);
+ 	igt_assert(fence != -1);
+ 
++	err = 0;
+ 	if (sync_fence_wait(fence, MSEC_PER_SEC)) { /* 640ms preempt-timeout */
+ 		igt_debugfs_dump(i915, "i915_engine_info");
+ 		err = -ETIME;
 -- 
 2.45.2
 
