@@ -4,68 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1CD2C3DA42
-	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 13:52:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E40FC3DA42
+	for <igt-dev@archiver.kernel.org>; Wed, 17 Jul 2024 13:53:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 043FD10E192;
-	Wed, 17 Jul 2024 13:52:35 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FchXuqVd";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96FC410E0CB
- for <igt-dev@lists.freedesktop.org>; Wed, 17 Jul 2024 13:52:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721224352; x=1752760352;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=VDljv5oNyt+Q6jNO+Aw3IUg3AsmEBguFIqM8+44FGfg=;
- b=FchXuqVdECrGPXhDfSEXh5R8Gxli/AYX3Bk5Xdwgu2HN/3DHaN84ziUO
- Re9eG/RH/ddbaSkS46ejLJT6H15xkV4NUeTAC9Y/a2xfE1HBObMqCg/C6
- Q/Dye5VhM3pARbHABirfeOagJmo3MkgBVIlv9xjY2Pun8lUY0uXO80rcP
- zS4lrVoPSlvzVA529K8L0iU7P/2aApZWCYV7Ec+DnSruOEFzPql1tx/vV
- y/Au1T7u7+EZ4Dyvlvlx6y4rqC+JYY9Hu48BlrhIxuE5E2o1nd6+mwUeq
- XbZtQsbnSgDAhQ/hE2K4Ilf+NLGiUXy5nJMKQq+nLckjMDMqdDIj07GV6 Q==;
-X-CSE-ConnectionGUID: sc01fRwzTKaIdSMslgGkhw==
-X-CSE-MsgGUID: iMWquVW6T8+tHECWdQ28SA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="36268273"
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="36268273"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2024 06:52:32 -0700
-X-CSE-ConnectionGUID: SrrxJ0rWRtOgw3dB37nsQQ==
-X-CSE-MsgGUID: mvqIErcQTQS821wtrfdBIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,214,1716274800"; d="scan'208";a="51130638"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2024 06:52:30 -0700
-Date: Wed, 17 Jul 2024 15:52:00 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- tursulin@ursulin.net, robdclark@chromium.org,
- lucas.demarchi@intel.com, healych@amazon.com,
- Daniel Vetter <daniel@ffwll.ch>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH v5 1/2] lib: Add DRM driver sysfs profiling knob toggling
- functions
-Message-ID: <20240717135200.v3rxecsvgye32ouh@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>,
- tursulin@ursulin.net, robdclark@chromium.org,
- lucas.demarchi@intel.com, healych@amazon.com,
- Daniel Vetter <daniel@ffwll.ch>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20240716205756.2973341-1-adrian.larumbe@collabora.com>
- <20240716205756.2973341-2-adrian.larumbe@collabora.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3066E10E140;
+	Wed, 17 Jul 2024 13:53:21 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA87F10E140;
+ Wed, 17 Jul 2024 13:53:18 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4234766501021470362=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240716205756.2973341-2-adrian.larumbe@collabora.com>
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/gem=5Fctx=5Fexec=3A_Fix_?=
+ =?utf-8?q?failing_preempt_timeout_updates?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 17 Jul 2024 13:53:18 -0000
+Message-ID: <172122439882.269913.7312944016478230933@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240717122836.3481656-7-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240717122836.3481656-7-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,299 +37,273 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Adrián,
-On 2024-07-16 at 21:57:23 +0100, Adrián Larumbe wrote:
-> Some DRM drivers need to have their accounting HW toggled on demand from
-> user space so that fdinfo's drm-engine and drm-cycles tags can be updated
-> upon job completion.
-> 
-> A profiler such as gputop should be able to check which DRM devices have
-> such a sysfs knob, record its original state, toggle-enable it and revert
-> this operation right before exiting.
-> 
-> Also create a new static library dependency for this family of functions so
-> that it can later be linked against gputop.
+--===============4234766501021470362==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Thank you for splitting this code into separate lib,
-now ldd shows only 3 libs (as it was in previous):
+== Series Details ==
 
-ldd gputop
-    linux-vdso.so.1 (0x000073d22da9f000)
-    libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000073d22d800000)
-    /lib64/ld-linux-x86-64.so.2 (0x000073d22daa1000)
+Series: tests/gem_ctx_exec: Fix failing preempt timeout updates
+URL   : https://patchwork.freedesktop.org/series/136190/
+State : success
 
-> 
-> Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-> Cc: Daniel Vetter <daniel@ffwll.ch>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Signed-off-by: Adrián Larumbe <adrian.larumbe@collabora.com>
-> Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> ---
->  lib/igt_profiling.c | 189 ++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_profiling.h |  22 ++++++
->  lib/meson.build     |   8 ++
->  3 files changed, 219 insertions(+)
->  create mode 100644 lib/igt_profiling.c
->  create mode 100644 lib/igt_profiling.h
-> 
-> diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
-> new file mode 100644
-> index 000000000000..b615067422e7
-> --- /dev/null
-> +++ b/lib/igt_profiling.c
-> @@ -0,0 +1,189 @@
-> +// SPDX-License-Identifier: MIT
+== Summary ==
 
-This should use /* SPDX... */ - I will fix it at merge.
-Please use checkpatch.pl script from Linux kernel for checks,
-look into CONTRIBUTE.md for few useful options.
+CI Bug Log - changes from XEIGT_7927_BAT -> XEIGTPW_11417_BAT
+====================================================
 
-With that:
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Summary
+-------
 
-Regards,
-Kamil
+  **SUCCESS**
 
-> +/*
-> + * Copyright © 2024 Collabora Ltd.
-> + *
-> + * Author: Adrian Larumbe <adrian.larumbe@collabora.com>
-> + *
-> + */
-> +
-> +#include <unistd.h>
-> +#include <assert.h>
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +
-> +#include "igt_profiling.h"
-> +
-> +#define SYSFS_DRM	"/sys/class/drm"
-> +#define NUM_DEVICES	10
-> +
-> +/**
-> + * igt_devices_profiled
-> + *
-> + * Gives us an array of igt_profiled_device structures, each of which contains
-> + * the full path of the DRM device's sysfs profiling knob and its original
-> + * state, so that it can be restored later on.
-> + *
-> + * Returns: NULL-terminated array of struct igt_profiled_device pointers, or
-> + * NULL on failure.
-> + */
-> +struct igt_profiled_device *igt_devices_profiled(void)
-> +{
-> +	struct igt_profiled_device *profiled_devices;
-> +	unsigned int devlist_len = NUM_DEVICES;
-> +	unsigned int i = 0;
-> +	struct dirent *entry;
-> +	DIR *dev_dir;
-> +
-> +	/* The return array will be resized in case there are too many devices */
-> +	profiled_devices = malloc(devlist_len * sizeof(struct igt_profiled_device));
-> +	if (!profiled_devices)
-> +		return NULL;
-> +
-> +	dev_dir = opendir(SYSFS_DRM);
-> +	if (!dev_dir)
-> +		goto end;
-> +
-> +	while ((entry = readdir(dev_dir)) != NULL) {
-> +		char path[PATH_MAX];
-> +		char orig_state;
-> +		int sysfs_fd;
-> +
-> +		/* All DRM device entries are symlinks to other paths within sysfs */
-> +		if (entry->d_type != DT_LNK)
-> +			continue;
-> +
-> +		/* We're only interested in render nodes */
-> +		if (strstr(entry->d_name, "render") != entry->d_name)
-> +			continue;
-> +
-> +		snprintf(path, sizeof(path), "%s/%s/device/%s",
-> +			 SYSFS_DRM, entry->d_name, "profiling");
-> +
-> +		if (access(path, F_OK))
-> +			continue;
-> +
-> +		sysfs_fd = open(path, O_RDONLY);
-> +		if (sysfs_fd == -1)
-> +			continue;
-> +
-> +		if (read(sysfs_fd, &orig_state, 1) <= 0) {
-> +			close(sysfs_fd);
-> +			continue;
-> +		}
-> +
-> +		if (i == (devlist_len - 1)) {
-> +			struct igt_profiled_device *new_profiled_devices;
-> +
-> +			devlist_len += NUM_DEVICES;
-> +			new_profiled_devices = realloc(profiled_devices, devlist_len);
-> +			if (!new_profiled_devices)
-> +				goto end;
-> +			profiled_devices = new_profiled_devices;
-> +		}
-> +
-> +		profiled_devices[i].syspath = strdup(path);
-> +		profiled_devices[i++].original_state = orig_state;
-> +
-> +		close(sysfs_fd);
-> +	}
-> +
-> +	if (i == 0)
-> +		goto end;
-> +	else
-> +		profiled_devices[i].syspath = NULL; /* Array terminator */
-> +
-> +	return profiled_devices;
-> +
-> +end:
-> +	free(profiled_devices);
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * igt_devices_configure_profiling
-> + * @devices: NULL-terminated array of igt_profiled_device structures.
-> + * @enable: If True, then enable profiling, otherwise restore to original state
-> + *
-> + * For every single device's profiling knob sysfs path in the NULL-terminated
-> + * 'devices' array, set it to '1' if bool equals true. Otherwise set it to
-> + * its original state at the time it was first probed in igt_devices_profiled
-> + *
-> + */
-> +void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable)
-> +{
-> +	assert(devices);
-> +
-> +	for (unsigned int i = 0; devices[i].syspath; i++) {
-> +		int sysfs_fd = open(devices[i].syspath, O_WRONLY);
-> +
-> +		if (sysfs_fd < 0)
-> +			continue;
-> +
-> +		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
-> +		close(sysfs_fd);
-> +	}
-> +}
-> +
-> +/**
-> + * igt_devices_configure_profiling
-> + * @devices: NULL-terminated array of igt_profiled_device structures.
-> + *
-> + * For every single struct igt_profiled_device in the 'devices' array,
-> + * free its duplicated syspath string, and then free the array itself.
-> + *
-> + */
-> +void igt_devices_free_profiling(struct igt_profiled_device *devices)
-> +{
-> +	assert(devices);
-> +
-> +	for (unsigned int i = 0; devices[i].syspath; i++)
-> +		free(devices[i].syspath);
-> +
-> +	free(devices);
-> +}
-> +
-> +/**
-> + * igt_devices_configure_profiling
-> + * @devices: NULL-terminated array of igt_profiled_device structures.
-> + *
-> + * For every single struct igt_profiled_device in the 'devices' array,
-> + * check whether the sysfs profiling knob has changed its state since
-> + * the last time its original state was registered, and then update it
-> + * accordingly. This is usually a symptom that there are other profilers
-> + * currently trying to toggle the sysfs knob, or perhaps more than one
-> + * instance of the same profiler.
-> + * The goal of this function is ensuring the sysfs knob is eventually
-> + * restored to a coherent state, even though a small race window is
-> + * possible. There's nothing we can do about this, so this function
-> + * tries to mitigate that situation in a best-effort fashion.
-> + *
-> + */
-> +void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices)
-> +{
-> +	assert(devices);
-> +
-> +	for (unsigned int i = 0; devices[i].syspath; i++) {
-> +		char new_state;
-> +		int sysfs_fd;
-> +
-> +		sysfs_fd = open(devices[i].syspath, O_RDWR);
-> +		if (sysfs_fd == -1)
-> +			continue;
-> +
-> +		if (!read(sysfs_fd, &new_state, 1)) {
-> +			close(sysfs_fd);
-> +			continue;
-> +		}
-> +
-> +		if (new_state == '0') {
-> +			write(sysfs_fd, "1", 1);
-> +			devices[i].original_state = new_state;
-> +		}
-> +
-> +		close(sysfs_fd);
-> +	}
-> +}
-> diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
-> new file mode 100644
-> index 000000000000..b711d2cd2d19
-> --- /dev/null
-> +++ b/lib/igt_profiling.h
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Collabora Ltd.
-> + *
-> + * Author: Adrian Larumbe <adrian.larumbe@collabora.com>
-> + *
-> + */
-> +
-> +#ifndef IGT_PROFILING_H
-> +#define IGT_PROFILING_H
-> +
-> +struct igt_profiled_device {
-> +	char *syspath;
-> +	char original_state;
-> +};
-> +
-> +void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable);
-> +struct igt_profiled_device *igt_devices_profiled(void);
-> +void igt_devices_free_profiling(struct igt_profiled_device *devices);
-> +void igt_devices_update_original_profiling_state(struct igt_profiled_device *devices);
-> +
-> +#endif /* IGT_PROFILING_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 7577bee9d35e..f711e60a736a 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -309,6 +309,14 @@ lib_igt_drm_fdinfo_build = static_library('igt_drm_fdinfo',
->  
->  lib_igt_drm_fdinfo = declare_dependency(link_with : lib_igt_drm_fdinfo_build,
->  				  include_directories : inc)
-> +
-> +lib_igt_profiling_build = static_library('igt_profiling',
-> +	['igt_profiling.c'],
-> +	include_directories : inc)
-> +
-> +lib_igt_profiling = declare_dependency(link_with : lib_igt_profiling_build,
-> +				        include_directories : inc)
-> +
->  i915_perf_files = [
->    'igt_list.c',
->    'i915/perf.c',
-> -- 
-> 2.45.1
-> 
+  No regressions found.
+
+  
+
+Participating hosts (5 -> 7)
+------------------------------
+
+  Additional (2): bat-lnl-2 bat-lnl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11417_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-lnl-1:          NOTRUN -> [SKIP][1] ([Intel XE#1466])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-lnl-1:          NOTRUN -> [SKIP][2] ([Intel XE#599])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          NOTRUN -> [FAIL][3] ([Intel XE#886]) +1 other test fail
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-lnl-1:          NOTRUN -> [SKIP][4] ([Intel XE#352]) +2 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-lnl-1:          NOTRUN -> [SKIP][5] ([Intel XE#1470])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-lnl-1:          NOTRUN -> [SKIP][6] ([Intel XE#1091]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-lnl-1:          NOTRUN -> [SKIP][7] ([Intel XE#688]) +17 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_gt_freq@freq_fixed_idle:
+    - bat-lnl-1:          NOTRUN -> [SKIP][8] ([Intel XE#1462]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_gt_freq@freq_fixed_idle.html
+
+  * igt@xe_mmap@vram:
+    - bat-lnl-1:          NOTRUN -> [SKIP][9] ([Intel XE#1416])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-lnl-1:          NOTRUN -> [SKIP][10] ([Intel XE#1420])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-lnl-1:          NOTRUN -> [SKIP][11] ([Intel XE#977])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-lnl-1:          NOTRUN -> [SKIP][12] ([Intel XE#979])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-lnl-1:          NOTRUN -> [FAIL][13] ([Intel XE#1442])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1091]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091
+  [Intel XE#1416]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#1442]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1442
+  [Intel XE#1462]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1462
+  [Intel XE#1466]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466
+  [Intel XE#1470]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#352]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/352
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#599]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/599
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+  [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7927 -> IGTPW_11417
+  * Linux: xe-1613-b6af83ceb593bc4e0d79acda73684462b13a15b9 -> xe-1619-cf52b34c47ed2a05c46193f0b9807ffd8838dbd8
+
+  IGTPW_11417: 11417
+  IGT_7927: a2ab0ec12ef447c96c67dc539813462b6b39f857 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1613-b6af83ceb593bc4e0d79acda73684462b13a15b9: b6af83ceb593bc4e0d79acda73684462b13a15b9
+  xe-1619-cf52b34c47ed2a05c46193f0b9807ffd8838dbd8: cf52b34c47ed2a05c46193f0b9807ffd8838dbd8
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/index.html
+
+--===============4234766501021470362==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/gem_ctx_exec: Fix failing preempt timeout updates</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136190/">https://patchwork.freedesktop.org/series/136190/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7927_BAT -&gt; XEIGTPW_11417_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (5 -&gt; 7)</h2>
+<p>Additional (2): bat-lnl-2 bat-lnl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11417_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1466">Intel XE#1466</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/599">Intel XE#599</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/352">Intel XE#352</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1470">Intel XE#1470</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1091">Intel XE#1091</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_fixed_idle:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_gt_freq@freq_fixed_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1462">Intel XE#1462</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1416">Intel XE#1416</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11417/bat-lnl-1/igt@xe_pm_residency@gt-c6-on-idle.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1442">Intel XE#1442</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7927 -&gt; IGTPW_11417</li>
+<li>Linux: xe-1613-b6af83ceb593bc4e0d79acda73684462b13a15b9 -&gt; xe-1619-cf52b34c47ed2a05c46193f0b9807ffd8838dbd8</li>
+</ul>
+<p>IGTPW_11417: 11417<br />
+  IGT_7927: a2ab0ec12ef447c96c67dc539813462b6b39f857 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1613-b6af83ceb593bc4e0d79acda73684462b13a15b9: b6af83ceb593bc4e0d79acda73684462b13a15b9<br />
+  xe-1619-cf52b34c47ed2a05c46193f0b9807ffd8838dbd8: cf52b34c47ed2a05c46193f0b9807ffd8838dbd8</p>
+
+</body>
+</html>
+
+--===============4234766501021470362==--
