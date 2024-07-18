@@ -4,60 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F19B1C3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 13:06:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EED8C3DA63
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 13:58:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B4B0810E829;
-	Thu, 18 Jul 2024 13:06:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0FF7510E890;
+	Thu, 18 Jul 2024 13:58:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NKM1Jynq";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="FBtMWA13";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C045110E829
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 13:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721307960; x=1752843960;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=lOmLvAme1oVie4WPyFxmayie9s3gpRNc92DEQGKz8AE=;
- b=NKM1JynqBdF91gyBtiV/vk3qvBRiTEvmShzSSLDCUZa6Kz58p09KnLFJ
- 2j3a7OB59jL8CWqhxJIecRTR+Pm4sSiwQVMAHV+l3TgizBTAl58c4W25Z
- Mnkqc7AjiU0hGlE2esnR1RAEZlwFufxy97TpzhOmC3taPtLSwV3Hvuklf
- roCRZ8d3KgDVDxrOWOtjTmfJFq2Q5kEudKMZZzt+s1sgWJtHLfzCtIhk9
- 1EtKNDaPJCec7PP+QhHV1P48lWCDDO/EjxZ5Mf4icBu9OqnbSsIerA273
- ucOa9G2DDf9ImKt4C9yVz5G154ieaq6t9AKqNjj5uspiEnHYflSnumx58 Q==;
-X-CSE-ConnectionGUID: kFucia+0TQah61VmV3opDA==
-X-CSE-MsgGUID: sarVjxLrQhiG/dlpDXQfaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11137"; a="36306922"
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="36306922"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 06:06:00 -0700
-X-CSE-ConnectionGUID: KN6+rc5rRGyitQoU9f+v4g==
-X-CSE-MsgGUID: wZfU9KbHQwS4vtDg5/WNww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="81779293"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 06:05:58 -0700
-Date: Thu, 18 Jul 2024 15:05:55 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>, matthew.brost@intel.com
-Subject: Re: [PATCH i-g-t, v2] tests/intel/xe_exec_mix_modes: Add new tests
- for parallel execution
-Message-ID: <20240718130555.wgwla42eblm7cozq@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Francois Dugast <francois.dugast@intel.com>,
- matthew.brost@intel.com
-References: <20240717163520.1145834-1-francois.dugast@intel.com>
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com
+ [46.235.227.194])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 94B9010E890
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 13:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1721311097;
+ bh=ilxJjt0w3DH7CP5hj0+y6ZwyDcd98mC1yLW2ZTIqF3M=;
+ h=From:To:Cc:Subject:Date:From;
+ b=FBtMWA13qiTOPFqMymxIHXzu/mTLYDRNe82fdaGgpQJPqI8I5zww5iLM6hzN8Ev6b
+ DRmmKlTDRxMlgahJpotAnxatxO5gpN+FNFqZOdLKMazR+BGvaz8vR0oanXeq72Rs3b
+ y8/Y6No9LmNpu+L4Ir0plxZR50Dyz+eB0RwOuKymqV6BtrzX2a4fCHZ6/zURUs7NRk
+ Io0SBbnSgF/lxhieKDaJIl9pRb2KJa+mdO3dbyLwIqJ1RiQ4HQT1+BqROEfD5fq9YP
+ RXQFiHLF4ZNUTc/CgjQaaqZ1twCUomFagbNZu7N0azXVC7hROEi7lc2k+GDDn9rLe4
+ m+sDIA7U8UUvQ==
+Received: from localhost.localdomain (cola.collaboradmins.com [195.201.22.229])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+ (No client certificate requested) (Authenticated sender: alarumbe)
+ by madrid.collaboradmins.com (Postfix) with ESMTPSA id D2955378219E;
+ Thu, 18 Jul 2024 13:58:16 +0000 (UTC)
+From: =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>
+To: tursulin@ursulin.net, robdclark@chromium.org,
+ kamil.konieczny@linux.intel.com, lucas.demarchi@intel.com,
+ igt-dev@lists.freedesktop.org
+Cc: healych@amazon.com, adrian.larumbe@collabora.com,
+ Daniel Vetter <daniel@ffwll.ch>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH v6 0/2] Add gputop support for sysfs profiling knob
+Date: Thu, 18 Jul 2024 14:58:08 +0100
+Message-ID: <20240718135811.3619050-1-adrian.larumbe@collabora.com>
+X-Mailer: git-send-email 2.45.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240717163520.1145834-1-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,336 +61,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Francois,
-On 2024-07-17 at 18:35:19 +0200, Francois Dugast wrote:
-> Test parallel execution of LR and dma fence jobs on the same device.
+Some GPUs like Panfrost need a sysfs file to be toggled before the HW can
+initiate the job accounting necessary to feed fdinfo with engine and cycle
+data. This sysfs knob has to be disabled when the profiler is done, to save
+power.
 
-Could you explain 'LR' here? Like: LR (Long Running)
+Changelog:
+v6:
+ - Deleted spurious line
+ - Changed license identifier comment style in header file
+ - Added some ack tags to th commits
+v5:
+ - Deleted unnecesary blank line and added Ack tags
+v4:
+ - Improve error handling *igt_devices_profiled
+ - Changed name of some symbols to better reflect their semantics
+ - Changed header with copyright notice
+ - Added documentation for public functions in igt_profiling.c
+v3:
+ - Created separate lib_igt_profiling to avoid dynamic linking
+ of gputop with igt_lib, which also meant isolating the functions
+ therein from the rest of igt_lib.
+ - Make gputop check the sysfs knob state at the end of every period
+ in case other instances of itself or other profilers might have
+ changed it, so that the knob can be returned to its original state.
+v2:
+ - Added header file guards around igt_profiling.h
+ - Modified licensing information to comply with SPDX format
+ - Sorted included header files in alphabetic order
+ - Added volatile qualifier to gputop stop variable
 
-I have few more nits, see below.
+Adrián Larumbe (2):
+  lib: Add DRM driver sysfs profiling knob toggling functions
+  tools/gputop: toggle sysfs profiling knob if available for device
 
-> 
-> Add the following tests:
-> * "exec-simple-batch-store-lr"
-> * "exec-simple-batch-store-dma-fence"
-> * "exec-spinner-interrupted-lr"
-> * "exec-spinner-interrupted-dma-fence"
-> 
-> v2: Remove useless exec queue priority, multiple job submissions
->     even when running without preemption, nits (Matt Brost)
-> 
-> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-> ---
->  tests/intel/xe_exec_mix_modes.c | 268 ++++++++++++++++++++++++++++++++
->  tests/meson.build               |   1 +
->  2 files changed, 269 insertions(+)
->  create mode 100644 tests/intel/xe_exec_mix_modes.c
-> 
-> diff --git a/tests/intel/xe_exec_mix_modes.c b/tests/intel/xe_exec_mix_modes.c
-> new file mode 100644
-> index 000000000..f7bb96255
-> --- /dev/null
-> +++ b/tests/intel/xe_exec_mix_modes.c
-> @@ -0,0 +1,268 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Test the parallel submission of jobs in LR and dma fence modes
+ lib/igt_profiling.c | 189 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_profiling.h |  22 ++++++
+ lib/meson.build     |   8 ++
+ tools/gputop.c      |  32 +++++++-
+ tools/meson.build   |   2 +-
+ 5 files changed, 251 insertions(+), 2 deletions(-)
+ create mode 100644 lib/igt_profiling.c
+ create mode 100644 lib/igt_profiling.h
 
-imho better:
 
- * TEST: Test the parallel submission of jobs in long running and dma fence modes
+base-commit: a2ab0ec12ef447c96c67dc539813462b6b39f857
+-- 
+2.45.1
 
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: CMD submission
-> + * Functionality: fault mode
-> + * GPU requirements: GPU needs support for DRM_XE_VM_CREATE_FLAG_FAULT_MODE
------------------------ ^^^^^^^^^
-Here we write specific GPUs, this looks like description or a comment.
-I did a grep and it seems it's use is inconsistent.
-imho something like this looks better:
-
- * GPU requirement: PVC, ATS-M
- * Description: GPU needs support for DRM_XE_VM_CREATE_FLAG_FAULT_MODE
-
-> + */
-> +
-> +#include <fcntl.h>
-> +
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "lib/intel_reg.h"
-> +#include "xe_drm.h"
-> +
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include "xe/xe_spin.h"
-> +#include <string.h>
--------------^^^^^^^^
-This include <string.h> should be after <fcntl.h> above.
-
-Regards,
-Kamil
-
-> +
-> +#define FLAG_EXEC_MODE_LR	(0x1 << 0)
-> +#define FLAG_JOB_TYPE_SIMPLE	(0x1 << 1)
-> +
-> +#define NUM_INTERRUPTING_JOBS	5
-> +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-> +#define ONE_SEC			MS_TO_NS(1000)
-> +#define VM_DATA			0
-> +#define SPIN_DATA		1
-> +#define EXEC_DATA		2
-> +#define DATA_COUNT		3
-> +
-> +struct data {
-> +	struct xe_spin spin;
-> +	uint32_t batch[16];
-> +	uint64_t vm_sync;
-> +	uint32_t data;
-> +	uint64_t exec_sync;
-> +	uint64_t addr;
-> +};
-> +
-> +static void store_dword_batch(struct data *data, uint64_t addr, int value)
-> +{
-> +	int b;
-> +	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-> +	uint64_t batch_addr = addr + batch_offset;
-> +	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
-> +	uint64_t sdi_addr = addr + sdi_offset;
-> +
-> +	b = 0;
-> +	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +	data->batch[b++] = sdi_addr;
-> +	data->batch[b++] = sdi_addr >> 32;
-> +	data->batch[b++] = value;
-> +	data->batch[b++] = MI_BATCH_BUFFER_END;
-> +	igt_assert(b <= ARRAY_SIZE(data->batch));
-> +
-> +	data->addr = batch_addr;
-> +}
-> +
-> +enum engine_execution_mode {
-> +	EXEC_MODE_LR,
-> +	EXEC_MODE_DMA_FENCE,
-> +};
-> +
-> +enum job_type {
-> +	SIMPLE_BATCH_STORE,
-> +	SPINNER_INTERRUPTED,
-> +};
-> +
-> +static void
-> +run_job(int fd, struct drm_xe_engine_class_instance *hwe,
-> +	enum engine_execution_mode engine_execution_mode,
-> +	enum job_type job_type, bool allow_recursion)
-> +{
-> +	struct drm_xe_sync sync[1] = {
-> +		{ .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 1,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +	struct data *data;
-> +	uint32_t vm;
-> +	uint32_t exec_queue;
-> +	size_t bo_size;
-> +	int value = 0x123456;
-> +	uint64_t addr = 0x100000;
-> +	uint32_t bo = 0;
-> +	unsigned int vm_flags = 0;
-> +	struct xe_spin_opts spin_opts = { .preempt = true };
-> +	const uint64_t duration_ns = NSEC_PER_SEC / 2; /* 500ms */
-> +	struct timespec tv;
-> +	enum engine_execution_mode interrupting_engine_execution_mode;
-> +
-> +	if (engine_execution_mode == EXEC_MODE_LR) {
-> +		sync[0].type = DRM_XE_SYNC_TYPE_USER_FENCE;
-> +		sync[0].timeline_value = USER_FENCE_VALUE;
-> +		vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE | DRM_XE_VM_CREATE_FLAG_FAULT_MODE;
-> +	} else if (engine_execution_mode == EXEC_MODE_DMA_FENCE) {
-> +		sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +		sync[0].handle = syncobj_create(fd, 0);
-> +	}
-> +
-> +	vm = xe_vm_create(fd, vm_flags, 0);
-> +	bo_size = sizeof(*data) * DATA_COUNT;
-> +	bo_size = xe_bb_size(fd, bo_size);
-> +	bo = xe_bo_create(fd, vm, bo_size,
-> +			  vram_if_possible(fd, hwe->gt_id),
-> +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	data = xe_bo_map(fd, bo, bo_size);
-> +	if (engine_execution_mode == EXEC_MODE_LR)
-> +		sync[0].addr = to_user_pointer(&data[VM_DATA].vm_sync);
-> +	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, &sync[0], 1);
-> +
-> +	store_dword_batch(data, addr, value);
-> +	if (engine_execution_mode == EXEC_MODE_LR) {
-> +		xe_wait_ufence(fd, &data[VM_DATA].vm_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> +		sync[0].addr = addr + (char *)&data[EXEC_DATA].exec_sync - (char *)data;
-> +	} else if (engine_execution_mode == EXEC_MODE_DMA_FENCE) {
-> +		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +		syncobj_reset(fd, &sync[0].handle, 1);
-> +		sync[0].flags &= DRM_XE_SYNC_FLAG_SIGNAL;
-> +	}
-> +	exec_queue = xe_exec_queue_create(fd, vm, hwe, 0);
-> +	exec.exec_queue_id = exec_queue;
-> +
-> +	if (job_type == SPINNER_INTERRUPTED) {
-> +		spin_opts.addr = addr + (char *)&data[SPIN_DATA].spin - (char *)data;
-> +		spin_opts.ctx_ticks = duration_to_ctx_ticks(fd, 0, duration_ns);
-> +		xe_spin_init(&data[SPIN_DATA].spin, &spin_opts);
-> +		if (engine_execution_mode == EXEC_MODE_LR)
-> +			sync[0].addr = addr + (char *)&data[SPIN_DATA].exec_sync - (char *)data;
-> +		exec.address = spin_opts.addr;
-> +	} else if (job_type == SIMPLE_BATCH_STORE) {
-> +		exec.address = data->addr;
-> +	}
-> +	xe_exec(fd, &exec);
-> +
-> +	if (job_type == SPINNER_INTERRUPTED) {
-> +		if (engine_execution_mode == EXEC_MODE_LR)
-> +			interrupting_engine_execution_mode = EXEC_MODE_DMA_FENCE;
-> +		else if (engine_execution_mode == EXEC_MODE_DMA_FENCE)
-> +			interrupting_engine_execution_mode = EXEC_MODE_LR;
-> +		xe_spin_wait_started(&data[SPIN_DATA].spin);
-> +	} else if (job_type == SIMPLE_BATCH_STORE) {
-> +		interrupting_engine_execution_mode = engine_execution_mode;
-> +	}
-> +
-> +	if (allow_recursion) {
-> +		igt_gettime(&tv);
-> +		for (int i = 0; i < NUM_INTERRUPTING_JOBS; i++)
-> +		{
-> +			run_job(fd, hwe, interrupting_engine_execution_mode, SIMPLE_BATCH_STORE, false);
-> +			/**
-> +			 * Executing a SIMPLE_BATCH_STORE job takes significantly less time than
-> +			 * duration_ns.
-> +			 * When a spinner is running in LR mode, the interrupting job preempts it
-> +			 * in KMD and should complete fast, shortly after starting the spinner.
-> +			 * When a spinner is running in dma fence mode, the interrupting job waits
-> +			 * in KMD and should complete shortly after the spinner has ended.
-> +			 * The checks below are to verify preempting/waiting happens as expected
-> +			 * depending on the execution mode.
-> +			 */
-> +			if (engine_execution_mode == EXEC_MODE_LR)
-> +				igt_assert(igt_nsec_elapsed(&tv) < 0.5 * duration_ns);
-> +			else if (engine_execution_mode == EXEC_MODE_DMA_FENCE &&
-> +				 job_type == SPINNER_INTERRUPTED)
-> +				igt_assert(igt_nsec_elapsed(&tv) > duration_ns);
-> +		}
-> +	}
-> +
-> +	if (engine_execution_mode == EXEC_MODE_LR) {
-> +		if (job_type == SPINNER_INTERRUPTED)
-> +			xe_wait_ufence(fd, &data[SPIN_DATA].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> +		else if (job_type == SIMPLE_BATCH_STORE)
-> +			xe_wait_ufence(fd, &data[EXEC_DATA].exec_sync, USER_FENCE_VALUE, 0, ONE_SEC);
-> +	} else if (engine_execution_mode == EXEC_MODE_DMA_FENCE) {
-> +		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +		syncobj_destroy(fd, sync[0].handle);
-> +	}
-> +
-> +	if (job_type == SIMPLE_BATCH_STORE)
-> +		igt_assert_eq(data->data, value);
-> +
-> +	munmap(data, bo_size);
-> +	gem_close(fd, bo);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +/**
-> + * SUBTEST: exec-simple-batch-store-lr
-> + * Description: Execute a simple batch store job in long running mode
-> + *
-> + * SUBTEST: exec-simple-batch-store-dma-fence
-> + * Description: Execute a simple batch store job in dma fence mode
-> + *
-> + * SUBTEST: exec-spinner-interrupted-lr
-> + * Description: Spin in long running mode then get interrupted by a simple
-> + *              batch store job in dma fence mode
-> + *
-> + * SUBTEST: exec-spinner-interrupted-dma-fence
-> + * Description: Spin in dma fence mode then get interrupted by a simple
-> + *              batch store job in long running mode
-> + */
-> +static void
-> +test_exec(int fd, struct drm_xe_engine_class_instance *hwe,
-> +	  unsigned int flags)
-> +{
-> +	enum engine_execution_mode engine_execution_mode;
-> +	enum job_type job_type;
-> +
-> +	if (flags & FLAG_EXEC_MODE_LR)
-> +		engine_execution_mode = EXEC_MODE_LR;
-> +	else
-> +		engine_execution_mode = EXEC_MODE_DMA_FENCE;
-> +
-> +	if (flags & FLAG_JOB_TYPE_SIMPLE)
-> +		job_type = SIMPLE_BATCH_STORE;
-> +	else
-> +		job_type = SPINNER_INTERRUPTED;
-> +
-> +	run_job(fd, hwe, engine_execution_mode, job_type, true);
-> +}
-> +
-> +igt_main
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	const struct section {
-> +		const char *name;
-> +		unsigned int flags;
-> +	} sections[] = {
-> +		{ "simple-batch-store-lr", FLAG_JOB_TYPE_SIMPLE | FLAG_EXEC_MODE_LR },
-> +		{ "simple-batch-store-dma-fence", FLAG_JOB_TYPE_SIMPLE },
-> +		{ "spinner-interrupted-lr", FLAG_EXEC_MODE_LR },
-> +		{ "spinner-interrupted-dma-fence", 0 },
-> +		{ NULL },
-> +	};
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		bool supports_faults;
-> +		int ret = 0;
-> +
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		ret = xe_supports_faults(fd);
-> +		supports_faults = !ret;
-> +		igt_require(supports_faults);
-> +	}
-> +
-> +	for (const struct section *s = sections; s->name; s++) {
-> +		igt_subtest_f("exec-%s", s->name)
-> +			xe_for_each_engine(fd, hwe)
-> +				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
-> +					test_exec(fd, hwe, s->flags);
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 357db2723..e649466be 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -286,6 +286,7 @@ intel_xe_progs = [
->  	'xe_exec_basic',
->  	'xe_exec_compute_mode',
->  	'xe_exec_fault_mode',
-> +	'xe_exec_mix_modes',
->  	'xe_exec_queue_property',
->  	'xe_exec_reset',
->  	'xe_exec_sip',
-> -- 
-> 2.43.0
-> 
