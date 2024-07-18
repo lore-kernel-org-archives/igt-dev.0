@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8AE5C3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 14:01:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F41B6C3DA63
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 14:01:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AA59A10E8A0;
-	Thu, 18 Jul 2024 14:01:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B748010E8A6;
+	Thu, 18 Jul 2024 14:01:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n6u1VTeG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JTFMsXOh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4ADF810E8A0
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 14:01:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 516A310E8A6
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 14:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721311301; x=1752847301;
+ t=1721311303; x=1752847303;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BY/K2rn2y1yO726f47KfsPxEmBoCz8tfmIGu00bA7vA=;
- b=n6u1VTeGUvsJh1qCBso+U2iP+gNj9M/0CjVVBiN/7wDqagAJLxWGaKtr
- 0t/k6UpJWjfkzi2Dbo8nvnzD2hAQX0WlP2V3tb+Fn7alzyNlw5/v1X1/n
- 1DqI1I6d8AdWQhIoH+6EPFJR0qkMFDV4q6piFNBfb1BOdPz2rle/Ky7WG
- qaw9bsnNztaTDRp0DB9eT2pKy0rrFNrLAbr8RkcXo62XkIUYS9BSGx0Ee
- 58Nb4xzBbYbuxl3GReNZJ/vaCU/h4dh8cxum11r8Cxi/G7qH5E2XPpkUN
- 0Noi1366SYfsGnertgX8R3d4wuFHbCypIV6xm1/bE4RuqGNmPqYRj/sAN w==;
-X-CSE-ConnectionGUID: yKGT4CjGQfyGLKf4o8n7Lg==
-X-CSE-MsgGUID: DOn0OB7lTpOhZrkJowaI8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11137"; a="19005872"
-X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; d="scan'208";a="19005872"
+ bh=EhTm53w9u1Xvkuja2pze/2K7+Y8h9Y9hGIJ4WNo94tY=;
+ b=JTFMsXOhCQ6HcZ+H7aqaTtIgRlad+GK6ZA9bHX7UECQumzRm4YjqB0dA
+ M0rV75Fd/NKTVR5snfGiuE/4HVTvp62Rqdt7wewo6lKXXcBiuIuYlUOs6
+ r5TxVry5fAYjM134rPoBiGXmgje+a77K+nI9Taz6lAtjlDvk2EwUqLSl+
+ jTydacuTu1jAdGMHWWipUP2QrrhSm77GMN1yC2p2Rf4g5IY6xfoggSISF
+ wcINV8+1mTORjroOOKrfPMjYaL8tauiI54Cbn/Mos/3pXRTYuKgLZ2pWs
+ HvLAj4v9kUf5cNxKy8+wI6QFSccup2/nK0f9R4GbfRrykS71vsNxwqQV5 A==;
+X-CSE-ConnectionGUID: htOsqL3cRIW3TSOzyq5n7g==
+X-CSE-MsgGUID: 5Sjb7cB5QO6bPcDRwCfDdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11137"; a="19005878"
+X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; d="scan'208";a="19005878"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 07:01:40 -0700
-X-CSE-ConnectionGUID: J15bAhgyRjC7FiENAeOfcQ==
-X-CSE-MsgGUID: oZ5SDsnKSP6oAf8mnWck8A==
+ 18 Jul 2024 07:01:43 -0700
+X-CSE-ConnectionGUID: Dtombba/RouiWzZQZVqSxQ==
+X-CSE-MsgGUID: YXX2/yRRS0q4aHQV4XHMKQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; d="scan'208";a="55927289"
+X-IronPort-AV: E=Sophos;i="6.09,218,1716274800"; d="scan'208";a="55927299"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2024 07:01:38 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2024 07:01:40 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com, kunal1.joshi@intel.com,
  Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v7 1/5] tests/kms_plane_scaling: Update the single plane
+Subject: [PATCH i-g-t v7 2/5] tests/kms_plane_scaling: Update the multi plane
  scaling function arguments
-Date: Thu, 18 Jul 2024 19:35:42 +0530
-Message-ID: <20240718140546.676903-2-ramanaidu.naladala@intel.com>
+Date: Thu, 18 Jul 2024 19:35:43 +0530
+Message-ID: <20240718140546.676903-3-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240718140546.676903-1-ramanaidu.naladala@intel.com>
 References: <20240718140546.676903-1-ramanaidu.naladala@intel.com>
@@ -69,213 +69,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Update the helper test_scaler_with_modifier_pipe,
-test_scaler_with_rotation_pipe and test_scaler_with_pixel_format_pipe
-to use a scaling_factor and is_clip_clamp flag instead of explicit
-width and height parameters. This change simplifies the function interfaces
-and allows for testing scenarios, where we need to recalculate the width
-and height based on the display mode. Adjusted all function calls to match
-new argument order.
+Update the helper test_planes_scaling_combo to use a scaling_factor
+for plane1 and plane2 instead of explicit width and height parameters.
+This change simplifies the function interfaces and allows for testing
+scenarios, where we need to recalculate the width and height based on
+the display mode. Adjusted all function calls to match new argument
+order.
 
 v2: Update the function arguments (Ankit)
-v3: Remove unwanted changes (Ankit) 
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 ---
- tests/kms_plane_scaling.c | 81 +++++++++++++++++++++++----------------
- 1 file changed, 48 insertions(+), 33 deletions(-)
+ tests/kms_plane_scaling.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 3f63d3cf4..450381831 100644
+index 450381831..84812430a 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -569,7 +569,8 @@ static void cleanup_crtc(data_t *data)
- static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
- 					 uint32_t pixel_format,
- 					 uint64_t modifier,
--					 int width, int height,
-+					 double sf_plane,
-+					 bool is_clip_clamp,
- 					 bool is_upscale,
- 					 enum pipe pipe,
- 					 igt_output_t *output,
-@@ -579,8 +580,16 @@ static void check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
- 	drmModeModeInfo *mode;
- 	int commit_ret;
- 	int w, h;
-+	int width, height;
- 
- 	mode = igt_output_get_mode(output);
-+	if (is_clip_clamp == true) {
-+		width = mode->hdisplay + 100;
-+		height = mode->vdisplay + 100;
-+	} else {
-+		width = get_width(mode, sf_plane);
-+		height = get_height(mode, sf_plane);
-+	}
- 
- 	if (is_upscale) {
- 		w = width;
-@@ -693,7 +702,8 @@ static const uint64_t modifiers[] = {
- };
- 
- static void test_scaler_with_modifier_pipe(data_t *d,
--					   int width, int height,
-+					   double sf_plane,
-+					   bool is_clip_clamp,
- 					   bool is_upscale,
- 					   enum pipe pipe,
- 					   igt_output_t *output)
-@@ -716,7 +726,8 @@ static void test_scaler_with_modifier_pipe(data_t *d,
- 			if (igt_plane_has_format_mod(plane, format, modifier))
- 				check_scaling_pipe_plane_rot(d, plane,
- 							     format, modifier,
--							     width, height,
-+							     sf_plane,
-+							     is_clip_clamp,
- 							     is_upscale,
- 							     pipe, output,
- 							     IGT_ROTATION_0);
-@@ -725,7 +736,8 @@ static void test_scaler_with_modifier_pipe(data_t *d,
+@@ -911,19 +911,27 @@ static void setup_fb(int fd, int width, int height, struct igt_fb *fb)
  }
  
- static void test_scaler_with_rotation_pipe(data_t *d,
--					   int width, int height,
-+					   double sf_plane,
-+					   bool is_clip_clamp,
- 					   bool is_upscale,
- 					   enum pipe pipe,
- 					   igt_output_t *output)
-@@ -749,7 +761,8 @@ static void test_scaler_with_rotation_pipe(data_t *d,
- 			if (igt_plane_has_rotation(plane, rot))
- 				check_scaling_pipe_plane_rot(d, plane,
- 							     format, modifier,
--							     width, height,
-+							     sf_plane,
-+							     is_clip_clamp,
- 							     is_upscale,
- 							     pipe, output,
- 							     rot);
-@@ -757,8 +770,11 @@ static void test_scaler_with_rotation_pipe(data_t *d,
- 	}
- }
- 
--static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height, bool is_upscale,
--					       enum pipe pipe, igt_output_t *output)
-+static void test_scaler_with_pixel_format_pipe(data_t *d, double sf_plane,
-+					       bool is_clip_clamp,
-+					       bool is_upscale,
-+					       enum pipe pipe,
-+					       igt_output_t *output)
+ static void
+-test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2,
+-			  enum pipe pipe, igt_output_t *output,
++test_planes_scaling_combo(data_t *d, double sf_plane1,
++			  double sf_plane2,
++			  enum pipe pipe,
++			  igt_output_t *output,
+ 			  enum scaler_combo_test_type test_type)
  {
  	igt_display_t *display = &d->display;
- 	uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
-@@ -787,9 +803,11 @@ static void test_scaler_with_pixel_format_pipe(data_t *d, int width, int height,
- 			    can_scale(d, format))
- 			    check_scaling_pipe_plane_rot(d, plane,
- 							 format, modifier,
--							 width, height,
-+							 sf_plane,
-+							 is_clip_clamp,
- 							 is_upscale,
--							 pipe, output, IGT_ROTATION_0);
-+							 pipe, output,
-+							 IGT_ROTATION_0);
- 		}
+ 	drmModeModeInfo *mode;
+ 	int n_planes;
++	int w1, h1, w2, h2;
  
- 		igt_vec_fini(&tested_formats);
-@@ -1307,13 +1325,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 							continue;
+ 	cleanup_crtc(d);
  
- 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--							drmModeModeInfo *mode = igt_output_get_mode(output);
+ 	igt_output_set_pipe(output, pipe);
+ 	mode = igt_output_get_mode(output);
  
- 							test_scaler_with_pixel_format_pipe(&data,
--								get_width(mode, scaler_with_pixel_format_tests[index].sf),
--								get_height(mode, scaler_with_pixel_format_tests[index].sf),
--								scaler_with_pixel_format_tests[index].is_upscale,
--								pipe, output);
-+									scaler_with_pixel_format_tests[index].sf,
-+									false,
-+									scaler_with_pixel_format_tests[index].is_upscale,
-+									pipe, output);
- 						}
- 						break;
- 					}
-@@ -1332,13 +1349,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 							continue;
++	w1 = get_width(mode, sf_plane1);
++	h1 = get_height(mode, sf_plane1);
++	w2 = get_width(mode, sf_plane2);
++	h2 = get_height(mode, sf_plane2);
++
+ 	n_planes = display->pipes[pipe].n_planes;
+ 	igt_require(n_planes >= 2);
  
- 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--							drmModeModeInfo *mode = igt_output_get_mode(output);
- 
- 							test_scaler_with_rotation_pipe(&data,
--								get_width(mode, scaler_with_rotation_tests[index].sf),
--								get_height(mode, scaler_with_rotation_tests[index].sf),
--								scaler_with_rotation_tests[index].is_upscale,
--								pipe, output);
-+									scaler_with_rotation_tests[index].sf,
-+									false,
-+									scaler_with_rotation_tests[index].is_upscale,
-+									pipe, output);
- 						}
- 						break;
- 					}
-@@ -1357,13 +1373,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 							continue;
- 
- 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--							drmModeModeInfo *mode = igt_output_get_mode(output);
- 
- 							test_scaler_with_modifier_pipe(&data,
--								get_width(mode, scaler_with_modifiers_tests[index].sf),
--								get_height(mode, scaler_with_modifiers_tests[index].sf),
--								scaler_with_modifiers_tests[index].is_upscale,
--								pipe, output);
-+									scaler_with_modifiers_tests[index].sf,
-+									false,
-+									scaler_with_modifiers_tests[index].is_upscale,
-+									pipe, output);
- 						}
- 						break;
- 					}
-@@ -1381,10 +1396,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+@@ -1456,14 +1464,12 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
  						continue;
  
  					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
 -						drmModeModeInfo *mode = igt_output_get_mode(output);
  
--						test_scaler_with_pixel_format_pipe(&data, mode->hdisplay + 100,
--							mode->vdisplay + 100, false, pipe, output);
-+						test_scaler_with_pixel_format_pipe(&data, 0.0, true,
-+										   false, pipe,
-+										   output);
- 					}
- 					break;
- 				}
-@@ -1401,10 +1416,10 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						continue;
- 
- 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--						drmModeModeInfo *mode = igt_output_get_mode(output);
- 
--						test_scaler_with_rotation_pipe(&data, mode->hdisplay + 100,
--							mode->vdisplay + 100, false, pipe, output);
-+						test_scaler_with_rotation_pipe(&data, 0.0, true,
-+										false, pipe,
-+										output);
- 					}
- 					break;
- 				}
-@@ -1421,9 +1436,9 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						continue;
- 
- 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
--						drmModeModeInfo *mode = igt_output_get_mode(output);
--						test_scaler_with_modifier_pipe(&data, mode->hdisplay + 100,
--							mode->vdisplay + 100, false, pipe, output);
-+						test_scaler_with_modifier_pipe(&data, 0.0, true,
-+										false, pipe,
-+										output);
+ 						test_planes_scaling_combo(&data,
+-							get_width(mode, scaler_with_2_planes_tests[index].sf_plane1),
+-							get_height(mode, scaler_with_2_planes_tests[index].sf_plane1),
+-							get_width(mode, scaler_with_2_planes_tests[index].sf_plane2),
+-							get_height(mode, scaler_with_2_planes_tests[index].sf_plane2),
+-							pipe, output, scaler_with_2_planes_tests[index].test_type);
++								scaler_with_2_planes_tests[index].sf_plane1,
++								scaler_with_2_planes_tests[index].sf_plane2,
++								pipe, output,
++								scaler_with_2_planes_tests[index].test_type);
  					}
  					break;
  				}
