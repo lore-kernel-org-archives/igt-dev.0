@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7BDAC3DA6A
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 08:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E36C3DA49
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 09:56:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B46510E635;
-	Thu, 18 Jul 2024 08:59:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R7srPZWK";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 471BF10E62F;
- Thu, 18 Jul 2024 08:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721293184; x=1752829184;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=m1/z2ogr73VfnLqa//bnUxgCACtDE3NH77KBl3v+uyY=;
- b=R7srPZWKkkjnXOb4p8TnzFTetcUuy13VO7sd+9+aJWyieSIX7Ng1oHJO
- i+KEN05ZlfYbqD0PynElOzVp7pNEPhk2kbwsFJaq1VIIIn4ratIFvaNep
- mj4LcwmpLdAKxdZh2ozl8WC9YdOGhoYvCBaoU+QeeDWXaV9tfS/sY+K8k
- F0j6pjwsKzcgVMqHULHApTGouxVKdDzHQkNW5HjUgsixSY+X3YkPi1lrZ
- zTAOoh0UIFiiimC/OndNsVDhchCJMDV62Odlasl3RRfem3j+28WL+CnuD
- F/OOJ8uJu065wwVb08Kljl1aj0a91pbioYhmIK4B9KdCPUknuv24eG6SV w==;
-X-CSE-ConnectionGUID: usD4Nj1SSfiIP7yUkXxsKg==
-X-CSE-MsgGUID: vBIK8ADYSo+Cz+LGa1qbMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="30001943"
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="30001943"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 01:59:44 -0700
-X-CSE-ConnectionGUID: ic1R4cWjTim+lskU25J1eQ==
-X-CSE-MsgGUID: yyhZvWqWThSvx1YRTeUXZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="73929473"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.26.184])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 01:59:42 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t v4 5/5] lib/gem_engine_topology: Fix broken compare of
- device links
-Date: Thu, 18 Jul 2024 10:55:16 +0200
-Message-ID: <20240718085912.15434-12-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
-References: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46F1310E6F5;
+	Thu, 18 Jul 2024 09:56:17 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78AA510E6F5;
+ Thu, 18 Jul 2024 09:56:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8960003634945737339=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/gem=5Fctx=5Fexec=3A_F?=
+ =?utf-8?q?ix_failing_preempt_timeout_updates?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 18 Jul 2024 09:56:15 -0000
+Message-ID: <172129657548.272469.2481043233133080953@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,51 +37,178 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When looking for a primary counterpart of a render device, we compare
-"device" links of both nodes.  If those links point to the same device
-then we know we've found the correct primary node.
+--===============8960003634945737339==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-However, readlinkat() function we use doesn't explicitly terminate read in
-strings with null characters, and then the comparison occasionally fails.
+== Series Details ==
 
-Process the second (potential primary counterpart) node only if its
-"device" link is of the same length as that of the render node, and limit
-the number of compared characters to that length.
+Series: tests/gem_ctx_exec: Fix failing preempt timeout updates
+URL   : https://patchwork.freedesktop.org/series/136228/
+State : failure
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6268
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/i915/gem_engine_topology.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+== Summary ==
 
-diff --git a/lib/i915/gem_engine_topology.c b/lib/i915/gem_engine_topology.c
-index c8c1079223..c251060341 100644
---- a/lib/i915/gem_engine_topology.c
-+++ b/lib/i915/gem_engine_topology.c
-@@ -467,7 +467,8 @@ static int __open_primary(int dir)
- 	if (minor < 64)
- 		return dir;
- 
--	if (igt_debug_on(readlinkat(dir, "device", target, sizeof(target)) < 0))
-+	len = readlinkat(dir, "device", target, sizeof(target));
-+	if (igt_debug_on(len <= 0))
- 		return dir;
- 
- 	close(dir);
-@@ -477,8 +478,8 @@ static int __open_primary(int dir)
- 		if (dir < 0)
- 			continue;
- 
--		if (readlinkat(dir, "device", device, sizeof(device)) > 0 &&
--		    !strcmp(device, target))
-+		if (readlinkat(dir, "device", device, sizeof(device)) == len &&
-+		    !strncmp(device, target, len))
- 			break;
- 
- 		close(dir);
--- 
-2.45.2
+CI Bug Log - changes from CI_DRM_15090 -> IGTPW_11425
+====================================================
 
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_11425 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_11425, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html
+
+Participating hosts (37 -> 35)
+------------------------------
+
+  Missing    (2): fi-snb-2520m fi-bsw-n3050 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_11425:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@active:
+    - bat-apl-1:          [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-apl-1/igt@i915_selftest@live@active.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-apl-1/igt@i915_selftest@live@active.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11425 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#9500])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-arls-2:         [PASS][5] -> [DMESG-WARN][6] ([i915#7507])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
+  [i915#9500]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7929 -> IGTPW_11425
+
+  CI-20190529: 20190529
+  CI_DRM_15090: 66d3fbb024886f8fbbc15fe79222f046cccd18c7 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11425: eac9ea37cf3260872513fc310dde1efb3c2fdd0f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7929: 7929
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html
+
+--===============8960003634945737339==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/gem_ctx_exec: Fix failing preempt timeout updates</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136228/">https://patchwork.freedesktop.org/series/136228/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_15090 -&gt; IGTPW_11425</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_11425 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_11425, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html</p>
+<h2>Participating hosts (37 -&gt; 35)</h2>
+<p>Missing    (2): fi-snb-2520m fi-bsw-n3050 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11425:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@active:<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-apl-1/igt@i915_selftest@live@active.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-apl-1/igt@i915_selftest@live@active.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11425 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500">i915#9500</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7929 -&gt; IGTPW_11425</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15090: 66d3fbb024886f8fbbc15fe79222f046cccd18c7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11425: eac9ea37cf3260872513fc310dde1efb3c2fdd0f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7929: 7929</p>
+
+</body>
+</html>
+
+--===============8960003634945737339==--
