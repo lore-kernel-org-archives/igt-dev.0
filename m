@@ -4,27 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91FCEC3DA60
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 10:14:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945BEC3DA60
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 10:37:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5757E10E097;
-	Thu, 18 Jul 2024 10:14:35 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89B6310E097;
- Thu, 18 Jul 2024 10:14:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4851078145445712091=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 592F110E725;
+	Thu, 18 Jul 2024 10:37:28 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kfPMnoOJ";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3751510E725
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 10:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721299047; x=1752835047;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=s03IO83MZOHc++em8U87iZlUNLK9xNmHteupR6F4unw=;
+ b=kfPMnoOJwRGr3hGf6p4aQ4115neBzeZjjUQhHSODF83IzI0NK5csLxWr
+ Bt0pbMUNaixnADeZpGG4kcTv8AprB1z36Ji/u13Huxo9sePOh56E93pBs
+ kNn7hwSg2eyKz7tL94ai6AaRoCwzxsqYD1U3MV0dGnknHfXXQ/byUONOh
+ y84FZ/SJSwfYYylDASHXKGN97HE9YE8+Lx5XlJFo+UHLP8DlnY5IjTYwH
+ eFj/WnDEYotWsYWjxQhNdk0+SlqJ93CbOoVobKHUbJM+lUDp4W+DeFRCH
+ vTMEHYMjDrLbScQwoV9OxO0XVJ96UDo2AU4nmze5fmyzUQfiKfN8SYrq4 w==;
+X-CSE-ConnectionGUID: JSuakVcaTb6HlHWas3z93g==
+X-CSE-MsgGUID: Ndw6LwKZQfKHwnYNdqHpzA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="22713959"
+X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="22713959"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jul 2024 03:37:23 -0700
+X-CSE-ConnectionGUID: 4bq42+/GTPmqHf19LAW6IA==
+X-CSE-MsgGUID: x/QwG3DpQu2V8ysdgv9Q3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="55566981"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+ by orviesa005.jf.intel.com with ESMTP; 18 Jul 2024 03:37:21 -0700
+Received: from [10.246.36.158] (mwajdecz-MOBL.ger.corp.intel.com
+ [10.246.36.158])
+ by irvmail002.ir.intel.com (Postfix) with ESMTP id 8B6B7125AF;
+ Thu, 18 Jul 2024 11:37:18 +0100 (IST)
+Message-ID: <ec909366-edd6-45d5-901c-880334ce3fdd@intel.com>
+Date: Thu, 18 Jul 2024 12:37:17 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/gem=5Fctx=5Fexec=3A_Fix_?=
- =?utf-8?q?failing_preempt_timeout_updates?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 18 Jul 2024 10:14:34 -0000
-Message-ID: <172129767455.285786.10377245009692341486@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist
+ for SR-IOV VF BAT runs
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+References: <20240717153051.1000030-1-marcin.bernatowicz@linux.intel.com>
+Content-Language: en-US
+From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+In-Reply-To: <20240717153051.1000030-1-marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,224 +74,116 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4851078145445712091==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/gem_ctx_exec: Fix failing preempt timeout updates
-URL   : https://patchwork.freedesktop.org/series/136228/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7929_BAT -> XEIGTPW_11425_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11425_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11425_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11425_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11425_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [PASS][3] -> [FAIL][4] ([Intel XE#886]) +1 other test fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@xe_exec_threads@threads-mixed-shared-vm-basic:
-    - bat-dg2-oem2:       [PASS][5] -> [INCOMPLETE][6] ([Intel XE#1169] / [Intel XE#1356])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html
-
-  * igt@xe_gt_freq@freq_basic_api:
-    - bat-adlp-7:         [PASS][7] -> [FAIL][8] ([Intel XE#2196])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_gt_freq@freq_basic_api:
-    - {bat-lnl-2}:        [FAIL][9] ([Intel XE#2196]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-lnl-2/igt@xe_gt_freq@freq_basic_api.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-lnl-2/igt@xe_gt_freq@freq_basic_api.html
-
-  * igt@xe_gt_freq@freq_fixed_idle:
-    - {bat-lnl-2}:        [FAIL][11] ([Intel XE#2262]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-lnl-2/igt@xe_gt_freq@freq_fixed_idle.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-lnl-2/igt@xe_gt_freq@freq_fixed_idle.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1169]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1169
-  [Intel XE#1356]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1356
-  [Intel XE#2196]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2196
-  [Intel XE#2262]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2262
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
 
 
-Build changes
--------------
+On 17.07.2024 17:30, Marcin Bernatowicz wrote:
+> Blocklist tests not applicable for Virtual Function (VF) BAT runs.
 
-  * IGT: IGT_7929 -> IGTPW_11425
-  * Linux: xe-1621-edeb340ae6172c699ea801a19d831d37cee9d2b3 -> xe-1623-66d3fbb024886f8fbbc15fe79222f046cccd18c7
+is this 'VF BAT run' about running IGTs in VM, or it's something different?
 
-  IGTPW_11425: eac9ea37cf3260872513fc310dde1efb3c2fdd0f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7929: 7929
-  xe-1621-edeb340ae6172c699ea801a19d831d37cee9d2b3: edeb340ae6172c699ea801a19d831d37cee9d2b3
-  xe-1623-66d3fbb024886f8fbbc15fe79222f046cccd18c7: 66d3fbb024886f8fbbc15fe79222f046cccd18c7
+> The list extends xe.blocklist.txt to enable xe-fast-feedback.testlist
+> execution on VF device.
 
-== Logs ==
+maybe it's just a outdated doc, but README [1] says that blocklist is
+only applied to *FULL* not *BAT* runs:
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/index.html
+"blacklist.txt
 
---===============4851078145445712091==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This file contains regular expressions (one per line) for tests that are
+not to be executed in full suite test rounds."
+
+[1]
+https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/intel-ci/README?ref_type=heads
+
+> 
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+> Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> ---
+>  tests/intel-ci/meson.build               |  1 +
+>  tests/intel-ci/xe-sriov-vf.blocklist.txt | 21 +++++++++++++++++++++
+>  2 files changed, 22 insertions(+)
+>  create mode 100644 tests/intel-ci/xe-sriov-vf.blocklist.txt
+> 
+> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+> index f16243cbb..59323eda9 100644
+> --- a/tests/intel-ci/meson.build
+> +++ b/tests/intel-ci/meson.build
+> @@ -11,6 +11,7 @@ intelci_files = [
+>    'xe.blocklist.txt',
+>    'xe-fast-feedback.testlist',
+>    'xe-fast-feedback-chamelium-only.testlist',
+> +  'xe-sriov-vf.blocklist.txt',
+>  ]
+>  
+>  install_data(sources : intelci_files, install_dir : datadir)
+> diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+> new file mode 100644
+> index 000000000..dae20bc6c
+> --- /dev/null
+> +++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+
+not a CI expert, but if there is:
+
+	xe-fast-feedback.testlist
+
+then maybe corresponding blocklist should be named:
+
+	xe-fast-feedback.vf.blocklist
+
+(and btw, I'm wondering why blocklists have .txt extension while
+testlists correctly don't have it)
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
 
+> @@ -0,0 +1,21 @@
+> +##################################################################
+> +# Block list for VF xe-fast-feedback runs
+> +##################################################################
+> +# The module is already loaded when VF is created
+> +##################################################################
+> +igt@xe_module_load
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/gem_ctx_exec: Fix failing preempt timeout updates</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136228/">https://patchwork.freedesktop.org/series/136228/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+if tests are executed inside the VM then testing a module reload is
+something that we want to have, no?
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/index.html</a></td></tr>
+> +##################################################################
+> +# Not applicable on VF
+> +##################################################################
+> +igt@fbdev
 
-</table>
+some devices don't have display (like ATSM) and likely don't have
+dedicated .blocklist for them, so maybe it's fine that these tests will
+SKIP (unless there will be separate BAT.display run introduced, where we
+can also run kms tests)
 
+> +igt@sriov_basic
+> +igt@kms.*
+> +igt@xe_gt_freq
+> +igt@xe_live_ktest
 
-    <h1>CI Bug Log - changes from XEIGT_7929_BAT -&gt; XEIGTPW_11425_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11425_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11425_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11425_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11425_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_threads@threads-mixed-shared-vm-basic:</p>
-<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-dg2-oem2/igt@xe_exec_threads@threads-mixed-shared-vm-basic.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1169">Intel XE#1169</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1356">Intel XE#1356</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_gt_freq@freq_basic_api:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2196">Intel XE#2196</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_gt_freq@freq_basic_api:</p>
-<ul>
-<li>{bat-lnl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-lnl-2/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2196">Intel XE#2196</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-lnl-2/igt@xe_gt_freq@freq_basic_api.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_gt_freq@freq_fixed_idle:</p>
-<ul>
-<li>{bat-lnl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7929/bat-lnl-2/igt@xe_gt_freq@freq_fixed_idle.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2262">Intel XE#2262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11425/bat-lnl-2/igt@xe_gt_freq@freq_fixed_idle.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7929 -&gt; IGTPW_11425</li>
-<li>Linux: xe-1621-edeb340ae6172c699ea801a19d831d37cee9d2b3 -&gt; xe-1623-66d3fbb024886f8fbbc15fe79222f046cccd18c7</li>
-</ul>
-<p>IGTPW_11425: eac9ea37cf3260872513fc310dde1efb3c2fdd0f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7929: 7929<br />
-  xe-1621-edeb340ae6172c699ea801a19d831d37cee9d2b3: edeb340ae6172c699ea801a19d831d37cee9d2b3<br />
-  xe-1623-66d3fbb024886f8fbbc15fe79222f046cccd18c7: 66d3fbb024886f8fbbc15fe79222f046cccd18c7</p>
+only individual live-testcases might be N/A for VFs, but in general we
+want to be able to execute live-tests on the VF
 
-</body>
-</html>
+see [2] how this will be improved soon
 
---===============4851078145445712091==--
+[2] https://patchwork.freedesktop.org/patch/604990/?series=136163&rev=2
+
+> +igt@xe_pm_residency
+> +##################################################################
+> +# Under investigation
+
+what does it mean?
+is it broken test or broken VF driver?
+do we track those failures anywhere?
+
+> +##################################################################
+> +igt@xe_debugfs@gt
+> +igt@xe_evict_ccs@evict-overcommit-simple
+> +igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
