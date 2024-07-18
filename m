@@ -4,64 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945BEC3DA60
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 10:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4CFAC3DA49
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 11:04:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 592F110E725;
-	Thu, 18 Jul 2024 10:37:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 60B0A10E0B0;
+	Thu, 18 Jul 2024 11:04:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kfPMnoOJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oez+vE3j";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3751510E725
- for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 10:37:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B64BA10E0B0
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 11:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721299047; x=1752835047;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=s03IO83MZOHc++em8U87iZlUNLK9xNmHteupR6F4unw=;
- b=kfPMnoOJwRGr3hGf6p4aQ4115neBzeZjjUQhHSODF83IzI0NK5csLxWr
- Bt0pbMUNaixnADeZpGG4kcTv8AprB1z36Ji/u13Huxo9sePOh56E93pBs
- kNn7hwSg2eyKz7tL94ai6AaRoCwzxsqYD1U3MV0dGnknHfXXQ/byUONOh
- y84FZ/SJSwfYYylDASHXKGN97HE9YE8+Lx5XlJFo+UHLP8DlnY5IjTYwH
- eFj/WnDEYotWsYWjxQhNdk0+SlqJ93CbOoVobKHUbJM+lUDp4W+DeFRCH
- vTMEHYMjDrLbScQwoV9OxO0XVJ96UDo2AU4nmze5fmyzUQfiKfN8SYrq4 w==;
-X-CSE-ConnectionGUID: JSuakVcaTb6HlHWas3z93g==
-X-CSE-MsgGUID: Ndw6LwKZQfKHwnYNdqHpzA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="22713959"
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="22713959"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Jul 2024 03:37:23 -0700
-X-CSE-ConnectionGUID: 4bq42+/GTPmqHf19LAW6IA==
-X-CSE-MsgGUID: x/QwG3DpQu2V8ysdgv9Q3w==
+ t=1721300684; x=1752836684;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ZSd6OJmzg/VoopZ66TJNwoNhRbKEigenVCbQHeQ8dDo=;
+ b=Oez+vE3jOWvnicTjs1E27f9NUdcWDx5mXIZTzyNaabcDoG9HWGDKssLj
+ 4TR7JvCqZDmhexpYr6xeSY/rASV+Je8bbCane+CrkxNF3CGBu8XI6zwES
+ NX1qMMcaR1XSqH6Yl8OeTQ8sVs9xk2wpG5cXXeOCUp5gzC5qRle7vG+9x
+ tD6UEdzbsZZNoRLVSHzLaDuEE0ue9SHwQw2u2CJpVTTx/0brzXTSsqG+G
+ JT5tRrS2ynFYwzXHYRF/+u0fGSdRKcBefGHh1wlTqmi+Drf0qmIxJk5lh
+ s7/cY/ogFsjN8F8AQHd5vzpYY8G1TAkNoV2mYT+X2rJ2jR0ztPEZmgZM0 g==;
+X-CSE-ConnectionGUID: duNWbl9TR4ey7oDDXjC5yw==
+X-CSE-MsgGUID: 7JOeLccBT/2RKg5clMnWTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11136"; a="18476555"
+X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="18476555"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Jul 2024 04:04:43 -0700
+X-CSE-ConnectionGUID: y5RGXWxYRoCkbt1jOuH2Mg==
+X-CSE-MsgGUID: yzO2R+kFSXOx2Y4A2xAZMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="55566981"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
- by orviesa005.jf.intel.com with ESMTP; 18 Jul 2024 03:37:21 -0700
-Received: from [10.246.36.158] (mwajdecz-MOBL.ger.corp.intel.com
- [10.246.36.158])
- by irvmail002.ir.intel.com (Postfix) with ESMTP id 8B6B7125AF;
- Thu, 18 Jul 2024 11:37:18 +0100 (IST)
-Message-ID: <ec909366-edd6-45d5-901c-880334ce3fdd@intel.com>
-Date: Thu, 18 Jul 2024 12:37:17 +0200
+X-IronPort-AV: E=Sophos;i="6.09,217,1716274800"; d="scan'208";a="50811509"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2024 04:04:41 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com, kunal1.joshi@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v6 0/5] tests/kms_plane_scaling: Improvise the
+Date: Thu, 18 Jul 2024 16:38:46 +0530
+Message-ID: <20240718110851.665102-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist
- for SR-IOV VF BAT runs
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20240717153051.1000030-1-marcin.bernatowicz@linux.intel.com>
-Content-Language: en-US
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
-In-Reply-To: <20240717153051.1000030-1-marcin.bernatowicz@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,113 +66,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Find display mode fitting within bandwidth constraints for scaling
+operations.
 
+Naladala Ramanaidu (5):
+  tests/kms_plane_scaling: Update the single plane scaling function
+    arguments
+  tests/kms_plane_scaling: Update the multi plane scaling function
+    arguments
+  tests/kms_plane_scaling: Find display mode fitting in BW
+  tests/kms_plane_scaling: Find display mode fitting in BW for rotations
+  HAX patch do not merge
 
-On 17.07.2024 17:30, Marcin Bernatowicz wrote:
-> Blocklist tests not applicable for Virtual Function (VF) BAT runs.
+ tests/intel-ci/fast-feedback.testlist    | 201 ++++----------
+ tests/intel-ci/xe-fast-feedback.testlist | 317 ++++-------------------
+ tests/kms_plane_scaling.c                | 283 +++++++++++---------
+ 3 files changed, 260 insertions(+), 541 deletions(-)
 
-is this 'VF BAT run' about running IGTs in VM, or it's something different?
+-- 
+2.43.0
 
-> The list extends xe.blocklist.txt to enable xe-fast-feedback.testlist
-> execution on VF device.
-
-maybe it's just a outdated doc, but README [1] says that blocklist is
-only applied to *FULL* not *BAT* runs:
-
-"blacklist.txt
-
-This file contains regular expressions (one per line) for tests that are
-not to be executed in full suite test rounds."
-
-[1]
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/blob/master/tests/intel-ci/README?ref_type=heads
-
-> 
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> ---
->  tests/intel-ci/meson.build               |  1 +
->  tests/intel-ci/xe-sriov-vf.blocklist.txt | 21 +++++++++++++++++++++
->  2 files changed, 22 insertions(+)
->  create mode 100644 tests/intel-ci/xe-sriov-vf.blocklist.txt
-> 
-> diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-> index f16243cbb..59323eda9 100644
-> --- a/tests/intel-ci/meson.build
-> +++ b/tests/intel-ci/meson.build
-> @@ -11,6 +11,7 @@ intelci_files = [
->    'xe.blocklist.txt',
->    'xe-fast-feedback.testlist',
->    'xe-fast-feedback-chamelium-only.testlist',
-> +  'xe-sriov-vf.blocklist.txt',
->  ]
->  
->  install_data(sources : intelci_files, install_dir : datadir)
-> diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-> new file mode 100644
-> index 000000000..dae20bc6c
-> --- /dev/null
-> +++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-
-not a CI expert, but if there is:
-
-	xe-fast-feedback.testlist
-
-then maybe corresponding blocklist should be named:
-
-	xe-fast-feedback.vf.blocklist
-
-(and btw, I'm wondering why blocklists have .txt extension while
-testlists correctly don't have it)
-
-
-
-> @@ -0,0 +1,21 @@
-> +##################################################################
-> +# Block list for VF xe-fast-feedback runs
-> +##################################################################
-> +# The module is already loaded when VF is created
-> +##################################################################
-> +igt@xe_module_load
-
-if tests are executed inside the VM then testing a module reload is
-something that we want to have, no?
-
-> +##################################################################
-> +# Not applicable on VF
-> +##################################################################
-> +igt@fbdev
-
-some devices don't have display (like ATSM) and likely don't have
-dedicated .blocklist for them, so maybe it's fine that these tests will
-SKIP (unless there will be separate BAT.display run introduced, where we
-can also run kms tests)
-
-> +igt@sriov_basic
-> +igt@kms.*
-> +igt@xe_gt_freq
-> +igt@xe_live_ktest
-
-only individual live-testcases might be N/A for VFs, but in general we
-want to be able to execute live-tests on the VF
-
-see [2] how this will be improved soon
-
-[2] https://patchwork.freedesktop.org/patch/604990/?series=136163&rev=2
-
-> +igt@xe_pm_residency
-> +##################################################################
-> +# Under investigation
-
-what does it mean?
-is it broken test or broken VF driver?
-do we track those failures anywhere?
-
-> +##################################################################
-> +igt@xe_debugfs@gt
-> +igt@xe_evict_ccs@evict-overcommit-simple
-> +igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
