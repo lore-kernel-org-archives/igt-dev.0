@@ -4,27 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E36C3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 09:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D386DC3DA49
+	for <igt-dev@archiver.kernel.org>; Thu, 18 Jul 2024 10:01:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 46F1310E6F5;
-	Thu, 18 Jul 2024 09:56:17 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78AA510E6F5;
- Thu, 18 Jul 2024 09:56:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8960003634945737339=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 927DA10E70C;
+	Thu, 18 Jul 2024 10:01:03 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; secure) header.d=ffwll.ch header.i=@ffwll.ch header.b="XohkOzQJ";
+	dkim-atps=neutral
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+ [209.85.128.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8D4210E030
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 10:01:01 +0000 (UTC)
+Received: by mail-wm1-f49.google.com with SMTP id
+ 5b1f17b1804b1-426719e2efeso184645e9.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 18 Jul 2024 03:01:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=ffwll.ch; s=google; t=1721296860; x=1721901660; darn=lists.freedesktop.org; 
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date:from:to
+ :cc:subject:date:message-id:reply-to;
+ bh=M9Ddiz5aWhESVWY91Rre4Ei8dXe0hxyGQTvWoxqtFTY=;
+ b=XohkOzQJpvK/a7ErT4lQM0Z/e2EVGsJmo9GLkzXnyUy9fjpS3/IMsC/Csl8RIUpfyl
+ a88wqMiOi7LzKtGqw6bCbmQGyj5kmc0TY8KiXff1NGePqdIPMfkQg8+nmYdmBMSDIzXW
+ s5ofXzJUriGoW2V35wwvN8uE8G1oNZQ0HN2DU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1721296860; x=1721901660;
+ h=in-reply-to:content-transfer-encoding:content-disposition
+ :mime-version:references:message-id:subject:cc:to:from:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=M9Ddiz5aWhESVWY91Rre4Ei8dXe0hxyGQTvWoxqtFTY=;
+ b=Dvzn20DyUtQm6+BFaybFRBdnys0v/bqipkiTPkQp14r6NrBzTW/nBw4E6V1V1faqzc
+ wSgRDLjjjrxj8f870GVw4e2o761+ngdIAcDtwtw6PI67pZWBSO9gksQcdi7ltyRfuGXI
+ b3VxVaBVILRITDqnNnRDmxw0/uXifXALnbHxkRSpLRorVf6gJYBxPCkSJhkeulzD4Pi/
+ u3ehofNkk8tphkbIvppm4oH8BY0WX2qmmIxnmI+2mZm1h/mOp8VlijHln6x2/rosLvHy
+ 4KwUXHq8Vh41f8aGciiD4osoLz7kUwtygUC+FqyB4hP5C+G2ldqX/kKRRUqShpvI3AMs
+ pMbw==
+X-Gm-Message-State: AOJu0YwmOXHS10llR9ppTa7beHzJ5sLkEUSM7VDVjaH/gKA78QAvT2qG
+ 0HpFq/kwVPa3blGcS2RcHPKOvaszp/wMt8eJ/QTXCnxvIdVk4UnMZBYKQJv0Ck4=
+X-Google-Smtp-Source: AGHT+IHzEUiUnYGCAJIso35npHep3v54So9cJ/+y6XB1JcYuLcfp0jCqBRHV49gSRCckOLeALkE6Hg==
+X-Received: by 2002:a05:600c:1d04:b0:426:6fc0:5910 with SMTP id
+ 5b1f17b1804b1-427d2a63ca3mr1851355e9.1.1721296860078; 
+ Thu, 18 Jul 2024 03:01:00 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+ by smtp.gmail.com with ESMTPSA id
+ 5b1f17b1804b1-427d2b1815esm4529165e9.13.2024.07.18.03.00.59
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 18 Jul 2024 03:00:59 -0700 (PDT)
+Date: Thu, 18 Jul 2024 12:00:57 +0200
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: igt-dev@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>,
+ Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_properties: drop immutability checks
+Message-ID: <Zpjn2dTHDrBBuTVH@phenom.ffwll.local>
+References: <20240717143947.28437-1-dmitry.baryshkov@linaro.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/gem=5Fctx=5Fexec=3A_F?=
- =?utf-8?q?ix_failing_preempt_timeout_updates?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Janusz Krzysztofik" <janusz.krzysztofik@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 18 Jul 2024 09:56:15 -0000
-Message-ID: <172129657548.272469.2481043233133080953@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
-In-Reply-To: <20240718085912.15434-7-janusz.krzysztofik@linux.intel.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240717143947.28437-1-dmitry.baryshkov@linaro.org>
+X-Operating-System: Linux phenom 6.9.7-amd64 
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,178 +77,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8960003634945737339==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Jul 17, 2024 at 05:39:47PM +0300, Dmitry Baryshkov wrote:
+> Following the discussion on IRC, it is actually an error to require that
+> properties that can not be chaged are marked as immutable.
+> 
+> First of all, it creates inconsistent uAPI. Some drivers might have an
+> immutable property, while others will have it mutable. Yes, there are
+> known examples for such behaviour (e.g. zpos), but they are clearly
+> documented in this way.
+> 
+> Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
+> more of the 'direction' of the property (whether it is set by the kernel
+> or it is expected to be set by the userspace) rather than simply states
+> that there is no way for the userspace to change the property.
+> 
+> Drop the single-value-is-immutable tests.
+> 
+> Fixes: 29ae12bd764e ("tests/kms_properties: Validate properties harder")
+> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> Link: https://oftc.irclog.whitequark.org/dri-devel/2024-07-16#33374622
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-== Series Details ==
+Makes sense, but we might drop some test coverage for the properties where
+we _do_ want the single value to be immutable. Like zpos.
 
-Series: tests/gem_ctx_exec: Fix failing preempt timeout updates
-URL   : https://patchwork.freedesktop.org/series/136228/
-State : failure
+So I think at least a cursory audit of existing properties would be good,
+checking that the kerneldoc is accurate and then maybe limiting these
+checks here to properties which are documented to have this behaviour?
 
-== Summary ==
+I know that's a bunch more work, but I fear if we just drop this we only
+move from one a bit confusing state of the uapi to another one, without
+real improvements.
 
-CI Bug Log - changes from CI_DRM_15090 -> IGTPW_11425
-====================================================
+Ofc if all the compositor folks tell me that this doesn't matter anyway,
+I'll shut up :-)
 
-Summary
--------
+Cheers, Sima
 
-  **FAILURE**
+> ---
+>  tests/kms_properties.c | 8 --------
+>  1 file changed, 8 deletions(-)
+> 
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index c0e5be1c90a8..c41b88bef76f 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -421,11 +421,9 @@ static void validate_range_prop(const struct drm_mode_get_property *prop,
+>  {
+>  	const uint64_t *values = from_user_pointer(prop->values_ptr);
+>  	bool is_unsigned = prop->flags & DRM_MODE_PROP_RANGE;
+> -	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>  
+>  	igt_assert_eq(prop->count_values, 2);
+>  	igt_assert_eq(prop->count_enum_blobs, 0);
+> -	igt_assert(values[0] != values[1] || immutable);
+>  
+>  	if (is_unsigned) {
+>  		igt_assert_lte_u64(values[0], values[1]);
+> @@ -461,12 +459,10 @@ static void validate_enum_prop(const struct drm_mode_get_property *prop,
+>  			       uint64_t value)
+>  {
+>  	const uint64_t *values = from_user_pointer(prop->values_ptr);
+> -	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>  	int i;
+>  
+>  	igt_assert_lte(1, prop->count_values);
+>  	igt_assert_eq(prop->count_enum_blobs, prop->count_values);
+> -	igt_assert(prop->count_values != 1 || immutable);
+>  
+>  	for (i = 0; i < prop->count_values; i++) {
+>  		if (value == values[i])
+> @@ -481,12 +477,10 @@ static void validate_bitmask_prop(const struct drm_mode_get_property *prop,
+>  				  uint64_t value)
+>  {
+>  	const uint64_t *values = from_user_pointer(prop->values_ptr);
+> -	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>  	uint64_t mask = 0;
+>  
+>  	igt_assert_lte(1, prop->count_values);
+>  	igt_assert_eq(prop->count_enum_blobs, prop->count_values);
+> -	igt_assert(prop->count_values != 1 || immutable);
+>  
+>  	for (int i = 0; i < prop->count_values; i++) {
+>  		igt_assert_lte_u64(values[i], 63);
+> @@ -535,7 +529,6 @@ static void validate_object_prop(int fd,
+>  				 uint64_t value)
+>  {
+>  	const uint64_t *values = from_user_pointer(prop->values_ptr);
+> -	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>  	struct drm_mode_crtc crtc;
+>  	struct drm_mode_fb_cmd fb;
+>  
+> @@ -543,7 +536,6 @@ static void validate_object_prop(int fd,
+>  	igt_assert_eq(prop->count_enum_blobs, 0);
+>  
+>  	igt_assert_lte_u64(value, 0xffffffff);
+> -	igt_assert(!immutable || value != 0);
+>  
+>  	switch (values[0]) {
+>  	case DRM_MODE_OBJECT_CRTC:
+> -- 
+> 2.43.0
+> 
 
-  Serious unknown changes coming with IGTPW_11425 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11425, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html
-
-Participating hosts (37 -> 35)
-------------------------------
-
-  Missing    (2): fi-snb-2520m fi-bsw-n3050 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11425:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@active:
-    - bat-apl-1:          [PASS][1] -> [DMESG-FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-apl-1/igt@i915_selftest@live@active.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-apl-1/igt@i915_selftest@live@active.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11425 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-mtlp-8:         [PASS][3] -> [DMESG-FAIL][4] ([i915#9500])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-arls-2:         [PASS][5] -> [DMESG-WARN][6] ([i915#7507])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [i915#7507]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507
-  [i915#9500]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7929 -> IGTPW_11425
-
-  CI-20190529: 20190529
-  CI_DRM_15090: 66d3fbb024886f8fbbc15fe79222f046cccd18c7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11425: eac9ea37cf3260872513fc310dde1efb3c2fdd0f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7929: 7929
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html
-
---===============8960003634945737339==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/gem_ctx_exec: Fix failing preempt timeout updates</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136228/">https://patchwork.freedesktop.org/series/136228/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15090 -&gt; IGTPW_11425</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11425 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11425, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/index.html</p>
-<h2>Participating hosts (37 -&gt; 35)</h2>
-<p>Missing    (2): fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11425:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@active:<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-apl-1/igt@i915_selftest@live@active.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-apl-1/igt@i915_selftest@live@active.html">DMESG-FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11425 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-mtlp-8/igt@i915_selftest@live@hangcheck.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9500">i915#9500</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15090/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11425/bat-arls-2/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7507">i915#7507</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7929 -&gt; IGTPW_11425</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15090: 66d3fbb024886f8fbbc15fe79222f046cccd18c7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11425: eac9ea37cf3260872513fc310dde1efb3c2fdd0f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7929: 7929</p>
-
-</body>
-</html>
-
---===============8960003634945737339==--
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
