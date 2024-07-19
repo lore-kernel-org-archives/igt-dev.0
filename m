@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF76C3DA59
-	for <igt-dev@archiver.kernel.org>; Fri, 19 Jul 2024 19:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34005C3DA64
+	for <igt-dev@archiver.kernel.org>; Fri, 19 Jul 2024 19:31:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A73310E02C;
-	Fri, 19 Jul 2024 19:30:00 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5059C10E02C;
- Fri, 19 Jul 2024 19:29:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4154877956697509388=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1AC010EC8C;
+	Fri, 19 Jul 2024 19:31:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hHYiJ77g";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3179310EC8C
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 19:31:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721417512; x=1752953512;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=yG5P7aMiexAPkOrThpAlO+azGkPK1/HxlAXfmW/WAwc=;
+ b=hHYiJ77g7VCik9wPooC5N36mswKqkGXXm0II5XxP/2+VUqJye+CvkeUT
+ JTj/QZ62CTm2urfDZPxQkt3XkDiwCIHW/LEdGMlNfPUByxf5Tc7Nh/ciP
+ 7F25VIY3kL2qjs2+XbUR16JF/FCTKCg7UrnZc/dUf/19NKChG+i4M8TEG
+ EI9SqKRoSWpRds3EEIdDrhUj1Ff1okAHo96CoUqDk1Z54RS9n9tLw97iR
+ Gd2BkywYT42pHCcbMvTjCQjqKeXRC9u8aJrJHkLpdtg3S6RicY8YKC/ug
+ L4+2gf/cAb+hjq3gmSw7V19FVyKNxKwTbgnbQSC8SExbG59P/VR4LZ6Eo A==;
+X-CSE-ConnectionGUID: SaR2SvRTRt+eHfeJeKyCeA==
+X-CSE-MsgGUID: eEpPT7DaQK6aNgdpWpMG8Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11138"; a="29712359"
+X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="29712359"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jul 2024 12:31:52 -0700
+X-CSE-ConnectionGUID: PtSGMK+oSTy6VfOJBYB+xA==
+X-CSE-MsgGUID: d9Xc8twkQaG7kXm3lgNo3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="55404817"
+Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jul 2024 12:31:51 -0700
+From: Matthew Brost <matthew.brost@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH 1/2] tests/xe/xe_vm: Add section to test zero number of VM
+ binds
+Date: Fri, 19 Jul 2024 12:32:36 -0700
+Message-Id: <20240719193237.1545120-1-matthew.brost@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcomput?=
- =?utf-8?q?e=5Fmode=3A_Add_userptr_free_/_munmap_sections_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Matthew Brost" <matthew.brost@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 19 Jul 2024 19:29:59 -0000
-Message-ID: <172141739932.291659.9785206597310686620@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240719190914.1535721-1-matthew.brost@intel.com>
-In-Reply-To: <20240719190914.1535721-1-matthew.brost@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +62,137 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4154877956697509388==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Verify the bind queue ordering works wrt out-sync signaling when zero
+number of binds passed to VM bind IOCTL.
 
-== Series Details ==
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
+ lib/xe/xe_ioctl.c   | 13 ++++++++++
+ lib/xe/xe_ioctl.h   |  2 ++
+ tests/intel/xe_vm.c | 63 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 78 insertions(+)
 
-Series: tests/intel/xe_exec_compute_mode: Add userptr free / munmap sections (rev2)
-URL   : https://patchwork.freedesktop.org/series/131211/
-State : success
+diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
+index ae43ffd15e..27a4a4e70d 100644
+--- a/lib/xe/xe_ioctl.c
++++ b/lib/xe/xe_ioctl.c
+@@ -154,6 +154,19 @@ void xe_vm_bind_async(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			    num_syncs, 0, 0);
+ }
+ 
++void xe_vm_bind_zero(int fd, uint32_t vm, uint32_t exec_queue,
++		     struct drm_xe_sync *sync, uint32_t num_syncs)
++{
++	struct drm_xe_vm_bind bind = {
++		.vm_id = vm,
++		.num_syncs = num_syncs,
++		.syncs = (uintptr_t)sync,
++		.exec_queue_id = exec_queue,
++	};
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind), 0);
++}
++
+ void xe_vm_bind_async_flags(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 			    uint64_t offset, uint64_t addr, uint64_t size,
+ 			    struct drm_xe_sync *sync, uint32_t num_syncs,
+diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
+index b27c0053f0..6dfed1b330 100644
+--- a/lib/xe/xe_ioctl.h
++++ b/lib/xe/xe_ioctl.h
+@@ -35,6 +35,8 @@ void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue,
+ void xe_vm_bind_async(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
+ 		      uint64_t offset, uint64_t addr, uint64_t size,
+ 		      struct drm_xe_sync *sync, uint32_t num_syncs);
++void xe_vm_bind_zero(int fd, uint32_t vm, uint32_t exec_queue,
++		     struct drm_xe_sync *sync, uint32_t num_syncs);
+ void xe_vm_bind_userptr_async(int fd, uint32_t vm, uint32_t exec_queue,
+ 			      uint64_t userptr, uint64_t addr, uint64_t size,
+ 			      struct drm_xe_sync *sync, uint32_t num_syncs);
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index a088bd5db8..b897ae3206 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -868,6 +868,63 @@ static void xe_vm_bind_array_err(int fd, uint32_t vm, uint32_t exec_queue,
+ 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_BIND, &bind, err);
+ }
+ 
++/**
++ * SUBTEST: zero-binds
++ * Description: Test zero binds in IOCTL
++ * Functionality: bind engines
++ * Run type: BAT
++ */
++
++static void test_zero_binds(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	uint32_t vm;
++	uint64_t addr = 0x1a0000;
++	struct drm_xe_sync sync[1] = {
++		{ .flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	size_t bo_size;
++	uint32_t bo = 0;
++	struct xe_cork cork;
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
++	bo_size = ALIGN(xe_cs_prefetch_size(fd),
++			xe_get_default_alignment(fd));
++	bo = xe_bo_create(fd, vm, bo_size,
++			  vram_if_possible(fd, eci->gt_id),
++			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++
++	xe_cork_init(fd, eci, &cork);
++	xe_cork_wait_started(&cork);
++
++	/* Initial bind behind cork */
++	sync[0].handle = cork.syncobj;
++	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++
++	/* Bind /w num_binds == 0 */
++	sync[0].handle = syncobj_create(fd, 0);
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_vm_bind_zero(fd, vm, 0, sync, 1);
++
++	/* Let jobs runs for a bit */
++	usleep(100000);
++
++	/* both binds are waiting */
++	igt_assert(!syncobj_wait(fd, &sync[0].handle, 1, 0, 0, NULL));
++
++	/* Release cork */
++	xe_cork_end(&cork);
++	xe_cork_wait_done(&cork);
++	xe_cork_fini(&cork);
++
++	/* both binds are done */
++	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
++
++	syncobj_destroy(fd, sync[0].handle);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
+ #define BIND_ARRAY_BIND_EXEC_QUEUE_FLAG	(0x1 << 0)
+ #define BIND_ARRAY_ENOBUFS_FLAG		(0x1 << 1)
+ 
+@@ -2416,6 +2473,12 @@ igt_main
+ 		xe_for_each_engine(fd, hwe)
+ 			test_bind_execqueues_independent(fd, hwe, CONFLICT);
+ 
++	igt_subtest("zero-binds")
++		xe_for_each_engine(fd, hwe) {
++			test_zero_binds(fd, hwe);
++			break;
++		}
++
+ 	igt_subtest("bind-array-twice")
+ 		xe_for_each_engine(fd, hwe)
+ 			test_bind_array(fd, hwe, 2, 0x1a0000, 0, 0);
+-- 
+2.34.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7933_BAT -> XEIGTPW_11433_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11433_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_gt_freq@freq_fixed_idle:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#2262]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7933/bat-adlp-7/igt@xe_gt_freq@freq_fixed_idle.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11433/bat-adlp-7/igt@xe_gt_freq@freq_fixed_idle.html
-
-  
-  [Intel XE#2262]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2262
-
-
-Build changes
--------------
-
-  * IGT: IGT_7933 -> IGTPW_11433
-
-  IGTPW_11433: 11433
-  IGT_7933: 7933
-  xe-1633-25cbb0b9828d08006be65c72f2ad5e85766d1941: 25cbb0b9828d08006be65c72f2ad5e85766d1941
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11433/index.html
-
---===============4154877956697509388==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_compute_mode: Add userptr free / munmap sections (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/131211/">https://patchwork.freedesktop.org/series/131211/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11433/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11433/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7933_BAT -&gt; XEIGTPW_11433_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11433_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_gt_freq@freq_fixed_idle:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7933/bat-adlp-7/igt@xe_gt_freq@freq_fixed_idle.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2262">Intel XE#2262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11433/bat-adlp-7/igt@xe_gt_freq@freq_fixed_idle.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7933 -&gt; IGTPW_11433</li>
-</ul>
-<p>IGTPW_11433: 11433<br />
-  IGT_7933: 7933<br />
-  xe-1633-25cbb0b9828d08006be65c72f2ad5e85766d1941: 25cbb0b9828d08006be65c72f2ad5e85766d1941</p>
-
-</body>
-</html>
-
---===============4154877956697509388==--
