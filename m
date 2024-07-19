@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CB67C3DA59
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 07:48:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 688DAC3DA5D
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 07:48:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3083310E3B8;
-	Mon, 22 Jul 2024 07:48:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0B53A10E3BA;
+	Mon, 22 Jul 2024 07:48:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; secure) header.d=kde.org header.i=@kde.org header.b="hCt5Mp3h";
+	dkim=pass (2048-bit key; secure) header.d=kde.org header.i=@kde.org header.b="GfJL/j/S";
 	dkim-atps=neutral
 Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E904110EC29
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 13:29:54 +0000 (UTC)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com
- [209.85.208.53]) (Authenticated sender: zamundaaa)
- by letterbox.kde.org (Postfix) with ESMTPSA id 88D673288FC
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 14:29:53 +0100 (BST)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AAB610E054
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 11:55:35 +0000 (UTC)
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com
+ [209.85.218.53]) (Authenticated sender: zamundaaa)
+ by letterbox.kde.org (Postfix) with ESMTPSA id 9582A328924
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 12:55:34 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
- t=1721395793; bh=PQktgT2WJOnKek2bS7LtQ1dryw5uSFabLbLj2S0kXdw=;
+ t=1721390134; bh=eg12/iVrc+arVomdevNW+qW+eeGHU7gTYb8cvszeNMs=;
  h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=hCt5Mp3h9E3kHGlTDx12B5qmzkmVWrQ40BMcufmxQjxve0UaDV5uaS8V0HAHU6XXA
- FdN+nvPq4SE1YWwYoNK9kgBnJlwp/d8lL/NtVhgBToNwy1SO549uvgap7oFyCqXHiU
- VMABBiVK+w7ycJfeosg23WI2pm3ufbOCmQ5yMUCYmD/XuqUcX+k9R0HoDc0Kxkvddz
- tKQC1bJP45MKju+qnTBJGxO/KcFAi5mtP5I+jRk0gS9foRkEpyvKLzT4KIWukR5AUc
- D2G0ghs+sIT2qHfbEhjGpeLiuLDIABkcJCUITKfkIE6gJbMAHTpfWp6dHI230AxACD
- QCNHkpTw0J7eg==
-Received: by mail-ed1-f53.google.com with SMTP id
- 4fb4d7f45d1cf-5a10835487fso1128675a12.1
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 06:29:53 -0700 (PDT)
+ b=GfJL/j/SF2mqEjy7vDlnyvaNf1Sw+p6RdOYaya9z6jsUY2ocKwHvBao7iUfBwfRt+
+ 7U4wU6gKm1u3OgmtyS1jPY9O77G6uxoxIge7jTA9Nggd9wPP0HKa9jBXuf/Ft2gLva
+ TuOCWQsR8GUZWQEyESXVUCLsD7KqHI0RFny2x+Je/GaRnLwE9M6ijYCUHsBnamAp8D
+ KjrTusij5nZWjHSV3U+7R+D4SRiNwZA5N+OqIDjXU18a2hjloYa/Q6oWrzdHPUrdFd
+ rGakd8XBE9T50XqZTarIyfVUVdvEkdfBKPi7pyxeLQl44VcWe2n9gjYXECjRfXWJ21
+ 4tPotZ2nlw0fg==
+Received: by mail-ej1-f53.google.com with SMTP id
+ a640c23a62f3a-a77e392f59fso197976566b.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 04:55:34 -0700 (PDT)
 X-Forwarded-Encrypted: i=1;
- AJvYcCUmGO2wVICq5HSbfIzw060LcfnUDlJca2I7Q6MIS0ydXow4Vw0yHravAMRrocY+6q0XVaehFcr3hXyLIYtmHOxJGqLrEK/MzFtqH4bNYA==
-X-Gm-Message-State: AOJu0YwamdsC6BtvJDD/VzwZXyw97A8f4J8toU8ZPZBd6vlKpoouYePZ
- lS/NxlzGtZSOecQzG7Su4KyX0vgd7GkB0Uo6o72iH2fXo8T3OG9x2oJdRgHgcZzNrMyEcDRLGQG
- VffDRkI+OvEPBJACHCFjcctEQ2Cg=
-X-Google-Smtp-Source: AGHT+IGD5iyaxIttKsSW4C7PjuFJowunNtY5ezLM6uPdq0KiYcPisptYfrvBiJrwAFNlRiziXNVoLft1pSQiq6oPiDw=
-X-Received: by 2002:a17:906:b886:b0:a6f:1036:98cf with SMTP id
- a640c23a62f3a-a7a01337706mr499958366b.54.1721395792632; Fri, 19 Jul 2024
- 06:29:52 -0700 (PDT)
+ AJvYcCVB5areSLdOo7InpFV6LyepV7Kkl4STou+Qzcmz0A36NohOf7mN2FQrxuC/H9pBLpUWea5Fz6P9B8X3gudph4ZMP4RAMa1hwjLwWnHm6A==
+X-Gm-Message-State: AOJu0YzztRo7fZ5SOXBzRjTFQVfxNRDXhy2fYmTzYNV1AzatHQj+teNt
+ BJIDfDe2ZkANtpm5QhsnQv7RbcV5rCN0/AQDx1GSYGz2pNkMBryQTKsJ3e4RXYiCF45m/z4eqLc
+ tpFrmcgqWe1E3wBKP+Ae7sr64tTU=
+X-Google-Smtp-Source: AGHT+IE2XQ1/rahRJhtyKK5LU6dA9Gl6g4A+0KDOpEqWDP+KMfFqR/EUoNOHrMS58fyHKchAqgsrYnX7yyQLccSCEhg=
+X-Received: by 2002:a17:906:79b:b0:a77:d1ea:ab36 with SMTP id
+ a640c23a62f3a-a7a0113146emr586973266b.6.1721390133560; Fri, 19 Jul 2024
+ 04:55:33 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240717143947.28437-1-dmitry.baryshkov@linaro.org>
  <Zpjn2dTHDrBBuTVH@phenom.ffwll.local>
  <CAPj87rM_5oKDcRa1sun4ErYXZFehv+1qFkO5Mx-2q-gfWO1jsg@mail.gmail.com>
- <CAFZQkGxOE3XhVcr6N89OReyPEDQnCrRLbvgb5x5UZPtuS7VGGg@mail.gmail.com>
- <CAA8EJpqw=v=OeGcuEk-TBBvhnRRDjjSp75007J_6HSSKSE+veQ@mail.gmail.com>
- <CAFZQkGz=VDjrKeHnWcv=WLxX6ZDYHvQ6agR+8zC2GT8XBpYQ6A@mail.gmail.com>
- <CAA8EJpopT+vEeo7mgUpH2B4dMN2n4qRzo_OyBbAeNAfXBmQv+Q@mail.gmail.com>
-In-Reply-To: <CAA8EJpopT+vEeo7mgUpH2B4dMN2n4qRzo_OyBbAeNAfXBmQv+Q@mail.gmail.com>
+In-Reply-To: <CAPj87rM_5oKDcRa1sun4ErYXZFehv+1qFkO5Mx-2q-gfWO1jsg@mail.gmail.com>
 From: Xaver Hugl <xaver.hugl@kde.org>
-Date: Fri, 19 Jul 2024 15:29:41 +0200
-X-Gmail-Original-Message-ID: <CAFZQkGwMV_KLEHjRG=E0_xnsspiY5_n0h5SMq49f20_W+p=_OQ@mail.gmail.com>
-Message-ID: <CAFZQkGwMV_KLEHjRG=E0_xnsspiY5_n0h5SMq49f20_W+p=_OQ@mail.gmail.com>
+Date: Fri, 19 Jul 2024 13:55:22 +0200
+X-Gmail-Original-Message-ID: <CAFZQkGxOE3XhVcr6N89OReyPEDQnCrRLbvgb5x5UZPtuS7VGGg@mail.gmail.com>
+Message-ID: <CAFZQkGxOE3XhVcr6N89OReyPEDQnCrRLbvgb5x5UZPtuS7VGGg@mail.gmail.com>
 Subject: Re: [PATCH i-g-t] tests/kms_properties: drop immutability checks
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Daniel Stone <daniel@fooishbar.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+To: Daniel Stone <daniel@fooishbar.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>,
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
  igt-dev@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
  =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
  emersion <contact@emersion.fr>,
@@ -77,78 +74,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Am Fr., 19. Juli 2024 um 14:52 Uhr schrieb Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org>:
+Am Fr., 19. Juli 2024 um 12:10 Uhr schrieb Daniel Stone <daniel@fooishbar.org>:
 >
-> On Fri, 19 Jul 2024 at 15:48, Xaver Hugl <xaver.hugl@kde.org> wrote:
-> >
-> > Am Fr., 19. Juli 2024 um 13:57 Uhr schrieb Dmitry Baryshkov
-> > <dmitry.baryshkov@linaro.org>:
-> > >
-> > > On Fri, 19 Jul 2024 at 14:55, Xaver Hugl <xaver.hugl@kde.org> wrote:
-> > > >
-> > > > Am Fr., 19. Juli 2024 um 12:10 Uhr schrieb Daniel Stone <daniel@fooishbar.org>:
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > On Thu, 18 Jul 2024 at 11:01, Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
-> > > > > > On Wed, Jul 17, 2024 at 05:39:47PM +0300, Dmitry Baryshkov wrote:
-> > > > > > > Following the discussion on IRC, it is actually an error to require that
-> > > > > > > properties that can not be chaged are marked as immutable.
-> > > > > > >
-> > > > > > > First of all, it creates inconsistent uAPI. Some drivers might have an
-> > > > > > > immutable property, while others will have it mutable. Yes, there are
-> > > > > > > known examples for such behaviour (e.g. zpos), but they are clearly
-> > > > > > > documented in this way.
-> > > > > > >
-> > > > > > > Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
-> > > > > > > more of the 'direction' of the property (whether it is set by the kernel
-> > > > > > > or it is expected to be set by the userspace) rather than simply states
-> > > > > > > that there is no way for the userspace to change the property.
-> > > > > > >
-> > > > > > > Drop the single-value-is-immutable tests.
-> > > > > >
-> > > > > > Makes sense, but we might drop some test coverage for the properties where
-> > > > > > we _do_ want the single value to be immutable. Like zpos.
-> > > > > >
-> > > > > > So I think at least a cursory audit of existing properties would be good,
-> > > > > > checking that the kerneldoc is accurate and then maybe limiting these
-> > > > > > checks here to properties which are documented to have this behaviour?
-> > > > > >
-> > > > > > I know that's a bunch more work, but I fear if we just drop this we only
-> > > > > > move from one a bit confusing state of the uapi to another one, without
-> > > > > > real improvements.
-> > > > > >
-> > > > > > Ofc if all the compositor folks tell me that this doesn't matter anyway,
-> > > > > > I'll shut up :-)
-> > > > >
-> > > > > Weston doesn't care - the effect is the same for us whether it's
-> > > > > immutable or mutable-but-single-value.
-> > > >
-> > > > For KWin's current code it does matter that blob properties that are
-> > > > only set from the kernel side and that the compositor should parse are
-> > > > immutable; if EDID were to become mutable for example, that could
-> > > > cause a regression for KWin.
-> > > >
-> > > > For properties like zpos, which the compositor is supposed to set on
-> > > > some drivers, I'd prefer it if they were consistently never immutable.
-> > >
-> > > The zpos property is already sometimes immutable, e.g. for cursor planes.
-> >
-> > I know, I'm arguing that should be changed. It's just a weird quirk
-> > that doesn't change anything for compositors.
+> Hi,
 >
-> Maybe I'm missing something. For some of the Qualcomm devices we have
-> generic planes which can have any zpos and in some cases a cursor
-> plane which must be the last one. Currently this can be represented by
-> using immutable zpos so we can make sure that the cursor plane is
-> always on the top. If the zpos is always mutable, we have no way to
-> tell userspace that this plane must be on top.
+> On Thu, 18 Jul 2024 at 11:01, Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
+> > On Wed, Jul 17, 2024 at 05:39:47PM +0300, Dmitry Baryshkov wrote:
+> > > Following the discussion on IRC, it is actually an error to require that
+> > > properties that can not be chaged are marked as immutable.
+> > >
+> > > First of all, it creates inconsistent uAPI. Some drivers might have an
+> > > immutable property, while others will have it mutable. Yes, there are
+> > > known examples for such behaviour (e.g. zpos), but they are clearly
+> > > documented in this way.
+> > >
+> > > Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
+> > > more of the 'direction' of the property (whether it is set by the kernel
+> > > or it is expected to be set by the userspace) rather than simply states
+> > > that there is no way for the userspace to change the property.
+> > >
+> > > Drop the single-value-is-immutable tests.
+> >
+> > Makes sense, but we might drop some test coverage for the properties where
+> > we _do_ want the single value to be immutable. Like zpos.
+> >
+> > So I think at least a cursory audit of existing properties would be good,
+> > checking that the kerneldoc is accurate and then maybe limiting these
+> > checks here to properties which are documented to have this behaviour?
+> >
+> > I know that's a bunch more work, but I fear if we just drop this we only
+> > move from one a bit confusing state of the uapi to another one, without
+> > real improvements.
+> >
+> > Ofc if all the compositor folks tell me that this doesn't matter anyway,
+> > I'll shut up :-)
+>
+> Weston doesn't care - the effect is the same for us whether it's
+> immutable or mutable-but-single-value.
 
-zpos is a range property, you tell userspace the possible values with
-a min and a max value. If they're the same, there's only one value for
-userspace to use.
+For KWin's current code it does matter that blob properties that are
+only set from the kernel side and that the compositor should parse are
+immutable; if EDID were to become mutable for example, that could
+cause a regression for KWin.
 
-> --
-> With best wishes
-> Dmitry
+For properties like zpos, which the compositor is supposed to set on
+some drivers, I'd prefer it if they were consistently never immutable.
+
+> CCed some other compositor people too.
+>
+> Cheers,
+> Daniel
