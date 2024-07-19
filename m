@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34005C3DA64
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31D27C3DA59
 	for <igt-dev@archiver.kernel.org>; Fri, 19 Jul 2024 19:31:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1AC010EC8C;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E4FDC10ECA6;
 	Fri, 19 Jul 2024 19:31:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hHYiJ77g";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZzlGqs+b";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3179310EC8C
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 864F210ECA6
  for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 19:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721417512; x=1752953512;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=yG5P7aMiexAPkOrThpAlO+azGkPK1/HxlAXfmW/WAwc=;
- b=hHYiJ77g7VCik9wPooC5N36mswKqkGXXm0II5XxP/2+VUqJye+CvkeUT
- JTj/QZ62CTm2urfDZPxQkt3XkDiwCIHW/LEdGMlNfPUByxf5Tc7Nh/ciP
- 7F25VIY3kL2qjs2+XbUR16JF/FCTKCg7UrnZc/dUf/19NKChG+i4M8TEG
- EI9SqKRoSWpRds3EEIdDrhUj1Ff1okAHo96CoUqDk1Z54RS9n9tLw97iR
- Gd2BkywYT42pHCcbMvTjCQjqKeXRC9u8aJrJHkLpdtg3S6RicY8YKC/ug
- L4+2gf/cAb+hjq3gmSw7V19FVyKNxKwTbgnbQSC8SExbG59P/VR4LZ6Eo A==;
-X-CSE-ConnectionGUID: SaR2SvRTRt+eHfeJeKyCeA==
-X-CSE-MsgGUID: eEpPT7DaQK6aNgdpWpMG8Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11138"; a="29712359"
-X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="29712359"
+ t=1721417513; x=1752953513;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=QdfT8a0hpsxo04PIGcvY3M5RXgBxy7anDgSees3lkrM=;
+ b=ZzlGqs+bqQh7tG2GYCGIrIfoCoecfuA+ca4eYGozJ3ZApoCSDMuUQerl
+ Abi9adVAFSW7tQlE96szC607RCSLszugoKOl1Z9eZU5E2/SQaYRvv/i4T
+ 14J7NPz+6pkwe2Nutk+D4pZOIoaUPHIutCAgj7O5+JaN4asV1Dqo+NF0k
+ w0WCCoIM9uf/adC8TbpVP8gky2LLIC5nVRj88vTGRoiOlUqL079iivOlH
+ hfJXBo8w6p39LRnA8bfEqGHSt6qhNxujeQv5tuzka8IIMOjTySTb2xaTb
+ oYoyu2obZSdYBtvZEHu13msHwOkHBCFrLuqfCY7+TC01QMavg/sHqkl6U g==;
+X-CSE-ConnectionGUID: aOlQMJOIQB2fcri/Lf4BYw==
+X-CSE-MsgGUID: ev/WZJQ8R22gs3Kdtx6zKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11138"; a="29712360"
+X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="29712360"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  19 Jul 2024 12:31:52 -0700
-X-CSE-ConnectionGUID: PtSGMK+oSTy6VfOJBYB+xA==
-X-CSE-MsgGUID: d9Xc8twkQaG7kXm3lgNo3A==
+X-CSE-ConnectionGUID: cXWznT6eRxm157oewzsLkQ==
+X-CSE-MsgGUID: OrKjRXc8SgCXDTWiz3zFrA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="55404817"
+X-IronPort-AV: E=Sophos;i="6.09,221,1716274800"; d="scan'208";a="55404818"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jul 2024 12:31:51 -0700
+ 19 Jul 2024 12:31:52 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 1/2] tests/xe/xe_vm: Add section to test zero number of VM
- binds
-Date: Fri, 19 Jul 2024 12:32:36 -0700
-Message-Id: <20240719193237.1545120-1-matthew.brost@intel.com>
+Subject: [PATCH 2/2] tests/xe/xe_exec_basic: Add section to test zero number
+ of BB in exec IOCTL
+Date: Fri, 19 Jul 2024 12:32:37 -0700
+Message-Id: <20240719193237.1545120-2-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240719193237.1545120-1-matthew.brost@intel.com>
+References: <20240719193237.1545120-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,103 +67,117 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify the bind queue ordering works wrt out-sync signaling when zero
-number of binds passed to VM bind IOCTL.
+Verify the exec queue ordering works wrt out-sync signaling when zero
+number of BB passed to exec IOCTL.
 
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 ---
- lib/xe/xe_ioctl.c   | 13 ++++++++++
- lib/xe/xe_ioctl.h   |  2 ++
- tests/intel/xe_vm.c | 63 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 78 insertions(+)
+ tests/intel/xe_exec_basic.c | 108 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 108 insertions(+)
 
-diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-index ae43ffd15e..27a4a4e70d 100644
---- a/lib/xe/xe_ioctl.c
-+++ b/lib/xe/xe_ioctl.c
-@@ -154,6 +154,19 @@ void xe_vm_bind_async(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			    num_syncs, 0, 0);
- }
+diff --git a/tests/intel/xe_exec_basic.c b/tests/intel/xe_exec_basic.c
+index 0fd1ae062c..a4ae87d008 100644
+--- a/tests/intel/xe_exec_basic.c
++++ b/tests/intel/xe_exec_basic.c
+@@ -19,6 +19,7 @@
  
-+void xe_vm_bind_zero(int fd, uint32_t vm, uint32_t exec_queue,
-+		     struct drm_xe_sync *sync, uint32_t num_syncs)
-+{
-+	struct drm_xe_vm_bind bind = {
-+		.vm_id = vm,
-+		.num_syncs = num_syncs,
-+		.syncs = (uintptr_t)sync,
-+		.exec_queue_id = exec_queue,
-+	};
-+
-+	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind), 0);
-+}
-+
- void xe_vm_bind_async_flags(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 			    uint64_t offset, uint64_t addr, uint64_t size,
- 			    struct drm_xe_sync *sync, uint32_t num_syncs,
-diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-index b27c0053f0..6dfed1b330 100644
---- a/lib/xe/xe_ioctl.h
-+++ b/lib/xe/xe_ioctl.h
-@@ -35,6 +35,8 @@ void xe_vm_prefetch_async(int fd, uint32_t vm, uint32_t exec_queue,
- void xe_vm_bind_async(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
- 		      uint64_t offset, uint64_t addr, uint64_t size,
- 		      struct drm_xe_sync *sync, uint32_t num_syncs);
-+void xe_vm_bind_zero(int fd, uint32_t vm, uint32_t exec_queue,
-+		     struct drm_xe_sync *sync, uint32_t num_syncs);
- void xe_vm_bind_userptr_async(int fd, uint32_t vm, uint32_t exec_queue,
- 			      uint64_t userptr, uint64_t addr, uint64_t size,
- 			      struct drm_xe_sync *sync, uint32_t num_syncs);
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index a088bd5db8..b897ae3206 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -868,6 +868,63 @@ static void xe_vm_bind_array_err(int fd, uint32_t vm, uint32_t exec_queue,
- 	do_ioctl_err(fd, DRM_IOCTL_XE_VM_BIND, &bind, err);
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_spin.h"
+ #include <string.h>
+ 
+ #define MAX_N_EXEC_QUEUES 16
+@@ -314,6 +315,109 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	}
  }
  
 +/**
-+ * SUBTEST: zero-binds
-+ * Description: Test zero binds in IOCTL
-+ * Functionality: bind engines
++ * SUBTEST: zero-execs
++ * Description: Test zero execs in IOCTL
++ * Functionality: exec IOCTL
 + * Run type: BAT
 + */
 +
-+static void test_zero_binds(int fd, struct drm_xe_engine_class_instance *eci)
++static void test_zero_execs(int fd, struct drm_xe_engine_class_instance *eci,
++			    int n_execs)
 +{
 +	uint32_t vm;
 +	uint64_t addr = 0x1a0000;
-+	struct drm_xe_sync sync[1] = {
++	struct drm_xe_sync sync[2] = {
 +		{ .flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, },
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(sync),
 +	};
 +	size_t bo_size;
 +	uint32_t bo = 0;
++	uint32_t syncobj;
++	uint32_t exec_queue;
 +	struct xe_cork cork;
++	struct {
++		uint32_t batch[16];
++		uint64_t pad;
++		uint32_t data;
++	} *data;
++	int i, b;
 +
 +	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_ASYNC_DEFAULT, 0);
-+	bo_size = ALIGN(xe_cs_prefetch_size(fd),
++	bo_size = sizeof(*data) * n_execs;
++	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
 +			xe_get_default_alignment(fd));
 +	bo = xe_bo_create(fd, vm, bo_size,
 +			  vram_if_possible(fd, eci->gt_id),
 +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	data = xe_bo_map(fd, bo, bo_size);
++	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
 +
 +	xe_cork_init(fd, eci, &cork);
 +	xe_cork_wait_started(&cork);
 +
 +	/* Initial bind behind cork */
-+	sync[0].handle = cork.syncobj;
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
++	sync[0].handle = syncobj = syncobj_create(fd, 0);
++	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	sync[1].handle = cork.syncobj;
++	sync[1].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 2);
 +
-+	/* Bind /w num_binds == 0 */
++	/* Exec behind bind */
++	for (i = 0; i < n_execs; i++) {
++		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
++		uint64_t batch_addr = addr + batch_offset;
++		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
++		uint64_t sdi_addr = addr + sdi_offset;
++
++		b = 0;
++		data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data[i].batch[b++] = sdi_addr;
++		data[i].batch[b++] = sdi_addr >> 32;
++		data[i].batch[b++] = 0xc0ffee;
++		data[i].batch[b++] = MI_BATCH_BUFFER_END;
++		igt_assert(b <= ARRAY_SIZE(data[i].batch));
++
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++
++		exec.exec_queue_id = exec_queue;
++		exec.address = batch_addr;
++		xe_exec(fd, &exec);
++	}
++
++	/* Exec with no batch buffer */
 +	sync[0].handle = syncobj_create(fd, 0);
 +	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	xe_vm_bind_zero(fd, vm, 0, sync, 1);
++	exec.num_batch_buffer = 0;
++	exec.address = 0;
++	xe_exec(fd, &exec);
 +
 +	/* Let jobs runs for a bit */
 +	usleep(100000);
 +
-+	/* both binds are waiting */
++	/* both bind and execs are waiting */
++	igt_assert(!syncobj_wait(fd, &syncobj, 1, 0, 0, NULL));
 +	igt_assert(!syncobj_wait(fd, &sync[0].handle, 1, 0, 0, NULL));
 +
 +	/* Release cork */
@@ -170,6 +186,7 @@ index a088bd5db8..b897ae3206 100644
 +	xe_cork_fini(&cork);
 +
 +	/* both binds are done */
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
 +	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
 +
 +	syncobj_destroy(fd, sync[0].handle);
@@ -177,22 +194,20 @@ index a088bd5db8..b897ae3206 100644
 +	xe_vm_destroy(fd, vm);
 +}
 +
- #define BIND_ARRAY_BIND_EXEC_QUEUE_FLAG	(0x1 << 0)
- #define BIND_ARRAY_ENOBUFS_FLAG		(0x1 << 1)
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -383,6 +487,10 @@ igt_main
+ 				test_exec(fd, hwe, 1, 0, 1, s->flags);
+ 	}
  
-@@ -2416,6 +2473,12 @@ igt_main
- 		xe_for_each_engine(fd, hwe)
- 			test_bind_execqueues_independent(fd, hwe, CONFLICT);
- 
-+	igt_subtest("zero-binds")
-+		xe_for_each_engine(fd, hwe) {
-+			test_zero_binds(fd, hwe);
-+			break;
-+		}
++	igt_subtest("zero-execs")
++		xe_for_each_engine(fd, hwe)
++			test_zero_execs(fd, hwe, 1);
 +
- 	igt_subtest("bind-array-twice")
- 		xe_for_each_engine(fd, hwe)
- 			test_bind_array(fd, hwe, 2, 0x1a0000, 0, 0);
+ 	igt_fixture
+ 		drm_close_driver(fd);
+ 
 -- 
 2.34.1
 
