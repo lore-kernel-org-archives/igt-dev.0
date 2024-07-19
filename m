@@ -4,55 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97F75C3DA59
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 07:41:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CB67C3DA59
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 07:48:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2BF210E3B2;
-	Mon, 22 Jul 2024 07:41:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3083310E3B8;
+	Mon, 22 Jul 2024 07:48:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dWup6xTp";
+	dkim=pass (2048-bit key; secure) header.d=kde.org header.i=@kde.org header.b="hCt5Mp3h";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52DEA10E3B2
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jul 2024 07:40:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721634057; x=1753170057;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=LYIHFUaoxzQ13hbspadAlTmiKpgn9HmMYQIbecHlSxM=;
- b=dWup6xTpIVnoD8Y3eaDo9DLyblRMFitMgpHcFDsT7++7qn+PsCTwN58k
- yKADXRCPZ4u4CcZgNTyl+c6UeEXozoX3s0t2bx4NV3EBgwyZo3IGM9Ycc
- BZug0i7vhzlf6kYKajLE2xyad2wcDnnSXwWWpPCNT4EbBmSq3oL1PFQ+q
- yNElBTi1fzL6OIsfLnxGssXgZRK/DRkgKzDIlUPYFZUcF+RwtlEcVAz3S
- gMnSmAeVRRf0Sn7rj6SzqzVQqj92IM/O6nJw6y8QSLYUc5BjAWzDP2F3L
- fygjlgIaKPLls00LKZcK3fXaQRwPfHSr/tk3V9pPwKczJaT7DDL0aQu8G g==;
-X-CSE-ConnectionGUID: 7KWV9gXOQ26aH4llsQuHBw==
-X-CSE-MsgGUID: ez5FSWJkTw2rSFPc+s6PHw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="22996006"
-X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="22996006"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 00:40:57 -0700
-X-CSE-ConnectionGUID: fQcWWAc3ScWvBKmN5QnyZQ==
-X-CSE-MsgGUID: lnpZsTBfS9i7yUIDnOJ69A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="52066085"
-Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 00:40:53 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, animesh.manna@intel.com,
- Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/kms_vrr: Add new test to validate LOBF
-Date: Mon, 22 Jul 2024 13:20:48 +0530
-Message-Id: <20240722075048.2616411-3-jeevan.b@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240722075048.2616411-1-jeevan.b@intel.com>
-References: <20240722075048.2616411-1-jeevan.b@intel.com>
+Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E904110EC29
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 13:29:54 +0000 (UTC)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com
+ [209.85.208.53]) (Authenticated sender: zamundaaa)
+ by letterbox.kde.org (Postfix) with ESMTPSA id 88D673288FC
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 14:29:53 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
+ t=1721395793; bh=PQktgT2WJOnKek2bS7LtQ1dryw5uSFabLbLj2S0kXdw=;
+ h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+ b=hCt5Mp3h9E3kHGlTDx12B5qmzkmVWrQ40BMcufmxQjxve0UaDV5uaS8V0HAHU6XXA
+ FdN+nvPq4SE1YWwYoNK9kgBnJlwp/d8lL/NtVhgBToNwy1SO549uvgap7oFyCqXHiU
+ VMABBiVK+w7ycJfeosg23WI2pm3ufbOCmQ5yMUCYmD/XuqUcX+k9R0HoDc0Kxkvddz
+ tKQC1bJP45MKju+qnTBJGxO/KcFAi5mtP5I+jRk0gS9foRkEpyvKLzT4KIWukR5AUc
+ D2G0ghs+sIT2qHfbEhjGpeLiuLDIABkcJCUITKfkIE6gJbMAHTpfWp6dHI230AxACD
+ QCNHkpTw0J7eg==
+Received: by mail-ed1-f53.google.com with SMTP id
+ 4fb4d7f45d1cf-5a10835487fso1128675a12.1
+ for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 06:29:53 -0700 (PDT)
+X-Forwarded-Encrypted: i=1;
+ AJvYcCUmGO2wVICq5HSbfIzw060LcfnUDlJca2I7Q6MIS0ydXow4Vw0yHravAMRrocY+6q0XVaehFcr3hXyLIYtmHOxJGqLrEK/MzFtqH4bNYA==
+X-Gm-Message-State: AOJu0YwamdsC6BtvJDD/VzwZXyw97A8f4J8toU8ZPZBd6vlKpoouYePZ
+ lS/NxlzGtZSOecQzG7Su4KyX0vgd7GkB0Uo6o72iH2fXo8T3OG9x2oJdRgHgcZzNrMyEcDRLGQG
+ VffDRkI+OvEPBJACHCFjcctEQ2Cg=
+X-Google-Smtp-Source: AGHT+IGD5iyaxIttKsSW4C7PjuFJowunNtY5ezLM6uPdq0KiYcPisptYfrvBiJrwAFNlRiziXNVoLft1pSQiq6oPiDw=
+X-Received: by 2002:a17:906:b886:b0:a6f:1036:98cf with SMTP id
+ a640c23a62f3a-a7a01337706mr499958366b.54.1721395792632; Fri, 19 Jul 2024
+ 06:29:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240717143947.28437-1-dmitry.baryshkov@linaro.org>
+ <Zpjn2dTHDrBBuTVH@phenom.ffwll.local>
+ <CAPj87rM_5oKDcRa1sun4ErYXZFehv+1qFkO5Mx-2q-gfWO1jsg@mail.gmail.com>
+ <CAFZQkGxOE3XhVcr6N89OReyPEDQnCrRLbvgb5x5UZPtuS7VGGg@mail.gmail.com>
+ <CAA8EJpqw=v=OeGcuEk-TBBvhnRRDjjSp75007J_6HSSKSE+veQ@mail.gmail.com>
+ <CAFZQkGz=VDjrKeHnWcv=WLxX6ZDYHvQ6agR+8zC2GT8XBpYQ6A@mail.gmail.com>
+ <CAA8EJpopT+vEeo7mgUpH2B4dMN2n4qRzo_OyBbAeNAfXBmQv+Q@mail.gmail.com>
+In-Reply-To: <CAA8EJpopT+vEeo7mgUpH2B4dMN2n4qRzo_OyBbAeNAfXBmQv+Q@mail.gmail.com>
+From: Xaver Hugl <xaver.hugl@kde.org>
+Date: Fri, 19 Jul 2024 15:29:41 +0200
+X-Gmail-Original-Message-ID: <CAFZQkGwMV_KLEHjRG=E0_xnsspiY5_n0h5SMq49f20_W+p=_OQ@mail.gmail.com>
+Message-ID: <CAFZQkGwMV_KLEHjRG=E0_xnsspiY5_n0h5SMq49f20_W+p=_OQ@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/kms_properties: drop immutability checks
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Daniel Stone <daniel@fooishbar.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ igt-dev@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
+ =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+ emersion <contact@emersion.fr>,
+ =?UTF-8?B?Sm9uYXMgw4VkYWhs?= <jadahl@redhat.com>, victoria@system76.com
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Mon, 22 Jul 2024 07:48:25 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,129 +77,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Validate pseudo static refresh rate changes in the VRR with
-fixed refresh rate framework for non-psr scenarios.
+Am Fr., 19. Juli 2024 um 14:52 Uhr schrieb Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org>:
+>
+> On Fri, 19 Jul 2024 at 15:48, Xaver Hugl <xaver.hugl@kde.org> wrote:
+> >
+> > Am Fr., 19. Juli 2024 um 13:57 Uhr schrieb Dmitry Baryshkov
+> > <dmitry.baryshkov@linaro.org>:
+> > >
+> > > On Fri, 19 Jul 2024 at 14:55, Xaver Hugl <xaver.hugl@kde.org> wrote:
+> > > >
+> > > > Am Fr., 19. Juli 2024 um 12:10 Uhr schrieb Daniel Stone <daniel@fooishbar.org>:
+> > > > >
+> > > > > Hi,
+> > > > >
+> > > > > On Thu, 18 Jul 2024 at 11:01, Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
+> > > > > > On Wed, Jul 17, 2024 at 05:39:47PM +0300, Dmitry Baryshkov wrote:
+> > > > > > > Following the discussion on IRC, it is actually an error to require that
+> > > > > > > properties that can not be chaged are marked as immutable.
+> > > > > > >
+> > > > > > > First of all, it creates inconsistent uAPI. Some drivers might have an
+> > > > > > > immutable property, while others will have it mutable. Yes, there are
+> > > > > > > known examples for such behaviour (e.g. zpos), but they are clearly
+> > > > > > > documented in this way.
+> > > > > > >
+> > > > > > > Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
+> > > > > > > more of the 'direction' of the property (whether it is set by the kernel
+> > > > > > > or it is expected to be set by the userspace) rather than simply states
+> > > > > > > that there is no way for the userspace to change the property.
+> > > > > > >
+> > > > > > > Drop the single-value-is-immutable tests.
+> > > > > >
+> > > > > > Makes sense, but we might drop some test coverage for the properties where
+> > > > > > we _do_ want the single value to be immutable. Like zpos.
+> > > > > >
+> > > > > > So I think at least a cursory audit of existing properties would be good,
+> > > > > > checking that the kerneldoc is accurate and then maybe limiting these
+> > > > > > checks here to properties which are documented to have this behaviour?
+> > > > > >
+> > > > > > I know that's a bunch more work, but I fear if we just drop this we only
+> > > > > > move from one a bit confusing state of the uapi to another one, without
+> > > > > > real improvements.
+> > > > > >
+> > > > > > Ofc if all the compositor folks tell me that this doesn't matter anyway,
+> > > > > > I'll shut up :-)
+> > > > >
+> > > > > Weston doesn't care - the effect is the same for us whether it's
+> > > > > immutable or mutable-but-single-value.
+> > > >
+> > > > For KWin's current code it does matter that blob properties that are
+> > > > only set from the kernel side and that the compositor should parse are
+> > > > immutable; if EDID were to become mutable for example, that could
+> > > > cause a regression for KWin.
+> > > >
+> > > > For properties like zpos, which the compositor is supposed to set on
+> > > > some drivers, I'd prefer it if they were consistently never immutable.
+> > >
+> > > The zpos property is already sometimes immutable, e.g. for cursor planes.
+> >
+> > I know, I'm arguing that should be changed. It's just a weird quirk
+> > that doesn't change anything for compositors.
+>
+> Maybe I'm missing something. For some of the Qualcomm devices we have
+> generic planes which can have any zpos and in some cases a cursor
+> plane which must be the last one. Currently this can be represented by
+> using immutable zpos so we can make sure that the cursor plane is
+> always on the top. If the zpos is always mutable, we have no way to
+> tell userspace that this plane must be on top.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_vrr.c | 57 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 55 insertions(+), 2 deletions(-)
+zpos is a range property, you tell userspace the possible values with
+a min and a max value. If they're the same, there's only one value for
+userspace to use.
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 7e8885f16..a79819303 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -31,12 +31,18 @@
-  */
- 
- #include "igt.h"
-+#include "igt_psr.h"
- #include "i915/intel_drrs.h"
- #include "sw_sync.h"
- #include <fcntl.h>
- #include <signal.h>
- 
- /**
-+ * SUBTEST: lobf
-+ * Description: Test to validate link-off between active frames in non-psr
-+ *              operation
-+ * Functionality: LOBF
-+ *
-  * SUBTEST: cmrr
-  * Description: Test to validate the content rate to exactly match with the
-  * 		requested rate without any frame drops.
-@@ -106,7 +112,8 @@ enum {
- 	TEST_FASTSET = 1 << 7,
- 	TEST_MAXMIN = 1 << 8,
- 	TEST_CMRR = 1 << 9,
--	TEST_NEGATIVE = 1 << 10,
-+	TEST_LINK_OFF = 1 << 10,
-+	TEST_NEGATIVE = 1 << 11,
- };
- 
- enum {
-@@ -129,6 +136,7 @@ typedef struct vtest_ns {
- typedef struct data {
- 	igt_display_t display;
- 	int drm_fd;
-+	int debugfs_fd;
- 	igt_plane_t *primary;
- 	igt_fb_t fb[2];
- 	range_t range;
-@@ -784,6 +792,43 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
- 	}
- }
- 
-+static void
-+test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-+{
-+	bool change_mode = false;
-+	time_t startTime = time(NULL);
-+	time_t secs = 4, change_time = 3;
-+	igt_plane_t *primary;
-+	drmModeModeInfo mode = *igt_output_get_mode(output);
-+
-+	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
-+		 output->name, kmstest_pipe_name(pipe), data->range.min, data->range.max);
-+
-+	igt_require(output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP);
-+	igt_require(!igt_get_i915_edp_lobf_status(data->drm_fd, output->name));
-+	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL))
-+		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
-+			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1, 1, 1, &data->fb[0]);
-+
-+	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
-+
-+	while (time(NULL) - startTime < secs) {
-+		igt_plane_set_fb(primary, &data->fb[0]);
-+		igt_display_commit(&data->display);
-+		if (!change_mode && time(NULL) - startTime >= change_time) {
-+			igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
-+			change_time = true;
-+		}
-+	}
-+
-+	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output->name),
-+		     "LOBF not enabled\n");
-+}
-+
- static void
- test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- {
-@@ -973,6 +1018,7 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- {
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 
- 		kmstest_set_vt_graphics_mode();
- 
-@@ -1030,13 +1076,20 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
- 			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
- 
--		igt_describe("Test to validate the the content rate exactly match with the "
-+		igt_describe("Test to validate the content rate exactly match with the "
- 			     "requested rate without any frame drops.");
- 		igt_subtest_with_dynamic("cmrr") {
- 			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
- 
- 			run_vrr_test(&data, test_cmrr, TEST_CMRR);
- 		}
-+		igt_describe("Test to validate the link-off between active frames in "
-+			     "non-PSR operation.");
-+		igt_subtest_with_dynamic("lobf") {
-+			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
-+
-+			run_vrr_test(&data, test_lobf, TEST_LINK_OFF);
-+		}
- 	}
- 
- 	igt_fixture {
--- 
-2.25.1
-
+> --
+> With best wishes
+> Dmitry
