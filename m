@@ -4,62 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34148C3DA5D
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 07:48:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79604C3DA5D
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 08:09:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D805010E3BB;
-	Mon, 22 Jul 2024 07:48:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 773C410E3D5;
+	Mon, 22 Jul 2024 08:09:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; secure) header.d=kde.org header.i=@kde.org header.b="IPFIIFU/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OmsgoNOz";
 	dkim-atps=neutral
-Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C77110EC1E
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 12:48:50 +0000 (UTC)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com
- [209.85.208.51]) (Authenticated sender: zamundaaa)
- by letterbox.kde.org (Postfix) with ESMTPSA id 46363328782
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 13:48:49 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
- t=1721393329; bh=gFf1yCuSUDTpdi0cNqGN14JneCj9i4D3hmFtVWYpjPQ=;
- h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
- b=IPFIIFU/C4YSYtsegbBXx2SbBNNaZcYf0dZYz9eG0Gbb2ExRKkI0WCqMsbZ0UYSLm
- qBKl5N1EPDOEIu97E8aWFaXKNqOBOPQDCkJUHB01c8jzL7q8gOQ4UBzcz5IlJa0TDp
- IFlR5Fi8J4l4j8vzkfTXMoTqCO5hQDje2C2YiJrGiESf1DTicH0X97VY4zsegBzd5H
- 4II2IVsc+A7OAp+aEouUnJpVXQdLV2AVer9gxOkqY2GUvlHkC7JFo3DSfP6O2OfrQd
- AsSZnKCQdIxfxLDl8XAU6eIAUGIlAUTUmvzCIWf93zIeobmOUpy+2WTCQ91dte50Gx
- qxY9k32qorsxw==
-Received: by mail-ed1-f51.google.com with SMTP id
- 4fb4d7f45d1cf-5a1337cfbb5so1087918a12.3
- for <igt-dev@lists.freedesktop.org>; Fri, 19 Jul 2024 05:48:49 -0700 (PDT)
-X-Forwarded-Encrypted: i=1;
- AJvYcCXJMXcZ538Vv7vguelGFBjFt5dFlUJr7kLqbclDH5eKtShrhnKlp5GXtuIJDS28Xjrv2Q0wA+M4ne70RQtbX0HJzhU7eVup/vy0aF26rQ==
-X-Gm-Message-State: AOJu0Yz57ip1cU90FQDdVthl/vkcspvl34k8vqfjGHN2hEJPKACtsOZx
- r+cq4ODxzpMTALyBRhrcrhWYFyi9O220MTWrFJrYjGl6bpNbj2VV6lWj7Kv1A6P3GO6wgOWLJbc
- rHCfSzRXOcD3/V58XYkJAu91+Quw=
-X-Google-Smtp-Source: AGHT+IFvE2tLEN+SD6zXUpoHOZ/6G/CXOMNM5F4PHtVFM4z7VXBMWkNeIbw9idVwb3FffUYb1T56ZTutAvPHRfHfTP8=
-X-Received: by 2002:a17:906:cc89:b0:a77:d0a0:ea74 with SMTP id
- a640c23a62f3a-a7a01120ffbmr535001466b.3.1721393328888; Fri, 19 Jul 2024
- 05:48:48 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AFB8210E3D5;
+ Mon, 22 Jul 2024 08:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721635789; x=1753171789;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=u0c4CLmg6kKc/T1kSboigVfbrnw1Nzk13+I0h9+KlN8=;
+ b=OmsgoNOz/h0bZWHcBI5cp2qOc/T0n8HakzJWXBBnV0D7u+J8AsGYG4DA
+ ma0vFZ6W5P/s7n+l8LYPTUESz5p1lnKFnaUasF6MHPXC/8jCaJZI1Ecv7
+ 0v2DxU3E5XVsWUdJZPuSqxDkXJgNy5BTpkCQ/+2efmqMVhzHO9wYB/C8F
+ u/ciHUdul2feA6otp3MrpInIzndOVE2CHarwIMSU8FmI57hSwALJHXwAR
+ 6rLWXsvHlXA1c/tIuoChDLLJLP7P/+lKIxkyT9DHkfC00uGac8xY9g8CZ
+ XhcTAxdUdt0uszvvkyz6jh1S9roFTZiyWgA3NQL1VwKnOT/PbLXSzUkpy g==;
+X-CSE-ConnectionGUID: GeRIU2jbShODY4NE1Lg/UQ==
+X-CSE-MsgGUID: uYw0nhOMR8WW/M58yKjHBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="19037710"
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="19037710"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 01:09:48 -0700
+X-CSE-ConnectionGUID: Le7PEqoPRuOJnoIjDqW30Q==
+X-CSE-MsgGUID: iG3RFfRPQv2HqJYlDF+ghg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="51463599"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.233])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 01:09:43 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t 0/3] lib/kunit: Fixes and enhancements
+Date: Mon, 22 Jul 2024 10:01:01 +0200
+Message-ID: <20240722080913.74333-5-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-References: <20240717143947.28437-1-dmitry.baryshkov@linaro.org>
- <Zpjn2dTHDrBBuTVH@phenom.ffwll.local>
- <CAPj87rM_5oKDcRa1sun4ErYXZFehv+1qFkO5Mx-2q-gfWO1jsg@mail.gmail.com>
- <CAFZQkGxOE3XhVcr6N89OReyPEDQnCrRLbvgb5x5UZPtuS7VGGg@mail.gmail.com>
- <CAA8EJpqw=v=OeGcuEk-TBBvhnRRDjjSp75007J_6HSSKSE+veQ@mail.gmail.com>
-In-Reply-To: <CAA8EJpqw=v=OeGcuEk-TBBvhnRRDjjSp75007J_6HSSKSE+veQ@mail.gmail.com>
-From: Xaver Hugl <xaver.hugl@kde.org>
-Date: Fri, 19 Jul 2024 14:48:37 +0200
-X-Gmail-Original-Message-ID: <CAFZQkGz=VDjrKeHnWcv=WLxX6ZDYHvQ6agR+8zC2GT8XBpYQ6A@mail.gmail.com>
-Message-ID: <CAFZQkGz=VDjrKeHnWcv=WLxX6ZDYHvQ6agR+8zC2GT8XBpYQ6A@mail.gmail.com>
-Subject: Re: [PATCH i-g-t] tests/kms_properties: drop immutability checks
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Daniel Stone <daniel@fooishbar.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- igt-dev@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>, 
- =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
- emersion <contact@emersion.fr>,
- =?UTF-8?B?Sm9uYXMgw4VkYWhs?= <jadahl@redhat.com>, victoria@system76.com
-Content-Type: text/plain; charset="UTF-8"
-X-Mailman-Approved-At: Mon, 22 Jul 2024 07:48:25 +0000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,62 +69,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Am Fr., 19. Juli 2024 um 13:57 Uhr schrieb Dmitry Baryshkov
-<dmitry.baryshkov@linaro.org>:
->
-> On Fri, 19 Jul 2024 at 14:55, Xaver Hugl <xaver.hugl@kde.org> wrote:
-> >
-> > Am Fr., 19. Juli 2024 um 12:10 Uhr schrieb Daniel Stone <daniel@fooishbar.org>:
-> > >
-> > > Hi,
-> > >
-> > > On Thu, 18 Jul 2024 at 11:01, Daniel Vetter <daniel.vetter@ffwll.ch> wrote:
-> > > > On Wed, Jul 17, 2024 at 05:39:47PM +0300, Dmitry Baryshkov wrote:
-> > > > > Following the discussion on IRC, it is actually an error to require that
-> > > > > properties that can not be chaged are marked as immutable.
-> > > > >
-> > > > > First of all, it creates inconsistent uAPI. Some drivers might have an
-> > > > > immutable property, while others will have it mutable. Yes, there are
-> > > > > known examples for such behaviour (e.g. zpos), but they are clearly
-> > > > > documented in this way.
-> > > > >
-> > > > > Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
-> > > > > more of the 'direction' of the property (whether it is set by the kernel
-> > > > > or it is expected to be set by the userspace) rather than simply states
-> > > > > that there is no way for the userspace to change the property.
-> > > > >
-> > > > > Drop the single-value-is-immutable tests.
-> > > >
-> > > > Makes sense, but we might drop some test coverage for the properties where
-> > > > we _do_ want the single value to be immutable. Like zpos.
-> > > >
-> > > > So I think at least a cursory audit of existing properties would be good,
-> > > > checking that the kerneldoc is accurate and then maybe limiting these
-> > > > checks here to properties which are documented to have this behaviour?
-> > > >
-> > > > I know that's a bunch more work, but I fear if we just drop this we only
-> > > > move from one a bit confusing state of the uapi to another one, without
-> > > > real improvements.
-> > > >
-> > > > Ofc if all the compositor folks tell me that this doesn't matter anyway,
-> > > > I'll shut up :-)
-> > >
-> > > Weston doesn't care - the effect is the same for us whether it's
-> > > immutable or mutable-but-single-value.
-> >
-> > For KWin's current code it does matter that blob properties that are
-> > only set from the kernel side and that the compositor should parse are
-> > immutable; if EDID were to become mutable for example, that could
-> > cause a regression for KWin.
-> >
-> > For properties like zpos, which the compositor is supposed to set on
-> > some drivers, I'd prefer it if they were consistently never immutable.
->
-> The zpos property is already sometimes immutable, e.g. for cursor planes.
+An issue has been discovered when running an IGT kunit test with a dynamic
+sub-subtest specified: only the first kunit test case of a test suite can
+be actually executed.  Selecting a test case other than the first one
+results in "Unloading test module failed, not executing more selftests."
+message being displayed and no single test case (dynamic sub-subtest)
+executed.
 
-I know, I'm arguing that should be changed. It's just a weird quirk
-that doesn't change anything for compositors.
+Besides, an optional 'suite' argument was used as a KUnit filter_glob
+when we were loading KUnit test module once per IGT subtest.  Since we are
+now loading the module once per IGT dynamic sub-subtest, we use
+test_suite.test_case obtained from a list of test cases as filter_glob.
 
-> --
-> With best wishes
-> Dmitry
+Resolve the above issues, and also update an inline comment to emphasize
+the fact that test case list of unknown length we want to avoid parsing of
+is an unstructured free text list.
+
+Janusz Krzysztofik (3):
+  lib/kunit: Fix selective execution of test cases
+  lib/kunit: Drop 'suite' from __igt_kunit arguments list
+  lib/kunit: Improve a comment on action=list parameter
+
+ lib/igt_kmod.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
+
+-- 
+2.45.2
+
