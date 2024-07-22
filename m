@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B8B9C3DA59
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 19:13:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 734B0C3DA5D
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 19:14:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A56E610E2BE;
-	Mon, 22 Jul 2024 19:13:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0968410E2C0;
+	Mon, 22 Jul 2024 19:14:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LZtMAayF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MgqDzQfW";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5DC810E2BE
- for <igt-dev@lists.freedesktop.org>; Mon, 22 Jul 2024 19:13:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC0B410E2C0
+ for <igt-dev@lists.freedesktop.org>; Mon, 22 Jul 2024 19:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721675614; x=1753211614;
+ t=1721675646; x=1753211646;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=soSoumqHnzv0n+AXRqTRIxpblLJCJhMyzVvyqY9rQ0w=;
- b=LZtMAayFIGk63UlSr0rh0zi+cYUQue5Kkfm7EEpPfjJUykOCw5230Lru
- X5i0yL8pencOssLQ+FouZb/bOjbS1dZs3zHvcHMz0s3VJuCAAbTdEfxM9
- tJC6nDEz6XFY+GdCR/CQITgEXWqsqeRl9pJ7e6Ew61QOdtcDHgGbGVr9i
- TfG0HFD8uNkzDLW+DjCg1xqZPeni4ZNKRfdpbNc/PC8nZwiPg+c8KGjFJ
- sdHPPdw0fhlsERS+/AIav1/fwEO3oxNzpQ12nBEc9SY9lqTDKNZAxSnVj
- j3w76wMq2hU5klVkhykCt/wj3B9eOVCcacb1ZEcBLakM0LBngI6nxw//5 w==;
-X-CSE-ConnectionGUID: VQbtrVxpTXiTn87Za3/DUA==
-X-CSE-MsgGUID: MI6V8HevQhaD6ddrSM/V7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="30414546"
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="30414546"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 12:13:33 -0700
-X-CSE-ConnectionGUID: VGhCr280Ss6F+ijECcEmPQ==
-X-CSE-MsgGUID: mlTfSfSNTPCC1XeuGk0hzg==
+ bh=4f1/H28oGvyrRnVfmwVDPGsX0dVeZaccX9KWaOITHIc=;
+ b=MgqDzQfWv3BuBkxwjYgFDkgCF3ofkKKU3Ut2je7xbcxyVqSG7AjkSUIN
+ fV2WOjKC8w89cc735RxYqn8nJISKIr3gQRfvDxr6nnUsSsLq2oY+U8GJ6
+ vffNuhyVlCEMtGXqnaCxb5LeeS/PXgtl/y3KHpjx2GCcwHIiwdDG1vHh/
+ h8GMwoKR2Xcz/nKnvlNHQgGDXKtCFnFuiN/CncNPBZSYO2PZbqWpUc5I2
+ TlwpYpmKlCs6aQKRairnTaCt28FIsCZGqNx4/wDMCh07JLXnRZOxGYeDD
+ CE3BsP3BRALmp8mzPAncVXrF1WLRDZWDnBCYP9lDy+V+e4yxrRVp4VFkp g==;
+X-CSE-ConnectionGUID: Wt4bKH+hT2OD7a565LhU5Q==
+X-CSE-MsgGUID: AyPE6oJ7QPG1rNu7oPmPIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11141"; a="23026450"
+X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="23026450"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 12:14:05 -0700
+X-CSE-ConnectionGUID: pWouuAlcSGWU1H2vBzoMlQ==
+X-CSE-MsgGUID: ZChXtIYaRI+Dyki6OFkA0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="52582710"
+X-IronPort-AV: E=Sophos;i="6.09,228,1716274800"; d="scan'208";a="51630158"
 Received: from dmprieto-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.125.48.92])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 12:13:33 -0700
-Date: Mon, 22 Jul 2024 11:53:44 -0700
-Message-ID: <87cyn5cl6v.wl-ashutosh.dixit@intel.com>
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 12:14:05 -0700
+Date: Mon, 22 Jul 2024 11:53:57 -0700
+Message-ID: <87bk2pcl6i.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: Matt Roper <matthew.d.roper@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] tests/xe_query: Also allow IP version less than 20
- for BMG media
-In-Reply-To: <20240722183511.1934050-1-matthew.d.roper@intel.com>
-References: <20240722183511.1934050-1-matthew.d.roper@intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t] lib/xe/oa: Handle SIMD16_EU_PER_DSS
+In-Reply-To: <20240722190717.57192-1-lucas.demarchi@intel.com>
+References: <20240722190717.57192-1-lucas.demarchi@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,45 +70,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 22 Jul 2024 11:35:10 -0700, Matt Roper wrote:
+On Mon, 22 Jul 2024 12:07:17 -0700, Lucas De Marchi wrote:
 >
-> Since BMG has a media version of 13.01, MTL/ARL are no longer the only
-> cases where we'll see IP versions lower than 20.  Add one more exception
-> to the final GT IP version sanity check.
+> Handle SIMD16_EU_PER_DSS the same way EU_PER_DSS is. Since this function
+> is mixing information from hwconfig and the topo query, this should be
+> more correct as now the numbers from the query match the hwconfig.
+>
+> This fixes the assert triggering in the default case because
+> SIMD16_EU_PER_DSS was not handled:
+>
+>	(xe_oa:4511) CRITICAL: Test assertion failure function xe_fill_topology_info, file ../lib/xe/xe_oa.c:532:
+>	(xe_oa:4511) CRITICAL: Failed assertion: 0
+>	(xe_oa:4511) CRITICAL: Last errno: 2, No such file or directory
+>	Test xe_oa failed.
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2238
-> Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 > ---
->  tests/intel/xe_query.c | 13 +++++++++----
->  1 file changed, 9 insertions(+), 4 deletions(-)
+>  lib/xe/xe_oa.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index 84df24f49..c13613e0a 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -331,11 +331,16 @@ test_query_gt_list(int fd)
->				igt_assert_lte(1270, verx100);
->
->			/*
-> -			 * Aside from MTL/ARL, all version numbers should be
-> -			 * 20.00 or higher.
-> +			 * Aside from MTL/ARL and media on BMG, all version
-> +			 * numbers should be 20.00 or higher.
->			 */
-> -			if (!IS_METEORLAKE(dev_id))
-> -				igt_assert_lte(20, gt_list->gt_list[i].ip_ver_major);
-> +			if (IS_METEORLAKE(dev_id))
-> +				continue;
-> +			if (gt_list->gt_list[i].type == DRM_XE_QUERY_GT_TYPE_MEDIA &&
-> +			    IS_BATTLEMAGE(dev_id))
-> +				continue;
-> +
-> +			igt_assert_lte(20, gt_list->gt_list[i].ip_ver_major);
->		}
->	}
->  }
+> diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
+> index 797458439..4764ed1fc 100644
+> --- a/lib/xe/xe_oa.c
+> +++ b/lib/xe/xe_oa.c
+> @@ -521,6 +521,7 @@ xe_fill_topology_info(int drm_fd, uint32_t device_id, uint32_t *topology_size)
+>			ptr += ptopo->subslice_stride;
+>			break;
+>		case DRM_XE_TOPO_EU_PER_DSS:
+> +		case DRM_XE_TOPO_SIMD16_EU_PER_DSS:
+>			for (i = 0; i < ptopo->max_subslices; i++) {
+>				memcpy(ptr, topo->mask, ptopo->eu_stride);
+>				ptr += ptopo->eu_stride;
 > --
-> 2.45.2
+> 2.43.0
 >
