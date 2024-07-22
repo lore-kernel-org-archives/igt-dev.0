@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 942DBC3DA59
-	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 08:10:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CF9EC3DA59
+	for <igt-dev@archiver.kernel.org>; Mon, 22 Jul 2024 08:44:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 466F810E3D7;
-	Mon, 22 Jul 2024 08:10:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 587E110E449;
+	Mon, 22 Jul 2024 08:44:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fm8/hZNQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GRwu80Fi";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DD8F10E3D6;
- Mon, 22 Jul 2024 08:09:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1CBE10E448;
+ Mon, 22 Jul 2024 08:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721635792; x=1753171792;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=ODZXMYLmiFFHmtAzIZpP3BQe3sXwxAmu56gFHFKGPbM=;
- b=fm8/hZNQmzaAvfSczEauXkS/b6O3iiUznoY+b9hqdSdMSLp18+lYuaF1
- ELYd4fMFYZd72FM1moDLATwR4QsB8dWQNeXtVcJXA4iS/cTUvU+wJztId
- rpCNUCu/o80AJEx3mY+zrVoVcGcHqsJ5fHoHEqmcXEgxvbsEOwGHVd310
- QS5SIN+ALmTHg6dAWBu8X3pee0u1hnTxOmakGOaNSxOVfQWB5r+VQNz/9
- EqCtDTEE3xW/UivRYxLs5mRzfz/P0s2I+7M6Yhp6TaHr8/KN1GqsPLcqh
- pbOQP6XpDcwmBwzAcKPLQSzTVpwYby5+VTUE9Sw7gT5dVYpDQb/cZtCxY w==;
-X-CSE-ConnectionGUID: RFLqqMFrTReJ+4bieuKMBw==
-X-CSE-MsgGUID: LuWZoQqgTueYCNrn2X1qig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="19037719"
-X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="19037719"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 01:09:49 -0700
-X-CSE-ConnectionGUID: iyOiezTRTx2cJaQjmGHc3g==
-X-CSE-MsgGUID: PotItiAzTR6cS35eJ+DL3A==
+ t=1721637882; x=1753173882;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=VNQzkTpINT52FikMT/5ITCnYWcVcNbXqiYJe1zxTMwg=;
+ b=GRwu80FiahPxlKa4tAKAWHirtMm+m1llUp7kLd1UikhgUIAqhEXAWFuh
+ BwUtwDr0jRceVdKEVUCYrDMki1W9sTUNaDdWoM+dIKft2YqIEfv8vfu+G
+ hptjZWO6MCMbqUEn+TJJSgpZw63z2cMvb6XZIMDI3s6uULFjS8JW2TDUT
+ gj4nsbhh95RCJHJXuBbbxjtsV19jywOdK4IceaHDCXmLUQBJlikAv6n82
+ oZRE5niA8NIqafWkQ1LUfuw3Z/mADoAFndwlg0pH/YplFCeexR1cqPBrf
+ RvZ5HiD7G05BlmpiKRWZ4cJF6WPae2j7mh0sPkmvJ4hI2F6bHTofRt4vn g==;
+X-CSE-ConnectionGUID: QVThrW2oTVWfE16R8VIopg==
+X-CSE-MsgGUID: bTsFIFNzS1SkDT+LMnxaQg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11140"; a="23057401"
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="23057401"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 01:44:41 -0700
+X-CSE-ConnectionGUID: ywzsG4VOTR+Eo7aodb8C/A==
+X-CSE-MsgGUID: WZBRL4J+T/Wbu3/NB+JFTA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="51463640"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.233])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2024 01:09:46 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t 1/3] lib/kunit: Fix selective execution of test cases
-Date: Mon, 22 Jul 2024 10:01:02 +0200
-Message-ID: <20240722080913.74333-6-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240722080913.74333-5-janusz.krzysztofik@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,227,1716274800"; d="scan'208";a="51703296"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.211])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2024 01:44:40 -0700
+Date: Mon, 22 Jul 2024 10:44:36 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/3] lib/kunit: Fix selective execution of test cases
+Message-ID: <20240722084436.6l67rhjodql5znvk@zkempczy-mobl2>
 References: <20240722080913.74333-5-janusz.krzysztofik@linux.intel.com>
+ <20240722080913.74333-6-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240722080913.74333-6-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,59 +72,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-An issue has been discovered when running an IGT kunit test with a dynamic
-sub-subtest specified: only the first kunit test case of a test suite can
-be actually executed.  Selecting a test case other than the first one
-results in "Unloading test module failed, not executing more selftests."
-message being displayed and no single test case (dynamic sub-subtest)
-executed.
+On Mon, Jul 22, 2024 at 10:01:02AM +0200, Janusz Krzysztofik wrote:
+> An issue has been discovered when running an IGT kunit test with a dynamic
+> sub-subtest specified: only the first kunit test case of a test suite can
+> be actually executed.  Selecting a test case other than the first one
+> results in "Unloading test module failed, not executing more selftests."
+> message being displayed and no single test case (dynamic sub-subtest)
+> executed.
+> 
+> To avoid the failure from a consecutive module unload attempt after it has
+> been already unloaded, unload the test module neither after geting a list
+> of test cases, nor after each leaving of igt_dynamic() section, only as a
+> first step of each dynamic sub-subtest body.
+> 
+> Reported-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-To avoid the failure from a consecutive module unload attempt after it has
-been already unloaded, unload the test module neither after geting a list
-of test cases, nor after each leaving of igt_dynamic() section, only as a
-first step of each dynamic sub-subtest body.
+Works perfect now, thanks for the fix.
 
-Reported-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
----
- lib/igt_kmod.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 33f059199f..5864be29d2 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -1328,8 +1328,6 @@ static bool kunit_get_tests(struct igt_list_head *tests,
- 		igt_require_f(r->code == IGT_EXIT_SKIP,
- 			      "Unexpected non-SKIP result while listing test cases\n");
- 
--	igt_skip_on(kmod_module_remove_module(tst->kmod, 0));
--
- 	return true;
- }
- 
-@@ -1356,6 +1354,8 @@ static void __igt_kunit(struct igt_ktest *tst,
- 			char glob[1024];
- 			int i;
- 
-+			igt_skip_on(kmod_module_remove_module(tst->kmod,
-+							      KMOD_REMOVE_FORCE));
- 			igt_skip_on(igt_kernel_tainted(&taints));
- 
- 			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
-@@ -1412,12 +1412,6 @@ static void __igt_kunit(struct igt_ktest *tst,
- 			igt_info("Kernel tainted, not executing more selftests.\n");
- 			break;
- 		}
--
--		if (igt_debug_on(kmod_module_remove_module(tst->kmod,
--							   KMOD_REMOVE_FORCE))) {
--			igt_info("Unloading test module failed, not executing more selftests.\n");
--			break;
--		}
- 	}
- }
- 
--- 
-2.45.2
+--
+Zbigniew
 
+> ---
+>  lib/igt_kmod.c | 10 ++--------
+>  1 file changed, 2 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 33f059199f..5864be29d2 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -1328,8 +1328,6 @@ static bool kunit_get_tests(struct igt_list_head *tests,
+>  		igt_require_f(r->code == IGT_EXIT_SKIP,
+>  			      "Unexpected non-SKIP result while listing test cases\n");
+>  
+> -	igt_skip_on(kmod_module_remove_module(tst->kmod, 0));
+> -
+>  	return true;
+>  }
+>  
+> @@ -1356,6 +1354,8 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  			char glob[1024];
+>  			int i;
+>  
+> +			igt_skip_on(kmod_module_remove_module(tst->kmod,
+> +							      KMOD_REMOVE_FORCE));
+>  			igt_skip_on(igt_kernel_tainted(&taints));
+>  
+>  			igt_assert_lt(snprintf(glob, sizeof(glob), "%s.%s",
+> @@ -1412,12 +1412,6 @@ static void __igt_kunit(struct igt_ktest *tst,
+>  			igt_info("Kernel tainted, not executing more selftests.\n");
+>  			break;
+>  		}
+> -
+> -		if (igt_debug_on(kmod_module_remove_module(tst->kmod,
+> -							   KMOD_REMOVE_FORCE))) {
+> -			igt_info("Unloading test module failed, not executing more selftests.\n");
+> -			break;
+> -		}
+>  	}
+>  }
+>  
+> -- 
+> 2.45.2
+> 
