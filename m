@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1929BC3DA63
-	for <igt-dev@archiver.kernel.org>; Wed, 24 Jul 2024 14:39:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27590C3DA61
+	for <igt-dev@archiver.kernel.org>; Wed, 24 Jul 2024 14:39:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9DBC10E6FC;
-	Wed, 24 Jul 2024 14:39:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA2D110E700;
+	Wed, 24 Jul 2024 14:39:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fJ7Utm+K";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iPp5HaKf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C93D10E6FC
- for <igt-dev@lists.freedesktop.org>; Wed, 24 Jul 2024 14:39:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8811B10E700
+ for <igt-dev@lists.freedesktop.org>; Wed, 24 Jul 2024 14:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721831969; x=1753367969;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Bt4BX6abvhsl/oT5CWZAP1+vuS8I/vuTM+T7yNoWJD8=;
- b=fJ7Utm+KoNWoMReXV9tsBMfdPlSgaWOnop3uX2K4mMQAccC1SRydoPNG
- Fki0NXQPb952WfyyMgM3T3dFg+Cwxevu66vjeKzN4TyEUzivJXa9at7hT
- 964nv9/EEcMvyXrAZyMRFuxU6e1VPfNHYrNe866RjH3Bom/uJnDawC66H
- GmvxYMKL+thavFtOW7F1c3eJGJTOGIHGay0BZAIyVfHf1ieC56dA9O1l0
- drQXwru3sR4Vr6ckTm3yFzDu3jgHLTWk57AzBIgQaDW4ZD25PYtqak/f2
- zwtGIqhcWpg1KElQPteBvbnEwiRXpaoQLvi83ZFoS9Hqn+FYtxx6qRAIV Q==;
-X-CSE-ConnectionGUID: X8ZOXaHST3Cr7H4LJm9s2A==
-X-CSE-MsgGUID: YNSJrDcpSv6Aq0LWjPc5Rg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19476685"
-X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="19476685"
+ t=1721831976; x=1753367976;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=k0pSk21+LPLG681zCgGAO8J9kjARQSPxZTNcIItHFi8=;
+ b=iPp5HaKftzvQ5JbPVxRgTRFdy0hrdx86gKNRYNvTsSLNGlrjAhfDNi9w
+ E9R8imJ6Uk4Ssocb9of00cFxEuGpIEJxkX+d1DTSY2WfANFXy/rROlU4N
+ W1dMuAj5fbWBjLwrEIZKk7/p5pAfn/UwaeGlURl+iVQjkOQXN3IH1tuUA
+ xtN86GeYUlHqKlbfi2HsaBHIuFqsoqpo8eaVs/QYuHiX74v2G2wZHN+BW
+ 5DVAXJqLaYvSPvyzUkqQmWe45SeVXN+X2mCdzMbjtre/fdch304QfqGAU
+ BQpvVTDDklYntNeLJjiHo2tTqTZfqtwvRLy5H8CqU2gprO24A2Nf8sMcR g==;
+X-CSE-ConnectionGUID: PGacfmTmQgqbwCF3Don2eQ==
+X-CSE-MsgGUID: manq45DuTeukya2kmK2TTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19476697"
+X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="19476697"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2024 07:39:29 -0700
-X-CSE-ConnectionGUID: X895P13OQ4StQnRJ3R/cdg==
-X-CSE-MsgGUID: j7nHJyQtQPmPyDnEEnxYFA==
+ 24 Jul 2024 07:39:36 -0700
+X-CSE-ConnectionGUID: qvrmVFSaTGmFn4TxD046+g==
+X-CSE-MsgGUID: 4AgufualQ6KiVr7HTxRQNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="52828251"
+X-IronPort-AV: E=Sophos;i="6.09,233,1716274800"; d="scan'208";a="52828340"
 Received: from kdec5-desk.igk.intel.com (HELO localhost) ([10.102.138.203])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2024 07:39:26 -0700
+ 24 Jul 2024 07:39:35 -0700
 From: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Chris Wilson <chris.p.wilson@intel.com>,
  Kamil Konieczny <kamil.konieczny@intel.com>
-Subject: [PATCH i-g-t 0/1] Add i915_selftest@wip selftests to execution
-Date: Wed, 24 Jul 2024 14:39:16 +0000
-Message-Id: <20240724143917.3405163-1-katarzyna.piecielska@intel.com>
+Subject: [PATCH i-g-t 1/1] Add i915_selftest@wip selftests to execution
+Date: Wed, 24 Jul 2024 14:39:17 +0000
+Message-Id: <20240724143917.3405163-2-katarzyna.piecielska@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240724143917.3405163-1-katarzyna.piecielska@intel.com>
+References: <20240724143917.3405163-1-katarzyna.piecielska@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,13 +75,38 @@ i915_selftest test in IGT. So let's do that.
 Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Chris Wilson <chris.p.wilson@intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@intel.com>
-
-Katarzyna Piecielska (1):
-  Add i915_selftest@wip selftests to execution
-
+---
  tests/intel/i915_selftest.c | 12 ++++++++++++
  1 file changed, 12 insertions(+)
 
+diff --git a/tests/intel/i915_selftest.c b/tests/intel/i915_selftest.c
+index aa29eb36a..47e09f988 100644
+--- a/tests/intel/i915_selftest.c
++++ b/tests/intel/i915_selftest.c
+@@ -634,6 +634,13 @@
+  * Mega feature: Performance interface
+  * Sub-category: Performance tests
+  * Functionality: perf
++ *
++ * SUBTEST: wip
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: Selftest subcategory
++ * Functionality: wip selftest
++ * Feature: gem_core
+  */
+ 
+ IGT_TEST_DESCRIPTION("Basic unit tests for i915.ko");
+@@ -657,4 +664,9 @@ igt_main
+ 			    "perf_selftests=-1 disable_display=1 st_filter=%s",
+ 			    env) < sizeof(opts));
+ 	igt_kselftests("i915", opts, "perf_selftests", "perf");
++
++	igt_assert(snprintf(opts, sizeof(opts),
++			    "wip_selftests=-1 disable_display=1 st_filter=%s",
++			    env) < sizeof(opts));
++	igt_kselftests("i915", opts, "wip_selftests", "wip");
+ }
 -- 
 2.34.1
 
