@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F2F3C3DA5D
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 04:27:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 085DAC3DA49
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 05:01:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E884F10E23C;
-	Thu, 25 Jul 2024 04:27:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IDERn2pW";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0982F10E23C
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 04:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721881631; x=1753417631;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1PJ8bD+4tJ9J6pbkMS08LlBjPk33Eg8Phs2vG9jhFOw=;
- b=IDERn2pWk3IMmBQ4Ai6AN3Nl3ZKDuoG7H9gRP9ucWvDR9RLcVffr3aCb
- Sebp3KeKDfdyE9X1Qt3c61nyMatwJKTDJEAKpHi9wHFT9Gv/+XOu8G5kH
- n4WlS5sz6a5teZ+KQQKl7tx6V2F94ErwSIqXe3NnJ3zc0AFqNFmDtWaIF
- jLfWpih6MDUVfLuNEuhskgWJ8n+9AAW+x3ihhLO+GkAdh5UVOQ6K5jA7V
- pePp8XPZrIVtAbItZIdrNrRZlsG7INcDA9O1w0DCVq0V5bxRbJ02I6fvl
- me8+Exaq2S88SSTN32DcJSmfGmSAolTgW9wsvk138XZCxyNnL0VBm44Yj A==;
-X-CSE-ConnectionGUID: AzPEpySTROCXR3klaKq0eQ==
-X-CSE-MsgGUID: e1hRbUPjTteUZq6x8klvQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19473122"
-X-IronPort-AV: E=Sophos;i="6.09,234,1716274800"; d="scan'208";a="19473122"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2024 21:27:10 -0700
-X-CSE-ConnectionGUID: p7jyQ961T3G1U9XJs/ju3Q==
-X-CSE-MsgGUID: j29nO/y2TZ6r9evGX7kq4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,234,1716274800"; d="scan'208";a="53401270"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Jul 2024 21:27:07 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [i-g-t V2 1/2] lib/drmtest: Ensure the XE driver is idle before
- starting a test
-Date: Thu, 25 Jul 2024 09:48:03 +0530
-Message-ID: <20240725041803.1764959-1-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240724070544.1734040-1-bhanuprakash.modem@intel.com>
-References: <20240724070544.1734040-1-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2DC8D10E33D;
+	Thu, 25 Jul 2024 05:01:12 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 28CFA10E33D;
+ Thu, 25 Jul 2024 05:01:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_series_starting_with_?=
+ =?utf-8?q?=5B1/2=5D_lib/amdgpu=3A_refactor_deadlock_tests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 25 Jul 2024 05:01:08 -0000
+Message-ID: <172188366815.364380.11602791844700634133@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240725024553.496197-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20240725024553.496197-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,85 +37,235 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Re-use the existing i915's exit handler to make sure that the
-XE driver is idle before starting the subtest.
+=3D=3D Series Details =3D=3D
 
-V2:
- - Add some delay after attempting the gt reset
- - Cover drm render device path too
+Series: series starting with [1/2] lib/amdgpu: refactor deadlock tests
+URL   : https://patchwork.freedesktop.org/series/136469/
+State : warning
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/294
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/drmtest.c | 24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+=3D=3D Summary =3D=3D
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index f8810da43..90885ec36 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -64,6 +64,7 @@
- #include "intel_reg.h"
- #include "ioctl_wrappers.h"
- #include "igt_dummyload.h"
-+#include "xe/xe_gt.h"
- #include "xe/xe_query.h"
- 
- /**
-@@ -663,12 +664,17 @@ static void __cancel_work_at_exit(int fd)
- {
- 	igt_terminate_spins(); /* for older kernels */
- 
--	igt_params_set(fd, "reset", "%u", -1u /* any method */);
--	igt_drop_caches_set(fd,
--			    /* cancel everything */
--			    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
--			    /* cleanup */
--			    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
-+	if (is_xe_device(fd)) {
-+		xe_force_gt_reset_all(fd);
-+		sleep(1);
-+	} else {
-+		igt_params_set(fd, "reset", "%u", -1u /* any method */);
-+		igt_drop_caches_set(fd,
-+				    /* cancel everything */
-+				    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
-+				    /* cleanup */
-+				    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
-+	}
- }
- 
- static void cancel_work_at_exit(int sig)
-@@ -716,11 +722,11 @@ int drm_open_driver(int chipset)
- 	igt_skip_on_f(fd<0, "No known gpu found for chipset flags 0x%u (%s)\n",
- 		      chipset, chipset_to_str(chipset));
- 
--	/* For i915, at least, we ensure that the driver is idle before
-+	/* For i915 & xe, at least, we ensure that the driver is idle before
- 	 * starting a test and we install an exit handler to wait until
- 	 * idle before quitting.
- 	 */
--	if (is_i915_device(fd)) {
-+	if (is_intel_device(fd)) {
- 		if (__sync_fetch_and_add(&open_count, 1) == 0) {
- 			__cancel_work_at_exit(fd);
- 			at_exit_drm_fd = drm_reopen_driver(fd);
-@@ -836,7 +842,7 @@ int drm_open_driver_render(int chipset)
- 		return fd;
- 
- 	at_exit_drm_render_fd = drm_reopen_driver(fd);
--	if (chipset & DRIVER_INTEL) {
-+	if (chipset & (DRIVER_INTEL | DRIVER_XE)) {
- 		__cancel_work_at_exit(fd);
- 		igt_install_exit_handler(cancel_work_at_exit_render);
- 	}
--- 
-2.43.2
+Pipeline status: FAILED.
 
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1232357 f=
+or the overview.
+
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
+igt-ci-tags/-/jobs/61483517):
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/1030] Generating version.h with a custom command.
+  [2/325] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
+_queue_reset.c.o'.
+  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
+  cc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@exe -Itests/amdgpu -I../tests/=
+amdgpu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I.=
+./lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include=
+/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixma=
+n-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I=
+/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/x86_64-lin=
+ux-gnu -I/usr/include/valgrind -I/usr/include/alsa -I/usr/include -fdiagnos=
+tics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wex=
+tra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=
+=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimpli=
+cit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-at=
+tribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-styl=
+e-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes=
+ -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-miss=
+ing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limit=
+s -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darra=
+y-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -W=
+error=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=
+=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dse=
+quence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-mallo=
+c -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD -MQ 'tests/am=
+dgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -MF 'tests/amdgpu/b9=
+f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 'tests/amdgpu/b9f2b1d@=
+@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/amdgpu/amd_queue_rese=
+t.c
+  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
+=E2=80=99:
+  ../tests/amdgpu/amd_queue_reset.c:479:8: error: implicit declaration of f=
+unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
+=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
+ration]
+    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          amdgpu_cs_query_reset_state
+  ../tests/amdgpu/amd_queue_reset.c:479:8: warning: nested extern declarati=
+on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1721883240:step_script
+  section_start:1721883240:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1721883241:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/61483520):
+  ninja: Entering directory `build'
+  [1/673] Generating version.h with a custom command.
+  [2/291] Linking target tests/amdgpu/amd_vcn.
+  [3/291] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
+_queue_reset.c.o'.
+  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
+  /usr/bin/aarch64-linux-gnu-gcc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@ex=
+e -Itests/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../=
+include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/=
+include/cairo -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0=
+/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetyp=
+e2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouv=
+eau -I/usr/include/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/include=
+/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Wi=
+nvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_F=
+ORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wforma=
+t=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmiss=
+ing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-exter=
+ns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstri=
+ct-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitiali=
+zed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -W=
+no-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -=
+Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-=
+conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-b=
+races -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type=
+ -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-=
+builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD =
+-MQ 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -MF 'te=
+sts/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 'tests/am=
+dgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/amdgpu/a=
+md_queue_reset.c
+  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
+=E2=80=99:
+  ../tests/amdgpu/amd_queue_reset.c:479:8: error: implicit declaration of f=
+unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
+=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
+ration]
+    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          amdgpu_cs_query_reset_state
+  ../tests/amdgpu/amd_queue_reset.c:479:8: warning: nested extern declarati=
+on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1721883209:step_script
+  section_start:1721883209:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1721883210:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
+fx-ci/igt-ci-tags/-/jobs/61483519):
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/669] Generating version.h with a custom command.
+  [2/281] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
+_queue_reset.c.o'.
+  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
+  /usr/bin/arm-linux-gnueabihf-gcc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@=
+exe -Itests/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I.=
+./include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/us=
+r/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib=
+-2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/fre=
+etype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/=
+nouveau -I/usr/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/usr/i=
+nclude/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wa=
+ll -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.=
+h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -=
+Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations =
+-Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested=
+-externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow =
+-Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-unin=
+itialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-comp=
+are -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dadd=
+ress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
+=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmi=
+ssing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretu=
+rn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-string=
+s -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthrea=
+d  -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' =
+-MF 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 't=
+ests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/a=
+mdgpu/amd_queue_reset.c
+  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
+=E2=80=99:
+  ../tests/amdgpu/amd_queue_reset.c:479:8: error: implicit declaration of f=
+unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
+=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
+ration]
+    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          amdgpu_cs_query_reset_state
+  ../tests/amdgpu/amd_queue_reset.c:479:8: warning: nested extern declarati=
+on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1721883236:step_script
+  section_start:1721883236:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1721883236:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+ =20
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
+x-ci/igt-ci-tags/-/jobs/61483521):
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/669] Generating version.h with a custom command.
+  [2/278] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
+_queue_reset.c.o'.
+  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
+  /usr/bin/mips-linux-gnu-gcc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@exe -=
+Itests/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../inc=
+lude/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/inc=
+lude/cairo -I/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/inclu=
+de -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/=
+usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I=
+/usr/include/mips-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fd=
+iagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pc=
+h -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SO=
+URCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wi=
+mplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-forma=
+t-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-=
+style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-protot=
+ypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-=
+missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-l=
+imits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3D=
+array-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversio=
+n -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -We=
+rror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=
+=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-=
+malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD -MQ 'tes=
+ts/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -MF 'tests/amdg=
+pu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 'tests/amdgpu/b9f=
+2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/amdgpu/amd_queue=
+_reset.c
+  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
+=E2=80=99:
+  ../tests/amdgpu/amd_queue_reset.c:479:8: error: implicit declaration of f=
+unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
+=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
+ration]
+    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+          amdgpu_cs_query_reset_state
+  ../tests/amdgpu/amd_queue_reset.c:479:8: warning: nested extern declarati=
+on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1721883212:step_script
+  section_start:1721883212:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1721883213:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+=3D=3D Logs =3D=3D
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
+ipelines/1232357
