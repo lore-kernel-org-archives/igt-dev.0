@@ -4,53 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07997C3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 18:44:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43DBFC3DA5D
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 18:47:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B1A1910E8CD;
-	Thu, 25 Jul 2024 18:44:54 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jk/NFrve";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D9DF10E8CD
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 18:44:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721933092; x=1753469092;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cwiZvYCDcjkxgneSZVx3QOQypiDqMBfDQMeD3S7LqYw=;
- b=jk/NFrveE1zG+tvCOAqe2iZg+tscOejdVConjCj5xLGsCZlg8dx9Waim
- ZnZrkO5uJQhxePRd9xL+/L9msUZEKBxWLxcg7jvGuRvuU9aUmXn9F2HPC
- 5sdo7D2fNr8iADjR1KIoQwHtyH/gj1oW3lrAHyySQwnw/aBIn1icVuK7A
- iyx6MrhQ77N2JBJoFQiKFuz/SdAVfX530of1qvSy+Inl6kLAj/mHfjzTm
- ou2fJLfZhYfN5ZuA8TbUdGl/tr0VzSxVZkiEuOA9w0DAH3lFivRxvBQzl
- xy7O3528OhNWepo/OOdzbeA/5uApdPYSZ1FGqd4cH0R+N0Gwsta8HoKD6 Q==;
-X-CSE-ConnectionGUID: 73rQpwzHSeOifyda8shBIA==
-X-CSE-MsgGUID: mYxi40lbRL+RtJ57eyW5HQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="12716111"
-X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="12716111"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 11:44:52 -0700
-X-CSE-ConnectionGUID: H73SGjRPTfirpbHFyLYnoQ==
-X-CSE-MsgGUID: mqCRqVJLQGqwC3j/MiDdvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="57829882"
-Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 11:44:51 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com
-Subject: [PATCH v3] tests/intel/xe_vm: Add test for 64k page corners
-Date: Thu, 25 Jul 2024 11:45:38 -0700
-Message-Id: <20240725184538.1938050-1-matthew.brost@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id F130E10E8B7;
+	Thu, 25 Jul 2024 18:47:33 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1117810E8B7;
+ Thu, 25 Jul 2024 18:47:32 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3555563929708506333=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bv3=2C1?=
+ =?utf-8?q?/2=5D_tests/intel/xe=5Fpm=5Fresidency=3A_convert_all_tests_to_dyn?=
+ =?utf-8?q?amic_subtests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matthew Brost" <matthew.brost@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 25 Jul 2024 18:47:32 -0000
+Message-ID: <172193325206.383560.15696964934785073325@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240725172344.1927234-1-matthew.brost@intel.com>
+In-Reply-To: <20240725172344.1927234-1-matthew.brost@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,168 +38,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add sections which splits 64k pages in 4k pages or splits compact 64k in
-64k pages.
+--===============3555563929708506333==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2:
- - Use SZ_* (Zbigniew)
- - Remove clock block (Zbigniew)
- - Update commit message / comments
-v3:
- - Send correct version
+== Series Details ==
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
----
- tests/intel/xe_vm.c | 125 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 125 insertions(+)
+Series: series starting with [v3,1/2] tests/intel/xe_pm_residency: convert all tests to dynamic subtests
+URL   : https://patchwork.freedesktop.org/series/136515/
+State : success
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index a4f6c7a0b4..f41c6aca53 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -366,6 +366,125 @@ static void userptr_invalid(int fd)
- 	xe_vm_destroy(fd, vm);
- }
- 
-+/**
-+ * SUBTEST: compact-64k-pages
-+ * Description:
-+ *	Take corner cases related to compact and 64k pages
-+ * Functionality: bind
-+ * Test category: functionality test
-+ */
-+static void compact_64k_pages(int fd, struct drm_xe_engine_class_instance *eci)
-+{
-+	size_t page_size = xe_get_default_alignment(fd);
-+	uint64_t addr0 = 0x10000000ull, addr1;
-+	uint32_t vm;
-+	uint32_t bo0, bo1;
-+	uint32_t exec_queue;
-+	void *ptr0, *ptr1;
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+	};
-+	struct {
-+		uint32_t batch[16];
-+		uint64_t pad;
-+		uint32_t data;
-+	} *data = NULL;
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	uint64_t batch_offset;
-+	uint64_t batch_addr;
-+	uint64_t sdi_offset;
-+	uint64_t sdi_addr;
-+	int b = 0;
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+
-+	bo0 = xe_bo_create(fd, vm, SZ_8M,
-+			   vram_if_possible(fd, eci->gt_id),
-+			   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	ptr0 = xe_bo_map(fd, bo0, SZ_8M);
-+
-+	bo1 = xe_bo_create(fd, vm, SZ_8M / 2,
-+			   vram_if_possible(fd, eci->gt_id),
-+			   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	ptr1 = xe_bo_map(fd, bo1, SZ_8M / 2);
-+
-+	sync[0].handle = syncobj_create(fd, 0);
-+	if (page_size == SZ_4K) {
-+		/* Setup mapping to split a 64k PTE in cache */
-+		xe_vm_bind_async(fd, vm, 0, bo0, 0, addr0, SZ_64K, 0, 0);
-+
-+		addr1 = addr0 + (SZ_64K / 2);
-+		xe_vm_bind_async(fd, vm, 0, bo1, 0, addr1, SZ_64K / 2,
-+				 sync, 1);
-+	} else if (page_size == SZ_64K) {
-+		addr0 += page_size;
-+
-+		/* Setup mapping to split compact 64k pages */
-+		xe_vm_bind_async(fd, vm, 0, bo0, 0, addr0, SZ_8M, 0, 0);
-+
-+		addr1 = addr0 + (SZ_8M / 4);
-+		xe_vm_bind_async(fd, vm, 0, bo1, 0, addr1, SZ_8M / 2,
-+				 sync, 1);
-+	}
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	/* Verify 1st and 2nd mappings working */
-+	batch_offset = (char *)&data[0].batch - (char *)data;
-+	batch_addr = addr0 + batch_offset;
-+	sdi_offset = (char *)&data[0].data - (char *)data;
-+	sdi_addr = addr0 + sdi_offset;
-+	data = ptr0;
-+
-+	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data[0].batch[b++] = sdi_addr;
-+	data[0].batch[b++] = sdi_addr >> 32;
-+	data[0].batch[b++] = 0xc0ffee;
-+
-+	sdi_addr = addr1 + sdi_offset;
-+	data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data[0].batch[b++] = sdi_addr;
-+	data[0].batch[b++] = sdi_addr >> 32;
-+	data[0].batch[b++] = 0xc0ffee;
-+
-+	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data[0].batch));
-+
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].handle = syncobj_create(fd, 0);
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = batch_addr;
-+	xe_exec(fd, &exec);
-+
-+	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0,
-+				NULL));
-+	igt_assert_eq(data[0].data, 0xc0ffee);
-+	data = ptr1;
-+	igt_assert_eq(data[0].data, 0xc0ffee);
-+
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	syncobj_reset(fd, &sync[0].handle, 1);
-+	xe_vm_unbind_all_async(fd, vm, 0, bo0, 0, 0);
-+	xe_vm_unbind_all_async(fd, vm, 0, bo1, sync, 1);
-+	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	syncobj_destroy(fd, sync[0].handle);
-+	syncobj_destroy(fd, sync[1].handle);
-+	munmap(ptr0, SZ_8M);
-+	munmap(ptr1, SZ_8M / 2);
-+	gem_close(fd, bo0);
-+	gem_close(fd, bo1);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- /**
-  * SUBTEST: shared-%s-page
-  * Description: Test shared arg[1] page
-@@ -1973,6 +2092,12 @@ igt_main
- 	igt_subtest("bind-flag-invalid")
- 		bind_flag_invalid(fd);
- 
-+	igt_subtest("compact-64k-pages")
-+		xe_for_each_engine(fd, hwe) {
-+			compact_64k_pages(fd, hwe);
-+			break;
-+		}
-+
- 	igt_subtest("shared-pte-page")
- 		xe_for_each_engine(fd, hwe)
- 			shared_pte_page(fd, hwe, 4,
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7937_BAT -> XEIGTPW_11462_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7937 -> IGTPW_11462
+  * Linux: xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2 -> xe-1667-9f8e597a1c39d7e316f9479e6f627c15dbc58e1d
+
+  IGTPW_11462: 98fcaa778bb4aa99d59fcce9c54f244b90363d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7937: eba69333dfe8c295d053997367e395d7bde2b4b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2: 724a2a53988a57709d7f9dcd5c58dd5737d45cb2
+  xe-1667-9f8e597a1c39d7e316f9479e6f627c15dbc58e1d: 9f8e597a1c39d7e316f9479e6f627c15dbc58e1d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11462/index.html
+
+--===============3555563929708506333==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [v3,1/2] tests/intel/xe_pm_residency: convert all tests to dynamic subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136515/">https://patchwork.freedesktop.org/series/136515/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11462/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11462/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7937_BAT -&gt; XEIGTPW_11462_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7937 -&gt; IGTPW_11462</li>
+<li>Linux: xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2 -&gt; xe-1667-9f8e597a1c39d7e316f9479e6f627c15dbc58e1d</li>
+</ul>
+<p>IGTPW_11462: 98fcaa778bb4aa99d59fcce9c54f244b90363d51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7937: eba69333dfe8c295d053997367e395d7bde2b4b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2: 724a2a53988a57709d7f9dcd5c58dd5737d45cb2<br />
+  xe-1667-9f8e597a1c39d7e316f9479e6f627c15dbc58e1d: 9f8e597a1c39d7e316f9479e6f627c15dbc58e1d</p>
+
+</body>
+</html>
+
+--===============3555563929708506333==--
