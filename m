@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 062D0C3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 13:38:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F02AC3DA49
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 13:45:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BBA2210E7F6;
-	Thu, 25 Jul 2024 13:38:17 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F9F010E7F6;
- Thu, 25 Jul 2024 13:38:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7533268775716437317=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4BA8410E7FE;
+	Thu, 25 Jul 2024 13:45:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M8WMYFQ7";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBA6210E7FE
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 13:45:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721915125; x=1753451125;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=s7qEimJ9PUkl0tAANLitFAn4OBl5tRNGdIwBwG9P/4o=;
+ b=M8WMYFQ710qO0HB7CdNNiRkULb7HDzI5q2T5LonVxaBKAk3xmkH5ui88
+ wELOMtFiHoyUEpqeNEOwjzhSILwfMJYTaLnxCa9NRcgbLnNKBk+h3Ih1w
+ ccBp3Y909lN4Uhp3X2gunxD9JIwKhdiDs73C+y7OP6LsakDM/Sh+WInz/
+ moRly14dGKw9DR0O5CblWbm3JXpu/KVc9hv6p+jljH6mSI2+wCptM0m3u
+ 0fwPczFNdTjKjyMaLF4V22bJWDgB1LXZXv2c82TNghiKqQoGcrb4ZpGvS
+ qM/X4F3KsT7C23d6NSwig9LVzZrAC0S0mltwnrGL/PYT1clZCYNUx/tCI w==;
+X-CSE-ConnectionGUID: u55QRo50TMWK1X//4jVptQ==
+X-CSE-MsgGUID: STFqXD6kQAaDtcyG7paZzw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19531696"
+X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="19531696"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2024 06:45:24 -0700
+X-CSE-ConnectionGUID: eBI/wav7RGunNWauYwwHxg==
+X-CSE-MsgGUID: J5xEuv4CRKCCZ6qzFm8mbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="53168746"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.0.122])
+ ([10.246.0.122])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2024 06:45:23 -0700
+Message-ID: <75f51358-3cba-41c3-92f2-dadf8eb33604@linux.intel.com>
+Date: Thu, 25 Jul 2024 15:45:19 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_benchmarks/gem=5Fwsim=3A_suppo?=
- =?utf-8?q?rt_gens_without_relocations_and_mmap_fix_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 25 Jul 2024 13:38:16 -0000
-Message-ID: <172191469631.381723.10946587175744517191@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240725122612.1290090-1-marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20240725122612.1290090-1-marcin.bernatowicz@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t V2 1/2] lib/drmtest: Ensure the XE driver is idle before
+ starting a test
+To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+References: <20240724070544.1734040-1-bhanuprakash.modem@intel.com>
+ <20240725041803.1764959-1-bhanuprakash.modem@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20240725041803.1764959-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +72,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7533268775716437317==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: benchmarks/gem_wsim: support gens without relocations and mmap fix (rev2)
-URL   : https://patchwork.freedesktop.org/series/127840/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7937_BAT -> XEIGTPW_11458_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
 
 
-Changes
--------
+On 7/25/2024 6:18 AM, Bhanuprakash Modem wrote:
+> Re-use the existing i915's exit handler to make sure that the
+> XE driver is idle before starting the subtest.
+> 
+> V2:
+>   - Add some delay after attempting the gt reset
+>   - Cover drm render device path too
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/294
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>   lib/drmtest.c | 24 +++++++++++++++---------
+>   1 file changed, 15 insertions(+), 9 deletions(-)
+> 
+> diff --git a/lib/drmtest.c b/lib/drmtest.c
+> index f8810da43..90885ec36 100644
+> --- a/lib/drmtest.c
+> +++ b/lib/drmtest.c
+> @@ -64,6 +64,7 @@
+>   #include "intel_reg.h"
+>   #include "ioctl_wrappers.h"
+>   #include "igt_dummyload.h"
+> +#include "xe/xe_gt.h"
+>   #include "xe/xe_query.h"
+>   
+>   /**
+> @@ -663,12 +664,17 @@ static void __cancel_work_at_exit(int fd)
+>   {
+>   	igt_terminate_spins(); /* for older kernels */
+>   
+> -	igt_params_set(fd, "reset", "%u", -1u /* any method */);
+> -	igt_drop_caches_set(fd,
+> -			    /* cancel everything */
+> -			    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
+> -			    /* cleanup */
+> -			    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
+> +	if (is_xe_device(fd)) {
+> +		xe_force_gt_reset_all(fd);
 
-  No changes found
+It looks quite invasive, we will loose the guc log ?
 
+> +		sleep(1);
 
-Build changes
--------------
+How the 1 is selected? Is it reliable enough ?
 
-  * IGT: IGT_7937 -> IGTPW_11458
-  * Linux: xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2 -> xe-1666-e8874cead8c9d93afcd62d5dc7aaf3f28a64c60f
-
-  IGTPW_11458: 214f86eddcf78ead49c8e429510f37d9d0fa0090 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7937: eba69333dfe8c295d053997367e395d7bde2b4b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2: 724a2a53988a57709d7f9dcd5c58dd5737d45cb2
-  xe-1666-e8874cead8c9d93afcd62d5dc7aaf3f28a64c60f: e8874cead8c9d93afcd62d5dc7aaf3f28a64c60f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11458/index.html
-
---===============7533268775716437317==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>benchmarks/gem_wsim: support gens without relocations and mmap fix (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/127840/">https://patchwork.freedesktop.org/series/127840/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11458/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11458/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7937_BAT -&gt; XEIGTPW_11458_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7937 -&gt; IGTPW_11458</li>
-<li>Linux: xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2 -&gt; xe-1666-e8874cead8c9d93afcd62d5dc7aaf3f28a64c60f</li>
-</ul>
-<p>IGTPW_11458: 214f86eddcf78ead49c8e429510f37d9d0fa0090 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7937: eba69333dfe8c295d053997367e395d7bde2b4b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2: 724a2a53988a57709d7f9dcd5c58dd5737d45cb2<br />
-  xe-1666-e8874cead8c9d93afcd62d5dc7aaf3f28a64c60f: e8874cead8c9d93afcd62d5dc7aaf3f28a64c60f</p>
-
-</body>
-</html>
-
---===============7533268775716437317==--
+> +	} else {
+> +		igt_params_set(fd, "reset", "%u", -1u /* any method */);
+> +		igt_drop_caches_set(fd,
+> +				    /* cancel everything */
+> +				    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
+> +				    /* cleanup */
+> +				    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
+> +	}
+>   }
+>   
+>   static void cancel_work_at_exit(int sig)
+> @@ -716,11 +722,11 @@ int drm_open_driver(int chipset)
+>   	igt_skip_on_f(fd<0, "No known gpu found for chipset flags 0x%u (%s)\n",
+>   		      chipset, chipset_to_str(chipset));
+>   
+> -	/* For i915, at least, we ensure that the driver is idle before
+> +	/* For i915 & xe, at least, we ensure that the driver is idle before
+>   	 * starting a test and we install an exit handler to wait until
+>   	 * idle before quitting.
+>   	 */
+> -	if (is_i915_device(fd)) {
+> +	if (is_intel_device(fd)) {
+>   		if (__sync_fetch_and_add(&open_count, 1) == 0) {
+>   			__cancel_work_at_exit(fd);
+>   			at_exit_drm_fd = drm_reopen_driver(fd);
+> @@ -836,7 +842,7 @@ int drm_open_driver_render(int chipset)
+>   		return fd;
+>   
+>   	at_exit_drm_render_fd = drm_reopen_driver(fd);
+> -	if (chipset & DRIVER_INTEL) {
+> +	if (chipset & (DRIVER_INTEL | DRIVER_XE)) {
+>   		__cancel_work_at_exit(fd);
+>   		igt_install_exit_handler(cancel_work_at_exit_render);
+>   	}
