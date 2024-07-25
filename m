@@ -4,57 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0AFFC3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 09:12:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFE7C3DA5D
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 09:13:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7635A10E03F;
-	Thu, 25 Jul 2024 09:12:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 319CC10E0B8;
+	Thu, 25 Jul 2024 09:13:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MvHatiDc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gLAoeVnQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C11810E03F
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 09:12:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFABE10E0B8
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 09:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721898723; x=1753434723;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to;
- bh=MWB5emv6YchkItSh8BLTqlQGXr684YJpkzkpUo14ItA=;
- b=MvHatiDcMELjJw1lGpLpDlhPB4+VUwJlby7z5R/ilsKfQehmp52DZ7WB
- jE7tToOudBJrRvprqEOSQ7RQo8g54EAy1CxZt0qO54hzvI0XILdRFe1lm
- cfuM4wg6I/sO1m1jv/rPPjtdtXC+3RecXDzCCYrsEzDzZb7QyX28BBFm3
- bifb40W+uEKcKc3j/r1K5xVNehoFtFWFpgMvWqUVyJLJLBM2i7u7RNS7k
- /J8DkH5oC8uDlClsgTWTbXDSmFmy/B05wBn/Eh7Lo7xxgD5POQas7g9DY
- rKoBe+kD4iAXc+LQhwy2eLOxeNeOIm1BNapSSr3rUHQ3zkRk3vM3YgdNR A==;
-X-CSE-ConnectionGUID: Q5r1HgB3QDCDooo6mwOqtw==
-X-CSE-MsgGUID: foYgyCYORIyu17na4DgXHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19315352"
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208,217";a="19315352"
+ t=1721898815; x=1753434815;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=mXgd6MYspodpIs3OK4XyrwW5QE/GGlnwh+5iX3Q/McQ=;
+ b=gLAoeVnQsVfN84hit6Vf5PCMEQKL1Lgnz2kLeFHuhM9ml2POCCt504Eo
+ 5jey3HFTd3fIOJQKQSsSY+J5t3e+dHG8gtawHuDp8fE8RPb9NGnELB80L
+ WUuVSW/g7of48wtm+7g1Tn1W+qG27v8PSO5kZ3iJK+dIyWhuz9isU+sq9
+ xJ/asU4YfBYE6LeEACmGp/Sgv5NYBTIKIKsiGU6FBoeZHkue5yX7NQX/N
+ lK2J52fhnVgqTMXM9FHDg9rodgn7aH2s65YllShNW72PfyJkikHvFa756
+ pNynlC1qnyamHUfkaxo6ASIm5NXcJgI7XUo1cq0jPV6RxIYDOGtORz7jP A==;
+X-CSE-ConnectionGUID: S6Cjfr7xQxmisb7BX9ttUQ==
+X-CSE-MsgGUID: LPg33nNyRSm3LtZHkwTIwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19315579"
+X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="19315579"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 02:12:02 -0700
-X-CSE-ConnectionGUID: aW96bPWEQaurUta9zN8kWg==
-X-CSE-MsgGUID: 9xHg8MGHSgylkXsnP+1Uaw==
+ 25 Jul 2024 02:13:35 -0700
+X-CSE-ConnectionGUID: RcPl2g/gQRe4S7Ye+/lrqQ==
+X-CSE-MsgGUID: gmhrSHfjTj+PzuWOA2betg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208,217";a="76078593"
-Received: from joshikun-mobl.gar.corp.intel.com (HELO [10.247.250.237])
- ([10.247.250.237])
+X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="76078970"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.0.122])
+ ([10.246.0.122])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 02:12:00 -0700
-Content-Type: multipart/alternative;
- boundary="------------pw5XUq735tiUhb3lQ07ahXed"
-Message-ID: <194ccdf6-001f-4e98-8518-aefe70c92510@intel.com>
-Date: Thu, 25 Jul 2024 14:41:56 +0530
+ 25 Jul 2024 02:13:34 -0700
+Message-ID: <b0bd790c-dfbf-4b56-9b14-899116c1c1f5@linux.intel.com>
+Date: Thu, 25 Jul 2024 11:13:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t,2/2] tests/kms_vrr: Add new test to validate LOBF
-To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-Cc: animesh.manna@intel.com
-References: <20240723042850.2651902-3-jeevan.b@intel.com>
+Subject: Re: [PATCH v2 i-g-t 1/2] benchmarks/gem_wsim: Support gens without
+ relocations
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Tvrtko Ursulin <tursulin@ursulin.net>,
+ Tvrtko Ursulin <tursulin@igalia.com>, zbigniew.kempczynski@intel.com,
+ lukasz.laguna@intel.com
+References: <20231214201302.29844-1-marcin.bernatowicz@linux.intel.com>
+ <20231214201302.29844-2-marcin.bernatowicz@linux.intel.com>
+ <20240723095232.7hihfoqwwdrvgosf@kamilkon-DESK.igk.intel.com>
 Content-Language: en-US
-From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-In-Reply-To: <20240723042850.2651902-3-jeevan.b@intel.com>
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20240723095232.7hihfoqwwdrvgosf@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,300 +75,312 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is a multi-part message in MIME format.
---------------pw5XUq735tiUhb3lQ07ahXed
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Hi Kamil,
 
-Hello Jeevan,
-
-On 7/23/2024 9:58 AM, Jeevan B wrote:
-> Validate pseudo static refresh rate changes in the VRR with
-> fixed refresh rate framework for non-psr scenarios.
+On 7/23/2024 11:52 AM, Kamil Konieczny wrote:
+> Hi Marcin,
+> On 2023-12-14 at 21:13:01 +0100, Marcin Bernatowicz wrote:
+>> This commit adopts the approach present in lib/igt_dummyload
+>> to support generations that do not use relocations.
+>> The intel_allocator is leveraged to compute offsets on these generations.
+>> Apart of this change, the 'struct vm' is now shared by both i915 and
+>> Xe. It includes a 'vm_id' that the intel_allocator uses for address
+>> assignment.
+>> This modification enhances gem_wsim compatibility with newer platforms
+>> running i915.
+> 
+> Overall looks good, only few nits, see below.
+> 
+>>
+>> v2: split mmap change to separate patch (Tvrtko)
+> 
+> Added new e-mails for Tvrtko: +Cc: Tvrtko Ursulin <tursulin@ursulin.net>
+> +Cc: Tvrtko Ursulin <tursulin@igalia.com>
+> 
+>>
+>> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+>> ---
+>>   benchmarks/gem_wsim.c | 96 ++++++++++++++++++++++++++++++++-----------
+>>   1 file changed, 71 insertions(+), 25 deletions(-)
+>>
+>> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+>> index 30673da8f..a1db37d4e 100644
+>> --- a/benchmarks/gem_wsim.c
+>> +++ b/benchmarks/gem_wsim.c
+>> @@ -205,7 +205,7 @@ struct w_step {
+>>   	uint32_t bb_handle;
+>>   };
+>>   
+>> -struct xe_vm {
+>> +struct vm {
+>>   	uint32_t id;
+>>   	bool compute_mode;
+>>   	uint64_t ahnd;
+>> @@ -226,9 +226,9 @@ struct ctx {
+>>   	struct bond *bonds;
+>>   	bool load_balance;
+>>   	uint64_t sseu;
+>> +	/* reference to vm */
+>> +	struct vm *vm;
+>>   	struct {
+>> -		/* reference to vm */
+>> -		struct xe_vm *vm;
+>>   		/* exec queues */
+>>   		unsigned int nr_queues;
+>>   		struct xe_exec_queue *queue_list;
+>> @@ -256,10 +256,8 @@ struct workload {
+>>   	unsigned int nr_ctxs;
+>>   	struct ctx *ctx_list;
+>>   
+>> -	struct {
+>> -		unsigned int nr_vms;
+>> -		struct xe_vm *vm_list;
+>> -	} xe;
+>> +	unsigned int nr_vms;
+>> +	struct vm *vm_list;
+>>   
+>>   	struct working_set **working_sets; /* array indexed by set id */
+>>   	int max_working_set_id;
+>> @@ -1539,9 +1537,11 @@ static unsigned int create_bb(struct w_step *w, int self)
+>>   	/* Save delta for indirect read by COND_BBE */
+>>   	*cs++ = MI_STORE_REGISTER_MEM_CMD | (1 + use_64b) | MI_CS_MMIO_DST;
+>>   	*cs++ = CS_GPR(NOW_TS);
+>> +	w->i915.reloc[r].presumed_offset = w->i915.obj[self].offset;
+>>   	w->i915.reloc[r].target_handle = self;
+>>   	w->i915.reloc[r].offset = offset_in_page(cs);
+>> -	*cs++ = w->i915.reloc[r].delta = 4000;
+>> +	w->i915.reloc[r].delta = 4000;
+>> +	*cs++ = w->i915.reloc[r].presumed_offset + w->i915.reloc[r].delta;
+>>   	*cs++ = 0;
+>>   	r++;
+>>   
+>> @@ -1556,17 +1556,21 @@ static unsigned int create_bb(struct w_step *w, int self)
+>>   	*cs++ = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | (1 + use_64b);
+>>   	w->i915.bb_duration = cs;
+>>   	*cs++ = 0;
+>> +	w->i915.reloc[r].presumed_offset = w->i915.obj[self].offset;
+>>   	w->i915.reloc[r].target_handle = self;
+>>   	w->i915.reloc[r].offset = offset_in_page(cs);
+>> -	*cs++ = w->i915.reloc[r].delta = 4000;
+>> +	w->i915.reloc[r].delta = 4000;
+>> +	*cs++ = w->i915.reloc[r].presumed_offset + w->i915.reloc[r].delta;
+>>   	*cs++ = 0;
+>>   	r++;
+>>   
+>>   	/* Otherwise back to recalculating delta */
+>>   	*cs++ = MI_BATCH_BUFFER_START | 1 << 8 | use_64b;
+>> +	w->i915.reloc[r].presumed_offset = w->i915.obj[self].offset;
+>>   	w->i915.reloc[r].target_handle = self;
+>>   	w->i915.reloc[r].offset = offset_in_page(cs);
+>> -	*cs++ = w->i915.reloc[r].delta = offset_in_page(jmp);
+>> +	w->i915.reloc[r].delta = offset_in_page(jmp);
+>> +	*cs++ = w->i915.reloc[r].presumed_offset + w->i915.reloc[r].delta;
+>>   	*cs++ = 0;
+>>   	r++;
+>>   
+>> @@ -1648,10 +1652,10 @@ xe_get_eq(struct workload *wrk, const struct w_step *w)
+>>   	return eq;
+>>   }
+>>   
+>> -static struct xe_vm *
+>> -xe_get_vm(struct workload *wrk, const struct w_step *w)
+>> +static struct vm *
+>> +get_vm(struct workload *wrk, const struct w_step *w)
+> 
+> You don't use 'w' here so maybe drop this param?
+For now, let's keep the changes in the patch minimal to avoid 
+introducing unnecessary modifications. I anticipate that this parameter 
+will become necessary as we expand our handling of multiple VMs.
+> 
+>>   {
+>> -	return wrk->xe.vm_list;
+>> +	return wrk->vm_list;
+>>   }
+>>   
+>>   static uint32_t alloc_bo(int i915, unsigned long *size)
+>> @@ -1673,6 +1677,16 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>>   	struct dep_entry *dep;
+>>   	unsigned int j = 0;
+>>   	unsigned int nr_obj = 2 + w->data_deps.nr;
+>> +	unsigned int objflags = 0;
+>> +	uint64_t addr;
+>> +	struct vm *vm = get_vm(wrk, w);
+>> +
+>> +	addr = gem_aperture_size(fd) / 2;
+>> +	if (addr >> 32)
+>> +		objflags |= EXEC_OBJECT_SUPPORTS_48B_ADDRESS;
+>> +
+>> +	if (vm->ahnd)
+>> +		objflags |= EXEC_OBJECT_PINNED;
+>>   
+>>   	w->i915.obj = calloc(nr_obj, sizeof(*w->i915.obj));
+>>   	igt_assert(w->i915.obj);
+>> @@ -1680,11 +1694,18 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>>   	w->bb_size = PAGE_SIZE;
+>>   	w->i915.obj[j].handle = alloc_bo(fd, &w->bb_size);
+>>   	w->i915.obj[j].flags = EXEC_OBJECT_WRITE;
+>> +	if (vm->ahnd) {
+>> +		addr = get_offset(vm->ahnd, w->i915.obj[j].handle, w->bb_size, 0);
+>> +		w->i915.obj[j].offset = CANONICAL(addr);
+>> +		w->i915.obj[j].flags |= objflags;
+>> +	}
+>> +
+>>   	j++;
+>>   	igt_assert(j < nr_obj);
+>>   
+>>   	for_each_dep(dep, w->data_deps) {
+>>   		uint32_t dep_handle;
+>> +		uint64_t dep_size;
+>>   
+>>   		if (dep->working_set == -1) {
+>>   			int dep_idx = w->idx + dep->target;
+>> @@ -1694,6 +1715,7 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>>   			igt_assert(wrk->steps[dep_idx].type == BATCH);
+>>   
+>>   			dep_handle = wrk->steps[dep_idx].i915.obj[0].handle;
+>> +			dep_size = w->bb_size;
+>>   		} else {
+>>   			struct working_set *set;
+>>   
+>> @@ -1707,18 +1729,33 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>>   			igt_assert(set->sizes[dep->target].size);
+>>   
+>>   			dep_handle = set->handles[dep->target];
+>> +			dep_size = set->sizes[dep->target].size;
+>>   		}
+>>   
+>>   		w->i915.obj[j].flags = dep->write ? EXEC_OBJECT_WRITE : 0;
+>>   		w->i915.obj[j].handle = dep_handle;
+>> +		if (vm->ahnd) {
+>> +			addr = get_offset(vm->ahnd, w->i915.obj[j].handle, dep_size, 0);
+>> +			w->i915.obj[j].offset = CANONICAL(addr);
+>> +			w->i915.obj[j].flags |= objflags;
+>> +		}
+>>   		j++;
+>>   		igt_assert(j < nr_obj);
+>>   	}
+>>   
+>>   	w->bb_handle = w->i915.obj[j].handle = alloc_bo(fd, &w->bb_size);
+>> +	if (vm->ahnd) {
+>> +		addr = get_offset(vm->ahnd, w->i915.obj[j].handle, w->bb_size, 0);
+>> +		w->i915.obj[j].offset = CANONICAL(addr);
+>> +		w->i915.obj[j].flags |= objflags;
+>> +	}
+>>   	w->i915.obj[j].relocation_count = create_bb(w, j);
+>> -	igt_assert(w->i915.obj[j].relocation_count <= ARRAY_SIZE(w->i915.reloc));
+>> -	w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
+>> +	if (vm->ahnd) {
+>> +		w->i915.obj[j].relocation_count = 0;
+>> +	} else {
+>> +		igt_assert(w->i915.obj[j].relocation_count <= ARRAY_SIZE(w->i915.reloc));
+>> +		w->i915.obj[j].relocs_ptr = to_user_pointer(&w->i915.reloc);
+>> +	}
+>>   
+>>   	w->i915.eb.buffers_ptr = to_user_pointer(w->i915.obj);
+>>   	w->i915.eb.buffer_count = j + 1;
+>> @@ -1738,7 +1775,7 @@ alloc_step_batch(struct workload *wrk, struct w_step *w)
+>>   static void
+>>   xe_alloc_step_batch(struct workload *wrk, struct w_step *w)
+>>   {
+>> -	struct xe_vm *vm = xe_get_vm(wrk, w);
+>> +	struct vm *vm = get_vm(wrk, w);
+>>   	struct xe_exec_queue *eq = xe_get_eq(wrk, w);
+>>   	struct dep_entry *dep;
+>>   	int i;
+>> @@ -2032,7 +2069,7 @@ static void measure_active_set(struct workload *wrk)
+>>   
+>>   #define alloca0(sz) ({ size_t sz__ = (sz); memset(alloca(sz__), 0, sz__); })
+>>   
+>> -static void xe_vm_create_(struct xe_vm *vm)
+>> +static void xe_vm_create_(struct vm *vm)
+>>   {
+>>   	uint32_t flags = 0;
+>>   
+>> @@ -2046,7 +2083,7 @@ static void xe_vm_create_(struct xe_vm *vm)
+>>   static void xe_exec_queue_create_(struct ctx *ctx, struct xe_exec_queue *eq)
+>>   {
+>>   	struct drm_xe_exec_queue_create create = {
+>> -		.vm_id = ctx->xe.vm->id,
+>> +		.vm_id = ctx->vm->id,
+>>   		.width = 1,
+>>   		.num_placements = eq->nr_hwes,
+>>   		.instances = to_user_pointer(eq->hwe_list),
+>> @@ -2159,6 +2196,13 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+>>   				gem_context_get_param(fd, &param);
+>>   				igt_assert(param.value);
+>>   				share_vm = param.value;
+>> +				wrk->nr_vms = 1;
+>> +				wrk->vm_list = calloc(wrk->nr_vms, sizeof(struct vm));
+>> +				igt_assert(wrk->vm_list);
+>> +				wrk->vm_list->id = share_vm;
+>> +				wrk->vm_list->ahnd = intel_allocator_open(fd, share_vm,
+>> +								INTEL_ALLOCATOR_RELOC);
+> --------------------------------^
+> Align to 'fd'
+ok
+> 
+>> +				ctx2->vm = wrk->vm_list;
+>>   				break;
+>>   			}
+>>   
+>> @@ -2174,6 +2218,7 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+>>   		ctx_id = args.ctx_id;
+>>   		ctx->id = ctx_id;
+>>   		ctx->sseu = device_sseu.slice_mask;
+>> +		ctx->vm = wrk->vm_list;
+>>   
+>>   		__configure_context(ctx_id, wrk->prio);
+>>   
+>> @@ -2267,16 +2312,17 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
+>>   	unsigned int i;
+>>   
+>>   	/* shortcut, create one vm */
+>> -	wrk->xe.nr_vms = 1;
+>> -	wrk->xe.vm_list = calloc(wrk->xe.nr_vms, sizeof(struct xe_vm));
+>> -	wrk->xe.vm_list->compute_mode = false;
+>> -	xe_vm_create_(wrk->xe.vm_list);
+>> -	wrk->xe.vm_list->ahnd = intel_allocator_open(fd, wrk->xe.vm_list->id,
+>> +	wrk->nr_vms = 1;
+>> +	wrk->vm_list = calloc(wrk->nr_vms, sizeof(struct vm));
+>> +	igt_assert(wrk->vm_list);
+>> +	wrk->vm_list->compute_mode = false;
+>> +	xe_vm_create_(wrk->vm_list);
+>> +	wrk->vm_list->ahnd = intel_allocator_open(fd, wrk->vm_list->id,
+>>   						     INTEL_ALLOCATOR_RELOC);
+> 
+> Same here, align.
+ok
+> 
+>>   
+>>   	__for_each_ctx(ctx, wrk, ctx_idx) {
+>>   		/* link with vm */
+>> -		ctx->xe.vm = wrk->xe.vm_list;
+>> +		ctx->vm = wrk->vm_list;
+> 
+> Why do you treat vm_list as actual vm? Why not changing s/vm_list/vm/
+The plan is to support more vms, but the first step is a common vm,
+so a one element list at the moment.
+> 
+> With above aligning fixed
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 >
-> v2: Add PR check.
->
-> Signed-off-by: Jeevan B<jeevan.b@intel.com>
-> ---
->   tests/kms_vrr.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++--
->   1 file changed, 56 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 7e8885f16..d45d38657 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -31,12 +31,18 @@
->    */
->   
->   #include "igt.h"
-> +#include "igt_psr.h"
->   #include "i915/intel_drrs.h"
->   #include "sw_sync.h"
->   #include <fcntl.h>
->   #include <signal.h>
->   
->   /**
-> + * SUBTEST: lobf
-> + * Description: Test to validate link-off between active frames in non-psr
-> + *              operation
-> + * Functionality: LOBF
-> + *
->    * SUBTEST: cmrr
->    * Description: Test to validate the content rate to exactly match with the
->    * 		requested rate without any frame drops.
-> @@ -106,7 +112,8 @@ enum {
->   	TEST_FASTSET = 1 << 7,
->   	TEST_MAXMIN = 1 << 8,
->   	TEST_CMRR = 1 << 9,
-> -	TEST_NEGATIVE = 1 << 10,
-> +	TEST_LINK_OFF = 1 << 10,
-> +	TEST_NEGATIVE = 1 << 11,
->   };
->   
->   enum {
-> @@ -129,6 +136,7 @@ typedef struct vtest_ns {
->   typedef struct data {
->   	igt_display_t display;
->   	int drm_fd;
-> +	int debugfs_fd;
->   	igt_plane_t *primary;
->   	igt_fb_t fb[2];
->   	range_t range;
-> @@ -784,6 +792,44 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
->   	}
->   }
->   
-> +static void
-> +test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-> +{
-> +	bool change_mode = false;
-> +	time_t startTime = time(NULL);
-> +	time_t secs = 4, change_time = 3;
-> +	igt_plane_t *primary;
-> +	drmModeModeInfo mode = *igt_output_get_mode(output);
-> +
-> +	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
-> +		 output->name, kmstest_pipe_name(pipe), data->range.min, data->range.max);
-> +
-> +	igt_require(output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP);
-> +	igt_require(!igt_get_i915_edp_lobf_status(data->drm_fd, output->name));
-> +	if (psr_sink_support(data->drm_fd, data->debugfs_fd, PSR_MODE_1, NULL) ||
-> +	    psr_sink_support(data->drm_fd, data->debugfs_fd, PR_MODE, NULL))
-> +		psr_disable(data->drm_fd, data->debugfs_fd, NULL);
-> +
-> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-> +	igt_create_color_fb(data->drm_fd, mode.hdisplay, mode.vdisplay,
-> +			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +			    1, 1, 1, &data->fb[0]);
-> +
-> +	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
-> +
-> +	while (time(NULL) - startTime < secs) {
-> +		igt_plane_set_fb(primary, &data->fb[0]);
-> +		igt_display_commit(&data->display);
-> +		if (!change_mode && time(NULL) - startTime >= change_time) {
-> +			igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
-> +			change_time = true;
-> +		}
-> +	}
->
-> Consider we have very less difference between LOW_RR and HIGH_RR,
-> Will we still get sufficienct extended vblank to always turn the link off?
->
-> @Animesh can you also clarify here if we somehow can know exact time required to do link off?
->
-> +
-> +	igt_assert_f(igt_get_i915_edp_lobf_status(data->drm_fd, output->name),
-> +		     "LOBF not enabled\n");
-> +}
-> +
->   static void
->   test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
->   {
-> @@ -973,6 +1019,7 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
->   {
->   	igt_fixture {
->   		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> +		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
->   
->   		kmstest_set_vt_graphics_mode();
->   
-> @@ -1030,13 +1077,20 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
->   		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
->   			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
->   
-> -		igt_describe("Test to validate the the content rate exactly match with the "
-> +		igt_describe("Test to validate the content rate exactly match with the "
->   			     "requested rate without any frame drops.");
->   		igt_subtest_with_dynamic("cmrr") {
->   			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
->   
->   			run_vrr_test(&data, test_cmrr, TEST_CMRR);
->   		}
-> +		igt_describe("Test to validate the link-off between active frames in "
-> +			     "non-PSR operation.");
-> +		igt_subtest_with_dynamic("lobf") {
-> +			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) >= 20);
-> +
-> +			run_vrr_test(&data, test_lobf, TEST_LINK_OFF);
-> +		}
->   	}
->   
->   	igt_fixture {
-Thanks and Regards
-Kunal Joshi
---------------pw5XUq735tiUhb3lQ07ahXed
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Thanks for review
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p>Hello Jeevan,<br>
-    </p>
-    <div class="moz-cite-prefix">On 7/23/2024 9:58 AM, Jeevan B wrote:<br>
-    </div>
-    <blockquote type="cite">
-      <pre class="moz-quote-pre" wrap="">Validate pseudo static refresh rate changes in the VRR with
-fixed refresh rate framework for non-psr scenarios.
-
-v2: Add PR check.
-
-Signed-off-by: Jeevan B <a class="moz-txt-link-rfc2396E" href="mailto:jeevan.b@intel.com">&lt;jeevan.b@intel.com&gt;</a>
----
- tests/kms_vrr.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 56 insertions(+), 2 deletions(-)
-
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 7e8885f16..d45d38657 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -31,12 +31,18 @@
-  */
- 
- #include "igt.h"
-+#include "igt_psr.h"
- #include "i915/intel_drrs.h"
- #include "sw_sync.h"
- #include &lt;fcntl.h&gt;
- #include &lt;signal.h&gt;
- 
- /**
-+ * SUBTEST: lobf
-+ * Description: Test to validate link-off between active frames in non-psr
-+ *              operation
-+ * Functionality: LOBF
-+ *
-  * SUBTEST: cmrr
-  * Description: Test to validate the content rate to exactly match with the
-  * 		requested rate without any frame drops.
-@@ -106,7 +112,8 @@ enum {
- 	TEST_FASTSET = 1 &lt;&lt; 7,
- 	TEST_MAXMIN = 1 &lt;&lt; 8,
- 	TEST_CMRR = 1 &lt;&lt; 9,
--	TEST_NEGATIVE = 1 &lt;&lt; 10,
-+	TEST_LINK_OFF = 1 &lt;&lt; 10,
-+	TEST_NEGATIVE = 1 &lt;&lt; 11,
- };
- 
- enum {
-@@ -129,6 +136,7 @@ typedef struct vtest_ns {
- typedef struct data {
- 	igt_display_t display;
- 	int drm_fd;
-+	int debugfs_fd;
- 	igt_plane_t *primary;
- 	igt_fb_t fb[2];
- 	range_t range;
-@@ -784,6 +792,44 @@ test_seamless_virtual_rr_basic(data_t *data, enum pipe pipe, igt_output_t *outpu
- 	}
- }
- 
-+static void
-+test_lobf(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-+{
-+	bool change_mode = false;
-+	time_t startTime = time(NULL);
-+	time_t secs = 4, change_time = 3;
-+	igt_plane_t *primary;
-+	drmModeModeInfo mode = *igt_output_get_mode(output);
-+
-+	igt_info("LOBF test execution on %s, PIPE %s with VRR range: (%u-%u) Hz\n",
-+		 output-&gt;name, kmstest_pipe_name(pipe), data-&gt;range.min, data-&gt;range.max);
-+
-+	igt_require(output-&gt;config.connector-&gt;connector_type == DRM_MODE_CONNECTOR_eDP);
-+	igt_require(!igt_get_i915_edp_lobf_status(data-&gt;drm_fd, output-&gt;name));
-+	if (psr_sink_support(data-&gt;drm_fd, data-&gt;debugfs_fd, PSR_MODE_1, NULL) ||
-+	    psr_sink_support(data-&gt;drm_fd, data-&gt;debugfs_fd, PR_MODE, NULL))
-+		psr_disable(data-&gt;drm_fd, data-&gt;debugfs_fd, NULL);
-+
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_create_color_fb(data-&gt;drm_fd, mode.hdisplay, mode.vdisplay,
-+			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    1, 1, 1, &amp;data-&gt;fb[0]);
-+
-+	igt_output_override_mode(output, &amp;data-&gt;switch_modes[HIGH_RR_MODE]);
-+
-+	while (time(NULL) - startTime &lt; secs) {
-+		igt_plane_set_fb(primary, &amp;data-&gt;fb[0]);
-+		igt_display_commit(&amp;data-&gt;display);
-+		if (!change_mode &amp;&amp; time(NULL) - startTime &gt;= change_time) {
-+			igt_output_override_mode(output, &amp;data-&gt;switch_modes[LOW_RR_MODE]);
-+			change_time = true;
-+		}
-+	}
-
-Consider we have very less difference between LOW_RR and HIGH_RR,
-Will we still get sufficienct extended vblank to always turn the link off?
-
-@Animesh can you also clarify here if we somehow can know exact time required to do link off?
-
-+
-+	igt_assert_f(igt_get_i915_edp_lobf_status(data-&gt;drm_fd, output-&gt;name),
-+		     "LOBF not enabled\n");
-+}
-+
- static void
- test_cmrr(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
- {
-@@ -973,6 +1019,7 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &amp;data)
- {
- 	igt_fixture {
- 		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
- 
- 		kmstest_set_vt_graphics_mode();
- 
-@@ -1030,13 +1077,20 @@ igt_main_args("drs:", long_opts, help_str, opt_handler, &amp;data)
- 		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
- 			run_vrr_test(&amp;data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
- 
--		igt_describe("Test to validate the the content rate exactly match with the "
-+		igt_describe("Test to validate the content rate exactly match with the "
- 			     "requested rate without any frame drops.");
- 		igt_subtest_with_dynamic("cmrr") {
- 			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) &gt;= 20);
- 
- 			run_vrr_test(&amp;data, test_cmrr, TEST_CMRR);
- 		}
-+		igt_describe("Test to validate the link-off between active frames in "
-+			     "non-PSR operation.");
-+		igt_subtest_with_dynamic("lobf") {
-+			igt_require(intel_display_ver(intel_get_drm_devid(data.drm_fd)) &gt;= 20);
-+
-+			run_vrr_test(&amp;data, test_lobf, TEST_LINK_OFF);
-+		}
- 	}
- 
- 	igt_fixture {</pre>
-    </blockquote>
-    Thanks and Regards<br>
-    Kunal Joshi<span style="white-space: pre-wrap">
-</span>
-  </body>
-</html>
-
---------------pw5XUq735tiUhb3lQ07ahXed--
+> Regards,
+> Kamil
+> 
+>>   		for_each_w_step(w, wrk) {
+>>   			if (w->context != ctx_idx)
+>>   				continue;
+>> @@ -2846,7 +2892,7 @@ static void *run_workload(void *data)
+>>   				w_step_sync(w);
+>>   				syncobj_destroy(fd, w->xe.syncs[0].handle);
+>>   				free(w->xe.syncs);
+>> -				xe_vm_unbind_sync(fd, xe_get_vm(wrk, w)->id, 0, w->xe.exec.address,
+>> +				xe_vm_unbind_sync(fd, get_vm(wrk, w)->id, 0, w->xe.exec.address,
+>>   						  w->bb_size);
+>>   				gem_munmap(w->xe.data, w->bb_size);
+>>   				gem_close(fd, w->bb_handle);
+>> -- 
+>> 2.31.1
+>>
