@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F02AC3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 13:45:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9164CC3DA49
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 14:03:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4BA8410E7FE;
-	Thu, 25 Jul 2024 13:45:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3195710E155;
+	Thu, 25 Jul 2024 14:03:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M8WMYFQ7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rq5NeHIT";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBA6210E7FE
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 13:45:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF45010E155
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 14:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721915125; x=1753451125;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=s7qEimJ9PUkl0tAANLitFAn4OBl5tRNGdIwBwG9P/4o=;
- b=M8WMYFQ710qO0HB7CdNNiRkULb7HDzI5q2T5LonVxaBKAk3xmkH5ui88
- wELOMtFiHoyUEpqeNEOwjzhSILwfMJYTaLnxCa9NRcgbLnNKBk+h3Ih1w
- ccBp3Y909lN4Uhp3X2gunxD9JIwKhdiDs73C+y7OP6LsakDM/Sh+WInz/
- moRly14dGKw9DR0O5CblWbm3JXpu/KVc9hv6p+jljH6mSI2+wCptM0m3u
- 0fwPczFNdTjKjyMaLF4V22bJWDgB1LXZXv2c82TNghiKqQoGcrb4ZpGvS
- qM/X4F3KsT7C23d6NSwig9LVzZrAC0S0mltwnrGL/PYT1clZCYNUx/tCI w==;
-X-CSE-ConnectionGUID: u55QRo50TMWK1X//4jVptQ==
-X-CSE-MsgGUID: STFqXD6kQAaDtcyG7paZzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19531696"
-X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="19531696"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 06:45:24 -0700
-X-CSE-ConnectionGUID: eBI/wav7RGunNWauYwwHxg==
-X-CSE-MsgGUID: J5xEuv4CRKCCZ6qzFm8mbg==
+ t=1721916220; x=1753452220;
+ h=message-id:date:mime-version:from:subject:to:
+ content-transfer-encoding;
+ bh=gMcraiPPiBFM811qQDmEebBs9tyrw7TfLUCFYQfL3pk=;
+ b=Rq5NeHITF54c0X5qGQKHho0Q8uILed27KSn53o1X6zpkKa/MSKHSFUve
+ teC865a9YF0e5yZNnH0Tzx23x0q1VIE8kmr9vMTg4gFA9lbaR/BhdONGd
+ qhy+5qMqn/OQAqLpBRAUPYLDspC5XENwL9uILSBDVGJseneeOEaIvy9mV
+ nI0WpB/CjjiKRjIH2yykxsovLh2CzN2v2ji40yVIldogc+ptlSXkExJn5
+ shoIiHo5OwABhLgPwCKpZoLRz+PM7df6ZsCzumF7tp23WCUn7jFiqApeX
+ pKcL2rHUPmCYe5wJ0UmrBjoMBZp3zbsuEwB1ZGmj6McguRPt3zNVwm3SW A==;
+X-CSE-ConnectionGUID: 5LsAxva+Q0eO9s8T2W18QQ==
+X-CSE-MsgGUID: Kz0qxuSoSdCqyh+ECQuAwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19795232"
+X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="19795232"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2024 07:03:24 -0700
+X-CSE-ConnectionGUID: WRlSc5rLQZK8l+ZDd1lxVQ==
+X-CSE-MsgGUID: +O+5wJJeRrKTOYOJzbaMkQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="53168746"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.0.122])
- ([10.246.0.122])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 06:45:23 -0700
-Message-ID: <75f51358-3cba-41c3-92f2-dadf8eb33604@linux.intel.com>
-Date: Thu, 25 Jul 2024 15:45:19 +0200
+X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="90383364"
+Received: from hmotaman-mobl.amr.corp.intel.com (HELO [10.251.217.191])
+ ([10.251.217.191])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2024 07:03:24 -0700
+Message-ID: <78c5f531-f482-49c7-8290-38710698e4a7@linux.intel.com>
+Date: Thu, 25 Jul 2024 16:03:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t V2 1/2] lib/drmtest: Ensure the XE driver is idle before
- starting a test
-To: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-References: <20240724070544.1734040-1-bhanuprakash.modem@intel.com>
- <20240725041803.1764959-1-bhanuprakash.modem@intel.com>
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: [PATCH i-g-t v2] lib/xe/xe_query: Do not require QUERY_OA_UNITS for
+ all Xe tests
 Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20240725041803.1764959-1-bhanuprakash.modem@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,88 +68,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Changes xe_query_oa_units_new() to return NULL instead of aborting
+due to assertion failure when querying for DRM_XE_DEVICE_QUERY_OA_UNITS.
 
+It adds a skip to xe_oa.c to make sure it will not try to run the tests if the
+query has failed before.
 
-On 7/25/2024 6:18 AM, Bhanuprakash Modem wrote:
-> Re-use the existing i915's exit handler to make sure that the
-> XE driver is idle before starting the subtest.
-> 
-> V2:
->   - Add some delay after attempting the gt reset
->   - Cover drm render device path too
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/294
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->   lib/drmtest.c | 24 +++++++++++++++---------
->   1 file changed, 15 insertions(+), 9 deletions(-)
-> 
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index f8810da43..90885ec36 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -64,6 +64,7 @@
->   #include "intel_reg.h"
->   #include "ioctl_wrappers.h"
->   #include "igt_dummyload.h"
-> +#include "xe/xe_gt.h"
->   #include "xe/xe_query.h"
->   
->   /**
-> @@ -663,12 +664,17 @@ static void __cancel_work_at_exit(int fd)
->   {
->   	igt_terminate_spins(); /* for older kernels */
->   
-> -	igt_params_set(fd, "reset", "%u", -1u /* any method */);
-> -	igt_drop_caches_set(fd,
-> -			    /* cancel everything */
-> -			    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
-> -			    /* cleanup */
-> -			    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
-> +	if (is_xe_device(fd)) {
-> +		xe_force_gt_reset_all(fd);
+The motivation is as follows:
+ - The only test that requires oa_units is tests/intel/xe_oa.c, however current
+   code will prevent all Xe tests from running if OA_UNITS is not supported
+ - Before this patch, trying to run IGT on the Xe module from Fedora 40
+   (6.9.9-200.fc40.x86_64) fails
+ - After this patch, we can run some tests, such as xe_exec_basic
+   successfully
 
-It looks quite invasive, we will loose the guc log ?
+Here is an example of the impact of this patch:
+ 1. Use Fedora 40 with the following kernel command line arguments:
+    "xe.force_probe=* i915.force_probe=!* modprobe.blacklist=i915,ast,snd_hda_intel,xe"
 
-> +		sleep(1);
+ 2. Running IGT without this patch will fail:
+     $ sudo ./build/tests/xe_exec_basic
+     $ echo $?
+     98
 
-How the 1 is selected? Is it reliable enough ?
+ 3. Running after fix applied will succeed:
+    sudo ./build/tests/xe_exec_basic
+     $ sudo ./build/tests/xe_exec_basic
+     $ echo $?
+     0
 
-> +	} else {
-> +		igt_params_set(fd, "reset", "%u", -1u /* any method */);
-> +		igt_drop_caches_set(fd,
-> +				    /* cancel everything */
-> +				    DROP_RESET_ACTIVE | DROP_RESET_SEQNO |
-> +				    /* cleanup */
-> +				    DROP_ACTIVE | DROP_RETIRE | DROP_IDLE | DROP_FREED);
-> +	}
->   }
->   
->   static void cancel_work_at_exit(int sig)
-> @@ -716,11 +722,11 @@ int drm_open_driver(int chipset)
->   	igt_skip_on_f(fd<0, "No known gpu found for chipset flags 0x%u (%s)\n",
->   		      chipset, chipset_to_str(chipset));
->   
-> -	/* For i915, at least, we ensure that the driver is idle before
-> +	/* For i915 & xe, at least, we ensure that the driver is idle before
->   	 * starting a test and we install an exit handler to wait until
->   	 * idle before quitting.
->   	 */
-> -	if (is_i915_device(fd)) {
-> +	if (is_intel_device(fd)) {
->   		if (__sync_fetch_and_add(&open_count, 1) == 0) {
->   			__cancel_work_at_exit(fd);
->   			at_exit_drm_fd = drm_reopen_driver(fd);
-> @@ -836,7 +842,7 @@ int drm_open_driver_render(int chipset)
->   		return fd;
->   
->   	at_exit_drm_render_fd = drm_reopen_driver(fd);
-> -	if (chipset & DRIVER_INTEL) {
-> +	if (chipset & (DRIVER_INTEL | DRIVER_XE)) {
->   		__cancel_work_at_exit(fd);
->   		igt_install_exit_handler(cancel_work_at_exit_render);
->   	}
+V2:
+ - Cleanup headers from message body
+ - Add 'lib/xe/xe_query:' to subject line
+
+Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>
+---
+ lib/xe/xe_query.c   | 6 +++++-
+ tests/intel/xe_oa.c | 9 ++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 84eaaac96..f0643e1bc 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -124,7 +124,11 @@ static struct drm_xe_query_oa_units *xe_query_oa_units_new(int fd)
+ 		.data = 0,
+ 	};
+ 
+-	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
++	/**
++	 * Only tests/intel/xe_oa.c needs OA_UNITS
++	 */
++	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query) != 0)
++		return NULL;
+ 
+ 	oa_units = malloc(query.size);
+ 	igt_assert(oa_units);
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index ff2218300..dd02f8608 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -4503,6 +4503,7 @@ static const char *xe_engine_class_name(uint32_t engine_class)
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *hwe = NULL;
++	struct xe_device *xe_dev;
+ 
+ 	igt_fixture {
+ 		struct stat sb;
+@@ -4527,7 +4528,13 @@ igt_main
+ 		igt_assert_eq(drm_fd, -1);
+ 
+ 		drm_fd = drm_open_driver(DRIVER_XE);
+-		xe_device_get(drm_fd);
++		xe_dev = xe_device_get(drm_fd);
++
++		/**
++		 * This test needs OA_UNITS to run, see xe_query_oa_units_new()
++		 * on lib/xe/xe_query.c
++		 */
++		igt_require(xe_dev->oa_units);
+ 
+ 		devid = intel_get_drm_devid(drm_fd);
+ 		sysfs = igt_sysfs_open(drm_fd);
+-- 
+2.34.1
+
