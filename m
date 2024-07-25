@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAAB6C3DA5D
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 12:50:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BEAC3DA5D
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 12:50:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE35710E7ED;
-	Thu, 25 Jul 2024 12:50:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ADF7610E7EE;
+	Thu, 25 Jul 2024 12:50:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G1P0YYrs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mkThbIgU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4A9810E7ED
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 12:50:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C22FD10E7EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 12:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721911827; x=1753447827;
+ t=1721911830; x=1753447830;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RGzCHFZBnjD9/MFCX8GGOTv4SPpP+hxAcZHVHDo/Vgk=;
- b=G1P0YYrsNYIc9lgfxp+WYLqkhZZyKwA1he7Eo014iazeqgo6N18xfHGy
- urVi8qjZp8ErjtBpgr2d1vwDP4BVylLjHCni+lYztJOttudso3UbW7sDO
- 2idy7sht/gKTSV5xXLaPKCyYxrWwTse+HBLVMvIJC/zV4AAcH82VQ96Xm
- gw+R7dQ2UGfqEnb5S9ibqc8jD+T5MTCn1LYQqn9Vl+thXgoVZKssXc0LH
- UGSiQujRitocGSa3GFZ/N1xAyRNSsLyx+xePLLqN8p8oWf+fxv/J2xtxV
- 3rW1LwGhL7cyo2dyv1/ics/Hpg0ofwoeJQv1aQKgVr6g4/x0AI2TTcv57 Q==;
-X-CSE-ConnectionGUID: s5cBFwbORQCgXIISawaBLQ==
-X-CSE-MsgGUID: k9upeUtpRluj4JBMABhqMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19522056"
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="19522056"
+ bh=hPNX8wzUrubNqwu7khnbdhluM6MuHdBnrPr68bWejNQ=;
+ b=mkThbIgUtGu0sQJQrtv9j08UEvoOxO+M+ag2Z9+swfdbbk17Y7+v3GxB
+ av9I1bVLCwNrWLlvn1wT7SxIhBcOcugLc9mQwrSKca6ro/fTJNxmbGmuA
+ u5/UYx3cA3H+dr64qFUFO9MTesOOQDb4DB2quNgLe9/rhWLs8v4Gnhh6U
+ IBImGYCwv4KDUltyIgaiJzirpr4OlmS5IztMN3GsheamYVIXwHctawxq3
+ GsHMr1xtcdFg/E42l8cG9OjXnZLKJw5UH2lxAeUofGb2jpfZtmytfr7yd
+ e+BdZQ5/IiKCe9uAGuA0S3YdYcPhIoVoKZI8ZQgl7BSYEmdvnngftwxVw w==;
+X-CSE-ConnectionGUID: 27JWK/SiTny0sKJO9jKSmA==
+X-CSE-MsgGUID: P0eEvFAnSEm4gErvrs7fDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11143"; a="19522060"
+X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="19522060"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 05:50:27 -0700
-X-CSE-ConnectionGUID: tHjXEXe3TTqvn4E60eYxCg==
-X-CSE-MsgGUID: gwxNkl9vTGaCV7dGMXQVEg==
+ 25 Jul 2024 05:50:29 -0700
+X-CSE-ConnectionGUID: 4bPbTnqhQDiXYnhT13oSqA==
+X-CSE-MsgGUID: JG1oYbU+RpyRYwxK8sCgYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="53686331"
+X-IronPort-AV: E=Sophos;i="6.09,235,1716274800"; d="scan'208";a="53686337"
 Received: from oandoniu-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.225])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 05:50:24 -0700
+ 25 Jul 2024 05:50:28 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t v1 3/4] tests/intel/xe_wedged: Inform runner about
- expected error
-Date: Thu, 25 Jul 2024 14:50:05 +0200
-Message-ID: <20240725125006.30041-4-kamil.konieczny@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 4/4] HAX/DO_NOT_MERGE: xe-fast-feedback: test
+ xe_wedged
+Date: Thu, 25 Jul 2024 14:50:06 +0200
+Message-ID: <20240725125006.30041-5-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240725125006.30041-1-kamil.konieczny@linux.intel.com>
 References: <20240725125006.30041-1-kamil.konieczny@linux.intel.com>
@@ -70,62 +69,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Tests runs force wedged state and then driver emits an error.
-Standalone runs are succeeding but when run by igt runner it
-catch such errors and reports them in results.
+Test solution which should allow igt runner to properly
+classify xe_wedged tests as success, so adding two into
+xe BAT runs:
 
-Inform runner to ignore such triggered failure.
+igt@xe_wedged@basic-wedged
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1760
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1958
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+igt@xe_wedged@wedged-at-any-timeout
+
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/xe_wedged.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tests/intel-ci/xe-fast-feedback.testlist | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index a4fc53869..a3f7a697f 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -26,6 +26,12 @@
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 01b01dcf9..4c53839be 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,12 +1,16 @@
+ # Should be the first test
+ igt@xe_module_load@load
  
-+static void ignore_wedged_in_dmesg(void)
-+{
-+	/* this is needed for igt_runner so it will ignore it */
-+	igt_emit_ignore_dmesg_regex("CRITICAL: Xe has declared device [0-9A-Fa-f:.]* as wedged");
-+}
++igt@xe_wedged@basic-wedged
 +
- static void force_wedged(int fd)
- {
- 	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
-@@ -235,6 +241,8 @@ igt_main
- 					       O_RDWR));
+ igt@fbdev@eof
+ igt@fbdev@info
+ igt@fbdev@nullptr
+ igt@fbdev@read
+ igt@fbdev@write
  
- 		igt_assert_eq(simple_ioctl(fd), 0);
-+		ignore_wedged_in_dmesg();
++igt@xe_wedged@wedged-at-any-timeout
 +
- 		force_wedged(fd);
- 		igt_assert_neq(simple_ioctl(fd), 0);
- 		fd = rebind_xe(fd);
-@@ -245,6 +253,7 @@ igt_main
- 
- 	igt_subtest_f("wedged-at-any-timeout") {
- 		igt_require(igt_debugfs_exists(fd, "wedged_mode", O_RDWR));
-+		ignore_wedged_in_dmesg();
- 
- 		igt_debugfs_write(fd, "wedged_mode", "2");
- 		simple_hang(fd);
-@@ -268,6 +277,7 @@ igt_main
- 		igt_debugfs_write(fd, "wedged_mode", "2");
- 		igt_assert_eq(simple_ioctl(fd), 0);
- 		igt_debugfs_write(fd, "wedged_mode", "1");
-+		ignore_wedged_in_dmesg();
- 		simple_hang(fd);
- 		igt_assert_eq(simple_ioctl(fd), 0);
- 	}
+ igt@kms_addfb_basic@addfb25-4-tiled
+ igt@kms_addfb_basic@addfb25-bad-modifier
+ igt@kms_addfb_basic@addfb25-modifier-no-flag
 -- 
 2.43.0
 
