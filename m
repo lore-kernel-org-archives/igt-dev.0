@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA06CC3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 05:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 174BBC3DA5D
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 05:41:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3851D10E44B;
-	Thu, 25 Jul 2024 05:26:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8B64310E70D;
+	Thu, 25 Jul 2024 05:41:47 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2BBA610E44B;
- Thu, 25 Jul 2024 05:26:19 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E83410E63A;
+ Thu, 25 Jul 2024 05:41:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3102970961561731728=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_series_starting_with_?=
- =?utf-8?q?=5B1/2=5D_lib/amdgpu=3A_refactor_deadlock_tests?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/2=5D?=
+ =?utf-8?q?_lib/amdgpu=3A_refactor_deadlock_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 25 Jul 2024 05:26:19 -0000
-Message-ID: <172188517917.364460.10321391982670735970@2413ebb6fbb6>
+Date: Thu, 25 Jul 2024 05:41:44 -0000
+Message-ID: <172188610451.366135.5724939675191604431@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240725034014.521855-1-vitaly.prosyak@amd.com>
 In-Reply-To: <20240725034014.521855-1-vitaly.prosyak@amd.com>
@@ -41,231 +41,364 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============3102970961561731728==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
 
 Series: series starting with [1/2] lib/amdgpu: refactor deadlock tests
 URL   : https://patchwork.freedesktop.org/series/136473/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7936_BAT -> XEIGTPW_11452_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1232373 f=
-or the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/=
-igt-ci-tags/-/jobs/61484263):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/1030] Generating version.h with a custom command.
-  [2/325] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
-_queue_reset.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
-  cc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@exe -Itests/amdgpu -I../tests/=
-amdgpu -I../include -I../include/drm-uapi -I../include/linux-uapi -Ilib -I.=
-./lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include=
-/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include/pixma=
-n-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I=
-/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/x86_64-lin=
-ux-gnu -I/usr/include/valgrind -I/usr/include/alsa -I/usr/include -fdiagnos=
-tics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wex=
-tra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=
-=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimpli=
-cit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-at=
-tribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-styl=
-e-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes=
- -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-miss=
-ing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limit=
-s -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darra=
-y-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -W=
-error=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=
-=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dse=
-quence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-mallo=
-c -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD -MQ 'tests/am=
-dgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -MF 'tests/amdgpu/b9=
-f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 'tests/amdgpu/b9f2b1d@=
-@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/amdgpu/amd_queue_rese=
-t.c
-  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
-=E2=80=99:
-  ../tests/amdgpu/amd_queue_reset.c:480:8: error: implicit declaration of f=
-unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
-=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          amdgpu_cs_query_reset_state
-  ../tests/amdgpu/amd_queue_reset.c:480:8: warning: nested extern declarati=
-on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1721884910:step_script
-  section_start:1721884910:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721884911:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/61484266):
-  ninja: Entering directory `build'
-  [1/673] Generating version.h with a custom command.
-  [2/290] Linking target tests/amdgpu/amd_vcn.
-  [3/290] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
-_queue_reset.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
-  /usr/bin/aarch64-linux-gnu-gcc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@ex=
-e -Itests/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../=
-include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/=
-include/cairo -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0=
-/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetyp=
-e2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouv=
-eau -I/usr/include/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/include=
-/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Wi=
-nvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_F=
-ORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wforma=
-t=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmiss=
-ing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-exter=
-ns -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstri=
-ct-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitiali=
-zed -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -W=
-no-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -=
-Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-=
-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-b=
-races -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type=
- -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-=
-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD =
--MQ 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -MF 'te=
-sts/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 'tests/am=
-dgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/amdgpu/a=
-md_queue_reset.c
-  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
-=E2=80=99:
-  ../tests/amdgpu/amd_queue_reset.c:480:8: error: implicit declaration of f=
-unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
-=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          amdgpu_cs_query_reset_state
-  ../tests/amdgpu/amd_queue_reset.c:480:8: warning: nested extern declarati=
-on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1721884905:step_script
-  section_start:1721884905:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721884906:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No regressions found.
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/61484265):
-  ninja: Entering directory `build'
-  [1/670] Generating version.h with a custom command.
-  [2/282] Linking target tests/amdgpu/amd_vcn.
-  [3/282] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
-_queue_reset.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
-  /usr/bin/arm-linux-gnueabihf-gcc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@=
-exe -Itests/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I.=
-./include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/us=
-r/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/arm-linux-gnueabihf/glib=
--2.0/include -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/fre=
-etype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/=
-nouveau -I/usr/include/arm-linux-gnueabihf -I/usr/include/valgrind -I/usr/i=
-nclude/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wa=
-ll -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.=
-h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -=
-Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations =
--Wmissing-format-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested=
--externs -Wold-style-definition -Wpointer-arith -Wredundant-decls -Wshadow =
--Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-unin=
-itialized -Wno-missing-field-initializers -Wno-pointer-arith -Wno-sign-comp=
-are -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dadd=
-ress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=
-=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmi=
-ssing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dretu=
-rn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-string=
-s -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthrea=
-d  -MD -MQ 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' =
--MF 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 't=
-ests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/a=
-mdgpu/amd_queue_reset.c
-  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
-=E2=80=99:
-  ../tests/amdgpu/amd_queue_reset.c:480:8: error: implicit declaration of f=
-unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
-=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          amdgpu_cs_query_reset_state
-  ../tests/amdgpu/amd_queue_reset.c:480:8: warning: nested extern declarati=
-on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1721884910:step_script
-  section_start:1721884910:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721884912:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/61484267):
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/669] Generating version.h with a custom command.
-  [2/278] Compiling C object 'tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd=
-_queue_reset.c.o'.
-  FAILED: tests/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o=20
-  /usr/bin/mips-linux-gnu-gcc -Itests/amdgpu/b9f2b1d@@amd_queue_reset@exe -=
-Itests/amdgpu -I../tests/amdgpu -I../include -I../include/drm-uapi -I../inc=
-lude/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/inc=
-lude/cairo -I/usr/include/glib-2.0 -I/usr/lib/mips-linux-gnu/glib-2.0/inclu=
-de -I/usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/=
-usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I=
-/usr/include/mips-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fd=
-iagnostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pc=
-h -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SO=
-URCE=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wi=
-mplicit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-forma=
-t-attribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-=
-style-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-protot=
-ypes -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-=
-missing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-l=
-imits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3D=
-array-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversio=
-n -Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -We=
-rror=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=
-=3Dsequence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-=
-malloc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD -MQ 'tes=
-ts/amdgpu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -MF 'tests/amdg=
-pu/b9f2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o.d' -o 'tests/amdgpu/b9f=
-2b1d@@amd_queue_reset@exe/amd_queue_reset.c.o' -c ../tests/amdgpu/amd_queue=
-_reset.c
-  ../tests/amdgpu/amd_queue_reset.c: In function =E2=80=98run_monitor_child=
-=E2=80=99:
-  ../tests/amdgpu/amd_queue_reset.c:480:8: error: implicit declaration of f=
-unction =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99; did you mean =E2=80=
-=98amdgpu_cs_query_reset_state=E2=80=99? [-Werror=3Dimplicit-function-decla=
-ration]
-    ret =3D amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
-          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-          amdgpu_cs_query_reset_state
-  ../tests/amdgpu/amd_queue_reset.c:480:8: warning: nested extern declarati=
-on of =E2=80=98amdgpu_cs_query_reset_state2=E2=80=99 [-Wnested-externs]
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1721884911:step_script
-  section_start:1721884911:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1721884912:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+Participating hosts (6 -> 7)
+------------------------------
 
-=3D=3D Logs =3D=3D
+  Additional (1): bat-pvc-2 
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1232373
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11452_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][1] ([i915#6077]) +30 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][2] ([Intel XE#1024] / [Intel XE#782]) +5 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][3] ([Intel XE#1024] / [Intel XE#784])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024] / [Intel XE#947]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:
+    - bat-lnl-1:          [PASS][5] -> [FAIL][6] ([Intel XE#886]) +2 other tests fail
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7936/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html
+
+  * igt@kms_force_connector_basic@force-connector-state:
+    - bat-pvc-2:          NOTRUN -> [SKIP][7] ([Intel XE#540]) +3 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][8] ([Intel XE#1024] / [Intel XE#783])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-pvc-2:          NOTRUN -> [SKIP][9] ([Intel XE#829]) +6 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  * igt@kms_prop_blob@basic:
+    - bat-pvc-2:          NOTRUN -> [SKIP][10] ([Intel XE#780])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_prop_blob@basic.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-pvc-2:          NOTRUN -> [SKIP][11] ([Intel XE#1024]) +2 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@sriov_basic@enable-vfs-autoprobe-off:
+    - bat-pvc-2:          NOTRUN -> [SKIP][12] ([Intel XE#1932]) +1 other test skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@sriov_basic@enable-vfs-autoprobe-off.html
+
+  * igt@xe_evict@evict-beng-small-external:
+    - bat-pvc-2:          NOTRUN -> [FAIL][13] ([Intel XE#1000]) +3 other tests fail
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html
+
+  * igt@xe_evict@evict-small-external-cm:
+    - bat-pvc-2:          NOTRUN -> [DMESG-FAIL][14] ([Intel XE#482]) +3 other tests dmesg-fail
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html
+
+  * igt@xe_gt_freq@freq_basic_api:
+    - bat-adlp-7:         [PASS][15] -> [FAIL][16] ([Intel XE#2196])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7936/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html
+
+  * igt@xe_gt_freq@freq_range_idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][17] ([Intel XE#1021]) +1 other test skip
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_gt_freq@freq_range_idle.html
+
+  * igt@xe_huc_copy@huc_copy:
+    - bat-pvc-2:          NOTRUN -> [SKIP][18] ([Intel XE#255])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_huc_copy@huc_copy.html
+
+  * igt@xe_intel_bb@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][19] ([Intel XE#532])
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_intel_bb@render.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-pvc-2:          NOTRUN -> [SKIP][20] ([Intel XE#2229])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_pat@pat-index-xe2:
+    - bat-pvc-2:          NOTRUN -> [SKIP][21] ([Intel XE#977]) +1 other test skip
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pat@pat-index-xe2.html
+
+  * igt@xe_pat@pat-index-xehpc@render:
+    - bat-pvc-2:          NOTRUN -> [SKIP][22] ([Intel XE#976])
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-pvc-2:          NOTRUN -> [SKIP][23] ([Intel XE#979])
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html
+
+  * igt@xe_pm_residency@gt-c6-on-idle:
+    - bat-pvc-2:          NOTRUN -> [SKIP][24] ([Intel XE#531])
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1000]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000
+  [Intel XE#1021]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#1932]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1932
+  [Intel XE#2196]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2196
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#255]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/255
+  [Intel XE#482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/482
+  [Intel XE#531]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/531
+  [Intel XE#532]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/532
+  [Intel XE#540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/540
+  [Intel XE#780]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/780
+  [Intel XE#782]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/782
+  [Intel XE#783]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/783
+  [Intel XE#784]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/784
+  [Intel XE#829]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/829
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+  [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
+  [Intel XE#976]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/976
+  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+  [i915#6077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7936 -> IGTPW_11452
+  * Linux: xe-1651-049eae5224ed92f3cb723a492593b255654e0649 -> xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2
+
+  IGTPW_11452: 11452
+  IGT_7936: 7936
+  xe-1651-049eae5224ed92f3cb723a492593b255654e0649: 049eae5224ed92f3cb723a492593b255654e0649
+  xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2: 724a2a53988a57709d7f9dcd5c58dd5737d45cb2
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/index.html
+
+--===============3102970961561731728==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/2] lib/amdgpu: refactor deadlock tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136473/">https://patchwork.freedesktop.org/series/136473/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7936_BAT -&gt; XEIGTPW_11452_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (6 -&gt; 7)</h2>
+<p>Additional (1): bat-pvc-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11452_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6077">i915#6077</a>) +30 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/782">Intel XE#782</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/784">Intel XE#784</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7936/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank@c-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-connector-state:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_force_connector_basic@force-connector-state.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/540">Intel XE#540</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/783">Intel XE#783</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_pipe_crc_basic@nonblocking-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/829">Intel XE#829</a>) +6 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_prop_blob@basic:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_prop_blob@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/780">Intel XE#780</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@sriov_basic@enable-vfs-autoprobe-off:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@sriov_basic@enable-vfs-autoprobe-off.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1932">Intel XE#1932</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small-external:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_evict@evict-beng-small-external.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1000">Intel XE#1000</a>) +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-external-cm:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_evict@evict-small-external-cm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/482">Intel XE#482</a>) +3 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_basic_api:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7936/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-adlp-7/igt@xe_gt_freq@freq_basic_api.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2196">Intel XE#2196</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_gt_freq@freq_range_idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_gt_freq@freq_range_idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1021">Intel XE#1021</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_huc_copy@huc_copy:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/255">Intel XE#255</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_intel_bb@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/532">Intel XE#532</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xe2:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc@render:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pat@pat-index-xehpc@render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/976">Intel XE#976</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-on-idle:</p>
+<ul>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11452/bat-pvc-2/igt@xe_pm_residency@gt-c6-on-idle.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/531">Intel XE#531</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7936 -&gt; IGTPW_11452</li>
+<li>Linux: xe-1651-049eae5224ed92f3cb723a492593b255654e0649 -&gt; xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2</li>
+</ul>
+<p>IGTPW_11452: 11452<br />
+  IGT_7936: 7936<br />
+  xe-1651-049eae5224ed92f3cb723a492593b255654e0649: 049eae5224ed92f3cb723a492593b255654e0649<br />
+  xe-1664-724a2a53988a57709d7f9dcd5c58dd5737d45cb2: 724a2a53988a57709d7f9dcd5c58dd5737d45cb2</p>
+
+</body>
+</html>
+
+--===============3102970961561731728==--
