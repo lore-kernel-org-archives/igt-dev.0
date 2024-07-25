@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58AF3C3DA49
-	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 17:38:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 570A9C3DA5D
+	for <igt-dev@archiver.kernel.org>; Thu, 25 Jul 2024 17:40:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1A63B10E30E;
-	Thu, 25 Jul 2024 17:38:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 15F7910E0B7;
+	Thu, 25 Jul 2024 17:40:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fAEDSEAi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QD8wfpdf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 18B1910E0B7
- for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 17:38:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BECE10E0B7
+ for <igt-dev@lists.freedesktop.org>; Thu, 25 Jul 2024 17:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721929114; x=1753465114;
+ t=1721929235; x=1753465235;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=D/1XMXCm7fFGVI5w0yf+4H/EqHbWXrwW1kL6oDCtbGs=;
- b=fAEDSEAiikSgFWQIjDp3zfYGNhjq5RqIOTTN9JTxw07clSlmPLen3aRm
- hcbOX1bn5sqvc4cYTXOfTKcLq9Snn7kyLr3R9pe8bJKKBz9GvWAVC8Uxp
- XFTGRmATixg65YDF96X6YkUZiXOZ3N1Uyqi5MLbTsvJ2UFnZaC9us/bXl
- p4lX3PfjokE4UNinQ0LMQ7PXo4iLuo/UlB4a18/v0PbMLrkiAEboOCSqT
- 1kXfFrNadpoIowkM6UDmFOWHUTnrOpaaXFU3iMtlO34Uq2cJ/e1kQtixi
- 7NPRBBEZqYWvjDVCWqjls0NIjAdin0UKrIUa9zjzKZvg85liiaZlHY61B g==;
-X-CSE-ConnectionGUID: T14S/V04QxiMEF3z1Yp91w==
-X-CSE-MsgGUID: GN9VfIG6StS+WgTYljJX3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="37205126"
-X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="37205126"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 10:38:33 -0700
-X-CSE-ConnectionGUID: YoYITGgLTUyr7DPceTa/+g==
-X-CSE-MsgGUID: vIYt8WCNT1uYV2xWFuVCZA==
+ bh=TSaoTOU2WmpyjjhazKrbNDPiDc0OV8aXFqtAL4e/eIk=;
+ b=QD8wfpdfyWTZJXERFTodKu1gBqjx7WUMoLUU4wKHxiGKDfAT0AyfFjzC
+ kqjvzjSzkymhV9P/xKOcezaCwoMsUjAw1vWiHSDCUSOL8WFH+c3P3mi+J
+ 0GIDjNicDY0mdvDR4kEzmcK4IigZNU42Cmud8upF06WE/35IpztnrI4PF
+ FFs2+AsG4+X2BGJf0KX7CUVefE1VTM4SB9K2fontn9IOAFQNxnwZHgZ8m
+ mqOhYZ44S2XgrsZkH7TbCjo4/P8tPTlPnsDcslyKRAVfdgMq9A05/CIdP
+ xUOg3POXy0KTHhvFT8AyIiyYUR6Owj4rnrDOHhVe+ZYiqNh+cijDXkWeW A==;
+X-CSE-ConnectionGUID: OFOcO+lsSdKTODfnacMNtQ==
+X-CSE-MsgGUID: h8n7oWaCRjqp8RxjibgEjA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19647359"
+X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="19647359"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2024 10:40:35 -0700
+X-CSE-ConnectionGUID: gqE+87SIQEG8zIz2PwyXAQ==
+X-CSE-MsgGUID: q5wbhITvRK2bdnnnrUhJbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="83984794"
+X-IronPort-AV: E=Sophos;i="6.09,236,1716274800"; d="scan'208";a="53775718"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Jul 2024 10:38:33 -0700
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Jul 2024 10:40:35 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: janga.rahul.kumar@intel.com
-Subject: [PATCH v2] tests/intel/xe_exec_compute_mode: Add userptr free /
+Subject: [PATCH v3] tests/intel/xe_exec_compute_mode: Add userptr free /
  munmap sections
-Date: Thu, 25 Jul 2024 10:39:21 -0700
-Message-Id: <20240725173921.1931503-1-matthew.brost@intel.com>
+Date: Thu, 25 Jul 2024 10:41:23 -0700
+Message-Id: <20240725174123.1931566-1-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -75,6 +75,8 @@ submissions.
 v2:
  - s/faill/fail (Janga)
  - check dummy for mapped failed (Janga)
+v3:
+ - Include local changes
 
 Cc: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
 Signed-off-by: Matthew Brost <matthew.brost@intel.com>
@@ -83,7 +85,7 @@ Signed-off-by: Matthew Brost <matthew.brost@intel.com>
  1 file changed, 37 insertions(+), 6 deletions(-)
 
 diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 389de7ca40..704d975178 100644
+index 389de7ca40..d5c9d12d1a 100644
 --- a/tests/intel/xe_exec_compute_mode.c
 +++ b/tests/intel/xe_exec_compute_mode.c
 @@ -29,9 +29,11 @@
@@ -105,7 +107,7 @@ index 389de7ca40..704d975178 100644
   * @preempt-fence-early:		preempt fence early
   * @userptr:				userptr
 + * @userptr-free:			userptr free
-+ * @userptr-unmap:			userptr unmap 
++ * @userptr-unmap:			userptr unmap
   * @rebind:				rebind
   * @userptr-rebind:			userptr rebind
   * @userptr-invalidate:			userptr invalidate
@@ -143,7 +145,7 @@ index 389de7ca40..704d975178 100644
 +			dummy = mmap((void *)MAP_ADDRESS, bo_size, PROT_READ |
 +				     PROT_WRITE, MAP_SHARED | MAP_FIXED |
 +				     MAP_ANONYMOUS, -1, 0);
-+			igt_assert(data != MAP_FAILED);
++			igt_assert(dummy != MAP_FAILED);
 +		}
 +		if (flags & FREE_MAPPPING) {
 +			dummy = aligned_alloc(xe_get_default_alignment(fd),
