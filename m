@@ -4,58 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97959C3DA7F
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jul 2024 11:45:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF96BC49EA1
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jul 2024 11:46:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E73110E238;
-	Fri, 26 Jul 2024 11:45:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2767910E964;
+	Fri, 26 Jul 2024 11:46:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tx6rb3Xh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KJm9OAsf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFA1910E238
- for <igt-dev@lists.freedesktop.org>; Fri, 26 Jul 2024 11:45:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A67AC10E238;
+ Fri, 26 Jul 2024 11:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1721994319; x=1753530319;
+ t=1721994383; x=1753530383;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=f/++PPzz5wtwzL1ZduVDznas2ypO3JCAzI0g8tVrhk4=;
- b=Tx6rb3XhecZrUl4m+2qLs10gqhVNB220LtUH3OMPhpi3IpT1G9FbniQ3
- KPBsOiOaI3XR6aouh9ykAUX/pNQVo4MfwPnSzbTitD3YpmtjS8yyStQCk
- ZNxAiG1emra6YZ/mmAqHhTgaETFR3tmvVPijgAR8ljc83HMjjV3JrAoCg
- cP7tiAMZMlYSWmv2opgjR5N35wPxqLbJXvYwnS1L+yuE9JipO/wKH035V
- XFh+Lk2uCTA54q7ysq5vA+L3OnPnBNNa8+7BOCWk/4Px53c5wTfsdaJDy
- Alkq4ve2Vr49WO+sfTbCmjgVs3wjYbfu3+i5d9zjrGU05sxdXxgAVL1tk A==;
-X-CSE-ConnectionGUID: Z/Gpj89+TGeF/ul3O8vBnw==
-X-CSE-MsgGUID: Z+4NeqnITW2tiNcoNAg8Rw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19922227"
-X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; d="scan'208";a="19922227"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jul 2024 04:45:18 -0700
-X-CSE-ConnectionGUID: ZcPPIYDcRrSuODeHYJTBcQ==
-X-CSE-MsgGUID: WOhsIPKkT2msQXho4nyA3A==
+ bh=ca0s0oSK1FE9cibXyw4ZLN4bParEUsrugNpgXgFZFd8=;
+ b=KJm9OAsfY6Ce+MkemudT98j31es5YoPQjMDkCHlTcPDGq+taaHYfwtec
+ cEK/2N3mEMPk9BFO7+XLHL/bvDjydASdURdozMWZQ1ECvXCZYP+AEEXyS
+ KD/FMeJ2EfnVNg1z46L3kN7Wc0WLjFCHfThGYGrHy70Pwbi+4kKB65ht8
+ natlacBwzkjwG0UzTuoxNi5dxAg7Gzce74/XyotkAwuGLhReJ0XLinfAw
+ t+df3b3qSrVXqNhtr4eE7LGjbcEt30RjBdN+w0hCwxi3/OQOySZ7Y3p3y
+ EJ6b523BRhTAcrmu3fh75b6ENyEvZCH+dOynCRO+2TCEHxqgCfdJn++xD w==;
+X-CSE-ConnectionGUID: Y4gHP/lwTJGmVBkVzidi2g==
+X-CSE-MsgGUID: ISua2fZ/QBi6CYJn+QY4pw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="30381517"
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; d="scan'208";a="30381517"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jul 2024 04:46:23 -0700
+X-CSE-ConnectionGUID: pIioGiItTuSJJnwpLqWp+Q==
+X-CSE-MsgGUID: cdk0s4xdR36XNA+UnQ7yqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; d="scan'208";a="90723331"
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; d="scan'208";a="53179337"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Jul 2024 04:45:18 -0700
-Date: Fri, 26 Jul 2024 13:45:14 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Jul 2024 04:46:22 -0700
+Date: Fri, 26 Jul 2024 13:46:19 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: Re: [PATCH] tests/intel/xe_exec_threads: decrease number of batches
- for simulation
-Message-ID: <20240726114514.bf2wflgjdmqf7fll@kamilkon-DESK.igk.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/2] tests/device_reset: Wait for device nodes to
+ re-appear
+Message-ID: <20240726114619.rv7jqzmlxthhnmkj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Andrzej Hajda <andrzej.hajda@intel.com>
-References: <20240726-xe_exec_threads_limit_simul-v1-1-4c3f6e8da448@intel.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org
+References: <20240726084022.356654-4-janusz.krzysztofik@linux.intel.com>
+ <20240726084022.356654-5-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240726-xe_exec_threads_limit_simul-v1-1-4c3f6e8da448@intel.com>
+In-Reply-To: <20240726084022.356654-5-janusz.krzysztofik@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,58 +74,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Andrzej,
-On 2024-07-26 at 10:24:19 +0200, Andrzej Hajda wrote:
-> Tests like threads-mixed-shared-vm-rebind takes significantly longer time
-> on simulation due to high number of batches - 6-8 minutes vs few seconds
-> on hw. As a result CI tests frequently fails due to timeout.
+Hi Janusz,
+On 2024-07-26 at 10:34:56 +0200, Janusz Krzysztofik wrote:
+> CI sporadically reports the following issue:
 > 
-> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> (device_reset:1335) DEBUG: rebind the driver to the device
+> (device_reset:1335) DEBUG: reopen the device
+> (device_reset:1335) drmtest-DEBUG: Looking for devices to open using filter 0: sys:/sys/devices/pci0000:00/0000:00:02.0
+> (device_reset:1335) drmtest-DEBUG: Filter matched  | /dev/dri/renderD128
+> (device_reset:1335) drmtest-WARNING: No card matches the filter! [sys:/sys/devices/pci0000:00/0000:00:02.0]
+> (device_reset:1335) CRITICAL: Test assertion failure function healthcheck, file ../../../usr/src/igt-gpu-tools/tests/device_reset.c:393:
+> (device_reset:1335) CRITICAL: Failed assertion: dev->fds.dev >= 0
+> (device_reset:1335) CRITICAL: Last errno: 22, Invalid argument
+> (device_reset:1335) CRITICAL: file descriptor dev->fds.dev failed
+> 
+> After rebinding a DRM device driver, we now immediately start looking for
+> DRM devices that match our PCI filter established before unbind.  The
+> above messages indicate that occasionally not all device nodes are ready
+> by the time we are doing that.
+> 
+> Introduce a delay to give the kernel a chance to re-create in devtmpfs all
+> device nodes we are going to scan for.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11626
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
 LGTM,
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  tests/intel/xe_exec_threads.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  tests/device_reset.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-> index e7a0a7cd0692..9a37730a9615 100644
-> --- a/tests/intel/xe_exec_threads.c
-> +++ b/tests/intel/xe_exec_threads.c
-> @@ -944,6 +944,7 @@ static void *thread(void *data)
->  
->  static void threads(int fd, int flags)
+> diff --git a/tests/device_reset.c b/tests/device_reset.c
+> index a669e1224e..8ed3ef5220 100644
+> --- a/tests/device_reset.c
+> +++ b/tests/device_reset.c
+> @@ -385,6 +385,8 @@ static bool is_i915_wedged(int i915)
+>  static void healthcheck(struct device_fds *dev)
 >  {
-> +	int n_execs = igt_run_in_simulation() ? 256 : 1024;
->  	struct thread_data *threads_data;
->  	struct drm_xe_engine_class_instance *hwe;
->  	uint64_t addr = 0x1a0000;
-> @@ -1002,8 +1003,7 @@ static void threads(int fd, int flags)
->  		threads_data[i].eci = hwe;
->  #define N_EXEC_QUEUE	16
->  		threads_data[i].n_exec_queue = N_EXEC_QUEUE;
-> -#define N_EXEC		1024
-> -		threads_data[i].n_exec = N_EXEC;
-> +		threads_data[i].n_exec = n_execs;
->  		threads_data[i].flags = flags;
->  		if (flags & MIXED_MODE) {
->  			threads_data[i].flags &= ~MIXED_MODE;
-> @@ -1050,7 +1050,7 @@ static void threads(int fd, int flags)
->  						vm_legacy_mode;
->  					threads_data[i].class = class;
->  					threads_data[i].n_exec_queue = N_EXEC_QUEUE;
-> -					threads_data[i].n_exec = N_EXEC;
-> +					threads_data[i].n_exec = n_execs;
->  					threads_data[i].flags = flags;
->  					threads_data[i].flags &= ~BALANCER;
->  					threads_data[i].flags |= *data_flags;
-> 
-> ---
-> base-commit: 0471a1097444389a901d78b260c24eaf4fc2d7df
-> change-id: 20240726-xe_exec_threads_limit_simul-3dc20e0deac3
-> 
-> Best regards,
+>  	if (dev->fds.dev == -1) {
+> +		/* give the kernel a breath for re-creating device nodes in devtmpfs */
+> +		sleep(1);
+>  		/* refresh device list */
+>  		igt_devices_scan(true);
+>  		igt_debug("reopen the device\n");
 > -- 
-> Andrzej Hajda <andrzej.hajda@intel.com>
+> 2.45.2
 > 
