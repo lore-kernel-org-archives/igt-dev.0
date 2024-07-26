@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 536AAC49EA1
-	for <igt-dev@archiver.kernel.org>; Fri, 26 Jul 2024 11:36:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97959C3DA7F
+	for <igt-dev@archiver.kernel.org>; Fri, 26 Jul 2024 11:45:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16FC310E238;
-	Fri, 26 Jul 2024 11:36:50 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D5D7910E238;
- Fri, 26 Jul 2024 11:36:48 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7528774088782544184=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E73110E238;
+	Fri, 26 Jul 2024 11:45:20 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tx6rb3Xh";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BFA1910E238
+ for <igt-dev@lists.freedesktop.org>; Fri, 26 Jul 2024 11:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1721994319; x=1753530319;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=f/++PPzz5wtwzL1ZduVDznas2ypO3JCAzI0g8tVrhk4=;
+ b=Tx6rb3XhecZrUl4m+2qLs10gqhVNB220LtUH3OMPhpi3IpT1G9FbniQ3
+ KPBsOiOaI3XR6aouh9ykAUX/pNQVo4MfwPnSzbTitD3YpmtjS8yyStQCk
+ ZNxAiG1emra6YZ/mmAqHhTgaETFR3tmvVPijgAR8ljc83HMjjV3JrAoCg
+ cP7tiAMZMlYSWmv2opgjR5N35wPxqLbJXvYwnS1L+yuE9JipO/wKH035V
+ XFh+Lk2uCTA54q7ysq5vA+L3OnPnBNNa8+7BOCWk/4Px53c5wTfsdaJDy
+ Alkq4ve2Vr49WO+sfTbCmjgVs3wjYbfu3+i5d9zjrGU05sxdXxgAVL1tk A==;
+X-CSE-ConnectionGUID: Z/Gpj89+TGeF/ul3O8vBnw==
+X-CSE-MsgGUID: Z+4NeqnITW2tiNcoNAg8Rw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11144"; a="19922227"
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; d="scan'208";a="19922227"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jul 2024 04:45:18 -0700
+X-CSE-ConnectionGUID: ZcPPIYDcRrSuODeHYJTBcQ==
+X-CSE-MsgGUID: WOhsIPKkT2msQXho4nyA3A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,238,1716274800"; d="scan'208";a="90723331"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Jul 2024 04:45:18 -0700
+Date: Fri, 26 Jul 2024 13:45:14 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: Re: [PATCH] tests/intel/xe_exec_threads: decrease number of batches
+ for simulation
+Message-ID: <20240726114514.bf2wflgjdmqf7fll@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+References: <20240726-xe_exec_threads_limit_simul-v1-1-4c3f6e8da448@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Improvise-the-deep-pkgc_=28rev?=
- =?utf-8?q?3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 26 Jul 2024 11:36:48 -0000
-Message-ID: <172199380886.385850.10637042713592429256@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240726100751.918038-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20240726100751.918038-1-ramanaidu.naladala@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240726-xe_exec_threads_limit_simul-v1-1-4c3f6e8da448@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,171 +68,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7528774088782544184==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Andrzej,
+On 2024-07-26 at 10:24:19 +0200, Andrzej Hajda wrote:
+> Tests like threads-mixed-shared-vm-rebind takes significantly longer time
+> on simulation due to high number of batches - 6-8 minutes vs few seconds
+> on hw. As a result CI tests frequently fails due to timeout.
+> 
+> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 
-== Series Details ==
+LGTM,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: Improvise-the-deep-pkgc (rev3)
-URL   : https://patchwork.freedesktop.org/series/136055/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7939_BAT -> XEIGTPW_11476_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (6 -> 7)
-------------------------------
-
-  Additional (1): bat-lnl-1 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11476_BAT:
-
-### IGT changes ###
-
-#### Suppressed ####
-
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
-
-  * igt@kms_pm_dc@deep-pkgc:
-    - {bat-bmg-1}:        NOTRUN -> [SKIP][1]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-bmg-1/igt@kms_pm_dc@deep-pkgc.html
-    - {bat-lnl-2}:        NOTRUN -> [SKIP][2]
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-lnl-2/igt@kms_pm_dc@deep-pkgc.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11476_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pm_dc@deep-pkgc:
-    - bat-pvc-2:          NOTRUN -> [SKIP][3] ([Intel XE#1024])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-pvc-2/igt@kms_pm_dc@deep-pkgc.html
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][4] ([Intel XE#2007])
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-dg2-oem2/igt@kms_pm_dc@deep-pkgc.html
-    - bat-atsm-2:         NOTRUN -> [SKIP][5] ([Intel XE#1024])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-atsm-2/igt@kms_pm_dc@deep-pkgc.html
-    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#2007])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-adlp-7/igt@kms_pm_dc@deep-pkgc.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#2007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2007
-
-
-Build changes
--------------
-
-  * IGT: IGT_7939 -> IGTPW_11476
-
-  IGTPW_11476: 11476
-  IGT_7939: 7939
-  xe-1671-edd84625d093bb52bfb1c0c6feb12cff308d81b7: edd84625d093bb52bfb1c0c6feb12cff308d81b7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/index.html
-
---===============7528774088782544184==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Improvise-the-deep-pkgc (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136055/">https://patchwork.freedesktop.org/series/136055/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7939_BAT -&gt; XEIGTPW_11476_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (6 -&gt; 7)</h2>
-<p>Additional (1): bat-lnl-1 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11476_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@kms_pm_dc@deep-pkgc:<ul>
-<li>{bat-bmg-1}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-bmg-1/igt@kms_pm_dc@deep-pkgc.html">SKIP</a></li>
-<li>{bat-lnl-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-lnl-2/igt@kms_pm_dc@deep-pkgc.html">SKIP</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11476_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pm_dc@deep-pkgc:<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-pvc-2/igt@kms_pm_dc@deep-pkgc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-dg2-oem2/igt@kms_pm_dc@deep-pkgc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2007">Intel XE#2007</a>)</li>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-atsm-2/igt@kms_pm_dc@deep-pkgc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>)</li>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11476/bat-adlp-7/igt@kms_pm_dc@deep-pkgc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2007">Intel XE#2007</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7939 -&gt; IGTPW_11476</li>
-</ul>
-<p>IGTPW_11476: 11476<br />
-  IGT_7939: 7939<br />
-  xe-1671-edd84625d093bb52bfb1c0c6feb12cff308d81b7: edd84625d093bb52bfb1c0c6feb12cff308d81b7</p>
-
-</body>
-</html>
-
---===============7528774088782544184==--
+> ---
+>  tests/intel/xe_exec_threads.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+> index e7a0a7cd0692..9a37730a9615 100644
+> --- a/tests/intel/xe_exec_threads.c
+> +++ b/tests/intel/xe_exec_threads.c
+> @@ -944,6 +944,7 @@ static void *thread(void *data)
+>  
+>  static void threads(int fd, int flags)
+>  {
+> +	int n_execs = igt_run_in_simulation() ? 256 : 1024;
+>  	struct thread_data *threads_data;
+>  	struct drm_xe_engine_class_instance *hwe;
+>  	uint64_t addr = 0x1a0000;
+> @@ -1002,8 +1003,7 @@ static void threads(int fd, int flags)
+>  		threads_data[i].eci = hwe;
+>  #define N_EXEC_QUEUE	16
+>  		threads_data[i].n_exec_queue = N_EXEC_QUEUE;
+> -#define N_EXEC		1024
+> -		threads_data[i].n_exec = N_EXEC;
+> +		threads_data[i].n_exec = n_execs;
+>  		threads_data[i].flags = flags;
+>  		if (flags & MIXED_MODE) {
+>  			threads_data[i].flags &= ~MIXED_MODE;
+> @@ -1050,7 +1050,7 @@ static void threads(int fd, int flags)
+>  						vm_legacy_mode;
+>  					threads_data[i].class = class;
+>  					threads_data[i].n_exec_queue = N_EXEC_QUEUE;
+> -					threads_data[i].n_exec = N_EXEC;
+> +					threads_data[i].n_exec = n_execs;
+>  					threads_data[i].flags = flags;
+>  					threads_data[i].flags &= ~BALANCER;
+>  					threads_data[i].flags |= *data_flags;
+> 
+> ---
+> base-commit: 0471a1097444389a901d78b260c24eaf4fc2d7df
+> change-id: 20240726-xe_exec_threads_limit_simul-3dc20e0deac3
+> 
+> Best regards,
+> -- 
+> Andrzej Hajda <andrzej.hajda@intel.com>
+> 
