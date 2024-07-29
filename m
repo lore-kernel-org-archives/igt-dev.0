@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D33FC3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B55FDC3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE32C10E428;
-	Mon, 29 Jul 2024 16:03:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B9A610E42E;
+	Mon, 29 Jul 2024 16:03:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VHBdKYKU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g9qYpYYv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CFCE10E42E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ACB110E42E
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269013; x=1753805013;
+ t=1722269016; x=1753805016;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2JkxUUPMfru17/zcslXPf+6L+eynphutJqOnFz93Zmk=;
- b=VHBdKYKUnX/H6Vr4ulqZe4Ep0uTRLkil+FhlXFR1iVDruds+8+irSZ2M
- UPcaqggncTT+cKmoRy8n9Oq0UoV0kEQNAiZtMQrIv81RZ8kcjEmm3nAxh
- r3fkSzQDEnWIyjIykQZlgovpAta0ocO5Iz4nbNocyuA+4PpMlCnVGRC/6
- kvN25t0ekBfQtscHQef6K2/x6lKzL17UlmbbGrXBsQrZaBZf/C4btkKdg
- Lr/RkNKl9ED8IrJTlSKrzgPne7kzBJ9lxQj1jjTA0GuTI9gQ+XtrZgvuO
- wQdM1BY0Vl0xcHAu7pW5XFbVHgH4po9OB4/VyhQfJpHx8tR914exrVIIO A==;
-X-CSE-ConnectionGUID: 4DKGb+C8TbSAXgFlYKB6NQ==
-X-CSE-MsgGUID: synu1gYtQaGrFSpbuRn5gw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427088"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427088"
+ bh=eEYObAHTAMZfLXfmVcOC2Sa8TO5AdP9AUiV3q555WfY=;
+ b=g9qYpYYvZh0e3chIlzv1d9Vrr6fS0kF2AJDaWImp7tJh7/kcrICxU5aa
+ /fSQRG1g3DHaSRaGXUyTjlE8wXvbVOS3U5fx9ZwRm54f7REFqg9lBf4X6
+ 6C99lGDAERptxePYvpY6aGOgEjaJUbhpEoAATvCa/owF+22jrKtETg2Ge
+ 1M//nbrqXelin1JQrwxTqcJUTX0ZSq4sE/0zSxQ+zMPGqDb5jhgxdwxf3
+ 97Dccd42Q1E5hXd89D2w4KqVZxHAs4sP9zQQVF5YhLE9/GnLR5eqicSVE
+ wTvvK1wW2VxaybPhLTxJVihO5vU63KohlrBkIRaVHSBJr49A04iV93NAA g==;
+X-CSE-ConnectionGUID: AIDWWG2eS2KF1hEySq0VYw==
+X-CSE-MsgGUID: xkWLireGSj+LCMv3gGRRIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427096"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427096"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:33 -0700
-X-CSE-ConnectionGUID: 0IAOppMiTqiLxBcUSYAbtg==
-X-CSE-MsgGUID: vByFM1boTcuIt/TaviNX3w==
+ 29 Jul 2024 09:03:36 -0700
+X-CSE-ConnectionGUID: BlfzT/XuRNSsg1Ef1akS/w==
+X-CSE-MsgGUID: crTBlft7SNyEB+XzXv3AkA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737840"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737880"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:29 -0700
+ 29 Jul 2024 09:03:32 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,11 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH 22/66] tests/xe_eudebug: Add coverage for sysfs debugger toggle
-Date: Mon, 29 Jul 2024 18:01:15 +0200
-Message-Id: <20240729160159.37036-23-christoph.manszewski@intel.com>
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Karolina Stolarek <karolina.stolarek@intel.com>
+Subject: [PATCH 23/66] lib/xe_eudebug: Allow debugger to wait for client
+Date: Mon, 29 Jul 2024 18:01:16 +0200
+Message-Id: <20240729160159.37036-24-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -79,59 +80,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtest for checking sysfs debugger toggle logic and debugger state.
+In some tests, we need to pause the debugger at a certain stage as
+the point at which the client performs certain activities, determines
+the executed code path in the driver.
+
+Add a possibility to pause debugger and to signal continuation by
+the client.
 
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Karolina Stolarek <karolina.stolarek@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ lib/xe/xe_eudebug.c | 37 +++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_eudebug.h |  2 ++
+ 2 files changed, 39 insertions(+)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index adf5e79ac..fa81cbfe6 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -22,6 +22,30 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
+diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+index 18e0ac422..919dd1d49 100644
+--- a/lib/xe/xe_eudebug.c
++++ b/lib/xe/xe_eudebug.c
+@@ -45,6 +45,7 @@ struct match_dto {
+ #define CLIENT_FINI 3
+ #define CLIENT_STOP 4
+ #define CLIENT_STAGE 5
++#define DEBUGGER_STAGE 6
+ 
+ #define DEBUGGER_WORKER_INACTIVE  0
+ #define DEBUGGER_WORKER_ACTIVE  1
+@@ -1244,6 +1245,29 @@ void xe_eudebug_debugger_signal_stage(struct xe_eudebug_debugger *d, uint64_t st
+ 	token_signal(d->p_client, CLIENT_STAGE, stage);
+ }
  
 +/**
-+ * SUBTEST: sysfs-toggle
-+ * Description:
-+ *      Excercise the debugger enable/disable sysfs toggle logic
++ * xe_eudebug_debugger_wait_stage:
++ * @s: pointer to xe_eudebug_debugger structure
++ * @stage: stage to wait on
++ *
++ * Pauses debugger until the client has signalled the corresponding stage with
++ * xe_eudebug_client_signal_stage. This is only for situatuons where the actual
++ * event flow is not enough to coordinate between client/debugger and extra sync
++ * mechanism is needed.
 + */
-+static void test_sysfs_toggle(int fd)
++void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s, uint64_t stage)
 +{
-+	xe_eudebug_enable(fd, false);
-+	igt_assert(!xe_eudebug_debugger_available(fd));
++	u64 stage_in;
 +
-+	xe_eudebug_enable(fd, true);
-+	igt_assert(xe_eudebug_debugger_available(fd));
-+	xe_eudebug_enable(fd, true);
-+	igt_assert(xe_eudebug_debugger_available(fd));
++	igt_debug("debugger xe client fd: %d pausing for stage %lu\n", s->d->master_fd, stage);
 +
-+	xe_eudebug_enable(fd, false);
-+	igt_assert(!xe_eudebug_debugger_available(fd));
-+	xe_eudebug_enable(fd, false);
-+	igt_assert(!xe_eudebug_debugger_available(fd));
++	stage_in = wait_from_client(s->c, DEBUGGER_STAGE);
++	igt_debug("debugger xe client fd: %d stage %lu, expected %lu, stage\n", s->d->master_fd,
++		  stage_in, stage);
 +
-+	xe_eudebug_enable(fd, true);
-+	igt_assert(xe_eudebug_debugger_available(fd));
++	igt_assert_eq(stage_in, stage);
 +}
 +
- #define CREATE_VMS (1 << 0)
- #define CREATE_EXEC_QUEUES (1 << 1)
- #define VM_BIND (1 << 2)
-@@ -1145,6 +1169,9 @@ igt_main
- 		was_enabled = xe_eudebug_enable(fd, true);
+ /**
+  * xe_eudebug_client_create:
+  * @master_fd: xe client used to open the debugger connection
+@@ -1391,6 +1415,19 @@ void xe_eudebug_client_wait_done(struct xe_eudebug_client *c)
  	}
+ }
  
-+	igt_subtest("sysfs-toggle")
-+		test_sysfs_toggle(fd);
++/**
++ * xe_eudebug_client_signal_stage:
++ * @c: pointer to the client
++ * @stage: stage to signal
++ *
++ * Signals to debugger, waiting in xe_eudebug_debugger_wait_stage(),
++ * releasing it to proceed.
++ */
++void xe_eudebug_client_signal_stage(struct xe_eudebug_client *c, uint64_t stage)
++{
++	token_signal(c->p_out, DEBUGGER_STAGE, stage);
++}
 +
- 	igt_subtest("basic-connect")
- 		test_connect(fd);
+ /**
+  * xe_eudebug_client_wait_stage:
+  * @c: pointer to xe_eudebug_client structure
+diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+index 1343cb25c..81c33417f 100644
+--- a/lib/xe/xe_eudebug.h
++++ b/lib/xe/xe_eudebug.h
+@@ -135,6 +135,7 @@ void xe_eudebug_debugger_set_data(struct xe_eudebug_debugger *c, void *ptr);
+ void xe_eudebug_debugger_add_trigger(struct xe_eudebug_debugger *d, int type,
+ 				     xe_eudebug_trigger_fn fn);
+ void xe_eudebug_debugger_signal_stage(struct xe_eudebug_debugger *d, uint64_t stage);
++void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s, uint64_t stage);
  
+ struct xe_eudebug_client *
+ xe_eudebug_client_create(int xe, xe_eudebug_client_work_fn work, uint64_t flags, void *data);
+@@ -142,6 +143,7 @@ void xe_eudebug_client_destroy(struct xe_eudebug_client *c);
+ void xe_eudebug_client_start(struct xe_eudebug_client *c);
+ void xe_eudebug_client_stop(struct xe_eudebug_client *c);
+ void xe_eudebug_client_wait_done(struct xe_eudebug_client *c);
++void xe_eudebug_client_signal_stage(struct xe_eudebug_client *c, uint64_t stage);
+ void xe_eudebug_client_wait_stage(struct xe_eudebug_client *c, uint64_t stage);
+ 
+ uint64_t xe_eudebug_client_get_seqno(struct xe_eudebug_client *c);
 -- 
 2.34.1
 
