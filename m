@@ -4,69 +4,70 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A496C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 04:38:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C00FC3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 04:38:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7FEA10E2EF;
-	Mon, 29 Jul 2024 04:38:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DC4BB10E2F0;
+	Mon, 29 Jul 2024 04:38:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="WKwsCWhN";
+	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="b5SpTe2s";
 	dkim-atps=neutral
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com
- [209.85.210.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A6B010E2EF
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 04:38:55 +0000 (UTC)
-Received: by mail-pf1-f182.google.com with SMTP id
- d2e1a72fcca58-70d1cbbeeaeso1842940b3a.0
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Jul 2024 21:38:55 -0700 (PDT)
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com
+ [209.85.210.180])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1AC5A10E2EB
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 04:38:58 +0000 (UTC)
+Received: by mail-pf1-f180.google.com with SMTP id
+ d2e1a72fcca58-70d316f0060so1698420b3a.1
+ for <igt-dev@lists.freedesktop.org>; Sun, 28 Jul 2024 21:38:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=broadcom.com; s=google; t=1722227934; x=1722832734;
+ d=broadcom.com; s=google; t=1722227937; x=1722832737;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to;
- bh=2YVapZSWnEezRypPp7Dz0ABQXd1Sn0jp6TKUYNybGTE=;
- b=WKwsCWhNTpk31nV66aOZXtyqTiH8CQ60YHoIbw7Qem3yzfgeXTjWqIas4db9nepeEJ
- nc98lPX6VIQ18Tdm/1I4ctaLSB118JX8qJpof3HCXDRD6Hn4UdIOjzsMAe1gp+y9kat7
- r7MbkV5fpjfPEb3aFgbrlxXso8N1QQkVKLGDA=
+ bh=fb2IE54tl5sXlokujGH95ucIePVoqobDwe+h78k5F9s=;
+ b=b5SpTe2sfCqXAai1NC2hiPDCqN0DORT6N+o66zPFVJTCviBop2CvKY3NmyrWYr/Lij
+ wo5kymXKbrRTWHAprmPHIngoJVPCZFSozUPlvRKMJHno4goHjkyTKRXElqmS97TTAfiR
+ IK+llQFHhHYoObTtk7PPRiu7dlU8f82arCWBs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722227934; x=1722832734;
+ d=1e100.net; s=20230601; t=1722227937; x=1722832737;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=2YVapZSWnEezRypPp7Dz0ABQXd1Sn0jp6TKUYNybGTE=;
- b=FxC1dNZNrGW/gqX/D+FIKmQWeHiT2h1TV7Bp4M0xuc2NUn5+eQtf2apGr6ZqIwPjc8
- JFYKD45YZynqJDfthymOpCBdcX3pcU7fb+nwYmrg3zoo3Sh7/hHXAlONsQ6KUMGxgtBU
- gU20Yua0gScdhmFYWfgPTPmbSSFj4IY/sanV0JncmeqdUNTTRdxvpNvcQTLztZm+0Yf/
- JESaIpo2yyJsR6YPVNif1Ghh2R4yeab+gxusDf5VOJYxzrga+iCfV+7wta0MA83gjV45
- M3kCqeHK8DTtGApX6CmjU3JR1naXzpQGwk3xGywufcr3enFRueviMOvZQ8dg3UvrQjQA
- DJZQ==
-X-Gm-Message-State: AOJu0YziqoAsmHK+K3RP4jRixQjyvwbcd5qxoAbdL33ldtRXcGRsD9Gs
- jIy6/l4Nh7v1FJGTw5tt+yK0Dxs/tV0sTib0GX55d9IXjzvJ2TaafrgJ225HlX6l6ZgZYHgVRct
- PzH/lrBEgvjaSJouwVtgLdo5Zn0pp3oB0c8UxfQ9/z840eJZQs7vpNF+zy4SN63H1i5dckI55j9
- /Yg2YXsIkODu67pMpmmwUTJspgOEHxQwkJOTUYJ8VqWmVSPCc=
-X-Google-Smtp-Source: AGHT+IEf7esBAhHp10hZ2ThzF//Et0Pal1W89ZrRfiCoxN3u8TMNZcKN/iCOA2I3RSnrQnVYILJC6g==
-X-Received: by 2002:a05:6a00:1304:b0:70d:311b:8569 with SMTP id
- d2e1a72fcca58-70ecedb0a31mr3837362b3a.26.1722227933883; 
- Sun, 28 Jul 2024 21:38:53 -0700 (PDT)
+ bh=fb2IE54tl5sXlokujGH95ucIePVoqobDwe+h78k5F9s=;
+ b=bGeckCZKRtHyla9+NpAzHwGV3gigR6hs1QGGzF+I5ZZyLvh/xXDJ2z+CLjNbZ6W4on
+ NnVp9XplLgXb/Z0YQbWQbjb5qs201xwYnbI7Hvkf1q2gn2Zf08boiPbGMXyXQGAZ5WuY
+ P2lPdqjnmqFcblulLlPEvNsFivVQtZU0Y0zwAWacxpKgH0vx6Wxs17tYUoS3RLaoD2PX
+ sDxY/pCJgmakObrVBMkuReXBg/PE75LOnD77GPc8FSYlSGz7BMDjN+0WtUhTj0sZ4h+e
+ XQn/R7qa8gHD5eC+lAuFgain9FgF0h5orHCS20+TM1+I89A6kWU18lANU77q7iMvPQ0K
+ DPiw==
+X-Gm-Message-State: AOJu0Yy1s+6uWqLnVfclWdT2Hrp0r4CR7RLCGnGk9zVGEeqFOkQUDl6m
+ 5Z3KB8ToWLbJ/AhY4VHNBNDJQmS+eHmyGHTCZWYSrbLF/qFcVWtcKhpElROjk009E4oQD+gnBui
+ PdOH1a3Y93s4tffMbm3o4aGtX89HPLTmCA+p3XWco7FWr+Ox0Cbh7io4cCBYhu6h6velmV22OGf
+ cWeJOotGJCMcOyJiSfdkL6T55IGI1AeHP1Uy8jqh8YRbl4ZHc=
+X-Google-Smtp-Source: AGHT+IGLDA92elanFc9xv5VScYDO7jwnsLoWIQ2IWtkJqpoTIwvecMtZW4gOv5+/+iA8ecxdj661+Q==
+X-Received: by 2002:a05:6a21:6f83:b0:1c4:d14f:248f with SMTP id
+ adf61e73a8af0-1c4d14f27e9mr1330853637.13.1722227937198; 
+ Sun, 28 Jul 2024 21:38:57 -0700 (PDT)
 Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net.
  [173.49.113.140]) by smtp.gmail.com with ESMTPSA id
- d2e1a72fcca58-70ead88c19bsm5963392b3a.183.2024.07.28.21.38.52
+ d2e1a72fcca58-70ead88c19bsm5963392b3a.183.2024.07.28.21.38.55
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Sun, 28 Jul 2024 21:38:53 -0700 (PDT)
+ Sun, 28 Jul 2024 21:38:56 -0700 (PDT)
 From: Zack Rusin <zack.rusin@broadcom.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ian.forbes@broadcom.com, martin.krastev@broadcom.com,
  maaz.mombasawala@broadcom.com, kamil.konieczny@linux.intel.com,
  Zack Rusin <zack.rusin@broadcom.com>
-Subject: [PATCH i-g-t v4 2/4] lib/vmwgfx: Allow using any buffer handle as a
- surface backing
-Date: Mon, 29 Jul 2024 00:37:54 -0400
-Message-ID: <20240729043846.1892343-3-zack.rusin@broadcom.com>
+Subject: [PATCH i-g-t v4 4/4] tests/vmwgfx: Fix and extend the reference
+ counting test
+Date: Mon, 29 Jul 2024 00:37:56 -0400
+Message-ID: <20240729043846.1892343-5-zack.rusin@broadcom.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240729043846.1892343-1-zack.rusin@broadcom.com>
 References: <20240729043846.1892343-1-zack.rusin@broadcom.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -83,309 +84,411 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Allow using any buffer handle as a surface backing to allow testing
-prime/dma-buf imports. This will allow addition of vmwgfx specific
-drm prime tests.
-
-The code always expected a mob structure created via the explicit
-alloc dmabuf ioctl which made using buffers created via dumb_buffer
-drm interface impossible.
+Fix a few issues related to buffer management in the reference counting
+test. Extend it to include various prime related reference counting
+issues.
 
 Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_vmwgfx.c                | 33 ++++++++++++++++-----------------
- lib/igt_vmwgfx.h                | 13 +++++++++----
- tests/vmwgfx/vmw_mob_stress.c   |  5 ++++-
- tests/vmwgfx/vmw_ref_count.c    |  6 +++---
- tests/vmwgfx/vmw_surface_copy.c |  8 ++++----
- tests/vmwgfx/vmw_tri.c          | 12 ++++++++----
- 6 files changed, 44 insertions(+), 33 deletions(-)
+ lib/igt_vmwgfx.c             |  45 +++-----
+ lib/igt_vmwgfx.h             |  30 +-----
+ tests/vmwgfx/vmw_ref_count.c | 204 +++++++++++++++++++++++++++++------
+ 3 files changed, 189 insertions(+), 90 deletions(-)
 
 diff --git a/lib/igt_vmwgfx.c b/lib/igt_vmwgfx.c
-index 12b07b4a8..d2f699575 100644
+index d2f699575..b62d7a326 100644
 --- a/lib/igt_vmwgfx.c
 +++ b/lib/igt_vmwgfx.c
-@@ -427,7 +427,7 @@ struct vmw_surface *vmw_ioctl_buffer_create(int fd, SVGA3dSurfaceAllFlags flags,
- 	SVGA3dSize surface_size = { .width = size, .height = 1, .depth = 1 };
+@@ -1,28 +1,8 @@
+ // SPDX-License-Identifier: GPL-2.0 OR MIT
+-/**********************************************************
+- * Copyright 2021-2023 VMware, Inc.
+- *
+- * Permission is hereby granted, free of charge, to any person
+- * obtaining a copy of this software and associated documentation
+- * files (the "Software"), to deal in the Software without
+- * restriction, including without limitation the rights to use, copy,
+- * modify, merge, publish, distribute, sublicense, and/or sell copies
+- * of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be
+- * included in all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+- * SOFTWARE.
+- *
+- **********************************************************/
++/*
++ * Copyright (c) 2021-2024 Broadcom. All Rights Reserved. The term
++ * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.
++ */
  
- 	return vmw_create_surface_simple(fd, flags, SVGA3D_BUFFER, surface_size,
--					 mob);
-+					 mob->handle);
+ #include "igt_vmwgfx.h"
+ 
+@@ -154,6 +134,7 @@ bool vmw_save_data_as_png(struct vmw_surface *surface, void *data,
+ 	/* Can separate this into another function as it grows */
+ 	switch (surface->params.base.format) {
+ 	case SVGA3D_R8G8B8A8_UNORM:
++	case SVGA3D_B8G8R8X8_UNORM:
+ 		format = CAIRO_FORMAT_ARGB32;
+ 		break;
+ 	default:
+@@ -345,11 +326,15 @@ void vmw_ioctl_mob_close_handle(int fd, struct vmw_mob *mob)
+ 	free(mob);
  }
  
- /**
-@@ -454,7 +454,7 @@ struct vmw_surface *vmw_ioctl_create_surface_full(
- 	uint32 multisample_count, SVGA3dMSPattern multisample_pattern,
- 	SVGA3dMSQualityLevel quality_level, SVGA3dTextureFilter autogen_filter,
- 	uint32 num_mip_levels, uint32 array_size, SVGA3dSize size,
--	struct vmw_mob *mob, enum drm_vmw_surface_flags surface_flags)
-+	uint32 buffer_handle, enum drm_vmw_surface_flags surface_flags)
+-struct vmw_surface vmw_ioctl_surface_ref(int fd, int32 sid, uint32 handle_type)
++struct vmw_surface *vmw_ioctl_surface_ref(int fd, int32 sid, uint32 handle_type)
  {
- 	struct vmw_surface *surface;
- 	int32 ret;
-@@ -470,10 +470,8 @@ struct vmw_surface *vmw_ioctl_create_surface_full(
- 	arg.req.base.array_size = array_size;
+ 	int ret;
+-	union drm_vmw_gb_surface_reference_ext_arg arg;
+-	struct vmw_surface surface;
++	union drm_vmw_gb_surface_reference_ext_arg arg = {0};
++	struct vmw_surface *surface;
++
++	surface = calloc(1, sizeof(struct vmw_surface));
++	if (!surface)
++		return NULL;
+ 
+ 	arg.req.handle_type = handle_type;
+ 	arg.req.sid = sid;
+@@ -359,8 +344,8 @@ struct vmw_surface vmw_ioctl_surface_ref(int fd, int32 sid, uint32 handle_type)
+ 	if (ret != 0)
+ 		fprintf(stderr, "%s Failed\n", __func__);
+ 
+-	surface.base = arg.rep.crep;
+-	surface.params = arg.rep.creq;
++	surface->base = arg.rep.crep;
++	surface->params = arg.rep.creq;
+ 	return surface;
+ }
+ 
+@@ -471,7 +456,7 @@ struct vmw_surface *vmw_ioctl_create_surface_full(
  	arg.req.base.autogen_filter = autogen_filter;
  	arg.req.base.drm_surface_flags |= surface_flags;
--	if (mob) {
--		arg.req.base.buffer_handle = mob->handle;
--	} else {
--		arg.req.base.buffer_handle = SVGA3D_INVALID_ID;
-+	arg.req.base.buffer_handle = buffer_handle;
-+	if (buffer_handle != SVGA3D_INVALID_ID) {
+ 	arg.req.base.buffer_handle = buffer_handle;
+-	if (buffer_handle != SVGA3D_INVALID_ID) {
++	if (buffer_handle == SVGA3D_INVALID_ID) {
  		arg.req.base.drm_surface_flags |=
  			drm_vmw_surface_flag_create_buffer;
  	}
-@@ -499,7 +497,6 @@ struct vmw_surface *vmw_ioctl_create_surface_full(
- 	}
- 
- 	surface->base = arg.rep;
--	surface->mob = mob;
- 	return surface;
- 
- out_err1:
-@@ -511,7 +508,7 @@ struct vmw_surface *vmw_create_surface_simple(int fd,
- 					      SVGA3dSurfaceAllFlags flags,
- 					      SVGA3dSurfaceFormat format,
- 					      SVGA3dSize size,
--					      struct vmw_mob *mob)
-+					      uint32 buffer_handle)
- {
- 	/*
- 	 * TODO:
-@@ -531,7 +528,7 @@ struct vmw_surface *vmw_create_surface_simple(int fd,
- 					     multisample_count,
- 					     multisample_pattern, quality_level,
- 					     SVGA3D_TEX_FILTER_NONE, 1,
--					     array_size, size, mob, 0);
-+					     array_size, size, buffer_handle, 0);
- }
- 
- /**
-@@ -921,14 +918,14 @@ void vmw_create_default_objects(struct vmw_svga_device *device,
- 		device->drm_fd,
- 		SVGA3D_SURFACE_HINT_TEXTURE | SVGA3D_SURFACE_HINT_RENDERTARGET |
- 			SVGA3D_SURFACE_BIND_RENDER_TARGET,
--		SVGA3D_R8G8B8A8_UNORM, *rt_size, NULL);
-+		SVGA3D_R8G8B8A8_UNORM, *rt_size, SVGA3D_INVALID_ID);
- 
- 	objects->depth_rt = vmw_create_surface_simple(
- 		device->drm_fd,
- 		SVGA3D_SURFACE_HINT_DEPTHSTENCIL |
- 			SVGA3D_SURFACE_HINT_RENDERTARGET |
- 			SVGA3D_SURFACE_BIND_DEPTH_STENCIL,
--		SVGA3D_R24G8_TYPELESS, *rt_size, NULL);
-+		SVGA3D_R24G8_TYPELESS, *rt_size, SVGA3D_INVALID_ID);
- 
- 	rtv_desc.tex.arraySize = 1;
- 	rtv_desc.tex.firstArraySlice = 0;
-@@ -1225,7 +1222,8 @@ void vmw_cmd_surface_copy(struct vmw_execbuf *cmd_buf, SVGA3dSurfaceImageId src,
- }
- 
- uint8 *vmw_triangle_draw(struct vmw_svga_device *device, int32 cid,
--			 struct vmw_default_objects *objects, bool do_sync)
-+			 struct vmw_default_objects *objects,
-+			 uint32_t draw_flags)
- {
- 	struct vmw_execbuf *cmd_buf;
- 	struct drm_vmw_fence_rep cmd_fence;
-@@ -1234,7 +1232,7 @@ uint8 *vmw_triangle_draw(struct vmw_svga_device *device, int32 cid,
- 	SVGA3dVertexBuffer vb_binding;
- 	SVGA3dRGBAFloat clear_color;
- 	void *vertex_data;
--	uint8 *rendered_img;
-+	uint8 *rendered_img = NULL;
- 	struct vmw_vertex vertices[3] = {
- 		{ 0.0, 0.75, 0.5, 1.0, 0.0, 1.0, 0.0, 1.0 },
- 		{ 0.75, -0.75, 0.5, 1.0, 1.0, 0.0, 0.0, 1.0 },
-@@ -1281,19 +1279,20 @@ uint8 *vmw_triangle_draw(struct vmw_svga_device *device, int32 cid,
- 
- 	/* Draw */
- 	vmw_cmd_draw(cmd_buf, 3, 0);
--	vmw_cmd_draw(cmd_buf, 3, 0);
- 
- 	/* Readback */
--	vmw_cmd_readback_gb_surface(cmd_buf, objects->color_rt->base.handle);
-+	if (draw_flags & vmw_triangle_draw_flags_readback)
-+		vmw_cmd_readback_gb_surface(cmd_buf, objects->color_rt->base.handle);
- 
- 	/* Submit commands */
- 	vmw_execbuf_submit(cmd_buf, &cmd_fence);
--	if (do_sync)
-+	if (draw_flags & vmw_triangle_draw_flags_sync)
- 		vmw_ioctl_fence_finish(device->drm_fd, &cmd_fence);
- 	vmw_execbuf_destroy(cmd_buf);
- 
- 	/* Read framebuffer into system mem and save */
--	rendered_img = vmw_readback_surface(device->drm_fd, objects->color_rt);
-+	if (draw_flags & vmw_triangle_draw_flags_readback)
-+		rendered_img = vmw_readback_surface(device->drm_fd, objects->color_rt);
- 
- 	vmw_ioctl_surface_unref(device->drm_fd, vertex_buffer);
- 	vmw_ioctl_mob_close_handle(device->drm_fd, vertex_mob);
 diff --git a/lib/igt_vmwgfx.h b/lib/igt_vmwgfx.h
-index c8ed43bac..bf037b74d 100644
+index bf037b74d..a630d201d 100644
 --- a/lib/igt_vmwgfx.h
 +++ b/lib/igt_vmwgfx.h
-@@ -115,7 +115,6 @@ struct vmw_mob {
- struct vmw_surface {
- 	struct drm_vmw_gb_surface_create_rep base;
- 	struct drm_vmw_gb_surface_create_ext_req params;
--	struct vmw_mob *mob;
- };
+@@ -1,28 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR MIT */
+-/**********************************************************
+- * Copyright 2021-2023 VMware, Inc.
+- *
+- * Permission is hereby granted, free of charge, to any person
+- * obtaining a copy of this software and associated documentation
+- * files (the "Software"), to deal in the Software without
+- * restriction, including without limitation the rights to use, copy,
+- * modify, merge, publish, distribute, sublicense, and/or sell copies
+- * of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be
+- * included in all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+- * SOFTWARE.
+- *
+- **********************************************************/
++/*
++ * Copyright (c) 2021-2024 Broadcom. All Rights Reserved. The term
++ * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.
++ */
  
- struct vmw_vertex {
-@@ -194,13 +193,13 @@ struct vmw_surface *vmw_ioctl_create_surface_full(
- 	uint32 multisample_count, SVGA3dMSPattern multisample_pattern,
- 	SVGA3dMSQualityLevel quality_level, SVGA3dTextureFilter autogen_filter,
- 	uint32 num_mip_levels, uint32 array_size, SVGA3dSize size,
--	struct vmw_mob *mob, enum drm_vmw_surface_flags surface_flags);
-+	uint32 buffer_handle, enum drm_vmw_surface_flags surface_flags);
+ #ifndef IGT_VMWGFX_H
+ #define IGT_VMWGFX_H
+@@ -186,7 +166,7 @@ struct vmw_surface *vmw_ioctl_buffer_create(int fd, SVGA3dSurfaceAllFlags flags,
+ 					    uint32_t size, struct vmw_mob *mob);
+ void vmw_ioctl_surface_unref(int fd, struct vmw_surface *buffer);
  
- struct vmw_surface *vmw_create_surface_simple(int fd,
- 					      SVGA3dSurfaceAllFlags flags,
- 					      SVGA3dSurfaceFormat format,
- 					      SVGA3dSize size,
--					      struct vmw_mob *mob);
-+					      uint32 buffer_handle);
+-struct vmw_surface vmw_ioctl_surface_ref(int fd, int32 sid, uint32 handle_type);
++struct vmw_surface *vmw_ioctl_surface_ref(int fd, int32 sid, uint32 handle_type);
  
- struct vmw_execbuf *vmw_execbuf_create(int drm_fd, int32_t cid);
- void vmw_execbuf_set_cid(struct vmw_execbuf *execbuf, int32_t cid);
-@@ -261,8 +260,14 @@ void vmw_cmd_surface_copy(struct vmw_execbuf *cmd_buf, SVGA3dSurfaceImageId src,
- 			  SVGA3dSurfaceImageId dest, const SVGA3dCopyBox *boxes,
- 			  uint32 num_boxes);
- 
-+enum vmw_triangle_draw_flags {
-+	vmw_triangle_draw_flags_none = 0,
-+	vmw_triangle_draw_flags_sync = 1 << 0,
-+	vmw_triangle_draw_flags_readback = 1 << 1,
-+};
-+
- uint8 *vmw_triangle_draw(struct vmw_svga_device *device, int32 cid,
--			 struct vmw_default_objects *objects, bool do_sync);
-+			 struct vmw_default_objects *objects, uint32_t draw_flags);
- 
- void vmw_triangle_assert_values(uint8 *rendered_img,
- 				struct vmw_surface *color_rt);
-diff --git a/tests/vmwgfx/vmw_mob_stress.c b/tests/vmwgfx/vmw_mob_stress.c
-index 4af23d6f7..2e6a9422c 100644
---- a/tests/vmwgfx/vmw_mob_stress.c
-+++ b/tests/vmwgfx/vmw_mob_stress.c
-@@ -35,7 +35,10 @@ static void test_triangle_render(struct vmw_svga_device *device, int32 cid)
- 
- 	vmw_create_default_objects(device, cid, &objects,
- 				   &vmw_default_rect_size);
--	rendered_tri = vmw_triangle_draw(device, cid, &objects, true);
-+	rendered_tri =
-+		vmw_triangle_draw(device, cid, &objects,
-+				  vmw_triangle_draw_flags_sync |
-+				  vmw_triangle_draw_flags_readback);
- 	vmw_triangle_assert_values(rendered_tri, objects.color_rt);
- 
- 	free(rendered_tri);
+ struct vmw_surface *vmw_ioctl_create_surface_full(
+ 	int fd, SVGA3dSurfaceAllFlags flags, SVGA3dSurfaceFormat format,
 diff --git a/tests/vmwgfx/vmw_ref_count.c b/tests/vmwgfx/vmw_ref_count.c
-index 92d49dbd0..c765f2e70 100644
+index c765f2e70..c74940e02 100644
 --- a/tests/vmwgfx/vmw_ref_count.c
 +++ b/tests/vmwgfx/vmw_ref_count.c
-@@ -72,7 +72,7 @@ create_and_write_shareable_surface(int32 fd, SVGA3dSize surface_size)
- 	surface = vmw_ioctl_create_surface_full(
+@@ -1,33 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0 OR MIT
+-/**********************************************************
+- * Copyright 2021-2023 VMware, Inc.
+- *
+- * Permission is hereby granted, free of charge, to any person
+- * obtaining a copy of this software and associated documentation
+- * files (the "Software"), to deal in the Software without
+- * restriction, including without limitation the rights to use, copy,
+- * modify, merge, publish, distribute, sublicense, and/or sell copies
+- * of the Software, and to permit persons to whom the Software is
+- * furnished to do so, subject to the following conditions:
+- *
+- * The above copyright notice and this permission notice shall be
+- * included in all copies or substantial portions of the Software.
+- *
+- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+- * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+- * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+- * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+- * SOFTWARE.
+- *
+- **********************************************************/
++/*
++ * Copyright (c) 2021-2024 Broadcom. All Rights Reserved. The term
++ * “Broadcom” refers to Broadcom Inc. and/or its subsidiaries.
++ */
+ 
+ #include "igt_vmwgfx.h"
+ 
+ IGT_TEST_DESCRIPTION("Perform tests related to vmwgfx's ref_count codepaths.");
+ 
++#define NUM_SURFACES 10
+ static uint32 data[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };
+ 
+ static void write_to_mob(int fd, struct vmw_mob *mob)
+@@ -35,6 +16,7 @@ static void write_to_mob(int fd, struct vmw_mob *mob)
+ 	void *write_data;
+ 
+ 	write_data = vmw_ioctl_mob_map(fd, mob);
++	igt_assert(write_data);
+ 	memcpy(write_data, data, sizeof(data));
+ 	vmw_ioctl_mob_unmap(mob);
+ }
+@@ -73,7 +55,7 @@ create_and_write_shareable_surface(int32 fd, SVGA3dSize surface_size)
  		fd, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
  		SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
--		SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
-+		SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, SVGA3D_INVALID_ID,
- 		drm_vmw_surface_flag_shareable);
+ 		SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, SVGA3D_INVALID_ID,
+-		drm_vmw_surface_flag_shareable);
++		drm_vmw_surface_flag_shareable | drm_vmw_surface_flag_create_buffer);
  
  	mob.handle = surface->base.buffer_handle;
-@@ -125,7 +125,7 @@ igt_main
- 		surface = vmw_ioctl_create_surface_full(
- 			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
- 			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
--			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, mob,
-+			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, mob->handle,
- 			drm_vmw_surface_flag_shareable);
+ 	mob.map_handle = surface->base.buffer_map_handle;
+@@ -86,17 +68,22 @@ create_and_write_shareable_surface(int32 fd, SVGA3dSize surface_size)
  
- 		write_to_mob(fd1, mob);
-@@ -274,7 +274,7 @@ igt_main
- 		surface = vmw_ioctl_create_surface_full(
- 			fd1, SVGA3D_SURFACE_HINT_RENDERTARGET, SVGA3D_BUFFER, 0,
- 			SVGA3D_MS_PATTERN_NONE, SVGA3D_MS_QUALITY_NONE,
--			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, NULL,
-+			SVGA3D_TEX_FILTER_NONE, 1, 1, surface_size, SVGA3D_INVALID_ID,
- 			drm_vmw_surface_flag_shareable);
+ static bool ref_surface_and_check_contents(int32 fd, uint32 surface_handle)
+ {
+-	struct vmw_surface surface;
++	struct vmw_surface *surface;
+ 	struct vmw_mob mob = { 0 };
++	bool data_valid;
  
- 		/* Shouldn't crash on multiple invocations */
-diff --git a/tests/vmwgfx/vmw_surface_copy.c b/tests/vmwgfx/vmw_surface_copy.c
-index 57e90334f..471de54aa 100644
---- a/tests/vmwgfx/vmw_surface_copy.c
-+++ b/tests/vmwgfx/vmw_surface_copy.c
-@@ -120,9 +120,9 @@ static void test_invalid_copies(int fd, int32 cid)
- 		vmw_is_format_supported(fd, SVGA3D_DEVCAP_SURFACEFMT_A8R8G8B8));
+ 	surface = vmw_ioctl_surface_ref(fd, surface_handle,
+ 					DRM_VMW_HANDLE_LEGACY);
  
- 	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
--				       NULL);
-+				       SVGA3D_INVALID_ID);
- 	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
--				       NULL);
-+				       SVGA3D_INVALID_ID);
- 	cmd_buf = vmw_execbuf_create(fd, cid);
+-	mob.handle = surface.base.handle;
+-	mob.size = surface.base.buffer_size;
+-	mob.map_handle = surface.base.buffer_map_handle;
++	mob.handle = surface->base.handle;
++	mob.size = surface->base.buffer_size;
++	mob.map_handle = surface->base.buffer_map_handle;
++
++	data_valid = verify_mob_data(fd, &mob);
  
- 	box.x = 0;
-@@ -271,8 +271,8 @@ static void test_invalid_copies_3d(int fd, int32 cid)
- 	igt_require(vmw_is_format_supported(fd, SVGA3D_DEVCAP_DXFMT_Z_D32));
+-	return verify_mob_data(fd, &mob);
++	vmw_ioctl_surface_unref(fd, surface);
++
++	return data_valid;
+ }
  
- 	s1 = vmw_create_surface_simple(fd, 0, SVGA3D_A8R8G8B8, surface_size,
--				       NULL);
--	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_Z_D32, surface_size, NULL);
-+				       SVGA3D_INVALID_ID);
-+	s2 = vmw_create_surface_simple(fd, 0, SVGA3D_Z_D32, surface_size, SVGA3D_INVALID_ID);
- 	cmd_buf = vmw_execbuf_create(fd, cid);
+ igt_main
+@@ -293,7 +280,7 @@ igt_main
+ 	igt_subtest("surface_alloc_ref_unref")
+ 	{
+ 		struct vmw_surface *surface;
+-		struct vmw_surface ref_surface;
++		struct vmw_surface *ref_surface;
+ 		struct vmw_mob readback_mob = { 0 };
  
- 	box.x = 0;
-diff --git a/tests/vmwgfx/vmw_tri.c b/tests/vmwgfx/vmw_tri.c
-index f5a59229c..61c4d5df8 100644
---- a/tests/vmwgfx/vmw_tri.c
-+++ b/tests/vmwgfx/vmw_tri.c
-@@ -36,7 +36,10 @@ static void draw_triangle(struct vmw_svga_device *device, int32 cid)
+ 		surface = create_and_write_shareable_surface(fd1, surface_size);
+@@ -303,15 +290,162 @@ igt_main
  
- 	vmw_create_default_objects(device, cid, &objects,
- 				   &vmw_default_rect_size);
--	rendered_img = vmw_triangle_draw(device, cid, &objects, true);
-+	rendered_img =
-+		vmw_triangle_draw(device, cid, &objects,
-+				  vmw_triangle_draw_flags_sync |
-+				  vmw_triangle_draw_flags_readback);
+ 		vmw_ioctl_surface_unref(fd1, surface);
  
- 	save_status = vmw_save_data_as_png(objects.color_rt, rendered_img,
- 					   "vmw_tri.png");
-@@ -65,7 +68,7 @@ static void replace_with_coherent_rt(struct vmw_svga_device *device,
- 			SVGA3D_SURFACE_BIND_RENDER_TARGET,
- 		SVGA3D_R8G8B8A8_UNORM, 0, SVGA3D_MS_PATTERN_NONE,
- 		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
--		NULL, drm_vmw_surface_flag_coherent);
-+		SVGA3D_INVALID_ID, drm_vmw_surface_flag_coherent);
+-		readback_mob.handle = ref_surface.base.handle;
+-		readback_mob.size = ref_surface.base.buffer_size;
+-		readback_mob.map_handle = ref_surface.base.buffer_map_handle;
++		readback_mob.handle = ref_surface->base.handle;
++		readback_mob.size = ref_surface->base.buffer_size;
++		readback_mob.map_handle = ref_surface->base.buffer_map_handle;
  
- 	objects->depth_rt = vmw_ioctl_create_surface_full(
- 		device->drm_fd,
-@@ -74,7 +77,7 @@ static void replace_with_coherent_rt(struct vmw_svga_device *device,
- 			SVGA3D_SURFACE_BIND_DEPTH_STENCIL,
- 		SVGA3D_R24G8_TYPELESS, 0, SVGA3D_MS_PATTERN_NONE,
- 		SVGA3D_MS_QUALITY_NONE, SVGA3D_TEX_FILTER_NONE, 1, 1, *rt_size,
--		NULL, drm_vmw_surface_flag_coherent);
-+		SVGA3D_INVALID_ID, drm_vmw_surface_flag_coherent);
+ 		igt_assert(verify_mob_data(fd1, &readback_mob));
++
++		vmw_ioctl_surface_unref(fd1, ref_surface);
+ 	}
  
- 	cmd_buf = vmw_execbuf_create(device->drm_fd, context_id);
- 
-@@ -160,7 +163,8 @@ static void draw_triangle_on_coherent_rt(struct vmw_svga_device *device,
- 	default_ds_view_id = objects.ds_view_id;
- 	replace_with_coherent_rt(device, cid, &objects, &vmw_default_rect_size);
- 
--	rendered_img = vmw_triangle_draw(device, cid, &objects, false);
-+	rendered_img = vmw_triangle_draw(device, cid, &objects,
-+					 vmw_triangle_draw_flags_readback);
- 
- 	vmw_triangle_assert_values(rendered_img, objects.color_rt);
- 
+-	igt_fixture
++	igt_describe("Test refing a surface from the buffer handle.");
++	igt_subtest("surface_buffer_ref")
+ 	{
++		struct vmw_surface *surfaces[NUM_SURFACES] = {0};
++		struct vmw_surface *refs[NUM_SURFACES] = {0};
++		struct vmw_surface *buf_refs[NUM_SURFACES] = {0};
++		int i;
++		SVGA3dSize surf_size;
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			surf_size.width = 32 + i * 16;
++			surf_size.height = 32 + i * 16;
++			surf_size.depth = 1;
++
++			surfaces[i] = vmw_create_surface_simple(fd1,
++								SVGA3D_SURFACE_HINT_TEXTURE |
++								SVGA3D_SURFACE_HINT_RENDERTARGET |
++								SVGA3D_SURFACE_BIND_RENDER_TARGET,
++								SVGA3D_R8G8B8A8_UNORM, surf_size,
++								SVGA3D_INVALID_ID);
++			igt_assert(surfaces[i]);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			int prime_fd = prime_handle_to_fd_for_mmap(fd1,
++								   surfaces[i]->base.handle);
++
++			refs[i] = vmw_ioctl_surface_ref(fd1, prime_fd,
++							DRM_VMW_HANDLE_PRIME);
++			igt_assert_eq(surfaces[i]->base.handle,
++				      refs[i]->base.handle);
++			igt_assert_eq(surfaces[i]->base.backup_size,
++				      refs[i]->base.backup_size);
++			igt_assert_eq(surfaces[i]->base.buffer_size,
++				      refs[i]->base.buffer_size);
++			igt_assert_eq(surfaces[i]->base.buffer_map_handle,
++				      refs[i]->base.buffer_map_handle);
++			igt_assert_eq(surfaces[i]->params.base.format,
++				      refs[i]->params.base.format);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			int prime_fd = prime_handle_to_fd_for_mmap(fd1,
++								   surfaces[i]->base.buffer_handle);
++
++			buf_refs[i] = vmw_ioctl_surface_ref(fd1, prime_fd,
++							    DRM_VMW_HANDLE_PRIME);
++			igt_assert_eq(surfaces[i]->base.handle,
++				      buf_refs[i]->base.handle);
++			igt_assert_eq(surfaces[i]->base.backup_size,
++				      buf_refs[i]->base.backup_size);
++			igt_assert_eq(surfaces[i]->base.buffer_size,
++				      buf_refs[i]->base.buffer_size);
++			igt_assert_eq(surfaces[i]->base.buffer_map_handle,
++				      buf_refs[i]->base.buffer_map_handle);
++			igt_assert_eq(surfaces[i]->params.base.format,
++				      buf_refs[i]->params.base.format);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			vmw_ioctl_surface_unref(fd1, buf_refs[i]);
++			vmw_ioctl_surface_unref(fd1, refs[i]);
++			vmw_ioctl_surface_unref(fd1, surfaces[i]);
++		}
++	}
++
++	igt_describe("Test refcounts on prime surfaces.");
++	igt_subtest("surface_prime_refs") {
++		struct vmw_surface *surfaces[NUM_SURFACES] = {0};
++		int prime_fds[NUM_SURFACES] = {0};
++		struct vmw_surface *refs[NUM_SURFACES] = {0};
++		int i;
++		SVGA3dSize surf_size;
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			surf_size.width = 32 + i * 16;
++			surf_size.height = 32 + i * 16;
++			surf_size.depth = 1;
++
++			surfaces[i] = vmw_create_surface_simple(fd1,
++								SVGA3D_SURFACE_HINT_TEXTURE |
++								SVGA3D_SURFACE_HINT_RENDERTARGET |
++								SVGA3D_SURFACE_BIND_RENDER_TARGET,
++								SVGA3D_R8G8B8A8_UNORM, surf_size,
++								SVGA3D_INVALID_ID);
++			igt_assert(surfaces[i]);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			prime_fds[i] = prime_handle_to_fd(fd1,
++							  surfaces[i]->base.handle);
++			igt_assert_neq(prime_fds[i], 0);
++			igt_assert_neq(prime_fds[i], -1);
++			vmw_ioctl_surface_unref(fd1, surfaces[i]);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			refs[i] = vmw_ioctl_surface_ref(fd1, prime_fds[i],
++							DRM_VMW_HANDLE_PRIME);
++			close(prime_fds[i]);
++			igt_assert_neq(refs[i]->base.handle, 0);
++			igt_assert_neq(refs[i]->base.backup_size, 0);
++			igt_assert_neq(refs[i]->base.buffer_size, 0);
++		}
++	}
++
++	igt_describe("Test refcounts on prime surfaces with buffer handles.");
++	igt_subtest("surface_buffer_prime_refs") {
++		struct vmw_surface *surfaces[NUM_SURFACES] = {0};
++		int prime_fds[NUM_SURFACES] = {0};
++		struct vmw_surface *refs[NUM_SURFACES] = {0};
++		int i;
++		SVGA3dSize surf_size;
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			surf_size.width = 32 + i * 16;
++			surf_size.height = 32 + i * 16;
++			surf_size.depth = 1;
++
++			surfaces[i] = vmw_create_surface_simple(fd1,
++								SVGA3D_SURFACE_HINT_TEXTURE |
++								SVGA3D_SURFACE_HINT_RENDERTARGET |
++								SVGA3D_SURFACE_BIND_RENDER_TARGET,
++								SVGA3D_R8G8B8A8_UNORM, surf_size,
++								SVGA3D_INVALID_ID);
++			igt_assert(surfaces[i]);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			prime_fds[i] = prime_handle_to_fd(fd1,
++							  surfaces[i]->base.buffer_handle);
++			igt_assert_neq(prime_fds[i], 0);
++			igt_assert_neq(prime_fds[i], -1);
++			vmw_ioctl_surface_unref(fd1, surfaces[i]);
++		}
++
++		for (i = 0; i < NUM_SURFACES; ++i) {
++			refs[i] = vmw_ioctl_surface_ref(fd1, prime_fds[i],
++							DRM_VMW_HANDLE_PRIME);
++			close(prime_fds[i]);
++			igt_assert_neq(refs[i]->base.handle, 0);
++			igt_assert_neq(refs[i]->base.backup_size, 0);
++			igt_assert_neq(refs[i]->base.buffer_size, 0);
++		}
++	}
++
++	igt_fixture {
+ 		drm_close_driver(fd1);
+ 		drm_close_driver(fd2);
+ 	}
 -- 
 2.43.0
 
