@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F271C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36BF3C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 30AF010E42C;
-	Mon, 29 Jul 2024 16:03:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EFF4110E42A;
+	Mon, 29 Jul 2024 16:03:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TVfz7iHj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cgHGmPek";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7D59A10E42C
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EDE4010E428
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269008; x=1753805008;
+ t=1722269010; x=1753805010;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lkNCBlFJP0DmuP7kwA8jPQIc4v48/BM/vHlKvah0nu4=;
- b=TVfz7iHjdajyPw2+RLev7mAtDPM2p5nhZRNvC6vyROlP+zSocB/54BYT
- JI7HTcGbbzlYbi/JEmUCMCcgvzgSxSFM5hVII2HeoA0YDD+pnz24ks+UZ
- TMnkLCp+sAAcz6KZVRERG0cKuCBp0ejys96AYGax1lrRhWvsEoGwUaMgd
- zWkWXXMX+t4qa9RQLz4WJ6DFcvrRwUU8tbPo+LURtiD6P7fNhERV3ltn9
- 0G7uYBMRqbY75DcH33xjWrynBaV137cCgYDmLMSCzB91D+Vx9W4L+gSpE
- kZ68sPVj2SZ+VESPUHNg0aowY7ScFPuU/dg9g1+t+eIeamjjvnl1LpTmU Q==;
-X-CSE-ConnectionGUID: 2kfNIt12TWelbTe1ncyRcw==
-X-CSE-MsgGUID: /hR3D/djTLqls+7SikD5wA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427054"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427054"
+ bh=BuN0i8mYdRel0GEqvJurpa/0vQLt75dNrBsq8ficmg0=;
+ b=cgHGmPekQ96SlcrCh5SHeXyeHCrb3212R8YnKv10pF4GHOk05C9UMG+e
+ +MFNURPsydPoV+wueGdHeGqVnnfFavQqr2ujOdWr7gkXVqEthmMYtjh53
+ JA3pt3sxJ610mIDhB/5dL9CYesy/ze/tEBOB5NoW4a50B/yXuSU9apAio
+ 3IlyFzprmMacs+ZtpaKQbRkzvvP5AVDjJD0B6gkTs0tsxq2ouxlddln2s
+ YBJ/G8Ki8KFNfu+Qf5zv6hq5tyGucB+40YbJvPyi4TVp5ADk85iEUqMWI
+ 69UbgCS8lXxn/EknYoDwF5vJRSNZ6G8PxHEeou8wBKmGQ/5iuIipkNneJ g==;
+X-CSE-ConnectionGUID: i6IydKjmTrekxcSEbNGBfg==
+X-CSE-MsgGUID: HOyiSD0/R2aRqpBhBGXl/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427083"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208,223";a="31427083"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:27 -0700
-X-CSE-ConnectionGUID: M0t00LlSR4a0C1CuDdTGUQ==
-X-CSE-MsgGUID: 3OmtJfV/QIO5ISQBlnm/5w==
+ 29 Jul 2024 09:03:30 -0700
+X-CSE-ConnectionGUID: KbUW9tDsToCucas9CSF9cA==
+X-CSE-MsgGUID: DZbCrDxoTV6gdFGOrtO4+w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737768"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208,223";a="53737800"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:23 -0700
+ 29 Jul 2024 09:03:26 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -56,10 +56,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH 20/66] tests/xe_eudebug: Exercise debug metadata events sent
- to debugger
-Date: Mon, 29 Jul 2024 18:01:13 +0200
-Message-Id: <20240729160159.37036-21-christoph.manszewski@intel.com>
+Subject: [PATCH 21/66] tests/xe_eudebug: Add support for dynamic debugger
+ sysfs toggle
+Date: Mon, 29 Jul 2024 18:01:14 +0200
+Message-Id: <20240729160159.37036-22-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -80,210 +80,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Maciej Patelczyk <maciej.patelczyk@intel.com>
+From now on the debugger is disabled by default so it is required
+to enable the debugger before using it. This change addresses that
+fact by calling necessary library functions within test fixtures.
 
-Add tests which exercise setting debug metadata and correctness
-of events received by currently attached debugger.
-
-Extended the attach-debug-metadata so that it has multimple metadatas per
-bind. (Maciej)
-
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 164 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 164 insertions(+)
+ tests/intel/xe_eudebug.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 35c2a0cc0..f5240e838 100644
+index f5240e838..adf5e79ac 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -27,6 +27,7 @@
- #define VM_BIND (1 << 2)
- #define VM_BIND_VM_DESTROY (1 << 3)
- #define VM_BIND_EXTENDED (1 << 4)
-+#define VM_METADATA (1 << 5)
+@@ -1137,10 +1137,12 @@ static void test_metadata_attach(int fd, unsigned int flags, int num_clients)
  
- static void basic_vm_bind_client(int fd, struct xe_eudebug_client *c)
- {
-@@ -977,6 +978,163 @@ static void test_vm_access(int fd, unsigned int flags, int num_clients)
- 					 false, XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP);
- }
- 
-+#define PAGE_SIZE 4096
-+#define MDATA_SIZE (WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM * PAGE_SIZE)
-+static void metadata_access_client(struct xe_eudebug_client *c)
-+{
-+	const uint64_t addr = 0x1a0000;
-+	struct drm_xe_vm_bind_op_ext_attach_debug *ext;
-+	uint8_t *data;
-+	size_t bo_size;
-+	uint32_t bo, vm;
-+	int fd, i;
-+
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_device_get(fd);
-+
-+	bo_size = xe_get_default_alignment(fd);
-+	vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
-+
-+	data = calloc(MDATA_SIZE, sizeof(*data));
-+	igt_assert(data);
-+
-+	for (i = 0; i < MDATA_SIZE; i++)
-+		data[i] = 0xff & (i + (i > PAGE_SIZE));
-+
-+	ext = calloc(WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA + 1, sizeof(*ext));
-+	igt_assert(ext);
-+
-+	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA + 1; i++) {
-+		ext[i].base.name = XE_VM_BIND_OP_EXTENSIONS_ATTACH_DEBUG;
-+		ext[i].metadata_id = xe_eudebug_client_metadata_create(c, fd, i,
-+								       (i + 1) * PAGE_SIZE, data);
-+		ext[i].cookie = i;
-+
-+		if (i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA)
-+			ext[i].base.next_extension = to_user_pointer(&ext[i+1]);
-+	}
-+
-+	xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, addr,
-+					bo_size, 0, NULL, 0, to_user_pointer(ext));
-+
-+	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++)
-+		xe_eudebug_client_wait_stage(c, i);
-+
-+	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr, bo_size);
-+
-+	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA + 1; i++)
-+		xe_eudebug_client_metadata_destroy(c, fd, ext[i].metadata_id, i, (i + 1) * PAGE_SIZE);
-+
-+	close(bo);
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+
-+	xe_device_put(fd);
-+	xe_eudebug_client_close_driver(c, fd);
-+
-+	free(data);
-+	free(ext);
-+}
-+
-+static void debugger_test_metadata(struct xe_eudebug_debugger *d,
-+				   uint64_t client_handle,
-+				   uint64_t metadata_handle,
-+				   uint64_t type,
-+				   uint64_t len)
-+{
-+	struct drm_xe_eudebug_read_metadata rm = {
-+		.client_handle = client_handle,
-+		.metadata_handle = metadata_handle,
-+		.size = len,
-+	};
-+	uint8_t *data;
-+	int i;
-+
-+	data = malloc(len);
-+	igt_assert(data);
-+
-+	rm.ptr = to_user_pointer(data);
-+
-+	igt_assert_eq(igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_READ_METADATA, &rm), 0);
-+
-+	/* syntetic check, test sets different size per metadata type */
-+	igt_assert_eq((type + 1) * PAGE_SIZE, rm.size);
-+
-+	for (i = 0; i < rm.size; i++)
-+		igt_assert_eq(data[i], 0xff & (i + (i > PAGE_SIZE)));
-+
-+	free(data);
-+}
-+
-+static void metadata_read_trigger(struct xe_eudebug_debugger *d,
-+				  struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_metadata *em = (void *)e;
-+
-+	/* syntetic check, test sets different size per metadata type */
-+	igt_assert_eq((em->type + 1) * PAGE_SIZE, em->len);
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		debugger_test_metadata(d, em->client_handle, em->metadata_handle,
-+				       em->type, em->len);
-+		xe_eudebug_debugger_signal_stage(d, em->type);
-+	}
-+}
-+
-+static void metadata_read_on_vm_bind_trigger(struct xe_eudebug_debugger *d,
-+					     struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op_metadata *em = (void *)e;
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+	struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+	/* For testing purpose client sets metadata_cookie = type */
-+
-+	/*
-+	 * Metadata event has a reference to vm-bind-op event which has a reference
-+	 * to vm-bind event which contains proper client-handle.
-+	 */
-+	eo = (struct drm_xe_eudebug_event_vm_bind_op *)
-+		xe_eudebug_event_log_find_seqno(d->log, em->vm_bind_op_ref_seqno);
-+	igt_assert(eo);
-+	eb = (struct drm_xe_eudebug_event_vm_bind *)
-+		xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+	igt_assert(eb);
-+
-+	debugger_test_metadata(d,
-+			       eb->client_handle,
-+			       em->metadata_handle,
-+			       em->metadata_cookie,
-+			       MDATA_SIZE); /* max size */
-+
-+	xe_eudebug_debugger_signal_stage(d, em->metadata_cookie);
-+}
-+
-+/**
-+ * SUBTEST: read-metadata
-+ * Description:
-+ *      Exercise DRM_XE_EUDEBUG_IOCTL_READ_METADATA and debug metadata create|destroy events.
-+ */
-+static void test_metadata_read(int fd, unsigned int flags, int num_clients)
-+{
-+	test_client_with_trigger(fd, flags, num_clients, metadata_access_client,
-+				 DRM_XE_EUDEBUG_EVENT_METADATA, metadata_read_trigger,
-+				 NULL, true, 0);
-+}
-+
-+/**
-+ * SUBTEST: attach-debug-metadata
-+ * Description:
-+ *      Read debug metadata when vm_bind has it attached.
-+ */
-+static void test_metadata_attach(int fd, unsigned int flags, int num_clients)
-+{
-+	test_client_with_trigger(fd, flags, num_clients, metadata_access_client,
-+				 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA,
-+				 metadata_read_on_vm_bind_trigger,
-+				 NULL, true, 0);
-+}
-+
  igt_main
  {
++	bool was_enabled;
  	int fd;
-@@ -1018,6 +1176,12 @@ igt_main
- 	igt_subtest("basic-vm-bind-extended")
- 		test_basic_sessions(fd, VM_BIND_EXTENDED, 1, true);
  
-+	igt_subtest("read-metadata")
-+		test_metadata_read(fd, 0, 1);
-+
-+	igt_subtest("attach-debug-metadata")
-+		test_metadata_attach(fd, 0, 1);
-+
- 	igt_subtest("discovery-race")
- 		test_race_discovery(fd, 0, 4);
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
++		was_enabled = xe_eudebug_enable(fd, true);
+ 	}
  
+ 	igt_subtest("basic-connect")
+@@ -1191,6 +1193,8 @@ igt_main
+ 	igt_subtest("discovery-empty-clients")
+ 		test_empty_discovery(fd, DISCOVERY_DESTROY_RESOURCES, 16);
+ 
+-	igt_fixture
++	igt_fixture {
++		xe_eudebug_enable(fd, was_enabled);
+ 		drm_close_driver(fd);
++	}
+ }
 -- 
 2.34.1
 
