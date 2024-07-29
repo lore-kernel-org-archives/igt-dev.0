@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD3F1C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF101C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 95A8710E425;
-	Mon, 29 Jul 2024 16:03:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A541D10E42E;
+	Mon, 29 Jul 2024 16:03:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mg35bRGw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OAfLZjs3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34D1A10E425
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D64E610E431
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269031; x=1753805031;
+ t=1722269034; x=1753805034;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SS08jJlHfDBhScJtqwsvsnZhyrjOsi1//NkjQ/MQbcI=;
- b=Mg35bRGwmwbZW/swm2pVsokfEr9Evy13MXvFBqjlKtq2IgC2FDX6ruTm
- frLJy4AwflkqM5oQ98mQo07Obk7Ncnry7A8gxi+2iHsZWGzVGJPahFm03
- JfLefE1bfi4mYlNwvHEs4YNdDH474iX3MBFRATZtkpYRrIlzzn1jGDNnl
- QlX61E9uQT5HylMuXgOob7Wkd8f/5rRsdg5yiLQnA8Gyfw/rNVaH+zqqU
- Spg/umREA/R/VYMB3eh3qKmzcHpPOPnYpW4quYvGDqAYMF6Qu8Wt5Nqne
- gLCUfjnEy+rCjcpH2m4dlkF/w69R4U7MXEDp2W0ouDx3yoe+wPpgZQsTV w==;
-X-CSE-ConnectionGUID: y8mx/VinR8SoVQojhLZ9fg==
-X-CSE-MsgGUID: jkk+PTDoRbi+1r1YRMNjuQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427146"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427146"
+ bh=U3XMsbKcpf4ixSsx3Y/ttkZcWGxS5KIvbDWKlF7wuA0=;
+ b=OAfLZjs31crem0P/xToy5VBC3YHpENsWG49B2lR2SkjETRZXkyzAg4DC
+ MmnsLL0W+4l8KbRsIhKu7LsBB83vOiY5rp+8qHOiDjI+irEOjzkMrO/CF
+ jjssHXn4XWzDLxrR+Cr3m2GhkvLpfFnLyTuBCQb0clcEuPXzePcW32VEJ
+ mxfaImQcLC4ddzJDCKmHccB3ms+jFjamEctdysmMoE+yi4xjnTwnGuF4K
+ 4tno+mcTSlNCpZdCUhpQ8L5q1L+nf29g7+3FPq4v4tJXwXe52laPGxIWy
+ +WIw5Ru8XuFJkEPrE/Txjxzptod3tRk1Kfz0i/DKK639f1WsbPE2oH6WU g==;
+X-CSE-ConnectionGUID: ITeBYbAYQqWEJwcd/8p/3g==
+X-CSE-MsgGUID: 0d1LltD1RbK8wZeTnvoTSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427155"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427155"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:51 -0700
-X-CSE-ConnectionGUID: hIgrQkxASTKPHRrtQS1YRg==
-X-CSE-MsgGUID: maEWav34TUekuDSMeypxyg==
+ 29 Jul 2024 09:03:54 -0700
+X-CSE-ConnectionGUID: 8iXUbZbzSCevP+i5FkO+zQ==
+X-CSE-MsgGUID: iMMoUQKkRleU+cNHXK/F3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738119"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738171"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:48 -0700
+ 29 Jul 2024 09:03:50 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,9 +55,9 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH 28/66] tests/xe_eudebug: Add basic-client-th test
-Date: Mon, 29 Jul 2024 18:01:21 +0200
-Message-Id: <20240729160159.37036-29-christoph.manszewski@intel.com>
+Subject: [PATCH 29/66] tests/xe_eudebug: Added connect-user test
+Date: Mon, 29 Jul 2024 18:01:22 +0200
+Message-Id: <20240729160159.37036-30-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -78,134 +78,221 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Pawel Sikora <pawel.sikora@intel.com>
+From: Maciej Patelczyk <maciej.patelczyk@intel.com>
 
-Add basic-client-th test which is a multithreaded version of basic-client.
+Verify the connection:
+ * user to user
+ * user to root
+ * root to user
+ * user to other user
 
-Create random number of VMs in random number of threads.
+The test uses two known non-privileged users lp and mail to verify
+the scenarios. Test drops root privileges to one of users if necessary.
 
-Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
+ptrace cannot access process which is not dumpable.  The default value
+of this property is stored in '/proc/sys/fs/suid_dumpable'. If process
+drops privileges then it gets the value from mentioned suid_dumpable.
+
+In our case the value after switching userm, to non privileged one,
+is 2 (SUID_DUMP_ROOT). Enforce it to be 1 (SUID_DUMP_USER).
+
+Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 78 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 78 insertions(+)
+ tests/intel/xe_eudebug.c | 164 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 164 insertions(+)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 37b4f4e27..022b39f1f 100644
+index 022b39f1f..8c21cffc7 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -13,6 +13,7 @@
+@@ -12,9 +12,12 @@
+  * Test category: functionality test
   */
  
++#include <grp.h>
  #include <poll.h>
-+#include <pthread.h>
+ #include <pthread.h>
++#include <pwd.h>
  #include <sys/ioctl.h>
++#include <sys/prctl.h>
  
  #include "igt.h"
-@@ -640,6 +641,10 @@ static void test_read_event(int fd)
-  * Description:
-  *	Attach the debugger to process which opens and closes xe drm client.
-  *
-+ * SUBTEST: basic-client-th
-+ * Description:
-+ *	Create client basic resources (vms) in multiple threads
-+ *
-  * SUBTEST: multiple-sessions
-  * Description:
-  *	Simultaneously attach many debuggers to many processes.
-@@ -669,6 +674,7 @@ static void test_read_event(int fd)
-  * @vms: vms
-  * @exec-queues: exec queues
-  */
-+
- static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
- {
- 	struct xe_eudebug_session **s;
-@@ -1056,6 +1062,75 @@ static void test_client_with_trigger(int fd, unsigned int flags, int count,
- 		xe_eudebug_session_destroy(s[i]);
+ #include "intel_pat.h"
+@@ -545,6 +548,164 @@ static void test_connect(int fd)
+ 	close(debugfd);
  }
  
-+struct thread_fn_args {
-+	struct xe_eudebug_client *client;
-+	int fd;
-+};
-+
-+static void *basic_client_th(void *data)
++static void switch_user(__uid_t uid, __gid_t gid)
 +{
-+	struct thread_fn_args *f = data;
-+	struct xe_eudebug_client *c = f->client;
-+	uint32_t *vms;
-+	int fd, i, num_vms;
++	struct group *gr;
++	__gid_t gr_v;
 +
-+	fd = f->fd;
-+	igt_assert(fd);
++	/* Users other then root need to belong to video group */
++	gr = getgrnam("video");
++	igt_assert(gr);
 +
-+	xe_device_get(fd);
++	/* Drop all */
++	igt_assert_eq(setgroups(1, &gr->gr_gid), 0);
++	igt_assert_eq(setgid(gid), 0);
++	igt_assert_eq(setuid(uid), 0);
 +
-+	num_vms = 2 + rand() % 16;
-+	vms = calloc(num_vms, sizeof(*vms));
-+	igt_assert(vms);
-+	igt_debug("Create %d client vms\n", num_vms);
++	igt_assert_eq(getgroups(1, &gr_v), 1);
++	igt_assert_eq(gr_v, gr->gr_gid);
++	igt_assert_eq(getgid(), gid);
++	igt_assert_eq(getuid(), uid);
 +
-+	for (i = 0; i < num_vms; i++)
-+		vms[i] = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+
-+	for (i = 0; i < num_vms; i++)
-+		xe_eudebug_client_vm_destroy(c, fd, vms[i]);
-+
-+	xe_device_put(fd);
-+	free(vms);
-+
-+	return NULL;
++	igt_assert_eq(prctl(PR_SET_DUMPABLE, 1L), 0);
 +}
 +
-+static void run_basic_client_th(struct xe_eudebug_client *c)
++/**
++ * SUBTEST: connect-user
++ * Description:
++ *	Verify unprivileged XE_EUDEBG_CONNECT ioctl.
++ *	Check:
++ *	 - user debugger to user workload connection
++ *	 - user debugger to other user workload connection
++ *	 - user debugger to privileged workload connection
++ */
++static void test_connect_user(int fd)
 +{
-+	struct thread_fn_args *args;
-+	int i, num_threads, fd;
-+	pthread_t *threads;
++	struct drm_xe_eudebug_connect param = {};
++	struct passwd *pwd, *pwd2;
++	const char *user1 = "lp";
++	const char *user2 = "mail";
++	int debugfd, ret, i;
++	int p1[2], p2[2];
++	__uid_t u1, u2;
++	__gid_t g1, g2;
++	int newfd;
++	pid_t pid;
 +
-+	args = calloc(1, sizeof(*args));
-+	igt_assert(args);
++#define NUM_USER_TESTS 4
++#define P_APP 0
++#define P_GDB 1
++	struct conn_user {
++		/* u[0] - process uid, u[1] - gdb uid */
++		__uid_t u[P_GDB + 1];
++		/* g[0] - process gid, g[1] - gdb gid */
++		__gid_t g[P_GDB + 1];
++		/* Expected fd from open */
++		int ret;
++		/* Skip this test case */
++		int skip;
++		const char *desc;
++	} test[NUM_USER_TESTS] = {};
 +
-+	num_threads = 2 + random() % 16;
-+	igt_debug("Run on %d threads\n", num_threads);
-+	threads = calloc(num_threads, sizeof(*threads));
-+	igt_assert(threads);
++	igt_assert(!pipe(p1));
++	igt_assert(!pipe(p2));
 +
-+	fd = xe_eudebug_client_open_driver(c);
-+	args->client = c;
-+	args->fd = fd;
++	pwd = getpwnam(user1);
++	igt_require(pwd);
++	u1 = pwd->pw_uid;
++	g1 = pwd->pw_gid;
 +
-+	for (i = 0; i < num_threads; i++)
-+		pthread_create(&threads[i], NULL, basic_client_th, args);
++	/*
++	 * Keep a copy of needed contents as it is a static
++	 * memory area and subsequent calls will overwrite
++	 * what's in.
++	 * However getpwnam() returns NULL if cannot find
++	 * user in passwd.
++	 */
++	setpwent();
++	pwd2 = getpwnam(user2);
++	if (pwd2) {
++		u2 = pwd2->pw_uid;
++		g2 = pwd2->pw_gid;
++	}
 +
-+	for (i = 0; i < num_threads; i++)
-+		pthread_join(threads[i], NULL);
++	test[0].skip = !pwd;
++	test[0].u[P_GDB] = u1;
++	test[0].g[P_GDB] = g1;
++	test[0].ret = -EACCES;
++	test[0].desc = "User GDB to Root App";
 +
-+	xe_eudebug_client_close_driver(c, fd);
-+	free(args);
-+	free(threads);
++	test[1].skip = !pwd;
++	test[1].u[P_APP] = u1;
++	test[1].g[P_APP] = g1;
++	test[1].u[P_GDB] = u1;
++	test[1].g[P_GDB] = g1;
++	test[1].ret = 0;
++	test[1].desc = "User GDB to User App";
++
++	test[2].skip = !pwd;
++	test[2].u[P_APP] = u1;
++	test[2].g[P_APP] = g1;
++	test[2].ret = 0;
++	test[2].desc = "Root GDB to User App";
++
++	test[3].skip = !pwd2;
++	test[3].u[P_APP] = u1;
++	test[3].g[P_APP] = g1;
++	test[3].u[P_GDB] = u2;
++	test[3].g[P_GDB] = g2;
++	test[3].ret = -EACCES;
++	test[3].desc = "User GDB to Other User App";
++
++	if (!pwd2)
++		igt_warn("User %s not available in the system. Skipping subtests: %s.\n",
++			 user2, test[3].desc);
++
++	for (i = 0; i < NUM_USER_TESTS; i++) {
++		if (test[i].skip) {
++			igt_debug("Subtest %s skipped\n", test[i].desc);
++			continue;
++		}
++		igt_debug("Executing connection: %s\n", test[i].desc);
++		igt_fork(child, 2) {
++			if (!child) {
++				if (test[i].u[P_APP])
++					switch_user(test[i].u[P_APP], test[i].g[P_APP]);
++
++				pid = getpid();
++				/* Signal the PID */
++				igt_assert(write(p1[1], &pid, sizeof(pid)) == sizeof(pid));
++				/* wait with exit */
++				igt_assert(read(p2[0], &pid, sizeof(pid)) == sizeof(pid));
++			} else {
++				if (test[i].u[P_GDB])
++					switch_user(test[i].u[P_GDB], test[i].g[P_GDB]);
++
++				igt_assert(read(p1[0], &pid, sizeof(pid)) == sizeof(pid));
++				param.pid = pid;
++
++				newfd = drm_open_driver(DRIVER_XE);
++				ret = __debug_connect(newfd, &debugfd, &param);
++
++				/* Release the app first */
++				igt_assert(write(p2[1], &pid, sizeof(pid)) == sizeof(pid));
++
++				igt_assert_eq(ret, test[i].ret);
++				if (!ret)
++					close(debugfd);
++			}
++		}
++		igt_waitchildren();
++	}
++	close(p1[0]);
++	close(p1[1]);
++	close(p2[0]);
++	close(p2[1]);
++#undef NUM_USER_TESTS
++#undef P_APP
++#undef P_GDB
 +}
 +
-+static void test_basic_sessions_th(int fd, unsigned int flags, int num_clients, bool match_opposite)
-+{
-+	test_client_with_trigger(fd, flags, num_clients, run_basic_client_th,
-+					 0, NULL, NULL, match_opposite, 0);
-+}
-+
- static void vm_access_client(struct xe_eudebug_client *c)
- {
- 	struct drm_xe_sync sync = {
-@@ -1468,6 +1543,9 @@ igt_main
- 	igt_subtest("basic-client")
- 		test_basic_sessions(fd, 0, 1, true);
+ /**
+  * SUBTEST: basic-close
+  * Description:
+@@ -1534,6 +1695,9 @@ igt_main
+ 	igt_subtest("basic-connect")
+ 		test_connect(fd);
  
-+	igt_subtest("basic-client-th")
-+		test_basic_sessions_th(fd, 0, 1, true);
++	igt_subtest("connect-user")
++		test_connect_user(fd);
 +
- 	igt_subtest("basic-vm-access")
- 		test_vm_access(fd, 0, 1);
+ 	igt_subtest("basic-close")
+ 		test_close(fd);
  
 -- 
 2.34.1
