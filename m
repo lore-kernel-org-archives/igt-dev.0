@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13CB2C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 19:18:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEAB9C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 19:21:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C68A810E3D1;
-	Mon, 29 Jul 2024 19:18:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 78B5B10E3D1;
+	Mon, 29 Jul 2024 19:21:39 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF7AC10E3CF;
- Mon, 29 Jul 2024 19:18:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D73A710E3CF;
+ Mon, 29 Jul 2024 19:21:37 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_Test_coverage_for_GPU_deb?=
- =?utf-8?q?ug_support?=
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Test_coverage_for_GPU_d?=
+ =?utf-8?q?ebug_support?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Christoph Manszewski" <christoph.manszewski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 29 Jul 2024 19:18:35 -0000
-Message-ID: <172228071591.425887.12617434841009058501@2413ebb6fbb6>
+Date: Mon, 29 Jul 2024 19:21:37 -0000
+Message-ID: <172228089787.425906.1151616097618470262@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -45,63 +45,233 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Series: Test coverage for GPU debug support
 URL   : https://patchwork.freedesktop.org/series/136623/
-State : failure
+State : warning
 
 == Summary ==
 
-IGT patchset build failed on latest successful build
-0f02dc176959e6296866b1bafd3982e277a5e44b tests/core_hotunplug: Fix inline comment on missing device nodes
+Pipeline status: FAILED.
 
-Tail of build.log:
-  138 |          xe_eudebug_trigger_fn fn);
-      |          ~~~~~~~~~~~~~~~~~~~~~~^~
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c: In function ‘test_many_sessions_on_tiles’:
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:1954:44: error: ‘DRM_XE_EUDEBUG_EVENT_EU_ATTENTION’ undeclared (first use in this function); did you mean ‘XE_EUDEBUG_FILTER_EVENT_EU_ATTENTION’?
- 1954 |   xe_eudebug_debugger_add_trigger(s[i]->d, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                            XE_EUDEBUG_FILTER_EVENT_EU_ATTENTION
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:1955:7: warning: passing argument 3 of ‘xe_eudebug_debugger_add_trigger’ from incompatible pointer type [-Wincompatible-pointer-types]
- 1955 |       eu_attention_debug_trigger);
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~
-      |       |
-      |       void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)
-In file included from ../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:15:
-../../../usr/src/igt-gpu-tools/lib/xe/xe_eudebug.h:138:32: note: expected ‘xe_eudebug_trigger_fn’ {aka ‘void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)’} but argument is of type ‘void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)’
-  138 |          xe_eudebug_trigger_fn fn);
-      |          ~~~~~~~~~~~~~~~~~~~~~~^~
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:1957:7: warning: passing argument 3 of ‘xe_eudebug_debugger_add_trigger’ from incompatible pointer type [-Wincompatible-pointer-types]
- 1957 |       save_first_exception_trigger);
-      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |       |
-      |       void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)
-In file included from ../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:15:
-../../../usr/src/igt-gpu-tools/lib/xe/xe_eudebug.h:138:32: note: expected ‘xe_eudebug_trigger_fn’ {aka ‘void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)’} but argument is of type ‘void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)’
-  138 |          xe_eudebug_trigger_fn fn);
-      |          ~~~~~~~~~~~~~~~~~~~~~~^~
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:1958:44: error: ‘DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE’ undeclared (first use in this function); did you mean ‘XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE’?
- 1958 |   xe_eudebug_debugger_add_trigger(s[i]->d, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                            XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:1959:7: warning: passing argument 3 of ‘xe_eudebug_debugger_add_trigger’ from incompatible pointer type [-Wincompatible-pointer-types]
- 1959 |       ufence_ack_trigger);
-      |       ^~~~~~~~~~~~~~~~~~
-      |       |
-      |       void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)
-In file included from ../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:15:
-../../../usr/src/igt-gpu-tools/lib/xe/xe_eudebug.h:138:32: note: expected ‘xe_eudebug_trigger_fn’ {aka ‘void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)’} but argument is of type ‘void (*)(struct xe_eudebug_debugger *, struct drm_xe_eudebug_event *)’
-  138 |          xe_eudebug_trigger_fn fn);
-      |          ~~~~~~~~~~~~~~~~~~~~~~^~
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:1978:13: error: dereferencing pointer to incomplete type ‘struct drm_xe_eudebug_event_eu_attention’
- 1978 |          eus->client_handle, eus->exec_queue_handle,
-      |             ^~
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c: In function ‘eu_ctl_interrupt_all’:
-../../../usr/src/igt-gpu-tools/tests/intel/xe_eudebug_online.c:327:1: error: control reaches end of non-void function [-Werror=return-type]
-  327 | }
-      | ^
-cc1: some warnings being treated as errors
-[694/1764] Compiling C object 'tests/59830eb@@perf_pmu@exe/intel_perf_pmu.c.o'.
-[695/1764] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
-[696/1764] Compiling C object 'tests/59830eb@@perf@exe/intel_perf.c.o'.
-ninja: build stopped: subcommand failed.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1236035 for the overview.
 
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654173):
+     int __n1 = (n1), __n2 = (n2); \
+                 ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+    igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+    ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+    struct drm_xe_eudebug_ack_event ack = { 0, };
+                                    ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   }
+   ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280796:step_script
+  section_start:1722280796:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280797:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654176):
+     int __n1 = (n1), __n2 = (n2); \
+                 ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+    igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+    ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+    struct drm_xe_eudebug_ack_event ack = { 0, };
+                                    ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   }
+   ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280801:step_script
+  section_start:1722280801:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280802:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654175):
+     int __n1 = (n1), __n2 = (n2); \
+                 ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+    igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+    ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+    struct drm_xe_eudebug_ack_event ack = { 0, };
+                                    ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   }
+   ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280803:step_script
+  section_start:1722280803:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280803:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654177):
+     int __n1 = (n1), __n2 = (n2); \
+                 ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+    igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+    ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+    struct drm_xe_eudebug_ack_event ack = { 0, };
+                                    ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   }
+   ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280804:step_script
+  section_start:1722280804:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280805:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654174):
+     int __n1 = (n1), __n2 = (n2); \
+                 ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+    igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+    ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+    struct drm_xe_eudebug_ack_event ack = { 0, };
+                                    ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   }
+   ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280790:step_script
+  section_start:1722280790:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280791:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654168):
+    737 |   int __n1 = (n1), __n2 = (n2); \
+        |               ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+   2185 |  igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+        |  ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+   2177 |  struct drm_xe_eudebug_ack_event ack = { 0, };
+        |                                  ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   2150 | }
+        | ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280798:step_script
+  section_start:1722280798:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280798:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654172):
+          if (flags & DRM_XE_EUDEBUG_EVENT_STATE_CHANGE)
+                      ^
+  ../lib/xe/xe_eudebug.c:105:23: error: use of undeclared identifier 'DRM_XE_EUDEBUG_EVENT_NEED_ACK'
+          igt_assert(!(flags & DRM_XE_EUDEBUG_EVENT_NEED_ACK));
+                               ^
+  ../lib/xe/xe_eudebug.c:112:11: error: incomplete definition of type 'struct drm_xe_eudebug_event'
+          switch (e->type) {
+                  ~^
+  ../lib/xe/xe_eudebug.h:117:8: note: forward declaration of 'struct drm_xe_eudebug_event'
+  struct drm_xe_eudebug_event *
+         ^
+  fatal error: too many errors emitted, stopping now [-ferror-limit=]
+  3 warnings and 20 errors generated.
+  ninja: build stopped: subcommand failed.
+  section_end:1722280804:step_script
+  section_start:1722280804:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280804:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654171):
+    737 |   int __n1 = (n1), __n2 = (n2); \
+        |               ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+   2185 |  igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+        |  ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+   2177 |  struct drm_xe_eudebug_ack_event ack = { 0, };
+        |                                  ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   2150 | }
+        | ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280799:step_script
+  section_start:1722280799:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280801:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654169):
+    737 |   int __n1 = (n1), __n2 = (n2); \
+        |               ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+   2185 |  igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+        |  ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+   2177 |  struct drm_xe_eudebug_ack_event ack = { 0, };
+        |                                  ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   2150 | }
+        | ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280799:step_script
+  section_start:1722280799:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280800:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
+
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61654170):
+    737 |   int __n1 = (n1), __n2 = (n2); \
+        |               ^~
+  ../lib/xe/xe_eudebug.c:2185:2: note: in expansion of macro ‘igt_assert_eq’
+   2185 |  igt_assert_eq(igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_ACK_EVENT, &ack), 0);
+        |  ^~~~~~~~~~~~~
+  ../lib/xe/xe_eudebug.c:2177:34: warning: unused variable ‘ack’ [-Wunused-variable]
+   2177 |  struct drm_xe_eudebug_ack_event ack = { 0, };
+        |                                  ^~~
+  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_metadata_create’:
+  ../lib/xe/xe_eudebug.c:2150:1: error: control reaches end of non-void function [-Werror=return-type]
+   2150 | }
+        | ^
+  cc1: some warnings being treated as errors
+  ninja: build stopped: subcommand failed.
+  section_end:1722280800:step_script
+  section_start:1722280800:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1722280801:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1236035
