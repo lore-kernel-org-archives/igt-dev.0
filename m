@@ -4,69 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC8CC3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 22:43:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFB8DC3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 22:43:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D788C10E12E;
-	Mon, 29 Jul 2024 22:43:34 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="FPSyETp9";
-	dkim-atps=neutral
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
- [209.85.214.169])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6771F10E12E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 22:43:33 +0000 (UTC)
-Received: by mail-pl1-f169.google.com with SMTP id
- d9443c01a7336-1fc566ac769so21670225ad.1
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 15:43:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=broadcom.com; s=google; t=1722293013; x=1722897813;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to;
- bh=lp+Z9fIWLOozTVgpwuA8RFIZuXGq9cyihh3n8p9aYUs=;
- b=FPSyETp9CilbAyEb9aob7eCSc5B6A6m//TH71bMKd1xVAjD1T1CNSEQ3ROdVm//MEs
- 3ILpif+QPLgzQ+eBbH9v2PhHq1f9vEkFTKVtXx6RvMgenxNmZP6eRMKvdU6d6vPdBnJo
- 8u6ox3bdnTpHVjC6dSCAG5CY+95JBv65O21DE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722293013; x=1722897813;
- h=content-transfer-encoding:in-reply-to:content-language:from
- :references:cc:to:subject:user-agent:mime-version:date:message-id
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
- bh=lp+Z9fIWLOozTVgpwuA8RFIZuXGq9cyihh3n8p9aYUs=;
- b=CS9xidXo0/VQhXLZ+yikluMvWRSnoFuKu+t6zJGr76r/y9VKSFd0tVequ4RQUzwkLY
- 6rYJ5aUbXM5tQVExs0foIYuI7nJlxS8QQ1DqggizJKvN+/kzmrHa+vhAdRYrTUQ5m44w
- JCSLI5l28Z/1I6tURjcoQ3XbNfYO4L8+HVWfF23ofgl9rOreVUCbkjPTQuyN+L1bhXyH
- o+rzp2v6y9rIUcHUqSnPxvaxHIVZEYuBfbC7LmoI2SxSBEyVyfm5NEY+yIxrQCPRMo4m
- VZeaHxb4b/eaIzujLUMnuLkArL/w5lumNvYODwSvejJWmYbWlmD7zW4GvRcftDs7lH+q
- ljPg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWvX1miE6qrTW8n4Eb1vZR9/VEjAYd1wto/cLpdps1Wh3JDjRRwpWe2SMj2wg/Ppqr9URBSrkBSJRXOgZxMq1F0AjMtAqLBz2CwwfsccQ==
-X-Gm-Message-State: AOJu0YxyHj4t+1HRR4QbXyqBV3u0I6KtCwWxBjTuqduqWRivi+S4yBxS
- SkhsAeIqRpGMFXn8ZLyLiMObwjgwBbJPSd24Z6ctwaVzXs16Av9EC9j9ZGsoLg==
-X-Google-Smtp-Source: AGHT+IHv5yPEZHAJxcDKFWvHGTOXzA0vK510SOrehFyt3ZHQqzJjQvNtp8zSd2GGN1JJBroJS9L3zQ==
-X-Received: by 2002:a17:902:c409:b0:1fc:41a4:60b6 with SMTP id
- d9443c01a7336-1ff046727aamr81159745ad.0.1722293012606; 
- Mon, 29 Jul 2024 15:43:32 -0700 (PDT)
-Received: from [10.211.41.59] ([66.170.99.2]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-1fed7cf1ac1sm88447325ad.84.2024.07.29.15.43.31
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 29 Jul 2024 15:43:32 -0700 (PDT)
-Message-ID: <1a266b9f-80b7-4ad8-b9bc-a427b4928d19@broadcom.com>
-Date: Mon, 29 Jul 2024 15:43:30 -0700
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9583F10E157;
+	Mon, 29 Jul 2024 22:43:55 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EA3A10E12E;
+ Mon, 29 Jul 2024 22:43:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1294934690218621814=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 0/4] Add vmwgfx prime tests
-To: Zack Rusin <zack.rusin@broadcom.com>, igt-dev@lists.freedesktop.org
-Cc: ian.forbes@broadcom.com, martin.krastev@broadcom.com,
- kamil.konieczny@linux.intel.com
-References: <20240729043846.1892343-1-zack.rusin@broadcom.com>
-From: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-Content-Language: en-US
-In-Reply-To: <20240729043846.1892343-1-zack.rusin@broadcom.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2C1/2=5D_lib=3A_Add_u32_variants_of_igt=5Fassert=5F=7Blt=2Clte?=
+ =?utf-8?q?=7D?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Matt Roper" <matthew.d.roper@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 29 Jul 2024 22:43:54 -0000
+Message-ID: <172229303437.426195.11682641852343024103@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240729220251.3353533-1-matthew.d.roper@intel.com>
+In-Reply-To: <20240729220251.3353533-1-matthew.d.roper@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,49 +38,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM
+--===============1294934690218621814==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+== Series Details ==
 
-Thanks,
+Series: series starting with [i-g-t,1/2] lib: Add u32 variants of igt_assert_{lt,lte}
+URL   : https://patchwork.freedesktop.org/series/136636/
+State : success
 
-Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7942_BAT -> XEIGTPW_11488_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11488_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_intel_bb@blit-simple:
+    - {bat-lnl-2}:        [DMESG-WARN][1] ([Intel XE#1705]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-lnl-2/igt@xe_intel_bb@blit-simple.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11488/bat-lnl-2/igt@xe_intel_bb@blit-simple.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1705]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1705
 
 
-On 7/28/24 21:37, Zack Rusin wrote:
-> The following series makes some adjustments for testing prime/dma-buf
-> on vmwgfx, adds a vmwgfx dedicated test for it and fixes some minor
-> issues.
-> 
-> The last patch in the series adds very basic prime tests to dumb_buffer
-> test to verify dumb_buffer<->prime functionality.
-> 
-> v2: Add a reference counting and dumb buffer tests plus fix issues
-> spotted by Kamil
-> v3: Fix a silly compile error in vmw_prime test and remove dumb buffer
-> test
-> v4: checkpatch.pl improvements suggested by Kamil
-> 
-> Maaz Mombasawala (1):
->   tests/vmwgfx: Removing incorrect assert in mob_repeated_unref
-> 
-> Zack Rusin (3):
->   lib/vmwgfx: Allow using any buffer handle as a surface backing
->   tests/vmwgfx: Add a prime test
->   tests/vmwgfx: Fix and extend the reference counting test
-> 
->  lib/igt_vmwgfx.c                |  76 ++---
->  lib/igt_vmwgfx.h                |  43 +--
->  tests/vmwgfx/meson.build        |   7 +-
->  tests/vmwgfx/vmw_mob_stress.c   |   5 +-
->  tests/vmwgfx/vmw_prime.c        | 584 ++++++++++++++++++++++++++++++++
->  tests/vmwgfx/vmw_ref_count.c    | 214 +++++++++---
->  tests/vmwgfx/vmw_surface_copy.c |   8 +-
->  tests/vmwgfx/vmw_tri.c          |  12 +-
->  8 files changed, 821 insertions(+), 128 deletions(-)
->  create mode 100644 tests/vmwgfx/vmw_prime.c
-> 
+Build changes
+-------------
 
+  * IGT: IGT_7942 -> IGTPW_11488
+  * Linux: xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d -> xe-1686-b6f9528c7fffc2f65c8e4969d35d9346fd503c9b
+
+  IGTPW_11488: 11488
+  IGT_7942: 0f02dc176959e6296866b1bafd3982e277a5e44b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d: 3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d
+  xe-1686-b6f9528c7fffc2f65c8e4969d35d9346fd503c9b: b6f9528c7fffc2f65c8e4969d35d9346fd503c9b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11488/index.html
+
+--===============1294934690218621814==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib: Add u32 variants of igt_assert_{lt,lte}</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136636/">https://patchwork.freedesktop.org/series/136636/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11488/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11488/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7942_BAT -&gt; XEIGTPW_11488_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11488_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_intel_bb@blit-simple:<ul>
+<li>{bat-lnl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-lnl-2/igt@xe_intel_bb@blit-simple.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1705">Intel XE#1705</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11488/bat-lnl-2/igt@xe_intel_bb@blit-simple.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7942 -&gt; IGTPW_11488</li>
+<li>Linux: xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d -&gt; xe-1686-b6f9528c7fffc2f65c8e4969d35d9346fd503c9b</li>
+</ul>
+<p>IGTPW_11488: 11488<br />
+  IGT_7942: 0f02dc176959e6296866b1bafd3982e277a5e44b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d: 3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d<br />
+  xe-1686-b6f9528c7fffc2f65c8e4969d35d9346fd503c9b: b6f9528c7fffc2f65c8e4969d35d9346fd503c9b</p>
+
+</body>
+</html>
+
+--===============1294934690218621814==--
