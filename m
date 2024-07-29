@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6E99C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59733C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:02:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8AFD310E420;
-	Mon, 29 Jul 2024 16:02:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CAE510E425;
+	Mon, 29 Jul 2024 16:02:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XvAWel1O";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cC/DQJsy";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1398F10E420
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79E0A10E420
  for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1722268965; x=1753804965;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/rw/jcfCsPf2vP53DuB3fcZvrSLcKNcnJw0UoTRGlH4=;
- b=XvAWel1OTBZzb6HS7Jv+TWp0Lf7kxzkA959IsMwHxn3lRYJ+pYOjrqSi
- wOCvrlaAS4xS8r3N3iv942RPRbQtI92X386Ih47GmSTjJ/jrs8xGBhppF
- D5PhY6ryIhO1XDjp4lWfhtqVacAmCmjtBKk74qC9q2ZN3txOF+C+ATQz4
- b5FZtbli7mACvLwDbHS+H+9Jj0uMGiz+fSYDfy17ByVtY8g1vyMXRvO5H
- 8Vrv53Hjh8Sa9f886+6EiMMIKQQqOrL4q/WGh54XnrAwolD+LgHnK/Dsh
- Ea2jEU6lteC7L977mcvvGOqCEZeXRbawT3+ipY99uqAE4Lx/NiAmHDAWm w==;
-X-CSE-ConnectionGUID: kX8jXdRcTg2j9f2KeJ1+9g==
-X-CSE-MsgGUID: nmqa4h5fRsu+tTFDwY7I0w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31426824"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31426824"
+ bh=xRyccqqqMB/IseWtLqKEBMD+X3++4FAJtYerOeVk+X0=;
+ b=cC/DQJsy+C1Rnj5lLefo5j47QgRnonqeSacX/O9GuRvzMBYGrdOathFV
+ /M+nYvYAr1KHGyEufDdXeD0wQSbq5IBLRxt5cdRmvOCuviQqu2ikNs/oY
+ ZN/RGheVuzOn2rXiLjxWzW+fDVmzpxJswSpxFhESbD6H80QXZjIJRQrxe
+ Crag7JnuVnsxTlePLu8dJq2tRzOO+S8FB78esKb+4zEKAct0dTEC8s6GP
+ v5JMelxHOqzq0Azim5HlhBmStd6/Y0Fpsmymd5O9YEfAoqLSBVcwz/V7v
+ HMRseFo5vnowtpLI0GbE5A/vUVPB0ct9f5zdQTqKz+AFidOmMv22xJZIm g==;
+X-CSE-ConnectionGUID: m66o7jy9Rxq4qyg/xCa9CA==
+X-CSE-MsgGUID: lkmgRvl2TKO0+ekpiK2CdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31426825"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31426825"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  29 Jul 2024 09:02:45 -0700
-X-CSE-ConnectionGUID: Eiqz1rkZSc2AJX5d3fOB5Q==
-X-CSE-MsgGUID: CH1vaQm1TFSLr/vsdvrKJw==
+X-CSE-ConnectionGUID: 19KFd6xVQxyOlS/UeLkGZQ==
+X-CSE-MsgGUID: TJ3tQaWTT8yCHdwtMH5Xtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737154"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737284"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:02:25 -0700
+ 29 Jul 2024 09:02:30 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: [PATCH 03/66] lib/xe_eudebug: Allow client to wait for debugger
-Date: Mon, 29 Jul 2024 18:00:56 +0200
-Message-Id: <20240729160159.37036-4-christoph.manszewski@intel.com>
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Subject: [PATCH 04/66] lib/xe_eudebug: Add exec_queue support
+Date: Mon, 29 Jul 2024 18:00:57 +0200
+Message-Id: <20240729160159.37036-5-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -79,364 +79,325 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 
-In some tests, we need to pause the client into a certain
-stage it has setup so that debugger can then examine that
-setup and crosscheck.
+Add support for exec_queue events to eudebug library.
 
-Add a possibility to pause client and debugger to signal
-continuation.
+Check event specific fields in post mortem log check. (Christoph)
 
-We need to take into account that the debugger might
-disappear before signaling continuation so a timeout
-mechanism for all pipe token reads needs to be added.
-
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/xe/xe_eudebug.c | 159 +++++++++++++++++++++++++++++++++-----------
- lib/xe/xe_eudebug.h |   8 ++-
- 2 files changed, 129 insertions(+), 38 deletions(-)
+ lib/xe/xe_eudebug.c | 188 +++++++++++++++++++++++++++++++++++++++++++-
+ lib/xe/xe_eudebug.h |   5 +-
+ 2 files changed, 189 insertions(+), 4 deletions(-)
 
 diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 59cd33990..70769e532 100644
+index 70769e532..ca030704b 100644
 --- a/lib/xe/xe_eudebug.c
 +++ b/lib/xe/xe_eudebug.c
-@@ -24,6 +24,7 @@ struct event_trigger {
+@@ -20,6 +20,17 @@ struct event_trigger {
+ 	struct igt_list_head link;
+ };
+ 
++struct seqno_list_entry {
++	struct igt_list_head link;
++	uint64_t seqno;
++};
++
++struct match_dto {
++	struct drm_xe_eudebug_event *target;
++	struct igt_list_head *seqno_list;
++	uint64_t client_handle;
++};
++
+ #define CLIENT_PID  1
  #define CLIENT_RUN  2
  #define CLIENT_FINI 3
- #define CLIENT_STOP 4
-+#define CLIENT_STAGE 5
- 
- #define DEBUGGER_WORKER_INACTIVE  0
- #define DEBUGGER_WORKER_ACTIVE  1
-@@ -129,9 +130,10 @@ static void catch_child_failure(void)
- 	igt_assert_f(WEXITSTATUS(status) == 0, "Client failed!\n");
- }
- 
--static int safe_pipe_read(int pipe[2], void *buf, int nbytes)
-+static int safe_pipe_read(int pipe[2], void *buf, int nbytes, int timeout_ms)
- {
- 	int ret;
-+	int t = 0;
- 	struct pollfd fd = {
- 		.fd = pipe[0],
- 		.events = POLLIN,
-@@ -142,36 +144,33 @@ static int safe_pipe_read(int pipe[2], void *buf, int nbytes)
- 	 * the child process ended with an error.
- 	 */
- 	do {
--		ret = poll(&fd, 1, 1000);
-+		const int interval_ms = 1000;
- 
--		if (!ret)
-+		ret = poll(&fd, 1, interval_ms);
-+
-+		if (!ret) {
- 			catch_child_failure();
--	} while (!ret);
-+			t += interval_ms;
-+		}
-+	} while (!ret && t < timeout_ms);
- 
--	return read(pipe[0], buf, nbytes);
-+	if (ret > 0)
-+		return read(pipe[0], buf, nbytes);
-+
-+	return 0;
- }
- 
--static uint64_t pipe_wait_u64(int pipe[2])
-+static uint64_t pipe_read(int pipe[2], int timeout_ms)
- {
- 	uint64_t in;
- 	uint64_t ret;
- 
--	ret = safe_pipe_read(pipe, &in, sizeof(in));
-+	ret = safe_pipe_read(pipe, &in, sizeof(in), timeout_ms);
- 	igt_assert(ret == sizeof(in));
- 
- 	return in;
- }
- 
--#define pipe_wait pipe_wait_u64
--
--static void pipe_wait_token(int pipe[2], uint64_t token)
--{
--	uint64_t in;
--
--	in = pipe_wait_u64(pipe);
--	igt_assert_eq(token, in);
--}
--
- static void pipe_signal(int pipe[2], uint64_t token)
- {
- 	igt_assert(write(pipe[1], &token, sizeof(token)) == sizeof(token));
-@@ -186,6 +185,42 @@ static void pipe_close(int pipe[2])
- 		close(pipe[1]);
- }
- 
-+static uint64_t __wait_token(int p[2], const uint64_t token, int timeout_ms)
-+{
-+	uint64_t in;
-+
-+	in = pipe_read(p, timeout_ms);
-+
-+	igt_assert_eq(in, token);
-+
-+	return pipe_read(p, timeout_ms);
-+}
-+
-+static uint64_t client_wait_token(struct xe_eudebug_client *c,
-+				 const uint64_t token)
-+{
-+	return __wait_token(c->p_in, token, c->timeout_ms);
-+}
-+
-+static uint64_t wait_from_client(struct xe_eudebug_client *c,
-+				 const uint64_t token)
-+{
-+	return __wait_token(c->p_out, token, c->timeout_ms);
-+}
-+
-+static void token_signal(int p[2], const uint64_t token, const uint64_t value)
-+{
-+	pipe_signal(p, token);
-+	pipe_signal(p, value);
-+}
-+
-+static void client_signal(struct xe_eudebug_client *c,
-+			  const uint64_t token,
-+			  const uint64_t value)
-+{
-+	token_signal(c->p_out, token, value);
-+}
-+
- static int __xe_eudebug_connect(int fd, pid_t pid, uint32_t flags, uint64_t events)
- {
- 	struct drm_xe_eudebug_connect param = {
-@@ -735,24 +770,28 @@ void xe_eudebug_debugger_destroy(struct xe_eudebug_debugger *d)
- /**
-  * xe_eudebug_debugger_attach:
-  * @d: pointer to the debugger
-- * @target: pid of the process to attach debugger
-+ * @c: pointer to the client
-  *
-- * Opens the xe eu debugger connection to the @target proccess.
-+ * Opens the xe eu debugger connection to the process described by @c (c->pid)
-  *
-  * Returns: 0 if the debugger was successfully attached, -errno otherwise.
-  */
--int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d, pid_t target)
-+int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d,
-+			       struct xe_eudebug_client *c)
- {
- 	int ret;
- 
- 	igt_assert_eq(d->fd, -1);
--	ret = xe_eudebug_connect(d->master_fd, target, 0);
-+	igt_assert_neq(c->pid, 0);
-+	ret = xe_eudebug_connect(d->master_fd, c->pid, 0);
- 
- 	if (ret < 0)
- 		return ret;
- 
- 	d->fd = ret;
--	d->target_pid = target;
-+	d->target_pid = c->pid;
-+	d->p_client[0] = c->p_in[0];
-+	d->p_client[1] = c->p_in[1];
- 
- 	igt_debug("debugger connected to %lu\n", d->target_pid);
- 
-@@ -848,6 +887,19 @@ void xe_eudebug_debugger_stop_worker(struct xe_eudebug_debugger *d,
- 	event_log_sort(d->log);
- }
- 
-+/**
-+ * xe_eudebug_debugger_signal_stage:
-+ * @d: pointer to the debugger
-+ * @stage: stage to signal
-+ *
-+ * Signals to client, waiting in xe_eudebug_client_wait_stage(),
-+ * releasing it to proceed.
-+ */
-+void xe_eudebug_debugger_signal_stage(struct xe_eudebug_debugger *d, uint64_t stage)
-+{
-+	token_signal(d->p_client, CLIENT_STAGE, stage);
-+}
-+
- /**
-  * xe_eudebug_client_create:
-  * @master_fd: xe client used to open the debugger connection
-@@ -879,8 +931,11 @@ struct xe_eudebug_client *xe_eudebug_client_create(int master_fd, xe_eudebug_cli
- 	c->done = 0;
- 	c->ptr = data;
- 	c->master_fd = master_fd;
-+	c->timeout_ms = XE_EUDEBUG_DEFAULT_TIMEOUT_MS;
- 
- 	igt_fork(child, 1) {
-+		int mypid;
-+
- 		igt_assert_eq(c->pid, 0);
- 
- 		close(c->p_out[0]);
-@@ -888,17 +943,20 @@ struct xe_eudebug_client *xe_eudebug_client_create(int master_fd, xe_eudebug_cli
- 		close(c->p_in[1]);
- 		c->p_in[1] = -1;
- 
--		pipe_signal(c->p_out, CLIENT_PID);
--		pipe_signal(c->p_out, getpid());
-+		mypid = getpid();
-+		client_signal(c, CLIENT_PID, mypid);
- 
--		pipe_wait_token(c->p_in, CLIENT_RUN);
--		work(c);
--		pipe_signal(c->p_out, CLIENT_FINI);
-+		c->pid = client_wait_token(c, CLIENT_RUN);
-+		igt_assert_eq(c->pid, mypid);
-+		if (work)
-+			work(c);
-+
-+		client_signal(c, CLIENT_FINI, c->seqno);
- 
--		igt_assert_eq(c->pid, 0);
- 		event_log_write_to_fd(c->log, c->p_out[1]);
--		pipe_signal(c->p_out, c->seqno);
--		pipe_wait_token(c->p_in, CLIENT_STOP);
-+
-+		c->pid = client_wait_token(c, CLIENT_STOP);
-+		igt_assert_eq(c->pid, mypid);
+@@ -41,6 +52,8 @@ static const char *type_to_str(unsigned int type)
+ 		return "client";
+ 	case DRM_XE_EUDEBUG_EVENT_VM:
+ 		return "vm";
++	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE:
++		return "exec_queue";
  	}
  
- 	close(c->p_out[1]);
-@@ -906,8 +964,7 @@ struct xe_eudebug_client *xe_eudebug_client_create(int master_fd, xe_eudebug_cli
- 	close(c->p_in[0]);
- 	c->p_in[0] = -1;
- 
--	pipe_wait_token(c->p_out, CLIENT_PID);
--	c->pid = pipe_wait(c->p_out);
-+	c->pid = wait_from_client(c, CLIENT_PID);
- 
- 	igt_info("client running with pid %d\n", c->pid);
- 
-@@ -927,7 +984,7 @@ void xe_eudebug_client_stop(struct xe_eudebug_client *c)
- 
- 		xe_eudebug_client_wait_done(c);
- 
--		pipe_signal(c->p_in, CLIENT_STOP);
-+		token_signal(c->p_in, CLIENT_STOP, c->pid);
- 		igt_assert_eq(waitpid(c->pid, &waitstatus, 0),
- 			      c->pid);
- 		c->pid = 0;
-@@ -971,7 +1028,7 @@ uint64_t xe_eudebug_client_get_seqno(struct xe_eudebug_client *c)
-  */
- void xe_eudebug_client_start(struct xe_eudebug_client *c)
- {
--	pipe_signal(c->p_in, CLIENT_RUN);
-+	token_signal(c->p_in, CLIENT_RUN, c->pid);
- }
- 
- /**
-@@ -985,12 +1042,40 @@ void xe_eudebug_client_wait_done(struct xe_eudebug_client *c)
- {
- 	if (!c->done) {
- 		c->done = 1;
--		pipe_wait_token(c->p_out, CLIENT_FINI);
-+		c->seqno = wait_from_client(c, CLIENT_FINI);
- 		event_log_read_from_fd(c->log, c->p_out[0]);
--		c->seqno = pipe_wait(c->p_out);
+ 	return "UNKNOWN";
+@@ -83,6 +96,15 @@ static const char *event_members_to_str(struct drm_xe_eudebug_event *e, char *b)
+ 			evm->client_handle, evm->vm_handle);
+ 		break;
  	}
++	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
++		struct drm_xe_eudebug_event_exec_queue *ee = (void *)e;
++
++		sprintf(b, "client_handle=%llu, vm_handle=%llu, "
++			   "exec_queue_handle=%llu, engine_class=%d, exec_queue_width=%d",
++			ee->client_handle, ee->vm_handle,
++			ee->exec_queue_handle, ee->engine_class, ee->width);
++		break;
++	}
+ 	default:
+ 		strcpy(b, "<...>");
+ 	}
+@@ -309,6 +331,34 @@ static int match_type_and_flags(struct drm_xe_eudebug_event *a, void *data)
+ 	return 0;
  }
  
-+/**
-+ * xe_eudebug_client_wait_stage:
-+ * @c: pointer to xe_eudebug_client structure
-+ * @stage: stage to wait on
-+ *
-+ * Pauses client until the debugger has signalled the corresponding stage with
-+ * xe_eudebug_debugger_signal_stage. This is only for situations where the
-+ * actual event flow is not enough to coordinate between client/debugger and extra
-+ * sync mechanism is needed.
-+ *
-+ */
-+void xe_eudebug_client_wait_stage(struct xe_eudebug_client *c, uint64_t stage)
++static int match_fields(struct drm_xe_eudebug_event *a, void *data)
 +{
-+	u64 stage_in;
++	struct drm_xe_eudebug_event *b = data;
++	int ret = 0;
 +
-+	if (c->done) {
-+		igt_warn("client: %d already done before %lu\n", c->pid, stage);
-+		return;
++	ret = match_type_and_flags(a, data);
++	if (!ret)
++		return ret;
++
++	ret = 0;
++
++	switch (a->type) {
++	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
++		struct drm_xe_eudebug_event_exec_queue *ae = (void *)a;
++		struct drm_xe_eudebug_event_exec_queue *be = (void *)b;
++
++		if (ae->engine_class == be->engine_class && ae->width == be->width)
++			ret = 1;
++		break;
++	}
++	default:
++		ret = 1;
++		break;
 +	}
 +
-+	igt_debug("client: %d pausing for stage %lu\n", c->pid, stage);
-+
-+	stage_in = client_wait_token(c, CLIENT_STAGE);
-+	igt_debug("client: %d stage %lu, expected %lu, stage\n", c->pid, stage_in, stage);
-+
-+	igt_assert_eq(stage_in, stage);
++	return ret;
 +}
 +
+ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+ {
+ 	uint64_t h = *(uint64_t *)data;
+@@ -328,6 +378,13 @@ static int match_client_handle(struct drm_xe_eudebug_event *e, void *data)
+ 			return 1;
+ 		break;
+ 	}
++	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
++		struct drm_xe_eudebug_event_exec_queue *ee = (struct drm_xe_eudebug_event_exec_queue *)e;
 +
++		if (ee->client_handle == h)
++			return 1;
++		break;
++	}
+ 	default:
+ 		break;
+ 	}
+@@ -365,12 +422,43 @@ static int match_opposite_resource(struct drm_xe_eudebug_event *e, void *data)
+ 			return 1;
+ 		break;
+ 	}
++	case DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE: {
++		struct drm_xe_eudebug_event_exec_queue *ee = (void *)e;
++		struct drm_xe_eudebug_event_exec_queue *filter = (struct drm_xe_eudebug_event_exec_queue *)data;
++
++		if (ee->exec_queue_handle == filter->exec_queue_handle)
++			return 1;
++		break;
++	}
+ 	default:
+ 		break;
+ 	}
+ 	return 0;
+ }
+ 
++static int match_full(struct drm_xe_eudebug_event *e, void *data)
++{
++	struct seqno_list_entry *sl;
++
++	struct match_dto *md = (void *)data;
++	int ret = 0;
++
++	ret = match_client_handle(e, &md->client_handle);
++	if (!ret)
++		return 0;
++
++	ret = match_fields(e, md->target);
++	if (!ret)
++		return 0;
++
++	igt_list_for_each_entry(sl, md->seqno_list, link) {
++		if (sl->seqno == e->seqno)
++			return 0;
++	}
++
++	return 1;
++}
++
+ static struct drm_xe_eudebug_event *
+ event_type_match(struct xe_eudebug_event_log *l,
+ 		 struct drm_xe_eudebug_event *filter,
+@@ -395,6 +483,21 @@ opposite_event_match(struct xe_eudebug_event_log *l,
+ 	return event_cmp(l, current, match_opposite_resource, filter);
+ }
+ 
++static struct drm_xe_eudebug_event *
++event_match(struct xe_eudebug_event_log *l,
++	    struct drm_xe_eudebug_event *target,
++	    uint64_t client_handle,
++	    struct igt_list_head *seqno_list)
++{
++	struct match_dto md = {
++		.target = target,
++		.client_handle = client_handle,
++		.seqno_list = seqno_list,
++	};
++
++	return event_cmp(l, NULL, match_full, &md);
++}
++
+ static void compare_client(struct xe_eudebug_event_log *c, struct drm_xe_eudebug_event *_ce,
+ 			   struct xe_eudebug_event_log *d, struct drm_xe_eudebug_event *_de)
+ {
+@@ -402,6 +505,9 @@ static void compare_client(struct xe_eudebug_event_log *c, struct drm_xe_eudebug
+ 	struct drm_xe_eudebug_event_client *de = (void *)_de;
+ 	struct drm_xe_eudebug_event *hc, *hd;
+ 
++	struct igt_list_head matched_seqno_list;
++	struct seqno_list_entry *entry, *tmp;
++
+ 	igt_assert(ce);
+ 	igt_assert(de);
+ 
+@@ -409,13 +515,14 @@ static void compare_client(struct xe_eudebug_event_log *c, struct drm_xe_eudebug
+ 
+ 	hc = NULL;
+ 	hd = NULL;
++	IGT_INIT_LIST_HEAD(&matched_seqno_list);
+ 
+ 	do {
+ 		hc = client_match(c, ce->client_handle, hc);
+ 		if (!hc)
+ 			break;
+ 
+-		hd = client_match(d, de->client_handle, hd);
++		hd = event_match(d, hc, de->client_handle, &matched_seqno_list);
+ 
+ 		igt_assert_f(hd, "%s (%llu): no matching event type %u found for client %llu\n",
+ 			     c->name,
+@@ -426,9 +533,18 @@ static void compare_client(struct xe_eudebug_event_log *c, struct drm_xe_eudebug
+ 		igt_debug("comparing %s %llu vs %s %llu\n",
+ 			  c->name, hc->seqno, d->name, hd->seqno);
+ 
+-		igt_assert_eq(hc->type, hd->type);
+-		igt_assert_eq(hc->flags, hd->flags);
++		/*
++		 * Store the seqno of the event that was matched above,
++		 * inside 'matched_seqno_list', to avoid it getting matched
++		 * by subsequent 'event_match' calls.
++		 */
++		entry = malloc(sizeof(*entry));
++		entry->seqno = hd->seqno;
++		igt_list_add(&entry->link, &matched_seqno_list);
+ 	} while (hc);
++
++	igt_list_for_each_entry_safe(entry, tmp, &matched_seqno_list, link)
++		free(entry);
+ }
+ 
+ /*
+@@ -1196,6 +1312,25 @@ static void vm_event(struct xe_eudebug_client *c, uint32_t flags, int client_fd,
+ 	xe_eudebug_event_log_write(c->log, (void *)&evm);
+ }
+ 
++static void exec_queue_event(struct xe_eudebug_client *c, uint32_t flags,
++			     int client_fd, uint32_t vm_id,
++			     uint32_t exec_queue_handle, uint16_t class,
++			     uint16_t width)
++{
++	struct drm_xe_eudebug_event_exec_queue ee;
++
++	base_event(c, to_base(ee), DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
++		   flags, sizeof(ee));
++
++	ee.client_handle = client_fd;
++	ee.vm_handle = vm_id;
++	ee.exec_queue_handle = exec_queue_handle;
++	ee.engine_class = class;
++	ee.width = width;
++
++	xe_eudebug_event_log_write(c->log, (void *)&ee);
++}
++
+ /* Eu debugger wrappers around resource creating xe ioctls. */
+ 
  /**
-  * xe_eudebug_session_create:
-  * @fd: XE file descriptor
-@@ -1031,7 +1116,7 @@ void xe_eudebug_session_run(struct xe_eudebug_session *s)
- 	struct xe_eudebug_debugger *debugger = s->d;
- 	struct xe_eudebug_client *client = s->c;
- 
--	igt_assert_eq(xe_eudebug_debugger_attach(debugger, client->pid), 0);
-+	igt_assert_eq(xe_eudebug_debugger_attach(debugger, client), 0);
- 
- 	xe_eudebug_debugger_start_worker(debugger);
- 
+@@ -1268,3 +1403,50 @@ void xe_eudebug_client_vm_destroy(struct xe_eudebug_client *c, int fd, uint32_t
+ 	xe_vm_destroy(fd, vm);
+ 	vm_event(c, DRM_XE_EUDEBUG_EVENT_DESTROY, fd, vm);
+ }
++
++/**
++ * xe_eudebug_client_exec_queue_create:
++ * @c: pointer to xe_eudebug_client structure
++ * @fd: xe client
++ * @create: exec_queue create drm struct
++ *
++ * Calls xe exec queue create ioctl and logs the corresponding event in
++ * client's event log.
++ *
++ * Returns: valid exec queue handle
++ */
++uint32_t xe_eudebug_client_exec_queue_create(struct xe_eudebug_client *c, int fd,
++					     struct drm_xe_exec_queue_create *create)
++{
++	uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, create), 0);
++
++	if (class == DRM_XE_ENGINE_CLASS_COMPUTE || class == DRM_XE_ENGINE_CLASS_RENDER)
++		exec_queue_event(c, DRM_XE_EUDEBUG_EVENT_CREATE, fd, create->vm_id,
++				 create->exec_queue_id, class, create->width);
++
++	return create->exec_queue_id;
++}
++
++/**
++ * xe_eudebug_client_exec_queue_destroy:
++ * @c: pointer to xe_eudebug_client structure
++ * @fd: xe client
++ * @create: exec_queue create drm struct which was used for creation
++ *
++ * Calls xe exec_queue destroy ioctl and logs the corresponding event in
++ * client's event log.
++ */
++void xe_eudebug_client_exec_queue_destroy(struct xe_eudebug_client *c, int fd,
++					  struct drm_xe_exec_queue_create *create)
++{
++	struct drm_xe_exec_queue_destroy destroy = { .exec_queue_id = create->exec_queue_id, };
++	uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
++
++	if (class == DRM_XE_ENGINE_CLASS_COMPUTE || class == DRM_XE_ENGINE_CLASS_RENDER)
++		exec_queue_event(c, DRM_XE_EUDEBUG_EVENT_DESTROY, fd, create->vm_id,
++				 create->exec_queue_id, class, create->width);
++
++	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy), 0);
++}
 diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-index a0cae245d..5ec63e46b 100644
+index 5ec63e46b..8dc153d27 100644
 --- a/lib/xe/xe_eudebug.h
 +++ b/lib/xe/xe_eudebug.h
-@@ -36,6 +36,7 @@ struct xe_eudebug_debugger {
- 	pthread_t worker_thread;
- 	int worker_state;
+@@ -138,6 +138,10 @@ void xe_eudebug_client_close_driver(struct xe_eudebug_client *c, int fd);
+ uint32_t xe_eudebug_client_vm_create(struct xe_eudebug_client *c, int fd,
+ 				     uint32_t flags, uint64_t ext);
+ void xe_eudebug_client_vm_destroy(struct xe_eudebug_client *c, int fd, uint32_t vm);
++uint32_t xe_eudebug_client_exec_queue_create(struct xe_eudebug_client *c, int fd,
++					     struct drm_xe_exec_queue_create *create);
++void xe_eudebug_client_exec_queue_destroy(struct xe_eudebug_client *c, int fd,
++					  struct drm_xe_exec_queue_create *create);
  
-+	int p_client[2];
- };
- 
- struct xe_eudebug_client {
-@@ -54,6 +55,8 @@ struct xe_eudebug_client {
- 
- 	/* Used to pickup right device (the one used in debugger) */
- 	int master_fd;
-+
-+	int timeout_ms;
- };
- 
- struct xe_eudebug_session {
-@@ -110,13 +113,14 @@ void xe_eudebug_event_log_match_opposite(struct xe_eudebug_event_log *l);
- struct xe_eudebug_debugger *
- xe_eudebug_debugger_create(int xe, uint64_t flags, void *data);
- void xe_eudebug_debugger_destroy(struct xe_eudebug_debugger *d);
--int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d, pid_t pid);
-+int xe_eudebug_debugger_attach(struct xe_eudebug_debugger *d, struct xe_eudebug_client *c);
- void xe_eudebug_debugger_start_worker(struct xe_eudebug_debugger *d);
- void xe_eudebug_debugger_stop_worker(struct xe_eudebug_debugger *d, int timeout_s);
- void xe_eudebug_debugger_dettach(struct xe_eudebug_debugger *d);
- void xe_eudebug_debugger_set_data(struct xe_eudebug_debugger *c, void *ptr);
- void xe_eudebug_debugger_add_trigger(struct xe_eudebug_debugger *d, int type,
- 				     xe_eudebug_trigger_fn fn);
-+void xe_eudebug_debugger_signal_stage(struct xe_eudebug_debugger *d, uint64_t stage);
- 
- struct xe_eudebug_client *
- xe_eudebug_client_create(int xe, xe_eudebug_client_work_fn work, uint64_t flags, void *data);
-@@ -124,6 +128,8 @@ void xe_eudebug_client_destroy(struct xe_eudebug_client *c);
- void xe_eudebug_client_start(struct xe_eudebug_client *c);
- void xe_eudebug_client_stop(struct xe_eudebug_client *c);
- void xe_eudebug_client_wait_done(struct xe_eudebug_client *c);
-+void xe_eudebug_client_wait_stage(struct xe_eudebug_client *c, uint64_t stage);
-+
- uint64_t xe_eudebug_client_get_seqno(struct xe_eudebug_client *c);
- void xe_eudebug_client_set_data(struct xe_eudebug_client *c, void *ptr);
- 
+ struct xe_eudebug_session *xe_eudebug_session_create(int fd,
+ 						     xe_eudebug_client_work_fn work,
+@@ -146,4 +150,3 @@ struct xe_eudebug_session *xe_eudebug_session_create(int fd,
+ void xe_eudebug_session_destroy(struct xe_eudebug_session *s);
+ void xe_eudebug_session_run(struct xe_eudebug_session *s);
+ void xe_eudebug_session_check(struct xe_eudebug_session *s, bool match_opposite);
+-
 -- 
 2.34.1
 
