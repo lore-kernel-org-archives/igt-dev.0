@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3EB0C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:05:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DCEBC3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:05:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9451310E420;
-	Mon, 29 Jul 2024 16:05:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8B4910E431;
+	Mon, 29 Jul 2024 16:05:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jWb/c39B";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F4jzrSQY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 026D410E420
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:05:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD32B10E431
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269107; x=1753805107;
+ t=1722269111; x=1753805111;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=XBeKceU0u5FsO0z/4o8OJEaantxIUyX7CCD34fOgsJs=;
- b=jWb/c39B1V4wkZhFHqm7ZtJViqbCstMXMmOZ5KBdv2GFNy8V/oaQaeWD
- u9FiX8sR8XWx7j+ntQ10a+3iOHGwk+LCtncz/K2gU539TWMQv2EYHfJzR
- zPuN6wcE3rtXHoq3lYssR7TUbOoKNZv4wejcFsevfoir1/JHXxTmblubC
- jFLns7G54xEf0IWwPUDiLr8VIvKvW+ZtnAIOGcfZUqWqrKCEUGGdZGkTs
- q6bRDXMhiTObpCNA1TLztUNYCZFGhMemLwri5dRlYT3/NhWLJ5TwojHfS
- uK4/nrp7bd8n5nrmxm9+DdFvxir7oRHiATRZgIHoHSOQTeazgQ9F+jljw g==;
-X-CSE-ConnectionGUID: +JEStSjSSaOa1cBL45W9lw==
-X-CSE-MsgGUID: roKsblCjSPeCjOVRDfgNJA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427549"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427549"
+ bh=6RTmGIPXy49QFUXrJTtTcFC5HzAe8dGcZ3UYx9LL4oU=;
+ b=F4jzrSQYrUK00xPPvtBzUg5dGfnCfpwUGZ99ZbOah4t7G1By8sgNfoYF
+ NWWFL+fd/vFcOHyk34I55ta1vds4/IMJKhQakv8bUQtPJGeLsW4B8OypD
+ zGB0Au6TcmoKrgYyQouqzMLrk86svKF+4wus3mP+5fEpPgKL2CM15KcMj
+ dMfBMDc9wDk25ricxXcrs2uzNviVufb0ikf11K9WsdzlkZh6ZEkUlec9f
+ AZAx1JknLZ/e8EfLwNO5JfbvEov8ne1p9sF3wzsmzjGQRvrmqzU5zp2HK
+ gxKGIEfYgyyvZL+xbt8ptdlp1aS5uy9iR6Jen9+90BmY4qbZ04YQyKj1j Q==;
+X-CSE-ConnectionGUID: mwVl33L/Sgei0oV5ND/b0g==
+X-CSE-MsgGUID: AlH3DoWKRaqJb/2cDhv+LA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427579"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427579"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:04:59 -0700
-X-CSE-ConnectionGUID: 2JWvb+PyRsC0sqTWNDmpNg==
-X-CSE-MsgGUID: cAq4M5+PRGSMn95V2B2H1g==
+ 29 Jul 2024 09:05:02 -0700
+X-CSE-ConnectionGUID: ESkNathoTGuT0KHXSKZa9A==
+X-CSE-MsgGUID: 8nfJL0qOTt6w0l0tctvnqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53739471"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53739511"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:04:56 -0700
+ 29 Jul 2024 09:04:59 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -54,10 +54,12 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH 50/66] tests/xe_exec_sip: Rework invalid instruction tests
-Date: Mon, 29 Jul 2024 18:01:43 +0200
-Message-Id: <20240729160159.37036-51-christoph.manszewski@intel.com>
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Subject: [PATCH 51/66] lib/intel_batchbuffer: Add support for long-running
+ mode execution
+Date: Mon, 29 Jul 2024 18:01:44 +0200
+Message-Id: <20240729160159.37036-52-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -78,176 +80,252 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
-The tests depended on undefined behavior of GPU. Invalid instruction
-provided by the test has 29th bit set, which on Xe2 causes SIP call without
-providing any exception reason and AIP address, unless eudebug is enabled,
-in such case breakpoint exception is signalled.
+To execute in lr (long-running) mode, apart from setting
+'DRM_XE_VM_CREATE_FLAG_LR_MODE' flag during vm creation, it is required
+to use 'DRM_XE_SYNC_TYPE_USER_FENCE' syncs with vm_bind and xe_exec
+ioctls.
 
-Xe2 and earlier gens are able to handle very limited set of invalid
-instructions - only illegal and undefined opcodes, other errors in
-instruction can cause undefined behavior.
-Illegal/undefined opcode results in:
-- setting illegal opcode status bit - cr0.1[28],
-- calling SIP if illegal opcode bit is enabled - cr0.1[12].
-cr0.1[12] can be enabled directly from the thread or by thread dispatcher
-from Interface Descriptor Data provided to COMPUTE_WALKER instruction.
+Make it possible to execute batch buffers via intel_bb_exec() in lr mode
+by setting the 'lr_mode' field with the supplied setter.
 
-Re-worked tests works similar way to OOB tests:
-- check if SIP is not called when exception is not enabled,
-- check if SIP is called when exception is enabled from EU thread,
-- check if SIP is called when exception is enabled from COMPUTE_WALKER.
-
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Mika Kuoppala <mika.kuoppala@intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- tests/intel/xe_exec_sip.c | 70 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 62 insertions(+), 8 deletions(-)
+ lib/intel_batchbuffer.c | 153 ++++++++++++++++++++++++++++++++++++++--
+ lib/intel_batchbuffer.h |  17 +++++
+ 2 files changed, 165 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
-index 35d65bcc4..0db0dc4b8 100644
---- a/tests/intel/xe_exec_sip.c
-+++ b/tests/intel/xe_exec_sip.c
-@@ -38,14 +38,22 @@
- #define SHADER_BREAKPOINT 0
- #define SHADER_WRITE 1
- #define SHADER_WAIT 2
--#define SHADER_HANG 3
--#define SIP_WRITE 4
--#define SIP_NULL 5
--#define SIP_WAIT 6
--#define SIP_HEAVY 7
-+#define SHADER_INV_INSTR_DISABLED 3
-+#define SHADER_INV_INSTR_THREAD_ENABLED 4
-+#define SHADER_INV_INSTR_WALKER_ENABLED 5
-+#define SHADER_HANG 6
-+#define SIP_WRITE 7
-+#define SIP_NULL 8
-+#define SIP_WAIT 9
-+#define SIP_HEAVY 10
-+#define SIP_INV_INSTR 11
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 824e92831..43bf5b04b 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -992,6 +992,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ 	igt_assert(ibb->batch);
+ 	ibb->ptr = ibb->batch;
+ 	ibb->fence = -1;
++	ibb->user_fence_offset = -1;
  
- #define F_SUBMIT_TWICE	(1 << 0)
- 
-+/* Control Register cr0.1 bits for exception handling */
-+#define ILLEGAL_OPCODE_ENABLE BIT(12)
-+#define ILLEGAL_OPCODE_STATUS BIT(28)
-+
- static struct intel_buf *
- create_fill_buf(int fd, int width, int height, uint8_t color)
+ 	/* Cache context configuration */
+ 	if (cfg) {
+@@ -1455,7 +1456,7 @@ int intel_bb_sync(struct intel_bb *ibb)
  {
-@@ -68,8 +76,12 @@ create_fill_buf(int fd, int width, int height, uint8_t color)
- static struct gpgpu_shader *get_shader(int fd, const int shadertype)
- {
- 	static struct gpgpu_shader *shader;
-+	uint32_t bad;
+ 	int ret;
  
- 	shader = gpgpu_shader_create(fd);
-+	if (shadertype == SHADER_INV_INSTR_WALKER_ENABLED)
-+		shader->illegal_opcode_exception_enable = true;
+-	if (ibb->fence < 0 && !ibb->engine_syncobj)
++	if (ibb->fence < 0 && !ibb->engine_syncobj && ibb->user_fence_offset < 0)
+ 		return 0;
+ 
+ 	if (ibb->fence >= 0) {
+@@ -1464,10 +1465,28 @@ int intel_bb_sync(struct intel_bb *ibb)
+ 			close(ibb->fence);
+ 			ibb->fence = -1;
+ 		}
+-	} else {
+-		igt_assert_neq(ibb->engine_syncobj, 0);
++	} else if(ibb->engine_syncobj) {
+ 		ret = syncobj_wait_err(ibb->fd, &ibb->engine_syncobj,
+ 				       1, INT64_MAX, 0);
++	} else {
++		int64_t timeout = -1;
++		uint64_t *sync_data;
++		void *map;
 +
- 	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
- 
- 	switch (shadertype) {
-@@ -87,6 +99,21 @@ static struct gpgpu_shader *get_shader(int fd, const int shadertype)
- 		gpgpu_shader__nop(shader);
- 		gpgpu_shader__breakpoint(shader);
- 		break;
-+	case SHADER_INV_INSTR_THREAD_ENABLED:
-+		gpgpu_shader__set_exception(shader, ILLEGAL_OPCODE_ENABLE);
-+		/* fall through */
-+	case SHADER_INV_INSTR_DISABLED:
-+	case SHADER_INV_INSTR_WALKER_ENABLED:
-+		bad = (shadertype == SHADER_INV_INSTR_DISABLED) ? ILLEGAL_OPCODE_ENABLE : 0;
-+		gpgpu_shader__write_on_exception(shader, 1, 0, ILLEGAL_OPCODE_ENABLE, bad);
-+		gpgpu_shader__nop(shader);
-+		gpgpu_shader__nop(shader);
-+		/* modify second nop, set only opcode bits[6:0] */
-+		shader->instr[shader->size/4 - 1][0] = 0x7f;
-+		/* SIP should clear exception bit */
-+		bad = ILLEGAL_OPCODE_STATUS;
-+		gpgpu_shader__write_on_exception(shader, 2, 0, ILLEGAL_OPCODE_STATUS, bad);
-+		break;
++		igt_assert(ibb->user_fence_offset >= 0);
++
++		map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
++		sync_data = (void*)((uint8_t *)map + ibb->user_fence_offset);
++
++		ret = __xe_wait_ufence(ibb->fd, sync_data, ibb->user_fence_value,
++				       ibb->ctx ?: ibb->engine_id, &timeout);
++
++		gem_munmap(map, ibb->size);
++		ibb->user_fence_offset = -1;
++
++		/* Workload finished forcibly, but finished none the less */
++		if (ret == -EIO)
++			ret = 0;
  	}
  
- 	gpgpu_shader__eot(shader);
-@@ -127,6 +154,9 @@ static struct gpgpu_shader *get_sip(int fd, const int siptype,
- 
- 		gpgpu_shader__wait(sip);
- 		break;
-+	case SIP_INV_INSTR:
-+		gpgpu_shader__write_on_exception(sip, 1, y_offset, ILLEGAL_OPCODE_STATUS, 0);
-+		break;
- 	}
- 
- 	gpgpu_shader__end_system_routine(sip, shadertype == SHADER_BREAKPOINT);
-@@ -160,7 +190,7 @@ static void check_fill_buf(uint8_t *ptr, const int width, const int x,
+ 	return ret;
+@@ -2441,6 +2460,126 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 	return 0;
  }
  
- static int check_buf(int fd, uint32_t handle, int width, int height,
--		      int siptype, uint8_t poison_c)
-+		      int shadertype, int siptype, uint8_t poison_c)
- {
- 	unsigned int sz = ALIGN(width * height, 4096);
- 	int thread_count = 0, sip_count = 0;
-@@ -194,7 +224,10 @@ static int check_buf(int fd, uint32_t handle, int width, int height,
- 	}
- 
- 	igt_assert(thread_count);
--	if (siptype != SIP_NULL && xe_eudebug_debugger_available(fd))
-+	if (shadertype == SHADER_INV_INSTR_DISABLED)
-+		igt_assert(!sip_count);
-+	else if ((siptype != SIP_NULL && xe_eudebug_debugger_available(fd)) ||
-+		 (siptype == SIP_INV_INSTR && shadertype != SHADER_INV_INSTR_DISABLED))
- 		igt_assert_f(thread_count == sip_count,
- 			     "Thread and SIP count mismatch, %d != %d\n",
- 			     thread_count, sip_count);
-@@ -285,6 +318,18 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
-  * SUBTEST: wait-writesip-nodebug
-  * Description: verify that we don't enter SIP after wait with debugging disabled.
-  *
-+ * SUBTEST: invalidinstr-disabled
-+ * Description: Verify that we don't enter SIP after running into an invalid
-+ *		instruction when exception is not enabled.
-+ *
-+ * SUBTEST: invalidinstr-thread-enabled
-+ * Description: Verify that we enter SIP after running into an invalid instruction
-+ *              when exception is enabled from thread.
-+ *
-+ * SUBTEST: invalidinstr-walker-enabled
-+ * Description: Verify that we enter SIP after running into an invalid instruction
-+ *              when exception is enabled from COMPUTE_WALKER.
-+ *
-  * SUBTEST: breakpoint-writesip-nodebug
-  * Description: verify that we don't enter SIP after hitting breakpoint in shader
-  *		when debugging is disabled.
-@@ -344,7 +389,7 @@ static void test_sip(int shader, int sip, struct drm_xe_engine_class_instance *e
- 		intel_bb_sync(ibb);
- 		igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
- 
--		dispatched = check_buf(fd, handle, width, height, sip, COLOR_C4);
-+		dispatched = check_buf(fd, handle, width, height, shader, sip, COLOR_C4);
- 		check_usercoredump(fd, sip, dispatched);
- 
- 		gem_close(fd, handle);
-@@ -396,6 +441,15 @@ igt_main
- 		test_render_and_compute("wait-writesip-nodebug", fd, eci)
- 			test_sip(SHADER_WAIT, SIP_WRITE, eci, 0);
- 
-+		test_render_and_compute("invalidinstr-disabled", fd, eci)
-+			test_sip(SHADER_INV_INSTR_DISABLED, SIP_INV_INSTR, eci, 0);
++static int
++__xe_lr_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
++{
++	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
++	uint32_t engine_id;
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++	/*
++	 * LR mode vm_bind requires to use DRM_XE_SYNC_TYPE_USER_FENCE type sync
++	 * LR mode xe_exec requires to use DRM_XE_SYNC_TYPE_USER_FENCE type sync
++	 */
++	struct drm_xe_sync syncs[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE
++		},
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE
++		},
++	};
++	struct drm_xe_vm_bind_op *bind_ops;
++	struct {
++		uint64_t vm_sync;
++		uint64_t exec_sync;
++	} *sync_data;
++	uint32_t sync_offset;
++	uint64_t ibb_addr, vm_sync_addr, exec_sync_addr;
++	void *map;
 +
-+		test_render_and_compute("invalidinstr-thread-enabled", fd, eci)
-+			test_sip(SHADER_INV_INSTR_THREAD_ENABLED, SIP_INV_INSTR, eci, 0);
++	igt_assert_eq(ibb->num_relocs, 0);
++	igt_assert_eq(ibb->xe_bound, false);
 +
-+		test_render_and_compute("invalidinstr-walker-enabled", fd, eci)
-+			test_sip(SHADER_INV_INSTR_WALKER_ENABLED, SIP_INV_INSTR, eci, 0);
++	if (ibb->ctx) {
++		engine_id = ibb->ctx;
++	} else if (ibb->last_engine != engine) {
++		struct drm_xe_engine_class_instance inst = { };
 +
- 		test_render_and_compute("breakpoint-writesip-nodebug", fd, eci)
- 			test_sip(SHADER_BREAKPOINT, SIP_WRITE, eci, 0);
++		inst.engine_instance =
++			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
++
++		switch (flags & I915_EXEC_RING_MASK) {
++		case I915_EXEC_DEFAULT:
++		case I915_EXEC_BLT:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
++			break;
++		case I915_EXEC_BSD:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++			break;
++		case I915_EXEC_RENDER:
++			if (xe_has_engine_class(ibb->fd, DRM_XE_ENGINE_CLASS_RENDER))
++				inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
++			else
++				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
++			break;
++		case I915_EXEC_VEBOX:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++			break;
++		default:
++			igt_assert_f(false, "Unknown engine: %x", (uint32_t) flags);
++		}
++		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
++
++		if (ibb->engine_id)
++			xe_exec_queue_destroy(ibb->fd, ibb->engine_id);
++
++		ibb->engine_id = engine_id =
++			xe_exec_queue_create(ibb->fd, ibb->vm_id, &inst, 0);
++	} else {
++		engine_id = ibb->engine_id;
++	}
++	ibb->last_engine = engine;
++
++	/* User fence add for sync: sync.addr has a quadword align limitation */
++	intel_bb_ptr_align(ibb, 8);
++	sync_offset = intel_bb_offset(ibb);
++	intel_bb_ptr_add(ibb, sizeof(*sync_data));
++
++	map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
++	memcpy(map, ibb->batch, ibb->size);
++
++	sync_data = (void*)((uint8_t *)map + sync_offset);
++	/* vm_sync userfence userspace address. */
++	vm_sync_addr = to_user_pointer(&sync_data->vm_sync);
++	ibb_addr = ibb->batch_offset;
++	/* exec_sync userfence ppgtt address. */
++	exec_sync_addr = ibb_addr + sync_offset + sizeof(uint64_t);
++	syncs[0].addr = vm_sync_addr;
++	syncs[1].addr = exec_sync_addr;
++
++	if (ibb->num_objects > 1) {
++		bind_ops = xe_alloc_bind_ops(ibb, DRM_XE_VM_BIND_OP_MAP, 0, 0);
++		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
++				 ibb->num_objects, syncs, 1);
++		free(bind_ops);
++	} else {
++		igt_debug("bind: MAP\n");
++		igt_debug("  handle: %u, offset: %llx, size: %llx\n",
++			  ibb->handle, (long long)ibb->batch_offset,
++			  (long long)ibb->size);
++		xe_vm_bind_async(ibb->fd, ibb->vm_id, 0, ibb->handle, 0,
++				 ibb->batch_offset, ibb->size, syncs, 1);
++	}
++
++	/* use default vm_bind_exec_queue */
++	xe_wait_ufence(ibb->fd, &sync_data->vm_sync, USER_FENCE_VALUE, 0, -1);
++	gem_munmap(map, ibb->size);
++
++	ibb->xe_bound = true;
++	ibb->user_fence_value = USER_FENCE_VALUE;
++	ibb->user_fence_offset = sync_offset + sizeof(uint64_t);
++
++	xe_exec_sync(ibb->fd, engine_id, ibb->batch_offset, &syncs[1], 1);
++
++	if (sync)
++		intel_bb_sync(ibb);
++
++	return 0;
++}
++
++
+ /*
+  * __intel_bb_exec:
+  * @ibb: pointer to intel_bb
+@@ -2541,8 +2680,12 @@ void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
  
+ 	if (ibb->driver == INTEL_DRIVER_I915)
+ 		igt_assert_eq(__intel_bb_exec(ibb, end_offset, flags, sync), 0);
+-	else
+-		igt_assert_eq(__xe_bb_exec(ibb, flags, sync), 0);
++	else {
++		if (intel_bb_get_lr_mode(ibb))
++			igt_assert_eq(__xe_lr_bb_exec(ibb, flags, sync), 0);
++		else
++			igt_assert_eq(__xe_bb_exec(ibb, flags, sync), 0);
++	}
+ }
+ 
+ /**
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 7caf6c518..051c336de 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -303,6 +303,11 @@ struct intel_bb {
+ 	 * is not thread-safe.
+ 	 */
+ 	int32_t refcount;
++
++	/* long running mode */
++	bool lr_mode;
++	int64_t user_fence_offset;
++	uint64_t user_fence_value;
+ };
+ 
+ struct intel_bb *
+@@ -421,6 +426,18 @@ static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
+ 	return ibb->pxp.appid;
+ }
+ 
++static inline void intel_bb_set_lr_mode(struct intel_bb *ibb, bool lr_mode)
++{
++	igt_assert(ibb);
++	ibb->lr_mode = lr_mode;
++}
++
++static inline bool intel_bb_get_lr_mode(struct intel_bb *ibb)
++{
++	igt_assert(ibb);
++	return ibb->lr_mode;
++}
++
+ struct drm_i915_gem_exec_object2 *
+ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 		    uint64_t offset, uint64_t alignment, bool write);
 -- 
 2.34.1
 
