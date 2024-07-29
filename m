@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F36DC3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1797C3DA7E
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 03E0E10E427;
-	Mon, 29 Jul 2024 16:03:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74F0710E42A;
+	Mon, 29 Jul 2024 16:03:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lu/40p42";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DDXRoElD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82E7310E427
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 40A7310E42A
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269025; x=1753805025;
+ t=1722269028; x=1753805028;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=5JOOBHn3jxXk+oOFtEEFl7b1MITuTnRl4MainG3tcL0=;
- b=lu/40p42aGasNoDRuteAiH/jWvUzSjZcAalItPeMp/qHVkcKLyCY/drq
- ILumllnUFd3vI1sSyv243DZbYWWv8gmENB2wa27ko8MYag8viqeb1qxXN
- +DMfHyv8exBs58k26XLxj09YIP800xyepdlVewVFkb4wW0NLiMN4yRziI
- OlzQgxV2G4r0TimVOpBlUemCuWMYJoxCA6ZsvDa50u04JwE/1AgS48zB5
- JlJDgxfVRi/uNQh71ZMxgH3QLXC2BKLVlE78kxSWbNzCinJ8LwgDPo3qd
- bRI68pKo9XI1STHLf+aCw5l0+E5eKgfJhTUnsdKxp3cIXMghbLv8ZtKIc g==;
-X-CSE-ConnectionGUID: f88pyU4URKiyyJwkNZ6FnQ==
-X-CSE-MsgGUID: zE7sfQCPQraMMwdJwjhUiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427129"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427129"
+ bh=f9kfsZryW6IusIpEprcLL931XfdVdJxs3bQuVxEMNSQ=;
+ b=DDXRoElDpwf3+XED9fcv19EIpmNG+/zAr8ofhdGbDELbSndaIOAehsTv
+ S8JYLEs6QBjdZIrxAmyOkpG3Z0+aVrRvj2Qa6lbYrSHj+uD8dg+L8eBe7
+ GJzWm05RsPk2t4kCxfzBmA5KQtkuii7d8k+6ePWvecFllPLwl0H6t74cv
+ E7b7KWbNybf3uYlwcnnoKaHJlGCppiFabiLSnUXMX3bwwf9iwYQsrPFX7
+ BEmwAdedNuOAQxOKiBvusJdx16ivuTEHPkHQupCek8Pi44P1nvJElhxVe
+ iVbe6JaMUYPlPyaG84B4rpkF3CdLdyIS4ZuNPGpoxuD9js3KjvANpCSJM w==;
+X-CSE-ConnectionGUID: bTBvynFXRUecOqJZNQ0lJg==
+X-CSE-MsgGUID: CwhKnO/DTT+8Xy6AhSl/TQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427137"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427137"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:45 -0700
-X-CSE-ConnectionGUID: G3GluwHKTNGGBx/vFjD/ng==
-X-CSE-MsgGUID: IH3EofhmRGuZE4BlVEwyfA==
+ 29 Jul 2024 09:03:48 -0700
+X-CSE-ConnectionGUID: jcnLWlSqQqiR04ZSHnCYBA==
+X-CSE-MsgGUID: 2X82oxS8RvCdXaPHlgmcug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737984"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738062"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:42 -0700
+ 29 Jul 2024 09:03:45 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -54,11 +54,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH 26/66] tests/xe_eudebug: Add basic-vm-access-parameters test
-Date: Mon, 29 Jul 2024 18:01:19 +0200
-Message-Id: <20240729160159.37036-27-christoph.manszewski@intel.com>
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Subject: [PATCH 27/66] lib/xe_eudebug: Add mutex for log events write
+Date: Mon, 29 Jul 2024 18:01:20 +0200
+Message-Id: <20240729160159.37036-28-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -81,176 +80,72 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Pawel Sikora <pawel.sikora@intel.com>
 
-This new test checks negative scenarios of VM_OPEN
-ioctl and pread/pwrite usage.
+Make 'xe_eudebug_event_log_write' to be thread-safe.
 
 Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 143 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 143 insertions(+)
+ lib/xe/xe_eudebug.c | 6 +++++-
+ lib/xe/xe_eudebug.h | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 50c944ba9..37b4f4e27 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -1167,6 +1167,146 @@ static void test_vm_access(int fd, unsigned int flags, int num_clients)
- 					 false, XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP);
+diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+index 919dd1d49..41809429d 100644
+--- a/lib/xe/xe_eudebug.c
++++ b/lib/xe/xe_eudebug.c
+@@ -830,6 +830,7 @@ struct xe_eudebug_event_log *xe_eudebug_event_log_create(const char *name, unsig
+ 	igt_assert(l->log);
+ 	l->max_size = max_size;
+ 	strncpy(l->name, name, sizeof(l->name) - 1);
++	pthread_mutex_init(&l->lock, NULL);
+ 
+ 	return l;
+ }
+@@ -842,6 +843,7 @@ struct xe_eudebug_event_log *xe_eudebug_event_log_create(const char *name, unsig
+  */
+ void xe_eudebug_event_log_destroy(struct xe_eudebug_event_log *l)
+ {
++	pthread_mutex_destroy(&l->lock);
+ 	free(l->log);
+ 	free(l);
+ }
+@@ -851,7 +853,7 @@ void xe_eudebug_event_log_destroy(struct xe_eudebug_event_log *l)
+  * @l: event log pointer
+  * @e: event to be written to event log
+  *
+- * Writes event @e to the event log.
++ * Writes event @e to the event log, thread-safe.
+  */
+ void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eudebug_event *e)
+ {
+@@ -862,6 +864,7 @@ void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eu
+ 	 */
+ 	igt_assert_lt(e->seqno, 10 * 1000 * 1000);
+ 
++	pthread_mutex_lock(&l->lock);
+ 	igt_assert_lt(l->head + e->len, l->max_size);
+ 	memcpy(l->log + l->head, e, e->len);
+ 	l->head += e->len;
+@@ -870,6 +873,7 @@ void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eu
+ 	igt_info("%s: wrote %u bytes to eventlog, free %u bytes\n",
+ 		 l->name, e->len, l->max_size - l->head);
+ #endif
++	pthread_mutex_unlock(&l->lock);
  }
  
-+static void debugger_test_vma_parameters(struct xe_eudebug_debugger *d,
-+					 uint64_t client_handle,
-+					 uint64_t vm_handle,
-+					 uint64_t va_start,
-+					 uint64_t va_length)
-+{
-+	struct drm_xe_eudebug_vm_open vo = { 0, };
-+	uint64_t *v;
-+	uint64_t items = va_length / sizeof(uint64_t);
-+	int fd;
-+	int r, i;
-+
-+	v = malloc(va_length);
-+	igt_assert(v);
-+
-+	/* Negative VM open - bad client handle */
-+	vo.client_handle = client_handle + 123;
-+	vo.vm_handle = vm_handle;
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert(fd < 0);
-+
-+	/* Negative VM open - bad vm handle */
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle + 123;
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert(fd < 0);
-+
-+	/* Positive VM open */
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle;
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert_lte(0, fd);
-+
-+	/* Negative pread - bad fd */
-+	r = pread(fd + 123, v, va_length, va_start);
-+	igt_assert(r < 0);
-+
-+	/* Negative pread - bad va_start */
-+	r = pread(fd, v, va_length, 0);
-+	igt_assert(r < 0);
-+
-+	/* Negative pread - bad va_start */
-+	r = pread(fd, v, va_length, va_start - 1);
-+	igt_assert(r < 0);
-+
-+	/* Positive pread - zero va_length */
-+	r = pread(fd, v, 0, va_start);
-+	igt_assert_eq(r, 0);
-+
-+	/* Negative pread - out of range */
-+	r = pread(fd, v, va_length + 1, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	/* Negative pread - bad va_start */
-+	r = pread(fd, v, 1, va_start + va_length);
-+	igt_assert(r < 0);
-+
-+	/* Positive pread - whole range */
-+	r = pread(fd, v, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	/* Positive pread */
-+	r = pread(fd, v, 1, va_start + va_length - 1);
-+	igt_assert_eq(r, 1);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v[i], va_start + i);
-+
-+	for (i = 0; i < items; i++)
-+		v[i] = va_start + i + 1;
-+
-+	/* Negative pwrite - bad fd */
-+	r = pwrite(fd + 123, v, va_length, va_start);
-+	igt_assert(r < 0);
-+
-+	/* Negative pwrite - bad va_start */
-+	r = pwrite(fd, v, va_length, -1);
-+	igt_assert(r < 0);
-+
-+	/* Negative pwrite - zero va_start */
-+	r = pwrite(fd, v, va_length, 0);
-+	igt_assert(r < 0);
-+
-+	/* Negative pwrite - bad va_length */
-+	r = pwrite(fd, v, va_length + 1, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	/* Positive pwrite - zero va_length */
-+	r = pwrite(fd, v, 0, va_start);
-+	igt_assert_eq(r, 0);
-+
-+	/* Positive pwrite */
-+	r = pwrite(fd, v, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+	fsync(fd);
-+
-+	close(fd);
-+	free(v);
-+}
-+
-+static void vm_trigger_access_parameters(struct xe_eudebug_debugger *d,
-+		       struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+		igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
-+			  eo->vm_bind_ref_seqno,
-+			  eo->addr,
-+			  eo->range);
-+
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+		igt_assert(eb);
-+
-+		debugger_test_vma_parameters(d, eb->client_handle, eb->vm_handle,
-+						   eo->addr, eo->range);
-+		xe_eudebug_debugger_signal_stage(d, eo->addr);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: basic-vm-access-parameters
-+ * Description:
-+ *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage.
-+ */
-+static void test_vm_access_parameters(int fd, unsigned int flags, int num_clients)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	xe_for_each_engine(fd, hwe)
-+		test_client_with_trigger(fd, flags, num_clients,
-+					 vm_access_client,
-+					 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
-+					 vm_trigger_access_parameters, hwe,
-+					 false, XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP);
-+}
-+
- #define PAGE_SIZE 4096
- #define MDATA_SIZE (WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM * PAGE_SIZE)
- static void metadata_access_client(struct xe_eudebug_client *c)
-@@ -1331,6 +1471,9 @@ igt_main
- 	igt_subtest("basic-vm-access")
- 		test_vm_access(fd, 0, 1);
+ /**
+diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+index 81c33417f..a499cc977 100644
+--- a/lib/xe/xe_eudebug.h
++++ b/lib/xe/xe_eudebug.h
+@@ -14,6 +14,7 @@ struct xe_eudebug_event_log {
+ 	unsigned int head;
+ 	unsigned int max_size;
+ 	char name[80];
++	pthread_mutex_t lock;
+ };
  
-+	igt_subtest("basic-vm-access-parameters")
-+		test_vm_access_parameters(fd, 0, 1);
-+
- 	igt_subtest("multiple-sessions")
- 		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4, true);
- 
+ struct xe_eudebug_debugger {
 -- 
 2.34.1
 
