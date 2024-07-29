@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1797C3DA7E
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD3F1C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74F0710E42A;
-	Mon, 29 Jul 2024 16:03:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 95A8710E425;
+	Mon, 29 Jul 2024 16:03:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DDXRoElD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Mg35bRGw";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40A7310E42A
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 34D1A10E425
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269028; x=1753805028;
+ t=1722269031; x=1753805031;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=f9kfsZryW6IusIpEprcLL931XfdVdJxs3bQuVxEMNSQ=;
- b=DDXRoElDpwf3+XED9fcv19EIpmNG+/zAr8ofhdGbDELbSndaIOAehsTv
- S8JYLEs6QBjdZIrxAmyOkpG3Z0+aVrRvj2Qa6lbYrSHj+uD8dg+L8eBe7
- GJzWm05RsPk2t4kCxfzBmA5KQtkuii7d8k+6ePWvecFllPLwl0H6t74cv
- E7b7KWbNybf3uYlwcnnoKaHJlGCppiFabiLSnUXMX3bwwf9iwYQsrPFX7
- BEmwAdedNuOAQxOKiBvusJdx16ivuTEHPkHQupCek8Pi44P1nvJElhxVe
- iVbe6JaMUYPlPyaG84B4rpkF3CdLdyIS4ZuNPGpoxuD9js3KjvANpCSJM w==;
-X-CSE-ConnectionGUID: bTBvynFXRUecOqJZNQ0lJg==
-X-CSE-MsgGUID: CwhKnO/DTT+8Xy6AhSl/TQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427137"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427137"
+ bh=SS08jJlHfDBhScJtqwsvsnZhyrjOsi1//NkjQ/MQbcI=;
+ b=Mg35bRGwmwbZW/swm2pVsokfEr9Evy13MXvFBqjlKtq2IgC2FDX6ruTm
+ frLJy4AwflkqM5oQ98mQo07Obk7Ncnry7A8gxi+2iHsZWGzVGJPahFm03
+ JfLefE1bfi4mYlNwvHEs4YNdDH474iX3MBFRATZtkpYRrIlzzn1jGDNnl
+ QlX61E9uQT5HylMuXgOob7Wkd8f/5rRsdg5yiLQnA8Gyfw/rNVaH+zqqU
+ Spg/umREA/R/VYMB3eh3qKmzcHpPOPnYpW4quYvGDqAYMF6Qu8Wt5Nqne
+ gLCUfjnEy+rCjcpH2m4dlkF/w69R4U7MXEDp2W0ouDx3yoe+wPpgZQsTV w==;
+X-CSE-ConnectionGUID: y8mx/VinR8SoVQojhLZ9fg==
+X-CSE-MsgGUID: jkk+PTDoRbi+1r1YRMNjuQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427146"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427146"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:48 -0700
-X-CSE-ConnectionGUID: jcnLWlSqQqiR04ZSHnCYBA==
-X-CSE-MsgGUID: 2X82oxS8RvCdXaPHlgmcug==
+ 29 Jul 2024 09:03:51 -0700
+X-CSE-ConnectionGUID: hIgrQkxASTKPHRrtQS1YRg==
+X-CSE-MsgGUID: maEWav34TUekuDSMeypxyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738062"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738119"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:45 -0700
+ 29 Jul 2024 09:03:48 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,9 +55,9 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH 27/66] lib/xe_eudebug: Add mutex for log events write
-Date: Mon, 29 Jul 2024 18:01:20 +0200
-Message-Id: <20240729160159.37036-28-christoph.manszewski@intel.com>
+Subject: [PATCH 28/66] tests/xe_eudebug: Add basic-client-th test
+Date: Mon, 29 Jul 2024 18:01:21 +0200
+Message-Id: <20240729160159.37036-29-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -80,72 +80,133 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Pawel Sikora <pawel.sikora@intel.com>
 
-Make 'xe_eudebug_event_log_write' to be thread-safe.
+Add basic-client-th test which is a multithreaded version of basic-client.
+
+Create random number of VMs in random number of threads.
 
 Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/xe/xe_eudebug.c | 6 +++++-
- lib/xe/xe_eudebug.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ tests/intel/xe_eudebug.c | 78 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 78 insertions(+)
 
-diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index 919dd1d49..41809429d 100644
---- a/lib/xe/xe_eudebug.c
-+++ b/lib/xe/xe_eudebug.c
-@@ -830,6 +830,7 @@ struct xe_eudebug_event_log *xe_eudebug_event_log_create(const char *name, unsig
- 	igt_assert(l->log);
- 	l->max_size = max_size;
- 	strncpy(l->name, name, sizeof(l->name) - 1);
-+	pthread_mutex_init(&l->lock, NULL);
- 
- 	return l;
- }
-@@ -842,6 +843,7 @@ struct xe_eudebug_event_log *xe_eudebug_event_log_create(const char *name, unsig
+diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+index 37b4f4e27..022b39f1f 100644
+--- a/tests/intel/xe_eudebug.c
++++ b/tests/intel/xe_eudebug.c
+@@ -13,6 +13,7 @@
   */
- void xe_eudebug_event_log_destroy(struct xe_eudebug_event_log *l)
- {
-+	pthread_mutex_destroy(&l->lock);
- 	free(l->log);
- 	free(l);
- }
-@@ -851,7 +853,7 @@ void xe_eudebug_event_log_destroy(struct xe_eudebug_event_log *l)
-  * @l: event log pointer
-  * @e: event to be written to event log
+ 
+ #include <poll.h>
++#include <pthread.h>
+ #include <sys/ioctl.h>
+ 
+ #include "igt.h"
+@@ -640,6 +641,10 @@ static void test_read_event(int fd)
+  * Description:
+  *	Attach the debugger to process which opens and closes xe drm client.
   *
-- * Writes event @e to the event log.
-+ * Writes event @e to the event log, thread-safe.
++ * SUBTEST: basic-client-th
++ * Description:
++ *	Create client basic resources (vms) in multiple threads
++ *
+  * SUBTEST: multiple-sessions
+  * Description:
+  *	Simultaneously attach many debuggers to many processes.
+@@ -669,6 +674,7 @@ static void test_read_event(int fd)
+  * @vms: vms
+  * @exec-queues: exec queues
   */
- void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eudebug_event *e)
++
+ static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
  {
-@@ -862,6 +864,7 @@ void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eu
- 	 */
- 	igt_assert_lt(e->seqno, 10 * 1000 * 1000);
- 
-+	pthread_mutex_lock(&l->lock);
- 	igt_assert_lt(l->head + e->len, l->max_size);
- 	memcpy(l->log + l->head, e, e->len);
- 	l->head += e->len;
-@@ -870,6 +873,7 @@ void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eu
- 	igt_info("%s: wrote %u bytes to eventlog, free %u bytes\n",
- 		 l->name, e->len, l->max_size - l->head);
- #endif
-+	pthread_mutex_unlock(&l->lock);
+ 	struct xe_eudebug_session **s;
+@@ -1056,6 +1062,75 @@ static void test_client_with_trigger(int fd, unsigned int flags, int count,
+ 		xe_eudebug_session_destroy(s[i]);
  }
  
- /**
-diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-index 81c33417f..a499cc977 100644
---- a/lib/xe/xe_eudebug.h
-+++ b/lib/xe/xe_eudebug.h
-@@ -14,6 +14,7 @@ struct xe_eudebug_event_log {
- 	unsigned int head;
- 	unsigned int max_size;
- 	char name[80];
-+	pthread_mutex_t lock;
- };
++struct thread_fn_args {
++	struct xe_eudebug_client *client;
++	int fd;
++};
++
++static void *basic_client_th(void *data)
++{
++	struct thread_fn_args *f = data;
++	struct xe_eudebug_client *c = f->client;
++	uint32_t *vms;
++	int fd, i, num_vms;
++
++	fd = f->fd;
++	igt_assert(fd);
++
++	xe_device_get(fd);
++
++	num_vms = 2 + rand() % 16;
++	vms = calloc(num_vms, sizeof(*vms));
++	igt_assert(vms);
++	igt_debug("Create %d client vms\n", num_vms);
++
++	for (i = 0; i < num_vms; i++)
++		vms[i] = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
++
++	for (i = 0; i < num_vms; i++)
++		xe_eudebug_client_vm_destroy(c, fd, vms[i]);
++
++	xe_device_put(fd);
++	free(vms);
++
++	return NULL;
++}
++
++static void run_basic_client_th(struct xe_eudebug_client *c)
++{
++	struct thread_fn_args *args;
++	int i, num_threads, fd;
++	pthread_t *threads;
++
++	args = calloc(1, sizeof(*args));
++	igt_assert(args);
++
++	num_threads = 2 + random() % 16;
++	igt_debug("Run on %d threads\n", num_threads);
++	threads = calloc(num_threads, sizeof(*threads));
++	igt_assert(threads);
++
++	fd = xe_eudebug_client_open_driver(c);
++	args->client = c;
++	args->fd = fd;
++
++	for (i = 0; i < num_threads; i++)
++		pthread_create(&threads[i], NULL, basic_client_th, args);
++
++	for (i = 0; i < num_threads; i++)
++		pthread_join(threads[i], NULL);
++
++	xe_eudebug_client_close_driver(c, fd);
++	free(args);
++	free(threads);
++}
++
++static void test_basic_sessions_th(int fd, unsigned int flags, int num_clients, bool match_opposite)
++{
++	test_client_with_trigger(fd, flags, num_clients, run_basic_client_th,
++					 0, NULL, NULL, match_opposite, 0);
++}
++
+ static void vm_access_client(struct xe_eudebug_client *c)
+ {
+ 	struct drm_xe_sync sync = {
+@@ -1468,6 +1543,9 @@ igt_main
+ 	igt_subtest("basic-client")
+ 		test_basic_sessions(fd, 0, 1, true);
  
- struct xe_eudebug_debugger {
++	igt_subtest("basic-client-th")
++		test_basic_sessions_th(fd, 0, 1, true);
++
+ 	igt_subtest("basic-vm-access")
+ 		test_vm_access(fd, 0, 1);
+ 
 -- 
 2.34.1
 
