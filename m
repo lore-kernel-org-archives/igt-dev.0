@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C17FC3DA7F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CC4CC3DA4A
 	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2C0310E431;
-	Mon, 29 Jul 2024 16:03:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CB5D10E432;
+	Mon, 29 Jul 2024 16:03:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XaCU2kq9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l+vVIO2N";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12EF210E42E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:02:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 15A5310E431
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722268979; x=1753804979;
+ t=1722268981; x=1753804981;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=rP+nUBDocapT6s2ecK3gX0r9ggkhNwvzUIIZiT4f3jo=;
- b=XaCU2kq9goG6AIo92q/xvtZ4BDxE6NyL0ZBttqcnDzo3rbeLBhkSFQ9W
- 6HNXglwG/RfbAzCL3gI70ewwLZPGfCHNPIxBttJ+z4QV7YDOfpeGSHTQi
- BbmQdpqFW2jt2PyCTLxgMjAV69ou1vkMLycnbzvKj6pA1vcComJ7vrRAF
- HqzlU/cLXxDdRStX7CzzvUmDrP5ih2FMH1q49MXlw1YYNb0jOGJtoiXqU
- NmqofHUVwWJ2sdhGZPvDSv7L1PwA+OpgffXGLcVoJdzR0bWkO2dpKAYt/
- fo8JxqZPUNPDTsdUxnitPbKtfzzZfG0rtm80Y9+qYrST4Qtnj7N+yDMaE w==;
-X-CSE-ConnectionGUID: RbwVZoDLR860MVQOd/jTbw==
-X-CSE-MsgGUID: kwkuCIUMRpuhdBdCs4KhIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31426869"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31426869"
+ bh=oKhxCfVo7h8E0acg3LRUfi6HWNsfH8yxxzhehgaU1qc=;
+ b=l+vVIO2NmvTJAFIAH8hlhmb5gBW8e09glveD4i1NH61p7hEwtOD3QrEK
+ B+vr4w+kOPe7Nmk+DRlLzttj98rHjOqHVSprcUBGc0A1170STy0A1SZBE
+ D8hgdVhbTHnM+e4l9D5s5K7+9JkX4pLO7G7o70Ui/RWgKj7ccwn3mbYWD
+ lSj5jGzYst9MxHgB3fl1s0h1WiTr8HAfQ1cggMIyzUOWV2H8SN4oisJRZ
+ dvbZ+uGeT4aIHplazlETc9E4hvmn9QD6xdlvkP+wLPxLRqgo9iW7nKuwR
+ we34oc5RToOOnaGsuONhbqI5ATyMBfqlUXPkExlvtqX3BOgEcovml6M04 w==;
+X-CSE-ConnectionGUID: lx7WVlbTTom0Fg6NFzoREg==
+X-CSE-MsgGUID: bzcgugFIRMqznHyaR1F7kw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31426893"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31426893"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:02:59 -0700
-X-CSE-ConnectionGUID: QUqrqGUvTzqriq1A6Lwptg==
-X-CSE-MsgGUID: RqPnrkdUS1CKqUpiauiIaQ==
+ 29 Jul 2024 09:03:01 -0700
+X-CSE-ConnectionGUID: kEYB9x5zTkmnUHZYkLb9+g==
+X-CSE-MsgGUID: gP19lJ5qRm6kI3Uove4uqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737455"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53737483"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:02:54 -0700
+ 29 Jul 2024 09:02:57 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,11 +55,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH 11/66] tests/xe_eudebug: Test open close events
-Date: Mon, 29 Jul 2024 18:01:04 +0200
-Message-Id: <20240729160159.37036-12-christoph.manszewski@intel.com>
+Subject: [PATCH 12/66] tests/xe_eudebug: Exercise read_event ioctl
+Date: Mon, 29 Jul 2024 18:01:05 +0200
+Message-Id: <20240729160159.37036-13-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -83,80 +82,154 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 
-Introduce basic tests which validate client create/destroy events
-sent on xe drm client open/close.
+Introduce synchronous test, which validates eu debugger read_event
+ioctl.
 
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 Cc: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- tests/intel/xe_eudebug.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+ tests/intel/xe_eudebug.c | 107 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 107 insertions(+)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 2bd5a44f9..d0dc38436 100644
+index d0dc38436..6bbad795c 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -3,8 +3,16 @@
+@@ -2,6 +2,8 @@
+ /*
   * Copyright © 2023 Intel Corporation
   */
++#include <poll.h>
++#include <sys/ioctl.h>
  
--#include <xe_drm.h>
  #include "igt.h"
-+#include "xe/xe_eudebug.h"
-+
-+static void run_basic_client(struct xe_eudebug_client *c)
-+{
-+	int fd;
-+
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
+ #include "xe/xe_eudebug.h"
+@@ -14,6 +16,45 @@ static void run_basic_client(struct xe_eudebug_client *c)
+ 	xe_eudebug_client_close_driver(c, fd);
+ }
  
++static int read_event(int debugfd, struct drm_xe_eudebug_event *event)
++{
++	int ret;
++
++	ret = igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
++	if (ret < 0)
++		return -errno;
++
++	return ret;
++}
++
++static int __read_event(int debugfd, struct drm_xe_eudebug_event *event)
++{
++	int ret;
++
++	ret = ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
++	if (ret < 0)
++		return -errno;
++
++	return ret;
++}
++
++static int poll_event(int fd, int timeout_ms)
++{
++	int ret;
++
++	struct pollfd p = {
++		.fd = fd,
++		.events = POLLIN,
++		.revents = 0,
++	};
++
++	ret = poll(&p, 1, timeout_ms);
++	if (ret == -1)
++		return -errno;
++
++	return ret == 1 && (p.revents & POLLIN);
++}
++
  static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect *param)
  {
-@@ -96,6 +104,28 @@ static void test_close(int fd)
+ 	int ret = 0;
+@@ -104,6 +145,69 @@ static void test_close(int fd)
  	close(debug_fd1);
  }
  
-+static void test_basic_sessions(int fd, unsigned int flags, int count)
++/**
++ * SUBTEST: basic-read-event
++ * Description:
++ *	Synchronously exercise eu debugger event polling and reading.
++ */
++#define MAX_EVENT_SIZE (32 * 1024)
++static void test_read_event(int fd)
 +{
-+	struct xe_eudebug_session **s;
-+	int i;
++	struct drm_xe_eudebug_event *event;
++	struct xe_eudebug_debugger *d;
++	struct xe_eudebug_client *c;
 +
-+	s = calloc(count, sizeof(*s));
++	event = malloc(MAX_EVENT_SIZE);
++	igt_assert(event);
++	memset(event, 0, sizeof(*event));
 +
-+	igt_assert(s);
++	c = xe_eudebug_client_create(fd, run_basic_client, 0, NULL);
++	d = xe_eudebug_debugger_create(fd, 0, NULL);
 +
-+	for (i = 0; i < count; i++)
-+		s[i] = xe_eudebug_session_create(fd, run_basic_client, flags, NULL);
++	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
++	igt_assert_eq(poll_event(d->fd, 500), 0);
 +
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_run(s[i]);
++	event->len = 1;
++	event->type = DRM_XE_EUDEBUG_EVENT_NONE;
++	igt_assert_eq(read_event(d->fd, event), -EINVAL);
 +
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_check(s[i], true, 0);
++	event->len = MAX_EVENT_SIZE;
++	event->type = DRM_XE_EUDEBUG_EVENT_NONE;
++	igt_assert_eq(read_event(d->fd, event), -EINVAL);
 +
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_destroy(s[i]);
++	xe_eudebug_client_start(c);
++
++	igt_assert_eq(poll_event(d->fd, 500), 1);
++	event->type = DRM_XE_EUDEBUG_EVENT_READ;
++	igt_assert_eq(read_event(d->fd, event), 0);
++
++	igt_assert_eq(poll_event(d->fd, 500), 1);
++	event->len = MAX_EVENT_SIZE;
++	event->flags = 0;
++	event->type = DRM_XE_EUDEBUG_EVENT_READ;
++	igt_assert_eq(read_event(d->fd, event), 0);
++
++	fcntl(d->fd, F_SETFL, fcntl(d->fd, F_GETFL) | O_NONBLOCK);
++	igt_assert(fcntl(d->fd, F_GETFL) & O_NONBLOCK);
++
++	igt_assert_eq(poll_event(d->fd, 500), 0);
++	event->len = MAX_EVENT_SIZE;
++	event->flags = 0;
++	event->type = DRM_XE_EUDEBUG_EVENT_READ;
++	igt_assert_eq(__read_event(d->fd, event), -EAGAIN);
++
++	xe_eudebug_client_wait_done(c);
++	xe_eudebug_client_stop(c);
++
++	igt_assert_eq(poll_event(d->fd, 500), 0);
++	igt_assert_eq(__read_event(d->fd, event), -EAGAIN);
++
++	xe_eudebug_debugger_destroy(d);
++	xe_eudebug_client_destroy(c);
++
++	free(event);
 +}
 +
- igt_main
+ static void test_basic_sessions(int fd, unsigned int flags, int count)
  {
- 	int fd;
-@@ -110,6 +140,12 @@ igt_main
+ 	struct xe_eudebug_session **s;
+@@ -140,6 +244,9 @@ igt_main
  	igt_subtest("basic-close")
  		test_close(fd);
  
-+	igt_subtest("basic-client")
-+		test_basic_sessions(fd, 0, 1);
++	igt_subtest("basic-read-event")
++		test_read_event(fd);
 +
-+	igt_subtest("multiple-sessions")
-+		test_basic_sessions(fd, 0, 4);
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
+ 	igt_subtest("basic-client")
+ 		test_basic_sessions(fd, 0, 1);
+ 
 -- 
 2.34.1
 
