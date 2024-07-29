@@ -4,63 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF52C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 10:03:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92D84C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 10:31:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65A6210E386;
-	Mon, 29 Jul 2024 10:03:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A0A410E387;
+	Mon, 29 Jul 2024 10:31:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="JbBuPZQt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h7LFlL6a";
 	dkim-atps=neutral
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com
- [209.85.166.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CB5BC10E386
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 10:03:17 +0000 (UTC)
-Received: by mail-io1-f47.google.com with SMTP id
- ca18e2360f4ac-81f95052c2cso120413439f.0
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 03:03:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=broadcom.com; s=google; t=1722247397; x=1722852197;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=r+RmP4Yzi5bc0D2bKT0kidGN0QY6Q7JdbuTGYNe/u0k=;
- b=JbBuPZQtAReFtgwRFTcF4TNYx8m1fL7iW9+BbBOZPInXmXNmjJGsvl6eKGlSOywJRo
- y0ugDz/IS7jxdsx1Hibxj1MG354dMFcAYkB9f4JgSjGC+PtDPynbhdRUDJGi1qM3LPbN
- nS0gC+Y7pKs7ovZXuBx7TDYXGlRWSNvND89O0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722247397; x=1722852197;
- h=content-transfer-encoding:cc:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=r+RmP4Yzi5bc0D2bKT0kidGN0QY6Q7JdbuTGYNe/u0k=;
- b=qAU1piACYLSXn5pELc04UO9xPi5GESMYMkQw2UO+Cgy++QhK5pQFPt2cxekfyI69UM
- VRyJLjLyj/kY1ycLxlfx/8q5IWyS8S4bCUMBpDW6QL9Fd9uxAP50w7XoImESs21Mcdv7
- 8WT4k+MPegWB+bd1jwZjXjN/z+sCa0/saZofeu/h3ro6YIGnlo7/v7zw7B18ldwfyC2t
- tVzD1ZsWnb96IHaDq4zRN372x/HrAiJHLZ/jjzYCz4T1TWo5qyW7ushUN641cZqz0RGM
- zVgjLSMKFD+rPEtajRKjxx2lD9FDTaX6sL76aIipCoawZSGssuR87F2iy2IoaOvdKHo4
- ZDQQ==
-X-Gm-Message-State: AOJu0YwnbFfTyn+UJPZAmbVZUunnihTq4++qePpGxm1UYfIyFqh4nSJI
- gXf702FU5uWVSOVFd680eNkfafCxa99NJ9tldYajwWyq2c2t4DId8Nn2QoQqIafFoPOMnCviqDF
- 46KLtuPLBd8+q7q3pSSEH71b7XUBtxgpNbu4r
-X-Google-Smtp-Source: AGHT+IHwA1nWwYBcDDs0y/uQX0wK06w5E+PN07Nfinw3mAV2ia2d3h4tLEP8RWFwCu46yqygO2KP0YYG74/Eq1UO2cM=
-X-Received: by 2002:a5e:9518:0:b0:81f:92b6:8235 with SMTP id
- ca18e2360f4ac-81f95bccea5mr723609839f.6.1722247396987; Mon, 29 Jul 2024
- 03:03:16 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4286A10E387
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 10:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722249070; x=1753785070;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Ckj6pFqSVoP+nQb3rkGQknR7cqX2nvpVY1V1HC6lxgg=;
+ b=h7LFlL6a20Bd96eMNRyOQyjtT31HmwhYBRa5zeZBjjUDEULvq/eK6tF6
+ Jc5xEhzRu39i/CfKxTRJsNt4ou3hxx5rxOw2O09yfXXXsAaopRJz9gkCc
+ IJPLZDESHOsrn1P+GdfFMxiIMMjq18rN5qw5fxcaFD99Kn8jBPBQF9p8n
+ ecEJ5MLRVT9JOAXYzAJVtG5t+htXw6E/gj1/k76PXqv/TSOsrj//oFz/0
+ 8WLngEGmiNK7wce/JMqQPEU+e0pjPUZBsEsnTOk6c0pVvhQLzGe4NPJ4G
+ czLXVvQrV9MVXDEwI+NHagNhrT/bmWf1xzfQ93RJMIALZWqtKID/eGjGk g==;
+X-CSE-ConnectionGUID: iyOvA0KbRr+NCx40cDvv1Q==
+X-CSE-MsgGUID: EC9t5o5ASEqX2rmjjAyeJA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11147"; a="31405035"
+X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; d="scan'208";a="31405035"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2024 03:31:10 -0700
+X-CSE-ConnectionGUID: KIW6aOEXQFKQNmQSUe0frw==
+X-CSE-MsgGUID: jiGxLGkuR8Cfg8NUKU2POw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; d="scan'208";a="54733814"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.84.149])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2024 03:31:07 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com, katarzyna.piecielska@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+Subject: [PATCH v3 i-g-t] tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist
+ for SR-IOV VF runs
+Date: Mon, 29 Jul 2024 12:31:01 +0200
+Message-Id: <20240729103101.1460568-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20240726170959.1378586-1-marcin.bernatowicz@linux.intel.com>
+References: <20240726170959.1378586-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-References: <20240729043846.1892343-1-zack.rusin@broadcom.com>
- <CAKLwHdUoj8bghv7O5JUVx5BCOnZcXnzsrJ_ejt7vGqET3UW8hQ@mail.gmail.com>
-In-Reply-To: <CAKLwHdUoj8bghv7O5JUVx5BCOnZcXnzsrJ_ejt7vGqET3UW8hQ@mail.gmail.com>
-From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Mon, 29 Jul 2024 13:03:06 +0300
-Message-ID: <CAKLwHdUnFr5GS_5bTCHebRGSmdr-zp+CA694j+Cb_RY=u+SfEQ@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v4 0/4] Add vmwgfx prime tests
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: igt-dev@lists.freedesktop.org, ian.forbes@broadcom.com, 
- maaz.mombasawala@broadcom.com, kamil.konieczny@linux.intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,58 +74,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Argh, wrong clipboard. Let's try again.
+Blocklist tests not applicable for Virtual Function (VF) runs.
+The list extends xe.blocklist.txt to enable execution on VF device,
+with BAT (xe-fast-feedback.testlist) runs to be enabled first.
 
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+V2:
+- Reduce blocklist to minimal, favoring SKIPs.
+- Demonstrated minimal time impact on ADLP with increased skips.
 
-Regards,
-Martin
+V3:
+- Update comment to reflect blocklist not restricted to BAT runs (Michal)
+- Move summary results after --- mark (Michal)
+- Removed igt@sriov_basic from the list (Michal)
+- Reduce decorations in blocklist file (Michal)
 
-On Mon, Jul 29, 2024 at 12:58=E2=80=AFPM Martin Krastev
-<martin.krastev@broadcom.com> wrote:
->
-> LGTM to the series.
->
-> Signed-off-by: Martin Krastev <martin.krastev@broadcom.com>
->
-> Regards,
-> Martin
->
-> On Mon, Jul 29, 2024 at 7:38=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.c=
-om> wrote:
-> >
-> > The following series makes some adjustments for testing prime/dma-buf
-> > on vmwgfx, adds a vmwgfx dedicated test for it and fixes some minor
-> > issues.
-> >
-> > The last patch in the series adds very basic prime tests to dumb_buffer
-> > test to verify dumb_buffer<->prime functionality.
-> >
-> > v2: Add a reference counting and dumb buffer tests plus fix issues
-> > spotted by Kamil
-> > v3: Fix a silly compile error in vmw_prime test and remove dumb buffer
-> > test
-> > v4: checkpatch.pl improvements suggested by Kamil
-> >
-> > Maaz Mombasawala (1):
-> >   tests/vmwgfx: Removing incorrect assert in mob_repeated_unref
-> >
-> > Zack Rusin (3):
-> >   lib/vmwgfx: Allow using any buffer handle as a surface backing
-> >   tests/vmwgfx: Add a prime test
-> >   tests/vmwgfx: Fix and extend the reference counting test
-> >
-> >  lib/igt_vmwgfx.c                |  76 ++---
-> >  lib/igt_vmwgfx.h                |  43 +--
-> >  tests/vmwgfx/meson.build        |   7 +-
-> >  tests/vmwgfx/vmw_mob_stress.c   |   5 +-
-> >  tests/vmwgfx/vmw_prime.c        | 584 ++++++++++++++++++++++++++++++++
-> >  tests/vmwgfx/vmw_ref_count.c    | 214 +++++++++---
-> >  tests/vmwgfx/vmw_surface_copy.c |   8 +-
-> >  tests/vmwgfx/vmw_tri.c          |  12 +-
-> >  8 files changed, 821 insertions(+), 128 deletions(-)
-> >  create mode 100644 tests/vmwgfx/vmw_prime.c
-> >
-> > --
-> > 2.43.0
-> >
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+
+Before:
+
+summary:
+       name: vf_bats_results
+       ----  ---------------
+       pass:             171
+       fail:               0
+      crash:               0
+       skip:              56
+    timeout:               0
+       warn:               0
+ incomplete:               0
+ dmesg-warn:               0
+ dmesg-fail:               0
+    changes:               0
+      fixes:               0
+regressions:               0
+      total:             227
+       time:        00:00:25
+
+After:
+
+summary:
+       name: vf_bats_results
+       ----  ---------------
+       pass:             171
+       fail:               0
+      crash:               0
+       skip:             121
+    timeout:               0
+       warn:               0
+ incomplete:               0
+ dmesg-warn:               0
+ dmesg-fail:               0
+    changes:               0
+      fixes:               0
+regressions:               0
+      total:             292
+       time:        00:00:27
+
+ tests/intel-ci/meson.build               |  1 +
+ tests/intel-ci/xe-sriov-vf.blocklist.txt | 16 ++++++++++++++++
+ 2 files changed, 17 insertions(+)
+ create mode 100644 tests/intel-ci/xe-sriov-vf.blocklist.txt
+
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index f16243cbb..59323eda9 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -11,6 +11,7 @@ intelci_files = [
+   'xe.blocklist.txt',
+   'xe-fast-feedback.testlist',
+   'xe-fast-feedback-chamelium-only.testlist',
++  'xe-sriov-vf.blocklist.txt',
+ ]
+ 
+ install_data(sources : intelci_files, install_dir : datadir)
+diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+new file mode 100644
+index 000000000..5df897000
+--- /dev/null
++++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+@@ -0,0 +1,16 @@
++##################################################################
++# Block list for VF runs
++##################################################################
++#
++# Prevent potential module reloads during tests
++#
++igt@xe_module_load
++#
++# Modify tests to SKIP: No interface on VF.
++#
++igt@xe_gt_freq
++igt@xe_pm_residency
++#
++# Blocked because of abort
++#
++igt@xe_debugfs@gt
+-- 
+2.31.1
+
