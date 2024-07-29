@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0383C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 05:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04876C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 05:34:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7079810E05E;
-	Mon, 29 Jul 2024 05:25:45 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fzShE0Jr";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1EC710E05E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 05:25:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722230744; x=1753766744;
- h=message-id:date:mime-version:from:subject:in-reply-to:to:
- cc:content-transfer-encoding;
- bh=nsgouotkzYCncpjXkaI0Jjwbl43zOhi1DniEYmUDjQs=;
- b=fzShE0Jr10QWoVtX/lA3vBzq2sFrppSmfb52EBvketF+4ba/7c8FvyiZ
- mW2LLc5DONNGnbWdZuTYGOBGhsWYBu6qTTh00XQxhntxmzrH2MyYutl37
- v3JsZyMZ/tcG1kUTC1fZRlGtPC1esGHGF5BFkCgMvfXg32NY2GFkevxVP
- RZJrOiTW6ZWJL0GwKJuVcXFf/yKDvEO5C+kHjCbkuQAeJeSKCiGew7LpE
- uGHQStPZwoVyugZ4b7QQTyFGJ7zlIFzVSKsA5s+2FujVx6OFndOo1GzNp
- HeUjoe3CnoTHOOu2iPthoSpVbfuciq87DpXXCvZhGRuCTV+kaK3KozoVk w==;
-X-CSE-ConnectionGUID: A8tZ5znbQjqqaVopHD9jug==
-X-CSE-MsgGUID: rp0w4QpBQ/6gZJkkxOHkuQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11147"; a="31370389"
-X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; d="scan'208";a="31370389"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2024 22:25:43 -0700
-X-CSE-ConnectionGUID: IhhR/QeySzCccH3dfMUlLw==
-X-CSE-MsgGUID: 1+wCjpUUSPC8DBRuOXtVjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,245,1716274800"; d="scan'208";a="58695138"
-Received: from hyeongju-mobl2.ger.corp.intel.com (HELO [10.251.217.184])
- ([10.251.217.184])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2024 22:25:42 -0700
-Message-ID: <ecedfd14-32ac-4ad8-b336-46f98b02b1e3@linux.intel.com>
-Date: Mon, 29 Jul 2024 07:25:39 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AAC510E2F0;
+	Mon, 29 Jul 2024 05:34:02 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7209310E2F0;
+ Mon, 29 Jul 2024 05:34:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5258478533312657267=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t v3] Do not require QUERY_OA_UNITS for all Xe tests
-Content-Language: en-US
-In-Reply-To: <78c5f531-f482-49c7-8290-38710698e4a7@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, ashutosh.dixit@intel.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_vmwgfx_prime_tests_=28rev4?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zack Rusin" <zack.rusin@broadcom.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 29 Jul 2024 05:34:01 -0000
+Message-ID: <172223124146.406370.13700563566329321587@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240729043846.1892343-1-zack.rusin@broadcom.com>
+In-Reply-To: <20240729043846.1892343-1-zack.rusin@broadcom.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,92 +37,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Changes xe_query_oa_units_new() to return NULL instead of aborting
-due to assertion failure when querying for DRM_XE_DEVICE_QUERY_OA_UNITS.
+--===============5258478533312657267==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-It adds a skip to xe_oa.c to make sure it will not try to run the tests if the
-query has failed before.
+== Series Details ==
 
-The motivation is as follows:
- - The only test that requires oa_units is tests/intel/xe_oa.c, however current
-   code will prevent all Xe tests from running if OA_UNITS is not supported
- - Before this patch, trying to run IGT on the Xe module from Fedora 40
-   (6.9.9-200.fc40.x86_64) fails
- - After this patch, we can run some tests, such as xe_exec_basic
-   successfully
+Series: Add vmwgfx prime tests (rev4)
+URL   : https://patchwork.freedesktop.org/series/133402/
+State : success
 
-Here is an example of the impact of this patch:
- 1. Use Fedora 40 with the following kernel command line arguments:
-    "xe.force_probe=* i915.force_probe=!* modprobe.blacklist=i915,ast,snd_hda_intel,xe"
+== Summary ==
 
- 2. Running IGT without this patch will fail:
-     $ sudo ./build/tests/xe_exec_basic
-     $ echo $?
-     98
+CI Bug Log - changes from XEIGT_7940_BAT -> XEIGTPW_11481_BAT
+====================================================
 
- 3. Running after fix applied will succeed:
-    sudo ./build/tests/xe_exec_basic
-     $ sudo ./build/tests/xe_exec_basic
-     $ echo $?
-     0
+Summary
+-------
 
-V3:
- - Update comment syntax and shorten comments
- - Update comment content to describe from kernel version perspective only
- - Update test to make '!= 0' implicit
+  **SUCCESS**
 
-V2:
- - Cleanup headers from message body
- - Add 'lib/xe/xe_query:' to subject line
+  No regressions found.
 
-Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>
----
- lib/xe/xe_query.c   | 4 +++-
- tests/intel/xe_oa.c | 6 +++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+  
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 84eaaac96..8694fa3f9 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -124,7 +124,9 @@ static struct drm_xe_query_oa_units *xe_query_oa_units_new(int fd)
- 		.data = 0,
- 	};
- 
--	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-+	/* Support older kernels where this uapi is not yet available */
-+	if (igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query))
-+		return NULL;
- 
- 	oa_units = malloc(query.size);
- 	igt_assert(oa_units);
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index ff2218300..1f82dce06 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -4503,6 +4503,7 @@ static const char *xe_engine_class_name(uint32_t engine_class)
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe = NULL;
-+	struct xe_device *xe_dev;
- 
- 	igt_fixture {
- 		struct stat sb;
-@@ -4527,7 +4528,10 @@ igt_main
- 		igt_assert_eq(drm_fd, -1);
- 
- 		drm_fd = drm_open_driver(DRIVER_XE);
--		xe_device_get(drm_fd);
-+		xe_dev = xe_device_get(drm_fd);
-+
-+		/* See xe_query_oa_units_new() */
-+		igt_require(xe_dev->oa_units);
- 
- 		devid = intel_get_drm_devid(drm_fd);
- 		sysfs = igt_sysfs_open(drm_fd);
--- 
-2.34.1
+Participating hosts (7 -> 6)
+------------------------------
 
+  Missing    (1): bat-bmg-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11481_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-FAIL][2] ([Intel XE#324])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7940/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11481/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#2200]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2200
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7940 -> IGTPW_11481
+  * Linux: xe-1672-220554a8ef7ac26fbfc4f141816679d742a0d232 -> xe-1677-e948842a6cba538c9f5f5dc8535a88d82a3fc0fe
+
+  IGTPW_11481: 11481
+  IGT_7940: 2a73158fa69a2b8e20d5a0bdf773ee194bfe13c2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1672-220554a8ef7ac26fbfc4f141816679d742a0d232: 220554a8ef7ac26fbfc4f141816679d742a0d232
+  xe-1677-e948842a6cba538c9f5f5dc8535a88d82a3fc0fe: e948842a6cba538c9f5f5dc8535a88d82a3fc0fe
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11481/index.html
+
+--===============5258478533312657267==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add vmwgfx prime tests (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/133402/">https://patchwork.freedesktop.org/series/133402/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11481/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11481/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7940_BAT -&gt; XEIGTPW_11481_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 6)</h2>
+<p>Missing    (1): bat-bmg-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11481_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7940/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11481/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7940 -&gt; IGTPW_11481</li>
+<li>Linux: xe-1672-220554a8ef7ac26fbfc4f141816679d742a0d232 -&gt; xe-1677-e948842a6cba538c9f5f5dc8535a88d82a3fc0fe</li>
+</ul>
+<p>IGTPW_11481: 11481<br />
+  IGT_7940: 2a73158fa69a2b8e20d5a0bdf773ee194bfe13c2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1672-220554a8ef7ac26fbfc4f141816679d742a0d232: 220554a8ef7ac26fbfc4f141816679d742a0d232<br />
+  xe-1677-e948842a6cba538c9f5f5dc8535a88d82a3fc0fe: e948842a6cba538c9f5f5dc8535a88d82a3fc0fe</p>
+
+</body>
+</html>
+
+--===============5258478533312657267==--
