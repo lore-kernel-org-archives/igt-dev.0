@@ -4,69 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83AB0C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 03:35:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90D9FC3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 04:38:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AAD110E2DF;
-	Mon, 29 Jul 2024 03:35:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35D7110E2EC;
+	Mon, 29 Jul 2024 04:38:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="I9qs00zN";
+	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="PJXh+FbZ";
 	dkim-atps=neutral
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com
- [209.85.219.178])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1D6210E2DF
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 03:35:35 +0000 (UTC)
-Received: by mail-yb1-f178.google.com with SMTP id
- 3f1490d57ef6-e03a17a50a9so1639135276.1
- for <igt-dev@lists.freedesktop.org>; Sun, 28 Jul 2024 20:35:35 -0700 (PDT)
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com
+ [209.85.166.169])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A474010E2EC
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 04:38:51 +0000 (UTC)
+Received: by mail-il1-f169.google.com with SMTP id
+ e9e14a558f8ab-39834949f27so16183945ab.2
+ for <igt-dev@lists.freedesktop.org>; Sun, 28 Jul 2024 21:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=broadcom.com; s=google; t=1722224135; x=1722828935;
+ d=broadcom.com; s=google; t=1722227930; x=1722832730;
  darn=lists.freedesktop.org; 
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=s3w6L9QTV7oiCVt4IYD0gM1qmGc5Hq9HHNA0LNVnJ84=;
- b=I9qs00zNiyTWNRYJGw4muuV4necwKbGdTdnt7TQp1sLiOactZ8xvJoFvEK41kQWFVr
- uIypgzh9q4gchiMH4HAXANQBB6nS0T/cx3Xk/+knCval/+6s7z17PLGROfczEUUpIfm7
- azrsgpTTvF6VgT6hUeS8o+W6ESx5KMS3FvwSc=
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=uTrGaBnbbWLPfnbvX9ZFRsamg9eajHgSwMXd2iCfKbY=;
+ b=PJXh+FbZ8fQ8yS9VkimILG4CGjjjsOC7/VzLzUCNXZ5/NMP80XMcSqvk0Vw9JiesM6
+ mc++2ul4oruMyO5Wdl0Kj8QyBn5x247QLxfKQCaUgZ7rBuku8tiuPuOqk0tJOFp0/q7s
+ 7XJsn/YUjtNytU6yfdtlhe24LQtvDGsBHmz8g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722224135; x=1722828935;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=s3w6L9QTV7oiCVt4IYD0gM1qmGc5Hq9HHNA0LNVnJ84=;
- b=f+hIomE1NEmpXNjPNkx5vyMyd8OZvusQ2PMwGQ0b0CuZbj8hx63R4btR/uVWAxARRt
- wGirQnJS2bvLlFKaT9xVn3X41fMyChbGAgq4FL2vf2hSynj3ejvN7TlqcEyHN1WFiU2h
- fJhe/HnZggjzb0JmCXPLzQFyc/WB06tSzmH1m1rB0A2k9uZZ7l03ZzlFfCoMSOYBc3lA
- u8vKxyywWeGGbJR3HeodJ0T0nhTwlTzFDQix0j68LRLIEzgUXQ7PUtC9LaUXDbAT6sD0
- Eh6dsVZfQUKVMfktejko0+c7lw9ilC9ofuthQZdjLaSyoj1rt5NaEgb7hHFfvA+ZIJqd
- lORA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVIcWPMrN8uN6xhZGSjEQe3t5bGgv3vVxIMiGcPosb3ggfFMyujrJguXAoG4bcwwhH14PqAceLFtUEuLU1ryZEOht5YDlH7A+td8Fdtng==
-X-Gm-Message-State: AOJu0Yxlh5rGmj0pbBNSelI1NfDsmoBnrsby1T9jBfnky8KHQs7d9vLY
- iyPCSsYqJRNv3hhSW2EpdkHeFyXoKk7+HwrR7kfPdE+yQXE530PCHjiprP5Im39bNceQ7EEEjE7
- Pi22IT43kp8PZEdd0fz80Ql5a3gpqkVDZFMS1
-X-Google-Smtp-Source: AGHT+IG+ArPDpN+Sct64YSwSSxJZ6jw6RGrV7gOa6sa1GDu/ivntvVNQ2phN+QQs9mrh63UezVSZ3m+8HqlOYlcJ1m0=
-X-Received: by 2002:a05:6902:2193:b0:e08:6091:710e with SMTP id
- 3f1490d57ef6-e0b5462b118mr6815104276.52.1722224134711; Sun, 28 Jul 2024
- 20:35:34 -0700 (PDT)
-MIME-Version: 1.0
-References: <20240628190243.695367-1-zack.rusin@broadcom.com>
- <20240628190243.695367-5-zack.rusin@broadcom.com>
- <20240726191610.kklcm5sv4e3r4h6l@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20240726191610.kklcm5sv4e3r4h6l@kamilkon-DESK.igk.intel.com>
+ d=1e100.net; s=20230601; t=1722227930; x=1722832730;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=uTrGaBnbbWLPfnbvX9ZFRsamg9eajHgSwMXd2iCfKbY=;
+ b=k/0lzxDD8fj5xdHOzhstAxd8TrPoDPM0Dvb3BH95hYzrk45TnULwdgLAT7zG2+bY7B
+ jJIlcQYXoT9n8rq2RmRK+JOMtuv0u+yXNP+pjOIZNvLXRTely+PEyubl8Zl5YLeBlnZY
+ quXSKXw4FmmX/2jiMGCOy5HSpkeoxt3gWek9CQzivqJq8HTwrq/qc5WZgxGGvFsRPMV2
+ MlFH7hkBnYHkgdPnCraEGwQ8bUTtAQd/XCCeiojY00urCL6fqRjZIMjk5XtTtIyhiz9i
+ CFwe38KnBSEKIfm5OK4ZG3/9aauX9cUjkQ0QRYdwL6tuayJGXJjOzgwREl5aXcBrL2XA
+ UsoA==
+X-Gm-Message-State: AOJu0Yz5YdLHT1Q0c8sLB23vIHNQK6NERnKd8EF894NDwxjirXX/OTMS
+ FXjEaQMIkK1hAmpvjNDiEFIyV6NReou7MtKvL6keA/74hF1gY8tVPpsHdFZLlhipx1gEJv8oHoq
+ WLhB4+17m3Ao62RkLb1f7vfrnCglfd6aV4C/Esj0U6G74Z/Y11NI3BrMUF0YVHHa1l8neePcFo/
+ w90VpL2HFBdW8zvVNUfFzsmUg41A76VhDYUF61Y+tbBO9M43s=
+X-Google-Smtp-Source: AGHT+IGXTheP7NBGvSr+KtKBnbkvgWAQPqjZrIeUAHwBX/F1eh5HjBejPREPnBz+BS+7Gy80oY9Efg==
+X-Received: by 2002:a05:6e02:1fc6:b0:39a:eb57:dc7 with SMTP id
+ e9e14a558f8ab-39aec2ca40amr84086075ab.1.1722227930364; 
+ Sun, 28 Jul 2024 21:38:50 -0700 (PDT)
+Received: from vertex.vmware.com (pool-173-49-113-140.phlapa.fios.verizon.net.
+ [173.49.113.140]) by smtp.gmail.com with ESMTPSA id
+ d2e1a72fcca58-70ead88c19bsm5963392b3a.183.2024.07.28.21.38.49
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Sun, 28 Jul 2024 21:38:50 -0700 (PDT)
 From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Sun, 28 Jul 2024 23:35:23 -0400
-Message-ID: <CABQX2QP8tdZfY3ai7+Z-O=Ahf8ju5hUwTsKon_ka9BnuZ_XnEw@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v3 4/4] tests/vmwgfx: Fix and extend the reference
- counting test
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, 
- Zack Rusin <zack.rusin@broadcom.com>, Petri Latvala <adrinael@adrinael.net>,
- ian.forbes@broadcom.com, 
- martin.krastev@broadcom.com, maaz.mombasawala@broadcom.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: igt-dev@lists.freedesktop.org
+Cc: ian.forbes@broadcom.com, martin.krastev@broadcom.com,
+ maaz.mombasawala@broadcom.com, kamil.konieczny@linux.intel.com,
+ Zack Rusin <zack.rusin@broadcom.com>
+Subject: [PATCH i-g-t v4 0/4] Add vmwgfx prime tests
+Date: Mon, 29 Jul 2024 00:37:52 -0400
+Message-ID: <20240729043846.1892343-1-zack.rusin@broadcom.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,45 +79,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Jul 26, 2024 at 3:16=E2=80=AFPM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Zack,
-> On 2024-06-28 at 15:02:43 -0400, Zack Rusin wrote:
-> > Fix a few issues related to buffer managment in the reference counting
-> > test. Extend it to include various prime related reference counting
-> > issues.
-> >
-> > Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
->
-> Sorry for late response. Could you split fixes from improvements?
+The following series makes some adjustments for testing prime/dma-buf
+on vmwgfx, adds a vmwgfx dedicated test for it and fixes some minor
+issues.
 
-It's really not worth it. The test is only valuable with all the
-changes. If it makes it better I can remove it altogether in one
-change and re-add it in its current form in the other but that seems
-silly.
+The last patch in the series adds very basic prime tests to dumb_buffer
+test to verify dumb_buffer<->prime functionality.
 
-> > ---
-> >  lib/igt_vmwgfx.c             |  45 +++-----
-> >  lib/igt_vmwgfx.h             |  30 +----
-> >  tests/vmwgfx/vmw_ref_count.c | 207 +++++++++++++++++++++++++++++------
-> >  3 files changed, 193 insertions(+), 89 deletions(-)
-> >
-> > diff --git a/lib/igt_vmwgfx.c b/lib/igt_vmwgfx.c
-> > index d2f699575..b62d7a326 100644
-> > --- a/lib/igt_vmwgfx.c
-> > +++ b/lib/igt_vmwgfx.c
-> > @@ -1,28 +1,8 @@
-> >  // SPDX-License-Identifier: GPL-2.0 OR MIT
-> > -/**********************************************************
-> > - * Copyright 2021-2023 VMware, Inc.
->
-> Please do not remove old copyrigths.
+v2: Add a reference counting and dumb buffer tests plus fix issues
+spotted by Kamil
+v3: Fix a silly compile error in vmw_prime test and remove dumb buffer
+test
+v4: checkpatch.pl improvements suggested by Kamil
 
-I'm sorry but I can not do that. Broadcom acquired VMware, this is how
-those copyrights have to look. You'd have to go through Broadcom's
-legal team to contest this.
+Maaz Mombasawala (1):
+  tests/vmwgfx: Removing incorrect assert in mob_repeated_unref
 
-I'll respin the series with checkpatch.pl fixes.
+Zack Rusin (3):
+  lib/vmwgfx: Allow using any buffer handle as a surface backing
+  tests/vmwgfx: Add a prime test
+  tests/vmwgfx: Fix and extend the reference counting test
 
-z
+ lib/igt_vmwgfx.c                |  76 ++---
+ lib/igt_vmwgfx.h                |  43 +--
+ tests/vmwgfx/meson.build        |   7 +-
+ tests/vmwgfx/vmw_mob_stress.c   |   5 +-
+ tests/vmwgfx/vmw_prime.c        | 584 ++++++++++++++++++++++++++++++++
+ tests/vmwgfx/vmw_ref_count.c    | 214 +++++++++---
+ tests/vmwgfx/vmw_surface_copy.c |   8 +-
+ tests/vmwgfx/vmw_tri.c          |  12 +-
+ 8 files changed, 821 insertions(+), 128 deletions(-)
+ create mode 100644 tests/vmwgfx/vmw_prime.c
+
+-- 
+2.43.0
+
