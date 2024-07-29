@@ -4,53 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BE90C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 22:15:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FC8CC3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 22:43:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E28D10E12E;
-	Mon, 29 Jul 2024 22:15:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D788C10E12E;
+	Mon, 29 Jul 2024 22:43:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h5UzoLPa";
+	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="FPSyETp9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F21A10E12E
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 22:15:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722291336; x=1753827336;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=FOXOVORTJnn/rE68vRbAkOohDBvswAiWBU7gCjBJHDs=;
- b=h5UzoLPa18GXgFRa+SQ5NenqgaOKrGp9cMjP4mXI8rr904nfl/dHqQ4u
- LX3grgUnTkqH+xmC2nI6qg1n9m2lgLzYMYwGdmBQXYImQ0o54fqOBrje2
- GF6oDRQ4SdG5nUFdlsU/KbShKLLwkYEyENDcXXFCSmX4UZgeevBu6pfPn
- rpl8WqUKCF8vsgk30SJmE573wrNVzOlsmr6cwkunw6ill0enBob+98A8b
- LvSP9J1r4xinEDBsUmjKNLdh+B9cOhWzE0fTNcpSn3UngIQ5ObfgM+afJ
- zID1cs4ah9bhwaViyXrfeT9c4iSMT+CNFfcgeAGVDgZW+VcrAH55lcOsw A==;
-X-CSE-ConnectionGUID: 1Bjb0DmpSKamb8qsluU3ww==
-X-CSE-MsgGUID: upQ2p5wnS7estUTgiaFMTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="42605413"
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="42605413"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 15:15:35 -0700
-X-CSE-ConnectionGUID: 0xZ4z1BrTP2k5oeG4QPLyw==
-X-CSE-MsgGUID: iiFs/IETRlOOKUj248HGHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,247,1716274800"; d="scan'208";a="85069276"
-Received: from pallavim-desk.iind.intel.com ([10.145.162.180])
- by fmviesa001.fm.intel.com with ESMTP; 29 Jul 2024 15:15:32 -0700
-From: Pallavi Mishra <pallavi.mishra@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	matthew.d.roper@intel.com
-Cc: Pallavi Mishra <pallavi.mishra@intel.com>
-Subject: [PATCH v2] tests/intel/xe_exec_store: Modify test for Priority Mem
- Read feature
-Date: Tue, 30 Jul 2024 03:54:34 +0530
-Message-Id: <20240729222434.1643521-1-pallavi.mishra@intel.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
+ [209.85.214.169])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6771F10E12E
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 22:43:33 +0000 (UTC)
+Received: by mail-pl1-f169.google.com with SMTP id
+ d9443c01a7336-1fc566ac769so21670225ad.1
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 15:43:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=broadcom.com; s=google; t=1722293013; x=1722897813;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :from:to:cc:subject:date:message-id:reply-to;
+ bh=lp+Z9fIWLOozTVgpwuA8RFIZuXGq9cyihh3n8p9aYUs=;
+ b=FPSyETp9CilbAyEb9aob7eCSc5B6A6m//TH71bMKd1xVAjD1T1CNSEQ3ROdVm//MEs
+ 3ILpif+QPLgzQ+eBbH9v2PhHq1f9vEkFTKVtXx6RvMgenxNmZP6eRMKvdU6d6vPdBnJo
+ 8u6ox3bdnTpHVjC6dSCAG5CY+95JBv65O21DE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1722293013; x=1722897813;
+ h=content-transfer-encoding:in-reply-to:content-language:from
+ :references:cc:to:subject:user-agent:mime-version:date:message-id
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+ bh=lp+Z9fIWLOozTVgpwuA8RFIZuXGq9cyihh3n8p9aYUs=;
+ b=CS9xidXo0/VQhXLZ+yikluMvWRSnoFuKu+t6zJGr76r/y9VKSFd0tVequ4RQUzwkLY
+ 6rYJ5aUbXM5tQVExs0foIYuI7nJlxS8QQ1DqggizJKvN+/kzmrHa+vhAdRYrTUQ5m44w
+ JCSLI5l28Z/1I6tURjcoQ3XbNfYO4L8+HVWfF23ofgl9rOreVUCbkjPTQuyN+L1bhXyH
+ o+rzp2v6y9rIUcHUqSnPxvaxHIVZEYuBfbC7LmoI2SxSBEyVyfm5NEY+yIxrQCPRMo4m
+ VZeaHxb4b/eaIzujLUMnuLkArL/w5lumNvYODwSvejJWmYbWlmD7zW4GvRcftDs7lH+q
+ ljPg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCWvX1miE6qrTW8n4Eb1vZR9/VEjAYd1wto/cLpdps1Wh3JDjRRwpWe2SMj2wg/Ppqr9URBSrkBSJRXOgZxMq1F0AjMtAqLBz2CwwfsccQ==
+X-Gm-Message-State: AOJu0YxyHj4t+1HRR4QbXyqBV3u0I6KtCwWxBjTuqduqWRivi+S4yBxS
+ SkhsAeIqRpGMFXn8ZLyLiMObwjgwBbJPSd24Z6ctwaVzXs16Av9EC9j9ZGsoLg==
+X-Google-Smtp-Source: AGHT+IHv5yPEZHAJxcDKFWvHGTOXzA0vK510SOrehFyt3ZHQqzJjQvNtp8zSd2GGN1JJBroJS9L3zQ==
+X-Received: by 2002:a17:902:c409:b0:1fc:41a4:60b6 with SMTP id
+ d9443c01a7336-1ff046727aamr81159745ad.0.1722293012606; 
+ Mon, 29 Jul 2024 15:43:32 -0700 (PDT)
+Received: from [10.211.41.59] ([66.170.99.2]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-1fed7cf1ac1sm88447325ad.84.2024.07.29.15.43.31
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Mon, 29 Jul 2024 15:43:32 -0700 (PDT)
+Message-ID: <1a266b9f-80b7-4ad8-b9bc-a427b4928d19@broadcom.com>
+Date: Mon, 29 Jul 2024 15:43:30 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 0/4] Add vmwgfx prime tests
+To: Zack Rusin <zack.rusin@broadcom.com>, igt-dev@lists.freedesktop.org
+Cc: ian.forbes@broadcom.com, martin.krastev@broadcom.com,
+ kamil.konieczny@linux.intel.com
+References: <20240729043846.1892343-1-zack.rusin@broadcom.com>
+From: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Content-Language: en-US
+In-Reply-To: <20240729043846.1892343-1-zack.rusin@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,122 +82,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Now that KMD supports Priority Mem Read feature, care needs to
-be taken to avoid RAW hazards which may get introduced due to
-unordered read and writes. Inorder to prevent this insert
-MI_MEM_FENCE which will ensure data coherency in such
-scenarios.
+LGTM
 
-KMD patch to enable Priority Mem Read:
-https://patchwork.freedesktop.org/series/134038/
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
 
-v2: Add graphics version check (Matt Roper)
+Thanks,
 
-Signed-off-by: Pallavi Mishra <pallavi.mishra@intel.com>
----
- include/intel_gpu_commands.h |  2 ++
- tests/intel/xe_exec_store.c  | 20 ++++++++++++++------
- 2 files changed, 16 insertions(+), 6 deletions(-)
+Maaz Mombasawala <maaz.mombasawala@broadcom.com>
 
-diff --git a/include/intel_gpu_commands.h b/include/intel_gpu_commands.h
-index fe734c4bb..cd281ba89 100644
---- a/include/intel_gpu_commands.h
-+++ b/include/intel_gpu_commands.h
-@@ -89,6 +89,7 @@
- #define   MI_DISPLAY_FLIP_SKL_PLANE_3_A	(7 << 8)
- #define   MI_DISPLAY_FLIP_SKL_PLANE_3_B	(8 << 8)
- #define   MI_DISPLAY_FLIP_SKL_PLANE_3_C	(9 << 8)
-+#define   MI_MEM_FENCE		MI_INSTR(0x09, 0)
- #define MI_SEMAPHORE_MBOX	MI_INSTR(0x16, 1) /* gen6, gen7 */
- #define   MI_SEMAPHORE_GLOBAL_GTT    (1<<22)
- #define   MI_SEMAPHORE_UPDATE	    (1<<21)
-@@ -192,6 +193,7 @@
- #define MI_OPCODE(x)		(((x) >> 23) & 0x3f)
- #define IS_MI_LRI_CMD(x)	(MI_OPCODE(x) == MI_OPCODE(MI_INSTR(0x22, 0)))
- #define MI_LRI_LEN(x)		(((x) & 0xff) + 1)
-+#define MI_WRITE_FENCE			(3 << 0)
- 
- /*
-  * 3D instructions used by the kernel
-diff --git a/tests/intel/xe_exec_store.c b/tests/intel/xe_exec_store.c
-index c872c22d5..8e6ffee4a 100644
---- a/tests/intel/xe_exec_store.c
-+++ b/tests/intel/xe_exec_store.c
-@@ -51,7 +51,8 @@ static void store_dword_batch(struct data *data, uint64_t addr, int value)
- 	data->addr = batch_addr;
- }
- 
--static void cond_batch(struct data *data, uint64_t addr, int value)
-+static void cond_batch(struct data *data, uint64_t addr, int value,
-+		       uint16_t dev_id)
- {
- 	int b;
- 	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-@@ -63,6 +64,10 @@ static void cond_batch(struct data *data, uint64_t addr, int value)
- 	data->batch[b++] = MI_ATOMIC | MI_ATOMIC_INC;
- 	data->batch[b++] = sdi_addr;
- 	data->batch[b++] = sdi_addr >> 32;
-+
-+	if (intel_graphics_ver(dev_id) >= IP_VER(20, 0))
-+		data->batch[b++] = MI_MEM_FENCE | MI_WRITE_FENCE;
-+
- 	data->batch[b++] = MI_CONDITIONAL_BATCH_BUFFER_END | MI_DO_COMPARE | 5 << 12 | 2;
- 	data->batch[b++] = value;
- 	data->batch[b++] = sdi_addr;
-@@ -101,7 +106,8 @@ static void persistance_batch(struct data *data, uint64_t addr)
-  * SUBTEST: basic-all
-  * Description: Test to verify store dword on all available engines.
-  */
--static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci)
-+static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci,
-+		       uint16_t dev_id)
- {
- 	struct drm_xe_sync sync[2] = {
- 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-@@ -144,7 +150,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
- 	else if (inst_type == COND_BATCH) {
- 		/* A random value where it stops at the below value. */
- 		value = 20 + random() % 10;
--		cond_batch(data, addr, value);
-+		cond_batch(data, addr, value, dev_id);
- 	}
- 	else
- 		igt_assert_f(inst_type < 2, "Entered wrong inst_type.\n");
-@@ -333,21 +339,23 @@ igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	int fd;
-+	uint16_t dev_id;
- 	struct drm_xe_engine *engine;
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
- 		xe_device_get(fd);
-+		dev_id = intel_get_drm_devid(fd);
- 	}
- 
- 	igt_subtest("basic-store") {
- 		engine = xe_engine(fd, 1);
--		basic_inst(fd, STORE, &engine->instance);
-+		basic_inst(fd, STORE, &engine->instance, dev_id);
- 	}
- 
- 	igt_subtest("basic-cond-batch") {
- 		engine = xe_engine(fd, 1);
--		basic_inst(fd, COND_BATCH, &engine->instance);
-+		basic_inst(fd, COND_BATCH, &engine->instance, dev_id);
- 	}
- 
- 	igt_subtest_with_dynamic("basic-all") {
-@@ -356,7 +364,7 @@ igt_main
- 				      xe_engine_class_string(hwe->engine_class),
- 				      hwe->engine_instance,
- 				      hwe->gt_id);
--			basic_inst(fd, STORE, hwe);
-+			basic_inst(fd, STORE, hwe, dev_id);
- 		}
- 	}
- 
--- 
-2.25.1
+
+On 7/28/24 21:37, Zack Rusin wrote:
+> The following series makes some adjustments for testing prime/dma-buf
+> on vmwgfx, adds a vmwgfx dedicated test for it and fixes some minor
+> issues.
+> 
+> The last patch in the series adds very basic prime tests to dumb_buffer
+> test to verify dumb_buffer<->prime functionality.
+> 
+> v2: Add a reference counting and dumb buffer tests plus fix issues
+> spotted by Kamil
+> v3: Fix a silly compile error in vmw_prime test and remove dumb buffer
+> test
+> v4: checkpatch.pl improvements suggested by Kamil
+> 
+> Maaz Mombasawala (1):
+>   tests/vmwgfx: Removing incorrect assert in mob_repeated_unref
+> 
+> Zack Rusin (3):
+>   lib/vmwgfx: Allow using any buffer handle as a surface backing
+>   tests/vmwgfx: Add a prime test
+>   tests/vmwgfx: Fix and extend the reference counting test
+> 
+>  lib/igt_vmwgfx.c                |  76 ++---
+>  lib/igt_vmwgfx.h                |  43 +--
+>  tests/vmwgfx/meson.build        |   7 +-
+>  tests/vmwgfx/vmw_mob_stress.c   |   5 +-
+>  tests/vmwgfx/vmw_prime.c        | 584 ++++++++++++++++++++++++++++++++
+>  tests/vmwgfx/vmw_ref_count.c    | 214 +++++++++---
+>  tests/vmwgfx/vmw_surface_copy.c |   8 +-
+>  tests/vmwgfx/vmw_tri.c          |  12 +-
+>  8 files changed, 821 insertions(+), 128 deletions(-)
+>  create mode 100644 tests/vmwgfx/vmw_prime.c
+> 
 
