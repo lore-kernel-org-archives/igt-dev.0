@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF101C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01353C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:03:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A541D10E42E;
-	Mon, 29 Jul 2024 16:03:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB89810E431;
+	Mon, 29 Jul 2024 16:03:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OAfLZjs3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M8Z2Bvrf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D64E610E431
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4672510E431
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269034; x=1753805034;
+ t=1722269037; x=1753805037;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=U3XMsbKcpf4ixSsx3Y/ttkZcWGxS5KIvbDWKlF7wuA0=;
- b=OAfLZjs31crem0P/xToy5VBC3YHpENsWG49B2lR2SkjETRZXkyzAg4DC
- MmnsLL0W+4l8KbRsIhKu7LsBB83vOiY5rp+8qHOiDjI+irEOjzkMrO/CF
- jjssHXn4XWzDLxrR+Cr3m2GhkvLpfFnLyTuBCQb0clcEuPXzePcW32VEJ
- mxfaImQcLC4ddzJDCKmHccB3ms+jFjamEctdysmMoE+yi4xjnTwnGuF4K
- 4tno+mcTSlNCpZdCUhpQ8L5q1L+nf29g7+3FPq4v4tJXwXe52laPGxIWy
- +WIw5Ru8XuFJkEPrE/Txjxzptod3tRk1Kfz0i/DKK639f1WsbPE2oH6WU g==;
-X-CSE-ConnectionGUID: ITeBYbAYQqWEJwcd/8p/3g==
-X-CSE-MsgGUID: 0d1LltD1RbK8wZeTnvoTSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427155"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427155"
+ bh=SITp0FU5RBAA3shyLHswqy9zwPQqZktFgQso/svdtQ0=;
+ b=M8Z2BvrfkOQT1h5DlJVHqd+PaHvVA6R23LXadIvD2yZvg5MvSXsKi4CV
+ vf6zBtSJpIyqwUSbPXgeC42FJhaqHwlrdzQ14qWvpnzCkaCWlSJtN0w/M
+ Y43PSZEhTdV8sF7Y+CKtxm+AoRTh8HK1fxtm9nj6vJlOOmIR4iHjExHy5
+ 5YSll21tQtsVdaXtHOf0UBbdY84z5L2xmLZ3FUWg7154MPS1P3Rus8I9W
+ WH5Qj0tWVs3LLqzp2wRaPD73rJXlyYMGkksWaTw0Ne9UVR33qdHYv3V07
+ Zq0VgR57Sv4g1Ex5l8Pgpg2gtztdgp1vH5Eb73C7AZGRS+TI7p+zxhqz3 Q==;
+X-CSE-ConnectionGUID: p4+DkxVjSZWQwsLF2gy1OA==
+X-CSE-MsgGUID: 6bX+8dKkQwqUy8jghxjeGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427162"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427162"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:54 -0700
-X-CSE-ConnectionGUID: 8iXUbZbzSCevP+i5FkO+zQ==
-X-CSE-MsgGUID: iMMoUQKkRleU+cNHXK/F3g==
+ 29 Jul 2024 09:03:57 -0700
+X-CSE-ConnectionGUID: zp1QWfGPRlqZvzkQ83wuLA==
+X-CSE-MsgGUID: S+q8RzKKRjSLlzctPAfwLw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738171"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738217"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:03:50 -0700
+ 29 Jul 2024 09:03:54 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -54,14 +54,16 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH 29/66] tests/xe_eudebug: Added connect-user test
-Date: Mon, 29 Jul 2024 18:01:22 +0200
-Message-Id: <20240729160159.37036-30-christoph.manszewski@intel.com>
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+ Karolina Stolarek <karolina.stolarek@intel.com>
+Subject: [PATCH 30/66] tests/xe_eudebug: Add discovery-race-vmbind subtest
+Date: Mon, 29 Jul 2024 18:01:23 +0200
+Message-Id: <20240729160159.37036-31-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -78,221 +80,131 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Maciej Patelczyk <maciej.patelczyk@intel.com>
+From: Karolina Stolarek <karolina.stolarek@intel.com>
 
-Verify the connection:
- * user to user
- * user to root
- * root to user
- * user to other user
+Extend discovery-race test case with BO creation and vm_bind operation
+to verify that all vm_bind_op events are properly registered and
+replayed.
 
-The test uses two known non-privileged users lp and mail to verify
-the scenarios. Test drops root privileges to one of users if necessary.
-
-ptrace cannot access process which is not dumpable.  The default value
-of this property is stored in '/proc/sys/fs/suid_dumpable'. If process
-drops privileges then it gets the value from mentioned suid_dumpable.
-
-In our case the value after switching userm, to non privileged one,
-is 2 (SUID_DUMP_ROOT). Enforce it to be 1 (SUID_DUMP_USER).
-
-Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
+Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 ---
- tests/intel/xe_eudebug.c | 164 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 164 insertions(+)
+ tests/intel/xe_eudebug.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 022b39f1f..8c21cffc7 100644
+index 8c21cffc7..c368e30e7 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -12,9 +12,12 @@
-  * Test category: functionality test
-  */
+@@ -917,11 +917,13 @@ static void test_basic_discovery(int fd, unsigned int flags, bool match_opposite
+ #define PRIMARY_THREAD			(1 << 0)
+ #define DISCOVERY_CLOSE_CLIENT		(1 << 1)
+ #define DISCOVERY_DESTROY_RESOURCES	(1 << 2)
++#define DISCOVERY_VM_BIND		(1 << 3)
+ static void run_discovery_client(struct xe_eudebug_client *c)
+ {
+ 	struct drm_xe_engine_class_instance *hwe = NULL;
+ 	int fd[RESOURCE_COUNT], i;
+ 	bool skip_sleep = c->flags & (DISCOVERY_DESTROY_RESOURCES | DISCOVERY_CLOSE_CLIENT);
++	uint64_t addr = 0x1a0000;
  
-+#include <grp.h>
- #include <poll.h>
- #include <pthread.h>
-+#include <pwd.h>
- #include <sys/ioctl.h>
-+#include <sys/prctl.h>
+ 	srand(getpid());
  
- #include "igt.h"
- #include "intel_pat.h"
-@@ -545,6 +548,164 @@ static void test_connect(int fd)
- 	close(debugfd);
- }
+@@ -950,18 +952,29 @@ static void run_discovery_client(struct xe_eudebug_client *c)
+ 			sleep(1);
  
-+static void switch_user(__uid_t uid, __gid_t gid)
-+{
-+	struct group *gr;
-+	__gid_t gr_v;
-+
-+	/* Users other then root need to belong to video group */
-+	gr = getgrnam("video");
-+	igt_assert(gr);
-+
-+	/* Drop all */
-+	igt_assert_eq(setgroups(1, &gr->gr_gid), 0);
-+	igt_assert_eq(setgid(gid), 0);
-+	igt_assert_eq(setuid(uid), 0);
-+
-+	igt_assert_eq(getgroups(1, &gr_v), 1);
-+	igt_assert_eq(gr_v, gr->gr_gid);
-+	igt_assert_eq(getgid(), gid);
-+	igt_assert_eq(getuid(), uid);
-+
-+	igt_assert_eq(prctl(PR_SET_DUMPABLE, 1L), 0);
-+}
-+
-+/**
-+ * SUBTEST: connect-user
-+ * Description:
-+ *	Verify unprivileged XE_EUDEBG_CONNECT ioctl.
-+ *	Check:
-+ *	 - user debugger to user workload connection
-+ *	 - user debugger to other user workload connection
-+ *	 - user debugger to privileged workload connection
-+ */
-+static void test_connect_user(int fd)
-+{
-+	struct drm_xe_eudebug_connect param = {};
-+	struct passwd *pwd, *pwd2;
-+	const char *user1 = "lp";
-+	const char *user2 = "mail";
-+	int debugfd, ret, i;
-+	int p1[2], p2[2];
-+	__uid_t u1, u2;
-+	__gid_t g1, g2;
-+	int newfd;
-+	pid_t pid;
-+
-+#define NUM_USER_TESTS 4
-+#define P_APP 0
-+#define P_GDB 1
-+	struct conn_user {
-+		/* u[0] - process uid, u[1] - gdb uid */
-+		__uid_t u[P_GDB + 1];
-+		/* g[0] - process gid, g[1] - gdb gid */
-+		__gid_t g[P_GDB + 1];
-+		/* Expected fd from open */
-+		int ret;
-+		/* Skip this test case */
-+		int skip;
-+		const char *desc;
-+	} test[NUM_USER_TESTS] = {};
-+
-+	igt_assert(!pipe(p1));
-+	igt_assert(!pipe(p2));
-+
-+	pwd = getpwnam(user1);
-+	igt_require(pwd);
-+	u1 = pwd->pw_uid;
-+	g1 = pwd->pw_gid;
-+
-+	/*
-+	 * Keep a copy of needed contents as it is a static
-+	 * memory area and subsequent calls will overwrite
-+	 * what's in.
-+	 * However getpwnam() returns NULL if cannot find
-+	 * user in passwd.
-+	 */
-+	setpwent();
-+	pwd2 = getpwnam(user2);
-+	if (pwd2) {
-+		u2 = pwd2->pw_uid;
-+		g2 = pwd2->pw_gid;
-+	}
-+
-+	test[0].skip = !pwd;
-+	test[0].u[P_GDB] = u1;
-+	test[0].g[P_GDB] = g1;
-+	test[0].ret = -EACCES;
-+	test[0].desc = "User GDB to Root App";
-+
-+	test[1].skip = !pwd;
-+	test[1].u[P_APP] = u1;
-+	test[1].g[P_APP] = g1;
-+	test[1].u[P_GDB] = u1;
-+	test[1].g[P_GDB] = g1;
-+	test[1].ret = 0;
-+	test[1].desc = "User GDB to User App";
-+
-+	test[2].skip = !pwd;
-+	test[2].u[P_APP] = u1;
-+	test[2].g[P_APP] = g1;
-+	test[2].ret = 0;
-+	test[2].desc = "Root GDB to User App";
-+
-+	test[3].skip = !pwd2;
-+	test[3].u[P_APP] = u1;
-+	test[3].g[P_APP] = g1;
-+	test[3].u[P_GDB] = u2;
-+	test[3].g[P_GDB] = g2;
-+	test[3].ret = -EACCES;
-+	test[3].desc = "User GDB to Other User App";
-+
-+	if (!pwd2)
-+		igt_warn("User %s not available in the system. Skipping subtests: %s.\n",
-+			 user2, test[3].desc);
-+
-+	for (i = 0; i < NUM_USER_TESTS; i++) {
-+		if (test[i].skip) {
-+			igt_debug("Subtest %s skipped\n", test[i].desc);
-+			continue;
-+		}
-+		igt_debug("Executing connection: %s\n", test[i].desc);
-+		igt_fork(child, 2) {
-+			if (!child) {
-+				if (test[i].u[P_APP])
-+					switch_user(test[i].u[P_APP], test[i].g[P_APP]);
-+
-+				pid = getpid();
-+				/* Signal the PID */
-+				igt_assert(write(p1[1], &pid, sizeof(pid)) == sizeof(pid));
-+				/* wait with exit */
-+				igt_assert(read(p2[0], &pid, sizeof(pid)) == sizeof(pid));
-+			} else {
-+				if (test[i].u[P_GDB])
-+					switch_user(test[i].u[P_GDB], test[i].g[P_GDB]);
-+
-+				igt_assert(read(p1[0], &pid, sizeof(pid)) == sizeof(pid));
-+				param.pid = pid;
-+
-+				newfd = drm_open_driver(DRIVER_XE);
-+				ret = __debug_connect(newfd, &debugfd, &param);
-+
-+				/* Release the app first */
-+				igt_assert(write(p2[1], &pid, sizeof(pid)) == sizeof(pid));
-+
-+				igt_assert_eq(ret, test[i].ret);
-+				if (!ret)
-+					close(debugfd);
+ 		for (int j = 0; j < RESOURCE_COUNT; j++) {
++			uint32_t vm = xe_eudebug_client_vm_create(c, fd[i], 0, 0);
+ 			struct drm_xe_exec_queue_create create = {
+ 				.width = 1,
+ 				.num_placements = 1,
+-				.vm_id = xe_eudebug_client_vm_create(c, fd[i], 0, 0),
++				.vm_id = vm,
+ 				.instances = to_user_pointer(hwe)
+ 			};
++			const unsigned int bo_size = max_t(bo_size,
++							   xe_get_default_alignment(fd[i]),
++							   MIN_BO_SIZE);
++			uint32_t bo = xe_bo_create(fd[i], 0, bo_size, system_memory(fd[i]), 0);
+ 
+ 			xe_eudebug_client_exec_queue_create(c, fd[i], &create);
+ 
++			if (c->flags & DISCOVERY_VM_BIND) {
++				xe_eudebug_client_vm_bind(c, fd[i], vm, bo, 0, addr, bo_size);
++				addr += 0x100000;
 +			}
-+		}
-+		igt_waitchildren();
-+	}
-+	close(p1[0]);
-+	close(p1[1]);
-+	close(p2[0]);
-+	close(p2[1]);
-+#undef NUM_USER_TESTS
-+#undef P_APP
-+#undef P_GDB
-+}
 +
- /**
-  * SUBTEST: basic-close
-  * Description:
-@@ -1534,6 +1695,9 @@ igt_main
- 	igt_subtest("basic-connect")
- 		test_connect(fd);
+ 			if (c->flags & DISCOVERY_DESTROY_RESOURCES) {
+ 				xe_eudebug_client_exec_queue_destroy(c, fd[i], &create);
+ 				xe_eudebug_client_vm_destroy(c, fd[i], create.vm_id);
++				gem_close(fd[i], bo);
+ 			}
+ 		}
  
-+	igt_subtest("connect-user")
-+		test_connect_user(fd);
+@@ -978,6 +991,7 @@ static void run_discovery_client(struct xe_eudebug_client *c)
+  * arg[1]:
+  *
+  * @race:		resources creation
++ * @race-vmbind:	vm-bind operations
+  * @empty:		resources destruction
+  * @empty-clients:	client closure
+  */
+@@ -987,6 +1001,7 @@ static void *discovery_race_thread(void *data)
+ 		uint64_t client_handle;
+ 		int vm_count;
+ 		int exec_queue_count;
++		int vm_bind_op_count;
+ 	} clients[RESOURCE_COUNT];
+ 	struct xe_eudebug_session *s = data;
+ 	int expected = RESOURCE_COUNT * (1 + 2 * RESOURCE_COUNT);
+@@ -1024,12 +1039,17 @@ static void *discovery_race_thread(void *data)
+ 
+ 						igt_assert_eq(clients[i].exec_queue_count,
+ 							      RESOURCE_COUNT);
 +
- 	igt_subtest("basic-close")
- 		test_close(fd);
++						if (s->c->flags & DISCOVERY_VM_BIND)
++							igt_assert_eq(clients[i].vm_bind_op_count,
++								      RESOURCE_COUNT);
+ 					}
+ 
+ 					igt_assert(++i < RESOURCE_COUNT);
+ 					clients[i].client_handle = eo->client_handle;
+ 					clients[i].vm_count = 0;
+ 					clients[i].exec_queue_count = 0;
++					clients[i].vm_bind_op_count = 0;
+ 				}
+ 
+ 				if (e->type == DRM_XE_EUDEBUG_EVENT_VM)
+@@ -1037,6 +1057,9 @@ static void *discovery_race_thread(void *data)
+ 
+ 				if (e->type == DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE)
+ 					clients[i].exec_queue_count++;
++
++				if (e->type == DRM_XE_EUDEBUG_EVENT_VM_BIND_OP)
++					clients[i].vm_bind_op_count++;
+ 			};
+ 
+ 			igt_assert_lte(0, i);
+@@ -1116,7 +1139,8 @@ static void test_race_discovery(int fd, unsigned int flags, int clients)
+ 			igt_assert_eq(sessions[i].c->seqno-1, sessions[i].d->event_count);
+ 
+ 			xe_eudebug_event_log_compare(sessions[0].d->log,
+-						     sessions[i].d->log, 0);
++						     sessions[i].d->log,
++						     XE_EUDEBUG_FILTER_EVENT_VM_BIND);
+ 
+ 			xe_eudebug_client_destroy(sessions[i].c);
+ 		}
+@@ -1755,6 +1779,9 @@ igt_main
+ 	igt_subtest("discovery-race")
+ 		test_race_discovery(fd, 0, 4);
+ 
++	igt_subtest("discovery-race-vmbind")
++		test_race_discovery(fd, DISCOVERY_VM_BIND, 4);
++
+ 	igt_subtest("discovery-empty")
+ 		test_empty_discovery(fd, DISCOVERY_CLOSE_CLIENT, 16);
  
 -- 
 2.34.1
