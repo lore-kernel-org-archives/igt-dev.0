@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DD29C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 09:58:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FF52C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 10:03:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0610410E383;
-	Mon, 29 Jul 2024 09:58:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65A6210E386;
+	Mon, 29 Jul 2024 10:03:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="RWzUvNJK";
+	dkim=pass (1024-bit key; unprotected) header.d=broadcom.com header.i=@broadcom.com header.b="JbBuPZQt";
 	dkim-atps=neutral
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com
- [209.85.166.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DEFFD10E381
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 09:58:49 +0000 (UTC)
-Received: by mail-io1-f54.google.com with SMTP id
- ca18e2360f4ac-81f96eaa00fso99352839f.1
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 02:58:49 -0700 (PDT)
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com
+ [209.85.166.47])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB5BC10E386
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 10:03:17 +0000 (UTC)
+Received: by mail-io1-f47.google.com with SMTP id
+ ca18e2360f4ac-81f95052c2cso120413439f.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 03:03:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=broadcom.com; s=google; t=1722247129; x=1722851929;
+ d=broadcom.com; s=google; t=1722247397; x=1722852197;
  darn=lists.freedesktop.org; 
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=7R234FFrrITXoQgwRf63stCYIaOA6Q2eh/vOcgVyefE=;
- b=RWzUvNJKaeUKZod6sGSZGO4sWFN2bry06dpNSAhQjvLoomkZB0fiA/9MXWW/rU8+Te
- hCwjK3b8tPKCsa03PAOPEoEC2LPQHTX9BW/zn3919UoxUzMBXHBhcLx0qigUOH/EEWZ4
- ipUk5/5iuSp1H5hmIjbK2toLMTMUAq3JOEBU4=
+ bh=r+RmP4Yzi5bc0D2bKT0kidGN0QY6Q7JdbuTGYNe/u0k=;
+ b=JbBuPZQtAReFtgwRFTcF4TNYx8m1fL7iW9+BbBOZPInXmXNmjJGsvl6eKGlSOywJRo
+ y0ugDz/IS7jxdsx1Hibxj1MG354dMFcAYkB9f4JgSjGC+PtDPynbhdRUDJGi1qM3LPbN
+ nS0gC+Y7pKs7ovZXuBx7TDYXGlRWSNvND89O0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1722247129; x=1722851929;
+ d=1e100.net; s=20230601; t=1722247397; x=1722852197;
  h=content-transfer-encoding:cc:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=7R234FFrrITXoQgwRf63stCYIaOA6Q2eh/vOcgVyefE=;
- b=mQnfC78Zzi8H7lScRALF0wsAq2KBxtNymqvcAnN1LWzSAQEAb/YSTDR7Q8jJ572BZR
- eiONku9bpvt0LyGxPghj/B52rVmytEnf8Viy1CBqzajiSl7RlFgAOOxTaEb8ZDUmCXhW
- 4a5CKs3TPKqdGSz5K+/GGSi89cTblKFe6Ri0jxgUZj7RWKvQqRjQ0hbefrzAQmkLDGw8
- WN/PD6jOv7QvbTjgjNYoAO1/dZzkbJAmNYDfd4NEmTY5oNWhWfctieWbGjOAWmr+FGfF
- jQ4sQzzXhO2798sIj3wy0Zlll6KuEY6DKPWiSZHGpl5d5OlL2w9Bjkz2s/iDNT2ONddv
- s5OA==
-X-Gm-Message-State: AOJu0YxoGvTSSjg/JIkpvVA4c29U5gbkwmb3LkBkegglNVA1+u3MStC+
- Kv1iD0ox5aF3q9vWKVUUuxyYue9dC0REu0Ro3Hsc1YgNlDyjvVwQvEqb6/geXmlAG/ScamMLri+
- W1lDMddUC6ipKeOm0frYXnTO5xE4LHzlTGMpGaIEm7DclnSs27k1m
-X-Google-Smtp-Source: AGHT+IEd0VKK5eqPWM/Wp4JM1AsyIiY9Exwqo0UYf56pJ4nwHk9/mMzPeap2gtvLXtigdcCbvdywNYrnDK5Wm7MkhSs=
-X-Received: by 2002:a05:6602:c82:b0:803:85ba:3cf9 with SMTP id
- ca18e2360f4ac-81f95a49db8mr914658639f.10.1722247128757; Mon, 29 Jul 2024
- 02:58:48 -0700 (PDT)
+ bh=r+RmP4Yzi5bc0D2bKT0kidGN0QY6Q7JdbuTGYNe/u0k=;
+ b=qAU1piACYLSXn5pELc04UO9xPi5GESMYMkQw2UO+Cgy++QhK5pQFPt2cxekfyI69UM
+ VRyJLjLyj/kY1ycLxlfx/8q5IWyS8S4bCUMBpDW6QL9Fd9uxAP50w7XoImESs21Mcdv7
+ 8WT4k+MPegWB+bd1jwZjXjN/z+sCa0/saZofeu/h3ro6YIGnlo7/v7zw7B18ldwfyC2t
+ tVzD1ZsWnb96IHaDq4zRN372x/HrAiJHLZ/jjzYCz4T1TWo5qyW7ushUN641cZqz0RGM
+ zVgjLSMKFD+rPEtajRKjxx2lD9FDTaX6sL76aIipCoawZSGssuR87F2iy2IoaOvdKHo4
+ ZDQQ==
+X-Gm-Message-State: AOJu0YwnbFfTyn+UJPZAmbVZUunnihTq4++qePpGxm1UYfIyFqh4nSJI
+ gXf702FU5uWVSOVFd680eNkfafCxa99NJ9tldYajwWyq2c2t4DId8Nn2QoQqIafFoPOMnCviqDF
+ 46KLtuPLBd8+q7q3pSSEH71b7XUBtxgpNbu4r
+X-Google-Smtp-Source: AGHT+IHwA1nWwYBcDDs0y/uQX0wK06w5E+PN07Nfinw3mAV2ia2d3h4tLEP8RWFwCu46yqygO2KP0YYG74/Eq1UO2cM=
+X-Received: by 2002:a5e:9518:0:b0:81f:92b6:8235 with SMTP id
+ ca18e2360f4ac-81f95bccea5mr723609839f.6.1722247396987; Mon, 29 Jul 2024
+ 03:03:16 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240729043846.1892343-1-zack.rusin@broadcom.com>
-In-Reply-To: <20240729043846.1892343-1-zack.rusin@broadcom.com>
+ <CAKLwHdUoj8bghv7O5JUVx5BCOnZcXnzsrJ_ejt7vGqET3UW8hQ@mail.gmail.com>
+In-Reply-To: <CAKLwHdUoj8bghv7O5JUVx5BCOnZcXnzsrJ_ejt7vGqET3UW8hQ@mail.gmail.com>
 From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Mon, 29 Jul 2024 12:58:37 +0300
-Message-ID: <CAKLwHdUoj8bghv7O5JUVx5BCOnZcXnzsrJ_ejt7vGqET3UW8hQ@mail.gmail.com>
+Date: Mon, 29 Jul 2024 13:03:06 +0300
+Message-ID: <CAKLwHdUnFr5GS_5bTCHebRGSmdr-zp+CA694j+Cb_RY=u+SfEQ@mail.gmail.com>
 Subject: Re: [PATCH i-g-t v4 0/4] Add vmwgfx prime tests
 To: Zack Rusin <zack.rusin@broadcom.com>
 Cc: igt-dev@lists.freedesktop.org, ian.forbes@broadcom.com, 
@@ -75,48 +76,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM to the series.
+Argh, wrong clipboard. Let's try again.
 
-Signed-off-by: Martin Krastev <martin.krastev@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
 
 Regards,
 Martin
 
-On Mon, Jul 29, 2024 at 7:38=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.com=
-> wrote:
+On Mon, Jul 29, 2024 at 12:58=E2=80=AFPM Martin Krastev
+<martin.krastev@broadcom.com> wrote:
 >
-> The following series makes some adjustments for testing prime/dma-buf
-> on vmwgfx, adds a vmwgfx dedicated test for it and fixes some minor
-> issues.
+> LGTM to the series.
 >
-> The last patch in the series adds very basic prime tests to dumb_buffer
-> test to verify dumb_buffer<->prime functionality.
+> Signed-off-by: Martin Krastev <martin.krastev@broadcom.com>
 >
-> v2: Add a reference counting and dumb buffer tests plus fix issues
-> spotted by Kamil
-> v3: Fix a silly compile error in vmw_prime test and remove dumb buffer
-> test
-> v4: checkpatch.pl improvements suggested by Kamil
+> Regards,
+> Martin
 >
-> Maaz Mombasawala (1):
->   tests/vmwgfx: Removing incorrect assert in mob_repeated_unref
->
-> Zack Rusin (3):
->   lib/vmwgfx: Allow using any buffer handle as a surface backing
->   tests/vmwgfx: Add a prime test
->   tests/vmwgfx: Fix and extend the reference counting test
->
->  lib/igt_vmwgfx.c                |  76 ++---
->  lib/igt_vmwgfx.h                |  43 +--
->  tests/vmwgfx/meson.build        |   7 +-
->  tests/vmwgfx/vmw_mob_stress.c   |   5 +-
->  tests/vmwgfx/vmw_prime.c        | 584 ++++++++++++++++++++++++++++++++
->  tests/vmwgfx/vmw_ref_count.c    | 214 +++++++++---
->  tests/vmwgfx/vmw_surface_copy.c |   8 +-
->  tests/vmwgfx/vmw_tri.c          |  12 +-
->  8 files changed, 821 insertions(+), 128 deletions(-)
->  create mode 100644 tests/vmwgfx/vmw_prime.c
->
-> --
-> 2.43.0
->
+> On Mon, Jul 29, 2024 at 7:38=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.c=
+om> wrote:
+> >
+> > The following series makes some adjustments for testing prime/dma-buf
+> > on vmwgfx, adds a vmwgfx dedicated test for it and fixes some minor
+> > issues.
+> >
+> > The last patch in the series adds very basic prime tests to dumb_buffer
+> > test to verify dumb_buffer<->prime functionality.
+> >
+> > v2: Add a reference counting and dumb buffer tests plus fix issues
+> > spotted by Kamil
+> > v3: Fix a silly compile error in vmw_prime test and remove dumb buffer
+> > test
+> > v4: checkpatch.pl improvements suggested by Kamil
+> >
+> > Maaz Mombasawala (1):
+> >   tests/vmwgfx: Removing incorrect assert in mob_repeated_unref
+> >
+> > Zack Rusin (3):
+> >   lib/vmwgfx: Allow using any buffer handle as a surface backing
+> >   tests/vmwgfx: Add a prime test
+> >   tests/vmwgfx: Fix and extend the reference counting test
+> >
+> >  lib/igt_vmwgfx.c                |  76 ++---
+> >  lib/igt_vmwgfx.h                |  43 +--
+> >  tests/vmwgfx/meson.build        |   7 +-
+> >  tests/vmwgfx/vmw_mob_stress.c   |   5 +-
+> >  tests/vmwgfx/vmw_prime.c        | 584 ++++++++++++++++++++++++++++++++
+> >  tests/vmwgfx/vmw_ref_count.c    | 214 +++++++++---
+> >  tests/vmwgfx/vmw_surface_copy.c |   8 +-
+> >  tests/vmwgfx/vmw_tri.c          |  12 +-
+> >  8 files changed, 821 insertions(+), 128 deletions(-)
+> >  create mode 100644 tests/vmwgfx/vmw_prime.c
+> >
+> > --
+> > 2.43.0
+> >
