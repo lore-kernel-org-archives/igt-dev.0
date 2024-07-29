@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 412C8C3DA61
-	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:04:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B543C3DA61
+	for <igt-dev@archiver.kernel.org>; Mon, 29 Jul 2024 16:04:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0038210E42A;
-	Mon, 29 Jul 2024 16:04:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 15D8F10E420;
+	Mon, 29 Jul 2024 16:04:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eJHShzdx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZtmrPr6P";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4EAF10E42A
- for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:04:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A267410E427
+ for <igt-dev@lists.freedesktop.org>; Mon, 29 Jul 2024 16:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722269056; x=1753805056;
+ t=1722269066; x=1753805066;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NkzEYVhvjTtdg9RVfVWmV1vTgRJGCRHaUR9aR2wFbUw=;
- b=eJHShzdxuIspDD0LSSMA3AlbMwtFG3ybK0XzSd6AR0+o85h+zx9Pmxcl
- OzuaD0+BKOsHMRnd0273X2RI7v/ax+9Mo0+v+UXhGxTapF/7hnsW+1fp7
- HGhlIxbWnXXxfEHowb23uDqXx2FYAfsqLKxg2ITVZy6XwQLXl2Yn0sSU4
- j6r25XIjf23k6TUjMjIb1U1S+gd3ybJCgVhNOP789Nnr/mXmXVfYiMhjg
- 6yttmhOixTLNyY9fPCpfB6z2CZMdGfg/xzdo75fgLcRGCCbUM3CLq+/F1
- 0EVVZXPRSUFrkfFUxj0xggkr3PhiNFXkbrcVx52UDe+/WCYCBPQ19t6Hp w==;
-X-CSE-ConnectionGUID: GVZUwteqTrGpaepHOz+fMg==
-X-CSE-MsgGUID: 33zHvF3PRkG7X2c7svhGgw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427220"
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427220"
+ bh=y3gDzwTWK8EXsqGZJGmGXQlMP/RXmMBf5NKJop6j7Jg=;
+ b=ZtmrPr6PQilTmk7cZazHb+FD1zcnHY/zNvyMzgF9Qm9GZ1ig97eZNnT7
+ vcl9YDC0QZ1D52hbicdqVgIy7iXGVanXrZvPrjM63O8zwYjdO+GKOD+e5
+ /+/T2UIo187S+AGeZLlmDx7Bz3/+K8tr3LQtKYBqrRnNhgG2SI/04e5Do
+ jWtP9RKrcHX4RJFiafkMujQmROccKJRXz572WliQzslM18ImC6APdwD4l
+ EAd1O3VSeEhHCHN+rMXFXsAfY/fXKc78WFnenHtl4GefHk6y1I2bTRNc2
+ bQqWWVkCYprWXUufatXsrKq4zPiuLZokO9HBWwJ1JgOVW7a4utrJQetQJ g==;
+X-CSE-ConnectionGUID: rHXSb2h9Tf+A1FO0WQFsOg==
+X-CSE-MsgGUID: cDiSsk+OSo+VCfk61UpizQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="31427235"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="31427235"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:04:15 -0700
-X-CSE-ConnectionGUID: et0lgqnTTAet70YtT890Dg==
-X-CSE-MsgGUID: /JCDb/dySY2TO0DH1h7UBw==
+ 29 Jul 2024 09:04:22 -0700
+X-CSE-ConnectionGUID: DJcXDXT7RJ+WqEhxPqg31g==
+X-CSE-MsgGUID: M0atkx/6RyG42Fn46Pj//Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738580"
+X-IronPort-AV: E=Sophos;i="6.09,246,1716274800"; d="scan'208";a="53738711"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.217])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 09:04:12 -0700
+ 29 Jul 2024 09:04:18 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,11 +55,11 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH 36/66] tests/xe_eudebug: Test multiple bo sizes
-Date: Mon, 29 Jul 2024 18:01:29 +0200
-Message-Id: <20240729160159.37036-37-christoph.manszewski@intel.com>
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Subject: [PATCH 38/66] tests/xe_exec_sip: Port tests for shaders and sip
+Date: Mon, 29 Jul 2024 18:01:31 +0200
+Message-Id: <20240729160159.37036-39-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240729160159.37036-1-christoph.manszewski@intel.com>
 References: <20240729160159.37036-1-christoph.manszewski@intel.com>
@@ -80,136 +80,245 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+SIP is a System Instruction Pointer, which the hardware will
+except/jump into when some defined event occurs, debug mode
+is enabled and pipeline setup has included sip program.
 
-Extend the basic vm access tests to allow for specifying the target bo
-size per bo in the bind list. The size still has to be at least the
-minimum, but can be overwritten to be larger.
+Events like illegal instruction or breakpoint hit will jump
+into SIP directly. Driver can also except into sip during hang
+resolution and SIP can do, for example, eu thread state snapshot
+before the hang resolution ends up in a hardware state reset.
 
-Make sure that the vm is unbound during bind list destroy, to avoid
-overlapping vmas.
-
-Suggested-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 45 ++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ tests/intel/xe_exec_sip.c | 129 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 116 insertions(+), 13 deletions(-)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 928dcdce4..db6d96a92 100644
---- a/tests/intel/xe_eudebug.c
-+++ b/tests/intel/xe_eudebug.c
-@@ -249,12 +249,13 @@ static union buf_id *vm_create_objects(int fd, uint32_t bo_placement, uint32_t v
- }
+diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+index 4b599e7f6..e52889818 100644
+--- a/tests/intel/xe_exec_sip.c
++++ b/tests/intel/xe_exec_sip.c
+@@ -21,6 +21,7 @@
+ #include "gpgpu_shader.h"
+ #include "igt.h"
+ #include "igt_sysfs.h"
++#include "xe/xe_eudebug.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
  
- static struct bind_list *create_bind_list(int fd, uint32_t bo_placement,
--					  uint32_t vm, unsigned int n)
-+					  uint32_t vm, unsigned int n,
-+					  unsigned int target_size)
- {
--	const unsigned int bo_size = max_t(bo_size, xe_get_default_alignment(fd), MIN_BO_SIZE);
-+	unsigned int i = target_size ?: MIN_BO_SIZE;
-+	const unsigned int bo_size = max_t(bo_size, xe_get_default_alignment(fd), i);
- 	bool is_userptr = !bo_placement;
- 	struct bind_list *bl;
--	unsigned int i;
+@@ -30,9 +31,16 @@
+ #define COLOR_C4 0xc4
  
- 	bl = malloc(sizeof(*bl));
- 	bl->fd = fd;
-@@ -317,7 +318,7 @@ static void do_bind_list(struct xe_eudebug_client *c,
- 		igt_assert(syncobj_wait(bl->fd, &sync->handle, 1, INT64_MAX, 0, NULL));
- }
+ #define SHADER_CANARY 0x01010101
++#define SIP_CANARY 0x02020202
  
--static void free_bind_list(struct bind_list *bl)
-+static void free_bind_list(struct xe_eudebug_client *c, struct bind_list *bl)
- {
- 	unsigned int i;
+ #define NSEC_PER_MSEC (1000 * 1000ull)
  
-@@ -327,6 +328,9 @@ static void free_bind_list(struct bind_list *bl)
- 		bo_check(bl->fd, &bl->bind_ops[i]);
- 		if (bl->bind_ops[i].op == DRM_XE_VM_BIND_OP_MAP_USERPTR)
- 			free(bl->bo[i].userptr);
-+		xe_eudebug_client_vm_unbind(c, bl->fd, bl->vm, 0,
-+					    bl->bind_ops[i].addr,
-+					    bl->bind_ops[i].range);
- 	}
- 
- 	free(bl->bind_ops);
-@@ -359,7 +363,7 @@ static void vm_bind_client(int fd, struct xe_eudebug_client *c)
- 
- 		xe_vm_bind_async(fd, vm, 0, bo[1], rebind_bo_offset, addr[1], size, NULL, 0);
- 
--		bl = create_bind_list(fd, system_memory(fd), vm, 4);
-+		bl = create_bind_list(fd, system_memory(fd), vm, 4, 0);
- 		xe_vm_bind_array(bl->fd, bl->vm, 0, bl->bind_ops, bl->n, NULL, 0);
- 
- 		xe_vm_unbind_all_async(fd, vm, 0, bo[0], NULL, 0);
-@@ -387,7 +391,7 @@ static void vm_bind_client(int fd, struct xe_eudebug_client *c)
- 		xe_eudebug_client_vm_bind(c, fd, vm, bo[1], 0, addr[1], bo_size);
- 		xe_eudebug_client_vm_bind(c, fd, vm, bo[1], rebind_bo_offset, addr[1], size);
- 
--		bl = create_bind_list(fd, system_memory(fd), vm, 4);
-+		bl = create_bind_list(fd, system_memory(fd), vm, 4, 0);
- 		do_bind_list(c, bl, NULL);
- 	}
- 
-@@ -1378,7 +1382,7 @@ static void vm_access_client(struct xe_eudebug_client *c)
- 	uint32_t bo_placement;
- 	struct bind_list *bl;
- 	uint32_t vm;
--	int fd, i;
-+	int fd, i, j;
- 
- 	igt_debug("Using %s\n", xe_engine_class_string(hwe->engine_class));
- 
-@@ -1391,16 +1395,20 @@ static void vm_access_client(struct xe_eudebug_client *c)
- 		bo_placement = 0;
- 	else
- 		bo_placement = vram_if_possible(fd, hwe->gt_id);
--	bl = create_bind_list(fd, bo_placement, vm, 4);
--	sync.handle = syncobj_create(bl->fd, 0);
--	do_bind_list(c, bl, &sync);
--	syncobj_destroy(bl->fd, sync.handle);
- 
--	for (i = 0; i < bl->n; i++)
--		xe_eudebug_client_wait_stage(c, bl->bind_ops[i].addr);
-+	for (j = 0; j < 5; j++) {
-+		unsigned int target_size = MIN_BO_SIZE * (1 << j);
- 
--	free_bind_list(bl);
-+		bl = create_bind_list(fd, bo_placement, vm, 4, target_size);
-+		sync.handle = syncobj_create(bl->fd, 0);
-+		do_bind_list(c, bl, &sync);
-+		syncobj_destroy(bl->fd, sync.handle);
- 
-+		for (i = 0; i < bl->n; i++)
-+			xe_eudebug_client_wait_stage(c, bl->bind_ops[i].addr);
++#define SHADER_BREAKPOINT 0
++#define SHADER_WRITE 1
++#define SHADER_WAIT 2
++#define SIP_WRITE 3
++#define SIP_NULL 4
 +
-+		free_bind_list(c, bl);
-+	}
- 	xe_eudebug_client_vm_destroy(c, fd, vm);
- 
- 	xe_device_put(fd);
-@@ -1482,11 +1490,16 @@ static void vm_trigger(struct xe_eudebug_debugger *d,
- /**
-  * SUBTEST: basic-vm-access
-  * Description:
-- *      Exercise XE_EUDEBG_VM_OPEN with pread and pwrite into the vm fd
-+ *      Exercise XE_EUDEBG_VM_OPEN with pread and pwrite into the
-+ *      vm fd, concerning many different offsets inside the vm,
-+ *      and many virtual addresses of the vm_bound object.
-  *
-  * SUBTEST: basic-vm-access-userptr
-  * Description:
-- *      Exercise XE_EUDEBG_VM_OPEN with pread and pwrite into the vm fd, but backed by userptr
-+ *      Exercise XE_EUDEBG_VM_OPEN with pread and pwrite into the
-+ *      vm fd, concerning many different offsets inside the vm,
-+ *      and many virtual addresses of the vm_bound object, but backed
-+ *      by userptr.
-  */
- static void test_vm_access(int fd, unsigned int flags, int num_clients)
+ static struct intel_buf *
+ create_fill_buf(int fd, int width, int height, uint8_t color)
  {
+@@ -52,27 +60,78 @@ create_fill_buf(int fd, int width, int height, uint8_t color)
+ 	return buf;
+ }
+ 
+-static struct gpgpu_shader *get_shader(int fd)
++static struct gpgpu_shader *get_shader(int fd, const int shadertype)
+ {
+ 	static struct gpgpu_shader *shader;
+ 
+ 	shader = gpgpu_shader_create(fd);
+ 	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
++
++	switch (shadertype) {
++	case SHADER_WAIT:
++		gpgpu_shader__wait(shader);
++		break;
++	case SHADER_WRITE:
++		break;
++	case SHADER_BREAKPOINT:
++		gpgpu_shader__nop(shader);
++		gpgpu_shader__breakpoint(shader);
++		break;
++	}
++
+ 	gpgpu_shader__eot(shader);
+ 	return shader;
+ }
+ 
+-static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, unsigned int threads,
+-			     unsigned int width, unsigned int height)
++static struct gpgpu_shader *get_sip(int fd, const int siptype,
++				    const int shadertype, unsigned int y_offset)
++{
++	static struct gpgpu_shader *sip;
++
++	if (siptype == SIP_NULL)
++		return NULL;
++
++	sip = gpgpu_shader_create(fd);
++	gpgpu_shader__write_dword(sip, SIP_CANARY, y_offset);
++
++	switch (siptype) {
++	case SIP_WRITE:
++		break;
++	/* TODO: Add alternative SIP instructions here */
++	}
++
++	gpgpu_shader__end_system_routine(sip, shadertype == SHADER_BREAKPOINT);
++	return sip;
++}
++
++static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, const int shadertype, const int siptype,
++			     unsigned int threads, unsigned int width, unsigned int height)
+ {
+ 	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
+-	struct gpgpu_shader *shader = get_shader(fd);
++	struct gpgpu_shader *sip = get_sip(fd, siptype, shadertype, height / 2);
++	struct gpgpu_shader *shader = get_shader(fd, shadertype);
++
++	gpgpu_shader_exec(ibb, buf, 1, threads, shader, sip, 0, 0);
+ 
+-	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
++	if (sip)
++		gpgpu_shader_destroy(sip);
+ 	gpgpu_shader_destroy(shader);
++
+ 	return buf->handle;
+ }
+ 
++static bool has_debugger(int fd)
++{
++	struct drm_xe_eudebug_connect param = { .pid = getpid() };
++	int debugfd;
++
++	debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, &param);
++	if (debugfd >= 0)
++		close(debugfd);
++
++	return debugfd >= 0;
++}
++
+ static void check_fill_buf(uint8_t *ptr, const int width, const int x,
+ 			   const int y, const uint8_t color)
+ {
+@@ -84,10 +143,10 @@ static void check_fill_buf(uint8_t *ptr, const int width, const int x,
+ }
+ 
+ static void check_buf(int fd, uint32_t handle, int width, int height,
+-		      uint8_t poison_c)
++		      int siptype, uint8_t poison_c)
+ {
+ 	unsigned int sz = ALIGN(width * height, 4096);
+-	int thread_count = 0;
++	int thread_count = 0, sip_count = 0;
+ 	uint32_t *ptr;
+ 	int i, j;
+ 
+@@ -105,7 +164,25 @@ static void check_buf(int fd, uint32_t handle, int width, int height,
+ 		i = 0;
+ 	}
+ 
++	for (i = 0, j = height / 2; j < height; ++j) {
++		if (ptr[j * width / 4] == SIP_CANARY) {
++			++sip_count;
++			i = 4;
++		}
++
++		for (; i < width; i++)
++			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
++
++		i = 0;
++	}
++
+ 	igt_assert(thread_count);
++	if (siptype != SIP_NULL && has_debugger(fd))
++		igt_assert_f(thread_count == sip_count,
++			     "Thread and SIP count mismatch, %d != %d\n",
++			     thread_count, sip_count);
++	else
++		igt_assert(sip_count == 0);
+ 
+ 	munmap(ptr, sz);
+ }
+@@ -128,16 +205,22 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+  * Description: check basic shader with write operation
+  * Run type: BAT
+  *
++ * SUBTEST: wait-writesip-nodebug
++ * Description: verify that we don't enter SIP after wait with debugging disabled.
++ *
++ * SUBTEST: breakpoint-writesip
++ * Description: Test that we enter SIP after hitting breakpoint in shader.
++ *
+  */
+-static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
++static void test_sip(int shader, int sip, struct drm_xe_engine_class_instance *eci)
+ {
+ 	unsigned int threads = 512;
+ 	unsigned int height = max_t(threads, HEIGHT, threads * 2);
+-	uint32_t exec_queue_id, handle, vm_id;
+ 	unsigned int width = WIDTH;
+ 	struct timespec ts = { };
+-	uint64_t timeout;
++	uint32_t exec_queue_id, handle, vm_id;
+ 	struct intel_bb *ibb;
++	uint64_t timeout;
+ 	int fd;
+ 
+ 	igt_debug("Using %s\n", xe_engine_class_string(eci->engine_class));
+@@ -156,12 +239,12 @@ static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
+ 	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
+ 
+ 	igt_nsec_elapsed(&ts);
+-	handle = gpgpu_shader(fd, ibb, threads, width, height);
++	handle = gpgpu_shader(fd, ibb, shader, sip, threads, width, height);
+ 
+ 	intel_bb_sync(ibb);
+ 	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
+ 
+-	check_buf(fd, handle, width, height, COLOR_C4);
++	check_buf(fd, handle, width, height, sip, COLOR_C4);
+ 
+ 	gem_close(fd, handle);
+ 	intel_bb_destroy(ibb);
+@@ -189,7 +272,27 @@ igt_main
+ 		fd = drm_open_driver(DRIVER_XE);
+ 
+ 	test_render_and_compute("sanity", fd, eci)
+-		test_sip(eci, 0);
++		test_sip(SHADER_WRITE, SIP_NULL, eci);
++
++	/* Debugger disabled (TD_CTL not set) */
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(!has_debugger(fd));
++		}
++
++		test_render_and_compute("wait-writesip-nodebug", fd, eci)
++			test_sip(SHADER_WAIT, SIP_WRITE, eci);
++	}
++
++	/* Debugger enabled (TD_CTL set) */
++	igt_subtest_group {
++		igt_fixture {
++			igt_require(has_debugger(fd));
++		}
++
++		test_render_and_compute("breakpoint-writesip", fd, eci)
++			test_sip(SHADER_BREAKPOINT, SIP_WRITE, eci);
++	}
+ 
+ 	igt_fixture
+ 		drm_close_driver(fd);
 -- 
 2.34.1
 
