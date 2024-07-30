@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C150C3DA7E
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C79E7C3DA49
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:49:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60A6B10E513;
-	Tue, 30 Jul 2024 11:49:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8851110E514;
+	Tue, 30 Jul 2024 11:49:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ILurHPk+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DhzAz+5U";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D695C10E516
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:49:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB21210E519
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722340177; x=1753876177;
+ t=1722340180; x=1753876180;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=S6MZv2oNV+hK5npuqSLPcIrP3/1xThRj25OywL2QLjo=;
- b=ILurHPk+6dBMbgdxErphqMB8HY3ZEhpHgT9C28LClOzVVw8B3lhUqTMR
- HVQ09yOelxMe2FizfgfKOyhydiZqN4+85h0f9f22wlJ8Vme2P4vEmPAio
- V7kBOrvJT3uNDmnlu/LexW8bVuXBWjr/mJ5OZznrr10Sy5tXWqgu7PLi0
- oWps5y1gW7CHiW9Kd+HUy+bKSbBRtDXi7OCUO0NR1Y4G8nXmw12VWaFCF
- Dx3vs3/lkrb+nOAHW1joR1pdWOLH43Yxj194hFMgLF2NWc3pybATNV3z/
- jmmcDFQes9uwPkAHFB1qa84/QjY+5EvFeFgKy4HSxIrFyXomrcBeXIaZD g==;
-X-CSE-ConnectionGUID: MJ552hhfSRWamD1phR8ruA==
-X-CSE-MsgGUID: ip3e5qUqRsayvntpP9VRdw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20286751"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="20286751"
+ bh=NbOd7DbyHBmGPx4qRbXZtTawbSa3RguHMmMbQzUvPNQ=;
+ b=DhzAz+5U3OLRl0G5UeGsIk/6Yrge1ufUT1nB3+GC+btxOeoONCu/vNRY
+ lZoRRBYvIeeStVUSXOIDEQuq+NcTRx5nOKmbvJmQsyWrEFVDBcA+nYKTL
+ Z6zPiF48cwCGeOG8C9otNv9VlZKz5y32D5k1ivOmngMJKecd49r0LEHDa
+ K+bFYX7ZFC9rt++8OnKogaM0yqVjXkvkL8H4g1BsHjplt+2J5T7DRwLcX
+ ZHJYzzj+cBJ2n565sPiHyT2VD4ctmgRshVmvpDXtl0OLfW5T+jcJYj25d
+ cuzM+3gOWxpfyLfI3SVtwCuzydkrTjdxjdTTLy7fzG0CEdchGIBO2br32 w==;
+X-CSE-ConnectionGUID: Z/6xvUDLQ5asxpkpPk9LHA==
+X-CSE-MsgGUID: FO4B2jzATjmfXNBBOD3lLA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="20286754"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="20286754"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:49:37 -0700
-X-CSE-ConnectionGUID: ftgZK2fLQrO0V3ukdMudXg==
-X-CSE-MsgGUID: LFTGMd2MTui3AKhzqWuHDg==
+ 30 Jul 2024 04:49:40 -0700
+X-CSE-ConnectionGUID: xYHN3ASFQT+zCJxXXBfKOg==
+X-CSE-MsgGUID: yczZSZxpTLqDBv51jWU/LQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54217654"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54217671"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.43])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:49:34 -0700
+ 30 Jul 2024 04:49:37 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,14 +55,15 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v2 58/66] tests/xe_eudebug_online: Add
- interrupt-reconnect test
-Date: Tue, 30 Jul 2024 13:45:15 +0200
-Message-Id: <20240730114523.334156-59-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v2 59/66] tests/xe_eudebug_online: Add single-step and
+ single-step-one tests
+Date: Tue, 30 Jul 2024 13:45:16 +0200
+Message-Id: <20240730114523.334156-60-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730114523.334156-1-christoph.manszewski@intel.com>
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -79,165 +80,375 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Karolina Stolarek <karolina.stolarek@intel.com>
+From: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 
-Introduce interrupt-reconnect test case where the debugger is
-closed and reopened on attention event. Check if the workload
-is reset when there is no active debugger detected.
+Add single-step test that walks debugger over shader
+instruction by instruction in every thread in parallel.
 
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Add single-step-one test that walks debugger over shader
+instruction by instruction in one thread at a time.
+
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug_online.c | 126 +++++++++++++++++++++++++++++++-
- 1 file changed, 123 insertions(+), 3 deletions(-)
+ tests/intel/xe_eudebug_online.c | 260 ++++++++++++++++++++++++++++++--
+ 1 file changed, 246 insertions(+), 14 deletions(-)
 
 diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-index c101bde2f..9f55cec74 100644
+index 9f55cec74..cabe2101e 100644
 --- a/tests/intel/xe_eudebug_online.c
 +++ b/tests/intel/xe_eudebug_online.c
-@@ -22,11 +22,14 @@
+@@ -20,16 +20,23 @@
+ #include "intel_mocs.h"
+ #include "gpgpu_shader.h"
  
- #define SHADER_BREAKPOINT	(1 << 0)
- #define SHADER_LOOP		(1 << 1)
-+#define TRIGGER_RECONNECT	(1 << 27)
- #define TRIGGER_RESUME_SET_BP	(1 << 28)
- #define TRIGGER_RESUME_DELAYED	(1 << 29)
- #define TRIGGER_RESUME_DSS	(1 << 30)
- #define TRIGGER_RESUME_ONE	(1 << 31)
+-#define SHADER_BREAKPOINT	(1 << 0)
+-#define SHADER_LOOP		(1 << 1)
+-#define TRIGGER_RECONNECT	(1 << 27)
+-#define TRIGGER_RESUME_SET_BP	(1 << 28)
+-#define TRIGGER_RESUME_DELAYED	(1 << 29)
+-#define TRIGGER_RESUME_DSS	(1 << 30)
+-#define TRIGGER_RESUME_ONE	(1 << 31)
++#define SHADER_BREAKPOINT		(1 << 0)
++#define SHADER_LOOP			(1 << 1)
++#define SHADER_SINGLE_STEP		(1 << 2)
++#define SIP_SINGLE_STEP			(1 << 3)
++#define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
++#define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
++#define TRIGGER_RECONNECT		(1 << 27)
++#define TRIGGER_RESUME_SET_BP		(1 << 28)
++#define TRIGGER_RESUME_DELAYED		(1 << 29)
++#define TRIGGER_RESUME_DSS		(1 << 30)
++#define TRIGGER_RESUME_ONE		(1 << 31)
  
-+#define DEBUGGER_REATTACHED	1
-+
+ #define DEBUGGER_REATTACHED	1
+ 
++#define SINGLE_STEP_COUNT	16
++#define STEERING_SINGLE_STEP	0
++#define STEERING_CONTINUE	0x00c0ffee
  #define STEERING_END_LOOP	0xdeadca11
  
  #define SHADER_CANARY 0x01010101
-@@ -682,9 +685,12 @@ static void run_online_client(struct xe_eudebug_client *c)
+@@ -92,7 +99,8 @@ static struct intel_buf *create_uc_buf(int fd, int width, int height)
  
- 	intel_bb_sync(ibb);
+ static int get_number_of_threads(uint64_t flags)
+ {
+-	if (flags & (TRIGGER_RESUME_ONE))
++	if (flags & (TRIGGER_RESUME_ONE | TRIGGER_RESUME_SINGLE_WALK |
++		     TRIGGER_RESUME_PARALLEL_WALK))
+ 		return 32;
  
--	/* Make sure it wasn't the timeout. */
--	igt_assert(igt_nsec_elapsed(&ts) <
--		   XE_EUDEBUG_DEFAULT_TIMEOUT_MS / MSEC_PER_SEC * NSEC_PER_SEC);
-+	if (c->flags & TRIGGER_RECONNECT)
-+		xe_eudebug_client_wait_stage(c, DEBUGGER_REATTACHED);
+ 	return 512;
+@@ -114,21 +122,30 @@ static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
+ 		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+ 		gpgpu_shader__jump_neq(shader, 0, w_dim.y, STEERING_END_LOOP);
+ 		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
++	} else if (flags & SHADER_SINGLE_STEP) {
++		gpgpu_shader__nop(shader);
++		gpgpu_shader__breakpoint(shader);
++		for (int i = 0; i < SINGLE_STEP_COUNT; i++)
++			gpgpu_shader__nop(shader);
+ 	}
+ 
+ 	gpgpu_shader__eot(shader);
+ 	return shader;
+ }
+ 
+-static struct gpgpu_shader *get_sip(int fd)
++static struct gpgpu_shader *get_sip(int fd, const unsigned int flags)
+ {
++	struct dim_t w_dim = walker_dimensions(get_number_of_threads(flags));
+ 	static struct gpgpu_shader *sip;
+ 
+ 	sip = gpgpu_shader_create(fd);
+ 	gpgpu_shader__write_aip(sip, 0);
+ 
+ 	gpgpu_shader__wait(sip);
+-	gpgpu_shader__end_system_routine(sip, true);
++	if (flags & SIP_SINGLE_STEP)
++		gpgpu_shader__end_system_routine_step_if_eq(sip, w_dim.y, 0);
 +	else
-+		/* Make sure it wasn't the timeout. */
-+		igt_assert(igt_nsec_elapsed(&ts) <
-+			   XE_EUDEBUG_DEFAULT_TIMEOUT_MS / MSEC_PER_SEC * NSEC_PER_SEC);
++		gpgpu_shader__end_system_routine(sip, true);
+ 	return sip;
+ }
  
- 	ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
- 	data->threads_count = count_canaries_neq(ptr, w_dim, 0);
-@@ -1158,6 +1164,117 @@ static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *h
+@@ -281,6 +298,10 @@ struct online_debug_data {
+ 	size_t bb_size;
+ 	int vm_fd;
+ 	uint32_t first_aip;
++	uint64_t *aips_offset_table;
++	uint32_t steps_done;
++	uint8_t *single_step_bitmask;
++	int stepped_threads_count;
+ 	struct timespec exception_arrived;
+ 	int last_eu_control_seqno;
+ };
+@@ -298,13 +319,14 @@ online_debug_data_create(struct drm_xe_engine_class_instance *hwe)
+ 	data->exec_queue_handle = -1ULL;
+ 	data->lrc_handle = -1ULL;
+ 	data->vm_fd = -1;
++	data->stepped_threads_count = -1;
+ 
+ 	return data;
+ }
+ 
+ static void online_debug_data_destroy(struct online_debug_data *data)
+ {
+-
++	free(data->aips_offset_table);
+ 	munmap(data, ALIGN(sizeof(*data), PAGE_SIZE));
+ }
+ 
+@@ -366,6 +388,25 @@ static void copy_first_bit(uint8_t *dst, uint8_t *src, int size)
+ 	}
+ }
+ 
++static void copy_nth_bit(uint8_t *dst, uint8_t *src, int size, int n)
++{
++	int count = 0;
++
++	for (int i = 0; i < size; i++) {
++		uint32_t tmp = src[i];
++		for (int j = 7; j >= 0; j--) {
++			if (tmp & (1 << j)) {
++				count++;
++				if (count == n)
++					dst[i] |= (1 << j);
++				else
++					dst[i] &= ~(1 << j);
++			} else
++				dst[i] &= ~(1 << j);
++		}
++	}
++}
++
+ /*
+  * Searches for the first instruction. It stands on assumption,
+  * that shader kernel is placed before sip within the bb.
+@@ -431,6 +472,57 @@ static void set_breakpoint_once(struct xe_eudebug_debugger *d,
+ 	gpgpu_shader_destroy(kernel);
+ }
+ 
++static void get_aips_offset_table(struct online_debug_data *data, int threads)
++{
++	size_t sz = sizeof(uint32_t);
++	uint32_t aip;
++	uint32_t first_aip;
++	int table_index = 0;
++
++	if (data->aips_offset_table)
++		return;
++
++	data->aips_offset_table = malloc(threads * sizeof(uint64_t));
++	igt_assert(data->aips_offset_table);
++
++	igt_assert_eq(pread(data->vm_fd, &first_aip, sz, data->target_offset), sz);
++	data->first_aip = first_aip;
++	data->aips_offset_table[table_index++] = 0;
++
++	fsync(data->vm_fd);
++	for (int i = 1; i < data->target_size; i++) {
++		igt_assert_eq(pread(data->vm_fd, &aip, sz, data->target_offset + i), sz);
++		if (aip == first_aip)
++			data->aips_offset_table[table_index++] = i;
++	}
++
++	igt_assert_eq(threads, table_index);
++
++	igt_debug("AIPs offset table:\n");
++	for (int i = 0; i < threads; i++) {
++		igt_debug("%lx\n", data->aips_offset_table[i]);
++	}
++}
++
++static int get_stepped_threads_count(struct online_debug_data *data, int threads)
++{
++	int count = 0;
++	size_t sz = sizeof(uint32_t);
++	uint32_t aip;
++
++	fsync(data->vm_fd);
++	for (int i = 0; i < threads; i++) {
++		igt_assert_eq(pread(data->vm_fd, &aip, sz,
++				    data->target_offset + data->aips_offset_table[i]), sz);
++		if (aip != data->first_aip) {
++			igt_assert(aip == data->first_aip + 0x10);
++			count++;
++		}
++	}
++
++	return count;
++}
++
+ #define MAX_PREEMPT_TIMEOUT 10ull
+ static void eu_attention_resume_trigger(struct xe_eudebug_debugger *d,
+ 					struct drm_xe_eudebug_event *e)
+@@ -493,6 +585,98 @@ static void eu_attention_resume_trigger(struct xe_eudebug_debugger *d,
+ 	free(bitmask);
+ }
+ 
++static void eu_attention_resume_single_step_trigger(struct xe_eudebug_debugger *d,
++						    struct drm_xe_eudebug_event *e)
++{
++	struct drm_xe_eudebug_event_eu_attention *att = (void *) e;
++	struct online_debug_data *data = d->ptr;
++	const int threads = get_number_of_threads(d->flags);
++	uint32_t val;
++	size_t sz = sizeof(uint32_t);
++
++	get_aips_offset_table(data, threads);
++
++	if (d->flags & TRIGGER_RESUME_PARALLEL_WALK) {
++		if (data->stepped_threads_count != -1)
++			if (data->steps_done < SINGLE_STEP_COUNT) {
++				int stepped_threads_count_after_resume =
++						get_stepped_threads_count(data, threads);
++				igt_debug("Stepped threads after: %d\n",
++					  stepped_threads_count_after_resume);
++
++				if (stepped_threads_count_after_resume == threads) {
++					data->first_aip += 0x10;
++					data->steps_done++;
++				}
++
++				igt_debug("Shader steps: %d\n", data->steps_done);
++				igt_assert(data->stepped_threads_count == 0);
++				igt_assert(stepped_threads_count_after_resume == threads);
++			}
++
++		if (data->steps_done < SINGLE_STEP_COUNT) {
++			data->stepped_threads_count = get_stepped_threads_count(data, threads);
++			igt_debug("Stepped threads before: %d\n", data->stepped_threads_count);
++		}
++
++		val = data->steps_done < SINGLE_STEP_COUNT ? STEERING_SINGLE_STEP :
++							     STEERING_CONTINUE;
++	} else if (d->flags & TRIGGER_RESUME_SINGLE_WALK) {
++		if (data->stepped_threads_count != -1)
++			if (data->steps_done < 2) {
++				int stepped_threads_count_after_resume =
++						get_stepped_threads_count(data, threads);
++				igt_debug("Stepped threads after: %d\n",
++					  stepped_threads_count_after_resume);
++
++				if (stepped_threads_count_after_resume == threads) {
++					data->first_aip += 0x10;
++					data->steps_done++;
++					free(data->single_step_bitmask);
++					data->single_step_bitmask = 0;
++				}
++
++				igt_debug("Shader steps: %d\n", data->steps_done);
++				igt_assert(data->stepped_threads_count +
++					   (intel_gen_needs_resume_wa(d->master_fd) ? 2 : 1) ==
++					   stepped_threads_count_after_resume);
++			}
++
++		if (data->steps_done < 2) {
++			data->stepped_threads_count = get_stepped_threads_count(data, threads);
++			igt_debug("Stepped threads before: %d\n", data->stepped_threads_count);
++			if (intel_gen_needs_resume_wa(d->master_fd)) {
++				if (!data->single_step_bitmask) {
++					data->single_step_bitmask = malloc(att->bitmask_size *
++									   sizeof(uint8_t));
++					igt_assert(data->single_step_bitmask);
++					memcpy(data->single_step_bitmask, att->bitmask,
++					       att->bitmask_size);
++				}
++
++				copy_first_bit(att->bitmask, data->single_step_bitmask,
++					       att->bitmask_size);
++			} else
++				copy_nth_bit(att->bitmask, att->bitmask, att->bitmask_size,
++					     data->stepped_threads_count + 1);
++		}
++
++		val = data->steps_done < 2 ? STEERING_SINGLE_STEP : STEERING_CONTINUE;
++	}
++
++	igt_assert_eq(pwrite(data->vm_fd, &val, sz,
++			     data->target_offset + steering_offset(threads)), sz);
++	fsync(data->vm_fd);
++
++	eu_ctl_resume(d->master_fd, d->fd, att->client_handle,
++		      att->exec_queue_handle, att->lrc_handle,
++		      att->bitmask, att->bitmask_size);
++
++	if (data->single_step_bitmask)
++		for (int i = 0; i < att->bitmask_size; i++)
++			data->single_step_bitmask[i] &= ~att->bitmask[i];
++}
++
+ static void open_trigger(struct xe_eudebug_debugger *d,
+ 			 struct drm_xe_eudebug_event *e)
+ {
+@@ -614,7 +798,7 @@ static struct intel_bb *xe_bb_create_on_offset(int fd, uint32_t exec_queue, uint
+ 
+ static void run_online_client(struct xe_eudebug_client *c)
+ {
+-	const int threads = c->flags & (TRIGGER_RESUME_ONE) ? 64 : 512;
++	int threads = get_number_of_threads(c->flags);
+ 	const uint64_t target_offset = 0x1a000000;
+ 	const uint64_t bb_offset = 0x1b000000;
+ 	const size_t bb_size = 4096;
+@@ -651,7 +835,7 @@ static void run_online_client(struct xe_eudebug_client *c)
+ 	xe_device_get(fd);
+ 
+ 	/* Additional memory for steering control */
+-	if (c->flags & SHADER_LOOP)
++	if (c->flags & SHADER_LOOP || c->flags & SHADER_SINGLE_STEP)
+ 		s_dim.y++;
+ 	buf = create_uc_buf(fd, s_dim.x, s_dim.y);
+ 
+@@ -674,7 +858,7 @@ static void run_online_client(struct xe_eudebug_client *c)
+ 				     bb_offset, bb_size);
+ 	intel_bb_set_lr_mode(ibb, true);
+ 
+-	sip = get_sip(fd);
++	sip = get_sip(fd, c->flags);
+ 	shader = get_shader(fd, c->flags);
+ 
+ 	igt_nsec_elapsed(&ts);
+@@ -1275,6 +1459,46 @@ static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance
  	online_debug_data_destroy(data);
  }
  
-+static void eu_attention_debugger_detach_trigger(struct xe_eudebug_debugger *d,
-+						 struct drm_xe_eudebug_event *event)
-+{
-+	struct online_debug_data *data = d->ptr;
-+	unsigned int max_size;
-+	uint64_t c_pid;
-+	int ret;
-+
-+	c_pid = d->target_pid;
-+
-+	/* Reset VM data so the re-triggered VM open handler works properly */
-+	data->vm_fd = -1;
-+
-+	xe_eudebug_debugger_dettach(d);
-+
-+	/* Let the KMD scan function notice unhandled EU attention */
-+	sleep(1);
-+
-+	/*
-+	 * New session that is created by EU debugger on reconnect restarts
-+	 * seqno, causing isses with log sorting. To avoid that, create
-+	 * a new event log.
-+	 */
-+	max_size = d->log->max_size;
-+	xe_eudebug_event_log_destroy(d->log);
-+	d->log = xe_eudebug_event_log_create("debugger-reconnect", max_size);
-+
-+	ret = xe_eudebug_connect(d->master_fd, c_pid, 0);
-+	igt_assert(ret >= 0);
-+	d->fd = ret;
-+	d->target_pid = c_pid;
-+
-+	/* Let the discovery worker discover resources */
-+	sleep(2);
-+
-+	xe_eudebug_debugger_signal_stage(d, DEBUGGER_REATTACHED);
-+}
-+
 +/**
-+ * SUBTEST: interrupt-reconnect
++ * SUBTEST: single-step
 + * Description:
-+ *	Schedules EU workload which should last about a few seconds,
-+ *	interrupts all threads and detaches debugger when attention is
-+ *	raised. The test checks if KMD resets the workload when there's
-+ *	no debugger attached and does the event playback on discovery.
++ *	Schedules EU workload with 16 nops after breakpoint, then single-steps
++ *	through the shader, advances all threads each step, checking if all
++ *	threads advanced every step.
++ *
++ * SUBTEST: single-step-one
++ * Description:
++ *	Schedules EU workload with 16 nops after breakpoint, then single-steps
++ *	through the shader, advances one thread each step, checking if one
++ *	thread advanced every step. Due to the time constraint, only first two
++ *	shader instructions after breakpoint are validated.
 + */
-+static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
++static void test_single_step(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
 +{
-+	struct drm_xe_eudebug_event *e = NULL;
-+	struct online_debug_data *data;
 +	struct xe_eudebug_session *s;
-+	uint32_t val;
++	struct online_debug_data *data;
 +
 +	data = online_debug_data_create(hwe);
 +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
 +
 +	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_OPEN,
 +					open_trigger);
-+	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-+					exec_queue_trigger);
 +	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
 +					eu_attention_debug_trigger);
 +	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-+					eu_attention_debugger_detach_trigger);
++					eu_attention_resume_single_step_trigger);
 +	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
 +	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_METADATA,
 +					create_metadata_trigger);
 +	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
 +					ufence_ack_trigger);
 +
-+	igt_assert_eq(xe_eudebug_debugger_attach(s->d, s->c), 0);
-+	xe_eudebug_debugger_start_worker(s->d);
-+	xe_eudebug_client_start(s->c);
-+
-+	/* wait for workload to start */
-+	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-+		/* collect needed data from triggers */
-+		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
-+			continue;
-+
-+		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
-+			if (val != 0)
-+				break;
-+	}
-+
-+	pthread_mutex_lock(&data->mutex);
-+	igt_assert(data->client_handle != -1);
-+	igt_assert(data->exec_queue_handle != -1);
-+	eu_ctl_interrupt_all(s->d->fd, data->client_handle,
-+			     data->exec_queue_handle, data->lrc_handle);
-+	pthread_mutex_unlock(&data->mutex);
-+
-+	xe_eudebug_client_wait_done(s->c);
-+
-+	xe_eudebug_debugger_stop_worker(s->d, 1);
-+
-+	xe_eudebug_event_log_print(s->d->log, true);
-+	xe_eudebug_event_log_print(s->c->log, true);
-+
-+	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
-+					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
-+					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-+
-+	/* We expect workload reset, so no attention should be raised */
-+	xe_eudebug_for_each_event(e, s->d->log)
-+		igt_assert(e->type != DRM_XE_EUDEBUG_EVENT_EU_ATTENTION);
-+
++	xe_eudebug_session_run(s);
++	online_session_check(s, s->flags);
 +	xe_eudebug_session_destroy(s);
 +	online_debug_data_destroy(data);
 +}
@@ -245,12 +456,17 @@ index c101bde2f..9f55cec74 100644
  static struct drm_xe_engine_class_instance *pick_compute(int fd, int gt)
  {
  	struct drm_xe_engine_class_instance *hwe;
-@@ -1220,6 +1337,9 @@ igt_main
- 	test_gt_render_or_compute("reset-with-attention", fd, hwe)
- 		test_reset_with_attention_online(fd, hwe, SHADER_BREAKPOINT);
+@@ -1340,6 +1564,14 @@ igt_main
+ 	test_gt_render_or_compute("interrupt-reconnect", fd, hwe)
+ 		test_interrupt_reconnect(fd, hwe, SHADER_LOOP | TRIGGER_RECONNECT);
  
-+	test_gt_render_or_compute("interrupt-reconnect", fd, hwe)
-+		test_interrupt_reconnect(fd, hwe, SHADER_LOOP | TRIGGER_RECONNECT);
++	test_gt_render_or_compute("single-step", fd, hwe)
++		test_single_step(fd, hwe, SHADER_SINGLE_STEP | SIP_SINGLE_STEP |
++				 TRIGGER_RESUME_PARALLEL_WALK);
++
++	test_gt_render_or_compute("single-step-one", fd, hwe)
++		test_single_step(fd, hwe, SHADER_SINGLE_STEP | SIP_SINGLE_STEP |
++				 TRIGGER_RESUME_SINGLE_WALK);
 +
  	igt_fixture {
  		xe_eudebug_enable(fd, was_enabled);
