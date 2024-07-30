@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60A4AC3DA49
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 16:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31F36C3DA70
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 16:23:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 18C6E10E477;
-	Tue, 30 Jul 2024 16:15:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D3F1310E54D;
+	Tue, 30 Jul 2024 16:23:55 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BFB110E2BD;
- Tue, 30 Jul 2024 16:15:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 458EE10E54D;
+ Tue, 30 Jul 2024 16:23:55 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0884741321722764429=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_Test_coverage_for_GPU_d?=
- =?utf-8?q?ebug_support_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Test_coverage_for_GPU_debug_su?=
+ =?utf-8?q?pport_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Manszewski, Christoph" <christoph.manszewski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 30 Jul 2024 16:15:05 -0000
-Message-ID: <172235610556.429217.7099217998696991911@2413ebb6fbb6>
+Date: Tue, 30 Jul 2024 16:23:55 -0000
+Message-ID: <172235663527.429232.3901119645986090109@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
 In-Reply-To: <20240730114523.334156-1-christoph.manszewski@intel.com>
@@ -41,61 +41,155 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============0884741321722764429==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: Test coverage for GPU debug support (rev2)
 URL   : https://patchwork.freedesktop.org/series/136623/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7942_BAT -> XEIGTPW_11495_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1236924 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61691633):
-              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                    ~~~~~
-  ../lib/igt_core.h:1239:64: note: in definition of macro ‘igt_debug’
-   #define igt_debug(f...) igt_log(IGT_LOG_DOMAIN, IGT_LOG_DEBUG, f)
-                                                                  ^
-  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_exec_queue_create’:
-  ../lib/xe/xe_eudebug.c:1792:20: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
-                      ^
-  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_exec_queue_destroy’:
-  ../lib/xe/xe_eudebug.c:1816:20: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
-                      ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722355697:step_script
-  section_start:1722355697:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722355697:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61691635):
-              ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                    ~~~~~
-  ../lib/igt_core.h:1239:64: note: in definition of macro ‘igt_debug’
-   #define igt_debug(f...) igt_log(IGT_LOG_DOMAIN, IGT_LOG_DEBUG, f)
-                                                                  ^
-  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_exec_queue_create’:
-  ../lib/xe/xe_eudebug.c:1792:20: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
-                      ^
-  ../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_exec_queue_destroy’:
-  ../lib/xe/xe_eudebug.c:1816:20: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
-    uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
-                      ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722355697:step_script
-  section_start:1722355697:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722355698:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11495_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_intel_bb@blit-simple:
+    - {bat-lnl-2}:        [DMESG-WARN][1] ([Intel XE#1705]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-lnl-2/igt@xe_intel_bb@blit-simple.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-lnl-2/igt@xe_intel_bb@blit-simple.html
+
+  
+#### Warnings ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-1:          [ABORT][3] ([Intel XE#2418]) -> [ABORT][4] ([Intel XE#2418] / [Intel XE#2421])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html
+    - bat-adlp-7:         [ABORT][5] ([Intel XE#2418]) -> [ABORT][6] ([Intel XE#2418] / [Intel XE#2421])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html
+    - bat-lnl-1:          [ABORT][7] ([Intel XE#2418]) -> [ABORT][8] ([Intel XE#2418] / [Intel XE#2421])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-lnl-1/igt@core_hotunplug@unbind-rebind.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-lnl-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1705]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1705
+  [Intel XE#2418]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418
+  [Intel XE#2421]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2421
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7942 -> IGTPW_11495
+  * Linux: xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d -> xe-1691-acd846e309e206a4dbc83e4b857b6604aa0741af
+
+  IGTPW_11495: 11495
+  IGT_7942: 0f02dc176959e6296866b1bafd3982e277a5e44b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d: 3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d
+  xe-1691-acd846e309e206a4dbc83e4b857b6604aa0741af: acd846e309e206a4dbc83e4b857b6604aa0741af
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1236924
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/index.html
+
+--===============0884741321722764429==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Test coverage for GPU debug support (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136623/">https://patchwork.freedesktop.org/series/136623/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7942_BAT -&gt; XEIGTPW_11495_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11495_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_intel_bb@blit-simple:<ul>
+<li>{bat-lnl-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-lnl-2/igt@xe_intel_bb@blit-simple.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1705">Intel XE#1705</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-lnl-2/igt@xe_intel_bb@blit-simple.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418">Intel XE#2418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418">Intel XE#2418</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2421">Intel XE#2421</a>)</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418">Intel XE#2418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-adlp-7/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418">Intel XE#2418</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2421">Intel XE#2421</a>)</li>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7942/bat-lnl-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418">Intel XE#2418</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11495/bat-lnl-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2418">Intel XE#2418</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2421">Intel XE#2421</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7942 -&gt; IGTPW_11495</li>
+<li>Linux: xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d -&gt; xe-1691-acd846e309e206a4dbc83e4b857b6604aa0741af</li>
+</ul>
+<p>IGTPW_11495: 11495<br />
+  IGT_7942: 0f02dc176959e6296866b1bafd3982e277a5e44b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1684-3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d: 3a93d4a1f4872fbdfe43e9b7f1a7dfd9236a642d<br />
+  xe-1691-acd846e309e206a4dbc83e4b857b6604aa0741af: acd846e309e206a4dbc83e4b857b6604aa0741af</p>
+
+</body>
+</html>
+
+--===============0884741321722764429==--
