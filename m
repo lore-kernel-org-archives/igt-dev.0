@@ -4,84 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B52A8C3DA61
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 06:49:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78207C3DA49
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 06:52:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5830210E4AA;
-	Tue, 30 Jul 2024 06:49:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1459110E0C3;
+	Tue, 30 Jul 2024 06:52:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XWYQfgXZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iSk1u17B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92B8210E4AB
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 06:49:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2969410E0C3
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 06:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722322194; x=1753858194;
+ t=1722322332; x=1753858332;
  h=from:to:subject:date:message-id:references:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=zyhFW6P9VQO3Ljg+2JQvMvvtnuyhCdklx+m/gH4WYbw=;
- b=XWYQfgXZIaEPImsHSjSV+RH6sheRwmAYO1XtPFF75IbPHJ8tbklG++5h
- 8UXJMmfG7ggE32xJ1Psk91ybngINlGds19lRChyH+2V01g6YACPFUs4XI
- D/542E+JKaMfyLHlIKn+P0m0OkFOEmDX7fKqWjxfbTTfpwHmUBJzapign
- 0jUftwHh3tZXVzIqOIj22CucGyu8uEHDVeykIJLJ2JmFq1p5dJtWUwOJw
- YskuM5p4FnXf88ALAJD029GeA+3K0lnFwmGXtRa3nxpleIuVPF5/ow+T2
- TE+mYkwTakZHjb3Ywv4yauJktWfb5x5RhJqDdD3tAqGiydBnQN/zUfMyA A==;
-X-CSE-ConnectionGUID: grHNBAM8TqysQVpOhnRF/g==
-X-CSE-MsgGUID: Z9pS4qj4TQCOb+btGwr4jA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="19820774"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="19820774"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2024 23:49:53 -0700
-X-CSE-ConnectionGUID: JtTYcS1fRtK7SEUwxQq1TQ==
-X-CSE-MsgGUID: nnvg2PQWSJKOlFRZEIkr0A==
+ bh=H8CN/i0mG4SG5B4myeE3vBuw6Vk4J7fj8M1Actp64Ks=;
+ b=iSk1u17BMauo8+t9qYbzBqNTCKWmVHx3Eymb21ZFtNfI8RTGzHhDZwu7
+ DulAOAPwP5FIc4CQJUKDzujT5nnqTsjzW7AiyeiHF8Vh6o+x6sM+O2AWW
+ xBJCuN5arfm4UiGFydgBs5Go9y9G9/rsA/Lgj7CKUSHUQMz3JnpRLiq68
+ d8DiwlshnE1kws0mhzxUuEo+kBP+7BD8LZllQDd/4uYLkJwegbpRxFEri
+ 0BnlVLxWlyZ1TyjP6dL5AqAwa9SmwWZ1TTsnecTw5jDH/b/DKk2F4cGUw
+ nl4B1KB9p+s1QnDo6gOHt2e+66qYjUyFH4x4Pl3Shs2PnuusiKqRDAchU A==;
+X-CSE-ConnectionGUID: H7Bm33+ATla/jjsh98cDRg==
+X-CSE-MsgGUID: LjiYrrD5SmmeHqom5c0ZYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="19717802"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="19717802"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2024 23:52:12 -0700
+X-CSE-ConnectionGUID: ret8aupsT2iNV7Ay+1HBzg==
+X-CSE-MsgGUID: FVS2Mv41R6asPJJaRCL9rQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54823490"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orviesa007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 29 Jul 2024 23:49:53 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54203712"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 29 Jul 2024 23:52:11 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 29 Jul 2024 23:49:50 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 29 Jul 2024 23:52:10 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 29 Jul 2024 23:49:50 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 29 Jul 2024 23:52:10 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 29 Jul 2024 23:52:10 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.171)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 29 Jul 2024 23:49:50 -0700
+ 15.1.2507.39; Mon, 29 Jul 2024 23:52:10 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iMck8zZDiV+l2UbcEuvN7S3wS0Ke3EvVd6sz1hRgpoglw0aBdZk5Wv4suFxkrjidPLu9JwNEWZHL1874EHrX6ucM4G3Orf4jUMVHmrhMzT3sX8nNtrjRiLpEbRtWvzpgArGSEGegm20akOKlR/ihJ0uuR+dszi0xslelAX4N0PxleAvOZGHkl0x7Ntc3afTEmvgrHfqS7C9vy7kjZK4wSeSotSh2WYSIe0Afe8dZaItpdwEToubZfaG7BKooqe8KmeGb1aAiTtiVDk7pNRWgu2rYkCF5TDkhez8Yv8Qzl2jQsJhWezaf6ymAqJfUN+Fk/naa+0YP/XxW/1mzZKkiiA==
+ b=QiDDgoG384Z4wPPV+Fo/DWheHPiEeuQ6xAwEH6l7lugKqNr7wG4iWKvV3oqmoAkKU+HpmV0apxYMb18FHAII+ved2s7dFKdHlfjEsYKscptKNLHkTGQ4kT9C+pr5h34Cbnt8kEn0SfYv+PFIUdtX0O9Umo6+f8pU1iI2aiMJjo9jWdN8kJygcaQHUT0uUjP2vIp2Ojll81mi8+WXCKR44E3BUppAfP6I5048uL0uT5TttCqqaNa5pYoJeJq/kK28oUoKr5rPXUhUTURdtfwx26+85LRUCPR6lJmnsASeaox5p79+voap0IG+ZbDKtcAWcZdSodYJatGV6bFOFF7xkw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NYqq+mitLr8lkC/fH72UrsOdDq4mzr5d2deCLBB4PqU=;
- b=FULZorRbW1qJyhj4nRoGC/WQP+ULu0bO9FHtaxTMqoH7eY1+MntctnunozPNC09YTqzV6A27NQb/NY1bQvM+M1nAH5OZpcdneDmIuJRVmHEZkDZM1O7KhELIJg/Vv4YXvZ/O0XLIzDpUro5tv3BB0cyPYezQl0DAdc0N/UpS6xgShVaWr9vRNWUwuiPrgS/y/oDhqKxD8GZ2k4kX/L+N3cH1e/bc5dsXLdE1+SJBhkYlc9sI7e2OaGFIpYXX11IRaMAcoRK+9lqzQ3wLE4p6ndFqAy1c9UN7iiXvMg7N3OMLgbBR9LsK4gEVLYsPIOdo4zSbE31/RmmbMDiB1/uhbw==
+ bh=uCX3ttt5YM7FtZ/bqeWL1o7UClddBsvC2y4s9bqonVA=;
+ b=O0bgQm9+M9LathMEeW9pgIgBayjPuXd8+bX85YQ0Kr9tm3lLiOl7dz0rmWeti4YvRhsP6eB4wkg3dnwfIIx8ulCQWqc9NNY/WScypB6EBNjsBop0AiqDniyD/OTOu6M7zFqgQBBGycmQ7al6O/86VoZ7rtbswkgexamWsOM4vWIaBKkU31baaT8b4y6xKA4Yz2yWL7PmlD15Gpm4qQKTrBT0orgx1omRCtFntBTrzGFCLVSCuBl8DN5W+9gZPGz6IlZo9YHHTuKUAW7f4sdYxsS+6q+m7xwg8xto2Lo8CFpPvFq4nhdHKNQXKszUPFcYIwP+ki/BEEC6BUfLz0wjLw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from MW3PR11MB4748.namprd11.prod.outlook.com (2603:10b6:303:2e::9)
- by SN7PR11MB7466.namprd11.prod.outlook.com (2603:10b6:806:34c::6) with
+ by CO1PR11MB5137.namprd11.prod.outlook.com (2603:10b6:303:92::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Tue, 30 Jul
- 2024 06:49:48 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.28; Tue, 30 Jul
+ 2024 06:52:07 +0000
 Received: from MW3PR11MB4748.namprd11.prod.outlook.com
  ([fe80::6c91:5b36:e5b7:6ea]) by MW3PR11MB4748.namprd11.prod.outlook.com
  ([fe80::6c91:5b36:e5b7:6ea%7]) with mapi id 15.20.7807.026; Tue, 30 Jul 2024
- 06:49:48 +0000
+ 06:52:07 +0000
 From: "Kumar, Janga Rahul" <janga.rahul.kumar@intel.com>
 To: "Brost, Matthew" <matthew.brost@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: RE: [PATCH v2 1/2] tests/intel/xe_vm: Add bind array conflict tests
-Thread-Topic: [PATCH v2 1/2] tests/intel/xe_vm: Add bind array conflict tests
-Thread-Index: AQHa2hRFMV9bmx6bm0WcxQhMEdcGabIO5G8Q
-Date: Tue, 30 Jul 2024 06:49:48 +0000
-Message-ID: <MW3PR11MB4748006E3D11D0BEF84EA1C2AEB02@MW3PR11MB4748.namprd11.prod.outlook.com>
+Subject: RE: [PATCH v2 2/2] tests/intel/xe_vm: Add bind array -ENOBUFS section
+Thread-Topic: [PATCH v2 2/2] tests/intel/xe_vm: Add bind array -ENOBUFS section
+Thread-Index: AQHa2hRAaUXClToWHUWgmIoqeOdxF7IO5CCg
+Date: Tue, 30 Jul 2024 06:52:07 +0000
+Message-ID: <MW3PR11MB47489E83482A61F8508503FDAEB02@MW3PR11MB4748.namprd11.prod.outlook.com>
 References: <20240719194613.1549550-1-matthew.brost@intel.com>
-In-Reply-To: <20240719194613.1549550-1-matthew.brost@intel.com>
+ <20240719194613.1549550-2-matthew.brost@intel.com>
+In-Reply-To: <20240719194613.1549550-2-matthew.brost@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -89,79 +94,79 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MW3PR11MB4748:EE_|SN7PR11MB7466:EE_
-x-ms-office365-filtering-correlation-id: f37f4e87-fdbd-410a-4d29-08dcb063ce0d
+x-ms-traffictypediagnostic: MW3PR11MB4748:EE_|CO1PR11MB5137:EE_
+x-ms-office365-filtering-correlation-id: 6da68d67-6561-4530-a874-08dcb06420cd
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?+6ZqpK3KRJcvPDcXSI4Pg32h/cri4UYoISFWmPhUrhCEVnUji8yOzLdqU14E?=
- =?us-ascii?Q?mkmruZPkNGIOCgvpnTEC5VwJsKrKLhYq/pUSGcxGpRpMD9DOe7qI9m9pqvH1?=
- =?us-ascii?Q?M/Vj4A73QdaFlWC+ixzc4DQzyQi879Gjn2yp29MNN/Ky9ZoGQnc4vfkMJBn/?=
- =?us-ascii?Q?AU9FuCOH+U7unb2Tze/Uc5wcXlyAL3QVo/swJr/hw7fLf6gYSuE4cSJhzMTE?=
- =?us-ascii?Q?FikeAc8kfVVnmjIMtuuEauAeSZR8Bga/EqopkFVZFzurfe8oJiND1Xbc4zU2?=
- =?us-ascii?Q?N4BvChKtudnmIiotlli8r3WlvBI+gTa9XNYVT7VD+9o0WEaXzCAUs4KnwXO3?=
- =?us-ascii?Q?HUKfjnqFoOvmu4wvAofUDLTg26O6Cxk5VORsCB+7Aqy4lmU3akhp+dEXDIEY?=
- =?us-ascii?Q?0e9eNDVHHRCJrmmRKt8wx5bBgl+om5yop/Swf2xiZtiLTBRfBfePDWtMsvA4?=
- =?us-ascii?Q?xJmWyzC/3mxqGmSpOcGyKFIWoLuOo6X9SBQVftk1DqlY3MTouzpENrqKcaGb?=
- =?us-ascii?Q?yJ2qHj1PKnkWbVeLn5nWzKl3bmxIdpFz13QiLOja21y1FgckjatMQrNn+Cwk?=
- =?us-ascii?Q?8rjAwZKYy8sANWaBKnBc3s570NP4HJ0VI3fqPGt7J8AYXw+WRDSz0s412cNC?=
- =?us-ascii?Q?Huwjlxi44fAUtWKJ2G/y4hhXN7yiGOxkfJEoiowk+4ZBEOJFzmg0ii9R2jwn?=
- =?us-ascii?Q?dCF/IaN9aPEKwynfk152U7zZ6TAeIlNSUgfHP0AiGPVG9I3Ljt8YGXhXHtFc?=
- =?us-ascii?Q?B/fULrEwAPOwDR3LQjCApkdW4quRjj/Y2kjLoSWvmfrlKNflzrpCapjUIemk?=
- =?us-ascii?Q?GTTU4CgONjmDHBA7tX/meCX/sus4mcySGC4r1kheA74Fhz1z0Q/Gfm9mZ3gM?=
- =?us-ascii?Q?jydcY3mnZqXlK6SmbvMmcJoq7YihqEv1G09JTGN3HUaP6m4XkFwGWknI/hY1?=
- =?us-ascii?Q?jmLaNa3BlQq7HuuHHzchbksPJ1q5xKtTk4ehBaN5JgaovxMkvMdCJPGc+VD1?=
- =?us-ascii?Q?qVeW8N/B/QQRj6WZL0J7vMXER1e7B7xpjcAcFv5kn4avWGoJpkRsK0eXS/Sg?=
- =?us-ascii?Q?R+M9FhaDEcRxMRgh1b3e3Fl1sKr7G18GeDJhFhkO38GXQFxmJZvB9R7aAwal?=
- =?us-ascii?Q?AqwcuDou7193Mf3wRUFFFn9DfXVEuzttDLWwY8qZauEaf+RkuiYU0Nyypqdo?=
- =?us-ascii?Q?5YU066xjBOhvRpo6XB8HPszBqGrabqwHz+v59Y90itQ4fXCMi19u0zl9N1d1?=
- =?us-ascii?Q?uneRaQj62gs8wCUC8i10RhhLnNi5k/N7jOZsw/+RdUOVzt8xVtunAuVRa+BW?=
- =?us-ascii?Q?enwnLbqEjexWTfR/8Lsv1s8R7kHBvZeUWOEzBKDnb5+Rv3Ef05q90gULK9p6?=
- =?us-ascii?Q?3mHU2YJ2qrEY6EGt552PaZQmFWV1Nzu3tr5A4YQe8/8jyrXTXQ=3D=3D?=
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?3mAnEeTW39So+2vrbOgQb4GwDlt98R2LUVP/VS74nOw/eN0yd0ZhFtmr0yqO?=
+ =?us-ascii?Q?vG8NQilJKlPBXrKyF6A9ovN9Is/+4VepBrnkIiSiktuPI5ZQ2U9A8IN+Ovyn?=
+ =?us-ascii?Q?lSToLuImRSTXhKneZDAxwKnokGND39WPN0FLi2KeJRBm3+3ph14uhjnl5Rkv?=
+ =?us-ascii?Q?JfgZoWWKnE1pb6lSkimEm3njBUz835k74253okLMXrpZ/acjVVMVspYonj3m?=
+ =?us-ascii?Q?iIUrRn6Iovfg9s2pcYOJpN5cup+H4JKnsWACgL2UWe7VK39yFQBTd5wWb/Wd?=
+ =?us-ascii?Q?Pvr8TGjPEZEJ02K+9tlVjvJb9SKKd0B1hK5A1Yh3oApNu2GDFjXCkBRid15r?=
+ =?us-ascii?Q?6jlq9o0Mroo28UszEojxs0QItJhPglr8eTvqS6ManUSDBTcqPTm4UlhtdhPk?=
+ =?us-ascii?Q?3h0c60vUFE90HhX+AcXsShtZFe12hNHKYtuw7zwFodMtLzoEPSnwsQTz8sqi?=
+ =?us-ascii?Q?lZblyTV+Yv+VU8Qn+fwRDJbIdyqy8fqVSqPVPtBncpQZqcqJIsP8B7S3USnH?=
+ =?us-ascii?Q?EG5+cYJgSrTHnbG7nzuR/FGbWUcEh6jk16/Y9n62oihiSt6FWSisRz3zw+On?=
+ =?us-ascii?Q?QcLqlwpdN6K+N+mYxkbCu2JgJmuzR6+S8NJzM9W1l5wBctixC8jYUzm+x4CT?=
+ =?us-ascii?Q?swwUl13YHI4cXRO2WwTsHMtzXmIfKyWRsxBkaADh+2YdSQztDXeBYI7jYViN?=
+ =?us-ascii?Q?5RLjYfuXlLj//6gdovZ3VIYeJiGo0WLssFhiBVHjlR9IjA5ydsXnFtDCuoqf?=
+ =?us-ascii?Q?1I07MgQvBrOO0d/7ZGCH7/x1/cI/Apvawwpl3aVHpKXW7ODuBjEObS6s15nC?=
+ =?us-ascii?Q?zBJqueFok8+RHv9hxjwiPoYZOXRS0Wust0likgb7FlPhbdKZSyBjexW85Smr?=
+ =?us-ascii?Q?yCavgI/HnoIDGRPPPr22OlV/jGXSf8s8T9e9FPIlr6cNujuz+nDGhjY6PPnO?=
+ =?us-ascii?Q?n9xsFBKfR45ZYgmx6Qy+ALxmxNK5L4zuLvbxJM2/NNwruaoxWDaT0b/RJqKy?=
+ =?us-ascii?Q?88WN1mUQcVNr19XpUeBj37nEsQpW0q06jLoQMHilXkSgOM8sUlYav9it7DYz?=
+ =?us-ascii?Q?HGZmkfyEf4tNxuGohyuNuxSvtKLILt0CwCQ6K2fnlJYtHCV+6Ar3XUkFmxtl?=
+ =?us-ascii?Q?565tdCn8HF+k7d7EijvL4V3u6Eaqwb/rt+l84ugTHLWXpi+WnSNSYPraIT7H?=
+ =?us-ascii?Q?9TxE9ckOtgEh6bur3TGBG7N9YI427uzKHCPr/QOJdDYA1plwG2ta9iG46J45?=
+ =?us-ascii?Q?5x5948ySGVM+9UyJyngIqxmbLDN9MdqK1aGSzpAenW610oa0eV2cI38x541E?=
+ =?us-ascii?Q?WZ/nqM+kSuJhlN92BFBEIEBf0P+37LVqRNjN3HulxaMg2RmZQ2zTVgYCJ2KQ?=
+ =?us-ascii?Q?FoO3cBXsCdRkqiKfEe/4KU9/JAA5VK7bFuRQKseQt9OvAmePSw=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MW3PR11MB4748.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?O5c4rIq+IwXVfUfBH8+eTFOT4/sJl9gtARmVw2esGtU1/p/L/+bTGvhXM7tb?=
- =?us-ascii?Q?hQvNB2OIb3xpn/cW/OB/+C7E93MqdMicdWs27IX3+s8NwMRqRQKZuGx+xXCs?=
- =?us-ascii?Q?s0ZxdpaqQZ3d3DcAmdj5MWb91UWTzsbONRJiEKppU53S8/fZjsBlAZODJnz9?=
- =?us-ascii?Q?HJXXjFhkuM1Nws0UAk+djRNCsSracLNRPaXHh+6Bp3A5yrxhQX/UyuhOAlzq?=
- =?us-ascii?Q?2xLG4IFP17T0BjlCCdokcP2ilinQxvEVJsiQNn+mszVYf/62d60ab6i4PaaL?=
- =?us-ascii?Q?m6n4oCDIn7/JPYTmsVy30ZabA2qL5ZYkYiiv2+jnxatg9dfTsbYQaMo0/JOy?=
- =?us-ascii?Q?ytDgYawfORwKyEI92DLFPpjbHAw6WnShx1TUPNE1hMFrxcFnEMujs4ALoHaJ?=
- =?us-ascii?Q?1AUiOx8jnyK1LUjTuFsVFAqzpjkTk2zsGSOzrcW20oCIUGj/4SDsOj4604Fy?=
- =?us-ascii?Q?EtPXGhsVfq7zWM9VgSgE72ywsOn0TUN4fnlcI2Dl6PPoKig3yJB3UxXz24q5?=
- =?us-ascii?Q?hoBHWiC1ZM1fRYjHI5JpopRIbBSGPQmBAo2/xvteO9Yr30k/wsfMsxpdRfH2?=
- =?us-ascii?Q?ubtc1+C3FDvbNd9cj2J+PmdyJCh5IkZpRpDFddeRl++2zDD8ZeVUW32OdhaA?=
- =?us-ascii?Q?kL1eeENJFT2POO7X885rwsjvof6HTlbxjlgTbc0gJ/x72FyF/1P0IvCWe+7M?=
- =?us-ascii?Q?8C0qiExoLHBckOxtIjozqDbe1TMPjWZvylRRsxpX3WqBKktXpUD0upZBz7mH?=
- =?us-ascii?Q?ijfsKTdR9B86IvQBSsR1yURzomyd3lmN5L09O+B45LfX2ZmfkVJi+nGaoTaP?=
- =?us-ascii?Q?WZnJxv7St6UzwTvC6kMkmdBDIk7WyGgERRq3BZuyTQ7mXCAjjAiOLKR+kBjz?=
- =?us-ascii?Q?RpZ5FJu34lWxDHrepUs2jWqyY6K/tRsH0DIrxDfr+YORQyZqWZ13kq+btjHZ?=
- =?us-ascii?Q?YZDYor3pcyzzaSi+UIMs5iF5e3RnAswaiWVQQ/Shbp5CcvzjFYVpt+5FG6pV?=
- =?us-ascii?Q?FbCA8KMCadeLQp16MNcHN7fjvW+VnXpAKa06Iv1vIwlaTMLuP23m+8RTm7gI?=
- =?us-ascii?Q?ohS9/dFdUoWydNIKH1vgULdBMTXVZ7+njzfPAFeqMjU7De8pV07AAlvxXG6+?=
- =?us-ascii?Q?7nkyo+qGdmcmoHuWn2Is8ZDlbJbYmg8pBWEabAWB8D2hTWRMwFOYJx4GBD25?=
- =?us-ascii?Q?Djq0LTy6kNh6B9ZqDH+Opl/KSf71CflPtKBNjCA0+kwzuZ8/2xM6xC9pQpgR?=
- =?us-ascii?Q?PCfl+JYoDMDJ1t3sJ5V/oCR8cx/xugevcdXSOvfWyFAtNdDAMXRmbnVtnpjz?=
- =?us-ascii?Q?vrcVuI2S3O6NMIzsewk2AdD87r6Ovl7H+Tx/NLWIem40h9Ntn/zAI1DtW8CX?=
- =?us-ascii?Q?EXz1Jt3mDJmRbuNn0yJwi0s6pcUW2dNhTJRlFvqDVdIcftiLh31fEVMaQyYW?=
- =?us-ascii?Q?JSaWmJl1vduG1Xo1qRt9UTiSxaFqvLhIhgunxayV3AwoG8twHcWsbWo8IOlI?=
- =?us-ascii?Q?oxVmJOa199Fkix30UQwe2OF/1MqLOpBGT8GSTC5x5km25hWtPXpqS8+xCpkT?=
- =?us-ascii?Q?nathidPdmAQLLLuiwcR2jGZvXMtsQh4pqstE6tf2weRF0vG0bu2r+kBN9dQD?=
- =?us-ascii?Q?7w=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5yc6XKbQTleMQtCkQ4UBVSCmP+cqyIsZTBzqWGCwdwmB98saSGdzeuuCw3a9?=
+ =?us-ascii?Q?LWOL96hWhZnFhHGU34g+uCHfAbbXSV+SznvarbZgPqXaY3ZSU1p9uKK2qXnB?=
+ =?us-ascii?Q?AOXOQ+ty/OVuH0lpxX3G7YIhPi5Dhcb672aDtiV+xypnNtoZYS454Rp7j0lF?=
+ =?us-ascii?Q?RkuKiPwoAoSTALMa+xp3TPg63Z5I+/lnq9kmPF7zgtUUZPf2gmX5I0UhN1KL?=
+ =?us-ascii?Q?pQrQO99FoQeSS1ucyRMnkL80o8VH4KQVNYxBeRuByCuHb+RMGKErvObeAFo0?=
+ =?us-ascii?Q?KL49nM2Xs6NaITvYAEPkzf5n0Rgiw74Kz1RuVBtP5LGRj0AoyLYqV5+McYiR?=
+ =?us-ascii?Q?R6LuDAZcnxB4NyXBs5CsUc0NYfPc4dHjbPQBtiwt4YCX0iM6Qz7z65eB4Jmi?=
+ =?us-ascii?Q?u2E2qWTTvK0FqfyCuXRGXx9cD5Jlq+oGCsZA2NMnKY/KihkwmzPQ35IEWGfI?=
+ =?us-ascii?Q?OCb33zF/N9fPSvdaO9IDHJMzCGbfnyW4dxsPECmJjZxqWKno7xBNSW22sH8P?=
+ =?us-ascii?Q?woFtt2Jf84gB4J1Xg2Y9mYG7kEXvolovTprd7NCiXHDpYMX5XSnb71WI9S9A?=
+ =?us-ascii?Q?hLJOi4xUpJHnJVsrGDAK5GzoM+xbykbSiEaCay2JxAHUVruK6DA+h36iV+68?=
+ =?us-ascii?Q?B6nipbZAuMagG8xglQwdgsnxIxp1ibdh8vid87qKOsaIt4JpPLTZ9eWhJLjK?=
+ =?us-ascii?Q?ait2P5oV7FEIaiANrBfmenLOP39IgQuK7Uk4jhK7X8V/e2uRgGnjcTvY6srM?=
+ =?us-ascii?Q?3EPFy4rMBrMwrVIApydtnvAU27aJfH80dDI7gfMTncvk50Qc7ZAUb3yE/aY7?=
+ =?us-ascii?Q?q7ThrjbsT3iGOBGw1/gwd5FvU60pBFURknM8xymTQaUbS0czHCuDzLarpGXW?=
+ =?us-ascii?Q?xnp+tYt/XPYbTQRf6QdnHpzcc2+m5DZCaQRxPjVIbumvveK8Js6E8br/rt97?=
+ =?us-ascii?Q?EhyUngjY+UPkME4sa2d8DeXP3GpBZ7gqSHY4mumOSL4XcFaxKp/hm80Y6s2j?=
+ =?us-ascii?Q?CB0kUYcE1I/0HXRQ/aToXA6flfPAKG1XE41TT24q97YaCYRscb1IxZ/iGUxJ?=
+ =?us-ascii?Q?LoR8RwKWQUUUmDmP7bolj8HzigPgAknVJu+V3/HuyWtlTb1pGVGR6ehYpPl0?=
+ =?us-ascii?Q?rhjhynw9UArMDxxZkaxfvjrsI5JcXoa9wfN60RoBcDSOdRHPsRkpS4ifs8SL?=
+ =?us-ascii?Q?m6u7b3xv0ejvGd33HcjW/hLFEAfDbG81jlZG7PPRzn+GxA356P++uI4JmMzW?=
+ =?us-ascii?Q?qddrxtCUecozDYucaOHXfN6StjzpSG29pPYdICwsGGWpzRvY2COpYriVDPKK?=
+ =?us-ascii?Q?KcQ8KP5ZKaE+O55yBz3FagB1jqo8ZoSNZgr4+RBeKroAj/bf6uK1/o8k7ggs?=
+ =?us-ascii?Q?EFEiDdAUn1U54HVdoTerT2gjZ3Pbzc+YJ0+6kjp98sPT1yZObyOrBDuT5bqP?=
+ =?us-ascii?Q?FylIRRNbY82WWvQdS8XJLnPQKwV89fK0vefVLV3NopTnIarhUAOdOAFnfU8l?=
+ =?us-ascii?Q?SExRCAlSK3evlFy5JQQf9Ug/XYwOnc/Vh/Sg+5fJjgo25stB2SIdR5eiRuWL?=
+ =?us-ascii?Q?6T98fgKdyG/gwry6p29YP/sI2IDh+wHFHUVmX5pDYIw2YKeKXWq/+pAoAzWv?=
+ =?us-ascii?Q?+Q=3D=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MW3PR11MB4748.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f37f4e87-fdbd-410a-4d29-08dcb063ce0d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 06:49:48.4974 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6da68d67-6561-4530-a874-08dcb06420cd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2024 06:52:07.3317 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Tr9CNiH7x3z0kMUh/iFj3iqLtwUlEwchD+1qMP/vyf2UmH5j9i8Y51sklzMGTuySML2o09dgmFzebjH8xwBW24HUYCokSCVtdv0VsL7+jCM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7466
+X-MS-Exchange-CrossTenant-userprincipalname: DYv+zW6C3tgAefye32xZFvLnL0v4NkuLzwGwPOSgebzvL/XxGSgUH0eTt5PJDVxPPQsa7WmucW+J/IYYF9e8k5GI9sHH4T3jHf1vE020PEk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5137
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -178,8 +183,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM,
-Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
 
 > -----Original Message-----
 > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Matthe=
@@ -187,361 +191,171 @@ w
 > Brost
 > Sent: Saturday, July 20, 2024 1:16 AM
 > To: igt-dev@lists.freedesktop.org
-> Subject: [PATCH v2 1/2] tests/intel/xe_vm: Add bind array conflict tests
+> Subject: [PATCH v2 2/2] tests/intel/xe_vm: Add bind array -ENOBUFS sectio=
+n
 >=20
-> Add bind array conflict tests which modify the same address space within
-> 1 bind array. Not a use case but stresses the driver logic. Also add an e=
-rror
-> injection section which tests error of bind IOCTL.
+> Add section which has a large enough array of binds which triggers BB
+> suballocation failure. Verify -ENOBUFS is returned in this case.
 >=20
 > v2:
->  - Use do_ioctl_err (Matthew Auld)
->  - Move xe_vm_bind_array_err to xe_vm.c
+> - Use do_ioctl_err (Matthew Auld)
+> - Move xe_vm_bind_array_err to xe_vm.c
 > v3:
->  - Fix sign of error usage
+> - Fix sign of error usage
 >=20
+> Cc: Matthew Auld <matthew.auld@intel.com>
 > Signed-off-by: Matthew Brost <matthew.brost@intel.com>
 > ---
->  tests/intel/xe_vm.c | 281
-> ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 281 insertions(+)
+>  tests/intel/xe_vm.c | 51 ++++++++++++++++++++++++++++++++++-----------
+>  1 file changed, 39 insertions(+), 12 deletions(-)
 >=20
 > diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c index
-> d507e7cb16..a5f25acc7e 100644
+> a5f25acc7e..cff71487e4 100644
 > --- a/tests/intel/xe_vm.c
 > +++ b/tests/intel/xe_vm.c
-> @@ -850,6 +850,24 @@ test_bind_execqueues_independent(int fd, struct
-> drm_xe_engine_class_instance *ec
->  	xe_vm_destroy(fd, vm);
->  }
+> @@ -869,7 +869,7 @@ static void xe_vm_bind_array_err(int fd, uint32_t vm,
+> uint32_t exec_queue,  }
 >=20
-> +static void xe_vm_bind_array_err(int fd, uint32_t vm, uint32_t exec_queu=
-e,
-> +				 struct drm_xe_vm_bind_op *bind_ops,
-> +				 uint32_t num_bind, struct drm_xe_sync *sync,
-> +				 uint32_t num_syncs, int err)
-> +{
-> +	struct drm_xe_vm_bind bind =3D {
-> +		.vm_id =3D vm,
-> +		.num_binds =3D num_bind,
-> +		.vector_of_binds =3D (uintptr_t)bind_ops,
-> +		.num_syncs =3D num_syncs,
-> +		.syncs =3D (uintptr_t)sync,
-> +		.exec_queue_id =3D exec_queue,
-> +	};
-> +
-> +	igt_assert(num_bind > 1);
-> +	do_ioctl_err(fd, DRM_IOCTL_XE_VM_BIND, &bind, err); }
-> +
 >  #define BIND_ARRAY_BIND_EXEC_QUEUE_FLAG	(0x1 << 0)
+> -
+> +#define BIND_ARRAY_ENOBUFS_FLAG		(0x1 << 1)
 >=20
->=20
-> @@ -992,6 +1010,257 @@ test_bind_array(int fd, struct
+>  /**
+>   * SUBTEST: bind-array-twice
+> @@ -882,6 +882,11 @@ static void xe_vm_bind_array_err(int fd, uint32_t vm=
+,
+> uint32_t exec_queue,
+>   * Functionality: bind exec_queues
+>   * Test category: functionality test
+>   *
+> + * SUBTEST: bind-array-enobufs
+> + * Description: Test bind array which too large are trigger -ENOBUFs
+> + error
+> + * Functionality: bind exec_queues
+> + * Test category: functionality test
+> + *
+>   * SUBTEST: bind-array-exec_queue-twice
+>   * Description: Test bind array exec_queue twice
+>   * Functionality: bind exec_queues
+> @@ -894,10 +899,10 @@ static void xe_vm_bind_array_err(int fd, uint32_t v=
+m,
+> uint32_t exec_queue,
+>   */
+>  static void
+>  test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_=
+execs,
+> -		unsigned int flags)
+> +		uint64_t addr, size_t bo_size, unsigned int flags)
+>  {
+>  	uint32_t vm;
+> -	uint64_t addr =3D 0x1a0000, base_addr =3D 0x1a0000;
+> +	uint64_t base_addr =3D addr;
+>  	struct drm_xe_sync sync[2] =3D {
+>  		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
+> DRM_XE_SYNC_FLAG_SIGNAL, },
+>  		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
+> DRM_XE_SYNC_FLAG_SIGNAL, }, @@ -907,9 +912,7 @@ test_bind_array(int fd,
+> struct drm_xe_engine_class_instance *eci, int n_execs,
+>  		.syncs =3D to_user_pointer(sync),
+>  	};
+>  	uint32_t exec_queue, bind_exec_queue =3D 0;
+> -#define BIND_ARRAY_MAX_N_EXEC	16
+> -	struct drm_xe_vm_bind_op bind_ops[BIND_ARRAY_MAX_N_EXEC] =3D { };
+> -	size_t bo_size;
+> +	struct drm_xe_vm_bind_op *bind_ops;
+>  	uint32_t bo =3D 0;
+>  	struct {
+>  		uint32_t batch[16];
+> @@ -918,10 +921,11 @@ test_bind_array(int fd, struct
 > drm_xe_engine_class_instance *eci, int n_execs,
+>  	} *data;
+>  	int i, b;
+>=20
+> -	igt_assert(n_execs <=3D BIND_ARRAY_MAX_N_EXEC);
+> +	bind_ops =3D malloc(sizeof(*bind_ops) * n_execs);
+> +	igt_assert(bind_ops);
+>=20
+>  	vm =3D xe_vm_create(fd, 0, 0);
+> -	bo_size =3D sizeof(*data) * n_execs;
+> +	bo_size =3D bo_size ?: sizeof(*data) * n_execs;
+>  	bo_size =3D xe_bb_size(fd, bo_size);
+>=20
+>  	bo =3D xe_bo_create(fd, vm, bo_size,
+> @@ -949,6 +953,22 @@ test_bind_array(int fd, struct
+> drm_xe_engine_class_instance *eci, int n_execs,
+>  	}
+>=20
+>  	sync[0].handle =3D syncobj_create(fd, 0);
+> +	if (flags & BIND_ARRAY_ENOBUFS_FLAG) {
+> +		struct xe_cork cork;
+> +
+> +		xe_cork_init(fd, eci, &cork);
+> +
+> +		sync[1].handle =3D xe_cork_sync_handle(&cork);
+> +		sync[1].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
+> +
+> +		xe_vm_bind_array_err(fd, vm, bind_exec_queue, bind_ops,
+> +				     n_execs, sync, 2, ENOBUFS);
+> +		xe_cork_end(&cork);
+> +		xe_cork_wait_done(&cork);
+> +		xe_cork_fini(&cork);
+> +		n_execs =3D n_execs / 2;
+> +	}
+> +
+>  	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync,
+> 1);
+>=20
+>  	addr =3D base_addr;
+> @@ -1008,6 +1028,7 @@ test_bind_array(int fd, struct
+> drm_xe_engine_class_instance *eci, int n_execs,
+>  	munmap(data, bo_size);
+>  	gem_close(fd, bo);
 >  	xe_vm_destroy(fd, vm);
+> +	free(bind_ops);
 >  }
 >=20
-> +/**
-> + * SUBTEST: bind-array-conflict
-> + * Description: Test bind array with conflicting address
-> + * Functionality: bind exec_queues and page table updates
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: bind-no-array-conflict
-> + * Description: Test binding with conflicting address
-> + * Functionality: bind and page table updates
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: bind-array-conflict-error-inject
-> + * Description: Test bind array with conflicting address plus error
-> +injection
-> + * Functionality: bind exec_queues and page table updates error paths
-> + * Test category: functionality test
-> + */
-> +static void
-> +test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *ec=
-i,
-> +			 bool no_array, bool error_inject)
-> +{
-> +	uint32_t vm;
-> +	uint64_t addr =3D 0x1a00000;
-> +	struct drm_xe_sync sync[2] =3D {
-> +		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
-> DRM_XE_SYNC_FLAG_SIGNAL, },
-> +		{ .type =3D DRM_XE_SYNC_TYPE_SYNCOBJ, .flags =3D
-> DRM_XE_SYNC_FLAG_SIGNAL, },
-> +	};
-> +	struct drm_xe_exec exec =3D {
-> +		.num_batch_buffer =3D 1,
-> +		.syncs =3D to_user_pointer(sync),
-> +	};
-> +	uint32_t exec_queue;
-> +#define BIND_ARRAY_CONFLICT_NUM_BINDS	4
-> +	struct drm_xe_vm_bind_op
-> bind_ops[BIND_ARRAY_CONFLICT_NUM_BINDS] =3D { };
-> +#define ONE_MB	0x100000
-> +	size_t bo_size =3D 8 * ONE_MB;
-> +	uint32_t bo =3D 0, bo2 =3D 0;
-> +	void *map, *map2 =3D NULL;
-> +	struct {
-> +		uint32_t batch[16];
-> +		uint64_t pad;
-> +		uint32_t data;
-> +	} *data =3D NULL;
-> +	const struct binds {
-> +		uint64_t size;
-> +		uint64_t offset;
-> +		uint32_t op;
-> +	} bind_args[] =3D {
-> +		{ ONE_MB, 0, DRM_XE_VM_BIND_OP_MAP },
-> +		{ 2 * ONE_MB, ONE_MB, DRM_XE_VM_BIND_OP_MAP },
-> +		{ 3 * ONE_MB, 3 * ONE_MB, DRM_XE_VM_BIND_OP_MAP },
-> +		{ 4 * ONE_MB, ONE_MB, DRM_XE_VM_BIND_OP_UNMAP },
-> +	};
-> +	const struct execs {
-> +		uint64_t offset;
-> +	} exec_args[] =3D {
-> +		{ 0 },
-> +		{ ONE_MB / 2 },
-> +		{ ONE_MB / 4 },
-> +		{ 5 * ONE_MB },
-> +	};
-> +	int i, b, n_execs =3D 4;
+>  /**
+> @@ -2397,20 +2418,26 @@ igt_main
+>=20
+>  	igt_subtest("bind-array-twice")
+>  		xe_for_each_engine(fd, hwe)
+> -			test_bind_array(fd, hwe, 2, 0);
+> +			test_bind_array(fd, hwe, 2, 0x1a0000, 0, 0);
+>=20
+>  	igt_subtest("bind-array-many")
+>  		xe_for_each_engine(fd, hwe)
+> -			test_bind_array(fd, hwe, 16, 0);
+> +			test_bind_array(fd, hwe, 16, 0x1a0000, 0, 0);
 > +
-> +	vm =3D xe_vm_create(fd, 0, 0);
-> +
-> +	bo =3D xe_bo_create(fd, vm, bo_size,
-> +			  vram_if_possible(fd, eci->gt_id),
-> +
-> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	map =3D xe_bo_map(fd, bo, bo_size);
-> +
-> +	exec_queue =3D xe_exec_queue_create(fd, vm, eci, 0);
-> +
-> +	/* Map some memory that will be over written */
-> +	if (error_inject) {
-> +		bo2 =3D xe_bo_create(fd, vm, bo_size,
-> +				   vram_if_possible(fd, eci->gt_id),
-> +
-> DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		map2 =3D xe_bo_map(fd, bo2, bo_size);
-> +
-> +		i =3D 0;
-> +		sync[0].handle =3D syncobj_create(fd, 0);
-> +		xe_vm_bind_async(fd, vm, 0, bo2, bind_args[i].offset,
-> +				 addr + bind_args[i].offset, bind_args[i].size,
-> +				 sync, 1);
-> +		{
-> +			uint64_t batch_offset =3D (char *)&data[i].batch - (char
-> *)data;
-> +			uint64_t batch_addr =3D addr + exec_args[i].offset +
-> batch_offset;
-> +			uint64_t sdi_offset =3D (char *)&data[i].data - (char
-> *)data;
-> +			uint64_t sdi_addr =3D addr + exec_args[i].offset +
-> sdi_offset;
-> +			data =3D map2 + exec_args[i].offset;
-> +
-> +			b =3D 0;
-> +			data[i].batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> +			data[i].batch[b++] =3D sdi_addr;
-> +			data[i].batch[b++] =3D sdi_addr >> 32;
-> +			data[i].batch[b++] =3D 0xc0ffee;
-> +			data[i].batch[b++] =3D MI_BATCH_BUFFER_END;
-> +			igt_assert(b <=3D ARRAY_SIZE(data[i].batch));
-> +
-> +			sync[0].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +			sync[1].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +			sync[1].handle =3D syncobj_create(fd, 0);
-> +			exec.num_syncs =3D 2;
-> +
-> +			exec.exec_queue_id =3D exec_queue;
-> +			exec.address =3D batch_addr;
-> +			xe_exec(fd, &exec);
-> +		}
-> +
-> +		igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0,
-> NULL));
-> +		igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0,
-> NULL));
-> +
-> +		syncobj_reset(fd, &sync[0].handle, 1);
-> +		syncobj_destroy(fd, sync[1].handle);
-> +
-> +		data =3D map2 + exec_args[i].offset;
-> +		igt_assert_eq(data[i].data, 0xc0ffee);
-> +	}
-> +
-> +	if (no_array) {
-> +		sync[0].handle =3D syncobj_create(fd, 0);
-> +		for (i =3D 0; i < BIND_ARRAY_CONFLICT_NUM_BINDS; ++i) {
-> +			if (bind_args[i].op =3D=3D DRM_XE_VM_BIND_OP_MAP)
-> +				xe_vm_bind_async(fd, vm, 0, bo,
-> +						 bind_args[i].offset,
-> +						 addr + bind_args[i].offset,
-> +						 bind_args[i].size,
-> +						 sync, 1);
-> +			else
-> +				xe_vm_unbind_async(fd, vm, 0,
-> +						   bind_args[i].offset,
-> +						   addr + bind_args[i].offset,
-> +						   bind_args[i].size,
-> +						   sync, 1);
-> +		}
-> +	} else {
-> +		for (i =3D 0; i < BIND_ARRAY_CONFLICT_NUM_BINDS; ++i) {
-> +			bind_ops[i].obj =3D bind_args[i].op =3D=3D
-> DRM_XE_VM_BIND_OP_MAP ?
-> +				bo : 0;
-> +			bind_ops[i].obj_offset =3D bind_args[i].offset;
-> +			bind_ops[i].range =3D bind_args[i].size;
-> +			bind_ops[i].addr =3D addr + bind_args[i].offset;
-> +			bind_ops[i].op =3D bind_args[i].op;
-> +			bind_ops[i].flags =3D 0;
-> +			bind_ops[i].prefetch_mem_region_instance =3D 0;
-> +			bind_ops[i].pat_index =3D intel_get_pat_idx_wb(fd);
-> +			bind_ops[i].reserved[0] =3D 0;
-> +			bind_ops[i].reserved[1] =3D 0;
-> +		}
-> +
-> +		if (error_inject) {
-> +			sync[0].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +			bind_ops[BIND_ARRAY_CONFLICT_NUM_BINDS -
-> 1].flags |=3D
-> +				0x1 << 31;
-> +			xe_vm_bind_array_err(fd, vm, 0, bind_ops,
-> +
-> BIND_ARRAY_CONFLICT_NUM_BINDS,
-> +					     sync, 1, ENOSPC);
-> +			bind_ops[BIND_ARRAY_CONFLICT_NUM_BINDS -
-> 1].flags &=3D
-> +				~(0x1 << 31);
-> +
-> +			/* Verify existing mappings still works */
-> +			i =3D 1;
-> +			{
-> +				uint64_t batch_offset =3D (char *)&data[i].batch -
-> (char *)data;
-> +				uint64_t batch_addr =3D addr +
-> exec_args[i].offset + batch_offset;
-> +				uint64_t sdi_offset =3D (char *)&data[i].data -
-> (char *)data;
-> +				uint64_t sdi_addr =3D addr + exec_args[i].offset +
-> sdi_offset;
-> +				data =3D map2 + exec_args[i].offset;
-> +
-> +				b =3D 0;
-> +				data[i].batch[b++] =3D
-> MI_STORE_DWORD_IMM_GEN4;
-> +				data[i].batch[b++] =3D sdi_addr;
-> +				data[i].batch[b++] =3D sdi_addr >> 32;
-> +				data[i].batch[b++] =3D 0xc0ffee;
-> +				data[i].batch[b++] =3D MI_BATCH_BUFFER_END;
-> +				igt_assert(b <=3D ARRAY_SIZE(data[i].batch));
-> +
-> +				sync[1].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +				sync[1].handle =3D syncobj_create(fd, 0);
-> +				exec.num_syncs =3D 2;
-> +
-> +				exec.exec_queue_id =3D exec_queue;
-> +				exec.address =3D batch_addr;
-> +				xe_exec(fd, &exec);
-> +			}
-> +
-> +			igt_assert(syncobj_wait(fd, &sync[0].handle, 1,
-> INT64_MAX, 0, NULL));
-> +			igt_assert(syncobj_wait(fd, &sync[1].handle, 1,
-> INT64_MAX, 0,
-> +NULL));
-> +
-> +			syncobj_destroy(fd, sync[0].handle);
-> +			syncobj_destroy(fd, sync[1].handle);
-> +
-> +			data =3D map2 + exec_args[i].offset;
-> +			igt_assert_eq(data[i].data, 0xc0ffee);
-> +			sync[0].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +		}
-> +		sync[0].handle =3D syncobj_create(fd, 0);
-> +		xe_vm_bind_array(fd, vm, 0, bind_ops,
-> +				 BIND_ARRAY_CONFLICT_NUM_BINDS, sync,
-> 1);
-> +	}
-> +
-> +	for (i =3D 0; i < n_execs; i++) {
-> +		uint64_t batch_offset =3D (char *)&data[i].batch - (char *)data;
-> +		uint64_t batch_addr =3D addr + exec_args[i].offset +
-> batch_offset;
-> +		uint64_t sdi_offset =3D (char *)&data[i].data - (char *)data;
-> +		uint64_t sdi_addr =3D addr + exec_args[i].offset + sdi_offset;
-> +		data =3D map + exec_args[i].offset;
-> +
-> +		b =3D 0;
-> +		data[i].batch[b++] =3D MI_STORE_DWORD_IMM_GEN4;
-> +		data[i].batch[b++] =3D sdi_addr;
-> +		data[i].batch[b++] =3D sdi_addr >> 32;
-> +		data[i].batch[b++] =3D 0xc0ffee;
-> +		data[i].batch[b++] =3D MI_BATCH_BUFFER_END;
-> +		igt_assert(b <=3D ARRAY_SIZE(data[i].batch));
-> +
-> +		sync[0].flags &=3D ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +		sync[1].flags |=3D DRM_XE_SYNC_FLAG_SIGNAL;
-> +		if (i =3D=3D n_execs - 1) {
-> +			sync[1].handle =3D syncobj_create(fd, 0);
-> +			exec.num_syncs =3D 2;
-> +		} else {
-> +			exec.num_syncs =3D 1;
-> +		}
-> +
-> +		exec.exec_queue_id =3D exec_queue;
-> +		exec.address =3D batch_addr;
-> +		xe_exec(fd, &exec);
-> +	}
-> +
-> +	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
-> +
-> +	for (i =3D 0; i < n_execs; i++) {
-> +		data =3D map + exec_args[i].offset;
-> +		igt_assert_eq(data[i].data, 0xc0ffee);
-> +	}
-> +
-> +	syncobj_destroy(fd, sync[0].handle);
-> +	syncobj_destroy(fd, sync[1].handle);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +
-> +	munmap(map, bo_size);
-> +	if (map2)
-> +		munmap(map, bo_size);
-> +	gem_close(fd, bo);
-> +	if (bo2)
-> +		gem_close(fd, bo2);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +
->  #define LARGE_BIND_FLAG_MISALIGNED	(0x1 << 0)
->  #define LARGE_BIND_FLAG_SPLIT		(0x1 << 1)
->  #define LARGE_BIND_FLAG_USERPTR		(0x1 << 2)
-> @@ -2144,6 +2413,18 @@ igt_main
->  			test_bind_array(fd, hwe, 16,
+> +	igt_subtest("bind-array-enobufs")
+> +		xe_for_each_engine(fd, hwe)
+> +			test_bind_array(fd, hwe, xe_has_vram(fd) ? 1024 : 512,
+To make this test future proof, you can add requirement check -  binds*size=
+ > Space available
+
+With that added, you can add r-b
+Reviewed-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+
+Thanks,
+Rahul
+> +					0x1a0000, SZ_2M,
+> +					BIND_ARRAY_ENOBUFS_FLAG);
+>=20
+>  	igt_subtest("bind-array-exec_queue-twice")
+>  		xe_for_each_engine(fd, hwe)
+> -			test_bind_array(fd, hwe, 2,
+> +			test_bind_array(fd, hwe, 2, 0x1a0000, 0,
 >=20
 > 	BIND_ARRAY_BIND_EXEC_QUEUE_FLAG);
 >=20
-> +	igt_subtest("bind-array-conflict")
-> +		xe_for_each_engine(fd, hwe)
-> +			test_bind_array_conflict(fd, hwe, false, false);
-> +
-> +	igt_subtest("bind-no-array-conflict")
-> +		xe_for_each_engine(fd, hwe)
-> +			test_bind_array_conflict(fd, hwe, true, false);
-> +
-> +	igt_subtest("bind-array-conflict-error-inject")
-> +		xe_for_each_engine(fd, hwe)
-> +			test_bind_array_conflict(fd, hwe, false, true);
-> +
->  	for (bind_size =3D 0x1ull << 21; bind_size <=3D 0x1ull << 31;
->  	     bind_size =3D bind_size << 1) {
->  		igt_subtest_f("large-binds-%lld",
+>  	igt_subtest("bind-array-exec_queue-many")
+>  		xe_for_each_engine(fd, hwe)
+> -			test_bind_array(fd, hwe, 16,
+> +			test_bind_array(fd, hwe, 16, 0x1a0000, 0,
+>=20
+> 	BIND_ARRAY_BIND_EXEC_QUEUE_FLAG);
+>=20
+>  	igt_subtest("bind-array-conflict")
 > --
 > 2.34.1
 
