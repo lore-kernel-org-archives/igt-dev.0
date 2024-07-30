@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82814C3DA7F
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 21:35:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6E51C52D1D
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 21:36:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3EB2010E588;
-	Tue, 30 Jul 2024 21:35:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A556610E59B;
+	Tue, 30 Jul 2024 21:36:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fkUGe2vk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qbmif00m";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4B8F110E588
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 21:35:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0466610E597
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 21:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722375356; x=1753911356;
+ t=1722375360; x=1753911360;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=YOZSs4zPW+0NtJCjfFQb+PWWZ/gaISAucvWeKW+8bxk=;
- b=fkUGe2vk8+VXPh0nx8uI2URhu0DL4hDi/DIfNX27QDudgPDieivkzPAp
- crZztyEFTFx8w+LVth1788vDP/6IlIGGQj2+mVMjgbSlCIUl5V2e+PoA6
- ZzJGfz9pDJzIXO1L1VVyPSSZ+DtSW5Q5T74SvUzqACSPmHeQ5GOrdoS0S
- 10iPvVlzI9s/g2J7K6kJiFAtONTaSOeGhoYsanSFB1oDPkP5YPC5WRGFT
- 9398eH3rsRuL8aXPqpVRdFYcyuZcVZSWJUt0SlfXnOtyrNHUhqeqVgF7J
- kgRpapDofOklPtDiHbgaYqdPdYY52Ya3dC7LTPa8i88xy7jacuPgMJmGZ g==;
-X-CSE-ConnectionGUID: Dv2LaxLLQfGYjJJef1scAg==
-X-CSE-MsgGUID: /W6SrVCfRT2+Q6IIxI5g3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="37694599"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="37694599"
+ bh=txyMl4vzJ5y5biv/Ii+wYdXMfQY/kD4unCo8E8bJpMw=;
+ b=Qbmif00miI6wKsIooqkqnwHuZbA31ogFE7k3P9OJEzCtaaIBJvwv61QE
+ JO77zwCebcDzkxuteyWy94rFTVNrOto1eRk7LHKHeK+WOO4uaaQ7WTXvS
+ v8DFEqI0rvMNG+60fBoWJbELZnT5fLsAlXq8z1oZ7x4LOrmOGoALRKwyb
+ +hjTCkOoRf/qI4e6BOynZBPE1tE1ho16NZFgd0y35qNNynCVOdwkt6ZxA
+ OyzZvCSn9e7ZyqRH4kvzLv0mtyoRf54RTgq40fIcujPBMZz4piwm5W+Dr
+ rLf4QQe9pEJMIXnovKez3OfUcrAwhRPmBo+zyHAJ7QezL0Lk9Zb4BV2cq w==;
+X-CSE-ConnectionGUID: uGNkAQcfQPCVF/3i4sjKdQ==
+X-CSE-MsgGUID: VRTH1ufjRTWR5DXAQkC3Qg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="37694602"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="37694602"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 14:35:56 -0700
-X-CSE-ConnectionGUID: W/n6wVRuSMSlF06Yg4Ft9g==
-X-CSE-MsgGUID: 5RDhgeD1SsCB9qasY+Khag==
+ 30 Jul 2024 14:35:59 -0700
+X-CSE-ConnectionGUID: mHyB27mwTKmVamNElq3+kA==
+X-CSE-MsgGUID: npSVIhPDSIiojfYcYivKoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="59321735"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="59321742"
 Received: from linux-meteor-lake-client-platform.iind.intel.com
  ([10.190.219.196])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 14:35:54 -0700
+ 30 Jul 2024 14:35:58 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: imre.deak@intel.com,
 	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 08/10] lib/igt_kms: add helper to get pending lt failures
-Date: Wed, 31 Jul 2024 02:43:39 +0530
-Message-ID: <20240730211343.58703-9-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 10/10] HAX: Do not merge
+Date: Wed, 31 Jul 2024 02:43:41 +0530
+Message-ID: <20240730211343.58703-11-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730211343.58703-1-kunal1.joshi@intel.com>
 References: <20240730211343.58703-1-kunal1.joshi@intel.com>
@@ -69,58 +69,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-link params are reduce on two consecutive lt failures,
-add helper to get lt failures pending.
-
-Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 24 ++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 25 insertions(+)
+ tests/intel-ci/fast-feedback.testlist    | 3 +++
+ tests/intel-ci/xe-fast-feedback.testlist | 4 ++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 581028b74..611f80ef0 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7027,3 +7027,27 @@ bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output
- 	close(debugfs_fd);
- 	return ret >= 0;
- }
-+
-+/**
-+ * igt_read_link_training_info:
-+ * @drm_fd: A drm file descriptor
-+ * @output: Target output
-+ * @link_training_info: Link training info to be filled
-+ *
-+ * Returns: Sets link training info.
-+ */
-+int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output)
-+{
-+	int dir, res, ret;
-+	char buf[512];
-+
-+	igt_require_f(output->name, "Invalid output");
-+	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-+	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-+			       igt_output_name(output));
-+	res = igt_debugfs_simple_read(dir, "i915_dp_force_link_training_failure", buf, sizeof(buf));
-+	close(dir);
-+	igt_require(res > 0);
-+	sscanf(buf, "%d", &ret);
-+	return ret;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 4f0847385..58dda6b45 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1261,5 +1261,6 @@ enum dp_link_rate igt_get_dp_max_link_rate(int drm_fd, igt_output_t *output);
- enum dp_lane_count igt_get_dp_max_lane_count(int drm_fd, igt_output_t *output);
- bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output);
- bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output);
-+int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output);
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..f7b0d40b1 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,6 +1,9 @@
+ # Try to load the driver if it's not available yet.
+ igt@i915_module_load@load
  
- #endif /* __IGT_KMS_H__ */
++igt@kms_dp_fallback@dp-fallback
++igt@kms_dp_fallback@mst-fallback
++igt@kms_dp_fallback@uhbr-fallback
+ # Keep alphabetically sorted by default
+ igt@core_auth@basic-auth
+ igt@debugfs_test@read_all_entries
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 01b01dcf9..387f612ff 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,6 +1,10 @@
+ # Should be the first test
+ igt@xe_module_load@load
+ 
++igt@kms_dp_fallback@dp-fallback
++igt@kms_dp_fallback@mst-fallback
++igt@kms_dp_fallback@uhbr-fallback
++
+ igt@fbdev@eof
+ igt@fbdev@info
+ igt@fbdev@nullptr
 -- 
 2.43.0
 
