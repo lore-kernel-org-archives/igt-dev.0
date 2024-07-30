@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D2B6C3DA49
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:48:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23335C3DA49
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:48:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16E9310E50D;
-	Tue, 30 Jul 2024 11:48:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D923B10E516;
+	Tue, 30 Jul 2024 11:48:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MRE70kDB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xu+ylj4m";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C600010E516
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:48:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E09710E517
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722340122; x=1753876122;
+ t=1722340125; x=1753876125;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=n5p+pYnFe2g3pvYOXs2yA+xTMsLCvHEo4rQZT/CMpW0=;
- b=MRE70kDBVxRgJPsBqpSqTOBRWuF9AVG9wxFMTDEPAr/krrFjOI3fGHKJ
- BvtGxjntD6mzteqkpEgtlKqyG7h69hxz8eXzYIFKCG2G2xgTLvaKaGLp0
- S4P6fZmrK+JCxRKwxGo5JEMskxa6n2xcsIaL81M/ymSJmXdJjm8QB4bjX
- P4V1NDPIx1AmdlDkRQG5841dYN0jIY9RlUuZ30veX1jkWH7g+IlosWO6j
- t5X/Xga6Q36syyYF/w8oU3UJej8DIIjPVesA7BFD7wPDg/QBJv9aqSPvX
- BRXGLttB5xpXsIcHbQyJ5qmjANr1HhM1EXIc/Kkam3izI5AtKqqEvcl23 Q==;
-X-CSE-ConnectionGUID: ETR6zVRITpSJQ17eSaECig==
-X-CSE-MsgGUID: gBlYJ9joRLO2K/WQPT0aOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937401"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937401"
+ bh=HujAAdShpIluPO2L8fvdOf0URlbKpNNkUl4msXXjuNo=;
+ b=Xu+ylj4mgk/Vla2PhcvWTxqtLLbcD3Ii+1eMflA7Dr7DuRTToaBT5lio
+ EQAHix1B1a1+cyTOQ0E/PydYiLeNWhNloUNhqMd6nacvI0swuOJpR/3n8
+ Reivp4f4b+PKtaJ5GAkxnVGztp9YHUgQsmxjtDiQRWqWGOTKB+c19+Rq4
+ OoqLY1cpX6gqZ/a7bdq9+bAYOUjUf5gpU78Pgy6O9uPbeMYHv3mWfvmE/
+ b+4nzqIbfVqywjmj7iAx8ECNX7TtBPKyEK2hQKzfKc7oBlDwVBCvYI/Oq
+ j2JfPu6nXX1S+u3bWgq085EEKh8o8BwEwgzj6aFiZG/Or4iKzUrN8hHgS g==;
+X-CSE-ConnectionGUID: BylDFWpkSj+jsYmKJx70ZQ==
+X-CSE-MsgGUID: tKpbLGnASXu9DDh+WFTcdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937409"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208,223";a="23937409"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:48:42 -0700
-X-CSE-ConnectionGUID: TAInzEjITF2wzeLuI2uTrg==
-X-CSE-MsgGUID: M5au3D7iS86Lk8OWylORMQ==
+ 30 Jul 2024 04:48:45 -0700
+X-CSE-ConnectionGUID: Odd4lpgVQmWcktBvzloP/g==
+X-CSE-MsgGUID: qqpMWYriT3uPau0o9IkWRw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54217185"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208,223";a="54217205"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.43])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:48:39 -0700
+ 30 Jul 2024 04:48:41 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v2 40/66] tests/xe_exec_sip: Check usercoredump for
- attentions
-Date: Tue, 30 Jul 2024 13:44:57 +0200
-Message-Id: <20240730114523.334156-41-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v2 41/66] tests/xe_exec_sip: Add support for dynamic
+ debugger sysfs toggle
+Date: Tue, 30 Jul 2024 13:44:58 +0200
+Message-Id: <20240730114523.334156-42-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730114523.334156-1-christoph.manszewski@intel.com>
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
@@ -79,112 +79,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+From now on the debugger is disabled by default so it is required
+to enable the debugger before using it. This change addresses that
+fact by calling necessary library functions within test fixtures.
 
-Check for attentions within usercoredump in tests that raise attentions.
-
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_exec_sip.c | 64 +++++++++++++++++++++++++++++++++++++--
- 1 file changed, 61 insertions(+), 3 deletions(-)
+ tests/intel/xe_exec_sip.c | 28 ++++++++++++----------------
+ 1 file changed, 12 insertions(+), 16 deletions(-)
 
 diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
-index 1b0accb3b..a315bd3a9 100644
+index a315bd3a9..832c26bac 100644
 --- a/tests/intel/xe_exec_sip.c
 +++ b/tests/intel/xe_exec_sip.c
-@@ -145,7 +145,7 @@ static void check_fill_buf(uint8_t *ptr, const int width, const int x,
- 		     color, val, x, y);
+@@ -123,18 +123,6 @@ static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, const int shadertype,
+ 	return buf->handle;
  }
  
--static void check_buf(int fd, uint32_t handle, int width, int height,
-+static int check_buf(int fd, uint32_t handle, int width, int height,
- 		      int siptype, uint8_t poison_c)
+-static bool has_debugger(int fd)
+-{
+-	struct drm_xe_eudebug_connect param = { .pid = getpid() };
+-	int debugfd;
+-
+-	debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, &param);
+-	if (debugfd >= 0)
+-		close(debugfd);
+-
+-	return debugfd >= 0;
+-}
+-
+ static void check_fill_buf(uint8_t *ptr, const int width, const int x,
+ 			   const int y, const uint8_t color)
  {
- 	unsigned int sz = ALIGN(width * height, 4096);
-@@ -188,6 +188,63 @@ static void check_buf(int fd, uint32_t handle, int width, int height,
- 		igt_assert(sip_count == 0);
+@@ -180,7 +168,7 @@ static int check_buf(int fd, uint32_t handle, int width, int height,
+ 	}
  
- 	munmap(ptr, sz);
-+
-+	return sip_count;
-+}
-+
-+#define USERCOREDUMP_FORMAT "usercoredumps/%d/%d"
-+static char *get_latest_usercoredump(int dir)
-+{
-+	char tmp[256];
-+	int i = 1;
-+
-+	do {
-+		snprintf(tmp, sizeof(tmp), USERCOREDUMP_FORMAT, getpid(), i++);
-+	} while (igt_sysfs_has_attr(dir, tmp));
-+
-+	snprintf(tmp, sizeof(tmp), USERCOREDUMP_FORMAT, getpid(), i-2);
-+	return igt_sysfs_get(dir, tmp);
-+}
-+
-+static void check_usercoredump(int fd, int sip, int dispatched)
-+{
-+	int dir = igt_debugfs_dir(fd);
-+	char *usercoredump, *str;
-+	unsigned int before, after;
-+	char match[256];
-+
-+	if (sip != SIP_WAIT)
-+		return;
-+
-+	/* XXX reinstate when offline coredumps are implemented */
-+#ifndef XXX_ATTENTIONS_THROUGH_COREDUMPS
-+	return;
-+#endif
-+	usercoredump = get_latest_usercoredump(dir);
-+	igt_assert(usercoredump);
-+	igt_debug("%s\n", usercoredump);
-+
-+	snprintf(match, sizeof(match), "PID: %d", getpid());
-+	str = strstr(usercoredump, match);
-+	igt_assert(str);
-+
-+	snprintf(match, sizeof(match), "Comm: %s", igt_test_name());
-+	str = strstr(str, match);
-+	igt_assert(str);
-+
-+	str = strstr(str, "TD_ATT");
-+	igt_assert(str);
-+	igt_assert_eq(sscanf(str, "TD_ATT before (%d):", &before), 1);
-+	str = strstr(str + 1, "TD_ATT");
-+	igt_assert_eq(sscanf(str, "TD_ATT after (%d):", &after), 1);
-+
-+	igt_info("attentions %d before, %d after\n", before, after);
-+
-+	igt_assert_eq(before, dispatched);
-+	igt_assert_eq(after, dispatched);
-+
-+	free(usercoredump);
-+	close(dir);
- }
+ 	igt_assert(thread_count);
+-	if (siptype != SIP_NULL && has_debugger(fd))
++	if (siptype != SIP_NULL && xe_eudebug_debugger_available(fd))
+ 		igt_assert_f(thread_count == sip_count,
+ 			     "Thread and SIP count mismatch, %d != %d\n",
+ 			     thread_count, sip_count);
+@@ -305,7 +293,7 @@ static void test_sip(int shader, int sip, struct drm_xe_engine_class_instance *e
+ 	timeout *= igt_run_in_simulation() ? 10 : 1;
  
- static uint64_t
-@@ -232,7 +289,7 @@ static void test_sip(int shader, int sip, struct drm_xe_engine_class_instance *e
- 	uint32_t exec_queue_id, handle, vm_id;
- 	struct intel_bb *ibb;
- 	uint64_t timeout;
--	int fd;
-+	int dispatched, fd;
+ 	exec_queue_id = xe_exec_queue_create(fd, vm_id, eci,
+-					     has_debugger(fd) ?
++					     xe_eudebug_debugger_available(fd) ?
+ 					     to_user_pointer(&ext) : 0);
+ 	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
  
- 	igt_debug("Using %s\n", xe_engine_class_string(eci->engine_class));
+@@ -338,6 +326,7 @@ static void test_sip(int shader, int sip, struct drm_xe_engine_class_instance *e
+ igt_main
+ {
+ 	struct drm_xe_engine_class_instance *eci;
++	bool was_enabled;
+ 	int fd;
  
-@@ -258,7 +315,8 @@ static void test_sip(int shader, int sip, struct drm_xe_engine_class_instance *e
- 	intel_bb_sync(ibb);
- 	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
+ 	igt_fixture
+@@ -349,17 +338,21 @@ igt_main
+ 	/* Debugger disabled (TD_CTL not set) */
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require(!has_debugger(fd));
++			was_enabled = xe_eudebug_enable(fd, false);
++			igt_require(!xe_eudebug_debugger_available(fd));
+ 		}
  
--	check_buf(fd, handle, width, height, sip, COLOR_C4);
-+	dispatched = check_buf(fd, handle, width, height, sip, COLOR_C4);
-+	check_usercoredump(fd, sip, dispatched);
+ 		test_render_and_compute("wait-writesip-nodebug", fd, eci)
+ 			test_sip(SHADER_WAIT, SIP_WRITE, eci);
++
++		igt_fixture
++			xe_eudebug_enable(fd, was_enabled);
+ 	}
  
- 	gem_close(fd, handle);
- 	intel_bb_destroy(ibb);
+ 	/* Debugger enabled (TD_CTL set) */
+ 	igt_subtest_group {
+ 		igt_fixture {
+-			igt_require(has_debugger(fd));
++			was_enabled = xe_eudebug_enable(fd, true);
+ 		}
+ 
+ 		test_render_and_compute("breakpoint-writesip", fd, eci)
+@@ -367,6 +360,9 @@ igt_main
+ 
+ 		test_render_and_compute("breakpoint-waitsip", fd, eci)
+ 			test_sip(SHADER_BREAKPOINT, SIP_WAIT, eci);
++
++		igt_fixture
++			xe_eudebug_enable(fd, was_enabled);
+ 	}
+ 
+ 	igt_fixture
 -- 
 2.34.1
 
