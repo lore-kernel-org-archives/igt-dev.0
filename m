@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C843C3DA49
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:45:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E39DC3DA49
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 12E7610E50A;
-	Tue, 30 Jul 2024 11:45:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2EB2010E50D;
+	Tue, 30 Jul 2024 11:46:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cFmdIrS0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SwV+OOFW";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2789410E50A
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:45:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F16B810E50D
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:46:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722339952; x=1753875952;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=BYcjIyAsGcDJthXcT/n9Bjmjy+mGyx0ifmHqcyQ6c5k=;
- b=cFmdIrS0roWVCq2yY5vHIXVGs3r80OXOI2jCHh3+wwMCjgF55T3LlxzK
- xAp0A3Dy4kBkqGsAYKBO4uMktpuTwAuigGA237NaeYHQQXhN2Oi+ljF6D
- Rp3xsWKWY2CHIaY5FxgRrRq1h8zrmHPoqpEYPcQaRLd/XHghRHeu/Weuq
- WQsQXn7b6OjQE+TbweQJU51n3w0A+TG6rJx/oMGUTdF3LVhqPj4UcPnw1
- 4Q096iCTOWpFoJkE5hTmvunbhr0oy6hFlYAPspwtlWEAguVmZf4tox6RR
- wNVvNkKagC4cjVHI8OKCjRlOAeCv5li43O1mKeIY6bAJD+STPNUK7c2W+ Q==;
-X-CSE-ConnectionGUID: l2b4Orn5Qva/ZYmY2EmHEw==
-X-CSE-MsgGUID: ayXeRLuITeWSY6uM1kzLTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937030"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937030"
+ t=1722339966; x=1753875966;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=U2yOxd+6XxnACNaaBCVbV69r8sFHvpdUtC6SI+jJeCs=;
+ b=SwV+OOFW3OMxcf+1JVEGyXZP4NgXoadCC7Si+1UE8M38WvhABUiZXbVm
+ XM/smrzqXLuv98p4ODEoCQ8eWUujss4xaVSiqdswHk2VPDTre0FCJPwo3
+ lkRsUykb3MuZu5bJc0wu2tGDGgfzh54sJ0owpnGRdc5Oqf0qWoJ6eNDUD
+ joA/1RY6hOt0mmnef5NpTeQNZhEiH44m3XERXBUlgD5RQ9flpXauasfFr
+ Wn0WVGOZVMrj9Lo31FTJJCNtpSplfwAkPtlENxDQHSAKh5fjLPMrwf4qb
+ fcbGTIV9usTwGec5P7/FZrIrztkD7v4BE8KSpjQGOMBFQ+GzNkGf+yMWh A==;
+X-CSE-ConnectionGUID: pDrY56ZEQVCys8tCiU+AfA==
+X-CSE-MsgGUID: 0Zy5tDs3TbW2ulpUPIbE7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937043"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937043"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:45:51 -0700
-X-CSE-ConnectionGUID: dELD+T1MRdS1b2X+qT1J/A==
-X-CSE-MsgGUID: IwXInkViRkOblR/Jt8Zkjw==
+ 30 Jul 2024 04:46:06 -0700
+X-CSE-ConnectionGUID: tFU3H/45T+qVPoDgsC2++w==
+X-CSE-MsgGUID: Yej3cyhiR8WPtrK+iE/RHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54215985"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54216124"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.43])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:45:47 -0700
+ 30 Jul 2024 04:46:02 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,12 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v2 00/66] Test coverage for GPU debug support
-Date: Tue, 30 Jul 2024 13:44:17 +0200
-Message-Id: <20240730114523.334156-1-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v2 01/66] drm-uapi/xe: Sync with eudebug uapi
+Date: Tue, 30 Jul 2024 13:44:18 +0200
+Message-Id: <20240730114523.334156-2-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240730114523.334156-1-christoph.manszewski@intel.com>
+References: <20240730114523.334156-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -77,150 +79,421 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 
-In this series the eudebug kernel and validation team would like to
-add test coverage for GPU debug support recently proposed as an RFC.
-(https://patchwork.freedesktop.org/series/136572/)
+Align with kernel commit 09411c6ecbef ("drm/xe/eudebug: Add debug
+metadata support for xe_eudebug") from:
 
-This series adds 'xe_eudebug' and 'xe_eudebug_online' tests together
-with a library that encapsulates common paths in current and future
-EU debugger scenarios. It also extends the 'xe_exec_sip' test and
-'gpgpu_shader' library.
+https://gitlab.freedesktop.org/miku/kernel.git
 
-The aim of the 'xe_eudebug' test is to validate the eudebug resource
-tracking and event delivery mechanism. The 'xe_eudebug_online' test is
-dedicated for 'online' scenarios which means scenarios that exercise
-hardware exception handling and thread state manipulation.
+which introduces most recent changes to the eudebug uapi.
 
-The xe_eudebug library provides an abstraction over debugger and debuggee
-processes, asynchronous event reader, and event log buffers for post-mortem
-analysis.
-
-Latest kernel code can be found here:
-https://gitlab.freedesktop.org/miku/kernel/-/commits/eudebug-dev
-
-Thank you in advance for any comments and insight.
-
-v2:
- - make sure to include all patches and verify that each individual
- patch compiles (Zbigniew)
-
-Andrzej Hajda (6):
-  tests/xe_eudebug: Add userptr variant of basic-vm-access test
-  lib/gpgpu_shader: Add write_on_exception template
-  lib/gpgpu_shader: Add set/clear exception register (cr0.1) helpers
-  lib/intel_batchbuffer: Add helper to get pointer at specified offset
-  lib/gpgpu_shader: Allow enabling illegal opcode exceptions in shader
-  tests/xe_exec_sip: Rework invalid instruction tests
-
-Christoph Manszewski (17):
-  lib/xe_ioctl: Add wrapper with vm_bind_op extension parameter
-  lib/xe_eudebug: Add support for vm_bind events
-  lib/xe_eudebug: Add support for user fence acking
-  lib/xe_eudebug: Add support for dynamic debugger sysfs toggle
-  tests/xe_eudebug: Add basic vm-bind coverage
-  tests/xe_eudebug: Add support for dynamic debugger sysfs toggle
-  tests/xe_eudebug: Add coverage for sysfs debugger toggle
-  lib/xe_eudebug: Allow debugger to wait for client
-  tests/xe_eudebug: Add vm-bind discovery tests
-  tests/xe_eudebug: Add basic-vm-bind-ufence
-  tests/xe_eudebug: Add vm-bind-clear test
-  lib/gpgpu_shader: Extend shader building library
-  tests/xe_exec_sip: Port tests for shaders and sip
-  tests/xe_exec_sip: Add support for dynamic debugger sysfs toggle
-  tests/xe_eudebug_online: Add support for dynamic debugger sysfs toggle
-  tests/xe_eudebug_online: Add subtests w/o long running mode
-  tests/xe_live_ktest: Add xe_eudebug live test
-
-Dominik Grzegorzek (18):
-  drm-uapi/xe: Sync with eudebug uapi
-  tests/xe_eudebug: Test eudebug connection
-  lib/xe_eudebug: Introduce eu debug testing framework
-  lib/xe_eudebug: Add exec_queue support
-  lib/xe_eudebug: Add attention events support
-  lib/xe_eudebug: Add metadata support
-  tests/xe_eudebug: Test open close events
-  tests/xe_eudebug: Exercise read_event ioctl
-  tests/xe_eudebug: Add vm events sanity check
-  tests/xe_eudebug: Race discovery against eudebug attach.
-  tests/xe_eudebug: Introduce basic exec_queue testing
-  tests/xe_eudebug: Include exec queues in discovery testing
-  tests/xe_exec_sip: Check if we reset due to unhandled attention
-  tests/xe_exec_sip: Check usercoredump for attentions
-  tests/xe_eudebug_online: Debug client which runs workloads on EU
-  tests/xe_eudebug_online: Set dynamic breakpoint on interrupt-all
-  tests/xe_eudebug_online: What if user does not set debug mode?
-  tests/xe_eudebug_online: Check if eu debugger disables preemption
-    timeout
-
-Dominik Karol Piatkowski (1):
-  tests/xe_eudebug_online: Add caching tests
-
-Dominik Karol Piątkowski (5):
-  tests/xe_eudebug: Add multigpu scenarios
-  tests/xe_exec_sip: Add breakpoint-writesip-twice test
-  tests/xe_exec_sip: Add breakpoint-waitsip-heavy test
-  tests/xe_eudebug_online: Add tdctl-parameters test
-  tests/xe_eudebug_online: Add single-step and single-step-one tests
-
-Gwan-gyeong Mun (1):
-  lib/intel_batchbuffer: Add support for long-running mode execution
-
-Jonathan Cavitt (2):
-  tests/xe_eudebug: Exercise lseek
-  tests/xe_eudebug: Test multiple bo sizes
-
-Karolina Stolarek (6):
-  tests/xe_eudebug: Add discovery-race-vmbind subtest
-  tests/xe_exec_sip: Add sanity-after-timeout test
-  tests/xe_exec_sip: Add nodebug test cases
-  lib/xe_eudebug: Expose xe_eudebug_connect
-  tests/xe_eudebug_online: Add interrupt-reconnect test
-  tests/xe_eudebug_online: Add multisession test cases
-
-Kolanupaka Naveena (1):
-  tests/xe_eudebug_online: Adds debugger-reopen test
-
-Maciej Patelczyk (3):
-  tests/xe_eudebug: Exercise debug metadata events sent to debugger
-  tests/xe_eudebug: Add basic-vm-bind-metadata-discovery
-  tests/xe_eudebug: Added connect-user test
-
-Mika Kuoppala (2):
-  lib/xe_eudebug: Allow client to wait for debugger
-  tests/xe_eudebug: Add vm open/pread/pwrite basic tests
-
-Pawel Sikora (4):
-  tests/xe_eudebug: Add basic-vm-access-parameters test
-  lib/xe_eudebug: Add mutex for log events write
-  tests/xe_eudebug: Add basic-client-th test
-  tests/xe_eudebug_online: Add reset-with-attention test
-
- include/drm-uapi/xe_drm.h         |  104 +-
- include/drm-uapi/xe_drm_eudebug.h |  226 +++
- lib/gpgpu_shader.c                |  474 +++++-
- lib/gpgpu_shader.h                |   29 +-
- lib/iga64_generated_codes.c       |  428 ++++-
- lib/intel_batchbuffer.c           |  153 +-
- lib/intel_batchbuffer.h           |   22 +
- lib/meson.build                   |    1 +
- lib/xe/xe_eudebug.c               | 2192 ++++++++++++++++++++++++++
- lib/xe/xe_eudebug.h               |  206 +++
- lib/xe/xe_ioctl.c                 |   20 +-
- lib/xe/xe_ioctl.h                 |    5 +
- tests/intel/xe_eudebug.c          | 2425 +++++++++++++++++++++++++++++
- tests/intel/xe_eudebug_online.c   | 2117 +++++++++++++++++++++++++
- tests/intel/xe_exec_sip.c         |  332 +++-
- tests/intel/xe_live_ktest.c       |    6 +
- tests/meson.build                 |    2 +
- 17 files changed, 8701 insertions(+), 41 deletions(-)
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+---
+ include/drm-uapi/xe_drm.h         | 104 +++++++++++++-
+ include/drm-uapi/xe_drm_eudebug.h | 226 ++++++++++++++++++++++++++++++
+ 2 files changed, 324 insertions(+), 6 deletions(-)
  create mode 100644 include/drm-uapi/xe_drm_eudebug.h
- create mode 100644 lib/xe/xe_eudebug.c
- create mode 100644 lib/xe/xe_eudebug.h
- create mode 100644 tests/intel/xe_eudebug.c
- create mode 100644 tests/intel/xe_eudebug_online.c
 
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 29425d7fd..ff9d4e7b6 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -3,8 +3,8 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
+-#ifndef _UAPI_XE_DRM_H_
+-#define _UAPI_XE_DRM_H_
++#ifndef _XE_DRM_H_
++#define _XE_DRM_H_
+ 
+ #include "drm.h"
+ 
+@@ -102,7 +102,9 @@ extern "C" {
+ #define DRM_XE_EXEC			0x09
+ #define DRM_XE_WAIT_USER_FENCE		0x0a
+ #define DRM_XE_OBSERVATION		0x0b
+-
++#define DRM_XE_EUDEBUG_CONNECT		0x0c
++#define DRM_XE_DEBUG_METADATA_CREATE	0x0d
++#define DRM_XE_DEBUG_METADATA_DESTROY	0x0e
+ /* Must be kept compact -- no holes */
+ 
+ #define DRM_IOCTL_XE_DEVICE_QUERY		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEVICE_QUERY, struct drm_xe_device_query)
+@@ -117,6 +119,9 @@ extern "C" {
+ #define DRM_IOCTL_XE_EXEC			DRM_IOW(DRM_COMMAND_BASE + DRM_XE_EXEC, struct drm_xe_exec)
+ #define DRM_IOCTL_XE_WAIT_USER_FENCE		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_WAIT_USER_FENCE, struct drm_xe_wait_user_fence)
+ #define DRM_IOCTL_XE_OBSERVATION		DRM_IOW(DRM_COMMAND_BASE + DRM_XE_OBSERVATION, struct drm_xe_observation_param)
++#define DRM_IOCTL_XE_EUDEBUG_CONNECT		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EUDEBUG_CONNECT, struct drm_xe_eudebug_connect)
++#define DRM_IOCTL_XE_DEBUG_METADATA_CREATE	 DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEBUG_METADATA_CREATE, struct drm_xe_debug_metadata_create)
++#define DRM_IOCTL_XE_DEBUG_METADATA_DESTROY	 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_DEBUG_METADATA_DESTROY, struct drm_xe_debug_metadata_destroy)
+ 
+ /**
+  * DOC: Xe IOCTL Extensions
+@@ -134,7 +139,7 @@ extern "C" {
+  * redefine the interface more easily than an ever growing struct of
+  * increasing complexity, and for large parts of that interface to be
+  * entirely optional. The downside is more pointer chasing; chasing across
+- * the __user boundary with pointers encapsulated inside u64.
++ * the boundary with pointers encapsulated inside u64.
+  *
+  * Example chaining:
+  *
+@@ -881,6 +886,23 @@ struct drm_xe_vm_destroy {
+ 	__u64 reserved[2];
+ };
+ 
++struct drm_xe_vm_bind_op_ext_attach_debug {
++	/** @base: base user extension */
++	struct drm_xe_user_extension base;
++
++	/** @id: Debug object id from create metadata */
++	__u64 metadata_id;
++
++	/** @flags: Flags */
++	__u64 flags;
++
++	/** @cookie: Cookie */
++	__u64 cookie;
++
++	/** @reserved: Reserved */
++	__u64 reserved;
++};
++
+ /**
+  * struct drm_xe_vm_bind_op - run bind operations
+  *
+@@ -905,7 +927,9 @@ struct drm_xe_vm_destroy {
+  *    handle MBZ, and the BO offset MBZ. This flag is intended to
+  *    implement VK sparse bindings.
+  */
++
+ struct drm_xe_vm_bind_op {
++#define XE_VM_BIND_OP_EXTENSIONS_ATTACH_DEBUG 0
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
+ 
+@@ -1108,7 +1132,8 @@ struct drm_xe_exec_queue_create {
+ #define DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY		0
+ #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY		0
+ #define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_TIMESLICE		1
+-
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		2
++#define     DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE		(1 << 0)
+ 	/** @extensions: Pointer to the first extension struct, if any */
+ 	__u64 extensions;
+ 
+@@ -1694,8 +1719,75 @@ struct drm_xe_oa_stream_info {
+ 	__u64 reserved[3];
+ };
+ 
++/*
++ * Debugger ABI (ioctl and events) Version History:
++ * 0 - No debugger available
++ * 1 - Initial version
++ */
++#define DRM_XE_EUDEBUG_VERSION 1
++
++struct drm_xe_eudebug_connect {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	__u64 pid; /* input: Target process ID */
++	__u32 flags; /* MBZ */
++
++	__u32 version; /* output: current ABI (ioctl / events) version */
++};
++
++/*
++ * struct drm_xe_debug_metadata_create - Create debug metadata
++ *
++ * Add a region of user memory to be marked as debug metadata.
++ * When the debugger attaches, the metadata regions will be delivered
++ * for debugger. Debugger can then map these regions to help decode
++ * the program state.
++ *
++ * Returns handle to created metadata entry.
++ */
++struct drm_xe_debug_metadata_create {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++#define DRM_XE_DEBUG_METADATA_ELF_BINARY     0
++#define DRM_XE_DEBUG_METADATA_PROGRAM_MODULE 1
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_MODULE_AREA 2
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SBA_AREA 3
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA 4
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM (1 + \
++	  WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA)
++
++	/** @type: Type of metadata */
++	__u64 type;
++
++	/** @user_addr: pointer to start of the metadata */
++	__u64 user_addr;
++
++	/** @len: length, in bytes of the medata */
++	__u64 len;
++
++	/** @metadata_id: created metadata handle (out) */
++	__u32 metadata_id;
++};
++
++/**
++ * struct drm_xe_debug_metadata_destroy - Destroy debug metadata
++ *
++ * Destroy debug metadata.
++ */
++struct drm_xe_debug_metadata_destroy {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @metadata_id: metadata handle to destroy */
++	__u32 metadata_id;
++};
++
++#include "xe_drm_eudebug.h"
++
+ #if defined(__cplusplus)
+ }
+ #endif
+ 
+-#endif /* _UAPI_XE_DRM_H_ */
++#endif /* _XE_DRM_H_ */
+diff --git a/include/drm-uapi/xe_drm_eudebug.h b/include/drm-uapi/xe_drm_eudebug.h
+new file mode 100644
+index 000000000..55df6f7cd
+--- /dev/null
++++ b/include/drm-uapi/xe_drm_eudebug.h
+@@ -0,0 +1,226 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#ifndef _XE_DRM_EUDEBUG_H_
++#define _XE_DRM_EUDEBUG_H_
++
++#if defined(__cplusplus)
++extern "C" {
++#endif
++
++/**
++ * Do a eudebug event read for a debugger connection.
++ *
++ * This ioctl is available in debug version 1.
++ */
++#define DRM_XE_EUDEBUG_IOCTL_READ_EVENT		_IO('j', 0x0)
++#define DRM_XE_EUDEBUG_IOCTL_EU_CONTROL		_IOWR('j', 0x2, struct drm_xe_eudebug_eu_control)
++#define DRM_XE_EUDEBUG_IOCTL_ACK_EVENT		_IOW('j', 0x4, struct drm_xe_eudebug_ack_event)
++#define DRM_XE_EUDEBUG_IOCTL_VM_OPEN		_IOW('j', 0x1, struct drm_xe_eudebug_vm_open)
++#define DRM_XE_EUDEBUG_IOCTL_READ_METADATA	_IOWR('j', 0x3, struct drm_xe_eudebug_read_metadata)
++
++/* XXX: Document events to match their internal counterparts when moved to xe_drm.h */
++struct drm_xe_eudebug_event {
++	__u32 len;
++
++	__u16 type;
++#define DRM_XE_EUDEBUG_EVENT_NONE		0
++#define DRM_XE_EUDEBUG_EVENT_READ		1
++#define DRM_XE_EUDEBUG_EVENT_OPEN		2
++#define DRM_XE_EUDEBUG_EVENT_VM			3
++#define DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE		4
++#define DRM_XE_EUDEBUG_EVENT_EU_ATTENTION	5
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND		6
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP		7
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE	8
++#define DRM_XE_EUDEBUG_EVENT_METADATA		9
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA 10
++#define DRM_XE_EUDEBUG_EVENT_MAX_EVENT		DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA
++
++	__u16 flags;
++#define DRM_XE_EUDEBUG_EVENT_CREATE		(1 << 0)
++#define DRM_XE_EUDEBUG_EVENT_DESTROY		(1 << 1)
++#define DRM_XE_EUDEBUG_EVENT_STATE_CHANGE	(1 << 2)
++#define DRM_XE_EUDEBUG_EVENT_NEED_ACK		(1 << 3)
++
++	__u64 seqno;
++	__u64 reserved;
++};
++
++struct drm_xe_eudebug_event_client {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle; /* This is unique per debug connection */
++};
++
++struct drm_xe_eudebug_event_vm {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 vm_handle;
++};
++
++struct drm_xe_eudebug_event_exec_queue {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 vm_handle;
++	__u64 exec_queue_handle;
++	__u32 engine_class;
++	__u32 width;
++	__u64 lrc_handle[];
++};
++
++struct drm_xe_eudebug_event_eu_attention {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 exec_queue_handle;
++	__u64 lrc_handle;
++	__u32 flags;
++	__u32 bitmask_size;
++	__u8 bitmask[];
++};
++
++struct drm_xe_eudebug_eu_control {
++	__u64 client_handle;
++
++#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL	0
++#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_STOPPED		1
++#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_RESUME		2
++	__u32 cmd;
++	__u32 flags;
++
++	__u64 seqno;
++
++	__u64 exec_queue_handle;
++	__u64 lrc_handle;
++	__u32 reserved;
++	__u32 bitmask_size;
++	__u64 bitmask_ptr;
++};
++
++/*
++ *  When client (debuggee) does vm_bind_ioctl() following event
++ *  sequence will be created (for the debugger):
++ *
++ *  ┌───────────────────────┐
++ *  │  EVENT_VM_BIND        ├───────┬─┬─┐
++ *  └───────────────────────┘       │ │ │
++ *      ┌───────────────────────┐   │ │ │
++ *      │ EVENT_VM_BIND_OP #1   ├───┘ │ │
++ *      └───────────────────────┘     │ │
++ *                 ...                │ │
++ *      ┌───────────────────────┐     │ │
++ *      │ EVENT_VM_BIND_OP #n   ├─────┘ │
++ *      └───────────────────────┘       │
++ *                                      │
++ *      ┌───────────────────────┐       │
++ *      │ EVENT_UFENCE          ├───────┘
++ *      └───────────────────────┘
++ *
++ * All the events below VM_BIND will reference the VM_BIND
++ * they associate with, by field .vm_bind_ref_seqno.
++ * event_ufence will only be included if the client did
++ * attach sync of type UFENCE into its vm_bind_ioctl().
++ *
++ * When EVENT_UFENCE is sent by the driver, all the OPs of
++ * the original VM_BIND are completed and the [addr,range]
++ * contained in them are present and modifiable through the
++ * vm accessors. Accessing [addr, range] before related ufence
++ * event will lead to undefined results as the actual bind
++ * operations are async and the backing storage might not
++ * be there on a moment of receiving the event.
++ *
++ * Client's UFENCE sync will be held by the driver: client's
++ * drm_xe_wait_ufence will not complete and the value of the ufence
++ * won't appear until ufence is acked by the debugger process calling
++ * DRM_XE_EUDEBUG_IOCTL_ACK_EVENT with the event_ufence.base.seqno.
++ * This will signal the fence, .value will update and the wait will
++ * complete allowing the client to continue.
++ *
++ */
++
++struct drm_xe_eudebug_event_vm_bind {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 vm_handle;
++
++	__u32 flags;
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE (1 << 0)
++
++	__u32 num_binds;
++};
++
++struct drm_xe_eudebug_event_vm_bind_op {
++	struct drm_xe_eudebug_event base;
++	__u64 vm_bind_ref_seqno; /* *_event_vm_bind.base.seqno */
++	__u64 num_extensions;
++
++	__u64 addr; /* XXX: Zero for unmap all? */
++	__u64 range; /* XXX: Zero for unmap all? */
++};
++
++struct drm_xe_eudebug_event_vm_bind_ufence {
++	struct drm_xe_eudebug_event base;
++	__u64 vm_bind_ref_seqno; /* *_event_vm_bind.base.seqno */
++};
++
++struct drm_xe_eudebug_ack_event {
++	__u32 type;
++	__u32 flags; /* MBZ */
++	__u64 seqno;
++};
++
++struct drm_xe_eudebug_vm_open {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @client_handle: id of client */
++	__u64 client_handle;
++
++	/** @vm_handle: id of vm */
++	__u64 vm_handle;
++
++	/** @flags: flags */
++	__u64 flags;
++
++	/** @timeout_ns: Timeout value in nanoseconds operations (fsync) */
++	__u64 timeout_ns;
++};
++
++struct drm_xe_eudebug_read_metadata {
++	__u64 client_handle;
++	__u64 metadata_handle;
++	__u32 flags;
++	__u32 reserved;
++	__u64 ptr;
++	__u64 size;
++};
++
++struct drm_xe_eudebug_event_metadata {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 metadata_handle;
++	/* XXX: Refer to xe_drm.h for fields */
++	__u64 type;
++	__u64 len;
++};
++
++struct drm_xe_eudebug_event_vm_bind_op_metadata {
++	struct drm_xe_eudebug_event base;
++	__u64 vm_bind_op_ref_seqno; /* *_event_vm_bind_op.base.seqno */
++
++	__u64 metadata_handle;
++	__u64 metadata_cookie;
++};
++
++#if defined(__cplusplus)
++}
++#endif
++
++#endif
 -- 
 2.34.1
 
