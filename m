@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C46B6C3DA7E
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:47:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE7E3C3DA7E
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:47:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88D0B10E50E;
-	Tue, 30 Jul 2024 11:47:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B445010E510;
+	Tue, 30 Jul 2024 11:47:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bUtL4tgu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UAWuUqt+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C080610E516
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:47:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A2E710E50E
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:47:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722340057; x=1753876057;
+ t=1722340059; x=1753876059;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Q676slvE1u7jOJlOyCXvay7ZMzsZFllRgZJDcgFe1HY=;
- b=bUtL4tguDFFl7v16uk4q840wrZ0iho8yfECUBVXmPe9WqtwxggoSd91o
- PJ47SjtD+SidDKkKUytINuNcpctAjlf8uUEDM7yxKTTZroAdi5Ex50whU
- BpEiakclpGmHTkV4SnII7i7NB5C/DBsk7XnbLyVlraSPBAziXKvnYPvuO
- TgjZ3HohInzSGbOOLug0t2wECXzCK1abcDgsVAPncsWcGcUw8Xom8adyD
- 0RAUet/oLdrBudXCnYNY5ACSFKLMehWFZW6xrFJg2ku1Ab72c7vKHjWTU
- bWAPnAUprsFKOqb5kfN5JYquHxPtcy19ByjICGZcts3PZMx4fL66oidHK A==;
-X-CSE-ConnectionGUID: OffNXVwOQnOvny83ujo5qw==
-X-CSE-MsgGUID: D8Hjeb3+RRmYtpjPjWn2pA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937268"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937268"
+ bh=wvqmMM2J7zOYWafLVg3Xse5rUh7btvd/dwUZD7N+hwA=;
+ b=UAWuUqt+xCfjWWfQNugmvjNjH8I+L7TZ4lbF//8b+0uk26ErXvG4ZDYQ
+ nG0I87ZJhK7ggeGbU55lbTm6njpDH0bV3c8Qg86DE6qWm+HJudtlaFMoX
+ R+abVmR5fzBC9dyFEpvtasJc3OyMIREKpnVsCfEUBszOPc7v0w8jHy1Aq
+ EWVS/Qma0h+xGsseyFWZ248yiSOlqMPumWOXHKHGtuQ3mrz33CL/HLTj7
+ K4QgCG9TUu2ouHRdqPqZKQkQz4xA02OYhqIQusrqTLXFMoU25LlFz1HtN
+ 1U4tpR18tuTa/dB/MXr1i1y9HGwR7kdh+/7HLWBEPpIGMQXrH2D6XUh6w Q==;
+X-CSE-ConnectionGUID: uyrjeaygSQmNOO43c4cMxQ==
+X-CSE-MsgGUID: fRpqrM/URbqWTL//6CJvYQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937276"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937276"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:47:36 -0700
-X-CSE-ConnectionGUID: bCQQUN3CTd2SSiQDmKKUZQ==
-X-CSE-MsgGUID: MiWWoNL6Q42asZyJ3xLFHg==
+ 30 Jul 2024 04:47:39 -0700
+X-CSE-ConnectionGUID: kemToe00R+2/moE8Tsy38w==
+X-CSE-MsgGUID: cf+q5S5iRNK71v9w69Wf5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54216693"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54216712"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.43])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:47:32 -0700
+ 30 Jul 2024 04:47:35 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,9 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v2 18/66] tests/xe_eudebug: Add vm open/pread/pwrite
- basic tests
-Date: Tue, 30 Jul 2024 13:44:35 +0200
-Message-Id: <20240730114523.334156-19-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v2 19/66] tests/xe_eudebug: Add basic vm-bind coverage
+Date: Tue, 30 Jul 2024 13:44:36 +0200
+Message-Id: <20240730114523.334156-20-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730114523.334156-1-christoph.manszewski@intel.com>
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
@@ -79,321 +78,193 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Add basic coverage for vm-bind event delivery mechanism that enables the
+user to track client vm-bind ioctl calls.
 
-Add basic tests for opening, writing and reading into
-client's vm.
-
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 276 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 276 insertions(+)
+ tests/intel/xe_eudebug.c | 117 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 109 insertions(+), 8 deletions(-)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index 9497e73e9..5080fdf5b 100644
+index 5080fdf5b..ce6c37c6d 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -16,9 +16,139 @@
- #include <sys/ioctl.h>
- 
- #include "igt.h"
-+#include "intel_pat.h"
-+#include "lib/igt_syncobj.h"
- #include "xe/xe_eudebug.h"
-+#include "xe/xe_ioctl.h"
+@@ -22,6 +22,41 @@
+ #include "xe/xe_ioctl.h"
  #include "xe/xe_query.h"
  
-+#define BO_ADDR 0x1a0000
-+#define BO_ITEMS 4096
-+#define MIN_BO_SIZE (BO_ITEMS * sizeof(uint64_t))
++#define CREATE_VMS (1 << 0)
++#define CREATE_EXEC_QUEUES (1 << 1)
++#define VM_BIND (1 << 2)
++#define VM_BIND_VM_DESTROY (1 << 3)
++#define VM_BIND_EXTENDED (1 << 4)
 +
-+struct bind_list {
-+	int fd;
-+	uint32_t vm;
-+	uint32_t *bo;
-+	struct drm_xe_vm_bind_op *bind_ops;
-+	unsigned int n;
-+};
-+
-+static void bo_prime(int fd, uint32_t bo, const uint64_t addr, const uint64_t size)
++static void basic_vm_bind_client(int fd, struct xe_eudebug_client *c)
 +{
-+	uint64_t *d;
-+	uint64_t i;
++	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
++	size_t bo_size = xe_get_default_alignment(fd);
++	uint32_t bo = xe_bo_create(fd, 0, bo_size,
++				   system_memory(fd), 0);
++	uint64_t addr = 0x1a0000;
 +
-+	d = xe_bo_map(fd, bo, size);
-+	igt_assert(d);
++	xe_eudebug_client_vm_bind(c, fd, vm, bo, 0, addr, bo_size);
++	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr, bo_size);
 +
-+	for (i = 0; i < size/sizeof(*d); i++)
-+		d[i] = addr + i;
-+
-+	munmap(d, size);
++	gem_close(fd, bo);
++	xe_eudebug_client_vm_destroy(c, fd, vm);
 +}
 +
-+static void bo_check(int fd, uint32_t bo, const uint64_t addr, const uint64_t size)
++static void basic_vm_bind_vm_destroy_client(int fd, struct xe_eudebug_client *c)
 +{
-+	uint64_t *d;
-+	uint64_t i;
++	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
++	size_t bo_size = xe_get_default_alignment(fd);
++	uint32_t bo = xe_bo_create(fd, 0, bo_size,
++				   system_memory(fd), 0);
++	uint64_t addr = 0x1a0000;
 +
-+	d = xe_bo_map(fd, bo, size);
-+	igt_assert(d);
++	xe_eudebug_client_vm_bind(c, fd, vm, bo, 0, addr, bo_size);
++	xe_eudebug_client_vm_destroy(c, fd, vm);
 +
-+	for (i = 0; i < size/sizeof(*d); i++)
-+		igt_assert_eq(d[i], addr + i + 1);
-+
-+	munmap(d, size);
++	gem_close(fd, bo);
 +}
 +
-+static uint32_t *vm_create_objects(int fd, uint32_t bo_placement, uint32_t vm, unsigned int size,
-+				   unsigned int n)
-+{
-+	uint32_t *bo;
-+	unsigned int i;
-+
-+	bo = calloc(n, sizeof(*bo));
-+	igt_assert(bo);
-+
-+	for (i = 0; i < n; i++) {
-+		bo[i] = xe_bo_create(fd, vm, size, bo_placement, 0);
-+		igt_assert(bo[i]);
-+	}
-+
-+	return bo;
-+}
-+
-+static struct bind_list *create_bind_list(int fd, uint32_t bo_placement,
-+					  uint32_t vm, unsigned int n)
-+{
-+	const unsigned int bo_size = max_t(bo_size, xe_get_default_alignment(fd), MIN_BO_SIZE);
-+	struct bind_list *bl;
-+	unsigned int i;
-+
-+	bl = malloc(sizeof(*bl));
-+	bl->fd = fd;
-+	bl->vm = vm;
-+	bl->bo = vm_create_objects(fd, bo_placement, vm, bo_size, n);
-+	bl->n = n;
-+	bl->bind_ops = calloc(n, sizeof(*bl->bind_ops));
-+	igt_assert(bl->bind_ops);
-+
-+	for (i = 0; i < n; i++) {
-+		struct drm_xe_vm_bind_op *o = &bl->bind_ops[i];
-+
-+		o->range = bo_size;
-+		o->addr = BO_ADDR + 2 * i * bo_size;
-+		o->flags = 0;
-+		o->pat_index = intel_get_pat_idx_wb(fd);
-+		o->prefetch_mem_region_instance = 0;
-+		o->reserved[0] = 0;
-+		o->reserved[1] = 0;
-+	}
-+
-+	for (i = 0; i < bl->n; i++) {
-+		struct drm_xe_vm_bind_op *o = &bl->bind_ops[i];
-+
-+		igt_debug("bo %d: addr 0x%llx, range 0x%llx\n", i, o->addr, o->range);
-+		bo_prime(fd, bl->bo[i], o->addr, o->range);
-+	}
-+
-+	return bl;
-+}
-+
-+static void do_bind_list(struct xe_eudebug_client *c,
-+			 struct bind_list *bl, struct drm_xe_sync *sync)
-+{
-+	int i;
-+	uint64_t ref_seqno = 0, op_ref_seqno = 0;
-+
-+	xe_vm_bind_array(bl->fd, bl->vm, 0, bl->bind_ops, bl->n, sync, sync ? 1 : 0);
-+	xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE,
-+					bl->fd, bl->vm, 0, bl->n, &ref_seqno);
-+	for (i = 0; i < bl->n; i++)
-+		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE,
-+						   ref_seqno,
-+						   &op_ref_seqno,
-+						   bl->bind_ops[i].addr,
-+						   bl->bind_ops[i].range,
-+						   0);
-+
-+	if (sync)
-+		igt_assert(syncobj_wait(bl->fd, &sync->handle, 1, INT64_MAX, 0, NULL));
-+}
-+
-+static void check_bind_list(struct bind_list *bl)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < bl->n; i++) {
-+		igt_debug("%d: checking 0x%llx (%lld)\n",
-+			  i, bl->bind_ops[i].addr, bl->bind_ops[i].addr);
-+		bo_check(bl->fd, bl->bo[i], bl->bind_ops[i].addr,
-+			 bl->bind_ops[i].range);
-+	}
-+}
-+
- #define CREATE_VMS	(1 << 0)
- #define CREATE_EXEC_QUEUES	(1 << 1)
- static void run_basic_client(struct xe_eudebug_client *c)
-@@ -613,6 +743,149 @@ static void test_empty_discovery(int fd, unsigned int flags, int clients)
+ #define BO_ADDR 0x1a0000
+ #define BO_ITEMS 4096
+ #define MIN_BO_SIZE (BO_ITEMS * sizeof(uint64_t))
+@@ -149,8 +184,41 @@ static void check_bind_list(struct bind_list *bl)
  	}
  }
  
-+typedef void (*client_run_t)(struct xe_eudebug_client *);
-+
-+static void test_client_with_trigger(int fd, unsigned int flags, int count,
-+				     client_run_t client_fn, int type,
-+				     xe_eudebug_trigger_fn trigger_fn,
-+				     struct drm_xe_engine_class_instance *hwe,
-+				     bool match_opposite, uint32_t event_filter)
+-#define CREATE_VMS	(1 << 0)
+-#define CREATE_EXEC_QUEUES	(1 << 1)
++static void vm_bind_client(int fd, struct xe_eudebug_client *c)
 +{
-+	struct xe_eudebug_session **s;
-+	int i;
-+
-+	s = calloc(count, sizeof(*s));
-+
-+	igt_assert(s);
-+
-+	for (i = 0; i < count; i++)
-+		s[i] = xe_eudebug_session_create(fd, client_fn, flags, hwe);
-+
-+	if (trigger_fn)
-+		for (i = 0; i < count; i++)
-+			xe_eudebug_debugger_add_trigger(s[i]->d, type, trigger_fn);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_run(s[i]);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_check(s[i], match_opposite, event_filter);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_destroy(s[i]);
-+}
-+
-+static void vm_access_client(struct xe_eudebug_client *c)
-+{
-+	struct drm_xe_sync sync = {
-+		.flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, };
-+	struct drm_xe_engine_class_instance *hwe = c->ptr;
++	uint64_t op_ref_seqno, ref_seqno;
 +	struct bind_list *bl;
-+	uint32_t vm;
-+	int fd, i;
++	size_t bo_size = 3 * xe_get_default_alignment(fd);
++	uint32_t bo[2] = {
++		xe_bo_create(fd, 0, bo_size, system_memory(fd), 0),
++		xe_bo_create(fd, 0, bo_size, system_memory(fd), 0),
++	};
++	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
++	uint64_t addr[] = {0x2a0000, 0x3a0000};
++	uint64_t rebind_bo_offset = 2 * bo_size / 3;
++	uint64_t size = bo_size / 3;
 +
-+	igt_debug("Using %s\n", xe_engine_class_string(hwe->engine_class));
++	xe_eudebug_client_vm_bind(c, fd, vm, bo[0], 0, addr[0], bo_size);
++	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr[0] + size, size);
 +
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_device_get(fd);
++	xe_eudebug_client_vm_bind(c, fd, vm, bo[1], 0, addr[1], bo_size);
++	xe_eudebug_client_vm_bind(c, fd, vm, bo[1], rebind_bo_offset, addr[1], size);
 +
-+	vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
++	bl = create_bind_list(fd, system_memory(fd), vm, 4);
++	do_bind_list(c, bl, NULL);
 +
-+	bl = create_bind_list(fd, vram_if_possible(fd, hwe->gt_id), vm, 4);
-+	sync.handle = syncobj_create(bl->fd, 0);
-+	do_bind_list(c, bl, &sync);
-+	syncobj_destroy(bl->fd, sync.handle);
++	xe_vm_unbind_all_async(fd, vm, 0, bo[1], NULL, 0);
 +
-+	for (i = 0; i < bl->n; i++)
-+		xe_eudebug_client_wait_stage(c, bl->bind_ops[i].addr);
++	xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE, fd, vm, 0,
++					1, &ref_seqno);
++	xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_DESTROY, ref_seqno,
++					   &op_ref_seqno, 0, 0, 0);
 +
-+	check_bind_list(bl);
-+
++	gem_close(fd, bo[0]);
++	gem_close(fd, bo[1]);
 +	xe_eudebug_client_vm_destroy(c, fd, vm);
-+
-+	xe_device_put(fd);
-+	xe_eudebug_client_close_driver(c, fd);
 +}
 +
-+static void debugger_test_vma(struct xe_eudebug_debugger *d,
-+			      uint64_t client_handle,
-+			      uint64_t vm_handle,
-+			      uint64_t va_start,
-+			      uint64_t va_length)
-+{
-+	struct drm_xe_eudebug_vm_open vo = { 0, };
-+	uint64_t *v;
-+	uint64_t items = va_length / sizeof(uint64_t);
-+	int fd;
-+	int r, i;
-+
-+	v = malloc(va_length);
-+	igt_assert(v);
-+
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle;
-+
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert_lte(0, fd);
-+
-+	r = pread(fd, v, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v[i], va_start + i);
-+
-+	for (i = 0; i < items; i++)
-+		v[i] = va_start + i + 1;
-+
-+	r = pwrite(fd, v, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	fsync(fd);
-+
-+	close(fd);
-+	free(v);
-+}
-+
-+static void vm_trigger(struct xe_eudebug_debugger *d,
-+		       struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+		igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
-+			  eo->vm_bind_ref_seqno,
-+			  eo->addr,
-+			  eo->range);
-+
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+		igt_assert(eb);
-+
-+		debugger_test_vma(d, eb->client_handle, eb->vm_handle,
-+				  eo->addr, eo->range);
-+		xe_eudebug_debugger_signal_stage(d, eo->addr);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: basic-vm-access
-+ * Description:
-+ *      Exercise XE_EUDEBG_VM_OPEN with pread and pwrite into the vm fd
-+ */
-+static void test_vm_access(int fd, unsigned int flags, int num_clients)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	xe_for_each_engine(fd, hwe)
-+		test_client_with_trigger(fd, flags, num_clients,
-+					 vm_access_client,
-+					 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
-+					 vm_trigger, hwe,
-+					 false, XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP);
-+}
-+
- igt_main
+ static void run_basic_client(struct xe_eudebug_client *c)
  {
- 	int fd;
-@@ -633,6 +906,9 @@ igt_main
- 	igt_subtest("basic-client")
- 		test_basic_sessions(fd, 0, 1);
+ 	int fd, i;
+@@ -216,6 +284,15 @@ static void run_basic_client(struct xe_eudebug_client *c)
+ 		xe_eudebug_client_vm_destroy(c, fd,  vm);
+ 	}
  
-+	igt_subtest("basic-vm-access")
-+		test_vm_access(fd, 0, 1);
++	if (c->flags & VM_BIND)
++		basic_vm_bind_client(fd, c);
 +
- 	igt_subtest("multiple-sessions")
- 		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4);
++	if (c->flags & VM_BIND_EXTENDED)
++		vm_bind_client(fd, c);
++
++	if (c->flags & VM_BIND_VM_DESTROY)
++		basic_vm_bind_vm_destroy_client(fd, c);
++
+ 	xe_device_put(fd);
+ 	xe_eudebug_client_close_driver(c, fd);
+ }
+@@ -437,13 +514,28 @@ static void test_read_event(int fd)
+  * Description:
+  *	Attach the debugger to process which creates and destroys a few %arg[1].
+  *
++ * SUBTEST: basic-vm-bind
++ * Description:
++ *	Attach the debugger to a process that performs synchronous vm bind
++ *	and vm unbind.
++ *
++ * SUBTEST: basic-vm-bind-vm-destroy
++ * Description:
++ *	Attach the debugger to a process that performs vm bind, and destroys
++ *	the vm without unbinding. Make sure that we don't get unbind events.
++ *
++ * SUBTEST: basic-vm-bind-extended
++ * Description:
++ *	Attach the debugger to a process that performs bind, bind array, rebind,
++ *	partial unbind, unbind and unbind all operations.
++ *
+  * arg[1]:
+  *
+  * @vms: vms
+  * @exec-queues: exec queues
+  */
  
+-static void test_basic_sessions(int fd, unsigned int flags, int count)
++static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
+ {
+ 	struct xe_eudebug_session **s;
+ 	int i;
+@@ -459,7 +551,7 @@ static void test_basic_sessions(int fd, unsigned int flags, int count)
+ 		xe_eudebug_session_run(s[i]);
+ 
+ 	for (i = 0; i < count; i++)
+-		xe_eudebug_session_check(s[i], true, 0);
++		xe_eudebug_session_check(s[i], match_opposite, 0);
+ 
+ 	for (i = 0; i < count; i++)
+ 		xe_eudebug_session_destroy(s[i]);
+@@ -904,19 +996,28 @@ igt_main
+ 		test_read_event(fd);
+ 
+ 	igt_subtest("basic-client")
+-		test_basic_sessions(fd, 0, 1);
++		test_basic_sessions(fd, 0, 1, true);
+ 
+ 	igt_subtest("basic-vm-access")
+ 		test_vm_access(fd, 0, 1);
+ 
+ 	igt_subtest("multiple-sessions")
+-		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4);
++		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4, true);
+ 
+ 	igt_subtest("basic-vms")
+-		test_basic_sessions(fd, CREATE_VMS, 1);
++		test_basic_sessions(fd, CREATE_VMS, 1, true);
+ 
+ 	igt_subtest("basic-exec-queues")
+-		test_basic_sessions(fd, CREATE_EXEC_QUEUES, 1);
++		test_basic_sessions(fd, CREATE_EXEC_QUEUES, 1, true);
++
++	igt_subtest("basic-vm-bind")
++		test_basic_sessions(fd, VM_BIND, 1, true);
++
++	igt_subtest("basic-vm-bind-vm-destroy")
++		test_basic_sessions(fd, VM_BIND_VM_DESTROY, 1, false);
++
++	igt_subtest("basic-vm-bind-extended")
++		test_basic_sessions(fd, VM_BIND_EXTENDED, 1, true);
+ 
+ 	igt_subtest("discovery-race")
+ 		test_race_discovery(fd, 0, 4);
 -- 
 2.34.1
 
