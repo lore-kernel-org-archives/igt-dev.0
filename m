@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CF31C3DA7E
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:47:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5489AC3DA7E
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 11:47:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 41E3010E50A;
-	Tue, 30 Jul 2024 11:47:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1454110E50E;
+	Tue, 30 Jul 2024 11:47:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UDPwYetN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aLyUsX5C";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBE3910E50E
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:47:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0788010E50E
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 11:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722340035; x=1753876035;
+ t=1722340038; x=1753876038;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MZvmKYNFk0egXajpSFryQHn72sl8pknpeqddKCf3mVU=;
- b=UDPwYetNo5YQf48wA7OWq9oR9rCZ0HiRD3UAIgfkivgskoVbRNa41uh/
- cmEFKuDICJRep5QYQbGhgNHFoPyBPHuLAZ4ONxsA2xPxn/UuweLshoOCA
- 88aKOrwAlq+nsppiWziqnV0h8eVUKdEMdmP4dcXdaddGp2sSP/1tv3kMr
- 8Juan4MpBluiVePOcPMlHRAR94bG2SejYE7tvOP4pgS4j+pHqx4CYvEF+
- mCN9umXENFJqPxZEq7bTgCzr8pKTsyCI6bu2j91ZNeGKvzoFQIOgjjPRT
- jACsVPezkGEXxmBzXmjFv3KauSepVET91kOidKY0xKUQLAEbGvl3uL4a4 w==;
-X-CSE-ConnectionGUID: oxI5jMv+RxqNjBIhfWpI8w==
-X-CSE-MsgGUID: yyzy2ByYSkOqfbg7ZDCjHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937196"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937196"
+ bh=tGbO4ju+rOZaCHCAdusV6JAQl7JSAUy71objCtO+qgM=;
+ b=aLyUsX5CZAGdgFUOeQEKOSeF1WOep8CZOkPLtYhNIRPV7HUg+A9WOnom
+ skpBZhOJgY2j6lEPCQpekz1+61/ZQ6xojZyBwuvQ8Pk+pHx2x0xv58Nw1
+ A61OWpiPVWHnvbc08RH3AkbAvOdhkFKF3mwv5MKC3AyOsmiAtwBFVtAhl
+ T+58m2dDJaLn4WAA4UmIqCtIvyuX0mTBbY0tqOM3IjAMYg9RGOAwGg99j
+ NKuL+AkzjgjZ3rpIo9HBQD8JZqsVf8vMsJQzZ067WIf1T3MjvPwJaNKXz
+ XF98cv0fuBO/7gWmS78fgEH4m2q4v8KDTA5HBuR50KR2FMo4r2fgnGMul Q==;
+X-CSE-ConnectionGUID: xacOttmaTQKk0zfHF7G6TA==
+X-CSE-MsgGUID: M5i68C5UQ/yQLAWc6EwolA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11148"; a="23937207"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="23937207"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:47:15 -0700
-X-CSE-ConnectionGUID: O697P1jNRqCq56a4pM5qdw==
-X-CSE-MsgGUID: V+lsJ5JYRjOLEwC02zeH2Q==
+ 30 Jul 2024 04:47:18 -0700
+X-CSE-ConnectionGUID: bmZWSXBNRW2SfcG4sCwP4Q==
+X-CSE-MsgGUID: tqiaRewiTZGxbRGcE2smnQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54216571"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="54216582"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.43])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 04:47:12 -0700
+ 30 Jul 2024 04:47:15 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,9 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v2 11/66] lib/xe_eudebug: Add support for dynamic
- debugger sysfs toggle
-Date: Tue, 30 Jul 2024 13:44:28 +0200
-Message-Id: <20240730114523.334156-12-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v2 12/66] tests/xe_eudebug: Test open close events
+Date: Tue, 30 Jul 2024 13:44:29 +0200
+Message-Id: <20240730114523.334156-13-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240730114523.334156-1-christoph.manszewski@intel.com>
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
@@ -79,159 +78,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The debugger now uses a dedicated sysfs entry:
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 
-/sys/class/drm/card<N>/device/enable_eudebug
+Introduce basic tests which validate client create/destroy events
+sent on xe drm client open/close.
 
-to toggle the debugger on/off. This change adds helper functons for
-toggling the debugger.
-
-Signed-off-by: Mika Kuoppala <mika.kuoppala@intel.com>
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/xe/xe_eudebug.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
- lib/xe/xe_eudebug.h |  3 ++
- 2 files changed, 91 insertions(+)
+ tests/intel/xe_eudebug.c | 49 +++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
-index af7cc5fc4..36eef25c7 100644
---- a/lib/xe/xe_eudebug.c
-+++ b/lib/xe/xe_eudebug.c
-@@ -7,10 +7,12 @@
- #include <poll.h>
- #include <signal.h>
- #include <sys/select.h>
-+#include <sys/stat.h>
- #include <sys/types.h>
- #include <sys/wait.h>
+diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+index 44a491319..7ca0138a2 100644
+--- a/tests/intel/xe_eudebug.c
++++ b/tests/intel/xe_eudebug.c
+@@ -12,8 +12,16 @@
+  * Test category: functionality test
+  */
  
+-#include <xe_drm.h>
  #include "igt.h"
-+#include "igt_sysfs.h"
- #include "intel_pat.h"
- #include "xe_eudebug.h"
- #include "xe_ioctl.h"
-@@ -1040,6 +1042,24 @@ static void *debugger_worker_loop(void *data)
- 	return NULL;
++#include "xe/xe_eudebug.h"
++
++static void run_basic_client(struct xe_eudebug_client *c)
++{
++	int fd;
++
++	fd = xe_eudebug_client_open_driver(c);
++	xe_eudebug_client_close_driver(c, fd);
++}
+ 
+ static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect *param)
+ {
+@@ -116,6 +124,39 @@ static void test_close(int fd)
+ 	close(debug_fd1);
  }
  
 +/**
-+ * xe_eudebug_debugger_available:
-+ * @fd: Xe file descriptor
++ * SUBTEST: basic-client
++ * Description:
++ *	Attach the debugger to process which opens and closes xe drm client.
 + *
-+ * Returns: true it debugger connection is available, false otherwise.
++ * SUBTEST: multiple-sessions
++ * Description:
++ *	Simultaneously attach many debuggers to many processes.
++ *	Each process opens and closes xe drm client.
 + */
-+bool xe_eudebug_debugger_available(int fd)
++
++static void test_basic_sessions(int fd, unsigned int flags, int count)
 +{
-+	struct drm_xe_eudebug_connect param = { .pid = getpid() };
-+	int debugfd;
++	struct xe_eudebug_session **s;
++	int i;
 +
-+	debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, &param);
-+	if (debugfd >= 0)
-+		close(debugfd);
++	s = calloc(count, sizeof(*s));
 +
-+	return debugfd >= 0;
++	igt_assert(s);
++
++	for (i = 0; i < count; i++)
++		s[i] = xe_eudebug_session_create(fd, run_basic_client, flags, NULL);
++
++	for (i = 0; i < count; i++)
++		xe_eudebug_session_run(s[i]);
++
++	for (i = 0; i < count; i++)
++		xe_eudebug_session_check(s[i], true, 0);
++
++	for (i = 0; i < count; i++)
++		xe_eudebug_session_destroy(s[i]);
 +}
 +
- /**
-  * xe_eudebug_debugger_create:
-  * @master_fd: xe client used to open the debugger connection
-@@ -1563,6 +1583,74 @@ static void metadata_event(struct xe_eudebug_client *c, uint32_t flags,
- 	xe_eudebug_event_log_write(c->log, (void *)&em);
+ igt_main
+ {
+ 	int fd;
+@@ -130,6 +171,12 @@ igt_main
+ 	igt_subtest("basic-close")
+ 		test_close(fd);
+ 
++	igt_subtest("basic-client")
++		test_basic_sessions(fd, 0, 1);
++
++	igt_subtest("multiple-sessions")
++		test_basic_sessions(fd, 0, 4);
++
+ 	igt_fixture
+ 		drm_close_driver(fd);
  }
- 
-+static int enable_getset(int fd, bool *old, bool *new)
-+{
-+	static const char * const fname = "enable_eudebug";
-+	int ret = 0;
-+
-+	int sysfs, device_fd;
-+	bool val_before;
-+	struct stat st;
-+
-+	igt_assert(new || old);
-+
-+	igt_assert_eq(fstat(fd, &st), 0);
-+	sysfs = igt_sysfs_open(fd);
-+	if (sysfs < 0)
-+		return -1;
-+
-+	device_fd = openat(sysfs, "device", O_DIRECTORY | O_RDONLY);
-+	close(sysfs);
-+	if (device_fd < 0)
-+		return -1;
-+
-+	if (!__igt_sysfs_get_boolean(device_fd, fname, &val_before)) {
-+		ret = -1;
-+		goto out;
-+	}
-+
-+	igt_debug("enable_eudebug before: %d\n", val_before);
-+
-+	if (old)
-+		*old = val_before;
-+
-+	ret = 0;
-+	if (new) {
-+		if (__igt_sysfs_set_boolean(device_fd, fname, *new))
-+			igt_assert_eq(igt_sysfs_get_boolean(device_fd, fname), *new);
-+		else
-+			ret = -1;
-+	}
-+
-+out:
-+	close(device_fd);
-+	return ret;
-+}
-+
-+/**
-+ * xe_eudebug_enable
-+ * @fd: xe client
-+ * @enable: state toggle - true to enable, false to disable
-+ *
-+ * Enables/disables eudebug capability by writing to
-+ * '/sys/class/drm/card<N>/device/enable_eudebug' sysfs entry.
-+ *
-+ * Returns: previous toggle value, i.e. true when eudebugging was enabled,
-+ * false when eudebugging was disabled.
-+ */
-+bool xe_eudebug_enable(int fd, bool enable)
-+{
-+	bool old = false;
-+	int ret = enable_getset(fd, &old, &enable);
-+
-+	if (ret) {
-+		igt_skip_on(enable);
-+		old = false;
-+	}
-+
-+	return old;
-+}
-+
- /* Eu debugger wrappers around resource creating xe ioctls. */
- 
- /**
-diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
-index ec75634f5..1343cb25c 100644
---- a/lib/xe/xe_eudebug.h
-+++ b/lib/xe/xe_eudebug.h
-@@ -123,6 +123,7 @@ void xe_eudebug_event_log_compare(struct xe_eudebug_event_log *c, struct xe_eude
- void xe_eudebug_event_log_write(struct xe_eudebug_event_log *l, struct drm_xe_eudebug_event *e);
- void xe_eudebug_event_log_match_opposite(struct xe_eudebug_event_log *l, uint32_t filter);
- 
-+bool xe_eudebug_debugger_available(int fd);
- struct xe_eudebug_debugger *
- xe_eudebug_debugger_create(int xe, uint64_t flags, void *data);
- void xe_eudebug_debugger_destroy(struct xe_eudebug_debugger *d);
-@@ -146,6 +147,8 @@ void xe_eudebug_client_wait_stage(struct xe_eudebug_client *c, uint64_t stage);
- uint64_t xe_eudebug_client_get_seqno(struct xe_eudebug_client *c);
- void xe_eudebug_client_set_data(struct xe_eudebug_client *c, void *ptr);
- 
-+bool xe_eudebug_enable(int fd, bool enable);
-+
- int xe_eudebug_client_open_driver(struct xe_eudebug_client *c);
- void xe_eudebug_client_close_driver(struct xe_eudebug_client *c, int fd);
- uint32_t xe_eudebug_client_vm_create(struct xe_eudebug_client *c, int fd,
 -- 
 2.34.1
 
