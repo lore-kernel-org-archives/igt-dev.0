@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 420BEC3DA7F
-	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 21:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DE38C3DA49
+	for <igt-dev@archiver.kernel.org>; Tue, 30 Jul 2024 21:35:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01B2310E300;
-	Tue, 30 Jul 2024 21:35:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30D9C10E574;
+	Tue, 30 Jul 2024 21:35:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lm12FsMK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AXgASAXG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 258B410E300
- for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 21:35:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7D8210E300
+ for <igt-dev@lists.freedesktop.org>; Tue, 30 Jul 2024 21:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722375351; x=1753911351;
+ t=1722375352; x=1753911352;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=vifCCr7/BwPrFdzZM6hpDIQSPZ+LRfRcmGupdo7c0UM=;
- b=lm12FsMKfzhhKzZkeVpmv5jHUtbt2nfUj8FczRabIWkqsd7Q60eUi3vP
- GJnVdBMBVPhtLzVPCdSeMNoyHsAg03lGou9vixSqccxq1iZ+LvNxfNmUd
- A80eufMePNDQAr8veb83jZ8DFayzi/eDrunHASkgih6bQhTjuyXSRuhXa
- VRB6toNLeLCLNlt4T1TO3FjxYvoMNjeRpKfEJ2vtu4TFlCMJwVQ3W8FKN
- PZecU+5HqTP5G++zk634xClkFa5P7rTbVl5G8TSg5vFc1zbyhYJPXX7Kt
- GJoHo0X3Qo+D2o7+5LGumMNKLqNYslRdi4RoM6z9sOnWR9LtVhlZ78VJ2 g==;
-X-CSE-ConnectionGUID: vEQc5Ns9RM6pkZA1EZbxmw==
-X-CSE-MsgGUID: Ex0c5VjbQPimfwOCm9OIzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="37694596"
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="37694596"
+ bh=vOJ5OQSvlMKvO82AIaV5tDM50L9+qYUHoop8kVkOm6s=;
+ b=AXgASAXGtITWUe8qClF6kmEMfBu+l5ibGdocQ1xL8Yoy94S7bPshbbBd
+ 0MCOgzFOuN7qVZSX4SsaoMnP10U3q41qYQOp1KI5csBltH1SPYcbc/tho
+ zpmlO/tvbvhGs2HDgw23ZX/PJnjIIwi1YbYDsmHmOM6M+9Iw4ebsjBCBw
+ Xkl3z9hrs81CLHKJ32SQTxiAXpRGbhaHteWcWW85+DkvXTGPyt4IgEp20
+ eb2avXUKCJ9SocHc7DdzuzEEqdqy/kgPFm5B9ceqV20cNlMCvR4BF8ocP
+ 28m2DcJHJhTwXQhgDJzx1louLvZMRz4b7CBphQUADZdR5Bn9ABH9RC3dj g==;
+X-CSE-ConnectionGUID: FrFrA5tFROSrySWlYoePgg==
+X-CSE-MsgGUID: pkWA+O06R+ay1uNQA4CKwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="37694597"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="37694597"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 14:35:51 -0700
-X-CSE-ConnectionGUID: pzvQq4xBSMSFBRngTi28Sw==
-X-CSE-MsgGUID: f2Wo/q61SWeOrcZnN4oDeg==
+ 30 Jul 2024 14:35:52 -0700
+X-CSE-ConnectionGUID: Lgp8o7IPQkyrjmJTAqjDPQ==
+X-CSE-MsgGUID: HZKiUfxrQCmFUXGm8LDgJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="59321725"
+X-IronPort-AV: E=Sophos;i="6.09,248,1716274800"; d="scan'208";a="59321729"
 Received: from linux-meteor-lake-client-platform.iind.intel.com
  ([10.190.219.196])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 14:35:50 -0700
+ 30 Jul 2024 14:35:52 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: imre.deak@intel.com,
 	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 05/10] lib/igt_kms: add function to force link retrain
-Date: Wed, 31 Jul 2024 02:43:36 +0530
-Message-ID: <20240730211343.58703-6-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 06/10] lib/igt_kms: add function to check if retrain
+ disabled
+Date: Wed, 31 Jul 2024 02:43:37 +0530
+Message-ID: <20240730211343.58703-7-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240730211343.58703-1-kunal1.joshi@intel.com>
 References: <20240730211343.58703-1-kunal1.joshi@intel.com>
@@ -69,85 +70,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-[1] exposes interface which can be utilized to apply previously
-set link rate/lane count or force link training failures
-
-[1] https://patchwork.freedesktop.org/patch/594772/?series=133624&rev=3
+add helper to check if link retraining is disabled.
+link retraining will be disabled when we are at the
+lower (link rate, lane count)
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  2 ++
- 2 files changed, 46 insertions(+)
+ lib/igt_kms.c | 22 ++++++++++++++++++++++
+ lib/igt_kms.h |  1 +
+ 2 files changed, 23 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index dd43d655a..a5bc0adff 100644
+index a5bc0adff..1440ab227 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -6825,6 +6825,50 @@ bool kmstest_force_connector_link_training_failure(int drm_fd, drmModeConnector
- 	return true;
- }
+@@ -6982,3 +6982,25 @@ enum dp_lane_count igt_get_dp_max_lane_count(int drm_fd, igt_output_t *output)
  
-+static bool force_connector_retrain(int drm_fd,
-+					  drmModeConnector *connector,
-+					  const char *value)
-+{
-+	return connector_attr_set_debugfs(drm_fd, connector,
-+					  "i915_dp_force_link_retrain",
-+					  value, "0");
-+}
+ 	return max_lane_count;
+ }
 +
 +/**
-+ * kmstest_force_connector_force_retrain:
-+ * @fd: drm file descriptor
-+ * @connector: connector
++ * igt_get_dp_link_retrain_disabled:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
 + *
-+ * Force retraining on the specified connector
-+ * and install exit handler for resetting
-+ *
-+ * Returns: True on success
++ * Returns: True if link retrain disabled, false otherwise
 + */
-+bool kmstest_force_connector_retrain(int drm_fd, drmModeConnector *connector, int retrain_count)
++bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output)
 +{
-+	char value[2];
-+	drmModeConnector *temp;
++	int dir, res;
++	char buf[512];
 +
-+	if (!is_intel_device(drm_fd))
-+		return false;
-+
-+	snprintf(value, sizeof(value), "%d", retrain_count);
-+	if (!force_connector_retrain(drm_fd, connector, value))
-+		return false;
-+
-+	dump_connector_attrs();
-+	igt_install_exit_handler(reset_connectors_at_exit);
-+
-+	/*
-+	 * To allow callers to always use GetConnectorCurrent we need to force a
-+	 * redetection here.
-+	 */
-+	temp = drmModeGetConnector(drm_fd, connector->connector_id);
-+	drmModeFreeConnector(temp);
-+
-+	return true;
++	igt_require_f(output->name, "Invalid output");
++	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
++	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
++			       igt_output_name(output));
++	res = igt_debugfs_simple_read(dir, "i915_dp_link_retrain_disabled", buf, sizeof(buf));
++	close(dir);
++	igt_require(res > 0);
++	return strstr(buf, "yes");
 +}
-+
- /**
-  * igt_get_dp_link_rate_set_for_output:
-  * @drm_fd: A drm file descriptor
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index f5b3017d3..310b835f6 100644
+index 310b835f6..7540670df 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -294,6 +294,8 @@ bool kmstest_force_connector_link_rate(int drm_fd, drmModeConnector *connector,
- 				       int link_rate);
- bool kmstest_force_connector_link_training_failure(int drm_fd, drmModeConnector *connector,
- 						   int train_count);
-+bool kmstest_force_connector_retrain(int drm_fd, drmModeConnector *connector,
-+				     int retrain_count);
+@@ -1259,5 +1259,6 @@ enum dp_link_rate igt_get_dp_link_rate_set_for_output(int drm_fd, igt_output_t *
+ enum dp_lane_count igt_get_dp_lane_count_set_for_output(int drm_fd, igt_output_t *output);
+ enum dp_link_rate igt_get_dp_max_link_rate(int drm_fd, igt_output_t *output);
+ enum dp_lane_count igt_get_dp_max_lane_count(int drm_fd, igt_output_t *output);
++bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output);
  
- bool kmstest_get_connector_default_mode(int drm_fd, drmModeConnector *connector,
- 					drmModeModeInfo *mode);
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.43.0
 
