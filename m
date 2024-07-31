@@ -4,58 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75607C3DA64
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 06:09:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7289C3DA7F
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 06:24:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F3C610E1AD;
-	Wed, 31 Jul 2024 06:09:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3FDDD10E129;
+	Wed, 31 Jul 2024 06:24:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GLF74jGN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Odo6/vsa";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 94E4B10E1AD
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 06:09:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DDB9010E129
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 06:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722406192; x=1753942192;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=V6Qn56q4z3kNmv/HxsIKt0QO37XvpF5s48+NgpSwa+k=;
- b=GLF74jGNa1uPwNjYBgmzsPZLDpX23p7oqiblwdvSnACL8NWBO6Jsc0n/
- pgiZg3vjVItneGsdd9wm7TLI6zEaKS70UVTyXyVykEbey70aPBLF6OXy3
- 3B3dH3EJx29bcyyJpnpmvdjaG6HVjqgJk0wgT1YHpAEuuHGQPN/eNqv3M
- TYWKRWBI2eG9MYuQtJzBu3wjFP1WK6CRaWzZX+bIPnNjurYUjGajehJmB
- 9ng9v0XoAbTdYaFAXQmx9rkRuI125v6jrV1Rjkf8QdPIYga1LgnnlR+8Y
- StgMc++7gFPzFrSotD0HPeNFeW1kreKZSPKBqssUk+/f/FE2UqXVk8gmA Q==;
-X-CSE-ConnectionGUID: 1s0X7wrHStqaio3hW8nfxw==
-X-CSE-MsgGUID: /UBsLV9+RmKFQ60/syl3kw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="30926767"
-X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; d="scan'208";a="30926767"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 23:09:50 -0700
-X-CSE-ConnectionGUID: QSmrjSDxSViH6dsqDXjYzw==
-X-CSE-MsgGUID: bSpDSnuCQWCDhA2ZiA8iWw==
+ t=1722407066; x=1753943066;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=doBRhcjTjvo6Df/plzZM7n26C0A1Tqmvppc/+4yLRnM=;
+ b=Odo6/vsaE7zWnrw4O3ONcVMJvahG9otgL0XcqCGoKTKXOqYi0jFkQKug
+ 03oecKF78RKEqASk5yen1nomhBeN2d6MUHQT0F4ZdWjZQncK6ZpbukOLa
+ T4TXTigPR6PR48YROxUYgXdFtV8v7s7AOiq4n8Ew9IqSkez/kE4xmRMpq
+ ri2MYST/pxCDwhY0Wghny0gex/bpO0FEHPkLkXdourYQ8qHG49Hm6Bqik
+ AuNKhj+hvz5Jb68e3IjTJkoE2iU9z5SQy+4xqXNuxSYiji9JqiyE3yHpx
+ bYe0VrP4hT+PmxOUVp0ZjAdiYSe0BMU9NVyYdrgv/gx5shtJY94WI/167 w==;
+X-CSE-ConnectionGUID: OjHMr6ACSVS/rd9PeLcFZA==
+X-CSE-MsgGUID: cVew4+wMTri9I0zQesPa1A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="45681049"
+X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; d="scan'208";a="45681049"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2024 23:24:25 -0700
+X-CSE-ConnectionGUID: 2P5hssZ3TvCrt5lFVyeDDg==
+X-CSE-MsgGUID: 8JQA19XLQ9qWKwPGMVuwtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; d="scan'208";a="59425447"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.246.111])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2024 23:09:48 -0700
-Date: Wed, 31 Jul 2024 08:09:46 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH i-g-t 3/3] lib/xe_spin: Fix ending the loop
-Message-ID: <20240731060946.zzusw6mcvvq22lcu@zkempczy-mobl2>
-References: <20240731033504.1426640-1-lucas.demarchi@intel.com>
- <20240731033504.1426640-4-lucas.demarchi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,250,1716274800"; d="scan'208";a="58911056"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2024 23:24:24 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t] tests/intel-ci/xe: Block kms_rmfb@close-fd test
+Date: Wed, 31 Jul 2024 11:45:12 +0530
+Message-ID: <20240731061512.1954095-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240731033504.1426640-4-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,36 +65,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Jul 30, 2024 at 08:35:04PM -0700, Lucas De Marchi wrote:
-> Less likely to be a problem with optimizations than the started
-> condition, but let's stay on the safe side. Comparing to igt_spin_end(),
-> that one uses a sync_write() to force a MI_BATCH_BUFFER_END in the
-> beginning of the loop that has a even stronger guarantee.
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> ---
->  lib/xe/xe_spin.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> index 43a7a43c2..f8b225125 100644
-> --- a/lib/xe/xe_spin.c
-> +++ b/lib/xe/xe_spin.c
-> @@ -183,7 +183,7 @@ void xe_spin_wait_started(struct xe_spin *spin)
->  
->  void xe_spin_end(struct xe_spin *spin)
->  {
-> -	spin->end = 0;
-> +	WRITE_ONCE(spin->end, 0);
->  }
->  
->  /**
-> -- 
-> 2.43.0
-> 
+Upon reopening the driver, the 'kms_rmfb@close-fd' test expects
+that 'getcrtc' should return an FB ID of 0. However, due to the
+default modeset, 'getcrtc' always returns a non-zero FB ID, which
+is expected behavior.
 
-Same as in 2/3. Checked in godbolt, -fpic/O3 always produces
-memory access.
+In the case of the i915 driver, the 'i915_gem_drop_caches' clears
+the cache and sets the FB ID to 0. Currently, there is no equivalent
+mechanism in the XE driver.
 
---
-Zbigniew
+Therefore, we should block this test from XE execution until an
+alternative solution is implemented.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/294
+Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index f9ef612c4..4ee8fb0d4 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -78,6 +78,10 @@ igt@kms_frontbuffer_tracking@(fbcpsrdrrs|psrdrrs).*
+ # KMS: Yet to add/missing XE support
+ ##################################################################
+ igt@kms_prime@.*
++
++# Expected failure on XE:
++# https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/294
++igt@kms_rmfb@close-fd
+ ##################################################################
+ # KMS: Non-Intel tests
+ ##################################################################
+-- 
+2.43.2
+
