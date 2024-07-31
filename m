@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFA27C3DA64
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 15:00:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B2B6C3DA64
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 15:02:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8161C10E086;
-	Wed, 31 Jul 2024 15:00:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0DB210E64D;
+	Wed, 31 Jul 2024 15:02:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fhOdReN3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TC5iG4+b";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E20610E086
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 15:00:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AD85110E64B
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 15:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722438051; x=1753974051;
+ t=1722438172; x=1753974172;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=vDjz27v6ANy+rDlvdi7WQYZ1H8zSxfRrXmaLHD0NlZw=;
- b=fhOdReN3ciHetBhRxrna+AJDcwcQ0xMz3XUmVKNz4QSJdthEQwphEx2N
- AG3ieH0MPAdFq/96t8qCB10GuV8x0YyoOA99WbfAA2GObflQZRkdcgzsc
- rA9ePrxrzQQuIOCfpWo6yLyuA7+AKvjPR86nJmS+99P90UdBo+0i7rq5A
- MaQyuklD1TUzba7KDPCedIaeloKCP9Q8/ohQNwedrjBZVVtY2gcZzyNOF
- yzSoaJgB4T6qmXDj8QN2bLnnPkXc+HSKXSf9WKB7YKTU9uJSjHnHPffyH
- Ad2gv/y4n/vQlFP4xgwVum5eStoWMUKAp6I4AUY+F3k1RoviR4TpVSg5S w==;
-X-CSE-ConnectionGUID: t2aXfGrwTqGq1p62qIn3EA==
-X-CSE-MsgGUID: 532NlkEyTLeV0Ig5ZXHrmg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="20271422"
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="20271422"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 08:00:50 -0700
-X-CSE-ConnectionGUID: aFpsnI4TSlCTwf3dhXr2ng==
-X-CSE-MsgGUID: JsqFJneTS2uWm8vFeQDaVA==
+ bh=xItlm4/mLu+ZYJNEJJ5k27IaRNFp/ieX9hBkXjQPiOU=;
+ b=TC5iG4+bp4NzrH4abpjI213GicED6jonDee66Xx3chaq0mb2Xi2+ke5k
+ dJW0/NhQL6rebu2L3T70Ixl154DVDuOIHNhHySnjO+pIQuqwTc2KLR08q
+ Q0TkrmkSFZzuiish93vfM2CHgyjkkLO+FoAfKqi4pFrH2n2CZbSLn2Pr4
+ jCG2tQqeTC1dEoy5bTkOx/GVbP497X/wk37xe+8BSS8mritGYbda++p2x
+ 2CtSG/wBE2iPb92N4krXHYOpp1n9ovEY0jFa3Ss+hXOJj+/GxZiA43o7j
+ hEDRT+dFD6eNSB5+QOJxVFVKzBeXI62K+aMyoLSWLSD/BuWV1QaSoR/jd w==;
+X-CSE-ConnectionGUID: YQ35CyL5TdWRC4s5Rq7naw==
+X-CSE-MsgGUID: vNTOVgkvSq+tAEiKhFLb+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="20141593"
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="20141593"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2024 08:02:52 -0700
+X-CSE-ConnectionGUID: U0lYKPyISGS0SvxejYFSjg==
+X-CSE-MsgGUID: UZYbVgGyTqq6AT6emFrhhA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="59359672"
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="59769579"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2024 08:00:48 -0700
-Date: Wed, 31 Jul 2024 17:00:45 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2024 08:02:50 -0700
+Date: Wed, 31 Jul 2024 17:02:47 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  tursulin@igalia.com, lukasz.laguna@intel.com
-Subject: Re: [PATCH v3 i-g-t 5/6] benchmarks/gem_wsim: Extend engine
- selection syntax
-Message-ID: <20240731150045.qp3ajmhy3kmsr3bt@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH v3 i-g-t 6/6] benchmarks/gem_wsim: Option to list
+ physical engines
+Message-ID: <20240731150247.e4xsvlvqoydoboiw@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  tursulin@igalia.com, lukasz.laguna@intel.com
 References: <20240729175219.1636694-1-marcin.bernatowicz@linux.intel.com>
- <20240729175219.1636694-6-marcin.bernatowicz@linux.intel.com>
+ <20240729175219.1636694-7-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240729175219.1636694-6-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20240729175219.1636694-7-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,963 +75,100 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Marcin,
-On 2024-07-29 at 19:52:18 +0200, Marcin Bernatowicz wrote:
-> This patch introduces a more flexible and detailed approach to
-> specifying engines.
-> The tool now dynamically generates a list of available physical engines
-> by querying the device, moving away from a static enumeration of engine
-> IDs.
-> Engines are now identified using [class:instance:gt] tuples.
-> This approach accommodates the specification of engine instances in the
-> format `engine_class[<engine_instance>-<gt_id>]`, enhancing the
-> granularity of engine selection, ex. First VCS engine may be specified
-> as VCS, VCS1, and VCS1-0.
-> The patch adds support for the compute engine class (CCS).
-> To maintain compatibility with existing workload definitions, the patch
-> ensures that 1-based engine instance IDs are preserved.
-> 
-> v2: Correct unbalanced braces, indentation.
+On 2024-07-29 at 19:52:19 +0200, Marcin Bernatowicz wrote:
+> Added command line option (-l) to list physical engines.
 > 
 > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 > ---
->  benchmarks/gem_wsim.c | 643 +++++++++++++++++++++---------------------
->  1 file changed, 323 insertions(+), 320 deletions(-)
+>  benchmarks/gem_wsim.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 42 insertions(+), 1 deletion(-)
 > 
 > diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-> index 85f722985..0c022f9ce 100644
+> index 0c022f9ce..c4fd00a6a 100644
 > --- a/benchmarks/gem_wsim.c
 > +++ b/benchmarks/gem_wsim.c
-> @@ -68,17 +68,44 @@
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_spin.h"
+> @@ -2989,6 +2989,7 @@ static void print_help(void)
+>  "  -f <scale>        Scale factor for batch durations.\n"
+>  "  -F <scale>        Scale factor for delays.\n"
+>  "  -L                List GPUs.\n"
+> +"  -l                List physical engines.\n"
+>  "  -D <gpu>          One of the GPUs from -L.\n"
+>  	);
+>  }
+> @@ -3048,10 +3049,42 @@ add_workload_arg(struct w_arg *w_args, unsigned int nr_args, char *w_arg,
+>  	return w_args;
+>  }
 >  
-> -enum intel_engine_id {
-> -	DEFAULT,
-> +enum intel_engine_class {
->  	RCS,
->  	BCS,
->  	VCS,
-> -	VCS1,
-> -	VCS2,
->  	VECS,
-> -	NUM_ENGINES
-> +	CCS,
-> +	NUM_ENGINE_CLASSES,
->  };
->  
-> +_Static_assert(RCS == DRM_XE_ENGINE_CLASS_RENDER, "mismatch");
-> +_Static_assert(BCS == DRM_XE_ENGINE_CLASS_COPY, "mismatch");
-> +_Static_assert(VCS == DRM_XE_ENGINE_CLASS_VIDEO_DECODE, "mismatch");
-> +_Static_assert(VECS == DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE, "mismatch");
-> +_Static_assert(CCS == DRM_XE_ENGINE_CLASS_COMPUTE, "mismatch");
-> +_Static_assert((int)RCS == (int)I915_ENGINE_CLASS_RENDER, "mismatch");
-> +_Static_assert((int)BCS == (int)I915_ENGINE_CLASS_COPY, "mismatch");
-> +_Static_assert((int)VCS == (int)I915_ENGINE_CLASS_VIDEO, "mismatch");
-> +_Static_assert((int)VECS == (int)I915_ENGINE_CLASS_VIDEO_ENHANCE, "mismatch");
-> +_Static_assert((int)CCS == (int)I915_ENGINE_CLASS_COMPUTE, "mismatch");
-> +
-> +static const char *intel_engine_class_string(uint16_t engine_class)
+> +static void list_engines(void)
 > +{
-> +	switch (engine_class) {
-> +	case RCS:
-> +		return "RCS";
-> +	case BCS:
-> +		return "BCS";
-> +	case VCS:
-> +		return "VCS";
-> +	case VECS:
-> +		return "VECS";
-> +	case CCS:
-> +		return "CCS";
-> +	default:
-> +		igt_assert(0);
+> +	struct intel_engines *engines = query_engines();
+> +	int engine_class_count[NUM_ENGINE_CLASSES] = {};
+> +	unsigned int i;
+> +
+> +	for (i = 0; i < engines->nr_engines; ++i) {
+> +		igt_assert_lt(engines->engines[i].engine_class, NUM_ENGINE_CLASSES);
+> +		engine_class_count[engines->engines[i].engine_class]++;
+> +	}
+> +
+> +	for (i = 0; i < engines->nr_engines; ++i) {
+> +		if (engine_class_count[engines->engines[i].engine_class] > 1)
+> +			printf("%s%u",
+> +			       intel_engine_class_string(engines->engines[i].engine_class),
+> +			       engines->engines[i].engine_instance + 1);
+> +		else
+> +			printf("%s",
+> +			       intel_engine_class_string(engines->engines[i].engine_class));
+> +
+> +		if (is_xe && engines->engines[i].gt_id)
+> +			printf("-%u", engines->engines[i].gt_id);
+> +
+> +		if (verbose > 3)
+> +			printf(" [%d:%d:%d]", engines->engines[i].engine_class,
+> +			       engines->engines[i].engine_instance,
+> +			       engines->engines[i].gt_id);
+> +		printf("\n");
 > +	}
 > +}
 > +
->  struct duration {
->  	unsigned int min, max;
->  	bool unbound;
-> @@ -126,14 +153,19 @@ struct w_arg {
->  	bool sseu;
->  };
->  
-> +#define INVALID_ID ((uint16_t)-2)
-> +#define DEFAULT_ID ((uint16_t)-1)
-> +
-> +typedef struct drm_xe_engine_class_instance intel_engine_t;
-> +
->  struct intel_engines {
->  	unsigned int nr_engines;
-> -	enum intel_engine_id *engines;
-> +	intel_engine_t *engines;
->  };
->  
->  struct bond {
-> -	uint64_t mask;
-> -	enum intel_engine_id master;
-> +	struct intel_engines mask;
-> +	intel_engine_t master;
->  };
->  
->  struct work_buffer_size {
-> @@ -158,7 +190,7 @@ struct w_step {
->  	/* Workload step metadata */
->  	enum w_type type;
->  	unsigned int context;
-> -	unsigned int engine;
-> +	intel_engine_t engine;
->  	unsigned int engine_idx;
->  	struct duration duration;
->  	struct deps data_deps;
-> @@ -264,8 +296,8 @@ struct workload {
->  	int sync_timeline;
->  	uint32_t sync_seqno;
->  
-> -	struct igt_list_head requests[NUM_ENGINES];
-> -	unsigned int nrequest[NUM_ENGINES];
-> +	struct igt_list_head *requests;
-> +	unsigned int *nrequest;
->  };
->  
->  #define __for_each_ctx(__ctx, __wrk, __ctx_idx) \
-> @@ -293,16 +325,6 @@ static struct drm_i915_gem_context_param_sseu device_sseu = {
->  #define FLAG_DEPSYNC		(1<<2)
->  #define FLAG_SSEU		(1<<3)
->  
-> -static const char *ring_str_map[NUM_ENGINES] = {
-> -	[DEFAULT] = "DEFAULT",
-> -	[RCS] = "RCS",
-> -	[BCS] = "BCS",
-> -	[VCS] = "VCS",
-> -	[VCS1] = "VCS1",
-> -	[VCS2] = "VCS2",
-> -	[VECS] = "VECS",
-> -};
-> -
->  static void w_step_sync(struct w_step *w)
+>  int main(int argc, char **argv)
 >  {
+>  	struct igt_device_card card = { };
+>  	bool list_devices_arg = false;
+> +	bool list_engines_arg = false;
+>  	unsigned int repeat = 1;
+>  	unsigned int clients = 1;
+>  	unsigned int flags = 0;
+> @@ -3074,11 +3107,14 @@ int main(int argc, char **argv)
+>  	master_prng = time(NULL);
+>  
+>  	while ((c = getopt(argc, argv,
+> -			   "LhqvsSdc:r:w:W:a:p:I:f:F:D:")) != -1) {
+> +			   "LlhqvsSdc:r:w:W:a:p:I:f:F:D:")) != -1) {
+>  		switch (c) {
+>  		case 'L':
+>  			list_devices_arg = true;
+>  			break;
+> +		case 'l':
+> +			list_engines_arg = true;
+> +			break;
+>  		case 'D':
+>  			device_arg = strdup(optarg);
+>  			break;
+> @@ -3199,6 +3235,11 @@ int main(int argc, char **argv)
 >  	if (is_xe)
-> @@ -518,41 +540,101 @@ out:
->  	} \
->  }
+>  		xe_device_get(fd);
 >  
-> -static int str_to_engine(const char *str)
-> -{
-> -	unsigned int i;
-> +/* engine_class[<engine_instance>-<gt_id>] */
-> +static intel_engine_t str_to_engine(const char *str)
-> +{
-> +	intel_engine_t e = {INVALID_ID, DEFAULT_ID, DEFAULT_ID};
-> +	size_t pos;
-> +
-> +	if (!strcasecmp("DEFAULT", str)) {
-> +		e.engine_class = DEFAULT_ID;
-> +		return e;
-> +	} else if (!strncasecmp("RCS", str, 3)) {
-> +		e.engine_class = RCS;
-> +		pos = 3;
-> +	} else if (!strncasecmp("BCS", str, 3)) {
-> +		e.engine_class = BCS;
-> +		pos = 3;
-> +	} else if (!strncasecmp("VCS", str, 3)) {
-> +		e.engine_class = VCS;
-> +		pos = 3;
-> +	} else if (!strncasecmp("VECS", str, 4)) {
-> +		e.engine_class = VECS;
-> +		pos = 4;
-> +	} else if (!strncasecmp("CCS", str, 3)) {
-> +		e.engine_class = CCS;
-> +		pos = 3;
-> +	} else {
-> +		return (intel_engine_t){INVALID_ID};
+> +	if (list_engines_arg) {
+> +		list_engines();
+> +		goto out;
 > +	}
 > +
-> +	if (str[pos]) {
-> +		char *s = strchr(&str[pos], '-');
-> +		char *endptr = NULL;
-> +		long id;
->  
-> -	for (i = 0; i < ARRAY_SIZE(ring_str_map); i++) {
-> -		if (!strcasecmp(str, ring_str_map[i]))
-> -			return i;
-> +		if (!s || (s && *s != str[pos])) {
-> +			id = strtol(&str[pos], &endptr, 10);
-> +			if (endptr == &str[pos] || id < 1 || id >= INVALID_ID)
-> +				return (intel_engine_t){INVALID_ID};
-> +			e.engine_instance = id - 1;
-> +		}
-> +
-> +		if (s && *(++s)) {
-> +			id = strtol(s, &endptr, 10);
-> +			if (endptr == s || id < 0 || id >= INVALID_ID)
-> +				return (intel_engine_t){INVALID_ID};
-> +			e.gt_id = id;
-> +		}
-> +
-> +		if (endptr && endptr != (str + strlen(str)))
-> +			return (intel_engine_t){INVALID_ID};
->  	}
->  
-> -	return -1;
-> +	return e;
-> +}
-> +
-> +static struct i915_engine_class_instance
-> +engine_to_i915_engine_class(const intel_engine_t *engine)
-> +{
-> +	return (struct i915_engine_class_instance){ engine->engine_class,
-> +						    engine->engine_instance };
->  }
->  
->  static unsigned int
-> -engine_to_i915_legacy_ring(const enum intel_engine_id *engine)
-> -{
-> -	static const unsigned int eb_engine_map[NUM_ENGINES] = {
-> -		[DEFAULT] = I915_EXEC_DEFAULT,
-> -		[RCS] = I915_EXEC_RENDER,
-> -		[BCS] = I915_EXEC_BLT,
-> -		[VCS] = I915_EXEC_BSD,
-> -		[VCS1] = I915_EXEC_BSD | I915_EXEC_BSD_RING1,
-> -		[VCS2] = I915_EXEC_BSD | I915_EXEC_BSD_RING2,
-> -		[VECS] = I915_EXEC_VEBOX
-> +engine_to_i915_legacy_ring(const intel_engine_t *engine)
-> +{
-> +	switch (engine->engine_class) {
-> +	case DEFAULT_ID:
-> +		return I915_EXEC_DEFAULT;
-> +	case RCS:
-> +		return I915_EXEC_RENDER;
-> +	case BCS:
-> +		return I915_EXEC_BLT;
-> +	case VCS:
-> +		if (engine->engine_instance == DEFAULT_ID)
-> +			return I915_EXEC_BSD;
-> +		else if (engine->engine_instance == 0)
-> +			return I915_EXEC_BSD | I915_EXEC_BSD_RING1;
-> +		else if (engine->engine_instance == 1)
-> +			return I915_EXEC_BSD | I915_EXEC_BSD_RING2;
-> +		break;
-> +	case VECS:
-> +		return I915_EXEC_VEBOX;
->  	};
->  
-> -	return eb_engine_map[*engine];
-> +	igt_assert(0);
->  }
->  
-> -static bool are_equal_engines(const enum intel_engine_id *e1,
-> -			      const enum intel_engine_id *e2)
-> +static bool are_equal_engines(const intel_engine_t *e1,
-> +			      const intel_engine_t *e2)
->  {
-> -	return *e1 == *e2;
-> +	return e1->engine_class == e2->engine_class &&
-> +	       e1->engine_instance == e2->engine_instance &&
-> +	       e1->gt_id == e2->gt_id;
->  }
->  
-> -static bool find_engine_in_map(const enum intel_engine_id *engine,
-> +static bool find_engine_in_map(const intel_engine_t *engine,
->  			       struct intel_engines *engines, unsigned int *idx)
->  {
->  	igt_assert(idx);
-> @@ -565,208 +647,156 @@ static bool find_engine_in_map(const enum intel_engine_id *engine,
->  	return false;
->  }
->  
-> -static struct intel_engine_data *query_engines(void)
-> +static struct intel_engines *query_engines(void)
->  {
-> -	static struct intel_engine_data engines = {};
-> +	static struct intel_engines engines = {};
->  
-> -	if (engines.nengines)
-> +	if (engines.nr_engines)
->  		return &engines;
->  
->  	if (is_xe) {
->  		struct drm_xe_engine_class_instance *hwe;
->  
-> -		xe_for_each_engine(fd, hwe) {
-> -			engines.engines[engines.nengines].class = hwe->engine_class;
-> -			engines.engines[engines.nengines].instance = hwe->engine_instance;
-> -			engines.nengines++;
-> +		engines.engines = calloc(xe_number_engines(fd), sizeof(intel_engine_t));
-> +		igt_assert(engines.engines);
-> +		engines.nr_engines = 0;
-> +		xe_for_each_engine(fd, hwe)
-> +			engines.engines[engines.nr_engines++] = *hwe;
-> +		igt_assert(engines.nr_engines);
-> +	} else {
-> +		struct intel_engine_data ed = {};
-> +
-> +		ed = intel_engine_list_of_physical(fd);
-> +		igt_assert(ed.nengines);
-> +		engines.nr_engines = ed.nengines;
-> +		engines.engines = calloc(engines.nr_engines, sizeof(intel_engine_t));
-> +		igt_assert(engines.engines);
-> +		for (int i = 0; i < ed.nengines; ++i) {
-> +			engines.engines[i].engine_class = ed.engines[i].class;
-> +			engines.engines[i].engine_instance = ed.engines[i].instance;
-> +			engines.engines[i].gt_id = DEFAULT_ID;
->  		}
-> -	} else
-> -		engines = intel_engine_list_of_physical(fd);
-> +	}
->  
-> -	igt_assert(engines.nengines);
->  	return &engines;
->  }
->  
-> -static unsigned int num_engines_in_class(enum intel_engine_id class)
-> +static bool is_valid_engine(const intel_engine_t *engine)
->  {
-> -	const struct intel_engine_data *engines = query_engines();
-> -	unsigned int i, count = 0;
-> -
-> -	igt_assert(class == VCS);
-> -
-> -	for (i = 0; i < engines->nengines; i++) {
-> -		if (engines->engines[i].class == I915_ENGINE_CLASS_VIDEO)
-> -			count++;
-> -	}
-> -
-> -	igt_assert(count);
-> -	return count;
-> +	return engine->engine_class != INVALID_ID;
->  }
->  
-> -static void
-> -fill_engines_id_class(enum intel_engine_id *list,
-> -		      enum intel_engine_id class)
-> +static bool is_default_engine(const intel_engine_t *engine)
->  {
-> -	const struct intel_engine_data *engines = query_engines();
-> -	enum intel_engine_id engine = VCS1;
-> -	unsigned int i, j = 0;
-> -
-> -	igt_assert(class == VCS);
-> -	igt_assert(num_engines_in_class(VCS) <= 2);
-> -
-> -	for (i = 0; i < engines->nengines; i++) {
-> -		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
-> -			continue;
-> +	return engine->engine_class == DEFAULT_ID &&
-> +	       engine->engine_instance == DEFAULT_ID &&
-> +	       engine->gt_id == DEFAULT_ID;
-> +}
->  
-> -		list[j++] = engine++;
-> -	}
-> +static bool engine_matches_filter(const intel_engine_t *engine, const intel_engine_t *filter)
-> +{
-> +	return (filter->engine_class == DEFAULT_ID ||
-> +		filter->engine_class == engine->engine_class) &&
-> +	       (filter->engine_instance == DEFAULT_ID ||
-> +		filter->engine_instance == engine->engine_instance) &&
-> +	       (filter->gt_id == DEFAULT_ID ||
-> +		filter->gt_id == engine->gt_id);
->  }
->  
-> +#define for_each_matching_engine(__engine, __filter, __engines) \
-> +	for (unsigned int __i = 0; __i < (__engines)->nr_engines && \
-> +	     ((__engine) = &(__engines)->engines[__i]); __i++) \
-> +		for_if(engine_matches_filter((__engine), (__filter)))
-> +
->  static unsigned int
-> -find_physical_instance(enum intel_engine_id class, unsigned int logical)
-> +append_matching_engines(const intel_engine_t *filter, struct intel_engines *engines)
->  {
-> -	const struct intel_engine_data *engines = query_engines();
-> -	unsigned int i, j = 0;
-> +	unsigned int prev_nr_engines;
-> +	struct intel_engines *all = query_engines();
-> +	intel_engine_t *engine;
->  
-> -	igt_assert(class == VCS);
-> +	igt_assert(engines);
-> +	prev_nr_engines = engines->nr_engines;
->  
-> -	for (i = 0; i < engines->nengines; i++) {
-> -		if (engines->engines[i].class != I915_ENGINE_CLASS_VIDEO)
-> -			continue;
-> -
-> -		/* Map logical to physical instances. */
-> -		if (logical == j++)
-> -			return engines->engines[i].instance;
-> +	for_each_matching_engine(engine, filter, all) {
-> +		engines->nr_engines++;
-> +		engines->engines = realloc(engines->engines,
-> +					   engines->nr_engines * sizeof(intel_engine_t));
-> +		igt_assert(engines->engines);
-> +		engines->engines[engines->nr_engines - 1] = *engine;
->  	}
->  
-> -	igt_assert(0);
-> -	return 0;
-> +	return engines->nr_engines - prev_nr_engines;
->  }
->  
-> -static struct i915_engine_class_instance
-> -get_engine(enum intel_engine_id engine)
-> +static intel_engine_t get_default_engine(void)
->  {
-> -	struct i915_engine_class_instance ci;
-> +	struct intel_engines *all_engines = query_engines();
-> +	const intel_engine_t filters[] = {
-> +		{RCS, DEFAULT_ID, DEFAULT_ID},
-> +		{CCS, DEFAULT_ID, DEFAULT_ID},
-> +		{DEFAULT_ID, DEFAULT_ID, DEFAULT_ID},
-> +		{INVALID_ID}
-> +	}, *filter, *default_engine;
->  
-> -	query_engines();
-> -
-> -	switch (engine) {
-> -	case RCS:
-> -		ci.engine_class = I915_ENGINE_CLASS_RENDER;
-> -		ci.engine_instance = 0;
-> -		break;
-> -	case BCS:
-> -		ci.engine_class = I915_ENGINE_CLASS_COPY;
-> -		ci.engine_instance = 0;
-> -		break;
-> -	case VCS1:
-> -	case VCS2:
-> -		ci.engine_class = I915_ENGINE_CLASS_VIDEO;
-> -		ci.engine_instance = find_physical_instance(VCS, engine - VCS1);
-> -		break;
-> -	case VECS:
-> -		ci.engine_class = I915_ENGINE_CLASS_VIDEO_ENHANCE;
-> -		ci.engine_instance = 0;
-> -		break;
-> -	default:
-> -		igt_assert(0);
-> -	};
-> +	for (filter = filters; is_valid_engine(filter); filter++)
-> +		for_each_matching_engine(default_engine, filter, all_engines)
-> +			return *default_engine;
->  
-> -	return ci;
-> +	igt_assert(0);
->  }
->  
-> -static struct drm_xe_engine_class_instance
-> -xe_get_engine(enum intel_engine_id engine)
-> +static intel_engine_t resolve_to_physical_engine_(const intel_engine_t *engine)
->  {
-> -	struct drm_xe_engine_class_instance hwe = {}, *hwe1;
-> -	bool found_physical = false;
-> +	struct intel_engines *all_engines = query_engines();
-> +	intel_engine_t *resolved;
->  
-> -	switch (engine) {
-> -	case RCS:
-> -		hwe.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
-> -		break;
-> -	case BCS:
-> -		hwe.engine_class = DRM_XE_ENGINE_CLASS_COPY;
-> -		break;
-> -	case VCS1:
-> -		hwe.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-> -		break;
-> -	case VCS2:
-> -		hwe.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-> -		hwe.engine_instance = 1;
-> -		break;
-> -	case VECS:
-> -		hwe.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-> -		break;
-> -	default:
-> -		igt_assert(0);
-> -	};
-> +	igt_assert(engine);
-> +	if (is_default_engine(engine))
-> +		return get_default_engine();
->  
-> -	xe_for_each_engine(fd, hwe1) {
-> -		if (hwe.engine_class == hwe1->engine_class &&
-> -		    hwe.engine_instance  == hwe1->engine_instance) {
-> -			hwe = *hwe1;
-> -			found_physical = true;
-> -			break;
-> -		}
-> -	}
-> +	for_each_matching_engine(resolved, engine, all_engines)
-> +		return *resolved;
->  
-> -	igt_assert(found_physical);
-> -	return hwe;
-> +	return (intel_engine_t){INVALID_ID};
->  }
->  
-> -static struct drm_xe_engine_class_instance
-> -xe_get_default_engine(void)
-> +static void resolve_to_physical_engine(intel_engine_t *engine)
->  {
-> -	struct drm_xe_engine_class_instance default_hwe, *hwe;
-> -
-> -	/* select RCS0 | CCS0 or first available engine */
-> -	default_hwe = xe_engine(fd, 0)->instance;
-> -	xe_for_each_engine(fd, hwe) {
-> -		if ((hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
-> -		     hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) &&
-> -		    hwe->engine_instance == 0) {
-> -			default_hwe = *hwe;
-> -			break;
-> -		}
-> -	}
-> -
-> -	return default_hwe;
-> +	*engine = resolve_to_physical_engine_(engine);
-> +	igt_assert(is_valid_engine(engine));
->  }
->  
->  static int parse_engine_map(struct w_step *step, const char *_str)
->  {
->  	char *token, *tctx = NULL, *tstart = (char *)_str;
-> +	intel_engine_t engine;
->  
->  	while ((token = strtok_r(tstart, "|", &tctx))) {
-> -		enum intel_engine_id engine;
-> -		unsigned int add;
-> -
->  		tstart = NULL;
->  
-> -		if (!strcmp(token, "DEFAULT"))
-> +		engine = str_to_engine(token);
-> +		if (!is_valid_engine(&engine) || is_default_engine(&engine))
->  			return -1;
->  
-> -		engine = str_to_engine(token);
-> -		if ((int)engine < 0)
-> +		if (!append_matching_engines(&engine, &step->engine_map))
->  			return -1;
-> +	}
-> +
-> +	return 0;
-> +}
->  
-> -		if (engine != VCS && engine != VCS1 && engine != VCS2 &&
-> -		    engine != RCS)
-> -			return -1; /* TODO */
-> +static int parse_bond_engines(struct w_step *step, const char *_str)
-> +{
-> +	char *token, *tctx = NULL, *tstart = (char *)_str;
-> +	intel_engine_t engine;
->  
-> -		add = engine == VCS ? num_engines_in_class(VCS) : 1;
-> -		step->engine_map.nr_engines += add;
-> -		step->engine_map.engines = realloc(step->engine_map.engines,
-> -						   step->engine_map.nr_engines *
-> -						   sizeof(step->engine_map.engines[0]));
-> +	while ((token = strtok_r(tstart, "|", &tctx))) {
-> +		tstart = NULL;
->  
-> -		if (engine != VCS)
-> -			step->engine_map.engines[step->engine_map.nr_engines - add] = engine;
-> -		else
-> -			fill_engines_id_class(&step->engine_map.engines[step->engine_map
-> -										.nr_engines - add],
-> -					      VCS);
-> +		engine = str_to_engine(token);
-> +		if (append_matching_engines(&engine, &step->bond.mask) != 1)
-> +			return -1;
->  	}
->  
->  	return 0;
-> @@ -888,26 +918,6 @@ static int parse_working_set(struct working_set *set, char *str)
->  	return 0;
->  }
->  
-> -static uint64_t engine_list_mask(const char *_str)
-> -{
-> -	uint64_t mask = 0;
-> -
-> -	char *token, *tctx = NULL, *tstart = (char *)_str;
-> -
-> -	while ((token = strtok_r(tstart, "|", &tctx))) {
-> -		enum intel_engine_id engine = str_to_engine(token);
-> -
-> -		if ((int)engine < 0 || engine == DEFAULT || engine == VCS)
-> -			return 0;
-> -
-> -		mask |= 1 << engine;
-> -
-> -		tstart = NULL;
-> -	}
-> -
-> -	return mask;
-> -}
-> -
->  static unsigned long
->  allocate_working_set(struct workload *wrk, struct working_set *set);
->  
-> @@ -1179,18 +1189,19 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
->  							  "Invalid context at step %u!\n",
->  							  nr_steps);
->  					} else if (nr == 1) {
-> -						step.bond.mask = engine_list_mask(field);
-> -						check_arg(step.bond.mask == 0,
-> +						tmp = parse_bond_engines(&step, field);
-> +						check_arg(tmp < 0,
->  							  "Invalid siblings list at step %u!\n",
->  							  nr_steps);
->  					} else if (nr == 2) {
-> -						tmp = str_to_engine(field);
-> -						check_arg(tmp <= 0 ||
-> -							  tmp == VCS ||
-> -							  tmp == DEFAULT,
-> +						struct intel_engines engines;
-> +
-> +						step.bond.master = str_to_engine(field);
-> +						check_arg(append_matching_engines(&step.bond.master,
-> +										  &engines) != 1,
->  							  "Invalid master engine at step %u!\n",
->  							  nr_steps);
-> -						step.bond.master = tmp;
-> +						free(engines.engines);
->  					}
->  
->  					nr++;
-> @@ -1248,13 +1259,11 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
->  		if (field) {
->  			fstart = NULL;
->  
-> -			i = str_to_engine(field);
-> -			check_arg(i < 0,
-> +			step.engine = str_to_engine(field);
-> +			check_arg(!is_valid_engine(&step.engine),
->  				  "Invalid engine id at step %u!\n", nr_steps);
->  
->  			valid++;
-> -
-> -			step.engine = i;
->  		}
->  
->  		field = strtok_r(fstart, ".", &fctx);
-> @@ -1421,9 +1430,9 @@ add_step:
->  static struct workload *
->  clone_workload(struct workload *_wrk)
->  {
-> +	int nr_engines = query_engines()->nr_engines;
->  	struct workload *wrk;
->  	struct w_step *w;
-> -	int i;
->  
->  	wrk = malloc(sizeof(*wrk));
->  	igt_assert(wrk);
-> @@ -1458,8 +1467,12 @@ clone_workload(struct workload *_wrk)
->  		}
->  	}
->  
-> -	for (i = 0; i < NUM_ENGINES; i++)
-> -		IGT_INIT_LIST_HEAD(&wrk->requests[i]);
-> +	wrk->requests = calloc(nr_engines, sizeof(*wrk->requests));
-> +	igt_assert(wrk->requests);
-> +	wrk->nrequest = calloc(nr_engines, sizeof(*wrk->nrequest));
-> +	igt_assert(wrk->nrequest);
-> +	while (--nr_engines >= 0)
-> +		IGT_INIT_LIST_HEAD(&wrk->requests[nr_engines]);
->  
->  	return wrk;
->  }
-> @@ -1486,37 +1499,32 @@ __get_ctx(struct workload *wrk, const struct w_step *w)
->  	return &wrk->ctx_list[w->context];
->  }
->  
-> -static uint32_t mmio_base(int i915, enum intel_engine_id engine, int gen)
-> +static uint32_t mmio_base(int i915, const intel_engine_t *engine, int gen)
->  {
-> -	const char *name;
-> +	char name[16];
->  
->  	if (gen >= 11)
->  		return 0;
->  
-> -	switch (engine) {
-> -	case NUM_ENGINES:
-> +	switch (engine->engine_class) {
->  	default:
->  		return 0;
->  
-> -	case DEFAULT:
-> +	case DEFAULT_ID:
->  	case RCS:
-> -		name = "rcs0";
-> +		snprintf(name, sizeof(name), "rcs%u", engine->engine_instance);
->  		break;
-> -
->  	case BCS:
-> -		name = "bcs0";
-> +		snprintf(name, sizeof(name), "bcs%u", engine->engine_instance);
->  		break;
-> -
->  	case VCS:
-> -	case VCS1:
-> -		name = "vcs0";
-> -		break;
-> -	case VCS2:
-> -		name = "vcs1";
-> +		snprintf(name, sizeof(name), "vcs%u", engine->engine_instance);
->  		break;
-> -
->  	case VECS:
-> -		name = "vecs0";
-> +		snprintf(name, sizeof(name), "vecs%u", engine->engine_instance);
-> +		break;
-> +	case CCS:
-> +		snprintf(name, sizeof(name), "ccs%u", engine->engine_instance);
->  		break;
->  	}
->  
-> @@ -1526,7 +1534,7 @@ static uint32_t mmio_base(int i915, enum intel_engine_id engine, int gen)
->  static unsigned int create_bb(struct w_step *w, int self)
->  {
->  	const int gen = intel_gen(intel_get_drm_devid(fd));
-> -	const uint32_t base = mmio_base(fd, w->engine, gen);
-> +	const uint32_t base = mmio_base(fd, &w->engine, gen);
->  #define CS_GPR(x) (base + 0x600 + 8 * (x))
->  #define TIMESTAMP (base + 0x3a8)
->  	const int use_64b = gen >= 8;
-> @@ -1887,22 +1895,6 @@ static void vm_destroy(int i915, uint32_t vm_id)
->  	igt_assert_eq(__vm_destroy(i915, vm_id), 0);
->  }
->  
-> -static unsigned int
-> -find_engine(struct i915_engine_class_instance *ci, unsigned int count,
-> -	    enum intel_engine_id engine)
-> -{
-> -	struct i915_engine_class_instance e = get_engine(engine);
-> -	unsigned int i;
-> -
-> -	for (i = 0; i < count; i++, ci++) {
-> -		if (!memcmp(&e, ci, sizeof(*ci)))
-> -			return i;
-> -	}
-> -
-> -	igt_assert(0);
-> -	return 0;
-> -}
-> -
->  static struct drm_i915_gem_context_param_sseu get_device_sseu(void)
->  {
->  	struct drm_i915_gem_context_param param = { };
-> @@ -2241,7 +2233,10 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
->  					else
->  						igt_assert(ctx->load_balance);
->  
-> -					w->request_idx = ctx->engine_map.engines[map_idx];
-> +					igt_assert(find_engine_in_map(&ctx->engine_map
-> +										.engines[map_idx],
-> +								      query_engines(),
-> +								      &w->request_idx));
->  				}
->  			}
->  
-> @@ -2256,7 +2251,8 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
->  
->  				for (j = 0; j < ctx->engine_map.nr_engines; j++)
->  					load_balance->engines[j] =
-> -						get_engine(ctx->engine_map.engines[j]);
-> +						engine_to_i915_engine_class(&ctx->engine_map
-> +										.engines[j]);
->  			}
->  
->  			/* Reserve slot for virtual engine. */
-> @@ -2267,32 +2263,30 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
->  
->  			for (j = 1; j <= ctx->engine_map.nr_engines; j++)
->  				set_engines->engines[j] =
-> -					get_engine(ctx->engine_map.engines[j - 1]);
-> +					engine_to_i915_engine_class(&ctx->engine_map
-> +										.engines[j - 1]);
->  
->  			last = NULL;
->  			for (j = 0; j < ctx->bond_count; j++) {
-> -				unsigned long mask = ctx->bonds[j].mask;
-> +				struct intel_engines *mask = &ctx->bonds[j].mask;
->  				struct i915_context_engines_bond *bond =
-> -					alloca0(sizeof_engines_bond(__builtin_popcount(mask)));
-> +					alloca0(sizeof_engines_bond(mask->nr_engines));
->  				unsigned int b, e;
->  
->  				bond->base.next_extension = to_user_pointer(last);
->  				bond->base.name = I915_CONTEXT_ENGINES_EXT_BOND;
->  
->  				bond->virtual_index = 0;
-> -				bond->master = get_engine(ctx->bonds[j].master);
-> +				bond->master = engine_to_i915_engine_class(&ctx->bonds[j].master);
->  
-> -				for (b = 0, e = 0; mask; e++, mask >>= 1) {
-> +				for (b = 0, e = 0; e < mask->nr_engines; e++) {
->  					unsigned int idx;
->  
-> -					if (!(mask & 1))
-> -						continue;
-> +					igt_assert(find_engine_in_map(&mask->engines[e],
-> +								      &ctx->engine_map,
-> +								      &idx));
->  
-> -					idx = find_engine(&set_engines->engines[1],
-> -							  ctx->engine_map.nr_engines,
-> -							  e);
-> -					bond->engines[b++] =
-> -						set_engines->engines[1 + idx];
-> +					bond->engines[b++] = set_engines->engines[1 + idx];
->  				}
->  
->  				last = bond;
-> @@ -2307,7 +2301,10 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
->  					continue;
->  				if (w->type == BATCH) {
->  					w->engine_idx = engine_to_i915_legacy_ring(&w->engine);
-> -					w->request_idx = w->engine;
-> +					resolve_to_physical_engine(&w->engine);
-> +					igt_assert(find_engine_in_map(&w->engine,
-> +								      query_engines(),
-> +								      &w->request_idx));
->  				}
->  			}
->  		}
-> @@ -2366,7 +2363,7 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
->  			eq->nr_hwes = ctx->engine_map.nr_engines;
->  			eq->hwe_list = calloc(eq->nr_hwes, sizeof(*eq->hwe_list));
->  			for (i = 0; i < eq->nr_hwes; ++i) {
-> -				eq->hwe_list[i] = xe_get_engine(ctx->engine_map.engines[i]);
-> +				eq->hwe_list[i] = ctx->engine_map.engines[i];
->  
->  				/* check no mixing classes and no duplicates */
->  				for (int j = 0; j < i; ++j) {
-> @@ -2388,65 +2385,71 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
->  				}
->  
->  				if (verbose > 3)
-> -					printf("%u ctx[%d] %s [%u:%u:%u]\n",
-> -						id, ctx_idx,
-> -						ring_str_map[ctx->engine_map.engines[i]],
-> -						eq->hwe_list[i].engine_class,
-> -						eq->hwe_list[i].engine_instance,
-> -						eq->hwe_list[i].gt_id);
-> -			}
-> -
-> -			/* update engine_idx */
-> -			for_each_w_step(w, wrk) {
-> -				if (w->context != ctx_idx)
-> -					continue;
-> -				if (w->type == BATCH) {
-> -					w->engine_idx = 0;
-> -					w->request_idx = ctx->engine_map.engines[w->engine_idx];
-> -				}
-> +					printf("%u ctx[%d] %s [%u:%u:%u]\n", id,
-> +					       ctx_idx,
-> +					       intel_engine_class_string(ctx->engine_map
-> +										.engines[i]
-> +										.engine_class),
-> +					       eq->hwe_list[i].engine_class,
-> +					       eq->hwe_list[i].engine_instance,
-> +					       eq->hwe_list[i].gt_id);
->  			}
->  
->  			xe_exec_queue_create_(ctx, eq);
->  		} else {
-> -			int engine_classes[NUM_ENGINES] = {};
-> -
-> -			ctx->xe.nr_queues = NUM_ENGINES;
-> -			ctx->xe.queue_list = calloc(ctx->xe.nr_queues, sizeof(*ctx->xe.queue_list));
-> -
-> +			/* create engine_map, update engine_idx */
->  			for_each_w_step(w, wrk) {
->  				if (w->context != ctx_idx)
->  					continue;
->  				if (w->type == BATCH) {
-> -					engine_classes[w->engine]++;
-> -					/* update engine_idx and request_idx */
-> -					w->engine_idx = w->engine;
-> -					w->request_idx = w->engine;
-> +					resolve_to_physical_engine(&w->engine);
-> +					if (!find_engine_in_map(&w->engine, &ctx->engine_map,
-> +								&w->engine_idx)) {
-> +						igt_assert(1 ==
-> +							   append_matching_engines(&w->engine,
-> +										   &ctx->engine_map)
-> +							  );
-> +						w->engine_idx = ctx->engine_map.nr_engines - 1;
-> +					}
->  				}
->  			}
->  
-> -			for (i = 0; i < NUM_ENGINES; i++) {
-> -				if (engine_classes[i]) {
-> -					eq = &ctx->xe.queue_list[i];
-> -					eq->nr_hwes = 1;
-> -					eq->hwe_list = calloc(1, sizeof(*eq->hwe_list));
-> +			/* skip not referenced context */
-> +			if (!ctx->engine_map.nr_engines)
-> +				continue;
->  
-> -					if (i == DEFAULT)
-> -						eq->hwe_list[0] = xe_get_default_engine();
-> -					else if (i == VCS)
-> -						eq->hwe_list[0] = xe_get_engine(VCS1);
-> -					else
-> -						eq->hwe_list[0] = xe_get_engine(i);
-> +			ctx->xe.nr_queues = ctx->engine_map.nr_engines;
-> +			ctx->xe.queue_list = calloc(ctx->xe.nr_queues, sizeof(*ctx->xe.queue_list));
->  
-> -					if (verbose > 3)
-> -						printf("%u ctx[%d] %s [%u:%u:%u]\n",
-> -							id, ctx_idx, ring_str_map[i],
-> -							eq->hwe_list[0].engine_class,
-> -							eq->hwe_list[0].engine_instance,
-> -							eq->hwe_list[0].gt_id);
-> +			for (i = 0; i < ctx->xe.nr_queues; i++) {
-> +				eq = &ctx->xe.queue_list[i];
-> +				eq->nr_hwes = 1;
-> +				eq->hwe_list = calloc(1, sizeof(*eq->hwe_list));
-> +				eq->hwe_list[0] = ctx->engine_map.engines[i];
->  
-> -					xe_exec_queue_create_(ctx, eq);
-> -				}
-> -				engine_classes[i] = 0;
-> +				if (verbose > 3)
-> +					printf("%u ctx[%d] %s [%d:%d:%d]\n",
-> +					       id, ctx_idx,
-> +					       intel_engine_class_string(ctx->engine_map
-> +										.engines[i]
-> +										.engine_class),
-> +					       eq->hwe_list[0].engine_class,
-> +					       eq->hwe_list[0].engine_instance,
-> +					       eq->hwe_list[0].gt_id);
-> +
-> +				xe_exec_queue_create_(ctx, eq);
-> +			}
-> +		}
-> +
-> +		/* update request_idx */
-> +		for_each_w_step(w, wrk) {
-> +			if (w->context != ctx_idx)
-> +				continue;
-> +			if (w->type == BATCH) {
-> +				igt_assert(find_engine_in_map(&ctx->engine_map
-> +									.engines[w->engine_idx],
-> +							      query_engines(),
-> +							      &w->request_idx));
->  			}
->  		}
->  	}
-> @@ -2909,7 +2912,7 @@ static void *run_workload(void *data)
->  		}
->  	}
->  
-> -	for (int i = 0; i < NUM_ENGINES; i++) {
-> +	for (int i = query_engines()->nr_engines; --i >= 0;) {
->  		if (!wrk->nrequest[i])
->  			continue;
->  
+>  	if (!nr_w_args) {
+>  		wsim_err("No workload descriptor(s)!\n");
+>  		goto err;
 > -- 
 > 2.31.1
 > 
