@@ -4,28 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 294D7C3DA64
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 14:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1C78C3DA64
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 14:56:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB25910E640;
-	Wed, 31 Jul 2024 14:53:29 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63E1510E640;
- Wed, 31 Jul 2024 14:53:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id A779510E646;
+	Wed, 31 Jul 2024 14:56:34 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IAd8HCyy";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADB0C10E646
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 14:56:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722437794; x=1753973794;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=ycZ2/p73qJ3/KAvsFHnoRwFn7mvLweNgZVVq7uEI01Q=;
+ b=IAd8HCyyrEMkkwm/Xv3EeirY+w0X3dbMqAcPvbgPTXk30kDSBzFoH0Nu
+ VYIYY80HOyG91ZiXrHctAqZa6kxoMNTyE06iK1lVzNq+MnsKkQQ5yyjzo
+ 5A4OebG40Kas+6qeYI8ov5yafKiFVWW+YiFQQz5J3eTlpWMe3svwgRHVl
+ ns11nPUMKe2jrLN68OJbikjFGDNOkWYXc4XrvmtzEPAXYOrS3ApazCLF1
+ lqsaWSLB00Tf35nAvgHGaGTF2MbY+RHcaNtd/tR8qZv4vDkSP4c6xcLQU
+ jhbDCfTzRZgW5FjXhl9LMfPQW6DNObJuM4nx0OMGwuQzePAiWV5oBAeqd Q==;
+X-CSE-ConnectionGUID: RgTK2AhNTmyBO9IB162X/g==
+X-CSE-MsgGUID: feDSQ596SF6I1DZtbi/M/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="37839337"
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="37839337"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2024 07:56:32 -0700
+X-CSE-ConnectionGUID: YooZ2jnPQQCLzA0KreoWxQ==
+X-CSE-MsgGUID: H7iLxgNqQcm8u2i/U17Tfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="58846600"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2024 07:56:30 -0700
+Date: Wed, 31 Jul 2024 16:56:27 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ tursulin@igalia.com, lukasz.laguna@intel.com
+Subject: Re: [PATCH v3 i-g-t 2/6] benchmarks/gem_wsim: Unify bond handling
+Message-ID: <20240731145627.g6ej4i4vnzqp5fdc@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ tursulin@igalia.com, lukasz.laguna@intel.com
+References: <20240729175219.1636694-1-marcin.bernatowicz@linux.intel.com>
+ <20240729175219.1636694-3-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Fsysfs?=
- =?utf-8?q?=5Fpreempt=5Ftimeout=3A_Porting_sysfs_preempt_test_in_xe_=28rev4?=
- =?utf-8?q?=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nakshtra.goyal@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 31 Jul 2024 14:53:29 -0000
-Message-ID: <172243760940.468187.14435356956313460692@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240731143029.3661149-1-nakshtra.goyal@intel.com>
-In-Reply-To: <20240731143029.3661149-1-nakshtra.goyal@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240729175219.1636694-3-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,87 +70,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Hi Marcin,
+On 2024-07-29 at 19:52:15 +0200, Marcin Bernatowicz wrote:
+> This change brings the handling of bonding information in line with
+> other parts of the code that use structured approaches for similar data,
+> enhancing overall consistency. Prepares code to use struct intel_engines as
+> bond.mask.
+> 
+> v2: Correct indentation.
+> 
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
-Series: tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in xe (rev4)
-URL   : https://patchwork.freedesktop.org/series/136449/
-State : warning
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1237760 for the overview.
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61728996):
-    int engines_fd = -1, gt_fd = -1;
-    ^~~
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:19: error: implicit declaration of function ‘openat’; did you mean ‘popen’? [-Werror=implicit-function-declaration]
-        engines_fd = openat(gt_fd, "engines", O_RDONLY);
-                     ^~~~~~
-                     popen
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:19: warning: nested extern declaration of ‘openat’ [-Wnested-externs]
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:44: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-        engines_fd = openat(gt_fd, "engines", O_RDONLY);
-                                              ^~~~~~~~
-                                              STA_RONLY
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:44: note: each undeclared identifier is reported only once for each function it appears in
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722437232:step_script
-  section_start:1722437232:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722437232:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61728995):
-    int engines_fd = -1, gt_fd = -1;
-    ^~~
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:19: error: implicit declaration of function ‘openat’; did you mean ‘popen’? [-Werror=implicit-function-declaration]
-        engines_fd = openat(gt_fd, "engines", O_RDONLY);
-                     ^~~~~~
-                     popen
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:19: warning: nested extern declaration of ‘openat’ [-Wnested-externs]
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:44: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-        engines_fd = openat(gt_fd, "engines", O_RDONLY);
-                                              ^~~~~~~~
-                                              STA_RONLY
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:44: note: each undeclared identifier is reported only once for each function it appears in
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722437260:step_script
-  section_start:1722437260:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722437262:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61728997):
-    int engines_fd = -1, gt_fd = -1;
-    ^~~
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:19: error: implicit declaration of function ‘openat’; did you mean ‘popen’? [-Werror=implicit-function-declaration]
-        engines_fd = openat(gt_fd, "engines", O_RDONLY);
-                     ^~~~~~
-                     popen
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:19: warning: nested extern declaration of ‘openat’ [-Wnested-externs]
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:44: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-        engines_fd = openat(gt_fd, "engines", O_RDONLY);
-                                              ^~~~~~~~
-                                              STA_RONLY
-  ../tests/intel/xe_sysfs_preempt_timeout.c:207:44: note: each undeclared identifier is reported only once for each function it appears in
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722437272:step_script
-  section_start:1722437272:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722437274:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1237760
+> ---
+>  benchmarks/gem_wsim.c | 20 +++++++-------------
+>  1 file changed, 7 insertions(+), 13 deletions(-)
+> 
+> diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+> index 0cf93228a..0445e9942 100644
+> --- a/benchmarks/gem_wsim.c
+> +++ b/benchmarks/gem_wsim.c
+> @@ -172,10 +172,7 @@ struct w_step {
+>  		int priority;
+>  		struct intel_engines engine_map;
+>  		bool load_balance;
+> -		struct {
+> -			uint64_t bond_mask;
+> -			enum intel_engine_id bond_master;
+> -		};
+> +		struct bond bond;
+>  		int sseu;
+>  		struct working_set working_set;
+>  	};
+> @@ -1146,10 +1143,10 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>  							  "Invalid context at step %u!\n",
+>  							  nr_steps);
+>  					} else if (nr == 1) {
+> -						step.bond_mask = engine_list_mask(field);
+> -						check_arg(step.bond_mask == 0,
+> -							"Invalid siblings list at step %u!\n",
+> -							nr_steps);
+> +						step.bond.mask = engine_list_mask(field);
+> +						check_arg(step.bond.mask == 0,
+> +							  "Invalid siblings list at step %u!\n",
+> +							  nr_steps);
+>  					} else if (nr == 2) {
+>  						tmp = str_to_engine(field);
+>  						check_arg(tmp <= 0 ||
+> @@ -1157,7 +1154,7 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
+>  							  tmp == DEFAULT,
+>  							  "Invalid master engine at step %u!\n",
+>  							  nr_steps);
+> -						step.bond_master = tmp;
+> +						step.bond.master = tmp;
+>  					}
+>  
+>  					nr++;
+> @@ -2170,10 +2167,7 @@ static int prepare_contexts(unsigned int id, struct workload *wrk)
+>  						     ctx->bond_count *
+>  						     sizeof(struct bond));
+>  				igt_assert(ctx->bonds);
+> -				ctx->bonds[ctx->bond_count - 1].mask =
+> -					w->bond_mask;
+> -				ctx->bonds[ctx->bond_count - 1].master =
+> -					w->bond_master;
+> +				ctx->bonds[ctx->bond_count - 1] = w->bond;
+>  			}
+>  		}
+>  	}
+> -- 
+> 2.31.1
+> 
