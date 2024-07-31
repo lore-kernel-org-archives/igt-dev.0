@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FB48C52D1D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2867C3DA7F
 	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 14:52:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4028110E640;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 68A6810E641;
 	Wed, 31 Jul 2024 14:52:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VQcBpDxp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RBfvw+Uk";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DD56510E640
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C005A10E63C
  for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 14:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1722437536; x=1753973536;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=QV8REiKd257sIP9OMC/hR4/dvkYLudBIz5cmj1WQCWs=;
- b=VQcBpDxp8HBWlT1m4IREtjDYX+h5t1ahbkH8l8qSkf4RJ6tKG6e8mzEE
- LiCR56JsI59CqCdlmjk9dufyc/aPn4rLOiKe+ua9syK6e/6KOjd/oLV+V
- C6YRqUZQZxGJcxW6JudHk659lDubk3ksvoQ0K/x2MPPOqTrypYC8qL2iq
- TTbhDj3m+31GXeUT87oX/KM+f7NcmACfhllI7ew+ZEH1BSSCIT66VCPtj
- TwJtnKOzl0qfM9qmlFJ0vZNaKmzpRUvOopwxY8EWwhu325IzKOBupBGVa
- Z1TrtQEdN7M0tPeaowNLdVRiALx7A/6XFiAx3Vf2duBoqGSyVz4t0hLqN w==;
-X-CSE-ConnectionGUID: jBNMIGXDRti3xJ69w5S8Yw==
-X-CSE-MsgGUID: Jeb7E/aWRQC0SuIOPKlKzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="37838506"
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="37838506"
+ bh=s8dCFuzsGy+tPVKWA8V2/vrXriKb0Y0TLMtZxQ2IzMM=;
+ b=RBfvw+UkjhJTajjtWBZXaoMW//tW6mzQGgmNPGsWrsw8zTjy5duYwyIa
+ AcVIiUDIFvpH4U2k6mKQUP1BjfXMX4+Bh2VYqR+RvGndncDvHqFG5QpJ1
+ hP+5hEpvSd39Dm9s6JEVhG92oTr5jJXxqrZvDiesN31x+3Dbc7DbNOmIs
+ fS+6kAU1+roHAdDL6k8pj32iwCiD5xiqrye/OnNm1WHZHIggGqkgVV9ge
+ 7mWCaQsIe4TwRm2Pgm0Ue/fIJ7XYKZNaonuUgN/vEhi7qrjDHkG845CXs
+ jCKv3UafhfoKnQVy5fdAL+OshLYEjXafTgNthJzJjSNsx7ar4uwfXYw7R g==;
+X-CSE-ConnectionGUID: loByZqHMT1+UTDVlrqWYbQ==
+X-CSE-MsgGUID: TI0jxQJDQIakHzBxWTqW+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="37838499"
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="37838499"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 07:52:10 -0700
-X-CSE-ConnectionGUID: DEfQ4ghMQrG94r6ad+8UgQ==
-X-CSE-MsgGUID: /37syRENRAOGO8hvYNV5xA==
+ 31 Jul 2024 07:52:07 -0700
+X-CSE-ConnectionGUID: ueDVXskNQ4ieIVhFpEEktA==
+X-CSE-MsgGUID: wzd6AorqQoCIKVL2/I8OVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="58845538"
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="58845527"
 Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 07:52:08 -0700
+ 31 Jul 2024 07:52:05 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: bhanuprakash.modem@intel.com, kunal1.joshi@intel.com,
- animesh.manna@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 2/3] lib/igt_kms: Added library functions for LOBF status
-Date: Wed, 31 Jul 2024 20:32:51 +0530
-Message-Id: <20240731150252.2951870-3-jeevan.b@intel.com>
+ animesh.manna@intel.com,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 1/3] tests/intel/xe_drm_fdinfo: Add
+ basic-engine-utilization test
+Date: Wed, 31 Jul 2024 20:32:50 +0530
+Message-Id: <20240731150252.2951870-2-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240731150252.2951870-1-jeevan.b@intel.com>
 References: <20240731150252.2951870-1-jeevan.b@intel.com>
@@ -68,64 +71,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added helper functions to check LOBF status to check weather
-it is enabled or disabled.
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-v2: rename function name.
+Add the basic test for engine utilization.
 
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
-Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://lore.kernel.org/r/20240703002532.3156277-3-umesh.nerlige.ramappa@intel.com
 ---
- lib/igt_kms.c | 23 +++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 24 insertions(+)
+ tests/intel/xe_drm_fdinfo.c | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 64318ef7f..e030b35a6 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6071,6 +6071,29 @@ void igt_dump_crtcs_fd(int drmfd)
- 	drmModeFreeResources(mode_resources);
+diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
+index f0aa23e2f..2f9661a0b 100644
+--- a/tests/intel/xe_drm_fdinfo.c
++++ b/tests/intel/xe_drm_fdinfo.c
+@@ -14,17 +14,20 @@
+ #include "xe/xe_spin.h"
+ /**
+  * TEST: xe drm fdinfo
+- * Description: Read and verify drm client memory consumption using fdinfo
++ * Description: Read and verify drm client memory consumption and engine utilization using fdinfo
+  * Category: Core
+  * Mega feature: General Core features
+  * Sub-category: driver
+- * Functionality: Per client memory statistics
++ * Functionality: Per client memory and engine utilization statistics
+  * Feature: SMI, core
+  * Test category: SysMan
+  *
+  * SUBTEST: basic-memory
+  * Description: Check if basic fdinfo content is present for memory
+  *
++ * SUBTEST: basic-engine-utilization
++ * Description: Check if basic fdinfo content is present for engine utilization
++ *
+  * SUBTEST: drm-total-resident
+  * Description: Create and compare total and resident memory consumption by client
+  *
+@@ -35,10 +38,18 @@
+  * Description: Create and compare active memory consumption by client
+  */
+ 
+-IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption using fdinfo");
++IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine utilization using fdinfo");
+ 
+ #define BO_SIZE (65536)
+ 
++static const char *engine_map[] = {
++	"rcs",
++	"bcs",
++	"vcs",
++	"vecs",
++	"ccs",
++};
++
+ /* Subtests */
+ static void test_active(int fd, struct drm_xe_engine *engine)
+ {
+@@ -287,6 +298,18 @@ static void basic_memory(int xe)
+ 	}
  }
  
-+/**
-+ * igt_get_i915_edp_lobf_status
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ *
-+ * Return: True if its enabled.
-+ */
-+bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name)
++static void basic_engine_utilization(int xe)
 +{
-+	char buf[24];
-+	int fd, res;
++	struct drm_client_fdinfo info = { };
++	unsigned int ret;
 +
-+	fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
-+	igt_assert(fd >= 0);
-+
-+	res = igt_debugfs_simple_read(fd, "i915_edp_lobf_info", buf, sizeof(buf));
-+	igt_require(res > 0);
-+
-+	close(fd);
-+
-+	return strstr(buf, "LOBF status: enabled");
++	ret = igt_parse_drm_fdinfo(xe, &info, engine_map,
++				   ARRAY_SIZE(engine_map), NULL, 0);
++	igt_assert_f(ret != 0, "failed with err:%d\n", errno);
++	igt_assert(!strcmp(info.driver, "xe"));
++	igt_require(info.num_engines);
 +}
 +
- /**
-  * igt_get_output_max_bpc:
-  * @drmfd: A drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 501d48763..e8582a45b 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1195,6 +1195,7 @@ void igt_require_pipe(igt_display_t *display,
- void igt_dump_connectors_fd(int drmfd);
- void igt_dump_crtcs_fd(int drmfd);
- bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
-+bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
- unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
- unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
- void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
+ igt_main
+ {
+ 	int xe;
+@@ -303,6 +326,10 @@ igt_main
+ 	igt_subtest("basic-memory")
+ 		basic_memory(xe);
+ 
++	igt_describe("Check if basic fdinfo content is present for engine utilization");
++	igt_subtest("basic-engine-utilization")
++		basic_engine_utilization(xe);
++
+ 	igt_describe("Create and compare total and resident memory consumption by client");
+ 	igt_subtest("drm-total-resident")
+ 		test_total_resident(xe);
 -- 
 2.25.1
 
