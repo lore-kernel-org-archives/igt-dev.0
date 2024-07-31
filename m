@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08B1FC49EA1
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 14:28:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2EFFC3DA7F
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 14:30:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2C8A10E63B;
-	Wed, 31 Jul 2024 14:28:23 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C06F10E63A;
- Wed, 31 Jul 2024 14:28:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0011904335330616049=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 853D210E63A;
+	Wed, 31 Jul 2024 14:30:12 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hA+tQN2a";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 70E7010E63A
+ for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 14:30:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722436211; x=1753972211;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1mVNArNp1bNnd+MLEvpu/WhHe+9Dbp4G3ztpb3dig5c=;
+ b=hA+tQN2adQgaXcwXSTQ4ACN0IYtCSAUQ73CwCCq+1ZUwEwXBM8QUgR8q
+ yHqlIWpFZ6ZD5CJn7u70CI5hBJsJFHSvwZYkUHLn8E41cnRkLEyNJoYJ/
+ 3wBxpnprZ0PDSXvZ9Hs/F0ITLnlHNoYHeiev1kevAmJeYnen2nLIOtVTt
+ yrV7bKCkOaLIuX6nrFOu3L8nV+K93Bl0dfJTMNfDfDtaihul7TIurqy26
+ 0H1E1epDOh9bCAS+wSVTSI8ONAzqh9keFaUK9iqgXAONQ4OmfAwBb0Tr6
+ yyTbH9NDUySaAvWI0/lFxBg3WsV3I6G0d4Xo/WjJjlYYVpRtUcR7rynJ3 A==;
+X-CSE-ConnectionGUID: EPiGRAbeST63j+7ss1TMng==
+X-CSE-MsgGUID: vhIshIAhSOC1wz0XfoCuNg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="20166071"
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="20166071"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2024 07:30:11 -0700
+X-CSE-ConnectionGUID: vPDW1+20RIOBs9vx42U3kw==
+X-CSE-MsgGUID: 0+6jMDNqTQekXw4vSZbhSw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="54631892"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.145.169.86])
+ by orviesa010.jf.intel.com with ESMTP; 31 Jul 2024 07:30:09 -0700
+From: nakshtra.goyal@intel.com
+To: igt-dev@lists.freedesktop.org,
+	ramadevi.gandi@intel.com
+Cc: janga.rahul.kumar@intel.com,
+	sai.gowtham.ch@intel.com
+Subject: [PATCH i-g-t,
+ v4 0/2] tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt
+ test in xe
+Date: Wed, 31 Jul 2024 20:00:27 +0530
+Message-Id: <20240731143029.3661149-1-nakshtra.goyal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_New_test_to_validate_link-off_?=
- =?utf-8?q?between_active_regions_=28LOBF=29_=28rev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 31 Jul 2024 14:28:22 -0000
-Message-ID: <172243610243.468110.17826499317078355018@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240731120215.2946412-1-jeevan.b@intel.com>
-In-Reply-To: <20240731120215.2946412-1-jeevan.b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +65,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0011904335330616049==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-== Series Details ==
+Using single exec, removing unnecessary headers,using variables of same
+type in single line according to comments in v3
 
-Series: New test to validate link-off between active regions (LOBF) (rev5)
-URL   : https://patchwork.freedesktop.org/series/135446/
-State : success
+Adding test in fast_feedback to check it xe BAT in CI
 
-== Summary ==
+Nakshtra Goyal (2):
+  tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in xe
+  HAX/DO_NOT_MERGE: xe-fast-feedback: test xe_sysfs_preempt_timeout
 
-CI Bug Log - changes from XEIGT_7946_BAT -> XEIGTPW_11506_BAT
-====================================================
+ tests/intel-ci/fast-feedback.testlist  |   2 +
+ tests/intel/xe_sysfs_preempt_timeout.c | 221 +++++++++++++++++++++++++
+ tests/meson.build                      |   1 +
+ 3 files changed, 224 insertions(+)
+ create mode 100644 tests/intel/xe_sysfs_preempt_timeout.c
 
-Summary
--------
+-- 
+2.34.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (7 -> 7)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7946 -> IGTPW_11506
-
-  IGTPW_11506: 11506
-  IGT_7946: 7946
-  xe-1696-2a74e6714291a2c9cf26c08f729d5feb203e8338: 2a74e6714291a2c9cf26c08f729d5feb203e8338
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11506/index.html
-
---===============0011904335330616049==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>New test to validate link-off between active regions (LOBF) (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135446/">https://patchwork.freedesktop.org/series/135446/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11506/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11506/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7946_BAT -&gt; XEIGTPW_11506_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7946 -&gt; IGTPW_11506</li>
-</ul>
-<p>IGTPW_11506: 11506<br />
-  IGT_7946: 7946<br />
-  xe-1696-2a74e6714291a2c9cf26c08f729d5feb203e8338: 2a74e6714291a2c9cf26c08f729d5feb203e8338</p>
-
-</body>
-</html>
-
---===============0011904335330616049==--
