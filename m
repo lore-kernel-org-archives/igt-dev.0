@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC520C3DA64
-	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 08:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6248EC3DA64
+	for <igt-dev@archiver.kernel.org>; Wed, 31 Jul 2024 09:06:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 680BF10E281;
-	Wed, 31 Jul 2024 08:31:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mHnqOVUS";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7983A10E281
- for <igt-dev@lists.freedesktop.org>; Wed, 31 Jul 2024 08:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722414699; x=1753950699;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=CS6ObYF5NZZs0E52Ykt1a9upohYOz8MUL/icfs0yrbg=;
- b=mHnqOVUSdDfH+sZ1V1ugeoAfSaggdG5AcIXj/y45CJ1yYAVWdurNC18W
- qH+jJJA5t4NtCtKcPZqPWP+cNkcTQunxQB8UQmGEBgpnlTA8T4n8Hgryg
- z0hHx/LW/Aw1wG39dBS5Jt44g4oEqCew8mGeeoryL6jxpm+YtzdPxVx89
- qbXwE9nJ7565kU0IlPYc6A2Uh9xK/MHanpQaKA7P1hAX2WolPhIzT0aGX
- +AULoXva+Q6HgxIrfRXD0Jyvb879TaFPs7I2/HHM/wgj6KHTh4p89GJcq
- MEva0fFbO7btH72Rzn2UJcD6/7+9ByEZhIL74YqKvXt3HtU1S7ZfFXeZN w==;
-X-CSE-ConnectionGUID: Je7zv3f7QfiXLnWBzzAJuQ==
-X-CSE-MsgGUID: +Zaj7DrOSA6pIzxdwOCPaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11149"; a="31427056"
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="31427056"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 01:31:38 -0700
-X-CSE-ConnectionGUID: H036uewQSd2s/MQodzqB0w==
-X-CSE-MsgGUID: BhxHzjsASD+FLWW6/e/6Lg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,251,1716274800"; d="scan'208";a="59464973"
-Received: from kbommu-desk.iind.intel.com ([10.145.169.159])
- by orviesa003.jf.intel.com with ESMTP; 31 Jul 2024 01:31:37 -0700
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Emil Velikov <emil.l.velikov@gmail.com>,
- Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Subject: [PATCH i-g-t v3] tests/core_setmaster: Adjust loop control in
- tweak_perm
-Date: Wed, 31 Jul 2024 13:50:37 +0530
-Message-Id: <20240731082037.1069-1-krishnaiah.bommu@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0672810E34A;
+	Wed, 31 Jul 2024 09:06:02 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9862210E027;
+ Wed, 31 Jul 2024 09:06:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7220765670493249249=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/core=5Fsetmaster=3A_Adju?=
+ =?utf-8?q?st_loop_control_in_tweak=5Fperm?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 31 Jul 2024 09:06:00 -0000
+Message-ID: <172241676061.466916.7550819954874207603@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240731082037.1069-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240731082037.1069-1-krishnaiah.bommu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,52 +37,125 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The `tweak_perm` function now uses `continue` instead of `break` when
-encountering non-existent card paths. This change addresses the assumption
-in existing userspace that card paths are contiguous, which may not be true
-if cards are dynamically removed.
+--===============7220765670493249249==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Problem Description:
-The test fails after running the `core_hotunplug@hot*` subtest, where card0 is missing.
-This leads to a failure in the subsequent `master-drop-set-user` test.
+== Series Details ==
 
-Command sequence for reproducing the issue:
-- Check available cards: `ls /dev/dri/`
-  - Output: by-path  card0  renderD128
-- Run the test: `# ./core_hotunplug --r hotrebind-lateclose`
-- Check again: ‘ls /dev/dri/’
-  - Output after failure: by-path  card1  renderD129
-- Run the test: `# ./core_setmaster --r master-drop-set-user`
+Series: tests/core_setmaster: Adjust loop control in tweak_perm
+URL   : https://patchwork.freedesktop.org/series/136729/
+State : success
 
-This failures on both XE and i915 for above sequence.
+== Summary ==
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Emil Velikov <emil.l.velikov@gmail.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
----
- tests/core_setmaster.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+CI Bug Log - changes from XEIGT_7944_BAT -> XEIGTPW_11504_BAT
+====================================================
 
-diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-index 9c2083f66..a2758e2f2 100644
---- a/tests/core_setmaster.c
-+++ b/tests/core_setmaster.c
-@@ -116,9 +116,10 @@ static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
- 	for (i = 0; i < max_perm; i++) {
- 		snprintf(path, sizeof(path), "/dev/dri/card%u", i);
- 
--		/* Existing userspace assumes there's no gaps, do the same. */
-+		/* Userspace cannot always have continuous card0...N due to
-+		 * dynamic unloading or removal of cards */
- 		if (stat(path, &st) != 0)
--			break;
-+			continue;
- 
- 		if (save) {
- 			/* Save and toggle */
--- 
-2.25.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (7 -> 7)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11504_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7944/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11504/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7944 -> IGTPW_11504
+
+  IGTPW_11504: 11504
+  IGT_7944: 7944
+  xe-1694-4a4602971578bb1ed5b64078f758dff3034b6b90: 4a4602971578bb1ed5b64078f758dff3034b6b90
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11504/index.html
+
+--===============7220765670493249249==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/core_setmaster: Adjust loop control in tweak_perm</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136729/">https://patchwork.freedesktop.org/series/136729/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11504/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11504/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7944_BAT -&gt; XEIGTPW_11504_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 7)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11504_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7944/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11504/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7944 -&gt; IGTPW_11504</li>
+</ul>
+<p>IGTPW_11504: 11504<br />
+  IGT_7944: 7944<br />
+  xe-1694-4a4602971578bb1ed5b64078f758dff3034b6b90: 4a4602971578bb1ed5b64078f758dff3034b6b90</p>
+
+</body>
+</html>
+
+--===============7220765670493249249==--
