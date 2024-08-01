@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3342CC3DA64
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 06:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A9385C3DA64
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 06:05:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E50CD10E89B;
-	Thu,  1 Aug 2024 06:05:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6984810E898;
+	Thu,  1 Aug 2024 06:05:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m7prjqoO";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G0pVkkNL";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9203810E89B
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 06:05:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44EE710E898
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 06:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722492317; x=1754028317;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=qwe/X6ThX3yS/tWvQgxxHrb+R9tzdSKdjubm01kWCqI=;
- b=m7prjqoOfFhIfB2n/5KI2Wp2LZzmu4qQvpj2Tst3URDTGJQa4yTbPz0S
- nZyxI91IpD0oIgRPCh6BGzU51YSLlJJNyFENerKC/QP+e1w5n/YXBeRzQ
- DH1/LqtlJBowm5x58HVBBeTQpmMVR/ZzKW7mzBcJwPi8YB0JVs59VYl35
- iHJniXWr6roFr3SNK9cSWr9u38x5UsPfZDHdyldfRipAXtNTpm4wWzeoC
- +u5W+HkFAeDq5HxNvlNTxm/EC5oMXJP2xt3GKmHQPWdwAeu3QlnhwBVw/
- RIlTBa/mvFAvZ31iXsM4Y7s5E2J85FIoVW+nliKJY/1XR9UE4EeYQXciU g==;
-X-CSE-ConnectionGUID: bpU80VPCSaO8C/MROjDwog==
-X-CSE-MsgGUID: BHPOIMlLTMOHIlh3uYn6fA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="31821077"
-X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="31821077"
+ t=1722492321; x=1754028321;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=QV8REiKd257sIP9OMC/hR4/dvkYLudBIz5cmj1WQCWs=;
+ b=G0pVkkNLaBJhgRiUQ4GToiqVOW6xC2WhXRprpcJVWRPEHpygpPegO4kp
+ NXIdAYYw7QpTsbTC4feRbyRJUpVhofvwzz7EOhJpiikhUGMVFsNto/Bqh
+ m1vbrdekF3+HeAsb2VhnCDILVtBiBTVmm8pfJMklRWsVqNTUqmYy5uLiS
+ M2we67rfeRpu5tT2JUu0KBU5AMqsvBXibK6KpDSpH7pXblF+7ZPl2osre
+ lp+r/ClkCnrmrn2GjFCfuGdI8rgAsbg5HThvuD6ajTPv1pHc9cDxC/fZg
+ zfj/BpDYCFTCkqwfBpFHsnAObTdtPB7+BqlWFtRo/1VxHK7nI8/fWrlJ2 A==;
+X-CSE-ConnectionGUID: KmPHRJ5bRGq92S0VEuEQ/A==
+X-CSE-MsgGUID: P5BgbN8DSaWX2hX28hGpXw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="31821085"
+X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="31821085"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 23:05:17 -0700
-X-CSE-ConnectionGUID: t1YFRxSFTzi5SGyS3memBg==
-X-CSE-MsgGUID: 9evx+VfVSfSkVfveM/gx6g==
+ 31 Jul 2024 23:05:21 -0700
+X-CSE-ConnectionGUID: oQn4/4UzTqy5tcUd47BTng==
+X-CSE-MsgGUID: 19L9imScRk++pNx1Sn2vbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="85836476"
+X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="85836527"
 Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 23:05:15 -0700
+ 31 Jul 2024 23:05:19 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: bhanuprakash.modem@intel.com, kunal1.joshi@intel.com,
  animesh.manna@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 0/3] New test to validate link-off between active
- regions (LOBF)
-Date: Thu,  1 Aug 2024 11:46:05 +0530
-Message-Id: <20240801061608.2983058-1-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/igt_kms: Added library functions for LOBF status
+Date: Thu,  1 Aug 2024 11:46:06 +0530
+Message-Id: <20240801061608.2983058-2-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240801061608.2983058-1-jeevan.b@intel.com>
+References: <20240801061608.2983058-1-jeevan.b@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,21 +68,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add debugfs entry to validate LOBF status and create a new
-test to validate and fix grammar.
+Added helper functions to check LOBF status to check weather
+it is enabled or disabled.
+
+v2: rename function name.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ lib/igt_kms.c | 23 +++++++++++++++++++++++
+ lib/igt_kms.h |  1 +
+ 2 files changed, 24 insertions(+)
 
-Jeevan B (3):
-  lib/igt_kms: Added library functions for LOBF status
-  tests/kms_vrr: Add new test to validate LOBF
-  tests/kms_vrr: Grammatical correction in igt_describe
-
- lib/igt_kms.c   | 23 +++++++++++++++++++
- lib/igt_kms.h   |  1 +
- tests/kms_vrr.c | 61 ++++++++++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 82 insertions(+), 3 deletions(-)
-
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 64318ef7f..e030b35a6 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6071,6 +6071,29 @@ void igt_dump_crtcs_fd(int drmfd)
+ 	drmModeFreeResources(mode_resources);
+ }
+ 
++/**
++ * igt_get_i915_edp_lobf_status
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
++ *
++ * Return: True if its enabled.
++ */
++bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name)
++{
++	char buf[24];
++	int fd, res;
++
++	fd = igt_debugfs_connector_dir(drmfd, connector_name, O_RDONLY);
++	igt_assert(fd >= 0);
++
++	res = igt_debugfs_simple_read(fd, "i915_edp_lobf_info", buf, sizeof(buf));
++	igt_require(res > 0);
++
++	close(fd);
++
++	return strstr(buf, "LOBF status: enabled");
++}
++
+ /**
+  * igt_get_output_max_bpc:
+  * @drmfd: A drm file descriptor
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 501d48763..e8582a45b 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1195,6 +1195,7 @@ void igt_require_pipe(igt_display_t *display,
+ void igt_dump_connectors_fd(int drmfd);
+ void igt_dump_crtcs_fd(int drmfd);
+ bool igt_override_all_active_output_modes_to_fit_bw(igt_display_t *display);
++bool igt_get_i915_edp_lobf_status(int drmfd, char *connector_name);
+ unsigned int igt_get_output_max_bpc(int drmfd, char *connector_name);
+ unsigned int igt_get_pipe_current_bpc(int drmfd, enum pipe pipe);
+ void igt_assert_output_bpc_equal(int drmfd, enum pipe pipe,
 -- 
 2.25.1
 
