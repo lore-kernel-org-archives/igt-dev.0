@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF766C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 10:28:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0E00C3DA64
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 10:28:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 69E7810E8EE;
-	Thu,  1 Aug 2024 10:28:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B183D10E8F1;
+	Thu,  1 Aug 2024 10:28:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZFyFJcGe";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S61Q948Z";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0919010E8EE
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 10:28:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 964A810E8F1
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 10:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722508080; x=1754044080;
+ t=1722508086; x=1754044086;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=RNF6LjNbYamJXKq9lyh0vFtjl2NRSm6znXe07PgQL64=;
- b=ZFyFJcGeobvhfX0piagoq03O8SEQBfuBeOku7a6kcY/0jCVDVco0nfv1
- bLtc1ckB/Al9C5z+fr/64PtNB46W9DSbd0pVOtcYc0Uj5Oz7Pcimq/2gk
- orwhSsMsaPnhCngDw3FW1cMlOg0gw2e3VlecW0M5I+SYa6spXHKPA98yO
- Pt3v+GRsVDTOINTC0g7vjhmUv0S+LtzCbvzzAc/tK2N0fx58OwfpAQnOP
- DldZj6Vt/ZxBndYGoHEL3djD+e8qlLz8ZuqNHrxZvcP49q9pPOlw7YPLd
- ITpDjLearNKqcF7gSuFlpZBXOOK9IHcd+HXgbP8kB03o6+RgJS9EkVyoL Q==;
-X-CSE-ConnectionGUID: Mu4AlT9DSXerkPyiC23IzQ==
-X-CSE-MsgGUID: 3gzNGdIGSP2wXHb9Og1qYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="24244522"
-X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="24244522"
+ bh=jRCJlqGka18qZ2HJTUv45ArUW9le1QOZEVJUq/xMy9I=;
+ b=S61Q948Zhj/3xmDl+7xN+WoZM0OWHlKZIqyfVC3qQFrhk3RrwB9w0J7u
+ uCaR57U+iCSMyQWcM4hOMtDUdfsGIvIyqEEBOdW9NwAB7tWzaceuVq0FG
+ 4ed4GBN6/CGgooVr5eTcSCChWki1H1jgFbaKCmKXSe2AYB5EXojy/Nxtc
+ w9yCiUNg0+RwDTHoJLQLpAqJd1gtOYqz8CGoWkfnRgD/puyF28RRLoKsW
+ JLUZA5Janb6JmAg0eLCLI3G1xvuQMhedz4sgkZb9DySk4coKDuw/A31+F
+ +48h5dG76Ezfx1Ow8CqOyEbXBoY69gwTp7pR8twKV1gOb2EYtz4VML1m6 w==;
+X-CSE-ConnectionGUID: 8+s1iMRQQMuLD2/ut66Agg==
+X-CSE-MsgGUID: FkJrIX8RRtuAwv7UKCwjAA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="24244537"
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="24244537"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2024 03:28:00 -0700
-X-CSE-ConnectionGUID: NTi6owMVTBSCMJUlL+Qw2A==
-X-CSE-MsgGUID: mfHBrFseTN+a++jWBVWbTQ==
+ 01 Aug 2024 03:28:05 -0700
+X-CSE-ConnectionGUID: bvkzB0bBSlWGTZjaIapwXQ==
+X-CSE-MsgGUID: ZV3kXfdZTXG1ytJQbtoTEQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="54967038"
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="54967075"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.96.225])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2024 03:27:58 -0700
+ 01 Aug 2024 03:28:03 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, rodrigo.vivi@intel.com,
  kamil.konieczny@linux.intel.com, jonathan.cavitt@intel.com,
  lukasz.laguna@intel.com, jakub1.kolakowski@intel.com
-Subject: [PATCH v2 i-g-t 1/3] lib/igt_sysfs: Add xe_sysfs_gt_has_node to check
- node existence
-Date: Thu,  1 Aug 2024 12:27:46 +0200
-Message-Id: <20240801102748.487160-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 2/3] tests/intel/xe_gt_freq: Skip test if 'freq0'
+ node is missing
+Date: Thu,  1 Aug 2024 12:27:47 +0200
+Message-Id: <20240801102748.487160-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20240801102748.487160-1-marcin.bernatowicz@linux.intel.com>
 References: <20240730164232.286232-1-marcin.bernatowicz@linux.intel.com>
@@ -72,67 +72,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce xe_sysfs_gt_has_node to verify if a specified node
-exists within the sysfs gt directory of a device.
+Add igt_require check for 'freq0' node to skip frequency tests
+on VF devices where this node is not present, preventing test
+failure.
 
-v2: Add newline before return statement (Kamil)
-    Use "node" instead of "attribute" for more accuracy
+v2: Use "node" instead of "attribute" for more accuracy
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 ---
- lib/igt_sysfs.c | 26 ++++++++++++++++++++++++++
- lib/igt_sysfs.h |  1 +
- 2 files changed, 27 insertions(+)
+ tests/intel/xe_gt_freq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 550472d81..12abc4f7e 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -265,6 +265,32 @@ int xe_sysfs_gt_open(int xe_device, int gt)
- 	return open(path, O_RDONLY);
- }
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index c9d59508b..397007ebe 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -437,6 +437,7 @@ igt_main
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
  
-+/**
-+ * xe_sysfs_gt_has_attr:
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @node: node inside sysfs gt dir that needs to be checked for existence
-+ *
-+ * This checks if specified node exists in device sysfs gt directory.
-+ *
-+ * Returns:
-+ * true if node exists in sysfs, false otherwise.
-+ */
-+bool xe_sysfs_gt_has_node(int xe_device, int gt, const char *node)
-+{
-+	bool has_node;
-+	int gt_fd;
-+
-+	gt_fd = xe_sysfs_gt_open(xe_device, gt);
-+	if (gt_fd < 0)
-+		return false;
-+
-+	has_node = igt_sysfs_has_attr(gt_fd, node);
-+	close(gt_fd);
-+
-+	return has_node;
-+}
-+
- static const char *xe_engine_class_to_str(__u16 class)
- {
- 	static const char * const str[] = {
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 5d050c786..27031a015 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -168,6 +168,7 @@ void igt_sysfs_engines(int xe, int engines, const char **property,
- 
- char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen);
- int xe_sysfs_gt_open(int xe_device, int gt);
-+bool xe_sysfs_gt_has_node(int xe_device, int gt, const char *node);
- char *xe_sysfs_tile_path(int xe_device, int tile, char *path, int pathlen);
- int xe_sysfs_tile_open(int xe_device, int tile);
- int xe_sysfs_get_num_tiles(int xe_device);
++		igt_require(xe_sysfs_gt_has_node(fd, 0, "freq0"));
+ 		/* The defaults are the same. Stashing the gt0 is enough */
+ 		stash_min = get_freq(fd, 0, "min");
+ 		stash_max = get_freq(fd, 0, "max");
 -- 
 2.31.1
 
