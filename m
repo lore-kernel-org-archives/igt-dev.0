@@ -4,25 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57CC2C3DA64
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 17:07:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D4E1C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 17:28:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F417E10E084;
-	Thu,  1 Aug 2024 17:07:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26A0910E8F1;
+	Thu,  1 Aug 2024 17:28:44 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B8B3B10E084;
- Thu,  1 Aug 2024 17:07:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B38A510E0A7;
+ Thu,  1 Aug 2024 17:28:42 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1986712090155404752=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Fsysfs?=
- =?utf-8?q?=5Fpreempt=5Ftimeout=3A_Porting_sysfs_preempt_test_in_xe_=28rev5?=
- =?utf-8?q?=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fsysfs=5Fpreem?=
+ =?utf-8?q?pt=5Ftimeout=3A_Porting_sysfs_preempt_test_in_xe_=28rev5=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: nakshtra.goyal@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Aug 2024 17:07:44 -0000
-Message-ID: <172253206474.488689.6267412500650481580@2413ebb6fbb6>
+Date: Thu, 01 Aug 2024 17:28:42 -0000
+Message-ID: <172253332272.488729.363684874818487749@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240801150737.3700254-1-nakshtra.goyal@intel.com>
 In-Reply-To: <20240801150737.3700254-1-nakshtra.goyal@intel.com>
@@ -42,134 +41,182 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============1986712090155404752==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Series: tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in=
- xe (rev5)
+== Series Details ==
+
+Series: tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in xe (rev5)
 URL   : https://patchwork.freedesktop.org/series/136449/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7951_BAT -> XEIGTPW_11518_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1238765 f=
-or the overview.
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/61791006):
-  /usr/bin/aarch64-linux-gnu-gcc -Itests/59830eb@@xe_sysfs_preempt_timeout@=
-exe -Itests -I../tests -I../include -I../include/drm-uapi -I../include/linu=
-x-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I../ -I/usr/include/cair=
-o -I/usr/include/glib-2.0 -I/usr/lib/aarch64-linux-gnu/glib-2.0/include -I/=
-usr/include/pixman-1 -I/usr/include/uuid -I/usr/include/freetype2 -I/usr/in=
-clude/libpng16 -I/usr/include/libdrm -I/usr/include/libdrm/nouveau -I/usr/i=
-nclude/aarch64-linux-gnu -I/usr/include/valgrind -I/usr/include/alsa -fdiag=
-nostics-color=3Dalways -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -=
-Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURC=
-E=3D2 -Wbad-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimpl=
-icit-fallthrough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-a=
-ttribute -Wmissing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-sty=
-le-definition -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototype=
-s -Wuninitialized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-mis=
-sing-field-initializers -Wno-pointer-arith -Wno-sign-compare -Wno-type-limi=
-ts -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress -Werror=3Darr=
-ay-bounds -Werror=3Dimplicit -Werror=3Dinit-self -Werror=3Dint-conversion -=
-Werror=3Dint-to-pointer-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werro=
-r=3Dnonnull -Werror=3Dpointer-to-int-cast -Werror=3Dreturn-type -Werror=3Ds=
-equence-point -Werror=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-mall=
-oc -fno-builtin-calloc -D_LARGEFILE64_SOURCE=3D1 -pthread  -MD -MQ 'tests/5=
-9830eb@@xe_sysfs_preempt_timeout@exe/intel_xe_sysfs_preempt_timeout.c.o' -M=
-F 'tests/59830eb@@xe_sysfs_preempt_timeout@exe/intel_xe_sysfs_preempt_timeo=
-ut.c.o.d' -o 'tests/59830eb@@xe_sysfs_preempt_timeout@exe/intel_xe_sysfs_pr=
-eempt_timeout.c.o' -c ../tests/intel/xe_sysfs_preempt_timeout.c
-  ../tests/intel/xe_sysfs_preempt_timeout.c: In function =E2=80=98__igt_uni=
-que____real_main173=E2=80=99:
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:19: error: implicit declara=
-tion of function =E2=80=98openat=E2=80=99; did you mean =E2=80=98popen=E2=
-=80=99? [-Werror=3Dimplicit-function-declaration]
-        engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
-                     ^~~~~~
-                     popen
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:19: warning: nested extern =
-declaration of =E2=80=98openat=E2=80=99 [-Wnested-externs]
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:44: error: =E2=80=98O_RDONL=
-Y=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98S=
-TA_RONLY=E2=80=99?
-        engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
-                                              ^~~~~~~~
-                                              STA_RONLY
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:44: note: each undeclared i=
-dentifier is reported only once for each function it appears in
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722531876:step_script
-  section_start:1722531876:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722531876:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/61791005):
-                                                                ^
-  ../tests/intel/xe_sysfs_preempt_timeout.c: In function =E2=80=98__igt_uni=
-que____real_main173=E2=80=99:
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:19: error: implicit declara=
-tion of function =E2=80=98openat=E2=80=99; did you mean =E2=80=98popen=E2=
-=80=99? [-Werror=3Dimplicit-function-declaration]
-        engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
-                     ^~~~~~
-                     popen
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:19: warning: nested extern =
-declaration of =E2=80=98openat=E2=80=99 [-Wnested-externs]
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:44: error: =E2=80=98O_RDONL=
-Y=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98S=
-TA_RONLY=E2=80=99?
-        engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
-                                              ^~~~~~~~
-                                              STA_RONLY
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:44: note: each undeclared i=
-dentifier is reported only once for each function it appears in
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722531872:step_script
-  section_start:1722531872:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722531873:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  No regressions found.
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/61791007):
-                                                                ^
-  ../tests/intel/xe_sysfs_preempt_timeout.c: In function =E2=80=98__igt_uni=
-que____real_main173=E2=80=99:
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:19: error: implicit declara=
-tion of function =E2=80=98openat=E2=80=99; did you mean =E2=80=98popen=E2=
-=80=99? [-Werror=3Dimplicit-function-declaration]
-        engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
-                     ^~~~~~
-                     popen
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:19: warning: nested extern =
-declaration of =E2=80=98openat=E2=80=99 [-Wnested-externs]
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:44: error: =E2=80=98O_RDONL=
-Y=E2=80=99 undeclared (first use in this function); did you mean =E2=80=98S=
-TA_RONLY=E2=80=99?
-        engines_fd =3D openat(gt_fd, "engines", O_RDONLY);
-                                              ^~~~~~~~
-                                              STA_RONLY
-  ../tests/intel/xe_sysfs_preempt_timeout.c:205:44: note: each undeclared i=
-dentifier is reported only once for each function it appears in
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1722531888:step_script
-  section_start:1722531888:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722531889:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  
 
-=3D=3D Logs =3D=3D
+Participating hosts (6 -> 6)
+------------------------------
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1238765
+  No changes in participating hosts
+
+New tests
+---------
+
+  New tests have been introduced between XEIGT_7951_BAT and XEIGTPW_11518_BAT:
+
+### New IGT tests (6) ###
+
+  * igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout:
+    - Statuses : 3 pass(s)
+    - Exec time: [10.56, 14.79] s
+
+  * igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@bcs:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.68, 3.22] s
+
+  * igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@ccs:
+    - Statuses : 2 pass(s)
+    - Exec time: [3.23] s
+
+  * igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@rcs:
+    - Statuses : 3 pass(s)
+    - Exec time: [1.99, 3.22] s
+
+  * igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@vcs:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.04, 2.63] s
+
+  * igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@vecs:
+    - Statuses : 3 pass(s)
+    - Exec time: [2.04, 2.68] s
+
+  
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7951 -> IGTPW_11518
+
+  IGTPW_11518: 11518
+  IGT_7951: 7951
+  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11518/index.html
+
+--===============1986712090155404752==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in xe (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136449/">https://patchwork.freedesktop.org/series/136449/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11518/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11518/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7951_BAT -&gt; XEIGTPW_11518_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (6 -&gt; 6)</h2>
+<p>No changes in participating hosts</p>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_7951_BAT and XEIGTPW_11518_BAT:</p>
+<h3>New IGT tests (6)</h3>
+<ul>
+<li>
+<p>igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [10.56, 14.79] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@bcs:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.68, 3.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@ccs:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [3.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@rcs:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [1.99, 3.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@vcs:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.04, 2.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout@vecs:</p>
+<ul>
+<li>Statuses : 3 pass(s)</li>
+<li>Exec time: [2.04, 2.68] s</li>
+</ul>
+</li>
+</ul>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7951 -&gt; IGTPW_11518</li>
+</ul>
+<p>IGTPW_11518: 11518<br />
+  IGT_7951: 7951<br />
+  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a</p>
+
+</body>
+</html>
+
+--===============1986712090155404752==--
