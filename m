@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E9E3C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 14:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9CFC3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:07:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 387F610E99B;
-	Thu,  1 Aug 2024 14:46:04 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0546C10E99A;
- Thu,  1 Aug 2024 14:46:04 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0508036875506239835=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97BE910E14B;
+	Thu,  1 Aug 2024 15:07:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dXJxelNp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 39F4610E14B
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 15:07:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722524878; x=1754060878;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QKh+mD2dJKREazCCsuJvzmzyK76rjFil1+cpR62R/24=;
+ b=dXJxelNppjKswhe72g3nLyV5rZFgv8TmNYub3PnwgbT5KA7O9iDGZqc0
+ IaSgfPtUtZRSU/nfN/cLmqu0eDkczz8Zh+bTn+hGqzArGIWzClqenne5k
+ 9HLIC4WWwQRv9PMkwav+ZzuGpXc3AdBbXwZRlaXlzw+EfdhVAhRBHr35z
+ bxPKEH90OGyJq9sODEC0L/1uoGl/hUXYxLGF5t5FVdpHz52lXeEqqhuuz
+ 6tqZPpZT1pDzaJ00EjKQOU8GClGNukHyMJg2QatfRFYEYZHarn5HaUuzu
+ wo74BAh0ZLUDD6FrAc4PqdSOzYhTIgPGys0qBqjuEaAM87fLK2jbSb5O2 Q==;
+X-CSE-ConnectionGUID: GqHk3EYGTJiZFmZ9SBAUzw==
+X-CSE-MsgGUID: 8gWJUy9SQqik4o9C49lEsQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="20327046"
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="20327046"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Aug 2024 08:07:30 -0700
+X-CSE-ConnectionGUID: lXqfXbj7Q1akqOjH3pC9Yg==
+X-CSE-MsgGUID: BZCR7r14SJO6FLzVyJZjzg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="55026569"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.96.225])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Aug 2024 08:07:21 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: zbigniew.kempczynski@intel.com, katarzyna.piecielska@intel.com,
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+Subject: [PATCH v4 i-g-t] tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist
+ for SR-IOV VF runs
+Date: Thu,  1 Aug 2024 17:06:35 +0200
+Message-Id: <20240801150635.512586-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fcreate=3A_?=
- =?utf-8?q?Remove_the_elapsed_time_validation?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Balasubramani Vivekanandan" <balasubramani.vivekanandan@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Aug 2024 14:46:04 -0000
-Message-ID: <172252356401.488231.5479489370626607742@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240801123312.1539769-1-balasubramani.vivekanandan@intel.com>
-In-Reply-To: <20240801123312.1539769-1-balasubramani.vivekanandan@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,111 +69,67 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0508036875506239835==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Blocklist tests not applicable for Virtual Function (VF) runs.
+The list extends xe.blocklist.txt to enable execution on VF device,
+with BAT (xe-fast-feedback.testlist) runs to be enabled first.
 
-== Series Details ==
+V2:
+- Reduce blocklist to minimal, favoring SKIPs.
+- Demonstrated minimal time impact on ADLP with increased skips.
 
-Series: tests/intel/xe_create: Remove the elapsed time validation
-URL   : https://patchwork.freedesktop.org/series/136799/
-State : success
+V3:
+- Update comment to reflect blocklist not restricted to BAT runs (Michal)
+- Move summary results after --- mark (Michal)
+- Removed igt@sriov_basic from the list (Michal)
+- Reduce decorations in blocklist file (Michal)
 
-== Summary ==
+V4:
+- Removed igt@xe_gt_freq and igt@xe_pm_residency tests,
+  corrected to SKIP.
 
-CI Bug Log - changes from CI_DRM_15168 -> IGTPW_11515
-====================================================
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+---
+ tests/intel-ci/meson.build               |  1 +
+ tests/intel-ci/xe-sriov-vf.blocklist.txt | 11 +++++++++++
+ 2 files changed, 12 insertions(+)
+ create mode 100644 tests/intel-ci/xe-sriov-vf.blocklist.txt
 
-Summary
--------
+diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
+index f16243cbb..59323eda9 100644
+--- a/tests/intel-ci/meson.build
++++ b/tests/intel-ci/meson.build
+@@ -11,6 +11,7 @@ intelci_files = [
+   'xe.blocklist.txt',
+   'xe-fast-feedback.testlist',
+   'xe-fast-feedback-chamelium-only.testlist',
++  'xe-sriov-vf.blocklist.txt',
+ ]
+ 
+ install_data(sources : intelci_files, install_dir : datadir)
+diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+new file mode 100644
+index 000000000..0c5bc631a
+--- /dev/null
++++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
+@@ -0,0 +1,11 @@
++##################################################################
++# Block list for VF runs
++##################################################################
++#
++# Prevent potential module reloads during tests
++#
++igt@xe_module_load
++#
++# Blocked because of abort
++#
++igt@xe_debugfs@gt
+-- 
+2.31.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11515/index.html
-
-Participating hosts (42 -> 39)
-------------------------------
-
-  Missing    (3): bat-dg2-11 fi-snb-2520m fi-bsw-n3050 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7950 -> IGTPW_11515
-
-  CI-20190529: 20190529
-  CI_DRM_15168: e6b1e3660d0168d9860e7cef487aba2bc21611bd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11515: 11515
-  IGT_7950: 7950
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11515/index.html
-
---===============0508036875506239835==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_create: Remove the elapsed time validation</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136799/">https://patchwork.freedesktop.org/series/136799/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11515/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11515/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15168 -&gt; IGTPW_11515</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11515/index.html</p>
-<h2>Participating hosts (42 -&gt; 39)</h2>
-<p>Missing    (3): bat-dg2-11 fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7950 -&gt; IGTPW_11515</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15168: e6b1e3660d0168d9860e7cef487aba2bc21611bd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11515: 11515<br />
-  IGT_7950: 7950</p>
-
-</body>
-</html>
-
---===============0508036875506239835==--
