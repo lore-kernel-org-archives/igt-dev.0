@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3093C3DA64
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 05:42:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3342CC3DA64
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 06:05:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A381610E6AB;
-	Thu,  1 Aug 2024 05:42:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E50CD10E89B;
+	Thu,  1 Aug 2024 06:05:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jcBrIvQl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m7prjqoO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C95210E6AB
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 05:42:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9203810E89B
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 06:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722490975; x=1754026975;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=IuYXI+CzFwX183FzVNw6BWsgs77scsz+5Onl/kIKpBI=;
- b=jcBrIvQlQo1O0Od2pCR3scVEx88B9CTFwXS1wG+cWl5gUwPxD4n5+BY3
- S0IOCT5X8KZ2pQXhrVOgAoWAzK3VTuPB7UaihdCS3KXh2aQuQ3AMPF3Gr
- QIzRohBcTG9HL2r80T82kGBLi2UXq141E7mVeGngkksukxTpfj+DEKmGd
- +a4ncormz59M4AcA0/jFAuTVVHfIVmf9CV9LqWBbvxP8Y7eFohUf01oJA
- sCpSf8poLpMZqZLaBGHtQSZjU1TzhkhXR/avO8Rt6cd8McpqWP3sZyWQZ
- A4SZ51/Le9EjFyHtkGoojfx+BWUdlLfPDsX7ZjLYneOlqJaxtHOZOen1e g==;
-X-CSE-ConnectionGUID: LGkDNs1jQcaCUPI3MkCPBA==
-X-CSE-MsgGUID: k8nVMRUMT9CYJQ2rHDAdXw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="20306924"
-X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="20306924"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 22:42:55 -0700
-X-CSE-ConnectionGUID: az4aYh1YSe2FB4bX+ANUXw==
-X-CSE-MsgGUID: M9OzfsN/S6i0jKWEbHuhIg==
+ t=1722492317; x=1754028317;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qwe/X6ThX3yS/tWvQgxxHrb+R9tzdSKdjubm01kWCqI=;
+ b=m7prjqoOfFhIfB2n/5KI2Wp2LZzmu4qQvpj2Tst3URDTGJQa4yTbPz0S
+ nZyxI91IpD0oIgRPCh6BGzU51YSLlJJNyFENerKC/QP+e1w5n/YXBeRzQ
+ DH1/LqtlJBowm5x58HVBBeTQpmMVR/ZzKW7mzBcJwPi8YB0JVs59VYl35
+ iHJniXWr6roFr3SNK9cSWr9u38x5UsPfZDHdyldfRipAXtNTpm4wWzeoC
+ +u5W+HkFAeDq5HxNvlNTxm/EC5oMXJP2xt3GKmHQPWdwAeu3QlnhwBVw/
+ RIlTBa/mvFAvZ31iXsM4Y7s5E2J85FIoVW+nliKJY/1XR9UE4EeYQXciU g==;
+X-CSE-ConnectionGUID: bpU80VPCSaO8C/MROjDwog==
+X-CSE-MsgGUID: BHPOIMlLTMOHIlh3uYn6fA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="31821077"
+X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="31821077"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2024 23:05:17 -0700
+X-CSE-ConnectionGUID: t1YFRxSFTzi5SGyS3memBg==
+X-CSE-MsgGUID: 9evx+VfVSfSkVfveM/gx6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="78206759"
-Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.212])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2024 22:42:53 -0700
-Date: Thu, 1 Aug 2024 07:42:54 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-Subject: Re: [PATCH i-g-t 2/3] lib/xe_spin: Fix xe_spin_wait_started()
-Message-ID: <20240801054254.eycl66ikumhryetf@zkempczy-mobl2>
-References: <20240731033504.1426640-1-lucas.demarchi@intel.com>
- <20240731033504.1426640-3-lucas.demarchi@intel.com>
- <20240731060652.w3zpciijmu3myvdn@zkempczy-mobl2>
+X-IronPort-AV: E=Sophos;i="6.09,253,1716274800"; d="scan'208";a="85836476"
+Received: from jeevanb-desk.iind.intel.com ([10.223.74.192])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2024 23:05:15 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: bhanuprakash.modem@intel.com, kunal1.joshi@intel.com,
+ animesh.manna@intel.com, Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t 0/3] New test to validate link-off between active
+ regions (LOBF)
+Date: Thu,  1 Aug 2024 11:46:05 +0530
+Message-Id: <20240801061608.2983058-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240731060652.w3zpciijmu3myvdn@zkempczy-mobl2>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,58 +67,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Jul 31, 2024 at 08:06:52AM +0200, Zbigniew Kempczyński wrote:
-> On Tue, Jul 30, 2024 at 08:35:03PM -0700, Lucas De Marchi wrote:
-> > Use READ_ONCE() to guarantee we are actually reading the memory written
-> > by the GPU and compiler can't optimize it away.
-> > 
-> > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> > ---
-> >  lib/xe/xe_spin.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> > index 3adacc3a8..43a7a43c2 100644
-> > --- a/lib/xe/xe_spin.c
-> > +++ b/lib/xe/xe_spin.c
-> > @@ -166,7 +166,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
-> >   */
-> >  bool xe_spin_started(struct xe_spin *spin)
-> >  {
-> > -	return spin->start != 0;
-> > +	return READ_ONCE(spin->start) != 0;
-> >  }
-> >  
-> >  /**
-> > -- 
-> > 2.43.0
-> > 
-> 
-> Hmm, function is exported and would expect compiler will always
-> read the memory before return. This is part of .so and I don't
-> think this will be inlined to the caller. Where do you observe
-> gpu memory write is not reflected to the cpu?
-> 
-> --
-> Zbigniew
-> 
+Add debugfs entry to validate LOBF status and create a new
+test to validate and fix grammar.
 
-I wondered about local inlining the function or optimizing which
-will prevent from looping the read (endless loop after single read)
-and I got this when code is optimized but not position independent.
-I mean -O2 produces:
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
 
-xe_spin_wait_started:
-	cmp     DWORD PTR [rdi], 1
-	jne     .L6
-        ret
-.L6:
-        jmp     .L6
+Jeevan B (3):
+  lib/igt_kms: Added library functions for LOBF status
+  tests/kms_vrr: Add new test to validate LOBF
+  tests/kms_vrr: Grammatical correction in igt_describe
 
-Only -fpic prevents from this optimization.
+ lib/igt_kms.c   | 23 +++++++++++++++++++
+ lib/igt_kms.h   |  1 +
+ tests/kms_vrr.c | 61 ++++++++++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 82 insertions(+), 3 deletions(-)
 
-As Jonathan gave you r-b I'm not going to block this series,
-it is just not necessary imo in this particular case.
+-- 
+2.25.1
 
---
-Zbigniew
