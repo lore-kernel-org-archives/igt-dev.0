@@ -4,118 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 856E9C3DA64
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 10:59:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D9B5C3DA64
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 10:59:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2F59E10E907;
-	Thu,  1 Aug 2024 10:59:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E6BA810E909;
+	Thu,  1 Aug 2024 10:59:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="DMuKhonG";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="gH831U0x";
 	dkim-atps=neutral
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam04on2073.outbound.protection.outlook.com [40.107.102.73])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 63DA010E907
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 10:59:40 +0000 (UTC)
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com
+ (mail-dm3nam02on2062.outbound.protection.outlook.com [40.107.95.62])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0236910E909
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 10:59:46 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tEIAiGkRB/FAWoPXVAJ7RiHv+A8d7/LaujGH19Ad6Cx7OTu1l1Lw9jmTvK1WJOXry5doAG+OCOTGSVW0KC4UWePHnyWSul5FlNlXlzuAJDUz9w5p1qFBffWPQz7YQLO80DJSnuxSCAWc7MiNXv0VNvT6tzlwsk9wnxfY6n1r2yTek+FH71yvpCMxJFX7OHgPncVaC5AYv6T6K+z3gC3YLAB3YZtLySMcPZ8iXxSYWTOLdQP8libRfvra/dXm1PzMRZXbzKMK2awVNoJy/MiKuXb/1KnTaWF4vkPboVVpIIJDkFlPnlIq8W5ZTqwHkQjOgnVGH0Kf4/uI6YMZxqeNhA==
+ b=TTF6LCl9OgGE2h1AYQ/Aij44p7vbPWGYa1A2+qCXjyuvuXkLH4OPKeM6e/c2VEIwI7huVQXkaMl5MKviK1hkv3mFn3PsUs1jjBGfwytmXMiU1jJ7KuT6x+ZiuOFjQUTJ5u5gz0sjyUd/r3g4VuumEUxKqqxXe58MCPgSrnqY8LGFjcts2ETybJAVG0k9rNNc/hu5tS0o1phwvwOKgVhlaCwyqVZgU94JXAPDxkSaHKyIL61x3slUzRtTrLkoPY8h3YAjfOkAiNvEdNg3huqmg0zQUoyfTVSfHYkIYmYuLAHLCCc3MCswEKjp2f0Fg9IPqRhgZ+N7OJfFcah2uCsScQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PUQUFjoX160bdKGjxVc4tlFjIyTDl+Hj2L0LBg01wI8=;
- b=kiQVz7sY2GkvBlT5WBhb9omYKZK03PwtQi9pCtXH7jbpLMY5+ABenBpfqROps2LpAG/JhrPt5IDh24cGQg5p9ROl6mu6Z9/8LwJjsgMYZEPuqCSmT7V+vaZhPMyCdbikxei8cEV2TXmjJMbtzBSKmIMsrrVD5OaOSOf3nJNiWfPSQB5tDyKcX+y5Iq7R4IP0wGL/bYE5FNaaLWuGxkD6fAnYmQstCLkvz70ySLo2FlHvHZ8gN+16M1891IT03yPGbphzjHgioLH7otGBcODtuvipv+IxZgM+G3y1QMpmneblBmTqooK9/CRp3b2ZisgN5PJOv0/OKRMUGQWBK1YbBw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=PjXsOwH1uuMH5xciMTuWQeYkbh0imJbUTAlDBcZok7w=;
+ b=HzNC6oug4WcfZi+OjskTnRAK7A9tdDlkxkWtdnVU8cbPV2/KM3xZ7DkEcx0xYGXQ3fJ1/C+gzQAlxbMqBX66EPG5t2u+U/C17TJw8hCj3iSq1liEAX8KBQou0JkPHg5KkA/LXwttH/FENlgHWXfhi+qZ/HGfKYmDtMy9I2Jrhz73XotqJaR6bLLbHQAE4C/TAqUXJCOnj/eHNhdidsUjZ6lzwjmpcq9/auSrxsUJc0N5MILsgulSu790TAwWYPuex6j/Th/ezNdCijZjN8JELF0gS0+kBWGi6j6e8yt4Ge5bwB1cNVlWzabA4A1U8Sdn67H446KGHwhI3lpYVB7/wA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PUQUFjoX160bdKGjxVc4tlFjIyTDl+Hj2L0LBg01wI8=;
- b=DMuKhonGVM5ROz72UoliI+HlQ15aA93MJvTd7hZwXnbrs33VAiY5/ca7YWI6pJqnIZ7ovRdpa0E5FRC9Cvpn30fJ1enV9j63sZiIS37M26f7Sz/AWEw7tfnKguD8QofuX0wkXZweziDN77vTmKtGfbyY8bWhRoBAFoxOJ2Mghsc=
-Received: from MW2PR16CA0038.namprd16.prod.outlook.com (2603:10b6:907:1::15)
- by DM4PR12MB6447.namprd12.prod.outlook.com (2603:10b6:8:bf::16) with
+ bh=PjXsOwH1uuMH5xciMTuWQeYkbh0imJbUTAlDBcZok7w=;
+ b=gH831U0xnXwdEJ9Ad8g1Q5aLGImmElDEsHTutjPGs5D8zX+6+rXJWsk0a2PG61/WtebjuUK1MeIRzrSKzr3rG+GldJk/FkMDJ9zyHUWSP7I2Ce74kZng59ZXeF5XFIrNVpEBtauGlCXmOw83HSSR9NhOusofKptlP/e5TMttD4c=
+Received: from DM4PR12MB5152.namprd12.prod.outlook.com (2603:10b6:5:393::16)
+ by SA3PR12MB7902.namprd12.prod.outlook.com (2603:10b6:806:305::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.21; Thu, 1 Aug
- 2024 10:59:38 +0000
-Received: from SJ5PEPF000001F1.namprd05.prod.outlook.com
- (2603:10b6:907:1:cafe::69) by MW2PR16CA0038.outlook.office365.com
- (2603:10b6:907:1::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7762.28 via Frontend
- Transport; Thu, 1 Aug 2024 10:59:37 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF000001F1.mail.protection.outlook.com (10.167.242.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7828.19 via Frontend Transport; Thu, 1 Aug 2024 10:59:37 +0000
-Received: from prike-code-pc.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 1 Aug
- 2024 05:59:35 -0500
-From: Prike Liang <Prike.Liang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <Vitaly.Prosyak@amd.com>, <Jesse.Zhang@amd.com>,
- <Alexander.Deucher@amd.com>, Prike Liang <Prike.Liang@amd.com>
-Subject: [PATCH] tests/amdgpu: update bad length case
-Date: Thu, 1 Aug 2024 18:59:25 +0800
-Message-ID: <20240801105925.2523913-1-Prike.Liang@amd.com>
-X-Mailer: git-send-email 2.34.1
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7807.27; Thu, 1 Aug
+ 2024 10:59:44 +0000
+Received: from DM4PR12MB5152.namprd12.prod.outlook.com
+ ([fe80::d4b5:6a30:96d5:e3ed]) by DM4PR12MB5152.namprd12.prod.outlook.com
+ ([fe80::d4b5:6a30:96d5:e3ed%3]) with mapi id 15.20.7828.023; Thu, 1 Aug 2024
+ 10:59:43 +0000
+From: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
+To: "Liang, Prike" <Prike.Liang@amd.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+CC: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>, "Deucher, Alexander"
+ <Alexander.Deucher@amd.com>
+Subject: RE: [PATCH] tests/amdgpu: update bad length case
+Thread-Topic: [PATCH] tests/amdgpu: update bad length case
+Thread-Index: AQHa4/kAPg+OoEFJtkOQxuTvauBpeLISO1kQ
+Date: Thu, 1 Aug 2024 10:59:43 +0000
+Message-ID: <DM4PR12MB5152C2F43ECF8D64C93E6608E3B22@DM4PR12MB5152.namprd12.prod.outlook.com>
+References: <20240801095540.2517506-1-Prike.Liang@amd.com>
+In-Reply-To: <20240801095540.2517506-1-Prike.Liang@amd.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ActionId=37aaf834-ce45-49b6-94ab-3f693ac9a09a;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=0;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=true;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
+ Internal Distribution Only;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2024-08-01T10:57:48Z;
+ MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR12MB5152:EE_|SA3PR12MB7902:EE_
+x-ms-office365-filtering-correlation-id: cb745c91-4957-4305-3cd8-08dcb2190cc1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?/Rjp0/qqhR1LHQuYH3+gCsWZoidmaB9qotju6BfhPPVjcRagDiuS6moZyOaM?=
+ =?us-ascii?Q?NSpP2sgV6aQVJ0I3DnBHYsuQcb4mw94D0UkVf9cpQeyrH4EhfCNBSQROt8iH?=
+ =?us-ascii?Q?7nI2dFAKMY67dl/bV9ro/IEvuRR3XmNpRH251ZLDaWajCBq7I2KcTBvFFxTX?=
+ =?us-ascii?Q?QoFW//fiTPwA08ZStFdOBl4SMVaYwAHUN9yUTeAS2B9aeIj1QruWiz4M06Kl?=
+ =?us-ascii?Q?nKyE392l6R2VZF4iCjoLQ/dAM+9NP/swkuXnL/dJd4BoOLWv9Cib1Ao/P0V3?=
+ =?us-ascii?Q?yFGcb2U8qBUM/FFFBeMdApGhob9kfAQkClc69LvamzO03f+8UBJjf9gB7NUR?=
+ =?us-ascii?Q?OJK1BCCum+xVADDS4/+oKUpzpUCUGUwx06Ye58QqklIQUiMBSimglPcVky/e?=
+ =?us-ascii?Q?7VXHZ7YR+wlLceKTZXyTj/wmIVCRrgUuzmLlfkThdQYCNAXS4UBeSmWOdl6L?=
+ =?us-ascii?Q?icp3ePRxmjTHBfyGDYZzShDKYG7movL+fZ3nJY4nA0vS7PNTTxp/bSKKvauX?=
+ =?us-ascii?Q?dUxSGG/p0Oa/FY/ZO/SnAwbxd4uLxIajlOsc8m/AhBgzMI4fRXAGEUUzAFqT?=
+ =?us-ascii?Q?cydRZCCmH2gxKcepgEGk4YWa9tQBAG8sx2ESWxqEoZkNki0fR6KXFTMHBBnT?=
+ =?us-ascii?Q?/7Nl5/tUtYw90mMQBmp3qGFN3Y2S2gPmArvyUXfMxwdZZTLg/2ivWRX9ncHZ?=
+ =?us-ascii?Q?t6h0qwf+qlo5WTYmNo41X7iPQ2cpUMfMMbFtX0eRStic51mZ5ihmsAWUZT9s?=
+ =?us-ascii?Q?Pmw8oJubHiBx/suwE6iCw7oQnBVHPx2szNPLzeuBAYAYzb+YDcIO35kgaY8d?=
+ =?us-ascii?Q?xpw6kEufjMXV1u/K7vsQxuX28yN0vvWCiaCXcZbkc2NX3RxbwnD7AnbsUHHZ?=
+ =?us-ascii?Q?iVJNbzGqT8InyD7l3v9woy7wOi7n3LcbCRF+PjIdvxUmsueDT0i+w7xxTvQR?=
+ =?us-ascii?Q?jxAKnCPQztk9vneD32Qv4t23i2IRQHxOW4/yYhrAUCbwH7WQriMzldypFLTW?=
+ =?us-ascii?Q?Dlt/AVZUtyG0gDLja4r2/5SquU9lYvnrFinuvt1OGLoZJrbhZgBgQrOwY/2C?=
+ =?us-ascii?Q?PsdXD7HAQO8tc8+Qcv4MuF5Z1T1/pbuycjqUBYXUseMAjTU891dLfGbn0WvO?=
+ =?us-ascii?Q?BwgpnwoypcniubDl3/fJiFdbrcsD5D8z6TgdpEmJxxBXHBIJInH6ha4SxsEc?=
+ =?us-ascii?Q?+vpGPrBuoknT2PXns+2kihLGR3UwfFzmPia/c3fTJM2yjrfvw2zZ4xEOgeon?=
+ =?us-ascii?Q?ZPIOAIzhkpHqgH5amnRcncSZq7gDicPuVWfiChArcjUtzkhRB55HHa9J4256?=
+ =?us-ascii?Q?ELcG4O/icbkWE6lpylN56zUPW/1iaqkK1Ygpbvtw9+I23SLPRWdQmwfANZlb?=
+ =?us-ascii?Q?iNxeqWr4SMFTZv7KLENb/Po9EuU/9EGbtqscT4fzr7tpqnYqqA=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR12MB5152.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?GNVpdxiOxe8VlkVkiow9r+qysglTk1VzLiIAr46vrOLk3l760yh9m2nPkn04?=
+ =?us-ascii?Q?1EPY88b3bWgFr1+NL0xEry9O9DFW+kMdVbtmIzXJPp9jnZgSlLCjv7nG05Lm?=
+ =?us-ascii?Q?7y08tbHHuf7buHGn51lAaglQyLS4cik6Sul/ZotUlpvBOFuvfM0UcB+6R8Mt?=
+ =?us-ascii?Q?CejaXk8mar1EQVhTr4uFDaUiku6zaSm59WnCAEQdrDPEGhENP+tSDoTdJbgT?=
+ =?us-ascii?Q?6+kWQi8qIhBhZUSJWAOwVv8Ui0qRYf9f4leLCi6ziDhp9JtFMKASXUt8mbnr?=
+ =?us-ascii?Q?agyGkMmF16gW/WZuDjhxU6zqOqYp3mZ/kPGyRxZzULMfYYOz8+ZrNAFeDzfS?=
+ =?us-ascii?Q?5Xf+RO4wANruQ5unO9XLLqD2I6YNI2UwWUh5EZpBlpMbotFTIRfNC9w0nGKO?=
+ =?us-ascii?Q?t+6p7VfvFTtWE3PmkNYxvo30RuWXTvHLor8mJLEu+8kDunOOI+dX2NEA1vVI?=
+ =?us-ascii?Q?fleEwUjVXgCkCrinmY/8WQcC1kVA4qO5jkCE/G0NUt4rOV1rurxXZSNTE+7t?=
+ =?us-ascii?Q?X4PURdLXLwkS0LYzsoWJ+jQT1zHdbUGBUxDZ8sixPVgeFIn0Qy6CQORNl5EJ?=
+ =?us-ascii?Q?9Ohe5sqms3R6KTLrv2glcpbPB6SvnM5MTh6+7nwrquoSQxT5fYjSXFRyChV3?=
+ =?us-ascii?Q?prJzDhXZj+SFDydYWLqmKhr3EAYFo5El2MhnJoU5wSmujmW4oHVrhZVajMCH?=
+ =?us-ascii?Q?YmtLgApumIWmLWQNDZoaoPlWrBkdt6lPR1r/VsBSpvS4gAhpz4ygRpy9U04U?=
+ =?us-ascii?Q?G4HjSUdnM+4IO/Zk/0U0YbdVyGhJ6JVeT1mDa+i12fsqJqIDZsA8NXhBhUEC?=
+ =?us-ascii?Q?Mo1BqAgIyNSs4Npu1jLMve7qOiy0iU61FAuPgoz5UasVPqvqxrnVlqKpX/zy?=
+ =?us-ascii?Q?KIGidMKAR5pLrgzCpFHpoCTZcPfY0S6DvBKqXzdMoT0Xo6Rou1hezrOx54xG?=
+ =?us-ascii?Q?ko6ZFXIQbtsN7WOM7RUlrVmN2NnXdLiAW2QLO/I4CB5Y5gkl0VUHinealAYj?=
+ =?us-ascii?Q?CkTtXQgLLrm0qnoOrRwu5+AUuBVSonHPCYWHrfOSsn/VCqAlutELGVJSEqpW?=
+ =?us-ascii?Q?ezNxa/nNTx1QVnOAd4YJn4zvGk7Up8IX3fN3vEO0xcldSv5Wj7MdXiv3GllL?=
+ =?us-ascii?Q?fn3KPx28xEsNa9jJUwcLtBn25JMRCtaTejXtitsPcuwrjhIZlkoz5apDcEhl?=
+ =?us-ascii?Q?imlJfdF8yxsaYrgvgt0eExKlEEw6fGohS2XQQt+zQIGNcKXU0WNaRX1Aywfq?=
+ =?us-ascii?Q?EOU/TqPDArW4NkTgak2Qmms1QDRXmxuo40Uv80G9LwqrefELHEbIKqC6IEQm?=
+ =?us-ascii?Q?LSkGg7SkOkDRRLMdq6pfO1BSXx2XfnCiGxm2whaNkxyje9GDGc15dvO7dk3y?=
+ =?us-ascii?Q?ReYLxa1CTBKQ4gs2jjrYSsp8u03B7T1dN/uG/BYctuozh3V5TYqQumX4x/ie?=
+ =?us-ascii?Q?mjTHk8ah3/Cmx9H6+ccMNUmYcUtHwZABDAFGJBHpVFonnnP5G41AyuDxBZuF?=
+ =?us-ascii?Q?kyPObMC6D304EK3w4BV/IUTQifuji1y8rBcwfKUS6Bp5J5o337mdFVidDVAQ?=
+ =?us-ascii?Q?YezviylCrT+1V6sFz60=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F1:EE_|DM4PR12MB6447:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a054476-14cc-46ab-1bf7-08dcb2190938
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?ageHNTygFdAuF7bOUAlWhP5WbubPZUbPdEqdECg1Mf6gEuwyMO45zkDS58Bk?=
- =?us-ascii?Q?0d66VlMIzAtxCL4ehyk32md4QE5AmVIe6zsV8D88WNZoAybUFdSqFnDhjs0I?=
- =?us-ascii?Q?iGvHppJ3SVJRR1bw1Z1VH5MdcVwQdDJXGVbtW2pzdop353V3Lek0kOh6jz8g?=
- =?us-ascii?Q?2kW0TZQx8W1teO71wBeVQJcvuAFXn13lD1GIQmgnAfdMEmI8WEj8v2mmEL0t?=
- =?us-ascii?Q?HhYjykotaKn7BFMeD6KxNsRYKdwMa20C7YaZ7+znXRRM4IAihMPG6vXDBlau?=
- =?us-ascii?Q?G/4PuueoENGbnfa9HI84u2v/uxDWB0XMseft84OU2tbIuOkYuajYl24GJt9s?=
- =?us-ascii?Q?nAM3FYFd0eRyHSrJs30/bOirhUc2caBkMnDeBvPHs0bj2BKk8AOMSOnhFsGB?=
- =?us-ascii?Q?Pnf8k3LS0udi4hcXhDooXSCI6TMdjuClpkUko7w1jnuX826fVT27F4QUhSGI?=
- =?us-ascii?Q?dfSUNkLD9VGdJa9VRVa6LKLkkX3xKUl/D3aURvXElImh1sBCzlTuNx29+YWC?=
- =?us-ascii?Q?QTTg0/ygVRikMMQGMuUWDCGBHT4DJBvu+msofmnJ/j31Ro+M6EHMD5w1/DuO?=
- =?us-ascii?Q?H4mcGH93u+9wLTXDtsx1cn6shBjc7s2HikeaZVNCzsMOPgVUwudOSJ8K3kCP?=
- =?us-ascii?Q?WAIIXBvH8iwB8PJRlO3UPPVDRMjct9hWD9uKqECcvymTCtDxL218BhA4ltaW?=
- =?us-ascii?Q?PJzTH27y5fBoGfMP/KSW2vl4ERoVdtP56luJIa2Y4y5Ui3ZxBiUwHvpL6vTJ?=
- =?us-ascii?Q?WYAHLbmHwQlVeIUWb3F/SjLj+kal/h8GWVKvCKz39FZCek9DowDxfCkecL4h?=
- =?us-ascii?Q?2bNU8bI/oa9kQutcLeUWUOsbVQj+o57nSmTNMIMbP6ae+/uGfUUsuIB3enOx?=
- =?us-ascii?Q?ZuhJEAoCsoENrBqsnQyaxbpp2gvbgFoOtXOcrqAcuqgbYSDAjUb8hRq6ZWeU?=
- =?us-ascii?Q?TXDUZPoLxD4idoGma0arbK5JlISCq739H9twOUUGY4BpTRqdt32HVDFdCWEQ?=
- =?us-ascii?Q?LsezCLhsge4U/cIG1T/zkp5Vv0oOfWFo5md1/E76d5ZMG7JS/kQjRQ2waRJo?=
- =?us-ascii?Q?xyt0mSpTHfpEYWvsvcDdgmsD5pn6pLPaNZkMXPIwOLN7/2GuEmjyxD/rDzOe?=
- =?us-ascii?Q?H6NQ0Tdt+j1W+Cig782EDQVtGiDAPeX0LihLM2c3f52TAIbrFqe263WN5+C8?=
- =?us-ascii?Q?wPTDCMOaxKqEZ4rQbknIu3KvqqBXDnES1aIjD6vz/youd/BknNu8/T4G0MOK?=
- =?us-ascii?Q?apqMn6tET/qxbkEKI4cu7AoF7QKsLBfZtX+Hzi5LqFn4L9gb8FWjXkPU9Y7r?=
- =?us-ascii?Q?oLgBfdl52WZcgRZUOOmRJ0LhyLefXVUJ0nwsaUB7/qXu0v+sa3w7EobsSpcW?=
- =?us-ascii?Q?knifRGYNLyRTb8nrhckEF3ZS1LP6L+xEXAlRLDg5WHF+FUclVjgxVVmbX0tX?=
- =?us-ascii?Q?7qKf5ggDtzEXkwdkXzGnPjU6ZWgAGnSJ?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
- SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 10:59:37.6803 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a054476-14cc-46ab-1bf7-08dcb2190938
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001F1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6447
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5152.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb745c91-4957-4305-3cd8-08dcb2190cc1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2024 10:59:43.7534 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: YrGD1RimizXxMct0+HYD8YhAdZTTN7UndF60V236ulOlga3AjQMEsDJx2bILn5p5eM+HNEtqq9RGNOoVlQoEDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7902
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -131,53 +154,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the bad length case, when the header length has more than 4dwords than
-packet stream length then CPFW will pending on the stream data and raise a
-CP halt error which requires do the pipe reset. As to the orignal case
-of header length is smaller than PM4 stream length then the PM4 stream
-data may will create a bad opcode error which only requires the queue
-reset. So for testing the pipe reset need to update the header length
-bigger than the PM4 stream data length.
+[AMD Official Use Only - AMD Internal Distribution Only]
+
+Hi Prike,
+
+-----Original Message-----
+From: Liang, Prike <Prike.Liang@amd.com>
+Sent: Thursday, August 1, 2024 5:56 PM
+To: igt-dev@lists.freedesktop.org
+Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Zhang, Jesse(Jie) <Jesse.Zhan=
+g@amd.com>; Deucher, Alexander <Alexander.Deucher@amd.com>; Liang, Prike <P=
+rike.Liang@amd.com>
+Subject: [PATCH] tests/amdgpu: update bad length case
+
+In the bad length case, when the header length has more than 4dwords than p=
+acket stream length then CPFW will pending on the stream data and raise a C=
+P halt error which requires do the pipe reset. As to the orignal case of he=
+ader length is smaller than PM4 stream length then the PM4 stream data may =
+will create a bad opcode error which only requires the queue reset. So for =
+testing the pipe reset need to update the header length bigger than the PM4=
+ stream data length.
 
 Signed-off-by: Prike Liang <Prike.Liang@amd.com>
 ---
  lib/amdgpu/amd_ip_blocks.c | 9 +++++++--
  1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index f675b97dd..3ffacc065 100644
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c index =
+f675b97dd..503b68431 100644
 --- a/lib/amdgpu/amd_ip_blocks.c
 +++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -189,7 +189,7 @@ gfx_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
- 		      const struct amdgpu_ring_context *ring_context,
- 		      uint32_t *pm4_dw, unsigned int cmd_error)
- {
--	uint32_t i, j;
-+	uint32_t i, j, stream_length;
- 
- 	i = 0;
- 	j = 0;
-@@ -198,6 +198,11 @@ gfx_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
- 	  * But the range applies to all asics.
- 	  * 0xcb-0xcf, 0xd2-0xef, 0xf1-0xfb
- 	  */
-+	if (cmd_error == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
-+		stream_length = ring_context->write_length / 16;
-+	else
-+		stream_length = ring_context->write_length;
+@@ -189,7 +189,7 @@ gfx_ring_bad_write_linear(const struct amdgpu_ip_funcs =
+*func,
+                      const struct amdgpu_ring_context *ring_context,
+                      uint32_t *pm4_dw, unsigned int cmd_error)  {
+-       uint32_t i, j;
++       uint32_t i, j, stream_length;
+
+        i =3D 0;
+        j =3D 0;
+@@ -198,6 +198,11 @@ gfx_ring_bad_write_linear(const struct amdgpu_ip_funcs=
+ *func,
+          * But the range applies to all asics.
+          * 0xcb-0xcf, 0xd2-0xef, 0xf1-0xfb
+          */
++       if (cmd_error =3D=3D CMD_STREAM_EXEC_INVALID_OPCODE)
+ >  this case is for bad opcode, not for bad length. It will have an impact=
+ on other cases.
+> Thanks Jesse
++               stream_length =3D ring_context->write_length / 16;
++       else
++               stream_length =3D ring_context->write_length;
 +
- 	if (cmd_error == CMD_STREAM_EXEC_INVALID_OPCODE)
- 		ring_context->pm4[i++] = PACKET3(0xf2, 2 +  ring_context->write_length);
- 	else if (cmd_error == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
-@@ -223,7 +228,7 @@ gfx_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
- 		ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
- 	}
- 
--	while (j++ < ring_context->write_length)
-+	while (j++ < stream_length)
- 		ring_context->pm4[i++] = func->deadbeaf;
- 	*pm4_dw = i;
- 	return i;
--- 
+        if (cmd_error =3D=3D CMD_STREAM_EXEC_INVALID_OPCODE)
+                ring_context->pm4[i++] =3D PACKET3(0xf2, 2 +  ring_context-=
+>write_length);
+        else if (cmd_error =3D=3D CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
+@@ -223,7 +228,7 @@ gfx_ring_bad_write_linear(const struct amdgpu_ip_funcs =
+*func,
+                ring_context->pm4[i++] =3D upper_32_bits(ring_context->bo_m=
+c);
+        }
+
+-       while (j++ < ring_context->write_length)
++       while (j++ < stream_length)
+                ring_context->pm4[i++] =3D func->deadbeaf;
+        *pm4_dw =3D i;
+        return i;
+--
 2.34.1
 
