@@ -4,23 +4,23 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52165C3DA64
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 20:26:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0789C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 20:50:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DFBC510E0F8;
-	Thu,  1 Aug 2024 20:26:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E99010E93B;
+	Thu,  1 Aug 2024 20:50:13 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB19B10E468;
- Thu,  1 Aug 2024 20:26:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10E8310E92C;
+ Thu,  1 Aug 2024 20:50:12 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0756224623479809758=="
+ boundary="===============5917923187566327758=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Update_hwconfig_table_tests?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Update_hwconfig_table_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: john.c.harrison@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Aug 2024 20:26:24 -0000
-Message-ID: <172254398488.489083.15336798497747953416@2413ebb6fbb6>
+Date: Thu, 01 Aug 2024 20:50:12 -0000
+Message-ID: <172254541206.489091.720083550977019884@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240801195129.3667206-1-John.C.Harrison@Intel.com>
 In-Reply-To: <20240801195129.3667206-1-John.C.Harrison@Intel.com>
@@ -40,7 +40,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0756224623479809758==
+--===============5917923187566327758==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -49,50 +49,91 @@ Content-Transfer-Encoding: 7bit
 
 Series: Update hwconfig table tests
 URL   : https://patchwork.freedesktop.org/series/136812/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7951_BAT -> XEIGTPW_11519_BAT
+CI Bug Log - changes from CI_DRM_15170 -> IGTPW_11519
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_11519 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_11519, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (6 -> 6)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/index.html
+
+Participating hosts (42 -> 42)
 ------------------------------
 
-  No changes in participating hosts
+  Additional (1): fi-bsw-n3050 
+  Missing    (1): fi-snb-2520m 
 
+Possible new issues
+-------------------
 
-Changes
--------
+  Here are the unknown changes that may have been introduced in IGTPW_11519:
 
-  No changes found
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@runner@aborted:
+    - fi-bsw-n3050:       NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/fi-bsw-n3050/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11519 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-2:         [PASS][2] -> [DMESG-WARN][3] ([i915#11349] / [i915#11378])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15170/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-9:          [FAIL][4] ([i915#10378]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15170/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
+
+  
+  [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#11378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7951 -> IGTPW_11519
-  * Linux: xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a -> xe-1705-d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5
 
+  CI-20190529: 20190529
+  CI_DRM_15170: d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11519: 11519
   IGT_7951: 7951
-  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a
-  xe-1705-d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5: d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11519/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/index.html
 
---===============0756224623479809758==
+--===============5917923187566327758==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,32 +155,63 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>Update hwconfig table tests</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136812/">https://patchwork.freedesktop.org/series/136812/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11519/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11519/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7951_BAT -&gt; XEIGTPW_11519_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15170 -&gt; IGTPW_11519</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (6 -&gt; 6)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_11519 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_11519, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/index.html</p>
+<h2>Participating hosts (42 -&gt; 42)</h2>
+<p>Additional (1): fi-bsw-n3050 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11519:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/fi-bsw-n3050/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11519 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15170/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@gem_lmem_swapping@basic@lmem0:<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15170/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11519/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7951 -&gt; IGTPW_11519</li>
-<li>Linux: xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a -&gt; xe-1705-d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5</li>
 </ul>
-<p>IGTPW_11519: 11519<br />
-  IGT_7951: 7951<br />
-  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a<br />
-  xe-1705-d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5: d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15170: d1ec20e149fc0bd4d15cbf34573b84d4fa47e3a5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11519: 11519<br />
+  IGT_7951: 7951</p>
 
 </body>
 </html>
 
---===============0756224623479809758==--
+--===============5917923187566327758==--
