@@ -4,57 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE9CFC3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:07:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1FC0C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:08:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97BE910E14B;
-	Thu,  1 Aug 2024 15:07:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A350910E14B;
+	Thu,  1 Aug 2024 15:08:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dXJxelNp";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RrsGPqoF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39F4610E14B
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 15:07:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CAEC510E14B
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 15:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722524878; x=1754060878;
+ t=1722524899; x=1754060899;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=QKh+mD2dJKREazCCsuJvzmzyK76rjFil1+cpR62R/24=;
- b=dXJxelNppjKswhe72g3nLyV5rZFgv8TmNYub3PnwgbT5KA7O9iDGZqc0
- IaSgfPtUtZRSU/nfN/cLmqu0eDkczz8Zh+bTn+hGqzArGIWzClqenne5k
- 9HLIC4WWwQRv9PMkwav+ZzuGpXc3AdBbXwZRlaXlzw+EfdhVAhRBHr35z
- bxPKEH90OGyJq9sODEC0L/1uoGl/hUXYxLGF5t5FVdpHz52lXeEqqhuuz
- 6tqZPpZT1pDzaJ00EjKQOU8GClGNukHyMJg2QatfRFYEYZHarn5HaUuzu
- wo74BAh0ZLUDD6FrAc4PqdSOzYhTIgPGys0qBqjuEaAM87fLK2jbSb5O2 Q==;
-X-CSE-ConnectionGUID: GqHk3EYGTJiZFmZ9SBAUzw==
-X-CSE-MsgGUID: 8gWJUy9SQqik4o9C49lEsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="20327046"
-X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="20327046"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2024 08:07:30 -0700
-X-CSE-ConnectionGUID: lXqfXbj7Q1akqOjH3pC9Yg==
-X-CSE-MsgGUID: BZCR7r14SJO6FLzVyJZjzg==
+ bh=OXuQ+uUOXEYPyZFiGAYbBpZZdFzOCWTQsz2jJTVgPmw=;
+ b=RrsGPqoFqB8DLZt+ddfCPJba9/MktFShKCzcaIlJvix4iqdcs99B74of
+ LXCL6BFCRRBvNuMWmWg5a2/qGHJP202Et8OWg6Of0IOIeTw3/0KB9G4rA
+ 0PbSRTk8hr5sXuoAJfLRI3gIGa60sbf8HDlpKR+iIJgUQ5MWWf8QErdWL
+ 8E780A+N602Oy12fht0oOUOyHzVZCNlK3wkqH2FS7doRlRKU0Gm71tJBo
+ 1uSPMEOx/bxa9/wCO9JTmn3wXyv95be9N9ShNg5zI5ZB/MQYT0oARkQuT
+ rhcVrfyT3eYmG7GHmHgslLHXFXNG4VIO9DfQUmEfxKmMha5PER31GKlGY w==;
+X-CSE-ConnectionGUID: a7MgiQzMSPKwlzoxZQmKlg==
+X-CSE-MsgGUID: A8xelbM3Th6qIXfpzanDHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11151"; a="31135506"
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="31135506"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Aug 2024 08:07:18 -0700
+X-CSE-ConnectionGUID: mUu/s8QKQ6uauWCrQZnk+g==
+X-CSE-MsgGUID: q6byueNnTSO5px0kBB2zxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="55026569"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.96.225])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2024 08:07:21 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com, katarzyna.piecielska@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Adam Miszczak <adam.miszczak@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>,
- Michal Wajdeczko <Michal.Wajdeczko@intel.com>
-Subject: [PATCH v4 i-g-t] tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist
- for SR-IOV VF runs
-Date: Thu,  1 Aug 2024 17:06:35 +0200
-Message-Id: <20240801150635.512586-1-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.31.1
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="59712512"
+Received: from nakshtra-system-product-name.iind.intel.com ([10.145.169.86])
+ by fmviesa004.fm.intel.com with ESMTP; 01 Aug 2024 08:07:16 -0700
+From: nakshtra.goyal@intel.com
+To: igt-dev@lists.freedesktop.org,
+	ramadevi.gandi@intel.com
+Cc: janga.rahul.kumar@intel.com, sai.gowtham.ch@intel.com,
+ kamil.konieczny@linux.intel.com
+Subject: [PATCH i-g-t,
+ v5 0/2] tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt
+ test in xe
+Date: Thu,  1 Aug 2024 20:37:35 +0530
+Message-Id: <20240801150737.3700254-1-nakshtra.goyal@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,64 +68,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Blocklist tests not applicable for Virtual Function (VF) runs.
-The list extends xe.blocklist.txt to enable execution on VF device,
-with BAT (xe-fast-feedback.testlist) runs to be enabled first.
+From: Nakshtra Goyal <nakshtra.goyal@intel.com>
 
-V2:
-- Reduce blocklist to minimal, favoring SKIPs.
-- Demonstrated minimal time impact on ADLP with increased skips.
+Changing variable initialisation type, sorting igt headers,adding spaces
+according to comments in v3
 
-V3:
-- Update comment to reflect blocklist not restricted to BAT runs (Michal)
-- Move summary results after --- mark (Michal)
-- Removed igt@sriov_basic from the list (Michal)
-- Reduce decorations in blocklist file (Michal)
+Adding test in fast_feedback to check it xe BAT in CI
 
-V4:
-- Removed igt@xe_gt_freq and igt@xe_pm_residency tests,
-  corrected to SKIP.
+Nakshtra Goyal (2):
+  tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in xe
+  HAX/DO_NOT_MERGE: xe-fast-feedback: test  xe_sysfs_preempt_timeout
 
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
----
- tests/intel-ci/meson.build               |  1 +
- tests/intel-ci/xe-sriov-vf.blocklist.txt | 11 +++++++++++
- 2 files changed, 12 insertions(+)
- create mode 100644 tests/intel-ci/xe-sriov-vf.blocklist.txt
+ tests/intel-ci/xe-fast-feedback.testlist |   2 +
+ tests/intel/xe_sysfs_preempt_timeout.c   | 218 +++++++++++++++++++++++
+ tests/meson.build                        |   1 +
+ 3 files changed, 221 insertions(+)
+ create mode 100644 tests/intel/xe_sysfs_preempt_timeout.c
 
-diff --git a/tests/intel-ci/meson.build b/tests/intel-ci/meson.build
-index f16243cbb..59323eda9 100644
---- a/tests/intel-ci/meson.build
-+++ b/tests/intel-ci/meson.build
-@@ -11,6 +11,7 @@ intelci_files = [
-   'xe.blocklist.txt',
-   'xe-fast-feedback.testlist',
-   'xe-fast-feedback-chamelium-only.testlist',
-+  'xe-sriov-vf.blocklist.txt',
- ]
- 
- install_data(sources : intelci_files, install_dir : datadir)
-diff --git a/tests/intel-ci/xe-sriov-vf.blocklist.txt b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-new file mode 100644
-index 000000000..0c5bc631a
---- /dev/null
-+++ b/tests/intel-ci/xe-sriov-vf.blocklist.txt
-@@ -0,0 +1,11 @@
-+##################################################################
-+# Block list for VF runs
-+##################################################################
-+#
-+# Prevent potential module reloads during tests
-+#
-+igt@xe_module_load
-+#
-+# Blocked because of abort
-+#
-+igt@xe_debugfs@gt
 -- 
-2.31.1
+2.34.1
 
