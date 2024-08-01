@@ -4,78 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DD13C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 12:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CCB3C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 12:32:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0828110E939;
-	Thu,  1 Aug 2024 12:28:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CEE5510E93F;
+	Thu,  1 Aug 2024 12:32:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZUtKfi8V";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BqaVNfvb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D83610E939
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 12:28:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6AC210E93F
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Aug 2024 12:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722515294; x=1754051294;
+ t=1722515537; x=1754051537;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=lTpIeXrH9AM2DkOG7wHzo7DzZZr9LDH3Lqen6llCowY=;
- b=ZUtKfi8VYwjcqBj/RhZ9u/fAlHVTzCTGNpUyhvekiUGgmcuHmmdThmVp
- uqy6KJycbv1pZMslvhWy9VNjk9c84FWQ9X32zKOafNP2ENu1g8IcjPGeM
- QqPR57pRA5CP+3Ag2Ql9U/HxH9IK1ulVHm7z0mQM456MSLd9czcyoarJ5
- PeWpQzW8dVnx1JiRmLuTb0JlYqPZWbYYr6sHB8hVkZsVGzNE/5nzBxdMY
- ybNz6Dzbd3zrc9b80W9LvhP4Kc0wAek8IiuQqBXwA+/1XHT1Wj9fSLmPd
- 8m1jkf9hJ8i5MTmZGK15d3Shlsyrv4JtivBrA7SoHQ/DUOBSOlVX5EQBD g==;
-X-CSE-ConnectionGUID: KYtdOvfwTpq2iv0xWXh9JA==
-X-CSE-MsgGUID: wFQdVxhDRIaEZfdXycR1zg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="12827320"
-X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="12827320"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Aug 2024 05:28:14 -0700
-X-CSE-ConnectionGUID: vz/0xcsuTaOtXAodrObtQw==
-X-CSE-MsgGUID: atT2G/PsSqC8ZjuitccaRA==
+ bh=pG9i0sjKIekCZzC8/BYWJJoeGHmAetwYYE8Syv+Jwuk=;
+ b=BqaVNfvbRBqUcbzezuFfNAXx8K8sgFRBnaUvDyQe5ikPTg5t6vGrXxS/
+ oZN/CSNQBA8iTUS7pedQ0dDr7uKOEDClehZbEDggBN5QuY0FpKsshbhdt
+ LdyuHhZKT1DFKNJAUimPZcTAwX4BPXHarSB8zCqBriBawGZstczLT8C55
+ UuroXDFN1QdsOCMKlwQK8yXke+IAAIOuXsnuQU4z64ieXBeYBGM/Xc1lk
+ 4Lbq2lBEI3mqB3T98b+PUFl400MV4c5tNP+FF02qN6IjiW/+lqSMsA4yR
+ 3fXctUwLHJ1LHjGzTLDzk1dhlAux21rcFx34A7v2wvNDlCX+74ujWS2eI A==;
+X-CSE-ConnectionGUID: hX0YM/6KSoy7qafbTsIOUA==
+X-CSE-MsgGUID: ddmHhx1kTguIR9JnyKE6Mg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11150"; a="37929556"
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="37929556"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Aug 2024 05:32:04 -0700
+X-CSE-ConnectionGUID: AuDfFY49T/y/YPDYS3nwvw==
+X-CSE-MsgGUID: EKcWqwo4TKG3oJsBGb/JMw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="85936949"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 01 Aug 2024 05:28:14 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.09,254,1716274800"; d="scan'208";a="55802898"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 01 Aug 2024 05:32:04 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 1 Aug 2024 05:28:13 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.1.2507.39; Thu, 1 Aug 2024 05:32:03 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 1 Aug 2024 05:28:13 -0700
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 1 Aug 2024 05:28:13 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.41) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Thu, 1 Aug 2024 05:32:03 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.45) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 1 Aug 2024 05:28:13 -0700
+ 15.1.2507.39; Thu, 1 Aug 2024 05:32:02 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GZYLj7W031eVRG2dzrZAwR2IYPls5+7NVEiP8a4O+I7Y0sT/QoVDoSXv2/vIlc/ZTfil/Kk3pO4mN6fbgQEdq4j4VzA//uTVzLPere3a691vSvxJZ6WnBklBr/4hi5UakTeCTFXf1gjl4UPgofijDGAbFeoYbjLescQhET6eVuVjjbOPA5Uyb8IgIYZ+VGaMVqG8bW2HRZAlslh1S9kIYOmG4tuEGyLqCdfFI0IJN+Fjc1KQBnLVZQ1x7ALQLr8fZ+jjVn1U3nqxoiMkYcxx0btHgC7zm2wlyg0ym7SgROJZgyhL1PuiYZOXYOEZxyJeP9Rz4YMKFUFSEFcinpENqQ==
+ b=SjiJGASLU9YjcD+ub7765uQqTJ7MsmR/7mHb5NH/ac2neMSn+WQgSx0mqaKbYRHoSMtrUFC5rIDiEg/T7uFuSTX5IsHt9fCZ2fUr+is2Gqq+Colj3sAQedcaFIN5A0rYfAaGE0rTRMUmq5SpndLpfb7GNfafJDI4WwX3+lzmUx+j0eimQntKG9IA70QXuh3bg+3lt9Ju9DVFMDm0sBs+XKw+rOXxcNctV5RHRw6EuaIiR+2h8/D5qIagNLjVqx3DGRFcx6ONT73zlFlxPBpQNfbB0LREwOhiCwvnWnmvA5ZOTSL000gVnFFX1+egYQc1iVehYoLbIKu0ZxTDLTwyRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FyCWpQXwnyFtkH2Ii9kRLpJTstGl8Mnvyuzp0cLlIbo=;
- b=zHI8xWlslPVgm+mhStqhloXXIXOWq6kxgBUfR2mDZsMYs8jf+/9ikYtVjNLVi6au+IOtcuenys1+RmuMIMXmL/lSXk8E85uDFhcgbhwWdNNHyj8CeuhLggExufcqesGuRbRbHksn10DvG/vT1RTCxvWWDMs11pEX2WhZjayV7v16ztz/e1JMV/dDntj+kkX8LeTZJvPaXcmnfXuIb+16jKBOsUXJBF6KtKeqQyTQ2TJdmAANDd2Vyp3poVGi5m5rJvwWXBsUWaoo+fP1TWoLMGXGnr+jrAsMk+iJgl2zFW/rcaGVKz08wj4efnOTwJu2rZfufhP5aczlSB2DfbcASQ==
+ bh=zTQkTnPW+UuMjOBw9fj7Etg5l6t4cgzQhFmkXu+sLXY=;
+ b=wh7hbLbtHzS3CirRo69DSkottybqrrExB7NAaS4ozTsBMsUHHGB+NSrrfH5jJaivISKp63sevZwilKqmf0ur5UdfGLYh3PICIaYmDfUtuwfhiSqchUVqaoZWU4PKRGwVqVUrvFGVg0xychxhFMtiNc5HhtFzujg8M50AujeIJbdt7RrVd/o2CNerRSh5M1kzAASgIOD2ZBxC3tZktecymP48ldEa8pz26589a411D1TKB1bQGscPEcwD5UFP2kBDe5kPTeidoCtDTQ6078Q1AlhWvrTMOOvQbBAosNn8A9hZ2w0wM/MtLZpleuVbGKjFEuFTIK+8i/URi1WdYpe4iw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from DS0PR11MB7264.namprd11.prod.outlook.com (2603:10b6:8:13b::5) by
- CO1PR11MB5108.namprd11.prod.outlook.com (2603:10b6:303:92::9) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7828.21; Thu, 1 Aug 2024 12:28:11 +0000
+ SN7PR11MB7115.namprd11.prod.outlook.com (2603:10b6:806:29a::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Thu, 1 Aug
+ 2024 12:31:59 +0000
 Received: from DS0PR11MB7264.namprd11.prod.outlook.com
  ([fe80::d250:d70b:55aa:5ff7]) by DS0PR11MB7264.namprd11.prod.outlook.com
  ([fe80::d250:d70b:55aa:5ff7%4]) with mapi id 15.20.7828.023; Thu, 1 Aug 2024
- 12:28:11 +0000
+ 12:31:59 +0000
 From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
 To: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
@@ -86,16 +82,16 @@ CC: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, Kamil Konieczny
  "Hajda, Andrzej" <andrzej.hajda@intel.com>, Kolanupaka Naveena
  <kolanupaka.naveena@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>,
  "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
-Subject: RE: [PATCH i-g-t v2 22/66] tests/xe_eudebug: Add coverage for sysfs
- debugger toggle
-Thread-Topic: [PATCH i-g-t v2 22/66] tests/xe_eudebug: Add coverage for sysfs
- debugger toggle
-Thread-Index: AQHa4nZdtc4g5nXFZUKRrgoU2j/zBrISVz3A
-Date: Thu, 1 Aug 2024 12:28:11 +0000
-Message-ID: <DS0PR11MB7264F321B4D055E3D5550244D9B22@DS0PR11MB7264.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t v2 23/66] lib/xe_eudebug: Allow debugger to wait for
+ client
+Thread-Topic: [PATCH i-g-t v2 23/66] lib/xe_eudebug: Allow debugger to wait
+ for client
+Thread-Index: AQHa4nZg43ncUeJzgkCJJJ/CwgkzprISWBYA
+Date: Thu, 1 Aug 2024 12:31:59 +0000
+Message-ID: <DS0PR11MB7264113C390B95A97C970B77D9B22@DS0PR11MB7264.namprd11.prod.outlook.com>
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
- <20240730114523.334156-23-christoph.manszewski@intel.com>
-In-Reply-To: <20240730114523.334156-23-christoph.manszewski@intel.com>
+ <20240730114523.334156-24-christoph.manszewski@intel.com>
+In-Reply-To: <20240730114523.334156-24-christoph.manszewski@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -103,81 +99,81 @@ X-MS-TNEF-Correlator:
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB7264:EE_|CO1PR11MB5108:EE_
-x-ms-office365-filtering-correlation-id: 79220ce2-9ea0-46be-83f5-08dcb2256851
+x-ms-traffictypediagnostic: DS0PR11MB7264:EE_|SN7PR11MB7115:EE_
+x-ms-office365-filtering-correlation-id: be8e429c-d3f1-4ba6-03b9-08dcb225f078
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-2?Q?dYTP1O+FvznjX+90+nkLX07kOYuzNhNeRkqAQ58niXwc1lVJOsuyMsLcwU?=
- =?iso-8859-2?Q?dPkWDwHcaSCoR7TvMbc49o9qjlzLNTsZLsDVwJ26bJLdUbZmWCg9QzE+0e?=
- =?iso-8859-2?Q?NnE8J9bkzIvVUyQQFRsVVh7C6JuiKH/54Quiml0yL0Pm+5fbbIvPt9QBa4?=
- =?iso-8859-2?Q?WFgrtuvrgbI3+NUye2UZgN1NbeonJQ8iRj/ggCf3r2lWdqpvcgBMuOslWj?=
- =?iso-8859-2?Q?9iEd4h0gBNj/uFb+Ul2tKC0XsqjB74s7sm3nI323lY2rxFGtmJwkMD4tYZ?=
- =?iso-8859-2?Q?ZlBIBWWDrXhms75L786Ve7F+e6RlLyGUBsHB8s25eYxkZ+iyS34LMxiZJ+?=
- =?iso-8859-2?Q?ETzdjx1QlSx9SDbyThPI6L880shhrxGPU6ShdVeYkWv4xX1hzNVD4CZ0C/?=
- =?iso-8859-2?Q?9J5kG7lzVnRB35kNtHdyij1Ak+3eozX8Hwio3xor6jua++m/DZocHCWszD?=
- =?iso-8859-2?Q?Izq7Ar3wxPJO+Fr8JGjafJKY83vaBFLNtoTGFKDFzIl0X9rnqfcKLl0RUG?=
- =?iso-8859-2?Q?9Wl/YJmTvQYtp2k8ytXgOrV2cvsZstURjNDycDlLnpSGknvUFBTnSy0QpH?=
- =?iso-8859-2?Q?nwHSI0QPSDAN9rBiHTIkXupsWdSPcD3Vej8XD106KddyGR590yYU2o8qyl?=
- =?iso-8859-2?Q?iDv80AYR4y2hSroNtPSOY43fBGR8UNxtAwFPV/Gu7vMRHQWrvgiWAUx2zl?=
- =?iso-8859-2?Q?hXkA09AAPueQJaTSJlo1I91eYXh9JDrbxAVPaf17YPHCSMCSwCKB2F1Ke4?=
- =?iso-8859-2?Q?/vEXM0ToDL3LDkDj9XJrIYAhF7N026q3ufxoFUOtjjfKI28vBrW7bnPZzi?=
- =?iso-8859-2?Q?b2TmWSQKQoLJVFf0c0ESMQXURyY/EPGefMFfYTkQPow6tuO4xa9BcTQa+W?=
- =?iso-8859-2?Q?2viAd5umCGiLJVYMc891c0aPQgMO68KKLSZaBNkvGb3T9agPlT8xsM35rB?=
- =?iso-8859-2?Q?WKj0dA98FfYkBNPoA//7AVVX9C40KKrR42rP4aeyiHrIxHPruncFWO65+B?=
- =?iso-8859-2?Q?DT2tpouP0gXMw7OCGIxUmvp3lhiFUdsx4eBX2OL7LR25at9gVYmTEpZrVZ?=
- =?iso-8859-2?Q?ACnJrH5kmyC3Us6JpISyIgy/r7xpjGlgO3N9R/kBPDQfH2A8I7Wiy+8Dse?=
- =?iso-8859-2?Q?2mGCOti7OBWWFvWCjipx2skzW9PKlU+W84Xtj5pr6JcXaYrYGoRZeD+i+j?=
- =?iso-8859-2?Q?ljb2Zsn8MBHn/0ZuV+FBdnV8paildYEndec+cOaVfdRMRvNaQfI0LMqU5+?=
- =?iso-8859-2?Q?FwIeZLfdNMIoFDvVO/BSEG95U7J8CM9aGf0LZca4fgRlc0XmQfHjyyA62R?=
- =?iso-8859-2?Q?XkwQ5LY1L7Ltghg1MwMaRL3FhfIHtuftMSyYeX26t8Lt9l80jSVjOoZ9W0?=
- =?iso-8859-2?Q?u14PHS+62RSJ0+CQNximoLqfjENBMs8s72FNBpASHeo9xIETFu5mvkuKW/?=
- =?iso-8859-2?Q?UICoKz9csNXc4U7iaKrG/dtOEG7y9PvMF6yx3w=3D=3D?=
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?iso-8859-2?Q?QnzMgHz7ESXDS0qQHtIDsYP3i8oCKTxZBiNWtmyd1AmieRsw6AUaBjXeP9?=
+ =?iso-8859-2?Q?UTKeRXaJlEIyjkMOv08eSbp/obe+9Q8LeC469goNAJpKHRnc0iBPut/dUi?=
+ =?iso-8859-2?Q?j4VPrhkKgjhLf1xdvfGb9Y+wcbl2xJbzyrtsNTfhKA10AT/VQ59KqIiuxf?=
+ =?iso-8859-2?Q?7EoZeSQZ8mAyp+DaufZ4ENOGjKVKjH4qRq8YTcoEtXs5G/6+uVy4jJ8+XT?=
+ =?iso-8859-2?Q?1G/YgKXHbqw1SSokpb+2PSZJ7ErbHXMWl0i5nesJNPWibfOvblvtsqUaT0?=
+ =?iso-8859-2?Q?lJozSkih5X5hvcUiegoTdHFLZXxSUq8Sh9lPLm0dcqGSoPaV+KptRG8vBR?=
+ =?iso-8859-2?Q?lE0hz4PMa8tTGvdqTfbFtQij1YSEQz9KUD7IiPhW6FeGZHFSYyoSujEfh+?=
+ =?iso-8859-2?Q?8fUaHx1v4KNVOsXD3Shy7pMUVnDanJ6sDTr0tWW5Lpuu2lL3M0cH2Ko6gx?=
+ =?iso-8859-2?Q?Jpk2cpyxw+nwz7+OwFBG5VWtfaK0hvmfMkXu4xLDufR5AmLFxmCpgsIxaX?=
+ =?iso-8859-2?Q?O2gsCJphhfp2jShGNB/KBFwe5qhyZ/HOT5jACQdXw7i4CywZWrew7/ixQC?=
+ =?iso-8859-2?Q?VntewsVOp67CTtQOMudESbVMUyZiCCN5Sl9r/IgpK1px/ItLFb0+uTXZrH?=
+ =?iso-8859-2?Q?lv8H6/oJeSopIW3lIKgU+Hc/sVaxQz8IGeJa4vLdigDj9Ubl7ikB6rn8aZ?=
+ =?iso-8859-2?Q?Tswv3oOXPY4CpKuyC2ffG+75/qupXoElfI32epTvxfnnVHWWoKvvW4GWrJ?=
+ =?iso-8859-2?Q?vYtHafQp0TzxWAwV4DHUwOUTnsMRF7+O/hklTznigquyteTyi/3x/w02fU?=
+ =?iso-8859-2?Q?L3ems3NUNdEokRLP04AKnVzzEupV31IvE4c1BQgHloOWcUN6yO3WxHJizA?=
+ =?iso-8859-2?Q?hnoItm8mFVB31v3RBDE8uzg0sLLfiLG4FICcfph9poNPgIGr5SGvL/rVLq?=
+ =?iso-8859-2?Q?mUBZFg8bdVC1UmGiC5Q5hc5/ohXZ+MNcOqTAj9jLmNKYwnjwCjg0VBUitI?=
+ =?iso-8859-2?Q?b0SwMOqsqXFGJpQSg4futifIXYa/MRFzg/Nl2rUfPdWg2h0wgIicj+BTEM?=
+ =?iso-8859-2?Q?AqURXdDJ2H30FoMyBc7QivOD+/z8dktCzYXSJT/50alN4PTihQcABlXZtc?=
+ =?iso-8859-2?Q?vwv+yMMK6H3uB/w+HutuyuIc+NC83nJq4QHFrJyekajp2p9O1cydp6Q+MB?=
+ =?iso-8859-2?Q?j1qmoaMi5Hq3DGys9OtBCjsuJLP3SHihSeW8Drrli3SpzeL/8gY4BqVPJV?=
+ =?iso-8859-2?Q?AKJWzNCSYE//Q5BVIrFr6Cm1ZMcbpxqR0PnGTzgK306Osp1JLtfznShVTn?=
+ =?iso-8859-2?Q?Uk3kNe7S4fNG6R+4y5aDM2iKPV/Beulc3Ta/cZUkDVRUnYTox9/PUEZRoJ?=
+ =?iso-8859-2?Q?4AvNun8cvUkbpzpclFVvZFdB6IZkmJ87F6xCriROi7EcuAmWweM+HCd9gr?=
+ =?iso-8859-2?Q?Tsm6Mps6znjdQfn/s6sGNvNbTVxAwuE1LlBYxw=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7264.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(376014)(366016)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?tRcbvBFoUdUtjxmkYzVgwvP3lHMnXu00moJ/zLFARmEBYgJspoYOZxEoiF?=
- =?iso-8859-2?Q?nDT9Ujr7iVRwmkOYRL5Jiz7ovbcQYVxobS8G08ozkVJNWmtLApqpFv+mHT?=
- =?iso-8859-2?Q?+0D0+6aWOGJU8CCrqaaMgYllzGE9wl15/8C6JeS9RHuchYLSeE2yx76mOa?=
- =?iso-8859-2?Q?uAPoG0Dg9AVn6FKi8s2vXVKR6aktkBguLgtaEMI2uJlvBgD/Gr+9GFmeOo?=
- =?iso-8859-2?Q?PXnMFR8AM+T2sCgKvJWURJStF5DYbv3celBXwiyvCAFrYIS8iQwi85eRIi?=
- =?iso-8859-2?Q?sXRBY4Kka7wHx++Yzt6+jRUhmEB7bzLk5lQyiurxsWoN2q2H4qFzpSfEfj?=
- =?iso-8859-2?Q?AD/swe2wlzf7LLhrjn8izu8c3bQ3jQqFfS9q0pR5czZMDpeHV60NvW0dU5?=
- =?iso-8859-2?Q?PVUhSmNCXN8WlWeBsLwnO1LfXS9cyBcUQTXuh9Sj3QHzpuLsA/JXc9s3bc?=
- =?iso-8859-2?Q?DAQDR9nCkUtAHZwfVyGCcVjNGBT4Hfe67+9lZesZ3qYX1lgNJ0XEIvRibB?=
- =?iso-8859-2?Q?AFsoasEgcGsHe6ENb3c7q8B4osxXcMFDPMRycs9BFErpYtG0f2+fliKJ05?=
- =?iso-8859-2?Q?AlXPnmV+8QSCZxxCi/rEYMgJqOSJ6/srqTQ6cajPkaQulPsL5S07fXsEmo?=
- =?iso-8859-2?Q?x89NKyIbMiexqz7qmLdCa8h2lFlsf21wV9BLlWWbGEj7d6/TzT7Q6A9Erj?=
- =?iso-8859-2?Q?WLqGG95AgGgdSklF+UFmm341XWYW+95GW+TiEkaFIrNjEtkII39oi0M8rX?=
- =?iso-8859-2?Q?w4eBZ/njwhTJrPUTqOORy4Sox0TpNJz98GZ8zn5wIa1Yedvw6CARlrGh5L?=
- =?iso-8859-2?Q?kO+3edfKtvmXUSNX9c1tT9KYFA3IudJjJ2r73L3B+eFm/xlZF9f4PseV0D?=
- =?iso-8859-2?Q?UisbdE35l9FZHPSKmexc9nKGSbtRaBRumU6jTlDNtJLUxODKHnyeCncljw?=
- =?iso-8859-2?Q?RwlB6TTNDJhPDmcskKVCPAw0x449cWdyLpk9t9axzLqTcASV6ft+qHmvR2?=
- =?iso-8859-2?Q?1GzCBJjZZKlH5HSJElWtoh/HF2eeh4I/bKvBydv5XN/cZDj8hdrY2idFn6?=
- =?iso-8859-2?Q?NWRjIomL8hSoPT8/AaSOhGQwkhyHsSNdNf/z8MED0U2w7RmbLknZJPcg7m?=
- =?iso-8859-2?Q?e1XDUaurUIay5N92XOfir0a0aSb0b2W1vL31QiSYaoXd14SG5TBiax9z2H?=
- =?iso-8859-2?Q?ALTVazSlsUXLv0lq+gwxY5XC7efHmG0v5zXF/jrIOPys46yQUrhvz6GBlx?=
- =?iso-8859-2?Q?9JHE0y89S6rg5R8FO5qnPgBr0umS5bfaJLMOZ/lkhvlF1c99LbyyzUcF7m?=
- =?iso-8859-2?Q?e9qlXuU1sDfI16TnnP+bn/e0p/9FbyLtyzrWr/6RMnW8JY2E16JhY0kmea?=
- =?iso-8859-2?Q?I+jrBleHugPQ8ol7cPCtuUV8Hrzl7UYpzQ8MOlkb/NXH3Kxh//n9sK5Vc3?=
- =?iso-8859-2?Q?iWMcAkbrsN6GcWiV7iE2qb8AtrT/NdKWlAjwQO3YEeFtVaMCN6LZZ4RrKy?=
- =?iso-8859-2?Q?YY+hjcgCpEL2SNnyxodBnkDFrUbTmtN0W/gUjCcwBOynKM34M8Gpzkp+AD?=
- =?iso-8859-2?Q?VvNXNgyBtRqJecIklhiI6TqUXlnkxBOwhOPYcrPgaVCN5+vVdKilxj+g4M?=
- =?iso-8859-2?Q?xK1AYbFwgj5wL1yeuCU0wTwrb7ftG8x9ep/GGxtB1m8Qo1oLcxdzG6RrAB?=
- =?iso-8859-2?Q?etjakG0GaDNp0kJ/+WE=3D?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?JNJ2n53iPuLTqf3PvwNewLw2tQgXXX6LfYzG6aePIsMzMGu5MhzF80htQz?=
+ =?iso-8859-2?Q?KzUMfmQC6p18CApP4rMB6gD48dQdStVp4XQzaZelujazZhneDqVImVVz5g?=
+ =?iso-8859-2?Q?B/FCkX0zQ2gPyRbShqExy/xr3IgAwRxaHmuUinN7d9GzULPbQG3FjWv9r5?=
+ =?iso-8859-2?Q?9tdVBvNDNhASM0CkA3ksPy0+hMyno07C7Xg/Os1J8C8gMfc3iGzyd1ZP3p?=
+ =?iso-8859-2?Q?pkwgJJfHS7Ci++s3eCpO8m0gf9r4LU2CM2i77dS3NZ6PdPyuS8JJlcVCgV?=
+ =?iso-8859-2?Q?O/IxlwKcMEH0xJsr4FzyCD1+90HLiNsvXWW/s9vlZN9nCOHml2eNMQJ9Ld?=
+ =?iso-8859-2?Q?tI2i+n3ACuvhnHxdDwdWAzeJSZDvHmuEcrSGUDzsgjt7nK4EsGTxdn5hXc?=
+ =?iso-8859-2?Q?aFsW2kJJeytrC4E7XcnwtJGJBiz2TU0rLHIEtaqNp+A2MrvK5Z7pQ5mH72?=
+ =?iso-8859-2?Q?LxKS7d8g5Zu6qfr7gqI0XRtJBRFRgTiyHb4aQNsEQLkh1Lv+EcN3Y8SPKd?=
+ =?iso-8859-2?Q?ZcbgwRGmyAIfG4WaW2HjXDfaTzfw5PhZEjsIUt09CTENyX/hFtwUAcY8O4?=
+ =?iso-8859-2?Q?BhI1y0+NBWmK75RWICeT0TTTfFbemEREo73L/vzoOosborHfgCukShT4qP?=
+ =?iso-8859-2?Q?yBBWqh3M2nwMk5kYyleSKN9X9elVSJ8x7woxF2ZtlbsqikCc3OMN5GuXT7?=
+ =?iso-8859-2?Q?ZEeX8wgp6uoQJ2sUl1eiZTfH6tnfYG2kAav8FsTZRMgXt5gm9p+YfGJ+9S?=
+ =?iso-8859-2?Q?RjIiCTyXXbU8scapk0LfTg9RXlgKwr0RsX5LSuZImy5RHaEpicnGAGEcyX?=
+ =?iso-8859-2?Q?uTzmaMRv6N9xINEac0KVnNpAl6y3cUFzV0/2rze1eKsrkHhnHp6KL1GEpv?=
+ =?iso-8859-2?Q?0Tg7kdfa6G78iYWjeum+8FJLKWPSYDQ0F6VwjFctxN3enz6wM0lcPJDqv/?=
+ =?iso-8859-2?Q?uPEnjkxRV0XFNwdV6B5Tnkvy+D7ZAjjoknr+bh5hu+DT/XpwO+aRzsTU6E?=
+ =?iso-8859-2?Q?Ph0u9xDs+6EFhgLB5x7yas9u9R0lanv7Odm6inumpwFxkv7Lm9lUI3FVtm?=
+ =?iso-8859-2?Q?Du4+LLR9pbHV1Rs2tgTqfyqDZRoxnFZGK25j5ls3d3KBG/LjR6mpCgZdjD?=
+ =?iso-8859-2?Q?IfS8EQuq+VaNw+sUdIfiA00qnmGbI67o4udMLhekMh0QDKwHtQH0ZfAIML?=
+ =?iso-8859-2?Q?5tBFgPKekUzRaT/L3s4aNNM8KrkKrvBGurRNQWrSr4LPm38usn377mRTAE?=
+ =?iso-8859-2?Q?fpLPiPT6BdKD0o0qCSTlEdIKiRlsxuxnZiXOU70CpRQFcMvj1uxWfH0zIG?=
+ =?iso-8859-2?Q?KzmzaV3tEcLBHI4mS5pE5smiyh5fT3DQrDkkVFtaPYubXP5ZUooKgUr53Y?=
+ =?iso-8859-2?Q?5qVUY4hat94ZJoXosZdADNg1v8Yqqj1vE5Lz/kvYiBBdNeKbLRFeTCNRyH?=
+ =?iso-8859-2?Q?Ha6dyi8832jzoDPGbf6F4/ouXqja6G2dsl3U8M4gjgbLM760UXfYaZHvSY?=
+ =?iso-8859-2?Q?YtWD8gXFTbL/8U1xn33B7uEkWX5mbZwM5AdAXU9tsl+bafj/JSXecT+zG7?=
+ =?iso-8859-2?Q?uZ1LPviBYEvn9USZ6+daZEIqamvldiMQzJycsmlZ7vdfk4sin6uBXC2go9?=
+ =?iso-8859-2?Q?zEcYYu7OOEv+Ki0o06opFUmsnj+4Pr7BI+Gou1M0My7uY9sqUctIxRedRw?=
+ =?iso-8859-2?Q?VsO/BP2E2JS/JCVoGGM=3D?=
 Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7264.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 79220ce2-9ea0-46be-83f5-08dcb2256851
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2024 12:28:11.3403 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: be8e429c-d3f1-4ba6-03b9-08dcb225f078
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Aug 2024 12:31:59.7676 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 350yb0PV/WpNhomGkfM8AZcNyBKZIthj5vq7kEvs9bmbrHXerWS31owNDvYAoNQYXdQCAq1+41J4s11Tf7Me/eIg7N+pyWaVgDZssv0kIF0ebklHiAriFjMIwv/ZIsV8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5108
+X-MS-Exchange-CrossTenant-userprincipalname: LsC9VE03h2kvntwdnC3sEvjwBJX+mySCxxUC49lEYh97GNqzXYGF9cxq/20j1RnjFEFEyN4/OkeMZI2U4j0J2jHv79tDz1Ilb8bzEz4Hky5wzzu0vP80Stff5gd1Ia26
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7115
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -211,65 +207,124 @@ Reviewed-by: Dominik Karol Pi=B1tkowski <dominik.karol.piatkowski@intel.com=
 > Kolanupaka Naveena <kolanupaka.naveena@intel.com>; Kuoppala, Mika
 > <mika.kuoppala@intel.com>; Mun, Gwan-gyeong <gwan-
 > gyeong.mun@intel.com>
-> Subject: [PATCH i-g-t v2 22/66] tests/xe_eudebug: Add coverage for sysfs
-> debugger toggle
+> Subject: [PATCH i-g-t v2 23/66] lib/xe_eudebug: Allow debugger to wait fo=
+r
+> client
 >=20
-> Add subtest for checking sysfs debugger toggle logic and debugger state.
+> In some tests, we need to pause the debugger at a certain stage as the po=
+int at
+> which the client performs certain activities, determines the executed cod=
+e path
+> in the driver.
+>=20
+> Add a possibility to pause debugger and to signal continuation by the cli=
+ent.
 >=20
 > Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+> Cc: Karolina Stolarek <karolina.stolarek@intel.com>
 > Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 > ---
->  tests/intel/xe_eudebug.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
+>  lib/xe/xe_eudebug.c | 37 +++++++++++++++++++++++++++++++++++++
+>  lib/xe/xe_eudebug.h |  2 ++
+>  2 files changed, 39 insertions(+)
 >=20
-> diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c index
-> de8edb485..b565785e3 100644
-> --- a/tests/intel/xe_eudebug.c
-> +++ b/tests/intel/xe_eudebug.c
-> @@ -22,6 +22,30 @@
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
+> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c index
+> 36eef25c7..ed1e382c7 100644
+> --- a/lib/xe/xe_eudebug.c
+> +++ b/lib/xe/xe_eudebug.c
+> @@ -45,6 +45,7 @@ struct match_dto {
+>  #define CLIENT_FINI 3
+>  #define CLIENT_STOP 4
+>  #define CLIENT_STAGE 5
+> +#define DEBUGGER_STAGE 6
+>=20
+>  #define DEBUGGER_WORKER_INACTIVE  0
+>  #define DEBUGGER_WORKER_ACTIVE  1
+> @@ -1250,6 +1251,29 @@ void xe_eudebug_debugger_signal_stage(struct
+> xe_eudebug_debugger *d, uint64_t st
+>  	token_signal(d->p_client, CLIENT_STAGE, stage);  }
 >=20
 > +/**
-> + * SUBTEST: sysfs-toggle
-> + * Description:
-> + *      Excercise the debugger enable/disable sysfs toggle logic
+> + * xe_eudebug_debugger_wait_stage:
+> + * @s: pointer to xe_eudebug_debugger structure
+> + * @stage: stage to wait on
+> + *
+> + * Pauses debugger until the client has signalled the corresponding
+> +stage with
+> + * xe_eudebug_client_signal_stage. This is only for situatuons where
+> +the actual
 
-Typo: Exercise
+Typo: situations
 
+> + * event flow is not enough to coordinate between client/debugger and
+> +extra sync
+> + * mechanism is needed.
 > + */
-> +static void test_sysfs_toggle(int fd)
-> +{
-> +	xe_eudebug_enable(fd, false);
-> +	igt_assert(!xe_eudebug_debugger_available(fd));
+> +void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s,
+> +uint64_t stage) {
+> +	u64 stage_in;
 > +
-> +	xe_eudebug_enable(fd, true);
-> +	igt_assert(xe_eudebug_debugger_available(fd));
-> +	xe_eudebug_enable(fd, true);
-> +	igt_assert(xe_eudebug_debugger_available(fd));
+> +	igt_debug("debugger xe client fd: %d pausing for stage %lu\n",
+> +s->d->master_fd, stage);
 > +
-> +	xe_eudebug_enable(fd, false);
-> +	igt_assert(!xe_eudebug_debugger_available(fd));
-> +	xe_eudebug_enable(fd, false);
-> +	igt_assert(!xe_eudebug_debugger_available(fd));
+> +	stage_in =3D wait_from_client(s->c, DEBUGGER_STAGE);
+> +	igt_debug("debugger xe client fd: %d stage %lu, expected %lu,
+> stage\n", s->d->master_fd,
+> +		  stage_in, stage);
 > +
-> +	xe_eudebug_enable(fd, true);
-> +	igt_assert(xe_eudebug_debugger_available(fd));
+> +	igt_assert_eq(stage_in, stage);
 > +}
 > +
->  #define CREATE_VMS (1 << 0)
->  #define CREATE_EXEC_QUEUES (1 << 1)
->  #define VM_BIND (1 << 2)
-> @@ -1146,6 +1170,9 @@ igt_main
->  		was_enabled =3D xe_eudebug_enable(fd, true);
+>  /**
+>   * xe_eudebug_client_create:
+>   * @master_fd: xe client used to open the debugger connection @@ -1397,6
+> +1421,19 @@ void xe_eudebug_client_wait_done(struct xe_eudebug_client
+> *c)
 >  	}
+>  }
 >=20
-> +	igt_subtest("sysfs-toggle")
-> +		test_sysfs_toggle(fd);
+> +/**
+> + * xe_eudebug_client_signal_stage:
+> + * @c: pointer to the client
+> + * @stage: stage to signal
+> + *
+> + * Signals to debugger, waiting in xe_eudebug_debugger_wait_stage(),
+> + * releasing it to proceed.
+> + */
+> +void xe_eudebug_client_signal_stage(struct xe_eudebug_client *c,
+> +uint64_t stage) {
+> +	token_signal(c->p_out, DEBUGGER_STAGE, stage); }
 > +
->  	igt_subtest("basic-connect")
->  		test_connect(fd);
+>  /**
+>   * xe_eudebug_client_wait_stage:
+>   * @c: pointer to xe_eudebug_client structure diff --git a/lib/xe/xe_eud=
+ebug.h
+> b/lib/xe/xe_eudebug.h index 1343cb25c..81c33417f 100644
+> --- a/lib/xe/xe_eudebug.h
+> +++ b/lib/xe/xe_eudebug.h
+> @@ -135,6 +135,7 @@ void xe_eudebug_debugger_set_data(struct
+> xe_eudebug_debugger *c, void *ptr);  void
+> xe_eudebug_debugger_add_trigger(struct xe_eudebug_debugger *d, int type,
+>  				     xe_eudebug_trigger_fn fn);
+>  void xe_eudebug_debugger_signal_stage(struct xe_eudebug_debugger *d,
+> uint64_t stage);
+> +void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s,
+> +uint64_t stage);
 >=20
+>  struct xe_eudebug_client *
+>  xe_eudebug_client_create(int xe, xe_eudebug_client_work_fn work, uint64_=
+t
+> flags, void *data); @@ -142,6 +143,7 @@ void
+> xe_eudebug_client_destroy(struct xe_eudebug_client *c);  void
+> xe_eudebug_client_start(struct xe_eudebug_client *c);  void
+> xe_eudebug_client_stop(struct xe_eudebug_client *c);  void
+> xe_eudebug_client_wait_done(struct xe_eudebug_client *c);
+> +void xe_eudebug_client_signal_stage(struct xe_eudebug_client *c,
+> +uint64_t stage);
+>  void xe_eudebug_client_wait_stage(struct xe_eudebug_client *c, uint64_t
+> stage);
+>=20
+>  uint64_t xe_eudebug_client_get_seqno(struct xe_eudebug_client *c);
 > --
 > 2.34.1
 
