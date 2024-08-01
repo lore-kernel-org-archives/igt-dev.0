@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED0DEC3DA64
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:37:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91EA3C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:38:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 902BC10E15C;
-	Thu,  1 Aug 2024 15:37:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 53D8910E15C;
+	Thu,  1 Aug 2024 15:38:45 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B20B10E15C;
- Thu,  1 Aug 2024 15:37:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 568C510E15C;
+ Thu,  1 Aug 2024 15:38:44 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4618332300415930694=="
+ boundary="===============5279062522276471539=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Add_sysfs_node_checks_for_gt?=
- =?utf-8?q?=5Ffreq_and_pm=5Fresidency_tests?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Add_sysfs_node_checks_for_g?=
+ =?utf-8?q?t=5Ffreq_and_pm=5Fresidency_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Aug 2024 15:37:19 -0000
-Message-ID: <172252663910.488380.15358640269141508652@2413ebb6fbb6>
+Date: Thu, 01 Aug 2024 15:38:44 -0000
+Message-ID: <172252672434.488394.2834497295098851936@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240801143848.509164-1-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20240801143848.509164-1-marcin.bernatowicz@linux.intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4618332300415930694==
+--===============5279062522276471539==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7950_BAT -> XEIGTPW_11516_BAT
+CI Bug Log - changes from CI_DRM_15169 -> IGTPW_11516
 ====================================================
 
 Summary
@@ -64,36 +64,71 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/index.html
 
-Participating hosts (7 -> 6)
+Participating hosts (41 -> 40)
 ------------------------------
 
-  Missing    (1): bat-lnl-1 
+  Additional (1): fi-kbl-8809g 
+  Missing    (2): fi-snb-2520m fi-elk-e7500 
 
+Known issues
+------------
 
-Changes
--------
+  Here are the changes found in IGTPW_11516 that come from known issues:
 
-  No changes found
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-1:         [PASS][3] -> [DMESG-WARN][4] ([i915#11349] / [i915#11378])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15169/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] +30 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-mtlp-6:         [DMESG-WARN][6] ([i915#11349] / [i915#11378]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15169/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#11378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7950 -> IGTPW_11516
-  * Linux: xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055 -> xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a
 
+  CI-20190529: 20190529
+  CI_DRM_15169: abbcf7af3bd79f8729a6dba72674a81730f97f8a @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11516: de49f37570efa660431bbd43d61608c690e92953 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_7950: 7950
-  xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055: 6d89c6866adbcecfc3ca559d1bdef8be50805055
-  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11516/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/index.html
 
---===============4618332300415930694==
+--===============5279062522276471539==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,30 +152,67 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136802/">https://patchwork.freedesktop.org/series/136802/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11516/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11516/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7950_BAT -&gt; XEIGTPW_11516_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15169 -&gt; IGTPW_11516</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 6)</h2>
-<p>Missing    (1): bat-lnl-1 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/index.html</p>
+<h2>Participating hosts (41 -&gt; 40)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (2): fi-snb-2520m fi-elk-e7500 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11516 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15169/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15169/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11516/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7950 -&gt; IGTPW_11516</li>
-<li>Linux: xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055 -&gt; xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a</li>
 </ul>
-<p>IGTPW_11516: de49f37570efa660431bbd43d61608c690e92953 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7950: 7950<br />
-  xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055: 6d89c6866adbcecfc3ca559d1bdef8be50805055<br />
-  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15169: abbcf7af3bd79f8729a6dba72674a81730f97f8a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11516: de49f37570efa660431bbd43d61608c690e92953 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7950: 7950</p>
 
 </body>
 </html>
 
---===============4618332300415930694==--
+--===============5279062522276471539==--
