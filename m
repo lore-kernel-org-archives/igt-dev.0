@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8FDAC3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:42:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD8B9C3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Aug 2024 15:55:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97C3710E8D1;
-	Thu,  1 Aug 2024 15:42:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 79E4E10E8D1;
+	Thu,  1 Aug 2024 15:55:28 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6822510E8D1;
- Thu,  1 Aug 2024 15:42:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9505F10E8D1;
+ Thu,  1 Aug 2024 15:55:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7608579472822416036=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel-ci/xe-sriov?=
- =?utf-8?q?-vf=2Eblocklist=2Etxt=3A_Blocklist_for_SR-IOV_VF_runs?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel-ci/xe-sriov-vf=2Eb?=
+ =?utf-8?q?locklist=2Etxt=3A_Blocklist_for_SR-IOV_VF_runs?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Aug 2024 15:42:29 -0000
-Message-ID: <172252694942.488394.12072541376343569925@2413ebb6fbb6>
+Date: Thu, 01 Aug 2024 15:55:27 -0000
+Message-ID: <172252772760.488490.8716710857966902733@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240801150635.512586-1-marcin.bernatowicz@linux.intel.com>
 In-Reply-To: <20240801150635.512586-1-marcin.bernatowicz@linux.intel.com>
@@ -41,62 +41,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7608579472822416036==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist for SR-IOV VF runs
 URL   : https://patchwork.freedesktop.org/series/136803/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7950_BAT -> XEIGTPW_11517_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1238707 for the overview.
+Summary
+-------
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61785179):
-  section_start:1722526607:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out e4886ea5 as detached HEAD (ref is intel/IGTPW_11517)...
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1722526612:get_sources
-  section_start:1722526612:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4886ea5ca4e4a67e6949bb69ef135ff2e38d13f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1722526616:step_script
-  section_start:1722526616:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722526616:cleanup_file_variables
-  ERROR: Job failed (system failure): unable to upgrade to tcp, received 409 (exec.go:71:0s)
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/61785182):
-  section_start:1722526608:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out e4886ea5 as detached HEAD (ref is intel/IGTPW_11517)...
-  
-  Skipping Git submodules setup
-  section_end:1722526614:get_sources
-  section_start:1722526614:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-e4886ea5ca4e4a67e6949bb69ef135ff2e38d13f with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
-  section_end:1722526615:step_script
-  section_start:1722526615:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1722526616:cleanup_file_variables
-  ERROR: Job failed (system failure): unable to upgrade to tcp, received 409 (exec.go:71:0s)
+Participating hosts (7 -> 6)
+------------------------------
+
+  Missing    (1): bat-lnl-1 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7950 -> IGTPW_11517
+  * Linux: xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055 -> xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a
+
+  IGTPW_11517: 11517
+  IGT_7950: 7950
+  xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055: 6d89c6866adbcecfc3ca559d1bdef8be50805055
+  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1238707
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11517/index.html
+
+--===============7608579472822416036==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci/xe-sriov-vf.blocklist.txt: Blocklist for SR-IOV VF runs</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136803/">https://patchwork.freedesktop.org/series/136803/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11517/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11517/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7950_BAT -&gt; XEIGTPW_11517_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (7 -&gt; 6)</h2>
+<p>Missing    (1): bat-lnl-1 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7950 -&gt; IGTPW_11517</li>
+<li>Linux: xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055 -&gt; xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a</li>
+</ul>
+<p>IGTPW_11517: 11517<br />
+  IGT_7950: 7950<br />
+  xe-1699-6d89c6866adbcecfc3ca559d1bdef8be50805055: 6d89c6866adbcecfc3ca559d1bdef8be50805055<br />
+  xe-1704-abbcf7af3bd79f8729a6dba72674a81730f97f8a: abbcf7af3bd79f8729a6dba72674a81730f97f8a</p>
+
+</body>
+</html>
+
+--===============7608579472822416036==--
