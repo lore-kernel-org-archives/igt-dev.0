@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C0DC3DA7F
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Aug 2024 23:13:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74B71C3DA7F
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Aug 2024 23:14:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F52710E029;
-	Fri,  2 Aug 2024 23:13:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C84E10E215;
+	Fri,  2 Aug 2024 23:14:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P/+39KZC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PtWJK5s9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74D9F10E029
- for <IGT-Dev@lists.freedesktop.org>; Fri,  2 Aug 2024 23:13:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B06C10E215
+ for <IGT-Dev@lists.freedesktop.org>; Fri,  2 Aug 2024 23:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722640383; x=1754176383;
+ t=1722640483; x=1754176483;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=6XEXrcN4Nq1lc5xnYaz5NSKFTOa3H1Sc8SyV7gyq5qQ=;
- b=P/+39KZCrD78rEDA/QJY+bJyomMY5inDbKaI2aKL0XSwtPLb0zP5ONG8
- Wv/NpnksZSDXO/lYExTWwFdUlVm5fsVd/eHfJcISnZc/1LOAbcZfcBQwH
- ATxjn4JF0yfd3aK1sI78TAseatyczE05FAg1G04vNWQdDsJOKa3bEflxz
- MPKNhzoHKnwDN1Msa7p+BEPH8YylBzwYQ3mmEZT2CwGnGT9YnCcuJwLC9
- kY8XyfAgewHbv3gGofgmaFJVSMMi8cqLQK/ODU0Ed5oxCK0waxgA1rbmc
- 52LH0ugqyUZOeNxZSIapnmMiShk/reTeJSUgjAKtkj14SPPa/n8Jyqk2G A==;
-X-CSE-ConnectionGUID: 3s3LJE/hR2aM7T8BPhTqGA==
-X-CSE-MsgGUID: 0fab7mktR0qR46/CfEv7bg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11152"; a="23592693"
-X-IronPort-AV: E=Sophos;i="6.09,259,1716274800"; d="scan'208";a="23592693"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Aug 2024 16:13:03 -0700
-X-CSE-ConnectionGUID: /JLMndGLQ+aOgOWHXQPfEg==
-X-CSE-MsgGUID: pkmL0+uvREysdf0X43TFsg==
+ bh=N2jci/Tf+B3ENwYjSdDEZuKoRFSVZe34zzF+lzIoWd4=;
+ b=PtWJK5s9Dqxt31NiIXBHkNhrwQOvaibU5fUiq7zMBuNG3rYi8d9EFn+u
+ Ba7TOfrw0hDatWUvIv1oUe7id35O/vvfBYUxwELgbP+yVXZoeOoTtsC9Y
+ zRiJ1oQpc4+Av4a2kDFQ/BYv3AHtbQXtK4vk+e6p6Y//tlPUDe+q9k0PP
+ fyUyjn9NkOacQ64zJD5JKJU+qY9I52fImoDHS1sskofGTGwLxBVks598f
+ xTFl+h5e6jMtSsX7wUqe6WlcSTPipf7dA1qC7xVAvEpZguaTdr36B5rLS
+ 0h/iiMleGcC7qE0E/iBVTBTNo3OuaNKxpMqP4iWHH+q5uj73LMfzmFtUA w==;
+X-CSE-ConnectionGUID: L9n3WVLETyCrLom9ed+Y2g==
+X-CSE-MsgGUID: AVjfH5W4SPiUmboSdZ1wjw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11152"; a="31327509"
+X-IronPort-AV: E=Sophos;i="6.09,259,1716274800"; d="scan'208";a="31327509"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Aug 2024 16:14:43 -0700
+X-CSE-ConnectionGUID: uGm5rdPrT6+SuBdrm0D3CA==
+X-CSE-MsgGUID: /wxRoF7WQhaDyMWC4HxmBQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,259,1716274800"; d="scan'208";a="55499307"
+X-IronPort-AV: E=Sophos;i="6.09,259,1716274800"; d="scan'208";a="86494313"
 Received: from coles-mobl1.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.246.112.252])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Aug 2024 16:13:02 -0700
-Date: Fri, 02 Aug 2024 16:12:59 -0700
-Message-ID: <87zfpu4iys.wl-ashutosh.dixit@intel.com>
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Aug 2024 16:14:42 -0700
+Date: Fri, 02 Aug 2024 16:14:38 -0700
+Message-ID: <87plqqa55t.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: John.C.Harrison@Intel.com
 Cc: IGT-Dev@Lists.FreeDesktop.Org
-Subject: Re: [PATCH i-g-t 1/2] tests/intel/xe_query: Fail on unknown hwconfig
- entries
-In-Reply-To: <20240801195129.3667206-2-John.C.Harrison@Intel.com>
-References: <20240801195129.3667206-1-John.C.Harrison@Intel.com>
- <20240801195129.3667206-2-John.C.Harrison@Intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/*_query: Add support for new
+ hwconfig table entry
+In-Reply-To: <20240801195129.3667206-3-John.C.Harrison@Intel.com>
+References: <20240801195129.3667206-1-John.C.Harrison@Intel.com>	<20240801195129.3667206-3-John.C.Harrison@Intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,40 +71,68 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 01 Aug 2024 12:51:28 -0700, John.C.Harrison@Intel.com wrote:
+On Thu, 01 Aug 2024 12:51:29 -0700, John.C.Harrison@Intel.com wrote:
 >
 > From: John Harrison <John.C.Harrison@Intel.com>
 >
-> There is a test that the hwconfig table is valid. However, if there
-> was an unknown entry (corrupted table or out of date test) all it did
-> was print a debug message of "please fix"! So the test would still
-> pass and CI would not notice the problem.
->
-> Add in some actual asserts that the enum value is within the valid
-> range and that it is not missing from the switch statement.
+> A new enum value has been added to the hardware config table. So
+> update the tests accordingly.
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
 >
 > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
 > ---
->  tests/intel/xe_query.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  lib/intel_hwconfig_types.h | 1 +
+>  tests/intel/i915_query.c   | 1 +
+>  tests/intel/xe_query.c     | 3 ++-
+>  3 files changed, 4 insertions(+), 1 deletion(-)
 >
+> diff --git a/lib/intel_hwconfig_types.h b/lib/intel_hwconfig_types.h
+> index d5db217afba2..0e6ce5b17084 100644
+> --- a/lib/intel_hwconfig_types.h
+> +++ b/lib/intel_hwconfig_types.h
+> @@ -96,6 +96,7 @@ enum intel_hwconfig {
+>	INTEL_HWCONFIG_MAX_TASK_URB_ENTRIES,			/* 78 */
+>	INTEL_HWCONFIG_MIN_MESH_URB_ENTRIES,			/* 79 */
+>	INTEL_HWCONFIG_MAX_MESH_URB_ENTRIES,			/* 80 */
+> +	INTEL_HWCONFIG_MAX_GSC,					/* 81 */
+>	__INTEL_HWCONFIG_KEY_LIMIT
+>  };
+>
+> diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
+> index 4d706d62b286..54dbb193a50e 100644
+> --- a/tests/intel/i915_query.c
+> +++ b/tests/intel/i915_query.c
+> @@ -1339,6 +1339,7 @@ static const char * const hwconfig_keys[] = {
+>	[INTEL_HWCONFIG_MAX_TASK_URB_ENTRIES] = "Max Task URB Entries",
+>	[INTEL_HWCONFIG_MIN_MESH_URB_ENTRIES] = "Min Mesh URB Entries",
+>	[INTEL_HWCONFIG_MAX_MESH_URB_ENTRIES] = "Max Mesh URB Entries",
+> +	[INTEL_HWCONFIG_MAX_GSC] = "MaxGSC",
+>  };
+>
+>  static const char * const hwconfig_memtypes[] = {
 > diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index c6d88b258fb3..6ebf5e4b6d71 100644
+> index 6ebf5e4b6d71..ddb2e76e5dd6 100644
 > --- a/tests/intel/xe_query.c
 > +++ b/tests/intel/xe_query.c
-> @@ -137,7 +137,8 @@ const char* get_hwconfig_name(int param)
+> @@ -50,7 +50,7 @@ void dump_hex_debug(void *buffer, int len)
+>  /* Please reflect intel_hwconfig_types.h changes below
+>   * static_asserti_value + get_hwconfig_name
+>   *   Thanks :-) */
+> -static_assert(INTEL_HWCONFIG_MAX_MESH_URB_ENTRIES+1 == __INTEL_HWCONFIG_KEY_LIMIT, "");
+> +static_assert(INTEL_HWCONFIG_MAX_GSC + 1 == __INTEL_HWCONFIG_KEY_LIMIT, "");
+>
+>  #define CASE_STRINGIFY(A) case INTEL_HWCONFIG_##A: return #A;
+>  const char* get_hwconfig_name(int param)
+> @@ -136,6 +136,7 @@ const char* get_hwconfig_name(int param)
+>	CASE_STRINGIFY(MAX_TASK_URB_ENTRIES);
 >	CASE_STRINGIFY(MIN_MESH_URB_ENTRIES);
 >	CASE_STRINGIFY(MAX_MESH_URB_ENTRIES);
+> +	CASE_STRINGIFY(MAX_GSC);
 >	}
-> -	return "?? Please fix "__FILE__;
-> +	igt_assert_lt(param, __INTEL_HWCONFIG_KEY_LIMIT);
-> +	igt_assert(!"Missing config table enum");
->  }
->  #undef CASE_STRINGIFY
->
+>	igt_assert_lt(param, __INTEL_HWCONFIG_KEY_LIMIT);
+>	igt_assert(!"Missing config table enum");
 > --
 > 2.45.2
 >
