@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17456C3DA7F
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B4C1C3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D0FFF10E219;
-	Mon,  5 Aug 2024 14:37:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1EF0D10E213;
+	Mon,  5 Aug 2024 14:37:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TtJn8idA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R9dv8Kdi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71E3510E219
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A35710E213
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722868647; x=1754404647;
+ t=1722868650; x=1754404650;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=n2zwx/pCl6xdKVfHxC+l7xVbxCCHaoxJkYAFeJURgCM=;
- b=TtJn8idA7XAi4JsxihjxyPjWQzBzkIEN69yEHXyp4RRb+ukpFn8oUOyn
- MEnbaai5FHKBCg9wjU/t/tVrilA3qijPNzbNQXZVBydSbZJWm4LT/0/23
- wQiAHYrtAKIa0CFbTUyoPbUUlJUiqY5Ta6fBF80+DGyn5bU7TGgCNm6YB
- c/WKAIipa7SHMtu/XPCwels7B4qEa1u7duy0zLX9my0sHhvt7AW1WaVws
- wk/SIMRsHT7N8i3sg3NbNnQE4Xhk+HtSUh+xa/hlfzWGmoDlT5vQ4Ns57
- kzFNnD63OlfI+T/UhUheamOVmMPa/4e7L4ihVzXD8otizlhzN0aT65hES A==;
-X-CSE-ConnectionGUID: 2Asu7yOeQSKB5DjU47dlOg==
-X-CSE-MsgGUID: 5p29+5tpQHy8kByIPtClNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702269"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702269"
+ bh=TrGCq86yFkTyeFOvj+uRCSZSMNnGobEQDBZv0cj1kgo=;
+ b=R9dv8KdiGqnfwI9lEZu2VOyw6zG861xgTnkzCwdXNUi7jYemJVtA+Rrt
+ byk1e3AhdO4M0dgTBHZ6LHUuCKwxRqgpYoNNc6ji16ygHsXhdFi9gMUp0
+ TvEvsFLWBrLXX1xopsk+0xoMXF9VnmXrueZ3hv+gA7HBh5D5I68Xn8n2G
+ 8KmkdlAJqik2ID2tgev3bhGIzapTRqTsV4wmO9AZqsNXkWqBnnZ4HJMLk
+ XWwDDckinYBieKFM7a4slmBGKvac4D9cN+Pi0whp0QmZ6cXaYGue8CDO7
+ H2vVTWsbD+uSbKehLYBK3bQ1+VOlsDCtPG5NJEMjl0t7/vOdyrcH+B+K7 w==;
+X-CSE-ConnectionGUID: ifP/dXXGR4iBbBXYlFL1jA==
+X-CSE-MsgGUID: J259n5HKRuqv4NWzIo3ymA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702273"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702273"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:26 -0700
-X-CSE-ConnectionGUID: pd0Xi6WBQIOX61235d6FDg==
-X-CSE-MsgGUID: AEXA2+IgQf6OIfyYkUq16g==
+ 05 Aug 2024 07:37:30 -0700
+X-CSE-ConnectionGUID: 3nuD8MUwTkGUgnsmEBT/VA==
+X-CSE-MsgGUID: MyBBUvuZRYeB0Up5ZkdyeA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56754901"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56754928"
 Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
  localhost) ([10.245.245.246])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:25 -0700
+ 05 Aug 2024 07:37:29 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH i-g-t v2 1/8] lib/drmtest: add function for retriving chipset
-Date: Mon,  5 Aug 2024 16:37:04 +0200
-Message-ID: <20240805143713.76034-2-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 2/8] tests/core_hotunplug: set known chipset before
+ tests
+Date: Mon,  5 Aug 2024 16:37:05 +0200
+Message-ID: <20240805143713.76034-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
 References: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
@@ -69,62 +70,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A few tests uses chipset value for control and checks, so
-instead of testing it with, for example, is_intel_driver(),
-allow to retrieve it once and give it back to test.
+Set chipset for all known drivers, not only for i915.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/drmtest.c | 21 +++++++++++++++++++++
- lib/drmtest.h |  2 ++
- 2 files changed, 23 insertions(+)
+ tests/core_hotunplug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index f8810da43..8ea96ba76 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -241,6 +241,27 @@ static void modulename_to_chipset(const char *name, unsigned int *chip)
- 	}
- }
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 145fe141e..617332b0f 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -685,9 +685,9 @@ igt_main
+ 		fd_drm = __drm_open_driver(DRIVER_ANY);
+ 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
  
-+/**
-+ * drm_get_chipset:
-+ * @fd: a drm file descriptor
-+ *
-+ * Returns:
-+ * chipset if driver name found in modules[] array, for example: DRIVER_INTEL
-+ * DRIVER_ANY if drm device name not known
-+ */
-+unsigned int drm_get_chipset(int fd)
-+{
-+	unsigned int chip = DRIVER_ANY;
-+	char name[32] = "";
-+
-+	if (__get_drm_device_name(fd, name, sizeof(name) - 1))
-+		return chip;
-+
-+	modulename_to_chipset(name, &chip);
-+
-+	return chip;
-+}
-+
- static const char *chipset_to_str(int chipset)
- {
- 	switch (chipset) {
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index bbe5f252f..4d9b60882 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -72,6 +72,8 @@ enum intel_driver {
+-		if (is_i915_device(fd_drm)) {
+-			priv.chipset = DRIVER_INTEL;
++		priv.chipset = drm_get_chipset(fd_drm);
  
- void __set_forced_driver(const char *name);
++		if (is_i915_device(fd_drm)) {
+ 			gem_quiescent_gpu(fd_drm);
+ 			igt_require_gem(fd_drm);
  
-+unsigned int drm_get_chipset(int fd);
-+
- /**
-  * ARRAY_SIZE:
-  * @arr: static array
 -- 
 2.43.0
 
