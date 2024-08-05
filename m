@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99499C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 07:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EE4FC3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 07:55:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45F7810E0A6;
-	Mon,  5 Aug 2024 07:53:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E85BB10E0A6;
+	Mon,  5 Aug 2024 07:55:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Eo+0srni";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ga6c5qjA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5D7F10E0A6
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 07:53:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7B4810E0A6
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 07:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722844421; x=1754380421;
+ t=1722844555; x=1754380555;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=SQMCbOCu4+hdgV6UVobWlQcP/+JVvsPvD/yLPgvgOEo=;
- b=Eo+0srni68k+FecNZHnCZ/h4QErPWtKYxmdj/dVU+MA33+ssC5464cfM
- daYdHMSEcgvD7XO/OXl4MNllF7kSzbH1OwYvANOmH2h2Ez1M6C7tfJB7W
- +4Ov6JRkCMSe/T16KCM/UlZIBd0Db3kBMH6kJVbtFC4iUaOFnFlG10xkv
- 095nREqFBgx4s6m9nowORHri7HLpudr5ipWIP6/SFdG2ZyIlRhU8DYK4L
- 7nLNKVSAKnIrg1DkpOaFNcw8JTTM2JRalzQ7j7Me3BOJ9t2Zh/yHdc5Rv
- sFQKs+AB2y93dlqX012wtbcJRAp09E/Pr1RF39Lm+Kh/9QmEx8XMC1cxF Q==;
-X-CSE-ConnectionGUID: fDBKfzq0Qn2QSnxFuVf9eg==
-X-CSE-MsgGUID: NuTMG42dSZeNjmJEnHFgfQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="20957073"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="20957073"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 00:53:40 -0700
-X-CSE-ConnectionGUID: Fj9+hvffR/+cK3HYoTPOig==
-X-CSE-MsgGUID: UnWYVd/gTmCNlTsFTp1i4A==
+ bh=8Bz77QA4FeHCryzFtYIgm4n+C/TD0kPz4MXpuuSdDdE=;
+ b=Ga6c5qjAPwKDwLelqn+OSPWjLzD02fN4yw56bqhOKTAG6Astfc910VXU
+ PjqHBOtSJppzC0JRGx4xLgPvIbCs06VP1ErhkiwnjWh38FrMXd91vE80t
+ ziwaWSyorls1YpWfW2f2F3GmYQjupymfYtkxdWLafi5cq/MKxLpzwXVLS
+ vCMSwRAfP3TKI+0sygaKxPXB+nnzRYgxpq1XvhYREaFjy8OTaKCigqfjA
+ hAh0rHDn3Xuhl2yL4FomeOJ82WNvTV+1kMp/rI4f+iUfPOSyMptiZy7ey
+ FUrK8iU0SyjT+lGVtHV6/1RCxxlu5o26efop9uMXat8g14cKi5J+/Uv0J Q==;
+X-CSE-ConnectionGUID: aDRaqCzSTPudIjj0PfE30w==
+X-CSE-MsgGUID: teMsRF0AS8airNKrD+o8AA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="31370499"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="31370499"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2024 00:55:54 -0700
+X-CSE-ConnectionGUID: TdCrZ2dIT7q33dqQJ5BGuA==
+X-CSE-MsgGUID: teA+3P+YQIe9JCirIgZolw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56289294"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Aug 2024 00:53:40 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="79357055"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 05 Aug 2024 00:55:53 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 5 Aug 2024 00:53:39 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 5 Aug 2024 00:55:53 -0700
+Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 5 Aug 2024 00:53:39 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 5 Aug 2024 00:55:52 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 5 Aug 2024 00:53:39 -0700
+ 15.1.2507.39 via Frontend Transport; Mon, 5 Aug 2024 00:55:52 -0700
 Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 5 Aug 2024 00:53:39 -0700
+ 15.1.2507.39; Mon, 5 Aug 2024 00:55:52 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Y4WykqiKq5jtWSieOcemIN1iiNztM8ZlyOBUaL4NF8bJ+X1HbX2JoCP+RZvvLhoIVOwsyFFNuiY8dGl291l8WnH9PAi/QLu2SB7Bq8tMM8XuowIdFoDc5nDwJfmVgdwsEVMsGvIDkhn+zZtTN7AN0PGX/YTT3Q1ad2+918oPQ2giMvsILgSOK8mmTEOF4lHc1B4ZIoUkWyFPq+bp9joX8YaDd1Xe+UwbtaDuXr+s1hPt3jYGvyC/H4WH69X4ZR8qZpOa+ug5Nui9Y4jL0+/pEmJjcbXFtxMKm3IekdCUePQhKzazvGBmkJBmp3v6Wv0HLRmxzbpApMVJxerlSSPPOQ==
+ b=yDXpnPNJHWBYXV4b8/Bh0wIny5oZFiFSIQLl2CCP7FqfaCZLhTqZKmNFAwNq0AnMgvcvBbysl1X9j49clie/+4xteFPViJXPqeo3vgo+7gUl3Gdu+LKvessmBaW6NxYoBnji9XB4pXfcxMG/aWK2i5odrRJ38Gn67UPQQbGP6g/G8azmm+6GxwP86pSxKy0PBSKgbaIUShY9cWS/s5NgPaszFpvIRKopSR2D6vIRH6B2aIWze0pRZPrJI5szkEcjxUGwMr9W3L2H/W7RHG1flGy1oytO+yN6ShVB38kjvp7oRk+5mpI4kra6egxrwYlJMqcxu+rYPjBi2DQyIQpaXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VPhRJXJPof8TiMRb6YjYloFB4mxL+zFA7eKy+aPyoSI=;
- b=i8CRetewFzKbvOVr+CT6vhCdvm8ptNNYU8hJFjZrX8rzN2rvxAVOiH74QBraoFObZ7ImXg809Li6+XbzfgOEcxiOrTFe6nyV0fbysKoy9kINuhpOGazPuZVfL1RV3WdC7xXWkcKKSYlrKQTbOud9t+yLwyfIjTv3disGlvebzBgNAa4Sm7H/KNfllwYK9DHOpn3cq6Ngh5CcLDTOMdnxSN3fDKGbv49LA/OwqsSFTQrp/MyYIHBD7KxTld0wlCVnWijnx+3Ennj+SRAlKZYlVpT15rX/pSJ5iiOY997T7DubgSQNQwwctMvEcFt6q1tit2IpYbT2E1S1yuUuzrHEVQ==
+ bh=NzDN95SAjwctxgj64kw7pdV64KypaHw+Ftunn3aR+GQ=;
+ b=Jw1nYzooyauCi6TqxlwGk2ZQ1RncrvJAncp/vxo+HAPpjTWzJ2lX05i6sLYrpG/hCVRxl0Qv/Ayx+GgQ20EnqvgWQEyPb6SM2mwd0p6yeBdDqEgb9TLdFEeKrP8/njRrVDZHOVYANawtutsb7vsU1R4Y5YgIM8+4gFoqo95z5P8j4trKdFkjLprOCgMz3gLvuv/TNTy0twJM3hcryhwRjTZ8Y9v3TJhcuLXzT0O6/HnVGPIbn/1L0DsJu2+JqB1PyXIo5Jxx+8mfnWUrzTZMPmCv+d1+ROebk6ydelc39Z1hRWydkt8Rj9UZqYilEx9QE/ltxnTptMFyQQMyP0wwnQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -71,11 +71,11 @@ Received: from DS0PR11MB7264.namprd11.prod.outlook.com (2603:10b6:8:13b::5) by
  MW4PR11MB6840.namprd11.prod.outlook.com (2603:10b6:303:222::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.24; Mon, 5 Aug
- 2024 07:53:36 +0000
+ 2024 07:55:50 +0000
 Received: from DS0PR11MB7264.namprd11.prod.outlook.com
  ([fe80::d250:d70b:55aa:5ff7]) by DS0PR11MB7264.namprd11.prod.outlook.com
  ([fe80::d250:d70b:55aa:5ff7%4]) with mapi id 15.20.7828.023; Mon, 5 Aug 2024
- 07:53:36 +0000
+ 07:55:50 +0000
 From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
 To: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
@@ -86,16 +86,16 @@ CC: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>, Kamil Konieczny
  "Hajda, Andrzej" <andrzej.hajda@intel.com>, Kolanupaka Naveena
  <kolanupaka.naveena@intel.com>, "Kuoppala, Mika" <mika.kuoppala@intel.com>,
  "Mun, Gwan-gyeong" <gwan-gyeong.mun@intel.com>
-Subject: RE: [PATCH i-g-t v2 58/66] tests/xe_eudebug_online: Add
- interrupt-reconnect test
-Thread-Topic: [PATCH i-g-t v2 58/66] tests/xe_eudebug_online: Add
- interrupt-reconnect test
-Thread-Index: AQHa4naVE3qMKuiJQEWLyIS04sMqDrIYVC1Q
-Date: Mon, 5 Aug 2024 07:53:36 +0000
-Message-ID: <DS0PR11MB726404A87BF55179D9CE0C29D9BE2@DS0PR11MB7264.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t v2 60/66] tests/xe_eudebug_online: What if user does
+ not set debug mode?
+Thread-Topic: [PATCH i-g-t v2 60/66] tests/xe_eudebug_online: What if user
+ does not set debug mode?
+Thread-Index: AQHa4naT6yvSfA/Tk0KrCEnuGvYhHbIYVM0Q
+Date: Mon, 5 Aug 2024 07:55:50 +0000
+Message-ID: <DS0PR11MB7264A4E739C5E81DAFA78C6ED9BE2@DS0PR11MB7264.namprd11.prod.outlook.com>
 References: <20240730114523.334156-1-christoph.manszewski@intel.com>
- <20240730114523.334156-59-christoph.manszewski@intel.com>
-In-Reply-To: <20240730114523.334156-59-christoph.manszewski@intel.com>
+ <20240730114523.334156-61-christoph.manszewski@intel.com>
+In-Reply-To: <20240730114523.334156-61-christoph.manszewski@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -104,79 +104,79 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: DS0PR11MB7264:EE_|MW4PR11MB6840:EE_
-x-ms-office365-filtering-correlation-id: 31aa49f3-f7ff-4ab8-878a-08dcb523b5fc
+x-ms-office365-filtering-correlation-id: 2171b4f6-d12a-4977-d6e6-08dcb52405ef
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?iso-8859-2?Q?oVBsGAcMfVu4KkxPBk0hiJeCVXoha6W18lcdzfa9hMBiNRySS1dAeY3BgK?=
- =?iso-8859-2?Q?bEg7bhEZ5drppZ6rpXnYfvt8thQFpr+KDYJys5tIYaWmyVHNG1jjcyy6q6?=
- =?iso-8859-2?Q?8JzJdujgOLE2lUkT2PoJSI297gtuPfMqNPvR2zY1kZcC+qtORw8ME428iu?=
- =?iso-8859-2?Q?FcJgWjpPJVozWmhOxyraQwTHGPBaSp1cNy1k8V+6QigSlVN4odMWoDiLWl?=
- =?iso-8859-2?Q?9XAOPXWsFHiw/xW4snPyTSNfUTOHWsrzlkj1dTIeTfrt4pWdBAZRedc6r5?=
- =?iso-8859-2?Q?fAO2HSesx+UEhiXj35aflh4o0pLCD7mTnoBZh4Fy2P33WGAvQj+9Crkorn?=
- =?iso-8859-2?Q?u+L8JHyp3S5bwe0Sk/rrKFu4ckH3tHq9sysNTOmFJUKQhXvOSrplwN0bmb?=
- =?iso-8859-2?Q?YtDApC/1fGymEGX1AP2fodLSWgHb4MkfXC6kxYsvw7No9G8ZTphMHoioao?=
- =?iso-8859-2?Q?be4mgNJj86lGsz3u2LCSX8Gna+stdNM8NKNrcKw8NSPqiqHj63sAUOuSLN?=
- =?iso-8859-2?Q?VkGjtZxcbu3QbqcfFlHsH3RBH0xoHY2z/YK3lCxhB42grGKAMQIfyo8kEp?=
- =?iso-8859-2?Q?rBL8wTsMus/+LIkawfPXT2K7anmdrUXNwMIpLZgNIoN1SIcIYok/X0HW1L?=
- =?iso-8859-2?Q?YGOce9QJZBTxodlsIRkUzkgnTeuUqrnjmJWsXAxOkXi2lrmHa0lGsZBjRz?=
- =?iso-8859-2?Q?FG1NMaRIg4+MG4Q8DbZ6mkD1Wjyw6xofOP4FBjyjHYE6lBgiPpZcNGHfjl?=
- =?iso-8859-2?Q?2Iy/CGiCtrBJm7EYk4GCa8lfYXsWIDlLKbQWpOkupQTNx1APUVD1mn8gyf?=
- =?iso-8859-2?Q?Uq0yI2u6aQyBQvAfnafouFn8oRr6k1aAJCKZQacHTk5sY+aJNFsz26/Cng?=
- =?iso-8859-2?Q?u0UcC1aAHsm4n5RbzVLuWoFCY76KuAHTnm5qsu67vBv+UHsHxj0uPdPQ8g?=
- =?iso-8859-2?Q?WzE8gIwypfOFq7UVFk0JYhZokpT8AgYm6uvcFsLatKfa0mt+960NS7FDGP?=
- =?iso-8859-2?Q?SoA3Dw06hTPyMLJ9XypJSNK35sUMVpJ4Ry5iGY+DWRMPWT20htv8spQQ1i?=
- =?iso-8859-2?Q?KW95m4jrq7DxDJiZYJXf2T2mWbckD5NnOqCtD/WyLID6BbwQWMe0SoPuhC?=
- =?iso-8859-2?Q?LVCaUMg3HezjVRBPf/vzriJsEv1aSJQ9dGmpLFiv7mrboDJitOgU6A0z89?=
- =?iso-8859-2?Q?qLgP3KF3XPHl/kQt8cFzdJRJ4jb7r+py1tdz1tfWAt/Ytk0t+Ove637JCx?=
- =?iso-8859-2?Q?8mGX61q9WIPHDkUKtXton5DGaLv0LCB6ZyYLCcG7l8qasj2FdXkkDqi+A0?=
- =?iso-8859-2?Q?4Zf4heFIWT1F2rbxDcrMO9aTAMWa1g9ZRJP0ajOT4Q4UkGFMri8rBD6Omm?=
- =?iso-8859-2?Q?rRlTncpKIiJt2dCIWDgIjD0lpS8y/3PIOlXdeSyuIRfBM6iylELsN2395L?=
- =?iso-8859-2?Q?S6R5qElpGGcTW2rGrrXWe1zLwg9xUY5D6Qj9UQ=3D=3D?=
+x-microsoft-antispam-message-info: =?iso-8859-2?Q?GE+D2gLSkLOgVFsKBz/+KwfK+CfxxtF5gG5cmpmZmTPVxJS0libYVDQAdt?=
+ =?iso-8859-2?Q?dVpfYAw5Xa17CSgReDtamfl0jIPvDVREbq8dgwIVSllvUxlCGjmUkudde3?=
+ =?iso-8859-2?Q?Zv0ePngBr1o5KBSuV8nnMOdpcGbl5WOEfwdajw0F4sMxSgVsZj65YjPY99?=
+ =?iso-8859-2?Q?vZgU1dxMs3BR2Tdsdml83hRnozC0sfLbEiUlGRznzNPqux68X34v3CrYCk?=
+ =?iso-8859-2?Q?JhDdG9RqAKTAqUUOZUv7/f/txbmepzxeMYcfDrZ1k7tKpr1maut0nUsHq7?=
+ =?iso-8859-2?Q?L0ModzL2EGafWkqTZWbHLjucq0OOUl0B/pOl/fa2WNFSpVF5C0hF1/V2ff?=
+ =?iso-8859-2?Q?v8yJtn+aOiIO+Tk+XHQ5Mxrn7uucfkwlwCH3VjTWCZOXO5BezlqSTKWYD6?=
+ =?iso-8859-2?Q?MEj7PlU2jRQ1CddflIpwC/WKQLclIYjm/D6Nf3p+MVy+tH1Gp+A77GeXzM?=
+ =?iso-8859-2?Q?Ke0UVLm5+eHae8ILsifEWmuXjPfqtquH5aFCVTO8ot8PoHGoHt62xaxiiQ?=
+ =?iso-8859-2?Q?q7HP/qWMiXeoHjGBGLgaOx26P1GJZJK2I6lVo+G6O6ZT1kjG4rSsZ2qaWy?=
+ =?iso-8859-2?Q?54o3w38OiGL/Jo6liP5HBpkFN4MWtr5hBJzRwtv+RzyAmivyYC8S2JPNVn?=
+ =?iso-8859-2?Q?MZ0OwbxWiigy3kiu6IMtf1HdjynlLNVHLaxG1uTVQkvzIyHopw55uKSdMd?=
+ =?iso-8859-2?Q?K981XwfMtnk7NiLZWAeCVudynmJXj9DjFXNaVNIk/sS9PUr7Sg+Qxe5xkq?=
+ =?iso-8859-2?Q?zyyQzHwD0P/L0StpAp8GlvP2jHmcfSiUgnGplV8FWfUxewYz4UtqJJBXjf?=
+ =?iso-8859-2?Q?FEmHkhv670YKotP7q35oZSXGBTH1/VXFcHESP6ec4eq6k1DsxtWa6sKv7S?=
+ =?iso-8859-2?Q?XlSluyBa7Y6A15CX+wlevrtIxyyq0JFL/hXnftSfi7yb52hN14CWxohy19?=
+ =?iso-8859-2?Q?jM9w6KIjoGCA6C7hZxMIJnnWk1iE9XwNh81w5XXUSRgp9lzbcEzIxhZl+j?=
+ =?iso-8859-2?Q?SftJ17IK63ppzsWKEfG2y/jN6ZuW7MHzILwo8O6l+1n2ldvPEwrizeTtzU?=
+ =?iso-8859-2?Q?ie1FlEgQM2uXF1kerpMadsqikE01mt9QY7sHJ9C1jDtWp5zwYp5zWBU13a?=
+ =?iso-8859-2?Q?4stzE9by17WImjh88mxl3c5SMAGhcDzR8eJkZrXgi5zhYFZ5WJ87GL/aO+?=
+ =?iso-8859-2?Q?/0FtTaLbsDlvjgCB/s9XcYGJ4a9JzmK4u5IbgsDbLBsjIJ1Q9BXDShxUQi?=
+ =?iso-8859-2?Q?oJv1Rr1Tv4ZJ5QKVCSjBw9wJCXsuvxaUpjesocPZoD7TjvFD916F/HQtiz?=
+ =?iso-8859-2?Q?4x08YroALRbPAqwvFS2ReQn/2dE841MdJGCnJRwVBusJcxHbv+RBi4QP3+?=
+ =?iso-8859-2?Q?xUtLJzlFTEpbJCcm/Y5ZM9nPrvFylu0g+sW4oP892USNKRgCFO1UqyOBfu?=
+ =?iso-8859-2?Q?TYIQ2+p0lmtuKDvADFOrH0WmpWZa70GpsbIVgg=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7264.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?K/PCJuOBb1as26fL6ehJkXvbimmIyWKCzkUM1NVhRJnouVvJnobsOzYBX1?=
- =?iso-8859-2?Q?D3Ts4opz5rS+YCnxnkDWSoYeq+HBd04NfZtrFPH4K6WznF2GF7KhwMFscC?=
- =?iso-8859-2?Q?kqEy+CuRRHxzIb7Q0L7QA7HNUM1KQIpkELBjZ9ZG/ctw5y1Ytw2ePU9UOc?=
- =?iso-8859-2?Q?EfP9GWO/Q8P3tdai4VE552/GxYtuMOGCHykI3aXdYnRtc2J07Db2Ra22+S?=
- =?iso-8859-2?Q?m5QxurG8kg4zwwtbchTf9EyWBZazcncS4gS4fHo5hh2+CkDOvLirIAsYHS?=
- =?iso-8859-2?Q?yG8yFV5K5mJ05Tij2yzLDPQNQJVaUiVu87I/xXD0GkoBjxAjsIuKINARg5?=
- =?iso-8859-2?Q?eRwX2wWfVrg+kzcp+DoDpDiRUAGcR0k5iIs6SUV5F+XPdqaub7jf1Ijgno?=
- =?iso-8859-2?Q?AHUQV79gAoSWDuEl/kjOSdFYURLncVElT82MrncCbElxLQF130tYAODk8H?=
- =?iso-8859-2?Q?7ToARhHTkTFEx9ifn3iLN2BHKrZMdAAXRWpWZsGIKplh7yCUbKO7gp7AiZ?=
- =?iso-8859-2?Q?Xyc04DBQ1NqRGZkyqVkkmDgdUuUlH/+c2KeoPXr5P2ggNX59GVIQn7gMPf?=
- =?iso-8859-2?Q?DWwnK/DwTuzAKQenei6ZGdYO9b40IywP0Uk00b5jp+6bmLj3vMO/cE8zPK?=
- =?iso-8859-2?Q?aA78aKBZohffsvH3f0Ldgf05IwVmDCHSWP+mB/SC4RbtZqz4scrZahRMpA?=
- =?iso-8859-2?Q?nLvYUKbRVMcxOH3N9vLjbjmJCc2yCN65AA3RREI4k2w9bWfgeH2szYA3hQ?=
- =?iso-8859-2?Q?xvsZo6nKF2QOSYqP9pmuQSChnopDSw4JABUzCgzEooGpjQk55ku7jGHmco?=
- =?iso-8859-2?Q?GthCorBkSGI8QxmougitXBG3XkppGWOcRK0F5QyM9AXf6OsBIQRDl27maX?=
- =?iso-8859-2?Q?ISuwLVEXZJZgCXAvVr98wMUAKAxCXxdvE2opiF6/AJsOENRRrsOA1g6AZn?=
- =?iso-8859-2?Q?JhHtOQpkiRqDuVfR3sSBNJeVBlMAGguqLSDJ3d1aXqqyvWDtYVeTzu4Hbj?=
- =?iso-8859-2?Q?VP3jPaV2CZEJef450bHbsyJbKErTSJTUhasy8qsicLTd2VbA8wqdBiGVBS?=
- =?iso-8859-2?Q?eAI8WkNvAefpIv7A+G+aX9QrRWxLTMt1Ea3Trk9XXIomJClELW9lUtKi0H?=
- =?iso-8859-2?Q?xadWkVxOySzI1LJulx5i03SSujAZhaoRkFiD8L/uyH+E4qLlCzzGt6JmS8?=
- =?iso-8859-2?Q?0v+xehnE4i6upAtYjpjtVp0IeH0pCtNfUrA1ApE6L4CPdb1CSNNXrYY3Th?=
- =?iso-8859-2?Q?ujyFeUqqCylEf7MknXS1gdaxCJg5C8GjMcUDOIokpy3Uv0VVPYwg3VWa6O?=
- =?iso-8859-2?Q?QFrZylYyIzsrAtf1P0X+Y8ryTq4sVqcjuENRQmQlHfl5fshOhpl/6iXeYF?=
- =?iso-8859-2?Q?8Odf0bT00Xzsv7f9o2w88TPlELGbvWkJI7AMCA/Fm8nGJp78iQbldZuTxV?=
- =?iso-8859-2?Q?e1xE/FKgos3GQj6u+Cw/xnGJhb0E2dtv1bBLcrrEKsY12+PiYQ4Zns3e2J?=
- =?iso-8859-2?Q?5GdjopGuMd/DGulVDoYh0sVTVP8TzQsqwsUcPyvWhIfrINXInwYhBUav9L?=
- =?iso-8859-2?Q?Z/ayYhFArga6/V2M2Ek8OjZ5Vf6nxYsW34XmqKEUFFoyYrGAnFoFfKShru?=
- =?iso-8859-2?Q?F3Nr9ksItmTKoaxSbqLW3XZ7qgZezX1RZ2dIDi/9O/EpFy1xaTV85WcA?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-2?Q?jsmWI4lkeAQwhixXlxnryM+Vda/h4KPAb3cEEqeCqBN07FNJ/QZyymLFce?=
+ =?iso-8859-2?Q?GV9zgusTStnW47hOhItDYiBDXghvVgdXkC6RJ8lLMyFrOVmqPBSK1PgtCq?=
+ =?iso-8859-2?Q?mJLwh6W6uWEhreRz/+Y8aJLgupG5PeSeFf6cXeZ9E//ggufyTPd8qXpfwH?=
+ =?iso-8859-2?Q?Cf8RqlnxAq8g7Aob6L8ZbttV4SijFsrjruJwZyqTU3+a/qq5AgeLa9IUR6?=
+ =?iso-8859-2?Q?UvXrhj+zwA53+GxApKyEwNgM/oOtUK9CvhhjMWcHnG+INWlpWEAqtBa2Ja?=
+ =?iso-8859-2?Q?Vy1X9IgUukTpPXDNKhTlMU+r1oZYBIae/atMZYuT4zrs64UH3jhfIYlNEU?=
+ =?iso-8859-2?Q?pcumQaYbdnbR/2S55MevT/Xmj9lEl9hzxqQxNxaVotFsnTierzl8DdFDWJ?=
+ =?iso-8859-2?Q?Dg4xP8JPbTLsIiuGsh43qvRO7avuOE4odRpgUYu18NLwWqwCfTjN7ux5D9?=
+ =?iso-8859-2?Q?shKh8NikE2XC62pqNrCQTW/DuJHa7G0Oh/wQS7ZHikAgVeC+qN0iIXTyr0?=
+ =?iso-8859-2?Q?6N2N2I5hY3TTqWtW9wZbU/Qf8ZryYp+LFXlNDuDkkjUP3vtG4rMtcMSeSk?=
+ =?iso-8859-2?Q?YlKwv5/gyTysT5S7kUnwqZo0+A0pa4wFIaQImKCX+Btj17AQB6Ibgzuo/p?=
+ =?iso-8859-2?Q?qRenag9VMwqAVbSIextweRyH0C8kAQ5n9dFgP4NsfpIHX3jYdLfaBvhQdV?=
+ =?iso-8859-2?Q?9tCWPrlxuO2mouX5JdQHSiFko0rbelrw3cxIidbhYF6lSTKZCHUxa0t2/C?=
+ =?iso-8859-2?Q?5+61z4Jna/Cn8gGzaz6OPrBRAM95EaD+Ch+lpR9nAvIRU3ioIb17mC8VKN?=
+ =?iso-8859-2?Q?Cv6gvHFPCwVzVsGBrjpv2vD6F3YVYZg304pqCM4pUbTM55hdb4E9dZ65Dm?=
+ =?iso-8859-2?Q?X6NUJna7AdVSh4CCp3Zv/tFnu4q+7mfbMXwtJa6QEsH5HviJn16uvZ2AYI?=
+ =?iso-8859-2?Q?Ki1sFx4m/XaMW4CeVAwbHumfCzMlvUvPzJX6SKZzMiFmQLwa7DUh7NwEki?=
+ =?iso-8859-2?Q?yhsWYTcfdTEqr50gdYMAm/ttssm7tsi0C1ULSp/3J/WkUISzPQCgVdSqDU?=
+ =?iso-8859-2?Q?5+B/11/U3Z0+ES3Ah/OPeAUbe2o6+sTYcrC4Z0AW/HP7uKuqD4o1YRZemd?=
+ =?iso-8859-2?Q?G9Ztzu7U4++tqAQnoC9CFOMHmOsH7qtbTrjuQd8LZLMKNwcPvW/ZgQ6fB3?=
+ =?iso-8859-2?Q?P7Wvw+FeR+mmg2H5bMTWwCR4AgbWUUu39fsHackKjC2TkMBBCdHtFoSb9t?=
+ =?iso-8859-2?Q?Nt98J6OToSVBEH25uSzzF1c6QjALoInyXo1bh2Kn9AbSj6r5cmh7QjbFiP?=
+ =?iso-8859-2?Q?0i2h/0ikvZs632258MluPavChqygpXi+DNqDn/ebXDZgrOKWVT3/vjXDwf?=
+ =?iso-8859-2?Q?08iyn2UfMU6D9UmXIQihhpdi/4ccRfa1yVps/NtNEKlqX/9MMuwDwWWLOm?=
+ =?iso-8859-2?Q?t35YDiEfoDm5V5F2Vo0qsaZgu0qpPgyvhWoeH3sk1XrILUI2mmzBaT4F27?=
+ =?iso-8859-2?Q?rA1zWFK0Qv3Qc8m5cAQRMvROdkb1FptWN6J871jnA/Q+ejD+8u0BSEvZhL?=
+ =?iso-8859-2?Q?USMS1sRGbhHqosEdf8e69A+GXEn1zg900kJb1mhU1UKSOEqiQpf7MKz+CD?=
+ =?iso-8859-2?Q?pwqfPKqIN3EAi4Xok5G/gGrTegN4+P5KLEDzakxUXNajYN0qPDHBZk2A?=
  =?iso-8859-2?Q?=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-2"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7264.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 31aa49f3-f7ff-4ab8-878a-08dcb523b5fc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2024 07:53:36.1321 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2171b4f6-d12a-4977-d6e6-08dcb52405ef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Aug 2024 07:55:50.2312 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: FVsqh4ifbv5Sl+dlSMZrYprM4qDepdLNvmNXHrlZuH1U4itsbZuAgMazlsyLSyocwQsOikXy7YGp2SfqWzzFrAirbH+SIbgqGIzqL8Q4JtTCEekN7/4kW0qwJUY8i2LZ
+X-MS-Exchange-CrossTenant-userprincipalname: 5LebBowp2UkUIhyhAkkccKvWEN+JW22VNCYGDXtOo79BSa4371Pee1g2xVW76CQITMo/R87JM0vb6dqxLZbEaG6yt9hEk8PKz+5CB/n+mz28FjgRw3JqVnS9mcaZHHxa
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6840
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -210,209 +210,106 @@ Reviewed-by: Dominik Karol Pi=B1tkowski <dominik.karol.piatkowski@intel.com=
 > Kolanupaka Naveena <kolanupaka.naveena@intel.com>; Kuoppala, Mika
 > <mika.kuoppala@intel.com>; Mun, Gwan-gyeong <gwan-
 > gyeong.mun@intel.com>
-> Subject: [PATCH i-g-t v2 58/66] tests/xe_eudebug_online: Add interrupt-
-> reconnect test
+> Subject: [PATCH i-g-t v2 60/66] tests/xe_eudebug_online: What if user doe=
+s
+> not set debug mode?
 >=20
-> From: Karolina Stolarek <karolina.stolarek@intel.com>
+> From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 >=20
-> Introduce interrupt-reconnect test case where the debugger is closed and
-> reopened on attention event. Check if the workload is reset when there is=
- no
-> active debugger detected.
+> Implement test proving that workload is terminated if we hit exception
+> without having exec queue in debug mode.
 >=20
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 > Cc: Christoph Manszewski <christoph.manszewski@intel.com>
-> Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 > ---
->  tests/intel/xe_eudebug_online.c | 126
-> +++++++++++++++++++++++++++++++-
->  1 file changed, 123 insertions(+), 3 deletions(-)
+>  tests/intel/xe_eudebug_online.c | 22 ++++++++++++++++++----
+>  1 file changed, 18 insertions(+), 4 deletions(-)
 >=20
 > diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_onl=
 ine.c
-> index c101bde2f..9f55cec74 100644
+> index cabe2101e..8361b6db4 100644
 > --- a/tests/intel/xe_eudebug_online.c
 > +++ b/tests/intel/xe_eudebug_online.c
-> @@ -22,11 +22,14 @@
->=20
->  #define SHADER_BREAKPOINT	(1 << 0)
->  #define SHADER_LOOP		(1 << 1)
-> +#define TRIGGER_RECONNECT	(1 << 27)
->  #define TRIGGER_RESUME_SET_BP	(1 << 28)
->  #define TRIGGER_RESUME_DELAYED	(1 << 29)
->  #define TRIGGER_RESUME_DSS	(1 << 30)
->  #define TRIGGER_RESUME_ONE	(1 << 31)
->=20
-> +#define DEBUGGER_REATTACHED	1
-> +
->  #define STEERING_END_LOOP	0xdeadca11
->=20
->  #define SHADER_CANARY 0x01010101
-> @@ -682,9 +685,12 @@ static void run_online_client(struct
+> @@ -24,6 +24,7 @@
+>  #define SHADER_LOOP			(1 << 1)
+>  #define SHADER_SINGLE_STEP		(1 << 2)
+>  #define SIP_SINGLE_STEP			(1 << 3)
+> +#define DISABLE_DEBUG_MODE		(1 << 4)
+>  #define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
+>  #define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
+>  #define TRIGGER_RECONNECT		(1 << 27)
+> @@ -813,7 +814,7 @@ static void run_online_client(struct
 > xe_eudebug_client *c)
+>  		.instances =3D to_user_pointer(&hwe),
+>  		.width =3D 1,
+>  		.num_placements =3D 1,
+> -		.extensions =3D to_user_pointer(&ext)
+> +		.extensions =3D c->flags & DISABLE_DEBUG_MODE ? 0 :
+> +to_user_pointer(&ext)
+>  	};
+>  	struct dim_t w_dim =3D walker_dimensions(threads);
+>  	struct dim_t s_dim =3D surface_dimensions(threads); @@ -880,7
+> +881,8 @@ static void run_online_client(struct xe_eudebug_client *c)
+>  	data->threads_count =3D count_canaries_neq(ptr, w_dim, 0);
+>  	igt_assert_f(data->threads_count, "No canaries found, nothing
+> executed?\n");
 >=20
->  	intel_bb_sync(ibb);
+> -	if (c->flags & SHADER_BREAKPOINT || c->flags &
+> TRIGGER_RESUME_SET_BP) {
+> +	if ((c->flags & SHADER_BREAKPOINT || c->flags &
+> TRIGGER_RESUME_SET_BP) &&
+> +	    !(c->flags & DISABLE_DEBUG_MODE)) {
+>  		uint32_t aip =3D ptr[0];
 >=20
-> -	/* Make sure it wasn't the timeout. */
-> -	igt_assert(igt_nsec_elapsed(&ts) <
-> -		   XE_EUDEBUG_DEFAULT_TIMEOUT_MS / MSEC_PER_SEC *
-> NSEC_PER_SEC);
-> +	if (c->flags & TRIGGER_RECONNECT)
-> +		xe_eudebug_client_wait_stage(c, DEBUGGER_REATTACHED);
+>  		igt_assert_f(aip !=3D SHADER_CANARY, "Workload executed but
+> breakpoint not hit!\n"); @@ -1049,6 +1051,7 @@ static void
+> online_session_check(struct xe_eudebug_session *s, int flags)
+>  	struct drm_xe_eudebug_event_eu_attention *ea =3D NULL;
+>  	struct drm_xe_eudebug_event *event =3D NULL;
+>  	struct online_debug_data *data =3D s->c->ptr;
+> +	bool expect_exception =3D flags & DISABLE_DEBUG_MODE ? false : true;
+>  	int sum =3D 0;
+>  	int bitmask_size;
+>=20
+> @@ -1076,7 +1079,10 @@ static void online_session_check(struct
+> xe_eudebug_session *s, int flags)
+>  	if (flags =3D=3D SHADER_BREAKPOINT)
+>  		igt_assert_eq(sum, data->threads_count);
+>=20
+> -	igt_assert(sum > 0);
+> +	if (expect_exception)
+> +		igt_assert(sum > 0);
 > +	else
-> +		/* Make sure it wasn't the timeout. */
-> +		igt_assert(igt_nsec_elapsed(&ts) <
-> +			   XE_EUDEBUG_DEFAULT_TIMEOUT_MS /
-> MSEC_PER_SEC * NSEC_PER_SEC);
->=20
->  	ptr =3D xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
->  	data->threads_count =3D count_canaries_neq(ptr, w_dim, 0); @@ -
-> 1158,6 +1164,117 @@ static void test_tdctl_parameters(int fd, struct
-> drm_xe_engine_class_instance *h
->  	online_debug_data_destroy(data);
+> +		igt_assert(sum =3D=3D 0);
 >  }
 >=20
-> +static void eu_attention_debugger_detach_trigger(struct
-> xe_eudebug_debugger *d,
-> +						 struct
-> drm_xe_eudebug_event *event) {
-> +	struct online_debug_data *data =3D d->ptr;
-> +	unsigned int max_size;
-> +	uint64_t c_pid;
-> +	int ret;
-> +
-> +	c_pid =3D d->target_pid;
-> +
-> +	/* Reset VM data so the re-triggered VM open handler works properly
-> */
-> +	data->vm_fd =3D -1;
-> +
-> +	xe_eudebug_debugger_dettach(d);
-> +
-> +	/* Let the KMD scan function notice unhandled EU attention */
-> +	sleep(1);
-> +
-> +	/*
-> +	 * New session that is created by EU debugger on reconnect restarts
-> +	 * seqno, causing isses with log sorting. To avoid that, create
-> +	 * a new event log.
-> +	 */
-> +	max_size =3D d->log->max_size;
-> +	xe_eudebug_event_log_destroy(d->log);
-> +	d->log =3D xe_eudebug_event_log_create("debugger-reconnect",
-> max_size);
-> +
-> +	ret =3D xe_eudebug_connect(d->master_fd, c_pid, 0);
-> +	igt_assert(ret >=3D 0);
-> +	d->fd =3D ret;
-> +	d->target_pid =3D c_pid;
-> +
-> +	/* Let the discovery worker discover resources */
-> +	sleep(2);
-> +
-> +	xe_eudebug_debugger_signal_stage(d, DEBUGGER_REATTACHED); }
-> +
-> +/**
-> + * SUBTEST: interrupt-reconnect
+>  static void ufence_ack_trigger(struct xe_eudebug_debugger *d, @@ -1092,7
+> +1098,12 @@ static void ufence_ack_trigger(struct xe_eudebug_debugger *d,
+>   * SUBTEST: basic-breakpoint
+>   * Description:
+>   *	Check whether KMD sends attention events
+> - *	for runalone workload stopped on breakpoint.
+> + *	for workload in debug mode stopped on breakpoint.
+> + *
+> + * SUBTEST: breakpoint-not-in-debug-mode
 > + * Description:
-> + *	Schedules EU workload which should last about a few seconds,
-> + *	interrupts all threads and detaches debugger when attention is
-> + *	raised. The test checks if KMD resets the workload when there's
-> + *	no debugger attached and does the event playback on discovery.
-> + */
-> +static void test_interrupt_reconnect(int fd, struct
-> +drm_xe_engine_class_instance *hwe, int flags) {
-> +	struct drm_xe_eudebug_event *e =3D NULL;
-> +	struct online_debug_data *data;
-> +	struct xe_eudebug_session *s;
-> +	uint32_t val;
-> +
-> +	data =3D online_debug_data_create(hwe);
-> +	s =3D xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-> +					exec_queue_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +
-> 	eu_attention_debugger_detach_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->d,
-> DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->d, s->c), 0);
-> +	xe_eudebug_debugger_start_worker(s->d);
-> +	xe_eudebug_client_start(s->c);
-> +
-> +	/* wait for workload to start */
-> +	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-> +		/* collect needed data from triggers */
-> +		if (READ_ONCE(data->vm_fd) =3D=3D -1 || READ_ONCE(data-
-> >target_size) =3D=3D 0)
-> +			continue;
-> +
-> +		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset)
-> =3D=3D sizeof(val))
-> +			if (val !=3D 0)
-> +				break;
-> +	}
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	igt_assert(data->client_handle !=3D -1);
-> +	igt_assert(data->exec_queue_handle !=3D -1);
-> +	eu_ctl_interrupt_all(s->d->fd, data->client_handle,
-> +			     data->exec_queue_handle, data->lrc_handle);
-> +	pthread_mutex_unlock(&data->mutex);
-> +
-> +	xe_eudebug_client_wait_done(s->c);
-> +
-> +	xe_eudebug_debugger_stop_worker(s->d, 1);
-> +
-> +	xe_eudebug_event_log_print(s->d->log, true);
-> +	xe_eudebug_event_log_print(s->c->log, true);
-> +
-> +	xe_eudebug_session_check(s, true,
-> XE_EUDEBUG_FILTER_EVENT_VM_BIND |
-> +
-> XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
-> +
-> XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-> +
-> +	/* We expect workload reset, so no attention should be raised */
-> +	xe_eudebug_for_each_event(e, s->d->log)
-> +		igt_assert(e->type !=3D
-> DRM_XE_EUDEBUG_EVENT_EU_ATTENTION);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
->  static struct drm_xe_engine_class_instance *pick_compute(int fd, int gt)=
-  {
->  	struct drm_xe_engine_class_instance *hwe; @@ -1220,6 +1337,9
-> @@ igt_main
->  	test_gt_render_or_compute("reset-with-attention", fd, hwe)
->  		test_reset_with_attention_online(fd, hwe,
-> SHADER_BREAKPOINT);
+> + *	Check whether KMD resets the GPU when it spots an attention
+> + *	coming from workload not in debug mode.
+>   *
+>   * SUBTEST: stopped-thread
+>   * Description:
+> @@ -1540,6 +1551,9 @@ igt_main
+>  	test_gt_render_or_compute("basic-breakpoint", fd, hwe)
+>  		test_basic_online(fd, hwe, SHADER_BREAKPOINT);
 >=20
-> +	test_gt_render_or_compute("interrupt-reconnect", fd, hwe)
-> +		test_interrupt_reconnect(fd, hwe, SHADER_LOOP |
-> TRIGGER_RECONNECT);
+> +	test_gt_render_or_compute("breakpoint-not-in-debug-mode", fd,
+> hwe)
+> +		test_basic_online(fd, hwe, SHADER_BREAKPOINT |
+> DISABLE_DEBUG_MODE);
 > +
->  	igt_fixture {
->  		xe_eudebug_enable(fd, was_enabled);
+>  	test_gt_render_or_compute("stopped-thread", fd, hwe)
+>  		test_basic_online(fd, hwe, SHADER_BREAKPOINT |
+> TRIGGER_RESUME_DELAYED);
 >=20
 > --
 > 2.34.1
