@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A900C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 03:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EE14C3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 03:54:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2559B10E121;
-	Mon,  5 Aug 2024 03:44:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7DDF10E126;
+	Mon,  5 Aug 2024 03:54:17 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 010C010E121;
- Mon,  5 Aug 2024 03:44:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A9E710E122;
+ Mon,  5 Aug 2024 03:54:16 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2848049584174395572=="
+ boundary="===============0480237110288388682=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_New_test_to_validate_link-off_?=
- =?utf-8?q?between_active_regions_=28LOBF=29_=28rev11=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_New_test_to_validate_link-o?=
+ =?utf-8?q?ff_between_active_regions_=28LOBF=29_=28rev11=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jeevan B" <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 Aug 2024 03:44:04 -0000
-Message-ID: <172282944499.539464.8497237787263491700@2413ebb6fbb6>
+Date: Mon, 05 Aug 2024 03:54:16 -0000
+Message-ID: <172283005616.539479.9980428282849731177@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240801061608.2983058-1-jeevan.b@intel.com>
 In-Reply-To: <20240801061608.2983058-1-jeevan.b@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2848049584174395572==
+--===============0480237110288388682==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,50 +50,87 @@ Content-Transfer-Encoding: 7bit
 
 Series: New test to validate link-off between active regions (LOBF) (rev11)
 URL   : https://patchwork.freedesktop.org/series/135446/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7954_BAT -> XEIGTPW_11527_BAT
+CI Bug Log - changes from CI_DRM_15176 -> IGTPW_11527
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_11527 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_11527, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (7 -> 7)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/index.html
+
+Participating hosts (42 -> 39)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (3): bat-dg2-11 fi-snb-2520m fi-kbl-8809g 
 
+Possible new issues
+-------------------
 
-Changes
--------
+  Here are the unknown changes that may have been introduced in IGTPW_11527:
 
-  No changes found
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@active:
+    - fi-glk-j4005:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15176/fi-glk-j4005/igt@i915_selftest@live@active.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/fi-glk-j4005/igt@i915_selftest@live@active.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11527 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@gem_lmem_swapping@basic@lmem0:
+    - bat-dg2-9:          [FAIL][3] ([i915#10378]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15176/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-twl-2:          [INCOMPLETE][5] ([i915#9413]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15176/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+
+  
+  [i915#10378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7954 -> IGTPW_11527
-  * Linux: xe-1708-974ee82a5f44e91fd93895cc12fb1e76e55b229a -> xe-1711-0b8d955bfdcf0864a764a125ab13bc0fd81f3b71
 
+  CI-20190529: 20190529
+  CI_DRM_15176: 0b8d955bfdcf0864a764a125ab13bc0fd81f3b71 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11527: 11527
   IGT_7954: a22f1dab2c2604f9678e4b27ba40bee7dcce9dfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1708-974ee82a5f44e91fd93895cc12fb1e76e55b229a: 974ee82a5f44e91fd93895cc12fb1e76e55b229a
-  xe-1711-0b8d955bfdcf0864a764a125ab13bc0fd81f3b71: 0b8d955bfdcf0864a764a125ab13bc0fd81f3b71
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11527/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/index.html
 
---===============2848049584174395572==
+--===============0480237110288388682==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -115,32 +152,63 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>New test to validate link-off between active regions (LOBF) (rev11)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135446/">https://patchwork.freedesktop.org/series/135446/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11527/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11527/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7954_BAT -&gt; XEIGTPW_11527_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15176 -&gt; IGTPW_11527</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (7 -&gt; 7)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_11527 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_11527, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/index.html</p>
+<h2>Participating hosts (42 -&gt; 39)</h2>
+<p>Missing    (3): bat-dg2-11 fi-snb-2520m fi-kbl-8809g </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11527:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@active:<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15176/fi-glk-j4005/igt@i915_selftest@live@active.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/fi-glk-j4005/igt@i915_selftest@live@active.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11527 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@basic@lmem0:</p>
+<ul>
+<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15176/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10378">i915#10378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/bat-dg2-9/igt@gem_lmem_swapping@basic@lmem0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15176/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11527/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7954 -&gt; IGTPW_11527</li>
-<li>Linux: xe-1708-974ee82a5f44e91fd93895cc12fb1e76e55b229a -&gt; xe-1711-0b8d955bfdcf0864a764a125ab13bc0fd81f3b71</li>
 </ul>
-<p>IGTPW_11527: 11527<br />
-  IGT_7954: a22f1dab2c2604f9678e4b27ba40bee7dcce9dfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1708-974ee82a5f44e91fd93895cc12fb1e76e55b229a: 974ee82a5f44e91fd93895cc12fb1e76e55b229a<br />
-  xe-1711-0b8d955bfdcf0864a764a125ab13bc0fd81f3b71: 0b8d955bfdcf0864a764a125ab13bc0fd81f3b71</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15176: 0b8d955bfdcf0864a764a125ab13bc0fd81f3b71 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11527: 11527<br />
+  IGT_7954: a22f1dab2c2604f9678e4b27ba40bee7dcce9dfd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============2848049584174395572==--
+--===============0480237110288388682==--
