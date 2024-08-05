@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDEE6C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 777D7C3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 84E1810E217;
-	Mon,  5 Aug 2024 14:37:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3C02110E21A;
+	Mon,  5 Aug 2024 14:37:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BUSrqBtN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fw5fl0u1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5D3D510E217
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BECA10E21A
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722868654; x=1754404654;
+ t=1722868658; x=1754404658;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=b9mHrAwW0tL51BdTxsr9vKcw4S59DweIpjOIiYT4lSo=;
- b=BUSrqBtNloeb+LDyj8mz0yEpBJiXEg7v+zlFlUlVteXZuVqSk/+yabFh
- 0Lx22SFabkJN/IdfhRDMieR888PW0MVozoN3o6uSM0fWSNELL4zXhsGmo
- IbU7WmfvW73kBzyNhwbP/ulG8kpg1EO6P8tDtQrw9TGICLV3q+ZmNy5gD
- 21Yzihr/gHCsaB5QTi6NLQaOM41UHHaLOvAyyFCCinLutHQmdDmSvK3E7
- +vtdjqsW1z9GjMXHt8BpFFRfgU4cmbYUvQkfNW/+YBL4c8EytUruxikvl
- pIq8TxdFHJu8b1LsgdJc8w/X11UanhraInby89g7JZJVXU2f1mlf0lgTx A==;
-X-CSE-ConnectionGUID: tFHgRRahTyiEm441xbzLpg==
-X-CSE-MsgGUID: t20eqn3AS1OdXVpY9uxUBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702279"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702279"
+ bh=fafvuHQ1m4KCJj0fMk9NDRQlWGdglwGk0IQs2Lfi9G0=;
+ b=fw5fl0u1peROZ13uTc4MRvSE65R7H6GUGkCdvohZClahXtHFkHS/76M0
+ wgv54wVM/uICfAgI1CbgV8IA2JzesLfJVq/9z7gDyi4ucZXwmfzv9HqKW
+ Yb+pHFn7JijClkjjoxJapej1csR1wf2HlxCotFp0q+z/WWZnrNpIzVbKM
+ Np+Dc5YRFCOUO8uuf+dGFSfacX9oj70PEWnEIKsdfHKrnbw8pFM3Tzbem
+ Ir/tZq+xeos73RRzPRDQ96tavYOGVaUf6HcBSvuiXYmy0xOyPcKJ0JuXI
+ LEtPeepaFyjO3OLnyulTDK0GS+718pEjed4mXq28SBrimsD5JUWd4zoul A==;
+X-CSE-ConnectionGUID: kKUcx0vQTLONcCjUJs7yaw==
+X-CSE-MsgGUID: MtNDm29+RVOtNGlutkWVFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702281"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702281"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:34 -0700
-X-CSE-ConnectionGUID: DUXV20btS36tS64NoqEXEA==
-X-CSE-MsgGUID: 9XRZiINnQ8+U4lwXYyAWuw==
+ 05 Aug 2024 07:37:38 -0700
+X-CSE-ConnectionGUID: qajhBktTRTyD+iLNPRhfXg==
+X-CSE-MsgGUID: COsTsfi1SDGz8kNXGgrLbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56754981"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56755020"
 Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
  localhost) ([10.245.245.246])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:33 -0700
+ 05 Aug 2024 07:37:37 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH i-g-t v2 3/8] lib/drmtest: Allow to get drm device name
-Date: Mon,  5 Aug 2024 16:37:06 +0200
-Message-ID: <20240805143713.76034-4-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 4/8] tests/core_hotunplug: Open the same driver
+Date: Mon,  5 Aug 2024 16:37:07 +0200
+Message-ID: <20240805143713.76034-5-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
 References: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
@@ -69,54 +69,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make this a public function so in tests developers could use it
-instead of hard-coding driver names (such as "i915" or "xe").
+Make sure any later opens will use the same driver as the first
+one. Also while at this, print driver name before test starts.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- lib/drmtest.c | 14 +++++++++++++-
- lib/drmtest.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ tests/core_hotunplug.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/lib/drmtest.c b/lib/drmtest.c
-index 8ea96ba76..2dd4540b8 100644
---- a/lib/drmtest.c
-+++ b/lib/drmtest.c
-@@ -81,7 +81,19 @@
-  * and [batchbuffer](igt-gpu-tools-intel-batchbuffer.html) libraries as dependencies.
-  */
+diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
+index 617332b0f..cc715a234 100644
+--- a/tests/core_hotunplug.c
++++ b/tests/core_hotunplug.c
+@@ -681,11 +681,16 @@ igt_main
  
--static int __get_drm_device_name(int fd, char *name, int name_size)
-+/**
-+ * __get_drm_device_name:
-+ * @fd: a drm file descriptor
-+ * @name: pointer to memory
-+ * @name_size: size of @name
-+ *
-+ * A wrapper for DRM_IOCTL_VERSION which will write drm device name in @name.
-+ *
-+ * Returns:
-+ * 0  if name of DRM driver was filled in @name
-+ * -1 on ioctl fail
-+ */
-+int __get_drm_device_name(int fd, char *name, int name_size)
- {
- 	drm_version_t version;
+ 	igt_fixture {
+ 		int fd_drm;
++		char driver[32] = {};
  
-diff --git a/lib/drmtest.h b/lib/drmtest.h
-index 4d9b60882..27e5a18e2 100644
---- a/lib/drmtest.h
-+++ b/lib/drmtest.h
-@@ -38,6 +38,8 @@
+ 		fd_drm = __drm_open_driver(DRIVER_ANY);
+ 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
  
- #include "igt_core.h"
+ 		priv.chipset = drm_get_chipset(fd_drm);
++		/* Make sure it opens the same driver */
++		__get_drm_device_name(fd_drm, driver, sizeof(driver) - 1);
++		__set_forced_driver(driver);
++		igt_info("DRM driver: %s\n", driver);
  
-+int __get_drm_device_name(int fd, char *name, int name_size);
-+
- /*
-  * NOTE: Theser are _only_ for testcases exercising driver specific rendering
-  * ioctls and uapi (and a bunch of historical reasons). And KMS testcase should
+ 		if (is_i915_device(fd_drm)) {
+ 			gem_quiescent_gpu(fd_drm);
 -- 
 2.43.0
 
