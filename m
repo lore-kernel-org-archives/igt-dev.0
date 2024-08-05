@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 777D7C3DA7F
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84F90C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C02110E21A;
-	Mon,  5 Aug 2024 14:37:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46C9110E222;
+	Mon,  5 Aug 2024 14:37:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fw5fl0u1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oq+n8pe9";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BECA10E21A
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 236EB10E22A
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722868658; x=1754404658;
+ t=1722868662; x=1754404662;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=fafvuHQ1m4KCJj0fMk9NDRQlWGdglwGk0IQs2Lfi9G0=;
- b=fw5fl0u1peROZ13uTc4MRvSE65R7H6GUGkCdvohZClahXtHFkHS/76M0
- wgv54wVM/uICfAgI1CbgV8IA2JzesLfJVq/9z7gDyi4ucZXwmfzv9HqKW
- Yb+pHFn7JijClkjjoxJapej1csR1wf2HlxCotFp0q+z/WWZnrNpIzVbKM
- Np+Dc5YRFCOUO8uuf+dGFSfacX9oj70PEWnEIKsdfHKrnbw8pFM3Tzbem
- Ir/tZq+xeos73RRzPRDQ96tavYOGVaUf6HcBSvuiXYmy0xOyPcKJ0JuXI
- LEtPeepaFyjO3OLnyulTDK0GS+718pEjed4mXq28SBrimsD5JUWd4zoul A==;
-X-CSE-ConnectionGUID: kKUcx0vQTLONcCjUJs7yaw==
-X-CSE-MsgGUID: MtNDm29+RVOtNGlutkWVFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702281"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702281"
+ bh=X7aqDd/F3Yy/2XIbIhdRVpMdaTLAkibuL7+0p56KYqw=;
+ b=Oq+n8pe9T+0dPqtLHLCPo6oo+SuKyUR4RmpS/AEGeEnt7yBiaP8R0vTA
+ HeKXlWQiUqLidXICypgdNHfwsOufOP5MhAy01VhAHulJO9tEwP+fVpJQj
+ ZbF58JuudSBlBnAOVvrAHctOR0pPACh3RQyaBnIkogKTdmF4xElQHqJi2
+ IWXHUdJT2R6TLOPvD6ZgpSkSb0oNrwJLmLGq0fmIXHdXnfwxeu7gRHJ2H
+ QTPMMWQ7vVT1jLqf6oBDavQQBsq7q45dE5XpNRjrcS2QSklUko5+yE41U
+ xeEj/2XoX2xvulRWsqMGoP5LPyp/mfvt1MgBU1seWQTVokPqJCrunINzx Q==;
+X-CSE-ConnectionGUID: zXqas0KUSDio+8o45xAXHQ==
+X-CSE-MsgGUID: 56GhBrpITw6WuQKmTp8Gqg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702283"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702283"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:38 -0700
-X-CSE-ConnectionGUID: qajhBktTRTyD+iLNPRhfXg==
-X-CSE-MsgGUID: COsTsfi1SDGz8kNXGgrLbQ==
+ 05 Aug 2024 07:37:42 -0700
+X-CSE-ConnectionGUID: d4wNeAQDRrK3ryNkA3BQlA==
+X-CSE-MsgGUID: swJYgUWXR12ChcyvArYbuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56755020"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56755045"
 Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
  localhost) ([10.245.245.246])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:37 -0700
+ 05 Aug 2024 07:37:41 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH i-g-t v2 4/8] tests/core_hotunplug: Open the same driver
-Date: Mon,  5 Aug 2024 16:37:07 +0200
-Message-ID: <20240805143713.76034-5-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 5/8] tests/core_hotunplug: Fix device close
+Date: Mon,  5 Aug 2024 16:37:08 +0200
+Message-ID: <20240805143713.76034-6-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
 References: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
@@ -69,36 +69,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make sure any later opens will use the same driver as the first
-one. Also while at this, print driver name before test starts.
+Use __drm_close_driver() for closing a drm device, as it was
+opened with __drm_open_driver() function.
+
+v2: update description
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- tests/core_hotunplug.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/core_hotunplug.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 617332b0f..cc715a234 100644
+index cc715a234..b66d5e4cf 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -681,11 +681,16 @@ igt_main
+@@ -142,7 +142,11 @@ static int close_device(int fd_drm, const char *when, const char *which)
+ 		return fd_drm;
  
- 	igt_fixture {
- 		int fd_drm;
-+		char driver[32] = {};
+ 	local_debug("%sclosing %sdevice instance\n", when, which);
+-	return local_close(fd_drm, "Device close failed");
++	errno = 0;
++	if (igt_warn_on_f(__drm_close_driver(fd_drm), "Device close failed\n"))
++		return -errno;	/* (never -1) */
++
++	return -1;	/* success */
+ }
  
- 		fd_drm = __drm_open_driver(DRIVER_ANY);
- 		igt_skip_on_f(fd_drm < 0, "No known DRM device found\n");
- 
- 		priv.chipset = drm_get_chipset(fd_drm);
-+		/* Make sure it opens the same driver */
-+		__get_drm_device_name(fd_drm, driver, sizeof(driver) - 1);
-+		__set_forced_driver(driver);
-+		igt_info("DRM driver: %s\n", driver);
- 
- 		if (is_i915_device(fd_drm)) {
- 			gem_quiescent_gpu(fd_drm);
+ static int close_sysfs(int fd_sysfs_dev)
 -- 
 2.43.0
 
