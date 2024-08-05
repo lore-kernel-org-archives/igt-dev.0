@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AECBEC3DA7F
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 08:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6F4AC3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 09:18:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6CAEC10E16A;
-	Mon,  5 Aug 2024 08:39:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5000A10E167;
+	Mon,  5 Aug 2024 09:18:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZJp8o0pC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pd/7dWXD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4618010E16A
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 08:39:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 03A3810E167;
+ Mon,  5 Aug 2024 09:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722847142; x=1754383142;
+ t=1722849484; x=1754385484;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Y6NY7qzbbCOB7/H2LFU8V2xXfTfH5Jv+b+B+/o4TJEk=;
- b=ZJp8o0pC2cR/HCVzWmqno9tnFN7yxZLYZRyLLpVTIz3+JnfzqJcrsfv/
- EpnfmOybvl/cX7P2M69ozrK2QYEh1UBZ3PSZdm5zNhPfHWRkBxa71r4L4
- Jr4gJdak+KGS602RKfwJ9yhYCSJr5X1djnwE3mMtDz4LcWLQpJYgkrnnT
- 8xUQVR4DOa51ezHN/I3WRtyKxXQD7uHn0DtHasoLdeI7/g2iKjclgIJE7
- n1oblAnV9cjQXix+dwrhx7yfeJKzA+BGcxMQHukc2x0KFPi1aSs4ni6qD
- LiX3GrdtrnsgCi4QJpdF3DimrcVUBibq3p+PiwhulZD4y9aYFL6R/7iB4 Q==;
-X-CSE-ConnectionGUID: w1vbi3XARViPNwtUiNSMTw==
-X-CSE-MsgGUID: sPdgue7sROGi8/R8iTOEig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="20949395"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="20949395"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 01:39:02 -0700
-X-CSE-ConnectionGUID: 8Kw4kwjCRKCIIa4j1FxwYw==
-X-CSE-MsgGUID: z3+InfBAQnuEfN7VrwLTPA==
+ mime-version:in-reply-to;
+ bh=B8b67RkMp74smO+8+hDcxq5O3rROa3BmLlB0P3NvUqs=;
+ b=Pd/7dWXDWagGLTYwxlvuIhmtEj4DgMdpXyuh/4aXPNyeDscDw05J/4u+
+ oNTAacT9+DC/Dq1aLGP/CVWbi+BJE+h0R9c/WxlS0WPlDyc+4PUXPB5E+
+ /cmq5usjSJhiLuloZght6QleimEVsSudvg0JrLTH32bpIYdUL90HOV1+H
+ XhxmpLYW4cxuJHzYduvYGfZWcbAuXgOez/k7Lu72SA4PD2gQ0N+C7U435
+ BQBV+4dBxegprU8SubGABhqmOoydaBr30z+veiyOl0DqBzRfbzNNYCaRF
+ egyz2xdO0h2jTMjcqNI+G/Aj+HuLdsPI7Fvz4C8wfIIVKF+csnOpY48ST A==;
+X-CSE-ConnectionGUID: IYkTj4CCRC6jLOmNtupPQQ==
+X-CSE-MsgGUID: WFGIp2PiQGuQeqG+AdHK+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="32174557"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="32174557"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2024 02:18:03 -0700
+X-CSE-ConnectionGUID: DXpl1RkKQcudaytQchr9FQ==
+X-CSE-MsgGUID: 7c2smREeTxSSHmtnOUTqSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="55762542"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.246.152])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 01:39:00 -0700
-Date: Mon, 5 Aug 2024 10:38:57 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/1] tools/lsgpu: Introduce version printing
-Message-ID: <20240805083857.v7ugynzlpfpay2ey@zkempczy-mobl2>
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="86671269"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Aug 2024 02:18:02 -0700
+Date: Mon, 5 Aug 2024 11:17:45 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ Print version in lsgpu tool
+Message-ID: <20240805091745.oxgiumbgpkjcqtqd@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20240802092746.22001-1-kamil.konieczny@linux.intel.com>
- <20240802092746.22001-2-kamil.konieczny@linux.intel.com>
+ <172263085334.503738.829761789150155248@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240802092746.22001-2-kamil.konieczny@linux.intel.com>
+In-Reply-To: <172263085334.503738.829761789150155248@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,140 +71,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Aug 02, 2024 at 11:27:45AM +0200, Kamil Konieczny wrote:
-> Add version information for the lsgpu tool. You can now show it
-> with long option --version or short -v, for example:
-
--v => -V
-
-It's good idea to start versioning, With with nit addressed:
-
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-
---
-Zbigniew
-
-> ./lsgpu --version
+Hi igt-dev,
+On 2024-08-02 at 20:34:13 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Also while at this, update copyright years and sort out include
-> headers.
+> Series: Print version in lsgpu tool
+> URL   : https://patchwork.freedesktop.org/series/136841/
+> State : failure
 > 
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tools/lsgpu.c | 37 +++++++++++++++++++++++++++++--------
->  1 file changed, 29 insertions(+), 8 deletions(-)
+> == Summary ==
 > 
-> diff --git a/tools/lsgpu.c b/tools/lsgpu.c
-> index bdc6671fe..2bf2cf5f0 100644
-> --- a/tools/lsgpu.c
-> +++ b/tools/lsgpu.c
-> @@ -1,5 +1,5 @@
->  /*
-> - * Copyright © 2019 Intel Corporation
-> + * Copyright © 2019-2024 Intel Corporation
->   *
->   * Permission is hereby granted, free of charge, to any person obtaining a
->   * copy of this software and associated documentation files (the "Software"),
-> @@ -22,15 +22,16 @@
->   *
->   */
->  
-> -#include "igt_device_scan.h"
-> -#include "igt.h"
-> -#include <sys/ioctl.h>
-> -#include <fcntl.h>
->  #include <errno.h>
-> -#include <string.h>
-> -#include <signal.h>
-> +#include <fcntl.h>
->  #include <glib.h>
->  #include <libudev.h>
-> +#include <string.h>
-> +#include <signal.h>
-> +#include <sys/ioctl.h>
-> +
-> +#include "igt.h"
-> +#include "igt_device_scan.h"
->  
->  /**
->   * SECTION:lsgpu
-> @@ -80,12 +81,14 @@ enum {
->  	OPT_DEVICE         = 'd',
->  	OPT_HELP           = 'h',
->  	OPT_PCISCAN        = 'P',
-> +	OPT_VERSION        = 'V',
->  };
->  
->  static bool g_show_vendors;
->  static bool g_list_filters;
->  static bool g_help;
->  static bool g_pciscan;
-> +static bool g_version;
->  static char *igt_device;
->  
->  static const char *usage_str =
-> @@ -99,12 +102,21 @@ static const char *usage_str =
->  	"  -v, --list-vendors          List recognized vendors\n"
->  	"  -l, --list-filter-types     List registered device filters types\n"
->  	"  -d, --device filter         Device filter, can be given multiple times\n"
-> +	"  -V, --version               Show version information and exit\n"
->  	"  -h, --help                  Show this help message and exit\n"
->  	"\nOptions valid for default print out mode only:\n"
->  	"      --drm                   Show DRM filters (default) for each device\n"
->  	"      --sysfs                 Show sysfs filters for each device\n"
->  	"      --pci                   Show PCI filters for each device\n";
->  
-> +static void show_version(void)
-> +{
-> +	printf("lsgpu version 1.0\n"
-> +	       "Copyright © 2019-2024 Intel Corporation\n"
-> +	       "This is free software; see the source for copying conditions.  There is NO\n"
-> +	       "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n");
-> +}
-> +
->  static void test_device_open(struct igt_device_card *card)
->  {
->  	int fd;
-> @@ -256,6 +268,7 @@ int main(int argc, char *argv[])
->  		{"list-filter-types", no_argument,       NULL, OPT_LIST_FILTERS},
->  		{"device",            required_argument, NULL, OPT_DEVICE},
->  		{"help",              no_argument,       NULL, OPT_HELP},
-> +		{"version",           no_argument,       NULL, OPT_VERSION},
->  		{0, 0, 0, 0}
->  	};
->  	int c, ret = 0, index = 0;
-> @@ -264,7 +277,7 @@ int main(int argc, char *argv[])
->  			.type = IGT_PRINT_USER,
->  	};
->  
-> -	while ((c = getopt_long(argc, argv, "ncspvld:hP",
-> +	while ((c = getopt_long(argc, argv, "ncspvld:hPV",
->  				long_options, &index)) != -1) {
->  		switch(c) {
->  
-> @@ -295,6 +308,9 @@ int main(int argc, char *argv[])
->  		case OPT_PCISCAN:
->  			g_pciscan = true;
->  			break;
-> +		case OPT_VERSION:
-> +			g_version = true;
-> +			break;
->  		case 0:
->  			fmt.option = IGT_PRINT_DRM;
->  			break;
-> @@ -315,6 +331,11 @@ int main(int argc, char *argv[])
->  		exit(0);
->  	}
->  
-> +	if (g_version) {
-> +		show_version();
-> +		exit(0);
-> +	}
-> +
->  	if (g_show_vendors) {
->  		igt_devices_print_vendors();
->  		return 0;
-> -- 
-> 2.43.0
+> CI Bug Log - changes from CI_DRM_15173_full -> IGTPW_11523_full
+> ====================================================
 > 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11523_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11523_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11523/index.html
+> 
+> Participating hosts (9 -> 9)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11523_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_ctx_persistence@smoketest:
+>     - shard-rkl:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15173/shard-rkl-1/igt@gem_ctx_persistence@smoketest.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11523/shard-rkl-4/igt@gem_ctx_persistence@smoketest.html
+> 
+>   * igt@i915_suspend@forcewake:
+>     - shard-snb:          [PASS][3] -> [DMESG-WARN][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15173/shard-snb7/igt@i915_suspend@forcewake.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11523/shard-snb7/igt@i915_suspend@forcewake.html
+> 
+>   * igt@perf_pmu@most-busy-idle-check-all@rcs0:
+>     - shard-mtlp:         [PASS][5] -> [FAIL][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15173/shard-mtlp-4/igt@perf_pmu@most-busy-idle-check-all@rcs0.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11523/shard-mtlp-3/igt@perf_pmu@most-busy-idle-check-all@rcs0.html
+> 
+
+These are unrelated to a tool lsgpu.
+
+Regards,
+Kamil
+
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11523_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@object-reloc-purge-cache:
+>     - shard-mtlp:         NOTRUN -> [SKIP][7] ([i915#8411])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11523/shard-mtlp-6/igt@api_intel_bb@object-reloc-purge-cache.html
+>
+...cut...
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7952 -> IGTPW_11523
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_15173: 974ee82a5f44e91fd93895cc12fb1e76e55b229a @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11523: 11523
+>   IGT_7952: 7952
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11523/index.html
