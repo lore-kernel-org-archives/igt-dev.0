@@ -4,122 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33921C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 06:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25819C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 07:12:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9AE510E128;
-	Mon,  5 Aug 2024 06:52:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CB9DD10E106;
+	Mon,  5 Aug 2024 07:12:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="KdVuNA9l";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cn0kw2LY";
 	dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2083.outbound.protection.outlook.com [40.107.94.83])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7EE9C10E128
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 06:52:25 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BnwiEVhz0bB5dGMrkb4KrPjTfrDBmr8bjHX1ZwLhA7RCxqwJPEJdEAbr3SxZ4lji5cQmVwAsujne9NOOib5G3QxOcvh1Abn/IlRRZyuv5VT1Hbpzcv4uLOZpNLjXyoKlhjFuOEyTw70Gy/FhKUaDD3dMuTfzqUiB6hssZlDYnTEqhDIlX/vt0sCzoL58fmmQFqUYwpuDmcY/rLRX7QMJOfGuzuNqIavh8sFCbtyoGlkr6iDWwadhkcYUCqtuDcFzDKQY0wZa6g+lbozKeWUFXQlKQCB9CfWO+nw7r6NJzmP/UX/UXhnD3r7PUNy/jBXdWEdO2HPtG2fjFN8gnQbkvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b/mQCOTYwmEZDVgT9qJA/FVAf+LZDU1UK687vGC3LqU=;
- b=bq0m/uszqeJjSqIVreDwMSX9CJbG10lZSOa/NDxzY5NHpsYrUogFJdwakauojUKC8qUHEWI6bcQlkn/g+9W13Z71LMQsEY/YLNVwGTQZCtnsni1UuLPmYmOO7g2u/hV2B2Tbqmed2GlQkih7nFTrY1C8Tjk2+cswc3fLtbn1eGgth8LKw3KmU1xuxYgeeVXr7qEgEX26QaISwVkA+VG+Y+RuZf3MB5Uj5HQVY/Jtd8pab4qR0hkxCfQiU/smsR9Q16IJYFHMv1GJ9AnoSinp93B841PUWXcW2tUWbdhzrB+cGg6Yg517pDvTAH20peHEo9eQfaQZUFVwlY38YwhLWg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b/mQCOTYwmEZDVgT9qJA/FVAf+LZDU1UK687vGC3LqU=;
- b=KdVuNA9lT3ONVcPfu+ylOGJGs9gr3WTN6kM2zcFzwBF8bOKiOeFJlxFi730I9a4vv6/vA3c7wdhrqDUsrm0VKFFtdBS9wqS7fBfWp/PGDch8MPb+hwOMzznHgHHiGECmHe5eTLcTsVDbzUC9pmLpMik/kUcvnS6DTX5FlkyHr2k=
-Received: from CH2PR18CA0055.namprd18.prod.outlook.com (2603:10b6:610:55::35)
- by DM4PR12MB7597.namprd12.prod.outlook.com (2603:10b6:8:10b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Mon, 5 Aug
- 2024 06:52:21 +0000
-Received: from CH2PEPF0000009E.namprd02.prod.outlook.com
- (2603:10b6:610:55:cafe::9c) by CH2PR18CA0055.outlook.office365.com
- (2603:10b6:610:55::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26 via Frontend
- Transport; Mon, 5 Aug 2024 06:52:21 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH2PEPF0000009E.mail.protection.outlook.com (10.167.244.27) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7849.8 via Frontend Transport; Mon, 5 Aug 2024 06:52:21 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 5 Aug
- 2024 01:52:20 -0500
-Received: from JesseDEV.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Mon, 5 Aug 2024 01:52:19 -0500
-From: Jesse Zhang <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, Jesse Zhang
- <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t] tests/amdgpu: move bad mem compute test to amd deadlock
-Date: Mon, 5 Aug 2024 14:52:18 +0800
-Message-ID: <20240805065218.2399530-1-jesse.zhang@amd.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1A2710E106
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 07:12:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1722841976; x=1754377976;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=mDcLPHJqSb//TnwUUl3Dh74RX9I8QcPhlmYUXkqBKEk=;
+ b=Cn0kw2LYlMowl5kgvZ/QyA0w503AGzyOQQK4fZ39cKyF0Oj17U+NLkQT
+ DEAJDlzarsB8qrjIIBTuQ8uqSbXX6wtouCt1BxBN3Te58Q1EhHJBeKJHu
+ aKqbcTwSLkzGY1tpUoooa0ISRH9ndjTgHIiXHmIj9Kt2hb7eHA+qxl3qQ
+ 3+JrCRlYEH5wmoQeQWr7ypxST2tKfv7sjSYw7ScI8z2OM75yz8lof6GV1
+ PiKmoAS98b/yFOl+Wrf5ttT/OuCBU9bR9NkkRlaYGwhyyfXU0Y7+w6muO
+ 2vEg1hcYJbmj+5YAmEdSTWtf5cYy6tclfCHEH1Ce+na0QRBHWKQuUBzlP w==;
+X-CSE-ConnectionGUID: oK+af4rdSRK022z7vq0bkg==
+X-CSE-MsgGUID: KMl2HZPcRV6vL2O1RB2pnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11154"; a="20363635"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="20363635"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2024 00:12:56 -0700
+X-CSE-ConnectionGUID: dkhn2j4QQm+0QGbcuIC4AQ==
+X-CSE-MsgGUID: z6jO+ROCSSW6KteRAXfklA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56275799"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.152])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2024 00:12:54 -0700
+Date: Mon, 5 Aug 2024 09:12:50 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Vivekanandan, Balasubramani" <balasubramani.vivekanandan@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH] tests/intel/xe_create: Remove the elapsed time validation
+Message-ID: <20240805071250.g3vszflk6vhp7fx7@zkempczy-mobl2>
+References: <20240801123312.1539769-1-balasubramani.vivekanandan@intel.com>
+ <20240802051206.7qkzsh7pdfbc56zl@zkempczy-mobl2>
+ <ZqyjJUUV_dI-n2jm@bvivekan-mobl2>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: jesse.zhang@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009E:EE_|DM4PR12MB7597:EE_
-X-MS-Office365-Filtering-Correlation-Id: 81dd869f-f07b-4262-10a3-08dcb51b27ad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PVKeWJYMYx/dVua5AjFvAi5YHKcezXpl7/kOWZSqwVidgu5UM1n1Zyh9DQce?=
- =?us-ascii?Q?ErA9ljJlOz+cQhiYRVWuG8Dyst3hXOfM7/IlYp6zjkWjrAZOKnF2E6avmAAF?=
- =?us-ascii?Q?NoMtSwHMXjGn4taxEF2Vv0xjFGLwBu2Mpt1gWWAFuFJjGGYN1UzPpVSrgI77?=
- =?us-ascii?Q?4crZ2aE5cDmADu86S8hSoAX3TWyVe/R698Dx36LwnF3Q1VpzoFgSv2WdSQJP?=
- =?us-ascii?Q?JWESLK5K8HqjTv/txduyNdMo8YjeHkQWb6zThoxFJJ6Eye9gxPG6ctOCBu5j?=
- =?us-ascii?Q?mNODkzBjFrehokQpKvBur8SUToTOGy+GuW6XZjk1DHhrlBz/6MkOQyGLDKeQ?=
- =?us-ascii?Q?QdHhAIsDvrX1mHHLeDnF3iUKeAnAUOzSxUIcBMQy6Huf0oYmwyvrYDXvs3zv?=
- =?us-ascii?Q?btqhwiRH6T3vCo4P6yGHY6nKenFCc+WEyDh1/uMM8TS68NNyr7VlmXQ0cMOY?=
- =?us-ascii?Q?ewBlRdnq0eYHVMAE9o8q/i4QFOiphp5cpiRvf6ywufdpcNqz79vG8dRYO+hb?=
- =?us-ascii?Q?tFJV/OVy6MYb/yit73wbuf1PenrE1LLUos4DVu5A4C0+wenhsy3UAYlA5yaR?=
- =?us-ascii?Q?QjPaD88NSH1gHDgktlv7l94PLBRGLY4zzZVY5RDNfCiY/tG76ruVqSuwuUTj?=
- =?us-ascii?Q?dIUpbB+XSYsT2YPXzcb6eq0H1RT9JczuM4yKiFLQzj5bw/k5OMkaRgcSlIFG?=
- =?us-ascii?Q?GkEnTrBKBztT5aSZTMYE8afhv8oVGY8Iny3ZsO8sFTd4PF4i/Jy3l781tsSr?=
- =?us-ascii?Q?Dpru7VrY3Sm3aggejPXA7X7MuOcyV0t0huueNK237pgF8vSKt+2mih4ZXM9t?=
- =?us-ascii?Q?SHll68WZL3eI7xie1d0n14t+4bKAqyv9kRlwaiHeLIh6w5M4GAqFIh5q5IRa?=
- =?us-ascii?Q?RfGVkaJ0k02Ab08XJZKyikwnizHOvoE7X8LW5alWjewLa/ueh1mAr/l7ehf9?=
- =?us-ascii?Q?yA4xiGNKzswauJRVbomJeEC18HKXQJdbcShqAciEv3LlyS36TsMB9xKX9BsZ?=
- =?us-ascii?Q?xzGV6d4OZUqe2NGq4E09cMbyRPzhaHeZqvVCth8ByGrNMgG0+FN8N/xOLRXX?=
- =?us-ascii?Q?vOQmnFWDnSTH8JnK65395YVqd7rrAlKj6AYEL05kAAo4z5pybNgYpkla4MgV?=
- =?us-ascii?Q?bDWOIfCI0PPRqQVQbvuc0PJxo/RmRLnkn6pMuFnvRpALOg8SZaK7xd+MfPUw?=
- =?us-ascii?Q?GPLPjfT9vHJK602l0Jnl8zdoJhvcl5BKs30YnuCaK5RPfti5WP2GVUH/X70b?=
- =?us-ascii?Q?3HMzTU7ezX8Z2DjpHayOQkEgjWxrRAB4GwxY1jD+IfxR0BYCMJHRbMW4YRH9?=
- =?us-ascii?Q?mpgoDdyUL5O0PLQLd0PkTAIyHgDMbmyO70dp3z1+zqgMnOcN7jPmLyHTuGkI?=
- =?us-ascii?Q?TXd7P+HvGs5mPzIACxUF1S1poS7A3iFH0hz5GQTzEK0mlFjYAIG289nxWHU3?=
- =?us-ascii?Q?vhCMhogJ2Fv3gDgwNeyaB6v6J1Qm4YQ2?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 06:52:21.3228 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 81dd869f-f07b-4262-10a3-08dcb51b27ad
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000009E.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7597
+In-Reply-To: <ZqyjJUUV_dI-n2jm@bvivekan-mobl2>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,73 +71,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-1. remove duplicate test case.
-2. Since the bad memory test only has page faults
-and does not trigger job timeouts on mi300.
-So temporarily moved this test to amd deadlock.
+On Fri, Aug 02, 2024 at 02:43:09PM +0530, Vivekanandan, Balasubramani wrote:
+> On 02.08.2024 07:12, Zbigniew Kempczyński wrote:
+> > On Thu, Aug 01, 2024 at 06:03:12PM +0530, Balasubramani Vivekanandan wrote:
+> > > Time check used is incorrect. Time limit used for validation is
+> > > arbitrarily chosen as 5 seconds with no real resoning behind it.
+> > > With different execution environments taking different execution times,
+> > > limit can't be fixed and leads to unnecessary hacks.
+> > > So remove this time check completely.
+> > 
+> > MAXTIME picked in the past was chosen as a fraction of created/destroyed
+> > exec queues in some (safe) time period. Up to relatively small number
+> > of exec queues (up to 512) there was no issue observed. But with larger
+> > number of exec queues we noticed kernel lockup (iirc guc related).
+> 
+> Time limit of 5 seconds is not fitting all platforms and execution
+> environments. I would like to avoid hacks to workaround those.
+> We can validate the test case by ensuring there were no GPU hangs or wait
+> timeouts instead of checking the time taken.
+> Measuring the time is more a performance validation rather than
+> functionality validation. Better to isolate performance tests from
+> functionality tests.
+> 
+> > 
+> > I think keeping some time regime for those operations is good idea, we
+> > may notice performance / stability drop if something unexpected will
+> > happen in kmd/guc. MAXTIME/MAXEXECQUEUES were chosen as safe values
+> > which should be easily handled. If you're removing this check you may
+> > delete subtest as well.
+> 
+> Keeping subtest without time check will ensure the use case works fine
+> without causing GPU hangs, kernel lockups or even dmesg warnings.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
----
- tests/amdgpu/amd_deadlock.c    |  9 +++++++++
- tests/amdgpu/amd_queue_reset.c | 11 +----------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+Agree, you've conviced me. Pick my r-b:
 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 01185bfd3..6996855cb 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -94,6 +94,15 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Test-GPU-reset-by-access-compute-illegal-mem-addr");
-+	igt_subtest_with_dynamic("amdgpu-compute-illegal-mem-access") {
-+		if (arr_cap[AMD_IP_COMPUTE]) {
-+			igt_dynamic_f("amdgpu-illegal-mem-access")
-+			bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+					AMDGPU_HW_IP_COMPUTE);
-+		}
-+	}
-+
- 	igt_describe("Test-GPU-reset-by-flooding-compute-ring-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
- 		if (arr_cap[AMD_IP_COMPUTE]) {
-diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
-index fb05aee35..df96c9f76 100644
---- a/tests/amdgpu/amd_queue_reset.c
-+++ b/tests/amdgpu/amd_queue_reset.c
-@@ -893,7 +893,6 @@ igt_main
- 	unsigned int arr_err[] = {
- 			CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
- 			CMD_STREAM_EXEC_INVALID_OPCODE,
--			CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 			//CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC,TODO  not job timeout, debug why for n31
- 			//CMD_STREAM_TRANS_BAD_REG_ADDRESS, TODO  amdgpu: device lost from bus! for n31
- 			BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,
-@@ -975,14 +974,6 @@ igt_main
- 		}
- 	}
- 
--	igt_describe("Stressful-and-multiple-cs-of-bad and good mem-operations-using-multiple-processes");
--	igt_subtest_with_dynamic("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS") {
--		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
--			igt_dynamic_f("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS")
--				set_next_test_to_run(sh_mem, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
--						ip_background, ip_test, ring_id_good, ring_id_bad);
--		}
--	}
- 	/* TODO  not job timeout, debug why for nv32
- 	 *igt_describe("Stressful-and-multiple-cs-of-bad and good mem-sync-operations-using-multiple-processes");
- 	 *igt_subtest_with_dynamic("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC") {
-@@ -997,7 +988,7 @@ igt_main
- 	 *igt_describe("Stressful-and-multiple-cs-of-bad and good reg-operations-using-multiple-processes");
- 	 *igt_subtest_with_dynamic("amdgpu-compute-CMD_STREAM_TRANS_BAD_REG_ADDRESS") {
- 	 *	if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
--	 *		igt_dynamic_f("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC")
-+	 *		igt_dynamic_f("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS")
- 	 *			set_next_test_to_run(sh_mem, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 	 *					ip_background, ip_test, ring_id_good, ring_id_bad);
- 	 *	}
--- 
-2.25.1
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
+--
+Zbigniew
+
+> 
+> Regards,
+> Bala
+> 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > 
+> > > Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+> > > ---
+> > >  tests/intel/xe_create.c | 17 +----------------
+> > >  1 file changed, 1 insertion(+), 16 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
+> > > index 76ffdcef2..80de07789 100644
+> > > --- a/tests/intel/xe_create.c
+> > > +++ b/tests/intel/xe_create.c
+> > > @@ -157,7 +157,6 @@ enum vm_count {
+> > >  };
+> > >  
+> > >  #define MAXEXECQUEUES 2048
+> > > -#define MAXTIME 5
+> > >  
+> > >  /**
+> > >   * SUBTEST: create-execqueues-%s
+> > > @@ -175,10 +174,8 @@ enum vm_count {
+> > >  static void create_execqueues(int fd, enum exec_queue_destroy ed,
+> > >  			      enum vm_count vc)
+> > >  {
+> > > -	struct timespec tv = { };
+> > >  	uint32_t num_engines, exec_queues_per_process, vm;
+> > > -	int nproc = sysconf(_SC_NPROCESSORS_ONLN), seconds;
+> > > -	int real_timeout = MAXTIME * (vc == SHARED ? 4 : 1);
+> > > +	int nproc = sysconf(_SC_NPROCESSORS_ONLN);
+> > >  
+> > >  	if (vc == SHARED) {
+> > >  		fd = drm_reopen_driver(fd);
+> > > @@ -189,8 +186,6 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed,
+> > >  	exec_queues_per_process = max_t(uint32_t, 1, MAXEXECQUEUES / nproc);
+> > >  	igt_debug("nproc: %u, exec_queues per process: %u\n", nproc, exec_queues_per_process);
+> > >  
+> > > -	igt_nsec_elapsed(&tv);
+> > > -
+> > >  	igt_fork(n, nproc) {
+> > >  		struct drm_xe_engine *engine;
+> > >  		uint32_t exec_queue, exec_queues[exec_queues_per_process];
+> > > @@ -236,16 +231,6 @@ static void create_execqueues(int fd, enum exec_queue_destroy ed,
+> > >  		xe_vm_destroy(fd, vm);
+> > >  		drm_close_driver(fd);
+> > >  	}
+> > > -
+> > > -	seconds = igt_seconds_elapsed(&tv);
+> > > -	if (seconds > real_timeout) {
+> > > -		if (igt_run_in_simulation())
+> > > -			igt_info("Creating %d exec_queues took too long: %d [limit: %d] seconds\n",
+> > > -				 MAXEXECQUEUES, seconds, real_timeout);
+> > > -		else
+> > > -			igt_assert_f(false, "Creating %d exec_queues took too long: %d [limit: %d] seconds\n",
+> > > -				     MAXEXECQUEUES, seconds, real_timeout);
+> > > -	}
+> > >  }
+> > >  
+> > >  /**
+> > > -- 
+> > > 2.34.1
+> > > 
