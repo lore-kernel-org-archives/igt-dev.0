@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9913BC3DA7F
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD092C3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Aug 2024 14:37:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5AD4510E213;
-	Mon,  5 Aug 2024 14:37:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70A6010E217;
+	Mon,  5 Aug 2024 14:37:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BjHlDQ8s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fQOIAVq0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CCA5E10E213
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91D3610E217
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Aug 2024 14:37:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722868670; x=1754404670;
+ t=1722868674; x=1754404674;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qv53CjLuIPhlNO46scqSdFzDmYMMEmHqTKJZrpIL9Cg=;
- b=BjHlDQ8so9d0Uq8Ej1vHySybr6oWxaJtnx2BsUkmFCnv7NrzLQESJvJQ
- yRsShnckqPvl/mxhc0GidxupRQFmhpq9zujMZZZS40uSrT8Tbdi/Qp8T3
- vBJXdiJLKfFdQ6rnIIiGt0CsTsiz9nV9pZzhsheKvEqGtGfvQM8Glovpj
- RLDCf0hUVOUp8YJRtbDkrhVsbCHrmH69ERMelxsTeWOObKt33xvm5xMSD
- AG2WtqmDdBrMRB1jS9P+EPiqz8/V0Y6BhKXKSqCqEraU2RtgbIqRQyJvZ
- Pl9FKW2D8wn+rPQO4F3FKXk72LlnxJK1NnO23jbWY7UE1uOPKoce4OIsQ Q==;
-X-CSE-ConnectionGUID: Fs4jZcexTP60+LRokMCJSw==
-X-CSE-MsgGUID: TEQfqRQ2SbelnjEt7Kzl/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="24702295"
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="24702295"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:50 -0700
-X-CSE-ConnectionGUID: gjlSIOl7R7+Fpp5po2ZjYA==
-X-CSE-MsgGUID: L4ImK55dRq6v7y0SL7ARrQ==
+ bh=zfrnJI+Zbf6udJM+dNBpluoqfZALh3/xDGOagXomLvk=;
+ b=fQOIAVq0/f8sisbnqHEDluP+vhN5rHipw+EKp9L609IqZf7PBb06wVps
+ 4sX41RpGz9icSn7qUWEVMliUnPT+bSLjTDc5hJwAnLxqeMC6MzzdGe+rw
+ EYRL1z1S+XAxx8TM947xivL2vFBRiGliPkOh04iApmZlalAFjzQxxFORA
+ rRbNBD7FQkxCYIL6DeyYlnA2fTh4kruqHVYJ8xI5R8Uc9yetYtyawxP9Y
+ 1ebdWpObRU37K3lvVZbGvrEL1ubkC6C6uBtj60j4svGJqSQ80JkZCJdtV
+ XoZaShX4DD7Co6L3BjukuiajlTEapwxVLNEP/TxUVIHolZOfVaCzTCj3T A==;
+X-CSE-ConnectionGUID: JLuksbLMR8emyOIXJMyrIQ==
+X-CSE-MsgGUID: 5LNG58LPSP2W4Qr5zrcD1w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="21012818"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="21012818"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2024 07:37:53 -0700
+X-CSE-ConnectionGUID: KvK3rWfDRzaiDR2YPnezmg==
+X-CSE-MsgGUID: lWIY8IjIRaKFoyJtuvdQEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="56755109"
+X-IronPort-AV: E=Sophos;i="6.09,264,1716274800"; d="scan'208";a="55862791"
 Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
  localhost) ([10.245.245.246])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 07:37:49 -0700
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2024 07:37:54 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 7/8] tests/core_hotunplug: Check health once after
- subtest
-Date: Mon,  5 Aug 2024 16:37:10 +0200
-Message-ID: <20240805143713.76034-8-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v2 8/8] tests/core_hotunplug: Print info between steps
+Date: Mon,  5 Aug 2024 16:37:11 +0200
+Message-ID: <20240805143713.76034-9-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
 References: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
@@ -69,224 +68,133 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently health checks and recovery are performed in fixtures
-outside of subtest and even without any subtest running. Whats
-more, after one subtest fail, all other checks will fail and
-will print quite a few logs.
+There are some info printed directly into kernel dmesg before
+subtest steps. Turn comment before steps into direct prints
+to stdout to help differentiate which steps where a success
+and where it starts failing.
 
-Lets try to lower number of checks to those really needed and
-do them only once per fixture, which should make reading logs
-easier.
-
-v2: drop new var from test priv structure, update subject and
-  description, change second macro parameter name to 'y'
+Fixed also one misspelling s/realoading/reloading/
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/core_hotunplug.c | 108 +++++++++++++++++++++++++----------------
- 1 file changed, 67 insertions(+), 41 deletions(-)
+ tests/core_hotunplug.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
 diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 7f17f4423..51edee985 100644
+index 51edee985..415c74381 100644
 --- a/tests/core_hotunplug.c
 +++ b/tests/core_hotunplug.c
-@@ -84,6 +84,9 @@
+@@ -184,12 +184,13 @@ static void prepare(struct hotunplug *priv)
+ 	igt_assert_fd(priv->fd.sysfs_bus);
  
- IGT_TEST_DESCRIPTION("Examine behavior of a driver on device hot unplug");
- 
-+#define ACTION_RECOVER		(1 << 0)
-+#define ACTION_POST_CHECK	(1 << 1)
-+
- struct hotunplug {
- 	struct {
- 		int drm;
-@@ -515,7 +518,6 @@ static void recover(struct hotunplug *priv)
- 	bool late_close = priv->fd.drm >= 0;
- 
- 	cleanup(priv);
--
- 	if (!priv->failure && late_close)
- 		igt_ignore_warn(healthcheck(priv, false));
- 
-@@ -671,6 +673,19 @@ static void hotreplug_lateclose(struct hotunplug *priv)
+ 	priv->fd.sysfs_dev = close_sysfs(priv->fd.sysfs_dev);
++	igt_info("Preparations done\n");
  }
  
- /* Main */
-+#define RECOVER(x) igt_fixture { \
-+		if (x) { \
-+			x = false; \
-+			recover(&priv); \
-+		} \
-+	}
-+
-+#define POST_CHECK(y) igt_fixture { \
-+		if (y) { \
-+			y = false; \
-+			post_healthcheck(&priv); \
-+		} \
-+	}
- 
- igt_main
+-/* Unbind the driver from the device */
+ static void driver_unbind(struct hotunplug *priv, const char *prefix,
+ 			  int timeout)
  {
-@@ -682,6 +697,8 @@ igt_main
- 		.snd_driver	= NULL,
- 		.chipset	= DRIVER_ANY,
- 	};
-+	bool needs_recover = false;
-+	bool needs_post_check = false;
++	igt_info("Unbind the driver from the device (bus: %s)\n", priv->dev_bus_addr);
+ 	/*
+ 	 * FIXME: on some devices, the audio driver (snd_hda_intel)
+ 	 * binds into the i915 driver. On such hardware, kernel warnings
+@@ -216,11 +217,13 @@ static void driver_unbind(struct hotunplug *priv, const char *prefix,
  
- 	igt_fixture {
- 		int fd_drm;
-@@ -717,100 +734,109 @@ igt_main
+ 	igt_assert_f(faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr, F_OK, 0),
+ 		     "Unbound device still present (%s)\n", priv->dev_bus_addr);
++
++	igt_info("Unbind done\n");
+ }
  
- 	igt_subtest_group {
- 		igt_describe("Check if the driver can be cleanly unbound from a device believed to be closed, then rebound");
--		igt_subtest("unbind-rebind")
-+		igt_subtest("unbind-rebind") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			unbind_rebind(&priv);
-+		}
+-/* Re-bind the driver to the device */
+ static void driver_bind(struct hotunplug *priv, int timeout)
+ {
++	igt_info("Re-bind the driver to the device (bus: %s)\n", priv->dev_bus_addr);
+ 	local_debug("%s\n", "rebinding the driver to the device");
+ 	priv->failure = "Driver re-bind failure!";
  
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
+@@ -235,17 +238,19 @@ static void driver_bind(struct hotunplug *priv, int timeout)
+ 		      "Rebound device not present (%s)!\n", priv->dev_bus_addr);
+ 
+ 	if (priv->snd_driver) {
+-		igt_info("Realoading %s\n", priv->snd_driver);
++		igt_info("Reloading %s\n", priv->snd_driver);
+ 		igt_kmod_load(priv->snd_driver, NULL);
+ 		free(priv->snd_driver);
+ 		priv->snd_driver = NULL;
+ 	}
++
++	igt_info("Re-bind done\n");
+ }
+ 
+-/* Remove (virtually unplug) the device from its bus */
+ static void device_unplug(struct hotunplug *priv, const char *prefix,
+ 			  int timeout)
+ {
++	igt_info("Remove (virtually unplug) the device from its bus (%s)\n", priv->dev_bus_addr);
+ 	igt_require(priv->fd.sysfs_dev == -1);
+ 
+ 	/*
+@@ -267,7 +272,8 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
+ 				    O_DIRECTORY);
+ 	igt_assert_fd(priv->fd.sysfs_dev);
+ 
+-	local_debug("%sunplugging the device\n", prefix);
++	igt_info("%sunplugging the device %s\n", prefix, priv->dev_bus_addr);
++	local_debug("%sunplugging the device %s\n", prefix, priv->dev_bus_addr);
+ 	priv->failure = "Device unplug failure!";
+ 
+ 	igt_set_timeout(timeout, "Device unplug timeout!");
+@@ -280,11 +286,13 @@ static void device_unplug(struct hotunplug *priv, const char *prefix,
+ 
+ 	igt_assert_f(faccessat(priv->fd.sysfs_bus, priv->dev_bus_addr, F_OK, 0),
+ 		     "Unplugged device still present (%s)\n", priv->dev_bus_addr);
++
++	igt_info("Unplug done\n");
+ }
+ 
+-/* Re-discover the device by rescanning its bus */
+ static void bus_rescan(struct hotunplug *priv, int timeout)
+ {
++	igt_info("Re-discover the device by rescanning its bus (%s)\n", priv->dev_bus_addr);
+ 	local_debug("%s\n", "rediscovering the device");
+ 	priv->failure = "Bus rescan failure!";
+ 
+@@ -303,6 +311,8 @@ static void bus_rescan(struct hotunplug *priv, int timeout)
+ 		free(priv->snd_driver);
+ 		priv->snd_driver = NULL;
+ 	}
++
++	igt_info("Bus rescan done\n");
+ }
+ 
+ static void cleanup(struct hotunplug *priv)
+@@ -317,6 +327,7 @@ static void cleanup(struct hotunplug *priv)
  	}
  
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
+ 	priv->fd.sysfs_dev = close_sysfs(priv->fd.sysfs_dev);
++	igt_info("Cleanup done\n");
+ }
  
- 	igt_subtest_group {
- 		igt_describe("Check if a device believed to be closed can be cleanly unplugged, then restored");
--		igt_subtest("unplug-rescan")
-+		igt_subtest("unplug-rescan") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			unplug_rescan(&priv);
-+		}
+ static bool local_i915_is_wedged(int i915)
+@@ -498,6 +509,8 @@ static bool healthcheck(struct hotunplug *priv, bool recover)
+ 		node_healthcheck(priv,
+ 				 FLAG_RENDER | (recover ? FLAG_RECOVER : 0));
  
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
++	igt_info("Healthcheck: %s\n", priv->failure ? "failed" : "ok");
++
+ 	return !priv->failure;
+ }
  
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
+@@ -532,6 +545,7 @@ static void recover(struct hotunplug *priv)
+ 	else if (faccessat(priv->fd.sysfs_drv, priv->dev_bus_addr, F_OK, 0))
+ 		driver_bind(priv, 60);
  
- 	igt_subtest_group {
- 		igt_describe("Check if the driver can be cleanly unbound from an open device, then released and rebound");
--		igt_subtest("hotunbind-rebind")
-+		igt_subtest("hotunbind-rebind") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			hotunbind_rebind(&priv);
-+		}
- 
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
- 
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
- 
- 	igt_subtest_group {
- 		igt_describe("Check if an open device can be cleanly unplugged, then released and restored");
--		igt_subtest("hotunplug-rescan")
-+		igt_subtest("hotunplug-rescan") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			hotunplug_rescan(&priv);
-+		}
- 
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
- 
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
- 
- 	igt_subtest_group {
- 		igt_describe("Check if the driver can be cleanly rebound to a device with a still open hot unbound driver instance");
--		igt_subtest("hotrebind")
-+		igt_subtest("hotrebind") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			hotrebind(&priv);
-+		}
- 
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
- 
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
- 
- 	igt_subtest_group {
- 		igt_describe("Check if a hot unplugged and still open device can be cleanly restored");
--		igt_subtest("hotreplug")
-+		igt_subtest("hotreplug") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			hotreplug(&priv);
-+		}
- 
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
- 
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
- 
- 	igt_subtest_group {
- 		igt_describe("Check if a hot unbound driver instance still open after hot rebind can be cleanly released");
--		igt_subtest("hotrebind-lateclose")
-+		igt_subtest("hotrebind-lateclose") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			hotrebind_lateclose(&priv);
-+		}
- 
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
- 
--	igt_fixture
--		post_healthcheck(&priv);
-+	POST_CHECK(needs_post_check);
- 
- 	igt_subtest_group {
- 		igt_describe("Check if an instance of a still open while hot replugged device can be cleanly released");
--		igt_subtest("hotreplug-lateclose")
-+		igt_subtest("hotreplug-lateclose") {
-+			needs_recover = true;
-+			needs_post_check = true;
- 			hotreplug_lateclose(&priv);
-+		}
- 
--		igt_fixture
--			recover(&priv);
-+		RECOVER(needs_recover);
- 	}
- 
- 	igt_fixture {
--		post_healthcheck(&priv);
--
-+		if (needs_post_check)
-+			post_healthcheck(&priv);
- 		igt_ignore_warn(close(priv.fd.sysfs_bus));
- 		igt_ignore_warn(close(priv.fd.sysfs_drv));
- 	}
++	igt_info("Recovery: %s\n", priv->failure ? "failed" : "ok");
+ 	if (priv->failure)
+ 		igt_assert_f(healthcheck(priv, true), "%s\n", priv->failure);
+ }
 -- 
 2.43.0
 
