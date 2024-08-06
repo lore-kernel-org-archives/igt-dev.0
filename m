@@ -4,64 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CB0FC52D70
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Aug 2024 12:50:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0C3FC3DA64
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Aug 2024 12:52:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC4AF10E0C6;
-	Tue,  6 Aug 2024 12:50:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F17110E18D;
+	Tue,  6 Aug 2024 12:52:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IM0CG/Y6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dwrkkcRz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58E6510E0C6
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Aug 2024 12:50:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B9B310E0C6;
+ Tue,  6 Aug 2024 12:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722948634; x=1754484634;
+ t=1722948723; x=1754484723;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=0No2yv+QlSL3Wzglycsos6dGrKSzsqdBI8o3LNgHYCQ=;
- b=IM0CG/Y6zRTyr4LBz5OPddYciV+d0HZAfn+JJk5keojEc8EHP5yI/ZUo
- 5rqYFaYsXjJZ6d6l51FLD1rMe+YGr7tdJYvJz/8+bGsVQCx2henl7ChNV
- oEX0IqBx3sSIl/ihDuzP7Um1LeLpUA2uglDGkNdMzUWLjMlMcbkmUpOy2
- PFIAIaRQrxpFtoqyLwUKQA0HedWnX8BcuWi1404fm+DKzXlQBdyEyOs09
- +ruTsZnWeqlrSdMStTv5meiDDCAysoiHU2rEY7udWImLXuZwWD9zY6x6r
- bNtUQqonb9Ee7dQW2j83nw3iKjGhUp2m5/7a9EnxKwBnVsr//iNV/dguS A==;
-X-CSE-ConnectionGUID: PoZhcWFkQAimpdVChwwuCg==
-X-CSE-MsgGUID: C8yviVXGRvKzS20UjHP+aQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="21140967"
-X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; d="scan'208";a="21140967"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Aug 2024 05:50:33 -0700
-X-CSE-ConnectionGUID: Z0ub8aVAQJezkAhSMb7u6Q==
-X-CSE-MsgGUID: X+go+2mIS+uyuvezccG2Lg==
+ bh=QJWq15nIo11OCt8XqOKGwp9dYhZ/q73pf1LNde3kX0A=;
+ b=dwrkkcRzqDcPW817z+eknZQd9uaikV0HKmouA61rFxXeatHCqf1xsnSS
+ 6Qps17MEr3klVHmqe6Jh33u1SPjKoMu+H0jVJyMMi/p6jehDnMp6/R1fF
+ JDODKhCv8hfyVW4iPzPZ3QqF8G0SQOcWHkdvxdl8ovepG5Iy7ggWoKEjv
+ 7JGcVSxmOuffstJj3L1t3QNNppUEdOvFPF/KSYga+WeAqomnQu98Qa6RD
+ fbrhLs7vq4RMFITMstZLCrpjj9eN9MbquuF1s3hntrMCB0cbCsGTg7/SQ
+ Mn7Pz0qpv9Q/ZKEGHQvii0t+ufFCCrTc5wclN1EMhwut3L0RdX+pDazls w==;
+X-CSE-ConnectionGUID: lfA/TMXFTyG684szt/AA+Q==
+X-CSE-MsgGUID: 9j4E5mfPQEWL4D7Ypv7UjQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="21103256"
+X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; d="scan'208";a="21103256"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Aug 2024 05:52:03 -0700
+X-CSE-ConnectionGUID: P/Nj19W2STSLZze6KLhJhA==
+X-CSE-MsgGUID: VijivfoaTpyT/RfQtSiBtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; d="scan'208";a="79760976"
+X-IronPort-AV: E=Sophos;i="6.09,267,1716274800"; d="scan'208";a="56427598"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 05:50:31 -0700
-Date: Tue, 6 Aug 2024 14:50:20 +0200
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2024 05:52:01 -0700
+Date: Tue, 6 Aug 2024 14:51:58 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: Re: [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without
- display
-Message-ID: <20240806125020.jygbaulfsnpv6rqd@kamilkon-DESK.igk.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ tests/core_hotunplug: Make it fail only once
+Message-ID: <20240806125158.ekktjw3cksz5vsbd@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-References: <20240730113508.48777-1-sujaritha.sundaresan@intel.com>
- <20240801114553.gmb4lpfb4i2xnico@kamilkon-DESK.igk.intel.com>
- <8fba7a7c-47f0-436c-b839-635a5edec4f9@intel.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20240805143713.76034-1-kamil.konieczny@linux.intel.com>
+ <172290187178.541967.3526584282945736721@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <8fba7a7c-47f0-436c-b839-635a5edec4f9@intel.com>
+In-Reply-To: <172290187178.541967.3526584282945736721@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,137 +71,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sundaresan,,
-On 2024-08-06 at 11:50:46 +0530, Sundaresan, Sujaritha wrote:
+Hi igt-dev,
+On 2024-08-05 at 23:51:11 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> On 8/1/2024 5:15 PM, Kamil Konieczny wrote:
-> > Hi Sujaritha,
-> > On 2024-07-30 at 17:05:08 +0530, Sujaritha Sundaresan wrote:
-> > 
-> > small nit about subject, you wrote:
-> > 
-> > [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without display
-> > 
-> > imho this should be:
-> > 
-> > [PATCH i-g-t, v3] tests/intel/xe_pm: Add tests for suspend without display
-> > 
-> > More nits below.
+> Series: tests/core_hotunplug: Make it fail only once
+> URL   : https://patchwork.freedesktop.org/series/136888/
+> State : failure
 > 
-> Hey Kamil,
+> == Summary ==
 > 
-> Sure this change I can make.
+> CI Bug Log - changes from CI_DRM_15180_full -> IGTPW_11531_full
+> ====================================================
 > 
-> > 
-> > > Add tests to validate basic execution suspend/resume cycle
-> > > without display module to rule out display related issues
-> > > from the suspend/resume stack.
-> > > 
-> > > v2: Add normal reload cycle after running test (Anshuman)
-> > > 
-> > > v3: Rebase
-> > > 
-> > > Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
-> > > Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
-> > > ---
-> > >   tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
-> > >   1 file changed, 34 insertions(+)
-> > > 
-> > > diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> > > index 8b115e2f6..03f742265 100644
-> > > --- a/tests/intel/xe_pm.c
-> > > +++ b/tests/intel/xe_pm.c
-> > > @@ -17,6 +17,7 @@
-> > >   #include "igt.h"
-> > >   #include "lib/igt_device.h"
-> > > +#include "lib/igt_kmod.h"
-> > >   #include "lib/igt_pm.h"
-> > >   #include "lib/igt_sysfs.h"
-> > >   #include "lib/igt_syncobj.h"
-> > > @@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
-> > >    * Description: suspend/autoresume on %arg[1] state and exec after RPM
-> > >    * Functionality: pm - %arg[1]
-> > >    *
-> > > + * SUBTEST: %s-without-display
-> > > + * Description: suspend/autoresume on %arg[1] state without display
-> > > + * Functionality: pm - %arg[1]
-> > I see you copy-pasted it but imho both Description and
-> > Functionality documentation fields should be static, here and
-> > in other places.
-> > +cc Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> > 
-> > > + *
-> > >    * arg[1]:
-> > >    *
-> > >    * @s2idle:	s2idle
-> > > @@ -681,6 +686,7 @@ igt_main
-> > >   	struct drm_xe_engine_class_instance *hwe;
-> > >   	device_t device;
-> > >   	uint32_t d3cold_allowed;
-> > > +	const char *opts;
-> > >   	int sysfs_fd;
-> > >   	const struct s_state {
-> > > @@ -757,6 +763,34 @@ igt_main
-> > >   					  NO_RPM, 0);
-> > >   		}
-> > > +		igt_subtest_f("%s-without-display", s->name) {
-> > > +
-> > > +			if (!drmModeGetResources(device.fd_xe))
-> > > +				return;
-> > Why 'return' here?! Imho this should be checked in fixture
-> > or be a skip. Or other way around - what about a headless board
-> > or one without any connected display?
-> > 
-> > Regards,
-> > Kamil
+> Summary
+> -------
 > 
-> I think this patch idea sort stemmed from the cases where we have a display
-> connected and
+>   **FAILURE**
 > 
-> want to make sure that the suspend/resume issues are not being caused by the
-> display.
+>   Serious unknown changes coming with IGTPW_11531_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11531_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
-> But would you suggest expanding the test to have the headless/no display
-> situations? If so what changes are you suggesting for that ?
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/index.html
 > 
-> Thanks,
+> Participating hosts (9 -> 9)
+> ------------------------------
 > 
-> Suja
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11531_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_busy@close-race:
+>     - shard-tglu:         [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15180/shard-tglu-9/igt@gem_busy@close-race.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-tglu-6/igt@gem_busy@close-race.html
+> 
+>   * igt@kms_atomic_transition@modeset-transition-fencing@2x-outputs:
+>     - shard-glk:          [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15180/shard-glk3/igt@kms_atomic_transition@modeset-transition-fencing@2x-outputs.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-glk8/igt@kms_atomic_transition@modeset-transition-fencing@2x-outputs.html
+> 
+>   * igt@kms_big_fb@4-tiled-8bpp-rotate-0:
+>     - shard-mtlp:         [PASS][5] -> [ABORT][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15180/shard-mtlp-7/igt@kms_big_fb@4-tiled-8bpp-rotate-0.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-mtlp-7/igt@kms_big_fb@4-tiled-8bpp-rotate-0.html
+> 
+>   * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@a-hdmi-a2:
+>     - shard-rkl:          NOTRUN -> [FAIL][7] +1 other test fail
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-rkl-5/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@a-hdmi-a2.html
+> 
+>   * igt@perf_pmu@all-busy-idle-check-all:
+>     - shard-dg2:          [PASS][8] -> [FAIL][9] +1 other test fail
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15180/shard-dg2-7/igt@perf_pmu@all-busy-idle-check-all.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-dg2-11/igt@perf_pmu@all-busy-idle-check-all.html
+>     - shard-dg1:          [PASS][10] -> [FAIL][11]
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15180/shard-dg1-14/igt@perf_pmu@all-busy-idle-check-all.html
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-dg1-18/igt@perf_pmu@all-busy-idle-check-all.html
+>     - shard-mtlp:         NOTRUN -> [FAIL][12]
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/shard-mtlp-3/igt@perf_pmu@all-busy-idle-check-all.html
 > 
 
-I would suggest turn this into a igt_skip_on_f(), not a return.
+These are unrelated to core_hotunplug,
 
 Regards,
 Kamil
 
-> > 
-> > > +
-> > > +			xe_for_each_engine(device.fd_xe, hwe) {
-> > > +
-> > > +				igt_debug("Reload w/o display\n");
-> > > +
-> > > +				igt_kmsg(KMSG_INFO "Unloading Xe\n");
-> > > +				igt_assert_eq(igt_xe_driver_unload(), 0);
-> > > +
-> > > +				igt_kmsg(KMSG_INFO "Re-loading Xe without display\n");
-> > > +				igt_assert_eq(igt_xe_driver_load("enable_display=0"), 0);
-> > > +
-> > > +				test_exec(device, hwe, 1, 2, s->state,
-> > > +					  NO_RPM, 0);
-> > > +
-> > > +				igt_debug("Reload as normal\n");
-> > > +
-> > > +				igt_kmsg(KMSG_INFO "Unloading Xe\n");
-> > > +				igt_assert_eq(igt_xe_driver_unload(), 0);
-> > > +
-> > > +				igt_kmsg(KMSG_INFO "Re-loading Xe\n");
-> > > +				igt_assert_eq(igt_xe_driver_load(opts), 0);
-> > > +			}
-> > > +		}
-> > > +
-> > >   		for (const struct vm_op *op = vm_op; op->name; op++) {
-> > >   			igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
-> > >   				xe_for_each_engine(device.fd_xe, hwe)
-> > > -- 
-> > > 2.34.1
-> > > 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11531_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+...cut...
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_7956 -> IGTPW_11531
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_15180: d15caf398bccf6c9d34363f65251b7192f833dc9 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11531: 11531
+>   IGT_7956: dc7e77d1a8643f50832c38b4c8f8ddb598c0cf48 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11531/index.html
