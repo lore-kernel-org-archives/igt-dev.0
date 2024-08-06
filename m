@@ -4,187 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50FEEC3DA64
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Aug 2024 06:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C99FDC3DA64
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Aug 2024 07:02:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0D7510E009;
-	Tue,  6 Aug 2024 06:21:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6783910E1AC;
+	Tue,  6 Aug 2024 07:02:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ktqe248Z";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="rZepcX2t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 141A710E009
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Aug 2024 06:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722925266; x=1754461266;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=L3lMjSawSy1jK/qbaByJXGiN1mbnXPfdhbZS9zY0EoM=;
- b=ktqe248ZMB6Hvg/YaY9njZEysGAQt0Godd4JKqmdP/+s1Vh5UsEIhJWi
- creWVzT11O389cUCg38dnda40/DOS40My9qXoCOs5DNn3NBqSNv4Y5QsO
- Uo9cti9zdxz4e2uxMLQQF47CKeKH6kKVpuTSsQ34qBXI5e7AiyrPVY2I7
- T56VOMW2FVsC4KSCkkPARTJQ8x2W6Nt2Gpgs/bdlmolNZ+jNEAJ8HVUfY
- XdDlGkey8OyyoWuGhI2Y+AhI2DfH5DzWNrvCM3/dqgwONRZuSiv6N44Ty
- 0CSM5nLoLvZJuwP/tQsPwwLlrGYOWd+3koN4JxHgvGwfcZ4W7OwPw3Gky g==;
-X-CSE-ConnectionGUID: wFgR80spSRSmzAyEnDlgkQ==
-X-CSE-MsgGUID: 3rEJnjH4RzmOkDGW0v5/8A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11155"; a="31495592"
-X-IronPort-AV: E=Sophos;i="6.09,266,1716274800"; d="scan'208";a="31495592"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2024 23:21:05 -0700
-X-CSE-ConnectionGUID: qX3MrlMrQiGTC0Ji/Ej4HA==
-X-CSE-MsgGUID: VqFuNeZPTLeYb4/CQKh6EA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,266,1716274800"; d="scan'208";a="79661483"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 05 Aug 2024 23:21:04 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 5 Aug 2024 23:21:04 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 5 Aug 2024 23:21:04 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 5 Aug 2024 23:21:04 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 5 Aug 2024 23:21:03 -0700
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam12on2072.outbound.protection.outlook.com [40.107.237.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE1F010E1AC
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Aug 2024 07:02:53 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vZka7s/yq5iUin1OVb4K468IdSNlObZf2KqEUNo76xIUmi42EWZmCuzRPjVbnxdIynNuVhRLuABGewUWGHMYJCI9JuWaaztXjZ4kNag2GhIjRn5nzHIyrTmvee0Tzs8TglMg2cLdqyXS/E8PYNsUCeVJRPqDDOkp0mFoZtk8jX32w6NLGpn8XIGulmdOTYLsQukvdA0AtQSOW4fvmiQ7zyQmok4937KFfJwYXP0/lUT3YVjMvEWHvPYGH1auBcusLgbbHvnKYbMOxSOoZmjcLIf7GCYEmEp75JC6TiuAlK0deZwVlcaC5JadRh64z3kHF8MASthEZgXHc4Pks4nCIA==
+ b=Cz4y/DJx7sKRGx7uSHLWDezWO4mPu7QSHYV4v1j/ZjgT0UziGP8Vts88lWCls3gclQp6bM7tLKoEdjUD4ZDYWgUGCMID3p40+zIXtWqRQFkmIQOvjAATG4T3gegXkwVrchGJTc+5joQXBUQp25TTQDbK7HIBrpzlc8ChRffrs1FF5cMPDL1HBM0K9e3TbItam2dn0clfmGnXQufGvGSAWxF1EHaeuf8IKYDNrcIR7DbAr8cKKrGi3SpHsZ/Xn5IcfgNVnwndTHEXCqVypfEgCHYpmtNX1GJKX+W1L+tkDnm8mwSIONL3v0WYmtiSxLk7n52XAYq+ebOmoo1E45/wUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qQuPIqzLq6ywYHWsKcRBN39jxtEnMkvFZ9vo+k4mk8A=;
- b=XqXmMtui2JP0l4Lp/dGlHNlqg9N7Y1W0g1Ub52ke+9teikYjIyIYuXcdHRxSLciVF5+MM0OsmtDFBffYLayetwBo3P5JPMPNvGa4IYuPHkB5KiKZpsR7iZuq4Y0jL1FXttcG+aoMwYlbpY4IjaZFJ/D4NxdP5rNLRIJ7+4domxdas7T7hAU66mpWas+H62Q2A6tSSbr4rknUS7nmfc5bQMW9G0wHM1/Zgr8V81+0odUKnW+sCCPWurKrDmrRjH5oYlgT/UzxkH9uEM861fosVksQVahdWtHlfc0tfqxIYOhTJ3VpBfiUT2UcBPLUqobHaaWKCN9fkn9F80IrdhalvQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DM8PR11MB5653.namprd11.prod.outlook.com (2603:10b6:8:25::8) by
- PH7PR11MB7431.namprd11.prod.outlook.com (2603:10b6:510:273::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.24; Tue, 6 Aug
- 2024 06:20:56 +0000
-Received: from DM8PR11MB5653.namprd11.prod.outlook.com
- ([fe80::2962:1efd:f912:a5a3]) by DM8PR11MB5653.namprd11.prod.outlook.com
- ([fe80::2962:1efd:f912:a5a3%5]) with mapi id 15.20.7828.023; Tue, 6 Aug 2024
- 06:20:54 +0000
-Message-ID: <8fba7a7c-47f0-436c-b839-635a5edec4f9@intel.com>
-Date: Tue, 6 Aug 2024 11:50:46 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without
- display
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, Anshuman Gupta <anshuman.gupta@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-References: <20240730113508.48777-1-sujaritha.sundaresan@intel.com>
- <20240801114553.gmb4lpfb4i2xnico@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
-In-Reply-To: <20240801114553.gmb4lpfb4i2xnico@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0036.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:81::12) To DM8PR11MB5653.namprd11.prod.outlook.com
- (2603:10b6:8:25::8)
+ bh=jA1afuuiPvQ5K76OJtMR//x5L2crPL0QJgg6POxcdYU=;
+ b=irQyNreVu3q3wphxTsqC7ZAMAGtl1dsigNnm1xY9EfCmJEWAnk/WTYsKz7Paa2sufZU0kt1h6+0I+iDa5THamSMMk4kWETWvKVgzdmmGiwPWiLJpqaQR8PKdFzKeWVQdT5xD1eH4kXbLYqwUtaCjwk6vEgpKe462LNc9npnqAMGhVyRdvXtF/8mcvqDXvpSIBB8kubwnQJpumw5QtGmZT/eOm7tx79IgnimMYJB8ZNRvudjqdssDem0/UCkRmlP/6F0kyNkwgkRN013ZvjCzw6NA9uM/N8iSSgj9gDHaclIbsbrGwIdfvITvIgepKyIDg38Hk0CMCrkngZx5I6cazA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jA1afuuiPvQ5K76OJtMR//x5L2crPL0QJgg6POxcdYU=;
+ b=rZepcX2tNEWdECgi5mq1v59vMmx+TZuLWKfJJ2bOpS6mbK8RvXN6JrnSdkPPsy6IADW5aZWzqk7rp2kSJUrvI4+DsQndo2iEy8iGVMHEA6fX87Tey6xxCNrl8ZOCjsilGfjV+pymz+scSLWVGmcAvm0cn0g7VN000Et8LcweCrY=
+Received: from PH7P221CA0032.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:33c::35)
+ by PH0PR12MB8797.namprd12.prod.outlook.com (2603:10b6:510:28d::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.21; Tue, 6 Aug
+ 2024 07:02:49 +0000
+Received: from CY4PEPF0000EE30.namprd05.prod.outlook.com
+ (2603:10b6:510:33c:cafe::50) by PH7P221CA0032.outlook.office365.com
+ (2603:10b6:510:33c::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.28 via Frontend
+ Transport; Tue, 6 Aug 2024 07:02:49 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE30.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7849.8 via Frontend Transport; Tue, 6 Aug 2024 07:02:49 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 Aug
+ 2024 02:02:48 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 Aug
+ 2024 02:02:47 -0500
+Received: from JesseDEV.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 6 Aug 2024 02:02:46 -0500
+From: Jesse Zhang <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, Jesse Zhang
+ <jesse.zhang@amd.com>
+Subject: [PATCH] tests/amdgpu: Add queue reset test
+Date: Tue, 6 Aug 2024 15:02:45 +0800
+Message-ID: <20240806070245.2444203-1-jesse.zhang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5653:EE_|PH7PR11MB7431:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b221f39-93d9-4d7f-1618-08dcb5dfed49
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE30:EE_|PH0PR12MB8797:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c15fc03-b179-4d23-701f-08dcb5e5c846
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?MGR1MUtOV01VYmpvRkt6dDVDaHdPR2oyd2RJYmtMUHNGOG1vaWc0RU5PcDBs?=
- =?utf-8?B?S2l0VVFUR1ZYWS80MlZPYVo3ZUxhbmlwdmNIWFBpMnZTTW9PbTBNakNCUTlU?=
- =?utf-8?B?eDlNYlh1bE80K0R3b2ozS2l2SWwzOXRsMGpKMDJuK20rb29zajFCS1dzSHRm?=
- =?utf-8?B?YzBaWFcvTEVJa2NXUHB1UkhVMS9hNGJadGtUTGkzWEZiSGxRMENpbUdLa1Ra?=
- =?utf-8?B?NkdyenVFc3JJWjMyOVFiL2tnSUV1dWk3QmNGTElRMThiSVdxOVR3WXI4cXpN?=
- =?utf-8?B?UkVqSk9jaDRGSkNCcXZzUHB1L1ZLYjA3aytVMG82cGRhNmJWcEo2M3B1UDFs?=
- =?utf-8?B?aUtHOUh1YmFxUG9CYUZKNGpxM0VybkIwSWJBYTZ0UzJBZHVkNXluSlFmT1p4?=
- =?utf-8?B?RjRXM0FrMVk3STduOUtXRG1qS1N4V2hSYjdoaFJUNUdCeDJDODJ6M29WTEpt?=
- =?utf-8?B?WWdtUGZFT2sxcGFTMjBqN3N5cE9EblhrejNLQmxlVTdlUzZuRm93OGt2VzJP?=
- =?utf-8?B?VjFQdGVlVTdSN2JqWG94YWljYTZ4MXJBM0V1ZGZ1ZjFkMjZXajE1eEFxc3RR?=
- =?utf-8?B?RHhFVkRvbkVLRXVoQ3lSOURDZmdWa3ZFY25URzc2RkVoQjNIbS9ZSytZT2Rj?=
- =?utf-8?B?SS9KdS9Ca3MwSWdEZEJzTXVPZ3hBNWtJb3FmUi9DaElyT1VnZURPcDhYaitq?=
- =?utf-8?B?OWU2aFAvZkE5M2h2d1pqUHgrcG9leTRTSUtpWTRkMlo5L0pOQkYxWnJKaDBX?=
- =?utf-8?B?K2dGUXF3WktoTzZId053VXlFSnJDaWVjS1JQb2RGaW85U2hrVityUTVGUGM4?=
- =?utf-8?B?VVZiSUlqcHljUHJYWGkxcTNmRms3cldlUk5ubll5ZC9tSG9ydDFwenhKbU9G?=
- =?utf-8?B?V293TE5XcWc5NFBPY0lhRDRmM0F3dXEzRzRMaTBXTE9kWGtlZTdRQzE0TUdk?=
- =?utf-8?B?eHk1N3I5VkE1bnJiZ09Zd0kvNVNzdjBwUEF5anB0eElwbkdTMjNuNmtRcFFH?=
- =?utf-8?B?ZWF4M05zWGZtYUF6U2hMYlRuUDRJMzNwak5tYkIzL0pFTnJEc2FPT3plRGl6?=
- =?utf-8?B?SFNIODlBZHRWejBLTVF2ZDAxdEs5QUw1RWU1bkNQSWxOVnlyYXVWNy9WZXJu?=
- =?utf-8?B?eE02VThrRDR1RFF6QnIwTGc4VW1xeTU0QTNlbVVVSjdPOW81a2g0N2M2WHd5?=
- =?utf-8?B?VWVja0FVT3pseEFQbnV4OXkraUdlYWNHQit1ZHB5VjlpV3Q1UE96bkRSSVBP?=
- =?utf-8?B?QU9jTjVJNmU1b3p6S0RDRTl3SlcvUlJHRDArMGVxNElyS0dyam1FaitOU05J?=
- =?utf-8?B?aUdtanlOSG9sOE02aGR5V2ErK1N1WlM1bFpnOC95MWVnTDR3dDh5WHdhNXdN?=
- =?utf-8?B?VkdXdHNwSk1kUThlcW1zQzZkdlV5MUtNVW9ZcXh3aUNqNUwrckxGVFd0Q3Vt?=
- =?utf-8?B?MDhESjZ1L2hlUU5NMy9UckNkeDlWN0pGMkF0NjJPRnhIVWhWNlJHSTJPSitt?=
- =?utf-8?B?T0drUWsrS1Z3MlExNUh2Qm9UNjQ2M3JZcnZLcHFRWU52UWFFQmlBYTlyTi9M?=
- =?utf-8?B?SjNCaElXRmZZRUxCbXo5dHFlQ0JwT0c0WWh1cHNaTzVjcHowWHdBTDF3RDVj?=
- =?utf-8?B?bkhEeG9Lcy9HRSt2VVNxS2FMRkFNT050OHBXT254Z0RhQTBpSFZtSkJEaFE2?=
- =?utf-8?B?dCtVN2NtdVQxSzRncXVlNWhpKzNMWWF2RjYrdFNMbS95aDBEUmw3SURRYXJM?=
- =?utf-8?B?RzBnNWRUTmRmdmRYcTl4KzRoV25vT213QUsxYWRyR01CcGNGd0tFRllwOHh4?=
- =?utf-8?B?bmlaYXBVZzVzUzI2dzJhZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5653.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QWFlU0xtNXJ2OUlwcG5CWStoRnJ4bnJFdDVsT0E5citrOTFKYTJpb2tmVUZZ?=
- =?utf-8?B?NnVxeDBFSVVQaEh2WWxHeWExRHlkTFJXK3g3QVFmTURnNlNCaTBpUUhLMjFX?=
- =?utf-8?B?T3RIeFJtbGNzc1NjeWp0TmM5c3RQNW1TWlZCWloxNlV6VXNGSXpXYzdiMTMr?=
- =?utf-8?B?R2JVSkg2ZEdpNzhHQ25nU2lsQlpOUUdzbnVXaU5uTVZ6SGVEZG9vWE5CZTJl?=
- =?utf-8?B?SFN0SzRIZ0R1aWxQeDR2dlFqUmNIbDByQmFKa3pxN0tMdHJOOUxhbnR0U1J0?=
- =?utf-8?B?L3pqRnhTSkwzb0k1QXpTL2RMVFFncUdFZGpSeFNKK1Y5dXdZZUFDY09MWEpE?=
- =?utf-8?B?NXl1MHhpQVJkQnQ1OXZWMEJQMjZFb1k4L3VJR3VqS3B4Y2Fpc1VKNlUrS1dI?=
- =?utf-8?B?Y1hOaHREdlF3RFAvbzlyS0JhTzZCNkNJMGdvbTB4N1diNWV2dU0zMG01bTlj?=
- =?utf-8?B?MmxKdE5FZmxMdVdkS01rY3dRSzlSYzdHR0VwdjVyL2hRbnBibFFCMTRQRUhI?=
- =?utf-8?B?UlFoa2lRYlR0NzlSTW8zNVoxNS9QUmtsWnpCdTBPUlJxVHlYbnVGNElDZFIr?=
- =?utf-8?B?bjdrcDhlOTBSMDh3dzhCa29hQTM2cjc0Tk1HWGNFcmpUTGVESXdyc1p5UWVX?=
- =?utf-8?B?R2xxLzhYQy9QdzllWFN6MHJCZzh5S2dPU3N5WHdadzlIdHlickxQUjNKMkMr?=
- =?utf-8?B?aDI4VTVEWG0wL0xQSEJNTEtKWXN1VmwrU0RNUDJQRUw1SVpJalcwYmQwQldX?=
- =?utf-8?B?YkRaMXdGK1RTNE9VVGtybEhwdWhWdEFXUlVmSm9HTmlTcFBFaTJlSDRPR3E4?=
- =?utf-8?B?QXVOdFJzWGg4NUt1Ny9LRGszcHd5L25VT3RIVXhtYm1WN3lxaVg5UDFDK1Vp?=
- =?utf-8?B?QzZNWjlBbGl3Z3RGenk2dWt4SHBzSjM4dlNCRFRKR3p4TlhjWUxLYWNOZ1lm?=
- =?utf-8?B?eE1qZEFTZm9VWXdKNjlQY0JkbzdEaWE0aCtsZDE0N0k2eGlvZzk3SHdzQWxP?=
- =?utf-8?B?WDdCcmFnRWV6U2JFZEp6Qm1DdGNwUHZYV2habmdJMCtNTWNlYUFlZXJPSldE?=
- =?utf-8?B?OEpnbkVReG9WWTROeTBubjZSNGh3ZTRGV1c3SDBpenZIRjg0QUNhVEhOS2dK?=
- =?utf-8?B?dUJMNEtXcU1pblZDdlBNTWlqOWZrSWg5TGp1cndCZkdlU2RDOEsxUGhjcXZB?=
- =?utf-8?B?TFlrUWVlRTBxRy9ITzF3LzdHcFZCbHAxTlZDaW1JYkI5di9FVjkrTDdNRmhx?=
- =?utf-8?B?K2M2WHlkRDI0ZkN3NnlNOTY0MGxiUFYvTTFoK3FGdkNDMkFnOWhqVERMc0py?=
- =?utf-8?B?Y2ordGZmbFIxbTQ1MzVwajVFYXZUNmtKY29FN2k2OXlCVlJDQkRoOGZFanIw?=
- =?utf-8?B?ekk2cFZuZmZSVklRS0VvQnRzMlRoRXBFNFZkanVTTGVrSmxEQ3E3UXkrT2Nu?=
- =?utf-8?B?a0NWS2ErSHNPQmcxUmlETmtWSkxGaFQwa3piVEFHUFRwSllaQURFTkZLNE44?=
- =?utf-8?B?RXV3WXNORWZGVnVldkxBaVNqN0lEWVJaZ0doU2VTR1RMOFVReXoydzZiWWVt?=
- =?utf-8?B?YURjVWw3dTkxd2RiRTRyWWtONEwzNHhjdVBZenpFWllmazhUNEpYdzhHcXhB?=
- =?utf-8?B?NmduRm5KeVpnSTlvQVplQWlOSGJSeVlTVk91TkVjUzg2SWI5ZFVYWm9FYy9I?=
- =?utf-8?B?RU5mVmk0VlpmTTdqMUxIVW9xM1hBOUVVSDRuZmRiTWJ6MmlCRk5ISDZueDY5?=
- =?utf-8?B?eUJoMnpFRjJNMXQ4WmVOejdZQ3lJTEd5RHFhZks1ajJONVlqdjVBZFRSMGV1?=
- =?utf-8?B?MnVLWkdYRkl6V2graVdsUFp4bjBWV25EOUtpNVNXY1V1Tis2VmxZeTlSejFi?=
- =?utf-8?B?ZjFXTjdsV2xaUmJkcitLcUVCeFJBK21yTWYrMVI0VDBPZ1lMc0dabmxmWkpE?=
- =?utf-8?B?SFAzQktURWJidjRuREpwbE11azBKTHVnZFVIWlcrN3R1d1F0UjJ6RXJIdXNq?=
- =?utf-8?B?N25CK2tnZHdZOThtQkN2R1dJK2x2N253VUlJdVZRL1NicnJBMkZmTzdhN0R4?=
- =?utf-8?B?d3dBK1NZUWorbUEwU1ZyaTJhRnoxVmJYaVdpTlo5Nm5IYjlncFRlbXhnVmk1?=
- =?utf-8?B?QWErVXFFOGRZQXgvc0Jma1ZFWHRFMzlLZGtoVk1uSGVFNzdRYUROa21DTUNZ?=
- =?utf-8?Q?4T5/7GGRAANQIJleFP/+ULY=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b221f39-93d9-4d7f-1618-08dcb5dfed49
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5653.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2024 06:20:54.6510 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: skDvArxyiMlGhfihT7Y6+Br8x9qIxK8alx7xFEpm7Km35EC/S9Lw159ObooLtCtN1sxGA5vjpUMZeRvh/QqcETV0wPwLWXWG/9YD7IhzUKI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7431
-X-OriginatorOrg: intel.com
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?TTTFcZbqrT1ztEoJDey5m6TKVnGHoP+f+Djejds1CXMWel7YXk+SqbD+2u76?=
+ =?us-ascii?Q?VqfNlxAEYOsiiv5Az5bs9KX2A4lX4rbYBxxm3HTqiXQRm8PC7FtF9+mPRFeX?=
+ =?us-ascii?Q?35OoRmpmAccaHwGpP4qVow2cuheFS4diT455skEuy8V7dn+NsK+ZZXweonDb?=
+ =?us-ascii?Q?LY8naLfhIxtwxpoftsvNEhWTvNhY5nKmGl0FhEI+i0LR7wZrPenp3U3LcISW?=
+ =?us-ascii?Q?y6iBrWfp2juR3tmhKrlmQbCXMR8DnpPd4t93BNosJN6FazvaVfZFZ40sYwFl?=
+ =?us-ascii?Q?7EoUSkHU7fKUSADvD6HG5XSE/0R9lbgijhlyOoOaZ5SzxrrXwBmmN8tUHDhV?=
+ =?us-ascii?Q?iWhBYWXpZ1rNK6pUe5s96gUFGfzuwu/iq5439dWNhMx915KCFL1hDVMO9Vm2?=
+ =?us-ascii?Q?pC/G2uznXkR4s1wOPusNgeyix6OW+ionjLiklebGmAnudAeIPvdYX/b3MaJF?=
+ =?us-ascii?Q?bIWO55JjdLuh8mmaT3b61GpttWKV7Yqk43/h7EJd+CnrMvCLxrLMoLar2ORZ?=
+ =?us-ascii?Q?81GTxrk1Iyh2gZabafTAYaXBlWMXLKTEEyD+RXlZFu1Ik7/1iJdUzL50q+PO?=
+ =?us-ascii?Q?vY42YGkm44CFyXSHiXb9ZvF56O8taqrLZkqhjX57P25IUgvjlMkqLR/tB6wU?=
+ =?us-ascii?Q?vb13JwTD8IU+hYEz/61JcAM9d5D2atM8f4Gsg+6S2npvmUZ7ZJnslEfESqIg?=
+ =?us-ascii?Q?YTDstQGz/DN227fFMVXzQpkkv2Fs9MHjPFwQuHNrYGvnviCcKbnNYOQs1Usn?=
+ =?us-ascii?Q?pA8Xpi8NaUBe5lfvFI2LvdGvFW5dwA75JaV/jpDM1XdJb9uRH2YhVFYcaXiH?=
+ =?us-ascii?Q?OdLkGsVdegzjm3BOd/sHfieAFFEB5yXwO+CiHMDTWsBXJ60mfBwYgl+jRoGQ?=
+ =?us-ascii?Q?j5HgvnNW5Ff5s87J07q6wMaRPdozfHDoqmf9FX/ACKrHN6H0bI9dHWALmShL?=
+ =?us-ascii?Q?NAAY01GZSRm126LmE3+QcHUkVvQWJiXOuHpjww85h3FXU9OGZ80kGU3e44R5?=
+ =?us-ascii?Q?ywf6ebdHaTsMXNeOXrTIbMXCGApn1dyY213cULU5tEAnC+/LPNtd3Wi5zusf?=
+ =?us-ascii?Q?LecxaNVhSm8z6aQAMS0hAKf3U90zPfUBrmDoZ55CBUamhioBpjjPQalZXFnj?=
+ =?us-ascii?Q?BGXC6wia91IjiDSuh9E2XeYeFYAGzgX0lK/Gnq+z0rkm7eANwI2R6RXAwYoe?=
+ =?us-ascii?Q?UQHx0i5MGOKjnykIKUX5gOSNh+107RqHla/fKnwptA3FGyIknQFM0dylfAKv?=
+ =?us-ascii?Q?AI0E5JCJW2/6qXKIvEqA3XostPqxitEicQKjbvJX5rPmuY9pFnHG8od0AR9Y?=
+ =?us-ascii?Q?2BbPJdlaY5YXniQtSVi/d4u6Xc3hRXBZYe6wyvJeYaWAvxpUG2iwKFKYqg9U?=
+ =?us-ascii?Q?sj3L+KyyBuYMXWS+2uGM0O9dSfdWbU5UwDFjpKMZiPbFj+KJCyEE5WaOmGRm?=
+ =?us-ascii?Q?9FzpKiO5mU2ETn+MY0jxHT5IxeamcDE0?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Aug 2024 07:02:49.0715 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c15fc03-b179-4d23-701f-08dcb5e5c846
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE30.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8797
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -200,132 +137,1113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+verview of Queue Reset Test Process:
+- Launch Child Test Process:
+  Executes various tests, such as BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,
+  BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING, etc., to evaluate queue reset
+  functionality.
+  If the amdgpu driver encounters a job timeout, it attempts recovery in the following sequence:
+  - Soft reset: Returns an error of -ENODATA for the given bad job. If unsuccessful, a queue reset is attempted.
+  - Queue reset: Returns an error of -ENODATA for the given bad job. If unsuccessful, a full GPU reset is attempted.
+  - Entire GPU reset: Returns an error of -ECANCELED or -ETIME for the given bad job.
+  After each test, the test waits for the selected recovery process to complete using a monitoring process.
 
-On 8/1/2024 5:15 PM, Kamil Konieczny wrote:
-> Hi Sujaritha,
-> On 2024-07-30 at 17:05:08 +0530, Sujaritha Sundaresan wrote:
->
-> small nit about subject, you wrote:
->
-> [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without display
->
-> imho this should be:
->
-> [PATCH i-g-t, v3] tests/intel/xe_pm: Add tests for suspend without display
->
-> More nits below.
+- Launch Child Monitoring Process:
+  During each test, this process calls amdgpu_cs_query_reset_state2 and communicates with the test process via
+  shared memory to obtain the return code once a job is completed. It uses flags AMDGPU_CTX_QUERY2_FLAGS_RESET and
+  AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS, along with the return code, to ensure the correct recovery procedure
+  (queue reset or entire GPU reset) is executed as required.
 
-Hey Kamil,
+- Launch Background Process:
+  Utilizes posix_spawn to submit successful jobs to other rings. Communicates with the test and monitoring
+  processes via shared memory to determine when background jobs should be interrupted and the next test should be run.
 
-Sure this change I can make.
+- Main Test Process:
+  Manages the above processes and pushes jobs to shared memory for the test process, sending appropriate signals as needed.
 
->
->> Add tests to validate basic execution suspend/resume cycle
->> without display module to rule out display related issues
->> from the suspend/resume stack.
->>
->> v2: Add normal reload cycle after running test (Anshuman)
->>
->> v3: Rebase
->>
->> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
->> Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
->> ---
->>   tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
->>   1 file changed, 34 insertions(+)
->>
->> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
->> index 8b115e2f6..03f742265 100644
->> --- a/tests/intel/xe_pm.c
->> +++ b/tests/intel/xe_pm.c
->> @@ -17,6 +17,7 @@
->>   
->>   #include "igt.h"
->>   #include "lib/igt_device.h"
->> +#include "lib/igt_kmod.h"
->>   #include "lib/igt_pm.h"
->>   #include "lib/igt_sysfs.h"
->>   #include "lib/igt_syncobj.h"
->> @@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
->>    * Description: suspend/autoresume on %arg[1] state and exec after RPM
->>    * Functionality: pm - %arg[1]
->>    *
->> + * SUBTEST: %s-without-display
->> + * Description: suspend/autoresume on %arg[1] state without display
->> + * Functionality: pm - %arg[1]
-> I see you copy-pasted it but imho both Description and
-> Functionality documentation fields should be static, here and
-> in other places.
-> +cc Katarzyna Piecielska <katarzyna.piecielska@intel.com>
->
->> + *
->>    * arg[1]:
->>    *
->>    * @s2idle:	s2idle
->> @@ -681,6 +686,7 @@ igt_main
->>   	struct drm_xe_engine_class_instance *hwe;
->>   	device_t device;
->>   	uint32_t d3cold_allowed;
->> +	const char *opts;
->>   	int sysfs_fd;
->>   
->>   	const struct s_state {
->> @@ -757,6 +763,34 @@ igt_main
->>   					  NO_RPM, 0);
->>   		}
->>   
->> +		igt_subtest_f("%s-without-display", s->name) {
->> +
->> +			if (!drmModeGetResources(device.fd_xe))
->> +				return;
-> Why 'return' here?! Imho this should be checked in fixture
-> or be a skip. Or other way around - what about a headless board
-> or one without any connected display?
->
-> Regards,
-> Kamil
+- Synchronization:
+  Sync points are established between the four processes at the beginning and end of each the test. Synchronization is
+  implemented using shared memory and unnamed semaphores.
 
-I think this patch idea sort stemmed from the cases where we have a 
-display connected and
+This approach ensures thorough testing and validation of the queue reset functionality by actively monitoring and
+responding to different stages of the reset process.
 
-want to make sure that the suspend/resume issues are not being caused by 
-the display.
+v2 : Enable queue reset test for drmlib v > 2.4.104.
+v3 : Fix subtest name duplication issue.
+v4 : Replace igt_subtest_with_dynamic with igt_subtest,
+     and remove igt_dynamic_f
 
-But would you suggest expanding the test to have the headless/no display 
-situations? If so what changes are you suggesting for that ?
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+---
+ tests/amdgpu/amd_queue_reset.c | 1039 ++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build       |    5 +
+ 2 files changed, 1044 insertions(+)
+ create mode 100644 tests/amdgpu/amd_queue_reset.c
 
-Thanks,
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+new file mode 100644
+index 000000000..b63bced0f
+--- /dev/null
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -0,0 +1,1039 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2024 Advanced Micro Devices, Inc.
++ */
++#include <fcntl.h>
++#include <sys/stat.h>
++#include <sys/sysmacros.h>
++#include <signal.h>
++#include <sys/wait.h>
++#include <unistd.h>
++#include <spawn.h>
++#include <semaphore.h>
++#include <errno.h>
++#include <assert.h>
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++
++#include "igt.h"
++#include "drmtest.h"
++
++#include "lib/amdgpu/amd_PM4.h"
++#include "lib/amdgpu/amd_ip_blocks.h"
++#include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_command_submission.h"
++#include "lib/amdgpu/amd_deadlock_helpers.h"
++#include "lib/amdgpu/amd_dispatch.h"
++
++#define NUM_CHILD_PROCESSES 4
++#define SHARED_CHILD_DESCRIPTOR 3
++
++#define SHARED_MEM_NAME  "/queue_reset_shm"
++
++enum  process_type {
++	PROCESS_UNKNOWN,
++	PROCESS_TEST,
++	PROCESS_BACKGROUND,
++};
++
++struct job_struct {
++	unsigned int error;
++	enum amd_ip_block_type ip;
++	unsigned int ring_id;
++	/* additional data if necessary */
++};
++
++enum error_code_bits {
++	ERROR_CODE_SET_BIT,
++};
++
++enum reset_code_bits {
++	QUEUE_RESET_SET_BIT,
++	GPU_RESET_BEGIN_SET_BIT,
++	GPU_RESET_END_SUCCESS_SET_BIT,
++	GPU_RESET_END_FAILURE_SET_BIT,
++
++	ALL_RESET_BITS = 0xf,
++};
++
++struct shmbuf {
++	sem_t sem_mutex;
++	sem_t sem_state_mutex;
++	sem_t sync_sem_enter;
++	sem_t sync_sem_exit;
++	int count;
++	bool test_completed;
++	unsigned int test_flags;
++	int test_error_code;
++	bool reset_completed;
++	unsigned int reset_flags;
++	struct job_struct bad_job;
++	struct job_struct good_job;
++
++};
++
++static inline
++void set_bit(int nr, uint32_t *addr)
++{
++	*addr |= (1U << nr);
++}
++
++static inline
++void clear_bit(int nr, uint32_t *addr)
++{
++	*addr &= ~(1U << nr);
++}
++
++static inline
++int test_bit(int nr, const uint32_t *addr)
++{
++	return ((*addr >> nr) & 1U) != 0;
++}
++
++static void
++sync_point_signal(sem_t *psem, int num_signals)
++{
++	int i;
++
++	for (i = 0; i < num_signals; i++)
++		sem_post(psem);
++}
++
++static void
++set_reset_state(struct shmbuf *sh_mem, bool reset_state, enum reset_code_bits bit)
++{
++	sem_wait(&sh_mem->sem_state_mutex);
++	sh_mem->reset_completed = reset_state;
++	if (reset_state)
++		set_bit(bit, &sh_mem->reset_flags);
++	else
++		clear_bit(bit, &sh_mem->reset_flags);
++
++	sem_post(&sh_mem->sem_state_mutex);
++}
++
++static bool
++get_reset_state(struct shmbuf *sh_mem, unsigned int *flags)
++{
++	bool reset_state;
++
++	sem_wait(&sh_mem->sem_state_mutex);
++	reset_state = sh_mem->reset_completed;
++	*flags = sh_mem->reset_flags;
++	sem_post(&sh_mem->sem_state_mutex);
++	return reset_state;
++}
++
++static void
++set_test_state(struct shmbuf *sh_mem, bool test_state,
++		int error_code, enum error_code_bits bit)
++{
++	sem_wait(&sh_mem->sem_state_mutex);
++	sh_mem->test_completed = test_state;
++	sh_mem->test_error_code = error_code;
++	if (test_state)
++		set_bit(bit, &sh_mem->test_flags);
++	else
++		clear_bit(bit, &sh_mem->test_flags);
++	sem_post(&sh_mem->sem_state_mutex);
++}
++
++
++
++static bool
++get_test_state(struct shmbuf *sh_mem, int *error_code, unsigned int *flags)
++{
++	bool test_state;
++
++	sem_wait(&sh_mem->sem_state_mutex);
++	test_state = sh_mem->test_completed;
++	*error_code = sh_mem->test_error_code;
++	*flags = sh_mem->test_flags;
++	sem_post(&sh_mem->sem_state_mutex);
++	return test_state;
++}
++
++static void
++sync_point_enter(struct shmbuf *sh_mem)
++{
++
++	sem_wait(&sh_mem->sem_mutex);
++	sh_mem->count++;
++	sem_post(&sh_mem->sem_mutex);
++
++	if (sh_mem->count == NUM_CHILD_PROCESSES)
++		sync_point_signal(&sh_mem->sync_sem_enter, NUM_CHILD_PROCESSES);
++
++	sem_wait(&sh_mem->sync_sem_enter);
++}
++
++static void
++sync_point_exit(struct shmbuf *sh_mem)
++{
++	sem_wait(&sh_mem->sem_mutex);
++	sh_mem->count--;
++	sem_post(&sh_mem->sem_mutex);
++
++	if (sh_mem->count == 0)
++		sync_point_signal(&sh_mem->sync_sem_exit, NUM_CHILD_PROCESSES);
++
++	sem_wait(&sh_mem->sync_sem_exit);
++}
++
++static bool
++is_dispatch_shader_test(unsigned int err, char error_str[128], bool *is_dispatch)
++{
++	static const struct error_struct {
++		enum cmd_error_type err;
++		bool is_shader_err;
++		const char *err_str;
++	} arr_err[] = {
++		{ CMD_STREAM_EXEC_SUCCESS,                   false, "CMD_STREAM_EXEC_SUCCESS" },
++		{ CMD_STREAM_EXEC_INVALID_OPCODE,            false, "CMD_STREAM_EXEC_INVALID_OPCODE" },
++		{ CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,     false, "CMD_STREAM_EXEC_INVALID_PACKET_LENGTH" },
++		{ CMD_STREAM_EXEC_INVALID_PACKET_EOP_QUEUE,  false, "CMD_STREAM_EXEC_INVALID_PACKET_EOP_QUEUE" },
++		{ CMD_STREAM_TRANS_BAD_REG_ADDRESS,          false, "CMD_STREAM_TRANS_BAD_REG_ADDRESS" },
++		{ CMD_STREAM_TRANS_BAD_MEM_ADDRESS,          false, "CMD_STREAM_TRANS_BAD_MEM_ADDRESS" },
++		{ CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC,  false, "CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC" },
++		{ BACKEND_SE_GC_SHADER_EXEC_SUCCESS,         true,  "BACKEND_SE_GC_SHADER_EXEC_SUCCESS" },
++		{ BACKEND_SE_GC_SHADER_INVALID_SHADER,       true,  "BACKEND_SE_GC_SHADER_INVALID_SHADER" },
++		{ BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR, true,  "BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR" },
++		{ BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING, true, "BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING" },
++		{ BACKEND_SE_GC_SHADER_INVALID_USER_DATA,    true,  "BACKEND_SE_GC_SHADER_INVALID_USER_DATA" }
++	};
++
++	const int arr_size = ARRAY_SIZE(arr_err);
++	const struct error_struct *p;
++	bool ret = false;
++
++	for (p = &arr_err[0]; p < &arr_err[arr_size]; p++) {
++		if (p->err == err) {
++			*is_dispatch = p->is_shader_err;
++			strcpy(error_str, p->err_str);
++			ret = true;
++			break;
++		}
++	}
++	return ret;
++}
++
++
++static bool
++get_ip_type(unsigned int ip, char ip_str[64])
++{
++	static const struct ip_struct {
++		enum amd_ip_block_type ip;
++		const char *ip_str;
++	} arr_ip[] = {
++		{ AMD_IP_GFX,       "AMD_IP_GFX" },
++		{ AMD_IP_COMPUTE,   "AMD_IP_COMPUTE" },
++		{ AMD_IP_DMA,       "AMD_IP_DMA" },
++		{ AMD_IP_UVD,       "AMD_IP_UVD" },
++		{ AMD_IP_VCE,       "AMD_IP_VCE" },
++		{ AMD_IP_UVD_ENC,   "AMD_IP_UVD_ENC" },
++		{ AMD_IP_VCN_DEC,   "AMD_IP_VCN_DEC" },
++		{ AMD_IP_VCN_ENC,   "AMD_IP_VCN_ENC" },
++		{ AMD_IP_VCN_JPEG,  "AMD_IP_VCN_JPEG" },
++		{ AMD_IP_VPE,       "AMD_IP_VPE" }
++	};
++
++	const int arr_size = ARRAY_SIZE(arr_ip);
++	const struct ip_struct *p;
++	bool ret = false;
++
++	for (p = &arr_ip[0]; p < &arr_ip[arr_size]; p++) {
++		if (p->ip == ip) {
++			strcpy(ip_str, p->ip_str);
++			ret = true;
++			break;
++		}
++	}
++	return ret;
++}
++
++static int
++read_next_job(struct shmbuf *sh_mem, struct job_struct *job, bool is_good)
++{
++	sem_wait(&sh_mem->sem_state_mutex);
++	if (is_good)
++		*job = sh_mem->good_job;
++	else
++		*job = sh_mem->bad_job;
++	sem_post(&sh_mem->sem_state_mutex);
++	return 0;
++}
++
++static void wait_for_complete_iteration(struct shmbuf *sh_mem)
++{
++	int error_code;
++	unsigned int flags;
++	unsigned int reset_flags;
++
++	while (1) {
++		if (get_test_state(sh_mem, &error_code, &flags) &&
++			get_reset_state(sh_mem, &reset_flags))
++			break;
++		sleep(1);
++	}
++
++}
++
++static void set_next_test_to_run(struct shmbuf *sh_mem, unsigned int error,
++		enum amd_ip_block_type ip_good, enum amd_ip_block_type ip_bad,
++		unsigned int ring_id_good, unsigned int ring_id_bad)
++{
++	char error_str[128];
++	char ip_good_str[64];
++	char ip_bad_str[64];
++
++	bool is_dispatch;
++
++	is_dispatch_shader_test(error, error_str, &is_dispatch);
++	get_ip_type(ip_good, ip_good_str);
++	get_ip_type(ip_bad, ip_bad_str);
++
++	//set jobs
++	sem_wait(&sh_mem->sem_state_mutex);
++	sh_mem->bad_job.error = error;
++	sh_mem->bad_job.ip = ip_bad;
++	sh_mem->bad_job.ring_id = ring_id_bad;
++	sh_mem->good_job.error = CMD_STREAM_EXEC_SUCCESS;
++	sh_mem->good_job.ip = ip_good;
++	sh_mem->good_job.ring_id = ring_id_good;
++	sem_post(&sh_mem->sem_state_mutex);
++
++	//sync and wait for complete
++	sync_point_enter(sh_mem);
++	wait_for_complete_iteration(sh_mem);
++	sync_point_exit(sh_mem);
++}
++
++static int
++shared_mem_destroy(struct shmbuf *shmp, int shm_fd, bool unmap)
++{
++	int ret = 0;
++
++	if (shmp && unmap) {
++		munmap(shmp, sizeof(struct shmbuf));
++		sem_destroy(&shmp->sem_mutex);
++		sem_destroy(&shmp->sem_state_mutex);
++		sem_destroy(&shmp->sync_sem_enter);
++		sem_destroy(&shmp->sync_sem_exit);
++	}
++	if (shm_fd > 0)
++		close(shm_fd);
++
++	shm_unlink(SHARED_MEM_NAME);
++
++	return ret;
++}
++
++static int
++shared_mem_create(struct shmbuf **ppbuf)
++{
++	int shm_fd = -1;
++	struct shmbuf *shmp = NULL;
++	bool unmap = false;
++
++	// Create a shared memory object
++	shm_fd = shm_open(SHARED_MEM_NAME, O_CREAT | O_RDWR, 0666);
++	if (shm_fd == -1)
++		goto error;
++
++
++	// Configure the size of the shared memory object
++	if (ftruncate(shm_fd, sizeof(struct shmbuf)) == -1)
++		goto error;
++
++	// Map the shared memory object
++	shmp = mmap(0, sizeof(struct shmbuf), PROT_WRITE, MAP_SHARED, shm_fd, 0);
++	if (shmp == MAP_FAILED)
++		goto error;
++
++	unmap = true;
++	if (sem_init(&shmp->sem_mutex, 1, 1) == -1) {
++		unmap = true;
++		goto error;
++	}
++	if (sem_init(&shmp->sem_state_mutex, 1, 1) == -1)
++		goto error;
++
++	if (sem_init(&shmp->sync_sem_enter, 1, 0) == -1)
++		goto error;
++
++	if (sem_init(&shmp->sync_sem_exit, 1, 0) == -1)
++		goto error;
++
++	shmp->count = 0;
++	shmp->test_completed = false;
++	shmp->reset_completed = false;
++
++	*ppbuf = shmp;
++	return shm_fd;
++
++error:
++	shared_mem_destroy(shmp,  shm_fd,  unmap);
++	return shm_fd;
++}
++
++static int
++shared_mem_open(struct shmbuf **ppbuf)
++{
++	int shm_fd = -1;
++	struct shmbuf *shmp = NULL;
++
++	shmp = mmap(NULL, sizeof(*shmp), PROT_READ | PROT_WRITE, MAP_SHARED,
++			SHARED_CHILD_DESCRIPTOR, 0);
++	if (shmp == MAP_FAILED)
++		goto error;
++	else
++		shm_fd = SHARED_CHILD_DESCRIPTOR;
++
++	*ppbuf = shmp;
++
++	return shm_fd;
++error:
++	return shm_fd;
++}
++
++static bool
++is_queue_reset_tests_enable(const struct amdgpu_gpu_info *gpu_info)
++{
++	bool enable = true;
++	// TO DO
++
++	return enable;
++}
++
++static int
++amdgpu_write_linear(amdgpu_device_handle device, amdgpu_context_handle context_handle,
++		const struct amdgpu_ip_block_version *ip_block,
++		struct job_struct *job)
++{
++	const int pm4_dw = 256;
++	struct amdgpu_ring_context *ring_context;
++	int write_length, expect_failure;
++	int r;
++
++	ring_context = calloc(1, sizeof(*ring_context));
++	igt_assert(ring_context);
++
++	/* The firmware triggers a badop interrupt to prevent CP/ME from hanging.
++	 * And it needs to be VIMID reset when receiving the interrupt.
++	 * But for a long badop packet, fw still hangs, which is a fw bug.
++	 * So please use a smaller size packet for temporary testing.
++	 */
++	if ((job->ip == AMD_IP_GFX) && (job->error == CMD_STREAM_EXEC_INVALID_OPCODE)) {
++		write_length = 10;
++		expect_failure = 0;
++	} else {
++		write_length = 128;
++		expect_failure = job->error == CMD_STREAM_EXEC_SUCCESS ? 0 : 1;
++	}
++	/* setup parameters */
++	ring_context->write_length =  write_length;
++	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
++	ring_context->pm4_size = pm4_dw;
++	ring_context->res_cnt = 1;
++	ring_context->ring_id = job->ring_id;
++	igt_assert(ring_context->pm4);
++	ring_context->context_handle = context_handle;
++	r = amdgpu_bo_alloc_and_map(device,
++					ring_context->write_length * sizeof(uint32_t),
++					4096, AMDGPU_GEM_DOMAIN_GTT,
++					AMDGPU_GEM_CREATE_CPU_GTT_USWC, &ring_context->bo,
++					(void **)&ring_context->bo_cpu,
++					&ring_context->bo_mc,
++					&ring_context->va_handle);
++	igt_assert_eq(r, 0);
++	memset((void *)ring_context->bo_cpu, 0, ring_context->write_length * sizeof(uint32_t));
++	ring_context->resources[0] = ring_context->bo;
++	ip_block->funcs->bad_write_linear(ip_block->funcs, ring_context,
++			&ring_context->pm4_dw, job->error);
++
++	r = amdgpu_test_exec_cs_helper(device, ip_block->type, ring_context,
++			expect_failure);
++
++	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
++			ring_context->bo_mc, ring_context->write_length * sizeof(uint32_t));
++	free(ring_context->pm4);
++	free(ring_context);
++	return r;
++}
++
++static int
++run_monitor_child(amdgpu_device_handle device, amdgpu_context_handle *arr_context,
++			   struct shmbuf *sh_mem, int num_of_tests)
++{
++	int ret;
++	int test_counter = 0;
++	uint64_t init_flags, in_process_flags;
++	uint32_t after_reset_state, after_reset_hangs;
++	int state_machine = 0;
++	int error_code;
++	unsigned int flags;
++
++	after_reset_state = after_reset_hangs = 0;
++	init_flags = in_process_flags = 0;
++
++	ret = amdgpu_cs_query_reset_state2(arr_context[0], &init_flags);
++	if (init_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)
++		igt_assert_eq(init_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS, 0);
++
++	while (num_of_tests > 0) {
++		sync_point_enter(sh_mem);
++		state_machine = 0;
++		error_code = 0;
++		flags = 0;
++		set_reset_state(sh_mem, false, ALL_RESET_BITS);
++		while (1) {
++			if (state_machine == 0) {
++				amdgpu_cs_query_reset_state2(arr_context[test_counter], &init_flags);
++
++				if (init_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET)
++					state_machine = 1;
++
++				if (init_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)
++					state_machine = 2;
++
++			} else if (state_machine == 1) {
++				amdgpu_cs_query_reset_state(arr_context[test_counter],
++						&after_reset_state, &after_reset_hangs);
++				amdgpu_cs_query_reset_state2(arr_context[test_counter],
++						&in_process_flags);
++
++				//TODO refactor this block !
++				igt_assert_eq(in_process_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET, 1);
++				if (get_test_state(sh_mem, &error_code, &flags) &&
++						test_bit(ERROR_CODE_SET_BIT, &flags)) {
++					if (error_code == -ENODATA) {
++						set_reset_state(sh_mem, true, QUEUE_RESET_SET_BIT);
++						break;
++					} else {
++						if (error_code != -ECANCELED && error_code == -ETIME) {
++							set_reset_state(sh_mem, true, GPU_RESET_END_FAILURE_SET_BIT);
++							break;
++						} else {
++							set_reset_state(sh_mem, true, GPU_RESET_BEGIN_SET_BIT);
++							state_machine = 2; //gpu reset stage
++						}
++					}
++				}
++			} else if (state_machine == 2) {
++				amdgpu_cs_query_reset_state(arr_context[test_counter],
++						&after_reset_state, &after_reset_hangs);
++				amdgpu_cs_query_reset_state2(arr_context[test_counter],
++						&in_process_flags);
++				/* here we should start timer and wait for some time until
++				 * the flag AMDGPU_CTX_QUERY2_FLAGS_RESET disappear
++				 */
++				if (!(in_process_flags & AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS)) {
++					set_reset_state(sh_mem, true, GPU_RESET_END_SUCCESS_SET_BIT);
++					break;
++				}
++			}
++		}
++		sync_point_exit(sh_mem);
++		num_of_tests--;
++		test_counter++;
++	}
++	return ret;
++}
++
++
++
++static int
++run_test_child(amdgpu_device_handle device, amdgpu_context_handle *arr_context,
++				struct shmbuf *sh_mem, int num_of_tests, uint32_t version)
++{
++	int ret;
++	bool bool_ret;
++	int test_counter = 0;
++	char error_str[128];
++	bool is_dispatch = false;
++	unsigned int reset_flags;
++
++	struct job_struct job;
++	const struct amdgpu_ip_block_version *ip_block_test = NULL;
++
++	while (num_of_tests > 0) {
++		sync_point_enter(sh_mem);
++		set_test_state(sh_mem, false, 0, ERROR_CODE_SET_BIT);
++		read_next_job(sh_mem, &job, false);
++		bool_ret = is_dispatch_shader_test(job.error,  error_str, &is_dispatch);
++		igt_assert_eq(bool_ret, 1);
++		ip_block_test = get_ip_block(device, job.ip);
++		if (is_dispatch) {
++			ret = amdgpu_memcpy_dispatch_test(device, job.ip, job.ring_id, version,
++					job.error);
++		} else {
++			ret = amdgpu_write_linear(device, arr_context[test_counter],
++					ip_block_test, &job);
++		}
++
++		num_of_tests--;
++		set_test_state(sh_mem, true, ret, ERROR_CODE_SET_BIT);
++		while (1) {
++			/*we may have GPU reset vs queue reset */
++			if (get_reset_state(sh_mem, &reset_flags))
++				break;
++			sleep(1);
++		}
++		sync_point_exit(sh_mem);
++		test_counter++;
++	}
++	return ret;
++}
++
++static int
++run_background(amdgpu_device_handle device, struct shmbuf *sh_mem,
++					int num_of_tests)
++{
++#define NUM_ITERATION 10000
++	char error_str[128];
++	bool is_dispatch = false;
++	unsigned int reset_flags;
++
++	int r, counter = 0;
++	amdgpu_context_handle context_handle = NULL;
++	struct job_struct job;
++	const struct amdgpu_ip_block_version *ip_block_test = NULL;
++	int error_code;
++	unsigned int flags;
++
++	r = amdgpu_cs_ctx_create(device, &context_handle);
++	igt_assert_eq(r, 0);
++
++
++	while (num_of_tests > 0) {
++		sync_point_enter(sh_mem);
++		read_next_job(sh_mem, &job, true);
++		ip_block_test = get_ip_block(device, job.ip);
++		is_dispatch_shader_test(job.error,  error_str, &is_dispatch);
++		while (1) {
++			r = amdgpu_write_linear(device, context_handle,  ip_block_test, &job);
++			if (get_test_state(sh_mem, &error_code, &flags) &&
++				get_reset_state(sh_mem, &reset_flags)) {
++				//if entire gpu reset then stop back ground jobs
++				break;
++			}
++			if (r != -ECANCELED && r != -ETIME && r != -ENODATA)
++				igt_assert_eq(r, 0);
++			/*
++			 * TODO we have issue during gpu reset the return code assert we put after we check the
++			 * test is completed othewise the job is failed due to
++			 * amdgpu_job_run Skip job if VRAM is lost
++			 * if (job->generation != amdgpu_vm_generation(adev, job->vm)
++			 */
++			counter++;
++
++		}
++		sync_point_exit(sh_mem);
++		num_of_tests--;
++	}
++	r = amdgpu_cs_ctx_free(context_handle);
++	return r;
++}
++
++
++
++
++static int
++run_all(amdgpu_device_handle device, amdgpu_context_handle *arr_context_handle,
++		enum process_type process, struct shmbuf *sh_mem,  int num_of_tests,
++		uint32_t version, pid_t *monitor_child, pid_t *test_child)
++{
++	if (process == PROCESS_TEST) {
++		*monitor_child = fork();
++		if (*monitor_child == -1) {
++			igt_fail(IGT_EXIT_FAILURE);
++		} else if (*monitor_child == 0) {
++			*monitor_child = getppid();
++			run_monitor_child(device, arr_context_handle, sh_mem, num_of_tests);
++				igt_success();
++				igt_exit();
++		}
++		*test_child = fork();
++		if (*test_child == -1) {
++			igt_fail(IGT_EXIT_FAILURE);
++		} else if (*test_child == 0) {
++			*test_child = getppid();
++			run_test_child(device, arr_context_handle, sh_mem, num_of_tests, version);
++			igt_success();
++			igt_exit();
++
++		}
++	} else if (process == PROCESS_BACKGROUND) {
++		run_background(device, sh_mem, num_of_tests);
++		igt_success();
++		igt_exit();
++	}
++	return 0;
++}
++
++static bool
++get_command_line(char cmdline[2048], int *pargc, char ***pppargv, char **ppath)
++{
++	ssize_t total_length = 0;
++	char *tmpline;
++	char **argv = NULL;
++	char *path  = NULL;
++	int length_cmd[16] = {0};
++	int i, argc = 0;
++	ssize_t num_read;
++
++	int fd = open("/proc/self/cmdline", O_RDONLY);
++
++	if (fd == -1) {
++		igt_info("**** Error opening /proc/self/cmdline");
++		return false;
++	}
++
++	num_read = read(fd, cmdline, 2048 - 1);
++	close(fd);
++
++	if (num_read == -1) {
++		igt_info("Error reading /proc/self/cmdline");
++		return false;
++	}
++	cmdline[num_read] = '\0';
++
++	tmpline = cmdline;
++	memset(length_cmd, 0, sizeof(length_cmd));
++
++	/*assumption that last parameter has 2 '\0' at the end*/
++	for (i = 0; total_length < num_read - 2; i++) {
++		length_cmd[i] = strlen(tmpline);
++		total_length += length_cmd[i];
++		tmpline += length_cmd[i] + 1;
++		argc++;
++	}
++	*pargc = argc;
++	if (argc == 0 || argc > 20) {
++		/* not support yet fancy things */
++		return false;
++	}
++	/* always do 2 extra for additional parameter */
++	argv = (char **)malloc(sizeof(argv) * (argc + 2));
++	memset(argv, 0, sizeof(argv) * (argc + 2));
++	tmpline = cmdline;
++	for (i = 0; i < argc; i++) {
++		argv[i] = (char *)malloc(sizeof(char) * length_cmd[i] + 1);
++		memcpy(argv[i], tmpline, length_cmd[i]);
++		argv[i][length_cmd[i]] = 0;
++		if (i == 0) {
++			path = (char *)malloc(sizeof(char) * length_cmd[0] + 1);
++			memcpy(path, tmpline, length_cmd[0]);
++			path[length_cmd[0]] = 0;
++		}
++		argv[i][length_cmd[i]] = 0;
++		tmpline += length_cmd[i] + 1;
++	}
++	*pppargv = argv;
++	*ppath = path;
++
++	return true;
++}
++
++#define BACKGROUND	"background"
++
++static bool
++is_background_parameter_found(int argc, char **argv)
++{
++	bool ret = false;
++	int i;
++
++	for (i = 1; i < argc; i++) {
++		if (strcmp(BACKGROUND, argv[i]) == 0) {
++			ret = true;
++			break;
++		}
++	}
++	return ret;
++}
++
++#define RUNSUBTEST	"--run-subtest"
++static bool
++is_run_subtest_parameter_found(int argc, char **argv)
++{
++	bool ret = false;
++	int i;
++
++	for (i = 1; i < argc; i++) {
++		if (strcmp(RUNSUBTEST, argv[i]) == 0) {
++			ret = true;
++			break;
++		}
++	}
++	return ret;
++}
++
++static bool
++add_background_parameter(int *pargc, char **argv)
++{
++	int argc = *pargc;
++	int len = strlen(BACKGROUND);
++
++	argv[argc] = (char *)malloc(sizeof(char) * len + 1);
++	memcpy(argv[argc], BACKGROUND, len);
++	argv[argc][len] = 0;
++	*pargc = argc + 1;
++	return true;
++}
++
++static void
++free_command_line(int argc, char **argv, char *path)
++{
++	int i;
++
++	for (i = 0; i <= argc; i++)
++		free(argv[i]);
++
++	free(argv);
++	free(path);
++
++}
++
++static int
++launch_background_process(int argc, char **argv, char *path, pid_t *ppid, int shm_fd)
++{
++	int status;
++	posix_spawn_file_actions_t action;
++
++	for(int i = 0; i < argc; i++) {
++		/* The background process only runs when a queue reset is actually triggered. */
++		if(strstr(argv[i], "list-subtests") != NULL)
++			return 0;
++	}
++	posix_spawn_file_actions_init(&action);
++	posix_spawn_file_actions_adddup2(&action, shm_fd, SHARED_CHILD_DESCRIPTOR);
++	status = posix_spawn(ppid, path, &action, NULL, argv, NULL);
++	posix_spawn_file_actions_destroy(&action);
++	if (status != 0)
++		igt_fail(IGT_EXIT_FAILURE);
++	return status;
++}
++
++static void
++create_contexts(amdgpu_device_handle device, amdgpu_context_handle **pp_contexts,
++		int num_of_contexts)
++{
++	amdgpu_context_handle *p_contexts = NULL;
++	int i, r;
++
++	p_contexts = (amdgpu_context_handle *)malloc(sizeof(amdgpu_context_handle)
++			*num_of_contexts);
++
++	for (i = 0; i < num_of_contexts; i++) {
++		r = amdgpu_cs_ctx_create(device, &p_contexts[i]);
++		igt_assert_eq(r, 0);
++	}
++	*pp_contexts = p_contexts;
++
++}
++static void
++free_contexts(amdgpu_device_handle device, amdgpu_context_handle *p_contexts,
++		int num_of_contexts)
++{
++	int i;
++
++	if (p_contexts) {
++		for (i = 0; i < num_of_contexts; i++)
++			amdgpu_cs_ctx_free(p_contexts[i]);
++	}
++}
++
++/* TODO add logic to iterate for all */
++static bool
++get_next_rings(unsigned int ring_begin, unsigned int available_rings,
++		unsigned int *next_ring, unsigned int *next_next_ring)
++{
++	bool ret = false;
++	unsigned int ring_id;
++
++	for (ring_id = ring_begin; (1 << ring_id) & available_rings; ring_id++) {
++		*next_ring = ring_id;
++		*next_next_ring = ring_id + 1;
++
++		if ((*next_ring  & available_rings) && (*next_next_ring & available_rings)) {
++			ret = true;
++			break;
++		}
++	}
++	return ret;
++}
++igt_main
++{
++	char cmdline[2048];
++	int argc = 0;
++	char **argv = NULL;
++	char *path = NULL;
++	enum  process_type process = PROCESS_UNKNOWN;
++	pid_t pid_background;
++	pid_t monitor_child, test_child;
++	int testExitMethod, monitorExitMethod, backgrounExitMethod;
++	posix_spawn_file_actions_t action;
++	amdgpu_device_handle device;
++	struct amdgpu_gpu_info gpu_info = {0};
++	struct drm_amdgpu_info_hw_ip info = {0};
++	int fd = -1;
++	int fd_shm = -1;
++	struct shmbuf *sh_mem = NULL;
++
++	int r;
++	bool arr_cap[AMD_IP_MAX] = {0};
++	unsigned int ring_id_good = 0;
++	unsigned int ring_id_bad = 1;
++
++	enum amd_ip_block_type ip_test = AMD_IP_COMPUTE;
++	enum amd_ip_block_type ip_background = AMD_IP_COMPUTE;
++
++	amdgpu_context_handle *arr_context_handle = NULL;
++
++	/* TODO remove this , it is used only to create array of contexts
++	 * which are shared between child processes ( test/monitor/main and
++	 *  separate for background
++	 */
++	unsigned int arr_err[] = {
++			CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
++			CMD_STREAM_EXEC_INVALID_OPCODE,
++			CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
++			//CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC,TODO  not job timeout, debug why for n31
++			//CMD_STREAM_TRANS_BAD_REG_ADDRESS, TODO  amdgpu: device lost from bus! for n31
++			BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,
++			BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING,
++			BACKEND_SE_GC_SHADER_INVALID_USER_DATA
++	};
++
++	int const_num_of_tests;
++
++	posix_spawn_file_actions_init(&action);
++
++	if (!get_command_line(cmdline, &argc, &argv, &path))
++		igt_fail(IGT_EXIT_FAILURE);
++
++	if (is_run_subtest_parameter_found(argc, argv))
++		const_num_of_tests = 1;
++	else
++		const_num_of_tests = ARRAY_SIZE(arr_err);
++
++	if (!is_background_parameter_found(argc, argv)) {
++		add_background_parameter(&argc, argv);
++		fd_shm = shared_mem_create(&sh_mem);
++		igt_require(fd_shm != -1);
++		launch_background_process(argc, argv, path, &pid_background, fd_shm);
++		process = PROCESS_TEST;
++	} else {
++		process = PROCESS_BACKGROUND;
++	}
++
++	igt_fixture {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++		r = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(r, 0);
++		 r = amdgpu_query_hw_ip_info(device, ip_test, 0, &info);
++		igt_assert_eq(r, 0);
++		r = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
++		igt_assert_eq(r, 0);
++
++		asic_rings_readness(device, 1, arr_cap);
++		igt_skip_on(!is_queue_reset_tests_enable(&gpu_info));
++		if (process == PROCESS_TEST)
++			create_contexts(device, &arr_context_handle, const_num_of_tests);
++		else if (process == PROCESS_BACKGROUND)
++			fd_shm = shared_mem_open(&sh_mem);
++
++		igt_require(fd_shm != -1);
++		igt_require(sh_mem != NULL);
++
++		run_all(device, arr_context_handle,
++			process, sh_mem, const_num_of_tests, info.hw_ip_version_major,
++			&monitor_child, &test_child);
++	}
++
++	igt_describe("Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes");
++	igt_subtest("amdgpu-compute-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH") {
++		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++				set_next_test_to_run(sh_mem, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
++						ip_background, ip_test, ring_id_good, ring_id_bad);
++		}
++	}
++
++	igt_describe("Stressful-and-multiple-cs-of-bad and good opcode-operations-using-multiple-processes");
++	igt_subtest("amdgpu-compute-CMD_STREAM_EXEC_INVALID_OPCODE") {
++		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++				set_next_test_to_run(sh_mem, CMD_STREAM_EXEC_INVALID_OPCODE,
++						ip_background, ip_test, ring_id_good, ring_id_bad);
++		}
++	}
++
++	/* TODO  not job timeout, debug why for nv32
++	 *igt_describe("Stressful-and-multiple-cs-of-bad and good mem-sync-operations-using-multiple-processes");
++	 *igt_subtest_with_dynamic("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC") {
++	 *	if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++	 *		igt_dynamic_f("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC")
++	 *			set_next_test_to_run(sh_mem, CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC,
++	 *					ip_background, ip_test, ring_id_good, ring_id_bad);
++	 *	}
++	 */
++
++	/* TODO  amdgpu: device lost from bus! for nv32
++	 *igt_describe("Stressful-and-multiple-cs-of-bad and good reg-operations-using-multiple-processes");
++	 *igt_subtest_with_dynamic("amdgpu-compute-CMD_STREAM_TRANS_BAD_REG_ADDRESS") {
++	 *	if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++	 *		igt_dynamic_f("amdgpu-compute-CMD_STREAM_TRANS_BAD_MEM_ADDRESS_BY_SYNC")
++	 *			set_next_test_to_run(sh_mem, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
++	 *					ip_background, ip_test, ring_id_good, ring_id_bad);
++	 *	}
++	 */
++
++	igt_describe("Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes");
++	igt_subtest("Handful-by-soft-recovery-amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR") { 
++		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++				//amdgpu_ring_soft_recovery
++				set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,
++						ip_background, ip_test, ring_id_good, ring_id_bad);
++		}
++	}
++
++	igt_describe("Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes");
++	igt_subtest("amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING") {
++		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++				set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING,
++						ip_background, ip_test, ring_id_good, ring_id_bad);
++		}
++	}
++
++	igt_describe("Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes");
++	igt_subtest("amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_USER_DATA") {
++		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
++				set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_USER_DATA,
++						ip_background, ip_test, ring_id_good, ring_id_bad);
++		}
++	}
++
++	igt_fixture {
++		if (process == PROCESS_TEST) {
++			waitpid(monitor_child, &monitorExitMethod, 0);
++			waitpid(test_child, &testExitMethod, 0);
++		}
++		waitpid(pid_background, &backgrounExitMethod, 0);
++		free_contexts(device, arr_context_handle, const_num_of_tests);
++		amdgpu_device_deinitialize(device);
++		drm_close_driver(fd);
++		shared_mem_destroy(sh_mem, fd_shm, true);
++		posix_spawn_file_actions_destroy(&action);
++	}
++	free_command_line(argc, argv, path);
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 3982a665f..36d65f44b 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -57,6 +57,11 @@ if libdrm_amdgpu.found()
+ 	else
+ 		warning('libdrm <= 2.4.109 found, amd_pstate test not applicable')
+ 	endif
++	if libdrm_amdgpu.version().version_compare('> 2.4.104')
++		amdgpu_progs +=[ 'amd_queue_reset',]
++	else
++		warning('libdrm <= 2.4.104 found, amd_queue_reset test not applicable')
++	endif
+ 	amdgpu_deps += libdrm_amdgpu
+ endif
+ 
+-- 
+2.25.1
 
-Suja
-
->
->> +
->> +			xe_for_each_engine(device.fd_xe, hwe) {
->> +
->> +				igt_debug("Reload w/o display\n");
->> +
->> +				igt_kmsg(KMSG_INFO "Unloading Xe\n");
->> +				igt_assert_eq(igt_xe_driver_unload(), 0);
->> +
->> +				igt_kmsg(KMSG_INFO "Re-loading Xe without display\n");
->> +				igt_assert_eq(igt_xe_driver_load("enable_display=0"), 0);
->> +
->> +				test_exec(device, hwe, 1, 2, s->state,
->> +					  NO_RPM, 0);
->> +
->> +				igt_debug("Reload as normal\n");
->> +
->> +				igt_kmsg(KMSG_INFO "Unloading Xe\n");
->> +				igt_assert_eq(igt_xe_driver_unload(), 0);
->> +
->> +				igt_kmsg(KMSG_INFO "Re-loading Xe\n");
->> +				igt_assert_eq(igt_xe_driver_load(opts), 0);
->> +			}
->> +		}
->> +
->>   		for (const struct vm_op *op = vm_op; op->name; op++) {
->>   			igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
->>   				xe_for_each_engine(device.fd_xe, hwe)
->> -- 
->> 2.34.1
->>
