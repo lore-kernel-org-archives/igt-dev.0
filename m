@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C63C3DA64
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Aug 2024 14:43:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4A8EC52D70
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Aug 2024 16:14:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 842DB10E39D;
-	Tue,  6 Aug 2024 14:43:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lFDmHzg3";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CE2C10E39D
- for <igt-dev@lists.freedesktop.org>; Tue,  6 Aug 2024 14:43:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1722955436; x=1754491436;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hPNX8wzUrubNqwu7khnbdhluM6MuHdBnrPr68bWejNQ=;
- b=lFDmHzg3PSC6sb9489BrMI4siquJC9fIpJ2D059HbJHCJktDwLVBteXd
- YVHppnfq87ytbsULL5AGxLxGMhUn0yJEnfWPHsNVY1uWFOOy6NIgpnYds
- wuZ+AjqVuWo6Y6OXm8nj5seF658FwUYNsNww4WBGwd8vPlyh0Lop2GjlQ
- YOMeZawYNipaPNjVGnhaiEXjzkmbT1V6OYTqm7nnNfbK5TCMaIsmscQX9
- XWJz9n1BbHrS1C7Cm7TimgJ9KsiJU6Akyg9/0YYEGQgDMnt4x8S4P7WUj
- jVxvcEBSfOiRBWyEUs6jqh+0Qj+ulxRi0C41ZZ8OaPFSw67+RfSyUt0/r A==;
-X-CSE-ConnectionGUID: GLPkIYR6TIWaaTeyT8GzCw==
-X-CSE-MsgGUID: FbRjPZlbSs2e01XGcYcTfg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11156"; a="24766626"
-X-IronPort-AV: E=Sophos;i="6.09,268,1716274800"; d="scan'208";a="24766626"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Aug 2024 07:43:55 -0700
-X-CSE-ConnectionGUID: Hl8A1OofSQKlkP6uxncqDQ==
-X-CSE-MsgGUID: 0AFQ8sX+TXGsxiyqCnj9YA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,268,1716274800"; d="scan'208";a="56606706"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.78])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Aug 2024 07:43:54 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v2 4/4] HAX/DO_NOT_MERGE: xe-fast-feedback: test
- xe_wedged
-Date: Tue,  6 Aug 2024 16:43:32 +0200
-Message-ID: <20240806144332.80609-5-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240806144332.80609-1-kamil.konieczny@linux.intel.com>
-References: <20240806144332.80609-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D1B110E3B1;
+	Tue,  6 Aug 2024 16:14:03 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C52010E3B1;
+ Tue,  6 Aug 2024 16:14:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9011877450857000433=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_runner=3A_Allow_dynamically?=
+ =?utf-8?q?_ignore_dmesg_errors_or_warnings_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 06 Aug 2024 16:14:02 -0000
+Message-ID: <172296084243.543866.10966718970272385096@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240806144332.80609-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20240806144332.80609-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,43 +37,166 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test solution which should allow igt runner to properly
-classify xe_wedged tests as success, so adding two into
-xe BAT runs:
+--===============9011877450857000433==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-igt@xe_wedged@basic-wedged
+== Series Details ==
 
-igt@xe_wedged@wedged-at-any-timeout
+Series: runner: Allow dynamically ignore dmesg errors or warnings (rev2)
+URL   : https://patchwork.freedesktop.org/series/136494/
+State : success
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/intel-ci/xe-fast-feedback.testlist | 4 ++++
- 1 file changed, 4 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 01b01dcf9..4c53839be 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,12 +1,16 @@
- # Should be the first test
- igt@xe_module_load@load
- 
-+igt@xe_wedged@basic-wedged
-+
- igt@fbdev@eof
- igt@fbdev@info
- igt@fbdev@nullptr
- igt@fbdev@read
- igt@fbdev@write
- 
-+igt@xe_wedged@wedged-at-any-timeout
-+
- igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-modifier-no-flag
--- 
-2.43.0
+CI Bug Log - changes from IGT_7958 -> IGTPW_11534
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/index.html
+
+Participating hosts (41 -> 41)
+------------------------------
+
+  Additional (1): fi-kbl-8809g 
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11534 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-twl-2:          [PASS][3] -> [INCOMPLETE][4] ([i915#9413])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7958/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] +30 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
+
+  
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7958 -> IGTPW_11534
+
+  CI-20190529: 20190529
+  CI_DRM_15187: 83eea64f81edb86ed3aa368039520810c154fd94 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11534: 55da790f2c4e192d50aa32c7d0ed2b106056c6e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7958: 5e93c0e266d7ebd74ea12b3b03cb50253a2ab760 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/index.html
+
+--===============9011877450857000433==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>runner: Allow dynamically ignore dmesg errors or warnings (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136494/">https://patchwork.freedesktop.org/series/136494/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7958 -&gt; IGTPW_11534</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/index.html</p>
+<h2>Participating hosts (41 -&gt; 41)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11534 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7958/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11534/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7958 -&gt; IGTPW_11534</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15187: 83eea64f81edb86ed3aa368039520810c154fd94 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11534: 55da790f2c4e192d50aa32c7d0ed2b106056c6e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7958: 5e93c0e266d7ebd74ea12b3b03cb50253a2ab760 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============9011877450857000433==--
