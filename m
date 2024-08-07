@@ -4,150 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEEA8C52D6F
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Aug 2024 01:16:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0568FC49EA1
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Aug 2024 01:59:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76B1A10E0B6;
-	Wed,  7 Aug 2024 01:16:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9DE4210E0DB;
+	Wed,  7 Aug 2024 01:59:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="RHz1Sydg";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="FoLhx8ts";
 	dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2045.outbound.protection.outlook.com [40.107.244.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F4EC10E0B6
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Aug 2024 01:16:51 +0000 (UTC)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com
+ (mail-bn8nam11on2074.outbound.protection.outlook.com [40.107.236.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C928310E13A
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Aug 2024 01:59:49 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EX2szWf1JjxBxJV0shFsDQqj+1GyU4qAu76Eg5oqQLHivBzVGQnFK7NAapTj3ujswzBpfA5UVxNVyYv2VtRqcSDk4MEmrpQmr57NwowpC/8Lzj8v7IOnT7cxh6Wlcv/Ltsr9VKmcV7PXqlTWPAKvUBPy9dY7VQF2EwLB+zDD8HR4ThJ28dXFlK/Xw4U9PMl+/cmUFi0uGfLxYq0/YhkVeP7CQhUF9GZyW2cN0UEYCHelMQggaQwRiYecAVS9wBIOt6SQ2Cw6CRgXTApwsw/PdZ/JJjPmapIIj+yTM0ETK/zlUj66PaL4tZ3DdqxNPE3c7crCzcASpiLe77iZb9j/JQ==
+ b=R1O4xEhwFsy72MZ5oAuzJJ8eFsjzkGU3wbNbbz57+qBDU3Zak5pm7u0FW+pd3h42I3UUG4bgSAW83nQ5xosoq+5QUzTEv8NsDBmGZYZkh5f86EWxKwNRfX9H+Cjs5JNpHYLHhSuf2EGlcTZU8+9rHW5/IsZ9i6hOWHtIoIDPI/ezrGMBFZG+5CkW3/RjIHXIS7kCfZqrrmUfcwDzqjtaW0fxeFLhAZCY8OObofILDujqgIRxvso7VYyOtdyyDxObGYdJQ5aCupqkPbbGEOPyWYKAp5YS72v5AsXZAVVdxlcpt1ro8GvH8D47TYFLgKioqsZkBAHM81tSfOgdha0Erg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i5Jim2ekXApi3eCvftMqixlssT/tWQFXig5Ph8XAu8M=;
- b=bHOzKI1DkJM24xzg+sOg2hjOyeQDdTYveSIsPyc8Nq6sQu0OzsLIVL60egTVufQwXE1k6Ez3DHvpu9uXQ/XxeVcmaPhsbefmknN5oyK2AlLkJ4DlBcah2Sw3BCF+AcavEHSUTJr8ngxVMtQsypddhJ4vOeLVW79Tm+1D9lYGy5u5q7PKY9IPXBKOPE0gWJqRo6Aii9caURAVmv3fTDE8xg/oe5z/jKxyJzSiF8gxzH7IEkz8DoFc7dk0eYUTT0cv5m6ZV7/r/0modr5dee8EWqWGRKS72KIlJBmOWyWYitCWkhVtpZeZH2FlMlMFNfOce9WBu9WfOKnm4tUv33mMRg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=JYtFZKnFE7iSyt0nDbdnX7TKwsSICPVJHik43mRfsTo=;
+ b=ofJBSBRFGWnbOhpvtyRqKmiKhiw6L/qE5Co8SLDx7E0jqX+MiELQUV3razd5tPfy7TQPtCEk6eJRJcAnAk4rrqRoPSyDVzVXqraRTZ2kIIhZsTi5rQKAjCrQ2mqFJ4xMua7k4N0B+WHwXFtzXhugF7uWiiIcS9tW6DEtmwzH1lseJd2vZpz+Xjz+Wis+6IBJHJGzf9gT2QvYn4ITF5/+U8Qp7lZf+k79t6+I3G5Q7k2PvoXZFqK6urGxaFIPr06cHqROmfhYd8NeLEVHTbwxC1aT8QyyVVIlcH0IBVNOrZl0pE6MFOosEzNg5lGTXVX/WDgtA5IqAvnJrQ/alrxB4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i5Jim2ekXApi3eCvftMqixlssT/tWQFXig5Ph8XAu8M=;
- b=RHz1Sydgh5rlBe4zjU/Ilhd01LpnHEwcAyoyJgZBNYOyL86zkQ/cFMdvC6uymSculKYtPnypGBnaDjlURmvjfO1UNO9FQwtIsihCxBeqrnUTIq7cFk8x0tV7/9mVyBG+nk7Eow15n6tS7lef/hOI8ggzITsFWoV6DP7PRfmpStw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com (2603:10b6:510:1fc::18)
- by CH3PR12MB7595.namprd12.prod.outlook.com (2603:10b6:610:14c::11)
+ bh=JYtFZKnFE7iSyt0nDbdnX7TKwsSICPVJHik43mRfsTo=;
+ b=FoLhx8tsHoGS0hc4ATsy5PharULShi2n45JphG0/rs7hi/XcpUF9w3YNfnc+nqqFnGNxRvgoDAWr2NyBYfr+HkgE5srCAUZMZ4pz3eOg/7FPqCLsK1hGeQ+yME5+i6UP2BHZp9ZXex04z40BET4QWQe5DcYLm1Nikmd+cmW/liU=
+Received: from CH0PR03CA0026.namprd03.prod.outlook.com (2603:10b6:610:b0::31)
+ by IA1PR12MB6259.namprd12.prod.outlook.com (2603:10b6:208:3e5::17)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
- 2024 01:16:46 +0000
-Received: from PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::e0e7:bd76:e99:43af]) by PH7PR12MB6420.namprd12.prod.outlook.com
- ([fe80::e0e7:bd76:e99:43af%5]) with mapi id 15.20.7828.023; Wed, 7 Aug 2024
- 01:16:46 +0000
-Content-Type: multipart/alternative;
- boundary="------------0GMF1dAbnuiQ7PletGhtEoy4"
-Message-ID: <fa4b886e-ac97-4814-a973-18aeb32d7dee@amd.com>
-Date: Tue, 6 Aug 2024 21:16:42 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/amdgpu: update bad length case
-To: "Liang, Prike" <Prike.Liang@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
- "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>
-References: <20240801105925.2523913-1-Prike.Liang@amd.com>
- <DS7PR12MB60050E9E343F11B751C36AFBFBB82@DS7PR12MB6005.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <DS7PR12MB60050E9E343F11B751C36AFBFBB82@DS7PR12MB6005.namprd12.prod.outlook.com>
-X-ClientProxiedBy: YT4PR01CA0089.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:ff::14) To PH7PR12MB6420.namprd12.prod.outlook.com
- (2603:10b6:510:1fc::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.27; Wed, 7 Aug
+ 2024 01:59:44 +0000
+Received: from DS1PEPF00017099.namprd05.prod.outlook.com
+ (2603:10b6:610:b0:cafe::e6) by CH0PR03CA0026.outlook.office365.com
+ (2603:10b6:610:b0::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.29 via Frontend
+ Transport; Wed, 7 Aug 2024 01:59:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS1PEPF00017099.mail.protection.outlook.com (10.167.18.103) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7849.8 via Frontend Transport; Wed, 7 Aug 2024 01:59:43 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 Aug
+ 2024 20:59:43 -0500
+Received: from desktop-host.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 6 Aug 2024 20:59:42 -0500
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>, Jesse Zhang
+ <jesse.zhang@amd.com>
+Subject: [PATCH] amdgpu/queue_reset_test: fix list-subtests command failure
+ from script
+Date: Tue, 6 Aug 2024 21:59:29 -0400
+Message-ID: <20240807015929.426551-1-vitaly.prosyak@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: vitaly.prosyak@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB6420:EE_|CH3PR12MB7595:EE_
-X-MS-Office365-Filtering-Correlation-Id: 735f4f20-a2b4-42bf-0682-08dcb67e9ad4
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017099:EE_|IA1PR12MB6259:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8bd89afc-8f41-4f44-586e-08dcb6849b84
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?YlZ2RnA3Y3lVb2U4NXVxSE8rYk1sRkZEbU5Uajg0MktZLzYxZWN5a3BjVEpF?=
- =?utf-8?B?ZjZkbncvN1RDdkQ3RTN2dU5kbGhRbEJ2VUNGbW9hQU4yQ0dUNTlQbVh4TWxr?=
- =?utf-8?B?Y3AxWEUzc3hZUzd0dktoSHVJTy9QQWs0ZVRESnlCazFXYlUxMUxCSU4vUlU0?=
- =?utf-8?B?aFYwUWZ3Y0dHa3hnT1VPY3I5a3V3NWRhcUFibThFTTIrdTdIbjRKcVBGWVc2?=
- =?utf-8?B?Wkk0VXBJTWdXdU9USEtqM1JuVTNqODNCV0JKYUhhbjlmaS9Ec3ZEbEFPSW1i?=
- =?utf-8?B?Y3RkcFpObUVZMGxQdmNQNlAwdWlxRVlKL1JjeXRRQkRKSWpWclh3ZkF0YmpZ?=
- =?utf-8?B?TFBESW5veUhXdWRkRGRHTDNSZUY1ZkdvZDRjT3BjTXEydkJuODJTdXBtZzJo?=
- =?utf-8?B?UElqK2FuRTJYZUErMTlRZkR2V0poZ2pNZWh1dkE5QTh3VEE3U1JuOHZLdmRm?=
- =?utf-8?B?NnlKTWVjdmRmR0tob3BxNGx1eUpMaStEbGdTdVVCNTMxNXlCNkxEMnFDckdK?=
- =?utf-8?B?NGdaM0NCMmtzbXd6TDJZaDlUOUsxMHMwU0c1ZStjRDk4OTlrRUdtdGJ5MUNY?=
- =?utf-8?B?Z0hDVkxBRjFoZjFDc2xmY0RBeU9JYlRXZG0wdG0zZFZ0T29IajdScHdGdnNG?=
- =?utf-8?B?VXRmenlDYnAvNEc0VStDQ2pOTFRLL1lQbjhMT01pbzF6cVpzanhzLzNHOHVT?=
- =?utf-8?B?RDFhTTI5dVhSTzl3M05uaEczbFpPQ3hieDQ4Ris5QkloVGhGc1ZvTjBNV0pn?=
- =?utf-8?B?SWRYbmRYbk5XS2cxSVEyNzNUZFpjTVgrNk9tcXBzUmlmcGJIMFNmQnNPUWNV?=
- =?utf-8?B?S0NySEZHQWVYckFselpFNUk2cmZWNmV3SkRSYmJKY200dWloKzFaTHpEbDY2?=
- =?utf-8?B?VzUzRXZJR3EyR2hxK1djdkRlbzFSY0hsZHk2SUtydVNBK3NhdHRxeGhORUhN?=
- =?utf-8?B?ZnN0ZlVFbDdsN1Nsd2xWQzRjLzBkRE1QcG00cWxlNk5ZU1hsVTJFQXgyUmk2?=
- =?utf-8?B?WnpDOGVjc2NZUXowd0NJeTZRR3VySzJMMXBHeHBWaGRpeUFJQmR3NTdNTVMw?=
- =?utf-8?B?OGFtTDNYTmFBTUNjSkg4N284VGFVTmtocWl3UGEvWE0rRmlkN2c3azA5ckc1?=
- =?utf-8?B?bmxuUW80MnVvN3lzQTdqbkZWTXVGSU1vQnpNY2RZREE5L2FKVzF5UERoVlV0?=
- =?utf-8?B?MHpvQS91cTN1blhibFhuKzFCeDVBd0dSOWNoNDhXTm1JT1pDVGZZUHBSOU5I?=
- =?utf-8?B?ZUFCUGo3cmRQVi8rdWFxT05iczJPRXNnU1o5Y2E0K2V6TENjK1Jqb3lhZXFu?=
- =?utf-8?B?Z2xUM0tUelV0OFpOWkNTd0k3ZGJhTW9HcitFellDaGc4N1ByekNHOTNyTFlX?=
- =?utf-8?B?SkdHWXVoNFNHVnhlaUIwTEhZMVZyR3BpMU9tL0c5WDhBcHNaTWhPanM5SGg4?=
- =?utf-8?B?R3lNY2hSUE1aRmNoRWN6dmYxK1dDNTl4ajlFZE9hRUs5b2VaTkE5ZlBwQU5t?=
- =?utf-8?B?LzJQTVhGSHhIYVU1eTV6b0haTkZnSUZnV0NTcWxvRDFhRktNTkMxWjNvNEtE?=
- =?utf-8?B?bGplRlZRUC9FUU1XUGFxaDNaSFJ4Sm5PNWNkWUxvRUlyV0FnRFRLbXNjUzFv?=
- =?utf-8?B?V084MEEySWV6L2NKSm9xcldaM3p6UktIcy9ZWS94dHNINTJGVURiQXQvRXRK?=
- =?utf-8?B?a1dUYngveGhXbW81Mng1d2MycFdDaDFhV3F3V2pkR2RJTE84Z3JtRHFYVXAw?=
- =?utf-8?B?YldKelRQNkhDb0FFNWswVTJzUmJ3cEd0ZkF2ZmZsU1pzWmtOQlRNQWttMnJy?=
- =?utf-8?B?WjYyWTBPMExRRitqaW0yZz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR12MB6420.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZDZLZFltUUlyVkpINERjcG15OVRmbXh3N1gyNysxL2hycEo5UnhRVFVXODA2?=
- =?utf-8?B?M2FZVWFibFBNaVNyTUo1M1dXN0YyWGh3WkM5b0lxRGNzTzZFZEp0TjhpWWRu?=
- =?utf-8?B?a09NZVJDdFl0Uzh0ZG1yWlJ1dC8wTlBWZ0YwUURpRGdJQUNzSVFZbklqMWVN?=
- =?utf-8?B?NUY3Rnl5cU1NM2dWNE5vUWZweTVwNWtIaGo4ejNwZVEyQ3d0NDAvQm9YWFJu?=
- =?utf-8?B?L0JnRElodktjZzMxRnI3WWtmMHpOZktHUExIdU95MEZjSHlIZjFHak1sZXV3?=
- =?utf-8?B?ejkrcC90eGdGMEZUZW5YdUxzOFZKaDlLb2YzNGxNRFBVVjllNERHREh5TlN4?=
- =?utf-8?B?dTFsNXdwT0xjK1U1WFRVMnk4OEdqWkhDNXNSOWptdDlFclhteS9abGs0Vklj?=
- =?utf-8?B?dFdMdm5MeGVRemhja004dVhpc2tsL1dGYXFJQytDbEZ0V3lEbjQ2THdSZXIy?=
- =?utf-8?B?dFhJNzR3Yi9CeEM5emFtZlZoZkVnNW92RkVqNTdOM2VLblFaMEVVYldBYklO?=
- =?utf-8?B?Z2xjdERWQ3pvUFJ2eURZbnJtTmlSL1piR3M5bjFhcE5Zb0RuSGF0MkxYTjBW?=
- =?utf-8?B?alU0cllPSWFSd29EMkF5WmFwb1c1OVFUeCtGdUxEWmhKR3pjeVFIU1Q2eHRa?=
- =?utf-8?B?TmJRSDM4Z0F3TGxVd3dYNWpYZFhlaTJTR3hyRWcwS0c4NHVDSExFMGlCbFBw?=
- =?utf-8?B?WHlrSlJEVUkyeHpqMk5IQjBLNC85Z3NEclNiUkFZczUzYW9SOWpxeERMSCtF?=
- =?utf-8?B?ZHJ5eWhwdmNoMGxJVGJEVURLakFKd3BWRHcyVFVaNU1TVkdQOG5iZGVUb0dr?=
- =?utf-8?B?c2hVM3FDZ3pFWUJzbnFFd3cxWVVnVmJxM0tDTno2QTBUc0hEM0VxWmpqY2gr?=
- =?utf-8?B?Q0hXc2hDdlo2QndWYWI3OUFpa2tLZWlUZ3ZTRXBzdHdCakF1MTB0TnFCb2FM?=
- =?utf-8?B?SXViVC9oalg4Z1JEdzFWTUs0STdVdDU5cVJGU3NKOFJEWnFLNVU0L0lIdDRB?=
- =?utf-8?B?dldpV2tFbUt0T0dmT1IzNndDMVFPSDAwUHBvREFQSzZvNytQTXpxZkJReGJQ?=
- =?utf-8?B?QTk5eHk2YkRiUHRYak5DMXdQVUhNaHJMNmN1U2E1UEthTTBsRlY5YTVyUkhv?=
- =?utf-8?B?bFhPd3g5MFZUS2Jzd3plRTlGVUN6ejlzYzhvb0d3U2RGREcwQm5HTStOVWRy?=
- =?utf-8?B?bHllNUlyd2hGdVhLMXcvYWJrY2U2Vkw0ek9WRDBBQVRpUEdMdkUvcU1Nb1JF?=
- =?utf-8?B?ekVja2FqNnRscWRNVlQwSC8rQktsZFZsdHV5elFsR0g1bDJ2THo0VVVvZm55?=
- =?utf-8?B?SWFyYmN0Vkh5c292cHg2MjNtRU8wTzBOcERhSW9YOFArb3g5WVNSa3haKzU0?=
- =?utf-8?B?UDl5ZGwzYkxaNkhqR2oxT00zV2VxbDhhSEMvbFNsWmpSbjF3ZDI4MkRLZTVl?=
- =?utf-8?B?amJHQ1h0R0w4bTNWTjJJbkhWdnp4NkVFc21yRHFHTjFFeVZPRXE1TFZQMnJL?=
- =?utf-8?B?bTZieWo4eVc1Tnl2RXphRVN5VkthSDBrL1VuTHZWOEJBNEY3VnFkZURmMVl4?=
- =?utf-8?B?TzAvNlU5WEplMWpHQWVpRFZ5Qkd5dkVFbTZET1NOQVRlZCtyM3BDSFl1YVF0?=
- =?utf-8?B?N21oeTczeVhOQjdHZmJIb21SdkhtSmdaTW5IT1gxL2pNZTkwSlhWdGZ1Q0hJ?=
- =?utf-8?B?S3NEQitBY01Dc0MzU3R5Wmd4amtkbjJhcEpLVGJpd3F5T0dRYTBpc0EyNGRx?=
- =?utf-8?B?eE8xZVM5MDBINnJ2aTZmbDh1eHltZW1FNnBYSVRxS2Z2SStURysvZi9yaThL?=
- =?utf-8?B?QVVlbTZubk05Vm5lUElMc2k2K0JUdytRajNEZWNhdVBtVEtLWjBFSHg3aGlR?=
- =?utf-8?B?Qi9hVWtIV1NwNFczaEVTM0VyMWNValFWQzdUdFc3cWsvamt0R1ZVcDVJSTc3?=
- =?utf-8?B?WEVqa1Q5dC9hRWhmdzU5UVpsWUhWakEzUG9UbEd2V3J0MFdYQ1k5QitqWThT?=
- =?utf-8?B?dzFIUWFmS2hjOFNWVmtoaVc0VjE2SWs3cFk3QnM5L2laOUNuVjcydWtMK1lu?=
- =?utf-8?B?QTc2S2ppdzA3VmRidlZUZEdNVUpEcStidnMvMmE0dzltamh2bmpkSW91d013?=
- =?utf-8?Q?43R3hirGJ1ZoxJqIo3A5wpZWi?=
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700013|1800799024|376014|82310400026; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?huJUa5JfbNOIBDB7mnUPqoknYvYJc3k4mV36Eg/o3LZHld/qC8iibGaDL/wr?=
+ =?us-ascii?Q?SaHB59UXcNLpnudwdV98gzSx9Cb/ZhVGlikK+tlg26SvR/BDpmua3LsVe/co?=
+ =?us-ascii?Q?rlewJbA66G1c7b0H6tv8uzqamBFZnl39UxJTITceIjsJGeFZ14aLfds4UsfG?=
+ =?us-ascii?Q?Kj2KRjq+wFeSdVM4NhvxAlFLawmSGIhS+s74tBOJqmuihijVR0lLJ2VPlD7d?=
+ =?us-ascii?Q?B9OWWejN6F8gAiDgCy6FgM9GEUIOX1TSh/mjOfVs0bpzSwvE3Ua96gyP5LOP?=
+ =?us-ascii?Q?6Sx/iL/j7a3VfbngepaPtLO2xtVu+RMl3ojC6mKtZ62qaoja8rIS56RgZDZ0?=
+ =?us-ascii?Q?2LL7R6iYjRdPh9YeEsqYguA8LyudxGeMRAQ7BFznMFq8hklvQ0WOQ48t663Y?=
+ =?us-ascii?Q?cs7Zdr0mzpUlImkW9uCXkcy0Itz3iZlC6jmzORnGuPoeTAAWcu9HY8TSfR3D?=
+ =?us-ascii?Q?WGG4DawviPT67FPhgmgggBZQIqQ324usEijVTV4FJZeUAwDZllfJn52ZGunW?=
+ =?us-ascii?Q?mJlFUJtQVkik+Ggrs9bsKCUSzg1Rmg4oIjUbDASZQNGjNRycRCnUU1kiided?=
+ =?us-ascii?Q?k1R/vqSwxFripf709qRcy7ts9QgTermg1wKXKgdr4FmdK2D0F/NeQuVcfEjg?=
+ =?us-ascii?Q?3SqTm83wP5Nq0cA/8/qfwcM2g2m6QEDvWYYZX1lIJB2YfcFVnIAKN2eKwR6W?=
+ =?us-ascii?Q?2m12IhAJAmxnLLOEYibVScLsE1eYeWy8G08fGzTrMlvedu8WgQelmKlIDsRN?=
+ =?us-ascii?Q?tkclS5BNxHkFx7WU9+GAM6GDc59NJcywi/ypAw0rSfz7eo3Sw00GcfI0JeL6?=
+ =?us-ascii?Q?ayfz+KwVAqxcVazwlVx1kxTBbWLaMaAlQDhN4Yqz1RDIqfF35K2tCArQRQ34?=
+ =?us-ascii?Q?MNbx9cBT/cerdrrMAv+vBCgs8JOufAgYE2uq+7zX8LSo7BWB1FA8ZRODHEg1?=
+ =?us-ascii?Q?l6AsC2Mu5Bd4l+xQtMsnIf/JosnVJ/YnB9WaSdt1TKQDHCEo5Wu86leTSwNw?=
+ =?us-ascii?Q?Eh7VBf33tdhYpF0jo6Sr0+7DhF8WB8gMM5czbjfT5esUuZKv/RvbMyjulUDm?=
+ =?us-ascii?Q?JMWw6abYP2J1dZol5QjIf0otGjYS8Uuwi31Ox5c2wz8EZZ/EtdVZUbC0IiHO?=
+ =?us-ascii?Q?uUvVfep/KtS3wrury/lApOiwIoOtpqcHw1W9lr6fUGcQEmfqV5oacIL7jb6Z?=
+ =?us-ascii?Q?Zwf/Xc/FCKoYRnpulxwwpQs/JZJShR82+XLSFRkPGhNkB4Ub5o7DRL11tYRS?=
+ =?us-ascii?Q?EcQW0bbi9LKYVe6pdonlJnXdsueoiGfrktnKasPMcFfuJ0PDqAdJrV0oP0e6?=
+ =?us-ascii?Q?/vc+WIzfsb57XEV2BX8yM5nQR+f8BTisr6vKa/ANmLiiu2+wQsotgkPmmp9W?=
+ =?us-ascii?Q?e5sbmpLUx/jkkiL1TAHMxEryxarUI2K4hI52ouvgYOOwT0brD3zubppjzWW0?=
+ =?us-ascii?Q?lK4Mes22DOhBVPdajdjq7cZnJNeNDurs?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
+ SFP:1101; 
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 735f4f20-a2b4-42bf-0682-08dcb67e9ad4
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB6420.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 01:16:46.1699 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 01:59:43.9754 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8bd89afc-8f41-4f44-586e-08dcb6849b84
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: n+h/bIgTpBZfEtTs5hK+H9cF29QH8hov5g+R6yPBBp86bnRtprvcq4vW3EzxdIUJPhgyaUM86BLNh87OlpKXMA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7595
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017099.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB6259
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -163,186 +136,190 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------0GMF1dAbnuiQ7PletGhtEoy4
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-The change look good to me.
+If run command: ninja -C build test then the following is occured:
+the process amd_queue_reset is terminated with error code 134 (assert),
+i found this editing script in igt-command_line.sh
+The following is the result of execution:
 
-Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com
+393/427 testcase check amdgpu/amd_queue_reset                   FAIL             0.23s   exit status 1
+>>> UBSAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1:print_stacktrace=1 MALLOC_PERTURB_=255
+ASAN_OPTIONS=halt_on_error=1:abort_on_error=1:print_summary=1
+/home/vprosyak/src/igt-gpu-tools/tests/igt_command_line.sh amdgpu/amd_queue_reset
 
-On 2024-08-06 21:06, Liang, Prike wrote:
-> [AMD Official Use Only - AMD Internal Distribution Only]
->
-> Ping for the patch.
->
-> Thanks,
-> Prike
->
->> -----Original Message-----
->> From: Liang, Prike <Prike.Liang@amd.com>
->> Sent: Thursday, August 1, 2024 6:59 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Prosyak, Vitaly <Vitaly.Prosyak@amd.com>; Zhang, Jesse(Jie)
->> <Jesse.Zhang@amd.com>; Deucher, Alexander
->> <Alexander.Deucher@amd.com>; Liang, Prike <Prike.Liang@amd.com>
->> Subject: [PATCH] tests/amdgpu: update bad length case
->>
->> In the bad length case, when the header length has more than 4dwords than
->> packet stream length then CPFW will pending on the stream data and raise a
->> CP halt error which requires do the pipe reset. As to the orignal case of
->> header length is smaller than PM4 stream length then the PM4 stream data
->> may will create a bad opcode error which only requires the queue reset. So
->> for testing the pipe reset need to update the header length bigger than the
->> PM4 stream data length.
->>
->> Signed-off-by: Prike Liang <Prike.Liang@amd.com>
->> ---
->>  lib/amdgpu/amd_ip_blocks.c | 9 +++++++--
->>  1 file changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c index
->> f675b97dd..3ffacc065 100644
->> --- a/lib/amdgpu/amd_ip_blocks.c
->> +++ b/lib/amdgpu/amd_ip_blocks.c
->> @@ -189,7 +189,7 @@ gfx_ring_bad_write_linear(const struct
->> amdgpu_ip_funcs *func,
->>                     const struct amdgpu_ring_context *ring_context,
->>                     uint32_t *pm4_dw, unsigned int cmd_error)  {
->> -     uint32_t i, j;
->> +     uint32_t i, j, stream_length;
->>
->>       i = 0;
->>       j = 0;
->> @@ -198,6 +198,11 @@ gfx_ring_bad_write_linear(const struct
->> amdgpu_ip_funcs *func,
->>         * But the range applies to all asics.
->>         * 0xcb-0xcf, 0xd2-0xef, 0xf1-0xfb
->>         */
->> +     if (cmd_error == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
->> +             stream_length = ring_context->write_length / 16;
->> +     else
->> +             stream_length = ring_context->write_length;
->> +
->>       if (cmd_error == CMD_STREAM_EXEC_INVALID_OPCODE)
->>               ring_context->pm4[i++] = PACKET3(0xf2, 2 +  ring_context-
->>> write_length);
->>       else if (cmd_error ==
->> CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
->> @@ -223,7 +228,7 @@ gfx_ring_bad_write_linear(const struct
->> amdgpu_ip_funcs *func,
->>               ring_context->pm4[i++] = upper_32_bits(ring_context-
->>> bo_mc);
->>       }
->>
->> -     while (j++ < ring_context->write_length)
->> +     while (j++ < stream_length)
->>               ring_context->pm4[i++] = func->deadbeaf;
->>       *pm4_dw = i;
->>       return i;
->> --
->> 2.34.1
---------------0GMF1dAbnuiQ7PletGhtEoy4
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+stdout:
+tests/amdgpu/amd_queue_reset:
+  Checking invalid option handling...
+  Checking valid option handling...
+  Checking subtest enumeration...
+    test does not exit with 0 or 79 with --list-subtests!
+    test does exits with 134
+FAIL: tests/amdgpu/amd_queue_reset
+stderr:
+skipping is allowed only in fixtures, subtests or igt_simple_main
+please refer to lib/igt_core documentation
+amd_queue_reset: ../lib/igt_core.c:441: internal_assert: Assertion `0' failed.
+Received signal SIGABRT.
+Stack trace:
+Aborted (core dumped).
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>The change look good to me.</p>
-    <p>Reviewed-by: Vitaly Prosyak <a rel="noreferrer">vitaly.prosyak@amd.com</a></p>
-    <p></p>
-    <div class="moz-cite-prefix">On 2024-08-06 21:06, Liang, Prike
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:DS7PR12MB60050E9E343F11B751C36AFBFBB82@DS7PR12MB6005.namprd12.prod.outlook.com">
-      <pre class="moz-quote-pre" wrap="">[AMD Official Use Only - AMD Internal Distribution Only]
+To fix the issue move the shared memory creation into igt_fixture block.
 
-Ping for the patch.
+v2: Fix formatting errors.
 
-Thanks,
-Prike
-
-</pre>
-      <blockquote type="cite">
-        <pre class="moz-quote-pre" wrap="">-----Original Message-----
-From: Liang, Prike <a class="moz-txt-link-rfc2396E" href="mailto:Prike.Liang@amd.com">&lt;Prike.Liang@amd.com&gt;</a>
-Sent: Thursday, August 1, 2024 6:59 PM
-To: <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>
-Cc: Prosyak, Vitaly <a class="moz-txt-link-rfc2396E" href="mailto:Vitaly.Prosyak@amd.com">&lt;Vitaly.Prosyak@amd.com&gt;</a>; Zhang, Jesse(Jie)
-<a class="moz-txt-link-rfc2396E" href="mailto:Jesse.Zhang@amd.com">&lt;Jesse.Zhang@amd.com&gt;</a>; Deucher, Alexander
-<a class="moz-txt-link-rfc2396E" href="mailto:Alexander.Deucher@amd.com">&lt;Alexander.Deucher@amd.com&gt;</a>; Liang, Prike <a class="moz-txt-link-rfc2396E" href="mailto:Prike.Liang@amd.com">&lt;Prike.Liang@amd.com&gt;</a>
-Subject: [PATCH] tests/amdgpu: update bad length case
-
-In the bad length case, when the header length has more than 4dwords than
-packet stream length then CPFW will pending on the stream data and raise a
-CP halt error which requires do the pipe reset. As to the orignal case of
-header length is smaller than PM4 stream length then the PM4 stream data
-may will create a bad opcode error which only requires the queue reset. So
-for testing the pipe reset need to update the header length bigger than the
-PM4 stream data length.
-
-Signed-off-by: Prike Liang <a class="moz-txt-link-rfc2396E" href="mailto:Prike.Liang@amd.com">&lt;Prike.Liang@amd.com&gt;</a>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/amdgpu/amd_queue_reset.c | 63 ++++++++++++++++++----------------
+ 1 file changed, 33 insertions(+), 30 deletions(-)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c index
-f675b97dd..3ffacc065 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -189,7 +189,7 @@ gfx_ring_bad_write_linear(const struct
-amdgpu_ip_funcs *func,
-                    const struct amdgpu_ring_context *ring_context,
-                    uint32_t *pm4_dw, unsigned int cmd_error)  {
--     uint32_t i, j;
-+     uint32_t i, j, stream_length;
-
-      i = 0;
-      j = 0;
-@@ -198,6 +198,11 @@ gfx_ring_bad_write_linear(const struct
-amdgpu_ip_funcs *func,
-        * But the range applies to all asics.
-        * 0xcb-0xcf, 0xd2-0xef, 0xf1-0xfb
-        */
-+     if (cmd_error == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
-+             stream_length = ring_context-&gt;write_length / 16;
-+     else
-+             stream_length = ring_context-&gt;write_length;
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+index 04366c0bf..9ea0a1f24 100644
+--- a/tests/amdgpu/amd_queue_reset.c
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -754,6 +754,7 @@ is_background_parameter_found(int argc, char **argv)
+ }
+ 
+ #define RUNSUBTEST	"--run-subtest"
 +
-      if (cmd_error == CMD_STREAM_EXEC_INVALID_OPCODE)
-              ring_context-&gt;pm4[i++] = PACKET3(0xf2, 2 +  ring_context-
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">write_length);
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">      else if (cmd_error ==
-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
-@@ -223,7 +228,7 @@ gfx_ring_bad_write_linear(const struct
-amdgpu_ip_funcs *func,
-              ring_context-&gt;pm4[i++] = upper_32_bits(ring_context-
-</pre>
-        <blockquote type="cite">
-          <pre class="moz-quote-pre" wrap="">bo_mc);
-</pre>
-        </blockquote>
-        <pre class="moz-quote-pre" wrap="">      }
+ static bool
+ is_run_subtest_parameter_found(int argc, char **argv)
+ {
+@@ -769,6 +770,7 @@ is_run_subtest_parameter_found(int argc, char **argv)
+ 	return ret;
+ }
+ 
++
+ static bool
+ add_background_parameter(int *pargc, char **argv)
+ {
+@@ -801,9 +803,9 @@ launch_background_process(int argc, char **argv, char *path, pid_t *ppid, int sh
+ 	int status;
+ 	posix_spawn_file_actions_t action;
+ 
+-	for(int i = 0; i < argc; i++) {
++	for (int i = 0; i < argc; i++) {
+ 		/* The background process only runs when a queue reset is actually triggered. */
+-		if(strstr(argv[i], "list-subtests") != NULL)
++		if (strstr(argv[i], "list-subtests") != NULL)
+ 			return 0;
+ 	}
+ 	posix_spawn_file_actions_init(&action);
+@@ -907,30 +909,30 @@ igt_main
+ 
+ 	int const_num_of_tests;
+ 
+-	posix_spawn_file_actions_init(&action);
+-
+-	if (!get_command_line(cmdline, &argc, &argv, &path))
+-		igt_fail(IGT_EXIT_FAILURE);
+-
+-	if (is_run_subtest_parameter_found(argc, argv))
+-		const_num_of_tests = 1;
+-	else
+-		const_num_of_tests = ARRAY_SIZE(arr_err);
+-
+-	if (!is_background_parameter_found(argc, argv)) {
+-		add_background_parameter(&argc, argv);
+-		fd_shm = shared_mem_create(&sh_mem);
+-		igt_require(fd_shm != -1);
+-		launch_background_process(argc, argv, path, &pid_background, fd_shm);
+-		process = PROCESS_TEST;
+-	} else {
+-		process = PROCESS_BACKGROUND;
+-	}
+-
+ 	igt_fixture {
+ 		uint32_t major, minor;
+ 		int err;
+ 
++		posix_spawn_file_actions_init(&action);
++
++		if (!get_command_line(cmdline, &argc, &argv, &path))
++			igt_fail(IGT_EXIT_FAILURE);
++
++		if (is_run_subtest_parameter_found(argc, argv))
++			const_num_of_tests = 1;
++		else
++			const_num_of_tests = ARRAY_SIZE(arr_err);
++
++		if (!is_background_parameter_found(argc, argv)) {
++			add_background_parameter(&argc, argv);
++			fd_shm = shared_mem_create(&sh_mem);
++			igt_require(fd_shm != -1);
++			launch_background_process(argc, argv, path, &pid_background, fd_shm);
++			process = PROCESS_TEST;
++		} else {
++			process = PROCESS_BACKGROUND;
++		}
++
+ 		fd = drm_open_driver(DRIVER_AMDGPU);
+ 
+ 		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+@@ -964,7 +966,7 @@ igt_main
+ 	igt_describe("Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes");
+ 	igt_subtest("amdgpu-compute-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH") {
+ 		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
+-				set_next_test_to_run(sh_mem, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
++			set_next_test_to_run(sh_mem, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
+ 						ip_background, ip_test, ring_id_good, ring_id_bad);
+ 		}
+ 	}
+@@ -972,7 +974,7 @@ igt_main
+ 	igt_describe("Stressful-and-multiple-cs-of-bad and good opcode-operations-using-multiple-processes");
+ 	igt_subtest("amdgpu-compute-CMD_STREAM_EXEC_INVALID_OPCODE") {
+ 		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
+-				set_next_test_to_run(sh_mem, CMD_STREAM_EXEC_INVALID_OPCODE,
++			set_next_test_to_run(sh_mem, CMD_STREAM_EXEC_INVALID_OPCODE,
+ 						ip_background, ip_test, ring_id_good, ring_id_bad);
+ 		}
+ 	}
+@@ -997,11 +999,11 @@ igt_main
+ 	 *	}
+ 	 */
+ 
++	//amdgpu_ring_soft_recovery
+ 	igt_describe("Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes");
+-	igt_subtest("Handful-by-soft-recovery-amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR") { 
++	igt_subtest("Handful-by-soft-recovery-amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR") {
+ 		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
+-				//amdgpu_ring_soft_recovery
+-				set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,
++			set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,
+ 						ip_background, ip_test, ring_id_good, ring_id_bad);
+ 		}
+ 	}
+@@ -1009,7 +1011,7 @@ igt_main
+ 	igt_describe("Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes");
+ 	igt_subtest("amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING") {
+ 		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
+-				set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING,
++			set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING,
+ 						ip_background, ip_test, ring_id_good, ring_id_bad);
+ 		}
+ 	}
+@@ -1017,7 +1019,7 @@ igt_main
+ 	igt_describe("Stressful-and-multiple-cs-of-bad and good shader-operations-using-multiple-processes");
+ 	igt_subtest("amdgpu-compute-BACKEND_SE_GC_SHADER_INVALID_USER_DATA") {
+ 		if (arr_cap[ip_test] && get_next_rings(ring_id_good, info.available_rings, &ring_id_good, &ring_id_bad)) {
+-				set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_USER_DATA,
++			set_next_test_to_run(sh_mem, BACKEND_SE_GC_SHADER_INVALID_USER_DATA,
+ 						ip_background, ip_test, ring_id_good, ring_id_bad);
+ 		}
+ 	}
+@@ -1033,6 +1035,7 @@ igt_main
+ 		drm_close_driver(fd);
+ 		shared_mem_destroy(sh_mem, fd_shm, true);
+ 		posix_spawn_file_actions_destroy(&action);
++
++		free_command_line(argc, argv, path);
+ 	}
+-	free_command_line(argc, argv, path);
+ }
+-- 
+2.25.1
 
--     while (j++ &lt; ring_context-&gt;write_length)
-+     while (j++ &lt; stream_length)
-              ring_context-&gt;pm4[i++] = func-&gt;deadbeaf;
-      *pm4_dw = i;
-      return i;
---
-2.34.1
-</pre>
-      </blockquote>
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------0GMF1dAbnuiQ7PletGhtEoy4--
