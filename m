@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE441C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Aug 2024 13:21:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 566C3C52D6F
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Aug 2024 13:25:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7A6E610E728;
-	Thu,  8 Aug 2024 13:21:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18E2F10E72A;
+	Thu,  8 Aug 2024 13:25:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H7iz9Ljm";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d9WXoqbK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 194ED10E728
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Aug 2024 13:21:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B4D210E729;
+ Thu,  8 Aug 2024 13:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723123285; x=1754659285;
+ t=1723123549; x=1754659549;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=EN7bBfjHVy7onDAF/d3wYMi4QmmmKI47PaeXIxBP4LY=;
- b=H7iz9Ljm2jp/qPgsn3JbvyqqQl6P1WtuW7nmqfA/FUwDWU4bICdAXCWo
- 4hQqExQGcRg3qtWXdMKlnGLdjKEbJDMVOKt6SOWl0FD5uQnjgfS8BHLbx
- 60BjwgX/NQFfZsIpN6cZeyaBNiEhxzWVZtybvovQVYRJcV1gsYzgNX2Yf
- Vr63JcfCBGIUm8zhtzEHK0v96iHfYJQbMqjl/rAU7zshSvtQkzP115tT4
- yrPkk4xNGCxwQtIAlXNcxCgt0EwdJFMqLGcowvdUbzE58utkrMGBCoIqr
- JT1y+mEWwpNzDGkg4cdckCmFnzHqaU4kX06wH8iDK7Ag1OA6uv2vNOKb6 A==;
-X-CSE-ConnectionGUID: ek3OelCTRXq949xK8V5bBg==
-X-CSE-MsgGUID: r5E+ozXsS3+0vIxHokkZ2Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="32639583"
-X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="32639583"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 06:21:25 -0700
-X-CSE-ConnectionGUID: pVioshIbQuq8azpCl461kA==
-X-CSE-MsgGUID: eC8Mk1KMQt6fceBa0BR7lg==
+ mime-version:in-reply-to;
+ bh=hHtYIa+P8L0LRxkGy5QE3P9w3RSp+i0FokwwIQPX6v4=;
+ b=d9WXoqbKA5O3P6ZN5J1vWETi78on2Z3s4NzThf/aIQJfIEH87LmAeUfq
+ Y3RqImusN96MBmFFZpSVpZ+NEyJA/+2Z4ZtrufFDBuQ50Rq2ONsWAQqWO
+ 9ctvUtEE8oXoxZgQQKmA+mYA2cs+wLWRS2OEyfhPqnlu9L2/EsPbJ2BQl
+ c2AcTC8u3DvWBRyHGgpfvPhhV5+9To1AyX+kwQZrzNeHZJvEWcugDJuso
+ iCziUGUllwmvNbLEq1FQwTm1lB6OIiTF7E4KbQvoA1zBY2IZ5b1uk12EI
+ hdz57nFL8ZVyP2jLOThVbv740KfCQnbD+PoV30ekF7NVAJb4rGWPqbMTU g==;
+X-CSE-ConnectionGUID: TYl8+bF4RvmKD/M4JAgfBw==
+X-CSE-MsgGUID: WHmZakx6QBeE0eu0EF4VSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="31916411"
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="31916411"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Aug 2024 06:25:48 -0700
+X-CSE-ConnectionGUID: dAAd8a7kRYGXRji5qAvXig==
+X-CSE-MsgGUID: Hx0HGF1XS7m1j6BmIGNLAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="88122643"
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="61313265"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 06:21:23 -0700
-Date: Thu, 8 Aug 2024 15:21:20 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Aug 2024 06:25:46 -0700
+Date: Thu, 8 Aug 2024 15:25:44 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/4] runner/resultgen: Added dynamically ignored
- dmesg messages
-Message-ID: <20240808132120.vfhzqlowh5v3zrql@kamilkon-DESK.igk.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_runner?=
+ =?utf-8?Q?=3A?= Allow dynamically ignore dmesg errors or warnings (rev3)
+Message-ID: <20240808132544.qxkf5bbk35m6dfma@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20240806144332.80609-1-kamil.konieczny@linux.intel.com>
- <20240806144332.80609-2-kamil.konieczny@linux.intel.com>
- <20240807143356.7qj6mofa62kesxso@zkempczy-mobl2>
+ <172310517364.549129.1681628799968686003@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240807143356.7qj6mofa62kesxso@zkempczy-mobl2>
+In-Reply-To: <172310517364.549129.1681628799968686003@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,197 +71,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbigniew,
-On 2024-08-07 at 16:33:56 +0200, Zbigniew Kempczyński wrote:
-> On Tue, Aug 06, 2024 at 04:43:29PM +0200, Kamil Konieczny wrote:
-> > Some messages generated by driver are triggered by test itself
-> > and are not meant to rise error nor warn within runner, yet
-> > they should be catched in other circumstances so they are not
-> > suitable to be ignored permanently.
-> > 
-> > Instead of hard-coding such situations check dmesg for info from
-> > a test and add such regex on a fly and then ignore next dmesg
-> > errors or warns which match it.
-> > 
-> > Ignored regex will be removed after end of current subtest, just
-> > before a new subtest or dynamic subtest starts.
-> > 
-> > v2: removed local copy for regex string (Zbigniew), clarify
-> >  description, free regex before creating new (Kamil)
-> > 
-> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  runner/output_strings.h |  8 ++++++
-> >  runner/resultgen.c      | 60 +++++++++++++++++++++++++++++++++++------
-> >  2 files changed, 60 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/runner/output_strings.h b/runner/output_strings.h
-> > index 892895ead..91ef5f2c3 100644
-> > --- a/runner/output_strings.h
-> > +++ b/runner/output_strings.h
-> > @@ -54,6 +54,14 @@ static const char STARTING_SUBTEST_DMESG[] = ": starting subtest ";
-> >   */
-> >  static const char STARTING_DYNAMIC_SUBTEST_DMESG[] = ": starting dynamic subtest ";
-> >  
-> > +/*
-> > + * Output in dmesg when a test wants runner to dynamically ignore error or warn.
-> > + *
-> > + * Example:
-> > + * [IGT] add ignored dmesg regex: CRITICAL: Xe has declared device [0-9:.]* as wedged
-> > + */
-> > +static const char IGT_ADD_IGNORED_REGEX_DMESG[] = "add ignored dmesg regex: ";
-> > +
-> >  /*
-> >   * Output when a test process is executed.
-> >   *
-> > diff --git a/runner/resultgen.c b/runner/resultgen.c
-> > index 63f5b26d7..ce7433b65 100644
-> > --- a/runner/resultgen.c
-> > +++ b/runner/resultgen.c
-> > @@ -829,16 +829,13 @@ static const char igt_dmesg_whitelist[] =
-> >  static const char igt_piglit_style_dmesg_blacklist[] =
-> >  	"(\\[drm:|drm_|intel_|i915_|\\[drm\\])";
-> >  
-> > -static bool init_regex_whitelist(struct settings* settings, GRegex **re)
-> > +static bool init_dmesg_regex(GRegex **re, const char *regex, const char *msg)
-> >  {
-> >  	GError *err = NULL;
-> > -	const char *regex = settings->piglit_style_dmesg ?
-> > -		igt_piglit_style_dmesg_blacklist :
-> > -		igt_dmesg_whitelist;
-> >  
-> >  	*re = g_regex_new(regex, G_REGEX_OPTIMIZE, 0, &err);
-> >  	if (err) {
-> > -		fprintf(stderr, "Cannot compile dmesg regexp\n");
-> > +		fprintf(stderr, "Cannot compile dmesg regexp for %s\n", msg);
+Hi igt-dev,
+On 2024-08-08 at 08:19:33 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> I've missed this on last review. I would bet to display error message
-> from GError when regex compilation fails.
+> Series: runner: Allow dynamically ignore dmesg errors or warnings (rev3)
+> URL   : https://patchwork.freedesktop.org/series/136494/
+> State : failure
 > 
-> Rest looks correct imo.
+> == Summary ==
 > 
-> --
-> Zbigniew
+> CI Bug Log - changes from XEIGT_7962_BAT -> XEIGTPW_11543_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_11543_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_11543_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (7 -> 6)
+> ------------------------------
+> 
+>   Missing    (1): bat-lnl-1 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_11543_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+>     - bat-adlp-7:         [PASS][1] -> [INCOMPLETE][2] +5 other tests incomplete
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+> 
+>   * igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-edp-1:
+>     - bat-adlp-7:         [PASS][3] -> [DMESG-WARN][4] +2 other tests dmesg-warn
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-adlp-7/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-edp-1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-adlp-7/igt@kms_pipe_crc_basic@hang-read-crc@pipe-a-edp-1.html
+> 
+>   * igt@xe_live_ktest@xe_migrate:
+>     - bat-pvc-2:          [PASS][5] -> [SKIP][6] +2 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-pvc-2/igt@xe_live_ktest@xe_migrate.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-pvc-2/igt@xe_live_ktest@xe_migrate.html
+>     - bat-atsm-2:         [PASS][7] -> [SKIP][8] +2 other tests skip
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-atsm-2/igt@xe_live_ktest@xe_migrate.html
+> 
+>   * igt@xe_module_load@load:
+>     - bat-dg2-oem2:       [PASS][9] -> [FAIL][10]
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-dg2-oem2/igt@xe_module_load@load.html
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-dg2-oem2/igt@xe_module_load@load.html
 > 
 
-I will add these (in runner and core) and resend.
+Above are unrelated.
+
+>   * igt@xe_wedged@basic-wedged:
+>     - bat-atsm-2:         NOTRUN -> [DMESG-WARN][11] +1 other test dmesg-warn
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-atsm-2/igt@xe_wedged@basic-wedged.html
+
+
+This looks like a bug in rc2 or in driver:
+
+<3> [765.287417] xe 0000:4d:00.0: [drm] *ERROR* GT0: reset failed (-ECANCELED)
+<4> [765.294872] ------------[ cut here ]------------
+<4> [765.294881] xe 0000:4d:00.0: [drm] Missing outer runtime PM protection
+<4> [765.294945] WARNING: CPU: 18 PID: 11 at drivers/gpu/drm/xe/xe_pm.c:559 xe_pm_runtime_get_noresume+0x48/0x60 [xe]
+
+> 
+>   * igt@xe_wedged@wedged-at-any-timeout:
+>     - bat-adlp-vf:        NOTRUN -> [ABORT][12]
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-adlp-vf/igt@xe_wedged@wedged-at-any-timeout.html
+> 
+
+This also looks like a bug in
+xe_guc_ads_scheduler_policy_toggle_reset()
+
+<1> [810.005232] BUG: kernel NULL pointer dereference, address: 00000000000003c0
+<1> [810.005236] #PF: supervisor read access in kernel mode
+<1> [810.005239] #PF: error_code(0x0000) - not-present page
+<6> [810.005241] PGD 0 P4D 0 
+<4> [810.005243] Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+<4> [810.005246] CPU: 0 UID: 0 PID: 1739 Comm: xe_wedged Tainted: G     U  W          6.11.0-rc2-xe #1
+<4> [810.005250] Tainted: [U]=USER, [W]=WARN
+<4> [810.005251] Hardware name: Intel Corporation Alder Lake Client Platform/AlderLake-P DDR5 RVP, BIOS RPLPFWI1.R00.4035.A00.2301200723 01/20/2023
+<4> [810.005254] RIP: 0010:xe_guc_ads_scheduler_policy_toggle_reset+0x67/0x1f0 [xe]
 
 Regards,
 Kamil
 
-> >  		g_error_free(err);
-> >  		return false;
-> >  	}
-> > @@ -846,6 +843,43 @@ static bool init_regex_whitelist(struct settings* settings, GRegex **re)
-> >  	return true;
-> >  }
-> >  
-> > +static bool init_regex_whitelist(struct settings *settings, GRegex **re)
-> > +{
-> > +	const char *regex = settings->piglit_style_dmesg ?
-> > +		igt_piglit_style_dmesg_blacklist :
-> > +		igt_dmesg_whitelist;
-> > +	const char *what = settings->piglit_style_dmesg ?
-> > +		"piglit style dmesg blocklist" :
-> > +		"igt dmesg whitelist";
-> > +
-> > +	return init_dmesg_regex(re, regex, what);
-> > +}
-> > +
-> > +static bool not_ignored(GRegex *re, const char *msg)
-> > +{
-> > +	if (!re)
-> > +		return true;
-> > +
-> > +	return !g_regex_match(re, msg, 0, NULL);
-> > +}
-> > +
-> > +static void clean_regex(GRegex **re)
-> > +{
-> > +	if (*re)
-> > +		g_regex_unref(*re);
-> > +
-> > +	*re = NULL;
-> > +}
-> > +
-> > +static void add_ignored_regex(GRegex **re, char *src)
-> > +{
-> > +	if (*re)
-> > +		g_regex_unref(*re);
-> > +
-> > +	init_dmesg_regex(re, src, "ignore match");
-> > +	fprintf(stderr, "igt_resultgen: Added ignore regex '%s'\n", src);
-> > +}
-> > +
-> >  static bool parse_dmesg_line(char* line,
-> >  			     unsigned *flags, unsigned long long *ts_usec,
-> >  			     char *continuation, char **message)
-> > @@ -979,6 +1013,7 @@ static bool fill_from_dmesg(int fd,
-> >  	char dynamic_piglit_name[256];
-> >  	size_t i;
-> >  	GRegex *re;
-> > +	GRegex *re_ignore; /* regex for dynamically ignored dmesg line */
-> >  
-> >  	if (!f) {
-> >  		return false;
-> > @@ -989,12 +1024,13 @@ static bool fill_from_dmesg(int fd,
-> >  		return false;
-> >  	}
-> >  
-> > +	re_ignore = NULL;
-> >  	while (getline(&line, &linelen, f) > 0) {
-> >  		char *formatted;
-> >  		unsigned flags;
-> >  		unsigned long long ts_usec;
-> >  		char continuation;
-> > -		char *message, *subtest, *dynamic_subtest;
-> > +		char *message, *subtest, *dynamic_subtest, *ignore;
-> >  
-> >  		if (!parse_dmesg_line(line, &flags, &ts_usec, &continuation, &message))
-> >  			continue;
-> > @@ -1024,6 +1060,7 @@ static bool fill_from_dmesg(int fd,
-> >  			subtest += strlen(STARTING_SUBTEST_DMESG);
-> >  			generate_piglit_name(binary, subtest, piglit_name, sizeof(piglit_name));
-> >  			current_test = get_or_create_json_object(tests, piglit_name);
-> > +			clean_regex(&re_ignore);
-> >  		}
-> >  
-> >  		if (current_test != NULL &&
-> > @@ -1041,18 +1078,24 @@ static bool fill_from_dmesg(int fd,
-> >  			dynamic_subtest += strlen(STARTING_DYNAMIC_SUBTEST_DMESG);
-> >  			generate_piglit_name_for_dynamic(piglit_name, dynamic_subtest, dynamic_piglit_name, sizeof(dynamic_piglit_name));
-> >  			current_dynamic_test = get_or_create_json_object(tests, dynamic_piglit_name);
-> > +			clean_regex(&re_ignore);
-> >  		}
-> >  
-> > +		if ((ignore = strstr(message, IGT_ADD_IGNORED_REGEX_DMESG)) != NULL)
-> > +			add_ignored_regex(&re_ignore, ignore + strlen(IGT_ADD_IGNORED_REGEX_DMESG));
-> > +
-> >  		if (settings->piglit_style_dmesg) {
-> >  			if ((flags & 0x07) <= settings->dmesg_warn_level && continuation != 'c' &&
-> > -			    g_regex_match(re, message, 0, NULL)) {
-> > +			    g_regex_match(re, message, 0, NULL) &&
-> > +			    not_ignored(re_ignore, message)) {
-> >  				append_line(&warnings, &warningslen, formatted);
-> >  				if (current_test != NULL)
-> >  					append_line(&dynamic_warnings, &dynamic_warnings_len, formatted);
-> >  			}
-> >  		} else {
-> >  			if ((flags & 0x07) <= settings->dmesg_warn_level && continuation != 'c' &&
-> > -			    !g_regex_match(re, message, 0, NULL)) {
-> > +			    !g_regex_match(re, message, 0, NULL) &&
-> > +			    not_ignored(re_ignore, message)) {
-> >  				append_line(&warnings, &warningslen, formatted);
-> >  				if (current_test != NULL)
-> >  					append_line(&dynamic_warnings, &dynamic_warnings_len, formatted);
-> > @@ -1099,6 +1142,7 @@ static bool fill_from_dmesg(int fd,
-> >  	free(dynamic_dmesg);
-> >  	free(warnings);
-> >  	free(dynamic_warnings);
-> > +	clean_regex(&re_ignore);
-> >  	g_regex_unref(re);
-> >  	fclose(f);
-> >  	return true;
-> > -- 
-> > 2.43.0
-> > 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_11543_BAT that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@core_hotunplug@unbind-rebind:
+>     - bat-dg2-oem2:       [PASS][13] -> [SKIP][14] ([Intel XE#1885])
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-dg2-oem2/igt@core_hotunplug@unbind-rebind.html
+> 
+>   * igt@fbdev@eof:
+>     - bat-dg2-oem2:       [PASS][15] -> [SKIP][16] ([Intel XE#2134]) +4 other tests skip
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7962/bat-dg2-oem2/igt@fbdev@eof.html
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/bat-dg2-oem2/igt@fbdev@eof.html
+
+...cut...
+
+>   [Intel XE#929]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/929
+>   [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
+>   [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
+>   [i915#2575]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2575
+>   [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7962 -> IGTPW_11543
+> 
+>   IGTPW_11543: 7cdda8ee1d271299366792ab59a3dc72e436fe27 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_7962: 7962
+>   xe-1731-4f5d551409fb5562ab0d732120e7ac9b698b5864: 4f5d551409fb5562ab0d732120e7ac9b698b5864
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11543/index.html
