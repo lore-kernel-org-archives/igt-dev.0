@@ -4,59 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7489C52D7B
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Aug 2024 16:48:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E790FC3DA4A
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Aug 2024 16:48:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 913D210E792;
-	Thu,  8 Aug 2024 16:48:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A260C10E793;
+	Thu,  8 Aug 2024 16:48:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O1mjsbPV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ALdJdof3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D2BB10E792
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Aug 2024 16:48:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D7FA10E793
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Aug 2024 16:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723135690; x=1754671690;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ADIvQGSlEp4vVshyzsEUzuTLkZ3Qne5Oa26mvBzCdJg=;
- b=O1mjsbPVcAuyuD9LYdwC5VGe57vG3J8bGMzApJkfR8hwJh0Cg1uj4m6q
- GcYDlsK0tgfBF3f55UkTLqwut8mvAxSDuOa2AL83uuCVs1Bf4QEZ3mnKs
- sN+4rS2EOP5xWcjAal6VPZ8hfiddMMGdlFoasTr5X1jL3eb7J20cRo111
- YJRZc2ZTlWnd5zbjWmpq5pb7euSM7FXKbo7ULIxedi4XvbB+Wpt1bXFVp
- KohMYZjNj9K5Q727CGcZ4fFkqeKL4OTFGFr62vvO0vLQy4gD78XrVqi/V
- 5xNtjXMtXZSZF+wsUAuRSFKccx+DghNyHMNJ0o51trbAhGCexrglqmV7N g==;
-X-CSE-ConnectionGUID: ZtUS0ntaS/egMOxdZKliYw==
-X-CSE-MsgGUID: KYMe9TrpQKeQgRhQzE1q5w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="43794129"
-X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="43794129"
+ t=1723135693; x=1754671693;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=7M5Izvcubd0btt3/kG16xPC+SYd/5xtjV01ijsxtQe4=;
+ b=ALdJdof3rDtDG6wkYMvG58SNDcHFDLF6nIAGRvPffsgV5+BSWbmnO0BT
+ WibN1qrp6tLBbUxW54sTBw4C8pLz/ySdQ/qGkAd4ci4JVc+o2g8TjStcm
+ 4oLwK726D0U7o7/aD/GmZbuHutTQdtpqu61nNncbjGL4Tn3xulRSn9DDg
+ zsfi+WQWCu+RUvA5Gcogye3ZKDWp53Rxal/AS32rRskfKSRWeBW5D9T23
+ 9hPnFKj/jL7Q7DcZXaoR1PzBQYNG+LR3eOnJqCGH7xnXF5dNhvWkflIhM
+ c9znSOTefzvU9DlVPzQCqVxaR+BgImEhbube53fzKzU7JgOtZEBqgopNX g==;
+X-CSE-ConnectionGUID: MukACw3lSNScPo1cNJXmdg==
+X-CSE-MsgGUID: lM9xohTMTuuy9qsFL4hl3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="43794142"
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="43794142"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 09:48:10 -0700
-X-CSE-ConnectionGUID: oftX8XiBQeOCjkNKJL2sJg==
-X-CSE-MsgGUID: ToFXnvVAQTWzpM1fvWJhzg==
+ 08 Aug 2024 09:48:13 -0700
+X-CSE-ConnectionGUID: HZ2KozbFT2m2h3XOgT+7cg==
+X-CSE-MsgGUID: F5akcHnyT6u0XN0oBbumug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="57520119"
+X-IronPort-AV: E=Sophos;i="6.09,273,1716274800"; d="scan'208";a="57520142"
 Received: from djiang5-mobl3.amr.corp.intel.com (HELO localhost)
  ([10.125.108.94])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Aug 2024 09:48:08 -0700
+ 08 Aug 2024 09:48:13 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Petri Latvala <adrinael@adrinael.net>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Karol Krol <karol.krol@intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>
-Subject: [PATCH i-g-t v3 0/4] runner: Allow dynamically ignore dmesg errors or
- warnings
-Date: Thu,  8 Aug 2024 18:47:55 +0200
-Message-ID: <20240808164759.133621-1-kamil.konieczny@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v3 1/4] runner/resultgen: Added dynamically ignored
+ dmesg messages
+Date: Thu,  8 Aug 2024 18:47:56 +0200
+Message-ID: <20240808164759.133621-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240808164759.133621-1-kamil.konieczny@linux.intel.com>
+References: <20240808164759.133621-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -73,68 +69,182 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Allow igt tests to dynamically inform igt_runner about expected
-kernel warn or error and allow to ignore it and generate correct
-results.
+Some messages generated by driver are triggered by test itself
+and are not meant to rise error nor warn within runner, yet
+they should be catched in other circumstances so they are not
+suitable to be ignored permanently.
 
-For example, xe_wedged forces wedged state and after checks test
-succeeds but runner interprets kernel error message and treat
-that as a fail. In dmesg there was:
+Instead of hard-coding such situations check dmesg for info from
+a test and add such regex on a fly and then ignore next dmesg
+errors or warns which match it.
 
-<6> [259.656065] [IGT] xe_wedged: executing
-<6> [259.659888] [IGT] xe_wedged: starting subtest wedged-at-any-timeout
-<3> [259.661285] xe 0000:03:00.0: [drm] *ERROR* CRITICAL: Xe has declared device 0000:03:00.0 as wedged.
-IOCTLs and executions are blocked. Only a rebind may clear the failure
-Please file a _new_ bug report at https://gitlab.freedesktop.org/drm/xe/kernel/issues/new
-<5> [259.661375] xe 0000:03:00.0: [drm] GT0: Timedout job: seqno=4294967169, lrc_seqno=4294967169, guc_id=2, flags=0x0 in xe_wedged [1825]
+Ignored regex will be removed after end of current subtest, just
+before a new subtest or dynamic subtest starts.
 
-In output on stdout there was:
+v2: removed local copy for regex string (Zbigniew), clarify
+ description, free regex before creating new (Kamil)
+v3: print error when compiling regex fails (Zbigniew)
 
-[381.820788] Starting subtest: wedged-at-any-timeout
-[385.137763] Subtest wedged-at-any-timeout: SUCCESS (3.317s)
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/output_strings.h |  8 ++++++
+ runner/resultgen.c      | 62 +++++++++++++++++++++++++++++++++++------
+ 2 files changed, 62 insertions(+), 8 deletions(-)
 
-but in results.json the test is marked as a fail with dmesg-warn:
-
-"igt@xe_wedged@wedged-at-any-timeout":{
-"out":"Starting subtest: wedged-at-any-timeout\nSubtest wedged-at-any-timeout: SUCCESS (3.317s)\n",
-"err":"Starting subtest: wedged-at-any-timeout\nSubtest wedged-at-any-timeout: SUCCESS (3.317s)\n",
-"igt-version":"IGT-Version: 1.28-g9fa156438 (x86_64) (Linux: 6.10.0-rc7-xe x86_64)\n",
-"result":"dmesg-warn",
-
-To overcome this test could emit a message, in this case:
-
-add ignored dmesg regex: CRITICAL: Xe has declared device [0-9A-Fa-f:.]* as wedged
-
-Such regex will be cleared after resultsgen proceeds to a next
-(dynamic) subtest, so if that happens outside such scenarios
-it would be treated in old way.
-
-v2: addressed review comments: removed strdup(), added check for regex
-  creation in igt_core (Zbigniew)
-  free regex before creating new (Kamil)
-v3: added printing error message from glib (Zbigniew)
-
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Karol Krol <karol.krol@intel.com>
-Cc: Ewelina Musial <ewelina.musial@intel.com>
-
-Kamil Konieczny (4):
-  runner/resultgen: Added dynamically ignored dmesg messages
-  lib/igt_core: Added message to runner about ignoring kernel warns
-  tests/intel/xe_wedged: Inform runner about expected error
-  HAX/DO_NOT_MERGE: xe-fast-feedback: test xe_wedged
-
- lib/igt_core.c                           | 24 +++++++++
- lib/igt_core.h                           |  2 +
- runner/output_strings.h                  |  8 +++
- runner/resultgen.c                       | 62 +++++++++++++++++++++---
- tests/intel-ci/xe-fast-feedback.testlist |  4 ++
- tests/intel/xe_wedged.c                  | 10 ++++
- 6 files changed, 102 insertions(+), 8 deletions(-)
-
+diff --git a/runner/output_strings.h b/runner/output_strings.h
+index 892895ead..91ef5f2c3 100644
+--- a/runner/output_strings.h
++++ b/runner/output_strings.h
+@@ -54,6 +54,14 @@ static const char STARTING_SUBTEST_DMESG[] = ": starting subtest ";
+  */
+ static const char STARTING_DYNAMIC_SUBTEST_DMESG[] = ": starting dynamic subtest ";
+ 
++/*
++ * Output in dmesg when a test wants runner to dynamically ignore error or warn.
++ *
++ * Example:
++ * [IGT] add ignored dmesg regex: CRITICAL: Xe has declared device [0-9:.]* as wedged
++ */
++static const char IGT_ADD_IGNORED_REGEX_DMESG[] = "add ignored dmesg regex: ";
++
+ /*
+  * Output when a test process is executed.
+  *
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 63f5b26d7..2c67de4c5 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -829,23 +829,59 @@ static const char igt_dmesg_whitelist[] =
+ static const char igt_piglit_style_dmesg_blacklist[] =
+ 	"(\\[drm:|drm_|intel_|i915_|\\[drm\\])";
+ 
+-static bool init_regex_whitelist(struct settings* settings, GRegex **re)
++static bool init_dmesg_regex(GRegex **re, const char *regex, const char *msg)
+ {
+ 	GError *err = NULL;
+-	const char *regex = settings->piglit_style_dmesg ?
+-		igt_piglit_style_dmesg_blacklist :
+-		igt_dmesg_whitelist;
+ 
+ 	*re = g_regex_new(regex, G_REGEX_OPTIMIZE, 0, &err);
+ 	if (err) {
+-		fprintf(stderr, "Cannot compile dmesg regexp\n");
++		fprintf(stderr, "Cannot compile %s : %s\n",
++			msg, err->message);
+ 		g_error_free(err);
++
+ 		return false;
+ 	}
+ 
+ 	return true;
+ }
+ 
++static bool init_regex_whitelist(struct settings *settings, GRegex **re)
++{
++	const char *regex = settings->piglit_style_dmesg ?
++		igt_piglit_style_dmesg_blacklist :
++		igt_dmesg_whitelist;
++	const char *what = settings->piglit_style_dmesg ?
++		"piglit style dmesg blocklist" :
++		"igt dmesg whitelist";
++
++	return init_dmesg_regex(re, regex, what);
++}
++
++static bool not_ignored(GRegex *re, const char *msg)
++{
++	if (!re)
++		return true;
++
++	return !g_regex_match(re, msg, 0, NULL);
++}
++
++static void clean_regex(GRegex **re)
++{
++	if (*re)
++		g_regex_unref(*re);
++
++	*re = NULL;
++}
++
++static void add_ignored_regex(GRegex **re, char *src)
++{
++	if (*re)
++		g_regex_unref(*re);
++
++	init_dmesg_regex(re, src, "ignore match");
++	fprintf(stderr, "igt_resultgen: Added ignore regex '%s'\n", src);
++}
++
+ static bool parse_dmesg_line(char* line,
+ 			     unsigned *flags, unsigned long long *ts_usec,
+ 			     char *continuation, char **message)
+@@ -979,6 +1015,7 @@ static bool fill_from_dmesg(int fd,
+ 	char dynamic_piglit_name[256];
+ 	size_t i;
+ 	GRegex *re;
++	GRegex *re_ignore; /* regex for dynamically ignored dmesg line */
+ 
+ 	if (!f) {
+ 		return false;
+@@ -989,12 +1026,13 @@ static bool fill_from_dmesg(int fd,
+ 		return false;
+ 	}
+ 
++	re_ignore = NULL;
+ 	while (getline(&line, &linelen, f) > 0) {
+ 		char *formatted;
+ 		unsigned flags;
+ 		unsigned long long ts_usec;
+ 		char continuation;
+-		char *message, *subtest, *dynamic_subtest;
++		char *message, *subtest, *dynamic_subtest, *ignore;
+ 
+ 		if (!parse_dmesg_line(line, &flags, &ts_usec, &continuation, &message))
+ 			continue;
+@@ -1024,6 +1062,7 @@ static bool fill_from_dmesg(int fd,
+ 			subtest += strlen(STARTING_SUBTEST_DMESG);
+ 			generate_piglit_name(binary, subtest, piglit_name, sizeof(piglit_name));
+ 			current_test = get_or_create_json_object(tests, piglit_name);
++			clean_regex(&re_ignore);
+ 		}
+ 
+ 		if (current_test != NULL &&
+@@ -1041,18 +1080,24 @@ static bool fill_from_dmesg(int fd,
+ 			dynamic_subtest += strlen(STARTING_DYNAMIC_SUBTEST_DMESG);
+ 			generate_piglit_name_for_dynamic(piglit_name, dynamic_subtest, dynamic_piglit_name, sizeof(dynamic_piglit_name));
+ 			current_dynamic_test = get_or_create_json_object(tests, dynamic_piglit_name);
++			clean_regex(&re_ignore);
+ 		}
+ 
++		if ((ignore = strstr(message, IGT_ADD_IGNORED_REGEX_DMESG)) != NULL)
++			add_ignored_regex(&re_ignore, ignore + strlen(IGT_ADD_IGNORED_REGEX_DMESG));
++
+ 		if (settings->piglit_style_dmesg) {
+ 			if ((flags & 0x07) <= settings->dmesg_warn_level && continuation != 'c' &&
+-			    g_regex_match(re, message, 0, NULL)) {
++			    g_regex_match(re, message, 0, NULL) &&
++			    not_ignored(re_ignore, message)) {
+ 				append_line(&warnings, &warningslen, formatted);
+ 				if (current_test != NULL)
+ 					append_line(&dynamic_warnings, &dynamic_warnings_len, formatted);
+ 			}
+ 		} else {
+ 			if ((flags & 0x07) <= settings->dmesg_warn_level && continuation != 'c' &&
+-			    !g_regex_match(re, message, 0, NULL)) {
++			    !g_regex_match(re, message, 0, NULL) &&
++			    not_ignored(re_ignore, message)) {
+ 				append_line(&warnings, &warningslen, formatted);
+ 				if (current_test != NULL)
+ 					append_line(&dynamic_warnings, &dynamic_warnings_len, formatted);
+@@ -1099,6 +1144,7 @@ static bool fill_from_dmesg(int fd,
+ 	free(dynamic_dmesg);
+ 	free(warnings);
+ 	free(dynamic_warnings);
++	clean_regex(&re_ignore);
+ 	g_regex_unref(re);
+ 	fclose(f);
+ 	return true;
 -- 
 2.43.0
 
