@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F17EC3DA4A
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 12:39:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF22C52D7C
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 12:39:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 27B0610E8F5;
-	Fri,  9 Aug 2024 12:39:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 12FEC10E8F6;
+	Fri,  9 Aug 2024 12:39:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eM7cmxwM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BtIozC8x";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D1C7810E8F5
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 12:39:21 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 491BC10E8F7
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 12:39:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723207162; x=1754743162;
+ t=1723207166; x=1754743166;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tokD6c3Kv5EaL1hyDz5+4CH4MHln3K8mg8e4Bdodb6A=;
- b=eM7cmxwMe/3JTX1WRVSZIsSHgdTUmYv8FPZ7BoraFH6DXAHpHuEEDelg
- bA9ShLHZ90FboomF/ZL71nooK5BP1JhvppKvShA5Dh4GlV18C8yyEvk9Y
- XunutY0c8fosxtA3UzeZd6cwP3KywXDbiyoB7gYvzCxaIJ1Lp51oae33m
- kovj0QvCm70caekQrF8C6df4Tj5ul5+u5If8Pg4O9nuXwNKJWeVU+rHsf
- mjhxU72rB7oi1l30bck6+0slVTTZK3wMSJdIKQxCc7DYNzPgmPHzocDn2
- H+q9hhnMjXRPrCR0HnvTcgEht/X3yzY6+MuQFUiugXD/+mTYcm8yzLj4g w==;
-X-CSE-ConnectionGUID: RkWoQoFiT6O1iasVTYJEQA==
-X-CSE-MsgGUID: borNHjL/SOOzCFQyv6tydA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="32525427"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="32525427"
+ bh=EYxIPn/mPUgb2fu6KalOIl0Hqfz9c8xLAF62QQATVSU=;
+ b=BtIozC8xTQgGHz0Br2tMzuSyI/JWV2hHhAtTuCljoXR0d84wKk2mGy1m
+ DyfEJm2+a8lQgM5Jh+Y/8CWtxogdSVZqeBaA63smxvj5M3CkMR/SxUgld
+ +cAGLwwWtV99vTfb0h4a5tRNN22osp88ZC901R/b361HdLCXfhBzEFKau
+ hMKBdHuEhqDdwqD013u+P74kpIImoHFFk7kMbqT2m/mPyTLqG0Hc2aLi6
+ D/7ebWFwYxKAFd9VBfKGdM7touhWGhs+jzjEu/HnKhentXb+gLzEShLdw
+ cKE3AgGH1vQPge18ZwIhCOJyZxaTDHrMGBuIi5wOQOk0WXCrOmcNwvpcp A==;
+X-CSE-ConnectionGUID: SxTEYwdrSFW769bozXwO6A==
+X-CSE-MsgGUID: XyjnIjB1THOi/TpweapMBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="32525437"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="32525437"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 05:39:22 -0700
-X-CSE-ConnectionGUID: gzju6iAHSYqev6w8aY83Rg==
-X-CSE-MsgGUID: lfl+d7g7Q7SGlGn36Ow4lA==
+ 09 Aug 2024 05:39:25 -0700
+X-CSE-ConnectionGUID: 3tFSSEe+RcKvHDX6TydoFQ==
+X-CSE-MsgGUID: s6CDSDhiQSG91PG6+SE99A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="57761394"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="57761423"
 Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.4])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 05:39:16 -0700
+ 09 Aug 2024 05:39:22 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,14 +55,11 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
- Karolina Stolarek <karolina.stolarek@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>
-Subject: [PATCH i-g-t v3 05/14] tests/xe_eudebug: Test eudebug resource
- tracking and manipulation
-Date: Fri,  9 Aug 2024 14:38:04 +0200
-Message-Id: <20240809123813.109365-6-christoph.manszewski@intel.com>
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v3 06/14] lib/gpgpu_shader: Extend shader building
+ library
+Date: Fri,  9 Aug 2024 14:38:05 +0200
+Message-Id: <20240809123813.109365-7-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809123813.109365-1-christoph.manszewski@intel.com>
 References: <20240809123813.109365-1-christoph.manszewski@intel.com>
@@ -84,2721 +81,851 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-
-For typical debugging under gdb one can specify two main usecases:
-accessing and manupulating resources created by the application and
-manipulating thread execution (interrupting and setting breakpoints).
-
-This test adds coverage for the former by checking that:
-- the debugger reports the expected events for Xe resources created
-by the debugged client,
-- the debugger is able to read and write the vm of the debugged client.
+Add shader building functions and iga64 code used by eudebug subtests.
 
 Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
-Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 ---
- tests/intel/xe_eudebug.c | 2671 ++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |    1 +
- 2 files changed, 2672 insertions(+)
- create mode 100644 tests/intel/xe_eudebug.c
+ lib/gpgpu_shader.c          | 386 +++++++++++++++++++++++++++++++++++-
+ lib/gpgpu_shader.h          |  24 ++-
+ lib/iga64_generated_codes.c | 321 +++++++++++++++++++++++++++++-
+ 3 files changed, 727 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-new file mode 100644
-index 000000000..152643850
---- /dev/null
-+++ b/tests/intel/xe_eudebug.c
-@@ -0,0 +1,2671 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Test EU Debugger functionality
-+ * Category: Core
-+ * Mega feature: EUdebug
-+ * Sub-category: EUdebug tests
-+ * Functionality: eu debugger framework
-+ * Test category: functionality test
-+ */
-+
-+#include <grp.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <pwd.h>
-+#include <sys/ioctl.h>
-+#include <sys/prctl.h>
-+
-+#include "igt.h"
-+#include "intel_pat.h"
-+#include "lib/igt_syncobj.h"
-+#include "xe/xe_eudebug.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+/**
-+ * SUBTEST: sysfs-toggle
-+ * Description:
-+ *	Exercise the debugger enable/disable sysfs toggle logic
-+ */
-+static void test_sysfs_toggle(int fd)
-+{
-+	xe_eudebug_enable(fd, false);
-+	igt_assert(!xe_eudebug_debugger_available(fd));
-+
-+	xe_eudebug_enable(fd, true);
-+	igt_assert(xe_eudebug_debugger_available(fd));
-+	xe_eudebug_enable(fd, true);
-+	igt_assert(xe_eudebug_debugger_available(fd));
-+
-+	xe_eudebug_enable(fd, false);
-+	igt_assert(!xe_eudebug_debugger_available(fd));
-+	xe_eudebug_enable(fd, false);
-+	igt_assert(!xe_eudebug_debugger_available(fd));
-+
-+	xe_eudebug_enable(fd, true);
-+	igt_assert(xe_eudebug_debugger_available(fd));
-+}
-+
-+#define STAGE_PRE_DEBUG_RESOURCES_DONE 1
-+#define STAGE_DISCOVERY_DONE 2
-+
-+#define CREATE_VMS (1 << 0)
-+#define CREATE_EXEC_QUEUES (1 << 1)
-+#define VM_BIND (1 << 2)
-+#define VM_BIND_VM_DESTROY (1 << 3)
-+#define VM_BIND_EXTENDED (1 << 4)
-+#define VM_METADATA (1 << 5)
-+#define VM_BIND_METADATA (1 << 6)
-+#define VM_BIND_OP_MAP_USERPTR (1 << 7)
-+#define TEST_DISCOVERY (1 << 31)
-+
-+#define PAGE_SIZE 4096
-+static struct drm_xe_vm_bind_op_ext_attach_debug *
-+basic_vm_bind_metadata_ext_prepare(int fd, struct xe_eudebug_client *c,
-+				   uint8_t **data, uint32_t data_size)
-+{
-+	struct drm_xe_vm_bind_op_ext_attach_debug *ext;
-+	int i;
-+
-+	*data = calloc(data_size, sizeof(*data));
-+	igt_assert(*data);
-+
-+	for (i = 0; i < data_size; i++)
-+		(*data)[i] = 0xff & (i + (i > PAGE_SIZE));
-+
-+
-+	ext = calloc(WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM, sizeof(*ext));
-+	igt_assert(ext);
-+
-+	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++) {
-+		ext[i].base.name = XE_VM_BIND_OP_EXTENSIONS_ATTACH_DEBUG;
-+		ext[i].metadata_id = xe_eudebug_client_metadata_create(c, fd, i,
-+								       (i + 1) * PAGE_SIZE, *data);
-+		ext[i].cookie = i;
-+
-+		if (i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM - 1)
-+			ext[i].base.next_extension = to_user_pointer(&ext[i+1]);
-+	}
-+	return ext;
-+}
-+
-+static void basic_vm_bind_metadata_ext_del(int fd, struct xe_eudebug_client *c,
-+					   struct drm_xe_vm_bind_op_ext_attach_debug *ext,
-+					   uint8_t *data)
-+{
-+	for (int i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++)
-+		xe_eudebug_client_metadata_destroy(c, fd, ext[i].metadata_id,
-+							   i, (i + 1) * PAGE_SIZE);
-+	free(ext);
-+	free(data);
-+}
-+
-+static void basic_vm_bind_client(int fd, struct xe_eudebug_client *c)
-+{
-+	struct drm_xe_vm_bind_op_ext_attach_debug *ext = NULL;
-+	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	size_t bo_size = xe_get_default_alignment(fd);
-+	bool test_discovery = c->flags & TEST_DISCOVERY;
-+	bool test_metadata = c->flags & VM_BIND_METADATA;
-+	uint32_t bo = xe_bo_create(fd, 0, bo_size,
-+				   system_memory(fd), 0);
-+	uint64_t addr = 0x1a0000;
-+	uint8_t *data = NULL;
-+
-+	if (test_metadata)
-+		ext = basic_vm_bind_metadata_ext_prepare(fd, c, &data, PAGE_SIZE);
-+
-+	xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, addr,
-+					bo_size, 0, NULL, 0, to_user_pointer(ext));
-+
-+	if (test_discovery) {
-+		xe_eudebug_client_signal_stage(c, STAGE_PRE_DEBUG_RESOURCES_DONE);
-+		xe_eudebug_client_wait_stage(c, STAGE_DISCOVERY_DONE);
-+	}
-+
-+	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr, bo_size);
-+
-+	if (test_metadata)
-+		basic_vm_bind_metadata_ext_del(fd, c, ext, data);
-+
-+	gem_close(fd, bo);
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+}
-+
-+static void basic_vm_bind_vm_destroy_client(int fd, struct xe_eudebug_client *c)
-+{
-+	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	size_t bo_size = xe_get_default_alignment(fd);
-+	bool test_discovery = c->flags & TEST_DISCOVERY;
-+	uint32_t bo = xe_bo_create(fd, 0, bo_size,
-+				   system_memory(fd), 0);
-+	uint64_t addr = 0x1a0000;
-+
-+	if (test_discovery) {
-+		vm = xe_vm_create(fd, 0, 0);
-+
-+		xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, NULL, 0);
-+
-+		xe_vm_destroy(fd, vm);
-+
-+		xe_eudebug_client_signal_stage(c, STAGE_PRE_DEBUG_RESOURCES_DONE);
-+		xe_eudebug_client_wait_stage(c, STAGE_DISCOVERY_DONE);
-+	} else {
-+		vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+		xe_eudebug_client_vm_bind(c, fd, vm, bo, 0, addr, bo_size);
-+		xe_eudebug_client_vm_destroy(c, fd, vm);
-+	}
-+
-+	gem_close(fd, bo);
-+}
-+
-+#define BO_ADDR 0x1a0000
-+#define BO_ITEMS 4096
-+#define MIN_BO_SIZE (BO_ITEMS * sizeof(uint64_t))
-+
-+union buf_id {
-+	uint32_t fd;
-+	void *userptr;
+diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+index 991455c49..3b16db593 100644
+--- a/lib/gpgpu_shader.c
++++ b/lib/gpgpu_shader.c
+@@ -7,10 +7,16 @@
+ 
+ #include <i915_drm.h>
+ 
++#include "igt_map.h"
+ #include "ioctl_wrappers.h"
+ #include "gpgpu_shader.h"
+ #include "gpu_cmds.h"
+ 
++struct label_entry {
++	uint32_t id;
++	uint32_t offset;
 +};
 +
-+struct bind_list {
-+	int fd;
-+	uint32_t vm;
-+	union buf_id *bo;
-+	struct drm_xe_vm_bind_op *bind_ops;
-+	unsigned int n;
-+};
+ #define IGA64_ARG0 0xc0ded000
+ #define IGA64_ARG_MASK 0xffffff00
+ 
+@@ -32,7 +38,7 @@ static void gpgpu_shader_extend(struct gpgpu_shader *shdr)
+ 	igt_assert(shdr->code);
+ }
+ 
+-void
++uint32_t
+ __emit_iga64_code(struct gpgpu_shader *shdr, struct iga64_template const *tpls,
+ 		  int argc, uint32_t *argv)
+ {
+@@ -60,6 +66,8 @@ __emit_iga64_code(struct gpgpu_shader *shdr, struct iga64_template const *tpls,
+ 	}
+ 
+ 	shdr->size += tpls->size;
 +
-+static void *bo_get_ptr(int fd, struct drm_xe_vm_bind_op *o)
++	return tpls->size;
+ }
+ 
+ static uint32_t fill_sip(struct intel_bb *ibb,
+@@ -235,6 +243,7 @@ struct gpgpu_shader *gpgpu_shader_create(int fd)
+ 	shdr->gen_ver = 100 * info->graphics_ver + info->graphics_rel;
+ 	shdr->max_size = 16 * 4;
+ 	shdr->code = malloc(4 * shdr->max_size);
++	shdr->labels = igt_map_create(igt_map_hash_32, igt_map_equal_32);
+ 	igt_assert(shdr->code);
+ 	return shdr;
+ }
+@@ -251,6 +260,70 @@ void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
+ 	free(shdr);
+ }
+ 
++/**
++ * gpgpu_shader_dump:
++ * @shdr: shader to be printed
++ *
++ * Print shader instructions from @shdr in hex.
++ */
++void gpgpu_shader_dump(struct gpgpu_shader *shdr)
 +{
-+	void *ptr;
-+
-+	if (o->op != DRM_XE_VM_BIND_OP_MAP_USERPTR)
-+		ptr = xe_bo_map(fd, o->obj, o->range);
-+	else
-+		ptr = (void *)(uintptr_t)o->userptr;
-+
-+	igt_assert(ptr);
-+
-+	return ptr;
-+}
-+
-+static void bo_put_ptr(int fd, struct drm_xe_vm_bind_op *o, void *ptr)
-+{
-+	if (o->op != DRM_XE_VM_BIND_OP_MAP_USERPTR)
-+		munmap(ptr, o->range);
-+}
-+
-+static void bo_prime(int fd, struct drm_xe_vm_bind_op *o)
-+{
-+	uint64_t *d;
-+	uint64_t i;
-+
-+	d = bo_get_ptr(fd, o);
-+
-+	for (i = 0; i < o->range / sizeof(*d); i++)
-+		d[i] = o->addr + i;
-+
-+	bo_put_ptr(fd, o, d);
-+}
-+
-+static void bo_check(int fd, struct drm_xe_vm_bind_op *o)
-+{
-+	uint64_t *d;
-+	uint64_t i;
-+
-+	d = bo_get_ptr(fd, o);
-+
-+	for (i = 0; i < o->range / sizeof(*d); i++)
-+		igt_assert_eq(d[i], o->addr + i + 1);
-+
-+	bo_put_ptr(fd, o, d);
-+}
-+
-+static union buf_id *vm_create_objects(int fd, uint32_t bo_placement, uint32_t vm, unsigned int size,
-+				   unsigned int n)
-+{
-+	union buf_id *bo;
-+	unsigned int i;
-+
-+	bo = calloc(n, sizeof(*bo));
-+	igt_assert(bo);
-+
-+	for (i = 0; i < n; i++) {
-+		if (bo_placement) {
-+			bo[i].fd = xe_bo_create(fd, vm, size, bo_placement, 0);
-+			igt_assert(bo[i].fd);
-+		} else {
-+			bo[i].userptr = aligned_alloc(PAGE_SIZE, size);
-+			igt_assert(bo[i].userptr);
-+		}
-+	}
-+
-+	return bo;
-+}
-+
-+static struct bind_list *create_bind_list(int fd, uint32_t bo_placement,
-+					  uint32_t vm, unsigned int n,
-+					  unsigned int target_size)
-+{
-+	unsigned int i = target_size ?: MIN_BO_SIZE;
-+	const unsigned int bo_size = max_t(bo_size, xe_get_default_alignment(fd), i);
-+	bool is_userptr = !bo_placement;
-+	struct bind_list *bl;
-+
-+	bl = malloc(sizeof(*bl));
-+	bl->fd = fd;
-+	bl->vm = vm;
-+	bl->bo = vm_create_objects(fd, bo_placement, vm, bo_size, n);
-+	bl->n = n;
-+	bl->bind_ops = calloc(n, sizeof(*bl->bind_ops));
-+	igt_assert(bl->bind_ops);
-+
-+	for (i = 0; i < n; i++) {
-+		struct drm_xe_vm_bind_op *o = &bl->bind_ops[i];
-+
-+		if (is_userptr) {
-+			o->obj = 0;
-+			o->userptr = (uintptr_t)bl->bo[i].userptr;
-+			o->op = DRM_XE_VM_BIND_OP_MAP_USERPTR;
-+		} else {
-+			o->obj = bl->bo[i].fd;
-+			o->obj_offset = 0;
-+			o->op = DRM_XE_VM_BIND_OP_MAP;
-+		}
-+
-+		o->range = bo_size;
-+		o->addr = BO_ADDR + 2 * i * bo_size;
-+		o->flags = 0;
-+		o->pat_index = intel_get_pat_idx_wb(fd);
-+		o->prefetch_mem_region_instance = 0;
-+		o->reserved[0] = 0;
-+		o->reserved[1] = 0;
-+	}
-+
-+	for (i = 0; i < bl->n; i++) {
-+		struct drm_xe_vm_bind_op *o = &bl->bind_ops[i];
-+
-+		igt_debug("bo %d: addr 0x%llx, range 0x%llx\n", i, o->addr, o->range);
-+		bo_prime(fd, o);
-+	}
-+
-+	return bl;
-+}
-+
-+static void do_bind_list(struct xe_eudebug_client *c,
-+			 struct bind_list *bl, struct drm_xe_sync *sync)
-+{
-+	int i;
-+	uint64_t ref_seqno = 0, op_ref_seqno = 0;
-+
-+	xe_vm_bind_array(bl->fd, bl->vm, 0, bl->bind_ops, bl->n, sync, sync ? 1 : 0);
-+	xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE,
-+					bl->fd, bl->vm, 0, bl->n, &ref_seqno);
-+	for (i = 0; i < bl->n; i++)
-+		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE,
-+						   ref_seqno,
-+						   &op_ref_seqno,
-+						   bl->bind_ops[i].addr,
-+						   bl->bind_ops[i].range,
-+						   0);
-+
-+	if (sync)
-+		igt_assert(syncobj_wait(bl->fd, &sync->handle, 1, INT64_MAX, 0, NULL));
-+}
-+
-+static void free_bind_list(struct xe_eudebug_client *c, struct bind_list *bl)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < bl->n; i++) {
-+		igt_debug("%d: checking 0x%llx (%lld)\n",
-+			  i, bl->bind_ops[i].addr, bl->bind_ops[i].addr);
-+		bo_check(bl->fd, &bl->bind_ops[i]);
-+		if (bl->bind_ops[i].op == DRM_XE_VM_BIND_OP_MAP_USERPTR)
-+			free(bl->bo[i].userptr);
-+		xe_eudebug_client_vm_unbind(c, bl->fd, bl->vm, 0,
-+					    bl->bind_ops[i].addr,
-+					    bl->bind_ops[i].range);
-+	}
-+
-+	free(bl->bind_ops);
-+	free(bl->bo);
-+	free(bl);
-+}
-+
-+static void vm_bind_client(int fd, struct xe_eudebug_client *c)
-+{
-+	uint64_t op_ref_seqno, ref_seqno;
-+	struct bind_list *bl;
-+	bool test_discovery = c->flags & TEST_DISCOVERY;
-+	size_t bo_size = 3 * xe_get_default_alignment(fd);
-+	uint32_t bo[2] = {
-+		xe_bo_create(fd, 0, bo_size, system_memory(fd), 0),
-+		xe_bo_create(fd, 0, bo_size, system_memory(fd), 0),
-+	};
-+	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	uint64_t addr[] = {0x2a0000, 0x3a0000};
-+	uint64_t rebind_bo_offset = 2 * bo_size / 3;
-+	uint64_t size = bo_size / 3;
-+	int i = 0;
-+
-+	if (test_discovery) {
-+		xe_vm_bind_async(fd, vm, 0, bo[0], 0, addr[0], bo_size, NULL, 0);
-+
-+		xe_vm_unbind_async(fd, vm, 0, 0, addr[0] + size, size, NULL, 0);
-+
-+		xe_vm_bind_async(fd, vm, 0, bo[1], 0, addr[1], bo_size, NULL, 0);
-+
-+		xe_vm_bind_async(fd, vm, 0, bo[1], rebind_bo_offset, addr[1], size, NULL, 0);
-+
-+		bl = create_bind_list(fd, system_memory(fd), vm, 4, 0);
-+		xe_vm_bind_array(bl->fd, bl->vm, 0, bl->bind_ops, bl->n, NULL, 0);
-+
-+		xe_vm_unbind_all_async(fd, vm, 0, bo[0], NULL, 0);
-+
-+		xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE,
-+						bl->fd, bl->vm, 0, bl->n + 2, &ref_seqno);
-+
-+		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE, ref_seqno,
-+						   &op_ref_seqno, addr[1], size, 0);
-+		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE, ref_seqno,
-+						   &op_ref_seqno, addr[1] + size, size * 2, 0);
-+
-+		for (i = 0; i < bl->n; i++)
-+			xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE,
-+							   ref_seqno, &op_ref_seqno,
-+							   bl->bind_ops[i].addr,
-+							   bl->bind_ops[i].range, 0);
-+
-+		xe_eudebug_client_signal_stage(c, STAGE_PRE_DEBUG_RESOURCES_DONE);
-+		xe_eudebug_client_wait_stage(c, STAGE_DISCOVERY_DONE);
-+	} else {
-+		xe_eudebug_client_vm_bind(c, fd, vm, bo[0], 0, addr[0], bo_size);
-+		xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr[0] + size, size);
-+
-+		xe_eudebug_client_vm_bind(c, fd, vm, bo[1], 0, addr[1], bo_size);
-+		xe_eudebug_client_vm_bind(c, fd, vm, bo[1], rebind_bo_offset, addr[1], size);
-+
-+		bl = create_bind_list(fd, system_memory(fd), vm, 4, 0);
-+		do_bind_list(c, bl, NULL);
-+	}
-+
-+	xe_vm_unbind_all_async(fd, vm, 0, bo[1], NULL, 0);
-+
-+	xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE, fd, vm, 0,
-+					1, &ref_seqno);
-+	xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_DESTROY, ref_seqno,
-+					   &op_ref_seqno, 0, 0, 0);
-+
-+	gem_close(fd, bo[0]);
-+	gem_close(fd, bo[1]);
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+}
-+
-+static void run_basic_client(struct xe_eudebug_client *c)
-+{
-+	int fd, i;
-+
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_device_get(fd);
-+
-+	if (c->flags & CREATE_VMS) {
-+		const uint32_t flags[] = {
-+			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE,
-+			DRM_XE_VM_CREATE_FLAG_LR_MODE,
-+		};
-+		uint32_t vms[ARRAY_SIZE(flags)];
-+
-+		for (i = 0; i < ARRAY_SIZE(flags); i++)
-+			vms[i] = xe_eudebug_client_vm_create(c, fd, flags[i], 0);
-+
-+		for (i--; i >= 0; i--)
-+			xe_eudebug_client_vm_destroy(c, fd, vms[i]);
-+	}
-+
-+	if (c->flags & CREATE_EXEC_QUEUES) {
-+		struct drm_xe_exec_queue_create *create;
-+		struct drm_xe_engine_class_instance *hwe;
-+		struct drm_xe_engine_class_instance bind_sync = {
-+			.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
-+			.engine_instance = 0,
-+		};
-+		struct drm_xe_engine_class_instance bind_async = {
-+			.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
-+			.engine_instance = 0,
-+		};
-+		uint32_t vm;
-+
-+		create = calloc((xe_number_engines(fd) + 2), sizeof(*create));
-+
-+		vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+
-+		i = 0;
-+		xe_for_each_engine(fd, hwe) {
-+			create[i].instances = to_user_pointer(hwe);
-+			create[i].vm_id = vm;
-+			create[i].width = 1;
-+			create[i].num_placements = 1;
-+			xe_eudebug_client_exec_queue_create(c, fd, &create[i++]);
-+		}
-+
-+		create[i].instances = to_user_pointer(&bind_sync),
-+		create[i].vm_id = vm;
-+		create[i].width = 1,
-+		create[i].num_placements = 1,
-+		xe_eudebug_client_exec_queue_create(c, fd, &create[i++]);
-+
-+		create[i].instances = to_user_pointer(&bind_async),
-+		create[i].vm_id = vm;
-+		create[i].width = 1,
-+		create[i].num_placements = 1,
-+		xe_eudebug_client_exec_queue_create(c, fd, &create[i]);
-+
-+		for (; i >= 0; i--)
-+			xe_eudebug_client_exec_queue_destroy(c, fd, &create[i]);
-+
-+		xe_eudebug_client_vm_destroy(c, fd,  vm);
-+	}
-+
-+	if (c->flags & VM_BIND || c->flags & VM_BIND_METADATA)
-+		basic_vm_bind_client(fd, c);
-+
-+	if (c->flags & VM_BIND_EXTENDED)
-+		vm_bind_client(fd, c);
-+
-+	if (c->flags & VM_BIND_VM_DESTROY)
-+		basic_vm_bind_vm_destroy_client(fd, c);
-+
-+	xe_device_put(fd);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
-+
-+static int read_event(int debugfd, struct drm_xe_eudebug_event *event)
-+{
-+	int ret;
-+
-+	ret = igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
-+	if (ret < 0)
-+		return -errno;
-+
-+	return ret;
-+}
-+
-+static int __read_event(int debugfd, struct drm_xe_eudebug_event *event)
-+{
-+	int ret;
-+
-+	ret = ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
-+	if (ret < 0)
-+		return -errno;
-+
-+	return ret;
-+}
-+
-+static int poll_event(int fd, int timeout_ms)
-+{
-+	int ret;
-+
-+	struct pollfd p = {
-+		.fd = fd,
-+		.events = POLLIN,
-+		.revents = 0,
-+	};
-+
-+	ret = poll(&p, 1, timeout_ms);
-+	if (ret == -1)
-+		return -errno;
-+
-+	return ret == 1 && (p.revents & POLLIN);
-+}
-+
-+static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect *param)
-+{
-+	int ret = 0;
-+
-+	*debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, param);
-+
-+	if (*debugfd < 0) {
-+		ret = -errno;
-+		igt_assume(ret != 0);
-+	}
-+
-+	errno = 0;
-+	return ret;
++	for (int i = 0; i < shdr->size / 4; i++)
++		igt_info("0x%08x 0x%08x 0x%08x 0x%08x\n",
++			 shdr->instr[i][0], shdr->instr[i][1],
++			 shdr->instr[i][2], shdr->instr[i][3]);
 +}
 +
 +/**
-+ * SUBTEST: basic-connect
-+ * Description:
-+ *	Exercise XE_EUDEBUG_CONNECT ioctl with passing
-+ *	valid and invalid params.
++ * gpgpu_shader__breakpoint_on:
++ * @shdr: shader to create breakpoint in
++ * @cmd_no: index of the instruction to break on
++ *
++ * Insert a breakpoint on the @cmd_no'th instruction within @shdr.
 + */
-+static void test_connect(int fd)
++void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no)
 +{
-+	struct drm_xe_eudebug_connect param = {};
-+	int debugfd, ret;
-+	pid_t *pid;
-+
-+	pid = mmap(NULL, sizeof(pid_t), PROT_WRITE,
-+		   MAP_SHARED | MAP_ANON, -1, 0);
-+
-+	/* get fresh unrelated pid */
-+	igt_fork(child, 1)
-+		*pid = getpid();
-+
-+	igt_waitchildren();
-+	param.pid = *pid;
-+	munmap(pid, sizeof(pid_t));
-+
-+	ret = __debug_connect(fd, &debugfd, &param);
-+	igt_assert(debugfd == -1);
-+	igt_assert_eq(ret, param.pid ? -ENOENT : -EINVAL);
-+
-+	param.pid = 0;
-+	ret = __debug_connect(fd, &debugfd, &param);
-+	igt_assert(debugfd == -1);
-+	igt_assert_eq(ret, -EINVAL);
-+
-+	param.pid = getpid();
-+	param.version = -1;
-+	ret = __debug_connect(fd, &debugfd, &param);
-+	igt_assert(debugfd == -1);
-+	igt_assert_eq(ret, -EINVAL);
-+
-+	param.version = 0;
-+	param.flags = ~0;
-+	ret = __debug_connect(fd, &debugfd, &param);
-+	igt_assert(debugfd == -1);
-+	igt_assert_eq(ret, -EINVAL);
-+
-+	param.flags = 0;
-+	param.extensions = ~0;
-+	ret = __debug_connect(fd, &debugfd, &param);
-+	igt_assert(debugfd == -1);
-+	igt_assert_eq(ret, -EINVAL);
-+
-+	param.extensions = 0;
-+	ret = __debug_connect(fd, &debugfd, &param);
-+	igt_assert_neq(debugfd, -1);
-+	igt_assert_eq(ret, 0);
-+
-+	close(debugfd);
-+}
-+
-+static void switch_user(__uid_t uid, __gid_t gid)
-+{
-+	struct group *gr;
-+	__gid_t gr_v;
-+
-+	/* Users other then root need to belong to video group */
-+	gr = getgrnam("video");
-+	igt_assert(gr);
-+
-+	/* Drop all */
-+	igt_assert_eq(setgroups(1, &gr->gr_gid), 0);
-+	igt_assert_eq(setgid(gid), 0);
-+	igt_assert_eq(setuid(uid), 0);
-+
-+	igt_assert_eq(getgroups(1, &gr_v), 1);
-+	igt_assert_eq(gr_v, gr->gr_gid);
-+	igt_assert_eq(getgid(), gid);
-+	igt_assert_eq(getuid(), uid);
-+
-+	igt_assert_eq(prctl(PR_SET_DUMPABLE, 1L), 0);
++	shdr->instr[cmd_no][0] |= 1<<30;
 +}
 +
 +/**
-+ * SUBTEST: connect-user
-+ * Description:
-+ *	Verify unprivileged XE_EUDEBG_CONNECT ioctl.
-+ *	Check:
-+ *	 - user debugger to user workload connection
-+ *	 - user debugger to other user workload connection
-+ *	 - user debugger to privileged workload connection
++ * gpgpu_shader__breakpoint:
++ * @shdr: shader to create breakpoint in
++ *
++ * Insert a breakpoint on the last instruction in @shdr.
 + */
-+static void test_connect_user(int fd)
++void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr)
 +{
-+	struct drm_xe_eudebug_connect param = {};
-+	struct passwd *pwd, *pwd2;
-+	const char *user1 = "lp";
-+	const char *user2 = "mail";
-+	int debugfd, ret, i;
-+	int p1[2], p2[2];
-+	__uid_t u1, u2;
-+	__gid_t g1, g2;
-+	int newfd;
-+	pid_t pid;
-+
-+#define NUM_USER_TESTS 4
-+#define P_APP 0
-+#define P_GDB 1
-+	struct conn_user {
-+		/* u[0] - process uid, u[1] - gdb uid */
-+		__uid_t u[P_GDB + 1];
-+		/* g[0] - process gid, g[1] - gdb gid */
-+		__gid_t g[P_GDB + 1];
-+		/* Expected fd from open */
-+		int ret;
-+		/* Skip this test case */
-+		int skip;
-+		const char *desc;
-+	} test[NUM_USER_TESTS] = {};
-+
-+	igt_assert(!pipe(p1));
-+	igt_assert(!pipe(p2));
-+
-+	pwd = getpwnam(user1);
-+	igt_require(pwd);
-+	u1 = pwd->pw_uid;
-+	g1 = pwd->pw_gid;
-+
-+	/*
-+	 * Keep a copy of needed contents as it is a static
-+	 * memory area and subsequent calls will overwrite
-+	 * what's in.
-+	 * However getpwnam() returns NULL if cannot find
-+	 * user in passwd.
-+	 */
-+	setpwent();
-+	pwd2 = getpwnam(user2);
-+	if (pwd2) {
-+		u2 = pwd2->pw_uid;
-+		g2 = pwd2->pw_gid;
-+	}
-+
-+	test[0].skip = !pwd;
-+	test[0].u[P_GDB] = u1;
-+	test[0].g[P_GDB] = g1;
-+	test[0].ret = -EACCES;
-+	test[0].desc = "User GDB to Root App";
-+
-+	test[1].skip = !pwd;
-+	test[1].u[P_APP] = u1;
-+	test[1].g[P_APP] = g1;
-+	test[1].u[P_GDB] = u1;
-+	test[1].g[P_GDB] = g1;
-+	test[1].ret = 0;
-+	test[1].desc = "User GDB to User App";
-+
-+	test[2].skip = !pwd;
-+	test[2].u[P_APP] = u1;
-+	test[2].g[P_APP] = g1;
-+	test[2].ret = 0;
-+	test[2].desc = "Root GDB to User App";
-+
-+	test[3].skip = !pwd2;
-+	test[3].u[P_APP] = u1;
-+	test[3].g[P_APP] = g1;
-+	test[3].u[P_GDB] = u2;
-+	test[3].g[P_GDB] = g2;
-+	test[3].ret = -EACCES;
-+	test[3].desc = "User GDB to Other User App";
-+
-+	if (!pwd2)
-+		igt_warn("User %s not available in the system. Skipping subtests: %s.\n",
-+			 user2, test[3].desc);
-+
-+	for (i = 0; i < NUM_USER_TESTS; i++) {
-+		if (test[i].skip) {
-+			igt_debug("Subtest %s skipped\n", test[i].desc);
-+			continue;
-+		}
-+		igt_debug("Executing connection: %s\n", test[i].desc);
-+		igt_fork(child, 2) {
-+			if (!child) {
-+				if (test[i].u[P_APP])
-+					switch_user(test[i].u[P_APP], test[i].g[P_APP]);
-+
-+				pid = getpid();
-+				/* Signal the PID */
-+				igt_assert(write(p1[1], &pid, sizeof(pid)) == sizeof(pid));
-+				/* wait with exit */
-+				igt_assert(read(p2[0], &pid, sizeof(pid)) == sizeof(pid));
-+			} else {
-+				if (test[i].u[P_GDB])
-+					switch_user(test[i].u[P_GDB], test[i].g[P_GDB]);
-+
-+				igt_assert(read(p1[0], &pid, sizeof(pid)) == sizeof(pid));
-+				param.pid = pid;
-+
-+				newfd = drm_open_driver(DRIVER_XE);
-+				ret = __debug_connect(newfd, &debugfd, &param);
-+
-+				/* Release the app first */
-+				igt_assert(write(p2[1], &pid, sizeof(pid)) == sizeof(pid));
-+
-+				igt_assert_eq(ret, test[i].ret);
-+				if (!ret)
-+					close(debugfd);
-+			}
-+		}
-+		igt_waitchildren();
-+	}
-+	close(p1[0]);
-+	close(p1[1]);
-+	close(p2[0]);
-+	close(p2[1]);
-+#undef NUM_USER_TESTS
-+#undef P_APP
-+#undef P_GDB
++	gpgpu_shader__breakpoint_on(shdr, shdr->size / 4 - 1);
 +}
 +
 +/**
-+ * SUBTEST: basic-close
-+ * Description:
-+ *	Test whether eudebug can be reattached after closure.
++ * gpgpu_shader__wait:
++ * @shdr: shader to be modified
++ *
++ * Append wait instruction to @shader. This instruction raises attention
++ * and stops execution.
 + */
-+static void test_close(int fd)
++void gpgpu_shader__wait(struct gpgpu_shader *shdr)
 +{
-+	struct drm_xe_eudebug_connect param = { 0,  };
-+	int debug_fd1, debug_fd2;
-+	int fd2;
-+
-+	param.pid = getpid();
-+
-+	igt_assert_eq(__debug_connect(fd, &debug_fd1, &param), 0);
-+	igt_assert(debug_fd1 >= 0);
-+	igt_assert_eq(__debug_connect(fd, &debug_fd2, &param), -EBUSY);
-+	igt_assert_eq(debug_fd2, -1);
-+
-+	close(debug_fd1);
-+	fd2 = drm_open_driver(DRIVER_XE);
-+
-+	igt_assert_eq(__debug_connect(fd2, &debug_fd2, &param), 0);
-+	igt_assert(debug_fd2 >= 0);
-+	close(fd2);
-+	close(debug_fd2);
-+	close(debug_fd1);
++	emit_iga64_code(shdr, sync_host, "	\n\
++(W)	sync.host	        null		\n\
++	");
 +}
 +
 +/**
-+ * SUBTEST: basic-read-event
-+ * Description:
-+ *	Synchronously exercise eu debugger event polling and reading.
++ * gpgpu_shader__nop:
++ * @shdr: shader to be modified
++ *
++ * Append a no-op instruction to @shdr.
 + */
-+#define MAX_EVENT_SIZE (32 * 1024)
-+static void test_read_event(int fd)
++void gpgpu_shader__nop(struct gpgpu_shader *shdr)
 +{
-+	struct drm_xe_eudebug_event *event;
-+	struct xe_eudebug_debugger *d;
-+	struct xe_eudebug_client *c;
-+
-+	event = malloc(MAX_EVENT_SIZE);
-+	igt_assert(event);
-+	memset(event, 0, sizeof(*event));
-+
-+	c = xe_eudebug_client_create(fd, run_basic_client, 0, NULL);
-+	d = xe_eudebug_debugger_create(fd, 0, NULL);
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
-+	igt_assert_eq(poll_event(d->fd, 500), 0);
-+
-+	event->len = 1;
-+	event->type = DRM_XE_EUDEBUG_EVENT_NONE;
-+	igt_assert_eq(read_event(d->fd, event), -EINVAL);
-+
-+	event->len = MAX_EVENT_SIZE;
-+	event->type = DRM_XE_EUDEBUG_EVENT_NONE;
-+	igt_assert_eq(read_event(d->fd, event), -EINVAL);
-+
-+	xe_eudebug_client_start(c);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 1);
-+	event->type = DRM_XE_EUDEBUG_EVENT_READ;
-+	igt_assert_eq(read_event(d->fd, event), 0);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 1);
-+	event->len = MAX_EVENT_SIZE;
-+	event->flags = 0;
-+	event->type = DRM_XE_EUDEBUG_EVENT_READ;
-+	igt_assert_eq(read_event(d->fd, event), 0);
-+
-+	fcntl(d->fd, F_SETFL, fcntl(d->fd, F_GETFL) | O_NONBLOCK);
-+	igt_assert(fcntl(d->fd, F_GETFL) & O_NONBLOCK);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 0);
-+	event->len = MAX_EVENT_SIZE;
-+	event->flags = 0;
-+	event->type = DRM_XE_EUDEBUG_EVENT_READ;
-+	igt_assert_eq(__read_event(d->fd, event), -EAGAIN);
-+
-+	xe_eudebug_client_wait_done(c);
-+	xe_eudebug_client_stop(c);
-+
-+	igt_assert_eq(poll_event(d->fd, 500), 0);
-+	igt_assert_eq(__read_event(d->fd, event), -EAGAIN);
-+
-+	xe_eudebug_debugger_destroy(d);
-+	xe_eudebug_client_destroy(c);
-+
-+	free(event);
++	emit_iga64_code(shdr, nop, "	\n\
++(W)	nop				\n\
++	");
 +}
 +
+ /**
+  * gpgpu_shader__eot:
+  * @shdr: shader to be modified
+@@ -269,6 +342,247 @@ void gpgpu_shader__eot(struct gpgpu_shader *shdr)
+ 	");
+ }
+ 
 +/**
-+ * SUBTEST: basic-client
-+ * Description:
-+ *	Attach the debugger to process which opens and closes xe drm client.
++ * gpgpu_shader__label:
++ * @shdr: shader to be modified
++ * @label_id: id of the label to be created
 + *
-+ * SUBTEST: basic-client-th
-+ * Description:
-+ *	Create client basic resources (vms) in multiple threads
-+ *
-+ * SUBTEST: multiple-sessions
-+ * Description:
-+ *	Simultaneously attach many debuggers to many processes.
-+ *	Each process opens and closes xe drm client and creates few resources.
-+ *
-+ * SUBTEST: basic-%s
-+ * Description:
-+ *	Attach the debugger to process which creates and destroys a few %arg[1].
-+ *
-+ * SUBTEST: basic-vm-bind
-+ * Description:
-+ *	Attach the debugger to a process that performs synchronous vm bind
-+ *	and vm unbind.
-+ *
-+ * SUBTEST: basic-vm-bind-vm-destroy
-+ * Description:
-+ *	Attach the debugger to a process that performs vm bind, and destroys
-+ *	the vm without unbinding. Make sure that we don't get unbind events.
-+ *
-+ * SUBTEST: basic-vm-bind-extended
-+ * Description:
-+ *	Attach the debugger to a process that performs bind, bind array, rebind,
-+ *	partial unbind, unbind and unbind all operations.
-+ *
-+ * SUBTEST: multigpu-basic-client
-+ * Description:
-+ *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
-+ *
-+ * SUBTEST: multigpu-basic-client-many
-+ * Description:
-+ *	Simultaneously attach many debuggers to many processes on all Xe devices.
-+ *	Each process opens and closes xe drm client and creates few resources.
-+ *
-+ * arg[1]:
-+ *
-+ * @vms: vms
-+ * @exec-queues: exec queues
++ * Create a label for the last instruction within @shdr.
 + */
-+
-+static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
++void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id)
 +{
-+	struct xe_eudebug_session **s;
-+	int i;
++	struct label_entry *l = malloc(sizeof(*l));
 +
-+	s = calloc(count, sizeof(*s));
-+
-+	igt_assert(s);
-+
-+	for (i = 0; i < count; i++)
-+		s[i] = xe_eudebug_session_create(fd, run_basic_client, flags, NULL);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_run(s[i]);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_check(s[i], match_opposite, 0);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_destroy(s[i]);
++	l->id = label_id;
++	l->offset = shdr->size;
++	igt_map_insert(shdr->labels, &l->id, l);
 +}
 +
-+/**
-+ * SUBTEST: basic-vm-bind-discovery
-+ * Description:
-+ *	Attach the debugger to a process that performs vm-bind before attaching
-+ *	and check if the discovery process reports it.
-+ *
-+ * SUBTEST: basic-vm-bind-metadata-discovery
-+ * Description:
-+ *	Attach the debugger to a process that performs vm-bind with metadata attached
-+ *	before attaching and check if the discovery process reports it.
-+ *
-+ * SUBTEST: basic-vm-bind-vm-destroy-discovery
-+ * Description:
-+ *	Attach the debugger to a process that performs vm bind, and destroys
-+ *	the vm without unbinding before attaching. Make sure that we don't get
-+ *	any bind/unbind and vm create/destroy events.
-+ *
-+ * SUBTEST: basic-vm-bind-extended-discovery
-+ * Description:
-+ *	Attach the debugger to a process that performs bind, bind array, rebind,
-+ *	partial unbind, and unbind all operations before attaching. Ensure that
-+ *	we get a only a singe 'VM_BIND' event from the discovery worker.
-+ */
-+static void test_basic_discovery(int fd, unsigned int flags, bool match_opposite)
++#define OPCODE(x) (x & 0x7f)
++#define OPCODE_JUMP_INDEXED 0x20
++static void __patch_indexed_jump(struct gpgpu_shader *shdr, int label_id,
++				 uint32_t jump_iga64_size)
 +{
-+	struct xe_eudebug_debugger *d;
-+	struct xe_eudebug_session *s;
-+	struct xe_eudebug_client *c;
-+
-+	s = xe_eudebug_session_create(fd, run_basic_client, flags | TEST_DISCOVERY, NULL);
-+
-+	c = s->c;
-+	d = s->d;
-+
-+	xe_eudebug_client_start(c);
-+	xe_eudebug_debugger_wait_stage(s, STAGE_PRE_DEBUG_RESOURCES_DONE);
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
-+	xe_eudebug_debugger_start_worker(d);
-+
-+	/* give the worker time to do it's job */
-+	sleep(2);
-+	xe_eudebug_debugger_signal_stage(d, STAGE_DISCOVERY_DONE);
-+
-+	xe_eudebug_client_wait_done(c);
-+
-+	xe_eudebug_debugger_stop_worker(d, 1);
-+
-+	xe_eudebug_event_log_print(d->log, true);
-+	xe_eudebug_event_log_print(c->log, true);
-+
-+	xe_eudebug_session_check(s, match_opposite, 0);
-+	xe_eudebug_session_destroy(s);
-+}
-+
-+#define RESOURCE_COUNT 16
-+#define PRIMARY_THREAD			(1 << 0)
-+#define DISCOVERY_CLOSE_CLIENT		(1 << 1)
-+#define DISCOVERY_DESTROY_RESOURCES	(1 << 2)
-+#define DISCOVERY_VM_BIND		(1 << 3)
-+static void run_discovery_client(struct xe_eudebug_client *c)
-+{
-+	struct drm_xe_engine_class_instance *hwe = NULL;
-+	int fd[RESOURCE_COUNT], i;
-+	bool skip_sleep = c->flags & (DISCOVERY_DESTROY_RESOURCES | DISCOVERY_CLOSE_CLIENT);
-+	uint64_t addr = 0x1a0000;
-+
-+	srand(getpid());
-+
-+	for (i = 0; i < RESOURCE_COUNT; i++) {
-+		fd[i] = xe_eudebug_client_open_driver(c);
-+
-+		if (!i) {
-+			bool found = false;
-+
-+			xe_device_get(fd[0]);
-+			xe_for_each_engine(fd[0], hwe) {
-+				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE ||
-+				    hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
-+					found = true;
-+					break;
-+				}
-+			}
-+			igt_assert(found);
-+		}
-+
-+		/*
-+		 * Give the debugger a break in event stream after every
-+		 * other client, that allows to read discovery and dettach in quiet.
-+		 */
-+		if (random() % 2 == 0 && !skip_sleep)
-+			sleep(1);
-+
-+		for (int j = 0; j < RESOURCE_COUNT; j++) {
-+			uint32_t vm = xe_eudebug_client_vm_create(c, fd[i], 0, 0);
-+			struct drm_xe_exec_queue_create create = {
-+				.width = 1,
-+				.num_placements = 1,
-+				.vm_id = vm,
-+				.instances = to_user_pointer(hwe)
-+			};
-+			const unsigned int bo_size = max_t(bo_size,
-+							   xe_get_default_alignment(fd[i]),
-+							   MIN_BO_SIZE);
-+			uint32_t bo = xe_bo_create(fd[i], 0, bo_size, system_memory(fd[i]), 0);
-+
-+			xe_eudebug_client_exec_queue_create(c, fd[i], &create);
-+
-+			if (c->flags & DISCOVERY_VM_BIND) {
-+				xe_eudebug_client_vm_bind(c, fd[i], vm, bo, 0, addr, bo_size);
-+				addr += 0x100000;
-+			}
-+
-+			if (c->flags & DISCOVERY_DESTROY_RESOURCES) {
-+				xe_eudebug_client_exec_queue_destroy(c, fd[i], &create);
-+				xe_eudebug_client_vm_destroy(c, fd[i], create.vm_id);
-+				gem_close(fd[i], bo);
-+			}
-+		}
-+
-+		if (c->flags & DISCOVERY_CLOSE_CLIENT)
-+			xe_eudebug_client_close_driver(c, fd[i]);
-+	}
-+	xe_device_put(fd[0]);
-+}
-+
-+/**
-+ * SUBTEST: discovery-%s
-+ * Description: Race discovery against %arg[1] and the debugger dettach.
-+ *
-+ * arg[1]:
-+ *
-+ * @race:		resources creation
-+ * @race-vmbind:	vm-bind operations
-+ * @empty:		resources destruction
-+ * @empty-clients:	client closure
-+ */
-+static void *discovery_race_thread(void *data)
-+{
-+	struct {
-+		uint64_t client_handle;
-+		int vm_count;
-+		int exec_queue_count;
-+		int vm_bind_op_count;
-+	} clients[RESOURCE_COUNT];
-+	struct xe_eudebug_session *s = data;
-+	int expected = RESOURCE_COUNT * (1 + 2 * RESOURCE_COUNT);
-+	const int tries = 100;
-+	bool done = false;
-+	int ret = 0;
-+
-+	for (int try = 0; try < tries && !done; try++) {
-+
-+		ret = xe_eudebug_debugger_attach(s->d, s->c);
-+
-+		if (ret == -EBUSY) {
-+			usleep(100000);
-+			continue;
-+		}
-+
-+		igt_assert_eq(ret, 0);
-+
-+		if (random() % 2) {
-+			struct drm_xe_eudebug_event *e = NULL;
-+			int i = -1;
-+
-+			xe_eudebug_debugger_start_worker(s->d);
-+			sleep(1);
-+			xe_eudebug_debugger_stop_worker(s->d, 1);
-+			igt_debug("Resources discovered: %lu\n", s->d->event_count);
-+
-+			xe_eudebug_for_each_event(e, s->d->log) {
-+				if (e->type == DRM_XE_EUDEBUG_EVENT_OPEN) {
-+					struct drm_xe_eudebug_event_client *eo = (void *)e;
-+
-+					if (i >= 0) {
-+						igt_assert_eq(clients[i].vm_count,
-+							      RESOURCE_COUNT);
-+
-+						igt_assert_eq(clients[i].exec_queue_count,
-+							      RESOURCE_COUNT);
-+
-+						if (s->c->flags & DISCOVERY_VM_BIND)
-+							igt_assert_eq(clients[i].vm_bind_op_count,
-+								      RESOURCE_COUNT);
-+					}
-+
-+					igt_assert(++i < RESOURCE_COUNT);
-+					clients[i].client_handle = eo->client_handle;
-+					clients[i].vm_count = 0;
-+					clients[i].exec_queue_count = 0;
-+					clients[i].vm_bind_op_count = 0;
-+				}
-+
-+				if (e->type == DRM_XE_EUDEBUG_EVENT_VM)
-+					clients[i].vm_count++;
-+
-+				if (e->type == DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE)
-+					clients[i].exec_queue_count++;
-+
-+				if (e->type == DRM_XE_EUDEBUG_EVENT_VM_BIND_OP)
-+					clients[i].vm_bind_op_count++;
-+			};
-+
-+			igt_assert_lte(0, i);
-+
-+			for (int j = 0; j < i; j++)
-+				for (int k = 0; k < i; k++) {
-+					if (k == j)
-+						continue;
-+
-+					igt_assert_neq(clients[j].client_handle,
-+						       clients[k].client_handle);
-+				}
-+
-+			if (s->d->event_count >= expected)
-+				done = true;
-+		}
-+
-+		xe_eudebug_debugger_dettach(s->d);
-+		s->d->log->head = 0;
-+		s->d->event_count = 0;
-+	}
-+
-+	/* Primary thread must read everything */
-+	if (s->flags & PRIMARY_THREAD) {
-+		while ((ret = xe_eudebug_debugger_attach(s->d, s->c)) == -EBUSY)
-+			usleep(100000);
-+
-+		igt_assert_eq(ret, 0);
-+
-+		xe_eudebug_debugger_start_worker(s->d);
-+		xe_eudebug_client_wait_done(s->c);
-+
-+		if (READ_ONCE(s->d->event_count) != expected)
-+			sleep(5);
-+
-+		xe_eudebug_debugger_stop_worker(s->d, 1);
-+		xe_eudebug_debugger_dettach(s->d);
-+	}
-+
-+	return NULL;
-+}
-+
-+static void test_race_discovery(int fd, unsigned int flags, int clients)
-+{
-+	const int debuggers_per_client = 3;
-+	int count = clients * debuggers_per_client;
-+	struct xe_eudebug_session *sessions, *s;
-+	struct xe_eudebug_client *c;
-+	pthread_t *threads;
-+	int i, j;
-+
-+	sessions = calloc(count, sizeof(*sessions));
-+	threads = calloc(count, sizeof(*threads));
-+
-+	for (i = 0; i < clients; i++) {
-+		c = xe_eudebug_client_create(fd, run_discovery_client, flags, NULL);
-+		for (j = 0; j < debuggers_per_client; j++) {
-+			s = &sessions[i * debuggers_per_client + j];
-+			s->c = c;
-+			s->d = xe_eudebug_debugger_create(fd, flags, NULL);
-+			s->flags = flags | (!j ? PRIMARY_THREAD : 0);
-+		}
-+	}
-+
-+	for (i = 0; i < count; i++) {
-+		if (sessions[i].flags & PRIMARY_THREAD)
-+			xe_eudebug_client_start(sessions[i].c);
-+
-+		pthread_create(&threads[i], NULL, discovery_race_thread, &sessions[i]);
-+	}
-+
-+	for (i = 0; i < count; i++)
-+		pthread_join(threads[i], NULL);
-+
-+	for (i = count - 1; i > 0; i--) {
-+		if (sessions[i].flags & PRIMARY_THREAD) {
-+			igt_assert_eq(sessions[i].c->seqno-1, sessions[i].d->event_count);
-+
-+			xe_eudebug_event_log_compare(sessions[0].d->log,
-+						     sessions[i].d->log,
-+						     XE_EUDEBUG_FILTER_EVENT_VM_BIND);
-+
-+			xe_eudebug_client_destroy(sessions[i].c);
-+		}
-+		xe_eudebug_debugger_destroy(sessions[i].d);
-+	}
-+}
-+
-+static void *attach_dettach_thread(void *data)
-+{
-+	struct xe_eudebug_session *s = data;
-+	const int tries = 100;
-+	int ret = 0;
-+
-+	for (int try = 0; try < tries; try++) {
-+
-+		ret = xe_eudebug_debugger_attach(s->d, s->c);
-+
-+		if (ret == -EBUSY) {
-+			usleep(100000);
-+			continue;
-+		}
-+
-+		igt_assert_eq(ret, 0);
-+
-+		if (random() % 2 == 0) {
-+			xe_eudebug_debugger_start_worker(s->d);
-+			xe_eudebug_debugger_stop_worker(s->d, 1);
-+		}
-+
-+		xe_eudebug_debugger_dettach(s->d);
-+		s->d->log->head = 0;
-+		s->d->event_count = 0;
-+	}
-+
-+	return NULL;
-+}
-+
-+static void test_empty_discovery(int fd, unsigned int flags, int clients)
-+{
-+	struct xe_eudebug_session **s;
-+	pthread_t *threads;
-+	int i, expected = flags & DISCOVERY_CLOSE_CLIENT ? 0 : RESOURCE_COUNT;
-+
-+	igt_assert(flags & (DISCOVERY_DESTROY_RESOURCES | DISCOVERY_CLOSE_CLIENT));
-+
-+	s = calloc(clients, sizeof(struct xe_eudebug_session *));
-+	threads = calloc(clients, sizeof(*threads));
-+
-+	for (i = 0; i < clients; i++)
-+		s[i] = xe_eudebug_session_create(fd, run_discovery_client, flags, NULL);
-+
-+	for (i = 0; i < clients; i++) {
-+		xe_eudebug_client_start(s[i]->c);
-+
-+		pthread_create(&threads[i], NULL, attach_dettach_thread, s[i]);
-+	}
-+
-+	for (i = 0; i < clients; i++)
-+		pthread_join(threads[i], NULL);
-+
-+	for (i = 0; i < clients; i++) {
-+		xe_eudebug_client_wait_done(s[i]->c);
-+		igt_assert_eq(xe_eudebug_debugger_attach(s[i]->d, s[i]->c), 0);
-+
-+		xe_eudebug_debugger_start_worker(s[i]->d);
-+		xe_eudebug_debugger_stop_worker(s[i]->d, 5);
-+		xe_eudebug_debugger_dettach(s[i]->d);
-+
-+		igt_assert_eq(s[i]->d->event_count, expected);
-+
-+		xe_eudebug_session_destroy(s[i]);
-+	}
-+}
-+
-+typedef void (*client_run_t)(struct xe_eudebug_client *);
-+
-+static void test_client_with_trigger(int fd, unsigned int flags, int count,
-+				     client_run_t client_fn, int type,
-+				     xe_eudebug_trigger_fn trigger_fn,
-+				     struct drm_xe_engine_class_instance *hwe,
-+				     bool match_opposite, uint32_t event_filter)
-+{
-+	struct xe_eudebug_session **s;
-+	int i;
-+
-+	s = calloc(count, sizeof(*s));
-+
-+	igt_assert(s);
-+
-+	for (i = 0; i < count; i++)
-+		s[i] = xe_eudebug_session_create(fd, client_fn, flags, hwe);
-+
-+	if (trigger_fn)
-+		for (i = 0; i < count; i++)
-+			xe_eudebug_debugger_add_trigger(s[i]->d, type, trigger_fn);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_run(s[i]);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_check(s[i], match_opposite, event_filter);
-+
-+	for (i = 0; i < count; i++)
-+		xe_eudebug_session_destroy(s[i]);
-+}
-+
-+struct thread_fn_args {
-+	struct xe_eudebug_client *client;
-+	int fd;
-+};
-+
-+static void *basic_client_th(void *data)
-+{
-+	struct thread_fn_args *f = data;
-+	struct xe_eudebug_client *c = f->client;
-+	uint32_t *vms;
-+	int fd, i, num_vms;
-+
-+	fd = f->fd;
-+	igt_assert(fd);
-+
-+	xe_device_get(fd);
-+
-+	num_vms = 2 + rand() % 16;
-+	vms = calloc(num_vms, sizeof(*vms));
-+	igt_assert(vms);
-+	igt_debug("Create %d client vms\n", num_vms);
-+
-+	for (i = 0; i < num_vms; i++)
-+		vms[i] = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
-+
-+	for (i = 0; i < num_vms; i++)
-+		xe_eudebug_client_vm_destroy(c, fd, vms[i]);
-+
-+	xe_device_put(fd);
-+	free(vms);
-+
-+	return NULL;
-+}
-+
-+static void run_basic_client_th(struct xe_eudebug_client *c)
-+{
-+	struct thread_fn_args *args;
-+	int i, num_threads, fd;
-+	pthread_t *threads;
-+
-+	args = calloc(1, sizeof(*args));
-+	igt_assert(args);
-+
-+	num_threads = 2 + random() % 16;
-+	igt_debug("Run on %d threads\n", num_threads);
-+	threads = calloc(num_threads, sizeof(*threads));
-+	igt_assert(threads);
-+
-+	fd = xe_eudebug_client_open_driver(c);
-+	args->client = c;
-+	args->fd = fd;
-+
-+	for (i = 0; i < num_threads; i++)
-+		pthread_create(&threads[i], NULL, basic_client_th, args);
-+
-+	for (i = 0; i < num_threads; i++)
-+		pthread_join(threads[i], NULL);
-+
-+	xe_eudebug_client_close_driver(c, fd);
-+	free(args);
-+	free(threads);
-+}
-+
-+static void test_basic_sessions_th(int fd, unsigned int flags, int num_clients, bool match_opposite)
-+{
-+	test_client_with_trigger(fd, flags, num_clients, run_basic_client_th,
-+					 0, NULL, NULL, match_opposite, 0);
-+}
-+
-+static void vm_access_client(struct xe_eudebug_client *c)
-+{
-+	struct drm_xe_sync sync = {
-+		.flags = DRM_XE_SYNC_TYPE_SYNCOBJ | DRM_XE_SYNC_FLAG_SIGNAL, };
-+	struct drm_xe_engine_class_instance *hwe = c->ptr;
-+	uint32_t bo_placement;
-+	struct bind_list *bl;
-+	uint32_t vm;
-+	int fd, i, j;
-+
-+	igt_debug("Using %s\n", xe_engine_class_string(hwe->engine_class));
-+
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_device_get(fd);
-+
-+	vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+
-+	if (c->flags & VM_BIND_OP_MAP_USERPTR)
-+		bo_placement = 0;
-+	else
-+		bo_placement = vram_if_possible(fd, hwe->gt_id);
-+
-+	for (j = 0; j < 5; j++) {
-+		unsigned int target_size = MIN_BO_SIZE * (1 << j);
-+
-+		bl = create_bind_list(fd, bo_placement, vm, 4, target_size);
-+		sync.handle = syncobj_create(bl->fd, 0);
-+		do_bind_list(c, bl, &sync);
-+		syncobj_destroy(bl->fd, sync.handle);
-+
-+		for (i = 0; i < bl->n; i++)
-+			xe_eudebug_client_wait_stage(c, bl->bind_ops[i].addr);
-+
-+		free_bind_list(c, bl);
-+	}
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+
-+	xe_device_put(fd);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
-+
-+static void debugger_test_vma(struct xe_eudebug_debugger *d,
-+			      uint64_t client_handle,
-+			      uint64_t vm_handle,
-+			      uint64_t va_start,
-+			      uint64_t va_length)
-+{
-+	struct drm_xe_eudebug_vm_open vo = { 0, };
-+	uint64_t *v1, *v2;
-+	uint64_t items = va_length / sizeof(uint64_t);
-+	int fd;
-+	int r, i;
-+
-+	v1 = malloc(va_length);
-+	igt_assert(v1);
-+	v2 = malloc(va_length);
-+	igt_assert(v2);
-+
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle;
-+
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert_lte(0, fd);
-+
-+	r = pread(fd, v1, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v1[i], va_start + i);
-+
-+	for (i = 0; i < items; i++)
-+		v1[i] = va_start + i + 1;
-+
-+	r = pwrite(fd, v1, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	lseek(fd, va_start, SEEK_SET);
-+	r = read(fd, v2, va_length);
-+	igt_assert_eq(r, va_length);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v1[i], v2[i]);
-+
-+	fsync(fd);
-+
-+	close(fd);
-+	free(v1);
-+	free(v2);
-+}
-+
-+static void vm_trigger(struct xe_eudebug_debugger *d,
-+		       struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+		igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
-+			  eo->vm_bind_ref_seqno,
-+			  eo->addr,
-+			  eo->range);
-+
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+		igt_assert(eb);
-+
-+		debugger_test_vma(d, eb->client_handle, eb->vm_handle,
-+				  eo->addr, eo->range);
-+		xe_eudebug_debugger_signal_stage(d, eo->addr);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: basic-vm-access
-+ * Description:
-+ *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
-+ *      vm fd, concerning many different offsets inside the vm,
-+ *      and many virtual addresses of the vm_bound object.
-+ *
-+ * SUBTEST: basic-vm-access-userptr
-+ * Description:
-+ *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
-+ *      vm fd, concerning many different offsets inside the vm,
-+ *      and many virtual addresses of the vm_bound object, but backed
-+ *      by userptr.
-+ */
-+static void test_vm_access(int fd, unsigned int flags, int num_clients)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	xe_for_each_engine(fd, hwe)
-+		test_client_with_trigger(fd, flags, num_clients,
-+					 vm_access_client,
-+					 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
-+					 vm_trigger, hwe,
-+					 false, XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP);
-+}
-+
-+static void debugger_test_vma_parameters(struct xe_eudebug_debugger *d,
-+					 uint64_t client_handle,
-+					 uint64_t vm_handle,
-+					 uint64_t va_start,
-+					 uint64_t va_length)
-+{
-+	struct drm_xe_eudebug_vm_open vo = { 0, };
-+	uint64_t *v;
-+	uint64_t items = va_length / sizeof(uint64_t);
-+	int fd;
-+	int r, i;
-+
-+	v = malloc(va_length);
-+	igt_assert(v);
-+
-+	/* Negative VM open - bad client handle */
-+	vo.client_handle = client_handle + 123;
-+	vo.vm_handle = vm_handle;
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert(fd < 0);
-+
-+	/* Negative VM open - bad vm handle */
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle + 123;
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert(fd < 0);
-+
-+	/* Positive VM open */
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle;
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert_lte(0, fd);
-+
-+	/* Negative pread - bad fd */
-+	r = pread(fd + 123, v, va_length, va_start);
-+	igt_assert(r < 0);
-+
-+	/* Negative pread - bad va_start */
-+	r = pread(fd, v, va_length, 0);
-+	igt_assert(r < 0);
-+
-+	/* Negative pread - bad va_start */
-+	r = pread(fd, v, va_length, va_start - 1);
-+	igt_assert(r < 0);
-+
-+	/* Positive pread - zero va_length */
-+	r = pread(fd, v, 0, va_start);
-+	igt_assert_eq(r, 0);
-+
-+	/* Negative pread - out of range */
-+	r = pread(fd, v, va_length + 1, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	/* Negative pread - bad va_start */
-+	r = pread(fd, v, 1, va_start + va_length);
-+	igt_assert(r < 0);
-+
-+	/* Positive pread - whole range */
-+	r = pread(fd, v, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	/* Positive pread */
-+	r = pread(fd, v, 1, va_start + va_length - 1);
-+	igt_assert_eq(r, 1);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v[i], va_start + i);
-+
-+	for (i = 0; i < items; i++)
-+		v[i] = va_start + i + 1;
-+
-+	/* Negative pwrite - bad fd */
-+	r = pwrite(fd + 123, v, va_length, va_start);
-+	igt_assert(r < 0);
-+
-+	/* Negative pwrite - bad va_start */
-+	r = pwrite(fd, v, va_length, -1);
-+	igt_assert(r < 0);
-+
-+	/* Negative pwrite - zero va_start */
-+	r = pwrite(fd, v, va_length, 0);
-+	igt_assert(r < 0);
-+
-+	/* Negative pwrite - bad va_length */
-+	r = pwrite(fd, v, va_length + 1, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	/* Positive pwrite - zero va_length */
-+	r = pwrite(fd, v, 0, va_start);
-+	igt_assert_eq(r, 0);
-+
-+	/* Positive pwrite */
-+	r = pwrite(fd, v, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+	fsync(fd);
-+
-+	close(fd);
-+	free(v);
-+}
-+
-+static void vm_trigger_access_parameters(struct xe_eudebug_debugger *d,
-+		       struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+		igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
-+			  eo->vm_bind_ref_seqno,
-+			  eo->addr,
-+			  eo->range);
-+
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+		igt_assert(eb);
-+
-+		debugger_test_vma_parameters(d, eb->client_handle, eb->vm_handle,
-+						   eo->addr, eo->range);
-+		xe_eudebug_debugger_signal_stage(d, eo->addr);
-+	}
-+}
-+
-+/**
-+ * SUBTEST: basic-vm-access-parameters
-+ * Description:
-+ *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage.
-+ */
-+static void test_vm_access_parameters(int fd, unsigned int flags, int num_clients)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+
-+	xe_for_each_engine(fd, hwe)
-+		test_client_with_trigger(fd, flags, num_clients,
-+					 vm_access_client,
-+					 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
-+					 vm_trigger_access_parameters, hwe,
-+					 false, XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP);
-+}
-+
-+#define PAGE_SIZE 4096
-+#define MDATA_SIZE (WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM * PAGE_SIZE)
-+static void metadata_access_client(struct xe_eudebug_client *c)
-+{
-+	const uint64_t addr = 0x1a0000;
-+	struct drm_xe_vm_bind_op_ext_attach_debug *ext;
-+	uint8_t *data;
-+	size_t bo_size;
-+	uint32_t bo, vm;
-+	int fd, i;
-+
-+	fd = xe_eudebug_client_open_driver(c);
-+	xe_device_get(fd);
-+
-+	bo_size = xe_get_default_alignment(fd);
-+	vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
-+
-+	ext = basic_vm_bind_metadata_ext_prepare(fd, c, &data, MDATA_SIZE);
-+
-+	xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, addr,
-+					bo_size, 0, NULL, 0, to_user_pointer(ext));
-+
-+	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++)
-+		xe_eudebug_client_wait_stage(c, i);
-+
-+	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr, bo_size);
-+
-+	basic_vm_bind_metadata_ext_del(fd, c, ext, data);
-+
-+	close(bo);
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+
-+	xe_device_put(fd);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
-+
-+static void debugger_test_metadata(struct xe_eudebug_debugger *d,
-+				   uint64_t client_handle,
-+				   uint64_t metadata_handle,
-+				   uint64_t type,
-+				   uint64_t len)
-+{
-+	struct drm_xe_eudebug_read_metadata rm = {
-+		.client_handle = client_handle,
-+		.metadata_handle = metadata_handle,
-+		.size = len,
-+	};
-+	uint8_t *data;
-+	int i;
-+
-+	data = malloc(len);
-+	igt_assert(data);
-+
-+	rm.ptr = to_user_pointer(data);
-+
-+	igt_assert_eq(igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_READ_METADATA, &rm), 0);
-+
-+	/* syntetic check, test sets different size per metadata type */
-+	igt_assert_eq((type + 1) * PAGE_SIZE, rm.size);
-+
-+	for (i = 0; i < rm.size; i++)
-+		igt_assert_eq(data[i], 0xff & (i + (i > PAGE_SIZE)));
-+
-+	free(data);
-+}
-+
-+static void metadata_read_trigger(struct xe_eudebug_debugger *d,
-+				  struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_metadata *em = (void *)e;
-+
-+	/* syntetic check, test sets different size per metadata type */
-+	igt_assert_eq((em->type + 1) * PAGE_SIZE, em->len);
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		debugger_test_metadata(d, em->client_handle, em->metadata_handle,
-+				       em->type, em->len);
-+		xe_eudebug_debugger_signal_stage(d, em->type);
-+	}
-+}
-+
-+static void metadata_read_on_vm_bind_trigger(struct xe_eudebug_debugger *d,
-+					     struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op_metadata *em = (void *)e;
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+	struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+	/* For testing purpose client sets metadata_cookie = type */
-+
-+	/*
-+	 * Metadata event has a reference to vm-bind-op event which has a reference
-+	 * to vm-bind event which contains proper client-handle.
-+	 */
-+	eo = (struct drm_xe_eudebug_event_vm_bind_op *)
-+		xe_eudebug_event_log_find_seqno(d->log, em->vm_bind_op_ref_seqno);
-+	igt_assert(eo);
-+	eb = (struct drm_xe_eudebug_event_vm_bind *)
-+		xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+	igt_assert(eb);
-+
-+	debugger_test_metadata(d,
-+			       eb->client_handle,
-+			       em->metadata_handle,
-+			       em->metadata_cookie,
-+			       MDATA_SIZE); /* max size */
-+
-+	xe_eudebug_debugger_signal_stage(d, em->metadata_cookie);
-+}
-+
-+/**
-+ * SUBTEST: read-metadata
-+ * Description:
-+ *      Exercise DRM_XE_EUDEBUG_IOCTL_READ_METADATA and debug metadata create|destroy events.
-+ */
-+static void test_metadata_read(int fd, unsigned int flags, int num_clients)
-+{
-+	test_client_with_trigger(fd, flags, num_clients, metadata_access_client,
-+				 DRM_XE_EUDEBUG_EVENT_METADATA, metadata_read_trigger,
-+				 NULL, true, 0);
-+}
-+
-+/**
-+ * SUBTEST: attach-debug-metadata
-+ * Description:
-+ *      Read debug metadata when vm_bind has it attached.
-+ */
-+static void test_metadata_attach(int fd, unsigned int flags, int num_clients)
-+{
-+	test_client_with_trigger(fd, flags, num_clients, metadata_access_client,
-+				 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA,
-+				 metadata_read_on_vm_bind_trigger,
-+				 NULL, true, 0);
-+}
-+
-+#define STAGE_CLIENT_WAIT_ON_UFENCE_DONE 1337
-+
-+#define UFENCE_EVENT_COUNT_EXPECTED 4
-+#define UFENCE_EVENT_COUNT_MAX 100
-+
-+struct ufence_bind {
-+	struct drm_xe_sync f;
-+	uint64_t addr;
-+	uint64_t range;
-+	uint64_t value;
-+	struct {
-+		uint64_t vm_sync;
-+	} *fence_data;
-+};
-+
-+static void client_wait_ufences(struct xe_eudebug_client *c,
-+				int fd, struct ufence_bind *binds, int count)
-+{
-+	const int64_t default_fence_timeout_ns = MS_TO_NS(500);
-+	int64_t timeout_ns;
-+	int err;
-+
-+	/* Ensure that wait on unacked ufence times out */
-+	for (int i = 0; i < count; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		timeout_ns = default_fence_timeout_ns;
-+		err = __xe_wait_ufence(fd, &b->fence_data->vm_sync, b->f.timeline_value,
-+				       0, &timeout_ns);
-+		igt_assert_eq(err, -ETIME);
-+		igt_assert_neq(b->fence_data->vm_sync, b->f.timeline_value);
-+		igt_debug("wait #%d blocked on ack\n", i);
-+	}
-+
-+	/* Wait on fence timed out, now tell the debugger to ack */
-+	xe_eudebug_client_signal_stage(c, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
-+
-+	/* Check that ack unblocks ufence */
-+	for (int i = 0; i < count; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		timeout_ns = MS_TO_NS(XE_EUDEBUG_DEFAULT_TIMEOUT_MS);
-+		err = __xe_wait_ufence(fd, &b->fence_data->vm_sync, b->f.timeline_value,
-+				       0, &timeout_ns);
-+		igt_assert_eq(err, 0);
-+		igt_assert_eq(b->fence_data->vm_sync, b->f.timeline_value);
-+		igt_debug("wait #%d completed\n", i);
-+	}
-+}
-+
-+static struct ufence_bind *create_binds_with_ufence(int fd, int count)
-+{
-+	struct ufence_bind *binds;
-+
-+	binds = calloc(count, sizeof(*binds));
-+	igt_assert(binds);
-+
-+	for (int i = 0; i < count; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		b->range = 0x1000;
-+		b->addr = 0x100000 + b->range * i;
-+		b->fence_data = aligned_alloc(xe_get_default_alignment(fd),
-+					      sizeof(*b->fence_data));
-+		igt_assert(b->fence_data);
-+		memset(b->fence_data, 0, sizeof(*b->fence_data));
-+
-+		b->f.type = DRM_XE_SYNC_TYPE_USER_FENCE;
-+		b->f.flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+		b->f.addr = to_user_pointer(&b->fence_data->vm_sync);
-+		b->f.timeline_value = UFENCE_EVENT_COUNT_EXPECTED + i;
-+	}
-+
-+	return binds;
-+}
-+
-+static void basic_ufence_client(struct xe_eudebug_client *c)
-+{
-+	const unsigned int n = UFENCE_EVENT_COUNT_EXPECTED;
-+	int fd = xe_eudebug_client_open_driver(c);
-+	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	size_t bo_size = n * xe_get_default_alignment(fd);
-+	uint32_t bo = xe_bo_create(fd, 0, bo_size,
-+				   system_memory(fd), 0);
-+	struct ufence_bind *binds = create_binds_with_ufence(fd, n);
-+
-+	for (int i = 0; i < n; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, b->addr, b->range, 0,
-+						&b->f, 1, 0);
-+	}
-+
-+	client_wait_ufences(c, fd, binds, n);
-+
-+	for (int i = 0; i < n; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		xe_eudebug_client_vm_unbind(c, fd, vm, 0, b->addr, b->range);
-+	}
-+
-+	free(binds);
-+	gem_close(fd, bo);
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
-+
-+struct ufence_priv {
-+	struct drm_xe_eudebug_event_vm_bind_ufence ufence_events[UFENCE_EVENT_COUNT_MAX];
-+	uint64_t ufence_event_seqno[UFENCE_EVENT_COUNT_MAX];
-+	uint64_t ufence_event_vm_addr_start[UFENCE_EVENT_COUNT_MAX];
-+	uint64_t ufence_event_vm_addr_range[UFENCE_EVENT_COUNT_MAX];
-+	unsigned int ufence_event_count;
-+	unsigned int vm_bind_op_count;
-+	pthread_mutex_t mutex;
-+};
-+
-+static struct ufence_priv *ufence_priv_create(void)
-+{
-+	struct ufence_priv *priv;
-+
-+	priv = mmap(0, ALIGN(sizeof(*priv), PAGE_SIZE),
-+		    PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	igt_assert(priv);
-+	memset(priv, 0, sizeof(*priv));
-+	pthread_mutex_init(&priv->mutex, NULL);
-+
-+	return priv;
-+}
-+
-+static void ufence_priv_destroy(struct ufence_priv *priv)
-+{
-+	munmap(priv, ALIGN(sizeof(*priv), PAGE_SIZE));
-+}
-+
-+static void ack_fences(struct xe_eudebug_debugger *d)
-+{
-+	struct ufence_priv *priv = d->ptr;
-+
-+	for (int i = 0; i < priv->ufence_event_count; i++)
-+		xe_eudebug_ack_ufence(d->fd, &priv->ufence_events[i]);
-+}
-+
-+static void basic_ufence_trigger(struct xe_eudebug_debugger *d,
-+				 struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
-+	struct ufence_priv *priv = d->ptr;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+
-+		xe_eudebug_event_to_str(e, event_str, XE_EUDEBUG_EVENT_STRING_MAX_LEN);
-+		igt_debug("ufence event received: %s\n", event_str);
-+
-+		xe_eudebug_assert_f(d, priv->ufence_event_count < UFENCE_EVENT_COUNT_EXPECTED,
-+				    "surplus ufence event received: %s\n", event_str);
-+		xe_eudebug_assert(d, ef->vm_bind_ref_seqno);
-+
-+		memcpy(&priv->ufence_events[priv->ufence_event_count++], ef, sizeof(*ef));
-+
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, ef->vm_bind_ref_seqno);
-+		xe_eudebug_assert_f(d, eb, "vm bind event with seqno (%lld) not found\n",
-+				    ef->vm_bind_ref_seqno);
-+		xe_eudebug_assert_f(d, eb->flags & DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE,
-+				    "vm bind event does not have ufence: %s\n", event_str);
-+	}
-+}
-+
-+static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
-+{
-+	int ret = -ETIMEDOUT;
-+
-+	igt_for_milliseconds(timeout_ms) {
-+		pthread_mutex_lock(&priv->mutex);
-+		if (priv->ufence_event_count == UFENCE_EVENT_COUNT_EXPECTED)
-+			ret = 0;
-+		pthread_mutex_unlock(&priv->mutex);
-+
-+		if (!ret)
++	struct label_entry *l;
++	uint32_t *start, *end, *label;
++	int32_t relative;
++
++	l = igt_map_search(shdr->labels, &label_id);
++	igt_assert(l);
++
++	igt_assert(jump_iga64_size % 4 == 0);
++
++	label = shdr->code + l->offset;
++	end = shdr->code + shdr->size;
++	start = end - jump_iga64_size;
++
++	for (; start < end; start += 4)
++		if (OPCODE(*start) == OPCODE_JUMP_INDEXED) {
++			relative = (label - start) * 4;
++			*(start + 3) = relative;
 +			break;
-+		usleep(1000);
-+	}
-+
-+	return ret;
++		}
 +}
 +
 +/**
-+ * SUBTEST: basic-vm-bind-ufence
-+ * Description:
-+ *      Give user fence in application and check if ufence ack works
++ * gpgpu_shader__jump:
++ * @shdr: shader to be modified
++ * @label_id: label to jump to
++ *
++ * Append jump instruction to @shdr. Jump to instruction with label @label_id.
 + */
-+static void test_basic_ufence(int fd, unsigned int flags)
++void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id)
 +{
-+	struct xe_eudebug_debugger *d;
-+	struct xe_eudebug_session *s;
-+	struct xe_eudebug_client *c;
-+	struct ufence_priv *priv;
++	size_t shader_size;
 +
-+	priv = ufence_priv_create();
-+	s = xe_eudebug_session_create(fd, basic_ufence_client, flags, priv);
-+	c = s->c;
-+	d = s->d;
++	shader_size = emit_iga64_code(shdr, jump, "	\n\
++L0:							\n\
++(W)	jmpi        L0					\n\
++	");
 +
-+	xe_eudebug_debugger_add_trigger(d,
-+					DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-+					basic_ufence_trigger);
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
-+	xe_eudebug_debugger_start_worker(d);
-+	xe_eudebug_client_start(c);
-+
-+	xe_eudebug_debugger_wait_stage(s, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
-+	xe_eudebug_assert_f(d, wait_for_ufence_events(priv, XE_EUDEBUG_DEFAULT_TIMEOUT_MS) == 0,
-+			    "missing ufence events\n");
-+	ack_fences(d);
-+
-+	xe_eudebug_client_wait_done(c);
-+	xe_eudebug_debugger_stop_worker(d, 1);
-+
-+	xe_eudebug_event_log_print(d->log, true);
-+	xe_eudebug_event_log_print(c->log, true);
-+
-+	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-+
-+	xe_eudebug_session_destroy(s);
-+	ufence_priv_destroy(priv);
++	__patch_indexed_jump(shdr, label_id, shader_size);
 +}
 +
-+struct vm_bind_clear_thread_priv {
-+	struct drm_xe_engine_class_instance *hwe;
-+	struct xe_eudebug_client *c;
-+	pthread_t thread;
-+	uint64_t region;
-+	unsigned long sum;
-+};
-+
-+struct vm_bind_clear_priv {
-+	unsigned long unbind_count;
-+	unsigned long bind_count;
-+	unsigned long sum;
-+};
-+
-+static struct vm_bind_clear_priv *vm_bind_clear_priv_create(void)
++/**
++ * gpgpu_shader__jump_neq:
++ * @shdr: shader to be modified
++ * @label_id: label to jump to
++ * @y_offset: offset within target buffer in rows
++ * @value: expected value
++ *
++ * Append jump instruction to @shdr. Jump to instruction with label @label_id
++ * when @value is not equal to dword stored at @dw_offset within the surface.
++ *
++ * Note: @dw_offset has to be aligned to 4
++ */
++void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
++			    uint32_t y_offset, uint32_t value)
 +{
-+	struct vm_bind_clear_priv *priv;
++	uint32_t size;
 +
-+	priv = mmap(0, ALIGN(sizeof(*priv), PAGE_SIZE),
-+		    PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-+	igt_assert(priv);
-+	memset(priv, 0, sizeof(*priv));
++	size = emit_iga64_code(shdr, jump_dw_neq, "					\n\
++L0:											\n\
++(W)		mov (16|M0)              r30.0<1>:ud    0x0:ud				\n\
++#if GEN_VER < 2000 // Media Block Write							\n\
++	// Y offset of the block in rows := thread group id Y				\n\
++(W)		mov (1|M0)               r30.1<1>:ud    ARG(0):ud			\n\
++	// block width [0,63] representing 1 to 64 bytes, we want dword			\n\
++(W)		mov (1|M0)               r30.2<1>:ud    0x3:ud				\n\
++	// FFTID := FFTID from R0 header						\n\
++(W)		mov (1|M0)               r30.4<1>:ud    r0.5<0;1,0>:ud  		\n\
++(W)		send.dc1 (16|M0)         r31     r30      null    0x0	0x2190000	\n\
++#else // Typed 2D Block Store								\n\
++	// Store X and Y block start (160:191 and 192:223)				\n\
++(W)            mov (2|M0)               r30.6<1>:ud    ARG(0):ud			\n\
++	// Store X and Y block size (224:231 and 232:239)				\n\
++(W)            mov (1|M0)               r30.7<1>:ud    0x3:ud				\n\
++(W)            send.tgm (16|M0)         r31     r30    null:0    0x0    0x62100003	\n\
++#endif											\n\
++	// clear the flag register							\n\
++(W)		mov (1|M0)               f0.0<1>:ud    0x0:ud				\n\
++(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(1):ud	\n\
++(W&f0.0)	jmpi                     L0						\n\
++	", y_offset, value);
 +
-+	return priv;
++	__patch_indexed_jump(shdr, label_id, size);
 +}
 +
-+static void vm_bind_clear_priv_destroy(struct vm_bind_clear_priv *priv)
++/**
++ * gpgpu_shader__loop_begin:
++ * @shdr: shader to be modified
++ * @label_id: id of the label to be created
++ *
++ * Begin a counting loop in @shdr. All subsequent instructions will constitute
++ * the loop body up until 'gpgpu_shader__loop_end' gets called. The first
++ * instruction of the loop will be at label @label_id.
++ */
++void gpgpu_shader__loop_begin(struct gpgpu_shader *shdr, int label_id)
 +{
-+	munmap(priv, ALIGN(sizeof(*priv), PAGE_SIZE));
++	emit_iga64_code(shdr, clear_r40, "		\n\
++L0:							\n\
++(W)	mov (1|M0)               r40:ud    0x0:ud	\n\
++	");
++
++	gpgpu_shader__label(shdr, label_id);
 +}
 +
-+static void *vm_bind_clear_thread(void *data)
++/**
++ * gpgpu_shader__loop_end:
++ * @shdr: shader to be modified
++ * @label_id: label id passed to 'gpgpu_shader__loop_begin'
++ * @iter: iteration count
++ *
++ * End loop body in @shdr.
++ */
++void gpgpu_shader__loop_end(struct gpgpu_shader *shdr, int label_id, uint32_t iter)
 +{
-+	const uint32_t CS_GPR0 = 0x600;
-+	const size_t batch_size = 16;
-+	struct drm_xe_sync uf_sync = {
-+		.type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++	uint32_t size;
++
++	size = emit_iga64_code(shdr, inc_r40_jump_neq, "				\n\
++L0:											\n\
++(W)		add (1|M0)              r40:ud          r40.0<0;1,0>:ud 0x1:ud		\n\
++(W)		mov (1|M0)              f0.0<1>:ud      0x0:ud				\n\
++(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r40.0<0;1,0>:ud   ARG(0):ud	\n\
++(W&f0.0)	jmpi                     L0						\n\
++	", iter);
++
++	__patch_indexed_jump(shdr, label_id, size);
++}
++
++/**
++ * gpgpu_shader__common_target_write:
++ * @shdr: shader to be modified
++ * @y_offset: write target offset within target buffer in rows
++ * @value: oword to be written
++ *
++ * Write the oword stored in @value to the target buffer at @y_offset.
++ */
++void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
++				       uint32_t y_offset, const uint32_t value[4])
++{
++	emit_iga64_code(shdr, common_target_write, "				\n\
++(W)	mov (16|M0)		r31.0<1>:ud	0x0:ud				\n\
++(W)	mov (1|M0)		r31.0<1>:ud	ARG(1):ud			\n\
++(W)	mov (1|M0)		r31.1<1>:ud	ARG(2):ud			\n\
++(W)	mov (1|M0)		r31.2<1>:ud	ARG(3):ud			\n\
++(W)	mov (1|M0)		r31.3<1>:ud	ARG(4):ud			\n\
++(W)	mov (16|M0)		r30.0<1>:ud	0x0:ud				\n\
++#if GEN_VER < 2000 // Media Block Write						\n\
++	// Y offset of the block in rows					\n\
++(W)	mov (1|M0)		r30.1<1>:ud	ARG(0):ud			\n\
++	// block width [0,63] representing 1 to 64 bytes			\n\
++(W)	mov (1|M0)		r30.2<1>:ud	0xf:ud				\n\
++	// FFTID := FFTID from R0 header					\n\
++(W)	mov (1|M0)		r30.4<1>:ud	r0.5<0;1,0>:ud			\n\
++	// written value							\n\
++(W)	send.dc1 (16|M0)	null	r30	src1_null  0x0	0x40A8000	\n\
++#else	// Typed 2D Block Store							\n\
++	// Store X and Y block start (160:191 and 192:223)			\n\
++(W)	mov (2|M0)              r30.6<1>:ud     ARG(0):ud			\n\
++	// Store X and Y block size (224:231 and 232:239)			\n\
++(W)	mov (1|M0)              r30.7<1>:ud     0xf:ud				\n\
++(W)	send.tgm (16|M0)        null    r30     null:0  0x0     0x64000007	\n\
++#endif										\n\
++	", y_offset, value[0], value[1], value[2], value[3]);
++}
++
++/**
++ * gpgpu_shader__common_target_write_u32:
++ * @shdr: shader to be modified
++ * @y_offset: write target offset within target buffer in rows
++ * @value: dword to be written
++ *
++ * Fill oword at @y_offset with dword stored in @value.
++ */
++void gpgpu_shader__common_target_write_u32(struct gpgpu_shader *shdr,
++					   uint32_t y_offset, uint32_t value)
++{
++	const uint32_t owblock[4] = {
++		value, value, value, value
 +	};
-+	struct vm_bind_clear_thread_priv *priv = data;
-+	int fd = xe_eudebug_client_open_driver(priv->c);
-+	uint32_t gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
-+	uint32_t vm = xe_eudebug_client_vm_create(priv->c, fd, 0, 0);
-+	size_t bo_size = xe_bb_size(fd, batch_size);
-+	unsigned long count = 0;
-+	uint64_t *fence_data;
-+
-+	/* init uf_sync */
-+	fence_data = aligned_alloc(xe_get_default_alignment(fd), sizeof(*fence_data));
-+	igt_assert(fence_data);
-+	uf_sync.timeline_value = 1337;
-+	uf_sync.addr = to_user_pointer(fence_data);
-+
-+	igt_debug("Run on: %s%u\n", xe_engine_class_string(priv->hwe->engine_class),
-+		  priv->hwe->engine_instance);
-+
-+	igt_until_timeout(5) {
-+		struct drm_xe_exec_queue_create eq_create = { 0 };
-+		uint32_t clean_bo = 0;
-+		uint32_t batch_bo = 0;
-+		uint64_t clean_offset, batch_offset;
-+		uint32_t exec_queue;
-+		uint32_t *map, *cs;
-+		uint64_t delta;
-+
-+		/* calculate offsets (vma addresses) */
-+		batch_offset = (random() * SZ_2M) & (gtt_size - 1);
-+		/* XXX: for some platforms/memory regions batch offset '0' can be problematic */
-+		if (batch_offset == 0)
-+			batch_offset = SZ_2M;
-+
-+		do {
-+			clean_offset = (random() * SZ_2M) & (gtt_size - 1);
-+			if (clean_offset == 0)
-+				clean_offset = SZ_2M;
-+		} while (clean_offset == batch_offset);
-+
-+		batch_offset += random() % SZ_2M & -bo_size;
-+		clean_offset += random() % SZ_2M & -bo_size;
-+
-+		delta = (random() % bo_size) & -4;
-+
-+		/* prepare clean bo */
-+		clean_bo = xe_bo_create(fd, vm, bo_size, priv->region,
-+					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		memset(fence_data, 0, sizeof(*fence_data));
-+		xe_eudebug_client_vm_bind_flags(priv->c, fd, vm, clean_bo, 0, clean_offset, bo_size,
-+						0, &uf_sync, 1, 0);
-+		xe_wait_ufence(fd, fence_data, uf_sync.timeline_value, 0,
-+			       MS_TO_NS(XE_EUDEBUG_DEFAULT_TIMEOUT_MS));
-+
-+		/* prepare batch bo */
-+		batch_bo = xe_bo_create(fd, vm, bo_size, priv->region,
-+					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+		memset(fence_data, 0, sizeof(*fence_data));
-+		xe_eudebug_client_vm_bind_flags(priv->c, fd, vm, batch_bo, 0, batch_offset, bo_size,
-+						0, &uf_sync, 1, 0);
-+		xe_wait_ufence(fd, fence_data, uf_sync.timeline_value, 0,
-+			       MS_TO_NS(XE_EUDEBUG_DEFAULT_TIMEOUT_MS));
-+
-+		map = xe_bo_map(fd, batch_bo, bo_size);
-+
-+		cs = map;
-+		*cs++ = MI_NOOP | 0xc5a3;
-+		*cs++ = MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+		*cs++ = CS_GPR0;
-+		*cs++ = clean_offset + delta;
-+		*cs++ = (clean_offset + delta) >> 32;
-+		*cs++ = MI_STORE_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
-+		*cs++ = CS_GPR0;
-+		*cs++ = batch_offset;
-+		*cs++ = batch_offset >> 32;
-+		*cs++ = MI_BATCH_BUFFER_END;
-+
-+		/* execute batch */
-+		eq_create.width = 1;
-+		eq_create.num_placements = 1;
-+		eq_create.vm_id = vm;
-+		eq_create.instances = to_user_pointer(priv->hwe);
-+		exec_queue = xe_eudebug_client_exec_queue_create(priv->c, fd, &eq_create);
-+		xe_exec_wait(fd, exec_queue, batch_offset);
-+
-+		igt_assert_eq(*map, 0);
-+
-+		/* cleanup */
-+		xe_eudebug_client_exec_queue_destroy(priv->c, fd, &eq_create);
-+		munmap(map, bo_size);
-+
-+		xe_eudebug_client_vm_unbind(priv->c, fd, vm, 0, batch_offset, bo_size);
-+		gem_close(fd, batch_bo);
-+
-+		xe_eudebug_client_vm_unbind(priv->c, fd, vm, 0, clean_offset, bo_size);
-+		gem_close(fd, clean_bo);
-+
-+		count++;
-+	}
-+
-+	priv->sum = count;
-+
-+	free(fence_data);
-+	xe_eudebug_client_close_driver(priv->c, fd);
-+	return NULL;
-+}
-+
-+static void vm_bind_clear_client(struct xe_eudebug_client *c)
-+{
-+	int fd = xe_eudebug_client_open_driver(c);
-+	struct xe_device *xe_dev = xe_device_get(fd);
-+	int count = xe_number_engines(fd) * xe_dev->mem_regions->num_mem_regions;
-+	uint64_t memreg = all_memory_regions(fd);
-+	struct vm_bind_clear_priv *priv = c->ptr;
-+	int current = 0;
-+	struct drm_xe_engine_class_instance *engine;
-+	struct vm_bind_clear_thread_priv *threads;
-+	uint64_t region;
-+
-+	threads = calloc(count, sizeof(*threads));
-+	igt_assert(threads);
-+	priv->sum = 0;
-+
-+	xe_for_each_mem_region(fd, memreg, region) {
-+		xe_for_each_engine(fd, engine) {
-+			threads[current].c = c;
-+			threads[current].hwe = engine;
-+			threads[current].region = region;
-+
-+			pthread_create(&threads[current].thread, NULL,
-+				       vm_bind_clear_thread, &threads[current]);
-+			current++;
-+		}
-+	}
-+
-+	for (current = 0; current < count; current++)
-+		pthread_join(threads[current].thread, NULL);
-+
-+	xe_for_each_mem_region(fd, memreg, region) {
-+		unsigned long sum = 0;
-+
-+		for (current = 0; current < count; current++)
-+			if (threads[current].region == region)
-+				sum += threads[current].sum;
-+
-+		igt_info("%s sampled %lu objects\n", xe_region_name(region), sum);
-+		priv->sum += sum;
-+	}
-+
-+	free(threads);
-+	xe_device_put(fd);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
-+
-+static void vm_bind_clear_test_trigger(struct xe_eudebug_debugger *d,
-+				       struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+	struct vm_bind_clear_priv *priv = d->ptr;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		if (random() & 1) {
-+			struct drm_xe_eudebug_vm_open vo = { 0, };
-+			uint32_t v = 0xc1c1c1c1;
-+
-+			struct drm_xe_eudebug_event_vm_bind *eb;
-+			int fd, delta, r;
-+
-+			igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
-+				eo->vm_bind_ref_seqno,
-+				eo->addr,
-+				eo->range);
-+
-+			eb = (struct drm_xe_eudebug_event_vm_bind *)
-+				xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+			igt_assert(eb);
-+
-+			vo.client_handle = eb->client_handle;
-+			vo.vm_handle = eb->vm_handle;
-+
-+			fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+			igt_assert_lte(0, fd);
-+
-+			delta = (random() % eo->range) & -4;
-+			r = pread(fd, &v, sizeof(v), eo->addr + delta);
-+			igt_assert_eq(r, sizeof(v));
-+			igt_assert_eq_u32(v, 0);
-+
-+			close(fd);
-+		}
-+		priv->bind_count++;
-+	}
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_DESTROY)
-+		priv->unbind_count++;
-+}
-+
-+static void vm_bind_clear_ack_trigger(struct xe_eudebug_debugger *d,
-+				      struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
-+
-+	xe_eudebug_ack_ufence(d->fd, ef);
++	gpgpu_shader__common_target_write(shdr, y_offset, owblock);
 +}
 +
 +/**
-+ * SUBTEST: vm-bind-clear
-+ * Description:
-+ *      Check that fresh buffers we vm_bind into the ppGTT are always clear.
++ * gpgpu_shader__write_aip:
++ * @shdr: shader to be modified
++ * @y_offset: write target offset within the surface in rows
++ *
++ * Write address instruction pointer to row tg_id_y + @y_offset.
 + */
-+static void test_vm_bind_clear(int fd)
++void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset)
 +{
-+	struct vm_bind_clear_priv *priv;
-+	struct xe_eudebug_session *s;
-+
-+	priv = vm_bind_clear_priv_create();
-+	s = xe_eudebug_session_create(fd, vm_bind_clear_client, 0, priv);
-+
-+	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
-+					vm_bind_clear_test_trigger);
-+	xe_eudebug_debugger_add_trigger(s->d, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-+					vm_bind_clear_ack_trigger);
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(s->d, s->c), 0);
-+	xe_eudebug_debugger_start_worker(s->d);
-+	xe_eudebug_client_start(s->c);
-+
-+	xe_eudebug_client_wait_done(s->c);
-+	xe_eudebug_debugger_stop_worker(s->d, 1);
-+
-+	igt_assert_eq(priv->bind_count, priv->unbind_count);
-+	igt_assert_eq(priv->sum * 2, priv->bind_count);
-+
-+	xe_eudebug_session_destroy(s);
-+	vm_bind_clear_priv_destroy(priv);
++	emit_iga64_code(shdr, media_block_write_aip, "				\n\
++	// Payload								\n\
++(W)	mov (1|M0)               r5.0<1>:ud    cr0.2:ud				\n\
++#if GEN_VER < 2000 // Media Block Write						\n\
++	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
++(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    0x2:ud		\n\
++	// Y offset of the block in rows := thread group id Y			\n\
++(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud			\n\
++(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud    ARG(0):ud	\n\
++	// block width [0,63] representing 1 to 64 bytes			\n\
++(W)	mov (1|M0)               r4.2<1>:ud    0x3:ud				\n\
++	// FFTID := FFTID from R0 header					\n\
++(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud			\n\
++(W)	send.dc1 (16|M0)         null     r4   src1_null 0       0x40A8000	\n\
++#else // Typed 2D Block Store							\n\
++	// Load r2.0-3 with tg id X << ARG(0)					\n\
++(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x2:ud		\n\
++	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
++(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
++(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(0):ud	\n\
++	// payload setup							\n\
++(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
++	// Store X and Y block start (160:191 and 192:223)			\n\
++(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
++	// Store X and Y block max_size (224:231 and 232:239)			\n\
++(W)	mov (1|M0)               r4.7<1>:ud    0x3:ud				\n\
++(W)	send.tgm (16|M0)         null     r4   null:0    0    0x64000007	\n\
++#endif										\n\
++	", y_offset);
 +}
 +
-+#define UFENCE_CLIENT_VM_TEST_VAL_START 0xaaaaaaaa
-+#define UFENCE_CLIENT_VM_TEST_VAL_END 0xbbbbbbbb
+ /**
+  * gpgpu_shader__write_dword:
+  * @shdr: shader to be modified
+@@ -313,3 +627,73 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+ #endif										\n\
+ 	", 2, y_offset, 3, value, value, value, value);
+ }
 +
-+static void vma_ufence_client(struct xe_eudebug_client *c)
-+{
-+	const unsigned int n = UFENCE_EVENT_COUNT_EXPECTED;
-+	int fd = xe_eudebug_client_open_driver(c);
-+	struct ufence_bind *binds = create_binds_with_ufence(fd, n);
-+	uint32_t vm = xe_eudebug_client_vm_create(c, fd, 0, 0);
-+	size_t bo_size = xe_get_default_alignment(fd);
-+	uint64_t items = bo_size / sizeof(uint32_t);
-+	uint32_t bo[UFENCE_EVENT_COUNT_EXPECTED];
-+	uint32_t *ptr[UFENCE_EVENT_COUNT_EXPECTED];
-+
-+	for (int i = 0; i < n; i++) {
-+		bo[i] = xe_bo_create(fd, 0, bo_size,
-+				     system_memory(fd), 0);
-+		ptr[i] = xe_bo_map(fd, bo[i], bo_size);
-+		igt_assert(ptr[i]);
-+		memset(ptr[i], UFENCE_CLIENT_VM_TEST_VAL_START, bo_size);
-+	}
-+
-+	for (int i = 0; i < n; i++)
-+		for (int j = 0; j < items; j++)
-+			igt_assert_eq(ptr[i][j], UFENCE_CLIENT_VM_TEST_VAL_START);
-+
-+	for (int i = 0; i < n; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		xe_eudebug_client_vm_bind_flags(c, fd, vm, bo[i], 0, b->addr, b->range, 0,
-+						&b->f, 1, 0);
-+	}
-+
-+	/* Wait for acks on ufences */
-+	for (int i = 0; i < n; i++) {
-+		int err;
-+		int64_t timeout_ns;
-+		struct ufence_bind *b = &binds[i];
-+
-+		timeout_ns = MS_TO_NS(XE_EUDEBUG_DEFAULT_TIMEOUT_MS);
-+		err = __xe_wait_ufence(fd, &b->fence_data->vm_sync, b->f.timeline_value,
-+				       0, &timeout_ns);
-+		igt_assert_eq(err, 0);
-+		igt_assert_eq(b->fence_data->vm_sync, b->f.timeline_value);
-+		igt_debug("wait #%d completed\n", i);
-+
-+		for (int j = 0; j < items; j++)
-+			igt_assert_eq(ptr[i][j], UFENCE_CLIENT_VM_TEST_VAL_END);
-+	}
-+
-+	for (int i = 0; i < n; i++) {
-+		struct ufence_bind *b = &binds[i];
-+
-+		xe_eudebug_client_vm_unbind(c, fd, vm, 0, b->addr, b->range);
-+	}
-+
-+	free(binds);
-+
-+	for (int i = 0; i < n; i++) {
-+		munmap(ptr[i], bo_size);
-+		gem_close(fd, bo[i]);
-+	}
-+
-+	xe_eudebug_client_vm_destroy(c, fd, vm);
-+	xe_eudebug_client_close_driver(c, fd);
-+}
-+
-+static void debugger_test_vma_ufence(struct xe_eudebug_debugger *d,
-+				     uint64_t client_handle,
-+				     uint64_t vm_handle,
-+				     uint64_t va_start,
-+				     uint64_t va_length)
-+{
-+	struct drm_xe_eudebug_vm_open vo = { 0, };
-+	uint32_t *v1, *v2;
-+	uint32_t items = va_length / sizeof(uint32_t);
-+	int fd;
-+	int r, i;
-+
-+	v1 = malloc(va_length);
-+	igt_assert(v1);
-+	v2 = malloc(va_length);
-+	igt_assert(v2);
-+
-+	vo.client_handle = client_handle;
-+	vo.vm_handle = vm_handle;
-+
-+	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-+	igt_assert_lte(0, fd);
-+
-+	r = pread(fd, v1, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq(v1[i], UFENCE_CLIENT_VM_TEST_VAL_START);
-+
-+	memset(v1, UFENCE_CLIENT_VM_TEST_VAL_END, va_length);
-+
-+	r = pwrite(fd, v1, va_length, va_start);
-+	igt_assert_eq(r, va_length);
-+
-+	lseek(fd, va_start, SEEK_SET);
-+	r = read(fd, v2, va_length);
-+	igt_assert_eq(r, va_length);
-+
-+	for (i = 0; i < items; i++)
-+		igt_assert_eq_u64(v1[i], v2[i]);
-+
-+	fsync(fd);
-+
-+	close(fd);
-+	free(v1);
-+	free(v2);
-+}
-+
-+static void vma_ufence_op_trigger(struct xe_eudebug_debugger *d,
-+				  struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
-+	struct ufence_priv *priv = d->ptr;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+		unsigned int op_count = priv->vm_bind_op_count++;
-+
-+		xe_eudebug_event_to_str(e, event_str, XE_EUDEBUG_EVENT_STRING_MAX_LEN);
-+		igt_debug("vm bind op event: ref %lld, addr 0x%llx, range 0x%llx, op_count %u\n",
-+			  eo->vm_bind_ref_seqno,
-+			  eo->addr,
-+			  eo->range,
-+			  op_count);
-+		igt_debug("vm bind op event received: %s\n", event_str);
-+		xe_eudebug_assert(d, eo->vm_bind_ref_seqno);
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
-+
-+		xe_eudebug_assert_f(d, eb, "vm bind event with seqno (%lld) not found\n",
-+				    eo->vm_bind_ref_seqno);
-+		xe_eudebug_assert_f(d, eb->flags & DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE,
-+				    "vm bind event does not have ufence: %s\n", event_str);
-+
-+		priv->ufence_event_seqno[op_count] = eo->vm_bind_ref_seqno;
-+		priv->ufence_event_vm_addr_start[op_count] = eo->addr;
-+		priv->ufence_event_vm_addr_range[op_count] = eo->range;
-+	}
-+}
-+
-+static void vma_ufence_trigger(struct xe_eudebug_debugger *d,
-+			       struct drm_xe_eudebug_event *e)
-+{
-+	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
-+	struct ufence_priv *priv = d->ptr;
-+	unsigned int ufence_count = priv->ufence_event_count;
-+
-+	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-+		char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
-+		struct drm_xe_eudebug_event_vm_bind *eb;
-+		uint64_t addr = priv->ufence_event_vm_addr_start[ufence_count];
-+		uint64_t range = priv->ufence_event_vm_addr_range[ufence_count];
-+
-+		xe_eudebug_event_to_str(e, event_str, XE_EUDEBUG_EVENT_STRING_MAX_LEN);
-+		igt_debug("ufence event received: %s\n", event_str);
-+
-+		xe_eudebug_assert_f(d, priv->ufence_event_count < UFENCE_EVENT_COUNT_EXPECTED,
-+				    "surplus ufence event received: %s\n", event_str);
-+		xe_eudebug_assert(d, ef->vm_bind_ref_seqno);
-+
-+		memcpy(&priv->ufence_events[priv->ufence_event_count++], ef, sizeof(*ef));
-+
-+		eb = (struct drm_xe_eudebug_event_vm_bind *)
-+			xe_eudebug_event_log_find_seqno(d->log, ef->vm_bind_ref_seqno);
-+		xe_eudebug_assert_f(d, eb, "vm bind event with seqno (%lld) not found\n",
-+				    ef->vm_bind_ref_seqno);
-+		xe_eudebug_assert_f(d, eb->flags & DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE,
-+				    "vm bind event does not have ufence: %s\n", event_str);
-+		igt_debug("vm bind ufence event received with ref %lld, addr 0x%lx, range 0x%lx\n",
-+			  ef->vm_bind_ref_seqno,
-+			  addr,
-+			  range);
-+		debugger_test_vma_ufence(d, eb->client_handle, eb->vm_handle,
-+					 addr, range);
-+
-+		xe_eudebug_ack_ufence(d->fd, ef);
-+	}
-+}
 +/**
-+ * SUBTEST: vma-ufence
-+ * Description:
-+ *      Intercept vm bind after receiving ufence event, then access target vm and write to it.
-+ *      Then check on client side if the write was successful.
++ * gpgpu_shader__end_system_routine:
++ * @shdr: shader to be modified
++ * @breakpoint_suppress: breakpoint suppress flag
++ *
++ * Return from system routine. To prevent infinite jumping to the system
++ * routine on a breakpoint, @breakpoint_suppres flag has to be set.
 + */
-+static void test_vma_ufence(int fd, unsigned int flags)
++void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
++				      bool breakpoint_suppress)
 +{
-+	struct xe_eudebug_session *s;
-+	struct ufence_priv *priv;
++	/*
++	 * set breakpoint suppress bit to avoid an endless loop
++	 * when sip was invoked by a breakpoint
++	 */
++	if (breakpoint_suppress)
++		emit_iga64_code(shdr, breakpoint_suppress, "			\n\
++(W)	or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud	\n\
++		");
 +
-+	priv = ufence_priv_create();
-+	s = xe_eudebug_session_create(fd, vma_ufence_client, flags, priv);
-+
-+	xe_eudebug_debugger_add_trigger(s->d,
-+					DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
-+					vma_ufence_op_trigger);
-+	xe_eudebug_debugger_add_trigger(s->d,
-+					DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-+					vma_ufence_trigger);
-+
-+	igt_assert_eq(xe_eudebug_debugger_attach(s->d, s->c), 0);
-+	xe_eudebug_debugger_start_worker(s->d);
-+	xe_eudebug_client_start(s->c);
-+
-+	xe_eudebug_client_wait_done(s->c);
-+	xe_eudebug_debugger_stop_worker(s->d, 1);
-+
-+	xe_eudebug_event_log_print(s->d->log, true);
-+	xe_eudebug_event_log_print(s->c->log, true);
-+
-+	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-+
-+	xe_eudebug_session_destroy(s);
-+	ufence_priv_destroy(priv);
++	emit_iga64_code(shdr, end_system_routine, "				\n\
++(W)	and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud	\n\
++	// return to an application						\n\
++(W)	and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud	\n\
++	", 0x7fffff | (1 << 26)); /* clear all exceptions, except read only bit */
 +}
 +
-+igt_main
++/**
++ * gpgpu_shader__end_system_routine_step_if_eq:
++ * @shdr: shader to be modified
++ * @y_offset: offset within target buffer in rows
++ * @value: expected value for single stepping execution
++ *
++ * Return from system routine. Don't clear breakpoint exception when @value
++ * is equal to value stored at @dw_offset. This triggers the system routine
++ * after the subsequent instruction, resulting in single stepping execution.
++ */
++void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
++						 uint32_t y_offset,
++						 uint32_t value)
 +{
-+	bool was_enabled;
-+	bool *multigpu_was_enabled;
-+	int fd, gpu_count;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+		was_enabled = xe_eudebug_enable(fd, true);
-+	}
-+
-+	igt_subtest("sysfs-toggle")
-+		test_sysfs_toggle(fd);
-+
-+	igt_subtest("basic-connect")
-+		test_connect(fd);
-+
-+	igt_subtest("connect-user")
-+		test_connect_user(fd);
-+
-+	igt_subtest("basic-close")
-+		test_close(fd);
-+
-+	igt_subtest("basic-read-event")
-+		test_read_event(fd);
-+
-+	igt_subtest("basic-client")
-+		test_basic_sessions(fd, 0, 1, true);
-+
-+	igt_subtest("basic-client-th")
-+		test_basic_sessions_th(fd, 0, 1, true);
-+
-+	igt_subtest("basic-vm-access")
-+		test_vm_access(fd, 0, 1);
-+
-+	igt_subtest("basic-vm-access-userptr")
-+		test_vm_access(fd, VM_BIND_OP_MAP_USERPTR, 1);
-+
-+	igt_subtest("basic-vm-access-parameters")
-+		test_vm_access_parameters(fd, 0, 1);
-+
-+	igt_subtest("multiple-sessions")
-+		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4, true);
-+
-+	igt_subtest("basic-vms")
-+		test_basic_sessions(fd, CREATE_VMS, 1, true);
-+
-+	igt_subtest("basic-exec-queues")
-+		test_basic_sessions(fd, CREATE_EXEC_QUEUES, 1, true);
-+
-+	igt_subtest("basic-vm-bind")
-+		test_basic_sessions(fd, VM_BIND, 1, true);
-+
-+	igt_subtest("basic-vm-bind-ufence")
-+		test_basic_ufence(fd, 0);
-+
-+	igt_subtest("vma-ufence")
-+		test_vma_ufence(fd, 0);
-+
-+	igt_subtest("vm-bind-clear")
-+		test_vm_bind_clear(fd);
-+
-+	igt_subtest("basic-vm-bind-discovery")
-+		test_basic_discovery(fd, VM_BIND, true);
-+
-+	igt_subtest("basic-vm-bind-metadata-discovery")
-+		test_basic_discovery(fd, VM_BIND_METADATA, true);
-+
-+	igt_subtest("basic-vm-bind-vm-destroy")
-+		test_basic_sessions(fd, VM_BIND_VM_DESTROY, 1, false);
-+
-+	igt_subtest("basic-vm-bind-vm-destroy-discovery")
-+		test_basic_discovery(fd, VM_BIND_VM_DESTROY, false);
-+
-+	igt_subtest("basic-vm-bind-extended")
-+		test_basic_sessions(fd, VM_BIND_EXTENDED, 1, true);
-+
-+	igt_subtest("basic-vm-bind-extended-discovery")
-+		test_basic_discovery(fd, VM_BIND_EXTENDED, true);
-+
-+	igt_subtest("read-metadata")
-+		test_metadata_read(fd, 0, 1);
-+
-+	igt_subtest("attach-debug-metadata")
-+		test_metadata_attach(fd, 0, 1);
-+
-+	igt_subtest("discovery-race")
-+		test_race_discovery(fd, 0, 4);
-+
-+	igt_subtest("discovery-race-vmbind")
-+		test_race_discovery(fd, DISCOVERY_VM_BIND, 4);
-+
-+	igt_subtest("discovery-empty")
-+		test_empty_discovery(fd, DISCOVERY_CLOSE_CLIENT, 16);
-+
-+	igt_subtest("discovery-empty-clients")
-+		test_empty_discovery(fd, DISCOVERY_DESTROY_RESOURCES, 16);
-+
-+	igt_fixture {
-+		xe_eudebug_enable(fd, was_enabled);
-+		drm_close_driver(fd);
-+	}
-+
-+	igt_subtest_group {
-+		igt_fixture {
-+			gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
-+			igt_require(gpu_count >= 2);
-+
-+			multigpu_was_enabled = malloc(gpu_count * sizeof(bool));
-+			igt_assert(multigpu_was_enabled);
-+			for (int i = 0; i < gpu_count; i++) {
-+				fd = drm_open_filtered_card(i);
-+				multigpu_was_enabled[i] = xe_eudebug_enable(fd, true);
-+				close(fd);
-+			}
-+		}
-+
-+		igt_subtest("multigpu-basic-client") {
-+			igt_multi_fork(child, gpu_count) {
-+				fd = drm_open_filtered_card(child);
-+				igt_assert_f(fd > 0, "cannot open gpu-%d, errno=%d\n",
-+					     child, errno);
-+				igt_assert(is_xe_device(fd));
-+
-+				test_basic_sessions(fd, 0, 1, true);
-+				close(fd);
-+			}
-+			igt_waitchildren();
-+		}
-+
-+		igt_subtest("multigpu-basic-client-many") {
-+			igt_multi_fork(child, gpu_count) {
-+				fd = drm_open_filtered_card(child);
-+				igt_assert_f(fd > 0, "cannot open gpu-%d, errno=%d\n",
-+					     child, errno);
-+				igt_assert(is_xe_device(fd));
-+
-+				test_basic_sessions(fd, 0, 4, true);
-+				close(fd);
-+			}
-+			igt_waitchildren();
-+		}
-+
-+		igt_fixture {
-+			for (int i = 0; i < gpu_count; i++) {
-+				fd = drm_open_filtered_card(i);
-+				xe_eudebug_enable(fd, multigpu_was_enabled[i]);
-+				close(fd);
-+			}
-+			free(multigpu_was_enabled);
-+		}
-+	}
++	emit_iga64_code(shdr, end_system_routine_step_if_eq, "				\n\
++(W)		or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud	\n\
++(W)		and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud	\n\
++(W)		mov (16|M0)              r30.0<1>:ud    0x0:ud				\n\
++#if GEN_VER < 2000 // Media Block Write							\n\
++		// Y offset of the block in rows := thread group id Y			\n\
++(W)		mov (1|M0)               r30.1<1>:ud    ARG(1):ud			\n\
++		// block width [0,63] representing 1 to 64 bytes, we want dword		\n\
++(W)		mov (1|M0)               r30.2<1>:ud    0x3:ud				\n\
++		// FFTID := FFTID from R0 header					\n\
++(W)		mov (1|M0)               r30.4<1>:ud    r0.5<0;1,0>:ud			\n\
++(W)		send.dc1 (16|M0)         r31     r30      null    0x0	0x2190000	\n\
++#else	// Typed 2D Block Store								\n\
++		// Store X and Y block start (160:191 and 192:223)			\n\
++(W)		mov (2|M0)               r30.6<1>:ud    ARG(1):ud			\n\
++		// Store X and Y block size (224:231 and 232:239)			\n\
++(W)		mov (1|M0)               r30.7<1>:ud    0x3:ud				\n\
++(W)		send.tgm (16|M0)         r31     r30    null:0    0x0    0x62100003	\n\
++#endif											\n\
++		// clear the flag register						\n\
++(W)		mov (1|M0)               f0.0<1>:ud    0x0:ud				\n\
++(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(2):ud	\n\
++(W&f0.0)	and (1|M0)              cr0.1<1>:ud     cr0.1<0;1,0>:ud   ARG(3):ud	\n\
++		// return to an application						\n\
++(W)		and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud	\n\
++	", 0x807fffff, /* leave breakpoint exception */
++	y_offset, value, 0x7fffff /* clear all exceptions */ );
 +}
-diff --git a/tests/meson.build b/tests/meson.build
-index e649466be..35bf8ed35 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -279,6 +279,7 @@ intel_xe_progs = [
- 	'xe_dma_buf_sync',
- 	'xe_debugfs',
- 	'xe_drm_fdinfo',
-+	'xe_eudebug',
- 	'xe_evict',
- 	'xe_evict_ccs',
- 	'xe_exec_atomic',
+diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+index 255f93b4d..e4ca0be4c 100644
+--- a/lib/gpgpu_shader.h
++++ b/lib/gpgpu_shader.h
+@@ -21,6 +21,7 @@ struct gpgpu_shader {
+ 		uint32_t *code;
+ 		uint32_t (*instr)[4];
+ 	};
++	struct igt_map *labels;
+ };
+ 
+ struct iga64_template {
+@@ -31,7 +32,7 @@ struct iga64_template {
+ 
+ #pragma GCC diagnostic ignored "-Wnested-externs"
+ 
+-void
++uint32_t
+ __emit_iga64_code(struct gpgpu_shader *shdr, const struct iga64_template *tpls,
+ 		  int argc, uint32_t *argv);
+ 
+@@ -56,8 +57,27 @@ void gpgpu_shader_exec(struct intel_bb *ibb,
+ 		       struct gpgpu_shader *sip,
+ 		       uint64_t ring, bool explicit_engine);
+ 
++void gpgpu_shader__wait(struct gpgpu_shader *shdr);
++void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no);
++void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr);
++void gpgpu_shader__nop(struct gpgpu_shader *shdr);
+ void gpgpu_shader__eot(struct gpgpu_shader *shdr);
++void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
++				       uint32_t y_offset, const uint32_t value[4]);
++void gpgpu_shader__common_target_write_u32(struct gpgpu_shader *shdr,
++				     uint32_t y_offset, uint32_t value);
++void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
++				      bool breakpoint_suppress);
++void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
++						 uint32_t dw_offset,
++						 uint32_t value);
++void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
+ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+ 			       uint32_t y_offset);
+-
++void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
++void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
++void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
++			    uint32_t dw_offset, uint32_t value);
++void gpgpu_shader__loop_begin(struct gpgpu_shader *shdr, int label_id);
++void gpgpu_shader__loop_end(struct gpgpu_shader *shdr, int label_id, uint32_t iter);
+ #endif /* GPGPU_SHADER_H */
+diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+index 6a08c4844..fea436dee 100644
+--- a/lib/iga64_generated_codes.c
++++ b/lib/iga64_generated_codes.c
+@@ -3,7 +3,95 @@
+ 
+ #include "gpgpu_shader.h"
+ 
+-#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
++#define MD5_SUM_IGA64_ASMS 61a15534954fe7c6bd0e983fbfd54c27
++
++struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
++	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
++		0x80000966, 0x80018220, 0x02008000, 0x00008000,
++		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
++		0x80100961, 0x1e054220, 0x00000000, 0x00000000,
++		0x80040061, 0x1e654220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
++		0x80132031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
++		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
++		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1272, .size = 48, .code = (const uint32_t []) {
++		0x80000966, 0x80018220, 0x02008000, 0x00008000,
++		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
++		0x80100961, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1e254220, 0x00000000, 0x00000003,
++		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
++		0x80132031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
++		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
++		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
++		0x80000966, 0x80018220, 0x02008000, 0x00008000,
++		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80040961, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
++		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
++		0x81000965, 0x80218220, 0x02008020, 0xc0ded003,
++		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
++		0x80000166, 0x80018220, 0x02008000, 0x00008000,
++		0x80000165, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80040161, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
++		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
++		0x80049031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
++		0x81000165, 0x80218220, 0x02008020, 0xc0ded003,
++		0x80000165, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_end_system_routine[] = {
++	{ .gen_ver = 1272, .size = 12, .code = (const uint32_t []) {
++		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
++		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 12, .code = (const uint32_t []) {
++		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 12, .code = (const uint32_t []) {
++		0x80000165, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80000165, 0x80018220, 0x02008000, 0x7ffffffd,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_breakpoint_suppress[] = {
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x80000966, 0x80018220, 0x02008000, 0x00008000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80000166, 0x80018220, 0x02008000, 0x00008000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
+ 
+ struct iga64_template const iga64_code_media_block_write[] = {
+ 	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+@@ -86,6 +174,215 @@ struct iga64_template const iga64_code_media_block_write[] = {
+ 	}}
+ };
+ 
++struct iga64_template const iga64_code_media_block_write_aip[] = {
++	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
++		0x80000961, 0x05050220, 0x00008020, 0x00000000,
++		0x80000969, 0x02058220, 0x02000014, 0x00000002,
++		0x80000061, 0x02150220, 0x00000064, 0x00000000,
++		0x80001940, 0x02158220, 0x02000214, 0xc0ded000,
++		0x80100061, 0x04054220, 0x00000000, 0x00000000,
++		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
++		0x80000061, 0x04754220, 0x00000000, 0x00000003,
++		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1272, .size = 40, .code = (const uint32_t []) {
++		0x80000961, 0x05050220, 0x00008020, 0x00000000,
++		0x80000969, 0x04058220, 0x02000014, 0x00000002,
++		0x80000061, 0x04150220, 0x00000064, 0x00000000,
++		0x80001940, 0x04158220, 0x02000414, 0xc0ded000,
++		0x80000061, 0x04254220, 0x00000000, 0x00000003,
++		0x80000061, 0x04450220, 0x00000054, 0x00000000,
++		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 44, .code = (const uint32_t []) {
++		0x80000961, 0x05050220, 0x00008040, 0x00000000,
++		0x80000969, 0x04058220, 0x02000024, 0x00000002,
++		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
++		0x80001940, 0x04258220, 0x02000424, 0xc0ded000,
++		0x80000061, 0x04454220, 0x00000000, 0x00000003,
++		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 40, .code = (const uint32_t []) {
++		0x80000161, 0x05050220, 0x00008040, 0x00000000,
++		0x80000169, 0x04058220, 0x02000024, 0x00000002,
++		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
++		0x80000140, 0x04258220, 0x02000424, 0xc0ded000,
++		0x80000061, 0x04454220, 0x00000000, 0x00000003,
++		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_common_target_write[] = {
++	{ .gen_ver = 2000, .size = 48, .code = (const uint32_t []) {
++		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
++		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80040061, 0x1e654220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
++		0x80132031, 0x00000000, 0xd00e1e94, 0x04000000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1272, .size = 52, .code = (const uint32_t []) {
++		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
++		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e254220, 0x00000000, 0x0000000f,
++		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
++		0x80132031, 0x00000000, 0xc0001e14, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
++		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
++		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
++		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x80044031, 0x00000000, 0xc0001e14, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
++		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
++		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
++		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
++		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
++		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
++		0x80049031, 0x00000000, 0xc0001e14, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_inc_r40_jump_neq[] = {
++	{ .gen_ver = 1272, .size = 20, .code = (const uint32_t []) {
++		0x80000040, 0x28058220, 0x02002804, 0x00000001,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80001a70, 0x00018220, 0x22002804, 0xc0ded000,
++		0x84000020, 0x00004000, 0x00000000, 0xffffffd0,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 20, .code = (const uint32_t []) {
++		0x80000040, 0x28058220, 0x02002804, 0x00000001,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80001a70, 0x00018220, 0x22002804, 0xc0ded000,
++		0x81000020, 0x00004000, 0x00000000, 0xffffffd0,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 20, .code = (const uint32_t []) {
++		0x80000040, 0x28058220, 0x02002804, 0x00000001,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80000270, 0x00018220, 0x22002804, 0xc0ded000,
++		0x81000020, 0x00004000, 0x00000000, 0xffffffd0,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_clear_r40[] = {
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x80000061, 0x28054220, 0x00000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80000061, 0x28054220, 0x00000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_jump_dw_neq[] = {
++	{ .gen_ver = 2000, .size = 32, .code = (const uint32_t []) {
++		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80040061, 0x1e654220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
++		0x80132031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
++		0x84000020, 0x00004000, 0x00000000, 0xffffffa0,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1272, .size = 36, .code = (const uint32_t []) {
++		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e254220, 0x00000000, 0x00000003,
++		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
++		0x80132031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
++		0x84000020, 0x00004000, 0x00000000, 0xffffff90,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 40, .code = (const uint32_t []) {
++		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
++		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
++		0x81000020, 0x00004000, 0x00000000, 0xffffff80,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 36, .code = (const uint32_t []) {
++		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
++		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
++		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
++		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
++		0x80049031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
++		0x80000061, 0x30014220, 0x00000000, 0x00000000,
++		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
++		0x81000020, 0x00004000, 0x00000000, 0xffffff90,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_jump[] = {
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x80000020, 0x00004000, 0x00000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80000020, 0x00004000, 0x00000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
+ struct iga64_template const iga64_code_eot[] = {
+ 	{ .gen_ver = 2000, .size = 8, .code = (const uint32_t []) {
+ 		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
+@@ -110,3 +407,25 @@ struct iga64_template const iga64_code_eot[] = {
+ 		0x80049031, 0x00000004, 0x7020700c, 0x10000000,
+ 	}}
+ };
++
++struct iga64_template const iga64_code_nop[] = {
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x00000060, 0x00000000, 0x00000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x00000060, 0x00000000, 0x00000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_sync_host[] = {
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x80000001, 0x00010000, 0xf0000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80000001, 0x00010000, 0xf0000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
 -- 
 2.34.1
 
