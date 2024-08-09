@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCD3DC52D7C
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 14:21:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70D3EC3DA4A
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 14:24:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 89A0410E920;
-	Fri,  9 Aug 2024 14:21:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09A6810E915;
+	Fri,  9 Aug 2024 14:24:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GIAz0z2S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jFB8notE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE0B610E914
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 14:21:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9202410E916
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 14:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723213303; x=1754749303;
+ t=1723213481; x=1754749481;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=plY53Devk8jo/J8E3uon5EEEBwvwxsBL9XPzx/qmF8w=;
- b=GIAz0z2S5tidbMbfyW3fvJBKa1qTYDHC+fiZvIZgXVdoCPVPCuRf8XrH
- N81s/Ndvm/iUWGOPasmPsC2ARPsccfFXcxeOyrN354cIqbF0QLl31dH1M
- /7UeA7xo97k6mY6x7WH27ShS/IH+Eqx2z2FabaUJkrZW/ZEQ31IyaRwco
- grSGf37x3I5Q9OvPU7X3z2T2pNp6LAswm7TEQC1ITFs01KdJ4wVWN53Ui
- N9zgcZ4Awk3Eh6RwGq0YjdG32P7ML8M2vUwxFTxascVlXIPOr5D1CiZ8x
- QNAl27k2VVk8r7Ny40/p45ffWiRR3pP9U7NFIRtKhVS3mlp5l/DR0o4MD A==;
-X-CSE-ConnectionGUID: b6VA3x4HQCGYUYYIpsy5Mw==
-X-CSE-MsgGUID: QctsJY3GSV+Thbzv0NpcIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="32012963"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="32012963"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 07:21:42 -0700
-X-CSE-ConnectionGUID: KDfTW6jNRG2AHOJPubX9wQ==
-X-CSE-MsgGUID: fIKJ1sppQumsEZEYekjIQg==
+ bh=8QQSvEe6gQxyVYmQLifVXtNNsqada5J9qQeZ+aGKB+Q=;
+ b=jFB8notEwke9L/5qV1FS0cD32dy8rQQimEJd7SlMuwqBPys2zytCsi4O
+ HJ2rrtWCOIUXZrZ4QYg1o/U8VRaRcIJki5+2JaTH6wACskzpQQg+zXV6r
+ ei2FHRpQfucOvFhZXu6NzRIY73M0gKkQaJOk6g2QzBbmCgVnfHqzOpnMp
+ 4UojGlBe5YEkFkdO9HpYKSLifdWgzAiAz1fckGe5JF3m003NMiw5eTDLi
+ F49JHJ+K6/AEy2k3XPAfVKVa+BxcZcVBqRGYD+TCEVmKi7o+Y3LickBVA
+ AmeHoxMgRe2ldytgwTgoCyvTeUEx5/ZpOtGe9yBkt2l9nhGU9D0iUogc0 Q==;
+X-CSE-ConnectionGUID: tSi3cyc2R7ubS+DTE6M3zQ==
+X-CSE-MsgGUID: /KxvA5WhTjSsp+VZO69TuQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="46795517"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="46795517"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2024 07:24:41 -0700
+X-CSE-ConnectionGUID: l4GY1vwzQ1aXb73pdV+1tw==
+X-CSE-MsgGUID: VqWDVLlTTvWUrkfhX18JpQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="57470772"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="62414071"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 07:21:38 -0700
-Date: Fri, 9 Aug 2024 16:21:21 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 07:24:39 -0700
+Date: Fri, 9 Aug 2024 16:24:35 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Christoph Manszewski <christoph.manszewski@intel.com>,
@@ -53,11 +53,9 @@ Cc: Christoph Manszewski <christoph.manszewski@intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: Re: [PATCH i-g-t v3 01/14] drm-uapi/xe: Sync with oa uapi fix
-Message-ID: <20240809142121.jtb4u53qtopwlro2@kamilkon-DESK.igk.intel.com>
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Subject: Re: [PATCH i-g-t v3 00/14] Test coverage for GPU debug support
+Message-ID: <20240809142435.wp67qgei4pj56zbx@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Christoph Manszewski <christoph.manszewski@intel.com>,
@@ -69,16 +67,13 @@ Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 References: <20240809123813.109365-1-christoph.manszewski@intel.com>
- <20240809123813.109365-2-christoph.manszewski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240809123813.109365-2-christoph.manszewski@intel.com>
+In-Reply-To: <20240809123813.109365-1-christoph.manszewski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,65 +90,110 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Christoph,
-On 2024-08-09 at 14:38:00 +0200, Christoph Manszewski wrote:
-> Align with kernel commit f2881dfdaaa9 ("drm/xe/oa/uapi: Make bit masks
-> unsigned"). Use built header instead of raw uapi header.
+On 2024-08-09 at 14:37:59 +0200, Christoph Manszewski wrote:
+> Hi,
 > 
-> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> ---
->  include/drm-uapi/xe_drm.h | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+> In this series the eudebug kernel and validation team would like to
+> add test coverage for GPU debug support recently proposed as an RFC.
+> (https://patchwork.freedesktop.org/series/136572/)
 > 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index 29425d7fd..f0a450db9 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -3,8 +3,8 @@
->   * Copyright © 2023 Intel Corporation
->   */
->  
-> -#ifndef _UAPI_XE_DRM_H_
-> -#define _UAPI_XE_DRM_H_
-> +#ifndef _XE_DRM_H_
-> +#define _XE_DRM_H_
->  
->  #include "drm.h"
->  
-> @@ -134,7 +134,7 @@ extern "C" {
->   * redefine the interface more easily than an ever growing struct of
->   * increasing complexity, and for large parts of that interface to be
->   * entirely optional. The downside is more pointer chasing; chasing across
-> - * the __user boundary with pointers encapsulated inside u64.
-> + * the boundary with pointers encapsulated inside u64.
->   *
->   * Example chaining:
->   *
-> @@ -1598,10 +1598,10 @@ enum drm_xe_oa_property_id {
->  	 * b. Counter select c. Counter size and d. BC report. Also refer to the
->  	 * oa_formats array in drivers/gpu/drm/xe/xe_oa.c.
->  	 */
-> -#define DRM_XE_OA_FORMAT_MASK_FMT_TYPE		(0xff << 0)
-> -#define DRM_XE_OA_FORMAT_MASK_COUNTER_SEL	(0xff << 8)
-> -#define DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE	(0xff << 16)
-> -#define DRM_XE_OA_FORMAT_MASK_BC_REPORT		(0xff << 24)
-> +#define DRM_XE_OA_FORMAT_MASK_FMT_TYPE		(0xffu << 0)
-> +#define DRM_XE_OA_FORMAT_MASK_COUNTER_SEL	(0xffu << 8)
-> +#define DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE	(0xffu << 16)
-> +#define DRM_XE_OA_FORMAT_MASK_BC_REPORT		(0xffu << 24)
->  
->  	/**
->  	 * @DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT: Requests periodic OA unit
-> @@ -1698,4 +1698,4 @@ struct drm_xe_oa_stream_info {
->  }
->  #endif
->  
-> -#endif /* _UAPI_XE_DRM_H_ */
-> +#endif /* _XE_DRM_H_ */
+> This series adds 'xe_eudebug' and 'xe_eudebug_online' tests together
+> with a library that encapsulates common paths in current and future
+> EU debugger scenarios. It also extends the 'xe_exec_sip' test and
+> 'gpgpu_shader' library.
+> 
+> The aim of the 'xe_eudebug' test is to validate the eudebug resource
+> tracking and event delivery mechanism. The 'xe_eudebug_online' test is
+> dedicated for 'online' scenarios which means scenarios that exercise
+> hardware exception handling and thread state manipulation.
+> 
+> The xe_eudebug library provides an abstraction over debugger and debuggee
+> processes, asynchronous event reader, and event log buffers for post-mortem
+> analysis.
+> 
+> Latest kernel code can be found here:
+> https://gitlab.freedesktop.org/miku/kernel/-/commits/eudebug-dev
+> 
+> Thank you in advance for any comments and insight.
+> 
+> v2:
+>  - make sure to include all patches and verify that each individual
+>  patch compiles (Zbigniew)
+> 
+> v3:
+>  - fix multiple typos (Dominik Karol),
+>  - squash subtest and eudebug lib patches (Zbigniew),
+>  - include uapi sync/fix (Kamil)
+> 
+
+Please look into GitLab compilation report with error for
+armhf and mips:
+
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62081847):
+
+../lib/igt_core.h:1257:64: note: in definition of macro ‘igt_debug’
+#define igt_debug(f...) igt_log(IGT_LOG_DOMAIN, IGT_LOG_DEBUG, f)
+
+../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_exec_queue_create’:
+../lib/xe/xe_eudebug.c:1792:20: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
+
+../lib/xe/xe_eudebug.c: In function ‘xe_eudebug_client_exec_queue_destroy’:
+../lib/xe/xe_eudebug.c:1816:20: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
+uint16_t class = ((struct drm_xe_engine_class_instance *)(create->instances))[0].engine_class;
+
+cc1: some warnings being treated as errors
+ninja: build stopped: subcommand failed.
+
+Regards,
+Kamil
+
+> Andrzej Hajda (4):
+>   lib/gpgpu_shader: Add write_on_exception template
+>   lib/gpgpu_shader: Add set/clear exception register (cr0.1) helpers
+>   lib/intel_batchbuffer: Add helper to get pointer at specified offset
+>   lib/gpgpu_shader: Allow enabling illegal opcode exceptions in shader
+> 
+> Christoph Manszewski (5):
+>   drm-uapi/xe: Sync with oa uapi fix
+>   lib/xe_ioctl: Add wrapper with vm_bind_op extension parameter
+>   lib/gpgpu_shader: Extend shader building library
+>   tests/xe_exec_sip: Extend SIP interaction testing
+>   tests/xe_live_ktest: Add xe_eudebug live test
+> 
+> Dominik Grzegorzek (4):
+>   drm-uapi/xe: Sync with eudebug uapi
+>   lib/xe_eudebug: Introduce eu debug testing framework
+>   tests/xe_eudebug: Test eudebug resource tracking and manipulation
+>   tests/xe_eudebug_online: Debug client which runs workloads on EU
+> 
+> Gwan-gyeong Mun (1):
+>   lib/intel_batchbuffer: Add support for long-running mode execution
+> 
+>  include/drm-uapi/xe_drm.h         |  112 +-
+>  include/drm-uapi/xe_drm_eudebug.h |  225 +++
+>  lib/gpgpu_shader.c                |  474 ++++-
+>  lib/gpgpu_shader.h                |   29 +-
+>  lib/iga64_generated_codes.c       |  428 ++++-
+>  lib/intel_batchbuffer.c           |  153 +-
+>  lib/intel_batchbuffer.h           |   22 +
+>  lib/meson.build                   |    1 +
+>  lib/xe/xe_eudebug.c               | 2192 +++++++++++++++++++++++
+>  lib/xe/xe_eudebug.h               |  206 +++
+>  lib/xe/xe_ioctl.c                 |   20 +-
+>  lib/xe/xe_ioctl.h                 |    5 +
+>  tests/intel/xe_eudebug.c          | 2671 +++++++++++++++++++++++++++++
+>  tests/intel/xe_eudebug_online.c   | 2203 ++++++++++++++++++++++++
+>  tests/intel/xe_exec_sip.c         |  332 +++-
+>  tests/intel/xe_live_ktest.c       |    6 +
+>  tests/meson.build                 |    2 +
+>  17 files changed, 9036 insertions(+), 45 deletions(-)
+>  create mode 100644 include/drm-uapi/xe_drm_eudebug.h
+>  create mode 100644 lib/xe/xe_eudebug.c
+>  create mode 100644 lib/xe/xe_eudebug.h
+>  create mode 100644 tests/intel/xe_eudebug.c
+>  create mode 100644 tests/intel/xe_eudebug_online.c
+> 
 > -- 
 > 2.34.1
 > 
