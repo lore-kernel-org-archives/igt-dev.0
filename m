@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34B44C3DA4A
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 17:30:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FE85C3DA4A
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 18:30:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E67F410E9B1;
-	Fri,  9 Aug 2024 17:30:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HCfUgmTl";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C2CA10E9B1
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 17:30:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723224600; x=1754760600;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=rhoWSig07n77MoaZSRs58ookg0S+x7WIwbxCiufg+UQ=;
- b=HCfUgmTl6iyRC9b0C2mMptUeg5pb+fDxDXGQ8Xi3qPE1FbridpeqHAGl
- LI9sq3dDdm1e1zuYIciSH0eQcFIQSGN/az6OKk3wFWFfQp2jCbDyi245a
- ILOPHXVV3BF1PYIVWweAfu6At6HtxOJN76J4qjjr6rNF/b4WmXlEbSUGO
- TY8zGFXU3oiGmCl4szY5eAPtE33zyN6BcfX/u81Jisj8wHdRwPgsDN0Lw
- rNGrirS9TgJBD4Fwn4UbJlQjcvCGXzM+hjYsfwNRUp+tEC9kEieIUK5L0
- Xflvnl1v6ng2XDQQ/hgkdAcQTrQC0gTiCFBiMgmdUYisQx8bCwpqfnr8T w==;
-X-CSE-ConnectionGUID: 39c0sylWTnS2/sABrEOXqA==
-X-CSE-MsgGUID: hrf6nCuAQ/a/xv1UQmoK+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11159"; a="21265821"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="21265821"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 10:29:59 -0700
-X-CSE-ConnectionGUID: djnTXapQQZSfrTcTfPyM3Q==
-X-CSE-MsgGUID: NrA2mrCDS4Gj8FIhelaykQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="88271608"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 10:29:59 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_module_load: Rename enable_display
- module param
-Date: Fri,  9 Aug 2024 10:27:28 -0700
-Message-ID: <20240809172936.2718506-1-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0DCE10E9D0;
+	Fri,  9 Aug 2024 18:30:13 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25C1A10E9D0;
+ Fri,  9 Aug 2024 18:30:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2214280940636831540=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fmodule=5Fl?=
+ =?utf-8?q?oad=3A_Rename_enable=5Fdisplay_module_param?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 09 Aug 2024 18:30:13 -0000
+Message-ID: <172322821314.552626.6255122305649319952@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240809172936.2718506-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240809172936.2718506-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,50 +37,185 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-enable_display is being renamed in the kernel since it's ambiguous:
-https://lore.kernel.org/all/20240808180154.2495634-1-lucas.demarchi@intel.com/
+--===============2214280940636831540==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Prepare for that renaming it in igt.
+== Series Details ==
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
+Series: tests/intel/xe_module_load: Rename enable_display module param
+URL   : https://patchwork.freedesktop.org/series/137096/
+State : success
 
-After doing this I'm wondering if it would break anything in CI if
-either
+== Summary ==
 
-a) igt started passing both for some time
-b) the kernel to have one additional enable_display module param,
-   documented as deprecated,  that we keep for a couple of releases
+CI Bug Log - changes from IGT_7965 -> IGTPW_11553
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/index.html
+
+Participating hosts (40 -> 37)
+------------------------------
+
+  Additional (2): fi-glk-j4005 fi-bsw-n3050 
+  Missing    (5): fi-snb-2520m fi-cfl-8109u fi-elk-e7500 fi-kbl-8809g bat-dg2-11 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11553 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-glk-j4005/igt@gem_lmem_swapping@basic.html
+
+  * igt@gem_lmem_swapping@random-engines:
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][3] +19 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-glk-j4005:       NOTRUN -> [SKIP][4] +10 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-1:         [DMESG-WARN][5] ([i915#11349] / [i915#11378]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7965/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+    - bat-arls-5:         [DMESG-WARN][7] ([i915#11349] / [i915#11378]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7965/bat-arls-5/igt@i915_selftest@live@hangcheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/bat-arls-5/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#11378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
 
 
- tests/intel/xe_module_load.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Build changes
+-------------
 
-diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
-index 0856a57c8..30259fc26 100644
---- a/tests/intel/xe_module_load.c
-+++ b/tests/intel/xe_module_load.c
-@@ -112,7 +112,7 @@ static const char * const unwanted_drivers[] = {
-  * Description: Reload the Xe driver
-  *
-  * SUBTEST: reload-no-display
-- * Description: Reload the Xe driver passing ``enable_display=0`` parameter
-+ * Description: Reload the Xe driver passing ``probe_display=0`` parameter
-  *
-  * SUBTEST: many-reload
-  * Description: Reload the Xe driver many times
-@@ -145,7 +145,7 @@ igt_main
- 
- 	igt_subtest("reload-no-display") {
- 		igt_xe_driver_unload();
--		load_and_check_xe("enable_display=0");
-+		load_and_check_xe("probe_display=0");
- 		igt_xe_driver_unload();
- 	}
- 
--- 
-2.43.0
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7965 -> IGTPW_11553
 
+  CI-20190529: 20190529
+  CI_DRM_15207: 13384fb5b1e76e7012902cc10b1e49023358dc1d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11553: ab175d0b72213a343fbc3a7c7d615379b336dfc0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7965: 965de1e69e91e331eee9d9f53e46b4652ba157c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/index.html
+
+--===============2214280940636831540==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_module_load: Rename enable_display module param</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137096/">https://patchwork.freedesktop.org/series/137096/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7965 -&gt; IGTPW_11553</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Additional (2): fi-glk-j4005 fi-bsw-n3050 <br />
+  Missing    (5): fi-snb-2520m fi-cfl-8109u fi-elk-e7500 fi-kbl-8809g bat-dg2-11 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11553 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-glk-j4005/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@random-engines:</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-bsw-n3050/igt@gem_lmem_swapping@random-engines.html">SKIP</a> +19 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> +10 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7965/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7965/bat-arls-5/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11553/bat-arls-5/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7965 -&gt; IGTPW_11553</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15207: 13384fb5b1e76e7012902cc10b1e49023358dc1d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11553: ab175d0b72213a343fbc3a7c7d615379b336dfc0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7965: 965de1e69e91e331eee9d9f53e46b4652ba157c1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2214280940636831540==--
