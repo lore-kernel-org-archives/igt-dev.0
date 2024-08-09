@@ -4,189 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4A77C3DA4A
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 11:41:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37E0FC3DA4A
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 11:42:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8356C10E8CC;
-	Fri,  9 Aug 2024 11:41:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD1C910E8CB;
+	Fri,  9 Aug 2024 11:42:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nFyHlAmv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KrK2ZXkx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 30D8810E8CB
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 11:41:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D7AA10E8CB
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 11:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723203689; x=1754739689;
+ t=1723203750; x=1754739750;
  h=message-id:date:subject:to:references:from:in-reply-to:
- mime-version; bh=S+wgye0C5NQEHG7gA7x+DExpU/HIVP2cMdMFyphSuPY=;
- b=nFyHlAmvgxQ9AxUwXo/m69AW55as6LIpKvXlinjmvDrhtxeL/Qs8UUF7
- vazNdsu1yBd+Hj57jfN58ilusQgXFCdeaBs80jQKHFaxd3MBCAAF8mXCr
- 1wxpiMTp4gN/qhCNDz8JUYPSuI21Ez57B7CesXnp5DXWZZuz5MYOruxVy
- bpqHhiznulnMRL1mnAe2jURt4BuAR/TuMhELDWyVY8zA4ykmfSuyBxwZ6
- wCaiw8J1Af1Ln+fkW8JghgVdtKbCuX+l7TZiH39iJH6/aVqw4HXsmq0oz
- /r5GahXLqo5jg+vm78LYnGM7To9UvRz1gMz66wnhkh5s1W35fOqbNsU25 Q==;
-X-CSE-ConnectionGUID: MSb+BFrtSs+GCLzw1SmaKg==
-X-CSE-MsgGUID: LYxG6r6OT3yqveEmWc9jNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21232938"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208,217";a="21232938"
+ content-transfer-encoding:mime-version;
+ bh=KdzA4leZzoBwk8ZX7qIRna3VR2xFtcEcpoOBHH+zWzU=;
+ b=KrK2ZXkxBUxcyJk0FKv6HvIGHNV+uavjKRKhYdYbYrvX4TTV6e3pVl29
+ FLjlGtDSo23Fr8s5GjVAMSy3JbSfZAZyI6bfm1VnTDi9VmmllAbHW8sPc
+ mv08FGWNy0YN7rGuseFqnd8Jw4vlqM4uIeSoIrBqfXArPCew6jwBtwa3z
+ Q5t+K8L7opYt9lJMm5Tlo3/7iFvkAD98kdP6CMrHTl6t9Dq41btOtftGz
+ Mc++iC5S0aKIV/pOf21/jM6mAPBF+ykqqXasXk8NKCtRAxiBONbyZjDh1
+ ql4A+OkWKHiTl+irxGyEBoWKxjChZlFkTZZJc1rkc8C/AuCfhySdanx1n A==;
+X-CSE-ConnectionGUID: hXYKTGspQNe5ouj+4xrXYA==
+X-CSE-MsgGUID: sCv06UerTM2dCxPOE5CeTA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21233097"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="21233097"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 04:41:28 -0700
-X-CSE-ConnectionGUID: WQsMumdXQIC7Yz9mNETdxw==
-X-CSE-MsgGUID: 3LZ+XwdfSbOTJ0ZFii0CdA==
+ 09 Aug 2024 04:42:30 -0700
+X-CSE-ConnectionGUID: xAmIM1HsSQqkKb03ijktsQ==
+X-CSE-MsgGUID: Pj8iSyrOSIKP9mr8gx7S0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208,217";a="58260919"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="58261173"
 Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 09 Aug 2024 04:41:29 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ 09 Aug 2024 04:42:30 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
  ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 9 Aug 2024 04:41:28 -0700
-Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
- ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.1.2507.39; Fri, 9 Aug 2024 04:42:29 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 9 Aug 2024 04:41:27 -0700
+ 15.1.2507.39; Fri, 9 Aug 2024 04:42:29 -0700
 Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 9 Aug 2024 04:41:27 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.40) by
+ 15.1.2507.39 via Frontend Transport; Fri, 9 Aug 2024 04:42:29 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.46) by
  edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 9 Aug 2024 04:41:26 -0700
+ 15.1.2507.39; Fri, 9 Aug 2024 04:42:29 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=It9EyA12x6R2avjgckyMAZVCHrhmzKK+A83BW1ySOSY/496GF47wkPTvrJKoYlheJAo0A/qatsHjfbQaUgoCJnNJxjagsBErY4bFvWlBU0R0bNdVSgMSkxZb9O0g0p1tYuRnqj1Jz5Ar8kz0i3eAwkRaipTQvW6n0JwdEu5mlcHVphyE4UMpts03/5DQAvwQIHG/PvPaMM5vtz5oaGjgzeGlvUoZ2pmGAOzGiWsmZZYMMIbNG3o05t2NKKJieG+iyCq7upyVbI4sf9GTI2xh9n5vQX4T0pWXQkh7tiVlKvN3Y8iTLfjNuBe/b/XRbJ9yhTA/ZJ1vmpMNuthGSevtqw==
+ b=cd5ZbDyKke3Gz5/C41hST7vWVFbWxPUXpLrn7aR63o5KHv17iB9zA1y12v34CHiK1v/DfRmVCDO+Neszrh6h3RgqmWQue+WB8pGHJeyd0SGOYNgrsTHzTeXRgGw6X0ukwNWGVhTmgwV3ZU/PlUdK+YxvAnY0mSDLhp3AwxaIHF1KwaFH9KiEF/upnGmu18rPYupIVm+vpP9D0jtHf0bfeTCCMSO717PD3Vmx4EbhEkMWdIbKOASAi75oMNAS3tV7V1lR0sd1sBls7F4gRro9opu6/v+ddoE5qnb1eBK7TD4a68/tuBN7N4IzCRpN9Yrb9lMXtUdG4MyP1hLP8QLSDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EUnGzb3VryfexlM2LkhLHAg/0SvzI04/lYQisVgbPkA=;
- b=IF92w5nTAudc3RY9ixKJwIY1mNDdTxD+3oUt35YhIjjgmVXsuvD0aKdxzdZBvhFZkwR16JsaxTFtpwhpSr1T/lelmiaj2sXa+T877J2RMc+FCwP+8i+zoxkkKMC73M9zZiKDmIvGQW8ZnT3C/9iQ3cfbfA5ocDenI/OBqOWyqrGVdsU2NVo6N90zyfikE/0+F8Ui4VXe3Sh1x5xlcfM4sGVMWEfvSrd2wmP2aqs5qYZrEZVbPe25bB+mqKvY0yP14G/gx4aRM5oKMAPfokH3fmWJ+F+M6Eb+OzwiiuuocfVPuC9hJs28IZliQOTehEDoiV8U/O+IKDMEOszgYdw/JQ==
+ bh=JVfUmfNq0xlM5Qvr484fYUaRYUy89XtlSjmYZlb7lRg=;
+ b=JSwGxLoVp0ZqykqgKR1j8AL58MZ/zGhWXNSSWYAyJVtrfzFWFyZbe4MHLgWT3JyehH1gK1SbfEHqzeSZXEInuAhvaC+7Jo7tYJIGyDLvyzCP3soY5DvSl7VFX5pgXBXJBHeatFBwanxMeOnBzVic3C+xYZ9zD6huPLmuxPNyUfQqgFPI9yLOr1LTWDupPJYjVmny+xYWQQNsebDYiL5MGtaB5ddpepm+rQzNlGU2ZmsNJfHWt8K5ZeYCkF8s34HT/YtncTHPWnUZiIKe/H/v584HbxnhCJ7Le6KYiOVm1YhiR7dv1o/YUKO5j9vCo1eLnKC1XJCthGTCaj3JX7WsFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DM8PR11MB5653.namprd11.prod.outlook.com (2603:10b6:8:25::8) by
- MN0PR11MB6230.namprd11.prod.outlook.com (2603:10b6:208:3c5::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.31; Fri, 9 Aug
- 2024 11:41:23 +0000
+ DM4PR11MB5994.namprd11.prod.outlook.com (2603:10b6:8:5d::20) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7828.26; Fri, 9 Aug 2024 11:42:26 +0000
 Received: from DM8PR11MB5653.namprd11.prod.outlook.com
  ([fe80::2962:1efd:f912:a5a3]) by DM8PR11MB5653.namprd11.prod.outlook.com
  ([fe80::2962:1efd:f912:a5a3%5]) with mapi id 15.20.7828.023; Fri, 9 Aug 2024
- 11:41:23 +0000
-Content-Type: multipart/alternative;
- boundary="------------9OBunsmIlBncxDcQLezw2bYR"
-Message-ID: <5a7c55e2-a303-4b2c-91c9-6a54c8b8be5f@intel.com>
-Date: Fri, 9 Aug 2024 17:11:11 +0530
+ 11:42:26 +0000
+Message-ID: <61358f2a-1739-499c-bb7f-572c469e7a45@intel.com>
+Date: Fri, 9 Aug 2024 17:12:17 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without
  display
-To: "Piecielska, Katarzyna" <katarzyna.piecielska@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>, "Gupta, Anshuman" <anshuman.gupta@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Anshuman Gupta <anshuman.gupta@intel.com>,
+ Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 References: <20240730113508.48777-1-sujaritha.sundaresan@intel.com>
  <20240801114553.gmb4lpfb4i2xnico@kamilkon-DESK.igk.intel.com>
  <8fba7a7c-47f0-436c-b839-635a5edec4f9@intel.com>
  <20240806125020.jygbaulfsnpv6rqd@kamilkon-DESK.igk.intel.com>
  <5cc321f5-a3e7-491c-b45b-e821caf424a2@intel.com>
- <IA1PR11MB60973966DEAC168058C09FFA86BA2@IA1PR11MB6097.namprd11.prod.outlook.com>
+ <20240809101003.stg7tgdqxh36hj4z@kamilkon-DESK.igk.intel.com>
 Content-Language: en-US
 From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
-In-Reply-To: <IA1PR11MB60973966DEAC168058C09FFA86BA2@IA1PR11MB6097.namprd11.prod.outlook.com>
-X-ClientProxiedBy: MA0PR01CA0089.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ae::15) To DM8PR11MB5653.namprd11.prod.outlook.com
+In-Reply-To: <20240809101003.stg7tgdqxh36hj4z@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MAXPR01CA0102.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::20) To DM8PR11MB5653.namprd11.prod.outlook.com
  (2603:10b6:8:25::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM8PR11MB5653:EE_|MN0PR11MB6230:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd006aee-d64b-4f2d-62c8-08dcb86831a1
+X-MS-TrafficTypeDiagnostic: DM8PR11MB5653:EE_|DM4PR11MB5994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8473d2ef-efac-48a5-6b94-08dcb8685767
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UHc1L3oya25rRFlMTVZoZHp2YW1HRCtGN1V2SUJncjVvSzBmREpET1dla2JL?=
- =?utf-8?B?YTkyNkdVd2Z1NWM3VFF6ZUFDQk1jMit3azVMdkdpcFVrRlZaYUlyR0VYdDhx?=
- =?utf-8?B?VVRmb000UmsyNWNRMkN5VmhpUEIyUnNHSVBUcDBRbWFZZ2dnWmxzRldKM3Rm?=
- =?utf-8?B?RDNrTFNVUHZEamx3Ti9FR0E4OGNEdkhFSkdJWXlDNC9zMVZ3RHZVdXpYT1lQ?=
- =?utf-8?B?K0NYNHE4OXVLZmtBZGdDQXMyWkd2OGh2MGZoSi92OUhudmRXR01CSzV3TVZr?=
- =?utf-8?B?TkljYU5JS21WLyt1UzhHMjhzUTRnUW1UVzNoUjlhT1I5eUN2U2g4Mis3MG1B?=
- =?utf-8?B?dVdwSlJHeHp3MDYvcmlBeE1laU1yYmRXczZ4eVlqemRKUmVETUMxaDMxcGVw?=
- =?utf-8?B?UHJBSnhoUmRSc3RjYmZkZlBRRWFNYWwvMlRhR2ZZcElBcStXQ3hDekpjN3Ju?=
- =?utf-8?B?bWZwV0p3VzNHOCtrdVp6UHd0MjV0LzVwSHFYUTk0dmFQYnVoRVNsSERYL0cz?=
- =?utf-8?B?L1J6WjdBTUszeTBFdFZqUEorcFZjUXd2R05DWWJOV01jWUtOTWU1R0I2aTUx?=
- =?utf-8?B?a1Zac1dmZTBMUGlCQUx2OXkrWEZuZ2hkWEsyUjlnUlM1Z3YwZE9NeFc5b1RH?=
- =?utf-8?B?bTVGY21EZ1VCcmJ3WU9kejF1ZWd4R2hlVTN6cmo0cW4zMjNnb3h5MkxFVmVa?=
- =?utf-8?B?QTZXU0hLRXVydTh6Z3YybFFvekJLcUdBRkNNamRQTHJOYWZmY3djZXlRK2dF?=
- =?utf-8?B?ZEp5bFdqV08xeVEzZERYMEZPcVV4VGRlZWpQRkI2clBGTnJsbVpmNVBnNS9u?=
- =?utf-8?B?VGxwRjBNUFZBYmkrSWZJS2cyRlVQeDhkVzQ1S2VTSzZMclZzSnFJcm5RVUdo?=
- =?utf-8?B?QUtZWkdQRmNiRWhrY0VUMU85MkRtYWtveFloVWlLbGVTNjNzd1Z3ZFYrc1pv?=
- =?utf-8?B?NWt1NnpEd3d2MzQvbUgwaDFtSHBhU2lVTTFJRzhDY09lTkZCdm5LdXZ1azBX?=
- =?utf-8?B?c2lFSFFVTE93bFkyK1FiR2x6MCtaRzRxSjd2T1hlSTlKZ2xmb3VNWnEyK1JX?=
- =?utf-8?B?aVNSaUpxOTZ5VlN3VGpicGtFV2ovZFkxRHZmbkZuQWdDZ0FGZUM4NzlKUDln?=
- =?utf-8?B?YkorK284U2RLOE9VUnJLelNNZTBORWNsL2N2Wk9yV1lBQ2hrNUJwUC9OWFFp?=
- =?utf-8?B?Q0h3R1hqNkVmNUNxTndXb2FWL3VQN2Q4anhtYkQzZGJGYWd6ekdyYzJla0la?=
- =?utf-8?B?UDFDQ2R3MjdGbUVqOG4vazR3OVlUeis5Y2syZ05ERFFOS2NtM0hIKzdlVHA3?=
- =?utf-8?B?N3k0cTE5S0tOamRncnFITytvZmVyQlpVU01hdmxIaG1oYXZDb0ZHOWlFS3Bo?=
- =?utf-8?B?QUwwN0U2VldtN3M3dDJxUDhldm1odWM5WnJ1L2pzWEZmZ3BURmd0UThEcTE3?=
- =?utf-8?B?QzNNaUp2alExbnRWWlVQaXJEQ1RWYmZMK3FRWkR3OWg2MUVJZGNmdVFkKzhB?=
- =?utf-8?B?WUpGYWFPQU12cXJKbjcvR29RamV4S05yN0xtZTlldDhDbDN5alhILy9aU2RS?=
- =?utf-8?B?dWNCSkZkV042ZUlOZjYxS2YwWDVpU0NkU0FPQm5KYVM0am1vcS9WNGMyTnV6?=
- =?utf-8?B?NlpnYzN1VVdzN3FXK2prdnE4Y2lVMlNGdU9saEVUczdiMmticWUrdHJnMGVs?=
- =?utf-8?B?bjAvcXF0VGJlNGxvOVVqQjlDZFBnRFNOWVNGZ1Q5YnJYU2VsQ0xEc1JSMVNH?=
- =?utf-8?B?b01vTFQvVHoyT0djSmY4VDNGZDBTMzlpVHA0aTFYNmZhQVEvZWRLTlJWZjdS?=
- =?utf-8?B?ME9PZkZtdXJ3a0g4TnNZZz09?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UVNZSmlJWUdRL3k4ck9Wd2dwYXBRZW02cXNBRDRjUDdvMks5anVXTXBxVmp2?=
+ =?utf-8?B?Y1oxQjVUQ25HK2xpaVRJaXFrekZLa2xXWUlhUEYwQ2RTQTU1VDV6aXVDWlVH?=
+ =?utf-8?B?aTdibXVEQlAzNXowQTZKU0U1VDlENDJTUEtRTkZqSUlpTVoybEpuc3BLYmdr?=
+ =?utf-8?B?RExsNXZZb0RUNys0QnhQd0NBMnZLVHpEUFYyTVRqcXM1ZGprdXhjMlhtSkI5?=
+ =?utf-8?B?MzVjZlZleFlEeEdubU5ERk92K2hWY0NESUNBaWwrQ1RlMXZkUHRyN1p5eDVl?=
+ =?utf-8?B?dEJDNWZMWjZyVU9udWxRdXBIdER3VWFZRkxkM214QjFqNW94cjBTMVNCT3VJ?=
+ =?utf-8?B?UWk0QS84KzFlRUZCMXJPc1labThSb2svOFFsR0FYR2poRzArVG84aGNzMC9y?=
+ =?utf-8?B?R2VmTVJOMVhVdW9ObWlPRnQySGNBWUIyYlM4bVdHTlBuaEJldzIyRjRNM3RL?=
+ =?utf-8?B?ckJSRHdUa0F5K2l5WWV3aklEUEExeG83bVhHUnV2eXVNUXMxbTBIbDhjeXZx?=
+ =?utf-8?B?VkIrMlRwZUNkTHRhcWJxOXQzcXhzTDF6eUNJcUNBZzlLWmsyU2F5VHpEWUZS?=
+ =?utf-8?B?c2hSWG1jUU1ZSnphcnJHejYwRjhKbmdzZ3NlMGFrNEg4OFBEdDZ0S0kvVFlM?=
+ =?utf-8?B?dWxIVW51aWJKOHVwVm9Fb0ltZHh0bjVpR0IyVFE4UWNnTFlyTkVCdER6d1A4?=
+ =?utf-8?B?cW9VZ0hTdmNwT1lqNWNpOVNlOTNSam53WlVCMSswc1puOHRYM1FUQURJNjBM?=
+ =?utf-8?B?RzNkMlpuYTlFWjVjYU44SkNic1Z5Z2ExMGhDS21SUnlOb01wNWN3dXJCcERv?=
+ =?utf-8?B?aXJaZnFGR3JNNGdKRDVwSXVicGxhR3d0eE1SSHJWQTRVdjJMTFdKck54K081?=
+ =?utf-8?B?U0ZLL3U2cjFrbVJmbUhDZ1NHMTZBa3p5NWhFWFF2SkpyNlVLZ2l5dUhWcHBr?=
+ =?utf-8?B?NDBxd3ZJUmhqVzNUcDA0T1lXUEo1aW90QlBZaVdOUS84U0dIQnl2TFE5VTc4?=
+ =?utf-8?B?ZFpJeS92OENkZDF1blJPQ05PY1prOUlyOE95SENpQnJpL3NLME9vMHB2Mlh5?=
+ =?utf-8?B?TS9YMXJZNnltdGlEaGx1emlqbThIa2RqQnRlb1ljWTZzUnVGcTNjbjR2NmFF?=
+ =?utf-8?B?MmhPRjg5cXBiN2M2TmtDVmovR0pSZ0Y1MzNWZ2hYOVBqVWk3U1pkUXpQUmpj?=
+ =?utf-8?B?aXVYaXNBUGE4c2dxbDhOdndlZitkaXRQUmhTb2JuSDVKcTBVOC85bHFBekha?=
+ =?utf-8?B?eVJoRThRVDhFUEpyRmxub05zYWxSSjRXa1RrQXY1WkVRNlJLVUVab3NMOGpE?=
+ =?utf-8?B?ZEp2eG1YMTkweDk1czhkWDdlK0I3dmo0VXZtamJuaHhxVm9NdlE2YjhiNmRq?=
+ =?utf-8?B?ZXFhNlFaK3pURjBtbGpjS1JHRHN6RXpub0xBRTZjTzFHTjIrUHVaNFFkLzZo?=
+ =?utf-8?B?dUFqcTdSYkMyMmpoOUtFbzRNZkhiMkU3MlM0bTMrK0ZUQ0tuK1RvQ0dFQVBa?=
+ =?utf-8?B?T29QVS8rV0oza3JsQ3lHcUVqQytYbjlxaDlkU00vUTdESHpYVEZ2MDNBMDBj?=
+ =?utf-8?B?VlI4c243TE92QVpTYUlucWVLazBqdE9NOEtzWUI1U0VSL2pnMGlkaFNYVGtX?=
+ =?utf-8?B?dEM0UU9WNnd0RnZRazI2QnVBZmt3VkRRVlVQOGZrc3FUczNLNTBleFRWVC9j?=
+ =?utf-8?B?bDFOemVLNDJDbkFJdUhxQnZMd05IRzdzdWVFNUZNd0pkQ0UzMWpHdFNxNVd0?=
+ =?utf-8?B?bmx2U1lXQjl2SnlMR3VzbGhZSHFvbmprOHZjeUFmLzQrb3RkQzhCMXRCdzJh?=
+ =?utf-8?B?NDM0dXBkc3BmRSt2eStOQT09?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM8PR11MB5653.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R1daeUd0MVhqck5TcEM3aWhUSU9YOW50RmtTQnFINzFoSkVDMUx3RjlBcXU3?=
- =?utf-8?B?bW8xdmhMODJrc0s5bnpwZXQ3TFBNbzdQWG9PcFpkb2RYQzJjL1VISXcydzBj?=
- =?utf-8?B?Y0JhRUdwQy9Ra0pQR3BVOEwvQWlXRzZFSklSYTNFNm1YNG82b1Rxa0JWNlRZ?=
- =?utf-8?B?MGZJaFoyandRY1VXS3NYNy96WkJhUzdzelBHeTRST1JUQWpqQXNxRGxjL2la?=
- =?utf-8?B?ckRsb1BWejFoMU1uTVovb3BhOThYMWh3SEc4YlJOcUoveFlkTzZyYXo2RDNy?=
- =?utf-8?B?K1lyVG1jQzVOdXIyT1ZpWnpsK0tiRGVzSnMvVUNNZW55SW53ZG9IOEtBTlRN?=
- =?utf-8?B?eEpLNnhLb1pHVXhHalNQUmwzOGpDWVFNRkJqakR1cFhaSUNJTGVkcnZBaDBX?=
- =?utf-8?B?MmI2OWQ0cXRHODU1aVQrcExYRUFEZlMwQU10dC95RjMwTEwwMm9iYVVUTzQy?=
- =?utf-8?B?SldLVzVkMTB0dUcyOE5RcmJCUXlpczRzY0RsNDhDQXJiZHVGc2J2alRLcDNk?=
- =?utf-8?B?a2dmL20rdW9CZGhtMlR1N29qQ2kxcytRMXNTQW5IdUs3aWdTUnJ4Qkt6Vzlp?=
- =?utf-8?B?Slk1bkp1WWRId0NIWVM4aFlmbkRyTnR6NFdyUVh3SktkTlFFSWN6SjZ3bDZr?=
- =?utf-8?B?aEFOR2x4UUljcEg1V1ZGL0ZKU1RWRE15eUlMWSs2SzUvOWZRK2M1YkpPR3hq?=
- =?utf-8?B?a1FacEl4OTBoaEh6UlhYTVplb3lzZlpQNjZoTWNYa1ExSmdydTRURzZ6K1Vy?=
- =?utf-8?B?MkFEZFUyUlZiMEdJQlByQnlTWlBITklFVHM4V0VBdGFqNUtGUFJxdUp1WXoz?=
- =?utf-8?B?N2x0cldtRVU5TDdSdzdsZWFxZTBQQ2QxSXZTVjJ3bzRGUWY5R09hMDFsaUJi?=
- =?utf-8?B?OEJhb0E0eE5Gci9qY0VZRElMRkx4N053SEZ5VG9DY3dVY0VUT0tSTlF0NVpI?=
- =?utf-8?B?T3VQVm8vdE0rRDZIbGpuOFc4cmR0cEJYd3g4K0tXMEJqaWFlZ0lTWXVvWTRn?=
- =?utf-8?B?cjBwTjVHN01xTC9mb0FwQXJnQmJzTVo4RVh1TWxFeXdKREl0RGhkM1I2dHdp?=
- =?utf-8?B?aDh1bmlGVUQzNWNKWFZKcXlXbHdPK3BDd29Ob3g3UmEyYTErLzFRTFM1WVBT?=
- =?utf-8?B?VjJRKzN0S0lOZjlNYWxDREZSTzJwZTNUYzNkOEYvK2IyaGUvYjFtdVNRTmdT?=
- =?utf-8?B?TVczdWhxSUhUN090TTdCT0poOEhacVFFYjJid2t3VlFBaTBPc0dzVGxMOGFx?=
- =?utf-8?B?OVlpVGdNYUR3TVdIR3R1U1JkM2dORWFreUxGdGw3MkZBd0wzVjVTZ3lMc294?=
- =?utf-8?B?MWVnblRJY3I0OTJJemRkSnNEWGx4UTJwQk1OZEFsY2JnSnd2ekg0aUNPdWtz?=
- =?utf-8?B?V1J2N0Y4QWdRMzUzLzQ5aXR1d3A1bHdibEV0UjJURyt1NjhWLzNqR2xQZmJ1?=
- =?utf-8?B?NEpYcWhUY1Bqb1lNeWMyV0FlSzFrQXBXbEw3MU9tV3crOTRkZ3d2MDg5b1ds?=
- =?utf-8?B?U253cjFNQ3VjR3lHZjRlRXl1WDlJb3J2SlB1L0QxdVpDNjNPc09oTUIvdzND?=
- =?utf-8?B?OCtvaTJaNzlPNW44MzFiWllVNEI0TVZZaU5PcXNPY2wyQWxmQzNXazRhclB4?=
- =?utf-8?B?RXNIa0VnK080L2tWd3J5TU5MZFV2MG9Rd2h4ZzQzYTFIWHcxbVRaa3I1K1JH?=
- =?utf-8?B?LzRMeWR1a0ZXU0lKSE5IREtLdUtJZnJ1cHJxa0FqSkh3bnlLWUlVVWUyMEdv?=
- =?utf-8?B?V3NkanRZb1ZzYUVFWWozMUJhVzJVc21GTHcwNFgrcmlTWXhQUnBObkYwTjFJ?=
- =?utf-8?B?MHUraXUzdEsvb0J0VGFxZ09JOHd4QW1aK1hVd1ZQUlAxMUpBNld6VUcvU3ov?=
- =?utf-8?B?R3hlc0tMRTh6WU14T3lMTmw2TVZQbXVTVjF4SmdJV0FNaXNpeVFUZk1IZGtZ?=
- =?utf-8?B?Y1QyTlE1akdnM3p3S1ppMjJTeXpEcVdLYlpBT0tVUFBCOHpPblE2enpYdDhR?=
- =?utf-8?B?VEt2RTdXYnAveDF5TmE3a3RoTThsU3BIbVc5MnVEdG5FakhMVExmMTlZZkpF?=
- =?utf-8?B?cWlWb0VQWExiUDRMS3dxcnMvdnZwOEVsOEZ5UjJVOWplUzBXRllNdFlrYWNT?=
- =?utf-8?B?Vmczblp4ZDVmTkpiK0Z5YVhNNDVmNmpFUURnTlhtRVpHekcvVjlHMVVDeTkw?=
- =?utf-8?Q?dhkXzNmdpoi3IyJhEkH1IlU=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd006aee-d64b-4f2d-62c8-08dcb86831a1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RHVDTXpULy9CUVVSSjBsUWdnRTBQWkVRcGNMR0NtdjdDYzB6Z0xHbGU3Nms5?=
+ =?utf-8?B?TjE1TnB0M0UwOWlLUHNSNkEyZ2RjU1BsMlJ2eDBJT3prMTFrTVVrQTJWWnlM?=
+ =?utf-8?B?RHI1YlJtaDRHZk1ScnVFSkY0TnVLc2JyalNWcGFOc1FWNjU0NitENjVEU3NU?=
+ =?utf-8?B?NHJwQ3AvQkwyV1ZCd0FLcnp2aWZkbmxrMUQrN1pVMkwvZG14NTM4TjVhaXJh?=
+ =?utf-8?B?M0swREhyTGJwVllXaDJRQ0hkdEN6NVFpK2V4SGlabHJBUWIyVnNsWjNmRDh5?=
+ =?utf-8?B?N0UxUG04TUpYVlZ6RDR0cnFWdnQzZXlDWVlGL2tNUnhXb080Zm1QWXRaQTFo?=
+ =?utf-8?B?MUthb0R4SjZHWk5hSHhlcHpPYVE5Tk1FMkNOdWp3WU1JRjUvVUVlV2gyTXhM?=
+ =?utf-8?B?YXJaYi9BNVBzRUJrc2c2dU0rUlJWQ2JZaGJUWk52ZFRtY0l6cXVpRFZWVm0z?=
+ =?utf-8?B?d2l4VHB4cmRiVExGU0h4bTJCajBBb2hkeE9zRTF1d2pIVlkyc3pnWjF2TE11?=
+ =?utf-8?B?c1JUU1MxWEI4N3FncXVha2FiYWw0eXYvMHJ0LzM5eGJxNnNGejhybjNETVJo?=
+ =?utf-8?B?aVgzNThxaU80M0FhZWR4b3p4QjhHNG04VXFmT0h6dzBEUGVhN2kyN3ZTVUto?=
+ =?utf-8?B?azkyUkZFZ0ZaaSs5NnhEZWRuYmQ5WlIyTVFQUE51N1pyQks1VWRkNnFsNHVp?=
+ =?utf-8?B?UWo3QWcrdytEdE5kQUFBL2l5NlNZU3A4R2I4a0F0eVViUFhJZ0JQS1MxRlhE?=
+ =?utf-8?B?NVJYNFBkNnR0TnZCQ1ZrY3NZc0xzc0JPK1h1b2RzTnY4MjQvOWFUMndRcFZG?=
+ =?utf-8?B?bjdsRExjZ0YyWjNxejZLVy8vWUpXM2x6R21zVjVQcnp4bUNIdjYxenFydmNP?=
+ =?utf-8?B?cXUvd3ZLZnhpd1c4VWk2eTVURlZLd0wxdEpiWXd2cFRTWHdGWVJ6Zi9peVNR?=
+ =?utf-8?B?WnNHYy9mRDduWVNET2NIdjl3Y245LzdLdGwrR1dOYlg0bDFPcHVhZEVZcU5G?=
+ =?utf-8?B?QjJOSG5URHI1Q0pWVldZRURSd1QrSWhRL0k5bUNFTWxkMi9LcENGTzk2cE1U?=
+ =?utf-8?B?L3JFbVFEekxNd2VHaFkrK0FSaXM5WkJ4dDF1TWYrSEJkekNrZ2pnRFlLUlFY?=
+ =?utf-8?B?QTQ4b1JGZDl2bFZlM0lJQmIyRVAyWXJSRGJuckNWdHRERjB2bXdCQnNsMXBa?=
+ =?utf-8?B?R25zbWhDMEZMdEI3S0Fud2Fla2JVQmRxVC8rVXFEYjZmYXAwUnNKQ1B6eCtu?=
+ =?utf-8?B?UTZBZ2hpNk9CSmhFNFVDb1lMSlFLU09vcUZvNjdoT0s5TEdMSVdhYmlGK1N0?=
+ =?utf-8?B?ZithMWNZUEpORkliWWhVaXNqeW4rY2d6ZjB5TXErZ2o1SDRjejZ4NWNFNHBN?=
+ =?utf-8?B?djRtUVJvNGRGeWNpUHpCd0FUNmdNT3lpQnRTbzJvbnpQZUl3dUpTZU9pUkVI?=
+ =?utf-8?B?Z2NDQmVBSmtaUTFsTFBYTkhoR1YzbGxsMDVUVm90U0xkY2lrdjNITUN6RGVX?=
+ =?utf-8?B?eDdzb016Wk9CUDZaSThnYXh6ZzhaRndmbUI3SDdvSjYyS1MxeUM1bXAvcUVV?=
+ =?utf-8?B?dzE3QTk1cnlXR2NXVjdQdGlCViswdnJDTCsrbk4yWjlJN2lPZENSejFxejBS?=
+ =?utf-8?B?OXA3VDhPVUFFWFRZSHk3OVJnTzUwRHhyNWRjMFdDRi90VUFIbXZWSVhFRFFk?=
+ =?utf-8?B?em5YYUxGTDhEMGNwcHdVd0x4SHkwYzU0cUZHNkpZdGs0VnFOQi9IY012eExt?=
+ =?utf-8?B?aXd5ZEVGYnNTZmI5bFNZTVNtV2JGLzZ4TFZKVmFJaFhieW1GUmE2NS9LVmk3?=
+ =?utf-8?B?Q0hsenFIRG92cW5YdnRRVmV2dzZUMU1oMHJsd1EvcHJTSytGUkpYWFJCajQ0?=
+ =?utf-8?B?MHJGSksyVlZpcGwrbVdDTFlrem1jaFQranBIQy96TnRqbTl6aU5CTHFTS2h4?=
+ =?utf-8?B?VllHamluV0tKdmtzdXdsOE9obVdhbDNFc1piT2hNRzlCQWlvYmZNbGhqcEc2?=
+ =?utf-8?B?endkSTZFaXROTW02VUNKMytEQ2UzYjlWdkZhRHFqeVVRQkloUXlESldMbnBr?=
+ =?utf-8?B?azhzU2l2c2VhN1BZUWZtdVBsOE1VNzY4RFY5WXF0NWI0aFJqWFNIclV0cE9N?=
+ =?utf-8?B?dDQ2V0wzZC9jcHltb1FtVWpNdy82L0g4T01qVzAxSXZ4dStHQnJVcW4va2hj?=
+ =?utf-8?B?QWc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8473d2ef-efac-48a5-6b94-08dcb8685767
 X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5653.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 11:41:23.6772 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Aug 2024 11:42:26.5477 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aNnOciaL0V+acCc2BwtFQKXiqH/i+YdZMwVlXBULiquztpU7SNGr0XrdXqKv9T0q5pFIaDSmj3yR7rmI1paIEG46F7l2RsVy3XY4ikOvD+k=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6230
+X-MS-Exchange-CrossTenant-UserPrincipalName: kb0bIpfWrNu2BLnDhCxl7Z4ROmfOjiGCLT3BTwH8Q6okQzYCs1+Xd2dXLbCtvj89nZ+pkXxjwaFRXgRQS/KsXEqnkaPkmieP0c04eJftNw0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB5994
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -203,530 +204,163 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------9OBunsmIlBncxDcQLezw2bYR
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
 
+On 8/9/2024 3:40 PM, Kamil Konieczny wrote:
+> Hi Sundaresan,,
+> On 2024-08-09 at 14:34:23 +0530, Sundaresan, Sujaritha wrote:
+>> On 8/6/2024 6:20 PM, Kamil Konieczny wrote:
+>>> Hi Sundaresan,,
+>>> On 2024-08-06 at 11:50:46 +0530, Sundaresan, Sujaritha wrote:
+>>>> On 8/1/2024 5:15 PM, Kamil Konieczny wrote:
+>>>>> Hi Sujaritha,
+>>>>> On 2024-07-30 at 17:05:08 +0530, Sujaritha Sundaresan wrote:
+>>>>>
+>>>>> small nit about subject, you wrote:
+>>>>>
+>>>>> [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without display
+>>>>>
+>>>>> imho this should be:
+>>>>>
+>>>>> [PATCH i-g-t, v3] tests/intel/xe_pm: Add tests for suspend without display
+>>>>>
+>>>>> More nits below.
+>>>> Hey Kamil,
+>>>>
+>>>> Sure this change I can make.
+>>>>
+>>>>>> Add tests to validate basic execution suspend/resume cycle
+>>>>>> without display module to rule out display related issues
+>>>>>> from the suspend/resume stack.
+>>>>>>
+>>>>>> v2: Add normal reload cycle after running test (Anshuman)
+>>>>>>
+>>>>>> v3: Rebase
+>>>>>>
+>>>>>> Signed-off-by: Sujaritha Sundaresan<sujaritha.sundaresan@intel.com>
+>>>>>> Reviewed-by: Anshuman Gupta<anshuman.gupta@intel.com>
+>>>>>> ---
+>>>>>>     tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
+>>>>>>     1 file changed, 34 insertions(+)
+>>>>>>
+>>>>>> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+>>>>>> index 8b115e2f6..03f742265 100644
+>>>>>> --- a/tests/intel/xe_pm.c
+>>>>>> +++ b/tests/intel/xe_pm.c
+>>>>>> @@ -17,6 +17,7 @@
+>>>>>>     #include "igt.h"
+>>>>>>     #include "lib/igt_device.h"
+>>>>>> +#include "lib/igt_kmod.h"
+>>>>>>     #include "lib/igt_pm.h"
+>>>>>>     #include "lib/igt_sysfs.h"
+>>>>>>     #include "lib/igt_syncobj.h"
+>>>>>> @@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
+>>>>>>      * Description: suspend/autoresume on %arg[1] state and exec after RPM
+>>>>>>      * Functionality: pm - %arg[1]
+>>>>>>      *
+>>>>>> + * SUBTEST: %s-without-display
+>>>>>> + * Description: suspend/autoresume on %arg[1] state without display
+>>>>>> + * Functionality: pm - %arg[1]
+>>>>> I see you copy-pasted it but imho both Description and
+>>>>> Functionality documentation fields should be static, here and
+>>>>> in other places.
+>>>>> +cc Katarzyna Piecielska<katarzyna.piecielska@intel.com>
+>> Hi Kamil,
+>>
+>> Sorry I didn't get this change. This is inline with the rest of the file
+>> right ?
+> Yes but this looks strange, so I added Katarzyna to discussion.
+>
+>>>>>> + *
+>>>>>>      * arg[1]:
+>>>>>>      *
+>>>>>>      * @s2idle:	s2idle
+>>>>>> @@ -681,6 +686,7 @@ igt_main
+>>>>>>     	struct drm_xe_engine_class_instance *hwe;
+>>>>>>     	device_t device;
+>>>>>>     	uint32_t d3cold_allowed;
+>>>>>> +	const char *opts;
+>>>>>>     	int sysfs_fd;
+>>>>>>     	const struct s_state {
+>>>>>> @@ -757,6 +763,34 @@ igt_main
+>>>>>>     					  NO_RPM, 0);
+>>>>>>     		}
+>>>>>> +		igt_subtest_f("%s-without-display", s->name) {
+>>>>>> +
+>>>>>> +			if (!drmModeGetResources(device.fd_xe))
+>>>>>> +				return;
+>>>>> Why 'return' here?! Imho this should be checked in fixture
+>>>>> or be a skip. Or other way around - what about a headless board
+>>>>> or one without any connected display?
+>>>>>
+>>>>> Regards,
+>>>>> Kamil
+>>>> I think this patch idea sort stemmed from the cases where we have a display
+>>>> connected and
+>>>>
+>>>> want to make sure that the suspend/resume issues are not being caused by the
+>>>> display.
+>>>>
+>>>> But would you suggest expanding the test to have the headless/no display
+>>>> situations? If so what changes are you suggesting for that ?
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Suja
+>>>>
+>>> I would suggest turn this into a igt_skip_on_f(), not a return.
+>>>
+>>> Regards,
+>>> Kamil
+>> Sure I will switch this to
+>>
+>> igt_skip_on(!drmModeGetResources(device.fd_xe))
+>>
+>> Thanks,
+>>
+>> Suja
+>>
+> On the second look - can we just ignore this and proceed with test?
+> It should do no harm when you have no display connected?
+>
+> Regards,
+> Kamil
 
-On 8/9/2024 4:28 PM, Piecielska, Katarzyna wrote:
->
-> For documentation – everything looks correct, a little bit different 
-> then in most of cases, but correct. I’ve generated docs and all needed 
-> tests are visible.
->
-> From this point of view LGTM Acked-by: Katarzyna Piecielska 
-> Katarzyna.piecielska@intel.com
->
-> Kasia
->
-Hi Kasia,
+  So just go back to the original return right ?
 
-Thank you for the ack on the doc.
+Yeah I guess that wouldn't cause any problems necessarily.
 
--Suja
+Thanks,
 
-> *From:*Sundaresan, Sujaritha <sujaritha.sundaresan@intel.com>
-> *Sent:* Friday, August 9, 2024 11:04 AM
-> *To:* Kamil Konieczny <kamil.konieczny@linux.intel.com>; 
-> igt-dev@lists.freedesktop.org; Gupta, Anshuman 
-> <anshuman.gupta@intel.com>; Piecielska, Katarzyna 
-> <katarzyna.piecielska@intel.com>
-> *Subject:* Re: [PATCH i-g-t, v3] tests/intel: Add tests to run suspend 
-> without display
->
-> On 8/6/2024 6:20 PM, Kamil Konieczny wrote:
->
->     Hi Sundaresan,,
->
->     On 2024-08-06 at 11:50:46 +0530, Sundaresan, Sujaritha wrote:
->
->         On 8/1/2024 5:15 PM, Kamil Konieczny wrote:
->
->             Hi Sujaritha,
->
->             On 2024-07-30 at 17:05:08 +0530, Sujaritha Sundaresan wrote:
->
->             small nit about subject, you wrote:
->
->             [PATCH i-g-t, v3] tests/intel: Add tests to run suspend without display
->
->             imho this should be:
->
->             [PATCH i-g-t, v3] tests/intel/xe_pm: Add tests for suspend without display
->
->             More nits below.
->
->         Hey Kamil,
->
->         Sure this change I can make.
->
->                 Add tests to validate basic execution suspend/resume cycle
->
->                 without display module to rule out display related issues
->
->                 from the suspend/resume stack.
->
->                 v2: Add normal reload cycle after running test (Anshuman)
->
->                 v3: Rebase
->
->                 Signed-off-by: Sujaritha Sundaresan<sujaritha.sundaresan@intel.com>  <mailto:sujaritha.sundaresan@intel.com>
->
->                 Reviewed-by: Anshuman Gupta<anshuman.gupta@intel.com>  <mailto:anshuman.gupta@intel.com>
->
->                 ---
->
->                    tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
->
->                    1 file changed, 34 insertions(+)
->
->                 diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
->
->                 index 8b115e2f6..03f742265 100644
->
->                 --- a/tests/intel/xe_pm.c
->
->                 +++ b/tests/intel/xe_pm.c
->
->                 @@ -17,6 +17,7 @@
->
->                    #include "igt.h"
->
->                    #include "lib/igt_device.h"
->
->                 +#include "lib/igt_kmod.h"
->
->                    #include "lib/igt_pm.h"
->
->                    #include "lib/igt_sysfs.h"
->
->                    #include "lib/igt_syncobj.h"
->
->                 @@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
->
->                     * Description: suspend/autoresume on %arg[1] state and exec after RPM
->
->                     * Functionality: pm - %arg[1]
->
->                     *
->
->                 + * SUBTEST: %s-without-display
->
->                 + * Description: suspend/autoresume on %arg[1] state without display
->
->                 + * Functionality: pm - %arg[1]
->
->             I see you copy-pasted it but imho both Description and
->
->             Functionality documentation fields should be static, here and
->
->             in other places.
->
->             +cc Katarzyna Piecielska<katarzyna.piecielska@intel.com>  <mailto:katarzyna.piecielska@intel.com>
->
-> Hi Kamil,
->
-> Sorry I didn't get this change. This is inline with the rest of the 
-> file right ?
->
->                 + *
->
->                     * arg[1]:
->
->                     *
->
->                     * @s2idle: s2idle
->
->                 @@ -681,6 +686,7 @@ igt_main
->
->                         struct drm_xe_engine_class_instance *hwe;
->
->                         device_t device;
->
->                         uint32_t d3cold_allowed;
->
->                 +      const char *opts;
->
->                         int sysfs_fd;
->
->                         const struct s_state {
->
->                 @@ -757,6 +763,34 @@ igt_main
->
->                                                         NO_RPM, 0);
->
->                                }
->
->                 +             igt_subtest_f("%s-without-display", s->name) {
->
->                 +
->
->                 +                     if (!drmModeGetResources(device.fd_xe))
->
->                 +                            return;
->
->             Why 'return' here?! Imho this should be checked in fixture
->
->             or be a skip. Or other way around - what about a headless board
->
->             or one without any connected display?
->
->             Regards,
->
->             Kamil
->
->         I think this patch idea sort stemmed from the cases where we have a display
->
->         connected and
->
->         want to make sure that the suspend/resume issues are not being caused by the
->
->         display.
->
->         But would you suggest expanding the test to have the headless/no display
->
->         situations? If so what changes are you suggesting for that ?
->
->         Thanks,
->
->         Suja
->
->     I would suggest turn this into a igt_skip_on_f(), not a return.
->
->     Regards,
->
->     Kamil
->
-> Sure I will switch this to
->
-> igt_skip_on(!drmModeGetResources(device.fd_xe))
->
-> Thanks,
->
-> Suja
->
->                 +
->
->                 +                    xe_for_each_engine(device.fd_xe, hwe) {
->
->                 +
->
->                 +                            igt_debug("Reload w/o display\n");
->
->                 +
->
->                 +                            igt_kmsg(KMSG_INFO "Unloading Xe\n");
->
->                 +                         igt_assert_eq(igt_xe_driver_unload(), 0);
->
->                 +
->
->                 +                            igt_kmsg(KMSG_INFO "Re-loading Xe without display\n");
->
->                 +                      igt_assert_eq(igt_xe_driver_load("enable_display=0"), 0);
->
->                 +
->
->                 +                            test_exec(device, hwe, 1, 2, s->state,
->
->                 +                                      NO_RPM, 0);
->
->                 +
->
->                 +                            igt_debug("Reload as normal\n");
->
->                 +
->
->                 +                            igt_kmsg(KMSG_INFO "Unloading Xe\n");
->
->                 +                         igt_assert_eq(igt_xe_driver_unload(), 0);
->
->                 +
->
->                 +                            igt_kmsg(KMSG_INFO "Re-loading Xe\n");
->
->                 +                       igt_assert_eq(igt_xe_driver_load(opts), 0);
->
->                 +                     }
->
->                 +             }
->
->                 +
->
->                                for (const struct vm_op *op = vm_op; op->name; op++) {
->
->                                        igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
->
->                                               xe_for_each_engine(device.fd_xe, hwe)
->
->                 -- 
->
->                 2.34.1
->
---------------9OBunsmIlBncxDcQLezw2bYR
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+Suja
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 8/9/2024 4:28 PM, Piecielska,
-      Katarzyna wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:IA1PR11MB60973966DEAC168058C09FFA86BA2@IA1PR11MB6097.namprd11.prod.outlook.com">
-      
-      <meta name="Generator" content="Microsoft Word 15 (filtered medium)">
-      <style>@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}@font-face
-	{font-family:Aptos;}@font-face
-	{font-family:Consolas;
-	panose-1:2 11 6 9 2 2 4 3 2 4;}p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0in;
-	font-size:12.0pt;
-	font-family:"Aptos",sans-serif;}a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}pre
-	{mso-style-priority:99;
-	mso-style-link:"HTML Preformatted Char";
-	margin:0in;
-	font-size:10.0pt;
-	font-family:"Courier New";}span.HTMLPreformattedChar
-	{mso-style-name:"HTML Preformatted Char";
-	mso-style-priority:99;
-	mso-style-link:"HTML Preformatted";
-	font-family:Consolas;}span.EmailStyle21
-	{mso-style-type:personal-reply;
-	font-family:"Aptos",sans-serif;
-	color:#0F4761;}.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:10.0pt;
-	mso-ligatures:none;}div.WordSection1
-	{page:WordSection1;}</style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext="edit" spidmax="1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext="edit">
-<o:idmap v:ext="edit" data="1" />
-</o:shapelayout></xml><![endif]-->
-      <div class="WordSection1">
-        <p class="MsoNormal"><span style="font-size:11.0pt;color:#0F4761">For documentation –
-            everything looks correct, a little bit different then in
-            most of cases, but correct. I’ve generated docs and all
-            needed tests are visible.<o:p></o:p></span></p>
-        <p class="MsoNormal"><span style="font-size:11.0pt;color:#0F4761">From this point of
-            view LGTM Acked-by: Katarzyna Piecielska
-            <a href="mailto:Katarzyna.piecielska@intel.com" moz-do-not-send="true" class="moz-txt-link-freetext">Katarzyna.piecielska@intel.com</a><o:p></o:p></span></p>
-        <p class="MsoNormal"><span style="font-size:11.0pt;color:#0F4761"><o:p>&nbsp;</o:p></span></p>
-        <p class="MsoNormal"><span style="font-size:11.0pt;color:#0F4761">Kasia</span></p>
-      </div>
-    </blockquote>
-    <p>Hi Kasia,</p>
-    <p>Thank you for the ack on the doc.</p>
-    <p>-Suja<br>
-    </p>
-    <blockquote type="cite" cite="mid:IA1PR11MB60973966DEAC168058C09FFA86BA2@IA1PR11MB6097.namprd11.prod.outlook.com">
-      <div class="WordSection1">
-        <p class="MsoNormal"><span style="font-size:11.0pt;color:#0F4761"><o:p></o:p></span></p>
-        <p class="MsoNormal"><span style="font-size:11.0pt;color:#0F4761"><o:p>&nbsp;</o:p></span></p>
-        <div>
-          <div style="border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in 0in 0in">
-            <p class="MsoNormal"><b><span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">From:</span></b><span style="font-size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif">
-                Sundaresan, Sujaritha
-                <a class="moz-txt-link-rfc2396E" href="mailto:sujaritha.sundaresan@intel.com">&lt;sujaritha.sundaresan@intel.com&gt;</a>
-                <br>
-                <b>Sent:</b> Friday, August 9, 2024 11:04 AM<br>
-                <b>To:</b> Kamil Konieczny
-                <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>;
-                <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>; Gupta, Anshuman
-                <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com">&lt;anshuman.gupta@intel.com&gt;</a>; Piecielska, Katarzyna
-                <a class="moz-txt-link-rfc2396E" href="mailto:katarzyna.piecielska@intel.com">&lt;katarzyna.piecielska@intel.com&gt;</a><br>
-                <b>Subject:</b> Re: [PATCH i-g-t, v3] tests/intel: Add
-                tests to run suspend without display<o:p></o:p></span></p>
-          </div>
-        </div>
-        <p class="MsoNormal"><o:p>&nbsp;</o:p></p>
-        <p><o:p>&nbsp;</o:p></p>
-        <div>
-          <p class="MsoNormal">On 8/6/2024 6:20 PM, Kamil Konieczny
-            wrote:<o:p></o:p></p>
-        </div>
-        <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-          <pre>Hi Sundaresan,,<o:p></o:p></pre>
-          <pre>On 2024-08-06 at 11:50:46 +0530, Sundaresan, Sujaritha wrote:<o:p></o:p></pre>
-          <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>On 8/1/2024 5:15 PM, Kamil Konieczny wrote:<o:p></o:p></pre>
-            <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-              <pre>Hi Sujaritha,<o:p></o:p></pre>
-              <pre>On 2024-07-30 at 17:05:08 +0530, Sujaritha Sundaresan wrote:<o:p></o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre>small nit about subject, you wrote:<o:p></o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre>[PATCH i-g-t, v3] tests/intel: Add tests to run suspend without display<o:p></o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre>imho this should be:<o:p></o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre>[PATCH i-g-t, v3] tests/intel/xe_pm: Add tests for suspend without display<o:p></o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre>More nits below.<o:p></o:p></pre>
-            </blockquote>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>Hey Kamil,<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>Sure this change I can make.<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-              <pre><o:p>&nbsp;</o:p></pre>
-              <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-                <pre>Add tests to validate basic execution suspend/resume cycle<o:p></o:p></pre>
-                <pre>without display module to rule out display related issues<o:p></o:p></pre>
-                <pre>from the suspend/resume stack.<o:p></o:p></pre>
-                <pre><o:p>&nbsp;</o:p></pre>
-                <pre>v2: Add normal reload cycle after running test (Anshuman)<o:p></o:p></pre>
-                <pre><o:p>&nbsp;</o:p></pre>
-                <pre>v3: Rebase<o:p></o:p></pre>
-                <pre><o:p>&nbsp;</o:p></pre>
-                <pre>Signed-off-by: Sujaritha Sundaresan <a href="mailto:sujaritha.sundaresan@intel.com" moz-do-not-send="true">&lt;sujaritha.sundaresan@intel.com&gt;</a><o:p></o:p></pre>
-                <pre>Reviewed-by: Anshuman Gupta <a href="mailto:anshuman.gupta@intel.com" moz-do-not-send="true">&lt;anshuman.gupta@intel.com&gt;</a><o:p></o:p></pre>
-                <pre>---<o:p></o:p></pre>
-                <pre>&nbsp; tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++<o:p></o:p></pre>
-                <pre>&nbsp; 1 file changed, 34 insertions(+)<o:p></o:p></pre>
-                <pre><o:p>&nbsp;</o:p></pre>
-                <pre>diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c<o:p></o:p></pre>
-                <pre>index 8b115e2f6..03f742265 100644<o:p></o:p></pre>
-                <pre>--- a/tests/intel/xe_pm.c<o:p></o:p></pre>
-                <pre>+++ b/tests/intel/xe_pm.c<o:p></o:p></pre>
-                <pre>@@ -17,6 +17,7 @@<o:p></o:p></pre>
-                <pre>&nbsp; #include &quot;igt.h&quot;<o:p></o:p></pre>
-                <pre>&nbsp; #include &quot;lib/igt_device.h&quot;<o:p></o:p></pre>
-                <pre>+#include &quot;lib/igt_kmod.h&quot;<o:p></o:p></pre>
-                <pre>&nbsp; #include &quot;lib/igt_pm.h&quot;<o:p></o:p></pre>
-                <pre>&nbsp; #include &quot;lib/igt_sysfs.h&quot;<o:p></o:p></pre>
-                <pre>&nbsp; #include &quot;lib/igt_syncobj.h&quot;<o:p></o:p></pre>
-                <pre>@@ -229,6 +230,10 @@ static void close_fw_handle(int sig)<o:p></o:p></pre>
-                <pre>&nbsp;&nbsp; * Description: suspend/autoresume on %arg[1] state and exec after RPM<o:p></o:p></pre>
-                <pre>&nbsp;&nbsp; * Functionality: pm - %arg[1]<o:p></o:p></pre>
-                <pre>&nbsp;&nbsp; *<o:p></o:p></pre>
-                <pre>+ * SUBTEST: %s-without-display<o:p></o:p></pre>
-                <pre>+ * Description: suspend/autoresume on %arg[1] state without display<o:p></o:p></pre>
-                <pre>+ * Functionality: pm - %arg[1]<o:p></o:p></pre>
-              </blockquote>
-              <pre>I see you copy-pasted it but imho both Description and<o:p></o:p></pre>
-              <pre>Functionality documentation fields should be static, here and<o:p></o:p></pre>
-              <pre>in other places.<o:p></o:p></pre>
-              <pre>+cc Katarzyna Piecielska <a href="mailto:katarzyna.piecielska@intel.com" moz-do-not-send="true">&lt;katarzyna.piecielska@intel.com&gt;</a><o:p></o:p></pre>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-        <p>Hi Kamil,<o:p></o:p></p>
-        <p>Sorry I didn't get this change. This is inline with the rest
-          of the file right ?<o:p></o:p></p>
-        <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-          <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-            <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-                <pre>+ *<o:p></o:p></pre>
-                <pre>&nbsp;&nbsp; * arg[1]:<o:p></o:p></pre>
-                <pre>&nbsp;&nbsp; *<o:p></o:p></pre>
-                <pre>&nbsp;&nbsp; * @s2idle: s2idle<o:p></o:p></pre>
-                <pre>@@ -681,6 +686,7 @@ igt_main<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; struct drm_xe_engine_class_instance *hwe;<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; device_t device;<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; uint32_t d3cold_allowed;<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; const char *opts;<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; int sysfs_fd;<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; const struct s_state {<o:p></o:p></pre>
-                <pre>@@ -757,6 +763,34 @@ igt_main<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;NO_RPM, 0);<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest_f(&quot;%s-without-display&quot;, s-&gt;name) {<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (!drmModeGetResources(device.fd_xe))<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;<o:p></o:p></pre>
-              </blockquote>
-              <pre>Why 'return' here?! Imho this should be checked in fixture<o:p></o:p></pre>
-              <pre>or be a skip. Or other way around - what about a headless board<o:p></o:p></pre>
-              <pre>or one without any connected display?<o:p></o:p></pre>
-              <pre><o:p>&nbsp;</o:p></pre>
-              <pre>Regards,<o:p></o:p></pre>
-              <pre>Kamil<o:p></o:p></pre>
-            </blockquote>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>I think this patch idea sort stemmed from the cases where we have a display<o:p></o:p></pre>
-            <pre>connected and<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>want to make sure that the suspend/resume issues are not being caused by the<o:p></o:p></pre>
-            <pre>display.<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>But would you suggest expanding the test to have the headless/no display<o:p></o:p></pre>
-            <pre>situations? If so what changes are you suggesting for that ?<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>Thanks,<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-            <pre>Suja<o:p></o:p></pre>
-            <pre><o:p>&nbsp;</o:p></pre>
-          </blockquote>
-          <pre><o:p>&nbsp;</o:p></pre>
-          <pre>I would suggest turn this into a igt_skip_on_f(), not a return.<o:p></o:p></pre>
-          <pre><o:p>&nbsp;</o:p></pre>
-          <pre>Regards,<o:p></o:p></pre>
-          <pre>Kamil<o:p></o:p></pre>
-        </blockquote>
-        <p>Sure I will switch this to <o:p></o:p></p>
-        <p>igt_skip_on(!drmModeGetResources(device.fd_xe))<o:p></o:p></p>
-        <p>Thanks,<o:p></o:p></p>
-        <p>Suja <o:p></o:p></p>
-        <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-          <pre><o:p>&nbsp;</o:p></pre>
-          <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-            <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-              <pre><o:p>&nbsp;</o:p></pre>
-              <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xe_for_each_engine(device.fd_xe, hwe) {<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&quot;Reload w/o display\n&quot;);<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_kmsg(KMSG_INFO &quot;Unloading Xe\n&quot;);<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; igt_assert_eq(igt_xe_driver_unload(), 0);<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_kmsg(KMSG_INFO &quot;Re-loading Xe without display\n&quot;);<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  igt_assert_eq(igt_xe_driver_load(&quot;enable_display=0&quot;), 0);<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; test_exec(device, hwe, 1, 2, s-&gt;state,<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; NO_RPM, 0);<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_debug(&quot;Reload as normal\n&quot;);<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_kmsg(KMSG_INFO &quot;Unloading Xe\n&quot;);<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; igt_assert_eq(igt_xe_driver_unload(), 0);<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_kmsg(KMSG_INFO &quot;Re-loading Xe\n&quot;);<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; igt_assert_eq(igt_xe_driver_load(opts), 0);<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></pre>
-                <pre>+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<o:p></o:p></pre>
-                <pre>+<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; for (const struct vm_op *op = vm_op; op-&gt;name; op++) {<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest_f(&quot;%s-vm-bind-%s&quot;, s-&gt;name, op-&gt;name) {<o:p></o:p></pre>
-                <pre>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; xe_for_each_engine(device.fd_xe, hwe)<o:p></o:p></pre>
-                <pre>-- <o:p></o:p></pre>
-                <pre>2.34.1<o:p></o:p></pre>
-                <pre><o:p>&nbsp;</o:p></pre>
-              </blockquote>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </div>
-    </blockquote>
-  </body>
-</html>
-
---------------9OBunsmIlBncxDcQLezw2bYR--
+>
+>>>>>> +
+>>>>>> +			xe_for_each_engine(device.fd_xe, hwe) {
+>>>>>> +
+>>>>>> +				igt_debug("Reload w/o display\n");
+>>>>>> +
+>>>>>> +				igt_kmsg(KMSG_INFO "Unloading Xe\n");
+>>>>>> +				igt_assert_eq(igt_xe_driver_unload(), 0);
+>>>>>> +
+>>>>>> +				igt_kmsg(KMSG_INFO "Re-loading Xe without display\n");
+>>>>>> +				igt_assert_eq(igt_xe_driver_load("enable_display=0"), 0);
+>>>>>> +
+>>>>>> +				test_exec(device, hwe, 1, 2, s->state,
+>>>>>> +					  NO_RPM, 0);
+>>>>>> +
+>>>>>> +				igt_debug("Reload as normal\n");
+>>>>>> +
+>>>>>> +				igt_kmsg(KMSG_INFO "Unloading Xe\n");
+>>>>>> +				igt_assert_eq(igt_xe_driver_unload(), 0);
+>>>>>> +
+>>>>>> +				igt_kmsg(KMSG_INFO "Re-loading Xe\n");
+>>>>>> +				igt_assert_eq(igt_xe_driver_load(opts), 0);
+>>>>>> +			}
+>>>>>> +		}
+>>>>>> +
+>>>>>>     		for (const struct vm_op *op = vm_op; op->name; op++) {
+>>>>>>     			igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
+>>>>>>     				xe_for_each_engine(device.fd_xe, hwe)
+>>>>>> -- 
+>>>>>> 2.34.1
+>>>>>>
