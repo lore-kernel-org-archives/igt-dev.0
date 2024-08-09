@@ -4,61 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F6AC52D71
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 10:14:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1C50FC52D7C
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 10:55:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0021310E89F;
-	Fri,  9 Aug 2024 10:14:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C69A310E8AE;
+	Fri,  9 Aug 2024 10:55:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OqcJIE7z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hRCNDwCc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F166C10E89F
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 10:14:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10B3410E8AE
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 10:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723198443; x=1754734443;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+vk9rWL5rnZlRRRXHJvQFaRNCgCTCPXG6sLqdlYFfvc=;
- b=OqcJIE7zgYREf1Thvxisz4qyBF2guY6Vt7l91Z/vDaA2vdIF/gpuUes+
- 91AIBtOkVLmtf7wdicTa6ANxSfBOp/8u5Xs5cGNFbKA2c8fGGTgntAB+L
- ex/oJbCxxeJp00wwKIFAWZFQCxGly6sjp77+CEcfgvJTfu5Tyem3WfW4P
- aypRVwuOZGp0KmwSrhJGqiZSfbpx9p//Mp9MVi35HVEKHlRPVlKnQJ35K
- RQ/Sko0oFps3btWU+a/+MfBEL8F7nY1hawIw/DGIzycmCLwbZYFBSZlOs
- be62iJEHOL1/SqQAe1507Z7ue/A0YZeG/z1DyczmACAUInSilhjxFLEKp Q==;
-X-CSE-ConnectionGUID: c5SuF6+pSXWYws/4eAqEZw==
-X-CSE-MsgGUID: udNGOMzGTxeinMMkaPWM3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21248346"
-X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="21248346"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 03:14:02 -0700
-X-CSE-ConnectionGUID: vcPp9pjxTXSSSAd8o+IV1Q==
-X-CSE-MsgGUID: iLg+2n7ETxKQcUeQCO3rmg==
+ t=1723200915; x=1754736915;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=65jOdusQX5QNrAMNtGD4sxNrps0h02hJ6Wh8+2HwPMg=;
+ b=hRCNDwCc3wDfoaW2fIahRLwvaGqv4MADpOPFEjNkM+4CkMdg6HNyhy/g
+ Iu3gKtD4yrEeGPTE3QPcjhbYaG4YuiDJFu9/yWwuHoSX5Dwv9y43ABzDr
+ PP/MHmVHg2ieOFBAYm4lBZFFS1OQpK8pBQAUNGjcZ+c9p2nKlPB5LSS22
+ 0FRV+FkQip2WoHU0virYlwp55jWqDqKibAkS3mPc4thLmck3+7SvRXz/E
+ FqLqc12YL7NMyfRmcErPpNfXV98NqdF8/Rno1sXi0SQM90YqJh+s0t0Mo
+ bYlF4hn7t8b4R5NO9aPRsDyneXgH1Ncaew8Kxl879pE6U9m45Y0bIjj67 A==;
+X-CSE-ConnectionGUID: hFqEgiY6SWuIKVZOzIg0Mg==
+X-CSE-MsgGUID: S66Afy7+QoaS2Ivs/RyBwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="21028225"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="21028225"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2024 03:55:15 -0700
+X-CSE-ConnectionGUID: WiyO0z8aQnqPmdoQLshAmA==
+X-CSE-MsgGUID: syHlqU/+Ti+4CnH3uFgwVg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,275,1716274800"; d="scan'208";a="61929915"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Aug 2024 03:14:02 -0700
-Date: Fri, 9 Aug 2024 12:13:58 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="57612429"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Aug 2024 03:55:14 -0700
+From: Nirmoy Das <nirmoy.das@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>
-Subject: Re: [PATCH i-g-t 1/1] tests/intel: Drop 'Run type' from xe_exec_sip
- documentation
-Message-ID: <20240809101358.sx4mw3x47hip53vb@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>
-References: <20240809093447.4001496-1-katarzyna.piecielska@intel.com>
- <20240809093447.4001496-2-katarzyna.piecielska@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>,
+ Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Mateusz Jablonski <mateusz.jablonski@intel.com>,
+ Matt Roper <matthew.d.roper@intel.com>
+Subject: [PATCH i-g-t 1/2] drm-uapi/xe: Add wmtp engine capability
+Date: Fri,  9 Aug 2024 12:39:21 +0200
+Message-ID: <20240809103922.12964-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240809093447.4001496-2-katarzyna.piecielska@intel.com>
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
+ 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,33 +72,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Katarzyna,
-On 2024-08-09 at 09:34:47 +0000, Katarzyna Piecielska wrote:
-> 'Run type' is not used in IGT test documentation for some time already.
-> Let's remove it from the only test that has it.
-> 
-> Signed-off-by: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
-> ---
->  tests/intel/xe_exec_sip.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
-> index 4b599e7f6..f99726761 100644
-> --- a/tests/intel/xe_exec_sip.c
-> +++ b/tests/intel/xe_exec_sip.c
-> @@ -126,7 +126,6 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
->  /**
->   * SUBTEST: sanity
->   * Description: check basic shader with write operation
-> - * Run type: BAT
->   *
+Align with commit ("drm/xe/uapi: Expose wmtp as engine capability")
 
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Mateusz Jablonski <mateusz.jablonski@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ include/drm-uapi/xe_drm.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
->   */
->  static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
-> -- 
-> 2.34.1
-> 
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 29425d7fd..756c7e110 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -247,13 +247,21 @@ struct drm_xe_engine_class_instance {
+ 
+ /**
+  * struct drm_xe_engine - describe hardware engine
++ *
++ * The @capabilities can be:
++ *  - DRM_XE_ENGINE_CAPABILITY_WMTP - represents a engine's mid-thread
++ *  preemption capability.
+  */
+ struct drm_xe_engine {
+ 	/** @instance: The @drm_xe_engine_class_instance */
+ 	struct drm_xe_engine_class_instance instance;
+-
++#define DRM_XE_ENGINE_CAPABILITY_WMTP		1
++	/** @capabilities: Capabilities of this engine. */
++	__u32 capabilities;
++	/** @pad: MBZ */
++	__u32 pad;
+ 	/** @reserved: Reserved */
+-	__u64 reserved[3];
++	__u64 reserved[2];
+ };
+ 
+ /**
+-- 
+2.42.0
+
