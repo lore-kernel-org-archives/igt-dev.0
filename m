@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EF22C52D7C
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 12:39:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FFF9C52D7C
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Aug 2024 12:39:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 12FEC10E8F6;
-	Fri,  9 Aug 2024 12:39:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 235AC10E8F4;
+	Fri,  9 Aug 2024 12:39:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BtIozC8x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xk9cCe2y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 491BC10E8F7
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 12:39:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C48E10E8F4
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Aug 2024 12:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723207166; x=1754743166;
+ t=1723207170; x=1754743170;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=EYxIPn/mPUgb2fu6KalOIl0Hqfz9c8xLAF62QQATVSU=;
- b=BtIozC8xTQgGHz0Br2tMzuSyI/JWV2hHhAtTuCljoXR0d84wKk2mGy1m
- DyfEJm2+a8lQgM5Jh+Y/8CWtxogdSVZqeBaA63smxvj5M3CkMR/SxUgld
- +cAGLwwWtV99vTfb0h4a5tRNN22osp88ZC901R/b361HdLCXfhBzEFKau
- hMKBdHuEhqDdwqD013u+P74kpIImoHFFk7kMbqT2m/mPyTLqG0Hc2aLi6
- D/7ebWFwYxKAFd9VBfKGdM7touhWGhs+jzjEu/HnKhentXb+gLzEShLdw
- cKE3AgGH1vQPge18ZwIhCOJyZxaTDHrMGBuIi5wOQOk0WXCrOmcNwvpcp A==;
-X-CSE-ConnectionGUID: SxTEYwdrSFW769bozXwO6A==
-X-CSE-MsgGUID: XyjnIjB1THOi/TpweapMBw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="32525437"
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="32525437"
+ bh=fbnvwoZnaCbqqgPtTqw0t8Y1uX8s5InXnYGm5mVmu1g=;
+ b=Xk9cCe2yjkFapxm6aYviZK2rNn3ujQfOX1qcd+/zJMYp70CNQdwLcfsZ
+ trufYc/XVJLrAVLCQH5vq0N27wEKgll5aPl0WeXA+sp3L45M3Ezir44bJ
+ HfcgMmclxiiGZN3WUBosSWvwouTF7XGx6H41YvUpx8r93MDREvkRARoto
+ VwviMpIPVSgeGmZWB59yzaNcQE20uHrxz5dMDWx1pVv3cF/HfeymFI29N
+ l+iFaAxlQI/RulX9/sPCNzcZSdwwdRsmEQiMXoqA/7waj4w+lvaMlVqly
+ Bydfyzw/yCV70NVLNZpPnZRMoEKv4lvEdmKE7TwfRlTpBfIn2JgXbOeaP g==;
+X-CSE-ConnectionGUID: y3h/i0+NTjifMzPILaf0iw==
+X-CSE-MsgGUID: 5lHBw4aDQ+2Gkk32gbA6bA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11158"; a="32525447"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="32525447"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 05:39:25 -0700
-X-CSE-ConnectionGUID: 3tFSSEe+RcKvHDX6TydoFQ==
-X-CSE-MsgGUID: s6CDSDhiQSG91PG6+SE99A==
+ 09 Aug 2024 05:39:29 -0700
+X-CSE-ConnectionGUID: OobuV/FXRdGo0y8HA/kkPg==
+X-CSE-MsgGUID: N1ZAQzmtT8igllQHJofrew==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="57761423"
+X-IronPort-AV: E=Sophos;i="6.09,276,1716274800"; d="scan'208";a="57761465"
 Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.4])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Aug 2024 05:39:22 -0700
+ 09 Aug 2024 05:39:26 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -56,15 +56,14 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v3 06/14] lib/gpgpu_shader: Extend shader building
- library
-Date: Fri,  9 Aug 2024 14:38:05 +0200
-Message-Id: <20240809123813.109365-7-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v3 07/14] lib/gpgpu_shader: Add write_on_exception
+ template
+Date: Fri,  9 Aug 2024 14:38:06 +0200
+Message-Id: <20240809123813.109365-8-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240809123813.109365-1-christoph.manszewski@intel.com>
 References: <20240809123813.109365-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -81,851 +80,196 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add shader building functions and iga64 code used by eudebug subtests.
+From: Andrzej Hajda <andrzej.hajda@intel.com>
 
-Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Writing specific value to memory location on unexpected value in exception
+register allows to report errors from inside shader or siplet.
+
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 ---
- lib/gpgpu_shader.c          | 386 +++++++++++++++++++++++++++++++++++-
- lib/gpgpu_shader.h          |  24 ++-
- lib/iga64_generated_codes.c | 321 +++++++++++++++++++++++++++++-
- 3 files changed, 727 insertions(+), 4 deletions(-)
+ lib/gpgpu_shader.c          | 56 ++++++++++++++++++++++++++
+ lib/gpgpu_shader.h          |  2 +
+ lib/iga64_generated_codes.c | 79 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 136 insertions(+), 1 deletion(-)
 
 diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 991455c49..3b16db593 100644
+index 3b16db593..a98abc57e 100644
 --- a/lib/gpgpu_shader.c
 +++ b/lib/gpgpu_shader.c
-@@ -7,10 +7,16 @@
- 
- #include <i915_drm.h>
- 
-+#include "igt_map.h"
- #include "ioctl_wrappers.h"
- #include "gpgpu_shader.h"
- #include "gpu_cmds.h"
- 
-+struct label_entry {
-+	uint32_t id;
-+	uint32_t offset;
-+};
-+
- #define IGA64_ARG0 0xc0ded000
- #define IGA64_ARG_MASK 0xffffff00
- 
-@@ -32,7 +38,7 @@ static void gpgpu_shader_extend(struct gpgpu_shader *shdr)
- 	igt_assert(shdr->code);
- }
- 
--void
-+uint32_t
- __emit_iga64_code(struct gpgpu_shader *shdr, struct iga64_template const *tpls,
- 		  int argc, uint32_t *argv)
- {
-@@ -60,6 +66,8 @@ __emit_iga64_code(struct gpgpu_shader *shdr, struct iga64_template const *tpls,
- 	}
- 
- 	shdr->size += tpls->size;
-+
-+	return tpls->size;
- }
- 
- static uint32_t fill_sip(struct intel_bb *ibb,
-@@ -235,6 +243,7 @@ struct gpgpu_shader *gpgpu_shader_create(int fd)
- 	shdr->gen_ver = 100 * info->graphics_ver + info->graphics_rel;
- 	shdr->max_size = 16 * 4;
- 	shdr->code = malloc(4 * shdr->max_size);
-+	shdr->labels = igt_map_create(igt_map_hash_32, igt_map_equal_32);
- 	igt_assert(shdr->code);
- 	return shdr;
- }
-@@ -251,6 +260,70 @@ void gpgpu_shader_destroy(struct gpgpu_shader *shdr)
- 	free(shdr);
- }
- 
-+/**
-+ * gpgpu_shader_dump:
-+ * @shdr: shader to be printed
-+ *
-+ * Print shader instructions from @shdr in hex.
-+ */
-+void gpgpu_shader_dump(struct gpgpu_shader *shdr)
-+{
-+	for (int i = 0; i < shdr->size / 4; i++)
-+		igt_info("0x%08x 0x%08x 0x%08x 0x%08x\n",
-+			 shdr->instr[i][0], shdr->instr[i][1],
-+			 shdr->instr[i][2], shdr->instr[i][3]);
-+}
-+
-+/**
-+ * gpgpu_shader__breakpoint_on:
-+ * @shdr: shader to create breakpoint in
-+ * @cmd_no: index of the instruction to break on
-+ *
-+ * Insert a breakpoint on the @cmd_no'th instruction within @shdr.
-+ */
-+void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no)
-+{
-+	shdr->instr[cmd_no][0] |= 1<<30;
-+}
-+
-+/**
-+ * gpgpu_shader__breakpoint:
-+ * @shdr: shader to create breakpoint in
-+ *
-+ * Insert a breakpoint on the last instruction in @shdr.
-+ */
-+void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr)
-+{
-+	gpgpu_shader__breakpoint_on(shdr, shdr->size / 4 - 1);
-+}
-+
-+/**
-+ * gpgpu_shader__wait:
-+ * @shdr: shader to be modified
-+ *
-+ * Append wait instruction to @shader. This instruction raises attention
-+ * and stops execution.
-+ */
-+void gpgpu_shader__wait(struct gpgpu_shader *shdr)
-+{
-+	emit_iga64_code(shdr, sync_host, "	\n\
-+(W)	sync.host	        null		\n\
-+	");
-+}
-+
-+/**
-+ * gpgpu_shader__nop:
-+ * @shdr: shader to be modified
-+ *
-+ * Append a no-op instruction to @shdr.
-+ */
-+void gpgpu_shader__nop(struct gpgpu_shader *shdr)
-+{
-+	emit_iga64_code(shdr, nop, "	\n\
-+(W)	nop				\n\
-+	");
-+}
-+
- /**
-  * gpgpu_shader__eot:
-  * @shdr: shader to be modified
-@@ -269,6 +342,247 @@ void gpgpu_shader__eot(struct gpgpu_shader *shdr)
- 	");
- }
- 
-+/**
-+ * gpgpu_shader__label:
-+ * @shdr: shader to be modified
-+ * @label_id: id of the label to be created
-+ *
-+ * Create a label for the last instruction within @shdr.
-+ */
-+void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id)
-+{
-+	struct label_entry *l = malloc(sizeof(*l));
-+
-+	l->id = label_id;
-+	l->offset = shdr->size;
-+	igt_map_insert(shdr->labels, &l->id, l);
-+}
-+
-+#define OPCODE(x) (x & 0x7f)
-+#define OPCODE_JUMP_INDEXED 0x20
-+static void __patch_indexed_jump(struct gpgpu_shader *shdr, int label_id,
-+				 uint32_t jump_iga64_size)
-+{
-+	struct label_entry *l;
-+	uint32_t *start, *end, *label;
-+	int32_t relative;
-+
-+	l = igt_map_search(shdr->labels, &label_id);
-+	igt_assert(l);
-+
-+	igt_assert(jump_iga64_size % 4 == 0);
-+
-+	label = shdr->code + l->offset;
-+	end = shdr->code + shdr->size;
-+	start = end - jump_iga64_size;
-+
-+	for (; start < end; start += 4)
-+		if (OPCODE(*start) == OPCODE_JUMP_INDEXED) {
-+			relative = (label - start) * 4;
-+			*(start + 3) = relative;
-+			break;
-+		}
-+}
-+
-+/**
-+ * gpgpu_shader__jump:
-+ * @shdr: shader to be modified
-+ * @label_id: label to jump to
-+ *
-+ * Append jump instruction to @shdr. Jump to instruction with label @label_id.
-+ */
-+void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id)
-+{
-+	size_t shader_size;
-+
-+	shader_size = emit_iga64_code(shdr, jump, "	\n\
-+L0:							\n\
-+(W)	jmpi        L0					\n\
-+	");
-+
-+	__patch_indexed_jump(shdr, label_id, shader_size);
-+}
-+
-+/**
-+ * gpgpu_shader__jump_neq:
-+ * @shdr: shader to be modified
-+ * @label_id: label to jump to
-+ * @y_offset: offset within target buffer in rows
-+ * @value: expected value
-+ *
-+ * Append jump instruction to @shdr. Jump to instruction with label @label_id
-+ * when @value is not equal to dword stored at @dw_offset within the surface.
-+ *
-+ * Note: @dw_offset has to be aligned to 4
-+ */
-+void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
-+			    uint32_t y_offset, uint32_t value)
-+{
-+	uint32_t size;
-+
-+	size = emit_iga64_code(shdr, jump_dw_neq, "					\n\
-+L0:											\n\
-+(W)		mov (16|M0)              r30.0<1>:ud    0x0:ud				\n\
-+#if GEN_VER < 2000 // Media Block Write							\n\
-+	// Y offset of the block in rows := thread group id Y				\n\
-+(W)		mov (1|M0)               r30.1<1>:ud    ARG(0):ud			\n\
-+	// block width [0,63] representing 1 to 64 bytes, we want dword			\n\
-+(W)		mov (1|M0)               r30.2<1>:ud    0x3:ud				\n\
-+	// FFTID := FFTID from R0 header						\n\
-+(W)		mov (1|M0)               r30.4<1>:ud    r0.5<0;1,0>:ud  		\n\
-+(W)		send.dc1 (16|M0)         r31     r30      null    0x0	0x2190000	\n\
-+#else // Typed 2D Block Store								\n\
-+	// Store X and Y block start (160:191 and 192:223)				\n\
-+(W)            mov (2|M0)               r30.6<1>:ud    ARG(0):ud			\n\
-+	// Store X and Y block size (224:231 and 232:239)				\n\
-+(W)            mov (1|M0)               r30.7<1>:ud    0x3:ud				\n\
-+(W)            send.tgm (16|M0)         r31     r30    null:0    0x0    0x62100003	\n\
-+#endif											\n\
-+	// clear the flag register							\n\
-+(W)		mov (1|M0)               f0.0<1>:ud    0x0:ud				\n\
-+(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(1):ud	\n\
-+(W&f0.0)	jmpi                     L0						\n\
-+	", y_offset, value);
-+
-+	__patch_indexed_jump(shdr, label_id, size);
-+}
-+
-+/**
-+ * gpgpu_shader__loop_begin:
-+ * @shdr: shader to be modified
-+ * @label_id: id of the label to be created
-+ *
-+ * Begin a counting loop in @shdr. All subsequent instructions will constitute
-+ * the loop body up until 'gpgpu_shader__loop_end' gets called. The first
-+ * instruction of the loop will be at label @label_id.
-+ */
-+void gpgpu_shader__loop_begin(struct gpgpu_shader *shdr, int label_id)
-+{
-+	emit_iga64_code(shdr, clear_r40, "		\n\
-+L0:							\n\
-+(W)	mov (1|M0)               r40:ud    0x0:ud	\n\
-+	");
-+
-+	gpgpu_shader__label(shdr, label_id);
-+}
-+
-+/**
-+ * gpgpu_shader__loop_end:
-+ * @shdr: shader to be modified
-+ * @label_id: label id passed to 'gpgpu_shader__loop_begin'
-+ * @iter: iteration count
-+ *
-+ * End loop body in @shdr.
-+ */
-+void gpgpu_shader__loop_end(struct gpgpu_shader *shdr, int label_id, uint32_t iter)
-+{
-+	uint32_t size;
-+
-+	size = emit_iga64_code(shdr, inc_r40_jump_neq, "				\n\
-+L0:											\n\
-+(W)		add (1|M0)              r40:ud          r40.0<0;1,0>:ud 0x1:ud		\n\
-+(W)		mov (1|M0)              f0.0<1>:ud      0x0:ud				\n\
-+(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r40.0<0;1,0>:ud   ARG(0):ud	\n\
-+(W&f0.0)	jmpi                     L0						\n\
-+	", iter);
-+
-+	__patch_indexed_jump(shdr, label_id, size);
-+}
-+
-+/**
-+ * gpgpu_shader__common_target_write:
-+ * @shdr: shader to be modified
-+ * @y_offset: write target offset within target buffer in rows
-+ * @value: oword to be written
-+ *
-+ * Write the oword stored in @value to the target buffer at @y_offset.
-+ */
-+void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
-+				       uint32_t y_offset, const uint32_t value[4])
-+{
-+	emit_iga64_code(shdr, common_target_write, "				\n\
-+(W)	mov (16|M0)		r31.0<1>:ud	0x0:ud				\n\
-+(W)	mov (1|M0)		r31.0<1>:ud	ARG(1):ud			\n\
-+(W)	mov (1|M0)		r31.1<1>:ud	ARG(2):ud			\n\
-+(W)	mov (1|M0)		r31.2<1>:ud	ARG(3):ud			\n\
-+(W)	mov (1|M0)		r31.3<1>:ud	ARG(4):ud			\n\
-+(W)	mov (16|M0)		r30.0<1>:ud	0x0:ud				\n\
-+#if GEN_VER < 2000 // Media Block Write						\n\
-+	// Y offset of the block in rows					\n\
-+(W)	mov (1|M0)		r30.1<1>:ud	ARG(0):ud			\n\
-+	// block width [0,63] representing 1 to 64 bytes			\n\
-+(W)	mov (1|M0)		r30.2<1>:ud	0xf:ud				\n\
-+	// FFTID := FFTID from R0 header					\n\
-+(W)	mov (1|M0)		r30.4<1>:ud	r0.5<0;1,0>:ud			\n\
-+	// written value							\n\
-+(W)	send.dc1 (16|M0)	null	r30	src1_null  0x0	0x40A8000	\n\
-+#else	// Typed 2D Block Store							\n\
-+	// Store X and Y block start (160:191 and 192:223)			\n\
-+(W)	mov (2|M0)              r30.6<1>:ud     ARG(0):ud			\n\
-+	// Store X and Y block size (224:231 and 232:239)			\n\
-+(W)	mov (1|M0)              r30.7<1>:ud     0xf:ud				\n\
-+(W)	send.tgm (16|M0)        null    r30     null:0  0x0     0x64000007	\n\
-+#endif										\n\
-+	", y_offset, value[0], value[1], value[2], value[3]);
-+}
-+
-+/**
-+ * gpgpu_shader__common_target_write_u32:
-+ * @shdr: shader to be modified
-+ * @y_offset: write target offset within target buffer in rows
-+ * @value: dword to be written
-+ *
-+ * Fill oword at @y_offset with dword stored in @value.
-+ */
-+void gpgpu_shader__common_target_write_u32(struct gpgpu_shader *shdr,
-+					   uint32_t y_offset, uint32_t value)
-+{
-+	const uint32_t owblock[4] = {
-+		value, value, value, value
-+	};
-+	gpgpu_shader__common_target_write(shdr, y_offset, owblock);
-+}
-+
-+/**
-+ * gpgpu_shader__write_aip:
-+ * @shdr: shader to be modified
-+ * @y_offset: write target offset within the surface in rows
-+ *
-+ * Write address instruction pointer to row tg_id_y + @y_offset.
-+ */
-+void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset)
-+{
-+	emit_iga64_code(shdr, media_block_write_aip, "				\n\
-+	// Payload								\n\
-+(W)	mov (1|M0)               r5.0<1>:ud    cr0.2:ud				\n\
-+#if GEN_VER < 2000 // Media Block Write						\n\
-+	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
-+(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    0x2:ud		\n\
-+	// Y offset of the block in rows := thread group id Y			\n\
-+(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud			\n\
-+(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud    ARG(0):ud	\n\
-+	// block width [0,63] representing 1 to 64 bytes			\n\
-+(W)	mov (1|M0)               r4.2<1>:ud    0x3:ud				\n\
-+	// FFTID := FFTID from R0 header					\n\
-+(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud			\n\
-+(W)	send.dc1 (16|M0)         null     r4   src1_null 0       0x40A8000	\n\
-+#else // Typed 2D Block Store							\n\
-+	// Load r2.0-3 with tg id X << ARG(0)					\n\
-+(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x2:ud		\n\
-+	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
-+(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
-+(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(0):ud	\n\
-+	// payload setup							\n\
-+(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
-+	// Store X and Y block start (160:191 and 192:223)			\n\
-+(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
-+	// Store X and Y block max_size (224:231 and 232:239)			\n\
-+(W)	mov (1|M0)               r4.7<1>:ud    0x3:ud				\n\
-+(W)	send.tgm (16|M0)         null     r4   null:0    0    0x64000007	\n\
-+#endif										\n\
-+	", y_offset);
-+}
-+
- /**
-  * gpgpu_shader__write_dword:
-  * @shdr: shader to be modified
-@@ -313,3 +627,73 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
- #endif										\n\
+@@ -628,6 +628,62 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
  	", 2, y_offset, 3, value, value, value, value);
  }
-+
+ 
 +/**
-+ * gpgpu_shader__end_system_routine:
++ * gpgpu_shader__write_on_exception:
 + * @shdr: shader to be modified
-+ * @breakpoint_suppress: breakpoint suppress flag
++ * @value: dword to be written
++ * @y_offset: write target offset within the surface in rows
++ * @mask: mask to be applied on exception register
++ * @expected: expected value of exception register with @mask applied
 + *
-+ * Return from system routine. To prevent infinite jumping to the system
-+ * routine on a breakpoint, @breakpoint_suppres flag has to be set.
++ * Check if bits specified by @mask in exception register(cr0.1) are equal
++ * to provided ones: cr0.1 & @mask == @expected,
++ * if yes fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
 + */
-+void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
-+				      bool breakpoint_suppress)
++void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
++				      uint32_t y_offset, uint32_t mask, uint32_t expected)
 +{
-+	/*
-+	 * set breakpoint suppress bit to avoid an endless loop
-+	 * when sip was invoked by a breakpoint
-+	 */
-+	if (breakpoint_suppress)
-+		emit_iga64_code(shdr, breakpoint_suppress, "			\n\
-+(W)	or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud	\n\
-+		");
-+
-+	emit_iga64_code(shdr, end_system_routine, "				\n\
-+(W)	and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud	\n\
-+	// return to an application						\n\
-+(W)	and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud	\n\
-+	", 0x7fffff | (1 << 26)); /* clear all exceptions, except read only bit */
-+}
-+
-+/**
-+ * gpgpu_shader__end_system_routine_step_if_eq:
-+ * @shdr: shader to be modified
-+ * @y_offset: offset within target buffer in rows
-+ * @value: expected value for single stepping execution
-+ *
-+ * Return from system routine. Don't clear breakpoint exception when @value
-+ * is equal to value stored at @dw_offset. This triggers the system routine
-+ * after the subsequent instruction, resulting in single stepping execution.
-+ */
-+void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
-+						 uint32_t y_offset,
-+						 uint32_t value)
-+{
-+	emit_iga64_code(shdr, end_system_routine_step_if_eq, "				\n\
-+(W)		or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud	\n\
-+(W)		and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud	\n\
-+(W)		mov (16|M0)              r30.0<1>:ud    0x0:ud				\n\
-+#if GEN_VER < 2000 // Media Block Write							\n\
-+		// Y offset of the block in rows := thread group id Y			\n\
-+(W)		mov (1|M0)               r30.1<1>:ud    ARG(1):ud			\n\
-+		// block width [0,63] representing 1 to 64 bytes, we want dword		\n\
-+(W)		mov (1|M0)               r30.2<1>:ud    0x3:ud				\n\
-+		// FFTID := FFTID from R0 header					\n\
-+(W)		mov (1|M0)               r30.4<1>:ud    r0.5<0;1,0>:ud			\n\
-+(W)		send.dc1 (16|M0)         r31     r30      null    0x0	0x2190000	\n\
-+#else	// Typed 2D Block Store								\n\
-+		// Store X and Y block start (160:191 and 192:223)			\n\
-+(W)		mov (2|M0)               r30.6<1>:ud    ARG(1):ud			\n\
-+		// Store X and Y block size (224:231 and 232:239)			\n\
-+(W)		mov (1|M0)               r30.7<1>:ud    0x3:ud				\n\
-+(W)		send.tgm (16|M0)         r31     r30    null:0    0x0    0x62100003	\n\
++	emit_iga64_code(shdr, write_on_exception, "					\n\
++	// Payload									\n\
++(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud				\n\
++(W)	mov (1|M0)               r5.1<1>:ud    ARG(4):ud				\n\
++(W)	mov (1|M0)               r5.2<1>:ud    ARG(5):ud				\n\
++(W)	mov (1|M0)               r5.3<1>:ud    ARG(6):ud				\n\
++#if GEN_VER < 2000 // prepare Media Block Write						\n\
++	// X offset of the block in bytes := (thread group id X << ARG(0))		\n\
++(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
++	// Y offset of the block in rows := thread group id Y				\n\
++(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud				\n\
++(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud		\n\
++	// block width [0,63] representing 1 to 64 bytes				\n\
++(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud				\n\
++	// FFTID := FFTID from R0 header						\n\
++(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud				\n\
++#else // prepare Typed 2D Block Store							\n\
++	// Load r2.0-3 with tg id X << ARG(0)						\n\
++(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
++	// Load r2.4-7 with tg id Y + ARG(1):ud						\n\
++(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud				\n\
++(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud		\n\
++	// payload setup								\n\
++(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud					\n\
++	// Store X and Y block start (160:191 and 192:223)				\n\
++(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud				\n\
++	// Store X and Y block max_size (224:231 and 232:239)				\n\
++(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud				\n\
 +#endif											\n\
-+		// clear the flag register						\n\
-+(W)		mov (1|M0)               f0.0<1>:ud    0x0:ud				\n\
-+(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(2):ud	\n\
-+(W&f0.0)	and (1|M0)              cr0.1<1>:ud     cr0.1<0;1,0>:ud   ARG(3):ud	\n\
-+		// return to an application						\n\
-+(W)		and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud	\n\
-+	", 0x807fffff, /* leave breakpoint exception */
-+	y_offset, value, 0x7fffff /* clear all exceptions */ );
++	// Check if masked exception is equal to provided value and write conditionally \n\
++(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(7):ud		\n\
++(W)      mov (1|M0)              f0.0<1>:ud     0x0:ud					\n\
++(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(8):ud		\n\
++#if GEN_VER < 2000 // Media Block Write							\n\
++(W&f0.0) send.dc1 (16|M0)        null     r4   src1_null 0    0x40A8000			\n\
++#else // Typed 2D Block Store								\n\
++(W&f0.0) send.tgm (16|M0)        null     r4   null:0    0    0x64000007		\n\
++#endif											\n\
++	", 2, y_offset, 3, value, value, value, value, mask, expected);
 +}
++
+ /**
+  * gpgpu_shader__end_system_routine:
+  * @shdr: shader to be modified
 diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-index 255f93b4d..e4ca0be4c 100644
+index e4ca0be4c..76ff4989e 100644
 --- a/lib/gpgpu_shader.h
 +++ b/lib/gpgpu_shader.h
-@@ -21,6 +21,7 @@ struct gpgpu_shader {
- 		uint32_t *code;
- 		uint32_t (*instr)[4];
- 	};
-+	struct igt_map *labels;
- };
- 
- struct iga64_template {
-@@ -31,7 +32,7 @@ struct iga64_template {
- 
- #pragma GCC diagnostic ignored "-Wnested-externs"
- 
--void
-+uint32_t
- __emit_iga64_code(struct gpgpu_shader *shdr, const struct iga64_template *tpls,
- 		  int argc, uint32_t *argv);
- 
-@@ -56,8 +57,27 @@ void gpgpu_shader_exec(struct intel_bb *ibb,
- 		       struct gpgpu_shader *sip,
- 		       uint64_t ring, bool explicit_engine);
- 
-+void gpgpu_shader__wait(struct gpgpu_shader *shdr);
-+void gpgpu_shader__breakpoint_on(struct gpgpu_shader *shdr, uint32_t cmd_no);
-+void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr);
-+void gpgpu_shader__nop(struct gpgpu_shader *shdr);
- void gpgpu_shader__eot(struct gpgpu_shader *shdr);
-+void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
-+				       uint32_t y_offset, const uint32_t value[4]);
-+void gpgpu_shader__common_target_write_u32(struct gpgpu_shader *shdr,
-+				     uint32_t y_offset, uint32_t value);
-+void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
-+				      bool breakpoint_suppress);
-+void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
-+						 uint32_t dw_offset,
-+						 uint32_t value);
-+void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
+@@ -74,6 +74,8 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
+ void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
  void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
  			       uint32_t y_offset);
--
-+void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
-+void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
-+void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
-+			    uint32_t dw_offset, uint32_t value);
-+void gpgpu_shader__loop_begin(struct gpgpu_shader *shdr, int label_id);
-+void gpgpu_shader__loop_end(struct gpgpu_shader *shdr, int label_id, uint32_t iter);
- #endif /* GPGPU_SHADER_H */
++void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw,
++			       uint32_t y_offset, uint32_t mask, uint32_t value);
+ void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
+ void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
+ void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
 diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-index 6a08c4844..fea436dee 100644
+index fea436dee..71429d442 100644
 --- a/lib/iga64_generated_codes.c
 +++ b/lib/iga64_generated_codes.c
-@@ -3,7 +3,95 @@
+@@ -3,7 +3,7 @@
  
  #include "gpgpu_shader.h"
  
--#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
-+#define MD5_SUM_IGA64_ASMS 61a15534954fe7c6bd0e983fbfd54c27
-+
-+struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
-+	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-+		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-+		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
-+		0x80100961, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80040061, 0x1e654220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
-+		0x80132031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
-+		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
-+		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1272, .size = 48, .code = (const uint32_t []) {
-+		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-+		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
-+		0x80100961, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e154220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1e254220, 0x00000000, 0x00000003,
-+		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
-+		0x80132031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80008070, 0x00018220, 0x22001f04, 0xc0ded002,
-+		0x84000965, 0x80118220, 0x02008010, 0xc0ded003,
-+		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
-+		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-+		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
-+		0x80040961, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
-+		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
-+		0x81000965, 0x80218220, 0x02008020, 0xc0ded003,
-+		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
-+		0x80000166, 0x80018220, 0x02008000, 0x00008000,
-+		0x80000165, 0x80218220, 0x02008020, 0xc0ded000,
-+		0x80040161, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e254220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
-+		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
-+		0x80049031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80002070, 0x00018220, 0x22001f04, 0xc0ded002,
-+		0x81000165, 0x80218220, 0x02008020, 0xc0ded003,
-+		0x80000165, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_end_system_routine[] = {
-+	{ .gen_ver = 1272, .size = 12, .code = (const uint32_t []) {
-+		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
-+		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 12, .code = (const uint32_t []) {
-+		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
-+		0x80000965, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 12, .code = (const uint32_t []) {
-+		0x80000165, 0x80218220, 0x02008020, 0xc0ded000,
-+		0x80000165, 0x80018220, 0x02008000, 0x7ffffffd,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_breakpoint_suppress[] = {
-+	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
-+		0x80000966, 0x80018220, 0x02008000, 0x00008000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
-+		0x80000166, 0x80018220, 0x02008000, 0x00008000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
+-#define MD5_SUM_IGA64_ASMS 61a15534954fe7c6bd0e983fbfd54c27
++#define MD5_SUM_IGA64_ASMS 88529cc180578939c0b8c4bb29da7db6
  
- struct iga64_template const iga64_code_media_block_write[] = {
- 	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
-@@ -86,6 +174,215 @@ struct iga64_template const iga64_code_media_block_write[] = {
+ struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
+ 	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+@@ -93,6 +93,83 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
  	}}
  };
  
-+struct iga64_template const iga64_code_media_block_write_aip[] = {
-+	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-+		0x80000961, 0x05050220, 0x00008020, 0x00000000,
-+		0x80000969, 0x02058220, 0x02000014, 0x00000002,
++struct iga64_template const iga64_code_write_on_exception[] = {
++	{ .gen_ver = 2000, .size = 68, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
 +		0x80000061, 0x02150220, 0x00000064, 0x00000000,
-+		0x80001940, 0x02158220, 0x02000214, 0xc0ded000,
++		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
 +		0x80100061, 0x04054220, 0x00000000, 0x00000000,
 +		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
-+		0x80000061, 0x04754220, 0x00000000, 0x00000003,
-+		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
++		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
++		0x80000965, 0x03058220, 0x02008010, 0xc0ded007,
++		0x80000961, 0x30014220, 0x00000000, 0x00000000,
++		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
++		0x84134031, 0x00000000, 0xd00e0494, 0x04000000,
 +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
 +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 1272, .size = 40, .code = (const uint32_t []) {
-+		0x80000961, 0x05050220, 0x00008020, 0x00000000,
-+		0x80000969, 0x04058220, 0x02000014, 0x00000002,
++	{ .gen_ver = 1272, .size = 64, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
 +		0x80000061, 0x04150220, 0x00000064, 0x00000000,
-+		0x80001940, 0x04158220, 0x02000414, 0xc0ded000,
-+		0x80000061, 0x04254220, 0x00000000, 0x00000003,
++		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
++		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
 +		0x80000061, 0x04450220, 0x00000054, 0x00000000,
-+		0x80132031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000965, 0x03058220, 0x02008010, 0xc0ded007,
++		0x80000961, 0x30014220, 0x00000000, 0x00000000,
++		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
++		0x84134031, 0x00000000, 0xc0000414, 0x02a00000,
 +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
 +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 1250, .size = 44, .code = (const uint32_t []) {
-+		0x80000961, 0x05050220, 0x00008040, 0x00000000,
-+		0x80000969, 0x04058220, 0x02000024, 0x00000002,
++	{ .gen_ver = 1250, .size = 68, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
 +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80001940, 0x04258220, 0x02000424, 0xc0ded000,
-+		0x80000061, 0x04454220, 0x00000000, 0x00000003,
++		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
++		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
 +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x80044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000965, 0x03058220, 0x02008020, 0xc0ded007,
++		0x80000961, 0x30014220, 0x00000000, 0x00000000,
++		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
++		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
++		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
 +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
 +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 0, .size = 40, .code = (const uint32_t []) {
-+		0x80000161, 0x05050220, 0x00008040, 0x00000000,
-+		0x80000169, 0x04058220, 0x02000024, 0x00000002,
++	{ .gen_ver = 0, .size = 64, .code = (const uint32_t []) {
++		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
++		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
++		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
++		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
 +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80000140, 0x04258220, 0x02000424, 0xc0ded000,
-+		0x80000061, 0x04454220, 0x00000000, 0x00000003,
++		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
++		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
 +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80049031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000165, 0x03058220, 0x02008020, 0xc0ded007,
++		0x80000161, 0x30014220, 0x00000000, 0x00000000,
++		0x80000270, 0x00018220, 0x12000304, 0xc0ded008,
++		0x8104a031, 0x00000000, 0xc0000414, 0x02a00000,
 +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
 +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
 +		0x80000101, 0x00010000, 0x00000000, 0x00000000,
 +	}}
 +};
 +
-+struct iga64_template const iga64_code_common_target_write[] = {
-+	{ .gen_ver = 2000, .size = 48, .code = (const uint32_t []) {
-+		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
-+		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80040061, 0x1e654220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e754220, 0x00000000, 0x0000000f,
-+		0x80132031, 0x00000000, 0xd00e1e94, 0x04000000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1272, .size = 52, .code = (const uint32_t []) {
-+		0x80100061, 0x1f054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1f154220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x1f254220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x1f354220, 0x00000000, 0xc0ded004,
-+		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e254220, 0x00000000, 0x0000000f,
-+		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
-+		0x80132031, 0x00000000, 0xc0001e14, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
-+		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
-+		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
-+		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x80044031, 0x00000000, 0xc0001e14, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
-+		0x80040061, 0x1f054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1f054220, 0x00000000, 0xc0ded001,
-+		0x80000061, 0x1f254220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x1f454220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x1f654220, 0x00000000, 0xc0ded004,
-+		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e454220, 0x00000000, 0x0000000f,
-+		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
-+		0x80049031, 0x00000000, 0xc0001e14, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_inc_r40_jump_neq[] = {
-+	{ .gen_ver = 1272, .size = 20, .code = (const uint32_t []) {
-+		0x80000040, 0x28058220, 0x02002804, 0x00000001,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80001a70, 0x00018220, 0x22002804, 0xc0ded000,
-+		0x84000020, 0x00004000, 0x00000000, 0xffffffd0,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 20, .code = (const uint32_t []) {
-+		0x80000040, 0x28058220, 0x02002804, 0x00000001,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80001a70, 0x00018220, 0x22002804, 0xc0ded000,
-+		0x81000020, 0x00004000, 0x00000000, 0xffffffd0,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 20, .code = (const uint32_t []) {
-+		0x80000040, 0x28058220, 0x02002804, 0x00000001,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80000270, 0x00018220, 0x22002804, 0xc0ded000,
-+		0x81000020, 0x00004000, 0x00000000, 0xffffffd0,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_clear_r40[] = {
-+	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
-+		0x80000061, 0x28054220, 0x00000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
-+		0x80000061, 0x28054220, 0x00000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_jump_dw_neq[] = {
-+	{ .gen_ver = 2000, .size = 32, .code = (const uint32_t []) {
-+		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80040061, 0x1e654220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e754220, 0x00000000, 0x00000003,
-+		0x80132031, 0x1f0c0000, 0xd0061e8c, 0x04000000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
-+		0x84000020, 0x00004000, 0x00000000, 0xffffffa0,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1272, .size = 36, .code = (const uint32_t []) {
-+		0x80100061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e154220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e254220, 0x00000000, 0x00000003,
-+		0x80000061, 0x1e450220, 0x00000054, 0x00000000,
-+		0x80132031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80008070, 0x00018220, 0x22001f04, 0xc0ded001,
-+		0x84000020, 0x00004000, 0x00000000, 0xffffff90,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 1250, .size = 40, .code = (const uint32_t []) {
-+		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
-+		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
-+		0x80001901, 0x00010000, 0x00000000, 0x00000000,
-+		0x80044031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
-+		0x81000020, 0x00004000, 0x00000000, 0xffffff80,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 36, .code = (const uint32_t []) {
-+		0x80040061, 0x1e054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x1e254220, 0x00000000, 0xc0ded000,
-+		0x80000061, 0x1e454220, 0x00000000, 0x00000003,
-+		0x80000061, 0x1e850220, 0x000000a4, 0x00000000,
-+		0x80049031, 0x1f0c0000, 0xc0001e0c, 0x02400000,
-+		0x80000061, 0x30014220, 0x00000000, 0x00000000,
-+		0x80002070, 0x00018220, 0x22001f04, 0xc0ded001,
-+		0x81000020, 0x00004000, 0x00000000, 0xffffff90,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_jump[] = {
-+	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
-+		0x80000020, 0x00004000, 0x00000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
-+		0x80000020, 0x00004000, 0x00000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
- struct iga64_template const iga64_code_eot[] = {
- 	{ .gen_ver = 2000, .size = 8, .code = (const uint32_t []) {
- 		0x800c0061, 0x70050220, 0x00460005, 0x00000000,
-@@ -110,3 +407,25 @@ struct iga64_template const iga64_code_eot[] = {
- 		0x80049031, 0x00000004, 0x7020700c, 0x10000000,
- 	}}
- };
-+
-+struct iga64_template const iga64_code_nop[] = {
-+	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
-+		0x00000060, 0x00000000, 0x00000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
-+		0x00000060, 0x00000000, 0x00000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
-+
-+struct iga64_template const iga64_code_sync_host[] = {
-+	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
-+		0x80000001, 0x00010000, 0xf0000000, 0x00000000,
-+		0x80000901, 0x00010000, 0x00000000, 0x00000000,
-+	}},
-+	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
-+		0x80000001, 0x00010000, 0xf0000000, 0x00000000,
-+		0x80000101, 0x00010000, 0x00000000, 0x00000000,
-+	}}
-+};
+ struct iga64_template const iga64_code_media_block_write[] = {
+ 	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+ 		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
 -- 
 2.34.1
 
