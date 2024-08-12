@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BEF1C52D7C
-	for <igt-dev@archiver.kernel.org>; Mon, 12 Aug 2024 19:41:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31772C3DA7F
+	for <igt-dev@archiver.kernel.org>; Mon, 12 Aug 2024 19:41:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D01E010E1CF;
-	Mon, 12 Aug 2024 19:41:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED83010E29C;
+	Mon, 12 Aug 2024 19:41:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YcmRcOz5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CTALMjQd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE02510E194
- for <igt-dev@lists.freedesktop.org>; Mon, 12 Aug 2024 19:41:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4BAEB10E29C
+ for <igt-dev@lists.freedesktop.org>; Mon, 12 Aug 2024 19:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723491700; x=1755027700;
+ t=1723491701; x=1755027701;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=nNdGkjLINPx5OpLxwr+5VjknmcmeIvgQh11f4YyMEEs=;
- b=YcmRcOz5bxfzVclBh1wy96K1LIYKSlnUgmMhPRSkJjigepgHbTEScoBA
- xZpa9k2JSca5w12k9rzA92nmMDm0dw2WHu+qacPc+Q2DNpi7zhTvhqMQw
- XKcCJCamhq0eYXlFeQj9RmVqqKD07sZQqUpLAq6K0dr8tQ2Pcz6kTBP2k
- ndG/Xx3LE0K/Tus/nhuH23Ya+mgqAPKAy3bTA8BbauLYTL2o3z93j/G0h
- 40nG7PHErhcNLnHR75gdCcB8pmmwYKpkEDS279xaDuWzBj/Beibpr+aWx
- SXvBYDPMDNCoD70GWUZ5NimWmg5W2Ls6e4RR0inMfq7HOmeKyH+W+0bFh w==;
-X-CSE-ConnectionGUID: bhVNWuRMTT6oTEYokqpsgg==
-X-CSE-MsgGUID: 0ZqenUGDSUu7LJdlOKmF4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21788423"
-X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; d="scan'208";a="21788423"
+ bh=ppGYIH4JVMNeWW9Xo4FMEpn5xh5JJv6G9C/52ZxaI0c=;
+ b=CTALMjQd4XNAbNqm/EpSJ4NRKgw6a5vcJJXxcWcun4Wn6fzOFdncwkgJ
+ WTasCLG2c5Wd4lBAJCOwhdSPvmonKdiv9jivEeOPuGsrWQVG9sevQTtSO
+ McF1mUtlRX9mq0u1K/cGT35c0qL6NE2MVJdnaMiUmk3Lcor2oO4zcg3PK
+ qt2DbML+MxqzCKL3p9ZqMjKXKOj2ABZp2iyeZFv2IVrO5xjlI4TFGKbaA
+ JkZcyF/zrtB2jZYFcdyDPU5Q/4/Z/vnoS5pf2K2Z3clDgW9b1jbXyf5T8
+ keAa4Yo804OO6J8gHdAhNgB2AFMcZdRAd1sqhT8K9ePSjvcSL86FmNIVx g==;
+X-CSE-ConnectionGUID: +b0DjYZgS4S5Y5EjN0xWtQ==
+X-CSE-MsgGUID: m1fNEuFcTEG1JWCeQqmeHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21788430"
+X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; d="scan'208";a="21788430"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2024 12:41:40 -0700
-X-CSE-ConnectionGUID: 7SKFmperQ2iM9Vb1qE8ukQ==
-X-CSE-MsgGUID: Pd9DIdwkRzaaeKUbbLGCPg==
+ 12 Aug 2024 12:41:41 -0700
+X-CSE-ConnectionGUID: MKZU83MKRC6OK96oyox/MQ==
+X-CSE-MsgGUID: Qe4dhSvBS2Kml0NC1eSuOg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; d="scan'208";a="58443109"
+X-IronPort-AV: E=Sophos;i="6.09,284,1716274800"; d="scan'208";a="58443114"
 Received: from gfx2.iind.intel.com ([10.145.169.154])
- by fmviesa010.fm.intel.com with ESMTP; 12 Aug 2024 12:41:38 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 12 Aug 2024 12:41:40 -0700
 From: sai.gowtham.ch@intel.com
 To: igt-dev@lists.freedesktop.org,
 	sai.gowtham.ch@intel.com
-Subject: [PATCH 1/2] lib/igt_sysfs: update igt_sysfs_engines to run dynamic
- tests with its associated engine class.
-Date: Tue, 13 Aug 2024 01:11:35 +0530
-Message-Id: <20240812194136.6352-2-sai.gowtham.ch@intel.com>
+Subject: [PATCH 2/2] tests/intel: Adopt igt_sysfs_engines dependent tests to
+ use query engine class
+Date: Tue, 13 Aug 2024 01:11:36 +0530
+Message-Id: <20240812194136.6352-3-sai.gowtham.ch@intel.com>
 X-Mailer: git-send-email 2.39.1
 In-Reply-To: <20240812194136.6352-1-sai.gowtham.ch@intel.com>
 References: <20240812194136.6352-1-sai.gowtham.ch@intel.com>
@@ -69,98 +69,113 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Correlate updates in sysfs engines queried and the work load submitted
-to a engine, enhancing igt_sysfs_engines so that each update in sysfs
-engine will corelates to it corresponding engine class.
+Adopt igt_sysfs_engines denpendent tests to query engine class based on
+the updated sysfs engines queried.
 
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- lib/igt_sysfs.c | 39 ++++++++++++++++++++++++++++++++++++---
- lib/igt_sysfs.h |  4 ++--
- 2 files changed, 38 insertions(+), 5 deletions(-)
+ tests/intel/xe_exec_queue_property.c |  7 ++++---
+ tests/intel/xe_sysfs_defaults.c      |  5 +++--
+ tests/intel/xe_sysfs_scheduler.c     | 10 ++++++----
+ 3 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 2863e22b5..aec0bb53d 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -1210,6 +1210,32 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
- 	igt_assert(!ret);
+diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+index 3edab0af5..25a7e7abb 100644
+--- a/tests/intel/xe_exec_queue_property.c
++++ b/tests/intel/xe_exec_queue_property.c
+@@ -64,7 +64,8 @@ static void test_set_property(int xe, int property_name,
+ 					     &exec_queue_id), err_val);
  }
  
-+/**
-+ * xe_get_engine_class:
-+ * @name: de_d_name that we get from igt_sysfs_engine.
-+ *
-+ * It returns engine class corresponding to the engine dir from igt_sysfs_engines.
-+ *
-+ */
-+static uint16_t xe_get_engine_class(char *name)
-+{
-+	uint16_t class;
-+
-+	if (strcmp(name, "rcs") == 0) {
-+		class = DRM_XE_ENGINE_CLASS_RENDER;
-+	} else if (strcmp(name, "bcs") == 0) {
-+		class = DRM_XE_ENGINE_CLASS_COPY;
-+	} else if (strcmp(name, "vcs") == 0) {
-+		class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
-+	} else if (strcmp(name, "vecs") == 0) {
-+		class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
-+	} else if (strcmp(name, "ccs") == 0) {
-+		class = DRM_XE_ENGINE_CLASS_COMPUTE;
-+	}
-+
-+	return class;
-+}
-+
- /**
-  * igt_sysfs_engines:
-  * @xe: fd of the device
-@@ -1220,11 +1246,12 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
-  * It iterates over sysfs/engines and runs a dynamic engine test.
-  *
-  */
--void igt_sysfs_engines(int xe, int engines, const char **property,
--		       void (*test)(int, int, const char **))
-+void igt_sysfs_engines(int xe, int engines, int gt, bool all, const char **property,
-+		       void (*test)(int, int, const char **, uint16_t, int))
+-static void test_property_min_max(int xe, int engine, const char **property)
++static void test_property_min_max(int xe, int engine, const char **property,
++				  uint16_t class, int gt)
+ {
+ 	unsigned int max;
+ 	unsigned int min;
+@@ -198,7 +199,7 @@ igt_main
+ {
+ 	static const struct {
+ 		const char *name;
+-		void (*fn)(int, int, const char **);
++		void (*fn)(int, int, const char **, uint16_t, int);
+ 	} tests[] = {{"property-min-max", test_property_min_max}, {} };
+ 
+ 	const char *property[][3] = { {"timeslice_duration_us", "timeslice_duration_min", "timeslice_duration_max"},
+@@ -257,7 +258,7 @@ igt_main
+ 						engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 						igt_require(engines_fd != -1);
+ 
+-						igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
++						igt_sysfs_engines(xe, engines_fd, 0, 0, property[i], t->fn);
+ 						close(engines_fd);
+ 						close(gt_fd);
+ 					}
+diff --git a/tests/intel/xe_sysfs_defaults.c b/tests/intel/xe_sysfs_defaults.c
+index 1777158d5..393e56651 100644
+--- a/tests/intel/xe_sysfs_defaults.c
++++ b/tests/intel/xe_sysfs_defaults.c
+@@ -28,7 +28,8 @@
+ #include "xe_drm.h"
+ #include "xe/xe_query.h"
+ 
+-static void test_defaults(int xe, int engine, const char **property)
++static void test_defaults(int xe, int engine, const char **property,
++			  uint16_t class, int gt)
  {
  	struct dirent *de;
- 	DIR *dir;
-+	uint16_t class;
+ 	uint64_t property_value;
+@@ -81,7 +82,7 @@ igt_main
+ 			engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 			igt_require(engines_fd != -1);
  
- 	lseek(engines, 0, SEEK_SET);
+-			igt_sysfs_engines(xe, engines_fd, NULL, test_defaults);
++			igt_sysfs_engines(xe, engines_fd, 0, 0, NULL, test_defaults);
  
-@@ -1251,7 +1278,13 @@ void igt_sysfs_engines(int xe, int engines, const char **property,
- 				igt_require(fstatat(engine_fd, property[2], &st, 0) == 0);
- 			}
- 			errno = 0;
--			test(xe, engine_fd, property);
-+
-+			if (all) {
-+				class = xe_get_engine_class(de->d_name);
-+				test(xe, engine_fd, property, class, gt);
-+			} else {
-+				test(xe, engine_fd, property, 0, 0);
-+			}
- 		}
- 		close(engine_fd);
- 	}
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 27031a015..2a1e3b1bf 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -163,8 +163,8 @@ typedef struct igt_sysfs_rw_attr {
+ 			close(engines_fd);
+ 			 close(gt_fd);
+diff --git a/tests/intel/xe_sysfs_scheduler.c b/tests/intel/xe_sysfs_scheduler.c
+index 979ce95d2..947dbdbc9 100644
+--- a/tests/intel/xe_sysfs_scheduler.c
++++ b/tests/intel/xe_sysfs_scheduler.c
+@@ -37,7 +37,8 @@
+ #include "xe_drm.h"
+ #include "xe/xe_query.h"
  
- void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw);
+-static void test_invalid(int xe, int engine, const char **property)
++static void test_invalid(int xe, int engine, const char **property,
++			 uint16_t class, int gt)
+ {
+ 	unsigned int saved, set;
+ 	unsigned int min, max;
+@@ -57,7 +58,8 @@ static void test_invalid(int xe, int engine, const char **property)
+ 	igt_assert_eq(set, saved);
+ }
  
--void igt_sysfs_engines(int xe, int engines, const char **property,
--		       void (*test)(int, int, const char **));
-+void igt_sysfs_engines(int xe, int engines, int gt, bool all, const char **property,
-+		       void (*test)(int, int, const char **, uint16_t, int));
+-static void test_min_max(int xe, int engine, const char **property)
++static void test_min_max(int xe, int engine, const char **property,
++			 uint16_t class, int gt)
+ {
+ 	unsigned int default_max, max;
+ 	unsigned int default_min, min;
+@@ -113,7 +115,7 @@ igt_main
+ {
+ 	static const struct {
+ 		const char *name;
+-		void (*fn)(int, int, const char **);
++		void (*fn)(int, int, const char **, uint16_t, int);
+ 	} tests[] = {
+ 		{ "invalid", test_invalid },
+ 		{ "min-max", test_min_max },
+@@ -150,7 +152,7 @@ igt_main
+ 					engines_fd = openat(gt_fd, "engines", O_RDONLY);
+ 					igt_require(engines_fd != -1);
  
- char *xe_sysfs_gt_path(int xe_device, int gt, char *path, int pathlen);
- int xe_sysfs_gt_open(int xe_device, int gt);
+-					igt_sysfs_engines(xe, engines_fd, property[i], t->fn);
++					igt_sysfs_engines(xe, engines_fd, 0, 0, property[i], t->fn);
+ 					close(engines_fd);
+ 					close(gt_fd);
+ 				}
 -- 
 2.39.1
 
