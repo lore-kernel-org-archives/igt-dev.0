@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E1E8C52D7C
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 12:15:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92A67C52D7C
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 12:16:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 44ED110E31F;
-	Tue, 13 Aug 2024 12:15:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 51F8010E322;
+	Tue, 13 Aug 2024 12:16:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EmsRn5mw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lkg7l1Yn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C24910E31F
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 12:15:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7DDFE10E322
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 12:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723551358; x=1755087358;
+ t=1723551361; x=1755087361;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=KikZEE1fz2MCZLTe+dfGMZy6PC9tmlDbUdxFptR9Qtk=;
- b=EmsRn5mw0wE3yllKpjUVmrN+gEhDsjJiLziVw+f31+zeV2E+dhn70jnn
- aj8/e4lVA6apmt3jIYnLo6mO97NR+8886It4T6wgyAdUHGzf9Gxt4LfDS
- 3pKYvr1L1dZKFlnYqnYtCB5V2atL1j7BMueDaZBjW2iVt8YyYyLP7hFAw
- vCccfSVMSA6dGH0D+gqGEQUzT/UG6v/W5VhOJtXMyWwFrEmhvmHV3K0A5
- fuK0/V3NZYNQ0yztYwXCEw2BCC89qC1BBk3PKCP99XBRj5yb6uzAu9BxG
- 8YTC5C0/Kpuk8kWkRBMc0mig0zbDkRCRqBvzri6HEMbo17rNFcWPd+zgb w==;
-X-CSE-ConnectionGUID: mmw8WjXnQVaFm1ZZs6KbiA==
-X-CSE-MsgGUID: LguagBSnQ3Kr335qxb38gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21869618"
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="21869618"
+ bh=pXC0lgq2Q0MUEhlscFeWn26/65kvt7CG9er1s0uGC2Q=;
+ b=Lkg7l1YnPqDv5mipPpIpW8P5PPfl21SbpEcOE+cFoKFAzXqepdsKQmvS
+ Hg08SysnfCcc0TYL/r7/FjFbatq1SeMEqZ2ck3hfBsOCwegumD+n4/SFX
+ xhjBUsqpel78monXl+K55pZOor4iu/3ZtHc2qfQrLbYIW3/0E4713GFGg
+ b9+zl7GWJjBJgY5B1dQ/eJ+pLEv/UDqbmuVKK4DI/vFNC9cRnF1y/dbI0
+ 42MqwQEEBctnVrsp0j/lOfzQL2pDtZ2bDing248iAK8FiL2bV9zCgU3/W
+ 8DQ17Rn2NyJQh0pdTDBNMRvVAzpWCC5EvsMgvylorjN/Vdfjr0pzk/tpD w==;
+X-CSE-ConnectionGUID: GZbpO1b5QHOxiXtGB8JArQ==
+X-CSE-MsgGUID: ORcPEQX8SYWGLO/YULsNxA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21869626"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="21869626"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 05:15:58 -0700
-X-CSE-ConnectionGUID: La8quMhRSkqoKa7QTqYwPw==
-X-CSE-MsgGUID: am3H0/zrQKqVhA6g9J0EHA==
+ 13 Aug 2024 05:16:01 -0700
+X-CSE-ConnectionGUID: G91UJ2irRgmzOgdzY1Y8Vg==
+X-CSE-MsgGUID: juAbmmkLT/Sp+ALv8hBY/w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="96181335"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="96181362"
 Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 05:15:56 -0700
+ 13 Aug 2024 05:16:00 -0700
 From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t 1/5] lib/igt_kms: Add infra to handle crtc arbitrary attributes
-Date: Tue, 13 Aug 2024 17:36:14 +0530
-Message-ID: <20240813120618.2697195-2-bhanuprakash.modem@intel.com>
+Subject: [i-g-t 3/5] lib/dsc: Reset DSC bpc to default on exit
+Date: Tue, 13 Aug 2024 17:36:16 +0530
+Message-ID: <20240813120618.2697195-4-bhanuprakash.modem@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
 References: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
@@ -67,213 +67,89 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We may want to poke at various other crtc attributes
-via sysfs/debugfs. Add a mechamisn to handle crtc
-arbitrary attributes.
+Add support to force the DSC bpc to default on exit.
 
 Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
 ---
- lib/igt_kms.c | 150 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |   3 +
- 2 files changed, 153 insertions(+)
+ lib/igt_dsc.c                | 16 ++++++++++++++++
+ lib/igt_dsc.h                |  1 +
+ tests/intel/kms_dsc_helper.c |  9 ++++++++-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index e030b35a6..a8e535a8b 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -92,6 +92,7 @@
- #define DISPLAY_TILE_BLOCK 0x12
- 
- typedef bool (*igt_connector_attr_set)(int dir, const char *attr, const char *value);
-+typedef bool (*igt_crtc_attr_set)(int dir, const char *attr, const char *value);
- 
- struct igt_connector_attr {
- 	uint32_t connector_type;
-@@ -102,7 +103,16 @@ struct igt_connector_attr {
- 	const char *attr, *value, *reset_value;
- };
- 
-+struct igt_crtc_attr {
-+	int pipe;
-+	int idx;
-+	int dir;
-+	igt_crtc_attr_set set;
-+	const char *attr, *value, *reset_value;
-+};
-+
- static struct igt_connector_attr connector_attrs[MAX_CONNECTORS];
-+static struct igt_crtc_attr crtc_attrs[IGT_MAX_PIPES];
- 
- /**
-  * igt_kms_get_base_edid:
-@@ -1802,6 +1812,125 @@ void kmstest_force_edid(int drm_fd, drmModeConnector *connector,
- 	igt_assert(ret != -1);
- }
- 
-+static struct igt_crtc_attr *crtc_attr_find(int idx, enum pipe pipe,
-+					    igt_crtc_attr_set set,
-+					    const char *attr)
-+{
-+	igt_assert(pipe != PIPE_NONE || pipe >= IGT_MAX_PIPES);
-+
-+	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-+		struct igt_crtc_attr *c = &crtc_attrs[i];
-+
-+		if (c->idx == idx &&
-+		    c->pipe == pipe &&
-+		    c->set == set && !strcmp(c->attr, attr))
-+			return c;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct igt_crtc_attr *crtc_attr_find_free(void)
-+{
-+	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-+		struct igt_crtc_attr *c = &crtc_attrs[i];
-+
-+		if (!c->attr)
-+			return c;
-+	}
-+
-+	return NULL;
-+}
-+
-+static struct igt_crtc_attr *crtc_attr_alloc(int idx, enum pipe pipe,
-+					     int dir, igt_crtc_attr_set set,
-+					     const char *attr, const char *reset_value)
-+{
-+	struct igt_crtc_attr *c = crtc_attr_find_free();
-+
-+	c->idx = idx;
-+	c->pipe = pipe;
-+
-+	c->dir = dir;
-+	c->set = set;
-+	c->attr = attr;
-+	c->reset_value = reset_value;
-+
-+	return c;
-+}
-+
-+static void crtc_attr_free(struct igt_crtc_attr *c)
-+{
-+	memset(c, 0, sizeof(*c));
-+}
-+
-+static bool crtc_attr_set(int idx, enum pipe pipe,
-+			  int dir, igt_crtc_attr_set set,
-+			  const char *attr, const char *value,
-+			  const char *reset_value)
-+{
-+	struct igt_crtc_attr *c;
-+
-+	c = crtc_attr_find(idx, pipe, set, attr);
-+	if (!c)
-+		c = crtc_attr_alloc(idx, pipe, dir, set, attr, reset_value);
-+
-+	c->value = value;
-+
-+	if (!c->set(c->dir, c->attr, c->value)) {
-+		crtc_attr_free(c);
-+		return false;
-+	}
-+
-+	if (!strcmp(c->value, c->reset_value))
-+		crtc_attr_free(c);
-+
-+	return true;
-+}
-+
-+static bool crtc_attr_set_debugfs(int drm_fd, enum pipe pipe,
-+				  const char *attr, const char *value,
-+				  const char *reset_value)
-+{
-+	int idx, dir;
-+
-+	idx = igt_device_get_card_index(drm_fd);
-+	if (idx < 0 || idx > 63)
-+		return false;
-+
-+	dir = igt_debugfs_pipe_dir(drm_fd, pipe, O_DIRECTORY);
-+	if (dir < 0)
-+		return false;
-+
-+	if (!crtc_attr_set(idx, pipe, dir,
-+			   igt_sysfs_set, attr,
-+			   value, reset_value))
-+		return false;
-+
-+	igt_info("Crtc-%d/%s is now %s\n", pipe, attr, value);
-+
-+	return true;
-+}
-+
-+/**
-+ * kmstest_set_connector_dpms:
-+ *
-+ * Dump all attr state on all crtcs.
-+ */
-+void dump_crtc_attrs(void)
-+{
-+	igt_debug("Current crtc attrs:\n");
-+
-+	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-+		struct igt_crtc_attr *c = &crtc_attrs[i];
-+
-+		if (!c->attr)
-+			continue;
-+
-+		igt_debug("\tcrtc-%d/%s: %s\n", c->pipe, c->attr, c->value);
-+	}
-+}
-+
- /**
-  * sort_drm_modes_by_clk_dsc:
-  * @a: first element
-@@ -5459,6 +5588,27 @@ void igt_reset_connectors(void)
- 	}
+diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
+index 229cd3298..409807b92 100644
+--- a/lib/igt_dsc.c
++++ b/lib/igt_dsc.c
+@@ -141,6 +141,22 @@ int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc)
+ 	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_bpc", buf);
  }
  
 +/**
-+ * igt_reset_crtcs:
++ * igt_get_dsc_bpc_debugfs_fd:
++ * @drmfd: A drm file descriptor
++ * @connector_name: Name of the libdrm connector we're going to use
 + *
-+ * Remove any forced state from the crtcs.
++ * Returns: fd of the DSC BPC debugfs for the given connector, else returns -1.
 + */
-+void igt_reset_crtcs(void)
++int igt_get_dsc_bpc_debugfs_fd(int drmfd, char *connector_name)
 +{
-+	/*
-+	 * Reset the crtcs stored in crtc_attrs, avoiding any
-+	 * functions that are not safe to call in signal handlers
-+	 */
-+	for (int i = 0; i < ARRAY_SIZE(crtc_attrs); i++) {
-+		struct igt_crtc_attr *c = &crtc_attrs[i];
++	char file_name[128] = {0};
 +
-+		if (!c->attr)
-+			continue;
++	sprintf(file_name, "%s/i915_dsc_bpc", connector_name);
 +
-+		c->set(c->dir, c->attr, c->reset_value);
-+	}
++	return openat(igt_debugfs_dir(drmfd), file_name, O_WRONLY);
 +}
 +
  /**
-  * igt_watch_uevents:
-  *
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index e8582a45b..6cfa6230a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1085,6 +1085,9 @@ void igt_pipe_refresh(igt_display_t *display, enum pipe pipe, bool force);
- void igt_enable_connectors(int drm_fd);
- void igt_reset_connectors(void);
+  * igt_get_dsc_debugfs_fd:
+  * @drmfd: A drm file descriptor
+diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
+index 7ab0917ec..1f3ea6920 100644
+--- a/lib/igt_dsc.h
++++ b/lib/igt_dsc.h
+@@ -18,6 +18,7 @@ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
+ int igt_force_dsc_enable(int drmfd, char *connector_name);
+ int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
+ int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
++int igt_get_dsc_bpc_debugfs_fd(int drmfd, char *connector_name);
+ bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+ 						enum dsc_output_format output_format);
+ int igt_force_dsc_output_format(int drmfd, char *connector_name,
+diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+index 0de09b8e9..53bc1cc33 100644
+--- a/tests/intel/kms_dsc_helper.c
++++ b/tests/intel/kms_dsc_helper.c
+@@ -6,6 +6,7 @@
+ #include "kms_dsc_helper.h"
  
-+void igt_reset_crtcs(void);
-+void dump_crtc_attrs(void);
+ static bool force_dsc_en_orig;
++static bool force_dsc_en_bpc_orig;
+ static bool force_dsc_fractional_bpp_en_orig;
+ static int force_dsc_restore_fd = -1;
+ static int force_dsc_fractional_bpp_restore_fd = -1;
+@@ -33,6 +34,8 @@ void save_force_dsc_en(int drmfd, igt_output_t *output)
+ {
+ 	force_dsc_en_orig =
+ 		igt_is_force_dsc_enabled(drmfd, output->name);
++	force_dsc_en_bpc_orig =
++		igt_get_dsc_bpc_debugfs_fd(drmfd, output->name);
+ 	force_dsc_restore_fd =
+ 		igt_get_dsc_debugfs_fd(drmfd, output->name);
+ 	igt_assert_lte(0, force_dsc_restore_fd);
+@@ -45,8 +48,12 @@ void restore_force_dsc_en(void)
+ 
+ 	igt_debug("Restoring DSC enable\n");
+ 	igt_assert(write(force_dsc_restore_fd, force_dsc_en_orig ? "1" : "0", 1) == 1);
+-
+ 	close(force_dsc_restore_fd);
 +
- uint32_t kmstest_get_vbl_flag(int crtc_offset);
++	igt_debug("Restoring DSC BPC enable\n");
++	igt_assert(write(force_dsc_en_bpc_orig, "0", 1) == 1);
++	close(force_dsc_en_bpc_orig);
++
+ 	force_dsc_restore_fd = -1;
+ }
  
- const struct edid *igt_kms_get_base_edid(void);
 -- 
 2.43.2
 
