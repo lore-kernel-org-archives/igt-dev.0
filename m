@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993E1C52D7C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF2F7C52D7B
 	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 04:22:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D22B10E245;
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC01510E25A;
 	Tue, 13 Aug 2024 04:22:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fUuhu7OD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kSVrpyxZ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 70FB710E245
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 04:22:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A19E810E245
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 04:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723522922; x=1755058922;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=CIXmmGp1iOExZ2m3GJY7J87a0+vIhry1DIct7dmburU=;
- b=fUuhu7ODXyMYlOrj/kgCWw7S7NDKOIoWW1BNYAS5YmqRTG1Pt+Xy7V9d
- 4MuIkt7lGcUxnCaOTxhQ4T88RubmMAV5o9/F+qJgcS1N7mfjDb3XvzGsh
- ONx2Rs/ltRF18+qwKE/AdvKc57yU/07Hs5dQ0zxsxP7gsZWtdO/ITSNnG
- c11FvnlpqGal0Au87aciEugw4M9piWbFciudzq3sFPBIeeLx0EoJjyMER
- H/rcDW0OhxmDfbl5RWHR55vnQH5VdfEVtPbTOPNlP0K6tZROmE0Fl4QCS
- uZN9x2fnE5Dols204JmtFd2orc62uRCIuWxW32wSuAPeY4YUGDfZcYFdL w==;
-X-CSE-ConnectionGUID: 8O4nwpZPSVWadtabv5/8Bg==
-X-CSE-MsgGUID: lXAVyWN4QCCxJUxbFHOQlQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="44186575"
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="44186575"
+ t=1723522923; x=1755058923;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=muCBbOi6TV9lBzXZ+6RhLXZrB/KBW07FkPBHKhxqjgI=;
+ b=kSVrpyxZ2HxDUHcxkiFjZwUx6MvR2uNSp4Hb4xIVP9usn+g3IFDPCLuc
+ sphQ5eVkebIO3JnkAzppCjRn6jb1h4QSbF2hkWtmFZk9xoqas3JtHOhAG
+ GRfULTVOZfTiOUdrsK7lJzA4Fh9WyZrFDs4WIzkaoDmDPhb1harz7Tr1E
+ Ekhvfp6MOCMI/vj2Vcdlsp+Jlpsjtrj0+a9mHPhtRLmXvKc/2WUI6dvlW
+ UJ0oPyYOcq/mQ8vihwHyE9PZmJ5PYShujMA6Ekat5Y/QGEIvk5CQPPSJ0
+ IDM7tAql7qiZAgugLOL3i+nV2FJoHyMxuexlF3xXLRD55ayVs+Ld0r6kf A==;
+X-CSE-ConnectionGUID: o6F7wNlJTpOY7bHWNT3Z8w==
+X-CSE-MsgGUID: ECAyiMcERsiYnAzi9QR59Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="44186576"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="44186576"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2024 21:22:01 -0700
-X-CSE-ConnectionGUID: +IPuFHp+S9yxJ6W9JX7aZw==
-X-CSE-MsgGUID: AItNVEcTTzKyWoXzZ8zoiQ==
+ 12 Aug 2024 21:22:03 -0700
+X-CSE-ConnectionGUID: 9x58NycCQnKbYZWVQDh3ug==
+X-CSE-MsgGUID: mcmhnkuJQKOZo0DveSsZSg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="58210032"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="58210036"
 Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
- by fmviesa007.fm.intel.com with ESMTP; 12 Aug 2024 21:22:00 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 12 Aug 2024 21:22:02 -0700
 From: Suraj Kandpal <suraj.kandpal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: pranay.samala@intel.com, ankit.k.nautiyal@intel.com,
  Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t 0/4] Improve MST HDCP tests
-Date: Tue, 13 Aug 2024 09:49:31 +0530
-Message-ID: <20240813041936.4014668-1-suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t 1/4] tests/kms_content_protection: Move HDCP output
+ checks earlier
+Date: Tue, 13 Aug 2024 09:49:32 +0530
+Message-ID: <20240813041936.4014668-2-suraj.kandpal@intel.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240813041936.4014668-1-suraj.kandpal@intel.com>
+References: <20240813041936.4014668-1-suraj.kandpal@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,22 +68,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Improve HDCP MST test by doing the following
--Eliminate unnecessary loops and wait times
--Add retry logic for mst test cases
--Change screen color based on HDCP Encryption Status
+Move the HDCP output check earlier when no. MST outputs are being
+checked this will avoid us using an extra loop and an extra array.
 
 Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+---
+ tests/kms_content_protection.c | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-Suraj Kandpal (4):
-  tests/kms_content_protection: Move HDCP output checks earlier
-  tests/kms_content_protection: Move try commit call
-  tests/kms_content_protection: Add retry logic for mst usecase
-  tests/kms_content_protection: Set screen red/green based on CP Status
-
- tests/kms_content_protection.c | 120 +++++++++++++++++++++++++--------
- 1 file changed, 91 insertions(+), 29 deletions(-)
-
+diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
+index e9a468eb0..6bd744351 100644
+--- a/tests/kms_content_protection.c
++++ b/tests/kms_content_protection.c
+@@ -638,7 +638,7 @@ test_content_protection_mst(int content_type)
+ 	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
+ 	enum pipe pipe;
+ 	bool pipe_found;
+-	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
++	igt_output_t *hdcp_mst_output[IGT_MAX_PIPES];
+ 
+ 	for_each_pipe(display, pipe)
+ 		max_pipe++;
+@@ -662,10 +662,13 @@ test_content_protection_mst(int content_type)
+ 
+ 		igt_output_set_pipe(output, pipe);
+ 		prepare_modeset_on_mst_output(output);
+-		mst_output[dp_mst_outputs++] = output;
++		dp_mst_outputs++;
++		if (output_hdcp_capable(output, content_type))
++			hdcp_mst_output[valid_outputs++] = output;
+ 	}
+ 
+ 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
++	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the required HDCP support\n");
+ 
+ 	if (igt_display_try_commit_atomic(display,
+ 				DRM_MODE_ATOMIC_TEST_ONLY |
+@@ -674,22 +677,13 @@ test_content_protection_mst(int content_type)
+ 		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
+ 		igt_require_f(found, "No valid mode combo found for MST modeset\n");
+ 
+-		for (count = 0; count < dp_mst_outputs; count++)
+-			prepare_modeset_on_mst_output(mst_output[count]);
++		for (count = 0; count < valid_outputs; count++)
++			prepare_modeset_on_mst_output(hdcp_mst_output[count]);
+ 	}
+ 
+ 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+ 	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
+ 
+-	for (count = 0; count < dp_mst_outputs; count++) {
+-		if (!output_hdcp_capable(mst_output[count], content_type))
+-			continue;
+-
+-		hdcp_mst_output[valid_outputs++] = mst_output[count];
+-	}
+-
+-	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the required HDCP support\n");
+-
+ 	for (count = 0; count < valid_outputs; count++) {
+ 		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
+ 
 -- 
 2.43.2
 
