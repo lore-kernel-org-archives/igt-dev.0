@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D729FC52D7C
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 12:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A54DC52D7C
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 12:45:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 93E7110E331;
-	Tue, 13 Aug 2024 12:42:38 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83BF310E331;
- Tue, 13 Aug 2024 12:42:37 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4785563239488938677=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0451710E339;
+	Tue, 13 Aug 2024 12:45:48 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RKngB9q2";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 919FF10E336
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 12:45:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723553146; x=1755089146;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=MXeBMRh+Xz8l3D5er3BDOsFFlqbqo7KlikYzVyK1xe4=;
+ b=RKngB9q2sdieSwxIJ/03u4BF8anRkctcSNsPb4k/l0cD77kyY+rJobbr
+ sNKz8D4JPZgkp65aJPtgbdaFbBp3Ppmj3OrXSxFE3JNiPFw12aRCEbXJH
+ VFppv/+/8K2sQ1mGYWghMLZXWcmN1AN+An1LE5m9Em6j3xgM5CFJlVEZc
+ 9ZGp/OSguI/wCyBYXELSmhKOJegEwQaBS19FyKZ7S2HRAIwZ2DxygsJg9
+ id6qQIDLI7m3tJcWda7cSUFQpoLAMUjssJ4QXyj9ruhU+uBzznHFtUPMZ
+ 0bfmDVYNMCES9vdtYCG4rfw0/WnniU0abcVbpDJ4UGj0BwuPEdSsd+QXH g==;
+X-CSE-ConnectionGUID: 739TTkTjQUujHtEIvrkGTg==
+X-CSE-MsgGUID: 47M8oNt6RzWi2dFKeAMUGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21582218"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="21582218"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2024 05:45:45 -0700
+X-CSE-ConnectionGUID: f0Lf+YHeQKi7Rc4wv9Njjw==
+X-CSE-MsgGUID: HBgABMTZQ9K3yM04b6fiRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="63338259"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.213])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2024 05:45:44 -0700
+From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Andi Shyti <andi.shyti@linux.intel.com>
+Subject: [PATCH i-g-t] lib|tests: Don't dereference engine outside
+ for_each_ctx_engine macro
+Date: Tue, 13 Aug 2024 14:45:36 +0200
+Message-Id: <20240813124536.66551-1-zbigniew.kempczynski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Force_connector/crtc_attrs_to_?=
- =?utf-8?q?default?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Aug 2024 12:42:37 -0000
-Message-ID: <172355295753.613595.2850613046972623286@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
-In-Reply-To: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +66,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4785563239488938677==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Engine used inside for_each_ctx_engine() macro is valid only inside its
+block as it is accessing local stack memory. Using outside the block works
+by an accident if luckily nothing will overwrite this stack before use.
+Fix found risky usages by using engine only inside the block or do its
+copy.
 
-== Series Details ==
+Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+---
+ lib/igt_fb.c                    |  8 ++++----
+ tests/intel/gem_lmem_swapping.c | 14 ++++++++++----
+ 2 files changed, 14 insertions(+), 8 deletions(-)
 
-Series: Force connector/crtc attrs to default
-URL   : https://patchwork.freedesktop.org/series/137234/
-State : success
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index ab162a5b74..addff2cfba 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -3050,13 +3050,13 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 						   dst_fb->size);
+ 		} else if (ahnd && block_copy_ok(src_fb) && block_copy_ok(dst_fb)) {
+ 			for_each_ctx_engine(src_fb->fd, ictx, e) {
+-				if (gem_engine_can_block_copy(src_fb->fd, e))
++				if (gem_engine_can_block_copy(src_fb->fd, e)) {
++					do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
++						      bb, bb_size, ictx, e);
+ 					break;
++				}
+ 			}
+ 			igt_assert_f(e, "No block copy capable engine found!\n");
+-
+-			do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
+-				      bb, bb_size, ictx, e);
+ 		} else {
+ 			igt_blitter_src_copy(dst_fb->fd,
+ 					     ahnd, ctx, NULL,
+diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+index b8f24742b8..b125261519 100644
+--- a/tests/intel/gem_lmem_swapping.c
++++ b/tests/intel/gem_lmem_swapping.c
+@@ -189,6 +189,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+ {
+ 	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+ 	const struct intel_execution_engine2 *e;
++	struct intel_execution_engine2 ec;
+ 	struct blt_copy_data blt = {};
+ 	struct blt_copy_batch *cmd;
+ 	uint64_t size = 4096;
+@@ -196,8 +197,10 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+ 
+ 	obj->seed = seed;
+ 	for_each_ctx_engine(i915, ctx, e) {
+-		if (gem_engine_can_block_copy(i915, e))
++		if (gem_engine_can_block_copy(i915, e)) {
++			ec = *e;
+ 			break;
++		}
+ 	}
+ 	igt_assert_f(e, "Ctx don't have blt engine\n");
+ 
+@@ -224,7 +227,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+ 	blt_set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+ 			   SURFACE_TYPE_2D);
+ 
+-	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
++	blt_block_copy(i915, ctx, &ec, ahnd, &blt, pext);
+ 	free(cmd);
+ }
+ 
+@@ -255,14 +258,17 @@ verify_object_ccs(int i915, const struct object *obj,
+ {
+ 	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+ 	const struct intel_execution_engine2 *e;
++	struct intel_execution_engine2 ec;
+ 	struct blt_copy_data blt = {};
+ 	struct blt_copy_batch *cmd;
+ 	uint64_t size = 4096;
+ 	unsigned long j, val, *buf;
+ 
+ 	for_each_ctx_engine(i915, ctx, e) {
+-		if (gem_engine_can_block_copy(i915, e))
++		if (gem_engine_can_block_copy(i915, e)) {
++			ec = *e;
+ 			break;
++		}
+ 	}
+ 	igt_assert_f(e, "Ctx don't have blt engine\n");
+ 
+@@ -284,7 +290,7 @@ verify_object_ccs(int i915, const struct object *obj,
+ 	blt_set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+ 			   SURFACE_TYPE_2D);
+ 	blt_set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
+-	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
++	blt_block_copy(i915, ctx, &ec, ahnd, &blt, pext);
+ 
+ 	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
+ 					obj->size, PROT_READ);
+-- 
+2.34.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7967_BAT -> XEIGTPW_11565_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 7)
-------------------------------
-
-  Missing    (2): bat-lnl-2 bat-lnl-1 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7967 -> IGTPW_11565
-  * Linux: xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78 -> xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426
-
-  IGTPW_11565: 11565
-  IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78: bb06cec392c188bc980be5cee9a85240ce866b78
-  xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426: 924db73e261b7bfd4b70b14db61197f48bf09426
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11565/index.html
-
---===============4785563239488938677==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Force connector/crtc attrs to default</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137234/">https://patchwork.freedesktop.org/series/137234/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11565/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11565/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7967_BAT -&gt; XEIGTPW_11565_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 7)</h2>
-<p>Missing    (2): bat-lnl-2 bat-lnl-1 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7967 -&gt; IGTPW_11565</li>
-<li>Linux: xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78 -&gt; xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426</li>
-</ul>
-<p>IGTPW_11565: 11565<br />
-  IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78: bb06cec392c188bc980be5cee9a85240ce866b78<br />
-  xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426: 924db73e261b7bfd4b70b14db61197f48bf09426</p>
-
-</body>
-</html>
-
---===============4785563239488938677==--
