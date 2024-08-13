@@ -4,26 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E244CC52D7C
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 05:00:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E47C52D7B
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 05:48:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D48D10E26D;
-	Tue, 13 Aug 2024 05:00:09 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AC3210E26D;
- Tue, 13 Aug 2024 05:00:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8739072935569024877=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6876310E2A2;
+	Tue, 13 Aug 2024 05:48:35 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G63ibCCK";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC68810E2A2
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 05:48:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723528115; x=1755064115;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=GX2cV2LAlu0rlsiwN90huC2KGfAfKrTTF98Quh70EDA=;
+ b=G63ibCCKCT1vBC+oK5Gklo6NCw2d0OK//ZBqa/RozVW2DXR/93lLH5GY
+ N/r8HYnuNlD3tTmfjwZs4M0U7Ll4IMnyyA0Bg3YDELXPzXiVd3S/ZQ8wX
+ xVZIci5LXSMj3Tq4TcjBjP1AK3ViH8ezsGL1pNe5aNRc8e2tqQnr42sOQ
+ TpQVjeGxVYKIQ9/HsmPg0TplQoHUvqF3dyPZU1dkdHD+b98ylwSl0xKse
+ wj0pvoaNn9poSAd4EF8N4CYzix2JmqAFhIX0M5kQJVlO6JLeo/diMl419
+ RMlAL1idqLTb8hA2n5t4OBx0irMhh12Mk+8czTnV3EVZikpbV3aSnFS9M A==;
+X-CSE-ConnectionGUID: Ag/GQNvMRYiKoF+HOEXAGA==
+X-CSE-MsgGUID: GKrMs+n+QFWZIU2Qnv87nw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="25459872"
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="25459872"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2024 22:48:23 -0700
+X-CSE-ConnectionGUID: sW/qCB6WR5OKVoMhdJQdeA==
+X-CSE-MsgGUID: yr2H49VySqW2O31FA1oZSQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="58623735"
+Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2024 22:48:21 -0700
+From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: [i-g-t 0/4] Add more logs to skips (KMS)
+Date: Tue, 13 Aug 2024 11:08:41 +0530
+Message-ID: <20240813053845.2567954-1-bhanuprakash.modem@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Improve_MST_HDCP_tests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Suraj Kandpal" <suraj.kandpal@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Aug 2024 05:00:08 -0000
-Message-ID: <172352520829.596985.8831301066522689695@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240813041936.4014668-1-suraj.kandpal@intel.com>
-In-Reply-To: <20240813041936.4014668-1-suraj.kandpal@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,125 +62,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8739072935569024877==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Debugging would be easier if we had logs available for
+test failures and skips. This patch adds print statements
+at crucial points to provide better insights.
 
-== Series Details ==
+Bhanuprakash Modem (4):
+  tests/kms_color: Add more logs to skips
+  tests/kms_dither: Add more logs to skips
+  tests/kms_vblank: Add more logs to skips
+  tests/kms_vrr: Add more logs to skips
 
-Series: Improve MST HDCP tests
-URL   : https://patchwork.freedesktop.org/series/137215/
-State : success
+ tests/kms_color.c  | 21 +++++++++++++++++----
+ tests/kms_dither.c | 10 ++++++++--
+ tests/kms_vblank.c | 12 +++++++++---
+ tests/kms_vrr.c    | 29 +++++++++++++++++++++--------
+ 4 files changed, 55 insertions(+), 17 deletions(-)
 
-== Summary ==
+-- 
+2.43.2
 
-CI Bug Log - changes from XEIGT_7967_BAT -> XEIGTPW_11562_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11562_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [FAIL][1] ([Intel XE#886]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7967/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11562/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
-
-
-Build changes
--------------
-
-  * IGT: IGT_7967 -> IGTPW_11562
-
-  IGTPW_11562: 1b143bd372b1cedd2a00ca9986f0fe85d573db5f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78: bb06cec392c188bc980be5cee9a85240ce866b78
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11562/index.html
-
---===============8739072935569024877==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Improve MST HDCP tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137215/">https://patchwork.freedesktop.org/series/137215/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11562/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11562/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7967_BAT -&gt; XEIGTPW_11562_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11562_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7967/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11562/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7967 -&gt; IGTPW_11562</li>
-</ul>
-<p>IGTPW_11562: 1b143bd372b1cedd2a00ca9986f0fe85d573db5f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78: bb06cec392c188bc980be5cee9a85240ce866b78</p>
-
-</body>
-</html>
-
---===============8739072935569024877==--
