@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 002D3C531DD
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 12:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D729FC52D7C
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 12:42:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A775210E326;
-	Tue, 13 Aug 2024 12:16:05 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ShO8d1CP";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9A50610E326
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 12:16:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723551364; x=1755087364;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7fuiVgB49bA3gHyFref26E0/QQTGrzUpNjpIm9A7r+8=;
- b=ShO8d1CP69PA9gA4asS0cK4j/H1qGhjfjfHk/pexW06V8lEUPAIpbgee
- 6CtsX2aOflz1YQV72zjFWZU6v31k7OVfqa+h+6SrFq6cF9vc9mwi+zdmc
- t2Dde+XeGLDyW82hQLEDG9ONaWC7e/DMHUZv9zhx6brH6RYsAAUUORise
- dXfPvYi4IDqZxmMiIo4IvliD6f8IPVlpsfU8A4YPNc2jmCTcV652H7fQy
- Wt7Xmw8bVydVgXlIteeUsy22DPvbcGGKfh1mEUsPvCbhkbLAwoc/slALF
- BEmjTtsk1LKrkupkDjDRuUARGmmdGvCxvONyE03+lJ1HJ9jHa5S94vLFE Q==;
-X-CSE-ConnectionGUID: 8mmw0VLOSlePqE/voevg8Q==
-X-CSE-MsgGUID: hTfBE0yJQsCjzAeb0343JA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21869630"
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="21869630"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 05:16:04 -0700
-X-CSE-ConnectionGUID: x76OCN3VRO2Xt6LDoR1yYg==
-X-CSE-MsgGUID: /4oxF4AlSfedz2B+Y4F6jQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="96181390"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 05:16:03 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t 5/5] lib/igt_kms: Reset spurious hpd to default on exit
-Date: Tue, 13 Aug 2024 17:36:18 +0530
-Message-ID: <20240813120618.2697195-6-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
-References: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 93E7110E331;
+	Tue, 13 Aug 2024 12:42:38 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83BF310E331;
+ Tue, 13 Aug 2024 12:42:37 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4785563239488938677=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Force_connector/crtc_attrs_to_?=
+ =?utf-8?q?default?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Aug 2024 12:42:37 -0000
+Message-ID: <172355295753.613595.2850613046972623286@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240813120618.2697195-1-bhanuprakash.modem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,50 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support to force the spurious hpd to default on exit.
+--===============4785563239488938677==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index c9f09c524..936fec4ba 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2896,6 +2896,19 @@ static void igt_handle_spurious_hpd(igt_display_t *display)
- 	dump_connector_attrs();
- }
- 
-+static void igt_reset_spurious_hpd(int drm_fd)
-+{
-+	/* Proceed with spurious HPD handling only if the env var is set */
-+	if (!getenv("IGT_KMS_IGNORE_HPD"))
-+		return;
-+
-+	/* Set the ignore HPD for the driver */
-+	if (!igt_ignore_long_hpd(drm_fd, false)) {
-+		igt_info("Unable set the ignore HPD debugfs entry \n");
-+		return;
-+	}
-+}
-+
- /**
-  * igt_display_reset_outputs:
-  * @display: a pointer to an initialized #igt_display_t structure
-@@ -3415,6 +3428,9 @@ void igt_display_fini(igt_display_t *display)
- 		igt_output_fini(&display->outputs[i]);
- 	}
- 
-+	if (display->n_pipes && display->n_outputs)
-+		igt_reset_spurious_hpd(display->drm_fd);
-+
- 	free(display->outputs);
- 	display->outputs = NULL;
- 	free(display->pipes);
--- 
-2.43.2
+Series: Force connector/crtc attrs to default
+URL   : https://patchwork.freedesktop.org/series/137234/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7967_BAT -> XEIGTPW_11565_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 7)
+------------------------------
+
+  Missing    (2): bat-lnl-2 bat-lnl-1 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7967 -> IGTPW_11565
+  * Linux: xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78 -> xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426
+
+  IGTPW_11565: 11565
+  IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78: bb06cec392c188bc980be5cee9a85240ce866b78
+  xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426: 924db73e261b7bfd4b70b14db61197f48bf09426
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11565/index.html
+
+--===============4785563239488938677==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Force connector/crtc attrs to default</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137234/">https://patchwork.freedesktop.org/series/137234/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11565/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11565/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7967_BAT -&gt; XEIGTPW_11565_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 7)</h2>
+<p>Missing    (2): bat-lnl-2 bat-lnl-1 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7967 -&gt; IGTPW_11565</li>
+<li>Linux: xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78 -&gt; xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426</li>
+</ul>
+<p>IGTPW_11565: 11565<br />
+  IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78: bb06cec392c188bc980be5cee9a85240ce866b78<br />
+  xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426: 924db73e261b7bfd4b70b14db61197f48bf09426</p>
+
+</body>
+</html>
+
+--===============4785563239488938677==--
