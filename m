@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82955C531DC
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 13:25:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 138FAC52D7B
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Aug 2024 13:36:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4408410E34E;
-	Tue, 13 Aug 2024 13:25:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B035610E356;
+	Tue, 13 Aug 2024 13:36:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T1fHQCTX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c36+66Pe";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED94110E34E
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 13:24:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1FE7510E35B
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Aug 2024 13:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723555500; x=1755091500;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PTZFLoWLk9wo6PtR9tkxXEeZgQCZvIL6OqpNrdoUk04=;
- b=T1fHQCTXiDq2NkJEnRX/VClBj+x+MD2fQNghICuemAagrD+/Ud2eg7XF
- MEcgpGPSBsBHOBYRVe8AwLdkj3gN01Lf/+WkYwYb1gQGyxVDOMjJMFyKN
- HKp1mAaaKkZfMEECJuu8+V+qkZH7th5UAGb6W/ec4TmtePcHj8sf91GFS
- 63pp8xLoL+BRi8rAXGioHJmkk8bpVRNyi9pg+GWhKDkUebL8aevg/wn3b
- 3sWIlnnFpqBp29cOXLSMXUaSTb94wmKXp6X7aNes8g7dOkP1z/24XS3xH
- 5BSNCyI/bmT+53YKqWGm/I+JFYb1wp7aqOw1ZmFr/qHNScMOOx5YGUev3 A==;
-X-CSE-ConnectionGUID: R/EfaiihTRuuzNhOMiDbhA==
-X-CSE-MsgGUID: JCsJBz9GQO+/FND1SF1YMg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="21579261"
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="21579261"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 06:24:59 -0700
-X-CSE-ConnectionGUID: KUThmLsRSpy/H5Mjnz0a7g==
-X-CSE-MsgGUID: J5K4gYWyTeOjHhfT62bnxg==
+ t=1723556216; x=1755092216;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=DoUXmN2cganv4/f/2Li/fsqoSml4BZKpjkBo1dmZwEo=;
+ b=c36+66PeuvbCDdfg+GqJm6YVh/VTOeziH/Ja3bl0HcEwzU7TRgZfACGc
+ jTHT5YZF7Xzyv//s4kyh9fWIlrr8XyukO4bG6TQayTP2clgGYTW3v1JoN
+ PpsRn4m45kV7IEK8V6xE3nodARyqNZF+fA6pIHGisuIIlRe0hT6+bJEst
+ o3JQGz0gc7XDC++t114s+5br3T6NOQOeV6y6QEPUZXolkBzNH+nKPo/7b
+ YH8jFrbJCMhWpfpg/QmgA11wEoefqUjyyDbxcm21BD4487dRTIg6MQbLY
+ W1ZjPbDpYvLqgwSsrMf1tyGKtW/LXftbnGTy0hmkmKFboDMb2sxPmCmXt Q==;
+X-CSE-ConnectionGUID: 0IcRNKPjQLGzEDOTN0BUcA==
+X-CSE-MsgGUID: kbMHnxppS7ONRrKL9pe4+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="33124083"
+X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; d="scan'208";a="33124083"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2024 06:36:56 -0700
+X-CSE-ConnectionGUID: K/3HoiO3R6ClEgN7yFtTTg==
+X-CSE-MsgGUID: Z2XNYJ/PS76IQjiSJJN7qA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,285,1716274800"; d="scan'208";a="63515042"
-Received: from bhanu-nuclab.iind.intel.com ([10.145.169.172])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2024 06:24:59 -0700
-From: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [i-g-t 2/2] lib/igt_kms: Clear all connector properties on reset
-Date: Tue, 13 Aug 2024 18:45:20 +0530
-Message-ID: <20240813131520.2715442-3-bhanuprakash.modem@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240813131520.2715442-1-bhanuprakash.modem@intel.com>
-References: <20240813131520.2715442-1-bhanuprakash.modem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,286,1716274800"; d="scan'208";a="58755029"
+Received: from ljcornel-mobl.ger.corp.intel.com (HELO [10.251.219.78])
+ ([10.251.219.78])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2024 06:36:55 -0700
+Message-ID: <e4d675ba-944b-4aa2-9803-edadb2b2f403@linux.intel.com>
+Date: Tue, 13 Aug 2024 15:36:50 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib|tests: Don't dereference engine outside
+ for_each_ctx_engine macro
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+References: <20240813124536.66551-1-zbigniew.kempczynski@intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20240813124536.66551-1-zbigniew.kempczynski@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,40 +72,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Just to sanitize all properties we should clear all
-connector properties on reset.
+Please do not apply this patch. I am working on a proper fix.
 
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
----
- lib/igt_kms.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f5fc9ada1..f52b35a72 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -2575,6 +2575,7 @@ static void igt_output_reset(igt_output_t *output)
- 	memset(&output->override_mode, 0, sizeof(output->override_mode));
- 
- 	igt_output_set_prop_value(output, IGT_CONNECTOR_CRTC_ID, 0);
-+	igt_output_set_prop_value(output, IGT_CONNECTOR_DPMS, DRM_MODE_DPMS_OFF);
- 
- 	if (igt_output_has_prop(output, IGT_CONNECTOR_BROADCAST_RGB))
- 		igt_output_set_prop_value(output, IGT_CONNECTOR_BROADCAST_RGB,
-@@ -2597,6 +2598,13 @@ static void igt_output_reset(igt_output_t *output)
- 	if (igt_output_has_prop(output, IGT_CONNECTOR_DITHERING_MODE))
- 		igt_output_set_prop_enum(output, IGT_CONNECTOR_DITHERING_MODE,
- 					 "off");
-+
-+	if (igt_output_has_prop(output, IGT_CONNECTOR_SCALING_MODE))
-+		igt_output_set_prop_value(output, IGT_CONNECTOR_SCALING_MODE,
-+					  DRM_MODE_SCALE_NONE);
-+
-+	if (igt_output_has_prop(output, IGT_CONNECTOR_MAX_BPC))
-+		igt_output_set_prop_value(output, IGT_CONNECTOR_MAX_BPC, 12);
- }
- 
- /**
--- 
-2.43.2
-
+On 13.08.2024 14:45, Zbigniew Kempczyński wrote:
+> Engine used inside for_each_ctx_engine() macro is valid only inside its
+> block as it is accessing local stack memory. Using outside the block works
+> by an accident if luckily nothing will overwrite this stack before use.
+> Fix found risky usages by using engine only inside the block or do its
+> copy.
+> 
+> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> ---
+>  lib/igt_fb.c                    |  8 ++++----
+>  tests/intel/gem_lmem_swapping.c | 14 ++++++++++----
+>  2 files changed, 14 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index ab162a5b74..addff2cfba 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -3050,13 +3050,13 @@ static void blitcopy(const struct igt_fb *dst_fb,
+>  						   dst_fb->size);
+>  		} else if (ahnd && block_copy_ok(src_fb) && block_copy_ok(dst_fb)) {
+>  			for_each_ctx_engine(src_fb->fd, ictx, e) {
+> -				if (gem_engine_can_block_copy(src_fb->fd, e))
+> +				if (gem_engine_can_block_copy(src_fb->fd, e)) {
+> +					do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
+> +						      bb, bb_size, ictx, e);
+>  					break;
+> +				}
+>  			}
+>  			igt_assert_f(e, "No block copy capable engine found!\n");
+> -
+> -			do_block_copy(src_fb, dst_fb, mem_region, i, ahnd,
+> -				      bb, bb_size, ictx, e);
+>  		} else {
+>  			igt_blitter_src_copy(dst_fb->fd,
+>  					     ahnd, ctx, NULL,
+> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> index b8f24742b8..b125261519 100644
+> --- a/tests/intel/gem_lmem_swapping.c
+> +++ b/tests/intel/gem_lmem_swapping.c
+> @@ -189,6 +189,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+>  {
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+>  	const struct intel_execution_engine2 *e;
+> +	struct intel_execution_engine2 ec;
+>  	struct blt_copy_data blt = {};
+>  	struct blt_copy_batch *cmd;
+>  	uint64_t size = 4096;
+> @@ -196,8 +197,10 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+>  
+>  	obj->seed = seed;
+>  	for_each_ctx_engine(i915, ctx, e) {
+> -		if (gem_engine_can_block_copy(i915, e))
+> +		if (gem_engine_can_block_copy(i915, e)) {
+> +			ec = *e;
+>  			break;
+> +		}
+>  	}
+>  	igt_assert_f(e, "Ctx don't have blt engine\n");
+>  
+> @@ -224,7 +227,7 @@ init_object_ccs(int i915, struct object *obj, struct blt_copy_object *tmp,
+>  	blt_set_object_ext(&ext.dst, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+>  			   SURFACE_TYPE_2D);
+>  
+> -	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> +	blt_block_copy(i915, ctx, &ec, ahnd, &blt, pext);
+>  	free(cmd);
+>  }
+>  
+> @@ -255,14 +258,17 @@ verify_object_ccs(int i915, const struct object *obj,
+>  {
+>  	struct blt_block_copy_data_ext ext = {}, *pext = &ext;
+>  	const struct intel_execution_engine2 *e;
+> +	struct intel_execution_engine2 ec;
+>  	struct blt_copy_data blt = {};
+>  	struct blt_copy_batch *cmd;
+>  	uint64_t size = 4096;
+>  	unsigned long j, val, *buf;
+>  
+>  	for_each_ctx_engine(i915, ctx, e) {
+> -		if (gem_engine_can_block_copy(i915, e))
+> +		if (gem_engine_can_block_copy(i915, e)) {
+> +			ec = *e;
+>  			break;
+> +		}
+>  	}
+>  	igt_assert_f(e, "Ctx don't have blt engine\n");
+>  
+> @@ -284,7 +290,7 @@ verify_object_ccs(int i915, const struct object *obj,
+>  	blt_set_object_ext(&ext.src, 0, obj->blt_obj->x2, obj->blt_obj->y2,
+>  			   SURFACE_TYPE_2D);
+>  	blt_set_object_ext(&ext.dst, 0, tmp->x2, tmp->y2, SURFACE_TYPE_2D);
+> -	blt_block_copy(i915, ctx, e, ahnd, &blt, pext);
+> +	blt_block_copy(i915, ctx, &ec, ahnd, &blt, pext);
+>  
+>  	buf = gem_mmap__device_coherent(i915, tmp->handle, 0,
+>  					obj->size, PROT_READ);
