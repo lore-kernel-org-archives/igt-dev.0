@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2306FC52D7D
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 14:45:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 027B1C3DA4A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 15:09:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB12E10E0AC;
-	Wed, 14 Aug 2024 14:45:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 825E410E4C1;
+	Wed, 14 Aug 2024 15:09:39 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 221D610E0AC;
- Wed, 14 Aug 2024 14:45:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E74210E497;
+ Wed, 14 Aug 2024 15:09:38 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2425625439904429656=="
+ boundary="===============4969346042042731688=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_lib/igt=5Fsysfs=3A_update_i?=
- =?utf-8?q?gt=5Fsysfs=5Fengines_to_run_dynamic_tests_with_its_associated_eng?=
- =?utf-8?q?ine_class=2E?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/amdgpu=3A_add_timeout_fo?=
+ =?utf-8?q?r_queue_reset?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sai.gowtham.ch@intel.com
+To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Aug 2024 14:45:55 -0000
-Message-ID: <172364675513.633194.958001874831785408@2413ebb6fbb6>
+Date: Wed, 14 Aug 2024 15:09:38 -0000
+Message-ID: <172364817854.633351.8432047245479405411@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240814090152.21793-1-sai.gowtham.ch@intel.com>
-In-Reply-To: <20240814090152.21793-1-sai.gowtham.ch@intel.com>
+References: <20240814101140.3165345-1-jesse.zhang@amd.com>
+In-Reply-To: <20240814101140.3165345-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,24 +41,71 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2425625439904429656==
+--===============4969346042042731688==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/igt_sysfs: update igt_sysfs_engines to run dynamic tests with its associated engine class.
-URL   : https://patchwork.freedesktop.org/series/137280/
-State : failure
+Series: tests/amdgpu: add timeout for queue reset
+URL   : https://patchwork.freedesktop.org/series/137288/
+State : success
 
 == Summary ==
 
-Series 137280 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_7970_BAT -> XEIGTPW_11573_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11573_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:
+    - {bat-bmg-2}:        [DMESG-WARN][1] ([Intel XE#877]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11573/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
 
 
+Build changes
+-------------
 
---===============2425625439904429656==
+  * IGT: IGT_7970 -> IGTPW_11573
+
+  IGTPW_11573: 11573
+  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11573/index.html
+
+--===============4969346042042731688==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -79,16 +125,42 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/igt_sysfs: update igt_sysfs_engines to run dynamic tests with its associated engine class.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137280/">https://patchwork.freedesktop.org/series/137280/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add timeout for queue reset</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137288/">https://patchwork.freedesktop.org/series/137288/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11573/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11573/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 137280 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_7970_BAT -&gt; XEIGTPW_11573_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11573_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:<ul>
+<li>{bat-bmg-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11573/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7970 -&gt; IGTPW_11573</li>
+</ul>
+<p>IGTPW_11573: 11573<br />
+  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993</p>
 
 </body>
 </html>
 
---===============2425625439904429656==--
+--===============4969346042042731688==--
