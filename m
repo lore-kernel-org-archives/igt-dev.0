@@ -4,67 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF960C52D7F
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 18:54:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2565EC3DA4A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 19:10:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83E1810E51B;
-	Wed, 14 Aug 2024 18:54:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="TzVtnEwM";
-	dkim-atps=neutral
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
- [209.85.214.176])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 590DA10E51B
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 18:54:37 +0000 (UTC)
-Received: by mail-pl1-f176.google.com with SMTP id
- d9443c01a7336-201df0b2df4so1848185ad.0
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 11:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1723661676; x=1724266476; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to;
- bh=ImWm9S0qV4Zz9buy3eWqQEbZivXMtfBFaXbG2chfQiU=;
- b=TzVtnEwMxUwJshsl+ik66r0tADlqO8ygR3nfoaji0WXi7ufNQHRi1vkYdY+Y9fRdr9
- vfaFDolW+mVnyzASHX2y2vuh6qJ/3cNjCa//K7lZtv7mKnCrD2v4CddBFF4x7EfDPRG/
- 2ANvZA9a1haukLVxwWvnNabaD6GKEuyrwzVsFMOlcVQ8YbaSU3zN88RJ6McYKZsRm4LR
- Tiji/WKhKa7F7iiqyEPEgadXowWM4dmiTqFijisQIUQN3VVbj5pQmTv3aYX1L3YGfHC8
- Vb4Pkk1B4huI4nr16YsYi7O9xUXKlhs9w7I/uFqPjjNu5yq7AWfFno7FJF+SbJLUgsvB
- DMXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1723661676; x=1724266476;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=ImWm9S0qV4Zz9buy3eWqQEbZivXMtfBFaXbG2chfQiU=;
- b=Wo3dgIGuQEjIJfvyeXkUIPaKFE2VjSUfrccv07bWVqjGYJeDDtd9yjRfrf5lUcnXNu
- V1zDpoGJaZwOjWpxQcfaRnssCtN6qOy/+YI5aD2V4kIJDG63xcO208tob50HeavKphxw
- ufZOBtTJqcAphKWR/IEovYlXy+crdZ5BP/tm3MrDcPDH1SOaRD0VpCnre2XZQ7ARk+bK
- Z409aHrWTmWaBVGbtV6zO+7a68yqSh7kUYakP9Te62FjUJImTao9eQOoImRe+MoXFglx
- Jieu925w3lySyQ49p69Y1PJpW1RRpxpVa71PwtH6KGU7Gglt83SnD+ksFbCdWwc5+zWv
- 1U2w==
-X-Gm-Message-State: AOJu0Yz1vFSmDil0ObA4iiHBNDgFuuv9NP1z43aeiQu/K98IIUactQgh
- 84oOlXYDAC7TIQdcaDWKwkOfk6U6vyTQy8zaa48E4/I/z/HYRa/m9MKZyg==
-X-Google-Smtp-Source: AGHT+IHKKeyQgkEM/0t+Kit7w0hVjDzBULmOO9P5BD6Mr0dvCYvY38wi2NRLZcPx02a/fPWlxPs0vg==
-X-Received: by 2002:a17:902:f686:b0:201:eb45:30a4 with SMTP id
- d9443c01a7336-201eb45320dmr17073575ad.9.1723661676260; 
- Wed, 14 Aug 2024 11:54:36 -0700 (PDT)
-Received: from localhost ([2a00:79e1:2e00:1301:12e9:d196:a1e9:ab67])
- by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-201cd14d08dsm32683005ad.109.2024.08.14.11.54.35
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 14 Aug 2024 11:54:35 -0700 (PDT)
-From: Rob Clark <robdclark@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Rob Clark <robdclark@chromium.org>
-Subject: [PATCH 2/2] device_reset: Require a PCI device
-Date: Wed, 14 Aug 2024 11:54:26 -0700
-Message-ID: <20240814185426.70418-2-robdclark@gmail.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240814185426.70418-1-robdclark@gmail.com>
-References: <20240814185426.70418-1-robdclark@gmail.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9781210E522;
+	Wed, 14 Aug 2024 19:10:38 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C6B810E521;
+ Wed, 14 Aug 2024 19:10:38 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1979404874856918530=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2C1/2=5D_lib/xe=3A_Add_XE=5FMAX=5FENGINE=5FINSTANCE?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 14 Aug 2024 19:10:38 -0000
+Message-ID: <172366263810.633948.4273682575984640356@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240814175013.3679997-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240814175013.3679997-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,30 +37,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Rob Clark <robdclark@chromium.org>
+--===============1979404874856918530==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Too much baked in assumptions that the drm device is a PCI device.
+== Series Details ==
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
----
- tests/device_reset.c | 1 +
- 1 file changed, 1 insertion(+)
+Series: series starting with [i-g-t,1/2] lib/xe: Add XE_MAX_ENGINE_INSTANCE
+URL   : https://patchwork.freedesktop.org/series/137317/
+State : success
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index 8ed3ef5220fc..c49f94e2faed 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -200,6 +200,7 @@ static void init_device_fds(struct device_fds *dev)
- 		igt_require_gem(dev->fds.dev);
- 
- 	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
-+	igt_require(strstr(dev_path, "/sys/devices/pci") == dev_path);
- 	addr_pos = strrchr(dev_path, '/');
- 	igt_assert(addr_pos);
- 	igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
--- 
-2.46.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7970_BAT -> XEIGTPW_11578_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11578_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:
+    - {bat-bmg-2}:        [DMESG-WARN][1] ([Intel XE#877]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
+
+  
+#### Warnings ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [DMESG-FAIL][3] ([Intel XE#324]) -> [DMESG-WARN][4] ([Intel XE#324])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7970 -> IGTPW_11578
+
+  IGTPW_11578: 11578
+  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/index.html
+
+--===============1979404874856918530==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/xe: Add XE_MAX_ENGINE_INSTANCE</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137317/">https://patchwork.freedesktop.org/series/137317/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7970_BAT -&gt; XEIGTPW_11578_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11578_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:<ul>
+<li>{bat-bmg-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11578/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7970 -&gt; IGTPW_11578</li>
+</ul>
+<p>IGTPW_11578: 11578<br />
+  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993</p>
+
+</body>
+</html>
+
+--===============1979404874856918530==--
