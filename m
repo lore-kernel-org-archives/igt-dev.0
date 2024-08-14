@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84BE9C3DA4A
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 20:23:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 001A6C52D7F
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 20:26:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4846910E0D0;
-	Wed, 14 Aug 2024 20:23:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AD9D210E077;
+	Wed, 14 Aug 2024 20:26:05 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AC6210E0D0;
- Wed, 14 Aug 2024 20:23:51 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2726209580123723220=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2ADEB10E040;
+ Wed, 14 Aug 2024 20:26:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5B1/2=5D?=
- =?utf-8?q?_tests/kms=5Fplane=5Fscaling=3A_Pass_display_to_get=5Fnum=5Fscale?=
- =?utf-8?q?rs=28=29?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_series_starting_with_?=
+ =?utf-8?q?=5B1/2=5D_dumb=5Fbuffer=3A_Remove_invalid-bpp_subtest?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Rob Clark" <robdclark@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Aug 2024 20:23:51 -0000
-Message-ID: <172366703156.633672.16696131637142200953@2413ebb6fbb6>
+Date: Wed, 14 Aug 2024 20:26:05 -0000
+Message-ID: <172366716516.633672.8979846223188255733@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240814185339.70097-1-robdclark@gmail.com>
-In-Reply-To: <20240814185339.70097-1-robdclark@gmail.com>
+References: <20240814185426.70418-1-robdclark@gmail.com>
+In-Reply-To: <20240814185426.70418-1-robdclark@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,126 +41,150 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2726209580123723220==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: series starting with [1/2] tests/kms_plane_scaling: Pass display to get_num_scalers()
-URL   : https://patchwork.freedesktop.org/series/137322/
-State : success
+Series: series starting with [1/2] dumb_buffer: Remove invalid-bpp subtest
+URL   : https://patchwork.freedesktop.org/series/137323/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7970_BAT -> XEIGTPW_11580_BAT
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1249227 for the overview.
 
-  **SUCCESS**
-
-  No regressions found.
-
+build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62265901):
+  [1873/1880] Generating kms_tests.rst with a custom command.
+  [1874/1880] Generating intel-ci-tests with a custom command.
+  [1875/1880] Generating xe_tests.html with a custom command.
+  [1876/1880] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/835] Generating version.h with a custom command.
+  [2/7] Linking target runner/runner_test.
+  [3/7] Linking target assembler/intel-gen4asm.
+  [4/7] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@dumb_buffer@invalid-bpp doesn't exist on source files
+  ninja: build stopped: subcommand failed.
+  section_end:1723666955:step_script
+  section_start:1723666955:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1723666958:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
 
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11580_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:
-    - {bat-bmg-2}:        [DMESG-WARN][1] ([Intel XE#877]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11580/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
-
+build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62265896):
+  [1880/1886] Generating kms_tests.rst with a custom command.
+  [1881/1886] Generating intel-ci-tests with a custom command.
+  [1882/1886] Generating xe_tests.html with a custom command.
+  [1883/1886] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/837] Generating version.h with a custom command.
+  [2/6] Linking target runner/runner_test.
+  [3/6] Generating kms_tests.html with a custom command.
+  [4/6] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@dumb_buffer@invalid-bpp doesn't exist on source files
+  ninja: build stopped: subcommand failed.
+  section_end:1723666942:step_script
+  section_start:1723666942:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1723666942:cleanup_file_variables
+  ERROR: Job failed: exit code 1
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62265900):
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@dumb_buffer@invalid-bpp doesn't exist on source files
+  [1882/1886] Generating kms_tests.rst with a custom command.
+  [1883/1886] Generating intel-ci-tests with a custom command.
+  [1884/1886] Generating xe_tests.html with a custom command.
+  ninja: build stopped: subcommand failed.
+  ninja: Entering directory `build'
+  [1/837] Generating version.h with a custom command.
+  [2/5] Generating kms_tests.html with a custom command.
+  [3/5] Generating i915_tests.rst with a custom command.
+  FAILED: docs/testplan/i915_tests.rst 
+  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
+  Warning: Documented igt@dumb_buffer@invalid-bpp doesn't exist on source files
+  ninja: build stopped: subcommand failed.
+  section_end:1723666985:step_script
+  section_start:1723666985:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1723666986:cleanup_file_variables
+  ERROR: Job failed: exit code 1
+  
 
+build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62265899):
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out eb54a8b3 as detached HEAD (ref is intel/IGTPW_11581)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing lib/xe/oa-configs/__pycache__/
+  Removing scripts/__pycache__/
+  
+  Skipping Git submodules setup
+  section_end:1723666833:get_sources
+  section_start:1723666833:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-eb54a8b3b2169a2ed37fc095461963b8382f5d9b with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1723666836:step_script
+  section_start:1723666836:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1723666837:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:652:0s)
 
-Build changes
--------------
+build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62265897):
+  section_start:1723666831:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out eb54a8b3 as detached HEAD (ref is intel/IGTPW_11581)...
+  
+  Skipping Git submodules setup
+  section_end:1723666833:get_sources
+  section_start:1723666833:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-eb54a8b3b2169a2ed37fc095461963b8382f5d9b with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1723666836:step_script
+  section_start:1723666836:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1723666838:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:652:0s)
 
-  * IGT: IGT_7970 -> IGTPW_11580
-
-  IGTPW_11580: 710dbb161865f40a460b7a762534f0432c306995 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993
+build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62265898):
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out eb54a8b3 as detached HEAD (ref is intel/IGTPW_11581)...
+  Removing build/
+  Removing installdir/
+  Removing undocumented_tests.txt
+  
+  Skipping Git submodules setup
+  section_end:1723666834:get_sources
+  section_start:1723666834:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora:commit-eb54a8b3b2169a2ed37fc095461963b8382f5d9b with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-fedora@sha256:17d64607d998df2bf29a56b88922d3a598e6f1daa3b51ece2a892c2f293daf83 ...
+  section_end:1723666836:step_script
+  section_start:1723666836:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1723666837:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:4b3054d89ef79f9be95501786fbbbe22857d02c867fff99693808cd80909939f: image not known (docker.go:652:0s)
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11580/index.html
-
---===============2726209580123723220==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [1/2] tests/kms_plane_scaling: Pass display to get_num_scalers()</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137322/">https://patchwork.freedesktop.org/series/137322/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11580/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11580/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7970_BAT -&gt; XEIGTPW_11580_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11580_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:<ul>
-<li>{bat-bmg-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11580/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7970 -&gt; IGTPW_11580</li>
-</ul>
-<p>IGTPW_11580: 710dbb161865f40a460b7a762534f0432c306995 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993</p>
-
-</body>
-</html>
-
---===============2726209580123723220==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1249227
