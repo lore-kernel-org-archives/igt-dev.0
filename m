@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BEA3C52D7F
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 09:46:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A3CEC52D7F
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 09:58:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 26F69891B4;
-	Wed, 14 Aug 2024 09:46:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FF1C10E0D3;
+	Wed, 14 Aug 2024 09:58:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bSq8IAkP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GBzP/HOs";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73128891B4
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 09:46:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CDDEE10E0D3
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 09:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723628817; x=1755164817;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=LlUZvQoXVLcOpstt576K/7JBuAmBsXMvuHbW8dK/+Uc=;
- b=bSq8IAkPIkqmvPEZBZovHbfWai+FADQyHaIspb8YpLga6mmBy5SsyXe3
- 0hxRBUsFWtwqGDBwfUd5IZAzQI8ScGweWNEWHxAYYamSIbAtdMmm5/NQV
- Ru1V9Ev4bvcCAo3RwaL/TJO9YNsgb2gu7IV+gyGXpb97lWRARe1933y+3
- 3Xp97BfJEjzCWCVuyRmE9Xtn38bx+ih/Bu6Im1xpDFxje2TB9kq2bj2kC
- DiyAI9XQ3gGso51GVY4ggKC097YrSMIShJ7TknZVcQ6f8SmAINIFpR/IE
- zQ8iAyv0KXdWtGBozYjAfir6/fzU6Y9Wrn2PwOI7sRT1iAxd/5XP2lsQ6 g==;
-X-CSE-ConnectionGUID: wE2+i5tOStGnn203UrTWFw==
-X-CSE-MsgGUID: M2KnexwAQlayEoZAQ3v6dA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="32509331"
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="32509331"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 02:46:57 -0700
-X-CSE-ConnectionGUID: p7XRqQriQoK+TEUEcju9hg==
-X-CSE-MsgGUID: aBJCXRxaRnei82Fwpw5dfA==
+ t=1723629537; x=1755165537;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=N8O2yJ4ICGEbEUBTyblo+rq6nQkq0DjUdJ6iX5Vr0qs=;
+ b=GBzP/HOsLHs391H5v4O5HWRfCT6VzI4RsHa3uEL0ddYfwXbnlbuPU4UR
+ aWytnC481Rzo1GEufgYrl1wjM4/6rtHZC2ByLw/P2LEP1FHj27uQS49l/
+ jEmPMxC+7WH/VJfY2h2DBS7QiHTA3TXFQYC7BEVgSr0Mi/0rqPg/TUAKy
+ 8RQbRNxhkC64tc1hoFLhDIU3wCFZ3nwWu+ki/kzxhzuPbVpeRnQcm9QFX
+ N85T/VWJ2wL/1Sf0vhUsNXwCkQP/Zb6aSb9upecvY2S08eOFF6yJ62dwu
+ 2q8zZJR9KZyLnS1NeXzy4DaPRZ+UPGToxN4y2a0IXCaw5hXAXkRNm5e+Q w==;
+X-CSE-ConnectionGUID: grYTKhp1QF6vmPAGOEjWzw==
+X-CSE-MsgGUID: f/sBOi5FSXKwpwC2+l/Xnw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="22001879"
+X-IronPort-AV: E=Sophos;i="6.09,145,1716274800"; d="scan'208";a="22001879"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 02:58:57 -0700
+X-CSE-ConnectionGUID: aB6nkwOPR/yjq0z1AyVswQ==
+X-CSE-MsgGUID: W7T7wzk7T3aom+4NbEV9VA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="63622350"
-Received: from amiszcza-mobl.ger.corp.intel.com (HELO [10.246.16.183])
- ([10.246.16.183])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 02:46:55 -0700
-Message-ID: <04aae6bc-3b9a-4cfc-bbdf-f2ce9a7f311d@linux.intel.com>
-Date: Wed, 14 Aug 2024 11:46:49 +0200
+X-IronPort-AV: E=Sophos;i="6.09,145,1716274800"; d="scan'208";a="63891980"
+Received: from ksztyber-mobl2.ger.corp.intel.com (HELO dgrzegor-mobl2..)
+ ([10.245.246.86])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 02:58:56 -0700
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH i-g-t] lib/gpgpu_shader: Fix compilation warning and write
+ dword shader
+Date: Wed, 14 Aug 2024 11:58:43 +0200
+Message-Id: <20240814095843.1108680-1-dominik.grzegorzek@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_huc_copy: Enhance HuC status check
- for VF mode
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>,
- =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Jakub Kolakowski <jakub1.kolakowski@intel.com>
-References: <20240812180812.1310155-1-marcin.bernatowicz@linux.intel.com>
-Content-Language: en-US
-From: Adam Miszczak <adam.miszczak@linux.intel.com>
-In-Reply-To: <20240812180812.1310155-1-marcin.bernatowicz@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,47 +68,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 12.08.2024 20:08, Marcin Bernatowicz wrote:
-> Extend the is_huc_running function to check for both 'RUNNING' and
-> 'PRELOADED' statuses. This adjustment ensures that firmware loading
-> by the PF driver is accurately recognized when operating in Virtual
-> Function (VF) mode.
->
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2466
->
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Michal Wajdeczko <Michal.Wajdeczko@intel.com>
-> Cc: Michał Winiarski <michal.winiarski@intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> ---
->   tests/intel/xe_huc_copy.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/tests/intel/xe_huc_copy.c b/tests/intel/xe_huc_copy.c
-> index 6d8ca0776..c8b5efc7b 100644
-> --- a/tests/intel/xe_huc_copy.c
-> +++ b/tests/intel/xe_huc_copy.c
-> @@ -177,7 +177,6 @@ static bool
->   is_huc_running(int fd)
->   {
->   	char buf[4096];
-> -	char *s;
->   	int gt;
->   
->   	xe_for_each_gt(fd, gt) {
-> @@ -185,9 +184,8 @@ is_huc_running(int fd)
->   
->   		sprintf(name, "gt%d/uc/huc_info", gt);
->   		igt_debugfs_read(fd, name, buf);
-> -		s = strstr(buf, "RUNNING");
->   
-> -		if (s)
-> +		if (strstr(buf, "RUNNING") || strstr(buf, "PRELOADED"))
->   			return true;
+1) Fix src1_null macro definiton to match platforms which are mentioned in
+the comment above the declaration. (DG2+)
 
-LGTM,
-Acked-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+Fixes:
+iga64 -Xauto-deps -Wall -p=12p71 lib/iga64_generated_codes.c.d/iga64_assembly_eot.12p71.asm
+line 2.37: warning: Src1.Length should suffix src1 register (e.g. r10:4)
+(W) send.gtwy (8|M0) null r112 null 0 0x02000000 {EOT}
+                                    ^
+2) Zero out r4 register in media block write message to prevent
+   errors when the same register was used earlier in the shader.
 
->   	}
->   	return false;
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+ lib/gpgpu_shader.c          |  4 ++--
+ lib/iga64_generated_codes.c | 18 +++++++++++-------
+ lib/iga64_macros.h          |  2 +-
+ 3 files changed, 14 insertions(+), 10 deletions(-)
+
+diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+index 991455c49..5cbb4346b 100644
+--- a/lib/gpgpu_shader.c
++++ b/lib/gpgpu_shader.c
+@@ -286,6 +286,8 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+ (W)	mov (1|M0)               r5.1<1>:ud    ARG(4):ud			\n\
+ (W)	mov (1|M0)               r5.2<1>:ud    ARG(5):ud			\n\
+ (W)	mov (1|M0)               r5.3<1>:ud    ARG(6):ud			\n\
++	// clear message header							\n\
++(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
+ #if GEN_VER < 2000 // Media Block Write						\n\
+ 	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
+ (W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud	\n\
+@@ -303,8 +305,6 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+ 	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
+ (W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
+ (W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud	\n\
+-	// payload setup							\n\
+-(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
+ 	// Store X and Y block start (160:191 and 192:223)			\n\
+ (W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
+ 	// Store X and Y block max_size (224:231 and 232:239)			\n\
+diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+index 6a08c4844..1769f4ecf 100644
+--- a/lib/iga64_generated_codes.c
++++ b/lib/iga64_generated_codes.c
+@@ -3,7 +3,7 @@
+ 
+ #include "gpgpu_shader.h"
+ 
+-#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
++#define MD5_SUM_IGA64_ASMS cecee4a452aa9764b5eaebb60269f1a4
+ 
+ struct iga64_template const iga64_code_media_block_write[] = {
+ 	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+@@ -11,22 +11,23 @@ struct iga64_template const iga64_code_media_block_write[] = {
+ 		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+ 		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+ 		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
++		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+ 		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
+ 		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+ 		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
+-		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+-		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
++		0x80041961, 0x04550220, 0x00220205, 0x00000000,
+ 		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
+ 		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
+ 		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+ 		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+ 		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+ 	}},
+-	{ .gen_ver = 1270, .size = 56, .code = (const uint32_t []) {
++	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
+ 		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+ 		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+ 		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+ 		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+ 		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+ 		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+ 		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+@@ -38,11 +39,12 @@ struct iga64_template const iga64_code_media_block_write[] = {
+ 		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+ 		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+ 	}},
+-	{ .gen_ver = 1260, .size = 52, .code = (const uint32_t []) {
++	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
+ 		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+ 		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+ 		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+ 		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
++		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+ 		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
+ 		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+ 		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
+@@ -53,11 +55,12 @@ struct iga64_template const iga64_code_media_block_write[] = {
+ 		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+ 		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+ 	}},
+-	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
++	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
+ 		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+ 		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+ 		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+ 		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+ 		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+ 		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+ 		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+@@ -69,11 +72,12 @@ struct iga64_template const iga64_code_media_block_write[] = {
+ 		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+ 		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+ 	}},
+-	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
++	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
+ 		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+ 		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+ 		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+ 		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
++		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+ 		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+ 		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+ 		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
+diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
+index f4ef5cb16..03cc726d4 100644
+--- a/lib/iga64_macros.h
++++ b/lib/iga64_macros.h
+@@ -7,7 +7,7 @@
+ #define IGA64_MACROS_H
+ 
+ /* send instruction for DG2+ requires 0 length in case src1 is null, BSpec: 47443 */
+-#if GEN_VER < 1271
++#if GEN_VER <= 1250
+ #define src1_null null
+ #else
+ #define src1_null null:0
+-- 
+2.34.1
+
