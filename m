@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF594C3DA4A
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 08:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23904C3DA4A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 08:56:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9598D10E0C3;
-	Wed, 14 Aug 2024 08:56:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D37E810E43B;
+	Wed, 14 Aug 2024 08:56:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JJj2+nyr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DJv3rEdN";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C267210E0C3
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 08:56:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF26E10E437
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 08:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723625794; x=1755161794;
+ t=1723625817; x=1755161817;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=8LgQrUCy4EMTSyaWrmB1eR6lBfj3H+QWPUqkltMiASQ=;
- b=JJj2+nyrqvP2e+AL0kcmOjM+KL/nWjq5W4bzUPVSHfgzvLC8dOWsOUqP
- 2L1ms2VS1DVPmn9rA0HKHGuqvfgg3ld26hMNRlhKKE9h9pxAHSLRVP296
- 5AowV3VDpjvwObzvaerZyn9AW5z1cYqAQi9b3WldSbnJxHIU90HO/sSRR
- k2kMd8m0wED85FI6qrgni0dnzI3EWFmzD7w9JPJ2NCpmmPxkzyMayMOw0
- U0HceokVZkux4GAap794EZlP2U7MFzLCMzI3sL7cP97BfVIBDb3MJKS/y
- 0RBKdJt318pasZO0bwzq23e+kYUfUuTKqW9JZonkRUtLQDXsiLzSJ0+9P Q==;
-X-CSE-ConnectionGUID: DxR/GzauSUyWOszuArTMGg==
-X-CSE-MsgGUID: v0mu+5uQTnCebi9ihd7N7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="13003039"
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="13003039"
+ b=DJv3rEdNvzVB9loJ5FuYXVULZOFU/ViSj12Y+ajkmYSI9eOl0Flfs8Ar
+ eFu7/Lads00pfJIcFENbSUpW2EMhVuUlxOCGEgF9uUiB3wrDoNx2xZ28x
+ VnX8+vkYcHCpwEsfNGpfYkphScp/OmsLql9H32F0ylgNUyO9nl/q3zoGN
+ Xd40UN2gbJkEYQL1drZdsLbuiRxLgwJuBlQzQXnQfdumAmszPvKva9a/W
+ kuBSCqCldNk89FjnihSqCzNDz0ourrZQHjbk3/LY54i82IU+Ns1cifRKS
+ UWHx4V9t5/gld1VDo8VHVluCrJLBsl9W3Esq+4v1OeFz2yFuBbA3bNWCi A==;
+X-CSE-ConnectionGUID: 1U1NQxJZT2Sz5X9KahcpGQ==
+X-CSE-MsgGUID: we/SC7SrSQWPsSh5EitLiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="13003092"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="13003092"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 01:56:34 -0700
-X-CSE-ConnectionGUID: UewAlrNJR2Sm/9Xw/FKPUA==
-X-CSE-MsgGUID: P/T4Rfj7QfqeJt5OhaSCLg==
+ 14 Aug 2024 01:56:56 -0700
+X-CSE-ConnectionGUID: ePDxwwEmS5K4tLROKOgsGA==
+X-CSE-MsgGUID: BObEjmKmQey5Eur/qxRTWg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="58645808"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="58646195"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
  ([10.245.246.73])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 01:56:30 -0700
+ 14 Aug 2024 01:56:54 -0700
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
@@ -49,8 +49,8 @@ Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>
 Subject: [PATCH i-g-t v2] lib/gpgpu_fill: Write kernel using inline iga64 api
-Date: Wed, 14 Aug 2024 10:56:14 +0200
-Message-Id: <20240814085614.1091014-1-dominik.grzegorzek@intel.com>
+Date: Wed, 14 Aug 2024 10:56:36 +0200
+Message-Id: <20240814085636.1091046-1-dominik.grzegorzek@intel.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
