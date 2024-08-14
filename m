@@ -4,122 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30EAFC52D7B
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 10:11:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BEAC3DA4A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 11:29:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E68F910E20C;
-	Wed, 14 Aug 2024 10:11:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 36F6910E43B;
+	Wed, 14 Aug 2024 11:29:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="KN3Qk5g+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UahFpH/n";
 	dkim-atps=neutral
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam12on2054.outbound.protection.outlook.com [40.107.237.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 301F710E20C
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 10:11:46 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t7DvLYw10h0M8rrW+fc/uDprdwI9V4HqY35vHFXJtu08z209AOh4jKk8wjejOlSllT1Akmsjw2NjZfwa6nZzipFIX8ValtS4DOtw0LWR6nDfFuRhTixdDrgZ4t1Q9DKZ1yrbUgwP6vI/tnmP9bU1R+Uf6KnovguAalDDJLz9rbfEjrcxSgYHhOGmuDfi7yvcWfo2vPlS6+zXyxYMlqwsEZ4rpwxQeB2fKGXprWI8o7CJSMAaM8YksJaASWaIBp7D/RY0CyAPzvN2y30LQ+G/FoSuufIk1DQyGJ2l6mvZqCY21cFJE2cj/PlSEg2gMc9Q4JaVLDngtef9S4D9aS9aWw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wyupf3obfIUWRhXuENujurWD7XZJ/L00UNVFsrhNHmk=;
- b=R9MknQXm67x3grZla2kkKJsf0nhnksrmsFLqPfEFvjbDNJYb4u+yKBBBVJfv+tN/1z76cI+p5aGQezIeZ713hhgu8Wsr1Ngm39f77fqnuI6WEP2Q+/KTp2LRtLr0bvm3cOwlpETDKgS01Dvso1c6+Nnf5nAFtHz0JsNTo0FOYPIlKf8B6DjGofvTc7GG6VR4Mz369UDU+KNKaYA+1G0tUVvD0/3TzvPotYBsQ6j8KiiHrU/wkx/UO9YuH5LFjaER3hJ2CWzsRu/RBws2X42IiswnTyS79JCMPVq04s/K+wh74svdrGSPepphWoY7jTOMBdIsEjnxyQkLYIsJGqW9qQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wyupf3obfIUWRhXuENujurWD7XZJ/L00UNVFsrhNHmk=;
- b=KN3Qk5g+7/K31TEOamUzWKMU/Mvlrd84E3fIQMNgE5UH9yYf9v1HgFj4YLxH1TwgQBBDD2gIzVlmmSN/QeFaJalbaGG1jGJhVM75Dm98cYQPeN6qBcFxasmJxb6poWRnv2jWl7W6s1sh30kMMuQdg6BhkldZMpRopP8QaniiDro=
-Received: from CH0P220CA0019.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:ef::26)
- by BL3PR12MB9052.namprd12.prod.outlook.com (2603:10b6:208:3bb::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Wed, 14 Aug
- 2024 10:11:43 +0000
-Received: from CH2PEPF0000009B.namprd02.prod.outlook.com
- (2603:10b6:610:ef:cafe::dc) by CH0P220CA0019.outlook.office365.com
- (2603:10b6:610:ef::26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7741.30 via Frontend
- Transport; Wed, 14 Aug 2024 10:11:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- CH2PEPF0000009B.mail.protection.outlook.com (10.167.244.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7849.8 via Frontend Transport; Wed, 14 Aug 2024 10:11:42 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 14 Aug
- 2024 05:11:42 -0500
-Received: from JesseDEV.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 14 Aug 2024 05:11:40 -0500
-From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Jesse.zhang@amd.com"
- <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t] tests/amdgpu: add timeout for queue reset
-Date: Wed, 14 Aug 2024 18:11:40 +0800
-Message-ID: <20240814101140.3165345-1-jesse.zhang@amd.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFB5D10E43B
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 11:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723634999; x=1755170999;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=1iFwXA0L393RkB0ZC2ac+uSv6N2DdLD8oPwSXO1sujc=;
+ b=UahFpH/npAHvKmdeqrmYU8VDqoHpE7Z0wG2NM4ab/EcquihAEnN2B+oJ
+ sRJT2OLl3vRECvP/kk36JiCa8rmSKBRq9l7puO7P9RPmrXxYXDh9k2hqn
+ QTdw/q/qJNsTX0r+dZu1Chcqd5+gktXehQYNz03XV03r5R+db1n4VXew9
+ cbrF7QzTPg5bhIr7hQdh+JxI5Au0rZPFW4ywaic2RTNN8IobZYMevP1c0
+ rakfc3oroT7BVhrF4LWlrYaktDfYmaZKsuHx/gkFTIYN5WCq0E31IK//0
+ 1yEvu1hgRbZb2TdeLquzjtKEeFuTEj/UG6RqoUtsgKn2S4ik63+glvgLQ A==;
+X-CSE-ConnectionGUID: U1P9Tn2gSwmZwDo2xw0ZTg==
+X-CSE-MsgGUID: pCkbRdEjT5C7Prmb/PlQKw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25645828"
+X-IronPort-AV: E=Sophos;i="6.09,145,1716274800"; d="scan'208";a="25645828"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 04:29:58 -0700
+X-CSE-ConnectionGUID: IQULCaLnTPeY6vw3kMwTzQ==
+X-CSE-MsgGUID: unxp6AadT0u0r5LhFbFtKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,145,1716274800"; d="scan'208";a="59275019"
+Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.246.30.61])
+ ([10.246.30.61])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 04:29:58 -0700
+Message-ID: <690eac26-a1d9-469c-9b01-fd4c8d871fde@intel.com>
+Date: Wed, 14 Aug 2024 13:29:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: jesse.zhang@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009B:EE_|BL3PR12MB9052:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d45e0f4-6103-406d-f426-08dcbc497f15
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|82310400026|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?2SlR3YkitGNg/qaOlEV7pi7rH8SMBDKbMeNtwBrB7XvqWS0wB1GR7rNVggDp?=
- =?us-ascii?Q?1R8ioCMsnlj6K0FC1GrvWZKE2wKbb8kj+sAk2wDcI2EiPxowt8umb/XdbnS5?=
- =?us-ascii?Q?tBRHYo580hPeBPdzCB7nimn9/sHIMxoT+Z6VKdUXSzP8GYXOASjlfvq0VweG?=
- =?us-ascii?Q?Gi+zCRtan7SjzlDuL4Jm35KY9xGcHDsc1SCdsXEAjMlJVll7wiFO8JumCzeX?=
- =?us-ascii?Q?3jrPPJtXFtl4ClW44N2EBfWE3FgjBuT9xp9VIOQRoyZHrbWqX3DV1bOdvBaV?=
- =?us-ascii?Q?rUANofqme152abB3XkSe64hSdn9RdbePm1alWSSRVeVqHh7ReuHohOD5tS8y?=
- =?us-ascii?Q?RAF/NBazlY/GRzsfg+q7/TsAjtHMXRnakSuL7xz6m9wUhnBOQOoTO/lvl+eg?=
- =?us-ascii?Q?hf0W8wMtqAk4gs8avcW4OJ7stULzphuy20HwDdseI8NrVxBkIlktLuNExu6Z?=
- =?us-ascii?Q?J3pqXl4oLiHjjUrfQdrqjSRh65psDvtSc6h4JOVUXTIRGY7AG6/EHvocv6ie?=
- =?us-ascii?Q?4j2kXXYYajpKvZ6IW2Di7ehEFOkB6amRfKEwRLXICuAngFj2WO7Ii7vG7wvN?=
- =?us-ascii?Q?jmzWED1oc11rSeMZSZzYYPLAUhoLVmfcG5YkTsLv5Ex759diX/uLn9ZPNo1A?=
- =?us-ascii?Q?rNFUA5Zq0FeaKpZcH65L+jzrK8egTCgE4o2Gdk5aKW3geIX6J1WMKgPkgYBa?=
- =?us-ascii?Q?+rVVIDFbaBl6FEeRQn2ydDSGlrIqumtByISKu6lNP3eghAasFGQDDriEsHxB?=
- =?us-ascii?Q?jWOcoJly9HeTR5twAIT3hI91UJgF/S1qEtrFEU/njxHy1hqqBr0vr2ggc5UX?=
- =?us-ascii?Q?ElIdW3D2fcwX1vr8XaWS/P5F+PhSq0FcOKIxYSRnqTlahbqxbm0hF4siZdQl?=
- =?us-ascii?Q?2/0NoAJrMkgdtlzRsTXWCpzTHU/+/OJ0OvS50qML5F4tzztHVVFrIqDGpFfL?=
- =?us-ascii?Q?9ybAcK2pTvonQfaiMqBbevFw++rS0VhnAaus1z1aFlGvmFTZqMt9kXenk440?=
- =?us-ascii?Q?RTptnzC6HMtjjJ4KFCCy16R6U9zw9xTbusRHmoLKQMBJqRMzRsBfjmdT7UJa?=
- =?us-ascii?Q?0sJyZ81nNL92UEEgpxTNE7kbBEtKJy6mvGg+kSLTw/cpyBidpVeVqPjdStaV?=
- =?us-ascii?Q?N2lxyjTeJsw2511lHgSueQuRb3Ao7FtRVgmIIVV/KkwO5JUjJlHKRBjr2GSn?=
- =?us-ascii?Q?YKy3hz+SVHOco6LnnacnYTePtJ4HBvtu2dY34Qhn0rdR4hHkNk8AUa1S6b+L?=
- =?us-ascii?Q?Q8h3zrtYqcTdfPINznuXJr9UaKkW/BKnjQ9KrMofg8yC++bdyY5NoUy/nOdU?=
- =?us-ascii?Q?rAk+GuEnxdkdVOHt8DDYQ/Ims3xnz+ScF1Z/JhSu95LulbswyFn5MUn3uowJ?=
- =?us-ascii?Q?L23xy2NIMfa9RdNoF1PmHiMXrDEVwQof+g3JsTYiQdSQfEa7AKwdDydcdymT?=
- =?us-ascii?Q?qfn96xKautv41I/Id9E1pFTwj5wv2aJe?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Aug 2024 10:11:42.9767 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d45e0f4-6103-406d-f426-08dcbc497f15
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000009B.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB9052
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] lib/gpgpu_shader: Fix compilation warning and write
+ dword shader
+To: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240814095843.1108680-1-dominik.grzegorzek@intel.com>
+Content-Language: en-US
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240814095843.1108680-1-dominik.grzegorzek@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -135,89 +73,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-1.If the test case cannot trigger any reset on some ASIC,
-It should be considered a failure.
 
-2. Fix code style
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
----
- tests/amdgpu/amd_queue_reset.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+On 14.08.2024 11:58, Dominik Grzegorzek wrote:
+> 1) Fix src1_null macro definiton to match platforms which are mentioned in
+> the comment above the declaration. (DG2+)
+>
+> Fixes:
+> iga64 -Xauto-deps -Wall -p=12p71 lib/iga64_generated_codes.c.d/iga64_assembly_eot.12p71.asm
+> line 2.37: warning: Src1.Length should suffix src1 register (e.g. r10:4)
+> (W) send.gtwy (8|M0) null r112 null 0 0x02000000 {EOT}
+>                                      ^
+> 2) Zero out r4 register in media block write message to prevent
+>     errors when the same register was used earlier in the shader.
+>
+> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
 
-diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
-index 6819892e0..249676407 100644
---- a/tests/amdgpu/amd_queue_reset.c
-+++ b/tests/amdgpu/amd_queue_reset.c
-@@ -30,6 +30,7 @@
- #define SHARED_CHILD_DESCRIPTOR 3
- 
- #define SHARED_MEM_NAME  "/queue_reset_shm"
-+#define TEST_TIMEOUT 100 //100 seconds
- 
- enum  process_type {
- 	PROCESS_UNKNOWN,
-@@ -49,6 +50,7 @@ enum error_code_bits {
- };
- 
- enum reset_code_bits {
-+	NO_RESET_SET_BIT,
- 	QUEUE_RESET_SET_BIT,
- 	GPU_RESET_BEGIN_SET_BIT,
- 	GPU_RESET_END_SUCCESS_SET_BIT,
-@@ -307,6 +309,7 @@ static void set_next_test_to_run(struct shmbuf *sh_mem, unsigned int error,
- 	sync_point_enter(sh_mem);
- 	wait_for_complete_iteration(sh_mem);
- 	sync_point_exit(sh_mem);
-+	igt_assert_neq(sh_mem->reset_flags, 1U << NO_RESET_SET_BIT);
- }
- 
- static int
-@@ -473,6 +476,9 @@ run_monitor_child(amdgpu_device_handle device, amdgpu_context_handle *arr_contex
- 	int state_machine = 0;
- 	int error_code;
- 	unsigned int flags;
-+	int64_t cnt = 0;
-+	time_t start, end;
-+	double elapsed = 0;
- 
- 	after_reset_state = after_reset_hangs = 0;
- 	init_flags = in_process_flags = 0;
-@@ -487,7 +493,8 @@ run_monitor_child(amdgpu_device_handle device, amdgpu_context_handle *arr_contex
- 		error_code = 0;
- 		flags = 0;
- 		set_reset_state(sh_mem, false, ALL_RESET_BITS);
--		while (1) {
-+		time(&start);
-+		while (elapsed < TEST_TIMEOUT) {
- 			if (state_machine == 0) {
- 				amdgpu_cs_query_reset_state2(arr_context[test_counter], &init_flags);
- 
-@@ -533,7 +540,15 @@ run_monitor_child(amdgpu_device_handle device, amdgpu_context_handle *arr_contex
- 					break;
- 				}
- 			}
-+			cnt++;
-+			if (cnt % 1000000 == 0) {
-+				time(&end);
-+				elapsed = difftime(end, start);
-+			}
- 		}
-+		elapsed = 0;
-+		if (sh_mem->reset_flags == 0)
-+			set_reset_state(sh_mem, true, NO_RESET_SET_BIT);
- 		sync_point_exit(sh_mem);
- 		num_of_tests--;
- 		test_counter++;
-@@ -1000,7 +1015,7 @@ igt_main
- 			igt_describe("Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes");
- 			igt_subtest_with_dynamic_f("amdgpu-%s-%s", ip_tests[i] == AMD_IP_COMPUTE ? "COMPUTE":"GRAFIX", it->name) {
- 				if (arr_cap[ip_tests[i]] && get_next_rings(ring_id_good, info, &ring_id_good, &ring_id_bad, i)) {
--					igt_dynamic_f("amdgpu-%s-ring-good-%d-bad-%d-%s", it->name,ring_id_good, ring_id_bad, ip_tests[i] == AMD_IP_COMPUTE ? "COMPUTE":"GRAFIX")
-+					igt_dynamic_f("amdgpu-%s-ring-good-%d-bad-%d-%s", it->name, ring_id_good, ring_id_bad, ip_tests[i] == AMD_IP_COMPUTE ? "COMPUTE":"GRAFIX")
- 					set_next_test_to_run(sh_mem, it->test, ip_background, ip_tests[i], ring_id_good, ring_id_bad);
- 				}
- 			}
--- 
-2.25.1
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+
+Regards
+Andrzej
+> ---
+>   lib/gpgpu_shader.c          |  4 ++--
+>   lib/iga64_generated_codes.c | 18 +++++++++++-------
+>   lib/iga64_macros.h          |  2 +-
+>   3 files changed, 14 insertions(+), 10 deletions(-)
+>
+> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+> index 991455c49..5cbb4346b 100644
+> --- a/lib/gpgpu_shader.c
+> +++ b/lib/gpgpu_shader.c
+> @@ -286,6 +286,8 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>   (W)	mov (1|M0)               r5.1<1>:ud    ARG(4):ud			\n\
+>   (W)	mov (1|M0)               r5.2<1>:ud    ARG(5):ud			\n\
+>   (W)	mov (1|M0)               r5.3<1>:ud    ARG(6):ud			\n\
+> +	// clear message header							\n\
+> +(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
+>   #if GEN_VER < 2000 // Media Block Write						\n\
+>   	// X offset of the block in bytes := (thread group id X << ARG(0))	\n\
+>   (W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud	\n\
+> @@ -303,8 +305,6 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>   	// Load r2.4-7 with tg id Y + ARG(1):ud					\n\
+>   (W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud			\n\
+>   (W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud	\n\
+> -	// payload setup							\n\
+> -(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud				\n\
+>   	// Store X and Y block start (160:191 and 192:223)			\n\
+>   (W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud			\n\
+>   	// Store X and Y block max_size (224:231 and 232:239)			\n\
+> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+> index 6a08c4844..1769f4ecf 100644
+> --- a/lib/iga64_generated_codes.c
+> +++ b/lib/iga64_generated_codes.c
+> @@ -3,7 +3,7 @@
+>   
+>   #include "gpgpu_shader.h"
+>   
+> -#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
+> +#define MD5_SUM_IGA64_ASMS cecee4a452aa9764b5eaebb60269f1a4
+>   
+>   struct iga64_template const iga64_code_media_block_write[] = {
+>   	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+> @@ -11,22 +11,23 @@ struct iga64_template const iga64_code_media_block_write[] = {
+>   		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+>   		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+>   		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
+> +		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>   		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
+>   		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+>   		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
+> -		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+> -		0x80041a61, 0x04550220, 0x00220205, 0x00000000,
+> +		0x80041961, 0x04550220, 0x00220205, 0x00000000,
+>   		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
+>   		0x80132031, 0x00000000, 0xd00e0494, 0x04000000,
+>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>   	}},
+> -	{ .gen_ver = 1270, .size = 56, .code = (const uint32_t []) {
+> +	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
+>   		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>   		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>   		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>   		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+> +		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>   		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>   		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+> @@ -38,11 +39,12 @@ struct iga64_template const iga64_code_media_block_write[] = {
+>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>   	}},
+> -	{ .gen_ver = 1260, .size = 52, .code = (const uint32_t []) {
+> +	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
+>   		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>   		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
+>   		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
+>   		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
+> +		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>   		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
+>   		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+>   		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
+> @@ -53,11 +55,12 @@ struct iga64_template const iga64_code_media_block_write[] = {
+>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>   	}},
+> -	{ .gen_ver = 1250, .size = 56, .code = (const uint32_t []) {
+> +	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
+>   		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>   		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>   		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>   		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+> +		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>   		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>   		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+> @@ -69,11 +72,12 @@ struct iga64_template const iga64_code_media_block_write[] = {
+>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>   	}},
+> -	{ .gen_ver = 0, .size = 52, .code = (const uint32_t []) {
+> +	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
+>   		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>   		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
+>   		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
+>   		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
+> +		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>   		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>   		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
+> diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
+> index f4ef5cb16..03cc726d4 100644
+> --- a/lib/iga64_macros.h
+> +++ b/lib/iga64_macros.h
+> @@ -7,7 +7,7 @@
+>   #define IGA64_MACROS_H
+>   
+>   /* send instruction for DG2+ requires 0 length in case src1 is null, BSpec: 47443 */
+> -#if GEN_VER < 1271
+> +#if GEN_VER <= 1250
+>   #define src1_null null
+>   #else
+>   #define src1_null null:0
 
