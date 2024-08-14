@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3436FC3DA4A
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 16:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B261C52D7B
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 16:48:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8C8010E4E5;
-	Wed, 14 Aug 2024 16:41:10 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1639C10E4E5;
- Wed, 14 Aug 2024 16:41:09 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2620459345708973215=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C51510E4E9;
+	Wed, 14 Aug 2024 16:48:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YxLH9t26";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 59B4E10E4E9
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 16:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1723654103; x=1755190103;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=s5XwdL4WmGNnG46pURVRBlfesASlPp7E6kkJ46H6vNM=;
+ b=YxLH9t260A2SU47FTmpRR3imj3OHSvsbddQn/2+YXBrQ7E6043M1hck/
+ YZNOYGFiUe8yt2Uegw0/oxE7NSj/J6FWOV/yTRCREvtz3G8qO+ehPjzvR
+ y54vZnhpcQ8HSZXVXMnRPlA06xCZjDwsxkhuzJdO8wbNb3o5aZkAjSo0S
+ kXKQkjdbIhkIFVwbEb8cfacN4xDgGifjQdDAXzTRSwoteNS6R9hbrX2vq
+ xRrvByfUfllWgQlM8tQCuGS3XEabNNOE/vkpKXTzzH/5ClpUYr4n+G7QN
+ i/fekoaZRiN+j80aimOnJ38PYQqVibA2nOY1mPKzDmS6h/CNvfCwnI2SF Q==;
+X-CSE-ConnectionGUID: vIM8Z/BCRV2Y9GfJutMrCg==
+X-CSE-MsgGUID: PF2rbaxOTzaCrOF1uri1TQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11164"; a="33270710"
+X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; d="scan'208";a="33270710"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 09:48:22 -0700
+X-CSE-ConnectionGUID: MlKSucj1TKOdFrd+GeH+jA==
+X-CSE-MsgGUID: Sp/1jYT0TCCsEVaac27fEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,146,1719903600"; d="scan'208";a="82296698"
+Received: from olympicsflex3.amr.corp.intel.com (HELO [10.245.245.31])
+ ([10.245.245.31])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 09:48:21 -0700
+Message-ID: <65bdf684-e606-41e1-8744-dafb878c809a@intel.com>
+Date: Wed, 14 Aug 2024 17:48:19 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/gpgpu=5Fshader=3A_Fix_comp?=
- =?utf-8?q?ilation_warning_and_write_dword_shader_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 14 Aug 2024 16:41:09 -0000
-Message-ID: <172365366908.633563.11361586156168803018@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240814130423.1140740-1-dominik.grzegorzek@intel.com>
-In-Reply-To: <20240814130423.1140740-1-dominik.grzegorzek@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/intel/xe_vm: Add BO partial mmap test
+To: Matthew Brost <matthew.brost@intel.com>, igt-dev@lists.freedesktop.org
+References: <20240814155854.3846990-1-matthew.brost@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20240814155854.3846990-1-matthew.brost@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,145 +66,99 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2620459345708973215==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 14/08/2024 16:58, Matthew Brost wrote:
+> Ensure BO partial mmap works by setting a BO to 0, partially mmap BO and
+> setting to a canned value, and then mmap entire BO ensure data
+> integrity.
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> ---
+>   tests/intel/xe_vm.c | 53 +++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 53 insertions(+)
+> 
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index c3960fedee..57534a2a8c 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -106,6 +106,56 @@ test_scratch(int fd)
+>   	xe_vm_destroy(fd, vm);
+>   }
+>   
+> +/**
+> + * SUBTEST: bo-mmap-partial
+> + * Description: Test partially mmap of a BO
+> + * Functionality: BO mmap
+> + * Test category: functionality test
+> + */
+> +
+> +static void test_bo_mmap_partial(int fd, size_t bo_size)
+> +{
+> +#define MMAP_VALUE(idx)	((0xdeadull << 32) | idx)
+> +	uint32_t bo;
+> +	uint64_t offset;
+> +	uint64_t *ptr;
+> +	size_t partial_size = bo_size / 2;
+> +	void *map;
+> +	int i, j;
+> +
+> +	bo = xe_bo_create(fd, 0, bo_size, vram_if_possible(fd, 0),
+> +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +
+> +	/* Set to zero */
+> +	map = xe_bo_map(fd, bo, bo_size);
+> +	memset(map, 0, bo_size);
+> +	munmap(map, bo_size);
+> +
+> +	/* Partial map */
+> +	offset = xe_bo_mmap_offset(fd, bo);
+> +	map = mmap(NULL, partial_size, PROT_WRITE, MAP_SHARED, fd,
+> +		   offset + partial_size);
 
-== Series Details ==
+So does this also then fail with:
 
-Series: lib/gpgpu_shader: Fix compilation warning and write dword shader (rev2)
-URL   : https://patchwork.freedesktop.org/series/137284/
-State : success
+ > +	map = mmap(NULL, partial_size, PROT_WRITE, MAP_SHARED, fd,
+ > +		   offset);
 
-== Summary ==
+Or it that allowed? From looking at the kernel side it looks like it's 
+maybe not rejected?
 
-CI Bug Log - changes from XEIGT_7970_BAT -> XEIGTPW_11575_BAT
-====================================================
+Also you can get partial mapping with partial munmap, should we also 
+test that to make sure nothing blows up?
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11575_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_spin_batch@spin-basic:
-    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-1/igt@xe_spin_batch@spin-basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/bat-bmg-1/igt@xe_spin_batch@spin-basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:
-    - {bat-bmg-2}:        [DMESG-WARN][3] ([Intel XE#877]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
-
-
-Build changes
--------------
-
-  * IGT: IGT_7970 -> IGTPW_11575
-
-  IGTPW_11575: 11575
-  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/index.html
-
---===============2620459345708973215==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/gpgpu_shader: Fix compilation warning and write dword shader (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137284/">https://patchwork.freedesktop.org/series/137284/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7970_BAT -&gt; XEIGTPW_11575_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11575_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_spin_batch@spin-basic:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-1/igt@xe_spin_batch@spin-basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/bat-bmg-1/igt@xe_spin_batch@spin-basic.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:<ul>
-<li>{bat-bmg-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11575/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7970 -&gt; IGTPW_11575</li>
-</ul>
-<p>IGTPW_11575: 11575<br />
-  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993</p>
-
-</body>
-</html>
-
---===============2620459345708973215==--
+> +	igt_assert(map != MAP_FAILED);
+> +	ptr = map;
+> +	for (i = 0, j = partial_size / sizeof(uint64_t);
+> +	     j < bo_size / sizeof(uint64_t); ++i, ++j)
+> +		ptr[i] = MMAP_VALUE(j);
+> +	munmap(map, partial_size);
+> +
+> +	/* Map entire BO and check */
+> +	map = xe_bo_map(fd, bo, bo_size);
+> +	ptr = map;
+> +	for (i = 0; i < bo_size / sizeof(uint64_t); ++i) {
+> +		if (i < partial_size / sizeof(uint64_t))
+> +			igt_assert_eq(ptr[i], 0);
+> +		else
+> +			igt_assert_eq(ptr[i], MMAP_VALUE(i));
+> +	}
+> +	munmap(map, bo_size);
+> +	gem_close(fd, bo);
+> +#undef MMAP_VALUE
+> +}
+> +
+>   static void
+>   __test_bind_one_bo(int fd, uint32_t vm, int n_addrs, uint64_t *addrs)
+>   {
+> @@ -2354,6 +2404,9 @@ igt_main
+>   			}
+>   	}
+>   
+> +	igt_subtest("bo-mmap-partial")
+> +		test_bo_mmap_partial(fd, SZ_2M);
+> +
+>   	igt_subtest("bind-once")
+>   		test_bind_once(fd);
+>   
