@@ -4,57 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 013FCC52D7F
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 08:52:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF594C3DA4A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Aug 2024 08:56:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B4FDA10E436;
-	Wed, 14 Aug 2024 08:52:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9598D10E0C3;
+	Wed, 14 Aug 2024 08:56:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cgZhHgQU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JJj2+nyr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D19F10E431;
- Wed, 14 Aug 2024 08:52:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C267210E0C3
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Aug 2024 08:56:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723625545; x=1755161545;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=eH3y/g4oUeWgfiHPonmQb6DYSPJHZcYjDmU3grwyd9E=;
- b=cgZhHgQUp5lhdz6TwwTfDJ3GaZBItMJVmFNCsiwPca5OkagnK2DPtt7x
- Uu2WaIptdl06vF9DXd8NHJdKLqmV92cvDPp8hD87YJ/E0B6hFIo2QTUG9
- 5ghKGOpqM5w+9mH4+xnAisj0BXKR9PLpO/CcOZT89sot99zCTIVVHI2D4
- rH2+XNM2Q4dmpL2X49cQtgNdfK48EnBkQ68Seb3RcRVXErObsa0m1NRbF
- LO3OagpXzU/upzhuPp/HPybP2R2Ohm03CC2iQmFL5p0EmL8KNc7I7+4a5
- m4TtzJQtTVT4i43H9tscE4qzLEkDttk9KgpqIMucbdxoGOfOD5z2fGkI8 A==;
-X-CSE-ConnectionGUID: K/a9h+hCQgS+tv66CAAx1A==
-X-CSE-MsgGUID: CB+0nMY/Q5yOMf1s1N/f4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="25629921"
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="25629921"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 01:52:24 -0700
-X-CSE-ConnectionGUID: ajiMpOFCSwSP4SwqVV1Fhg==
-X-CSE-MsgGUID: a9jT9JH7SLGaGGYt2ZcTmg==
+ t=1723625794; x=1755161794;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8LgQrUCy4EMTSyaWrmB1eR6lBfj3H+QWPUqkltMiASQ=;
+ b=JJj2+nyrqvP2e+AL0kcmOjM+KL/nWjq5W4bzUPVSHfgzvLC8dOWsOUqP
+ 2L1ms2VS1DVPmn9rA0HKHGuqvfgg3ld26hMNRlhKKE9h9pxAHSLRVP296
+ 5AowV3VDpjvwObzvaerZyn9AW5z1cYqAQi9b3WldSbnJxHIU90HO/sSRR
+ k2kMd8m0wED85FI6qrgni0dnzI3EWFmzD7w9JPJ2NCpmmPxkzyMayMOw0
+ U0HceokVZkux4GAap794EZlP2U7MFzLCMzI3sL7cP97BfVIBDb3MJKS/y
+ 0RBKdJt318pasZO0bwzq23e+kYUfUuTKqW9JZonkRUtLQDXsiLzSJ0+9P Q==;
+X-CSE-ConnectionGUID: DxR/GzauSUyWOszuArTMGg==
+X-CSE-MsgGUID: v0mu+5uQTnCebi9ihd7N7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11163"; a="13003039"
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="13003039"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 01:56:34 -0700
+X-CSE-ConnectionGUID: UewAlrNJR2Sm/9Xw/FKPUA==
+X-CSE-MsgGUID: P/T4Rfj7QfqeJt5OhaSCLg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="59708332"
-Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.246.48])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Aug 2024 01:52:22 -0700
-Date: Wed, 14 Aug 2024 10:52:17 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.09,288,1716274800"; d="scan'208";a="58645808"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
+ ([10.245.246.73])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Aug 2024 01:56:30 -0700
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeFULL=3A_failure_for_lib|tests?=
- =?utf-8?Q?=3A?= Don't dereference engine outside for_each_ctx_engine macro
-Message-ID: <20240814085217.xsfzrgbob3ilyake@zkempczy-mobl2>
-References: <20240813124536.66551-1-zbigniew.kempczynski@intel.com>
- <172356591965.613595.3116177232040338565@2413ebb6fbb6>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH i-g-t v2] lib/gpgpu_fill: Write kernel using inline iga64 api
+Date: Wed, 14 Aug 2024 10:56:14 +0200
+Message-Id: <20240814085614.1091014-1-dominik.grzegorzek@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <172356591965.613595.3116177232040338565@2413ebb6fbb6>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,595 +70,465 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Aug 13, 2024 at 04:18:39PM +0000, Patchwork wrote:
->    Patch Details
-> 
->    Series:  lib|tests: Don't dereference engine outside for_each_ctx_engine   
->             macro                                                             
->    URL:     https://patchwork.freedesktop.org/series/137235/                  
->    State:   failure                                                           
->    Details: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11566/index.html  
-> 
->         CI Bug Log - changes from XEIGT_7967_full -> XEIGTPW_11566_full
-> 
-> Summary
-> 
->    WARNING
-> 
->    Minor unknown changes coming with XEIGTPW_11566_full need to be verified
->    manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in XEIGTPW_11566_full, please notify your bug team
->    (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
-> Participating hosts (4 -> 4)
-> 
->    No changes in participating hosts
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in
->    XEIGTPW_11566_full:
-> 
->   IGT changes
-> 
->     Warnings
-> 
->      * igt@kms_content_protection@mei-interface:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#455) -> SKIP
->      * igt@xe_oa@invalid-create-userspace-config:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201) -> SKIP +5 other tests skip
-> 
->     Suppressed
-> 
->    The following results come from untrusted machines, tests, or statuses.
->    They do not affect the overall result.
-> 
->      * igt@kms_content_protection@mei-interface:
-> 
->           * {shard-bmg}: SKIP (Intel XE#2341) -> SKIP
->      * igt@kms_cursor_crc@cursor-suspend:
-> 
->           * {shard-bmg}: FAIL (Intel XE#2428) -> INCOMPLETE +1 other test
->             incomplete
+Rewrite gpgpu_fill shaders to utilize the newly introduced
+method of writing IGA64 assembly inline.
 
-Change touches igt_fb but in part used by i915, not Xe so above
-is not related to the change.
+v2: start with gen12 (Andrzej)
 
---
-Zbigniew
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Cc: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+ lib/gpgpu_fill.c                              | 166 +++++++-----------
+ lib/gpgpu_fill.h                              |  19 --
+ lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm |  12 --
+ .../shaders/gpgpu/gen12p72_gpgpu_kernel.asm   |  12 --
+ .../shaders/gpgpu/xe2lpg_gpgpu_kernel.asm     |  13 --
+ lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm  |  12 --
+ lib/iga64_generated_codes.c                   |  76 +++++++-
+ lib/intel_batchbuffer.c                       |  10 +-
+ lib/meson.build                               |   2 +-
+ 9 files changed, 140 insertions(+), 182 deletions(-)
+ delete mode 100644 lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm
+ delete mode 100644 lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
+ delete mode 100644 lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+ delete mode 100644 lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
 
-> 
-> Known issues
-> 
->    Here are the changes found in XEIGTPW_11566_full that come from known
->    issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@kms_async_flips@async-flip-with-page-flip-events@pipe-a-edp-1-linear:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#911) +3 other tests fail
->      * igt@kms_async_flips@invalid-async-flip:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#873)
->      * igt@kms_big_fb@yf-tiled-32bpp-rotate-90:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1124 / Intel XE#1201) +1
->             other test skip
->      * igt@kms_big_fb@yf-tiled-max-hw-stride-64bpp-rotate-180-hflip-async-flip:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1124) +2 other tests skip
->      * igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2191)
->      * igt@kms_ccs@bad-pixel-format-4-tiled-dg2-rc-ccs-cc:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1399) +1 other test skip
->      * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-rc-ccs-cc@pipe-a-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#787) +6 other tests skip
->      * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-rc-ccs-cc@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#455 / Intel XE#787) +1
->             other test skip
->      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs@pipe-a-hdmi-a-6:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#787) +6
->             other tests skip
->      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#455 /
->             Intel XE#787) +1 other test skip
->      * igt@kms_chamelium_color@ctm-0-75:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#306)
->      * igt@kms_chamelium_hpd@common-hpd-after-suspend:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#373)
->      * igt@kms_chamelium_hpd@vga-hpd-after-hibernate:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#373)
->      * igt@kms_content_protection@uevent:
-> 
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#1188) +1 other test fail
->      * igt@kms_cursor_crc@cursor-rapid-movement-256x85:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1424)
->      * igt@kms_feature_discovery@display-3x:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#703)
->      * igt@kms_flip@2x-flip-vs-suspend-interruptible@ab-hdmi-a6-dp4:
-> 
->           * shard-dg2-set2: PASS -> DMESG-WARN (Intel XE#2019) +2 other tests
->             dmesg-warn
->      * igt@kms_flip@2x-flip-vs-suspend@bc-hdmi-a6-dp4:
-> 
->           * shard-dg2-set2: PASS -> INCOMPLETE (Intel XE#1195)
->      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401 / Intel XE#1745)
->      * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-32bpp-ytilercccs-downscaling@pipe-a-default-mode:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1401)
->      * igt@kms_force_connector_basic@prune-stale-modes:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#352)
->      * igt@kms_frontbuffer_tracking@fbc-suspend:
-> 
->           * shard-dg2-set2: NOTRUN -> FAIL (Intel XE#616)
->      * igt@kms_frontbuffer_tracking@fbcdrrs-1p-primscrn-cur-indfb-move:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#651) +1
->             other test skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-1p-rte:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#651) +1 other test skip
->      * igt@kms_frontbuffer_tracking@fbcpsr-2p-scndscrn-shrfb-plflip-blt:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#656) +4 other tests skip
->      * igt@kms_hdr@static-toggle-dpms:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1503 / Intel XE#599)
->      * igt@kms_plane@plane-panning-bottom-right-suspend:
-> 
->           * shard-lnl: PASS -> FAIL (Intel XE#2028) +5 other tests fail
->      * igt@kms_plane@plane-position-hole-dpms@pipe-b-plane-4:
-> 
->           * shard-lnl: PASS -> DMESG-WARN (Intel XE#324) +2 other tests
->             dmesg-warn
->      * igt@kms_pm_backlight@basic-brightness:
-> 
->           * shard-lnl: PASS -> SKIP (Intel XE#870)
->      * igt@kms_psr@fbc-pr-sprite-render:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#1406)
->      * igt@kms_psr@fbc-psr-sprite-render:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#929) +1
->             other test skip
->      * igt@kms_psr@psr-sprite-plane-onoff:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#929)
->      * igt@xe_evict@evict-beng-large-external-cm:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#688)
->      * igt@xe_evict@evict-beng-mixed-many-threads-small:
-> 
->           * shard-dg2-set2: PASS -> INCOMPLETE (Intel XE#1195 / Intel XE#1473
->             / Intel XE#402)
->      * igt@xe_evict@evict-beng-mixed-threads-large:
-> 
->           * shard-dg2-set2: PASS -> INCOMPLETE (Intel XE#1195 / Intel
->             XE#1473) +1 other test incomplete
->      * igt@xe_evict@evict-threads-large:
-> 
->           * shard-dg2-set2: PASS -> TIMEOUT (Intel XE#1473)
->      * igt@xe_exec_fault_mode@many-execqueues-userptr-rebind-imm:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#288) +1
->             other test skip
->      * igt@xe_oa@oa-regs-whitelisted@rcs-0:
-> 
->           * shard-lnl: NOTRUN -> FAIL (Intel XE#2514)
->      * igt@xe_pat@pat-index-xehpc:
-> 
->           * shard-dg2-set2: NOTRUN -> SKIP (Intel XE#1201 / Intel XE#979)
->      * igt@xe_pm@s2idle-d3cold-basic-exec:
-> 
->           * shard-lnl: NOTRUN -> SKIP (Intel XE#2284 / Intel XE#366)
->      * igt@xe_pm@s3-multiple-execs:
-> 
->           * shard-dg2-set2: PASS -> DMESG-WARN (Intel XE#1551 / Intel XE#569)
->      * igt@xe_pm@s3-vm-bind-unbind-all:
-> 
->           * shard-dg2-set2: PASS -> DMESG-WARN (Intel XE#1162 / Intel XE#1941
->             / Intel XE#569)
-> 
->     Possible fixes
-> 
->      * igt@fbdev@unaligned-read:
-> 
->           * {shard-bmg}: DMESG-WARN (Intel XE#877) -> PASS
->      * igt@kms_async_flips@async-flip-with-page-flip-events:
-> 
->           * shard-dg2-set2: DMESG-WARN (Intel XE#1705) -> PASS
->      * igt@kms_atomic_transition@plane-all-modeset-transition@pipe-a-hdmi-a-6:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#1426) -> PASS +3 other tests pass
->      * igt@kms_atomic_transition@plane-toggle-modeset-transition@pipe-a-edp-1:
-> 
->           * shard-lnl: FAIL (Intel XE#1426) -> PASS +1 other test pass
->      * igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-180-hflip:
-> 
->           * shard-lnl: FAIL (Intel XE#1659) -> PASS
->      * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-xe2-ccs@pipe-a-hdmi-a-3:
-> 
->           * {shard-bmg}: FAIL (Intel XE#2436) -> PASS
->      * igt@kms_flip@flip-vs-suspend-interruptible:
-> 
->           * {shard-bmg}: INCOMPLETE -> PASS +3 other tests pass
->      * igt@kms_pipe_crc_basic@suspend-read-crc@pipe-d-hdmi-a-6:
-> 
->           * shard-dg2-set2: DMESG-WARN (Intel XE#2019) -> PASS
->      * igt@kms_plane@plane-position-covered:
-> 
->           * shard-lnl: DMESG-WARN (Intel XE#324) -> PASS +1 other test pass
->      * igt@kms_plane_lowres@tiling-4@pipe-b-dp-2:
-> 
->           * {shard-bmg}: FAIL (Intel XE#2058) -> PASS +2 other tests pass
->      * igt@kms_pm_backlight@fade-with-dpms:
-> 
->           * shard-lnl: SKIP (Intel XE#870) -> PASS
->      * igt@kms_pm_dc@dc5-dpms:
-> 
->           * shard-lnl: FAIL (Intel XE#718) -> PASS
->      * igt@kms_psr2_sf@primary-plane-update-sf-dmg-area-big-fb:
-> 
->           * shard-lnl: DMESG-WARN (Intel XE#1705) -> PASS +1 other test pass
->      * igt@kms_universal_plane@cursor-fb-leak@pipe-a-dp-2:
-> 
->           * {shard-bmg}: FAIL (Intel XE#899) -> PASS
->      * igt@kms_universal_plane@cursor-fb-leak@pipe-a-edp-1:
-> 
->           * shard-lnl: FAIL (Intel XE#899) -> PASS +1 other test pass
->      * igt@kms_vblank@ts-continuation-dpms-suspend@pipe-a-edp-1:
-> 
->           * shard-lnl: FAIL -> PASS +1 other test pass
->      * igt@kms_vblank@ts-continuation-dpms-suspend@pipe-c-edp-1:
-> 
->           * shard-lnl: FAIL (Intel XE#2028) -> PASS +4 other tests pass
->      * igt@kms_vrr@flip-basic:
-> 
->           * shard-lnl: FAIL (Intel XE#2443) -> PASS +1 other test pass
->      * igt@xe_ccs@suspend-resume@linear-compressed-compfmt0-system-vram01:
-> 
->           * shard-dg2-set2: DMESG-WARN -> PASS +1 other test pass
->      * igt@xe_evict@evict-beng-mixed-threads-large:
-> 
->           * {shard-bmg}: TIMEOUT (Intel XE#1473) -> PASS
->      * igt@xe_evict@evict-cm-threads-large:
-> 
->           * shard-dg2-set2: TIMEOUT (Intel XE#1473) -> PASS
->      * igt@xe_evict@evict-large-multi-vm-cm:
-> 
->           * shard-dg2-set2: FAIL (Intel XE#1600) -> PASS
->      * igt@xe_evict@evict-threads-large:
-> 
->           * {shard-bmg}: TIMEOUT (Intel XE#1473 / Intel XE#2472) -> PASS +1
->             other test pass
->      * igt@xe_module_load@unload:
-> 
->           * shard-dg2-set2: DMESG-WARN (Intel XE#1551 / Intel XE#2019) ->
->             PASS
->      * igt@xe_oa@mmio-triggered-reports:
-> 
->           * {shard-bmg}: FAIL (Intel XE#2249) -> PASS
->      * igt@xe_pm@s4-d3hot-basic-exec:
-> 
->           * shard-dg2-set2: INCOMPLETE (Intel XE#1195 / Intel XE#1358) ->
->             PASS
->      * igt@xe_pm_residency@toggle-gt-c6:
-> 
->           * shard-lnl: FAIL (Intel XE#958) -> PASS
-> 
->     Warnings
-> 
->      * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#623) -> SKIP
->             (Intel XE#623)
->      * igt@kms_big_fb@4-tiled-32bpp-rotate-270:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#316) -> SKIP
->             (Intel XE#316) +3 other tests skip
->      * igt@kms_big_fb@linear-16bpp-rotate-90:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#316) -> SKIP (Intel XE#1201 /
->             Intel XE#316) +4 other tests skip
->      * igt@kms_big_fb@y-tiled-addfb-size-offset-overflow:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#607) -> SKIP (Intel XE#1201 /
->             Intel XE#607)
->      * igt@kms_big_fb@yf-tiled-32bpp-rotate-180:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1124 / Intel XE#1201) -> SKIP
->             (Intel XE#1124) +10 other tests skip
->      * igt@kms_big_fb@yf-tiled-64bpp-rotate-180:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1124) -> SKIP (Intel XE#1124 /
->             Intel XE#1201) +10 other tests skip
->      * igt@kms_bw@connected-linear-tiling-3-displays-2560x1440p:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#2191) -> SKIP (Intel XE#1201 /
->             Intel XE#2191)
->      * igt@kms_bw@connected-linear-tiling-3-displays-3840x2160p:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#2191) -> SKIP
->             (Intel XE#2191)
->      * igt@kms_bw@linear-tiling-3-displays-3840x2160p:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#367) -> SKIP (Intel XE#1201 /
->             Intel XE#367) +3 other tests skip
->      * igt@kms_ccs@bad-aux-stride-y-tiled-gen12-mc-ccs@pipe-c-hdmi-a-6:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#787) -> SKIP
->             (Intel XE#787) +76 other tests skip
->      * igt@kms_ccs@bad-pixel-format-4-tiled-mtl-rc-ccs-cc@pipe-a-hdmi-a-6:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#787) -> SKIP (Intel XE#1201 /
->             Intel XE#787) +83 other tests skip
->      * igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs-cc@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#455 / Intel
->             XE#787) -> SKIP (Intel XE#455 / Intel XE#787) +21 other tests
->             skip
->      * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-rc-ccs@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455 / Intel XE#787) -> SKIP (Intel
->             XE#1201 / Intel XE#455 / Intel XE#787) +23 other tests skip
->      * igt@kms_ccs@crc-primary-rotation-180-4-tiled-xe2-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1252) -> SKIP (Intel XE#1201 /
->             Intel XE#1252)
->      * igt@kms_cdclk@mode-transition@pipe-d-dp-4:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#314) -> SKIP (Intel XE#1201 /
->             Intel XE#314) +3 other tests skip
->      * igt@kms_chamelium_color@ctm-0-50:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#306) -> SKIP
->             (Intel XE#306) +1 other test skip
->      * igt@kms_chamelium_color@ctm-blue-to-red:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#306) -> SKIP (Intel XE#1201 /
->             Intel XE#306)
->      * igt@kms_chamelium_hpd@dp-hpd-storm-disable:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#373) -> SKIP
->             (Intel XE#373) +5 other tests skip
->      * igt@kms_chamelium_hpd@vga-hpd:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#373) -> SKIP (Intel XE#1201 /
->             Intel XE#373) +9 other tests skip
->      * igt@kms_content_protection@dp-mst-lic-type-1:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#307) -> SKIP (Intel XE#1201 /
->             Intel XE#307)
->      * igt@kms_cursor_crc@cursor-rapid-movement-512x512:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#308) -> SKIP (Intel XE#1201 /
->             Intel XE#308) +1 other test skip
->      * igt@kms_cursor_legacy@short-busy-flip-before-cursor-atomic-transitions:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#323) -> SKIP
->             (Intel XE#323) +1 other test skip
->      * igt@kms_cursor_legacy@short-busy-flip-before-cursor-toggle:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#323) -> SKIP (Intel XE#1201 /
->             Intel XE#323)
->      * igt@kms_dither@fb-8bpc-vs-panel-6bpc@pipe-a-hdmi-a-6:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / i915#3804) -> SKIP
->             (i915#3804)
->      * igt@kms_fbcon_fbt@psr-suspend:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#776) -> SKIP (Intel XE#1201 /
->             Intel XE#776)
->      * igt@kms_feature_discovery@chamelium:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#701) -> SKIP (Intel XE#1201 /
->             Intel XE#701)
->      * igt@kms_feature_discovery@display-4x:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1138) -> SKIP (Intel XE#1138 /
->             Intel XE#1201)
->      * igt@kms_feature_discovery@psr1:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1135 / Intel XE#1201) -> SKIP
->             (Intel XE#1135) +1 other test skip
->      * igt@kms_flip@2x-flip-vs-suspend:
-> 
->           * shard-dg2-set2: DMESG-WARN (Intel XE#2019) -> INCOMPLETE (Intel
->             XE#1195 / Intel XE#2019)
->      * igt@kms_frontbuffer_tracking@drrs-2p-scndscrn-cur-indfb-onoff:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#651) -> SKIP (Intel XE#1201 /
->             Intel XE#651) +33 other tests skip
->      * igt@kms_frontbuffer_tracking@drrs-rgb101010-draw-mmap-wc:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#651) -> SKIP
->             (Intel XE#651) +26 other tests skip
->      * igt@kms_frontbuffer_tracking@fbcdrrs-tiling-y:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#658) -> SKIP (Intel XE#1201 /
->             Intel XE#658)
->      * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-spr-indfb-draw-blt:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#653) -> SKIP (Intel XE#1201 /
->             Intel XE#653) +24 other tests skip
->      * igt@kms_frontbuffer_tracking@plane-fbc-rte:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1158) -> SKIP (Intel XE#1158 /
->             Intel XE#1201)
->      * igt@kms_frontbuffer_tracking@psr-2p-primscrn-shrfb-msflip-blt:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#653) -> SKIP
->             (Intel XE#653) +18 other tests skip
->      * igt@kms_getfb@getfb-reject-ccs:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#605) -> SKIP (Intel XE#1201 /
->             Intel XE#605)
->      * igt@kms_hdr@invalid-hdr:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#455) -> SKIP
->             (Intel XE#455) +9 other tests skip
->      * igt@kms_multipipe_modeset@basic-max-pipe-crc-check:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#356) -> SKIP (Intel XE#1201 /
->             Intel XE#356)
->      * igt@kms_plane_lowres@tiling-y:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#455) -> SKIP (Intel XE#1201 /
->             Intel XE#455) +17 other tests skip
->      * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#2318 / Intel
->             XE#455) -> SKIP (Intel XE#2318 / Intel XE#455) +3 other tests
->             skip
->      * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-c-hdmi-a-6:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#2318) -> SKIP
->             (Intel XE#2318) +5 other tests skip
->      * igt@kms_pm_backlight@fade-with-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#870) -> SKIP (Intel XE#1201 /
->             Intel XE#870) +1 other test skip
->      * igt@kms_pm_dc@dc3co-vpb-simulation:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1122 / Intel XE#1201) -> SKIP
->             (Intel XE#1122) +1 other test skip
->           * shard-lnl: SKIP (Intel XE#736) -> SKIP (Intel XE#1909)
->      * igt@kms_pm_dc@dc6-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#908) -> SKIP (Intel XE#1201 /
->             Intel XE#908)
->      * igt@kms_psr2_sf@fbc-cursor-plane-move-continuous-exceed-fully-sf:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#1489) -> SKIP
->             (Intel XE#1489) +2 other tests skip
->      * igt@kms_psr2_sf@fbc-primary-plane-update-sf-dmg-area:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1489) -> SKIP (Intel XE#1201 /
->             Intel XE#1489) +3 other tests skip
->      * igt@kms_psr@fbc-psr2-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#929) -> SKIP
->             (Intel XE#929) +10 other tests skip
->      * igt@kms_psr@psr-dpms:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#929) -> SKIP (Intel XE#1201 /
->             Intel XE#929) +15 other tests skip
->      * igt@kms_psr_stress_test@invalidate-primary-flip-overlay:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1149) -> SKIP (Intel XE#1149 /
->             Intel XE#1201)
->      * igt@kms_rotation_crc@bad-tiling:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#327) -> SKIP (Intel XE#1201 /
->             Intel XE#327) +1 other test skip
->      * igt@kms_rotation_crc@primary-y-tiled-reflect-x-90:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#327) -> SKIP
->             (Intel XE#327)
->      * igt@kms_rotation_crc@primary-yf-tiled-reflect-x-180:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1127) -> SKIP (Intel XE#1127 /
->             Intel XE#1201)
->      * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#362) -> SKIP
->             (Intel XE#1201 / Intel XE#1500)
->      * igt@kms_tv_load_detect@load-detect:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#330) -> SKIP (Intel XE#1201 /
->             Intel XE#330)
->      * igt@kms_vrr@cmrr:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#2168) -> SKIP
->             (Intel XE#2168)
->      * igt@xe_compute_preempt@compute-preempt-many:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1280 / Intel XE#455) -> SKIP
->             (Intel XE#1201 / Intel XE#1280 / Intel XE#455) +1 other test skip
->      * igt@xe_copy_basic@mem-copy-linear-0xfd:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1123 / Intel XE#1201) -> SKIP
->             (Intel XE#1123)
->      * igt@xe_copy_basic@mem-copy-linear-0xfffe:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1123) -> SKIP (Intel XE#1123 /
->             Intel XE#1201)
->      * igt@xe_copy_basic@mem-set-linear-0x3fff:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1126) -> SKIP (Intel XE#1126 /
->             Intel XE#1201)
->      * igt@xe_evict@evict-beng-threads-large:
-> 
->           * shard-dg2-set2: TIMEOUT (Intel XE#1473) -> FAIL (Intel XE#1000)
->      * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#288) -> SKIP
->             (Intel XE#288) +18 other tests skip
->      * igt@xe_exec_fault_mode@twice-userptr-rebind-imm:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#288) -> SKIP (Intel XE#1201 /
->             Intel XE#288) +25 other tests skip
->      * igt@xe_module_load@load:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#378) -> SKIP
->             (Intel XE#378)
->      * igt@xe_oa@closed-fd-and-unmapped-access:
-> 
->           * shard-dg2-set2: SKIP -> SKIP (Intel XE#1201) +8 other tests skip
->      * igt@xe_pm@s4-d3cold-basic-exec:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#2284 / Intel
->             XE#366) -> SKIP (Intel XE#2284 / Intel XE#366)
->      * igt@xe_pm@vram-d3cold-threshold:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#579) -> SKIP (Intel XE#1201 /
->             Intel XE#579)
->      * igt@xe_query@multigpu-query-engines:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#944) -> SKIP (Intel XE#1201 /
->             Intel XE#944) +1 other test skip
->      * igt@xe_query@multigpu-query-mem-usage:
-> 
->           * shard-dg2-set2: SKIP (Intel XE#1201 / Intel XE#944) -> SKIP
->             (Intel XE#944)
-> 
->    {name}: This element is suppressed. This means it is ignored when
->    computing
->    the status of the difference (SUCCESS, WARNING, or FAILURE).
-> 
-> Build changes
-> 
->      * IGT: IGT_7967 -> IGTPW_11566
->      * Linux: xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78 ->
->        xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426
-> 
->    IGTPW_11566: 11566
->    IGT_7967: 290bdef9033c8b185922f02cd05d62fcc0091c15 @
->    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->    xe-1756-bb06cec392c188bc980be5cee9a85240ce866b78:
->    bb06cec392c188bc980be5cee9a85240ce866b78
->    xe-1759-924db73e261b7bfd4b70b14db61197f48bf09426:
->    924db73e261b7bfd4b70b14db61197f48bf09426
+diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
+index 1270c2b22..dc3ebd8f0 100644
+--- a/lib/gpgpu_fill.c
++++ b/lib/gpgpu_fill.c
+@@ -31,6 +31,7 @@
+ #include "drmtest.h"
+ 
+ #include "gpgpu_fill.h"
++#include "gpgpu_shader.h"
+ #include "gpu_cmds.h"
+ 
+ /* lib/i915/shaders/gpgpu/gpgpu_fill.gxa */
+@@ -86,56 +87,6 @@ static const uint32_t gen11_gpgpu_kernel[][4] = {
+ 	{ 0x07800031, 0x20000a40, 0x06000e00, 0x82000010 },
+ };
+ 
+-static const uint32_t gen12_gpgpu_kernel[][4] = {
+-	{ 0x00020061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000024, 0x00000004 },
+-	{ 0x00000061, 0x02250220, 0x000000c4, 0x00000000 },
+-	{ 0x00030061, 0x04050220, 0x00460005, 0x00000000 },
+-	{ 0x00010261, 0x04050220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04454220, 0x00000000, 0x0000000f },
+-	{ 0x00040661, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x00049031, 0x00000000, 0xc0000414, 0x02a00000 },
+-	{ 0x00030061, 0x70050220, 0x00460005, 0x00000000 },
+-	{ 0x00040131, 0x00000004, 0x7020700c, 0x10000000 },
+-};
+-
+-static const uint32_t xehp_gpgpu_kernel[][4] = {
+-	{ 0x00020061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000024, 0x00000004 },
+-	{ 0x00000061, 0x02250220, 0x000000c4, 0x00000000 },
+-	{ 0x00030061, 0x04050220, 0x00460005, 0x00000000 },
+-	{ 0x00011a61, 0x04050220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04454220, 0x00000000, 0x0000000f },
+-	{ 0x00041e61, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x80001901, 0x00010000, 0x00000000, 0x00000000 },
+-	{ 0x00044031, 0x00000000, 0xc0000414, 0x02a00000 },
+-	{ 0x00030031, 0x00000004, 0x3000500c, 0x00000000 },
+-};
+-
+-static const uint32_t xehpc_gpgpu_kernel[][4] = {
+-	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
+-	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
+-	{ 0x000c0061, 0x04050220, 0x00460005, 0x00000000 },
+-	{ 0x00041a61, 0x04050220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04254220, 0x00000000, 0x0000000f },
+-	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x00132031, 0x00000000, 0xc0000414, 0x02a00000 },
+-	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
+-};
+-
+-static const uint32_t xe2lpg_gpgpu_kernel[][4] = {
+-	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
+-	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
+-	{ 0x00100061, 0x04054220, 0x00000000, 0x00000000 },
+-	{ 0x00041a61, 0x04550220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04754550, 0x00000000, 0x000f000f },
+-	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x00132031, 0x00000000, 0xd00e0494, 0x04000000 },
+-	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
+-};
+-
+ /*
+  * This sets up the gpgpu pipeline,
+  *
+@@ -317,15 +268,66 @@ __gen9_gpgpu_fillfunc(int i915,
+ 	intel_bb_destroy(ibb);
+ }
+ 
+-static void
+-__xehp_gpgpu_fillfunc(int i915,
+-		      struct intel_buf *buf,
+-		      unsigned int x, unsigned int y,
+-		      unsigned int width, unsigned int height,
+-		      uint8_t color, const uint32_t kernel[][4],
+-		      size_t kernel_size)
++static struct gpgpu_shader *__xehp_gpgpu_kernel(int i915)
++{
++	struct gpgpu_shader *kernel = gpgpu_shader_create(i915);
++
++	emit_iga64_code(kernel, gpgpu_fill, "					\n\
++// fill up r1 with target colour						\n\
++mov (4|M0)		r1.0<1>:ub	r1.0<0;1,0>:ub				\n\
++// prepare block x offset (Thread Group Id X * 16)				\n\
++shl (1|M0)		r2.0<1>:ud	r0.1<0;1,0>:ud	0x4:ud			\n\
++// prepare block y offset (Thread Group Id Y)					\n\
++mov (1|M0)		r2.1<1>:ud	r0.6<0;1,0>:ud				\n\
++// zero message header payload							\n\
++mov (8|M0)		r4.0<1>:ud	0x0:ud					\n\
++// fill up message payload with target colour					\n\
++mov (16|M0)		r5.0<1>:ud	r1.0<0;1,0>:ud				\n\
++#if GEN_VER < 2000								\n\
++// load block offsets into message header payload				\n\
++mov (2|M0)		r4.0<1>:ud	r2.0<2;2,1>:ud				\n\
++// load block width								\n\
++mov (1|M0)		r4.2<1>:ud	0xF:ud					\n\
++// load FFTID from R0 header							\n\
++mov (1|M0)		r4.4<1>:ud	r0.5<0;1,0>:ud				\n\
++// Media block write to bti[0] surface						\n\
++// Message Descriptor								\n\
++//	0x40A8000:								\n\
++//	[28:25]		Mlen: 2							\n\
++//	[24:20]		Rlen: 0							\n\
++//	[19]		Header: 1 (included)					\n\
++//	[18:14]		MessageType: 0xA (media block write)			\n\
++//	[7:0]		BTI: 0							\n\
++send.dc1 (16|M0)	null	r4	src1_null	0x0	0x40A8000	\n\
++#else										\n\
++// load block offsets into message header payload				\n\
++mov (2|M0)		r4.5<1>:ud	r2.0<2;2,1>:ud				\n\
++// load block width								\n\
++mov (1|M0)		 r4.14<1>:w	0xF:w					\n\
++// Typed 2D block store to bti[0] surface					\n\
++// Message Descriptor								\n\
++//	0x6400007:								\n\
++//	[30:29]		AddrType: 3 (BTI)					\n\
++//	[28:25]		Mlen: 2							\n\
++//	[24:20]		Rlen: 0							\n\
++//	[19:17]		Caching: 0  (use state settings for both L1 and L3)	\n\
++//	[5:0]		Opcode: 0x07  (store_block2d)				\n\
++send.tgm (16|M0)	null	r4	null	0x0	0x64000007		\n\
++#endif										\n\
++	");
++
++	gpgpu_shader__eot(kernel);
++	return kernel;
++}
++
++void xehp_gpgpu_fillfunc(int i915,
++			 struct intel_buf *buf,
++			 unsigned int x, unsigned int y,
++			 unsigned int width, unsigned int height,
++			 uint8_t color)
+ {
+ 	struct intel_bb *ibb;
++	struct gpgpu_shader *kernel;
+ 	struct xehp_interface_descriptor_data idd;
+ 
+ 	ibb = intel_bb_create(i915, PAGE_SIZE);
+@@ -333,8 +335,10 @@ __xehp_gpgpu_fillfunc(int i915,
+ 
+ 	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
+ 
+-	xehp_fill_interface_descriptor(ibb, buf,
+-				       kernel, kernel_size, &idd);
++	kernel = __xehp_gpgpu_kernel(i915);
++	xehp_fill_interface_descriptor(ibb, buf, kernel->instr,
++				       kernel->size * 4, &idd);
++	gpgpu_shader_destroy(kernel);
+ 
+ 	intel_bb_ptr_set(ibb, 0);
+ 
+@@ -377,47 +381,3 @@ void gen11_gpgpu_fillfunc(int i915,
+ 			      gen11_gpgpu_kernel,
+ 			      sizeof(gen11_gpgpu_kernel));
+ }
+-
+-void gen12_gpgpu_fillfunc(int i915,
+-			  struct intel_buf *buf,
+-			  unsigned x, unsigned y,
+-			  unsigned width, unsigned height,
+-			  uint8_t color)
+-{
+-	__gen9_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      gen12_gpgpu_kernel,
+-			      sizeof(gen12_gpgpu_kernel));
+-}
+-
+-void xehp_gpgpu_fillfunc(int i915,
+-			 struct intel_buf *buf,
+-			 unsigned int x, unsigned int y,
+-			 unsigned int width, unsigned int height,
+-			 uint8_t color)
+-{
+-	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      xehp_gpgpu_kernel,
+-			      sizeof(xehp_gpgpu_kernel));
+-}
+-
+-void xehpc_gpgpu_fillfunc(int i915,
+-			  struct intel_buf *buf,
+-			  unsigned int x, unsigned int y,
+-			  unsigned int width, unsigned int height,
+-			  uint8_t color)
+-{
+-	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      xehpc_gpgpu_kernel,
+-			      sizeof(xehpc_gpgpu_kernel));
+-}
+-
+-void xe2lpg_gpgpu_fillfunc(int i915,
+-			   struct intel_buf *buf,
+-			   unsigned int x, unsigned int y,
+-			   unsigned int width, unsigned int height,
+-			   uint8_t color)
+-{
+-	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      xe2lpg_gpgpu_kernel,
+-			      sizeof(xe2lpg_gpgpu_kernel));
+-}
+diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
+index c3b47c10a..f4e207077 100644
+--- a/lib/gpgpu_fill.h
++++ b/lib/gpgpu_fill.h
+@@ -55,12 +55,6 @@ void gen11_gpgpu_fillfunc(int i915,
+ 			  unsigned width, unsigned height,
+ 			  uint8_t color);
+ 
+-void gen12_gpgpu_fillfunc(int i915,
+-			  struct intel_buf *buf,
+-			  unsigned x, unsigned y,
+-			  unsigned width, unsigned height,
+-			  uint8_t color);
+-
+ void
+ xehp_gpgpu_fillfunc(int i915,
+ 		    struct intel_buf *dst,
+@@ -68,17 +62,4 @@ xehp_gpgpu_fillfunc(int i915,
+ 		    unsigned int width, unsigned int height,
+ 		    uint8_t color);
+ 
+-void
+-xehpc_gpgpu_fillfunc(int i915,
+-		     struct intel_buf *dst,
+-		     unsigned int x, unsigned int y,
+-		     unsigned int width, unsigned int height,
+-		     uint8_t color);
+-
+-void xe2lpg_gpgpu_fillfunc(int i915,
+-			   struct intel_buf *buf,
+-			   unsigned int x, unsigned int y,
+-			   unsigned int width, unsigned int height,
+-			   uint8_t color);
+-
+ #endif /* GPGPU_FILL_H */
+diff --git a/lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm
+deleted file mode 100644
+index ede87a055..000000000
+--- a/lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,12 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
+-         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
+-         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {@2}
+-         mov (1|M0)               r4.2<1>:ud    0xF:ud
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {@6}
+-         send.dc1 (16|M0)         null     r4      null    0x0         0x40A8000  {@1, $0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
+-         mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud
+-         send.ts (16|M0)          null     r112    null    0x10000000  0x2000010  {EOT, @1} //    wr:1+0, rd:0, fc: 0x10
+-L160:
+diff --git a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
+deleted file mode 100644
+index 52699a475..000000000
+--- a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,12 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
+-         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
+-         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
+-         mov (1|M0)               r4.2<1>:ud    0xF:ud
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
+-(W)      sync.nop                             null                             {I@1}
+-         send.dc1 (16|M0)         null     r4      null:0    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
+-         send.gtwy (8|M0)         null     r80     null:0    0x0         0x02000000 {EOT}
+-L176:
+diff --git a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+deleted file mode 100644
+index e2ecc71f5..000000000
+--- a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,13 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub                        // Load r1.0-3 with color byte
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud              // Load r2.0-3 with tg id X << 4
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud                        // Load r2.4-7 with tg id Y
+-
+-         // payload setup
+-         mov (16|M0)              r4.0<1>:ud    0x0:ud                                // Zero out register R4
+-         mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud                        // Store X and Y block start (160:191 and 192:223)
+-         mov (1|M0)               r4.14<1>:w    0xF:w                                 // Store X and Y block size (224:231 and 232:239)
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                        // Load r5-r6 with color byte
+-
+-         send.tgm (16|M0)         null     r4    null:0    0x0    0x64000007          // Send TypedStore2DBlock to tgm port
+-         send.gtwy (8|M0)         null    r80    null:0    0x0    0x02000000 {EOT}
+diff --git a/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
+deleted file mode 100644
+index 7adfbd0f0..000000000
+--- a/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,12 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
+-         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
+-         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
+-         mov (1|M0)               r4.2<1>:ud    0xF:ud
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
+-(W)      sync.nop                             null                             {I@1}
+-         send.dc1 (16|M0)         null     r4      null    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
+-         send.gtwy (8|M0)         null     r80     null    0x0         0x02000000 {EOT}
+-L176:
+diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+index 6a08c4844..c22b1e9e7 100644
+--- a/lib/iga64_generated_codes.c
++++ b/lib/iga64_generated_codes.c
+@@ -3,7 +3,81 @@
+ 
+ #include "gpgpu_shader.h"
+ 
+-#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
++#define MD5_SUM_IGA64_ASMS efa80cb5c2d50f515af3642cee8dc062
++
++struct iga64_template const iga64_code_gpgpu_fill[] = {
++	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
++		0x00080061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000014, 0x00000004,
++		0x00000061, 0x02150220, 0x00000064, 0x00000000,
++		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
++		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00041b61, 0x04550220, 0x00220205, 0x00000000,
++		0x00000061, 0x04754550, 0x00000000, 0x000f000f,
++		0x00132031, 0x00000000, 0xd00e0494, 0x04000000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1270, .size = 52, .code = (const uint32_t []) {
++		0x00020061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000024, 0x00000004,
++		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
++		0x00030061, 0x04054220, 0x00000000, 0x00000000,
++		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1260, .size = 48, .code = (const uint32_t []) {
++		0x00080061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000014, 0x00000004,
++		0x00000061, 0x02150220, 0x00000064, 0x00000000,
++		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
++		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00041b61, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04254220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04450220, 0x00000054, 0x00000000,
++		0x00132031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
++		0x00020061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000024, 0x00000004,
++		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
++		0x00030061, 0x04054220, 0x00000000, 0x00000000,
++		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
++		0x00020061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000024, 0x00000004,
++		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
++		0x00030061, 0x04054220, 0x00000000, 0x00000000,
++		0x00040461, 0x05050220, 0x00000104, 0x00000000,
++		0x00010361, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x00049031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
+ 
+ struct iga64_template const iga64_code_media_block_write[] = {
+ 	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 824e92831..a7185cf05 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -758,16 +758,8 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
+ {
+ 	igt_fillfunc_t fill = NULL;
+ 
+-	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
+-		fill = xe2lpg_gpgpu_fillfunc;
+-	else if (IS_METEORLAKE(devid))
++	if (intel_graphics_ver(devid) >= IP_VER(12, 00))
+ 		fill = xehp_gpgpu_fillfunc;
+-	else if (intel_graphics_ver(devid) >= IP_VER(12, 60))
+-		fill = xehpc_gpgpu_fillfunc;
+-	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+-		fill = xehp_gpgpu_fillfunc;
+-	else if (IS_GEN12(devid))
+-		fill = gen12_gpgpu_fillfunc;
+ 	else if (IS_GEN11(devid))
+ 		fill = gen11_gpgpu_fillfunc;
+ 	else if (IS_GEN9(devid) || IS_GEN10(devid))
+diff --git a/lib/meson.build b/lib/meson.build
+index f711e60a7..2fac522d3 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -216,7 +216,7 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
+ 		      fallback : 'NO-GIT',
+ 		      command : vcs_command )
+ 
+-iga64_assembly_sources = [ 'gpgpu_shader.c' ]
++iga64_assembly_sources = [ 'gpgpu_shader.c', 'gpgpu_fill.c' ]
+ 
+ lib_intermediates = []
+ iga64_assembly_libs = []
+-- 
+2.34.1
+
