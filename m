@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E91E0C3DA7F
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Aug 2024 17:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 937D0C52D7F
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Aug 2024 19:16:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9BFF110E4A4;
-	Thu, 15 Aug 2024 17:31:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 501B610E521;
+	Thu, 15 Aug 2024 19:16:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ff6hMeih";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bSjcpAud";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1783D10E4A4
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Aug 2024 17:31:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5579110E522
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Aug 2024 19:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723743098; x=1755279098;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=W/AsommxbYhEx0pJvW6k++PM+AdoU9BqH+PgO9kpigo=;
- b=ff6hMeih0y/48OAXpNzP4pPqE5NXxWiq/ZJWu+Kc4Dbmff9Nlub8q7bH
- nRkHmj2U/HIybmkwqab6vCj3iId1UAwDIjAVp6KDo1htfWXRfqiZHrayK
- WhsK0v4bCCLVYYSaYnUV7N6EdidZxHzt96xknKsgVLye20zN0P7Kk3gxo
- R8HZGDh55f7A94Wa7jzULHs7EmbUgTL9I67QnHqQyhyh5mWl9vnzZXbW7
- c7+mjqc24te87cWlF8Pmxz1RggLJjeJSbHkDZ4H9RxyJUUV4A1MhyOTQT
- UBIBzeLMCazAqHwqrDwgTZppQ1FLuMxLaZ6zdv24PBEKYEoweksMz24Ig g==;
-X-CSE-ConnectionGUID: Dvp+qvHVQOuyNSSFHvhjaw==
-X-CSE-MsgGUID: URkJ5qoIQ26Kx+gldBw2Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11165"; a="21656633"
-X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; d="scan'208";a="21656633"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Aug 2024 10:31:38 -0700
-X-CSE-ConnectionGUID: MC/IyKKKS1yQJmOg6u38lQ==
-X-CSE-MsgGUID: fgaZ7U4aS3GsCH/X/Yc3zA==
+ t=1723749406; x=1755285406;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ydpLL5jgB0oOLWcXnaHNyZdzCWKEmmaS7TghlIvpQI8=;
+ b=bSjcpAudtxLk+k/83hmz2vOSCqnMqaLN22cHHU7amE32V5i6rY1yAPwe
+ eLGQ9ybFwThCnl+ITTETlcDgOX0Fl4Rq28BEpJ8dQibyVJDQB6aYppZuW
+ FKBdFYxwe+2hwMlYOVeXzbxRwTaZNWtBdhXqjfbGdrk5c0PXiKONsozlj
+ Xta5hqB9L6dlPZPuBOiFmeSpVMCHMpDL4PdGJwswU2XwS+KGp+reySD4u
+ HrbRJPEmmeuI4syTkHHs0n1cXpbpwuGNXkA3HnpNUAWM5ukQ5RjcFsOxR
+ GM7wGP6N/GkGsu2HlqbLmsDBNyO/s8uhLFUlZIaOAwUMBxVv0ZtcsWmTk A==;
+X-CSE-ConnectionGUID: kW5fEz0gT0G/77qwF7CgbQ==
+X-CSE-MsgGUID: jercurqAQTuYw5kuYV+2tA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11165"; a="24928097"
+X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; d="scan'208";a="24928097"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Aug 2024 12:16:46 -0700
+X-CSE-ConnectionGUID: oNogc3cWTMqN9WhabROKqQ==
+X-CSE-MsgGUID: CEGJTGtEQ5y1PpKiZsV5iA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; d="scan'208";a="63592970"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Aug 2024 10:31:37 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>
-Subject: Re: [PATCH i-g-t 1/3] lib/igt_core: Use unsigned constants for time
- conversion
-Date: Thu, 15 Aug 2024 10:31:21 -0700
-Message-ID: <172374302306.3784041.11151040561268332409.b4-ty@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240814214705.3718355-1-lucas.demarchi@intel.com>
-References: <20240814214705.3718355-1-lucas.demarchi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; d="scan'208";a="82644363"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO gjsousa-mobl2.intel.com)
+ ([10.125.110.233])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Aug 2024 12:16:44 -0700
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH i-g-t] tools/dpcd_reg: Advertise the dump command in usage text
+Date: Thu, 15 Aug 2024 16:16:00 -0300
+Message-ID: <20240815191626.49244-1-gustavo.sousa@intel.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,22 +66,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+When no command is passed, the default operation for dpcd_reg is to dump
+DPCD data. However, passing "dump" explicitly is also supported.
 
-On Wed, 14 Aug 2024 14:47:03 -0700, Lucas De Marchi wrote:
-> Time conversion is usually done with unsigned constant as it could
-> otherwise give warnings on signed/unsigned comparisons.
-> 
-> 
+Improve the help message to let the user know about the "dump" command
+and that it is the default operation.
 
-Thanks Gustavo for reviewing. I fixed the comments and applied.
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
+ tools/dpcd_reg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-[1/3] lib/igt_core: Use unsigned constants for time conversion
-      commit: d1990dcb44c80cb07f11f15ef4412a45acb4601b
-[2/3] lib/igt_core: Add a couple of time conversion macros
-      commit: 63780d7d1cc09d5c13e00d161149bcdfa3b36cb8
-[3/3] lib/xe: Remove MS_TO_NS()
-      commit: 54f99657bd69295e49e1ab376fde82d3135bba7a
-
-Best regards,
+diff --git a/tools/dpcd_reg.c b/tools/dpcd_reg.c
+index 2761168d0030..7d497e36a46b 100644
+--- a/tools/dpcd_reg.c
++++ b/tools/dpcd_reg.c
+@@ -89,6 +89,7 @@ static void print_usage(void)
+ {
+ 	printf("Usage: dpcd_reg [OPTION ...] COMMAND\n\n");
+ 	printf("COMMAND is one of:\n");
++	printf("  dump:		Dump dpcd data (default command)\n");
+ 	printf("  read:		Read [count] bytes dpcd reg at an offset\n");
+ 	printf("  write:	Write a dpcd reg at an offset\n\n");
+ 	printf("Options for the above COMMANDS are\n");
 -- 
-Lucas De Marchi <lucas.demarchi@intel.com>
+2.46.0
+
