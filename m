@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E73C52D7C
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Aug 2024 13:15:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68A23C52D7C
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Aug 2024 13:46:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEB5F10E05A;
-	Thu, 15 Aug 2024 13:15:57 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k7Ufg1so";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5385510E05A
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Aug 2024 13:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723727756; x=1755263756;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=zPnS2kA7qj+qcWdN2LnfIPNgrM1Bpx7YWl5rgAIKB4s=;
- b=k7Ufg1so2GMUOeEW31cn9JMxBJ+GPvrGmDvV3tPhMoGjIxZ2YRU3720Y
- 3KxdBySPuEChMsPLXC3KBHkMglPOt/HqoWg0lIxWLKPorBv/P+RPWzHov
- G5toZ2lE0DT0g/95oUt/IBLbqQfLAtypW9N8S/Drz1QOm44EhtidxwOxp
- lFvsPuKKcrVRZGFMcXlAwzS1GTLNIVW6DmuHkoVDkEm0nynCSyQ7es25h
- eCylefnwwoG4Y5EydNfp/xAG39gC6+v07Yp3Ym/mfdBxEO4BB77N/voLV
- 4/mGD2RCCtljoDHp+1kCooHLB/oVfP7DEDyAkYweGXiNNtXZF4zuamELn g==;
-X-CSE-ConnectionGUID: ADmR8tNVSASGSvlp9DaGFQ==
-X-CSE-MsgGUID: CcybTNdfTpalGP1SU4j1NQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11165"; a="25744517"
-X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; d="scan'208";a="25744517"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Aug 2024 06:15:55 -0700
-X-CSE-ConnectionGUID: s5y3zh07Spqp2Yjl0CyaSw==
-X-CSE-MsgGUID: STgSpCgjSzeU6bpc/DM4cA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; d="scan'208";a="58979222"
-Received: from kbommu-desk.iind.intel.com ([10.145.169.159])
- by fmviesa006.fm.intel.com with ESMTP; 15 Aug 2024 06:15:49 -0700
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: [PATCH i-g-t] lib/igt_kmod: Unload/Reload the mei Modules Before
- Unloading/Reloading the i915/xe Driver
-Date: Thu, 15 Aug 2024 18:34:23 +0530
-Message-Id: <20240815130423.7686-1-krishnaiah.bommu@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 28CB610E368;
+	Thu, 15 Aug 2024 13:46:29 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B2C910E368;
+ Thu, 15 Aug 2024 13:46:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8222868374243451009=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fkmod=3A_Unload/Reloa?=
+ =?utf-8?q?d_the_mei_Modules_Before_Unloading/Reloading_the_i915/xe_Driver?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 15 Aug 2024 13:46:27 -0000
+Message-ID: <172372958762.651696.11841751501229863364@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240815130423.7686-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240815130423.7686-1-krishnaiah.bommu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,102 +37,150 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-To ensure stability and proper module management, this update introduces
-changes to the handling of MEI modules when loading or unloading
-the Intel i915 or Xe drivers.
+--===============8222868374243451009==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Key Changes:
-- Unload Order: The `mei_gsc_proxy` module is now unloaded before `mei_gsc`,
-preventing potential failures during the unloading process.
-- Platform-Specific Handling: On platforms where the MEI hardware is integrated
-with the graphics device (e.g., DG2/BMG), the MEI modules depend on the i915/Xe driver.
-Conversely, on newer platforms like CLS, where MEI hardware is separate,
-this dependency does not exist. This update ensures that MEI modules are
-unloaded/reloaded in the correct order based on platform-specific dependencies.
+== Series Details ==
 
-These changes address the need for a more robust handling of MEI modules across
-different hardware platforms, ensuring that the i915/Xe driver can be
-cleanly unloaded and reloaded without issues.
+Series: lib/igt_kmod: Unload/Reload the mei Modules Before Unloading/Reloading the i915/xe Driver
+URL   : https://patchwork.freedesktop.org/series/137343/
+State : success
 
-Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
----
- lib/igt_kmod.c | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+== Summary ==
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 464c0dcf4..6ee2b7afe 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -480,9 +480,29 @@ igt_intel_driver_load(const char *opts, const char *driver)
- {
- 	int ret;
- 
-+	const char *mei[] = {
-+		/* mei_gsc uses an i915 aux dev and the other mei mods depend on it */
-+		"mei_pxp",
-+		"mei_hdcp",
-+		"mei_gsc_proxy",
-+		"mei_gsc",
-+		NULL,
-+	};
-+
- 	if (opts)
- 		igt_info("Reloading %s with %s\n\n", driver, opts);
- 
-+	for (const char **m = mei; *m; m++) {
-+		if (igt_kmod_is_loaded(*m))
-+			continue;
-+
-+		ret = igt_kmod_load(*m, NULL);
-+		if (ret) {
-+			igt_debug("Could not load %s\n", *m);
-+			return ret;
-+		}
-+	}
-+
- 	ret = igt_kmod_load(driver, opts);
- 	if (ret) {
- 		igt_debug("Could not load %s\n", driver);
-@@ -620,9 +640,14 @@ int __igt_intel_driver_unload(char **who, const char *driver)
- 	const char *aux[] = {
- 		/* gen5: ips uses symbol_get() so only a soft module dependency */
- 		"intel_ips",
-+		NULL,
-+	};
-+
-+	const char *mei[] = {
- 		/* mei_gsc uses an i915 aux dev and the other mei mods depend on it */
- 		"mei_pxp",
- 		"mei_hdcp",
-+		"mei_gsc_proxy",
- 		"mei_gsc",
- 		NULL,
- 	};
-@@ -647,6 +672,19 @@ int __igt_intel_driver_unload(char **who, const char *driver)
- 		}
- 	}
- 
-+	for (const char **m = mei; *m; m++) {
-+		if (!igt_kmod_is_loaded(*m))
-+			continue;
-+
-+		ret = igt_kmod_unload(*m);
-+		if (ret) {
-+			if (who)
-+				*who = strdup_realloc(*who, *m);
-+
-+			return ret;
-+		}
-+	}
-+
- 	if (igt_kmod_is_loaded(driver)) {
- 		ret = igt_kmod_unload(driver);
- 		if (ret) {
--- 
-2.25.1
+CI Bug Log - changes from XEIGT_7970_BAT -> XEIGTPW_11585_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11585_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:
+    - {bat-bmg-2}:        [DMESG-WARN][3] ([Intel XE#877]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7970 -> IGTPW_11585
+  * Linux: xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993 -> xe-1768-b29b4804ea3a6469d292aa80631565bfa54c7380
+
+  IGTPW_11585: 11585
+  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993
+  xe-1768-b29b4804ea3a6469d292aa80631565bfa54c7380: b29b4804ea3a6469d292aa80631565bfa54c7380
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/index.html
+
+--===============8222868374243451009==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_kmod: Unload/Reload the mei Modules Before Unloading/Reloading the i915/xe Driver</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137343/">https://patchwork.freedesktop.org/series/137343/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7970_BAT -&gt; XEIGTPW_11585_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11585_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr:<ul>
+<li>{bat-bmg-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7970/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11585/bat-bmg-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7970 -&gt; IGTPW_11585</li>
+<li>Linux: xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993 -&gt; xe-1768-b29b4804ea3a6469d292aa80631565bfa54c7380</li>
+</ul>
+<p>IGTPW_11585: 11585<br />
+  IGT_7970: 496e86347f8607d032ed59cdad5eb018e5be6933 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1766-79d8c33863d99ac1b04afcce123bdc2ad919e993: 79d8c33863d99ac1b04afcce123bdc2ad919e993<br />
+  xe-1768-b29b4804ea3a6469d292aa80631565bfa54c7380: b29b4804ea3a6469d292aa80631565bfa54c7380</p>
+
+</body>
+</html>
+
+--===============8222868374243451009==--
