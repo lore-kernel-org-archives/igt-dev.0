@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 462B1C3DA4A
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Aug 2024 22:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F325FC3DA4A
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Aug 2024 22:44:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB37C10E842;
-	Fri, 16 Aug 2024 22:21:49 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z/EEx//b";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88F4B10E842
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Aug 2024 22:21:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723846908; x=1755382908;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=3EnTpTJEHtYVECrCpa+1ND6zEJAfl+Eo9Ogf0H7XeEc=;
- b=Z/EEx//bbX1vV8PjHD5+GqpAe/Tiz9m7XfGSxuK8j7tm6HGrLq5T7wah
- vdEfdXjW1fcycGUfXa6PVH+fUZGuE+lEWtkMyruGEAhfQWMpv0QJjPhi5
- UVGJvMBbJrEHjIf2saMGh4eW9SfOjb6n0ahdsMHLwKWbSUFvYG2DOpyW4
- FD/PvexinLfElA8ckb6fYBnjKDeQF3Qxz3BgLVp3DKhuF2vcapUT1sOeL
- p7pfp0Yj307bpX/zrMgA3x7mzTLxxRrZjeGLgG4QyDkTf4Pj4W20BSZnv
- dwgh/xgmAwLf+O6TsVIakEnzixYs1bN+McxVH0R2d/ksLH2Bxwe6vwqRV A==;
-X-CSE-ConnectionGUID: A5IYD5bJRVWsXMeFxYN2Fw==
-X-CSE-MsgGUID: Y6UIPgpcTLCjN++adSNhyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11166"; a="22299508"
-X-IronPort-AV: E=Sophos;i="6.10,153,1719903600"; d="scan'208";a="22299508"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2024 15:21:48 -0700
-X-CSE-ConnectionGUID: ErDJwSH4RemO2SozjgsiDg==
-X-CSE-MsgGUID: mdTYIcj1TJaguFZzQL5o1A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,153,1719903600"; d="scan'208";a="64194579"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2024 15:21:47 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_drm_fdinfo: Add single engine tests
-Date: Fri, 16 Aug 2024 15:15:57 -0700
-Message-ID: <20240816222140.22577-1-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFE8F10E851;
+	Fri, 16 Aug 2024 22:44:10 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A79E710E851;
+ Fri, 16 Aug 2024 22:44:09 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6548847456207412127=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/gem=5Fspin=5Fba?=
+ =?utf-8?q?tch=3A_Skip_compute_engines_on_DG2_due_to_w/a?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jonathan-Cavitt" <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 16 Aug 2024 22:44:09 -0000
+Message-ID: <172384824967.659321.6068114338927433804@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240816213110.718186-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20240816213110.718186-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,304 +37,171 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+--===============6548847456207412127==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add simple tests that submit work to one engine and measure utilization
-per class.
+== Series Details ==
 
-v2:
-- Drop measured_usleep since return value is not used
-- s/parallel engines/parallel submission/ in comment
-- Use NSEC_PER_SEC for batch_duration_ns
-- Percent should not be > 100
-- Check utilization for both clients for isolation case
-v3 (Lucas):
-- Squash some patches to avoid warnings
-- Remove traces of parallel/virtual execution, to be added
-  separately
+Series: tests/intel/gem_spin_batch: Skip compute engines on DG2 due to w/a
+URL   : https://patchwork.freedesktop.org/series/137404/
+State : success
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
+== Summary ==
 
-This corresponds to patches 3-5 from https://patchwork.freedesktop.org/series/135204/
-Changes heres are in the v3 changelog above.
+CI Bug Log - changes from IGT_7975 -> IGTPW_11591
+====================================================
 
-I didn't want to heavily change this patch, so even if my feedback on v2
-remains, I plan to do some cleanup on top, moving common stuff to
-xe_spin.c to be similar to xe_cork.  The other patches from that series
-will be further simplified since the setup for virtual/parallel exec
-queue got merged.
+Summary
+-------
 
- tests/intel/xe_drm_fdinfo.c | 222 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 222 insertions(+)
+  **SUCCESS**
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 2f9661a0b..735fbe5e6 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -28,6 +28,15 @@
-  * SUBTEST: basic-engine-utilization
-  * Description: Check if basic fdinfo content is present for engine utilization
-  *
-+ * SUBTEST: drm-idle
-+ * Description: Check that engines show no load when idle
-+ *
-+ * SUBTEST: drm-busy-idle
-+ * Description: Check that engines show load when idle after busy
-+ *
-+ * SUBTEST: drm-busy-idle-isolation
-+ * Description: Check that engine load does not spill over to other drm clients
-+ *
-  * SUBTEST: drm-total-resident
-  * Description: Create and compare total and resident memory consumption by client
-  *
-@@ -42,6 +51,18 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine u
- 
- #define BO_SIZE (65536)
- 
-+/* flag masks */
-+#define TEST_BUSY		(1 << 0)
-+#define TEST_TRAILING_IDLE	(1 << 1)
-+#define TEST_ISOLATION		(1 << 2)
-+
-+struct pceu_cycles {
-+	uint64_t cycles;
-+	uint64_t total_cycles;
-+};
-+
-+const unsigned long batch_duration_ns = (1 * NSEC_PER_SEC) / 2;
-+
- static const char *engine_map[] = {
- 	"rcs",
- 	"bcs",
-@@ -50,6 +71,21 @@ static const char *engine_map[] = {
- 	"ccs",
- };
- 
-+static void read_engine_cycles(int xe, struct pceu_cycles *pceu)
-+{
-+	struct drm_client_fdinfo info = { };
-+	int class;
-+
-+	igt_assert(pceu);
-+	igt_assert(igt_parse_drm_fdinfo(xe, &info, engine_map,
-+					ARRAY_SIZE(engine_map), NULL, 0));
-+
-+	xe_for_each_engine_class(class) {
-+		pceu[class].cycles = info.cycles[class];
-+		pceu[class].total_cycles = info.total_cycles[class];
-+	}
-+}
-+
- /* Subtests */
- static void test_active(int fd, struct drm_xe_engine *engine)
- {
-@@ -310,8 +346,182 @@ static void basic_engine_utilization(int xe)
- 	igt_require(info.num_engines);
- }
- 
-+struct spin_ctx {
-+	uint32_t vm;
-+	uint64_t addr;
-+	struct drm_xe_sync sync[2];
-+	struct drm_xe_exec exec;
-+	uint32_t exec_queue;
-+	size_t bo_size;
-+	uint32_t bo;
-+	struct xe_spin *spin;
-+	struct xe_spin_opts spin_opts;
-+	bool ended;
-+	uint16_t class;
-+};
-+
-+static struct spin_ctx *
-+spin_ctx_init(int fd, struct drm_xe_engine_class_instance *hwe, uint32_t vm)
-+{
-+	struct spin_ctx *ctx = calloc(1, sizeof(*ctx));
-+
-+	ctx->class = hwe->engine_class;
-+	ctx->vm = vm;
-+	ctx->addr = 0x100000;
-+
-+	ctx->exec.num_batch_buffer = 1;
-+	ctx->exec.num_syncs = 2;
-+	ctx->exec.syncs = to_user_pointer(ctx->sync);
-+
-+	ctx->sync[0].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-+	ctx->sync[0].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	ctx->sync[0].handle = syncobj_create(fd, 0);
-+
-+	ctx->sync[1].type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-+	ctx->sync[1].flags = DRM_XE_SYNC_FLAG_SIGNAL;
-+	ctx->sync[1].handle = syncobj_create(fd, 0);
-+
-+	ctx->bo_size = sizeof(struct xe_spin);
-+	ctx->bo_size = xe_bb_size(fd, ctx->bo_size);
-+	ctx->bo = xe_bo_create(fd, ctx->vm, ctx->bo_size,
-+			       vram_if_possible(fd, hwe->gt_id),
-+			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	ctx->spin = xe_bo_map(fd, ctx->bo, ctx->bo_size);
-+
-+	igt_assert_eq(__xe_exec_queue_create(fd, ctx->vm, 1, 1,
-+					     hwe, 0, &ctx->exec_queue), 0);
-+
-+	xe_vm_bind_async(fd, ctx->vm, 0, ctx->bo, 0, ctx->addr, ctx->bo_size,
-+			 ctx->sync, 1);
-+
-+	return ctx;
-+}
-+
-+static void
-+spin_sync_start(int fd, struct spin_ctx *ctx)
-+{
-+	if (!ctx)
-+		return;
-+
-+	ctx->spin_opts.addr = ctx->addr;
-+	ctx->spin_opts.preempt = true;
-+	xe_spin_init(ctx->spin, &ctx->spin_opts);
-+
-+	/* re-use sync[0] for exec */
-+	ctx->sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+
-+	ctx->exec.exec_queue_id = ctx->exec_queue;
-+	ctx->exec.address = ctx->addr;
-+	xe_exec(fd, &ctx->exec);
-+
-+	xe_spin_wait_started(ctx->spin);
-+	igt_assert(!syncobj_wait(fd, &ctx->sync[1].handle, 1, 1, 0, NULL));
-+
-+	igt_debug("%s: spinner started\n", engine_map[ctx->class]);
-+}
-+
-+static void
-+spin_sync_end(int fd, struct spin_ctx *ctx)
-+{
-+	if (!ctx || ctx->ended)
-+		return;
-+
-+	xe_spin_end(ctx->spin);
-+
-+	igt_assert(syncobj_wait(fd, &ctx->sync[1].handle, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	ctx->sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	xe_vm_unbind_async(fd, ctx->vm, 0, 0, ctx->addr, ctx->bo_size, ctx->sync, 1);
-+	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	ctx->ended = true;
-+	igt_debug("%s: spinner ended\n", engine_map[ctx->class]);
-+}
-+
-+static void
-+spin_ctx_destroy(int fd, struct spin_ctx *ctx)
-+{
-+	if (!ctx)
-+		return;
-+
-+	syncobj_destroy(fd, ctx->sync[0].handle);
-+	syncobj_destroy(fd, ctx->sync[1].handle);
-+	xe_exec_queue_destroy(fd, ctx->exec_queue);
-+
-+	munmap(ctx->spin, ctx->bo_size);
-+	gem_close(fd, ctx->bo);
-+
-+	free(ctx);
-+}
-+
-+static void
-+check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
-+	      int class, unsigned int flags)
-+{
-+	double percent;
-+
-+	igt_debug("%s: sample 1: cycles %lu, total_cycles %lu\n",
-+		  engine_map[class], s1[class].cycles, s1[class].total_cycles);
-+	igt_debug("%s: sample 2: cycles %lu, total_cycles %lu\n",
-+		  engine_map[class], s2[class].cycles, s2[class].total_cycles);
-+
-+	percent = ((s2[class].cycles - s1[class].cycles) * 100) /
-+		  ((s2[class].total_cycles + 1) - s1[class].total_cycles);
-+
-+	igt_debug("%s: percent: %f\n", engine_map[class], percent);
-+
-+	if (flags & TEST_BUSY)
-+		igt_assert(percent >= 95 && percent <= 100);
-+	else
-+		igt_assert(!percent);
-+}
-+
-+static void
-+single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
-+{
-+	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-+	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-+	struct spin_ctx *ctx = NULL;
-+	uint32_t vm;
-+	int new_fd;
-+
-+	if (flags & TEST_ISOLATION)
-+		new_fd = drm_reopen_driver(fd);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	if (flags & TEST_BUSY) {
-+		ctx = spin_ctx_init(fd, hwe, vm);
-+		spin_sync_start(fd, ctx);
-+	}
-+
-+	read_engine_cycles(fd, pceu1[0]);
-+	if (flags & TEST_ISOLATION)
-+		read_engine_cycles(new_fd, pceu1[1]);
-+
-+	usleep(batch_duration_ns / 1000);
-+	if (flags & TEST_TRAILING_IDLE)
-+		spin_sync_end(fd, ctx);
-+
-+	read_engine_cycles(fd, pceu2[0]);
-+	if (flags & TEST_ISOLATION)
-+		read_engine_cycles(new_fd, pceu2[1]);
-+
-+	check_results(pceu1[0], pceu2[0], hwe->engine_class, flags);
-+
-+	if (flags & TEST_ISOLATION) {
-+		check_results(pceu1[1], pceu2[1], hwe->engine_class, 0);
-+		close(new_fd);
-+	}
-+
-+	spin_sync_end(fd, ctx);
-+	spin_ctx_destroy(fd, ctx);
-+	xe_vm_destroy(fd, vm);
-+}
-+
- igt_main
- {
-+	struct drm_xe_engine_class_instance *hwe;
- 	int xe;
- 
- 	igt_fixture {
-@@ -330,6 +540,18 @@ igt_main
- 	igt_subtest("basic-engine-utilization")
- 		basic_engine_utilization(xe);
- 
-+	igt_subtest("drm-idle")
-+		xe_for_each_engine(xe, hwe)
-+			single(xe, hwe, 0);
-+
-+	igt_subtest("drm-busy-idle")
-+		xe_for_each_engine(xe, hwe)
-+			single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+
-+	igt_subtest("drm-busy-idle-isolation")
-+		xe_for_each_engine(xe, hwe)
-+			single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
-+
- 	igt_describe("Create and compare total and resident memory consumption by client");
- 	igt_subtest("drm-total-resident")
- 		test_total_resident(xe);
--- 
-2.43.0
+  No regressions found.
 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/index.html
+
+Participating hosts (42 -> 40)
+------------------------------
+
+  Additional (1): fi-kbl-8809g 
+  Missing    (3): bat-dg1-7 bat-arls-2 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11591 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][3] +30 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-1:         [DMESG-WARN][4] ([i915#11349] / [i915#11378]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7975/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#11378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7975 -> IGTPW_11591
+
+  CI-20190529: 20190529
+  CI_DRM_15251: d6dac3db19935f5939cbb033eea30c90bdf3888c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11591: ffdf9dc0aedb11f391d61e53f3486d33eda5ac6e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7975: 7975
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/index.html
+
+--===============6548847456207412127==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/gem_spin_batch: Skip compute engines on DG2 due to w/a</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137404/">https://patchwork.freedesktop.org/series/137404/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_7975 -&gt; IGTPW_11591</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/index.html</p>
+<h2>Participating hosts (42 -&gt; 40)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (3): bat-dg1-7 bat-arls-2 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11591 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@hangcheck:<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7975/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11591/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7975 -&gt; IGTPW_11591</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15251: d6dac3db19935f5939cbb033eea30c90bdf3888c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11591: ffdf9dc0aedb11f391d61e53f3486d33eda5ac6e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7975: 7975</p>
+
+</body>
+</html>
+
+--===============6548847456207412127==--
