@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C317C3DA4A
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Aug 2024 06:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22B1AC531DC
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Aug 2024 07:13:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5829010E53A;
-	Fri, 16 Aug 2024 06:48:36 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WqqUpCIa";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9EB6310E53A
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Aug 2024 06:48:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1723790916; x=1755326916;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=h9KlLHJ05Jlvxivlosqfkq3XxNTxXR5W7X70hsX9YdU=;
- b=WqqUpCIa3w+T+O6BsxvK2r8IBBppl1RKV1cgH71HiFdVBeEV8DG7QiLc
- BT3LTplKVuc/O/6+koaIufincl1VBua8Oz3o+OomqM1W0tWacJRK60bu+
- kVql8lPyYbXyE1zaCuA/GWujCFk9f/+xoyhiMPcSWMTmybfAUAFQdxlSo
- vP6vpZNqzHa0CPCNXk9FQbdpVxg4ZtZoMH3RvGfleQf3wPIzVValYIJ+A
- 8V7qZGuT6EilO0CafGZZIyKB8g6CQHxJtGyb3bvq34+g1UhTRB9Dki6/i
- QKn6/es0Y7BuexmZ10lfiqa6t/ircdqaKb7ET8C3QRvrDfcWtVurMjnVK Q==;
-X-CSE-ConnectionGUID: Hzjij0fNQO66AefhQgysJg==
-X-CSE-MsgGUID: qq/TxfKwTMG7ve+P4cgCYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11165"; a="22251544"
-X-IronPort-AV: E=Sophos;i="6.10,150,1719903600"; d="scan'208";a="22251544"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Aug 2024 23:48:35 -0700
-X-CSE-ConnectionGUID: U3BCxY+CQHy3TTQVkAIT1A==
-X-CSE-MsgGUID: ImWCZgfXQDCnKzAEN2dx8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,150,1719903600"; d="scan'208";a="64436497"
-Received: from nakshtra-system-product-name.iind.intel.com ([10.145.169.86])
- by orviesa003.jf.intel.com with ESMTP; 15 Aug 2024 23:48:32 -0700
-From: nakshtra.goyal@intel.com
-To: igt-dev@lists.freedesktop.org,
-	ramadevi.gandi@intel.com
-Cc: janga.rahul.kumar@intel.com, sai.gowtham.ch@intel.com,
- kamil.konieczny@linux.intel.com, himanshu.girotra@intel.com,
- riana.tauro@intel.com
-Subject: [PATCH i-g-t,
- v7] tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test
- in xe
-Date: Fri, 16 Aug 2024 12:18:52 +0530
-Message-Id: <20240816064852.3919814-1-nakshtra.goyal@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id C68F510E5A6;
+	Fri, 16 Aug 2024 07:13:06 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 520BF10E5A6;
+ Fri, 16 Aug 2024 07:13:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/intel/xe=5Fsysfs=5F?=
+ =?utf-8?q?preempt=5Ftimeout=3A_Porting_sysfs_preempt_test_in_xe_=28rev7=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nakshtra.goyal@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 16 Aug 2024 07:13:05 -0000
+Message-ID: <172379238532.653293.13018739457011198049@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240816064852.3919814-1-nakshtra.goyal@intel.com>
+In-Reply-To: <20240816064852.3919814-1-nakshtra.goyal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,264 +37,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nakshtra Goyal <nakshtra.goyal@intel.com>
+== Series Details ==
 
-Adding preempt_timeout test in xe similar to i915 to check preemption
-for different preemption_timeout like 50 ms, 100 ms
+Series: tests/intel/xe_sysfs_preempt_timeout: Porting sysfs preempt test in xe (rev7)
+URL   : https://patchwork.freedesktop.org/series/136449/
+State : failure
 
-v6: correcting allignment and argument for subtest as per IGT
-documentations
+== Summary ==
 
-Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@intel.com>
-Cc: Riana Tauro <riana.tauro@intel.com>
+IGT patchset build failed on latest successful build
+c34e13f766d0ed48c8b62ad9d8c29f11a8441b8b tests/amdgpu: fix secure bounce test failure on APUs
 
-Signed-off-by: Nakshtra Goyal <nakshtra.goyal@intel.com>
+Tail of build.log:
+[1714/1761] Linking target tools/lsgpu.
+[1715/1761] Linking target runner/igt_comms_decoder.
+[1716/1761] Linking target tools/intel_residency.
+[1717/1761] Linking target tools/msm_dp_compliance.
+[1718/1761] Linking target tools/amd_hdmi_compliance.
+[1719/1761] Linking target runner/testdata/successtest.
+[1720/1761] Linking target tools/intel_vbt_decode.
+[1721/1761] Linking target tools/intel_gvtg_test.
+[1722/1761] Linking target runner/igt_results.
+[1723/1761] Linking target tools/intel_stepping.
+[1724/1761] Linking target tools/intel_gem_info.
+[1725/1761] Linking target runner/testdata/abort-simple.
+[1726/1761] Linking target tools/intel_l3_parity.
+[1727/1761] Linking target runner/testdata/abort-dynamic.
+[1728/1761] Linking target runner/testdata/dynamic.
+[1729/1761] Linking target runner/igt_resume.
+[1730/1761] Linking target runner/testdata/skippers.
+[1731/1761] Linking target runner/testdata/abort.
+[1732/1761] Linking target runner/testdata/no-subtests.
+[1733/1761] Linking target runner/igt_runner.
+[1734/1761] Linking target runner/runner_json_test.
+[1735/1761] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1736/1761] Linking target runner/testdata/abort-fixture.
+[1737/1761] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_mtlgt3.c.o'.
+[1738/1761] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1739/1761] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1740/1761] Linking target runner/runner_test.
+[1741/1761] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1742/1761] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+[1743/1761] Linking target lib/libi915_perf.so.1.5.
+[1744/1761] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
+[1745/1761] Linking target tools/i915-perf/i915-perf-configs.
+[1746/1761] Linking target tools/i915-perf/i915-perf-reader.
+[1747/1761] Linking target tools/i915-perf/i915-perf-recorder.
+[1748/1761] Linking target tests/core_hotunplug.
+[1749/1761] Linking target tests/gem_barrier_race.
+[1750/1761] Linking target tests/perf.
+[1751/1761] Generating core_hotunplug.testlist with a meson_exe.py custom command.
+[1752/1761] Generating gem_barrier_race.testlist with a meson_exe.py custom command.
+[1753/1761] Generating perf.testlist with a meson_exe.py custom command.
+[1754/1761] Generating xe_tests.rst with a custom command.
+FAILED: docs/testplan/xe_tests.rst 
+/usr/src/igt-gpu-tools/scripts/igt_doc.py --config /usr/src/igt-gpu-tools/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /opt/igt/build
+Warning: Documented igt@xe_sysfs_preempt_timeout@preempt timeout us-timeout doesn't exist on source files
+Warning: Missing documentation for igt@xe_sysfs_preempt_timeout@preempt_timeout_us-timeout
+Please refer: docs/test_documentation.md for more details
+[1755/1761] Generating i915_tests.rst with a custom command.
+[1756/1761] Generating kms_tests.rst with a custom command.
+[1757/1761] Generating intel-ci-tests with a custom command.
+ninja: build stopped: subcommand failed.
 
-Reviewed-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
----
- tests/intel/xe_sysfs_preempt_timeout.c | 216 +++++++++++++++++++++++++
- tests/meson.build                      |   1 +
- 2 files changed, 217 insertions(+)
- create mode 100644 tests/intel/xe_sysfs_preempt_timeout.c
-
-diff --git a/tests/intel/xe_sysfs_preempt_timeout.c b/tests/intel/xe_sysfs_preempt_timeout.c
-new file mode 100644
-index 000000000..029da3cc4
---- /dev/null
-+++ b/tests/intel/xe_sysfs_preempt_timeout.c
-@@ -0,0 +1,216 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: sysfs preempt timeout
-+ * Category: Core
-+ * Mega feature: SysMan
-+ * Sub-category: SysMan tests
-+ * Functionality: sysfs preempt timeout
-+ * Feature: SMI, context
-+ * Test category: SysMan
-+ *
-+ * SUBTEST: preempt timeout us-timeout
-+ * Description: Test to measure the delay from requesting the preemption to its
-+ *      completion. Send down some non-preemptable workloads and then
-+ *      request a switch to a higher priority context. The HW will not
-+ *      be able to respond, so the kernel will be forced to reset the hog.
-+ * Test category: functionality test
-+ *
-+ */
-+
-+#include <fcntl.h>
-+
-+#include "igt.h"
-+#include "igt_syncobj.h"
-+#include "igt_sysfs.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_spin.h"
-+
-+#define ATTR "preempt_timeout_us"
-+
-+static void set_preempt_timeout(int engine, unsigned int value)
-+{
-+	unsigned int delay;
-+
-+	igt_assert_lte(0, igt_sysfs_printf(engine, ATTR, "%u", value));
-+	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
-+	igt_assert_eq(delay, value);
-+}
-+
-+static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_t gt, int class)
-+{
-+	struct drm_xe_sync sync = {
-+		.handle = syncobj_create(fd, 0),
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+	};
-+
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+/* high priority property */
-+	struct drm_xe_ext_set_property ext = {
-+		.base.next_extension = 0,
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
-+		.value = 2, /* High priority */
-+	};
-+	struct drm_xe_engine_class_instance *hwe = NULL, *_hwe;
-+	uint64_t ahnd[2];
-+	uint32_t exec_queues[2];
-+	uint32_t vm[2];
-+	uint32_t bo[2];
-+	size_t bo_size;
-+	struct xe_spin *spin[2];
-+	struct timespec ts = {};
-+	double elapsed;
-+	uint64_t addr1 = 0x1a0000, addr2 = 0x100000;
-+
-+	xe_for_each_engine(fd, _hwe)
-+		if (_hwe->engine_class == class && _hwe->gt_id == gt)
-+			hwe = _hwe;
-+
-+	if (!hwe)
-+		return -1;
-+
-+	/* set preempt timeout*/
-+	set_preempt_timeout(engine, timeout);
-+	vm[0] = xe_vm_create(fd, 0, 0);
-+	vm[1] = xe_vm_create(fd, 0, 0);
-+	exec_queues[0] = xe_exec_queue_create(fd, vm[0], hwe, 0);
-+	exec_queues[1] = xe_exec_queue_create(fd, vm[1], hwe, to_user_pointer(&ext));
-+	ahnd[0] = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+	bo_size = xe_bb_size(fd, sizeof(*spin));
-+	bo[0] = xe_bo_create(fd, vm[0], bo_size, vram_if_possible(fd, 0), 0);
-+	spin[0] = xe_bo_map(fd, bo[0], bo_size);
-+	xe_vm_bind_async(fd, vm[0], 0, bo[0], 0, addr1, bo_size, &sync, 1);
-+	xe_spin_init_opts(spin[0], .addr = addr1,
-+				.preempt = false);
-+	exec.address = addr1;
-+	exec.exec_queue_id = exec_queues[0];
-+	xe_exec(fd, &exec);
-+	xe_spin_wait_started(spin[0]);
-+
-+	igt_nsec_elapsed(&ts);
-+	ahnd[1] = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+	bo[1] = xe_bo_create(fd, vm[1], bo_size, vram_if_possible(fd, 0), 0);
-+	spin[1] = xe_bo_map(fd, bo[1], bo_size);
-+	xe_vm_bind_sync(fd, vm[1], bo[1], 0, addr2, bo_size);
-+	xe_spin_init_opts(spin[1], .addr = addr2);
-+	exec.address = addr2;
-+	exec.exec_queue_id = exec_queues[1];
-+	xe_exec(fd, &exec);
-+	xe_spin_wait_started(spin[1]);
-+	elapsed = igt_nsec_elapsed(&ts);
-+	xe_spin_end(spin[1]);
-+
-+	xe_vm_unbind_async(fd, vm[0], 0, 0, addr1, bo_size, &sync, 1);
-+	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
-+
-+	xe_spin_end(spin[0]);
-+	xe_vm_unbind_sync(fd, vm[1], 0, addr2, bo_size);
-+	syncobj_destroy(fd, sync.handle);
-+
-+	xe_exec_queue_destroy(fd, exec_queues[0]);
-+	xe_vm_destroy(fd, vm[0]);
-+	xe_exec_queue_destroy(fd, exec_queues[1]);
-+	xe_vm_destroy(fd, vm[1]);
-+
-+	put_ahnd(ahnd[1]);
-+	put_ahnd(ahnd[0]);
-+
-+	return elapsed;
-+}
-+
-+static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
-+{
-+	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
-+	unsigned int saved;
-+	uint64_t elapsed;
-+	uint64_t epsilon;
-+
-+    /*
-+     * Send down some non-preemptable workloads and then request a
-+     * switch to a higher priority context. The HW will not be able to
-+     * respond, so the kernel will be forced to reset the hog. This
-+     * timeout should match our specification, and so we can measure
-+     * the delay from requesting the preemption to its completion.
-+     */
-+
-+	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
-+	igt_debug("Initial %s:%u\n", property[0], saved);
-+
-+	elapsed = __test_timeout(fd, engine, 1000, gt, class);
-+	epsilon = 2 * elapsed / 1000;
-+	if (epsilon < 50000)
-+		epsilon = 50000;
-+	igt_info("Minimum timeout measured as %.3fus; setting error threshold to %" PRId64 "us\n",
-+			 elapsed * 1e-3, epsilon);
-+	igt_require(epsilon < 10000000);
-+
-+	for (int i = 0; i < ARRAY_SIZE(delays); i++) {
-+		elapsed = __test_timeout(fd, engine, delays[i], gt, class);
-+		igt_info("%s:%ld, elapsed=%.3fus\n",
-+			property[0], delays[i], elapsed * 1e-3);
-+
-+		/*
-+		 * We need to give a couple of jiffies slack for the scheduler
-+		 * timeouts and then a little more slack for the overhead in
-+		 * submitting and measuring.
-+		 */
-+			igt_assert_f(elapsed / 1000  < delays[i] + epsilon,
-+				 "Forced preemption timeout exceeded request!\n");
-+	}
-+
-+	set_preempt_timeout(engine, saved);
-+}
-+
-+igt_main
-+{
-+	static const struct {
-+		const char *name;
-+		void (*fn)(int, int, const char **, uint16_t, int);
-+	} tests[] = {
-+		{ "timeout", test_timeout },
-+		{ }
-+	};
-+	const char *property[][3] = { {"preempt_timeout_us",
-+								   "preempt_timeout_min",
-+								   "preempt_timeout_max"}, };
-+	int count = sizeof(property) / sizeof(property[0]);
-+	int fd = -1, sys_fd, gt;
-+	int engines_fd = -1, gt_fd = -1;
-+
-+	igt_fixture {
-+		fd = drm_open_driver(DRIVER_XE);
-+
-+		sys_fd = igt_sysfs_open(fd);
-+		igt_require(sys_fd != -1);
-+		close(sys_fd);
-+	}
-+
-+	for (int i = 0; i < count; i++) {
-+		for (typeof(*tests) *t = tests; t->name; t++) {
-+			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-+				xe_for_each_gt(fd, gt) {
-+					gt_fd = xe_sysfs_gt_open(fd, gt);
-+					igt_require(gt_fd != -1);
-+					engines_fd = openat(gt_fd, "engines", O_RDONLY);
-+					igt_require(engines_fd != -1);
-+
-+					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i], t->fn);
-+					close(engines_fd);
-+					close(gt_fd);
-+				}
-+			}
-+		}
-+	}
-+	igt_fixture {
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index e649466be..00556c9d6 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -314,6 +314,7 @@ intel_xe_progs = [
- 	'xe_waitfence',
- 	'xe_spin_batch',
- 	'xe_sysfs_defaults',
-+	'xe_sysfs_preempt_timeout',
- 	'xe_sysfs_scheduler',
- ]
- 
--- 
-2.34.1
 
