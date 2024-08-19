@@ -4,58 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49639C52D7C
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 18:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BDC3C52D7C
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 18:25:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0536A10E18B;
-	Mon, 19 Aug 2024 18:24:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 196A910E1A2;
+	Mon, 19 Aug 2024 18:25:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G1HRVUNA";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jL7M2mfF";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CAE2010E18B
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 18:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724091896; x=1755627896;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=zC3Fc2qokWrPGZbfO+BdoMhPcGmoeDZC5pxN82jzxyQ=;
- b=G1HRVUNA1QX++1HLXdb4bIGfE8aCKalGm/uRiafYLb53k/BxSHr834eq
- ud3lyj7NbwFe0G38EoEHcC8e3l4pqgtRtpxxC0GdZNs7qFNWXFTcbry8k
- XVjSsRAyXKUEvKhgeDVjMiyU2CqpJg9GWpR+JJoUk/4UTh51Q7iJ42rVP
- o5HoQztDtJJ7vV0CjdRkrUCDVBBabNRHO3F2jNEaOHZg1b6cdpp5mpxir
- ASpOHwQfJOoNv6no0UsCwBXKXQ7fMliw1b5gYcUPdAteraWwIQEBpzjcG
- C02jeIjDsbXXYwe4zTidW0lG2qpvz+5GHtaBjGW0VQxeDYm3oztewuUTf g==;
-X-CSE-ConnectionGUID: AU9hDyWBSQipsRAqiFkTAQ==
-X-CSE-MsgGUID: +StG+RHwRpCviWk1P3D2Dw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="26155662"
-X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; d="scan'208";a="26155662"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 11:24:56 -0700
-X-CSE-ConnectionGUID: ATavUYHdSPaHAFlWo/SrVw==
-X-CSE-MsgGUID: HKlAJlCHTliAkbQxh+CdSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; d="scan'208";a="97935909"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 11:24:54 -0700
-Date: Mon, 19 Aug 2024 20:24:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
-Subject: Re: [PATCH 2/2] tests/kms_plane_scaling: msm get_num_scalars() support
-Message-ID: <20240819182451.toxzr2tji4sd3wfq@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Rob Clark <robdclark@gmail.com>,
- Rob Clark <robdclark@chromium.org>
-References: <20240814185339.70097-1-robdclark@gmail.com>
- <20240814185339.70097-2-robdclark@gmail.com>
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com
+ [209.85.208.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AEB0510E1A2
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 18:25:17 +0000 (UTC)
+Received: by mail-ed1-f44.google.com with SMTP id
+ 4fb4d7f45d1cf-5bec7d380caso3810783a12.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 11:25:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724091916; x=1724696716; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=AHvdMsLUqITH6ZyWKGAoiCEhmD5cJ3NP/2M/Z3hbVm0=;
+ b=jL7M2mfFkqWQDUujqUg2SXt/bZIjywNg09nslkiDeAS0CsrZQhiCb/I+lJYVmg06+n
+ 1jSAiY5iCWiFn+V72cXcZbc2eMY8SYfcmw2nY8QVyECPNlHQiL3bEmRrPv0EpTZx5xiT
+ q806fvQno68hra1NsxU+gPdzVfVEMG9g2bzx2QjGm0IO0L4q22Y7ncFsgA64568PURYq
+ iOIk1w3bAzyDCNEDHhsRlK79jQDbtnZ2/8EIP9OftHFPlNJxrSyuTIP+d/UuBzS3Q+pS
+ VKt/YyZN/Rb0oUoDkR2iaKrHEb4HYvLDiK/azMJ1Jf4Z0SfschvFFMuAXQCM9QssR2P0
+ 22jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724091916; x=1724696716;
+ h=content-transfer-encoding:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=AHvdMsLUqITH6ZyWKGAoiCEhmD5cJ3NP/2M/Z3hbVm0=;
+ b=wiNYuyvGJsfClPsOt2zPfERRCUCPTW96FzZadpxiUgUH2rDg7hGncfT34uWNRDZ078
+ ApnJEipF8aBB2YXFuV1Cjj0FRzf6xj4HlnuBCGqQL/X0+Rq7r7YA38Oep0BeoBh82RrY
+ H6mrQBJggrTV6EjSpnxVkcNnhLW7ygf90Y1xr45sSSW9N6wZJNWxemMmuIe4tDLRSQdQ
+ R7fHn/S4i5o7ZSkjfYYFbCZO6Nx5e4LkwnJVy+Sf/qAMgkTPZBi7KV8XNJkQW3KBUXAj
+ NElKeFaMTm84v0d6dUETmTl3DBB19fpDyMWlZId1GkO+fvhE+IwOqinpJc9MaQKLq2KW
+ fdOg==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVAVE6NdfZPcUzgNjtsHrvtgLAB9zvTNtz2IIHF/pRQpjj7CbA/bfOhLNkULoTrC32Hoj0DXmMp@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yz5U9o6M8j83BoXgIHDy2Y0tCqOAJvUws7QT73Svxc2vddfRMzu
+ yUh68YZ1WfE5wtBNe+4O81cHpd5iQOomrP/zBUE9fPmPA/fSL7BDpHzJMy0eP+49enAasidPZFi
+ DsY0BgFXvRBpO3buDJNIgKfKWScg=
+X-Google-Smtp-Source: AGHT+IFmUviUFM7OfoIdp8ZwT2dcHG3iVXSQ4CIFf3wQfkXvKFYrMqYaYsouxkxWdKZn8pDyWiCOdhbdeFzvh6JeL8Q=
+X-Received: by 2002:a05:6402:3590:b0:5be:e887:c667 with SMTP id
+ 4fb4d7f45d1cf-5bee887c7cdmr5501157a12.33.1724091915390; Mon, 19 Aug 2024
+ 11:25:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240814185339.70097-2-robdclark@gmail.com>
+References: <20240814185426.70418-1-robdclark@gmail.com>
+ <20240819171618.hs2jssfois4mgbjm@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20240819171618.hs2jssfois4mgbjm@kamilkon-DESK.igk.intel.com>
+From: Rob Clark <robdclark@gmail.com>
+Date: Mon, 19 Aug 2024 11:25:01 -0700
+Message-ID: <CAF6AEGsxK29G8ZzOhxQhfXquibJ5Gdf5rTtbUAbpSUHB=nYCbg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dumb_buffer: Remove invalid-bpp subtest
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Rob Clark <robdclark@gmail.com>, 
+ igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,71 +80,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Rob,
-On 2024-08-14 at 11:53:39 -0700, Rob Clark wrote:
-> From: Rob Clark <robdclark@chromium.org>
-> 
+On Mon, Aug 19, 2024 at 10:16=E2=80=AFAM Kamil Konieczny
+<kamil.konieczny@linux.intel.com> wrote:
+>
+> Hi Rob,
+> On 2024-08-14 at 11:54:25 -0700, Rob Clark wrote:
+> > From: Rob Clark <robdclark@chromium.org>
+> >
+> > These allocations are not necessarily invalid.
+>
+> Please write a little more why. Also look at gitlab log,
+> you need to delete comments with this subtest name and description
+> as our CI is creating testlist at build time and that info
+> is there.
+>
+> Add also tests/ prefix in subject:
+>
+> [PATCH 1/2] tests/dumb_buffer: Remove invalid-bpp subtest
+>
+> >
+> > Signed-off-by: Rob Clark <robdclark@chromium.org>
+> > ---
+> >  tests/dumb_buffer.c | 22 ----------------------
+> >  1 file changed, 22 deletions(-)
+> >
+> > diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+> > index 1d4bf296c53e..579d2f906b6d 100644
+> > --- a/tests/dumb_buffer.c
+> > +++ b/tests/dumb_buffer.c
+> > @@ -136,25 +136,6 @@ static void dumb_destroy(int fd, uint32_t handle)
+> >       igt_assert_eq(__dumb_destroy(fd, handle), 0);
+> >  }
+> >
+> > -static void invalid_dimensions_test(int fd)
+> > -{
+> > -     struct drm_mode_create_dumb create;
+> > -
+> > -     memset(&create, 0, sizeof(create));
+> > -     create.width =3D 4032;
+> > -     create.height =3D 2016;
+> > -     create.bpp =3D 24;
+> > -     igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+>
+> These use 3-Bytes bpp with divisible by 4 screen W x H, so here
+> you could be right with removing this.
 
-Could you improve subject? Was:
+I guess I could instead create.bpp =3D 0, since that is the only case
+that the kernel actually rejects
 
-[PATCH 2/2] tests/kms_plane_scaling: msm get_num_scalars() support
+BR,
+-R
 
-imho better:
-
-[PATCH 2/2] tests/kms_plane_scaling: Improve msm support
-
-or some other re-wording, no need here for mentioning
-'get_num_scalars()' function
-
-> This may undercount # of scalars on hw with rgb pipes, but the scaling
---------------------- ^
-
-Please use word here, 'number'.
-
-With these nits addressed
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-> on yuv and rgb pipes is functionally equivalent, so for test coverage
-> this is a good enough approximation.
-> 
-> Signed-off-by: Rob Clark <robdclark@chromium.org>
-> ---
->  lib/igt_kms.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 99cdeeb76033..dd530dbabf89 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -6682,6 +6682,25 @@ int get_num_scalers(igt_display_t *display, enum pipe pipe)
->  			igt_assert(start_loc2 = strstr(start_loc1, "num_scalers="));
->  			igt_assert_eq(sscanf(start_loc2, "num_scalers=%d", &num_scalers), 1);
->  		}
-> +	} else if (is_msm_device(drm_fd)) {
-> +		igt_plane_t *plane;
-> +
-> +		/*
-> +		 * msm devices have dma pipes (no csc, no scaling), rgb
-> +		 * pipes (no csc, has scaling), and vid pipes (has csc,
-> +		 * has scaling), but not all devices have rgb pipes.
-> +		 * We can use the # of pipes that support YUV formats
-> +		 * as a rough approximation of the # of scalars.. it may
-> +		 * undercount on some hw, but it will not overcount
-> +		 */
-> +		for_each_plane_on_pipe(display, pipe, plane) {
-> +			for (unsigned i = 0; i < plane->format_mod_count; i++) {
-> +				if (igt_format_is_yuv(plane->formats[i])) {
-> +					num_scalers++;
-> +					break;
-> +				}
-> +			}
-> +		}
->  	}
->  
->  	return num_scalers;
-> -- 
-> 2.46.0
-> 
+>
+> > -
+> > -     create.bpp =3D 32;
+> > -     create.width =3D 0;
+> > -     igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+>
+> Why 0-width is valid?
+>
+> > -
+> > -     create.width =3D 4032;
+> > -     create.height =3D 0;
+> > -     igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+>
+> Same here, imho looks invalid. Btw what about other settings?
+> Like bpp not divisible by 8 bits?
+>
+> Regards,
+> Kamil
+>
+> > -}
+> > -
+> >  static void valid_dumb_creation_test(int fd)
+> >  {
+> >       struct drm_mode_create_dumb create =3D {
+> > @@ -397,9 +378,6 @@ igt_main
+> >               fd =3D drm_open_driver(DRIVER_ANY);
+> >       }
+> >
+> > -     igt_subtest("invalid-bpp")
+> > -             invalid_dimensions_test(fd);
+> > -
+> >       igt_subtest("create-valid-dumb")
+> >               valid_dumb_creation_test(fd);
+> >
+> > --
+> > 2.46.0
+> >
