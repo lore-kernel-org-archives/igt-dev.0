@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC99CC52D6F
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 17:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 521F7C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 17:16:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5009510E30F;
-	Mon, 19 Aug 2024 17:09:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E989210E32A;
+	Mon, 19 Aug 2024 17:16:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ox1aavN4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dk1bTXUw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D310110E30F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 17:09:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49BD810E32A
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 17:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724087378; x=1755623378;
+ t=1724087783; x=1755623783;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=X0XDccJTIW6DuE4gKo4ToE26v6SVc97NEHRj3ceP5Pc=;
- b=Ox1aavN46FtJFdrtf4bhkLbuPV+XmXWjdCMNGidAD6lu1NvN7K262EuD
- t1S2Nqh7hpKX7t5a+6bkNddMfrQT6f5ht6V2MhZYB76A3swHIdBO53s/i
- GMQEzeLt1h+Lf7G6+owiYq+xA0pzcu2px2iTTjVCifHX1b27vysxza/ZC
- ZMLti4JUNG6srdgCycYqatWhQLFajCGr+d2/ZFHljVpCMYa0NJTcVeriF
- 3EVnXI+fEqi/i9Z2ox7cbiCEhMbT7TcgrmQlfWLRw7AN+xvZIP5ZTpi/S
- 30PQDiIX9dfOX6Z5vI7NLveEaMyV/eLCTuZgrDNeXWNuBzrZ+LAoAna3G Q==;
-X-CSE-ConnectionGUID: lkODeyxRRlSIcTvWCMs0Vg==
-X-CSE-MsgGUID: h0prxXkpSI2jO09VyTup6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="21891777"
-X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; d="scan'208";a="21891777"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 10:09:31 -0700
-X-CSE-ConnectionGUID: ohTKqDE3QS6ARuoP+3CTbw==
-X-CSE-MsgGUID: rNOV6arKSemjWhR+DAkVGQ==
+ bh=malAEoUXhgsyjD/BumCKY6hVmVytEuqofErWop8IYB0=;
+ b=dk1bTXUwqyEkt3WN9ui5PCfstzAdzpsCQsZpLwjO4jMYYI2uHsQN9U/S
+ Y6UZr59fqQuzvIoJXbdsiTDZDHAZuurNwAODOtA6zVxWhUkGKIfz1Tv2u
+ lFXPyhPljO9oQYwxCgN/hMDfEomcvGwGFLx4UIMs3KjRl+EzyhahRxM4j
+ hlYacJaWARnFkiDJDNo1zYkeAI6Z9HGKEMdOw6TfcZTJEcKrc+GWWLFvT
+ hKGFaTyLas8q7N/fIFikXSLyHJ6rAb8Yd4Nly9y+nUzsuUP8fWhrSqa4w
+ v+C3brOqWPg6D07R4jjC60v8M+ZLSlOGBY24qgpJHAuEYfrXr7/AxxFaK w==;
+X-CSE-ConnectionGUID: Rr3RisJ0SvWWnMijZhmg1A==
+X-CSE-MsgGUID: sXkyPJjhRF6ugdGjUvEUQw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="25253577"
+X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; d="scan'208";a="25253577"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 10:16:23 -0700
+X-CSE-ConnectionGUID: Ym8qmMxjTNaZJtWQiOkimw==
+X-CSE-MsgGUID: QFjDrycbSfSvgWPDrdKQaw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; d="scan'208";a="64831039"
+X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; d="scan'208";a="60759105"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 10:09:28 -0700
-Date: Mon, 19 Aug 2024 19:09:11 +0200
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 10:16:22 -0700
+Date: Mon, 19 Aug 2024 19:16:18 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
-Subject: Re: [PATCH 2/2] device_reset: Require a PCI device
-Message-ID: <20240819170911.7b2zv5ptfaby76zk@kamilkon-DESK.igk.intel.com>
+To: Rob Clark <robdclark@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>
+Subject: Re: [PATCH 1/2] dumb_buffer: Remove invalid-bpp subtest
+Message-ID: <20240819171618.hs2jssfois4mgbjm@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, Rob Clark <robdclark@gmail.com>,
+ Rob Clark <robdclark@gmail.com>, igt-dev@lists.freedesktop.org,
  Rob Clark <robdclark@chromium.org>
 References: <20240814185426.70418-1-robdclark@gmail.com>
- <20240814185426.70418-2-robdclark@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240814185426.70418-2-robdclark@gmail.com>
+In-Reply-To: <20240814185426.70418-1-robdclark@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,31 +71,80 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Rob,
-On 2024-08-14 at 11:54:26 -0700, Rob Clark wrote:
+On 2024-08-14 at 11:54:25 -0700, Rob Clark wrote:
 > From: Rob Clark <robdclark@chromium.org>
 > 
-> Too much baked in assumptions that the drm device is a PCI device.
+> These allocations are not necessarily invalid.
+
+Please write a little more why. Also look at gitlab log,
+you need to delete comments with this subtest name and description
+as our CI is creating testlist at build time and that info
+is there.
+
+Add also tests/ prefix in subject:
+
+[PATCH 1/2] tests/dumb_buffer: Remove invalid-bpp subtest
+
 > 
 > Signed-off-by: Rob Clark <robdclark@chromium.org>
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
 > ---
->  tests/device_reset.c | 1 +
->  1 file changed, 1 insertion(+)
+>  tests/dumb_buffer.c | 22 ----------------------
+>  1 file changed, 22 deletions(-)
 > 
-> diff --git a/tests/device_reset.c b/tests/device_reset.c
-> index 8ed3ef5220fc..c49f94e2faed 100644
-> --- a/tests/device_reset.c
-> +++ b/tests/device_reset.c
-> @@ -200,6 +200,7 @@ static void init_device_fds(struct device_fds *dev)
->  		igt_require_gem(dev->fds.dev);
+> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+> index 1d4bf296c53e..579d2f906b6d 100644
+> --- a/tests/dumb_buffer.c
+> +++ b/tests/dumb_buffer.c
+> @@ -136,25 +136,6 @@ static void dumb_destroy(int fd, uint32_t handle)
+>  	igt_assert_eq(__dumb_destroy(fd, handle), 0);
+>  }
 >  
->  	igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
-> +	igt_require(strstr(dev_path, "/sys/devices/pci") == dev_path);
->  	addr_pos = strrchr(dev_path, '/');
->  	igt_assert(addr_pos);
->  	igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
+> -static void invalid_dimensions_test(int fd)
+> -{
+> -	struct drm_mode_create_dumb create;
+> -
+> -	memset(&create, 0, sizeof(create));
+> -	create.width = 4032;
+> -	create.height = 2016;
+> -	create.bpp = 24;
+> -	igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+
+These use 3-Bytes bpp with divisible by 4 screen W x H, so here
+you could be right with removing this.
+
+> -
+> -	create.bpp = 32;
+> -	create.width = 0;
+> -	igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+
+Why 0-width is valid?
+
+> -
+> -	create.width = 4032;
+> -	create.height = 0;
+> -	igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+
+Same here, imho looks invalid. Btw what about other settings?
+Like bpp not divisible by 8 bits?
+
+Regards,
+Kamil
+
+> -}
+> -
+>  static void valid_dumb_creation_test(int fd)
+>  {
+>  	struct drm_mode_create_dumb create = {
+> @@ -397,9 +378,6 @@ igt_main
+>  		fd = drm_open_driver(DRIVER_ANY);
+>  	}
+>  
+> -	igt_subtest("invalid-bpp")
+> -		invalid_dimensions_test(fd);
+> -
+>  	igt_subtest("create-valid-dumb")
+>  		valid_dumb_creation_test(fd);
+>  
 > -- 
 > 2.46.0
 > 
