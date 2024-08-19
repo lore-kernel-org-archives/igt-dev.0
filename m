@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F38AEC5320E
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 10:35:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 759F5C5320E
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 10:36:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF3D010E204;
-	Mon, 19 Aug 2024 10:35:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 03B8410E206;
+	Mon, 19 Aug 2024 10:36:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gjtJ8ywt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q1gd5N6U";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E58010E204
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 10:35:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF06510E206
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 10:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724063751; x=1755599751;
+ t=1724063759; x=1755599759;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=xV6w7ZD/YPG1xB6JRSHqhIn7bd9h3naUdGgmPJbFXlE=;
- b=gjtJ8ywt1+t+mrAI6P0gBC/95Z7L2ucb7JqM8tfqbUQIlKtubc3pmvxP
- tZCgFPIbVy2yBUW2zLOysB2oMC0S6iZAYg44rEE7wxhvvSPUPLjfqnb9F
- xTkwMveY9eESmguwJvOh1zrZOwsPDBzY5F9icJvBfUZJm1RJsf8iY02zj
- 96v4ExpZ5XhqpuT9yOJTdX9yNNLp+MFLkBKYvtTZ5w0a/RrJvjeLgo2cv
- UUkQM5MrP+bq3b2vAtdKDLRQM9SKCh9XAWoOI53x5xVSegtjgJbc2IMOf
- 1oCjbI7eBrmAIPPlAk/l4UywROJQR1JCITNAEI8CXIYi8RHauyessUfp3 A==;
-X-CSE-ConnectionGUID: ybBf/WlgSkimvgllQWI31w==
-X-CSE-MsgGUID: UW+E8evySJa0/mdM0cKD/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11168"; a="39763268"
-X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="39763268"
+ bh=1eHrbNPoJshnxDbZ/GIvmsGWQa7OM8m3Yk8XXk/Nlbo=;
+ b=Q1gd5N6UE5IzeOwVOnwGT9z1R3ZKvzx7X5iMBtgnQxqlCS2fyUSFr/N4
+ M/SszTTa+xRPlB6ll0UkKYjDsTgHV6Ih0F086VAc8fD0E3mDvRw80PkxC
+ 4jkji9lv2V0/nrCnyAsKIb3AqoIKHSQBvx0tbjakOORx20lVadY8RzRAo
+ mQEMJ9DM6Ti2kGeqtLWjjk3lOPyYoj4HcaNTbyrmRV7lYSPXerHVWzA+Q
+ WXYPAL3LBbqlKtDJTcPMS8QBDj9JSSDP9pmNpEHcO6FxMYtnCb6stHV6G
+ qOC7xP7pZK18z/K2EKsZYYFhVNItV+1wuRt53oCD4qz7rmijSgOTs05AH g==;
+X-CSE-ConnectionGUID: hyX4Q2vjTCalD1GAuXLsaA==
+X-CSE-MsgGUID: 9kzrySHHQPOgIuCettwLSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11168"; a="39763329"
+X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="39763329"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 03:35:50 -0700
-X-CSE-ConnectionGUID: d5Er9jvbTamSGNeKh/NiyA==
-X-CSE-MsgGUID: PQXwm24QTOelszhZMZOEcg==
+ 19 Aug 2024 03:35:54 -0700
+X-CSE-ConnectionGUID: WAVyHLsMQDu77kuJT4jJCQ==
+X-CSE-MsgGUID: lxW5tuJ3QKSpp6oZy3TzwQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="65286321"
+X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="65286344"
 Received: from opintica-mobl1 (HELO localhost) ([10.245.244.144])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 03:35:50 -0700
+ 19 Aug 2024 03:35:54 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v5 2/4] lib/igt_core: Added message to runner about
- ignoring kernel warns
-Date: Mon, 19 Aug 2024 12:32:40 +0200
-Message-ID: <20240819103242.26527-3-kamil.konieczny@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t v5 3/4] tests/intel/xe_wedged: Inform runner about
+ expected error
+Date: Mon, 19 Aug 2024 12:32:41 +0200
+Message-ID: <20240819103242.26527-4-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240819103242.26527-1-kamil.konieczny@linux.intel.com>
 References: <20240819103242.26527-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,65 +71,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Allow a test to emit regex into dmesg to be read by runner when
-it will be generating results based on kernel dmesg. When it
-will encounter such message, runner will save it and then
-temporarily ignore kernel warnings or errors which matches given
-regex.
+Tests runs force wedged state and then driver emits an error.
+Standalone runs are succeeding but when run by igt runner it
+catch such errors and reports them in results.
 
-v2: check creation of regex in subtest run and bail out quickly
-on error, fix description (Zbigniew)
-v3: print error when compiling regex fails (Zbigniew)
+Inform runner to ignore such triggered failure.
 
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1760
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1958
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/igt_core.c | 24 ++++++++++++++++++++++++
- lib/igt_core.h |  2 ++
- 2 files changed, 26 insertions(+)
+ tests/intel/xe_wedged.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 3ff3e0392..6eef25dd5 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -3432,3 +3432,27 @@ int igt_pci_system_init(void)
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index a4fc53869..a3f7a697f 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -26,6 +26,12 @@
+ #include "xe/xe_query.h"
+ #include "xe/xe_spin.h"
  
- 	return pthread_once(&once_control, __pci_system_init);
- }
-+
-+/**
-+ * igt_emit_ignore_dmesg_regex:
-+ * @ignore_dmesg: string regex
-+ *
-+ * Emits a string for igt_runner to ignore next dmesg warns or errors which
-+ * matches it.
-+ */
-+void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex)
++static void ignore_wedged_in_dmesg(void)
 +{
-+	static const char mark_ignore_dmesg[] = "add ignored dmesg regex: ";
-+	GError *err = NULL;
-+	GRegex *re;
-+
-+	re = g_regex_new(ignore_dmesg_regex, G_REGEX_OPTIMIZE, 0, &err);
-+	if (err) {
-+		igt_debug("regexp: '%s'\n", err->message);
-+		g_error_free(err);
-+		igt_assert_f(re, "Error in regexp\n");
-+	}
-+
-+	g_regex_unref(re);
-+	igt_kmsg(KMSG_INFO "%s%s\n", mark_ignore_dmesg, ignore_dmesg_regex);
++	/* this is needed for igt_runner so it will ignore it */
++	igt_emit_ignore_dmesg_regex("CRITICAL: Xe has declared device [0-9A-Fa-f:.]* as wedged");
 +}
-diff --git a/lib/igt_core.h b/lib/igt_core.h
-index 06c5314bf..a437ff8ed 100644
---- a/lib/igt_core.h
-+++ b/lib/igt_core.h
-@@ -1542,4 +1542,6 @@ static inline void igt_pci_system_cleanup(void)
- {
- }
- 
-+void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex);
 +
- #endif /* IGT_CORE_H */
+ static void force_wedged(int fd)
+ {
+ 	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+@@ -235,6 +241,8 @@ igt_main
+ 					       O_RDWR));
+ 
+ 		igt_assert_eq(simple_ioctl(fd), 0);
++		ignore_wedged_in_dmesg();
++
+ 		force_wedged(fd);
+ 		igt_assert_neq(simple_ioctl(fd), 0);
+ 		fd = rebind_xe(fd);
+@@ -245,6 +253,7 @@ igt_main
+ 
+ 	igt_subtest_f("wedged-at-any-timeout") {
+ 		igt_require(igt_debugfs_exists(fd, "wedged_mode", O_RDWR));
++		ignore_wedged_in_dmesg();
+ 
+ 		igt_debugfs_write(fd, "wedged_mode", "2");
+ 		simple_hang(fd);
+@@ -268,6 +277,7 @@ igt_main
+ 		igt_debugfs_write(fd, "wedged_mode", "2");
+ 		igt_assert_eq(simple_ioctl(fd), 0);
+ 		igt_debugfs_write(fd, "wedged_mode", "1");
++		ignore_wedged_in_dmesg();
+ 		simple_hang(fd);
+ 		igt_assert_eq(simple_ioctl(fd), 0);
+ 	}
 -- 
 2.43.0
 
