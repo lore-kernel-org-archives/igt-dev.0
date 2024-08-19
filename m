@@ -4,54 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0958DC54722
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 19:56:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32EBC3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 20:25:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24A7D10E358;
-	Mon, 19 Aug 2024 19:56:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 79F5210E364;
+	Mon, 19 Aug 2024 20:25:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HcjNeoDs";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="EtWY89Ey";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD05510E355
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 19:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724097374; x=1755633374;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Cm5dhlqU0OFkT8eNNQfpyoOCtN1gFM/T9iaNrQHucsE=;
- b=HcjNeoDs6IHDbw8Mrv5liDUiqexOgCDddnYhyZ2AuwY9wXFyMP7ew3y/
- xYntdoJFOKlF9087pz1F8qaD0mLLO0Ym6oH+Us1Le3QWh81QuhoAt44zX
- B6KqeWHtwH9kz2DNT8B5pNTzYjn+jXNPSXxyzGWtZ0JBpNSrLffAPNRd8
- GYucXzup0CYoKDAl77001vM1qlmGn7yOK3IsUs5fEuvp9MX4oQt5iax7v
- Co24IVNgkRnqd6MdTCjiJrMiQSc66lkwF3sAWnRasa6DOP7ENunfPMoFB
- XUeE6tsOsKeoPLSrumERf1L504xeudctmniGZhqao3Jhd/4QF/K1Luiou w==;
-X-CSE-ConnectionGUID: Qa950DJyQPmI7/eJoTpjHw==
-X-CSE-MsgGUID: MKUfZcOBQsS+j98QM9OCxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22251047"
-X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="22251047"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 12:56:13 -0700
-X-CSE-ConnectionGUID: xU30AWcyQ/SxS1CZBCkHkQ==
-X-CSE-MsgGUID: R1n8dJCoSnuUz6b7xD+WIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="60315550"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 12:56:13 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com
+ [209.85.214.182])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 493CF10E364
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 20:25:51 +0000 (UTC)
+Received: by mail-pl1-f182.google.com with SMTP id
+ d9443c01a7336-201f7fb09f6so31379695ad.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 13:25:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724099150; x=1724703950; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=9UxYMcWs6omjwwV8dMHxDTwHBqrOLUbUU2I+gHkrAQA=;
+ b=EtWY89Eymfo7ZZs5GBYGwLpx9oui1xoic5MyhQ4M451RHsp2yW8c4iCLH9V+07C6Ec
+ 0YLWE/fpaqODMsyTspuCTzF/hB9S8BdW9vElsxlD/OorSLrBbAOxzZqFyQIys4OLRNbF
+ uIjoOew9s/RHy20lFR+Xw8+Vf3BcoGHmvCAWlk1wxIbbzMRMS0iY69JemO3pBbDlviKD
+ +SDD7SriEXL3AhQiXRMoxU70UtjMNfDzaxLb+UD4tMeKajXSKKMrK47JUhDBoEjadViM
+ uUh/Vveq/0+dsxGcotsYrBRGmxVSlF3Pii5uyCS7fbLgcdda9yCi3RLQ1f+dyyUmwqQm
+ F4jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724099150; x=1724703950;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=9UxYMcWs6omjwwV8dMHxDTwHBqrOLUbUU2I+gHkrAQA=;
+ b=r4nyGw/erNGeqOgIKKnJ6ogLNSPLUlgwBo23uq7nD/0i9sPsBaRAnIeh+ncreiFQBR
+ 9uYUQuZzP/EqV4hXT/dpnnCA3JIl5jGYjpC/n2tf121hTuqQsU+zpV3HkSPkFewk+fwr
+ wRt957ZqdjrlI9ALcRmXfRZGjE8U39EWWzGWrRf3E6JtvwZVEuTZNir97RVQ3ccYgPvK
+ LaMrACpjCSq9HFe+shVP0xPi4O8OwNiAQEaxwAuM+/l+q+1UDPsxmnzff6/AT2j78jEs
+ bZHgFfAGkjSrPti/cTlq5/4dkDjwqhb+EQdP+yfxWZjFrGUbNBSTEEKLBwlbx4tMzfqB
+ C20w==
+X-Gm-Message-State: AOJu0YyfZh0GI/RX8EDN4ETJ9L2Zw3BdzZoQ/wwBADegC39eX5F+y6hS
+ I2tsyyj1nk5DXIYcPLOjLIFPSoRTS3EFehKZIMe7M7NGQgbbolKyJVNZnw==
+X-Google-Smtp-Source: AGHT+IHRAZsNTG2Lvo4zrB80KKubvDrdCOARhtOYmzZsQXPaPCGRjqFWvsMrOd3HAIyoA2eDHW4ztw==
+X-Received: by 2002:a17:902:ced1:b0:202:46cc:696c with SMTP id
+ d9443c01a7336-20246cc6c1cmr41245925ad.18.1724099149917; 
+ Mon, 19 Aug 2024 13:25:49 -0700 (PDT)
+Received: from localhost ([2a00:79e1:2e00:1301:12e9:d196:a1e9:ab67])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-201f038a688sm66141905ad.191.2024.08.19.13.25.48
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Mon, 19 Aug 2024 13:25:49 -0700 (PDT)
+From: Rob Clark <robdclark@gmail.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 2/4] tools/intel-gfx-fw-info: Embed fw decoding
-Date: Mon, 19 Aug 2024 12:55:58 -0700
-Message-ID: <20240819195600.242767-3-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240819195600.242767-1-lucas.demarchi@intel.com>
-References: <20240819195600.242767-1-lucas.demarchi@intel.com>
+Cc: Rob Clark <robdclark@chromium.org>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH 1/2] tests/kms_plane_scaling: Pass display to get_num_scalers()
+Date: Mon, 19 Aug 2024 13:25:45 -0700
+Message-ID: <20240819202546.111243-1-robdclark@gmail.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,142 +78,162 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use a factory class method to decide what class to use depending on the
-magic and embed the calls to cstruct in each of them. Main motivation is
-that in future the decode method will need to seek the binary as it
-can't really know the version just checking the beginning of the file.
+From: Rob Clark <robdclark@chromium.org>
 
-For now, keep the open/close of the file in the main function, but
-eventually can be migrated as well.
+Prep for next patch.  The next commit will need the display to figure
+out the number of scalers.  This commit has no functional change, just
+plumbing the extra parameter everywhere.
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tools/intel-gfx-fw-info | 73 ++++++++++++++++++++++++++++-------------
- 1 file changed, 51 insertions(+), 22 deletions(-)
+ lib/igt_kms.c             |  5 +++--
+ lib/igt_kms.h             |  2 +-
+ tests/kms_plane_scaling.c | 24 ++++++++++++------------
+ 3 files changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-index 5156c724c..a2518aa0e 100755
---- a/tools/intel-gfx-fw-info
-+++ b/tools/intel-gfx-fw-info
-@@ -105,8 +105,38 @@ def FIELD_GET(mask: int, value: int) -> int:
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index e030b35a6051..99cdeeb76033 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6650,17 +6650,18 @@ int igt_get_dp_mst_connector_id(igt_output_t *output)
  
+ /**
+  * get_num_scalers:
+- * @drm_fd: drm file descriptor
++ * @display: the display
+  * @pipe: display pipe
+  *
+  * Returns: Number of scalers supported per pipe.
+  */
+-int get_num_scalers(int drm_fd, enum pipe pipe)
++int get_num_scalers(igt_display_t *display, enum pipe pipe)
+ {
+ 	char buf[8120];
+ 	char *start_loc1, *start_loc2;
+ 	int dir, res;
+ 	int num_scalers = 0;
++	int drm_fd = display->drm_fd;
+ 	char dest[20] = ":pipe ";
  
- class Fw(abc.ABC):
--    def __init__(self, fw):
--        self.fw = fw
-+    def __init__(self, cparser, f):
-+        self.f = f
-+        self.cparser = cparser
-+        self.fw = None
-+
-+    def checksum(self):
-+        self.f.seek(0, 0)
-+        return hashlib.sha256(self.f.read()).hexdigest()
-+
-+    def dump(self, **kw):
-+        cstruct.dumpstruct(self.fw, kw)
-+
-+    @classmethod
-+    def create(cls, f):
-+        cparser = cstruct.cstruct()
-+        cparser.load(CDEF)
-+
-+        magic = cparser.magic(f).data
-+        default = None
-+
-+        for s in cls.__subclasses__():
-+            if s.MAGIC is None:
-+                default = s
-+            elif s.MAGIC == magic:
-+                f.seek(0, 0)
-+                return s(cparser, f)
-+
-+        if default:
-+            f.seek(0, 0)
-+            return default(cparser, f)
-+
-+        return None
+ 	strcat(dest, kmstest_pipe_name(pipe));
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index e8582a45b53e..25ba509164e3 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1223,6 +1223,6 @@ bool igt_parse_mode_string(const char *mode_string, drmModeModeInfo *mode);
+ bool intel_pipe_output_combo_valid(igt_display_t *display);
+ bool igt_check_output_is_dp_mst(igt_output_t *output);
+ int igt_get_dp_mst_connector_id(igt_output_t *output);
+-int get_num_scalers(int drm_fd, enum pipe pipe);
++int get_num_scalers(igt_display_t *display, enum pipe pipe);
  
-     @abc.abstractmethod
-     def decode(self):
-@@ -114,8 +144,13 @@ class Fw(abc.ABC):
+ #endif /* __IGT_KMS_H__ */
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index 90bfb004773b..42eb67409899 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -1080,8 +1080,8 @@ static void test_scaler_with_multi_pipe_plane(data_t *d)
+ 	igt_output_set_pipe(output1, pipe1);
+ 	igt_output_set_pipe(output2, pipe2);
  
+-	igt_require(get_num_scalers(d->drm_fd, pipe1) >= 2);
+-	igt_require(get_num_scalers(d->drm_fd, pipe2) >= 2);
++	igt_require(get_num_scalers(display, pipe1) >= 2);
++	igt_require(get_num_scalers(display, pipe2) >= 2);
  
- class FwCss(Fw):
-+    MAGIC = None
-+
-     def decode(self):
--        data = []
-+        self.f.seek(0, 0)
-+        self.fw = self.cparser.uc_css_header(self.f)
-+
-+        data = ["header-type: CSS"]
+ 	plane[0] = igt_output_get_plane(output1, 0);
+ 	igt_require(plane[0]);
+@@ -1169,7 +1169,7 @@ static void invalid_parameter_tests(data_t *d)
+ 		igt_output_set_pipe(output, pipe);
+ 		plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
  
-         CSS_SW_VERSION_UC_MAJOR = 0xFF << 16
-         CSS_SW_VERSION_UC_MINOR = 0xFF << 8
-@@ -137,8 +172,13 @@ class FwCss(Fw):
+-		igt_require(get_num_scalers(d->drm_fd, pipe) >= 1);
++		igt_require(get_num_scalers(&d->display, pipe) >= 1);
  
+ 		igt_create_fb(d->drm_fd, 256, 256,
+ 			      DRM_FORMAT_XRGB8888,
+@@ -1346,7 +1346,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
  
- class FwGsc(Fw):
-+    MAGIC = b'$CPD'
-+
-     def decode(self):
--        data = []
-+        self.f.seek(0, 0)
-+        self.fw = self.cparser.uc_huc_gsc_header(self.f)
-+
-+        data = ["header-type: GSC"]
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1370,7 +1370,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
  
-         HUC_GSC_MINOR_VER_HI_MASK = 0xFF << 16
-         HUC_GSC_MAJOR_VER_HI_MASK = 0xFF
-@@ -165,40 +205,29 @@ def parse_args(argv: typing.List[str]) -> argparse.Namespace:
-     return parser.parse_args(argv)
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1394,7 +1394,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 							continue;
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
  
+ 						igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1417,7 +1417,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 1)
++					if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
  
--def calculate_checksum(f: typing.BinaryIO) -> str:
--    return hashlib.sha256(f.read()).hexdigest()
--
--
- def main(argv: typing.List[str]) -> int:
-     args = parse_args(argv)
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1437,7 +1437,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 1)
++					if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
  
--    cparser = cstruct.cstruct()
--    cparser.load(CDEF)
--
-     checksum = None
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1457,7 +1457,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 1)
++					if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
  
-     try:
-         with open(args.filename, mode="rb") as f:
--            magic = cparser.magic(f)
--            f.seek(0, 0)
--            if magic.data == b"$CPD":
--                fw = FwGsc(cparser.uc_huc_gsc_header(f))
--            else:
--                fw = FwCss(cparser.uc_css_header(f))
-+            fw = Fw.create(f)
-+            if not fw:
-+                logging.fatal("Unknown firmware type in '{args.filename}'")
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1477,7 +1477,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 					if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 						continue;
+-					if (get_num_scalers(data.drm_fd, pipe) < 2)
++					if (get_num_scalers(&data.display, pipe) < 2)
+ 						continue;
  
-+            decoded_data = fw.decode()
-             if args.checksum:
--                f.seek(0, 0)
--                checksum = calculate_checksum(f)
--
-+                checksum = fw.checksum()
-     except FileNotFoundError as e:
-         logging.fatal(e)
-         return 1
+ 					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+@@ -1502,7 +1502,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
+ 						drmModeModeInfo *mode = NULL;
  
--    print(*fw.decode(), sep="\n")
-+    print(*decoded_data, sep="\n")
+-						if (get_num_scalers(data.drm_fd, pipe) < 1)
++						if (get_num_scalers(&data.display, pipe) < 1)
+ 							continue;
+ 						/*
+ 						 * Need to find mode with lowest vrefresh else
+@@ -1527,7 +1527,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			for_each_pipe_with_valid_output(&data.display, pipe, output) {
+ 				if (!pipe_output_combo_valid(&data.display, pipe, output))
+ 					continue;
+-				if (get_num_scalers(data.drm_fd, pipe) < 1)
++				if (get_num_scalers(&data.display, pipe) < 1)
+ 						continue;
  
-     if args.raw:
-         print("raw dump:", end="")
--        cstruct.dumpstruct(fw.fw, color=sys.stdout.isatty())
-+        fw.dump(color=sys.stdout.isatty())
- 
-     if checksum:
-         print(f"checksum: {checksum}")
+ 				igt_dynamic_f("pipe-%s-%s-invalid-num-scalers",
 -- 
-2.43.0
+2.46.0
 
