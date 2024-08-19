@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09506C5320E
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 09:14:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37C63C3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 09:48:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BACCC10E22F;
-	Mon, 19 Aug 2024 09:14:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0EA610E235;
+	Mon, 19 Aug 2024 09:48:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hUZrpKyl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UKXRKek+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 752A710E22F
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 09:14:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB34410E235
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 09:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724058879; x=1755594879;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Cq7UfwvlvsrAKQl/VLmpSpdffKLNTv8U/bz8ENEg4Kw=;
- b=hUZrpKyl+Mht38VvQFJGVQ6/k91WkCSYp0bbSrwjA9v1Kvk/o9FlHop/
- nv27NluA1nHnU7Ye2aimH2FU/JunKcMMcfnO8rNesVfMcD2hyJNYgs2d2
- tJWS0TT2MsBBiayJeasYCaDqdIEAjlCzlv2K1sRg3NsRBoqVB97j57Ie/
- Yaq9f+/ML+XPyuWGmuG6v5bl+ULDpOOpYiskUvmL+MerXItJF8YVRSPbw
- LNhtB1b/0ofHiXy8M4HItwNdl8CYSXVgXopnXLciVqKXbKyVM+1WFVkHv
- Pn+uI169wFvqa680p4yzfvivyOeZz9+u8YaJx8sEarWCN5GUoCsBo60a+ Q==;
-X-CSE-ConnectionGUID: SVmfbAQgQyS89d0vHRI/LA==
-X-CSE-MsgGUID: 9eN032m+RlyiTCVBN13utQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11168"; a="44816340"
-X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="44816340"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 02:14:39 -0700
-X-CSE-ConnectionGUID: wlivzm0HSey9gcpL5G5AXA==
-X-CSE-MsgGUID: 36XBthrSQJy33YBspLkkCg==
+ t=1724060890; x=1755596890;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=NflDJUCN+GsJzeBFly9E/E0flFacDi+PCDu8WSVow+Q=;
+ b=UKXRKek+2UB+MlbeyhVH/2rRWSI9gWOm4BqClWmF4vv2URXNoC9iEMg/
+ 6UfK8v92qeWNHKPmXUcpbO/06lyCi5sFcUB4a6wns/nR5lPj19n0UT/q8
+ VdUfxSyvj0t3ZoXv2NLdgfuUTZWiuivI5PrSDKHjlmwV5VB/7mkpdHoWK
+ tcA9jwShCc/w/+WzUC5jxEZqRP3KehHJ+4M2A7cMhoYeV3MJ6CfyDpOBb
+ VYVNEBc6S/luK7NEcHsoeoGKJcHlLZWTuSOfzGrGBoEydhGBjs2yWMh0J
+ wiVxTyM5jyRVyG74J/HpdqutivP6FGGOAqjq3ixLC2pMI5DpRTsekWOkh w==;
+X-CSE-ConnectionGUID: hfdb/u0PRMixBLxPVbpkFw==
+X-CSE-MsgGUID: YACsQRsVSi+2dAWM1wXPuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11168"; a="22143912"
+X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="22143912"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 02:48:09 -0700
+X-CSE-ConnectionGUID: eFD2LOgNR3CcCd6annODPA==
+X-CSE-MsgGUID: dx7yIK9URJWBixvLqrLjHA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="60884218"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 02:14:36 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,158,1719903600"; d="scan'208";a="65150188"
+Received: from sinjan-super-server.iind.intel.com ([10.145.169.153])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 02:48:07 -0700
+From: Karthik Poosa <karthik.poosa@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: imre.deak@intel.com,
-	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 12/12] HAX: Do not merge
-Date: Mon, 19 Aug 2024 14:56:15 +0530
-Message-Id: <20240819092615.3669803-13-kunal1.joshi@intel.com>
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ vinay.belgaumkar@intel.com, riana.tauro@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v3 0/2] tests/intel/xe_gt_freq: Add a wait after gt reset
+Date: Mon, 19 Aug 2024 15:31:44 +0530
+Message-Id: <20240819100146.3130945-1-karthik.poosa@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240819092615.3669803-1-kunal1.joshi@intel.com>
-References: <20240819092615.3669803-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,36 +67,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
----
- tests/intel-ci/fast-feedback.testlist    | 1 +
- tests/intel-ci/xe-fast-feedback.testlist | 2 ++
- 2 files changed, 3 insertions(+)
+After reset min and max takes sometime to get set.
+So add a wait of 100ms after gt reset before reading
+min and max frequencies.
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..7b84ccffc 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,6 +1,7 @@
- # Try to load the driver if it's not available yet.
- igt@i915_module_load@load
- 
-+igt@kms_fallback@dp-fallback
- # Keep alphabetically sorted by default
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 01b01dcf9..110675cd3 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,6 +1,8 @@
- # Should be the first test
- igt@xe_module_load@load
- 
-+igt@kms_fallback@dp-fallback
-+
- igt@fbdev@eof
- igt@fbdev@info
- igt@fbdev@nullptr
+v2:
+ - Rename ACT_FREQ_LATENCY_US to SLPC_FREQ_LATENCY_US and use it
+   instead of new macro. (Riana)
+
+v3:
+ - Split v2 patch to move macro rename to separate patch. (Riana)
+
+Karthik Poosa (2):
+  tests/intel/xe_gt_freq: Rename ACT_FREQ_LATENCY_US to
+    SLPC_FREQ_LATENCY_US
+  tests/intel/xe_gt_freq: Add a wait after gt reset
+
+ tests/intel/xe_gt_freq.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
 -- 
-2.43.0
+2.25.1
 
