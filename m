@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BDC3C52D7C
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 18:25:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64CACC3DA4A
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 18:52:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 196A910E1A2;
-	Mon, 19 Aug 2024 18:25:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 19A5E10E2A4;
+	Mon, 19 Aug 2024 18:52:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jL7M2mfF";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="QGvc4TX6";
 	dkim-atps=neutral
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com
- [209.85.208.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEB0510E1A2
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 18:25:17 +0000 (UTC)
-Received: by mail-ed1-f44.google.com with SMTP id
- 4fb4d7f45d1cf-5bec7d380caso3810783a12.3
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 11:25:17 -0700 (PDT)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com
+ [209.85.208.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A70D10E2A4
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 18:52:06 +0000 (UTC)
+Received: by mail-ed1-f52.google.com with SMTP id
+ 4fb4d7f45d1cf-5becc379f3fso3267815a12.3
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 11:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724091916; x=1724696716; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1724093524; x=1724698324; darn=lists.freedesktop.org;
  h=content-transfer-encoding:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:from:to:cc:subject:date
  :message-id:reply-to;
- bh=AHvdMsLUqITH6ZyWKGAoiCEhmD5cJ3NP/2M/Z3hbVm0=;
- b=jL7M2mfFkqWQDUujqUg2SXt/bZIjywNg09nslkiDeAS0CsrZQhiCb/I+lJYVmg06+n
- 1jSAiY5iCWiFn+V72cXcZbc2eMY8SYfcmw2nY8QVyECPNlHQiL3bEmRrPv0EpTZx5xiT
- q806fvQno68hra1NsxU+gPdzVfVEMG9g2bzx2QjGm0IO0L4q22Y7ncFsgA64568PURYq
- iOIk1w3bAzyDCNEDHhsRlK79jQDbtnZ2/8EIP9OftHFPlNJxrSyuTIP+d/UuBzS3Q+pS
- VKt/YyZN/Rb0oUoDkR2iaKrHEb4HYvLDiK/azMJ1Jf4Z0SfschvFFMuAXQCM9QssR2P0
- 22jA==
+ bh=yewPRnZxdu1JkV5oi0hou/M7czzKGFNY0ldY10WWXO0=;
+ b=QGvc4TX6FW64fORfHFTp+qYvuYqzSAQQpD7Q8KlLFkpVbRMrWstUPTXi8Nm1aa1Vc6
+ 80jG5tO/6lQZAyomEMDVTZJVyBrbM2unVMbj79So/XjFTVBupXvD1AE45Shfa2TKiGOh
+ XSrylRs4LyvD1obPDIn39RCWK9wqdfwi+0+6mvCdCjMl9zOlRRWDhmYH8UyFCjDikALG
+ IqEjUUP5KfVWB4t4IXT81I95C86wFgh/ZIa4qOKVi80n/Hyc6F/VwQh8nLNz1DlROphg
+ DpPlddQy5exCzRlQ2CBwSt/Db9pp8x69FYCR0clupvbS0t0Ug6+4vrO/iRF7VPCKDCjc
+ QcaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724091916; x=1724696716;
+ d=1e100.net; s=20230601; t=1724093524; x=1724698324;
  h=content-transfer-encoding:to:subject:message-id:date:from
  :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to;
- bh=AHvdMsLUqITH6ZyWKGAoiCEhmD5cJ3NP/2M/Z3hbVm0=;
- b=wiNYuyvGJsfClPsOt2zPfERRCUCPTW96FzZadpxiUgUH2rDg7hGncfT34uWNRDZ078
- ApnJEipF8aBB2YXFuV1Cjj0FRzf6xj4HlnuBCGqQL/X0+Rq7r7YA38Oep0BeoBh82RrY
- H6mrQBJggrTV6EjSpnxVkcNnhLW7ygf90Y1xr45sSSW9N6wZJNWxemMmuIe4tDLRSQdQ
- R7fHn/S4i5o7ZSkjfYYFbCZO6Nx5e4LkwnJVy+Sf/qAMgkTPZBi7KV8XNJkQW3KBUXAj
- NElKeFaMTm84v0d6dUETmTl3DBB19fpDyMWlZId1GkO+fvhE+IwOqinpJc9MaQKLq2KW
- fdOg==
+ bh=yewPRnZxdu1JkV5oi0hou/M7czzKGFNY0ldY10WWXO0=;
+ b=CLxOUBlmWjJl6rKKAefM6sYqmTAcy/smrhFYIZ/krS9XMUfL7ex2WcO5kWCIoCaF+e
+ YDOjYc+2vG5ulFcgEe5rBVhMOTSRA38cw2bon6ye5zzWtDCDXtJ1cYEb9k9vEFfWlcoE
+ OWNTqHdVHm1lhNuRbcbRPAeC3lNOwHsKJ3H4eVb0b2k/irwjplvxTMWyY5Mqwo5U6HLY
+ IUlmf0w31/5i3Y4jV1+L72JgcAsJzx67ZgejTwJW/tyCFmE+TCAXvTjdo3Ld75oOQKXN
+ fwf5lu+Sp2BdmRhH3bmmUPaCo8sfURTft/HWRzRi5CcKrmOVLQkN6kKlEHEkRuXDOnnI
+ BGGA==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVAVE6NdfZPcUzgNjtsHrvtgLAB9zvTNtz2IIHF/pRQpjj7CbA/bfOhLNkULoTrC32Hoj0DXmMp@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yz5U9o6M8j83BoXgIHDy2Y0tCqOAJvUws7QT73Svxc2vddfRMzu
- yUh68YZ1WfE5wtBNe+4O81cHpd5iQOomrP/zBUE9fPmPA/fSL7BDpHzJMy0eP+49enAasidPZFi
- DsY0BgFXvRBpO3buDJNIgKfKWScg=
-X-Google-Smtp-Source: AGHT+IFmUviUFM7OfoIdp8ZwT2dcHG3iVXSQ4CIFf3wQfkXvKFYrMqYaYsouxkxWdKZn8pDyWiCOdhbdeFzvh6JeL8Q=
-X-Received: by 2002:a05:6402:3590:b0:5be:e887:c667 with SMTP id
- 4fb4d7f45d1cf-5bee887c7cdmr5501157a12.33.1724091915390; Mon, 19 Aug 2024
- 11:25:15 -0700 (PDT)
+ AJvYcCWVwp7kVpxx6UBcLHrHz4HAYvTCaeUVHcGtsrBO5T6MdLeIgMnDeM6+5jEM9ltbbzh5JleLsP8mfswQIV4LrYzDURdOsyE8hxf9MSRrhg==
+X-Gm-Message-State: AOJu0Yw1mh/qrjtuyJWg3HHWnkM6vf1LCtGBMEw+siH0XXvoyR+wh7La
+ qdGuofzZWvc1GSGER0ZJmo7nd+iDGvurslFhpTkYEc/SwddRH+hMkLTiFv+IZl6UTX+iJt3soao
+ l+SPs3srPSNWDonIe1nwxt2KoXwU=
+X-Google-Smtp-Source: AGHT+IFoxO8Fn+NxgdfmoABFeG5QjlKzzFmAMJ0fzeoen/Oi4XOsMdVHWudCwgxkmm11rFt/iOGmYtvsPHp9Y+sNogQ=
+X-Received: by 2002:a05:6402:1e8f:b0:5a1:faf:e5ac with SMTP id
+ 4fb4d7f45d1cf-5beca7b03e1mr8763326a12.26.1724093524051; Mon, 19 Aug 2024
+ 11:52:04 -0700 (PDT)
 MIME-Version: 1.0
 References: <20240814185426.70418-1-robdclark@gmail.com>
- <20240819171618.hs2jssfois4mgbjm@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20240819171618.hs2jssfois4mgbjm@kamilkon-DESK.igk.intel.com>
+ <20240814185426.70418-2-robdclark@gmail.com>
+ <20240819173652.t4ctowxlkzwkvjzc@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20240819173652.t4ctowxlkzwkvjzc@kamilkon-DESK.igk.intel.com>
 From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 19 Aug 2024 11:25:01 -0700
-Message-ID: <CAF6AEGsxK29G8ZzOhxQhfXquibJ5Gdf5rTtbUAbpSUHB=nYCbg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dumb_buffer: Remove invalid-bpp subtest
+Date: Mon, 19 Aug 2024 11:51:51 -0700
+Message-ID: <CAF6AEGtEkf4Mzo6iXCcdCUwhXxePKU_RZE8VrVUJwav6GQxhvg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] device_reset: Require a PCI device
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Rob Clark <robdclark@gmail.com>, 
- igt-dev@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>
+ igt-dev@lists.freedesktop.org, 
+ Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -80,91 +81,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Aug 19, 2024 at 10:16=E2=80=AFAM Kamil Konieczny
+On Mon, Aug 19, 2024 at 10:37=E2=80=AFAM Kamil Konieczny
 <kamil.konieczny@linux.intel.com> wrote:
 >
 > Hi Rob,
-> On 2024-08-14 at 11:54:25 -0700, Rob Clark wrote:
+> On 2024-08-14 at 11:54:26 -0700, Rob Clark wrote:
 > > From: Rob Clark <robdclark@chromium.org>
-> >
-> > These allocations are not necessarily invalid.
 >
-> Please write a little more why. Also look at gitlab log,
-> you need to delete comments with this subtest name and description
-> as our CI is creating testlist at build time and that info
-> is there.
+> One nit about subject, please use 'tests/' prefix:
 >
-> Add also tests/ prefix in subject:
+> [PATCH 2/2] device_reset: Require a PCI device
 >
-> [PATCH 1/2] tests/dumb_buffer: Remove invalid-bpp subtest
+> should be:
+>
+> [PATCH 2/2] tests/device_reset: Require a PCI device
 >
 > >
-> > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > ---
-> >  tests/dumb_buffer.c | 22 ----------------------
-> >  1 file changed, 22 deletions(-)
-> >
-> > diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
-> > index 1d4bf296c53e..579d2f906b6d 100644
-> > --- a/tests/dumb_buffer.c
-> > +++ b/tests/dumb_buffer.c
-> > @@ -136,25 +136,6 @@ static void dumb_destroy(int fd, uint32_t handle)
-> >       igt_assert_eq(__dumb_destroy(fd, handle), 0);
-> >  }
-> >
-> > -static void invalid_dimensions_test(int fd)
-> > -{
-> > -     struct drm_mode_create_dumb create;
-> > -
-> > -     memset(&create, 0, sizeof(create));
-> > -     create.width =3D 4032;
-> > -     create.height =3D 2016;
-> > -     create.bpp =3D 24;
-> > -     igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
+> > Too much baked in assumptions that the drm device is a PCI device.
 >
-> These use 3-Bytes bpp with divisible by 4 screen W x H, so here
-> you could be right with removing this.
+> Do you have examples where it is not true (e.g. not a PCI device)
+> and reset is possible? Just curious.
 
-I guess I could instead create.bpp =3D 0, since that is the only case
-that the kernel actually rejects
+maybe usb devices?
+
+Platform devices cannot be reset at the bus level, since there is no bus.
 
 BR,
 -R
 
->
-> > -
-> > -     create.bpp =3D 32;
-> > -     create.width =3D 0;
-> > -     igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
->
-> Why 0-width is valid?
->
-> > -
-> > -     create.width =3D 4032;
-> > -     create.height =3D 0;
-> > -     igt_assert_eq(__dumb_create(fd, &create), -EINVAL);
->
-> Same here, imho looks invalid. Btw what about other settings?
-> Like bpp not divisible by 8 bits?
->
 > Regards,
 > Kamil
 >
-> > -}
-> > -
-> >  static void valid_dumb_creation_test(int fd)
-> >  {
-> >       struct drm_mode_create_dumb create =3D {
-> > @@ -397,9 +378,6 @@ igt_main
-> >               fd =3D drm_open_driver(DRIVER_ANY);
-> >       }
 > >
-> > -     igt_subtest("invalid-bpp")
-> > -             invalid_dimensions_test(fd);
-> > -
-> >       igt_subtest("create-valid-dumb")
-> >               valid_dumb_creation_test(fd);
+> > Signed-off-by: Rob Clark <robdclark@chromium.org>
+> > ---
+> >  tests/device_reset.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >
+> > diff --git a/tests/device_reset.c b/tests/device_reset.c
+> > index 8ed3ef5220fc..c49f94e2faed 100644
+> > --- a/tests/device_reset.c
+> > +++ b/tests/device_reset.c
+> > @@ -200,6 +200,7 @@ static void init_device_fds(struct device_fds *dev)
+> >               igt_require_gem(dev->fds.dev);
+> >
+> >       igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
+> > +     igt_require(strstr(dev_path, "/sys/devices/pci") =3D=3D dev_path)=
+;
+> >       addr_pos =3D strrchr(dev_path, '/');
+> >       igt_assert(addr_pos);
+> >       igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
 > > --
 > > 2.46.0
 > >
