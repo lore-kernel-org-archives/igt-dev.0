@@ -4,68 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64CACC3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 18:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64561C52D7C
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 19:56:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 19A5E10E2A4;
-	Mon, 19 Aug 2024 18:52:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09B5E10E355;
+	Mon, 19 Aug 2024 19:56:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="QGvc4TX6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T859N082";
 	dkim-atps=neutral
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com
- [209.85.208.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A70D10E2A4
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 18:52:06 +0000 (UTC)
-Received: by mail-ed1-f52.google.com with SMTP id
- 4fb4d7f45d1cf-5becc379f3fso3267815a12.3
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 11:52:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724093524; x=1724698324; darn=lists.freedesktop.org;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:from:to:cc:subject:date
- :message-id:reply-to;
- bh=yewPRnZxdu1JkV5oi0hou/M7czzKGFNY0ldY10WWXO0=;
- b=QGvc4TX6FW64fORfHFTp+qYvuYqzSAQQpD7Q8KlLFkpVbRMrWstUPTXi8Nm1aa1Vc6
- 80jG5tO/6lQZAyomEMDVTZJVyBrbM2unVMbj79So/XjFTVBupXvD1AE45Shfa2TKiGOh
- XSrylRs4LyvD1obPDIn39RCWK9wqdfwi+0+6mvCdCjMl9zOlRRWDhmYH8UyFCjDikALG
- IqEjUUP5KfVWB4t4IXT81I95C86wFgh/ZIa4qOKVi80n/Hyc6F/VwQh8nLNz1DlROphg
- DpPlddQy5exCzRlQ2CBwSt/Db9pp8x69FYCR0clupvbS0t0Ug6+4vrO/iRF7VPCKDCjc
- QcaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724093524; x=1724698324;
- h=content-transfer-encoding:to:subject:message-id:date:from
- :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
- :subject:date:message-id:reply-to;
- bh=yewPRnZxdu1JkV5oi0hou/M7czzKGFNY0ldY10WWXO0=;
- b=CLxOUBlmWjJl6rKKAefM6sYqmTAcy/smrhFYIZ/krS9XMUfL7ex2WcO5kWCIoCaF+e
- YDOjYc+2vG5ulFcgEe5rBVhMOTSRA38cw2bon6ye5zzWtDCDXtJ1cYEb9k9vEFfWlcoE
- OWNTqHdVHm1lhNuRbcbRPAeC3lNOwHsKJ3H4eVb0b2k/irwjplvxTMWyY5Mqwo5U6HLY
- IUlmf0w31/5i3Y4jV1+L72JgcAsJzx67ZgejTwJW/tyCFmE+TCAXvTjdo3Ld75oOQKXN
- fwf5lu+Sp2BdmRhH3bmmUPaCo8sfURTft/HWRzRi5CcKrmOVLQkN6kKlEHEkRuXDOnnI
- BGGA==
-X-Forwarded-Encrypted: i=1;
- AJvYcCWVwp7kVpxx6UBcLHrHz4HAYvTCaeUVHcGtsrBO5T6MdLeIgMnDeM6+5jEM9ltbbzh5JleLsP8mfswQIV4LrYzDURdOsyE8hxf9MSRrhg==
-X-Gm-Message-State: AOJu0Yw1mh/qrjtuyJWg3HHWnkM6vf1LCtGBMEw+siH0XXvoyR+wh7La
- qdGuofzZWvc1GSGER0ZJmo7nd+iDGvurslFhpTkYEc/SwddRH+hMkLTiFv+IZl6UTX+iJt3soao
- l+SPs3srPSNWDonIe1nwxt2KoXwU=
-X-Google-Smtp-Source: AGHT+IFoxO8Fn+NxgdfmoABFeG5QjlKzzFmAMJ0fzeoen/Oi4XOsMdVHWudCwgxkmm11rFt/iOGmYtvsPHp9Y+sNogQ=
-X-Received: by 2002:a05:6402:1e8f:b0:5a1:faf:e5ac with SMTP id
- 4fb4d7f45d1cf-5beca7b03e1mr8763326a12.26.1724093524051; Mon, 19 Aug 2024
- 11:52:04 -0700 (PDT)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9FE8510E356
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Aug 2024 19:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724097374; x=1755633374;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=L7/P3OpjwSgFIXXbzYfLEMeyJWzECpUqiG9BEaSnNfI=;
+ b=T859N082spc/TV/lBLFMsxoEK4JFTLt3zts7mmsqg4cPM01DpBtwMF28
+ Dw8T7FbiVL3EZPvFn15jrX3Gghls6sL2PFVjj6FFQvf0oLg2egU32a/hl
+ qs8ZQpIMDHBtneXPBb8gRX7Nsc1V7l1PNeogQ/f8vnc0MtmGYLRZzcuba
+ OFQ759w9TzKGAgEf6IBbKmu6sRjRBYuBYVCLxtcKf3JqfXEzgzdtNlOfK
+ F2Pc+kqQWA3RiFp5n60j2v7v5ygk/CklciNy3JsQkW98prXUSGqU38afI
+ neSww/iGMOmhhXqjoPg1/FYWQFQNZ0JydPCHved6BfNBgdhbhj4DdPlgI g==;
+X-CSE-ConnectionGUID: h/NGz1IuTMWFEZzG5zhSmA==
+X-CSE-MsgGUID: b/A4zdTASXKiNvsIWE/gng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22251046"
+X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="22251046"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 12:56:13 -0700
+X-CSE-ConnectionGUID: yC/wwVbVTROgJ5mZ0vs8mA==
+X-CSE-MsgGUID: yLZSez7oTBiEgH+osRuVRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="60315546"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 12:56:13 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
+ Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 1/4] tools/intel-gfx-fw-info: Annotate abstract method
+Date: Mon, 19 Aug 2024 12:55:57 -0700
+Message-ID: <20240819195600.242767-2-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240819195600.242767-1-lucas.demarchi@intel.com>
+References: <20240819195600.242767-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-References: <20240814185426.70418-1-robdclark@gmail.com>
- <20240814185426.70418-2-robdclark@gmail.com>
- <20240819173652.t4ctowxlkzwkvjzc@kamilkon-DESK.igk.intel.com>
-In-Reply-To: <20240819173652.t4ctowxlkzwkvjzc@kamilkon-DESK.igk.intel.com>
-From: Rob Clark <robdclark@gmail.com>
-Date: Mon, 19 Aug 2024 11:51:51 -0700
-Message-ID: <CAF6AEGtEkf4Mzo6iXCcdCUwhXxePKU_RZE8VrVUJwav6GQxhvg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] device_reset: Require a PCI device
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, 
- Rob Clark <robdclark@gmail.com>, Rob Clark <robdclark@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,56 +69,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Aug 19, 2024 at 10:37=E2=80=AFAM Kamil Konieczny
-<kamil.konieczny@linux.intel.com> wrote:
->
-> Hi Rob,
-> On 2024-08-14 at 11:54:26 -0700, Rob Clark wrote:
-> > From: Rob Clark <robdclark@chromium.org>
->
-> One nit about subject, please use 'tests/' prefix:
->
-> [PATCH 2/2] device_reset: Require a PCI device
->
-> should be:
->
-> [PATCH 2/2] tests/device_reset: Require a PCI device
->
-> >
-> > Too much baked in assumptions that the drm device is a PCI device.
->
-> Do you have examples where it is not true (e.g. not a PCI device)
-> and reset is possible? Just curious.
+Make the FW an abstract class and annotate the decode() method.
 
-maybe usb devices?
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ tools/intel-gfx-fw-info | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Platform devices cannot be reset at the bus level, since there is no bus.
+diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
+index b0d41bbae..5156c724c 100755
+--- a/tools/intel-gfx-fw-info
++++ b/tools/intel-gfx-fw-info
+@@ -4,6 +4,7 @@
+ #
+ # Copyright (C) 2023 Intel Corporation
+ 
++import abc
+ import argparse
+ import logging
+ import hashlib
+@@ -103,10 +104,14 @@ def FIELD_GET(mask: int, value: int) -> int:
+     return (value & mask) >> ffs(mask)
+ 
+ 
+-class Fw:
++class Fw(abc.ABC):
+     def __init__(self, fw):
+         self.fw = fw
+ 
++    @abc.abstractmethod
++    def decode(self):
++        raise NotImplementedError()
++
+ 
+ class FwCss(Fw):
+     def decode(self):
+-- 
+2.43.0
 
-BR,
--R
-
-> Regards,
-> Kamil
->
-> >
-> > Signed-off-by: Rob Clark <robdclark@chromium.org>
-> > ---
-> >  tests/device_reset.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/tests/device_reset.c b/tests/device_reset.c
-> > index 8ed3ef5220fc..c49f94e2faed 100644
-> > --- a/tests/device_reset.c
-> > +++ b/tests/device_reset.c
-> > @@ -200,6 +200,7 @@ static void init_device_fds(struct device_fds *dev)
-> >               igt_require_gem(dev->fds.dev);
-> >
-> >       igt_assert(device_sysfs_path(dev->fds.dev, dev_path));
-> > +     igt_require(strstr(dev_path, "/sys/devices/pci") =3D=3D dev_path)=
-;
-> >       addr_pos =3D strrchr(dev_path, '/');
-> >       igt_assert(addr_pos);
-> >       igt_assert_eq(sizeof(dev->dev_bus_addr) - 1,
-> > --
-> > 2.46.0
-> >
