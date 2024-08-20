@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49A02C3DA4A
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 23:29:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AD52C3DA4A
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 23:54:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 01AE910E55A;
-	Tue, 20 Aug 2024 23:29:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z/biMoqE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AABC110E541
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 23:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724196583; x=1755732583;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kZg/uukeK+eWxqKUnM5GjXepVhFqUSsdWDrO0G6gP4M=;
- b=Z/biMoqEYjLsZnb4xCMyBUxHsOlaJJterEAu/tow2Ff1hGVk9jLQc/ey
- 4ueUprPeWuM7j0XOVL1TBzLkPODTccS1BMs+RowiZvZFTAM07vwtfZId9
- rgrh4MWU8kqryZivFMDnM4lNc9ihlLuX0dCjI+6iMTBE5efdKCJCBZxHO
- hnTsyBcMZ+cYIBm+cxv9eXqX1eLT3qtKgu0mrM0zL6EcfNXj7lVkAGlwt
- Ya1mT7o5N5fn0ZR596DPVuOGFwTNKN5TKdm143sP1DKYrbQFRGg/E13J1
- 4apsEumUzolwBlSAixyBf6Fk/LP+KqoiKrQj6UNz27H91Wh6Zzbhg0KCX w==;
-X-CSE-ConnectionGUID: tvp7Vwt5S6aZPhkZ0vuadA==
-X-CSE-MsgGUID: gtejCKUWRXyQ5KoVRQslJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="22339748"
-X-IronPort-AV: E=Sophos;i="6.10,163,1719903600"; d="scan'208,223";a="22339748"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2024 16:29:42 -0700
-X-CSE-ConnectionGUID: hBXC2QKsSmSN4+JnxLdvqQ==
-X-CSE-MsgGUID: k2OxNa+QRvq3Pd8R3zyqFA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,163,1719903600"; d="scan'208,223";a="60599579"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2024 16:29:43 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 6/6] tools/intel-gfx-fw-info: do not use bare 'except'
-Date: Tue, 20 Aug 2024 16:29:28 -0700
-Message-ID: <20240820232928.458248-7-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240820232928.458248-1-lucas.demarchi@intel.com>
-References: <20240820232928.458248-1-lucas.demarchi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BDC8010E53C;
+	Tue, 20 Aug 2024 23:54:09 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8920210E53C;
+ Tue, 20 Aug 2024 23:54:08 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5368904325251370114=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Parse_GSC-based_HuC_firmware_l?=
+ =?utf-8?q?ayout_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 20 Aug 2024 23:54:08 -0000
+Message-ID: <172419804855.716831.5194222554986904525@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240820232928.458248-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240820232928.458248-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,40 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From flake8:
+--===============5368904325251370114==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-	tools/intel-gfx-fw-info:137:1: E722 do not use bare 'except'
+== Series Details ==
 
-Now it passes clean with --ignore=E101,E501,W191 - those ignores are
-needed because they are triggering in the C string we use, CDEF, and
-flake8 can't bother enabling/disabling warnings per block.
+Series: Parse GSC-based HuC firmware layout (rev2)
+URL   : https://patchwork.freedesktop.org/series/137473/
+State : success
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tools/intel-gfx-fw-info | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-index cbabda913..3c9b47809 100755
---- a/tools/intel-gfx-fw-info
-+++ b/tools/intel-gfx-fw-info
-@@ -133,11 +133,11 @@ logging.basicConfig(format="%(levelname)s: %(message)s")
- 
- try:
-     from dissect import cstruct
--except:
-+except ImportError as e:
-     logging.critical(
-         "Could not import dissect.cstruct module. See https://github.com/fox-it/dissect.cstruct for installation options"
-     )
--    raise SystemExit(1)
-+    raise SystemExit(1) from e
- 
- 
- GSC_CPD_ENTRY_OFFSET_MASK = 0x1FFFFFF
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_7981_BAT -> XEIGTPW_11605_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7981 -> IGTPW_11605
+  * Linux: xe-1801-50db4c0a8d28ec0d03ea120d17a914265fa47d5c -> xe-1802-0729ba6a553ae595a4092ceb27300ea218c2efae
+
+  IGTPW_11605: 11605
+  IGT_7981: f4e2ada1adec484cf506b5ec7e9acb3ae62228f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1801-50db4c0a8d28ec0d03ea120d17a914265fa47d5c: 50db4c0a8d28ec0d03ea120d17a914265fa47d5c
+  xe-1802-0729ba6a553ae595a4092ceb27300ea218c2efae: 0729ba6a553ae595a4092ceb27300ea218c2efae
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11605/index.html
+
+--===============5368904325251370114==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Parse GSC-based HuC firmware layout (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137473/">https://patchwork.freedesktop.org/series/137473/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11605/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11605/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7981_BAT -&gt; XEIGTPW_11605_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7981 -&gt; IGTPW_11605</li>
+<li>Linux: xe-1801-50db4c0a8d28ec0d03ea120d17a914265fa47d5c -&gt; xe-1802-0729ba6a553ae595a4092ceb27300ea218c2efae</li>
+</ul>
+<p>IGTPW_11605: 11605<br />
+  IGT_7981: f4e2ada1adec484cf506b5ec7e9acb3ae62228f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1801-50db4c0a8d28ec0d03ea120d17a914265fa47d5c: 50db4c0a8d28ec0d03ea120d17a914265fa47d5c<br />
+  xe-1802-0729ba6a553ae595a4092ceb27300ea218c2efae: 0729ba6a553ae595a4092ceb27300ea218c2efae</p>
+
+</body>
+</html>
+
+--===============5368904325251370114==--
