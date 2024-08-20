@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F90C52D7C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5911C3DA4A
 	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 00:31:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E03D10E31D;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 179D510E040;
 	Tue, 20 Aug 2024 00:31:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RULTcvzx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fQ8MmKxY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 817ED10E320
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7400D10E31D
  for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 00:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1724113868; x=1755649868;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=S9Bzqg0JMJgtkQkA8b6I0XyQOCFSR+BFVWqw1FCJI7Q=;
- b=RULTcvzxYeQv2fE7+DNWasWLJRT4CHhbkY0ZK+YNfTUg4s52lQS7nRMe
- TsXZA8j3vL2Qqux5LCUVtEKtG0CWoS2GJU+8B02I49OXSmXHSdOHFWJq3
- vzgr7M3i+vyHM/KWU9M4JN3TZ5jj+2oXc9ZXv4m86rcUog7M1gIRtmZdm
- Vwo9knUKHGsXy9lMzDjVSzFlbj1kBmoseRcBAYQZXC8qLaVEOloqSu/Hs
- MEqrJ+wtS2yfQKHdAbl7A3LPDLocSFNDuwQBxuaA+hoMtAqGeAAPv4Vm7
- kn9IEaInFoT2F4quwf8/lbTVIkf2a+bnd23AKl65AH9hmuLPrkepmYk1C w==;
-X-CSE-ConnectionGUID: 1XIluvEaTy2DCz1oEVJsGw==
-X-CSE-MsgGUID: vRzbxPOKQYigy+N5g+koiQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="33544869"
-X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="33544869"
+ bh=6L301r16/D2uan40Ljty2Tn5CY4Fjwf5bRpyc+nZP7U=;
+ b=fQ8MmKxYeJ00UHoMDwyZFFwmMPQDeuGUxH6m6dOD3+H39JBe1X0KayO8
+ BHkS7w38SHXjp35klmXiUTj67hRNlqtvGUTJKWr7LgTKmvkWAjJxggpCe
+ oT9mzc8n8AgCsEA3f3RfGVbZ90TcRoZKz6yMhwxbiWoteNUXZ/3WlCQdB
+ ptZ9iF/rULEh1qqdqoFlcQuttUWhFBwtZb6xlpH+w0H/EjMllmRwMVnMx
+ Cs01W9zvXvNm1iSdOVZIxI5DIpwiwFP6wLVrR5XwCOBKl7EPWANs5C8F+
+ ShBTrwEaZxNpaZxt5OFHogztsXpuRLwwEy+5yk73P9bbk3qy7KxtWdvJw Q==;
+X-CSE-ConnectionGUID: iVHKwizvTrScSDcIN4UWdw==
+X-CSE-MsgGUID: tXLw5oOPTua93QUyNRvJig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="33544870"
+X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="33544870"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  19 Aug 2024 17:31:07 -0700
-X-CSE-ConnectionGUID: e4PBqVGATByPMlmbW2U3BQ==
-X-CSE-MsgGUID: wRiFAF5PRXiYQd7c4P38BA==
+X-CSE-ConnectionGUID: V0BkKZhBQ+ycHbaBoYS0dg==
+X-CSE-MsgGUID: GzVpqHFESK61/Px/anrxsA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="61101266"
+X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="61101267"
 Received: from orsosgc001.jf.intel.com ([10.165.21.138])
  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  19 Aug 2024 17:31:07 -0700
 From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/2] tests/intel/oa: Add syncs-signal test for OA syncs
-Date: Mon, 19 Aug 2024 17:31:03 -0700
-Message-ID: <20240820003104.1407398-2-ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/oa: Add syncs-ufence test for OA syncs
+Date: Mon, 19 Aug 2024 17:31:04 -0700
+Message-ID: <20240820003104.1407398-3-ashutosh.dixit@intel.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20240820003104.1407398-1-ashutosh.dixit@intel.com>
 References: <20240820003104.1407398-1-ashutosh.dixit@intel.com>
@@ -66,149 +66,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Verify OA syncs signal correctly in open and change config code paths.
+Test ufences work correctly with OA syncs in open and reconfig paths.
 
 Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 ---
- include/drm-uapi/xe_drm.h |  18 +++++++
- lib/xe/xe_oa.c            |   6 +--
- lib/xe/xe_oa.h            |   2 +
- tests/intel/xe_oa.c       | 106 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 129 insertions(+), 3 deletions(-)
+ tests/intel/xe_oa.c | 103 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 103 insertions(+)
 
-diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-index 29425d7fdc..10d1471128 100644
---- a/include/drm-uapi/xe_drm.h
-+++ b/include/drm-uapi/xe_drm.h
-@@ -1483,6 +1483,7 @@ struct drm_xe_oa_unit {
- 	/** @capabilities: OA capabilities bit-mask */
- 	__u64 capabilities;
- #define DRM_XE_OA_CAPS_BASE		(1 << 0)
-+#define DRM_XE_OA_CAPS_SYNCS		(1 << 1)
- 
- 	/** @oa_timestamp_freq: OA timestamp freq */
- 	__u64 oa_timestamp_freq;
-@@ -1632,6 +1633,23 @@ enum drm_xe_oa_property_id {
- 	 * to be disabled for the stream exec queue.
- 	 */
- 	DRM_XE_OA_PROPERTY_NO_PREEMPT,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_NUM_SYNCS: Number of syncs in the sync array
-+	 * specified in @DRM_XE_OA_PROPERTY_SYNCS
-+	 */
-+	DRM_XE_OA_PROPERTY_NUM_SYNCS,
-+
-+	/**
-+	 * @DRM_XE_OA_PROPERTY_SYNCS: Pointer to struct @drm_xe_sync array
-+	 * with array size specified via @DRM_XE_OA_PROPERTY_NUM_SYNCS
-+	 * with array size specified via @DRM_XE_OA_PROPERTY_NUM_SYNCS. OA
-+	 * configuration will wait till input fences signal. Output fences
-+	 * will signal after the new OA configuration takes effect. For
-+	 * @DRM_XE_SYNC_TYPE_USER_FENCE, @addr is a user pointer, similar
-+	 * to the VM bind case.
-+	 */
-+	DRM_XE_OA_PROPERTY_SYNCS,
- };
- 
- /**
-diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
-index 4764ed1fcf..b1a9ff7fa4 100644
---- a/lib/xe/xe_oa.c
-+++ b/lib/xe/xe_oa.c
-@@ -1027,8 +1027,8 @@ const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
- 	return "unknown";
- }
- 
--static void xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
--			      struct drm_xe_ext_set_property *extn)
-+void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
-+			     struct drm_xe_ext_set_property *extn)
- {
- 	__u64 *prop = from_user_pointer(properties->properties_ptr);
- 	struct drm_xe_ext_set_property *ext = extn;
-@@ -1065,7 +1065,7 @@ int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg)
- 		struct intel_xe_oa_open_prop *oprop = (struct intel_xe_oa_open_prop *)arg;
- 
- 		igt_assert_lte(oprop->num_properties, XE_OA_MAX_SET_PROPERTIES);
--		xe_oa_prop_to_ext(oprop, ext);
-+		intel_xe_oa_prop_to_ext(oprop, ext);
- 	}
- 
- 	return igt_ioctl(fd, DRM_IOCTL_XE_OBSERVATION, &p);
-diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
-index 962f9dddcc..7d3d074560 100644
---- a/lib/xe/xe_oa.h
-+++ b/lib/xe/xe_oa.h
-@@ -398,6 +398,8 @@ uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *per
- const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
- 					     const struct intel_xe_perf_record_header *record);
- 
-+void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
-+			     struct drm_xe_ext_set_property *extn);
- int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg);
- void intel_xe_perf_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err);
- 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index f2c6d53007..bd38b24de8 100644
+index bd38b24de8..c18b6bd7d1 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -22,6 +22,7 @@
- #include "drm.h"
- #include "igt.h"
- #include "igt_device.h"
-+#include "igt_syncobj.h"
- #include "igt_sysfs.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-@@ -4454,6 +4455,98 @@ static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
- 	__perf_close(stream_fd);
+@@ -4547,6 +4547,105 @@ out:
+ 	syncobj_destroy(drm_fd, syncobj);
  }
  
-+static bool find_alt_oa_config(u32 config_id, u32 *alt_config_id)
-+{
-+	struct dirent *entry;
-+	int metrics_fd, dir_fd;
-+	DIR *metrics_dir;
-+	bool ret;
-+
-+	metrics_fd = openat(sysfs, "metrics", O_DIRECTORY);
-+	igt_assert_lte(0, metrics_fd);
-+
-+	metrics_dir = fdopendir(metrics_fd);
-+	igt_assert(metrics_dir);
-+
-+	while ((entry = readdir(metrics_dir))) {
-+		if (entry->d_type != DT_DIR)
-+			continue;
-+
-+		dir_fd = openat(metrics_fd, entry->d_name, O_RDONLY);
-+		ret = __igt_sysfs_get_u32(dir_fd, "id", alt_config_id);
-+		close(dir_fd);
-+		if (!ret)
-+			continue;
-+
-+		if (config_id != *alt_config_id) {
-+			closedir(metrics_dir);
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
 +/**
-+ * SUBTEST: syncs-signal
-+ * Description: Test OA syncs signal correctly
++ * SUBTEST: syncs-ufence
++ * Description: Test OA ufence signal correctly
 + */
++#define USERPTR (1 << 0)
 +static void
-+test_syncs_signal(const struct drm_xe_engine_class_instance *hwe)
++test_syncs_ufence(const struct drm_xe_engine_class_instance *hwe, unsigned int flags)
 +{
++	uint32_t vm;
++	uint64_t addr = 0x1a0000;
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++	size_t bo_size;
++	uint32_t bo = 0;
++	struct {
++		uint64_t vm_sync;
++		uint64_t pad;
++		uint64_t oa_sync;
++	} *data;
 +	struct drm_xe_ext_set_property extn[XE_OA_MAX_SET_PROPERTIES] = {};
 +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
 +	struct drm_xe_sync sync = {
-+	    .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+	    .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.timeline_value = USER_FENCE_VALUE,
 +	};
 +	uint64_t open_properties[] = {
 +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
@@ -231,17 +127,37 @@ index f2c6d53007..bd38b24de8 100644
 +		.num_properties = ARRAY_SIZE(config_properties) / 2,
 +		.properties_ptr = to_user_pointer(config_properties),
 +	};
-+	uint32_t syncobj = syncobj_create(drm_fd, 0);
 +	uint32_t alt_config_id;
 +	int ret;
 +
-+	sync.handle = syncobj;
++	vm = xe_vm_create(drm_fd, 0, 0);
++	bo_size = xe_bb_size(drm_fd, sizeof(*data));
++
++	if (flags & USERPTR) {
++		data = aligned_alloc(xe_get_default_alignment(drm_fd), bo_size);
++		igt_assert(data);
++	} else {
++		bo = xe_bo_create(drm_fd, vm, bo_size, vram_if_possible(drm_fd, hwe->gt_id),
++				  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++		data = xe_bo_map(drm_fd, bo, bo_size);
++	}
++	memset(data, 0, bo_size);
++
++	sync.addr = to_user_pointer(&data[0].vm_sync);
++	if (bo)
++		xe_vm_bind_async(drm_fd, vm, 0, bo, 0, addr, bo_size, &sync, 1);
++	else
++		xe_vm_bind_userptr_async(drm_fd, vm, 0, to_user_pointer(data), addr,
++					 bo_size, &sync, 1);
++	xe_wait_ufence(drm_fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
++
++	sync.addr = to_user_pointer(&data[0].oa_sync);
 +	stream_fd = __perf_open(drm_fd, &open_param, false);
 +
-+	igt_assert(syncobj_wait(drm_fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	xe_wait_ufence(drm_fd, &data[0].oa_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
 +
 +	/* Change stream configuration */
-+	syncobj_reset(drm_fd, &syncobj, 1);
++	data[0].oa_sync = 0;
 +	if (!find_alt_oa_config(test_set->perf_oa_metrics_set, &alt_config_id))
 +		goto out;
 +
@@ -251,35 +167,33 @@ index f2c6d53007..bd38b24de8 100644
 +	ret = igt_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_CONFIG, extn);
 +	igt_assert_eq(ret, test_set->perf_oa_metrics_set);
 +
-+	igt_assert(syncobj_wait(drm_fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	xe_wait_ufence(drm_fd, &data[0].oa_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
 +out:
 +	__perf_close(stream_fd);
-+	syncobj_destroy(drm_fd, syncobj);
++
++	if (bo) {
++		munmap(data, bo_size);
++		gem_close(drm_fd, bo);
++	} else {
++		free(data);
++	}
++	xe_vm_destroy(drm_fd, vm);
 +}
 +
  static const char *xe_engine_class_name(uint32_t engine_class)
  {
  	switch (engine_class) {
-@@ -4702,6 +4795,19 @@ igt_main
- 		}
+@@ -4806,6 +4905,10 @@ igt_main
+ 		igt_subtest_with_dynamic("syncs-signal")
+ 			__for_one_render_engine(hwe)
+ 				test_syncs_signal(hwe);
++
++		igt_subtest_with_dynamic("syncs-ufence")
++			__for_one_render_engine(hwe)
++				test_syncs_ufence(hwe, 0);
  	}
  
-+	igt_subtest_group {
-+		igt_fixture {
-+			struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-+			struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
-+
-+			igt_require(oau->capabilities & DRM_XE_OA_CAPS_SYNCS);
-+		}
-+
-+		igt_subtest_with_dynamic("syncs-signal")
-+			__for_one_render_engine(hwe)
-+				test_syncs_signal(hwe);
-+	}
-+
  	igt_fixture {
- 		/* leave sysctl options in their default state... */
- 		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
 -- 
 2.41.0
 
