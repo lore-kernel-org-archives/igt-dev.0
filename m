@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 394FEC5321D
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 07:16:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E070C3DA4A
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 07:35:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E9E9D10E008;
-	Tue, 20 Aug 2024 07:16:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 60645892CA;
+	Tue, 20 Aug 2024 07:35:39 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 162B310E008;
- Tue, 20 Aug 2024 07:16:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FE0F10E275;
+ Tue, 20 Aug 2024 07:35:38 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4996877183488659468=="
+ boundary="===============4623202819576660333=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_HAX/DO=5FNOT=5FMERGE=3A_Profil?=
- =?utf-8?q?e_kms=5Fflip_tests_=28i915_Vs_XE=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_HAX/DO=5FNOT=5FMERGE=3A_Pro?=
+ =?utf-8?q?file_kms=5Fflip_tests_=28i915_Vs_XE=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Bhanuprakash Modem" <bhanuprakash.modem@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 20 Aug 2024 07:16:52 -0000
-Message-ID: <172413821208.698259.10334662555144564995@2413ebb6fbb6>
+Date: Tue, 20 Aug 2024 07:35:38 -0000
+Message-ID: <172413933825.698595.5726831336787464057@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240820062728.2996242-1-bhanuprakash.modem@intel.com>
 In-Reply-To: <20240820062728.2996242-1-bhanuprakash.modem@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4996877183488659468==
+--===============4623202819576660333==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7978_BAT -> XEIGTPW_11601_BAT
+CI Bug Log - changes from IGT_7978 -> IGTPW_11601
 ====================================================
 
 Summary
@@ -62,78 +62,260 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with XEIGTPW_11601_BAT absolutely need to be
+  Serious unknown changes coming with IGTPW_11601 absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11601_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in IGTPW_11601, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/index.html
 
-Participating hosts (9 -> 9)
+Participating hosts (41 -> 34)
 ------------------------------
 
-  No changes in participating hosts
+  Additional (1): fi-kbl-8809g 
+  Missing    (8): bat-kbl-2 fi-bsw-n3050 fi-snb-2520m fi-glk-j4005 fi-cfl-8109u fi-pnv-d510 bat-jsl-1 bat-mtlp-6 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_11601_BAT:
+  Here are the unknown changes that may have been introduced in IGTPW_11601:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * igt@kms_flip@plain-flip-ts-check-interruptible:
-    - bat-adlp-vf:        NOTRUN -> [SKIP][1] +29 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-adlp-vf/igt@kms_flip@plain-flip-ts-check-interruptible.html
+  * igt@kms_flip@absolute-wf_vblank@a-dp1:
+    - bat-adls-6:         NOTRUN -> [FAIL][1] +3 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adls-6/igt@kms_flip@absolute-wf_vblank@a-dp1.html
+
+  * igt@kms_flip@plain-flip-fb-recreate-interruptible@b-dp1:
+    - bat-apl-1:          NOTRUN -> [FAIL][2] +8 other tests fail
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-apl-1/igt@kms_flip@plain-flip-fb-recreate-interruptible@b-dp1.html
+
+  * igt@kms_flip@plain-flip-fb-recreate-interruptible@c-vga1 (NEW):
+    - fi-ivb-3770:        NOTRUN -> [FAIL][3] +16 other tests fail
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-ivb-3770/igt@kms_flip@plain-flip-fb-recreate-interruptible@c-vga1.html
+
+  * igt@kms_flip@wf_vblank-ts-check@c-edp1:
+    - bat-twl-2:          NOTRUN -> [FAIL][4] +2 other tests fail
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-twl-2/igt@kms_flip@wf_vblank-ts-check@c-edp1.html
 
   
+New tests
+---------
+
+  New tests have been introduced between IGT_7978 and IGTPW_11601:
+
+### New IGT tests (29) ###
+
+  * igt@kms_flip@absolute-wf_vblank-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.18] s
+
+  * igt@kms_flip@absolute-wf_vblank@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.20] s
+
+  * igt@kms_flip@blocking-absolute-wf_vblank-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.18] s
+
+  * igt@kms_flip@blocking-absolute-wf_vblank@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.20] s
+
+  * igt@kms_flip@blocking-wf_vblank@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.49] s
+
+  * igt@kms_flip@bo-too-big-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.47] s
+
+  * igt@kms_flip@bo-too-big@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.49] s
+
+  * igt@kms_flip@busy-flip@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.68] s
+
+  * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.47] s
+
+  * igt@kms_flip@flip-vs-absolute-wf_vblank@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.48] s
+
+  * igt@kms_flip@flip-vs-blocking-wf-vblank@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.49] s
+
+  * igt@kms_flip@flip-vs-expired-vblank-interruptible@c-vga1:
+    - Statuses : 1 fail(s)
+    - Exec time: [6.09] s
+
+  * igt@kms_flip@flip-vs-expired-vblank@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [13.82] s
+
+  * igt@kms_flip@flip-vs-panning-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.19] s
+
+  * igt@kms_flip@flip-vs-panning@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.20] s
+
+  * igt@kms_flip@flip-vs-rmfb-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.15] s
+
+  * igt@kms_flip@flip-vs-rmfb@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.17] s
+
+  * igt@kms_flip@flip-vs-wf_vblank-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.11] s
+
+  * igt@kms_flip@modeset-vs-vblank-race-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.78] s
+
+  * igt@kms_flip@modeset-vs-vblank-race@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.80] s
+
+  * igt@kms_flip@nonexisting-fb-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.15] s
+
+  * igt@kms_flip@nonexisting-fb@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.17] s
+
+  * igt@kms_flip@plain-flip-fb-recreate-interruptible@c-vga1:
+    - Statuses : 1 fail(s)
+    - Exec time: [5.05] s
+
+  * igt@kms_flip@plain-flip-fb-recreate@c-vga1:
+    - Statuses : 1 fail(s)
+    - Exec time: [14.45] s
+
+  * igt@kms_flip@plain-flip-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.82] s
+
+  * igt@kms_flip@plain-flip-ts-check-interruptible@c-vga1:
+    - Statuses : 1 fail(s)
+    - Exec time: [6.13] s
+
+  * igt@kms_flip@plain-flip-ts-check@c-vga1:
+    - Statuses : 1 fail(s)
+    - Exec time: [14.54] s
+
+  * igt@kms_flip@wf_vblank-ts-check-interruptible@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.47] s
+
+  * igt@kms_flip@wf_vblank-ts-check@c-vga1:
+    - Statuses : 1 pass(s)
+    - Exec time: [10.49] s
+
+  
+
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_11601_BAT that come from known issues:
+  Here are the changes found in IGTPW_11601 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@kms_flip@blocking-absolute-wf_vblank:
-    - bat-lnl-2:          NOTRUN -> [SKIP][2] ([Intel XE#2235] / [Intel XE#2482]) +28 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-lnl-2/igt@kms_flip@blocking-absolute-wf_vblank.html
+  * igt@kms_flip@absolute-wf_vblank-interruptible:
+    - bat-adlm-1:         NOTRUN -> [SKIP][5] ([i915#3637]) +28 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adlm-1/igt@kms_flip@absolute-wf_vblank-interruptible.html
 
-  * igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible:
-    - bat-atsm-2:         NOTRUN -> [SKIP][3] ([Intel XE#1024]) +29 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-atsm-2/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible.html
+  * igt@kms_flip@blocking-absolute-wf_vblank-interruptible:
+    - bat-dg2-9:          NOTRUN -> [SKIP][6] ([i915#5354]) +28 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-dg2-9/igt@kms_flip@blocking-absolute-wf_vblank-interruptible.html
+    - bat-adlp-11:        NOTRUN -> [SKIP][7] ([i915#3637]) +28 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adlp-11/igt@kms_flip@blocking-absolute-wf_vblank-interruptible.html
 
-  * igt@kms_flip@plain-flip-interruptible:
-    - bat-pvc-2:          NOTRUN -> [SKIP][4] ([Intel XE#1024]) +29 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-pvc-2/igt@kms_flip@plain-flip-interruptible.html
+  * igt@kms_flip@bo-too-big-interruptible@b-vga1:
+    - fi-blb-e6850:       NOTRUN -> [SKIP][8] +3 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-blb-e6850/igt@kms_flip@bo-too-big-interruptible@b-vga1.html
+
+  * igt@kms_flip@flip-vs-expired-vblank:
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][9] +28 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-kbl-x1275/igt@kms_flip@flip-vs-expired-vblank.html
+
+  * igt@kms_flip@flip-vs-wf_vblank-interruptible:
+    - bat-arlh-2:         NOTRUN -> [SKIP][10] ([i915#11346]) +28 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-arlh-2/igt@kms_flip@flip-vs-wf_vblank-interruptible.html
+
+  * igt@kms_flip@modeset-vs-vblank-race-interruptible:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][11] +31 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-kbl-8809g/igt@kms_flip@modeset-vs-vblank-race-interruptible.html
+    - fi-kbl-guc:         NOTRUN -> [SKIP][12] +28 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-kbl-guc/igt@kms_flip@modeset-vs-vblank-race-interruptible.html
+
+  * igt@kms_flip@plain-flip-fb-recreate-interruptible@a-dp1:
+    - bat-adls-6:         NOTRUN -> [FAIL][13] ([i915#2122]) +9 other tests fail
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adls-6/igt@kms_flip@plain-flip-fb-recreate-interruptible@a-dp1.html
+
+  * igt@kms_flip@plain-flip-fb-recreate-interruptible@c-dp1:
+    - bat-apl-1:          NOTRUN -> [FAIL][14] ([i915#2122]) +5 other tests fail
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-apl-1/igt@kms_flip@plain-flip-fb-recreate-interruptible@c-dp1.html
+
+  * igt@kms_flip@plain-flip-fb-recreate@a-vga1:
+    - fi-ilk-650:         NOTRUN -> [FAIL][15] ([i915#2122]) +10 other tests fail
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-ilk-650/igt@kms_flip@plain-flip-fb-recreate@a-vga1.html
+
+  * igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1:
+    - bat-rplp-1:         NOTRUN -> [FAIL][16] ([i915#2122]) +11 other tests fail
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-rplp-1/igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1.html
+
+  * igt@kms_flip@wf_vblank-ts-check@a-hdmi-a1:
+    - fi-cfl-guc:         NOTRUN -> [FAIL][17] ([i915#2122])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-cfl-guc/igt@kms_flip@wf_vblank-ts-check@a-hdmi-a1.html
+
+  * igt@kms_flip@wf_vblank-ts-check@b-dp1:
+    - bat-dg2-8:          NOTRUN -> [FAIL][18] ([i915#2122]) +1 other test fail
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-dg2-8/igt@kms_flip@wf_vblank-ts-check@b-dp1.html
+
+  * igt@kms_flip@wf_vblank-ts-check@b-hdmi-a2:
+    - bat-dg2-14:         NOTRUN -> [FAIL][19] ([i915#2122]) +1 other test fail
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-dg2-14/igt@kms_flip@wf_vblank-ts-check@b-hdmi-a2.html
 
   
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
-  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
-  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#2122]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122
+  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7978 -> IGTPW_11601
 
+  CI-20190529: 20190529
+  CI_DRM_15263: 4d24271792fac837e728f7bb6237a94ee46cc76e @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11601: 11601
   IGT_7978: 4083a9d8abc80c8a905ffdc20bc76383b1e07e79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1798-4d24271792fac837e728f7bb6237a94ee46cc76e: 4d24271792fac837e728f7bb6237a94ee46cc76e
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/index.html
 
---===============4996877183488659468==
+--===============4623202819576660333==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -157,66 +339,358 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137493/">https://patchwork.freedesktop.org/series/137493/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7978_BAT -&gt; XEIGTPW_11601_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_7978 -&gt; IGTPW_11601</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11601_BAT absolutely need to be<br />
+<p>Serious unknown changes coming with IGTPW_11601 absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11601_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  introduced in IGTPW_11601, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/index.html</p>
+<h2>Participating hosts (41 -&gt; 34)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (8): bat-kbl-2 fi-bsw-n3050 fi-snb-2520m fi-glk-j4005 fi-cfl-8109u fi-pnv-d510 bat-jsl-1 bat-mtlp-6 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11601_BAT:</p>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11601:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
-<li>igt@kms_flip@plain-flip-ts-check-interruptible:<ul>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-adlp-vf/igt@kms_flip@plain-flip-ts-check-interruptible.html">SKIP</a> +29 other tests skip</li>
+<li>
+<p>igt@kms_flip@absolute-wf_vblank@a-dp1:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adls-6/igt@kms_flip@absolute-wf_vblank@a-dp1.html">FAIL</a> +3 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate-interruptible@b-dp1:</p>
+<ul>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-apl-1/igt@kms_flip@plain-flip-fb-recreate-interruptible@b-dp1.html">FAIL</a> +8 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate-interruptible@c-vga1 (NEW):</p>
+<ul>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-ivb-3770/igt@kms_flip@plain-flip-fb-recreate-interruptible@c-vga1.html">FAIL</a> +16 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check@c-edp1:</p>
+<ul>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-twl-2/igt@kms_flip@wf_vblank-ts-check@c-edp1.html">FAIL</a> +2 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_7978 and IGTPW_11601:</p>
+<h3>New IGT tests (29)</h3>
+<ul>
+<li>
+<p>igt@kms_flip@absolute-wf_vblank-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@absolute-wf_vblank@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@blocking-absolute-wf_vblank-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@blocking-absolute-wf_vblank@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@blocking-wf_vblank@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@bo-too-big-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@bo-too-big@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@busy-flip@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-absolute-wf_vblank@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-blocking-wf-vblank@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [6.09] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [13.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-panning-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-panning@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-rmfb-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-rmfb@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-wf_vblank-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@modeset-vs-vblank-race-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.78] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@modeset-vs-vblank-race@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.80] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@nonexisting-fb-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@nonexisting-fb@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [5.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate@c-vga1:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [14.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-ts-check-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [6.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-ts-check@c-vga1:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [14.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check-interruptible@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check@c-vga1:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [10.49] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11601_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_11601 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@kms_flip@blocking-absolute-wf_vblank:</p>
+<p>igt@kms_flip@absolute-wf_vblank-interruptible:</p>
 <ul>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-lnl-2/igt@kms_flip@blocking-absolute-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +28 other tests skip</li>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adlm-1/igt@kms_flip@absolute-wf_vblank-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a>) +28 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible:</p>
+<p>igt@kms_flip@blocking-absolute-wf_vblank-interruptible:</p>
 <ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-atsm-2/igt@kms_flip@flip-vs-absolute-wf_vblank-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +29 other tests skip</li>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-dg2-9/igt@kms_flip@blocking-absolute-wf_vblank-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>) +28 other tests skip</li>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adlp-11/igt@kms_flip@blocking-absolute-wf_vblank-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a>) +28 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_flip@plain-flip-interruptible:</p>
+<p>igt@kms_flip@bo-too-big-interruptible@b-vga1:</p>
 <ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11601/bat-pvc-2/igt@kms_flip@plain-flip-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +29 other tests skip</li>
+<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-blb-e6850/igt@kms_flip@bo-too-big-interruptible@b-vga1.html">SKIP</a> +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank:</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-kbl-x1275/igt@kms_flip@flip-vs-expired-vblank.html">SKIP</a> +28 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-wf_vblank-interruptible:</p>
+<ul>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-arlh-2/igt@kms_flip@flip-vs-wf_vblank-interruptible.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>) +28 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@modeset-vs-vblank-race-interruptible:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-kbl-8809g/igt@kms_flip@modeset-vs-vblank-race-interruptible.html">SKIP</a> +31 other tests skip</li>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-kbl-guc/igt@kms_flip@modeset-vs-vblank-race-interruptible.html">SKIP</a> +28 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate-interruptible@a-dp1:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-adls-6/igt@kms_flip@plain-flip-fb-recreate-interruptible@a-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>) +9 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate-interruptible@c-dp1:</p>
+<ul>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-apl-1/igt@kms_flip@plain-flip-fb-recreate-interruptible@c-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>) +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@plain-flip-fb-recreate@a-vga1:</p>
+<ul>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-ilk-650/igt@kms_flip@plain-flip-fb-recreate@a-vga1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>) +10 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1:</p>
+<ul>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-rplp-1/igt@kms_flip@wf_vblank-ts-check-interruptible@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>) +11 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check@a-hdmi-a1:</p>
+<ul>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/fi-cfl-guc/igt@kms_flip@wf_vblank-ts-check@a-hdmi-a1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check@b-dp1:</p>
+<ul>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-dg2-8/igt@kms_flip@wf_vblank-ts-check@b-dp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@wf_vblank-ts-check@b-hdmi-a2:</p>
+<ul>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11601/bat-dg2-14/igt@kms_flip@wf_vblank-ts-check@b-hdmi-a2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2122">i915#2122</a>) +1 other test fail</li>
 </ul>
 </li>
 </ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7978 -&gt; IGTPW_11601</li>
 </ul>
-<p>IGTPW_11601: 11601<br />
-  IGT_7978: 4083a9d8abc80c8a905ffdc20bc76383b1e07e79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1798-4d24271792fac837e728f7bb6237a94ee46cc76e: 4d24271792fac837e728f7bb6237a94ee46cc76e</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15263: 4d24271792fac837e728f7bb6237a94ee46cc76e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11601: 11601<br />
+  IGT_7978: 4083a9d8abc80c8a905ffdc20bc76383b1e07e79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============4996877183488659468==--
+--===============4623202819576660333==--
