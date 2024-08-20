@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 955BBC5320E
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 08:15:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 925EEC3DA4A
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 08:15:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5045410E4F9;
-	Tue, 20 Aug 2024 08:15:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DD5010E50B;
+	Tue, 20 Aug 2024 08:15:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QFiKQlQU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KqoIZHTt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 086C510E501
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 08:15:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E6AC10E4F3
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 08:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724141708; x=1755677708;
+ t=1724141709; x=1755677709;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=muCBbOi6TV9lBzXZ+6RhLXZrB/KBW07FkPBHKhxqjgI=;
- b=QFiKQlQUetMONw7GLQJSu5zadlchCr/gboK4vNW2uRmXUR0nMSxCK1/f
- lvwuiLDPjcZW0gKILoIesWMlXiuq28fWMHYGIU5UBXPnCzjhvgdBv+zhs
- EZNIeeu7euwQ6OJVTk8ew+6j5o6T8jPgz9/bDZRgt5l2RU2OBX7K2wnte
- Tc8jDqoG4bah3bGn10GSS3w70Z/qkY2XNi0wLNdhJ4vTd+pL9M6aJYOlE
- jTy0miUfzw9w6Z553znX1L1zmgLZ/r+gj5wIGOvDB2yN4GPi655auvn9a
- RjW04UfeeoZXo4geFFUk8ggzee01jrg5SLOLriVy4fFZn99Nu64TwdZo3 A==;
-X-CSE-ConnectionGUID: HRB0bALETIG2MY+DA1s9mA==
-X-CSE-MsgGUID: hh4vVV5kSNSHVfGAToFy2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="44948234"
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="44948234"
+ bh=swY7un1IAbKZWJc9U3im67PTM73evIHCaegGWeqAWkw=;
+ b=KqoIZHTtVVDStS6U4T+0TflisYPE5CEu61EH1AbwzD4CcT0SZJ9eSvCe
+ bhsYGROc+xymVpOOtuEZ3tAIRhavt9JVk0rtRiLzQ8kdv8RglIyO5K0Og
+ l+b5G5vMuSPZL48RHl7g3pHAkK62J3NqehT4Mxk1DATT36ks3cj1BvG71
+ VhdxuPgk4SRBjGH8IZgcJ1bzQNenMkaZEFvc71guJkhyMZoXyxa/nMVku
+ xeBCZTOlxUlS5yAFs0togjsVr6rdGC++bPOwpQblU2kmWJeed9qEEl1h2
+ H16Ukyehf16bVYw+hyzBUrQ/Y2k4fmu+X/jupBcybVLh1i3RmnkUsKN4+ A==;
+X-CSE-ConnectionGUID: gAcFYo3SSHGEM0atF3eIzQ==
+X-CSE-MsgGUID: /58/p3O1Q+OkYU54d4xkWw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="44948241"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="44948241"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2024 01:15:02 -0700
-X-CSE-ConnectionGUID: fKQfpX6aTUqWN4UArW4J0g==
-X-CSE-MsgGUID: rs7pEFDYTB+mxzBseIiIPg==
+ 20 Aug 2024 01:15:06 -0700
+X-CSE-ConnectionGUID: NTl8i9/YTb2eCOGRAbXKhQ==
+X-CSE-MsgGUID: G3qdKA46THypJhwHF4BKgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="91418364"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="91418387"
 Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
- by fmviesa001.fm.intel.com with ESMTP; 20 Aug 2024 01:15:00 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 20 Aug 2024 01:15:04 -0700
 From: Suraj Kandpal <suraj.kandpal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: pranay.samala@intel.com, ankit.k.nautiyal@intel.com, jeevan.b@intel.com,
  Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t 1/5] tests/kms_content_protection: Move HDCP output
- checks earlier
-Date: Tue, 20 Aug 2024 13:42:28 +0530
-Message-ID: <20240820081233.4092203-2-suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t 3/5] tests/kms_content_protection: Rename
+ igt_commit_style variable
+Date: Tue, 20 Aug 2024 13:42:30 +0530
+Message-ID: <20240820081233.4092203-4-suraj.kandpal@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240820081233.4092203-1-suraj.kandpal@intel.com>
 References: <20240820081233.4092203-1-suraj.kandpal@intel.com>
@@ -68,67 +68,242 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move the HDCP output check earlier when no. MST outputs are being
-checked this will avoid us using an extra loop and an extra array.
+Currently all igt_commit_style variables are declared using a
+single variable which is not a good practice use commit_style
+naming instead.
 
 Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tests/kms_content_protection.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ tests/kms_content_protection.c | 65 +++++++++++++++++-----------------
+ 1 file changed, 33 insertions(+), 32 deletions(-)
 
 diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index e9a468eb0..6bd744351 100644
+index db6dc17b1..473686939 100644
 --- a/tests/kms_content_protection.c
 +++ b/tests/kms_content_protection.c
-@@ -638,7 +638,7 @@ test_content_protection_mst(int content_type)
- 	int valid_outputs = 0, dp_mst_outputs = 0, ret, count, max_pipe = 0, i;
- 	enum pipe pipe;
- 	bool pipe_found;
--	igt_output_t *mst_output[IGT_MAX_PIPES], *hdcp_mst_output[IGT_MAX_PIPES];
-+	igt_output_t *hdcp_mst_output[IGT_MAX_PIPES];
+@@ -208,19 +208,19 @@ wait_for_prop_value(igt_output_t *output, uint64_t expected,
+ }
  
- 	for_each_pipe(display, pipe)
- 		max_pipe++;
-@@ -662,10 +662,13 @@ test_content_protection_mst(int content_type)
+ static void
+-commit_display_and_wait_for_flip(enum igt_commit_style s)
++commit_display_and_wait_for_flip(enum igt_commit_style commit_style)
+ {
+ 	int ret;
+ 	uint32_t flag;
  
- 		igt_output_set_pipe(output, pipe);
- 		prepare_modeset_on_mst_output(output);
--		mst_output[dp_mst_outputs++] = output;
-+		dp_mst_outputs++;
-+		if (output_hdcp_capable(output, content_type))
-+			hdcp_mst_output[valid_outputs++] = output;
+-	if (s == COMMIT_ATOMIC) {
++	if (commit_style == COMMIT_ATOMIC) {
+ 		flag = DRM_MODE_PAGE_FLIP_EVENT | DRM_MODE_ATOMIC_ALLOW_MODESET;
+ 		igt_display_commit_atomic(&data.display, flag, NULL);
+ 
+ 		ret = wait_flip_event();
+ 		igt_assert_f(!ret, "wait_flip_event failed. %d\n", ret);
+ 	} else {
+-		igt_display_commit2(&data.display, s);
++		igt_display_commit2(&data.display, commit_style);
+ 
+ 		/* Wait for 50mSec */
+ 		usleep(50 * 1000);
+@@ -228,7 +228,7 @@ commit_display_and_wait_for_flip(enum igt_commit_style s)
+ }
+ 
+ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
+-			    enum igt_commit_style s)
++			    enum igt_commit_style commit_style)
+ {
+ 	igt_display_t *display = &data.display;
+ 	drmModeModeInfo *mode;
+@@ -240,15 +240,15 @@ static void modeset_with_fb(const enum pipe pipe, igt_output_t *output,
+ 	igt_plane_set_fb(primary, &data.red);
+ 	igt_fb_set_size(&data.red, primary, mode->hdisplay, mode->vdisplay);
+ 
+-	igt_display_commit2(display, s);
++	igt_display_commit2(display, commit_style);
+ 
+ 	igt_plane_set_fb(primary, &data.green);
+ 
+ 	/* Wait for Flip completion before starting the HDCP authentication */
+-	commit_display_and_wait_for_flip(s);
++	commit_display_and_wait_for_flip(commit_style);
+ }
+ 
+-static bool test_cp_enable(igt_output_t *output, enum igt_commit_style s,
++static bool test_cp_enable(igt_output_t *output, enum igt_commit_style commit_style,
+ 			   int content_type, bool type_change)
+ {
+ 	igt_display_t *display = &data.display;
+@@ -266,19 +266,19 @@ static bool test_cp_enable(igt_output_t *output, enum igt_commit_style s,
+ 		igt_output_set_prop_value(output,
+ 					  IGT_CONNECTOR_HDCP_CONTENT_TYPE,
+ 					  content_type);
+-	igt_display_commit2(display, s);
++	igt_display_commit2(display, commit_style);
+ 
+ 	ret = wait_for_prop_value(output, CP_ENABLED,
+ 				  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+ 	if (ret) {
+ 		igt_plane_set_fb(primary, &data.green);
+-		igt_display_commit2(display, s);
++		igt_display_commit2(display, commit_style);
  	}
  
- 	igt_require_f(dp_mst_outputs > 1, "No DP MST set up with >= 2 outputs found in a single topology\n");
-+	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the required HDCP support\n");
+ 	return ret;
+ }
  
- 	if (igt_display_try_commit_atomic(display,
- 				DRM_MODE_ATOMIC_TEST_ONLY |
-@@ -674,22 +677,13 @@ test_content_protection_mst(int content_type)
- 		bool found = igt_override_all_active_output_modes_to_fit_bw(display);
- 		igt_require_f(found, "No valid mode combo found for MST modeset\n");
+-static void test_cp_disable(igt_output_t *output, enum igt_commit_style s)
++static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_style)
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_plane_t *primary;
+@@ -293,7 +293,7 @@ static void test_cp_disable(igt_output_t *output, enum igt_commit_style s)
+ 	igt_output_set_prop_value(output, IGT_CONNECTOR_CONTENT_PROTECTION,
+ 				  CP_UNDESIRED);
+ 	igt_plane_set_fb(primary, &data.red);
+-	igt_display_commit2(display, s);
++	igt_display_commit2(display, commit_style);
  
--		for (count = 0; count < dp_mst_outputs; count++)
--			prepare_modeset_on_mst_output(mst_output[count]);
-+		for (count = 0; count < valid_outputs; count++)
-+			prepare_modeset_on_mst_output(hdcp_mst_output[count]);
+ 	/* Wait for HDCP to be disabled, before crtc off */
+ 	ret = wait_for_prop_value(output, CP_UNDESIRED,
+@@ -302,8 +302,9 @@ static void test_cp_disable(igt_output_t *output, enum igt_commit_style s)
+ }
+ 
+ static void test_cp_enable_with_retry(igt_output_t *output,
+-				      enum igt_commit_style s, int retry,
+-				      int content_type, bool expect_failure,
++				      enum igt_commit_style commit_style,
++				      int retry, int content_type,
++				      bool expect_failure,
+ 				      bool type_change)
+ {
+ 	int retry_orig = retry;
+@@ -311,16 +312,16 @@ static void test_cp_enable_with_retry(igt_output_t *output,
+ 
+ 	do {
+ 		if (!type_change || retry_orig != retry)
+-			test_cp_disable(output, s);
++			test_cp_disable(output, commit_style);
+ 
+-		ret = test_cp_enable(output, s, content_type, type_change);
++		ret = test_cp_enable(output, commit_style, content_type, type_change);
+ 
+ 		if (!ret && --retry)
+ 			igt_debug("Retry (%d/2) ...\n", 3 - retry);
+ 	} while (retry && !ret);
+ 
+ 	if (!ret)
+-		test_cp_disable(output, s);
++		test_cp_disable(output, commit_style);
+ 
+ 	if (expect_failure)
+ 		igt_assert_f(!ret,
+@@ -375,22 +376,22 @@ static bool write_srm_as_fw(const __u8 *srm, int len)
+ 
+ static void test_content_protection_on_output(igt_output_t *output,
+ 					      enum pipe pipe,
+-					      enum igt_commit_style s,
++					      enum igt_commit_style commit_style,
+ 					      int content_type)
+ {
+ 	igt_display_t *display = &data.display;
+ 	bool ret;
+ 
+-	test_cp_enable_with_retry(output, s, 3, content_type, false,
++	test_cp_enable_with_retry(output, commit_style, 3, content_type, false,
+ 				  false);
+ 
+ 	if (data.cp_tests & CP_TYPE_CHANGE) {
+ 		/* Type 1 -> Type 0 */
+-		test_cp_enable_with_retry(output, s, 3,
++		test_cp_enable_with_retry(output, commit_style, 3,
+ 					  HDCP_CONTENT_TYPE_0, false,
+ 					  true);
+ 		/* Type 0 -> Type 1 */
+-		test_cp_enable_with_retry(output, s, 3,
++		test_cp_enable_with_retry(output, commit_style, 3,
+ 					  content_type, false,
+ 					  true);
+ 	}
+@@ -400,14 +401,14 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 			     "mei_hdcp unload failed");
+ 
+ 		/* Expected to fail */
+-		test_cp_enable_with_retry(output, s, 3,
++		test_cp_enable_with_retry(output, commit_style, 3,
+ 					  content_type, true, false);
+ 
+ 		igt_assert_f(!igt_kmod_load("mei_hdcp", NULL),
+ 			     "mei_hdcp load failed");
+ 
+ 		/* Expected to pass */
+-		test_cp_enable_with_retry(output, s, 3,
++		test_cp_enable_with_retry(output, commit_style, 3,
+ 					  content_type, false, false);
  	}
  
- 	ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
- 	igt_require_f(ret == 0, "Commit failure during MST modeset\n");
+@@ -417,16 +418,16 @@ static void test_content_protection_on_output(igt_output_t *output,
+ 	if (data.cp_tests & CP_DPMS) {
+ 		igt_pipe_set_prop_value(display, pipe,
+ 					IGT_CRTC_ACTIVE, 0);
+-		igt_display_commit2(display, s);
++		igt_display_commit2(display, commit_style);
  
--	for (count = 0; count < dp_mst_outputs; count++) {
--		if (!output_hdcp_capable(mst_output[count], content_type))
--			continue;
--
--		hdcp_mst_output[valid_outputs++] = mst_output[count];
--	}
--
--	igt_require_f(valid_outputs > 1, "DP MST outputs do not have the required HDCP support\n");
--
- 	for (count = 0; count < valid_outputs; count++) {
- 		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
+ 		igt_pipe_set_prop_value(display, pipe,
+ 					IGT_CRTC_ACTIVE, 1);
+-		igt_display_commit2(display, s);
++		igt_display_commit2(display, commit_style);
  
+ 		ret = wait_for_prop_value(output, CP_ENABLED,
+ 					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
+ 		if (!ret)
+-			test_cp_enable_with_retry(output, s, 2,
++			test_cp_enable_with_retry(output, commit_style, 2,
+ 						  content_type, false,
+ 						  false);
+ 	}
+@@ -534,20 +535,20 @@ static bool output_hdcp_capable(igt_output_t *output, int content_type)
+ }
+ 
+ static void
+-test_fini(igt_output_t *output, enum igt_commit_style s)
++test_fini(igt_output_t *output, enum igt_commit_style commit_style)
+ {
+ 	igt_plane_t *primary;
+ 
+-	test_cp_disable(output, s);
++	test_cp_disable(output, commit_style);
+ 	primary = igt_output_get_plane_type(output,
+ 					    DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+ 	igt_output_set_pipe(output, PIPE_NONE);
+-	igt_display_commit2(&data.display, s);
++	igt_display_commit2(&data.display, commit_style);
+ }
+ 
+ static void
+-test_content_protection(enum igt_commit_style s, int content_type)
++test_content_protection(enum igt_commit_style commit_style, int content_type)
+ {
+ 	igt_display_t *display = &data.display;
+ 	igt_output_t *output;
+@@ -570,15 +571,15 @@ test_content_protection(enum igt_commit_style s, int content_type)
+ 			if (!intel_pipe_output_combo_valid(display))
+ 				continue;
+ 
+-			modeset_with_fb(pipe, output, s);
++			modeset_with_fb(pipe, output, commit_style);
+ 
+ 			if (!output_hdcp_capable(output, content_type))
+ 				continue;
+ 
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name)
+-				test_content_protection_on_output(output, pipe, s, content_type);
++				test_content_protection_on_output(output, pipe, commit_style, content_type);
+ 
+-			test_fini(output, s);
++			test_fini(output, commit_style);
+ 			/*
+ 			 * Testing a output with a pipe is enough for HDCP
+ 			 * testing. No ROI in testing the connector with other
 -- 
 2.43.2
 
