@@ -4,184 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06990C3DA4A
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 03:23:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABCE8C3DA4A
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 04:43:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7267E10E29B;
-	Tue, 20 Aug 2024 03:23:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BA3E10E4A2;
+	Tue, 20 Aug 2024 04:43:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FGAaLoS6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QWNwzaD5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 321B710E29B
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 03:23:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56D4A10E4A2
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 04:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724124234; x=1755660234;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=dMuLhfGvlCR7FWwAsLk3Vk0e+zlMi79BMzhWChMyjSA=;
- b=FGAaLoS6ZWPBCV/Hd7hofmNpq5a/IWIQH9Bc+8r5My9+UaXEhCmR6kYe
- O8Rg3yKejLXEfxh9iQSt4oT+Za+s4BTHnpWAHKGMqmwbmcMlUh5g2LTio
- 6fGI6qxOQzw1KC0zCT0+MMaHGAOenTHItITgl3CgtvKiOkG6u1UhNiHJ7
- 1rXb0MAye1Iepmv1FnbktjWx2B2POHcDNuykjVQqRi3r8ii19lYBVn8Hq
- xVb5WsSPYRLVRL6sPhLVfrlQXopCHQGNw9i6DWxdePVdruW3QHI0dtXFA
- 6rgUIBc00b7JiUq8qwW14eV0TQ20ApQNNPOXgvTIgw43tks/jpbiKMx23 g==;
-X-CSE-ConnectionGUID: RXGhENf9ST+Vypb/3Tspng==
-X-CSE-MsgGUID: YER6bcZRSGij581u+N/TZA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="39906986"
-X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="39906986"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2024 20:23:54 -0700
-X-CSE-ConnectionGUID: tXg1b2+oThG/eCNuuWWcCw==
-X-CSE-MsgGUID: pEXD2u8eSW6eQOu75RNnSg==
+ t=1724129006; x=1755665006;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=+9IgdHg7ap7nNHYZkj3d1aRpPLtsmh6Z9ZwccGaO1wY=;
+ b=QWNwzaD5+lTCnOOvDOB16mojbYmE/sZZF9rzHVXK+pDxDwo/K4cSXvbP
+ i9YIVSDezevZXoVl3GtaCmcKp9MeTQTN7yJFIsIzkjxWiuZIhpLMhOQQq
+ wAyKgxG17CxMbdPHW7yaDg3xXh+/LMMTKxMbxJwNOyct/ojVWReZVPrBf
+ A5QjHl+o3WuVra/cS/3936Rdvqv+FpfBPdAWL0mO3Nt7oLx7ZnXUThTud
+ wiTBi71OU23QKXtiUHh8u5LRWXWG4lv3peEe5iFw4tZMbPjdBVBar4Rbj
+ 9CuhI2Q5smLbH6xIJeVOYccLDeEV0Kl1eYc/uEZHjXOrReKRgH+NjQG+3 w==;
+X-CSE-ConnectionGUID: 4VeRNMmsQZKSpizOQM4PZQ==
+X-CSE-MsgGUID: EfLNpaN5TbWX5rSbk1xuUw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22548730"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="22548730"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 21:43:26 -0700
+X-CSE-ConnectionGUID: vHuhyGBJST6V18HLVCaW6w==
+X-CSE-MsgGUID: KRS/ttE7RM+asqgy6bLqow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="60420887"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 19 Aug 2024 20:23:53 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="64969571"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 19 Aug 2024 21:43:24 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 19 Aug 2024 20:23:53 -0700
-Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 19 Aug 2024 21:43:24 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 19 Aug 2024 20:23:52 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ 15.1.2507.39; Mon, 19 Aug 2024 21:43:24 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 19 Aug 2024 20:23:52 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.170)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Mon, 19 Aug 2024 21:43:24 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 19 Aug 2024 20:23:52 -0700
+ 15.1.2507.39; Mon, 19 Aug 2024 21:43:23 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xJKml9XQYrcpl44yBkyFsJSh2Ucfbg5s71heDCAV4Z8cSp3clZkLmgSFh/OgbUtQXFvLww8eJSyBtzHqc8GDkVzsRXSA47CQt4r3enCr9Qfb90FY7FMknfjZnVGryrOcL0SGE/pjv2cDe14L0587CD0+Yoqidcj/sq8QNlolF4kZUW1+V3QxVGU3Fe4HXxCrJWU3tIxravkpSbpk7H2BFofGY5U7592It/5HwQdHuQ14IKHmtU4yenG4Y2QJw298cEtv17l8iXs31wCajhaASwI75OcppElthBEHk7xCAJ9+RohQhsvBPKgMQlX5fOPddYkA0ejToGDwraoy0zz8uQ==
+ b=Q5bxHVEvttWeP5XW98efbxaRsWls/vxnb256kcW+UiuUl2rbOoXi2xCbGpoKVRSpcWY165tvsEt3EUj8QD+AMVUxUaXaribvfZik2x9iW+OmQMdG+/wMtqVhKwOnr48BXiHeIyRTC0mDOV9p2ZfRLxBECsrEO+/Yr88kjT56zUWw7PgogIGod6d9aYPw+TvjDd9Qj0oio/DM5kT7uCuh4V8c4zAfMjCoK/PdAH/tFhXndoGGyUWFBZZlhrjC+wvi60J0y5jhzCT1WxEx+3MOdvy34qhCcY9OrUj+sPgwoLPb6jmNgCNlbuMrzQytVv0A8vWf4jWOoa23Kbd1JVP0tA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bLYuzQDY+dCbrzzLwfq+TMvbSbui6wEFgYLeArNEFz8=;
- b=oGlzRDKT05eI9Kobqbk+AY93w9K8k50EnMd8oyt79xu9hugjqDjZfmUu+2WLt9KRMx7OHqlOlSIdr6fo03XAe2JKnpgRxVVBRmr8WukimiZYdCYR+BMeS3b0IjrgLEfgvQSikb25KU088Y2m78aET4vMJBP5/ke5eZSY1Yg9h6TBfAqTPmwal+6yf6plTOEM9WB8MgQ+lpM7pRg82TCOOXK7d/1xl57tvDIVLYIkXxrnYYCdxmzkrcLEkdSZ6xhwnwk2hfuRzBCwwmgo0DUZHsSJZ64AADwaIjpE2L4yn2OIRPBqkxkckmA9eElsJipUjo94kLma2phLdpHPpsL1nQ==
+ bh=BnOcrIAL6PPwJyFQJdFrSc7xRFnosa+1xU38WO8uh+8=;
+ b=NI7JPVEOD4YrjxOIEY/efuS0g/5zqTkrLW848Oq8EvF1SuMgwa9iYJI5dRSD6/CqeUuQS7loA+AY/Dh7DmWj9H/L+bZRXhUKx5MjFjydNmOxYv0dHJkcfISHkaAr+EVTyP29LFsTJm/O/GHBR4mBxsriTVrsIFqA5GLgWKLdkgA5CmJoGGpfheStsnEtnkDOnsMtXK4jybdfDiLari8ipm9k9q17Qucf7sSwIrMUSO7GsoYOxnoB+l3VxFtJyDe2kYJKQFytZt9UpV8O2V35RN+eieaA62r/FCt7VVHwxVGzZa9OFXDDTPabHXeaQHa3GSN3oi9QxWu3jj9guM7Nkg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SN6PR11MB2704.namprd11.prod.outlook.com (2603:10b6:805:53::11)
- by IA1PR11MB8247.namprd11.prod.outlook.com (2603:10b6:208:449::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Tue, 20 Aug
- 2024 03:23:49 +0000
-Received: from SN6PR11MB2704.namprd11.prod.outlook.com
- ([fe80::513d:aaea:b097:afb5]) by SN6PR11MB2704.namprd11.prod.outlook.com
- ([fe80::513d:aaea:b097:afb5%4]) with mapi id 15.20.7875.019; Tue, 20 Aug 2024
- 03:23:49 +0000
-Message-ID: <c1a33307-fc5f-4457-a714-fb87d2df9c2f@intel.com>
-Date: Tue, 20 Aug 2024 08:53:42 +0530
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ CH3PR11MB8751.namprd11.prod.outlook.com (2603:10b6:610:1c1::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.16; Tue, 20 Aug
+ 2024 04:43:22 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::a255:8030:603f:7245]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::a255:8030:603f:7245%5]) with mapi id 15.20.7875.019; Tue, 20 Aug 2024
+ 04:43:22 +0000
+Message-ID: <e7e9c3a3-1c7f-4f8a-a208-ef9e09edd5c7@intel.com>
+Date: Tue, 20 Aug 2024 10:13:13 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 8/9] tests/intel/kms_dp_fallback: add test for
- validating fallback
-To: <igt-dev@lists.freedesktop.org>
-References: <20240609212535.868832-1-kunal1.joshi@intel.com>
- <20240609212535.868832-9-kunal1.joshi@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/2] tests/intel/xe_gt_freq: Rename
+ ACT_FREQ_LATENCY_US to SLPC_FREQ_LATENCY_US
+To: Karthik Poosa <karthik.poosa@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
+ <vinay.belgaumkar@intel.com>
+References: <20240819100146.3130945-1-karthik.poosa@intel.com>
+ <20240819100146.3130945-2-karthik.poosa@intel.com>
 Content-Language: en-US
-From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20240609212535.868832-9-kunal1.joshi@intel.com>
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20240819100146.3130945-2-karthik.poosa@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0060.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::14) To SN6PR11MB2704.namprd11.prod.outlook.com
- (2603:10b6:805:53::11)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MAXPR01CA0110.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::28) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR11MB2704:EE_|IA1PR11MB8247:EE_
-X-MS-Office365-Filtering-Correlation-Id: fae6ee75-0761-4006-57dc-08dcc0c78209
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|CH3PR11MB8751:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6ee251c6-7c94-4a8d-0efe-08dcc0d29e82
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NTFsWmZKekkxV3RheTJpYUg0NGJOVVJTcVFJMk1EM21UWTljN25qTVlwZUxD?=
- =?utf-8?B?NE1aaHZ2akNzYTJzbjRGWXJkUzIxdlVqZkUzRmNWRUlQYkdINkRvanloSkFX?=
- =?utf-8?B?RldDMHRYZlRTd0xKY05ndmZFRGFTL1FtZkJxWFFBMzR1UGZ2eDQyQUVMYUdX?=
- =?utf-8?B?dG1ON09FcmFYK2VoZkk4SkxndjlBWjB4MWFlT1FScjRZeXFLTmdVTER0akh5?=
- =?utf-8?B?RUwvcmo3amdaRk9OcUtXRW9EaVpmejRrcUNIblBOTWYycDlxVEJneU9Ldmho?=
- =?utf-8?B?M2EySzFEYk5QY0ZHZ1hpQUsySFFla28raUR6aTJtRHJ6YURyRXhUVVhZM0o1?=
- =?utf-8?B?cWlmNWZ6Mk05ZUxXaFBhVVBrTVVsdXByOTlaUktpRkpuUEgwcjBrWnNCemZa?=
- =?utf-8?B?S0NOUjJxa3lPSGxJb0xDVHNwUUtaNG8vQ3FJaHBiWFNjNTVadnRTbm13ZUVm?=
- =?utf-8?B?cWNEaytrblBITWN4czRUbjJFQkh6eEp5clN5VUZoNkRsa1JxMlpRMGZNN0wx?=
- =?utf-8?B?NWk0aS9FdTFQNHRPUVc1cVpYRFVsbkdoeDNTZWxjdG41M0Npa2xBb25DR3BW?=
- =?utf-8?B?MHIxMGRIMHY3Y1QrVFhaNXMrWHJXVzdRZTVWK0phbFo5Q2loK0NRWG15SUNT?=
- =?utf-8?B?S1BYWHB4RlRtZS9lMCtHVXU5Rkl6ODJOcVFLb2IwMnBENm84bFhuUTlBK1BN?=
- =?utf-8?B?YThXWEFCVjFzWXUwRzB3ZkwvcENXaFNXbTF2TVVzZ1lVc2xIaGZBRXlPYU1U?=
- =?utf-8?B?VFNWVU1BWGN2d3RVK3Rrc2gwTldJWXVXcnFjdTE1TnVrWlVTcWhDM2RCMU5T?=
- =?utf-8?B?dDJMSmRNL1R4SGEwV21MMmV2R0RMcUZnWUZqMlJZOTJES1NmYTJPWGJ5UUg1?=
- =?utf-8?B?aWgyUUFHcFFncHMzM3pGeTdjcUFiSnNPSVp5SURhQU5KckkxM05wVzJLTmFh?=
- =?utf-8?B?MENtS2hwNHNKemVWZEJyZ0dMMlEwWG04ejcxemJod1A5WGdNOFRmM04xbFpI?=
- =?utf-8?B?U1NYZ1dQZCtaZURQVFlmdFFsUjRSbE5rOG5GVVhqUjUxV3JndVNueEQ1VXd2?=
- =?utf-8?B?UXVDSFlSRjcvaEdDSmgrMDdVRURCd1N5QXhReFFOUldPQkxFbDZ0YW9oZlM2?=
- =?utf-8?B?OTYyN3VxT2twbXRBajVzZHF1bHVBYWcwbG9mZ0xXRGYrRWhmU245WjRtNkZW?=
- =?utf-8?B?VGVWU3RIN1NNcVlsRXRRVkQ1KzNPSGFkTWgvV2gwdzZoUDltQjltT1lUL0RY?=
- =?utf-8?B?Sk9hRXdqSFhvMGFuRHJxUndaL1JRTUNVQU5WdnRXckNTK0doQ2phWG9tYlZW?=
- =?utf-8?B?d3M2SEVpN0lTT2ZUMi9PQ29yalppRzAxSVYrUDFhR1JFRURSQVFjWjRYWnpX?=
- =?utf-8?B?bmZXYnRBTWlVaWl2RVAvT3F6dUZPdFQvZDAxc0tZVmxZeTR4V2c1Z28zU0tN?=
- =?utf-8?B?cnlpbU9kcGhqVk9zRnBjSXNwK00wNlVqN2xGdFlCMUlQV1IxZTdQUWpQeW9X?=
- =?utf-8?B?YzlqcnRFMmdKUkZzVm9lOVFnRFpLY2JnTnpEMnFUNjdkS1lrUUYxTnV5YkdJ?=
- =?utf-8?B?RTVxY3RKWDRtRW9aYThsZUZyUURZU3hvM1Q1eVNuTmJmanNhMzBubE1uVXE0?=
- =?utf-8?B?anY1WDMwSlgzMkxkYmJabURxcE1qVzIwOGs0UmdHYXVCenBGSkpVMnpYWklq?=
- =?utf-8?B?ZWVhZlV6TDNUS3RvVlA3QlRFaHh4cmdLNE9ZNFBsQjFxb3ZKQ09XM1R6eHpr?=
- =?utf-8?B?ZlQ2dHV3SlVDNXNNbFFwVm5YMmcwdmVQTkl6ME9IazdSZG1ZK1NabU82c29z?=
- =?utf-8?B?emZvNVZZNGtLdmxzOXc0Zz09?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SGdDVThRSzZnbkpkWDVBTXlXc0FFM2NsY3o1b2J0TkFJYjJyUk9Fdml0aitS?=
+ =?utf-8?B?TFoyZ3dxQVZkSFJERU9EaGQxNk9KUzY1aS9ycU1JbmhlRk9MZ3V3Z1VrVlJQ?=
+ =?utf-8?B?ZXQ1VEFIdEhRNHMreC9qMHZTOUtEeFVmZ2dDQlliKzkwcFM3UVVWWkpJM2ds?=
+ =?utf-8?B?RUlFQTZSZFJUV1ovVyswcFl5MDhnSU8xMWZuOGx0TGd5dUZCK25CVCttaXlv?=
+ =?utf-8?B?VWg2bVdjYVhlNlgzTnVlVk11UFVEb2g5RHErZ3VjV1V3R2VhUmpydE1TSFoy?=
+ =?utf-8?B?QTVrUDFKcEVlVERhYTk2MisySDh5Q3pDMmRoZ3FJRGxPZUJoTkozVi90cHNP?=
+ =?utf-8?B?NVoxdk9YUms0M1dRUUx5SUJtbG9HVVhGdGlBL2cza0UraEtySGFRdzdJSFdk?=
+ =?utf-8?B?citFYldJQTJvWGNXaU9sVUxFV0t3TmdyNTZvVEd3YTdNVHhna2xieVFrQWI4?=
+ =?utf-8?B?OERkWlAyWUJoQ3B5Q2ZmVXVxRFE3QklkN2EzaGpiOEZkYXFydURSR2tpS2Zl?=
+ =?utf-8?B?UEp6QU1vcjh3eXBFY1RVRUhQVklSRnRFRlBMNEEwS1FZbVJCc1Jwdkx0RmRU?=
+ =?utf-8?B?bExVNS9Kd01YaTFvUFZRODB2bkpLTkozeGJyVUY5c0VBQ3UycDJhR2szWUdE?=
+ =?utf-8?B?T05mTjlObHQ4RllFY0g5UzUyMXk1b0hUNDlMREdveUkrLzBBdXpIN2d5aWth?=
+ =?utf-8?B?a0ptejhlWU5iQTRGZWhNZHphZkg4T2N0MTZIWm1LT3czblV3eFZkWk1nWnRt?=
+ =?utf-8?B?VVI3aXpuRGNwVWhrYVNuQ3BMU01DQjVncmtHSXNDdElDVGJTcVFpdVlCL1Yw?=
+ =?utf-8?B?cGlmRm1IZ0huWGRRdWU1VTlFSi8zdmZ1WlVsWko5QTZDNU5WYTJKdElIdVI2?=
+ =?utf-8?B?MUlsYWxjenRxaXozQkFEb29NZG5YeUU3U2VJcnByNkpwd3Z5NjN5c3ZZNWdq?=
+ =?utf-8?B?dWR6eEFoM3FWbXp5TWpLZ2laQSs3WVRUUnJGNVhiTmZLZzhVeHJScS9BbGZV?=
+ =?utf-8?B?dEo2ZlhQYWtlK0FSSERUbU1Ud28rczYwQmpKQ3hHdjNSbHkwVWxRUkozNDB2?=
+ =?utf-8?B?djdzbUYwT2VpcHpDQzIxSlg1MVRMblBLNUFNdFJaWFBySFFadmFhMXZkY1Va?=
+ =?utf-8?B?UFJZZHVMRlloWDJ3eDVUc1R0bW1Jc0QvR3Fob0VKZ2N3Yk82VWtNYTdNc0ZQ?=
+ =?utf-8?B?WmJ5aFMrVFU0cFU2TFpXbDBTWUQzZmpoUVlLRVd0aWxNTkY4VGtucW9pSk8v?=
+ =?utf-8?B?UXRpRGhqRzVueVJmSUdFWlBWMVRDRVdabUo3QWxvZThzdFV3TVoyWmxNdEgz?=
+ =?utf-8?B?SWtnd1VVZTRPWnhPS0NlNXIrWSs2M2hSUlRDVVhucVBLMHlyQmpQUzF1ZXow?=
+ =?utf-8?B?bmJmQnY1enpOcFB0SDkwbGd6ZXF0SGxoYldSNlcwYUROQ1pjY3kvRTNQak4r?=
+ =?utf-8?B?MVNRblNxa1VIKzNCVzZCQ1ZIdDR2Sk43YUwrNFp6Z01BVEtvdnp3aWZ3bm8w?=
+ =?utf-8?B?MHcwclB4TlBxd1JkeE5oNVcrLzAzZjJWUnVvTC9MTy9mNzlWM1NXNUFxZ3dC?=
+ =?utf-8?B?N2p5dnFiZm5sQUxQQjJrNFJIRVliYWtoclNvUE1nSVAxdVNNUkd0RmkxamZB?=
+ =?utf-8?B?MGs5ODNiRUYrWUkxRE9lalJQelRoM1ZZOGZ1Mml2VCticnJZcVBiMXhoZEpo?=
+ =?utf-8?B?eUViditab2NaQlllN1dEWDlrRmJaY1BSSVY1L0FNRFNkQ0VJZ2d1MHlyU3VM?=
+ =?utf-8?B?ODc1MkxZY2xNb3BvTHJ3YU9GZEZOa0tsbnpYL3NhbDJCclNreUs4OHJVNUNT?=
+ =?utf-8?B?RnJHOTVlREhncThFcVRBZz09?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN6PR11MB2704.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RFVtNTZMWWpIYkVHVlBYM2t5SGFWc2FIOWJvRDRaS0NkbzArQ3FDNThhYUNE?=
- =?utf-8?B?dXUxdkFqVFdndWZuMy9xZTh4OFdHYUlMalZ6dXhMdWF1R1NqWGc1dGV3VVZq?=
- =?utf-8?B?S3dGU3FWdEJuMnFXeldJdy9Od0hEMko5V2VJYmx4MHBGMU1DT3RsRTNWTklk?=
- =?utf-8?B?MnRxTDNJTmwrWU1tN05rQ2dkNXhxZFVWQUJjZC9Lb0ZZRU9jZlNhOVFqY2VX?=
- =?utf-8?B?RjVQYlFYVmtZNzhCNm5NVG51cExDeFBGenRlUUJOU0szNXQvbXBUZDFBV2Fi?=
- =?utf-8?B?M2FETHBtOEI0dVFVQjdjb1NiR3dwNURuM045SnpKV292bElucjN6SHRxWU1M?=
- =?utf-8?B?NHRBVVlDMUVZWm5wUFRML0RYeU8rMzZVYUtvTzRTQys3VlJydTI4OFlzUW9Y?=
- =?utf-8?B?ckIzZE9PZ1NNUE1CTWFFS1VWNk1yNDhGdEo3bFlLcUVJTlo0WkZ4YnNXWnZn?=
- =?utf-8?B?SWVRdi9RUUlGa0w3M1FQOG9LYTJHd2RyaENUZlhXRm4vdjQ2bFFXa0kzNE9C?=
- =?utf-8?B?VzladVpCM0Z4WW1ud3NtSFhRN1hKbkxud2NqZ0twV2VhSkdBRjJaQmVyTFM2?=
- =?utf-8?B?RWZuRVpaSlRuVkl0c3M4M2pGc0V4eWJkSnJNMG5XUnMxZ09PL3RRc00zSjJ5?=
- =?utf-8?B?ZnM3QzJGMjFVVkozcFN6Ym04YTVULzhmRDVmenRtWTc5Y1RFV2RFSFBoU0JU?=
- =?utf-8?B?b0RVNkVLdU1HbDJxMHdaNEJ6Yy9nMlZHODNOQSszYzg1dVpUTDlERkFOQWEz?=
- =?utf-8?B?K2wzZ2xGVGE4QkprZ3ZMa1U5MTNHcG5LUWFyQ2JXM2tJSkxWUzd4R0VhL2Na?=
- =?utf-8?B?TUdjK2paOGFnQ2VWZVBLYzZGQ01aRG1vMTBXN1pFWnlWdEVVTWZuTTRtMjZn?=
- =?utf-8?B?YzRhMWd0WTF0K1Z5V2dDdTFiVC81US9hNWpNUmFtTWxNaHBsQXZqQ2taenVF?=
- =?utf-8?B?M0U0TTBaaHRMZUZlQ3gvVTlkWGFWckxpcFZVZEZ6YWpxajNmNzZ3UlJZMS8r?=
- =?utf-8?B?d0p2WFUrN2VRRjc3OGkrc0VmdHZLS2RnSmQxRDY1anNoYkRQbzBXeS9mQk1L?=
- =?utf-8?B?OGV1Q3BqQWFYbDUwdCsxaWtQMmFIdW5CSGJ0VjBzdFhiVTcvTFJZUmZjdXkx?=
- =?utf-8?B?UnROeDBzSkYyNHBCS1NpM09aTWtIVFQ2MFdUMWZGTFQ4QWN1bkZreHZvZ2FN?=
- =?utf-8?B?TTkyWkpNcXJ0d1JiMmNZejA5RGxGVEV5SUMzbVBtWjU1MHprb1JtaUFhR29n?=
- =?utf-8?B?ajhVdHhvc0IvakFUTUhVaU52QldNVFRpa3lXbjB3RlJiQy9QWVhwVzdzUkVD?=
- =?utf-8?B?Z2hEKzdOaWRxUTI0TWZXRFRHdHZBY0tjQ1Q3cWwydXpkM0R6T1JYS1JkWDZt?=
- =?utf-8?B?bU16UVN0alFzaEZmTUUwbk1MYWlXV2djOEJzU3lhc2J6SjlCakRTcnorUGVz?=
- =?utf-8?B?cVpJcEtncGx3T3VJbzNqVTVBaFgyKzBqRFp6MFlLdU04c2xhN0U5T2Q4YnVS?=
- =?utf-8?B?R3MvR1pyaGR6YVRHTFpKcWJ6OTkrTGhJTEFIbnhua0lnZE1GWENoOEJxUzJU?=
- =?utf-8?B?R0pJR3lPcEVjZUNrbmk0Lzl3YXlzMkxoNzdVbzZtck5zWk9iVGZNRm5XNWRG?=
- =?utf-8?B?RTM4UkRWeXVYMVZtTU9uSFZlWm04ZkxoS2RKSWtGNXJzdnNoVkFodDl6TjZr?=
- =?utf-8?B?cGdnSEtOVklGODRnWkc0RWZaN3AycUhvbFp1NS9SVXM5THAzeUtMQmlSbnd1?=
- =?utf-8?B?WE51Y1Qrb1NoVlZua1hBWGF0OXNOWk1jZG1qaUt1YVVDMzdjR3NNUGYyVW5q?=
- =?utf-8?B?c01zb2hwUnM0TjVuRHFuQ25LdWE0cHlHT2JSZEI3UVBiZDlxWWE1TW1XWTF1?=
- =?utf-8?B?SzZEeUJTbmtWM1VqWkRpMnNGbHdBdk5lbVVTRlcwdi8rOEE0WEFNbzN1TE1Y?=
- =?utf-8?B?dXkzcEF5eDRHMFZGTjZRZzRJai9sZzVEekJkMkFLWXVxQ2JwSGluS3JORWZO?=
- =?utf-8?B?Z0dQY1hrNHB1UWFLL1ZJS0ZNMElOZnBNaG1lYUxiOHM3WTdCNi91TTlxN3Mr?=
- =?utf-8?B?ckVSUHEvSVRkNGY2cFdKR1ZjckRFcTlMbTF5ckhYbE96T2ZTWisvMFVXNU1l?=
- =?utf-8?B?NlYyVkRkRUlKOGxJbmp4TDhSWC9pV2puM0NtbDRQZmdWWGhKcEIzTEM1VHNI?=
- =?utf-8?Q?4hLk/kNz4FKGTzdpx2qcttw=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: fae6ee75-0761-4006-57dc-08dcc0c78209
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2704.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VTVBUDlnS1ZrbDBDc0lOZnF5ZlVTcjN3eWt5bm5Za3hJRytsV3pwY3dySElj?=
+ =?utf-8?B?UEZSZnNCSVNOZmZEVTVaQ3RldjJNR2F1WURQdjI4MUUyeHhiYjA4MEN0VnFQ?=
+ =?utf-8?B?SWREM3p6R0ZNTGNPMkJHL1JFNitDVkE0bXlSTU5YaFM0N2ZjS3ZsZTZnWGNi?=
+ =?utf-8?B?dzVwZmRPUFRsSDBNQ3ZFRGRMR1dhN2lNZ09nNENaMzE2TU1jYW5BRXJxUXRY?=
+ =?utf-8?B?WHFUQWJxMDRhQWtvRU1PQ2U3TUJPZlJtOCtCNGVEb3pOcGt2SzBKd003TGxO?=
+ =?utf-8?B?N09aVmczL0c4Q3I2cHF5ZzFVMnc1Tk8yZXFlOGZ3N1Q2T0hxazZFRzcwb1hZ?=
+ =?utf-8?B?ME9qTUJwU1IwZFZJT2VyR0VQTThaRGxNM2VvV2kyVFg0MXNRWDlVbjIzaFBn?=
+ =?utf-8?B?YXhRNFZTNm1xZmsraFB3VDZBell1anNXYjg1R3BRUUwxZDlScC9WRjR0VmNR?=
+ =?utf-8?B?UmN2ZTVmaDVYNzhRK1Rxa1lHd3JNVjFBOGFXNXFpS0FHTjBSRGFQamFscU5z?=
+ =?utf-8?B?Nkl3V25RV09mNDVIY1gzanY5UFk0WmhWUGZ6UG9Id1VoMmtvS1RpcHJ2akto?=
+ =?utf-8?B?RjJSeEVOVXZiS2pqT0ovVTFsa1dsUkRPOHpKZCtndmQ3M1cxby9ERWJlZ2ZU?=
+ =?utf-8?B?UmI1WHhtTlNsZTVRNFI5czIzTnNQTDcwSW51VFRtdHRVNWptTldPdUtZUHVw?=
+ =?utf-8?B?TDFLTU9BT1pkVG9vdDBPc1E3UFYyTmFUUStoNEF6bmlFYWdzN1QzeWxxcGd6?=
+ =?utf-8?B?blo0alJwdmZoL2QvdnBuVEFrTmd0bFZ6Z0dWUmM1cXU4aWp1TlhoMngzVGZz?=
+ =?utf-8?B?b1RQWnB1MzlnYWxIZVNVTTdBT0dVaTZuc29lWm5CQlV3QXBMWitIZ0FtNDR1?=
+ =?utf-8?B?NkJLL3dEb0g5YWthS2lBTXJwcW9Tb0RTaC85SjVJUWlHdS9YUnNraXR2WXU3?=
+ =?utf-8?B?RDFBNmoyK3pPOEJWN2tOZUNYcG5Ta1BJcFJPV3djS0lHMHJQNTh5czlxcjUy?=
+ =?utf-8?B?ZzRPZHF3cmVnZVV2ZkRmMXA3R1JwSS9LNW16MFpWdnRoMHFIengyeGtyOWw2?=
+ =?utf-8?B?dmxBazNMQzVPdHNHemxXZWN2QXFKNFNoRUJYL1B2UUNlekFwa3QwdUFkNVdO?=
+ =?utf-8?B?N3dvNHpmKzFRcDlycDdXOHNNY08xdDBrUTdicWhYTkRlcm1raEg1U21CaWl5?=
+ =?utf-8?B?VFdzQ2xTOWg4UzVyUVV4RjVkaWp0b1VzMi9JblJXZk9pUjEvQUF6NFlmQTBC?=
+ =?utf-8?B?R2l6MDRMc2l3dU0yTGVTMjN1QXdra0lxVGlqemlicWNCVGk0QkZJd2JWbHlO?=
+ =?utf-8?B?MVJ0QlFWb29udW1rQ0dCcjdnYTJlWnFWMnEzMm13VkdQRFI5MWFVMGJweUlm?=
+ =?utf-8?B?K0U5UmhvcnFYZ2lDdVA5ek9ZdkVtYUR0TmxmcUx3Q0J5Z3ZEK0pLUHhlYkQ0?=
+ =?utf-8?B?d0pNNnVwWlZidXlOSWY3dXZaaHdyQmloQmJJWkFNZ0VESno4YVZodVZSQ2NI?=
+ =?utf-8?B?MlFvUGxxdFNCbm1nOTY3TW1iNDUrcmVJcHlLQitOZnNXRFlrUVdCd1hNTXUv?=
+ =?utf-8?B?UExZR1laWUJqdTYwSTNkMWFrTFVaakhDSm03TTRYVFdjOGd4Y3licmRNdnZp?=
+ =?utf-8?B?YTlzd2V3Z0QzTDY5SnRqbEpPVTliNU9jM1NpOTJoemhvL1lMcWlrWEpQY1dU?=
+ =?utf-8?B?NDlVdjR1bzl1eldsMHRNZjMvSDVCU2t3UFBzVGxvOFY2UzV5ay9iOEFPd1hz?=
+ =?utf-8?B?Mm45QzNINVprb2owdndmNHNXcm1xWXVVYlZJS1NGK2dvSXdTRWM2cmFyZ3pZ?=
+ =?utf-8?B?RnZMb3daZ3FlckxadHNsQmNES0FFNGlFMEdLUEpGR3NPN2xNSTBGTzUvekJp?=
+ =?utf-8?B?emw4UWtYcEVxdWY1T2k3Y0xqeDgzZ0xHTXk5eDRvditpSUVTMmptT3NFcldy?=
+ =?utf-8?B?aHhORXNuZmtJZ3NvYTlMWXAvUnpGdkc5WjBUZEM1THR0K0Q5YW1Xcmd2N2FF?=
+ =?utf-8?B?Z1BXckxJUElRMUpiL0RwcGptcklJajk2OEg4MWJGenhwWHk0RVh4ZWhzZ04r?=
+ =?utf-8?B?T1ZGYldOa3o2RkF0ZkVxWkhDaGpNRjdOY0RQTTQyOGN5VnUxaTYxSklRdmlD?=
+ =?utf-8?Q?qjsBqxyP1USSoLpgm6SyN+qHC?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6ee251c6-7c94-4a8d-0efe-08dcc0d29e82
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 03:23:49.6032 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2024 04:43:21.8916 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VvDtmsXDgFsAPRYpb6sqK8r6RXTlPOIBBJNYBIN1o1CcFAGBAIaEzCXmj/hPp9vL++bCGwJhSKWI4EpKBTVwESKBJVjnIPvv3Lt3Wk0cyhOeEZk+BMyDtyc6ueVUiU+n
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8247
+X-MS-Exchange-CrossTenant-UserPrincipalName: fuzTPRF5M5/QO5oUWQQHDPWo3DMLBozLgzBQPKa8vLJZ+pHmg9PyZ9PW7yYqwchbV3ahpgR8xtrnNvzX+fA0yA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8751
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -198,286 +199,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kunal,
 
-Can we use macros something like below to make code readable ?
 
-#define STR_LINK_RATE(link_rate) \
-	(link_rate == DP_LINK_RATE_162000 ? "1.62 Gbps" : \
-	link_rate == DP_LINK_RATE_216000 ? "2.16 Gbps" : \
-	link_rate == DP_LINK_RATE_243000 ? "2.43 Gbps" : \
-	link_rate == DP_LINK_RATE_270000 ? "2.70 Gbps" : \
-	link_rate == DP_LINK_RATE_324000 ? "3.24 Gbps" : \
-	link_rate == DP_LINK_RATE_432000 ? "4.32 Gbps" : \
-	link_rate == DP_LINK_RATE_540000 ? "5.40 Gbps" : \
-	link_rate == DP_LINK_RATE_675000 ? "6.75 Gbps" : \
-	link_rate == DP_LINK_RATE_810000 ? "8.10 Gbps" : \
-	link_rate == DP_LINK_RATE_1000000 ? "10.00 Gbps" : \
-	link_rate == DP_LINK_RATE_1350000 ? "13.50 Gbps" : \
-	link_rate == DP_LINK_RATE_2000000 ? "20.00 Gbps" : \
-	(igt_assert_f(0, "Invalid link rate %d\n", link_rate), NULL))
+On 8/19/2024 3:31 PM, Karthik Poosa wrote:
+> Rename ACT_FREQ_LATENCY_US to SLPC_FREQ_LATENCY_US as this delay is
+> not specific to actual frequency. 
 
-#define STR_LINK_TO_WRITE(link_rate) \
-	(link_rate == DP_LINK_RATE_162000 ? "162000" : \
-	link_rate == DP_LINK_RATE_216000 ? "216000" : \
-	link_rate == DP_LINK_RATE_243000 ? "243000" : \
-	link_rate == DP_LINK_RATE_270000 ? "270000" : \
-	link_rate == DP_LINK_RATE_324000 ? "324000" : \
-	link_rate == DP_LINK_RATE_432000 ? "432000" : \
-	link_rate == DP_LINK_RATE_540000 ? "540000" : \
-	link_rate == DP_LINK_RATE_675000 ? "675000" : \
-	link_rate == DP_LINK_RATE_810000 ? "810000" : \
-	link_rate == DP_LINK_RATE_1000000 ? "1000000" : \
-	link_rate == DP_LINK_RATE_1350000 ? "1350000" : \
-	link_rate == DP_LINK_RATE_2000000 ? "2000000" : \
-	(igt_assert_f(0, "Invalid link rate %d\n", link_rate), NULL))
-#define STR_LANE_COUNT(lane_count) \
-	(lane_count == DP_LANE_COUNT_1 ? "1" : \
-	lane_count == DP_LANE_COUNT_2 ? "2" : \
-	lane_count == DP_LANE_COUNT_4 ? "4" : \
-	(igt_assert_f(0, "Invalid lane count %d\n", lane_count), NULL))
 
-DP_LINK_RATE link_rate = DP_LINK_RATE_540000;
-const char* link_rate_str = STR_LINK_RATE(link_rate);
-printf("Link rate: %s\n", link_rate_str);
+We may need a wait after gt reset
+also for min and max frequencies to get set where this can be used.
+Rewrite this sentence
+"This will be used in a later patch to wait after gt reset ..."
 
-Thanks,
-santhosh
-
-On 10-06-2024 02:55, Kunal Joshi wrote:
-> add fallback test which tries to validate fallback by
-> reducing link rate / lane count, until retrain is disabled
-> or the lowest mode bw requirements are met.
+With the above corrected
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 > 
-> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
 > ---
->   tests/intel/kms_dp_fallback.c | 207 ++++++++++++++++++++++++++++++++++
->   tests/meson.build             |   1 +
->   2 files changed, 208 insertions(+)
->   create mode 100644 tests/intel/kms_dp_fallback.c
+>   tests/intel/xe_gt_freq.c | 16 ++++++++--------
+>   1 file changed, 8 insertions(+), 8 deletions(-)
 > 
-> diff --git a/tests/intel/kms_dp_fallback.c b/tests/intel/kms_dp_fallback.c
-> new file mode 100644
-> index 000000000..935a77cc6
-> --- /dev/null
-> +++ b/tests/intel/kms_dp_fallback.c
-> @@ -0,0 +1,207 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 20234 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: kms dp fallback
-> + * Category: Display
-> + * Description: Test link training fallback for DP connectors
-> + * Driver requirement: i915, xe
-> + * Functionality: link training
-> + * Mega feature: General Display Features
-> + * Test category: functionality test
-> + */
-> +
-> +#include <sys/types.h>
-> +
-> +#include "igt.h"
-> +#include "igt_psr.h"
-> +
-> +/**
-> + * SUBTEST: fallback
-> + * Description: Test fallback
-> + */
-> +
-> +typedef struct {
-> +	int drm_fd;
-> +	igt_display_t display;
-> +	drmModeModeInfo *mode;
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +	struct igt_fb fb;
-> +	struct igt_plane *primary;
-> +} data_t;
-> +
-> +IGT_TEST_DESCRIPTION("Test link training fallback for DP connectors");
-> +
-> +#define BITS_PER_PIXEL 24
-> +#define ENCODING_OVERHEAD_8b_10b 0.8
-> +#define ENCODING_OVERHEAD_128b_132b 0.9723
-> +
-> +static const char *str_link_rate(enum dp_link_rate link_rate)
-> +{
-> +	switch (link_rate) {
-> +	case DP_LINK_RATE_162000:
-> +		return "1.62 Gbps";
-> +	case DP_LINK_RATE_216000:
-> +		return "2.16 Gbps";
-> +	case DP_LINK_RATE_243000:
-> +		return "2.43 Gbps";
-> +	case DP_LINK_RATE_270000:
-> +		return "2.70 Gbps";
-> +	case DP_LINK_RATE_324000:
-> +		return "3.24 Gbps";
-> +	case DP_LINK_RATE_432000:
-> +		return "4.32 Gbps";
-> +	case DP_LINK_RATE_540000:
-> +		return "5.40 Gbps";
-> +	case DP_LINK_RATE_675000:
-> +		return "6.75 Gbps";
-> +	case DP_LINK_RATE_810000:
-> +		return "8.10 Gbps";
-> +	case DP_LINK_RATE_1000000:
-> +		return "10.00 Gbps";
-> +	case DP_LINK_RATE_1350000:
-> +		return "13.50 Gbps";
-> +	case DP_LINK_RATE_2000000:
-> +		return "20.00 Gbps";
-> +	default:
-> +		igt_assert_f(0, "Invalid link rate %d\n", link_rate);
-> +	}
-> +}
-> +
-> +static void find_min_dp_config(int drm_fd, drmModeModeInfo mode, igt_output_t *output, uint64_t *min_link_rate, int *min_lane_count)
-> +{
-> +	int i, lanes;
-> +	int num_rates = 0;
-> +	float overhead;
-> +	uint64_t link_rates[DP_MAX_LINK_RATE_COUNT];
-> +	uint64_t required_bandwidth, available_bandwidth;
-> +
-> +	igt_require_f(mode.vdisplay > 0, "No modes found\n");
-> +	igt_require_f(output, "Output cannot be null\n");
-> +
-> +	required_bandwidth = (uint64_t)(mode.clock * BITS_PER_PIXEL);
-> +	read_link_rates(drm_fd, link_rates, &num_rates, output);
-> +
-> +	for (lanes = 4; lanes > 0 ; lanes = lanes/2) {
-> +		for (i = num_rates-1; i > 0; i--) {
-> +			overhead = link_rates[i] >= DP_LINK_RATE_1000000 ?
-> +						    ENCODING_OVERHEAD_128b_132b :
-> +						    ENCODING_OVERHEAD_8b_10b;
-> +			available_bandwidth = link_rates[i] * lanes * overhead * 10;
-> +			if (available_bandwidth < required_bandwidth) {
-> +				igt_info("Lowest link configuration for %s: Link Rate = %"PRIu64" Kbps, Lanes = %d\n", output->name, link_rates[i], lanes);
-> +				*min_link_rate = link_rates[i];
-> +				*min_lane_count = lanes;
-> +				return;
-> +			}
-> +		}
-> +	}
-> +}
-> +
-> +static const char *str_lane_count(enum dp_lane_count lane_count)
-> +{
-> +	switch (lane_count) {
-> +	case DP_LANE_COUNT_1:
-> +		return "1";
-> +	case DP_LANE_COUNT_2:
-> +		return "2";
-> +	case DP_LANE_COUNT_4:
-> +		return "4";
-> +	default:
-> +		igt_assert_f(0, "Invalid lane count %d\n", lane_count);
-> +	}
-> +}
-> +
-> +static bool is_retrain_disabled(data_t *data)
-> +{
-> +	struct dp_link_training_info info;
-> +
-> +	igt_read_link_training_info(data->drm_fd, data->output, &info);
-> +	return info.retrain_disabled;
-> +}
-> +
-> +static void test_fallback(data_t *data)
-> +{
-> +	bool first = true;
-> +	uint64_t min_link_rate;
-> +	int min_lane_count;
-> +
-> +	igt_sort_connector_modes(data->output->config.connector, sort_drm_modes_by_res_asc);
-> +	find_min_dp_config(data->drm_fd, data->output->config.connector->modes[0], data->output,
-> +			   &min_link_rate, &min_lane_count);
-> +
-> +	while (!is_retrain_disabled(data)) {
-> +		data->mode = &data->output->config.connector->modes[0];
-> +		igt_info("mode: %dx%d@%d\n", data->mode->hdisplay, data->mode->vdisplay, data->mode->vrefresh);
-> +		igt_create_pattern_fb(data->drm_fd, data->mode->hdisplay, data->mode->vdisplay, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &data->fb);
-> +		igt_output_set_pipe(data->output, data->pipe);
-> +		data->primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-> +		igt_plane_set_fb(data->primary, &data->fb);
-> +		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +		igt_info("Current link rate : %s, lane count : %s\n",
-> +		       str_link_rate(igt_get_dp_link_rate_set_for_output(data->drm_fd, data->output)),
-> +		       str_lane_count(igt_get_dp_lane_count_set_for_output(data->drm_fd, data->output)));
-> +		if ((igt_get_dp_link_rate_set_for_output(data->drm_fd, data->output) == min_link_rate) &&
-> +		   (igt_get_dp_lane_count_set_for_output(data->drm_fd, data->output) == min_lane_count))
-> +			break;
-> +		kmstest_force_connector_link_training_failure(data->drm_fd, data->output->config.connector, 2);
-> +		kmstest_force_connector_retrain(data->drm_fd, data->output->config.connector, 1);
-> +
-> +		if (!first) {
-> +			igt_display_reset(&data->display);
-> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +		}
-> +		first = false;
-> +	}
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data = {};
-> +	igt_output_t *output;
-> +	enum pipe pipe;
-> +	enum dp_link_rate link_rate;
-> +	enum dp_lane_count lane_count;
-> +
-> +	igt_fixture {
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL);
-> +		kmstest_set_vt_graphics_mode();
-> +		igt_display_require(&data.display, data.drm_fd);
-> +	}
-> +
-> +	igt_describe_f("Test fallback");
-> +	igt_subtest_with_dynamic_f("fallback")
-> +	{
-> +		for_each_connected_output(&data.display, output) {
-> +			if (!igt_has_force_link_training_failure_debugfs(data.drm_fd, output)) {
-> +				igt_info("Skipping output %s as doesn't support fallback\n",
-> +					 output->name);
-> +				continue;
-> +			}
-> +
-> +			data.output = output;
-> +			link_rate = igt_get_dp_max_link_rate(data.drm_fd, data.output);
-> +			lane_count = igt_get_dp_max_lane_count(data.drm_fd, data.output);
-> +
-> +			for_each_pipe(&data.display, pipe) {
-> +				igt_display_reset(&data.display);
-> +				data.pipe = pipe;
-> +				igt_dynamic_f("%s-pipe-%s", igt_output_name(output), kmstest_pipe_name(pipe))
-> +					test_fallback(&data);
-> +				kmstest_force_connector_link_rate(data.drm_fd, data.output->config.connector, link_rate);
-> +				kmstest_force_connector_lane_count(data.drm_fd, data.output->config.connector, lane_count);
-> +				igt_reset_connectors();
-> +			}
-> +		}
-> +	}
-> +
-> +	igt_fixture {
-> +		igt_reset_connectors();
-> +		igt_display_fini(&data.display);
-> +		drm_close_driver(data.drm_fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 758ae090c..1a4e6c18b 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -251,6 +251,7 @@ intel_kms_progs = [
->   	'kms_ccs',
->   	'kms_cdclk',
->   	'kms_dirtyfb',
-> +	'kms_dp_fallback',
->   	'kms_draw_crc',
->   	'kms_dsc',
->   	'kms_fb_coherency',
+> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+> index 171f9cb44..56cc10ade 100644
+> --- a/tests/intel/xe_gt_freq.c
+> +++ b/tests/intel/xe_gt_freq.c
+> @@ -34,7 +34,7 @@
+>    * Too many intermediate components and steps before freq is adjusted
+>    * Specially if workload is under execution, so let's wait 100 ms.
+>    */
+> -#define ACT_FREQ_LATENCY_US 100000
+> +#define SLPC_FREQ_LATENCY_US 100000
+>   
+>   static int set_freq(int fd, int gt_id, const char *freq_name, uint32_t freq)
+>   {
+> @@ -194,7 +194,7 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>   	 */
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
+> -	usleep(ACT_FREQ_LATENCY_US);
+> +	usleep(SLPC_FREQ_LATENCY_US);
+>   	igt_assert_eq_u32(get_freq(fd, gt_id, "cur"), rpn);
+>   
+>   	if (gt_idle) {
+> @@ -208,7 +208,7 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>   
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpmid));
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpmid));
+> -	usleep(ACT_FREQ_LATENCY_US);
+> +	usleep(SLPC_FREQ_LATENCY_US);
+>   	cur_freq = get_freq(fd, gt_id, "cur");
+>   	/* If rpmid is around RPe, we could see SLPC follow it */
+>   	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ), cur_freq);
+> @@ -224,7 +224,7 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>   
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "min", rp0));
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "max", rp0));
+> -	usleep(ACT_FREQ_LATENCY_US);
+> +	usleep(SLPC_FREQ_LATENCY_US);
+>   	/*
+>   	 * It is unlikely that PCODE will *always* respect any request above RPe
+>   	 * So for this level let's only check if GuC PC is doing its job
+> @@ -259,7 +259,7 @@ static void test_freq_range(int fd, int gt_id, bool gt_idle)
+>   
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpmid));
+> -	usleep(ACT_FREQ_LATENCY_US);
+> +	usleep(SLPC_FREQ_LATENCY_US);
+>   	cur = get_freq(fd, gt_id, "cur");
+>   	igt_assert(rpn <= cur && cur <= rpmid + FREQ_UNIT_MHZ);
+>   
+> @@ -292,7 +292,7 @@ static void test_freq_low_max(int fd, int gt_id)
+>   	 */
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpmid));
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
+> -	usleep(ACT_FREQ_LATENCY_US);
+> +	usleep(SLPC_FREQ_LATENCY_US);
+>   
+>   	/* Cur freq will follow RPe, which could be higher than min freq */
+>   	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ),
+> @@ -310,7 +310,7 @@ static void test_suspend(int fd, int gt_id)
+>   
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "min", rpn));
+>   	igt_assert_lt(0, set_freq(fd, gt_id, "max", rpn));
+> -	usleep(ACT_FREQ_LATENCY_US);
+> +	usleep(SLPC_FREQ_LATENCY_US);
+>   	igt_assert_eq_u32(get_freq(fd, gt_id, "cur"), rpn);
+>   
+>   	igt_system_suspend_autoresume(SUSPEND_STATE_S3,
+> @@ -337,7 +337,7 @@ static void test_reset(int fd, int gt_id, int cycles)
+>   			     "Failed after %d good cycles\n", i);
+>   		igt_assert_f(set_freq(fd, gt_id, "max", rpn) > 0,
+>   			     "Failed after %d good cycles\n", i);
+> -		usleep(ACT_FREQ_LATENCY_US);
+> +		usleep(SLPC_FREQ_LATENCY_US);
+>   		igt_assert_f(get_freq(fd, gt_id, "cur") == rpn,
+>   			     "Failed after %d good cycles\n", i);
+>   
