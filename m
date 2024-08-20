@@ -4,68 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1F0DC3DA4A
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 07:54:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD02C3DA4A
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 08:15:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC37C10E4A2;
-	Tue, 20 Aug 2024 07:54:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A19E10E501;
+	Tue, 20 Aug 2024 08:15:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SAqOhdhf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kvRkNwUV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8855D10E4A2
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 07:54:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA5A910E501
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 08:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724140456; x=1755676456;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=foUSPFe6X/cuUR0bXLAfU3GDs/utqu1xHpmLCOCuDfo=;
- b=SAqOhdhf9ZVpY3TcJqYB2og0SYNoPQsb1HmmV2m8R9mhAmSpY687UHtS
- 6HrUUo1XLmD/PMoHM+a2yz2p6jAB2cMcty+QV7fXlWpa0lwGtIDQVcG0i
- vnwSdSo+ogAk6G1LbvHIbntDEIwHm3zBeCxi6e5G/XRZkmB/fLNnqHK0C
- Bbx9x1kQ5gi6IVwpsSYVsNXzzrOKqLXX0ntT+Tzlki33twsCHucB6dwtG
- W/Ixp0h0EtVn6ttMrkKt52s2T7dalkzuhc3bDpPgpqFmVC0VK42Y4oTFa
- pTnUbUj4Z/yEs4IenW1Qw8kHbJ2eY8QfIGUmwcH/RrU7Rk71VJaPOhSoL w==;
-X-CSE-ConnectionGUID: U4HYDEmtRbqSknuUWLIN+Q==
-X-CSE-MsgGUID: tlTYRysNSsmBLecPR1Sc3A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22560050"
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="22560050"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2024 00:54:10 -0700
-X-CSE-ConnectionGUID: y4eC28awQeW2NtEpVvHUWg==
-X-CSE-MsgGUID: LfIJg1x6R/WOQR/wZsVAMQ==
+ t=1724141708; x=1755677708;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=rx8mEbVHP6rsuGOjHr+RYU0qOibn0HLfTmU4a3bQ3PM=;
+ b=kvRkNwUVkdgfiUTrLw4fzTHMytlVP8ez6rE86s4d+JvsEwjhxtSfZVN3
+ 3/UhGo0uuaHDAkZuEuOxrhEd3TkzZnDW45D1fib7UkkUqdp/7mJnPZguf
+ YkjseayU3Twou4OguThVwzsV1PuoRlivR1lB5MwFG1qd2DveLP+7x6L23
+ LW8Uz53Gmd3pt8GGrSwygW2Q0JZk5R6lSiI5ldIgaWZZNveBqXTff/zbF
+ xpS39JWALfB8X7IASoX8UJDoG65UmrjRn5aZ4KS/34cfbpY2X+LDXVsct
+ CGIQXQO/kJKVbiYFdnEPB3zVklOzxEFBzHtfjYI4EXBWcGamPtaRMBYoJ w==;
+X-CSE-ConnectionGUID: GDzLm0N4TgOtA3/6OuVIUg==
+X-CSE-MsgGUID: KGSlk/0EQSaEzmS4pEfnjA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="44948233"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="44948233"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2024 01:15:00 -0700
+X-CSE-ConnectionGUID: ocbXF+2iQDS2l5b8NRKBkA==
+X-CSE-MsgGUID: WzMyPN0mS1qaJ43EVrqTCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="65592053"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.160])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2024 00:54:05 -0700
-Date: Tue, 20 Aug 2024 09:54:01 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Maciej Patelczyk <maciej.patelczyk@intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
- Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Mika Kuoppala <mika.kuoppala@linux.intel.com>
-Subject: Re: [PATCH i-g-t v3 03/14] lib/xe_ioctl: Add wrapper with vm_bind_op
- extension parameter
-Message-ID: <20240820075401.oq4uafzira7ykbhy@zkempczy-mobl2>
-References: <20240809123813.109365-1-christoph.manszewski@intel.com>
- <20240809123813.109365-4-christoph.manszewski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; d="scan'208";a="91418354"
+Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
+ by fmviesa001.fm.intel.com with ESMTP; 20 Aug 2024 01:14:58 -0700
+From: Suraj Kandpal <suraj.kandpal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com, ankit.k.nautiyal@intel.com, jeevan.b@intel.com,
+ Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t 0/5] Improve MST HDCP tests
+Date: Tue, 20 Aug 2024 13:42:27 +0530
+Message-ID: <20240820081233.4092203-1-suraj.kandpal@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240809123813.109365-4-christoph.manszewski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,85 +65,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Aug 09, 2024 at 02:38:02PM +0200, Christoph Manszewski wrote:
-> Currently there is no way to set drm_xe_vm_bind_op extension field. Add
-> vm_bind wrapper that allows pass this field as a parameter.
-> 
-> Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
-> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-> Reviewed-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> ---
->  lib/xe/xe_ioctl.c | 20 ++++++++++++++++----
->  lib/xe/xe_ioctl.h |  5 +++++
->  2 files changed, 21 insertions(+), 4 deletions(-)
-> 
-> diff --git a/lib/xe/xe_ioctl.c b/lib/xe/xe_ioctl.c
-> index ae43ffd15..6d8388918 100644
-> --- a/lib/xe/xe_ioctl.c
-> +++ b/lib/xe/xe_ioctl.c
-> @@ -96,15 +96,17 @@ void xe_vm_bind_array(int fd, uint32_t vm, uint32_t exec_queue,
->  	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_VM_BIND, &bind), 0);
->  }
->  
-> -int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> -		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
-> -		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
-> -		  uint32_t prefetch_region, uint8_t pat_index, uint64_t ext)
-> +int  ___xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> +		   uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
-> +		   uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
-> +		   uint32_t prefetch_region, uint8_t pat_index, uint64_t ext,
-> +		   uint64_t op_ext)
->  {
->  	struct drm_xe_vm_bind bind = {
->  		.extensions = ext,
->  		.vm_id = vm,
->  		.num_binds = 1,
-> +		.bind.extensions = op_ext,
->  		.bind.obj = bo,
->  		.bind.obj_offset = offset,
->  		.bind.range = size,
-> @@ -125,6 +127,16 @@ int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  	return 0;
->  }
->  
-> +int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> +		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
-> +		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
-> +		  uint32_t prefetch_region, uint8_t pat_index, uint64_t ext)
-> +{
-> +	return ___xe_vm_bind(fd, vm, exec_queue, bo, offset, addr, size, op,
-> +			     flags, sync, num_syncs, prefetch_region,
-> +			     pat_index, ext, 0);
-> +}
-> +
->  void  __xe_vm_bind_assert(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  			  uint64_t offset, uint64_t addr, uint64_t size,
->  			  uint32_t op, uint32_t flags, struct drm_xe_sync *sync,
-> diff --git a/lib/xe/xe_ioctl.h b/lib/xe/xe_ioctl.h
-> index b27c0053f..18cc2b72b 100644
-> --- a/lib/xe/xe_ioctl.h
-> +++ b/lib/xe/xe_ioctl.h
-> @@ -20,6 +20,11 @@
->  uint32_t xe_cs_prefetch_size(int fd);
->  uint64_t xe_bb_size(int fd, uint64_t reqsize);
->  uint32_t xe_vm_create(int fd, uint32_t flags, uint64_t ext);
-> +int  ___xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
-> +		   uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
-> +		   uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
-> +		   uint32_t prefetch_region, uint8_t pat_index, uint64_t ext,
-> +		   uint64_t op_ext);
->  int  __xe_vm_bind(int fd, uint32_t vm, uint32_t exec_queue, uint32_t bo,
->  		  uint64_t offset, uint64_t addr, uint64_t size, uint32_t op,
->  		  uint32_t flags, struct drm_xe_sync *sync, uint32_t num_syncs,
-> -- 
-> 2.34.1
-> 
+Improve HDCP MST test by doing the following
+-Eliminate unnecessary loops and wait times
+-Add retry logic for mst test cases
+-Change screen color based on HDCP Encryption Status
 
-Ok, this is harmless and doesn't depend on eudebug uapi headers.
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Suraj Kandpal (5):
+  tests/kms_content_protection: Move HDCP output checks earlier
+  tests/kms_content_protection: Move try commit call
+  tests/kms_content_protection: Rename igt_commit_style variable
+  tests/kms_content_protection: Add retry logic for mst usecase
+  tests/kms_content_protection: Set screen red/green based on CP Status
 
---
-Zbigniew
+ tests/kms_content_protection.c | 186 ++++++++++++++++++++++-----------
+ 1 file changed, 125 insertions(+), 61 deletions(-)
+
+-- 
+2.43.2
 
