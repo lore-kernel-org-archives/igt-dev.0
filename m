@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 194A3C3DA4A
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Aug 2024 23:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3F90C52D7C
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Aug 2024 00:31:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB1A610E492;
-	Mon, 19 Aug 2024 23:46:47 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0FB010E040;
- Mon, 19 Aug 2024 23:46:46 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0716803029506476334=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3E03D10E31D;
+	Tue, 20 Aug 2024 00:31:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RULTcvzx";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 817ED10E320
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Aug 2024 00:31:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724113868; x=1755649868;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=S9Bzqg0JMJgtkQkA8b6I0XyQOCFSR+BFVWqw1FCJI7Q=;
+ b=RULTcvzxYeQv2fE7+DNWasWLJRT4CHhbkY0ZK+YNfTUg4s52lQS7nRMe
+ TsXZA8j3vL2Qqux5LCUVtEKtG0CWoS2GJU+8B02I49OXSmXHSdOHFWJq3
+ vzgr7M3i+vyHM/KWU9M4JN3TZ5jj+2oXc9ZXv4m86rcUog7M1gIRtmZdm
+ Vwo9knUKHGsXy9lMzDjVSzFlbj1kBmoseRcBAYQZXC8qLaVEOloqSu/Hs
+ MEqrJ+wtS2yfQKHdAbl7A3LPDLocSFNDuwQBxuaA+hoMtAqGeAAPv4Vm7
+ kn9IEaInFoT2F4quwf8/lbTVIkf2a+bnd23AKl65AH9hmuLPrkepmYk1C w==;
+X-CSE-ConnectionGUID: 1XIluvEaTy2DCz1oEVJsGw==
+X-CSE-MsgGUID: vRzbxPOKQYigy+N5g+koiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="33544869"
+X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="33544869"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 17:31:07 -0700
+X-CSE-ConnectionGUID: e4PBqVGATByPMlmbW2U3BQ==
+X-CSE-MsgGUID: wRiFAF5PRXiYQd7c4P38BA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,160,1719903600"; d="scan'208";a="61101266"
+Received: from orsosgc001.jf.intel.com ([10.165.21.138])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2024 17:31:07 -0700
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 1/2] tests/intel/oa: Add syncs-signal test for OA syncs
+Date: Mon, 19 Aug 2024 17:31:03 -0700
+Message-ID: <20240820003104.1407398-2-ashutosh.dixit@intel.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240820003104.1407398-1-ashutosh.dixit@intel.com>
+References: <20240820003104.1407398-1-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_IGT_tests_for_the_KMS_Color?=
- =?utf-8?q?_Pipeline_API_=28rev6=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Harry Wentland" <harry.wentland@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 19 Aug 2024 23:46:46 -0000
-Message-ID: <172411120665.697853.9435406795238076826@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240819205823.316656-1-harry.wentland@amd.com>
-In-Reply-To: <20240819205823.316656-1-harry.wentland@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,217 +63,223 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0716803029506476334==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Verify OA syncs signal correctly in open and change config code paths.
 
-== Series Details ==
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+---
+ include/drm-uapi/xe_drm.h |  18 +++++++
+ lib/xe/xe_oa.c            |   6 +--
+ lib/xe/xe_oa.h            |   2 +
+ tests/intel/xe_oa.c       | 106 ++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 129 insertions(+), 3 deletions(-)
 
-Series: IGT tests for the KMS Color Pipeline API (rev6)
-URL   : https://patchwork.freedesktop.org/series/123448/
-State : failure
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 29425d7fdc..10d1471128 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -1483,6 +1483,7 @@ struct drm_xe_oa_unit {
+ 	/** @capabilities: OA capabilities bit-mask */
+ 	__u64 capabilities;
+ #define DRM_XE_OA_CAPS_BASE		(1 << 0)
++#define DRM_XE_OA_CAPS_SYNCS		(1 << 1)
+ 
+ 	/** @oa_timestamp_freq: OA timestamp freq */
+ 	__u64 oa_timestamp_freq;
+@@ -1632,6 +1633,23 @@ enum drm_xe_oa_property_id {
+ 	 * to be disabled for the stream exec queue.
+ 	 */
+ 	DRM_XE_OA_PROPERTY_NO_PREEMPT,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_NUM_SYNCS: Number of syncs in the sync array
++	 * specified in @DRM_XE_OA_PROPERTY_SYNCS
++	 */
++	DRM_XE_OA_PROPERTY_NUM_SYNCS,
++
++	/**
++	 * @DRM_XE_OA_PROPERTY_SYNCS: Pointer to struct @drm_xe_sync array
++	 * with array size specified via @DRM_XE_OA_PROPERTY_NUM_SYNCS
++	 * with array size specified via @DRM_XE_OA_PROPERTY_NUM_SYNCS. OA
++	 * configuration will wait till input fences signal. Output fences
++	 * will signal after the new OA configuration takes effect. For
++	 * @DRM_XE_SYNC_TYPE_USER_FENCE, @addr is a user pointer, similar
++	 * to the VM bind case.
++	 */
++	DRM_XE_OA_PROPERTY_SYNCS,
+ };
+ 
+ /**
+diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
+index 4764ed1fcf..b1a9ff7fa4 100644
+--- a/lib/xe/xe_oa.c
++++ b/lib/xe/xe_oa.c
+@@ -1027,8 +1027,8 @@ const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
+ 	return "unknown";
+ }
+ 
+-static void xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
+-			      struct drm_xe_ext_set_property *extn)
++void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
++			     struct drm_xe_ext_set_property *extn)
+ {
+ 	__u64 *prop = from_user_pointer(properties->properties_ptr);
+ 	struct drm_xe_ext_set_property *ext = extn;
+@@ -1065,7 +1065,7 @@ int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg)
+ 		struct intel_xe_oa_open_prop *oprop = (struct intel_xe_oa_open_prop *)arg;
+ 
+ 		igt_assert_lte(oprop->num_properties, XE_OA_MAX_SET_PROPERTIES);
+-		xe_oa_prop_to_ext(oprop, ext);
++		intel_xe_oa_prop_to_ext(oprop, ext);
+ 	}
+ 
+ 	return igt_ioctl(fd, DRM_IOCTL_XE_OBSERVATION, &p);
+diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
+index 962f9dddcc..7d3d074560 100644
+--- a/lib/xe/xe_oa.h
++++ b/lib/xe/xe_oa.h
+@@ -398,6 +398,8 @@ uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *per
+ const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
+ 					     const struct intel_xe_perf_record_header *record);
+ 
++void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
++			     struct drm_xe_ext_set_property *extn);
+ int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg);
+ void intel_xe_perf_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err);
+ 
+diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+index f2c6d53007..bd38b24de8 100644
+--- a/tests/intel/xe_oa.c
++++ b/tests/intel/xe_oa.c
+@@ -22,6 +22,7 @@
+ #include "drm.h"
+ #include "igt.h"
+ #include "igt_device.h"
++#include "igt_syncobj.h"
+ #include "igt_sysfs.h"
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+@@ -4454,6 +4455,98 @@ static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
+ 	__perf_close(stream_fd);
+ }
+ 
++static bool find_alt_oa_config(u32 config_id, u32 *alt_config_id)
++{
++	struct dirent *entry;
++	int metrics_fd, dir_fd;
++	DIR *metrics_dir;
++	bool ret;
++
++	metrics_fd = openat(sysfs, "metrics", O_DIRECTORY);
++	igt_assert_lte(0, metrics_fd);
++
++	metrics_dir = fdopendir(metrics_fd);
++	igt_assert(metrics_dir);
++
++	while ((entry = readdir(metrics_dir))) {
++		if (entry->d_type != DT_DIR)
++			continue;
++
++		dir_fd = openat(metrics_fd, entry->d_name, O_RDONLY);
++		ret = __igt_sysfs_get_u32(dir_fd, "id", alt_config_id);
++		close(dir_fd);
++		if (!ret)
++			continue;
++
++		if (config_id != *alt_config_id) {
++			closedir(metrics_dir);
++			return true;
++		}
++	}
++
++	return false;
++}
++
++/**
++ * SUBTEST: syncs-signal
++ * Description: Test OA syncs signal correctly
++ */
++static void
++test_syncs_signal(const struct drm_xe_engine_class_instance *hwe)
++{
++	struct drm_xe_ext_set_property extn[XE_OA_MAX_SET_PROPERTIES] = {};
++	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
++	struct drm_xe_sync sync = {
++	    .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++	    .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++	};
++	uint64_t open_properties[] = {
++		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
++		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
++		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
++		DRM_XE_OA_PROPERTY_NUM_SYNCS, 1,
++		DRM_XE_OA_PROPERTY_SYNCS, to_user_pointer(&sync),
++	};
++	struct intel_xe_oa_open_prop open_param = {
++		.num_properties = ARRAY_SIZE(open_properties) / 2,
++		.properties_ptr = to_user_pointer(open_properties),
++	};
++	uint64_t config_properties[] = {
++		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0, /* Filled later */
++		DRM_XE_OA_PROPERTY_NUM_SYNCS, 1,
++		DRM_XE_OA_PROPERTY_SYNCS, to_user_pointer(&sync),
++	};
++	struct intel_xe_oa_open_prop config_param = {
++		.num_properties = ARRAY_SIZE(config_properties) / 2,
++		.properties_ptr = to_user_pointer(config_properties),
++	};
++	uint32_t syncobj = syncobj_create(drm_fd, 0);
++	uint32_t alt_config_id;
++	int ret;
++
++	sync.handle = syncobj;
++	stream_fd = __perf_open(drm_fd, &open_param, false);
++
++	igt_assert(syncobj_wait(drm_fd, &syncobj, 1, INT64_MAX, 0, NULL));
++
++	/* Change stream configuration */
++	syncobj_reset(drm_fd, &syncobj, 1);
++	if (!find_alt_oa_config(test_set->perf_oa_metrics_set, &alt_config_id))
++		goto out;
++
++	config_properties[1] = alt_config_id;
++	intel_xe_oa_prop_to_ext(&config_param, extn);
++
++	ret = igt_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_CONFIG, extn);
++	igt_assert_eq(ret, test_set->perf_oa_metrics_set);
++
++	igt_assert(syncobj_wait(drm_fd, &syncobj, 1, INT64_MAX, 0, NULL));
++out:
++	__perf_close(stream_fd);
++	syncobj_destroy(drm_fd, syncobj);
++}
++
+ static const char *xe_engine_class_name(uint32_t engine_class)
+ {
+ 	switch (engine_class) {
+@@ -4702,6 +4795,19 @@ igt_main
+ 		}
+ 	}
+ 
++	igt_subtest_group {
++		igt_fixture {
++			struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
++			struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
++
++			igt_require(oau->capabilities & DRM_XE_OA_CAPS_SYNCS);
++		}
++
++		igt_subtest_with_dynamic("syncs-signal")
++			__for_one_render_engine(hwe)
++				test_syncs_signal(hwe);
++	}
++
+ 	igt_fixture {
+ 		/* leave sysctl options in their default state... */
+ 		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
+-- 
+2.41.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_7978 -> IGTPW_11599
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_11599 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11599, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/index.html
-
-Participating hosts (41 -> 39)
-------------------------------
-
-  Missing    (2): bat-kbl-2 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11599:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@client:
-    - bat-arlh-2:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-arlh-2/igt@i915_selftest@live@client.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-arlh-2/igt@i915_selftest@live@client.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11599 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-1:         [DMESG-WARN][3] ([i915#11349] / [i915#11378]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-arls-1/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-arls-1/igt@i915_selftest@live@hangcheck.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@psr-cursor-plane-move:
-    - bat-mtlp-6:         [SKIP][5] ([i915#1072] / [i915#9673] / [i915#9732] / [i915#9792]) -> [SKIP][6] ([i915#1072] / [i915#9732] / [i915#9792]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-mtlp-6/igt@kms_psr@psr-cursor-plane-move.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-mtlp-6/igt@kms_psr@psr-cursor-plane-move.html
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - bat-adlp-9:         [SKIP][7] ([i915#1072] / [i915#9673] / [i915#9732]) -> [SKIP][8] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-adlp-9/igt@kms_psr@psr-sprite-plane-onoff.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-adlp-9/igt@kms_psr@psr-sprite-plane-onoff.html
-    - bat-rplp-1:         [SKIP][9] ([i915#1072] / [i915#9673] / [i915#9732]) -> [SKIP][10] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-rplp-1/igt@kms_psr@psr-sprite-plane-onoff.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-rplp-1/igt@kms_psr@psr-sprite-plane-onoff.html
-    - bat-dg2-9:          [SKIP][11] ([i915#1072] / [i915#9673] / [i915#9732]) -> [SKIP][12] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-dg2-9/igt@kms_psr@psr-sprite-plane-onoff.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-dg2-9/igt@kms_psr@psr-sprite-plane-onoff.html
-    - bat-adlp-11:        [SKIP][13] ([i915#1072] / [i915#9673] / [i915#9732]) -> [SKIP][14] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-adlp-11/igt@kms_psr@psr-sprite-plane-onoff.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-adlp-11/igt@kms_psr@psr-sprite-plane-onoff.html
-    - bat-dg2-8:          [SKIP][15] ([i915#1072] / [i915#9673] / [i915#9732]) -> [SKIP][16] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html
-    - bat-adlm-1:         [SKIP][17] ([i915#1072] / [i915#9673] / [i915#9732]) -> [SKIP][18] ([i915#1072] / [i915#9732]) +3 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#11378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378
-  [i915#9673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7978 -> IGTPW_11599
-
-  CI-20190529: 20190529
-  CI_DRM_15263: 4d24271792fac837e728f7bb6237a94ee46cc76e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11599: 11599
-  IGT_7978: 4083a9d8abc80c8a905ffdc20bc76383b1e07e79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/index.html
-
---===============0716803029506476334==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>IGT tests for the KMS Color Pipeline API (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/123448/">https://patchwork.freedesktop.org/series/123448/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7978 -&gt; IGTPW_11599</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11599 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11599, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/index.html</p>
-<h2>Participating hosts (41 -&gt; 39)</h2>
-<p>Missing    (2): bat-kbl-2 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11599:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@client:<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-arlh-2/igt@i915_selftest@live@client.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-arlh-2/igt@i915_selftest@live@client.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11599 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378">i915#11378</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_psr@psr-cursor-plane-move:</p>
-<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-mtlp-6/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-mtlp-6/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-adlp-9/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-adlp-9/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-<li>bat-rplp-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-rplp-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-rplp-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-dg2-9/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-dg2-9/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-<li>bat-adlp-11:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-adlp-11/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-adlp-11/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7978/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11599/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7978 -&gt; IGTPW_11599</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15263: 4d24271792fac837e728f7bb6237a94ee46cc76e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11599: 11599<br />
-  IGT_7978: 4083a9d8abc80c8a905ffdc20bc76383b1e07e79 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============0716803029506476334==--
