@@ -4,64 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93989C52D7C
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 17:12:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85D4DC52D6F
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 17:13:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B44D10E66F;
-	Wed, 21 Aug 2024 17:12:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C7BE10E677;
+	Wed, 21 Aug 2024 17:13:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dsTiEvel";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W4d3Y8Nz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91DE110E66F
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 17:12:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3F3410E676;
+ Wed, 21 Aug 2024 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724260329; x=1755796329;
+ t=1724260404; x=1755796404;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=cILSbR5G2J+eqnF56z3WSM1NugVp45d7Ou7TOcWTLr8=;
- b=dsTiEvelEv9cmhJ0ON5UFk4e/JOt8vMM4V30fsVZf6omv0rjGHoE5s8Q
- UbmBV4KraN92KeerT+Vyg0gsDTq342h24u6Th0YNt9TTCvnEU/bRnIK5j
- abOtIa5jciuxOloCCpzQ1TRIOaIQPiqd5iVK8PnaMkUpnlHPz7N5m7STF
- i14vuL50Rr6awL8Wsl84nuOm0uR4vgyAyeYLfoTj6oR9M04UULHPxBkZZ
- VJ+AkO7byhiMR3RCutxbrBW9TBN70CxRjF9OX5/f/Sbq+ZUXfM/YmC2CR
- GkIUqJeSGNtlnE/OHkK96aEMuDtRbADonimOw1haPEc17tx8J3V/lPvGn A==;
-X-CSE-ConnectionGUID: o7MmxBNpQqKzboX1nDXFjg==
-X-CSE-MsgGUID: Gh6Da7TbTfKnpAo8U3Kc5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="45160620"
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="45160620"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 10:12:08 -0700
-X-CSE-ConnectionGUID: Ohcmc9v9T4ezS654WAad8Q==
-X-CSE-MsgGUID: bLb5Lr+PSaC2u+hhMJt5Cw==
+ bh=YsMaF/dojUC5k+7kRctPPOfNWibBSA3851nR9lBJXg0=;
+ b=W4d3Y8NzDboc2rYEl9cRLJ27mgOnHZCM4NMvvVMpvWEmPdLEl5/GS0oK
+ GRQL1+shwWq3tvOK/DNTxqTgl2YvZvIAMp746pQ2u8hjvqxyjICUirgGb
+ 7NnhqubsPrafZCKOAwzAwwKu9x6uLdKfDorLj0AsO0MtN2NTiLTI61gjT
+ QuEehTY5i/98FT+wWJ/mYy3rDP1fDOoZjfXpjUelT7Jii7crUF1gQm6ZW
+ f840pTXF3lVB33BqzZ9ZU+oc4NRmClyh6D8jBMla/7uGI8XL366QK2JxU
+ X1m7wfLnNap3piATMEv5lb46CEwNiIbV6K858v/H6IEuDLInm1FkO4ZO1 Q==;
+X-CSE-ConnectionGUID: DtF/6lg+SQCaxYPj6nT3EQ==
+X-CSE-MsgGUID: o/iIW+94TJm4slAnuk6KLg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="26430067"
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="26430067"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2024 10:13:23 -0700
+X-CSE-ConnectionGUID: iAqKLwVlSd+0UzcZ2p7/Gg==
+X-CSE-MsgGUID: n1Rrei83TH+EUn/4ZRliIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61017858"
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61287581"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 10:12:07 -0700
-Date: Wed, 21 Aug 2024 19:11:48 +0200
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 10:13:22 -0700
+Date: Wed, 21 Aug 2024 19:13:19 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/6] tools/intel-gfx-fw-info: Re-format with black
-Message-ID: <20240821171148.hdwa4nqzmrgzn6vn@kamilkon-DESK.igk.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIENJLnhlRlVMTDogZmFpbHVy?= =?utf-8?Q?e?= for Fix
+ compilation for musl in intel/kms_pm_backlight
+Message-ID: <20240821171319.vbhebgbc7sbfhobi@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-References: <20240820232928.458248-1-lucas.demarchi@intel.com>
- <20240820232928.458248-2-lucas.demarchi@intel.com>
- <20240821112945.ecy2tuu36nnih4hd@kamilkon-DESK.igk.intel.com>
- <vbao6gcl4cxcfizf6gdwpmjebmlqvob6y72of6bq7g737x43lw@nfovq2z3fzt7>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20240821095137.60254-1-kamil.konieczny@linux.intel.com>
+ <172425814909.721581.15278207553073772463@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <vbao6gcl4cxcfizf6gdwpmjebmlqvob6y72of6bq7g737x43lw@nfovq2z3fzt7>
+In-Reply-To: <172425814909.721581.15278207553073772463@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,97 +71,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
-On 2024-08-21 at 07:35:11 -0500, Lucas De Marchi wrote:
-> On Wed, Aug 21, 2024 at 01:29:45PM GMT, Kamil Konieczny wrote:
-> > Hi Lucas,
-> > On 2024-08-20 at 16:29:23 -0700, Lucas De Marchi wrote:
-> > > black tools/intel-gfx-fw-info
-> > > 
-> > > Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> > 
-> > This looks almost ok, now
-> > 
-> > pylint -d C0114,C0103,C0116,C0115 intel-gfx-fw-info
-> > 
-> > intel-gfx-fw-info:293:4: W0621: Redefining name 'e' from outer scope (line 136) (redefined-outer-name)
-> > 
-> > Your code has been rated at 9.92/10 (previous run: 7.64/10, +2.28)
-> > 
-> > Btw running
-> > ./intel-gfx-fw-info -c /lib/firmware/i915/ehl_huc_9.0.0.bin.zst
+Hi igt-dev,
+On 2024-08-21 at 16:35:49 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> 							     ^^^
+> Series: Fix compilation for musl in intel/kms_pm_backlight
+> URL   : https://patchwork.freedesktop.org/series/137557/
+> State : failure
 > 
-> > 
-> > I got:
-> > 
-> > header-type: CSS
-> > version: 137.147.184
-> > date: 543-01-b9
-> > checksum: 3aa76ca9f25d916e64a56267338d37993b8e4e7321856de83d98d14e15ace4ad
-> > 
-> > Is date an encoded date and time?
+> == Summary ==
 > 
-> it's compressed and this simple script doesn't handle compression (yet)
+> CI Bug Log - changes from XEIGT_7981_full -> XEIGTPW_11609_full
+> ====================================================
 > 
-> 	$ cp /lib/firmware/i915/ehl_huc_9.0.0.bin.zst .
-> 	$ zstd -d ehl_huc_9.0.0.bin.zst
-> 	$ ./tools/intel-gfx-fw-info ehl_huc_9.0.0.bin
-> 	header-type: CSS
-> 	version: 9.0.0
-> 	date: 2019-08-05
+> Summary
+> -------
 > 
-> The compression happened not to change the first 4 bytes so it
-> incorrectly recognized it and applied the CCS parser.  Adding
-> decompression may be something for another time.
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_11609_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_11609_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (4 -> 4)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_11609_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+>     - shard-lnl:          NOTRUN -> [FAIL][1] +12 other tests fail
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-7/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+> 
+>   * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12:
+>     - shard-lnl:          [PASS][2] -> [FAIL][3] +7 other tests fail
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-5/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12.html
+> 
+>   * igt@xe_module_load@reload:
+>     - shard-lnl:          [PASS][4] -> [ABORT][5] +1 other test abort
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-3/igt@xe_module_load@reload.html
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-3/igt@xe_module_load@reload.html
+> 
+>   
+> #### Warnings ####
+> 
+>   * igt@kms_async_flips@invalid-async-flip:
+>     - shard-lnl:          [SKIP][6] ([Intel XE#873]) -> [FAIL][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-7/igt@kms_async_flips@invalid-async-flip.html
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-1/igt@kms_async_flips@invalid-async-flip.html
+> 
+>   * igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow:
+>     - shard-lnl:          [SKIP][8] ([Intel XE#1477]) -> [FAIL][9]
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-4/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-1/igt@kms_big_fb@yf-tiled-addfb-size-offset-overflow.html
+> 
+>   * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs:
+>     - shard-lnl:          [SKIP][10] ([Intel XE#1399]) -> [FAIL][11]
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-1/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs.html
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-1/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-mtl-mc-ccs.html
+> 
+>   * igt@kms_chamelium_hpd@hdmi-hpd-after-hibernate:
+>     - shard-lnl:          [SKIP][12] ([Intel XE#373]) -> [FAIL][13] +1 other test fail
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-1/igt@kms_chamelium_hpd@hdmi-hpd-after-hibernate.html
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-7/igt@kms_chamelium_hpd@hdmi-hpd-after-hibernate.html
+> 
+>   * igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset:
+>     - shard-lnl:          [SKIP][14] ([Intel XE#1421]) -> [FAIL][15]
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-7/igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset.html
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-1/igt@kms_flip@2x-flip-vs-dpms-off-vs-modeset.html
+> 
+>   * igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-blt:
+>     - shard-lnl:          [SKIP][16] ([Intel XE#656]) -> [FAIL][17] +2 other tests fail
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-3/igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-blt.html
+>    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-7/igt@kms_frontbuffer_tracking@psr-2p-primscrn-pri-shrfb-draw-blt.html
+> 
+>   * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:
+>     - shard-lnl:          [SKIP][18] ([Intel XE#2318]) -> [FAIL][19] +1 other test fail
+>    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7981/shard-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html
+>    [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/shard-lnl-7/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html
+> 
 
-Thank you, is that de/compression documented somewhere?
-
-> 
-> > 
-> > You can add my acked-by with or without a fix for W0621 warning.
-> 
-> For this patch or for the series?
-
-For a series.
+Unrelated to change.
 
 Regards,
 Kamil
 
+>   
+> #### Suppressed ####
 > 
-> thanks
-> Lucas De Marchi
+>   The following results come from untrusted machines, tests, or statuses.
+>   They do not affect the overall result.
+>
+...cut...
 > 
-> > 
-> > Regards,
-> > Kamil
-> > 
-> > > ---
-> > >  tools/intel-gfx-fw-info | 10 ++++++----
-> > >  1 file changed, 6 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-> > > index b0d41bbae..35555aab5 100755
-> > > --- a/tools/intel-gfx-fw-info
-> > > +++ b/tools/intel-gfx-fw-info
-> > > @@ -150,10 +150,12 @@ def parse_args(argv: typing.List[str]) -> argparse.Namespace:
-> > >      description = "Dump GuC/HuC firmware information"
-> > >      parser = argparse.ArgumentParser(prog="intel-gfx-fw-info", description=description)
-> > > 
-> > > -    parser.add_argument("-x", "--raw", action="store_true",
-> > > -                        help="Also print raw header content")
-> > > -    parser.add_argument("-c", "--checksum", action="store_true",
-> > > -                        help="Also print checksum")
-> > > +    parser.add_argument(
-> > > +        "-x", "--raw", action="store_true", help="Also print raw header content"
-> > > +    )
-> > > +    parser.add_argument(
-> > > +        "-c", "--checksum", action="store_true", help="Also print checksum"
-> > > +    )
-> > > 
-> > >      parser.add_argument("filename", help="GuC/HuC firmware file")
-> > > 
-> > > --
-> > > 2.43.0
-> > > 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7981 -> IGTPW_11609
+>   * Linux: xe-1801-50db4c0a8d28ec0d03ea120d17a914265fa47d5c -> xe-1804-c83ab549ef8f647c3de42793d222a980021a973f
+> 
+>   IGTPW_11609: 11609
+>   IGT_7981: f4e2ada1adec484cf506b5ec7e9acb3ae62228f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-1801-50db4c0a8d28ec0d03ea120d17a914265fa47d5c: 50db4c0a8d28ec0d03ea120d17a914265fa47d5c
+>   xe-1804-c83ab549ef8f647c3de42793d222a980021a973f: c83ab549ef8f647c3de42793d222a980021a973f
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11609/index.html
