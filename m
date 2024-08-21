@@ -4,185 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3CCDC52D7C
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 13:25:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DE05C52D7C
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 13:58:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 41FDB10E452;
-	Wed, 21 Aug 2024 13:25:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 214FD10E592;
+	Wed, 21 Aug 2024 13:58:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDFL9E/C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OiRhZOfn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D568010E452
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 13:25:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A702B10E592
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 13:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724246706; x=1755782706;
- h=date:from:to:subject:message-id:references:in-reply-to:
- mime-version; bh=XAzrTA5qoshpBqjrXOuw12fyOO+wPjgXElK7WXWf6Pw=;
- b=aDFL9E/CtfUlqga8FZNi4tg1nVT2wuiyntO9h1VrFnpjYAYuQt5kM/6U
- VW27TEfdP3hrds+BnD9ptb1UAweCoka60dL2NWRCQGJ+XhQGmyG99lFuU
- reIGoBe5UbsIQcHp/lj0Sj6kY7YBJTtyGiZU9WOCvQLXNRi/GAZDc7ES2
- mXcplF4tk3xznpW4wPQ45nRN4DYpTLIuwQYt1UF2gaaph3GfAi/wRtCBd
- xFb5ISCiUMjU529sk2V/wRvAjXU5CmolrQUTFuHnueRNjQig5J/9dsM7t
- 8Goeo/qrz9SckqLowj5dBOojCZutWgGU0vR1OzkiywaKcU9qdFAkrvi7Q g==;
-X-CSE-ConnectionGUID: Spi7YAnhSyGcSdlDDOBMiQ==
-X-CSE-MsgGUID: bHBZsgvQR5yfA9PY1bmSLA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="40118823"
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="40118823"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 06:25:06 -0700
-X-CSE-ConnectionGUID: FTifUTKTRkGBhUEpCNnVww==
-X-CSE-MsgGUID: VjScTRoVT9aMeeu1cV4yfg==
+ t=1724248723; x=1755784723;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5LuwiJro3w3hoJ4WZaplKTZuCXKCXSDuDb4EwJ/ZgNA=;
+ b=OiRhZOfnrF+NBpcvP+KYjUabdqNtTHQUca/w2wICZ9rOvWGJgaghb3qx
+ bljpBzXxKjPJAg9q6UoQlrpFeTrIiI3/FlNjDdTxYkCH1TmfT8iviEemX
+ tdplL/JgR0Lrqf1j+wZ0FwQBhlFzhlrv5TV3YdOj8xX7m5KJei2c4m8i4
+ S0Ms1Xl28KyyN103ZVqYk8BWplTYIxsczmkwQ9wpAFaKn6OwJjgMeCNB2
+ 2LyKr0J3g1rvbCZJb1dajRd5VwrYsqPI+LKjubQH2GEPlYfpRfcAq8yN6
+ zhlcJZFHkiO1kgd98gqSX6CQObL8QK5HZdgKQ2ORrGjVP/BBu7/M9/nxs g==;
+X-CSE-ConnectionGUID: 6Rge3VsKSxOybrIxJ4KyiA==
+X-CSE-MsgGUID: lrb+MR3oSKuD9oED9B5v1Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22221489"
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="22221489"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2024 06:58:42 -0700
+X-CSE-ConnectionGUID: ApBjDzxARCGZJcQCeyMfkA==
+X-CSE-MsgGUID: mPZS2sIBTjmf/WSn1DLSBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61227540"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 21 Aug 2024 06:25:05 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 21 Aug 2024 06:25:05 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 21 Aug 2024 06:25:04 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 21 Aug 2024 06:25:04 -0700
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 21 Aug 2024 06:24:53 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jTt4cTFFNRyJRr5qDmGdP04Nzt+fEtQ1MFo+MZJch34oJ/qW5GPclCkhUkDDlX9tx91f1hyTF1fufM0cUdSYiBXDQy1BCmzBlVVDxZCzNPnplwHjqdYxZ6hNxrXG1ULdLeA4jTtV4c1ecMyLlcTyuK/7RPDxiDFvXDZMdCsoVCtS82gXlpG+XCcmfQy7/cw1nLg6ta335QjySL+JgGsGmHC9vYEYuEE/VNpFnd3Mxi7BntDoAdpzpfsCoaNg3w6omC5Al4XkDTWnlExVyUuN+pjELHkcWVAlBDadpei2xggLNC7UaT9GTuFE+wrtl/P2rB/G9oRwt3+6npdqePy9yA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TYZ4Req5EXuEBN/huxT1j4QfZngokrPwGU987uFIzN0=;
- b=QsvglAPPpGDTzhFm/9lNViiYwZLRjeG9cxf+HyXu+ipL4Bgfldp580FI0tkjsoa41x5YvIWnnIY9UuQztX3mUliUDZ9JGt33gN4dN6cWjeKAMdbECVPw2VZYIJOvf4FF25AylmwjAL5bD9IaArsuwBaZUDY9dKI+yTTEGnEX+qGVvpoUtA9lJTpg0Locj52Bok0bR9Wgy2IzZfyJOEu37AiUgIP7N39ciShy3I97o1DezcoK7evnPVC68225G5jLyfpqDU1Gt4XVgDJMQ7GGdjSdCcplBhGcVWNMkt56qZtycKM7WwBdRLn4aVPGRmfZRo4bQCTg2gmQa1LIQCDegw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8019.namprd11.prod.outlook.com (2603:10b6:8:12e::18)
- by PH7PR11MB5817.namprd11.prod.outlook.com (2603:10b6:510:13a::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.19; Wed, 21 Aug
- 2024 13:24:47 +0000
-Received: from DS0PR11MB8019.namprd11.prod.outlook.com
- ([fe80::d2ab:ff8b:3430:b695]) by DS0PR11MB8019.namprd11.prod.outlook.com
- ([fe80::d2ab:ff8b:3430:b695%4]) with mapi id 15.20.7875.019; Wed, 21 Aug 2024
- 13:24:47 +0000
-Date: Wed, 21 Aug 2024 15:24:36 +0200
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: <igt-dev@lists.freedesktop.org>, Chris Wilson
- <chris.p.wilson@linux.intel.com>, Andi Shyti <andi.shyti@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, Nirmoy Das
- <nirmoy.das@intel.com>, Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: Re: [PATCH i-g-t v2] i915/gem_mmap_offset: Partial mmap and munmap
-Message-ID: <gohu7lp6s2xhckqdayrwmsxzkpmucpnrzvnotktafw3pfvbosz@ybjztcocclmr>
-References: <20240821121157.19055-2-krzysztof.niemiec@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-In-Reply-To: <20240821121157.19055-2-krzysztof.niemiec@intel.com>
-X-ClientProxiedBy: BE1P281CA0346.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:7d::11) To DS0PR11MB8019.namprd11.prod.outlook.com
- (2603:10b6:8:12e::18)
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61077629"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
+ ([10.245.246.18])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2024 06:58:40 -0700
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: [PATCH i-g-t v3] lib/gpgpu_fill: Write kernel using inline iga64 api
+Date: Wed, 21 Aug 2024 15:58:22 +0200
+Message-Id: <20240821135822.445887-1-dominik.grzegorzek@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8019:EE_|PH7PR11MB5817:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a76e85c-37bf-4e27-a92f-08dcc1e4a0d6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|27256017;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?amdLdHNsQitZQVR6N1dKTUs5YmlMZ2NUaldIYldkMXY1QTVkNjJEakpKZFdv?=
- =?utf-8?B?c08xZUVJSGFwTDFHUFJTcnB3d1AxNElOQU9jK25Lcjd3UzJJWHZYN1EvRGEy?=
- =?utf-8?B?YmpVZmVnenlaeUM3ZDF1d0owdVk3OTVJbDVFMXc5ZisrQ0Z0b0VHUFFaNHNh?=
- =?utf-8?B?TXJPZElHVUwrS29KME5LTXRLV1NsaHpOdXVEeDZnVzhIR1lkQk1tOXgzYUlE?=
- =?utf-8?B?U0ZhZGp5NUt3YVBVcERDRVo4cTZxREdrb2lOOWJBWFkxV3B6cHUzeTJFSkNp?=
- =?utf-8?B?c00xSFJGbUxZOEVYU2lRaWV4VlZ0cWNHWTh0MEFjNzRZajZFdlQ2Z2JMNVF2?=
- =?utf-8?B?bUp5Y0hmdnhwK3JCM0VzVWxHZU9Ham8xQitlbHVPNzVFNWYra0E1TEFJeWRL?=
- =?utf-8?B?ZFRTMGVqcDBaWTlaaTFLeXVkSmxYRzhuTnRrNTNSaTRqQVRqVHlpY2xRcjYx?=
- =?utf-8?B?SzNBNm9jVlpEckxrNkR2Y1FJa1JhZERZRmh1eGJXVEFwVDZLNkpIUUZrR0tL?=
- =?utf-8?B?SHBjV2xZVzFxWXYwMUxES2ZyWTlrK3hFZmhMempHd2xuMDBGcnFGRzlZaDdO?=
- =?utf-8?B?bmJyK0dMVE9hanFNc3pid2VyWk54V0dQVlYxQW5aRHNkMjZMVVpBZTh4QUlz?=
- =?utf-8?B?M1FtK2lYMG43WU1TMFVyUTNFeE10blA0RHJVeUpoNExWWk9ITHpCbi8zL2Fy?=
- =?utf-8?B?YWxxTzBlQ1d4THd4RDlESlV3YzlBVkRKbW1XQ3Q5QVhOYWlkSEFmdVhjVkd5?=
- =?utf-8?B?UzhkV1I0TWlnOHM5L1J4NDY2cUJPNmZaRlVZUXc3bzJZaDJCam4wcmhYdnhP?=
- =?utf-8?B?ZjNXNUdDR0lVR05rejdZYjUvaW5qSkQzRE9XUXVWN0FxRU15eW9NYUFzSnRE?=
- =?utf-8?B?cTNrdWFVOWpqbnkvcm1XL2Z5MUtnQXI3Zk5aRHEzTXd4Yi9WUTdRcWs5N3k2?=
- =?utf-8?B?dTNpTU1CK01iUHNoQkh1RG9EUjluWXlUT3FhRzZ5S0xud0J0QWxLWElkT3Jq?=
- =?utf-8?B?a1hjNXg3RENSS0E4Tlo0VXNrQmdMM3htOTdkSHl3RERDTlUyTGRQNGFmV1d2?=
- =?utf-8?B?Q3RQOXgwZkRDZWxUUHRMbGE2VXBxK0UvUW01STU5K05DZFQ0SGs1MjdnbVhT?=
- =?utf-8?B?dUZGZFhiYXJ3U01TTWxFT2hzanhkdDNHVGZoZGlxZEErb0k4dTRSTUpzK2Fv?=
- =?utf-8?B?NlB3NUpCNmhMRFJSeS9lTytVWTNSV3g2UGFsOEpYSkRCd1lNQUErV3Zjd0ZI?=
- =?utf-8?B?VHhnVnU5VUlKdjBkZWNEWFFVaDdwSlBKNUV2bURPUHV6V1RNNG9TaVBHakd0?=
- =?utf-8?B?Tkt0MHhDS3VHVFhUbHgrYUNQajMrOHdyOGtaYlJQRU9yY2VwUjIzakY3TG1J?=
- =?utf-8?B?WVlidHFES2RIMWxvVWxUUWV1ZFo0dVNNZ2k4N0d5b0ZRSFRaMGJWZ29jazIy?=
- =?utf-8?B?SnYvcUhoMVJzeS9TQlhqK09aK1dtaVpBQTBsTGJ5TVpMUnJyN09XNndtUWFt?=
- =?utf-8?B?L0t2NHliM0dyZHQ1eml0LzU1aG1heHFGbnhFdlhlOGFlRlRtcW04cldyWjhZ?=
- =?utf-8?B?RUQ5R01NM05Cc1pMUVNyTzFXRU13engzQ0FXeEQrR2NPUEtoMTFxYVYvRDI3?=
- =?utf-8?B?MXNhejdRZHFTdEloemJxTkRhcjRyOVN5cXNMQTJ0b2hJY3k1YlJQcktpUjhY?=
- =?utf-8?B?anZrS3dEWDhMZW9qWVF1OVBkZHVKTlpRamlyN01uZUpWdklXMis1anRYWVJn?=
- =?utf-8?B?MzhrUU5TUHhQYnNvZU1UTzdrZml2bytJUzA3eEF4OGR1Tmp0QjUwU1c0Y0Q0?=
- =?utf-8?B?cVc0RVVMeFB4bGhGc1VGa2oweElUWThEMFIvZG9IanZ4blg3RVBmNTFPeS9s?=
- =?utf-8?B?c3ltdGgxNE1Za0pkNnZhWkZXdzdVa0JHaVE3NUM4NTZSSVE9PQ==?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB8019.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(27256017); DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WG5YSnNKN3JJaUs5bXNGemVHMHZMdW9tMmIyZUZDM0liVEpQR3UrMFFWTkRK?=
- =?utf-8?B?VnF1VlovRXVQN1VaQnY2SHpxZmlmQzQ0TUZtZGo1czczSHhuMW9hcStJT2Vw?=
- =?utf-8?B?ZnN5REJUSFNyZnZZQnphZk42ZS9kN1duMEhlT2lST0NjRU1RbTV4TE51VzFu?=
- =?utf-8?B?M0p6czlhcXh2T2dTNlV6QWd5YjlPampNMndXMU9oczg1MWZxSkNlV20yYzBM?=
- =?utf-8?B?V2tWanN0dmdIMytsTk1EZXIrS24zTHZSOFVlQzB0L2RtMDdFR09wQzllMXBR?=
- =?utf-8?B?U3FSa1NZV2xhbFZzZEY1TEtqOE1xUnFxaCtuTjFHU1cvZGdwU1NjUVYvakZP?=
- =?utf-8?B?UU5UakVEbW5uNXhRdDF4M1RGbkZPRVdjdmhZUVlVL05JS091c2NZOUNvYTZs?=
- =?utf-8?B?eVJGajVteVF4dEVFV3A2OU9IYzBLQkdTcm5KbE1GMGR5dDhLR1JoNDJrc0tu?=
- =?utf-8?B?RlA2UGJYbHJjNWFneExFS212VFdKWmRCZndBNGpvSWplclVJVWpTMnlpTUsx?=
- =?utf-8?B?T1ZXNmVJUWRFQVBSWmIwYlZHVlJmNGNSWkowaGtST1FYRGVBWHI2UGFGZlF0?=
- =?utf-8?B?SlFXS0g1dEFZY2djWFhCM1dySWYweE5lMWFqVEVUR3V1R3RDb2hZS2xyZS9U?=
- =?utf-8?B?U0FVZVhlMHhJRUQ4cXh4ckRObkp0N3NKN2RLVWk4Mm55dFRuRjlEbmdnZzNX?=
- =?utf-8?B?cG11NU1lcDBaalc3ektIWCthR0Rvak8xYjdQclVSbVNxVjlSck0zWkFTTm00?=
- =?utf-8?B?cXZRbGVCK0xHOUFiOWdNSVVnbG5SQXhqajZjVkFZVzFGaHd5dk9ud2o2c091?=
- =?utf-8?B?aUg5eXBlN2FNdHJRbElSMGFuYkdUaEMyWSs1TXQwcGtrQmFSODhqckttQlRl?=
- =?utf-8?B?cXdjZmhHYjQwS1NhZzE1TEx3RmFmWGwyNWlSQnlTK1dFcUcyWjh2akZMZ2RR?=
- =?utf-8?B?MFhZUEdXdmtseGUzd000Rkx2d25HbXI0dmMxT2NEMzMwTjVGWGdobW1Pb09o?=
- =?utf-8?B?TGpHTjRZbHNCUG41aW96cTd2a1o5VHI4alJNSnJNYW5BR2lyc1FpMkNOZS9U?=
- =?utf-8?B?QVhTM1V4K1hxcWVyV28wOG1RRjBiYzZqWjJxclQxcVdmNDhWdkg2SGN3azF2?=
- =?utf-8?B?NzZnaVFBV1RHSVJvUXl2V3lPL0pBcnlpSUhMMCtWS3VDeXJMSHNSempRVDgw?=
- =?utf-8?B?UHVqTklDUERIN1VXYmhSdVBjU0pCSHZ3NlRuY2FqQlRKNDZZMTlMRTB4RVVt?=
- =?utf-8?B?VlJlQUF6TTNyRWozMmU3enMvc1JqSHJmZnI1cThCLzliWkcxd0Q5d1kweHRF?=
- =?utf-8?B?bFVBbzIyaVJUdmROdFA3YVhib0NQVVRtaHliUzVkemVGSHg3Z2t2YjlDWlZM?=
- =?utf-8?B?Q25kUDRRYTFndm1sSTNkejNFR0xTT3p6ODg5RzFtZGV6QWl6Rm5EZExFa3Nl?=
- =?utf-8?B?WnB6dFYvaHIrOWwrTDNLVUUrc1R2MTZiNExGVjUxbnY5enZjOERWc1YwMWlM?=
- =?utf-8?B?QWI5TFVmRkpDU2NhbFN1YlhBMWlzaStndVVKeWFWSXJ1c1BPOFBDaU14UmlV?=
- =?utf-8?B?dDI4SVB1M25nalpVeUpkSFlQSW80ZmRWK01kRDJHWjhPZ0cvdDRUV01PaHda?=
- =?utf-8?B?d1ZJMENudkt1REcyWHRXZDQ4bHBzTFc1NWtQbjV1QW9DODdGcmxMc05CQnZC?=
- =?utf-8?B?ZzAxb1dZb3B1RlVrelQvZkZwU2NucnNad2NBTk1FMTdSNVN2YjBWWlAzZVVX?=
- =?utf-8?B?V3ppaUNFTnNadldGTFo4UmpoeXR1RXdxNmpsOVpFL1YraWswN3Jac1o3bEI0?=
- =?utf-8?B?dFBWbU9QZHJpNXU2MWxwWFh5UXJqc0V3UStBMmczdys3ZHVPZmtxc3dZZDIy?=
- =?utf-8?B?ZU5PMDhsR1Z0alJYRzFCYWlpSTV4WUtUc2dmZUxVaFlHMUhzNUxsZ2dmSDFR?=
- =?utf-8?B?eGlIdGo4TDZWQTIrYWh5UlMyTW5DWVZVSzZRTWtVcnFwWC9Id1BwRk1EanJi?=
- =?utf-8?B?Y21BWTFCZk9kbTdsaDhUVmF2N3RIR3dCelVESys3MEVwU2kyNElVek9YWVBp?=
- =?utf-8?B?c2JFb2F1eW5iSlFzK0VpS2lKS0hDNHFPbGRnRkdPTzdDZTdQTjFZaHYvMDNB?=
- =?utf-8?B?dStmU1QwcU1nNnhBc002UVczME5RM0tjMHgwMnJJNS9FVW5HQTQzWHJtN3dJ?=
- =?utf-8?B?Vmc9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a76e85c-37bf-4e27-a92f-08dcc1e4a0d6
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8019.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 13:24:47.5930 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oPeF+4L+O+oilFSL1kkrFn0pIqsef/C5yBAGoJGvlPqblqoKNor3DneP1RVejRJbn05V7lXp7wtqhMnz6DqZbZFUZzXNyL9CcL4n1MyE78A=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB5817
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -198,22 +67,401 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 2024-08-21 at 14:11:57 GMT, Krzysztof Niemiec wrote:
-> From: Chris Wilson <chris.p.wilson@linux.intel.com>
-> 
-> Based on a test case developed by Lionel Landwerlin, this exercises
-> creation of partial mmaps using both direct methods of a partial mmap()
-> (where the mmap() only covers a portion of the object) and
-> munmap() to do the same.
-> 
-> Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Rewrite gpgpu_fill shaders to utilize the newly introduced
+method of writing IGA64 assembly inline.
 
-Please, ignore this patch. It has been sent as a result of a little
-misunderstanding. I will send a proper v2 later.
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+ lib/gpgpu_fill.c                              | 142 ++++++++----------
+ lib/gpgpu_fill.h                              |  13 --
+ .../shaders/gpgpu/gen12p72_gpgpu_kernel.asm   |  12 --
+ .../shaders/gpgpu/xe2lpg_gpgpu_kernel.asm     |  13 --
+ lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm  |  12 --
+ lib/iga64_generated_codes.c                   |  76 +++++++++-
+ lib/intel_batchbuffer.c                       |   8 +-
+ lib/meson.build                               |   2 +-
+ 8 files changed, 140 insertions(+), 138 deletions(-)
+ delete mode 100644 lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
+ delete mode 100644 lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+ delete mode 100644 lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
 
-Thanks
-Krzysztof
+diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
+index 1270c2b22..fe0b8b35d 100644
+--- a/lib/gpgpu_fill.c
++++ b/lib/gpgpu_fill.c
+@@ -31,6 +31,7 @@
+ #include "drmtest.h"
+ 
+ #include "gpgpu_fill.h"
++#include "gpgpu_shader.h"
+ #include "gpu_cmds.h"
+ 
+ /* lib/i915/shaders/gpgpu/gpgpu_fill.gxa */
+@@ -99,43 +100,6 @@ static const uint32_t gen12_gpgpu_kernel[][4] = {
+ 	{ 0x00040131, 0x00000004, 0x7020700c, 0x10000000 },
+ };
+ 
+-static const uint32_t xehp_gpgpu_kernel[][4] = {
+-	{ 0x00020061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000024, 0x00000004 },
+-	{ 0x00000061, 0x02250220, 0x000000c4, 0x00000000 },
+-	{ 0x00030061, 0x04050220, 0x00460005, 0x00000000 },
+-	{ 0x00011a61, 0x04050220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04454220, 0x00000000, 0x0000000f },
+-	{ 0x00041e61, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x80001901, 0x00010000, 0x00000000, 0x00000000 },
+-	{ 0x00044031, 0x00000000, 0xc0000414, 0x02a00000 },
+-	{ 0x00030031, 0x00000004, 0x3000500c, 0x00000000 },
+-};
+-
+-static const uint32_t xehpc_gpgpu_kernel[][4] = {
+-	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
+-	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
+-	{ 0x000c0061, 0x04050220, 0x00460005, 0x00000000 },
+-	{ 0x00041a61, 0x04050220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04254220, 0x00000000, 0x0000000f },
+-	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x00132031, 0x00000000, 0xc0000414, 0x02a00000 },
+-	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
+-};
+-
+-static const uint32_t xe2lpg_gpgpu_kernel[][4] = {
+-	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
+-	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
+-	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
+-	{ 0x00100061, 0x04054220, 0x00000000, 0x00000000 },
+-	{ 0x00041a61, 0x04550220, 0x00220205, 0x00000000 },
+-	{ 0x00000061, 0x04754550, 0x00000000, 0x000f000f },
+-	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
+-	{ 0x00132031, 0x00000000, 0xd00e0494, 0x04000000 },
+-	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
+-};
+-
+ /*
+  * This sets up the gpgpu pipeline,
+  *
+@@ -317,15 +281,66 @@ __gen9_gpgpu_fillfunc(int i915,
+ 	intel_bb_destroy(ibb);
+ }
+ 
+-static void
+-__xehp_gpgpu_fillfunc(int i915,
+-		      struct intel_buf *buf,
+-		      unsigned int x, unsigned int y,
+-		      unsigned int width, unsigned int height,
+-		      uint8_t color, const uint32_t kernel[][4],
+-		      size_t kernel_size)
++static struct gpgpu_shader *__xehp_gpgpu_kernel(int i915)
++{
++	struct gpgpu_shader *kernel = gpgpu_shader_create(i915);
++
++	emit_iga64_code(kernel, gpgpu_fill, "					\n\
++// fill up r1 with target colour						\n\
++mov (4|M0)		r1.0<1>:ub	r1.0<0;1,0>:ub				\n\
++// prepare block x offset (Thread Group Id X * 16)				\n\
++shl (1|M0)		r2.0<1>:ud	r0.1<0;1,0>:ud	0x4:ud			\n\
++// prepare block y offset (Thread Group Id Y)					\n\
++mov (1|M0)		r2.1<1>:ud	r0.6<0;1,0>:ud				\n\
++// zero message header payload							\n\
++mov (8|M0)		r4.0<1>:ud	0x0:ud					\n\
++// fill up message payload with target colour					\n\
++mov (16|M0)		r5.0<1>:ud	r1.0<0;1,0>:ud				\n\
++#if GEN_VER < 2000								\n\
++// load block offsets into message header payload				\n\
++mov (2|M0)		r4.0<1>:ud	r2.0<2;2,1>:ud				\n\
++// load block width								\n\
++mov (1|M0)		r4.2<1>:ud	0xF:ud					\n\
++// load FFTID from R0 header							\n\
++mov (1|M0)		r4.4<1>:ud	r0.5<0;1,0>:ud				\n\
++// Media block write to bti[0] surface						\n\
++// Message Descriptor								\n\
++//	0x40A8000:								\n\
++//	[28:25]		Mlen: 2							\n\
++//	[24:20]		Rlen: 0							\n\
++//	[19]		Header: 1 (included)					\n\
++//	[18:14]		MessageType: 0xA (media block write)			\n\
++//	[7:0]		BTI: 0							\n\
++send.dc1 (16|M0)	null	r4	src1_null	0x0	0x40A8000	\n\
++#else										\n\
++// load block offsets into message header payload				\n\
++mov (2|M0)		r4.5<1>:ud	r2.0<2;2,1>:ud				\n\
++// load block width								\n\
++mov (1|M0)		 r4.14<1>:w	0xF:w					\n\
++// Typed 2D block store to bti[0] surface					\n\
++// Message Descriptor								\n\
++//	0x6400007:								\n\
++//	[30:29]		AddrType: 3 (BTI)					\n\
++//	[28:25]		Mlen: 2							\n\
++//	[24:20]		Rlen: 0							\n\
++//	[19:17]		Caching: 0  (use state settings for both L1 and L3)	\n\
++//	[5:0]		Opcode: 0x07  (store_block2d)				\n\
++send.tgm (16|M0)	null	r4	null	0x0	0x64000007		\n\
++#endif										\n\
++	");
++
++	gpgpu_shader__eot(kernel);
++	return kernel;
++}
++
++void xehp_gpgpu_fillfunc(int i915,
++			 struct intel_buf *buf,
++			 unsigned int x, unsigned int y,
++			 unsigned int width, unsigned int height,
++			 uint8_t color)
+ {
+ 	struct intel_bb *ibb;
++	struct gpgpu_shader *kernel;
+ 	struct xehp_interface_descriptor_data idd;
+ 
+ 	ibb = intel_bb_create(i915, PAGE_SIZE);
+@@ -333,8 +348,10 @@ __xehp_gpgpu_fillfunc(int i915,
+ 
+ 	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
+ 
+-	xehp_fill_interface_descriptor(ibb, buf,
+-				       kernel, kernel_size, &idd);
++	kernel = __xehp_gpgpu_kernel(i915);
++	xehp_fill_interface_descriptor(ibb, buf, kernel->instr,
++				       kernel->size * 4, &idd);
++	gpgpu_shader_destroy(kernel);
+ 
+ 	intel_bb_ptr_set(ibb, 0);
+ 
+@@ -388,36 +405,3 @@ void gen12_gpgpu_fillfunc(int i915,
+ 			      gen12_gpgpu_kernel,
+ 			      sizeof(gen12_gpgpu_kernel));
+ }
+-
+-void xehp_gpgpu_fillfunc(int i915,
+-			 struct intel_buf *buf,
+-			 unsigned int x, unsigned int y,
+-			 unsigned int width, unsigned int height,
+-			 uint8_t color)
+-{
+-	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      xehp_gpgpu_kernel,
+-			      sizeof(xehp_gpgpu_kernel));
+-}
+-
+-void xehpc_gpgpu_fillfunc(int i915,
+-			  struct intel_buf *buf,
+-			  unsigned int x, unsigned int y,
+-			  unsigned int width, unsigned int height,
+-			  uint8_t color)
+-{
+-	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      xehpc_gpgpu_kernel,
+-			      sizeof(xehpc_gpgpu_kernel));
+-}
+-
+-void xe2lpg_gpgpu_fillfunc(int i915,
+-			   struct intel_buf *buf,
+-			   unsigned int x, unsigned int y,
+-			   unsigned int width, unsigned int height,
+-			   uint8_t color)
+-{
+-	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
+-			      xe2lpg_gpgpu_kernel,
+-			      sizeof(xe2lpg_gpgpu_kernel));
+-}
+diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
+index c3b47c10a..a483859e5 100644
+--- a/lib/gpgpu_fill.h
++++ b/lib/gpgpu_fill.h
+@@ -68,17 +68,4 @@ xehp_gpgpu_fillfunc(int i915,
+ 		    unsigned int width, unsigned int height,
+ 		    uint8_t color);
+ 
+-void
+-xehpc_gpgpu_fillfunc(int i915,
+-		     struct intel_buf *dst,
+-		     unsigned int x, unsigned int y,
+-		     unsigned int width, unsigned int height,
+-		     uint8_t color);
+-
+-void xe2lpg_gpgpu_fillfunc(int i915,
+-			   struct intel_buf *buf,
+-			   unsigned int x, unsigned int y,
+-			   unsigned int width, unsigned int height,
+-			   uint8_t color);
+-
+ #endif /* GPGPU_FILL_H */
+diff --git a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
+deleted file mode 100644
+index 52699a475..000000000
+--- a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,12 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
+-         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
+-         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
+-         mov (1|M0)               r4.2<1>:ud    0xF:ud
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
+-(W)      sync.nop                             null                             {I@1}
+-         send.dc1 (16|M0)         null     r4      null:0    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
+-         send.gtwy (8|M0)         null     r80     null:0    0x0         0x02000000 {EOT}
+-L176:
+diff --git a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
+deleted file mode 100644
+index e2ecc71f5..000000000
+--- a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,13 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub                        // Load r1.0-3 with color byte
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud              // Load r2.0-3 with tg id X << 4
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud                        // Load r2.4-7 with tg id Y
+-
+-         // payload setup
+-         mov (16|M0)              r4.0<1>:ud    0x0:ud                                // Zero out register R4
+-         mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud                        // Store X and Y block start (160:191 and 192:223)
+-         mov (1|M0)               r4.14<1>:w    0xF:w                                 // Store X and Y block size (224:231 and 232:239)
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                        // Load r5-r6 with color byte
+-
+-         send.tgm (16|M0)         null     r4    null:0    0x0    0x64000007          // Send TypedStore2DBlock to tgm port
+-         send.gtwy (8|M0)         null    r80    null:0    0x0    0x02000000 {EOT}
+diff --git a/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
+deleted file mode 100644
+index 7adfbd0f0..000000000
+--- a/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
++++ /dev/null
+@@ -1,12 +0,0 @@
+-L0:
+-         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
+-         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
+-         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
+-         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
+-         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
+-         mov (1|M0)               r4.2<1>:ud    0xF:ud
+-         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
+-(W)      sync.nop                             null                             {I@1}
+-         send.dc1 (16|M0)         null     r4      null    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
+-         send.gtwy (8|M0)         null     r80     null    0x0         0x02000000 {EOT}
+-L176:
+diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+index 6a08c4844..c22b1e9e7 100644
+--- a/lib/iga64_generated_codes.c
++++ b/lib/iga64_generated_codes.c
+@@ -3,7 +3,81 @@
+ 
+ #include "gpgpu_shader.h"
+ 
+-#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
++#define MD5_SUM_IGA64_ASMS efa80cb5c2d50f515af3642cee8dc062
++
++struct iga64_template const iga64_code_gpgpu_fill[] = {
++	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
++		0x00080061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000014, 0x00000004,
++		0x00000061, 0x02150220, 0x00000064, 0x00000000,
++		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
++		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00041b61, 0x04550220, 0x00220205, 0x00000000,
++		0x00000061, 0x04754550, 0x00000000, 0x000f000f,
++		0x00132031, 0x00000000, 0xd00e0494, 0x04000000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1270, .size = 52, .code = (const uint32_t []) {
++		0x00020061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000024, 0x00000004,
++		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
++		0x00030061, 0x04054220, 0x00000000, 0x00000000,
++		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1260, .size = 48, .code = (const uint32_t []) {
++		0x00080061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000014, 0x00000004,
++		0x00000061, 0x02150220, 0x00000064, 0x00000000,
++		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
++		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00041b61, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04254220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04450220, 0x00000054, 0x00000000,
++		0x00132031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
++		0x00020061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000024, 0x00000004,
++		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
++		0x00030061, 0x04054220, 0x00000000, 0x00000000,
++		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
++		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x80001901, 0x00010000, 0x00000000, 0x00000000,
++		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
++		0x00020061, 0x01050000, 0x00000104, 0x00000000,
++		0x00000069, 0x02058220, 0x02000024, 0x00000004,
++		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
++		0x00030061, 0x04054220, 0x00000000, 0x00000000,
++		0x00040461, 0x05050220, 0x00000104, 0x00000000,
++		0x00010361, 0x04050220, 0x00220205, 0x00000000,
++		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
++		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
++		0x00049031, 0x00000000, 0xc0000414, 0x02a00000,
++		0x80000001, 0x00010000, 0x20000000, 0x00000000,
++		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
+ 
+ struct iga64_template const iga64_code_media_block_write[] = {
+ 	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index 824e92831..f91091bc4 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -758,13 +758,7 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
+ {
+ 	igt_fillfunc_t fill = NULL;
+ 
+-	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
+-		fill = xe2lpg_gpgpu_fillfunc;
+-	else if (IS_METEORLAKE(devid))
+-		fill = xehp_gpgpu_fillfunc;
+-	else if (intel_graphics_ver(devid) >= IP_VER(12, 60))
+-		fill = xehpc_gpgpu_fillfunc;
+-	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
++	if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+ 		fill = xehp_gpgpu_fillfunc;
+ 	else if (IS_GEN12(devid))
+ 		fill = gen12_gpgpu_fillfunc;
+diff --git a/lib/meson.build b/lib/meson.build
+index f711e60a7..2fac522d3 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -216,7 +216,7 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
+ 		      fallback : 'NO-GIT',
+ 		      command : vcs_command )
+ 
+-iga64_assembly_sources = [ 'gpgpu_shader.c' ]
++iga64_assembly_sources = [ 'gpgpu_shader.c', 'gpgpu_fill.c' ]
+ 
+ lib_intermediates = []
+ iga64_assembly_libs = []
+-- 
+2.34.1
+
