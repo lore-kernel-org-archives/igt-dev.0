@@ -4,64 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB2C2C52D7C
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 12:17:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AEA5C52D7C
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 12:35:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B4E610E87B;
-	Wed, 21 Aug 2024 12:17:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0822710E137;
+	Wed, 21 Aug 2024 12:35:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="guuGvkgl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JGaY7TAR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D3D3710E135
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 12:17:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D1C3510E137
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 12:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724242649; x=1755778649;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=AFXcaq/ovdL0YEu4CcoRpKvg0smhqlbhLXgRVqjs4ZU=;
- b=guuGvkglZ3u9N67jL2WrYqrAWLyrkdx5Dy/pke8tsS462mvKWrNJ2mjx
- 0KvXksTu1PqNzlfZz7JhSgpI1XZmK2CgHdpHu4UHY5YUgLcv+wy98c1+6
- CunT065iK06aqzKEtmb+5kHNMqyurDPDwVv/Ek+J3idjE4RxhFjh/NO8M
- LAHU051NXJp0sHWneE1BtM0uRqIvmpjYaFj3kXDXIoYkVv+J1nJ/LM9NV
- jzWi5O6a1h7DncDtuVkDL5ClFW/ItGswIgTsr+JAn2AJNcIDogyhpuwyG
- LI0d0jXfiKSrjtSJeXwnhBIPMz9W4HvnlOo15fnoZDETbPQWkS8N4Me5n Q==;
-X-CSE-ConnectionGUID: WWzDFd1WQy+L9ZYpDbrtbA==
-X-CSE-MsgGUID: /kpUJoZsT/a+fCwVKHM9Cg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="13132144"
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="13132144"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 05:17:29 -0700
-X-CSE-ConnectionGUID: QeHuiYb2TRivrhKThuOOYg==
-X-CSE-MsgGUID: FKs2jDLSRuefnCxEEaxemw==
+ t=1724243719; x=1755779719;
+ h=date:from:to:subject:message-id:references:in-reply-to:
+ mime-version; bh=duyAxILFRaOknss1CjDyhoEk27RmcAm8WDErQHgXLD8=;
+ b=JGaY7TARjP6JjJCDWxzJaT9phYGnDndx0WU16uGI3Y1ONWLKNwYVpd2h
+ 7SApg+zkciiRzf8r3EpMX1HNfrlT984BgGESkXZidYazyZkYp3d3Indca
+ 6fz+JSrVxjpDXLohw2uAj37DwyOQSCttoDE594ivw0OL6+9b9ZgHR0Hos
+ ebgb2d6Eo69+Jj4joF+SmULLyj+OXNJVI0RyIwNwf7Ob+b0OcQIhPVS13
+ u8HdWWbnQJlUG0Tg2hNf42cHtz34y6UPM34ASfH9a16ybFpXol3XNwT5w
+ 7mf4CWL7Iki/P0yMVPUe7WvGG9shtZwMvoeuTajxgR2nqKxY3gCjTC5Ay A==;
+X-CSE-ConnectionGUID: h9OSb7D+RsCrRrJ9elGavA==
+X-CSE-MsgGUID: z2cZYYFGTDyiMFdhRVybbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22482754"
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="22482754"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2024 05:35:18 -0700
+X-CSE-ConnectionGUID: JGc7CqhHQ6WTUzX6cihMDA==
+X-CSE-MsgGUID: lX08+MX/Se+Xm6s+b9yL0w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61048678"
-Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.246.18.111])
- ([10.246.18.111])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 05:17:28 -0700
-Message-ID: <41b93039-4f06-455f-bbb4-11b7a9f9d6cc@intel.com>
-Date: Wed, 21 Aug 2024 14:17:25 +0200
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="65427219"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 21 Aug 2024 05:35:18 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 21 Aug 2024 05:35:18 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 21 Aug 2024 05:35:17 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 21 Aug 2024 05:35:17 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.43) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 21 Aug 2024 05:35:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dQkJ5E5q+UFbuf7Olk9J/9cNQSSyEKAUSP0dJTscdGqQ189yZAV3Qfj2ZDHUsnjixgryoNwFBjSXnmZTRGy3CKYRfksMbvQjAdQ4AZqd8gXkAiZLkz2lMss616Nh4JhiujM94kLMAtgbwCnZtyw32Me09ShBZbdYB9yO+kdxbEtzKPh3nNziCRc7OMyLn+dnNvmcV0drsN6AvGGQMafU3tjKgGNHyWgf45cqZQBZ5PpOYnbvADCGyJ28RUqAkuBAWtFo2SjgPVd0+RmNODvLn8Ia/Ja+R/kixFD7JfEZP6oy+V1w5WeS3YZjJdjo0eoZL+/W0exWyeEmvhzbSF17gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+sYoDjPG4xhRkpqookkIomZZnkeX8OPyUMIx7DZcRiA=;
+ b=yDfcK3zQxTavuhxohcJGMhhgRE+SEYySsq/eYGdCLQwlO++1D4wa+rUajbPGXn4Q4ngjHGc3fUTqth38tRFrRjbYWqtROE2V8lm9l+jYermwzSLywieYvxyXKlP+oyCQrr1SZtC6xv6WNBsCJ0jrKQo8v/HdOrSkTHy5Y4myUUUxEjXZOohm65296kAKyOFT8KtVE6GaYx9AXY0/cquKcgnITCZcZ+3eNa2Zyg0UsZc1r+ARGByYzmEjHqjMpA/U/Jks/NWGYdL6Wp7uqnRJ3za9gPS4UIcKlOSR/gt3MSlP8NNiYhbxSTZK7icbAWFBV86nRJBZHZ4Ol5SuCoUCWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by CH3PR11MB7724.namprd11.prod.outlook.com (2603:10b6:610:123::10)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.19; Wed, 21 Aug
+ 2024 12:35:14 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%7]) with mapi id 15.20.7875.023; Wed, 21 Aug 2024
+ 12:35:14 +0000
+Date: Wed, 21 Aug 2024 07:35:11 -0500
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Gustavo Sousa <gustavo.sousa@intel.com>,
+ Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/6] tools/intel-gfx-fw-info: Re-format with black
+Message-ID: <vbao6gcl4cxcfizf6gdwpmjebmlqvob6y72of6bq7g737x43lw@nfovq2z3fzt7>
+References: <20240820232928.458248-1-lucas.demarchi@intel.com>
+ <20240820232928.458248-2-lucas.demarchi@intel.com>
+ <20240821112945.ecy2tuu36nnih4hd@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240821112945.ecy2tuu36nnih4hd@kamilkon-DESK.igk.intel.com>
+X-ClientProxiedBy: MW3PR06CA0015.namprd06.prod.outlook.com
+ (2603:10b6:303:2a::20) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] lib/gpgpu_fill: Write kernel using inline iga64
- api
-To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "Manszewski, Christoph" <christoph.manszewski@intel.com>
-References: <20240814085636.1091046-1-dominik.grzegorzek@intel.com>
- <62edd5b2-c326-4210-ba3b-20a3d4fa154c@intel.com>
- <1436834f61c8c5db6285016570ea873e29ac328f.camel@intel.com>
-Content-Language: en-US
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <1436834f61c8c5db6285016570ea873e29ac328f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|CH3PR11MB7724:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8ccfb86-280e-4877-0c15-08dcc1ddb4a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?PK2PDGLIAtxIBy16N5SgEfvXtproyQJmNuYDXdLEraQtW2cQX2Y6E5R/miHQ?=
+ =?us-ascii?Q?8Mkvd712wpeGNaTCLBMwbsus9Fl+v8poUKjp67d3Ao5wp2oRKLIzvM/IskGy?=
+ =?us-ascii?Q?z8RXdg34DOKTrnpsSiTymxbbkLegH25UrkP1yLpUfYuop2Zys9KPHlagMX2d?=
+ =?us-ascii?Q?u8pKdkSyBI72G0rqDxMfbkXnN2kDxbAbnEt+wYgS+GvTDD7vPGs+p62upm63?=
+ =?us-ascii?Q?4tC5+Zq8tYFh5ksQaTiNlyyK/v5+AFEylrJXvAIaVrOVqcgrwKrFcrlal/2j?=
+ =?us-ascii?Q?v0jRfFHyJZJAgg4WG7E+Jg83juGapu4CQHXMBK/BLCgBD7bAL1ZFXP/pim9w?=
+ =?us-ascii?Q?Vc3rgWHMcH7Tl0/aWJXpLOwgsNqEnXgRR/YfKBAn6cQzvB0GCIFPS/BsxFaW?=
+ =?us-ascii?Q?ReJW8vldSsEIUUIBwsBAy/Baya4ql40Sp6uHA4B+5jVGCXgSxCzmuBH957IB?=
+ =?us-ascii?Q?EWYDRoEANZwbY9k90QklekaXZotDxs6OJoQ81ZIBpItADTD5OkMf+7bwtDnq?=
+ =?us-ascii?Q?ZPZUD99yGxoD96/jw7H6nc9vXqecmONhiG3QvqyKdg7V1iVlq2PbIJ3PAXhl?=
+ =?us-ascii?Q?q/HrUyqm2iFvr9kGVxBLIqFIZgs5e2mT1QpIAJ8QmCoQxTzG/lLZFidQJOBe?=
+ =?us-ascii?Q?MRXuE4ytA5gCHHJ65RSQFJa7uJdzt/BIGSyJC99PD5e3yQvbiAC2pr9J4NkU?=
+ =?us-ascii?Q?D/xBc1s7TgAGUoIWCW+nH9FY172CDvh6nGCW2a+IrFlLPpHpABQQI6/ilyH+?=
+ =?us-ascii?Q?Lcgvc8dxMyAIMxORGuTx7o3MkkEh7T5d1CMcbVP1VT8tFpCusTh97b+gsVor?=
+ =?us-ascii?Q?XQ10fQUVw8IzWmbWaB/YQcCPFGHIKzIkGqtnTQLDNUo+piQIs14zYnmxMomO?=
+ =?us-ascii?Q?rXRcatIXhTAcZUZ1SAqfy1Uf5UwKXvpG59KPoBDS81bfRBaWSCDwWn158Rqe?=
+ =?us-ascii?Q?V0cFZMRTqm4P9DGtjuwJOn+7zUNyiXydwcMMZaR04DHOS39S7B+89mIYjh6N?=
+ =?us-ascii?Q?Qp2DZDv2SWPZ/DTnFBTFac+q82I+PWMKBxs3eosJ6f1/EHt6Grfw8UxWqIEF?=
+ =?us-ascii?Q?0lvTxKVXGx6sSzqf7JLTGwgHf54ECYtVT+FGrTmbtMGxFDAZoz31XdzW3buK?=
+ =?us-ascii?Q?cElKkfLkts5xxCwZe+Dz7cInV97xUMwg/A7CqDpHvrBUBxgeXxiqfXpmoVj7?=
+ =?us-ascii?Q?YPHNPfLse48ez3wLV+y4m7+h3vPse2R73X28W4LUqVYqIIpUxAlFvgorwFhZ?=
+ =?us-ascii?Q?YOorPCVIAIqkbuL2XYoXH4GzEp+xUQHHkCTTXSEXMguo6ydVX0UXHDqnPAqd?=
+ =?us-ascii?Q?AxyaXREuBlbj7TcuiAceP51HzrSVMtG90qrr+45b1XxtsA=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?8/Tuz0NuJMFpHyRXd6Z4DffTbz9tF3r3XEsESqcRUFgpmz9ioR2CWh6IPDzQ?=
+ =?us-ascii?Q?9rhffc9c4Iq6VQJEhx/89fL1tsgtmIQqpaYXsM6POYl/hr9Rk1kQ8aIZTmI6?=
+ =?us-ascii?Q?hUTrOyIC8wx9YJsMwONFMfabUMt8p6/uTZN/wNVwuZlbvCvK410KOGaUDYTi?=
+ =?us-ascii?Q?e0DozYcdXQK6fU6tUU40dw4mmB6EqdoeyaTJ/z2lVEe1ctTaS2fzBGSqfNvq?=
+ =?us-ascii?Q?ZNtQeqS6s6YASS5D9njdEn4j/GUCkjAwsHNvG5tum9tPRQWKhp28n0FfSbOt?=
+ =?us-ascii?Q?/ife9nGKyiD+Y4M/6xrqprmF+htLedK5ZECjazICveU+uSEEeb3nYgkkkUrJ?=
+ =?us-ascii?Q?ojy64G/CkMS7tzq6r03Z5JJqSDLced2f4gKdIdx04i6kJ4fMJuUYvw5NrQKS?=
+ =?us-ascii?Q?ueGnwYfVRr2IdRPgpuHSRzEi88LOyHIC173BNpkAJ4NLfxAkmi+9BU5NbTFy?=
+ =?us-ascii?Q?17M4dKVjSCAMdobmw7S9kubDxohuKMerrq+m2O/hw1rfI2vHOsqvUgwqIIFr?=
+ =?us-ascii?Q?b9/mpaI7Fq+8Aff/Y1No0bImAB/jA1jmAhBnKCpkt+ULRbXEpkkntmU6WF7C?=
+ =?us-ascii?Q?R/SmsJ/Y9MnOcwd+qEVxKyxhN5GqdZD42YYYVuEhWkzox+YeT1LIjENA1trR?=
+ =?us-ascii?Q?Vz4nsRL1kpINdbdMvmtaPgkywQ+ZrBbITGvrxdCL23nUdF71+16QHjWbjxIF?=
+ =?us-ascii?Q?iEdIsZsSejgDEGP9GVSS4dM0m7DD0J9zElUGljVe9icDGl086ZnL7FrcsJ7g?=
+ =?us-ascii?Q?zUSgMNLNxjejo7PKZV6Y10DCr+HNAoadY+pbDUMjypQBdxE2gwjWNos7n/3P?=
+ =?us-ascii?Q?YtTNfrMzFqVOvuqwWXMgDYUha0dA+11WTAVRUEl6vMfXMrBK330bar2ONXve?=
+ =?us-ascii?Q?Uy1CVps35RRwtcTM35mOQ0cYx9mmCYzouTALwD4HiHUN3ogVhvcmNPTa4QIW?=
+ =?us-ascii?Q?GOxYB+dhxWLJ/lm9OHdGxdJ/pST0dHCDIFxGyAcADuJX1wzGzpvynpUFZb04?=
+ =?us-ascii?Q?E9MWXQ561dsQQdBDIbukJOUlRt87jRDw9JQIup7mh4DdPdUc9xIB5sr+DaRl?=
+ =?us-ascii?Q?xtXs5ydykRQjRcanpbXgqinDUFzHUjUV8SrsOHqF9LQZbAyUevgK5tQ/1jG9?=
+ =?us-ascii?Q?GuG9e7YGscOoIfJWznwgnU3hhNu/HZVh6YM1dONm8ykkxeJjiaOTGZeGWNda?=
+ =?us-ascii?Q?Dz65CqQU9IfvyDAi9H8Oogd4ZTQt7LQHnXDvIThkM3gUXIcjUaRJjBrfQgPl?=
+ =?us-ascii?Q?M68/rJruX8UJWbgn+yA/NZHBuE45xST/UqMbui8zLUvg+cwfiQiHi1siYEE7?=
+ =?us-ascii?Q?kShQsEkA93RBTPivpH7Ic92FSuHP8Wxijxmd7caGeKqPNXIoiGUKn6AnkP0P?=
+ =?us-ascii?Q?cBZDnapbvdnNT1HMVmBGi+2joRNtAK2p4gNAmvtBBhGwI5p9RraLqX2saNv1?=
+ =?us-ascii?Q?3n5wj/w55w7rH+GOrNONWvrhNC2uFOZm97AxeL+XPFDvIOZYnodPUFM/FONc?=
+ =?us-ascii?Q?4xixxUFlKOh/bILz7I86twO58BmeCcfwACLcFUzL/519ILLfV7W2MspCZX5e?=
+ =?us-ascii?Q?9VRKCge1Som9/42afFBO+WqyB4WNFwL6OlG2KfHP/UM2xTq0ik+1nA93jNdC?=
+ =?us-ascii?Q?YA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8ccfb86-280e-4877-0c15-08dcc1ddb4a1
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 12:35:14.3798 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6ZXTGLvad6nylCDAAjj91vurqzyukFi2v/09XNKG7xPcfJpyTUKqY9Hw2sp9QRFfThdhnUXzMn+CCXiaO2zunl8vuxsN8k1cljSfK2eVG0g=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7724
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,488 +180,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-
-
-On 14.08.2024 17:54, Grzegorzek, Dominik wrote:
-> On Wed, 2024-08-14 at 13:32 +0200, Andrzej Hajda wrote:
->> On 14.08.2024 10:56, Dominik Grzegorzek wrote:
->>> Rewrite gpgpu_fill shaders to utilize the newly introduced
->>> method of writing IGA64 assembly inline.
->>>
->>> v2: start with gen12 (Andrzej)
->>>
->>> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
->>> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
->>> Cc: Christoph Manszewski <christoph.manszewski@intel.com>
->>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
->> Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+On Wed, Aug 21, 2024 at 01:29:45PM GMT, Kamil Konieczny wrote:
+>Hi Lucas,
+>On 2024-08-20 at 16:29:23 -0700, Lucas De Marchi wrote:
+>> black tools/intel-gfx-fw-info
 >>
->> Regards
->> Andrzej
->>
->>> ---
->>>    lib/gpgpu_fill.c                              | 166 +++++++-----------
->>>    lib/gpgpu_fill.h                              |  19 --
->>>    lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm |  12 --
->>>    .../shaders/gpgpu/gen12p72_gpgpu_kernel.asm   |  12 --
->>>    .../shaders/gpgpu/xe2lpg_gpgpu_kernel.asm     |  13 --
->>>    lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm  |  12 --
->>>    lib/iga64_generated_codes.c                   |  76 +++++++-
->>>    lib/intel_batchbuffer.c                       |  10 +-
->>>    lib/meson.build                               |   2 +-
->>>    9 files changed, 140 insertions(+), 182 deletions(-)
->>>    delete mode 100644 lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm
->>>    delete mode 100644 lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
->>>    delete mode 100644 lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
->>>    delete mode 100644 lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
->>>
->>> diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
->>> index 1270c2b22..dc3ebd8f0 100644
->>> --- a/lib/gpgpu_fill.c
->>> +++ b/lib/gpgpu_fill.c
->>> @@ -31,6 +31,7 @@
->>>    #include "drmtest.h"
->>>    
->>>    #include "gpgpu_fill.h"
->>> +#include "gpgpu_shader.h"
->>>    #include "gpu_cmds.h"
->>>    
->>>    /* lib/i915/shaders/gpgpu/gpgpu_fill.gxa */
->>> @@ -86,56 +87,6 @@ static const uint32_t gen11_gpgpu_kernel[][4] = {
->>>    	{ 0x07800031, 0x20000a40, 0x06000e00, 0x82000010 },
->>>    };
->>>    
->>> -static const uint32_t gen12_gpgpu_kernel[][4] = {
->>> -	{ 0x00020061, 0x01050000, 0x00000104, 0x00000000 },
->>> -	{ 0x00000069, 0x02058220, 0x02000024, 0x00000004 },
->>> -	{ 0x00000061, 0x02250220, 0x000000c4, 0x00000000 },
->>> -	{ 0x00030061, 0x04050220, 0x00460005, 0x00000000 },
->>> -	{ 0x00010261, 0x04050220, 0x00220205, 0x00000000 },
->>> -	{ 0x00000061, 0x04454220, 0x00000000, 0x0000000f },
->>> -	{ 0x00040661, 0x05050220, 0x00000104, 0x00000000 },
->>> -	{ 0x00049031, 0x00000000, 0xc0000414, 0x02a00000 },
->>> -	{ 0x00030061, 0x70050220, 0x00460005, 0x00000000 },
->>> -	{ 0x00040131, 0x00000004, 0x7020700c, 0x10000000 },
->>> -};
->>> -
->>> -static const uint32_t xehp_gpgpu_kernel[][4] = {
->>> -	{ 0x00020061, 0x01050000, 0x00000104, 0x00000000 },
->>> -	{ 0x00000069, 0x02058220, 0x02000024, 0x00000004 },
->>> -	{ 0x00000061, 0x02250220, 0x000000c4, 0x00000000 },
->>> -	{ 0x00030061, 0x04050220, 0x00460005, 0x00000000 },
->>> -	{ 0x00011a61, 0x04050220, 0x00220205, 0x00000000 },
->>> -	{ 0x00000061, 0x04454220, 0x00000000, 0x0000000f },
->>> -	{ 0x00041e61, 0x05050220, 0x00000104, 0x00000000 },
->>> -	{ 0x80001901, 0x00010000, 0x00000000, 0x00000000 },
->>> -	{ 0x00044031, 0x00000000, 0xc0000414, 0x02a00000 },
->>> -	{ 0x00030031, 0x00000004, 0x3000500c, 0x00000000 },
->>> -};
->>> -
->>> -static const uint32_t xehpc_gpgpu_kernel[][4] = {
->>> -	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
->>> -	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
->>> -	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
->>> -	{ 0x000c0061, 0x04050220, 0x00460005, 0x00000000 },
->>> -	{ 0x00041a61, 0x04050220, 0x00220205, 0x00000000 },
->>> -	{ 0x00000061, 0x04254220, 0x00000000, 0x0000000f },
->>> -	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
->>> -	{ 0x00132031, 0x00000000, 0xc0000414, 0x02a00000 },
->>> -	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
->>> -};
->>> -
->>> -static const uint32_t xe2lpg_gpgpu_kernel[][4] = {
->>> -	{ 0x00080061, 0x01050000, 0x00000104, 0x00000000 },
->>> -	{ 0x00000069, 0x02058220, 0x02000014, 0x00000004 },
->>> -	{ 0x00000061, 0x02150220, 0x00000064, 0x00000000 },
->>> -	{ 0x00100061, 0x04054220, 0x00000000, 0x00000000 },
->>> -	{ 0x00041a61, 0x04550220, 0x00220205, 0x00000000 },
->>> -	{ 0x00000061, 0x04754550, 0x00000000, 0x000f000f },
->>> -	{ 0x00101e61, 0x05050220, 0x00000104, 0x00000000 },
->>> -	{ 0x00132031, 0x00000000, 0xd00e0494, 0x04000000 },
->>> -	{ 0x000c0031, 0x00000004, 0x3000500c, 0x00000000 },
->>> -};
->>> -
->>>    /*
->>>     * This sets up the gpgpu pipeline,
->>>     *
->>> @@ -317,15 +268,66 @@ __gen9_gpgpu_fillfunc(int i915,
->>>    	intel_bb_destroy(ibb);
->>>    }
->>>    
->>> -static void
->>> -__xehp_gpgpu_fillfunc(int i915,
->>> -		      struct intel_buf *buf,
->>> -		      unsigned int x, unsigned int y,
->>> -		      unsigned int width, unsigned int height,
->>> -		      uint8_t color, const uint32_t kernel[][4],
->>> -		      size_t kernel_size)
->>> +static struct gpgpu_shader *__xehp_gpgpu_kernel(int i915)
->>> +{
->>> +	struct gpgpu_shader *kernel = gpgpu_shader_create(i915);
->>> +
->>> +	emit_iga64_code(kernel, gpgpu_fill, "					\n\
->>> +// fill up r1 with target colour						\n\
->>> +mov (4|M0)		r1.0<1>:ub	r1.0<0;1,0>:ub				\n\
->>> +// prepare block x offset (Thread Group Id X * 16)				\n\
->>> +shl (1|M0)		r2.0<1>:ud	r0.1<0;1,0>:ud	0x4:ud			\n\
->>> +// prepare block y offset (Thread Group Id Y)					\n\
->>> +mov (1|M0)		r2.1<1>:ud	r0.6<0;1,0>:ud				\n\
->>> +// zero message header payload							\n\
->>> +mov (8|M0)		r4.0<1>:ud	0x0:ud					\n\
->>> +// fill up message payload with target colour					\n\
->>> +mov (16|M0)		r5.0<1>:ud	r1.0<0;1,0>:ud				\n\
->>> +#if GEN_VER < 2000								\n\
->>> +// load block offsets into message header payload				\n\
->>> +mov (2|M0)		r4.0<1>:ud	r2.0<2;2,1>:ud				\n\
->>> +// load block width								\n\
->>> +mov (1|M0)		r4.2<1>:ud	0xF:ud					\n\
->>> +// load FFTID from R0 header							\n\
->>> +mov (1|M0)		r4.4<1>:ud	r0.5<0;1,0>:ud				\n\
->>> +// Media block write to bti[0] surface						\n\
->>> +// Message Descriptor								\n\
->>> +//	0x40A8000:								\n\
->>> +//	[28:25]		Mlen: 2							\n\
->>> +//	[24:20]		Rlen: 0							\n\
->>> +//	[19]		Header: 1 (included)					\n\
->>> +//	[18:14]		MessageType: 0xA (media block write)			\n\
->>> +//	[7:0]		BTI: 0							\n\
->>> +send.dc1 (16|M0)	null	r4	src1_null	0x0	0x40A8000	\n\
->>> +#else										\n\
->>> +// load block offsets into message header payload				\n\
->>> +mov (2|M0)		r4.5<1>:ud	r2.0<2;2,1>:ud				\n\
->>> +// load block width								\n\
->>> +mov (1|M0)		 r4.14<1>:w	0xF:w					\n\
->>> +// Typed 2D block store to bti[0] surface					\n\
->>> +// Message Descriptor								\n\
->>> +//	0x6400007:								\n\
->>> +//	[30:29]		AddrType: 3 (BTI)					\n\
->>> +//	[28:25]		Mlen: 2							\n\
->>> +//	[24:20]		Rlen: 0							\n\
->>> +//	[19:17]		Caching: 0  (use state settings for both L1 and L3)	\n\
->>> +//	[5:0]		Opcode: 0x07  (store_block2d)				\n\
->>> +send.tgm (16|M0)	null	r4	null	0x0	0x64000007		\n\
->>> +#endif										\n\
->>> +	");
->>> +
->>> +	gpgpu_shader__eot(kernel);
->>> +	return kernel;
->>> +}
->>> +
->>> +void xehp_gpgpu_fillfunc(int i915,
->>> +			 struct intel_buf *buf,
->>> +			 unsigned int x, unsigned int y,
->>> +			 unsigned int width, unsigned int height,
->>> +			 uint8_t color)
->>>    {
->>>    	struct intel_bb *ibb;
->>> +	struct gpgpu_shader *kernel;
->>>    	struct xehp_interface_descriptor_data idd;
->>>    
->>>    	ibb = intel_bb_create(i915, PAGE_SIZE);
->>> @@ -333,8 +335,10 @@ __xehp_gpgpu_fillfunc(int i915,
->>>    
->>>    	intel_bb_ptr_set(ibb, BATCH_STATE_SPLIT);
->>>    
->>> -	xehp_fill_interface_descriptor(ibb, buf,
->>> -				       kernel, kernel_size, &idd);
->>> +	kernel = __xehp_gpgpu_kernel(i915);
->>> +	xehp_fill_interface_descriptor(ibb, buf, kernel->instr,
->>> +				       kernel->size * 4, &idd);
->>> +	gpgpu_shader_destroy(kernel);
->>>    
->>>    	intel_bb_ptr_set(ibb, 0);
->>>    
->>> @@ -377,47 +381,3 @@ void gen11_gpgpu_fillfunc(int i915,
->>>    			      gen11_gpgpu_kernel,
->>>    			      sizeof(gen11_gpgpu_kernel));
->>>    }
->>> -
->>> -void gen12_gpgpu_fillfunc(int i915,
->>> -			  struct intel_buf *buf,
->>> -			  unsigned x, unsigned y,
->>> -			  unsigned width, unsigned height,
->>> -			  uint8_t color)
->>> -{
->>> -	__gen9_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
->>> -			      gen12_gpgpu_kernel,
->>> -			      sizeof(gen12_gpgpu_kernel));
-> This function used gen9_gpgpu_fillfunc so I could not remove it, thus failure in premerge.
-> I need to bring it back. Of course, I could call __xehp_gpgpu_kernel here and pass
-> that kernel to this function, but I'm do not feel there is a need. Let make it consistent, so
-> platforms which are using gen9 pipeline will keep using old fashioned precompiled kernels.
+>> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 >
-> So effectively v1 version of that patch is the correct one. Let me know if v1 works for you.
+>This looks almost ok, now
+>
+>pylint -d C0114,C0103,C0116,C0115 intel-gfx-fw-info
+>
+>intel-gfx-fw-info:293:4: W0621: Redefining name 'e' from outer scope (line 136) (redefined-outer-name)
+>
+>Your code has been rated at 9.92/10 (previous run: 7.64/10, +2.28)
+>
+>Btw running
+>./intel-gfx-fw-info -c /lib/firmware/i915/ehl_huc_9.0.0.bin.zst
 
-Yes, v1 is OK.
-
-Regards
-Andrzej
+							     ^^^
 
 >
-> Regards,
-> Dominik
->>> -}
->>> -
->>> -void xehp_gpgpu_fillfunc(int i915,
->>> -			 struct intel_buf *buf,
->>> -			 unsigned int x, unsigned int y,
->>> -			 unsigned int width, unsigned int height,
->>> -			 uint8_t color)
->>> -{
->>> -	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
->>> -			      xehp_gpgpu_kernel,
->>> -			      sizeof(xehp_gpgpu_kernel));
->>> -}
->>> -
->>> -void xehpc_gpgpu_fillfunc(int i915,
->>> -			  struct intel_buf *buf,
->>> -			  unsigned int x, unsigned int y,
->>> -			  unsigned int width, unsigned int height,
->>> -			  uint8_t color)
->>> -{
->>> -	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
->>> -			      xehpc_gpgpu_kernel,
->>> -			      sizeof(xehpc_gpgpu_kernel));
->>> -}
->>> -
->>> -void xe2lpg_gpgpu_fillfunc(int i915,
->>> -			   struct intel_buf *buf,
->>> -			   unsigned int x, unsigned int y,
->>> -			   unsigned int width, unsigned int height,
->>> -			   uint8_t color)
->>> -{
->>> -	__xehp_gpgpu_fillfunc(i915, buf, x, y, width, height, color,
->>> -			      xe2lpg_gpgpu_kernel,
->>> -			      sizeof(xe2lpg_gpgpu_kernel));
->>> -}
->>> diff --git a/lib/gpgpu_fill.h b/lib/gpgpu_fill.h
->>> index c3b47c10a..f4e207077 100644
->>> --- a/lib/gpgpu_fill.h
->>> +++ b/lib/gpgpu_fill.h
->>> @@ -55,12 +55,6 @@ void gen11_gpgpu_fillfunc(int i915,
->>>    			  unsigned width, unsigned height,
->>>    			  uint8_t color);
->>>    
->>> -void gen12_gpgpu_fillfunc(int i915,
->>> -			  struct intel_buf *buf,
->>> -			  unsigned x, unsigned y,
->>> -			  unsigned width, unsigned height,
->>> -			  uint8_t color);
->>> -
->>>    void
->>>    xehp_gpgpu_fillfunc(int i915,
->>>    		    struct intel_buf *dst,
->>> @@ -68,17 +62,4 @@ xehp_gpgpu_fillfunc(int i915,
->>>    		    unsigned int width, unsigned int height,
->>>    		    uint8_t color);
->>>    
->>> -void
->>> -xehpc_gpgpu_fillfunc(int i915,
->>> -		     struct intel_buf *dst,
->>> -		     unsigned int x, unsigned int y,
->>> -		     unsigned int width, unsigned int height,
->>> -		     uint8_t color);
->>> -
->>> -void xe2lpg_gpgpu_fillfunc(int i915,
->>> -			   struct intel_buf *buf,
->>> -			   unsigned int x, unsigned int y,
->>> -			   unsigned int width, unsigned int height,
->>> -			   uint8_t color);
->>> -
->>>    #endif /* GPGPU_FILL_H */
->>> diff --git a/lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm
->>> deleted file mode 100644
->>> index ede87a055..000000000
->>> --- a/lib/i915/shaders/gpgpu/gen12_gpgpu_kernel.asm
->>> +++ /dev/null
->>> @@ -1,12 +0,0 @@
->>> -L0:
->>> -         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
->>> -         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
->>> -         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
->>> -         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
->>> -         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {@2}
->>> -         mov (1|M0)               r4.2<1>:ud    0xF:ud
->>> -         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {@6}
->>> -         send.dc1 (16|M0)         null     r4      null    0x0         0x40A8000  {@1, $0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
->>> -         mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud
->>> -         send.ts (16|M0)          null     r112    null    0x10000000  0x2000010  {EOT, @1} //    wr:1+0, rd:0, fc: 0x10
->>> -L160:
->>> diff --git a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
->>> deleted file mode 100644
->>> index 52699a475..000000000
->>> --- a/lib/i915/shaders/gpgpu/gen12p72_gpgpu_kernel.asm
->>> +++ /dev/null
->>> @@ -1,12 +0,0 @@
->>> -L0:
->>> -         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
->>> -         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
->>> -         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
->>> -         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
->>> -         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
->>> -         mov (1|M0)               r4.2<1>:ud    0xF:ud
->>> -         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
->>> -(W)      sync.nop                             null                             {I@1}
->>> -         send.dc1 (16|M0)         null     r4      null:0    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
->>> -         send.gtwy (8|M0)         null     r80     null:0    0x0         0x02000000 {EOT}
->>> -L176:
->>> diff --git a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
->>> deleted file mode 100644
->>> index e2ecc71f5..000000000
->>> --- a/lib/i915/shaders/gpgpu/xe2lpg_gpgpu_kernel.asm
->>> +++ /dev/null
->>> @@ -1,13 +0,0 @@
->>> -L0:
->>> -         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub                        // Load r1.0-3 with color byte
->>> -         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud              // Load r2.0-3 with tg id X << 4
->>> -         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud                        // Load r2.4-7 with tg id Y
->>> -
->>> -         // payload setup
->>> -         mov (16|M0)              r4.0<1>:ud    0x0:ud                                // Zero out register R4
->>> -         mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud                        // Store X and Y block start (160:191 and 192:223)
->>> -         mov (1|M0)               r4.14<1>:w    0xF:w                                 // Store X and Y block size (224:231 and 232:239)
->>> -         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                        // Load r5-r6 with color byte
->>> -
->>> -         send.tgm (16|M0)         null     r4    null:0    0x0    0x64000007          // Send TypedStore2DBlock to tgm port
->>> -         send.gtwy (8|M0)         null    r80    null:0    0x0    0x02000000 {EOT}
->>> diff --git a/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm b/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
->>> deleted file mode 100644
->>> index 7adfbd0f0..000000000
->>> --- a/lib/i915/shaders/gpgpu/xehp_gpgpu_kernel.asm
->>> +++ /dev/null
->>> @@ -1,12 +0,0 @@
->>> -L0:
->>> -         mov (4|M0)               r1.0<1>:ub    r1.0<0;1,0>:ub
->>> -         shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    0x4:ud
->>> -         mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud
->>> -         mov (8|M0)               r4.0<1>:ud    r0.0<8;8,1>:ud
->>> -         mov (2|M0)               r4.0<1>:ud    r2.0<2;2,1>:ud                   {I@2}
->>> -         mov (1|M0)               r4.2<1>:ud    0xF:ud
->>> -         mov (16|M0)              r5.0<1>:ud    r1.0<0;1,0>:ud                   {I@6}
->>> -(W)      sync.nop                             null                             {I@1}
->>> -         send.dc1 (16|M0)         null     r4      null    0x0         0x40A8000  {$0} //    wr:2h+0, rd:0, Media Block Write msc:0, to #0
->>> -         send.gtwy (8|M0)         null     r80     null    0x0         0x02000000 {EOT}
->>> -L176:
->>> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
->>> index 6a08c4844..c22b1e9e7 100644
->>> --- a/lib/iga64_generated_codes.c
->>> +++ b/lib/iga64_generated_codes.c
->>> @@ -3,7 +3,81 @@
->>>    
->>>    #include "gpgpu_shader.h"
->>>    
->>> -#define MD5_SUM_IGA64_ASMS 2c503cbfbd7b3043e9a52188ae4da7a8
->>> +#define MD5_SUM_IGA64_ASMS efa80cb5c2d50f515af3642cee8dc062
->>> +
->>> +struct iga64_template const iga64_code_gpgpu_fill[] = {
->>> +	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->>> +		0x00080061, 0x01050000, 0x00000104, 0x00000000,
->>> +		0x00000069, 0x02058220, 0x02000014, 0x00000004,
->>> +		0x00000061, 0x02150220, 0x00000064, 0x00000000,
->>> +		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
->>> +		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
->>> +		0x00041b61, 0x04550220, 0x00220205, 0x00000000,
->>> +		0x00000061, 0x04754550, 0x00000000, 0x000f000f,
->>> +		0x00132031, 0x00000000, 0xd00e0494, 0x04000000,
->>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>> +	}},
->>> +	{ .gen_ver = 1270, .size = 52, .code = (const uint32_t []) {
->>> +		0x00020061, 0x01050000, 0x00000104, 0x00000000,
->>> +		0x00000069, 0x02058220, 0x02000024, 0x00000004,
->>> +		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
->>> +		0x00030061, 0x04054220, 0x00000000, 0x00000000,
->>> +		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
->>> +		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
->>> +		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
->>> +		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
->>> +		0x80001901, 0x00010000, 0x00000000, 0x00000000,
->>> +		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
->>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>> +	}},
->>> +	{ .gen_ver = 1260, .size = 48, .code = (const uint32_t []) {
->>> +		0x00080061, 0x01050000, 0x00000104, 0x00000000,
->>> +		0x00000069, 0x02058220, 0x02000014, 0x00000004,
->>> +		0x00000061, 0x02150220, 0x00000064, 0x00000000,
->>> +		0x000c0061, 0x04054220, 0x00000000, 0x00000000,
->>> +		0x00101c61, 0x05050220, 0x00000104, 0x00000000,
->>> +		0x00041b61, 0x04050220, 0x00220205, 0x00000000,
->>> +		0x00000061, 0x04254220, 0x00000000, 0x0000000f,
->>> +		0x00000061, 0x04450220, 0x00000054, 0x00000000,
->>> +		0x00132031, 0x00000000, 0xc0000414, 0x02a00000,
->>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>> +	}},
->>> +	{ .gen_ver = 1250, .size = 52, .code = (const uint32_t []) {
->>> +		0x00020061, 0x01050000, 0x00000104, 0x00000000,
->>> +		0x00000069, 0x02058220, 0x02000024, 0x00000004,
->>> +		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
->>> +		0x00030061, 0x04054220, 0x00000000, 0x00000000,
->>> +		0x00041c61, 0x05050220, 0x00000104, 0x00000000,
->>> +		0x00011b61, 0x04050220, 0x00220205, 0x00000000,
->>> +		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
->>> +		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
->>> +		0x80001901, 0x00010000, 0x00000000, 0x00000000,
->>> +		0x00044031, 0x00000000, 0xc0000414, 0x02a00000,
->>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>> +	}},
->>> +	{ .gen_ver = 0, .size = 48, .code = (const uint32_t []) {
->>> +		0x00020061, 0x01050000, 0x00000104, 0x00000000,
->>> +		0x00000069, 0x02058220, 0x02000024, 0x00000004,
->>> +		0x00000061, 0x02250220, 0x000000c4, 0x00000000,
->>> +		0x00030061, 0x04054220, 0x00000000, 0x00000000,
->>> +		0x00040461, 0x05050220, 0x00000104, 0x00000000,
->>> +		0x00010361, 0x04050220, 0x00220205, 0x00000000,
->>> +		0x00000061, 0x04454220, 0x00000000, 0x0000000f,
->>> +		0x00000061, 0x04850220, 0x000000a4, 0x00000000,
->>> +		0x00049031, 0x00000000, 0xc0000414, 0x02a00000,
->>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>> +		0x80000101, 0x00010000, 0x00000000, 0x00000000,
->>> +	}}
->>> +};
->>>    
->>>    struct iga64_template const iga64_code_media_block_write[] = {
->>>    	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
->>> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
->>> index 824e92831..a7185cf05 100644
->>> --- a/lib/intel_batchbuffer.c
->>> +++ b/lib/intel_batchbuffer.c
->>> @@ -758,16 +758,8 @@ igt_fillfunc_t igt_get_gpgpu_fillfunc(int devid)
->>>    {
->>>    	igt_fillfunc_t fill = NULL;
->>>    
->>> -	if (intel_graphics_ver(devid) >= IP_VER(20, 0))
->>> -		fill = xe2lpg_gpgpu_fillfunc;
->>> -	else if (IS_METEORLAKE(devid))
->>> +	if (intel_graphics_ver(devid) >= IP_VER(12, 00))
->>>    		fill = xehp_gpgpu_fillfunc;
->>> -	else if (intel_graphics_ver(devid) >= IP_VER(12, 60))
->>> -		fill = xehpc_gpgpu_fillfunc;
->>> -	else if (intel_graphics_ver(devid) >= IP_VER(12, 50))
->>> -		fill = xehp_gpgpu_fillfunc;
->>> -	else if (IS_GEN12(devid))
->>> -		fill = gen12_gpgpu_fillfunc;
->>>    	else if (IS_GEN11(devid))
->>>    		fill = gen11_gpgpu_fillfunc;
->>>    	else if (IS_GEN9(devid) || IS_GEN10(devid))
->>> diff --git a/lib/meson.build b/lib/meson.build
->>> index f711e60a7..2fac522d3 100644
->>> --- a/lib/meson.build
->>> +++ b/lib/meson.build
->>> @@ -216,7 +216,7 @@ lib_version = vcs_tag(input : 'version.h.in', output : 'version.h',
->>>    		      fallback : 'NO-GIT',
->>>    		      command : vcs_command )
->>>    
->>> -iga64_assembly_sources = [ 'gpgpu_shader.c' ]
->>> +iga64_assembly_sources = [ 'gpgpu_shader.c', 'gpgpu_fill.c' ]
->>>    
->>>    lib_intermediates = []
->>>    iga64_assembly_libs = []
+>I got:
+>
+>header-type: CSS
+>version: 137.147.184
+>date: 543-01-b9
+>checksum: 3aa76ca9f25d916e64a56267338d37993b8e4e7321856de83d98d14e15ace4ad
+>
+>Is date an encoded date and time?
 
+it's compressed and this simple script doesn't handle compression (yet)
+
+	$ cp /lib/firmware/i915/ehl_huc_9.0.0.bin.zst .
+	$ zstd -d ehl_huc_9.0.0.bin.zst
+	$ ./tools/intel-gfx-fw-info ehl_huc_9.0.0.bin
+	header-type: CSS
+	version: 9.0.0
+	date: 2019-08-05
+
+The compression happened not to change the first 4 bytes so it
+incorrectly recognized it and applied the CCS parser.  Adding
+decompression may be something for another time.
+
+>
+>You can add my acked-by with or without a fix for W0621 warning.
+
+For this patch or for the series?
+
+thanks
+Lucas De Marchi
+
+>
+>Regards,
+>Kamil
+>
+>> ---
+>>  tools/intel-gfx-fw-info | 10 ++++++----
+>>  1 file changed, 6 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
+>> index b0d41bbae..35555aab5 100755
+>> --- a/tools/intel-gfx-fw-info
+>> +++ b/tools/intel-gfx-fw-info
+>> @@ -150,10 +150,12 @@ def parse_args(argv: typing.List[str]) -> argparse.Namespace:
+>>      description = "Dump GuC/HuC firmware information"
+>>      parser = argparse.ArgumentParser(prog="intel-gfx-fw-info", description=description)
+>>
+>> -    parser.add_argument("-x", "--raw", action="store_true",
+>> -                        help="Also print raw header content")
+>> -    parser.add_argument("-c", "--checksum", action="store_true",
+>> -                        help="Also print checksum")
+>> +    parser.add_argument(
+>> +        "-x", "--raw", action="store_true", help="Also print raw header content"
+>> +    )
+>> +    parser.add_argument(
+>> +        "-c", "--checksum", action="store_true", help="Also print checksum"
+>> +    )
+>>
+>>      parser.add_argument("filename", help="GuC/HuC firmware file")
+>>
+>> --
+>> 2.43.0
+>>
