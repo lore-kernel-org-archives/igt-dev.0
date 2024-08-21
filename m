@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B60C52D6F
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 11:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CAE2C52D6F
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Aug 2024 12:12:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A3AC10E17C;
-	Wed, 21 Aug 2024 11:30:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B468010E14E;
+	Wed, 21 Aug 2024 12:12:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LisQwPaJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ige1n1sC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EA9EA10E17C
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 11:30:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A637210E8E3
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Aug 2024 12:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724239804; x=1755775804;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=F7VJcO3oNmDRj6BTqTVLE1Uhb7hR6DarC47zd2Ql0c4=;
- b=LisQwPaJbYeWpVbLVUp/5T8CPdJZztFkptcxPMFnC6vDYha1nc0YGO7p
- YugHftBy2cYk5JFqbQkt1PHT+I/XU0kHDEjvWsMw54HjyIQ4xjhMK57XS
- H1DUwTPlw2ZY33PULj8b1tPmLfRgwhKuao1WjFVZuzxBsnNsFf27sQ5ky
- DSzBzvBTR36FFGjaowcR8pejYGCCMNz1P2yF91QKleEIwOLbcNhiNbe2f
- f2PKcmSn/1KCrDuhUINcX6XHtaAvrPoLSROeUGADh3EWTxsyqd79OjrRu
- xs79IqKkhrSJYSxJPBSohHSp5+6+yW3nrTJK/huUORBYWWWP6Co3sbSnB g==;
-X-CSE-ConnectionGUID: EyCuqJ8pTFSC4tAcsfmpyg==
-X-CSE-MsgGUID: /JUsFlSdSISTYiyoLOlLpw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="22743566"
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="22743566"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 04:30:03 -0700
-X-CSE-ConnectionGUID: jl7c4WvaQIS3fNAgrvszbA==
-X-CSE-MsgGUID: Bs3CvvDgSmiMEnx1roT/zA==
+ t=1724242350; x=1755778350;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zeRBUznzor7h2SJCB/OO+QR8ga4sXkNfhuBMl/qp+gE=;
+ b=ige1n1sCL0669LpyyL5p/ymqxEL1ex2TUhweLNGI+C/yClMfMnJmqvgX
+ nYJEzVyW3jV16/PIhOPnQdp7gccriOrG4oFpAOV5p9KsR1T1JuQVEFRRA
+ X1mj0RLnDHu7Zl+mH6bgmcDKQhIzrBi5RkPCVcsJhSQRPllh6PHIiwTTs
+ pQmmttxScOFuU++VI+y4se3Gf+CXIp+cFVJjn7iLHldhqKoVAFFcfwOdd
+ LSI/8+BuxP6tfvmUNkNB7tjq6oD2ct+QnKfrwRQKuPZyZ7C8j8n7lyHEP
+ z9uOvlb7xrzg02DT5TzpeC6enwyERNBmYzNyUDcAN7xGa7QDY8y+y8vkU A==;
+X-CSE-ConnectionGUID: YXw0/j+rSm+lg5w9NAO1Ug==
+X-CSE-MsgGUID: BoMfI4Z5TaOlRv6qJHhqpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="45122287"
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="45122287"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2024 05:12:29 -0700
+X-CSE-ConnectionGUID: FiexkSeER8OMVW/Tv1CHRg==
+X-CSE-MsgGUID: L0aSsnSBTHOCQ/225arUXg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61202334"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 04:30:02 -0700
-Date: Wed, 21 Aug 2024 13:29:45 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Gustavo Sousa <gustavo.sousa@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: Re: [PATCH i-g-t v2 1/6] tools/intel-gfx-fw-info: Re-format with black
-Message-ID: <20240821112945.ecy2tuu36nnih4hd@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- igt-dev@lists.freedesktop.org,
- Gustavo Sousa <gustavo.sousa@intel.com>,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-References: <20240820232928.458248-1-lucas.demarchi@intel.com>
- <20240820232928.458248-2-lucas.demarchi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; d="scan'208";a="61052019"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.246.38])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2024 05:12:26 -0700
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Nirmoy Das <nirmoy.das@intel.com>,
+ Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t v2] i915/gem_mmap_offset: Partial mmap and munmap
+Date: Wed, 21 Aug 2024 14:11:57 +0200
+Message-ID: <20240821121157.19055-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240820232928.458248-2-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,62 +71,180 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Lucas,
-On 2024-08-20 at 16:29:23 -0700, Lucas De Marchi wrote:
-> black tools/intel-gfx-fw-info
-> 
-> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+From: Chris Wilson <chris.p.wilson@linux.intel.com>
 
-This looks almost ok, now 
+Based on a test case developed by Lionel Landwerlin, this exercises
+creation of partial mmaps using both direct methods of a partial mmap()
+(where the mmap() only covers a portion of the object) and
+munmap() to do the same.
 
-pylint -d C0114,C0103,C0116,C0115 intel-gfx-fw-info
+Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+---
+ tests/intel/gem_mmap_offset.c | 133 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 133 insertions(+)
 
-intel-gfx-fw-info:293:4: W0621: Redefining name 'e' from outer scope (line 136) (redefined-outer-name)
+diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+index d0e439fea..80ac8dc01 100644
+--- a/tests/intel/gem_mmap_offset.c
++++ b/tests/intel/gem_mmap_offset.c
+@@ -57,6 +57,9 @@
+  * SUBTEST: isolation
+  * SUBTEST: oob-read
+  * SUBTEST: open-flood
++ * SUBTEST: partial-mmap
++ * SUBTEST: partial-unmap
++ * SUBTEST: partial-remap
+  * SUBTEST: perf
+  * SUBTEST: pf-nonblock
+  * SUBTEST: ptrace
+@@ -875,6 +878,117 @@ static void blt_coherency(int i915)
+ 	igt_assert_f(compare_ok, "Problem with coherency, flush is too late\n");
+ }
+ 
++static void partial_mmap(int i915, struct gem_memory_region *r)
++{
++	uint32_t handle;
++
++	handle = gem_create_in_memory_region_list(i915, SZ_2M, 0, &r->ci, 1);
++	make_resident(i915, 0, handle);
++
++	for_each_mmap_offset_type(i915, t) {
++		struct drm_i915_gem_mmap_offset arg = {
++			.handle = handle,
++			.flags = t->type,
++		};
++		uint32_t *ptr;
++
++		if (mmap_offset_ioctl(i915, &arg))
++			continue;
++
++		ptr = mmap(0, SZ_4K, PROT_WRITE, MAP_SHARED, i915, arg.offset);
++		if (ptr == MAP_FAILED)
++			continue;
++
++		memset(ptr, 0xcc, SZ_4K);
++		munmap(ptr, SZ_4K);
++
++		ptr = mmap(0, SZ_4K, PROT_READ, MAP_SHARED, i915, arg.offset + SZ_2M - SZ_4K);
++		igt_assert(ptr != MAP_FAILED);
++
++		for (uint32_t i = 0; i < SZ_4K / sizeof(uint32_t); i++)
++			igt_assert_eq_u32(ptr[i], 0);
++
++		munmap(ptr, SZ_4K);
++	}
++
++	gem_close(i915, handle);
++}
++
++static void partial_unmap(int i915, struct gem_memory_region *r)
++{
++	uint32_t handle;
++
++	handle = gem_create_in_memory_region_list(i915, SZ_2M, 0, &r->ci, 1);
++	make_resident(i915, 0, handle);
++
++	for_each_mmap_offset_type(i915, t) {
++		uint8_t *ptr_a, *ptr_b;
++
++		/* mmap the same GEM BO twice */
++		ptr_a = __mmap_offset(i915, handle, 0, SZ_2M,
++				PROT_READ | PROT_WRITE,
++				t->type);
++		if (!ptr_a)
++			continue;
++
++		ptr_b = __mmap_offset(i915, handle, 0, SZ_2M,
++				PROT_READ | PROT_WRITE,
++				t->type);
++		if (!ptr_b)
++			continue;
++
++		/* unmap the first mapping but the last 4k */
++		munmap(ptr_a, SZ_2M - SZ_4K);
++
++		/* memset that remaining 4k with 0xcc */
++		memset(ptr_a + SZ_2M - SZ_4K, 0xcc, SZ_4K);
++
++		/* memset the first page of the 2Mb with 0xdd */
++		memset(ptr_b, 0xdd, SZ_4K);
++
++		for (uint32_t i = 0; i < SZ_4K; i++)
++			igt_assert_eq_u32(ptr_a[SZ_2M - SZ_4K + i], 0xcc);
++
++		munmap(ptr_a + SZ_2M - SZ_4K, SZ_4K);
++		memset(ptr_b, 0, SZ_2M);
++		munmap(ptr_b, SZ_2M);
++	}
++
++	gem_close(i915, handle);
++}
++
++static void partial_remap(int i915, struct gem_memory_region *r)
++{
++	uint32_t handle;
++
++	handle = gem_create_in_memory_region_list(i915, SZ_2M, 0, &r->ci, 1);
++	make_resident(i915, 0, handle);
++
++	for_each_mmap_offset_type(i915, t) {
++		long tail = SZ_2M - SZ_4K;
++		uint8_t *ptr;
++
++		ptr = __mmap_offset(i915, handle, 0, SZ_2M,
++				PROT_READ | PROT_WRITE,
++				t->type);
++		if (!ptr)
++			continue;
++
++		igt_assert_eq_u32(ptr[0], 0);
++		igt_assert(munmap(ptr, tail) == 0);
++
++		ptr = mremap(ptr + tail, SZ_4K, SZ_4K, MREMAP_MAYMOVE | MREMAP_FIXED, SZ_4K);
++		igt_info("Testing remap(%s), tail of 2M object at ptr=%p\n",
++			 t->name, ptr);
++		igt_assert(ptr == (uint8_t *)SZ_4K);
++
++		igt_assert_eq_u32(ptr[0], 0);
++		munmap(ptr, SZ_4K);
++	}
++
++	gem_close(i915, handle);
++}
++
+ static int mmap_gtt_version(int i915)
+ {
+ 	int gtt_version = -1;
+@@ -932,7 +1046,25 @@ igt_main
+ 	igt_subtest_f("open-flood")
+ 		open_flood(i915, 20);
+ 
++	igt_subtest_with_dynamic("partial-mmap") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				partial_mmap(i915, r);
++		}
++	}
++	igt_subtest_with_dynamic("partial-unmap") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				partial_unmap(i915, r);
++		}
++	}
++	igt_subtest_with_dynamic("partial-remap") {
++		for_each_memory_region(r, i915) {
++			igt_dynamic_f("%s", r->name)
++				partial_remap(i915, r);
++		}
++	}
++
+ 	igt_subtest_with_dynamic("clear") {
+ 		for_each_memory_region(r, i915) {
+ 			igt_dynamic_f("%s", r->name)
+-- 
+2.45.2
 
-Your code has been rated at 9.92/10 (previous run: 7.64/10, +2.28)
-
-Btw running 
-./intel-gfx-fw-info -c /lib/firmware/i915/ehl_huc_9.0.0.bin.zst
-
-I got:
-
-header-type: CSS
-version: 137.147.184
-date: 543-01-b9
-checksum: 3aa76ca9f25d916e64a56267338d37993b8e4e7321856de83d98d14e15ace4ad
-
-Is date an encoded date and time?
-
-You can add my acked-by with or without a fix for W0621 warning.
-
-Regards,
-Kamil
-
-> ---
->  tools/intel-gfx-fw-info | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/intel-gfx-fw-info b/tools/intel-gfx-fw-info
-> index b0d41bbae..35555aab5 100755
-> --- a/tools/intel-gfx-fw-info
-> +++ b/tools/intel-gfx-fw-info
-> @@ -150,10 +150,12 @@ def parse_args(argv: typing.List[str]) -> argparse.Namespace:
->      description = "Dump GuC/HuC firmware information"
->      parser = argparse.ArgumentParser(prog="intel-gfx-fw-info", description=description)
->  
-> -    parser.add_argument("-x", "--raw", action="store_true",
-> -                        help="Also print raw header content")
-> -    parser.add_argument("-c", "--checksum", action="store_true",
-> -                        help="Also print checksum")
-> +    parser.add_argument(
-> +        "-x", "--raw", action="store_true", help="Also print raw header content"
-> +    )
-> +    parser.add_argument(
-> +        "-c", "--checksum", action="store_true", help="Also print checksum"
-> +    )
->  
->      parser.add_argument("filename", help="GuC/HuC firmware file")
->  
-> -- 
-> 2.43.0
-> 
