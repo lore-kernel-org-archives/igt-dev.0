@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B07FC5320E
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 06:14:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABB1EC531DF
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 07:25:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CB3510E72C;
-	Thu, 22 Aug 2024 06:14:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZHjJW3ot";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8440610E72A
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 06:14:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724307268; x=1755843268;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=qFrW5yL+nwMD0dITr2c0D/kOhRt7yOUfYQH9e3oSnIs=;
- b=ZHjJW3otvKT+qWQBjNrvu7/gPmoDaEASIEjxD3e7tmAuXz+B1x8WDQFS
- +YDNGbRRpHqZ9g09Z7SybXuMf4ssxIvTmTJ/7nRmYraDjalynMj9Viu/1
- xSUCVdom9Jy/TXdmtPkpvTtqNanwWY7swq8girtn7iqMBc80uXLIYlqoH
- trUA6giWwIvEQdEEsUSgiofxYF75Csxwm03V7VlMvOzgSpbuZoygPiphq
- EqcLRGKK8bIzLF028Q9Z16KGqwRWj6szjGW6ub106aru1dOBNaFwX+CJP
- iuPXXrDca7ffopWkDQoFEeosLU20SAlWcG8buiv51mE0SwAs7qp9NeBgP w==;
-X-CSE-ConnectionGUID: v4Aix9jgQZ+6/uzLaP40Ag==
-X-CSE-MsgGUID: kzQcY3dqQuuNoBA3O2wdNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22225659"
-X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; d="scan'208";a="22225659"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 23:14:28 -0700
-X-CSE-ConnectionGUID: rywARDLnSL+QFUr6WI9uAw==
-X-CSE-MsgGUID: lEj+8B56Ti2POo1bJrCF+Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; d="scan'208";a="61329208"
-Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
- by fmviesa008.fm.intel.com with ESMTP; 21 Aug 2024 23:14:27 -0700
-From: Suraj Kandpal <suraj.kandpal@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: pranay.samala@intel.com, ankit.k.nautiyal@intel.com, jeevan.b@intel.com,
- Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t 5/5] tests/kms_content_protection: Set screen red/green
- based on CP Status
-Date: Thu, 22 Aug 2024 11:41:50 +0530
-Message-ID: <20240822061150.4127413-6-suraj.kandpal@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240822061150.4127413-1-suraj.kandpal@intel.com>
-References: <20240822061150.4127413-1-suraj.kandpal@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54D4010E7A8;
+	Thu, 22 Aug 2024 07:25:18 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77A7C10E7A8;
+ Thu, 22 Aug 2024 07:25:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3954114681592658289=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Improve_MST_HDCP_tests_=28rev3?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 22 Aug 2024 07:25:17 -0000
+Message-ID: <172431151748.724138.16148347316331992438@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240822061150.4127413-1-suraj.kandpal@intel.com>
+In-Reply-To: <20240822061150.4127413-1-suraj.kandpal@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,84 +37,172 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Set fb as red when HDCP is disabled and green when HDCP is enabled
-rather than randomly setting the color. This helps to visually
-verify HDCP's enablement status rather than having to look at the
-logs.
+--===============3954114681592658289==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
---v2
--Add reason for this change in commit message [Jeevan]
+== Series Details ==
 
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
----
- tests/kms_content_protection.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+Series: Improve MST HDCP tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/137215/
+State : success
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index d6c8344e2..3cb432ded 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -524,12 +524,11 @@ static bool sink_hdcp2_capable(igt_output_t *output)
- 	return strstr(buf, "HDCP2.2");
- }
- 
--static void prepare_modeset_on_mst_output(igt_output_t *output)
-+static void prepare_modeset_on_mst_output(igt_output_t *output, bool is_enabled)
- {
- 	drmModeModeInfo *mode;
- 	igt_plane_t *primary;
- 	int width, height;
--	enum pipe pipe = output->pending_pipe;
- 
- 	mode = igt_output_get_mode(output);
- 
-@@ -538,8 +537,8 @@ static void prepare_modeset_on_mst_output(igt_output_t *output)
- 
- 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_plane_set_fb(primary, NULL);
--	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
--	igt_fb_set_size(pipe % 2 ? &data.red : &data.green, primary, width, height);
-+	igt_plane_set_fb(primary, is_enabled ? &data.green : &data.red);
-+	igt_fb_set_size(is_enabled ? &data.green : &data.red, primary, width, height);
- 	igt_plane_set_size(primary, width, height);
- }
- 
-@@ -733,7 +732,7 @@ test_content_protection_mst(int content_type)
- 		igt_assert_f(pipe_found, "No valid pipe found for %s\n", output->name);
- 
- 		igt_output_set_pipe(output, pipe);
--		prepare_modeset_on_mst_output(output);
-+		prepare_modeset_on_mst_output(output, false);
- 		dp_mst_outputs++;
- 		if (output_hdcp_capable(output, content_type))
- 			hdcp_mst_output[valid_outputs++] = output;
-@@ -750,7 +749,7 @@ test_content_protection_mst(int content_type)
- 		igt_require_f(found, "No valid mode combo found for MST modeset\n");
- 
- 		for (count = 0; count < valid_outputs; count++)
--			prepare_modeset_on_mst_output(hdcp_mst_output[count]);
-+			prepare_modeset_on_mst_output(hdcp_mst_output[count], false);
- 
- 		ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
- 		igt_require_f(ret == 0, "Commit failure during MST modeset\n");
-@@ -760,6 +759,13 @@ test_content_protection_mst(int content_type)
- 
- 	ret = test_mst_cp_enable_with_retry(hdcp_mst_output, valid_outputs, 2, content_type);
- 
-+	if (ret) {
-+		for (i = 0; i < valid_outputs; i++)
-+			prepare_modeset_on_mst_output(hdcp_mst_output[count], true);
-+
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+	}
-+
- 	if (data.cp_tests & CP_LIC)
- 		test_cp_lic_on_mst(hdcp_mst_output, valid_outputs, 0);
- 
--- 
-2.43.2
+== Summary ==
 
+CI Bug Log - changes from XEIGT_7983_BAT -> XEIGTPW_11615_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11615_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@xe_intel_bb@blit-simple:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#1705])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-adlp-vf/igt@xe_intel_bb@blit-simple.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-adlp-vf/igt@xe_intel_bb@blit-simple.html
+
+  * igt@xe_live_ktest@xe_migrate:
+    - bat-adlp-vf:        [PASS][5] -> [SKIP][6] ([Intel XE#1192]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html
+
+  
+#### Warnings ####
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [SKIP][7] ([Intel XE#2229] / [Intel XE#455]) -> [SKIP][8] ([Intel XE#1192])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+
+  
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
+  [Intel XE#1705]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1705
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7983 -> IGTPW_11615
+  * Linux: xe-1809-e0f8b8a5d8c77e94683451085c62cc54a4d9079d -> xe-1810-4c294bd7d8c84305dbb1de1aa9e010818e3f4b7e
+
+  IGTPW_11615: eaa4e9bb9e0d400dc30a4a36ac80bd7e8d20ebf3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_7983: b2e17acf37471073210221724a66d164328dee98 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1809-e0f8b8a5d8c77e94683451085c62cc54a4d9079d: e0f8b8a5d8c77e94683451085c62cc54a4d9079d
+  xe-1810-4c294bd7d8c84305dbb1de1aa9e010818e3f4b7e: 4c294bd7d8c84305dbb1de1aa9e010818e3f4b7e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/index.html
+
+--===============3954114681592658289==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Improve MST HDCP tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137215/">https://patchwork.freedesktop.org/series/137215/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7983_BAT -&gt; XEIGTPW_11615_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11615_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@blit-simple:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-adlp-vf/igt@xe_intel_bb@blit-simple.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-adlp-vf/igt@xe_intel_bb@blit-simple.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1705">Intel XE#1705</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-adlp-vf/igt@xe_live_ktest@xe_migrate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7983/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11615/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7983 -&gt; IGTPW_11615</li>
+<li>Linux: xe-1809-e0f8b8a5d8c77e94683451085c62cc54a4d9079d -&gt; xe-1810-4c294bd7d8c84305dbb1de1aa9e010818e3f4b7e</li>
+</ul>
+<p>IGTPW_11615: eaa4e9bb9e0d400dc30a4a36ac80bd7e8d20ebf3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_7983: b2e17acf37471073210221724a66d164328dee98 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1809-e0f8b8a5d8c77e94683451085c62cc54a4d9079d: e0f8b8a5d8c77e94683451085c62cc54a4d9079d<br />
+  xe-1810-4c294bd7d8c84305dbb1de1aa9e010818e3f4b7e: 4c294bd7d8c84305dbb1de1aa9e010818e3f4b7e</p>
+
+</body>
+</html>
+
+--===============3954114681592658289==--
