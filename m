@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59880C3DA4A
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B07FC5320E
 	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 06:14:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C02710E72A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5CB3510E72C;
 	Thu, 22 Aug 2024 06:14:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DF47X3wT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZHjJW3ot";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6FD3B10E729
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 06:14:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8440610E72A
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 06:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724307266; x=1755843266;
+ t=1724307268; x=1755843268;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=IbmkyjApP9W7E/VXv8FgB9vbtR92BdE4jGD6ej/IurU=;
- b=DF47X3wT0GIGixeQGv5YbcqLXOc7bT3HYH10kRoxAALN7Z1ZKO31hdSS
- iTETb6s9jubMw6O5ryGclZ7tJX0tjp6c3hvl+RCWSedqEZ/D7KVMeZjN4
- mlWB3azDl4p6dVB21PHBNjjWwcGDYM6pLIbMT0ZBhF8qX8Tns4fPg8j2Q
- HyhGQvTvS0Zcu6qSj5/kj9/XhbnY6tqECeujANP6B+NFWpZkb4s56sszn
- yWwxUfhvjli4ScGkBvdNBdqhjjC4CPfVGg6IN8QoCZvtRN09hGGjAQPNZ
- bVXhpOR29gAfXYwB9m+5vnYgC0R8foVpO9m/rigwOLVEpbC5CQgwdkfq7 w==;
-X-CSE-ConnectionGUID: 7kI55DSjS2eIMsWK9g2oBQ==
-X-CSE-MsgGUID: CN+wvoUBQ0igBY+i9iaDEg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22225648"
-X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; d="scan'208";a="22225648"
+ bh=qFrW5yL+nwMD0dITr2c0D/kOhRt7yOUfYQH9e3oSnIs=;
+ b=ZHjJW3otvKT+qWQBjNrvu7/gPmoDaEASIEjxD3e7tmAuXz+B1x8WDQFS
+ +YDNGbRRpHqZ9g09Z7SybXuMf4ssxIvTmTJ/7nRmYraDjalynMj9Viu/1
+ xSUCVdom9Jy/TXdmtPkpvTtqNanwWY7swq8girtn7iqMBc80uXLIYlqoH
+ trUA6giWwIvEQdEEsUSgiofxYF75Csxwm03V7VlMvOzgSpbuZoygPiphq
+ EqcLRGKK8bIzLF028Q9Z16KGqwRWj6szjGW6ub106aru1dOBNaFwX+CJP
+ iuPXXrDca7ffopWkDQoFEeosLU20SAlWcG8buiv51mE0SwAs7qp9NeBgP w==;
+X-CSE-ConnectionGUID: v4Aix9jgQZ+6/uzLaP40Ag==
+X-CSE-MsgGUID: kzQcY3dqQuuNoBA3O2wdNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="22225659"
+X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; d="scan'208";a="22225659"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2024 23:14:26 -0700
-X-CSE-ConnectionGUID: SlSOL807SwWPq4CdEXINEw==
-X-CSE-MsgGUID: bNMzDuXmSa+H9CxlVtpdAA==
+ 21 Aug 2024 23:14:28 -0700
+X-CSE-ConnectionGUID: rywARDLnSL+QFUr6WI9uAw==
+X-CSE-MsgGUID: lEj+8B56Ti2POo1bJrCF+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; d="scan'208";a="61329195"
+X-IronPort-AV: E=Sophos;i="6.10,166,1719903600"; d="scan'208";a="61329208"
 Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
- by fmviesa008.fm.intel.com with ESMTP; 21 Aug 2024 23:14:24 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 21 Aug 2024 23:14:27 -0700
 From: Suraj Kandpal <suraj.kandpal@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: pranay.samala@intel.com, ankit.k.nautiyal@intel.com, jeevan.b@intel.com,
  Suraj Kandpal <suraj.kandpal@intel.com>
-Subject: [PATCH i-g-t 4/5] tests/kms_content_protection: Add retry logic for
- mst usecase
-Date: Thu, 22 Aug 2024 11:41:49 +0530
-Message-ID: <20240822061150.4127413-5-suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t 5/5] tests/kms_content_protection: Set screen red/green
+ based on CP Status
+Date: Thu, 22 Aug 2024 11:41:50 +0530
+Message-ID: <20240822061150.4127413-6-suraj.kandpal@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240822061150.4127413-1-suraj.kandpal@intel.com>
 References: <20240822061150.4127413-1-suraj.kandpal@intel.com>
@@ -68,140 +68,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add mst retry logic where it retries 3 times before failing the test.
-After every retry mst setup needs to be disabled so we need to add a
-function which disables mst in one commit.
+Set fb as red when HDCP is disabled and green when HDCP is enabled
+rather than randomly setting the color. This helps to visually
+verify HDCP's enablement status rather than having to look at the
+logs.
 
 --v2
--Fix enum declaration name [Jeevan]
--Add more elaborate debug message [Jeevan]
-
---v3
--Instead of removing wait time for subsequent CP connector status
-check reduce it to 100msec
+-Add reason for this change in commit message [Jeevan]
 
 Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/kms_content_protection.c | 83 +++++++++++++++++++++++++++++-----
- 1 file changed, 72 insertions(+), 11 deletions(-)
+ tests/kms_content_protection.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
 diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 473686939..d6c8344e2 100644
+index d6c8344e2..3cb432ded 100644
 --- a/tests/kms_content_protection.c
 +++ b/tests/kms_content_protection.c
-@@ -124,6 +124,7 @@ struct data {
- #define LIC_PERIOD_MSEC				(4 * 1000)
- /* Kernel retry count=3, Max time per authentication allowed = 6Sec */
- #define KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
-+#define KERNEL_AUTH_TIME_ADDITIONAL_MSEC	100
- #define KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
- #define FLIP_EVENT_POLLING_TIMEOUT_MSEC		1000
- 
-@@ -278,6 +279,36 @@ static bool test_cp_enable(igt_output_t *output, enum igt_commit_style commit_st
- 	return ret;
+@@ -524,12 +524,11 @@ static bool sink_hdcp2_capable(igt_output_t *output)
+ 	return strstr(buf, "HDCP2.2");
  }
  
-+static void test_mst_cp_disable(igt_output_t *hdcp_mst_output[],
-+				enum igt_commit_style commit_style,
-+				int valid_outputs)
-+{
-+	igt_display_t *display = &data.display;
-+	igt_plane_t *primary;
-+	bool ret;
-+	int count;
-+	u64 val;
-+
-+	for (count = 0; count < valid_outputs; count++) {
-+		primary = igt_output_get_plane_type(hdcp_mst_output[count], DRM_PLANE_TYPE_PRIMARY);
-+		igt_plane_set_fb(primary, &data.red);
-+		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION,
-+					  CP_UNDESIRED);
-+	}
-+
-+	igt_display_commit2(display, commit_style);
-+
-+	ret = wait_for_prop_value(hdcp_mst_output[0], CP_UNDESIRED,
-+				  KERNEL_DISABLE_TIME_ALLOWED_MSEC);
-+	for (count = 1; count < valid_outputs; count++) {
-+		val = igt_output_get_prop(hdcp_mst_output[count],
-+					  IGT_CONNECTOR_CONTENT_PROTECTION);
-+		ret &= (val == CP_UNDESIRED);
-+	}
-+
-+	igt_assert_f(ret, "Content Protection not cleared on all MST outputs\n");
-+}
-+
- static void test_cp_disable(igt_output_t *output, enum igt_commit_style commit_style)
+-static void prepare_modeset_on_mst_output(igt_output_t *output)
++static void prepare_modeset_on_mst_output(igt_output_t *output, bool is_enabled)
  {
- 	igt_display_t *display = &data.display;
-@@ -631,6 +662,46 @@ static void test_cp_lic_on_mst(igt_output_t *mst_outputs[], int valid_outputs, b
- 	}
+ 	drmModeModeInfo *mode;
+ 	igt_plane_t *primary;
+ 	int width, height;
+-	enum pipe pipe = output->pending_pipe;
+ 
+ 	mode = igt_output_get_mode(output);
+ 
+@@ -538,8 +537,8 @@ static void prepare_modeset_on_mst_output(igt_output_t *output)
+ 
+ 	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+ 	igt_plane_set_fb(primary, NULL);
+-	igt_plane_set_fb(primary, pipe % 2 ? &data.red : &data.green);
+-	igt_fb_set_size(pipe % 2 ? &data.red : &data.green, primary, width, height);
++	igt_plane_set_fb(primary, is_enabled ? &data.green : &data.red);
++	igt_fb_set_size(is_enabled ? &data.green : &data.red, primary, width, height);
+ 	igt_plane_set_size(primary, width, height);
  }
  
-+static bool
-+test_mst_cp_enable_with_retry(igt_output_t *hdcp_mst_output[], int valid_outputs,
-+			      int retries, int content_type)
-+{
-+	igt_display_t *display = &data.display;
-+	int retry_orig = retries, count;
-+	bool ret;
-+
-+	do {
-+		if (retry_orig != retries)
-+			test_mst_cp_disable(hdcp_mst_output, COMMIT_ATOMIC, valid_outputs);
-+
-+		for (count = 0; count < valid_outputs; count++) {
-+			igt_output_set_prop_value(hdcp_mst_output[count],
-+						  IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
-+
-+			if (hdcp_mst_output[count]->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
-+				igt_output_set_prop_value(hdcp_mst_output[count],
-+							  IGT_CONNECTOR_HDCP_CONTENT_TYPE,
-+							  content_type);
-+		}
+@@ -733,7 +732,7 @@ test_content_protection_mst(int content_type)
+ 		igt_assert_f(pipe_found, "No valid pipe found for %s\n", output->name);
+ 
+ 		igt_output_set_pipe(output, pipe);
+-		prepare_modeset_on_mst_output(output);
++		prepare_modeset_on_mst_output(output, false);
+ 		dp_mst_outputs++;
+ 		if (output_hdcp_capable(output, content_type))
+ 			hdcp_mst_output[valid_outputs++] = output;
+@@ -750,7 +749,7 @@ test_content_protection_mst(int content_type)
+ 		igt_require_f(found, "No valid mode combo found for MST modeset\n");
+ 
+ 		for (count = 0; count < valid_outputs; count++)
+-			prepare_modeset_on_mst_output(hdcp_mst_output[count]);
++			prepare_modeset_on_mst_output(hdcp_mst_output[count], false);
+ 
+ 		ret = igt_display_try_commit2(display, COMMIT_ATOMIC);
+ 		igt_require_f(ret == 0, "Commit failure during MST modeset\n");
+@@ -760,6 +759,13 @@ test_content_protection_mst(int content_type)
+ 
+ 	ret = test_mst_cp_enable_with_retry(hdcp_mst_output, valid_outputs, 2, content_type);
+ 
++	if (ret) {
++		for (i = 0; i < valid_outputs; i++)
++			prepare_modeset_on_mst_output(hdcp_mst_output[count], true);
 +
 +		igt_display_commit2(display, COMMIT_ATOMIC);
++	}
 +
-+		ret = wait_for_prop_value(hdcp_mst_output[0], CP_ENABLED,
-+					  KERNEL_AUTH_TIME_ALLOWED_MSEC);
-+		for (count = 1; count < valid_outputs; count++)
-+			ret &= wait_for_prop_value(hdcp_mst_output[count], CP_ENABLED,
-+						  KERNEL_AUTH_TIME_ADDITIONAL_MSEC);
-+
-+		retries -= 1;
-+		if (!ret || retries)
-+			igt_debug("Retry %d/3\n", 3 - retries);
-+	} while (retries && !ret);
-+
-+	igt_assert_f(ret, "Content Protection not enabled on MST outputs\n");
-+
-+	return ret;
-+}
-+
- static void
- test_content_protection_mst(int content_type)
- {
-@@ -685,19 +756,9 @@ test_content_protection_mst(int content_type)
- 		igt_require_f(ret == 0, "Commit failure during MST modeset\n");
- 	}
- 
--	for (count = 0; count < valid_outputs; count++) {
--		igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_CONTENT_PROTECTION, CP_DESIRED);
--
--		if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
--			igt_output_set_prop_value(hdcp_mst_output[count], IGT_CONNECTOR_HDCP_CONTENT_TYPE, content_type);
--	}
--
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
--	for (count = 0; count < valid_outputs; count++) {
--		ret = wait_for_prop_value(hdcp_mst_output[count], CP_ENABLED, KERNEL_AUTH_TIME_ALLOWED_MSEC);
--		igt_assert_f(ret, "Content Protection not enabled on %s\n", hdcp_mst_output[count]->name);
--	}
-+	ret = test_mst_cp_enable_with_retry(hdcp_mst_output, valid_outputs, 2, content_type);
- 
  	if (data.cp_tests & CP_LIC)
  		test_cp_lic_on_mst(hdcp_mst_output, valid_outputs, 0);
+ 
 -- 
 2.43.2
 
