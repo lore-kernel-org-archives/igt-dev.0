@@ -4,61 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE806C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 15:37:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD8DC531DF
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 15:38:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD0E510EB38;
-	Thu, 22 Aug 2024 15:37:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1ABAF10EB3C;
+	Thu, 22 Aug 2024 15:38:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I/UslkGB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H3c51OPh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C262710EB38
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 15:37:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2495910EB3C
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 15:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724341063; x=1755877063;
+ t=1724341116; x=1755877116;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=6xtud7olwlNtwqlWZK+m5Lu3XxhIC6w9CCzbGNZ8Rxs=;
- b=I/UslkGBPfWCrX8A5514Ed2OZsqobT7YDmMEFcMmrVIoLijOAA9n9Eou
- Kzm22AQ2M6e2fN5W2DnPOmiHzSxDu2iWZUn40/90oMe14nPFdYtERmwC6
- 0KjRK1k5caKdK1ZwjNiyBFINosXTsgintsTKlIbH5v08xVsksHhpmZXxr
- 6/Y71W1iT8XIKH96DJL/X7R0gXsP9KJqqSt9RCRGLe+VEZ06EVoQ/LFGj
- S7RI4MXGBS3Sk6G1lwixHQa00EGw+QC/VjB6KEuTEBWS/5zkJp2tmw3oM
- phsTk3jJJh+eiSp+SK8qfdIO2zBkpKM2S2DRjwIZQzYFjl82It0MLcb2t w==;
-X-CSE-ConnectionGUID: wWFL6LzTTBK/LhqrWQvFpA==
-X-CSE-MsgGUID: 0kwA3jr4SlepkDz/jRZIAw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="33334685"
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="33334685"
+ bh=sejZjrpPULlq3HmpITtDD5lq8KcTxbfPxpVBrabEDlQ=;
+ b=H3c51OPhx9i2AabwZuiPpNaCk2jRQ+jpxxjjO0Pj3wKpbWqrX4tM1pSf
+ McoYz93wyqRF5L9CMww8Hf7UJU0PdIy1985Kd+ceK0YctiB5TmjF93FRD
+ 57Twnf9JMBovnHmN/d6cGEe4i3P2yMQj6qNZ5ts17dP215P4D/9dituwy
+ njU4RYFLSsxXGQb//dxYPMlubaNDKz5m2kCSlEIjt06zPmip2myN4rp6N
+ ybPRStjjcsmIpJ9pz44l23LU7aPn9buFECthGSw27ddxJDcZYvcjEK4pD
+ 71tKhXeUulaHdU/8rpEh8GsxAICnLHS7B/aEEsAavn99McFg6gea/Fhcw w==;
+X-CSE-ConnectionGUID: f7xcsGXeTPyG6PBxRejouQ==
+X-CSE-MsgGUID: 7tyPNPVATemkxhAW+h6gvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="33334901"
+X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="33334901"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2024 08:37:43 -0700
-X-CSE-ConnectionGUID: /QDRCL37Qa+EmLlTL5eK4w==
-X-CSE-MsgGUID: 7ObKZgC6SHumBNULZApFtw==
+ 22 Aug 2024 08:38:36 -0700
+X-CSE-ConnectionGUID: GtFnMXL3ThiUGkw3FV75QQ==
+X-CSE-MsgGUID: VubpmxS/RLapC6ryb5FQKw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="62188278"
+X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="62188313"
 Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.246.49.79])
  ([10.246.49.79])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2024 08:37:42 -0700
-Message-ID: <76697f4e-3479-48e5-bffc-64938e7be547@linux.intel.com>
-Date: Thu, 22 Aug 2024 17:37:39 +0200
+ 22 Aug 2024 08:38:35 -0700
+Message-ID: <3e1501a2-1ce6-4304-9554-fce4e5a9458c@linux.intel.com>
+Date: Thu, 22 Aug 2024 17:38:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 1/2] tests/intel/xe_evict: Reduce allocations to
- maximum working set
+Subject: Re: [PATCH i-g-t v3 2/2] tests/intel/xe_evict: Reduce the "large" bo
+ size for threaded eviction
 To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: Matthew Brost <matthew.brost@intel.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
 References: <20240630180502.81556-1-thomas.hellstrom@linux.intel.com>
- <20240630180502.81556-2-thomas.hellstrom@linux.intel.com>
+ <20240630180502.81556-3-thomas.hellstrom@linux.intel.com>
 Content-Language: en-US
 From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240630180502.81556-2-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20240630180502.81556-3-thomas.hellstrom@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -78,198 +77,132 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 6/30/2024 8:05 PM, Thomas Hellström wrote:
-> Current xe kmd allows for a maximum working set of VRAM plus
-> half of system memory, or if the working set is allowed only in
-> VRAM, the working set is limited to VRAM.
+> When calculating the number of bos that simultaneously fits in
+> VRAM + system memory, account for eviction pipelining by subtracting
+> one bo for ongoing pipelined evictions per thread.
 >
-> Some subtests attempt to exceed that. Detect when that happens
-> and limit the working set accordingly.
+> With large bos this may lead to us not being able to use a working
+> set of 2 bos, which is the minimum, so reduce the large bo size for
+> threaded evictions, and instead increase the default number of bos.
 >
-> v2:
-> - The determination for which flags system bos are allowed in the
->    working set was incorrect. Fix. (Zbigniew Kempczyński)
-> - Fix a typo.
-> - Add an assert that vram_size is indeed > 0.
->    (Zbigniew Kempczyński, Thomas)
-> - Add asserts and make sure that the bo is bound to the same
->    vm the exec_queue is using.
-> - Increase the allowed set size for the multi-vm test.
 > v3:
-> - Reduce available system size to 80% (4/5) to be sure.
->    (Matthew Brost, Thomas)
+> - Fix up number of bo calculation to *really* subtract one bo per
+>    thread. (Matthew Brost)
 >
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 > Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->   tests/intel/xe_evict.c | 92 ++++++++++++++++++++++++++++++++++++------
->   1 file changed, 79 insertions(+), 13 deletions(-)
+>   tests/intel/xe_evict.c | 39 +++++++++++++++++++++++----------------
+>   1 file changed, 23 insertions(+), 16 deletions(-)
 >
 > diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-> index eebdbc84b..601c02ff7 100644
+> index 601c02ff7..9b71b6b74 100644
 > --- a/tests/intel/xe_evict.c
 > +++ b/tests/intel/xe_evict.c
-> @@ -97,6 +97,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
->                           uint32_t _vm = (flags & EXTERNAL_OBJ) &&
->                                   i < n_execs / 8 ? 0 : vm;
+> @@ -486,10 +486,14 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
 >   
-> +			igt_assert((e & 1) == (i & 1));
->   			if (flags & MULTI_VM) {
->   				__bo = bo[i] = xe_bo_create(fd, 0,
->   							    bo_size,
-> @@ -115,6 +116,7 @@ test_evict(int fd, struct drm_xe_engine_class_instance *eci,
->   							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->   			}
->   		} else {
-> +			igt_assert((e & 1) == ((i % (n_execs / 2)) & 1));
->   			__bo = bo[i % (n_execs / 2)];
->   		}
->   		if (i)
-> @@ -273,6 +275,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
->                           uint32_t _vm = (flags & EXTERNAL_OBJ) &&
->                                   i < n_execs / 8 ? 0 : vm;
+>   	/*
+>   	 * All bos must fit in, say 4 / 5 of memory to be sure.
+> -	 * Assume no swap-space available.
+> +	 * Assume no swap-space available. Subtract one bo per thread
+> +	 * for an active eviction.
+>   	 */
+>   	total_size = ((vram_size - 1) / bo_size + system_size * 4 / 5 / bo_size) /
+> -		num_threads;
+> +		num_threads - 1;
+> +
+> +	igt_debug("num_threads: %d bo_size : %lu total_size : %lu\n", num_threads,
+> +		  bo_size, total_size);
 >   
-> +			igt_assert((e & 1) == (i & 1));
->   			if (flags & MULTI_VM) {
->   				__bo = bo[i] = xe_bo_create(fd, 0,
->   							    bo_size,
-> @@ -291,6 +294,7 @@ test_evict_cm(int fd, struct drm_xe_engine_class_instance *eci,
->   							    DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->   			}
->   		} else {
-> +			igt_assert((e & 1) == ((i % (n_execs / 2)) & 1));
->   			__bo = bo[i % (n_execs / 2)];
->   		}
->   		if (i)
-> @@ -458,6 +462,49 @@ static uint64_t calc_bo_size(uint64_t vram_size, int mul, int div)
->   		return (ALIGN(vram_size, SZ_256M)  * mul) / div; /* small-bar */
->   }
->   
-> +static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
-> +				uint64_t bo_size, unsigned int num_threads,
-> +				unsigned int flags)
-> +{
-> +	uint64_t set_size;
-> +	uint64_t total_size;
-> +
-> +	igt_assert(vram_size > 0);
-> +
-> +	set_size = (vram_size - 1) / bo_size;
-> +
-> +	/*
-> +	 * Working set resides also in system?
-> +	 * Currently system graphics memory is limited to 50% of total.
-> +	 */
-> +	if (!(flags & (THREADED | MULTI_VM)))
-> +		set_size += (system_size / 2) / bo_size;
-> +
-> +	/* Set sizes are per vm. In the multi-vm case we use 2 vms. */
-> +	if (flags & MULTI_VM)
-> +		set_size *= 2;
-> +
-> +	/*
-> +	 * All bos must fit in, say 4 / 5 of memory to be sure.
-> +	 * Assume no swap-space available.
-> +	 */
-> +	total_size = ((vram_size - 1) / bo_size + system_size * 4 / 5 / bo_size) /
-> +		num_threads;
-> +
-> +	if (set_size > total_size)
-> +		set_size = total_size;
-> +
-> +	/* bos are only created on half of the execs. */
-> +	set_size *= 2;
-> +
-> +	/*
-> +	 * Align down to ensure the vm the bo is bound to matches the vm
-> +	 * used by the exec_queue, fulfilling the asserts in the
-> +	 * tests.
-> +	 */
-> +	return ALIGN_DOWN(set_size, 4);
-> +}
-> +
->   /**
->    * SUBTEST: evict-%s
->    * Description:  %arg[1] evict test.
-> @@ -748,6 +795,7 @@ igt_main
+>   	if (set_size > total_size)
+>   		set_size = total_size;
+> @@ -744,13 +748,13 @@ igt_main
+>   			MIXED_THREADS | THREADED },
+>   		{ "mixed-many-threads-small", 3, 16, 128, 1, 128,
+>   			THREADED },
+> -		{ "threads-large", 2, 2, 4, 3, 8,
+> +		{ "threads-large", 2, 2, 16, 3, 32,
+>   			THREADED },
+> -		{ "cm-threads-large", 2, 2, 4, 3, 8,
+> +		{ "cm-threads-large", 2, 2, 16, 3, 32,
+>   			COMPUTE_THREAD | THREADED },
+> -		{ "mixed-threads-large", 2, 2, 4, 3, 8,
+> +		{ "mixed-threads-large", 2, 2, 16, 3, 32,
+>   			MIXED_THREADS | THREADED },
+> -		{ "mixed-many-threads-large", 3, 2, 4, 3, 8,
+> +		{ "mixed-many-threads-large", 3, 2, 16, 3, 32,
+>   			THREADED },
+>   		{ "threads-small-multi-vm", 2, 16, 128, 1, 128,
+>   			MULTI_VM | THREADED },
+> @@ -758,11 +762,11 @@ igt_main
+>   			COMPUTE_THREAD | MULTI_VM | THREADED },
+>   		{ "mixed-threads-small-multi-vm", 2, 16, 128, 1, 128,
+>   			MIXED_THREADS | MULTI_VM | THREADED },
+> -		{ "threads-large-multi-vm", 2, 2, 4, 3, 8,
+> +		{ "threads-large-multi-vm", 2, 2, 16, 3, 32,
+>   			MULTI_VM | THREADED },
+> -		{ "cm-threads-large-multi-vm", 2, 2, 4, 3, 8,
+> +		{ "cm-threads-large-multi-vm", 2, 2, 16, 3, 32,
+>   			COMPUTE_THREAD | MULTI_VM | THREADED },
+> -		{ "mixed-threads-large-multi-vm", 2, 2, 4, 3, 8,
+> +		{ "mixed-threads-large-multi-vm", 2, 2, 16, 3, 32,
+>   			MIXED_THREADS | MULTI_VM | THREADED },
+>   		{ "beng-threads-small", 2, 16, 128, 1, 128,
+>   			THREADED | BIND_EXEC_QUEUE },
+> @@ -772,13 +776,13 @@ igt_main
+>   			MIXED_THREADS | THREADED | BIND_EXEC_QUEUE },
+>   		{ "beng-mixed-many-threads-small", 3, 16, 128, 1, 128,
+>   			THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-threads-large", 2, 2, 4, 3, 8,
+> +		{ "beng-threads-large", 2, 2, 16, 3, 32,
+>   			THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-cm-threads-large", 2, 2, 4, 3, 8,
+> +		{ "beng-cm-threads-large", 2, 2, 16, 3, 32,
+>   			COMPUTE_THREAD | THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-mixed-threads-large", 2, 2, 4, 3, 8,
+> +		{ "beng-mixed-threads-large", 2, 2, 16, 3, 32,
+>   			MIXED_THREADS | THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-mixed-many-threads-large", 3, 2, 4, 3, 8,
+> +		{ "beng-mixed-many-threads-large", 3, 2, 16, 3, 32,
+>   			THREADED | BIND_EXEC_QUEUE },
+>   		{ "beng-threads-small-multi-vm", 2, 16, 128, 1, 128,
+>   			MULTI_VM | THREADED | BIND_EXEC_QUEUE },
+> @@ -786,11 +790,11 @@ igt_main
+>   			COMPUTE_THREAD | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
+>   		{ "beng-mixed-threads-small-multi-vm", 2, 16, 128, 1, 128,
+>   			MIXED_THREADS | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-threads-large-multi-vm", 2, 2, 4, 3, 8,
+> +		{ "beng-threads-large-multi-vm", 2, 2, 16, 3, 32,
+>   			MULTI_VM | THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-cm-threads-large-multi-vm", 2, 2, 4, 3, 8,
+> +		{ "beng-cm-threads-large-multi-vm", 2, 2, 16, 3, 32,
+>   			COMPUTE_THREAD | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
+> -		{ "beng-mixed-threads-large-multi-vm", 2, 2, 4, 3, 8,
+> +		{ "beng-mixed-threads-large-multi-vm", 2, 2, 16, 3, 32,
+>   			MIXED_THREADS | MULTI_VM | THREADED | BIND_EXEC_QUEUE },
 >   		{ NULL },
 >   	};
->   	uint64_t vram_size;
-> +	uint64_t system_size;
->   	int fd;
+> @@ -826,6 +830,7 @@ igt_main
+>   					     1, s->flags);
 >   
->   	igt_fixture {
-> @@ -755,14 +803,16 @@ igt_main
->   		igt_require(xe_has_vram(fd));
->   		vram_size = xe_visible_vram_size(fd, 0);
->   		igt_assert(vram_size);
-> +		system_size = igt_get_avail_ram_mb() << 20;
->   
->   		/* Test requires SRAM to about as big as VRAM. For example, small-cm creates
->   		 * (448 / 2) BOs with a size (1 / 128) of the total VRAM size. For
->   		 * simplicity ensure the SRAM size >= VRAM before running this test.
->   		 */
-> -		igt_skip_on_f(igt_get_avail_ram_mb() < (vram_size >> 20),
-> -			      "System memory %lu MiB is less than local memory %lu MiB\n",
-> -			      igt_get_avail_ram_mb(), vram_size >> 20);
-> +		igt_skip_on_f(system_size < vram_size,
-> +			      "System memory %llu MiB is less than local memory %llu MiB\n",
-> +			      (unsigned long long)system_size >> 20,
-> +			      (unsigned long long)vram_size >> 20);
->   
->   		xe_for_each_engine(fd, hwe)
->   			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY)
-> @@ -770,25 +820,41 @@ igt_main
->   	}
->   
->   	for (const struct section *s = sections; s->name; s++) {
-> -		igt_subtest_f("evict-%s", s->name)
-> -			test_evict(fd, hwe, s->n_exec_queues, s->n_execs,
-> -				   calc_bo_size(vram_size, s->mul, s->div),
-> +		igt_subtest_f("evict-%s", s->name) {
-> +			uint64_t bo_size = calc_bo_size(vram_size, s->mul, s->div);
-> +			int ws = working_set(vram_size, system_size, bo_size,
-> +					     1, s->flags);
-> +
-> +			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
-> +			test_evict(fd, hwe, s->n_exec_queues,
-> +				   min(ws, s->n_execs), bo_size,
+>   			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+> +			igt_skip_on_f(!ws, "System memory size is too small.\n");
+>   			test_evict(fd, hwe, s->n_exec_queues,
+>   				   min(ws, s->n_execs), bo_size,
 >   				   s->flags, NULL);
-> +		}
->   	}
+> @@ -839,6 +844,7 @@ igt_main
+>   					     1, s->flags);
 >   
->   	for (const struct section_cm *s = sections_cm; s->name; s++) {
-> -		igt_subtest_f("evict-%s", s->name)
-> -			test_evict_cm(fd, hwe, s->n_exec_queues, s->n_execs,
-> -				      calc_bo_size(vram_size, s->mul, s->div),
-> +		igt_subtest_f("evict-%s", s->name) {
-> +			uint64_t bo_size = calc_bo_size(vram_size, s->mul, s->div);
-> +			int ws = working_set(vram_size, system_size, bo_size,
-> +					     1, s->flags);
-> +
-> +			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
-> +			test_evict_cm(fd, hwe, s->n_exec_queues,
-> +				      min(ws, s->n_execs), bo_size,
+>   			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+> +			igt_skip_on_f(!ws, "System memory size is too small.\n");
+>   			test_evict_cm(fd, hwe, s->n_exec_queues,
+>   				      min(ws, s->n_execs), bo_size,
 >   				      s->flags, NULL);
-> +		}
->   	}
+> @@ -852,6 +858,7 @@ igt_main
+>   					     s->n_threads, s->flags);
 >   
->   	for (const struct section_threads *s = sections_threads; s->name; s++) {
-> -		igt_subtest_f("evict-%s", s->name)
-> +		igt_subtest_f("evict-%s", s->name) {
-> +			uint64_t bo_size = calc_bo_size(vram_size, s->mul, s->div);
-> +			int ws = working_set(vram_size, system_size, bo_size,
-> +					     s->n_threads, s->flags);
-> +
-> +			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+>   			igt_debug("Max working set %d n_execs %d\n", ws, s->n_execs);
+> +			igt_skip_on_f(!ws, "System memory size is too small.\n");
 >   			threads(fd, hwe, s->n_threads, s->n_exec_queues,
-> -				 s->n_execs,
-> -				 calc_bo_size(vram_size, s->mul, s->div),
-> -				 s->flags);
-> +				min(ws, s->n_execs), bo_size, s->flags);
-> +		}
->   	}
->   
->   	igt_fixture
+>   				min(ws, s->n_execs), bo_size, s->flags);
+>   		}
