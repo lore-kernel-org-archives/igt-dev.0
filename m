@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B39A9C3DA4A
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 12:48:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9878C52D7C
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Aug 2024 12:48:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6FF3810E08E;
-	Thu, 22 Aug 2024 12:48:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9431110E093;
+	Thu, 22 Aug 2024 12:48:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mu38pFPa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WgMrSsBs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 163A610E08E
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 12:48:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E43310E090
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Aug 2024 12:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724330884; x=1755866884;
+ t=1724330892; x=1755866892;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=c7aJAK9DH5tk1US3c8X4yJy3SsOHQwd8Cm0xYI9F4CI=;
- b=mu38pFPadP+HI7XEaGundCfFFacFo8t6fLaK0PawHstS86JLLnUDA4lz
- sHcN9FHIjSqjhrsfARfEJds+CPd+Ju2xu0LPfn+i0LJWxYZT3v0EOHkXX
- ehpxc24iNYPJpRhuYHLHaWak81XrBnYcOPbIQwTQZZucP4qKmyvIhOYyg
- FHQTtaiqLKmfxjVQGMmTswlhsxiUhaJfzuwyaAaiUglNNe7+pu2l5ls2X
- SMgb+PuepfTRGzqCgwxaFZTH/UQq/SOK3nUDNnF63fMDvwBLg95icLeox
- KexF6JKC8jb4DNgmodvefAAfIi/dBWzKdTXPmSZOTfgLrCU/tBxt6Ow06 A==;
-X-CSE-ConnectionGUID: Kp7rPvCbS7mGJZCs7rN1zA==
-X-CSE-MsgGUID: fASuD3iST02hN+wa+7l1Uw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="25636501"
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="25636501"
+ bh=CLgAGKhsHD4nVPC0e2u7I7sBr8R6UZrbgXQqeNNSY9U=;
+ b=WgMrSsBszWex9RhO1ARvJKwmWhhF4UbdEXNDIt1xHDNtX+XchoXviChx
+ zcZuf2MuDdrgtfSanpk1snlrg7EvxWzuqeI8gdaxx+bTE8vLU8PHf+eB2
+ z6eYkFyA2Q7WAgLsnJEhtCR+vvNwmhj5/dGZFqy3eA/DYnBPwVIPPoH3p
+ pYRbKxlbpSsRyhPUh5PlxLk1EC7fDu9SIYK57fJBE3mquLYRUCd5pElfD
+ UjRoLFVM6VV/Bq+UcGuK3viqwma+fpXQgRy7u4a/upBrlGt0D373ByvD6
+ NcVS6pemI93uEwu9QpgDyOzwEu85DqbdNdzi9EhGoLyg+2tHiiG7p8ndA Q==;
+X-CSE-ConnectionGUID: Ug4juo55SlqEL/ZpWZqE1Q==
+X-CSE-MsgGUID: iEIgqaSYTtKMYm09BpLL+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="25636512"
+X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="25636512"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2024 05:48:04 -0700
-X-CSE-ConnectionGUID: Pr6iV3XXRpiLy4OABBolmg==
-X-CSE-MsgGUID: +Ay9fgP2SAqBzFvAgCAqPg==
+ 22 Aug 2024 05:48:11 -0700
+X-CSE-ConnectionGUID: y0UnCL9NQl6ciVB7pL43NA==
+X-CSE-MsgGUID: anDo6jjVQcm0l6U19CZj3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="92231800"
+X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; d="scan'208";a="92231852"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
  ([10.245.246.123])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Aug 2024 05:47:59 -0700
+ 22 Aug 2024 05:48:07 -0700
 From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 To: igt-dev@lists.freedesktop.org,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -50,10 +50,10 @@ Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
  Lionel Landwerlin <lionel.g.landwerlin@intel.com>,
  Jann Horn <jannh@google.com>,
  Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t v3 1/3] tests/intel/gem_mmap_offset: Partial mmap and
- munmap
-Date: Thu, 22 Aug 2024 14:47:42 +0200
-Message-ID: <20240822124744.13054-2-krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t v3 2/3] tests/intel/gem_mmap_offset: Introduce
+ mmap-boundaries test
+Date: Thu, 22 Aug 2024 14:47:43 +0200
+Message-ID: <20240822124744.13054-3-krzysztof.niemiec@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240822124744.13054-1-krzysztof.niemiec@intel.com>
 References: <20240822124744.13054-1-krzysztof.niemiec@intel.com>
@@ -74,180 +74,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Chris Wilson <chris.p.wilson@linux.intel.com>
+Introduce the mmap-boundaries test, which checks if mmap() correctly
+calculates memory boundaries during the mapping.
 
-Based on a test case developed by Lionel Landwerlin, this exercises
-creation of partial mmaps using both direct methods of a partial mmap()
-(where the mmap() only covers a portion of the object) and
-munmap() to do the same.
-
-Signed-off-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Lionel Landwerlin <lionel.g.landwerlin@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
 Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 ---
- tests/intel/gem_mmap_offset.c | 133 ++++++++++++++++++++++++++++++++++
- 1 file changed, 133 insertions(+)
+ tests/intel/gem_mmap_offset.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
 diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
-index d0e439fea..80ac8dc01 100644
+index 80ac8dc01..e95c26e7f 100644
 --- a/tests/intel/gem_mmap_offset.c
 +++ b/tests/intel/gem_mmap_offset.c
-@@ -57,6 +57,9 @@
+@@ -55,6 +55,7 @@
+  * SUBTEST: clear
+  * SUBTEST: close-race
   * SUBTEST: isolation
++ * SUBTEST: mmap-boundaries
   * SUBTEST: oob-read
   * SUBTEST: open-flood
-+ * SUBTEST: partial-mmap
-+ * SUBTEST: partial-unmap
-+ * SUBTEST: partial-remap
-  * SUBTEST: perf
-  * SUBTEST: pf-nonblock
-  * SUBTEST: ptrace
-@@ -875,6 +878,117 @@ static void blt_coherency(int i915)
- 	igt_assert_f(compare_ok, "Problem with coherency, flush is too late\n");
+  * SUBTEST: partial-mmap
+@@ -989,6 +990,32 @@ static void partial_remap(int i915, struct gem_memory_region *r)
+ 	gem_close(i915, handle);
  }
  
-+static void partial_mmap(int i915, struct gem_memory_region *r)
++/* This test's failure is detected by checking the dmesg. */
++static void test_mmap_boundaries(int i915, struct gem_memory_region *r)
 +{
++	const uint64_t map_size = SZ_128M - SZ_512K;
 +	uint32_t handle;
 +
-+	handle = gem_create_in_memory_region_list(i915, SZ_2M, 0, &r->ci, 1);
++	handle = gem_create_in_memory_region_list(i915, SZ_2G, 0, &r->ci, 1);
 +	make_resident(i915, 0, handle);
 +
 +	for_each_mmap_offset_type(i915, t) {
-+		struct drm_i915_gem_mmap_offset arg = {
-+			.handle = handle,
-+			.flags = t->type,
-+		};
-+		uint32_t *ptr;
++		uint8_t *map;
 +
-+		if (mmap_offset_ioctl(i915, &arg))
++		map = __mmap_offset(i915, handle, 0, map_size,
++				    PROT_READ | PROT_WRITE, t->type);
++		if (!map)
 +			continue;
 +
-+		ptr = mmap(0, SZ_4K, PROT_WRITE, MAP_SHARED, i915, arg.offset);
-+		if (ptr == MAP_FAILED)
-+			continue;
++		memset(map + map_size - SZ_1K, 0xab, SZ_1K);
++		for (uint64_t i = 0; i < SZ_1K; i++)
++			igt_assert_eq(map[map_size - SZ_1K + i], 0xab);
 +
-+		memset(ptr, 0xcc, SZ_4K);
-+		munmap(ptr, SZ_4K);
-+
-+		ptr = mmap(0, SZ_4K, PROT_READ, MAP_SHARED, i915, arg.offset + SZ_2M - SZ_4K);
-+		igt_assert(ptr != MAP_FAILED);
-+
-+		for (uint32_t i = 0; i < SZ_4K / sizeof(uint32_t); i++)
-+			igt_assert_eq_u32(ptr[i], 0);
-+
-+		munmap(ptr, SZ_4K);
++		munmap(map, map_size);
 +	}
-+
-+	gem_close(i915, handle);
-+}
-+
-+static void partial_unmap(int i915, struct gem_memory_region *r)
-+{
-+	uint32_t handle;
-+
-+	handle = gem_create_in_memory_region_list(i915, SZ_2M, 0, &r->ci, 1);
-+	make_resident(i915, 0, handle);
-+
-+	for_each_mmap_offset_type(i915, t) {
-+		uint8_t *ptr_a, *ptr_b;
-+
-+		/* mmap the same GEM BO twice */
-+		ptr_a = __mmap_offset(i915, handle, 0, SZ_2M,
-+				PROT_READ | PROT_WRITE,
-+				t->type);
-+		if (!ptr_a)
-+			continue;
-+
-+		ptr_b = __mmap_offset(i915, handle, 0, SZ_2M,
-+				PROT_READ | PROT_WRITE,
-+				t->type);
-+		if (!ptr_b)
-+			continue;
-+
-+		/* unmap the first mapping but the last 4k */
-+		munmap(ptr_a, SZ_2M - SZ_4K);
-+
-+		/* memset that remaining 4k with 0xcc */
-+		memset(ptr_a + SZ_2M - SZ_4K, 0xcc, SZ_4K);
-+
-+		/* memset the first page of the 2Mb with 0xdd */
-+		memset(ptr_b, 0xdd, SZ_4K);
-+
-+		for (uint32_t i = 0; i < SZ_4K; i++)
-+			igt_assert_eq_u32(ptr_a[SZ_2M - SZ_4K + i], 0xcc);
-+
-+		munmap(ptr_a + SZ_2M - SZ_4K, SZ_4K);
-+		memset(ptr_b, 0, SZ_2M);
-+		munmap(ptr_b, SZ_2M);
-+	}
-+
-+	gem_close(i915, handle);
-+}
-+
-+static void partial_remap(int i915, struct gem_memory_region *r)
-+{
-+	uint32_t handle;
-+
-+	handle = gem_create_in_memory_region_list(i915, SZ_2M, 0, &r->ci, 1);
-+	make_resident(i915, 0, handle);
-+
-+	for_each_mmap_offset_type(i915, t) {
-+		long tail = SZ_2M - SZ_4K;
-+		uint8_t *ptr;
-+
-+		ptr = __mmap_offset(i915, handle, 0, SZ_2M,
-+				PROT_READ | PROT_WRITE,
-+				t->type);
-+		if (!ptr)
-+			continue;
-+
-+		igt_assert_eq_u32(ptr[0], 0);
-+		igt_assert(munmap(ptr, tail) == 0);
-+
-+		ptr = mremap(ptr + tail, SZ_4K, SZ_4K, MREMAP_MAYMOVE | MREMAP_FIXED, SZ_4K);
-+		igt_info("Testing remap(%s), tail of 2M object at ptr=%p\n",
-+			 t->name, ptr);
-+		igt_assert(ptr == (uint8_t *)SZ_4K);
-+
-+		igt_assert_eq_u32(ptr[0], 0);
-+		munmap(ptr, SZ_4K);
-+	}
-+
 +	gem_close(i915, handle);
 +}
 +
  static int mmap_gtt_version(int i915)
  {
  	int gtt_version = -1;
-@@ -932,6 +1046,25 @@ igt_main
- 	igt_subtest_f("open-flood")
- 		open_flood(i915, 20);
+@@ -1082,6 +1109,14 @@ igt_main
+ 	igt_subtest_f("blt-coherency")
+ 		blt_coherency(i915);
  
-+	igt_subtest_with_dynamic("partial-mmap") {
++	igt_describe("Check for proper boundary calculation during mmap");
++	igt_subtest_with_dynamic("mmap-boundaries") {
 +		for_each_memory_region(r, i915) {
 +			igt_dynamic_f("%s", r->name)
-+				partial_mmap(i915, r);
-+		}
-+	}
-+	igt_subtest_with_dynamic("partial-unmap") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				partial_unmap(i915, r);
-+		}
-+	}
-+	igt_subtest_with_dynamic("partial-remap") {
-+		for_each_memory_region(r, i915) {
-+			igt_dynamic_f("%s", r->name)
-+				partial_remap(i915, r);
++				test_mmap_boundaries(i915, r);
 +		}
 +	}
 +
- 	igt_subtest_with_dynamic("clear") {
- 		for_each_memory_region(r, i915) {
- 			igt_dynamic_f("%s", r->name)
+ 	igt_fixture {
+ 		drm_close_driver(i915);
+ 	}
 -- 
 2.45.2
 
