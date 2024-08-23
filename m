@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FF79C531DC
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 19:59:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CFD9C5321D
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 20:15:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2332010E4B8;
-	Fri, 23 Aug 2024 19:59:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EFD1610E860;
+	Fri, 23 Aug 2024 20:15:41 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26E7B10E4B8;
- Fri, 23 Aug 2024 19:59:45 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3A2D310E860;
+ Fri, 23 Aug 2024 20:15:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5926636366604160524=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_runner/settings=3A_set_?=
- =?utf-8?q?PRUNE=5FKEEP=5FALL_as_default_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_runner/settings=3A_set_PRUNE?=
+ =?utf-8?q?=5FKEEP=5FALL_as_default_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Aug 2024 19:59:45 -0000
-Message-ID: <172444318515.747671.9732322262614556463@2413ebb6fbb6>
+Date: Fri, 23 Aug 2024 20:15:41 -0000
+Message-ID: <172444414123.747962.3411177113845701097@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240823161409.79198-1-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20240823161409.79198-1-kamil.konieczny@linux.intel.com>
@@ -41,40 +41,102 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============5926636366604160524==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: runner/settings: set PRUNE_KEEP_ALL as default (rev2)
 URL   : https://patchwork.freedesktop.org/series/135116/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7989_BAT -> XEIGTPW_11625_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1256538 for the overview.
+Summary
+-------
 
-build-containers:build-debian has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/62675372):
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 468f88a1 as detached HEAD (ref is intel/IGTPW_11625)...
-  Removing build/
-  Removing lib/i915/perf-configs/__pycache__/
-  Removing lib/xe/oa-configs/__pycache__/
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1724442945:get_sources
-  section_start:1724442945:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:594aa868d31ee3304dee8cae8a3433c89a6fcfcf6c7d420c04cce22f60147176 for registry.freedesktop.org/wayland/ci-templates/buildah:2019-08-13.0 with digest registry.freedesktop.org/wayland/ci-templates/buildah@sha256:7dbcf22cd2c1c7d49db0dc7b4ab207c3d6a4a09bd81cc3b71a688d3727d8749f ...
-  section_end:1724442945:step_script
-  section_start:1724442945:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1724442947:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: container 370a508422ac66e06c0d2a9e0bae39b45491d09b51a6c351a001941fff31143c does not exist in database: no such container (exec.go:78:0s)
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7989 -> IGTPW_11625
+
+  IGTPW_11625: 11625
+  IGT_7989: 7989
+  xe-1821-96041621daaf71059d790a2ddbaa60114371eada: 96041621daaf71059d790a2ddbaa60114371eada
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1256538
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11625/index.html
+
+--===============5926636366604160524==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>runner/settings: set PRUNE_KEEP_ALL as default (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135116/">https://patchwork.freedesktop.org/series/135116/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11625/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11625/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7989_BAT -&gt; XEIGTPW_11625_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7989 -&gt; IGTPW_11625</li>
+</ul>
+<p>IGTPW_11625: 11625<br />
+  IGT_7989: 7989<br />
+  xe-1821-96041621daaf71059d790a2ddbaa60114371eada: 96041621daaf71059d790a2ddbaa60114371eada</p>
+
+</body>
+</html>
+
+--===============5926636366604160524==--
