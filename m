@@ -4,58 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F1C7C531DC
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 10:24:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EF82C52D7C
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 11:02:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BC57510E488;
-	Fri, 23 Aug 2024 10:24:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB37710E069;
+	Fri, 23 Aug 2024 11:02:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jOURCdEv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GCkLJu0q";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A06110E485;
- Fri, 23 Aug 2024 10:24:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CE32C10E069
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Aug 2024 11:02:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724408695; x=1755944695;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=PVc2O//owzd0fzd7UPhklkWkqdGXaaZp3Sev2N+hp9U=;
- b=jOURCdEvpeiLsoQ7bqnRV0nnSMImM5ldjYtMT7vO9Af39wqVrypnzDYK
- hIkaQkwriSouIs/OHnq/+Ud9K3HPIs774FHCR2hFB2TYSVQK2j8oEZgAp
- KZ5YpeQ6fakvfU8AvD3iSq4NTSewqFgtI5PnzaAzd5n5FLww5yfb5LB4h
- s3MrZaNkSyU1DgRk+GcogOliO4LPU5E9Ja/KDOLeHrWN/M1rIEwKGYndI
- BYoEmhaHdgJsFhl0YBgBWpdgscX8ul+Mt4uTsF/e20Yw8JaP5H0Bix3G2
- fCmloju8qz4VQc6yl7GueKiXeMXEYSdvMYSqjWEnsR8ELzm1EFOVAEU37 g==;
-X-CSE-ConnectionGUID: 51ivgILqRR2juTi6yuqR3Q==
-X-CSE-MsgGUID: O8klHSftRnGw7oTSDsKskQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="26626698"
-X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; d="scan'208";a="26626698"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2024 03:24:55 -0700
-X-CSE-ConnectionGUID: mrqVzcLMT4+IHZKSHOqeEA==
-X-CSE-MsgGUID: BhUwNWq5Q7GRjVOAUvX88w==
+ t=1724410957; x=1755946957;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Mq1QPW4tUWQ6Zj5ZlnnhrWPcEoOCyu3d9h2XJQjdd04=;
+ b=GCkLJu0qyr7YghpQUZZHRjEVaRnG2rt5Z7DIOsgbRdRz5jDkmYya7iiO
+ RA+oG6/+pKQksGAgO7S3pfwywpWFV8/ywjGAHbG2z2sf2Nxt9B71tFIPl
+ 36g/OsGzv46DoLgb1sQY5Kp6IYJSXkHeunI4xyY9s0YAc+wFZr15iX2N6
+ UmFDaJEGG8I14LpsbGFI4fIvJwnQFm3NCnZUShhwzRtePBecKmPs9k+61
+ gFB5LWp5/jNsAf445kR0mE61T0WDsqtphz0KhmeYqKcHG9neVwCSAQUNW
+ BUAi8NE5oScS5rkqB+dy8fMS71M6nK+sCZod0nSIZG8yMxAV5XT/SQra0 g==;
+X-CSE-ConnectionGUID: vhTY7IwxQbuZCLpY0ceQtw==
+X-CSE-MsgGUID: 8rH2amExTSCXxGVIKZUUDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="25768344"
+X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; d="scan'208";a="25768344"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2024 04:02:37 -0700
+X-CSE-ConnectionGUID: pIiCvhxHRxONO1jA8clTkA==
+X-CSE-MsgGUID: kculFdhvSxi56S5ZS8McAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; d="scan'208";a="61731471"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 03:24:54 -0700
-Date: Fri, 23 Aug 2024 12:24:51 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; d="scan'208";a="66464650"
+Received: from lab-ah.igk.intel.com ([10.102.138.202])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Aug 2024 04:02:36 -0700
+From: Andrzej Hajda <andrzej.hajda@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgcnVubmVy?=
- =?utf-8?Q?=3A?= Allow dynamically ignore dmesg errors or warnings (rev6)
-Message-ID: <20240823102451.6uxjjphh5bfk336r@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20240819103242.26527-1-kamil.konieczny@linux.intel.com>
- <172406767860.678771.10113030628887685428@2413ebb6fbb6>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH] tests/intel/xe_vm: initialize bind_ops.extensions field
+Date: Fri, 23 Aug 2024 13:02:21 +0200
+Message-Id: <20240823110221.68234-1-andrzej.hajda@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <172406767860.678771.10113030628887685428@2413ebb6fbb6>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,104 +69,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-08-19 at 11:41:18 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: runner: Allow dynamically ignore dmesg errors or warnings (rev6)
-> URL   : https://patchwork.freedesktop.org/series/136494/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_15255 -> IGTPW_11595
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11595 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11595, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11595/index.html
-> 
-> Participating hosts (41 -> 40)
-> ------------------------------
-> 
->   Missing    (1): fi-snb-2520m 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11595:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live@slpc:
->     - bat-arlh-2:         [PASS][1] -> [INCOMPLETE][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15255/bat-arlh-2/igt@i915_selftest@live@slpc.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11595/bat-arlh-2/igt@i915_selftest@live@slpc.html
-> 
+Zeroing structure on allocation ensures all fields are initialized
+and allows to drop 0-initialzations.
 
-This is unrelated to change.
+Fixes: 2e5b3647f428 ("tests/intel/xe_vm: Add bind array -ENOBUFS section")
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+---
+ tests/intel/xe_vm.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Regards,
-Kamil
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index c3960fedeec7..7a8740b69627 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -917,7 +917,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 	} *data;
+ 	int i, b;
+ 
+-	bind_ops = malloc(sizeof(*bind_ops) * n_execs);
++	bind_ops = calloc(n_execs, sizeof(*bind_ops));
+ 	igt_assert(bind_ops);
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+@@ -935,15 +935,10 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 
+ 	for (i = 0; i < n_execs; ++i) {
+ 		bind_ops[i].obj = bo;
+-		bind_ops[i].obj_offset = 0;
+ 		bind_ops[i].range = bo_size;
+ 		bind_ops[i].addr = addr;
+ 		bind_ops[i].op = DRM_XE_VM_BIND_OP_MAP;
+-		bind_ops[i].flags = 0;
+-		bind_ops[i].prefetch_mem_region_instance = 0;
+ 		bind_ops[i].pat_index = intel_get_pat_idx_wb(fd);
+-		bind_ops[i].reserved[0] = 0;
+-		bind_ops[i].reserved[1] = 0;
+ 
+ 		addr += bo_size;
+ 	}
+-- 
+2.34.1
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_11595 that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@i915_selftest@live@hangcheck:
->     - bat-arls-2:         [PASS][3] -> [DMESG-WARN][4] ([i915#11349] / [i915#11378])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15255/bat-arls-2/igt@i915_selftest@live@hangcheck.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11595/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-> 
->   
-> #### Possible fixes ####
-> 
->   * igt@i915_selftest@live@ring_submission:
->     - fi-cfl-8109u:       [DMESG-WARN][5] ([i915#11621]) -> [PASS][6] +81 other tests pass
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15255/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11595/fi-cfl-8109u/igt@i915_selftest@live@ring_submission.html
-> 
->   * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp2:
->     - fi-cfl-8109u:       [DMESG-WARN][7] ([i915#11621] / [i915#9925]) -> [PASS][8] +37 other tests pass
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15255/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp2.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11595/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-wf_vblank@c-dp2.html
-> 
->   
->   [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
->   [i915#11378]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11378
->   [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
->   [i915#9925]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925
-> 
-> 
-> Build changes
-> -------------
-> 
->   * CI: CI-20190529 -> None
->   * IGT: IGT_7975 -> IGTPW_11595
-> 
->   CI-20190529: 20190529
->   CI_DRM_15255: 02f693a1a747b2784cedbbd7f6cf35be9a652d94 @ git://anongit.freedesktop.org/gfx-ci/linux
->   IGTPW_11595: 11595
->   IGT_7975: 7975
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11595/index.html
