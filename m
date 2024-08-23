@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38388C531DC
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 18:23:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34EE5C52D7C
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 18:23:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E90CB10E0EB;
-	Fri, 23 Aug 2024 18:23:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E7A8810E4B8;
+	Fri, 23 Aug 2024 18:23:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iqG4qnHR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OetYB/qe";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1989D10E0EB
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Aug 2024 18:22:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 93FB110E4B8
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Aug 2024 18:23:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724437379; x=1755973379;
+ t=1724437384; x=1755973384;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hU+KWHtBFauqSYMo4T6+e4jM4DhHgQzs0hgSTygNmKI=;
- b=iqG4qnHRC+xej9i7XchnS9fKMog17YZNKfBlD7GSwlkKBwMBedYZ226L
- yb+oZegBxg+R5G4fDviJYP3Iw39HPXWgk7OtH4Ygd/IVNyhHwBp/QsBoT
- ff6MXtdSq2CkQjXlDKgPiY+bEjHbginRvSo1PXH6WN0DpwIXIYbEZE0iM
- coGtxQBQMgfGv2blsbN96Tck7zvAFU5TTXjzu36ubjhmHrYzC+aYnaOsm
- qnzj7wjCocj2o7UGQIRCKBQz9WoAEF2GLxPuzcWqhSPtWiLYxklX1rGf4
- 3qWVYlOQSCKXUqXbrzjRORk7FUPz9u/xBenOMf5PJ468BJx+rIWiMai4z Q==;
-X-CSE-ConnectionGUID: UziYL6kIQJqH/qneLP2FoA==
-X-CSE-MsgGUID: jtm4zbFoSv+bcf/xMC9vqg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="34079280"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="34079280"
+ bh=OlUm22D3coaibg5BQQ3v7xnJJgYj8RcMu9/DPf3Oy3k=;
+ b=OetYB/qefiljonOo5z02/2HaLmdcyq6Osa7AVf7vBtaV6JaSSyzR04nZ
+ Vw99l6vo4cWBdtuVqxSu6w4TSLfaRs1taRLH+Xp+MklexhY+So2bIA6aa
+ 7KBWYF5A3EAq+4WtCTvRs3QAzHUp8saEz6dc8fD7BLO03566xclHaRiMX
+ v1IUo1H/dgX2QrZ7OQ5TYmiTKCpJN7IuSST2s+kub2wSaJUWknGMYwW8U
+ qUfLPMr2rnTORgMbIYlrcKhu8X3dWJC6W2SKOJDGGwfQDhUljJB5wcKbI
+ h6sTnZWh9TeaxetdjrWTTl+BTzK2gd19A5BJ7m549s7hn1cEyNhHKdsa3 w==;
+X-CSE-ConnectionGUID: wC37dFxdQMuNiW6PsBHQZA==
+X-CSE-MsgGUID: 0BKOWPSPSeCZw0vaPwNQgg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="34079283"
+X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="34079283"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2024 11:22:59 -0700
-X-CSE-ConnectionGUID: eTSOz3TDSGWQK0TFzEK9og==
-X-CSE-MsgGUID: 5yU6XCfoSuO0Vko2jXQdAQ==
+ 23 Aug 2024 11:23:03 -0700
+X-CSE-ConnectionGUID: hVk8XCXfSB6q0h4MtVufDQ==
+X-CSE-MsgGUID: HJC3Qq+mRAKvzDSbtwYt4A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="92606064"
+X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="92606076"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.10])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2024 11:22:55 -0700
+ 23 Aug 2024 11:22:59 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,10 +55,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v4 05/17] lib/gpgpu_shader: Add write_on_exception
- template
-Date: Fri, 23 Aug 2024 20:22:10 +0200
-Message-Id: <20240823182222.305965-6-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v4 06/17] lib/gpgpu_shader: Add set/clear exception
+ register (cr0.1) helpers
+Date: Fri, 23 Aug 2024 20:22:11 +0200
+Message-Id: <20240823182222.305965-7-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240823182222.305965-1-christoph.manszewski@intel.com>
 References: <20240823182222.305965-1-christoph.manszewski@intel.com>
@@ -81,210 +81,127 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Andrzej Hajda <andrzej.hajda@intel.com>
 
-Writing specific value to memory location on unexpected value in exception
-register allows to report errors from inside shader or siplet.
+To allow enabling and handling exceptions from shader and siplet
+proper helpers should be provided.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/gpgpu_shader.c          |  56 ++++++++++++++++++++
- lib/gpgpu_shader.h          |   2 +
- lib/iga64_generated_codes.c | 102 +++++++++++++++++++++++++++++++++++-
- 3 files changed, 159 insertions(+), 1 deletion(-)
+ lib/gpgpu_shader.c          | 28 ++++++++++++++++++++++
+ lib/gpgpu_shader.h          |  2 ++
+ lib/iga64_generated_codes.c | 48 ++++++++++++++++++++++++++++++++++++-
+ 3 files changed, 77 insertions(+), 1 deletion(-)
 
 diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 3dab23942..920db0be2 100644
+index 920db0be2..1616c1942 100644
 --- a/lib/gpgpu_shader.c
 +++ b/lib/gpgpu_shader.c
-@@ -628,6 +628,62 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+@@ -628,6 +628,34 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
  	", 2, y_offset, 3, value, value, value, value);
  }
  
 +/**
-+ * gpgpu_shader__write_on_exception:
++ * gpgpu_shader__clear_exception:
 + * @shdr: shader to be modified
-+ * @value: dword to be written
-+ * @y_offset: write target offset within the surface in rows
-+ * @mask: mask to be applied on exception register
-+ * @expected: expected value of exception register with @mask applied
++ * @value: exception bits to be cleared
 + *
-+ * Check if bits specified by @mask in exception register(cr0.1) are equal
-+ * to provided ones: cr0.1 & @mask == @expected,
-+ * if yes fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
++ * Clear provided bits in exception register: cr0.1 &= ~value.
 + */
-+void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
-+				      uint32_t y_offset, uint32_t mask, uint32_t expected)
++void gpgpu_shader__clear_exception(struct gpgpu_shader *shdr, uint32_t value)
 +{
-+	emit_iga64_code(shdr, write_on_exception, "					\n\
-+	// Clear message header								\n\
-+(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud					\n\
-+	// Payload									\n\
-+(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud				\n\
-+(W)	mov (1|M0)               r5.1<1>:ud    ARG(4):ud				\n\
-+(W)	mov (1|M0)               r5.2<1>:ud    ARG(5):ud				\n\
-+(W)	mov (1|M0)               r5.3<1>:ud    ARG(6):ud				\n\
-+#if GEN_VER < 2000 // prepare Media Block Write						\n\
-+	// X offset of the block in bytes := (thread group id X << ARG(0))		\n\
-+(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
-+	// Y offset of the block in rows := thread group id Y				\n\
-+(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud				\n\
-+(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud		\n\
-+	// block width [0,63] representing 1 to 64 bytes				\n\
-+(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud				\n\
-+	// FFTID := FFTID from R0 header						\n\
-+(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud				\n\
-+#else // prepare Typed 2D Block Store							\n\
-+	// Load r2.0-3 with tg id X << ARG(0)						\n\
-+(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
-+	// Load r2.4-7 with tg id Y + ARG(1):ud						\n\
-+(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud				\n\
-+(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud		\n\
-+	// Store X and Y block start (160:191 and 192:223)				\n\
-+(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud				\n\
-+	// Store X and Y block max_size (224:231 and 232:239)				\n\
-+(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud				\n\
-+#endif											\n\
-+	// Check if masked exception is equal to provided value and write conditionally \n\
-+(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(7):ud		\n\
-+(W)      mov (1|M0)              f0.0<1>:ud     0x0:ud					\n\
-+(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(8):ud		\n\
-+#if GEN_VER < 2000 // Media Block Write							\n\
-+(W&f0.0) send.dc1 (16|M0)        null     r4   src1_null 0    0x40A8000			\n\
-+#else // Typed 2D Block Store								\n\
-+(W&f0.0) send.tgm (16|M0)        null     r4   null:0    0    0x64000007		\n\
-+#endif											\n\
-+	", 2, y_offset, 3, value, value, value, value, mask, expected);
++	emit_iga64_code(shdr, clear_exception, "		\n\
++(W)	and (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud	\n\
++	", ~value);
++}
++
++/**
++ * gpgpu_shader__set_exception:
++ * @shdr: shader to be modified
++ * @value: exception bits to be set
++ *
++ * Set provided bits in exception register: cr0.1 |= value.
++ */
++void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value)
++{
++	emit_iga64_code(shdr, set_exception, "		\n\
++(W)	or (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud	\n\
++	", value);
 +}
 +
  /**
-  * gpgpu_shader__end_system_routine:
+  * gpgpu_shader__write_on_exception:
   * @shdr: shader to be modified
 diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-index e4ca0be4c..76ff4989e 100644
+index 76ff4989e..0bbeae66f 100644
 --- a/lib/gpgpu_shader.h
 +++ b/lib/gpgpu_shader.h
-@@ -74,6 +74,8 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
- void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
- void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
- 			       uint32_t y_offset);
-+void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw,
-+			       uint32_t y_offset, uint32_t mask, uint32_t value);
- void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
- void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
- void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
+@@ -66,6 +66,8 @@ void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
+ 				       uint32_t y_offset, const uint32_t value[4]);
+ void gpgpu_shader__common_target_write_u32(struct gpgpu_shader *shdr,
+ 				     uint32_t y_offset, uint32_t value);
++void gpgpu_shader__clear_exception(struct gpgpu_shader *shdr, uint32_t value);
++void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value);
+ void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
+ 				      bool breakpoint_suppress);
+ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
 diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
-index abfb1f203..695e921fa 100644
+index 695e921fa..b9d1f6f0a 100644
 --- a/lib/iga64_generated_codes.c
 +++ b/lib/iga64_generated_codes.c
 @@ -3,7 +3,7 @@
  
  #include "gpgpu_shader.h"
  
--#define MD5_SUM_IGA64_ASMS 590664a67ce2c1d01aa92b69d2f821f5
-+#define MD5_SUM_IGA64_ASMS 872801f6be6b8c5141d85b9d5eb466cd
+-#define MD5_SUM_IGA64_ASMS 872801f6be6b8c5141d85b9d5eb466cd
++#define MD5_SUM_IGA64_ASMS ff21151a5dd5398ffc2e0404e9b6f605
  
  struct iga64_template const iga64_code_end_system_routine_step_if_eq[] = {
  	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
-@@ -118,6 +118,106 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
+@@ -218,6 +218,52 @@ struct iga64_template const iga64_code_write_on_exception[] = {
  	}}
  };
  
-+struct iga64_template const iga64_code_write_on_exception[] = {
-+	{ .gen_ver = 2000, .size = 68, .code = (const uint32_t []) {
-+		0x80100061, 0x04054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
-+		0x80000061, 0x02150220, 0x00000064, 0x00000000,
-+		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
-+		0x80041961, 0x04550220, 0x00220205, 0x00000000,
-+		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
-+		0x80000965, 0x03058220, 0x02008010, 0xc0ded007,
-+		0x80000961, 0x30014220, 0x00000000, 0x00000000,
-+		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
-+		0x84134031, 0x00000000, 0xd00e0494, 0x04000000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++struct iga64_template const iga64_code_set_exception[] = {
++	{ .gen_ver = 2000, .size = 8, .code = (const uint32_t []) {
++		0x80000966, 0x80118220, 0x02008010, 0xc0ded000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 1270, .size = 72, .code = (const uint32_t []) {
-+		0x80040061, 0x04054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
-+		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
-+		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80000965, 0x03058220, 0x02008020, 0xc0ded007,
-+		0x80000961, 0x30014220, 0x00000000, 0x00000000,
-+		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
-+		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
-+		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++	{ .gen_ver = 1270, .size = 8, .code = (const uint32_t []) {
++		0x80000966, 0x80218220, 0x02008020, 0xc0ded000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 1260, .size = 68, .code = (const uint32_t []) {
-+		0x80100061, 0x04054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05154220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05354220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
-+		0x80000061, 0x04150220, 0x00000064, 0x00000000,
-+		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
-+		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04450220, 0x00000054, 0x00000000,
-+		0x80000965, 0x03058220, 0x02008010, 0xc0ded007,
-+		0x80000961, 0x30014220, 0x00000000, 0x00000000,
-+		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
-+		0x84134031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++	{ .gen_ver = 1260, .size = 8, .code = (const uint32_t []) {
++		0x80000966, 0x80118220, 0x02008010, 0xc0ded000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 1250, .size = 72, .code = (const uint32_t []) {
-+		0x80040061, 0x04054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
-+		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
-+		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80000965, 0x03058220, 0x02008020, 0xc0ded007,
-+		0x80000961, 0x30014220, 0x00000000, 0x00000000,
-+		0x80001a70, 0x00018220, 0x12000304, 0xc0ded008,
-+		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
-+		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x80000966, 0x80218220, 0x02008020, 0xc0ded000,
 +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
 +	}},
-+	{ .gen_ver = 0, .size = 68, .code = (const uint32_t []) {
-+		0x80040061, 0x04054220, 0x00000000, 0x00000000,
-+		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
-+		0x80000061, 0x05254220, 0x00000000, 0xc0ded004,
-+		0x80000061, 0x05454220, 0x00000000, 0xc0ded005,
-+		0x80000061, 0x05654220, 0x00000000, 0xc0ded006,
-+		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
-+		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
-+		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
-+		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
-+		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
-+		0x80000165, 0x03058220, 0x02008020, 0xc0ded007,
-+		0x80000161, 0x30014220, 0x00000000, 0x00000000,
-+		0x80000270, 0x00018220, 0x12000304, 0xc0ded008,
-+		0x8104a031, 0x00000000, 0xc0000414, 0x02a00000,
-+		0x80000001, 0x00010000, 0x20000000, 0x00000000,
-+		0x80000001, 0x00010000, 0x30000000, 0x00000000,
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80000166, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80000101, 0x00010000, 0x00000000, 0x00000000,
++	}}
++};
++
++struct iga64_template const iga64_code_clear_exception[] = {
++	{ .gen_ver = 2000, .size = 8, .code = (const uint32_t []) {
++		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1270, .size = 8, .code = (const uint32_t []) {
++		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1260, .size = 8, .code = (const uint32_t []) {
++		0x80000965, 0x80118220, 0x02008010, 0xc0ded000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 1250, .size = 8, .code = (const uint32_t []) {
++		0x80000965, 0x80218220, 0x02008020, 0xc0ded000,
++		0x80000901, 0x00010000, 0x00000000, 0x00000000,
++	}},
++	{ .gen_ver = 0, .size = 8, .code = (const uint32_t []) {
++		0x80000165, 0x80218220, 0x02008020, 0xc0ded000,
 +		0x80000101, 0x00010000, 0x00000000, 0x00000000,
 +	}}
 +};
