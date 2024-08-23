@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB5E7C5321E
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 21:45:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D9B2C5321E
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 21:56:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7FE9610E094;
-	Fri, 23 Aug 2024 21:45:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD46710E09B;
+	Fri, 23 Aug 2024 21:56:55 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A531910E094;
- Fri, 23 Aug 2024 21:45:16 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5206079148331501339=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 842CA10E09B;
+ Fri, 23 Aug 2024 21:56:54 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Test_coverage_for_GPU_debug_su?=
- =?utf-8?q?pport_=28rev4=29?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_kunit=3A_Remove_hard-code?=
+ =?utf-8?q?d_test_list_from_xe=5Flive=5Fktest?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Christoph Manszewski" <christoph.manszewski@intel.com>
+To: john.c.harrison@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Aug 2024 21:45:16 -0000
-Message-ID: <172444951667.748003.15276438535363804776@2413ebb6fbb6>
+Date: Fri, 23 Aug 2024 21:56:54 -0000
+Message-ID: <172445021453.748054.6486549922745953512@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240823182222.305965-1-christoph.manszewski@intel.com>
-In-Reply-To: <20240823182222.305965-1-christoph.manszewski@intel.com>
+References: <20240823182418.1771456-1-John.C.Harrison@Intel.com>
+In-Reply-To: <20240823182418.1771456-1-John.C.Harrison@Intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,102 +41,67 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5206079148331501339==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: Test coverage for GPU debug support (rev4)
-URL   : https://patchwork.freedesktop.org/series/136623/
-State : success
+Series: kunit: Remove hard-coded test list from xe_live_ktest
+URL   : https://patchwork.freedesktop.org/series/137735/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7989_BAT -> XEIGTPW_11627_BAT
-====================================================
+IGT patchset build failed on latest successful build
+af25d174eb6445242565a014f99bf3f419552c04 tests/amd_queue_reset: add ability to skip subtest
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_7989 -> IGTPW_11627
-
-  IGTPW_11627: 11627
-  IGT_7989: 7989
-  xe-1821-96041621daaf71059d790a2ddbaa60114371eada: 96041621daaf71059d790a2ddbaa60114371eada
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11627/index.html
-
---===============5206079148331501339==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Test coverage for GPU debug support (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/136623/">https://patchwork.freedesktop.org/series/136623/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11627/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11627/index.html</a></td></tr>
-
-</table>
+Tail of build.log:
+[1720/1767] Linking target tools/intel_reg_checker.
+[1721/1767] Linking target tools/lsgpu.
+[1722/1767] Generating gem_stress.testlist with a meson_exe.py custom command.
+[1723/1767] Linking target tools/intel_watermark.
+[1724/1767] Linking target runner/testdata/abort-simple.
+[1725/1767] Linking target runner/testdata/no-subtests.
+[1726/1767] Linking target tools/xe-perf/xe-perf-reader.
+[1727/1767] Linking target runner/testdata/dynamic.
+[1728/1767] Linking target tools/xe-perf/xe-perf-recorder.
+[1729/1767] Linking target tools/amd_hdmi_compliance.
+[1730/1767] Linking target tools/intel_gvtg_test.
+[1731/1767] Linking target tools/intel_vbt_decode.
+[1732/1767] Linking target runner/igt_results.
+[1733/1767] Linking target runner/testdata/successtest.
+[1734/1767] Linking target tools/intel_dp_compliance.
+[1735/1767] Linking target runner/igt_comms_decoder.
+[1736/1767] Generating xe_live_ktest.testlist with a meson_exe.py custom command.
+FAILED: tests/xe_live_ktest.testlist 
+/usr/bin/meson --internal exe --capture tests/xe_live_ktest.testlist -- /opt/igt/build/tests/xe_live_ktest --show-testlist
+skipping is allowed only in fixtures, subtests or igt_simple_main
+please refer to lib/igt_core documentation
+xe_live_ktest: ../../../usr/src/igt-gpu-tools/lib/igt_core.c:450: internal_assert: Assertion `0' failed.
+Received signal SIGABRT.
+Stack trace: 
+ #0 [fatal_sig_handler+0x10f]
+ #1 [killpg+0x40]
+ #2 [gsignal+0xcb]
+ #3 [abort+0x12b]
+ #4 [<unknown>+0x12b]
+ #5 [__assert_fail+0x46]
+ #6 [internal_assert+0x106]
+ #7 [igt_skip+0x185]
+ #8 [__igt_skip_check+0x1d7]
+ #9 [igt_ktest_begin+0x9e]
+ #10 [igt_kunit_get_test_names+0x124]
+ #11 [main+0x75]
+ #12 [__libc_start_main+0xf3]
+ #13 [_start+0x2e]
+[1737/1767] Linking target runner/testdata/skippers.
+[1738/1767] Linking target runner/testdata/abort.
+[1739/1767] Linking target runner/testdata/abort-fixture.
+[1740/1767] Linking target runner/igt_runner.
+[1741/1767] Linking target runner/testdata/abort-dynamic.
+[1742/1767] Linking target runner/runner_json_test.
+[1743/1767] Linking target runner/igt_resume.
+[1744/1767] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt1.c.o'.
+[1745/1767] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
+[1746/1767] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt2.c.o'.
+[1747/1767] Compiling C object 'lib/76b5a35@@i915_perf@sha/meson-generated_.._i915_perf_metrics_acmgt3.c.o'.
+ninja: build stopped: subcommand failed.
 
 
-    <h1>CI Bug Log - changes from XEIGT_7989_BAT -&gt; XEIGTPW_11627_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7989 -&gt; IGTPW_11627</li>
-</ul>
-<p>IGTPW_11627: 11627<br />
-  IGT_7989: 7989<br />
-  xe-1821-96041621daaf71059d790a2ddbaa60114371eada: 96041621daaf71059d790a2ddbaa60114371eada</p>
-
-</body>
-</html>
-
---===============5206079148331501339==--
