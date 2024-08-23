@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2C4C531DC
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 18:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13C96C531DC
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Aug 2024 18:22:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2DD3F10E061;
-	Fri, 23 Aug 2024 18:22:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA50B10E08B;
+	Fri, 23 Aug 2024 18:22:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nKTvcdz/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MjjRT1EX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 376C110E061
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Aug 2024 18:22:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E845F10E08B
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Aug 2024 18:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724437355; x=1755973355;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/EjBubFXj3Ol0j2VqxmGZMpa49hhhqS6BC0ZyOjsKU0=;
- b=nKTvcdz/+G0o5vhXUy7K0PC20fbWZjZJUEpBOyX6scPTEgiP+yZfKdTk
- akTy4ecxbTvQmgsw2l336GdG0nv33xjcfdHhHCdZioDMNO3Zrq0vmsqaf
- YuXlOSaIhKtH0H+6utOIdc46xd3kFEAHRerJe8V6giZc5P0G45SAyYwaz
- gGPkJsiQp43h6TD+ye7gowCBcqStSUVDCFW9P4RDwi87XTcvSslwCkjYU
- lkIoy9dE9TiwFJTusb+Q38j28PubEasbmPFsWrXZv6jiL2GXqhS5WoX/H
- EEpaYeWBC3wJS64t1c9DbfQEP1aAM/eokpJUGTcRemxMMtPaVqwuOTSGi g==;
-X-CSE-ConnectionGUID: Wohm7f2dRje+eUizoJTqyg==
-X-CSE-MsgGUID: F4IW6ITsSWec6W0lftssRw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="34079264"
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="34079264"
+ t=1724437362; x=1755973362;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=1dLcbWj3m74QuD2OTvTAztDWUXGbsZYpSVFz7UnVl7o=;
+ b=MjjRT1EXkQoKbFVUa2X/HJXaZ5sBCJuxAEqsuEG+axM8JTgYKJYOKZ2A
+ M+CFxqTObynPmUIbiaIqW7T0PzCtZekyYFuhOA9p5NUdchn4+3Pjitlcf
+ Xx7th/lIzLGuvqoIvihCQGfzZlvzkKc6FfGUsVpGQSoLXKWL/mrPlvhqs
+ WAylUc5HoT+pbw96ZXArSiqYUr2YUFsRLiETgWcd2zloQpCP3OE9l5FWJ
+ OTciewWk0GsE2n5SNId53TW5hXlsxm+qh5k1k4HmWNbRTaa8sOLhmPrXx
+ O2ucB4FMe6rkhEORFZ6niQ08JJlyL92w1soMuo3sahx8EnuFzPlaYQcZV Q==;
+X-CSE-ConnectionGUID: KNDvS38bSxatA6FOQZ2ZQw==
+X-CSE-MsgGUID: 9fKZgDT9RTGfwvnVuX84vg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="34079267"
+X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="34079267"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2024 11:22:35 -0700
-X-CSE-ConnectionGUID: jVN9UF9aSvWuvmT3YbDMGA==
-X-CSE-MsgGUID: 3bT2oazfTDWXDiwiMaWMgw==
+ 23 Aug 2024 11:22:42 -0700
+X-CSE-ConnectionGUID: 6O7j4brmTHCakyR8ZtLHMw==
+X-CSE-MsgGUID: hRcTKtyPTOq8fNfaq2IzFw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="92606000"
+X-IronPort-AV: E=Sophos;i="6.10,171,1719903600"; d="scan'208";a="92606021"
 Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.10])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Aug 2024 11:22:30 -0700
+ 23 Aug 2024 11:22:37 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,11 +55,15 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v4 00/17] Test coverage for GPU debug support
-Date: Fri, 23 Aug 2024 20:22:05 +0200
-Message-Id: <20240823182222.305965-1-christoph.manszewski@intel.com>
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v4 01/17] drm-uapi/xe: Sync with oa uapi fix
+Date: Fri, 23 Aug 2024 20:22:06 +0200
+Message-Id: <20240823182222.305965-2-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240823182222.305965-1-christoph.manszewski@intel.com>
+References: <20240823182222.305965-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -78,104 +82,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
+Align with kernel commit f2881dfdaaa9 ("drm/xe/oa/uapi: Make bit masks
+unsigned"). Use built header instead of raw uapi header.
 
-In this series the eudebug kernel and validation team would like to
-add test coverage for GPU debug support recently proposed as an RFC.
-(https://patchwork.freedesktop.org/series/136572/)
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ include/drm-uapi/xe_drm.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-This series adds 'xe_eudebug' and 'xe_eudebug_online' tests together
-with a library that encapsulates common paths in current and future
-EU debugger scenarios. It also extends the 'xe_exec_sip' test and
-'gpgpu_shader' library.
-
-The aim of the 'xe_eudebug' test is to validate the eudebug resource
-tracking and event delivery mechanism. The 'xe_eudebug_online' test is
-dedicated for 'online' scenarios which means scenarios that exercise
-hardware exception handling and thread state manipulation.
-
-The xe_eudebug library provides an abstraction over debugger and debuggee
-processes, asynchronous event reader, and event log buffers for post-mortem
-analysis.
-
-Latest kernel code can be found here:
-https://gitlab.freedesktop.org/miku/kernel/-/commits/eudebug-dev
-
-Thank you in advance for any comments and insight.
-
-v2:
- - make sure to include all patches and verify that each individual
- patch compiles (Zbigniew)
-
-v3:
- - fix multiple typos (Dominik Karol),
- - squash subtest and eudebug lib patches (Zbigniew),
- - include uapi sync/fix (Kamil)
-
-v4:
- - move all eudebug uapi changes to xe_drm_eudebug.h (Zbigniew),
- - move some 'xe_exec_sip' tests to 'xe_exec_sip_eudebug' test (Zbigniew),
- - control eudebug lib and test build with meson flag and disable it by
- default (Zbigniew),
- - fix multiple checkpatch issues (Kamil),
- - apply review comments from Dominik,
-
-Andrzej Hajda (5):
-  lib/gpgpu_shader: Add write_on_exception template
-  lib/gpgpu_shader: Add set/clear exception register (cr0.1) helpers
-  lib/intel_batchbuffer: Add helper to get pointer at specified offset
-  lib/gpgpu_shader: Allow enabling illegal opcode exceptions in shader
-  tests/xe_exec_sip: Introduce invalid instruction tests
-
-Christoph Manszewski (7):
-  drm-uapi/xe: Sync with oa uapi fix
-  lib/xe_ioctl: Add wrapper with vm_bind_op extension parameter
-  lib/gpgpu_shader: Extend shader building library
-  tests/xe_exec_sip: Add sanity-after-timeout test
-  scripts/igt_doc: Add '--exclude-files' parameter
-  tests/xe_exec_sip_eudebug: Add SIP tests for eudebug
-  tests/xe_live_ktest: Add xe_eudebug live test
-
-Dominik Grzegorzek (4):
-  drm-uapi/xe: Sync with eudebug uapi
-  lib/xe_eudebug: Introduce eu debug testing framework
-  tests/xe_eudebug: Test eudebug resource tracking and manipulation
-  tests/xe_eudebug_online: Debug client which runs workloads on EU
-
-Gwan-gyeong Mun (1):
-  lib/intel_batchbuffer: Add support for long-running mode execution
-
- docs/testplan/meson.build         |   22 +-
- include/drm-uapi/xe_drm.h         |   16 +-
- include/drm-uapi/xe_drm_eudebug.h |  332 ++++
- lib/gpgpu_shader.c                |  474 ++++-
- lib/gpgpu_shader.h                |   29 +-
- lib/iga64_generated_codes.c       |  547 +++++-
- lib/intel_batchbuffer.c           |  153 +-
- lib/intel_batchbuffer.h           |   22 +
- lib/meson.build                   |    5 +
- lib/xe/xe_eudebug.c               | 2203 +++++++++++++++++++++++
- lib/xe/xe_eudebug.h               |  212 +++
- lib/xe/xe_ioctl.c                 |   20 +-
- lib/xe/xe_ioctl.h                 |    5 +
- meson.build                       |    2 +
- meson_options.txt                 |    5 +
- scripts/igt_doc.py                |    3 +
- scripts/test_list.py              |   47 +-
- tests/intel/xe_eudebug.c          | 2719 +++++++++++++++++++++++++++++
- tests/intel/xe_eudebug_online.c   | 2255 ++++++++++++++++++++++++
- tests/intel/xe_exec_sip.c         |  142 +-
- tests/intel/xe_exec_sip_eudebug.c |  346 ++++
- tests/intel/xe_live_ktest.c       |    6 +
- tests/meson.build                 |    8 +
- 23 files changed, 9520 insertions(+), 53 deletions(-)
- create mode 100644 include/drm-uapi/xe_drm_eudebug.h
- create mode 100644 lib/xe/xe_eudebug.c
- create mode 100644 lib/xe/xe_eudebug.h
- create mode 100644 tests/intel/xe_eudebug.c
- create mode 100644 tests/intel/xe_eudebug_online.c
- create mode 100644 tests/intel/xe_exec_sip_eudebug.c
-
+diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
+index 29425d7fd..f0a450db9 100644
+--- a/include/drm-uapi/xe_drm.h
++++ b/include/drm-uapi/xe_drm.h
+@@ -3,8 +3,8 @@
+  * Copyright © 2023 Intel Corporation
+  */
+ 
+-#ifndef _UAPI_XE_DRM_H_
+-#define _UAPI_XE_DRM_H_
++#ifndef _XE_DRM_H_
++#define _XE_DRM_H_
+ 
+ #include "drm.h"
+ 
+@@ -134,7 +134,7 @@ extern "C" {
+  * redefine the interface more easily than an ever growing struct of
+  * increasing complexity, and for large parts of that interface to be
+  * entirely optional. The downside is more pointer chasing; chasing across
+- * the __user boundary with pointers encapsulated inside u64.
++ * the boundary with pointers encapsulated inside u64.
+  *
+  * Example chaining:
+  *
+@@ -1598,10 +1598,10 @@ enum drm_xe_oa_property_id {
+ 	 * b. Counter select c. Counter size and d. BC report. Also refer to the
+ 	 * oa_formats array in drivers/gpu/drm/xe/xe_oa.c.
+ 	 */
+-#define DRM_XE_OA_FORMAT_MASK_FMT_TYPE		(0xff << 0)
+-#define DRM_XE_OA_FORMAT_MASK_COUNTER_SEL	(0xff << 8)
+-#define DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE	(0xff << 16)
+-#define DRM_XE_OA_FORMAT_MASK_BC_REPORT		(0xff << 24)
++#define DRM_XE_OA_FORMAT_MASK_FMT_TYPE		(0xffu << 0)
++#define DRM_XE_OA_FORMAT_MASK_COUNTER_SEL	(0xffu << 8)
++#define DRM_XE_OA_FORMAT_MASK_COUNTER_SIZE	(0xffu << 16)
++#define DRM_XE_OA_FORMAT_MASK_BC_REPORT		(0xffu << 24)
+ 
+ 	/**
+ 	 * @DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT: Requests periodic OA unit
+@@ -1698,4 +1698,4 @@ struct drm_xe_oa_stream_info {
+ }
+ #endif
+ 
+-#endif /* _UAPI_XE_DRM_H_ */
++#endif /* _XE_DRM_H_ */
 -- 
 2.34.1
 
