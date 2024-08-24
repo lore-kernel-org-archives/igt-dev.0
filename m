@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83CB4C52D6F
-	for <igt-dev@archiver.kernel.org>; Sat, 24 Aug 2024 21:24:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1335C52D6F
+	for <igt-dev@archiver.kernel.org>; Sat, 24 Aug 2024 21:48:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F93710E133;
-	Sat, 24 Aug 2024 21:24:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hd0DWwXY";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 680F610E133
- for <igt-dev@lists.freedesktop.org>; Sat, 24 Aug 2024 21:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724534695; x=1756070695;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Ajsx7QoiV4Wbb8oPR1oKcAfY4xxe2zwMGuRJYt4jUAo=;
- b=hd0DWwXYkqbt25VQX0EgbJ+PlcOSkYor3vQifFtJK1eY7uQ7j93DTmxb
- dlFZFC4f2h+m1EGevP5FKI986K1XLpkBvizgWMZn1iniiJZ8FLxZt7sAk
- P3aWmTjNaRzFVeY+qegUJBfnL3zQwtmGcmDtGznjrzOYc6eoQYi5TOvhz
- qdydndNg9BIUmyYrg9BXLXkaSmWogos3S5Q5ddo5oAODRO4X47Qwyfbwt
- h1ZY0Wpzq/1KVBSHWMShndbueL044s8iYxmut0on46Y7fl4nBY9O7oV3n
- BdH+yySVqVrmohWKvQVLPT7byYDS3mALk1AO/0KKaic6oQXxPh4rN2gfG Q==;
-X-CSE-ConnectionGUID: yPNBVlFVTLubfWJpcvMNHA==
-X-CSE-MsgGUID: Q1A9X9IgTke+/Xj17/xpHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11173"; a="22800126"
-X-IronPort-AV: E=Sophos;i="6.10,174,1719903600"; d="scan'208";a="22800126"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2024 14:24:55 -0700
-X-CSE-ConnectionGUID: puBT6M67SKGrww1/9uEezg==
-X-CSE-MsgGUID: 8n2M9w3BRXm3oenTEWxqWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,174,1719903600"; d="scan'208";a="99627023"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2024 14:24:55 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_drm_fdinfo: Extend mercy to the upper end
-Date: Sat, 24 Aug 2024 14:24:37 -0700
-Message-ID: <20240824212437.1167757-1-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D50310E1A2;
+	Sat, 24 Aug 2024 21:48:08 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A805B10E1A1;
+ Sat, 24 Aug 2024 21:48:07 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1380181924408863086=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fdrm=5Ffdinfo?=
+ =?utf-8?q?=3A_Extend_mercy_to_the_upper_end?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 24 Aug 2024 21:48:07 -0000
+Message-ID: <172453608767.765659.3598713558272152751@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240824212437.1167757-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240824212437.1167757-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,64 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When we are processing the fdinfo of each client, the gpu time is read
-first, and then later all the exec queues are accumulated. It's thus
-possible that the total gpu time is smaller than the time reported in
-the exec queues. A preemption in the middle of second sample would
-exaggerate the problem:
-				  total_cycles	      cycles
-	s1: read gpu time		|
-	s1: read exec queues times	|		*
-					|		*
-	..				|		*
-					|		*
-	s2: read gpu time		|		*
-	-> prempted					*
-	...						*
-	s2: read exec queues times			*
+--===============1380181924408863086==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-In this situation, using the line numbers:
+== Series Details ==
 
-	total_cyles == 6
-	cycles == 8
+Series: tests/intel/xe_drm_fdinfo: Extend mercy to the upper end
+URL   : https://patchwork.freedesktop.org/series/137750/
+State : success
 
-In a more realistic situation, as reported in CI:
+== Summary ==
 
-	(xe_drm_fdinfo:1072) DEBUG: rcs: sample 1: cycles 29223333, total_cycles 5801623069
-	(xe_drm_fdinfo:1072) DEBUG: rcs: sample 2: cycles 38974256, total_cycles 5811276365
-	(xe_drm_fdinfo:1072) DEBUG: rcs: percent: 101.000000
+CI Bug Log - changes from XEIGT_7990_BAT -> XEIGTPW_11631_BAT
+====================================================
 
-Extend the same mercy to the upper end as we did to the lower end.
+Summary
+-------
 
-Long term we may move some of these tests to just check cycles by using
-a timed spinner and stop relying on the CPU sleep time and timing on the
-fdinfo file read. See commit 01214d73c209 ("lib/xe_spin: fixed duration
-xe_spin capability").
+  **SUCCESS**
 
-Also, this matches the tolerance applied on the i915 side in
-tests/intel/drm_fdinfo.c:__assert_within_epsilon().
+  No regressions found.
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/intel/xe_drm_fdinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+  
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 4696c6495..e3a99a2dc 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -484,7 +484,7 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
- 	igt_debug("%s: percent: %f\n", engine_map[class], percent);
- 
- 	if (flags & TEST_BUSY)
--		igt_assert(percent >= 95 && percent <= 100);
-+		igt_assert(percent >= 95 && percent <= 105);
- 	else
- 		igt_assert(!percent);
- }
--- 
-2.43.0
+Participating hosts (9 -> 9)
+------------------------------
 
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7990 -> IGTPW_11631
+  * Linux: xe-1822-411a047925bb7e169a075a2ddfb63ba96f26a8c8 -> xe-1823-5626fe5d6eeb0949727861375b27d67ee71feaa7
+
+  IGTPW_11631: 11631
+  IGT_7990: 9ca5ff0afa3636478b6ba5a97e5ba440cfb2e55e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1822-411a047925bb7e169a075a2ddfb63ba96f26a8c8: 411a047925bb7e169a075a2ddfb63ba96f26a8c8
+  xe-1823-5626fe5d6eeb0949727861375b27d67ee71feaa7: 5626fe5d6eeb0949727861375b27d67ee71feaa7
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11631/index.html
+
+--===============1380181924408863086==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Extend mercy to the upper end</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137750/">https://patchwork.freedesktop.org/series/137750/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11631/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11631/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7990_BAT -&gt; XEIGTPW_11631_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7990 -&gt; IGTPW_11631</li>
+<li>Linux: xe-1822-411a047925bb7e169a075a2ddfb63ba96f26a8c8 -&gt; xe-1823-5626fe5d6eeb0949727861375b27d67ee71feaa7</li>
+</ul>
+<p>IGTPW_11631: 11631<br />
+  IGT_7990: 9ca5ff0afa3636478b6ba5a97e5ba440cfb2e55e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1822-411a047925bb7e169a075a2ddfb63ba96f26a8c8: 411a047925bb7e169a075a2ddfb63ba96f26a8c8<br />
+  xe-1823-5626fe5d6eeb0949727861375b27d67ee71feaa7: 5626fe5d6eeb0949727861375b27d67ee71feaa7</p>
+
+</body>
+</html>
+
+--===============1380181924408863086==--
