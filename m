@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C1A7C5472C
-	for <igt-dev@archiver.kernel.org>; Sun, 25 Aug 2024 18:02:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19DC6C5320E
+	for <igt-dev@archiver.kernel.org>; Sun, 25 Aug 2024 18:02:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5597310E097;
+	by gabe.freedesktop.org (Postfix) with ESMTP id C836610E0A4;
 	Sun, 25 Aug 2024 18:02:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nszvu64w";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mHho7zpA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4874310E092
- for <igt-dev@lists.freedesktop.org>; Sun, 25 Aug 2024 18:02:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98E3410E097
+ for <igt-dev@lists.freedesktop.org>; Sun, 25 Aug 2024 18:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724608953; x=1756144953;
+ t=1724608954; x=1756144954;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=zBGrGyjky/sa0uPWdB1lvrg/0qkwNeDbPTlPk38xbQQ=;
- b=nszvu64wJkbUSD3bqxif3Ww3MgnOGczd4Y4HNqfsXn1nAluMem5xKmfZ
- zG2LVMR6NeylMdN7/LJGs42KfCH82cSL65VMy9oJsVH04Aj/DUrSNphst
- VefyaAN9jGSELLUeexVKB8RFPX7A8W/EUrnUT03vVNWsd+z6mGA4sSqbe
- VT5sJn5vx8WAtuhdKeaQWC19NG8XEWohEm4JXfT8QWD6r9XTYFVRa+7ps
- VSdUeXuIZD6jtQa5bTgsRmWM7acz/CXu6PVWpFlt4pteb41qoufezZRgt
- SbjPLiqOuLrLfVuYNfqAEkrnfqMmoNeFSnncux1bRxa2F4bfUbOBmj9yr Q==;
-X-CSE-ConnectionGUID: A9egXDQ+See3Pm7OSf4Xlw==
-X-CSE-MsgGUID: SA0+CYOpSFKBuRneKL006w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="25917453"
-X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; d="scan'208";a="25917453"
+ bh=hVsU2TH7hhaXKXqDRdI6VBYzUXfg4xJrEOAx3h6KCmg=;
+ b=mHho7zpAEt/uQ1AiaR5JRspthqGFCxo25NgaBPipa0whUXit+jpzllCA
+ x0hGsce0wct3qmBmevVyWhlFUvgH+inVkdxy1QOutmd5MYzSX20tafHAk
+ vgam4R3aEFy+H/IWxJyJZi5nw0VmrZY35l7g1GPU3UmVaKE9+U5I97f0K
+ 7DxfnwXokCwpGeXFKiCuPizhr7mlPfLlkbYGqWZ1w0jC+7Twg2k3YNAEk
+ I1KISUUZ8IAjPaGn2ji3BfylK67ZZcSnQJzxAYt3x7h7ozhA0hcpjwwrj
+ P/KrTR3FYBWYmWwo7AITA6l/BA3I/bt6n5F62SV+F06kS5lTphXpdF9vD A==;
+X-CSE-ConnectionGUID: w9V9oKIqT/KjipcSTDVM9Q==
+X-CSE-MsgGUID: k1zkWvZoTYy5Rd5sqnwE3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="25917455"
+X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; d="scan'208";a="25917455"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2024 11:02:33 -0700
-X-CSE-ConnectionGUID: IL4/1qhPTMi4IXAJWuuSsg==
-X-CSE-MsgGUID: u5VfYAE7Q+aylTgLiADDgg==
+ 25 Aug 2024 11:02:34 -0700
+X-CSE-ConnectionGUID: C2ibQirPT7Gr00xEGqk2xQ==
+X-CSE-MsgGUID: TWXNBD/VQTK56Kx2nolGJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; d="scan'208";a="85488288"
+X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; d="scan'208";a="85488291"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 11:02:32 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 11:02:33 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 04/14] lib/igt_kms: add function to force link retrain
-Date: Sun, 25 Aug 2024 23:44:14 +0530
-Message-Id: <20240825181424.4034541-5-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 05/14] lib/igt_kms: add function to force link training
+ failure
+Date: Sun, 25 Aug 2024 23:44:15 +0530
+Message-Id: <20240825181424.4034541-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240825181424.4034541-1-kunal1.joshi@intel.com>
 References: <20240825181424.4034541-1-kunal1.joshi@intel.com>
@@ -67,55 +68,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-i915_dp_force_link_retrain debugfs allow forcing retraing
-on the connector. add a helper to write given retraining count
-to the same.
+i915_dp_force_link_training_failure debugfs
+file is used to force link training failure.
+add a function to force link training failure.
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 22 ++++++++++++++++++++++
+ lib/igt_kms.c | 26 ++++++++++++++++++++++++++
  lib/igt_kms.h |  1 +
- 2 files changed, 23 insertions(+)
+ 2 files changed, 27 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 21ea8550c..553a08f2f 100644
+index 553a08f2f..683989e84 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -6821,3 +6821,25 @@ enum dp_lane_count igt_get_dp_max_lane_count(int drm_fd, igt_output_t *output)
- 
- 	return max_lane_count;
+@@ -6843,3 +6843,29 @@ void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
+ 	igt_sysfs_write(dir, "i915_dp_force_link_retrain", value, sizeof(value));
+ 	close(dir);
  }
 +
 +/**
-+ * igt_force_link_retrain:
++ * igt_force_lt_failure:
 + * @drm_fd: A drm file descriptor
 + * @output: Target output
-+ * @retrain_count: number of retraining required
++ * @failure_count: 1 for same link param and
++ *                2 for reduced link params
 + *
-+ * Force link retrain on the output.
++ * Force link training failure on the output.
++ * @failure_count: 1 for retraining with same link params
++ * 				   2 for retraining with reduced link params
 + */
-+void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
++void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count)
 +{
 +	int dir;
 +	char value[2];
 +
-+	snprintf(value, sizeof(value), "%d", retrain_count);
++	snprintf(value, sizeof(value), "%d", failure_count);
 +	igt_require_f(output->name, "Invalid output");
 +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
 +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
 +			       igt_output_name(output));
-+	igt_sysfs_write(dir, "i915_dp_force_link_retrain", value, sizeof(value));
++	igt_sysfs_write(dir, "i915_dp_force_link_training_failure",
++			     value, sizeof(value));
 +	close(dir);
 +}
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 1d3226c5c..9ba8c6394 100644
+index 9ba8c6394..57829416a 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -1251,5 +1251,6 @@ enum dp_link_rate igt_get_dp_link_rate_set_for_output(int drm_fd, igt_output_t *
- enum dp_lane_count igt_get_dp_lane_count_set_for_output(int drm_fd, igt_output_t *output);
+@@ -1252,5 +1252,6 @@ enum dp_lane_count igt_get_dp_lane_count_set_for_output(int drm_fd, igt_output_t
  enum dp_link_rate igt_get_dp_max_link_rate(int drm_fd, igt_output_t *output);
  enum dp_lane_count igt_get_dp_max_lane_count(int drm_fd, igt_output_t *output);
-+void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
+ void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
++void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count);
  
  #endif /* __IGT_KMS_H__ */
 -- 
