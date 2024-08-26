@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 808EFC5472C
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 22:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 362CFC5321D
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 22:37:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E6BD10E24A;
-	Mon, 26 Aug 2024 22:21:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE70D10E044;
+	Mon, 26 Aug 2024 22:37:44 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 71D5210E24A;
- Mon, 26 Aug 2024 22:21:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C1F610E044;
+ Mon, 26 Aug 2024 22:37:43 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7504906382330242025=="
+ boundary="===============4543008759142062993=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Parse_GSC-based_HuC_firmwar?=
- =?utf-8?q?e_layout_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fasync=5Fflips=3A_s?=
+ =?utf-8?q?ubtests_to_validate_async_flips_on_atomic_path?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Aug 2024 22:21:23 -0000
-Message-ID: <172471088345.785817.8281177667702880329@2413ebb6fbb6>
+Date: Mon, 26 Aug 2024 22:37:43 -0000
+Message-ID: <172471186356.785817.3709131100650769789@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240826152656.1306490-1-lucas.demarchi@intel.com>
-In-Reply-To: <20240826152656.1306490-1-lucas.demarchi@intel.com>
+References: <20240826170937.470561-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20240826170937.470561-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,102 +41,68 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7504906382330242025==
+--===============4543008759142062993==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Parse GSC-based HuC firmware layout (rev3)
-URL   : https://patchwork.freedesktop.org/series/137473/
-State : failure
+Series: tests/kms_async_flips: subtests to validate async flips on atomic path
+URL   : https://patchwork.freedesktop.org/series/137811/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7992 -> IGTPW_11637
+CI Bug Log - changes from XEIGT_7992_BAT -> XEIGTPW_11638_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_11637 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11637, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/index.html
-
-Participating hosts (40 -> 38)
+Participating hosts (9 -> 9)
 ------------------------------
 
-  Additional (1): fi-cfl-8109u 
-  Missing    (3): bat-arlh-2 fi-snb-2520m fi-bsw-n3050 
+  No changes in participating hosts
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11637:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/bat-arls-5/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-8:         [PASS][3] -> [ABORT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/bat-mtlp-8/igt@i915_selftest@live@workarounds.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_11637 that come from known issues:
+  Here are the changes found in XEIGTPW_11638_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][5] ([i915#2190])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][6] ([i915#4613]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][7] +11 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#1069])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7992/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11638/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
 
   
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7992 -> IGTPW_11637
+  * IGT: IGT_7992 -> IGTPW_11638
 
-  CI-20190529: 20190529
-  CI_DRM_15295: a98a350b5396d30458c26b4f31d7c4f4f9b1da90 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11637: 11637
+  IGTPW_11638: 11638
   IGT_7992: 14c915ac38d4f697f504f3c754195c5e284c49e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1830-a98a350b5396d30458c26b4f31d7c4f4f9b1da90: a98a350b5396d30458c26b4f31d7c4f4f9b1da90
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11638/index.html
 
---===============7504906382330242025==
+--===============4543008759142062993==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -156,73 +122,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Parse GSC-based HuC firmware layout (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137473/">https://patchwork.freedesktop.org/series/137473/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_async_flips: subtests to validate async flips on atomic path</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137811/">https://patchwork.freedesktop.org/series/137811/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11638/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11638/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_7992 -&gt; IGTPW_11637</h1>
+    <h1>CI Bug Log - changes from XEIGT_7992_BAT -&gt; XEIGTPW_11638_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11637 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11637, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Additional (1): fi-cfl-8109u <br />
-  Missing    (3): bat-arlh-2 fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11637:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-arls-5/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/bat-arls-5/igt@i915_selftest@live@workarounds.html">ABORT</a></li>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-mtlp-8/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/bat-mtlp-8/igt@i915_selftest@live@workarounds.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11637 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_11638_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11637/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> +11 other tests skip</li>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7992/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11638/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069">Intel XE#1069</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7992 -&gt; IGTPW_11637</li>
+<li>IGT: IGT_7992 -&gt; IGTPW_11638</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15295: a98a350b5396d30458c26b4f31d7c4f4f9b1da90 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11637: 11637<br />
-  IGT_7992: 14c915ac38d4f697f504f3c754195c5e284c49e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11638: 11638<br />
+  IGT_7992: 14c915ac38d4f697f504f3c754195c5e284c49e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1830-a98a350b5396d30458c26b4f31d7c4f4f9b1da90: a98a350b5396d30458c26b4f31d7c4f4f9b1da90</p>
 
 </body>
 </html>
 
---===============7504906382330242025==--
+--===============4543008759142062993==--
