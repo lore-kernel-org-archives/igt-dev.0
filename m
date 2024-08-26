@@ -4,121 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6575C5321E
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 08:25:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6549CC5321D
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 09:22:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7AC8B10E140;
-	Mon, 26 Aug 2024 08:25:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9272C10E174;
+	Mon, 26 Aug 2024 09:22:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="WcJ7Z4Ly";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=vignesh.raman@collabora.com header.b="EPy0AQtH";
 	dkim-atps=neutral
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com
- (mail-bn8nam11on2058.outbound.protection.outlook.com [40.107.236.58])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 82A8810E140
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Aug 2024 08:25:32 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Kjkm+PQWMVDOnU5ip/ZS3G6B7TWHnLhqhZzeRnPuE6S4BZHdS0W1heQN7SUyLhBnS4b9LMVaOxCTh1aBR8AC+IY2aezkPuYePZPnrwPJavlHmxHm9f84WrUTJga80kb6DjeCG7jOlOE/RKU5ef6tcZO8Gz3lzZFZWuYO5Qj0I8FeNDG9IFnUp3zYY/yUx7FxveDPsIk/GraDqb9gKVLwCkTD/ojWDzevCy6tBFHdzz9Lrz+BRYj5aEOFgQarqgHazwVYyp8tFVXMD3J0BHVQLHdIDi3FXkSvSuHeWMpkqKgxW5BCYQJH5AFnve62+6wAqkT+xZn7VugEFeteHw0dpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6/uvz4IIpKK7pENLroL+Hb9OHui/QiszElw3/Wf2xK4=;
- b=ItFJg5q469W11nVCUiWB1RxofoauI4MKQ5oAe5nco7gMOJ6oizngP5NFtahSERA+ZEuQtBxe+1jrLiSSCsvg/bJXafG/CpznfbRZzrNLgc99DnoiBm22eDx/groeWQwVQ5iYqh/YZGTpE1uCxZjjtTLFYQhQcIm5gKXJCF27AcU67oB3iwd2CLIqaVZP7tCcuv6qHeR9lT3qcsKMLWYGNtyABf71513lZCXjTbOK0t9ORD78vcxA5gpT/14dryPw175++uYq3cerc+pB/D8apKVQblWDsTYGHy0nTl82fe7tEjCiUkh1sDPfB296iegGGYtvEDkd/5qAHp7HMIjDNA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6/uvz4IIpKK7pENLroL+Hb9OHui/QiszElw3/Wf2xK4=;
- b=WcJ7Z4LynolAKCL7yWzKr35OqPnRwDBDXJyRH0sQZUQDeC23Kx0xAbqvh3kCAeT3pBf29qEed4WQfkHEjkbiLZ2MwwI56Oshhi35sFBNIuzkM1grirgIBH4wB8pUEwhuq+jiOznn4XqEbx8JXnARhmUv5DbDzxBd8CXi/pqQ//c=
-Received: from CY5PR18CA0013.namprd18.prod.outlook.com (2603:10b6:930:5::23)
- by DM4PR12MB5819.namprd12.prod.outlook.com (2603:10b6:8:63::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24; Mon, 26 Aug
- 2024 08:25:25 +0000
-Received: from CY4PEPF0000E9D8.namprd05.prod.outlook.com
- (2603:10b6:930:5:cafe::5d) by CY5PR18CA0013.outlook.office365.com
- (2603:10b6:930:5::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24 via Frontend
- Transport; Mon, 26 Aug 2024 08:25:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9D8.mail.protection.outlook.com (10.167.241.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Mon, 26 Aug 2024 08:25:25 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 26 Aug
- 2024 03:25:24 -0500
-Received: from tom-MAPLE-HALO.amd.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Mon, 26 Aug 2024 03:25:22 -0500
-From: Tom Chung <chiahsuan.chung@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <Rodrigo.Siqueira@amd.com>, <alex.hung@amd.com>, <sunpeng.li@amd.com>,
- <chiahsuan.chung@amd.com>
-Subject: [PATCH i-g-t] tests/amdgpu/amd_abm: Remove the modeset for ABM level
- setting
-Date: Mon, 26 Aug 2024 16:25:14 +0800
-Message-ID: <20240826082520.25942-1-chiahsuan.chung@amd.com>
-X-Mailer: git-send-email 2.43.0
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com
+ [136.143.188.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 75D4A10E174
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Aug 2024 09:22:49 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1724664167; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=BwgZlbhf4zNFkD5Mt8OS18bQqWnvnQ+xc4cnYAvDMgVP5JLOMIezSxXQkPjxE6zRUg2o9tNX/ys8Nzt7NTvl53OvD61PTWKTGNwVV6BA3g2yMp+pZTBD0sgcqT/UWFZyn2lffCA6IQCmQoG2zVn4+g2I86qk+eyRufnig7Pkd5Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1724664167;
+ h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc;
+ bh=hAzH2PZRSGMONkHoNcQpYkA7AAiOkmWnNHe5Ktt0qdI=; 
+ b=Dpz0zYX6EhsqCZtjmYmE78UVAPDAdpHYsWHCR5bnLTo8hiXHgot9vxg7RrIVBSq+q7XiriTj1BYN6CERb12frX5g4K5zPQ9kq0migtJ+5/zYK2p/kPrfZdvRbmpFxQ8YLCyhEIMrnFXFF8kr+a8GpOfAhKRS4wFqkvcdAHDwtL0=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=vignesh.raman@collabora.com;
+ dmarc=pass header.from=<vignesh.raman@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724664167; 
+ s=zohomail; d=collabora.com; i=vignesh.raman@collabora.com;
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
+ bh=hAzH2PZRSGMONkHoNcQpYkA7AAiOkmWnNHe5Ktt0qdI=;
+ b=EPy0AQtH832qqkn1iSZmKWAwgXErwFbqQkgdDMIDFhbFmJ1hnakfb1CpEGDEGAbp
+ 9ak9vYRcnMWmO03RdP3Ffrcbtb2XgmHO6giw0tIy+VV2KzMLBCWVGNf7tvpivHoe52Y
+ Kzu/21bbijbHxRtlmehhDt4THOFBVQ0CEODXZtiI=
+Received: by mx.zohomail.com with SMTPS id 1724664165791715.6247527488458;
+ Mon, 26 Aug 2024 02:22:45 -0700 (PDT)
+Message-ID: <b84917de-4a48-4363-9060-243fa5e61c45@collabora.com>
+Date: Mon, 26 Aug 2024 14:52:41 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: chiahsuan.chung@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D8:EE_|DM4PR12MB5819:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7b8e761a-ba20-46d1-9987-08dcc5a8a2d2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?gR/g95Wor+ZduiNDZ9gG4bFygrNBJqP7CvqyqQydFi4A88jPPl2m9yLylIlf?=
- =?us-ascii?Q?yEJQ1EfNb1W/oB/2PtTzR0MaUmB2raeFAtiPu6FPI+xjBkbdbEgl6EPaWBR/?=
- =?us-ascii?Q?3PPekPW4WNKPq+vqtgzUZ1lHrAAUJPb2wZzaarmHHrg442shPSdP0Ak69as1?=
- =?us-ascii?Q?ewtl+ul3lfRfiM2zheek9gOwowKVU1/5ZTt4tu3sjwcdmrHfMrxKtHSz1D8V?=
- =?us-ascii?Q?zqS2RURwXaFbZqqMott4bbYVqYB456I3Cc/Jc2OV2FLm7I7j49ppOXYfM/gu?=
- =?us-ascii?Q?jlG4nGLE59khm9/1u/gVx+Jw2gFK35+4Vbn6TOlZ1Gb+TO90Ii+MFi+erLvm?=
- =?us-ascii?Q?5HH1muqHktf2+/vvRZR+po4elMq05B5q7cKfcA31P1z4HsUbWPpnljxENhET?=
- =?us-ascii?Q?X5Ri1BQ5xxwBS+KQ/IxF3tDC/rrm1BxQPJUzht9zj4SsAo34w7LKLQCsNWK9?=
- =?us-ascii?Q?LlX66XZGvMOH5k5cfbJGCQ8pte8jTEqLdxW+UXlyMeIvw9Jat0BGVwgvtaJg?=
- =?us-ascii?Q?W5OipZd0XfDnlc8arjzkQ3uGdJD+R+eRoWAFXBfIpmLEScBlI4g7yIKIxb5z?=
- =?us-ascii?Q?nzQz1wkAkeNC6tNNPEiPJIKghXFxhAH1daEdAACQXTmIkh72KQenz9Xv9kKt?=
- =?us-ascii?Q?61niPVqT9msDYbHzlGeKSBTyTBNWCX1sSZvHLrGsnMF7nTGXX34eYhw85hMI?=
- =?us-ascii?Q?M3CnlGLNgat3ZiyovVEswUZqH3OcJqz4pKECwjDRUnR4Bo4yNE5Qp0cIJTUT?=
- =?us-ascii?Q?ln8SRQJnM5oxKno2lyDnDdj91XU8s7zKZcGmiPocZj9NO7vVfns9/Egkvqen?=
- =?us-ascii?Q?NVRIl6D3DI435OaYvLX2JlmHtXFNsGiqueNP2Rmreq8uoTPpW5xMUt8b0xvT?=
- =?us-ascii?Q?AcrgBqLqb0bIWpTkjKfC85cVg3tTrCpKiJ/n4BmRv9+BMsPnI/fe2a1HDLRT?=
- =?us-ascii?Q?d5ARGVlETvA25eJ+FvkdqTrPBwvh2yvyom3zZdJCecBFf2qvilR8gBbzuwHP?=
- =?us-ascii?Q?kvgUsyJCYNueHJdPWkglBwQtvKGmhqmFYqm1jxJ3VxjDuoCEc3oK/lnsN9+E?=
- =?us-ascii?Q?H+KAq2a6mwTd5IDup5VDG2TO0ImqyEvVjzw05ON7SdxHDNhzq5B9RVA3Gf7v?=
- =?us-ascii?Q?VjGnEibmpIB+fbmQmPt/MgSLNyiwcMqs8GcgZqOuLpE8bdzXBjJkOyQSwan5?=
- =?us-ascii?Q?Jy4NzuFppp1GIoBa/dPPm+Xpa5EyHBBT+slyF31hg+vMP08btu4q1ZiG97ZM?=
- =?us-ascii?Q?zUgGGRvkR/UIO4Sz3njI5kySBmB57j+/TgS5OuazoIYK2IjAN8fw/RRvLf9L?=
- =?us-ascii?Q?xupdbN43B53Dal+pnd7KYhvLZTBxajccEX58ZRDdx2G3NQrqe2hFe8GPKi/s?=
- =?us-ascii?Q?FnzSwA3W2szu0zGd8cmmSkpXrMXln4T+cDoGnmlnzn+Pw3f1zm4OFdJgCrhh?=
- =?us-ascii?Q?7MPxDEF4wufbYAQpbfrbYti9BiKRpan7?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2024 08:25:25.5406 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7b8e761a-ba20-46d1-9987-08dcc5a8a2d2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000E9D8.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5819
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2 14/39] lib/chamelium/v3: Introduce the foundation
+ for the Chamelium v3 wrapper
+To: Louis Chauvet <louis.chauvet@bootlin.com>, igt-dev@lists.freedesktop.org, 
+ ihf@google.com, markyacoub@google.com, thomas.petazzoni@bootlin.com,
+ jeremie.dautheribes@bootlin.com, daniels <daniels@collabora.com>
+References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
+ <20240709-dev-remove-static-ports-v2-14-5adfc6985778@bootlin.com>
+Content-Language: en-US
+From: Vignesh Raman <vignesh.raman@collabora.com>
+In-Reply-To: <20240709-dev-remove-static-ports-v2-14-5adfc6985778@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -134,159 +69,220 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-[Why]
-Set the ABM level does not need to trigger the modeset to take effect.
+Hi Louis,
 
-[How]
-Replace the DPMS off -> on transition in set_abm_level() with
-atomic commit.
+On 09/07/24 21:04, Louis Chauvet wrote:
+> Adds a build option to enable building the Chamelium v3 wrapper.
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>   lib/chamelium/v3/igt_chamelium.c |  9 +++++++++
+>   lib/chamelium/v3/igt_chamelium.h |  8 ++++++++
+>   lib/igt_kms.c                    |  8 ++++++++
+>   lib/meson.build                  |  7 +++++++
+>   lib/tests/meson.build            |  4 ++++
+>   meson.build                      | 17 ++++++++++++++++-
+>   meson_options.txt                |  4 ++++
+>   tests/meson.build                | 25 +++++++++++++++++++++++++
+>   8 files changed, 81 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
+> new file mode 100644
+> index 000000000000..9579bd2cd9f8
+> --- /dev/null
+> +++ b/lib/chamelium/v3/igt_chamelium.c
+> @@ -0,0 +1,9 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <igt_core.h>
+> +#include "igt_chamelium.h"
+> +
+> +void chamelium_v3_init(void)
+> +{
+> +	igt_info("Using chamelium v3\n");
+> +}
+> diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
+> new file mode 100644
+> index 000000000000..1848f66b574f
+> --- /dev/null
+> +++ b/lib/chamelium/v3/igt_chamelium.h
+> @@ -0,0 +1,8 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#ifndef V3_IGT_CHAMELIUM_H
+> +#define V3_IGT_CHAMELIUM_H
+> +
+> +void chamelium_v3_init(void);
+> +
+> +#endif //V3_IGT_CHAMELIUM_H
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 059c61bf222a..6c2b7cc4f5bd 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2883,7 +2883,14 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>   	if (!resources)
+>   		goto out;
+>   
+> +/*
+> + * FIXME: Dirty hack to avoid those lines when chamelium v3 is used
+> + *
+> + * Must be replaced with a configuration file information, so the end user can choose if the
+> + * chamelium must be connected or not.
+> + */
+>   #ifdef HAVE_CHAMELIUM_V2
+> +#ifndef HAVE_CHAMELIUM_V3
+>   	{
+>   		struct chamelium *chamelium;
+>   
+> @@ -2898,6 +2905,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+>   			chamelium_deinit_rpc_only(chamelium);
+>   		}
+>   	}
+> +#endif
+>   #endif
+>   
+>   	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 714990e96485..968f1164bf61 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -197,6 +197,13 @@ if chamelium_v2.found()
+>   	lib_sources += 'monitor_edids/monitor_edids_helper.c'
+>   endif
+>   
+> +if chamelium_v3.found()
+> +	lib_deps += chamelium_v3
+> +	lib_sources += [
+> +		'chamelium/v3/igt_chamelium.c',
+> +	]
 
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
----
- tests/amdgpu/amd_abm.c | 99 ++++++++++++++++++++++++++++++------------
- 1 file changed, 71 insertions(+), 28 deletions(-)
+We need to add "lib_sources += 'monitor_edids/monitor_edids_helper.c'" 
+to fix undefined reference to error.
 
-diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
-index 2882c2c18..a85f444c4 100644
---- a/tests/amdgpu/amd_abm.c
-+++ b/tests/amdgpu/amd_abm.c
-@@ -39,9 +39,75 @@
- 
- typedef struct data {
- 	igt_display_t display;
-+	igt_plane_t *primary;
-+	igt_output_t *output;
-+	igt_pipe_t *pipe;
- 	int drm_fd;
-+	drmModeModeInfo *mode;
-+	enum pipe pipe_id;
-+	int w, h;
-+	igt_fb_t ref_fb;
- } data_t;
- 
-+/* Common test setup. */
-+static void test_init(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+	drmModeConnectorPtr conn;
-+	bool has_edp = false;
-+	int i;
-+
-+	/* Skip test if no eDP connected. */
-+	for (i = 0; i < display->n_outputs; i++) {
-+		conn = display->outputs[i].config.connector;
-+
-+		if (conn->connector_type == DRM_MODE_CONNECTOR_eDP &&
-+		    conn->connection == DRM_MODE_CONNECTED) {
-+			has_edp = true;
-+		}
-+	}
-+	if (!has_edp)
-+		igt_skip("No eDP connector found\n");
-+
-+	/* It doesn't matter which pipe we choose on amdpgu. */
-+	data->pipe_id = PIPE_A;
-+	data->pipe = &data->display.pipes[data->pipe_id];
-+
-+	igt_display_reset(display);
-+
-+	data->output = igt_get_single_output_for_pipe(display, data->pipe_id);
-+	igt_require(data->output);
-+	igt_info("output %s\n", data->output->name);
-+
-+	data->mode = igt_output_get_mode(data->output);
-+	igt_assert(data->mode);
-+	kmstest_dump_mode(data->mode);
-+
-+	data->primary =
-+		 igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-+
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+
-+	data->w = data->mode->hdisplay;
-+	data->h = data->mode->vdisplay;
-+
-+	data->ref_fb.fb_id = 0;
-+
-+	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
-+		data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 0.0, 0.6, 0.6, &data->ref_fb);
-+}
-+
-+/* Common test cleanup. */
-+static void test_fini(data_t *data)
-+{
-+	igt_display_t *display = &data->display;
-+
-+	igt_display_reset(display);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
-+
-+	if (data->ref_fb.fb_id)
-+		igt_remove_fb(data->drm_fd, &data->ref_fb);
-+}
- 
- 
- static int read_current_backlight_pwm(int drm_fd, char *connector_name)
-@@ -121,14 +187,9 @@ static void set_abm_level(data_t *data, igt_output_t *output, int level)
- 
- 	igt_assert_eq(close(fd), 0);
- 
--	/**
--	 * We need to trigger a full modeset to have the new ABM level take effect.
--	 * DPMS off -> on transition is one of many approaches.
--	 */
--	kmstest_set_connector_dpms(data->drm_fd, output->config.connector,
--			 DRM_MODE_DPMS_OFF);
--	kmstest_set_connector_dpms(data->drm_fd, output->config.connector,
--			 DRM_MODE_DPMS_ON);
-+	igt_output_set_pipe(data->output, data->pipe_id);
-+	igt_plane_set_fb(data->primary, &data->ref_fb);
-+	igt_display_commit_atomic(&data->display, 0, 0);
- }
- 
- static int backlight_read_max_brightness(int *result)
-@@ -156,25 +217,6 @@ static int backlight_read_max_brightness(int *result)
- 	return errno;
- }
- 
--static void test_init(data_t *data)
--{
--	igt_display_t *display = &data->display;
--	drmModeConnectorPtr conn;
--	int i;
--
--	for (i = 0; i < display->n_outputs; i++) {
--		conn = display->outputs[i].config.connector;
--
--		if (conn->connector_type == DRM_MODE_CONNECTOR_eDP &&
--		    conn->connection == DRM_MODE_CONNECTED) {
--			return;
--		}
--	}
--
--	igt_skip("No eDP connector found\n");
--}
--
--
- static void backlight_dpms_cycle(data_t *data)
- {
- 	int ret;
-@@ -354,7 +396,7 @@ static void abm_gradual(data_t *data)
- 
- igt_main
- {
--	data_t data = {};
-+	data_t data = {0};
- 	igt_skip_on_simulation();
- 
- 	igt_fixture {
-@@ -382,6 +424,7 @@ igt_main
- 		abm_gradual(&data);
- 
- 	igt_fixture {
-+		test_fini(&data);
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
- 	}
--- 
-2.43.0
+> +endif
+> +
+>   if libprocps.found()
+>   	lib_deps += libprocps
+>   else
+> diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+> index f98c948bc827..15f484ba0d54 100644
+> --- a/lib/tests/meson.build
+> +++ b/lib/tests/meson.build
+> @@ -39,6 +39,10 @@ if chamelium_v2.found()
+>   	lib_tests += 'igt_audio'
+>   endif
+>   
+> +if chamelium_v3.found()
+> +	lib_deps += chamelium_v3
+> +endif
+> +
+>   foreach lib_test : lib_tests
+>   	exec = executable(lib_test, lib_test + '.c', install : false,
+>   			dependencies : igt_deps)
+> diff --git a/meson.build b/meson.build
+> index 1fbbe4802ad3..0bb4853535cf 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -87,6 +87,7 @@ foreach cc_arg : cc_args
+>   endforeach
+>   
+>   build_chamelium_v2 = get_option('chamelium_v2')
+> +build_chamelium_v3 = get_option('chamelium_v3')
+>   build_docs = get_option('docs')
+>   build_tests = not get_option('tests').disabled()
+>   build_xe = not get_option('xe_driver').disabled()
+> @@ -172,7 +173,7 @@ if not xmlrpc.found() and xmlrpc_cmd.found()
+>   	endif
+>   endif
+>   
+> -if build_chamelium_v2.enabled() and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
+> +if (build_chamelium_v2.enabled() or build_chamelium_v3.enabled()) and not (xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found())
+>   	error('Chamelium build forced and required dependency xmlrpc not found')
+>   endif
+>   
+> @@ -195,6 +196,20 @@ endif
+>   
+>   build_info += 'Build Chamelium v2 test: @0@'.format(chamelium_v2.found())
+>   
+> +
+> +if xmlrpc.found() and xmlrpc_util.found() and xmlrpc_client.found() and libcurl.found()
+> +	config.set('HAVE_CHAMELIUM_V3', 1)
+> +	chamelium_v3 = declare_dependency(dependencies : [
+> +										  xmlrpc,
+> +										  xmlrpc_util,
+> +										  xmlrpc_client,
+> +										  gsl,
+> +										  alsa,
 
+gsl and alsa can be removed for v3?
+
+> +									  ])
+> +else
+> +	chamelium_v3 = disabler()
+> +endif
+> +
+>   pthreads = dependency('threads')
+>   math = cc.find_library('m')
+>   realtime = cc.find_library('rt')
+> diff --git a/meson_options.txt b/meson_options.txt
+> index fea91fb129aa..4d4047407854 100644
+> --- a/meson_options.txt
+> +++ b/meson_options.txt
+> @@ -12,6 +12,10 @@ option('chamelium_v2',
+>          type : 'feature',
+>          description : 'Build Chamelium v2 test')
+>   
+> +option('chamelium_v3',
+> +       type : 'feature',
+> +       description : 'Build Chamelium v3 tests')
+> +
+>   option('valgrind',
+>          type : 'feature',
+>          description : 'Build with support for valgrind annotations')
+> diff --git a/tests/meson.build b/tests/meson.build
+> index e7c8416dabcf..6a736d1defd1 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -324,6 +324,9 @@ chamelium_v2_progs = [
+>   	'kms_chamelium_hpd',
+>   ]
+>   
+> +chamelium_v3_progs = [
+> +]
+> +
+>   test_deps = [ igt_deps ]
+>   
+>   if libdrm_nouveau.found()
+> @@ -441,6 +444,28 @@ if chamelium_v2.found()
+>   	test_deps += chamelium_v2
+>   endif
+>   
+> +if chamelium_v3.found()
+> +	foreach prog : chamelium_v3_progs
+> +		testexe = executable(prog,
+> +				 [join_paths('chamelium', 'v3', prog + '.c')],
+> +				 dependencies : test_deps,
+> +				 install_dir : libexecdir,
+> +				 install_rpath : libexecdir_rpathdir,
+> +				 install : true)
+> +		test_list += prog
+> +		test_executables += testexe
+> +		name = prog.split('/').get(-1)
+> +		if not meson.is_cross_build()
+> +			testlist_files += custom_target(name + '.testlist',
+> +				    build_by_default : true,
+> +				    command : [testexe, '--show-testlist'],
+> +				    capture : true,
+> +				    output : name + '.testlist')
+> +		endif
+> +	endforeach
+> +	test_deps += chamelium_v3
+> +endif
+> +
+>   subdir('amdgpu')
+>   
+>   subdir('msm')
+> 
+
+Regards,
+Vignesh
