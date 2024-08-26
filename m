@@ -4,60 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48061C5321E
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 13:07:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 088F1C5321E
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 13:18:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04E7410E135;
-	Mon, 26 Aug 2024 13:07:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F43010E0FA;
+	Mon, 26 Aug 2024 13:18:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EaDLtmeP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HUFNpaG+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B1AA10E135
- for <IGT-Dev@lists.freedesktop.org>; Mon, 26 Aug 2024 13:07:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 65D0F10E0FA
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Aug 2024 13:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724677641; x=1756213641;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=bwdCMzzxflpt8pgnlz++wPfcCvcsNqE7pN0PNUdaS4E=;
- b=EaDLtmeP52kX3CVXJP5ezWPK79oMb3fFSlLmcA5dNsTe/+1olJu65dw7
- CiTW0OGBb9vwydhQhQyF7PQryGtDgk8bvlYkTSzh3tulXopxdHRmG3KrY
- PAKolGvWoqaQHnUEXWemztatVo7tfrm9nM2fQR0ZIQIc1F8/YrXPCt3c/
- +dFEI1opJYU4vTVvY5FD1S2Pk1alvGN0EC47j97oWzJC+4cUTMkYz0s9l
- 0WJX2QFZ4XIcREYf7cQGz2jr+RmZ/G0mRxn8EsN5lnRmE2IzElZJIQO5x
- 87MTBLJ1ZE2fCKNcEaD5rAMYolrezU7XPXBMKkNImY+jkWfeUo45MOQro g==;
-X-CSE-ConnectionGUID: KqvhC0j/SKK7ZHa29bB6jg==
-X-CSE-MsgGUID: FUZn92+iQ+CvD/ssuJ+icw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23228832"
-X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; d="scan'208";a="23228832"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2024 06:07:21 -0700
-X-CSE-ConnectionGUID: dt2zRk2YSdqlCJy5Vpzh9Q==
-X-CSE-MsgGUID: 7QF8Xqa2S6KsmJroBuOCgw==
+ t=1724678292; x=1756214292;
+ h=date:from:to:subject:message-id:references:in-reply-to:
+ mime-version; bh=dhVgveN2Hi+FsnvBIykIH/M3EE/4TbSpzi/GX0OV4PU=;
+ b=HUFNpaG+p8PGU3aM8K6pyGvAVCJll1Qc4tBhsEzEiI7UHVQo0eF1z1v0
+ uHRUYdh2nH/6AvOgYl4alGF9bA6eDL0b3z5sKi+fliC2S1bk7ioOqIFfo
+ iy7+4VCP/cW8lMmVr8dpXBg2gIwjnUGJJhkRMMq5QNRYI1IsusYW/qsLp
+ iqOffFlzvj1cRlc+JkZFcWjmBdZLXBgnfffrO8Psq2MklHd+UB/KwaN7K
+ WBwRi8e0zfThRZpw87P3KraE62q2cwQRSDo4EnP405a8jHmkEp87bcp3E
+ +3eNtiVqYZjmRF2zEJIn4rXJiLPG6k00Wh77IOXz0Dtr4PJJjHPrtWE3D g==;
+X-CSE-ConnectionGUID: XVi/Nng/Si2F0vUWWJOS4A==
+X-CSE-MsgGUID: Ti6Mj9zMRv+PRAACTjPJHw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="22693224"
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; d="scan'208";a="22693224"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2024 06:18:11 -0700
+X-CSE-ConnectionGUID: JV4ZgBIoRhWF5GmL54zpZg==
+X-CSE-MsgGUID: TGMJv5lWRZS+2EL8N1MCJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; d="scan'208";a="66834211"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.130])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2024 06:07:19 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- John.C.Harrison@intel.com,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: IGT-Dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: Re: [RFC i-g-t] kunit: Remove hard-coded test list from xe_live_ktest
-Date: Mon, 26 Aug 2024 15:07:17 +0200
-Message-ID: <1941664.taCxCBeP46@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20240826114645.76jn7mlknpirgoml@kamilkon-DESK.igk.intel.com>
-References: <20240823182418.1771456-1-John.C.Harrison@Intel.com>
- <20240826114645.76jn7mlknpirgoml@kamilkon-DESK.igk.intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; d="scan'208";a="67404812"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 26 Aug 2024 06:18:12 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 26 Aug 2024 06:18:11 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 26 Aug 2024 06:18:10 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 26 Aug 2024 06:18:10 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.40) by
+ edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 26 Aug 2024 06:18:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OjW9U0Bkp84T0rua8hd4HqPSATUA/vL8IaC8pSZXK3QTqs3xfogJEsR6eaZDXtYPkTXViupCB+Az2a3YfDNeZ4RNFVPnqIy1DfF70UaR+gNdpZsp9peT2+/HUUs+7dE8xKSmWoYQfM31fnZslFNUHph3qzB6RvHDS8ITbV3bzBJUEV4HkcNeoKfHM9j9FgdTg1NJhcrdTm8tfcsO2uQPMWoAM+3pAnBww3csih66f70ul7w2Gxx+6L0T5VwLJt0ygY+k033mqKWtb222A2zhYB0BaUA9odsK0cRYebBbV9f5drT6IWkI02NgIkUxJ7gqAKah595XdDosghxil35XhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S29B9GX6LU1WbBjjapLMHPhbaa8xLysarBwNNG+/pxc=;
+ b=eVqWeDxvzIEsox1vDWlQ5ZN5uMWQ8NReTcTfHjzcUDQ9FR0D+gGVTeAs3Aox/zuJ2mWQ9Pku8qaWhqKKe0aF/PWBKJf3XYdrkRqw0xdUDd1DgbIe+FpbEPWgJj0E7G3zx/si96N1PztZ37YysXmEyDnvFrEagOxWI4CtFoWwKoS5asChUN/HyJDyJsBEzhdfo6PyftTnHzQbnYHQ40CvQb4V+d5bln7BlfI4N6Sd3V7T7ng9dOV2zYufc+p2o8bjwyQjODk8m6NwKkEVKlmBj4PT5i+B5kSo7wwQ6cfMAzKqQjfXTbE6lPIZt8MesCtSeZTnGY5MW5eDN0rgk1CIoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8019.namprd11.prod.outlook.com (2603:10b6:8:12e::18)
+ by SN7PR11MB6994.namprd11.prod.outlook.com (2603:10b6:806:2ad::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24; Mon, 26 Aug
+ 2024 13:18:08 +0000
+Received: from DS0PR11MB8019.namprd11.prod.outlook.com
+ ([fe80::d2ab:ff8b:3430:b695]) by DS0PR11MB8019.namprd11.prod.outlook.com
+ ([fe80::d2ab:ff8b:3430:b695%4]) with mapi id 15.20.7875.019; Mon, 26 Aug 2024
+ 13:18:08 +0000
+Date: Mon, 26 Aug 2024 15:17:58 +0200
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: Re: =?utf-8?B?4pyXIENJLnhlRlVMTA==?= =?utf-8?Q?=3A?= failure for
+ Introduce memory mapping tests (rev3)
+Message-ID: <aakjxaofolkn6rxryymeuit3rsynfsfxgj72wii7v5due66mxg@u6kla2eik2u3>
+References: <20240822124744.13054-1-krzysztof.niemiec@intel.com>
+ <172437291681.727909.13206891092253977259@2413ebb6fbb6>
 Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <172437291681.727909.13206891092253977259@2413ebb6fbb6>
+X-ClientProxiedBy: VI1PR07CA0280.eurprd07.prod.outlook.com
+ (2603:10a6:803:b4::47) To DS0PR11MB8019.namprd11.prod.outlook.com
+ (2603:10b6:8:12e::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8019:EE_|SN7PR11MB6994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f44e259-ad7f-4a00-f55e-08dcc5d186bc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ajRHT1o1QWt0VDhqMDBtUm83eWkrNFlkUVhTbXEwMUFmbXFieVV2M21GWlFK?=
+ =?utf-8?B?RThRTGx1Qk1IRGx2TGpuMmRoWUJWOW9sekxKK2FpQkRRbklYangzNWhnNUtI?=
+ =?utf-8?B?MFFYMjZYa0V1QzlpMVZ6OXFNbGpveVhyWW5vd1lnUUoxUmVGTkh4M2R4Q1Fz?=
+ =?utf-8?B?bDVnY2tRUkQzSjMwcExTNjlmbS9JTThkZGQ5UW12cGFIZ0kxUGZ0UWc4RW1H?=
+ =?utf-8?B?Yk5CNUlWOFVVVjNhRk8vUUcxaXJTWW1rM0V5eFRYVmlNRkMyVFVEWHdaSzNa?=
+ =?utf-8?B?dXR3NDh6YmRNZ2hBUUt2M2xoRFBRN1NrZDB0WTZuU3ZYUnFCMmpzQmliS3Zv?=
+ =?utf-8?B?RVFEdlhVRmtaNW9heGVYZ1ZLWGZvdVFmVWY4bVhGa29IenFoL3hZajd2RFAw?=
+ =?utf-8?B?SENXSnFLcnVrVXo1cTQzTFBUZ3NlYjVMc2lJZFhhejczQzc0cTJHV2p5eTlp?=
+ =?utf-8?B?QzlpenZIWkQ1ZUZPbS9ud01TQUxiR3N2WDR1eXF3czlFckQ2QXh6dFJFc1F6?=
+ =?utf-8?B?U3FwWWd2bEg5ZHV2VU9UK0hoT1JzNTM4TlRTMHR0M3Z3SXFiMHhPM1p3c0ZF?=
+ =?utf-8?B?MG1zajY5SUIrMWlLb01DMTU2bHlUUmE0K1hpWXJjYU0zUHg3ZjBZQUVUZml1?=
+ =?utf-8?B?L2wxZmtndGhWVVFiOFlXUHhsbFp6TFdzMy9HSHQ0Z2Y1bTFldExtejUzcExL?=
+ =?utf-8?B?V004S1Fvai9RZmZpYUlFN0NIUlpIZHA4L1VvWUdtVGk3bGJRaENveC9DWmZO?=
+ =?utf-8?B?ZlB4am1IOGVMYnQ5UEVsTDZpYzdDcHgwcmVJMG0xb0lGZUlOYjEvaWtSQUpp?=
+ =?utf-8?B?S2lpelFCZHR2bS9taEZNR2pzT0tpNnVUTHZMRlNhSGFJNU5kbWZXb01lTHFa?=
+ =?utf-8?B?ZTU4ZkpESklwYjdHNytCWW1tWFNrN2hpa1pKdzJuT21lNFJjS2xEM3FnTzZF?=
+ =?utf-8?B?QlBzdEZ5R052QzFmNmRSQllBS01aN2JxbUV5UmJjUXkxYUZnQUxyNlpTQWdP?=
+ =?utf-8?B?eXNuWnpzSEx0ejZ5RCtneXZjc2pxY3drK094ejVWL2NHNUJwcTVBVGhlVnhI?=
+ =?utf-8?B?TCs2eXhDVVNablJvZmpLNU14TGE0Slp1ZmppaFRRby9QNDBWaCtHLzhDR1Ft?=
+ =?utf-8?B?cjdRRWVMQ0hFYy9QZUlma2QzY0lBY1haZ3FrRWw3MjVlTTNockdBaldtT1Ja?=
+ =?utf-8?B?QlpwOTRJME8zQzhuczN0cStYTjhIRjBNSng5amJvZVVQUHc2YVF0MjZHVGdX?=
+ =?utf-8?B?L3FGb2xlcDRyb2VyOTlYVUNUNzBhMm9MejYwWXBLODBadnUrRW1OSXltdDBB?=
+ =?utf-8?B?bDduNjVNaHh1OGRjczBhdDA1elVaUkdoT2pRMU5NMHB4MkJ1L3lxdGt6RXhZ?=
+ =?utf-8?B?YS9sY0hGKzhEZEU4NzQzWTl3Rk1xbUloUkpqQ0N1ZVlzRzNUKzYwZUd5Tkgy?=
+ =?utf-8?B?dFJMUG0rejg0UkkrSGZQMEdvci9xVStDVC9QbzlWTzJaNGs5NU1yTjVaamN2?=
+ =?utf-8?B?dmM3bU9NTVNaMDhmRThrL3dMQzZ5TkM3dU1lQ1BKTnJGOUk0RXh2S2I3MjlD?=
+ =?utf-8?B?OThTWkRCcWtiVGVFZCsrNTN5amVuMy9YcG5CdWplSTNzZkg2UkwzZVdFMUpl?=
+ =?utf-8?B?OERJNi94eDJKc1RtQVFtc0lmVGtXQWdBYkdQTUFWUTFGbUJhWldSWXh2WVVr?=
+ =?utf-8?B?cThFN3hzV2thWjIzZDc2azZpSjU4N0YxU0NabnVLaHJxc0lsM2xMVm53Z3RV?=
+ =?utf-8?Q?ZigpV5Z+pktZ1l+QqY=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB8019.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?enJIanhULzNiWVZ1Y1lSaGx0UnYveTlSU25hNnp1cXdabTFZdTNUUlcyczNB?=
+ =?utf-8?B?R0svS2VTYWcxb0R2NFYybm9sRS93cXI1OWF2Tk5XR1d5b2wxcjN1T2FVRXl5?=
+ =?utf-8?B?MGUwZmdWRTlydWtzZk0wek9TK1FRV29DaUNpd2YrNkxGb096blVjRm5Td1ZH?=
+ =?utf-8?B?bysvUnBDU3FTRU5xWGRnaTZQc3BPUlRFVENNQkFKLy8vY041eUw4Yyt3QXA0?=
+ =?utf-8?B?WUk2WEY1c3gvSDh6bUIwN0lWSnBwYzJqVUM5V0puZThHVmZEQUNKcWF2Tnl0?=
+ =?utf-8?B?MERJUWU5OWdSY3lDVHJzZ1NxZ2ZOT0dQRE1NakhtODQ0WEtQb1RlTFhpSnVj?=
+ =?utf-8?B?TUk1MG9oZnpINVNvbUxVSEMzUStCVFo2SDJkTXZZZnBGeEdsRWZmdXpvaXZG?=
+ =?utf-8?B?ODRuR1hBcU5DRDYvN3RSUlVoTUIvWHQ0WW01N0xrUDJhYU4rbGM4ZDVYeUR3?=
+ =?utf-8?B?SkdWZkRsRWNHQndOSnJCRnI4VC83SzJsTUltODVxV0NqM1dKVXdqOWp5NHZZ?=
+ =?utf-8?B?SCs2Mk9Bd01oUkxwWFg3THEveTBWZ0cydlUvRnNNODNwRTFWVkVuNUE2bk9w?=
+ =?utf-8?B?RGVMdHJ4MW4rVktLRWRtZkhxM0pSU296NnZ5QzAxQkRhbzFGNzZKUVd1MzFH?=
+ =?utf-8?B?d0wxRWpIL3dQazdsU0JmME5ObEhCYWloZllzZ1gveWtpcUwvTU5GWitiRFZU?=
+ =?utf-8?B?WGZuMk9Lb2Y5cmhRUmhuRGlMUkxDWXJwMmdUQXhMTm1qUEF5WGdYbWRpQ1Yz?=
+ =?utf-8?B?VC91cTdoa3JSNEtlZk1hV3VNeVFNM09QdjZwTGU4V2NpVi85MnVyY2ZHQkJy?=
+ =?utf-8?B?Z2o2bU1rYUorYXkxdW9GaXp2czZoMzVPeHd3TU9HOHVENXhBTFRVMit2SnFE?=
+ =?utf-8?B?NDN0RmwreE1yQVlOUGJpcE02N2c4djFzZXRaNkFqajlsZFBEc0pLRnczcTFl?=
+ =?utf-8?B?d3V1cjZYT1NzTnREMDZBRk9URTdvTGVUbEk3Y0p0ZUZUYkJpbFM1OTFSM1Bl?=
+ =?utf-8?B?bHNZa2RGV3Zuc21qeThJSW1ERFJFQVZsK0lNL0plZXdIUXZOUXJ1ajNYazdU?=
+ =?utf-8?B?RFJ6NVpCUFFrQ0EvaXd6alQyRG1MRkFMN2hsY1hhbmFsdzZSaXZrUkZ1MGl5?=
+ =?utf-8?B?ZmM1OUpWTzZQVktKUHBHdmFOTUdGNmJjUXRvUnl0b2E2WFFhS2MrU0xDS21m?=
+ =?utf-8?B?ZlhyMU54NHRFNlJlUXZ3U1g5dTVKLzRPRk91RXVQbHBvM3ZoMjdUczljbXlH?=
+ =?utf-8?B?N1FHbXJzN3FLZXVGbFptczMvVmQ4cmFIcjdVdUFWeXphQ2hCRkhjTjhIZ0pU?=
+ =?utf-8?B?ZXVMUE1HVUxqQXZzRUtSTDI5dENXdFlCYmVjU0w1Z1JUQ1Fvb0ZPNS9nNFFY?=
+ =?utf-8?B?SXFQcFI1SVpBRWhackNrS2Q1alNKMkViZ21XMXg5emxISFQrdndzZVhxdDZv?=
+ =?utf-8?B?UTAvUUV2Tkd1UzJoL0EzQnRYeEFDd1hjclJXdU9jT0tmVWdPY2NxTllxZU1h?=
+ =?utf-8?B?QW1xS1hvd215aVBnNkl5SXlQVG1lM3dBUi9EU1pXNnFoY0IwVUVTZUttNVF5?=
+ =?utf-8?B?VG5EWUNwd0dWVWpSTUd0Mi9LdGl5VU1rcm9zdkE4aHNkcTlXaHFnMVF5aTJn?=
+ =?utf-8?B?MWE4UENhL1g5Y0lXRWNYWitha0ltVEpQRkdjbWM5NEJENXBNeFNEWWpYckZl?=
+ =?utf-8?B?bEwrM09sUURtZlJkdmVUaGUzV1BEdklDL0EwK3ppRit4enE1TTl0Tm9NT0pJ?=
+ =?utf-8?B?MUpXL2VyNmJlS0ovd1B3VUFhbXM0V1JIOWNKMlhFNTU0WStQVTJFcDhUMXEr?=
+ =?utf-8?B?ZkJocS9sRE81R2I3WTZwN3cyMFh0SzJvazZZMVRtSWREMVZGQnhZbUF6TnBB?=
+ =?utf-8?B?TFVkSHlTTnhWeUxMdDVrVXIzaFhDcVRnR0pYMUhFd01WbzBma0VyL0RjejZF?=
+ =?utf-8?B?MkN0QXAvU1Y1Wk5GYVBBZE82NEZhcmx1UkVYQlZZLy9Wck1IaDVPTWYweHYr?=
+ =?utf-8?B?TTUyZmIyMUN3REhHWVBkY2Y4SlE4aEhMMmlFM1A4ZWRPbzhXV1lSQnZCZFZn?=
+ =?utf-8?B?YyswUGU1ZU1NV0Jkd1Vub2kzemRIdDBZNS9STThUaHdmc0ZsRHhrdk9RbVZF?=
+ =?utf-8?B?Zllnb1J4U2EyRGxnNFNrZklwelJRK2x5SjlNNkFCdW1VSVZ3bEh0dk1SYUp1?=
+ =?utf-8?B?THc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f44e259-ad7f-4a00-f55e-08dcc5d186bc
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8019.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2024 13:18:08.0129 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bdkUx1SwkzpGFS2lkM5/XCCm6jOCtuB5KA7KGJmsxExftfcYvyOcT8pIq5MoU4wgHOv4/aeu/3mT/xOM9TASHulY0k9bMutwBMHO3G9CSxU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB6994
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,275 +194,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi John, Kamil,
-
-On Monday, 26 August 2024 13:46:45 GMT+2 Kamil Konieczny wrote:
-> Hi John.C.Harrison,
-> On 2024-08-23 at 11:24:18 -0700, John.C.Harrison@Intel.com wrote:
-> > From: johnharr <johnharr@invalid-email.com>
-> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> Again invalid e-mail here.
+On 2024-08-23 at 00:28:36 GMT, Patchwork wrote:
+> == Series Details ==
 > 
-> > 
-> > The list of supported kunit tests is currently hard coded. 
-
-That pattern originates from i915_selftest, where there are 3 stable subtests, 
-"mock", "live" and "perf", each of them executing a (possibly long) list of 
-dynamic sub-subtests actually provided by the module for each category.  Also, 
-IIRC there was a separate module for each Xe test suite before, each mapped to 
-a separate IGT test, later merged into one module with multiple suites and one 
-test with multiple corresponding subtests.
-
-> > Which means
-> > that adding a new test to the kernel also requires patches to IGT as
-> > well.
-> > 
-> > The list of available kunit tests is already exported by the kernel.
-> > So there is no need to bake a list into the IGT source code. So, add
-> > support for querying the test list dynamically.
-> > 
-> > NB: Currently, the test list can only be queried by root but the IGT
-> > build system queries all tests at compile time. In theory this should
-> > not be a problem. However, the kunit helper code is all written to run
-> > inside a test and not inside the prep code, which means that when it
-> > fails to open the root only interfaces, it calls 'skip'. And skip is
-> > not allowed outside of running a test. Hence the build fails with:
-> >   skipping is allowed only in fixtures, subtests or igt_simple_main
+> Series: Introduce memory mapping tests (rev3)
+> URL   : https://patchwork.freedesktop.org/series/137303/
+> State : failure
 > 
-> Looks like we should fix it, move out skips from kunit libs.
-
-I suggest you consider a different approach: for a module, call igt_kunit() 
-only once, with NULL suite argument.  As a result, you'll get results from one 
-IGT subtest called "<module_name>" with a bunch of IGT dynamic sub-subtests 
-called "<test_suite>-<test_case>", one for each test case provided by the 
-module.
-
+> == Summary ==
 > 
-> > 
-> > And of course, putting all the query code inside an igt_fixture block
-> > means it doesn't get run as part of --show-testlist or --list-subtests.
-> > 
-> > Reworking the kunit code to fail cleanly rather than skipping
-> > everywhere seems much more invasive. It is also not clear why the
-> > kunit code is considered 'library' when it is execlusively used from
-> > the kunit test alone!? 
-
-Current users:
-	igt$ grep -rl igt_kunit tests/
-	tests/intel/xe_live_ktest.c
-	tests/kms_selftest.c
-	tests/drm_mm.c
-	tests/drm_buddy.c
-
-The other 3 were first converted from i915_selftest standard to KUnit still 
-before Xe KUnit IGT tests started appearing.
-
-Thanks,
-Janusz
-
-> > So posting this as an RFC before going too far
-> > down the possible rabbit hole.
-> > 
+> CI Bug Log - changes from XEIGT_7984_full -> XEIGTPW_11618_full
+> ====================================================
 > 
-> As I see this, it is a lib because some other vendor (like amdpgu)
-> could use it.
+> Summary
+> -------
 > 
-> +cc Janusz
-> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+>   **FAILURE**
 > 
-> btw could you split this into two patches, one for lib/* and
-> one for tests/intel/xe_live_ktest ?
+>   Serious unknown changes coming with XEIGTPW_11618_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_11618_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
 > 
-> > Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> > ---
-> >  lib/igt_kmod.c              | 68 +++++++++++++++++++++++++++++++++++++
-> >  lib/igt_kmod.h              |  6 ++++
-> >  tests/intel/xe_live_ktest.c | 60 ++++++++++++++++----------------
-> >  3 files changed, 103 insertions(+), 31 deletions(-)
-> > 
-> > diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> > index 464c0dcf484a..69c1254b397c 100644
-> > --- a/lib/igt_kmod.c
-> > +++ b/lib/igt_kmod.c
-> > @@ -1414,6 +1414,74 @@ static void __igt_kunit(struct igt_ktest *tst,
-> >  	}
-> >  }
-> >  
-> > +/**
-> > + * igt_kunit:
-> > + * @module_name: the name of the module
-> > + * @suite: the name of test suite to be executed, also used as subtest name;
-> > + *	   if NULL then test cases from all test suites provided by the module
-> > + *	   are executed as dynamic sub-subtests of one IGT subtest, which name
-> > + *	   is derived from the module name by cutting off its optional trailing
-> > + *	   _test or _kunit suffix
-> > + * @opts: options to load the module
-> > + *
-> > + * Loads the test module, parses its (k)tap dmesg output, then unloads it
-> > + */
-> > +void igt_kunit_get_test_names(const char *module_name, const char *opts, struct igt_list_head *names)
-> > +{
-> > +	char debugfs_path[PATH_MAX] = { '\0', };
-> > +	struct igt_ktest tst = { .kmsg = -1, };
-> > +	struct igt_ktap_results *ktap = NULL;
-> > +	const char *subtest;
-> > +	char *suite_name = NULL, *case_name = NULL;
-> > +	DIR *debugfs_dir = NULL;
-> > +	IGT_LIST_HEAD(tests);
-> > +
-> > +	subtest = strdup(module_name);
-> > +	if (!igt_debug_on(!subtest)) {
-> > +		char *suffix = strstr(subtest, "_test");
-> > +
-> > +		if (!suffix)
-> > +			suffix = strstr(subtest, "_kunit");
-> > +
-> > +		if (suffix)
-> > +			*suffix = '\0';
-> > +	}
-> > +
-> > +	igt_require(subtest);
-> > +
-> > +	igt_require(!igt_ktest_init(&tst, module_name));
-> > +	igt_require(!igt_ktest_begin(&tst));
-> > +
-> > +	igt_ignore_warn(igt_kmod_load("kunit", NULL));
-> > +
-> > +	kunit_debugfs_path(debugfs_path);
-> > +	igt_info("kunit path: %s\n", debugfs_path);
-> > +	if (igt_debug_on(!*debugfs_path) ||
-> > +	    !kunit_get_tests(&tests, &tst, NULL, opts, debugfs_path, &debugfs_dir, &ktap)) {
-> > +		igt_info("kunit - no tests found!?\n");
-> > +	} else {
-> > +		struct igt_ktap_result *t;
-> > +		igt_info("kunit tests:\n");
-> > +		igt_list_for_each_entry(t, &tests, link) {
-> > +			struct igt_kunit_names *name = malloc(sizeof(*name));
-> > +			name->suite = strdup(t->suite_name);
-> > +			name->sub = strdup(t->case_name);
-> > +			igt_info("  %s / %s\n", t->suite_name, t->case_name);
-> > +			igt_list_add(&name->link, names);
-> > +		}
-> > +	}
-> > +
-> > +	igt_ktap_free(&ktap);
-> > +
-> > +	kunit_results_free(&tests, &suite_name, &case_name);
-> > +
-> > +	if (debugfs_dir)
-> > +		closedir(debugfs_dir);
-> > +
-> > +	igt_ktest_end(&tst);
-> > +	igt_ktest_fini(&tst);
-> > +}
-> > +
-> >  /**
-> >   * igt_kunit:
-> >   * @module_name: the name of the module
-> > diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> > index efb46da128d4..2f608eb69d48 100644
-> > --- a/lib/igt_kmod.h
-> > +++ b/lib/igt_kmod.h
-> > @@ -71,7 +71,13 @@ static inline int igt_xe_driver_unload(void)
-> >  int igt_amdgpu_driver_load(const char *opts);
-> >  int igt_amdgpu_driver_unload(void);
-> >  
-> > +struct igt_kunit_names {
-> > +	char *suite;
-> > +	char *sub;
-> > +	struct igt_list_head link;
-> > +};
-> >  void igt_kunit(const char *module_name, const char *name, const char *opts);
-> > +void igt_kunit_get_test_names(const char *module_name, const char *opts, struct igt_list_head *names);
-> >  
-> >  void igt_kselftests(const char *module_name,
-> >  		    const char *module_options,
-> > diff --git a/tests/intel/xe_live_ktest.c b/tests/intel/xe_live_ktest.c
-> > index 4376d5df7751..13265e87ba9d 100644
-> > --- a/tests/intel/xe_live_ktest.c
-> > +++ b/tests/intel/xe_live_ktest.c
-> > @@ -9,40 +9,38 @@
-> >   * Sub-category: kunit
-> >   * Functionality: kunit test
-> >   * Test category: functionality test
-> > - *
-> > - * SUBTEST: xe_bo
-> > - * Description:
-> > - *	Kernel dynamic selftests to check if GPU buffer objects are
-> > - *	being handled properly.
-> > - * Functionality: bo
-> > - *
-> > - * SUBTEST: xe_dma_buf
-> > - * Description: Kernel dynamic selftests for dmabuf functionality.
-> > - * Functionality: dmabuf test
-> > - *
-> > - * SUBTEST: xe_migrate
-> > - * Description:
-> > - *	Kernel dynamic selftests to check if page table migrations
-> > - *	are working properly.
-> > - * Functionality: migrate
-> > - *
-> > - * SUBTEST: xe_mocs
-> > - * Description:
-> > - *	Kernel dynamic selftests to check mocs configuration.
-> > - * Functionality: mocs configuration
-> >   */
-> >  
+>   
 > 
-> Does that mean we will not have any subtests here? The point
-> into moving subtests names into documentation was to have a testlist
-> generated during compilation, so it will not depend on running
-> test with --list option. Adding also Katarzyna to cc.
-> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
+> Participating hosts (4 -> 4)
+> ------------------------------
 > 
-> Regards,
-> Kamil
+>   No changes in participating hosts
 > 
-> > -static const char *live_tests[] = {
-> > -	"xe_bo",
-> > -	"xe_dma_buf",
-> > -	"xe_migrate",
-> > -	"xe_mocs",
-> > -};
-> > -
-> >  igt_main
-> >  {
-> > -	int i;
-> > +	IGT_LIST_HEAD(names);
-> > +	IGT_LIST_HEAD(done);
-> > +	struct igt_kunit_names *name, *cmp;
-> > +
-> > +	igt_kunit_get_test_names("xe_live_test", NULL, &names);
-> > +
-> > +	while (!igt_list_empty(&names)) {
-> > +		bool found = false;
-> > +
-> > +		name = igt_list_first_entry(&names, name, link);
-> > +		igt_list_del(&name->link);
-> > +
-> > +		/*
-> > +		 * Retuned list is sub-tests.
-> > +		 * So, need filter out duplicated top level names.
-> > +		 */
-> > +		igt_list_for_each_entry(cmp, &done, link) {
-> > +			if (strcmp(name->suite, cmp->suite) != 0)
-> > +				continue;
-> > +
-> > +			found = true;
-> > +		}
-> > +
-> > +		if (found)
-> > +			continue;
-> > +
-> > +		igt_list_add(&name->link, &done);
-> >  
-> > -	for (i = 0; i < ARRAY_SIZE(live_tests); i++)
-> > -		igt_kunit("xe_live_test", live_tests[i], NULL);
-> > +		igt_kunit("xe_live_test", name->suite, NULL);
-> > +	}
-> >  }
+> Possible new issues
+> -------------------
 > 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_11618_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_exec_threads@threads-hang-shared-vm-userptr:
+>     - shard-lnl:          [PASS][1] -> [FAIL][2] +1 other test fail
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7984/shard-lnl-8/igt@xe_exec_threads@threads-hang-shared-vm-userptr.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11618/shard-lnl-7/igt@xe_exec_threads@threads-hang-shared-vm-userptr.html
+> 
+>   
 
+These are not related.
 
+Thanks
+Krzysztof
 
-
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_11618_full that come from known issues:
+> 
+(snip)
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_7984 -> IGTPW_11618
+> 
+>   IGTPW_11618: 11618
+>   IGT_7984: 7984
+>   xe-1815-882c26c7017bdcc4eca493c7bf1ffb034d40be02: 882c26c7017bdcc4eca493c7bf1ffb034d40be02
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11618/index.html
