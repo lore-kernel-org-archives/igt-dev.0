@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4C5C5321D
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 09:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 173BAC5472E
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 09:31:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9FFA210E178;
-	Mon, 26 Aug 2024 09:26:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C516410E165;
+	Mon, 26 Aug 2024 09:30:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=vignesh.raman@collabora.com header.b="dWquq4Th";
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=vignesh.raman@collabora.com header.b="iriJcnpv";
 	dkim-atps=neutral
-Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com
- [136.143.188.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32F4310E173
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Aug 2024 09:26:46 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; t=1724664404; cv=none; 
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
+ [136.143.188.112])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 41DB910E18B
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Aug 2024 09:30:58 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1724664655; cv=none; 
  d=zohomail.com; s=zohoarc; 
- b=CbHr2bL49NJsLSvIivBYZnBUKEgfQB5zB5ou/55VCsTN1PuGfJsnITL63IKq08dOWSQhcmut7I84sqLeaYVKbGSTybhaD2SavKvX1GuWT6YwEwRlpWXksTEPrIL41+924hwqeiOXrgt63EhJrXS6UTs0OL7s5a0+f/r3B6V9LSw=
+ b=VAdZ8z3GRMWF9Gl7MsiC9Tsd4dchg8eQBTHnt8q2qAkaDhvV2eJ+Iff6BQYjfexYa9OvG5ccBLTVVpDn9KfjJmRMA6KiMgbny7Qu6NsxZf8rrv13wuYKPB4M2P/e8FxejD0+1uwSmoRAoBNVfI8/QUHZBReeLBfbQTBHuyQIp3s=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1724664404;
- h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc;
- bh=Diipcu9yXm6CNr7POqyoYq5ZtVrMDrU36Ew/ouLWF5M=; 
- b=BtBBe9ogiMUOOsyj3NLFsFT1BFpHi6Jm9vGhTQ72EGt74dYlGsmbvKWKGhNmvc4weIy9CXHnK+lJcVjepfqyIGRBcU6jd8y/ob9dx+BlwyapMDJUsul76AL32JV1bpQUFUu0xnD1bmHDgFMmXLbEh5rt18T/c18cHSAYhiXU2f8=
+ s=zohoarc; t=1724664655;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=rJlIO6zAT2t5qZOyxn1iixhDdWvUW84OxzFYKPffrRU=; 
+ b=B3+Hh7N8NhxtsEeq4kMoEdkmYQel22y0XU0kSqUjelcwscKaR4n6RP+hvWfdXWSHliEcDwnrIMniAXhatMC9hQTqF4UgmAIO4Pt3Eu3kaKL0ev0k84NdNEj/qBd7OoRu9whcIB2sre4QH9nPt5pPRRWT6gtJWEoir4uYLxZdyR8=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
  dkim=pass  header.i=collabora.com;
  spf=pass  smtp.mailfrom=vignesh.raman@collabora.com;
  dmarc=pass header.from=<vignesh.raman@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724664404; 
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724664655; 
  s=zohomail; d=collabora.com; i=vignesh.raman@collabora.com;
- h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
- bh=Diipcu9yXm6CNr7POqyoYq5ZtVrMDrU36Ew/ouLWF5M=;
- b=dWquq4ThmzI9Tv0W4yLRn9Ytd1KZ72oNBKEVgZVLRGOaZFaXhRli7Xx+veWTEoXZ
- UbhKtoeMURtHwM21h4m78T4n+fN/+fxOsg6ys63imhvRKZyEEQAWi9bOEq3QdszZdKe
- X4rwXporanfIGM7KfBQgeIGDkjTviOb0wLxMhOuU=
-Received: by mx.zohomail.com with SMTPS id 172466440233572.61456800510132;
- Mon, 26 Aug 2024 02:26:42 -0700 (PDT)
-Message-ID: <3e689ade-862e-4a35-8762-8f0000847289@collabora.com>
-Date: Mon, 26 Aug 2024 14:56:38 +0530
+ h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:References:Cc:Cc:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+ bh=rJlIO6zAT2t5qZOyxn1iixhDdWvUW84OxzFYKPffrRU=;
+ b=iriJcnpvY2RqMJRcMZpY4YdsS+Pviq2N+6L18sIcrnu90fYpiGwwTDJ7TJzYM+bQ
+ UMckR1YlX2MaIw/DoOH+AilaC9KkZzGhB/r7POdvzQ/igR/0lu02VlMkfL92PSQSJ3E
+ GnfvsAmNp9TsvwN9GpOkpXL3Y35qxbReOacxH7uw=
+Received: by mx.zohomail.com with SMTPS id 1724664654334701.3142360070684;
+ Mon, 26 Aug 2024 02:30:54 -0700 (PDT)
+Message-ID: <949380f8-0c5b-49d4-b314-d4c087a3fe4e@collabora.com>
+Date: Mon, 26 Aug 2024 15:00:51 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 28/39] lib/chamelium/v3: Plug specific ports for
- all tests
-To: Louis Chauvet <louis.chauvet@bootlin.com>, igt-dev@lists.freedesktop.org, 
- ihf@google.com, markyacoub@google.com, thomas.petazzoni@bootlin.com,
- jeremie.dautheribes@bootlin.com, daniels <daniels@collabora.com>
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/cham?=
+ =?UTF-8?Q?elium=3A_Integrate_the_chamelium_v3?=
+To: Louis Chauvet <louis.chauvet@bootlin.com>, igt-dev@lists.freedesktop.org
 References: <20240709-dev-remove-static-ports-v2-0-5adfc6985778@bootlin.com>
- <20240709-dev-remove-static-ports-v2-28-5adfc6985778@bootlin.com>
+ <172054176637.86477.2526307237145811654@2413ebb6fbb6>
+ <Zo5Y4acIaFzsJxW3@louis-chauvet-laptop>
 Content-Language: en-US
+Cc: daniels <daniels@collabora.com>
 From: Vignesh Raman <vignesh.raman@collabora.com>
-In-Reply-To: <20240709-dev-remove-static-ports-v2-28-5adfc6985778@bootlin.com>
+In-Reply-To: <Zo5Y4acIaFzsJxW3@louis-chauvet-laptop>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
@@ -71,175 +71,134 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Louis,
 
-On 09/07/24 21:04, Louis Chauvet wrote:
-> As the chamelium v3 does not support plugging all ports at the same time,
-> something is required to identify which port must be plugged during
-> non-chamelium specific tests.
+On 10/07/24 15:18, Louis Chauvet wrote:
+> Hi all,
 > 
-> Add two options in port configuration:
-> - ConnectOnAnyTest: force this port to be plugged during any test
-> - EDID: Set a specific EDID for this port
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->   lib/chamelium/v3/igt_chamelium.c | 19 ++++++++++++++
->   lib/chamelium/v3/igt_chamelium.h |  7 +++++
->   lib/igt_kms.c                    | 55 +++++++++++++++++++++++++++++++++++-----
->   3 files changed, 74 insertions(+), 7 deletions(-)
+> It seems like I forgot to include errno.h. Should I send a new version or
+> wait for comments before?
 > 
 > diff --git a/lib/chamelium/v3/igt_chamelium.c b/lib/chamelium/v3/igt_chamelium.c
-> index 51b3a610e358..736e593a465e 100644
+> index fa70e2c1e296..4ed408a49afb 100644
 > --- a/lib/chamelium/v3/igt_chamelium.c
 > +++ b/lib/chamelium/v3/igt_chamelium.c
-> @@ -18,6 +18,8 @@
->   #define CHAMELIUM_V3_CONFIG_MST_PATH "MstPath"
->   #define CHAMELIUM_V3_CONFIG_PARENT_ID "ChameliumParentID"
->   #define CHAMELIUM_V3_CONFIG_AUTODETECT_SAVE "ChameliumAutodetectSave"
-> +#define CHAMELIUM_V3_CONFIG_CONNECT_ON_ANY_TEST "ConnectOnAnyTest"
-> +#define CHAMELIUM_V3_CONFIG_EDID "EDID"
->   
->   struct igt_chamelium_v3 {
->   	xmlrpc_env env;
-> @@ -234,6 +236,23 @@ static void chamelium_v3_fill_port_mapping_from_config_v3(struct igt_chamelium_v
->   
->   			port_mapping = chamelium_v3_port_mapping_alloc();
->   			port_mapping->port_id = chamelium_port_id;
-> +			port_mapping->connect_on_any_test = g_key_file_get_boolean(igt_key_file,
-> +										   group_list[group_idx],
-> +										   CHAMELIUM_V3_CONFIG_CONNECT_ON_ANY_TEST,
-> +										   NULL);
-> +
-> +			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
-> +					       CHAMELIUM_V3_CONFIG_EDID, NULL)) {
-> +				port_mapping->edid_name = g_key_file_get_string(igt_key_file,
-> +										group_list[group_idx],
-> +										CHAMELIUM_V3_CONFIG_EDID,
-> +										&error);
-> +				if (error) {
-> +					igt_info("Skipping malformed entry %s: %s\n",
-> +						 group_list[group_idx], error->message);
-> +					goto exit_loop;
-> +				}
-> +			}
->   
->   			if (g_key_file_has_key(igt_key_file, group_list[group_idx],
->   					       CHAMELIUM_V3_CONFIG_PORT_NAME, NULL)) {
-> diff --git a/lib/chamelium/v3/igt_chamelium.h b/lib/chamelium/v3/igt_chamelium.h
-> index 90d2a7473894..834f446f4317 100644
-> --- a/lib/chamelium/v3/igt_chamelium.h
-> +++ b/lib/chamelium/v3/igt_chamelium.h
-> @@ -18,6 +18,9 @@ typedef int chamelium_edid_id;
->    * the chamelium
->    *
->    * @port_id: Chamelium port ID.
-> + * @connect_on_any_test: if true, this port will be connected, even for tests that are not
-> + *                       chamelium-specific
-> + * @edid_name: When using @connect_on_any_test, set this specific EDID to the port
->    * @connector_name: DRM connector name, used to identify the connector in DRM, mutually exclusive
->    *		    with @mst_path
->    * @mst_path: MST path property, used to identify the connector in DRM, mutually exclusive with
-> @@ -29,6 +32,10 @@ typedef int chamelium_edid_id;
->   struct chamelium_v3_port_mapping {
->   	chamelium_v3_port_id port_id;
->   
-> +	/* Using chamelium to emulate a display */
-> +	bool connect_on_any_test;
-> +	char *edid_name;
-> +
->   	/* For normal DRM connector */
->   	char *connector_name;
->   
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 6c2b7cc4f5bd..a30bb483594c 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -49,6 +49,8 @@
->   #include <time.h>
->   
->   #include <i915_drm.h>
-> +#include <chamelium/v3/igt_chamelium.h>
-> +#include <monitor_edids/monitor_edids_helper.h>
-
-Should this be in ifdef HAVE_CHAMELIUM_V3 ?
-
->   
->   #include "drmtest.h"
->   #include "igt_kms.h"
-> @@ -2883,14 +2885,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->   	if (!resources)
->   		goto out;
->   
-> -/*
-> - * FIXME: Dirty hack to avoid those lines when chamelium v3 is used
-> - *
-> - * Must be replaced with a configuration file information, so the end user can choose if the
-> - * chamelium must be connected or not.
-> - */
->   #ifdef HAVE_CHAMELIUM_V2
-> -#ifndef HAVE_CHAMELIUM_V3
->   	{
->   		struct chamelium *chamelium;
->   
-> @@ -2906,6 +2901,52 @@ void igt_display_require(igt_display_t *display, int drm_fd)
->   		}
->   	}
->   #endif
-> +
-> +#ifdef HAVE_CHAMELIUM_V3
-> +	{
-> +		struct igt_chamelium_v3 *chamelium = chamelium_v3_init_from_config();
-> +
-> +		if (chamelium) {
-> +			struct chamelium_v3_port_mapping *mapping, *tmp;
-> +
-> +			chamelium_v3_reset(chamelium);
-> +			chamelium_v3_fill_port_mapping(chamelium);
-> +
-> +			igt_list_for_each_entry_safe(mapping, tmp,
-> +						     chamelium_v3_get_port_mapping(chamelium),
-> +						     link) {
-> +				if (mapping->connect_on_any_test && !chamelium_v3_is_mst(chamelium, mapping->port_id)) {
-> +					int edid_id = CHAMELIUM_DEFAULT_EDID;
-
-Need to use CHAMELIUM_V3_EDID_DEFAULT from lib/chamelium/v3/igt_chamelium.h.
-
-> +
-> +					igt_info("Plugging port %s\n", mapping->connector_name);
-> +					if (mapping->edid_name) {
-> +						struct edid *edid = get_edid_by_name(mapping->edid_name);
-> +
-> +						if (edid)
-> +							edid_id = chamelium_v3_create_edid(chamelium,
-> +											   edid);
-> +						else
-> +							igt_warn("Impossible to find an edid named \"%s\". Available names:\n",
-> +								 mapping->edid_name);
-> +							list_edid_names(IGT_LOG_WARN);
-> +					}
-> +					if (edid_id == CHAMELIUM_DEFAULT_EDID)
-
-Same as above.
-
-> +						igt_info("\tUsing default EDID\n");
-> +					else
-> +						igt_info("\tUsing edid: %s\n", mapping->edid_name);
-> +
-> +					chamelium_v3_apply_edid(chamelium, mapping->port_id,
-> +								edid_id);
-> +					chamelium_v3_plug(chamelium, mapping->port_id);
-> +					igt_require(igt_wait_for_connector_status(drm_fd,
-> +										  chamelium_v3_port_mapping_get_connector_id(mapping, drm_fd),
-> +										  igt_default_detect_timeout(),
-> +										  DRM_MODE_CONNECTED));
-> +				}
-> +			}
-> +			chamelium_v3_uninit(chamelium);
-> +		}
-> +	}
->   #endif
->   
->   	igt_require_f(resources->count_crtcs <= IGT_MAX_PIPES,
+> @@ -1,5 +1,7 @@
+>   // SPDX-License-Identifier: GPL-2.0
 > 
+> +#include <errno.h>
+> +
+>   #include <xmlrpc-c/base.h>
+>   #include <xmlrpc-c/client.h>
+> 
+> 
+> This morning I attempted to run the CI locally to avoid more errors, it
+> was a bit tricky (gitlab-runner deprecated the exec option to run the CI
+> locally, the images used are in the private docker repository, I had to
+> rebuild docker image myself).
+> 
+> With the following diff, the fedora build seems to pass, but I have some
+> timeout on tests, this timeout is also present on master.
+> 
+>   PASS  build:tests-fedora
+>   PASS  build:tests-fedora-no-libunwind
+>   PASS  build:tests-fedora-oldest-meson
+>   PASS  build:tests-fedora-no-libdrm-nouveau
+>   PASS  build:tests-fedora-clang
+>   PASS  test:list-undocumented-tests
+>   PASS  test:verify-blacklists
+>   FAIL  test:ninja-test
+>    > Skipped:               0
+>    > Timeout:               1
+>    > Full log written to /gcl-builds/build/meson-logs/testlog.txt
+>   FAIL  test:ninja-test-clang
+>    > Skipped:               0
+>    > Timeout:               1
+>    > Full log written to /gcl-builds/build/meson-logs/testlog.txt
+> 
+> For test:ninja-test
+> 419/431 runner                                  TIMEOUT 300.01 s
+> 
+> For test:ninja-test-clang
+> 419/431 runner                                  TIMEOUT 300.00 s
+> 
+> I am not able to run debian images, I tried to build the Dockerfile, but
+> the debian version seems too old (404 during apt update), and I am not
+> able to fetch prebuild images from gitlab (it seems to require API keys).
+
+Thanks for this series.
+
+I'm able to add your patches in a test branch and build it in drm-ci 
+using debian images. There are some failures seen in lib/igt_kms.c and I 
+sent some review comments for your patches. Please could you send an 
+updated series. Thank you.
 
 Regards,
 Vignesh
+
+> 
+> I will send a series to explain how to run the CI locally.
+> 
+>> == Series Details ==
+>>
+>> Series: tests/chamelium: Integrate the chamelium v3
+>> URL   : https://patchwork.freedesktop.org/series/135910/
+>> State : failure
+>>
+>> == Summary ==
+>>
+>> IGT patchset build failed on latest successful build
+>> a7ef4e2bacb168f19605851986629d462b097df6 lib/i915/perf: Add ARL support in IGT perf library
+>>
+>> Tail of build.log:
+>> [381/1759] Compiling C object 'lib/76b5a35@@igt-igt_v3d_c@sta/igt_v3d.c.o'.
+>> [382/1759] Compiling C object 'lib/76b5a35@@igt-gpu_cmds_c@sta/gpu_cmds.c.o'.
+>> [383/1759] Compiling C object 'tests/59830eb@@kms_selftest@exe/kms_selftest.c.o'.
+>> [384/1759] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen7_c@sta/rendercopy_gen7.c.o'.
+>> [385/1759] Compiling C object 'tests/59830eb@@kms_sysfs_edid_timing@exe/kms_sysfs_edid_timing.c.o'.
+>> [386/1759] Compiling C object 'tests/59830eb@@gem_softpin@exe/intel_gem_softpin.c.o'.
+>> [387/1759] Compiling C object 'tests/59830eb@@kms_scaling_modes@exe/kms_scaling_modes.c.o'.
+>> [388/1759] Compiling C object 'lib/76b5a35@@igt-igt_draw_c@sta/igt_draw.c.o'.
+>> [389/1759] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen6_c@sta/rendercopy_gen6.c.o'.
+>> [390/1759] Compiling C object 'lib/76b5a35@@igt-intel_compute_c@sta/intel_compute.c.o'.
+>> [391/1759] Compiling C object 'tests/59830eb@@kms_plane_multiple@exe/kms_plane_multiple.c.o'.
+>> [392/1759] Compiling C object 'tests/59830eb@@kms_tv_load_detect@exe/kms_tv_load_detect.c.o'.
+>> [393/1759] Compiling C object 'tests/59830eb@@kms_rmfb@exe/kms_rmfb.c.o'.
+>> [394/1759] Compiling C object 'tests/59830eb@@kms_plane_cursor@exe/kms_plane_cursor.c.o'.
+>> [395/1759] Compiling C object 'tests/59830eb@@kms_plane_lowres@exe/kms_plane_lowres.c.o'.
+>> [396/1759] Compiling C object 'lib/76b5a35@@igt-intel_bufops_c@sta/intel_bufops.c.o'.
+>> [397/1759] Compiling C object 'tests/59830eb@@kms_pipe_crc_basic@exe/kms_pipe_crc_basic.c.o'.
+>> [398/1759] Compiling C object 'lib/76b5a35@@igt-igt_pm_c@sta/igt_pm.c.o'.
+>> [399/1759] Compiling C object 'tests/59830eb@@kms_prop_blob@exe/kms_prop_blob.c.o'.
+>> [400/1759] Compiling C object 'tests/59830eb@@kms_plane_alpha_blend@exe/kms_plane_alpha_blend.c.o'.
+>> [401/1759] Compiling C object 'tests/59830eb@@kms_prime@exe/kms_prime.c.o'.
+>> [402/1759] Compiling C object 'lib/76b5a35@@igt-igt_amd_c@sta/igt_amd.c.o'.
+>> [403/1759] Generating i915-perf-registers-acmgt3 with a custom command.
+>> [404/1759] Compiling C object 'lib/76b5a35@@igt-igt_vmwgfx_c@sta/igt_vmwgfx.c.o'.
+>> [405/1759] Compiling C object 'tests/59830eb@@kms_tiled_display@exe/kms_tiled_display.c.o'.
+>> [406/1759] Compiling C object 'tests/59830eb@@kms_sequence@exe/kms_sequence.c.o'.
+>> [407/1759] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
+>> [408/1759] Compiling C object 'lib/76b5a35@@xe_oa@sha/meson-generated_.._xe_oa_equations.c.o'.
+>> [409/1759] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
+>> [410/1759] Compiling C object 'lib/76b5a35@@igt-intel_blt_c@sta/intel_blt.c.o'.
+>> [411/1759] Compiling C object 'tests/59830eb@@kms_plane@exe/kms_plane.c.o'.
+>> [412/1759] Generating i915-perf-metrics-acmgt3 with a custom command.
+>> [413/1759] Compiling C object 'lib/76b5a35@@igt-igt_kmod_c@sta/igt_kmod.c.o'.
+>> [414/1759] Compiling C object 'tests/59830eb@@kms_properties@exe/kms_properties.c.o'.
+>> [415/1759] Compiling C object 'tests/59830eb@@kms_setmode@exe/kms_setmode.c.o'.
+>> [416/1759] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
+>> [417/1759] Compiling C object 'tests/59830eb@@kms_lease@exe/kms_lease.c.o'.
+>> [418/1759] Compiling C object 'lib/76b5a35@@igt-chamelium_v2_igt_chamelium_c@sta/chamelium_v2_igt_chamelium.c.o'.
+>> [419/1759] Compiling C object 'tests/59830eb@@kms_rotation_crc@exe/kms_rotation_crc.c.o'.
+>> [420/1759] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
+>> [421/1759] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen8_c@sta/rendercopy_gen8.c.o'.
+>> [422/1759] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+>> [423/1759] Compiling C object 'lib/76b5a35@@igt-igt_core_c@sta/igt_core.c.o'.
+>> [424/1759] Compiling C object 'lib/76b5a35@@igt-intel_batchbuffer_c@sta/intel_batchbuffer.c.o'.
+>> [425/1759] Compiling C object 'lib/76b5a35@@igt-rendercopy_gen9_c@sta/rendercopy_gen9.c.o'.
+>> [426/1759] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+>> [427/1759] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+>> [428/1759] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+>> [429/1759] Generating i915-perf-equations with a custom command.
+>> ninja: build stopped: subcommand failed.
+>>
+>>
+> 
