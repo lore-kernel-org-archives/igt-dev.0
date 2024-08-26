@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC544C5472E
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 21:43:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A181C5472C
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Aug 2024 22:01:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6462710E253;
-	Mon, 26 Aug 2024 21:43:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE24610E025;
+	Mon, 26 Aug 2024 22:01:07 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 964A210E054;
- Mon, 26 Aug 2024 21:43:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60FC110E025;
+ Mon, 26 Aug 2024 22:01:06 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2230733589870890955=="
+ boundary="===============1307071860181787996=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amdgpu/amd=5Fabm=3A_R?=
- =?utf-8?q?emove_the_modeset_for_ABM_level_setting?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Parse_GSC-based_HuC_firmware_l?=
+ =?utf-8?q?ayout_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tom Chung" <chiahsuan.chung@amd.com>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Aug 2024 21:43:35 -0000
-Message-ID: <172470861560.785810.11329451761446929328@2413ebb6fbb6>
+Date: Mon, 26 Aug 2024 22:01:06 -0000
+Message-ID: <172470966639.785817.2330198828380713093@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240826082520.25942-1-chiahsuan.chung@amd.com>
-In-Reply-To: <20240826082520.25942-1-chiahsuan.chung@amd.com>
+References: <20240826152656.1306490-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240826152656.1306490-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,116 +41,57 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2230733589870890955==
+--===============1307071860181787996==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/amdgpu/amd_abm: Remove the modeset for ABM level setting
-URL   : https://patchwork.freedesktop.org/series/137780/
-State : failure
+Series: Parse GSC-based HuC firmware layout (rev3)
+URL   : https://patchwork.freedesktop.org/series/137473/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_7992 -> IGTPW_11636
+CI Bug Log - changes from XEIGT_7992_BAT -> XEIGTPW_11637_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_11636 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11636, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/index.html
-
-Participating hosts (40 -> 38)
+Participating hosts (9 -> 9)
 ------------------------------
 
-  Additional (1): fi-cfl-8109u 
-  Missing    (3): bat-dg2-11 fi-snb-2520m fi-kbl-8809g 
+  No changes in participating hosts
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_11636:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11636 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][3] ([i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-1:         [PASS][5] -> [DMESG-WARN][6] ([i915#11349])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-arls-1/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/bat-arls-1/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][7] +11 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arlh-3}:       [ABORT][8] -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7992 -> IGTPW_11636
+  * IGT: IGT_7992 -> IGTPW_11637
 
-  CI-20190529: 20190529
-  CI_DRM_15295: a98a350b5396d30458c26b4f31d7c4f4f9b1da90 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11636: 11636
+  IGTPW_11637: 11637
   IGT_7992: 14c915ac38d4f697f504f3c754195c5e284c49e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1830-a98a350b5396d30458c26b4f31d7c4f4f9b1da90: a98a350b5396d30458c26b4f31d7c4f4f9b1da90
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11637/index.html
 
---===============2230733589870890955==
+--===============1307071860181787996==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -170,87 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_abm: Remove the modeset for ABM level setting</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137780/">https://patchwork.freedesktop.org/series/137780/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>Parse GSC-based HuC firmware layout (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137473/">https://patchwork.freedesktop.org/series/137473/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11637/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11637/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_7992 -&gt; IGTPW_11636</h1>
+    <h1>CI Bug Log - changes from XEIGT_7992_BAT -&gt; XEIGTPW_11637_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11636 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11636, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Additional (1): fi-cfl-8109u <br />
-  Missing    (3): bat-dg2-11 fi-snb-2520m fi-kbl-8809g </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11636:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11636 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/fi-cfl-8109u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> +11 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7992/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11636/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7992 -&gt; IGTPW_11636</li>
+<li>IGT: IGT_7992 -&gt; IGTPW_11637</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15295: a98a350b5396d30458c26b4f31d7c4f4f9b1da90 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11636: 11636<br />
-  IGT_7992: 14c915ac38d4f697f504f3c754195c5e284c49e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11637: 11637<br />
+  IGT_7992: 14c915ac38d4f697f504f3c754195c5e284c49e7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1830-a98a350b5396d30458c26b4f31d7c4f4f9b1da90: a98a350b5396d30458c26b4f31d7c4f4f9b1da90</p>
 
 </body>
 </html>
 
---===============2230733589870890955==--
+--===============1307071860181787996==--
