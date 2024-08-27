@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C26CC52D6F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 06:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACCA1C52D6F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 06:14:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E02B510E05F;
-	Tue, 27 Aug 2024 06:04:33 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D9E510E02A;
- Tue, 27 Aug 2024 06:04:33 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7721942992402039061=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 520AF10E133;
+	Tue, 27 Aug 2024 06:14:40 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fTHok/3E";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 33F1110E19D
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 06:14:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724739279; x=1756275279;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Y17/L7+nCeyGsXHhipW58GIa4bYUowEQ7szhpdBBUV8=;
+ b=fTHok/3EYtWce7NT3sL7ynaBDQUWmY3DuRa+/A+WkqFbYHxDD8QHpVPm
+ du5KqUcdx6GrXFcRHCRHJ76qiO4eGAn7/qAsFEiZLmq5nA4iIDkcbAshw
+ 6CgwLIVKoxaundrD+iTYKLu9ea+ioiEkDvDq/pmlgbGZdCt0gsVrg3npV
+ Bw8aKZmXNOfvzeIahjweTfoC+QaF4FQMefWTscPMGMCZWDDNgLx0rl6o5
+ ehw0DVHggvZe5RIs9RrbUd7hZuCh78HmY50jueJhoMaSJt2ik64J1QYMO
+ 54DIOqHFfJoVLmD7y5ml70gDB01SW1NtSKlHdvJmlgGStocIBDAyIfcNF w==;
+X-CSE-ConnectionGUID: 4GDfW3JcQWynRzw3gYVrog==
+X-CSE-MsgGUID: wZw7E5fkTvGW+igf0R+ZPQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="40699835"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="40699835"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2024 23:14:38 -0700
+X-CSE-ConnectionGUID: ueI/m2p1SDqY7PdJXGu/6A==
+X-CSE-MsgGUID: HJft8CsARMScjg7a7KdwJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="62452326"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 23:14:34 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, vandita.kulkarni@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/kms_async_flips: subtests to validate async
+ flips on atomic path
+Date: Tue, 27 Aug 2024 11:41:10 +0530
+Message-Id: <20240827061111.472460-2-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240827061111.472460-1-santhosh.reddy.guddati@intel.com>
+References: <20240827061111.472460-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_test/amdgpu=3A_fix_unknow_t?=
- =?utf-8?q?est_issue_for_amdgpu_queue_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Aug 2024 06:04:33 -0000
-Message-ID: <172473867316.786468.16469721877127770327@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240827051932.74382-1-jesse.zhang@amd.com>
-In-Reply-To: <20240827051932.74382-1-jesse.zhang@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,269 +66,274 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7721942992402039061==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ tests/kms_async_flips.c | 154 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 141 insertions(+), 13 deletions(-)
 
-== Series Details ==
+diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
+index 5b70c4033..21cf0d302 100644
+--- a/tests/kms_async_flips.c
++++ b/tests/kms_async_flips.c
+@@ -66,6 +66,25 @@
+  *
+  * SUBTEST: invalid-async-flip
+  * Description: Negative case to verify if changes in fb are rejected from kernel as expected
++ *
++ * SUBTEST: alternate-sync-async-flip-atomic
++ * Description: Verify the async flip functionality and the fps during async flips using atomic path
++ *
++ * SUBTEST: async-flip-with-page-flip-events-atomic
++ * Description: Wait for page flip events in between successive asynchronous flips using atomic path
++ *
++ * SUBTEST: test-time-stamp-atomic
++ * Description: Verify that the async flip timestamp does not coincide with either previous or next vblank
++ * 				when async flip is done using atomic path
++ *
++ * SUBTEST: test-cursor-atomic
++ * Description: Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip with atomic commit
++ *
++ * SUBTEST: invalid-async-flip-atomic
++ * Description: Negative case to verify if changes in fb are rejected from kernel as expected when async flip is done using atomic path
++ *
++ * SUBTEST: crc-atomic
++ * Description: Use CRC to verify async flip scans out the correct framebuffer with atomic commit
+  */
+ 
+ #define CURSOR_POS 128
+@@ -101,6 +120,7 @@ typedef struct {
+ 	bool alternate_sync_async;
+ 	bool allow_fail;
+ 	struct buf_ops *bops;
++	bool atomic_path;
+ } data_t;
+ 
+ static void flip_handler(int fd_, unsigned int sequence, unsigned int tv_sec,
+@@ -271,9 +291,14 @@ static void test_async_flip(data_t *data)
+ 		if (data->alternate_sync_async) {
+ 			flags &= ~DRM_MODE_PAGE_FLIP_ASYNC;
+ 
+-			ret = drmModePageFlip(data->drm_fd, data->crtc_id,
++			if (!data->atomic_path) {
++				ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+ 					      data->bufs[frame % NUM_FBS].fb_id,
+ 					      flags, data);
++			} else {
++				igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
++				ret = igt_display_try_commit_atomic(&data->display, flags, data);
++			}
+ 
+ 			igt_assert_eq(ret, 0);
+ 
+@@ -282,19 +307,30 @@ static void test_async_flip(data_t *data)
+ 			flags |= DRM_MODE_PAGE_FLIP_ASYNC;
+ 
+ 			if (async_flip_needs_extra_frame(data)) {
+-				ret = drmModePageFlip(data->drm_fd, data->crtc_id,
++				if (!data->atomic_path) {
++					ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+ 						      data->bufs[frame % NUM_FBS].fb_id,
+ 						      flags, data);
+-
++				} else {
++					igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
++					ret = igt_display_try_commit_atomic(&data->display, flags, data);
++				}
+ 				igt_assert_eq(ret, 0);
+ 
+ 				wait_flip_event(data);
+ 			}
+ 		}
+ 
+-		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
++		if (!data->atomic_path) {
++			ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+ 				      data->bufs[frame % NUM_FBS].fb_id,
+ 				      flags, data);
++		} else {
++			igt_plane_set_fb(data->plane, &data->bufs[frame % NUM_FBS]);
++			ret = igt_display_try_commit_atomic(&data->display, flags, data);
++			igt_skip_on(ret == -EINVAL);
++		}
++
+ 		if (frame == 1 && data->allow_fail)
+ 			igt_skip_on(ret == -EINVAL);
+ 		else
+@@ -419,9 +455,14 @@ static void test_cursor(data_t *data)
+ 
+ 	do_ioctl(data->drm_fd, DRM_IOCTL_MODE_CURSOR, &cur);
+ 
+-	ret = drmModePageFlip(data->drm_fd, data->crtc_id,
+-			      data->bufs[0].fb_id,
+-			      flags, data);
++	if (!data->atomic_path) {
++		ret = drmModePageFlip(data->drm_fd, data->crtc_id,
++				      data->bufs[0].fb_id,
++				      flags, data);
++	} else {
++		igt_plane_set_fb(data->plane, &data->bufs[0]);
++		ret = igt_display_try_commit_atomic(&data->display, flags, data);
++	}
+ 
+ 	igt_assert_eq(ret, 0);
+ 
+@@ -457,14 +498,24 @@ static void test_invalid(data_t *data)
+ 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
+ 
+ 	/* first async flip is expected to allow modifier changes */
+-	ret = drmModePageFlip(data->drm_fd, data->crtc_id, fb[1].fb_id,
+-			      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++	if(!data->atomic_path) {
++		ret = drmModePageFlip(data->drm_fd, data->crtc_id, fb[1].fb_id,
++				      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++	} else {
++		igt_plane_set_fb(data->plane, &fb[1]);
++		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_ASYNC, data);
++	}
+ 	igt_assert_eq(ret, 0);
+ 	wait_flip_event(data);
+ 
+ 	/* subsequent async flips should reject modifier changes */
+-	ret = drmModePageFlip(data->drm_fd, data->crtc_id, fb[0].fb_id,
+-			      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++	if(!data->atomic_path) {
++		ret = drmModePageFlip(data->drm_fd, data->crtc_id, fb[0].fb_id,
++				      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++	} else {
++		igt_plane_set_fb(data->plane, &fb[0]);
++		ret = igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_ASYNC, data);
++	}
+ 	igt_assert(ret == -EINVAL);
+ 
+ 	/* TODO: Add verification for changes in stride, pixel format */
+@@ -611,8 +662,26 @@ static void test_crc(data_t *data)
+ 		paint_fb(data, &data->bufs[frame], 1, height, 0xff0000ff);
+ 
+ 		data->flip_pending = true;
+-		ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
+-				      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++
++		if (!data->atomic_path) {
++			ret = drmModePageFlip(data->drm_fd, data->crtc_id, data->bufs[frame].fb_id,
++					      DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++		} else {
++			 // TODO: Check if the first frame modeset is required.
++			 // Atomic commit is failing with invalid parameter when async flip with atomic is done
++			 // for crc test. So, skipping the first frame modeset.
++			if (data->frame_count == 0) {
++				igt_plane_set_fb(data->plane, &data->bufs[frame]);
++				igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET , data);
++				data->frame_count++;
++				continue;
++			} else {
++				igt_plane_set_fb(data->plane, &data->bufs[frame]);
++				ret = igt_display_try_commit_atomic(&data->display, 
++						DRM_MODE_PAGE_FLIP_ASYNC | DRM_MODE_PAGE_FLIP_EVENT, data);
++			}
++		}
++
+ 		igt_assert_eq(ret, 0);
+ 
+ 		wait_events_crc(data);
+@@ -705,15 +774,38 @@ igt_main
+ 				run_test(&data, test_async_flip);
+ 		}
+ 
++		igt_describe("Wait for page flip events in between successive asynchronous flips using atomic path");
++		igt_subtest_with_dynamic("async-flip-with-page-flip-events-atomic") {
++			data.alternate_sync_async = false;
++			data.atomic_path = true;
++			if (is_intel_device(data.drm_fd))
++				run_test_with_modifiers(&data, test_async_flip);
++			else
++				run_test(&data, test_async_flip);
++		}
++
+ 		igt_describe("Alternate between sync and async flips");
+ 		igt_subtest_with_dynamic("alternate-sync-async-flip") {
+ 			data.alternate_sync_async = true;
+ 			run_test(&data, test_async_flip);
+ 		}
+ 
++		igt_describe("Alternate between sync and async flips using atomic path");
++		igt_subtest_with_dynamic("alternate-sync-async-flip-atomic") {
++			data.alternate_sync_async = true;
++			data.atomic_path = true;
++			run_test(&data, test_async_flip);
++		}
++
+ 		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank");
+ 		igt_subtest_with_dynamic("test-time-stamp")
+ 			run_test(&data, test_timestamp);
++
++		igt_describe("Verify that the async flip timestamp does not coincide with either previous or next vblank with atomic path");
++		igt_subtest_with_dynamic("test-time-stamp-atomic") {
++			data.atomic_path = true;
++			run_test(&data, test_timestamp);
++		}
+ 	}
+ 
+ 	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip");
+@@ -730,6 +822,20 @@ igt_main
+ 		run_test(&data, test_cursor);
+ 	}
+ 
++	igt_describe("Verify that the DRM_IOCTL_MODE_CURSOR passes after async flip with atomic commit");
++	igt_subtest_with_dynamic("test-cursor-atomic") {
++		/*
++		 * Intel's PSR2 selective fetch adds other planes to state when
++		 * necessary, causing the async flip to fail because async flip is not
++		 * supported in cursor plane.
++		 */
++		igt_skip_on_f(i915_psr2_selective_fetch_check(data.drm_fd, NULL),
++			      "PSR2 sel fetch causes cursor to be added to primary plane " \
++			      "pages flips and async flip is not supported in cursor\n");
++		data.atomic_path = true;
++		run_test(&data, test_cursor);
++	}
++
+ 	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected");
+ 	igt_subtest_with_dynamic("invalid-async-flip") {
+ 		/* TODO: support more vendors */
+@@ -742,6 +848,19 @@ igt_main
+ 		run_test(&data, test_invalid);
+ 	}
+ 
++	igt_describe("Negative case to verify if changes in fb are rejected from kernel as expected when async flip is done using atomic path");
++	igt_subtest_with_dynamic("invalid-async-flip-atomic") {
++		data.atomic_path = true;
++		/* TODO: support more vendors */
++		igt_require(is_intel_device(data.drm_fd));
++		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
++						       I915_FORMAT_MOD_X_TILED));
++		igt_require(igt_display_has_format_mod(&data.display, DRM_FORMAT_XRGB8888,
++						       I915_FORMAT_MOD_Y_TILED));
++
++		run_test(&data, test_invalid);
++	}
++
+ 	igt_describe("Use CRC to verify async flip scans out the correct framebuffer");
+ 	igt_subtest_with_dynamic("crc") {
+ 		/* Devices without CRC can't run this test */
+@@ -750,6 +869,15 @@ igt_main
+ 		run_test(&data, test_crc);
+ 	}
+ 
++	igt_describe("Use CRC to verify async flip scans out the correct framebuffer with atomic commit");
++	igt_subtest_with_dynamic("crc-atomic") {
++		/* Devices without CRC can't run this test */
++		igt_require_pipe_crc(data.drm_fd);
++
++		data.atomic_path = true;
++		run_test(&data, test_crc);
++	}
++
+ 	igt_fixture {
+ 		for (i = 0; i < NUM_FBS; i++)
+ 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
+-- 
+2.34.1
 
-Series: test/amdgpu: fix unknow test issue for amdgpu queue test
-URL   : https://patchwork.freedesktop.org/series/137822/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_7993 -> IGTPW_11639
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/index.html
-
-Participating hosts (37 -> 40)
-------------------------------
-
-  Additional (4): bat-kbl-2 fi-cfl-8700k bat-jsl-1 fi-kbl-8809g 
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11639 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-jsl-1:          NOTRUN -> [SKIP][1] ([i915#9318])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@info:
-    - bat-kbl-2:          NOTRUN -> [SKIP][2] ([i915#1849])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-kbl-2/igt@fbdev@info.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][3] ([i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][4] ([i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@gem_huc_copy@huc-copy.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][5] ([i915#2190])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][6] ([i915#4613]) +3 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-cfl-8700k/igt@gem_lmem_swapping@basic.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][7] ([i915#4613]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-kbl-2:          NOTRUN -> [SKIP][8] +39 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - bat-jsl-1:          NOTRUN -> [SKIP][9] ([i915#4613]) +3 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
-    - bat-jsl-1:          NOTRUN -> [SKIP][10] ([i915#4103]) +1 other test skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-jsl-1:          NOTRUN -> [SKIP][11] ([i915#3555] / [i915#9886])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][12] +11 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-cfl-8700k/igt@kms_force_connector_basic@force-load-detect.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][13] +30 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][14]
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-jsl-1:          NOTRUN -> [SKIP][15] ([i915#3555])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-2:         [DMESG-WARN][16] ([i915#11349]) -> [PASS][17]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7993/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-    - {bat-arlh-3}:       [DMESG-WARN][18] ([i915#11349]) -> [PASS][19]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7993/bat-arlh-3/igt@i915_selftest@live@hangcheck.html
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-arlh-3/igt@i915_selftest@live@hangcheck.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7993 -> IGTPW_11639
-
-  CI-20190529: 20190529
-  CI_DRM_15297: 0f7dbe16a23882ef9c928d9650ea0613925e710b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11639: 11639
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/index.html
-
---===============7721942992402039061==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>test/amdgpu: fix unknow test issue for amdgpu queue test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137822/">https://patchwork.freedesktop.org/series/137822/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_7993 -&gt; IGTPW_11639</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/index.html</p>
-<h2>Participating hosts (37 -&gt; 40)</h2>
-<p>Additional (4): bat-kbl-2 fi-cfl-8700k bat-jsl-1 fi-kbl-8809g <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11639 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318">i915#9318</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-kbl-2/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-cfl-8700k/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-cfl-8700k/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-kbl-2/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> +39 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886">i915#9886</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-cfl-8700k/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +11 other tests skip</li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-jsl-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@hangcheck:<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7993/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_7993/bat-arlh-3/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11639/bat-arlh-3/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7993 -&gt; IGTPW_11639</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15297: 0f7dbe16a23882ef9c928d9650ea0613925e710b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11639: 11639<br />
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7721942992402039061==--
