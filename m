@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBED2C5473F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 23:29:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB060C54744
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 23:51:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 67C0710E42E;
-	Tue, 27 Aug 2024 23:29:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D47310E2AE;
+	Tue, 27 Aug 2024 23:51:36 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA3F810E434;
- Tue, 27 Aug 2024 23:29:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEF4810E2AE;
+ Tue, 27 Aug 2024 23:51:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5138281715201350384=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/xe=3A_Add_system?=
- =?utf-8?q?=5Fallocator_test_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe=3A_Add_system=5Falloc?=
+ =?utf-8?q?ator_test_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Matthew Brost" <matthew.brost@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Aug 2024 23:29:31 -0000
-Message-ID: <172480137188.808278.16623671047082429423@2413ebb6fbb6>
+Date: Tue, 27 Aug 2024 23:51:34 -0000
+Message-ID: <172480269483.808306.2667075697863505027@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240827231653.2580766-1-matthew.brost@intel.com>
 In-Reply-To: <20240827231653.2580766-1-matthew.brost@intel.com>
@@ -41,124 +41,106 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-=3D=3D Series Details =3D=3D
+--===============5138281715201350384==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
 
 Series: tests/xe: Add system_allocator test (rev2)
 URL   : https://patchwork.freedesktop.org/series/137545/
-State : warning
+State : success
 
-=3D=3D Summary =3D=3D
+== Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_7993_BAT -> XEIGTPW_11648_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1259011 f=
-or the overview.
+Summary
+-------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/g=
-fx-ci/igt-ci-tags/-/jobs/62822420):
-  /usr/bin/arm-linux-gnueabihf-gcc -Ilib/76b5a35@@igt-xe_xe_ioctl_c@sta -Il=
-ib -I../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I..=
-/lib/stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 =
--I/usr/lib/arm-linux-gnueabihf/glib-2.0/include -I/usr/include/pixman-1 -I/=
-usr/include/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/in=
-clude/libdrm -I/usr/include/libdrm/nouveau -I/usr/include/arm-linux-gnueabi=
-hf -I/usr/include/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways=
- -pipe -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O=
-2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-c=
-ast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -=
-Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissing-nor=
-eturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpointe=
-r-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wun=
-used -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initializer=
-s -Wno-pointer-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-paramet=
-er -Wno-unused-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dim=
-plicit -Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointe=
-r-cast -Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3D=
-pointer-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=
-=3Dtrigraphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-callo=
-c -D_LARGEFILE64_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/sha=
-re/igt-gpu-tools"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DI=
-GT_LOG_DOMAIN=3D"xe/xe_ioctl"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta=
-/xe_xe_ioctl.c.o' -MF 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o.d=
-' -o 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o' -c ../lib/xe/xe_i=
-octl.c
-  ../lib/xe/xe_ioctl.c:427:7: error: conflicting types for =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-         ^~~~~~~~~~~~~~~
-  In file included from ../lib/xe/xe_ioctl.c:46:
-  ../lib/xe/xe_ioctl.h:84:7: note: previous declaration of =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99 was here
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned in=
-t addr);
-         ^~~~~~~~~~~~~~~
-  ../lib/xe/xe_ioctl.c: In function =E2=80=98xe_bo_map_fixed=E2=80=99:
-  ../lib/xe/xe_ioctl.c:433:13: error: cast to pointer from integer of diffe=
-rent size [-Werror=3Dint-to-pointer-cast]
-    map =3D mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd=
-, mmo);
-               ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1724801055:step_script
-  section_start:1724801055:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1724801055:cleanup_file_variables
-  ERROR: Job failed: exit code 1
- =20
+  **SUCCESS**
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gf=
-x-ci/igt-ci-tags/-/jobs/62822422):
-  /usr/bin/mips-linux-gnu-gcc -Ilib/76b5a35@@igt-xe_xe_ioctl_c@sta -Ilib -I=
-../lib -I../include -I../include/drm-uapi -I../include/linux-uapi -I../lib/=
-stubs/syscalls -I. -I../ -I/usr/include/cairo -I/usr/include/glib-2.0 -I/us=
-r/lib/mips-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/includ=
-e/uuid -I/usr/include/freetype2 -I/usr/include/libpng16 -I/usr/include/libd=
-rm -I/usr/include/libdrm/nouveau -I/usr/include/mips-linux-gnu -I/usr/inclu=
-de/valgrind -I/usr/include/alsa -fdiagnostics-color=3Dalways -pipe -D_FILE_=
-OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgnu11 -O2 -g -D_GNU_SOU=
-RCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-function-cast -Wdeclarati=
-on-after-statement -Wformat=3D2 -Wimplicit-fallthrough=3D0 -Wlogical-op -Wm=
-issing-declarations -Wmissing-format-attribute -Wmissing-noreturn -Wmissing=
--prototypes -Wnested-externs -Wold-style-definition -Wpointer-arith -Wredun=
-dant-decls -Wshadow -Wstrict-prototypes -Wuninitialized -Wunused -Wno-clobb=
-ered -Wno-maybe-uninitialized -Wno-missing-field-initializers -Wno-pointer-=
-arith -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-unused-=
-result -Werror=3Daddress -Werror=3Darray-bounds -Werror=3Dimplicit -Werror=
-=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werror=
-=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-int=
--cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs -W=
-error=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFILE6=
-4_SOURCE=3D1 -fPIC -pthread '-DIGT_DATADIR=3D"/usr/local/share/igt-gpu-tool=
-s"' '-DIGT_SRCDIR=3D"/builds/gfx-ci/igt-ci-tags/tests"' '-DIGT_LOG_DOMAIN=
-=3D"xe/xe_ioctl"'  -MD -MQ 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.=
-c.o' -MF 'lib/76b5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o.d' -o 'lib/76b=
-5a35@@igt-xe_xe_ioctl_c@sta/xe_xe_ioctl.c.o' -c ../lib/xe/xe_ioctl.c
-  ../lib/xe/xe_ioctl.c:427:7: error: conflicting types for =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, uint64_t addr)
-         ^~~~~~~~~~~~~~~
-  In file included from ../lib/xe/xe_ioctl.c:46:
-  ../lib/xe/xe_ioctl.h:84:7: note: previous declaration of =E2=80=98xe_bo_m=
-ap_fixed=E2=80=99 was here
-   void *xe_bo_map_fixed(int fd, uint32_t bo, size_t size, long unsigned in=
-t addr);
-         ^~~~~~~~~~~~~~~
-  ../lib/xe/xe_ioctl.c: In function =E2=80=98xe_bo_map_fixed=E2=80=99:
-  ../lib/xe/xe_ioctl.c:433:13: error: cast to pointer from integer of diffe=
-rent size [-Werror=3Dint-to-pointer-cast]
-    map =3D mmap((void *)addr, size, PROT_WRITE, MAP_SHARED | MAP_FIXED, fd=
-, mmo);
-               ^
-  cc1: some warnings being treated as errors
-  ninja: build stopped: subcommand failed.
-  section_end:1724801049:step_script
-  section_start:1724801049:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1724801050:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  No regressions found.
 
-=3D=3D Logs =3D=3D
+  
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/p=
-ipelines/1259011
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7993 -> IGTPW_11648
+  * Linux: xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b -> xe-1842-2940d1fa7abe0d2a9acc95fd1c704a8d8cbc68f4
+
+  IGTPW_11648: 11648
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b
+  xe-1842-2940d1fa7abe0d2a9acc95fd1c704a8d8cbc68f4: 2940d1fa7abe0d2a9acc95fd1c704a8d8cbc68f4
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11648/index.html
+
+--===============5138281715201350384==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe: Add system_allocator test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137545/">https://patchwork.freedesktop.org/series/137545/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11648/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11648/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7993_BAT -&gt; XEIGTPW_11648_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7993 -&gt; IGTPW_11648</li>
+<li>Linux: xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b -&gt; xe-1842-2940d1fa7abe0d2a9acc95fd1c704a8d8cbc68f4</li>
+</ul>
+<p>IGTPW_11648: 11648<br />
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b<br />
+  xe-1842-2940d1fa7abe0d2a9acc95fd1c704a8d8cbc68f4: 2940d1fa7abe0d2a9acc95fd1c704a8d8cbc68f4</p>
+
+</body>
+</html>
+
+--===============5138281715201350384==--
