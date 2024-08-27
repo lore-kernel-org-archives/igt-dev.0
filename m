@@ -4,74 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DB1AC54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B741AC5472F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:31:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3026810E0DE;
-	Tue, 27 Aug 2024 15:24:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="YmhmYLBE";
-	dkim-atps=neutral
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
- [209.85.128.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A2F210E0DE
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:24:48 +0000 (UTC)
-Received: by mail-wm1-f41.google.com with SMTP id
- 5b1f17b1804b1-42ab880b73eso50794995e9.0
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:24:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724772286; x=1725377086; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=ORJEjPXVC1tnYYf+Iw7ywlTVwNlBrV+z4t8RXqsT8sc=;
- b=YmhmYLBEFzo/8rrPOVZYDfnhpat7xcIf0etGe3pt1OEnnRgwz3co0BeuqqFMG2uqzw
- AGKsHU+rh6Tutavjgw/K4p4DnhwCLvrqxyoOtjIvbvYttmIB0GP7+mEq7blDiA0kG7IL
- sUmqdIlX7RxpMyOMTd3BOi13A4tnZ29Kz1BL2q+eob6AavVWXcZ/IuYxgJeChD1dhNB8
- OEz3SJdLYIqB5rjNPw8PmloBothox62R8Y8vMEDQ1jTDK+3iF5CutHM2m56gafUkeppN
- a9VVYxXQXjg2EAv1Vxeo/x0GnXo9iEpUUsl8FGfndWFobHtXTFJcB6gtsb0GB1j7Oq6J
- fMsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724772286; x=1725377086;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=ORJEjPXVC1tnYYf+Iw7ywlTVwNlBrV+z4t8RXqsT8sc=;
- b=haokOICZPblfPnxUMVSRs9hAUqHAf9mh1mJLGc/qieNadi1afQiTURNgFXD5By5bav
- MkaDyvDYmEJ2j7WuFwvbc1GwFiSK3auh6sLF3y+x6Y807UEUPDLKTdAKNeMAKshBQ6Ip
- njCKoNOEnNsO9PjL4QY/B+VWmIdjwinhU2xlvTn7KItnMCj0LHdw639Z6fI2/Hhm1SlY
- kDs+gJ4lzg+Z/mhkChXqX8ips1xrtK8ZWA7H0w2r4xsPn1wl0G/eA6leQcade3J+jlwN
- uCm74GayAGxiR5qDU/tV3xx7Q8u+51/PTZA+rjkZK4ToljJQ57nnliuBsEpRoP3WwAOX
- x9og==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXdvLd9nzvmRf9agr1IpL77b9eLROkjqqfgv7NjGekVR+VK88MtWY8fbu8wsA4gzsIM2uWnzqtF@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yw+OHm0F9ErX/9/te1YRSmdn1aU7sWkcECNPUigC5jF2a1y2jqF
- uuDm7gwf+XjW4URH3974AEpB7ITYeYjA/WBVs+nvfMxx7zCdosgF+52/Dv2QUEE=
-X-Google-Smtp-Source: AGHT+IEzXxQeDNLITUxoyRJpkpZWCXYwWHHRVwtLTKn5L7df58xX9Xuuq+yMAFVcgKHsKEz2gAK1SA==
-X-Received: by 2002:a05:600c:4fc5:b0:427:ffa4:32d0 with SMTP id
- 5b1f17b1804b1-42b9ae2422emr22453695e9.28.1724772286121; 
- Tue, 27 Aug 2024 08:24:46 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.72])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-37308161042sm13400369f8f.59.2024.08.27.08.24.43
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 08:24:45 -0700 (PDT)
-Message-ID: <9f5d52ca-281f-402f-98d6-04914f8851b6@gmail.com>
-Date: Tue, 27 Aug 2024 18:24:40 +0300
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C71010E357;
+	Tue, 27 Aug 2024 15:31:25 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 100F610E357;
+ Tue, 27 Aug 2024 15:31:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3080588502667040531=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 10/37] lib/rendercopy: Extract {dg2,
- lnl}_compression_format()
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <20240702232817.31147-11-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240702232817.31147-11-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Ffault?=
+ =?utf-8?q?=5Fmode=3A_Don=27t_return_early?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Nirmoy Das" <nirmoy.das@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Aug 2024 15:31:24 -0000
+Message-ID: <172477268405.806722.13705937680432910513@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240827105222.13650-1-nirmoy.das@intel.com>
+In-Reply-To: <20240827105222.13650-1-nirmoy.das@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,81 +37,158 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+--===============3080588502667040531==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 3.7.2024 2.27, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Extract the code to determine the SURFACE_STATE compression
-> format for dg2/lnl+ into helper. We'll need more formats here
-> soon.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   lib/rendercopy_gen9.c | 41 ++++++++++++++++++++++++++---------------
->   1 file changed, 26 insertions(+), 15 deletions(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 11f456a70d2f..eafdf50581d3 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -146,6 +146,28 @@ static const uint32_t xe2_render_copy[][4] = {
->   	{ 0x8010c031, 0x00000004, 0x58000c24, 0x00c40000 },
->   };
->   
-> +static uint32_t lnl_compression_format(const struct intel_buf *buf)
-> +{
-> +	switch (buf->bpp) {
-> +	case 32:
-> +		return 0x2; /* CMF_R8_G8_B8_A8 */
-> +	default:
-> +		igt_assert(0);
-> +		return 0;
-> +	}
-> +}
-> +
-> +static uint32_t dg2_compression_format(const struct intel_buf *buf)
-> +{
-> +	switch (buf->bpp) {
-> +	case 32:
-> +		return 0x8;
-> +	default:
-> +		igt_assert(0);
-> +		return 0;
-> +	}
-> +}
-> +
->   /* Mostly copy+paste from gen6, except height, width, pitch moved */
->   static uint32_t
->   gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-> @@ -272,21 +294,10 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->   			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
->   			ss->ss7.dg2.disable_support_for_multi_gpu_atomics = 1;
->   
-> -			if (AT_LEAST_GEN(ibb->devid, 20)) {
-> -				/*
-> -				 * For Xe2+ R8G8B8A8 best compression ratio is
-> -				 * achieved with compression format = '2'
-> -				 */
-> -				ss->ss12.lnl.compression_format = 2;
-> -			} else {
-> -				/*
-> -				 * For now here is coming only 32bpp rgb format
-> -				 * which is marked below as B8G8R8X8_UNORM = '8'
-> -				 * If here ever arrive other formats below need to be
-> -				 * fixed to take that into account.
-> -				 */
-> -				ss->ss12.dg2.compression_format = 8;
-> -			}
-> +			if (AT_LEAST_GEN(ibb->devid, 20))
-> +				ss->ss12.lnl.compression_format = lnl_compression_format(buf);
-> +			else
-> +				ss->ss12.dg2.compression_format = dg2_compression_format(buf);
->   		}
->   	}
->   
+== Series Details ==
 
+Series: tests/intel/xe_exec_fault_mode: Don't return early
+URL   : https://patchwork.freedesktop.org/series/137836/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_7993_BAT -> XEIGTPW_11644_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11644_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@basic-x-tiled-legacy:
+    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-bmg-1/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/bat-bmg-1/igt@kms_addfb_basic@basic-x-tiled-legacy.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#324]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-adlp-7:         [DMESG-WARN][5] -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7993 -> IGTPW_11644
+  * Linux: xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b -> xe-1836-27592570393fbdca50a8767bf7b53ff88147e701
+
+  IGTPW_11644: 11644
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b
+  xe-1836-27592570393fbdca50a8767bf7b53ff88147e701: 27592570393fbdca50a8767bf7b53ff88147e701
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/index.html
+
+--===============3080588502667040531==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_fault_mode: Don&#x27;t return early</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137836/">https://patchwork.freedesktop.org/series/137836/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7993_BAT -&gt; XEIGTPW_11644_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11644_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_addfb_basic@basic-x-tiled-legacy:<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-bmg-1/igt@kms_addfb_basic@basic-x-tiled-legacy.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/bat-bmg-1/igt@kms_addfb_basic@basic-x-tiled-legacy.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11644/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7993 -&gt; IGTPW_11644</li>
+<li>Linux: xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b -&gt; xe-1836-27592570393fbdca50a8767bf7b53ff88147e701</li>
+</ul>
+<p>IGTPW_11644: 11644<br />
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b<br />
+  xe-1836-27592570393fbdca50a8767bf7b53ff88147e701: 27592570393fbdca50a8767bf7b53ff88147e701</p>
+
+</body>
+</html>
+
+--===============3080588502667040531==--
