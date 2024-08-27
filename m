@@ -4,72 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D81A0C54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5053CC54731
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:26:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A1F610E37C;
-	Tue, 27 Aug 2024 16:25:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E881110E379;
+	Tue, 27 Aug 2024 16:26:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="UZnepoqa";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jg3ej891";
 	dkim-atps=neutral
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
- [209.85.221.47])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0BAEE10E388
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:25:54 +0000 (UTC)
-Received: by mail-wr1-f47.google.com with SMTP id
- ffacd0b85a97d-371bb8322b2so3095360f8f.0
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 09:25:54 -0700 (PDT)
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
+ [209.85.221.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2852610E379
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:26:43 +0000 (UTC)
+Received: by mail-wr1-f49.google.com with SMTP id
+ ffacd0b85a97d-371a13c7c80so3895045f8f.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 09:26:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724775953; x=1725380753; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1724776001; x=1725380801; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=/SuP2V1sZ4HM+QTM5PMDntLy9Xl8EbxK9Y9CVFV7cbs=;
- b=UZnepoqa8zNGnjA+KclwTeHpb1XZphY7K44BWv2xCqzISgcN7ZydXo+q/llE9Y1pFG
- YUWTT8N09hGj1SSbegPzJaufWAg9gmmNNmRckzBgt1vLmPB83170+pczy/+z9Y3Sxcd9
- 8XkUT8m6Akfqf/vGzuWRPcaMVZM1nVxnljjYanyFuy2gFqVWbIXMtl9JB2M/44CM0X5l
- plDL/MgtM2TNKXbjwHXWwS+qjNBWLtTBxyO2XjIPNWbp6XZJ5yiOrnKUh46ZnNAEFxnN
- fm4z5N94fL8XL3ecUPHKtDEj/iVm8V8hS5qspHbDzfU8v0ROxLZdFK+lq0iXehFJJ50W
- mecQ==
+ bh=Q9lKIBKu3m9Ku35Ai2O9HpuM7oCyqHQS38WzI2gUQUM=;
+ b=jg3ej891CtTEeEIAsrwdhp2DmYMi22YKpusK4c+f9+qcRtH73Q/RaeQfYmpx1FX+3B
+ nhdAOEG86owP77y+JMShhDMLs6pqyFrfKY3bhwxM2b4nleEIYVucamGT6H0LVZISDhRT
+ TBDovIrw+nL5iYYYDuZSKd9C7oLxh0QexBC9HWdFEN+E5Wu6mIpLtGQaBAflWDV4KJyi
+ ObNHcsVp8E51sfJBP7gDXzPY8Qm/aYkF4wqqIA5CvT0C5e6TKeDsBwMA7p71Wa1LsqOS
+ A9upH12HGbkV/KMbP4GxAaky7XUbNR2hMRcmlSaNe/p1C+ADn74OwCidXFfkqFhSPAU+
+ bIUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724775953; x=1725380753;
+ d=1e100.net; s=20230601; t=1724776001; x=1725380801;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=/SuP2V1sZ4HM+QTM5PMDntLy9Xl8EbxK9Y9CVFV7cbs=;
- b=TB/k5EKqYVlOeMpclMrPhgVkRClaMRhZi0RaQm7CKAT5GK7qWOqgHRaN6sAwq911dD
- iSHFqwUjl6i+0lsA5CRsL5ksSXHeMxX1v4AMYAsk3akeUtH3yB0VhOzCHbQ4HJQp2ZB5
- aFNBvMwiPPeUO2htoKg6zXxs2cjgMqy6WPSOPfIYFtw2huzNSjbQlITefabROZrnCF17
- Y0OJ+unu9KSCRuUDlNcpicNgt8JqkR5/3SGfM4KSr8sWhmSEhf3PH5EcJYb7mK4Kc0Ox
- 09iHAQt+ebnVld0rjSvXekJcvNHS/F4G8seqLJ/rVhcQppNX2deqw71Y7tnVyVnZL02I
- nQaA==
+ bh=Q9lKIBKu3m9Ku35Ai2O9HpuM7oCyqHQS38WzI2gUQUM=;
+ b=Bfna/1+W2x15PkHRXrXxoM+eWby5YlAKRZ2dJD2VF/fnW8x9MEvxF6q36c4Nakz+mh
+ NLRU0O0rwRkEo1DawijTDCDg2WD9IM45C7/PozvziYjVWOI3knvof5WU/AvBKhw6rHRh
+ NQbkXmAuT+fmXdZ6ZwwMazFnndtyEQDvHUxxnRGtBHsRUivoSZ3Zng/swWqHrg+fsXHm
+ nwphFHPNsD5JF1TN6LCwEk6oR2u0vfP0o4yFbITxwXg9lpWXcZntzFIi+vlkzf9RwBf5
+ bpkH8KxP9BOZApIaP6Rgz7947Ndb46u4iQuIwrM5y/T8Q3Zv6/4K9sSmuHVhWbjMpb80
+ T//g==
 X-Forwarded-Encrypted: i=1;
- AJvYcCVZHSEeBkJurdBvZWCgRKNHw1CXC2Ian5XE/CUIxQrqUlsSn9eLtMtLk2DuHH9CxfwmuhA4Sgx7@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YwZTAOYR9ZXVG4728HwvC9yNZFSg+waqk053VSEeBpYIsD3dgS3
- MPTCa1zWPYej8m149zQUoFoAZU2Xiuu2fQscsqTdLiOWuyZjPVfmd/B8r+GEZxs=
-X-Google-Smtp-Source: AGHT+IF1fU1XFDhzMn1plnFxE6RxnC+A8Me7Hp4xzcfYJ4wnlb0oxANmejLjk0AKuaO9kFdu8ICprw==
-X-Received: by 2002:a5d:6d4e:0:b0:36b:ea2d:fd5a with SMTP id
- ffacd0b85a97d-3748c88a52emr1779694f8f.22.1724775952873; 
- Tue, 27 Aug 2024 09:25:52 -0700 (PDT)
+ AJvYcCU/7UHeoip6EW/pigbMSIa9VsngNLbmjQkhz/dQw2CXWkgEbfur5fLhEI5KEyQt6cS+qnUQ5EqC@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yzy/X0l6YztB9hbYuYs4HfBtV0KEZV31x2bNdXroWGQo5BJeD0O
+ i5t+c9ecOwMA42baX/WSqQO3JYtbErem6LDYbi4RsvVQRsLxEhB4
+X-Google-Smtp-Source: AGHT+IHqRmm/4Ic4+IrQv4UCwlx85wSbDZYa7hH35KybT/G8vay0Xu2pmUm8L+9Py1oxgLRXUjDxWA==
+X-Received: by 2002:adf:e30e:0:b0:367:895f:619e with SMTP id
+ ffacd0b85a97d-3748c8442a7mr2104142f8f.11.1724776001211; 
+ Tue, 27 Aug 2024 09:26:41 -0700 (PDT)
 Received: from [0.0.0.0] ([134.134.139.73])
  by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-42b9d945144sm25209185e9.0.2024.08.27.09.25.50
+ 5b1f17b1804b1-42ac514e088sm196788985e9.8.2024.08.27.09.26.39
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 09:25:52 -0700 (PDT)
-Message-ID: <441701a0-66d8-4b87-8c31-7dde15df4ea7@gmail.com>
-Date: Tue, 27 Aug 2024 19:25:45 +0300
+ Tue, 27 Aug 2024 09:26:40 -0700 (PDT)
+Message-ID: <eb64f3e6-c60d-466d-8f7c-55656dd11632@gmail.com>
+Date: Tue, 27 Aug 2024 19:26:35 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 13/37] lib/rendercopy: Use the proper compression
- format for 16bpc on dg2/lnl+
+Subject: Re: [PATCH i-g-t 14/37] lib/igt_fb: Extract
+ is_gen12_rc_ccs_cc_modifier()
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <20240702232817.31147-14-ville.syrjala@linux.intel.com>
+ <20240702232817.31147-15-ville.syrjala@linux.intel.com>
 Content-Language: en-US
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240702232817.31147-14-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240702232817.31147-15-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -93,33 +93,40 @@ Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 On 3.7.2024 2.27, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Setup the dg2/lnl+ compression format correctly for 16bpc formats.
+> Extract a helper to identify the clear color compressed modifiers.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->   lib/rendercopy_gen9.c | 4 ++++
->   1 file changed, 4 insertions(+)
+>   lib/igt_fb.c | 13 +++++++++----
+>   1 file changed, 9 insertions(+), 4 deletions(-)
 > 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index b871a4b3dae1..ae4bb2606125 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -149,6 +149,8 @@ static const uint32_t xe2_render_copy[][4] = {
->   static uint32_t lnl_compression_format(const struct intel_buf *buf)
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 857ffb6547a3..c48a61b5f148 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -594,15 +594,20 @@ static bool is_gen12_mc_ccs_modifier(uint64_t modifier)
+>   		modifier == I915_FORMAT_MOD_4_TILED_MTL_MC_CCS;
+>   }
+>   
+> +static bool is_gen12_rc_ccs_cc_modifier(uint64_t modifier)
+> +{
+> +	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+> +		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
+> +		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+> +}
+> +
+>   static bool is_gen12_ccs_modifier(uint64_t modifier)
 >   {
->   	switch (buf->bpp) {
-> +	case 64:
-> +		return 0x7; /* CMF_R16_G16_B16_A16 */
->   	case 32:
->   		if (buf->depth == 30)
->   			return 0x3; /* CMF_R10_G10_B10_A2 */
-> @@ -163,6 +165,8 @@ static uint32_t lnl_compression_format(const struct intel_buf *buf)
->   static uint32_t dg2_compression_format(const struct intel_buf *buf)
->   {
->   	switch (buf->bpp) {
-> +	case 64:
-> +		return 0x5;
->   	case 32:
->   		if (buf->depth == 30)
->   			return 0xc;
+>   	return is_gen12_mc_ccs_modifier(modifier) ||
+> +		is_gen12_rc_ccs_cc_modifier(modifier) ||
+>   		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS ||
+> -		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+>   		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS ||
+> -		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
+> -		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS ||
+> -		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+> +		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS;
+>   }
+>   
+>   static bool is_ccs_modifier(uint64_t modifier)
 
