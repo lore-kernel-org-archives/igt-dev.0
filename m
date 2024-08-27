@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD6DFC54734
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 10:20:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01246C54734
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 10:26:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7344710E06C;
-	Tue, 27 Aug 2024 10:20:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B127010E2CE;
+	Tue, 27 Aug 2024 10:26:54 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5914D10E06C;
- Tue, 27 Aug 2024 10:20:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2651510E2CE;
+ Tue, 27 Aug 2024 10:26:54 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4157586311292160711=="
+ boundary="===============5061510723061843123=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/2=5D_tests/kms=5Fasync=5Fflips=3A_subtests_to_validate_async?=
- =?utf-8?q?_flips_on_atomic_path?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/2=5D_tests/kms=5Fasync=5Fflips=3A_subtests_to_validate_asy?=
+ =?utf-8?q?nc_flips_on_atomic_path?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Aug 2024 10:20:48 -0000
-Message-ID: <172475404835.805909.4411864273706173004@2413ebb6fbb6>
+Date: Tue, 27 Aug 2024 10:26:54 -0000
+Message-ID: <172475441415.806002.10284301848825394805@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20240827061111.472460-1-santhosh.reddy.guddati@intel.com>
 In-Reply-To: <20240827061111.472460-1-santhosh.reddy.guddati@intel.com>
@@ -42,7 +42,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4157586311292160711==
+--===============5061510723061843123==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -51,75 +51,245 @@ Content-Transfer-Encoding: 7bit
 
 Series: series starting with [i-g-t,1/2] tests/kms_async_flips: subtests to validate async flips on atomic path
 URL   : https://patchwork.freedesktop.org/series/137825/
-State : success
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_7993_BAT -> XEIGTPW_11642_BAT
+CI Bug Log - changes from CI_DRM_15299 -> IGTPW_11642
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_11642 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_11642, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (9 -> 9)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/index.html
+
+Participating hosts (38 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Additional (3): fi-cfl-8109u bat-arls-2 fi-kbl-8809g 
+  Missing    (3): bat-kbl-2 bat-jsl-1 fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_11642:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_async_flip@alternate-sync-async-flip (NEW):
+    - bat-adlp-9:         NOTRUN -> [SKIP][1] +11 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlp-9/igt@kms_async_flip@alternate-sync-async-flip.html
+    - bat-twl-2:          NOTRUN -> [SKIP][2] +11 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-twl-2/igt@kms_async_flip@alternate-sync-async-flip.html
+    - bat-dg2-11:         NOTRUN -> [SKIP][3] +11 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-11/igt@kms_async_flip@alternate-sync-async-flip.html
+
+  * igt@kms_async_flip@alternate-sync-async-flip-atomic (NEW):
+    - bat-arls-2:         NOTRUN -> [SKIP][4] +11 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arls-2/igt@kms_async_flip@alternate-sync-async-flip-atomic.html
+    - bat-mtlp-8:         NOTRUN -> [SKIP][5] +11 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-mtlp-8/igt@kms_async_flip@alternate-sync-async-flip-atomic.html
+    - bat-adls-6:         NOTRUN -> [SKIP][6] +11 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adls-6/igt@kms_async_flip@alternate-sync-async-flip-atomic.html
+
+  * igt@kms_async_flip@async-flip-with-page-flip-events-atomic (NEW):
+    - bat-mtlp-6:         NOTRUN -> [SKIP][7] +11 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-mtlp-6/igt@kms_async_flip@async-flip-with-page-flip-events-atomic.html
+
+  * igt@kms_async_flip@crc (NEW):
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] +11 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-tgl-1115g4/igt@kms_async_flip@crc.html
+    - bat-arls-1:         NOTRUN -> [SKIP][9] +11 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arls-1/igt@kms_async_flip@crc.html
+
+  * igt@kms_async_flip@crc-atomic (NEW):
+    - bat-adlp-11:        NOTRUN -> [SKIP][10] +11 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlp-11/igt@kms_async_flip@crc-atomic.html
+    - bat-dg2-8:          NOTRUN -> [SKIP][11] +11 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-8/igt@kms_async_flip@crc-atomic.html
+
+  * igt@kms_async_flip@invalid-async-flip (NEW):
+    - {bat-arlh-3}:       NOTRUN -> [SKIP][12] +11 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arlh-3/igt@kms_async_flip@invalid-async-flip.html
+    - bat-dg1-7:          NOTRUN -> [SKIP][13] +11 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg1-7/igt@kms_async_flip@invalid-async-flip.html
+
+  * igt@kms_async_flip@invalid-async-flip-atomic (NEW):
+    - bat-rpls-4:         NOTRUN -> [SKIP][14] +11 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-rpls-4/igt@kms_async_flip@invalid-async-flip-atomic.html
+    - bat-twl-1:          NOTRUN -> [SKIP][15] +11 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-twl-1/igt@kms_async_flip@invalid-async-flip-atomic.html
+
+  * igt@kms_async_flip@test-cursor (NEW):
+    - bat-dg2-14:         NOTRUN -> [SKIP][16] +11 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-14/igt@kms_async_flip@test-cursor.html
+    - bat-arls-5:         NOTRUN -> [SKIP][17] +11 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arls-5/igt@kms_async_flip@test-cursor.html
+    - bat-adlm-1:         NOTRUN -> [SKIP][18] +11 other tests skip
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlm-1/igt@kms_async_flip@test-cursor.html
+    - bat-rplp-1:         NOTRUN -> [SKIP][19] +11 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-rplp-1/igt@kms_async_flip@test-cursor.html
+    - bat-arlh-2:         NOTRUN -> [SKIP][20] +11 other tests skip
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arlh-2/igt@kms_async_flip@test-cursor.html
+
+  * igt@kms_async_flip@test-cursor-atomic (NEW):
+    - bat-dg2-9:          NOTRUN -> [SKIP][21] +11 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-9/igt@kms_async_flip@test-cursor-atomic.html
+
+  * igt@kms_async_flip@test-time-stamp (NEW):
+    - bat-adlp-6:         NOTRUN -> [SKIP][22] +11 other tests skip
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlp-6/igt@kms_async_flip@test-time-stamp.html
+
+  * igt@kms_async_flip@test-time-stamp-atomic (NEW):
+    - fi-rkl-11600:       NOTRUN -> [SKIP][23] +11 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-rkl-11600/igt@kms_async_flip@test-time-stamp-atomic.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between CI_DRM_15299 and IGTPW_11642:
+
+### New IGT tests (12) ###
+
+  * igt@kms_async_flip@alternate-sync-async-flip:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@alternate-sync-async-flip-atomic:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@async-flip-with-page-flip-events:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@async-flip-with-page-flip-events-atomic:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@crc:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@crc-atomic:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@invalid-async-flip:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@invalid-async-flip-atomic:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@test-cursor:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@test-cursor-atomic:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@test-time-stamp:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  * igt@kms_async_flip@test-time-stamp-atomic:
+    - Statuses : 37 skip(s)
+    - Exec time: [0.0] s
+
+  
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_11642_BAT that come from known issues:
+  Here are the changes found in IGTPW_11642 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@xe_vm@munmap-style-unbind-userptr-inval-front:
-    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-bmg-1/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/bat-bmg-1/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html
+  * igt@kms_async_flip@alternate-sync-async-flip (NEW):
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][24] +11 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-8809g/igt@kms_async_flip@alternate-sync-async-flip.html
+
+  * igt@kms_async_flip@alternate-sync-async-flip-atomic (NEW):
+    - fi-kbl-guc:         NOTRUN -> [SKIP][25] +11 other tests skip
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-guc/igt@kms_async_flip@alternate-sync-async-flip-atomic.html
+
+  * igt@kms_async_flip@async-flip-with-page-flip-events (NEW):
+    - fi-glk-j4005:       NOTRUN -> [SKIP][26] +11 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-glk-j4005/igt@kms_async_flip@async-flip-with-page-flip-events.html
+
+  * igt@kms_async_flip@async-flip-with-page-flip-events-atomic (NEW):
+    - fi-cfl-guc:         NOTRUN -> [SKIP][27] +11 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-cfl-guc/igt@kms_async_flip@async-flip-with-page-flip-events-atomic.html
+
+  * igt@kms_async_flip@crc-atomic (NEW):
+    - fi-kbl-x1275:       NOTRUN -> [SKIP][28] +11 other tests skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-x1275/igt@kms_async_flip@crc-atomic.html
+    - fi-cfl-8109u:       NOTRUN -> [SKIP][29] +11 other tests skip
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-cfl-8109u/igt@kms_async_flip@crc-atomic.html
+    - fi-ivb-3770:        NOTRUN -> [SKIP][30] +11 other tests skip
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-ivb-3770/igt@kms_async_flip@crc-atomic.html
+    - fi-ilk-650:         NOTRUN -> [SKIP][31] +11 other tests skip
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-ilk-650/igt@kms_async_flip@crc-atomic.html
+
+  * igt@kms_async_flip@invalid-async-flip (NEW):
+    - fi-pnv-d510:        NOTRUN -> [SKIP][32] +11 other tests skip
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-pnv-d510/igt@kms_async_flip@invalid-async-flip.html
+
+  * igt@kms_async_flip@invalid-async-flip-atomic (NEW):
+    - fi-kbl-7567u:       NOTRUN -> [SKIP][33] +11 other tests skip
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-7567u/igt@kms_async_flip@invalid-async-flip-atomic.html
+    - fi-cfl-8700k:       NOTRUN -> [SKIP][34] +11 other tests skip
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-cfl-8700k/igt@kms_async_flip@invalid-async-flip-atomic.html
+
+  * igt@kms_async_flip@test-cursor (NEW):
+    - bat-apl-1:          NOTRUN -> [SKIP][35] +11 other tests skip
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-apl-1/igt@kms_async_flip@test-cursor.html
+    - fi-elk-e7500:       NOTRUN -> [SKIP][36] +11 other tests skip
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-elk-e7500/igt@kms_async_flip@test-cursor.html
+
+  * igt@kms_async_flip@test-time-stamp (NEW):
+    - fi-bsw-n3050:       NOTRUN -> [SKIP][37] +11 other tests skip
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-bsw-n3050/igt@kms_async_flip@test-time-stamp.html
 
   
-#### Possible fixes ####
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#324]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-adlp-7:         [DMESG-WARN][5] -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  
-  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_7993 -> IGTPW_11642
-  * Linux: xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b -> xe-1834-5141d5ae1dead73bd1d029f8310609720bca06b3
 
+  CI-20190529: 20190529
+  CI_DRM_15299: 5141d5ae1dead73bd1d029f8310609720bca06b3 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_11642: 11642
   IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b
-  xe-1834-5141d5ae1dead73bd1d029f8310609720bca06b3: 5141d5ae1dead73bd1d029f8310609720bca06b3
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/index.html
 
---===============4157586311292160711==
+--===============5061510723061843123==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,55 +311,276 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] tests/kms_async_flips: subtests to validate async flips on atomic path</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137825/">https://patchwork.freedesktop.org/series/137825/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_7993_BAT -&gt; XEIGTPW_11642_BAT</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15299 -&gt; IGTPW_11642</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_11642 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_11642, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/index.html</p>
+<h2>Participating hosts (38 -&gt; 38)</h2>
+<p>Additional (3): fi-cfl-8109u bat-arls-2 fi-kbl-8809g <br />
+  Missing    (3): bat-kbl-2 bat-jsl-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11642:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_async_flip@alternate-sync-async-flip (NEW):</p>
+<ul>
+<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlp-9/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +11 other tests skip</li>
+<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-twl-2/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-11/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@alternate-sync-async-flip-atomic (NEW):</p>
+<ul>
+<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arls-2/igt@kms_async_flip@alternate-sync-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-mtlp-8/igt@kms_async_flip@alternate-sync-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adls-6/igt@kms_async_flip@alternate-sync-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@async-flip-with-page-flip-events-atomic (NEW):</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-mtlp-6/igt@kms_async_flip@async-flip-with-page-flip-events-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@crc (NEW):</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-tgl-1115g4/igt@kms_async_flip@crc.html">SKIP</a> +11 other tests skip</li>
+<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arls-1/igt@kms_async_flip@crc.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@crc-atomic (NEW):</p>
+<ul>
+<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlp-11/igt@kms_async_flip@crc-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-8/igt@kms_async_flip@crc-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@invalid-async-flip (NEW):</p>
+<ul>
+<li>{bat-arlh-3}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arlh-3/igt@kms_async_flip@invalid-async-flip.html">SKIP</a> +11 other tests skip</li>
+<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg1-7/igt@kms_async_flip@invalid-async-flip.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@invalid-async-flip-atomic (NEW):</p>
+<ul>
+<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-rpls-4/igt@kms_async_flip@invalid-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-twl-1/igt@kms_async_flip@invalid-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-cursor (NEW):</p>
+<ul>
+<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-14/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arls-5/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlm-1/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-rplp-1/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-arlh-2/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-cursor-atomic (NEW):</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-dg2-9/igt@kms_async_flip@test-cursor-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-time-stamp (NEW):</p>
+<ul>
+<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-adlp-6/igt@kms_async_flip@test-time-stamp.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-time-stamp-atomic (NEW):</p>
+<ul>
+<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-rkl-11600/igt@kms_async_flip@test-time-stamp-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between CI_DRM_15299 and IGTPW_11642:</p>
+<h3>New IGT tests (12)</h3>
+<ul>
+<li>
+<p>igt@kms_async_flip@alternate-sync-async-flip:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@alternate-sync-async-flip-atomic:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@async-flip-with-page-flip-events:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@async-flip-with-page-flip-events-atomic:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@crc:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@crc-atomic:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@invalid-async-flip:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@invalid-async-flip-atomic:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-cursor:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-cursor-atomic:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-time-stamp:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-time-stamp-atomic:</p>
+<ul>
+<li>Statuses : 37 skip(s)</li>
+<li>Exec time: [0.0] s</li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11642_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_11642 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@xe_vm@munmap-style-unbind-userptr-inval-front:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-bmg-1/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/bat-bmg-1/igt@xe_vm@munmap-style-unbind-userptr-inval-front.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
 <li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
+<p>igt@kms_async_flip@alternate-sync-async-flip (NEW):</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-8809g/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +11 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<p>igt@kms_async_flip@alternate-sync-async-flip-atomic (NEW):</p>
 <ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11642/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">PASS</a> +1 other test pass</li>
+<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-guc/igt@kms_async_flip@alternate-sync-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@async-flip-with-page-flip-events (NEW):</p>
+<ul>
+<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-glk-j4005/igt@kms_async_flip@async-flip-with-page-flip-events.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@async-flip-with-page-flip-events-atomic (NEW):</p>
+<ul>
+<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-cfl-guc/igt@kms_async_flip@async-flip-with-page-flip-events-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@crc-atomic (NEW):</p>
+<ul>
+<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-x1275/igt@kms_async_flip@crc-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-cfl-8109u/igt@kms_async_flip@crc-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-ivb-3770/igt@kms_async_flip@crc-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-ilk-650/igt@kms_async_flip@crc-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@invalid-async-flip (NEW):</p>
+<ul>
+<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-pnv-d510/igt@kms_async_flip@invalid-async-flip.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@invalid-async-flip-atomic (NEW):</p>
+<ul>
+<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-kbl-7567u/igt@kms_async_flip@invalid-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-cfl-8700k/igt@kms_async_flip@invalid-async-flip-atomic.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-cursor (NEW):</p>
+<ul>
+<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/bat-apl-1/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-elk-e7500/igt@kms_async_flip@test-cursor.html">SKIP</a> +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flip@test-time-stamp (NEW):</p>
+<ul>
+<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11642/fi-bsw-n3050/igt@kms_async_flip@test-time-stamp.html">SKIP</a> +11 other tests skip</li>
 </ul>
 </li>
 </ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_7993 -&gt; IGTPW_11642</li>
-<li>Linux: xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b -&gt; xe-1834-5141d5ae1dead73bd1d029f8310609720bca06b3</li>
 </ul>
-<p>IGTPW_11642: 11642<br />
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b<br />
-  xe-1834-5141d5ae1dead73bd1d029f8310609720bca06b3: 5141d5ae1dead73bd1d029f8310609720bca06b3</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15299: 5141d5ae1dead73bd1d029f8310609720bca06b3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11642: 11642<br />
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============4157586311292160711==--
+--===============5061510723061843123==--
