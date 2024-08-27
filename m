@@ -4,75 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40D85C5472F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:16:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55347C54731
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:16:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF6AE10E0F7;
-	Tue, 27 Aug 2024 15:16:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1074210E34B;
+	Tue, 27 Aug 2024 15:16:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Jh7IXB1o";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="RaBsa4Uc";
 	dkim-atps=neutral
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
- [209.85.221.41])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B224410E0F7
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:16:31 +0000 (UTC)
-Received: by mail-wr1-f41.google.com with SMTP id
- ffacd0b85a97d-371bb8322b2so3050896f8f.0
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:16:31 -0700 (PDT)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
+ [209.85.128.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B0ACC10E34A
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:16:56 +0000 (UTC)
+Received: by mail-wm1-f46.google.com with SMTP id
+ 5b1f17b1804b1-42819654737so48302585e9.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:16:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724771790; x=1725376590; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1724771815; x=1725376615; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=ROWBz0TVNAi4BVGL6mas+jR3pA+Yh1NaYuXYDoKhqEs=;
- b=Jh7IXB1ohhYKnehgQsC/5CiXDN1X/xTeOoVbEMamh/QoWwp/D9ZcF+v5PRbVFJmU9E
- w1i955iWyPWlxryEpgGh1aQ4bkzx/Wsn7WDRqblfhYFcVZe6BYeV6YZP3UutCaKIp8JR
- r0VFu0dQN6F7ih8kSKiGQhxGMJRQSQKtm1siQGt4MkNZgmoafMnJowl8d810echhKwGT
- on5dHmeib/PYS0Fvft41iSIibUBlKO/vCB6ZvBHEXdS9b8HynqCJXwERjlviuMUYiMND
- ocSvCmxh6UOVonTwWkYLGI5XGPYpHy7zOO3ruu6t9XQtF23nCu9bej2gYIf0IIy/XCaQ
- Mecg==
+ bh=2YKdUmo0AynzTd7C43bIu6jfBq6h+uPWqTTT5yLsGrc=;
+ b=RaBsa4Uc5toRRQTOkVrX1c+uLYx/fiyOuQTzlAa+knoo2R8CpGI3lSKykyczEunKG2
+ EazwsEYf58TGeuXi0SjdL0gknLt1fKFIlh1vLmRxDpBimekHR749ir8KVxl5VCXP6qx+
+ SlQJNwDzf6qJuHEVFCN7HHL/0fxAR3dPeAoIlMKeR+fW1FBZlJmfmPGxMgxZTioreqJ7
+ I/3kjmW5wQt+X5Uk6wNiK/zPZ4IWcNrLsu7QBf1FzRZRyFXp75sSFfklrYrutGmrCRpA
+ UVbBnMW9kUawhk/cU3Krcm6XKOZP0eU3m4o2DpEUPiOPdyyd0CEIK3w/kmwpbvVbL1fW
+ 3DJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724771790; x=1725376590;
+ d=1e100.net; s=20230601; t=1724771815; x=1725376615;
  h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=ROWBz0TVNAi4BVGL6mas+jR3pA+Yh1NaYuXYDoKhqEs=;
- b=V57b0pr8vosbnpDak+4A/tWnLk1Hiy2YBW/ug4NWepY0OZIXaY/B+i01BYf2MuyVS0
- u1J4UdQYA374vh5Sfgs+m1IgIdtHi5X9satFUr/vqv2LpRKdF7AczctQVMOZlhekwSMs
- pxD86Ti45E8PWrMh002kfscoWXILh0VBn+45RT4VSokL7gKEZEQM5v7xYVrvsbTugvPo
- YzNGVJQD7x7p/rBlSxPD4jZw1WaUqN9eDuATo/SgY+I/K8MAlTejJz+veruHnWwF5LWX
- wyngm6hACK24QMPXsXw5Niw2CCE4TTOT83dHt4OaSHbUXf5MdX4QxRIxWtVVk86dUOa3
- vNuw==
+ bh=2YKdUmo0AynzTd7C43bIu6jfBq6h+uPWqTTT5yLsGrc=;
+ b=EeBJ8cmO73GH8z+fBoMRtKdWsW+j/cvUS1YnRkkInynSZ+iFUWgx5gRnqKp0ALfpXj
+ TSxhlC13jfllgz5kDseNZtiZQibQ4sKUgC+cALnB+nCr5IkDv2sgsH6ti4kDwx4oq72C
+ pe3pOD6WKcrgB6QCXvqouM9OkxyuDh+ZYgBtbAh/MIvX0crP0x/hjzhKissrPAAQov/C
+ 2gS7NfD9hWLrOQiDZL6Jvn2llzgK0opatfjDtXPyXGCJOfUXJHoNlxAaWIkdSHeNN/y8
+ DZkguFISyTb9r2eYTyRQVl1s7D1/L0OaOAJV2BEtn1Sf49nCyN2x3rD0ko1XP0R9wCcu
+ MVDQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU9x24Kher0i70NzxSghiNfABU49+EZz5gP07lZZuHq5coWG3en1bkTtYp80Y76TlqyNXWHwC6w@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YylXJ8yIqoN+dRpm6tMh+mbNg5SMTorYzOybYUBwPg5IdSGJ2tw
- T1+seRf3uYBoMzrydHCN7ZboKHijoD2JcIVDe19L2gchmj0GfRw0
-X-Google-Smtp-Source: AGHT+IHwLh1qPQJgbOIYFrLaQpDxdfwarnv3jOCJGpvO8dmr5WB/Sp1S7XePoeEbWBsIHOaZOaZKiA==
-X-Received: by 2002:a5d:4884:0:b0:371:8451:5a82 with SMTP id
- ffacd0b85a97d-3748c8496d7mr2345449f8f.15.1724771789652; 
- Tue, 27 Aug 2024 08:16:29 -0700 (PDT)
+ AJvYcCVyYM9UQVfxBtlq2p2h3jRdAF2TzNQ3BjxlHh6GNNKLy8YCJ3grdExP5sJ4W9Ld2JLWGmsxfNJ/@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yw0swu7vA0S0SauemrpyifxpaLP8zELTT+4U5z8EjMahpmCDRo6
+ oon0LNHgaSxmuau6JYVzB9F2nN+nyXhjYjejQfBKPAvy7KGeDG7PozCIXUd7oD4=
+X-Google-Smtp-Source: AGHT+IEbbVEj3MxEKLHVM5MY//NukxfN5LkQmozkeTLYik5jfNmN6n+sGDDHKjfUO0JwjxoAWSdzjw==
+X-Received: by 2002:a05:600c:46cc:b0:426:5440:8541 with SMTP id
+ 5b1f17b1804b1-42acd5d9cd2mr83039865e9.27.1724771814616; 
+ Tue, 27 Aug 2024 08:16:54 -0700 (PDT)
 Received: from [0.0.0.0] ([134.134.137.72])
  by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-3730813c0dcsm13393495f8f.37.2024.08.27.08.16.25
+ 5b1f17b1804b1-42abef8175fsm223975405e9.25.2024.08.27.08.16.52
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 08:16:29 -0700 (PDT)
-Message-ID: <45e652e0-0fc6-41ad-bc61-cd70b58169ca@gmail.com>
-Date: Tue, 27 Aug 2024 18:16:20 +0300
+ Tue, 27 Aug 2024 08:16:54 -0700 (PDT)
+Message-ID: <aab44ff2-6e5f-4cd9-8c56-601eb74234c7@gmail.com>
+Date: Tue, 27 Aug 2024 18:16:48 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 01/37] lib/intel_aux_pgtable: Library to add support
- for RGB16161616_64B format
+Subject: Re: [PATCH i-g-t 07/37] lib/rendercopy: Don't skip clearcolor on flat
+ CCS
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
-Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- "Lobo, Melanie" <melanie.lobo@intel.com>
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <20240702232817.31147-2-ville.syrjala@linux.intel.com>
+ <20240702232817.31147-8-ville.syrjala@linux.intel.com>
 Content-Language: en-US
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240702232817.31147-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240702232817.31147-8-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -91,57 +88,31 @@ Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+
 On 3.7.2024 2.27, Ville Syrjala wrote:
-> From: Melanie Lobo <melanie.lobo@intel.com>
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> TGL+ supports RGB16161616_64B FP16 format which is a binary
-> floating-point computer number format that occupies 16 bits
-> in computer memory.
+> We always need to tell the hardware about the clear
+> color buffer, otherwise if we sample from a fast cleared
+> buffer we get complete garbage.
 > 
-> This was tested with kernel patch,
-> https://patchwork.freedesktop.org/series/124957/
-> https://lore.kernel.org/all/20231201091133.23508-1-melanie.lobo@intel.com/
-> 
-> cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Melanie Lobo <melanie.lobo@intel.com>
-> [vsyrjala: s/0x1/0x10/ to make the format correct, note that it's for TGL+]
-
-I'm feeling bit challenged on this s/0x1/0x10/ change. When looking at 
-bpsec 43868 Melanie's original '1' look correct. Rest of those 
-AUX_FORMAT_* match to what's in 43868. Then with bspec 43869 this '10' 
-look correct but what will we get on MTL with this? I think Melanie's 
-original kernel change was targeting for MTL hence this was not looked at.
-
-/Juha-Pekka
-
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->   lib/intel_aux_pgtable.c | 5 +++++
->   1 file changed, 5 insertions(+)
+>   lib/rendercopy_gen9.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/intel_aux_pgtable.c b/lib/intel_aux_pgtable.c
-> index 3cbb0e26f35c..8ff48641619e 100644
-> --- a/lib/intel_aux_pgtable.c
-> +++ b/lib/intel_aux_pgtable.c
-> @@ -22,6 +22,7 @@
->   #define AUX_FORMAT_AYUV		0x09
->   #define AUX_FORMAT_ARGB_8B	0x0A
->   #define AUX_FORMAT_NV12_21	0x0F
-> +#define AUX_FORMAT_RGBA16_FLOAT	0x10
->   
->   struct pgtable_level_desc {
->   	int idx_shift;
-> @@ -306,6 +307,10 @@ static uint64_t pgt_get_l1_flags(const struct intel_buf *buf, int surface_idx)
->   			entry.e.format = AUX_FORMAT_ARGB_8B;
->   			entry.e.depth = bpp_to_depth_val(32);
->   			break;
-> +		case 64:
-> +			entry.e.format = AUX_FORMAT_RGBA16_FLOAT;
-> +			entry.e.depth = bpp_to_depth_val(64);
-> +			break;
->   		default:
->   			igt_assert(0);
+> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+> index f0757a8e6b78..57b64dad1b1d 100644
+> --- a/lib/rendercopy_gen9.c
+> +++ b/lib/rendercopy_gen9.c
+> @@ -249,7 +249,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+>   			ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
 >   		}
+>   
+> -		if (fast_clear || (buf->cc.offset && !HAS_FLATCCS(ibb->devid))) {
+> +		if (buf->cc.offset) {
+>   			igt_assert(buf->compression == I915_COMPRESSION_RENDER);
+>   
+>   			ss->ss10.clearvalue_addr_enable = 1;
 
