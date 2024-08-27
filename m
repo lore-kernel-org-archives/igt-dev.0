@@ -4,73 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55347C54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:16:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4854C54731
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:17:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1074210E34B;
-	Tue, 27 Aug 2024 15:16:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A7FC10E348;
+	Tue, 27 Aug 2024 15:17:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="RaBsa4Uc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IGNFI1dt";
 	dkim-atps=neutral
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
- [209.85.128.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0ACC10E34A
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:16:56 +0000 (UTC)
-Received: by mail-wm1-f46.google.com with SMTP id
- 5b1f17b1804b1-42819654737so48302585e9.1
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:16:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724771815; x=1725376615; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=2YKdUmo0AynzTd7C43bIu6jfBq6h+uPWqTTT5yLsGrc=;
- b=RaBsa4Uc5toRRQTOkVrX1c+uLYx/fiyOuQTzlAa+knoo2R8CpGI3lSKykyczEunKG2
- EazwsEYf58TGeuXi0SjdL0gknLt1fKFIlh1vLmRxDpBimekHR749ir8KVxl5VCXP6qx+
- SlQJNwDzf6qJuHEVFCN7HHL/0fxAR3dPeAoIlMKeR+fW1FBZlJmfmPGxMgxZTioreqJ7
- I/3kjmW5wQt+X5Uk6wNiK/zPZ4IWcNrLsu7QBf1FzRZRyFXp75sSFfklrYrutGmrCRpA
- UVbBnMW9kUawhk/cU3Krcm6XKOZP0eU3m4o2DpEUPiOPdyyd0CEIK3w/kmwpbvVbL1fW
- 3DJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724771815; x=1725376615;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=2YKdUmo0AynzTd7C43bIu6jfBq6h+uPWqTTT5yLsGrc=;
- b=EeBJ8cmO73GH8z+fBoMRtKdWsW+j/cvUS1YnRkkInynSZ+iFUWgx5gRnqKp0ALfpXj
- TSxhlC13jfllgz5kDseNZtiZQibQ4sKUgC+cALnB+nCr5IkDv2sgsH6ti4kDwx4oq72C
- pe3pOD6WKcrgB6QCXvqouM9OkxyuDh+ZYgBtbAh/MIvX0crP0x/hjzhKissrPAAQov/C
- 2gS7NfD9hWLrOQiDZL6Jvn2llzgK0opatfjDtXPyXGCJOfUXJHoNlxAaWIkdSHeNN/y8
- DZkguFISyTb9r2eYTyRQVl1s7D1/L0OaOAJV2BEtn1Sf49nCyN2x3rD0ko1XP0R9wCcu
- MVDQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVyYM9UQVfxBtlq2p2h3jRdAF2TzNQ3BjxlHh6GNNKLy8YCJ3grdExP5sJ4W9Ld2JLWGmsxfNJ/@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yw0swu7vA0S0SauemrpyifxpaLP8zELTT+4U5z8EjMahpmCDRo6
- oon0LNHgaSxmuau6JYVzB9F2nN+nyXhjYjejQfBKPAvy7KGeDG7PozCIXUd7oD4=
-X-Google-Smtp-Source: AGHT+IEbbVEj3MxEKLHVM5MY//NukxfN5LkQmozkeTLYik5jfNmN6n+sGDDHKjfUO0JwjxoAWSdzjw==
-X-Received: by 2002:a05:600c:46cc:b0:426:5440:8541 with SMTP id
- 5b1f17b1804b1-42acd5d9cd2mr83039865e9.27.1724771814616; 
- Tue, 27 Aug 2024 08:16:54 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.72])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-42abef8175fsm223975405e9.25.2024.08.27.08.16.52
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 08:16:54 -0700 (PDT)
-Message-ID: <aab44ff2-6e5f-4cd9-8c56-601eb74234c7@gmail.com>
-Date: Tue, 27 Aug 2024 18:16:48 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B440110E348
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:17:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724771822; x=1756307822;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DRoL1SKwuvRiyA5cxkHXPMa2DL9AY+1Gs+mgV3G/1YA=;
+ b=IGNFI1dtgTquoJctI/gaMOe+uCSq4VuoSq8rxrBoT5U/xkWtzHMFQHfL
+ ALf/Yjmimf7Ru060IxnAzo9JxmyNDGUKQSas1HpRcNzLM2YvvpW1RpoSm
+ ZCDsZWZ5NuhkKNFwVQTRzVnSv6ASXHh+nS1d9rEt4dFzzf2XC2Dp4UhPV
+ Bdvkj5d5RbaU0mtbJKsWwc58Wc4PEOh8+uWre1u+o2ZngLwptinKk/9+L
+ soD7qpcoSfRknpXVC02nk9RLDCgGTzTEcZfvs50jambm7woz5hh7LRlTY
+ hDtXYbY3Bh5+doF/UZtXgAvYfXh05EKZFMPM3NB/BdiO6Ax+btL+DN63T A==;
+X-CSE-ConnectionGUID: 1qg3vS2VT1aJHG1+7nvDgA==
+X-CSE-MsgGUID: k26UkBpQSwikjZQG21mqFA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="34631184"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="34631184"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 08:17:02 -0700
+X-CSE-ConnectionGUID: F0E0d2PvS22EpkuNfjj4oA==
+X-CSE-MsgGUID: KuE20IoxQIOQa59iBVmmUA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63062566"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 08:16:59 -0700
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, Nirmoy Das <nirmoy.das@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/xe_exec_fault_mode: Don't return early
+Date: Tue, 27 Aug 2024 16:48:37 +0200
+Message-ID: <20240827144837.19718-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 07/37] lib/rendercopy: Don't skip clearcolor on flat
- CCS
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <20240702232817.31147-8-ville.syrjala@linux.intel.com>
-Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240702232817.31147-8-ville.syrjala@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
+ 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -84,35 +67,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Tests that are causing pagefaults should wait for exec queue to be ban
+otherwise pending engine resets because of on-going pagefaults would
+cause failure in subsequent tests to fail.
 
-On 3.7.2024 2.27, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> We always need to tell the hardware about the clear
-> color buffer, otherwise if we sample from a fast cleared
-> buffer we get complete garbage.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   lib/rendercopy_gen9.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index f0757a8e6b78..57b64dad1b1d 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -249,7 +249,7 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
->   			ss->ss11.aux_base_addr_hi = (address + buf->ccs[0].offset) >> 32;
->   		}
->   
-> -		if (fast_clear || (buf->cc.offset && !HAS_FLATCCS(ibb->devid))) {
-> +		if (buf->cc.offset) {
->   			igt_assert(buf->compression == I915_COMPRESSION_RENDER);
->   
->   			ss->ss10.clearvalue_addr_enable = 1;
+v2: specify timeout reason and iterate over exec_queues(Andrzej)
+
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/intel/xe_exec_fault_mode.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
+
+diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+index 1f1f1e50b..1722df641 100644
+--- a/tests/intel/xe_exec_fault_mode.c
++++ b/tests/intel/xe_exec_fault_mode.c
+@@ -36,6 +36,22 @@
+ #define INVALID_VA	(0x1 << 8)
+ #define ENABLE_SCRATCH  (0x1 << 9)
+ 
++static int get_ban_property(int xe, struct drm_xe_engine_class_instance *eci,
++			    uint32_t vm, uint32_t exec_queue)
++{
++	struct drm_xe_exec_queue_get_property args = {
++		.value = -1,
++		.reserved[0] = 0,
++		.property = DRM_XE_EXEC_QUEUE_GET_PROPERTY_BAN,
++	};
++
++	args.exec_queue_id = exec_queue;
++
++	do_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args);
++
++	return args.value;
++}
++
+ /**
+  * SUBTEST: invalid-va
+  * Description: Access invalid va and check for EIO through user fence.
+@@ -324,6 +340,15 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+ 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+ 		       bind_exec_queues[0], NSEC_PER_SEC);
+ 
++	if ((flags & INVALID_FAULT)) {
++		igt_set_timeout(1, "waiting for ban");
++		for (i = 0; i < n_exec_queues; i++) {
++			while (!get_ban_property(fd, eci, vm, exec_queues[i]))
++				sched_yield();
++		}
++		igt_reset_timeout();
++	}
++
+ 	if (!(flags & INVALID_FAULT) && !(flags & INVALID_VA)) {
+ 		for (i = j; i < n_execs; i++)
+ 				igt_assert_eq(data[i].data, 0xc0ffee);
+-- 
+2.42.0
 
