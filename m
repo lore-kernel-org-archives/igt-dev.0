@@ -4,56 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4854C54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:17:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F545C5472F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 15:17:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4A7FC10E348;
-	Tue, 27 Aug 2024 15:17:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4CD2A10E34A;
+	Tue, 27 Aug 2024 15:17:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IGNFI1dt";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="UZ+XRNz+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B440110E348
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:17:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724771822; x=1756307822;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=DRoL1SKwuvRiyA5cxkHXPMa2DL9AY+1Gs+mgV3G/1YA=;
- b=IGNFI1dtgTquoJctI/gaMOe+uCSq4VuoSq8rxrBoT5U/xkWtzHMFQHfL
- ALf/Yjmimf7Ru060IxnAzo9JxmyNDGUKQSas1HpRcNzLM2YvvpW1RpoSm
- ZCDsZWZ5NuhkKNFwVQTRzVnSv6ASXHh+nS1d9rEt4dFzzf2XC2Dp4UhPV
- Bdvkj5d5RbaU0mtbJKsWwc58Wc4PEOh8+uWre1u+o2ZngLwptinKk/9+L
- soD7qpcoSfRknpXVC02nk9RLDCgGTzTEcZfvs50jambm7woz5hh7LRlTY
- hDtXYbY3Bh5+doF/UZtXgAvYfXh05EKZFMPM3NB/BdiO6Ax+btL+DN63T A==;
-X-CSE-ConnectionGUID: 1qg3vS2VT1aJHG1+7nvDgA==
-X-CSE-MsgGUID: k26UkBpQSwikjZQG21mqFA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="34631184"
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="34631184"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2024 08:17:02 -0700
-X-CSE-ConnectionGUID: F0E0d2PvS22EpkuNfjj4oA==
-X-CSE-MsgGUID: KuE20IoxQIOQa59iBVmmUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63062566"
-Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2024 08:16:59 -0700
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, Nirmoy Das <nirmoy.das@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: [PATCH i-g-t v2] tests/intel/xe_exec_fault_mode: Don't return early
-Date: Tue, 27 Aug 2024 16:48:37 +0200
-Message-ID: <20240827144837.19718-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.42.0
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+ [209.85.128.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F84E10E34A
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 15:17:15 +0000 (UTC)
+Received: by mail-wm1-f54.google.com with SMTP id
+ 5b1f17b1804b1-428243f928fso62691945e9.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:17:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724771834; x=1725376634; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=7G8ueVrDw0w8vvWms5Gr8981eZFOQxWwCtLp+KE1Ni8=;
+ b=UZ+XRNz+7KRREDFiBpc9ZV/xquaABYrrHNAFhmx0Bk79rUhXh79clCiM+aRXo35E2a
+ Jja4YNj5x4UED5ASOHu0jj2cnOFckJChQI4eclkPCQW6cOXzJcGCimfrZOPJ+JlxuZAt
+ P51WjIxotywqw7tmS8wQeHFR2Z3dmrdn9etS3eJOMf4dU4YKOoU88Fj0rdcba98VvClJ
+ 3yNAjxSDbopsIK/y+7vFnwd7QY3Lh0Nl0c5J2C0cWrzQZKwo5Mvv1zp66OP5eT7dwh6A
+ oNzOg7xcqm/PHNvfSGUc5kiKKknv6vFXNIyUQ9GayrGI+Ad1etIx/+XFEA+wYH2rpvea
+ efgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724771834; x=1725376634;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=7G8ueVrDw0w8vvWms5Gr8981eZFOQxWwCtLp+KE1Ni8=;
+ b=j3qW02bmPdBIAEmEf71oK3W8iaTMX5KXNrK8jw+xDP8KpSzKKZWDWE9uTzT26sGuDn
+ PHhOqYXrXbGO05UNVuOhX53Bci0y04sXKlQDJu5UQHlog1dk/puU7svyQRQWiuk30wsL
+ lruSl7aWVucltAQ8CrPZjLuWzuq2ECxOeAAyjGnllOtkDHP7U2XmFp1gnmiuVeflT1yS
+ nLotE+peLkCix/ip56ivad1F7MspckkyfRHzQIwOiwUxM68JxgbAEjqjf35wMN0MS6Bm
+ ZfVMDYXH+JOI3xjoIX6xhN4bZ3mR8jQoJlc0lQIbdVxDwKbThZcodO5Lm9IWSq+jCyr+
+ 6JSA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCVu4YYWyTpTz2cED4CFNN3shPO6nyEtSrznjrdU1b0/FZS28cysssSSykrZMUKop2sNzaM5ogVV@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YwpSutznC2rns57hHv5fO1lzLsoonS1H6M19LfpaGMahSmDFHe3
+ Iono1IYETsNP2w/1xk4xLS/MxoKVV9Q6FBHmAkLp+9kgAc5b3GEIqHG5yIE6DYw=
+X-Google-Smtp-Source: AGHT+IFqdYlKVdkMDfuDOzEccc0MrAksRUMZoLIS84vIv87bpXD9alnQqXMUa+JkxBfLjLfqjzmAMQ==
+X-Received: by 2002:a05:600c:4746:b0:426:5269:982c with SMTP id
+ 5b1f17b1804b1-42acd5dcccbmr116787305e9.28.1724771833622; 
+ Tue, 27 Aug 2024 08:17:13 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.137.72])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-42ac516252asm188239855e9.26.2024.08.27.08.17.11
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Aug 2024 08:17:13 -0700 (PDT)
+Message-ID: <2e007015-957c-4c88-854d-f0c70257c7f1@gmail.com>
+Date: Tue, 27 Aug 2024 18:17:07 +0300
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
- 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 04/37] tests/kms_frontbuffer_tracking: Use
+ igt_create_fb()
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
+ <20240702232817.31147-5-ville.syrjala@linux.intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240702232817.31147-5-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,68 +84,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Tests that are causing pagefaults should wait for exec queue to be ban
-otherwise pending engine resets because of on-going pagefaults would
-cause failure in subsequent tests to fail.
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-v2: specify timeout reason and iterate over exec_queues(Andrzej)
-
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/intel/xe_exec_fault_mode.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
-index 1f1f1e50b..1722df641 100644
---- a/tests/intel/xe_exec_fault_mode.c
-+++ b/tests/intel/xe_exec_fault_mode.c
-@@ -36,6 +36,22 @@
- #define INVALID_VA	(0x1 << 8)
- #define ENABLE_SCRATCH  (0x1 << 9)
- 
-+static int get_ban_property(int xe, struct drm_xe_engine_class_instance *eci,
-+			    uint32_t vm, uint32_t exec_queue)
-+{
-+	struct drm_xe_exec_queue_get_property args = {
-+		.value = -1,
-+		.reserved[0] = 0,
-+		.property = DRM_XE_EXEC_QUEUE_GET_PROPERTY_BAN,
-+	};
-+
-+	args.exec_queue_id = exec_queue;
-+
-+	do_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args);
-+
-+	return args.value;
-+}
-+
- /**
-  * SUBTEST: invalid-va
-  * Description: Access invalid va and check for EIO through user fence.
-@@ -324,6 +340,15 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
- 		       bind_exec_queues[0], NSEC_PER_SEC);
- 
-+	if ((flags & INVALID_FAULT)) {
-+		igt_set_timeout(1, "waiting for ban");
-+		for (i = 0; i < n_exec_queues; i++) {
-+			while (!get_ban_property(fd, eci, vm, exec_queues[i]))
-+				sched_yield();
-+		}
-+		igt_reset_timeout();
-+	}
-+
- 	if (!(flags & INVALID_FAULT) && !(flags & INVALID_VA)) {
- 		for (i = j; i < n_execs; i++)
- 				igt_assert_eq(data[i].data, 0xc0ffee);
--- 
-2.42.0
+On 3.7.2024 2.27, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> Calling igt_calc_fb_size() and igt_create_fb_with_bo_size() like
+> this back to back is the same as just calling igt_create_fb().
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>   tests/intel/kms_frontbuffer_tracking.c | 11 ++---------
+>   1 file changed, 2 insertions(+), 9 deletions(-)
+> 
+> diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+> index e45d17dd692d..da593c3aacc7 100644
+> --- a/tests/intel/kms_frontbuffer_tracking.c
+> +++ b/tests/intel/kms_frontbuffer_tracking.c
+> @@ -1630,8 +1630,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+>   		      enum tiling_type tiling, int plane, struct igt_fb *fb)
+>   {
+>   	uint32_t format;
+> -	uint64_t size, modifier;
+> -	unsigned int stride;
+> +	uint64_t modifier;
+>   
+>   	switch (pformat) {
+>   	case FORMAT_RGB888:
+> @@ -1665,13 +1664,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+>   
+>   	igt_warn_on(plane == PLANE_CUR && tiling != TILING_LINEAR);
+>   
+> -	igt_calc_fb_size(drm.fd, width, height, format, modifier, &size,
+> -			 &stride);
+> -
+> -	igt_create_fb_with_bo_size(drm.fd, width, height, format, modifier,
+> -				   IGT_COLOR_YCBCR_BT709,
+> -				   IGT_COLOR_YCBCR_LIMITED_RANGE,
+> -				   fb, size, stride);
+> +	igt_create_fb(drm.fd, width, height, format, modifier, fb);
+>   }
+>   
+>   static uint32_t pick_color(struct igt_fb *fb, enum color ecolor)
 
