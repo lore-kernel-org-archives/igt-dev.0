@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 512A1C52D6F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 05:42:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E9F6C54731
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 05:42:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 11AD710E02A;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9BE5710E19D;
 	Tue, 27 Aug 2024 05:42:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j9Vw89KH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VsGkLs3x";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9755910E02A
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8B3AF10E05F
  for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 05:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724737375; x=1756273375;
+ t=1724737374; x=1756273374;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=UUYhD/3ewRTr4tJ8CgtT/4NT8cy2szB2JufB9ihl24M=;
- b=j9Vw89KHYZmuyRpuEYAd1iJI/FYgHS70y44RNfnRiKKB04odLvzoHOqG
- sSAb45RcFyDaO3So8jCNhUKtUzIjcseTvWhy4L/huasugngrRTHTu36Gx
- 1JkyPhVBLvrUoy5TfY0JzAF7MqTMvdah9N/X8irwraUMdbMNhT319c+IQ
- ZN4K9kU0FKXEME6taVBiR4m9vScE1IpvpQMGIDawdi1pI4uYFWvH3F9Yp
- d5JvDewBvzB3hdlkhjiNO8nI1I5ZOsBpbC/dWmhgBP+OTcnrRg0o5sxET
- 9jfIQVQjeaEK32pubkeMs8HAU3b9NSsDfJqeNAi+WMYDkC869xpuX/39Q Q==;
-X-CSE-ConnectionGUID: oDBnypMQRWuws5X0IjStGA==
-X-CSE-MsgGUID: CWuRxL+RTKSQHVRIuLhgzQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23372155"
-X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="23372155"
+ bh=RPkJxcLY6WCT/kasFL4XK64as+3zEqz7gFfAzorGTcg=;
+ b=VsGkLs3xkq/n4qVKz/kQLhwdGMq0kuhwjHqRpN1/O3/9kqJjip+kScm/
+ b9bz4G1rU1OeuCoSQ2cvt0KxpWjZD60uuOcGJ3bf74ZDyp381nR2f/nhg
+ 6pO6QuJAulDGoKO/whZOKcIz7/5uAzYDLY7Mwscrv1HlQxOstUE16FOfy
+ csS9eKjpaKDDxPzwwM63H21af4qDSUlbn4Fci2UBnvhLHVL0HpGNmVFdm
+ rku74vMiIP03wo97ZRT0GxPS9E8xzxir0acDbwAl+SGpZrc5tLe8fanS0
+ CtZxPud6nlI7/hvC0aPPljeuyvJb+DM45e0xGeGFVgmisaR/8ojv/xWIx g==;
+X-CSE-ConnectionGUID: PoYBHuLjSRy7mFjeV8zdwA==
+X-CSE-MsgGUID: PGVH1MbwRPG4Z6kz4odH6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23372154"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="23372154"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Aug 2024 22:42:54 -0700
-X-CSE-ConnectionGUID: LWHk/9UFRmCZi2KXF1mQFA==
-X-CSE-MsgGUID: /wmTQZsPRVCdPR1TTvs5KA==
+X-CSE-ConnectionGUID: 9xT8ngFSREeQh8HjdEva/g==
+X-CSE-MsgGUID: HfcjvQiuRr660LURBDajzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="67556994"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="67556991"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Aug 2024 22:42:54 -0700
@@ -45,9 +45,9 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 08/10] tests/intel/xe_drm_fdinfo: Remove unused flags
-Date: Mon, 26 Aug 2024 22:42:20 -0700
-Message-ID: <20240827054223.1671414-9-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 07/10] tests/intel/xe_drm_fdinfo: Half the execution time
+Date: Mon, 26 Aug 2024 22:42:19 -0700
+Message-ID: <20240827054223.1671414-8-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240827054223.1671414-1-lucas.demarchi@intel.com>
 References: <20240827054223.1671414-1-lucas.demarchi@intel.com>
@@ -68,183 +68,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-single() is the only test function that is used by multiple kinds of
-tests and controlled by flags. The others simply pass the same flags
-every time. Simplify the tests by removing the bogus checks.
+No need to do 500 msec per subtest. As we add more tests, the total
+execution time of ~ 2.5 sec per subtest make it take too long. Sleep
+half the time to lower the execution time.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 81 +++++++++++++++++--------------------
- 1 file changed, 38 insertions(+), 43 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index f7a359540..62a31abd5 100644
+index 96468e1be..f7a359540 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -537,7 +537,7 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- }
+@@ -73,7 +73,7 @@ struct pceu_cycles {
+ 	uint64_t total_cycles;
+ };
  
- static void
--busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
-+busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -546,20 +546,20 @@ busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int fl
- 	int class;
+-const unsigned long batch_duration_usec = (1 * USEC_PER_SEC) / 2;
++const unsigned long batch_duration_usec = (1 * USEC_PER_SEC) / 4;
  
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		ctx = spin_ctx_init(fd, hwe, vm);
--		spin_sync_start(fd, ctx);
--	}
-+
-+	ctx = spin_ctx_init(fd, hwe, vm);
-+	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		spin_sync_end(fd, ctx);
-+	spin_sync_end(fd, ctx);
- 	read_engine_cycles(fd, pceu2);
- 
--	xe_for_each_engine_class(class)
--		check_results(pceu1, pceu2, class,
--			      hwe->engine_class == class ? flags : 0);
-+	xe_for_each_engine_class(class) {
-+		bool idle = hwe->engine_class != class;
-+
-+		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
-+	}
- 
- 	spin_sync_end(fd, ctx);
- 	spin_ctx_destroy(fd, ctx);
-@@ -593,8 +593,7 @@ single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
- }
- 
- static void
--most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
--		    unsigned int flags)
-+most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -604,32 +603,31 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		/* spin on one hwe per class except the target class hwes */
--		xe_for_each_engine(fd, _hwe) {
--			int _class = _hwe->engine_class;
- 
--			if (_class == hwe->engine_class || ctx[_class])
--				continue;
-+	/* spin on one hwe per class except the target class hwes */
-+	xe_for_each_engine(fd, _hwe) {
-+		int _class = _hwe->engine_class;
- 
--			ctx[_class] = spin_ctx_init(fd, _hwe, vm);
--			spin_sync_start(fd, ctx[_class]);
--		}
-+		if (_class == hwe->engine_class || ctx[_class])
-+			continue;
-+
-+		ctx[_class] = spin_ctx_init(fd, _hwe, vm);
-+		spin_sync_start(fd, ctx[_class]);
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		xe_for_each_engine_class(class)
--			spin_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class)
-+		spin_sync_end(fd, ctx[class]);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
-+		bool idle = hwe->engine_class == class;
-+
- 		if (!ctx[class])
- 			continue;
- 
--		check_results(pceu1, pceu2, class,
--			      hwe->engine_class == class ? 0 : flags);
-+		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
- 	}
-@@ -638,7 +636,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- }
- 
- static void
--all_busy_check_all(int fd, unsigned int flags)
-+all_busy_check_all(int fd)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -648,31 +646,28 @@ all_busy_check_all(int fd, unsigned int flags)
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		/* spin on one hwe per class */
--		xe_for_each_engine(fd, hwe) {
--			class = hwe->engine_class;
- 
--			if (ctx[class])
--				continue;
-+	/* spin on one hwe per class */
-+	xe_for_each_engine(fd, hwe) {
-+		class = hwe->engine_class;
-+		if (ctx[class])
-+			continue;
- 
--			ctx[class] = spin_ctx_init(fd, hwe, vm);
--			spin_sync_start(fd, ctx[class]);
--		}
-+		ctx[class] = spin_ctx_init(fd, hwe, vm);
-+		spin_sync_start(fd, ctx[class]);
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		xe_for_each_engine_class(class)
--			spin_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class)
-+		spin_sync_end(fd, ctx[class]);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
- 		if (!ctx[class])
- 			continue;
- 
--		check_results(pceu1, pceu2, class, flags);
-+		check_results(pceu1, pceu2, class, TEST_BUSY);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
- 	}
-@@ -714,14 +709,14 @@ igt_main
- 
- 	igt_subtest("drm-busy-idle-check-all")
- 		xe_for_each_engine(xe, hwe)
--			busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+			busy_check_all(xe, hwe);
- 
- 	igt_subtest("drm-most-busy-idle-check-all")
- 		xe_for_each_engine(xe, hwe)
--			most_busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+			most_busy_check_all(xe, hwe);
- 
- 	igt_subtest("drm-all-busy-idle-check-all")
--		all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
-+		all_busy_check_all(xe);
- 
- 	igt_subtest("drm-busy-exec-queue-destroy-idle")
- 		xe_for_each_engine(xe, hwe)
+ static const char *engine_map[] = {
+ 	"rcs",
 -- 
 2.43.0
 
