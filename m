@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87753C5472F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A041C54731
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:55:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4710B10E3B8;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E77EA10E3B9;
 	Tue, 27 Aug 2024 16:55:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BTjLi1bt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kHzTYkiU";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0C9A110E3AF
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:54:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E73D310E3B1
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1724777697; x=1756313697;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dC2AXiKqBce4sWNxZeOWnsHV4zbkfXWC9qE5MlxtuCU=;
- b=BTjLi1btWptITBV4DUwA9N/quUp9HScJmfs5fg+vfzoAH+gf8Ps9+WsT
- oB3wsx0Ky2JaXjEs8yKoXcy2VW5VJWXI6mNhaDCFCAeHV4lm45pVebWFB
- Yz/YS4I0Yub3/itGnmd9rdiEe2DLDcCvylqUUdxRKLu2B0i7Q+ORxREkY
- w5kSkY6VLBOcqlf4we8W9+u2BpUDPaIAZkUZ2k/aG9VF0ZOL/jJhmkX12
- D7PPnETMx05pKk3Os+dNmhPTvQcuHa9gEm0PvQr6x15mXZxa+25yD13cv
- yKZzu9F9KlBOdRY3Xu70F6GFLq5cCAZLugGRjmh2DTlSQLZDqX8mtUbzC g==;
-X-CSE-ConnectionGUID: f0KnAvLCRoKHqMtGJhnPZA==
-X-CSE-MsgGUID: ONxHlkiNSO25YRq594S08A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="45787338"
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="45787338"
+ bh=gZPoxqxK82Ye7BgTb2/Y7XxnNcoEE87xSe6TBl6F6wM=;
+ b=kHzTYkiUCWpXcaHIILHovLj1kyo7b3hqop1EDwWP8VAZOax+mGESPzD/
+ zE51bPEvfW0exwDAmSCJtT/SwPkL+WN3xhUkNce+vQMNTm56icPNMW6am
+ lvYjp4xl04uXnByL/yBjwzeKuvcBzTHydlXC4pTM0L2nvt3geTQuUq3BL
+ Q5fk/JEpdDU/FqB3qxU7dxFP0WNuzy3psl7rmGZ3n4Rh2rRoZuFWTJUDl
+ 4r6zky7ig3R39e3VFwfpjfFLlp343azF3X9nywhXRPUb05XCnfgl4Z+bS
+ /3G99VD/q4PAb8jaSZfwy1kY17F/xjOlAvOpjjdHKC1baIiX2riB9QZyC A==;
+X-CSE-ConnectionGUID: PJ8LGa/AQwWEC3SjeZHNYg==
+X-CSE-MsgGUID: 8VVi98pxSrSobjMoGz+syQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="45787336"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="45787336"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Aug 2024 09:54:56 -0700
-X-CSE-ConnectionGUID: ekT4+baNSXCriCU5s5AoQg==
-X-CSE-MsgGUID: 826vpJbRRGiBGIcrEIcBnQ==
+X-CSE-ConnectionGUID: XHXJyUCXTVijLO/Ca7ZX8Q==
+X-CSE-MsgGUID: nmohmSRvTdOZ82R5G9Lkyg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63640439"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63640432"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Aug 2024 09:54:57 -0700
@@ -45,10 +45,9 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v3 10/10] tests/intel/xe_drm_fdinfo: Rename and reorder
- tests
-Date: Tue, 27 Aug 2024 09:54:49 -0700
-Message-ID: <20240827165449.1706784-11-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3 08/10] tests/intel/xe_drm_fdinfo: Remove unused flags
+Date: Tue, 27 Aug 2024 09:54:47 -0700
+Message-ID: <20240827165449.1706784-9-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240827165449.1706784-1-lucas.demarchi@intel.com>
 References: <20240827165449.1706784-1-lucas.demarchi@intel.com>
@@ -69,296 +68,183 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are 2 main categories of tests in xe_drm_fdinfo:
-mem and utilization. Group and name tests accordingly.
-
-For utilization, create subgroups: "single", "others" and "all",
-with variants on each of them.
-
-No change in behavior on each tests, it's just rename and reorder.
+single() is the only test function that is used by multiple kinds of
+tests and controlled by flags. The others simply pass the same flags
+every time. Simplify the tests by removing the bogus checks.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 148 ++++++++++++++++++------------------
- 1 file changed, 74 insertions(+), 74 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 81 +++++++++++++++++--------------------
+ 1 file changed, 38 insertions(+), 43 deletions(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index d45e45c6b..d1ed0fcaa 100644
+index 46c96dbe0..23edeea40 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -22,41 +22,41 @@
-  * Feature: SMI, core
-  * Test category: SysMan
-  *
-- * SUBTEST: basic-memory
-+ * SUBTEST: basic-mem
-  * Description: Check if basic fdinfo content is present for memory
-  *
-- * SUBTEST: basic-engine-utilization
-+ * SUBTEST: basic-utilization
-  * Description: Check if basic fdinfo content is present for engine utilization
-  *
-- * SUBTEST: drm-idle
-- * Description: Check that engines show no load when idle
-+ * SUBTEST: mem-total-resident
-+ * Description: Create and compare total and resident memory consumption by client
-  *
-- * SUBTEST: drm-busy-idle
-- * Description: Check that engines show load when idle after busy
-+ * SUBTEST: mem-shared
-+ * Description: Create and compare shared memory consumption by client
-  *
-- * SUBTEST: drm-busy-idle-isolation
-- * Description: Check that engine load does not spill over to other drm clients
-+ * SUBTEST: mem-active
-+ * Description: Create and compare active memory consumption by client
-  *
-- * SUBTEST: drm-busy-idle-check-all
-- * Description: Check that only the target engine shows load when idle after busy
-+ * SUBTEST: utilization-single-idle
-+ * Description: Check that each engine shows no load
-  *
-- * SUBTEST: drm-most-busy-idle-check-all
-- * Description: Check that only the target engine shows idle and all others are busy
-+ * SUBTEST: utilization-single-full-load
-+ * Description: Check that each engine shows full load
-  *
-- * SUBTEST: drm-all-busy-idle-check-all
-- * Description: Check that all engines show busy when all are loaded
-+ * SUBTEST: utilization-single-full-load-isolation
-+ * Description: Check that each engine load does not spill over to other drm clients
-  *
-- * SUBTEST: drm-busy-exec-queue-destroy-idle
-+ * SUBTEST: utilization-single-full-load-destroy-queue
-  * Description: Destroy exec queue before idle and ensure load is accurate
-  *
-- * SUBTEST: drm-total-resident
-- * Description: Create and compare total and resident memory consumption by client
-+ * SUBTEST: utilization-others-idle
-+ * Description: Check that only the target engine shows load
-  *
-- * SUBTEST: drm-shared
-- * Description: Create and compare shared memory consumption by client
-+ * SUBTEST: utilization-others-full-load
-+ * Description: Check that only the target engine shows idle and all others are busy
-  *
-- * SUBTEST: drm-active
-- * Description: Create and compare active memory consumption by client
-+ * SUBTEST: utilization-all-full-load
-+ * Description: Check that all engines show busy when all are loaded
-  */
- 
- IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine utilization using fdinfo");
-@@ -104,7 +104,7 @@ static void read_engine_cycles(int xe, struct pceu_cycles *pceu)
- }
- 
- /* Subtests */
--static void test_active(int fd, struct drm_xe_engine *engine)
-+static void mem_active(int fd, struct drm_xe_engine *engine)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(fd), region;
-@@ -230,7 +230,7 @@ static void test_active(int fd, struct drm_xe_engine *engine)
- 	xe_vm_destroy(fd, vm);
- }
- 
--static void test_shared(int xe)
-+static void mem_shared(int xe)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(xe), region;
-@@ -275,7 +275,7 @@ static void test_shared(int xe)
- 	}
- }
- 
--static void test_total_resident(int xe)
-+static void mem_total_resident(int xe)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(xe), region;
-@@ -508,7 +508,7 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
+@@ -538,7 +538,7 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
  }
  
  static void
--single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
-+utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- {
- 	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -557,64 +557,64 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- }
- 
- static void
--busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
-+utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
+-busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
++busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
  {
  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct spin_ctx *ctx = NULL;
- 	uint32_t vm;
--	int class;
+@@ -547,20 +547,20 @@ busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int fl
+ 	int class;
  
  	vm = xe_vm_create(fd, 0, 0);
--
- 	ctx = spin_ctx_init(fd, hwe, vm);
- 	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	spin_sync_end(fd, ctx);
--	read_engine_cycles(fd, pceu2);
--
--	xe_for_each_engine_class(class) {
--		enum expected_load expected_load = hwe->engine_class != class ?
--			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
--
--		check_results(pceu1, pceu2, class, expected_load);
+-	if (flags & TEST_BUSY) {
+-		ctx = spin_ctx_init(fd, hwe, vm);
+-		spin_sync_start(fd, ctx);
 -	}
- 
-+	/* destroy queue before sampling again */
- 	spin_sync_end(fd, ctx);
- 	spin_ctx_destroy(fd, ctx);
 +
-+	read_engine_cycles(fd, pceu2);
-+
- 	xe_vm_destroy(fd, vm);
-+
-+	check_results(pceu1, pceu2, hwe->engine_class, EXPECTED_LOAD_FULL);
- }
- 
- static void
--single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
-+utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct spin_ctx *ctx = NULL;
- 	uint32_t vm;
-+	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
-+
- 	ctx = spin_ctx_init(fd, hwe, vm);
- 	spin_sync_start(fd, ctx);
++	ctx = spin_ctx_init(fd, hwe, vm);
++	spin_sync_start(fd, ctx);
  
  	read_engine_cycles(fd, pceu1);
  	usleep(batch_duration_usec);
--
--	/* destroy queue before sampling again */
- 	spin_sync_end(fd, ctx);
--	spin_ctx_destroy(fd, ctx);
--
+-	if (flags & TEST_TRAILING_IDLE)
+-		spin_sync_end(fd, ctx);
++	spin_sync_end(fd, ctx);
  	read_engine_cycles(fd, pceu2);
  
--	xe_vm_destroy(fd, vm);
+-	xe_for_each_engine_class(class)
+-		check_results(pceu1, pceu2, class,
+-			      hwe->engine_class == class ? flags : 0);
 +	xe_for_each_engine_class(class) {
-+		enum expected_load expected_load = hwe->engine_class != class ?
-+			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
- 
--	check_results(pceu1, pceu2, hwe->engine_class, EXPECTED_LOAD_FULL);
-+		check_results(pceu1, pceu2, class, expected_load);
-+	}
++		bool idle = hwe->engine_class != class;
 +
-+	spin_sync_end(fd, ctx);
-+	spin_ctx_destroy(fd, ctx);
-+	xe_vm_destroy(fd, vm);
++		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
++	}
+ 
+ 	spin_sync_end(fd, ctx);
+ 	spin_ctx_destroy(fd, ctx);
+@@ -594,8 +594,7 @@ single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
  }
  
  static void
--most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
-+utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
+-most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
+-		    unsigned int flags)
++most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
  {
  	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
  	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -658,7 +658,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- }
+@@ -605,32 +604,31 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
+ 	int class;
  
- static void
--all_busy_check_all(int fd)
-+utilization_all_full_load(int fd)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -710,51 +710,51 @@ igt_main
+ 	vm = xe_vm_create(fd, 0, 0);
+-	if (flags & TEST_BUSY) {
+-		/* spin on one hwe per class except the target class hwes */
+-		xe_for_each_engine(fd, _hwe) {
+-			int _class = _hwe->engine_class;
+ 
+-			if (_class == hwe->engine_class || ctx[_class])
+-				continue;
++	/* spin on one hwe per class except the target class hwes */
++	xe_for_each_engine(fd, _hwe) {
++		int _class = _hwe->engine_class;
+ 
+-			ctx[_class] = spin_ctx_init(fd, _hwe, vm);
+-			spin_sync_start(fd, ctx[_class]);
+-		}
++		if (_class == hwe->engine_class || ctx[_class])
++			continue;
++
++		ctx[_class] = spin_ctx_init(fd, _hwe, vm);
++		spin_sync_start(fd, ctx[_class]);
  	}
  
- 	igt_describe("Check if basic fdinfo content is present for memory");
--	igt_subtest("basic-memory")
-+	igt_subtest("basic-mem")
- 		basic_memory(xe);
+ 	read_engine_cycles(fd, pceu1);
+ 	usleep(batch_duration_usec);
+-	if (flags & TEST_TRAILING_IDLE)
+-		xe_for_each_engine_class(class)
+-			spin_sync_end(fd, ctx[class]);
++	xe_for_each_engine_class(class)
++		spin_sync_end(fd, ctx[class]);
+ 	read_engine_cycles(fd, pceu2);
  
- 	igt_describe("Check if basic fdinfo content is present for engine utilization");
--	igt_subtest("basic-engine-utilization")
-+	igt_subtest("basic-utilization")
- 		basic_engine_utilization(xe);
+ 	xe_for_each_engine_class(class) {
++		bool idle = hwe->engine_class == class;
++
+ 		if (!ctx[class])
+ 			continue;
  
--	igt_subtest("drm-idle")
--		xe_for_each_engine(xe, hwe)
--			single(xe, hwe, 0);
-+	igt_describe("Create and compare total and resident memory consumption by client");
-+	igt_subtest("mem-total-resident")
-+		mem_total_resident(xe);
+-		check_results(pceu1, pceu2, class,
+-			      hwe->engine_class == class ? 0 : flags);
++		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
+ 		spin_sync_end(fd, ctx[class]);
+ 		spin_ctx_destroy(fd, ctx[class]);
+ 	}
+@@ -639,7 +637,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
+ }
  
--	igt_subtest("drm-busy-idle")
--		xe_for_each_engine(xe, hwe)
--			single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+	igt_describe("Create and compare shared memory consumption by client");
-+	igt_subtest("mem-shared")
-+		mem_shared(xe);
+ static void
+-all_busy_check_all(int fd, unsigned int flags)
++all_busy_check_all(int fd)
+ {
+ 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+ 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
+@@ -649,31 +647,28 @@ all_busy_check_all(int fd, unsigned int flags)
+ 	int class;
  
--	igt_subtest("drm-busy-idle-isolation")
--		xe_for_each_engine(xe, hwe)
--			single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
-+	igt_describe("Create and compare active memory consumption by client");
-+	igt_subtest("mem-active")
-+		mem_active(xe, xe_engine(xe, 0));
+ 	vm = xe_vm_create(fd, 0, 0);
+-	if (flags & TEST_BUSY) {
+-		/* spin on one hwe per class */
+-		xe_for_each_engine(fd, hwe) {
+-			class = hwe->engine_class;
  
--	igt_subtest("drm-busy-idle-check-all")
-+	igt_subtest("utilization-single-idle")
+-			if (ctx[class])
+-				continue;
++	/* spin on one hwe per class */
++	xe_for_each_engine(fd, hwe) {
++		class = hwe->engine_class;
++		if (ctx[class])
++			continue;
+ 
+-			ctx[class] = spin_ctx_init(fd, hwe, vm);
+-			spin_sync_start(fd, ctx[class]);
+-		}
++		ctx[class] = spin_ctx_init(fd, hwe, vm);
++		spin_sync_start(fd, ctx[class]);
+ 	}
+ 
+ 	read_engine_cycles(fd, pceu1);
+ 	usleep(batch_duration_usec);
+-	if (flags & TEST_TRAILING_IDLE)
+-		xe_for_each_engine_class(class)
+-			spin_sync_end(fd, ctx[class]);
++	xe_for_each_engine_class(class)
++		spin_sync_end(fd, ctx[class]);
+ 	read_engine_cycles(fd, pceu2);
+ 
+ 	xe_for_each_engine_class(class) {
+ 		if (!ctx[class])
+ 			continue;
+ 
+-		check_results(pceu1, pceu2, class, flags);
++		check_results(pceu1, pceu2, class, TEST_BUSY);
+ 		spin_sync_end(fd, ctx[class]);
+ 		spin_ctx_destroy(fd, ctx[class]);
+ 	}
+@@ -715,14 +710,14 @@ igt_main
+ 
+ 	igt_subtest("drm-busy-idle-check-all")
  		xe_for_each_engine(xe, hwe)
--			busy_check_all(xe, hwe);
-+			utilization_single(xe, hwe, 0);
+-			busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
++			busy_check_all(xe, hwe);
  
--	igt_subtest("drm-most-busy-idle-check-all")
-+	igt_subtest("utilization-single-full-load")
+ 	igt_subtest("drm-most-busy-idle-check-all")
  		xe_for_each_engine(xe, hwe)
--			most_busy_check_all(xe, hwe);
-+			utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
+-			most_busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
++			most_busy_check_all(xe, hwe);
  
--	igt_subtest("drm-all-busy-idle-check-all")
--		all_busy_check_all(xe);
-+	igt_subtest("utilization-single-full-load-isolation")
-+		xe_for_each_engine(xe, hwe)
-+			utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
+ 	igt_subtest("drm-all-busy-idle-check-all")
+-		all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
++		all_busy_check_all(xe);
  
--	igt_subtest("drm-busy-exec-queue-destroy-idle")
-+	igt_subtest("utilization-single-full-load-destroy-queue")
+ 	igt_subtest("drm-busy-exec-queue-destroy-idle")
  		xe_for_each_engine(xe, hwe)
--			single_destroy_queue(xe, hwe);
-+			utilization_single_destroy_queue(xe, hwe);
- 
--	igt_describe("Create and compare total and resident memory consumption by client");
--	igt_subtest("drm-total-resident")
--		test_total_resident(xe);
-+	igt_subtest("utilization-others-idle")
-+		xe_for_each_engine(xe, hwe)
-+			utilization_others_idle(xe, hwe);
- 
--	igt_describe("Create and compare shared memory consumption by client");
--	igt_subtest("drm-shared")
--		test_shared(xe);
-+	igt_subtest("utilization-others-full-load")
-+		xe_for_each_engine(xe, hwe)
-+			utilization_others_full_load(xe, hwe);
- 
--	igt_describe("Create and compare active memory consumption by client");
--	igt_subtest("drm-active")
--		test_active(xe, xe_engine(xe, 0));
-+	igt_subtest("utilization-all-full-load")
-+		utilization_all_full_load(xe);
- 
- 	igt_fixture {
- 		drm_close_driver(xe);
 -- 
 2.43.0
 
