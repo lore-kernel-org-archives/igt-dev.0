@@ -4,27 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC91DC54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 08:21:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B54A4C52D6F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 08:26:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9790C10E04E;
-	Tue, 27 Aug 2024 08:21:31 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D25B510E235;
- Tue, 27 Aug 2024 08:21:30 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2787419604650721230=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4A42C10E274;
+	Tue, 27 Aug 2024 08:26:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PBaDZN7k";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0FD5910E274
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724747167; x=1756283167;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=H3sgoVN1QksxJnm88omn9h422X+KWiVqf0Quz/9gpQ4=;
+ b=PBaDZN7kiZETCPIsWy1Zx4lKI/SYbb3jfqmSIul1ZotRD2k6DNhdvHbO
+ Ld3erW/PIaUmh0GZrMNQ0KVakZm6BPvQWDHPKTFEhaxYko/6lihBKD7AJ
+ vhGKr2L3Ns+ZnGiD5rB4dz1nrPBghEG3pp0R+SYs1VWnQJ3yKrL94LNoL
+ DLzgl/QltEWB4DMYaZIe6Vko/zUiRextuVdrvJP1mHBRIn6qBmcWec2qt
+ zQ4jptYchEtd82gG5d5Ly0N3pC22zqsgiYqycoDZilEDu952Q1DGGuUxn
+ +9zA5aqrPZdiNfUDVpS97zwn0eDHSaoo/zuL0e51CBvvWJFwfdwQ73glo A==;
+X-CSE-ConnectionGUID: p2fayiMYQKSnLmj782R7QA==
+X-CSE-MsgGUID: MPJYDXzeTBeT48WpjPtDng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="34583076"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="34583076"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 01:26:07 -0700
+X-CSE-ConnectionGUID: cMHCKGDLQai9nM9ciWkEkQ==
+X-CSE-MsgGUID: 8Cm4eGcjQFeqnOlziOEfWQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="67121981"
+Received: from ksztyber-mobl2.ger.corp.intel.com (HELO [10.245.246.214])
+ ([10.245.246.214])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 01:26:03 -0700
+Message-ID: <35808b77-895d-4b51-989d-5ee79928ae2c@intel.com>
+Date: Tue, 27 Aug 2024 10:26:00 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fdrm=5Ffdinfo?=
- =?utf-8?q?=3A_Fix_noise_and_improve?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Aug 2024 08:21:30 -0000
-Message-ID: <172474689085.790607.9566914516186544337@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240827055129.1671873-1-lucas.demarchi@intel.com>
-In-Reply-To: <20240827055129.1671873-1-lucas.demarchi@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4 09/17] tests/xe_exec_sip: Add
+ sanity-after-timeout test
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, Pawel Sikora <pawel.sikora@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
+ Mika Kuoppala <mika.kuoppala@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+References: <20240823182222.305965-1-christoph.manszewski@intel.com>
+ <20240823182222.305965-10-christoph.manszewski@intel.com>
+ <20240827081944.hichpdxh6lh2s26d@zkempczy-mobl2>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240827081944.hichpdxh6lh2s26d@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,138 +81,127 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2787419604650721230==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
 
-== Series Details ==
+On 27.08.2024 10:19, Zbigniew Kempczyński wrote:
+> On Fri, Aug 23, 2024 at 08:22:14PM +0200, Christoph Manszewski wrote:
+>> Add a subtest that checks if we are able to submit workloads after gpu
+>> was reset due to hung job.
+>>
+>> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+>> ---
+>>   tests/intel/xe_exec_sip.c | 39 ++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 32 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+>> index ea1770cd6..5d57d2c78 100644
+>> --- a/tests/intel/xe_exec_sip.c
+>> +++ b/tests/intel/xe_exec_sip.c
+>> @@ -31,6 +31,9 @@
+>>   
+>>   #define SHADER_CANARY 0x01010101
+>>   
+>> +#define SHADER_HANG 0
+>> +#define SHADER_WRITE 1
+>> +
+> 
+> Please introduce a new enum for this, it's more readable.
 
-Series: tests/intel/xe_drm_fdinfo: Fix noise and improve
-URL   : https://patchwork.freedesktop.org/series/137824/
-State : success
+Sure, will do.
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_7993_BAT -> XEIGTPW_11641_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11641_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#324]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-adlp-7:         [DMESG-WARN][3] -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  
-  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
-
-
-Build changes
--------------
-
-  * IGT: IGT_7993 -> IGTPW_11641
-
-  IGTPW_11641: 11641
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/index.html
-
---===============2787419604650721230==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Fix noise and improve</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137824/">https://patchwork.freedesktop.org/series/137824/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7993_BAT -&gt; XEIGTPW_11641_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11641_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11641/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7993 -&gt; IGTPW_11641</li>
-</ul>
-<p>IGTPW_11641: 11641<br />
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b</p>
-
-</body>
-</html>
-
---===============2787419604650721230==--
+Thanks,
+Christoph
+> 
+>>   static struct intel_buf *
+>>   create_fill_buf(int fd, int width, int height, uint8_t color)
+>>   {
+>> @@ -50,21 +53,32 @@ create_fill_buf(int fd, int width, int height, uint8_t color)
+>>   	return buf;
+>>   }
+>>   
+>> -static struct gpgpu_shader *get_shader(int fd)
+>> +static struct gpgpu_shader *get_shader(int fd, const int shadertype)
+>>   {
+>>   	static struct gpgpu_shader *shader;
+>>   
+>>   	shader = gpgpu_shader_create(fd);
+>>   	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
+>> +
+>> +	switch (shadertype) {
+>> +	case SHADER_HANG:
+>> +		gpgpu_shader__label(shader, 0);
+>> +		gpgpu_shader__nop(shader);
+>> +		gpgpu_shader__jump(shader, 0);
+>> +		break;
+>> +	case SHADER_WRITE:
+>> +		break;
+>> +	}
+>> +
+>>   	gpgpu_shader__eot(shader);
+>>   	return shader;
+>>   }
+>>   
+>> -static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, unsigned int threads,
+>> -			     unsigned int width, unsigned int height)
+>> +static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, const int shadertype,
+>> +			     unsigned int threads, unsigned int width, unsigned int height)
+>>   {
+>>   	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
+>> -	struct gpgpu_shader *shader = get_shader(fd);
+>> +	struct gpgpu_shader *shader = get_shader(fd, shadertype);
+>>   
+>>   	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
+>>   	gpgpu_shader_destroy(shader);
+>> @@ -125,8 +139,10 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+>>    * SUBTEST: sanity
+>>    * Description: check basic shader with write operation
+>>    *
+>> + * SUBTEST: sanity-after-timeout
+>> + * Description: check basic shader execution after job timeout
+>>    */
+>> -static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
+>> +static void test_sip(int shader, struct drm_xe_engine_class_instance *eci, uint32_t flags)
+>>   {
+>>   	unsigned int threads = 512;
+>>   	unsigned int height = max_t(threads, HEIGHT, threads * 2);
+>> @@ -153,7 +169,7 @@ static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
+>>   	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
+>>   
+>>   	igt_nsec_elapsed(&ts);
+>> -	handle = gpgpu_shader(fd, ibb, threads, width, height);
+>> +	handle = gpgpu_shader(fd, ibb, shader, threads, width, height);
+>>   
+>>   	intel_bb_sync(ibb);
+>>   	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
+>> @@ -186,7 +202,16 @@ igt_main
+>>   		fd = drm_open_driver(DRIVER_XE);
+>>   
+>>   	test_render_and_compute("sanity", fd, eci)
+>> -		test_sip(eci, 0);
+>> +		test_sip(SHADER_WRITE, eci, 0);
+>> +
+>> +	test_render_and_compute("sanity-after-timeout", fd, eci) {
+>> +		test_sip(SHADER_HANG, eci, 0);
+> 
+> It seems job will hang, but what will happen if it will be submitted
+> on LR mode? Doesn't it stuck here forever? Do we support eudebugger
+> on !LR mode?
+> 
+> --
+> Zbigniew
+> 
+>> +
+>> +		xe_for_each_engine(fd, eci)
+>> +			if (eci->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+>> +			    eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
+>> +				test_sip(SHADER_WRITE, eci, 0);
+>> +	}
+>>   
+>>   	igt_fixture
+>>   		drm_close_driver(fd);
+>> -- 
+>> 2.34.1
+>>
