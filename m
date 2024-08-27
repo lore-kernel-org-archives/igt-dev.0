@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D930C54734
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 05:52:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78DFBC52D6F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 05:56:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7604B10E271;
-	Tue, 27 Aug 2024 05:52:06 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hsGw3hX7";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 862C810E24A
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 05:52:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724737922; x=1756273922;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cNx/rIJWECzqTg2ySyizMKjEr7OLApuKV7dwWJOVvng=;
- b=hsGw3hX7/t0oAYoEnUXfJ++ykD74BvBpd6ZICs2viYfYoljrDSkeXW7w
- d+rN3ZR21TRO/lE7LetLlPHt7sUk8WBiG7LiOz/2P00rJNSC+vQhthq7b
- +huTfwf62EH2UhvoNdV6gPQ9gExBAqVMXcY0NHERdVEKbOI/ZJTwA2OBS
- Tz1CxFWQm8NYfEzDHwPD4QU1ZPe6kLrvmq7gQ1UejveCI4eYqMmSAEOYX
- 0F2fRsOrvuly9t0gGkPcivZUCxGfrUMrQvvyMLgp0SluA+6JXOHTBL3xw
- Wy5UdqnDHwMo1s8a19MvpXRGNE36kyCchOsP2RnC6JmyYcbbZIBKIGpXB w==;
-X-CSE-ConnectionGUID: L3dY1tpqQXir6Obbi0uXVw==
-X-CSE-MsgGUID: Q2RZwbH3Qgy9WcM00biozQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23355598"
-X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="23355598"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2024 22:52:01 -0700
-X-CSE-ConnectionGUID: szMVFziFRIWYNSMaKb/yAg==
-X-CSE-MsgGUID: f2vQXCKTTxOh5WFD+Tzhqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="62800414"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2024 22:52:01 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v2 10/10] tests/intel/xe_drm_fdinfo: Rename and reorder
- tests
-Date: Mon, 26 Aug 2024 22:51:29 -0700
-Message-ID: <20240827055129.1671873-11-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240827055129.1671873-1-lucas.demarchi@intel.com>
-References: <20240827055129.1671873-1-lucas.demarchi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 31A3D10E05F;
+	Tue, 27 Aug 2024 05:56:42 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F293510E02A;
+ Tue, 27 Aug 2024 05:56:40 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============9085320759680996213=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_test/amdgpu=3A_fix_unknow_test?=
+ =?utf-8?q?_issue_for_amdgpu_queue_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 27 Aug 2024 05:56:40 -0000
+Message-ID: <172473820098.786266.10330882777239124874@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240827051932.74382-1-jesse.zhang@amd.com>
+In-Reply-To: <20240827051932.74382-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,299 +37,138 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There are 2 main categories of tests in xe_drm_fdinfo:
-mem and utilization. Group and name tests accordingly.
+--===============9085320759680996213==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For utilization, create subgroups: "single", "others" and "all",
-with variants on each of them.
+== Series Details ==
 
-No change in behavior on each tests, it's just rename and reorder.
+Series: test/amdgpu: fix unknow test issue for amdgpu queue test
+URL   : https://patchwork.freedesktop.org/series/137822/
+State : success
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/intel/xe_drm_fdinfo.c | 148 ++++++++++++++++++------------------
- 1 file changed, 74 insertions(+), 74 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 9b3441b2a..83f30786d 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -22,41 +22,41 @@
-  * Feature: SMI, core
-  * Test category: SysMan
-  *
-- * SUBTEST: basic-memory
-+ * SUBTEST: basic-mem
-  * Description: Check if basic fdinfo content is present for memory
-  *
-- * SUBTEST: basic-engine-utilization
-+ * SUBTEST: basic-utilization
-  * Description: Check if basic fdinfo content is present for engine utilization
-  *
-- * SUBTEST: drm-idle
-- * Description: Check that engines show no load when idle
-+ * SUBTEST: mem-total-resident
-+ * Description: Create and compare total and resident memory consumption by client
-  *
-- * SUBTEST: drm-busy-idle
-- * Description: Check that engines show load when idle after busy
-+ * SUBTEST: mem-shared
-+ * Description: Create and compare shared memory consumption by client
-  *
-- * SUBTEST: drm-busy-idle-isolation
-- * Description: Check that engine load does not spill over to other drm clients
-+ * SUBTEST: mem-active
-+ * Description: Create and compare active memory consumption by client
-  *
-- * SUBTEST: drm-busy-idle-check-all
-- * Description: Check that only the target engine shows load when idle after busy
-+ * SUBTEST: utilization-single-idle
-+ * Description: Check that each engine shows no load
-  *
-- * SUBTEST: drm-most-busy-idle-check-all
-- * Description: Check that only the target engine shows idle and all others are busy
-+ * SUBTEST: utilization-single-full-load
-+ * Description: Check that each engine shows full load
-  *
-- * SUBTEST: drm-all-busy-idle-check-all
-- * Description: Check that all engines show busy when all are loaded
-+ * SUBTEST: utilization-single-full-load-isolation
-+ * Description: Check that each engine load does not spill over to other drm clients
-  *
-- * SUBTEST: drm-busy-exec-queue-destroy-idle
-+ * SUBTEST: utilization-single-full-load-destroy-queue
-  * Description: Destroy exec queue before idle and ensure load is accurate
-  *
-- * SUBTEST: drm-total-resident
-- * Description: Create and compare total and resident memory consumption by client
-+ * SUBTEST: utilization-others-idle
-+ * Description: Check that only the target engine shows load
-  *
-- * SUBTEST: drm-shared
-- * Description: Create and compare shared memory consumption by client
-+ * SUBTEST: utilization-others-full-load
-+ * Description: Check that only the target engine shows idle and all others are busy
-  *
-- * SUBTEST: drm-active
-- * Description: Create and compare active memory consumption by client
-+ * SUBTEST: utilization-all-full-load
-+ * Description: Check that all engines show busy when all are loaded
-  */
- 
- IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine utilization using fdinfo");
-@@ -104,7 +104,7 @@ static void read_engine_cycles(int xe, struct pceu_cycles *pceu)
- }
- 
- /* Subtests */
--static void test_active(int fd, struct drm_xe_engine *engine)
-+static void mem_active(int fd, struct drm_xe_engine *engine)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(fd), region;
-@@ -230,7 +230,7 @@ static void test_active(int fd, struct drm_xe_engine *engine)
- 	xe_vm_destroy(fd, vm);
- }
- 
--static void test_shared(int xe)
-+static void mem_shared(int xe)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(xe), region;
-@@ -275,7 +275,7 @@ static void test_shared(int xe)
- 	}
- }
- 
--static void test_total_resident(int xe)
-+static void mem_total_resident(int xe)
- {
- 	struct drm_xe_mem_region *memregion;
- 	uint64_t memreg = all_memory_regions(xe), region;
-@@ -507,7 +507,7 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
- }
- 
- static void
--single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
-+utilization_single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- {
- 	struct pceu_cycles pceu1[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -556,64 +556,64 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- }
- 
- static void
--busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
-+utilization_single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct spin_ctx *ctx = NULL;
- 	uint32_t vm;
--	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--
- 	ctx = spin_ctx_init(fd, hwe, vm);
- 	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	spin_sync_end(fd, ctx);
--	read_engine_cycles(fd, pceu2);
--
--	xe_for_each_engine_class(class) {
--		enum expected_load expected_load = hwe->engine_class != class ?
--			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
--
--		check_results(pceu1, pceu2, class, expected_load);
--	}
- 
-+	/* destroy queue before sampling again */
- 	spin_sync_end(fd, ctx);
- 	spin_ctx_destroy(fd, ctx);
-+
-+	read_engine_cycles(fd, pceu2);
-+
- 	xe_vm_destroy(fd, vm);
-+
-+	check_results(pceu1, pceu2, hwe->engine_class, EXPECTED_LOAD_FULL);
- }
- 
- static void
--single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
-+utilization_others_idle(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct spin_ctx *ctx = NULL;
- 	uint32_t vm;
-+	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
-+
- 	ctx = spin_ctx_init(fd, hwe, vm);
- 	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--
--	/* destroy queue before sampling again */
- 	spin_sync_end(fd, ctx);
--	spin_ctx_destroy(fd, ctx);
--
- 	read_engine_cycles(fd, pceu2);
- 
--	xe_vm_destroy(fd, vm);
-+	xe_for_each_engine_class(class) {
-+		enum expected_load expected_load = hwe->engine_class != class ?
-+			EXPECTED_LOAD_IDLE : EXPECTED_LOAD_FULL;
- 
--	check_results(pceu1, pceu2, hwe->engine_class, EXPECTED_LOAD_FULL);
-+		check_results(pceu1, pceu2, class, expected_load);
-+	}
-+
-+	spin_sync_end(fd, ctx);
-+	spin_ctx_destroy(fd, ctx);
-+	xe_vm_destroy(fd, vm);
- }
- 
- static void
--most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
-+utilization_others_full_load(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -657,7 +657,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- }
- 
- static void
--all_busy_check_all(int fd)
-+utilization_all_full_load(int fd)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -709,51 +709,51 @@ igt_main
- 	}
- 
- 	igt_describe("Check if basic fdinfo content is present for memory");
--	igt_subtest("basic-memory")
-+	igt_subtest("basic-mem")
- 		basic_memory(xe);
- 
- 	igt_describe("Check if basic fdinfo content is present for engine utilization");
--	igt_subtest("basic-engine-utilization")
-+	igt_subtest("basic-utilization")
- 		basic_engine_utilization(xe);
- 
--	igt_subtest("drm-idle")
--		xe_for_each_engine(xe, hwe)
--			single(xe, hwe, 0);
-+	igt_describe("Create and compare total and resident memory consumption by client");
-+	igt_subtest("mem-total-resident")
-+		mem_total_resident(xe);
- 
--	igt_subtest("drm-busy-idle")
--		xe_for_each_engine(xe, hwe)
--			single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+	igt_describe("Create and compare shared memory consumption by client");
-+	igt_subtest("mem-shared")
-+		mem_shared(xe);
- 
--	igt_subtest("drm-busy-idle-isolation")
--		xe_for_each_engine(xe, hwe)
--			single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
-+	igt_describe("Create and compare active memory consumption by client");
-+	igt_subtest("mem-active")
-+		mem_active(xe, xe_engine(xe, 0));
- 
--	igt_subtest("drm-busy-idle-check-all")
-+	igt_subtest("utilization-single-idle")
- 		xe_for_each_engine(xe, hwe)
--			busy_check_all(xe, hwe);
-+			utilization_single(xe, hwe, 0);
- 
--	igt_subtest("drm-most-busy-idle-check-all")
-+	igt_subtest("utilization-single-full-load")
- 		xe_for_each_engine(xe, hwe)
--			most_busy_check_all(xe, hwe);
-+			utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
- 
--	igt_subtest("drm-all-busy-idle-check-all")
--		all_busy_check_all(xe);
-+	igt_subtest("utilization-single-full-load-isolation")
-+		xe_for_each_engine(xe, hwe)
-+			utilization_single(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE | TEST_ISOLATION);
- 
--	igt_subtest("drm-busy-exec-queue-destroy-idle")
-+	igt_subtest("utilization-single-full-load-destroy-queue")
- 		xe_for_each_engine(xe, hwe)
--			single_destroy_queue(xe, hwe);
-+			utilization_single_destroy_queue(xe, hwe);
- 
--	igt_describe("Create and compare total and resident memory consumption by client");
--	igt_subtest("drm-total-resident")
--		test_total_resident(xe);
-+	igt_subtest("utilization-others-idle")
-+		xe_for_each_engine(xe, hwe)
-+			utilization_others_idle(xe, hwe);
- 
--	igt_describe("Create and compare shared memory consumption by client");
--	igt_subtest("drm-shared")
--		test_shared(xe);
-+	igt_subtest("utilization-others-full-load")
-+		xe_for_each_engine(xe, hwe)
-+			utilization_others_full_load(xe, hwe);
- 
--	igt_describe("Create and compare active memory consumption by client");
--	igt_subtest("drm-active")
--		test_active(xe, xe_engine(xe, 0));
-+	igt_subtest("utilization-all-full-load")
-+		utilization_all_full_load(xe);
- 
- 	igt_fixture {
- 		drm_close_driver(xe);
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_7993_BAT -> XEIGTPW_11639_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11639_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#324]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-adlp-7:         [DMESG-WARN][3] -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  
+  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
+
+
+Build changes
+-------------
+
+  * IGT: IGT_7993 -> IGTPW_11639
+
+  IGTPW_11639: 11639
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/index.html
+
+--===============9085320759680996213==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/amdgpu: fix unknow test issue for amdgpu queue test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137822/">https://patchwork.freedesktop.org/series/137822/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_7993_BAT -&gt; XEIGTPW_11639_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11639_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11639/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_7993 -&gt; IGTPW_11639</li>
+</ul>
+<p>IGTPW_11639: 11639<br />
+  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b</p>
+
+</body>
+</html>
+
+--===============9085320759680996213==--
