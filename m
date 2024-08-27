@@ -4,62 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C695BC52D6F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 08:10:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA4AFC52D6F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 08:12:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 865C189C0A;
-	Tue, 27 Aug 2024 08:10:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 70DA610E12E;
+	Tue, 27 Aug 2024 08:12:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="InI80XSy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gsge3jnR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E665389C0A
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:10:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7599B10E12E
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 08:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724746253; x=1756282253;
+ t=1724746330; x=1756282330;
  h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=Wqqy3akA1Di8r7v62kZUf4EadwDHEsPTIlHuPY/LxlY=;
- b=InI80XSyNS4G0LcPY3odHStsJsr5Ds57S7VHUcnTX2t8C1wwK5XNwnOp
- 3mJOspAfzp6u+hygp9MTKZ/PN3KfqoK34WD0eFK4PtPh2scIHG9TtJZ5L
- 3qRRR6EZiHGuucTiAlkSb/+dNG+YRVW5VQawuhGbNfvKrS1qqKfQ//xEd
- 51laQTOaYvGNWapc8RWyPpdj6C7/77iewkRvs6wmly6T+5vLdGfvdDzyF
- 18j9dHiYaxVVf1NgfHePIAIq173AJyJRhieUmtjm3ZbsOT+L72c3owcFJ
- hpGk1Mx4FKyHQuA2KRw2S+IQ+d1f8b7OHEBdgHGIxkl9MTJH1/QTrcojR A==;
-X-CSE-ConnectionGUID: Gt68B8iDTHOnvbq2Y2/EHw==
-X-CSE-MsgGUID: 2MKB+la5TTK5EbIcYqd4FA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="34360224"
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="34360224"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2024 01:10:52 -0700
-X-CSE-ConnectionGUID: L8fM910GTLqWJzOLshXorw==
-X-CSE-MsgGUID: GvUCyc4NSpGU7VnYaz0JDw==
+ in-reply-to:mime-version;
+ bh=B7FyPz5fV8Aa4PuPkyLCNLRg5z/0L/52ehjQpex2an4=;
+ b=gsge3jnRQqjFAa8O/F+MXl7jMn+kE8uNEvB8WL+OuCehdaI6iK8g64nS
+ /YyOF14Yti1lmcI+TC3Q/AA+Q50fUR3EAG/qNst1qqP3UzWyXwa+1RZVO
+ O2h8m2avd7swfa7wr8l+Isz5hWKqG72OwYpXqZhAjYyjqKY2LqyKcmcXd
+ ID1BFEqRTg7MSCXBTlZqwZuJiZRsaeZc09N45/WO1EFux26PmtCdPEfUp
+ bxw6H2vzmZY8/vlGO2Ac2dbsH+0N8XljaOD5tDrTyuC/iv+eIkWAc34z1
+ NNlsh7HETxT5+y1nLA22912TY1Mk2vkC0HBgl8irHGjfLVPOXjQtRSThJ g==;
+X-CSE-ConnectionGUID: i6I2T8wzQ+iZavtYmyBDGg==
+X-CSE-MsgGUID: eOJhuPgHTXSwJ1g0H4f5NA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23387053"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208,217";a="23387053"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 01:12:10 -0700
+X-CSE-ConnectionGUID: Rl6MOMZLQjilplN6JvtRfg==
+X-CSE-MsgGUID: AoHMGv+PT36BjLjMTKpr+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="62753060"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 27 Aug 2024 01:10:53 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208,217";a="67480591"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 27 Aug 2024 01:12:10 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 27 Aug 2024 01:10:52 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ 15.1.2507.39; Tue, 27 Aug 2024 01:12:09 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 27 Aug 2024 01:10:52 -0700
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.177)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ 15.1.2507.39; Tue, 27 Aug 2024 01:12:09 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 27 Aug 2024 01:12:09 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.174)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 27 Aug 2024 01:10:51 -0700
+ 15.1.2507.39; Tue, 27 Aug 2024 01:12:08 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hMYzsgFlWPNPlideKycwu5kPQejXtemhU6xEOerBsmFrnde2eEyCSWmPmc5uwjpDzg/STP9/FKOeUXOH1RTqxI+mmd78YWv1PkLK2QG1jgUorirGnTmkHrankLtpcDqOWVmBhivUYwhslUmrw4f0Pnjoc8qJQSPSELjvuzmsMqzfRD4ZfKVqp1ljYlQ/4zWvzXzn3KQ9XQXNoBwtEXDGg5N6luYpnR4uQkWWPsiGd1qn6xhvMty5p+/dVoka9/8xX1oNnKkWUnMKwo/RHcPeoMUFRwIK4cfhesD1DApiHExBT39A90whI198rmIVNICurvMpxDZnBgCZPwT/J3p1oQ==
+ b=Kv5CHTayUFjqWTRso7cdjbsoILto1kFZYBJr26NiS8OjbVu6UkcQnGXAn57bwv6azjrkmaiy5xUKDBUPht2jgzyZpI1w7robZplW8uhieNmuwega54MFdLI5J6IWFDLINFDeaQjI02moZK51/pK2WUdzff50k/d3i80Wjwf9Nv8wLD3CuzCyU1qEV9bpIfWkdvajdSpLwpS86yIh7LCXriLryGCq3D+xrNnYHcH2eVbnMUBobyOyk0TpmLbhJ31wYL5n3e91Is2/5xWM7FnTpFkJyTlp4SxsiLQYi9i59VC/djlVujUNAnZxTDqQgzp4su5xLR4pQISCjLR802AgAQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cvbAtenWvHLyQLi7Pl6C3XIvI2KnjmaoFniqKHh24Rg=;
- b=Oa4YHiheWzVwgjuL8puYeyWtZIN/AkKcdHl5UCIdVnQdwbHm4GnoflKe14dfgQ6mwpkEB45h7s7nVfUYrExzjTI087hBulywNkLqwRrp4KquKpx0FY+0n0UigY//6L/QVJAOIR76nbrKpRS1ab0y43XPHXya/Zybpdo4qsazrKVb1RPuW6fdHlgRjk6XFfNNt2eUy/yU6j9ZxjktFac8uhd5QAzj04eQ8cjqNcMhtUoq5VSaEfBqqyyNs1aObdjMqH2r0h8VIxeE4TGazDJRwhI56g4DppU4fx6Utke4xmMJ+N3ry/bap810xDn81tEsyHiHePVX0c5Q1fDU2jy2zQ==
+ bh=xaCF+3e0uwJ/X9COdidAGVkIz/Rd2EjzzhpSWTUfmJ8=;
+ b=hlAr2ogNWUAuQHmEhPILNaXkVy23b3ZWzJELaSmbHOitGgpuo8gSC7LOGz/erfmtgAm1Z90INFjkTSu2rCgErB3no2e8WvSVGTfJwNxIUFF0ve5oTGXqYxDfyeb+d1Hod/5W5bkjLL7io6TErnDU1heDIrI2GVN7nFbLq1qS0Bae54+XEi3wHrBcLhLw3k+aJD/W2QFrJICPuOOJ4Eto+iorFiwJQMseFTl/887StqtEWKazxdtjNOIdN+5rO1uKiyj1eBD6Y967lT33SqEGPgRHhpTn5Z9TZgOmh+upCxVMIo8McaTceOSssrLmkNHDpYdGtPk3IYtcoppGRyrYTA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,120 +73,120 @@ Received: from DM8PR11MB5653.namprd11.prod.outlook.com (2603:10b6:8:25::8) by
  PH0PR11MB4983.namprd11.prod.outlook.com (2603:10b6:510:40::19) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7897.25; Tue, 27 Aug 2024 08:10:49 +0000
+ 15.20.7897.25; Tue, 27 Aug 2024 08:12:06 +0000
 Received: from DM8PR11MB5653.namprd11.prod.outlook.com
  ([fe80::2962:1efd:f912:a5a3]) by DM8PR11MB5653.namprd11.prod.outlook.com
  ([fe80::2962:1efd:f912:a5a3%5]) with mapi id 15.20.7897.021; Tue, 27 Aug 2024
- 08:10:49 +0000
-Message-ID: <039e1cf2-4b52-4fef-886b-297c0b148ad4@intel.com>
-Date: Tue, 27 Aug 2024 13:40:37 +0530
+ 08:12:06 +0000
+Content-Type: multipart/alternative;
+ boundary="------------ZDsv3lshI0hVoWrEEmqG2P0E"
+Message-ID: <82a8af36-642a-4747-b085-924c02e6308e@intel.com>
+Date: Tue, 27 Aug 2024 13:41:57 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t, v4] tests/intel/xe_pm: Add tests for suspend
  without display
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-CC: Gustavo Sousa <gustavo.sousa@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, <igt-dev@lists.freedesktop.org>,
- <anshuman.gupta@intel.com>, <katarzyna.piecielska@intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>, Lucas De Marchi
+ <lucas.demarchi@intel.com>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, <anshuman.gupta@intel.com>,
+ <katarzyna.piecielska@intel.com>
 References: <20240822092058.26784-1-sujaritha.sundaresan@intel.com>
  <20240822165243.kfcmvdlxsxh6p4mv@kamilkon-DESK.igk.intel.com>
  <172434871596.2055.1015145340873010177@gjsousa-mobl2>
  <4e6gyyd3qf7bfyrtwbun4w42clu55v7r5glgrfikstw5hs5xyn@wdfocxn3uqsg>
- <d5cd630c-314c-4dde-9f4b-6a3e213f4587@intel.com>
- <cbce7zwah7pkzabb4npk52b3vxhdzot2kq2ivvrj6bzvcz2zut@5xqpkltx22no>
+ <172468301865.6014.9946879676247551400@gjsousa-mobl2>
 Content-Language: en-US
 From: "Sundaresan, Sujaritha" <sujaritha.sundaresan@intel.com>
-In-Reply-To: <cbce7zwah7pkzabb4npk52b3vxhdzot2kq2ivvrj6bzvcz2zut@5xqpkltx22no>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0017.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:80::12) To DM8PR11MB5653.namprd11.prod.outlook.com
+In-Reply-To: <172468301865.6014.9946879676247551400@gjsousa-mobl2>
+X-ClientProxiedBy: MA0PR01CA0114.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:11d::12) To DM8PR11MB5653.namprd11.prod.outlook.com
  (2603:10b6:8:25::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM8PR11MB5653:EE_|PH0PR11MB4983:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71a3258c-6844-4d10-e569-08dcc66fc0d3
+X-MS-Office365-Filtering-Correlation-Id: fa1ab203-09a0-4815-45b5-08dcc66ff090
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?OWdXV2hOdndNajloRTA2bEpaY3hjdHpJclZJc3RQaW5VQzF2aDUrcnVlODFJ?=
- =?utf-8?B?WjZ2Y2dGa3FGR0owVVBad0diRHpXWVFSdE5TVE1mc1ovZENpYWdoVlRHcVlp?=
- =?utf-8?B?NS90Y3pvS09RVkdnOWthV1BsU0xSMmFwL3BXN1NBSHBOUXZrTk9wN2NlM2NQ?=
- =?utf-8?B?NXFYVUc3WVk4UUdTRzc1YTJxRjVLTVdEQnhMQ2Q5VHBkY2hoR0NJNFRMaSt1?=
- =?utf-8?B?SFdKUVlNVkNvSGNVZzZ2ckVrbDlyWk1WSmhQN04zWnNkZWcrQ1J1QXJPTFl3?=
- =?utf-8?B?Q3NISHhHeXJCdkRKbmRtRUFpNVQ4Yk4vMU9wbFJFUjVQcEUvaUlCSFVOM1pW?=
- =?utf-8?B?SHlJV0ZzRklpSXBXQnYzcUVBWG5BaDJyQS9jSmlxRUVkT0lUbllFOC90aGZH?=
- =?utf-8?B?VXM5clQ5Q2wxaGpVdUtGVUVLbWxwUnVjMWhRdFh6ZytadlpUNzdxWDVZQTVp?=
- =?utf-8?B?ejlnbWYvdlZHWEQvaDdFaWVuWk9DVWxxOWY2L01YYkZJMEQ5TUllcnVDeDBy?=
- =?utf-8?B?YXJNWWYycnZSQnlxQVFVTlZ6YVZPZi9yZlFLM0wyTlErQ2t6Z0lWOE5PSzN5?=
- =?utf-8?B?dURYUjRQNUJXL0FEeU4rT3ROTWFvV1h2NStHa3FUTmZqL2x2UzJlYXhtUWxN?=
- =?utf-8?B?dGZ4RDlYYjFKdmgyWDlnUFZwcmxiNzg2dXNOQ2RxVUYyMDlDUm15cFgxNFRn?=
- =?utf-8?B?ZEtBNHQwKytZdjdNZEI1VkdYa3I2dnNaam1iK2x5WW12ajlOQnBzN3p5TmRl?=
- =?utf-8?B?YVZkcmp0NVpLVUJtRmxGRnBkSXJ5RElCOHVhVEFZNlRmazlKUGNsZXRSZTdX?=
- =?utf-8?B?MkJqbGh5SDR6N01YYjVEcG1jTHV6NmgwcWFJQjNjRXJXV05LcU9uV2NaSXAy?=
- =?utf-8?B?SEdTWTNnd005ekhzb2pmVlBxVCtNNEpDSnJrQ3luUGp2WDFtWFYrYjI3cDFN?=
- =?utf-8?B?SU4rV2ZzeXUzVFhZVVplMEs5NHBlalFiZG5ERWFhVHNFTFJEVUdRV1EvQXQ5?=
- =?utf-8?B?Ykt4TzZYUGVncDJuZW5OMGFWQ01YOHB1Ujc3UnlicDFqRWZyNHZ0QzBiaStC?=
- =?utf-8?B?Z2VwUlBvbTZMcFV2WVJLZlJXcmRlT2hxV3RQbzE5MzhaMUgxRG84Ti9GL25u?=
- =?utf-8?B?dkdQR3RHcGhaSXpxT3RCWUJobmNnTGg4VHFFaU9hK1ZYMC9CSjVEWWxWS21T?=
- =?utf-8?B?R0x5dVBrdzkxblFWSGwxUGpxNTdMWHVlamY1TjdTSTlodUVYSGtUU1dYNkVQ?=
- =?utf-8?B?bjBUdUxYUnIzcUVFNS9UQlpPOThnNHJYcEtYUXo2b05xTjZ5ZjB0c1ZnOHBX?=
- =?utf-8?B?MGNvQmJ4QTRuNndPV1RFVElTaXB0cXpRb2FEZkUvdXdaa3pQQVFLSDlibUt6?=
- =?utf-8?B?UzVCeFRCOEFuNTJpdkdvVG9BN0U2QktEME1NMGRlSGh5UDVwTEFHak9ZQnc4?=
- =?utf-8?B?cTRIYmdOVUIzMmRWWm5VV0g2Wkx3Q0d4clY4N2RuMGRuc3M4dDk0T1lWSDhO?=
- =?utf-8?B?NjhTbzI4b3VqcjhaMDJoZE9oSjk1YnMwQWtpQ001eTRlVXZLVUNKT093ZVdL?=
- =?utf-8?B?Vk1ibFp1WGN6NlcwNkJQcGZyUlUvdjM4TVVzZEtjQnU4cXdjQW5HbzloTWl1?=
- =?utf-8?B?eXNtdk5udWtyais3ZFBHWnJYcGEwMFZEZk9uZzZPR3dXank0TTU3dTc0V0FC?=
- =?utf-8?B?cktEVDZTcjRtQ3VMcEJER25scXRqM09Md2RrZFNZWGw2TkpUK05ReHpJVDk3?=
- =?utf-8?Q?Dh0TOp/9l8ccdcAS6w=3D?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?bFZRTmtPTEwyTWpiQ1BQR1RVOVdWYjFtV0VYVEJ3UG1wbWdUcEp1ZE9kSmtz?=
+ =?utf-8?B?RmYzUGVNWDhJTUlIdGpCc2lBN3diWWtaWTlxWDJaNFZRNzdPQmR3UG43eVFP?=
+ =?utf-8?B?RVpIUXNxZHdudElLM1FNZjh1dzhhRTRoWlAxV1VFaEZtbU9qeCtMTEp4SDVv?=
+ =?utf-8?B?cHBOZTlIYW5MVmpDaWJ5Qms5QnYyVThIMG1oRVJYbzBGOGJCN0VaM2YrTHVz?=
+ =?utf-8?B?TGhzS0J0MG5UdnA1ZXpBWUlSSS9QalRzVHAzeXBIekJNSjBLQ1F5UGUvYUtv?=
+ =?utf-8?B?c1AwSUZ5NUJBbGJ5cmVUc1pWOEhlcVZ4WldTMWNoQ1JaNlNYZmdvbnkwRVZC?=
+ =?utf-8?B?VHZrVVFNd01ma1RER0ZMaGRmbjhxbWFNUjhrUzFlQmZXTmJuN3BRVmViUG1X?=
+ =?utf-8?B?c1hydHdxWHFRZHZGMzVUelBPc2NPb1N2cHRaZlQ2RGc1VWErVW9veTVVa0xi?=
+ =?utf-8?B?c3pPVERDVnJmTldmV2ZnZ20yTWxBdWNPTURzb3ZiZnhrOThQeFluc2xoVXM2?=
+ =?utf-8?B?OEpKbjlqaGpQbjM2ZGlNSHdqVnlNY2ZmdVB3cHNDQ3EwaWFsVlFXMTRreVBz?=
+ =?utf-8?B?RW40cFh2VC9yT1pwTzRxcVpTUk9TQ1FrbWs1MVdRTXh4Z3lIWFFXRWxDWDBs?=
+ =?utf-8?B?Ymg2Ym5NQkxDMVA4azNkTDBmaVVKMUx4b3ZtVUxQaFpOSnltT0pEbFVTdEpZ?=
+ =?utf-8?B?dHFsV3FiU3VUdUwvMHROL3J6cERRR1BuL0R3OUR3MTNNak5JaVVwbUNrWVhC?=
+ =?utf-8?B?cnJEczRTU3R1R0VjYzhONG5yNWgyUk9NQ3hvOGtvWjVTQmpncElDUEtOY3Fx?=
+ =?utf-8?B?MDRDK3JZWUN0L3JaaURKRUR2aHVjVm9HYjdOUXNWZXdvbmJvcWpoZDZjVjlJ?=
+ =?utf-8?B?K01aZXNRUUNjdWoyYlRSbXoyYzhWVjZoR1NBNW9WMnJZMXVOMGZZdjMwc3JX?=
+ =?utf-8?B?YnFzR1EzTnh5RnhhdkdHc0ZaVU9mTUR1eWZBZkoyWksrSVpQMGNkaHJ3amJx?=
+ =?utf-8?B?cFZ6bTVoRTB3M2U5VUlEalJRQ293WFVnS2l1cW5rNlNpSXRMcmhMNmVsMVdU?=
+ =?utf-8?B?SjRCTk9wdFRtZWhDcDBYZXFLUGFEZE1PU2FrbUtNUFdJREJWeGdvaHFrV1JJ?=
+ =?utf-8?B?S3dXbEY0dlVXTmpSRXUxZGo2TTNDSHZ3RytiRTlSd0d4MnBKc1NpQWkxVE12?=
+ =?utf-8?B?ekhuVUJxTnB5bHN3eFpQSXhSenprUnQ2QXpFUlZ1VUJGYldJVFpkUHloZkVq?=
+ =?utf-8?B?WEZkV0tLcDVHc0I0SmdmSG5KQTBrN1k1YlQ4MnVXZVpwc3lwZ2gwbFVUQ1d1?=
+ =?utf-8?B?YkpkL3lKQ1Yyd0dTRFVWZWd0RHJTK0l2RTYrdEtuRlN3Vm9taHZMV2VMb0FH?=
+ =?utf-8?B?QUtsNGRPNXZGVkN4K1NnVlNBQUZnd2VYMlVFWWJoT0c3ZjBPaUNmbnkxQk5k?=
+ =?utf-8?B?WTVnWHA0R3lJWnZCaGhxOGxvYW81cW1LQ2w2SW9CbzlSdzRYOTQwN0cwbWRS?=
+ =?utf-8?B?WWVTVVFldENsUndzTnp0alphVkRoZWNwTXUySkk3cml5em45VlZSb2VpL29j?=
+ =?utf-8?B?WFdwQjVXKy9hRWgzbDI0ZTJIYjdJU09DcnJ1a3FkWFNwNlJYQ04zUWRDMnFN?=
+ =?utf-8?B?TkhHTDBZQ2pQYWgvVThuUkNiZHQwKzd0alhFdzFHYmYrQzFCekx2eDlkNFRI?=
+ =?utf-8?B?VmRwaERYZ1MwSHBTY2Rvb2RjdDk0dkFVRUY4YythVUJEbWU4NFFPb0p0T0li?=
+ =?utf-8?Q?JEFSzvuWIPkqeAcnEs=3D?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM8PR11MB5653.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(1800799024)(366016)(376014); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NHJhaWJnamhBckNvSFBHd2JMZkZNd1l1dWVsZVA2OTdMckl4aDQ1c0wzVE1y?=
- =?utf-8?B?b1lDRUJoRG1NZWlwRXFSVGFtUDc0ZE1DdkFtdk52NVJGeHovWTRDSHorZk44?=
- =?utf-8?B?UlN5RXF4ejBwTVZaVnNzaW1acUU4TW4rTng0YnFGSjYzc0hyaEY3Ny9sN2hG?=
- =?utf-8?B?ZDhUbzViYU5wS1llbnBVRFp0TGJQNUZBVi9wbFlvTW4zVEFXYWRXdHh3NHpr?=
- =?utf-8?B?eGNSM0I0Z2JKYlZ5OThrMk04Tk5EQTAzMkJza3hkY1pmeG9kcHhmajgyeG5y?=
- =?utf-8?B?NHAyRm9xdFR1U0c5WElWYmluYytJb1BIZEplT1BVZGlGSkRxazJTclM5VWx4?=
- =?utf-8?B?SWJjMXBreVFUdFhReGdoeDR4ekIrNitScVJxVjFlaTMzUVYrK2dkZjUrRFor?=
- =?utf-8?B?U2FzUXkyWS9VVUdOMHJLbWZTSzFqTU5nVGRFZHVPTVVSZXE0c2YrRzJ0RFpI?=
- =?utf-8?B?Y0tDM2V5RFVsd3pIcUJZdS9xUXh2VVFleE1iQWUybkpQeUxpU2lRK1ZzOTMv?=
- =?utf-8?B?THhmdFFkSkxNT25aeFpvNUhIS3VVeHlvamlsaVp2bUtuaHBiczM4eHJVeEUz?=
- =?utf-8?B?UUNHT2EySUsvRUZkVkJRcmhZOFQ5R0R4ZWR1QTZIcUxRbTZ1QnNSVjYrRHRy?=
- =?utf-8?B?Qi80bXliYlo3eFYxTkxhU0JuM053dFRtMzFlTFdabU5nbDNWV1VXREFxOWxt?=
- =?utf-8?B?UzlMR01XWW94dFgrU3EwQXlmUDJxdldGTTd0cVFKOFI5YkhhV2dyWVUrb2xw?=
- =?utf-8?B?L2xScjdIdGNMc0xuMjRNM2o1a1ZNTjdOTGE4a01xUEFsZGpxNHFlSlh0eTQ4?=
- =?utf-8?B?RS9uc0NhYzFtSVNPVXRBUm1jWTZDKzdXczJRSWp0ajAzcHl0bWJOUmcva3Nw?=
- =?utf-8?B?N0NFelZ2MXRBdDRmeEhPUXUvYzIrWXRlSFpLdFpSUkFSclk2aS9jZGRpODE2?=
- =?utf-8?B?OURHcGhnMEx2dHUwOEIyWUNCK1UzTEFFSkNHQVlPWVAvVUJiZHdFdzMzbWVt?=
- =?utf-8?B?OGxUMUJSN1RtSnBrOU12VXVOZlRXakVjenNwVWlSclJVTzFQeWlPUkQ4cUVY?=
- =?utf-8?B?Rm1HS2c3UTM5MXo1S2JQVFN3N0w0VFNWWG4vMTZ4TUw5SWhSMHZVYW9hVzl0?=
- =?utf-8?B?Z1g1c2trNEhkZ3dGU2VsbTlVdFlWWlBlaFZrdWdsbW1DcDltVzBoKzlmNkln?=
- =?utf-8?B?WEhHZ1dyNDV3M2JrU0UwcWZNR09EN0lpWkFkeElQdzlveDBrcytiMGRxY2U2?=
- =?utf-8?B?ZVNENHRFNGVBZVdybzFPZkJhOXAxOFdBSHptc0FKMGk0bnpseDZMT3BEbkla?=
- =?utf-8?B?RHdxY0dXcG5ZRXlneFN0N3Rpam9tLzV6ZHpML3FDdEFVWWk0U1JSdDhEeHky?=
- =?utf-8?B?QmVzby93NDUwUkd0dnBLaHBvQjMreEg5ZlRCR3ozMzJ1OC9mSGl4QmYwOFVH?=
- =?utf-8?B?V2tuWGxoeU1GRVBsR2ErZWZ5QktzUUQ0eEl0azZ1RVppdjVkR3lidGw4aU83?=
- =?utf-8?B?MGxxSFJEVkpEL3NGRHlSNjNtREVyN2htMnZEQ1VEVkZ1bFlMdUc5Q1kxNGMy?=
- =?utf-8?B?NjM5U2c3MFhQVGtodU5TZVJLeVZjQk10d2J4OTFXTFJFR0dXcFdEUFhYZUpF?=
- =?utf-8?B?UlV1dUQxQ1RubzN0OXdqUExzc3BDNUdMRnFidWt1My9WSTRWa0xsanRNQmxG?=
- =?utf-8?B?UnBFcWNKZE52NlN1K202UzNyR2d5Q3Fld3h2MUZ2Z3lRcEs2UVJybXY4bUV6?=
- =?utf-8?B?NEpVdyt6YjNuQlJVUjQ2WXIyU0xQaG84TTY2SHJzNWhBQzFhNGxYTi9BbXJ1?=
- =?utf-8?B?YnJSTUdvcWthQStOd0s1ak5VVHZtLzNVSzhVWS8zMmZoUHU5dmtjY1l4Q0Zs?=
- =?utf-8?B?MFNNQ0hPT2E4QXZ0ZlhzclpFcWUrUTFISitSSjExUFowK1krVE5uTXlza3Zz?=
- =?utf-8?B?UUY5c1k4NW15VnB4VTVZWkEzaFhXWVB6c0tQTmMxUjJmbFI3bWU1RHNyVlNO?=
- =?utf-8?B?dmlzQmNmNk9sNVlrSTFmWXlsUSttSFF3OTdkZFVBbUY5K29WR0lJdHdzalQr?=
- =?utf-8?B?RkxyYmowNTZkcFdDWDJsZ1lXTXlRKzNuQnZwaU1UZ3lQYTdTemZ3NEg4OWxv?=
- =?utf-8?B?dnlwazIwRVlIZGJUQTlMMXpIam9JcHI1T3VLUmNzRUJma1BCTDVibTZPejNw?=
- =?utf-8?Q?L+mGZSlzMPG5/jR9SffPQZk=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71a3258c-6844-4d10-e569-08dcc66fc0d3
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NFhhVzZNMG1va3B5bzExZFNFbTFjTjdyTTBSQm9iTUkzWm4rSUNTZmVpNjRG?=
+ =?utf-8?B?QWZhSHZpcDNZY2tERXBpVjdYZWtSKzd0NnlmdTRQdDEwZGptQis0am5xcjVT?=
+ =?utf-8?B?ZG52SVRaQStCaXpUTWZKekY0aFhiOWVYYUp0R3NJREsrMFpKQWlld1o5OW5D?=
+ =?utf-8?B?TEczUmFWdjc3MmFqbzhEQTRQakRJUGFxWHNDOGtHVHRXRnFBcFhHZU5QVm83?=
+ =?utf-8?B?SHRwdVNBT0VNdXVMWWxCeFRLR08wYnRkaTlyZ1FMZ2tHakVZYzJnQlliMlNP?=
+ =?utf-8?B?QmxUeUFqVGt0MFBJQmRkUWtOalBiSFo2MzBHVmVZdmorZVNSUG5CVWNSVXFQ?=
+ =?utf-8?B?TmFKZ0VsV2hOcW9DYmFXaWJNTUJLN09lU0U2OUN2b2ttM1o3cG90UlRnOGdD?=
+ =?utf-8?B?UjJCZ0lMZU42clFHUzFXUkNiR0k1d21tNDMvRjA3ZUNoSE5qZ2FRVG1XNUpl?=
+ =?utf-8?B?VTJkVGJNWTN6c0ZtTFdVUlJ5MXpYdWpUK2plS2ExbXhoNGYwSC9IQjM2OG9K?=
+ =?utf-8?B?REVuZlZrYUk3dXVWTXJacll5eXYyTUlKelRCL0JJdG94eHBHaFIvQjh6WENB?=
+ =?utf-8?B?Z2VwMkhIUXRJeDM1UUF3NEdkNEZ5TmtWYy9iNzVVc0ZPWS9ZemJzTWt5L0l2?=
+ =?utf-8?B?YXFRck41RTlSTy9SQXk5Vk1Rem9WazBlbTNwVk56ditxQlVZRUR1S2VSdSty?=
+ =?utf-8?B?b1R2ODEvNjlBaUgrSWpZUEpWMDZlT3FOZ2xaeHYwb1JRMjI4cDErVVpvTmpE?=
+ =?utf-8?B?ZVJiRVRyQlNSeDRUSDZBaUErR0pvQklxWEdhejJUVTBHS2dLRnU5R2JUbWVJ?=
+ =?utf-8?B?bTB0em9jWGp1N2hwSktTQXpPSXMvenlDTWQ4ajJkVkp3dWpyVHRYYml6K2VD?=
+ =?utf-8?B?cUQwcEt1YmNUZ0tjQjVsZ3JZd290WVNrM0ozeXBCUE9MdVptZExWNStSaXk5?=
+ =?utf-8?B?Mko4dGMyWGJXaElwOXhxejluNmlXSnd5YU5TNHV3ZzNGamhpajU2UEc1YXlO?=
+ =?utf-8?B?cklUc21mMDNubUhKL2RRZ1o3WVFzU2gwZit4bzBramE1c0RXYUFHVXN6NDBj?=
+ =?utf-8?B?Y3N2QVJ2Q1lsQkVGalJldlJoT3lUUWNQeENLRVRjMFNvZVNqcTdxU1oxSnlv?=
+ =?utf-8?B?YlQ4WHE4MktZcGRTemkrR2k1V3c2U0xIVlR3bHVSaHcrVmRhS00xaWxLMVBR?=
+ =?utf-8?B?d3I4QkdvVjQ1aWJWWnYxcjBOdUZNT242U2ovTnZKdEgrQmtXZ3FvaDZoTFZT?=
+ =?utf-8?B?bmFCNjRUNXI0WlE1QWl0azZaTkFvdmpaMTRVSGlzN016OCtsUERQa1d2Sm10?=
+ =?utf-8?B?eUhKcVNHOVIrVUVYNjY5czJrSWs3Y1pUQWNaZ1h3akxtSUNzUzhiVFY0aEda?=
+ =?utf-8?B?YkFYd2xsaVBIYzRJMWdoSFB2ZWEyTVAvRy93d3VraklZNXlTWEdEeS8waDBE?=
+ =?utf-8?B?ajhZMURRTU9TTGs3Vm5XWnFReHRNbkF1ZTkrSGVmNmRXMFVPS2hVWE5kYTd6?=
+ =?utf-8?B?MGl3dU9LaFlHT1hLanlyRUhqQmR6OXI4YWd3VHFTcUVCMjI3YS9YTHZNcHpT?=
+ =?utf-8?B?TVJ0OXMyWk85dll4ckNJQnlxTmdRQ1VWY3k3S2JWemFIa20vcFdrY051bU10?=
+ =?utf-8?B?TnpoNEZHWTBmODRnR2IzcUJnVmdOVmg0a3N2QU8zTlhLaE9memRIcHJ3eEhj?=
+ =?utf-8?B?Sjk0WGNOYlduaGt6V0pNdFFuQ1ZwcCtibFk3eDgxVHhrUk03TVo5a3g5bXdG?=
+ =?utf-8?B?dXlRUW96WmJibGJsZTVWZTdEWHNKMW9vdTczWEdra2dNL2lQNmttZnNhcFpQ?=
+ =?utf-8?B?Y1A0K2x6M3lveWE0NXNZd0I5VC8rRzA4TG5maXhsNWQreFRqY01DSnAzQWRZ?=
+ =?utf-8?B?K2ZBdE9QSXJ1a0JmWTF3bE9Pd2xUd1VXMzZnbEllQkVwd1prUnlvWW5YVGNQ?=
+ =?utf-8?B?ZHlURUZ1R09xWGpUeEk1eEFoVXg1S1g4Njgzclo4T3V6ZnFRRkNqZ2VDYUQy?=
+ =?utf-8?B?ZmlPVExIMFZDNDlCZ3RYQnl6aWo3ZFhXazBNSUF3MFhjbzc1YkdrWVQ0YWp0?=
+ =?utf-8?B?SkplcHE2U01ZNlE3MTRhUXU4UjZiNWVoUFdHMXlNTkFtWk9PMUNocU5SeTE4?=
+ =?utf-8?B?T0FmV0dmK3ZBd3lyc1NuSjduczR3N0ZCL3FwOXBtN3RmRmxxZi91d1lIT1lF?=
+ =?utf-8?Q?RAMsR9KygWztSjPIdbB/444=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: fa1ab203-09a0-4815-45b5-08dcc66ff090
 X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5653.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 08:10:49.1415 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 08:12:06.2722 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: S8lAHZoToXaUeo/2iyP3FcBA1V5e7/mnGuP5cOBd7uqsSiDcLql3W/IKsp2GPkWEKoBfy8wArzGpoaZkVfkYUoLgSG90y1eeXgnGxhtwTkI=
+X-MS-Exchange-CrossTenant-UserPrincipalName: ybW6sVzeuvOnTCRznt7UyW0yihBLzuDynL9IldhrIQrbmxs53xp6KNW9AnuXv2ynk501dVo1MpdxRb2kS32kEh4StvKSQsgjTg3i0ozW8I4=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4983
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -200,131 +204,254 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--------------ZDsv3lshI0hVoWrEEmqG2P0E
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 8/26/2024 7:27 PM, Lucas De Marchi wrote:
-> On Mon, Aug 26, 2024 at 04:42:06PM GMT, Sujaritha Sundaresan wrote:
->>
->> On 8/23/2024 2:31 AM, Lucas De Marchi wrote:
->>> On Thu, Aug 22, 2024 at 02:45:15PM GMT, Gustavo Sousa wrote:
->>>> Quoting Kamil Konieczny (2024-08-22 13:52:43-03:00)
->>>>> Hi Sujaritha,
->>>>> On 2024-08-22 at 14:50:58 +0530, Sujaritha Sundaresan wrote:
->>>>>> Add tests to validate basic execution suspend/resume cycle
->>>>>> without display module to rule out display related issues
->>>>>> from the suspend/resume stack.
->>>>>>
->>>>>> v2: Add normal reload cycle after running test (Anshuman)
->>>>>>
->>>>>> v3: Rebase
->>>>>>
->>>>>> v4: Change commit name/header (Kamil)
->>>>>>
->>>>>> Signed-off-by: Sujaritha Sundaresan <sujaritha.sundaresan@intel.com>
->>>>>> Acked-by: Katarzyna Piecielska 
->>>>>> Katarzyna.piecielska@intel.com<Katarzyna.piecielska@intel.com>
->>>>>> Reviewed-by: Anshuman Gupta <anshuman.gupta@intel.com>
->>>>>> ---
->>>>>>  tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
->>>>>>  1 file changed, 34 insertions(+)
->>>>>>
->>>>>> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
->>>>>> index eee89428c..1623a56c7 100644
->>>>>> --- a/tests/intel/xe_pm.c
->>>>>> +++ b/tests/intel/xe_pm.c
->>>>>> @@ -17,6 +17,7 @@
->>>>>>
->>>>>>  #include "igt.h"
->>>>>>  #include "lib/igt_device.h"
->>>>>> +#include "lib/igt_kmod.h"
->>>>>>  #include "lib/igt_pm.h"
->>>>>>  #include "lib/igt_sysfs.h"
->>>>>>  #include "lib/igt_syncobj.h"
->>>>>> @@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
->>>>>>   * Description: suspend/autoresume on %arg[1] state and exec 
->>>>>> after RPM
->>>>>>   * Functionality: pm - %arg[1]
->>>>>>   *
->>>>>> + * SUBTEST: %s-without-display
->>>>>> + * Description: suspend/autoresume on %arg[1] state without display
->>>>>> + * Functionality: pm - %arg[1]
->>>>>> + *
->>>>>>   * arg[1]:
->>>>>>   *
->>>>>>   * @s2idle:        s2idle
->>>>>> @@ -681,6 +686,7 @@ igt_main
->>>>>>          struct drm_xe_engine_class_instance *hwe;
->>>>>>          device_t device;
->>>>>>          uint32_t d3cold_allowed;
->>>>>> +        const char *opts;
->>>>>>          int sysfs_fd;
->>>>>>
->>>>>>          const struct s_state {
->>>>>> @@ -757,6 +763,34 @@ igt_main
->>>>>>                                            NO_RPM, 0);
->>>>>>                  }
->>>>>>
->>>>>> +                igt_subtest_f("%s-without-display", s->name) {
->>>>>> +
->>>>>> +                        if (!drmModeGetResources(device.fd_xe))
->>>>>> +                                return;
+
+On 8/26/2024 8:06 PM, Gustavo Sousa wrote:
+> Quoting Lucas De Marchi (2024-08-22 18:01:19-03:00)
+>> On Thu, Aug 22, 2024 at 02:45:15PM GMT, Gustavo Sousa wrote:
+>>> Quoting Kamil Konieczny (2024-08-22 13:52:43-03:00)
+>>>> Hi Sujaritha,
+>>>> On 2024-08-22 at 14:50:58 +0530, Sujaritha Sundaresan wrote:
+>>>>> Add tests to validate basic execution suspend/resume cycle
+>>>>> without display module to rule out display related issues
+>>>>> from the suspend/resume stack.
 >>>>>
->>>>> This should be skip or save it (as global?) and run test on headless.
+>>>>> v2: Add normal reload cycle after running test (Anshuman)
 >>>>>
->>>>>> +
->>>>>> + xe_for_each_engine(device.fd_xe, hwe) {
->>>>>> +
->>>>>> +                                igt_debug("Reload w/o display\n");
->>>>>> +
->>>>>> +                                igt_kmsg(KMSG_INFO "Unloading 
->>>>>> Xe\n");
->>>>>> + igt_assert_eq(igt_xe_driver_unload(), 0);
->>>>>> +
->>>>>> +                                igt_kmsg(KMSG_INFO "Re-loading 
->>>>>> Xe without display\n");
->>>>>> + igt_assert_eq(igt_xe_driver_load("enable_display=0"), 0);
+>>>>> v3: Rebase
 >>>>>
->>>>> This param was renamed to probe_display, see
->>>>> https://patchwork.freedesktop.org/series/137096/
->>>>> tests/intel/xe_module_load: Rename enable_display module param
->>>>> Submitted by Lucas De Marchi on Aug. 9, 2024, 5:30 p.m.
+>>>>> v4: Change commit name/header (Kamil)
 >>>>>
->>>>> +Cc Lucas
+>>>>> Signed-off-by: Sujaritha Sundaresan<sujaritha.sundaresan@intel.com>
+>>>>> Acked-by: Katarzyna PiecielskaKatarzyna.piecielska@intel.com<Katarzyna.piecielska@intel.com>
+>>>>> Reviewed-by: Anshuman Gupta<anshuman.gupta@intel.com>
+>>>>> ---
+>>>>>   tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
+>>>>>   1 file changed, 34 insertions(+)
+>>>>>
+>>>>> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+>>>>> index eee89428c..1623a56c7 100644
+>>>>> --- a/tests/intel/xe_pm.c
+>>>>> +++ b/tests/intel/xe_pm.c
+>>>>> @@ -17,6 +17,7 @@
+>>>>>
+>>>>>   #include "igt.h"
+>>>>>   #include "lib/igt_device.h"
+>>>>> +#include "lib/igt_kmod.h"
+>>>>>   #include "lib/igt_pm.h"
+>>>>>   #include "lib/igt_sysfs.h"
+>>>>>   #include "lib/igt_syncobj.h"
+>>>>> @@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
+>>>>>    * Description: suspend/autoresume on %arg[1] state and exec after RPM
+>>>>>    * Functionality: pm - %arg[1]
+>>>>>    *
+>>>>> + * SUBTEST: %s-without-display
+>>>>> + * Description: suspend/autoresume on %arg[1] state without display
+>>>>> + * Functionality: pm - %arg[1]
+>>>>> + *
+>>>>>    * arg[1]:
+>>>>>    *
+>>>>>    * @s2idle:        s2idle
+>>>>> @@ -681,6 +686,7 @@ igt_main
+>>>>>           struct drm_xe_engine_class_instance *hwe;
+>>>>>           device_t device;
+>>>>>           uint32_t d3cold_allowed;
+>>>>> +        const char *opts;
+>>>>>           int sysfs_fd;
+>>>>>
+>>>>>           const struct s_state {
+>>>>> @@ -757,6 +763,34 @@ igt_main
+>>>>>                                             NO_RPM, 0);
+>>>>>                   }
+>>>>>
+>>>>> +                igt_subtest_f("%s-without-display", s->name) {
+>>>>> +
+>>>>> +                        if (!drmModeGetResources(device.fd_xe))
+>>>>> +                                return;
+>>>> This should be skip or save it (as global?) and run test on headless.
 >>>>
->>>> And disable_display=1 might be more appropriate, because probe_display
->>>> would simply skip the probe for display?
->>>
->>> Good point. For platforms with display, is it expected that suspend 
->>> works
->>> if DMC is not loaded? Otherwise we will actually have to touch display
->>> to disable it to be allowed to suspend.
->>>
->>> Lucas De Marchi
->>
->> Hi all,
->>
->> Thanks for all of the comments. The need for this test mostly stemmed 
->> from
->>
->> ruling out display as being the reason for a lot of the random 
->> suspend/resume bugs we see.
->>
->> So what do you think should be the approach for this?
+>>>>> +
+>>>>> +                        xe_for_each_engine(device.fd_xe, hwe) {
+>>>>> +
+>>>>> +                                igt_debug("Reload w/o display\n");
+>>>>> +
+>>>>> +                                igt_kmsg(KMSG_INFO "Unloading Xe\n");
+>>>>> +                                igt_assert_eq(igt_xe_driver_unload(), 0);
+>>>>> +
+>>>>> +                                igt_kmsg(KMSG_INFO "Re-loading Xe without display\n");
+>>>>> +                                igt_assert_eq(igt_xe_driver_load("enable_display=0"), 0);
+>>>> This param was renamed to probe_display, see
+>>>> https://patchwork.freedesktop.org/series/137096/
+>>>> tests/intel/xe_module_load: Rename enable_display module param
+>>>> Submitted by Lucas De Marchi on Aug. 9, 2024, 5:30 p.m.
+>>>>
+>>>> +Cc Lucas
+>>> And disable_display=1 might be more appropriate, because probe_display
+>>> would simply skip the probe for display?
+>> Good point. For platforms with display, is it expected that suspend works
+>> if DMC is not loaded? Otherwise we will actually have to touch display
+>> to disable it to be allowed to suspend.
+> Well, for s2idle (s0ix for intel), DC6 is required, which in turn
+> requires the DMC.
 >
-> what are the suspend/resume bugs we are talking about? Without analyzing
-> them, it's hard to answer if they are caused by display or if
-> probe_display/disable_display will help at all.
+> For s3, I'm not really sure what DC state would be required, but I would
+> assume that we would need the driver to put the display in a low-power
+> state, so disable_display=1 seems to be needed here. Someone with more
+> experience could chime in to confirm this.
 >
-> Lucas De Marchi
+> --
+> Gustavo Sousa
 
-I will try to find a specific example but it's most the suspend/resume 
-incomplete
-
-bugs we see regularly across most platforms. The aim with this was just 
-for the debugging process
-
-for those to instantly rule out display as a reason early on.
+Is there someone else specific that can be brought into this 
+conversation to help answer these questions ?
 
 Thanks,
 
 Suja
 
+--------------ZDsv3lshI0hVoWrEEmqG2P0E
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 8/26/2024 8:06 PM, Gustavo Sousa
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:172468301865.6014.9946879676247551400@gjsousa-mobl2">
+      <pre class="moz-quote-pre" wrap="">Quoting Lucas De Marchi (2024-08-22 18:01:19-03:00)
+</pre>
+      <blockquote type="cite">
+        <pre class="moz-quote-pre" wrap="">On Thu, Aug 22, 2024 at 02:45:15PM GMT, Gustavo Sousa wrote:
+</pre>
+        <blockquote type="cite">
+          <pre class="moz-quote-pre" wrap="">Quoting Kamil Konieczny (2024-08-22 13:52:43-03:00)
+</pre>
+          <blockquote type="cite">
+            <pre class="moz-quote-pre" wrap="">Hi Sujaritha,
+On 2024-08-22 at 14:50:58 +0530, Sujaritha Sundaresan wrote:
+</pre>
+            <blockquote type="cite">
+              <pre class="moz-quote-pre" wrap="">Add tests to validate basic execution suspend/resume cycle
+without display module to rule out display related issues
+from the suspend/resume stack.
+
+v2: Add normal reload cycle after running test (Anshuman)
+
+v3: Rebase
+
+v4: Change commit name/header (Kamil)
+
+Signed-off-by: Sujaritha Sundaresan <a class="moz-txt-link-rfc2396E" href="mailto:sujaritha.sundaresan@intel.com">&lt;sujaritha.sundaresan@intel.com&gt;</a>
+Acked-by: Katarzyna Piecielska <a class="moz-txt-link-abbreviated" href="mailto:Katarzyna.piecielska@intel.com">Katarzyna.piecielska@intel.com</a><a class="moz-txt-link-rfc2396E" href="mailto:Katarzyna.piecielska@intel.com">&lt;Katarzyna.piecielska@intel.com&gt;</a>
+Reviewed-by: Anshuman Gupta <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com">&lt;anshuman.gupta@intel.com&gt;</a>
+---
+ tests/intel/xe_pm.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
+
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index eee89428c..1623a56c7 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -17,6 +17,7 @@
+
+ #include &quot;igt.h&quot;
+ #include &quot;lib/igt_device.h&quot;
++#include &quot;lib/igt_kmod.h&quot;
+ #include &quot;lib/igt_pm.h&quot;
+ #include &quot;lib/igt_sysfs.h&quot;
+ #include &quot;lib/igt_syncobj.h&quot;
+@@ -229,6 +230,10 @@ static void close_fw_handle(int sig)
+  * Description: suspend/autoresume on %arg[1] state and exec after RPM
+  * Functionality: pm - %arg[1]
+  *
++ * SUBTEST: %s-without-display
++ * Description: suspend/autoresume on %arg[1] state without display
++ * Functionality: pm - %arg[1]
++ *
+  * arg[1]:
+  *
+  * @s2idle:        s2idle
+@@ -681,6 +686,7 @@ igt_main
+         struct drm_xe_engine_class_instance *hwe;
+         device_t device;
+         uint32_t d3cold_allowed;
++        const char *opts;
+         int sysfs_fd;
+
+         const struct s_state {
+@@ -757,6 +763,34 @@ igt_main
+                                           NO_RPM, 0);
+                 }
+
++                igt_subtest_f(&quot;%s-without-display&quot;, s-&gt;name) {
++
++                        if (!drmModeGetResources(device.fd_xe))
++                                return;
+</pre>
+            </blockquote>
+            <pre class="moz-quote-pre" wrap="">
+This should be skip or save it (as global?) and run test on headless.
+
+</pre>
+            <blockquote type="cite">
+              <pre class="moz-quote-pre" wrap="">+
++                        xe_for_each_engine(device.fd_xe, hwe) {
++
++                                igt_debug(&quot;Reload w/o display\n&quot;);
++
++                                igt_kmsg(KMSG_INFO &quot;Unloading Xe\n&quot;);
++                                igt_assert_eq(igt_xe_driver_unload(), 0);
++
++                                igt_kmsg(KMSG_INFO &quot;Re-loading Xe without display\n&quot;);
++                                igt_assert_eq(igt_xe_driver_load(&quot;enable_display=0&quot;), 0);
+</pre>
+            </blockquote>
+            <pre class="moz-quote-pre" wrap="">
+This param was renamed to probe_display, see
+<a class="moz-txt-link-freetext" href="https://patchwork.freedesktop.org/series/137096/">https://patchwork.freedesktop.org/series/137096/</a>
+tests/intel/xe_module_load: Rename enable_display module param
+Submitted by Lucas De Marchi on Aug. 9, 2024, 5:30 p.m.
+
++Cc Lucas
+</pre>
+          </blockquote>
+          <pre class="moz-quote-pre" wrap="">
+And disable_display=1 might be more appropriate, because probe_display
+would simply skip the probe for display?
+</pre>
+        </blockquote>
+        <pre class="moz-quote-pre" wrap="">
+Good point. For platforms with display, is it expected that suspend works
+if DMC is not loaded? Otherwise we will actually have to touch display
+to disable it to be allowed to suspend.
+</pre>
+      </blockquote>
+      <pre class="moz-quote-pre" wrap="">
+Well, for s2idle (s0ix for intel), DC6 is required, which in turn
+requires the DMC.
+
+For s3, I'm not really sure what DC state would be required, but I would
+assume that we would need the driver to put the display in a low-power
+state, so disable_display=1 seems to be needed here. Someone with more
+experience could chime in to confirm this.
+
+--
+Gustavo Sousa</pre>
+    </blockquote>
+    <p>Is there someone else specific that can be brought into this
+      conversation to help answer these questions ?</p>
+    <p><span style="white-space: pre-wrap">Thanks,</span></p>
+    <p><span style="white-space: pre-wrap">Suja
+</span></p>
+  </body>
+</html>
+
+--------------ZDsv3lshI0hVoWrEEmqG2P0E--
