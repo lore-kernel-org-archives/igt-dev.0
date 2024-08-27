@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AB0EC52D6F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 06:19:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F23C52D6F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 06:21:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05B4310E1C7;
-	Tue, 27 Aug 2024 06:19:47 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53ABD10E043;
- Tue, 27 Aug 2024 06:19:46 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9048212073199052158=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6253110E20C;
+	Tue, 27 Aug 2024 06:21:34 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UgPb6X+N";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38F4110E20C
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 06:21:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724739693; x=1756275693;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=W/X5ekS9L7FV8xmgr09LA3hmwCso/ys0WsXtcPdlJ9s=;
+ b=UgPb6X+NDNK6hWTrawaddBRM2DflbTPNJ8jRAINwNVRRmr78pz4H1j3X
+ 2PTZPTM6iHeGkosCso1/A3zLVc9E1ddcvT8VrHE7dgZppsWRip5U/krRO
+ nRjHOjXoiklA4/JuAzLfl9En8hGfYw8SedeamFiNmME/O5Qxy50gMfsOh
+ B5JrgfNbH7m+58IpV2+KgczCrzRzj5S6frIJ/t7hVG0yhbYDQWk3RtfIo
+ FAdeGSe5wXKD4OlbIpdLm0WWiiO2eP2InbDvNoGrCxQN1OOk/4n8nfa/s
+ 6HxNShy6JBqgqS+LI8o6Z/FkVQlhNynHcynHxBnpjXeNqd2a6wIQ+/S0V g==;
+X-CSE-ConnectionGUID: fsnQSM95QiK/S2F5DuVDcw==
+X-CSE-MsgGUID: 1D0YimAqSz2YAjVy8w0qbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="40700483"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="40700483"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2024 23:21:33 -0700
+X-CSE-ConnectionGUID: jexjp32kT8uuRiuACWtD7w==
+X-CSE-MsgGUID: 7uH7Ts+7TuGp1hbK0TRyQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="62916000"
+Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
+ by fmviesa010.fm.intel.com with ESMTP; 26 Aug 2024 23:21:31 -0700
+From: Suraj Kandpal <suraj.kandpal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: pranay.samala@intel.com, ankit.k.nautiyal@intel.com, jeevan.b@intel.com,
+ Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t 0/5] Improve MST HDCP tests
+Date: Tue, 27 Aug 2024 11:48:59 +0530
+Message-ID: <20240827061904.4170393-1-suraj.kandpal@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/intel/xe=5Fdrm=5Ffdinfo?=
- =?utf-8?q?=3A_Rename_and_reorder_tests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 27 Aug 2024 06:19:46 -0000
-Message-ID: <172473958633.786468.6510877687332866317@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240827054223.1671414-1-lucas.demarchi@intel.com>
-In-Reply-To: <20240827054223.1671414-1-lucas.demarchi@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,172 +62,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9048212073199052158==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Improve HDCP MST test by doing the following
+-Eliminate unnecessary loops and wait times
+-Add retry logic for mst test cases
+-Change screen color based on HDCP Encryption Status
 
-== Series Details ==
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
 
-Series: tests/intel/xe_drm_fdinfo: Rename and reorder tests
-URL   : https://patchwork.freedesktop.org/series/137823/
-State : failure
+Suraj Kandpal (5):
+  tests/kms_content_protection: Move HDCP output checks earlier
+  tests/kms_content_protection: Move try commit call
+  tests/kms_content_protection: Rename igt_commit_style variable
+  tests/kms_content_protection: Add retry logic for mst usecase
+  tests/kms_content_protection: Set screen red/green based on CP Status
 
-== Summary ==
+ tests/kms_content_protection.c | 184 ++++++++++++++++++++++-----------
+ 1 file changed, 123 insertions(+), 61 deletions(-)
 
-CI Bug Log - changes from XEIGT_7993_BAT -> XEIGTPW_11640_BAT
-====================================================
+-- 
+2.43.2
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11640_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11640_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11640_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:
-    - bat-lnl-1:          [PASS][1] -> [FAIL][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11640_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - bat-adlp-7:         [DMESG-WARN][3] ([Intel XE#324]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html
-
-  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
-    - bat-adlp-7:         [DMESG-WARN][5] -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
-
-  
-  [Intel XE#324]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/324
-
-
-Build changes
--------------
-
-  * IGT: IGT_7993 -> IGTPW_11640
-
-  IGTPW_11640: 11640
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/index.html
-
---===============9048212073199052158==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Rename and reorder tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137823/">https://patchwork.freedesktop.org/series/137823/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_7993_BAT -&gt; XEIGTPW_11640_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11640_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11640_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11640_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_cursor_legacy@basic-flip-after-cursor-atomic:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/bat-lnl-1/igt@kms_cursor_legacy@basic-flip-after-cursor-atomic.html">FAIL</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11640_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/324">Intel XE#324</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/bat-adlp-7/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_7993/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11640/bat-adlp-7/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_7993 -&gt; IGTPW_11640</li>
-</ul>
-<p>IGTPW_11640: 11640<br />
-  IGT_7993: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1832-0f7dbe16a23882ef9c928d9650ea0613925e710b: 0f7dbe16a23882ef9c928d9650ea0613925e710b</p>
-
-</body>
-</html>
-
---===============9048212073199052158==--
