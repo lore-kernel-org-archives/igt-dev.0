@@ -4,74 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C415C5472F
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:04:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B4F6C54739
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:12:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55EB310E36D;
-	Tue, 27 Aug 2024 16:04:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EFC1510E373;
+	Tue, 27 Aug 2024 16:12:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="OfdhP6y+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OiFiZA+x";
 	dkim-atps=neutral
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
- [209.85.221.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B39710E36D
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:04:24 +0000 (UTC)
-Received: by mail-wr1-f51.google.com with SMTP id
- ffacd0b85a97d-371a13c7c80so3880925f8f.0
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 09:04:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724774662; x=1725379462; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=OwSydXCwL7a9Mm9/vHG/fkX9xmwfe0ftN9eeoPjgp0U=;
- b=OfdhP6y+1gVKrhOPJWrOKhb7OEAf51qLaTgOsIfRCGPJb1azmXV+Za/jtTmkk2BIl3
- /XExks85rSaplFQm3If/wjpmBfdIKBkYXuDpVz8PMhx0k+MsBnMOZUVyK0XnfPgaow58
- m6MXFzk+Roaxyv7pSpfI/U4d4nkuCIhht82Ii+YvNZSezl0HTRIqMC7f4Hp52mcDnHuO
- DCa62QGxNTU+INukrLZ9SwNmnYG9V3dTSn9iONSJIp51tbRQJRa3TkKjXmGR871A1qs/
- pLmLVDi5x08Cp2yqJY9h5qsolRWNcAW0w7NwPoKlvSaf93DS2TvejHFi1rrFMuvxKKEf
- hrcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724774662; x=1725379462;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=OwSydXCwL7a9Mm9/vHG/fkX9xmwfe0ftN9eeoPjgp0U=;
- b=QzEXMH5susFu/8gN1HKIfKkSPSuy3tMukNsEQHs08ZexZJfr9i4GwlyY75wRddS76S
- 20hfk1Lp77lSADy2F9zQ5EGwTF6JgAKafweG50ZlaJw3BTpxK5JsIQh3yEcvAd9LqtA7
- x6e4Lp3PpHYJeTFtcTL9MDZCARgCEQGP77Hlzc2rlM+yQFrIYbr41ocTTMIo8CgvpFLd
- shY/W+mD/vcNSOk+lZVTd4cotb80LfoI83T+C0R7Yf6TaEXloDNZrYt73thL0M2D8vfh
- OEnVen2AoYVOI6g2mpOWvIa4Dc7e+3Klo+p8ydASwAFKo6huDV4XyHYt7UHtah87w+x9
- I9wQ==
-X-Forwarded-Encrypted: i=1;
- AJvYcCVR0YMLeJQlePxJfVK3zphjo987Fx5mkwvqmc+Wmwt3lRT0PSr4mn2grhhus5OErNbqw8VC6igH@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YwICpzQG8Amj7UUVNV+d5u8EWv1X56KAdrMr+uIhos9REG5oTYY
- 4LPU31n8aXkuu45kridqtP37JoXUCqPTVaeaU2NwZ4MWfbEIOcypgpQWa/J5mP4=
-X-Google-Smtp-Source: AGHT+IECUM+wnK7gB2ZaC8WmI9s1z/ARzhdHHDJiHlwkxPVjU8e1XYJuHuQ7UT9+ttXPyMF6e216DA==
-X-Received: by 2002:adf:e30e:0:b0:367:895f:619e with SMTP id
- ffacd0b85a97d-3748c8442a7mr2064822f8f.11.1724774662031; 
- Tue, 27 Aug 2024 09:04:22 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.139.73])
- by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-42abeffe3e9sm226758575e9.43.2024.08.27.09.04.19
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 09:04:21 -0700 (PDT)
-Message-ID: <f3323969-c9e5-45ca-8d87-0ecc7ef3991f@gmail.com>
-Date: Tue, 27 Aug 2024 19:04:16 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD32210E373
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:12:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724775174; x=1756311174;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=l6Ca9FdcHKYg8Sx1RDokzX5o/4cfMux3VyKUGBWnSjQ=;
+ b=OiFiZA+xCaZMPzzmmBGWR/qHJcILeCdJP2V8Oz2aTXeiwmUgE66c65fK
+ Dhtn0P54WtDz/hVLohiLsU+aRX+JXR2W9oP03HAN6356+P+TbpvtoTi7U
+ ik9MTfEx8DCUM1KQ6Nsid9kHkZqrABLnaeU4oqRnYaUSuhjvIikuBzJL6
+ JIgwwbMc71ZLEKGBuGu29r7YS0LXUFFRO///ut5PokMHuEVqnVaNIB5sp
+ Dh6qKy4GSQTENGbAQP5+dJuZKJsnWHG8AS7JfacK9wQYCXQlz0FKEOzNA
+ 1r3DcG6kvbmK1Ugs2C1WWXMypEOrEwhKqPBbFnaIa225xIPtYPF9Y3t5s w==;
+X-CSE-ConnectionGUID: aiAAxTzqR9eTYe1fKrHr+Q==
+X-CSE-MsgGUID: bYkEkX7vRBeiBYGx0eJlfw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="13239825"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="13239825"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 09:12:53 -0700
+X-CSE-ConnectionGUID: QxUDHTy8RauzejbM8Y+PBw==
+X-CSE-MsgGUID: 9m6X6dhBQ52KkZWPY2adQQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="67809385"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.192.32])
+ ([10.245.192.32])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2024 09:12:51 -0700
+Message-ID: <45e3b3d6-66b9-4ed6-8241-91cc24e0a559@linux.intel.com>
+Date: Tue, 27 Aug 2024 18:12:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 12/37] lib/rendercopy: Use the proper compression
- format for 10bpc on dg2/lnl+
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <20240702232817.31147-13-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_fault_mode: Don't return early
+To: Matthew Brost <matthew.brost@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@linux.intel.com,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Tejas Upadhyay <tejas.upadhyay@intel.com>
+References: <20240827105222.13650-1-nirmoy.das@intel.com>
+ <Zs32L7Y9GePDfXUg@DUT025-TGLU.fm.intel.com>
 Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240702232817.31147-13-ville.syrjala@linux.intel.com>
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <Zs32L7Y9GePDfXUg@DUT025-TGLU.fm.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,48 +70,86 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-On 3.7.2024 2.27, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Setup the dg2/lnl+ compression format correctly for 10bpc formats.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   lib/rendercopy_gen9.c | 10 ++++++++--
->   1 file changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 4014100a23b5..b871a4b3dae1 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -150,7 +150,10 @@ static uint32_t lnl_compression_format(const struct intel_buf *buf)
->   {
->   	switch (buf->bpp) {
->   	case 32:
-> -		return 0x2; /* CMF_R8_G8_B8_A8 */
-> +		if (buf->depth == 30)
-> +			return 0x3; /* CMF_R10_G10_B10_A2 */
-> +		else
-> +			return 0x2; /* CMF_R8_G8_B8_A8 */
->   	default:
->   		igt_assert(0);
->   		return 0;
-> @@ -161,7 +164,10 @@ static uint32_t dg2_compression_format(const struct intel_buf *buf)
->   {
->   	switch (buf->bpp) {
->   	case 32:
-> -		return 0x8;
-> +		if (buf->depth == 30)
-> +			return 0xc;
-> +		else
-> +			return 0x8;
->   	default:
->   		igt_assert(0);
->   		return 0;
+On 8/27/2024 5:52 PM, Matthew Brost wrote:
+> On Tue, Aug 27, 2024 at 12:52:22PM +0200, Nirmoy Das wrote:
+>> Tests that are causing pagefaults should wait for exec queue to be ban
+>> otherwise pending engine resets because of on-going pagefaults would
+>> cause failure in subsequent tests to fail.
+>>
+>> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+>> Cc: Matthew Brost <matthew.brost@intel.com>
+> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
+Hi Matt,
+
+
+have sent a v2, with few minor suggestion Andrzej, could you please 
+review that
+
+https://patchwork.freedesktop.org/patch/610883/?series=137836&rev=2
+
+
+Regards,
+
+Nirmoy
+
+>
+>> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+>> Link: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1630
+>> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+>> ---
+>>   tests/intel/xe_exec_fault_mode.c | 27 +++++++++++++++++++++++++++
+>>   1 file changed, 27 insertions(+)
+>>
+>> diff --git a/tests/intel/xe_exec_fault_mode.c b/tests/intel/xe_exec_fault_mode.c
+>> index 1f1f1e50b..339c79353 100644
+>> --- a/tests/intel/xe_exec_fault_mode.c
+>> +++ b/tests/intel/xe_exec_fault_mode.c
+>> @@ -36,6 +36,22 @@
+>>   #define INVALID_VA	(0x1 << 8)
+>>   #define ENABLE_SCRATCH  (0x1 << 9)
+>>   
+>> +static int get_ban_property(int xe, struct drm_xe_engine_class_instance *eci,
+>> +			    uint32_t vm, uint32_t exec_queue)
+>> +{
+>> +	struct drm_xe_exec_queue_get_property args = {
+>> +		.value = -1,
+>> +		.reserved[0] = 0,
+>> +		.property = DRM_XE_EXEC_QUEUE_GET_PROPERTY_BAN,
+>> +	};
+>> +
+>> +	args.exec_queue_id = exec_queue;
+>> +
+>> +	do_ioctl(xe, DRM_IOCTL_XE_EXEC_QUEUE_GET_PROPERTY, &args);
+>> +
+>> +	return args.value;
+>> +}
+>> +
+>>   /**
+>>    * SUBTEST: invalid-va
+>>    * Description: Access invalid va and check for EIO through user fence.
+>> @@ -324,6 +340,17 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
+>>   	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE,
+>>   		       bind_exec_queues[0], NSEC_PER_SEC);
+>>   
+>> +	if ((flags & INVALID_FAULT)) {
+>> +		igt_set_timeout(1, "");
+>> +		for (i = 0; i < n_execs; i++) {
+>> +			int e = i % n_exec_queues;
+>> +				while (!get_ban_property(fd, eci, vm,
+>> +							 exec_queues[e]))
+>> +					sched_yield();
+>> +		}
+>> +		igt_reset_timeout();
+>> +	}
+>> +
+>>   	if (!(flags & INVALID_FAULT) && !(flags & INVALID_VA)) {
+>>   		for (i = j; i < n_execs; i++)
+>>   				igt_assert_eq(data[i].data, 0xc0ffee);
+>> -- 
+>> 2.42.0
+>>
