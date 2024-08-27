@@ -4,72 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5053CC54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:26:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62D9BC54731
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:34:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E881110E379;
-	Tue, 27 Aug 2024 16:26:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E1E010E386;
+	Tue, 27 Aug 2024 16:34:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="jg3ej891";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="Puc2S6wZ";
 	dkim-atps=neutral
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
- [209.85.221.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2852610E379
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:26:43 +0000 (UTC)
-Received: by mail-wr1-f49.google.com with SMTP id
- ffacd0b85a97d-371a13c7c80so3895045f8f.0
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 09:26:43 -0700 (PDT)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+ [209.85.221.50])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F63510E386
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:34:15 +0000 (UTC)
+Received: by mail-wr1-f50.google.com with SMTP id
+ ffacd0b85a97d-371b97cfd6fso3666665f8f.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 09:34:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1724776001; x=1725380801; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1724776454; x=1725381254; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=Q9lKIBKu3m9Ku35Ai2O9HpuM7oCyqHQS38WzI2gUQUM=;
- b=jg3ej891CtTEeEIAsrwdhp2DmYMi22YKpusK4c+f9+qcRtH73Q/RaeQfYmpx1FX+3B
- nhdAOEG86owP77y+JMShhDMLs6pqyFrfKY3bhwxM2b4nleEIYVucamGT6H0LVZISDhRT
- TBDovIrw+nL5iYYYDuZSKd9C7oLxh0QexBC9HWdFEN+E5Wu6mIpLtGQaBAflWDV4KJyi
- ObNHcsVp8E51sfJBP7gDXzPY8Qm/aYkF4wqqIA5CvT0C5e6TKeDsBwMA7p71Wa1LsqOS
- A9upH12HGbkV/KMbP4GxAaky7XUbNR2hMRcmlSaNe/p1C+ADn74OwCidXFfkqFhSPAU+
- bIUg==
+ bh=Fdd5E8daWX9R2OKo6nH8szNSyedqmYdQp9TWLKfAsiE=;
+ b=Puc2S6wZ1N/CDl4l6j1dfLfIriYPEo/8OIDcjrGhSM42WweQ9+is5PQHnCd8qDe/Dh
+ 9KQry7XJIF4KQ4JzFuBV9rw8ClXXM2viamvTfu1+kktpNaYOxD8PE9DKp3OiPPQ1B3TQ
+ duczZ4MezdyZ6L9Ea9mA/uu5L1F0xIGSlUma/084qeIu6pSA3V9oCQNo2mve6o3H1lf6
+ tmNLJnzx28GD3w1/32X1WUUQbZvCP2S2uSH165E3/o36EReLD/m3oTVR5Bb/Eu4Rh91/
+ rQ5/+TH3xUrypkPMt6fxGMqJTtL5UAEEODt7oFbDum2I1UeF680SpG+jt/HMG1PUGfOZ
+ Gj1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1724776001; x=1725380801;
+ d=1e100.net; s=20230601; t=1724776454; x=1725381254;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=Q9lKIBKu3m9Ku35Ai2O9HpuM7oCyqHQS38WzI2gUQUM=;
- b=Bfna/1+W2x15PkHRXrXxoM+eWby5YlAKRZ2dJD2VF/fnW8x9MEvxF6q36c4Nakz+mh
- NLRU0O0rwRkEo1DawijTDCDg2WD9IM45C7/PozvziYjVWOI3knvof5WU/AvBKhw6rHRh
- NQbkXmAuT+fmXdZ6ZwwMazFnndtyEQDvHUxxnRGtBHsRUivoSZ3Zng/swWqHrg+fsXHm
- nwphFHPNsD5JF1TN6LCwEk6oR2u0vfP0o4yFbITxwXg9lpWXcZntzFIi+vlkzf9RwBf5
- bpkH8KxP9BOZApIaP6Rgz7947Ndb46u4iQuIwrM5y/T8Q3Zv6/4K9sSmuHVhWbjMpb80
- T//g==
+ bh=Fdd5E8daWX9R2OKo6nH8szNSyedqmYdQp9TWLKfAsiE=;
+ b=UMAoO0XJe0VtCjO9aM8ZR71FwBR7luoWKi75WTRnLHBfhh2XtDT5cf+c4mRUIzZTzX
+ OSRJV2WkyOoD5MfZen9wXKK2i5r3eQnVAccA3oz5NGJ+G+4P68Zj6MBmw1ppMhqTKGw4
+ VnAyRB2333tdieiuwxH4gPVmWE47qJV/BGjPUmBm2P9ehuq+Rs1b/8FWsZPHPc2Nt7EQ
+ ImfUH3LcKVPlBX4JCdyW1PstONHUUpqigZXqOVMdFBzrc0Thw0H028qeMPQ3KacFDCe6
+ P1Zfu9gN+8oSebgG28qc8YKN3PGYQNST8FeIplbnowPYJgF0yJ9gbijPGEvvk9ySZcdr
+ lmdQ==
 X-Forwarded-Encrypted: i=1;
- AJvYcCU/7UHeoip6EW/pigbMSIa9VsngNLbmjQkhz/dQw2CXWkgEbfur5fLhEI5KEyQt6cS+qnUQ5EqC@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yzy/X0l6YztB9hbYuYs4HfBtV0KEZV31x2bNdXroWGQo5BJeD0O
- i5t+c9ecOwMA42baX/WSqQO3JYtbErem6LDYbi4RsvVQRsLxEhB4
-X-Google-Smtp-Source: AGHT+IHqRmm/4Ic4+IrQv4UCwlx85wSbDZYa7hH35KybT/G8vay0Xu2pmUm8L+9Py1oxgLRXUjDxWA==
-X-Received: by 2002:adf:e30e:0:b0:367:895f:619e with SMTP id
- ffacd0b85a97d-3748c8442a7mr2104142f8f.11.1724776001211; 
- Tue, 27 Aug 2024 09:26:41 -0700 (PDT)
+ AJvYcCX8/NkLOn9bnlz1zkOQDLOWQhQ+dQbzGzE6SuFuOMLPRa521uNK5HG+3rjS1MVJCHxbrn83HJmh@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YwWI+KeXj2UbhBFfVz2tR+NlTVbz2ZknOxKZ5DbaAvsWEae8SrC
+ W/JdbdaW9oHMjHoP8phxMQSFwuOBg0mu//yTEKSaTVgcE1JI5UCC
+X-Google-Smtp-Source: AGHT+IFcSL2VRLFBy+ocvNGbICdpvSKHYLeZ4WBpt1Bdv+MY310p6wLF/9nsjOUcu+T1CC5rRAuSxA==
+X-Received: by 2002:a5d:4fce:0:b0:368:41e0:16c0 with SMTP id
+ ffacd0b85a97d-3748c7cf611mr2522559f8f.22.1724776453676; 
+ Tue, 27 Aug 2024 09:34:13 -0700 (PDT)
 Received: from [0.0.0.0] ([134.134.139.73])
  by smtp.googlemail.com with ESMTPSA id
- 5b1f17b1804b1-42ac514e088sm196788985e9.8.2024.08.27.09.26.39
+ ffacd0b85a97d-3730817ae1fsm13581159f8f.65.2024.08.27.09.34.11
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 27 Aug 2024 09:26:40 -0700 (PDT)
-Message-ID: <eb64f3e6-c60d-466d-8f7c-55656dd11632@gmail.com>
-Date: Tue, 27 Aug 2024 19:26:35 +0300
+ Tue, 27 Aug 2024 09:34:13 -0700 (PDT)
+Message-ID: <7d4997f0-591e-4db4-8f5a-69097e80c96e@gmail.com>
+Date: Tue, 27 Aug 2024 19:34:06 +0300
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 14/37] lib/igt_fb: Extract
- is_gen12_rc_ccs_cc_modifier()
+Subject: Re: [PATCH i-g-t 15/37] lib/igt_fb: Extract ccs_needs_enginecopy()
 To: Ville Syrjala <ville.syrjala@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
- <20240702232817.31147-15-ville.syrjala@linux.intel.com>
+ <20240702232817.31147-16-ville.syrjala@linux.intel.com>
 Content-Language: en-US
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240702232817.31147-15-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240702232817.31147-16-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -93,40 +92,66 @@ Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 On 3.7.2024 2.27, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Extract a helper to identify the clear color compressed modifiers.
+> We have two copies of the code to determine if CCS needs to
+> use enginecopy. Extract the code to a helper.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->   lib/igt_fb.c | 13 +++++++++----
->   1 file changed, 9 insertions(+), 4 deletions(-)
+>   lib/igt_fb.c | 29 +++++++++++++++++++++--------
+>   1 file changed, 21 insertions(+), 8 deletions(-)
 > 
 > diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 857ffb6547a3..c48a61b5f148 100644
+> index c48a61b5f148..6c9b4b7f3107 100644
 > --- a/lib/igt_fb.c
 > +++ b/lib/igt_fb.c
-> @@ -594,15 +594,20 @@ static bool is_gen12_mc_ccs_modifier(uint64_t modifier)
->   		modifier == I915_FORMAT_MOD_4_TILED_MTL_MC_CCS;
+> @@ -2494,17 +2494,29 @@ static bool block_copy_ok(const struct igt_fb *fb)
+>   					       fb_tile_to_blt_tile(fb->modifier));
 >   }
 >   
-> +static bool is_gen12_rc_ccs_cc_modifier(uint64_t modifier)
+> +static bool ccs_needs_enginecopy(const struct igt_fb *fb)
 > +{
-> +	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
-> +		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
-> +		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+> +	if (is_gen12_mc_ccs_modifier(fb->modifier))
+> +		return true;
+> +
+> +	if (is_ccs_modifier(fb->modifier) &&
+> +	    !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
+> +		return true;
+> +
+> +	return false;
 > +}
 > +
->   static bool is_gen12_ccs_modifier(uint64_t modifier)
+>   static bool blitter_ok(const struct igt_fb *fb)
 >   {
->   	return is_gen12_mc_ccs_modifier(modifier) ||
-> +		is_gen12_rc_ccs_cc_modifier(modifier) ||
->   		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS ||
-> -		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
->   		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS ||
-> -		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
-> -		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS ||
-> -		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
-> +		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS;
+>   	if (!is_intel_device(fb->fd))
+>   		return false;
+>   
+> -	if ((!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) &&
+> -	    is_ccs_modifier(fb->modifier)) ||
+> -	    is_gen12_mc_ccs_modifier(fb->modifier) ||
+> -	    (!blt_uses_extended_block_copy(fb->fd) &&
+> +	if (ccs_needs_enginecopy(fb))
+> +		return false;
+> +
+> +	if (!blt_uses_extended_block_copy(fb->fd) &&
+>   	    fb->modifier == I915_FORMAT_MOD_X_TILED &&
+> -	    is_xe_device(fb->fd)))
+> +	    is_xe_device(fb->fd))
+>   		return false;
+>   
+>   	if (is_xe_device(fb->fd))
+> @@ -2544,10 +2556,11 @@ static bool use_enginecopy(const struct igt_fb *fb)
+>   	if (blitter_ok(fb))
+>   		return false;
+>   
+> +	if (ccs_needs_enginecopy(fb))
+> +		return true;
+> +
+>   	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+> -	       fb->modifier == I915_FORMAT_MOD_X_TILED ||
+> -	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
+> -	       is_gen12_mc_ccs_modifier(fb->modifier);
+> +		fb->modifier == I915_FORMAT_MOD_X_TILED;
 >   }
 >   
->   static bool is_ccs_modifier(uint64_t modifier)
+>   static bool use_blitter(const struct igt_fb *fb)
 
