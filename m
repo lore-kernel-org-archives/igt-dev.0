@@ -4,54 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A041C54731
-	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:55:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA0CC5472F
+	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:55:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E77EA10E3B9;
-	Tue, 27 Aug 2024 16:55:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 49C9210E3AE;
+	Tue, 27 Aug 2024 16:55:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kHzTYkiU";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="GjaGDlAE";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E73D310E3B1
- for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:54:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724777697; x=1756313697;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=gZPoxqxK82Ye7BgTb2/Y7XxnNcoEE87xSe6TBl6F6wM=;
- b=kHzTYkiUCWpXcaHIILHovLj1kyo7b3hqop1EDwWP8VAZOax+mGESPzD/
- zE51bPEvfW0exwDAmSCJtT/SwPkL+WN3xhUkNce+vQMNTm56icPNMW6am
- lvYjp4xl04uXnByL/yBjwzeKuvcBzTHydlXC4pTM0L2nvt3geTQuUq3BL
- Q5fk/JEpdDU/FqB3qxU7dxFP0WNuzy3psl7rmGZ3n4Rh2rRoZuFWTJUDl
- 4r6zky7ig3R39e3VFwfpjfFLlp343azF3X9nywhXRPUb05XCnfgl4Z+bS
- /3G99VD/q4PAb8jaSZfwy1kY17F/xjOlAvOpjjdHKC1baIiX2riB9QZyC A==;
-X-CSE-ConnectionGUID: PJ8LGa/AQwWEC3SjeZHNYg==
-X-CSE-MsgGUID: 8VVi98pxSrSobjMoGz+syQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="45787336"
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="45787336"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2024 09:54:56 -0700
-X-CSE-ConnectionGUID: XHXJyUCXTVijLO/Ca7ZX8Q==
-X-CSE-MsgGUID: nmohmSRvTdOZ82R5G9Lkyg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63640432"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2024 09:54:57 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v3 08/10] tests/intel/xe_drm_fdinfo: Remove unused flags
-Date: Tue, 27 Aug 2024 09:54:47 -0700
-Message-ID: <20240827165449.1706784-9-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240827165449.1706784-1-lucas.demarchi@intel.com>
-References: <20240827165449.1706784-1-lucas.demarchi@intel.com>
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+ [209.85.128.45])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C8A4910E3AE
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:55:53 +0000 (UTC)
+Received: by mail-wm1-f45.google.com with SMTP id
+ 5b1f17b1804b1-42809d6e719so50491695e9.3
+ for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 09:55:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1724777752; x=1725382552; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=FY858mX1jtuGYD7F3iG0Z+cOD2JGI4SZnS0wG0PHqf0=;
+ b=GjaGDlAEU/gYm7WaKZn2YeTYHbfLz1T7VKKmI0XjQZ78W0lJA8iJn5a8n+CfGa5x8b
+ h/tTnYOe6fBvLK96kw7MgLHBe67WFIJJYQX7lWf2iXuf+NGzWZS/6Vaj1AdfujWG0RBP
+ 8+wbr0ibgcbtzMcyI+4t/Myr9Tc/N3CwD1wYZI78NgDmzWLbASJs1B4OhSMdpiV1Hl7A
+ W6Un4wjYsQ7nKlV7uxnfrPnBDtH4kuGFNVh/dN43hLYVyYgLXVwpopxDnyW3mFFBGKmG
+ ffPGZaTIhHdLW7hF8507XcsDqz6sMJQ/H2Sc+sD/uY3pfBl2iuA75IVPCiIUsYakYTDs
+ 07oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1724777752; x=1725382552;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=FY858mX1jtuGYD7F3iG0Z+cOD2JGI4SZnS0wG0PHqf0=;
+ b=ZemM4yuYt+QUx7bBQUyytKfMILQko8vwZ6l63nAgVqZOO4Z/VcpiDkOL/l84oJNcZC
+ lhBD20aztp2GsTkO2V/SAVw4Yib5TYVd62R7fAbpvKEYlUifH8LTBIxfUfz2V2yiYNuM
+ B7EFe0npIFLTxErb+o3dLLTqeeRN6R8ajFu9GYFbF//toPEn/FmeT+rcCf9jqQf/j3pX
+ T2iFCQWYZq8Q1P/ENyi6tIKtg8KACgz/hH7PlFVd5fSBeCqJxZz53v87V6oqklQtSJ/C
+ mS2zqrw4Ow7lcKzaHYtc4XhrB8FC7yQUh/3aeFyQ8T8gOb1g+VsRh7BWI9cupMJdPqau
+ l6vA==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCV/izZm2ruUo69geEK0+dk5ZmjfRi9CIb3z5qxYGswMNdOWMH25diJ+kHQ16UAXBUoGuPiZ3UeI@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YxC0IFCeWOgL6ppblZ/MN3wtBTx0rd/U7qbVmwpu5rAZW6We6ON
+ nnYDOTkEsVQ9xfBnbjhPaXenvf/MVbPKW5qu7S4xMLlBjg0RjRmg
+X-Google-Smtp-Source: AGHT+IGyxZibccpTGMennup2fPmee0xFpOpJ88XXkIDe6Ndp5HopPJdWebHGiYFp4FduPVqmBq1mRA==
+X-Received: by 2002:a05:600c:3c89:b0:427:b995:5bd0 with SMTP id
+ 5b1f17b1804b1-42acc8ff81emr95779745e9.23.1724777751794; 
+ Tue, 27 Aug 2024 09:55:51 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.139.73])
+ by smtp.googlemail.com with ESMTPSA id
+ 5b1f17b1804b1-42ac500e119sm194211425e9.0.2024.08.27.09.55.49
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 27 Aug 2024 09:55:51 -0700 (PDT)
+Message-ID: <c55abd24-bb92-440a-8665-7d64f3bb480d@gmail.com>
+Date: Tue, 27 Aug 2024 19:55:45 +0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 23/37] lib/igt_fb: Fix planar block copy
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20240702232817.31147-1-ville.syrjala@linux.intel.com>
+ <20240702232817.31147-24-ville.syrjala@linux.intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20240702232817.31147-24-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,186 +83,74 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-single() is the only test function that is used by multiple kinds of
-tests and controlled by flags. The others simply pass the same flags
-every time. Simplify the tests by removing the bogus checks.
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/intel/xe_drm_fdinfo.c | 81 +++++++++++++++++--------------------
- 1 file changed, 38 insertions(+), 43 deletions(-)
-
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 46c96dbe0..23edeea40 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -538,7 +538,7 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- }
- 
- static void
--busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
-+busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -547,20 +547,20 @@ busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int fl
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		ctx = spin_ctx_init(fd, hwe, vm);
--		spin_sync_start(fd, ctx);
--	}
-+
-+	ctx = spin_ctx_init(fd, hwe, vm);
-+	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		spin_sync_end(fd, ctx);
-+	spin_sync_end(fd, ctx);
- 	read_engine_cycles(fd, pceu2);
- 
--	xe_for_each_engine_class(class)
--		check_results(pceu1, pceu2, class,
--			      hwe->engine_class == class ? flags : 0);
-+	xe_for_each_engine_class(class) {
-+		bool idle = hwe->engine_class != class;
-+
-+		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
-+	}
- 
- 	spin_sync_end(fd, ctx);
- 	spin_ctx_destroy(fd, ctx);
-@@ -594,8 +594,7 @@ single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
- }
- 
- static void
--most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
--		    unsigned int flags)
-+most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -605,32 +604,31 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		/* spin on one hwe per class except the target class hwes */
--		xe_for_each_engine(fd, _hwe) {
--			int _class = _hwe->engine_class;
- 
--			if (_class == hwe->engine_class || ctx[_class])
--				continue;
-+	/* spin on one hwe per class except the target class hwes */
-+	xe_for_each_engine(fd, _hwe) {
-+		int _class = _hwe->engine_class;
- 
--			ctx[_class] = spin_ctx_init(fd, _hwe, vm);
--			spin_sync_start(fd, ctx[_class]);
--		}
-+		if (_class == hwe->engine_class || ctx[_class])
-+			continue;
-+
-+		ctx[_class] = spin_ctx_init(fd, _hwe, vm);
-+		spin_sync_start(fd, ctx[_class]);
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		xe_for_each_engine_class(class)
--			spin_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class)
-+		spin_sync_end(fd, ctx[class]);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
-+		bool idle = hwe->engine_class == class;
-+
- 		if (!ctx[class])
- 			continue;
- 
--		check_results(pceu1, pceu2, class,
--			      hwe->engine_class == class ? 0 : flags);
-+		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
- 	}
-@@ -639,7 +637,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- }
- 
- static void
--all_busy_check_all(int fd, unsigned int flags)
-+all_busy_check_all(int fd)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -649,31 +647,28 @@ all_busy_check_all(int fd, unsigned int flags)
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		/* spin on one hwe per class */
--		xe_for_each_engine(fd, hwe) {
--			class = hwe->engine_class;
- 
--			if (ctx[class])
--				continue;
-+	/* spin on one hwe per class */
-+	xe_for_each_engine(fd, hwe) {
-+		class = hwe->engine_class;
-+		if (ctx[class])
-+			continue;
- 
--			ctx[class] = spin_ctx_init(fd, hwe, vm);
--			spin_sync_start(fd, ctx[class]);
--		}
-+		ctx[class] = spin_ctx_init(fd, hwe, vm);
-+		spin_sync_start(fd, ctx[class]);
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		xe_for_each_engine_class(class)
--			spin_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class)
-+		spin_sync_end(fd, ctx[class]);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
- 		if (!ctx[class])
- 			continue;
- 
--		check_results(pceu1, pceu2, class, flags);
-+		check_results(pceu1, pceu2, class, TEST_BUSY);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
- 	}
-@@ -715,14 +710,14 @@ igt_main
- 
- 	igt_subtest("drm-busy-idle-check-all")
- 		xe_for_each_engine(xe, hwe)
--			busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+			busy_check_all(xe, hwe);
- 
- 	igt_subtest("drm-most-busy-idle-check-all")
- 		xe_for_each_engine(xe, hwe)
--			most_busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+			most_busy_check_all(xe, hwe);
- 
- 	igt_subtest("drm-all-busy-idle-check-all")
--		all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
-+		all_busy_check_all(xe);
- 
- 	igt_subtest("drm-busy-exec-queue-destroy-idle")
- 		xe_for_each_engine(xe, hwe)
--- 
-2.43.0
+On 3.7.2024 2.28, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> The block copy code tries to handle planar formats by blitting
+> each color plane separately. But it incorrectly picks some of
+> the parameters (size, bpp, etc.) from the first color plane
+> instead of the one it's actually copying. Pick the parameters
+> from the correct color plane.
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>   lib/igt_fb.c | 14 ++++++++------
+>   1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index c0b157ee44fa..64be4bffdea8 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -2802,7 +2802,8 @@ static struct blt_copy_object *allocate_and_initialize_blt(const struct igt_fb *
+>   		       igt_fb_is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
+>   		       igt_fb_is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
+>   
+> -	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
+> +	blt_set_geom(blt, stride, 0, 0,
+> +		     fb->plane_width[plane], fb->plane_height[plane], 0, 0);
+>   	blt->plane_offset = fb->offsets[plane];
+>   
+>   	return blt;
+> @@ -2848,9 +2849,10 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+>   	return blt;
+>   }
+>   
+> -static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
+> +static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb,
+> +					int color_plane)
+>   {
+> -	switch (fb->plane_bpp[0]) {
+> +	switch (fb->plane_bpp[color_plane]) {
+>   	case 8:
+>   		return CD_8bit;
+>   	case 16:
+> @@ -2995,19 +2997,19 @@ static void do_block_copy(const struct igt_fb *src_fb,
+>   	igt_assert(src && dst);
+>   
+>   	blt_copy_init(src_fb->fd, &blt);
+> -	blt.color_depth = blt_get_bpp(src_fb);
+> +	blt.color_depth = blt_get_bpp(src_fb, i);
+>   	blt_set_copy_object(&blt.src, src);
+>   	blt_set_copy_object(&blt.dst, dst);
+>   
+>   	if (blt_uses_extended_block_copy(src_fb->fd)) {
+>   		blt_set_object_ext(&ext.src,
+>   				   blt_compression_format(&blt, src_fb),
+> -				   src_fb->width, src_fb->height,
+> +				   src_fb->plane_width[i], src_fb->plane_height[i],
+>   				   SURFACE_TYPE_2D);
+>   
+>   		blt_set_object_ext(&ext.dst,
+>   				   blt_compression_format(&blt, dst_fb),
+> -				   dst_fb->width, dst_fb->height,
+> +				   dst_fb->plane_width[i], dst_fb->plane_height[i],
+>   				   SURFACE_TYPE_2D);
+>   		pext = &ext;
+>   	}
 
