@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2669EC5472F
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 907C9C54739
 	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 05:42:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D330C10E245;
-	Tue, 27 Aug 2024 05:42:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5DCC10E259;
+	Tue, 27 Aug 2024 05:42:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lj8vg9v+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JMgMZhs+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E99510E03D
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4210110E02A
  for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 05:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1724737374; x=1756273374;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=s5onfmEJAjn+W0LjuJquAHhQArSvS/lu6CGftKyoJJM=;
- b=Lj8vg9v+9mGMRlC8wtzFO558WrF0H3Fi3WqkVI9uBqQ3/736y8G/nnQR
- xqcQTKj+/Qo/GWRxyC0B1UCn7XEb9ppOAPut1dyA9HoLYCv+lRmD0WreA
- lcdaQBLAMy72kyQKG438Mw23tiir/T3HySwxFvfPqI45VXTwwAMrjlawi
- QLy/bt7kOXbmgSqvyzxkBJUBG8ccFp8JhDgpWEx9EytSY3qevEyKgZxF/
- 2XCGPShZC+bs/dcOVK8gvOuHBKf8tS1FnvHdPSbdo8TAap7SvkSpfIZrz
- 9hba3BXhzf+OVrEC+LIanntZqjMej+h8B4/Ozt3NcijxAyKdAdrYtTSzl g==;
-X-CSE-ConnectionGUID: bTsQBNAtS5in9fUdwrUjhA==
-X-CSE-MsgGUID: ctwvDq5tRhes4AeEL6AAuQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23372153"
-X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="23372153"
+ bh=IQ4pPwxuqSJDjwWflDe4xYv2cYrM61tcbk+MNYmZoS8=;
+ b=JMgMZhs+2Za3RZuCpKKu6NWfu5lu1HEeOcJv+Cgw5BTVTHMAfhndrx/m
+ 1iM6smhyL0fPDTsb6ZMcbxG/n8/4+UJdXnjdKFE86Nhk6juolBSerKiQS
+ wLJxvnkwflLGfutL8z6xSlAICE+3cJ/aBNKrvuY7ui+QGGH/p8SCWawwj
+ 6Cr0hNNt6dWBtBIAhJ/B4aCxsA//VPP8tzoRpPSV5lqRarwusNkXrg9ah
+ Iu5H31JI23fNwRhlrNhFSdCO9h9vCW4hMfuG92UOkHXws7l64G7f66xLp
+ pZ/zI3UgwA6MdN1W9KDi5UxeHiwCRQ3Bx/b1HvHdYm82U5KkvxaqQ2Q/4 Q==;
+X-CSE-ConnectionGUID: tJllWhnrT5iK4i6Jvb85Rw==
+X-CSE-MsgGUID: DRL0EQj+ReuecFlDiNRpsw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23372149"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="23372149"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  26 Aug 2024 22:42:54 -0700
-X-CSE-ConnectionGUID: w08qdXAbSWmYbBBm3RRdlg==
-X-CSE-MsgGUID: D6bWTmQgTSOlMcQ/H9O7TA==
+X-CSE-ConnectionGUID: NxHq6omISXi/QjtMDTnC7Q==
+X-CSE-MsgGUID: 4rZg0qZDTfe/ITbkky2JRw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="67556988"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; d="scan'208";a="67556976"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2024 22:42:54 -0700
+ 26 Aug 2024 22:42:53 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 06/10] tests/intel/xe_drm_fdinfo: Use usec for batch
- duration
-Date: Mon, 26 Aug 2024 22:42:18 -0700
-Message-ID: <20240827054223.1671414-7-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 02/10] tests/intel/xe_drm_fdinfo: Print timestamp for
+ debug
+Date: Mon, 26 Aug 2024 22:42:14 -0700
+Message-ID: <20240827054223.1671414-3-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240827054223.1671414-1-lucas.demarchi@intel.com>
 References: <20240827054223.1671414-1-lucas.demarchi@intel.com>
@@ -69,71 +69,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-It's only used to control the time to usleep(), so use a better unit.
+xe_spin is capable of writing the timestamp from the GPU side. This is a
+good way to compare what we are reading from the fdinfo with what the
+GPU is seeing. Example output:
+
+(xe_drm_fdinfo:10404) DEBUG: rcs: spinner ended (timestamp=9817720)
+(xe_drm_fdinfo:10404) DEBUG: bcs: spinner ended (timestamp=9755785)
+(xe_drm_fdinfo:10404) DEBUG: vecs: spinner ended (timestamp=9653024)
+(xe_drm_fdinfo:10404) DEBUG: ccs: spinner ended (timestamp=9722776)
+(xe_drm_fdinfo:10404) DEBUG: rcs: sample 1: cycles 19513436, total_cycles 130596422980
+(xe_drm_fdinfo:10404) DEBUG: rcs: sample 2: cycles 29331470, total_cycles 130606141449
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_drm_fdinfo.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ tests/intel/xe_drm_fdinfo.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index ad563aa20..96468e1be 100644
+index e3a99a2dc..074a89711 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -73,7 +73,7 @@ struct pceu_cycles {
- 	uint64_t total_cycles;
- };
+@@ -416,6 +416,7 @@ spin_sync_start(int fd, struct spin_ctx *ctx)
+ 		return;
  
--const unsigned long batch_duration_ns = (1 * NSEC_PER_SEC) / 2;
-+const unsigned long batch_duration_usec = (1 * USEC_PER_SEC) / 2;
+ 	ctx->spin_opts.addr = ctx->addr;
++	ctx->spin_opts.write_timestamp = true;
+ 	ctx->spin_opts.preempt = true;
+ 	xe_spin_init(ctx->spin, &ctx->spin_opts);
  
- static const char *engine_map[] = {
- 	"rcs",
-@@ -516,7 +516,7 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- 	if (flags & TEST_ISOLATION)
- 		read_engine_cycles(new_fd, pceu1[1]);
+@@ -448,7 +449,8 @@ spin_sync_end(int fd, struct spin_ctx *ctx)
+ 	igt_assert(syncobj_wait(fd, &ctx->sync[0].handle, 1, INT64_MAX, 0, NULL));
  
--	usleep(batch_duration_ns / 1000);
-+	usleep(batch_duration_usec);
- 	if (flags & TEST_TRAILING_IDLE)
- 		spin_sync_end(fd, ctx);
+ 	ctx->ended = true;
+-	igt_debug("%s: spinner ended\n", engine_map[ctx->class]);
++	igt_debug("%s: spinner ended (timestamp=%u)\n", engine_map[ctx->class],
++		  ctx->spin->timestamp);
+ }
  
-@@ -552,7 +552,7 @@ busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int fl
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
--	usleep(batch_duration_ns / 1000);
-+	usleep(batch_duration_usec);
- 	if (flags & TEST_TRAILING_IDLE)
- 		spin_sync_end(fd, ctx);
- 	read_engine_cycles(fd, pceu2);
-@@ -579,7 +579,7 @@ single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
- 	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
--	usleep(batch_duration_ns / 1000);
-+	usleep(batch_duration_usec);
- 
- 	/* destroy queue before sampling again */
- 	spin_sync_end(fd, ctx);
-@@ -618,7 +618,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
--	usleep(batch_duration_ns / 1000);
-+	usleep(batch_duration_usec);
- 	if (flags & TEST_TRAILING_IDLE)
- 		xe_for_each_engine_class(class)
- 			spin_sync_end(fd, ctx[class]);
-@@ -662,7 +662,7 @@ all_busy_check_all(int fd, unsigned int flags)
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
--	usleep(batch_duration_ns / 1000);
-+	usleep(batch_duration_usec);
- 	if (flags & TEST_TRAILING_IDLE)
- 		xe_for_each_engine_class(class)
- 			spin_sync_end(fd, ctx[class]);
+ static void
 -- 
 2.43.0
 
