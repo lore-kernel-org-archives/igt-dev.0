@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330BBC5473D
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 674A7C5473E
 	for <igt-dev@archiver.kernel.org>; Tue, 27 Aug 2024 16:54:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA6E010E3B3;
-	Tue, 27 Aug 2024 16:54:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D06010E3B6;
+	Tue, 27 Aug 2024 16:54:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WxJcdMdF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="juoqfgyX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DD0810E3B0
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA43210E3AF
  for <igt-dev@lists.freedesktop.org>; Tue, 27 Aug 2024 16:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724777696; x=1756313696;
+ t=1724777697; x=1756313697;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=LQQSXTNeVnmCNb/Mc0XqWMaXY8/d7Fvid+kizd6bauU=;
- b=WxJcdMdFnIFgu0CkgDp/G1mZh1dPBA6CGFB8bp/xIiRC4bwe32wnOegb
- pu8aTSFYbCLzIc3Ley7IDfjEu/id+7RBuFAmyau7CIvAIwoMftntoDqq6
- fHNtuJHODVjRzzQs6SVlexaxIjs9frV9qXZm7bdAYIRHP/DnyRKveoEht
- khSRaFVNyXFwew+n8a742o2v9zTDt9zaAaCU9fV9SZR5HsuKbueY3dU1T
- s92lalCkJP4ZEX1WqJCsosVX11bieKRaPpm2X01lIF079G24Fv/gQvreY
- DVDZvV1ywK1FLkca28c+GWrpyer8QEYeh7LwkpleKCGCgbKtdxK7MhBis w==;
-X-CSE-ConnectionGUID: HjltIQOdSF2kUVHa9/YJcg==
-X-CSE-MsgGUID: rwmMVS5FSsGg2yLVrRedRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="45787329"
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="45787329"
+ bh=UFtmpcsgVSVPuGhRN6v+CssCY2TGi6CnhV6M5cvjSrE=;
+ b=juoqfgyXPR3CAwLRoQoaT0QvE5h8uWr2SndpWhMw7cuzt1h+7yVPavZk
+ /eOof0miN67EsDyH0XudRxtX6tNDAGy5+0Pn78e4CMJkeF/DabSCx/jya
+ 17XBq6gdEVdfs2lfwfJo3dCzl3sWzkGz6bnepyQM6RsA59qgywib6j3Zs
+ NBa8bgvQ2uUbh4VQJi1Z2r9SUM9oYAiUbpjCMOOhkxdU7wIaohWgSRemY
+ Uct9vBkaRuBZKuSkj5KAEPeuK5DcTOZu3bb9BdXQCw72S1KDGVRzdryoc
+ iJdTUYGxaP2PBo6gNFL1xtGcGrFs/pDOMQRPPQSP/GfxoGlIsoU4xX6SC A==;
+X-CSE-ConnectionGUID: LphXFTYAR6++gG34fZD6WA==
+X-CSE-MsgGUID: dh26OsOIQlKwQ3Kan7MmiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="45787335"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="45787335"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Aug 2024 09:54:56 -0700
-X-CSE-ConnectionGUID: KMKXiV6VTbaZeBlHGqIuIQ==
-X-CSE-MsgGUID: DvNYIS3qTJez9u7e755Lzw==
+X-CSE-ConnectionGUID: HxHBhxXxTyKvBllVXKejFw==
+X-CSE-MsgGUID: CpV9/DxKQ6ic/DsL5R0kMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63640411"
+X-IronPort-AV: E=Sophos;i="6.10,180,1719903600"; d="scan'208";a="63640429"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  27 Aug 2024 09:54:57 -0700
@@ -45,10 +45,10 @@ From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v3 01/10] tests/intel/xe_drm_fdinfo: Extend mercy to the
- upper end
-Date: Tue, 27 Aug 2024 09:54:40 -0700
-Message-ID: <20240827165449.1706784-2-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t v3 07/10] tests/intel/xe_drm_fdinfo: Half the execution
+ time
+Date: Tue, 27 Aug 2024 09:54:46 -0700
+Message-ID: <20240827165449.1706784-8-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240827165449.1706784-1-lucas.demarchi@intel.com>
 References: <20240827165449.1706784-1-lucas.demarchi@intel.com>
@@ -69,39 +69,9 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When we are processing the fdinfo of each client, the gpu time is read
-first, and then later all the exec queues are accumulated. It's thus
-possible that the total gpu time is smaller than the time reported in
-the exec queues. A preemption in the middle of second sample would
-exaggerate the problem:
-				  total_cycles	      cycles
-	s1: read exec queues times			*
-	s1: read gpu time		|		*
-	.				|		*
-	.				|		*
-	.				|		*
-	-> xe_spin_end()		|		*
-	s2: read exec queues times	|
-	s2: read gpu time		|
-
-There's nothing guaranteeing and atomic read between the gpu time and
-exec_queue time in either s1 or s2. Due to the call to xe_spin_end(),
-in which exec_queue tick stops and gpu tick continues, it's much more
-likely delta_total_cycles > cycles. However, if there was any additional
-delay between the readout in s1, it could also go the other way.
-
-In a more realistic situation, as reported in CI:
-
-	(xe_drm_fdinfo:1072) DEBUG: rcs: sample 1: cycles 29223333, total_cycles 5801623069
-	(xe_drm_fdinfo:1072) DEBUG: rcs: sample 2: cycles 38974256, total_cycles 5811276365
-	(xe_drm_fdinfo:1072) DEBUG: rcs: percent: 101.000000
-
-Extend the same mercy to the upper end as we did to the lower end.
-This also matches the tolerance applied on the i915 side in
-tests/intel/drm_fdinfo.c:__assert_within_epsilon().
-
-v2: Fix the commit message since the problem is actually on sample1, not
-    sample2
+No need to do 500 msec per subtest. As we add more tests, the total
+execution time of ~ 2.5 sec per subtest make it take too long. Sleep
+half the time to lower the execution time.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
@@ -109,18 +79,18 @@ Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 4696c6495..e3a99a2dc 100644
+index 9fb739fba..46c96dbe0 100644
 --- a/tests/intel/xe_drm_fdinfo.c
 +++ b/tests/intel/xe_drm_fdinfo.c
-@@ -484,7 +484,7 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
- 	igt_debug("%s: percent: %f\n", engine_map[class], percent);
+@@ -73,7 +73,7 @@ struct pceu_cycles {
+ 	uint64_t total_cycles;
+ };
  
- 	if (flags & TEST_BUSY)
--		igt_assert(percent >= 95 && percent <= 100);
-+		igt_assert(percent >= 95 && percent <= 105);
- 	else
- 		igt_assert(!percent);
- }
+-const unsigned long batch_duration_usec = (1 * USEC_PER_SEC) / 2;
++const unsigned long batch_duration_usec = (1 * USEC_PER_SEC) / 4;
+ 
+ static const char *engine_map[] = {
+ 	"rcs",
 -- 
 2.43.0
 
