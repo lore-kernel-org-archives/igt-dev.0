@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91C67C636F0
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Aug 2024 17:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1686C636ED
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Aug 2024 17:27:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47D3910E3EC;
-	Wed, 28 Aug 2024 17:27:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 473D910E499;
+	Wed, 28 Aug 2024 17:27:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="g15SaKGO";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="cPHjBjlH";
 	dkim-atps=neutral
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
  [217.70.183.193])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6066110E384
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 17:27:04 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 80DAD240006;
- Wed, 28 Aug 2024 17:27:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A739010E384
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 17:27:05 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D9F44240009;
+ Wed, 28 Aug 2024 17:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1724866023;
+ t=1724866024;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=XvwZKa7QEhwt4mA7g3ocxVRR8A4sRlGtsYK7+9fMJcE=;
- b=g15SaKGO4IwlLx6bgFSl2MttswDH4yEvRY20xTHTFnrASYxAm8b1t/j7QjS/atmv24obrK
- MH1e1RD4sv80d6DRxLu4FG/Hq3AOle+zYhbbKWEVjPPjw+tQU/KsjE2jZYbBLDt7PBUVJ1
- TYK4CjsATjTrVhdBEisP1iPTLDj9R4QrUOTj6xg736JLnps4v9rt1FCv3yJy3zm+5FgXVf
- DlJVs64bFG0xAnAI+OrqIx8WEZA22L2vlMep/HxZu5YQ6b3QX3AscVyEyKlyLxH6KcwM2F
- 9/0nLXwymmktGEMKU95jMrqD41mpfo3W/zK5eSCGM+xPPMN7PJLU+7NzLt0UQQ==
+ bh=fD1OXzu3/mObBGIQJjcmILoxosKOK3Nx42x67b5s+XM=;
+ b=cPHjBjlHojT+nT9xOE2y1DnUITqQbe/xFH3qN5rdpfHx9+C2XdWvcoebw14WdQmn2wSi34
+ c7Ea7MFBdNV7Gpm+FMKk39Tc4V1RVanljsCLGPlF/UF67OT8sbjhIxke1gHSMQlqj679Xa
+ yfo1SUkjp09oUBQUkCyIK8moO/ik9g5rx1/MV4xVXtOa68eWoR7MIFICrf4Cxbu2RF+abB
+ daVvktspy//t8/AxmrlkKpzRJinQjGQDsJuAfMt2gvaW9QiGRpyGcTzdXzhm7H6sp2lJNn
+ b9iCIk91iIiBDYm+Tu+BKSnVOGkGaq+ffkh5BV56mPHYICFptBNM5xmUhEBKgw==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Aug 2024 19:26:36 +0200
-Subject: [PATCH i-g-t 2/5] lib/monitor_edids: Add helper to get an EDID by
- its name
+Date: Wed, 28 Aug 2024 19:26:38 +0200
+Subject: [PATCH i-g-t 4/5] lib/monitor_edids: Fix missing names in some
+ monitor EDID
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240828-b4-cv3-02-monitor-edids-v1-2-29c846bcf251@bootlin.com>
+Message-Id: <20240828-b4-cv3-02-monitor-edids-v1-4-29c846bcf251@bootlin.com>
 References: <20240828-b4-cv3-02-monitor-edids-v1-0-29c846bcf251@bootlin.com>
 In-Reply-To: <20240828-b4-cv3-02-monitor-edids-v1-0-29c846bcf251@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -50,21 +50,21 @@ Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  seanpaul@google.com, jeremie.dautheribes@bootlin.com, markyacoub@google.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3094;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1565;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=LVODf8sSfHosRxzKWPKydrAnQd+E3zM/TgT6TRodAiE=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmz13jCP/p6kLsp/lXhzOtU3juUCkQdouhopJKs
- hBOBOOgwHSJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZs9d4wAKCRAgrS7GWxAs
- 4tDMEADEKkjO8YOzYdmxmxZTamzbidIP22P8mDtam2+N8gIVYpw/uxiyvWlsotsOWvcJJbgj3aX
- vq/IVmSToMmgbZHsOS5gluWKPnBeEhcx2JI2aYyaHXjc5UyTT+Ckz3CH6fJCGDxUzaVKljgMiID
- rreNMqKY4oZ3CIk3JDmEsW7CrlHSXAd4TK+OD4FOt6KmwGwf8UoBnbSgmlofck6qgKVsrF3PmAm
- EkwfuxNaYEs4FTAiyjbBOqzu0moXG+PowXPRu4Oder4Jrw8YvMJiHzdC7BN+wkKTCcTib2pJ01i
- nHByDEE7UXRsnBhcCeBYOm7C5Xiavdny4Ej7TPI0dJSx6NXm4c87xcDRGOOky3hYj3Ja0MMf2Mw
- QJtWpkMycJ8dOBvdeAb6PHfbq7f7mySCaH9UUzDgniORrsWfY/dkL+ShLw5HyYeoy4sgOenrAO2
- UbUOjbqvLGsWl8+Jrd5e0ei5U1QZ4xonuVMqcTO7UvJoEOxCCY1/oCgFnPmuakO5QPYx2T9jxoQ
- 0Cs1yANZY8Gi24L1cjceLFWNHZ1mqMcL+rWLwR0wBWgKyKyJOyLeYi9+RqmiQiDFaCZS9NU4gtL
- 9RNhaJmjWFO9TJ8o87cskOA9JnAcCEBiaHqT7k0HfiAU0jGdbmYJwabnK3czc0McoFRnQiPkMPE
- Zf4Q+uuGzB648wQ==
+ bh=aZiJ4OURHKoQiaNRRMc7VzrXBjvrN3YO4SIG9ZsKFwg=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmz13k2kPFwY7clxSDgnOGpTjjCz69yDKmfKdQO
+ 9NibE7As+uJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZs9d5AAKCRAgrS7GWxAs
+ 4vc/D/4+iBM7hYH1qOTZRBKtUxnba4PfpNXkLfmlnN2ImVLiDyGSLU6VDYPq9m+39KEFij25OxK
+ +ok+IEULCa85BPNKgt5zOTzgtcnrKyqajAlxJt3hLp+kPis2Xb2FOpm/94WCiJBve8wGW0eYFsg
+ hd2HV1Wt0fDqyTEMV+nvi9dn/XRzswjWvvcsPHVji63MCt2hk53Ud/2Tho3N99UkmcqUqqGr+Rz
+ vpaWPB+QentlEf1eBNQmWd8Kuzi3HbS91eRebIUuVNg7WWxIxSNrJCmXNnejTzJ+KDRAoIj5EXF
+ bhipHGSuKoyIcP6gcVDbXK2HmkIjFmTQh0UWFg2xNiWvQGRFcbFRUkCUiwk3wSVKxKM2rYnkEgZ
+ 2pYDMvoR1wUwKtQMwpYTnPkdf7P7VlqQHsXz8LPbCbeJwt1v2TOp/U5hSnkpLzb2s1kvHrdhbcD
+ wT07JbYPn2QkNyo5nlbzN+8DKlyqfsVKOcXfvmRXKBFWLi41Zct0dvAqDu7tHUpWXY+PSB896t/
+ uTso5g9UTA0H9rvDDxYY0IlwoHaO8lymKM0C3/z0QSaW/usCwmzyoZ4Z6myWlFyF9cXsTnJuNPc
+ UqcKH6g9bZUUgWM8jI1Ph7AkVKVQnw8wBPFgcSoYZppXk4w1x+4uOlGfGIveh/ZTvl1fXVLnmBC
+ s7KkgRvoMkoa0JA==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -83,89 +83,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For testing specific EDID, it is useful to be able to retrieve an EDID by
-a verbose name.
+Some HDMI EDID did not have a good name identifier. Add one to avoid
+confusion.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/dp_edids.h             |  3 +++
- lib/monitor_edids/hdmi_edids.h           |  3 +++
- lib/monitor_edids/monitor_edids_helper.c | 21 +++++++++++++++++++++
- lib/monitor_edids/monitor_edids_helper.h |  1 +
- 4 files changed, 28 insertions(+)
+ lib/monitor_edids/hdmi_edids.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/lib/monitor_edids/dp_edids.h b/lib/monitor_edids/dp_edids.h
-index 144907558be1..d11a81d167fc 100644
---- a/lib/monitor_edids/dp_edids.h
-+++ b/lib/monitor_edids/dp_edids.h
-@@ -194,4 +194,7 @@ monitor_edid DP_EDIDS_NON_4K[] = {
- 
-  };
- 
-+const int DP_EDID_NON_4K_COUNT = ARRAY_SIZE(DP_EDIDS_NON_4K);
-+const int DP_EDID_4K_COUNT = ARRAY_SIZE(DP_EDIDS_4K);
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_DP_EDIDS_H_ */
 diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index 9d75cfa989b6..573e2149d5d3 100644
+index 573e2149d5d3..8bcd1f31b458 100644
 --- a/lib/monitor_edids/hdmi_edids.h
 +++ b/lib/monitor_edids/hdmi_edids.h
-@@ -604,4 +604,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "1620582c2500baac4200009e0000006b" },
- };
- 
-+const int HDMI_EDID_4K_COUNT = ARRAY_SIZE(HDMI_EDIDS_4K);
-+const int HDMI_EDID_NON_4K_COUNT = ARRAY_SIZE(HDMI_EDIDS_NON_4K);
-+
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_HDMI_EDIDS_H_ */
-diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
-index 0e0c2a9badcf..0f92ced64d06 100644
---- a/lib/monitor_edids/monitor_edids_helper.c
-+++ b/lib/monitor_edids/monitor_edids_helper.c
-@@ -19,6 +19,16 @@
- #include "dp_edids.h"
- #include "hdmi_edids.h"
- 
-+struct {
-+	struct monitor_edid *edid_list;
-+	int list_size;
-+} ALL_EDIDS[] = {
-+	{DP_EDIDS_NON_4K,	DP_EDID_NON_4K_COUNT},
-+	{DP_EDIDS_4K,		DP_EDID_4K_COUNT},
-+	{HDMI_EDIDS_NON_4K,	HDMI_EDID_NON_4K_COUNT},
-+	{HDMI_EDIDS_4K,		HDMI_EDID_4K_COUNT},
-+};
-+
- static uint8_t convert_hex_char_to_byte(char c)
- {
- 	if (c >= '0' && c <= '9')
-@@ -149,3 +159,14 @@ struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count,
- 		}
- 	}
- }
-+
-+struct edid *get_edid_by_name(char *name)
-+{
-+	for (int i = 0; i < ARRAY_SIZE(ALL_EDIDS); i++) {
-+		for (int j = 0; j < ALL_EDIDS[i].list_size; j++) {
-+			if (strcmp(ALL_EDIDS[i].edid_list[j].name, name) == 0)
-+				return edid_from_monitor_edid(&ALL_EDIDS[i].edid_list[j]);
-+		}
-+	}
-+	return NULL;
-+}
-diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
-index 2ec7aee5f13f..cd0e5a7b2645 100644
---- a/lib/monitor_edids/monitor_edids_helper.h
-+++ b/lib/monitor_edids/monitor_edids_helper.h
-@@ -34,5 +34,6 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
- 
- struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
- struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
-+struct edid *get_edid_by_name(char *name);
- 
- #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
-\ No newline at end of file
+@@ -241,7 +241,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
+ 		  "33333633493056465320000000fc0044"
+ 		  "454c4c20323430354650570a000000fd"
+ 		  "00384c1e5111000a20202020202000e9" },
+-	{ .name = "`",
++	{ .name = "DEL_DELL_2407WFP_HDMI",
+ 	  .edid = "00ffffffffffff0010ac17a053575930"
+ 		  "0511010380342178eeee91a3544c9926"
+ 		  "0f5054a54b008180a940714fb3000101"
+@@ -438,7 +438,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
+ 		  "60350000003200001c011d8018711c16"
+ 		  "20582c2500c48e2100009e0000000000"
+ 		  "0000000000000000000000000000000a" },
+-	{ .name = "",
++	{ .name = "GSM_50294_M3704C_HDMI",
+ 	  .edid = "00ffffffffffff001e6d76c401010101"
+ 		  "2514010380522e78eaac27a355499b25"
+ 		  "10474aa1080081807140614045403140"
+@@ -490,7 +490,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
+ 		  "5011000a202020202020000000fc0048"
+ 		  "50205a5232343430770a2020000000ff"
+ 		  "00434e34333132303836580a2020007f" },
+-	{ .name = "",
++	{ .name = "HWP_10582_HP_ZR2440w_HDMI",
+ 	  .edid = "00ffffffffffff0022f0562901010101"
+ 		  "0b170103803420782afc81a4554d9d25"
+ 		  "125054210800d1c081c0814081809500"
 
 -- 
 2.44.2
