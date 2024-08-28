@@ -4,52 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58712C5475C
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Aug 2024 09:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D859CC5479A
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Aug 2024 09:45:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1051310E4F3;
-	Wed, 28 Aug 2024 09:27:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 65F9E10E083;
+	Wed, 28 Aug 2024 09:45:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="die7uu13";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="bNtDPF8E";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9BF110E4F3
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 09:27:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724837224; x=1756373224;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=f4jiAcxyuChl4vbrVjXpC7HXZymV27318T8oqN+fj1Y=;
- b=die7uu13qp4gEtRgXtSLSMrM65Hb+wbhciKN4NvtDicT/f1xXsOVTimE
- ZkFujTqtncjDNWtcgMFC7wrpxEJ00b8K4s2YutdfD6+MbqmyXIC4At+CO
- +WBUOqHn5S8BtRMJ0tI0qJNLIhHYS5/57geropqizahxvnQ0JN5cM+5Uw
- oCDoW5GSMQYbnUVd5d+aEcMYTlxNzmTIcWl8fhgrTmh+FsSuqnZ+44NVm
- WjGWUlUQ4IC6HrC89cICRq9YBccGwjo44d1BKTh2O2Xccc1vknwKkbb+F
- kDWTJTdBrhfjETvuDaxFmFhpCZSLtqLaz45iarWyjiKHMZZGB1Q1ywHQE w==;
-X-CSE-ConnectionGUID: X9sJvUjPTg+pI48V5rfQPg==
-X-CSE-MsgGUID: jUeLyEIBR++gAWbIFJHfhg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="48741817"
-X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; d="scan'208";a="48741817"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2024 02:27:03 -0700
-X-CSE-ConnectionGUID: F2ZRjKXSTqynzzPjp5ry8w==
-X-CSE-MsgGUID: dBZM0BvQT8acVqg1zWNTsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; d="scan'208";a="67315861"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa003.fm.intel.com with ESMTP; 28 Aug 2024 02:27:02 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com, bhanuprakash.modem@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v3] tests/kms_3d: Add more logs to skips/failure
-Date: Wed, 28 Aug 2024 14:57:22 +0530
-Message-Id: <20240828092722.1013397-1-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2074.outbound.protection.outlook.com [40.107.223.74])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D8A4410E083
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 09:45:57 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iWLk6dLw7BoDTH0+Y98RKptfJ/sC6p1J3QyoGUWeSDRii/XECaylTVEa/KWePB+GbXJqXW1gyqeFqeN+a5iFGwes15cfpfZBVxsaW+uGp8pCzKyywPy651EyxU4nxZytCw2A/8Gl7Tv3L7P53QaPPF6hI9iu5MbIDkcaSFFS2AfDklmjzG4OWBaIXHGb5NXcAxj/i22mVcOYbY4GnXHzEKnh14byRnCfXObrIKR4p3Hrwhg8yGrcozXxXZMWwF3THnfw9wkIfZfdyim5QNWwpB/LFzffFj6s5JFYAHICfeQSjqvVuVzJsyRm7DS6wzfYk0c9zHI3zqRZxV30u20cnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QbcyYgZEofP4e7t1jZ9q6c2xRrPijVWLg3cWhE76PQ8=;
+ b=vj25j8UiQK/q07N4U5ilpoXdqmfcxXPxOIty0jNOzfkKt8TpKwZXTnFlJN2l5EFz6VqdI4+8P9ZNXRYKVYxfQCSxLu0yeaRuSWBV5BUSrAPk52GDq1THvvzsB6Y/eEwhVt47I1HQ684+IPb2YKa1gxDQ0goMX8AWk0Nbc/fq1FlLOJVp8CBDZHzxMVfoSDH/KDeSpzZWyCRjB6Ly8TY7lbKYl+ZC9Ou/oqGQRPhbIJTwaEljo8K0B7QiJcJw5Tzf/PfvNlYvBgh9cBKOailZ+ug2a0e+DFRWO0rKb5pXrzzjZmS20bNyqfK6LaF3PA0JLjy1gq0gU7p8EWzUW3f58w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QbcyYgZEofP4e7t1jZ9q6c2xRrPijVWLg3cWhE76PQ8=;
+ b=bNtDPF8ErU5zwFwxLMPoWzUihmGLwsLhfER8qanJyl9XiGDCw0rIZdUVOp8CrAS0lgjhIGt8r4+Uiamg3rO/ziQ9ovDqCoJWq50rsx5qxJ1VNlkkzoCyPBjiUtawHgK0wNB5L2X8tgNZU1xqz2OYTl4zPb1pdEXz+fHKF8bxLvQ=
+Received: from SA1P222CA0074.NAMP222.PROD.OUTLOOK.COM (2603:10b6:806:2c1::20)
+ by CH3PR12MB9395.namprd12.prod.outlook.com (2603:10b6:610:1ce::18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.27; Wed, 28 Aug
+ 2024 09:45:54 +0000
+Received: from SA2PEPF00003AE7.namprd02.prod.outlook.com
+ (2603:10b6:806:2c1:cafe::24) by SA1P222CA0074.outlook.office365.com
+ (2603:10b6:806:2c1::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28 via Frontend
+ Transport; Wed, 28 Aug 2024 09:45:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SA2PEPF00003AE7.mail.protection.outlook.com (10.167.248.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7918.13 via Frontend Transport; Wed, 28 Aug 2024 09:45:53 +0000
+Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 Aug
+ 2024 04:45:52 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
+ (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 28 Aug
+ 2024 04:45:52 -0500
+Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
+ SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Wed, 28 Aug 2024 04:45:50 -0500
+From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+Subject: [PATCH 1/2 V2 i-g-t] lib/amdgpu: Enhanced SDMA negative test interface
+Date: Wed, 28 Aug 2024 17:45:49 +0800
+Message-ID: <20240828094549.150449-1-jesse.zhang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00003AE7:EE_|CH3PR12MB9395:EE_
+X-MS-Office365-Filtering-Correlation-Id: e24200bb-e206-44ba-3670-08dcc746359b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|82310400026|1800799024|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?XLMBeCLzE3jNk1mjxJgX/235ZpwlFiDkmVJ8SXAW+8f/JXZyHUdBzF4JpAj3?=
+ =?us-ascii?Q?lbpqypsQm8dUw7CtROX2t8epWoeLfu1d7mS8iTbhmrNvvoPKtvluMptKhokn?=
+ =?us-ascii?Q?06B1h5HzyQX1mKQQvZ5P3zP6zVqU82cqT0M/w8iIE8LB4yq0qrUqh4OLgr93?=
+ =?us-ascii?Q?0lqmwTtL/hYwjyCiMQPRb00kI3CTJwZWnZjUQdd32QfK9EUQyZuKNwWm5dXR?=
+ =?us-ascii?Q?7ilGKft2+86emLTGOZQrbxgNYOaR/rUlP9lBnShbVsLkeVBmul3jdcYcgkWH?=
+ =?us-ascii?Q?IEhFj12UIRS3ghCTYpkwtTDH95eYApm+/LnhNi3KvUUaWj7hS31G/jEy4vu1?=
+ =?us-ascii?Q?4NlSBYSBOMSoJQEJJ5gFfuiyvVgcADxFx6EqVa84vA7TIQV4wc7NpcGe1nPK?=
+ =?us-ascii?Q?tKyccMUGTFJyCADyHsgyFq/YctAdXgMVEzq2Cx7cjZqfrBIAli3j+9KWKE8u?=
+ =?us-ascii?Q?mCDkB+LLH+k/BXwB4qUmrJ16xShrRDbve31PTwluQE2pEHQvP57ZlmdjC7TE?=
+ =?us-ascii?Q?7jvAvhMtlmPYSlpHEuL1w5M+d/gBQo9aK2uDsXUKWDtbHprR+NatGRvqSI8b?=
+ =?us-ascii?Q?OUOvQt+7EF5l8/ZoWMPfTZgn0J1xvaZsLruFncHccN0ZvNi3478QhrT6vNRI?=
+ =?us-ascii?Q?6+8qFqMUg4GTD9fP2h/oECRezhMHSlFMlTGIvyBnVT3MLnmMnlU/5xuSZS1z?=
+ =?us-ascii?Q?lFOkIO97gZiPeB5l/EPT0uH3Ph2mBxFxSy/sYTMTW9oUW+EUcH9zvo3UJhUV?=
+ =?us-ascii?Q?8eM38OA5cCQGB7um8H82wAL6LiTg/bGcEI1tVdqX5HAaD1F1CEDXcqTy91pY?=
+ =?us-ascii?Q?uvm51+LZ+nxuwwv/7wm1iCkbBIjOn85QVqooNr+iWRuHqbgFsNnezyu4Q+q9?=
+ =?us-ascii?Q?zFLz4LfIIJV7Ygnh6iU1bU2LmENuwQ/2IsN3Zavbal+OO/1mlmcM3oBMC5Vw?=
+ =?us-ascii?Q?hAxkClqKE7S0kRLj7drSv0znZkX5Dhhgt4TZjaj8zMhrlS0s1D6bxbqbiIOZ?=
+ =?us-ascii?Q?ywyvBsCf8NsvzgN7/RjYUIK3b+abAm4F+y42s6+F1nwGX6GLQNAhLrFul06d?=
+ =?us-ascii?Q?lCcj1qOMxmE46Ec/Hjmm99UHKyHW6Plxx1JT0O1ieI7T7uAa1QDm2t4dWI60?=
+ =?us-ascii?Q?OrpBbKSXjiYec3ZQjnEPiXHjmw1ub6lrqn49TLDC2CqUo5gJPD30X8cI3Dhc?=
+ =?us-ascii?Q?9hrTJgyP73Xdk23+TCe9+ymT7iEvauENXRfMAnOREtwg1PrkW5JCLtJ0AwIb?=
+ =?us-ascii?Q?tOxhd2z3zY65Q8rvxLOoPGDo6XrF2CT+jAE410fqqjW6TrEINxYvzHEipKba?=
+ =?us-ascii?Q?Z3p0ThKX/Pox/Z1i2JwyjlD1Hyi7mfmhD9k8I6xVpV5LmVg6OABx69BeyGU+?=
+ =?us-ascii?Q?onrlURpkbFTPh0unOW/0vp91KFAEaXUjDucX344A7k3zAx71x6QkY1ghG9t6?=
+ =?us-ascii?Q?cl4BnrOS6p/WuoEoAUkkQAV3o5VIrnmM?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2024 09:45:53.9989 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e24200bb-e206-44ba-3670-08dcc746359b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF00003AE7.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9395
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,64 +136,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Having some logs for test failures and skips would
-make debugging much easier.
+To enhance the reset function, several invalid sdma writes are added.
+1. Assembling invalid operation code.
+2. Writing invalid memory address.
+3. Writing illegal register.
+4. Sending invalid packet length.
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
 ---
- tests/kms_3d.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ lib/amdgpu/amd_deadlock_helpers.h |  5 ---
+ lib/amdgpu/amd_ip_blocks.c        | 51 +++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_ip_blocks.h        |  5 ++-
+ 3 files changed, 55 insertions(+), 6 deletions(-)
 
-diff --git a/tests/kms_3d.c b/tests/kms_3d.c
-index ad6c45e9b..e1c024066 100644
---- a/tests/kms_3d.c
-+++ b/tests/kms_3d.c
-@@ -55,17 +55,19 @@ igt_simple_main
- 	res = drmModeGetResources(drm_fd);
- 	igt_require(res);
+diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
+index e36227950..165ffb98d 100644
+--- a/lib/amdgpu/amd_deadlock_helpers.h
++++ b/lib/amdgpu/amd_deadlock_helpers.h
+@@ -24,11 +24,6 @@
+ #ifndef __AMD_DEADLOCK_HELPERS_H__
+ #define __AMD_DEADLOCK_HELPERS_H__
  
--	igt_assert(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_STEREO_3D, 1) >= 0);
-+	igt_assert_f(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_STEREO_3D, 1) >= 0,
-+		     "Failed to enable STEREO_3D capability.\n");
+-enum  hang_type {
+-	DMA_CORRUPTED_HEADER_HANG,
+-	DMA_SLOW_LINEARCOPY_HANG
+-};
+-
+ void
+ amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type);
  
- 	/* find an hdmi connector */
- 	for (int i = 0; i < res->count_connectors; i++) {
- 		connector = drmModeGetConnectorCurrent(drm_fd, res->connectors[i]);
--		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA)
-+		if (connector->connector_type == DRM_MODE_CONNECTOR_HDMIA &&
-+		    connector->connection == DRM_MODE_CONNECTED)
- 			break;
- 		drmModeFreeConnector(connector);
- 		connector = NULL;
- 	}
--	igt_require(connector);
-+	igt_require_f(connector, "No HDMI connector found.\n");
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 175c84cf9..a486347ac 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -57,6 +57,56 @@ sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
+ 	return 0;
+ }
  
- 	kmstest_unset_all_crtcs(drm_fd, res);
++static int
++sdma_ring_bad_write_linear(const struct amdgpu_ip_funcs *func,
++		       const struct amdgpu_ring_context *ring_context,
++		       uint32_t *pm4_dw, unsigned int cmd_error)
++{
++	uint32_t i, j, stream_length;
++	uint32_t opcode;
++
++	i = 0;
++	j = 0;
++
++	if (cmd_error == CMD_STREAM_EXEC_INVALID_PACKET_LENGTH)
++		stream_length = ring_context->write_length / 16;
++	else
++		stream_length = ring_context->write_length;
++
++	if (cmd_error == CMD_STREAM_EXEC_INVALID_OPCODE)
++		opcode = 0xf2;
++	else
++		opcode = SDMA_OPCODE_WRITE;
++
++	if (func->family_id == AMDGPU_FAMILY_SI)
++		ring_context->pm4[i++] = SDMA_PACKET_SI(opcode, 0, 0, 0,
++					 ring_context->write_length);
++	else
++		ring_context->pm4[i++] = SDMA_PACKET(opcode,
++					 SDMA_WRITE_SUB_OPCODE_LINEAR,
++					 ring_context->secure ? SDMA_ATOMIC_TMZ(1) : 0);
++	if (cmd_error == CMD_STREAM_TRANS_BAD_MEM_ADDRESS) {
++		ring_context->pm4[i++] = lower_32_bits(0xdeadbee0);
++		ring_context->pm4[i++] = upper_32_bits(0xdeadbee0);
++	}else if (cmd_error == CMD_STREAM_TRANS_BAD_REG_ADDRESS) {
++		ring_context->pm4[i++] = lower_32_bits(mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR);
++		ring_context->pm4[i++] = upper_32_bits(mmVM_CONTEXT0_PAGE_TABLE_BASE_ADDR);
++	} else {
++		ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
++		ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
++	}
++	if (func->family_id >= AMDGPU_FAMILY_AI)
++		ring_context->pm4[i++] = ring_context->write_length - 1;
++	else
++		ring_context->pm4[i++] = ring_context->write_length;
++
++	while (j++ < stream_length)
++		ring_context->pm4[i++] = func->deadbeaf;
++	*pm4_dw = i;
++
++	return 0;
++}
++
+ static int
+ sdma_ring_atomic(const struct amdgpu_ip_funcs *func,
+ 		       const struct amdgpu_ring_context *ring_context,
+@@ -429,6 +479,7 @@ static struct amdgpu_ip_funcs sdma_v3_x_ip_funcs = {
+ 	.deadbeaf = 0xdeadbeaf,
+ 	.pattern = 0xaaaaaaaa,
+ 	.write_linear = sdma_ring_write_linear,
++	.bad_write_linear = sdma_ring_bad_write_linear,
+ 	.write_linear_atomic = sdma_ring_atomic,
+ 	.const_fill = sdma_ring_const_fill,
+ 	.copy_linear = sdma_ring_copy_linear,
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 86b82c40c..3e729f4c0 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -42,7 +42,10 @@ enum  cmd_error_type {
+ 	BACKEND_SE_GC_SHADER_INVALID_SHADER,
+ 	BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR,    /* COMPUTE_PGM */
+ 	BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING, /* COMPUTE_PGM_RSRC */
+-	BACKEND_SE_GC_SHADER_INVALID_USER_DATA /* COMPUTE_USER_DATA */
++	BACKEND_SE_GC_SHADER_INVALID_USER_DATA, /* COMPUTE_USER_DATA */
++
++	DMA_CORRUPTED_HEADER_HANG,
++	DMA_SLOW_LINEARCOPY_HANG
+ };
  
-@@ -85,7 +87,7 @@ igt_simple_main
- 			mode_count++;
- 	}
- 
--	igt_assert(mode_count);
-+	igt_assert_f(mode_count, "3D modes not detected.\n");
- 
- 	/* set 3D modes */
- 	igt_info("Testing:\n");
-@@ -95,8 +97,12 @@ igt_simple_main
- 		int crtc_mask = -1;
- 		int ret;
- 
--		if (!(connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK))
-+		if (!(connector->modes[i].flags & DRM_MODE_FLAG_3D_MASK)) {
-+			igt_info("%s-%d: Doesn't support 3D MASK.\n",
-+				 kmstest_connector_type_str(connector->connector_type),
-+				 connector->connector_type_id);
- 			continue;
-+		}
- 
- 		/* create a configuration */
- 		ret = kmstest_get_connector_config(drm_fd, connector_id,
+ #define _MAX_NUM_ASIC_ID_EXCLUDE_FILTER 3
 -- 
-2.34.1
+2.25.1
 
