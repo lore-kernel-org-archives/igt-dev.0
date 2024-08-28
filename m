@@ -4,72 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAB70C5B55B
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Aug 2024 14:32:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21F70C5B548
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Aug 2024 14:42:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 66B1910E54B;
-	Wed, 28 Aug 2024 14:32:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF7CE10E54F;
+	Wed, 28 Aug 2024 14:42:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="HtOTupwd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VMBhFXXq";
 	dkim-atps=neutral
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 448BB10E547
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 14:32:01 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (unknown [217.70.183.198])
- by mslow1.mail.gandi.net (Postfix) with ESMTP id 09B44C824D
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 14:32:00 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B4545C000D;
- Wed, 28 Aug 2024 14:31:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1724855518;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=uzRXFeNK6rZQB+Sn7i5n81C/GuWUk8bU5rEdkMs8Ums=;
- b=HtOTupwdbvfROjHP0htIgr7qFHW/w++i5cqedPmUFc1lwkpeHSPhmM18k1HeuNdLX81UgT
- NMNSeTMzPSzj4Xh5pZoRO1Cqe2xEXMiUiP5unE+csvH22+Yy47O0zueHguXQhnySviX+X/
- QIOGlbhQIc+7U5B7JOGYxqLCBlvehapyXLTrLEqNBAO9ixen+RKWzJDEJH2kfZOeei3f40
- BXMbSmPgyqUkw/gt6ZOUH3YnJsS1N1xVa4OSkBXRx19hBuEYiCspEjxKfXXMDvMO1xpX3d
- YDgpThn+exSvHh26OaOM8XlRmrl2AloW5ZcdCH+5vYE7MCcO+KtULI+aRKK60A==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Wed, 28 Aug 2024 16:31:53 +0200
-Subject: [PATCH i-g-t 4/5] lib/igt_kms: Add helper to obtain a connector by
- its name or MST path
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D494D10E54E
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Aug 2024 14:42:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1724856126; x=1756392126;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=osoHlNHP2xWfxNbWHEQ/4Nlp3GCgyk29hixNRwABKSY=;
+ b=VMBhFXXq4TLrDo5xajMyJBtl3ioPLP1hqsPQ6EV9Ts2dcRbrTuWvjRfb
+ 0ytvnmSQYk34gIHp3JD0af3M8+Ao14Sn3ve6iJKUhYTGDnvCUdqH9zJcn
+ 13TGUgvPoJVLf0gf28c3hbo5EiRNIl7fV9oJ5XFbCxP0o/D6DdEdmJU2b
+ 2ajUE4cedf4g8Ju6kEwS30MhvVNhjTMkhuPzkylHn75DQNu3Wy5xtkdcF
+ V49BcTKpUaO3+AcTBRt6qogg5INMyvxy/Wf98uBjj4qQGNXSKG8oP6Qv/
+ 8N9lVfDKxdGak6UYj6AYLC2YVrUzQ3/K+PjCXMn8zd5xTYLakfEtpUQC0 Q==;
+X-CSE-ConnectionGUID: RlFblOFnR429EHHf/4vYzA==
+X-CSE-MsgGUID: cIMMdmRCQ9yiHTnarRHavw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11178"; a="13261367"
+X-IronPort-AV: E=Sophos;i="6.10,183,1719903600"; d="scan'208";a="13261367"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2024 07:42:05 -0700
+X-CSE-ConnectionGUID: KA3o/CLrTkKWa7SWdqiqQw==
+X-CSE-MsgGUID: 4sSJBxgzT7ecwDuPZJgtFA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,183,1719903600"; d="scan'208";a="67914346"
+Received: from iyeshuru-mobl.ger.corp.intel.com (HELO [10.251.220.228])
+ ([10.251.220.228])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Aug 2024 07:42:03 -0700
+Message-ID: <b61fdc02-9842-40c2-a53f-ee1243f55deb@linux.intel.com>
+Date: Wed, 28 Aug 2024 16:42:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] runner/settings: set PRUNE_KEEP_ALL as default
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Ewelina Musial <ewelina.musial@intel.com>,
+ Helen Koike <helen.koike@collabora.com>,
+ Jari Tahvanainen <jari.tahvanainen@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>, Rob Clark <robdclark@gmail.com>
+References: <20240823161409.79198-1-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20240823161409.79198-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240828-b4-cv3-01-igt-kms-v1-4-d6e21b1e5d04@bootlin.com>
-References: <20240828-b4-cv3-01-igt-kms-v1-0-d6e21b1e5d04@bootlin.com>
-In-Reply-To: <20240828-b4-cv3-01-igt-kms-v1-0-d6e21b1e5d04@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
- Ashutosh Dixit <ashutosh.dixit@intel.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, nicolejadeyee@google.com, 
- seanpaul@google.com, jeremie.dautheribes@bootlin.com, markyacoub@google.com, 
- Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4532;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=utTydvIQaIgUEzWMNR/ZbpJQKapyP/uAxn9u+LgFKWo=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBmzzTZ4lZX/9YlK3/ibPZl8ERizgszDaklh2hPs
- ASwjfmhT7iJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZs802QAKCRAgrS7GWxAs
- 4kBgEACrSI8JqA4FffPtZU0YYrNdpni9lsV8/fjD48sOmBQgNbWFwCpMOHjfHz7NQ9Zmb4zjQpa
- 6bRypBcDUnzgzmeRTPxjQ345fFak0vZtpjD6WNMVi3bSkcGLnIDdelaYD+lQ8lkwPxX6T3w86pR
- rdt8n2Wq1Kfl21QNQaNMndNowtowYANedC6Z89gizdmHxlqq97zQk7UxbAT6zkET1J7Bmkce4jb
- UrqpHKtNwH+3AP7+kzT3P29DGinFC6lMSDd1QNwELyMvAtDjWBCMLkIn2XBvsa0GKrP7j3kkP5W
- RBCd00jlSD3wsSGjPdikLazRyHKqsRvrf/mVgB4FJPQmfdjjx6z/q0ISdm1WOg1blYaGEAlLGxO
- AJY2o0meczzc0fEHNKkrwzLqLTJXCpkX2KY2XiCx1quwbjR2LCTzwETCacxztLUpvATzto90Te5
- d/fMr3sRUlwnbBzs5tqECD7pTDkcuFlsurpTwusZlNW0yvsL4fvZwPk+0RmTg1rBimaWAwo6Hoe
- ZRSpOo0lS4e8tNIy+hRRBRhKbPabzXCdJbLKtcmRTChtZgofYK6L8gqcNg5IQYPsMlCQK2wjOwk
- Mk6LtxsnUnrdS2kxHTdM6e8Gwa7w300FoTai9LFbiOMorZcstqkluoC2Pmwls0Hr4CU++R6rTsh
- BuFvKXdJ0zheeEg==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-GND-Sasl: louis.chauvet@bootlin.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,144 +74,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the functions igt_get_connector_from_name() and
-igt_get_connector_id_from_mst_path(). These functions serve to retrieve
-the connector object using a connector name and a connector ID from its
-MST path, respectively.
+Tested by compilation only.
 
-Given that the connector id may not be consistent, especially with MST
-connectors, these functions are essential to recognize each connector even
-after system reboots and plug/unplug events.
-
-The function igt_get_connector_id_from_name() is a convenient wrapper for
-igt_get_connector_from_name() to streamline its usage when the caller only
-requires the connector id.
-
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- lib/igt_kms.c | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  3 ++
- 2 files changed, 100 insertions(+)
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index d4fe4ee7ae4a..45587a4bb9e6 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -6821,3 +6821,100 @@ int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
- 	return
- 	    connected_count;
- }
-+
-+drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name)
-+{
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
-+	struct timespec start, end;
-+	int i;
-+
-+	if (!res)
-+		return 0;
-+
-+	for (i = 0; i < res->count_connectors; i++) {
-+		char name[50];
-+
-+		drmModeConnectorPtr connector = drmModeGetConnector(drm_fd, res->connectors[i]);
-+		/*
-+		 * This time is required as sometimes some id in the connector list are not totally
-+		 * ready or can disappear
-+		 */
-+		clock_gettime(CLOCK_MONOTONIC, &start);
-+		clock_gettime(CLOCK_MONOTONIC, &end);
-+		while (!connector &&
-+		       igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
-+			connector = drmModeGetConnector(drm_fd, res->connectors[i]);
-+			clock_gettime(CLOCK_MONOTONIC, &end);
-+		}
-+
-+		if (igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
-+			igt_assert(connector);
-+
-+			/* We have to generate the connector name on our own */
-+			snprintf(name, 50, "%s-%u",
-+				 kmstest_connector_type_str(connector->connector_type),
-+				 connector->connector_type_id);
-+
-+			if (strcmp(port_name, name) == 0) {
-+				drmModeFreeResources(res);
-+				return connector;
-+			}
-+			drmModeFreeConnector(connector);
-+		}
-+	}
-+	drmModeFreeResources(res);
-+	return NULL;
-+}
-+
-+/**
-+ * igt_get_connector_id_from_name - Get a connector ID from a connector name
-+ * @drm_fd: DRM file descriptor
-+ * @port_name: Port name to find in the connector
-+ *
-+ * Returns 0 when no connector is found with the correct name
-+ */
-+uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name)
-+{
-+	drmModeConnectorPtr connector = igt_get_connector_from_name(drm_fd, port_name);
-+
-+	if (connector) {
-+		int connector_id = connector->connector_id;
-+
-+		drmModeFreeConnector(connector);
-+		return connector_id;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * igt_get_connector_id_from_mst_path - Get a connector ID from a mst path
-+ * @drm_fd: DRM file descriptor
-+ * @mst_path: MST path to find in the connector
-+ *
-+ * Returns 0 when no connector is found with the correct mst path
-+ */
-+uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path)
-+{
-+	drmModeResPtr res = drmModeGetResources(drm_fd);
-+	int i;
-+
-+	if (!res)
-+		return 0;
-+
-+	for (i = 0; i < res->count_connectors; i++) {
-+		uint32_t connector_id = res->connectors[i];
-+
-+		drmModePropertyBlobPtr path_blob = kmstest_get_path_blob(drm_fd, connector_id);
-+
-+		if (path_blob) {
-+			if (strcmp(path_blob->data, mst_path) == 0) {
-+				drmModeFreePropertyBlob(path_blob);
-+				drmModeFreeResources(res);
-+				return connector_id;
-+			}
-+			drmModeFreePropertyBlob(path_blob);
-+		}
-+	}
-+	drmModeFreeResources(res);
-+	return 0;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b3ff0cdda36f..0b7dc7e9a3ed 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1237,5 +1237,8 @@ float igt_default_detect_timeout(void);
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
- int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
-+drmModeConnectorPtr igt_get_connector_from_name(int drm_fd, const char *port_name);
-+uint32_t igt_get_connector_id_from_name(int drm_fd, const char *port_name);
-+uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
- 
- #endif /* __IGT_KMS_H__ */
-
--- 
-2.44.2
-
+On 23.08.2024 18:14, Kamil Konieczny wrote:
+> In testing drm-tip it is helpful to have reported all tests
+> results, especially when one have many dynamic ones we want
+> to get a parent result.
+> 
+> v2: fix for runner_tests (Jari)
+> 
+> Cc: Ewelina Musial <ewelina.musial@intel.com>
+> Cc: Helen Koike <helen.koike@collabora.com>
+> Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Cc: Rob Clark <robdclark@gmail.com>
+Reviewed-by: Peter Senna Tschudin <peter.senna@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  runner/runner_tests.c | 2 +-
+>  runner/settings.c     | 8 ++++++--
+>  2 files changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/runner/runner_tests.c b/runner/runner_tests.c
+> index b806d45ad..a661722ac 100644
+> --- a/runner/runner_tests.c
+> +++ b/runner/runner_tests.c
+> @@ -310,7 +310,7 @@ igt_main
+>  		igt_assert_eq(settings->per_test_timeout, 0);
+>  		igt_assert_eq(settings->overall_timeout, 0);
+>  		igt_assert(!settings->use_watchdog);
+> -		igt_assert_eq(settings->prune_mode, 0);
+> +		igt_assert_eq(settings->prune_mode, PRUNE_KEEP_ALL);
+>  		igt_assert(strstr(settings->test_root, "test-root-dir") != NULL);
+>  		igt_assert(strstr(settings->results_path, "path-to-results") != NULL);
+>  
+> diff --git a/runner/settings.c b/runner/settings.c
+> index 94b3b9fe6..0d27e7af3 100644
+> --- a/runner/settings.c
+> +++ b/runner/settings.c
+> @@ -279,11 +279,11 @@ static const char *usage_str =
+>  	"                        results that are removed from the final results set.\n"
+>  	"                        Possible options:\n"
+>  	"                         keep-dynamic-subtests  - Remove subtests that have dynamic\n"
+> -	"                                                  subtests. (default)\n"
+> +	"                                                  subtests.\n"
+>  	"                         keep-dynamic           - Alias for the above\n"
+>  	"                         keep-subtests          - Remove dynamic subtests,\n"
+>  	"                                                  leaving just the parent subtest.\n"
+> -	"                         keep-all               - Don't remove anything\n"
+> +	"                         keep-all               - Don't remove anything (default)\n"
+>  	"                         keep-requested         - Remove reported results that are\n"
+>  	"                                                  not in the requested test set.\n"
+>  	"                                                  Useful when you have a hand-written\n"
+> @@ -693,6 +693,7 @@ bool parse_options(int argc, char **argv,
+>  	optind = 1;
+>  
+>  	settings->dmesg_warn_level = -1;
+> +	settings->prune_mode = -1;
+>  
+>  	while ((c = getopt_long(argc, argv, "hn:dt:x:e:sl:omb:L",
+>  				long_options, NULL)) != -1) {
+> @@ -818,6 +819,9 @@ bool parse_options(int argc, char **argv,
+>  	if (settings->dmesg_warn_level < 0)
+>  		settings->dmesg_warn_level = 4; /* KERN_WARN */
+>  
+> +	if (settings->prune_mode < 0)
+> +		settings->prune_mode = PRUNE_KEEP_ALL;
+> +
+>  	if (settings->list_all) { /* --list-all doesn't require results path */
+>  		switch (argc - optind) {
+>  		case 1:
