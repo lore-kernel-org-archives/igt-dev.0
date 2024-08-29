@@ -4,55 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBD3CC87FD4
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 19:04:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95ADDC87FD4
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 19:34:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5A1D010E771;
-	Thu, 29 Aug 2024 19:04:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4FFCC10E0C3;
+	Thu, 29 Aug 2024 19:34:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VPOVjRvH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M8IxQGxj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2280610E770
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Aug 2024 19:04:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4657A10E0C3
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Aug 2024 19:34:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724958254; x=1756494254;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=UzPFzpQdpFQFPEq9uiYzyzljJyxOP4ZAlGaMAaK899g=;
- b=VPOVjRvHs672o7hIJ/TOU1JAW+k7EeP2ueS4eHpPSN0QjarLYvH4Tb95
- OD6kJjPc6jVbSEBTzPuibWFMc9DMzB7iiY9QNqvfuE6iberThRrIOfhDA
- ia1WiXCfrGpC4AX512Hekxjfv/yP79xT2n1woyuw6nP259QaXqQ68KrUl
- DKK9OUdfdXHHa92i0nqSx0fb0nMhsxRofuKIfSPk1Nfy0c5eZfiTq/SHX
- o0zDgw1BPR1V1gkWfVFzdx3PeSIivMebriQ2v4pPGMHh780RDh3Gf4816
- uj+HKkYDVdz3LrpRSGyX6czYpNBRNdbXx4rQEXV+DNxGlKkx+hFu9S+u1 g==;
-X-CSE-ConnectionGUID: D9D0XBUKTr25/fyXMysmhw==
-X-CSE-MsgGUID: x5+3D0N1Rz2Vw0xH4CkhnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="26473921"
-X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; d="scan'208";a="26473921"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2024 12:03:53 -0700
-X-CSE-ConnectionGUID: aYMJD8LrTsWA56cI4xq/pA==
-X-CSE-MsgGUID: qhvS02CyTqa2qBB7UaC/WQ==
+ t=1724960044; x=1756496044;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=UKX8l9AqMvzAjOMwmTDjoJh3JBbwrXDvKCvlbffolXc=;
+ b=M8IxQGxj1lI2bS6nQmzSP4z6Yr75LqflnF2yxDhowBY1rEuc886P1ocQ
+ yAVeOgKG0BF/u2je1zL+jdqsWtCOi29/0x3yY4bRGwhXdBuaHXoTawaqM
+ NsOtrDRqGSDMN4a0wX8qCpJPv5jsgBhiq0oHKk5k/E8cDOu786TsasnbL
+ lsn+dohIabhBbG/9GtkBZntlIiLFSBx45owIjXNwUT55tIB6mjMmLCLFq
+ /4hFOUS/8oGIRwGsRRbgqTbFm9zmMuABGw4omt5OCmwX9sO15Mpc8HEE7
+ dvGUNHAZ+k5cxAW0IjOtBiXA1epDcW4zsptwmibcMzqJKMW3cxrr9Na5g Q==;
+X-CSE-ConnectionGUID: XH6nRAgVQkW3Bdbs7wbSeA==
+X-CSE-MsgGUID: hURaOBrbTFepSzEpb8RbCg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="23723330"
+X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; d="scan'208";a="23723330"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2024 12:34:04 -0700
+X-CSE-ConnectionGUID: xQ0ak4nlRp+ZbppWfP8OGQ==
+X-CSE-MsgGUID: 8yKkqvq2TBSAyzeHK+uGAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; d="scan'208";a="63365397"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2024 12:03:53 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Nirmoy Das <nirmoy.das@intel.com>
-Subject: [CI i-g-t 2/3] tests/intel/xe_drm_fdinfo: Remove unused flags
-Date: Thu, 29 Aug 2024 12:03:40 -0700
-Message-ID: <20240829190341.1943839-2-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240829190341.1943839-1-lucas.demarchi@intel.com>
-References: <20240829190341.1943839-1-lucas.demarchi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,186,1719903600"; d="scan'208";a="68576008"
+Received: from swatish2-mobl2.gar.corp.intel.com (HELO [10.215.119.6])
+ ([10.215.119.6])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Aug 2024 12:34:00 -0700
+Message-ID: <d382978a-5b50-4afc-9e99-3350bef08576@intel.com>
+Date: Fri, 30 Aug 2024 01:03:41 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tests/kms_rmfb: Fix subtest description
+To: Lucas De Marchi <lucas.demarchi@intel.com>, igt-dev@lists.freedesktop.org
+References: <20240201004448.351926-1-lucas.demarchi@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <20240201004448.351926-1-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,184 +69,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-single() is the only test function that is used by multiple kinds of
-tests and controlled by flags. The others simply pass the same flags
-every time. Simplify the tests by removing the bogus checks.
+LGTM
 
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/intel/xe_drm_fdinfo.c | 81 +++++++++++++++++--------------------
- 1 file changed, 38 insertions(+), 43 deletions(-)
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 46c96dbe0..23edeea40 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -538,7 +538,7 @@ single(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
- }
- 
- static void
--busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int flags)
-+busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -547,20 +547,20 @@ busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe, unsigned int fl
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		ctx = spin_ctx_init(fd, hwe, vm);
--		spin_sync_start(fd, ctx);
--	}
-+
-+	ctx = spin_ctx_init(fd, hwe, vm);
-+	spin_sync_start(fd, ctx);
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		spin_sync_end(fd, ctx);
-+	spin_sync_end(fd, ctx);
- 	read_engine_cycles(fd, pceu2);
- 
--	xe_for_each_engine_class(class)
--		check_results(pceu1, pceu2, class,
--			      hwe->engine_class == class ? flags : 0);
-+	xe_for_each_engine_class(class) {
-+		bool idle = hwe->engine_class != class;
-+
-+		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
-+	}
- 
- 	spin_sync_end(fd, ctx);
- 	spin_ctx_destroy(fd, ctx);
-@@ -594,8 +594,7 @@ single_destroy_queue(int fd, struct drm_xe_engine_class_instance *hwe)
- }
- 
- static void
--most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
--		    unsigned int flags)
-+most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -605,32 +604,31 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		/* spin on one hwe per class except the target class hwes */
--		xe_for_each_engine(fd, _hwe) {
--			int _class = _hwe->engine_class;
- 
--			if (_class == hwe->engine_class || ctx[_class])
--				continue;
-+	/* spin on one hwe per class except the target class hwes */
-+	xe_for_each_engine(fd, _hwe) {
-+		int _class = _hwe->engine_class;
- 
--			ctx[_class] = spin_ctx_init(fd, _hwe, vm);
--			spin_sync_start(fd, ctx[_class]);
--		}
-+		if (_class == hwe->engine_class || ctx[_class])
-+			continue;
-+
-+		ctx[_class] = spin_ctx_init(fd, _hwe, vm);
-+		spin_sync_start(fd, ctx[_class]);
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		xe_for_each_engine_class(class)
--			spin_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class)
-+		spin_sync_end(fd, ctx[class]);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
-+		bool idle = hwe->engine_class == class;
-+
- 		if (!ctx[class])
- 			continue;
- 
--		check_results(pceu1, pceu2, class,
--			      hwe->engine_class == class ? 0 : flags);
-+		check_results(pceu1, pceu2, class, idle ? 0 : TEST_BUSY);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
- 	}
-@@ -639,7 +637,7 @@ most_busy_check_all(int fd, struct drm_xe_engine_class_instance *hwe,
- }
- 
- static void
--all_busy_check_all(int fd, unsigned int flags)
-+all_busy_check_all(int fd)
- {
- 	struct pceu_cycles pceu1[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
- 	struct pceu_cycles pceu2[DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-@@ -649,31 +647,28 @@ all_busy_check_all(int fd, unsigned int flags)
- 	int class;
- 
- 	vm = xe_vm_create(fd, 0, 0);
--	if (flags & TEST_BUSY) {
--		/* spin on one hwe per class */
--		xe_for_each_engine(fd, hwe) {
--			class = hwe->engine_class;
- 
--			if (ctx[class])
--				continue;
-+	/* spin on one hwe per class */
-+	xe_for_each_engine(fd, hwe) {
-+		class = hwe->engine_class;
-+		if (ctx[class])
-+			continue;
- 
--			ctx[class] = spin_ctx_init(fd, hwe, vm);
--			spin_sync_start(fd, ctx[class]);
--		}
-+		ctx[class] = spin_ctx_init(fd, hwe, vm);
-+		spin_sync_start(fd, ctx[class]);
- 	}
- 
- 	read_engine_cycles(fd, pceu1);
- 	usleep(batch_duration_usec);
--	if (flags & TEST_TRAILING_IDLE)
--		xe_for_each_engine_class(class)
--			spin_sync_end(fd, ctx[class]);
-+	xe_for_each_engine_class(class)
-+		spin_sync_end(fd, ctx[class]);
- 	read_engine_cycles(fd, pceu2);
- 
- 	xe_for_each_engine_class(class) {
- 		if (!ctx[class])
- 			continue;
- 
--		check_results(pceu1, pceu2, class, flags);
-+		check_results(pceu1, pceu2, class, TEST_BUSY);
- 		spin_sync_end(fd, ctx[class]);
- 		spin_ctx_destroy(fd, ctx[class]);
- 	}
-@@ -715,14 +710,14 @@ igt_main
- 
- 	igt_subtest("drm-busy-idle-check-all")
- 		xe_for_each_engine(xe, hwe)
--			busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+			busy_check_all(xe, hwe);
- 
- 	igt_subtest("drm-most-busy-idle-check-all")
- 		xe_for_each_engine(xe, hwe)
--			most_busy_check_all(xe, hwe, TEST_BUSY | TEST_TRAILING_IDLE);
-+			most_busy_check_all(xe, hwe);
- 
- 	igt_subtest("drm-all-busy-idle-check-all")
--		all_busy_check_all(xe, TEST_BUSY | TEST_TRAILING_IDLE);
-+		all_busy_check_all(xe);
- 
- 	igt_subtest("drm-busy-exec-queue-destroy-idle")
- 		xe_for_each_engine(xe, hwe)
--- 
-2.43.0
-
+On 01-Feb-24 6:14 AM, Lucas De Marchi wrote:
+> Kernel driver is responsible to do those actions. kms_rmfb is then
+> checking if that was true in 2 cases: a) DRM_IOCTL_MODE_RMFB was called
+> or b) the file descriptor was closed.
+> 
+> v2: Fix swapped description (Swati)
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>   tests/kms_rmfb.c | 23 ++++++++++++-----------
+>   1 file changed, 12 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/kms_rmfb.c b/tests/kms_rmfb.c
+> index 39e8bbd55..0ea689d60 100644
+> --- a/tests/kms_rmfb.c
+> +++ b/tests/kms_rmfb.c
+> @@ -24,7 +24,7 @@
+>   /**
+>    * TEST: kms rmfb
+>    * Category: Display
+> - * Description: This tests rmfb and close-fd behavior. In these casesthe
+> + * Description: This tests rmfb and close-fd behavior. In these cases the
+>    *              framebuffers should be removed from the crtc.
+>    * Driver requirement: i915, xe
+>    * Functionality: kms_gem_interop
+> @@ -42,12 +42,13 @@
+>   
+>   /**
+>    * SUBTEST: close-fd
+> - * Description: RMFB is supposed to free the framebuffers from any and all planes
+> - *              so test this and make sure it works with fd close and reopen.
+> + * Description: Kernel driver is supposed to free the framebuffers from any and all planes
+> + *		when the fd is closed. Ensure that is the case by closing and re-opening
+> + *		it.
+>    *
+>    * SUBTEST: rmfb-ioctl
+> - * Description: RMFB is supposed to free the framebuffers from any and all planes
+> - *              so test this and make sure it works.
+> + * Description: Kernel driver is supposed to free the framebuffers from any and all planes
+> + *              when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case.
+>    */
+>   
+>   #ifndef DRM_CAP_CURSOR_WIDTH
+> @@ -57,7 +58,7 @@
+>   #define DRM_CAP_CURSOR_HEIGHT 0x9
+>   #endif
+>   
+> -IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases"
+> +IGT_TEST_DESCRIPTION("This tests rmfb and close-fd behavior. In these cases "
+>   		     "the framebuffers should be removed from the crtc.");
+>   
+>   struct rmfb_data {
+> @@ -198,11 +199,11 @@ igt_main
+>   		const char *name;
+>   		const char *description;
+>   	} tests[] = {
+> -		{ false, "rmfb-ioctl", "RMFB is supposed to free the framebuffers from any and all "
+> -				       "planes so test this and make sure it works."},
+> -		{ true, "close-fd", "RMFB is supposed to free the framebuffers from any and all "
+> -				    "planes so test this and make sure it works with fd close "
+> -				    "and reopen."},
+> +		{ false, "rmfb-ioctl", "Kernel driver is supposed to free the framebuffers from any and all planes "
+> +				       "when DRM_IOCTL_MODE_RMFB ioctl is called. Ensure that is the case." },
+> +		{ true, "close-fd", "Kernel driver is supposed to free the framebuffers from any and all planes "
+> +				    "when the fd is closed. Ensure that is the case by closing and re-opening "
+> +				    "it" },
+>   	};
+>   	struct rmfb_data data = {};
+>   	int i;
