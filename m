@@ -4,27 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 771B9C83010
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 09:02:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8E51C8300F
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 09:17:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3768010E1CE;
-	Thu, 29 Aug 2024 09:02:03 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 64E8A10E1AC;
- Thu, 29 Aug 2024 09:02:01 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8984488790754848278=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6818510E653;
+	Thu, 29 Aug 2024 09:17:39 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="dsvrkZ8t";
+	dkim-atps=neutral
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com
+ (mail-bn7nam10on2042.outbound.protection.outlook.com [40.107.92.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BEFE10E653
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Aug 2024 09:17:38 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=p+3FYE3Jk2v8gi5v0WfDa48tXqc70iMR7xsVepCTGRbSZbIxGed5fqF2Kh4amKi2OTTVnINQxENxkla1DjYMQ8Ii/1MqVas7Zifqrplv5r2/qOxgCxdSDKb4X2zeQovTQt5cZpcAAnq8TOSq1r+PcKjT2qe5x4Jv2WOwpdPXIoCA1WvUE9RmKcvPBAE86jL+4fmy0NmT497l/g5vXzzear+EG4ZUZidWZSZ5UuPa/eba59xyFRemIMavDjT6pcQUzJb6hWb9/M9Wim98Q9R6quQxoEp8e/HBmxkAIF+PeIX/keiWyvssFgLqt4uv7DnA2GYOWWmqG5N06+BHgl/YXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NUEwgdr9Xt8Hz5AhiBm1wa+TscJN/bLndEmI34weIN4=;
+ b=Juav2leXImnczl39fFhNLGKEsVewRYYwZ9weHKEQPbh0WbagVJDU27GfxiD4bAI4SBjsaPSaEKszPmBduYs7Jb3Ui0dKo3VzVm4d/pXkbNNLTb3/qQXWIAN2zKnKoC4WCGef+OvTQCsuVhf3nDXNZLeN+ev3krroDu+Vn60NBb2h5uwCFV92JpXozFe9NmI8oNVInKnlNwxV6QN/Y+7Wz6BYLg4EX05h81v7SMFVBacECHaYIQ8mhRZ42l1RNiw0UOJKDUuSzrtm9ubWhYh2ja+4TB537d9Hjj4lj16jUx4d8MH2lP1o5xsJtsYgy+gGZmnWK5YG66XaYKtBM8DZbA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NUEwgdr9Xt8Hz5AhiBm1wa+TscJN/bLndEmI34weIN4=;
+ b=dsvrkZ8tDx6fJ1LE21tVvcYM4j11jgN+cBTWxWClPvSUTxNpQ22gA8gJLPji81GFpBUethigHOXaU6HBg76WilOW4vX2DG8w5y4cFvny/mk8nOp9jR/7I/1cCwpXX681BaaF8wVWxphwedQqV1xB3gTmVig/ntNGcVd/Kv5dC6Q=
+Received: from BN9PR03CA0062.namprd03.prod.outlook.com (2603:10b6:408:fc::7)
+ by IA0PR12MB8256.namprd12.prod.outlook.com (2603:10b6:208:407::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28; Thu, 29 Aug
+ 2024 09:17:30 +0000
+Received: from BN2PEPF000055DA.namprd21.prod.outlook.com
+ (2603:10b6:408:fc:cafe::ca) by BN9PR03CA0062.outlook.office365.com
+ (2603:10b6:408:fc::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.27 via Frontend
+ Transport; Thu, 29 Aug 2024 09:17:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF000055DA.mail.protection.outlook.com (10.167.245.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7939.2 via Frontend Transport; Thu, 29 Aug 2024 09:17:30 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 29 Aug
+ 2024 04:17:29 -0500
+Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Thu, 29 Aug 2024 04:17:28 -0500
+From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+Subject: [PATCH i-g-t] tests/amd_queue_reset: fix critical warning in queue
+ reset
+Date: Thu, 29 Aug 2024 17:17:27 +0800
+Message-ID: <20240829091727.192798-1-jesse.zhang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/amd=5Fqueue=5Freset?=
- =?utf-8?q?=3A_add_sdma_test_in_queue_reset?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Aug 2024 09:02:01 -0000
-Message-ID: <172492212140.830456.1825899449880656319@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240829073153.188855-1-jesse.zhang@amd.com>
-In-Reply-To: <20240829073153.188855-1-jesse.zhang@amd.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: jesse.zhang@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DA:EE_|IA0PR12MB8256:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4044a97-db55-4b18-d1d1-08dcc80b688e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|82310400026|36860700013|376014; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?obaJDhPoBaw6pEBTStKFoy5BM711JMk17LeMacJ7Oa2WVhXeBnbnrx3jwz0f?=
+ =?us-ascii?Q?CIWKhD2MrDebPzBps/9YVpAEuwWozI6c2fb0p3lQ5gFP3O2L7dbu1rA88hOx?=
+ =?us-ascii?Q?c1aKgtF2LW1xIZlzZUuP/tSpBaLgPH0NxiPSiJjniP4cVIu+QPFZaiB+BzIY?=
+ =?us-ascii?Q?d2UaaqDZHj05hHc8xr71eMMmdzSAOzczjhlue/ssKngRKSlnKht4Lb1Y6Hl2?=
+ =?us-ascii?Q?LINQp98Lv/qLwCoPOI0UryNEtbJIifLCs944thxdm2LCGyYEjRLHtjIF/+/7?=
+ =?us-ascii?Q?YplX0miuCB+bpEMHQV5GWwq2WPOAv4+IPIT+H/0kDkgTni6lNoinyybWl6az?=
+ =?us-ascii?Q?F3wKygI7C3AR7P4BQmNyaEz1cKVEXVeExDzdk4iMHXchGwF75rKiGn1IimEk?=
+ =?us-ascii?Q?xZalkOQpRa8SAsnqvpzmp056IE1pmIxzJ5oSpvZVrKlr/SyvvJJtEjEm/hRC?=
+ =?us-ascii?Q?Ucii14SlEZ5dsy3YBFPfVa0WEqlmh+sVVMMarvPfAPB86KD0giT6S41qjYhy?=
+ =?us-ascii?Q?AjJhIua4UlqVHNcCIl/g3mE3ncacthB/KNfDTmCEEcaG0vrmJBfHuTjiQ6oT?=
+ =?us-ascii?Q?0/CAp/ppAyPvajO8k6lhQOAErj1HWEhMqp7CYP+klKkfpCIxTRzkh11TGNw4?=
+ =?us-ascii?Q?RPSi3Jwf9boumhHHmwSLQL9RoEfa4dM8/8AAVUKzGU445ydsP6X17kN5Ts83?=
+ =?us-ascii?Q?kha5igvYx66tnsY6Uaiz4Ve9TTawshV2v/jZMp0VQJ3BCYaUBBBD7yB+luh4?=
+ =?us-ascii?Q?1nujM0WTcjZA7WjmTZg++0fETZSmdZMlXJlyTvivzSk2ZHYcgYWrStBhPjtu?=
+ =?us-ascii?Q?bAN7BW6awwSP7dqn7Dspf1sktIeBn/8h1AxPLAOc3ahCtGiEt+eNxNj7qdFu?=
+ =?us-ascii?Q?YYVuFBUbHnKo4bb0mrVlgjBMjJHqlS9qzIXT4I4YKL+umKWzalUpKyHs8YB0?=
+ =?us-ascii?Q?CDDA5oy6SVD8cagsrB8et3iOR5kiI+8KhzeR9zNc4+30jvZOaZXtZTEiHRBI?=
+ =?us-ascii?Q?D7F6PsofVY360jFpruxwv8UTFdpj15puSXjdMTMst5bnM/+9d30QZYk8NIug?=
+ =?us-ascii?Q?wKaAJXR4RovM/swDzh/7kMYelLBMyB/zObq4EUtUn0Eb0/EM2fOuYfv+/dNh?=
+ =?us-ascii?Q?xn/LO7KNOAebQJZKYobTNKQRJ3FWeWT8AKoXBRJ1tNzvm3E7F8EDjdYuirvc?=
+ =?us-ascii?Q?z/3ClE9aUcUycXMml/zklypSnFf943xS1o1mfQGc6IwBClLLkG4BzCwAH0D/?=
+ =?us-ascii?Q?7kImiEE1NUZY5ukda3t48N1YkWIKDk1HuNeD4Gvv5VyTj1VykDKf7aE1soEt?=
+ =?us-ascii?Q?HAW9CzKq2AYUs5Bd7zqwEZ8hSr60lzqgvbQE2oQqpqr0lNe4KOX6QOttTXB5?=
+ =?us-ascii?Q?6IK3qIwaNjNHOA1ccYUrnf53gTymbMcSJiOw3goUyKtfIoxRsblRZ8PUAdIH?=
+ =?us-ascii?Q?T1zyErxGSEvEJYAoyrcxNPvHw0UD0/yk?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2024 09:17:30.1809 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4044a97-db55-4b18-d1d1-08dcc80b688e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000055DA.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8256
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,252 +132,71 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8984488790754848278==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+When queue reset is run with the subtest parameter, a critical warning will be reported. For example:
+run the command: sudo ./tests/amdgpu/amd_queue_reset --run-subtest amdgpu-GFX-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH
+the warnning is:
+(amd_queue_reset:71723) igt_core-CRITICAL: Unknown subtest: amdgpu-GFX-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH
+Subtest amdgpu-GFX-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH: SUCCESS (9.771s)
+(amd_queue_reset:71722) igt_core-CRITICAL: Unknown subtest: amdgpu-GFX-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH
+(amd_queue_reset:71721) igt_core-CRITICAL: Unknown subtest: amdgpu-GFX-CMD_STREAM_EXEC_INVALID_PACKET_LENGTH
 
-== Series Details ==
+Because it has three processes (backgroud, monitor, test), not including subtest.
+So when these three processes exit, the variable igt_exit_called needs to be masked to skip the warning report.
 
-Series: tests/amd_queue_reset: add sdma test in queue reset
-URL   : https://patchwork.freedesktop.org/series/137948/
-State : success
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+---
+ lib/igt_core.h                 | 2 +-
+ tests/amdgpu/amd_queue_reset.c | 9 ++++++---
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 06c5314bf..5b4f41504 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1225,7 +1225,7 @@ void igt_skip_on_simulation(void);
+ 
+ extern const char *igt_interactive_debug;
+ extern bool igt_skip_crc_compare;
+-
++extern bool igt_exit_called;
+ /**
+  * igt_log_level:
+  * @IGT_LOG_DEBUG: debug information, not printed by default
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+index 8482a371d..414677861 100644
+--- a/tests/amdgpu/amd_queue_reset.c
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -759,7 +759,8 @@ run_all(amdgpu_device_handle device, amdgpu_context_handle *arr_context_handle,
+ 			*monitor_child = getppid();
+ 			run_monitor_child(device, arr_context_handle, sh_mem, num_of_tests);
+ 				igt_success();
+-				igt_exit();
++				igt_exit_called = true;
++				exit(0);
+ 		}
+ 		*test_child = fork();
+ 		if (*test_child == -1) {
+@@ -768,13 +769,15 @@ run_all(amdgpu_device_handle device, amdgpu_context_handle *arr_context_handle,
+ 			*test_child = getppid();
+ 			run_test_child(device, arr_context_handle, sh_mem, num_of_tests, version);
+ 			igt_success();
+-			igt_exit();
++			igt_exit_called = true;
++			exit(0);
+ 
+ 		}
+ 	} else if (process == PROCESS_BACKGROUND) {
+ 		run_background(device, sh_mem, num_of_tests);
+ 		igt_success();
+-		igt_exit();
++		igt_exit_called = true;
++		exit(0);
+ 	}
+ 	return 0;
+ }
+-- 
+2.25.1
 
-CI Bug Log - changes from CI_DRM_15318 -> IGTPW_11660
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/index.html
-
-Participating hosts (40 -> 37)
-------------------------------
-
-  Additional (1): fi-kbl-8809g 
-  Missing    (4): bat-kbl-2 bat-dg2-11 bat-arlh-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11660 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
-
-  * igt@gem_lmem_swapping@verify-random:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][4] +30 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-arls-5:         NOTRUN -> [INCOMPLETE][5] ([i915#11320])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][6] +10 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html
-
-  
-#### Possible fixes ####
-
-  * igt@gem_exec_parallel@engines@fds:
-    - {bat-arlh-3}:       [INCOMPLETE][7] ([i915#11786]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-2:         [DMESG-WARN][9] ([i915#11349]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-
-  * igt@kms_busy@basic@modeset:
-    - fi-cfl-8109u:       [INCOMPLETE][11] ([i915#10056]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/fi-cfl-8109u/igt@kms_busy@basic@modeset.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-cfl-8109u/igt@kms_busy@basic@modeset.html
-
-  
-#### Warnings ####
-
-  * igt@fbdev@read:
-    - bat-arls-1:         [DMESG-FAIL][13] ([i915#9157]) -> [DMESG-WARN][14] ([i915#9157])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@fbdev@read.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arls-1/igt@fbdev@read.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10056]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10056
-  [i915#10196]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10196
-  [i915#11320]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320
-  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#11725]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725
-  [i915#11786]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11786
-  [i915#12041]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12041
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#9157]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9157
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_7997 -> IGTPW_11660
-
-  CI-20190529: 20190529
-  CI_DRM_15318: 6d5d77a2ec2865053755f00bbdfc0d0bf765ee97 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11660: 11660
-  IGT_7997: c70810080fa12a37859c45f16445797c5d849d4d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/index.html
-
---===============8984488790754848278==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amd_queue_reset: add sdma test in queue reset</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137948/">https://patchwork.freedesktop.org/series/137948/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15318 -&gt; IGTPW_11660</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/index.html</p>
-<h2>Participating hosts (40 -&gt; 37)</h2>
-<p>Additional (1): fi-kbl-8809g <br />
-  Missing    (4): bat-kbl-2 bat-dg2-11 bat-arlh-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11660 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@verify-random:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-cfl-8109u/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
-<ul>
-<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320">i915#11320</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-cfl-8109u/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> +10 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@gem_exec_parallel@engines@fds:</p>
-<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11786">i915#11786</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@modeset:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/fi-cfl-8109u/igt@kms_busy@basic@modeset.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10056">i915#10056</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/fi-cfl-8109u/igt@kms_busy@basic@modeset.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@fbdev@read:<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@fbdev@read.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9157">i915#9157</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11660/bat-arls-1/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9157">i915#9157</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_7997 -&gt; IGTPW_11660</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15318: 6d5d77a2ec2865053755f00bbdfc0d0bf765ee97 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11660: 11660<br />
-  IGT_7997: c70810080fa12a37859c45f16445797c5d849d4d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============8984488790754848278==--
