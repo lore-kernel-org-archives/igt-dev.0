@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 162C1C83F2E
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B81ECC83F2D
 	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 14:46:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C265010E6CF;
-	Thu, 29 Aug 2024 14:46:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A9B810E6CE;
+	Thu, 29 Aug 2024 14:46:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mTNHPK6h";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NlnqoGHj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AAA7D10E6CD
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Aug 2024 14:46:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AEF5C10E6CE
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Aug 2024 14:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724942789; x=1756478789;
+ t=1724942792; x=1756478792;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=s0R+rEcVqleeupzuIAjndrxF5zeJXwKrOwtN44CwhE4=;
- b=mTNHPK6hEC0bhcQONMoNCZHMACerdX8kDhZMKiVQDMLcUJjyTYBmxylm
- sS9vDNNLXMqquGt2oONc+kGsl9zDmZUDaBXCqSidV5Ce6GvyUYMVYUqdD
- rwx2+OBbK5JnfY50f7V2E4SU0dQm9TZmr3tSXl0yW7cQLqRcjUz8e+xhA
- BbvoRYCDMsn9wRbYFLwHrPBPpHjhkvgegPbaQ5yZYoR/aRWmKpb8tIaud
- 1tTh0U2+QE8UUe+VXr2vdK2SVoDBDvmPgxVsMGaScF6pqADgnDYajJFA7
- EFSmCxiANHgh4amfeHwcWExUfeube/Uf0UCR480UNWUBdEnBaxzAIeQPX w==;
-X-CSE-ConnectionGUID: m4hFMii8RauWR2GMfOGzJQ==
-X-CSE-MsgGUID: d4UM1eGmSxG3+oom234DsQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34947543"
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; d="scan'208";a="34947543"
+ bh=Y3Uvyktr2nVcykjKcXl7yoBFUZtrSsiywFxM765+rFM=;
+ b=NlnqoGHjcGqlzNVqR6HBgDAiL2mXDygsUs7piaWsP6ED+IoWehI6ohcg
+ LU2zVlkWdYQsQQnRa/dUPrCcSQvTdL31coZDPcObYfo0rorr0dbYO/YvB
+ tSWDNyKou/dozqhpbIwt212vug1Fg1+/a6BQqZpCKvKSPqf071FF7r0Dz
+ eqv0lVI2SKJ7E0TVWAhzH6MNIHjdQzxOBII9uGyPoWcQLiClRQK9pC340
+ +P2nhRWLOhBWm7RxE2yLbwbSvCePJroxo2csNimXrPAw914rD/0lw1qmj
+ DhGT1kjFAZapVIbZZ0OOEICsoxBn/AAUnd4SKGpZYUbE/vIjC+ri34+b/ w==;
+X-CSE-ConnectionGUID: Ik115w+bSOGarMcnTLLwmA==
+X-CSE-MsgGUID: 6CZUTxTwTtWsR9BXYced0w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="34947558"
+X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; d="scan'208";a="34947558"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2024 07:46:29 -0700
-X-CSE-ConnectionGUID: +AvDpB3xQBuIKdfpWO8tHg==
-X-CSE-MsgGUID: 0Aay3UxmSb+mX1BN7Zz/Fg==
+ 29 Aug 2024 07:46:32 -0700
+X-CSE-ConnectionGUID: 9d4+xWP/TbuCddIE3FyPPQ==
+X-CSE-MsgGUID: KxzeXDOfTdyYvyfJlYfI+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; d="scan'208";a="64304049"
+X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; d="scan'208";a="64304068"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.237])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2024 07:46:25 -0700
+ 29 Aug 2024 07:46:29 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -55,14 +55,15 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
-Subject: [PATCH i-g-t v5 06/17] lib/intel_batchbuffer: Add helper to get
- pointer at specified offset
-Date: Thu, 29 Aug 2024 16:45:36 +0200
-Message-Id: <20240829144547.105371-7-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v5 07/17] lib/gpgpu_shader: Allow enabling illegal
+ opcode exceptions in shader
+Date: Thu, 29 Aug 2024 16:45:37 +0200
+Message-Id: <20240829144547.105371-8-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240829144547.105371-1-christoph.manszewski@intel.com>
 References: <20240829144547.105371-1-christoph.manszewski@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -81,34 +82,59 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Andrzej Hajda <andrzej.hajda@intel.com>
 
-The helper will be used to access data placed in batchbuffer.
+Illegal opcode exceptions can be enabled in interface descriptor data
+passed to COMPUTE_WALKER instruction.
 
 Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
 Cc: Mika Kuoppala <mika.kuoppala@intel.com>
 Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Acked-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/intel_batchbuffer.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/gpgpu_shader.c | 4 ++++
+ lib/gpgpu_shader.h | 1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
-index cb32206e5..b1670d23e 100644
---- a/lib/intel_batchbuffer.h
-+++ b/lib/intel_batchbuffer.h
-@@ -353,6 +353,13 @@ static inline uint32_t intel_bb_offset(struct intel_bb *ibb)
- 	return (uint32_t) ((uint8_t *) ibb->ptr - (uint8_t *) ibb->batch);
- }
- 
-+static inline void *intel_bb_ptr_get(struct intel_bb *ibb, uint32_t offset)
-+{
-+	igt_assert(offset <= ibb->size);
-+
-+	return ((uint8_t *) ibb->batch + offset);
-+}
-+
- static inline void intel_bb_ptr_set(struct intel_bb *ibb, uint32_t offset)
+diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+index c1bb70507..fb0bd6e4c 100644
+--- a/lib/gpgpu_shader.c
++++ b/lib/gpgpu_shader.c
+@@ -103,6 +103,7 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
+ 		      struct gpgpu_shader *sip,
+ 		      uint64_t ring, bool explicit_engine)
  {
- 	ibb->ptr = (void *) ((uint8_t *) ibb->batch + offset);
++	struct gen8_interface_descriptor_data *idd;
+ 	uint32_t interface_descriptor, sip_offset;
+ 	uint64_t engine;
+ 
+@@ -113,6 +114,8 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
+ 	interface_descriptor = gen8_fill_interface_descriptor(ibb, target,
+ 							      shdr->instr,
+ 							      4 * shdr->size);
++	idd = intel_bb_ptr_get(ibb, interface_descriptor);
++	idd->desc2.illegal_opcode_exception_enable = shdr->illegal_opcode_exception_enable;
+ 
+ 	if (sip && sip->size)
+ 		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
+@@ -163,6 +166,7 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+ 
+ 	xehp_fill_interface_descriptor(ibb, target, shdr->instr,
+ 				       4 * shdr->size, &idd);
++	idd.desc2.illegal_opcode_exception_enable = shdr->illegal_opcode_exception_enable;
+ 
+ 	if (sip && sip->size)
+ 		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
+diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+index 0bbeae66f..26a117a0b 100644
+--- a/lib/gpgpu_shader.h
++++ b/lib/gpgpu_shader.h
+@@ -22,6 +22,7 @@ struct gpgpu_shader {
+ 		uint32_t (*instr)[4];
+ 	};
+ 	struct igt_map *labels;
++	bool illegal_opcode_exception_enable;
+ };
+ 
+ struct iga64_template {
 -- 
 2.34.1
 
