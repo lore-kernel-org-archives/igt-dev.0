@@ -4,61 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36A94C71135
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 09:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10082C71135
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Aug 2024 10:03:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E59AE10E337;
-	Thu, 29 Aug 2024 09:57:05 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ihRZ2pcw";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9865410E337
- for <IGT-Dev@lists.freedesktop.org>; Thu, 29 Aug 2024 09:57:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1724925425; x=1756461425;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=wfMAXeec9IcfvoJBkrdyjczDfeDBpwWbWKjAT9djdmY=;
- b=ihRZ2pcwF3YnLo7uCVJfEFzxAjK6PyPwyIk55+MNWzRf142Li5tfliWj
- Chg++7gSXsVS+JFMu0DBbNvKExoxds+5VGoPF8Ez0Vyz/3rkkwE1Apq4y
- Imw+jEyAMZ3/UbgkZjyw80zPvogQrxRbszK487/cbZNbuUrVqMzWLj7OE
- lQskrcukQfVicW8bSf0jyZ+NbQWQ0BMYQBZnGPxrvZ/tVE+gnDF2HgGiO
- KgL1nqSFyE6c5AXj67Pfh3QbKESfVmSvixsQWQ4R1UlA14VIuYWmEFu3u
- 3Sb+lrePbgq2glgQz+Ta7COjiwYdumSDNpuzyc/FHYoQ6ZCXHTniMfNfE w==;
-X-CSE-ConnectionGUID: wcIkpBTTQqmQ/frSf3siSQ==
-X-CSE-MsgGUID: 4Uz/+pUwRWOb9cpT9cTwnA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11178"; a="23459590"
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; d="scan'208";a="23459590"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2024 02:57:05 -0700
-X-CSE-ConnectionGUID: 1sL4dk1pQBip2CL7hz7O2g==
-X-CSE-MsgGUID: 6TfYSNRUR/Wp0duICaDPdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; d="scan'208";a="86736598"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.230])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Aug 2024 02:57:02 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: John Harrison <john.c.harrison@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- IGT-Dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: Re: [RFC i-g-t] kunit: Remove hard-coded test list from xe_live_ktest
-Date: Thu, 29 Aug 2024 11:57:00 +0200
-Message-ID: <1942260.taCxCBeP46@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <abec4930-3ad9-4a90-97be-20a21a3e841c@intel.com>
-References: <20240823182418.1771456-1-John.C.Harrison@Intel.com>
- <1941664.taCxCBeP46@jkrzyszt-mobl2.ger.corp.intel.com>
- <abec4930-3ad9-4a90-97be-20a21a3e841c@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5FDC10E15A;
+	Thu, 29 Aug 2024 10:03:55 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A27AB10E0F2;
+ Thu, 29 Aug 2024 10:03:54 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7152996036318542914=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/amd=5Fqueue=5Freset?=
+ =?utf-8?q?=3A_add_sdma_test_in_queue_reset_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 29 Aug 2024 10:03:54 -0000
+Message-ID: <172492583465.830654.5779328585845010977@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240829084035.191312-1-jesse.zhang@amd.com>
+In-Reply-To: <20240829084035.191312-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,364 +37,256 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi John,
+--===============7152996036318542914==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On Wednesday, 28 August 2024 20:04:06 GMT+2 John Harrison wrote:
-> On 8/26/2024 06:07, Janusz Krzysztofik wrote:
-> > Hi John, Kamil,
-> >
-> > On Monday, 26 August 2024 13:46:45 GMT+2 Kamil Konieczny wrote:
-> >> Hi John.C.Harrison,
-> >> On 2024-08-23 at 11:24:18 -0700, John.C.Harrison@Intel.com wrote:
-> >>> From: johnharr <johnharr@invalid-email.com>
-> >> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> >> Again invalid e-mail here.
-> >>
-> >>> The list of supported kunit tests is currently hard coded.
-> > That pattern originates from i915_selftest, where there are 3 stable subtests,
-> > "mock", "live" and "perf", each of them executing a (possibly long) list of
-> > dynamic sub-subtests actually provided by the module for each category.  Also,
-> > IIRC there was a separate module for each Xe test suite before, each mapped to
-> > a separate IGT test, later merged into one module with multiple suites and one
-> > test with multiple corresponding subtests.
-> Not sure if you are just explaining the history of the test or making a 
-> suggestion as to how it should evolve next?
+== Series Details ==
 
-Both, I think.  Maybe not the history, but origin of ideas standing behind the 
-implementation, and how tests are expected to use it (and maybe evolve if now 
-doing that in a different way).
+Series: tests/amd_queue_reset: add sdma test in queue reset (rev2)
+URL   : https://patchwork.freedesktop.org/series/137948/
+State : failure
 
-> 
-> >
-> >>> Which means
-> >>> that adding a new test to the kernel also requires patches to IGT as
-> >>> well.
-> >>>
-> >>> The list of available kunit tests is already exported by the kernel.
-> >>> So there is no need to bake a list into the IGT source code. So, add
-> >>> support for querying the test list dynamically.
-> >>>
-> >>> NB: Currently, the test list can only be queried by root but the IGT
-> >>> build system queries all tests at compile time. In theory this should
-> >>> not be a problem. However, the kunit helper code is all written to run
-> >>> inside a test and not inside the prep code, which means that when it
-> >>> fails to open the root only interfaces, it calls 'skip'. And skip is
-> >>> not allowed outside of running a test. Hence the build fails with:
-> >>>    skipping is allowed only in fixtures, subtests or igt_simple_main
-> >> Looks like we should fix it, move out skips from kunit libs.
-> > I suggest you consider a different approach: for a module, call igt_kunit()
-> > only once, with NULL suite argument.  As a result, you'll get results from one
-> > IGT subtest called "<module_name>" with a bunch of IGT dynamic sub-subtests
-> > called "<test_suite>-<test_case>", one for each test case provided by the
-> > module.
-> I'm not following. This is what my patch does, isn't it? 
+== Summary ==
 
-No, your patch introduces a runtime determined list of subtests -- something 
-not existent in IGT.
+CI Bug Log - changes from CI_DRM_15318 -> IGTPW_11662
+====================================================
 
-An IGT test may consist of one or more statically defined subtests with pre-
-defined names.  The term dynamic subtest is usually used in two meanings.  It 
-may mean a subtest of type igt_subtest_with_dynamic, still with a pre-defined 
-name, but with a runtime determined list of sub-subtests, sometimes called 
-dynamic sub-subtests, but often also called just dynamic subtests.  Names of 
-dynamic sub-subtests are determined at runtime.
+Summary
+-------
 
-My approach tries to address your need for a maintenance-free kunit IGT test 
-source file in a different way.  I'm following the IGT standard of statically 
-defined list of subtests with pre-defined names: one subtest of type 
-igt_subtest_with_dynamic, named after the kunit test module name which you 
-have to enter into the test code anyway, and providing all test cases from 
-all test suites contained in that module reported as dynamic sub-subtests 
-named <test_suite>-<test_case>.
+  **FAILURE**
 
-> There is a 
-> single call to igt_kunit_get_test_names() which returns a list of 
-> 'suite/case' name pairs having already registered those as dynamic 
-> sub-tests. Then it loops through the list running the suites (with any 
-> command line filtering being automatically applied to filter out sub-tests).
+  Serious unknown changes coming with IGTPW_11662 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_11662, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-That's what breaks the IGT rule of statically defined lists of subtests with 
-pre-defined names.
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/index.html
 
-> 
-> 
-> >
-> >>> And of course, putting all the query code inside an igt_fixture block
-> >>> means it doesn't get run as part of --show-testlist or --list-subtests.
-> >>>
-> >>> Reworking the kunit code to fail cleanly rather than skipping
-> >>> everywhere seems much more invasive. It is also not clear why the
-> >>> kunit code is considered 'library' when it is execlusively used from
-> >>> the kunit test alone!?
-> > Current users:
-> > 	igt$ grep -rl igt_kunit tests/
-> > 	tests/intel/xe_live_ktest.c
-> > 	tests/kms_selftest.c
-> > 	tests/drm_mm.c
-> > 	tests/drm_buddy.c
-> >
-> > The other 3 were first converted from i915_selftest standard to KUnit still
-> > before Xe KUnit IGT tests started appearing.
-> 
-> Argh, I must have been inside the 'intel' directory when I did my 
-> search! Oops.
-> 
-> The KMS one has another hard coded test list. 
+Participating hosts (40 -> 37)
+------------------------------
 
-But that's not a list of test suites, that's has a hardcoded list of module 
-names -- something not avoidable when kunit test cases you want to group in a 
-single IGT test are split among several modules.  IIRC, each of those modules 
-provides only one test suite.  Names of test suites may be the same as module 
-names (with _kunit or _test suffix stripped) or may be different.  It was 
-decided to use module names as subtest names, then we are always passing NULL 
-as suite.  If module and suite names don't match then IGT dynamic sub-subtests 
-are called <test_suite>-<test_case>, otherwise just <test_case>.
+  Additional (1): fi-kbl-8809g 
+  Missing    (4): fi-cfl-8109u bat-kbl-2 bat-jsl-1 fi-snb-2520m 
 
-> The drm_mm one has a commented hard coded test list 
+Possible new issues
+-------------------
 
-I don't like the idea of documenting dynamic sub-subtest names in IGT test 
-sources -- for me that breaks current IGT standards in the opposite direction.  
-But maybe an important business need stands behind.
+  Here are the unknown changes that may have been introduced in IGTPW_11662:
 
-> but actually just runs everything with no compiled in lists and the
-> drm_buddy test has no test lists at all. 
+### IGT changes ###
 
-Both have a module name hardcoded, also used as a name of IGT subtest.
+#### Possible regressions ####
 
-> Not 
-> sure what tests/sub-tests they actually run because all three of those 
-> just skip for me. Not sure why. 
+  * igt@fbdev@write:
+    - bat-arls-1:         [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@fbdev@write.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-1/igt@fbdev@write.html
 
-Have you got those drm kunit modules built and available to the running 
-kernel?
+  
+Known issues
+------------
 
-> The xe_live_ktest one runs everything 
-> fine so I definitely have the ktest system compiled in to the kernel. 
-> And this is running with a stock IGT tree, not with my patch, so it's 
-> not that my patch is breaking it.
+  Here are the changes found in IGTPW_11662 that come from known issues:
 
-Your patch can't break anything since it doesn't modify any existing 
-functions, only introduces a new one.  As long as you don't force IGT tests to 
-use it, nothing can break.
+### IGT changes ###
 
-Thanks,
-Janusz
+#### Issues hit ####
 
-> 
-> John.
-> 
-> >
-> > Thanks,
-> > Janusz
-> >
-> >>> So posting this as an RFC before going too far
-> >>> down the possible rabbit hole.
-> >>>
-> >> As I see this, it is a lib because some other vendor (like amdpgu)
-> >> could use it.
-> >>
-> >> +cc Janusz
-> >> Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> >>
-> >> btw could you split this into two patches, one for lib/* and
-> >> one for tests/intel/xe_live_ktest ?
-> >>
-> >>> Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-> >>> ---
-> >>>   lib/igt_kmod.c              | 68 +++++++++++++++++++++++++++++++++++++
-> >>>   lib/igt_kmod.h              |  6 ++++
-> >>>   tests/intel/xe_live_ktest.c | 60 ++++++++++++++++----------------
-> >>>   3 files changed, 103 insertions(+), 31 deletions(-)
-> >>>
-> >>> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> >>> index 464c0dcf484a..69c1254b397c 100644
-> >>> --- a/lib/igt_kmod.c
-> >>> +++ b/lib/igt_kmod.c
-> >>> @@ -1414,6 +1414,74 @@ static void __igt_kunit(struct igt_ktest *tst,
-> >>>   	}
-> >>>   }
-> >>>   
-> >>> +/**
-> >>> + * igt_kunit:
-> >>> + * @module_name: the name of the module
-> >>> + * @suite: the name of test suite to be executed, also used as subtest name;
-> >>> + *	   if NULL then test cases from all test suites provided by the module
-> >>> + *	   are executed as dynamic sub-subtests of one IGT subtest, which name
-> >>> + *	   is derived from the module name by cutting off its optional trailing
-> >>> + *	   _test or _kunit suffix
-> >>> + * @opts: options to load the module
-> >>> + *
-> >>> + * Loads the test module, parses its (k)tap dmesg output, then unloads it
-> >>> + */
-> >>> +void igt_kunit_get_test_names(const char *module_name, const char *opts, struct igt_list_head *names)
-> >>> +{
-> >>> +	char debugfs_path[PATH_MAX] = { '\0', };
-> >>> +	struct igt_ktest tst = { .kmsg = -1, };
-> >>> +	struct igt_ktap_results *ktap = NULL;
-> >>> +	const char *subtest;
-> >>> +	char *suite_name = NULL, *case_name = NULL;
-> >>> +	DIR *debugfs_dir = NULL;
-> >>> +	IGT_LIST_HEAD(tests);
-> >>> +
-> >>> +	subtest = strdup(module_name);
-> >>> +	if (!igt_debug_on(!subtest)) {
-> >>> +		char *suffix = strstr(subtest, "_test");
-> >>> +
-> >>> +		if (!suffix)
-> >>> +			suffix = strstr(subtest, "_kunit");
-> >>> +
-> >>> +		if (suffix)
-> >>> +			*suffix = '\0';
-> >>> +	}
-> >>> +
-> >>> +	igt_require(subtest);
-> >>> +
-> >>> +	igt_require(!igt_ktest_init(&tst, module_name));
-> >>> +	igt_require(!igt_ktest_begin(&tst));
-> >>> +
-> >>> +	igt_ignore_warn(igt_kmod_load("kunit", NULL));
-> >>> +
-> >>> +	kunit_debugfs_path(debugfs_path);
-> >>> +	igt_info("kunit path: %s\n", debugfs_path);
-> >>> +	if (igt_debug_on(!*debugfs_path) ||
-> >>> +	    !kunit_get_tests(&tests, &tst, NULL, opts, debugfs_path, &debugfs_dir, &ktap)) {
-> >>> +		igt_info("kunit - no tests found!?\n");
-> >>> +	} else {
-> >>> +		struct igt_ktap_result *t;
-> >>> +		igt_info("kunit tests:\n");
-> >>> +		igt_list_for_each_entry(t, &tests, link) {
-> >>> +			struct igt_kunit_names *name = malloc(sizeof(*name));
-> >>> +			name->suite = strdup(t->suite_name);
-> >>> +			name->sub = strdup(t->case_name);
-> >>> +			igt_info("  %s / %s\n", t->suite_name, t->case_name);
-> >>> +			igt_list_add(&name->link, names);
-> >>> +		}
-> >>> +	}
-> >>> +
-> >>> +	igt_ktap_free(&ktap);
-> >>> +
-> >>> +	kunit_results_free(&tests, &suite_name, &case_name);
-> >>> +
-> >>> +	if (debugfs_dir)
-> >>> +		closedir(debugfs_dir);
-> >>> +
-> >>> +	igt_ktest_end(&tst);
-> >>> +	igt_ktest_fini(&tst);
-> >>> +}
-> >>> +
-> >>>   /**
-> >>>    * igt_kunit:
-> >>>    * @module_name: the name of the module
-> >>> diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-> >>> index efb46da128d4..2f608eb69d48 100644
-> >>> --- a/lib/igt_kmod.h
-> >>> +++ b/lib/igt_kmod.h
-> >>> @@ -71,7 +71,13 @@ static inline int igt_xe_driver_unload(void)
-> >>>   int igt_amdgpu_driver_load(const char *opts);
-> >>>   int igt_amdgpu_driver_unload(void);
-> >>>   
-> >>> +struct igt_kunit_names {
-> >>> +	char *suite;
-> >>> +	char *sub;
-> >>> +	struct igt_list_head link;
-> >>> +};
-> >>>   void igt_kunit(const char *module_name, const char *name, const char *opts);
-> >>> +void igt_kunit_get_test_names(const char *module_name, const char *opts, struct igt_list_head *names);
-> >>>   
-> >>>   void igt_kselftests(const char *module_name,
-> >>>   		    const char *module_options,
-> >>> diff --git a/tests/intel/xe_live_ktest.c b/tests/intel/xe_live_ktest.c
-> >>> index 4376d5df7751..13265e87ba9d 100644
-> >>> --- a/tests/intel/xe_live_ktest.c
-> >>> +++ b/tests/intel/xe_live_ktest.c
-> >>> @@ -9,40 +9,38 @@
-> >>>    * Sub-category: kunit
-> >>>    * Functionality: kunit test
-> >>>    * Test category: functionality test
-> >>> - *
-> >>> - * SUBTEST: xe_bo
-> >>> - * Description:
-> >>> - *	Kernel dynamic selftests to check if GPU buffer objects are
-> >>> - *	being handled properly.
-> >>> - * Functionality: bo
-> >>> - *
-> >>> - * SUBTEST: xe_dma_buf
-> >>> - * Description: Kernel dynamic selftests for dmabuf functionality.
-> >>> - * Functionality: dmabuf test
-> >>> - *
-> >>> - * SUBTEST: xe_migrate
-> >>> - * Description:
-> >>> - *	Kernel dynamic selftests to check if page table migrations
-> >>> - *	are working properly.
-> >>> - * Functionality: migrate
-> >>> - *
-> >>> - * SUBTEST: xe_mocs
-> >>> - * Description:
-> >>> - *	Kernel dynamic selftests to check mocs configuration.
-> >>> - * Functionality: mocs configuration
-> >>>    */
-> >>>   
-> >> Does that mean we will not have any subtests here? The point
-> >> into moving subtests names into documentation was to have a testlist
-> >> generated during compilation, so it will not depend on running
-> >> test with --list option. Adding also Katarzyna to cc.
-> >> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> >>
-> >> Regards,
-> >> Kamil
-> >>
-> >>> -static const char *live_tests[] = {
-> >>> -	"xe_bo",
-> >>> -	"xe_dma_buf",
-> >>> -	"xe_migrate",
-> >>> -	"xe_mocs",
-> >>> -};
-> >>> -
-> >>>   igt_main
-> >>>   {
-> >>> -	int i;
-> >>> +	IGT_LIST_HEAD(names);
-> >>> +	IGT_LIST_HEAD(done);
-> >>> +	struct igt_kunit_names *name, *cmp;
-> >>> +
-> >>> +	igt_kunit_get_test_names("xe_live_test", NULL, &names);
-> >>> +
-> >>> +	while (!igt_list_empty(&names)) {
-> >>> +		bool found = false;
-> >>> +
-> >>> +		name = igt_list_first_entry(&names, name, link);
-> >>> +		igt_list_del(&name->link);
-> >>> +
-> >>> +		/*
-> >>> +		 * Retuned list is sub-tests.
-> >>> +		 * So, need filter out duplicated top level names.
-> >>> +		 */
-> >>> +		igt_list_for_each_entry(cmp, &done, link) {
-> >>> +			if (strcmp(name->suite, cmp->suite) != 0)
-> >>> +				continue;
-> >>> +
-> >>> +			found = true;
-> >>> +		}
-> >>> +
-> >>> +		if (found)
-> >>> +			continue;
-> >>> +
-> >>> +		igt_list_add(&name->link, &done);
-> >>>   
-> >>> -	for (i = 0; i < ARRAY_SIZE(live_tests); i++)
-> >>> -		igt_kunit("xe_live_test", live_tests[i], NULL);
-> >>> +		igt_kunit("xe_live_test", name->suite, NULL);
-> >>> +	}
-> >>>   }
-> >
-> >
-> >
-> 
-> 
+  * igt@gem_huc_copy@huc-copy:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][3] ([i915#2190])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@basic:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-kbl-8809g:       NOTRUN -> [SKIP][5] +30 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html
+
+  
+#### Possible fixes ####
+
+  * igt@gem_exec_parallel@engines@fds:
+    - {bat-arlh-3}:       [INCOMPLETE][6] ([i915#11786]) -> [PASS][7]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-2:         [DMESG-WARN][8] ([i915#11349]) -> [PASS][9]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+    - bat-arls-1:         [DMESG-WARN][10] ([i915#11349]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-1/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@fbdev@read:
+    - bat-arls-1:         [DMESG-FAIL][12] ([i915#9157]) -> [FAIL][13] ([i915#12030])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@fbdev@read.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-1/igt@fbdev@read.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10196]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10196
+  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
+  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#11666]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666
+  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
+  [i915#11724]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11724
+  [i915#11725]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725
+  [i915#11726]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726
+  [i915#11786]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11786
+  [i915#12030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12030
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+  [i915#9157]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9157
+  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
 
 
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_7997 -> IGTPW_11662
+
+  CI-20190529: 20190529
+  CI_DRM_15318: 6d5d77a2ec2865053755f00bbdfc0d0bf765ee97 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11662: 11662
+  IGT_7997: c70810080fa12a37859c45f16445797c5d849d4d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/index.html
+
+--===============7152996036318542914==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amd_queue_reset: add sdma test in queue reset (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137948/">https://patchwork.freedesktop.org/series/137948/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_15318 -&gt; IGTPW_11662</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_11662 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_11662, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Additional (1): fi-kbl-8809g <br />
+  Missing    (4): fi-cfl-8109u bat-kbl-2 bat-jsl-1 fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11662:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@fbdev@write:<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@fbdev@write.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-1/igt@fbdev@write.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11662 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/fi-kbl-8809g/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@basic:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/fi-kbl-8809g/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/fi-kbl-8809g/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> +30 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@gem_exec_parallel@engines@fds:</p>
+<ul>
+<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11786">i915#11786</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arlh-3/igt@gem_exec_parallel@engines@fds.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@fbdev@read:<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15318/bat-arls-1/igt@fbdev@read.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9157">i915#9157</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11662/bat-arls-1/igt@fbdev@read.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12030">i915#12030</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_7997 -&gt; IGTPW_11662</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15318: 6d5d77a2ec2865053755f00bbdfc0d0bf765ee97 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11662: 11662<br />
+  IGT_7997: c70810080fa12a37859c45f16445797c5d849d4d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7152996036318542914==--
