@@ -4,27 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73429CA1009
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Aug 2024 17:48:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44DDECA100C
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Aug 2024 18:32:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 35E1310EAC5;
-	Fri, 30 Aug 2024 17:48:21 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D7FCE10EAC5;
- Fri, 30 Aug 2024 17:48:19 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8799475067859559334=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9CA2A10EAAD;
+	Fri, 30 Aug 2024 18:32:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="KVRP0mVQ";
+	dkim-atps=neutral
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
+ [205.220.168.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1976A10EAAD
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Aug 2024 18:32:13 +0000 (UTC)
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47UHrCqi003943;
+ Fri, 30 Aug 2024 18:32:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+ hR09yPGqvfl/RVqw2Kjz0plh60R7JJQ8o8kmjLr6to0=; b=KVRP0mVQDTbHJ0ol
+ XhvG37jbku5ODTMGw4qSpT8pS2r4lp9dBshJ5ZhUqMFW3Rxa3CCQmq8DZLZUBMn1
+ w+zuBfvZvsGWBFgiRHRbv99GnJu+R3SYMpbM9aWEHRPhN7fnwTds0XQBqBNRsaP2
+ mcIQCa2GwEfUaEnfpD9lU5m6daqNNNZ5xji/WzbNhy80FhkPREWG7FIsgLILKWIG
+ mGQpsV/V+yq33EuQbxfKRBJb7BRcgqb+DS5RWnupfNDp2Sx3oFhiu0RyY9u7H/P8
+ z5CJnZPNFY1mgDg1FeastWbTZxboed2GyhPjb7uU+q+hfWKddVvFyEhfmvfn0aYU
+ +UGOuw==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com
+ [199.106.103.254])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419px5sqkv-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 18:32:03 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com
+ [10.46.141.250])
+ by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47UIW32x006224
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Fri, 30 Aug 2024 18:32:03 GMT
+Received: from [10.134.70.212] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 30 Aug
+ 2024 11:32:02 -0700
+Message-ID: <77a149a4-ede3-496e-bee6-728f396199d9@quicinc.com>
+Date: Fri, 30 Aug 2024 11:32:02 -0700
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fdrm=5Ffdinfo?=
- =?utf-8?q?=3A_Rename_and_reorder_tests_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 30 Aug 2024 17:48:19 -0000
-Message-ID: <172504009987.855156.10554579713485216650@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240830135020.2031087-1-lucas.demarchi@intel.com>
-In-Reply-To: <20240830135020.2031087-1-lucas.demarchi@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] tests/kms_writeback: Add clone mode subtest
+To: Alex Hung <alex.hung@amd.com>, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@intel.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>
+CC: <quic_abhinavk@quicinc.com>, <quic_ebharadw@quicinc.com>,
+ <igt-dev@lists.freedesktop.org>
+References: <20240828-igt-cwb-v2-0-7b255c730c55@quicinc.com>
+ <4c40e28d-a8db-40ec-bde2-0081314a7e8e@amd.com>
+Content-Language: en-US
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
+In-Reply-To: <4c40e28d-a8db-40ec-bde2-0081314a7e8e@amd.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.80.80.8]
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: pVcIIDLxG1THeAhtlYykbHvJClnG7RKM
+X-Proofpoint-GUID: pVcIIDLxG1THeAhtlYykbHvJClnG7RKM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-30_10,2024-08-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 clxscore=1015
+ adultscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408300141
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +91,104 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8799475067859559334==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/intel/xe_drm_fdinfo: Rename and reorder tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/137823/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8000_BAT -> XEIGTPW_11670_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
 
 
-Changes
--------
+On 8/29/2024 1:28 PM, Alex Hung wrote:
+> I ran a smoke test and Patch 4 (tests/kms_writeback: Disable all outputs 
+> after igt_display_require()) is causing a regression on my test platform:
+> 
+> 
+> Starting subtest: writeback-check-output-XRGB2101010
+> (kms_writeback:1973) CRITICAL: Test assertion failure function 
+> get_and_wait_out_fence, file ../tests/kms_writeback.c:345:
+> (kms_writeback:1973) CRITICAL: Failed assertion: ret == 0
+> (kms_writeback:1973) CRITICAL: Last errno: 38, Function not implemented
+> (kms_writeback:1973) CRITICAL: sync_fence_wait failed: Timer expired
+> Stack trace:
+>    #0 ../lib/igt_core.c:2051 __igt_fail_assert()
+>    #1 [get_and_wait_out_fence+0x8e]
+>    #2 ../tests/kms_writeback.c:401 writeback_sequence()
+>    #3 ../tests/kms_writeback.c:424 writeback_check_output()
+>    #4 ../tests/kms_writeback.c:782 __igt_unique____real_main557()
+>    #5 ../tests/kms_writeback.c:557 main()
+>    #6 ../sysdeps/nptl/libc_start_call_main.h:58 __libc_start_call_main()
+>    #7 ../csu/libc-start.c:128 __libc_start_main@@GLIBC_2.34()
+>    #8 [_start+0x25]
+> Subtest writeback-check-output-XRGB2101010 failed.
 
-  No changes found
+Hi Alex,
 
+Thanks for testing and reporting this.
 
-Build changes
--------------
+The overall goal of that patch was to force a modeset for cases where 
+the primary display mode and the mode being used on writeback were the 
+same. If the modes are the same between commits, the DRM framework won't 
+perform a modeset on the encoder even if the connectors have been changed.
 
-  * IGT: IGT_8000 -> IGTPW_11670
-  * Linux: xe-1867-876db6b8ef45d285316cc53b5cf44cbc39aa8758 -> xe-1869-1836028c756d6d0c6f741b9a31b2549f06dc3e79
+To get around this, we thought it would be good to disable all the 
+outputs and start from a clean state before doing the writeback 
+connector setup.
 
-  IGTPW_11670: 72379b7a4d171b3c6879558074487e7c72450e6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8000: fba44baafa5d79b6eed52fa24234781e8e47beb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1867-876db6b8ef45d285316cc53b5cf44cbc39aa8758: 876db6b8ef45d285316cc53b5cf44cbc39aa8758
-  xe-1869-1836028c756d6d0c6f741b9a31b2549f06dc3e79: 1836028c756d6d0c6f741b9a31b2549f06dc3e79
+Is there anything in AMD's disable path that could cause the writeback 
+connector/encoder to be in a bad state for the next commit?
 
-== Logs ==
+Thanks,
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11670/index.html
+Jessica Zhang
 
---===============8799475067859559334==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Rename and reorder tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137823/">https://patchwork.freedesktop.org/series/137823/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11670/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11670/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8000_BAT -&gt; XEIGTPW_11670_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8000 -&gt; IGTPW_11670</li>
-<li>Linux: xe-1867-876db6b8ef45d285316cc53b5cf44cbc39aa8758 -&gt; xe-1869-1836028c756d6d0c6f741b9a31b2549f06dc3e79</li>
-</ul>
-<p>IGTPW_11670: 72379b7a4d171b3c6879558074487e7c72450e6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8000: fba44baafa5d79b6eed52fa24234781e8e47beb8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1867-876db6b8ef45d285316cc53b5cf44cbc39aa8758: 876db6b8ef45d285316cc53b5cf44cbc39aa8758<br />
-  xe-1869-1836028c756d6d0c6f741b9a31b2549f06dc3e79: 1836028c756d6d0c6f741b9a31b2549f06dc3e79</p>
-
-</body>
-</html>
-
---===============8799475067859559334==--
+> 
+> 
+> 
+> On 2024-08-28 21:05, Jessica Zhang wrote:
+>> Add a subtest that will iterate through all pairs of
+>> non-writeback and writeback cloned outputs and dump the writeback
+>> framebuffer for each pair.
+>>
+>> This series includes:
+>>
+>> - Fixes for properly cleaning up the kms_writeback state and forcing a
+>>    modeset after igt_display_require() to prevent commit failures when
+>>    the writeback mode is the same as the primary display mode
+>> - Adjust the duplicate pipe check in igt_display_refresh() to allow for
+>>    combinations of valid clones
+>> - Moving the writeback dump to its own subtest
+>> - Adding a subtest to dump all writeback/non-writeback cloned pairs
+>>
+>> To dump the clone mode buffer, run the following command:
+>>
+>> IGT_FRAME_DUMP_PATH=<dump path> FRAME_PNG_FILE_NAME=<file name> \
+>>     ./build/tests/kms_writeback [--run-subtest dump-valid-clones] \
+>>     -dc <primary display mode>
+>>
+>> This will output a file named <file name>-encoder<writeback encoder
+>> id>-encoder<primary display encoder id>
+>>
+>> ---
+>> Changes in v2:
+>> - Corrected author email
+>> - Link to v1: 
+>> https://lore.kernel.org/r/20240828-igt-cwb-v1-0-48aee421fc97@quicinc.com
+>>
+>> ---
+>> Jessica Zhang (5):
+>>        tests/kms_writeback: clear writeback properties in teardown path
+>>        lib/igt_kms: Add helper to get encoder index
+>>        lib/igt_kms: loosen duplicate check in igt_display_refresh
+>>        tests/kms_writeback: Disable all outputs after 
+>> igt_display_require()
+>>        tests/kms_writeback: Add dump for valid clone mode
+>>
+>>   lib/igt_kms.c         | 57 +++++++++++++++++++++++++++++------
+>>   lib/igt_kms.h         |  2 ++
+>>   tests/kms_setmode.c   | 14 ++-------
+>>   tests/kms_writeback.c | 83 
+>> +++++++++++++++++++++++++++++++++++++++++++--------
+>>   4 files changed, 122 insertions(+), 34 deletions(-)
+>> ---
+>> base-commit: 3b6b2d238e864ff1af9e33159d3bbf4b7f01d86d
+>> change-id: 20240827-igt-cwb-23fd81d3a7a4
+>>
+>> Best regards,
