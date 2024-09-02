@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7347CD13CF
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23CC5CA0ED3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 928C610E324;
-	Mon,  2 Sep 2024 14:38:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D943E10E325;
+	Mon,  2 Sep 2024 14:38:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jNOCo/GS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FUof4+5f";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5E9510E324
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99D0510E325
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287887; x=1756823887;
+ t=1725287889; x=1756823889;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=nBSGzdwggYqaKYQs4GL9Stg73yjuU0yx2nCO6jBET3E=;
- b=jNOCo/GScYKAgRBscIMC9BNUUgcsaqhnStazx05AN7uBH7FMZTT5XjWc
- K2nQ55PTu/uqGBqktw4WzJKPp2EjzNavg3VI5zN2TcT6U3+GAY/auR+9d
- badjsr1cR2hIzPvw3IifNFXwN+elIxcTEIO3oNoxyp25b8TXfEC4pCfzp
- jRRIrV96m/FWF+Rtk5jdFrLDrtRdOfjJ1FE5U7coLwzCGpzcNzGBP1N7M
- 7tFxoD1u6ze+pciJvGHepRhh7yBFdWLliu61HASr5z+xzUhjGKLjQw3qa
- ahBfCZMbAqkU+trYk86zKMK0+ZAxjK6NEl1xvwl1Jesikvd4Fr6oQWqFn w==;
-X-CSE-ConnectionGUID: DFj/riJ4T5eSBfp7hB2o9A==
-X-CSE-MsgGUID: fB5c3OjbRMOn/79IkgkYaw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009422"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009422"
+ bh=YgUxAj2z3wPab2w1521h5W2Zup+YrQEm+U0sixWjSFo=;
+ b=FUof4+5fQ2mj21G/Q/HPwROorhTpyrHO/Ed/VvEQ6Y5Q6ZLxTk1IA9ST
+ jC3X2F75gAMwRptO2n6CxkVlD8MFwnRwgVhkOlAq4+TSVNJevTt07Vpd5
+ Y+WNt+saSsDjFwS1vpEgBKyI81nbfR6UnyKAViqbi+tOLqtqWeMRh3Xlp
+ jJbWiVXVxOxHBjTsvOd+9OiEE4yRK4qfRvwEfH4DgTHX9AePbzxQqoqaq
+ hYeeGhasLM6Qeqj8OTMQtOZRSo+8cvfULDFT2XX4z8hr1BiLli4wJcc84
+ mR8tHmPRhY0NU7XmvywYZksb1V9G4/ZabCpjSo2LIl9bgfdZEhYKlG6PT g==;
+X-CSE-ConnectionGUID: e6CHgo27Sl6Nn6VoEVCeOA==
+X-CSE-MsgGUID: 8I+kbd1lSbyDaLaZRgU0JQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009425"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009425"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:06 -0700
-X-CSE-ConnectionGUID: 6X5dnxXMTfuGYrP/DtFnMA==
-X-CSE-MsgGUID: GHSARX/6S4mwtb4OVi0dBw==
+ 02 Sep 2024 07:38:09 -0700
+X-CSE-ConnectionGUID: A1oQ3rEQSCOELcjYuBXrbA==
+X-CSE-MsgGUID: tWb76ItKTs2pTgDczzTFsw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639372"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639373"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:04 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:07 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:03 +0300
+ Mon, 02 Sep 2024 17:38:06 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: [PATCH i-g-t 02/23] tests/kms_big_fb: Use igt_fb_create_intel_buf()
-Date: Mon,  2 Sep 2024 17:37:37 +0300
-Message-ID: <20240902143758.21036-3-ville.syrjala@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 03/23] tests/kms_frontbuffer_tracking: Use
+ igt_create_fb()
+Date: Mon,  2 Sep 2024 17:37:38 +0300
+Message-ID: <20240902143758.21036-4-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -71,54 +72,44 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use igt_fb_create_intel_buf() instead of hand rolling something
-similar but less capable (igt_fb_create_intel_buf() handles
-planar and compressed formats, the hand rolled version does not).
+Calling igt_calc_fb_size() and igt_create_fb_with_bo_size() like
+this back to back is the same as just calling igt_create_fb().
 
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/kms_big_fb.c | 27 +--------------------------
- 1 file changed, 1 insertion(+), 26 deletions(-)
+ tests/intel/kms_frontbuffer_tracking.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tests/intel/kms_big_fb.c b/tests/intel/kms_big_fb.c
-index b808b4a02f77..2fef03ab7412 100644
---- a/tests/intel/kms_big_fb.c
-+++ b/tests/intel/kms_big_fb.c
-@@ -188,32 +188,7 @@ static struct intel_buf *init_buf(data_t *data,
- 				  const struct igt_fb *fb,
- 				  const char *buf_name)
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index e45d17dd692d..da593c3aacc7 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -1630,8 +1630,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+ 		      enum tiling_type tiling, int plane, struct igt_fb *fb)
  {
--	struct intel_buf *buf;
--	enum intel_driver driver = buf_ops_get_driver(data->bops);
--	uint32_t name, handle, tiling, width, height, bpp, size;
--	uint64_t region = driver == INTEL_DRIVER_XE ?
--				vram_if_possible(data->drm_fd, 0) : -1;
+ 	uint32_t format;
+-	uint64_t size, modifier;
+-	unsigned int stride;
++	uint64_t modifier;
+ 
+ 	switch (pformat) {
+ 	case FORMAT_RGB888:
+@@ -1665,13 +1664,7 @@ static void create_fb(enum pixel_format pformat, int width, int height,
+ 
+ 	igt_warn_on(plane == PLANE_CUR && tiling != TILING_LINEAR);
+ 
+-	igt_calc_fb_size(drm.fd, width, height, format, modifier, &size,
+-			 &stride);
 -
--	igt_assert_eq(fb->offsets[0], 0);
--
--	tiling = igt_fb_mod_to_tiling(fb->modifier);
--	bpp = fb->plane_bpp[0];
--	size = fb->size;
--	width = fb->strides[0] / (bpp / 8);
--	height = fb->height;
--
--	name = gem_flink(data->drm_fd, fb->gem_handle);
--	handle = gem_open(data->drm_fd, name);
--	buf = intel_buf_create_full(data->bops, handle, width, height,
--				    bpp, 0, tiling, 0, size, 0,
--				    region,
--				    intel_get_pat_idx_uc(data->drm_fd),
--				    DEFAULT_MOCS_INDEX);
--
--	intel_buf_set_name(buf, buf_name);
--	intel_buf_set_ownership(buf, true);
--
--	return buf;
-+	return igt_fb_create_intel_buf(data->drm_fd, data->bops, fb, buf_name);
+-	igt_create_fb_with_bo_size(drm.fd, width, height, format, modifier,
+-				   IGT_COLOR_YCBCR_BT709,
+-				   IGT_COLOR_YCBCR_LIMITED_RANGE,
+-				   fb, size, stride);
++	igt_create_fb(drm.fd, width, height, format, modifier, fb);
  }
  
- static void fini_buf(struct intel_buf *buf)
+ static uint32_t pick_color(struct igt_fb *fb, enum color ecolor)
 -- 
 2.44.2
 
