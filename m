@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ABB8CA0ED3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 844AFCD3427
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C7F3310E339;
-	Mon,  2 Sep 2024 14:38:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48B7A10E33A;
+	Mon,  2 Sep 2024 14:38:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RHfYkUZf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VdI3Urej";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92EE810E339
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F57C10E33A
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287927; x=1756823927;
+ t=1725287930; x=1756823930;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=PxU/FP5bvoASsmLyrmURbFfuBRp0x9Klzjjfd9GU4YM=;
- b=RHfYkUZfO0+B7Dh9EOQXm88F1hf8MizJhcjsOqCXFq5x1UsoCZELg5sw
- f1A2gk5bgJi6tZOr6kS/sJO7q5QFANf3RlQjB5IcsWt+bzyzNUfMNQ4r2
- 2EAQmlLqOnHLyUyHi7iEk8/vU21jnRigUnStKvpcsGqRgPqIokzxRJ6XX
- ktJFPhctvDi90BzF2VFLKFwBjce2jjbcjnUHl7qUSBeuYpb/kZP2peCti
- /ib2IM7ec8Qr3t2MRGFaCVM6BF7NSETdvi4v2ninT8BkkNuZMxHzILCK3
- oV3ogcbp6eON7INaZI48T0eruqiCz9mgHrn7JmILM9Cf8imofnR8RzpyO g==;
-X-CSE-ConnectionGUID: 1F/u+SygSKyXwJsbrEG44w==
-X-CSE-MsgGUID: 3JXt+sdHQVKguYAarceQWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009504"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009504"
+ bh=Fq/A9G1Unpy/NKhqthjPCMFkQWSCP2o34oTT/o8ldTI=;
+ b=VdI3Urejw5S/uMEqSq1yTxdW/bXWaUhJ5mmudICH//JVokwnYxv/RuX+
+ PfeCU4qhe01PDyXL5OSUy7SkYKauTsgyzf8SOyiVVfsq4AZvTI0B5FnK6
+ vlltub/cex/I4fdsR0LCEazwns4dW3jVgO5fW3fPDLuw3IPibanNj02M4
+ vCs9TgP8eja829YWbhPTidOkWpjwK40njBv8slZHYtBY85Ctj9xAh1o6X
+ x6SbaCpg+Jnk2lNZWGLO9vIYo6/iQP1gS8JlL7YHxWW063dFXXTtu1U1U
+ 6peGaCVkltKGdOA6XT/+498oOvOiM6dtFWGCJ/VxR5o465lAKIqQK+v1W A==;
+X-CSE-ConnectionGUID: rwbwgFOjTrm9PzZzfckG/w==
+X-CSE-MsgGUID: H6XQ7J4fRgaHWwpUQgjlvA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009513"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009513"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:47 -0700
-X-CSE-ConnectionGUID: t7C8Big7SJOEIxRa1Cmbcg==
-X-CSE-MsgGUID: PR1hb9oeTPKqIB4JZ8QAtw==
+ 02 Sep 2024 07:38:50 -0700
+X-CSE-ConnectionGUID: zZ/GzXpGTga8OpMFek/X/w==
+X-CSE-MsgGUID: m1QQZwBSSg2sjXep1M16Ow==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639457"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639468"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:45 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:48 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:44 +0300
+ Mon, 02 Sep 2024 17:38:47 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 16/23] lib/igt_fb: Adjust how we pick the blitter
- compression format
-Date: Mon,  2 Sep 2024 17:37:51 +0300
-Message-ID: <20240902143758.21036-17-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 17/23] lib/igt_fb: Fix planar block copy
+Date: Mon,  2 Sep 2024 17:37:52 +0300
+Message-ID: <20240902143758.21036-18-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -72,64 +71,68 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Instead doing this bpp vs. format thing based on the compression
-type, let's stick with the format. In order to avoid having to
-populate the table with all the different swizzles we'll pass
-the format through igt_reduce_format().
+The block copy code tries to handle planar formats by blitting
+each color plane separately. But it incorrectly picks some of
+the parameters (size, bpp, etc.) from the first color plane
+instead of the one it's actually copying. Pick the parameters
+from the correct color plane.
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_fb.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ lib/igt_fb.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index dbf9b1035cfd..8d9d1bbe3508 100644
+index 8d9d1bbe3508..2d53b317afc2 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2902,23 +2902,22 @@ static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
- 			  x.compression_type == COMPRESSION_TYPE_MEDIA)
+@@ -2829,7 +2829,8 @@ static struct blt_copy_object *allocate_and_initialize_blt(const struct igt_fb *
+ 		       igt_fb_is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
+ 		       igt_fb_is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
  
- const struct {
--	uint32_t key;
-+	uint32_t format;
- 	enum blt_compression_type type;
- 	uint32_t return_value;
- } compression_mappings[] = {
--	{ CD_32bit, COMPRESSION_TYPE_3D, 8 },
-+	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_3D, 0x8 },
- 	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_MEDIA, 8 },
- 	{ DRM_FORMAT_XYUV8888, COMPRESSION_TYPE_MEDIA, 9 },
- 	{ DRM_FORMAT_NV12, COMPRESSION_TYPE_MEDIA, 9 },
- 	{ DRM_FORMAT_P010, COMPRESSION_TYPE_MEDIA, 8 },
--	{ DRM_FORMAT_P012, COMPRESSION_TYPE_MEDIA, 8 },
--	{ DRM_FORMAT_P016, COMPRESSION_TYPE_MEDIA, 8 },
- };
+-	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
++	blt_set_geom(blt, stride, 0, 0,
++		     fb->plane_width[plane], fb->plane_height[plane], 0, 0);
+ 	blt->plane_offset = fb->offsets[plane];
  
--static uint32_t get_compression_return_value(uint32_t key, enum  blt_compression_type type)
-+static uint32_t get_compression_return_value(uint32_t format,
-+					     enum  blt_compression_type type)
+ 	return blt;
+@@ -2875,9 +2876,10 @@ static struct blt_copy_object *blt_fb_init(const struct igt_fb *fb,
+ 	return blt;
+ }
+ 
+-static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
++static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb,
++					int color_plane)
  {
- 	for (int i = 0; i < ARRAY_SIZE(compression_mappings); i++) {
--		if (compression_mappings[i].key == key &&
-+		if (compression_mappings[i].format == format &&
- 		    compression_mappings[i].type == type) {
- 			return compression_mappings[i].return_value;
- 		}
-@@ -2935,11 +2934,11 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
- 		return 0;
+-	switch (fb->plane_bpp[0]) {
++	switch (fb->plane_bpp[color_plane]) {
+ 	case 8:
+ 		return CD_8bit;
+ 	case 16:
+@@ -3020,19 +3022,19 @@ static void do_block_copy(const struct igt_fb *src_fb,
+ 	igt_assert(src && dst);
  
- 	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst))
--		return get_compression_return_value(blt->color_depth,
-+		return get_compression_return_value(igt_reduce_format(fb->drm_format),
- 						    COMPRESSION_TYPE_3D);
+ 	blt_copy_init(src_fb->fd, &blt);
+-	blt.color_depth = blt_get_bpp(src_fb);
++	blt.color_depth = blt_get_bpp(src_fb, i);
+ 	blt_set_copy_object(&blt.src, src);
+ 	blt_set_copy_object(&blt.dst, dst);
  
- 	if (BLT_TARGET_MC(blt->src))
--		return get_compression_return_value(fb->drm_format,
-+		return get_compression_return_value(igt_reduce_format(fb->drm_format),
- 						    COMPRESSION_TYPE_MEDIA);
+ 	if (blt_uses_extended_block_copy(src_fb->fd)) {
+ 		blt_set_object_ext(&ext.src,
+ 				   blt_compression_format(&blt, src_fb),
+-				   src_fb->width, src_fb->height,
++				   src_fb->plane_width[i], src_fb->plane_height[i],
+ 				   SURFACE_TYPE_2D);
  
- 	if (BLT_TARGET_MC(blt->dst))
+ 		blt_set_object_ext(&ext.dst,
+ 				   blt_compression_format(&blt, dst_fb),
+-				   dst_fb->width, dst_fb->height,
++				   dst_fb->plane_width[i], dst_fb->plane_height[i],
+ 				   SURFACE_TYPE_2D);
+ 		pext = &ext;
+ 	}
 -- 
 2.44.2
 
