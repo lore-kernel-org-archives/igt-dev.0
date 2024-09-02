@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D22BCD13CF
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EBBCCA0ED3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F45E10E32F;
-	Mon,  2 Sep 2024 14:38:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFCC910E330;
+	Mon,  2 Sep 2024 14:38:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="is3xGrGj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ff5WiSoj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E5AD10E32F
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14E3310E331
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287907; x=1756823907;
+ t=1725287910; x=1756823910;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0JF1PFE75RX/ab2ibMTHFFcI2DgbIBnUEInZGeLmwsM=;
- b=is3xGrGjqnleXNOI98jpHyRBqHrud99FQ1M4QQ1ycLFKDndOLVXOIvl0
- FxUqMuLyOLiVfvwa3pktiDMeYiXa5zPln2BT6hSsAWmgPPwWcVE671EWm
- Q+F67UrTp+O2Tc/UKnfDkwbTlT2peogjSLsD2u3ju2zPSBHfwyrZhyu0l
- epHGjvlZRi7cL0rCq0hBoei+BRAJ/y0qJoXyNcCl8qh+FF6x1pobevNW4
- +4i9hDVXVkDL1W7/fzohpkKYvkXZcmSG7vghxnVCs62T93TNdi8UanZ4M
- yr4fLUzPUJQL0O1dZ/bvwqKr4nrj0vzfQWneMKG2xx/vkRDX/9k5ZMXph A==;
-X-CSE-ConnectionGUID: q95Jz5gESfWOP1liIC3yyA==
-X-CSE-MsgGUID: KWm0Bx8wRiyfYHpx4WrBKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009454"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009454"
+ bh=g81Nb33rgTJSd5POxc3LQ5uAbbKiyqv8SUNhySn3QSA=;
+ b=ff5WiSojcOv0VguBQ0WH/M0aaaoutX5IrWpwMT4XP91vRAr2aWM34iZN
+ rrBI6YuAjC7oFqbp4LS4c4Cjmfpe+vgc+zx2e6WyH/DQjM/tgMCcLDgDY
+ w36VdfGyYdD+y4sKdA4citUtrDFdxUe+M2LL6LXOGcHZBfk32WTIpi6s6
+ /diGzizWBFJ4E8dlDmoC7Ff9prErzm4AxMPW7Wm7XRRKWIUdHtRLo2pWy
+ 2Kv+uPTZbZ4+2xRKNmcajIz8UJiWx0nRY0vGQypu6zLnPGI28V9uV+rtB
+ oBfe1K/nL8o6kOLtxze+mL0/MKIFmFDLogYcALzZArZhscuYBdYj09qV2 A==;
+X-CSE-ConnectionGUID: gJxhScWAQaeb86y85awQ6g==
+X-CSE-MsgGUID: yxK5gAjHSj63tKrhthZnTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009458"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009458"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:27 -0700
-X-CSE-ConnectionGUID: crggggX7QmS93auq6+Keng==
-X-CSE-MsgGUID: IgS/vO8xTzeOpXokvm2tMg==
+ 02 Sep 2024 07:38:30 -0700
+X-CSE-ConnectionGUID: 1fMg0nPoR/ew/JzdAUmZ/g==
+X-CSE-MsgGUID: GOzicXGaQvuA/xUlHuo96Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639401"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639409"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:25 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:28 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:24 +0300
+ Mon, 02 Sep 2024 17:38:27 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 09/23] lib/rendercopy: Extract {dg2,
- lnl}_compression_format()
-Date: Mon,  2 Sep 2024 17:37:44 +0300
-Message-ID: <20240902143758.21036-10-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 10/23] lib/igt_fb: Extract is_gen12_rc_ccs_cc_modifier()
+Date: Mon,  2 Sep 2024 17:37:45 +0300
+Message-ID: <20240902143758.21036-11-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -72,75 +71,43 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Extract the code to determine the SURFACE_STATE compression
-format for dg2/lnl+ into helper. We'll need more formats here
-soon.
+Extract a helper to identify the clear color compressed modifiers.
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/rendercopy_gen9.c | 41 ++++++++++++++++++++++++++---------------
- 1 file changed, 26 insertions(+), 15 deletions(-)
+ lib/igt_fb.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 11f456a70d2f..eafdf50581d3 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -146,6 +146,28 @@ static const uint32_t xe2_render_copy[][4] = {
- 	{ 0x8010c031, 0x00000004, 0x58000c24, 0x00c40000 },
- };
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 0eb3897d0f8b..6c379f6d86ba 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -596,15 +596,20 @@ static bool is_gen12_mc_ccs_modifier(uint64_t modifier)
+ 		modifier == I915_FORMAT_MOD_4_TILED_MTL_MC_CCS;
+ }
  
-+static uint32_t lnl_compression_format(const struct intel_buf *buf)
++static bool is_gen12_rc_ccs_cc_modifier(uint64_t modifier)
 +{
-+	switch (buf->bpp) {
-+	case 32:
-+		return 0x2; /* CMF_R8_G8_B8_A8 */
-+	default:
-+		igt_assert(0);
-+		return 0;
-+	}
++	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
++		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
++		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
 +}
 +
-+static uint32_t dg2_compression_format(const struct intel_buf *buf)
-+{
-+	switch (buf->bpp) {
-+	case 32:
-+		return 0x8;
-+	default:
-+		igt_assert(0);
-+		return 0;
-+	}
-+}
-+
- /* Mostly copy+paste from gen6, except height, width, pitch moved */
- static uint32_t
- gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
-@@ -272,21 +294,10 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
- 			ss->ss7.dg2.disable_support_for_multi_gpu_partial_writes = 1;
- 			ss->ss7.dg2.disable_support_for_multi_gpu_atomics = 1;
+ static bool is_gen12_ccs_modifier(uint64_t modifier)
+ {
+ 	return is_gen12_mc_ccs_modifier(modifier) ||
++		is_gen12_rc_ccs_cc_modifier(modifier) ||
+ 		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS ||
+-		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+ 		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS ||
+-		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
+-		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS ||
+-		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
++		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS;
+ }
  
--			if (AT_LEAST_GEN(ibb->devid, 20)) {
--				/*
--				 * For Xe2+ R8G8B8A8 best compression ratio is
--				 * achieved with compression format = '2'
--				 */
--				ss->ss12.lnl.compression_format = 2;
--			} else {
--				/*
--				 * For now here is coming only 32bpp rgb format
--				 * which is marked below as B8G8R8X8_UNORM = '8'
--				 * If here ever arrive other formats below need to be
--				 * fixed to take that into account.
--				 */
--				ss->ss12.dg2.compression_format = 8;
--			}
-+			if (AT_LEAST_GEN(ibb->devid, 20))
-+				ss->ss12.lnl.compression_format = lnl_compression_format(buf);
-+			else
-+				ss->ss12.dg2.compression_format = dg2_compression_format(buf);
- 		}
- 	}
- 
+ static bool is_ccs_modifier(uint64_t modifier)
 -- 
 2.44.2
 
