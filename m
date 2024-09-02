@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 685D6CD13CF
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 12:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F5ECD13CF
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 13:49:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B2D110E2E1;
-	Mon,  2 Sep 2024 12:48:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A065510E030;
+	Mon,  2 Sep 2024 13:49:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ELccBPlE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KVQTbGv1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC85C10E2E3
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 12:48:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 234BC10E030
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 13:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725281304; x=1756817304;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Hp76c8aY1toL0r6MJ2m8huerbeESKMyRKlwkYhuSbj0=;
- b=ELccBPlE6ees9fpGWBGLa4X3/w5W07263+92zUo761Ar4bLoVALdoPp7
- p1U3zde1RIX7N8rye61PqB2/W5JL9C6i5SS2Awnzj4qn7+W1Oi6uwKoyz
- qHtY0jzRXFXGeCh4/orxUTduNhbdtUuEQoJVqvRC8gVRFhRW0pvYWSJeX
- hNPT5C2Cm6KIawOexvAWeN5T1DK8m8BxEIX6+TXOh/Iju1MuU1Rqc+8UE
- 3tJq9KWeUvce0HhAe6KsGg66JWKTf91d7AtsPEz8YDu5MYDyz2AqBcNp8
- KXMFZ24wt7XPiM16YqJepB2DgxhkdGqcNy3J599YPFzifHUlf2/4Gf7wR w==;
-X-CSE-ConnectionGUID: X7Q/LpTxRcW2LvL8TRFXMw==
-X-CSE-MsgGUID: iJ9Du3J+TGeTsWncKA4GZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="35255591"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="35255591"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 05:48:24 -0700
-X-CSE-ConnectionGUID: 6khVnJ5WTmmxD6r1rFmOGQ==
-X-CSE-MsgGUID: Xxu3jukOS+yf1gZp+FiSJw==
+ t=1725284964; x=1756820964;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=kyGvqxBL/vgD5x3b7jdZEooh+GqU21DSZ3offQA5SLg=;
+ b=KVQTbGv1kTkkFs83ttojwz1mwTWAAE0dcrsh5qaJWeZr7lS4VbEvpTW1
+ ft8ZqZ0rYyq4ptyEabCn9jcEhxbVBtMpVd6gwvlT+qE3IPBW0wgEJ4VtA
+ ZA+sfEqMbgV8v07lJNUd2E6DY85KwSOGtAhU+BMqxW0unipcy0/hfTn+y
+ bgnShKYGkrHI4iqrw5b44T14taqIUL+dpZwdPYq2/MTSOosaZ1cjwxm86
+ bqKPJItWVEKlU1Q/IYJJAXbQcMKRHhaadhbKDZHyPMI439eDG9wAxEB8A
+ HThX1jOVjXfHcwqdrL1O+e8b9ZuE1HvvdGoFK+fxMUsMKZO5uPKJXkQh1 Q==;
+X-CSE-ConnectionGUID: 7sx3Adl+Rxim3Bw2ZAncKA==
+X-CSE-MsgGUID: IBkdf1USSA+cDA7A+qujow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="23382912"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="23382912"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Sep 2024 06:49:24 -0700
+X-CSE-ConnectionGUID: 2dnmZlVgRkuV1AMt3Dg9jQ==
+X-CSE-MsgGUID: 2Bxz1cKjTwaMnwzqAJwy9Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="95313873"
-Received: from swatish2-mobl2.gar.corp.intel.com (HELO [10.213.83.151])
- ([10.213.83.151])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 05:48:22 -0700
-Message-ID: <c98ab43a-d327-4824-beab-ad834acfcb53@intel.com>
-Date: Mon, 2 Sep 2024 18:18:18 +0530
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="68997780"
+Received: from ltuz-desk.ger.corp.intel.com (HELO localhost) ([10.245.246.4])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2024 06:49:22 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jani.nikula@intel.com
+Subject: [PATCH i-g-t 1/2] lib/xe/oa: simplify device id array initialization
+Date: Mon,  2 Sep 2024 16:49:06 +0300
+Message-Id: <20240902134907.2186238-1-jani.nikula@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/intel/kms_cdclk: skip cdclk tests for bmg
-To: Vinod Govindapillai <vinod.govindapillai@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: juha-pekka.heikkila@intel.com, matthew.d.roper@intel.com
-References: <20240902083232.21871-1-vinod.govindapillai@intel.com>
-Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20240902083232.21871-1-vinod.govindapillai@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,36 +66,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM
+Stop abusing INTEL_VGA_DEVICE when we can simply define our own macro
+for initializing uint16_t arrays.
 
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ lib/xe/xe_oa.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-On 02-Sep-24 2:02 PM, Vinod Govindapillai wrote:
-> As there is only one cdclk option in BMG, these cdclk tests
-> which look for change in cdclk frequency when changing
-> between high and low resolution mode will fail. So skip
-> these tests for bmg
-> 
-> v2: Add WA info as a comment (Matt Roper)
->      fix commit header description (Swati)
-> 
-> Acked-by: Matt Roper <matthew.d.roper@intel.com>
-> Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
-> ---
->   tests/intel/kms_cdclk.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-> index 6fe6e6c3f..382b3e9d1 100644
-> --- a/tests/intel/kms_cdclk.c
-> +++ b/tests/intel/kms_cdclk.c
-> @@ -402,6 +402,9 @@ igt_main
->   			      "Hardware doesn't support crawling/squashing.\n");
->   		igt_display_require(&data.display, data.drm_fd);
->   		igt_display_require_output(&data.display);
-> +
-> +		/* Wa_15015413771: Only single possible cdclk value in XE2_HPD */
-> +		igt_require(!IS_BATTLEMAGE(data.devid));
->   	}
->   
->   	igt_describe("Plane scaling test to validate cdclk frequency change.");
+diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
+index 4764ed1fcfb8..1bc2eeb0a11a 100644
+--- a/lib/xe/xe_oa.c
++++ b/lib/xe/xe_oa.c
+@@ -112,16 +112,15 @@ unsupported_xe_oa_platform(struct intel_xe_perf *perf)
+ 	return NULL;
+ }
+ 
++#define DEVID(_id) (_id)
++
+ static bool
+ is_acm_gt1(const struct intel_xe_perf_devinfo *devinfo)
+ {
+-#undef INTEL_VGA_DEVICE
+-#define INTEL_VGA_DEVICE(_id, _info) _id
+ 	static const uint32_t devids[] = {
+-		XE_DG2_G11_IDS(INTEL_VGA_DEVICE, NULL),
+-		XE_ATS_M75_IDS(INTEL_VGA_DEVICE, NULL),
++		XE_DG2_G11_IDS(DEVID),
++		XE_ATS_M75_IDS(DEVID),
+ 	};
+-#undef INTEL_VGA_DEVICE
+ 	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
+ 		if (devids[i] == devinfo->devid)
+ 			return true;
+@@ -133,12 +132,9 @@ is_acm_gt1(const struct intel_xe_perf_devinfo *devinfo)
+ static bool
+ is_acm_gt2(const struct intel_xe_perf_devinfo *devinfo)
+ {
+-#undef INTEL_VGA_DEVICE
+-#define INTEL_VGA_DEVICE(_id, _info) _id
+ 	static const uint32_t devids[] = {
+-		XE_DG2_G12_IDS(INTEL_VGA_DEVICE, NULL),
++		XE_DG2_G12_IDS(DEVID),
+ 	};
+-#undef INTEL_VGA_DEVICE
+ 	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
+ 		if (devids[i] == devinfo->devid)
+ 			return true;
+@@ -150,13 +146,10 @@ is_acm_gt2(const struct intel_xe_perf_devinfo *devinfo)
+ static bool
+ is_acm_gt3(const struct intel_xe_perf_devinfo *devinfo)
+ {
+-#undef INTEL_VGA_DEVICE
+-#define INTEL_VGA_DEVICE(_id, _info) _id
+ 	static const uint32_t devids[] = {
+-		XE_DG2_G10_IDS(INTEL_VGA_DEVICE, NULL),
+-		XE_ATS_M150_IDS(INTEL_VGA_DEVICE, NULL),
++		XE_DG2_G10_IDS(DEVID),
++		XE_ATS_M150_IDS(DEVID),
+ 	};
+-#undef INTEL_VGA_DEVICE
+ 	for (uint32_t i = 0; i < ARRAY_SIZE(devids); i++) {
+ 		if (devids[i] == devinfo->devid)
+ 			return true;
+@@ -165,6 +158,8 @@ is_acm_gt3(const struct intel_xe_perf_devinfo *devinfo)
+ 	return false;
+ }
+ 
++#undef DEVID
++
+ struct intel_xe_perf *
+ intel_xe_perf_for_devinfo(uint32_t device_id,
+ 			  uint32_t revision,
+-- 
+2.39.2
+
