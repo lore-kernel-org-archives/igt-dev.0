@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACA4CD13CF
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DC80CA0ED3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0CC110E320;
-	Mon,  2 Sep 2024 14:38:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD2FD10E323;
+	Mon,  2 Sep 2024 14:38:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T8J1p17X";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gLFp8ahm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4C02710E320
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E032E10E323
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287881; x=1756823881;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=10hVoP3oTeceLPxo8SAeIf7Q+RrC7V+28yPI9HlBg00=;
- b=T8J1p17XHzb14EgI1neF37Khj7sLmeXLpbT2qgRntSaeW4w5nvq+Hujh
- 00/cgC0GglcMcABbJwjlxDtSJo5oW2pCMINUuIuvFE3ZIURp6rtAtBFsb
- crRCRUUed4gCFVDp4zQVgIwS//eBcn7HhGdBh8hkZNlkHwCqpVA6ljS2U
- vPgsLw1FYAWxOhYxPYPIW+PiRwPMWJ3IArizcCnlkHaSaopkw+wtpCwIR
- Abgit40BHf/BBEVUskG5SRkNTAQWWMknOGzwzDr8HhWrNqz9dEv4b1cRK
- A7pHa7SeR47A+6igkhhQsazBPenyIuoDtZSydApBO+JPjgi2zjvWuFCGT Q==;
-X-CSE-ConnectionGUID: Trn/j12wTquiTLZ/Qcr91A==
-X-CSE-MsgGUID: INki+bqXT7qDnedhv2u3Sg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009409"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009409"
+ t=1725287884; x=1756823884;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=rEB78VZLA2r8uWuOm5K9HFlFOEeLokGZLCCPvYwgCLI=;
+ b=gLFp8ahmq/dp5LpTmKM45k6haaaPreVFjWjE3e6YHy4kjkns6Du1ZA8f
+ D0lrwqHXOaAp+LY1FavWWJs3EqgtKABfG4ymQ5FMBimW0fio3CNZANCAo
+ rbU4ZS1OlqdO9P2itfmw/T38zxxa6n8mbHoyquHtfEoFBhpg7/XHWcgbD
+ 6HRjD1BQcANc/jylITiFuts6v0mrunEQ3gyKg/GphYfEjDKloI1B2dU/H
+ qReU7STXE/TXVSQDH+CUolZ7pxnOshIVRWSNhc6dlILTfTu2Fix8zFCuD
+ qB+OL4+EFpMbp7D85rA7nWfj9F1KjP0T/FkBjGr+s7gb3RE5UVF9Q8AQB w==;
+X-CSE-ConnectionGUID: ciX9LB6USB+OgibG6vNLmw==
+X-CSE-MsgGUID: C/ROzNPNT/2SngfzJ8gjRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009418"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009418"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:01 -0700
-X-CSE-ConnectionGUID: 6GDxhMpNSXyJYZW4FeK9tQ==
-X-CSE-MsgGUID: ZoGt08ofSCi3bP/9km9Peg==
+ 02 Sep 2024 07:38:04 -0700
+X-CSE-ConnectionGUID: KG2zQtcnTHW8yM7TFp4dnQ==
+X-CSE-MsgGUID: o4nbFSVcQIi2h3RMuVEN4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639359"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639366"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:37:59 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:01 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:37:58 +0300
+ Mon, 02 Sep 2024 17:38:00 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 00/23] Intel format/modifier stuff
-Date: Mon,  2 Sep 2024 17:37:35 +0300
-Message-ID: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 01/23] lib/rendercopy: Add deltas to all surface relocs
+Date: Mon,  2 Sep 2024 17:37:36 +0300
+Message-ID: <20240902143758.21036-2-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
+References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,63 +71,190 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Bunch of refactoring/fixes/misc stuff extracted from the
-earlier big series [1] whose main goal was proper 10bpc/fp16
-CCS testing. I left out all the new 10bpc/fp16 stuff for
-now, and just included all the prep work more or less.
+In order to copy stuff not at offset 0 in the BO we need
+to include the delta in the relocs/etc.
 
-Apart from the TGL magic fast clear stuff, some blitter
-fixes, and a few tweaks to kms_ccs behaviour there should
-no other functional changes here.
+v2: fix the address in the command packets
+v3: Fix intel_bb_offset_reloc_with_delta() argument order on gen7
 
-[1] https://patchwork.freedesktop.org/series/135670/
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/rendercopy_gen4.c | 11 ++++++-----
+ lib/rendercopy_gen6.c | 11 ++++++-----
+ lib/rendercopy_gen7.c | 11 ++++++-----
+ lib/rendercopy_gen8.c | 13 +++++++------
+ lib/rendercopy_gen9.c | 13 +++++++------
+ lib/rendercopy_i830.c | 10 +++++++---
+ lib/rendercopy_i915.c |  6 ++++--
+ 7 files changed, 43 insertions(+), 32 deletions(-)
 
-Ville Syrjälä (23):
-  lib/rendercopy: Add deltas to all surface relocs
-  tests/kms_big_fb: Use igt_fb_create_intel_buf()
-  tests/kms_frontbuffer_tracking: Use igt_create_fb()
-  lib/igt_fb: Make igt_calc_fb_size() somewhat usable
-  lib/rendercopy: Always setup clear color for TGL
-  lib/rendercopy: Don't skip clearcolor on flat CCS
-  lib/rendercopy: Fix fastclear scaling
-  lib/rendercopy: Extract gen4_surface_format()
-  lib/rendercopy: Extract {dg2,lnl}_compression_format()
-  lib/igt_fb: Extract is_gen12_rc_ccs_cc_modifier()
-  lib/igt_fb: Extract ccs_needs_enginecopy()
-  lib/igt_fb: Require enginecopy for clear color
-  lib/igt_fb: Expose igt_fb_is_ccs_modifier()
-  lib/igt_fb: Expose igt_fb_is_gen12_rc_ccs_cc_modifier()
-  lib/igt_fb: Expose igt_fb_is_gen12_mc_ccs_modifier()
-  lib/igt_fb: Adjust how we pick the blitter compression format
-  lib/igt_fb: Fix planar block copy
-  lib/igt_fb: Fix blitter compression format handling
-  lib/igt_fb: Assert that we have no clear color when using the bltter
-  tests/kms_plane: Extract skip_format_mod()
-  tests/kms_ccs: Reuse igt_fb_is_gen12_rc_ccs_cc_modifier()
-  tests/kms_ccs: Skip testing on identical plane types
-  tests/kms_ccs: Provide a hint as to what we're testing
-
- lib/igt_fb.c                           | 234 ++++++++++++++-----------
- lib/igt_fb.h                           |   6 +-
- lib/intel_bufops.h                     |   1 +
- lib/rendercopy_gen4.c                  |  20 +--
- lib/rendercopy_gen6.c                  |  21 +--
- lib/rendercopy_gen7.c                  |  23 +--
- lib/rendercopy_gen8.c                  |  21 +--
- lib/rendercopy_gen9.c                  | 183 +++++++++++++++----
- lib/rendercopy_i830.c                  |  10 +-
- lib/rendercopy_i915.c                  |   6 +-
- lib/surfaceformat.h                    |  16 ++
- tests/intel/gem_pxp.c                  |   4 +-
- tests/intel/kms_big_fb.c               |  64 ++-----
- tests/intel/kms_ccs.c                  |  35 +++-
- tests/intel/kms_frontbuffer_tracking.c |  11 +-
- tests/kms_addfb_basic.c                |  14 +-
- tests/kms_plane.c                      |  56 +++---
- tests/kms_prime.c                      |  12 +-
- tests/kms_rotation_crc.c               |  10 +-
- 19 files changed, 442 insertions(+), 305 deletions(-)
-
+diff --git a/lib/rendercopy_gen4.c b/lib/rendercopy_gen4.c
+index 8536d6b632c5..8582e0efb886 100644
+--- a/lib/rendercopy_gen4.c
++++ b/lib/rendercopy_gen4.c
+@@ -148,11 +148,12 @@ gen4_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
+ 	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
+ 	ss->ss0.color_blend = 1;
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4,
+-					buf->addr.offset);
+-	ss->ss1.base_addr = (uint32_t) address;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4,
++						   buf->addr.offset);
++	ss->ss1.base_addr = address + buf->surface[0].offset;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_gen6.c b/lib/rendercopy_gen6.c
+index e941257eb606..ec197661702f 100644
+--- a/lib/rendercopy_gen6.c
++++ b/lib/rendercopy_gen6.c
+@@ -91,11 +91,12 @@ gen6_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst)
+ 	ss->ss0.data_return_format = SURFACERETURNFORMAT_FLOAT32;
+ 	ss->ss0.color_blend = 1;
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4,
+-					buf->addr.offset);
+-	ss->ss1.base_addr = (uint32_t) address;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4,
++						   buf->addr.offset);
++	ss->ss1.base_addr = address + buf->surface[0].offset;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_gen7.c b/lib/rendercopy_gen7.c
+index 9fadb0772e9e..e3657b5d1035 100644
+--- a/lib/rendercopy_gen7.c
++++ b/lib/rendercopy_gen7.c
+@@ -86,11 +86,12 @@ gen7_bind_buf(struct intel_bb *ibb,
+ 		 gen7_tiling_bits(buf->tiling) |
+ 		format << GEN7_SURFACE_FORMAT_SHIFT);
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4,
+-					buf->addr.offset);
+-	ss[1] = address;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4,
++						   buf->addr.offset);
++	ss[1] = address + buf->surface[0].offset;
+ 	ss[2] = ((intel_buf_width(buf) - 1)  << GEN7_SURFACE_WIDTH_SHIFT |
+ 		 (intel_buf_height(buf) - 1) << GEN7_SURFACE_HEIGHT_SHIFT);
+ 	ss[3] = (buf->surface[0].stride - 1) << GEN7_SURFACE_PITCH_SHIFT;
+diff --git a/lib/rendercopy_gen8.c b/lib/rendercopy_gen8.c
+index bbfa6d28f525..23bea56ad1ba 100644
+--- a/lib/rendercopy_gen8.c
++++ b/lib/rendercopy_gen8.c
+@@ -109,12 +109,13 @@ gen8_bind_buf(struct intel_bb *ibb,
+ 		ss->ss1.memory_object_control = BDW_MOCS_PTE |
+ 			BDW_MOCS_TC_L3_PTE | BDW_MOCS_AGE(0);
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4 * 8,
+-					buf->addr.offset);
+-	ss->ss8.base_addr = address;
+-	ss->ss9.base_addr_hi = address >> 32;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4 * 8,
++						   buf->addr.offset);
++	ss->ss8.base_addr = (address + buf->surface[0].offset);
++	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
+index 62a365f3c2f4..5ee4c89f5cdb 100644
+--- a/lib/rendercopy_gen9.c
++++ b/lib/rendercopy_gen9.c
+@@ -210,12 +210,13 @@ gen9_bind_buf(struct intel_bb *ibb, const struct intel_buf *buf, int is_dst,
+ 	if (intel_buf_pxp(buf))
+ 		ss->ss1.pxp = 1;
+ 
+-	address = intel_bb_offset_reloc(ibb, buf->handle,
+-					read_domain, write_domain,
+-					intel_bb_offset(ibb) + 4 * 8,
+-					buf->addr.offset);
+-	ss->ss8.base_addr = address;
+-	ss->ss9.base_addr_hi = address >> 32;
++	address = intel_bb_offset_reloc_with_delta(ibb, buf->handle,
++						   read_domain, write_domain,
++						   buf->surface[0].offset,
++						   intel_bb_offset(ibb) + 4 * 8,
++						   buf->addr.offset);
++	ss->ss8.base_addr = (address + buf->surface[0].offset);
++	ss->ss9.base_addr_hi = (address + buf->surface[0].offset) >> 32;
+ 
+ 	ss->ss2.height = intel_buf_height(buf) - 1;
+ 	ss->ss2.width  = intel_buf_width(buf) - 1;
+diff --git a/lib/rendercopy_i830.c b/lib/rendercopy_i830.c
+index 4c4271493b4b..4b0ea3b859e2 100644
+--- a/lib/rendercopy_i830.c
++++ b/lib/rendercopy_i830.c
+@@ -158,8 +158,10 @@ static void gen2_emit_target(struct intel_bb *ibb,
+ 	intel_bb_out(ibb, _3DSTATE_BUF_INFO_CMD);
+ 	intel_bb_out(ibb, BUF_3D_ID_COLOR_BACK | tiling |
+ 		     BUF_3D_PITCH(dst->surface[0].stride));
+-	intel_bb_emit_reloc(ibb, dst->handle, I915_GEM_DOMAIN_RENDER,
+-			    I915_GEM_DOMAIN_RENDER, 0, dst->addr.offset);
++	intel_bb_emit_reloc(ibb, dst->handle,
++			    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
++			    dst->surface[0].offset,
++			    dst->addr.offset);
+ 
+ 	intel_bb_out(ibb, _3DSTATE_DST_BUF_VARS_CMD);
+ 	intel_bb_out(ibb, format |
+@@ -199,7 +201,9 @@ static void gen2_emit_texture(struct intel_bb *ibb,
+ 		tiling |= TM0S1_TILE_WALK;
+ 
+ 	intel_bb_out(ibb, _3DSTATE_LOAD_STATE_IMMEDIATE_2 | LOAD_TEXTURE_MAP(unit) | 4);
+-	intel_bb_emit_reloc(ibb, src->handle, I915_GEM_DOMAIN_SAMPLER, 0, 0,
++	intel_bb_emit_reloc(ibb, src->handle,
++			    I915_GEM_DOMAIN_SAMPLER, 0,
++			    src->surface[0].offset,
+ 			    src->addr.offset);
+ 	intel_bb_out(ibb, (intel_buf_height(src) - 1) << TM0S1_HEIGHT_SHIFT |
+ 		     (intel_buf_width(src) - 1) << TM0S1_WIDTH_SHIFT |
+diff --git a/lib/rendercopy_i915.c b/lib/rendercopy_i915.c
+index 3e421301e6a6..94cdfb99af9a 100644
+--- a/lib/rendercopy_i915.c
++++ b/lib/rendercopy_i915.c
+@@ -112,7 +112,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+ 		intel_bb_out(ibb, (1 << TEX_COUNT) - 1);
+ 		intel_bb_emit_reloc(ibb, src->handle,
+ 				    I915_GEM_DOMAIN_SAMPLER, 0,
+-				    0, src->addr.offset);
++				    src->surface[0].offset,
++				    src->addr.offset);
+ 		intel_bb_out(ibb, format_bits | tiling_bits |
+ 			     (intel_buf_height(src) - 1) << MS3_HEIGHT_SHIFT |
+ 			     (intel_buf_width(src) - 1) << MS3_WIDTH_SHIFT);
+@@ -155,7 +156,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+ 			     BUF_3D_PITCH(dst->surface[0].stride));
+ 		intel_bb_emit_reloc(ibb, dst->handle,
+ 				    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
+-				    0, dst->addr.offset);
++				    dst->surface[0].offset,
++				    dst->addr.offset);
+ 
+ 		intel_bb_out(ibb, _3DSTATE_DST_BUF_VARS_CMD);
+ 		intel_bb_out(ibb, format_bits |
 -- 
 2.44.2
 
