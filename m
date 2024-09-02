@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDD12CA0ED3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D420ECD13CF
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 661D110E33C;
-	Mon,  2 Sep 2024 14:38:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99EA810E33B;
+	Mon,  2 Sep 2024 14:38:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BN831dE5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GfJY368L";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88CEE10E33B
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 971B310E33B
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287933; x=1756823933;
+ t=1725287936; x=1756823936;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=uFB531qEJwqi2r+peTHeHtWBZDcCT/z50u+UrqbovyA=;
- b=BN831dE528U7+n6++9yatQMtupY2J1hNfTA6YTX5OypPEK0HTelTxTVU
- RRkrLySKtNsORMa6iTW55Th1NzKpYekJ3TmnvJa1ntdZhiad7YkNg7iM/
- jxwJMsCEijKCAeL5IItQcZvkIKC8bDbp0itW/dWOWLW3jiTuK/a8MsZyG
- u7Hn3nYz1wLhnMt0/bPwlBY/iTwj9UlROX3ujt9eFu42OQOOIUWEGrgX5
- gpKfHhUFaJ4+atMGsz7UwSyn5l65yMN0984lJ2vByLXSLZf8DrV/Aeg2i
- Ns4ZQ0UgLDoIILHjun5ythbUk1B5dH4M019IOG5NadbmESmuEsGVL8Rfp Q==;
-X-CSE-ConnectionGUID: sH28XS8sSFaAQz/etaRa7A==
-X-CSE-MsgGUID: tzp08M//RcSSxTgsi1jt+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009518"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009518"
+ bh=T1jo486IcKZlRknkl/wx8rzZFc61pO1eM24tEkE9qLg=;
+ b=GfJY368Lb6r66U82nsQheDdLRmD172j3wN/IU3S0PXaS9w2AJ2MA8tIv
+ HpkDwn0qMqA7ouJsL7qNLJp1uZUQm/OG6+hl6jOLXd9TJtptPcOLYoGqC
+ caTtbeQsSajGPeJI8IJzvoPffR9+/575x40V8sRWHp7UQlNBRiDpHPL6D
+ OAHqerh0EOsA+gnavRDJPORMR7uXPxLEdXC6OxQb9sgGEJI+/FUiSU6Q9
+ M3A3EFfiunO5xV8588ISQWeuFJrIytv5jqO66Z+WTKcoGzJPD/Dvmmxma
+ flegv+anIrc0pFbAwy0EghhHowg6bsQ6sZzfsFSnZwhOK3Vr5CV4i4ex6 g==;
+X-CSE-ConnectionGUID: zOzmMz4eRliTJNGZfZE3Lw==
+X-CSE-MsgGUID: p/F3euxORFGnMZpXR4iUew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009523"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009523"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:53 -0700
-X-CSE-ConnectionGUID: B6OGUGu0QXm9vvvxbyMS0g==
-X-CSE-MsgGUID: z9IEl436TVG2knG5hIziuw==
+ 02 Sep 2024 07:38:56 -0700
+X-CSE-ConnectionGUID: 9b6hW9BGQoqAY3XMDYu/fw==
+X-CSE-MsgGUID: 0YXZdDbORrOW6LSmPm4dLg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639476"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639483"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:51 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:54 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:50 +0300
+ Mon, 02 Sep 2024 17:38:53 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 18/23] lib/igt_fb: Fix blitter compression format
- handling
-Date: Mon,  2 Sep 2024 17:37:53 +0300
-Message-ID: <20240902143758.21036-19-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 19/23] lib/igt_fb: Assert that we have no clear color
+ when using the bltter
+Date: Mon,  2 Sep 2024 17:37:54 +0300
+Message-ID: <20240902143758.21036-20-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -72,91 +72,48 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-For some reason blt_compression_format() sets up both the
-source and destination with the same compression format.
-This doesn't make sense to me as one or the other could
-at least be uncompressed. Decouple the src vs. dst
-compression formats so that they can be set independently.
+The blitter code doesn't know how to deal with the clear color
+currently. There is some preliminary code to simply skip the clear
+color buffer for dg2, but that would just result in bogus rendering
+if we even had to deal with fast cleared stuff.
+
+Rip out the dg2 stuff, and just assert that we should never get
+here with a clear color modifier.
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_fb.c | 33 ++++++++++-----------------------
- 1 file changed, 10 insertions(+), 23 deletions(-)
+ lib/igt_fb.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 2d53b317afc2..1ec16ab9d813 100644
+index 1ec16ab9d813..fcd655cf8ca9 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -2897,12 +2897,6 @@ static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb,
- 	}
- }
+@@ -3046,19 +3046,18 @@ static void blitcopy(const struct igt_fb *dst_fb,
+ 	const intel_ctx_t *ictx = NULL;
+ 	intel_ctx_t *xe_ctx = NULL;
+ 	struct intel_execution_engine2 *e;
+-	/* To ignore CC plane */
+-	uint32_t src_cc = src_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
+-	uint32_t dst_cc = dst_fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ? 1 : 0;
+ 	bool is_xe = is_xe_device(dst_fb->fd);
  
--#define BLT_TARGET_RC(x) (x.compression == COMPRESSION_ENABLED && \
--			  x.compression_type == COMPRESSION_TYPE_3D)
--
--#define BLT_TARGET_MC(x) (x.compression == COMPRESSION_ENABLED && \
--			  x.compression_type == COMPRESSION_TYPE_MEDIA)
--
- const struct {
- 	uint32_t format;
- 	enum blt_compression_type type;
-@@ -2928,25 +2922,14 @@ static uint32_t get_compression_return_value(uint32_t format,
- 	return 0; // This line is to avoid compilation warnings, it will not be reached.
- }
+ 	igt_assert_eq(dst_fb->fd, src_fb->fd);
+-	igt_assert_eq(dst_fb->num_planes - dst_cc, src_fb->num_planes - src_cc);
++	igt_assert_eq(dst_fb->num_planes, src_fb->num_planes);
++	igt_assert(!igt_fb_is_gen12_rc_ccs_cc_modifier(src_fb->modifier));
++	igt_assert(!igt_fb_is_gen12_rc_ccs_cc_modifier(dst_fb->modifier));
  
--static uint32_t blt_compression_format(struct blt_copy_data *blt,
-+static uint32_t blt_compression_format(const struct blt_copy_object *obj,
- 				       const struct igt_fb *fb)
- {
--	if (blt->src.compression == COMPRESSION_DISABLED &&
--	    blt->dst.compression == COMPRESSION_DISABLED)
-+	if (obj->compression == COMPRESSION_DISABLED)
- 		return 0;
+ 	setup_context_and_memory_region(dst_fb, &ctx, &ahnd, &mem_region,
+ 					&vm, &bb, &bb_size, &ictx,
+ 					&exec_queue, &xe_ctx);
  
--	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst))
--		return get_compression_return_value(igt_reduce_format(fb->drm_format),
--						    COMPRESSION_TYPE_3D);
--
--	if (BLT_TARGET_MC(blt->src))
--		return get_compression_return_value(igt_reduce_format(fb->drm_format),
--						    COMPRESSION_TYPE_MEDIA);
--
--	if (BLT_TARGET_MC(blt->dst))
--		igt_assert_f(0, "Destination compression not supported on mc ccs\n");
--
--	igt_assert_f(0, "unknown compression\n");
-+	return get_compression_return_value(igt_reduce_format(fb->drm_format),
-+					    obj->compression_type);
- }
- 
- static void setup_context_and_memory_region(const struct igt_fb *fb, uint32_t *ctx,
-@@ -3021,6 +3004,10 @@ static void do_block_copy(const struct igt_fb *src_fb,
- 
- 	igt_assert(src && dst);
- 
-+	igt_assert_f(blt.dst.compression == COMPRESSION_DISABLED ||
-+		     blt.dst.compression_type !=  COMPRESSION_TYPE_MEDIA,
-+		     "Destination compression not supported on mc ccs\n");
-+
- 	blt_copy_init(src_fb->fd, &blt);
- 	blt.color_depth = blt_get_bpp(src_fb, i);
- 	blt_set_copy_object(&blt.src, src);
-@@ -3028,12 +3015,12 @@ static void do_block_copy(const struct igt_fb *src_fb,
- 
- 	if (blt_uses_extended_block_copy(src_fb->fd)) {
- 		blt_set_object_ext(&ext.src,
--				   blt_compression_format(&blt, src_fb),
-+				   blt_compression_format(&blt.src, src_fb),
- 				   src_fb->plane_width[i], src_fb->plane_height[i],
- 				   SURFACE_TYPE_2D);
- 
- 		blt_set_object_ext(&ext.dst,
--				   blt_compression_format(&blt, dst_fb),
-+				   blt_compression_format(&blt.dst, dst_fb),
- 				   dst_fb->plane_width[i], dst_fb->plane_height[i],
- 				   SURFACE_TYPE_2D);
- 		pext = &ext;
+-	for (int i = 0; i < dst_fb->num_planes - dst_cc; i++) {
++	for (int i = 0; i < dst_fb->num_planes; i++) {
+ 		igt_assert_eq(dst_fb->plane_bpp[i], src_fb->plane_bpp[i]);
+ 		igt_assert_eq(dst_fb->plane_width[i], src_fb->plane_width[i]);
+ 		igt_assert_eq(dst_fb->plane_height[i], src_fb->plane_height[i]);
 -- 
 2.44.2
 
