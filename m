@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4157BCA0ED3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ACA4CD13CF
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F26D810E322;
-	Mon,  2 Sep 2024 14:36:55 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5BCB110E320;
- Mon,  2 Sep 2024 14:36:55 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4521384855915945768=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F0CC110E320;
+	Mon,  2 Sep 2024 14:38:02 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T8J1p17X";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C02710E320
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725287881; x=1756823881;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=10hVoP3oTeceLPxo8SAeIf7Q+RrC7V+28yPI9HlBg00=;
+ b=T8J1p17XHzb14EgI1neF37Khj7sLmeXLpbT2qgRntSaeW4w5nvq+Hujh
+ 00/cgC0GglcMcABbJwjlxDtSJo5oW2pCMINUuIuvFE3ZIURp6rtAtBFsb
+ crRCRUUed4gCFVDp4zQVgIwS//eBcn7HhGdBh8hkZNlkHwCqpVA6ljS2U
+ vPgsLw1FYAWxOhYxPYPIW+PiRwPMWJ3IArizcCnlkHaSaopkw+wtpCwIR
+ Abgit40BHf/BBEVUskG5SRkNTAQWWMknOGzwzDr8HhWrNqz9dEv4b1cRK
+ A7pHa7SeR47A+6igkhhQsazBPenyIuoDtZSydApBO+JPjgi2zjvWuFCGT Q==;
+X-CSE-ConnectionGUID: Trn/j12wTquiTLZ/Qcr91A==
+X-CSE-MsgGUID: INki+bqXT7qDnedhv2u3Sg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009409"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009409"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Sep 2024 07:38:01 -0700
+X-CSE-ConnectionGUID: 6GDxhMpNSXyJYZW4FeK9tQ==
+X-CSE-MsgGUID: ZoGt08ofSCi3bP/9km9Peg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639359"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:37:59 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Mon, 02 Sep 2024 17:37:58 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 00/23] Intel format/modifier stuff
+Date: Mon,  2 Sep 2024 17:37:35 +0300
+Message-ID: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.44.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/amd=5Fdeadlock=3A_fix?=
- =?utf-8?q?_sdma_error_type?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 02 Sep 2024 14:36:55 -0000
-Message-ID: <172528781537.906954.5672899274815842076@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240902065108.487239-1-jesse.zhang@amd.com>
-In-Reply-To: <20240902065108.487239-1-jesse.zhang@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,184 +63,68 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4521384855915945768==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+Bunch of refactoring/fixes/misc stuff extracted from the
+earlier big series [1] whose main goal was proper 10bpc/fp16
+CCS testing. I left out all the new 10bpc/fp16 stuff for
+now, and just included all the prep work more or less.
 
-Series: tests/amd_deadlock: fix sdma error type
-URL   : https://patchwork.freedesktop.org/series/138067/
-State : success
+Apart from the TGL magic fast clear stuff, some blitter
+fixes, and a few tweaks to kms_ccs behaviour there should
+no other functional changes here.
 
-== Summary ==
+[1] https://patchwork.freedesktop.org/series/135670/
 
-CI Bug Log - changes from CI_DRM_15342 -> IGTPW_11673
-====================================================
+Ville Syrjälä (23):
+  lib/rendercopy: Add deltas to all surface relocs
+  tests/kms_big_fb: Use igt_fb_create_intel_buf()
+  tests/kms_frontbuffer_tracking: Use igt_create_fb()
+  lib/igt_fb: Make igt_calc_fb_size() somewhat usable
+  lib/rendercopy: Always setup clear color for TGL
+  lib/rendercopy: Don't skip clearcolor on flat CCS
+  lib/rendercopy: Fix fastclear scaling
+  lib/rendercopy: Extract gen4_surface_format()
+  lib/rendercopy: Extract {dg2,lnl}_compression_format()
+  lib/igt_fb: Extract is_gen12_rc_ccs_cc_modifier()
+  lib/igt_fb: Extract ccs_needs_enginecopy()
+  lib/igt_fb: Require enginecopy for clear color
+  lib/igt_fb: Expose igt_fb_is_ccs_modifier()
+  lib/igt_fb: Expose igt_fb_is_gen12_rc_ccs_cc_modifier()
+  lib/igt_fb: Expose igt_fb_is_gen12_mc_ccs_modifier()
+  lib/igt_fb: Adjust how we pick the blitter compression format
+  lib/igt_fb: Fix planar block copy
+  lib/igt_fb: Fix blitter compression format handling
+  lib/igt_fb: Assert that we have no clear color when using the bltter
+  tests/kms_plane: Extract skip_format_mod()
+  tests/kms_ccs: Reuse igt_fb_is_gen12_rc_ccs_cc_modifier()
+  tests/kms_ccs: Skip testing on identical plane types
+  tests/kms_ccs: Provide a hint as to what we're testing
 
-Summary
--------
+ lib/igt_fb.c                           | 234 ++++++++++++++-----------
+ lib/igt_fb.h                           |   6 +-
+ lib/intel_bufops.h                     |   1 +
+ lib/rendercopy_gen4.c                  |  20 +--
+ lib/rendercopy_gen6.c                  |  21 +--
+ lib/rendercopy_gen7.c                  |  23 +--
+ lib/rendercopy_gen8.c                  |  21 +--
+ lib/rendercopy_gen9.c                  | 183 +++++++++++++++----
+ lib/rendercopy_i830.c                  |  10 +-
+ lib/rendercopy_i915.c                  |   6 +-
+ lib/surfaceformat.h                    |  16 ++
+ tests/intel/gem_pxp.c                  |   4 +-
+ tests/intel/kms_big_fb.c               |  64 ++-----
+ tests/intel/kms_ccs.c                  |  35 +++-
+ tests/intel/kms_frontbuffer_tracking.c |  11 +-
+ tests/kms_addfb_basic.c                |  14 +-
+ tests/kms_plane.c                      |  56 +++---
+ tests/kms_prime.c                      |  12 +-
+ tests/kms_rotation_crc.c               |  10 +-
+ 19 files changed, 442 insertions(+), 305 deletions(-)
 
-  **SUCCESS**
+-- 
+2.44.2
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/index.html
-
-Participating hosts (41 -> 38)
-------------------------------
-
-  Missing    (3): fi-kbl-8809g fi-snb-2520m fi-bsw-n3050 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11673 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-2:         [PASS][1] -> [DMESG-WARN][2] ([i915#11349])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@requests:
-    - bat-apl-1:          [PASS][3] -> [DMESG-WARN][4] ([i915#11621]) +32 other tests dmesg-warn
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-apl-1/igt@i915_selftest@live@requests.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-apl-1/igt@i915_selftest@live@requests.html
-
-  
-#### Possible fixes ####
-
-  * igt@debugfs_test@read_all_entries:
-    - bat-adlp-9:         [DMESG-WARN][5] ([i915#12119]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-adlp-9/igt@debugfs_test@read_all_entries.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-adlp-9/igt@debugfs_test@read_all_entries.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arlh-3}:       [ABORT][7] ([i915#12061]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arlh-2:         [ABORT][9] ([i915#12061]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#11981]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11981
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12119]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12119
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8001 -> IGTPW_11673
-
-  CI-20190529: 20190529
-  CI_DRM_15342: d5b1bfdcb803eb5b8b572a2fed8a9134993b47e5 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11673: 11673
-  IGT_8001: d3a77fc98e89cc94b03be2b0903d44f83480b8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/index.html
-
---===============4521384855915945768==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/amd_deadlock: fix sdma error type</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138067/">https://patchwork.freedesktop.org/series/138067/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15342 -&gt; IGTPW_11673</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/index.html</p>
-<h2>Participating hosts (41 -&gt; 38)</h2>
-<p>Missing    (3): fi-kbl-8809g fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11673 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@requests:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-apl-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-apl-1/igt@i915_selftest@live@requests.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) +32 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@read_all_entries:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-adlp-9/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12119">i915#12119</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-adlp-9/igt@debugfs_test@read_all_entries.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15342/bat-arlh-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11673/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8001 -&gt; IGTPW_11673</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15342: d5b1bfdcb803eb5b8b572a2fed8a9134993b47e5 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11673: 11673<br />
-  IGT_8001: d3a77fc98e89cc94b03be2b0903d44f83480b8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4521384855915945768==--
