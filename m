@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 363B6CA0ED3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 08:32:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EBBBCD13CF
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 09:00:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E669710E252;
-	Mon,  2 Sep 2024 08:32:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3EC0010E261;
+	Mon,  2 Sep 2024 09:00:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zjg0u6dI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l3aliix9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C13C610E252
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 08:32:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A966610E265
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 09:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725265965; x=1756801965;
+ t=1725267615; x=1756803615;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=DlNy2amU32kvjVKnx48lGD2Q9uiTf+uArXEXGrrCh1c=;
- b=Zjg0u6dIcgDfpscfloEYA7ri/j9T7/CT507wS5/OMtR9ZKjHQL0EdJQt
- BtDnLwE8noi5YfK04E4FgzSKxstIOeHKlpM4MR6GR2RG2q/ap4AkEzpgv
- 2aR0NG482vupWLqTahq+W588yjw4hHEJNmf7jrL5cVXhQBIB5rsYWuJYr
- Rf19RivCjA3SghwZD2IsOFQn0c/LUG6/KabxHy8xTjbNTO59nYk8D6JtC
- d0mU5qJPvG1jP9zYS7e+6Fnu39YCPQLLtqg/fEF3/Aid/AIof11HacV3k
- WpNVcQ5Weq/BDwd9SgoRkqLTN64NOmwJDXgX9ahn3jw8ywSA2R3TNuqe8 g==;
-X-CSE-ConnectionGUID: wyMbZgTzQAmy6tsahaT+0A==
-X-CSE-MsgGUID: gxJYV9G1T5ynO20ydmrMow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11182"; a="34994548"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="34994548"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 01:32:45 -0700
-X-CSE-ConnectionGUID: ni6g4wG9T62xIt3ypyi4Sg==
-X-CSE-MsgGUID: nmaUraVMSqqqNUsqp+UadQ==
+ bh=l8ybMKI/VpGJ7CY3lwqtq0pxZ4IdGzKedJ5tvVqkwmM=;
+ b=l3aliix97hNDZH+KyS9HIPbtYkdNUG4D8bxnYgoPejSSb7LqRbVehayx
+ Q5uw8l1gwXFYzGoT6uWU0nhv5maiCZGRr1BtAPW92ZHviXKjnh+njyqJu
+ bfEPVMXyim4cn87ko3TliGOk4rYPORtHNN8+13HAFPiajHmsOiKt/sV2+
+ QzUpUA5tv5RPfbi/U+cdAepV85PrD/QycCIpDLk51CTh04XezDErExVAc
+ rXy9ePKRMmilCcIbdjYOTLpBXKbMR+SRS4SP8YRFl7acHMu6EIyCJ+qVb
+ 6jwyo1fKu2X9K69ulHLfJltmu6uKvOYWKGTAAlXWSksla0IRkDD9YNApO A==;
+X-CSE-ConnectionGUID: vCSWThD5St+4vKQ/Kgp0xQ==
+X-CSE-MsgGUID: wBPhCXXJR32Al6VSX81HPw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11182"; a="41316171"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="41316171"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Sep 2024 02:00:14 -0700
+X-CSE-ConnectionGUID: inityxoQRO+mHmGH32pilA==
+X-CSE-MsgGUID: V1D3Ee1HQCCXZ82g7K/SJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="69333388"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- vgovind2-mobl3..) ([10.245.244.61])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 01:32:43 -0700
-From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64749641"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2024 02:00:12 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, juha-pekka.heikkila@intel.com,
- matthew.d.roper@intel.com, swati2.sharma@intel.com
-Subject: [PATCH i-g-t v2] tests/intel/kms_cdclk: skip cdclk tests for bmg
-Date: Mon,  2 Sep 2024 11:32:32 +0300
-Message-Id: <20240902083232.21871-1-vinod.govindapillai@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: suraj.kandpal@intel.com, jeevan.b@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v6 0/4] Improvise-the-deep-pkgc
+Date: Mon,  2 Sep 2024 14:29:39 +0530
+Message-ID: <20240902085943.1496088-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,34 +66,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As there is only one cdclk option in BMG, these cdclk tests
-which look for change in cdclk frequency when changing
-between high and low resolution mode will fail. So skip
-these tests for bmg
+This update improve deep pkgc. Add a check for the eDP connector
+to ensure proper connector handling. Increase the test duration
+to 4 seconds. Modify the loop to use igt_wait for better handling
+of the package C-state counter read.
 
-v2: Add WA info as a comment (Matt Roper)
-    fix commit header description (Swati)
+Naladala Ramanaidu (4):
+  tests/intel/kms_pm_dc: Add time unit macros and update delay
+    calculation
+  tests/intel/kms_pm_dc: Update VRR handling and eDP output check
+  tests/intel/kms_pm_dc: Update test duration to 4 seconds
+  tests/intel/kms_pm_dc: Add polling for deep-pkgc
 
-Acked-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
----
- tests/intel/kms_cdclk.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tests/intel/kms_pm_dc.c | 49 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 34 insertions(+), 15 deletions(-)
 
-diff --git a/tests/intel/kms_cdclk.c b/tests/intel/kms_cdclk.c
-index 6fe6e6c3f..382b3e9d1 100644
---- a/tests/intel/kms_cdclk.c
-+++ b/tests/intel/kms_cdclk.c
-@@ -402,6 +402,9 @@ igt_main
- 			      "Hardware doesn't support crawling/squashing.\n");
- 		igt_display_require(&data.display, data.drm_fd);
- 		igt_display_require_output(&data.display);
-+
-+		/* Wa_15015413771: Only single possible cdclk value in XE2_HPD */
-+		igt_require(!IS_BATTLEMAGE(data.devid));
- 	}
- 
- 	igt_describe("Plane scaling test to validate cdclk frequency change.");
 -- 
-2.34.1
+2.43.0
 
