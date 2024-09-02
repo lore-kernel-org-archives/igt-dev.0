@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6E5FCD13CF
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:39:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9B86CA0ED3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:39:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A2D410E340;
-	Mon,  2 Sep 2024 14:39:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7855C10E34F;
+	Mon,  2 Sep 2024 14:39:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BbokNrpV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XqMrtiqp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A3F410E345
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 874AB10E33D
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287939; x=1756823939;
+ t=1725287942; x=1756823942;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=n9Gu+B2QewNWWbu2OAVVTspGj+ZjG5UZvWgzXS3KSu0=;
- b=BbokNrpVmx8//p4bjFAV6lcmVGIegvjvkgKC/hClGIDbMI9GPiRrHBgn
- 25AWFWth7w0/ROrMVQVBH5Pl9pAhXH8Gii1mSTez5p+fFipCb6lmHvbT7
- CLCITZLKGQGlidSYGovjpd2IrCprxqYZJBfvGVPxwxIzybAZdZsPFuC+Q
- Io2qDlj2CuB9SMIOO5t2QKOFZFM9yc1ikrEhJkFal9HMlBqvaeKLhDPlZ
- bT5n9rRU9tPziGjtecPGFbaSDPTzqAiieK9+LWeedjzRCc5oX6bXxj7ZW
- 5cg33T4FuPa1tFujovVHH/PCIhg1rdZ9L4DGJgTdicWx5wvwcsvHENbhN A==;
-X-CSE-ConnectionGUID: XY2nw/RGQy2dtdEf0w67cQ==
-X-CSE-MsgGUID: hsyPGN7zQIeY2QOAfWHg0A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009525"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009525"
+ bh=1XUL/oJV5GpGfL/fY3n4i8RcKs4YOMj7S7NNpv8TuoA=;
+ b=XqMrtiqpF2KMxmJMqCcHvfnit+FYYXRfhT3LcTe3sIgXHQ2c8ZiS1STd
+ l/RP3dBqSYxctO+E+7mnORgAi18CrTw9E6ySQ9QbHunq1ePHZyIw5be8z
+ 5kcvawCG8+JmNcow1wXiJX8Fi6dr8VCtakkXFAifmrFNKhKtC/zCcuOuM
+ 5CZAibFv2wIWciEVpOS2WpO6DZI7nUQTPY7pxpAamIxpMZNtbFGJ9Sqxn
+ wfwQW+SsHe4+UJv48IhXdiWfIHMKusjmU1InVdJchK4yK54SV/GZDdqD7
+ 5SPglOZPYtgdhH93BZyUHAB7VViebEDJOssH1mcs1KRSATF+Eac/b1LfN w==;
+X-CSE-ConnectionGUID: pTGx4ejETeObe8Z8MZfp8w==
+X-CSE-MsgGUID: t1Mp9OD/S0KWwxistKDPyA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009528"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009528"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:59 -0700
-X-CSE-ConnectionGUID: fS5qGKQ/ST6WTNkldTNW/A==
-X-CSE-MsgGUID: tcILW68mTUu/h/O5GKKuPw==
+ 02 Sep 2024 07:39:02 -0700
+X-CSE-ConnectionGUID: h3LiH1nMTWi5LQG3AS8SSg==
+X-CSE-MsgGUID: zCcs0AfkRtWSUpzbS2jCJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639491"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639512"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:57 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:39:00 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:56 +0300
+ Mon, 02 Sep 2024 17:38:59 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 20/23] tests/kms_plane: Extract skip_format_mod()
-Date: Mon,  2 Sep 2024 17:37:55 +0300
-Message-ID: <20240902143758.21036-21-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 21/23] tests/kms_ccs: Reuse
+ igt_fb_is_gen12_rc_ccs_cc_modifier()
+Date: Mon,  2 Sep 2024 17:37:56 +0300
+Message-ID: <20240902143758.21036-22-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -71,97 +72,51 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-We have a few different cases why format/modifier combos
-need to be skipped. Pull the code to determine that into
-a helper.
-
-This also gives better debug logging for the msm UBWC case,
-as previously there was none.
+Replace the hand rolled version of igt_fb_is_gen12_rc_ccs_cc_modifier()
+with the real thing.
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_plane.c | 56 ++++++++++++++++++++++++++++-------------------
- 1 file changed, 33 insertions(+), 23 deletions(-)
+ tests/intel/kms_ccs.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 28df846d3a16..a6b5d4f8aa2a 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1003,6 +1003,31 @@ static void check_allowed_plane_size_64x64(data_t *data, igt_plane_t *plane,
- 	igt_remove_fb(data->drm_fd, &test_fb);
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index b1a9da8dacd2..1036666de2b6 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -280,13 +280,6 @@ create_fb_prepare_add(int drm_fd, int width, int height,
+ 	addfb_init(fb, f);
  }
  
-+static bool skip_format_mod(data_t *data,
-+			    uint32_t format, uint64_t modifier,
-+			    struct igt_vec *tested_formats)
-+{
-+	/* igt doesn't know how to sw generate UBWC: */
-+	if (is_msm_device(data->drm_fd) &&
-+	    modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
-+		return true;
-+
-+	/* test each format "class" only once in non-extended tests */
-+	if (!data->extended && modifier != DRM_FORMAT_MOD_LINEAR) {
-+		struct format_mod rf = {
-+			.format = igt_reduce_format(format),
-+			.modifier = modifier,
-+		};
-+
-+		if (igt_vec_index(tested_formats, &rf) >= 0)
-+			return true;
-+
-+		igt_vec_push(tested_formats, &rf);
-+	}
-+
-+	return false;
-+}
-+
- static bool test_format_plane(data_t *data, enum pipe pipe,
- 			      igt_output_t *output, igt_plane_t *plane, igt_fb_t *primary_fb)
- {
-@@ -1076,33 +1101,18 @@ static bool test_format_plane(data_t *data, enum pipe pipe,
- 			.modifier = plane->modifiers[i],
- 		};
- 
--		/* igt doesn't know how to sw generate UBWC: */
--		if (is_msm_device(data->drm_fd) &&
--		    f.modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
--			continue;
+-static bool is_ccs_cc_modifier(uint64_t modifier)
+-{
+-	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
+-	       modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
+-	       modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
+-}
 -
- 		if (f.format == ref.format &&
- 		    f.modifier == ref.modifier)
- 			continue;
+ /*
+  * The CCS planes of compressed framebuffers contain non-zero bytes if the
+  * engine compressed effectively the framebuffer. The actual encoding of these
+@@ -754,7 +747,7 @@ static void generate_fb(data_t *data, struct igt_fb *fb,
+ 		srand(data->seed);
+ 		fill_fb_random(data->drm_fd, fb);
+ 	} else {
+-		bool do_fast_clear = is_ccs_cc_modifier(data->ccs_modifier);
++		bool do_fast_clear = igt_fb_is_gen12_rc_ccs_cc_modifier(data->ccs_modifier);
+ 		bool do_solid_fill = do_fast_clear || data->plane;
+ 		int c = !!data->plane;
  
--		/* test each format "class" only once in non-extended tests */
--		if (!data->extended && f.modifier != DRM_FORMAT_MOD_LINEAR) {
--			struct format_mod rf = {
--				.format = igt_reduce_format(f.format),
--				.modifier = f.modifier,
--			};
--
--			if (igt_vec_index(&tested_formats, &rf) >= 0) {
--				igt_debug("Skipping format " IGT_FORMAT_FMT " / modifier "
--					IGT_MODIFIER_FMT " on %s.%u\n",
--					IGT_FORMAT_ARGS(f.format),
--					IGT_MODIFIER_ARGS(f.modifier),
--					kmstest_pipe_name(pipe),
--					plane->index);
--				continue;
--			}
--
--			igt_vec_push(&tested_formats, &rf);
-+		if (skip_format_mod(data, f.format, f.modifier, &tested_formats)) {
-+			igt_debug("Skipping format " IGT_FORMAT_FMT " / modifier "
-+				  IGT_MODIFIER_FMT " on %s.%u\n",
-+				  IGT_FORMAT_ARGS(f.format),
-+				  IGT_MODIFIER_ARGS(f.modifier),
-+				  kmstest_pipe_name(pipe),
-+				  plane->index);
-+			continue;
- 		}
+@@ -847,7 +840,7 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+ 				      data->ccs_modifier))
+ 		return false;
  
- 		if (f.format == DRM_FORMAT_C8) {
+-	if (is_ccs_cc_modifier(data->ccs_modifier) &&
++	if (igt_fb_is_gen12_rc_ccs_cc_modifier(data->ccs_modifier) &&
+ 	    data->format != DRM_FORMAT_XRGB8888 &&
+ 	    data->format != DRM_FORMAT_XRGB2101010)
+ 		return false;
 -- 
 2.44.2
 
