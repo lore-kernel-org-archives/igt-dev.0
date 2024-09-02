@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A94E4CA0ED3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ABB8CA0ED3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 68A0410E338;
-	Mon,  2 Sep 2024 14:38:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C7F3310E339;
+	Mon,  2 Sep 2024 14:38:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ecnbTpg8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RHfYkUZf";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6DCD10E338
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92EE810E339
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287925; x=1756823925;
+ t=1725287927; x=1756823927;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Mp8cJCEXCC2dyh/VNhXrJrSPdJjtbGDV1d4mTlUhZRg=;
- b=ecnbTpg8GMm0kYBf+aX1qbLWqzfwa4iq5itlMU51ZwpZvukyVqTXtIJZ
- ASQtk0oCEnWawc8efs5z1SEtddVlKt2E5tmqgrBy+4fwU63ghp5QU04Aj
- VhU1EnYoEETPcjpYBRSR8plI7J0NATWUm7RnxCI3dHlwnZiclyJvLqekv
- I6lfdkg+eGdskPUm34Es/kOyzun6rmyJ4+Aa4omBkwAmKiYPj5WaEdtPx
- qwRQQz0pFQ+N2EJTlQli7Z4y2kO8AujpL1smMqbjDztym5+Mm+e5Pw3xK
- 2AR3Ovq+RQaSEznb2uzrgHcdJavbrSBXpSHP9u5ODuY9sTtvH/kkHuiAL A==;
-X-CSE-ConnectionGUID: +YJF3AFBRYC2FAiErglPEA==
-X-CSE-MsgGUID: KgRBdb5/RkuLK6slAkWStA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009497"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009497"
+ bh=PxU/FP5bvoASsmLyrmURbFfuBRp0x9Klzjjfd9GU4YM=;
+ b=RHfYkUZfO0+B7Dh9EOQXm88F1hf8MizJhcjsOqCXFq5x1UsoCZELg5sw
+ f1A2gk5bgJi6tZOr6kS/sJO7q5QFANf3RlQjB5IcsWt+bzyzNUfMNQ4r2
+ 2EAQmlLqOnHLyUyHi7iEk8/vU21jnRigUnStKvpcsGqRgPqIokzxRJ6XX
+ ktJFPhctvDi90BzF2VFLKFwBjce2jjbcjnUHl7qUSBeuYpb/kZP2peCti
+ /ib2IM7ec8Qr3t2MRGFaCVM6BF7NSETdvi4v2ninT8BkkNuZMxHzILCK3
+ oV3ogcbp6eON7INaZI48T0eruqiCz9mgHrn7JmILM9Cf8imofnR8RzpyO g==;
+X-CSE-ConnectionGUID: 1F/u+SygSKyXwJsbrEG44w==
+X-CSE-MsgGUID: 3JXt+sdHQVKguYAarceQWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009504"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009504"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:44 -0700
-X-CSE-ConnectionGUID: Ih4U+WqjTTiwk6bO+5vOqw==
-X-CSE-MsgGUID: NC7ohPMLQbyEbZHYHuo8RA==
+ 02 Sep 2024 07:38:47 -0700
+X-CSE-ConnectionGUID: t7C8Big7SJOEIxRa1Cmbcg==
+X-CSE-MsgGUID: PR1hb9oeTPKqIB4JZ8QAtw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639443"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639457"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:42 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:45 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:41 +0300
+ Mon, 02 Sep 2024 17:38:44 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 15/23] lib/igt_fb: Expose
- igt_fb_is_gen12_mc_ccs_modifier()
-Date: Mon,  2 Sep 2024 17:37:50 +0300
-Message-ID: <20240902143758.21036-16-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 16/23] lib/igt_fb: Adjust how we pick the blitter
+ compression format
+Date: Mon,  2 Sep 2024 17:37:51 +0300
+Message-ID: <20240902143758.21036-17-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -72,95 +72,64 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-I'm going to need is_gen12_mc_ccs_modifier() outside of
-igt_fb.c. Rename it to igt_fb_is_gen12_mc_ccs_modifier()
-and expose it to everyone.
-
-v2: Add docs (J-P)
+Instead doing this bpp vs. format thing based on the compression
+type, let's stick with the format. In order to avoid having to
+populate the table with all the different swizzles we'll pass
+the format through igt_reduce_format().
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_fb.c | 18 ++++++++++++------
- lib/igt_fb.h |  1 +
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ lib/igt_fb.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 534ed9aa4e55..dbf9b1035cfd 100644
+index dbf9b1035cfd..8d9d1bbe3508 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -589,7 +589,13 @@ void igt_get_fb_tile_size(int fd, uint64_t modifier, int fb_bpp,
- 	}
- }
+@@ -2902,23 +2902,22 @@ static enum blt_color_depth blt_get_bpp(const struct igt_fb *fb)
+ 			  x.compression_type == COMPRESSION_TYPE_MEDIA)
  
--static bool is_gen12_mc_ccs_modifier(uint64_t modifier)
-+/**
-+ * igt_fb_is_gen12_mc_ccs_modifier:
-+ * @modifier: drm modifier
-+ *
-+ * This function returns true if @modifier supports media compression.
-+ */
-+bool igt_fb_is_gen12_mc_ccs_modifier(uint64_t modifier)
+ const struct {
+-	uint32_t key;
++	uint32_t format;
+ 	enum blt_compression_type type;
+ 	uint32_t return_value;
+ } compression_mappings[] = {
+-	{ CD_32bit, COMPRESSION_TYPE_3D, 8 },
++	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_3D, 0x8 },
+ 	{ DRM_FORMAT_XRGB8888, COMPRESSION_TYPE_MEDIA, 8 },
+ 	{ DRM_FORMAT_XYUV8888, COMPRESSION_TYPE_MEDIA, 9 },
+ 	{ DRM_FORMAT_NV12, COMPRESSION_TYPE_MEDIA, 9 },
+ 	{ DRM_FORMAT_P010, COMPRESSION_TYPE_MEDIA, 8 },
+-	{ DRM_FORMAT_P012, COMPRESSION_TYPE_MEDIA, 8 },
+-	{ DRM_FORMAT_P016, COMPRESSION_TYPE_MEDIA, 8 },
+ };
+ 
+-static uint32_t get_compression_return_value(uint32_t key, enum  blt_compression_type type)
++static uint32_t get_compression_return_value(uint32_t format,
++					     enum  blt_compression_type type)
  {
- 	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_MC_CCS ||
- 		modifier == I915_FORMAT_MOD_4_TILED_DG2_MC_CCS ||
-@@ -611,7 +617,7 @@ bool igt_fb_is_gen12_rc_ccs_cc_modifier(uint64_t modifier)
+ 	for (int i = 0; i < ARRAY_SIZE(compression_mappings); i++) {
+-		if (compression_mappings[i].key == key &&
++		if (compression_mappings[i].format == format &&
+ 		    compression_mappings[i].type == type) {
+ 			return compression_mappings[i].return_value;
+ 		}
+@@ -2935,11 +2934,11 @@ static uint32_t blt_compression_format(struct blt_copy_data *blt,
+ 		return 0;
  
- static bool is_gen12_ccs_modifier(uint64_t modifier)
- {
--	return is_gen12_mc_ccs_modifier(modifier) ||
-+	return igt_fb_is_gen12_mc_ccs_modifier(modifier) ||
- 		igt_fb_is_gen12_rc_ccs_cc_modifier(modifier) ||
- 		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS ||
- 		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS ||
-@@ -2518,7 +2524,7 @@ static bool ccs_needs_enginecopy(const struct igt_fb *fb)
- 	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
- 		return true;
+ 	if (BLT_TARGET_RC(blt->src) || BLT_TARGET_RC(blt->dst))
+-		return get_compression_return_value(blt->color_depth,
++		return get_compression_return_value(igt_reduce_format(fb->drm_format),
+ 						    COMPRESSION_TYPE_3D);
  
--	if (is_gen12_mc_ccs_modifier(fb->modifier))
-+	if (igt_fb_is_gen12_mc_ccs_modifier(fb->modifier))
- 		return true;
+ 	if (BLT_TARGET_MC(blt->src))
+-		return get_compression_return_value(fb->drm_format,
++		return get_compression_return_value(igt_reduce_format(fb->drm_format),
+ 						    COMPRESSION_TYPE_MEDIA);
  
- 	if (igt_fb_is_ccs_modifier(fb->modifier) &&
-@@ -2652,7 +2658,7 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
- 		} else
- 			igt_assert_eq(fb->strides[1] & 127, 0);
- 
--		if (is_gen12_mc_ccs_modifier(fb->modifier))
-+		if (igt_fb_is_gen12_mc_ccs_modifier(fb->modifier))
- 			compression = I915_COMPRESSION_MEDIA;
- 		else
- 			compression = I915_COMPRESSION_RENDER;
-@@ -2746,7 +2752,7 @@ static bool use_vebox_copy(const struct igt_fb *src_fb,
- 			   const struct igt_fb *dst_fb)
- {
- 
--	return is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
-+	return igt_fb_is_gen12_mc_ccs_modifier(dst_fb->modifier) ||
- 	       igt_format_is_yuv(src_fb->drm_format) ||
- 	       igt_format_is_yuv(dst_fb->drm_format);
- }
-@@ -2821,7 +2827,7 @@ static struct blt_copy_object *allocate_and_initialize_blt(const struct igt_fb *
- 		       intel_get_pat_idx_uc(fb->fd),
- 		       blt_tile,
- 		       igt_fb_is_ccs_modifier(fb->modifier) ? COMPRESSION_ENABLED : COMPRESSION_DISABLED,
--		       is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
-+		       igt_fb_is_gen12_mc_ccs_modifier(fb->modifier) ? COMPRESSION_TYPE_MEDIA : COMPRESSION_TYPE_3D);
- 
- 	blt_set_geom(blt, stride, 0, 0, fb->width, fb->plane_height[plane], 0, 0);
- 	blt->plane_offset = fb->offsets[plane];
-diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-index 12c9574827f2..eb707cc34560 100644
---- a/lib/igt_fb.h
-+++ b/lib/igt_fb.h
-@@ -183,6 +183,7 @@ uint64_t igt_fb_tiling_to_mod(uint64_t tiling);
- 
- bool igt_fb_is_ccs_modifier(uint64_t modifier);
- bool igt_fb_is_gen12_rc_ccs_cc_modifier(uint64_t modifier);
-+bool igt_fb_is_gen12_mc_ccs_modifier(uint64_t modifier);
- bool igt_fb_is_ccs_plane(const struct igt_fb *fb, int plane);
- bool igt_fb_is_gen12_ccs_cc_plane(const struct igt_fb *fb, int plane);
- int igt_fb_ccs_to_main_plane(const struct igt_fb *fb, int ccs_plane);
+ 	if (BLT_TARGET_MC(blt->dst))
 -- 
 2.44.2
 
