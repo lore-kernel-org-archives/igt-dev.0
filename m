@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EBBCCA0ED3
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B771CA0ED3
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Sep 2024 14:38:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BFCC910E330;
-	Mon,  2 Sep 2024 14:38:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B708A10E049;
+	Mon,  2 Sep 2024 14:38:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ff5WiSoj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h9S6L+tp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14E3310E331
- for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0444A10E049
+ for <igt-dev@lists.freedesktop.org>; Mon,  2 Sep 2024 14:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725287910; x=1756823910;
+ t=1725287913; x=1756823913;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=g81Nb33rgTJSd5POxc3LQ5uAbbKiyqv8SUNhySn3QSA=;
- b=ff5WiSojcOv0VguBQ0WH/M0aaaoutX5IrWpwMT4XP91vRAr2aWM34iZN
- rrBI6YuAjC7oFqbp4LS4c4Cjmfpe+vgc+zx2e6WyH/DQjM/tgMCcLDgDY
- w36VdfGyYdD+y4sKdA4citUtrDFdxUe+M2LL6LXOGcHZBfk32WTIpi6s6
- /diGzizWBFJ4E8dlDmoC7Ff9prErzm4AxMPW7Wm7XRRKWIUdHtRLo2pWy
- 2Kv+uPTZbZ4+2xRKNmcajIz8UJiWx0nRY0vGQypu6zLnPGI28V9uV+rtB
- oBfe1K/nL8o6kOLtxze+mL0/MKIFmFDLogYcALzZArZhscuYBdYj09qV2 A==;
-X-CSE-ConnectionGUID: gJxhScWAQaeb86y85awQ6g==
-X-CSE-MsgGUID: yxK5gAjHSj63tKrhthZnTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009458"
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009458"
+ bh=qpjIHuy6Jk92GZNsiyxL1L0TWIrhShzHRZ6VgBJ6e7w=;
+ b=h9S6L+tp8tC8ej0XTHRlnyJlCLl5sSAydUboe/AaS/8//3YkpCmyLAp/
+ 03Cs8IhcD2CrHXZDdl7Mx2AmE2x1w5oXZL/FKd+j9sJUlk0aFPblKSUNy
+ hd1FYxj2R5E+EI0TEKSCQ+sBc9joidFu3KUVpTaOIf7uCbwbc8IpW920u
+ f7oNWxG6ewoRSwhLy7GAC2NaWsduYJSWk9iCGl9UMgjMVYvRBVCEaQb0M
+ Go6EUTISVMG/prgbN+2M456JezuJQ3O4C0HvFyMRrB3Wuy4EXl6veCvOq
+ fMvk2qDHpKh/Wk9Hz/FlAWMZnD9n4A/k5+cCU513uh/lrGetAta+VJLsZ w==;
+X-CSE-ConnectionGUID: LfoXYzlWQ+aso3Omgqt6Jw==
+X-CSE-MsgGUID: 2Sy96xYnRxuBKPzSqBeXwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24009467"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="24009467"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2024 07:38:30 -0700
-X-CSE-ConnectionGUID: 1fMg0nPoR/ew/JzdAUmZ/g==
-X-CSE-MsgGUID: GOzicXGaQvuA/xUlHuo96Q==
+ 02 Sep 2024 07:38:33 -0700
+X-CSE-ConnectionGUID: gzCnAYw+SL6BxvDtnabMtQ==
+X-CSE-MsgGUID: TfhhxfDYSxahQxLkuM0WVQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639409"
+X-IronPort-AV: E=Sophos;i="6.10,195,1719903600"; d="scan'208";a="64639412"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:28 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Sep 2024 07:38:31 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 02 Sep 2024 17:38:27 +0300
+ Mon, 02 Sep 2024 17:38:30 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 10/23] lib/igt_fb: Extract is_gen12_rc_ccs_cc_modifier()
-Date: Mon,  2 Sep 2024 17:37:45 +0300
-Message-ID: <20240902143758.21036-11-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 11/23] lib/igt_fb: Extract ccs_needs_enginecopy()
+Date: Mon,  2 Sep 2024 17:37:46 +0300
+Message-ID: <20240902143758.21036-12-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
 References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
@@ -71,43 +71,69 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Extract a helper to identify the clear color compressed modifiers.
+We have two copies of the code to determine if CCS needs to
+use enginecopy. Extract the code to a helper.
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_fb.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ lib/igt_fb.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
 diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index 0eb3897d0f8b..6c379f6d86ba 100644
+index 6c379f6d86ba..52910b68a534 100644
 --- a/lib/igt_fb.c
 +++ b/lib/igt_fb.c
-@@ -596,15 +596,20 @@ static bool is_gen12_mc_ccs_modifier(uint64_t modifier)
- 		modifier == I915_FORMAT_MOD_4_TILED_MTL_MC_CCS;
+@@ -2501,17 +2501,29 @@ static bool block_copy_ok(const struct igt_fb *fb)
+ 					       fb_tile_to_blt_tile(fb->modifier));
  }
  
-+static bool is_gen12_rc_ccs_cc_modifier(uint64_t modifier)
++static bool ccs_needs_enginecopy(const struct igt_fb *fb)
 +{
-+	return modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
-+		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
-+		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
++	if (is_gen12_mc_ccs_modifier(fb->modifier))
++		return true;
++
++	if (is_ccs_modifier(fb->modifier) &&
++	    !HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
++		return true;
++
++	return false;
 +}
 +
- static bool is_gen12_ccs_modifier(uint64_t modifier)
+ static bool blitter_ok(const struct igt_fb *fb)
  {
- 	return is_gen12_mc_ccs_modifier(modifier) ||
-+		is_gen12_rc_ccs_cc_modifier(modifier) ||
- 		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS ||
--		modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS_CC ||
- 		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS ||
--		modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC ||
--		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS ||
--		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS_CC;
-+		modifier == I915_FORMAT_MOD_4_TILED_MTL_RC_CCS;
+ 	if (!is_intel_device(fb->fd))
+ 		return false;
+ 
+-	if ((!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) &&
+-	    is_ccs_modifier(fb->modifier)) ||
+-	    is_gen12_mc_ccs_modifier(fb->modifier) ||
+-	    (!blt_uses_extended_block_copy(fb->fd) &&
++	if (ccs_needs_enginecopy(fb))
++		return false;
++
++	if (!blt_uses_extended_block_copy(fb->fd) &&
+ 	    fb->modifier == I915_FORMAT_MOD_X_TILED &&
+-	    is_xe_device(fb->fd)))
++	    is_xe_device(fb->fd))
+ 		return false;
+ 
+ 	if (is_xe_device(fb->fd))
+@@ -2551,10 +2563,11 @@ static bool use_enginecopy(const struct igt_fb *fb)
+ 	if (blitter_ok(fb))
+ 		return false;
+ 
++	if (ccs_needs_enginecopy(fb))
++		return true;
++
+ 	return fb->modifier == I915_FORMAT_MOD_Yf_TILED ||
+-	       fb->modifier == I915_FORMAT_MOD_X_TILED ||
+-	       (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)) && is_ccs_modifier(fb->modifier)) ||
+-	       is_gen12_mc_ccs_modifier(fb->modifier);
++		fb->modifier == I915_FORMAT_MOD_X_TILED;
  }
  
- static bool is_ccs_modifier(uint64_t modifier)
+ static bool use_blitter(const struct igt_fb *fb)
 -- 
 2.44.2
 
