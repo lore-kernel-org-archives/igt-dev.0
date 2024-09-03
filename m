@@ -4,65 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B93FCD3420
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 12:03:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F3FCD3420
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 12:05:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EEBF3897FF;
-	Tue,  3 Sep 2024 12:03:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61B9110E51B;
+	Tue,  3 Sep 2024 12:05:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DR6Yhgl0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ev32vM2m";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4459C897FF
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 12:03:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF11410E519
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 12:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725365030; x=1756901030;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=AmqEZc97/Zkutba8W89WoKU9HC1DB0GCkso9FmXQ1fE=;
- b=DR6Yhgl0JQUU14Rk81Bcrax053ZN7o8194eKehu/4IcZdk984ylfprg0
- fpUx8Z3taMHARvnvYx7Zt77v1NS2WVDIyZFlsOcrWre1H5DApDMT5G+H+
- KIzYBfzzfxVxkxcAl41IZ+nQ9GhBrpjNTRps3/8F321ZBDGGBFfPB7mnp
- zLMFdeb0k7zkFe/dwbK9iLpG7RzK42/6XOtTmgD6ea06FgWc+3KlpvNoO
- IfLWAux2WY0iSot7vRRk1E5BrMFDPBZe/eEd+Hq9kbhGNPaoIA4fhG3A3
- HMqzIteiaKILQjnhatYDcnrlJZKptPOA5NtWlNxlyrnn+DgXPKuX2IZXH g==;
-X-CSE-ConnectionGUID: yfMvFKoyQMeznulfFTr5dA==
-X-CSE-MsgGUID: V/1bI1jAQDODjNAB/cP3kQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="24096640"
-X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; d="scan'208";a="24096640"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2024 05:03:49 -0700
-X-CSE-ConnectionGUID: RLdGLpckRHK+mP2X1v58mA==
-X-CSE-MsgGUID: e+49U6VbTFinW8SK6DVLIA==
+ t=1725365114; x=1756901114;
+ h=message-id:date:mime-version:from:subject:in-reply-to:to:
+ cc:content-transfer-encoding;
+ bh=PZTKYp9w+lr3qqzru2B88Pms9SZSF1ie2/xBd0Zbw+4=;
+ b=ev32vM2mSnEbGv/yjoOU4dxMVD79EowhrJ5iFazvuRLR4WHohuvlJIms
+ gQMnDUDvoZP80xBmYCVegXhvWJuXs6z1cS/+A5umwJrVxiJJAEJj2Ovco
+ OaHuHmZxlhRJsLiBlFY0NUe+wsn/aygbkWp5DhKo5QVJB67Bt/6Uj5QSf
+ 87pVC9ucMr/j1C+yuvNc6LPQhMxkHves3gNoUH9BaiSDGuSNhDgYyfosw
+ JuZ7WXphjCyq1+RbzmE8fZ6p4E7V7qSyzL0siraGhOX5zVU7pg1eLahGj
+ UIQKKil/KzzX2UVXnl69E/oXlum+uA1NH8JvCw4WVxotelBlgUCEA+nIA w==;
+X-CSE-ConnectionGUID: rFW0cj/XT+iqj12NZXtWKg==
+X-CSE-MsgGUID: WaYUam1cTdeUB2kY+8AJ+Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="41428394"
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; d="scan'208";a="41428394"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2024 05:05:14 -0700
+X-CSE-ConnectionGUID: IRHMGGf3QEmfmXXrYLbIaw==
+X-CSE-MsgGUID: 8cquC7FgSMKNE+jAo3S+nQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; d="scan'208";a="65619612"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 05:03:48 -0700
-Date: Tue, 3 Sep 2024 14:03:35 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Krishnaiah Bommu <krishnaiah.bommu@intel.com>,
- Emil Velikov <emil.l.velikov@gmail.com>,
- "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-Subject: Re: [PATCH] tests/core_setmaster: Handle the test even if cards are
- non-continuous
-Message-ID: <20240903120335.2yz3ix6rezxn7x53@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Krishnaiah Bommu <krishnaiah.bommu@intel.com>,
- Emil Velikov <emil.l.velikov@gmail.com>,
- "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
-References: <20240812052443.12856-1-krishnaiah.bommu@intel.com>
- <20240822164627.byk7ffdpjwpwb5tw@kamilkon-DESK.igk.intel.com>
- <DM4PR11MB529380A7C3015E03F8D1B59C9D932@DM4PR11MB5293.namprd11.prod.outlook.com>
+X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; d="scan'208";a="64528768"
+Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.251.221.173])
+ ([10.251.221.173])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2024 05:05:12 -0700
+Message-ID: <4c126777-6899-407c-911f-27e25ca8191e@linux.intel.com>
+Date: Tue, 3 Sep 2024 14:05:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM4PR11MB529380A7C3015E03F8D1B59C9D932@DM4PR11MB5293.namprd11.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: [PATCH i-g-t v5] runner/executor: Detect when child process is killed
+ by a signal
+Content-Language: en-US
+In-Reply-To: <f7319a46-d6d4-4ea5-9863-99ccd7cea3a5@linux.intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,147 +71,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Bommu,,
-On 2024-09-03 at 08:32:00 +0000, Bommu, Krishnaiah wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Sent: Thursday, August 22, 2024 10:16 PM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Bommu, Krishnaiah <krishnaiah.bommu@intel.com>; Emil Velikov
-> > <emil.l.velikov@gmail.com>; Ghimiray, Himal Prasad
-> > <himal.prasad.ghimiray@intel.com>
-> > Subject: Re: [PATCH] tests/core_setmaster: Handle the test even if cards are
-> > non-continuous
-> > 
-> > Hi Bommu,
-> > On 2024-08-12 at 10:54:43 +0530, Bommu Krishnaiah wrote:
-> > > Although most of userspace assumes drm cards to be populated
-> > > continously,
-> > >
-> > 
-> > Remove blank line.
-> I will remove 
-> > 
-> > > this assumption may not be always true. After hot unpluging and
-> > > repluging of card
-> > >
-> > 
-> > Remove blank.
-> I will remove
-> > 
-> > > the card may be non-continous.  To address such scenarios where the
-> > > cards can be non-continous
-> > >
-> > 
-> > Remove blank.
-> I will remove
-> > 
-> > > modify the tweak_perm function to loop all possible
-> > > cardnumbers(card0-card255) to confirm are they populated or not.
-> > -----^
-> > s/cardnumbers/card numbers/
-> I will changes 
-> > 
-> > imho test is checking only first card so looping all is not optimal.
-> > 
-> > >
-> > > Problem Description:
-> > > The test fails after running the `core_hotunplug@hot*` subtest, where
-> > > card0 is missing.
-> Here card0 is populated as card1
-> > 
-> > imho this could be discussed if that is ok or driver error, imho valid case would
-> > be to have multi-card and unpluging first.
-> > 
-> > > This leads to a failure in the subsequent `master-drop-set-user` test.
-> > >
-> > > Command sequence for reproducing the issue:
-> > > - Check available cards: `ls /dev/dri/`
-> > > 	- Output: by-path  card0  renderD128
-> > > - Run the test: `# ./core_hotunplug --r hotrebind-lateclose`
-> > > - Check again: ‘ls /dev/dri/’
-> > > 	- Output after failure: by-path  card1  renderD129
-> > 
-> > s/failure/core_hotunplug failure/
-> I will change 
-> > 
-> > > - Run the test: `# ./core_setmaster --r master-drop-set-user`
-> > >
-> > > This failures on both XE and i915 for above sequence.
-> > >
-> > > Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> > > Cc: Emil Velikov <emil.l.velikov@gmail.com>
-> > > Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > ---
-> > >  tests/core_setmaster.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c index
-> > > 9c2083f66..a2758e2f2 100644
-> > > --- a/tests/core_setmaster.c
-> > > +++ b/tests/core_setmaster.c
-> > > @@ -116,9 +116,10 @@ static unsigned tweak_perm(uint8_t *saved_perm,
-> > unsigned max_perm, bool save)
-> > >  	for (i = 0; i < max_perm; i++) {
-> > >  		snprintf(path, sizeof(path), "/dev/dri/card%u", i);
-> > >
-> > > -		/* Existing userspace assumes there's no gaps, do the same. */
-> > > +		/* Userspace cannot always have continuous card0...N due to
-> > > +		 * dynamic unloading or removal of cards */
-> > >  		if (stat(path, &st) != 0)
-> > > -			break;
-> > > +			continue;
-> > 
-> > imho this is ok but you should also break after first save/restore just before end
-> > of for loop, so no need for setting all perms when you will test only first one.
-> > 
-> > Also imho you should fill info in saved_perm about which card was found and
-> > use it instead of calling __drm_open_driver().
-> > 
-> 
-> kbommu@kbommu-desk:~/xe_public/igt-gpu-tools$ git diff
-> diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-> index a2758e2f2..b0bf4a5d3 100644
-> --- a/tests/core_setmaster.c
-> +++ b/tests/core_setmaster.c
-> @@ -138,6 +138,9 @@ static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
->                  * failure may be irrelevant.
->                  */
->                 chmod(path, st.st_mode);
+Make igt-runner aware about tests being killed by signals. Before this
+patch, manually killing a test process would result in igt-runner silently
+marking the test as incomplete.
 
-Just noticed a problem here, return code for chmod() is not checked...
+Now igt-runner aborts the run verbosely. As an example the following was
+extracted from results.json:
+ This test caused an abort condition: Test terminated by a signal Killed (-9).
 
-> +
-> +               if (save)
-> +                       return i;
+ v5: do not use sigdescr_np() as it seems to be a fairly new lib function that does
+     not compile on older Ubuntu
+ v4: improve abort code path to not interfere with igt-runner timeouts
+ v3: do not interfere with igt-runner killing tests due to timeout and diskspace
+ v2: fix race condition
 
-It should also apply for restoring, not only setting.
-Imho also save an index at which you found a card for testing
-so you could restore it later and also use it for opening for
-testing.
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>
+---
+ runner/executor.c | 38 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
-Regards,
-Kamil
+diff --git a/runner/executor.c b/runner/executor.c
+index ac73e1dde..990d932f3 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -888,6 +888,8 @@ static int monitor_output(pid_t child,
+ 	const int interval_length = 1;
+ 	int wd_timeout;
+ 	int killed = 0; /* 0 if not killed, signal number otherwise */
++	bool child_reaped = false;
++	bool child_killed_by_signal = false;
+ 	struct timespec time_beg, time_now, time_last_activity, time_last_subtest, time_killed;
+ 	unsigned long taints = 0;
+ 	bool aborting = false;
+@@ -960,6 +962,25 @@ static int monitor_output(pid_t child,
+ 
+ 		igt_gettime(&time_now);
+ 
++		/* Testing for !killed to prevent aborting too early after igt-runner
++		 * decides to kill a process.
++		 */
++		if (!killed && (child == waitpid(child, &status, WNOHANG))) {
++			child_reaped = true;
++			if (WIFSIGNALED(status)) {
++				child_killed_by_signal = true;
++				killed = WTERMSIG(status);
++
++				/*
++				 * Do not abort just yet, because igt-runner can kill the test
++				 * due to a timeout for example. Aborting here prevents
++				 * igt-runner from reporting a timeout. The code that aborts
++				 * the run after the test was killed is at the end of the
++				 * while() loop.
++				 */
++			}
++		}
++
+ 		/* TODO: Refactor these handlers to their own functions */
+ 		if (outfd >= 0 && FD_ISSET(outfd, &set)) {
+ 			char *newline;
+@@ -1241,7 +1262,11 @@ static int monitor_output(pid_t child,
+ 				errf("Error reading from signalfd: %m\n");
+ 				continue;
+ 			} else if (siginfo.ssi_signo == SIGCHLD) {
+-				if (child != waitpid(child, &status, WNOHANG)) {
++				if (!child_reaped) {
++					if (child == waitpid(child, &status, WNOHANG))
++						child_reaped = true;
++				}
++				if (!child_reaped) {
+ 					errf("Failed to reap child\n");
+ 					status = 9999;
+ 				} else if (WIFEXITED(status)) {
+@@ -1483,6 +1508,17 @@ static int monitor_output(pid_t child,
+ 				return -1;
+ 			time_killed = time_now;
+ 		}
++
++		if (child_killed_by_signal) {
++			aborting = true;
++
++			sprintf(buf, "Test terminated by a signal %s (%d).\n",
++					strsignal(killed), -killed);
++			errf("%s", buf);
++			*abortreason = strdup(buf);
++
++			break;
++		}
+ 	}
+ 
+ 	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
+-- 
+2.34.1
 
->         }
->         return i;
->  }
-> kbommu@kbommu-desk:~/xe_public/igt-gpu-tools$
-> 
-> this is the changes your excepting right ?
-> 
-> Regards,
-> Krishna.
-> 
-> > Regards,
-> > Kamil
-> > 
-> > >
-> > >  		if (save) {
-> > >  			/* Save and toggle */
-> > > --
-> > > 2.25.1
-> > >
