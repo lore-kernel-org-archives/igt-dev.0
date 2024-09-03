@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2549FCD37AC
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 20:01:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83511CD37AC
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 20:02:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D597810E071;
-	Tue,  3 Sep 2024 20:01:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4025C10E071;
+	Tue,  3 Sep 2024 20:02:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ls+p0tNP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EPCU/xub";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2D6310E071
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 20:01:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B982910E071
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 20:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725393711; x=1756929711;
+ t=1725393735; x=1756929735;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3N9nIu2+fG91oK9Ys5wEUBN+51u2rG87A23lNO9KSDY=;
- b=ls+p0tNPvcNEeWp5CHHiaNuUieTseCr/tcNhesN/Q9cqYmyWY87GCF2A
- wAh/OT1hY5KhgkoEqQTUfZDnliLDi4NllEPdtWGFK2RBbXsfaBzricFmw
- z47iWHCQ/7HGTskx7C6L/wLsPfP78Yv5easMdSn++2yNnuGP9hVVEIvkx
- KXpb0nNhsmDRNDc/QaY01I1w6R7AlqyYy5Sg8WBbfK0lucX+VvXVJzGVo
- wrPWfxpfyupIbc5+VChK3LYT3udy/1xTjjvxeDVOoXxfhgrCBJvSiMswM
- VMGbn96LImksFlRW1/o7ddB8CoqFyF4FCUy6U9ZFjdzfZy6T0r3ulx67m w==;
-X-CSE-ConnectionGUID: kEHSGdahRCizdmmoCfBonQ==
-X-CSE-MsgGUID: ruO4zd8+Ra2mOREoRMVyPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="35174892"
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="35174892"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2024 13:01:51 -0700
-X-CSE-ConnectionGUID: sCrf/rw5S8mSe97QC5kErg==
-X-CSE-MsgGUID: kgtUUppiQf+ivayqvg4hhA==
+ bh=m3tCxoACjXxu/ln2S1eqzQDy23Gm5EdWq4Ch7kK4QYI=;
+ b=EPCU/xubcjWrh4jRvEzVjX9ApK663oBfSXSLhIJUi4TeK5B41IM/AxL9
+ IT0JRBe9gcJW1geFNKDb4vXE2ju8S03dzHUbpouF///H24Jmw0qVUg60l
+ kHkcgNLQ362+4XipUZC7SJAgi4kIxCzAuU+Z1evkg77LgfI/TH22S8bTb
+ FRMmsbVzNeFRf5UX0jjg0Do13hGEqVPr+D0S2+HFUUFjqiMK60OXQWwjl
+ +IybgZ9tbaPDCzdlLeVA5YzuF/oVuvITd+ODVcmba+gA5tgrGjCd68KkP
+ y14VCp1iMKxR6CHOMnpFQ2NCweeij5X2vWLx+FiC34YCiNPwCQq/Gwtjk A==;
+X-CSE-ConnectionGUID: rAb70mqgT/2IWg9BNufB7A==
+X-CSE-MsgGUID: 5iScQZndQ4mwwbxT9wo0Uw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="13352728"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="13352728"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2024 13:02:14 -0700
+X-CSE-ConnectionGUID: EsQeiBHhQpKA/rwd0500Iw==
+X-CSE-MsgGUID: hfHskTB3QgWU6tg1C8jdBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="95757440"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="64842756"
 Received: from jtuanzol-mobl2.amr.corp.intel.com (HELO adixit-arch.intel.com)
  ([10.125.129.72])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2024 13:01:51 -0700
-Date: Tue, 03 Sep 2024 12:48:16 -0700
-Message-ID: <878qw8zfgf.wl-ashutosh.dixit@intel.com>
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2024 13:02:15 -0700
+Date: Tue, 03 Sep 2024 12:48:26 -0700
+Message-ID: <877cbszfg5.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: =?ISO-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
 Cc: <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t v2 2/4] xe/oa: Update oa-lnl.xml
-In-Reply-To: <20240903132436.8337-2-jose.souza@intel.com>
+Subject: Re: [PATCH i-g-t v2 4/4] xe/oa: Add oa-bmg.xml
+In-Reply-To: <20240903132436.8337-4-jose.souza@intel.com>
 References: <20240903132436.8337-1-jose.souza@intel.com>
- <20240903132436.8337-2-jose.souza@intel.com>
+ <20240903132436.8337-4-jose.souza@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -72,10 +72,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 03 Sep 2024 06:24:34 -0700, Jos=E9 Roberto de Souza wrote:
->
-> File was updated using latest HW definitions.
-> Most relevant change was the drop of TestOa metric.
+On Tue, 03 Sep 2024 06:24:36 -0700, Jos=E9 Roberto de Souza wrote:
 >
 
 Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
