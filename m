@@ -4,56 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9F60CD37AC
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 19:59:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02638CD37AC
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 20:01:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A291F10E071;
-	Tue,  3 Sep 2024 19:59:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF1F410E071;
+	Tue,  3 Sep 2024 20:01:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X2hdaj+L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iIhSJrEJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5C11610E071
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 19:59:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 511B610E071
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 20:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725393588; x=1756929588;
- h=from:to:cc:subject:date:message-id:in-reply-to:
+ t=1725393690; x=1756929690;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=fI0LOg0U/9BlK6iDtWyoV8ozDpMLUDTLPf8iZXfNZko=;
- b=X2hdaj+LvwOXc+WogVf4g99D6G5b31DBZxKF0Ik6IF6fC1hTwHvfew2d
- xBP+LKpD6bHkDYJmYSM+h8JE5ND2i2O8zno4fZw7hJcHo9ABTjBsmSJRC
- Mi7odmvPcfEJyVqelsvm6PrKW6UY8yR6rhCLda9KxvrcYwFKMS/jW0Joq
- IoVYAm5A2taGq6V8jVbY7VOCk9k9ypIqJKeORaVZ0rdI50GMILmLeaW8D
- 77VxHF2cmcDvxqx2WcGNlhGI/zwMToGJV+gQywG3Mk6+ilbXQIT1UZFNi
- 5Tbx55KSmP3mM/jn1CxFpVsRsqEZ4TbJa1K5Wzy01Hm1gsN8d+CdPrODP Q==;
-X-CSE-ConnectionGUID: OX6ntmgeTNCwO6AousbX/g==
-X-CSE-MsgGUID: xzbogXnWTMy9J5Sg4yU86w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="34587316"
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="34587316"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2024 12:59:48 -0700
-X-CSE-ConnectionGUID: TGnzAOUXQkmiIEYaAiJwHQ==
-X-CSE-MsgGUID: n2zd63e5QwGe9kPtMjWmrg==
+ bh=64GuUDVd5XdvoX3lfLsO43deeTISehWwni6WrOfZNxg=;
+ b=iIhSJrEJ1kShgekIGL5yUrwBcf84rFeut+TxGujl69LLW4M6mdlEO774
+ x9H3eaiaWb/WrTKdbeNto5XzigQkw3TadAlQladC/ZqXTvSXPD+fibxa7
+ Oi+hXw/cEHqwsttZPviW42LEHubLh8s2ZE/vIiIm2N5e3t+K2tmPu9x9b
+ z78ccHdHoZPm5clqneH/J7OIkAoBzeN/JFVHCaZcHmKPGR0ff2QkZkSvl
+ 2yle2dnagZjpHkhqSPhMT3wL0TgmTLxK5TkHQ+zKyuwygytmitBzfQMUJ
+ PxA1cSyf4hVbvNL44qzeFQew4/ZYZmRBj+QCDbY3lzLXQbSp9B8GMket1 Q==;
+X-CSE-ConnectionGUID: IZIbsKviQCiU0S1oi681Ug==
+X-CSE-MsgGUID: VbU+VaQwSTC0Pink3MJfiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="24210999"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="24210999"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2024 13:01:29 -0700
+X-CSE-ConnectionGUID: XoUEIGtCSNm0IhTKq9RIVA==
+X-CSE-MsgGUID: 6OfGlI7vRgWkdJmJ2tr5qw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="69183821"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 12:59:47 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jouni.hogander@intel.com, kunal1.joshi@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t 1/1] tests/intel/kms_psr: Add condition to check for eDP
- output before asserting PSR update
-Date: Wed,  4 Sep 2024 01:29:17 +0530
-Message-ID: <20240903195917.1527829-2-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240903195917.1527829-1-ramanaidu.naladala@intel.com>
-References: <20240903195917.1527829-1-ramanaidu.naladala@intel.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; d="scan'208";a="64675702"
+Received: from jtuanzol-mobl2.amr.corp.intel.com (HELO adixit-arch.intel.com)
+ ([10.125.129.72])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2024 13:01:29 -0700
+Date: Tue, 03 Sep 2024 12:48:07 -0700
+Message-ID: <87a5gozfgo.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: =?ISO-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v2 1/4] tests/xe_oa: Drop TestOa from metric_set()
+In-Reply-To: <20240903132436.8337-1-jose.souza@intel.com>
+References: <20240903132436.8337-1-jose.souza@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/29.4 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,31 +71,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We do not have ALPM on the DP2.1 Panel Replay. Due to this, the
-SRD_STATUS [SRD State] doesn't change from SRDENT_ON after Panel
-Replay is enabled until it gets disabled. As a result, the igt
-tests fail. To resolve this issue, add a condition to skip the
-check in the 'psr_wait_update_if_enabled' function for DP2.1 PR.
+On Tue, 03 Sep 2024 06:24:33 -0700, Jos=E9 Roberto de Souza wrote:
+>
+> Some platforms don't provide TestOa and Renderbasic and ComputeBasic
+> are better tests for render and compute engine and available in all
+> platforms.
+>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Jos=E9 Roberto de Souza <jose.souza@intel.com>
+> ---
+>  tests/intel/xe_oa.c | 24 +++++++++++++++---------
+>  1 file changed, 15 insertions(+), 9 deletions(-)
+>
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index f2c6d53007..dac3fb6bd5 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -311,15 +311,21 @@ static struct intel_xe_perf_metric_set *metric_set(=
+const struct drm_xe_engine_cl
+>	struct intel_xe_perf_metric_set *metric_set_iter;
+>	struct intel_xe_perf_metric_set *test_set =3D NULL;
+>
+> -	if (hwe->engine_class =3D=3D DRM_XE_ENGINE_CLASS_RENDER ||
+> -	    hwe->engine_class =3D=3D DRM_XE_ENGINE_CLASS_COMPUTE)
+> -		test_set_name =3D "TestOa";
+> -	else if ((hwe->engine_class =3D=3D DRM_XE_ENGINE_CLASS_VIDEO_DECODE ||
+> -		  hwe->engine_class =3D=3D DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE) &&
+> -		 HAS_OAM(devid))
+> -		test_set_name =3D "MediaSet1";
+> -	else
+> -		igt_assert(!"reached");
+> +	switch (hwe->engine_class) {
+> +	case DRM_XE_ENGINE_CLASS_RENDER:
+> +		test_set_name =3D "RenderBasic";
+> +		break;
+> +	case DRM_XE_ENGINE_CLASS_COMPUTE:
+> +		test_set_name =3D "ComputeBasic";
+> +		break;
+> +	case DRM_XE_ENGINE_CLASS_VIDEO_DECODE:
+> +	case DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE:
+> +		if (HAS_OAM(devid))
+> +			test_set_name =3D "MediaSet1";
+> +		break;
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/intel/kms_psr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Drop this break so we fallthrough to default?
 
-diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
-index cf0ce4bb8..8671f33ea 100644
---- a/tests/intel/kms_psr.c
-+++ b/tests/intel/kms_psr.c
-@@ -642,7 +642,8 @@ static void run_test(data_t *data)
- 		expected = "screen GREEN";
- 		break;
- 	}
--	igt_assert(psr_wait_update_if_enabled(data));
-+	if (strstr(data->output->name, "eDP-") != NULL)
-+		igt_assert(psr_wait_update_if_enabled(data));
- 	manual(expected);
- }
- 
--- 
-2.43.0
+> +	default:
+> +		igt_assert(!"missing");
+> +	}
+>
+>	igt_list_for_each_entry(metric_set_iter, &intel_xe_perf->metric_sets, lin=
+k) {
+>		if (strcmp(metric_set_iter->symbol_name, test_set_name) =3D=3D 0) {
 
+For the record, grep'ing for testset name in xml's this is what I see:
+
+oa-acmgt1.xml=00492:       symbol_name=3D"TestOa"
+oa-acmgt2.xml=00610:       symbol_name=3D"TestOa"
+oa-acmgt3.xml=00606:       symbol_name=3D"TestOa"
+oa-adl.xml=00564:       symbol_name=3D"TestOa"
+oa-dg1.xml=00571:       symbol_name=3D"TestOa"
+oa-mtlgt2.xml=00566:       symbol_name=3D"TestOa"
+oa-mtlgt3.xml=00580:       symbol_name=3D"TestOa"
+oa-pvc.xml=00553:       symbol_name=3D"TestOa"
+oa-rkl.xml=00577:       symbol_name=3D"TestOa"
+oa-tglgt1.xml=00573:       symbol_name=3D"TestOa"
+oa-tglgt2.xml=00567:       symbol_name=3D"TestOa"
+
+oa-acmgt1.xml=005:       symbol_name=3D"RenderBasic"
+oa-acmgt2.xml=005:       symbol_name=3D"RenderBasic"
+oa-acmgt3.xml=005:       symbol_name=3D"RenderBasic"
+oa-adl.xml=005:       symbol_name=3D"RenderBasic"
+oa-bmg.xml=005:       symbol_name=3D"RenderBasic"
+oa-dg1.xml=005:       symbol_name=3D"RenderBasic"
+oa-lnl.xml=005:       symbol_name=3D"RenderBasic"
+oa-mtlgt2.xml=005:       symbol_name=3D"RenderBasic"
+oa-mtlgt3.xml=005:       symbol_name=3D"RenderBasic"
+oa-rkl.xml=005:       symbol_name=3D"RenderBasic"
+oa-tglgt1.xml=005:       symbol_name=3D"RenderBasic"
+oa-tglgt2.xml=005:       symbol_name=3D"RenderBasic"
+
+So this patch is fine. With that this is:
+
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
