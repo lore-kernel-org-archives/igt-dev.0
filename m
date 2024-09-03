@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F3FCD3420
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 12:05:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D3F5CD13CF
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Sep 2024 12:07:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 61B9110E51B;
-	Tue,  3 Sep 2024 12:05:15 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ev32vM2m";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF11410E519
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Sep 2024 12:05:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725365114; x=1756901114;
- h=message-id:date:mime-version:from:subject:in-reply-to:to:
- cc:content-transfer-encoding;
- bh=PZTKYp9w+lr3qqzru2B88Pms9SZSF1ie2/xBd0Zbw+4=;
- b=ev32vM2mSnEbGv/yjoOU4dxMVD79EowhrJ5iFazvuRLR4WHohuvlJIms
- gQMnDUDvoZP80xBmYCVegXhvWJuXs6z1cS/+A5umwJrVxiJJAEJj2Ovco
- OaHuHmZxlhRJsLiBlFY0NUe+wsn/aygbkWp5DhKo5QVJB67Bt/6Uj5QSf
- 87pVC9ucMr/j1C+yuvNc6LPQhMxkHves3gNoUH9BaiSDGuSNhDgYyfosw
- JuZ7WXphjCyq1+RbzmE8fZ6p4E7V7qSyzL0siraGhOX5zVU7pg1eLahGj
- UIQKKil/KzzX2UVXnl69E/oXlum+uA1NH8JvCw4WVxotelBlgUCEA+nIA w==;
-X-CSE-ConnectionGUID: rFW0cj/XT+iqj12NZXtWKg==
-X-CSE-MsgGUID: WaYUam1cTdeUB2kY+8AJ+Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11183"; a="41428394"
-X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; d="scan'208";a="41428394"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2024 05:05:14 -0700
-X-CSE-ConnectionGUID: IRHMGGf3QEmfmXXrYLbIaw==
-X-CSE-MsgGUID: 8cquC7FgSMKNE+jAo3S+nQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,198,1719903600"; d="scan'208";a="64528768"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO [10.251.221.173])
- ([10.251.221.173])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2024 05:05:12 -0700
-Message-ID: <4c126777-6899-407c-911f-27e25ca8191e@linux.intel.com>
-Date: Tue, 3 Sep 2024 14:05:05 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1EC110E53A;
+	Tue,  3 Sep 2024 12:07:33 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73C8D10E539;
+ Tue,  3 Sep 2024 12:07:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2750766608176811639=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t v5] runner/executor: Detect when child process is killed
- by a signal
-Content-Language: en-US
-In-Reply-To: <f7319a46-d6d4-4ea5-9863-99ccd7cea3a5@linux.intel.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Petri Latvala <adrinael@adrinael.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/intel=5Fbatchbuffer=3A_Int?=
+ =?utf-8?q?roduce_intel=5Fbb=5Fcreate=5Fwith=5Fcontext=5Fin=5Fmemory?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 03 Sep 2024 12:07:33 -0000
+Message-ID: <172536525346.912146.1012595773009032689@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240902114656.9779-1-dominik.karol.piatkowski@intel.com>
+In-Reply-To: <20240902114656.9779-1-dominik.karol.piatkowski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,100 +38,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Make igt-runner aware about tests being killed by signals. Before this
-patch, manually killing a test process would result in igt-runner silently
-marking the test as incomplete.
+--===============2750766608176811639==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Now igt-runner aborts the run verbosely. As an example the following was
-extracted from results.json:
- This test caused an abort condition: Test terminated by a signal Killed (-9).
+== Series Details ==
 
- v5: do not use sigdescr_np() as it seems to be a fairly new lib function that does
-     not compile on older Ubuntu
- v4: improve abort code path to not interfere with igt-runner timeouts
- v3: do not interfere with igt-runner killing tests due to timeout and diskspace
- v2: fix race condition
+Series: lib/intel_batchbuffer: Introduce intel_bb_create_with_context_in_memory
+URL   : https://patchwork.freedesktop.org/series/138090/
+State : success
 
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>
----
- runner/executor.c | 38 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 37 insertions(+), 1 deletion(-)
+== Summary ==
 
-diff --git a/runner/executor.c b/runner/executor.c
-index ac73e1dde..990d932f3 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -888,6 +888,8 @@ static int monitor_output(pid_t child,
- 	const int interval_length = 1;
- 	int wd_timeout;
- 	int killed = 0; /* 0 if not killed, signal number otherwise */
-+	bool child_reaped = false;
-+	bool child_killed_by_signal = false;
- 	struct timespec time_beg, time_now, time_last_activity, time_last_subtest, time_killed;
- 	unsigned long taints = 0;
- 	bool aborting = false;
-@@ -960,6 +962,25 @@ static int monitor_output(pid_t child,
- 
- 		igt_gettime(&time_now);
- 
-+		/* Testing for !killed to prevent aborting too early after igt-runner
-+		 * decides to kill a process.
-+		 */
-+		if (!killed && (child == waitpid(child, &status, WNOHANG))) {
-+			child_reaped = true;
-+			if (WIFSIGNALED(status)) {
-+				child_killed_by_signal = true;
-+				killed = WTERMSIG(status);
-+
-+				/*
-+				 * Do not abort just yet, because igt-runner can kill the test
-+				 * due to a timeout for example. Aborting here prevents
-+				 * igt-runner from reporting a timeout. The code that aborts
-+				 * the run after the test was killed is at the end of the
-+				 * while() loop.
-+				 */
-+			}
-+		}
-+
- 		/* TODO: Refactor these handlers to their own functions */
- 		if (outfd >= 0 && FD_ISSET(outfd, &set)) {
- 			char *newline;
-@@ -1241,7 +1262,11 @@ static int monitor_output(pid_t child,
- 				errf("Error reading from signalfd: %m\n");
- 				continue;
- 			} else if (siginfo.ssi_signo == SIGCHLD) {
--				if (child != waitpid(child, &status, WNOHANG)) {
-+				if (!child_reaped) {
-+					if (child == waitpid(child, &status, WNOHANG))
-+						child_reaped = true;
-+				}
-+				if (!child_reaped) {
- 					errf("Failed to reap child\n");
- 					status = 9999;
- 				} else if (WIFEXITED(status)) {
-@@ -1483,6 +1508,17 @@ static int monitor_output(pid_t child,
- 				return -1;
- 			time_killed = time_now;
- 		}
-+
-+		if (child_killed_by_signal) {
-+			aborting = true;
-+
-+			sprintf(buf, "Test terminated by a signal %s (%d).\n",
-+					strsignal(killed), -killed);
-+			errf("%s", buf);
-+			*abortreason = strdup(buf);
-+
-+			break;
-+		}
- 	}
- 
- 	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_8001_BAT -> XEIGTPW_11684_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11684_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8001/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-lnl-1:          [FAIL][3] ([Intel XE#1069]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8001/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+
+  
+  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8001 -> IGTPW_11684
+  * Linux: xe-1873-c689a348137cb6f8934a9be49438bafe413b97d5 -> xe-1885-707f9d05c039aa43d5cbfc29573b642d3c43b618
+
+  IGTPW_11684: 11684
+  IGT_8001: d3a77fc98e89cc94b03be2b0903d44f83480b8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1873-c689a348137cb6f8934a9be49438bafe413b97d5: c689a348137cb6f8934a9be49438bafe413b97d5
+  xe-1885-707f9d05c039aa43d5cbfc29573b642d3c43b618: 707f9d05c039aa43d5cbfc29573b642d3c43b618
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/index.html
+
+--===============2750766608176811639==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/intel_batchbuffer: Introduce intel_bb_create_with_context_in_memory</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138090/">https://patchwork.freedesktop.org/series/138090/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8001_BAT -&gt; XEIGTPW_11684_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11684_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8001/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8001/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069">Intel XE#1069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11684/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8001 -&gt; IGTPW_11684</li>
+<li>Linux: xe-1873-c689a348137cb6f8934a9be49438bafe413b97d5 -&gt; xe-1885-707f9d05c039aa43d5cbfc29573b642d3c43b618</li>
+</ul>
+<p>IGTPW_11684: 11684<br />
+  IGT_8001: d3a77fc98e89cc94b03be2b0903d44f83480b8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1873-c689a348137cb6f8934a9be49438bafe413b97d5: c689a348137cb6f8934a9be49438bafe413b97d5<br />
+  xe-1885-707f9d05c039aa43d5cbfc29573b642d3c43b618: 707f9d05c039aa43d5cbfc29573b642d3c43b618</p>
+
+</body>
+</html>
+
+--===============2750766608176811639==--
