@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75A0ECD4F4B
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Sep 2024 22:57:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11B0DCD4F4A
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Sep 2024 23:39:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D852B10E3DD;
-	Wed,  4 Sep 2024 22:57:56 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I5Tg6IbD";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12B3610E128
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Sep 2024 22:57:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725490675; x=1757026675;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cjEdLqde3GmEtoJfJPWoAVrvpLpCZNnUGvOMkzvaEHM=;
- b=I5Tg6IbDWRxeT7kSUAOjiZB2pGS30MOhY7RIkbMV1GnEDECMQ5KxlCwl
- oTphV/FcPPaevtl7M9/fLMA0ISQ598jyWfPHOAMK/TbhvEQnKstLca8uY
- 9AxV2KpsWOykyRVdqDFaz31MLp+Ix9JZeWEPPJRUqiEoQb01CVMO2ypO8
- WkpVmk1W5dzD5W51rHCiIFbRPInoFNG09aAaQCt+uLcfzGdBs9F+CKhmT
- tA/JGHPQ9Ra8DrdAPaTBrACAO6UV7WDyYIrr0Y/gtYHySvLa3bGtDaKmk
- zYTz40Zor047Ai+lIlKiZ7RKQl5MiX9vuaY+APVowaLMql5nrMurydCYR Q==;
-X-CSE-ConnectionGUID: K+Ruy71rRIOACjjewSu/fg==
-X-CSE-MsgGUID: PlW0pHE6TwiINlT3nEtwfA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="23980965"
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; d="scan'208";a="23980965"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2024 15:57:54 -0700
-X-CSE-ConnectionGUID: jJmPJYqVR4adYaVxv/PUlQ==
-X-CSE-MsgGUID: nJipVoOsTfWoOJrNw12Eqw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; d="scan'208";a="69565876"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2024 15:57:53 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
- Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_drm_fdinfo: Implement
- virtual/parallel exec queues
-Date: Wed,  4 Sep 2024 15:57:46 -0700
-Message-ID: <20240904225746.2857448-3-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240904225746.2857448-1-lucas.demarchi@intel.com>
-References: <20240904225746.2857448-1-lucas.demarchi@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6F1810E051;
+	Wed,  4 Sep 2024 23:39:44 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 646AF10E051;
+ Wed,  4 Sep 2024 23:39:43 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6465562375982510962=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fdrm=5Ffdinfo?=
+ =?utf-8?q?=3A_Virtual_and_parallel?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 04 Sep 2024 23:39:43 -0000
+Message-ID: <172549318338.949084.16004083013812978183@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240904225746.2857448-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240904225746.2857448-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,183 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Implement a similar function to utilization_single(), but also taking
-virtual/parallel into account. I chose some different variable names
-to make it more obvious what exactly it is testing and integrated
-with the xe_gt_fill_engines_by_class() function recently added.
-A possible refactor in the future is to make the other tests use
-this function and remove utilization_single().
+--===============6465562375982510962==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Based on previous patch by Umesh.
+== Series Details ==
 
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
- tests/intel/xe_drm_fdinfo.c | 124 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 123 insertions(+), 1 deletion(-)
+Series: tests/intel/xe_drm_fdinfo: Virtual and parallel
+URL   : https://patchwork.freedesktop.org/series/138225/
+State : success
 
-diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-index 8acb95040..747b6155c 100644
---- a/tests/intel/xe_drm_fdinfo.c
-+++ b/tests/intel/xe_drm_fdinfo.c
-@@ -12,6 +12,8 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
-+#include "xe/xe_util.h"
-+
- /**
-  * TEST: xe drm fdinfo
-  * Description: Read and verify drm client memory consumption and engine utilization using fdinfo
-@@ -67,6 +69,8 @@ IGT_TEST_DESCRIPTION("Read and verify drm client memory consumption and engine u
- #define TEST_BUSY		(1 << 0)
- #define TEST_TRAILING_IDLE	(1 << 1)
- #define TEST_ISOLATION		(1 << 2)
-+#define TEST_VIRTUAL		(1 << 3)
-+#define TEST_PARALLEL		(1 << 4)
- 
- enum expected_load {
- 	EXPECTED_LOAD_IDLE,
-@@ -715,10 +719,102 @@ utilization_all_full_load(int fd)
- 
- 	xe_vm_destroy(fd, vm);
- }
-+
-+/**
-+ * SUBTEST: %s-utilization-single-idle
-+ * Description: Check that each engine shows no load
-+ *
-+ * SUBTEST: %s-utilization-single-full-load
-+ * Description: Check that each engine shows full load
-+ *
-+ * SUBTEST: %s-utilization-single-full-load-isolation
-+ * Description: Check that each engine load does not spill over to other drm clients
-+ *
-+ * arg[1]:
-+ *
-+ * @virtual:			virtual
-+ * @parallel:			parallel
-+ */
-+static void
-+utilization_multi(int fd, int gt, int class, unsigned int flags)
-+{
-+	struct pceu_cycles pceu[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-+	struct pceu_cycles pceu_spill[2][DRM_XE_ENGINE_CLASS_COMPUTE + 1];
-+	struct drm_xe_engine_class_instance eci[XE_MAX_ENGINE_INSTANCE];
-+	struct spin_ctx *ctx = NULL;
-+	enum expected_load expected_load;
-+	int fd_spill, num_placements;
-+	uint32_t vm;
-+	bool virtual = flags & TEST_VIRTUAL;
-+	bool parallel = flags & TEST_PARALLEL;
-+	uint16_t width;
-+
-+	igt_assert(virtual ^ parallel);
-+
-+	num_placements = xe_gt_fill_engines_by_class(fd, gt, class, eci);
-+	if (num_placements < 2)
-+		return;
-+
-+	if (parallel) {
-+		width = num_placements;
-+		num_placements = 1;
-+	} else {
-+		width = 1;
-+	}
-+
-+	if (flags & TEST_ISOLATION)
-+		fd_spill = drm_reopen_driver(fd);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+	if (flags & TEST_BUSY) {
-+		ctx = spin_ctx_init(fd, eci, vm, width, num_placements);
-+		spin_sync_start(fd, ctx);
-+	}
-+
-+	read_engine_cycles(fd, pceu[0]);
-+	if (flags & TEST_ISOLATION)
-+		read_engine_cycles(fd_spill, pceu_spill[0]);
-+
-+	usleep(batch_duration_usec);
-+	if (flags & TEST_TRAILING_IDLE)
-+		spin_sync_end(fd, ctx);
-+
-+	read_engine_cycles(fd, pceu[1]);
-+	if (flags & TEST_ISOLATION)
-+		read_engine_cycles(fd_spill, pceu_spill[1]);
-+
-+	expected_load = flags & TEST_BUSY ?
-+	       EXPECTED_LOAD_FULL : EXPECTED_LOAD_IDLE;
-+	check_results(pceu[0], pceu[1], class, width, expected_load);
-+
-+	if (flags & TEST_ISOLATION) {
-+		/*
-+		 * Load from one client shouldn't spill on another,
-+		 * so check for idle
-+		 */
-+		check_results(pceu_spill[0], pceu_spill[1], class, width,
-+			      EXPECTED_LOAD_IDLE);
-+		close(fd_spill);
-+	}
-+
-+	spin_sync_end(fd, ctx);
-+	spin_ctx_destroy(fd, ctx);
-+
-+	xe_vm_destroy(fd, vm);
-+}
-+
- igt_main
- {
-+	const struct section {
-+		const char *name;
-+		unsigned int flags;
-+	} sections[] = {
-+		{ .name = "virtual", .flags = TEST_VIRTUAL },
-+		{ .name = "parallel", .flags = TEST_PARALLEL },
-+		{ }
-+	};
- 	struct drm_xe_engine_class_instance *hwe;
--	int xe;
-+	int xe, gt, class;
- 
- 	igt_fixture {
- 		struct drm_client_fdinfo info = { };
-@@ -775,6 +871,32 @@ igt_main
- 	igt_subtest("utilization-all-full-load")
- 		utilization_all_full_load(xe);
- 
-+
-+	for (const struct section *s = sections; s->name; s++) {
-+		igt_subtest_f("%s-utilization-single-idle", s->name)
-+			xe_for_each_gt(xe, gt)
-+				xe_for_each_engine_class(class)
-+					utilization_multi(xe, gt, class, s->flags);
-+
-+		igt_subtest_f("%s-utilization-single-full-load", s->name)
-+			xe_for_each_gt(xe, gt)
-+				xe_for_each_engine_class(class)
-+					utilization_multi(xe, gt, class,
-+							  s->flags |
-+							  TEST_BUSY |
-+							  TEST_TRAILING_IDLE);
-+
-+		igt_subtest_f("%s-utilization-single-full-load-isolation",
-+			      s->name)
-+			xe_for_each_gt(xe, gt)
-+				xe_for_each_engine_class(class)
-+					utilization_multi(xe, gt, class,
-+							  s->flags |
-+							  TEST_BUSY |
-+							  TEST_TRAILING_IDLE |
-+							  TEST_ISOLATION);
-+	}
-+
- 	igt_fixture {
- 		drm_close_driver(xe);
- 	}
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8005_BAT -> XEIGTPW_11698_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11698_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +2 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8005/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11698/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8005 -> IGTPW_11698
+  * Linux: xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea -> xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d
+
+  IGTPW_11698: 11698
+  IGT_8005: fc3113c8c1e99797b2d4769aaf02265be64a7589 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea: c72d3ffc0308b71024de6f80c3596668991c67ea
+  xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d: 8b1096500fd6fae573f7d9c4416778d6442e985d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11698/index.html
+
+--===============6465562375982510962==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_drm_fdinfo: Virtual and parallel</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138225/">https://patchwork.freedesktop.org/series/138225/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11698/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11698/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8005_BAT -&gt; XEIGTPW_11698_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11698_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8005/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11698/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +2 other tests fail</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8005 -&gt; IGTPW_11698</li>
+<li>Linux: xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea -&gt; xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d</li>
+</ul>
+<p>IGTPW_11698: 11698<br />
+  IGT_8005: fc3113c8c1e99797b2d4769aaf02265be64a7589 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea: c72d3ffc0308b71024de6f80c3596668991c67ea<br />
+  xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d: 8b1096500fd6fae573f7d9c4416778d6442e985d</p>
+
+</body>
+</html>
+
+--===============6465562375982510962==--
