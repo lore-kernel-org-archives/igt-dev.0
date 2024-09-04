@@ -4,56 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 000D9CD4F59
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 08:53:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0A57CD5BA0
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:25:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A63DF10E108;
-	Thu,  5 Sep 2024 08:53:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 82A1B10E7F0;
+	Thu,  5 Sep 2024 09:25:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EDdVJSE9";
+	dkim=pass (2048-bit key; unprotected) header.d=alyssa.is header.i=@alyssa.is header.b="RALhRIFI";
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.b="jIO6DGM/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B097B10E079
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 08:53:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725526428; x=1757062428;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=17+VGgrozS1+d7e5SZeXGwkgKrSH2wFSurMzbfgk6h0=;
- b=EDdVJSE9hxNs6m2JeDDt+6EH8rZBMp4W2HTSn2fFE9Fo2oA8veiiCO0a
- GKDf7Ddhq0efeK9aqnA7GpZBlRExftMMrqKsduU+jPJFGyfqrhsfXQjsm
- thI+uT5+TI37eMUQQCniPYvzicOwu9QdEg9vCSXgVwFrHTBiniOHSLj2J
- s3AWMMp8cFoD9rbgsbSRce9xRemT2KYKdHQoK7En5d1DdOb/YFqeJs+ns
- G0zDarN2g/tTO43QKv8v7016g7D0Sy0dkuf5CE5TOGLdlWw73nYtQ42jp
- fQK7LQL+bJj5RXmxMA2ts62mpqj2n/RP9uqZIaun2eqodTd5f6rggwx0Q g==;
-X-CSE-ConnectionGUID: iwKVTVeRRCK7YP70TCjN3A==
-X-CSE-MsgGUID: 4q6NC6M9TE+ZX8zKoGw60g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="24031632"
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="24031632"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2024 01:53:48 -0700
-X-CSE-ConnectionGUID: p8kPr3EPRM60Sslf/KL7FQ==
-X-CSE-MsgGUID: dpVa7O0aSj6GdbXEP+CqIQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="70474424"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 01:53:46 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+X-Greylist: delayed 371 seconds by postgrey-1.36 at gabe;
+ Wed, 04 Sep 2024 13:56:21 UTC
+Received: from fhigh1-smtp.messagingengine.com
+ (fhigh1-smtp.messagingengine.com [103.168.172.152])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7C6810E795
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Sep 2024 13:56:21 +0000 (UTC)
+Received: from phl-compute-04.internal (phl-compute-04.phl.internal
+ [10.202.2.44])
+ by mailfhigh.phl.internal (Postfix) with ESMTP id 5AFAB1140234;
+ Wed,  4 Sep 2024 09:50:09 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+ by phl-compute-04.internal (MEProxy); Wed, 04 Sep 2024 09:50:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+ :cc:content-transfer-encoding:content-type:date:date:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to; s=fm3; t=1725457809; x=1725544209; bh=gNvrB8PgtmPnQWFL8ZKKd
+ cQM6Xq7dIYgQHJZ5tkDbDI=; b=RALhRIFI+IwXHq4Htf2vC88+Ex6Q3He6g4tVw
+ a2TSF2L6JkpTJgTbvQb8jjd8pMiO0SWDptrniCcOSjYpwcbPrBQRlxP1aBISsjef
+ zODiZZz3KNfmFNpDBJw3xIMfbuxi0cXXzk5YPG+PdR0Pqcbpr+J0/Tcav1JMmz8x
+ 6nO8V8NzPvPUxENNHIbsjYvIkOOS+6rvw8qlK7nFU3bkzL/wO6Di4mjlAc3jq0DY
+ LO2m7nW8HDLCvM6tKwhTaN2DS7Dv+FJS0kqqjye7GrcbscqJbRCbn5s2o9iRC7Y9
+ wiozao40zfWLQWnUSDaG6qdfK+ll12DiywvqQy4HeKDfuU71Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+ messagingengine.com; h=cc:cc:content-transfer-encoding
+ :content-type:date:date:feedback-id:feedback-id:from:from
+ :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
+ :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+ fm1; t=1725457809; x=1725544209; bh=gNvrB8PgtmPnQWFL8ZKKdcQM6Xq7
+ dIYgQHJZ5tkDbDI=; b=jIO6DGM/59fmlUf6zbL8EGnRNXLuMiqw+JL63sLKdSnU
+ 33fM7eINyUmE3XxVD4M+iIZqx9WH29yja/e/XnZoRzHj73iNojZHftmO2eVGMRvU
+ /MASlCZpn9MA4L1UwiA0DcUeqH6SRr9F8CK/VKDL83VhEDEOQlXgdxPTOKZBp5K9
+ IYOgCGsBRM2vLbzrXyNfSZb+teBu5Rc87XstgQ5Xd5qdTU8y7NXfreQqTOEs3fpW
+ 0cH3vbD8XlE/zyplSKxljgsAILkivcfZ5E1W7u+SwBgnr0HIF5Dx+VnR/6Jx3KxO
+ vJiywnNkz22YLhYFURyJ9qkMlQYHh/XKp50HlbEWiQ==
+X-ME-Sender: <xms:kGXYZgEfmZWhGhdsHsdvb2ksBc6QQUDSQFGsc7Mk_ZHIsQitboH3dA>
+ <xme:kGXYZpU17_6DX-m7a3Zp7NRP831nQU2Edf71RmNyOHJG0LhohduNht-b3pmeVJbf2
+ DpjDXrVR5MODuH6QA>
+X-ME-Received: <xmr:kGXYZqIGugjtWWulRe3ZXbrNthESQmtU8vZ5fec7jDNnjpIo-LN28HC7JMoSvBJCzRGxdUfdtfcjL-IF8rao-2KtXxg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehjedgieelucetufdoteggodetrfdotf
+ fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+ rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+ htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
+ rhhomheptehlhihsshgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrf
+ grthhtvghrnhepheekgfdtveettdekuddugeeugfdujeehuefgleegtedthfffudfhhedu
+ hfduuefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+ ephhhisegrlhihshhsrgdrihhspdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhp
+ ohhuthdprhgtphhtthhopeigsghjfhhkrdhgihhthhhusgesghhmrghilhdrtghomhdprh
+ gtphhtthhopegsvghrnhgusehkuhhhlhhsrdhnvghtpdhrtghpthhtohepjhgrnhhushii
+ rdhkrhiihihsiihtohhfihhksehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoh
+ epkhgrmhhilhdrkhhonhhivggtiihnhieslhhinhhugidrihhnthgvlhdrtghomhdprhgt
+ phhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpd
+ hrtghpthhtohepshhtfehrgehgsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthho
+ pehtrhhirghllhgrgiesthhuthgrnhhothgrrdgtohhmpdhrtghpthhtohephihukhgrse
+ ihuhhkrgdruggvvh
+X-ME-Proxy: <xmx:kGXYZiHLZbcS1gvJ0DD1qttBlthmrmeQ1CWQqScHgGsWS0uwio8y0w>
+ <xmx:kGXYZmXnhqfPkURfVmDavH1GPpj-Yy1vOt_i4k-oIqMUE1I9n2CIRA>
+ <xmx:kGXYZlPgV_DhaFqdT9IfnLCpfoPDYSTpjvvJ4Df5IcSa0Xwr397GOw>
+ <xmx:kGXYZt2mFoJg5EWSRePgYfezEAaInjIaoxIvI5Is_mJ2SMvHjd3lBQ>
+ <xmx:kWXYZqrbX6Qr1ygsAAvOX6oEJFSMUF8vBJOcpBce0t1_C1lfJXoGparT>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Sep 2024 09:50:08 -0400 (EDT)
+Received: by sf.qyliss.net (Postfix, from userid 1000)
+ id E2EF13028F6EC; Wed, 04 Sep 2024 15:50:06 +0200 (CEST)
+From: Alyssa Ross <hi@alyssa.is>
 To: igt-dev@lists.freedesktop.org
-Cc: jouni.hogander@intel.com, kunal1.joshi@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 1/1] lib/igt_psr: Remove SRD status change check for
- DP2.1 Panel Replay
-Date: Thu,  5 Sep 2024 14:23:15 +0530
-Message-ID: <20240905085315.1566848-2-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240905085315.1566848-1-ramanaidu.naladala@intel.com>
-References: <20240905085315.1566848-1-ramanaidu.naladala@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mohammed Anas <triallax@tutanota.com>,
+ Stefano Ragni <st3r4g@protonmail.com>, Bernd Kuhls <bernd@kuhls.net>,
+ Reagan Bohan <xbjfk.github@gmail.com>, Yureka <yuka@yuka.dev>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: use basename from libgen.h
+Date: Wed,  4 Sep 2024 15:49:48 +0200
+Message-ID: <20240904134948.1337335-1-hi@alyssa.is>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 05 Sep 2024 09:25:56 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,56 +106,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We do not have ALPM on the DP2.1 Panel Replay. Due to this, the
-SRD_STATUS [SRD State] doesn't change from SRDENT_ON after Panel
-Replay is enabled until it gets disabled. As a result, the igt
-tests fail. To resolve this issue, add a condition to skip the
-check in the 'psr_wait_update' and 'psr_long_wait_update'
-functions for DP2.1 PR.
+musl only provides the libgen.h version of basename() that may modify
+it's argument.  That's fine in this case, because in the one use of
+basename() in this file, the buffer is never read from again.
 
-v1: Update change for all users of psr_wait_update and
-    psr_long_wait_update. (Jouni)
-
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Alyssa Ross <hi@alyssa.is>
 ---
- lib/igt_psr.c | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ tests/intel/kms_pm_rpm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index e3e7577eb..2677d4822 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -113,12 +113,28 @@ bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
+index 5af3e81bc..852e9cb5f 100644
+--- a/tests/intel/kms_pm_rpm.c
++++ b/tests/intel/kms_pm_rpm.c
+@@ -27,6 +27,7 @@
+ #endif
  
- bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 1);
-+	/*
-+	 * TODO: After enabling Panel Replay on DP2.1, observe that the SRD status
-+	 * remains in the SRDENT_ON state. Remove the polling mechanism for the SRD
-+	 * status change for the DP2.1 output.
-+	 */
-+	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
-+		return igt_wait(psr_active_check(debugfs_fd, mode, output), 40, 1);
-+	else
-+		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 1);
- }
+ #include <dirent.h>
++#include <libgen.h>
  
- bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 1);
-+	/*
-+	 * TODO: After enabling Panel Replay on DP2.1, observe that the SRD status
-+	 * remains in the SRDENT_ON state. Remove the polling mechanism for the SRD
-+	 * status change for the DP2.1 output.
-+	 */
-+	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
-+		return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 1);
-+	else
-+		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 1);
- }
- 
- static ssize_t psr_write(int debugfs_fd, const char *buf, igt_output_t *output)
+ #include "config.h"
+ #include "i915/gem.h"
+
+base-commit: fc3113c8c1e99797b2d4769aaf02265be64a7589
 -- 
-2.43.0
+2.45.2
 
