@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65D56CD4F30
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Sep 2024 21:11:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DFEACD4F48
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Sep 2024 22:57:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2380E10E1B8;
-	Wed,  4 Sep 2024 21:11:59 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1182B10E1B8;
- Wed,  4 Sep 2024 21:11:58 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4433623276015702205=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D915D10E070;
+	Wed,  4 Sep 2024 22:57:55 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OKMfXpie";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB15910E070
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Sep 2024 22:57:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725490675; x=1757026675;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0225VgtiiaRyHEqC2oH8c0iuvviZIvNeOC1ifZv5yBw=;
+ b=OKMfXpieFvT1dsAfv18fFW+COSyK62PBSjWC9qXDXpXesfNDBDVx1nHO
+ hnrKEJrzmPmkQxqY0hGY9TVm490uGErusPoEmK702XjLUiZxXiK2RcdVf
+ qj4T4U+YdzkaW9yUmPAGaQBJxgINgZPw7xKmP9eF2R+kpdLDdRoOQyI1Z
+ HMccOL+IWsSVfXj4haFC84upgLuS94xynem1gZB8oyFkK0u9VdQoSULcM
+ 6LBtHUY1OZeraiIE6ENmNR9cFf4irYvR4Hh2EarAHrLepAXZEXn09a0Ia
+ o30aw1mB+R6xF+K9OdvTzXHOMDBFASTa54qhv9mAtvsWH75o3/L2FOsuz Q==;
+X-CSE-ConnectionGUID: sSxsvFXHStSlFJk6dxwYLQ==
+X-CSE-MsgGUID: l266MoXcS26FnL/cwPERlA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="23980961"
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; d="scan'208";a="23980961"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2024 15:57:54 -0700
+X-CSE-ConnectionGUID: 4BYp9dN4TNW8lnrTes6/7Q==
+X-CSE-MsgGUID: Cgyz7zU3SH2JWk4WEoIrEA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,203,1719903600"; d="scan'208";a="69565867"
+Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2024 15:57:53 -0700
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/intel/xe_drm_fdinfo: Virtual and parallel
+Date: Wed,  4 Sep 2024 15:57:44 -0700
+Message-ID: <20240904225746.2857448-1-lucas.demarchi@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_RFC_tests/intel/kms=5Ffrontbuf?=
- =?utf-8?q?fer=5Ftracking=3A_Introduce_plane-fbc-dr_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 04 Sep 2024 21:11:58 -0000
-Message-ID: <172548431805.948967.12975646801128591510@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +62,18 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4433623276015702205==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add virtual and parallel test coverage to xe_drm_fdinfo.
 
-== Series Details ==
+Lucas De Marchi (2):
+  tests/intel/xe_drm_fdinfo: Wire up parallel/virtual submission
+  tests/intel/xe_drm_fdinfo: Implement virtual/parallel exec queues
 
-Series: RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test
-URL   : https://patchwork.freedesktop.org/series/138218/
-State : success
+ tests/intel/xe_drm_fdinfo.c | 185 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 163 insertions(+), 22 deletions(-)
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_8005_BAT -> XEIGTPW_11697_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11697_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:
-    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#1069])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8005/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11697/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
-
-  
-  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
-
-
-Build changes
--------------
-
-  * IGT: IGT_8005 -> IGTPW_11697
-  * Linux: xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea -> xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d
-
-  IGTPW_11697: 11697
-  IGT_8005: fc3113c8c1e99797b2d4769aaf02265be64a7589 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea: c72d3ffc0308b71024de6f80c3596668991c67ea
-  xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d: 8b1096500fd6fae573f7d9c4416778d6442e985d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11697/index.html
-
---===============4433623276015702205==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138218/">https://patchwork.freedesktop.org/series/138218/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11697/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11697/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8005_BAT -&gt; XEIGTPW_11697_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11697_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8005/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11697/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069">Intel XE#1069</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8005 -&gt; IGTPW_11697</li>
-<li>Linux: xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea -&gt; xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d</li>
-</ul>
-<p>IGTPW_11697: 11697<br />
-  IGT_8005: fc3113c8c1e99797b2d4769aaf02265be64a7589 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1890-c72d3ffc0308b71024de6f80c3596668991c67ea: c72d3ffc0308b71024de6f80c3596668991c67ea<br />
-  xe-1891-8b1096500fd6fae573f7d9c4416778d6442e985d: 8b1096500fd6fae573f7d9c4416778d6442e985d</p>
-
-</body>
-</html>
-
---===============4433623276015702205==--
