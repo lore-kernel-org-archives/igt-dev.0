@@ -4,48 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C51CD4853
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Sep 2024 15:59:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A24D4CD4857
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Sep 2024 16:16:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9907410E1B9;
-	Wed,  4 Sep 2024 15:59:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D90310E802;
+	Wed,  4 Sep 2024 16:16:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="fQ0N3RFB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kM3Xi3G3";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C56E10E1B9
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Sep 2024 15:59:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:Content-Description:
- Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
- In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
- List-Post:List-Owner:List-Archive;
- bh=5ZsFc5On2qgScSElkPYglCqG2fG9/McbWZgYHQ7GDCM=; b=fQ0N3RFB1xT9T1GDmW4V757k6D
- Tz+aK623gsqMXUaGiyVez2BUgqNPgnBAt6ZTWtAdWlCpRsCsNSBj0ENKMRz1eniIB6bXiRvVFhN4y
- ChKyCyfEI7Fsle4kN+ih5F7u4GygVZmytilbmMVe3Nx/lslpJZ+j0EBy/Q8DZt8stdYqUvVCdtYq+
- gOX4+KJ+wxKy4yIkVHRgYJ/qaJPPrTJ0YUUYj9mUrgsuBwad6MRDMuIVFoAKfai2wSiIvikEoN+OJ
- Xb3PMbV8sYq70fPACPxzoqghBL+whOjzht6xOSOZu51gIBnYZatXkDjf3mNAG/9ym9MsE1med2CR5
- X6D0a2bw==;
-Received: from [90.241.98.187] (helo=localhost)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1slsPo-009a3q-IU; Wed, 04 Sep 2024 17:59:28 +0200
-From: Tvrtko Ursulin <tursulin@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1EBF10E802
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Sep 2024 16:16:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725466578; x=1757002578;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0kpngA3W1LIWR0rI7k9C913pR9iKSU7bexDPTPlfuyU=;
+ b=kM3Xi3G3Y0oEchl3ioc4Z17EtU90mqQkR2tIUpBsRBoqbJZHaG98cYCa
+ wrkn5A+gxtcjsO965Xc7FCqB6YKiaLCZPey8eGfEy0F5pUnG5vQm6d3wJ
+ lTFQMFI5noUoMDou7lbikegkLGvFWEa6S7Yxj2hS8hGs3RVD/pNwptTF6
+ hiTOY0SQwYw8OzsECf32NYET8tj0KBOpuikp9tVPMtkIeJAlcFDEpYr/1
+ 583AMhxloucdNI2KiXdfhKNsQtjQwr/U3eiXtUAldkN4ShGW7JKsEiZuf
+ ppCyyJPh5v9HpmR32RMwHRv5WPt/BbGNT9IaVoo4WVnyY546wDq27nd1S Q==;
+X-CSE-ConnectionGUID: Ip99OWWeRk2UOzI5Fl+Bwg==
+X-CSE-MsgGUID: BIm4j+wXQSOIZC/xzKAOKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="24004139"
+X-IronPort-AV: E=Sophos;i="6.10,202,1719903600"; d="scan'208";a="24004139"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2024 09:16:18 -0700
+X-CSE-ConnectionGUID: ApKitbEmSbi8EKcrgwxd7Q==
+X-CSE-MsgGUID: 3ekxKszdTZGKlWEjOvn3bA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,202,1719903600"; d="scan'208";a="88571158"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2024 09:16:15 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- Rob Clark <robdclark@chromium.org>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] lib/igt_drm_fdinfo: Handle (somewhat) amdgpu memory
- stats
-Date: Wed,  4 Sep 2024 16:59:19 +0100
-Message-ID: <20240904155919.74744-1-tursulin@igalia.com>
-X-Mailer: git-send-email 2.46.0
+Cc: jeevan.b@intel.com, swati2.sharma@intel.com, vinod.govindapillai@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t] RFC tests/intel/kms_frontbuffer_tracking: Introduce
+ plane-fbc-dr test
+Date: Wed,  4 Sep 2024 21:42:21 +0530
+Message-Id: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -62,44 +67,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Use the FP_DAMAGE_CLIPS property of the plane for non psr modes
+and fill the damaged rectangles on the plane with framebuffer
+cordinates and verify that fbc dirty ctl is enabled.
 
-Code so far only handles the clients using the common DRM helper.
-
-Handle the amdgpu driver which uses a slightly different set of keys. More
-specifically, outputs drm-memory-<region> instead of drm-resident-<region>.
-
-With this added gputop starts showing resident memory usage for amdgpu.
-
-v2:
- * Semantics of amdgpu drm-memory- are like resident, not total.
-
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Rob Clark <robdclark@chromium.org>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com> # v1
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/igt_drm_fdinfo.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tests/intel/kms_frontbuffer_tracking.c | 74 ++++++++++++++++++++++++++
+ 1 file changed, 74 insertions(+)
 
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index 539d15056117..74a90c437880 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -281,6 +281,11 @@ __igt_parse_drm_fdinfo(int dir, const char *fd, struct drm_client_fdinfo *info,
- 			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
- 			UPDATE_REGION(idx, resident, val);
-+		} else if (strstartswith(l, "drm-memory-", &keylen)) {
-+			/* amdgpu legacy key */
-+			idx = parse_region(l + keylen, info,
-+					   region_map, region_entries, &val);
-+			UPDATE_REGION(idx, resident, val);
- 		} else if (strstartswith(l, "drm-purgeable-", &keylen)) {
- 			idx = parse_region(l + keylen, info,
- 					   region_map, region_entries, &val);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index e45d17dd6..3b40e4a93 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -57,6 +57,10 @@
+  * Description: Sanity test to enable FBC on a plane.
+  * Functionality: fbc
+  *
++ * SUBTEST: plane-fbc-dr
++ * Description: Sanity test to verify FBC DR by sending multiple damaged areas with non psr modes
++ * Functionality: fbc
++ *
+  * SUBTEST: pipe-fbc-rte
+  * Description: Sanity test to enable FBC on each pipe.
+  * Functionality: fbc
+@@ -1168,6 +1172,7 @@
+  */
+ 
+ #define TIME SLOW_QUICK(1000, 10000)
++#define MAX_DIRTY_RECT 3
+ 
+ IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
+ 		     "its related features: FBC, PSR and DRRS");
+@@ -4288,6 +4293,70 @@ static int opt_handler(int option, int option_index, void *data)
+ 	return IGT_OPT_HANDLER_SUCCESS;
+ }
+ 
++static void fbc_dr_subtest(const struct test_mode *t) {
++	struct drm_mode_rect rect_data[MAX_DIRTY_RECT];
++	uint32_t color;
++	drmModeModeInfo *mode;
++	prepare_subtest_data(t, NULL);
++
++	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
++	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
++
++	mode = igt_output_get_mode(prim_mode_params.output);
++
++	for (int i = 0; i < MAX_DIRTY_RECT; i++) {
++		// Full Frame update
++		rect_data[0].x1 = 0;
++		rect_data[0].y1 = 0;
++		rect_data[0].x2 = mode->hdisplay;
++		rect_data[0].y2 = mode->vdisplay;
++
++		// Half Frame update till last-1 scanline
++		rect_data[1].x1 = mode->hdisplay / 2;
++		rect_data[1].y1 = mode->vdisplay / 2;
++		rect_data[1].x2 = mode->hdisplay - 1;
++		rect_data[1].y2 = mode->vdisplay - 1;
++
++		// last 10 scanlines update
++		rect_data[2].x1 = mode->hdisplay - 10;
++		rect_data[2].y1 = mode->vdisplay - 10;
++		rect_data[2].x2 = mode->hdisplay - 1;
++		rect_data[2].y2 = mode->vdisplay - 1;
++
++		igt_debug("Dirty Rectangle data = {%d, %d, %d, %d}, {%d, %d, %d, %d}, {%d, %d, %d, %d}\n", 
++					rect_data[0].x1, rect_data[0].y1, rect_data[0].x2, rect_data[0].y2, 
++					rect_data[1].x1, rect_data[1].y1, rect_data[1].x2, rect_data[1].y2,
++					rect_data[2].x1, rect_data[2].y1, rect_data[2].x2, rect_data[2].y2);
++	}
++
++	for(int i = 0; i < MAX_DIRTY_RECT; i++) {
++		igt_plane_t *primary = igt_output_get_plane_type(prim_mode_params.output, DRM_PLANE_TYPE_PRIMARY);
++		igt_fb_t fb[MAX_DIRTY_RECT];
++
++		create_fb(t->format, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay, t->tiling, t->plane, &fb[i]);
++		color = pick_color(&fb[i], COLOR_PRIM_BG);
++		igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb[i], t->method,
++			rect_data[i].x1, rect_data[i].y1, rect_data[i].x2 - rect_data[i].x1, rect_data[i].y2 - rect_data[i].y1,
++			color);
++
++		igt_plane_set_fb(primary, &fb[i]);
++		igt_plane_set_position(primary, rect_data[i].x1, rect_data[i].y1);
++		igt_plane_set_size(primary, rect_data[i].x2 - rect_data[i].x1, rect_data[i].y2 - rect_data[i].y1);
++		igt_fb_set_size(&fb[i], primary, rect_data[i].x2 - rect_data[i].x1, rect_data[i].y2 - rect_data[i].y1);
++		igt_plane_replace_prop_blob(primary, IGT_PLANE_FB_DAMAGE_CLIPS, &rect_data[i], sizeof(rect_data[i]));
++
++		igt_display_commit_atomic(&drm.display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++		fbc_update_last_action();
++		do_assertions(ASSERT_FBC_ENABLED | ASSERT_NO_ACTION_CHANGE);
++		igt_assert_f(fbc_enable_per_plane(primary->index + 1, prim_mode_params.pipe), "FBC disabled\n");
++
++		igt_remove_fb(drm.fd, &fb[i]);
++		igt_plane_set_fb(primary, NULL);
++		igt_display_commit2(&drm.display, COMMIT_ATOMIC);
++	}
++}
++
+ const char *help_str =
+ "  --no-status-check           Don't check for enable/disable status\n"
+ "  --no-crc-check              Don't check for CRC values\n"
+@@ -4513,6 +4582,11 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 		plane_fbc_rte_subtest(&t);
+ 	}
+ 
++	igt_subtest_f("plane-fbc-dr") {
++		t.feature = FEATURE_FBC;
++	 	fbc_dr_subtest(&t);
++	}
++
+ 	igt_subtest_group {
+ 		igt_subtest_with_dynamic("pipe-fbc-rte") {
+ 
 -- 
-2.44.0
+2.25.1
 
