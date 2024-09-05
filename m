@@ -4,93 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0A57CD5BA0
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:25:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F8F0CD4F5F
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:28:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 82A1B10E7F0;
-	Thu,  5 Sep 2024 09:25:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A2AC10E7F6;
+	Thu,  5 Sep 2024 09:28:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=alyssa.is header.i=@alyssa.is header.b="RALhRIFI";
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.b="jIO6DGM/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K6u6/KTK";
 	dkim-atps=neutral
-X-Greylist: delayed 371 seconds by postgrey-1.36 at gabe;
- Wed, 04 Sep 2024 13:56:21 UTC
-Received: from fhigh1-smtp.messagingengine.com
- (fhigh1-smtp.messagingengine.com [103.168.172.152])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B7C6810E795
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Sep 2024 13:56:21 +0000 (UTC)
-Received: from phl-compute-04.internal (phl-compute-04.phl.internal
- [10.202.2.44])
- by mailfhigh.phl.internal (Postfix) with ESMTP id 5AFAB1140234;
- Wed,  4 Sep 2024 09:50:09 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
- by phl-compute-04.internal (MEProxy); Wed, 04 Sep 2024 09:50:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
- :cc:content-transfer-encoding:content-type:date:date:from:from
- :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
- :to; s=fm3; t=1725457809; x=1725544209; bh=gNvrB8PgtmPnQWFL8ZKKd
- cQM6Xq7dIYgQHJZ5tkDbDI=; b=RALhRIFI+IwXHq4Htf2vC88+Ex6Q3He6g4tVw
- a2TSF2L6JkpTJgTbvQb8jjd8pMiO0SWDptrniCcOSjYpwcbPrBQRlxP1aBISsjef
- zODiZZz3KNfmFNpDBJw3xIMfbuxi0cXXzk5YPG+PdR0Pqcbpr+J0/Tcav1JMmz8x
- 6nO8V8NzPvPUxENNHIbsjYvIkOOS+6rvw8qlK7nFU3bkzL/wO6Di4mjlAc3jq0DY
- LO2m7nW8HDLCvM6tKwhTaN2DS7Dv+FJS0kqqjye7GrcbscqJbRCbn5s2o9iRC7Y9
- wiozao40zfWLQWnUSDaG6qdfK+ll12DiywvqQy4HeKDfuU71Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
- messagingengine.com; h=cc:cc:content-transfer-encoding
- :content-type:date:date:feedback-id:feedback-id:from:from
- :in-reply-to:message-id:mime-version:reply-to:subject:subject:to
- :to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
- fm1; t=1725457809; x=1725544209; bh=gNvrB8PgtmPnQWFL8ZKKdcQM6Xq7
- dIYgQHJZ5tkDbDI=; b=jIO6DGM/59fmlUf6zbL8EGnRNXLuMiqw+JL63sLKdSnU
- 33fM7eINyUmE3XxVD4M+iIZqx9WH29yja/e/XnZoRzHj73iNojZHftmO2eVGMRvU
- /MASlCZpn9MA4L1UwiA0DcUeqH6SRr9F8CK/VKDL83VhEDEOQlXgdxPTOKZBp5K9
- IYOgCGsBRM2vLbzrXyNfSZb+teBu5Rc87XstgQ5Xd5qdTU8y7NXfreQqTOEs3fpW
- 0cH3vbD8XlE/zyplSKxljgsAILkivcfZ5E1W7u+SwBgnr0HIF5Dx+VnR/6Jx3KxO
- vJiywnNkz22YLhYFURyJ9qkMlQYHh/XKp50HlbEWiQ==
-X-ME-Sender: <xms:kGXYZgEfmZWhGhdsHsdvb2ksBc6QQUDSQFGsc7Mk_ZHIsQitboH3dA>
- <xme:kGXYZpU17_6DX-m7a3Zp7NRP831nQU2Edf71RmNyOHJG0LhohduNht-b3pmeVJbf2
- DpjDXrVR5MODuH6QA>
-X-ME-Received: <xmr:kGXYZqIGugjtWWulRe3ZXbrNthESQmtU8vZ5fec7jDNnjpIo-LN28HC7JMoSvBJCzRGxdUfdtfcjL-IF8rao-2KtXxg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehjedgieelucetufdoteggodetrfdotf
- fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
- rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
- htshculddquddttddmnecujfgurhephffvvefufffkofgggfestdekredtredttdenucfh
- rhhomheptehlhihsshgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrf
- grthhtvghrnhepheekgfdtveettdekuddugeeugfdujeehuefgleegtedthfffudfhhedu
- hfduuefhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
- ephhhisegrlhihshhsrgdrihhspdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhp
- ohhuthdprhgtphhtthhopeigsghjfhhkrdhgihhthhhusgesghhmrghilhdrtghomhdprh
- gtphhtthhopegsvghrnhgusehkuhhhlhhsrdhnvghtpdhrtghpthhtohepjhgrnhhushii
- rdhkrhiihihsiihtohhfihhksehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtoh
- epkhgrmhhilhdrkhhonhhivggtiihnhieslhhinhhugidrihhnthgvlhdrtghomhdprhgt
- phhtthhopehighhtqdguvghvsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpd
- hrtghpthhtohepshhtfehrgehgsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthho
- pehtrhhirghllhgrgiesthhuthgrnhhothgrrdgtohhmpdhrtghpthhtohephihukhgrse
- ihuhhkrgdruggvvh
-X-ME-Proxy: <xmx:kGXYZiHLZbcS1gvJ0DD1qttBlthmrmeQ1CWQqScHgGsWS0uwio8y0w>
- <xmx:kGXYZmXnhqfPkURfVmDavH1GPpj-Yy1vOt_i4k-oIqMUE1I9n2CIRA>
- <xmx:kGXYZlPgV_DhaFqdT9IfnLCpfoPDYSTpjvvJ4Df5IcSa0Xwr397GOw>
- <xmx:kGXYZt2mFoJg5EWSRePgYfezEAaInjIaoxIvI5Is_mJ2SMvHjd3lBQ>
- <xmx:kWXYZqrbX6Qr1ygsAAvOX6oEJFSMUF8vBJOcpBce0t1_C1lfJXoGparT>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Sep 2024 09:50:08 -0400 (EDT)
-Received: by sf.qyliss.net (Postfix, from userid 1000)
- id E2EF13028F6EC; Wed, 04 Sep 2024 15:50:06 +0200 (CEST)
-From: Alyssa Ross <hi@alyssa.is>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 048A610E7F6
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 09:28:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725528503; x=1757064503;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=PmixfMcfHAdxGPldB0Baxj34Nb4/Q/1+CMPc4FDK/+o=;
+ b=K6u6/KTKtOhu9lulil8om28EFuiovt0CJFaR2mLhBFXsBxvmjAmfREyi
+ zw+mzhB90sgVgMw+xFfkxnfHi4lz3+ufD+NymrjQ0DzlkrDZGddS9vf/v
+ BajL+1kij3pprRbYXWHxXzCn99vsQ+pMZ1cJM91F6RAkN+ox7xRzW0iPa
+ Wi0Byi+M5NLytUHVAaRS7ZKn+D9g7X4YhrV/JdQTdNO79RMYvkGeic9co
+ JOG++P59udnnjnZatCFzx4PgiXveu7WyWCrsw+/jFg7PHzf8KNK74hp69
+ uu/XG5vcFEGYa44nX/uI8yzrS3ZHRDYMsAiqWeMH6YnDoXqp9sFjcSJ0X Q==;
+X-CSE-ConnectionGUID: N9YH1iRwSpmvQv2aAO9LkA==
+X-CSE-MsgGUID: ES9IvjFhQIOr8L+qbvr6Zg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="35590105"
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="35590105"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Sep 2024 02:28:22 -0700
+X-CSE-ConnectionGUID: nObCUX5cRUKo3+iWddapww==
+X-CSE-MsgGUID: PCAaC1VHTSyfbY4M5tGZRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="65404515"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
+ ([10.245.246.144])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Sep 2024 02:28:17 -0700
+From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mohammed Anas <triallax@tutanota.com>,
- Stefano Ragni <st3r4g@protonmail.com>, Bernd Kuhls <bernd@kuhls.net>,
- Reagan Bohan <xbjfk.github@gmail.com>, Yureka <yuka@yuka.dev>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_pm_rpm: use basename from libgen.h
-Date: Wed,  4 Sep 2024 15:49:48 +0200
-Message-ID: <20240904134948.1337335-1-hi@alyssa.is>
-X-Mailer: git-send-email 2.45.2
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, 
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
+ Mika Kuoppala <mika.kuoppala@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v6 00/17] Test coverage for GPU debug support
+Date: Thu,  5 Sep 2024 11:27:55 +0200
+Message-Id: <20240905092812.94553-1-christoph.manszewski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Thu, 05 Sep 2024 09:25:56 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,29 +78,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-musl only provides the libgen.h version of basename() that may modify
-it's argument.  That's fine in this case, because in the one use of
-basename() in this file, the buffer is never read from again.
+Hi,
 
-Signed-off-by: Alyssa Ross <hi@alyssa.is>
----
- tests/intel/kms_pm_rpm.c | 1 +
- 1 file changed, 1 insertion(+)
+In this series the eudebug kernel and validation team would like to
+add test coverage for GPU debug support recently proposed as an RFC.
+(https://patchwork.freedesktop.org/series/136572/)
 
-diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
-index 5af3e81bc..852e9cb5f 100644
---- a/tests/intel/kms_pm_rpm.c
-+++ b/tests/intel/kms_pm_rpm.c
-@@ -27,6 +27,7 @@
- #endif
- 
- #include <dirent.h>
-+#include <libgen.h>
- 
- #include "config.h"
- #include "i915/gem.h"
+This series adds 'xe_eudebug' and 'xe_eudebug_online' tests together
+with a library that encapsulates common paths in current and future
+EU debugger scenarios. It also extends the 'xe_exec_sip' test and
+'gpgpu_shader' library.
 
-base-commit: fc3113c8c1e99797b2d4769aaf02265be64a7589
+The aim of the 'xe_eudebug' test is to validate the eudebug resource
+tracking and event delivery mechanism. The 'xe_eudebug_online' test is
+dedicated for 'online' scenarios which means scenarios that exercise
+hardware exception handling and thread state manipulation.
+
+The xe_eudebug library provides an abstraction over debugger and debuggee
+processes, asynchronous event reader, and event log buffers for post-mortem
+analysis.
+
+Latest kernel code can be found here:
+https://gitlab.freedesktop.org/miku/kernel/-/commits/eudebug-dev
+
+Thank you in advance for any comments and insight.
+
+v2:
+ - make sure to include all patches and verify that each individual
+ patch compiles (Zbigniew)
+
+v3:
+ - fix multiple typos (Dominik Karol),
+ - squash subtest and eudebug lib patches (Zbigniew),
+ - include uapi sync/fix (Kamil)
+
+v4:
+ - move all eudebug uapi changes to xe_drm_eudebug.h (Zbigniew),
+ - move some 'xe_exec_sip' tests to 'xe_exec_sip_eudebug' test (Zbigniew),
+ - control eudebug lib and test build with meson flag and disable it by
+ default (Zbigniew),
+ - fix multiple checkpatch issues (Kamil),
+ - apply review comments from Dominik,
+
+v5:
+ - add comment to 'xe_drm_eudebug' (Zbigniew),
+ - misc fixes and cleanups in gpgpu_shader.[ch] (Zbigniew),
+ - assert on offset in intel_bb_ptr_get (Zbigniew),
+ - use enum for shader and sip type in 'xe_exec_sip[_eudebug]'
+ (Zbigniew),
+ - fix string concatenation issue for meson older than 0.49,
+ - more (hopefully all relevant) checkpatch issues addressed,
+
+v6:
+ - trim write_on_exception shader parameter list (Zbigniew),
+ - fix assert condition for 'intel_bb_ptr_get' (Zbigniew),
+ - properly use previously introduced enum arround xe_exec_sip[_eudebug]
+ (Zbigniew),
+ - simplify loop condition in xe_exec_sip_eudebug (Zbigniew),
+ - add 'gpgpu_shader_last_instr' helper (Zbigniew),
+ - assert on params of public functions in lib/xe_eudebug (Zbigniew),
+ - fix assert order arround lib/xe_eudebug (Zbigniew),
+ - simplify and unify casts in lib/xe_eudebug (Zbigniew),
+ - more descriptive variable names for lib/xe_eudebug functions
+ and structs (Zbigniew),
+ - fix typo in 'xe_eudebug_debugger_dettach' (Zbigniew),
+ - create 'xe_eudebug_debugger_worker_state' enum (Zbigniew),
+ - misc code formatting fixes (Zbigniew),
+ - use common list in meson for conditional build and doc generation of
+ xe_eudebug tests (Zbigniew),
+ - rebase on top of master,
+
+Andrzej Hajda (5):
+  lib/gpgpu_shader: Add write_on_exception template
+  lib/gpgpu_shader: Add set/clear exception register (cr0.1) helpers
+  lib/intel_batchbuffer: Add helper to get pointer at specified offset
+  lib/gpgpu_shader: Allow enabling illegal opcode exceptions in shader
+  tests/xe_exec_sip: Introduce invalid instruction tests
+
+Christoph Manszewski (7):
+  drm-uapi/xe: Sync with oa uapi fix
+  lib/xe_ioctl: Add wrapper with vm_bind_op extension parameter
+  lib/gpgpu_shader: Extend shader building library
+  tests/xe_exec_sip: Add sanity-after-timeout test
+  scripts/igt_doc: Add '--exclude-files' parameter
+  tests/xe_exec_sip_eudebug: Port tests for shaders and sip
+  tests/xe_live_ktest: Add xe_eudebug live test
+
+Dominik Grzegorzek (4):
+  drm-uapi/xe: Sync with eudebug uapi
+  lib/xe_eudebug: Introduce eu debug testing framework
+  tests/xe_eudebug: Test eudebug resource tracking and manipulation
+  tests/xe_eudebug_online: Debug client which runs workloads on EU
+
+Gwan-gyeong Mun (1):
+  lib/intel_batchbuffer: Add support for long-running mode execution
+
+ docs/testplan/meson.build         |   13 +-
+ include/drm-uapi/xe_drm.h         |   16 +-
+ include/drm-uapi/xe_drm_eudebug.h |  341 ++++
+ lib/gpgpu_shader.c                |  477 ++++-
+ lib/gpgpu_shader.h                |   34 +-
+ lib/iga64_generated_codes.c       |  532 +++++-
+ lib/intel_batchbuffer.c           |  149 +-
+ lib/intel_batchbuffer.h           |   24 +
+ lib/meson.build                   |    5 +
+ lib/xe/xe_eudebug.c               | 2249 ++++++++++++++++++++++++
+ lib/xe/xe_eudebug.h               |  218 +++
+ lib/xe/xe_ioctl.c                 |   20 +-
+ lib/xe/xe_ioctl.h                 |    5 +
+ meson.build                       |    2 +
+ meson_options.txt                 |    5 +
+ scripts/igt_doc.py                |    3 +
+ scripts/test_list.py              |   47 +-
+ tests/intel/xe_eudebug.c          | 2716 +++++++++++++++++++++++++++++
+ tests/intel/xe_eudebug_online.c   | 2254 ++++++++++++++++++++++++
+ tests/intel/xe_exec_sip.c         |  152 +-
+ tests/intel/xe_exec_sip_eudebug.c |  355 ++++
+ tests/intel/xe_live_ktest.c       |    6 +
+ tests/meson.build                 |   10 +
+ 23 files changed, 9581 insertions(+), 52 deletions(-)
+ create mode 100644 include/drm-uapi/xe_drm_eudebug.h
+ create mode 100644 lib/xe/xe_eudebug.c
+ create mode 100644 lib/xe/xe_eudebug.h
+ create mode 100644 tests/intel/xe_eudebug.c
+ create mode 100644 tests/intel/xe_eudebug_online.c
+ create mode 100644 tests/intel/xe_exec_sip_eudebug.c
+
 -- 
-2.45.2
+2.34.1
 
