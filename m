@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6005CE7AA2
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 22:59:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5751ACE7AA5
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 23:37:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 883E710E3F7;
-	Thu,  5 Sep 2024 22:59:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E67C710E165;
+	Thu,  5 Sep 2024 23:37:54 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 645C410E165;
- Thu,  5 Sep 2024 22:59:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1781910E033;
+ Thu,  5 Sep 2024 23:37:53 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1307932767266034325=="
+ boundary="===============2240489030983028215=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv3=2C1/2=5D_tests/intel/kms=5Fpsr2=5Fsf=3A_Modify_kms=5Fpsr2?=
- =?utf-8?q?=5Fsf_test?=
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/kms=5Fplane=5Fscaling=3A?=
+ =?utf-8?q?_Update_scaling_functions_to_retry_on_valid_outputs_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Sep 2024 22:59:52 -0000
-Message-ID: <172557719240.952417.15588562607721573773@2413ebb6fbb6>
+Date: Thu, 05 Sep 2024 23:37:53 -0000
+Message-ID: <172557947308.952417.5686320610646676097@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240905134259.1155164-1-pranay.samala@intel.com>
-In-Reply-To: <20240905134259.1155164-1-pranay.samala@intel.com>
+References: <20240905145038.1569226-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20240905145038.1569226-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,651 +41,856 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1307932767266034325==
+--===============2240489030983028215==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,v3,1/2] tests/intel/kms_psr2_sf: Modify kms_psr2_sf test
-URL   : https://patchwork.freedesktop.org/series/138264/
-State : success
+Series: tests/kms_plane_scaling: Update scaling functions to retry on valid outputs (rev2)
+URL   : https://patchwork.freedesktop.org/series/137770/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_15369 -> IGTPW_11705
+CI Bug Log - changes from XEIGT_8007_BAT -> XEIGTPW_11706_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_11706_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11706_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/index.html
+  
 
-Participating hosts (40 -> 39)
+Participating hosts (9 -> 8)
 ------------------------------
 
-  Additional (2): fi-glk-j4005 fi-elk-e7500 
-  Missing    (3): bat-mtlp-8 bat-arlh-3 fi-snb-2520m 
+  Missing    (1): bat-pvc-2 
 
 Possible new issues
 -------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_11705:
+  Here are the unknown changes that may have been introduced in XEIGTPW_11706_BAT:
 
 ### IGT changes ###
 
 #### Possible regressions ####
 
-  * {igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf} (NEW):
-    - bat-rpls-4:         NOTRUN -> [SKIP][1] +49 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-rpls-4/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html
-    - bat-twl-1:          NOTRUN -> [SKIP][2] +60 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-twl-1/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a (NEW):
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] +59 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html
 
-  * {igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area} (NEW):
-    - bat-dg2-9:          NOTRUN -> [SKIP][3] +49 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-9/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers:
+    - bat-adlp-vf:        NOTRUN -> [SKIP][2] +44 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-adlp-vf/igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers.html
 
-  * {igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1} (NEW):
-    - bat-twl-2:          NOTRUN -> [SKIP][4] +60 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-twl-2/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d (NEW):
+    - bat-bmg-1:          NOTRUN -> [SKIP][3] +114 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-bmg-1/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html
 
-  * {igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf} (NEW):
-    - bat-mtlp-6:         NOTRUN -> [SKIP][5] +49 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-mtlp-6/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][4] +29 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c.html
 
-  * {igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf} (NEW):
-    - bat-adlp-9:         NOTRUN -> [SKIP][6] +49 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlp-9/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a (NEW):
+    - bat-lnl-2:          NOTRUN -> [SKIP][5] +134 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a.html
 
-  * {igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1} (NEW):
-    - bat-adlp-6:         NOTRUN -> [SKIP][7] +60 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlp-6/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d (NEW):
+    - {bat-bmg-2}:        NOTRUN -> [SKIP][6] +179 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-bmg-2/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d.html
 
-  * {igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area} (NEW):
-    - bat-dg2-14:         NOTRUN -> [SKIP][8] +49 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-14/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area} (NEW):
-    - bat-arls-5:         NOTRUN -> [SKIP][9] +49 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-5/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][10] +49 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-rplp-1/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] +49 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-tgl-1115g4/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf} (NEW):
-    - bat-adlp-11:        NOTRUN -> [SKIP][12] +49 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlp-11/igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf.html
-
-  * {igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf} (NEW):
-    - bat-dg2-11:         NOTRUN -> [SKIP][13] +49 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-11/igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf.html
-
-  * {igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area} (NEW):
-    - bat-arls-2:         NOTRUN -> [SKIP][14] +60 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-2/igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area} (NEW):
-    - bat-dg1-7:          NOTRUN -> [SKIP][15] +49 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg1-7/igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf} (NEW):
-    - bat-arlh-2:         NOTRUN -> [SKIP][16] +49 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arlh-2/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][17] +49 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-rkl-11600/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html
-
-  * {igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb} (NEW):
-    - bat-dg2-8:          NOTRUN -> [SKIP][18] +49 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-8/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-adls-6:         NOTRUN -> [SKIP][19] +49 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adls-6/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-adlm-1:         NOTRUN -> [SKIP][20] +49 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlm-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][21] +49 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-jsl-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-arls-1:         NOTRUN -> [SKIP][22] +49 other tests skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a (NEW):
+    - bat-lnl-1:          NOTRUN -> [SKIP][7] +93 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-lnl-1/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a.html
 
   
 New tests
 ---------
 
-  New tests have been introduced between CI_DRM_15369 and IGTPW_11705:
+  New tests have been introduced between XEIGT_8007_BAT and XEIGTPW_11706_BAT:
 
-### New IGT tests (100) ###
+### New IGT tests (180) ###
 
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 38 skip(s)
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-a:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.18] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.43] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.43] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 1.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.41] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.43] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.57] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 1.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.36] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 1.36] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.95] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.89] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.38] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.37] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.70] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.73] s
+
+  * igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.51] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.68] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.93] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.84] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.55] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.37] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.35] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.48] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.37] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.47] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.17] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.73] s
+
+  * igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.44] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.54] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.68] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.78] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.60] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-a:
+    - Statuses : 3 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.20] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b:
+    - Statuses : 3 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.30] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 4.70] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.30] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.37] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.60] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.62] s
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.49] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.67] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 5.78] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.92] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.61] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.77] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.00] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.42] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.67] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 2.04] s
+
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.41] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.55] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.79] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 2.03] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.59] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.66] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 2.83] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.54] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 0.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.86] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.61] s
+
+  * igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 1.52] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-a:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.01] s
 
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 38 skip(s)
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-a:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.01] s
 
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf:
-    - Statuses : 38 skip(s)
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-a:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.01] s
 
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:
-    - Statuses : 38 skip(s)
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-a:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.01] s
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 38 skip(s)
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.81] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.82] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.63] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.59] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.71] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.71] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.71] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.72] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.77] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.76] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.65] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.67] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.65] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.84] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.69] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.73] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.82] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.00] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.90] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.93] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.83] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.98] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.96] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 7.01] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.87] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.90] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.02] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.89] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-a:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.49] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-b:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.26] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-c:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.27] s
+
+  * igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d:
+    - Statuses : 2 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.28] s
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.88] s
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.06] s
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.04] s
+
+  * igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.93] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-a:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.01] s
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 38 skip(s)
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.70] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.82] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.70] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.62] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.88] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.04] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.03] s
+
+  * igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.91] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-a:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-d:
+    - Statuses : 4 skip(s)
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.83] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.78] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.66] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.57] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-a:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.53] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-b:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.33] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-c:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.33] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-d:
+    - Statuses : 2 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.33] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.81] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.90] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 7.04] s
+
+  * igt@kms_plane_scaling@planes-upscale-20x20@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.91] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-a:
+    - Statuses : 6 skip(s)
     - Exec time: [0.0, 0.01] s
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-b:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-c:
+    - Statuses : 6 skip(s)
+    - Exec time: [0.0, 0.02] s
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-plane-move-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-primary-plane-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-d:
     - Statuses : 4 skip(s)
-    - Exec time: [0.85, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.85, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.10] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.24] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.26] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.26] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.26] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.25] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.18] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.28] s
-
-  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.12] s
-
-  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.90] s
-
-  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.24] s
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.24] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.83] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-update-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_psr2_sf@pr-plane-move-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area-big-fb:
-    - Statuses : 38 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 42.96] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.82, 21.49] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.78, 21.46] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 42.10] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.54, 21.06] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.58, 21.04] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 41.07] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.28, 20.52] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.33, 20.54] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-update-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 2.97] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [1.36, 1.51] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [1.35, 1.48] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 64.69] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [9.46, 32.34] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [9.46, 32.35] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 44.41] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.89, 22.20] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.87, 22.20] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 23.67] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [4.09, 11.83] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [4.15, 11.83] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 4.29] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [1.69, 2.16] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [1.67, 2.13] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 15.22] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.74, 7.66] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.70, 7.56] s
-
-  * igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 15.27] s
-
-  * igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.74, 7.59] s
-
-  * igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.71, 7.68] s
-
-  * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 12.16] s
-
-  * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.39, 6.08] s
-
-  * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.38, 6.08] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 15.29] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb:
-    - Statuses : 4 pass(s) 34 skip(s)
-    - Exec time: [0.0, 15.86] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.96, 7.98] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.97, 7.87] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.73, 7.67] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.71, 7.61] s
+    - Exec time: [0.0, 0.02] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.73] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-b:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.81] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-c:
+    - Statuses : 1 pass(s) 5 skip(s)
+    - Exec time: [0.0, 2.72] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-d:
+    - Statuses : 1 pass(s) 3 skip(s)
+    - Exec time: [0.0, 2.68] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.44] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.27] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c:
+    - Statuses : 2 pass(s) 4 skip(s)
+    - Exec time: [0.0, 3.27] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-d:
+    - Statuses : 2 pass(s) 2 skip(s)
+    - Exec time: [0.0, 3.27] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.76] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-b:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.95] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-c:
+    - Statuses : 4 pass(s) 2 skip(s)
+    - Exec time: [0.0, 6.89] s
+
+  * igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-d:
+    - Statuses : 3 pass(s) 1 skip(s)
+    - Exec time: [0.0, 6.98] s
 
   
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_11705 that come from known issues:
+  Here are the changes found in XEIGTPW_11706_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@fbdev@read:
-    - bat-arls-1:         [PASS][23] -> [DMESG-FAIL][24] ([i915#12102])
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15369/bat-arls-1/igt@fbdev@read.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-1/igt@fbdev@read.html
+  * igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][8] ([Intel XE#455]) +39 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html
 
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][25] ([i915#2190])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
+  * igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:
+    - bat-atsm-2:         NOTRUN -> [SKIP][9] ([Intel XE#1024]) +44 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-atsm-2/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html
 
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][26] ([i915#4613]) +3 other tests skip
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:
+    - bat-lnl-2:          NOTRUN -> [SKIP][10] ([Intel XE#2381]) +44 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html
 
-  * {igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf} (NEW):
-    - bat-atsm-1:         NOTRUN -> [SKIP][27] ([i915#6078]) +49 other tests skip
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-atsm-1/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf.html
-
-  * {igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf} (NEW):
-    - bat-apl-1:          NOTRUN -> [SKIP][28] +49 other tests skip
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-apl-1/igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf.html
-
-  * {igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf} (NEW):
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][29] +49 other tests skip
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-7567u/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html
-
-  * {igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area} (NEW):
-    - fi-cfl-guc:         NOTRUN -> [SKIP][30] +49 other tests skip
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-cfl-guc/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][31] +49 other tests skip
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-x1275/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area} (NEW):
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][32] +49 other tests skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-cfl-8700k/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][33] +49 other tests skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-kbl-2/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@pr-cursor-plane-update-sf} (NEW):
-    - fi-glk-j4005:       NOTRUN -> [SKIP][34] +60 other tests skip
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-glk-j4005/igt@kms_psr2_sf@pr-cursor-plane-update-sf.html
-
-  * {igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area} (NEW):
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][35] +49 other tests skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-cfl-8109u/igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area} (NEW):
-    - fi-pnv-d510:        NOTRUN -> [SKIP][36] +49 other tests skip
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-pnv-d510/igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf} (NEW):
-    - fi-ivb-3770:        NOTRUN -> [SKIP][37] +49 other tests skip
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-ivb-3770/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf.html
-
-  * {igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf} (NEW):
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][38] +49 other tests skip
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-bsw-n3050/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf.html
-
-  * {igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area} (NEW):
-    - fi-ilk-650:         NOTRUN -> [SKIP][39] +49 other tests skip
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-ilk-650/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][40] +49 other tests skip
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-blb-e6850/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html
-
-  * {igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb} (NEW):
-    - fi-elk-e7500:       NOTRUN -> [SKIP][41] +75 other tests skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-elk-e7500/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][42] +49 other tests skip
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-guc/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-
-  
-#### Possible fixes ####
-
-  * igt@fbdev@info:
-    - bat-arls-1:         [DMESG-WARN][43] ([i915#12102]) -> [PASS][44]
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15369/bat-arls-1/igt@fbdev@info.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-1/igt@fbdev@info.html
-
-  
-#### Warnings ####
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-7567u:       [DMESG-WARN][45] ([i915#180] / [i915#9925]) -> [DMESG-WARN][46] ([i915#180] / [i915#1982] / [i915#9925]) +1 other test dmesg-warn
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15369/fi-kbl-7567u/igt@i915_module_load@reload.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-7567u/igt@i915_module_load@reload.html
+  * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d (NEW):
+    - bat-adlp-7:         NOTRUN -> [SKIP][11] ([Intel XE#455]) +19 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html
 
   
   {name}: This element is suppressed. This means it is ignored when computing
           the status of the difference (SUCCESS, WARNING, or FAILURE).
 
-  [i915#12102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#9925]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2381]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2381
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8006 -> IGTPW_11705
+  * IGT: IGT_8007 -> IGTPW_11706
 
-  CI-20190529: 20190529
-  CI_DRM_15369: 7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11705: 539b0fdc2a085a40bdd202a2e61553f0149550f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8006: ae7f2bc0b99801a7ae369d4b5fda5c6b1c386eb1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11706: 11706
+  IGT_8007: 8f9900c288f4cf1244d66baa71bc6d9355747cbd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1901-7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d: 7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/index.html
 
---===============1307932767266034325==
+--===============2240489030983028215==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -706,937 +910,1365 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,1/2] tests/intel/kms_psr2_sf: Modify kms_psr2_sf test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138264/">https://patchwork.freedesktop.org/series/138264/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/kms_plane_scaling: Update scaling functions to retry on valid outputs (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137770/">https://patchwork.freedesktop.org/series/137770/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_15369 -&gt; IGTPW_11705</h1>
+    <h1>CI Bug Log - changes from XEIGT_8007_BAT -&gt; XEIGTPW_11706_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Additional (2): fi-glk-j4005 fi-elk-e7500 <br />
-  Missing    (3): bat-mtlp-8 bat-arlh-3 fi-snb-2520m </p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11706_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11706_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 8)</h2>
+<p>Missing    (1): bat-pvc-2 </p>
 <h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11705:</p>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11706_BAT:</p>
 <h3>IGT changes</h3>
 <h4>Possible regressions</h4>
 <ul>
 <li>
-<p>{igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf} (NEW):</p>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a (NEW):</p>
 <ul>
-<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-rpls-4/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-twl-1/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +60 other tests skip</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a.html">SKIP</a> +59 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area} (NEW):</p>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers:</p>
 <ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-9/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-adlp-vf/igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers.html">SKIP</a> +44 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1} (NEW):</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d (NEW):</p>
 <ul>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-twl-2/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1.html">SKIP</a> +60 other tests skip</li>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-bmg-1/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html">SKIP</a> +114 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf} (NEW):</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c (NEW):</p>
 <ul>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-mtlp-6/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c.html">SKIP</a> +29 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf} (NEW):</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a (NEW):</p>
 <ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlp-9/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a.html">SKIP</a> +134 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1} (NEW):</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d (NEW):</p>
 <ul>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlp-6/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1.html">SKIP</a> +60 other tests skip</li>
+<li>{bat-bmg-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-bmg-2/igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d.html">SKIP</a> +179 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area} (NEW):</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a (NEW):</p>
 <ul>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-14/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-5/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-rplp-1/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-tgl-1115g4/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf} (NEW):</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlp-11/igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf} (NEW):</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-11/igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-2/igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg1-7/igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf} (NEW):</p>
-<ul>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arlh-2/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-rkl-11600/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb} (NEW):</p>
-<ul>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-dg2-8/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adls-6/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-adlm-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-jsl-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-lnl-1/igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a.html">SKIP</a> +93 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_15369 and IGTPW_11705:</p>
-<h3>New IGT tests (100)</h3>
+<p>New tests have been introduced between XEIGT_8007_BAT and XEIGTPW_11706_BAT:</p>
+<h3>New IGT tests (180)</h3>
 <ul>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf:</p>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-a:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 1.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-b:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-pixel-format@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 1.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-pixel-format@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-5-with-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.95] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-pixel-format@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.73] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-75-with-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.93] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.84] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-pixel-format@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.73] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-unity-scaling-with-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.78] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-a:</p>
+<ul>
+<li>Statuses : 3 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b:</p>
+<ul>
+<li>Statuses : 3 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 4.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 5.78] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.92] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.77] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 2.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.55] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.79] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 2.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-modifiers@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 2.83] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.54] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-pixel-format@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 0.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.86] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-factor-0-25-with-rotation@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 1.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-20x20@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-fully-sf:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.81] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-unity-scaling@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.71] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.71] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.71] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-20x20@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.72] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.77] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5-upscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.84] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.69] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-5@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.73] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-unity-scaling@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.93] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.83] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-20x20@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 7.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.87] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75-upscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-a:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-b:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.26] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-c:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-75@pipe-d:</p>
+<ul>
+<li>Statuses : 2 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.88] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-scaler-unity-scaling@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.93] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf:</p>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.82] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-5@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.88] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-unity-scaling-downscale-factor-0-75@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.91] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-b:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-c:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-25@pipe-d:</p>
+<ul>
+<li>Statuses : 4 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-a:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.83] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-b:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.78] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-c:</p>
+<ul>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-5@pipe-d:</p>
+<ul>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-a:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.53] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-b:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-c:</p>
+<ul>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20-downscale-factor-0-75@pipe-d:</p>
+<ul>
+<li>Statuses : 2 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-a:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.81] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-b:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.90] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-c:</p>
+<ul>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 7.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-20x20@pipe-d:</p>
+<ul>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.91] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-a:</p>
+<ul>
+<li>Statuses : 6 skip(s)</li>
 <li>Exec time: [0.0, 0.01] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-sf:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-c:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
+<li>Statuses : 6 skip(s)</li>
+<li>Exec time: [0.0, 0.02] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-25@pipe-d:</p>
 <ul>
 <li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.85, 0.89] s</li>
+<li>Exec time: [0.0, 0.02] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-a:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.73] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-b:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.81] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-c:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
+<li>Statuses : 1 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 2.72] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-5@pipe-d:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
+<li>Statuses : 1 pass(s) 3 skip(s)</li>
+<li>Exec time: [0.0, 2.68] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-a:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.44] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-b:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-c:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21] s</li>
+<li>Statuses : 2 pass(s) 4 skip(s)</li>
+<li>Exec time: [0.0, 3.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25-downscale-factor-0-75@pipe-d:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
+<li>Statuses : 2 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 3.27] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-a-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-a:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.85, 0.89] s</li>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.76] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-b:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21] s</li>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.95] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-c:</p>
 <ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.10] s</li>
+<li>Statuses : 4 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 6.89] s</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
+<p>igt@kms_plane_scaling@planes-upscale-factor-0-25@pipe-d:</p>
 <ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.24] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.26] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.26] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.26] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.25] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.18] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.28] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.90] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.24] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.24] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.83] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-update-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area-big-fb:</p>
-<ul>
-<li>Statuses : 38 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 42.96] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.82, 21.49] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.78, 21.46] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 42.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.54, 21.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.58, 21.04] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 41.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.28, 20.52] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.33, 20.54] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-update-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 2.97] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [1.36, 1.51] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [1.35, 1.48] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 64.69] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [9.46, 32.34] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [9.46, 32.35] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 44.41] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.89, 22.20] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.87, 22.20] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 23.67] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [4.09, 11.83] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [4.15, 11.83] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 4.29] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [1.69, 2.16] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [1.67, 2.13] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 15.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.74, 7.66] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.70, 7.56] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 15.27] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.74, 7.59] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.71, 7.68] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 12.16] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [5.39, 6.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [5.38, 6.08] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 15.29] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb:</p>
-<ul>
-<li>Statuses : 4 pass(s) 34 skip(s)</li>
-<li>Exec time: [0.0, 15.86] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.96, 7.98] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.97, 7.87] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.73, 7.67] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.71, 7.61] s</li>
+<li>Statuses : 3 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.0, 6.98] s</li>
 </ul>
 </li>
 </ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11705 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_11706_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@fbdev@read:</p>
+<p>igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation:</p>
 <ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15369/bat-arls-1/igt@fbdev@read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-1/igt@fbdev@read.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>)</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-dg2-oem2/igt@kms_plane_scaling@plane-downscale-factor-0-25-with-rotation.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +39 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_huc_copy@huc-copy:</p>
+<p>igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format:</p>
 <ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-atsm-2/igt@kms_plane_scaling@plane-upscale-20x20-with-pixel-format.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a>) +44 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling:</p>
 <ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-lnl-2/igt@kms_plane_scaling@planes-downscale-factor-0-25-unity-scaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2381">Intel XE#2381</a>) +44 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>{igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf} (NEW):</p>
+<p>igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d (NEW):</p>
 <ul>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-atsm-1/igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>) +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf} (NEW):</p>
-<ul>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-apl-1/igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf} (NEW):</p>
-<ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-7567u/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-cfl-guc/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-x1275/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-cfl-8700k/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-kbl-2/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-cursor-plane-update-sf} (NEW):</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-glk-j4005/igt@kms_psr2_sf@pr-cursor-plane-update-sf.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-cfl-8109u/igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-pnv-d510/igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf} (NEW):</p>
-<ul>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-ivb-3770/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf} (NEW):</p>
-<ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-bsw-n3050/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area} (NEW):</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-ilk-650/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-blb-e6850/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb} (NEW):</p>
-<ul>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-elk-e7500/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +75 other tests skip</li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-guc/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@fbdev@info:<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15369/bat-arls-1/igt@fbdev@info.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/bat-arls-1/igt@fbdev@info.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_module_load@reload:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15369/fi-kbl-7567u/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925">i915#9925</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11705/fi-kbl-7567u/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925">i915#9925</a>) +1 other test dmesg-warn</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11706/bat-adlp-7/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25@pipe-d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +19 other tests skip</li>
 </ul>
 </li>
 </ul>
@@ -1644,15 +2276,13 @@ Content-Transfer-Encoding: 7bit
           the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8006 -&gt; IGTPW_11705</li>
+<li>IGT: IGT_8007 -&gt; IGTPW_11706</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15369: 7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11705: 539b0fdc2a085a40bdd202a2e61553f0149550f4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8006: ae7f2bc0b99801a7ae369d4b5fda5c6b1c386eb1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11706: 11706<br />
+  IGT_8007: 8f9900c288f4cf1244d66baa71bc6d9355747cbd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1901-7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d: 7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d</p>
 
 </body>
 </html>
 
---===============1307932767266034325==--
+--===============2240489030983028215==--
