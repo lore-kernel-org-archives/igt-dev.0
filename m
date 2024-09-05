@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6CBCCD4F5F
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8393CD4F5F
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:28:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 744E610E805;
-	Thu,  5 Sep 2024 09:28:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F99910E806;
+	Thu,  5 Sep 2024 09:28:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EJKbqk6c";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EcFr0gqp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 78B8310E806
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 09:28:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84D4010E806
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 09:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725528533; x=1757064533;
+ t=1725528538; x=1757064538;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lkHEBvFwed7GOvSqafaBUS9bJJD6wmi2xvjgmLFY9p4=;
- b=EJKbqk6ciBxE5APhAPN715nM0c437TXgHJ34qKhA/SO9iJLASxYQRBmP
- E1m/RuPxy2aegmnHFtCYEI/cEsGsU3mPwgzKF1kLcHAZVoUSy25FwspRQ
- 8g71pF1OqNDQXcZ0DxsYCFrDZnst3yv0ypKsPV/wCASY/I5AuTS7wjSR5
- 4K4LuH+6mJ48RO7BtY7aHT7ap1aRIdtuA1aJJnKXx5RsqyJlLBPBkow5P
- HIqedc3sdjL6MKQpL5g9Es35fK/lS7yPTDOu6vKzUe2KABZej5j95eyO1
- /vfYbJ8MHr/48qccQ1P0UNMd/b2balSVw/L0pfJmUdgAFZHzqzjnzzh99 Q==;
-X-CSE-ConnectionGUID: u23I8Ib6Tn+ZkQCqHAmKaQ==
-X-CSE-MsgGUID: 8DdHIlbVSkCK/6H/6A3wQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="35590249"
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="35590249"
+ bh=eQbybgy/Wq4zRhv7v2VeCfEFop05VE0dtJ6TJJ6CajY=;
+ b=EcFr0gqp7HCDM1CbpByaMr91HO+0gQbOtD9diP8rPZs8AewA/GwON7gW
+ X30eYo7GAk8vMDa9TBJCdUmiNCCljyoVDt2iGekMzeEu1WjEAru0Slzw3
+ FNzgWitc629igKUjwM40e9RPmqELv2dGZC/tf5L80xGMiXCG1VnW4+u0x
+ kXYh6B/uH0J5wopHw0Z1EZp8YL1Z3M+jTK4pn6ToxhpGBnWZqBAxk81kq
+ zw3Aq78+A0/bgUEQYkKgit6nFho4wSd+o0eTKUvlb2Kqw/N7TRha+Jj9p
+ 5/kbn4nvfc07qZVmv9KDXDhIxTqJ8mr2PtkAgYvqo8AHTlZLUuaZ02uto g==;
+X-CSE-ConnectionGUID: Y9jGSnNtSfeBfSlA5z90Dg==
+X-CSE-MsgGUID: IXyiulKFSv67RfQFD4Ahgw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="35590261"
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="35590261"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2024 02:28:53 -0700
-X-CSE-ConnectionGUID: vKhhhkf+RLGuG3KvC0dAtw==
-X-CSE-MsgGUID: iCjBy/sXSLGbZeV8CcJRug==
+ 05 Sep 2024 02:28:57 -0700
+X-CSE-ConnectionGUID: yoY3Cf2KTsmPvJkKJf+CPA==
+X-CSE-MsgGUID: AR64ZgwuTb2yGJoc4JknBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="65404812"
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="65404830"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.144])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2024 02:28:49 -0700
+ 05 Sep 2024 02:28:53 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -56,10 +56,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v6 07/17] lib/gpgpu_shader: Allow enabling illegal
- opcode exceptions in shader
-Date: Thu,  5 Sep 2024 11:28:02 +0200
-Message-Id: <20240905092812.94553-8-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v6 08/17] tests/xe_exec_sip: Add sanity-after-timeout
+ test
+Date: Thu,  5 Sep 2024 11:28:03 +0200
+Message-Id: <20240905092812.94553-9-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905092812.94553-1-christoph.manszewski@intel.com>
 References: <20240905092812.94553-1-christoph.manszewski@intel.com>
@@ -81,62 +81,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+Add a subtest that checks if we are able to submit workloads after gpu
+was reset due to hung job.
 
-Illegal opcode exceptions can be enabled in interface descriptor data
-passed to COMPUTE_WALKER instruction.
-
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Mika Kuoppala <mika.kuoppala@intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/gpgpu_shader.c | 4 ++++
- lib/gpgpu_shader.h | 1 +
- 2 files changed, 5 insertions(+)
+ tests/intel/xe_exec_sip.c | 42 ++++++++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 9284ad5ea..d4dd118d6 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -103,6 +103,7 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
- 		      struct gpgpu_shader *sip,
- 		      uint64_t ring, bool explicit_engine)
+diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+index ea1770cd6..564c899f8 100644
+--- a/tests/intel/xe_exec_sip.c
++++ b/tests/intel/xe_exec_sip.c
+@@ -31,6 +31,11 @@
+ 
+ #define SHADER_CANARY 0x01010101
+ 
++enum shader_type {
++	SHADER_HANG,
++	SHADER_WRITE,
++};
++
+ static struct intel_buf *
+ create_fill_buf(int fd, int width, int height, uint8_t color)
  {
-+	struct gen8_interface_descriptor_data *idd;
- 	uint32_t interface_descriptor, sip_offset;
- 	uint64_t engine;
+@@ -50,21 +55,32 @@ create_fill_buf(int fd, int width, int height, uint8_t color)
+ 	return buf;
+ }
  
-@@ -113,6 +114,8 @@ __xelp_gpgpu_execfunc(struct intel_bb *ibb,
- 	interface_descriptor = gen8_fill_interface_descriptor(ibb, target,
- 							      shdr->instr,
- 							      4 * shdr->size);
-+	idd = intel_bb_ptr_get(ibb, interface_descriptor);
-+	idd->desc2.illegal_opcode_exception_enable = shdr->illegal_opcode_exception_enable;
+-static struct gpgpu_shader *get_shader(int fd)
++static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
+ {
+ 	static struct gpgpu_shader *shader;
  
- 	if (sip && sip->size)
- 		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
-@@ -163,6 +166,7 @@ __xehp_gpgpu_execfunc(struct intel_bb *ibb,
+ 	shader = gpgpu_shader_create(fd);
+ 	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
++
++	switch (shader_type) {
++	case SHADER_HANG:
++		gpgpu_shader__label(shader, 0);
++		gpgpu_shader__nop(shader);
++		gpgpu_shader__jump(shader, 0);
++		break;
++	case SHADER_WRITE:
++		break;
++	}
++
+ 	gpgpu_shader__eot(shader);
+ 	return shader;
+ }
  
- 	xehp_fill_interface_descriptor(ibb, target, shdr->instr,
- 				       4 * shdr->size, &idd);
-+	idd.desc2.illegal_opcode_exception_enable = shdr->illegal_opcode_exception_enable;
+-static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, unsigned int threads,
+-			     unsigned int width, unsigned int height)
++static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, enum shader_type shader_type,
++			     unsigned int threads, unsigned int width, unsigned int height)
+ {
+ 	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
+-	struct gpgpu_shader *shader = get_shader(fd);
++	struct gpgpu_shader *shader = get_shader(fd, shader_type);
  
- 	if (sip && sip->size)
- 		sip_offset = fill_sip(ibb, sip->instr, 4 * sip->size);
-diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
-index b722b9e50..53fe2869e 100644
---- a/lib/gpgpu_shader.h
-+++ b/lib/gpgpu_shader.h
-@@ -22,6 +22,7 @@ struct gpgpu_shader {
- 		uint32_t (*instr)[4];
- 	};
- 	struct igt_map *labels;
-+	bool illegal_opcode_exception_enable;
- };
+ 	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
+ 	gpgpu_shader_destroy(shader);
+@@ -125,8 +141,11 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+  * SUBTEST: sanity
+  * Description: check basic shader with write operation
+  *
++ * SUBTEST: sanity-after-timeout
++ * Description: check basic shader execution after job timeout
+  */
+-static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
++static void test_sip(enum shader_type shader_type, struct drm_xe_engine_class_instance *eci,
++		     uint32_t flags)
+ {
+ 	unsigned int threads = 512;
+ 	unsigned int height = max_t(threads, HEIGHT, threads * 2);
+@@ -153,7 +172,7 @@ static void test_sip(struct drm_xe_engine_class_instance *eci, uint32_t flags)
+ 	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
  
- struct iga64_template {
+ 	igt_nsec_elapsed(&ts);
+-	handle = gpgpu_shader(fd, ibb, threads, width, height);
++	handle = gpgpu_shader(fd, ibb, shader_type, threads, width, height);
+ 
+ 	intel_bb_sync(ibb);
+ 	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
+@@ -186,7 +205,16 @@ igt_main
+ 		fd = drm_open_driver(DRIVER_XE);
+ 
+ 	test_render_and_compute("sanity", fd, eci)
+-		test_sip(eci, 0);
++		test_sip(SHADER_WRITE, eci, 0);
++
++	test_render_and_compute("sanity-after-timeout", fd, eci) {
++		test_sip(SHADER_HANG, eci, 0);
++
++		xe_for_each_engine(fd, eci)
++			if (eci->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
++			    eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
++				test_sip(SHADER_WRITE, eci, 0);
++	}
+ 
+ 	igt_fixture
+ 		drm_close_driver(fd);
 -- 
 2.34.1
 
