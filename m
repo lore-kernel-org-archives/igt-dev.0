@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA499CD5BA1
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:29:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23A37CD5BA0
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 09:29:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E75610E819;
-	Thu,  5 Sep 2024 09:29:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D6A2410E81A;
+	Thu,  5 Sep 2024 09:29:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="glFGa6KW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DuzB0wxI";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA92D10E81A
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 09:29:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3D32410E81A
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 09:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725528555; x=1757064555;
+ t=1725528564; x=1757064564;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=SiOW8ve06Ch/9MQib6P9MAp05zd9M6X+OcvOlSuC/+I=;
- b=glFGa6KWoxrf9lB5vtJh5VROW3MVL/Wkx8PMi3vDAEc6lkKFQ93BzD5A
- AKR7MYyrRi0rqHOstBqu6HUGsDszB56dOUW4CZc57aWUpLQdu4Ob9eCpg
- PEK4dWXvbV+YqZWg5SsFZzBDw8VD3rSr/OlvyFPc/4TtfUE+OrxcVwOS9
- OkmNHW8wdlrgDuZ9pZEmE9WI18z7nz/MVF4yEhwSxdw17Yx3nk+YC+hMk
- BnhHlt1LCykXp64tzCy4skBINi9FUjJ9gH58qvTi20yGcJWI0IjgGJcYb
- MqdDcEAmg7fb6R5bBEJ/njIuXxDStfWMYtO5ZNK6fzy05sQU33TZDrbeD Q==;
-X-CSE-ConnectionGUID: dXyEGN+DS8ykztQRlHncZg==
-X-CSE-MsgGUID: lBU2hx/ISreD7wb68iW0iA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="35590303"
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="35590303"
+ bh=DwgAGN4jG2jQRS+IkwMplm8qpRC1Dc67kOa81YX2Ego=;
+ b=DuzB0wxIecka4bmNKJlcCPnNzRNnSMlHjTgBSkbjfon018UHjZsYxfKD
+ XeYB1QvLYJxhecZLmjoQWNV9bp39SPi27jvEc7c/MQyMSSHGQGsQTFAHt
+ HcMt07andZBtfpavCYctglaCE93QQJnNQlxO1jXUFW/GEYilCb8lk7fR5
+ 8N1loPXN5M9ToHcbhrpYOkzNlsvlWRNWe3yPBvHOy5TT+XFAV3rBfAijp
+ bSOUNVQ4jjMPb86cruXc3hJMTjcF1WfHQXlBroaUAF7iB5//w0RAeIjNs
+ 29zzmaXeytrWVwZTWl/gOvHJcIJb1nYTzRVDuDx4RrqTECpjxUK+mLE09 A==;
+X-CSE-ConnectionGUID: 9ge0d7XrRomPZjUEc34GtQ==
+X-CSE-MsgGUID: JZyKVlbYQD6niyT2wjRPFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11185"; a="35590331"
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="35590331"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2024 02:29:15 -0700
-X-CSE-ConnectionGUID: k1r6OsKRQFCS1EfPQN0cQA==
-X-CSE-MsgGUID: CA7JKEXdRCKKKuuDZ7stRQ==
+ 05 Sep 2024 02:29:24 -0700
+X-CSE-ConnectionGUID: eTSjporgQ+m7mbI5g3nXkg==
+X-CSE-MsgGUID: +E83bpzuTFWhMtoymgUY6Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="65404963"
+X-IronPort-AV: E=Sophos;i="6.10,204,1719903600"; d="scan'208";a="65405116"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.144])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2024 02:29:11 -0700
+ 05 Sep 2024 02:29:20 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -56,10 +56,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v6 12/17] scripts/igt_doc: Add '--exclude-files'
- parameter
-Date: Thu,  5 Sep 2024 11:28:07 +0200
-Message-Id: <20240905092812.94553-13-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v6 14/17] lib/intel_batchbuffer: Add support for
+ long-running mode execution
+Date: Thu,  5 Sep 2024 11:28:09 +0200
+Message-Id: <20240905092812.94553-15-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240905092812.94553-1-christoph.manszewski@intel.com>
 References: <20240905092812.94553-1-christoph.manszewski@intel.com>
@@ -81,113 +81,249 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently the doc scripts relies on a static list of files passed
-through the respective '<config>.json' file for generating
-documentation. This results in a compilation error when we exclude some
-tests from building since the doc script notices documentation generated
-for missing binaries.
+From: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 
-Make it possible to dynamically exclude files from doc generation using
-'--exclude-files' parameter. Merge excluded files passed with that parameter
-with files excluded from the test config '.json' files. Align the behavior
-of the '--files' parameter to also merge with files included from the config.
+To execute in lr (long-running) mode, apart from setting
+'DRM_XE_VM_CREATE_FLAG_LR_MODE' flag during vm creation, it is required
+to use 'DRM_XE_SYNC_TYPE_USER_FENCE' syncs with vm_bind and xe_exec
+ioctls.
 
+Make it possible to execute batch buffers via intel_bb_exec() in lr mode
+by setting the 'lr_mode' field with the supplied setter.
+
+Signed-off-by: Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- scripts/igt_doc.py   |  3 +++
- scripts/test_list.py | 47 +++++++++++++++++++++++++-------------------
- 2 files changed, 30 insertions(+), 20 deletions(-)
+ lib/intel_batchbuffer.c | 149 ++++++++++++++++++++++++++++++++++++++--
+ lib/intel_batchbuffer.h |  17 +++++
+ 2 files changed, 162 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/igt_doc.py b/scripts/igt_doc.py
-index fa2c2c7ca..9b7317feb 100755
---- a/scripts/igt_doc.py
-+++ b/scripts/igt_doc.py
-@@ -313,6 +313,8 @@ def main():
-                         help="Generate testlists for Intel CI integration at the INTELCI_TESTLIST directory.")
-     parser.add_argument('--files', nargs='+',
-                         help="File name(s) to be processed")
-+    parser.add_argument('--exclude-files', nargs='+',
-+                        help="File name(s) to ignore")
+diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+index f91091bc4..f3df9f965 100644
+--- a/lib/intel_batchbuffer.c
++++ b/lib/intel_batchbuffer.c
+@@ -986,6 +986,7 @@ __intel_bb_create(int fd, uint32_t ctx, uint32_t vm, const intel_ctx_cfg_t *cfg,
+ 	igt_assert(ibb->batch);
+ 	ibb->ptr = ibb->batch;
+ 	ibb->fence = -1;
++	ibb->user_fence_offset = -1;
  
-     parse_args = parser.parse_args()
+ 	/* Cache context configuration */
+ 	if (cfg) {
+@@ -1449,7 +1450,7 @@ int intel_bb_sync(struct intel_bb *ibb)
+ {
+ 	int ret;
  
-@@ -325,6 +327,7 @@ def main():
-         tests = IgtTestList(config_fname = config,
-                             include_plan = parse_args.include_plan,
-                             file_list = parse_args.files,
-+                            exclude_file_list = parse_args.exclude_files,
-                             igt_build_path = parse_args.igt_build_path)
+-	if (ibb->fence < 0 && !ibb->engine_syncobj)
++	if (ibb->fence < 0 && !ibb->engine_syncobj && ibb->user_fence_offset < 0)
+ 		return 0;
  
-         if parse_args.filter_field:
-diff --git a/scripts/test_list.py b/scripts/test_list.py
-index 69c830ca1..4fe209e5a 100644
---- a/scripts/test_list.py
-+++ b/scripts/test_list.py
-@@ -250,7 +250,7 @@ class TestList:
-                  config_dict = None, sources_path = None,
-                  test_tag = "TEST", subtest_tag = "SUBTESTS?",
-                  main_name = "igt", planned_name = "planned",
--                 subtest_separator = "@"):
-+                 subtest_separator = "@", exclude_file_list = None):
-         self.doc = {}
-         self.test_number = 0
-         self.config = None
-@@ -368,28 +368,35 @@ class TestList:
-         if "_properties_" in self.props:
-             del self.props["_properties_"]
- 
--        has_implemented = False
-+        if not exclude_file_list:
-+            exclude_file_list = []
-+        else:
-+            exclude_file_list = [os.path.normpath(f) for f in exclude_file_list]
+ 	if (ibb->fence >= 0) {
+@@ -1458,10 +1459,28 @@ int intel_bb_sync(struct intel_bb *ibb)
+ 			close(ibb->fence);
+ 			ibb->fence = -1;
+ 		}
+-	} else {
+-		igt_assert_neq(ibb->engine_syncobj, 0);
++	} else if (ibb->engine_syncobj) {
+ 		ret = syncobj_wait_err(ibb->fd, &ibb->engine_syncobj,
+ 				       1, INT64_MAX, 0);
++	} else {
++		int64_t timeout = -1;
++		uint64_t *sync_data;
++		void *map;
 +
-+        exclude_file_glob = self.config.get("exclude_files", [])
-+        for cfg_file in exclude_file_glob:
-+            cfg_file = cfg_path + cfg_file
-+            for fname in glob.glob(cfg_file):
-+                exclude_file_list.append(fname)
++		igt_assert(ibb->user_fence_offset >= 0);
 +
-         if not self.filenames:
-             self.filenames = []
--            exclude_files = []
--            files = self.config["files"]
--            exclude_file_glob = self.config.get("exclude_files", [])
--            for cfg_file in exclude_file_glob:
--                cfg_file = cfg_path + cfg_file
--                for fname in glob.glob(cfg_file):
--                    exclude_files.append(fname)
--
--            for cfg_file in files:
--                cfg_file = cfg_path + cfg_file
--                for fname in glob.glob(cfg_file):
--                    if fname in exclude_files:
--                        continue
--                    self.filenames.append(fname)
--                    has_implemented = True
-         else:
--            for cfg_file in self.filenames:
--                if cfg_file:
--                    has_implemented = True
-+            self.filenames = [os.path.normpath(f) for f in self.filenames]
++		map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
++		sync_data = (void *)((uint8_t *)map + ibb->user_fence_offset);
 +
-+        files = self.config["files"]
-+        for cfg_file in files:
-+            cfg_file = cfg_path + cfg_file
-+            for fname in glob.glob(cfg_file):
-+                if fname in exclude_file_list:
-+                    continue
-+                self.filenames.append(fname)
++		ret = __xe_wait_ufence(ibb->fd, sync_data, ibb->user_fence_value,
++				       ibb->ctx ?: ibb->engine_id, &timeout);
 +
-+        has_implemented = False
-+        for cfg_file in self.filenames:
-+            if cfg_file:
-+                has_implemented = True
-+                break
++		gem_munmap(map, ibb->size);
++		ibb->user_fence_offset = -1;
++
++		/* Workload finished forcibly, but finished none the less */
++		if (ret == -EIO)
++			ret = 0;
+ 	}
  
-         has_planned = False
-         if include_plan and "planning_files" in self.config:
+ 	return ret;
+@@ -2435,6 +2454,125 @@ __xe_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
+ 	return 0;
+ }
+ 
++static int
++__xe_lr_bb_exec(struct intel_bb *ibb, uint64_t flags, bool sync)
++{
++	uint32_t engine = flags & (I915_EXEC_BSD_MASK | I915_EXEC_RING_MASK);
++	uint32_t engine_id;
++#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
++	/*
++	 * LR mode vm_bind requires to use DRM_XE_SYNC_TYPE_USER_FENCE type sync
++	 * LR mode xe_exec requires to use DRM_XE_SYNC_TYPE_USER_FENCE type sync
++	 */
++	struct drm_xe_sync syncs[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE
++		},
++		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		  .timeline_value = USER_FENCE_VALUE
++		},
++	};
++	struct drm_xe_vm_bind_op *bind_ops;
++	struct {
++		uint64_t vm_sync;
++		uint64_t exec_sync;
++	} *sync_data;
++	uint32_t sync_offset;
++	uint64_t ibb_addr, vm_sync_addr, exec_sync_addr;
++	void *map;
++
++	igt_assert_eq(ibb->num_relocs, 0);
++	igt_assert_eq(ibb->xe_bound, false);
++
++	if (ibb->ctx) {
++		engine_id = ibb->ctx;
++	} else if (ibb->last_engine != engine) {
++		struct drm_xe_engine_class_instance inst = { };
++
++		inst.engine_instance =
++			(flags & I915_EXEC_BSD_MASK) >> I915_EXEC_BSD_SHIFT;
++
++		switch (flags & I915_EXEC_RING_MASK) {
++		case I915_EXEC_DEFAULT:
++		case I915_EXEC_BLT:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_COPY;
++			break;
++		case I915_EXEC_BSD:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_DECODE;
++			break;
++		case I915_EXEC_RENDER:
++			if (xe_has_engine_class(ibb->fd, DRM_XE_ENGINE_CLASS_RENDER))
++				inst.engine_class = DRM_XE_ENGINE_CLASS_RENDER;
++			else
++				inst.engine_class = DRM_XE_ENGINE_CLASS_COMPUTE;
++			break;
++		case I915_EXEC_VEBOX:
++			inst.engine_class = DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE;
++			break;
++		default:
++			igt_assert_f(false, "Unknown engine: %x", (uint32_t)flags);
++		}
++		igt_debug("Run on %s\n", xe_engine_class_string(inst.engine_class));
++
++		if (ibb->engine_id)
++			xe_exec_queue_destroy(ibb->fd, ibb->engine_id);
++
++		ibb->engine_id = engine_id =
++			xe_exec_queue_create(ibb->fd, ibb->vm_id, &inst, 0);
++	} else {
++		engine_id = ibb->engine_id;
++	}
++	ibb->last_engine = engine;
++
++	/* User fence add for sync: sync.addr has a quadword align limitation */
++	intel_bb_ptr_align(ibb, 8);
++	sync_offset = intel_bb_offset(ibb);
++	intel_bb_ptr_add(ibb, sizeof(*sync_data));
++
++	map = xe_bo_map(ibb->fd, ibb->handle, ibb->size);
++	memcpy(map, ibb->batch, ibb->size);
++
++	sync_data = (void *)((uint8_t *)map + sync_offset);
++	/* vm_sync userfence userspace address. */
++	vm_sync_addr = to_user_pointer(&sync_data->vm_sync);
++	ibb_addr = ibb->batch_offset;
++	/* exec_sync userfence ppgtt address. */
++	exec_sync_addr = ibb_addr + sync_offset + sizeof(uint64_t);
++	syncs[0].addr = vm_sync_addr;
++	syncs[1].addr = exec_sync_addr;
++
++	if (ibb->num_objects > 1) {
++		bind_ops = xe_alloc_bind_ops(ibb, DRM_XE_VM_BIND_OP_MAP, 0, 0);
++		xe_vm_bind_array(ibb->fd, ibb->vm_id, 0, bind_ops,
++				 ibb->num_objects, syncs, 1);
++		free(bind_ops);
++	} else {
++		igt_debug("bind: MAP\n");
++		igt_debug("  handle: %u, offset: %llx, size: %llx\n",
++			  ibb->handle, (long long)ibb->batch_offset,
++			  (long long)ibb->size);
++		xe_vm_bind_async(ibb->fd, ibb->vm_id, 0, ibb->handle, 0,
++				 ibb->batch_offset, ibb->size, syncs, 1);
++	}
++
++	/* use default vm_bind_exec_queue */
++	xe_wait_ufence(ibb->fd, &sync_data->vm_sync, USER_FENCE_VALUE, 0, -1);
++	gem_munmap(map, ibb->size);
++
++	ibb->xe_bound = true;
++	ibb->user_fence_value = USER_FENCE_VALUE;
++	ibb->user_fence_offset = sync_offset + sizeof(uint64_t);
++
++	xe_exec_sync(ibb->fd, engine_id, ibb->batch_offset, &syncs[1], 1);
++
++	if (sync)
++		intel_bb_sync(ibb);
++
++	return 0;
++}
++
+ /*
+  * __intel_bb_exec:
+  * @ibb: pointer to intel_bb
+@@ -2536,7 +2674,10 @@ void intel_bb_exec(struct intel_bb *ibb, uint32_t end_offset,
+ 	if (ibb->driver == INTEL_DRIVER_I915)
+ 		igt_assert_eq(__intel_bb_exec(ibb, end_offset, flags, sync), 0);
+ 	else
+-		igt_assert_eq(__xe_bb_exec(ibb, flags, sync), 0);
++		if (intel_bb_get_lr_mode(ibb))
++			igt_assert_eq(__xe_lr_bb_exec(ibb, flags, sync), 0);
++		else
++			igt_assert_eq(__xe_bb_exec(ibb, flags, sync), 0);
+ }
+ 
+ /**
+diff --git a/lib/intel_batchbuffer.h b/lib/intel_batchbuffer.h
+index 9e3430e2a..a63b31a33 100644
+--- a/lib/intel_batchbuffer.h
++++ b/lib/intel_batchbuffer.h
+@@ -303,6 +303,11 @@ struct intel_bb {
+ 	 * is not thread-safe.
+ 	 */
+ 	int32_t refcount;
++
++	/* long running mode */
++	bool lr_mode;
++	int64_t user_fence_offset;
++	uint64_t user_fence_value;
+ };
+ 
+ struct intel_bb *
+@@ -423,6 +428,18 @@ static inline uint32_t intel_bb_pxp_appid(struct intel_bb *ibb)
+ 	return ibb->pxp.appid;
+ }
+ 
++static inline void intel_bb_set_lr_mode(struct intel_bb *ibb, bool lr_mode)
++{
++	igt_assert(ibb);
++	ibb->lr_mode = lr_mode;
++}
++
++static inline bool intel_bb_get_lr_mode(struct intel_bb *ibb)
++{
++	igt_assert(ibb);
++	return ibb->lr_mode;
++}
++
+ struct drm_i915_gem_exec_object2 *
+ intel_bb_add_object(struct intel_bb *ibb, uint32_t handle, uint64_t size,
+ 		    uint64_t offset, uint64_t alignment, bool write);
 -- 
 2.34.1
 
