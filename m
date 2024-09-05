@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C5F2CD5BCB
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 14:51:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4354CD5BCE
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Sep 2024 14:51:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0971310E8E1;
-	Thu,  5 Sep 2024 14:51:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 660FB10E8DE;
+	Thu,  5 Sep 2024 14:51:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CTeWxKbM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hyD+v5RR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC26110E8DB
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 14:51:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3C2510E8E4
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Sep 2024 14:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725547894; x=1757083894;
+ t=1725547896; x=1757083896;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=O1pdMinXU/3YbxvlW8YPVW3iWqp36HT1YE6Cq5c5iXQ=;
- b=CTeWxKbMOjTM1wRtgwlLgxBT4G/LVctbqaLb61n9FfIg6BLXvaVMOj+N
- zc/m0z0JWd56kL5ZNCOov+TQNnxKv+PPRA2n419I2uj0Dvd4t8L8Vbqi5
- 2bnLXeqKl8fEYqrfMGEgjC+YSY+FJVK6u9Zwky5BziAziGnLzxVMYTVSi
- e9MLOu4ZQr2ky5icznnc7O+gIa6q44dE47ifIcz70Dpj0xsEL2imbMME9
- fl1l1G2MRhW2LRChYkV27613IMvl9ux9dciuYpP+BnwE0awLP6pFwEFKT
- TOGwh4yiGuYvkf39KJKTeLiPt0B+RrCkHVKLgfO7sjSZjHKbgpOneFkPv w==;
-X-CSE-ConnectionGUID: LrqCWi6lTO+Fjhvl1Ch70w==
-X-CSE-MsgGUID: goKQk7aTQYWF0RLCnHuc5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="24145527"
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; d="scan'208";a="24145527"
+ bh=CrpdyCAQMmpsP2OPshaGpgWS5lGAjYxPmLbm/TBc3eg=;
+ b=hyD+v5RRa5fbK3N1kht4iIEkTm/JaGJN9rQ1MQxgWFZSE3gmE0on4BP3
+ ONNaj4y3kuqewVdJTN1wcAfZi7kLzVuAX32Hfa2k+ayMCbW6Wy3mKYCJD
+ hUlJcAr7U5IHEz1+n8SdIYtzPyxQUpPepNTccpOR8pm/vAESiu2gvc9ze
+ kcPYgJHQTHQQYh44GYsSivFkdT4eTgpYQv9feF9eEQRgptv0JCB4beQyQ
+ NsqQXau2vaGe6CbSTdqWRtSUMV5uINcDOrVuNxhcI518xBvOJXFxJzkIU
+ Kc0cl6sNBXawN6NoHimNbQLLWLxM/s3osr2lot5t3PO8sgIGStoDgWCo0 Q==;
+X-CSE-ConnectionGUID: msfT+DEOSuC0e2vyb7X0fg==
+X-CSE-MsgGUID: +cqkI2nwRWexZEQpKZwfmA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="24145533"
+X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; d="scan'208";a="24145533"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Sep 2024 07:51:16 -0700
-X-CSE-ConnectionGUID: zfL2DEHkTAWVY6TFrJ93Ow==
-X-CSE-MsgGUID: FDZ2sC2GT+yTLCtvg6RMAg==
+ 05 Sep 2024 07:51:17 -0700
+X-CSE-ConnectionGUID: 8OKF6AKqQi+mgKmq5nX/xw==
+X-CSE-MsgGUID: FQzwU9qCQZagMz2VUt46WQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; d="scan'208";a="88887204"
+X-IronPort-AV: E=Sophos;i="6.10,205,1719903600"; d="scan'208";a="88887214"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 07:51:14 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2024 07:51:15 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 2/5] tests/kms_plane_scaling: Add informative logs
- for single plane scaling operations
-Date: Thu,  5 Sep 2024 20:20:35 +0530
-Message-ID: <20240905145038.1569226-3-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 3/5] tests/kms_plane_scaling: Return error code in
+ test_planes_scaling_combo
+Date: Thu,  5 Sep 2024 20:20:36 +0530
+Message-ID: <20240905145038.1569226-4-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240905145038.1569226-1-ramanaidu.naladala@intel.com>
 References: <20240905145038.1569226-1-ramanaidu.naladala@intel.com>
@@ -68,122 +68,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This will adds informative logging to the kms_plane_scaling test
-Logs indicating which output is being tried for scaling. When a
-required scaling operation is not supported on a particular output
-and the test is moving to the next output.
+Change the return type of test_planes_scaling_combo from void to
+uint32_t to return error codes. Modify the loop in
+scaler_with_2_planes_tests to break on successful
+test_planes_scaling_combo execution.
+
+v1: fix crash issues. (swati)
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- tests/kms_plane_scaling.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tests/kms_plane_scaling.c | 37 ++++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 17 deletions(-)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 5c5837a51..f03a73a5e 100644
+index f03a73a5e..5d69eabf4 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -1359,6 +1359,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				for_each_pipe(&data.display, pipe) {
- 					igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 						for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+							igt_info("Trying on %s\n", igt_output_name(output));
- 							if (!pipe_output_combo_valid(&data.display, pipe, output))
- 								continue;
- 							if (get_num_scalers(&data.display, pipe) < 1)
-@@ -1370,6 +1371,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 									pipe, output);
- 							if (ret == 0)
- 								break;
-+							igt_info("Required Scaling operation not supported on %s trying on next output\n",
-+								 igt_output_name(output));
- 						}
- 						igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 							      "Unsupported scaling operation in driver with return value %s\n",
-@@ -1385,6 +1388,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				for_each_pipe(&data.display, pipe) {
- 					igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 						for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+							igt_info("Trying on %s\n", igt_output_name(output));
- 							if (!pipe_output_combo_valid(&data.display, pipe, output))
- 								continue;
- 							if (get_num_scalers(&data.display, pipe) < 1)
-@@ -1397,6 +1401,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 									pipe, output);
- 							if (ret == 0)
- 								break;
-+							igt_info("Required Scaling operation not supported on %s trying on next output\n",
-+								 igt_output_name(output));
- 						}
- 						igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 							      "Unsupported scaling operation in driver with return value %s\n",
-@@ -1412,6 +1418,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 				for_each_pipe(&data.display, pipe) {
- 					igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 						for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+							igt_info("Trying on %s\n", igt_output_name(output));
- 							if (!pipe_output_combo_valid(&data.display, pipe, output))
- 								continue;
- 							if (get_num_scalers(&data.display, pipe) < 1)
-@@ -1424,6 +1431,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 									pipe, output);
- 							if (ret == 0)
- 								break;
-+							igt_info("Required Scaling operation not supported on %s trying on next output\n",
-+								 igt_output_name(output));
- 						}
- 						igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 							      "Unsupported scaling operation in driver with return value %s\n",
-@@ -1438,6 +1447,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe(&data.display, pipe) {
- 				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						igt_info("Trying on %s\n", igt_output_name(output));
- 						if (!pipe_output_combo_valid(&data.display, pipe, output))
- 							continue;
- 						if (get_num_scalers(&data.display, pipe) < 1)
-@@ -1448,6 +1458,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 											 output);
- 						if (ret == 0)
- 							break;
-+						igt_info("Required Scaling operation not supported on %s trying on next output\n",
-+							 igt_output_name(output));
+@@ -933,7 +933,7 @@ static void setup_fb(int fd, int width, int height, struct igt_fb *fb)
+ 		      fb);
+ }
+ 
+-static void
++static uint32_t
+ test_planes_scaling_combo(data_t *d, double sf_plane1,
+ 			  double sf_plane2,
+ 			  enum pipe pipe,
+@@ -997,13 +997,14 @@ test_planes_scaling_combo(data_t *d, double sf_plane1,
+ 							  pipe, output, p1, p2,
+ 							  &d->fb[1], &d->fb[2],
+ 							  test_type);
+-			if (ret != 0)
+-				break;
++			if (ret != 0) {
++				cleanup_fbs(d);
++				return ret;
++			}
+ 		}
+ 		cleanup_fbs(d);
+ 	}
+-	igt_skip_on_f(ret == -EINVAL || ret == -ERANGE, "Unsupported scaling operation in driver with return value %s\n",
+-		      (ret == -EINVAL) ? "-EINVAL" : "-ERANGE");
++	return ret;
+ }
+ 
+ static void
+@@ -1524,25 +1525,27 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		for (int index = 0; index < ARRAY_SIZE(scaler_with_2_planes_tests); index++) {
+ 			igt_describe(scaler_with_2_planes_tests[index].describe);
+ 			igt_subtest_with_dynamic(scaler_with_2_planes_tests[index].name) {
+-			for_each_pipe(&data.display, pipe) {
+-				for_each_valid_output_on_pipe(&data.display, pipe, output) {
+-					if (!pipe_output_combo_valid(&data.display, pipe, output))
+-						continue;
+-					if (get_num_scalers(&data.display, pipe) < 2)
+-						continue;
+-
+-					igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output)) {
+-
+-						test_planes_scaling_combo(&data,
++				for_each_pipe(&data.display, pipe) {
++					igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
++						for_each_valid_output_on_pipe(&data.display, pipe, output) {
++							if (!pipe_output_combo_valid(&data.display, pipe, output))
++								continue;
++							if (get_num_scalers(&data.display, pipe) < 2)
++								continue;
++							ret = test_planes_scaling_combo(&data,
+ 								scaler_with_2_planes_tests[index].sf_plane1,
+ 								scaler_with_2_planes_tests[index].sf_plane2,
+ 								pipe, output,
+ 								scaler_with_2_planes_tests[index].test_type);
++							if (ret == 0)
++								break;
++						}
++						igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
++							      "Unsupported scaling operation in driver with return value %s\n",
++							      (ret == -EINVAL) ? "-EINVAL" : "-ERANGE");
  					}
- 					igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 						      "Unsupported scaling operation in driver with return value %s\n",
-@@ -1462,6 +1474,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe(&data.display, pipe) {
- 				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						igt_info("Trying on %s\n", igt_output_name(output));
- 						if (!pipe_output_combo_valid(&data.display, pipe, output))
- 							continue;
- 						if (get_num_scalers(&data.display, pipe) < 1)
-@@ -1472,6 +1485,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 										     output);
- 						if (ret == 0)
- 							break;
-+						igt_info("Required Scaling operation not supported on %s trying on next output\n",
-+							 igt_output_name(output));
- 					}
- 					igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 						      "Unsupported scaling operation in driver with return value %s\n",
-@@ -1485,6 +1500,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 			for_each_pipe(&data.display, pipe) {
- 				igt_dynamic_f("pipe-%s", kmstest_pipe_name(pipe)) {
- 					for_each_valid_output_on_pipe(&data.display, pipe, output) {
-+						igt_info("Trying on %s\n", igt_output_name(output));
- 						if (!pipe_output_combo_valid(&data.display, pipe, output))
- 							continue;
- 						if (get_num_scalers(&data.display, pipe) < 1)
-@@ -1495,6 +1511,8 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 										     output);
- 						if (ret == 0)
- 							break;
-+						igt_info("Required Scaling operation not supported on %s trying on next output\n",
-+							 igt_output_name(output));
- 					}
- 					igt_skip_on_f(ret == -ERANGE || ret == -EINVAL,
- 						      "Unsupported scaling operation in driver with return value %s\n",
+-					break;
+ 				}
+ 			}
+-			}
+ 		}
+ 
+ 		for (int index = 0; index < ARRAY_SIZE(intel_paramtests); index++) {
 -- 
 2.43.0
 
