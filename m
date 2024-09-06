@@ -4,28 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 977F1C54FC6
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Sep 2024 03:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3ED93CE7AB2
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Sep 2024 05:58:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B35010E96F;
-	Fri,  6 Sep 2024 03:57:26 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C68D210E974;
- Fri,  6 Sep 2024 03:57:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1874141429380951447=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E89E110E174;
+	Fri,  6 Sep 2024 05:58:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ql0LPEZl";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E33C10E173
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Sep 2024 05:58:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725602303; x=1757138303;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=hYXmmgqjGVNXQUNLmDIFc5Q563FZJvfQwMTcjeXzvRU=;
+ b=Ql0LPEZlGh6UrhRkM4C+36sRBIOxBqNDNRfBJwnZAvXktRxWZRU3J1zb
+ dh5k+NyCk8hqLo47tQ5xA5jt/ZL5G6gxSJrnDpxqlTwDuEmuneYYKbdgs
+ JfS9k90etKgQ/ACD0DTqnGTkHaW5MBN9Bhiu+r4HPlHsnnlAJkqoALo8N
+ 50rHDe9oAvW1t33nFyw6prG7PXpL4bkmQcPM1rorHersY6nExR06ZGV/N
+ xHL67/nnCV2acsXkXx00kmHE5kl4FEtiDdFZHBSn9fNlKY6JMLh+MTh+5
+ cpXgWL2HBnbuKF3WRWoqzPrtVwxiQ64b9LqHHozTketM6T2LaVitJummv A==;
+X-CSE-ConnectionGUID: g5SJcpTMR92usULnWLT0EA==
+X-CSE-MsgGUID: 7LXqyRzLQhKgEr/PgFaaJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="23907314"
+X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; d="scan'208";a="23907314"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Sep 2024 22:58:23 -0700
+X-CSE-ConnectionGUID: TZ/RMVdXQbuOVexQUP/96Q==
+X-CSE-MsgGUID: icm3TJvpQouj+m6aH5RCPg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,206,1719903600"; d="scan'208";a="66395454"
+Received: from ahajda-mobl.ger.corp.intel.com (HELO [10.245.80.70])
+ ([10.245.80.70])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Sep 2024 22:58:20 -0700
+Message-ID: <e428a67e-6109-451a-bb1a-6eab330279ef@intel.com>
+Date: Fri, 6 Sep 2024 07:58:16 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/km=5Fpm=5Fbrightness?=
- =?utf-8?q?=2Ec=3A_check_for_flickers_while_adjusting_the_brightness=2E_=28r?=
- =?utf-8?q?ev5=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 06 Sep 2024 03:57:24 -0000
-Message-ID: <172559504480.952780.9540833880144359464@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240627030211.164110-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20240627030211.164110-1-santhosh.reddy.guddati@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v6 04/17] lib/gpgpu_shader: Add write_on_exception
+ template
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ =?UTF-8?Q?Dominik_Karol_Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>, Pawel Sikora <pawel.sikora@intel.com>,
+ Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
+ Mika Kuoppala <mika.kuoppala@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+References: <20240905092812.94553-1-christoph.manszewski@intel.com>
+ <20240905092812.94553-5-christoph.manszewski@intel.com>
+ <20240905105131.7sqnzdpgnfad5azw@zkempczy-mobl2>
+Content-Language: en-US
+From: Andrzej Hajda <andrzej.hajda@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240905105131.7sqnzdpgnfad5azw@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,273 +81,230 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1874141429380951447==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: tests/km_pm_brightness.c: check for flickers while adjusting the brightness. (rev5)
-URL   : https://patchwork.freedesktop.org/series/135463/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8007 -> IGTPW_11710
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-arlh-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11710 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@nullptr:
-    - bat-arls-1:         [PASS][1] -> [DMESG-WARN][2] ([i915#12102])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-1/igt@fbdev@nullptr.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-1/igt@fbdev@nullptr.html
-
-  
-#### Possible fixes ####
-
-  * igt@fbdev@read:
-    - bat-arls-1:         [DMESG-WARN][3] ([i915#12102]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-1/igt@fbdev@read.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-1/igt@fbdev@read.html
-
-  * igt@i915_module_load@reload:
-    - fi-kbl-7567u:       [DMESG-WARN][5] ([i915#180] / [i915#1982] / [i915#9925]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@i915_module_load@reload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@i915_module_load@reload.html
-    - bat-apl-1:          [DMESG-WARN][7] ([i915#180] / [i915#1982]) -> [PASS][8] +5 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@i915_module_load@reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@i915_module_load@reload.html
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-kbl-7567u:       [DMESG-WARN][9] ([i915#11621] / [i915#180] / [i915#1982] / [i915#9925]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-arls-2:         [DMESG-WARN][11] ([i915#10341]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-2/igt@i915_selftest@live.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-2:         [DMESG-WARN][13] ([i915#11349]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-2/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][15] ([i915#11621]) -> [PASS][16] +81 other tests pass
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-    - bat-apl-1:          [DMESG-WARN][17] ([i915#11621]) -> [PASS][18] +79 other tests pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [DMESG-WARN][19] ([i915#180]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:
-    - bat-apl-1:          [DMESG-WARN][21] ([i915#11621] / [i915#180] / [i915#1982]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - fi-kbl-7567u:       [DMESG-WARN][23] ([i915#180] / [i915#9925]) -> [PASS][24] +13 other tests pass
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@kms_pipe_crc_basic@nonblocking-crc.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@kms_pipe_crc_basic@nonblocking-crc.html
-    - bat-apl-1:          [DMESG-WARN][25] ([i915#180]) -> [PASS][26] +8 other tests pass
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html
-    - bat-arls-5:         [INCOMPLETE][27] ([i915#11320]) -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][29] ([i915#11621] / [i915#180] / [i915#9925]) -> [PASS][30] +36 other tests pass
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-    - bat-apl-1:          [DMESG-WARN][31] ([i915#11621] / [i915#180]) -> [PASS][32] +33 other tests pass
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
-  [i915#11320]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#9925]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925
 
 
-Build changes
--------------
+On 05.09.2024 12:51, Zbigniew Kempczyński wrote:
+> On Thu, Sep 05, 2024 at 11:27:59AM +0200, Christoph Manszewski wrote:
+>> From: Andrzej Hajda <andrzej.hajda@intel.com>
+>>
+>> Writing specific value to memory location on unexpected value in exception
+>> register allows to report errors from inside shader or siplet.
+>>
+>> Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+>> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+>> ---
+>>   lib/gpgpu_shader.c          | 53 ++++++++++++++++++++++
+>>   lib/gpgpu_shader.h          |  2 +
+>>   lib/iga64_generated_codes.c | 87 ++++++++++++++++++++++++++++++++++++-
+>>   3 files changed, 141 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+>> index dacab51dd..926eccaa0 100644
+>> --- a/lib/gpgpu_shader.c
+>> +++ b/lib/gpgpu_shader.c
+>> @@ -634,6 +634,59 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>>   	", 2, y_offset, 3, value, value, value, value);
+>>   }
+>>   
+>> +/**
+>> + * gpgpu_shader__write_on_exception:
+>> + * @shdr: shader to be modified
+>> + * @value: dword to be written
+>> + * @y_offset: write target offset within the surface in rows
+>> + * @mask: mask to be applied on exception register
+>> + * @expected: expected value of exception register with @mask applied
+>> + *
+>> + * Check if bits specified by @mask in exception register(cr0.1) are equal
+>> + * to provided ones: cr0.1 & @mask == @expected,
+>> + * if yes fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
+>> + */
+>> +void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
+>> +				      uint32_t y_offset, uint32_t mask, uint32_t expected)
+>> +{
+>> +	emit_iga64_code(shdr, write_on_exception, "					\n\
+>> +	// Clear message header								\n\
+>> +(W)	mov (16|M0)              r4.0<1>:ud    0x0:ud					\n\
+> I got rid off rest of instructions and appropriate xe_exec_sip tests are
+> still passing. May you check why this happens?
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8007 -> IGTPW_11710
+The "rest of instructions" are used to set error value. If you get rid 
+of them, the error will not be set, and the test will report almost 
+always success.
+So this is correct behavior.
+On the other side, I agree block writing is quite big and complicated 
+and varies between gens. So if some day the block will stop working as 
+expected, the test will always report success.
+There are multiple ways of hardening it, for example, we can perform 
+write on success (as opposed to the current situation, when we perform 
+write only on error).
 
-  CI-20190529: 20190529
-  CI_DRM_15369: 7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11710: 11710
-  IGT_8007: 8f9900c288f4cf1244d66baa71bc6d9355747cbd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Regards
+Andrzej
 
-== Logs ==
+>
+> --
+> Zbigniew
+>
+>> +	// Payload									\n\
+>> +(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud				\n\
+>> +#if GEN_VER < 2000 // prepare Media Block Write						\n\
+>> +	// X offset of the block in bytes := (thread group id X << ARG(0))		\n\
+>> +(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
+>> +	// Y offset of the block in rows := thread group id Y				\n\
+>> +(W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud				\n\
+>> +(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud		\n\
+>> +	// block width [0,63] representing 1 to 64 bytes				\n\
+>> +(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud				\n\
+>> +	// FFTID := FFTID from R0 header						\n\
+>> +(W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud				\n\
+>> +#else // prepare Typed 2D Block Store							\n\
+>> +	// Load r2.0-3 with tg id X << ARG(0)						\n\
+>> +(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
+>> +	// Load r2.4-7 with tg id Y + ARG(1):ud						\n\
+>> +(W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud				\n\
+>> +(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud		\n\
+>> +	// Store X and Y block start (160:191 and 192:223)				\n\
+>> +(W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud				\n\
+>> +	// Store X and Y block max_size (224:231 and 232:239)				\n\
+>> +(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud				\n\
+>> +#endif											\n\
+>> +	// Check if masked exception is equal to provided value and write conditionally \n\
+>> +(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(4):ud		\n\
+>> +(W)      mov (1|M0)              f0.0<1>:ud     0x0:ud					\n\
+>> +(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(5):ud		\n\
+>> +#if GEN_VER < 2000 // Media Block Write							\n\
+>> +(W&f0.0) send.dc1 (16|M0)        null     r4   src1_null 0    0x40A8000			\n\
+>> +#else // Typed 2D Block Store								\n\
+>> +(W&f0.0) send.tgm (16|M0)        null     r4   null:0    0    0x64000007		\n\
+>> +#endif											\n\
+>> +	", 2, y_offset, 3, value, mask, expected);
+>> +}
+>> +
+>>   /**
+>>    * gpgpu_shader__end_system_routine:
+>>    * @shdr: shader to be modified
+>> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+>> index da4ece983..6c6953a1a 100644
+>> --- a/lib/gpgpu_shader.h
+>> +++ b/lib/gpgpu_shader.h
+>> @@ -79,6 +79,8 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
+>>   void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
+>>   void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>>   			       uint32_t y_offset);
+>> +void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw,
+>> +			       uint32_t y_offset, uint32_t mask, uint32_t value);
+>>   void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
+>>   void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
+>>   void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
+>> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+>> index dd849eebc..0800496c5 100644
+>> --- a/lib/iga64_generated_codes.c
+>> +++ b/lib/iga64_generated_codes.c
+>> @@ -3,7 +3,7 @@
+>>   
+>>   #include "gpgpu_shader.h"
+>>   
+>> -#define MD5_SUM_IGA64_ASMS 33b7cd843e3b009c123a85a6c520d7d0
+>> +#define MD5_SUM_IGA64_ASMS 716c5b437e2abd2a1768e79182993ff6
+>>   
+>>   struct iga64_template const iga64_code_gpgpu_fill[] = {
+>>   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>> @@ -192,6 +192,91 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
+>>   	}}
+>>   };
+>>   
+>> +struct iga64_template const iga64_code_write_on_exception[] = {
+>> +	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+>> +		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
+>> +		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+>> +		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
+>> +		0x80041961, 0x04550220, 0x00220205, 0x00000000,
+>> +		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
+>> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded004,
+>> +		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x84134031, 0x00000000, 0xd00e0494, 0x04000000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
+>> +		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded004,
+>> +		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
+>> +		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
+>> +		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
+>> +		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+>> +		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
+>> +		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04450220, 0x00000054, 0x00000000,
+>> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded004,
+>> +		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x84134031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
+>> +		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded004,
+>> +		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
+>> +		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>> +	}},
+>> +	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
+>> +		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> +		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> +		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> +		0x80000165, 0x03058220, 0x02008020, 0xc0ded004,
+>> +		0x80000161, 0x30014220, 0x00000000, 0x00000000,
+>> +		0x80000270, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x8104a031, 0x00000000, 0xc0000414, 0x02a00000,
+>> +		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>> +		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> +		0x80000101, 0x00010000, 0x00000000, 0x00000000,
+>> +	}}
+>> +};
+>> +
+>>   struct iga64_template const iga64_code_media_block_write[] = {
+>>   	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+>>   		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -- 
+>> 2.34.1
+>>
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/index.html
-
---===============1874141429380951447==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/km_pm_brightness.c: check for flickers while adjusting the brightness. (rev5)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135463/">https://patchwork.freedesktop.org/series/135463/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8007 -&gt; IGTPW_11710</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-arlh-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11710 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@fbdev@nullptr:<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-1/igt@fbdev@nullptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-1/igt@fbdev@nullptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-1/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-1/igt@fbdev@read.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925">i915#9925</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@i915_module_load@reload.html">PASS</a></li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@i915_module_load@reload.html">PASS</a> +5 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925">i915#9925</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-2/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-2/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +81 other tests pass</li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank@a-dp1.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@kms_pipe_crc_basic@nonblocking-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925">i915#9925</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> +13 other tests pass</li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> +8 other tests pass</li>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320">i915#11320</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9925">i915#9925</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +36 other tests pass</li>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8007/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11710/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +33 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8007 -&gt; IGTPW_11710</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15369: 7f3ffaf88a3a1b3e29416488fb4e58fd551cd89d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11710: 11710<br />
-  IGT_8007: 8f9900c288f4cf1244d66baa71bc6d9355747cbd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1874141429380951447==--
