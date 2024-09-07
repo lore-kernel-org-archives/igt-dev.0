@@ -4,73 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E2E1E6FE53
-	for <igt-dev@archiver.kernel.org>; Sat,  7 Sep 2024 08:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46001E71080
+	for <igt-dev@archiver.kernel.org>; Sat,  7 Sep 2024 11:39:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C5FDC10E203;
-	Sat,  7 Sep 2024 08:27:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9CE8C10E205;
+	Sat,  7 Sep 2024 11:39:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="AMJLaB/2";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fvxDZV4I";
 	dkim-atps=neutral
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com
- [209.85.221.45])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A469810E203
- for <igt-dev@lists.freedesktop.org>; Sat,  7 Sep 2024 08:27:02 +0000 (UTC)
-Received: by mail-wr1-f45.google.com with SMTP id
- ffacd0b85a97d-374b5f27cf2so1701484f8f.1
- for <igt-dev@lists.freedesktop.org>; Sat, 07 Sep 2024 01:27:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1725697621; x=1726302421; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=MPvns3Vx579NkdE/UkOakPOu0Si2jefMQqWMxAKl4vE=;
- b=AMJLaB/2u528dYglggkF0NYgbfxPhzj2v3z+in+jh3XYxVYpoc/KWBXYYljNDAhNsN
- qSiLK3DT1QdzVy/1+fgmNuvfT6+BRFqGQKltuoS8zi4ZZj+nS/gPUjslcNi4YXyYyfxS
- NzKqr6Uld9V0rse0UsZ4gS09n8eIGNAwzp5Cox71joF/ZfJpq16LOg7FHeecQOmD+/vA
- 3a9a4b1X62y2M0/uPSccpD+Xd4RzeeXPibHYSrgKImpVWVmuRvdhDTC0Awpa73m4mczR
- taea05REMSBL2ranHcPqlXLwyZdc76u8Of9YD3Ktd1IAFi3MYqiuedSwjt6e2eD699X7
- wwgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1725697621; x=1726302421;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:cc:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=MPvns3Vx579NkdE/UkOakPOu0Si2jefMQqWMxAKl4vE=;
- b=vtugmdeOB21FWIC4yiKaQKNF2YskUuKwWgnZAzxaRfVZK5f03dot//dkg+kYlNFPz7
- JNYnNYNMNhgn/603N1tF4S08uSZ+gGavhz/WfYbp6fmZI89rJpKStuZQMxA/6ovhBe+Y
- h6MPldPvH89CbORJQcSKBhTq4U5BFfhcZCoucU/RHQ25sh/ZwObgjMfpe2Dd32ymYwxc
- kYXUBuPT9NzdAL3J6KB6lVqAmubVbBGWTj3t0y4Yy9Yaa8UwHMB7C1DTNX4FiNMNp27N
- RyvjtXDldeKBpuLnSuEBZnY5sLxAcHPXTDwIeeONyWPC5B8rrQXcWcYzTvH0lyw9v56U
- NGvQ==
-X-Gm-Message-State: AOJu0YzwqQtcXxNevQCSHXotX+nXC24ZJ6QKWUzJwMQyWwWKmnZE1gnE
- blmrslNffWjewJLXZ4brB5y2hrUL13FnPpYJVLz8SagdPOVMKlEj
-X-Google-Smtp-Source: AGHT+IH+FuzCnhRcW/iRSbaWRV2R/YsTrkyus9wrva7pGE0Yrn3N5XfdmrPaH3pBZ2+76poVTNXXBw==
-X-Received: by 2002:adf:8b97:0:b0:374:d259:647f with SMTP id
- ffacd0b85a97d-3789269fe85mr1099641f8f.34.1725697620481; 
- Sat, 07 Sep 2024 01:27:00 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.78])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-378956653c6sm843413f8f.32.2024.09.07.01.26.57
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Sat, 07 Sep 2024 01:26:59 -0700 (PDT)
-Message-ID: <033d025a-a6bb-441b-a0f2-b32854932344@gmail.com>
-Date: Sat, 7 Sep 2024 11:26:52 +0300
-MIME-Version: 1.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86D8E10E205
+ for <igt-dev@lists.freedesktop.org>; Sat,  7 Sep 2024 11:39:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725709172; x=1757245172;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=qyq8DhQ0HgTWO5vV9YrU8ooeFmvJ64/M4RG9rtl52a8=;
+ b=fvxDZV4I6p/jKQBd1IPKccsoZDwMkkdrdpoupDwNlhOE2T4jmzv3eZf4
+ PwCMxyWqp5niCMtxzlP+L4jEellpx4ajomWpqCtXe7P9oHeqP3CXmNBdj
+ zDFGLDHg2HYmaB6Jhv7AP6OQdpDuXYBEkrkmq/UaKun6YmZ0Hg7lpP85c
+ z96YBo7J7B73Svqm3+lwRj5g8JwL57nMCgtOxFFVe2eDJUpMdYCiJ8yRw
+ PwmuCCcpm922gc7B8Ji6wFlSkhfF+suhahSb4n/l1gLhfG9xzG8ee39MR
+ szbc2qlqteQrcURD763G4DChOhSA8SdYSHXaXOnvw5+8ERgd4t/zhDPor w==;
+X-CSE-ConnectionGUID: SyzxhbkIQKWuFb3QjYC2/w==
+X-CSE-MsgGUID: X+pbou9yQIKOjqrGMh6Pkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11187"; a="28339822"
+X-IronPort-AV: E=Sophos;i="6.10,210,1719903600"; d="scan'208";a="28339822"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Sep 2024 04:39:31 -0700
+X-CSE-ConnectionGUID: cpvkQ+o9SVmONkqMzuLc9Q==
+X-CSE-MsgGUID: T4GC69j2RSOLQu56gE/ymA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,210,1719903600"; d="scan'208";a="66184333"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 07 Sep 2024 04:39:31 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sat, 7 Sep 2024 04:39:30 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sat, 7 Sep 2024 04:39:30 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Sat, 7 Sep 2024 04:39:30 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.177)
+ by edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sat, 7 Sep 2024 04:39:30 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WmNERwoExg8/vxyczDNk69f932gFUAYjG9YUi7yFQgjj0OZ5sq1wrcLXH7BVCPXjqYWYQ6hix7a3g7DqbvAHI2Htx5FimdhZivSrrqINU31hKkJmUZ5PsFfB7rHAhVQ50aCLaFRt2rpc5Oekuu+CPszH+JST5Aq3YJJD1wec3hBseYTmAhwI529614J1lrgoB1ih+iAB6nquarTPTASe2mDWs2a4FAG0O34KQE8MJFAHl+RrFP0QgcepyDpJQC8U7dKb5CiUsaCxlRiPEsDJaZ1W4J3nEV9VJQtPbBdMQi05hbKwJlNyxFanV9mCfdIWvFH8S27/wZEF3BRlK+cazg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=1w1ST7q8cvJhB70slS+CqVV0GKzJMvZcQtaA1ECCILM=;
+ b=j0cmuPRyIOlmKNr9z8XfH7RGAzXEdho7OoZt910TBLBaeBb0HG2hEXzo/DSJmLZ9rkgjkhnd/5pXe0RTiwurXiPYSy0eWqA3dSIxWONMYV7V9WsWO0q80ZgsU9GerNrKa8tHsy1zEAX43wbn8QIbPQYUcacuO4CPenNRmwmM+AsBE0eRTxGGeNZ2oI92yXP4XqOfCS3m810NDNaenws7lCPECAhFgnUhW06vsXGtJ21J1kcxVGWodnMtrMFqcnh3e/7QNq9ODxCA7P5Cjw/8YU/78HE+KI+rNl3a7vBzMhXjtYmtqJRdwbFqmKLrT+nBmYFXpP5VRwlUCNpz3roN4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM6PR11MB4738.namprd11.prod.outlook.com (2603:10b6:5:2a3::18)
+ by MW4PR11MB6935.namprd11.prod.outlook.com (2603:10b6:303:228::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.27; Sat, 7 Sep
+ 2024 11:39:27 +0000
+Received: from DM6PR11MB4738.namprd11.prod.outlook.com
+ ([fe80::7064:9c9a:d2ca:c6a1]) by DM6PR11MB4738.namprd11.prod.outlook.com
+ ([fe80::7064:9c9a:d2ca:c6a1%7]) with mapi id 15.20.7939.017; Sat, 7 Sep 2024
+ 11:39:27 +0000
+Message-ID: <d59e40be-ae35-485a-9f59-89fd7d32c689@intel.com>
+Date: Sat, 7 Sep 2024 17:09:21 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 05/23] lib/rendercopy: Always setup clear color for
- TGL
-To: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-References: <20240902143758.21036-1-ville.syrjala@linux.intel.com>
- <20240902143758.21036-6-ville.syrjala@linux.intel.com>
- <d08eeda6-a8e9-4ab9-8dc2-4860e97a2307@gmail.com> <ZtsHYjwtGwrNDU-E@intel.com>
+Subject: Re: [PATCH i-g-t 1/3] lib/igt_psr: Add mechanism to check sink status
+ as well
+To: <igt-dev@lists.freedesktop.org>
+References: <20240701051301.3344927-1-jouni.hogander@intel.com>
+ <20240701051301.3344927-2-jouni.hogander@intel.com>
 Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <ZtsHYjwtGwrNDU-E@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>
+In-Reply-To: <20240701051301.3344927-2-jouni.hogander@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MAXPR01CA0117.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a00:5d::35) To DM6PR11MB4738.namprd11.prod.outlook.com
+ (2603:10b6:5:2a3::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR11MB4738:EE_|MW4PR11MB6935:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5250b016-708c-47bf-1bd8-08dccf31ba58
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?S1B3Nko2amNNZkVKQnpHTmlhci9Oc2ZJdm9DQ0hURTlVUG9DdG4yNE5zWXln?=
+ =?utf-8?B?USsxMG9wN0RPR0FudWs0ZnoyYzVDMVZ1K0VPdmlZd0FDSzZEOHB0Q054eW85?=
+ =?utf-8?B?bi9ZNW1QRUdGL1o4dWN1aGNJa1F0eTMyaDlCTmRSaFdHWkw0Vml1OWpUOG1l?=
+ =?utf-8?B?VkdiU3pxL0dLMm02NGE3aU1YMGoyOUpjMDZKL3c1amIrdm1KR2haUTRsMlNw?=
+ =?utf-8?B?WGVVd0x3RC9kelZrR0lRbUR5a2kyVUwyejI3bWZUb012dFJLSFRQN25UTDZm?=
+ =?utf-8?B?VWV5WXVmcU1VZkViS3ZmRWFCRW9ndjh5V3VYSlN5U2c2MnNHU0ZLK2JFMDVE?=
+ =?utf-8?B?RkErdDlaMWU0NmNOSTFvNUJuOC9NZk1FQk1sWi9BZERwS0VoZUhZdVNXV0gx?=
+ =?utf-8?B?dUc0UkIrQlFDTis5VGJSeWFWcE1qRGM1ODNIeldEWlpCS2VsN0xOcUdLYVhv?=
+ =?utf-8?B?dXRkUTNiRnBBVjI4MWkvQWFocXJyd2tOdjlwZzNXaDZJdDhiWnRFWTc4ek5Z?=
+ =?utf-8?B?MEUyZmlvNGhmd3piamdBU2VqR3psV1BJWjMrRDNUUENiZHNGYTdVZm5mb0hk?=
+ =?utf-8?B?M2hoSnZVd2YySUxxRGdLMTFTeDlYcTV6RFpMaFgrS3JKY2ZoLzNaRUVDYVdz?=
+ =?utf-8?B?amRkUzNNZ3BFRERxZDBaRVU3U0gyRjJpUEpiSm14U3hOWFFBY0N1OFZ3MldD?=
+ =?utf-8?B?ckJGSDArMlo1SWtjN2p5S1hTS05GM0xld3hMNjBWLy8zcEhSRE1nb0pCU3FR?=
+ =?utf-8?B?cU5JRnJtMXhaZWFrMWppelNrSXRrUUcvSHdhMVM2OXhieCtJa1NFTG9iTk1R?=
+ =?utf-8?B?K0VuMDFhWm5RS0pRNUErL280UjBCbW5EQkkwcmxFekdjUDA0b3MwWlRIOXUz?=
+ =?utf-8?B?ajVXVFZtRXU0SmVCdSs2UGJWa1VITWtKTnFDRFNsWEVHTWszclkxNDJPaUZH?=
+ =?utf-8?B?RFBNSXR0VVZxdjRDQWl3SUVwUDFOc25JZUJhN1BtM0lFVTArVGYrajdvUTg3?=
+ =?utf-8?B?d1J0bGpIb3JrWjlGT0tRMktkTzF5Uk5va0U3NXZtc3JIZ1VieEx5RU5zQ3F4?=
+ =?utf-8?B?eW84K3BWNTNHdWk3UzJnaWk5a05jVFhQNDQ1UmJPTFRYQ1NMYzlKbEhraUtS?=
+ =?utf-8?B?Y2dQVFErakM0eTlubUdqdC8wVXV5bXpnMG4yMTUvblJIaGgxT0ZTcVJ1MG1H?=
+ =?utf-8?B?TzIrMGNuM0Nlb3VabjRZZWYyclNLOFhmMm5wOHZNY2NlNmZBdlhVbkZHMmF0?=
+ =?utf-8?B?d0R0d0V5eWZQc3RGVW9HTndnNkE0VkxvNG5KUTNMaUcxM1R6aXNwbHM5ckxu?=
+ =?utf-8?B?ZnhxTXg0VXh2b0l6STZQN1c1Nk16T043VDNjZi9GZkM1VEs2azVPQnRMNGpn?=
+ =?utf-8?B?UktIUG5BcEJHR0pybTFIVTl1a2g2YTBtWEpOMk5GemxkUloxNXVRTStKUlJT?=
+ =?utf-8?B?N0ZkQzNkN3hQTFhNd3lTOGVGL1R5dExTbW84aXRScXZnaFZEcFFjOGg3TnBh?=
+ =?utf-8?B?b2FDYXB0Y0x6dUVGM3IyVjdFNWJTYkJld3dYb3g0WHFwKzZIdyt1VVZRbnVh?=
+ =?utf-8?B?RERrN3VCMGlzUnAwdE5Ed1hkaFYyQnVQMDJ6WUMrak02NnBuRUMwSVJQSmxW?=
+ =?utf-8?B?VzREeVBQZkJCSS9hUm0rMzcvYWpFV1VGNE5MQS9zZnVTbzBKb0NuUUV0MVlq?=
+ =?utf-8?B?YVpTc0xQUGRxcC9VZ0h1aDRwYS9SblkvQkZ4c2R5aDZSRFE1U3ZXOFFmWml6?=
+ =?utf-8?B?NWdjYTVhOVp5ZEcvWkxrTkRmRE55ZWhaYXFyMUw1UUZwcjhTc2l3c0k0b2FZ?=
+ =?utf-8?B?U3BrVGpUcnhhQ1pJcTlrUT09?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM6PR11MB4738.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Zk1udjQ2N0d0K1dFV0ViSzZQVlFPWkJuNks3M3lYOGNXYWlFTU1JWmZraWZH?=
+ =?utf-8?B?QXhhbDd3QjY5dURLemorNzRoeVZUK2pNOVVmSVU4OVM5VmQvRVlUZzBXRlFS?=
+ =?utf-8?B?bGJGMWtwVWRGb201eEU5ajQ2bmgvc2o0Ky92dmdnVndmd0xKSitrUURnM3Qx?=
+ =?utf-8?B?YTFIMkFXcnpPMS9JZDFLcXFidVpCSjl4c20rYXlwYzVaeEZpM2xoUnBzdDlV?=
+ =?utf-8?B?RjlKTEhnczd1dlpYbTdsc2p6WW9hdlpUbEFNVUhxVUF3SVRoVjZ4Wm43Zktm?=
+ =?utf-8?B?YUdCQUV5NVYzb1ZGZEQ4ODVFaCtkL2VvbFo5amIwbnJpcjZBeXhWcWdmaDRy?=
+ =?utf-8?B?QjVpTjlyS01DcWtCNlZ6UzdoZkczd2NhUFVlZEJaK1ZlWjk0dWlRa1MrNE9m?=
+ =?utf-8?B?Z1lWcCsyM1ZPUmE1UGZlbXFjTHZvSDUyVUdRbXF5dkRvU0FYMkNiZ1lDeVV0?=
+ =?utf-8?B?cDBQQUJoWjZKSVVoZGd2dkhWZlhFRTJNRVN1ZmN0U3BTTVZlTnZ2eFRoc0JD?=
+ =?utf-8?B?anlFTUY3bktmT0I2cnQxZ0J5OXBHSFgyMTczSHpEWENuQllGamdIbWFvWFBH?=
+ =?utf-8?B?aEQwTXRtazRKSExGRFVkOGNoLzVTVEpQQ1ZjbEhSaEhJMEZhVzdZaUsyNzNy?=
+ =?utf-8?B?d2orV3QyUldueFE2S3kxeHlOWFpHUTRHaXI4NzROMXZodUpRQ1dqNGthYmsy?=
+ =?utf-8?B?OVpIR2c4VVR1R3RHQmppdHVJUk5tL2VuZkJLUTJndlRuNnBIUnFiMWg2NjBG?=
+ =?utf-8?B?VGNXaEMrcFFsNEJEdlI2Y01NWGRtZS95dDJmRGhqVnFTeEhEZ1NON0tEK05W?=
+ =?utf-8?B?ajI2SzArNmtaT2NkeGkyY2JTZEdjV3RRTmNvdEwrcDdFcm53QVNQSW50aUIr?=
+ =?utf-8?B?RHBsOURENjA0c3hwaWxCalNMY0taMllyVjJrS0NXMDVYeG5qVEdNMXA3b3Zk?=
+ =?utf-8?B?ZTFuay93SDh3NVpDcXVWaVlNRlpyRVh1QmlSYzlOZGVOditBWGFvVm4wbW1M?=
+ =?utf-8?B?V0hTMWpFcmlYWC85ditTSkZwT3lBcWZuQ1V2Y1NjVUIwWXJmOWFkeTZ3UVVk?=
+ =?utf-8?B?SHBWVlBvWGV1QUlndXhDZXRNeUtuMDBlaWNJNHh4bE1NNU8ycGRNRnRUc2lG?=
+ =?utf-8?B?YTRUaFdpdjB4d2F5ZGcvZnRWZjVqcSsvbEIwUDUxRkxxcHFnbmk4ckN5ZkFa?=
+ =?utf-8?B?aW1PSGNjSGJxN1FDdXpOOHNZd0FLTG8wTDRFNm10YmQxeWZLMnd5T0RNd3ZJ?=
+ =?utf-8?B?c294K2FxSDZ3enUyVzRkQi81bnZNZ0JEQVBCcWhkcGFlcEtRM0JFRGlZd08r?=
+ =?utf-8?B?VVNoU2pNRkl4cDFvbDhHaFdoZElmc0V6SE91QWQ4dDdiRThMdUlCaGE2UUJp?=
+ =?utf-8?B?YzJmN1JvNzlFZ2JaQkZZTWJPd2xPb2YwRzFkQ3lLbjJyMU9FVWdCMTV2NUh1?=
+ =?utf-8?B?bzE3dTdPbzNBcUxJZVNMczZJSDRJZzBublRNUzdqVGVhQ1FlMG5oR29JMFVt?=
+ =?utf-8?B?cElhMXZuaXJ2TzlkdVZxYTRFaytZR2wrZ2NVcGplSTY4UWhvcGFkSU1tYzVE?=
+ =?utf-8?B?dnVCUHZDQ2htOHFLbFdhRDBuUXpxSS9seHZ1ZTZJVm1lVzIyb0J1OFI2aC81?=
+ =?utf-8?B?Y1lONmJJZ3F0b3Bmb2c1T21jejJTTzRJWEU3ZkoyK1BONWZoajdwNTdyS2ow?=
+ =?utf-8?B?ZUMzVzlnUkxiakUzeG94NGJlY2Nnc3lRT3VaVWxFeEwvMlZsLzhOM2VwWlRk?=
+ =?utf-8?B?T2dZeUtJN0dZanA3U0hvYVNWTVJkUVIrUVdWU1VzR21LbUxLb3FmUjFMelNO?=
+ =?utf-8?B?cllqYU9ESHd2eGNMSHA5ZnkxbTRJbjlZOERsOTZFWGpoT3IzcjZIZGhUUitL?=
+ =?utf-8?B?Vmp5Vjh1TktJcVVjU1lsTWVHZUpUcGNBMGR3NFBJOVFNaXh1Z0VRS0wzYUVO?=
+ =?utf-8?B?WjRZM053RTk0amtUN1Y3YmptQlMza21Ld2txQ2huZkhuVTZJWlc3NDdUWlNr?=
+ =?utf-8?B?U2RnQ01EWlFiZVMxVmdBVjM4V0lUN0NFTFNTUEZOdGRUNXdnbTdYdzNQWldE?=
+ =?utf-8?B?UitvSk1ZVnJYbnUzMXFxWk42dGxReU4wVmljTkVYNzJkZVNaR2QvdE1WTFBl?=
+ =?utf-8?B?Tjk1bGRaVnZTb2FNdlRQbEJmdFlkU2wzK2kyaHRsZncreTF6KzFLdkRYWVBk?=
+ =?utf-8?B?K1E9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5250b016-708c-47bf-1bd8-08dccf31ba58
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB4738.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2024 11:39:27.0197 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EcUuBm2EafdhBcgokEIWMCBQP6bg/0j3u4/eRLHadXZtb0kHDX3K40cJGz3Tn8MKCRHEDfUMJ2hdLDYnNr7A/gLsY9yDHjZdZQUn9nXZVtI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6935
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,140 +195,122 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 6.9.2024 16.45, Ville Syrjälä wrote:
-> On Fri, Sep 06, 2024 at 04:09:19PM +0300, Juha-Pekka Heikkila wrote:
->> On 2.9.2024 17.37, Ville Syrjala wrote:
->>> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
->>>
->>> TGL apparently automagically converts regular output to fast
->>> clears when the output matches the configured clear color.
->>> And if we don't enable the clear color packet at all then we
->>> just get some rainbow gibberish on all black parts of the
->>> output.
->>>
->>> To avoid always set up the clear color packet when using
->>> using a non-clear color modifier. We'll just stick a bunch
->>> of NaNs into the clear value so it'll never match any
->>> legitimate output, and thus automagic fast clear should not
->>> happen.
->>>
->>> TODO: Hide this better inside rendercopy_gen9.c without
->>>         requring extra allocation in the FB BO
->>> TODO: Figure out if other platforms need this sort stuff
->>>
->>> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
->>> ---
->>>    lib/igt_fb.c          | 24 ++++++++++++++++++++++++
->>>    lib/intel_bufops.h    |  1 +
->>>    lib/rendercopy_gen9.c | 14 +++++++++++---
->>>    3 files changed, 36 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
->>> index 21c56a454c5a..0eb3897d0f8b 100644
->>> --- a/lib/igt_fb.c
->>> +++ b/lib/igt_fb.c
->>> @@ -965,6 +965,16 @@ void igt_calc_fb_size(struct igt_fb *fb)
->>>    		size += calc_plane_size(fb, plane);
->>>    	}
->>>    
->>> +	/*
->>> +	 * We always need a clear color on TGL, make some extra
->>> +	 * room for one it if it's not explicit in the modifier.
->>> +	 *
->>> +	 * TODO: probably better to allocate this as part of the
->>> +	 * batch instead so the fb size doesn't need to change...
->>> +	 */
->>> +	if (fb->modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS)
->>> +		size = ALIGN(size + 64, 64);
->>> +
->>>    	if (is_xe_device(fb->fd)) {
->>>    		size = ALIGN(size, xe_get_default_alignment(fb->fd));
->>>    		if (fb->modifier == I915_FORMAT_MOD_4_TILED_BMG_CCS)
->>> @@ -2670,6 +2680,20 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->>>    	if (fb->modifier == I915_FORMAT_MOD_4_TILED_DG2_RC_CCS_CC)
->>>    		buf->cc.offset = fb->offsets[1];
->>>    
->>> +	/*
->>> +	 * TGL appears to do automagic fast clear when rendering
->>> +	 * black and the clear color isn't specified, or when the
->>> +	 * output matches the specified clear color. Force a
->>> +	 * non-sensical clear color to prevent it from doing this
->>> +	 * when using a non-clear color modifier.
->>> +	 *
->>> +	 * TODO: figure out if other platforms are affected...
->>> +	 */
->>> +	if (fb->modifier == I915_FORMAT_MOD_Y_TILED_GEN12_RC_CCS) {
->>
->> What about adlp on this? I believe it will now get same treatment as tgl
->> and ci doesn't seem to have adlp on shards so there's no good results(?)
-> 
-> I *think* adl wasn't affected, but I'll need to double check that...
-> 
-> Although apart from allocating a bit of extra memory this should
-> be completely harmeless on unaffected platforms.
 
-ah yes, true. At the worst this will reveal something that was not 
-handled for adlp.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-
+On 7/1/2024 10:42 AM, Jouni Högander wrote:
+> We have seen passing PSR testcases even though panel is not even aware of
+> PSR being used. This can happen because we currently not checking sink PSR
+> statuses at all. Also sink might have detected errors but our testcase
+> currently don't care about that.
 > 
->>
->> /Juha-Pekka
->>
->>> +		buf->cc.disable = true;
->>> +		buf->cc.offset = fb->size - 64;
->>> +	}
->>> +
->>>    	return buf;
->>>    }
->>>    
->>> diff --git a/lib/intel_bufops.h b/lib/intel_bufops.h
->>> index 84e71d41a2c2..06e72ba4ba93 100644
->>> --- a/lib/intel_bufops.h
->>> +++ b/lib/intel_bufops.h
->>> @@ -38,6 +38,7 @@ struct intel_buf {
->>>    	} ccs[2];
->>>    	struct {
->>>    		uint32_t offset;
->>> +		bool disable;
->>>    	} cc;
->>>    	struct {
->>>    		uint64_t offset;
->>> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
->>> index 5ee4c89f5cdb..f0757a8e6b78 100644
->>> --- a/lib/rendercopy_gen9.c
->>> +++ b/lib/rendercopy_gen9.c
->>> @@ -1133,15 +1133,23 @@ void _gen9_render_op(struct intel_bb *ibb,
->>>    
->>>    	gen12_emit_aux_pgtable_state(ibb, aux_pgtable_state, true);
->>>    
->>> -	if (fast_clear) {
->>> +	if (fast_clear || dst->cc.disable) {
->>>    		for (int i = 0; i < 4; i++) {
->>>    			intel_bb_out(ibb, MI_STORE_DWORD_IMM_GEN4);
->>>    			intel_bb_emit_reloc(ibb, dst->handle,
->>>    					    I915_GEM_DOMAIN_RENDER, I915_GEM_DOMAIN_RENDER,
->>>                                                dst->cc.offset + i*sizeof(float),
->>>    					    dst->addr.offset);
->>> -			intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
->>> -               }
->>> +			if (fast_clear) {
->>> +				intel_bb_out(ibb, *(uint32_t*)&clear_color[i]);
->>> +			} else {
->>> +				/*
->>> +				 * Emit NaN so it'll match nothing and thus prevent
->>> +				 * TGL from doing its automagic fast clear tricks.
->>> +				 */
->>> +				intel_bb_out(ibb, 0xffffffff);
->>> +			}
->>> +		}
->>>           }
->>>    
->>>    
+> Help the gap described above by adding new interface to check sink error
+> statuses. Also add sink status check to be part of psr_is_active check.
 > 
+> Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+> ---
+>   lib/igt_psr.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++++-
+>   lib/igt_psr.h |  1 +
+>   2 files changed, 52 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_psr.c b/lib/igt_psr.c
+> index e3e7577eb..47517b5dc 100644
+> --- a/lib/igt_psr.c
+> +++ b/lib/igt_psr.c
+> @@ -52,6 +52,19 @@ bool selective_fetch_check(int debugfs_fd, igt_output_t *output)
+>   
+>   	return strstr(buf, "PSR2 selective fetch: enabled");
+>   }
+> +static bool psr_active_sink_check(int debugfs_fd, igt_output_t *output)
+> +{
+> +	char debugfs_file[128] = {0};
+> +	char buf[PSR_STATUS_MAX_LEN];
+> +	int ret;
+> +
+> +	sprintf(debugfs_file, "%s/i915_psr_sink_status", output->name);
+> +	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+> +				      sizeof(buf));
+> +	igt_assert_f(ret >= 1, "Failed to read sink status\n");
+> +
+> +	return strstr(buf, "0x2 [active, display from RFB]");
+> +}
+>   
+>   /*
+>    * Checks if Early Transport is enabled in PSR status by reading the debugfs.
+> @@ -72,6 +85,7 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
+>   	char buf[PSR_STATUS_MAX_LEN];
+>   	drmModeConnector *c;
+>   	const char *state;
+> +	bool active;
+>   	int ret;
+>   
+>   	if (mode == PR_MODE || mode == PR_MODE_SEL_FETCH) {
+> @@ -100,7 +114,11 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
+>   
+>   	igt_skip_on(strstr(buf, "PSR sink not reliable: yes"));
+>   
+> -	return strstr(buf, state);
+> +	active = strstr(buf, state);
+> +	if (active && output)
+> +		active = psr_active_sink_check(debugfs_fd, output);
+> +
+> +	return active;
+>   }
+>   
+>   /*
+> @@ -297,6 +315,38 @@ bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output
+>   	}
+>   }
+>   
+> +/**
+> + * psr_sink_error_check
+> + * Check and assert on PSR errors detected by panel
+> + *
+> + * Returns:
+> + * None
+> + */
+> +void psr_sink_error_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
+> +{
+> +	char *line;
+> +	char debugfs_file[128] = {0};
+> +	char buf[PSR_STATUS_MAX_LEN];
+> +	int ret;
+> +
+> +	sprintf(debugfs_file, "%s/i915_psr_sink_status", output->name);
+> +	ret = igt_debugfs_simple_read(debugfs_fd, debugfs_file, buf,
+> +				      sizeof(buf));
+> +	igt_assert_f(ret >= 1, "Failed to read sink status\n");
+> +
+> +	line = strstr(buf, "error status: 0x0");
+> +
+> +	/*
+> +	 * On certain PSR1 panels we are seeing "PSR VSC SDP
+> +	 * uncorrectable error" bit set even it is applicable for PSR1
+> +	 * only
+> +	 */
+> +	if (!line && mode == PSR_MODE_1)
+> +		line = strstr(buf, "Sink PSR error status: 0x4");
+> +
+> +	igt_assert_f(line, "Sink detected PSR error(s):\n%s\n", buf);
+> +}
+LGTM,
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+> +
+>   #define PSR2_SU_BLOCK_STR_LOOKUP "PSR2 SU blocks:\n0\t"
+>   
+>   /* Return the the last or last but one su blocks */
+> diff --git a/lib/igt_psr.h b/lib/igt_psr.h
+> index a7ebd0739..7639f8d46 100644
+> --- a/lib/igt_psr.h
+> +++ b/lib/igt_psr.h
+> @@ -56,6 +56,7 @@ bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *outp
+>   bool psr_enable(int device, int debugfs_fd, enum psr_mode, igt_output_t *output);
+>   bool psr_disable(int device, int debugfs_fd, igt_output_t *output);
+>   bool psr_sink_support(int device, int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+> +void psr_sink_error_check(int debugfs_fd, enum psr_mode mode, igt_output_t *output);
+>   bool psr2_wait_su(int debugfs_fd, uint16_t *num_su_blocks);
+>   void psr_print_debugfs(int debugfs_fd);
+>   enum psr_mode psr_get_mode(int debugfs_fd, igt_output_t *output);
 
