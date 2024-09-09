@@ -4,59 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A3EFECE579
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 15:21:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05423ECE579
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 15:23:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE3C810E5AF;
-	Mon,  9 Sep 2024 15:21:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A16CA10E5B0;
+	Mon,  9 Sep 2024 15:23:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e9e+LbDu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dUx3MhJb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A110B10E5AD;
- Mon,  9 Sep 2024 15:21:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 979C610E5B0
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Sep 2024 15:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725895300; x=1757431300;
+ t=1725895404; x=1757431404;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=XkLWjfwLVQkLurJ/7kg5/9+Q41s8e4X93QhCP0QCAAU=;
- b=e9e+LbDuH3JDtg7rGqkV9DtgC4xFFad9TsNS0BY1OphXu07uMFztaSb3
- 66ovw5MlF4UNC9S6HTVlNxMYS6gpM0RKkF3UOEHOJrAxLJzaRNkZ3Uudw
- lKYH8wdmVkpCOLZ5JUwbJBGA2aQoxs1UN3fBZdpyGa8tXNt6dTZZWjqah
- eEI1dWrn3ytHaj82VGYdoC3nkBRclf2/jGdIOd0siukH9t7ZEoWIF+liQ
- Cu8IksazXspr+uigBuEvaL0Mkf0wmopDTsH766JZZetgaJBx9PrbOxD7C
- J9oKWEMekCvXUcdxWuIw82sRNxLVSOk/QdAUnzVAtVHDtwqoU0QZg7+3x A==;
-X-CSE-ConnectionGUID: Pbnw7POkSquyfz3vjHj4Gw==
-X-CSE-MsgGUID: jrwocgo6TwSlA7rnP+C4Jw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="24098355"
-X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; d="scan'208";a="24098355"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2024 08:21:40 -0700
-X-CSE-ConnectionGUID: 2cyeqEwTQ7G2OJ8BvId7kw==
-X-CSE-MsgGUID: RsqXiCtPSh+ywTR7ByctiQ==
+ bh=o/qEXUVcdcjOlxxUrJFZRJhYJgmuis7/S61ZukpjDiA=;
+ b=dUx3MhJbC6UL56B5bOJnL+R8xZaASe6mapi0xFfb+bJ6FD4HT75syLkz
+ tkGWDeoMs9+fb5me457YkD2e9WerIpZivN807y8AieUR4yCbvBO7+v8Qy
+ ofohJqdGsPqJ0ATqT7z6RAetYWLKDqwE2BGST1lh3fMLYG6hsXGbuiJDR
+ 9rRdJVtoUGZrxSfmMBAEM4Zu+4JgrsbQdDzGBAyFf0wKdgwtsuMhNIDw6
+ 15Vrko+LwVEyiVIu+h+LvXH73/3GiKW2GSqom0u8jrhORTPAi9IP5nE6x
+ 72H+2tz0WTFRCWL+RcpTZ2jWv8f0xKyqbKtOIYr83Tuzb/pf5q4XpnJ82 w==;
+X-CSE-ConnectionGUID: n7GrMec7T5KINBhFlVbheg==
+X-CSE-MsgGUID: JZGm7eW5QH6BT1vZdDirDw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="35743144"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; d="scan'208";a="35743144"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2024 08:23:23 -0700
+X-CSE-ConnectionGUID: HZHiFAGCTj+irTiFuVZbcA==
+X-CSE-MsgGUID: rCA0bIJUQJyo1IZHmlsMsg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; d="scan'208";a="67442941"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; d="scan'208";a="66758459"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 08:21:38 -0700
-Date: Mon, 9 Sep 2024 17:21:21 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 08:23:20 -0700
+Date: Mon, 9 Sep 2024 17:23:17 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Alyssa Ross <hi@alyssa.is>, I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIENJLnhlRlVMTDogZmFpbHVy?= =?utf-8?Q?e?= for
- tests/intel/kms_pm_rpm: use basename from libgen.h
-Message-ID: <20240909152121.s3r4nowaglmyf2tf@kamilkon-DESK.igk.intel.com>
+Cc: Alyssa Ross <hi@alyssa.is>, Mohammed Anas <triallax@tutanota.com>,
+ Stefano Ragni <st3r4g@protonmail.com>, Bernd Kuhls <bernd@kuhls.net>,
+ Reagan Bohan <xbjfk.github@gmail.com>, Yureka <yuka@yuka.dev>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_pm_rpm: use basename from libgen.h
+Message-ID: <20240909152317.ki7s7mfji2i6sdqb@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, Alyssa Ross <hi@alyssa.is>,
- I915-ci-infra@lists.freedesktop.org
+ Mohammed Anas <triallax@tutanota.com>,
+ Stefano Ragni <st3r4g@protonmail.com>,
+ Bernd Kuhls <bernd@kuhls.net>,
+ Reagan Bohan <xbjfk.github@gmail.com>, Yureka <yuka@yuka.dev>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 References: <20240904134948.1337335-1-hi@alyssa.is>
- <172574444562.971860.15713752684341198258@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <172574444562.971860.15713752684341198258@2413ebb6fbb6>
+In-Reply-To: <20240904134948.1337335-1-hi@alyssa.is>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,94 +77,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-09-07 at 21:27:25 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Alyssa,
+On 2024-09-04 at 15:49:48 +0200, Alyssa Ross wrote:
+> musl only provides the libgen.h version of basename() that may modify
+> it's argument.  That's fine in this case, because in the one use of
+> basename() in this file, the buffer is never read from again.
 > 
-> Series: tests/intel/kms_pm_rpm: use basename from libgen.h
-> URL   : https://patchwork.freedesktop.org/series/138243/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8006_full -> XEIGTPW_11701_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_11701_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_11701_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 4)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_11701_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@xe_wedged@wedged-at-any-timeout:
->     - shard-lnl:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8006/shard-lnl-6/igt@xe_wedged@wedged-at-any-timeout.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11701/shard-lnl-6/igt@xe_wedged@wedged-at-any-timeout.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@xe_wedged@wedged-at-any-timeout:
->     - shard-dg2-set2:     [SKIP][3] ([Intel XE#1130]) -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8006/shard-dg2-432/igt@xe_wedged@wedged-at-any-timeout.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11701/shard-dg2-435/igt@xe_wedged@wedged-at-any-timeout.html
-> 
+> Signed-off-by: Alyssa Ross <hi@alyssa.is>
 
-Unrelated to change in kms_pm_rpm
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Regards,
-Kamil
-
->   
-> Known issues
-> ------------
+> ---
+>  tests/intel/kms_pm_rpm.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
->   Here are the changes found in XEIGTPW_11701_full that come from known issues:
+> diff --git a/tests/intel/kms_pm_rpm.c b/tests/intel/kms_pm_rpm.c
+> index 5af3e81bc..852e9cb5f 100644
+> --- a/tests/intel/kms_pm_rpm.c
+> +++ b/tests/intel/kms_pm_rpm.c
+> @@ -27,6 +27,7 @@
+>  #endif
+>  
+>  #include <dirent.h>
+> +#include <libgen.h>
+>  
+>  #include "config.h"
+>  #include "i915/gem.h"
 > 
-> ### IGT changes ###
+> base-commit: fc3113c8c1e99797b2d4769aaf02265be64a7589
+> -- 
+> 2.45.2
 > 
-> #### Issues hit ####
-> 
->   * igt@core_hotunplug@hotreplug-lateclose:
->     - shard-dg2-set2:     [PASS][5] -> [DMESG-WARN][6] ([Intel XE#2317])
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8006/shard-dg2-434/igt@core_hotunplug@hotreplug-lateclose.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11701/shard-dg2-436/igt@core_hotunplug@hotreplug-lateclose.html
-> 
-...cut...
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_8006 -> IGTPW_11701
->   * Linux: xe-1897-883d811c2bfc8544bc5b00bbee84e6b83e20a581 -> xe-1899-4384ecebb83afae5e51ab90ff1fc9dc1f7c048a8
-> 
->   IGTPW_11701: 11701
->   IGT_8006: ae7f2bc0b99801a7ae369d4b5fda5c6b1c386eb1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-1897-883d811c2bfc8544bc5b00bbee84e6b83e20a581: 883d811c2bfc8544bc5b00bbee84e6b83e20a581
->   xe-1899-4384ecebb83afae5e51ab90ff1fc9dc1f7c048a8: 4384ecebb83afae5e51ab90ff1fc9dc1f7c048a8
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11701/index.html
