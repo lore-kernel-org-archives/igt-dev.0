@@ -4,27 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF207CD4F4C
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 05:38:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC8B6CD4F4C
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 06:54:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B17810E2B7;
-	Mon,  9 Sep 2024 05:38:07 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8292610E2B7;
- Mon,  9 Sep 2024 05:38:06 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1547795739504965491=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9C5810E2D7;
+	Mon,  9 Sep 2024 06:54:14 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cELkCB3J";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A57FF10E2D7
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Sep 2024 06:54:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1725864853; x=1757400853;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=bS0KRkhw7m5srRgFWvNVomtpIaj82DylpFI4ffKzU2o=;
+ b=cELkCB3JIy76AJ1sHwnrlYrEMrQgrp1BsaDza93jaRFu6bNAwEajr8Bm
+ MSxKcMNeEqRGueyUbYywMMYTv3QXjsWJu7nQXJWhruGt8HBebRG/PUyfp
+ s92ggwNa2qU3zTYCBXm0JbV807kwTvOSfYO3iTHj9l8aDjVfKaQO1DCfc
+ tW9wN3U9zyRlKtq6+RrQ09NqZur7pAUjEkalYEOmWzSfoAG4qlbivh+C3
+ iwhZVX3LXs8adQJvpANQ86Qauu+JNz2Xa7xQiWSlXSb+fmomGTtp7TwEz
+ rWRcbZYfF28Hz+SMSMtCaLkE1IocLL7Bu2tRT7n0zzVSpoieFyIiA4ZHV A==;
+X-CSE-ConnectionGUID: Fk44+IhsSQG25O6kojdW0w==
+X-CSE-MsgGUID: lKWzawcMTPuGO/e/Z836wQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="35113255"
+X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; d="scan'208";a="35113255"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Sep 2024 23:54:12 -0700
+X-CSE-ConnectionGUID: UAPLusGMQAO73fg1TqAMIg==
+X-CSE-MsgGUID: KOv7RO/8Sa2FdzvgCu+oGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; d="scan'208";a="89836805"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.143])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Sep 2024 23:54:09 -0700
+Date: Mon, 9 Sep 2024 08:54:06 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Christoph Manszewski <christoph.manszewski@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
+ Mika Kuoppala <mika.kuoppala@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>
+Subject: Re: [PATCH i-g-t v6 03/17] lib/gpgpu_shader: Extend shader building
+ library
+Message-ID: <20240909065406.6qexcqvctub2kvlh@zkempczy-mobl2>
+References: <20240905092812.94553-1-christoph.manszewski@intel.com>
+ <20240905092812.94553-4-christoph.manszewski@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_RFC_tests/intel/kms=5Ffrontbuf?=
- =?utf-8?q?fer=5Ftracking=3A_Introduce_plane-fbc-dr_test_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 09 Sep 2024 05:38:06 -0000
-Message-ID: <172586028652.972530.12674985153646441794@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240905092812.94553-4-christoph.manszewski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +76,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1547795739504965491==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Sep 05, 2024 at 11:27:58AM +0200, Christoph Manszewski wrote:
 
-== Series Details ==
+<cut>
 
-Series: RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev2)
-URL   : https://patchwork.freedesktop.org/series/138218/
-State : success
+> +
+> +/**
+> + * gpgpu_shader__end_system_routine:
+> + * @shdr: shader to be modified
+> + * @breakpoint_suppress: breakpoint suppress flag
+> + *
+> + * Return from system routine. To prevent infinite jumping to the system
+> + * routine on a breakpoint, @breakpoint_suppress flag has to be set.
+> + */
+> +void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
+> +				      bool breakpoint_suppress)
+> +{
+> +	/*
+> +	 * set breakpoint suppress bit to avoid an endless loop
+> +	 * when sip was invoked by a breakpoint
+> +	 */
+> +	if (breakpoint_suppress)
+> +		emit_iga64_code(shdr, breakpoint_suppress, "			\n\
+> +(W)	or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud	\n\
+> +		");
+> +
+> +	emit_iga64_code(shdr, end_system_routine, "				\n\
+> +(W)	and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud	\n\
+> +	// return to an application						\n\
+> +(W)	and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud	\n\
 
-== Summary ==
+I'm reading documentation and I've doubts regarding 0x7ffffffd value.
+If I understand correctly, the bits 0 and 2 are mbz, so mask here
+should likely be 0x7ffffffa.
 
-CI Bug Log - changes from XEIGT_8011_BAT -> XEIGTPW_11713_BAT
-====================================================
+> +	", 0x7fffff | (1 << 26)); /* clear all exceptions, except read only bit */
+> +}
+> +
 
-Summary
--------
+--
+Zbigniew
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11713_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_addfb_basic@addfb25-bad-modifier:
-    - bat-bmg-1:          [DMESG-WARN][1] ([Intel XE#877]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8011/bat-bmg-1/igt@kms_addfb_basic@addfb25-bad-modifier.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11713/bat-bmg-1/igt@kms_addfb_basic@addfb25-bad-modifier.html
-
-  
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
-
-
-Build changes
--------------
-
-  * IGT: IGT_8011 -> IGTPW_11713
-  * Linux: xe-1909-217031ad4c962ee8b1b7ac4b30323b4e2ac6d12a -> xe-1910-3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6
-
-  IGTPW_11713: 9107fbd6df3a209334b29eb73a82d393d61ad44d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8011: 26dca87f1252b7f6f0c0f833050256f0244d61e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1909-217031ad4c962ee8b1b7ac4b30323b4e2ac6d12a: 217031ad4c962ee8b1b7ac4b30323b4e2ac6d12a
-  xe-1910-3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6: 3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11713/index.html
-
---===============1547795739504965491==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138218/">https://patchwork.freedesktop.org/series/138218/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11713/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11713/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8011_BAT -&gt; XEIGTPW_11713_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11713_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_addfb_basic@addfb25-bad-modifier:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8011/bat-bmg-1/igt@kms_addfb_basic@addfb25-bad-modifier.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11713/bat-bmg-1/igt@kms_addfb_basic@addfb25-bad-modifier.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8011 -&gt; IGTPW_11713</li>
-<li>Linux: xe-1909-217031ad4c962ee8b1b7ac4b30323b4e2ac6d12a -&gt; xe-1910-3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6</li>
-</ul>
-<p>IGTPW_11713: 9107fbd6df3a209334b29eb73a82d393d61ad44d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8011: 26dca87f1252b7f6f0c0f833050256f0244d61e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1909-217031ad4c962ee8b1b7ac4b30323b4e2ac6d12a: 217031ad4c962ee8b1b7ac4b30323b4e2ac6d12a<br />
-  xe-1910-3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6: 3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6</p>
-
-</body>
-</html>
-
---===============1547795739504965491==--
