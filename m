@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C334CE7AB0
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 04:18:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E6EFCE7AB0
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 05:28:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C1A510E2A8;
-	Mon,  9 Sep 2024 04:18:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OoLNWlwv";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 028BE10E2A8
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Sep 2024 04:18:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725855533; x=1757391533;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Ej+6gKf1cooQpJOFS+RZwvDkx2fy+sF6iEh7gXWvxc4=;
- b=OoLNWlwvmAOP8gexSdmyrxobSHBnNOAnGMwiQcSzhn92U2pzfMt7HY7b
- hdbUT3WxV2kZ5vNKgSioX+yARZ/8pCBsF3mKg6zVjeZXk4kJc29qnq3Of
- cJOoNQePbBp441vbjmwoeBgzt8o+pTFNUc5ClTENJnluG+wrlwC6+rXyx
- JOMDVRGcady/G4iuoOGpZGpk/O6a3J4hDv9P8hhk85MS+CPmNuGK1fHqh
- UrgCpvSSpHres9vCnuQvTUoahaM3sh8qEstm3p+Ey4k1MgCN0PuiHTzpf
- Twi9uIuKC4ZuaIQOz3RmN8hrvIHjl4qo4AVwem5l1ejkjc2Qz4lRdKGmG A==;
-X-CSE-ConnectionGUID: JHZJPFybQKeJ3Nm1h6C1pA==
-X-CSE-MsgGUID: ATj3ibrmQmGqO31EtZ4mvQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="24469951"
-X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; d="scan'208";a="24469951"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2024 21:18:52 -0700
-X-CSE-ConnectionGUID: y2A15uarSiKPm9BjlxsmgA==
-X-CSE-MsgGUID: a7af29ESSw6D62I+QRBNtg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; d="scan'208";a="66763508"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2024 21:18:50 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t] RFC tests/intel/kms_frontbuffer_tracking: Introduce
- plane-fbc-dr test
-Date: Mon,  9 Sep 2024 09:44:41 +0530
-Message-Id: <20240909041441.528638-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
-References: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E29E10E2B4;
+	Mon,  9 Sep 2024 05:28:47 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C45B10E2B3;
+ Mon,  9 Sep 2024 05:28:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1595330850751016412=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_RFC_tests/intel/kms=5Ffront?=
+ =?utf-8?q?buffer=5Ftracking=3A_Introduce_plane-fbc-dr_test_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 09 Sep 2024 05:28:46 -0000
+Message-ID: <172585972630.972530.12694179750025132207@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20240904161221.494423-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,131 +37,197 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the FP_DAMAGE_CLIPS property of the plane for non psr modes
-and fill the damaged rectangles on the plane with framebuffer
-coordinates and verify that fbc dirty ctl is enabled.
+--===============1595330850751016412==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: Fix typo , add version check for feature support,
-    extend support for all pipes (Rama Naidu)
+== Series Details ==
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_frontbuffer_tracking.c | 78 ++++++++++++++++++++++++++
- 1 file changed, 78 insertions(+)
+Series: RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev2)
+URL   : https://patchwork.freedesktop.org/series/138218/
+State : success
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index e45d17dd6..b15527209 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -57,6 +57,10 @@
-  * Description: Sanity test to enable FBC on a plane.
-  * Functionality: fbc
-  *
-+ * SUBTEST: plane-fbc-dr
-+ * Description: Sanity test to verify FBC DR by sending multiple damaged areas with non psr modes
-+ * Functionality: fbc
-+ *
-  * SUBTEST: pipe-fbc-rte
-  * Description: Sanity test to enable FBC on each pipe.
-  * Functionality: fbc
-@@ -1168,6 +1172,7 @@
-  */
- 
- #define TIME SLOW_QUICK(1000, 10000)
-+#define MAX_DIRTY_RECT 3
- 
- IGT_TEST_DESCRIPTION("Test the Kernel's frontbuffer tracking mechanism and "
- 		     "its related features: FBC, PSR and DRRS");
-@@ -4288,6 +4293,73 @@ static int opt_handler(int option, int option_index, void *data)
- 	return IGT_OPT_HANDLER_SUCCESS;
- }
- 
-+static void fbc_dr_subtest(const struct test_mode *t) {
-+	struct drm_mode_rect rect_data[MAX_DIRTY_RECT];
-+	uint32_t color;
-+	drmModeModeInfo *mode;
-+
-+	igt_require_f(drm.display_ver > 20, "FBC with dirty region is not supported\n");
-+
-+	prepare_subtest_data(t, NULL);
-+
-+	igt_output_override_mode(prim_mode_params.output, &prim_mode_params.mode);
-+	igt_output_set_pipe(prim_mode_params.output, prim_mode_params.pipe);
-+
-+	mode = igt_output_get_mode(prim_mode_params.output);
-+
-+	for (int i = 0; i < MAX_DIRTY_RECT; i++) {
-+		// Full Frame update
-+		rect_data[0].x1 = 0;
-+		rect_data[0].y1 = 0;
-+		rect_data[0].x2 = mode->hdisplay;
-+		rect_data[0].y2 = mode->vdisplay;
-+
-+		// Half Frame update till last-1 scanline
-+		rect_data[1].x1 = mode->hdisplay / 2;
-+		rect_data[1].y1 = mode->vdisplay / 2;
-+		rect_data[1].x2 = mode->hdisplay - 1;
-+		rect_data[1].y2 = mode->vdisplay - 1;
-+
-+		// last 10 scanlines update
-+		rect_data[2].x1 = mode->hdisplay - 10;
-+		rect_data[2].y1 = mode->vdisplay - 10;
-+		rect_data[2].x2 = mode->hdisplay - 1;
-+		rect_data[2].y2 = mode->vdisplay - 1;
-+
-+		igt_debug("Dirty Rectangle data = {%d, %d, %d, %d}, {%d, %d, %d, %d}, {%d, %d, %d, %d}\n",
-+					rect_data[0].x1, rect_data[0].y1, rect_data[0].x2, rect_data[0].y2,
-+					rect_data[1].x1, rect_data[1].y1, rect_data[1].x2, rect_data[1].y2,
-+					rect_data[2].x1, rect_data[2].y1, rect_data[2].x2, rect_data[2].y2);
-+	}
-+
-+	for(int i = 0; i < MAX_DIRTY_RECT; i++) {
-+		igt_plane_t *primary = igt_output_get_plane_type(prim_mode_params.output, DRM_PLANE_TYPE_PRIMARY);
-+		igt_fb_t fb[MAX_DIRTY_RECT];
-+
-+		create_fb(t->format, prim_mode_params.mode.hdisplay, prim_mode_params.mode.vdisplay, t->tiling, t->plane, &fb[i]);
-+		color = pick_color(&fb[i], COLOR_PRIM_BG);
-+		igt_draw_rect_fb(drm.fd, drm.bops, 0, &fb[i], t->method,
-+			rect_data[i].x1, rect_data[i].y1, rect_data[i].x2 - rect_data[i].x1, rect_data[i].y2 - rect_data[i].y1,
-+			color);
-+
-+		igt_plane_set_fb(primary, &fb[i]);
-+		igt_plane_set_position(primary, rect_data[i].x1, rect_data[i].y1);
-+		igt_plane_set_size(primary, rect_data[i].x2 - rect_data[i].x1, rect_data[i].y2 - rect_data[i].y1);
-+		igt_fb_set_size(&fb[i], primary, rect_data[i].x2 - rect_data[i].x1, rect_data[i].y2 - rect_data[i].y1);
-+		igt_plane_replace_prop_blob(primary, IGT_PLANE_FB_DAMAGE_CLIPS, &rect_data[i], sizeof(rect_data[i]));
-+
-+		igt_display_commit_atomic(&drm.display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+
-+		fbc_update_last_action();
-+		do_assertions(ASSERT_FBC_ENABLED | ASSERT_NO_ACTION_CHANGE);
-+		igt_assert_f(fbc_enable_per_plane(primary->index + 1, prim_mode_params.pipe), "FBC disabled\n");
-+
-+		igt_remove_fb(drm.fd, &fb[i]);
-+		igt_plane_set_fb(primary, NULL);
-+		igt_display_commit2(&drm.display, COMMIT_ATOMIC);
-+	}
-+}
-+
- const char *help_str =
- "  --no-status-check           Don't check for enable/disable status\n"
- "  --no-crc-check              Don't check for CRC values\n"
-@@ -4513,6 +4585,12 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		plane_fbc_rte_subtest(&t);
- 	}
- 
-+	igt_subtest_f("plane-fbc-dr") {
-+		t.feature = FEATURE_FBC;
-+		igt_dynamic_f("pipe-%s", kmstest_pipe_name(prim_mode_params.pipe))
-+			fbc_dr_subtest(&t);
-+	}
-+
- 	igt_subtest_group {
- 		igt_subtest_with_dynamic("pipe-fbc-rte") {
- 
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from CI_DRM_15378 -> IGTPW_11713
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/index.html
+
+Participating hosts (43 -> 38)
+------------------------------
+
+  Missing    (5): fi-kbl-7567u bat-arlh-3 fi-snb-2520m fi-kbl-8809g bat-jsl-1 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11713 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@read:
+    - bat-arls-1:         [PASS][1] -> [DMESG-WARN][2] ([i915#12102])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-1/igt@fbdev@read.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-1/igt@fbdev@read.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][3] -> [ABORT][4] ([i915#12061]) +1 other test abort
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc:
+    - bat-arls-5:         [PASS][5] -> [INCOMPLETE][6] ([i915#11320])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@info:
+    - bat-arls-1:         [DMESG-WARN][7] ([i915#12102]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-1/igt@fbdev@info.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-1/igt@fbdev@info.html
+
+  * igt@i915_selftest@live:
+    - bat-arls-2:         [DMESG-WARN][9] ([i915#10341]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-2/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-2:         [DMESG-WARN][11] ([i915#11349]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+
+  
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#11320]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8011 -> IGTPW_11713
+
+  CI-20190529: 20190529
+  CI_DRM_15378: 3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11713: 9107fbd6df3a209334b29eb73a82d393d61ad44d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8011: 26dca87f1252b7f6f0c0f833050256f0244d61e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/index.html
+
+--===============1595330850751016412==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>RFC tests/intel/kms_frontbuffer_tracking: Introduce plane-fbc-dr test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138218/">https://patchwork.freedesktop.org/series/138218/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_15378 -&gt; IGTPW_11713</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/index.html</p>
+<h2>Participating hosts (43 -&gt; 38)</h2>
+<p>Missing    (5): fi-kbl-7567u bat-arlh-3 fi-snb-2520m fi-kbl-8809g bat-jsl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11713 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@read:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-1/igt@fbdev@read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-1/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320">i915#11320</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@fbdev@info:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-1/igt@fbdev@info.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-1/igt@fbdev@info.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-2/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-2/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15378/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11713/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8011 -&gt; IGTPW_11713</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15378: 3d2b2701d3c250fff370f5057f5a9d88d8ba6ca6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11713: 9107fbd6df3a209334b29eb73a82d393d61ad44d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8011: 26dca87f1252b7f6f0c0f833050256f0244d61e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1595330850751016412==--
