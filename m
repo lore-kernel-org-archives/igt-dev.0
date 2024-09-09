@@ -4,185 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1CE8ECE579
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 09:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E76EEECE579
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Sep 2024 10:34:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E0B610E1ED;
-	Mon,  9 Sep 2024 09:53:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6ED1010E371;
+	Mon,  9 Sep 2024 10:34:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vqz6XPXD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bDFS8Udn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CB3710E1ED;
- Mon,  9 Sep 2024 09:53:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 241CC10E371
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Sep 2024 10:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725875622; x=1757411622;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=FeAdmR+LSJ/h3Rz6DDki02kR45JQO7j8NQwmPg4qK7A=;
- b=Vqz6XPXDgOXUbdwcK06R7EUK90h1KsXnlHaG/7J5GYqNZshMr2IbDg0l
- XoJmJEhmOuXeYPLsNjkun7pGXwi3AiPVgnXRAx7eTcHx+fQTmEpBWAy5k
- G4lKUEFR0rzQ7nHegIjG5CcCO/AxR+V4XE9VZ2+u7p0dK+hgaXyEUXYS3
- 2k3R2HosNX5t2ET9p2qMzvVjoiZvrnDqXavkib+9M/eHzPPIgYQzuV6W4
- FzJKCKD2MMwelMoIwpyghNPt/7dl0dLquISvxNy+fiF8ZemsXtrgwmY1L
- xiheoSOKkWh/A48gkyRIqIlDgz+WmtDYhl9JWpWCf+KXfqGL4O5RshlqN g==;
-X-CSE-ConnectionGUID: OdpB2Ev7QKWPnUd/piEfBQ==
-X-CSE-MsgGUID: hfP6RssfSvWsumyULyEPew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="28305578"
-X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; d="scan'208";a="28305578"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2024 02:53:41 -0700
-X-CSE-ConnectionGUID: RF/NQSmxTnG+cDu24X6ITg==
-X-CSE-MsgGUID: Jy7TRXMsR+yZUircq2YKvg==
+ t=1725878060; x=1757414060;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=1Gepgeb63C0RKHKcrJKfKhaR+wXhijLCmciTQj9gF2g=;
+ b=bDFS8UdnCotYFHn0QZQCPE63vjdvXRPFCddqHub+ZCo3eHeRIWDU1VJS
+ 10fPDx20iJmjy8VjLYKdJcEDp5AvfwMV4ojbCepyfhIkBjse5sPjFRKU4
+ 3Mtsu/tdDbXk0vcTVOmfqN5xjSaN2AvjLERNqkWn0gpnsGUFz93xxUMZn
+ Uwn1zFN6br3qCPhJUUuBhBDbDOrYIkK1t59CyC/c6nLuDGTGnsGkzGToC
+ mvs2Uq84RDP5HkT8OcfnG8fnfLxHIEcS0wfWcWwPF0J9MS3ZWVerBW2V8
+ HA03wlmoPe+ZGQBsIutFgFFCVb6wQgJQ99JcpTG41/ChbKUkWf8TXxXms w==;
+X-CSE-ConnectionGUID: g4J5qSa1QWuvGuIRh+Rkiw==
+X-CSE-MsgGUID: z+3at4C+TZym1EJ26CV3ow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11189"; a="13438065"
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; d="scan'208";a="13438065"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2024 03:34:19 -0700
+X-CSE-ConnectionGUID: 6F+fjPMyRyu98ebCSwtSJw==
+X-CSE-MsgGUID: 0pDxqQ4dQQCzZnNnqt3eAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,213,1719903600"; d="scan'208";a="89902446"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
- by fmviesa002.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 09 Sep 2024 02:53:41 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 9 Sep 2024 02:53:40 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 9 Sep 2024 02:53:40 -0700
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.46) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 9 Sep 2024 02:53:39 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nCyScLfmdpzNGYHdwiRDPVn8AKpYryEVavVBeNbLQAuGgzz1Xb6mG8hYyhsiG3abKIVqDnqZajDeFltvVYXsEB+U4kmU6oKZdUyv8s5Q8qANcNU01kk+vHT9vlR0ZZkMdGlLQpEFdxugRxgpfPdIzWHs/Xm0o2zgiz4PZ63j3jBpl3g5PrVyamwhHmlFw6sB3c8/EXzyn8maigvYyNwEX+DBeBnFKTaSMdz7vXvAxtvSythJaZ4xGY1WSVvDCp60AK/RnyHPaRQC75RlyeV38UOMJJa6NukpiL5FwKQA1u17QJkDm6aHcLHI+b5EEGaVUzTY22QSCFJdCnzwwE/n+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FeAdmR+LSJ/h3Rz6DDki02kR45JQO7j8NQwmPg4qK7A=;
- b=IScY3XQm+O0iLZWmkR7WeSTl7YWTW23h5msVLzxWfDre7MDbPBxfZ2tXh6DEE9lFi9rwvnBmbCRaC69b8NXyGf7WLQsT4cY7Tlaay5cgfdNpKkMIyKOsoiOB4IHpdzJK7RHzh2dFdzltls4gIrLDiYKjXfqLkmS+LHYrs+f+ucwphgRHNkokhVGLsG0gxDOxT0A761nQlYKaZoEVh7WUc4kcVx0jh460Bbr7bnIqsNSsdqx1LRNjuGLs2YgthgYTdKsZE7UEXhAutTVm9P5g8yoN0/jf2jqQI9+p9aR78AHHKN0TPrNFpwvmzRfB517np4HbgzFh+qZULHeANeTZLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM8PR11MB5655.namprd11.prod.outlook.com (2603:10b6:8:28::10) by
- SJ2PR11MB7598.namprd11.prod.outlook.com (2603:10b6:a03:4c6::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Mon, 9 Sep
- 2024 09:53:37 +0000
-Received: from DM8PR11MB5655.namprd11.prod.outlook.com
- ([fe80::f6db:9044:ad81:33d9]) by DM8PR11MB5655.namprd11.prod.outlook.com
- ([fe80::f6db:9044:ad81:33d9%3]) with mapi id 15.20.7918.024; Mon, 9 Sep 2024
- 09:53:37 +0000
-From: "Saarinen, Jani" <jani.saarinen@intel.com>
-To: Alyssa Ross <hi@alyssa.is>, "I915-ci-infra@lists.freedesktop.org"
- <I915-ci-infra@lists.freedesktop.org>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: =?utf-8?B?UkU6IOKclyBGaS5DSS5CQVQ6IGZhaWx1cmUgZm9yIHRlc3RzL2ludGVsL2tt?=
- =?utf-8?B?c19wbV9ycG06IHVzZSBiYXNlbmFtZSBmcm9tIGxpYmdlbi5o?=
-Thread-Topic: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVzdHMvaW50ZWwva21zX3Bt?=
- =?utf-8?Q?=5Frpm:_use_basename_from_libgen.h?=
-Thread-Index: AQHa/8NtkG2cerz/R0GkUVuf9SGH/bJKfJIAgAS/+9A=
-Date: Mon, 9 Sep 2024 09:53:37 +0000
-Message-ID: <DM8PR11MB56555F2613C1B48BE4126955E0992@DM8PR11MB5655.namprd11.prod.outlook.com>
-References: <20240904134948.1337335-1-hi@alyssa.is>
- <172556176266.951809.4045747526049449062@2413ebb6fbb6>
- <87plphgmtv.fsf@alyssa.is>
-In-Reply-To: <87plphgmtv.fsf@alyssa.is>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM8PR11MB5655:EE_|SJ2PR11MB7598:EE_
-x-ms-office365-filtering-correlation-id: 4a1a83b9-3efc-4dba-36b9-08dcd0b546b6
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?elBjYnlvanpnNmxCb2ZkdDNhSVZDOHFjYWtFRmZFV1J0UkNTb0dvVmpkaC80?=
- =?utf-8?B?cVI0ZUFCS2hwb3ZiVDBmL1JHemk5ZlpQRmZ4aHZSMUtIVmd2WmdiUCtQUHVh?=
- =?utf-8?B?Q0VLUmdhUm9XcGdHSWl1Y2tTQldNL3ZGeHp5TWdWRkEwWmtUUnk5VDFHQVlJ?=
- =?utf-8?B?NmU0YnFUd2ZrWWs1eHNnWnh1WW9COURrZXhURlVpdExBT2haZlFEM0J2Yy9z?=
- =?utf-8?B?RG5USkNhYnB5ZkFTQW5GcGFIY29Db2x3M05TTWdmRnRVakVHYVVxT2RHV2JJ?=
- =?utf-8?B?ejVnM2JEbitCU2l6bFVyY1l1YmpjMnFZdmIvOVhSVVppR3VxVnkrcHp6d0kx?=
- =?utf-8?B?cUg0RlRPdU5ETkhBTjBEUmNIcDJ2clpkN0lYZ1lKSmc2RW1KMEJPUEc1WHov?=
- =?utf-8?B?VW5hcEdNTXd0bGNZQnlQQ3FyOHRzT0JjRm5sd1NTOE1YcUozZXhvRUh6Tk84?=
- =?utf-8?B?aEhGc0ZVOUF1SCtVb0k4Y2VWdnZJdU1CWi94Ry83STRkellVSnEya0pMeEN5?=
- =?utf-8?B?M0Z2dTVHS2hqNFZWbThFWGhSVUxMNTlGM0ovRTR4V2NNYUxhWGJhbVpiN0Fn?=
- =?utf-8?B?dm5tQSs1aDdJc2EyaTFPSE15eUw1V29PZkM3NWt6RnJNd2s2UWhFTGdsRjlp?=
- =?utf-8?B?OEdyeHZxUDVWR052aStkS3Yrc3VrNUlScDQzSTJYclVWYzZnRW1uOEQ0YlQ2?=
- =?utf-8?B?cjQwMnBpUEJ2bVZyTll3dmN3NTNRWWRLTUR5VklScnRXRzlqY0tLSjcxLzk4?=
- =?utf-8?B?K3JZOGUydk5ibGtUZlVXbk10REhBY3ZaWDVqZ3VQeGlXaU5US3NIckQrOEJZ?=
- =?utf-8?B?SERNRG1EYWNqbnhwbGN6VENDMGsyMlA1SkkyNEFGWVFCQ3pYUXdVT1QvcVVN?=
- =?utf-8?B?b1BhTkdWcU5DZGFkTk0yRVdxMCtJSzZnMmM0RXpkb1EwaVdkeWJObFZmNURF?=
- =?utf-8?B?Z0p5VjRKR0dXNVprR2d6OUh1UE5zZ1pnUkh4UzJoYW9YK20yUWx1MlB4MUdC?=
- =?utf-8?B?Qm5rMXlYcml2K05yNHRnMnRya0twdU40b2xWRkM2WXZld2p5ZlBBQTIwbDBL?=
- =?utf-8?B?M0syRVh6WnVELzZMcHVaemtLTHBueU8zVEt4cGpKYlBqZW91V1pJOGpOK0JN?=
- =?utf-8?B?RWhCQW11WU54ZnZ4SnRKTlk1a1BiVXlrbXoveVZmSXRRYXU4ZlFZUlI1SzRz?=
- =?utf-8?B?RmpRM0F5RzIwdGdWQVQrSDBBVkIvekZzTXhUaE05eXMvcDc2SG5ncEN2MU9O?=
- =?utf-8?B?UEp6NDZlRVpKbWd3UGhLYnppRUorczZrU1ZrM21lMEVCREdEeVZnbExQbTMx?=
- =?utf-8?B?VmhScjNvUXVJbERIQTI0VjVFMHNvZ1orTDJOSjBUSlY2WHl4M053SlF5cXox?=
- =?utf-8?B?TllFMWVhNVJoWkROUXJRajRHaWgwcTVLMjdYcGlSYkl4N1NrY0I5aE5QQ1R1?=
- =?utf-8?B?L3krQTJqK3M2eDdaZjQrMXJ2bGttTHRWQ2hlY3RjYTljSWdBOStrbGxtL2M4?=
- =?utf-8?B?UEVrVSthT0U5YzY2QVRWK0RkYWMxUG5aWFl5d3FVNEdWclVhQnY4S1NFOE9Y?=
- =?utf-8?B?SytjaEYrYUhFbFhzWGVKaG1ySEQ4eDhJeW1XVSsvMEpZa0xOekVrOFI5ek90?=
- =?utf-8?B?MkRSV3duRUViYjdBN2NSdUlRRjBuWU5vYUxhUXpuQ3o5VVlLQXZwejJKWkJ4?=
- =?utf-8?B?RVdSaUtrSUNNOUFEeXo5bDBON3hQeVFwRXdnMmNsK0RqcTh2MjFoVnhFRUJD?=
- =?utf-8?B?dlcxT09UYmRSbFl1OHYwZlVDajQ1cHJQQnp2Z3czazhHYi9jczBiWTlhd1Bv?=
- =?utf-8?Q?BWj0ijFJYtKnOf3u5yKQNaipDqb9aWdUWoZaQ=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM8PR11MB5655.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?MEtpaldvT0FpYjBUWE43aEVOakExMStTQmlYcm9CTWhxaU5leFhpQlhXUVFm?=
- =?utf-8?B?YlpqVW5MMC9xVGQ1T0FJVXdOQVBEa2oyS3lYcHA3a056OWx0Y2Jyd0pSUmdO?=
- =?utf-8?B?Rjl4T0NLejVrQ3RNSXFEcysxY3ZlUktMeVdZenFoZ0xxVm5ieVEyRElvYjhM?=
- =?utf-8?B?K3FYYTVQc3dzZWluQlBYaWNkbnhTc0wwVmJPR3QzTTlUclkrNGZLM1cxTXJM?=
- =?utf-8?B?Zm5XWU9SaTcvTWxPNEEyNitnclNPemFsNWlQUVd5UEx3ZFl5Mlo2aklvYnpR?=
- =?utf-8?B?dTRDQ1F0MWJtOGxvRWFvRVlVVTJtd0J5YnQvclRsanRsVWxsVEoyNUtxZ0FY?=
- =?utf-8?B?dlMrZlk4d0M4NWc5MTRhY0lLY0pFdGlWWDdLOVMwV1d3R3kxTnZ5eUFNSUFt?=
- =?utf-8?B?ZWpYQnBjdDNpS1oyeDQ4ZTFSdzVkSVdUU2VQbUdnczFhb1RKZFUwdTZSd0VB?=
- =?utf-8?B?VXBGNU9zbFJhK2FpeERLMzQzRkJJN25tQkZYTVRxd0NheU9YamowYkxGODhY?=
- =?utf-8?B?Vm5vZTdIMDJ3ZUpzc25HOGdKTGV6dkRwdXFaekZOZ1NuaGpFNkc5ZHhPLzVs?=
- =?utf-8?B?U2s2SzRNTUZ6eFJwRmpiY2xkWHZSODZOb0g4VnYwRW15NWNSZ1FZLzB1cHhW?=
- =?utf-8?B?MU5OVWFnZGFBLzVkRlZrZFJKcVhBanZ0QW1SMnhxSUoySFFqZEJKcXRQUkI1?=
- =?utf-8?B?dnB3Vkh5dndhYUJ0aGZDNXhrdXdRQVB4Kzc0dnRQQk9rVG0vOWRJSzlGbWM5?=
- =?utf-8?B?Y2NBNVI2NmZUbTVLdUpTdjdBNmpMS0IzNXNPQnNpVmVhUk80ZUVDSGFETWRO?=
- =?utf-8?B?NGIzeUNFZlhIZWdML0g4Q2IvK1AvZmtSaGovRDNQaml2SjhWZ21uS3BmL21z?=
- =?utf-8?B?eTlTaDczMTB0MUFYaklWMmVOWDFhVnJuQ1RybkV2QndndStoZ3M4ME84YU15?=
- =?utf-8?B?MHBJUVYzTnFTSWVWT0JzRkU5SnBGVlhuV2J0emRUYWdZZk5yMDVLZ2gwY0do?=
- =?utf-8?B?UHNZNnV4dnAxUGJBTGhlT0UxZGxHMEpVN0xRZ0x1VExmbWZTMkVOV2VUL3d0?=
- =?utf-8?B?K1NQbWR0ZVVDL1RwUXFmQjRPay90UlNscEZCTlVpcXhscWptUG5RVi96cjZa?=
- =?utf-8?B?Y3JVZk5XbHhScXNuWENmK2dzVlF3dVIxNWp3MVRPVjlpbnVKUXZOc3lPQ2Jo?=
- =?utf-8?B?NjZQVDMwbFI1aGhqdVluMS9wQWJDc1pDendzSmhCYU1scHUvU2JrZkQ5aDcx?=
- =?utf-8?B?c2RyN3ZiM2orMDJnOUtscHNUQ2p3UjQ2R2VXY0xaSGNKQS9PZUtVME9lck43?=
- =?utf-8?B?M0x3c0Y1NzNOaVJSUE1YYmc3d2VuekxNTlZwdWNTY3gxNU1rNUZHNit0dUtD?=
- =?utf-8?B?VEtiTHVudGt6YW5IQ3BWdG1iZE9XOFd4dDZSa21ETGxaTWNhTWJkV3hZb1Uw?=
- =?utf-8?B?bVY4Tlk1dVlkRDFLSFNYRWx3VGtmZDFOb2ZjSTJMTFVyZnRPMG53ZTZmNlVH?=
- =?utf-8?B?Z3IvaEV6cklHMnJjNXZhM25qUWN6Q1F4ekt3ZVlVQjhSb2Z4QjFMclR1UTJt?=
- =?utf-8?B?ViszTktWaG1KR1B4R3hoRy95eFhRcEpXcXp2SmxKVHJKcTcvdExFQ2ViT2ZZ?=
- =?utf-8?B?S2M1dXhRUlpQT1E2Z3ZpbVFnUE1uUUV0cWtPWUlXZWFtZHB4Q1cwRXBUSjlX?=
- =?utf-8?B?UDlya3FrdS9MRHh0anI1TmsvRS9FREMzai9LaTVFNnNnR29sNHhLSm15ejdv?=
- =?utf-8?B?cFVINGNSNkdQMCt1ckVXNnJncmE0TmU2aUg2OGNLb0djZnZRTnU3YXcyMXV0?=
- =?utf-8?B?VWFhd2crWjRveDJBcGRwUktxRXlzdUY4OTdhYk1xeVhXYzVWUFFacnpoQXNr?=
- =?utf-8?B?ejhJOE43OUt6dVFKdGpiYVlMcjRZUXZNUTRzZkU2MzkvWW4zdS9Wb0F5VldM?=
- =?utf-8?B?Y0hpMnFiR05KUzJ3OWV1MkZzYkZBaWtUdnBXbXp1MkxrZHNQT01nZDc4Z0Qr?=
- =?utf-8?B?QzY4RElFL1RTS2xTanh1TlVtK3NrcmR6K2JmU2h2bElJMUEwRkRIbFljbnEr?=
- =?utf-8?B?WTdKSmR3b0t3R0lSUkhJWUVlSlhHTGVvbUREU0dFL2drMWhpN0h4cWdZb1F6?=
- =?utf-8?Q?SJZ6iVLdfst+NPg/gcVCcYnNZ?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="6.10,214,1719903600"; d="scan'208";a="66678889"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.143])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2024 03:34:15 -0700
+Date: Mon, 9 Sep 2024 12:34:12 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Maciej Patelczyk <maciej.patelczyk@intel.com>,
+ Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
+ Mika Kuoppala <mika.kuoppala@intel.com>,
+ Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>,
+ Karolina Stolarek <karolina.stolarek@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t v6 13/17] tests/xe_eudebug: Test eudebug resource
+ tracking and manipulation
+Message-ID: <20240909103412.ygglbjtgewdkxpmu@zkempczy-mobl2>
+References: <20240905092812.94553-1-christoph.manszewski@intel.com>
+ <20240905092812.94553-14-christoph.manszewski@intel.com>
+ <20240906144636.fqcnutu3ibasxfgy@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM8PR11MB5655.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4a1a83b9-3efc-4dba-36b9-08dcd0b546b6
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2024 09:53:37.3241 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ftl1wV8Na+h3GbkRpNhvKiZKCT1iFdAePTuzPUdWJ9Azs4sZ/5WzLFil8yVAnq0OHXFMS4Vq7b8n3oWYJJXD7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB7598
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240906144636.fqcnutu3ibasxfgy@kamilkon-DESK.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -198,271 +84,2840 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-SGksIA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1kZXYgPGln
-dC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBBbHlzc2Eg
-Um9zcw0KPiBTZW50OiBGcmlkYXksIDYgU2VwdGVtYmVyIDIwMjQgMTIuMjENCj4gVG86IEk5MTUt
-Y2ktaW5mcmFAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBpZ3QtZGV2QGxpc3RzLmZyZWVk
-ZXNrdG9wLm9yZw0KPiBTdWJqZWN0OiBSZTog4pyXIEZpLkNJLkJBVDogZmFpbHVyZSBmb3IgdGVz
-dHMvaW50ZWwva21zX3BtX3JwbTogdXNlIGJhc2VuYW1lIGZyb20NCj4gbGliZ2VuLmgNCj4gDQo+
-IEhlbGxvLA0KPiANCj4gSSBkb24ndCB0aGluayB0aGUgcG9zc2libGUgcmVncmVzc2lvbnMgaGVy
-ZSBhcmUgbGlrZWx5IHRvIGJlIHJlbGF0ZWQgdG8gbXkgY2hhbmdlLCBhcw0KPiB0aGV5IGFwcGVh
-ciB0byBiZSB0ZXN0aW5nIHRoZSBrZXJuZWwsIGFzIHRoZXkgYXBwZWFyIHRvIGJlIGRpZmZlcmVu
-Y2VzIGluIGtlcm5lbA0KPiBiZWhhdmlvdXIgYnV0IG15IHBhdGNoIGlzIGEgKGhvcGVmdWxseSkg
-bm9uLWZ1bmN0aW9uYWwgY2hhbmdlIHRvIHVzZXJzcGFjZS4NCj4gDQo+IFBhdGNod29yayA8cGF0
-Y2h3b3JrQGVtZXJpbC5mcmVlZGVza3RvcC5vcmc+IHdyaXRlczoNCj4gDQo+ID4gPT0gU2VyaWVz
-IERldGFpbHMgPT0NCj4gPg0KPiA+IFNlcmllczogdGVzdHMvaW50ZWwva21zX3BtX3JwbTogdXNl
-IGJhc2VuYW1lIGZyb20gbGliZ2VuLmgNCj4gPiBVUkwgICA6IGh0dHBzOi8vcGF0Y2h3b3JrLmZy
-ZWVkZXNrdG9wLm9yZy9zZXJpZXMvMTM4MjQzLw0KPiA+IFN0YXRlIDogZmFpbHVyZQ0KPiA+DQo+
-ID4gPT0gU3VtbWFyeSA9PQ0KPiA+DQo+ID4gQ0kgQnVnIExvZyAtIGNoYW5nZXMgZnJvbSBDSV9E
-Uk1fMTUzNjcgLT4gSUdUUFdfMTE3MDENCj4gPiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09DQo+ID4NCj4gPiBTdW1tYXJ5DQo+ID4gLS0tLS0tLQ0K
-PiA+DQo+ID4gICAqKkZBSUxVUkUqKg0KPiA+DQo+ID4gICBTZXJpb3VzIHVua25vd24gY2hhbmdl
-cyBjb21pbmcgd2l0aCBJR1RQV18xMTcwMSBhYnNvbHV0ZWx5IG5lZWQgdG8gYmUNCj4gPiAgIHZl
-cmlmaWVkIG1hbnVhbGx5Lg0KPiA+DQo+ID4gICBJZiB5b3UgdGhpbmsgdGhlIHJlcG9ydGVkIGNo
-YW5nZXMgaGF2ZSBub3RoaW5nIHRvIGRvIHdpdGggdGhlIGNoYW5nZXMNCj4gPiAgIGludHJvZHVj
-ZWQgaW4gSUdUUFdfMTE3MDEsIHBsZWFzZSBub3RpZnkgeW91ciBidWcgdGVhbSAoSTkxNS1jaS0N
-Cj4gaW5mcmFAbGlzdHMuZnJlZWRlc2t0b3Aub3JnKSB0byBhbGxvdyB0aGVtDQo+ID4gICB0byBk
-b2N1bWVudCB0aGlzIG5ldyBmYWlsdXJlIG1vZGUsIHdoaWNoIHdpbGwgcmVkdWNlIGZhbHNlIHBv
-c2l0aXZlcyBpbiBDSS4NCj4gPg0KPiA+ICAgRXh0ZXJuYWwgVVJMOg0KPiA+IGh0dHBzOi8vaW50
-ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTE3MDEvaW5kZXguaHRtbA0KPiA+
-DQo+ID4gUGFydGljaXBhdGluZyBob3N0cyAoNDAgLT4gMzkpDQo+ID4gLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tDQo+ID4NCj4gPiAgIEFkZGl0aW9uYWwgKDMpOiBiYXQta2JsLTIgYmF0
-LWRnMi0xMSBmaS1rYmwtODgwOWcNCj4gPiAgIE1pc3NpbmcgICAgKDQpOiBiYXQtanNsLTEgYmF0
-LWFybHMtMSBmaS1zbmItMjUyMG0gYmF0LW10bHAtNg0KPiA+DQo+ID4gUG9zc2libGUgbmV3IGlz
-c3Vlcw0KPiA+IC0tLS0tLS0tLS0tLS0tLS0tLS0NCj4gPg0KPiA+ICAgSGVyZSBhcmUgdGhlIHVu
-a25vd24gY2hhbmdlcyB0aGF0IG1heSBoYXZlIGJlZW4gaW50cm9kdWNlZCBpbg0KPiBJR1RQV18x
-MTcwMToNCj4gPg0KPiA+ICMjIyBJR1QgY2hhbmdlcyAjIyMNCj4gPg0KPiA+ICMjIyMgUG9zc2li
-bGUgcmVncmVzc2lvbnMgIyMjIw0KPiA+DQo+ID4gICAqIGlndEBrbXNfYnVzeUBiYXNpYzoNCj4g
-PiAgICAgLSBmaS1jZmwtODEwOXU6ICAgICAgIFtQQVNTXVsxXSAtPiBbRE1FU0ctV0FSTl1bMl0N
-Cj4gPiAgICBbMV06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lf
-RFJNXzE1MzY3L2ZpLWNmbC0NCj4gODEwOXUvaWd0QGttc19idXN5QGJhc2ljLmh0bWwNCj4gPiAg
-ICBbMl06DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQ
-V18xMTcwMS9maS1jZmwtODEwOXUvaWd0QA0KPiA+IGttc19idXN5QGJhc2ljLmh0bWwNCg0KU2Vl
-bXMgdG8gYmUgaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8t
-L2lzc3Vlcy8xMjE0NSANCg0KPiA+DQo+ID4gICAqIGlndEBrbXNfZmxpcEBiYXNpYy1mbGlwLXZz
-LWRwbXM6DQo+ID4gICAgIC0gZmktY2ZsLTgxMDl1OiAgICAgICBbUEFTU11bM10gLT4gW0lOQ09N
-UExFVEVdWzRdDQo+ID4gICAgWzNdOiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9k
-cm0tdGlwL0NJX0RSTV8xNTM2Ny9maS1jZmwtDQo+IDgxMDl1L2lndEBrbXNfZmxpcEBiYXNpYy1m
-bGlwLXZzLWRwbXMuaHRtbA0KPiA+ICAgIFs0XToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2ZpLWNmbC04MTA5dS9pZ3RADQo+ID4ga21z
-X2ZsaXBAYmFzaWMtZmxpcC12cy1kcG1zLmh0bWwNCj4gPg0KPiA+DQo+ID4gIyMjIyBTdXBwcmVz
-c2VkICMjIyMNCj4gPg0KPiA+ICAgVGhlIGZvbGxvd2luZyByZXN1bHRzIGNvbWUgZnJvbSB1bnRy
-dXN0ZWQgbWFjaGluZXMsIHRlc3RzLCBvciBzdGF0dXNlcy4NCj4gPiAgIFRoZXkgZG8gbm90IGFm
-ZmVjdCB0aGUgb3ZlcmFsbCByZXN1bHQuDQo+ID4NCj4gPiAgICogaWd0QGk5MTVfc2VsZnRlc3RA
-bGl2ZUBndF9tb2NzOg0KPiA+ICAgICAtIHtiYXQtYXJsaC0zfTogICAgICAgTk9UUlVOIC0+IFtJ
-TkNPTVBMRVRFXVs1XQ0KPiA+ICAgIFs1XToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5v
-cmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2JhdC1hcmxoLTMvaWd0QGk5DQo+ID4gMTVfc2Vs
-ZnRlc3RAbGl2ZUBndF9tb2NzLmh0bWwNCj4gPg0KPiA+DQo+ID4gS25vd24gaXNzdWVzDQo+ID4g
-LS0tLS0tLS0tLS0tDQo+ID4NCj4gPiAgIEhlcmUgYXJlIHRoZSBjaGFuZ2VzIGZvdW5kIGluIElH
-VFBXXzExNzAxIHRoYXQgY29tZSBmcm9tIGtub3duIGlzc3VlczoNCj4gPg0KPiA+ICMjIyBJR1Qg
-Y2hhbmdlcyAjIyMNCj4gPg0KPiA+ICMjIyMgSXNzdWVzIGhpdCAjIyMjDQo+ID4NCj4gPiAgICog
-aWd0QGZiZGV2QGluZm86DQo+ID4gICAgIC0gYmF0LWtibC0yOiAgICAgICAgICBOT1RSVU4gLT4g
-W1NLSVBdWzZdIChbaTkxNSMxODQ5XSkNCj4gPiAgICBbNl06DQo+ID4gaHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQta2JsLTIvaWd0QGZiZA0K
-PiA+IGV2QGluZm8uaHRtbA0KPiA+DQo+ID4gICAqIGlndEBnZW1faHVjX2NvcHlAaHVjLWNvcHk6
-DQo+ID4gICAgIC0gZmkta2JsLTg4MDlnOiAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzddIChbaTkx
-NSMyMTkwXSkNCj4gPiAgICBbN106DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9maS1rYmwtODgwOWcvaWd0QA0KPiA+IGdlbV9odWNfY29w
-eUBodWMtY29weS5odG1sDQo+ID4NCj4gPiAgICogaWd0QGdlbV9sbWVtX3N3YXBwaW5nQHBhcmFs
-bGVsLXJhbmRvbS1lbmdpbmVzOg0KPiA+ICAgICAtIGJhdC1rYmwtMjogICAgICAgICAgTk9UUlVO
-IC0+IFtTS0lQXVs4XSArMzkgb3RoZXIgdGVzdHMgc2tpcA0KPiA+ICAgIFs4XTogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQta2JsLQ0KPiAy
-L2lndEBnZW1fbG1lbV9zd2FwcGluZ0BwYXJhbGxlbC1yYW5kb20tZW5naW5lcy5odG1sDQo+ID4g
-ICAgIC0gZmkta2JsLTg4MDlnOiAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzldIChbaTkxNSM0NjEz
-XSkgKzMgb3RoZXIgdGVzdHMgc2tpcA0KPiA+ICAgIFs5XToNCj4gPiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2ZpLWtibC04ODA5Zy9pZ3RADQo+
-ID4gZ2VtX2xtZW1fc3dhcHBpbmdAcGFyYWxsZWwtcmFuZG9tLWVuZ2luZXMuaHRtbA0KPiA+DQo+
-ID4gICAqIGlndEBnZW1fbW1hcEBiYXNpYzoNCj4gPiAgICAgLSBiYXQtZGcyLTExOiAgICAgICAg
-IE5PVFJVTiAtPiBbU0tJUF1bMTBdIChbaTkxNSM0MDgzXSkNCj4gPiAgICBbMTBdOg0KPiA+IGh0
-dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTE3MDEvYmF0LWRn
-Mi0xMS9pZ3RAZ2UNCj4gPiBtX21tYXBAYmFzaWMuaHRtbA0KPiA+DQo+ID4gICAqIGlndEBnZW1f
-cmVuZGVyX3RpbGVkX2JsaXRzQGJhc2ljOg0KPiA+ICAgICAtIGJhdC1kZzItMTE6ICAgICAgICAg
-Tk9UUlVOIC0+IFtTS0lQXVsxMV0gKFtpOTE1IzQwNzldKSArMSBvdGhlciB0ZXN0IHNraXANCj4g
-PiAgICBbMTFdOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAv
-SUdUUFdfMTE3MDEvYmF0LWRnMi0xMS9pZ3RAZ2UNCj4gPiBtX3JlbmRlcl90aWxlZF9ibGl0c0Bi
-YXNpYy5odG1sDQo+ID4NCj4gPiAgICogaWd0QGdlbV90aWxlZF9mZW5jZV9ibGl0c0BiYXNpYzoN
-Cj4gPiAgICAgLSBiYXQtZGcyLTExOiAgICAgICAgIE5PVFJVTiAtPiBbU0tJUF1bMTJdIChbaTkx
-NSM0MDc3XSkgKzIgb3RoZXIgdGVzdHMgc2tpcA0KPiA+ICAgIFsxMl06DQo+ID4gaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtZGcyLTExL2ln
-dEBnZQ0KPiA+IG1fdGlsZWRfZmVuY2VfYmxpdHNAYmFzaWMuaHRtbA0KPiA+DQo+ID4gICAqIGln
-dEBpOTE1X3BtX3Jwc0BiYXNpYy1hcGk6DQo+ID4gICAgIC0gYmF0LWRnMi0xMTogICAgICAgICBO
-T1RSVU4gLT4gW1NLSVBdWzEzXSAoW2k5MTUjMTE2ODFdIC8gW2k5MTUjNjYyMV0pDQo+ID4gICAg
-WzEzXToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBX
-XzExNzAxL2JhdC1kZzItMTEvaWd0QGk5DQo+ID4gMTVfcG1fcnBzQGJhc2ljLWFwaS5odG1sDQo+
-ID4NCj4gPiAgICogaWd0QGttc19hZGRmYl9iYXNpY0BhZGRmYjI1LXgtdGlsZWQtbWlzbWF0Y2gt
-bGVnYWN5Og0KPiA+ICAgICAtIGJhdC1kZzItMTE6ICAgICAgICAgTk9UUlVOIC0+IFtTS0lQXVsx
-NF0gKFtpOTE1IzQyMTJdKSArNyBvdGhlciB0ZXN0cyBza2lwDQo+ID4gICAgWzE0XToNCj4gPiBo
-dHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2JhdC1k
-ZzItMTEvaWd0QGttDQo+ID4gc19hZGRmYl9iYXNpY0BhZGRmYjI1LXgtdGlsZWQtbWlzbWF0Y2gt
-bGVnYWN5Lmh0bWwNCj4gPg0KPiA+ICAgKiBpZ3RAa21zX2FkZGZiX2Jhc2ljQGFkZGZiMjUteS10
-aWxlZC1zbWFsbC1sZWdhY3k6DQo+ID4gICAgIC0gYmF0LWRnMi0xMTogICAgICAgICBOT1RSVU4g
-LT4gW1NLSVBdWzE1XSAoW2k5MTUjNTE5MF0pDQo+ID4gICAgWzE1XToNCj4gPiBodHRwczovL2lu
-dGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2JhdC1kZzItMTEvaWd0
-QGttDQo+ID4gc19hZGRmYl9iYXNpY0BhZGRmYjI1LXktdGlsZWQtc21hbGwtbGVnYWN5Lmh0bWwN
-Cj4gPg0KPiA+ICAgKiBpZ3RAa21zX2FkZGZiX2Jhc2ljQGJhc2ljLXktdGlsZWQtbGVnYWN5Og0K
-PiA+ICAgICAtIGJhdC1kZzItMTE6ICAgICAgICAgTk9UUlVOIC0+IFtTS0lQXVsxNl0gKFtpOTE1
-IzQyMTVdIC8gW2k5MTUjNTE5MF0pDQo+ID4gICAgWzE2XToNCj4gPiBodHRwczovL2ludGVsLWdm
-eC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2JhdC1kZzItMTEvaWd0QGttDQo+
-ID4gc19hZGRmYl9iYXNpY0BiYXNpYy15LXRpbGVkLWxlZ2FjeS5odG1sDQo+ID4NCj4gPiAgICog
-aWd0QGttc19jdXJzb3JfbGVnYWN5QGJhc2ljLWJ1c3ktZmxpcC1iZWZvcmUtY3Vyc29yLWF0b21p
-YzoNCj4gPiAgICAgLSBiYXQtZGcyLTExOiAgICAgICAgIE5PVFJVTiAtPiBbU0tJUF1bMTddIChb
-aTkxNSM0MTAzXSAvIFtpOTE1IzQyMTNdKSArMQ0KPiBvdGhlciB0ZXN0IHNraXANCj4gPiAgICBb
-MTddOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
-MTE3MDEvYmF0LWRnMi0xMS9pZ3RAa20NCj4gPiBzX2N1cnNvcl9sZWdhY3lAYmFzaWMtYnVzeS1m
-bGlwLWJlZm9yZS1jdXJzb3ItYXRvbWljLmh0bWwNCj4gPg0KPiA+ICAgKiBpZ3RAa21zX2N1cnNv
-cl9sZWdhY3lAYmFzaWMtZmxpcC1hZnRlci1jdXJzb3ItdmFyeWluZy1zaXplOg0KPiA+ICAgICAt
-IGZpLWNmbC04MTA5dTogICAgICAgW1BBU1NdWzE4XSAtPiBbRE1FU0ctV0FSTl1bMTldIChbaTkx
-NSMxMjE0NV0pICsxIG90aGVyDQo+IHRlc3QgZG1lc2ctd2Fybg0KPiA+ICAgIFsxOF06IGh0dHBz
-Oi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lfRFJNXzE1MzY3L2ZpLWNmbC0N
-Cj4gODEwOXUvaWd0QGttc19jdXJzb3JfbGVnYWN5QGJhc2ljLWZsaXAtYWZ0ZXItY3Vyc29yLXZh
-cnlpbmctc2l6ZS5odG1sDQo+ID4gICAgWzE5XToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2ZpLWNmbC04MTA5dS9pZ3RADQo+ID4ga21z
-X2N1cnNvcl9sZWdhY3lAYmFzaWMtZmxpcC1hZnRlci1jdXJzb3ItdmFyeWluZy1zaXplLmh0bWwN
-Cj4gPg0KPiA+ICAgKiBpZ3RAa21zX2RzY0Bkc2MtYmFzaWM6DQo+ID4gICAgIC0gZmkta2JsLTg4
-MDlnOiAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzIwXSArMzAgb3RoZXIgdGVzdHMgc2tpcA0KPiA+
-ICAgIFsyMF06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
-MTE3MDEvZmkta2JsLQ0KPiA4ODA5Zy9pZ3RAa21zX2RzY0Bkc2MtYmFzaWMuaHRtbA0KPiA+ICAg
-ICAtIGJhdC1kZzItMTE6ICAgICAgICAgTk9UUlVOIC0+IFtTS0lQXVsyMV0gKFtpOTE1IzM1NTVd
-IC8gW2k5MTUjMzg0MF0pDQo+ID4gICAgWzIxXToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4w
-MS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2JhdC1kZzItMTEvaWd0QGttDQo+ID4gc19k
-c2NAZHNjLWJhc2ljLmh0bWwNCj4gPg0KPiA+ICAgKiBpZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12
-cy1kcG1zQGItZHAxOg0KPiA+ICAgICAtIGZpLWNmbC04MTA5dTogICAgICAgW1BBU1NdWzIyXSAt
-PiBbSU5DT01QTEVURV1bMjNdIChbaTkxNSMxMjE0Nl0pDQo+ID4gICAgWzIyXTogaHR0cHM6Ly9p
-bnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTUzNjcvZmktY2ZsLQ0KPiA4
-MTA5dS9pZ3RAa21zX2ZsaXBAYmFzaWMtZmxpcC12cy1kcG1zQGItZHAxLmh0bWwNCj4gPiAgICBb
-MjNdOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdf
-MTE3MDEvZmktY2ZsLTgxMDl1L2lndEANCj4gPiBrbXNfZmxpcEBiYXNpYy1mbGlwLXZzLWRwbXNA
-Yi1kcDEuaHRtbA0KPiA+DQo+ID4gICAqIGlndEBrbXNfZm9yY2VfY29ubmVjdG9yX2Jhc2ljQGZv
-cmNlLWxvYWQtZGV0ZWN0Og0KPiA+ICAgICAtIGJhdC1kZzItMTE6ICAgICAgICAgTk9UUlVOIC0+
-IFtTS0lQXVsyNF0NCj4gPiAgICBbMjRdOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvSUdUUFdfMTE3MDEvYmF0LWRnMi0xMS9pZ3RAa20NCj4gPiBzX2ZvcmNl
-X2Nvbm5lY3Rvcl9iYXNpY0Bmb3JjZS1sb2FkLWRldGVjdC5odG1sDQo+ID4NCj4gPiAgICogaWd0
-QGttc19mb3JjZV9jb25uZWN0b3JfYmFzaWNAcHJ1bmUtc3RhbGUtbW9kZXM6DQo+ID4gICAgIC0g
-YmF0LWRnMi0xMTogICAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzI1XSAoW2k5MTUjNTI3NF0pDQo+
-ID4gICAgWzI1XToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlw
-L0lHVFBXXzExNzAxL2JhdC1kZzItMTEvaWd0QGttDQo+ID4gc19mb3JjZV9jb25uZWN0b3JfYmFz
-aWNAcHJ1bmUtc3RhbGUtbW9kZXMuaHRtbA0KPiA+DQo+ID4gICAqIGlndEBrbXNfcGlwZV9jcmNf
-YmFzaWNAbm9uYmxvY2tpbmctY3JjOg0KPiA+ICAgICAtIGJhdC1hcmxzLTU6ICAgICAgICAgW1BB
-U1NdWzI2XSAtPiBbSU5DT01QTEVURV1bMjddIChbaTkxNSMxMTMyMF0pDQo+ID4gICAgWzI2XTog
-aHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTUzNjcvYmF0
-LWFybHMtDQo+IDUvaWd0QGttc19waXBlX2NyY19iYXNpY0Bub25ibG9ja2luZy1jcmMuaHRtbA0K
-PiA+ICAgIFsyN106DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRp
-cC9JR1RQV18xMTcwMS9iYXQtYXJscy01L2lndEBrbQ0KPiA+IHNfcGlwZV9jcmNfYmFzaWNAbm9u
-YmxvY2tpbmctY3JjLmh0bWwNCj4gPg0KPiA+ICAgKiBpZ3RAa21zX3BtX2JhY2tsaWdodEBiYXNp
-Yy1icmlnaHRuZXNzOg0KPiA+ICAgICAtIGJhdC1kZzItMTE6ICAgICAgICAgTk9UUlVOIC0+IFtT
-S0lQXVsyOF0gKFtpOTE1IzUzNTRdKQ0KPiA+ICAgIFsyOF06DQo+ID4gaHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtZGcyLTExL2lndEBrbQ0K
-PiA+IHNfcG1fYmFja2xpZ2h0QGJhc2ljLWJyaWdodG5lc3MuaHRtbA0KPiA+DQo+ID4gICAqIGln
-dEBrbXNfcHNyQHBzci1zcHJpdGUtcGxhbmUtb25vZmY6DQo+ID4gICAgIC0gYmF0LWRnMi0xMTog
-ICAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzI5XSAoW2k5MTUjMTA3Ml0gLyBbaTkxNSM5NzMyXSkg
-KzMNCj4gb3RoZXIgdGVzdHMgc2tpcA0KPiA+ICAgIFsyOV06DQo+ID4gaHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtZGcyLTExL2lndEBrbQ0K
-PiA+IHNfcHNyQHBzci1zcHJpdGUtcGxhbmUtb25vZmYuaHRtbA0KPiA+DQo+ID4gICAqIGlndEBr
-bXNfc2V0bW9kZUBiYXNpYy1jbG9uZS1zaW5nbGUtY3J0YzoNCj4gPiAgICAgLSBiYXQtZGcyLTEx
-OiAgICAgICAgIE5PVFJVTiAtPiBbU0tJUF1bMzBdIChbaTkxNSMzNTU1XSkNCj4gPiAgICBbMzBd
-Og0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTE3
-MDEvYmF0LWRnMi0xMS9pZ3RAa20NCj4gPiBzX3NldG1vZGVAYmFzaWMtY2xvbmUtc2luZ2xlLWNy
-dGMuaHRtbA0KPiA+DQo+ID4gICAqIGlndEBwcmltZV92Z2VtQGJhc2ljLWZlbmNlLWZsaXA6DQo+
-ID4gICAgIC0gYmF0LWRnMi0xMTogICAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzMxXSAoW2k5MTUj
-MzcwOF0pDQo+ID4gICAgWzMxXToNCj4gPiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJl
-ZS9kcm0tdGlwL0lHVFBXXzExNzAxL2JhdC1kZzItMTEvaWd0QHByDQo+ID4gaW1lX3ZnZW1AYmFz
-aWMtZmVuY2UtZmxpcC5odG1sDQo+ID4NCj4gPiAgICogaWd0QHByaW1lX3ZnZW1AYmFzaWMtZ3R0
-Og0KPiA+ICAgICAtIGJhdC1kZzItMTE6ICAgICAgICAgTk9UUlVOIC0+IFtTS0lQXVszMl0gKFtp
-OTE1IzM3MDhdIC8gW2k5MTUjNDA3N10pICsxDQo+IG90aGVyIHRlc3Qgc2tpcA0KPiA+ICAgIFsz
-Ml06DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18x
-MTcwMS9iYXQtZGcyLTExL2lndEBwcg0KPiA+IGltZV92Z2VtQGJhc2ljLWd0dC5odG1sDQo+ID4N
-Cj4gPiAgICogaWd0QHByaW1lX3ZnZW1AYmFzaWMtd3JpdGU6DQo+ID4gICAgIC0gYmF0LWRnMi0x
-MTogICAgICAgICBOT1RSVU4gLT4gW1NLSVBdWzMzXSAoW2k5MTUjMzI5MV0gLyBbaTkxNSMzNzA4
-XSkgKzINCj4gb3RoZXIgdGVzdHMgc2tpcA0KPiA+ICAgIFszM106DQo+ID4gaHR0cHM6Ly9pbnRl
-bC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtZGcyLTExL2lndEBw
-cg0KPiA+IGltZV92Z2VtQGJhc2ljLXdyaXRlLmh0bWwNCj4gPg0KPiA+DQo+ID4gIyMjIyBQb3Nz
-aWJsZSBmaXhlcyAjIyMjDQo+ID4NCj4gPiAgICogaWd0QGk5MTVfc2VsZnRlc3RAbGl2ZToNCj4g
-PiAgICAgLSBiYXQtYXJscy0yOiAgICAgICAgIFtETUVTRy1XQVJOXVszNF0gKFtpOTE1IzEwMzQx
-XSkgLT4gW1BBU1NdWzM1XQ0KPiA+ICAgIFszNF06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvQ0lfRFJNXzE1MzY3L2JhdC1hcmxzLQ0KPiAyL2lndEBpOTE1X3NlbGZ0
-ZXN0QGxpdmUuaHRtbA0KPiA+ICAgIFszNV06DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEu
-b3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtYXJscy0yL2lndEBpOQ0KPiA+IDE1X3Nl
-bGZ0ZXN0QGxpdmUuaHRtbA0KPiA+DQo+ID4gICAqIGlndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAaGFu
-Z2NoZWNrOg0KPiA+ICAgICAtIGJhdC1hcmxzLTI6ICAgICAgICAgW0RNRVNHLVdBUk5dWzM2XSAo
-W2k5MTUjMTEzNDldKSAtPiBbUEFTU11bMzddDQo+ID4gICAgWzM2XTogaHR0cHM6Ly9pbnRlbC1n
-ZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9DSV9EUk1fMTUzNjcvYmF0LWFybHMtDQo+IDIvaWd0
-QGk5MTVfc2VsZnRlc3RAbGl2ZUBoYW5nY2hlY2suaHRtbA0KPiA+ICAgIFszN106DQo+ID4gaHR0
-cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3RyZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtYXJs
-cy0yL2lndEBpOQ0KPiA+IDE1X3NlbGZ0ZXN0QGxpdmVAaGFuZ2NoZWNrLmh0bWwNCj4gPg0KPiA+
-ICAgKiBpZ3RAaTkxNV9zZWxmdGVzdEBsaXZlQHdvcmthcm91bmRzOg0KPiA+ICAgICAtIHtiYXQt
-YXJsaC0zfTogICAgICAgW0FCT1JUXVszOF0gKFtpOTE1IzEyMDYxXSkgLT4gW1BBU1NdWzM5XQ0K
-PiA+ICAgIFszOF06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvQ0lf
-RFJNXzE1MzY3L2JhdC1hcmxoLQ0KPiAzL2lndEBpOTE1X3NlbGZ0ZXN0QGxpdmVAd29ya2Fyb3Vu
-ZHMuaHRtbA0KPiA+ICAgIFszOV06DQo+ID4gaHR0cHM6Ly9pbnRlbC1nZngtY2kuMDEub3JnL3Ry
-ZWUvZHJtLXRpcC9JR1RQV18xMTcwMS9iYXQtYXJsaC0zL2lndEBpOQ0KPiA+IDE1X3NlbGZ0ZXN0
-QGxpdmVAd29ya2Fyb3VuZHMuaHRtbA0KPiA+DQo+ID4NCj4gPiAjIyMjIFdhcm5pbmdzICMjIyMN
-Cj4gPg0KPiA+ICAgKiBpZ3RAY29yZV9ob3R1bnBsdWdAdW5iaW5kLXJlYmluZDoNCj4gPiAgICAg
-LSBiYXQtYXBsLTE6ICAgICAgICAgIFtETUVTRy1XQVJOXVs0MF0gKFtpOTE1IzE4MF0pIC0+IFtE
-TUVTRy1XQVJOXVs0MV0NCj4gKFtpOTE1IzE4MF0gLyBbaTkxNSMxOTgyXSkNCj4gPiAgICBbNDBd
-OiBodHRwczovL2ludGVsLWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0NJX0RSTV8xNTM2Ny9i
-YXQtYXBsLQ0KPiAxL2lndEBjb3JlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5kLmh0bWwNCj4gPiAg
-ICBbNDFdOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdU
-UFdfMTE3MDEvYmF0LWFwbC0xL2lndEBjb3INCj4gPiBlX2hvdHVucGx1Z0B1bmJpbmQtcmViaW5k
-Lmh0bWwNCj4gPg0KPiA+ICAgKiBpZ3RAaTkxNV9tb2R1bGVfbG9hZEByZWxvYWQ6DQo+ID4gICAg
-IC0gZmkta2JsLTc1Njd1OiAgICAgICBbRE1FU0ctV0FSTl1bNDJdIChbaTkxNSMxODBdIC8gW2k5
-MTUjOTkyNV0pIC0+DQo+IFtETUVTRy1XQVJOXVs0M10gKFtpOTE1IzE4MF0gLyBbaTkxNSMxOTgy
-XSAvIFtpOTE1Izk5MjVdKQ0KPiA+ICAgIFs0Ml06IGh0dHBzOi8vaW50ZWwtZ2Z4LWNpLjAxLm9y
-Zy90cmVlL2RybS10aXAvQ0lfRFJNXzE1MzY3L2ZpLWtibC0NCj4gNzU2N3UvaWd0QGk5MTVfbW9k
-dWxlX2xvYWRAcmVsb2FkLmh0bWwNCj4gPiAgICBbNDNdOg0KPiA+IGh0dHBzOi8vaW50ZWwtZ2Z4
-LWNpLjAxLm9yZy90cmVlL2RybS10aXAvSUdUUFdfMTE3MDEvZmkta2JsLTc1Njd1L2lndEANCj4g
-PiBpOTE1X21vZHVsZV9sb2FkQHJlbG9hZC5odG1sDQo+ID4NCj4gPg0KPiA+ICAge25hbWV9OiBU
-aGlzIGVsZW1lbnQgaXMgc3VwcHJlc3NlZC4gVGhpcyBtZWFucyBpdCBpcyBpZ25vcmVkIHdoZW4g
-Y29tcHV0aW5nDQo+ID4gICAgICAgICAgIHRoZSBzdGF0dXMgb2YgdGhlIGRpZmZlcmVuY2UgKFNV
-Q0NFU1MsIFdBUk5JTkcsIG9yIEZBSUxVUkUpLg0KPiA+DQo+ID4gICBbaTkxNSMxMDM0MV06IGh0
-dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvMTAz
-NDENCj4gPiAgIFtpOTE1IzEwNzJdOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJt
-L2k5MTUva2VybmVsLy0vaXNzdWVzLzEwNzINCj4gPiAgIFtpOTE1IzExMzIwXTogaHR0cHM6Ly9n
-aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy8xMTMyMA0KPiA+
-ICAgW2k5MTUjMTEzNDldOiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2k5MTUv
-a2VybmVsLy0vaXNzdWVzLzExMzQ5DQo+ID4gICBbaTkxNSMxMTY4MV06IGh0dHBzOi8vZ2l0bGFi
-LmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvMTE2ODENCj4gPiAgIFtp
-OTE1IzEyMDYxXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5l
-bC8tL2lzc3Vlcy8xMjA2MQ0KPiA+ICAgW2k5MTUjMTIxNDVdOiBodHRwczovL2dpdGxhYi5mcmVl
-ZGVza3RvcC5vcmcvZHJtL2k5MTUva2VybmVsLy0vaXNzdWVzLzEyMTQ1DQo+ID4gICBbaTkxNSMx
-MjE0Nl06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9p
-c3N1ZXMvMTIxNDYNCj4gPiAgIFtpOTE1IzE4MF06IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9w
-Lm9yZy9kcm0vaTkxNS9rZXJuZWwvLS9pc3N1ZXMvMTgwDQo+ID4gICBbaTkxNSMxODQ5XTogaHR0
-cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy8xODQ5
-DQo+ID4gICBbaTkxNSMxOTgyXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9p
-OTE1L2tlcm5lbC8tL2lzc3Vlcy8xOTgyDQo+ID4gICBbaTkxNSMyMTkwXTogaHR0cHM6Ly9naXRs
-YWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy8yMTkwDQo+ID4gICBb
-aTkxNSMzMjkxXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5l
-bC8tL2lzc3Vlcy8zMjkxDQo+ID4gICBbaTkxNSMzNTU1XTogaHR0cHM6Ly9naXRsYWIuZnJlZWRl
-c2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy8zNTU1DQo+ID4gICBbaTkxNSMzNzA4
-XTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vl
-cy8zNzA4DQo+ID4gICBbaTkxNSMzODQwXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3Jn
-L2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy8zODQwDQo+ID4gICBbaTkxNSM0MDc3XTogaHR0cHM6
-Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80MDc3DQo+
-ID4gICBbaTkxNSM0MDc5XTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1
-L2tlcm5lbC8tL2lzc3Vlcy80MDc5DQo+ID4gICBbaTkxNSM0MDgzXTogaHR0cHM6Ly9naXRsYWIu
-ZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80MDgzDQo+ID4gICBbaTkx
-NSM0MTAzXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8t
-L2lzc3Vlcy80MTAzDQo+ID4gICBbaTkxNSM0MjEyXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0
-b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80MjEyDQo+ID4gICBbaTkxNSM0MjEzXTog
-aHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80
-MjEzDQo+ID4gICBbaTkxNSM0MjE1XTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2Ry
-bS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80MjE1DQo+ID4gICBbaTkxNSM0NjEzXTogaHR0cHM6Ly9n
-aXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy80NjEzDQo+ID4g
-ICBbaTkxNSM1MTkwXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tl
-cm5lbC8tL2lzc3Vlcy81MTkwDQo+ID4gICBbaTkxNSM1Mjc0XTogaHR0cHM6Ly9naXRsYWIuZnJl
-ZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy81Mjc0DQo+ID4gICBbaTkxNSM1
-MzU0XTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lz
-c3Vlcy81MzU0DQo+ID4gICBbaTkxNSM2NjIxXTogaHR0cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Au
-b3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy82NjIxDQo+ID4gICBbaTkxNSM5NzMyXTogaHR0
-cHM6Ly9naXRsYWIuZnJlZWRlc2t0b3Aub3JnL2RybS9pOTE1L2tlcm5lbC8tL2lzc3Vlcy85NzMy
-DQo+ID4gICBbaTkxNSM5OTI1XToNCj4gPiBodHRwczovL2dpdGxhYi5mcmVlZGVza3RvcC5vcmcv
-ZHJtL2k5MTUva2VybmVsLy0vaXNzdWVzLzk5MjUNCj4gPg0KPiA+DQo+ID4gQnVpbGQgY2hhbmdl
-cw0KPiA+IC0tLS0tLS0tLS0tLS0NCj4gPg0KPiA+ICAgKiBDSTogQ0ktMjAxOTA1MjkgLT4gTm9u
-ZQ0KPiA+ICAgKiBJR1Q6IElHVF84MDA2IC0+IElHVFBXXzExNzAxDQo+ID4NCj4gPiAgIENJLTIw
-MTkwNTI5OiAyMDE5MDUyOQ0KPiA+ICAgQ0lfRFJNXzE1MzY3OiA0Mzg0ZWNlYmI4M2FmYWU1ZTUx
-YWI5MGZmMWZjOWRjMWY3YzA0OGE4IEANCj4gZ2l0Oi8vYW5vbmdpdC5mcmVlZGVza3RvcC5vcmcv
-Z2Z4LWNpL2xpbnV4DQo+ID4gICBJR1RQV18xMTcwMTogMTE3MDENCj4gPiAgIElHVF84MDA2OiBh
-ZTdmMmJjMGI5OTgwMWE3YWUzNjlkNGI1ZmRhNWM2YjFjMzg2ZWIxIEANCj4gPiBodHRwczovL2dp
-dGxhYi5mcmVlZGVza3RvcC5vcmcvZHJtL2lndC1ncHUtdG9vbHMuZ2l0DQo+ID4NCj4gPiA9PSBM
-b2dzID09DQo+ID4NCj4gPiBGb3IgbW9yZSBkZXRhaWxzIHNlZToNCj4gPiBodHRwczovL2ludGVs
-LWdmeC1jaS4wMS5vcmcvdHJlZS9kcm0tdGlwL0lHVFBXXzExNzAxL2luZGV4Lmh0bWwNCg==
+On Fri, Sep 06, 2024 at 04:46:36PM +0200, Kamil Konieczny wrote:
+> Hi Christoph,
+> On 2024-09-05 at 11:28:08 +0200, Christoph Manszewski wrote:
+> > From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> > 
+> > For typical debugging under gdb one can specify two main usecases:
+> > accessing and manupulating resources created by the application and
+> > manipulating thread execution (interrupting and setting breakpoints).
+> > 
+> > This test adds coverage for the former by checking that:
+> > - the debugger reports the expected events for Xe resources created
+> > by the debugged client,
+> > - the debugger is able to read and write the vm of the debugged client.
+> > 
+> > Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+> > Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
+> > Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+> > Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
+> > Signed-off-by: Maciej Patelczyk <maciej.patelczyk@intel.com>
+> > Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
+> > Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+> > Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+> > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> > ---
+> >  docs/testplan/meson.build |   13 +-
+> >  meson_options.txt         |    2 +-
+> >  tests/intel/xe_eudebug.c  | 2716 +++++++++++++++++++++++++++++++++++++
+> >  tests/meson.build         |    8 +
+> >  4 files changed, 2737 insertions(+), 2 deletions(-)
+> >  create mode 100644 tests/intel/xe_eudebug.c
+> > 
+> > diff --git a/docs/testplan/meson.build b/docs/testplan/meson.build
+> > index 5560347f1..e86af028e 100644
+> > --- a/docs/testplan/meson.build
+> > +++ b/docs/testplan/meson.build
+> > @@ -33,11 +33,22 @@ else
+> >  	doc_dependencies = []
+> >  endif
+> >  
+> > +xe_excluded_tests = []
+> > +if not build_xe_eudebug
+> > +	foreach test : intel_xe_eudebug_progs
+> > +		xe_excluded_tests += meson.current_source_dir() + '/../../tests/intel/' + test + '.c'
+> > +	endforeach
+> > +endif
+> > +
+> > +if xe_excluded_tests.length() > 0
+> > +	xe_excluded_tests = ['--exclude-files'] + xe_excluded_tests
+> > +endif
+> > +
+> >  if build_xe
+> >  	test_dict = {
+> >  		'i915_tests': { 'input': i915_test_config, 'extra_args': check_testlist },
+> >  		'kms_tests': { 'input': kms_test_config, 'extra_args': kms_check_testlist },
+> > -		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist }
+> > +		'xe_tests': { 'input': xe_test_config, 'extra_args': check_testlist + xe_excluded_tests }
+> >  	    }
+> 
+> Do we need this change? Can we just add igt@.*eudebug.* to blocklist
+> and have it compiled tested?
+
+Yes. We need this change. We want to protect eudebug tests behind
+the compilation flag. At least I prefer such solution instead of
+compiling eudebug test unconditionally.
+
+Problem with igt_doc is if you have eudebug tests disabled then it
+will warn about mismatching list of subtests detected from the source
+and binary (eudebug tests don't exists if you have them disabled
+in meson configuration).
+
+--
+Zbigniew
+
+
+> 
+> Regards,
+> Kamil
+> 
+> >  else
+> >  	test_dict = {
+> > diff --git a/meson_options.txt b/meson_options.txt
+> > index 11922523b..c410f9b77 100644
+> > --- a/meson_options.txt
+> > +++ b/meson_options.txt
+> > @@ -45,7 +45,7 @@ option('xe_driver',
+> >  option('xe_eudebug',
+> >         type : 'feature',
+> >         value : 'disabled',
+> > -       description : 'Build library for Xe EU debugger')
+> > +       description : 'Build library and tests for Xe EU debugger')
+> >  
+> >  option('libdrm_drivers',
+> >         type : 'array',
+> > diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
+> > new file mode 100644
+> > index 000000000..fd2894a5e
+> > --- /dev/null
+> > +++ b/tests/intel/xe_eudebug.c
+> > @@ -0,0 +1,2716 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright © 2023 Intel Corporation
+> > + */
+> > +
+> > +/**
+> > + * TEST: Test EU Debugger functionality
+> > + * Category: Core
+> > + * Mega feature: EUdebug
+> > + * Sub-category: EUdebug tests
+> > + * Functionality: eu debugger framework
+> > + * Test category: functionality test
+> > + */
+> > +
+> > +#include <grp.h>
+> > +#include <poll.h>
+> > +#include <pthread.h>
+> > +#include <pwd.h>
+> > +#include <sys/ioctl.h>
+> > +#include <sys/prctl.h>
+> > +
+> > +#include "igt.h"
+> > +#include "intel_pat.h"
+> > +#include "lib/igt_syncobj.h"
+> > +#include "xe/xe_eudebug.h"
+> > +#include "xe/xe_ioctl.h"
+> > +#include "xe/xe_query.h"
+> > +
+> > +/**
+> > + * SUBTEST: sysfs-toggle
+> > + * Description:
+> > + *	Exercise the debugger enable/disable sysfs toggle logic
+> > + */
+> > +static void test_sysfs_toggle(int fd)
+> > +{
+> > +	xe_eudebug_enable(fd, false);
+> > +	igt_assert(!xe_eudebug_debugger_available(fd));
+> > +
+> > +	xe_eudebug_enable(fd, true);
+> > +	igt_assert(xe_eudebug_debugger_available(fd));
+> > +	xe_eudebug_enable(fd, true);
+> > +	igt_assert(xe_eudebug_debugger_available(fd));
+> > +
+> > +	xe_eudebug_enable(fd, false);
+> > +	igt_assert(!xe_eudebug_debugger_available(fd));
+> > +	xe_eudebug_enable(fd, false);
+> > +	igt_assert(!xe_eudebug_debugger_available(fd));
+> > +
+> > +	xe_eudebug_enable(fd, true);
+> > +	igt_assert(xe_eudebug_debugger_available(fd));
+> > +}
+> > +
+> > +#define STAGE_PRE_DEBUG_RESOURCES_DONE 1
+> > +#define STAGE_DISCOVERY_DONE 2
+> > +
+> > +#define CREATE_VMS (1 << 0)
+> > +#define CREATE_EXEC_QUEUES (1 << 1)
+> > +#define VM_BIND (1 << 2)
+> > +#define VM_BIND_VM_DESTROY (1 << 3)
+> > +#define VM_BIND_EXTENDED (1 << 4)
+> > +#define VM_METADATA (1 << 5)
+> > +#define VM_BIND_METADATA (1 << 6)
+> > +#define VM_BIND_OP_MAP_USERPTR (1 << 7)
+> > +#define TEST_DISCOVERY (1 << 31)
+> > +
+> > +#define PAGE_SIZE 4096
+> > +static struct drm_xe_vm_bind_op_ext_attach_debug *
+> > +basic_vm_bind_metadata_ext_prepare(int fd, struct xe_eudebug_client *c,
+> > +				   uint8_t **data, uint32_t data_size)
+> > +{
+> > +	struct drm_xe_vm_bind_op_ext_attach_debug *ext;
+> > +	int i;
+> > +
+> > +	*data = calloc(data_size, sizeof(*data));
+> > +	igt_assert(*data);
+> > +
+> > +	for (i = 0; i < data_size; i++)
+> > +		(*data)[i] = 0xff & (i + (i > PAGE_SIZE));
+> > +
+> > +	ext = calloc(WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM, sizeof(*ext));
+> > +	igt_assert(ext);
+> > +
+> > +	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++) {
+> > +		ext[i].base.name = XE_VM_BIND_OP_EXTENSIONS_ATTACH_DEBUG;
+> > +		ext[i].metadata_id = xe_eudebug_client_metadata_create(c, fd, i,
+> > +								       (i + 1) * PAGE_SIZE, *data);
+> > +		ext[i].cookie = i;
+> > +
+> > +		if (i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM - 1)
+> > +			ext[i].base.next_extension = to_user_pointer(&ext[i + 1]);
+> > +	}
+> > +	return ext;
+> > +}
+> > +
+> > +static void basic_vm_bind_metadata_ext_del(int fd, struct xe_eudebug_client *c,
+> > +					   struct drm_xe_vm_bind_op_ext_attach_debug *ext,
+> > +					   uint8_t *data)
+> > +{
+> > +	for (int i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++)
+> > +		xe_eudebug_client_metadata_destroy(c, fd, ext[i].metadata_id, i,
+> > +						   (i + 1) * PAGE_SIZE);
+> > +	free(ext);
+> > +	free(data);
+> > +}
+> > +
+> > +static void basic_vm_bind_client(int fd, struct xe_eudebug_client *c)
+> > +{
+> > +	struct drm_xe_vm_bind_op_ext_attach_debug *ext = NULL;
+> > +	uint32_t vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	size_t bo_size = xe_get_default_alignment(fd);
+> > +	bool test_discovery = c->flags & TEST_DISCOVERY;
+> > +	bool test_metadata = c->flags & VM_BIND_METADATA;
+> > +	uint32_t bo = xe_bo_create(fd, 0, bo_size,
+> > +				   system_memory(fd), 0);
+> > +	uint64_t addr = 0x1a0000;
+> > +	uint8_t *data = NULL;
+> > +
+> > +	if (test_metadata)
+> > +		ext = basic_vm_bind_metadata_ext_prepare(fd, c, &data, PAGE_SIZE);
+> > +
+> > +	xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, addr,
+> > +					bo_size, 0, NULL, 0, to_user_pointer(ext));
+> > +
+> > +	if (test_discovery) {
+> > +		xe_eudebug_client_signal_stage(c, STAGE_PRE_DEBUG_RESOURCES_DONE);
+> > +		xe_eudebug_client_wait_stage(c, STAGE_DISCOVERY_DONE);
+> > +	}
+> > +
+> > +	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr, bo_size);
+> > +
+> > +	if (test_metadata)
+> > +		basic_vm_bind_metadata_ext_del(fd, c, ext, data);
+> > +
+> > +	gem_close(fd, bo);
+> > +	xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +}
+> > +
+> > +static void basic_vm_bind_vm_destroy_client(int fd, struct xe_eudebug_client *c)
+> > +{
+> > +	uint32_t vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	size_t bo_size = xe_get_default_alignment(fd);
+> > +	bool test_discovery = c->flags & TEST_DISCOVERY;
+> > +	uint32_t bo = xe_bo_create(fd, 0, bo_size,
+> > +				   system_memory(fd), 0);
+> > +	uint64_t addr = 0x1a0000;
+> > +
+> > +	if (test_discovery) {
+> > +		vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +
+> > +		xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, NULL, 0);
+> > +
+> > +		xe_vm_destroy(fd, vm);
+> > +
+> > +		xe_eudebug_client_signal_stage(c, STAGE_PRE_DEBUG_RESOURCES_DONE);
+> > +		xe_eudebug_client_wait_stage(c, STAGE_DISCOVERY_DONE);
+> > +	} else {
+> > +		vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +		xe_eudebug_client_vm_bind(c, fd, vm, bo, 0, addr, bo_size);
+> > +		xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +	}
+> > +
+> > +	gem_close(fd, bo);
+> > +}
+> > +
+> > +#define BO_ADDR 0x1a0000
+> > +#define BO_ITEMS 4096
+> > +#define MIN_BO_SIZE (BO_ITEMS * sizeof(uint64_t))
+> > +
+> > +union buf_id {
+> > +	uint32_t fd;
+> > +	void *userptr;
+> > +};
+> > +
+> > +struct bind_list {
+> > +	int fd;
+> > +	uint32_t vm;
+> > +	union buf_id *bo;
+> > +	struct drm_xe_vm_bind_op *bind_ops;
+> > +	unsigned int n;
+> > +};
+> > +
+> > +static void *bo_get_ptr(int fd, struct drm_xe_vm_bind_op *o)
+> > +{
+> > +	void *ptr;
+> > +
+> > +	if (o->op != DRM_XE_VM_BIND_OP_MAP_USERPTR)
+> > +		ptr = xe_bo_map(fd, o->obj, o->range);
+> > +	else
+> > +		ptr = (void *)(uintptr_t)o->userptr;
+> > +
+> > +	igt_assert(ptr);
+> > +
+> > +	return ptr;
+> > +}
+> > +
+> > +static void bo_put_ptr(int fd, struct drm_xe_vm_bind_op *o, void *ptr)
+> > +{
+> > +	if (o->op != DRM_XE_VM_BIND_OP_MAP_USERPTR)
+> > +		munmap(ptr, o->range);
+> > +}
+> > +
+> > +static void bo_prime(int fd, struct drm_xe_vm_bind_op *o)
+> > +{
+> > +	uint64_t *d;
+> > +	uint64_t i;
+> > +
+> > +	d = bo_get_ptr(fd, o);
+> > +
+> > +	for (i = 0; i < o->range / sizeof(*d); i++)
+> > +		d[i] = o->addr + i;
+> > +
+> > +	bo_put_ptr(fd, o, d);
+> > +}
+> > +
+> > +static void bo_check(int fd, struct drm_xe_vm_bind_op *o)
+> > +{
+> > +	uint64_t *d;
+> > +	uint64_t i;
+> > +
+> > +	d = bo_get_ptr(fd, o);
+> > +
+> > +	for (i = 0; i < o->range / sizeof(*d); i++)
+> > +		igt_assert_eq(d[i], o->addr + i + 1);
+> > +
+> > +	bo_put_ptr(fd, o, d);
+> > +}
+> > +
+> > +static union buf_id *vm_create_objects(int fd, uint32_t bo_placement, uint32_t vm,
+> > +				       unsigned int size, unsigned int n)
+> > +{
+> > +	union buf_id *bo;
+> > +	unsigned int i;
+> > +
+> > +	bo = calloc(n, sizeof(*bo));
+> > +	igt_assert(bo);
+> > +
+> > +	for (i = 0; i < n; i++) {
+> > +		if (bo_placement) {
+> > +			bo[i].fd = xe_bo_create(fd, vm, size, bo_placement, 0);
+> > +			igt_assert(bo[i].fd);
+> > +		} else {
+> > +			bo[i].userptr = aligned_alloc(PAGE_SIZE, size);
+> > +			igt_assert(bo[i].userptr);
+> > +		}
+> > +	}
+> > +
+> > +	return bo;
+> > +}
+> > +
+> > +static struct bind_list *create_bind_list(int fd, uint32_t bo_placement,
+> > +					  uint32_t vm, unsigned int n,
+> > +					  unsigned int target_size)
+> > +{
+> > +	unsigned int i = target_size ?: MIN_BO_SIZE;
+> > +	const unsigned int bo_size = max_t(bo_size, xe_get_default_alignment(fd), i);
+> > +	bool is_userptr = !bo_placement;
+> > +	struct bind_list *bl;
+> > +
+> > +	bl = malloc(sizeof(*bl));
+> > +	bl->fd = fd;
+> > +	bl->vm = vm;
+> > +	bl->bo = vm_create_objects(fd, bo_placement, vm, bo_size, n);
+> > +	bl->n = n;
+> > +	bl->bind_ops = calloc(n, sizeof(*bl->bind_ops));
+> > +	igt_assert(bl->bind_ops);
+> > +
+> > +	for (i = 0; i < n; i++) {
+> > +		struct drm_xe_vm_bind_op *o = &bl->bind_ops[i];
+> > +
+> > +		if (is_userptr) {
+> > +			o->obj = 0;
+> > +			o->userptr = (uintptr_t)bl->bo[i].userptr;
+> > +			o->op = DRM_XE_VM_BIND_OP_MAP_USERPTR;
+> > +		} else {
+> > +			o->obj = bl->bo[i].fd;
+> > +			o->obj_offset = 0;
+> > +			o->op = DRM_XE_VM_BIND_OP_MAP;
+> > +		}
+> > +
+> > +		o->range = bo_size;
+> > +		o->addr = BO_ADDR + 2 * i * bo_size;
+> > +		o->flags = 0;
+> > +		o->pat_index = intel_get_pat_idx_wb(fd);
+> > +		o->prefetch_mem_region_instance = 0;
+> > +		o->reserved[0] = 0;
+> > +		o->reserved[1] = 0;
+> > +	}
+> > +
+> > +	for (i = 0; i < bl->n; i++) {
+> > +		struct drm_xe_vm_bind_op *o = &bl->bind_ops[i];
+> > +
+> > +		igt_debug("bo %d: addr 0x%llx, range 0x%llx\n", i, o->addr, o->range);
+> > +		bo_prime(fd, o);
+> > +	}
+> > +
+> > +	return bl;
+> > +}
+> > +
+> > +static void do_bind_list(struct xe_eudebug_client *c,
+> > +			 struct bind_list *bl, bool sync)
+> > +{
+> > +	struct drm_xe_sync uf_sync = {
+> > +		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
+> > +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> > +		.timeline_value = 1337,
+> > +	};
+> > +	uint64_t ref_seqno = 0, op_ref_seqno = 0;
+> > +	uint64_t *fence_data;
+> > +	int i;
+> > +
+> > +	if (sync) {
+> > +		fence_data = aligned_alloc(xe_get_default_alignment(bl->fd),
+> > +					   sizeof(*fence_data));
+> > +		igt_assert(fence_data);
+> > +		uf_sync.addr = to_user_pointer(fence_data);
+> > +		memset(fence_data, 0, sizeof(*fence_data));
+> > +	}
+> > +
+> > +	xe_vm_bind_array(bl->fd, bl->vm, 0, bl->bind_ops, bl->n, &uf_sync, sync ? 1 : 0);
+> > +	xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE,
+> > +					bl->fd, bl->vm, 0, bl->n, &ref_seqno);
+> > +	for (i = 0; i < bl->n; i++)
+> > +		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE,
+> > +						   ref_seqno,
+> > +						   &op_ref_seqno,
+> > +						   bl->bind_ops[i].addr,
+> > +						   bl->bind_ops[i].range,
+> > +						   0);
+> > +
+> > +	if (sync) {
+> > +		xe_wait_ufence(bl->fd, fence_data, uf_sync.timeline_value, 0,
+> > +			       XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC);
+> > +		free(fence_data);
+> > +	}
+> > +}
+> > +
+> > +static void free_bind_list(struct xe_eudebug_client *c, struct bind_list *bl)
+> > +{
+> > +	unsigned int i;
+> > +
+> > +	for (i = 0; i < bl->n; i++) {
+> > +		igt_debug("%d: checking 0x%llx (%lld)\n",
+> > +			  i, bl->bind_ops[i].addr, bl->bind_ops[i].addr);
+> > +		bo_check(bl->fd, &bl->bind_ops[i]);
+> > +		if (bl->bind_ops[i].op == DRM_XE_VM_BIND_OP_MAP_USERPTR)
+> > +			free(bl->bo[i].userptr);
+> > +		xe_eudebug_client_vm_unbind(c, bl->fd, bl->vm, 0,
+> > +					    bl->bind_ops[i].addr,
+> > +					    bl->bind_ops[i].range);
+> > +	}
+> > +
+> > +	free(bl->bind_ops);
+> > +	free(bl->bo);
+> > +	free(bl);
+> > +}
+> > +
+> > +static void vm_bind_client(int fd, struct xe_eudebug_client *c)
+> > +{
+> > +	uint64_t op_ref_seqno, ref_seqno;
+> > +	struct bind_list *bl;
+> > +	bool test_discovery = c->flags & TEST_DISCOVERY;
+> > +	size_t bo_size = 3 * xe_get_default_alignment(fd);
+> > +	uint32_t bo[2] = {
+> > +		xe_bo_create(fd, 0, bo_size, system_memory(fd), 0),
+> > +		xe_bo_create(fd, 0, bo_size, system_memory(fd), 0),
+> > +	};
+> > +	uint32_t vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	uint64_t addr[] = {0x2a0000, 0x3a0000};
+> > +	uint64_t rebind_bo_offset = 2 * bo_size / 3;
+> > +	uint64_t size = bo_size / 3;
+> > +	int i = 0;
+> > +
+> > +	if (test_discovery) {
+> > +		xe_vm_bind_async(fd, vm, 0, bo[0], 0, addr[0], bo_size, NULL, 0);
+> > +
+> > +		xe_vm_unbind_async(fd, vm, 0, 0, addr[0] + size, size, NULL, 0);
+> > +
+> > +		xe_vm_bind_async(fd, vm, 0, bo[1], 0, addr[1], bo_size, NULL, 0);
+> > +
+> > +		xe_vm_bind_async(fd, vm, 0, bo[1], rebind_bo_offset, addr[1], size, NULL, 0);
+> > +
+> > +		bl = create_bind_list(fd, system_memory(fd), vm, 4, 0);
+> > +		xe_vm_bind_array(bl->fd, bl->vm, 0, bl->bind_ops, bl->n, NULL, 0);
+> > +
+> > +		xe_vm_unbind_all_async(fd, vm, 0, bo[0], NULL, 0);
+> > +
+> > +		xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE,
+> > +						bl->fd, bl->vm, 0, bl->n + 2, &ref_seqno);
+> > +
+> > +		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE, ref_seqno,
+> > +						   &op_ref_seqno, addr[1], size, 0);
+> > +		xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE, ref_seqno,
+> > +						   &op_ref_seqno, addr[1] + size, size * 2, 0);
+> > +
+> > +		for (i = 0; i < bl->n; i++)
+> > +			xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_CREATE,
+> > +							   ref_seqno, &op_ref_seqno,
+> > +							   bl->bind_ops[i].addr,
+> > +							   bl->bind_ops[i].range, 0);
+> > +
+> > +		xe_eudebug_client_signal_stage(c, STAGE_PRE_DEBUG_RESOURCES_DONE);
+> > +		xe_eudebug_client_wait_stage(c, STAGE_DISCOVERY_DONE);
+> > +	} else {
+> > +		xe_eudebug_client_vm_bind(c, fd, vm, bo[0], 0, addr[0], bo_size);
+> > +		xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr[0] + size, size);
+> > +
+> > +		xe_eudebug_client_vm_bind(c, fd, vm, bo[1], 0, addr[1], bo_size);
+> > +		xe_eudebug_client_vm_bind(c, fd, vm, bo[1], rebind_bo_offset, addr[1], size);
+> > +
+> > +		bl = create_bind_list(fd, system_memory(fd), vm, 4, 0);
+> > +		do_bind_list(c, bl, false);
+> > +	}
+> > +
+> > +	xe_vm_unbind_all_async(fd, vm, 0, bo[1], NULL, 0);
+> > +
+> > +	xe_eudebug_client_vm_bind_event(c, DRM_XE_EUDEBUG_EVENT_STATE_CHANGE, fd, vm, 0,
+> > +					1, &ref_seqno);
+> > +	xe_eudebug_client_vm_bind_op_event(c, DRM_XE_EUDEBUG_EVENT_DESTROY, ref_seqno,
+> > +					   &op_ref_seqno, 0, 0, 0);
+> > +
+> > +	gem_close(fd, bo[0]);
+> > +	gem_close(fd, bo[1]);
+> > +	xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +}
+> > +
+> > +static void run_basic_client(struct xe_eudebug_client *c)
+> > +{
+> > +	int fd, i;
+> > +
+> > +	fd = xe_eudebug_client_open_driver(c);
+> > +	xe_device_get(fd);
+> > +
+> > +	if (c->flags & CREATE_VMS) {
+> > +		const uint32_t flags[] = {
+> > +			DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE | DRM_XE_VM_CREATE_FLAG_LR_MODE,
+> > +			DRM_XE_VM_CREATE_FLAG_LR_MODE,
+> > +		};
+> > +		uint32_t vms[ARRAY_SIZE(flags)];
+> > +
+> > +		for (i = 0; i < ARRAY_SIZE(flags); i++)
+> > +			vms[i] = xe_eudebug_client_vm_create(c, fd, flags[i], 0);
+> > +
+> > +		for (i--; i >= 0; i--)
+> > +			xe_eudebug_client_vm_destroy(c, fd, vms[i]);
+> > +	}
+> > +
+> > +	if (c->flags & CREATE_EXEC_QUEUES) {
+> > +		struct drm_xe_exec_queue_create *create;
+> > +		struct drm_xe_engine_class_instance *hwe;
+> > +		struct drm_xe_ext_set_property eq_ext = {
+> > +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> > +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
+> > +			.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
+> > +		};
+> > +		uint32_t vm;
+> > +
+> > +		create = calloc(xe_number_engines(fd), sizeof(*create));
+> > +
+> > +		vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +
+> > +		i = 0;
+> > +		xe_eudebug_for_each_engine(fd, hwe) {
+> > +			create[i].instances = to_user_pointer(hwe);
+> > +			create[i].vm_id = vm;
+> > +			create[i].width = 1;
+> > +			create[i].num_placements = 1;
+> > +			create[i].extensions = to_user_pointer(&eq_ext);
+> > +			xe_eudebug_client_exec_queue_create(c, fd, &create[i++]);
+> > +		}
+> > +
+> > +		while (--i >= 0)
+> > +			xe_eudebug_client_exec_queue_destroy(c, fd, &create[i]);
+> > +
+> > +		xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +	}
+> > +
+> > +	if (c->flags & VM_BIND || c->flags & VM_BIND_METADATA)
+> > +		basic_vm_bind_client(fd, c);
+> > +
+> > +	if (c->flags & VM_BIND_EXTENDED)
+> > +		vm_bind_client(fd, c);
+> > +
+> > +	if (c->flags & VM_BIND_VM_DESTROY)
+> > +		basic_vm_bind_vm_destroy_client(fd, c);
+> > +
+> > +	xe_device_put(fd);
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +}
+> > +
+> > +static int read_event(int debugfd, struct drm_xe_eudebug_event *event)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
+> > +	if (ret < 0)
+> > +		return -errno;
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int __read_event(int debugfd, struct drm_xe_eudebug_event *event)
+> > +{
+> > +	int ret;
+> > +
+> > +	ret = ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_READ_EVENT, event);
+> > +	if (ret < 0)
+> > +		return -errno;
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int poll_event(int fd, int timeout_ms)
+> > +{
+> > +	int ret;
+> > +
+> > +	struct pollfd p = {
+> > +		.fd = fd,
+> > +		.events = POLLIN,
+> > +		.revents = 0,
+> > +	};
+> > +
+> > +	ret = poll(&p, 1, timeout_ms);
+> > +	if (ret == -1)
+> > +		return -errno;
+> > +
+> > +	return ret == 1 && (p.revents & POLLIN);
+> > +}
+> > +
+> > +static int __debug_connect(int fd, int *debugfd, struct drm_xe_eudebug_connect *param)
+> > +{
+> > +	int ret = 0;
+> > +
+> > +	*debugfd = igt_ioctl(fd, DRM_IOCTL_XE_EUDEBUG_CONNECT, param);
+> > +
+> > +	if (*debugfd < 0) {
+> > +		ret = -errno;
+> > +		igt_assume(ret != 0);
+> > +	}
+> > +
+> > +	errno = 0;
+> > +	return ret;
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-connect
+> > + * Description:
+> > + *	Exercise XE_EUDEBUG_CONNECT ioctl with passing
+> > + *	valid and invalid params.
+> > + */
+> > +static void test_connect(int fd)
+> > +{
+> > +	struct drm_xe_eudebug_connect param = {};
+> > +	int debugfd, ret;
+> > +	pid_t *pid;
+> > +
+> > +	pid = mmap(NULL, sizeof(pid_t), PROT_WRITE,
+> > +		   MAP_SHARED | MAP_ANON, -1, 0);
+> > +
+> > +	/* get fresh unrelated pid */
+> > +	igt_fork(child, 1)
+> > +		*pid = getpid();
+> > +
+> > +	igt_waitchildren();
+> > +	param.pid = *pid;
+> > +	munmap(pid, sizeof(pid_t));
+> > +
+> > +	ret = __debug_connect(fd, &debugfd, &param);
+> > +	igt_assert(debugfd == -1);
+> > +	igt_assert_eq(ret, param.pid ? -ENOENT : -EINVAL);
+> > +
+> > +	param.pid = 0;
+> > +	ret = __debug_connect(fd, &debugfd, &param);
+> > +	igt_assert(debugfd == -1);
+> > +	igt_assert_eq(ret, -EINVAL);
+> > +
+> > +	param.pid = getpid();
+> > +	param.version = -1;
+> > +	ret = __debug_connect(fd, &debugfd, &param);
+> > +	igt_assert(debugfd == -1);
+> > +	igt_assert_eq(ret, -EINVAL);
+> > +
+> > +	param.version = 0;
+> > +	param.flags = ~0;
+> > +	ret = __debug_connect(fd, &debugfd, &param);
+> > +	igt_assert(debugfd == -1);
+> > +	igt_assert_eq(ret, -EINVAL);
+> > +
+> > +	param.flags = 0;
+> > +	param.extensions = ~0;
+> > +	ret = __debug_connect(fd, &debugfd, &param);
+> > +	igt_assert(debugfd == -1);
+> > +	igt_assert_eq(ret, -EINVAL);
+> > +
+> > +	param.extensions = 0;
+> > +	ret = __debug_connect(fd, &debugfd, &param);
+> > +	igt_assert_neq(debugfd, -1);
+> > +	igt_assert_eq(ret, 0);
+> > +
+> > +	close(debugfd);
+> > +}
+> > +
+> > +static void switch_user(__uid_t uid, __gid_t gid)
+> > +{
+> > +	struct group *gr;
+> > +	__gid_t gr_v;
+> > +
+> > +	/* Users other then root need to belong to video group */
+> > +	gr = getgrnam("video");
+> > +	igt_assert(gr);
+> > +
+> > +	/* Drop all */
+> > +	igt_assert_eq(setgroups(1, &gr->gr_gid), 0);
+> > +	igt_assert_eq(setgid(gid), 0);
+> > +	igt_assert_eq(setuid(uid), 0);
+> > +
+> > +	igt_assert_eq(getgroups(1, &gr_v), 1);
+> > +	igt_assert_eq(gr_v, gr->gr_gid);
+> > +	igt_assert_eq(getgid(), gid);
+> > +	igt_assert_eq(getuid(), uid);
+> > +
+> > +	igt_assert_eq(prctl(PR_SET_DUMPABLE, 1L), 0);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: connect-user
+> > + * Description:
+> > + *	Verify unprivileged XE_EUDEBG_CONNECT ioctl.
+> > + *	Check:
+> > + *	 - user debugger to user workload connection
+> > + *	 - user debugger to other user workload connection
+> > + *	 - user debugger to privileged workload connection
+> > + */
+> > +static void test_connect_user(int fd)
+> > +{
+> > +	struct drm_xe_eudebug_connect param = {};
+> > +	struct passwd *pwd, *pwd2;
+> > +	const char *user1 = "lp";
+> > +	const char *user2 = "mail";
+> > +	int debugfd, ret, i;
+> > +	int p1[2], p2[2];
+> > +	__uid_t u1, u2;
+> > +	__gid_t g1, g2;
+> > +	int newfd;
+> > +	pid_t pid;
+> > +
+> > +#define NUM_USER_TESTS 4
+> > +#define P_APP 0
+> > +#define P_GDB 1
+> > +	struct conn_user {
+> > +		/* u[0] - process uid, u[1] - gdb uid */
+> > +		__uid_t u[P_GDB + 1];
+> > +		/* g[0] - process gid, g[1] - gdb gid */
+> > +		__gid_t g[P_GDB + 1];
+> > +		/* Expected fd from open */
+> > +		int ret;
+> > +		/* Skip this test case */
+> > +		int skip;
+> > +		const char *desc;
+> > +	} test[NUM_USER_TESTS] = {};
+> > +
+> > +	igt_assert(!pipe(p1));
+> > +	igt_assert(!pipe(p2));
+> > +
+> > +	pwd = getpwnam(user1);
+> > +	igt_require(pwd);
+> > +	u1 = pwd->pw_uid;
+> > +	g1 = pwd->pw_gid;
+> > +
+> > +	/*
+> > +	 * Keep a copy of needed contents as it is a static
+> > +	 * memory area and subsequent calls will overwrite
+> > +	 * what's in.
+> > +	 * However getpwnam() returns NULL if cannot find
+> > +	 * user in passwd.
+> > +	 */
+> > +	setpwent();
+> > +	pwd2 = getpwnam(user2);
+> > +	if (pwd2) {
+> > +		u2 = pwd2->pw_uid;
+> > +		g2 = pwd2->pw_gid;
+> > +	}
+> > +
+> > +	test[0].skip = !pwd;
+> > +	test[0].u[P_GDB] = u1;
+> > +	test[0].g[P_GDB] = g1;
+> > +	test[0].ret = -EACCES;
+> > +	test[0].desc = "User GDB to Root App";
+> > +
+> > +	test[1].skip = !pwd;
+> > +	test[1].u[P_APP] = u1;
+> > +	test[1].g[P_APP] = g1;
+> > +	test[1].u[P_GDB] = u1;
+> > +	test[1].g[P_GDB] = g1;
+> > +	test[1].ret = 0;
+> > +	test[1].desc = "User GDB to User App";
+> > +
+> > +	test[2].skip = !pwd;
+> > +	test[2].u[P_APP] = u1;
+> > +	test[2].g[P_APP] = g1;
+> > +	test[2].ret = 0;
+> > +	test[2].desc = "Root GDB to User App";
+> > +
+> > +	test[3].skip = !pwd2;
+> > +	test[3].u[P_APP] = u1;
+> > +	test[3].g[P_APP] = g1;
+> > +	test[3].u[P_GDB] = u2;
+> > +	test[3].g[P_GDB] = g2;
+> > +	test[3].ret = -EACCES;
+> > +	test[3].desc = "User GDB to Other User App";
+> > +
+> > +	if (!pwd2)
+> > +		igt_warn("User %s not available in the system. Skipping subtests: %s.\n",
+> > +			 user2, test[3].desc);
+> > +
+> > +	for (i = 0; i < NUM_USER_TESTS; i++) {
+> > +		if (test[i].skip) {
+> > +			igt_debug("Subtest %s skipped\n", test[i].desc);
+> > +			continue;
+> > +		}
+> > +		igt_debug("Executing connection: %s\n", test[i].desc);
+> > +		igt_fork(child, 2) {
+> > +			if (!child) {
+> > +				if (test[i].u[P_APP])
+> > +					switch_user(test[i].u[P_APP], test[i].g[P_APP]);
+> > +
+> > +				pid = getpid();
+> > +				/* Signal the PID */
+> > +				igt_assert(write(p1[1], &pid, sizeof(pid)) == sizeof(pid));
+> > +				/* wait with exit */
+> > +				igt_assert(read(p2[0], &pid, sizeof(pid)) == sizeof(pid));
+> > +			} else {
+> > +				if (test[i].u[P_GDB])
+> > +					switch_user(test[i].u[P_GDB], test[i].g[P_GDB]);
+> > +
+> > +				igt_assert(read(p1[0], &pid, sizeof(pid)) == sizeof(pid));
+> > +				param.pid = pid;
+> > +
+> > +				newfd = drm_open_driver(DRIVER_XE);
+> > +				ret = __debug_connect(newfd, &debugfd, &param);
+> > +
+> > +				/* Release the app first */
+> > +				igt_assert(write(p2[1], &pid, sizeof(pid)) == sizeof(pid));
+> > +
+> > +				igt_assert_eq(ret, test[i].ret);
+> > +				if (!ret)
+> > +					close(debugfd);
+> > +			}
+> > +		}
+> > +		igt_waitchildren();
+> > +	}
+> > +	close(p1[0]);
+> > +	close(p1[1]);
+> > +	close(p2[0]);
+> > +	close(p2[1]);
+> > +#undef NUM_USER_TESTS
+> > +#undef P_APP
+> > +#undef P_GDB
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-close
+> > + * Description:
+> > + *	Test whether eudebug can be reattached after closure.
+> > + */
+> > +static void test_close(int fd)
+> > +{
+> > +	struct drm_xe_eudebug_connect param = { 0,  };
+> > +	int debug_fd1, debug_fd2;
+> > +	int fd2;
+> > +
+> > +	param.pid = getpid();
+> > +
+> > +	igt_assert_eq(__debug_connect(fd, &debug_fd1, &param), 0);
+> > +	igt_assert(debug_fd1 >= 0);
+> > +	igt_assert_eq(__debug_connect(fd, &debug_fd2, &param), -EBUSY);
+> > +	igt_assert_eq(debug_fd2, -1);
+> > +
+> > +	close(debug_fd1);
+> > +	fd2 = drm_open_driver(DRIVER_XE);
+> > +
+> > +	igt_assert_eq(__debug_connect(fd2, &debug_fd2, &param), 0);
+> > +	igt_assert(debug_fd2 >= 0);
+> > +	close(fd2);
+> > +	close(debug_fd2);
+> > +	close(debug_fd1);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-read-event
+> > + * Description:
+> > + *	Synchronously exercise eu debugger event polling and reading.
+> > + */
+> > +#define MAX_EVENT_SIZE (32 * 1024)
+> > +static void test_read_event(int fd)
+> > +{
+> > +	struct drm_xe_eudebug_event *event;
+> > +	struct xe_eudebug_debugger *d;
+> > +	struct xe_eudebug_client *c;
+> > +
+> > +	event = malloc(MAX_EVENT_SIZE);
+> > +	igt_assert(event);
+> > +	memset(event, 0, sizeof(*event));
+> > +
+> > +	c = xe_eudebug_client_create(fd, run_basic_client, 0, NULL);
+> > +	d = xe_eudebug_debugger_create(fd, 0, NULL);
+> > +
+> > +	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
+> > +	igt_assert_eq(poll_event(d->fd, 500), 0);
+> > +
+> > +	event->len = 1;
+> > +	event->type = DRM_XE_EUDEBUG_EVENT_NONE;
+> > +	igt_assert_eq(read_event(d->fd, event), -EINVAL);
+> > +
+> > +	event->len = MAX_EVENT_SIZE;
+> > +	event->type = DRM_XE_EUDEBUG_EVENT_NONE;
+> > +	igt_assert_eq(read_event(d->fd, event), -EINVAL);
+> > +
+> > +	xe_eudebug_client_start(c);
+> > +
+> > +	igt_assert_eq(poll_event(d->fd, 500), 1);
+> > +	event->type = DRM_XE_EUDEBUG_EVENT_READ;
+> > +	igt_assert_eq(read_event(d->fd, event), 0);
+> > +
+> > +	igt_assert_eq(poll_event(d->fd, 500), 1);
+> > +
+> > +	event->flags = 0;
+> > +	event->type = DRM_XE_EUDEBUG_EVENT_READ;
+> > +
+> > +	event->len = 0;
+> > +	igt_assert_eq(read_event(d->fd, event), -EINVAL);
+> > +	igt_assert_eq(0, event->len);
+> > +
+> > +	event->len = sizeof(*event) - 1;
+> > +	igt_assert_eq(read_event(d->fd, event), -EINVAL);
+> > +
+> > +	event->len = sizeof(*event);
+> > +	igt_assert_eq(read_event(d->fd, event), -EMSGSIZE);
+> > +	igt_assert_lt(sizeof(*event), event->len);
+> > +
+> > +	event->len = event->len - 1;
+> > +	igt_assert_eq(read_event(d->fd, event), -EMSGSIZE);
+> > +	/* event->len should now contain the exact len */
+> > +	igt_assert_eq(read_event(d->fd, event), 0);
+> > +
+> > +	fcntl(d->fd, F_SETFL, fcntl(d->fd, F_GETFL) | O_NONBLOCK);
+> > +	igt_assert(fcntl(d->fd, F_GETFL) & O_NONBLOCK);
+> > +
+> > +	igt_assert_eq(poll_event(d->fd, 500), 0);
+> > +	event->len = MAX_EVENT_SIZE;
+> > +	event->flags = 0;
+> > +	event->type = DRM_XE_EUDEBUG_EVENT_READ;
+> > +	igt_assert_eq(__read_event(d->fd, event), -EAGAIN);
+> > +
+> > +	xe_eudebug_client_wait_done(c);
+> > +	xe_eudebug_client_stop(c);
+> > +
+> > +	igt_assert_eq(poll_event(d->fd, 500), 0);
+> > +	igt_assert_eq(__read_event(d->fd, event), -EAGAIN);
+> > +
+> > +	xe_eudebug_debugger_destroy(d);
+> > +	xe_eudebug_client_destroy(c);
+> > +
+> > +	free(event);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-client
+> > + * Description:
+> > + *	Attach the debugger to process which opens and closes xe drm client.
+> > + *
+> > + * SUBTEST: basic-client-th
+> > + * Description:
+> > + *	Create client basic resources (vms) in multiple threads
+> > + *
+> > + * SUBTEST: multiple-sessions
+> > + * Description:
+> > + *	Simultaneously attach many debuggers to many processes.
+> > + *	Each process opens and closes xe drm client and creates few resources.
+> > + *
+> > + * SUBTEST: basic-%s
+> > + * Description:
+> > + *	Attach the debugger to process which creates and destroys a few %arg[1].
+> > + *
+> > + * SUBTEST: basic-vm-bind
+> > + * Description:
+> > + *	Attach the debugger to a process that performs synchronous vm bind
+> > + *	and vm unbind.
+> > + *
+> > + * SUBTEST: basic-vm-bind-vm-destroy
+> > + * Description:
+> > + *	Attach the debugger to a process that performs vm bind, and destroys
+> > + *	the vm without unbinding. Make sure that we don't get unbind events.
+> > + *
+> > + * SUBTEST: basic-vm-bind-extended
+> > + * Description:
+> > + *	Attach the debugger to a process that performs bind, bind array, rebind,
+> > + *	partial unbind, unbind and unbind all operations.
+> > + *
+> > + * SUBTEST: multigpu-basic-client
+> > + * Description:
+> > + *	Attach the debugger to process which opens and closes xe drm client on all Xe devices.
+> > + *
+> > + * SUBTEST: multigpu-basic-client-many
+> > + * Description:
+> > + *	Simultaneously attach many debuggers to many processes on all Xe devices.
+> > + *	Each process opens and closes xe drm client and creates few resources.
+> > + *
+> > + * arg[1]:
+> > + *
+> > + * @vms: vms
+> > + * @exec-queues: exec queues
+> > + */
+> > +
+> > +static void test_basic_sessions(int fd, unsigned int flags, int count, bool match_opposite)
+> > +{
+> > +	struct xe_eudebug_session **s;
+> > +	int i;
+> > +
+> > +	s = calloc(count, sizeof(*s));
+> > +
+> > +	igt_assert(s);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		s[i] = xe_eudebug_session_create(fd, run_basic_client, flags, NULL);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_session_run(s[i]);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_session_check(s[i], match_opposite, 0);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_session_destroy(s[i]);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-vm-bind-discovery
+> > + * Description:
+> > + *	Attach the debugger to a process that performs vm-bind before attaching
+> > + *	and check if the discovery process reports it.
+> > + *
+> > + * SUBTEST: basic-vm-bind-metadata-discovery
+> > + * Description:
+> > + *	Attach the debugger to a process that performs vm-bind with metadata attached
+> > + *	before attaching and check if the discovery process reports it.
+> > + *
+> > + * SUBTEST: basic-vm-bind-vm-destroy-discovery
+> > + * Description:
+> > + *	Attach the debugger to a process that performs vm bind, and destroys
+> > + *	the vm without unbinding before attaching. Make sure that we don't get
+> > + *	any bind/unbind and vm create/destroy events.
+> > + *
+> > + * SUBTEST: basic-vm-bind-extended-discovery
+> > + * Description:
+> > + *	Attach the debugger to a process that performs bind, bind array, rebind,
+> > + *	partial unbind, and unbind all operations before attaching. Ensure that
+> > + *	we get a only a singe 'VM_BIND' event from the discovery worker.
+> > + */
+> > +static void test_basic_discovery(int fd, unsigned int flags, bool match_opposite)
+> > +{
+> > +	struct xe_eudebug_debugger *d;
+> > +	struct xe_eudebug_session *s;
+> > +	struct xe_eudebug_client *c;
+> > +
+> > +	s = xe_eudebug_session_create(fd, run_basic_client, flags | TEST_DISCOVERY, NULL);
+> > +
+> > +	c = s->client;
+> > +	d = s->debugger;
+> > +
+> > +	xe_eudebug_client_start(c);
+> > +	xe_eudebug_debugger_wait_stage(s, STAGE_PRE_DEBUG_RESOURCES_DONE);
+> > +
+> > +	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
+> > +	xe_eudebug_debugger_start_worker(d);
+> > +
+> > +	/* give the worker time to do it's job */
+> > +	sleep(2);
+> > +	xe_eudebug_debugger_signal_stage(d, STAGE_DISCOVERY_DONE);
+> > +
+> > +	xe_eudebug_client_wait_done(c);
+> > +
+> > +	xe_eudebug_debugger_stop_worker(d, 1);
+> > +
+> > +	xe_eudebug_event_log_print(d->log, true);
+> > +	xe_eudebug_event_log_print(c->log, true);
+> > +
+> > +	xe_eudebug_session_check(s, match_opposite, 0);
+> > +	xe_eudebug_session_destroy(s);
+> > +}
+> > +
+> > +#define RESOURCE_COUNT 16
+> > +#define PRIMARY_THREAD			(1 << 0)
+> > +#define DISCOVERY_CLOSE_CLIENT		(1 << 1)
+> > +#define DISCOVERY_DESTROY_RESOURCES	(1 << 2)
+> > +#define DISCOVERY_VM_BIND		(1 << 3)
+> > +static void run_discovery_client(struct xe_eudebug_client *c)
+> > +{
+> > +	struct drm_xe_engine_class_instance *hwe = NULL;
+> > +	int fd[RESOURCE_COUNT], i;
+> > +	bool skip_sleep = c->flags & (DISCOVERY_DESTROY_RESOURCES | DISCOVERY_CLOSE_CLIENT);
+> > +	uint64_t addr = 0x1a0000;
+> > +
+> > +	srand(getpid());
+> > +
+> > +	for (i = 0; i < RESOURCE_COUNT; i++) {
+> > +		fd[i] = xe_eudebug_client_open_driver(c);
+> > +
+> > +		if (!i) {
+> > +			bool found = false;
+> > +
+> > +			xe_device_get(fd[0]);
+> > +			xe_for_each_engine(fd[0], hwe) {
+> > +				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE ||
+> > +				    hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
+> > +					found = true;
+> > +					break;
+> > +				}
+> > +			}
+> > +			igt_assert(found);
+> > +		}
+> > +
+> > +		/*
+> > +		 * Give the debugger a break in event stream after every
+> > +		 * other client, that allows to read discovery and dettach in quiet.
+> > +		 */
+> > +		if (random() % 2 == 0 && !skip_sleep)
+> > +			sleep(1);
+> > +
+> > +		for (int j = 0; j < RESOURCE_COUNT; j++) {
+> > +			uint32_t vm = xe_eudebug_client_vm_create(c, fd[i],
+> > +								  DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +			struct drm_xe_ext_set_property eq_ext = {
+> > +				.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> > +				.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
+> > +				.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
+> > +			};
+> > +			struct drm_xe_exec_queue_create create = {
+> > +				.width = 1,
+> > +				.num_placements = 1,
+> > +				.vm_id = vm,
+> > +				.instances = to_user_pointer(hwe),
+> > +				.extensions = to_user_pointer(&eq_ext),
+> > +			};
+> > +			const unsigned int bo_size = max_t(bo_size,
+> > +							   xe_get_default_alignment(fd[i]),
+> > +							   MIN_BO_SIZE);
+> > +			uint32_t bo = xe_bo_create(fd[i], 0, bo_size, system_memory(fd[i]), 0);
+> > +
+> > +			xe_eudebug_client_exec_queue_create(c, fd[i], &create);
+> > +
+> > +			if (c->flags & DISCOVERY_VM_BIND) {
+> > +				xe_eudebug_client_vm_bind(c, fd[i], vm, bo, 0, addr, bo_size);
+> > +				addr += 0x100000;
+> > +			}
+> > +
+> > +			if (c->flags & DISCOVERY_DESTROY_RESOURCES) {
+> > +				xe_eudebug_client_exec_queue_destroy(c, fd[i], &create);
+> > +				xe_eudebug_client_vm_destroy(c, fd[i], create.vm_id);
+> > +				gem_close(fd[i], bo);
+> > +			}
+> > +		}
+> > +
+> > +		if (c->flags & DISCOVERY_CLOSE_CLIENT)
+> > +			xe_eudebug_client_close_driver(c, fd[i]);
+> > +	}
+> > +	xe_device_put(fd[0]);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: discovery-%s
+> > + * Description: Race discovery against %arg[1] and the debugger dettach.
+> > + *
+> > + * arg[1]:
+> > + *
+> > + * @race:		resources creation
+> > + * @race-vmbind:	vm-bind operations
+> > + * @empty:		resources destruction
+> > + * @empty-clients:	client closure
+> > + */
+> > +static void *discovery_race_thread(void *data)
+> > +{
+> > +	struct {
+> > +		uint64_t client_handle;
+> > +		int vm_count;
+> > +		int exec_queue_count;
+> > +		int vm_bind_op_count;
+> > +	} clients[RESOURCE_COUNT];
+> > +	struct xe_eudebug_session *s = data;
+> > +	int expected = RESOURCE_COUNT * (1 + 2 * RESOURCE_COUNT);
+> > +	const int tries = 100;
+> > +	bool done = false;
+> > +	int ret = 0;
+> > +
+> > +	for (int try = 0; try < tries && !done; try++) {
+> > +		ret = xe_eudebug_debugger_attach(s->debugger, s->client);
+> > +
+> > +		if (ret == -EBUSY) {
+> > +			usleep(100000);
+> > +			continue;
+> > +		}
+> > +
+> > +		igt_assert_eq(ret, 0);
+> > +
+> > +		if (random() % 2) {
+> > +			struct drm_xe_eudebug_event *e = NULL;
+> > +			int i = -1;
+> > +
+> > +			xe_eudebug_debugger_start_worker(s->debugger);
+> > +			sleep(1);
+> > +			xe_eudebug_debugger_stop_worker(s->debugger, 1);
+> > +			igt_debug("Resources discovered: %lu\n", s->debugger->event_count);
+> > +
+> > +			xe_eudebug_for_each_event(e, s->debugger->log) {
+> > +				if (e->type == DRM_XE_EUDEBUG_EVENT_OPEN) {
+> > +					struct drm_xe_eudebug_event_client *eo = (void *)e;
+> > +
+> > +					if (i >= 0) {
+> > +						igt_assert_eq(clients[i].vm_count,
+> > +							      RESOURCE_COUNT);
+> > +
+> > +						igt_assert_eq(clients[i].exec_queue_count,
+> > +							      RESOURCE_COUNT);
+> > +
+> > +						if (s->client->flags & DISCOVERY_VM_BIND)
+> > +							igt_assert_eq(clients[i].vm_bind_op_count,
+> > +								      RESOURCE_COUNT);
+> > +					}
+> > +
+> > +					igt_assert(++i < RESOURCE_COUNT);
+> > +					clients[i].client_handle = eo->client_handle;
+> > +					clients[i].vm_count = 0;
+> > +					clients[i].exec_queue_count = 0;
+> > +					clients[i].vm_bind_op_count = 0;
+> > +				}
+> > +
+> > +				if (e->type == DRM_XE_EUDEBUG_EVENT_VM)
+> > +					clients[i].vm_count++;
+> > +
+> > +				if (e->type == DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE)
+> > +					clients[i].exec_queue_count++;
+> > +
+> > +				if (e->type == DRM_XE_EUDEBUG_EVENT_VM_BIND_OP)
+> > +					clients[i].vm_bind_op_count++;
+> > +			};
+> > +
+> > +			igt_assert_lte(0, i);
+> > +
+> > +			for (int j = 0; j < i; j++)
+> > +				for (int k = 0; k < i; k++) {
+> > +					if (k == j)
+> > +						continue;
+> > +
+> > +					igt_assert_neq(clients[j].client_handle,
+> > +						       clients[k].client_handle);
+> > +				}
+> > +
+> > +			if (s->debugger->event_count >= expected)
+> > +				done = true;
+> > +		}
+> > +
+> > +		xe_eudebug_debugger_detach(s->debugger);
+> > +		s->debugger->log->head = 0;
+> > +		s->debugger->event_count = 0;
+> > +	}
+> > +
+> > +	/* Primary thread must read everything */
+> > +	if (s->flags & PRIMARY_THREAD) {
+> > +		while ((ret = xe_eudebug_debugger_attach(s->debugger, s->client)) == -EBUSY)
+> > +			usleep(100000);
+> > +
+> > +		igt_assert_eq(ret, 0);
+> > +
+> > +		xe_eudebug_debugger_start_worker(s->debugger);
+> > +		xe_eudebug_client_wait_done(s->client);
+> > +
+> > +		if (READ_ONCE(s->debugger->event_count) != expected)
+> > +			sleep(5);
+> > +
+> > +		xe_eudebug_debugger_stop_worker(s->debugger, 1);
+> > +		xe_eudebug_debugger_detach(s->debugger);
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +static void test_race_discovery(int fd, unsigned int flags, int clients)
+> > +{
+> > +	const int debuggers_per_client = 3;
+> > +	int count = clients * debuggers_per_client;
+> > +	struct xe_eudebug_session *sessions, *s;
+> > +	struct xe_eudebug_client *c;
+> > +	pthread_t *threads;
+> > +	int i, j;
+> > +
+> > +	sessions = calloc(count, sizeof(*sessions));
+> > +	threads = calloc(count, sizeof(*threads));
+> > +
+> > +	for (i = 0; i < clients; i++) {
+> > +		c = xe_eudebug_client_create(fd, run_discovery_client, flags, NULL);
+> > +		for (j = 0; j < debuggers_per_client; j++) {
+> > +			s = &sessions[i * debuggers_per_client + j];
+> > +			s->client = c;
+> > +			s->debugger = xe_eudebug_debugger_create(fd, flags, NULL);
+> > +			s->flags = flags | (!j ? PRIMARY_THREAD : 0);
+> > +		}
+> > +	}
+> > +
+> > +	for (i = 0; i < count; i++) {
+> > +		if (sessions[i].flags & PRIMARY_THREAD)
+> > +			xe_eudebug_client_start(sessions[i].client);
+> > +
+> > +		pthread_create(&threads[i], NULL, discovery_race_thread, &sessions[i]);
+> > +	}
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		pthread_join(threads[i], NULL);
+> > +
+> > +	for (i = count - 1; i > 0; i--) {
+> > +		if (sessions[i].flags & PRIMARY_THREAD) {
+> > +			igt_assert_eq(sessions[i].client->seqno - 1,
+> > +				      sessions[i].debugger->event_count);
+> > +
+> > +			xe_eudebug_event_log_compare(sessions[0].debugger->log,
+> > +						     sessions[i].debugger->log,
+> > +						     XE_EUDEBUG_FILTER_EVENT_VM_BIND);
+> > +
+> > +			xe_eudebug_client_destroy(sessions[i].client);
+> > +		}
+> > +		xe_eudebug_debugger_destroy(sessions[i].debugger);
+> > +	}
+> > +}
+> > +
+> > +static void *attach_dettach_thread(void *data)
+> > +{
+> > +	struct xe_eudebug_session *s = data;
+> > +	const int tries = 100;
+> > +	int ret = 0;
+> > +
+> > +	for (int try = 0; try < tries; try++) {
+> > +		ret = xe_eudebug_debugger_attach(s->debugger, s->client);
+> > +
+> > +		if (ret == -EBUSY) {
+> > +			usleep(100000);
+> > +			continue;
+> > +		}
+> > +
+> > +		igt_assert_eq(ret, 0);
+> > +
+> > +		if (random() % 2 == 0) {
+> > +			xe_eudebug_debugger_start_worker(s->debugger);
+> > +			xe_eudebug_debugger_stop_worker(s->debugger, 1);
+> > +		}
+> > +
+> > +		xe_eudebug_debugger_detach(s->debugger);
+> > +		s->debugger->log->head = 0;
+> > +		s->debugger->event_count = 0;
+> > +	}
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +static void test_empty_discovery(int fd, unsigned int flags, int clients)
+> > +{
+> > +	struct xe_eudebug_session **s;
+> > +	pthread_t *threads;
+> > +	int i, expected = flags & DISCOVERY_CLOSE_CLIENT ? 0 : RESOURCE_COUNT;
+> > +
+> > +	igt_assert(flags & (DISCOVERY_DESTROY_RESOURCES | DISCOVERY_CLOSE_CLIENT));
+> > +
+> > +	s = calloc(clients, sizeof(struct xe_eudebug_session *));
+> > +	threads = calloc(clients, sizeof(*threads));
+> > +
+> > +	for (i = 0; i < clients; i++)
+> > +		s[i] = xe_eudebug_session_create(fd, run_discovery_client, flags, NULL);
+> > +
+> > +	for (i = 0; i < clients; i++) {
+> > +		xe_eudebug_client_start(s[i]->client);
+> > +
+> > +		pthread_create(&threads[i], NULL, attach_dettach_thread, s[i]);
+> > +	}
+> > +
+> > +	for (i = 0; i < clients; i++)
+> > +		pthread_join(threads[i], NULL);
+> > +
+> > +	for (i = 0; i < clients; i++) {
+> > +		xe_eudebug_client_wait_done(s[i]->client);
+> > +		igt_assert_eq(xe_eudebug_debugger_attach(s[i]->debugger, s[i]->client), 0);
+> > +
+> > +		xe_eudebug_debugger_start_worker(s[i]->debugger);
+> > +		xe_eudebug_debugger_stop_worker(s[i]->debugger, 5);
+> > +		xe_eudebug_debugger_detach(s[i]->debugger);
+> > +
+> > +		igt_assert_eq(s[i]->debugger->event_count, expected);
+> > +
+> > +		xe_eudebug_session_destroy(s[i]);
+> > +	}
+> > +}
+> > +
+> > +static void ufence_ack_trigger(struct xe_eudebug_debugger *d,
+> > +			       struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE)
+> > +		xe_eudebug_ack_ufence(d->fd, ef);
+> > +}
+> > +
+> > +typedef void (*client_run_t)(struct xe_eudebug_client *);
+> > +
+> > +static void test_client_with_trigger(int fd, unsigned int flags, int count,
+> > +				     client_run_t client_fn, int type,
+> > +				     xe_eudebug_trigger_fn trigger_fn,
+> > +				     struct drm_xe_engine_class_instance *hwe,
+> > +				     bool match_opposite, uint32_t event_filter)
+> > +{
+> > +	struct xe_eudebug_session **s;
+> > +	int i;
+> > +
+> > +	s = calloc(count, sizeof(*s));
+> > +
+> > +	igt_assert(s);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		s[i] = xe_eudebug_session_create(fd, client_fn, flags, hwe);
+> > +
+> > +	if (trigger_fn)
+> > +		for (i = 0; i < count; i++)
+> > +			xe_eudebug_debugger_add_trigger(s[i]->debugger, type, trigger_fn);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_debugger_add_trigger(s[i]->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+> > +						ufence_ack_trigger);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_session_run(s[i]);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_session_check(s[i], match_opposite, event_filter);
+> > +
+> > +	for (i = 0; i < count; i++)
+> > +		xe_eudebug_session_destroy(s[i]);
+> > +}
+> > +
+> > +struct thread_fn_args {
+> > +	struct xe_eudebug_client *client;
+> > +	int fd;
+> > +};
+> > +
+> > +static void *basic_client_th(void *data)
+> > +{
+> > +	struct thread_fn_args *f = data;
+> > +	struct xe_eudebug_client *c = f->client;
+> > +	uint32_t *vms;
+> > +	int fd, i, num_vms;
+> > +
+> > +	fd = f->fd;
+> > +	igt_assert(fd);
+> > +
+> > +	xe_device_get(fd);
+> > +
+> > +	num_vms = 2 + rand() % 16;
+> > +	vms = calloc(num_vms, sizeof(*vms));
+> > +	igt_assert(vms);
+> > +	igt_debug("Create %d client vms\n", num_vms);
+> > +
+> > +	for (i = 0; i < num_vms; i++)
+> > +		vms[i] = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +
+> > +	for (i = 0; i < num_vms; i++)
+> > +		xe_eudebug_client_vm_destroy(c, fd, vms[i]);
+> > +
+> > +	xe_device_put(fd);
+> > +	free(vms);
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +static void run_basic_client_th(struct xe_eudebug_client *c)
+> > +{
+> > +	struct thread_fn_args *args;
+> > +	int i, num_threads, fd;
+> > +	pthread_t *threads;
+> > +
+> > +	args = calloc(1, sizeof(*args));
+> > +	igt_assert(args);
+> > +
+> > +	num_threads = 2 + random() % 16;
+> > +	igt_debug("Run on %d threads\n", num_threads);
+> > +	threads = calloc(num_threads, sizeof(*threads));
+> > +	igt_assert(threads);
+> > +
+> > +	fd = xe_eudebug_client_open_driver(c);
+> > +	args->client = c;
+> > +	args->fd = fd;
+> > +
+> > +	for (i = 0; i < num_threads; i++)
+> > +		pthread_create(&threads[i], NULL, basic_client_th, args);
+> > +
+> > +	for (i = 0; i < num_threads; i++)
+> > +		pthread_join(threads[i], NULL);
+> > +
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +	free(args);
+> > +	free(threads);
+> > +}
+> > +
+> > +static void test_basic_sessions_th(int fd, unsigned int flags, int num_clients, bool match_opposite)
+> > +{
+> > +	test_client_with_trigger(fd, flags, num_clients, run_basic_client_th, 0, NULL, NULL,
+> > +				 match_opposite, 0);
+> > +}
+> > +
+> > +static void vm_access_client(struct xe_eudebug_client *c)
+> > +{
+> > +	struct drm_xe_engine_class_instance *hwe = c->ptr;
+> > +	uint32_t bo_placement;
+> > +	struct bind_list *bl;
+> > +	uint32_t vm;
+> > +	int fd, i, j;
+> > +
+> > +	igt_debug("Using %s\n", xe_engine_class_string(hwe->engine_class));
+> > +
+> > +	fd = xe_eudebug_client_open_driver(c);
+> > +	xe_device_get(fd);
+> > +
+> > +	vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +
+> > +	if (c->flags & VM_BIND_OP_MAP_USERPTR)
+> > +		bo_placement = 0;
+> > +	else
+> > +		bo_placement = vram_if_possible(fd, hwe->gt_id);
+> > +
+> > +	for (j = 0; j < 5; j++) {
+> > +		unsigned int target_size = MIN_BO_SIZE * (1 << j);
+> > +
+> > +		bl = create_bind_list(fd, bo_placement, vm, 4, target_size);
+> > +		do_bind_list(c, bl, true);
+> > +
+> > +		for (i = 0; i < bl->n; i++)
+> > +			xe_eudebug_client_wait_stage(c, bl->bind_ops[i].addr);
+> > +
+> > +		free_bind_list(c, bl);
+> > +	}
+> > +	xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +
+> > +	xe_device_put(fd);
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +}
+> > +
+> > +static void debugger_test_vma(struct xe_eudebug_debugger *d,
+> > +			      uint64_t client_handle,
+> > +			      uint64_t vm_handle,
+> > +			      uint64_t va_start,
+> > +			      uint64_t va_length)
+> > +{
+> > +	struct drm_xe_eudebug_vm_open vo = { 0, };
+> > +	uint64_t *v1, *v2;
+> > +	uint64_t items = va_length / sizeof(uint64_t);
+> > +	int fd;
+> > +	int r, i;
+> > +
+> > +	v1 = malloc(va_length);
+> > +	igt_assert(v1);
+> > +	v2 = malloc(va_length);
+> > +	igt_assert(v2);
+> > +
+> > +	vo.client_handle = client_handle;
+> > +	vo.vm_handle = vm_handle;
+> > +
+> > +	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
+> > +	igt_assert_lte(0, fd);
+> > +
+> > +	r = pread(fd, v1, va_length, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		igt_assert_eq(v1[i], va_start + i);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		v1[i] = va_start + i + 1;
+> > +
+> > +	r = pwrite(fd, v1, va_length, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	lseek(fd, va_start, SEEK_SET);
+> > +	r = read(fd, v2, va_length);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		igt_assert_eq(v1[i], v2[i]);
+> > +
+> > +	fsync(fd);
+> > +
+> > +	close(fd);
+> > +	free(v1);
+> > +	free(v2);
+> > +}
+> > +
+> > +static void vm_trigger(struct xe_eudebug_debugger *d,
+> > +		       struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		struct drm_xe_eudebug_event_vm_bind *eb;
+> > +
+> > +		igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
+> > +			  eo->vm_bind_ref_seqno,
+> > +			  eo->addr,
+> > +			  eo->range);
+> > +
+> > +		eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
+> > +		igt_assert(eb);
+> > +
+> > +		debugger_test_vma(d, eb->client_handle, eb->vm_handle,
+> > +				  eo->addr, eo->range);
+> > +		xe_eudebug_debugger_signal_stage(d, eo->addr);
+> > +	}
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-vm-access
+> > + * Description:
+> > + *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
+> > + *      vm fd, concerning many different offsets inside the vm,
+> > + *      and many virtual addresses of the vm_bound object.
+> > + *
+> > + * SUBTEST: basic-vm-access-userptr
+> > + * Description:
+> > + *      Exercise XE_EUDEBUG_VM_OPEN with pread and pwrite into the
+> > + *      vm fd, concerning many different offsets inside the vm,
+> > + *      and many virtual addresses of the vm_bound object, but backed
+> > + *      by userptr.
+> > + */
+> > +static void test_vm_access(int fd, unsigned int flags, int num_clients)
+> > +{
+> > +	struct drm_xe_engine_class_instance *hwe;
+> > +
+> > +	xe_eudebug_for_each_engine(fd, hwe)
+> > +		test_client_with_trigger(fd, flags, num_clients,
+> > +					 vm_access_client,
+> > +					 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
+> > +					 vm_trigger, hwe,
+> > +					 false,
+> > +					 XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
+> > +					 XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
+> > +}
+> > +
+> > +static void debugger_test_vma_parameters(struct xe_eudebug_debugger *d,
+> > +					 uint64_t client_handle,
+> > +					 uint64_t vm_handle,
+> > +					 uint64_t va_start,
+> > +					 uint64_t va_length)
+> > +{
+> > +	struct drm_xe_eudebug_vm_open vo = { 0, };
+> > +	uint64_t *v;
+> > +	uint64_t items = va_length / sizeof(uint64_t);
+> > +	int fd;
+> > +	int r, i;
+> > +
+> > +	v = malloc(va_length);
+> > +	igt_assert(v);
+> > +
+> > +	/* Negative VM open - bad client handle */
+> > +	vo.client_handle = client_handle + 123;
+> > +	vo.vm_handle = vm_handle;
+> > +	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
+> > +	igt_assert(fd < 0);
+> > +
+> > +	/* Negative VM open - bad vm handle */
+> > +	vo.client_handle = client_handle;
+> > +	vo.vm_handle = vm_handle + 123;
+> > +	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
+> > +	igt_assert(fd < 0);
+> > +
+> > +	/* Positive VM open */
+> > +	vo.client_handle = client_handle;
+> > +	vo.vm_handle = vm_handle;
+> > +	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
+> > +	igt_assert_lte(0, fd);
+> > +
+> > +	/* Negative pread - bad fd */
+> > +	r = pread(fd + 123, v, va_length, va_start);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Negative pread - bad va_start */
+> > +	r = pread(fd, v, va_length, 0);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Negative pread - bad va_start */
+> > +	r = pread(fd, v, va_length, va_start - 1);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Positive pread - zero va_length */
+> > +	r = pread(fd, v, 0, va_start);
+> > +	igt_assert_eq(r, 0);
+> > +
+> > +	/* Negative pread - out of range */
+> > +	r = pread(fd, v, va_length + 1, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	/* Negative pread - bad va_start */
+> > +	r = pread(fd, v, 1, va_start + va_length);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Positive pread - whole range */
+> > +	r = pread(fd, v, va_length, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	/* Positive pread */
+> > +	r = pread(fd, v, 1, va_start + va_length - 1);
+> > +	igt_assert_eq(r, 1);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		igt_assert_eq(v[i], va_start + i);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		v[i] = va_start + i + 1;
+> > +
+> > +	/* Negative pwrite - bad fd */
+> > +	r = pwrite(fd + 123, v, va_length, va_start);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Negative pwrite - bad va_start */
+> > +	r = pwrite(fd, v, va_length, -1);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Negative pwrite - zero va_start */
+> > +	r = pwrite(fd, v, va_length, 0);
+> > +	igt_assert(r < 0);
+> > +
+> > +	/* Negative pwrite - bad va_length */
+> > +	r = pwrite(fd, v, va_length + 1, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	/* Positive pwrite - zero va_length */
+> > +	r = pwrite(fd, v, 0, va_start);
+> > +	igt_assert_eq(r, 0);
+> > +
+> > +	/* Positive pwrite */
+> > +	r = pwrite(fd, v, va_length, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +	fsync(fd);
+> > +
+> > +	close(fd);
+> > +	free(v);
+> > +}
+> > +
+> > +static void vm_trigger_access_parameters(struct xe_eudebug_debugger *d,
+> > +					 struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		struct drm_xe_eudebug_event_vm_bind *eb;
+> > +
+> > +		igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
+> > +			  eo->vm_bind_ref_seqno,
+> > +			  eo->addr,
+> > +			  eo->range);
+> > +
+> > +		eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
+> > +		igt_assert(eb);
+> > +
+> > +		debugger_test_vma_parameters(d, eb->client_handle, eb->vm_handle, eo->addr,
+> > +					     eo->range);
+> > +		xe_eudebug_debugger_signal_stage(d, eo->addr);
+> > +	}
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-vm-access-parameters
+> > + * Description:
+> > + *      Check negative scenarios of VM_OPEN ioctl and pread/pwrite usage.
+> > + */
+> > +static void test_vm_access_parameters(int fd, unsigned int flags, int num_clients)
+> > +{
+> > +	struct drm_xe_engine_class_instance *hwe;
+> > +
+> > +	xe_eudebug_for_each_engine(fd, hwe)
+> > +		test_client_with_trigger(fd, flags, num_clients,
+> > +					 vm_access_client,
+> > +					 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
+> > +					 vm_trigger_access_parameters, hwe,
+> > +					 false,
+> > +					 XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
+> > +					 XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
+> > +}
+> > +
+> > +#define PAGE_SIZE 4096
+> > +#define MDATA_SIZE (WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM * PAGE_SIZE)
+> > +static void metadata_access_client(struct xe_eudebug_client *c)
+> > +{
+> > +	const uint64_t addr = 0x1a0000;
+> > +	struct drm_xe_vm_bind_op_ext_attach_debug *ext;
+> > +	uint8_t *data;
+> > +	size_t bo_size;
+> > +	uint32_t bo, vm;
+> > +	int fd, i;
+> > +
+> > +	fd = xe_eudebug_client_open_driver(c);
+> > +	xe_device_get(fd);
+> > +
+> > +	bo_size = xe_get_default_alignment(fd);
+> > +	vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	bo = xe_bo_create(fd, vm, bo_size, system_memory(fd), 0);
+> > +
+> > +	ext = basic_vm_bind_metadata_ext_prepare(fd, c, &data, MDATA_SIZE);
+> > +
+> > +	xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, addr,
+> > +					bo_size, 0, NULL, 0, to_user_pointer(ext));
+> > +
+> > +	for (i = 0; i < WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM; i++)
+> > +		xe_eudebug_client_wait_stage(c, i);
+> > +
+> > +	xe_eudebug_client_vm_unbind(c, fd, vm, 0, addr, bo_size);
+> > +
+> > +	basic_vm_bind_metadata_ext_del(fd, c, ext, data);
+> > +
+> > +	close(bo);
+> > +	xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +
+> > +	xe_device_put(fd);
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +}
+> > +
+> > +static void debugger_test_metadata(struct xe_eudebug_debugger *d,
+> > +				   uint64_t client_handle,
+> > +				   uint64_t metadata_handle,
+> > +				   uint64_t type,
+> > +				   uint64_t len)
+> > +{
+> > +	struct drm_xe_eudebug_read_metadata rm = {
+> > +		.client_handle = client_handle,
+> > +		.metadata_handle = metadata_handle,
+> > +		.size = len,
+> > +	};
+> > +	uint8_t *data;
+> > +	int i;
+> > +
+> > +	data = malloc(len);
+> > +	igt_assert(data);
+> > +
+> > +	rm.ptr = to_user_pointer(data);
+> > +
+> > +	igt_assert_eq(igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_READ_METADATA, &rm), 0);
+> > +
+> > +	/* syntetic check, test sets different size per metadata type */
+> > +	igt_assert_eq((type + 1) * PAGE_SIZE, rm.size);
+> > +
+> > +	for (i = 0; i < rm.size; i++)
+> > +		igt_assert_eq(data[i], 0xff & (i + (i > PAGE_SIZE)));
+> > +
+> > +	free(data);
+> > +}
+> > +
+> > +static void metadata_read_trigger(struct xe_eudebug_debugger *d,
+> > +				  struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_metadata *em = (void *)e;
+> > +
+> > +	/* syntetic check, test sets different size per metadata type */
+> > +	igt_assert_eq((em->type + 1) * PAGE_SIZE, em->len);
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		debugger_test_metadata(d, em->client_handle, em->metadata_handle,
+> > +				       em->type, em->len);
+> > +		xe_eudebug_debugger_signal_stage(d, em->type);
+> > +	}
+> > +}
+> > +
+> > +static void metadata_read_on_vm_bind_trigger(struct xe_eudebug_debugger *d,
+> > +					     struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_op_metadata *em = (void *)e;
+> > +	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
+> > +	struct drm_xe_eudebug_event_vm_bind *eb;
+> > +
+> > +	/* For testing purpose client sets metadata_cookie = type */
+> > +
+> > +	/*
+> > +	 * Metadata event has a reference to vm-bind-op event which has a reference
+> > +	 * to vm-bind event which contains proper client-handle.
+> > +	 */
+> > +	eo = (struct drm_xe_eudebug_event_vm_bind_op *)
+> > +		xe_eudebug_event_log_find_seqno(d->log, em->vm_bind_op_ref_seqno);
+> > +	igt_assert(eo);
+> > +	eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +		xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
+> > +	igt_assert(eb);
+> > +
+> > +	debugger_test_metadata(d,
+> > +			       eb->client_handle,
+> > +			       em->metadata_handle,
+> > +			       em->metadata_cookie,
+> > +			       MDATA_SIZE); /* max size */
+> > +
+> > +	xe_eudebug_debugger_signal_stage(d, em->metadata_cookie);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: read-metadata
+> > + * Description:
+> > + *      Exercise DRM_XE_EUDEBUG_IOCTL_READ_METADATA and debug metadata create|destroy events.
+> > + */
+> > +static void test_metadata_read(int fd, unsigned int flags, int num_clients)
+> > +{
+> > +	test_client_with_trigger(fd, flags, num_clients, metadata_access_client,
+> > +				 DRM_XE_EUDEBUG_EVENT_METADATA, metadata_read_trigger,
+> > +				 NULL, true, 0);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: attach-debug-metadata
+> > + * Description:
+> > + *      Read debug metadata when vm_bind has it attached.
+> > + */
+> > +static void test_metadata_attach(int fd, unsigned int flags, int num_clients)
+> > +{
+> > +	test_client_with_trigger(fd, flags, num_clients, metadata_access_client,
+> > +				 DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA,
+> > +				 metadata_read_on_vm_bind_trigger,
+> > +				 NULL, true, 0);
+> > +}
+> > +
+> > +#define STAGE_CLIENT_WAIT_ON_UFENCE_DONE 1337
+> > +
+> > +#define UFENCE_EVENT_COUNT_EXPECTED 4
+> > +#define UFENCE_EVENT_COUNT_MAX 100
+> > +
+> > +struct ufence_bind {
+> > +	struct drm_xe_sync f;
+> > +	uint64_t addr;
+> > +	uint64_t range;
+> > +	uint64_t value;
+> > +	struct {
+> > +		uint64_t vm_sync;
+> > +	} *fence_data;
+> > +};
+> > +
+> > +static void client_wait_ufences(struct xe_eudebug_client *c,
+> > +				int fd, struct ufence_bind *binds, int count)
+> > +{
+> > +	const int64_t default_fence_timeout_ns = 500 * NSEC_PER_MSEC;
+> > +	int64_t timeout_ns;
+> > +	int err;
+> > +
+> > +	/* Ensure that wait on unacked ufence times out */
+> > +	for (int i = 0; i < count; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		timeout_ns = default_fence_timeout_ns;
+> > +		err = __xe_wait_ufence(fd, &b->fence_data->vm_sync, b->f.timeline_value,
+> > +				       0, &timeout_ns);
+> > +		igt_assert_eq(err, -ETIME);
+> > +		igt_assert_neq(b->fence_data->vm_sync, b->f.timeline_value);
+> > +		igt_debug("wait #%d blocked on ack\n", i);
+> > +	}
+> > +
+> > +	/* Wait on fence timed out, now tell the debugger to ack */
+> > +	xe_eudebug_client_signal_stage(c, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
+> > +
+> > +	/* Check that ack unblocks ufence */
+> > +	for (int i = 0; i < count; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		timeout_ns = XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC;
+> > +		err = __xe_wait_ufence(fd, &b->fence_data->vm_sync, b->f.timeline_value,
+> > +				       0, &timeout_ns);
+> > +		igt_assert_eq(err, 0);
+> > +		igt_assert_eq(b->fence_data->vm_sync, b->f.timeline_value);
+> > +		igt_debug("wait #%d completed\n", i);
+> > +	}
+> > +}
+> > +
+> > +static struct ufence_bind *create_binds_with_ufence(int fd, int count)
+> > +{
+> > +	struct ufence_bind *binds;
+> > +
+> > +	binds = calloc(count, sizeof(*binds));
+> > +	igt_assert(binds);
+> > +
+> > +	for (int i = 0; i < count; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		b->range = 0x1000;
+> > +		b->addr = 0x100000 + b->range * i;
+> > +		b->fence_data = aligned_alloc(xe_get_default_alignment(fd),
+> > +					      sizeof(*b->fence_data));
+> > +		igt_assert(b->fence_data);
+> > +		memset(b->fence_data, 0, sizeof(*b->fence_data));
+> > +
+> > +		b->f.type = DRM_XE_SYNC_TYPE_USER_FENCE;
+> > +		b->f.flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> > +		b->f.addr = to_user_pointer(&b->fence_data->vm_sync);
+> > +		b->f.timeline_value = UFENCE_EVENT_COUNT_EXPECTED + i;
+> > +	}
+> > +
+> > +	return binds;
+> > +}
+> > +
+> > +static void basic_ufence_client(struct xe_eudebug_client *c)
+> > +{
+> > +	const unsigned int n = UFENCE_EVENT_COUNT_EXPECTED;
+> > +	int fd = xe_eudebug_client_open_driver(c);
+> > +	uint32_t vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	size_t bo_size = n * xe_get_default_alignment(fd);
+> > +	uint32_t bo = xe_bo_create(fd, 0, bo_size,
+> > +				   system_memory(fd), 0);
+> > +	struct ufence_bind *binds = create_binds_with_ufence(fd, n);
+> > +
+> > +	for (int i = 0; i < n; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		xe_eudebug_client_vm_bind_flags(c, fd, vm, bo, 0, b->addr, b->range, 0,
+> > +						&b->f, 1, 0);
+> > +	}
+> > +
+> > +	client_wait_ufences(c, fd, binds, n);
+> > +
+> > +	for (int i = 0; i < n; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		xe_eudebug_client_vm_unbind(c, fd, vm, 0, b->addr, b->range);
+> > +	}
+> > +
+> > +	free(binds);
+> > +	gem_close(fd, bo);
+> > +	xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +}
+> > +
+> > +struct ufence_priv {
+> > +	struct drm_xe_eudebug_event_vm_bind_ufence ufence_events[UFENCE_EVENT_COUNT_MAX];
+> > +	uint64_t ufence_event_seqno[UFENCE_EVENT_COUNT_MAX];
+> > +	uint64_t ufence_event_vm_addr_start[UFENCE_EVENT_COUNT_MAX];
+> > +	uint64_t ufence_event_vm_addr_range[UFENCE_EVENT_COUNT_MAX];
+> > +	unsigned int ufence_event_count;
+> > +	unsigned int vm_bind_op_count;
+> > +	pthread_mutex_t mutex;
+> > +};
+> > +
+> > +static struct ufence_priv *ufence_priv_create(void)
+> > +{
+> > +	struct ufence_priv *priv;
+> > +
+> > +	priv = mmap(0, ALIGN(sizeof(*priv), PAGE_SIZE),
+> > +		    PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> > +	igt_assert(priv);
+> > +	memset(priv, 0, sizeof(*priv));
+> > +	pthread_mutex_init(&priv->mutex, NULL);
+> > +
+> > +	return priv;
+> > +}
+> > +
+> > +static void ufence_priv_destroy(struct ufence_priv *priv)
+> > +{
+> > +	munmap(priv, ALIGN(sizeof(*priv), PAGE_SIZE));
+> > +}
+> > +
+> > +static void ack_fences(struct xe_eudebug_debugger *d)
+> > +{
+> > +	struct ufence_priv *priv = d->ptr;
+> > +
+> > +	for (int i = 0; i < priv->ufence_event_count; i++)
+> > +		xe_eudebug_ack_ufence(d->fd, &priv->ufence_events[i]);
+> > +}
+> > +
+> > +static void basic_ufence_trigger(struct xe_eudebug_debugger *d,
+> > +				 struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
+> > +	struct ufence_priv *priv = d->ptr;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
+> > +		struct drm_xe_eudebug_event_vm_bind *eb;
+> > +
+> > +		xe_eudebug_event_to_str(e, event_str, XE_EUDEBUG_EVENT_STRING_MAX_LEN);
+> > +		igt_debug("ufence event received: %s\n", event_str);
+> > +
+> > +		xe_eudebug_assert_f(d, priv->ufence_event_count < UFENCE_EVENT_COUNT_EXPECTED,
+> > +				    "surplus ufence event received: %s\n", event_str);
+> > +		xe_eudebug_assert(d, ef->vm_bind_ref_seqno);
+> > +
+> > +		memcpy(&priv->ufence_events[priv->ufence_event_count++], ef, sizeof(*ef));
+> > +
+> > +		eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +			xe_eudebug_event_log_find_seqno(d->log, ef->vm_bind_ref_seqno);
+> > +		xe_eudebug_assert_f(d, eb, "vm bind event with seqno (%lld) not found\n",
+> > +				    ef->vm_bind_ref_seqno);
+> > +		xe_eudebug_assert_f(d, eb->flags & DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE,
+> > +				    "vm bind event does not have ufence: %s\n", event_str);
+> > +	}
+> > +}
+> > +
+> > +static int wait_for_ufence_events(struct ufence_priv *priv, int timeout_ms)
+> > +{
+> > +	int ret = -ETIMEDOUT;
+> > +
+> > +	igt_for_milliseconds(timeout_ms) {
+> > +		pthread_mutex_lock(&priv->mutex);
+> > +		if (priv->ufence_event_count == UFENCE_EVENT_COUNT_EXPECTED)
+> > +			ret = 0;
+> > +		pthread_mutex_unlock(&priv->mutex);
+> > +
+> > +		if (!ret)
+> > +			break;
+> > +		usleep(1000);
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: basic-vm-bind-ufence
+> > + * Description:
+> > + *      Give user fence in application and check if ufence ack works
+> > + */
+> > +static void test_basic_ufence(int fd, unsigned int flags)
+> > +{
+> > +	struct xe_eudebug_debugger *d;
+> > +	struct xe_eudebug_session *s;
+> > +	struct xe_eudebug_client *c;
+> > +	struct ufence_priv *priv;
+> > +
+> > +	priv = ufence_priv_create();
+> > +	s = xe_eudebug_session_create(fd, basic_ufence_client, flags, priv);
+> > +	c = s->client;
+> > +	d = s->debugger;
+> > +
+> > +	xe_eudebug_debugger_add_trigger(d,
+> > +					DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+> > +					basic_ufence_trigger);
+> > +
+> > +	igt_assert_eq(xe_eudebug_debugger_attach(d, c), 0);
+> > +	xe_eudebug_debugger_start_worker(d);
+> > +	xe_eudebug_client_start(c);
+> > +
+> > +	xe_eudebug_debugger_wait_stage(s, STAGE_CLIENT_WAIT_ON_UFENCE_DONE);
+> > +	xe_eudebug_assert_f(d, wait_for_ufence_events(priv, XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * MSEC_PER_SEC) == 0,
+> > +			    "missing ufence events\n");
+> > +	ack_fences(d);
+> > +
+> > +	xe_eudebug_client_wait_done(c);
+> > +	xe_eudebug_debugger_stop_worker(d, 1);
+> > +
+> > +	xe_eudebug_event_log_print(d->log, true);
+> > +	xe_eudebug_event_log_print(c->log, true);
+> > +
+> > +	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
+> > +
+> > +	xe_eudebug_session_destroy(s);
+> > +	ufence_priv_destroy(priv);
+> > +}
+> > +
+> > +struct vm_bind_clear_thread_priv {
+> > +	struct drm_xe_engine_class_instance *hwe;
+> > +	struct xe_eudebug_client *c;
+> > +	pthread_t thread;
+> > +	uint64_t region;
+> > +	unsigned long sum;
+> > +};
+> > +
+> > +struct vm_bind_clear_priv {
+> > +	unsigned long unbind_count;
+> > +	unsigned long bind_count;
+> > +	unsigned long sum;
+> > +};
+> > +
+> > +static struct vm_bind_clear_priv *vm_bind_clear_priv_create(void)
+> > +{
+> > +	struct vm_bind_clear_priv *priv;
+> > +
+> > +	priv = mmap(0, ALIGN(sizeof(*priv), PAGE_SIZE),
+> > +		    PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
+> > +	igt_assert(priv);
+> > +	memset(priv, 0, sizeof(*priv));
+> > +
+> > +	return priv;
+> > +}
+> > +
+> > +static void vm_bind_clear_priv_destroy(struct vm_bind_clear_priv *priv)
+> > +{
+> > +	munmap(priv, ALIGN(sizeof(*priv), PAGE_SIZE));
+> > +}
+> > +
+> > +static void *vm_bind_clear_thread(void *data)
+> > +{
+> > +	const uint32_t CS_GPR0 = 0x600;
+> > +	const size_t batch_size = 16;
+> > +	struct drm_xe_sync uf_sync = {
+> > +		.type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> > +	};
+> > +	struct vm_bind_clear_thread_priv *priv = data;
+> > +	int fd = xe_eudebug_client_open_driver(priv->c);
+> > +	uint32_t gtt_size = 1ull << min_t(uint32_t, xe_va_bits(fd), 48);
+> > +	uint32_t vm = xe_eudebug_client_vm_create(priv->c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	size_t bo_size = xe_bb_size(fd, batch_size);
+> > +	unsigned long count = 0;
+> > +	uint64_t *fence_data;
+> > +
+> > +	/* init uf_sync */
+> > +	fence_data = aligned_alloc(xe_get_default_alignment(fd), sizeof(*fence_data));
+> > +	igt_assert(fence_data);
+> > +	uf_sync.timeline_value = 1337;
+> > +	uf_sync.addr = to_user_pointer(fence_data);
+> > +
+> > +	igt_debug("Run on: %s%u\n", xe_engine_class_string(priv->hwe->engine_class),
+> > +		  priv->hwe->engine_instance);
+> > +
+> > +	igt_until_timeout(5) {
+> > +		struct drm_xe_ext_set_property eq_ext = {
+> > +			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
+> > +			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
+> > +			.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
+> > +		};
+> > +		struct drm_xe_exec_queue_create eq_create = { 0 };
+> > +		uint32_t clean_bo = 0;
+> > +		uint32_t batch_bo = 0;
+> > +		uint64_t clean_offset, batch_offset;
+> > +		uint32_t exec_queue;
+> > +		uint32_t *map, *cs;
+> > +		uint64_t delta;
+> > +
+> > +		/* calculate offsets (vma addresses) */
+> > +		batch_offset = (random() * SZ_2M) & (gtt_size - 1);
+> > +		/* XXX: for some platforms/memory regions batch offset '0' can be problematic */
+> > +		if (batch_offset == 0)
+> > +			batch_offset = SZ_2M;
+> > +
+> > +		do {
+> > +			clean_offset = (random() * SZ_2M) & (gtt_size - 1);
+> > +			if (clean_offset == 0)
+> > +				clean_offset = SZ_2M;
+> > +		} while (clean_offset == batch_offset);
+> > +
+> > +		batch_offset += random() % SZ_2M & -bo_size;
+> > +		clean_offset += random() % SZ_2M & -bo_size;
+> > +
+> > +		delta = (random() % bo_size) & -4;
+> > +
+> > +		/* prepare clean bo */
+> > +		clean_bo = xe_bo_create(fd, vm, bo_size, priv->region,
+> > +					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > +		memset(fence_data, 0, sizeof(*fence_data));
+> > +		xe_eudebug_client_vm_bind_flags(priv->c, fd, vm, clean_bo, 0, clean_offset, bo_size,
+> > +						0, &uf_sync, 1, 0);
+> > +		xe_wait_ufence(fd, fence_data, uf_sync.timeline_value, 0,
+> > +			       XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC);
+> > +
+> > +		/* prepare batch bo */
+> > +		batch_bo = xe_bo_create(fd, vm, bo_size, priv->region,
+> > +					DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > +		memset(fence_data, 0, sizeof(*fence_data));
+> > +		xe_eudebug_client_vm_bind_flags(priv->c, fd, vm, batch_bo, 0, batch_offset, bo_size,
+> > +						0, &uf_sync, 1, 0);
+> > +		xe_wait_ufence(fd, fence_data, uf_sync.timeline_value, 0,
+> > +			       XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC);
+> > +
+> > +		map = xe_bo_map(fd, batch_bo, bo_size);
+> > +
+> > +		cs = map;
+> > +		*cs++ = MI_NOOP | 0xc5a3;
+> > +		*cs++ = MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
+> > +		*cs++ = CS_GPR0;
+> > +		*cs++ = clean_offset + delta;
+> > +		*cs++ = (clean_offset + delta) >> 32;
+> > +		*cs++ = MI_STORE_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
+> > +		*cs++ = CS_GPR0;
+> > +		*cs++ = batch_offset;
+> > +		*cs++ = batch_offset >> 32;
+> > +		*cs++ = MI_BATCH_BUFFER_END;
+> > +
+> > +		/* execute batch */
+> > +		eq_create.width = 1;
+> > +		eq_create.num_placements = 1;
+> > +		eq_create.vm_id = vm;
+> > +		eq_create.instances = to_user_pointer(priv->hwe);
+> > +		eq_create.extensions = to_user_pointer(&eq_ext);
+> > +		exec_queue = xe_eudebug_client_exec_queue_create(priv->c, fd, &eq_create);
+> > +
+> > +		memset(fence_data, 0, sizeof(*fence_data));
+> > +		xe_exec_sync(fd, exec_queue, batch_offset, &uf_sync, 1);
+> > +		xe_wait_ufence(fd, fence_data, uf_sync.timeline_value, 0,
+> > +			       XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC);
+> > +
+> > +		igt_assert_eq(*map, 0);
+> > +
+> > +		/* cleanup */
+> > +		xe_eudebug_client_exec_queue_destroy(priv->c, fd, &eq_create);
+> > +		munmap(map, bo_size);
+> > +
+> > +		xe_eudebug_client_vm_unbind(priv->c, fd, vm, 0, batch_offset, bo_size);
+> > +		gem_close(fd, batch_bo);
+> > +
+> > +		xe_eudebug_client_vm_unbind(priv->c, fd, vm, 0, clean_offset, bo_size);
+> > +		gem_close(fd, clean_bo);
+> > +
+> > +		count++;
+> > +	}
+> > +
+> > +	priv->sum = count;
+> > +
+> > +	free(fence_data);
+> > +	xe_eudebug_client_close_driver(priv->c, fd);
+> > +	return NULL;
+> > +}
+> > +
+> > +static void vm_bind_clear_client(struct xe_eudebug_client *c)
+> > +{
+> > +	int fd = xe_eudebug_client_open_driver(c);
+> > +	struct xe_device *xe_dev = xe_device_get(fd);
+> > +	int count = xe_number_engines(fd) * xe_dev->mem_regions->num_mem_regions;
+> > +	uint64_t memreg = all_memory_regions(fd);
+> > +	struct vm_bind_clear_priv *priv = c->ptr;
+> > +	int current = 0;
+> > +	struct drm_xe_engine_class_instance *engine;
+> > +	struct vm_bind_clear_thread_priv *threads;
+> > +	uint64_t region;
+> > +
+> > +	threads = calloc(count, sizeof(*threads));
+> > +	igt_assert(threads);
+> > +	priv->sum = 0;
+> > +
+> > +	xe_for_each_mem_region(fd, memreg, region) {
+> > +		xe_eudebug_for_each_engine(fd, engine) {
+> > +			threads[current].c = c;
+> > +			threads[current].hwe = engine;
+> > +			threads[current].region = region;
+> > +
+> > +			pthread_create(&threads[current].thread, NULL,
+> > +				       vm_bind_clear_thread, &threads[current]);
+> > +			current++;
+> > +		}
+> > +	}
+> > +
+> > +	for (current = 0; current < count; current++)
+> > +		pthread_join(threads[current].thread, NULL);
+> > +
+> > +	xe_for_each_mem_region(fd, memreg, region) {
+> > +		unsigned long sum = 0;
+> > +
+> > +		for (current = 0; current < count; current++)
+> > +			if (threads[current].region == region)
+> > +				sum += threads[current].sum;
+> > +
+> > +		igt_info("%s sampled %lu objects\n", xe_region_name(region), sum);
+> > +		priv->sum += sum;
+> > +	}
+> > +
+> > +	free(threads);
+> > +	xe_device_put(fd);
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +}
+> > +
+> > +static void vm_bind_clear_test_trigger(struct xe_eudebug_debugger *d,
+> > +				       struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
+> > +	struct vm_bind_clear_priv *priv = d->ptr;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		if (random() & 1) {
+> > +			struct drm_xe_eudebug_vm_open vo = { 0, };
+> > +			uint32_t v = 0xc1c1c1c1;
+> > +
+> > +			struct drm_xe_eudebug_event_vm_bind *eb;
+> > +			int fd, delta, r;
+> > +
+> > +			igt_debug("vm bind op event received with ref %lld, addr 0x%llx, range 0x%llx\n",
+> > +				  eo->vm_bind_ref_seqno, eo->addr, eo->range);
+> > +
+> > +			eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +				xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
+> > +			igt_assert(eb);
+> > +
+> > +			vo.client_handle = eb->client_handle;
+> > +			vo.vm_handle = eb->vm_handle;
+> > +
+> > +			fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
+> > +			igt_assert_lte(0, fd);
+> > +
+> > +			delta = (random() % eo->range) & -4;
+> > +			r = pread(fd, &v, sizeof(v), eo->addr + delta);
+> > +			igt_assert_eq(r, sizeof(v));
+> > +			igt_assert_eq_u32(v, 0);
+> > +
+> > +			close(fd);
+> > +		}
+> > +		priv->bind_count++;
+> > +	}
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_DESTROY)
+> > +		priv->unbind_count++;
+> > +}
+> > +
+> > +static void vm_bind_clear_ack_trigger(struct xe_eudebug_debugger *d,
+> > +				      struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
+> > +
+> > +	xe_eudebug_ack_ufence(d->fd, ef);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: vm-bind-clear
+> > + * Description:
+> > + *      Check that fresh buffers we vm_bind into the ppGTT are always clear.
+> > + */
+> > +static void test_vm_bind_clear(int fd)
+> > +{
+> > +	struct vm_bind_clear_priv *priv;
+> > +	struct xe_eudebug_session *s;
+> > +
+> > +	priv = vm_bind_clear_priv_create();
+> > +	s = xe_eudebug_session_create(fd, vm_bind_clear_client, 0, priv);
+> > +
+> > +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
+> > +					vm_bind_clear_test_trigger);
+> > +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+> > +					vm_bind_clear_ack_trigger);
+> > +
+> > +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
+> > +	xe_eudebug_debugger_start_worker(s->debugger);
+> > +	xe_eudebug_client_start(s->client);
+> > +
+> > +	xe_eudebug_client_wait_done(s->client);
+> > +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
+> > +
+> > +	igt_assert_eq(priv->bind_count, priv->unbind_count);
+> > +	igt_assert_eq(priv->sum * 2, priv->bind_count);
+> > +
+> > +	xe_eudebug_session_destroy(s);
+> > +	vm_bind_clear_priv_destroy(priv);
+> > +}
+> > +
+> > +#define UFENCE_CLIENT_VM_TEST_VAL_START 0xaaaaaaaa
+> > +#define UFENCE_CLIENT_VM_TEST_VAL_END 0xbbbbbbbb
+> > +
+> > +static void vma_ufence_client(struct xe_eudebug_client *c)
+> > +{
+> > +	const unsigned int n = UFENCE_EVENT_COUNT_EXPECTED;
+> > +	int fd = xe_eudebug_client_open_driver(c);
+> > +	struct ufence_bind *binds = create_binds_with_ufence(fd, n);
+> > +	uint32_t vm = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> > +	size_t bo_size = xe_get_default_alignment(fd);
+> > +	uint64_t items = bo_size / sizeof(uint32_t);
+> > +	uint32_t bo[UFENCE_EVENT_COUNT_EXPECTED];
+> > +	uint32_t *ptr[UFENCE_EVENT_COUNT_EXPECTED];
+> > +
+> > +	for (int i = 0; i < n; i++) {
+> > +		bo[i] = xe_bo_create(fd, 0, bo_size,
+> > +				     system_memory(fd), 0);
+> > +		ptr[i] = xe_bo_map(fd, bo[i], bo_size);
+> > +		igt_assert(ptr[i]);
+> > +		memset(ptr[i], UFENCE_CLIENT_VM_TEST_VAL_START, bo_size);
+> > +	}
+> > +
+> > +	for (int i = 0; i < n; i++)
+> > +		for (int j = 0; j < items; j++)
+> > +			igt_assert_eq(ptr[i][j], UFENCE_CLIENT_VM_TEST_VAL_START);
+> > +
+> > +	for (int i = 0; i < n; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		xe_eudebug_client_vm_bind_flags(c, fd, vm, bo[i], 0, b->addr, b->range, 0,
+> > +						&b->f, 1, 0);
+> > +	}
+> > +
+> > +	/* Wait for acks on ufences */
+> > +	for (int i = 0; i < n; i++) {
+> > +		int err;
+> > +		int64_t timeout_ns;
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		timeout_ns = XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC;
+> > +		err = __xe_wait_ufence(fd, &b->fence_data->vm_sync, b->f.timeline_value,
+> > +				       0, &timeout_ns);
+> > +		igt_assert_eq(err, 0);
+> > +		igt_assert_eq(b->fence_data->vm_sync, b->f.timeline_value);
+> > +		igt_debug("wait #%d completed\n", i);
+> > +
+> > +		for (int j = 0; j < items; j++)
+> > +			igt_assert_eq(ptr[i][j], UFENCE_CLIENT_VM_TEST_VAL_END);
+> > +	}
+> > +
+> > +	for (int i = 0; i < n; i++) {
+> > +		struct ufence_bind *b = &binds[i];
+> > +
+> > +		xe_eudebug_client_vm_unbind(c, fd, vm, 0, b->addr, b->range);
+> > +	}
+> > +
+> > +	free(binds);
+> > +
+> > +	for (int i = 0; i < n; i++) {
+> > +		munmap(ptr[i], bo_size);
+> > +		gem_close(fd, bo[i]);
+> > +	}
+> > +
+> > +	xe_eudebug_client_vm_destroy(c, fd, vm);
+> > +	xe_eudebug_client_close_driver(c, fd);
+> > +}
+> > +
+> > +static void debugger_test_vma_ufence(struct xe_eudebug_debugger *d,
+> > +				     uint64_t client_handle,
+> > +				     uint64_t vm_handle,
+> > +				     uint64_t va_start,
+> > +				     uint64_t va_length)
+> > +{
+> > +	struct drm_xe_eudebug_vm_open vo = { 0, };
+> > +	uint32_t *v1, *v2;
+> > +	uint32_t items = va_length / sizeof(uint32_t);
+> > +	int fd;
+> > +	int r, i;
+> > +
+> > +	v1 = malloc(va_length);
+> > +	igt_assert(v1);
+> > +	v2 = malloc(va_length);
+> > +	igt_assert(v2);
+> > +
+> > +	vo.client_handle = client_handle;
+> > +	vo.vm_handle = vm_handle;
+> > +
+> > +	fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
+> > +	igt_assert_lte(0, fd);
+> > +
+> > +	r = pread(fd, v1, va_length, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		igt_assert_eq(v1[i], UFENCE_CLIENT_VM_TEST_VAL_START);
+> > +
+> > +	memset(v1, UFENCE_CLIENT_VM_TEST_VAL_END, va_length);
+> > +
+> > +	r = pwrite(fd, v1, va_length, va_start);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	lseek(fd, va_start, SEEK_SET);
+> > +	r = read(fd, v2, va_length);
+> > +	igt_assert_eq(r, va_length);
+> > +
+> > +	for (i = 0; i < items; i++)
+> > +		igt_assert_eq_u64(v1[i], v2[i]);
+> > +
+> > +	fsync(fd);
+> > +
+> > +	close(fd);
+> > +	free(v1);
+> > +	free(v2);
+> > +}
+> > +
+> > +static void vma_ufence_op_trigger(struct xe_eudebug_debugger *d,
+> > +				  struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_op *eo = (void *)e;
+> > +	struct ufence_priv *priv = d->ptr;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
+> > +		struct drm_xe_eudebug_event_vm_bind *eb;
+> > +		unsigned int op_count = priv->vm_bind_op_count++;
+> > +
+> > +		xe_eudebug_event_to_str(e, event_str, XE_EUDEBUG_EVENT_STRING_MAX_LEN);
+> > +		igt_debug("vm bind op event: ref %lld, addr 0x%llx, range 0x%llx, op_count %u\n",
+> > +			  eo->vm_bind_ref_seqno,
+> > +			  eo->addr,
+> > +			  eo->range,
+> > +			  op_count);
+> > +		igt_debug("vm bind op event received: %s\n", event_str);
+> > +		xe_eudebug_assert(d, eo->vm_bind_ref_seqno);
+> > +		eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +			xe_eudebug_event_log_find_seqno(d->log, eo->vm_bind_ref_seqno);
+> > +
+> > +		xe_eudebug_assert_f(d, eb, "vm bind event with seqno (%lld) not found\n",
+> > +				    eo->vm_bind_ref_seqno);
+> > +		xe_eudebug_assert_f(d, eb->flags & DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE,
+> > +				    "vm bind event does not have ufence: %s\n", event_str);
+> > +
+> > +		priv->ufence_event_seqno[op_count] = eo->vm_bind_ref_seqno;
+> > +		priv->ufence_event_vm_addr_start[op_count] = eo->addr;
+> > +		priv->ufence_event_vm_addr_range[op_count] = eo->range;
+> > +	}
+> > +}
+> > +
+> > +static void vma_ufence_trigger(struct xe_eudebug_debugger *d,
+> > +			       struct drm_xe_eudebug_event *e)
+> > +{
+> > +	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
+> > +	struct ufence_priv *priv = d->ptr;
+> > +	unsigned int ufence_count = priv->ufence_event_count;
+> > +
+> > +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
+> > +		char event_str[XE_EUDEBUG_EVENT_STRING_MAX_LEN];
+> > +		struct drm_xe_eudebug_event_vm_bind *eb;
+> > +		uint64_t addr = priv->ufence_event_vm_addr_start[ufence_count];
+> > +		uint64_t range = priv->ufence_event_vm_addr_range[ufence_count];
+> > +
+> > +		xe_eudebug_event_to_str(e, event_str, XE_EUDEBUG_EVENT_STRING_MAX_LEN);
+> > +		igt_debug("ufence event received: %s\n", event_str);
+> > +
+> > +		xe_eudebug_assert_f(d, priv->ufence_event_count < UFENCE_EVENT_COUNT_EXPECTED,
+> > +				    "surplus ufence event received: %s\n", event_str);
+> > +		xe_eudebug_assert(d, ef->vm_bind_ref_seqno);
+> > +
+> > +		memcpy(&priv->ufence_events[priv->ufence_event_count++], ef, sizeof(*ef));
+> > +
+> > +		eb = (struct drm_xe_eudebug_event_vm_bind *)
+> > +			xe_eudebug_event_log_find_seqno(d->log, ef->vm_bind_ref_seqno);
+> > +		xe_eudebug_assert_f(d, eb, "vm bind event with seqno (%lld) not found\n",
+> > +				    ef->vm_bind_ref_seqno);
+> > +		xe_eudebug_assert_f(d, eb->flags & DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE,
+> > +				    "vm bind event does not have ufence: %s\n", event_str);
+> > +		igt_debug("vm bind ufence event received with ref %lld, addr 0x%lx, range 0x%lx\n",
+> > +			  ef->vm_bind_ref_seqno,
+> > +			  addr,
+> > +			  range);
+> > +		debugger_test_vma_ufence(d, eb->client_handle, eb->vm_handle,
+> > +					 addr, range);
+> > +
+> > +		xe_eudebug_ack_ufence(d->fd, ef);
+> > +	}
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: vma-ufence
+> > + * Description:
+> > + *      Intercept vm bind after receiving ufence event, then access target vm and write to it.
+> > + *      Then check on client side if the write was successful.
+> > + */
+> > +static void test_vma_ufence(int fd, unsigned int flags)
+> > +{
+> > +	struct xe_eudebug_session *s;
+> > +	struct ufence_priv *priv;
+> > +
+> > +	priv = ufence_priv_create();
+> > +	s = xe_eudebug_session_create(fd, vma_ufence_client, flags, priv);
+> > +
+> > +	xe_eudebug_debugger_add_trigger(s->debugger,
+> > +					DRM_XE_EUDEBUG_EVENT_VM_BIND_OP,
+> > +					vma_ufence_op_trigger);
+> > +	xe_eudebug_debugger_add_trigger(s->debugger,
+> > +					DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+> > +					vma_ufence_trigger);
+> > +
+> > +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
+> > +	xe_eudebug_debugger_start_worker(s->debugger);
+> > +	xe_eudebug_client_start(s->client);
+> > +
+> > +	xe_eudebug_client_wait_done(s->client);
+> > +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
+> > +
+> > +	xe_eudebug_event_log_print(s->debugger->log, true);
+> > +	xe_eudebug_event_log_print(s->client->log, true);
+> > +
+> > +	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
+> > +
+> > +	xe_eudebug_session_destroy(s);
+> > +	ufence_priv_destroy(priv);
+> > +}
+> > +
+> > +igt_main
+> > +{
+> > +	bool was_enabled;
+> > +	bool *multigpu_was_enabled;
+> > +	int fd, gpu_count;
+> > +
+> > +	igt_fixture {
+> > +		fd = drm_open_driver(DRIVER_XE);
+> > +		was_enabled = xe_eudebug_enable(fd, true);
+> > +	}
+> > +
+> > +	igt_subtest("sysfs-toggle")
+> > +		test_sysfs_toggle(fd);
+> > +
+> > +	igt_subtest("basic-connect")
+> > +		test_connect(fd);
+> > +
+> > +	igt_subtest("connect-user")
+> > +		test_connect_user(fd);
+> > +
+> > +	igt_subtest("basic-close")
+> > +		test_close(fd);
+> > +
+> > +	igt_subtest("basic-read-event")
+> > +		test_read_event(fd);
+> > +
+> > +	igt_subtest("basic-client")
+> > +		test_basic_sessions(fd, 0, 1, true);
+> > +
+> > +	igt_subtest("basic-client-th")
+> > +		test_basic_sessions_th(fd, 0, 1, true);
+> > +
+> > +	igt_subtest("basic-vm-access")
+> > +		test_vm_access(fd, 0, 1);
+> > +
+> > +	igt_subtest("basic-vm-access-userptr")
+> > +		test_vm_access(fd, VM_BIND_OP_MAP_USERPTR, 1);
+> > +
+> > +	igt_subtest("basic-vm-access-parameters")
+> > +		test_vm_access_parameters(fd, 0, 1);
+> > +
+> > +	igt_subtest("multiple-sessions")
+> > +		test_basic_sessions(fd, CREATE_VMS | CREATE_EXEC_QUEUES, 4, true);
+> > +
+> > +	igt_subtest("basic-vms")
+> > +		test_basic_sessions(fd, CREATE_VMS, 1, true);
+> > +
+> > +	igt_subtest("basic-exec-queues")
+> > +		test_basic_sessions(fd, CREATE_EXEC_QUEUES, 1, true);
+> > +
+> > +	igt_subtest("basic-vm-bind")
+> > +		test_basic_sessions(fd, VM_BIND, 1, true);
+> > +
+> > +	igt_subtest("basic-vm-bind-ufence")
+> > +		test_basic_ufence(fd, 0);
+> > +
+> > +	igt_subtest("vma-ufence")
+> > +		test_vma_ufence(fd, 0);
+> > +
+> > +	igt_subtest("vm-bind-clear")
+> > +		test_vm_bind_clear(fd);
+> > +
+> > +	igt_subtest("basic-vm-bind-discovery")
+> > +		test_basic_discovery(fd, VM_BIND, true);
+> > +
+> > +	igt_subtest("basic-vm-bind-metadata-discovery")
+> > +		test_basic_discovery(fd, VM_BIND_METADATA, true);
+> > +
+> > +	igt_subtest("basic-vm-bind-vm-destroy")
+> > +		test_basic_sessions(fd, VM_BIND_VM_DESTROY, 1, false);
+> > +
+> > +	igt_subtest("basic-vm-bind-vm-destroy-discovery")
+> > +		test_basic_discovery(fd, VM_BIND_VM_DESTROY, false);
+> > +
+> > +	igt_subtest("basic-vm-bind-extended")
+> > +		test_basic_sessions(fd, VM_BIND_EXTENDED, 1, true);
+> > +
+> > +	igt_subtest("basic-vm-bind-extended-discovery")
+> > +		test_basic_discovery(fd, VM_BIND_EXTENDED, true);
+> > +
+> > +	igt_subtest("read-metadata")
+> > +		test_metadata_read(fd, 0, 1);
+> > +
+> > +	igt_subtest("attach-debug-metadata")
+> > +		test_metadata_attach(fd, 0, 1);
+> > +
+> > +	igt_subtest("discovery-race")
+> > +		test_race_discovery(fd, 0, 4);
+> > +
+> > +	igt_subtest("discovery-race-vmbind")
+> > +		test_race_discovery(fd, DISCOVERY_VM_BIND, 4);
+> > +
+> > +	igt_subtest("discovery-empty")
+> > +		test_empty_discovery(fd, DISCOVERY_CLOSE_CLIENT, 16);
+> > +
+> > +	igt_subtest("discovery-empty-clients")
+> > +		test_empty_discovery(fd, DISCOVERY_DESTROY_RESOURCES, 16);
+> > +
+> > +	igt_fixture {
+> > +		xe_eudebug_enable(fd, was_enabled);
+> > +		drm_close_driver(fd);
+> > +	}
+> > +
+> > +	igt_subtest_group {
+> > +		igt_fixture {
+> > +			gpu_count = drm_prepare_filtered_multigpu(DRIVER_XE);
+> > +			igt_require(gpu_count >= 2);
+> > +
+> > +			multigpu_was_enabled = malloc(gpu_count * sizeof(bool));
+> > +			igt_assert(multigpu_was_enabled);
+> > +			for (int i = 0; i < gpu_count; i++) {
+> > +				fd = drm_open_filtered_card(i);
+> > +				multigpu_was_enabled[i] = xe_eudebug_enable(fd, true);
+> > +				close(fd);
+> > +			}
+> > +		}
+> > +
+> > +		igt_subtest("multigpu-basic-client") {
+> > +			igt_multi_fork(child, gpu_count) {
+> > +				fd = drm_open_filtered_card(child);
+> > +				igt_assert_f(fd > 0, "cannot open gpu-%d, errno=%d\n",
+> > +					     child, errno);
+> > +				igt_assert(is_xe_device(fd));
+> > +
+> > +				test_basic_sessions(fd, 0, 1, true);
+> > +				close(fd);
+> > +			}
+> > +			igt_waitchildren();
+> > +		}
+> > +
+> > +		igt_subtest("multigpu-basic-client-many") {
+> > +			igt_multi_fork(child, gpu_count) {
+> > +				fd = drm_open_filtered_card(child);
+> > +				igt_assert_f(fd > 0, "cannot open gpu-%d, errno=%d\n",
+> > +					     child, errno);
+> > +				igt_assert(is_xe_device(fd));
+> > +
+> > +				test_basic_sessions(fd, 0, 4, true);
+> > +				close(fd);
+> > +			}
+> > +			igt_waitchildren();
+> > +		}
+> > +
+> > +		igt_fixture {
+> > +			for (int i = 0; i < gpu_count; i++) {
+> > +				fd = drm_open_filtered_card(i);
+> > +				xe_eudebug_enable(fd, multigpu_was_enabled[i]);
+> > +				close(fd);
+> > +			}
+> > +			free(multigpu_was_enabled);
+> > +		}
+> > +	}
+> > +}
+> > diff --git a/tests/meson.build b/tests/meson.build
+> > index 00556c9d6..0f996fdc8 100644
+> > --- a/tests/meson.build
+> > +++ b/tests/meson.build
+> > @@ -318,6 +318,14 @@ intel_xe_progs = [
+> >  	'xe_sysfs_scheduler',
+> >  ]
+> >  
+> > +intel_xe_eudebug_progs = [
+> > +	'xe_eudebug',
+> > +]
+> > +
+> > +if build_xe_eudebug
+> > +	intel_xe_progs += intel_xe_eudebug_progs
+> > +endif
+> > +
+> >  chamelium_progs = [
+> >  	'kms_chamelium_audio',
+> >  	'kms_chamelium_color',
+> > -- 
+> > 2.34.1
+> > 
