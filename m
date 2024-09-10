@@ -4,50 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BC63EDE98B
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Sep 2024 01:13:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 545EFEB64DE
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Sep 2024 03:51:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EAD0E10E5FF;
-	Tue, 10 Sep 2024 01:13:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 042EB10E6EC;
+	Tue, 10 Sep 2024 03:51:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q2SYbNON";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AMZsB1Ci";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6D69410E5FF
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Sep 2024 01:13:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA59510E6EC
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Sep 2024 03:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1725930787; x=1757466787;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=XFS6avu1z8Q3wq8ATgbboC9yICQCXRI8vDaf3jW3qLg=;
- b=Q2SYbNONrmV1l98XBiiMxWuvVwv4Ba3+5z/aF8Buid3RcV0e29feoq7H
- mJ1T8+qv7pMqyYfHNffD8pt20C126pKax+I+U+YCNYBY7WZOGUS659Q81
- G2LDuHrQ0fxnPhjgkie+kMAjKCnn+9+/Ai+DRmKkPXmKM6T1hz/rMUGgP
- SRVIx3Vqn8q2iG3nhDaHhWwtmgBoCQp+bnwq1NxwVc9Ev4T2Ror1lfcPd
- 4pDwASu5sywSARjDJmJ1O26l+vhvYJnzgIzJ1IL9XA9S8R3FOcWpOTDx1
- EyyBK06gqIjuzRWXfaYlNHyIet/d6hwHrqFjITMnI5SOT8ro7wxg8mxxl Q==;
-X-CSE-ConnectionGUID: J3hLsyD4QpavL9KnQJEQzQ==
-X-CSE-MsgGUID: 4kpsMcF4Qnu92LxNCFPa6g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="50067432"
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; d="scan'208";a="50067432"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2024 18:13:06 -0700
-X-CSE-ConnectionGUID: oCVEYYzKRjKL0kH285I52g==
-X-CSE-MsgGUID: 6F0naJDQTd+uGG9bakSq9w==
+ t=1725940266; x=1757476266;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=mC3GI/fkuCgjOIMiYZcT6ZTHI4lIA/cXIXbvEdrE+LM=;
+ b=AMZsB1Cin5D3O89qd1I2gY89y2IPhc5qtaFzZ+WJWfwr1/wtGg9tVjwe
+ G95QcKJnp6UopLJbe4zmoDIcXal4ilAMQTCkBvzWNWUtFy0cUwgM/NwlZ
+ Rs2bk5EnPBkKmkGCadcGryUnQ+jOcrfO1I4xGW257vFpxomqaXJhlaalv
+ nYXjJZfhSuU6/f7h1/4u4LWxrK6GUTp+5MfFAA3IomIkdJhBSnuN+K43C
+ Pe+zbXDOH+0dGa8ntRRm4mBEFnA8HXc7/iHZlKgwMioY41uBiB/mWRXFT
+ EoLCjkLtdwZjsNBIIw2n43GxYm1chr6IL5/4eyIE56pwdFz+spAuMWnDz Q==;
+X-CSE-ConnectionGUID: 3Gkso1VQQ/KgftwUdqfMZA==
+X-CSE-MsgGUID: FdwVXRc+S1WACI7y0AhfkA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="13450895"
+X-IronPort-AV: E=Sophos;i="6.10,216,1719903600"; d="scan'208";a="13450895"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2024 20:51:05 -0700
+X-CSE-ConnectionGUID: fiiTuEkHQ6Ozev+gAqgRJA==
+X-CSE-MsgGUID: jhW89yOxRQS7jrGg9aO4TA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; d="scan'208";a="71644604"
-Received: from bfilipch-desk.jf.intel.com ([10.165.21.204])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2024 18:13:06 -0700
-From: Julia Filipchuk <julia.filipchuk@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; d="scan'208";a="67182788"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 20:51:04 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Julia Filipchuk <julia.filipchuk@intel.com>
-Subject: [PATCH] tests/intel/*_query: Add new hwconfig table entry
-Date: Mon,  9 Sep 2024 18:12:38 -0700
-Message-ID: <20240910011238.254204-1-julia.filipchuk@intel.com>
-X-Mailer: git-send-email 2.45.2
+Cc: mohammed.thasleem@intel.com, swati2.sharma@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pm_backlight: Detect flickering with
+ brightness change
+Date: Tue, 10 Sep 2024 09:16:53 +0530
+Message-Id: <20240910034653.543796-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240627030211.164110-1-santhosh.reddy.guddati@intel.com>
+References: <20240627030211.164110-1-santhosh.reddy.guddati@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,64 +69,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Two new entries added to the hardware config table. Updated enum and
-tests accordingly.
+New test is added to check for flickers on the panel while
+changing brightness.
 
-Signed-off-by: Julia Filipchuk <julia.filipchuk@intel.com>
+If there is any flicker observed on the panel while changing
+the brightness then crc will change. This patch set is trying
+to address the flickers observed using crc when brightness
+is being changed.
+
+v2: fix subject, use igt_assert_f (Kamil)
+v4: Remove unnecessary debug logs and test name (Thasleem)
+V5: fix subject description,rename test name and
+keep all brightness tests together. (Swathi)
+
+Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- lib/intel_hwconfig_types.h | 2 ++
- tests/intel/i915_query.c   | 2 ++
- tests/intel/xe_query.c     | 4 +++-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ tests/intel/kms_pm_backlight.c | 35 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/lib/intel_hwconfig_types.h b/lib/intel_hwconfig_types.h
-index 0e6ce5b17..b5d9f1c9e 100644
---- a/lib/intel_hwconfig_types.h
-+++ b/lib/intel_hwconfig_types.h
-@@ -97,6 +97,8 @@ enum intel_hwconfig {
- 	INTEL_HWCONFIG_MIN_MESH_URB_ENTRIES,			/* 79 */
- 	INTEL_HWCONFIG_MAX_MESH_URB_ENTRIES,			/* 80 */
- 	INTEL_HWCONFIG_MAX_GSC,					/* 81 */
-+	INTEL_HWCONFIG_SYNC_NUM_RT_STACKS_PER_DSS,		/* 82 */
-+	INTEL_HWCONFIG_NUM_XECU,				/* 83 */
- 	__INTEL_HWCONFIG_KEY_LIMIT
- };
+diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+index 140a95bcc..481e60f77 100644
+--- a/tests/intel/kms_pm_backlight.c
++++ b/tests/intel/kms_pm_backlight.c
+@@ -56,6 +56,10 @@
+  * SUBTEST: basic-brightness
+  * Description: Test the basic brightness.
+  *
++ * SUBTEST: basic-crc-brightness
++ * Description: Test the brightness change with crc.
++ * Functionality: backlight, crc
++ *
+  * SUBTEST: fade
+  * Description: Test basic fade.
+  *
+@@ -66,6 +70,7 @@
+  * SUBTEST: fade-with-suspend
+  * Description: Test the fade with suspend.
+  * Functionality: backlight, suspend
++ *
+  */
  
-diff --git a/tests/intel/i915_query.c b/tests/intel/i915_query.c
-index 54dbb193a..df7e46a63 100644
---- a/tests/intel/i915_query.c
-+++ b/tests/intel/i915_query.c
-@@ -1340,6 +1340,8 @@ static const char * const hwconfig_keys[] = {
- 	[INTEL_HWCONFIG_MIN_MESH_URB_ENTRIES] = "Min Mesh URB Entries",
- 	[INTEL_HWCONFIG_MAX_MESH_URB_ENTRIES] = "Max Mesh URB Entries",
- 	[INTEL_HWCONFIG_MAX_GSC] = "MaxGSC",
-+	[INTEL_HWCONFIG_SYNC_NUM_RT_STACKS_PER_DSS] = "Sync Num RT Stacks Per DSS",
-+	[INTEL_HWCONFIG_NUM_XECU] = "Num of XeCU",
- };
- 
- static const char * const hwconfig_memtypes[] = {
-diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index ddb2e76e5..3a0a83135 100644
---- a/tests/intel/xe_query.c
-+++ b/tests/intel/xe_query.c
-@@ -50,7 +50,7 @@ void dump_hex_debug(void *buffer, int len)
- /* Please reflect intel_hwconfig_types.h changes below
-  * static_asserti_value + get_hwconfig_name
-  *   Thanks :-) */
--static_assert(INTEL_HWCONFIG_MAX_GSC + 1 == __INTEL_HWCONFIG_KEY_LIMIT, "");
-+static_assert(INTEL_HWCONFIG_NUM_XECU + 1 == __INTEL_HWCONFIG_KEY_LIMIT, "");
- 
- #define CASE_STRINGIFY(A) case INTEL_HWCONFIG_##A: return #A;
- const char* get_hwconfig_name(int param)
-@@ -137,6 +137,8 @@ const char* get_hwconfig_name(int param)
- 	CASE_STRINGIFY(MIN_MESH_URB_ENTRIES);
- 	CASE_STRINGIFY(MAX_MESH_URB_ENTRIES);
- 	CASE_STRINGIFY(MAX_GSC);
-+	CASE_STRINGIFY(SYNC_NUM_RT_STACKS_PER_DSS);
-+	CASE_STRINGIFY(NUM_XECU);
+ struct context {
+@@ -257,6 +262,34 @@ static void test_setup(igt_display_t display, igt_output_t *output)
  	}
- 	igt_assert_lt(param, __INTEL_HWCONFIG_KEY_LIMIT);
- 	igt_assert(!"Missing config table enum");
+ }
+ 
++static void test_brightness_crc(struct context *context)
++{
++	int min = 0;
++	int max = context->max;
++	int step = (max - min) / 10;
++	int brightness;
++	igt_crc_t out_crc_before, out_crc_after;
++	igt_display_t *display = context->output->display;
++	igt_pipe_crc_t *ref_crc;
++	bool crc_ok;
++
++	ref_crc = igt_pipe_crc_new(display->drm_fd, context->output->config.pipe, IGT_PIPE_CRC_SOURCE_AUTO);
++	igt_assert(ref_crc);
++
++	for (brightness = min; brightness <= max; brightness += step) {
++		igt_pipe_crc_collect_crc(ref_crc, &out_crc_before);
++
++		igt_assert_eq(backlight_write(brightness, "brightness", context), 0);
++
++		igt_pipe_crc_collect_crc(ref_crc, &out_crc_after);
++
++		/* compare the crc values before and after changing brightness */
++		crc_ok = igt_check_crc_equal(&out_crc_before, &out_crc_after);
++		igt_debug("brightness: %d flicker: %s\n", brightness, crc_ok ? "none" : "detected");
++		igt_assert_f(crc_ok, "Flicker observed for brightness %d\n", brightness);
++	}
++}
++
+ igt_main
+ {
+ 	int fd;
+@@ -273,6 +306,7 @@ igt_main
+ 		int flags;
+ 	} tests[] = {
+ 		{ "basic-brightness", "test the basic brightness.", test_brightness, TEST_NONE },
++		{ "basic-crc-brightness", "test the brightness change with CRC.", test_brightness_crc, TEST_NONE },
+ 		{ "bad-brightness", "test the bad brightness.", test_bad_brightness, TEST_NONE },
+ 		{ "fade", "test basic fade.", test_fade, TEST_NONE },
+ 		{ "fade-with-dpms", "test the fade with DPMS.", test_fade, TEST_DPMS },
+@@ -290,6 +324,7 @@ igt_main
+ 		 */
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&display, drm_open_driver(DRIVER_INTEL | DRIVER_XE));
++		igt_require_pipe_crc(display.drm_fd);
+ 
+ 		for_each_connected_output(&display, output) {
+ 			if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_eDP)
 -- 
-2.45.2
+2.34.1
 
