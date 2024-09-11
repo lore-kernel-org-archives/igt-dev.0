@@ -4,55 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD7CEE57D4
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 20:24:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D578EE57D7
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 21:01:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B22710EA96;
-	Wed, 11 Sep 2024 20:24:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B77EC10EAAB;
+	Wed, 11 Sep 2024 21:01:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gd3GiAEJ";
+	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="mP4wJFBK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E225310EA96
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 20:24:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726086286; x=1757622286;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=b8TSNsHSyCLIf0fBcIRDUI1eEY8YTUOrb0BVbcVeNUo=;
- b=Gd3GiAEJ8kT+bg7bsDHq3T/Yz98vlCWQcf8X+qsng/rfPu7O2BDghgDR
- 3KuTCwOSDESViZVloLkKwQbY2+Grk/It3GD4pCnbvpQVM2UTAn4E4tC1N
- G2JMT02HLRBq8YjK7D8hbxS/2z712k3ys4Gbe+exMJuSyUN5eY/nOawkP
- HUBhX4Y38RNqp+pL5bGIt5cEsI1UElFXYj+qCRKRzk2Eg+xK7ftuo4jd+
- uzMSaAYI92QUxhysSWMq42E8HIkGeg+foErDcpB9WxTMZR1hgDWbLqi1J
- O4C7tvl88zmricFRkmpRJ6P+Ck14Gh0ptow9/Rk0vxx4xk1gutIIEDlFr g==;
-X-CSE-ConnectionGUID: 4R9FPg10Qy6YHCKAR5WImw==
-X-CSE-MsgGUID: IyZ6ILY1Q3mWYqDyvP7qbg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="35503421"
-X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; d="scan'208";a="35503421"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2024 13:24:46 -0700
-X-CSE-ConnectionGUID: Zo8BubC3TAS8UNwxijvuEQ==
-X-CSE-MsgGUID: 54XzES7iSzaBPSLJsilS5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; d="scan'208";a="72078281"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 13:24:44 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jouni.hogander@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v3 2/2] lib/igt_psr: Fix PR state check for DisplayPort
- connectors
-Date: Thu, 12 Sep 2024 01:54:08 +0530
-Message-ID: <20240911202408.1665929-3-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240911202408.1665929-1-ramanaidu.naladala@intel.com>
-References: <20240911202408.1665929-1-ramanaidu.naladala@intel.com>
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
+ [205.220.180.131])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E7AD10EAAB
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 21:01:25 +0000 (UTC)
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+ by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BElx80010609;
+ Wed, 11 Sep 2024 21:01:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+ cc:content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=qcppdkim1; bh=m/KvIniwmO6p7WFmWl5g2U
+ mhgmDGlBvbJGn3t8DXGog=; b=mP4wJFBKMOyZnE/L8y2R5z5qJPWiJ17U71KxKr
+ s8J0mGk5VAlggw74T3TCLardL/xXECf3ss8DEKrndUvSRVuNSiNXS6FBiaA+X47Z
+ L784rALly463vVdy4aTkUs4DHArQnmLUy058Tz2V01Q91xtaTCDNNTu0n2uMFn3I
+ TEEAHY0llbxixO94gU3BLRN36QJeJPuj0P5UzEuuOIO3Wt2Do8GwVKtJZA0RHC5n
+ NxP+e9qydKamlN0ZDAKd5r946JbwXLjrk9qFu/HWKvMF1zFs4vv2IBG/DOKJQNQG
+ iby4d3BWYT47SV4dhHhrldjazPNZFtbDG2TgGe74d57zcMkw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
+ [129.46.96.20])
+ by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41gy51awaf-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Sep 2024 21:01:12 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
+ [10.47.97.35])
+ by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48BL1Bh4007148
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+ Wed, 11 Sep 2024 21:01:11 GMT
+Received: from hu-ebharadw-lv.qualcomm.com (10.49.16.6) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 11 Sep 2024 14:01:11 -0700
+From: Esha Bharadwaj <quic_ebharadw@quicinc.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <adrinael@adrinael.net>, <quic_abhinavk@quicinc.com>, <arek@hiler.eu>,
+ <kamil.konieczny@linux.intel.com>, <juhapekka.heikkila@gmail.com>,
+ <bhanuprakash.modem@intel.com>, <ashutosh.dixit@intel.com>,
+ <robdclark@chromium.org>, <quic_jesszhan@quicinc.com>
+Subject: [PATCH i-g-t] lib/igt_fb: fix stride calculation for
+ igt_fb_get_fnv1a_crc()
+Date: Wed, 11 Sep 2024 14:00:58 -0700
+Message-ID: <20240911210058.477513-1-quic_ebharadw@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
+ signatures=585085
+X-Proofpoint-ORIG-GUID: QF3beyNJv10WZ3wdUcE6PfNGKnXPcxGY
+X-Proofpoint-GUID: QF3beyNJv10WZ3wdUcE6PfNGKnXPcxGY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 impostorscore=0
+ mlxscore=0 bulkscore=0 mlxlogscore=963 priorityscore=1501
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 phishscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2408220000 definitions=main-2409110160
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,38 +88,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The PR state check logic has been updated to handle DisplayPort
-connectors.
+fb->strides is assigned to the value returned by
+calc_plane_stride() only if it was previously not set by the
+caller. In the case of dumb buffer allocation, this is already
+assigned by the driver.
 
-v1: Update connecter logic for PR tests.
+Respect the stride requested by the driver in such cases by
+using fb->strides[0] as this is assigned correctly in
+calc_fb_size() only if it was previously not set by the driver.
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Signed-off-by: Esha Bharadwaj <quic_ebharadw@quicinc.com>
 ---
- lib/igt_psr.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ lib/igt_fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index 222e05e6c..99f08f3c2 100644
---- a/lib/igt_psr.c
-+++ b/lib/igt_psr.c
-@@ -77,12 +77,11 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
- 	if (mode == PR_MODE || mode == PR_MODE_SEL_FETCH) {
- 		igt_assert_f(output, "Output not given\n");
- 		c = output->config.connector;
--	}
--
--	if ((mode == PR_MODE || mode == PR_MODE_SEL_FETCH) &&
--	    c && c->connector_type == DRM_MODE_CONNECTOR_eDP)
--		state = "SLEEP";
--	else if (mode == PSR_MODE_1 || mode == PR_MODE || mode == PR_MODE_SEL_FETCH)
-+		if (c->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
-+			state = "SRDENT_ON";
-+		else if (c->connector_type == DRM_MODE_CONNECTOR_eDP)
-+			state = "SLEEP";
-+	} else if (mode == PSR_MODE_1)
- 		state = "SRDENT";
- 	else if (mode == PSR_MODE_2 || mode == PSR_MODE_2_SEL_FETCH)
- 		state = "DEEP_SLEEP";
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index ab162a5b7..ed016f07d 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4814,7 +4814,7 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
+ 	void *map;
+ 	char *ptr;
+ 	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
+-	uint32_t stride = calc_plane_stride(fb, 0);
++	uint32_t stride = fb->strides[0];
+ 
+ 	if (fb->num_planes != 1)
+ 		return -EINVAL;
 -- 
-2.43.0
+2.34.1
 
