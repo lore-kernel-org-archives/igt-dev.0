@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4E89EE57CF
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFD7CEE57D4
 	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 20:24:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 63A0910EA97;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4B22710EA96;
 	Wed, 11 Sep 2024 20:24:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S+zeLrF+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gd3GiAEJ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4FA9410EA96
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 20:24:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E225310EA96
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 20:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726086284; x=1757622284;
+ t=1726086286; x=1757622286;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/8+9fHzocR68dEH15oCuHM1wWH8IJx1Kx1eL1Al+8w0=;
- b=S+zeLrF+R+3D+afcSVZTrW9vo6nJ2UE7RWJcl6u8/y6Bd8ET+KmZ/XM8
- i314PqSG27OpyWniKF/sdBUtOzIYivTOenWpg907zLSeFi+MrjU+oXhaB
- 4gsDg2a3WaT0y5lhxs6PKiDFKfFTTfnG31nIAq56tJfDnmkC1Z3s6zCU8
- xxVkYI3/H1NXsE2t7n4lhH+DKA0h0yUksqfw+CJSR0CQ9hh2VqraiMnBI
- a+QI1aHaG7YFa4fNHkAc5/IDLD4h6v7M5cx0SNrcIq4z4WcCdhZaBoeqS
- HkpebkkmpjShBOAEZDgCFG9gLwSI67xy/IR0OSXQrF3Ow2YA4aBExLGYz g==;
-X-CSE-ConnectionGUID: pTBSQA4PTRqWgk2wWd/lxQ==
-X-CSE-MsgGUID: PHjUbVE/TPOsMdiqJk/YZQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="35503420"
-X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; d="scan'208";a="35503420"
+ bh=b8TSNsHSyCLIf0fBcIRDUI1eEY8YTUOrb0BVbcVeNUo=;
+ b=Gd3GiAEJ8kT+bg7bsDHq3T/Yz98vlCWQcf8X+qsng/rfPu7O2BDghgDR
+ 3KuTCwOSDESViZVloLkKwQbY2+Grk/It3GD4pCnbvpQVM2UTAn4E4tC1N
+ G2JMT02HLRBq8YjK7D8hbxS/2z712k3ys4Gbe+exMJuSyUN5eY/nOawkP
+ HUBhX4Y38RNqp+pL5bGIt5cEsI1UElFXYj+qCRKRzk2Eg+xK7ftuo4jd+
+ uzMSaAYI92QUxhysSWMq42E8HIkGeg+foErDcpB9WxTMZR1hgDWbLqi1J
+ O4C7tvl88zmricFRkmpRJ6P+Ck14Gh0ptow9/Rk0vxx4xk1gutIIEDlFr g==;
+X-CSE-ConnectionGUID: 4R9FPg10Qy6YHCKAR5WImw==
+X-CSE-MsgGUID: IyZ6ILY1Q3mWYqDyvP7qbg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="35503421"
+X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; d="scan'208";a="35503421"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2024 13:24:44 -0700
-X-CSE-ConnectionGUID: dpLfOvj1SE+j8G0E8qYbBw==
-X-CSE-MsgGUID: 45qUfsDLRAitYKP69i0frA==
+ 11 Sep 2024 13:24:46 -0700
+X-CSE-ConnectionGUID: Zo8BubC3TAS8UNwxijvuEQ==
+X-CSE-MsgGUID: 54XzES7iSzaBPSLJsilS5A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; d="scan'208";a="72078276"
+X-IronPort-AV: E=Sophos;i="6.10,221,1719903600"; d="scan'208";a="72078281"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 13:24:42 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 13:24:44 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jouni.hogander@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v3 1/2] lib/igt_psr: Remove SRD status change check for
- DP2.1 Panel Replay
-Date: Thu, 12 Sep 2024 01:54:07 +0530
-Message-ID: <20240911202408.1665929-2-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v3 2/2] lib/igt_psr: Fix PR state check for DisplayPort
+ connectors
+Date: Thu, 12 Sep 2024 01:54:08 +0530
+Message-ID: <20240911202408.1665929-3-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240911202408.1665929-1-ramanaidu.naladala@intel.com>
 References: <20240911202408.1665929-1-ramanaidu.naladala@intel.com>
@@ -68,59 +68,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-We do not have ALPM on the DP2.1 Panel Replay. Due to this, the
-SRD_STATUS [SRD State] doesn't change from SRDENT_ON after Panel
-Replay is enabled until it gets disabled. As a result, the igt
-tests fail. To resolve this issue, add a condition to skip the
-check in the 'psr_wait_update' and 'psr_long_wait_update'
-functions for DP2.1 PR.
+The PR state check logic has been updated to handle DisplayPort
+connectors.
 
-v1: Update change for all users of psr_wait_update and
-    psr_long_wait_update. (Jouni)
-v2: Update null check in if condition
+v1: Update connecter logic for PR tests.
 
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/igt_psr.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ lib/igt_psr.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/lib/igt_psr.c b/lib/igt_psr.c
-index e3e7577eb..222e05e6c 100644
+index 222e05e6c..99f08f3c2 100644
 --- a/lib/igt_psr.c
 +++ b/lib/igt_psr.c
-@@ -113,12 +113,30 @@ bool psr_wait_entry(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- 
- bool psr_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 1);
-+	/*
-+	 * TODO: After enabling Panel Replay on DP2.1, observe that the SRD status
-+	 * remains in the SRDENT_ON state. Remove the polling mechanism for the SRD
-+	 * status change for the DP2.1 output.
-+	 */
-+	if (output != NULL &&
-+	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
-+		return igt_wait(psr_active_check(debugfs_fd, mode, output), 40, 1);
-+	else
-+		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 40, 1);
- }
- 
- bool psr_long_wait_update(int debugfs_fd, enum psr_mode mode, igt_output_t *output)
- {
--	return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 1);
-+	/*
-+	 * TODO: After enabling Panel Replay on DP2.1, observe that the SRD status
-+	 * remains in the SRDENT_ON state. Remove the polling mechanism for the SRD
-+	 * status change for the DP2.1 output.
-+	 */
-+	if (output != NULL &&
-+	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
-+		return igt_wait(psr_active_check(debugfs_fd, mode, output), 500, 1);
-+	else
-+		return igt_wait(!psr_active_check(debugfs_fd, mode, output), 500, 1);
- }
- 
- static ssize_t psr_write(int debugfs_fd, const char *buf, igt_output_t *output)
+@@ -77,12 +77,11 @@ static bool psr_active_check(int debugfs_fd, enum psr_mode mode, igt_output_t *o
+ 	if (mode == PR_MODE || mode == PR_MODE_SEL_FETCH) {
+ 		igt_assert_f(output, "Output not given\n");
+ 		c = output->config.connector;
+-	}
+-
+-	if ((mode == PR_MODE || mode == PR_MODE_SEL_FETCH) &&
+-	    c && c->connector_type == DRM_MODE_CONNECTOR_eDP)
+-		state = "SLEEP";
+-	else if (mode == PSR_MODE_1 || mode == PR_MODE || mode == PR_MODE_SEL_FETCH)
++		if (c->connector_type == DRM_MODE_CONNECTOR_DisplayPort)
++			state = "SRDENT_ON";
++		else if (c->connector_type == DRM_MODE_CONNECTOR_eDP)
++			state = "SLEEP";
++	} else if (mode == PSR_MODE_1)
+ 		state = "SRDENT";
+ 	else if (mode == PSR_MODE_2 || mode == PSR_MODE_2_SEL_FETCH)
+ 		state = "DEEP_SLEEP";
 -- 
 2.43.0
 
