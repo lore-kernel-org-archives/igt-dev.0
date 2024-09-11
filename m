@@ -4,56 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF9B4EE0213
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 06:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3969CEDE998
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 07:07:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8047510E9EE;
-	Wed, 11 Sep 2024 06:57:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7259910EA16;
+	Wed, 11 Sep 2024 07:07:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jl0nvhvr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="See5AqDm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2E5610E9EE
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 06:57:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 434A810EA11
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 07:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726037869; x=1757573869;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=U77Xra3s6F3PliPW3V8sK7uT2FIpEv9DO0HDpIdS4fA=;
- b=Jl0nvhvrSZlnIHCtb5nbhbwsPb9jt4SN0xtQvUd+8YxNjURWy/RieX7c
- yAD80MaZ/4ZrXC19qyvsM47VSxEmDSckJV8+UsJF35taoZ6wRfK8A/Mx0
- GfucA0QIAvcbg73sKtULbKW+0F6uCc0aysYUGJ57hI/kwd5ifSszCDg5i
- Ur+0z9C6Y2xi6QOVGsuXdPN4hpIDd+ldgdmjictASVsHjd2iriyXZ/0uJ
- xSt7Tnq/nX6jAHG+pVcmoJtZwYJ+ueIRl8YOlZMcFgcXZvzrTazOvxVH9
- fFO22eQ0HGKo7OfpYxGfz5GypHmwiS0pWgSVmPoRbbtqV79aUj10KGx3E w==;
-X-CSE-ConnectionGUID: Ymb9HCiGTdWHORcT4Zfulg==
-X-CSE-MsgGUID: 1wfX8Iu5TJ218jgSxBrEtQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="36173959"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="36173959"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 23:57:48 -0700
-X-CSE-ConnectionGUID: NwT6gVczRc++ATxyesRQCw==
-X-CSE-MsgGUID: t/4uOVNOTw2ZnUAHE9AnZw==
+ t=1726038463; x=1757574463;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=Lew2fWrqSO3M4KXuB4HYBW2CbZCXJuQBljPl8ycOl74=;
+ b=See5AqDmcUxwjwW5uXs3sY0J5qUHuDvZ6G3CYgBx+eo7HDfPFEO0ITrV
+ X/KpDZhIjv6PaaweOD+3iCpJBoB9BUeP5lKW4/Hyex8ZEEREo+9jvZ4jD
+ MWhgCa/8Q+/s+OdobbucIGhQ0Auo8oBpALnk5jt+nNWnIm0EgAWFBChS1
+ Sr/SmMhQ1WHGgazQrE82vBpNykiam1iqXExl8KK6x+UerM4tHBjOM/8vR
+ bJDaTneY9gba1Iei9YKwAurxdSS99pVtmc74jznpVK/SUFj4a777Ajjvj
+ OGShDNvrP6bYrazUhMNlIik3HiTI63GjY3vaec0+VpeQXzgUV91fJ4R0O A==;
+X-CSE-ConnectionGUID: AfzQorDPQU+XMAkxgtcvJg==
+X-CSE-MsgGUID: b3TVDQaMQJuENFuNaCSnBw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="42339773"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="42339773"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2024 00:07:42 -0700
+X-CSE-ConnectionGUID: l2MYTtlXQ8+8GibNVabQvA==
+X-CSE-MsgGUID: SiHWY/5lTYCI9MJ2LppzAA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="66979292"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 23:57:47 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2] tests/kms_async_flips: Async flips suspend resume
- test
-Date: Wed, 11 Sep 2024 12:23:33 +0530
-Message-Id: <20240911065333.556989-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240906072824.509607-2-santhosh.reddy.guddati@intel.com>
-References: <20240906072824.509607-2-santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67558253"
+Received: from mjaroshe-mobl1.ger.corp.intel.com (HELO [10.246.0.112])
+ ([10.246.0.112])
+ by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2024 00:07:41 -0700
+Message-ID: <da9e03fa-1ecf-49eb-84ef-66aeee6bd99d@linux.intel.com>
+Date: Wed, 11 Sep 2024 09:06:12 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v5] runner/executor: Detect when child process is
+ killed by a signal
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>
+References: <f7319a46-d6d4-4ea5-9863-99ccd7cea3a5@linux.intel.com>
+ <4c126777-6899-407c-911f-27e25ca8191e@linux.intel.com>
+ <20240910155814.jq2og45xf7apwb64@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <20240910155814.jq2og45xf7apwb64@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,69 +73,120 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test functionality of async flips with suspend and resume
+Hi Kamil,
 
-v2: Re-use existing function and use s/r API (Swathi)
+Thank you for your review.
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_async_flips.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+On 10.09.2024 17:58, Kamil Konieczny wrote:
+> Hi Peter,
+> On 2024-09-03 at 14:05:05 +0200, Peter Senna Tschudin wrote:
+>> Make igt-runner aware about tests being killed by signals. Before this
+>> patch, manually killing a test process would result in igt-runner silently
+>> marking the test as incomplete.
+>>
+>> Now igt-runner aborts the run verbosely. As an example the following was
+>> extracted from results.json:
+>>  This test caused an abort condition: Test terminated by a signal Killed (-9).
+>>
+>>  v5: do not use sigdescr_np() as it seems to be a fairly new lib function that does
+>>      not compile on older Ubuntu
+>>  v4: improve abort code path to not interfere with igt-runner timeouts
+>>  v3: do not interfere with igt-runner killing tests due to timeout and diskspace
+>>  v2: fix race condition
+>>
+>> Cc: Petri Latvala <adrinael@adrinael.net>
+>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>> Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>
+> 
+> Your signed-off-by is different from your e-mail:
+> Peter Senna Tschudin <peter.senna@linux.intel.com>
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 5b70c4033..8964e1db7 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -66,6 +66,9 @@
-  *
-  * SUBTEST: invalid-async-flip
-  * Description: Negative case to verify if changes in fb are rejected from kernel as expected
-+ *
-+ * SUBTEST: async-flip-suspend-resume
-+ * Description: Verify the async flip functionality with suspend and resume cycle
-  */
- 
- #define CURSOR_POS 128
-@@ -99,6 +102,7 @@ typedef struct {
- 	bool flip_pending;
- 	enum pipe pipe;
- 	bool alternate_sync_async;
-+	bool suspend_resume;
- 	bool allow_fail;
- 	struct buf_ops *bops;
- } data_t;
-@@ -260,6 +264,7 @@ static void test_async_flip(data_t *data)
- 	int ret, frame;
- 	long long int fps;
- 	struct timeval start, end, diff;
-+	int suspend_time = 1;
- 
- 	igt_display_commit2(&data->display, data->display.is_atomic ? COMMIT_ATOMIC : COMMIT_LEGACY);
- 
-@@ -312,6 +317,10 @@ static void test_async_flip(data_t *data)
- 				     data->flip_interval, data->refresh_rate, MIN_FLIPS_PER_FRAME);
- 		}
- 
-+		if (data->suspend_resume && diff.tv_sec == suspend_time) {
-+				igt_system_suspend_autoresume(SUSPEND_STATE_MEM, SUSPEND_TEST_NONE);
-+				suspend_time = 0;
-+		}
- 		frame++;
- 	} while (diff.tv_sec < RUN_TIME);
- 
-@@ -750,6 +759,12 @@ igt_main
- 		run_test(&data, test_crc);
- 	}
- 
-+	igt_describe("Verify the async flip functionality after suspend and resume cycle");
-+	igt_subtest_with_dynamic("async-flip-suspend-resume") {
-+		data.suspend_resume = true;
-+		run_test(&data, test_async_flip);
-+	}
-+
- 	igt_fixture {
- 		for (i = 0; i < NUM_FBS; i++)
- 			igt_remove_fb(data.drm_fd, &data.bufs[i]);
--- 
-2.34.1
+That was a feature, not a bug.
 
+> 
+> checkpatch.pl script warns:
+> 
+> 100: WARNING:FROM_SIGN_OFF_MISMATCH: From:/Signed-off-by: email address mismatch: 'From: Peter Senna Tschudin <peter.senna@linux.intel.com>' != 'Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>'
+
+Will fix and not repeat.
+
+> 
+>> ---
+>>  runner/executor.c | 38 +++++++++++++++++++++++++++++++++++++-
+>>  1 file changed, 37 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/runner/executor.c b/runner/executor.c
+>> index ac73e1dde..990d932f3 100644
+>> --- a/runner/executor.c
+>> +++ b/runner/executor.c
+>> @@ -888,6 +888,8 @@ static int monitor_output(pid_t child,
+>>  	const int interval_length = 1;
+>>  	int wd_timeout;
+>>  	int killed = 0; /* 0 if not killed, signal number otherwise */
+>> +	bool child_reaped = false;
+>> +	bool child_killed_by_signal = false;
+>>  	struct timespec time_beg, time_now, time_last_activity, time_last_subtest, time_killed;
+>>  	unsigned long taints = 0;
+>>  	bool aborting = false;
+>> @@ -960,6 +962,25 @@ static int monitor_output(pid_t child,
+>>  
+>>  		igt_gettime(&time_now);
+>>  
+>> +		/* Testing for !killed to prevent aborting too early after igt-runner
+>> +		 * decides to kill a process.
+>> +		 */
+>> +		if (!killed && (child == waitpid(child, &status, WNOHANG))) {
+>> +			child_reaped = true;
+>> +			if (WIFSIGNALED(status)) {
+>> +				child_killed_by_signal = true;
+>> +				killed = WTERMSIG(status);
+>> +
+>> +				/*
+>> +				 * Do not abort just yet, because igt-runner can kill the test
+>> +				 * due to a timeout for example. Aborting here prevents
+>> +				 * igt-runner from reporting a timeout. The code that aborts
+>> +				 * the run after the test was killed is at the end of the
+>> +				 * while() loop.
+>> +				 */
+>> +			}
+>> +		}
+>> +
+> 
+> Why is it here? Imho better place it at second hunk.
+
+Please notice that the problem is that igt-runner does not check if a child ended due to a signal, but it notices when a child ends. The problem with your suggestion is that the loop _may_ decide to exercise the old behavior and simply mark the test as incomplete.
+
+My proposal is to always check for child termination due to a signal, and hence unconditional detection before all other logic inside the loop. However there are corner cases, such as excessive disk space consumption by a test, in which igt-runner will signal a test, and will check for the child being signaled. To not interfere with these corner cases, the detection of a signal and taking the action of aborting the run are at different places.
+
+> 
+>>  		/* TODO: Refactor these handlers to their own functions */
+>>  		if (outfd >= 0 && FD_ISSET(outfd, &set)) {
+>>  			char *newline;
+>> @@ -1241,7 +1262,11 @@ static int monitor_output(pid_t child,
+>>  				errf("Error reading from signalfd: %m\n");
+>>  				continue;
+>>  			} else if (siginfo.ssi_signo == SIGCHLD) {
+>> -				if (child != waitpid(child, &status, WNOHANG)) {
+> 
+> This code here do what you wrote at first hunk:
+> 	if (child != waitpid(child, &status, WNOHANG)) {
+> 		// fatal err, set status=9999
+> 	} else { // all 'else if' checks 'child == '
+> 	}
+> 
+> The only difference is that your code calls waitpid() unconditionally
+> before loop. Could you write some testing code in one simple test
+
+Exactly. Calling waitpid() unconditionally, and early enough to catch all signals.
+
+> and make checks on trybot? e.g. to not rely that your code will
+> catch such scenarios if they are rarly seen but to test them in
+> predictable way. You could also add here some debugs.
+
+I did not understand what you want to test. The "condition" here is igt-runner itself killing a test due to excessive disk space consumption for example.
+
+Please let me know how to proceed.
+
+Thank you!
+
+[...]
