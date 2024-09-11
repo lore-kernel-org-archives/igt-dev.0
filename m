@@ -4,59 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7C1AEE0209
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 05:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1AE0CEE01F3
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 06:24:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 492F510E96B;
-	Wed, 11 Sep 2024 05:50:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90A5B10E186;
+	Wed, 11 Sep 2024 06:24:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JaixcieQ";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="JcFaruYM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3123510E96B
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 05:50:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726033850; x=1757569850;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=nE/mC/X6N4U+P7YUUNGZMEtK/IvzlyObzritSM4ay6U=;
- b=JaixcieQvAp0urjpKNUW/GSdGm8b/CDn0wCpKDo/KkPgar9xJQCNfAUK
- nExDWod6Tarry34MGzik1GjYuucvDk3L+8b50/kvNX8Qb6jrGK4lFbWPt
- cF5vyro66xhMi6QC4gywADZfdZXKdRV+S8Q6/nG/+lglvaVzC8dpWF9Rw
- S4KSp7dn1K5BSTKTecnMiL0M7QTECuQd6oNYN4VsNrBrAbdoZQx1ZJXeI
- bPH17pEi/U67bawxkVCJD81+qdeHIro2CAmhwv4TbjcOtlSjJ79auQSwx
- Z4hfKqlQZu0r1qso/BVBeKXFCP5vKgpVN0Dvu8dxORdpBILqMrWrW1plU w==;
-X-CSE-ConnectionGUID: iqjf8OQKQjy+LB2FeF+zJQ==
-X-CSE-MsgGUID: wswoL03FSPS2dn2bBcwXGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="25009419"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="25009419"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:50:50 -0700
-X-CSE-ConnectionGUID: jvtGpOsmR2iQ8DjxRaMZ2A==
-X-CSE-MsgGUID: +pONr2YXQUSfKGBB2l/Ufw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67540767"
-Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
- jhogande-mobl1..) ([10.245.244.65])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:50:49 -0700
-From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ramanaidu.naladala@intel.com,
- =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Subject: [PATCH i-g-t v2 5/5] tests/intel/kms_dirtyfb: Check features after
- rendering
-Date: Wed, 11 Sep 2024 08:49:58 +0300
-Message-Id: <20240911054958.1023925-6-jouni.hogander@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240911054958.1023925-1-jouni.hogander@intel.com>
-References: <20240911054958.1023925-1-jouni.hogander@intel.com>
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam10on2071.outbound.protection.outlook.com [40.107.93.71])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02C2410E186
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 06:24:28 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=qPmKsv80B5My0bPit6mvVZ3ay1YjfJaMvRe2p3f+6+QEwYc+83ykpPp68XCUL/ryK75+Bvtm9iJF4H8XxRiofxPxL5Y4E+zWUok90i2NBhv1Zz5aCZLJbJWHDW0toZPxbX3UO3QhdEYMdXoZComVL4I1elBXnFwInJBsYKyN/AEIHspK0vlxo42w42YMVIBbTNvNUQONNkMUUP59ljmqAJ9fvYxbMHJjdLjWzUrWEcsgTRiNNCk9QaAawaSLNlydujAwF3qZec9lSdC0j+IRga6z9pMYpLZSR+1oEWOOAubgbG7/cojUyekah16WoXXlu/hwvwK70xslp54UGdkFOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gDgyEmqKxvkSfeK7KF1HJuO7b6pbNDlETyTPqmorJp8=;
+ b=QRBcUNu7nhmlT5yiGm2nCm8iV+d3icGn5YBfu2DURC8d0/fsG6LDvklgOM5v5G5HCCpyo01ZzIKXNIiATznDQZsmIMmrJ0aeypfWBVp1tBt0sOPll2dcZXYwe8r1OGtC7OqAQbkRc17GLEFDRXOFqDKbyQwANmaUJNVeP1obew4EnzDc8+5CeArG+1NtDZ1Xnv/U3An5MrATtqFGDnKN+OPxUf0tN4ZR7oPMgTV3yQRb0VDlqLZDt48WXzrOGLnIS6c948I2DcYS39EsijDHC4LPDlgfEok51nUD9lNkzH2LxhDtvlkB7x7V44Jep+AIAhvPADJMwZ7i1tgDgmD5cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gDgyEmqKxvkSfeK7KF1HJuO7b6pbNDlETyTPqmorJp8=;
+ b=JcFaruYMvKn6ubV0sra5GpgcLwc75fjBt8tvD/B3C8vYoMRpZKsnpTb23+58xBSNXvXikmQxKqozy5z0+3nuNCfzwqYARrdGy+01BgRcglTlLyb4US4+UOVVXkHZRCPDA+jXp7Oe484yPO2/wS+qLw0zw/KHwmXaXKGQN7aP4D4=
+Received: from SJ0PR03CA0345.namprd03.prod.outlook.com (2603:10b6:a03:39c::20)
+ by DS7PR12MB6262.namprd12.prod.outlook.com (2603:10b6:8:96::7) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7939.17; Wed, 11 Sep 2024 06:24:24 +0000
+Received: from MWH0EPF000989E8.namprd02.prod.outlook.com
+ (2603:10b6:a03:39c:cafe::53) by SJ0PR03CA0345.outlook.office365.com
+ (2603:10b6:a03:39c::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.24 via Frontend
+ Transport; Wed, 11 Sep 2024 06:24:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ MWH0EPF000989E8.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7918.13 via Frontend Transport; Wed, 11 Sep 2024 06:24:23 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Sep
+ 2024 01:24:22 -0500
+Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Wed, 11 Sep 2024 01:24:20 -0500
+From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, "jesse(jie) zhang"
+ <jesse.zhang@amd.com>
+Subject: [PATCH i-g-t ] tests/amdgpu: filter some asic for invalid packet
+ length.
+Date: Wed, 11 Sep 2024 14:24:01 +0800
+Message-ID: <20240911062401.1670741-1-jesse.zhang@amd.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Received-SPF: None (SATLEXMB03.amd.com: jesse.zhang@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989E8:EE_|DS7PR12MB6262:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76f82b9c-a5b4-4221-b8ac-08dcd22a6103
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|82310400026|36860700013; 
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?YZgg0NYI+6Ct6GKdH+5NfhoELoTHFlFGwYVSFszmS2TWbnHeA1wWJlU95mrP?=
+ =?us-ascii?Q?L/BZGb8GFKXgFZ6dYxj5RC38ClEj6xwWWoB/avFh8Gku47L2Vj0AnYiVpPud?=
+ =?us-ascii?Q?eh0kKuGaTJ/gPvG+JsQ9JGwJr2ZbhySpAKJEnA8mVdvV2Rbg92yoggYlxb17?=
+ =?us-ascii?Q?h7invV61oaWt4DccVQyYhyaMpurcQ9AAwFPG2GY1oULHInFiJJcGH1vmqwZY?=
+ =?us-ascii?Q?5YEs/NN/xNiLI2MwNcb+x48Omx5uf9wv+qUKrL3L5jO01qeNpjg3i+B1PJOU?=
+ =?us-ascii?Q?2R0M8lkns4xNf62zMAvZrW6/kqjxs4wLztYYqf9J6bwJL78KTZ2cvXh+Yspo?=
+ =?us-ascii?Q?ry26gTiNCIPji+HD91b89Z8vlhcpy5nxw9HRcsRLqYV19UEILCrC8UkUpdJe?=
+ =?us-ascii?Q?9hBMuxYbCMtiBDNPF0xHy13dUUF++lpl9dGxSOcxezuMtvnCI0Qq2ULYacB0?=
+ =?us-ascii?Q?UhzZjvouKbhemF8tc3a6rcT5ivN3XLP+kb11lLbv3Ks/E9DnkU31n6FoYiLK?=
+ =?us-ascii?Q?4F7JrEjJ57pEo1MP4AU34tGItinaOhhqrYMgQr6fkC9g6KrjRNvDdy+2nnhl?=
+ =?us-ascii?Q?EbyOtxWq5ESwPszHt675JEM3AKBr2KfoSiIlNbxEveqVmQy5xHitezU5aQl5?=
+ =?us-ascii?Q?kbM/iyGwRIXTm5TRWgpvCtxOofHspzg2ouhqwlDScMTMGYvNlTrOpmUXffJX?=
+ =?us-ascii?Q?QRk4yiGQWJwUUfAselOWPrAK6RrRpmGq6OIBgGOOaqrVP/g2BVb9Mog4ZzbP?=
+ =?us-ascii?Q?kafHzgjnKgpRk3GsCgFcSBOYPa+/8tLMa3x89yaWuJKNnlUCzExiFs3Axhng?=
+ =?us-ascii?Q?kCsmnppLJly6ovOCjbZJdbpWjNZmoEGmfRDY9GMOJXaf0xciZpLdcHKHaqN8?=
+ =?us-ascii?Q?cEsNyRSFNpA1E/Kd4S6K06GBhA/4ugkUTirrhzJTsaaalIe6dPFWIogoVUXr?=
+ =?us-ascii?Q?M8q9pio0fzurWKqFNrZaAE+tScvetzt1gQLHHSRbNJDPneHdWr4Za4Q4UvD5?=
+ =?us-ascii?Q?o0JVLJ/x0VnoYo0AyAGqKYv7CQIT9fpkZ7yvsPLFhbt0G69/IkJOSLtBaFqt?=
+ =?us-ascii?Q?Qn9mSfdY3hl+5LG8Zh5KEk+2AaHGc4C58eE7cRAI67ipXnq9ZVUvLif0WgZ8?=
+ =?us-ascii?Q?VJfRAG0YTtG8TpCWgFd3jaxfyrwC+zzczt949QExU3alqLdMrd8ayBOdeLcX?=
+ =?us-ascii?Q?TfSmjjhtpjm/QBboldenlo3PLPTMaCWDOVK6vUy+dgrRMPfpA3ntvh816+7W?=
+ =?us-ascii?Q?XvpXqukbVU/ZfolawVQmkDtOCOX/WUXZaeVOZ3lcER6I/2WiqJB2V6yo0ZP5?=
+ =?us-ascii?Q?LWgJlmM+3OUPmn3FtVMV4Quw2JgyDs+mYiMBk3mKlUfDnq1NWfiVzD3d5D14?=
+ =?us-ascii?Q?6nFysUF9sBYjObod4GqklkB+0BoL88naKb61HDcp2VXz/C5LLcotJEECEpta?=
+ =?us-ascii?Q?Q8aTzhJtUcnzMLfsQT24GwmOQ/h5ggzV?=
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(82310400026)(36860700013); DIR:OUT;
+ SFP:1101; 
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2024 06:24:23.6142 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76f82b9c-a5b4-4221-b8ac-08dcd22a6103
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: MWH0EPF000989E8.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6262
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,80 +136,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Check each feature after rendering and flush. Also add new check for
-possible PSR errors.
+From: "jesse(jie) zhang" <jesse.zhang@amd.com>
 
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Filter some devices because the firmware does not support recovery it.
+
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
 ---
- tests/intel/kms_dirtyfb.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ tests/amdgpu/amd_queue_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_dirtyfb.c b/tests/intel/kms_dirtyfb.c
-index 75047ec63..35df9be3b 100644
---- a/tests/intel/kms_dirtyfb.c
-+++ b/tests/intel/kms_dirtyfb.c
-@@ -145,7 +145,7 @@ static void enable_feature(data_t *data)
- 	}
- }
- 
--static void check_feature(data_t *data)
-+static void check_feature_enabled(data_t *data)
- {
- 	switch (data->feature) {
- 	case FEATURE_NONE:
-@@ -171,6 +171,33 @@ static void check_feature(data_t *data)
- 	}
- }
- 
-+static void check_feature(data_t *data)
-+{
-+	switch (data->feature) {
-+	case FEATURE_NONE:
-+		break;
-+	case FEATURE_FBC:
-+		igt_assert_f(intel_fbc_wait_until_enabled(data->drm_fd,
-+							  data->pipe),
-+			     "FBC disabled\n");
-+		/* TODO: Add compression check here */
-+		break;
-+	case FEATURE_PSR:
-+		igt_assert_f(psr_wait_entry(data->debugfs_fd, PSR_MODE_1, data->output),
-+			     "No PSR entry\n");
-+		psr_sink_error_check(data->debugfs_fd, PSR_MODE_1, data->output);
-+		break;
-+	case FEATURE_DRRS:
-+		igt_assert_f(!intel_is_drrs_inactive(data->drm_fd, data->pipe),
-+			     "DRRS INACTIVE\n");
-+		break;
-+	case FEATURE_DEFAULT:
-+		break;
-+	default:
-+		igt_assert(false);
-+	}
-+}
-+
- static void disable_features(data_t *data)
- {
- 	intel_fbc_disable(data->drm_fd);
-@@ -232,7 +259,7 @@ static void prepare(data_t *data)
- 
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	check_feature(data);
-+	check_feature_enabled(data);
- }
- 
- static void cleanup(data_t *data)
-@@ -298,6 +325,8 @@ static void run_test(data_t *data)
- 	igt_pipe_crc_collect_crc(data->pipe_crc, &crc);
- 	igt_assert_crc_equal(&crc, &data->ref_crc);
- 
-+	check_feature(data);
-+
- 	igt_spin_free(data->drm_fd, spin);
- 	intel_bb_destroy(ibb);
- 	intel_buf_destroy(src);
+diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
+index 8f5c7d4b8..d2d57d3da 100644
+--- a/tests/amdgpu/amd_queue_reset.c
++++ b/tests/amdgpu/amd_queue_reset.c
+@@ -1082,7 +1082,7 @@ igt_main
+ 	struct dynamic_test arr_err[] = {
+ 			{CMD_STREAM_EXEC_INVALID_PACKET_LENGTH, "CMD_STREAM_EXEC_INVALID_PACKET_LENGTH",
+ 				"Stressful-and-multiple-cs-of-bad and good length-operations-using-multiple-processes",
+-				{ {FAMILY_UNKNOWN, 0x1, 0x10 }, {FAMILY_AI, 0x32, 0x3C }, {FAMILY_AI, 0x3C, 0xFF } } },
++				{ {FAMILY_UNKNOWN, 0x1, 0x10 }, {FAMILY_AI, 0x32, 0xFF }, {FAMILY_GFX1100, 0x1, 0xFF } } },
+ 			{CMD_STREAM_EXEC_INVALID_OPCODE, "CMD_STREAM_EXEC_INVALID_OPCODE",
+ 				"Stressful-and-multiple-cs-of-bad and good opcode-operations-using-multiple-processes",
+ 				{ {FAMILY_UNKNOWN, -1, -1 }, {FAMILY_UNKNOWN, -1, -1 }, {FAMILY_UNKNOWN, -1, -1 } } },
 -- 
-2.34.1
+2.25.1
 
