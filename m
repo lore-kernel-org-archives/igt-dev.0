@@ -4,52 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB70FEE49A6
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 13:37:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E99EE49B5
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 14:14:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D7F3D10E197;
-	Wed, 11 Sep 2024 13:37:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F17E510E9A5;
+	Wed, 11 Sep 2024 14:14:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TkkjXg+i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DeM+Oiy8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F32110E197
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 13:37:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C9AA10E9A5
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 14:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726061849; x=1757597849;
+ t=1726064050; x=1757600050;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=Wyr+pZe0oyh0lorkAda7QvyQTsB8Zjhl+HhWYGLzA4g=;
- b=TkkjXg+i3siJ+A3VYmh6VR12EsL1Ump4s8qymELgyo2fv+b79aV8cP4y
- Y9bjFghaECzudrxpej/3yONIeijlHUGr1GrrCcNR9q4wY6GlRYMmMmy1o
- dJCG9VaB+jEs7YMj3pvflR41H2y8DXC8KdZ8wdCsJGXY7VZhHQFs3n2OS
- G5P1F8Y6ZGtnu0kWs0ulcnwQQPEFERiE6GfkBgnGdVOtMARem+NqjpGhH
- VHAS2vQf7eHvuco3hcfDCTMGT8R09dGPkWOOA8bsSoOQaRHaC70/YlZl9
- DaacTAMxBv7JkXIirwIrJ+oRPq3Cf4vwJpgx1QUmmjshABnJw9Jeopg27 g==;
-X-CSE-ConnectionGUID: e1FOkB9dRM+QArt5Nu5khw==
-X-CSE-MsgGUID: GItjutVtQ32q8GnkHlpuzA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="27782857"
-X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; d="scan'208";a="27782857"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2024 06:37:29 -0700
-X-CSE-ConnectionGUID: oRMzk3iSRYKBF3D7USZ++A==
-X-CSE-MsgGUID: 72Xbw0BuRrmcAqMcBLYvhg==
+ bh=ypU0m8/13CjjIKrmux20i54HdMyVk8fFk0kFG2Ssvfw=;
+ b=DeM+Oiy8cOwP03SbX1MCVb23ryWEkUCzMXicBfdJCDR0sRf1bXkz5k9D
+ 8R2lQ12Kxah2I218Evu5CPEx6dE/Z3ChHoWN+8KsJrUMs6uf968rtvLA1
+ Io9gdI5dxX7uA7deYl0tVNwrngyLjLOixa3/yeBcqYGAYEcWavvO2iTdk
+ Xt2tMbNYMhGd96wdK3woYG1s8h4aRHwimFnE4KT81OT7D4Gljl7WOlT3v
+ Q2LxWb9HTNZfTqduXefX2cmp+JETR+xmBygjGE/w2Wa0cI1Jo8n1sZirK
+ FXX3Y2CGyZ/fYfjYaYP63o1i291TX95L5Xg+pmFCWbiEClb7ynBEOYIAW g==;
+X-CSE-ConnectionGUID: QrZHg0IHSgqVAu0YsJdHeA==
+X-CSE-MsgGUID: NM8PKvdOTSiPqgl+uVbQ7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="25009984"
+X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; d="scan'208";a="25009984"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2024 07:14:10 -0700
+X-CSE-ConnectionGUID: 7gYpcOgGQqS3iyFIG+fsAQ==
+X-CSE-MsgGUID: TpEiCXfqTVW0h9eioHzXWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; d="scan'208";a="67315288"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 06:37:27 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; d="scan'208";a="98220301"
+Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.84.149])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2024 07:14:07 -0700
+From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, karthik.b.s@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_joiner: switch modeset from uj to bj
- and vice-versa
-Date: Wed, 11 Sep 2024 19:03:11 +0530
-Message-Id: <20240911133311.569568-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Chris Wilson <chris.p.wilson@intel.com>
+Subject: [PATCH v2 i-g-t] lib/igt_core: Refactor libpciaccess init/cleanup
+ wrappers
+Date: Wed, 11 Sep 2024 16:13:49 +0200
+Message-Id: <20240911141349.455943-1-marcin.bernatowicz@linux.intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,50 +73,154 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a subtest to validate switching from ultra joiner to big joiner
-and vice-versa.
+Enable reinitialization of the libpciaccess global state, necessary
+to correctly handle dynamic add/remove of PCI devices, such as the
+creation/removal of Virtual Functions (VFs). Update
+igt_pci_system_cleanup() to conditionally call pci_system_cleanup()
+based on the initialization state. Introduce igt_pci_system_reinit()
+for explicit reinitialization of the libpciaccess global state,
+particularly useful after PCI device changes, to be used in
+subsequent patches.
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+v2:
+- Change pci_system_initialized type from int to bool for consistency
+  with install_handler (Peter)
+- Simplify conditional logic in igt_pci_system_init by removing
+  redundant assignments
+
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Chris Wilson <chris.p.wilson@intel.com>
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
 ---
- tests/intel/kms_joiner.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ lib/igt_core.c | 40 ++++++++++++++++++++++++++++++++++------
+ lib/igt_core.h | 36 ++++++++++++++++++++++++------------
+ 2 files changed, 58 insertions(+), 18 deletions(-)
 
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index 07b49fb08..3c3186418 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -499,6 +499,31 @@ igt_main
- 				test_ultra_joiner(&data, false, false, false);
- 	}
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 88b5af732..407f7b551 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -3483,23 +3483,51 @@ void igt_srandom(void)
+ }
  
-+	igt_subtest_with_dynamic("switch-modeset") {
-+		igt_require_f(force_joiner_supported,
-+					  "force joiner not supported on this platform or none of the connected output supports it\n");
-+		igt_require_f(data.ultra_joiner_output_count > 0 && data.big_joiner_output_count > 0,
-+					  "No ultra joiner or big joiner output found\n");
-+		igt_require_f(data.n_pipes > 1,
-+					  "Minimum 2 pipes required\n");
+ /* IGT wrappers around libpciaccess init/cleanup functions */
++static bool pci_system_initialized;
++static pthread_mutex_t pci_system_mutex = PTHREAD_MUTEX_INITIALIZER;
 +
-+		igt_dynamic_f("ultra_joiner_to_big_joiner") {
-+			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+			test_ultra_joiner(&data, false, false, true);
-+			enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+			test_single_joiner(&data, data.big_joiner_output_count, true);
-+			igt_reset_connectors();
-+		}
++void igt_pci_system_cleanup(void)
++{
++	pthread_mutex_lock(&pci_system_mutex);
++	if (pci_system_initialized) {
++		pci_system_cleanup();
++		pci_system_initialized = false;
++	}
++	pthread_mutex_unlock(&pci_system_mutex);
++}
+ 
+ static void pci_system_exit_handler(int sig)
+ {
+-	pci_system_cleanup();
++	igt_pci_system_cleanup();
+ }
+ 
+-static void __pci_system_init(void)
++int igt_pci_system_init(void)
+ {
+-	if (!igt_warn_on_f(pci_system_init(), "Could not initialize libpciaccess global data\n"))
++	int ret = 0;
++	bool install_handler = false;
 +
-+		igt_dynamic_f("big_joiner_to_ultra_joiner") {
-+			enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+			test_single_joiner(&data, data.big_joiner_output_count, true);
-+			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+			test_ultra_joiner(&data, false, false, true);
-+			igt_reset_connectors();
++	pthread_mutex_lock(&pci_system_mutex);
++	if (!pci_system_initialized) {
++		ret = igt_warn_on_f(pci_system_init(),
++				    "Could not initialize libpciaccess global data\n");
++		if (!ret) {
++			pci_system_initialized = true;
++			install_handler = true;
 +		}
 +	}
++	pthread_mutex_unlock(&pci_system_mutex);
 +
- 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
- 		     "when the pipe is active with a big joiner modeset");
- 	igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
++	if (install_handler)
+ 		igt_install_exit_handler(pci_system_exit_handler);
++
++	return ret;
+ }
+ 
+-int igt_pci_system_init(void)
++int igt_pci_system_reinit(void)
+ {
+-	static pthread_once_t once_control = PTHREAD_ONCE_INIT;
++	igt_pci_system_cleanup();
+ 
+-	return pthread_once(&once_control, __pci_system_init);
++	return igt_pci_system_init();
+ }
+ 
+ /**
+diff --git a/lib/igt_core.h b/lib/igt_core.h
+index 58864c2bc..90f57402f 100644
+--- a/lib/igt_core.h
++++ b/lib/igt_core.h
+@@ -1530,29 +1530,41 @@ void igt_kmsg(const char *format, ...);
+  * igt_pci_system_init:
+  * IGT wrapper around pci_system_init()
+  *
+- * Runs pci_system_init() and installs pci_system_cleanup() as IGT exit handler when
+- * called first per thread, subsequent calls are noop.  Tests should use this wrapper
++ * Runs pci_system_init() and installs igt_pci_system_cleanup() as IGT exit handler when
++ * called first per thread, subsequent calls are noop. Tests should use this wrapper
+  * instead of pci_system_init() to avoid memory leaking which happens each time a call
+  * to pci_system_init() is repeated not preceded by pci_system_cleanup() (may easily
+  * happen in consequence of long jumps performed by IGT flow control functions).
+  *
+- * Return value: equal return value of pthread_once() (return value of pci_system_init()
+- *		 can't be passed through pthread_once())
++ * Return:
++ * Return value of pci_system_init() or 0 if pci system is already initialized.
+  */
+ int igt_pci_system_init(void);
+ 
++/**
++ * igt_pci_system_reinit:
++ * Reinitialize libpciaccess global data.
++ *
++ * Executes igt_pci_system_cleanup() and igt_pci_system_init() to refresh
++ * the PCI system state, typically needed after PCI devices are added or
++ * removed.
++ *
++ * Note: All previously obtained handles (pci_dev, mmio) become invalid
++ * after this call. Do not use old handles post-reinitialization.
++ *
++ * Return: Outcome of igt_pci_system_init().
++ */
++int igt_pci_system_reinit(void);
++
+ /**
+  * igt_pci_system_cleanup():
+- * IGT replacement for pci_system_cleanup()
++ * IGT wrapper around pci_system_cleanup()
+  *
+- * For use in IGT library and tests to avoid destroying libpciaccess global data.
+- * Direct calls to pci_system_cleanup() should be either dropped or replaced with this
+- * wrapper (for code clarity), otherwise subsequent access to libpciaccess global data
+- * may be lost unless preceded by direct call to pci_system_init() (not recommended).
++ * Runs pci_system_cleanup() if igt_pci_system_init() was successfully called
++ * before. This allows to refresh the libpciaccess global data when followed
++ * by igt_pci_system_init(), see igt_pci_system_reinit().
+  */
+-static inline void igt_pci_system_cleanup(void)
+-{
+-}
++void igt_pci_system_cleanup(void);
+ 
+ void igt_emit_ignore_dmesg_regex(const char *ignore_dmesg_regex);
+ 
 -- 
-2.34.1
+2.31.1
 
