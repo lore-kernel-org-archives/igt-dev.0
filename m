@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89BA3EE01F3
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 05:50:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C04AEE01F3
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 05:50:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1086E10E969;
-	Wed, 11 Sep 2024 05:50:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2133410E96A;
+	Wed, 11 Sep 2024 05:50:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g/x+qWOM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JLiZ40K+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4D9B10E969
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 05:50:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 968A510E96A
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 05:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726033841; x=1757569841;
+ t=1726033845; x=1757569845;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qSZneQIGYOfctgF8Pq04yF9FY2NBjtBBlsRpQWGkIUg=;
- b=g/x+qWOMZDVRFYyeSgi5/z2eoMVMMCOK8gDp0pbuowPGQIli6u4j6YFH
- Ce9Vw40luDpVy9VtFK0LKh6zSeCBqKYa0Oexy8n+VWkCQpnwImM8PvZHy
- KvvVZEHY6oPKLm9UcB3bhOgVa53bCxUShyQppgrX3gYhZUCb7Vxfoj0bI
- ploTe5Mv+vwgrhqN1925bz7fbdyJu5QFMCAIBOmzRyckQu0GktYoMX/j5
- 67/CaQnDQ740f2yNr2vqHYImAxvtpUEBvXp0wblHAxPbi1wbi6sUr/dHp
- lgp2+AhxQVPoXy1lTy42+VOwVb9rRWGyAcNELymOJHv1Z9L8Vlz/7IvEP A==;
-X-CSE-ConnectionGUID: oDfhAvlQQLq8H8derOF8Uw==
-X-CSE-MsgGUID: O/hEVAwoQw+1BUplhdyeag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="25009398"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="25009398"
+ bh=mKnUz6R1eIJRjeYawg7QeDT7Be1Qv793h6XC9HT33E4=;
+ b=JLiZ40K+8P2+PGrXasxk/EM5Cej05zxF22EZxmczdcEz7w4mYJ0357xN
+ 64i19EQn7DmZABXtGiRK9mjyHdOXcpb8V+XZBXg5JOfjFX7LZDY/mlWku
+ qkpVPc70N4JCvW9LrTyUrnGzucPzx5jN9u9GQ01nMsN+SAcmatbZDyV+0
+ XUA4cUIGJqkmpA0J83UHQbw0QEGKbRDhxzLvaFYUbHYFbq5wcPTIqcOCK
+ RHQ1tDdh3P8Lveknv4GM6w0iYf50Eaj2JV6yVwFNth42uGxMjkUzO1Swf
+ /DbqTcsHxJ29FL+Puf7frSK2pPbknmQ0OPOvf8i2Y4XUdGcskZbxXa7X5 A==;
+X-CSE-ConnectionGUID: 8/Y63eIiRJS1I4GEx7DYkw==
+X-CSE-MsgGUID: +bdOITLxTreDC0zNZ7ptiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="25009414"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="25009414"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:50:41 -0700
-X-CSE-ConnectionGUID: 6dAAjJ29Q8iBu8MidSbtCA==
-X-CSE-MsgGUID: oPWubna9Shu0TbnBIE2tRw==
+ 10 Sep 2024 22:50:45 -0700
+X-CSE-ConnectionGUID: 1L6XBk7WTlu54UpvrFuWQQ==
+X-CSE-MsgGUID: 1WHUOfy8SeOg8wDVjfrFMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67540726"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67540738"
 Received: from dhhellew-desk2.ger.corp.intel.com.ger.corp.intel.com (HELO
  jhogande-mobl1..) ([10.245.244.65])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2024 22:50:39 -0700
+ 10 Sep 2024 22:50:44 -0700
 From: =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ramanaidu.naladala@intel.com,
  =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>
-Subject: [PATCH i-g-t v2 3/5] tests/intel/kms_fbt: Add psr_sink_error_check to
- PSR tests
-Date: Wed, 11 Sep 2024 08:49:56 +0300
-Message-Id: <20240911054958.1023925-4-jouni.hogander@intel.com>
+Subject: [PATCH i-g-t v2 4/5] test/intel/kms_pm_dc: Add psr_sink_error_check
+ to PSR tests
+Date: Wed, 11 Sep 2024 08:49:57 +0300
+Message-Id: <20240911054958.1023925-5-jouni.hogander@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240911054958.1023925-1-jouni.hogander@intel.com>
 References: <20240911054958.1023925-1-jouni.hogander@intel.com>
@@ -77,26 +77,28 @@ testcases using PSR. Fix this by add psr_sink_error_check to each of them.
 
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tests/intel/kms_pm_dc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index e45d17dd6..913c7b234 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -2722,10 +2722,11 @@ static void do_status_assertions(int flags)
- 						   prim_mode_params.pipe));
- 	}
+diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
+index 07b140ce5..c87e1d408 100644
+--- a/tests/intel/kms_pm_dc.c
++++ b/tests/intel/kms_pm_dc.c
+@@ -407,6 +407,7 @@ static void test_dc_state_psr(data_t *data, int dc_flag)
+ 	igt_require(!psr_disabled_check(data->debugfs_fd));
+ 	igt_assert(psr_wait_entry(data->debugfs_fd, data->op_psr_mode, NULL));
+ 	check_dc_counter(data, dc_flag, dc_counter_before_psr);
++	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
+ 	cleanup_dc_psr(data);
+ }
  
--	if (flags & ASSERT_PSR_ENABLED)
-+	if (flags & ASSERT_PSR_ENABLED) {
- 		igt_assert_f(psr_wait_entry(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still disabled\n");
--	else if (flags & ASSERT_PSR_DISABLED)
-+		psr_sink_error_check(drm.debugfs, PSR_MODE_1, prim_mode_params.output);
-+	} else if (flags & ASSERT_PSR_DISABLED)
- 		igt_assert_f(psr_wait_update(drm.debugfs, PSR_MODE_1, NULL),
- 			     "PSR still enabled\n");
+@@ -693,6 +694,7 @@ static void test_pkgc_state_psr(data_t *data)
+ 	igt_wait((cur_value = read_pkgc_counter(data->debugfs_root_fd)) > prev_value,
+ 		  timeout_sec * 1000, 100);
+ 	igt_assert_f(cur_value > prev_value, "PKGC10 is not achieved.\n");
++	psr_sink_error_check(data->debugfs_fd, data->op_psr_mode, data->output);
+ 	psr_dpms(data, DRM_MODE_DPMS_ON);
+ 	cleanup_dc_psr(data);
  }
 -- 
 2.34.1
