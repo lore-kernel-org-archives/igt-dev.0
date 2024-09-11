@@ -4,62 +4,187 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F8C9EE498F
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 10:50:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D812DEE4990
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 10:53:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9FC210E995;
-	Wed, 11 Sep 2024 10:50:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7922589A5C;
+	Wed, 11 Sep 2024 10:53:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dxvJzmER";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IvkwoVUv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52CB410E995
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 10:50:33 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7970F89A5C
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 10:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726051833; x=1757587833;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=0q6BjNAqn8mAtLV9MzQikU2LPwHWoPkPfnepNXOhO90=;
- b=dxvJzmERhnQENI6btMqq946dxyZtWja51p1RK18X1lS+U19iK0EmdNvn
- yJIAN2+WqdTyeo+X5fO3X7W4KOUYFPj4jyKGRwI21735iXDFW20td1fin
- 0mGxY0ZWItZ0X5IbJCekIGzHFraNaPsKJ9bTYXZVvzIk7fuzdMd7LjwNl
- s6C4AoFVTBHZ1yXwdPQ3i/xTt2auJ3iH2fQuJ577ieE2feJWBzyjhUjRB
- /49OAlGoohtKy3YS4OaCcf+6T61NkOV9fuz/5HR5hpZLTDbnTGk1MsQ6Q
- dQzV3SU6HId+TJj0doDAvvmnWO739ae8oB3OoboBqo3FJh0WMNUUqOG5A w==;
-X-CSE-ConnectionGUID: y0UI6RnYT0aQhTwl0ykWsg==
-X-CSE-MsgGUID: UeceXILnQIyGhUWTWvs1Gw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="50257170"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="50257170"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2024 03:50:33 -0700
-X-CSE-ConnectionGUID: NsojlvPIT0eLhSyMStOvrA==
-X-CSE-MsgGUID: 463gHhJUTNqnaNBYUPOFNw==
+ t=1726052031; x=1757588031;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=Y2O6hHl3HkWtWeCSOrxc0IA8q6opzKHWGb20QdPfWUo=;
+ b=IvkwoVUvOBaTT37ShKJJWaAKb+nki8mOLb9IuahUrmaq4DVpaRCqLGLT
+ 0VQ8pkbTwOtwRRauOw34V1JkcbiZjv+77IVsHHfHOWL+UdYKfXC8FkQ9W
+ R30B7L8YGoQNJ+/gsyonklEyDvbB0DAa3DcC1EbLIHxQ/o9MBCw6hgjuN
+ 11POztQMRsF61pt86nt/YIcAjYRUSII2kEJ47v9tcnbx4K9J+NYirzZ/N
+ KpKNObk15x6oosaCKRprIpA2YqbhSgsWc694HuQLd5tIGQcBAilL+q1eP
+ ujthQnoElrSqmoylr/OzK5aA7DKomrnNxsVSSmSmalqe4gVhjuIIdcDpg g==;
+X-CSE-ConnectionGUID: aEj/owwwSx6Dufx8UHh6Dg==
+X-CSE-MsgGUID: /sI08qkZT7Sfb4OpKN2xDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="24383381"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="24383381"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Sep 2024 03:53:50 -0700
+X-CSE-ConnectionGUID: aUVR0DFDQUe8dG3Xq2Y6kw==
+X-CSE-MsgGUID: 6C2gkYmXQ8m1f3QdpTuMOg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="72106134"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 03:50:31 -0700
-Date: Wed, 11 Sep 2024 12:50:12 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>
-Subject: Re: [PATCH i-g-t v5] runner/executor: Detect when child process is
- killed by a signal
-Message-ID: <20240911105012.odfxe75ymxqqovci@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Petri Latvala <adrinael@adrinael.net>
-References: <f7319a46-d6d4-4ea5-9863-99ccd7cea3a5@linux.intel.com>
- <4c126777-6899-407c-911f-27e25ca8191e@linux.intel.com>
- <20240910155814.jq2og45xf7apwb64@kamilkon-DESK.igk.intel.com>
- <da9e03fa-1ecf-49eb-84ef-66aeee6bd99d@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; d="scan'208";a="67281230"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by orviesa009.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 11 Sep 2024 03:53:50 -0700
+Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 11 Sep 2024 03:53:49 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 11 Sep 2024 03:53:49 -0700
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.49) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 11 Sep 2024 03:53:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kARRfuJfEd4yA/BV7x0UDO7Bi1RotKJvI2qem/B92+ils+M8NmyBuYFTyCyGtrOFPEzh4LrrXiS9QjKxO8oEHnO7bdtQoCOvRGH0N15b5K5FOj3Bl0IX/+lzL3hAmzorLMvmCIQkGNjJ2CQPf8fwji75EH/FaO0K0Gl+F8xRgqxt7709bZYo0rJRHBedrepjYgcyTIrI+nNZxwuyoB2sURLEhBkIS/C+8VE8x9vWfhVMKFITlmHoyydLCEwMEUKSmRJM/1kmI4K/mSZF7NbyYNQalhKWBF9AEtj/zvnhcGuFBlrP2yz6pO/SgnZ4sbz2dzjpcCEYq0h6WlR3dkaF7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y2O6hHl3HkWtWeCSOrxc0IA8q6opzKHWGb20QdPfWUo=;
+ b=pKONm6q00bvapxp7FGB7mdaPwjMI3CShar5Fj2mARhIaqbqiG6W1pr6ogmjm0yqluSYenjd4utCQ5qdunF8L7cKWcSeoATnITCCFVQQOyCUivbKgeAzQU8ojuady0QXqfCV7a5hg2ImfmgWGKlnIOu64RQ6yyqF0DMC+of+eYZi0JME4FAoMN+iOTB/V0Mm4Nv0NL1Vgi5TCAXcyWqtjANr1YUPp/qP9rmaGSLgymTnHwJ/qZQ/C27i7NAAdIqb/L9mpUgD1pnRf7KLXuz0Rl1SptoqM6p1lXUQAsBkuzpWsvgYquzJBIL/YY+pafJ/RLy5HKZeP9X3yA+mCBwydYQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH0PR11MB4806.namprd11.prod.outlook.com (2603:10b6:510:31::21)
+ by MW4PR11MB5935.namprd11.prod.outlook.com (2603:10b6:303:18a::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 11 Sep
+ 2024 10:53:47 +0000
+Received: from PH0PR11MB4806.namprd11.prod.outlook.com
+ ([fe80::c37b:a730:acc7:479c]) by PH0PR11MB4806.namprd11.prod.outlook.com
+ ([fe80::c37b:a730:acc7:479c%5]) with mapi id 15.20.7918.024; Wed, 11 Sep 2024
+ 10:53:46 +0000
+From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
+To: "Hogander, Jouni" <jouni.hogander@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>, "Hogander, Jouni"
+ <jouni.hogander@intel.com>
+Subject: RE: [PATCH i-g-t v2 2/5] tests/intel/kms_psr*: Add
+ psr_sink_error_check to PSR tests
+Thread-Topic: [PATCH i-g-t v2 2/5] tests/intel/kms_psr*: Add
+ psr_sink_error_check to PSR tests
+Thread-Index: AQHbBA6f5mNGtVrHpEWZvoaEj6/yRbJSY3vQ
+Date: Wed, 11 Sep 2024 10:53:46 +0000
+Message-ID: <PH0PR11MB4806273B9AF8BFB2EAAF02ABE49B2@PH0PR11MB4806.namprd11.prod.outlook.com>
+References: <20240911054958.1023925-1-jouni.hogander@intel.com>
+ <20240911054958.1023925-3-jouni.hogander@intel.com>
+In-Reply-To: <20240911054958.1023925-3-jouni.hogander@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR11MB4806:EE_|MW4PR11MB5935:EE_
+x-ms-office365-filtering-correlation-id: faafa152-5221-4c80-c157-08dcd25002bd
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?RmFZcG80QjdPZStKRTh3T3BBTVZmblNiNCs4NS8wTk1SQytLUlRiVGhiU0Rq?=
+ =?utf-8?B?b1RlVnp6UGhQcXRmMEZPQWQ1ZGVmazQ5Y01ZTnlDbjc1SGFYNFJVcFZnWkh2?=
+ =?utf-8?B?My80NnozMnRnR2hpalRxSFJjQjg3Z2J1bmVycWREL2F6UGF2a0hRWnlLYWdp?=
+ =?utf-8?B?Rm5Sc1ZIbFMxQkJtakVmZ2NBeEExUXhtaGt4WWNmNFhHSzVnbTN1OFFJMXlT?=
+ =?utf-8?B?THhqV0tCU1ErcTdHdWVyLzJFR0EwbEpkcmlPMXJFcnZZSTBZWDhFVU1PUHY0?=
+ =?utf-8?B?dHZvSXBNNGVGVzVOeGVkbE5EcGp6eUE2bnZ4Rm9YZ1BpN3pSdEpzd21pTm5G?=
+ =?utf-8?B?c1ROVHluZ1RvZkZta3B1NCtHOTFMQU02a1VLSXhaUGRQWGZjUHdKTk5iS1Vp?=
+ =?utf-8?B?M25vY05Mc3FUWEprVnFNSDI5MDNYb0RKRFN5MmhrOHV0cncxVlJvTEd2aDVt?=
+ =?utf-8?B?Y0lpYmsyR08rODVQOXFiWEVxclNUbGd2VWdKbU4rUUdLdmR5YjlBcWI0cmc5?=
+ =?utf-8?B?ZENVckFSSTlPNVlWUG1rWFp6T0lYeXJrbWxveHpMbkJOY2E5RDAyNEhMbDJ5?=
+ =?utf-8?B?Mm9TQXZ1MzR2bkpDamh3ZEN3U2N6MFZMeVphVUgzdlFLMm4rZlNWOVFNMUhB?=
+ =?utf-8?B?Ny9VRXQvNVN1ZElUdTNOcHhuOHYwNmJtcWN2SWlvMkoxMXhydkVwZzUvWllu?=
+ =?utf-8?B?VDlscEhzZTIxUG5pdDdHZXRtT1RxaUl6OUtSeGJGb0hOd0NwNzNiWlZ1N2hQ?=
+ =?utf-8?B?d3lvV0pFUUhJOXdYeUJXQXp6OStxdDdzeXNVNk0wMERnRXFHQkcrb0RLYmMr?=
+ =?utf-8?B?akJWaFY3TldyZkliTzIrSi9PYytYMW9wOTBkZGdFWjdsY2hjdFNWQWQraDUr?=
+ =?utf-8?B?WXc3L1VKTzl4dXNoc3IyRHJEU25hUm42QVQ4M1dvNmw1YlZORUhaZGFPTlJB?=
+ =?utf-8?B?Vjh5d1BNVURkaERnYmxNcTU0OE9Fb2ZuNkZDMDJ1cldXMnc1N0Y2U2ZYSC9w?=
+ =?utf-8?B?ek1LTlpETnJjR3RFbDJQbXJaMTJwR1dWUi9XVWlubjdXRDlpeGtOSmN5OGU0?=
+ =?utf-8?B?SDFyekdHU1J0Q1M0Vzh5VVdGbVF5Vy9SWSswbGZZV3BUa2NtQStkVzFqNkJk?=
+ =?utf-8?B?ekVpSDRldDVFY1JCYlRnRmtCL2hzbG4xYlc4K21udEdWd2NaTS9rU3gwcFlr?=
+ =?utf-8?B?UzljYVc2SjZPdVQ0b3lJRDhGRzhjYmZtU0syVnNxc0ZnU0V2ZDZSQUt2dGN0?=
+ =?utf-8?B?cXRLRmtndVp0Rm5rYlJheGUxSDZPVUs1bG9vZVhwVE83R1FQeHZySWN0bDNv?=
+ =?utf-8?B?eDIybm5Pc3FHeHRJZjBJdDdVVktaUTNGV3dSZEQ0SkVJWU9qREN6ZHVzWXZ3?=
+ =?utf-8?B?NXJPeTZNOUNKYjUxemdQeHFUamtOMUZCRzBEc0tXRDd4MXd4WHpwRStPTE1Y?=
+ =?utf-8?B?L3lMbHBUZzB4a203TytnR3ZQRkdTMit4dHBXeHhPZTZHSUdTSWhKcDJ5dXFj?=
+ =?utf-8?B?NjdMc1d3MXh5NmNkUk1mNDlBamlmVmkxY0pJeCtwSHdiRlh1bmRpVnZIclNQ?=
+ =?utf-8?B?UGtHN1dPSjE0eDk5MEF3WWNLWktDMDUxZEJaRDJzV1g3RkZMU3B4TlJucWhP?=
+ =?utf-8?B?OXE0dnhQS2xRYmh0ZWFEN001Skx2SDVjcjZaaFlpYVNMY0FuZzNRSzVWaGRR?=
+ =?utf-8?B?cXdyUVZCRjRjeEQvYVhyejJnK3ZPZkhxUzFWUExYd0NCWGlIZ1NFdVJyS0pE?=
+ =?utf-8?B?cUJ3bnhxejRYUmhxdjRWREVZNEpITzlMOWJNYmo5Zk5UelJ1TTZVUkxlL0Zz?=
+ =?utf-8?B?TUZNZFMxRkdRTXhTdDZJLy9tMFpKbFF1SXN5dExiNUhyVTdhVDZUU1JraUQ2?=
+ =?utf-8?B?V3JUQVUremVnb2d5N0J4Y2xjdTNPb0ZOVHFuKzNhYjhhb0E9PQ==?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB4806.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UDk0SldoWEFBWEFTbFhJZXJtdUZ5UXlyVm5sOEdqNmZLZlUzdzJXRWhjdFdh?=
+ =?utf-8?B?ZFR5MUpOM2JqYk0xMTNJc01BZzI4OStLb2tTWlVVOFYvbWprM0IvZURWOGsx?=
+ =?utf-8?B?T1NrdVRkRmM4eGZKNGE1UmhGcERmMnhZaUFBYnU5QS9udjUwSm1yYUpPcVBE?=
+ =?utf-8?B?cFRQRkY2NjJxL29ZRWVHWXRoSUZQdGFuVllWYnFkT1N3cENoWjYra3UrTUZq?=
+ =?utf-8?B?U0Y4OHNoano3TlRoV29HK1VJSFhyNlF5MExPYWlYWHhpUzlUb2hVZCsrdkZn?=
+ =?utf-8?B?RVJ5aVZsdFVkUS9JcUpXblJ1cXFNazZreEtJNUc1cDRyR2crTUNuTEh1eGRn?=
+ =?utf-8?B?UmVRZExGaW9LWmxrZERiUWZ6bExhdW41Y2RLOURnNWNQSFpKQzB4S1EyWW1w?=
+ =?utf-8?B?S3ZuWjhQM2J5RXU3NW8yQkQrUXltN28zaFRlMlg3b0Q3TEk4N1NnL0oxU0h1?=
+ =?utf-8?B?Mmx3UWhIK2ozUmRMeTFGNUQ0RWo0dUxQTzBIdXMrMThLU1AzNmp6L1JoeGRR?=
+ =?utf-8?B?NGZWdXpiUGZiajFTWjhWN3Y1OTdFZEN2NTB5dStqSHJPdkd0R2xZQkgyRmFI?=
+ =?utf-8?B?TTMvUVVrQjhOUFFzNnZYLzZOWDJwQXNkVVE4eUZ2WEpIdmU5YTNCMEVOaVRv?=
+ =?utf-8?B?dndQaE9QM3IxVDE3eEY5aU90WGdrcjFOc3p1Q1ZweTh2ZllOWDMwY3lYRS8v?=
+ =?utf-8?B?aTZrckJHWG5nVERZdUVSaWpKbUZoK2c2dHdMSWw4d28yWXZ4Y0FIcS9LTlZJ?=
+ =?utf-8?B?aHIxcUlIVVlZejd5VEFwK050dndvN3pxYWc0ZFhlSHhkSitDcVZZN2ZQRDYy?=
+ =?utf-8?B?dXJwdnA0cXFvSno2YlVFQ3JsKzBXU1ppc0tZVStZWG5JWVF4Q1crdkRSR0pU?=
+ =?utf-8?B?cVRXbkJ4cEZIbklYK0hWOFhUcUE1WWJLMUQ0R1NzcHlIV0ZNWGQzVmtNSW5v?=
+ =?utf-8?B?dDh0eTVTb2szSGIwV0hMSVM0NUtlam9tYTl5OE1lRFkvYXI3Vlg1czJlTU13?=
+ =?utf-8?B?YlN4bE9OZWdIcDJNS2ZqT09XNXFKazVDcWExc1MyWE5rNW5FSVBjbFhsRm1V?=
+ =?utf-8?B?S1JQUUg1UzVEWE1EbHJ0UWp0NitiVFByMkV5eXk0WFV3dkZDdmNDWWxMNDdH?=
+ =?utf-8?B?NVpHQU4wVHhudC9IT1k1a015dFI0ejYzcmNzMTdzdi9XMWhIOGp3cWNWWXFW?=
+ =?utf-8?B?endtdjNPVEdFZkg4STBLdUlJcUtOYWdRT3E1dUNrV0x6ZmVGT2ZWb3N3L1dk?=
+ =?utf-8?B?MURLN0NmOHl4UVI5dkZicG4zZ1hZb1llb2pZZTJSKzBmWDBqTnBSMkcvUTdw?=
+ =?utf-8?B?QVFMQTJOMWUwL2IzTDFkUEs4QnNkYVN3Z2RSQkJKK1I0SlVYTk1TeXlSVTBL?=
+ =?utf-8?B?TUVyTDQ1RlhuV29FdXZUODdlMXQrd3dMeUIvdXB5RnByR2pxbjBWcm1qUitC?=
+ =?utf-8?B?dEJBQ2grZC9WWUpzbXRGRzFkZnhWYys3M1dyUG42NXNrWmpJOTVUQkQ1ZGVY?=
+ =?utf-8?B?MHdWYjN1WlZoT3U3ZjN6U3Y4bS9oMmR1NFZ0WmFQL0IxOSt4VVd1alJIcFo5?=
+ =?utf-8?B?VlF5Wk5CVGliVkhKNTlndHVxQzFsa1pGMjhPajQ4eEVlaWZIYldCU0s4RGhm?=
+ =?utf-8?B?TVNGNVBMelBtODVBZ3JQOTZjQ0syL2pla3VvaDYxY011czRUK2NNVTFuQXJ1?=
+ =?utf-8?B?ZkZJL1dzTVRhcFNZRlFKcXhmSDIwOCt2d0hJN2ZHVGtKR0VZRVdIYlo0SWJF?=
+ =?utf-8?B?UWRlNXFlbkEzbitWb1NsaDBBS0QrMnRQaE1EVEU2WXNlTDZpNGptaFl0RUQ5?=
+ =?utf-8?B?UTQrWUFnTmFsZVJ0Ny9WZlE1bE9mSXduZkh0YThseUE0V3prb2lhOEFtOHF6?=
+ =?utf-8?B?OTBNdWFpUURQTmZ6VjRrZHF2RU1rd0lPVHZGcTdZcHJIMFl5TWlWNUdNeitT?=
+ =?utf-8?B?dm95RDhDR0lrMGxkemxnQUZJZytleHQrdDRCVW5YMnplaUttb0FTQ3c1L21a?=
+ =?utf-8?B?SmVpY05LbDlSL2NBMlRSUFVZVzJsdVR2REhGTS9CMUk0WWNkL21RNlpva2N2?=
+ =?utf-8?B?cDR4N1BvZnVGWHFUTXF3Z1JCS3ZNeEI4OWVyV3AxV2dsejFSQk4yemhwdEtM?=
+ =?utf-8?B?cE9oSGJaNTNWTzcrb0ZtdHRCVXhGMzFkb3dhMGZKVDVBYkNHeGpuYjc1WmFZ?=
+ =?utf-8?B?OWc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <da9e03fa-1ecf-49eb-84ef-66aeee6bd99d@linux.intel.com>
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB4806.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: faafa152-5221-4c80-c157-08dcd25002bd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2024 10:53:46.4654 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RulsOB0J+N/KFEjo3dYTMsu2LJi6mwsvXnDD/LvTpBsWOSLzAi2spqeaAUOg+lAaaQE/8wemdZJOFJ9hO3vHQZYGMxHTQG98sOHhXfGRIiU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5935
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,155 +200,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Peter,
-On 2024-09-11 at 09:06:12 +0200, Peter Senna Tschudin wrote:
-> Hi Kamil,
-> 
-> Thank you for your review.
-> 
-> On 10.09.2024 17:58, Kamil Konieczny wrote:
-> > Hi Peter,
-> > On 2024-09-03 at 14:05:05 +0200, Peter Senna Tschudin wrote:
-> >> Make igt-runner aware about tests being killed by signals. Before this
-> >> patch, manually killing a test process would result in igt-runner silently
-> >> marking the test as incomplete.
-> >>
-> >> Now igt-runner aborts the run verbosely. As an example the following was
-> >> extracted from results.json:
-> >>  This test caused an abort condition: Test terminated by a signal Killed (-9).
-> >>
-> >>  v5: do not use sigdescr_np() as it seems to be a fairly new lib function that does
-> >>      not compile on older Ubuntu
-> >>  v4: improve abort code path to not interfere with igt-runner timeouts
-> >>  v3: do not interfere with igt-runner killing tests due to timeout and diskspace
-> >>  v2: fix race condition
-> >>
-> >> Cc: Petri Latvala <adrinael@adrinael.net>
-> >> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> >> Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>
-> > 
-> > Your signed-off-by is different from your e-mail:
-> > Peter Senna Tschudin <peter.senna@linux.intel.com>
-> 
-> That was a feature, not a bug.
-> 
-
-You can have it just place "From: you singned-off-by signature" at begin
-of the patch, for example see here:
-
-https://patchwork.freedesktop.org/patch/612712/?series=138273&rev=1
-
-> > 
-> > checkpatch.pl script warns:
-> > 
-> > 100: WARNING:FROM_SIGN_OFF_MISMATCH: From:/Signed-off-by: email address mismatch: 'From: Peter Senna Tschudin <peter.senna@linux.intel.com>' != 'Signed-off-by: Peter Senna Tschudin <peter.senna@intel.com>'
-> 
-> Will fix and not repeat.
-> 
-
-Check with checkpatch.pl script before sending.
-
-> > 
-> >> ---
-> >>  runner/executor.c | 38 +++++++++++++++++++++++++++++++++++++-
-> >>  1 file changed, 37 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/runner/executor.c b/runner/executor.c
-> >> index ac73e1dde..990d932f3 100644
-> >> --- a/runner/executor.c
-> >> +++ b/runner/executor.c
-> >> @@ -888,6 +888,8 @@ static int monitor_output(pid_t child,
-> >>  	const int interval_length = 1;
-> >>  	int wd_timeout;
-> >>  	int killed = 0; /* 0 if not killed, signal number otherwise */
-> >> +	bool child_reaped = false;
-> >> +	bool child_killed_by_signal = false;
-> >>  	struct timespec time_beg, time_now, time_last_activity, time_last_subtest, time_killed;
-> >>  	unsigned long taints = 0;
-> >>  	bool aborting = false;
-> >> @@ -960,6 +962,25 @@ static int monitor_output(pid_t child,
-> >>  
-> >>  		igt_gettime(&time_now);
-> >>  
-> >> +		/* Testing for !killed to prevent aborting too early after igt-runner
-> >> +		 * decides to kill a process.
-> >> +		 */
-> >> +		if (!killed && (child == waitpid(child, &status, WNOHANG))) {
-> >> +			child_reaped = true;
-> >> +			if (WIFSIGNALED(status)) {
-> >> +				child_killed_by_signal = true;
-> >> +				killed = WTERMSIG(status);
-> >> +
-> >> +				/*
-> >> +				 * Do not abort just yet, because igt-runner can kill the test
-> >> +				 * due to a timeout for example. Aborting here prevents
-> >> +				 * igt-runner from reporting a timeout. The code that aborts
-> >> +				 * the run after the test was killed is at the end of the
-> >> +				 * while() loop.
-> >> +				 */
-> >> +			}
-> >> +		}
-> >> +
-> > 
-> > Why is it here? Imho better place it at second hunk.
-> 
-> Please notice that the problem is that igt-runner does not check if a child ended due to a signal,
-> but it notices when a child ends. The problem with your suggestion is that the loop _may_ decide
-> to exercise the old behavior and simply mark the test as incomplete.
-> 
-> My proposal is to always check for child termination due to a signal, and hence unconditional
-> detection before all other logic inside the loop. However there are corner cases, such as
-> excessive disk space consumption by a test, in which igt-runner will signal a test, and will
-> check for the child being signaled. To not interfere with these corner cases, the detection of
-> a signal and taking the action of aborting the run are at different places.
-
-Could you place that detection _after_ a second hunk, maybe just before
-loop end? That way you could decide to end a loop there?
-
-Also I am not convinced we should abort runner, thats why I asked
-for some predictable tests, possibly with some adjusted test which
-will simulate a problem.
-
-> 
-> > 
-> >>  		/* TODO: Refactor these handlers to their own functions */
-> >>  		if (outfd >= 0 && FD_ISSET(outfd, &set)) {
-> >>  			char *newline;
-> >> @@ -1241,7 +1262,11 @@ static int monitor_output(pid_t child,
-> >>  				errf("Error reading from signalfd: %m\n");
-> >>  				continue;
-> >>  			} else if (siginfo.ssi_signo == SIGCHLD) {
-> >> -				if (child != waitpid(child, &status, WNOHANG)) {
-> > 
-> > This code here do what you wrote at first hunk:
-> > 	if (child != waitpid(child, &status, WNOHANG)) {
-> > 		// fatal err, set status=9999
-> > 	} else { // all 'else if' checks 'child == '
-> > 	}
-> > 
-> > The only difference is that your code calls waitpid() unconditionally
-> > before loop. Could you write some testing code in one simple test
-> 
-> Exactly. Calling waitpid() unconditionally, and early enough to catch all signals.
-> 
-
-imho better to do this _after_ siginfo checks
-
-> > and make checks on trybot? e.g. to not rely that your code will
-> > catch such scenarios if they are rarly seen but to test them in
-> > predictable way. You could also add here some debugs.
-> 
-> I did not understand what you want to test. The "condition" here is igt-runner itself killing a test due to excessive disk space consumption for example.
-> 
-> Please let me know how to proceed.
-
-One idea would be to write a HAX test to simulate error conditions
-which you are trying to catch.
-
-Regards,
-Kamil
-
-> 
-> Thank you!
-> 
-> [...]
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJv
+dW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBPbiBCZWhhbGYgT2YgSm91bmkgSMO2Z2FuZGVy
+DQpTZW50OiBXZWRuZXNkYXksIFNlcHRlbWJlciAxMSwgMjAyNCAxMToyMCBBTQ0KVG86IGlndC1k
+ZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQpDYzogTmFsYWRhbGEsIFJhbWFuYWlkdSA8cmFtYW5h
+aWR1Lm5hbGFkYWxhQGludGVsLmNvbT47IEhvZ2FuZGVyLCBKb3VuaSA8am91bmkuaG9nYW5kZXJA
+aW50ZWwuY29tPg0KU3ViamVjdDogW1BBVENIIGktZy10IHYyIDIvNV0gdGVzdHMvaW50ZWwva21z
+X3Bzcio6IEFkZCBwc3Jfc2lua19lcnJvcl9jaGVjayB0byBQU1IgdGVzdHMNCg0KQ3VycmVudGx5
+IHdlIGFyZSBpZ25vcmluZyBwb3NzaWJsZSBlcnJvcnMgZGV0ZWN0ZWQgYnkgdGhlIHNpbmsgaW4g
+b3VyIFBTUiB0ZXN0Y2FzZXMuIEZpeCB0aGlzIGJ5IGFkZCBwc3Jfc2lua19lcnJvcl9jaGVjayB0
+byBlYWNoIG9mIHRoZW0uDQoNCnYyOiBzcGxpdCBrbXNfZmJ0IGFuZCBrbXNfcG1fZGMgdG8gc2Vw
+YXJhdGUgcGF0Y2hlcw0KDQpTaWduZWQtb2ZmLWJ5OiBKb3VuaSBIw7ZnYW5kZXIgPGpvdW5pLmhv
+Z2FuZGVyQGludGVsLmNvbT4NCg0KTEdUTToNClJldmlld2VkLWJ5OiBNb2hhbW1lZCBUaGFzbGVl
+bSA8bW9oYW1tZWQudGhhc2xlZW1AaW50ZWwuY29tPg0KLS0tDQogdGVzdHMvaW50ZWwva21zX3Bz
+ci5jICAgICAgICAgICAgIHwgMiArKw0KIHRlc3RzL2ludGVsL2ttc19wc3IyX3NmLmMgICAgICAg
+ICB8IDIgKysNCiB0ZXN0cy9pbnRlbC9rbXNfcHNyMl9zdS5jICAgICAgICAgfCAyICsrDQogdGVz
+dHMvaW50ZWwva21zX3Bzcl9zdHJlc3NfdGVzdC5jIHwgMSArDQogNCBmaWxlcyBjaGFuZ2VkLCA3
+IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL3Rlc3RzL2ludGVsL2ttc19wc3IuYyBiL3Rl
+c3RzL2ludGVsL2ttc19wc3IuYyBpbmRleCBjZjBjZTRiYjguLjJiYWRlZWRkZCAxMDA2NDQNCi0t
+LSBhL3Rlc3RzL2ludGVsL2ttc19wc3IuYw0KKysrIGIvdGVzdHMvaW50ZWwva21zX3Bzci5jDQpA
+QCAtNjUwLDYgKzY1MCw4IEBAIHN0YXRpYyB2b2lkIHRlc3RfY2xlYW51cChkYXRhX3QgKmRhdGEp
+ICB7DQogCWlndF9wbGFuZV90ICpwcmltYXJ5Ow0KIA0KKwlwc3Jfc2lua19lcnJvcl9jaGVjayhk
+YXRhLT5kZWJ1Z2ZzX2ZkLCBkYXRhLT5vcF9wc3JfbW9kZSwgDQorZGF0YS0+b3V0cHV0KTsNCisN
+CiAJaWd0X291dHB1dF9vdmVycmlkZV9tb2RlKGRhdGEtPm91dHB1dCwgTlVMTCk7DQogDQogCXBy
+aW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBlKGRhdGEtPm91dHB1dCwNCmRpZmYgLS1n
+aXQgYS90ZXN0cy9pbnRlbC9rbXNfcHNyMl9zZi5jIGIvdGVzdHMvaW50ZWwva21zX3BzcjJfc2Yu
+YyBpbmRleCAwM2ZmMWNkZGIuLmE5YmUxYTFlYyAxMDA2NDQNCi0tLSBhL3Rlc3RzL2ludGVsL2tt
+c19wc3IyX3NmLmMNCisrKyBiL3Rlc3RzL2ludGVsL2ttc19wc3IyX3NmLmMNCkBAIC05NzIsNiAr
+OTcyLDggQEAgc3RhdGljIHZvaWQgcnVuKGRhdGFfdCAqZGF0YSkNCiAJZGVmYXVsdDoNCiAJCWln
+dF9hc3NlcnQoZmFsc2UpOw0KIAl9DQorDQorCXBzcl9zaW5rX2Vycm9yX2NoZWNrKGRhdGEtPmRl
+YnVnZnNfZmQsIGRhdGEtPnBzcl9tb2RlLCBkYXRhLT5vdXRwdXQpOw0KIH0NCiANCiBzdGF0aWMg
+dm9pZCBjbGVhbnVwKGRhdGFfdCAqZGF0YSkNCmRpZmYgLS1naXQgYS90ZXN0cy9pbnRlbC9rbXNf
+cHNyMl9zdS5jIGIvdGVzdHMvaW50ZWwva21zX3BzcjJfc3UuYyBpbmRleCA0MzdlZTM2ZjYuLjAw
+OTlkYWYxZCAxMDA2NDQNCi0tLSBhL3Rlc3RzL2ludGVsL2ttc19wc3IyX3N1LmMNCisrKyBiL3Rl
+c3RzL2ludGVsL2ttc19wc3IyX3N1LmMNCkBAIC0yNzMsNiArMjczLDggQEAgc3RhdGljIHZvaWQg
+cnVuKGRhdGFfdCAqZGF0YSwgaWd0X291dHB1dF90ICpvdXRwdXQpDQogDQogCWlndF9hc3NlcnRf
+ZihyZXN1bHQsDQogCQkgICAgICJObyBtYXRjaGluZyBzZWxlY3RpdmUgdXBkYXRlIGJsb2NrcyBy
+ZWFkIGZyb20gZGVidWdmc1xuIik7DQorDQorCXBzcl9zaW5rX2Vycm9yX2NoZWNrKGRhdGEtPmRl
+YnVnZnNfZmQsIFBTUl9NT0RFXzIsIG91dHB1dCk7DQogfQ0KIA0KIHN0YXRpYyB2b2lkIGNsZWFu
+dXAoZGF0YV90ICpkYXRhLCBpZ3Rfb3V0cHV0X3QgKm91dHB1dCkgZGlmZiAtLWdpdCBhL3Rlc3Rz
+L2ludGVsL2ttc19wc3Jfc3RyZXNzX3Rlc3QuYyBiL3Rlc3RzL2ludGVsL2ttc19wc3Jfc3RyZXNz
+X3Rlc3QuYw0KaW5kZXggZDZlMjM0MGI4Li43M2E2ZWI1NmQgMTAwNjQ0DQotLS0gYS90ZXN0cy9p
+bnRlbC9rbXNfcHNyX3N0cmVzc190ZXN0LmMNCisrKyBiL3Rlc3RzL2ludGVsL2ttc19wc3Jfc3Ry
+ZXNzX3Rlc3QuYw0KQEAgLTM0NCw2ICszNDQsNyBAQCBzdGF0aWMgdm9pZCBydW4oZGF0YV90ICpk
+YXRhKQ0KIA0KIAkvKiBDaGVjayBpZiBhZnRlciBhbGwgdGhpcyBzdHJlc3MgdGhlIFBTUiBpcyBz
+dGlsbCBpbiB0aGUgc2FtZSBzdGF0ZSAqLw0KIAlpZ3RfYXNzZXJ0KHBzcl9nZXRfbW9kZShkYXRh
+LT5kZWJ1Z2ZzX2ZkLCBOVUxMKSA9PSBkYXRhLT5pbml0aWFsX3N0YXRlKTsNCisJcHNyX3Npbmtf
+ZXJyb3JfY2hlY2soZGF0YS0+ZGVidWdmc19mZCwgZGF0YS0+aW5pdGlhbF9zdGF0ZSwgDQorZGF0
+YS0+b3V0cHV0KTsNCiB9DQogDQogaWd0X21haW4NCi0tDQoyLjM0LjENCg0K
