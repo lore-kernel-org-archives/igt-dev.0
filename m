@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE753EED606
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 14:04:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273CFEED609
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 14:05:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6051210E229;
-	Thu, 12 Sep 2024 14:04:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C629910EB91;
+	Thu, 12 Sep 2024 14:05:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CEnmj9/o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TJ4j702M";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26A5310E229
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Sep 2024 14:04:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 110AC10EB91
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Sep 2024 14:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726149884; x=1757685884;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0bmWl7/LbmpFI/PsAOFP6hv80kW/xE2gRorz5G521EY=;
- b=CEnmj9/o2FRahdeWR089nuh9LCu8otKCqIY34habNlTl/Zye+Q4zoeya
- 2bhX0nc7/IpOqYrmd7EVDDJzeK4NgsAB3fKpZdQhK6xJjYIZqPd/wfqAR
- +e2FT9I3F2Pe2u/T9JS8w7ik8UtXSSK5y4m+vCP083M6uX6eTrl60za2J
- lBGX+0K7wpKjIHCe1KQaMth0iDpkRKyLSPywaEn3LHicUohE+glRt1/Uy
- 06rkdgKB3NFT1U82y+l9+7wBJIuP3y8gfwCCgSVDZvCRcr2I+f/9dRHgj
- EukHotJ+4Va02ZKSalMEHNj2t10h7u6UFRFwuZBh5yxezTQpO73DuTMII A==;
-X-CSE-ConnectionGUID: 0E/uP/VaQDuAFi3Q7qhpjw==
-X-CSE-MsgGUID: dkgk2azKRFmLxBtm+4iXcw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="24538949"
-X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; d="scan'208";a="24538949"
+ t=1726149934; x=1757685934;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=s73BsGpzSXCQmV3QrjLp1W3iiJfNczhbVh87AV8dxfI=;
+ b=TJ4j702MOk8cOkIQ8fUNNpJGsGo0eq3GHw2tIygTvv1kZANR15p6Z/cj
+ HxaJ8hjIVbv7N1speYCYTtUNndv0wiPM1f99Uk/HpBXAWSj14A/F0E2x3
+ eWkDwNukAipZqGRJ3hctLN0q+dpouNjCFo1cv1VK0OulhoPG8NbEhAalp
+ HmVJ+2s6h+VDn7DdFQL1qahioTRC4BHWjfw4Zdt+GeG8syd2nJ4iQ/ioC
+ 84x2iV99BCaRjaPKJWGjKK0tjDNt+Re5r180pRJX9EDcoFpcgkAlFEyt7
+ g76PNOwTUv6sz7fI1AMOJzB9y4hORTU9yOrkoW/T6QM3L2TazUJofmzGm g==;
+X-CSE-ConnectionGUID: HJhLUFlYTSmdJkSQLPFx7A==
+X-CSE-MsgGUID: HC20iuCgSbmraXcScU7FOQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="24539100"
+X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; d="scan'208";a="24539100"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2024 07:04:10 -0700
-X-CSE-ConnectionGUID: KDylNzGKRPigyGJb8Uc3oQ==
-X-CSE-MsgGUID: xBcC1W10SDuI+1kZfC533Q==
+ 12 Sep 2024 07:04:20 -0700
+X-CSE-ConnectionGUID: wdOOyHwjTCu+SZr6M2HBfg==
+X-CSE-MsgGUID: Yq+bNmLwQoCIIcjzSk9Xpw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; d="scan'208";a="67425335"
+X-IronPort-AV: E=Sophos;i="6.10,223,1719903600"; d="scan'208";a="67425351"
 Received: from apaszkie-mobl2.apaszkie-mobl2 (HELO localhost)
  ([10.245.244.245])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2024 07:04:07 -0700
+ 12 Sep 2024 07:04:11 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -50,10 +50,13 @@ Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Jari Tahvanainen <jari.tahvanainen@intel.com>,
  Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
  Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH i-g-t 0/1] relax doc generation for non-compiled tests
-Date: Thu, 12 Sep 2024 16:04:00 +0200
-Message-ID: <20240912140401.137060-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t 1/1] scripts/test_list: relax treatment of non-compiled
+ tests
+Date: Thu, 12 Sep 2024 16:04:01 +0200
+Message-ID: <20240912140401.137060-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240912140401.137060-1-kamil.konieczny@linux.intel.com>
+References: <20240912140401.137060-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -72,67 +75,91 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-New tests added with conditional compilation result in error reported
-when generating testlist. For example, with a recent series with new
-eudebug igt tests from here:
-https://patchwork.freedesktop.org/series/136623/
-("Test coverage for GPU debug support")
+Some tests could be added and compiled only when non-default
+meson option is given. It will result in no testlist generated
+for such tests but they could appear in our documentation.
+Currently we report an error in such case.
 
-when --exclude-files option was removed from version 6:
-https://patchwork.freedesktop.org/series/136623/#rev6
+Create a way to detect and report that and treat this as feature
+and do not report it as an error.  This should allow to relax
+processing of chamelium and other new tests.
 
-then compiling with testplan report warnings:
-
-xe_eudebug.testlist: Testlist file not found.
-xe_eudebug_online.testlist: Testlist file not found.
-xe_exec_sip_eudebug.testlist: Testlist file not found.
-Warning: Documented igt@xe_eudebug@attach-debug-metadata doesn't exist on source files
-Warning: Documented igt@xe_eudebug@basic-client doesn't exist on source files
-Warning: Documented igt@xe_eudebug@basic-client-th doesn't exist on source files
-[...rest omitted...]
-
-and exits with an error.
-
-Relax that check to only report error on missing documentation, and treat
-new added tests without a compiled binary as a new tests under development
-or as tests outside a compilation scope (such as chamelium). This should
-allow to have new tests in documentation and track them.
-
-With dropped --exclude-files patch and dropped changes in docs/testplan/meson.build
-generation of testplan succeeds and in report it can be find:
-
-[1897/1905] Generating docs/testplan/xe_tests.rst with a custom command
-xe_eudebug.testlist: Testlist file not found.
-xe_eudebug_online.testlist: Testlist file not found.
-xe_exec_sip_eudebug.testlist: Testlist file not found.
-xe_eudebug: No binary found, test was not compiled.
-xe_eudebug_online: No binary found, test was not compiled.
-xe_exec_sip_eudebug: No binary found, test was not compiled.
-Info: Documented igt@xe_eudebug@attach-debug-metadata don't have a binary xe_eudebug
-Info: Documented igt@xe_eudebug_online@basic-breakpoint don't have a binary xe_eudebug_online
-Info: Documented igt@xe_exec_sip_eudebug@breakpoint-waitsip don't have a binary xe_exec_sip_eudebug
-[1898/1905] Generating docs/testplan/i915_tests.rst with a custom command
-[1899/1905] Generating docs/testplan/kms_tests.rst with a custom command
-[1900/1905] Generating docs/testplan/intel-ci-tests with a custom command
-[1901/1905] Generating docs/testplan/xe_tests.html with a custom command
-[1902/1905] Generating docs/testplan/i915_tests.html with a custom command
-[1903/1905] Compiling C object runner/runner_test.p/runner_tests.c.o
-[1904/1905] Generating docs/testplan/kms_tests.html with a custom command
-[1905/1905] Linking target runner/runner_test
-
+Also while at this, print error information before actually
+exiting with an error code, as previous prints were only
+warnings.
 
 Cc: Christoph Manszewski <christoph.manszewski@intel.com>
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
 Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
 Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-
-Kamil Konieczny (1):
-  scripts/test_list: relax treatment of non-compiled tests
-
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
  scripts/test_list.py | 31 +++++++++++++++++++++++++++++--
  1 file changed, 29 insertions(+), 2 deletions(-)
 
+diff --git a/scripts/test_list.py b/scripts/test_list.py
+index 69c830ca1..322933c26 100644
+--- a/scripts/test_list.py
++++ b/scripts/test_list.py
+@@ -1141,6 +1141,20 @@ class TestList:
+ 
+         return sorted(tests)
+ 
++    def get_notcompiled(self):
++
++        """ Return a list of tests which were not compiled """
++        no_binaries = []
++        for name in self.filenames:
++            test_basename = re.sub(r"\.c$", "", name.split('/')[-1])
++            fname = os.path.join(self.igt_build_path, "tests", test_basename)
++
++            if not os.path.isfile(fname):
++                print(f"{test_basename}: No binary found, test was not compiled.")
++                no_binaries.append(test_basename)
++
++        return sorted(no_binaries)
++
+     #
+     # Validation methods
+     #
+@@ -1177,21 +1191,34 @@ class TestList:
+         # Get a list of tests from
+         run_subtests = set(self.get_testlist())
+ 
++        # Get a list of not compiled tests
++        no_binary = set(self.get_notcompiled())
++
+         # Compare sets
+ 
+         run_missing = list(sorted(run_subtests - doc_subtests))
+         doc_uneeded = list(sorted(doc_subtests - run_subtests))
+ 
++        """Check if there are (possibly unneeded) documented subtests"""
+         if doc_uneeded:
++            un_reported = []
+             for test_name in doc_uneeded:
+-                print(f"Warning: Documented {test_name} doesn't exist on source files")
++                test_basename = test_name.split('@')[1]
++                if test_basename in no_binary:
++                    if test_basename not in un_reported:
++                        print(f"Info: Documented {test_name} don't have a binary {test_basename}")
++                        un_reported.append(test_basename)
++                else:
++                    print(f"Info: Documented {test_name} doesn't exist on source files")
+ 
++        """Check for missing documentation"""
+         if run_missing:
+             for test_name in run_missing:
+                 print(f'Warning: Missing documentation for {test_name}')
+             print('Please refer: docs/test_documentation.md for more details')
+ 
+-        if doc_uneeded or run_missing:
++        if run_missing:
++            print('Error: Missing tests documentation')
+             sys.exit(1)
+ 
+     #
 -- 
 2.43.0
 
