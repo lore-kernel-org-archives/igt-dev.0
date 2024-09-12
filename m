@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF79EDE996
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 03:34:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D552EE6427
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 03:42:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B88B10E196;
-	Thu, 12 Sep 2024 03:34:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 016AE10E855;
+	Thu, 12 Sep 2024 03:42:16 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DCA0110E196;
- Thu, 12 Sep 2024 03:34:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6986093800807155792=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8003C10E5EA;
+ Thu, 12 Sep 2024 03:42:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_PSR_testing_improvement_by_che?=
- =?utf-8?q?cking_sink_status?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/amdgpu=3A_filter_so?=
+ =?utf-8?q?me_asic_for_invalid_packet_length=2E?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hogander, Jouni" <jouni.hogander@intel.com>
+To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Sep 2024 03:34:42 -0000
-Message-ID: <172611208288.989482.2014744369568298254@2413ebb6fbb6>
+Date: Thu, 12 Sep 2024 03:42:14 -0000
+Message-ID: <172611253451.989493.15034260059237712478@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240911054958.1023925-1-jouni.hogander@intel.com>
-In-Reply-To: <20240911054958.1023925-1-jouni.hogander@intel.com>
+References: <20240911062401.1670741-1-jesse.zhang@amd.com>
+In-Reply-To: <20240911062401.1670741-1-jesse.zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,125 +41,23 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6986093800807155792==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: PSR testing improvement by checking sink status
-URL   : https://patchwork.freedesktop.org/series/138498/
-State : success
+Series: tests/amdgpu: filter some asic for invalid packet length.
+URL   : https://patchwork.freedesktop.org/series/138499/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8013_BAT -> XEIGTPW_11720_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (8 -> 8)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11720_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:
-    - bat-lnl-1:          [FAIL][1] ([Intel XE#1069]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8013/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11720/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
-
-  
-  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
+Applying: tests/amdgpu: filter some asic for invalid packet length.
+Using index info to reconstruct a base tree...
+M	tests/amdgpu/amd_queue_reset.c
+Falling back to patching base and 3-way merge...
+Auto-merging tests/amdgpu/amd_queue_reset.c
+CONFLICT (content): Merge conflict in tests/amdgpu/amd_queue_reset.c
+Patch failed at 0001 tests/amdgpu: filter some asic for invalid packet length.
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
 
-Build changes
--------------
-
-  * IGT: IGT_8013 -> IGTPW_11720
-  * Linux: xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8 -> xe-1931-21b08eea4582e996db65c3afa82431e756a9875b
-
-  IGTPW_11720: 11720
-  IGT_8013: 8013
-  xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8: 45bec37c098c2f6232d233c8116236f09327d2b8
-  xe-1931-21b08eea4582e996db65c3afa82431e756a9875b: 21b08eea4582e996db65c3afa82431e756a9875b
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11720/index.html
-
---===============6986093800807155792==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>PSR testing improvement by checking sink status</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138498/">https://patchwork.freedesktop.org/series/138498/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11720/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11720/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8013_BAT -&gt; XEIGTPW_11720_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (8 -&gt; 8)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11720_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8013/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069">Intel XE#1069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11720/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8013 -&gt; IGTPW_11720</li>
-<li>Linux: xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8 -&gt; xe-1931-21b08eea4582e996db65c3afa82431e756a9875b</li>
-</ul>
-<p>IGTPW_11720: 11720<br />
-  IGT_8013: 8013<br />
-  xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8: 45bec37c098c2f6232d233c8116236f09327d2b8<br />
-  xe-1931-21b08eea4582e996db65c3afa82431e756a9875b: 21b08eea4582e996db65c3afa82431e756a9875b</p>
-
-</body>
-</html>
-
---===============6986093800807155792==--
