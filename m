@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E700FEE6457
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 07:43:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 876E3EE645B
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 07:58:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 386C610E343;
-	Thu, 12 Sep 2024 07:43:17 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A3BA10E343;
- Thu, 12 Sep 2024 07:43:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8256971760690414908=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0949810E9CA;
+	Thu, 12 Sep 2024 07:58:05 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f0oMW+vq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2383510E9CA
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Sep 2024 07:58:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1726127884; x=1757663884;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dQ3Gtqrm2P6/h1iogJeZ8UhKMWhVJ/keIUzNakt97MU=;
+ b=f0oMW+vq+dd+7lwGcVuNV9NhuZcVF5CD5y8F6DBhQ0b10n4KfUfAMyvx
+ QGkv5Tg8Q+jwt9gi19sWOYMwdEYiI31ncrvsCQvP9yR83/d2iKtwBuT/y
+ SwnRpGbKbhuDuFdjwmJtZYkM+2/RWMPedruRMRTdSwgNOL4jYNK+dT75B
+ uQztXHA6pFkmjJHKoObhtxwx1npaow1lUPSDL8ErArXVBFRVoZArDagpX
+ 6yz3n+HW2ngktQLAjsDX2KTVOkiNZCdiNIrdGamMEgS7K69Wx1Szov/FY
+ E3hvekcHhKOnWkuTDO+eEQ350IVcMKpKKhshX0uBt7syHrHqtXH1iQwc+ w==;
+X-CSE-ConnectionGUID: a9D8YUAORA+lHBBid2TQOg==
+X-CSE-MsgGUID: fI5FCYSAQQOI7y5P9Z/XNA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="25095442"
+X-IronPort-AV: E=Sophos;i="6.10,222,1719903600"; d="scan'208";a="25095442"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Sep 2024 00:58:02 -0700
+X-CSE-ConnectionGUID: 1WGfektXRfGxvi+OkleQzQ==
+X-CSE-MsgGUID: IT5EcjXLSFiA34n9KTa6qA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,222,1719903600"; d="scan'208";a="67248394"
+Received: from kandpal-x299-ud4-pro.iind.intel.com ([10.190.239.32])
+ by fmviesa006.fm.intel.com with ESMTP; 12 Sep 2024 00:58:00 -0700
+From: Suraj Kandpal <suraj.kandpal@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: mohammed.thasleem@intel.com, karthik.b.s@intel.com, jeevan.b@intel.com,
+ Suraj Kandpal <suraj.kandpal@intel.com>
+Subject: [PATCH i-g-t 0/3] HDCP MST LIC fixes 
+Date: Thu, 12 Sep 2024 13:25:32 +0530
+Message-ID: <20240912075536.710350-1-suraj.kandpal@intel.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/igt=5Ffb=3A_fix_stride_cal?=
- =?utf-8?q?culation_for_igt=5Ffb=5Fget=5Ffnv1a=5Fcrc=28=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Esha Bharadwaj" <quic_ebharadw@quicinc.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 12 Sep 2024 07:43:15 -0000
-Message-ID: <172612699535.990124.13660614148448851571@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240911210058.477513-1-quic_ebharadw@quicinc.com>
-In-Reply-To: <20240911210058.477513-1-quic_ebharadw@quicinc.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,122 +62,22 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8256971760690414908==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Contains some refactors and fixes to get mst lic tests to
+work as inteneded.
 
-== Series Details ==
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
 
-Series: lib/igt_fb: fix stride calculation for igt_fb_get_fnv1a_crc()
-URL   : https://patchwork.freedesktop.org/series/138547/
-State : failure
+Suraj Kandpal (3):
+  test/kms_content_protection: Fix variable declaration
+  tests/kms_content_protection: Print correct output
+  test/kms_content_protection: Move color change code.
 
-== Summary ==
+ tests/kms_content_protection.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-CI Bug Log - changes from XEIGT_8013_BAT -> XEIGTPW_11727_BAT
-====================================================
+-- 
+2.43.2
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11727_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11727_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (8 -> 0)
-------------------------------
-
-  ERROR: It appears as if the changes made in XEIGTPW_11727_BAT prevented too many machines from booting.
-
-  Missing    (8): bat-bmg-1 bat-lnl-2 bat-adlp-vf bat-lnl-1 bat-dg2-oem2 bat-atsm-2 bat-bmg-2 bat-adlp-7 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8013 -> IGTPW_11727
-  * Linux: xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8 -> xe-1932-1b37d4587b45639327eeb4cce29f77d487f7700a
-
-  IGTPW_11727: 0affb7feaa1daf498d77aeb40519395a24234e78 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8013: 8013
-  xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8: 45bec37c098c2f6232d233c8116236f09327d2b8
-  xe-1932-1b37d4587b45639327eeb4cce29f77d487f7700a: 1b37d4587b45639327eeb4cce29f77d487f7700a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11727/index.html
-
---===============8256971760690414908==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb: fix stride calculation for igt_fb_get_fnv1a_crc()</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138547/">https://patchwork.freedesktop.org/series/138547/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11727/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11727/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8013_BAT -&gt; XEIGTPW_11727_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11727_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11727_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (8 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_11727_BAT prevented too many machines from booting.</p>
-<p>Missing    (8): bat-bmg-1 bat-lnl-2 bat-adlp-vf bat-lnl-1 bat-dg2-oem2 bat-atsm-2 bat-bmg-2 bat-adlp-7 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8013 -&gt; IGTPW_11727</li>
-<li>Linux: xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8 -&gt; xe-1932-1b37d4587b45639327eeb4cce29f77d487f7700a</li>
-</ul>
-<p>IGTPW_11727: 0affb7feaa1daf498d77aeb40519395a24234e78 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8013: 8013<br />
-  xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8: 45bec37c098c2f6232d233c8116236f09327d2b8<br />
-  xe-1932-1b37d4587b45639327eeb4cce29f77d487f7700a: 1b37d4587b45639327eeb4cce29f77d487f7700a</p>
-
-</body>
-</html>
-
---===============8256971760690414908==--
