@@ -4,49 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3B66EEE26C
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85923EEE26E
 	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 22:30:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3CB3F10EC63;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3417310EC62;
 	Thu, 12 Sep 2024 22:30:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mb9rRJy8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Se5Uybo1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 376FB10EC62
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE8B310EC63
  for <igt-dev@lists.freedesktop.org>; Thu, 12 Sep 2024 22:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726180211; x=1757716211;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=1t/tuwXbsz4A8KLE7qS9PfcwAGfh2TgG71rEdt1uEWM=;
- b=mb9rRJy8AG1yfIRETJIhm+vFiUj01toapJTCGi5SH17JhZ7rTNRFtPeS
- lvQDah2gTIqSI/mlKLde2Xj08UukI4WOsSk0mjwCr4ckErxvJR+a0uOLi
- WU0oI4HxSPupV1Bw9VIEie0g3hCXOFnyf1LFG0db4ZwG1J6P3olPnN4u9
- ExM0BefDl/K+TUfKbrbDrI/GCLNDUrL+34fg5nZRnOB3V5lWGBpY1bPts
- BmJjuhNXWLS6OIqwHlK8slY0Ev2KtqLlcaOZB/QX+5AQ4n5phiR5Mgieu
- zeMtiIknF5PVNRlr6Sg4nk5lb9kxdz0Ey2eU86n7BsFWsaJnqavO4BW6j A==;
-X-CSE-ConnectionGUID: bHeLLF6fTuqG3Idlh3DLZA==
-X-CSE-MsgGUID: i9ITbCqoSc6oEsZ8+jPO5g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="42577563"
-X-IronPort-AV: E=Sophos;i="6.10,224,1719903600"; d="scan'208";a="42577563"
+ t=1726180212; x=1757716212;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=ohjTjT7hRyyWHGXN8tDzgTa6jUsPKTz200o9oYUwQuQ=;
+ b=Se5Uybo1zeaCwH08uhD8UzGDeknzrcKTiwIuBgc2bkaHPlEgb+bhEcbO
+ ozvfzldEE5tka6tgWbccMXqJo7CgtuwPecf2Z+N6tqXLU2zxH/Osay8aM
+ MlVyu+G6PohbIciRaZ9zOXh+V3VsD1M/VsP7JB7A9YYiT8AvIkd6eMizb
+ RHvU9jtQSzNqzXzGbEIVFKcqxxcYlyoFZFrE/RzxsWReAzPIghT6u7x9w
+ gCzWyU/vxbPrp01CuCuovGoayrKfQxsz882zwy079JT1Ut67PgkvI7t4j
+ c1TFkQ9/mn5/LRXb/OonEcQwOdjX1PRmw4AMTjCuOGva6iMylPHcU8SvP w==;
+X-CSE-ConnectionGUID: WNmwDbZRRoSTYNnLvmLjwg==
+X-CSE-MsgGUID: kQb66lBMSA+MYciLHsybGA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="42577564"
+X-IronPort-AV: E=Sophos;i="6.10,224,1719903600"; d="scan'208";a="42577564"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  12 Sep 2024 15:30:11 -0700
-X-CSE-ConnectionGUID: WcEqq9K4Qv62uccPqoYlXw==
-X-CSE-MsgGUID: hvGQP19cSQK2nvJizSrGEw==
+X-CSE-ConnectionGUID: P8zc9tO6Qgijl41t41ofuQ==
+X-CSE-MsgGUID: 6Jq9ZRDHQKqJakL4dUY0dQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,224,1719903600"; d="scan'208";a="68633425"
+X-IronPort-AV: E=Sophos;i="6.10,224,1719903600"; d="scan'208";a="68633426"
 Received: from lstrano-desk.jf.intel.com ([10.54.39.91])
  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  12 Sep 2024 15:30:10 -0700
 From: Matthew Brost <matthew.brost@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH 0/1] Fixup xe_dma_buf_sync to new KMD behavior 
-Date: Thu, 12 Sep 2024 15:31:09 -0700
-Message-Id: <20240912223110.1054974-1-matthew.brost@intel.com>
+Subject: [PATCH 1/1] tests/intel/xe_dma_buf_sync: Update dma-buf sync to use
+ import read / write deps
+Date: Thu, 12 Sep 2024 15:31:10 -0700
+Message-Id: <20240912223110.1054974-2-matthew.brost@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240912223110.1054974-1-matthew.brost@intel.com>
+References: <20240912223110.1054974-1-matthew.brost@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,21 +67,249 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-External BOs will use BOOKKEEP slots [1] per expected behavior with user
-space setting the read / write dependencies. Fixup xe_dma_buf_sync to
-conform to this behavior.
+The KMD was incorrectly setting write dependencies on all external BOs
+when the read / write dependencies should be set via import IOCTLs in
+user space. Update xe_dma_buf_sync to reflect this behavior.
 
-Matt
+While we are here, test all read / write dependency combinations and
+update test documentation.
 
-[1] https://patchwork.freedesktop.org/series/138531/
-
-Matthew Brost (1):
-  tests/intel/xe_dma_buf_sync: Update dma-buf sync to use import read /
-    write deps
-
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+---
  tests/intel/xe_dma_buf_sync.c | 137 +++++++++++++++++++---------------
  1 file changed, 76 insertions(+), 61 deletions(-)
 
+diff --git a/tests/intel/xe_dma_buf_sync.c b/tests/intel/xe_dma_buf_sync.c
+index 7af80dd2f2..3e8d89e950 100644
+--- a/tests/intel/xe_dma_buf_sync.c
++++ b/tests/intel/xe_dma_buf_sync.c
+@@ -21,69 +21,48 @@
+ #include "xe/xe_spin.h"
+ #include <string.h>
+ #include <linux/dma-buf.h>
++#include <lib/dmabuf_sync_file.h>
+ #include <poll.h>
+ 
+ #define MAX_N_BO	16
+ #define N_FD		2
+ 
+-#define READ_SYNC	(0x1 << 0)
+-
+-struct igt_dma_buf_sync_file {
+-	__u32 flags;
+-	__s32 fd;
+-};
+-
+-#define IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE \
+-	_IOWR(DMA_BUF_BASE, 2, struct igt_dma_buf_sync_file)
+-
+-static int dmabuf_export_sync_file(int dmabuf, uint32_t flags)
+-{
+-	struct igt_dma_buf_sync_file arg;
+-
+-	arg.flags = flags;
+-	arg.fd = -1;
+-	do_ioctl(dmabuf, IGT_DMA_BUF_IOCTL_EXPORT_SYNC_FILE, &arg);
+-
+-	return arg.fd;
+-}
+-
+-static bool dmabuf_busy(int dmabuf, uint32_t flags)
+-{
+-	struct pollfd pfd = { .fd = dmabuf };
+-
+-	/* If DMA_BUF_SYNC_WRITE is set, we don't want to set POLLIN or
+-	 * else poll() may return a non-zero value if there are only read
+-	 * fences because POLLIN is ready even if POLLOUT isn't.
+-	 */
+-	if (flags & DMA_BUF_SYNC_WRITE)
+-		pfd.events |= POLLOUT;
+-	else if (flags & DMA_BUF_SYNC_READ)
+-		pfd.events |= POLLIN;
+-
+-	return poll(&pfd, 1, 0) == 0;
+-}
+-
+-static bool sync_file_busy(int sync_file)
+-{
+-	struct pollfd pfd = { .fd = sync_file, .events = POLLIN };
+-	return poll(&pfd, 1, 0) == 0;
+-}
++#define WRITE_SYNC	(0x1 << 0)
++#define READ_SYNC	(0x1 << 1)
++#define READ_WRITE_SYNC	(0x1 << 2)
++#define WRITE_READ_SYNC	(0x1 << 3)
+ 
+ /**
+- * SUBTEST: export-dma-buf-once
+- * Description: Test exporting a sync file from a dma-buf
++ * SUBTEST: export-dma-buf-once-write-sync
++ * Description: Test exporting a sync file from a dma-buf with write deps once
+  * Functionality: export
+  *
+  * SUBTEST: export-dma-buf-once-read-sync
+- * Description: Test export prime BO as sync file and verify business
++ * Description: Test exporting a sync file from a dma-buf with read deps once
++ * Functionality: export
++ *
++ * SUBTEST: export-dma-buf-once-read-write-sync
++ * Description: Test exporting a sync file from a dma-buf with read followed by write deps once
+  * Functionality: export
+  *
+- * SUBTEST: export-dma-buf-many
+- * Description: Test exporting many sync files from a dma-buf
++ * SUBTEST: export-dma-buf-once-write-read-sync
++ * Description: Test exporting a sync file from a dma-buf with write followed by read deps once
++ * Functionality: export
++ *
++ * SUBTEST: export-dma-buf-many-write-sync
++ * Description: Test exporting a sync file from a dma-buf with write deps many times
+  * Functionality: export
+  *
+  * SUBTEST: export-dma-buf-many-read-sync
+- * Description: Test export many prime BO as sync file and verify business
++ * Description: Test exporting a sync file from a dma-buf with read deps many times
++ * Functionality: export
++ *
++ * SUBTEST: export-dma-buf-many-read-write-sync
++ * Description: Test exporting a sync file from a dma-buf with read followed by write deps many times
++ * Functionality: export
++ *
++ * SUBTEST: export-dma-buf-many-write-read-sync
++ * Description: Test exporting a sync file from a dma-buf with write followed by read deps many times
+  * Functionality: export
+  */
+ 
+@@ -145,7 +124,7 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+ 		uint64_t sdi_addr = addr + sdi_offset;
+ 		uint64_t spin_offset = (char *)&data[i]->spin - (char *)data[i];
+ 		struct drm_xe_sync sync[2] = {
+-			{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, },
++			{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+ 			{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+ 		};
+ 		struct drm_xe_exec exec = {
+@@ -153,26 +132,41 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+ 			.syncs = to_user_pointer(sync),
+ 		};
+ 		struct xe_spin_opts spin_opts = { .addr = addr + spin_offset, .preempt = true };
+-		uint32_t syncobj;
++		uint32_t syncobj, syncobj_signal;
+ 		int b = 0;
+-		int sync_fd;
++		int sync_fd, syncobj_fd;
+ 
+ 		/* Write spinner on FD[0] */
+ 		xe_spin_init(&data[i]->spin, &spin_opts);
++		syncobj_signal = syncobj_create(fd[0], 0);
+ 		exec.exec_queue_id = exec_queue[0];
+ 		exec.address = spin_opts.addr;
++		exec.num_syncs = 1;
++		sync[0].handle = syncobj_signal;
+ 		xe_exec(fd[0], &exec);
+ 
++
++		syncobj_fd = syncobj_handle_to_fd(fd[0], syncobj_signal,
++						  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
++
++		/* Set read / write deps */
++		if (flags & (READ_SYNC | READ_WRITE_SYNC))
++			dmabuf_import_sync_file(dma_buf_fd[i],
++						DMA_BUF_SYNC_READ, syncobj_fd);
++		else
++			dmabuf_import_sync_file(dma_buf_fd[i],
++						DMA_BUF_SYNC_WRITE, syncobj_fd);
++
+ 		/* Export prime BO as sync file and veify business */
+-		if (flags & READ_SYNC)
++		if (flags & (READ_SYNC | WRITE_READ_SYNC))
+ 			sync_fd = dmabuf_export_sync_file(dma_buf_fd[i],
+ 							  DMA_BUF_SYNC_READ);
+ 		else
+ 			sync_fd = dmabuf_export_sync_file(dma_buf_fd[i],
+ 							  DMA_BUF_SYNC_WRITE);
+ 		xe_spin_wait_started(&data[i]->spin);
+-		igt_assert(sync_file_busy(sync_fd));
+-		igt_assert(dmabuf_busy(dma_buf_fd[i], DMA_BUF_SYNC_READ));
++		if (!(flags & READ_SYNC))
++			igt_assert(sync_file_busy(sync_fd));
+ 
+ 		/* Convert sync file to syncobj */
+ 		syncobj = syncobj_create(fd[1], 0);
+@@ -185,6 +179,7 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+ 		data[i]->batch[b++] = 0xc0ffee;
+ 		data[i]->batch[b++] = MI_BATCH_BUFFER_END;
+ 		igt_assert(b <= ARRAY_SIZE(data[i]->batch));
++		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+ 		sync[0].handle = syncobj;
+ 		sync[1].handle = syncobj_create(fd[1], 0);
+ 		exec.exec_queue_id = exec_queue[1];
+@@ -194,9 +189,15 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+ 
+ 		/* Verify exec blocked on spinner / prime BO */
+ 		usleep(5000);
+-		igt_assert(!syncobj_wait(fd[1], &sync[1].handle, 1, 1, 0,
+-					 NULL));
+-		igt_assert_eq(data[i]->data, 0x0);
++		if (flags & READ_SYNC) {
++			igt_assert(syncobj_wait(fd[1], &sync[1].handle, 1, INT64_MAX,
++						0, NULL));
++			igt_assert_eq(data[i]->data, 0xc0ffee);
++		} else {
++			igt_assert(!syncobj_wait(fd[1], &sync[1].handle, 1, 1, 0,
++						 NULL));
++			igt_assert_eq(data[i]->data, 0x0);
++		}
+ 
+ 		/* End spinner and verify exec complete */
+ 		xe_spin_end(&data[i]->spin);
+@@ -205,9 +206,11 @@ test_export_dma_buf(struct drm_xe_engine_class_instance *hwe0,
+ 		igt_assert_eq(data[i]->data, 0xc0ffee);
+ 
+ 		/* Clean up */
++		syncobj_destroy(fd[0], syncobj_signal);
+ 		syncobj_destroy(fd[1], sync[0].handle);
+ 		syncobj_destroy(fd[1], sync[1].handle);
+ 		close(sync_fd);
++		close(syncobj_fd);
+ 		addr += bo_size;
+ 	}
+ 
+@@ -238,11 +241,11 @@ igt_main
+ 			}
+ 	}
+ 
+-	igt_subtest("export-dma-buf-once")
+-		test_export_dma_buf(hwe0, hwe1, 1, 0);
++	igt_subtest("export-dma-buf-once-write-sync")
++		test_export_dma_buf(hwe0, hwe1, 1, WRITE_SYNC);
+ 
+-	igt_subtest("export-dma-buf-many")
+-		test_export_dma_buf(hwe0, hwe1, 16, 0);
++	igt_subtest("export-dma-buf-many-write-sync")
++		test_export_dma_buf(hwe0, hwe1, 16, WRITE_SYNC);
+ 
+ 	igt_subtest("export-dma-buf-once-read-sync")
+ 		test_export_dma_buf(hwe0, hwe1, 1, READ_SYNC);
+@@ -250,6 +253,18 @@ igt_main
+ 	igt_subtest("export-dma-buf-many-read-sync")
+ 		test_export_dma_buf(hwe0, hwe1, 16, READ_SYNC);
+ 
++	igt_subtest("export-dma-buf-once-read-write-sync")
++		test_export_dma_buf(hwe0, hwe1, 1, READ_WRITE_SYNC);
++
++	igt_subtest("export-dma-buf-many-read-write-sync")
++		test_export_dma_buf(hwe0, hwe1, 16, READ_WRITE_SYNC);
++
++	igt_subtest("export-dma-buf-once-write-read-sync")
++		test_export_dma_buf(hwe0, hwe1, 1, WRITE_READ_SYNC);
++
++	igt_subtest("export-dma-buf-many-write-read-sync")
++		test_export_dma_buf(hwe0, hwe1, 16, WRITE_READ_SYNC);
++
+ 	igt_fixture
+ 		drm_close_driver(fd);
+ }
 -- 
 2.34.1
 
