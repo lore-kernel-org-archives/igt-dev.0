@@ -4,54 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C71A5EE644D
-	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 06:16:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DC76EE57C7
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 06:16:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E628910EAD5;
-	Thu, 12 Sep 2024 06:16:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 03A8010EAD9;
+	Thu, 12 Sep 2024 06:16:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OQKxKUzK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cn8UXD+G";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5000210EAD5
- for <igt-dev@lists.freedesktop.org>; Thu, 12 Sep 2024 06:16:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFE2810EAD9
+ for <igt-dev@lists.freedesktop.org>; Thu, 12 Sep 2024 06:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726121807; x=1757657807;
+ t=1726121811; x=1757657811;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=BDW2QGdXE9stHlHcNSluFq+rI7aAv//BBZeh+87JvV8=;
- b=OQKxKUzKhfyckLkihcTmPqMaCs1iMf5woDT5XdLUQ+nTJTWbJzx0Plha
- DOpwRM6V3RRRZoNq2Ie22U2pkThv+mlHGx0IRjKCVXSkFRKbalcqqsBNF
- 39oy254tY6yQA6LfTN7E5hsWR9ECaMPx/LCz643a9F+G205RTL2CZ631r
- CG1PZRyuUOe1sEbx0kmUhoJ24hTggGCxDB2xtFPcatMwjEBeqM8w27bm7
- xbc81Ts1duAE2+kqRrwIQ52m41fm6s2v2G5lB98gD2MGEFbHYd5xxnWFh
- xD428x8A1+VR2Rzh52FGUcvhw6XLu0GcAgEGcDwC8Zlvb/NHYS8aWJlFc Q==;
-X-CSE-ConnectionGUID: NsikaokbTMeQp4Sv/PKTUQ==
-X-CSE-MsgGUID: J4Hrzu/9S1S5nJcFd1lnpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="25056617"
-X-IronPort-AV: E=Sophos;i="6.10,222,1719903600"; d="scan'208";a="25056617"
+ bh=V/vBCxp9cCKpS3M9mlmPNiVsDOMjC8F87Xawk+fHSaw=;
+ b=Cn8UXD+GaLuuhhAlaX/JrUZCNNH2A0cGRnyMH2C9144eKAH7mcc5z26i
+ BTAxo8URwmqkueApP2qXv2++5QBVtJms1KhZ3CAvlPZN0JV+v8hvfbAKj
+ rDcgICwwDDH01PYpQfjCzSI9soEG+yJt8f44EFElD+6txSDsVfRlTWCSV
+ Brzr8JFp2zrk0RQT+9V3GVLaMJU1yChonyQkUtYp2g6gGJHmusy9DQqTH
+ /dZScVyFD0bpjxXrHzr2lWtiMoiazzcxgSAhiL0iReKwOj94xoaQOg5rX
+ hE8RtWMaZ3Ib6v21U0VnR9Ij6Up9JwCBFvZAMUmi3L8GssxxFtqbSF7bA A==;
+X-CSE-ConnectionGUID: njHW0UdCSE2TCEAqttCFDw==
+X-CSE-MsgGUID: Hg2mrrJFSsGPcyGodDYwqA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="25056621"
+X-IronPort-AV: E=Sophos;i="6.10,222,1719903600"; d="scan'208";a="25056621"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2024 23:16:47 -0700
-X-CSE-ConnectionGUID: HyZ9EMGpRG2GN6t0mC8QWQ==
-X-CSE-MsgGUID: tiI1TVtmR86MAgRXgvV1Bw==
+ 11 Sep 2024 23:16:50 -0700
+X-CSE-ConnectionGUID: Au9vM8DeTb2cDf48PNv7CQ==
+X-CSE-MsgGUID: Sq2E84c8TsCg3Xg52NXUGA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,222,1719903600"; d="scan'208";a="98310273"
+X-IronPort-AV: E=Sophos;i="6.10,222,1719903600"; d="scan'208";a="98310288"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 23:16:45 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 23:16:49 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: imre.deak@intel.com,
 	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 3/6] lib/igt_kms: allow set and reset value to be same
-Date: Thu, 12 Sep 2024 11:58:36 +0530
-Message-Id: <20240912062839.760661-4-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 5/6] tests/intel/kms_dp_fallback: add test for
+ validating fallback
+Date: Thu, 12 Sep 2024 11:58:38 +0530
+Message-Id: <20240912062839.760661-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240912062839.760661-1-kunal1.joshi@intel.com>
 References: <20240912062839.760661-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,101 +70,491 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-allow set and reset value to be same, let the caller handle
-this scenario instead.
+add test to valdiate fallback for DP connector,
+eDP subtest will be added later.
 
-example scenario where this is required.
-i915_dp_force_link_rate should be auto before starting test
-should be auto at exit
+How does test validates fallback?
+- test start by doing initial modeset on default mode
+   (if connector is DP then we enable just that connector,
+    if its DP-MST we enable all on the same topology)
+- force link training failures and retrain until we reach
+  lowest param or retrain is disabled
+- expect hotplug and link-status to turn bad
+- expect link params reduce after fallback
 
-v2: handle the scenario at caller side
+v2: add test for mst (imre)
+    refresh mode list (imre)
+    monitor got hotplugs (imre)
+    check link parameter are reduced (imre)
 
+v3: call check_fn (Santosh)
+
+v4: handle buggy lg monitor (Imre)
+    remove reset in between (Imre)
+
+v5: fit modes wrt to bw in non-mst case as well
+
+v6: remove LT_FAILURE_SAME_CAPS (Imre)
+    explain LT_FAILURE_REDUCED_CAPS to be 2 (Imre)
+    combine infra for mst and non-mst case (Imre)
+    call igt_reset_link_params before setup (Imre)
+    Avoid duplication setting prev_(link_rate/lane_count) (Imre)
+    use the cached property name here instead of hard-coding it (Imre)
+    move test logic to function (Imre)
+    remove extra w/s (Imre)
+    remove braces in one liners (Imre)
+    enhance igt_info message (Pranay)
+
+Cc: Imre Deak <imre.deak@intel.com>
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Suggested-by: Imre Deak <imre.deak@intel.com>
 ---
- lib/igt_kms.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ tests/intel/kms_fallback.c | 423 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build          |   1 +
+ 2 files changed, 424 insertions(+)
+ create mode 100644 tests/intel/kms_fallback.c
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 863eb5331..a7f8d0f83 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1557,7 +1557,8 @@ static void connector_attr_free(struct igt_connector_attr *c)
- static bool connector_attr_set(int idx, drmModeConnector *connector,
- 			       int dir, igt_connector_attr_set set,
- 			       const char *attr, const char *value,
--			       const char *reset_value)
-+			       const char *reset_value,
-+			       bool allow_set_equals_reset)
- {
- 	struct igt_connector_attr *c;
- 
-@@ -1573,7 +1574,7 @@ static bool connector_attr_set(int idx, drmModeConnector *connector,
- 		return false;
- 	}
- 
--	if (!strcmp(c->value, c->reset_value))
-+	if (!allow_set_equals_reset && !strcmp(c->value, c->reset_value))
- 		connector_attr_free(c);
- 
- 	return true;
-@@ -1582,7 +1583,8 @@ static bool connector_attr_set(int idx, drmModeConnector *connector,
- static bool connector_attr_set_sysfs(int drm_fd,
- 				     drmModeConnector *connector,
- 				     const char *attr, const char *value,
--				     const char *reset_value)
-+				     const char *reset_value,
-+				     bool allow_set_equals_reset)
- {
- 	char name[80];
- 	int idx, dir;
-@@ -1600,7 +1602,8 @@ static bool connector_attr_set_sysfs(int drm_fd,
- 		return false;
- 
- 	if (!connector_attr_set(idx, connector, dir,
--				igt_sysfs_set, attr, value, reset_value))
-+				igt_sysfs_set, attr, value, reset_value,
-+				allow_set_equals_reset))
- 		return false;
- 
- 	igt_debug("Connector %s/%s is now %s\n", name, attr, value);
-@@ -1611,7 +1614,8 @@ static bool connector_attr_set_sysfs(int drm_fd,
- static bool connector_attr_set_debugfs(int drm_fd,
- 				       drmModeConnector *connector,
- 				       const char *attr, const char *value,
--				       const char *reset_value)
-+				       const char *reset_value,
-+				       bool allow_set_equals_reset)
- {
- 	char name[80];
- 	int idx, dir;
-@@ -1630,7 +1634,7 @@ static bool connector_attr_set_debugfs(int drm_fd,
- 
- 	if (!connector_attr_set(idx, connector, dir,
- 				igt_sysfs_set, attr,
--				value, reset_value))
-+				value, reset_value, allow_set_equals_reset))
- 		return false;
- 
- 	igt_info("Connector %s/%s is now %s\n", name, attr, value);
-@@ -1662,7 +1666,8 @@ static bool force_connector(int drm_fd,
- 			    const char *value)
- {
- 	return connector_attr_set_sysfs(drm_fd, connector,
--					"status", value, "detect");
-+					"status", value, "detect",
-+					false);
- }
- 
- /**
-@@ -1727,7 +1732,7 @@ static bool force_connector_bigjoiner(int drm_fd,
- {
- 	return connector_attr_set_debugfs(drm_fd, connector,
- 					  "i915_bigjoiner_force_enable",
--					  value, "0");
-+					  value, "0", false);
- }
- 
- /**
+diff --git a/tests/intel/kms_fallback.c b/tests/intel/kms_fallback.c
+new file mode 100644
+index 000000000..4b6791b4d
+--- /dev/null
++++ b/tests/intel/kms_fallback.c
+@@ -0,0 +1,423 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2024 Intel Corporation
++ */
++
++/**
++ * TEST: kms fallback
++ * Category: Display
++ * Description: Test link training fallback for eDP/DP connectors
++ * Driver requirement: i915, xe
++ * Functionality: link training
++ * Mega feature: General Display Features
++ * Test category: functionality test
++ */
++
++#include <sys/types.h>
++
++#include "igt.h"
++#include "igt_psr.h"
++
++/**
++ * SUBTEST: dp-fallback
++ * Description: Test fallback on DP connectors
++ */
++
++#define RETRAIN_COUNT 1
++/*
++ * Two consecutives link training failures
++ * reduces link params (link rate, lane count)
++ */
++#define LT_FAILURE_REDUCED_CAPS 2
++#define SPURIOUS_HPD_RETRY 3
++
++static int traversed_mst_outputs[IGT_MAX_PIPES];
++static int traversed_mst_output_count;
++typedef struct {
++	int drm_fd;
++	igt_display_t display;
++	drmModeModeInfo *mode;
++	igt_output_t *output;
++	enum pipe pipe;
++	struct igt_fb fb;
++	struct igt_plane *primary;
++	int n_pipes;
++} data_t;
++
++typedef int (*condition_check_fn)(int drm_fd, igt_output_t *output);
++
++IGT_TEST_DESCRIPTION("Test link training fallback");
++
++static void find_mst_outputs(int drm_fd, data_t *data,
++			     igt_output_t *output,
++			     igt_output_t **mst_outputs,
++			     int *num_mst_outputs)
++{
++	bool is_output_mst;
++	uint64_t path_blob_id;
++	igt_output_t *connector_output;
++	drmModePropertyPtr path_prop = NULL;
++	drmModePropertyPtr connector_path_prop = NULL;
++
++	igt_assert_f(output, "Invalid output\n");
++
++	/*
++	 * Check if given output is MST by checking if it has PATH property
++	 */
++	is_output_mst = kmstest_get_property(drm_fd,
++			output->config.connector->connector_id,
++			DRM_MODE_OBJECT_CONNECTOR, "PATH", NULL,
++			&path_blob_id, &path_prop);
++
++	if (!is_output_mst)
++		return;
++
++	/*
++	 * If output is MST check all other connected output which shares
++	 * same path and fill mst_outputs and num_mst_outputs
++	 */
++	for_each_connected_output(&data->display, connector_output) {
++
++		connector_path_prop = NULL;
++
++		kmstest_get_property(drm_fd,
++				     connector_output->config.connector->connector_id,
++				     DRM_MODE_OBJECT_CONNECTOR, "PATH",
++				     NULL, &path_blob_id,
++				     &connector_path_prop);
++
++		if (connector_path_prop && path_prop &&
++		    connector_path_prop->prop_id == path_prop->prop_id)
++			mst_outputs[(*num_mst_outputs)++] = connector_output;
++
++		if (connector_path_prop)
++			drmModeFreeProperty(connector_path_prop);
++	}
++	if (path_prop)
++		drmModeFreeProperty(path_prop);
++}
++
++static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
++			      int *output_count)
++{
++	int i;
++	igt_output_t *output;
++
++	igt_require_f(igt_check_output_is_dp_mst(data->output),
++		      "Not a valid MST connector\n");
++
++	/*
++	 * Check if this is already traversed
++	 */
++	for (i = 0; i < traversed_mst_output_count; i++)
++		if (traversed_mst_outputs[i] == data->output->config.connector->connector_id)
++			return false;
++
++	find_mst_outputs(data->drm_fd, data, data->output,
++			 mst_output, output_count);
++
++	for (i = 0; i < *output_count; i++) {
++		output = mst_output[i];
++		traversed_mst_outputs[traversed_mst_output_count++] = output->config.connector->connector_id;
++		igt_info("Output %s is in same topology as %s\n",
++			 igt_output_name(output),
++			 igt_output_name(data->output));
++	}
++
++	return true;
++}
++
++static void setup_pipe_on_outputs(data_t *data,
++				      igt_output_t *outputs[],
++				      int *output_count)
++{
++	int i = 0;
++
++	igt_require_f(data->n_pipes >= *output_count,
++		      "Need %d pipes to assign to %d outputs\n",
++		      data->n_pipes, *output_count);
++
++	for_each_pipe(&data->display, data->pipe) {
++		if (i >= *output_count)
++			break;
++		igt_info("Setting pipe %s on output %s\n",
++			 kmstest_pipe_name(data->pipe),
++			 igt_output_name(outputs[i]));
++		igt_output_set_pipe(outputs[i++], data->pipe);
++	}
++}
++
++static void setup_modeset_on_outputs(data_t *data,
++				     igt_output_t *outputs[],
++				     int *output_count,
++				     drmModeModeInfo *mode[],
++				     struct igt_fb fb[],
++				     struct igt_plane *primary[])
++{
++	int i;
++
++	for (i = 0; i < *output_count; i++) {
++		outputs[i]->force_reprobe = true;
++		igt_output_refresh(outputs[i]);
++		mode[i] = igt_output_get_mode(outputs[i]);
++		igt_info("Mode %dx%d@%d on output %s\n",
++			 mode[i]->hdisplay, mode[i]->vdisplay,
++			 mode[i]->vrefresh,
++			 igt_output_name(outputs[i]));
++		primary[i] = igt_output_get_plane_type(outputs[i],
++						       DRM_PLANE_TYPE_PRIMARY);
++		igt_create_color_fb(data->drm_fd,
++				    mode[i]->hdisplay,
++				    mode[i]->vdisplay,
++				    DRM_FORMAT_XRGB8888,
++				    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0,
++				    &fb[i]);
++		igt_plane_set_fb(primary[i], &fb[i]);
++	}
++}
++
++static bool fit_modes_in_bw(data_t *data)
++{
++	bool found;
++	int ret;
++
++	if (!igt_display_try_commit2(&data->display, COMMIT_ATOMIC)) {
++		found = igt_override_all_active_output_modes_to_fit_bw(&data->display);
++		igt_require_f(found,
++			      "No valid mode combo found for MST modeset\n");
++		ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
++		igt_require_f(ret == 0,
++			      "Commit failure during MST modeset\n");
++	}
++	return true;
++}
++
++static bool validate_modeset_for_outputs(data_t *data,
++					igt_output_t *outputs[],
++					int *output_count,
++					drmModeModeInfo *mode[],
++					struct igt_fb fb[],
++					struct igt_plane *primary[])
++{
++	igt_require_f(*output_count > 0, "Require at least 1 output\n");
++	setup_pipe_on_outputs(data, outputs, output_count);
++	setup_modeset_on_outputs(data, outputs,
++				 output_count,
++				 mode, fb, primary);
++	igt_assert_f(fit_modes_in_bw(data), "Unable to fit modes in bw\n");
++	return true;
++}
++
++static bool setup_outputs(data_t *data, bool is_mst,
++		      igt_output_t *outputs[],
++		      int *output_count, drmModeModeInfo *mode[],
++		      struct igt_fb fb[], struct igt_plane *primary[])
++{
++	bool ret;
++
++	*output_count = 0;
++
++	if (is_mst) {
++		ret = setup_mst_outputs(data, outputs, output_count);
++		if (!ret) {
++			igt_info("Skipping MST output %s as already tested\n",
++				 igt_output_name(data->output));
++			return false;
++		}
++	} else
++		outputs[(*output_count)++] = data->output;
++
++	ret = validate_modeset_for_outputs(data, outputs,
++					   output_count, mode,
++					   fb, primary);
++
++	if (!ret) {
++		igt_info("Skipping output %s as valid pipe/output combo not found\n",
++			 igt_output_name(data->output));
++		return false;
++	}
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	return true;
++}
++
++static int check_condition_with_timeout(int drm_fd, igt_output_t *output,
++					condition_check_fn check_fn,
++					double interval, double timeout)
++{
++	struct timespec start_time, current_time;
++	double elapsed_time;
++
++	clock_gettime(CLOCK_MONOTONIC, &start_time);
++
++	while (1) {
++		if (check_fn(drm_fd, output) == 0)
++			return 0;
++
++		clock_gettime(CLOCK_MONOTONIC, &current_time);
++		elapsed_time = (current_time.tv_sec - start_time.tv_sec) +
++			(current_time.tv_nsec - start_time.tv_nsec) / 1e9;
++
++		if (elapsed_time >= timeout)
++			return -1;
++
++		usleep((useconds_t)(interval * 1000000));
++	}
++}
++
++static void test_fallback(data_t *data, bool is_mst)
++{
++	int output_count, retries;
++	int max_link_rate, curr_link_rate, prev_link_rate;
++	int max_lane_count, curr_lane_count, prev_lane_count;
++	igt_output_t *outputs[IGT_MAX_PIPES];
++	uint32_t link_status_prop_id;
++	uint64_t link_status_value;
++	drmModeModeInfo *modes[IGT_MAX_PIPES];
++	drmModePropertyPtr link_status_prop;
++	struct igt_fb fbs[IGT_MAX_PIPES];
++	struct igt_plane *primarys[IGT_MAX_PIPES];
++	struct udev_monitor *mon;
++
++	igt_display_reset(&data->display);
++	igt_reset_link_params(data->drm_fd, data->output);
++	retries = SPURIOUS_HPD_RETRY;
++
++	if (!setup_outputs(data, is_mst, outputs,
++			   &output_count, modes, fbs,
++			   primarys))
++		return;
++
++	igt_info("Testing link training fallback on %s\n",
++		 igt_output_name(data->output));
++	max_link_rate = igt_get_dp_max_link_param(data->drm_fd, data->output, 1);
++	max_lane_count = igt_get_dp_max_link_param(data->drm_fd, data->output, 0);
++	prev_link_rate = igt_get_dp_link_param_set_for_output(data->drm_fd, data->output, 1);
++	prev_lane_count = igt_get_dp_link_param_set_for_output(data->drm_fd, data->output, 0);
++
++	while (!igt_get_dp_link_retrain_disabled(data->drm_fd,
++						 data->output)) {
++		igt_info("Current link rate: %d, Current lane count: %d\n",
++			 prev_link_rate,
++			 prev_lane_count);
++		mon = igt_watch_uevents();
++		igt_force_lt_failure(data->drm_fd, data->output,
++				     LT_FAILURE_REDUCED_CAPS);
++		igt_force_link_retrain(data->drm_fd, data->output,
++				       RETRAIN_COUNT);
++
++		igt_assert_eq(check_condition_with_timeout(data->drm_fd,
++							   data->output,
++							   igt_get_dp_pending_retrain,
++							   1.0, 20.0), 0);
++		igt_assert_eq(check_condition_with_timeout(data->drm_fd,
++							   data->output,
++							   igt_get_dp_pending_lt_failures,
++							   1.0, 20.0), 0);
++
++		if (igt_get_dp_link_retrain_disabled(data->drm_fd,
++						     data->output)) {
++			igt_reset_connectors();
++			return;
++		}
++
++		igt_assert_f(igt_hotplug_detected(mon, 20),
++			     "Didn't get hotplug for force link training failure\n");
++
++		kmstest_get_property(data->drm_fd,
++				data->output->config.connector->connector_id,
++				DRM_MODE_OBJECT_CONNECTOR, "link-status",
++				&link_status_prop_id, &link_status_value,
++				&link_status_prop);
++		igt_assert_eq(link_status_value, DRM_MODE_LINK_STATUS_BAD);
++		igt_flush_uevents(mon);
++		igt_assert_f(validate_modeset_for_outputs(data,
++							  outputs,
++							  &output_count,
++							  modes,
++							  fbs,
++							  primarys),
++			     "modeset failed\n");
++
++		kmstest_set_connector_link_status(data->drm_fd,
++						  data->output->config.connector,
++						  DRM_MODE_LINK_STATUS_GOOD);
++		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++		igt_assert_eq(data->output->values[IGT_CONNECTOR_LINK_STATUS], DRM_MODE_LINK_STATUS_GOOD);
++		curr_link_rate = igt_get_dp_link_param_set_for_output(data->drm_fd, data->output, 1);
++		curr_lane_count = igt_get_dp_link_param_set_for_output(data->drm_fd, data->output, 0);
++
++		igt_assert_f((curr_link_rate < prev_link_rate ||
++			     curr_lane_count < prev_lane_count) ||
++			     ((curr_link_rate == max_link_rate && curr_lane_count == max_lane_count) && --retries),
++			     "Fallback unsuccessful\n");
++
++		prev_link_rate = curr_link_rate;
++		prev_lane_count = curr_lane_count;
++	}
++}
++
++static bool run_test(data_t *data)
++{
++	bool ran = false;
++	igt_output_t *output;
++
++	for_each_connected_output(&data->display, output) {
++		data->output = output;
++
++		if (!igt_has_force_link_training_failure_debugfs(data->drm_fd,
++								 data->output)) {
++			igt_info("Output %s doesn't support forcing link training failure\n",
++				 igt_output_name(data->output));
++			continue;
++		}
++
++		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort) {
++			igt_info("Skipping output %s as it's not DP\n", output->name);
++				continue;
++		}
++
++		ran = true;
++
++		/*
++		 * Check output is MST
++		 */
++		if (igt_check_output_is_dp_mst(data->output)) {
++			igt_info("Testing MST output %s\n",
++				 igt_output_name(data->output));
++			test_fallback(data, true);
++		} else {
++			igt_info("Testing DP output %s\n",
++				 igt_output_name(data->output));
++			test_fallback(data, false);
++		}
++	}
++	return ran;
++}
++
++igt_main
++{
++	data_t data = {};
++
++	igt_fixture {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL |
++						     DRIVER_XE);
++		kmstest_set_vt_graphics_mode();
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
++		for_each_pipe(&data.display, data.pipe)
++			data.n_pipes++;
++	}
++
++	igt_subtest("dp-fallback") {
++		igt_require_f(run_test(&data),
++			      "Skipping test as no output found or none supports fallback\n");
++	}
++
++	igt_fixture {
++		igt_remove_fb(data.drm_fd, &data.fb);
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 00556c9d6..86fab423b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -249,6 +249,7 @@ intel_kms_progs = [
+ 	'kms_dirtyfb',
+ 	'kms_draw_crc',
+ 	'kms_dsc',
++        'kms_fallback',
+ 	'kms_fb_coherency',
+ 	'kms_fbcon_fbt',
+ 	'kms_fence_pin_leak',
 -- 
 2.43.0
 
