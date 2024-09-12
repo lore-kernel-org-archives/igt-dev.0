@@ -4,75 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D578EE57D7
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Sep 2024 21:01:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A83E6EE57CC
+	for <igt-dev@archiver.kernel.org>; Thu, 12 Sep 2024 00:03:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B77EC10EAAB;
-	Wed, 11 Sep 2024 21:01:25 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=quicinc.com header.i=@quicinc.com header.b="mP4wJFBK";
-	dkim-atps=neutral
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com
- [205.220.180.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E7AD10EAAB
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Sep 2024 21:01:25 +0000 (UTC)
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BElx80010609;
- Wed, 11 Sep 2024 21:01:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
- cc:content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=qcppdkim1; bh=m/KvIniwmO6p7WFmWl5g2U
- mhgmDGlBvbJGn3t8DXGog=; b=mP4wJFBKMOyZnE/L8y2R5z5qJPWiJ17U71KxKr
- s8J0mGk5VAlggw74T3TCLardL/xXECf3ss8DEKrndUvSRVuNSiNXS6FBiaA+X47Z
- L784rALly463vVdy4aTkUs4DHArQnmLUy058Tz2V01Q91xtaTCDNNTu0n2uMFn3I
- TEEAHY0llbxixO94gU3BLRN36QJeJPuj0P5UzEuuOIO3Wt2Do8GwVKtJZA0RHC5n
- NxP+e9qydKamlN0ZDAKd5r946JbwXLjrk9qFu/HWKvMF1zFs4vv2IBG/DOKJQNQG
- iby4d3BWYT47SV4dhHhrldjazPNZFtbDG2TgGe74d57zcMkw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com
- [129.46.96.20])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41gy51awaf-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Sep 2024 21:01:12 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com
- [10.47.97.35])
- by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48BL1Bh4007148
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
- Wed, 11 Sep 2024 21:01:11 GMT
-Received: from hu-ebharadw-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 11 Sep 2024 14:01:11 -0700
-From: Esha Bharadwaj <quic_ebharadw@quicinc.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: <adrinael@adrinael.net>, <quic_abhinavk@quicinc.com>, <arek@hiler.eu>,
- <kamil.konieczny@linux.intel.com>, <juhapekka.heikkila@gmail.com>,
- <bhanuprakash.modem@intel.com>, <ashutosh.dixit@intel.com>,
- <robdclark@chromium.org>, <quic_jesszhan@quicinc.com>
-Subject: [PATCH i-g-t] lib/igt_fb: fix stride calculation for
- igt_fb_get_fnv1a_crc()
-Date: Wed, 11 Sep 2024 14:00:58 -0700
-Message-ID: <20240911210058.477513-1-quic_ebharadw@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E36510E95F;
+	Thu, 12 Sep 2024 00:03:15 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C42110E905;
+ Thu, 12 Sep 2024 00:03:15 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7514642156794053122=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800
- signatures=585085
-X-Proofpoint-ORIG-GUID: QF3beyNJv10WZ3wdUcE6PfNGKnXPcxGY
-X-Proofpoint-GUID: QF3beyNJv10WZ3wdUcE6PfNGKnXPcxGY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 impostorscore=0
- mlxscore=0 bulkscore=0 mlxlogscore=963 priorityscore=1501
- lowpriorityscore=0 malwarescore=0 clxscore=1015 phishscore=0
- suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2408220000 definitions=main-2409110160
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/*=5Fquery=3A_Add_n?=
+ =?utf-8?q?ew_hwconfig_table_entry?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Julia Filipchuk" <julia.filipchuk@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 12 Sep 2024 00:03:15 -0000
+Message-ID: <172609939500.989142.10502978935111076316@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240910011238.254204-1-julia.filipchuk@intel.com>
+In-Reply-To: <20240910011238.254204-1-julia.filipchuk@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,36 +37,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-fb->strides is assigned to the value returned by
-calc_plane_stride() only if it was previously not set by the
-caller. In the case of dumb buffer allocation, this is already
-assigned by the driver.
+--===============7514642156794053122==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Respect the stride requested by the driver in such cases by
-using fb->strides[0] as this is assigned correctly in
-calc_fb_size() only if it was previously not set by the driver.
+== Series Details ==
 
-Signed-off-by: Esha Bharadwaj <quic_ebharadw@quicinc.com>
----
- lib/igt_fb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Series: tests/intel/*_query: Add new hwconfig table entry
+URL   : https://patchwork.freedesktop.org/series/138436/
+State : success
 
-diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-index ab162a5b7..ed016f07d 100644
---- a/lib/igt_fb.c
-+++ b/lib/igt_fb.c
-@@ -4814,7 +4814,7 @@ int igt_fb_get_fnv1a_crc(struct igt_fb *fb, igt_crc_t *crc)
- 	void *map;
- 	char *ptr;
- 	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
--	uint32_t stride = calc_plane_stride(fb, 0);
-+	uint32_t stride = fb->strides[0];
- 
- 	if (fb->num_planes != 1)
- 		return -EINVAL;
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8013_BAT -> XEIGTPW_11715_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (8 -> 8)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11715_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8013/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-lnl-1:          [FAIL][3] ([Intel XE#1069]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8013/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+
+  
+  [Intel XE#1069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8013 -> IGTPW_11715
+  * Linux: xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8 -> xe-1930-024375dea928f05b859b457ceaff8c2b33609121
+
+  IGTPW_11715: 11715
+  IGT_8013: 8013
+  xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8: 45bec37c098c2f6232d233c8116236f09327d2b8
+  xe-1930-024375dea928f05b859b457ceaff8c2b33609121: 024375dea928f05b859b457ceaff8c2b33609121
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/index.html
+
+--===============7514642156794053122==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/*_query: Add new hwconfig table entry</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138436/">https://patchwork.freedesktop.org/series/138436/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8013_BAT -&gt; XEIGTPW_11715_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (8 -&gt; 8)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11715_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8013/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8013/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1069">Intel XE#1069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11715/bat-lnl-1/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8013 -&gt; IGTPW_11715</li>
+<li>Linux: xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8 -&gt; xe-1930-024375dea928f05b859b457ceaff8c2b33609121</li>
+</ul>
+<p>IGTPW_11715: 11715<br />
+  IGT_8013: 8013<br />
+  xe-1929-45bec37c098c2f6232d233c8116236f09327d2b8: 45bec37c098c2f6232d233c8116236f09327d2b8<br />
+  xe-1930-024375dea928f05b859b457ceaff8c2b33609121: 024375dea928f05b859b457ceaff8c2b33609121</p>
+
+</body>
+</html>
+
+--===============7514642156794053122==--
