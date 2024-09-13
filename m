@@ -4,40 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98E0AEEE274
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Sep 2024 00:49:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D5A5EEE277
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Sep 2024 00:49:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2170C10EC75;
+	by gabe.freedesktop.org (Postfix) with ESMTP id E412210EC89;
 	Fri, 13 Sep 2024 00:49:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="BAfNnirQ";
+	dkim=pass (1024-bit key; secure) header.d=riseup.net header.i=@riseup.net header.b="BAI0thtg";
 	dkim-atps=neutral
 Received: from mx1.riseup.net (mx1.riseup.net [198.252.153.129])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 537F610EC5E
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3186810EC5E
  for <igt-dev@lists.freedesktop.org>; Fri, 13 Sep 2024 00:49:56 +0000 (UTC)
 Received: from fews02-sea.riseup.net (fews02-sea-pn.riseup.net [10.0.1.112])
  (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
  key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
  (No client certificate requested)
- by mx1.riseup.net (Postfix) with ESMTPS id 4X4b7F1YXRzDqrc;
- Fri, 13 Sep 2024 00:40:09 +0000 (UTC)
+ by mx1.riseup.net (Postfix) with ESMTPS id 4X4b753kvXzDqns;
+ Fri, 13 Sep 2024 00:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
- t=1726188009; bh=uv46N6GgvWGvP26EF4FhaOcHgEN2S0Rw8WhxNqMBFrw=;
+ t=1726188001; bh=2rvv1oEXZfpCwIDfZvy1EMz86UE403eTH2+cPar3+V0=;
  h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
- b=BAfNnirQ5sDevQWJGrHf30o+5RKixaRyFBQ3JDJwalmXetAhkM2hMz5pfvmot+OHJ
- JO4tKIi7ILxmza0+2aTsQUWsyeWVFvlJiTUlB49rYfSVdoItTyKq3BSiHdpNmR93yz
- uJPyIfoJOiU9ZCLrnr9EAwgaxCU/Ry8cyclX7mhA=
-X-Riseup-User-ID: 36045ECA7EFB7B0AC0619D240A7CBB0E8C2168199436819BD3D953B4EDBBC635
+ b=BAI0thtgp+5zdZqeBB+9TVBQ/AuSFUOmC229cY+Zm0GEluDSGcIzyQvUZqvOQpeDF
+ YvDnf3rS7b0TekvoQp6+nOJ/4EwWynviFlpL8fndYBG9a74bqInmcniGxo/kO7H7sB
+ vWVaVGS4lC4Y+35Qpvd4ETC5IqavmHRfDvKGC5C0=
+X-Riseup-User-ID: D58FD4282E140D6714C2BE7FC4F347A6C4DE1BDAAAE27C6C7003C9FE09A60A5D
 Received: from [127.0.0.1] (localhost [127.0.0.1])
- by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4X4b7B6Xn6zFpdt;
- Fri, 13 Sep 2024 00:40:06 +0000 (UTC)
+ by fews02-sea.riseup.net (Postfix) with ESMTPSA id 4X4b730jgZzFsZt;
+ Fri, 13 Sep 2024 00:39:58 +0000 (UTC)
 From: Arthur Grillo <arthurgrillo@riseup.net>
-Date: Thu, 12 Sep 2024 21:39:33 -0300
-Subject: [PATCH i-g-t v6 09/12] benchmarks/kms_fb_stress: Log the KMS structure
+Date: Thu, 12 Sep 2024 21:39:30 -0300
+Subject: [PATCH i-g-t v6 06/12] benchmarks/kms_fb_stress: Don't paint the
+ FB's if the format is not supported by Pixman
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240912-kms_fb_stress-dev-v6-9-71e9a65397e9@riseup.net>
+Message-Id: <20240912-kms_fb_stress-dev-v6-6-71e9a65397e9@riseup.net>
 References: <20240912-kms_fb_stress-dev-v6-0-71e9a65397e9@riseup.net>
 In-Reply-To: <20240912-kms_fb_stress-dev-v6-0-71e9a65397e9@riseup.net>
 To: igt-dev@lists.freedesktop.org
@@ -64,63 +65,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In the future, the KMS structure could be dynamically changed. So, log
-the KMS structure to the user.
+Pixman requires strides to be divisible by sizeof(uint32_t).
+So, don't paint the FB's if the stride is not.
 
 Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
 ---
- benchmarks/kms_fb_stress.c | 31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ benchmarks/kms_fb_stress.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
 diff --git a/benchmarks/kms_fb_stress.c b/benchmarks/kms_fb_stress.c
-index 45e03f97919a..0adb296304fa 100644
+index 25673d57f593..dce69d0b5b81 100644
 --- a/benchmarks/kms_fb_stress.c
 +++ b/benchmarks/kms_fb_stress.c
-@@ -8,6 +8,9 @@
- #define FRAME_COUNT 100
- #define NUM_FBS 2
+@@ -45,10 +45,27 @@ static void plane_setup(struct plane_t *plane, int index)
  
-+#define RECT_FMT "%dx%d%+d%+d"
-+#define RECT_ARG(r) (r)->width, (r)->height, (r)->x, (r)->y
+ static void create_fb(int fd, struct plane_t *plane, int fb_index, double r, double g, double b)
+ {
+-	igt_create_color_fb(fd, plane->rect.width, plane->rect.height,
+-			    plane->format, DRM_FORMAT_MOD_LINEAR,
+-			    r, g, b,
+-			    &plane->fbs[fb_index]);
++	struct igt_fb stride_lookup_fb;
 +
- struct rect_t {
- 	int x, y;
- 	int width, height;
-@@ -150,6 +153,34 @@ static void stress_driver(struct data_t *data)
- 	struct timespec then, now;
- 	double elapsed;
++	igt_init_fb(&stride_lookup_fb, fd, plane->rect.width, plane->rect.height,
++		    plane->format, DRM_FORMAT_MOD_LINEAR,
++		    IGT_COLOR_YCBCR_BT709,
++		    IGT_COLOR_YCBCR_LIMITED_RANGE);
++
++	igt_calc_fb_size(&stride_lookup_fb);
++
++	if (stride_lookup_fb.strides[0] % sizeof(uint32_t) == 0) {
++		igt_create_color_fb(fd,
++				    plane->rect.width, plane->rect.height,
++				    plane->format, DRM_FORMAT_MOD_LINEAR,
++				    r, g, b,
++				    &plane->fbs[fb_index]);
++	} else {
++		igt_create_fb(fd,
++			      plane->rect.width, plane->rect.height,
++			      plane->format, DRM_FORMAT_MOD_LINEAR,
++			      &plane->fbs[fb_index]);
++	}
+ }
  
-+	igt_info("KMS structure:\n");
-+	igt_info("\tCRTC:\n");
-+	igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.crtc));
-+
-+	if (data->kms.primary.enable) {
-+		igt_info("\tprimary:\n");
-+		igt_info("\t\tformat: %s\n", igt_format_str(data->kms.primary.format));
-+		igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.primary.rect));
-+	}
-+
-+	if (data->kms.overlay_a.enable) {
-+		igt_info("\toverlay A:\n");
-+		igt_info("\t\tformat: %s\n", igt_format_str(data->kms.overlay_a.format));
-+		igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.overlay_a.rect));
-+	}
-+
-+	if (data->kms.overlay_b.enable) {
-+		igt_info("\toverlay B:\n");
-+		igt_info("\t\tformat: %s\n", igt_format_str(data->kms.overlay_b.format));
-+		igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.overlay_b.rect));
-+	}
-+
-+	if (data->kms.writeback.enable) {
-+		igt_info("\twriteback:\n");
-+		igt_info("\t\tformat: %s\n", igt_format_str(data->kms.writeback.format));
-+		igt_info("\t\trectangle: " RECT_FMT "\n", RECT_ARG(&data->kms.writeback.rect));
-+	}
-+
- 	gen_fbs(data);
- 
- 	igt_assert_eq(igt_gettime(&then), 0);
+ static void gen_fbs(struct data_t *data)
 
 -- 
 2.46.0
