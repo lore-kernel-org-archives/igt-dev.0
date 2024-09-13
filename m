@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76603FC6182
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Sep 2024 22:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 359D1FC6172
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Sep 2024 22:43:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1289E10E1B7;
-	Fri, 13 Sep 2024 22:16:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iEPU/Xqy";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5315010E1B7
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Sep 2024 22:16:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726265760; x=1757801760;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=vlJAYVNnEK76HpKXm5Dx1GuCGgrkewv7vKIH0CMtH6M=;
- b=iEPU/XqyLdo12vtpgCdBV8un8vL40Bc8+yZBGw+tHXLuqrlUi1HMjyF2
- k9HSjVh3l6yEhi1ulBJUI/bCr+h6JArIbq9LHtKStXP8GkMy/XiB2uRGa
- U9ToR7GlQ4DpET58WbMTf1WqSXezycZ+rJGCa+vyOXT1n9upfF00FU7/q
- rOaKuJI05nV9HZs2isWXDAclf3dxkvbcP7nBSljj+zX0wibhKJ+mILiAx
- agrrnyVPSbKr5/ocAwK+WoSGMjyTy0rYSezfYKkx8QoZ2XfhUFsNu0pOc
- iTb5mSOw+Bv41A+qhjDHBPAQTY+tGEBRAkT72Dx5IA6DTZ5cbLqHlMk1b g==;
-X-CSE-ConnectionGUID: Y/FXzauMS7iGj4laFIZFyA==
-X-CSE-MsgGUID: H2otqexBQ2CXZlCfC/BBSA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="28927079"
-X-IronPort-AV: E=Sophos;i="6.10,227,1719903600"; d="scan'208";a="28927079"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Sep 2024 15:15:59 -0700
-X-CSE-ConnectionGUID: KXpt2xaJSzqDCvMU5/pTpg==
-X-CSE-MsgGUID: ImiCwT+CSGmsY1lmBwAyLQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,227,1719903600"; d="scan'208";a="67919895"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Sep 2024 15:15:59 -0700
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>, krishnaiah.bommu@intel.com,
- Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t] lib/igt_kmod: Rewrite xe unload logic
-Date: Fri, 13 Sep 2024 15:14:22 -0700
-Message-ID: <20240913221555.569699-1-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id D75BF10EDCB;
+	Fri, 13 Sep 2024 22:43:07 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AD1410EDCB;
+ Fri, 13 Sep 2024 22:43:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2328585206225199477=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fkmod=3A_Rewrite_xe_u?=
+ =?utf-8?q?nload_logic?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 13 Sep 2024 22:43:06 -0000
+Message-ID: <172626738633.998634.15516877857367367343@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240913221555.569699-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240913221555.569699-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,110 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Stop trying to unload possibly-dependent modules. Loading a module and
-probing a module are 2 different things, although the Linux kernel will
-by default probe devices when a module is loaded (for pci, configurable
-in /sys/bus/pci/drivers_autoprobe).
+--===============2328585206225199477==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-For the unloading part we can simplify: instead of trying to unload
-the modules directly (which may complain that module is already in use)
-we just unplug the HW first.  For each possible device bound.
+== Series Details ==
 
-This will be come part of libkmod in future, but we don't need to wait:
-we can implement it in igt too as it's straightforward.
+Series: lib/igt_kmod: Rewrite xe unload logic
+URL   : https://patchwork.freedesktop.org/series/138676/
+State : success
 
-For now this only switches the unload path for xe, but if it works well,
-we can switch others in future too.
+== Summary ==
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2362
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
----
+CI Bug Log - changes from XEIGT_8019_BAT -> XEIGTPW_11743_BAT
+====================================================
 
-This works for me for the test above that was failing, but not thouroughly
-tested with the rest of the tests that may trigger module load/unload.
-Tested on BMG and DG2. YMMV :)
+Summary
+-------
 
- lib/igt_kmod.c | 47 +++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kmod.h |  5 +----
- 2 files changed, 48 insertions(+), 4 deletions(-)
+  **SUCCESS**
 
-diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-index 464c0dcf4..1868fdbf7 100644
---- a/lib/igt_kmod.c
-+++ b/lib/igt_kmod.c
-@@ -697,6 +697,53 @@ igt_intel_driver_unload(const char *driver)
- 	return 0;
- }
- 
-+static int unbind_xe(void)
-+{
-+	struct dirent *de;
-+	DIR *dir;
-+
-+	dir = opendir("/sys/module/xe/drivers/pci:xe/");
-+
-+	/* Module may be loaded, but without any device bound */
-+	if (!dir)
-+		return 0;
-+
-+	while ((de = readdir(dir))) {
-+		int devfd;
-+		bool ret;
-+
-+		if (de->d_type != DT_LNK || !isdigit(de->d_name[0]))
-+			continue;
-+
-+		devfd = openat(dirfd(dir), de->d_name, O_RDONLY | O_CLOEXEC);
-+		igt_assert(devfd >= 0);
-+
-+		ret = igt_sysfs_set(devfd, "power/control", "auto");
-+		igt_assert(ret);
-+
-+		ret = igt_sysfs_set(devfd, "driver/unbind", de->d_name);
-+		igt_assert(ret);
-+
-+		close(devfd);
-+		errno = 0;
-+	}
-+
-+	igt_assert_eq(errno, 0);
-+
-+        return 0;
-+}
-+
-+int igt_xe_driver_unload(void)
-+{
-+	unbind_xe();
-+
-+	igt_kmod_unload("xe");
-+	if (igt_kmod_is_loaded("xe"))
-+		return IGT_EXIT_FAILURE;
-+
-+	return IGT_EXIT_SUCCESS;
-+}
-+
- /**
-  * igt_amdgpu_driver_load:
-  * @opts: options to pass to amdgpu driver
-diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
-index efb46da12..ee1719a8f 100644
---- a/lib/igt_kmod.h
-+++ b/lib/igt_kmod.h
-@@ -63,10 +63,7 @@ static inline int igt_xe_driver_load(const char *opts)
- }
- 
- 
--static inline int igt_xe_driver_unload(void)
--{
--	return igt_intel_driver_unload("xe");
--}
-+int igt_xe_driver_unload(void);
- 
- int igt_amdgpu_driver_load(const char *opts);
- int igt_amdgpu_driver_unload(void);
--- 
-2.43.0
+  No regressions found.
 
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8019 -> IGTPW_11743
+  * Linux: xe-1949-8839c645d7a7d76cbee6f4807984dbd6c77eb543 -> xe-1950-2530827ab017894f2339dd308356366d6e87a72d
+
+  IGTPW_11743: 11743
+  IGT_8019: 8019
+  xe-1949-8839c645d7a7d76cbee6f4807984dbd6c77eb543: 8839c645d7a7d76cbee6f4807984dbd6c77eb543
+  xe-1950-2530827ab017894f2339dd308356366d6e87a72d: 2530827ab017894f2339dd308356366d6e87a72d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11743/index.html
+
+--===============2328585206225199477==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_kmod: Rewrite xe unload logic</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138676/">https://patchwork.freedesktop.org/series/138676/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11743/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11743/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8019_BAT -&gt; XEIGTPW_11743_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8019 -&gt; IGTPW_11743</li>
+<li>Linux: xe-1949-8839c645d7a7d76cbee6f4807984dbd6c77eb543 -&gt; xe-1950-2530827ab017894f2339dd308356366d6e87a72d</li>
+</ul>
+<p>IGTPW_11743: 11743<br />
+  IGT_8019: 8019<br />
+  xe-1949-8839c645d7a7d76cbee6f4807984dbd6c77eb543: 8839c645d7a7d76cbee6f4807984dbd6c77eb543<br />
+  xe-1950-2530827ab017894f2339dd308356366d6e87a72d: 2530827ab017894f2339dd308356366d6e87a72d</p>
+
+</body>
+</html>
+
+--===============2328585206225199477==--
