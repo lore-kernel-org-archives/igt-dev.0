@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3457C3ABB2
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Sep 2024 20:18:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C871AC3ABCB
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Sep 2024 20:18:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A142610E3DD;
-	Mon, 16 Sep 2024 20:18:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 887BA10E3DE;
+	Mon, 16 Sep 2024 20:18:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Jl4v0qTP";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a+PjSyB+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53B6510E3DD
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Sep 2024 20:18:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B51B210E3DE
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Sep 2024 20:18:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726517924; x=1758053924;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=OHcoATmQztszKMHP2MnNc5jCmasuGeUfis7a1ncPWsk=;
- b=Jl4v0qTPB/u1BJA+MBVrNWGA720IldfrQFGgPo6HlJDz9o7ctWsWHs2v
- ENgjVH9B10T+4Ee1tjso/ioXoHyBARNcXjdosgYC/sROjg8zwen7hooLk
- f3/RSK8klZ4QKEloGXIoIrkuWbhaMdGfMdk392tz1myt1LTN1ikob3Fdo
- vU2ZxyDoquoDxu6RICjxMxVDJ0LshEgk1C8CM1PbjYLyDvVFl53daTejB
- hLhPGdb7WBzaIkL3bj/qlR1DFHffF63oIhD6pNgOnCtI0bn63yzaAB8qb
- mhiqTnKwBlHjRee1DwFbtnzMUBm9p0Ne7ZYmr8m6gWT8OnS83FngMsHD3 w==;
-X-CSE-ConnectionGUID: MS0bBt+4Q+6me1lOwpah1Q==
-X-CSE-MsgGUID: znCDDnz/SRKa394U+yqy4Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11197"; a="36499465"
-X-IronPort-AV: E=Sophos;i="6.10,233,1719903600"; d="scan'208";a="36499465"
+ t=1726517927; x=1758053927;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=62VPdtBSIYg53cT6P7J34d9TNOsENWLcIbILsv0zkoo=;
+ b=a+PjSyB+11n7wGWbBN2axIe7S+pl8oa97f6+GalhD7MnT50AQnNdhpO4
+ MfGAVIIg0i61yQpX8qN8HCey68P5y93wb3GnNJh7aFUYv21Ul6sOb5PLj
+ mPxNrZ9gV87X2lXJh+BOhvpSMBZBwyUgZfXiNytyzPY0Ov3RNhZ4i3n5L
+ Yj/fqGzr4uRytf/Ks4OEt/+7auUtXzin1XaTgtOIe67I+q0mcuZXL7ylO
+ 7S4KC+QuUBUmGT9g3NmSu8rTy3PON+u9wnhTMeaBSOBVn4S+79qE8G6R/
+ GBw4mWg0geb2lFEmRkPAxrWBIbnT9vBm3XrJEGAPxb2VCxTmHWcIvWdU7 w==;
+X-CSE-ConnectionGUID: rpFS5RZ8TjatpwUn7lC+5w==
+X-CSE-MsgGUID: kRi7SA8nSe2F1x44d7tdFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11197"; a="36499475"
+X-IronPort-AV: E=Sophos;i="6.10,233,1719903600"; d="scan'208";a="36499475"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2024 13:18:44 -0700
-X-CSE-ConnectionGUID: Zg/FPHuxT/GQySvVZlBSnw==
-X-CSE-MsgGUID: q9CHgwBYQb+PlOiCaZAbFQ==
+ 16 Sep 2024 13:18:46 -0700
+X-CSE-ConnectionGUID: ecwkPmvgTA2jU/Sr0p6xZg==
+X-CSE-MsgGUID: SfD+GN7dRkGrlVA8trFDUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,233,1719903600"; d="scan'208";a="69070726"
+X-IronPort-AV: E=Sophos;i="6.10,233,1719903600"; d="scan'208";a="69070728"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 16 Sep 2024 13:18:42 -0700
+ by fmviesa008.fm.intel.com with SMTP; 16 Sep 2024 13:18:44 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 16 Sep 2024 23:18:41 +0300
+ Mon, 16 Sep 2024 23:18:44 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 0/5] Power/energy and display memory bandwidth
- measurement tools
-Date: Mon, 16 Sep 2024 23:18:36 +0300
-Message-ID: <20240916201841.29592-1-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 1/5] lib/power: Allow use of rapl by specifying fd=-1
+Date: Mon, 16 Sep 2024 23:18:37 +0300
+Message-ID: <20240916201841.29592-2-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240916201841.29592-1-ville.syrjala@linux.intel.com>
+References: <20240916201841.29592-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -69,32 +70,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Add a couple of small tools for measuring energy/power consumption
-and display memory bandwidth utlization (on Intel hw). Might be
-helpful for other people as well, and having them in igt will allow
-me to mostly forget aboyt my local copies of these.
+igt_power_open() is currently defunct when you don't have
+the GPU driver loaded, or when you explicitly want to measure
+via rapl even when using a DGPU. Allow those use cases by
+accepting fd<0 to indicate that we explicitly want to use rapl.
 
-Ville Syrjälä (5):
-  lib/power: Allow use of rapl by specifying fd=-1
-  igt: Use is_intel_dgfx()
-  lib/igt_power: Add power_supply/BAT based measurement
-  tools/power: Introduce a small power/energy measurement tool
-  tools/intel_display_bandwidth: Tool for measuring display memory
-    bandwidth utilization
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ lib/igt_power.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- lib/igt_power.c                 |  66 +++++++++++-
- lib/igt_power.h                 |   5 +-
- lib/intel_reg.h                 |   5 +
- tests/intel/kms_pm_dc.c         |   6 +-
- tests/intel/kms_pm_rpm.c        |   6 +-
- tests/kms_addfb_basic.c         |   9 +-
- tools/intel_display_bandwidth.c | 171 ++++++++++++++++++++++++++++++
- tools/meson.build               |   2 +
- tools/power.c                   | 179 ++++++++++++++++++++++++++++++++
- 9 files changed, 431 insertions(+), 18 deletions(-)
- create mode 100644 tools/intel_display_bandwidth.c
- create mode 100644 tools/power.c
-
+diff --git a/lib/igt_power.c b/lib/igt_power.c
+index 810859b134dc..f4d3efcf0cec 100644
+--- a/lib/igt_power.c
++++ b/lib/igt_power.c
+@@ -106,7 +106,7 @@ int igt_power_open(int fd, struct igt_power *p, const char *domain)
+ 	p->hwmon_fd = -1;
+ 	p->rapl.fd = -1;
+ 
+-	is_dgfx = is_xe_device(fd) ? xe_has_vram(fd) : gem_has_lmem(fd);
++	is_dgfx = fd >= 0 && (is_xe_device(fd) ? xe_has_vram(fd) : gem_has_lmem(fd));
+ 	if (is_dgfx) {
+ 		if (strncmp(domain, "gpu", strlen("gpu")) == 0) {
+ 			p->hwmon_fd = igt_hwmon_open(fd);
 -- 
 2.44.2
 
