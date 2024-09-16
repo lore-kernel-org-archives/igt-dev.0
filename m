@@ -4,60 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C08C3ABA2
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Sep 2024 08:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C0F2C3ABB2
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Sep 2024 09:04:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F22B010E2E5;
-	Mon, 16 Sep 2024 08:17:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3383010E108;
+	Mon, 16 Sep 2024 09:04:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JDeqJnCt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dVujy93M";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28B8310E2E5
- for <IGT-Dev@lists.freedesktop.org>; Mon, 16 Sep 2024 08:17:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8656910E108;
+ Mon, 16 Sep 2024 09:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726474659; x=1758010659;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=udP1kq1qIod2+x5HqjoxdLiimFW1QQohUXPwmYjbqQI=;
- b=JDeqJnCt+Rh9KIb5/6oH0SXf5yw/P86EzXAh/91IG+2BfJOFkqhbijAd
- O3R8nlqA/kA34lhRGGyQvGkXPOYvHSDqSGASE2+1r0lvIKHTQI1axDRmh
- vsQKklBdUt9sR2Wp2ihLVT6sEYYRKlTlt/IcV/mnOIvLjwEcNWOJJSlbE
- kctWsD6ZxPFr4DkXxdXGz4gpqaJODlhd7o3+CXM7wsMnpeSu8YTtcLIBE
- ztgeOU1FU4tBKGWyKgTO9jgu0hwbRLY4O/cpNFtODXT+FB1xLSB1cYbG3
- RUxxj96BkHZVB4jku40+lRS8/+uh37jD62hcFsr6zfE0gKvVeuFGSXUEK A==;
-X-CSE-ConnectionGUID: AxT4FXp2Ta6DUOlv//QoRw==
-X-CSE-MsgGUID: iOMcVXKISLSgQjELOB2/ag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11196"; a="36640203"
-X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; d="scan'208";a="36640203"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ t=1726477490; x=1758013490;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/eIiBoyTbkYg5ZUrt9PdXYL5cLuZEAqjlHJjaOOd2X4=;
+ b=dVujy93M2P3v71tQOfZquIdNk+Fm9afdKUX+trC9kU6IvxHZdLOlZNfZ
+ IwEoqYmXTEz1dBl6CRNUpSuu1+PWms/3dIY6/ygnYhIcJGhww9oI0Rf3O
+ yMNB0iTxTvJMqkgdRo1/YVSoz0FpPI/oOG34q1TPPlS7ny7VK8HJosOqD
+ cLMmFejvQmFeWTN//xlXpvvhm32mFu/pIlI8C5y8TImK6XxWQzQoKKXIm
+ 8bUoR831k/UkZ0MIeNJSLrkoX4F1DrXN/DfuxFQ6aJR1a5J+6IlWkKj9a
+ c4NpQVLkpqTSgy5iynSbQ/n47TtSoi7jno3rZlqurejEWgPr/xvYgAnwy g==;
+X-CSE-ConnectionGUID: bK949vvFTGyw14pNF82RwQ==
+X-CSE-MsgGUID: mN2VZfRnSjOh/VpcnQ2n3g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11196"; a="36643954"
+X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; d="scan'208";a="36643954"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2024 01:17:39 -0700
-X-CSE-ConnectionGUID: H4kBz5xZSJChrOTzNmcwLA==
-X-CSE-MsgGUID: 74W35odDT92VT6PmlI+1Dw==
+ 16 Sep 2024 02:04:48 -0700
+X-CSE-ConnectionGUID: 4GMJ2dzFS3GhibAJaeJvqg==
+X-CSE-MsgGUID: OU3zET2fQPuKvVVIn3TGUQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; d="scan'208";a="68756308"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.247])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2024 01:17:38 -0700
+X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; d="scan'208";a="69055579"
+Received: from dut1407rkls.igk.intel.com ([10.102.46.160])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2024 02:04:45 -0700
 From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: John Harrison <john.c.harrison@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- IGT-Dev@lists.freedesktop.org,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-Subject: Re: [RFC i-g-t] kunit: Remove hard-coded test list from xe_live_ktest
-Date: Mon, 16 Sep 2024 10:17:34 +0200
-Message-ID: <3240976.5fSG56mABF@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <84c6520c-b634-4be3-89fd-98595b537cb8@intel.com>
-References: <20240823182418.1771456-1-John.C.Harrison@Intel.com>
- <1942260.taCxCBeP46@jkrzyszt-mobl2.ger.corp.intel.com>
- <84c6520c-b634-4be3-89fd-98595b537cb8@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH] tests: drm_fdinfo: Fix zero tolerance checks
+Date: Mon, 16 Sep 2024 11:03:26 +0200
+Message-ID: <20240916090329.5279-1-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,115 +69,145 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi John,
+When we expect an engine to be busy, we check if its reported busy time
+falls within a +/-5% tolerance range of measurement time period.
+However, when we expect the engine to be idle, we compare its reported
+busy time against zero, still with a +/-5% tolerance range, but now
+calculated against the zero value, then no tolerance at all.  Obviously,
+such check fails when the reported busy time is not exactly zero.
 
-On Saturday, 14 September 2024 02:20:32 GMT+2 John Harrison wrote:
-> On 8/29/2024 02:57, Janusz Krzysztofik wrote:
-> > Hi John,
-> >
-> > On Wednesday, 28 August 2024 20:04:06 GMT+2 John Harrison wrote:
-> >> On 8/26/2024 06:07, Janusz Krzysztofik wrote:
-> >>> Hi John, Kamil,
-> >>>
-> >>> On Monday, 26 August 2024 13:46:45 GMT+2 Kamil Konieczny wrote:
-> >>>> Hi John.C.Harrison,
-> >>>> On 2024-08-23 at 11:24:18 -0700, John.C.Harrison@Intel.com wrote:
-> >>>>> From: johnharr <johnharr@invalid-email.com>
-> >>>> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> >>>> Again invalid e-mail here.
-> >>>>
-> >>>>> The list of supported kunit tests is currently hard coded.
-> >>> That pattern originates from i915_selftest, where there are 3 stable 
-subtests,
-> >>> "mock", "live" and "perf", each of them executing a (possibly long) list 
-of
-> >>> dynamic sub-subtests actually provided by the module for each category.  
-Also,
-> >>> IIRC there was a separate module for each Xe test suite before, each 
-mapped to
-> >>> a separate IGT test, later merged into one module with multiple suites 
-and one
-> >>> test with multiple corresponding subtests.
-> >> Not sure if you are just explaining the history of the test or making a
-> >> suggestion as to how it should evolve next?
-> > Both, I think.  Maybe not the history, but origin of ideas standing behind 
-the
-> > implementation, and how tests are expected to use it (and maybe evolve if 
-now
-> > doing that in a different way).
-> >
-> >>>>> Which means
-> >>>>> that adding a new test to the kernel also requires patches to IGT as
-> >>>>> well.
-> >>>>>
-> >>>>> The list of available kunit tests is already exported by the kernel.
-> >>>>> So there is no need to bake a list into the IGT source code. So, add
-> >>>>> support for querying the test list dynamically.
-> >>>>>
-> >>>>> NB: Currently, the test list can only be queried by root but the IGT
-> >>>>> build system queries all tests at compile time. In theory this should
-> >>>>> not be a problem. However, the kunit helper code is all written to run
-> >>>>> inside a test and not inside the prep code, which means that when it
-> >>>>> fails to open the root only interfaces, it calls 'skip'. And skip is
-> >>>>> not allowed outside of running a test. Hence the build fails with:
-> >>>>>     skipping is allowed only in fixtures, subtests or igt_simple_main
-> >>>> Looks like we should fix it, move out skips from kunit libs.
-> >>> I suggest you consider a different approach: for a module, call 
-igt_kunit()
-> >>> only once, with NULL suite argument.  As a result, you'll get results 
-from one
-> >>> IGT subtest called "<module_name>" with a bunch of IGT dynamic sub-
-subtests
-> >>> called "<test_suite>-<test_case>", one for each test case provided by 
-the
-> >>> module.
-> >> I'm not following. This is what my patch does, isn't it?
-> > No, your patch introduces a runtime determined list of subtests -- 
-something
-> > not existent in IGT.
-> >
-> > An IGT test may consist of one or more statically defined subtests with 
-pre-
-> > defined names.  The term dynamic subtest is usually used in two meanings.  
-It
-> > may mean a subtest of type igt_subtest_with_dynamic, still with a pre-
-defined
-> > name, but with a runtime determined list of sub-subtests, sometimes called
-> > dynamic sub-subtests, but often also called just dynamic subtests.  Names 
-of
-> > dynamic sub-subtests are determined at runtime.
-> >
-> > My approach tries to address your need for a maintenance-free kunit IGT 
-test
-> > source file in a different way.  I'm following the IGT standard of 
-statically
-> > defined list of subtests with pre-defined names: one subtest of type
-> > igt_subtest_with_dynamic, named after the kunit test module name which you
-> > have to enter into the test code anyway, and providing all test cases from
-> > all test suites contained in that module reported as dynamic sub-subtests
-> > named <test_suite>-<test_case>.
-> Can you please prototype how to do this?  I can read your words but I 
-> don't really get your meaning and I have no clue how to implement what 
-> you are saying.
+Compare engine idle time against measurement time period instead of
+comparing its busy time against zero when we expect the busy time to be
+close to zero.  As a debugging aid, display messages with the compared
+values when requested via --debug option or when a failure occurs.
 
-The test code may look as simple as:
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7742
+Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ tests/intel/drm_fdinfo.c | 51 ++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 26 deletions(-)
 
-igt_main
-{
-        igt_kunit("xe_live_test", NULL, NULL);
-}
-
-Then, igt_kunit() will use xe_live_test module and should report results from 
-all its KUnit test cases as results from a set of IGT dynamic sub-subtests 
-"<test_suite>-<test_case>" under a single IGT subtest "xe_live".
-
-Janusz
-
-> 
-> John.
-> 
-> 
-
-
-
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+index 43216a64e..45d17aaaa 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/drm_fdinfo.c
+@@ -107,12 +107,18 @@ static const char *engine_map[] = {
+ };
+ 
+ #define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+-	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+-		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+-		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
+-		     #x, #ref, (double)(x), \
+-		     (tol_up) * 100.0, (tol_down) * 100.0, \
+-		     (double)(ref))
++	do { \
++		igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
++			     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
++			     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
++			     #x, #ref, (double)(x), \
++			     (tol_up) * 100.0, (tol_down) * 100.0, \
++			     (double)(ref)); \
++		igt_debug("%f within +%.1f%%/-%.1f%% tolerance of %f\n",\
++			  (double)(x), \
++			  (tol_up) * 100.0, (tol_down) * 100.0, \
++			  (double)(ref)); \
++	} while (0)
+ 
+ #define assert_within_epsilon(x, ref, tolerance) \
+ 	__assert_within_epsilon(x, ref, tolerance, tolerance)
+@@ -241,10 +247,8 @@ single(int gem_fd, const intel_ctx_t *ctx,
+ 	else
+ 		end_spin(spin_fd, spin, FLAG_SYNC);
+ 
+-	assert_within_epsilon(val,
+-			      (flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ?
+-			      slept : 0.0f,
+-			      tolerance);
++	assert_within_epsilon((flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ? val : slept - val,
++			      slept, tolerance);
+ 
+ 	/* Check for idle after hang. */
+ 	if (flags & FLAG_HANG) {
+@@ -255,7 +259,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
+ 		slept = measured_usleep(batch_duration_ns / 1000);
+ 		val = read_engine_time(gem_fd, e->class) - val;
+ 
+-		assert_within_epsilon(val, 0, tolerance);
++		assert_within_epsilon(slept - val, slept, tolerance);
+ 	}
+ 
+ 	igt_spin_free(spin_fd, spin);
+@@ -328,11 +332,8 @@ busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 
+ 	log_busy(num_classes, val);
+ 
+-	for (i = 0; i < num_classes; i++) {
+-		double target = i == e->class ? slept : 0.0f;
+-
+-		assert_within_epsilon(val[i], target, tolerance);
+-	}
++	for (i = 0; i < num_classes; i++)
++		assert_within_epsilon(i == e->class ? val[i] : slept - val[i], slept, tolerance);
+ 
+ 	gem_quiescent_gpu(gem_fd);
+ }
+@@ -405,9 +406,9 @@ most_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 	log_busy(num_classes, val);
+ 
+ 	for (i = 0; i < num_classes; i++) {
+-		double target = slept * busy_class[i];
++		double target = slept * busy_class[i] ?: slept;
+ 
+-		assert_within_epsilon(val[i], target, tolerance);
++		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
+ 	}
+ 	gem_quiescent_gpu(gem_fd);
+ }
+@@ -460,9 +461,9 @@ all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+ 	log_busy(num_classes, val);
+ 
+ 	for (i = 0; i < num_classes; i++) {
+-		double target = slept * busy_class[i];
++		double target = slept * busy_class[i] ?: slept;
+ 
+-		assert_within_epsilon(val[i], target, tolerance);
++		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
+ 	}
+ 	gem_quiescent_gpu(gem_fd);
+ }
+@@ -601,10 +602,8 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+ 			else
+ 				end_spin(i915, spin, FLAG_SYNC);
+ 
+-			assert_within_epsilon(val,
+-					      flags & TEST_BUSY ?
+-					      slept : 0.0f,
+-					      tolerance);
++			assert_within_epsilon(flags & TEST_BUSY ? val : slept - val,
++					      slept, tolerance);
+ 
+ 			/* Check for idle after hang. */
+ 			if (flags & FLAG_HANG) {
+@@ -616,7 +615,7 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+ 							1000);
+ 				val = read_engine_time(i915, class) - val;
+ 
+-				assert_within_epsilon(val, 0, tolerance);
++				assert_within_epsilon(slept - val, slept, tolerance);
+ 			}
+ 
+ 			igt_spin_free(i915, spin);
+@@ -724,7 +723,7 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+ 						1000);
+ 			val = read_engine_time(i915, class) - val;
+ 
+-			assert_within_epsilon(val, 0, tolerance);
++			assert_within_epsilon(slept - val, slept, tolerance);
+ 		}
+ 
+ 		igt_spin_free(i915, spin);
+-- 
+2.45.2
 
