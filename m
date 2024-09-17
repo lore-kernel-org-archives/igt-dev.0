@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9D7EC36013
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Sep 2024 11:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E93EC36014
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Sep 2024 11:25:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 67E5110E46F;
-	Tue, 17 Sep 2024 11:24:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C8EFA10E0D0;
+	Tue, 17 Sep 2024 11:24:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GUSetCu3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DWvZUBo/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 154E110E476
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Sep 2024 11:24:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 68BE110E0D0
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Sep 2024 11:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726572293; x=1758108293;
+ t=1726572298; x=1758108298;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=suNX7uYPHbQynVTgXhy3zJKyRtNm3L4gwf5TIAcshS8=;
- b=GUSetCu3d08DjEcLo9Z6tsrmh36pS/Edw7M0Blp2sjbHN6uWPs84RYMP
- oWMGdUNEgNh03P/Bbi/t5n3ItuW+n8wD50vskzI3j1sswfr2008c5cCTi
- /UO/uy+JnXq8YyAH/hfq64itZWB2rKwEeIGCG2W6PYWj9eH964/FagNq5
- k1MbfH3FdQHzyBf3nUmLpy5pPDU4AS2vegsLDR7E9VMoR3FiaDLWlbICE
- m/xL+sOE3KmqP1/tw8s8bCY0c1gJBtqyHq+ZWOsIRAA4qmxHPHnmd+Cb5
- IIZS+FGdfcLlUcXWEXSEEd+Ad8JZIQZeL8g4afL5gi9khxbslBXzzm/hd w==;
-X-CSE-ConnectionGUID: 3t+16I9vQxGeX/yWAda6dg==
-X-CSE-MsgGUID: meJ0tGZCTMacD4dwX6/wmg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11197"; a="29207435"
-X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="29207435"
+ bh=yL3DBDSXoVT6OBGmzmf99jR1gOOg4DinM9wGMYeBvEE=;
+ b=DWvZUBo/xtXMKPwLTzAvC9LPlw7h1FupodlfolQPJzEtWQzj6h2YMuQY
+ RiA5MjGHY90tn9mib+c32ucRocqkh8Lsd0k4CuiU+eJWGnOztKNMDpaJp
+ PykdacGmVHCJjD5aLiIaaOEBWgQpTzbBiyek3cYjCV8av87c0Dsxu48rq
+ 5KDnDnb8K4ezsCPDuthUKAAxo4/b99QMt2RGAZWa3h/S86EDFnGxUfqoJ
+ y9muqPtRK2TepTLzvqCufH86R74ER8Qkv4gFyVDU1dx5dgwweThqs17Ru
+ mREKeRTLYkkV2FZqg6c3NB/4wmewoAQDkIfn2d/zcN53+1+3hJo58H+7W w==;
+X-CSE-ConnectionGUID: 14ecO7z4R+iEZCSesMVZ2g==
+X-CSE-MsgGUID: MgGmz80nQb6Ai6zPVuBzGQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11197"; a="29207439"
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="29207439"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2024 04:24:53 -0700
-X-CSE-ConnectionGUID: YGzFjSC/SPScWlxOgwQc1w==
-X-CSE-MsgGUID: Ebm8SaZ4SWC5Gns+cBfmSA==
+ 17 Sep 2024 04:24:58 -0700
+X-CSE-ConnectionGUID: RnStqqicQEuF3fefgOn06w==
+X-CSE-MsgGUID: jw6YRGk1SMWU3sBdLIJd4g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="73249900"
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="73249912"
 Received: from sinjan-super-server.iind.intel.com ([10.145.169.153])
  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2024 04:24:51 -0700
+ 17 Sep 2024 04:24:56 -0700
 From: Karthik Poosa <karthik.poosa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, riana.tauro@intel.com,
  Karthik Poosa <karthik.poosa@intel.com>
-Subject: [PATCH i-g-t 1/2] tests/intel/xe_pm_residency: [DO NOT REVIEW] Assert
- if sleep more than 120 s
-Date: Tue, 17 Sep 2024 17:08:58 +0530
-Message-Id: <20240917113859.1499723-2-karthik.poosa@intel.com>
+Subject: [PATCH i-g-t 2/2] HAX: [DO NOT REVIEW] Add xe_pm
+ idle-residency-on-exec test to fast feedback list
+Date: Tue, 17 Sep 2024 17:08:59 +0530
+Message-Id: <20240917113859.1499723-3-karthik.poosa@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240917113859.1499723-1-karthik.poosa@intel.com>
 References: <20240917113859.1499723-1-karthik.poosa@intel.com>
@@ -69,38 +69,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Assert if sleep > 120 seconds in xe_pm_residency.
-Change a print from igt_debug to igt_info to get execution time of
-current run.
+Add multiple idle-residency-on-exec test to fast feedback list to check
+execution time of workload of the test.
 
 Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
 ---
- tests/intel/xe_pm_residency.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tests/intel-ci/xe-fast-feedback.testlist | 25 ++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 0e687558b..716ddc24a 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -139,7 +139,7 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
- 		elapsed = igt_nsec_elapsed(&tv);
- 		igt_assert_eq(data->data, done[1]);
- 
--		igt_debug("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
-+		igt_info("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
- 			  1e-6 * elapsed,
- 			  1e-3 * submit,
- 			  1e-3 * (elapsed - submit));
-@@ -150,6 +150,9 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
- 		 * Execute the above workload for ~1% of the elapsed time and sleep for
- 		 * the rest of the time (~99%)
- 		 */
-+		igt_info("sleeping for %ld ms\n", ((elapsed / 10)/1000));
-+		igt_assert((uint64_t)(elapsed / 10) < (uint64_t)(120 * USEC_PER_SEC));
-+
- 		usleep(elapsed / 10);
- 	} while (!READ_ONCE(*done));
- 
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 01b01dcf9..525d64f26 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -160,6 +160,31 @@ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
+ igt@xe_pm_residency@gt-c6-on-idle
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
++igt@xe_pm_residency@idle-residency-on-exec
+ igt@xe_prime_self_import@basic-with_one_bo
+ igt@xe_prime_self_import@basic-with_fd_dup
+ #igt@xe_prime_self_import@basic-llseek-size
 -- 
 2.25.1
 
