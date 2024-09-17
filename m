@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A01AC35FF2
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Sep 2024 08:25:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46C1EC35FF3
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Sep 2024 08:48:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EAE9F10E42F;
-	Tue, 17 Sep 2024 08:25:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0731C10E1FB;
+	Tue, 17 Sep 2024 08:48:13 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9AC1810E42F;
- Tue, 17 Sep 2024 08:25:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 56F3610E1FB;
+ Tue, 17 Sep 2024 08:48:12 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4624311638917745572=="
+ boundary="===============3763829448289465119=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv4=2C1/2=5D_tests/intel/kms=5Fpsr2=5Fsf=3A_Modify_kms=5Fpsr2?=
- =?utf-8?q?=5Fsf_test?=
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/core=5Fsetmaster=3A_H?=
+ =?utf-8?q?andle_the_test_even_if_cards_are_non-continuous_=28rev5=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
+To: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Sep 2024 08:25:09 -0000
-Message-ID: <172656150962.1020922.17989215893607188556@2413ebb6fbb6>
+Date: Tue, 17 Sep 2024 08:48:12 -0000
+Message-ID: <172656289234.1020953.17438594708029574933@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240917051639.1162160-1-pranay.samala@intel.com>
-In-Reply-To: <20240917051639.1162160-1-pranay.samala@intel.com>
+References: <20240917072123.17381-1-krishnaiah.bommu@intel.com>
+In-Reply-To: <20240917072123.17381-1-krishnaiah.bommu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,623 +41,226 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4624311638917745572==
+--===============3763829448289465119==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,v4,1/2] tests/intel/kms_psr2_sf: Modify kms_psr2_sf test
-URL   : https://patchwork.freedesktop.org/series/138742/
-State : failure
+Series: tests/core_setmaster: Handle the test even if cards are non-continuous (rev5)
+URL   : https://patchwork.freedesktop.org/series/137135/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from CI_DRM_15428 -> IGTPW_11747
+CI Bug Log - changes from CI_DRM_15428 -> IGTPW_11748
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_11747 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11747, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/index.html
 
-Participating hosts (39 -> 33)
+Participating hosts (39 -> 38)
 ------------------------------
 
-  Missing    (6): bat-dg1-7 bat-arlh-3 fi-snb-2520m fi-cfl-8109u fi-kbl-8809g bat-arls-2 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11747:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf (NEW):
-    - bat-rpls-4:         NOTRUN -> [SKIP][1] +49 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-rpls-4/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html
-    - bat-twl-1:          NOTRUN -> [SKIP][2] +60 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-twl-1/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area (NEW):
-    - bat-dg2-9:          NOTRUN -> [SKIP][3] +49 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-9/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1 (NEW):
-    - bat-twl-2:          NOTRUN -> [SKIP][4] +60 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-twl-2/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1.html
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf (NEW):
-    - bat-mtlp-8:         NOTRUN -> [SKIP][5] +60 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-mtlp-8/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf.html
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf (NEW):
-    - bat-adlp-9:         NOTRUN -> [SKIP][6] +49 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlp-9/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf.html
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1 (NEW):
-    - bat-adlp-6:         NOTRUN -> [SKIP][7] +60 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlp-6/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1.html
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area (NEW):
-    - bat-dg2-14:         NOTRUN -> [SKIP][8] +49 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-14/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area (NEW):
-    - bat-arls-5:         NOTRUN -> [SKIP][9] +49 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][10] +49 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-rplp-1/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][11] +49 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-tgl-1115g4/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf (NEW):
-    - bat-adlp-11:        NOTRUN -> [SKIP][12] +49 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlp-11/igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf.html
-
-  * igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf (NEW):
-    - bat-dg2-11:         NOTRUN -> [SKIP][13] +49 other tests skip
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-11/igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf.html
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf (NEW):
-    - bat-arlh-2:         NOTRUN -> [SKIP][14] +49 other tests skip
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arlh-2/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][15] +49 other tests skip
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-rkl-11600/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb (NEW):
-    - bat-dg2-8:          NOTRUN -> [SKIP][16] +49 other tests skip
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-8/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-adlm-1:         NOTRUN -> [SKIP][17] +49 other tests skip
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlm-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][18] +49 other tests skip
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-jsl-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-    - bat-arls-1:         NOTRUN -> [SKIP][19] +49 other tests skip
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
-
-  
-New tests
----------
-
-  New tests have been introduced between CI_DRM_15428 and IGTPW_11747:
-
-### New IGT tests (100) ###
-
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.00] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-plane-move-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-pr-primary-plane-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.33] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.43] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.12] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.87, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.10] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.88] s
-
-  * igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.86, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.12] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.10] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.88] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.11] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.23] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.17] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.89] s
-
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.27] s
-
-  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.10] s
-
-  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.84, 0.88] s
-
-  * igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.22] s
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 2.10] s
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [0.83, 0.88] s
-
-  * igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 skip(s)
-    - Exec time: [1.21, 1.23] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-move-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-cursor-plane-update-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-move-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-plane-move-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area-big-fb:
-    - Statuses : 32 skip(s)
-    - Exec time: [0.0, 0.01] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 43.74] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.82, 21.73] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.78, 22.27] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 42.65] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.53, 21.33] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.58, 21.31] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 41.58] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.36, 20.78] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.30, 20.80] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-update-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 3.11] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [1.31, 1.56] s
-
-  * igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [1.34, 1.54] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 65.56] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [9.51, 32.78] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [9.45, 32.78] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 44.94] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.89, 22.47] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.88, 22.47] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 23.91] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [4.16, 11.96] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [4.16, 11.95] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 18.66] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.85, 9.34] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.90, 9.31] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 15.28] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.74, 7.61] s
-
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.70, 7.67] s
-
-  * igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 15.28] s
-
-  * igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.73, 7.61] s
-
-  * igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.71, 7.68] s
-
-  * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 12.21] s
-
-  * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.40, 6.12] s
-
-  * igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [5.37, 6.09] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 15.26] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb:
-    - Statuses : 4 pass(s) 28 skip(s)
-    - Exec time: [0.0, 15.84] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [7.02, 7.83] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.96, 8.00] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.75, 7.67] s
-
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:
-    - Statuses : 4 pass(s)
-    - Exec time: [6.70, 7.61] s
-
-  
+  Additional (1): bat-mtlp-6 
+  Missing    (2): bat-arlh-3 fi-snb-2520m 
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_11747 that come from known issues:
+  Here are the changes found in IGTPW_11748 that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf (NEW):
-    - bat-apl-1:          NOTRUN -> [SKIP][20] +49 other tests skip
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-apl-1/igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf.html
+  * igt@debugfs_test@basic-hwmon:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][1] ([i915#9318])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@debugfs_test@basic-hwmon.html
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf (NEW):
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][21] +49 other tests skip
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-kbl-7567u/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html
+  * igt@fbdev@info:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][2] ([i915#1849] / [i915#2582])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@fbdev@info.html
 
-  * igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area (NEW):
-    - fi-cfl-guc:         NOTRUN -> [SKIP][22] +49 other tests skip
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-cfl-guc/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][23] +49 other tests skip
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-kbl-x1275/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html
+  * igt@fbdev@write:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][3] ([i915#2582]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@fbdev@write.html
 
-  * igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area (NEW):
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][24] +49 other tests skip
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-cfl-8700k/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][25] +49 other tests skip
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-kbl-2/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html
+  * igt@gem_lmem_swapping@verify-random:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_lmem_swapping@verify-random.html
 
-  * igt@kms_psr2_sf@pr-cursor-plane-update-sf (NEW):
-    - fi-glk-j4005:       NOTRUN -> [SKIP][26] +49 other tests skip
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-glk-j4005/igt@kms_psr2_sf@pr-cursor-plane-update-sf.html
+  * igt@gem_mmap@basic:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][5] ([i915#4083])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_mmap@basic.html
 
-  * igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area (NEW):
-    - fi-pnv-d510:        NOTRUN -> [SKIP][27] +49 other tests skip
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-pnv-d510/igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area.html
+  * igt@gem_tiled_blits@basic:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][6] ([i915#4077]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_tiled_blits@basic.html
 
-  * igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf (NEW):
-    - fi-ivb-3770:        NOTRUN -> [SKIP][28] +49 other tests skip
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-ivb-3770/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf.html
+  * igt@gem_tiled_pread_basic:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][7] ([i915#4079]) +1 other test skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_tiled_pread_basic.html
 
-  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf (NEW):
-    - fi-bsw-n3050:       NOTRUN -> [SKIP][29] +49 other tests skip
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-bsw-n3050/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf.html
+  * igt@i915_pm_rps@basic-api:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][8] ([i915#11681] / [i915#6621])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@i915_pm_rps@basic-api.html
 
-  * igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area (NEW):
-    - fi-ilk-650:         NOTRUN -> [SKIP][30] +49 other tests skip
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-ilk-650/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][31] +49 other tests skip
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-blb-e6850/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html
+  * igt@i915_selftest@live:
+    - bat-arls-1:         [PASS][9] -> [ABORT][10] ([i915#12133] / [i915#12175])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-1/igt@i915_selftest@live.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-1/igt@i915_selftest@live.html
 
-  * igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb (NEW):
-    - fi-kbl-guc:         NOTRUN -> [SKIP][32] +49 other tests skip
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-kbl-guc/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-1:         [PASS][11] -> [ABORT][12] ([i915#12061])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-1/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-1/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-legacy:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][13] ([i915#4212] / [i915#9792]) +8 other tests skip
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][14] ([i915#5190] / [i915#9792])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][15] ([i915#9792]) +17 other tests skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-dpms:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][16] ([i915#3637] / [i915#9792]) +3 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_flip@basic-flip-vs-dpms.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-dp1:
+    - fi-cfl-8109u:       [PASS][17] -> [DMESG-WARN][18] ([i915#12145])
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html
+
+  * igt@kms_flip@basic-flip-vs-dpms@b-dp1:
+    - fi-cfl-8109u:       [PASS][19] -> [INCOMPLETE][20] ([i915#12146]) +1 other test incomplete
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@b-dp1.html
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@b-dp1.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][21] ([i915#5274] / [i915#9792])
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][22] ([i915#4342] / [i915#5354] / [i915#9792])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][23] ([i915#5354] / [i915#9792])
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-cursor-plane-move:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][24] ([i915#1072] / [i915#9673] / [i915#9732] / [i915#9792]) +3 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_psr@psr-cursor-plane-move.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][25] ([i915#3555] / [i915#8809] / [i915#9792])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][26] ([i915#3708] / [i915#9792])
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-fence-mmap:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][27] ([i915#3708] / [i915#4077]) +1 other test skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-fence-mmap.html
+
+  * igt@prime_vgem@basic-read:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][28] ([i915#3708]) +1 other test skip
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-read.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-mtlp-6:         NOTRUN -> [SKIP][29] ([i915#10216] / [i915#3708])
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-write.html
 
   
 #### Possible fixes ####
 
-  * igt@kms_pipe_crc_basic@nonblocking-crc:
-    - bat-arls-5:         [INCOMPLETE][33] ([i915#11320]) -> [PASS][34]
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html
+  * igt@i915_selftest@live:
+    - bat-arls-2:         [DMESG-FAIL][30] ([i915#10262] / [i915#10341]) -> [PASS][31]
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-2/igt@i915_selftest@live.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@execlists:
+    - bat-arls-2:         [DMESG-WARN][32] ([i915#10341]) -> [PASS][33]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-2/igt@i915_selftest@live@execlists.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-2/igt@i915_selftest@live@execlists.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - bat-arls-2:         [DMESG-FAIL][34] ([i915#10262]) -> [PASS][35] +6 other tests pass
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-2/igt@i915_selftest@live@late_gt_pm.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-2/igt@i915_selftest@live@late_gt_pm.html
 
   
 #### Warnings ####
 
-  * igt@i915_selftest@live:
-    - bat-arls-5:         [DMESG-WARN][35] ([i915#10341] / [i915#12133]) -> [ABORT][36] ([i915#12133] / [i915#12175])
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-5/igt@i915_selftest@live.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-5:         [DMESG-WARN][37] ([i915#10341] / [i915#11637]) -> [ABORT][38] ([i915#12061])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-5/igt@i915_selftest@live@workarounds.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@i915_selftest@live@workarounds.html
+  * igt@fbdev@read:
+    - bat-arls-1:         [DMESG-WARN][36] ([i915#12102]) -> [DMESG-FAIL][37] ([i915#12102])
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-1/igt@fbdev@read.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-1/igt@fbdev@read.html
 
   
+  [i915#10216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216
+  [i915#10262]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262
   [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
-  [i915#11320]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320
-  [i915#11637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102
   [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12145]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12145
+  [i915#12146]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12146
   [i915#12175]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12175
+  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+  [i915#2582]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
+  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
+  [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
+  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+  [i915#9673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_8022 -> IGTPW_11747
+  * IGT: IGT_8022 -> IGTPW_11748
 
   CI-20190529: 20190529
   CI_DRM_15428: a2269b8bdf726c56f52e41ebfdd1cf38aea494de @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11747: c974edd3aef9545436857dfe76a960cdfae7f4f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11748: 705a27ac0b5846e23053e9d56bde8f150936c5a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8022: 2d82f767a959d58c04ff3876d59d67924208d4ef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/index.html
 
---===============4624311638917745572==
+--===============3763829448289465119==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -678,918 +280,218 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v4,1/2] tests/intel/kms_psr2_sf: Modify kms_psr2_sf test</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138742/">https://patchwork.freedesktop.org/series/138742/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/core_setmaster: Handle the test even if cards are non-continuous (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/137135/">https://patchwork.freedesktop.org/series/137135/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from CI_DRM_15428 -&gt; IGTPW_11747</h1>
+    <h1>CI Bug Log - changes from CI_DRM_15428 -&gt; IGTPW_11748</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11747 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11747, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/index.html</p>
-<h2>Participating hosts (39 -&gt; 33)</h2>
-<p>Missing    (6): bat-dg1-7 bat-arlh-3 fi-snb-2520m fi-cfl-8109u fi-kbl-8809g bat-arls-2 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11747:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf (NEW):</p>
-<ul>
-<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-rpls-4/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-twl-1/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area (NEW):</p>
-<ul>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-9/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1 (NEW):</p>
-<ul>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-twl-2/igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf (NEW):</p>
-<ul>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-mtlp-8/igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf (NEW):</p>
-<ul>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlp-9/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1 (NEW):</p>
-<ul>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlp-6/igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1.html">SKIP</a> +60 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area (NEW):</p>
-<ul>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-14/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area (NEW):</p>
-<ul>
-<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-rplp-1/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-tgl-1115g4/igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf (NEW):</p>
-<ul>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlp-11/igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf (NEW):</p>
-<ul>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-11/igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf (NEW):</p>
-<ul>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arlh-2/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-rkl-11600/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb (NEW):</p>
-<ul>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-dg2-8/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-adlm-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-jsl-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-1/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_15428 and IGTPW_11747:</p>
-<h3>New IGT tests (100)</h3>
-<ul>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-pr-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.33] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.43] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.87, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.88] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-cursor-plane-update-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.86, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.88] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.23] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.17] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.27] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.84, 0.88] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-plane-move-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.22] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 2.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [0.83, 0.88] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@fbc-psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 skip(s)</li>
-<li>Exec time: [1.21, 1.23] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-update-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area-big-fb:</p>
-<ul>
-<li>Statuses : 32 skip(s)</li>
-<li>Exec time: [0.0, 0.01] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 43.74] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.82, 21.73] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.78, 22.27] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 42.65] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.53, 21.33] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.58, 21.31] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 41.58] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.36, 20.78] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.30, 20.80] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-update-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 3.11] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [1.31, 1.56] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-update-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [1.34, 1.54] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 65.56] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [9.51, 32.78] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [9.45, 32.78] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 44.94] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.89, 22.47] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.88, 22.47] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 23.91] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [4.16, 11.96] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [4.16, 11.95] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 18.66] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.85, 9.34] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.90, 9.31] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 15.28] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.74, 7.61] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.70, 7.67] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 15.28] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.73, 7.61] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-primary-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.71, 7.68] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 12.21] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [5.40, 6.12] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-plane-move-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [5.37, 6.09] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 15.26] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb:</p>
-<ul>
-<li>Statuses : 4 pass(s) 28 skip(s)</li>
-<li>Exec time: [0.0, 15.84] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [7.02, 7.83] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.96, 8.00] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-a-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.75, 7.67] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area@pipe-b-edp-1:</p>
-<ul>
-<li>Statuses : 4 pass(s)</li>
-<li>Exec time: [6.70, 7.61] s</li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Additional (1): bat-mtlp-6 <br />
+  Missing    (2): bat-arlh-3 fi-snb-2520m </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11747 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_11748 that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf (NEW):</p>
+<p>igt@debugfs_test@basic-hwmon:</p>
 <ul>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-apl-1/igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318">i915#9318</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf (NEW):</p>
+<p>igt@fbdev@info:</p>
 <ul>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-kbl-7567u/igt@kms_psr2_sf@fbc-pr-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area (NEW):</p>
+<p>igt@fbdev@write:</p>
 <ul>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-cfl-guc/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-kbl-x1275/igt@kms_psr2_sf@fbc-pr-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area (NEW):</p>
+<p>igt@gem_lmem_swapping@verify-random:</p>
 <ul>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-cfl-8700k/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-kbl-2/igt@kms_psr2_sf@fbc-psr2-overlay-primary-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@pr-cursor-plane-update-sf (NEW):</p>
+<p>igt@gem_mmap@basic:</p>
 <ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-glk-j4005/igt@kms_psr2_sf@pr-cursor-plane-update-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area (NEW):</p>
+<p>igt@gem_tiled_blits@basic:</p>
 <ul>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-pnv-d510/igt@kms_psr2_sf@pr-primary-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +2 other tests skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf (NEW):</p>
+<p>igt@gem_tiled_pread_basic:</p>
 <ul>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-ivb-3770/igt@kms_psr2_sf@psr2-cursor-plane-move-continuous-exceed-fully-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>) +1 other test skip</li>
 </ul>
 </li>
 <li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf (NEW):</p>
+<p>igt@i915_pm_rps@basic-api:</p>
 <ul>
-<li>fi-bsw-n3050:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-bsw-n3050/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-sf.html">SKIP</a> +49 other tests skip</li>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>)</li>
 </ul>
 </li>
-<li>
-<p>igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area (NEW):</p>
-<ul>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-ilk-650/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-blb-e6850/igt@kms_psr2_sf@psr2-overlay-plane-update-sf-dmg-area.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb (NEW):</p>
-<ul>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/fi-kbl-guc/igt@kms_psr2_sf@psr2-primary-plane-update-sf-dmg-area-big-fb.html">SKIP</a> +49 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11320">i915#11320</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@kms_pipe_crc_basic@nonblocking-crc.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
 <li>
 <p>igt@i915_selftest@live:</p>
 <ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-5/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12175">i915#12175</a>)</li>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12175">i915#12175</a>)</li>
 </ul>
 </li>
 <li>
 <p>igt@i915_selftest@live@workarounds:</p>
 <ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11747/bat-arls-5/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-1/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-legacy:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_addfb_basic@addfb25-x-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212">i915#4212</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_flip@basic-flip-vs-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-dp1:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@a-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12145">i915#12145</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@b-dp1:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@b-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/fi-cfl-8109u/igt@kms_flip@basic-flip-vs-dpms@b-dp1.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12146">i915#12146</a>) +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274">i915#5274</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342">i915#4342</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-cursor-plane-move:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_psr@psr-cursor-plane-move.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9673">i915#9673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809">i915#8809</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-mmap:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-read:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-mtlp-6/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10216">i915#10216</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-2/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-2/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@execlists:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-2/igt@i915_selftest@live@execlists.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-2/igt@i915_selftest@live@execlists.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-2/igt@i915_selftest@live@late_gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-2/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +6 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@fbdev@read:<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15428/bat-arls-1/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11748/bat-arls-1/igt@fbdev@read.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>)</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8022 -&gt; IGTPW_11747</li>
+<li>IGT: IGT_8022 -&gt; IGTPW_11748</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_15428: a2269b8bdf726c56f52e41ebfdd1cf38aea494de @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11747: c974edd3aef9545436857dfe76a960cdfae7f4f0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGTPW_11748: 705a27ac0b5846e23053e9d56bde8f150936c5a2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_8022: 2d82f767a959d58c04ff3876d59d67924208d4ef @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============4624311638917745572==--
+--===============3763829448289465119==--
