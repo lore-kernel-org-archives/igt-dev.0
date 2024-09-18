@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49780CCD19A
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 11:10:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEC67CCD19D
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 11:10:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0354E10E1D0;
-	Wed, 18 Sep 2024 11:10:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9D2B10E254;
+	Wed, 18 Sep 2024 11:10:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ON+K4niG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eIbXHlZb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CBE910E1D0
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 11:10:05 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84C2010E23C
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 11:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726657806; x=1758193806;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=9JE7E+H/GF6fQ3f2RlEYSLnpqE5+JZ9AjiTyJomNLNc=;
- b=ON+K4niGi+IJFRdtKNyIDZe8xWUyYDZVoMI407G0/ONnv3TCvMbtPRWk
- fzIOIczG+E46uoh3jXqNvylFuueXDeKEar87q+utpaMwp3pPNhKXCPbVn
- VUSiqFdQpBlYsjB/oNZoZda4JCRvv8Nrf7WCxGIHdFej4Z1ZgqiVk/nHx
- Qy3nTKhSXLAvEA3daoj6eZCwkB61kQi93cZUFJ/fdCXvigw02hG3gFBDy
- FNjOzr4hGOi3xUvCYwjAVZ/pnE2MB23OEzbCIXizg5XHVVvU9Ya5vGzNz
- 5lf7n19tor9ye2BXNykn6JgYI8UB95iTmzT6K5bHR5Olxw+Z9s4ZirJn6 Q==;
-X-CSE-ConnectionGUID: J2stzcDeRZWHxldnlLGEVQ==
-X-CSE-MsgGUID: xtFoLS/oQrGxXcDsQlIh/w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25682174"
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25682174"
+ t=1726657808; x=1758193808;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=UygUNUChgy8v6dK15D3xz+GyjVwVvMh9f4Aj39dxHa4=;
+ b=eIbXHlZbkDFom9F5anmPcsf4MU7ForXOx3+u5pKRn0huScO7EyRi9Btz
+ zoB3pLFhdkz2Yik5WVGMdIhcv8Y8AswPsarSWMbx/vBwG0rIeSWZSQQv9
+ cT4WDBwv7cyLoHX3R5GPre9oFXZLmhBNnLPPFJUHCBzZrMe6AOy70FuGg
+ GUXXM7BE5j5Kf7fQvdRS3Ds0Cd9cVudNA1V3h6pEi3n0PxUSFmqv482UI
+ lj6IbXnVPXooOezbYk6GT4ys8YzOqvwdH9v2SadYIScDbNdwPgDoTadWj
+ lW9owJbpzqO17eRqXK8EctZcxjOL8TXsfl8LQL+rIU/Ynuix78PmBwIQM g==;
+X-CSE-ConnectionGUID: 3S6eTxlnR72T6ROEmsd3qQ==
+X-CSE-MsgGUID: hbAvWuI3R9+2XElKQuuDLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25682178"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25682178"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 04:10:05 -0700
-X-CSE-ConnectionGUID: QstmosuzTCGKeFk8oYuOeg==
-X-CSE-MsgGUID: FiYUjNC9TMCwHp09RpCQeg==
+ 18 Sep 2024 04:10:08 -0700
+X-CSE-ConnectionGUID: bHDxCstLT/CFqUlcGIRAOQ==
+X-CSE-MsgGUID: x/SYtt0KTrmhYw4sK42hFA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="69499894"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="69499925"
 Received: from srr4-3-linux-124-kbs1.iind.intel.com ([10.190.238.68])
  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 04:10:02 -0700
+ 18 Sep 2024 04:10:05 -0700
 From: Karthik B S <karthik.b.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com, santhosh.reddy.guddati@intel.com,
  kunal1.joshi@intel.com, Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v4 0/3] Add tests for ultrajoiner validation
-Date: Wed, 18 Sep 2024 16:37:51 +0530
-Message-Id: <20240918110754.26140-1-karthik.b.s@intel.com>
+Subject: [PATCH i-g-t v4 1/3] tests/kms_joiner: Add tests for ultrajoiner
+ validation
+Date: Wed, 18 Sep 2024 16:37:52 +0530
+Message-Id: <20240918110754.26140-2-karthik.b.s@intel.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20240918110754.26140-1-karthik.b.s@intel.com>
+References: <20240918110754.26140-1-karthik.b.s@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,25 +69,357 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds subtests to validate basic ultrajoiner modeset and
-negative tests to validate invalid pipe configs on both ultrajoiner
-capable display and on non ultrajoiner capable display using the force
-joiner debugfs option.
+Add a subtest to validate basic ultrajoiner modeset and a negative test
+to validate invalid pipe configs during an ultrajoiner modeset.
 
 Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-
-Karthik B S (3):
-  tests/kms_joiner: Add tests for ultrajoiner validation
-  lib/kms: Update force joiner helpers to accomodate ultrajoiner
-  tests/kms_joiner: Add subtests for force ultrajoiner validation
-
- lib/igt_kms.c                                 |  77 +++++-
- lib/igt_kms.h                                 |  19 +-
- .../intel/{kms_big_joiner.c => kms_joiner.c}  | 255 ++++++++++++++++--
+Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+---
+ lib/igt_kms.c                                 |  44 +++++
+ lib/igt_kms.h                                 |   3 +
+ .../intel/{kms_big_joiner.c => kms_joiner.c}  | 150 ++++++++++++++++--
  tests/meson.build                             |   2 +-
- 4 files changed, 318 insertions(+), 35 deletions(-)
- rename tests/intel/{kms_big_joiner.c => kms_joiner.c} (61%)
+ 4 files changed, 183 insertions(+), 16 deletions(-)
+ rename tests/intel/{kms_big_joiner.c => kms_joiner.c} (74%)
 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index dd530dbab..cf453dcfc 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -6347,6 +6347,50 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 	return found;
+ }
+ 
++/**
++ * igt_ultrajoiner_possible:
++ * @mode: libdrm mode
++ * @max_dotclock: Max pixel clock frequency
++ *
++ * Ultrajoiner will come into the picture, when the requested
++ * mode resolution > 10K or mode clock > 2 * max_dotclock.
++ *
++ * Returns: True if mode requires Ultrajoiner, else False.
++ */
++bool igt_ultrajoiner_possible(drmModeModeInfo *mode, int max_dotclock)
++{
++	return (mode->hdisplay > 2 * MAX_HDISPLAY_PER_PIPE ||
++		mode->clock > 2 * max_dotclock);
++}
++
++/**
++ * Ultrajoiner_mode_found:
++ * @drm_fd: drm file descriptor
++ * @connector: libdrm connector
++ * @max_dot_clock: max dot clock frequency
++ * @mode: libdrm mode to be filled
++ *
++ * Ultrajoiner will come in to the picture when the
++ * resolution > 10K or clock > 2 * max-dot-clock.
++ *
++ * Returns: True if ultra joiner found in connector modes
++ */
++bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock, drmModeModeInfo *mode)
++{
++	bool found = false;
++
++	igt_sort_connector_modes(connector, sort_drm_modes_by_res_dsc);
++	found = igt_ultrajoiner_possible(&connector->modes[0], max_dotclock);
++	if (!found) {
++		igt_sort_connector_modes(connector, sort_drm_modes_by_clk_dsc);
++		found = igt_ultrajoiner_possible(&connector->modes[0], max_dotclock);
++	}
++	if (found)
++		*mode = connector->modes[0];
++	return found;
++}
++
+ /**
+  * igt_has_force_joiner_debugfs
+  * @drmfd: A drm file descriptor
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 25ba50916..4455632f4 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1216,6 +1216,9 @@ int igt_get_max_dotclock(int fd);
+ bool igt_bigjoiner_possible(drmModeModeInfo *mode, int max_dotclock);
+ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
+ 			  int max_dotclock, drmModeModeInfo *mode);
++bool igt_ultrajoiner_possible(drmModeModeInfo *mode, int max_dotclock);
++bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
++			  int max_dotclock, drmModeModeInfo *mode);
+ bool igt_has_force_joiner_debugfs(int drmfd, char *conn_name);
+ bool igt_check_force_joiner_status(int drmfd, char *connector_name);
+ bool igt_check_bigjoiner_support(igt_display_t *display);
+diff --git a/tests/intel/kms_big_joiner.c b/tests/intel/kms_joiner.c
+similarity index 74%
+rename from tests/intel/kms_big_joiner.c
+rename to tests/intel/kms_joiner.c
+index 7c370bc60..633bf51c7 100644
+--- a/tests/intel/kms_big_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -37,13 +37,20 @@
+ #include "igt.h"
+ 
+ /**
+- * SUBTEST: invalid-modeset
++ * SUBTEST: invalid-modeset-big-joiner
+  * Description: Verify if the modeset on the adjoining pipe is rejected when
+  *              the pipe is active with a big joiner modeset
+  *
+- * SUBTEST: basic
++ * SUBTEST: invalid-modeset-ultra-joiner
++ * Description: Verify if the modeset on the other pipes are rejected when
++ *              the pipe A is active with ultra joiner modeset
++ *
++ * SUBTEST: basic-big-joiner
+  * Description: Verify the basic modeset on big joiner mode on all pipes
+  *
++ * SUBTEST: basic-ultra-joiner
++ * Description: Verify the basic modeset on ultra joiner mode on all pipes
++ *
+  * SUBTEST: invalid-modeset-force-joiner
+  * Description: Verify if modeset on adjacent pipe is declined when force joiner modeset is active.
+  *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs,
+@@ -54,20 +61,24 @@
+  *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs thus,
+  *		the test exclusively targets non-bigjoiner outputs.
+  */
+-IGT_TEST_DESCRIPTION("Test big joiner / force joiner");
++IGT_TEST_DESCRIPTION("Test joiner / force joiner");
+ 
+ #define INVALID_TEST_OUTPUT 2
+ 
+ typedef struct {
+ 	int drm_fd;
+ 	int big_joiner_output_count;
++	int ultra_joiner_output_count;
+ 	int non_big_joiner_output_count;
++	int non_ultra_joiner_output_count;
+ 	int mixed_output_count;
+ 	int output_count;
+ 	int n_pipes;
+ 	uint32_t master_pipes;
+ 	igt_output_t *big_joiner_output[IGT_MAX_PIPES];
++	igt_output_t *ultra_joiner_output[IGT_MAX_PIPES];
+ 	igt_output_t *non_big_joiner_output[IGT_MAX_PIPES];
++	igt_output_t *non_ultra_joiner_output[IGT_MAX_PIPES];
+ 	igt_output_t *mixed_output[IGT_MAX_PIPES];
+ 	enum pipe pipe_seq[IGT_MAX_PIPES];
+ 	igt_display_t display;
+@@ -286,6 +297,81 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
+ 	}
+ }
+ 
++static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display)
++{
++	int i, j, k, ret;
++	igt_output_t *output, *non_ultra_joiner_output;
++	igt_plane_t *primary;
++	igt_output_t **outputs;
++	igt_fb_t fb;
++	drmModeModeInfo mode;
++
++	outputs = data->ultra_joiner_output;
++	igt_display_reset(&data->display);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	for (i = 0; i < data->ultra_joiner_output_count; i++) {
++		output = outputs[i];
++		igt_require(ultrajoiner_mode_found(data->drm_fd, output->config.connector, max_dotclock, &mode));
++		igt_output_override_mode(output, &mode);
++		for (j = 0; j < data->n_pipes; j++) {
++			/* Ultra joiner is only valid on PIPE_A */
++			if (invalid_pipe && j == PIPE_A)
++				continue;
++			if (!invalid_pipe && j != PIPE_A)
++				continue;
++			if (two_display && j != PIPE_A)
++				continue;
++
++			igt_output_set_pipe(output, data->pipe_seq[j]);
++
++			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++			igt_create_pattern_fb(data->drm_fd, mode.hdisplay, mode.vdisplay, DRM_FORMAT_XRGB8888,
++					      DRM_FORMAT_MOD_LINEAR, &fb);
++			igt_plane_set_fb(primary, &fb);
++
++			if (invalid_pipe)
++				ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
++			else
++				igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++			if (two_display) {
++				for_each_connected_output(&data->display, non_ultra_joiner_output) {
++					if (output->id != non_ultra_joiner_output->id) {
++						for (k = 1; k < data->n_pipes; k++) {
++							igt_plane_t *plane;
++							drmModeModeInfo *mode1;
++
++							mode1 = igt_output_get_mode(non_ultra_joiner_output);
++
++							igt_output_set_pipe(non_ultra_joiner_output, data->pipe_seq[k]);
++							plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++
++							igt_plane_set_fb(plane, &fb);
++							igt_fb_set_size(&fb, plane, mode1->hdisplay, mode1->vdisplay);
++							igt_plane_set_size(plane, mode1->hdisplay, mode1->vdisplay);
++
++							ret = igt_display_try_commit2(&data->display, COMMIT_ATOMIC);
++
++							igt_plane_set_fb(plane, NULL);
++							igt_assert_f(ret != 0, "Commit expected to fail on second display\n");
++						}
++						/* Validation with one output is sufficient */
++						break;
++					}
++				}
++			}
++
++			igt_display_reset(&data->display);
++			igt_plane_set_fb(primary, NULL);
++			igt_remove_fb(data->drm_fd, &fb);
++
++			if (invalid_pipe)
++				igt_assert_f(ret != 0, "Commit shouldn't have passed\n");
++		}
++	}
++}
++
+ igt_main
+ {
+ 	bool force_joiner_supported;
+@@ -297,7 +383,9 @@ igt_main
+ 	igt_fixture {
+ 		force_joiner_supported = false;
+ 		data.big_joiner_output_count = 0;
++		data.ultra_joiner_output_count = 0;
+ 		data.non_big_joiner_output_count = 0;
++		data.non_ultra_joiner_output_count = 0;
+ 		data.mixed_output_count = 0;
+ 		data.output_count = 0;
+ 		j = 0;
+@@ -310,24 +398,31 @@ igt_main
+ 		max_dotclock = igt_get_max_dotclock(data.drm_fd);
+ 
+ 		for_each_connected_output(&data.display, output) {
+-			bool found = false;
++			bool ultrajoiner_found = false, bigjoiner_found = false;
+ 			drmModeConnector *connector = output->config.connector;
+ 
+ 			/*
+ 			 * Bigjoiner will come in to the picture when the
+ 			 * resolution > 5K or clock > max-dot-clock.
++			 * Ultrajoiner will come in to the picture when the
++			 * resolution > 10K or clock > 2 * max-dot-clock.
+ 			 */
+-			found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock, &mode);
++			bigjoiner_found = bigjoiner_mode_found(data.drm_fd, connector, max_dotclock, &mode);
++			ultrajoiner_found = ultrajoiner_mode_found(data.drm_fd, connector, max_dotclock, &mode);
+ 
+-			if (found) {
++			if (igt_has_force_joiner_debugfs(data.drm_fd, output->name))
++				force_joiner_supported = true;
++
++			if (ultrajoiner_found)
++				data.ultra_joiner_output[data.ultra_joiner_output_count++] = output;
++			else if (force_joiner_supported)
++				data.non_ultra_joiner_output[data.non_ultra_joiner_output_count++] = output;
++
++			if (bigjoiner_found)
+ 				data.big_joiner_output[data.big_joiner_output_count++] = output;
+-				igt_output_override_mode(output, &mode);
+-			} else {
+-				if (igt_has_force_joiner_debugfs(data.drm_fd, output->name)) {
+-					force_joiner_supported = true;
+-					data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
+-				}
+-			}
++			else if (force_joiner_supported)
++				data.non_big_joiner_output[data.non_big_joiner_output_count++] = output;
++
+ 			data.output_count++;
+ 		}
+ 		if (data.big_joiner_output_count == 1 && data.non_big_joiner_output_count >= 1) {
+@@ -337,6 +432,7 @@ igt_main
+ 			data.mixed_output[data.mixed_output_count++] = data.big_joiner_output[0];
+ 			data.mixed_output[data.mixed_output_count++] = data.non_big_joiner_output[0];
+ 		}
++
+ 		data.n_pipes = 0;
+ 		for_each_pipe(&data.display, i) {
+ 			data.n_pipes++;
+@@ -346,7 +442,7 @@ igt_main
+ 	}
+ 
+ 	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+-	igt_subtest_with_dynamic("basic") {
++	igt_subtest_with_dynamic("basic-big-joiner") {
+ 			igt_require_f(data.big_joiner_output_count > 0,
+ 				      "No bigjoiner output found\n");
+ 			igt_require_f(data.n_pipes > 1,
+@@ -358,9 +454,19 @@ igt_main
+ 					test_multi_joiner(&data, data.big_joiner_output_count, false);
+ 	}
+ 
++	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
++	igt_subtest_with_dynamic("basic-ultra-joiner") {
++			igt_require_f(data.ultra_joiner_output_count > 0,
++				      "No ultrajoiner output found\n");
++			igt_require_f(data.n_pipes > 3,
++				      "Minimum 4 pipes required\n");
++			igt_dynamic_f("single-joiner")
++				test_ultra_joiner(&data, false, false);
++	}
++
+ 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
+ 		     "when the pipe is active with a big joiner modeset");
+-	igt_subtest_with_dynamic("invalid-modeset") {
++	igt_subtest_with_dynamic("invalid-modeset-big-joiner") {
+ 		igt_require_f(data.big_joiner_output_count > 0, "Non big joiner output not found\n");
+ 		igt_require_f(data.n_pipes > 1, "Minimum of 2 pipes are required\n");
+ 		if (data.big_joiner_output_count >= 1)
+@@ -374,6 +480,20 @@ igt_main
+ 				test_invalid_modeset_two_joiner(&data, true, false);
+ 	}
+ 
++	igt_describe("Verify if the modeset on the other pipes are rejected "
++		     "when the pipe A is active with a ultra joiner modeset");
++	igt_subtest_with_dynamic("invalid-modeset-ultra-joiner") {
++		igt_require_f(data.ultra_joiner_output_count > 0, "Ultra joiner output not found\n");
++		igt_require_f(data.n_pipes > 3, "Minimum of 4 pipes are required\n");
++
++		igt_dynamic_f("ultra_joiner_on_invalid_pipe")
++			test_ultra_joiner(&data, true, false);
++		if (data.non_ultra_joiner_output_count > 0) {
++			igt_dynamic_f("2x")
++				test_ultra_joiner(&data, false, true);
++		}
++	}
++
+ 	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
+ 	igt_subtest_with_dynamic("basic-force-joiner") {
+ 		igt_require_f(force_joiner_supported,
+diff --git a/tests/meson.build b/tests/meson.build
+index 00556c9d6..c8cba1b9a 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -242,7 +242,6 @@ intel_i915_progs = [
+ 
+ intel_kms_progs = [
+ 	'kms_big_fb',
+-	'kms_big_joiner' ,
+ 	'kms_busy',
+ 	'kms_ccs',
+ 	'kms_cdclk',
+@@ -255,6 +254,7 @@ intel_kms_progs = [
+ 	'kms_flip_scaled_crc',
+ 	'kms_flip_tiling',
+ 	'kms_frontbuffer_tracking',
++	'kms_joiner',
+ 	'kms_legacy_colorkey',
+ 	'kms_mmap_write_crc',
+ 	'kms_pipe_b_c_ivb',
 -- 
 2.39.1
 
