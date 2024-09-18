@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99135CDD548
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3DE4CDD54C
 	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 16:36:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2137D10E5FB;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1FE9610E5F6;
 	Wed, 18 Sep 2024 16:36:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BFgLy93f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eQNzG3yb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6C6B10E5EA
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FDF610E290
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726677392; x=1758213392;
+ t=1726677391; x=1758213391;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VKtyLvOMl9N8AwBup0wLlI3Xj2w3sjbsjZdZC3vn8IA=;
- b=BFgLy93fnDwJ9CcjdO8QDl/vbasC184UV/6Baw5enAUmuHrwGbrj3ZZ+
- EpUkw6W+2tLahFvT0mL3SGnpm5Lm4Kr3dBQHrEahi6c51q+rMt59cPNhc
- brTtp1Le+R6oWoia609ibyjCsNB5qj6oTTsicIdvOMJIO2kdIueJDCP6c
- ZA0eZlE11L8afQVsttloHF8G0JHb7sIb4Tfr7IvPHZZtjqXZt2oykUKUA
- 0I3XlObu4JSzOaCVifMPCndis4wnneeAYqKSefiiDepQtu18eL8bcDB11
- 8YXJmKMQJHirjZI9lSQbRY/Z+v5CXnbqchtnD3MIhGtP5bsxGEPBrkln9 Q==;
-X-CSE-ConnectionGUID: FgVJtaPiQ+e+HiOVAyTaEQ==
-X-CSE-MsgGUID: EHyKSLgtQ5+KcqY8Hf1mUA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="29496278"
-X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="29496278"
+ bh=X/pBfiL466YP+4lBhTb6fZ0RQV2ve2Tq6WeRicH8TBc=;
+ b=eQNzG3ybmyAAar2Blrl8dCxcZLTYtbj4n8PG9dNgTZVN8d9ONP/LGr/s
+ zPXRJ5uJQwDl/NAPt5oFl8esMQcC5Vkuj3s2l/M9YxHndBGo7LGNCaH5z
+ BfTw59XvpZjjB0AVRnxOLFnxy4OtZnwnFMOyKd2JumlztusKanbNDEZIB
+ /z8WqHZi+LQJtq0cCS1j0NOjqRMx39qQmWNsn+ELIHG+bWR99TYIw0D+y
+ OrugrLx/5hntj9th9YULhE8P34ujY6oroE4uXvAXhocbJFFAH4zKE4+FR
+ Qoc/G8wGO4NWZT75J8aGHLOI+elEX6VX115gWIS/2Co54wCg/MLOD1Q+5 Q==;
+X-CSE-ConnectionGUID: Pi7VJyAmTludCKAUTJqIMQ==
+X-CSE-MsgGUID: kgcNQrQST7y4H1eDNdFM1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="29496274"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="29496274"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Sep 2024 09:36:31 -0700
-X-CSE-ConnectionGUID: dqNN81xcQOKrJkb3KUaGNg==
-X-CSE-MsgGUID: 74YAH6kuRf+iOc3v+XN0sw==
+X-CSE-ConnectionGUID: /KNMvAq/TXiixwnL7AYISw==
+X-CSE-MsgGUID: 9qJOo42GSami5Nju18lKrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="69235583"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="69235572"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Sep 2024 09:36:31 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 5/6] tools/intel_reg: Add wrapper for reg access init
-Date: Wed, 18 Sep 2024 09:36:28 -0700
-Message-ID: <20240918163629.1186314-6-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 2/6] lib/igt_gt: Document fd argument in
+ igt_open_forcewake_handle()
+Date: Wed, 18 Sep 2024 09:36:25 -0700
+Message-ID: <20240918163629.1186314-3-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.46.1
 In-Reply-To: <20240918163629.1186314-1-lucas.demarchi@intel.com>
 References: <20240918163629.1186314-1-lucas.demarchi@intel.com>
@@ -67,62 +68,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extract helper function so it can be extended to xe.
+Document the fd argument to make it clear what -1 means, which is
+usually not the desired behavior.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tools/intel_reg.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ lib/igt_gt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/intel_reg.c b/tools/intel_reg.c
-index c5800cf05..906ae9b84 100644
---- a/tools/intel_reg.c
-+++ b/tools/intel_reg.c
-@@ -800,6 +800,11 @@ static int parse_reg(struct config *config, struct reg *reg, const char *s)
- 	return ret;
- }
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index b043e2d41..d831d2448 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -492,6 +492,7 @@ void igt_stop_hang_helper(void)
  
-+static int register_access_init(struct config *config)
-+{
-+	return intel_register_access_init(&config->mmio_data, config->pci_dev, 0, -1);
-+}
-+
- /* XXX: add support for register ranges, maybe REGISTER..REGISTER */
- static int intel_reg_read(struct config *config, int argc, char *argv[])
- {
-@@ -812,8 +817,8 @@ static int intel_reg_read(struct config *config, int argc, char *argv[])
- 
- 	if (config->mmiofile)
- 		intel_mmio_use_dump_file(&config->mmio_data, config->mmiofile);
--	else
--		intel_register_access_init(&config->mmio_data, config->pci_dev, 0, -1);
-+	else if (register_access_init(config) < 0)
-+		return EXIT_FAILURE;
- 
- 	for (i = 1; i < argc; i++) {
- 		struct reg reg;
-@@ -843,7 +848,9 @@ static int intel_reg_write(struct config *config, int argc, char *argv[])
- 		return EXIT_FAILURE;
- 	}
- 
--	intel_register_access_init(&config->mmio_data, config->pci_dev, 0, -1);
-+
-+	if (register_access_init(config) < 0)
-+		return EXIT_FAILURE;
- 
- 	for (i = 1; i < argc; i += 2) {
- 		struct reg reg;
-@@ -880,8 +887,8 @@ static int intel_reg_dump(struct config *config, int argc, char *argv[])
- 
- 	if (config->mmiofile)
- 		intel_mmio_use_dump_file(&config->mmio_data, config->mmiofile);
--	else
--		intel_register_access_init(&config->mmio_data, config->pci_dev, 0, -1);
-+	else if (register_access_init(config) < 0)
-+		return EXIT_FAILURE;
- 
- 	for (i = 0; i < config->regcount; i++) {
- 		reg = &config->regs[i];
+ /**
+  * igt_open_forcewake_handle:
++ * @fd: open i915 or xe drm file descriptor or -1 to use the first device found
+  *
+  * This functions opens the debugfs forcewake file and so prevents the GT from
+  * suspending. The reference is automatically dropped when the is closed.
 -- 
 2.46.1
 
