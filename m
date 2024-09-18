@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74980CCD1A4
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 11:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D023DCCD1A0
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 11:31:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E73A10E585;
-	Wed, 18 Sep 2024 11:31:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8732A10E586;
+	Wed, 18 Sep 2024 11:31:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aiTlC22i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n5JNbXyD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CC0B10E585
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 11:31:08 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8536910E586
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 11:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726659069; x=1758195069;
+ t=1726659073; x=1758195073;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=+IvSw8acyBoHRLx8KFJB3/8tV2sVqpTd7+5qnKvtCaE=;
- b=aiTlC22iXYJoSgzc8OkC8tlz+mjerVxq9BA3dfY9n0vsTWCmZboIaeTX
- /YKxUaZipVfHjix+1K/Ct5X/BbJr2FESNaQ20Z0Xw6Lyg4Ebb18i4hQEf
- kz17StZdmMBebyK8UZqLnoscJ+0p6NebtrFz6/Ayhp2aW5eYwCXuwSp3U
- NlHwpdVxLfiCJTzZUqfO0LUo0staeBtFO5w8daiKXYpslbpnIFVna8xdB
- zHBXqSEcrC64JXb6gi2QI9iFPtdkEmzUzbDzOY2q379GAVORkmPwbQfkd
- /5URo+XeQSTvqGDemd4KOskRI0iChmx/IEut/14c7kg086zikeorjDSiU A==;
-X-CSE-ConnectionGUID: 7C5oKehPSPaoALce5fE4qA==
-X-CSE-MsgGUID: YhqlsrtjTiq3k8uKTNbKxA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="28470093"
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="28470093"
+ bh=7+B7kX9wxrMd1BJGWB5zOEaZfN4PzqbNYrWKkEtynJ4=;
+ b=n5JNbXyDSpCfEOFODaAYN9V5s0MCmhVh38cWUbmqyJ14rkpaoVEVuZ8U
+ drgkbbLS0bsqPW2jLVOR25T6kXesPiswYvgbob3f7jo54ng7rgHCiCsaB
+ /Mo2jWTXJQKoze12cZ4qnCIrzctAHJbIJ9eYoc6sTJRp42MTf7GR9zOb6
+ epKnoitYIMCqc8MTN+eC4N3X04fthILLFgVHSNKSUHe1+eMzlwOcYg08T
+ vzwXC10XESI48Cb0M2uKJdYkLZgM1HkFY5SfNi1FaTNiTopAyRKhNoeaG
+ AkDB2GTHzYpgy5v3V0wJNhyVVP5EHHkyfqhTYZWiSbPEDKYxM6Zcarm2n A==;
+X-CSE-ConnectionGUID: 9TkaW/H5QvSLVppv4yC8gg==
+X-CSE-MsgGUID: o611fVUeRECq4AFA9zd6Ug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="28470094"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="28470094"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 04:31:08 -0700
-X-CSE-ConnectionGUID: nrE5cIiDRuG4gXhE46Gjyw==
-X-CSE-MsgGUID: 5Kwp7a/aSpCyjvfJqRli5w==
+ 18 Sep 2024 04:31:13 -0700
+X-CSE-ConnectionGUID: bYiBlNmlTzi/d3NdPnXtuw==
+X-CSE-MsgGUID: Z7XHCVEZQfSfo6N0GIlIwg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="106972629"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="106972653"
 Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.218])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 04:31:03 -0700
+ 18 Sep 2024 04:31:08 -0700
 From: Christoph Manszewski <christoph.manszewski@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
@@ -56,11 +56,11 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Mika Kuoppala <mika.kuoppala@intel.com>,
  Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
  Jan Sokolowski <jan.sokolowski@intel.com>,
+ Mika Kuoppala <mika.kuoppala@linux.intel.com>,
  Christoph Manszewski <christoph.manszewski@intel.com>
-Subject: [PATCH i-g-t v7 08/16] tests/xe_exec_sip: Introduce invalid
- instruction tests
-Date: Wed, 18 Sep 2024 13:30:09 +0200
-Message-Id: <20240918113017.144687-9-christoph.manszewski@intel.com>
+Subject: [PATCH i-g-t v7 09/16] drm-uapi/xe: Sync with eudebug uapi
+Date: Wed, 18 Sep 2024 13:30:10 +0200
+Message-Id: <20240918113017.144687-10-christoph.manszewski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240918113017.144687-1-christoph.manszewski@intel.com>
 References: <20240918113017.144687-1-christoph.manszewski@intel.com>
@@ -82,250 +82,371 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 
-Xe2 and earlier gens are able to handle very limited set of invalid
-instructions - only illegal and undefined opcodes, other errors in
-instruction can cause undefined behavior.
-Illegal/undefined opcode results in:
-- setting illegal opcode status bit - cr0.1[28],
-- calling SIP if illegal opcode bit is enabled - cr0.1[12].
-cr0.1[12] can be enabled directly from the thread or by thread dispatcher
-from Interface Descriptor Data provided to COMPUTE_WALKER instruction.
+Align with kernel commit 09411c6ecbef ("drm/xe/eudebug: Add debug
+metadata support for xe_eudebug") from:
 
-Implemented cases:
-- check if SIP is not called when exception is not enabled,
-- check if SIP is called when exception is enabled from EU thread,
-- check if SIP is called when exception is enabled from COMPUTE_WALKER
+https://gitlab.freedesktop.org/miku/kernel.git
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Mika Kuoppala <mika.kuoppala@intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+which introduces most recent changes to the eudebug uapi.
+
+Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- tests/intel/xe_exec_sip.c | 124 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 113 insertions(+), 11 deletions(-)
+ include/drm-uapi/xe_drm_eudebug.h | 341 ++++++++++++++++++++++++++++++
+ 1 file changed, 341 insertions(+)
+ create mode 100644 include/drm-uapi/xe_drm_eudebug.h
 
-diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
-index 564c899f8..ee4787d61 100644
---- a/tests/intel/xe_exec_sip.c
-+++ b/tests/intel/xe_exec_sip.c
-@@ -30,12 +30,25 @@
- #define COLOR_C4 0xc4
- 
- #define SHADER_CANARY 0x01010101
-+#define SIP_CANARY 0x02020202
- 
- enum shader_type {
- 	SHADER_HANG,
-+	SHADER_INV_INSTR_DISABLED,
-+	SHADER_INV_INSTR_THREAD_ENABLED,
-+	SHADER_INV_INSTR_WALKER_ENABLED,
- 	SHADER_WRITE,
- };
- 
-+enum sip_type {
-+	SIP_INV_INSTR,
-+	SIP_NULL,
+diff --git a/include/drm-uapi/xe_drm_eudebug.h b/include/drm-uapi/xe_drm_eudebug.h
+new file mode 100644
+index 000000000..13c069e00
+--- /dev/null
++++ b/include/drm-uapi/xe_drm_eudebug.h
+@@ -0,0 +1,341 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2023 Intel Corporation
++ */
++
++#ifndef _XE_DRM_EUDEBUG_H_
++#define _XE_DRM_EUDEBUG_H_
++
++#if defined(__cplusplus)
++extern "C" {
++#endif
++
++/*
++ * The Xe EU debugger extends the uapi by both extending the api for the Xe device as well as
++ * adding an api to use with a separate debugger handle. Currently the KMD part adds the former to
++ * 'xe_drm.h' and the latter to 'xe_drm_eudebug.h'. Since the KMD part is not yet merged upstream,
++ * let's put all eudebug specific uapi here to keep the 'xe_drm.h' file synced with the upstream
++ * kernel.
++ */
++
++/* XXX: BEGIN section moved from xe_drm.h as temporary solution */
++#define DRM_XE_EUDEBUG_CONNECT		0x0c
++#define DRM_XE_DEBUG_METADATA_CREATE	0x0d
++#define DRM_XE_DEBUG_METADATA_DESTROY	0x0e
++
++/* ... */
++
++#define DRM_IOCTL_XE_EUDEBUG_CONNECT		DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_EUDEBUG_CONNECT, struct drm_xe_eudebug_connect)
++#define DRM_IOCTL_XE_DEBUG_METADATA_CREATE	 DRM_IOWR(DRM_COMMAND_BASE + DRM_XE_DEBUG_METADATA_CREATE, struct drm_xe_debug_metadata_create)
++#define DRM_IOCTL_XE_DEBUG_METADATA_DESTROY	 DRM_IOW(DRM_COMMAND_BASE + DRM_XE_DEBUG_METADATA_DESTROY, struct drm_xe_debug_metadata_destroy)
++
++/* ... */
++
++struct drm_xe_vm_bind_op_ext_attach_debug {
++	/** @base: base user extension */
++	struct drm_xe_user_extension base;
++
++	/** @id: Debug object id from create metadata */
++	__u64 metadata_id;
++
++	/** @flags: Flags */
++	__u64 flags;
++
++	/** @cookie: Cookie */
++	__u64 cookie;
++
++	/** @reserved: Reserved */
++	__u64 reserved;
 +};
 +
-+/* Control Register cr0.1 bits for exception handling */
-+#define ILLEGAL_OPCODE_ENABLE BIT(12)
-+#define ILLEGAL_OPCODE_STATUS BIT(28)
++/* ... */
 +
- static struct intel_buf *
- create_fill_buf(int fd, int width, int height, uint8_t color)
- {
-@@ -58,8 +71,12 @@ create_fill_buf(int fd, int width, int height, uint8_t color)
- static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
- {
- 	static struct gpgpu_shader *shader;
-+	uint32_t bad;
- 
- 	shader = gpgpu_shader_create(fd);
-+	if (shader_type == SHADER_INV_INSTR_WALKER_ENABLED)
-+		shader->illegal_opcode_exception_enable = true;
++#define XE_VM_BIND_OP_EXTENSIONS_ATTACH_DEBUG 0
 +
- 	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
- 
- 	switch (shader_type) {
-@@ -70,19 +87,63 @@ static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
- 		break;
- 	case SHADER_WRITE:
- 		break;
-+	case SHADER_INV_INSTR_THREAD_ENABLED:
-+		gpgpu_shader__set_exception(shader, ILLEGAL_OPCODE_ENABLE);
-+		__attribute__ ((fallthrough));
-+	case SHADER_INV_INSTR_DISABLED:
-+	case SHADER_INV_INSTR_WALKER_ENABLED:
-+		bad = (shader_type == SHADER_INV_INSTR_DISABLED) ? ILLEGAL_OPCODE_ENABLE : 0;
-+		gpgpu_shader__write_on_exception(shader, 1, 0, ILLEGAL_OPCODE_ENABLE, bad);
-+		gpgpu_shader__nop(shader);
-+		gpgpu_shader__nop(shader);
-+		/* modify second nop, set only opcode bits[6:0] */
-+		shader->instr[gpgpu_shader_last_instr(shader)][0] = 0x7f;
-+		/* SIP should clear exception bit */
-+		bad = ILLEGAL_OPCODE_STATUS;
-+		gpgpu_shader__write_on_exception(shader, 2, 0, ILLEGAL_OPCODE_STATUS, bad);
-+		break;
- 	}
- 
- 	gpgpu_shader__eot(shader);
- 	return shader;
- }
- 
-+static struct gpgpu_shader *get_sip(int fd, enum sip_type sip_type, unsigned int y_offset)
-+{
-+	static struct gpgpu_shader *sip;
++/* ... */
 +
-+	if (sip_type == SIP_NULL)
-+		return NULL;
++#define   DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG		2
++#define     DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE		(1 << 0)
 +
-+	sip = gpgpu_shader_create(fd);
-+	gpgpu_shader__write_dword(sip, SIP_CANARY, y_offset);
++/* ... */
 +
-+	switch (sip_type) {
-+	case SIP_INV_INSTR:
-+		gpgpu_shader__write_on_exception(sip, 1, y_offset, ILLEGAL_OPCODE_STATUS, 0);
-+		break;
-+	default:
-+		break;
-+	}
++/*
++ * Debugger ABI (ioctl and events) Version History:
++ * 0 - No debugger available
++ * 1 - Initial version
++ */
++#define DRM_XE_EUDEBUG_VERSION 1
 +
-+	gpgpu_shader__end_system_routine(sip, false);
++struct drm_xe_eudebug_connect {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
 +
-+	return sip;
++	__u64 pid; /* input: Target process ID */
++	__u32 flags; /* MBZ */
++
++	__u32 version; /* output: current ABI (ioctl / events) version */
++};
++
++/*
++ * struct drm_xe_debug_metadata_create - Create debug metadata
++ *
++ * Add a region of user memory to be marked as debug metadata.
++ * When the debugger attaches, the metadata regions will be delivered
++ * for debugger. Debugger can then map these regions to help decode
++ * the program state.
++ *
++ * Returns handle to created metadata entry.
++ */
++struct drm_xe_debug_metadata_create {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++#define DRM_XE_DEBUG_METADATA_ELF_BINARY     0
++#define DRM_XE_DEBUG_METADATA_PROGRAM_MODULE 1
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_MODULE_AREA 2
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SBA_AREA 3
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA 4
++#define WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_NUM (1 + \
++	  WORK_IN_PROGRESS_DRM_XE_DEBUG_METADATA_SIP_AREA)
++
++	/** @type: Type of metadata */
++	__u64 type;
++
++	/** @user_addr: pointer to start of the metadata */
++	__u64 user_addr;
++
++	/** @len: length, in bytes of the medata */
++	__u64 len;
++
++	/** @metadata_id: created metadata handle (out) */
++	__u32 metadata_id;
++};
++
++/**
++ * struct drm_xe_debug_metadata_destroy - Destroy debug metadata
++ *
++ * Destroy debug metadata.
++ */
++struct drm_xe_debug_metadata_destroy {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @metadata_id: metadata handle to destroy */
++	__u32 metadata_id;
++};
++
++/* XXX: END section moved from xe_drm.h as temporary solution */
++
++/**
++ * Do a eudebug event read for a debugger connection.
++ *
++ * This ioctl is available in debug version 1.
++ */
++#define DRM_XE_EUDEBUG_IOCTL_READ_EVENT		_IO('j', 0x0)
++#define DRM_XE_EUDEBUG_IOCTL_EU_CONTROL		_IOWR('j', 0x2, struct drm_xe_eudebug_eu_control)
++#define DRM_XE_EUDEBUG_IOCTL_ACK_EVENT		_IOW('j', 0x4, struct drm_xe_eudebug_ack_event)
++#define DRM_XE_EUDEBUG_IOCTL_VM_OPEN		_IOW('j', 0x1, struct drm_xe_eudebug_vm_open)
++#define DRM_XE_EUDEBUG_IOCTL_READ_METADATA	_IOWR('j', 0x3, struct drm_xe_eudebug_read_metadata)
++
++/* XXX: Document events to match their internal counterparts when moved to xe_drm.h */
++struct drm_xe_eudebug_event {
++	__u32 len;
++
++	__u16 type;
++#define DRM_XE_EUDEBUG_EVENT_NONE		0
++#define DRM_XE_EUDEBUG_EVENT_READ		1
++#define DRM_XE_EUDEBUG_EVENT_OPEN		2
++#define DRM_XE_EUDEBUG_EVENT_VM			3
++#define DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE		4
++#define DRM_XE_EUDEBUG_EVENT_EU_ATTENTION	5
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND		6
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP		7
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE	8
++#define DRM_XE_EUDEBUG_EVENT_METADATA		9
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_OP_METADATA 10
++
++	__u16 flags;
++#define DRM_XE_EUDEBUG_EVENT_CREATE		(1 << 0)
++#define DRM_XE_EUDEBUG_EVENT_DESTROY		(1 << 1)
++#define DRM_XE_EUDEBUG_EVENT_STATE_CHANGE	(1 << 2)
++#define DRM_XE_EUDEBUG_EVENT_NEED_ACK		(1 << 3)
++
++	__u64 seqno;
++	__u64 reserved;
++};
++
++struct drm_xe_eudebug_event_client {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle; /* This is unique per debug connection */
++};
++
++struct drm_xe_eudebug_event_vm {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 vm_handle;
++};
++
++struct drm_xe_eudebug_event_exec_queue {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 vm_handle;
++	__u64 exec_queue_handle;
++	__u32 engine_class;
++	__u32 width;
++	__u64 lrc_handle[];
++};
++
++struct drm_xe_eudebug_event_eu_attention {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 exec_queue_handle;
++	__u64 lrc_handle;
++	__u32 flags;
++	__u32 bitmask_size;
++	__u8 bitmask[];
++};
++
++struct drm_xe_eudebug_eu_control {
++	__u64 client_handle;
++
++#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL	0
++#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_STOPPED		1
++#define DRM_XE_EUDEBUG_EU_CONTROL_CMD_RESUME		2
++	__u32 cmd;
++	__u32 flags;
++
++	__u64 seqno;
++
++	__u64 exec_queue_handle;
++	__u64 lrc_handle;
++	__u32 reserved;
++	__u32 bitmask_size;
++	__u64 bitmask_ptr;
++};
++
++/*
++ *  When client (debuggee) does vm_bind_ioctl() following event
++ *  sequence will be created (for the debugger):
++ *
++ *  ┌───────────────────────┐
++ *  │  EVENT_VM_BIND        ├───────┬─┬─┐
++ *  └───────────────────────┘       │ │ │
++ *      ┌───────────────────────┐   │ │ │
++ *      │ EVENT_VM_BIND_OP #1   ├───┘ │ │
++ *      └───────────────────────┘     │ │
++ *                 ...                │ │
++ *      ┌───────────────────────┐     │ │
++ *      │ EVENT_VM_BIND_OP #n   ├─────┘ │
++ *      └───────────────────────┘       │
++ *                                      │
++ *      ┌───────────────────────┐       │
++ *      │ EVENT_UFENCE          ├───────┘
++ *      └───────────────────────┘
++ *
++ * All the events below VM_BIND will reference the VM_BIND
++ * they associate with, by field .vm_bind_ref_seqno.
++ * event_ufence will only be included if the client did
++ * attach sync of type UFENCE into its vm_bind_ioctl().
++ *
++ * When EVENT_UFENCE is sent by the driver, all the OPs of
++ * the original VM_BIND are completed and the [addr,range]
++ * contained in them are present and modifiable through the
++ * vm accessors. Accessing [addr, range] before related ufence
++ * event will lead to undefined results as the actual bind
++ * operations are async and the backing storage might not
++ * be there on a moment of receiving the event.
++ *
++ * Client's UFENCE sync will be held by the driver: client's
++ * drm_xe_wait_ufence will not complete and the value of the ufence
++ * won't appear until ufence is acked by the debugger process calling
++ * DRM_XE_EUDEBUG_IOCTL_ACK_EVENT with the event_ufence.base.seqno.
++ * This will signal the fence, .value will update and the wait will
++ * complete allowing the client to continue.
++ *
++ */
++
++struct drm_xe_eudebug_event_vm_bind {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 vm_handle;
++
++	__u32 flags;
++#define DRM_XE_EUDEBUG_EVENT_VM_BIND_FLAG_UFENCE (1 << 0)
++
++	__u32 num_binds;
++};
++
++struct drm_xe_eudebug_event_vm_bind_op {
++	struct drm_xe_eudebug_event base;
++	__u64 vm_bind_ref_seqno; /* *_event_vm_bind.base.seqno */
++	__u64 num_extensions;
++
++	__u64 addr; /* XXX: Zero for unmap all? */
++	__u64 range; /* XXX: Zero for unmap all? */
++};
++
++struct drm_xe_eudebug_event_vm_bind_ufence {
++	struct drm_xe_eudebug_event base;
++	__u64 vm_bind_ref_seqno; /* *_event_vm_bind.base.seqno */
++};
++
++struct drm_xe_eudebug_ack_event {
++	__u32 type;
++	__u32 flags; /* MBZ */
++	__u64 seqno;
++};
++
++struct drm_xe_eudebug_vm_open {
++	/** @extensions: Pointer to the first extension struct, if any */
++	__u64 extensions;
++
++	/** @client_handle: id of client */
++	__u64 client_handle;
++
++	/** @vm_handle: id of vm */
++	__u64 vm_handle;
++
++	/** @flags: flags */
++	__u64 flags;
++
++	/** @timeout_ns: Timeout value in nanoseconds operations (fsync) */
++	__u64 timeout_ns;
++};
++
++struct drm_xe_eudebug_read_metadata {
++	__u64 client_handle;
++	__u64 metadata_handle;
++	__u32 flags;
++	__u32 reserved;
++	__u64 ptr;
++	__u64 size;
++};
++
++struct drm_xe_eudebug_event_metadata {
++	struct drm_xe_eudebug_event base;
++
++	__u64 client_handle;
++	__u64 metadata_handle;
++	/* XXX: Refer to xe_drm.h for fields */
++	__u64 type;
++	__u64 len;
++};
++
++struct drm_xe_eudebug_event_vm_bind_op_metadata {
++	struct drm_xe_eudebug_event base;
++	__u64 vm_bind_op_ref_seqno; /* *_event_vm_bind_op.base.seqno */
++
++	__u64 metadata_handle;
++	__u64 metadata_cookie;
++};
++
++#if defined(__cplusplus)
 +}
++#endif
 +
- static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, enum shader_type shader_type,
--			     unsigned int threads, unsigned int width, unsigned int height)
-+			     enum sip_type sip_type, unsigned int threads, unsigned int width,
-+			     unsigned int height)
- {
- 	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
-+	struct gpgpu_shader *sip = get_sip(fd, sip_type, height / 2);
- 	struct gpgpu_shader *shader = get_shader(fd, shader_type);
- 
--	gpgpu_shader_exec(ibb, buf, 1, threads, shader, NULL, 0, 0);
-+	gpgpu_shader_exec(ibb, buf, 1, threads, shader, sip, 0, 0);
-+
-+	if (sip)
-+		gpgpu_shader_destroy(sip);
-+
- 	gpgpu_shader_destroy(shader);
- 	return buf->handle;
- }
-@@ -98,10 +159,10 @@ static void check_fill_buf(uint8_t *ptr, const int width, const int x,
- }
- 
- static void check_buf(int fd, uint32_t handle, int width, int height,
--		      uint8_t poison_c)
-+		      enum shader_type shader_type, enum sip_type sip_type, uint8_t poison_c)
- {
- 	unsigned int sz = ALIGN(width * height, 4096);
--	int thread_count = 0;
-+	int thread_count = 0, sip_count = 0;
- 	uint32_t *ptr;
- 	int i, j;
- 
-@@ -119,7 +180,27 @@ static void check_buf(int fd, uint32_t handle, int width, int height,
- 		i = 0;
- 	}
- 
-+	for (i = 0, j = height / 2; j < height; ++j) {
-+		if (ptr[j * width / 4] == SIP_CANARY) {
-+			++sip_count;
-+			i = 4;
-+		}
-+
-+		for (; i < width; i++)
-+			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
-+
-+		i = 0;
-+	}
-+
- 	igt_assert(thread_count);
-+	if (shader_type == SHADER_INV_INSTR_DISABLED)
-+		igt_assert(!sip_count);
-+	else if (sip_type == SIP_INV_INSTR && shader_type != SHADER_INV_INSTR_DISABLED)
-+		igt_assert_f(thread_count == sip_count,
-+			     "Thread and SIP count mismatch, %d != %d\n",
-+			     thread_count, sip_count);
-+	else
-+		igt_assert(sip_count == 0);
- 
- 	munmap(ptr, sz);
- }
-@@ -143,9 +224,21 @@ xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
-  *
-  * SUBTEST: sanity-after-timeout
-  * Description: check basic shader execution after job timeout
-+ *
-+ * SUBTEST: invalidinstr-disabled
-+ * Description: Verify that we don't enter SIP after running into an invalid
-+ *		instruction when exception is not enabled.
-+ *
-+ * SUBTEST: invalidinstr-thread-enabled
-+ * Description: Verify that we enter SIP after running into an invalid instruction
-+ *              when exception is enabled from thread.
-+ *
-+ * SUBTEST: invalidinstr-walker-enabled
-+ * Description: Verify that we enter SIP after running into an invalid instruction
-+ *              when exception is enabled from COMPUTE_WALKER.
-  */
--static void test_sip(enum shader_type shader_type, struct drm_xe_engine_class_instance *eci,
--		     uint32_t flags)
-+static void test_sip(enum shader_type shader_type, enum sip_type sip_type,
-+		     struct drm_xe_engine_class_instance *eci, uint32_t flags)
- {
- 	unsigned int threads = 512;
- 	unsigned int height = max_t(threads, HEIGHT, threads * 2);
-@@ -172,12 +265,12 @@ static void test_sip(enum shader_type shader_type, struct drm_xe_engine_class_in
- 	ibb = intel_bb_create_with_context(fd, exec_queue_id, vm_id, NULL, 4096);
- 
- 	igt_nsec_elapsed(&ts);
--	handle = gpgpu_shader(fd, ibb, shader_type, threads, width, height);
-+	handle = gpgpu_shader(fd, ibb, shader_type, sip_type, threads, width, height);
- 
- 	intel_bb_sync(ibb);
- 	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
- 
--	check_buf(fd, handle, width, height, COLOR_C4);
-+	check_buf(fd, handle, width, height, shader_type, sip_type, COLOR_C4);
- 
- 	gem_close(fd, handle);
- 	intel_bb_destroy(ibb);
-@@ -205,17 +298,26 @@ igt_main
- 		fd = drm_open_driver(DRIVER_XE);
- 
- 	test_render_and_compute("sanity", fd, eci)
--		test_sip(SHADER_WRITE, eci, 0);
-+		test_sip(SHADER_WRITE, SIP_NULL, eci, 0);
- 
- 	test_render_and_compute("sanity-after-timeout", fd, eci) {
--		test_sip(SHADER_HANG, eci, 0);
-+		test_sip(SHADER_HANG, SIP_NULL, eci, 0);
- 
- 		xe_for_each_engine(fd, eci)
- 			if (eci->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
- 			    eci->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE)
--				test_sip(SHADER_WRITE, eci, 0);
-+				test_sip(SHADER_WRITE, SIP_NULL, eci, 0);
- 	}
- 
-+	test_render_and_compute("invalidinstr-disabled", fd, eci)
-+		test_sip(SHADER_INV_INSTR_DISABLED, SIP_INV_INSTR, eci, 0);
-+
-+	test_render_and_compute("invalidinstr-thread-enabled", fd, eci)
-+		test_sip(SHADER_INV_INSTR_THREAD_ENABLED, SIP_INV_INSTR, eci, 0);
-+
-+	test_render_and_compute("invalidinstr-walker-enabled", fd, eci)
-+		test_sip(SHADER_INV_INSTR_WALKER_ENABLED, SIP_INV_INSTR, eci, 0);
-+
- 	igt_fixture
- 		drm_close_driver(fd);
- }
++#endif
 -- 
 2.34.1
 
