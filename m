@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2E6ACCD1A0
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 13:59:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88040CCD1B3
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 14:29:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 711C910E5AE;
-	Wed, 18 Sep 2024 13:59:56 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 84CB510E5AE;
- Wed, 18 Sep 2024 13:59:55 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3263345240910626806=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_Intel_CCS_+_10bpc/fp16_stuf?=
- =?utf-8?q?f_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 488C910E26C;
+	Wed, 18 Sep 2024 14:29:06 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eM+n5o7s";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11BE110E26C
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 14:29:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1726669745; x=1758205745;
+ h=date:from:to:cc:subject:message-id:reply-to:references:
+ mime-version:in-reply-to;
+ bh=47IUtEhzqhlQpgXNwrn85SaCyLKsGGiR4vayMKa+n8g=;
+ b=eM+n5o7slyXr2+LOx1TYZOFmLKSAAXxLSSzeTFlnY7w+a1I8mR8ruNzL
+ t4Vd1i9ymEupdP8LnzkDT73Z6fgyKupD0DzzFsr5svVm3hdAnUaUwezBE
+ uO/HFPIGC/3gR14plZrK8ZhVf1QNHwIK2sGsgDGkSCOYr3c1Pu3Rx1V7o
+ QMoF/szgZE0XeqleL3K2KY+LlIiLKh9w+xTCDgsbbRO4ilEJJx5CUqovZ
+ jvopqscrnReMPl85hg2QNJ3AVhuva1QEYE1UZPcI6e5HdP3YSnS2tXTrb
+ q487ATyQwH8mdqL2sZX21f7sjg5SLXdt9iHQkwTD0/JZQ3iKCmlC8GAU3 Q==;
+X-CSE-ConnectionGUID: En4FRAqCR0KPqq215CM9Uw==
+X-CSE-MsgGUID: fBtt1jF5TQ6cTxh2CJ0Fvg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="36717162"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="36717162"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 07:29:05 -0700
+X-CSE-ConnectionGUID: EUIKV+LgRwqQAE9NWnDyzg==
+X-CSE-MsgGUID: UcwujvDCSsy2tv1soYMlcA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="74405768"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 07:29:04 -0700
+Date: Wed, 18 Sep 2024 17:29:28 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 18 Sep 2024 13:59:55 -0000
-Message-ID: <172666799553.1026482.672970815532867267@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240918120518.30258-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240918120518.30258-1-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/6] lib/igt_kms: add DP link management helper
+ functions
+Message-ID: <ZurjyCEBLCYLhdSi@ideak-desk.fi.intel.com>
+References: <20240912062839.760661-1-kunal1.joshi@intel.com>
+ <20240912062839.760661-2-kunal1.joshi@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240912062839.760661-2-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,197 +66,286 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: imre.deak@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3263345240910626806==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Thu, Sep 12, 2024 at 11:58:34AM +0530, Kunal Joshi wrote:
+> Added helper functions for below
+> - read current/max link_rate/lane_count
+> - forcing link retraining
+> - forcing link training failures
+> - read pending retrain
+> - read pending link training failures
+> - checking output supports forcing lt failures
+> - force link_rate/lane_count
+> 
+> v2: combine all link training debugfs in one patch (Imre)
+>     remove unwanted valid output check (Imre)
+>     return link_rate/lane_count marked with '*' or an error (Imre)
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> ---
+>  lib/igt_kms.c | 210 ++++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_kms.h |  10 +++
+>  2 files changed, 220 insertions(+)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index dd530dbab..f0ac1e5dc 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -61,6 +61,7 @@
+>  #include "sw_sync.h"
+>  #ifdef HAVE_CHAMELIUM
+>  #include "igt_chamelium.h"
+> +#include <ctype.h>
+>  #endif
+>  
+>  /**
+> @@ -6705,3 +6706,212 @@ int get_num_scalers(igt_display_t *display, enum pipe pipe)
+>  
+>  	return num_scalers;
+>  }
+> +
+> +/**
+> + * igt_get_dp_link_param_set_for_output:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + * @link_param: 0 for lane count, 1 for link rate
+> + *
+> + * Returns: link_rate / lane_count if set for output else -1
+> + */
+> +int igt_get_dp_link_param_set_for_output(int drm_fd, igt_output_t *output, int link_param)
 
-== Series Details ==
+At the call-site it's not clear what link_param=0/1 means. Instead of
+that param I'd rather add debugfs_connector_read/write helpers and
+export these functions with a self-descriptive name (i.e. stg. like
+igt_get_dp_current_link_rate/lane_count()).
 
-Series: Intel CCS + 10bpc/fp16 stuff (rev4)
-URL   : https://patchwork.freedesktop.org/series/135670/
-State : success
+> +{
+> +	char *star_ptr, *param_ptr;
+> +	char buf[512];
+> +	int dir, res;
+> +	int ret;
+> +
+> +	ret = -1;
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +		     igt_output_name(output));
+> +	res = igt_debugfs_simple_read(dir, link_param ? "i915_dp_force_link_rate" :
+> +				      "i915_dp_force_lane_count", buf, sizeof(buf));
+> +	close(dir);
+> +	igt_require(res >= 0);
+> +
+> +	/*
+> +	 * Check we have a mode enabled for the output
+> +	 * If so we will have current  active link rate
+> +	 * marked with a *
+> +	 */
+> +	star_ptr = strstr(buf, "*");
+> +
+> +	if (star_ptr) {
+> +		param_ptr = star_ptr - 1;
+> +		while (param_ptr > buf && isdigit(*param_ptr))
+> +			param_ptr--;
+> +
+> +		param_ptr++;
+> +		igt_assert(sscanf(param_ptr, "%d", &ret) == 1);
+> +	}
+> +	return ret;
+> +}
+> +
+> +/**
+> + * igt_get_dp_max_link_param:
+> + * @drm_fd: A drm file descriptor
+> + * @output: The output to query
+> + * @link_param: 0 for lane count, 1 for link rate
+> + *
+> + * Get the max link_rate / lane_count supported by the sink.
+> + *
+> + * Returns: max link_rate / lane_count supported by the sink.
+> + */
+> +int igt_get_dp_max_link_param(int drm_fd, igt_output_t *output, int link_param)
+> +{
+> +	char buf[512];
+> +	int dir, res;
+> +	int max_link_param;
+> +
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_DIRECTORY);
 
-== Summary ==
+Not sure why O_DIRECTORY is used here and O_RDONLY elsewhere. This and
+all the functions below could use common
+debugfs_connector_read/write helpers discussed above.
 
-CI Bug Log - changes from CI_DRM_15434 -> IGTPW_11757
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/index.html
-
-Participating hosts (36 -> 34)
-------------------------------
-
-  Additional (1): bat-arlh-3 
-  Missing    (3): fi-kbl-8809g fi-snb-2520m fi-bsw-n3050 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11757 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
-    - bat-arls-5:         [PASS][1] -> [SKIP][2] ([i915#11346])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-arls-5/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-arls-5/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [ABORT][3] ([i915#12061]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-mtlp-8/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-mtlp-8/igt@i915_selftest@live.html
-
-  
-#### Warnings ####
-
-  * igt@fbdev@read:
-    - bat-arls-1:         [DMESG-WARN][5] ([i915#12102]) -> [DMESG-FAIL][6] ([i915#12102])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-arls-1/igt@fbdev@read.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-arls-1/igt@fbdev@read.html
-
-  * igt@i915_module_load@reload:
-    - bat-arls-5:         [DMESG-WARN][7] ([i915#11637]) -> [DMESG-WARN][8] ([i915#11637] / [i915#1982])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-arls-5/igt@i915_module_load@reload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-arls-5/igt@i915_module_load@reload.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10196]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10196
-  [i915#11343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11343
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#11637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637
-  [i915#11666]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11666
-  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
-  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
-  [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
-  [i915#11724]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11724
-  [i915#11725]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11725
-  [i915#11726]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11726
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102
-  [i915#12203]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12203
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#8809]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/8809
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9886]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9886
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8024 -> IGTPW_11757
-
-  CI-20190529: 20190529
-  CI_DRM_15434: 692d461fa9a48c6600df07421a99308f49cf00a9 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11757: 1a7b863adfaa6e9511bf0f8b4743a13a38f78dff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8024: 15f8ad0bce184e96d171dfe19c06bdef93e7cf72 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/index.html
-
---===============3263345240910626806==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Intel CCS + 10bpc/fp16 stuff (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135670/">https://patchwork.freedesktop.org/series/135670/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15434 -&gt; IGTPW_11757</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/index.html</p>
-<h2>Participating hosts (36 -&gt; 34)</h2>
-<p>Additional (1): bat-arlh-3 <br />
-  Missing    (3): fi-kbl-8809g fi-snb-2520m fi-bsw-n3050 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11757 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@read-crc-frame-sequence:<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-arls-5/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-arls-5/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-mtlp-8/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-arls-1/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-arls-1/igt@fbdev@read.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15434/bat-arls-5/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11757/bat-arls-5/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8024 -&gt; IGTPW_11757</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15434: 692d461fa9a48c6600df07421a99308f49cf00a9 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11757: 1a7b863adfaa6e9511bf0f8b4743a13a38f78dff @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8024: 15f8ad0bce184e96d171dfe19c06bdef93e7cf72 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3263345240910626806==--
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +				 igt_output_name(output));
+> +	res = igt_debugfs_simple_read(dir, link_param ? "i915_dp_max_link_rate" :
+> +				      "i915_dp_max_lane_count", buf, sizeof(buf));
+> +	close(dir);
+> +	igt_require_f(res >= 0, "Couldn't read i915_dp_max_link_rate");
+> +
+> +	igt_assert(sscanf(buf, "%d", &max_link_param) == 1);
+> +
+> +	return max_link_param;
+> +}
+> +
+> +/**
+> + * igt_force_link_retrain:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + * @retrain_count: number of retraining required
+> + *
+> + * Force link retrain on the output.
+> + */
+> +void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
+> +{
+> +	int dir;
+> +	char value[2];
+> +
+> +	snprintf(value, sizeof(value), "%d", retrain_count);
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +			       igt_output_name(output));
+> +	igt_sysfs_write(dir, "i915_dp_force_link_retrain", value, sizeof(value));
+> +	close(dir);
+> +}
+> +
+> +/**
+> + * igt_force_lt_failure:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + * @failure_count: 1 for same link param and
+> + *                2 for reduced link params
+> + *
+> + * Force link training failure on the output.
+> + * @failure_count: 1 for retraining with same link params
+> + *				   2 for retraining with reduced link params
+> + */
+> +void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count)
+> +{
+> +	int dir;
+> +	char value[2];
+> +
+> +	snprintf(value, sizeof(value), "%d", failure_count);
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +			       igt_output_name(output));
+> +	igt_sysfs_write(dir, "i915_dp_force_link_training_failure",
+> +			     value, sizeof(value));
+> +	close(dir);
+> +}
+> +
+> +/**
+> + * igt_get_dp_link_retrain_disabled:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + *
+> + * Returns: True if link retrain disabled, false otherwise
+> + */
+> +bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output)
+> +{
+> +	int dir, res;
+> +	char buf[512];
+> +
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +			       igt_output_name(output));
+> +	res = igt_debugfs_simple_read(dir,
+> +				      "i915_dp_link_retrain_disabled",
+> +				      buf, sizeof(buf));
+> +	close(dir);
+> +	igt_require(res >= 0);
+> +	return strstr(buf, "yes");
+> +}
+> +
+> +/**
+> + * Checks if the force link training failure debugfs
+> + * is available for a specific output.
+> + *
+> + * @drmfd: file descriptor of the DRM device.
+> + * @output: output to check.
+> + * Returns:
+> + *  true if the debugfs is available, false otherwise.
+> + */
+> +bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output)
+> +{
+> +	int debugfs_fd, ret;
+> +	char buf[512];
+> +
+> +	igt_assert_f(output->name, "Invalid output\n");
+> +	debugfs_fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
+> +	if (debugfs_fd < 0)
+> +		return false;
+> +	ret = igt_debugfs_simple_read(debugfs_fd,
+> +				      "i915_dp_force_link_training_failure",
+> +				      buf, sizeof(buf));
+> +	close(debugfs_fd);
+> +	return ret >= 0;
+> +}
+> +
+> +/**
+> + * igt_get_dp_pending_lt_failures:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + *
+> + * Returns: Number of pending link training failures.
+> + */
+> +int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output)
+> +{
+> +	int dir, res, ret;
+> +	char buf[512];
+> +
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +			       igt_output_name(output));
+> +	res = igt_debugfs_simple_read(dir, "i915_dp_force_link_training_failure", buf, sizeof(buf));
+> +	close(dir);
+> +	igt_require(res >= 0);
+> +	sscanf(buf, "%d", &ret);
+> +	return ret;
+> +}
+> +
+> +/**
+> + * igt_dp_pending_retrain:
+> + * @drm_fd: A drm file descriptor
+> + * @output: Target output
+> + *
+> + * Returns: Number of pending link retrains.
+> + */
+> +int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output)
+> +{
+> +	int dir, res, ret;
+> +	char buf[512];
+> +
+> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
+> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
+> +			       igt_output_name(output));
+> +	res = igt_debugfs_simple_read(dir, "i915_dp_force_link_retrain", buf, sizeof(buf));
+> +	close(dir);
+> +	igt_require(res >= 0);
+> +	sscanf(buf, "%d", &ret);
+> +	return ret;
+> +}
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 25ba50916..895bc9d04 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1224,5 +1224,15 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
+>  bool igt_check_output_is_dp_mst(igt_output_t *output);
+>  int igt_get_dp_mst_connector_id(igt_output_t *output);
+>  int get_num_scalers(igt_display_t *display, enum pipe pipe);
+> +int igt_get_dp_link_param_set_for_output(int drm_fd, igt_output_t *output,
+> +					 int link_param);
+> +int igt_get_dp_max_link_param(int drm_fd, igt_output_t *output,
+> +			      int link_param);
+> +void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
+> +void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count);
+> +bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output);
+> +bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output);
+> +int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output);
+> +int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
+>  
+>  #endif /* __IGT_KMS_H__ */
+> -- 
+> 2.43.0
+> 
