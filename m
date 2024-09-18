@@ -4,50 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D352FCCD1A0
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 12:05:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FBAECCD1A3
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 12:06:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 871AC10E58A;
-	Wed, 18 Sep 2024 12:05:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB8B210E585;
+	Wed, 18 Sep 2024 12:06:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V24+R+jM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZuR0InUb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C72B10E58A
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 12:05:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0BAC910E585
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 12:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726661159; x=1758197159;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=wMQwIyXjJm5NeYmk+oRIJlqsNZ1liXNeFFSa0/H+sFo=;
- b=V24+R+jM6eW9cG9zVTvb76xUs/ARe5xC8+7g81+ESkXMn9WDYPFCGu7k
- /CPh9CNjPDDKE9kMB5IRnFulQOMx9lxAkNAqqhX7ITrWzoz9GscVORVp7
- +wgzbOwnx16w9TVV9heBnBM1vjokD7pJIQdhiel7HsY2ao42J239wgGTS
- PdudE/ded3A194kmIQNrhYwDxiBXd3zc9T7RYsAC9IGaoQUJeMdoGDRfJ
- O6K8LpIM8W+1rjChLcWr21I8PHNxlWX+SwI/Agp6TAzSEEx5nY0QmIVXw
- sxiU2EqAKEgLAvInHPuSmeMKOQxtoX0flk0BsO2jHaa+RGqtAXMa+UaB4 w==;
-X-CSE-ConnectionGUID: ATQiE84rQFShXfMqECtE1Q==
-X-CSE-MsgGUID: K+4KFpi3RxKFFKv1adaO+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25687554"
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25687554"
+ t=1726661162; x=1758197162;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Hcf9x5jSkfkVCJjc5BN1XyjyR57PqnRdb8fe9Wm0WRY=;
+ b=ZuR0InUbmE13xzO4wBVPyyMf84y5kzmreoF3HByMNedCjcETLGke+zyc
+ XdGK9McxUHIOtVIC7G1A5vJVd7szOUGjNbRJPyd/02cwiGEozeEy8DKBn
+ q4XvYO4dd81sWXmhl6UloohXgU7M2TDJX8/uR1ycDVQ3F2S+PEUjmwfw0
+ dotE3zroz0/+iztMk6UcJT4Wqh/YOI56l1SSbFoUmfWVu8qLTxzccKDMP
+ QNLjlKljxjjiMH73KszCQBGK+WV4xKcEG/I9WNqSCD/F0+qff4DMze3hj
+ RfV6tCnxtR8bi6TK//ONrQzYgDxU724sE1jMaUoOWUqXWNQdT8ysGp0je w==;
+X-CSE-ConnectionGUID: G6VUe/awSBinLZHDoF7Vqg==
+X-CSE-MsgGUID: s5jrtH5OTSy7+ieevJS/aw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25687558"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25687558"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 05:05:59 -0700
-X-CSE-ConnectionGUID: OjOVCXy6SEa5nFt9TNQJ5g==
-X-CSE-MsgGUID: fgdadhn6Rd+HfmMDchPOSw==
+ 18 Sep 2024 05:06:02 -0700
+X-CSE-ConnectionGUID: U+DBwLurSxi4FxygFtsO9g==
+X-CSE-MsgGUID: ER5GN2RrTiCQZ/kNTCrLYQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="69634456"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="69634458"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 18 Sep 2024 05:05:57 -0700
+ by fmviesa008.fm.intel.com with SMTP; 18 Sep 2024 05:06:00 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 18 Sep 2024 15:05:56 +0300
+ Wed, 18 Sep 2024 15:05:59 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t v2 13/18] lib/vebox: Document that 2:10:10:10 is
- unusable with VEBOX
-Date: Wed, 18 Sep 2024 15:05:13 +0300
-Message-ID: <20240918120518.30258-14-ville.syrjala@linux.intel.com>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v2 14/18] tests/kms_ccs: Correctly check clear color for
+ 10bpc formats
+Date: Wed, 18 Sep 2024 15:05:14 +0300
+Message-ID: <20240918120518.30258-15-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240918120518.30258-1-ville.syrjala@linux.intel.com>
 References: <20240918120518.30258-1-ville.syrjala@linux.intel.com>
@@ -71,58 +72,56 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-VEBOX has a specific format for R10G10B10A2_UNORM, but it
-just hangs the engine if you try to use it.
+The hardware generated clear color will be in the native
+pixel format. Generate the reference correctly for 10bpc
+formats.
 
-For most platforms bsepc says: "Valid format only for when
-IECP is enabled and in output state only. Not supported in
-HSB mode."
-
-Document this fact so that the next fella doesn't try to
-implement it like I did :/
-
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/veboxcopy_gen12.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tests/intel/kms_ccs.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/lib/veboxcopy_gen12.c b/lib/veboxcopy_gen12.c
-index af52a96578d9..4e3aefaf1f44 100644
---- a/lib/veboxcopy_gen12.c
-+++ b/lib/veboxcopy_gen12.c
-@@ -29,6 +29,7 @@
- #define YCRCB_NORMAL	0
- #define PLANAR_420_8	4
- #define PACKED_444A_8	5
-+#define R10G10B10A2_UNORM	7
- #define R8G8B8A8_UNORM	8
- #define PACKED_444_16	9
- #define PLANAR_420_16	12
-@@ -168,6 +169,8 @@ static uint32_t compression_format(int format, struct intel_buf *buf)
- 	switch (format) {
- 	case R16G16B16A16:
- 		return 0x1;
-+	case R10G10B10A2_UNORM:
-+		return 0xe;
- 	case R8G8B8A8_UNORM:
- 		return 0xa;
- 	case PLANAR_420_8:
-@@ -343,6 +346,15 @@ void gen12_vebox_copyfunc(struct intel_bb *ibb,
- 		break;
- 	case 32:
- 		igt_assert(!src->format_is_yuv_semiplanar);
-+		/*
-+		 * R10G10B10A2_UNORM is not usable.
-+		 *
-+		 * Bspec says: "Valid format only for when IECP is enabled
-+		 * and in output state only. Not supported in  HSB mode."
-+		 *
-+		 * VEBOX hangs if you try use it.
-+		 */
-+		igt_assert(src->depth != 30);
- 		format = src->format_is_yuv ? PACKED_444A_8 :
- 					      R8G8B8A8_UNORM;
- 		break;
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 7cda79412d94..68e925382bd6 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -324,7 +324,7 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float
+ 		uint32_t d;
+ 	} *cc_p;
+ 	void *map;
+-	uint32_t native_color;
++	uint32_t native_color = 0;
+ 
+ 	if (is_i915_device(drm_fd)) {
+ 		gem_set_domain(drm_fd, fb->gem_handle, I915_GEM_DOMAIN_CPU, 0);
+@@ -339,10 +339,22 @@ static void check_ccs_cc_plane(int drm_fd, igt_fb_t *fb, int plane, const float
+ 		   cc_color[2] == cc_p[2].f &&
+ 		   cc_color[3] == cc_p[3].f);
+ 
+-	native_color = (uint8_t)(cc_color[3] * 0xff) << 24 |
+-		       (uint8_t)(cc_color[0] * 0xff) << 16 |
+-		       (uint8_t)(cc_color[1] * 0xff) << 8 |
+-		       (uint8_t)(cc_color[2] * 0xff);
++	switch (fb->drm_format) {
++	case DRM_FORMAT_XRGB8888:
++		native_color = (uint32_t)(cc_color[3] * 0xff) << 24 |
++			(uint32_t)(cc_color[0] * 0xff) << 16 |
++			(uint32_t)(cc_color[1] * 0xff) << 8 |
++			(uint32_t)(cc_color[2] * 0xff);
++		break;
++	case DRM_FORMAT_XRGB2101010:
++		native_color = (uint32_t)(cc_color[3] * 0x3) << 30 |
++			(uint32_t)(cc_color[0] * 0x3ff) << 20 |
++			(uint32_t)(cc_color[1] * 0x3ff) << 10 |
++			(uint32_t)(cc_color[2] * 0x3ff);
++		break;
++	default:
++		break;
++	}
+ 
+ 	igt_assert_eq_u32(native_color, cc_p[4].d);
+ 
 -- 
 2.44.2
 
