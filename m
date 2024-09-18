@@ -4,56 +4,167 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC207CCD187
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 07:36:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CFB6CCD18E
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 08:10:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 936C810E177;
-	Wed, 18 Sep 2024 07:36:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E231B10E55D;
+	Wed, 18 Sep 2024 08:10:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NUszVBeK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HU622Uud";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4E2EE10E557
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 07:36:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64DC110E561
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 08:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726644991; x=1758180991;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0Umqm06ri5xyReRWhMT6acScTT/FxoautPwnQ//Qcys=;
- b=NUszVBeKmr5+SuPdQHICoy+R+04rYAtE/CGjBXoahmsitvt++gmTrOHZ
- grAN0GGzUvznvZYe0eb4yE7d1AfHjmIO+oTuBeG34sQfqMIwkrv8to/lG
- 9qahG5MctKx1UM1YgScCPI2GsptziVnimkxLeBtCylU7C5nUdktfmXTSs
- 9C2bGm3Kbn5uGQsxShG+WSjdeuvE7zyIKPC2k6DeCr+JGS3oX97iIOL16
- FAArQz1sWrj5NhJtLfMIMJ3wcouOc09BDIkEqX+ZgFkHkCg1Zmexomffk
- kDcrMEeDxs4JK+5WUnOnHMci6wxQ8qsj5KJ6d2i7nkAmllY+GVNqinInK g==;
-X-CSE-ConnectionGUID: IqD4eQbQRnCbAZzmRBigvA==
-X-CSE-MsgGUID: ndN2s1/DQ4uxv1Q3DYKBVg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25359026"
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25359026"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 00:36:31 -0700
-X-CSE-ConnectionGUID: l2SR2HjwSpekyJ3+/W7aoA==
-X-CSE-MsgGUID: QjYMD0rOQLOMW1/CzPyh7w==
+ t=1726647013; x=1758183013;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=q369q4MzTryorwOyZGmRVeAS3KS9elb1ZjhTOlM6K2I=;
+ b=HU622UudEM1Ddx3nL/xbbG3S+V33+omUi3lb33BVsitfA1GyzRHOFgai
+ I2+bV4Fgez+wFo+JYaW+hjEW1SMJNDZyBoHqcQXY7ZqBxG1rf+Vhs1k6S
+ gCa2G0sinasCOFKiu4k9sXIqcrVA+7Tii02lUEH1PpWkXLUhrB7ozoYnh
+ rP7INUK7u4ySurw2rPFx3nFSK+ggr7l8W85JK2zbSoVa+U4wuGw0r83Tt
+ OmF+LO+8eHkQsMzXEiopxcu7Fl/CpYEA4E4ZEpwfaAHSZmukkO/n156h+
+ 0MYTRonWI5cLvNAWzKSkmb2KUIGEg+01lcoWA22w2kApwlmDni8Of6zfZ w==;
+X-CSE-ConnectionGUID: nWsNiDkQR9GAut0fg9U4vg==
+X-CSE-MsgGUID: etNaKYkKTcaWW/xKtk6Spw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="36114385"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="36114385"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 01:10:11 -0700
+X-CSE-ConnectionGUID: xh5D+NvgRC2VxNtkVbSiaQ==
+X-CSE-MsgGUID: JU9b1F/5SDax2mcfY1IXag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="73806744"
-Received: from srr4-3-linux-124-kbs1.iind.intel.com ([10.190.238.68])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 00:36:29 -0700
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, santhosh.reddy.guddati@intel.com,
- kunal1.joshi@intel.com, Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t v3 3/3] tests/kms_joiner: Add subtests for force
- ultrajoiner validation
-Date: Wed, 18 Sep 2024 13:04:13 +0530
-Message-Id: <20240918073413.28598-4-karthik.b.s@intel.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20240918073413.28598-1-karthik.b.s@intel.com>
-References: <20240918073413.28598-1-karthik.b.s@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="74459003"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+ by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 18 Sep 2024 01:10:11 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 18 Sep 2024 01:10:10 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 18 Sep 2024 01:10:10 -0700
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (104.47.55.46) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 18 Sep 2024 01:10:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ngp/j5ZgagAJQyze2kU8tbF8XDzYaBhfCtlc21d569XIwp+NTtFh6/U8yRjH6drGa/UnP15crR9t+uWGyJM1PFVpDx5feYdNsSzZuB4UO6+MHDTQephEGNjE8VyC3zd81dGvH228sLFVNRVCfG0RCW1Sb4XNt3cFHn+qEhWZDCI+fuWWTx5V7VCyZ5ETLvVOAIaSp8Wckaifh7Q9GmgFN4i+IuAfn9FKfuMMf+Oh7TM+KtCihpg7Puhc2sqI8YUxrkLRYxbNPCsXI9Mcfgbswos1Zo3GHLXiRSJql+YRZWWY7s7NZtSzUfdfoBrWyXyY+fgwJsgRFilfDH3omMS7tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pI2svx9PZElKPqHnGTU89hAoyuacVjWtADOQHHbAyIo=;
+ b=SjsURxqamWcnDGGmMjI6/Zso5wS/DcWYg4TAcyZftGIv+In1rs/L93BBLaskgZWO1PbcbodGXcr/xpQmzaTiEQmR5y5SeFVnLA4q1RRHZ+f6G8fljct8fNC41tND4KmOAx+5oHu9GNmZYXSS83pSoU3zeKcV+0WliRpP8OdslcPiHTA6W+W7UEQ8XCMV43ZM4cwHd9OHEowMNIQprPQyBaT6ViLaJUyC8DDFvlFJiSicmAe7xNB1mIa3AZTSSrZLD5lsJp8sZgC2a9sWO37t4+P9fL9a8bAsfUAVvV/OnISDSQLxcapksPf7lDVhxTNHhOpenKrjVq0dCz8j4/iN6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
+ by CYYPR11MB8331.namprd11.prod.outlook.com (2603:10b6:930:bd::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.24; Wed, 18 Sep
+ 2024 08:10:08 +0000
+Received: from PH7PR11MB6053.namprd11.prod.outlook.com
+ ([fe80::4a36:b210:9d85:d13b]) by PH7PR11MB6053.namprd11.prod.outlook.com
+ ([fe80::4a36:b210:9d85:d13b%7]) with mapi id 15.20.7962.022; Wed, 18 Sep 2024
+ 08:10:08 +0000
+From: "Samala, Pranay" <pranay.samala@intel.com>
+To: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Modem, Bhanuprakash" <bhanuprakash.modem@intel.com>
+Subject: RE: [i-g-t 1/2] lib/igt_kms: Add a debug log for invalid pipe/output
+ combo
+Thread-Topic: [i-g-t 1/2] lib/igt_kms: Add a debug log for invalid pipe/output
+ combo
+Thread-Index: AQHbCOeXIcSfNqSSJUSZqtYo+meSwLJdMnNg
+Date: Wed, 18 Sep 2024 08:10:08 +0000
+Message-ID: <PH7PR11MB6053896ED006BD0FD31BFDA8E7622@PH7PR11MB6053.namprd11.prod.outlook.com>
+References: <20240917094422.938032-1-bhanuprakash.modem@intel.com>
+In-Reply-To: <20240917094422.938032-1-bhanuprakash.modem@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|CYYPR11MB8331:EE_
+x-ms-office365-filtering-correlation-id: 84ab9e53-96de-44a9-59fa-08dcd7b94f8e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?+Q9/nuNlZVkstjYIs44iefOr8WjzX+Y/PUcpU3qsPolk/0ITFgSHFminTShq?=
+ =?us-ascii?Q?k+Z1S5qYkkV9pUIZYSjcYdh72/Uw1mYpAjDiHlk3vKzKEnDhD2WvDNCfsgOE?=
+ =?us-ascii?Q?KoAlCMB1MZhTY1kn911DVYooKRE/qpwAGV8SPVJYnOea7v8HvQQY6KjUwmhA?=
+ =?us-ascii?Q?+rqLEHgyqef9x4JfKk51HzUllgBfp7toQtnj8cA9lZlmuMZYBmApfrdG9hji?=
+ =?us-ascii?Q?ldaADD9cecP433PBol0vV8KVcL/lTID79reqPq5rBcdf0HNKrmaVkxTGoV90?=
+ =?us-ascii?Q?LT+jQy3Hp+pqno+hyj8IhoQKciOcXSp0AAZNak9jZT5P40PrI03IN4ZfyfLY?=
+ =?us-ascii?Q?VTpiuwUnKrL9lOR/Zt22Mz6rSHZT3zmUy9pauFR+MJkf8SmIx/IheXR7Q4XJ?=
+ =?us-ascii?Q?C3eMfl1sypk0oohLk/fPzVNvoHTN3X+VO1zRKWp8igy7aWZ29ypNSI1tbvvt?=
+ =?us-ascii?Q?cQKCoCO6d98o1ppwW/xNkFb6iNoEcaB0SzGQn514tkzlNsInI9IgR9L3goj1?=
+ =?us-ascii?Q?uvIMy2Le66EasOCMnPThHT5bVdWwjZcBbdpve57mfhKm0LCE1hmCSvFXV47Y?=
+ =?us-ascii?Q?1wkMTXQlBaZqAaHXFxf5AMxOgFiioVNGX4M+OxJe0n28UFIffV+9iDbEY4Rd?=
+ =?us-ascii?Q?MB+bETa3njswOR5ql1d5aC6+hCSlZaUfEYNugHjGNx3tkMFkwTWv23LQKmMy?=
+ =?us-ascii?Q?OzKzfmEW3IQQj/6KBINTdL6YEcr3lcUglx5WF0Whq6wzHOw8TRezx/OACJt4?=
+ =?us-ascii?Q?SsK6l1fhj0dcYB//1R90FldRa5jjXsE1Y9vaTmmUL8TaIUmiRty3KAjZPoUQ?=
+ =?us-ascii?Q?sdVsP1LZHuV8ykgsF74a3ezE50W3wzvm0vELN/0RzL6qBCVSAU9f2vCuRAEy?=
+ =?us-ascii?Q?xrE4HHuFrCS9i3OfPBpORRdYXq8sgIULJOHxQkWFoyoVrkdRrKvqF/6pY21w?=
+ =?us-ascii?Q?E4+HxZADJiwBARwKDSLZd/WcqXQiIFEdoj8VcmBUemf5G+pri/Ya4RKY3SA0?=
+ =?us-ascii?Q?LU0x/ZV5pIOijz66BdBiOXId3ZGmxZw2Ot/QxxFzI6qmphxZUocPvZJrhfSY?=
+ =?us-ascii?Q?KNYcCEFYJ5zFTAVulAFNoSvAppfyKdhwjZA8RTDoGyXUwX4nDAiP8+iDdr6X?=
+ =?us-ascii?Q?JEGqPStLXVWPunsGyAKMYsYKbInKZPDyrOmmFoX6cRxruebQqpFvxml7XARC?=
+ =?us-ascii?Q?BGddVTeXaCkYY79ppeAVBETOpVMVSpfnw6FolADgjtrxaT/TFOOBKTezn2JA?=
+ =?us-ascii?Q?SaBeuuGAqSvHF/5p0wYbcx41KLoCFfneDdoDGDnrXRnBYjJnF76O4RKXTO9y?=
+ =?us-ascii?Q?X73AGs/ovApFylNv9ZDuvk8/xn/W9WI0nr7JMPrroaUqRcQ+gaKAowzeFyWY?=
+ =?us-ascii?Q?L93R/vEwNvazblppatrNumgJYkZAqRi71ATYhqhsT0ncfSdXqQ=3D=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?EZHsNR74L/ZCNaLaFJd1S6HWKAla64tcqhUMHa09SyRuqis8mj+CB6ys5Apr?=
+ =?us-ascii?Q?caiWeleDfXRGXjAojb/T9yKBAXFuWpsGeVaohP0y/rHMG+TqgOU4Q8cW+qBY?=
+ =?us-ascii?Q?6NgcyWLB9AWchqKekshwR0r7gPWXwIqOvPqmsufZvm3Yc7CD2XQImUW+8Sq6?=
+ =?us-ascii?Q?DbfODu7tF+q4QkqiJyZ5X7cBmItI1jb8qdQG/pjjp/6BqVh3duQnnf/jD1+K?=
+ =?us-ascii?Q?mCImu1jsP46CWfan9aHfWs4GVXlHI7ShYMjifsVaKmHnyEFxbO+2ZStSmOzz?=
+ =?us-ascii?Q?EuQyGSH/hjw8V878wemMt7ffpE7IwSrycRzEWm5OAhjDT7aA0QkdE4jVAOZr?=
+ =?us-ascii?Q?lhsIOAK/yIdut8itqCzPJilOJ85nYSg1Se6rVUMXSKJc45HiDU58AUA2uY6i?=
+ =?us-ascii?Q?xgXnWd5Ji8j0PRCLp0rdj+ZpGYn9e9iEQUGkcPGopzWouEEjOgV/NKRRqkZW?=
+ =?us-ascii?Q?siF2y2eojN/C3Tr4gUhuX8K0cBWTt4uU+dmEalnbTyyFJr+RXpn4BMDBjx0l?=
+ =?us-ascii?Q?ySDjrZ4YE0i623kUBCwwiFamj1ZKVZObu+zvnSbOz6Zcs3flNZhyVTZ+Lq/B?=
+ =?us-ascii?Q?eODXsBVj6i0BTSr10IYB3ubIGBD6HO1R32Vu9Ft+iQ0/KzktLLt8rrRObsn+?=
+ =?us-ascii?Q?lg4gyeu00ih5wKK9gRYvpx1br9fd+5STN4eqZupIi2QssyuFzPFIxVkT4+E3?=
+ =?us-ascii?Q?OoDTpjEHnVSkYL5gIAfxl+0527H8pzB2nk2ZNwq4XYyd9Yslcfn8cPVYJjgO?=
+ =?us-ascii?Q?6GxBVa3qujDTS0GgOQnZXzi2xQF/J29XizEsWjB1l3+//W3yZrwMi2gCC1JV?=
+ =?us-ascii?Q?AfFcYoy30fkzvxBPUqfsxn4nb0/3ejR7bFov0U5XeTZrO4kqBOXtPP0yHBHZ?=
+ =?us-ascii?Q?E+i4Laq59yYfIWZq/ED6nYZygRf0AonkgfVKJZ2/7kmbPDWg4QK4/IZOScIz?=
+ =?us-ascii?Q?H+UxN4cLL5V44KPQfBiIFSVJuIN/VirMJ6MQsRBGyKs9PmFCz7v8nAg2B4cL?=
+ =?us-ascii?Q?BI9Bsd8cMFMwANQhZOzcnln7Sfwd6CyCVpIASftdz2gFut7RAhKIXnlZs2I9?=
+ =?us-ascii?Q?3nF8M67IkziBH/PVgyT7n2Sb8fM2yyz/wQXAHXXwQlumRcnRJoZlS4gqYvrj?=
+ =?us-ascii?Q?GmP7L/8/l7CU9FcKMDyMMmrJEeKHNaV/YycJAUWVcqybyXaNZxbwET1ZnYu5?=
+ =?us-ascii?Q?IWtXtFBKREGmwo3v6jcvMQHyVPvQv3N1MpHYbvobv00sH6gZchLsFfjC+dnv?=
+ =?us-ascii?Q?eGz0soW0d/oYyD/UzehQolD36DLskqEsUJjL0+oPawho6n7NQeTMxfQXIfki?=
+ =?us-ascii?Q?rkEpBLLoqtXAG/YGd5NsEsUCAneYsvqffxTZ/IoD9hmSS7yo5WLSxarnUMJj?=
+ =?us-ascii?Q?oSE/mdY21LBEqzgVbv6MPGVc3e67lGyjwTRuS+w7GCizI1Pi7Wwn23Rax48B?=
+ =?us-ascii?Q?Yrgl+c6eH3wSX9zNkaDieGwJZiNVqTOCYj3ko6V/sQRa6M1pBBk8CTz1Duyb?=
+ =?us-ascii?Q?MA4gWlm1V9SwGFC+bJDASkwhI/sNv8hrMnEeK2IH9u4BmKuTsSjEs3HPXtMh?=
+ =?us-ascii?Q?xNmGQjTx0dqh2XRQw1dRmpyePgtBiDstSW4rIzT/?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 84ab9e53-96de-44a9-59fa-08dcd7b94f8e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2024 08:10:08.2955 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: damL+mkUs4OhiDcpow2VeS4RfdUbBdFpHlYqgnXI6onK+v8pQWu8lyFa7HgQV4nBtjRukJABvTI1mzvORj6sMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYYPR11MB8331
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,240 +180,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the ultrajoiner subtests to validate ultrajoiner on a non
-ultrajoiner supported display using force joiner.
 
-v2: Rebase
 
-v3: Add display version check for ultrajoiner
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
+> Bhanuprakash Modem
+> Sent: Tuesday, September 17, 2024 3:14 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+> Subject: [i-g-t 1/2] lib/igt_kms: Add a debug log for invalid pipe/output=
+ combo
+>=20
+> Add some meaningful logs in case of invalid pipe/output combo.
+>=20
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+LGTM.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
-Reviewed-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/intel/kms_joiner.c | 120 +++++++++++++++++++++++++++++++++------
- 1 file changed, 102 insertions(+), 18 deletions(-)
-
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index e193f9071..e498ac542 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -35,6 +35,7 @@
-  */
- 
- #include "igt.h"
-+#include "xe/xe_query.h"
- 
- /**
-  * SUBTEST: invalid-modeset-big-joiner
-@@ -51,15 +52,24 @@
-  * SUBTEST: basic-ultra-joiner
-  * Description: Verify the basic modeset on ultra joiner mode on all pipes
-  *
-- * SUBTEST: invalid-modeset-force-joiner
-- * Description: Verify if modeset on adjacent pipe is declined when force joiner modeset is active.
-- *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs,
-+ * SUBTEST: invalid-modeset-force-big-joiner
-+ * Description: Verify if modeset on adjacent pipe is declined when force big joiner modeset is active.
-+ *		Force big joiner applies bigjoiner functionality to non-bigjoiner outputs,
-  *		so test exclusively targets non-bigjoiner outputs.
-  *
-- * SUBTEST: basic-force-joiner
-- * Description: Verify basic modeset in force joiner mode across all pipes.
-+ * SUBTEST: basic-force-big-joiner
-+ * Description: Verify basic big joiner modeset in force joiner mode across all pipes.
-  *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs thus,
-  *		the test exclusively targets non-bigjoiner outputs.
-+ *
-+ * SUBTEST: basic-force-ultra-joiner
-+ * Description: Verify basic ultra joiner modeset in force joiner mode across all pipes.
-+ *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs thus,
-+ *		the test exclusively targets non-bigjoiner outputs.
-+ *
-+ * SUBTEST: invalid-modeset-force-ultra-joiner
-+ * Description: Verify if the modeset on the other pipes are rejected when
-+ *              the pipe A is active with force ultra joiner modeset.
-  */
- IGT_TEST_DESCRIPTION("Test joiner / force joiner");
- 
-@@ -111,6 +121,19 @@ static void enable_force_joiner_on_all_non_big_joiner_outputs(data_t *data)
- 	}
- }
- 
-+static void enable_force_joiner_on_all_non_ultra_joiner_outputs(data_t *data)
-+{
-+	bool status;
-+	igt_output_t *output;
-+	int i;
-+
-+	for (i = 0; i < data->non_ultra_joiner_output_count; i++) {
-+		output = data->non_ultra_joiner_output[i];
-+		status = kmstest_force_connector_joiner(data->drm_fd, output->config.connector, 4);
-+		igt_assert_f(status, "Failed to toggle force joiner\n");
-+	}
-+}
-+
- static enum pipe get_next_master_pipe(data_t *data, uint32_t available_pipe_mask)
- {
- 	if ((data->master_pipes & available_pipe_mask) == 0)
-@@ -297,23 +320,36 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
- 	}
- }
- 
--static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display)
-+static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display, bool force_joiner)
- {
--	int i, j, k, ret;
-+	int i, j, k, ret, count;
- 	igt_output_t *output, *non_ultra_joiner_output;
- 	igt_plane_t *primary;
- 	igt_output_t **outputs;
- 	igt_fb_t fb;
- 	drmModeModeInfo mode;
- 
--	outputs = data->ultra_joiner_output;
-+	if (force_joiner) {
-+		outputs = data->non_ultra_joiner_output;
-+		count = data->non_ultra_joiner_output_count;
-+	} else {
-+		outputs = data->ultra_joiner_output;
-+		count = data->ultra_joiner_output_count;
-+	}
-+
- 	igt_display_reset(&data->display);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	for (i = 0; i < data->ultra_joiner_output_count; i++) {
-+	for (i = 0; i < count; i++) {
- 		output = outputs[i];
--		igt_require(ultrajoiner_mode_found(data->drm_fd, output->config.connector, max_dotclock, &mode));
--		igt_output_override_mode(output, &mode);
-+
-+		if (!force_joiner) {
-+			igt_require(ultrajoiner_mode_found(data->drm_fd, output->config.connector, max_dotclock, &mode));
-+			igt_output_override_mode(output, &mode);
-+		} else {
-+			mode = *igt_output_get_mode(output);
-+		}
-+
- 		for (j = 0; j < data->n_pipes; j++) {
- 			/* Ultra joiner is only valid on PIPE_A */
- 			if (invalid_pipe && j == PIPE_A)
-@@ -374,14 +410,15 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display)
- 
- igt_main
- {
--	bool force_joiner_supported;
--	int i, j;
-+	bool force_joiner_supported, ultra_joiner_supported, is_dgfx;
-+	int i, j, display_ver;
- 	igt_output_t *output;
- 	drmModeModeInfo mode;
- 	data_t data;
- 
- 	igt_fixture {
- 		force_joiner_supported = false;
-+		ultra_joiner_supported = false;
- 		data.big_joiner_output_count = 0;
- 		data.ultra_joiner_output_count = 0;
- 		data.non_big_joiner_output_count = 0;
-@@ -397,6 +434,11 @@ igt_main
- 		igt_require(data.display.is_atomic);
- 		max_dotclock = igt_get_max_dotclock(data.drm_fd);
- 
-+		is_dgfx = is_xe_device(data.drm_fd) ? xe_has_vram(data.drm_fd) : gem_has_lmem(data.drm_fd);
-+		display_ver = intel_display_ver(intel_get_drm_devid(data.drm_fd));
-+		if ((is_dgfx && display_ver == 14) || (display_ver > 14))
-+			ultra_joiner_supported = true;
-+
- 		for_each_connected_output(&data.display, output) {
- 			bool ultrajoiner_found = false, bigjoiner_found = false;
- 			drmModeConnector *connector = output->config.connector;
-@@ -461,7 +503,7 @@ igt_main
- 			igt_require_f(data.n_pipes > 3,
- 				      "Minimum 4 pipes required\n");
- 			igt_dynamic_f("single-joiner")
--				test_ultra_joiner(&data, false, false);
-+				test_ultra_joiner(&data, false, false, false);
- 	}
- 
- 	igt_describe("Verify if the modeset on the adjoining pipe is rejected "
-@@ -487,15 +529,15 @@ igt_main
- 		igt_require_f(data.n_pipes > 3, "Minimum of 4 pipes are required\n");
- 
- 		igt_dynamic_f("ultra_joiner_on_invalid_pipe")
--			test_ultra_joiner(&data, true, false);
-+			test_ultra_joiner(&data, true, false, false);
- 		if (data.non_ultra_joiner_output_count > 0) {
- 			igt_dynamic_f("2x")
--				test_ultra_joiner(&data, false, true);
-+				test_ultra_joiner(&data, false, true, false);
- 		}
- 	}
- 
- 	igt_describe("Verify the basic modeset on big joiner mode on all pipes");
--	igt_subtest_with_dynamic("basic-force-joiner") {
-+	igt_subtest_with_dynamic("basic-force-big-joiner") {
- 		igt_require_f(force_joiner_supported,
- 			      "force joiner not supported on this platform or none of the connected output supports it\n");
- 		igt_require_f(data.non_big_joiner_output_count > 0,
-@@ -516,7 +558,7 @@ igt_main
- 		}
- 	}
- 
--	igt_subtest_with_dynamic("invalid-modeset-force-joiner") {
-+	igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
- 		igt_require_f(force_joiner_supported,
- 			      "force joiner not supported on this platform or none of the connected output supports it\n");
- 		igt_require_f(data.non_big_joiner_output_count > 0,
-@@ -539,6 +581,48 @@ igt_main
- 		}
- 	}
- 
-+	igt_describe("Verify the basic modeset on ultra joiner mode on all pipes");
-+	igt_subtest_with_dynamic("basic-force-ultra-joiner") {
-+		igt_require_f(force_joiner_supported,
-+			      "force joiner not supported on this platform or none of the connected output supports it\n");
-+		igt_require_f(ultra_joiner_supported,
-+			      "Ultra joiner not supported on this platform\n");
-+		igt_require_f(data.non_ultra_joiner_output_count > 0,
-+			      "No non ultra joiner output found\n");
-+		igt_require_f(data.n_pipes > 3,
-+			      "Minimum 4 pipes required\n");
-+		igt_dynamic_f("single") {
-+			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+			test_ultra_joiner(&data, false, false, true);
-+			igt_reset_connectors();
-+		}
-+	}
-+
-+	igt_subtest_with_dynamic("invalid-modeset-force-ultra-joiner") {
-+		igt_require_f(force_joiner_supported,
-+			      "force joiner not supported on this platform or none of the connected output supports it\n");
-+		igt_require_f(ultra_joiner_supported,
-+			      "Ultra joiner not supported on this platform\n");
-+		igt_require_f(data.non_ultra_joiner_output_count > 0,
-+			      "Non ultra joiner output not found\n");
-+		igt_require_f(data.n_pipes > 3,
-+			      "Minimum of 3 pipes are required\n");
-+
-+		igt_dynamic_f("ultra_joiner_on_invalid_pipe") {
-+			enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+			test_ultra_joiner(&data, true, false, true);
-+			igt_reset_connectors();
-+		}
-+
-+		if (data.non_ultra_joiner_output_count > 1) {
-+			igt_dynamic_f("2x") {
-+				enable_force_joiner_on_all_non_ultra_joiner_outputs(&data);
-+				test_ultra_joiner(&data, false, true, true);
-+				igt_reset_connectors();
-+			}
-+		}
-+	}
-+
- 	igt_fixture {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
--- 
-2.39.1
+Reviewed-by: Pranay Samala <pranay.samala@intel.com>
+> ---
+>  lib/igt_kms.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c index dd530dbab..9313e4c27 100=
+644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -6585,8 +6585,13 @@ bool intel_pipe_output_combo_valid(igt_display_t
+> *display)
+>  		if (output->pending_pipe =3D=3D PIPE_NONE)
+>  			continue;
+>=20
+> -		if (!igt_pipe_connector_valid(output->pending_pipe, output))
+> +		if (!igt_pipe_connector_valid(output->pending_pipe, output)) {
+> +			igt_info("Output %s is disconnected (or) pipe-%s & %s
+> cannot be used together\n",
+> +				 igt_output_name(output),
+> +				 kmstest_pipe_name(output->pending_pipe),
+> +				 igt_output_name(output));
+>  			return false;
+> +		}
+>=20
+>  		combo++;
+>  	}
+> --
+> 2.43.0
 
