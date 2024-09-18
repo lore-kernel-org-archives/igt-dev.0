@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 775F1CAC5BA
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 05:09:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0160CAC5BB
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 05:21:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E9F910E062;
-	Wed, 18 Sep 2024 05:09:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35C8510E062;
+	Wed, 18 Sep 2024 05:21:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WWvMVZxT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m45WIqA8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 32B9D10E062
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 05:09:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25BC910E062
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 05:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726636166; x=1758172166;
+ t=1726636898; x=1758172898;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=SnIYU6ufMGkSaq4+KMl2mlOaN6G91f+tujrjCt9Q5Dc=;
- b=WWvMVZxTEPt0TEVEBOBX1FtPMc79RTYwP7rjAn9shrkliUyGJZ50QIea
- DW/QgpbrDHUVvJCFM3vPCpusT/eEzX+QmwthCSeD+WuPxPu8QLrxNVy95
- io5uLeAor6cTbXUTiJPtbIHzfcJulzAz/bPjX6JoVsPFMD4o+BBqcgw1F
- 6IaKdbYkeG2QXUaGkgN2bjRPRtY1G/WvkrGWXYT+bEqVbHqMdXnC2pnYx
- p1q7Mkdj7GW4CNQMwTm5FAueD9OzeQLYxR4Ac9t58JRLvoBOzVKVCOvxd
- V+lW/jygRUpHmLFAFtdQxKzW3tzfZxcoXmINuQYgzuZj+4myuZFSxSXhJ w==;
-X-CSE-ConnectionGUID: ipJ0n61zSverxBxXGFfBmA==
-X-CSE-MsgGUID: 2gGT9+WfS42ND1ZUq/mAdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="43046606"
-X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="43046606"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2024 22:09:00 -0700
-X-CSE-ConnectionGUID: D/IxXbKNS6SmshYsuXBIOQ==
-X-CSE-MsgGUID: 08dnqmdIQ6Kq8DnFlWOKhw==
+ bh=z/UqVYYCQHrohll/hNWL62cHBX2q/v7wtz+2BCf6BPg=;
+ b=m45WIqA8KLzCPDhSL7bq3LdW9UyacIoXogAgMQyGQ71Xb2r5d8bLRX3C
+ LEYwCrZdaVBLZJGQjnyXvGNO7wpOwXvQDgKJrVgM1NEySKaCHruUPhi7K
+ eLYI3ccMozy4rA57LbtQ3XVI7rV/1Jy5zDw0RLNMRzvBsoxe+bCsiXmyH
+ /aGtfCLMsb50rNYe/qZwlWPIflV5CxB7SEKiZopudlOgo3WTiPfq5kwHk
+ s35stbBzU0ueObBiqSJmSUMSOWz11UzwvouXz88AY+NKMEBdyyF4ezhgJ
+ 4SYiolXRDC0P/I9V70llCbmFN05qA0Yu7ZmbM1qt0J/TcUvaxsRAggtlV w==;
+X-CSE-ConnectionGUID: eqnYTdscSL234/S/l9DQ3g==
+X-CSE-MsgGUID: 9AUbCyzZQPe7zhMUs2yZMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25406501"
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="25406501"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2024 22:21:38 -0700
+X-CSE-ConnectionGUID: gp1Vb3lmThS53SVBr2gxZw==
+X-CSE-MsgGUID: 3IGCfJ7JS0+1CTqzk/Ijbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="92719011"
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; d="scan'208";a="69048632"
 Received: from bergbenj-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.246.189])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2024 22:08:57 -0700
-Date: Wed, 18 Sep 2024 07:08:54 +0200
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2024 22:21:34 -0700
+Date: Wed, 18 Sep 2024 07:21:31 +0200
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
 Cc: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
@@ -57,7 +57,7 @@ Cc: "Manszewski, Christoph" <christoph.manszewski@intel.com>,
  Kolanupaka Naveena <kolanupaka.naveena@intel.com>
 Subject: Re: [PATCH i-g-t v6 16/17] tests/xe_eudebug_online: Debug client
  which runs workloads on EU
-Message-ID: <20240918050854.7f4gs3vjt74nxr3f@zkempczy-mobl2>
+Message-ID: <20240918052131.oemx53fsszye7eno@zkempczy-mobl2>
 References: <20240905092812.94553-1-christoph.manszewski@intel.com>
  <20240905092812.94553-17-christoph.manszewski@intel.com>
  <20240913113902.pdjcijg3ra6ej7ec@zkempczy-mobl2>
@@ -85,147 +85,58 @@ On Tue, Sep 17, 2024 at 09:34:20PM +0200, Grzegorzek, Dominik wrote:
 
 <cut>
 
-> > > +static int count_set_bits(void *ptr, size_t size)
+> > > +/**
+> > > + * SUBTEST: preempt-breakpoint
+> > > + * Description:
+> > > + *	Verify that eu debugger disables preemption timeout to
+> > > + *	prevent reset of workload stopped on breakpoint.
+> > > + */
+> > > +static void test_preemption(int fd, struct drm_xe_engine_class_instance *hwe)
 > > > +{
-> > > +	uint8_t *p = ptr;
-> > > +	int count = 0;
-> > > +	int i, j;
+> > > +	int flags = SHADER_BREAKPOINT | TRIGGER_RESUME_DELAYED;
+> > > +	struct xe_eudebug_session *s;
+> > > +	struct online_debug_data *data;
+> > > +	struct xe_eudebug_client *other;
 > > > +
-> > 
-> > hweight()?
-> > 
-> Are you proposing here to change the name or to implement it without second loop like below?
-
-Yes, I just want to get rid of second loop.
-
-> 
-> static int count_set_bits(void *ptr, size_t size)
-> {
-> 	uint32_t *p = ptr;
-> 	int count = 0;
-> 	int i;
-> 
-> 	igt_assert(size % 4 == 0);
-> 
-> 	for (i = 0; i < size/4; i++)
-> 		count += igt_hweight(p[i]);
-> 
-> 	return count;
-> }
-
-You may iterate over uint8_t to cover all sizes, not only % 4.
-But if you're sure buffer will always be multiple of 4, this
-imo is ok.
-
-<cut>
-
-> > > +static void copy_first_bit(uint8_t *dst, uint8_t *src, int size)
-> > > +{
-> > > +	bool found = false;
-> > > +	int i, j;
+> > > +	data = online_debug_data_create(hwe);
+> > > +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
+> > > +	other = xe_eudebug_client_create(fd, run_online_client, SHADER_NOP, data);
 > > > +
-> > > +	for (i = 0; i < size; i++) {
-> > > +		if (found) {
-> > > +			dst[i] = 0;
-> > 
-> > Function is static, but according to line above I would add some
-> > comment that it is cleaning dst buffer. copy_first_bit() is misleading
-> > as you mean first bit set. First bit is src[0] & 1.
-> > 
-> > And what 'first' means? Having lets say src = { 0x0, 0xff, 0xcc, 0xaa }
-> > I would expect first should be most significant bit of 0xff.
-> > 
-> > 
-> > > +		} else {
-> > > +			uint32_t tmp = src[i]; /* in case dst == src */
+> > > +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+> > > +					eu_attention_debug_trigger);
+> > > +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
+> > > +					eu_attention_resume_trigger);
+> > > +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
+> > > +					ufence_ack_trigger);
 > > > +
-> > > +			for (j = 0; j < 8; j++) {
-> > 
-> > ffs()? But according to copy copy_nth_bit() I've doubts shouldn't this
-> > be fls()?
-> > 
-> > > +				dst[i] = tmp & (1 << j);
-> > > +				if (dst[i]) {
-> > > +					found = true;
-> > > +					break;
-> > > +				}
-> > > +			}
-> > > +		}
-> > > +	}
-> > > +}
+> > > +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
+> > > +	xe_eudebug_debugger_start_worker(s->debugger);
 > > > +
-> > > +static void copy_nth_bit(uint8_t *dst, uint8_t *src, int size, int n)
-> > > +{
-> > > +	int count = 0;
-> > > +
-> > > +	for (int i = 0; i < size; i++) {
-> > > +		uint32_t tmp = src[i];
-> > > +
-> > > +		for (int j = 7; j >= 0; j--) {
+> > > +	xe_eudebug_client_start(s->client);
+> > > +	sleep(1); /* make sure s->client starts first */
 > > 
-> > I'm confused. In above function you iterate starting from least
-> > significant bit, here you start from most significant bit.
-> > Same concern about function name - shouldn't this be copy_nth_bit_set()?
-> > 
-> > > +			if (tmp & (1 << j)) {
-> > > +				count++;
-> > > +				if (count == n)
-> > > +					dst[i] |= (1 << j);
-> > > +				else
-> > > +					dst[i] &= ~(1 << j);
-> > 
-> > Do I understand correctly that you are clearing other bits in dst?
-> > It's extremely weird calling function copy_nth_bit() where it scans
-> > for n-th bit set, zeroing other bits in dst. Or I just don't understand
-> > logic behind this decision.
-> 
-> You've raised bunch of valid inaccuracies. How about:
-> 
-> static void only_nth_set_bit(uint8_t *dst, uint8_t *src, int size, int n)
-> {
-> 	int count = 0;
-> 
-> 	for (int i = 0; i < size; i++) {
-> 		if (count < n) {
-> 			uint8_t tmp = src[i];
-> 
-> 			for (int j = 0; j < 8; j++) {
-> 				if (tmp & (1 << j)) {
-> 					count++;
-> 					if (count == n)
-> 						dst[i] |= (1 << j);
-> 					else
-> 						dst[i] &= ~(1 << j);
-> 				} else {
-> 					dst[i] &= ~(1 << j);
-> 				}
-> 			}
-> 		} else {
-> 			dst[i] = 0;
-> 		}
-> 	}
-> }
+> > If client would write token it has started this sleep wouldn't be
+> > necessary. I mean inside xe_eudebug_client_start() do
+> > token_signal/wait_for_client.
+> To ensure that the first client executes its workload first, we would need to signal it after
+> calling xe_exec. This means that the signaling would need to be incorporated within the client's
+> work function. We cannot place wait_for_client inside the generic xe_eudebug_client_start() because
+> the work function is defined by the caller. While I could implement a similar mechanism specifically
+> for this test, it would require creating a brand new run_online_client()-like function or adding
+> wait_for_client in every test that reuses run_online_client(). I decided to keep it simple, albeit
+> imperfect. Let me know if you would rather have it changed. 
 
-Likely I would copy octet by octet from src[i] -> dst[i], tracking
-previous/current hweight and when it is bigger than n zeroing rest of bits in
-current octet. But this is implementation detail.
+Ok, now I understand. That's not the client process start is interesting from
+our point of view (that's why I suggested to inform caller that is created)
+but xe_exec() itself. Signalling to the spawner xe_exec() was called is not
+so easy with current code shape. sleep(1) is however long time and likely
+first client will start its execution before 'other' (I'm not sure shouldn't
+it be called 'another', but that's not important).
 
-In above code you're copying from least significant bit, is this intended?
-Previous code was copying from most significant bit so this is
-definitely semantic change which according to hw behavior may be
-incorrect. May you double check this?
-
-> 
-> static void only_first_set_bit(uint8_t *dst, uint8_t *src, int size)
-> {
-> 	return only_nth_set_bit(dst, src, size, 1);
-> }
-
-Nice, code reuse is always good.
-
-I'll drop rest of email to reply in another email. This will narrow
-our conversation to interesting part only.
+Keep as it is now. If we encounter the race win by 'other' then we'll think
+how to prevent this.
 
 --
+
 Zbigniew
- 
+
