@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59E89CDD548
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE9FECDD543
 	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 16:36:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 18A4210E290;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1EDA410E5EA;
 	Wed, 18 Sep 2024 16:36:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f/VtuxyX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hfFYPBCJ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14A5C10E290
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9340A10E290
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726677391; x=1758213391;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0YSJctjJ8cuUgubpJ2g/cAzwU/UOkQjXWqvW24gCkmk=;
- b=f/VtuxyXtO9jJW+wmheOoJeY2l4SJCjbY+Xa1sgj8l0sfspjzXzEIYi4
- TIcebDbEkI1PrC5zDMxEVZdaLC2F2OLjTOdtj6JS7PSNM30SkQ6FRvBYZ
- KFUwG6eE7hUN79se5kizvlEdLAwGh/n6J2ovuuKDDen/jUcY2xiiC1IPG
- 0lVOjH7xBNTQp0Ry2V/eJyypZXXLzblUIaaqYqngy7Qw2+313JaCkjwod
- kPkMGZIv9daGQm/7dXhBYCLF8rcdViDp0NZjCDn/Ee0Ca1YfWYXhw9qPy
- L7ZGDyC5F8aEJ0sL7jYW4NpbOgJmYTT4l1W7d/UGsSiqlNIESAX6I23Mg w==;
-X-CSE-ConnectionGUID: NdUnsi71QBS7Aaea1nTyBw==
-X-CSE-MsgGUID: bMIKr8G9T+CMg4ASr6hb+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="29496272"
-X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="29496272"
+ t=1726677392; x=1758213392;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=uj+KndKXf+fl9I9aGl7oppJI54dAh8CBhmHugXrdsgs=;
+ b=hfFYPBCJwN24ugspv6HWumMGWL8uIuH1sF/G9daVRmO1DjbIVv6vAz7K
+ fe9u0ec81uCS+xXFetA0U10gLZmOi9GLWoT8jEreuI9vB+hQAf1fXFdN7
+ +8XUobba1ZLOL3dEOn8QUG+sMSxbtAxyq8iW66LY+H2ZVH1yx4ufOmgb1
+ TQVbo3EmzG23OJGetZgUKLvym//zYJJukWRjIhW+uYFtojLyC4lF3AQk5
+ ygO8/mITFjjeaZyBm1WDi4R5+rSxyzgy7VR+ndVA8T/zWDCSxG4qbv+NU
+ 0kv4nyjvu9MrG/XGfog3xinDNvCyjNttHbUTP/LfjQDcIYQ/JTotkgLfH Q==;
+X-CSE-ConnectionGUID: m4RyoMWCRmWUBURo7AM7TQ==
+X-CSE-MsgGUID: /tV+EdH0Q2aXPlDMz+SlgQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="29496276"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="29496276"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Sep 2024 09:36:31 -0700
-X-CSE-ConnectionGUID: vZWsJPd4Qq+CkDMp0J3AqQ==
-X-CSE-MsgGUID: Oamz49jRSFyNHEKTTerHnw==
+X-CSE-ConnectionGUID: entXhcXPQOyOGvBceAUSNA==
+X-CSE-MsgGUID: FnOHkjWKRU+fJGl324ntMA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="69235564"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="69235579"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Sep 2024 09:36:31 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 0/6] Add forcewake support for xe
-Date: Wed, 18 Sep 2024 09:36:23 -0700
-Message-ID: <20240918163629.1186314-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 4/6] lib/igt_gt: Fallback on filenames in
+ igt_open_forcewake_handle()
+Date: Wed, 18 Sep 2024 09:36:27 -0700
+Message-ID: <20240918163629.1186314-5-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.46.1
+In-Reply-To: <20240918163629.1186314-1-lucas.demarchi@intel.com>
+References: <20240918163629.1186314-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,22 +68,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-First 3 patches are sufficient, but I also think the behavior with
-passing fd == -1 is not very good. Hence, also add code in intel_reg to
-be explicit about what driver to use.
+If fd is -1, we don't know what file should be used for forcewake.
+We could open the debugfs dir and figure out from there, but it's also
+cheap to just handle a fallback approach. Ideally fd == -1 wouldn't be
+passed and eventually this could be removed.
 
-Lucas De Marchi (6):
-  lib/igt_gt: Fix forcewake open
-  lib/igt_gt: Document fd argument in igt_open_forcewake_handle()
-  lib/igt_gt: Make igt_open_forcewake_handle() xe-compatible
-  lib/igt_gt: Fallback on filenames in igt_open_forcewake_handle()
-  tools/intel_reg: Add wrapper for reg access init
-  tools/intel_reg: Add forcewake support to xe
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ lib/igt_gt.c | 24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
- lib/igt_gt.c      | 25 ++++++++++++++++++++++++-
- tools/intel_reg.c | 28 +++++++++++++++++++++++-----
- 2 files changed, 47 insertions(+), 6 deletions(-)
-
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index c84368fbd..3df3fdb63 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -502,17 +502,31 @@ void igt_stop_hang_helper(void)
+  */
+ int igt_open_forcewake_handle(int fd)
+ {
+-	const char *fn;
++	enum {
++		I915,
++		XE,
++	};
++	const char *fn[] = {
++		[I915] = "i915_forcewake_user",
++		[XE] = "forcewake_all",
++	};
+ 
+ 	if (getenv("IGT_NO_FORCEWAKE"))
+ 		return -1;
+ 
+ 	if (is_xe_device(fd))
+-		fn = "forcewake_all";
+-	else
+-		fn = "i915_forcewake_user";
++		return igt_debugfs_open(fd, fn[XE], O_RDONLY);
++	if (is_i915_device(fd))
++		return igt_debugfs_open(fd, fn[XE], O_RDONLY);
++
++	for (unsigned int i = 0; i < ARRAY_SIZE(fn); i++) {
++		int ret = igt_debugfs_open(fd, fn[i], O_RDONLY);
++
++		if (ret >= 0)
++			return ret;
++	}
+ 
+-	return igt_debugfs_open(fd, fn, O_RDONLY);
++	return -ENOENT;
+ }
+ 
+ #if defined(__x86_64__) || defined(__i386__)
 -- 
 2.46.1
 
