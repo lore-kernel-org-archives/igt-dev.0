@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88040CCD1B3
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 14:29:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1BB0CCD1B7
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 14:33:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 488C910E26C;
-	Wed, 18 Sep 2024 14:29:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E20F10E26C;
+	Wed, 18 Sep 2024 14:33:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eM+n5o7s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K+bYwy9t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 11BE110E26C
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 14:29:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DEF110E26C
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 14:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726669745; x=1758205745;
+ t=1726669984; x=1758205984;
  h=date:from:to:cc:subject:message-id:reply-to:references:
  mime-version:in-reply-to;
- bh=47IUtEhzqhlQpgXNwrn85SaCyLKsGGiR4vayMKa+n8g=;
- b=eM+n5o7slyXr2+LOx1TYZOFmLKSAAXxLSSzeTFlnY7w+a1I8mR8ruNzL
- t4Vd1i9ymEupdP8LnzkDT73Z6fgyKupD0DzzFsr5svVm3hdAnUaUwezBE
- uO/HFPIGC/3gR14plZrK8ZhVf1QNHwIK2sGsgDGkSCOYr3c1Pu3Rx1V7o
- QMoF/szgZE0XeqleL3K2KY+LlIiLKh9w+xTCDgsbbRO4ilEJJx5CUqovZ
- jvopqscrnReMPl85hg2QNJ3AVhuva1QEYE1UZPcI6e5HdP3YSnS2tXTrb
- q487ATyQwH8mdqL2sZX21f7sjg5SLXdt9iHQkwTD0/JZQ3iKCmlC8GAU3 Q==;
-X-CSE-ConnectionGUID: En4FRAqCR0KPqq215CM9Uw==
-X-CSE-MsgGUID: fBtt1jF5TQ6cTxh2CJ0Fvg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="36717162"
-X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="36717162"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 07:29:05 -0700
-X-CSE-ConnectionGUID: EUIKV+LgRwqQAE9NWnDyzg==
-X-CSE-MsgGUID: UcwujvDCSsy2tv1soYMlcA==
+ bh=YLdFrl6sv9QFRys6uEB27EHV92F2Xrg9hXZOSs46a2M=;
+ b=K+bYwy9trJ0rUE+jDoOJO9NUtTMZhreRhr6dVaYR+9jGGd1WCnsWzIuO
+ UiztGIRrFpFQ2R7BBCBTZi/mwtWMtRWlYWkFeSpN0plq87HiHmoDC6k2T
+ xogy1wkjbR8Tg1cPxM4Nafxh7Jk1L1kkfT4JU6A0Cckb+ALGmW2xxFpoY
+ UJWdGNd9CffxxDazBtdUbsPxHO+Jbav1y3eW3CU98+VRtgKGnom2/4JuG
+ Cw0M3KNLJ/HOUMYWE8crtzXEf1I0hHObKR/Wvr/y4uqLT7AnhqHaZ6DQU
+ oPXKkrTYPueJdA3F0QHJvY4wg/fa4/cLOUhKiQC8DFuWKFYnvK8li3T2W g==;
+X-CSE-ConnectionGUID: fCd2whobREi4RaAweC7AwA==
+X-CSE-MsgGUID: hz7rzhvuS92ehnGM2IoXGg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25745335"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="25745335"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 07:33:04 -0700
+X-CSE-ConnectionGUID: cOVFV8dQRSi+ki57H697sQ==
+X-CSE-MsgGUID: 1zdljH28TF+GK+tB4jBn/Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="74405768"
+X-IronPort-AV: E=Sophos;i="6.10,239,1719903600"; d="scan'208";a="69627162"
 Received: from ideak-desk.fi.intel.com ([10.237.72.78])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 07:29:04 -0700
-Date: Wed, 18 Sep 2024 17:29:28 +0300
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 07:33:02 -0700
+Date: Wed, 18 Sep 2024 17:33:27 +0300
 From: Imre Deak <imre.deak@intel.com>
 To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/6] lib/igt_kms: add DP link management helper
- functions
-Message-ID: <ZurjyCEBLCYLhdSi@ideak-desk.fi.intel.com>
+Subject: Re: [PATCH i-g-t 3/6] lib/igt_kms: allow set and reset value to be
+ same
+Message-ID: <Zurkt5aK8labwwt3@ideak-desk.fi.intel.com>
 References: <20240912062839.760661-1-kunal1.joshi@intel.com>
- <20240912062839.760661-2-kunal1.joshi@intel.com>
+ <20240912062839.760661-4-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240912062839.760661-2-kunal1.joshi@intel.com>
+In-Reply-To: <20240912062839.760661-4-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,282 +70,105 @@ Reply-To: imre.deak@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Sep 12, 2024 at 11:58:34AM +0530, Kunal Joshi wrote:
-> Added helper functions for below
-> - read current/max link_rate/lane_count
-> - forcing link retraining
-> - forcing link training failures
-> - read pending retrain
-> - read pending link training failures
-> - checking output supports forcing lt failures
-> - force link_rate/lane_count
+On Thu, Sep 12, 2024 at 11:58:36AM +0530, Kunal Joshi wrote:
+> allow set and reset value to be same, let the caller handle
+> this scenario instead.
 > 
-> v2: combine all link training debugfs in one patch (Imre)
->     remove unwanted valid output check (Imre)
->     return link_rate/lane_count marked with '*' or an error (Imre)
+> example scenario where this is required.
+> i915_dp_force_link_rate should be auto before starting test
+> should be auto at exit
+> 
+> v2: handle the scenario at caller side
 > 
 > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 > ---
->  lib/igt_kms.c | 210 ++++++++++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_kms.h |  10 +++
->  2 files changed, 220 insertions(+)
+>  lib/igt_kms.c | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
 > 
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index dd530dbab..f0ac1e5dc 100644
+> index 863eb5331..a7f8d0f83 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -61,6 +61,7 @@
->  #include "sw_sync.h"
->  #ifdef HAVE_CHAMELIUM
->  #include "igt_chamelium.h"
-> +#include <ctype.h>
->  #endif
+> @@ -1557,7 +1557,8 @@ static void connector_attr_free(struct igt_connector_attr *c)
+>  static bool connector_attr_set(int idx, drmModeConnector *connector,
+>  			       int dir, igt_connector_attr_set set,
+>  			       const char *attr, const char *value,
+> -			       const char *reset_value)
+> +			       const char *reset_value,
+> +			       bool allow_set_equals_reset)
+
+force_reset would describe better what the flag does.
+
+>  {
+>  	struct igt_connector_attr *c;
+>  
+> @@ -1573,7 +1574,7 @@ static bool connector_attr_set(int idx, drmModeConnector *connector,
+>  		return false;
+>  	}
+>  
+> -	if (!strcmp(c->value, c->reset_value))
+> +	if (!allow_set_equals_reset && !strcmp(c->value, c->reset_value))
+>  		connector_attr_free(c);
+>  
+>  	return true;
+> @@ -1582,7 +1583,8 @@ static bool connector_attr_set(int idx, drmModeConnector *connector,
+>  static bool connector_attr_set_sysfs(int drm_fd,
+>  				     drmModeConnector *connector,
+>  				     const char *attr, const char *value,
+> -				     const char *reset_value)
+> +				     const char *reset_value,
+> +				     bool allow_set_equals_reset)
+>  {
+>  	char name[80];
+>  	int idx, dir;
+> @@ -1600,7 +1602,8 @@ static bool connector_attr_set_sysfs(int drm_fd,
+>  		return false;
+>  
+>  	if (!connector_attr_set(idx, connector, dir,
+> -				igt_sysfs_set, attr, value, reset_value))
+> +				igt_sysfs_set, attr, value, reset_value,
+> +				allow_set_equals_reset))
+>  		return false;
+>  
+>  	igt_debug("Connector %s/%s is now %s\n", name, attr, value);
+> @@ -1611,7 +1614,8 @@ static bool connector_attr_set_sysfs(int drm_fd,
+>  static bool connector_attr_set_debugfs(int drm_fd,
+>  				       drmModeConnector *connector,
+>  				       const char *attr, const char *value,
+> -				       const char *reset_value)
+> +				       const char *reset_value,
+> +				       bool allow_set_equals_reset)
+>  {
+>  	char name[80];
+>  	int idx, dir;
+> @@ -1630,7 +1634,7 @@ static bool connector_attr_set_debugfs(int drm_fd,
+>  
+>  	if (!connector_attr_set(idx, connector, dir,
+>  				igt_sysfs_set, attr,
+> -				value, reset_value))
+> +				value, reset_value, allow_set_equals_reset))
+>  		return false;
+>  
+>  	igt_info("Connector %s/%s is now %s\n", name, attr, value);
+> @@ -1662,7 +1666,8 @@ static bool force_connector(int drm_fd,
+>  			    const char *value)
+>  {
+>  	return connector_attr_set_sysfs(drm_fd, connector,
+> -					"status", value, "detect");
+> +					"status", value, "detect",
+> +					false);
+>  }
 >  
 >  /**
-> @@ -6705,3 +6706,212 @@ int get_num_scalers(igt_display_t *display, enum pipe pipe)
->  
->  	return num_scalers;
+> @@ -1727,7 +1732,7 @@ static bool force_connector_bigjoiner(int drm_fd,
+>  {
+>  	return connector_attr_set_debugfs(drm_fd, connector,
+>  					  "i915_bigjoiner_force_enable",
+> -					  value, "0");
+> +					  value, "0", false);
 >  }
-> +
-> +/**
-> + * igt_get_dp_link_param_set_for_output:
-> + * @drm_fd: A drm file descriptor
-> + * @output: Target output
-> + * @link_param: 0 for lane count, 1 for link rate
-> + *
-> + * Returns: link_rate / lane_count if set for output else -1
-> + */
-> +int igt_get_dp_link_param_set_for_output(int drm_fd, igt_output_t *output, int link_param)
-
-At the call-site it's not clear what link_param=0/1 means. Instead of
-that param I'd rather add debugfs_connector_read/write helpers and
-export these functions with a self-descriptive name (i.e. stg. like
-igt_get_dp_current_link_rate/lane_count()).
-
-> +{
-> +	char *star_ptr, *param_ptr;
-> +	char buf[512];
-> +	int dir, res;
-> +	int ret;
-> +
-> +	ret = -1;
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +		     igt_output_name(output));
-> +	res = igt_debugfs_simple_read(dir, link_param ? "i915_dp_force_link_rate" :
-> +				      "i915_dp_force_lane_count", buf, sizeof(buf));
-> +	close(dir);
-> +	igt_require(res >= 0);
-> +
-> +	/*
-> +	 * Check we have a mode enabled for the output
-> +	 * If so we will have current  active link rate
-> +	 * marked with a *
-> +	 */
-> +	star_ptr = strstr(buf, "*");
-> +
-> +	if (star_ptr) {
-> +		param_ptr = star_ptr - 1;
-> +		while (param_ptr > buf && isdigit(*param_ptr))
-> +			param_ptr--;
-> +
-> +		param_ptr++;
-> +		igt_assert(sscanf(param_ptr, "%d", &ret) == 1);
-> +	}
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_get_dp_max_link_param:
-> + * @drm_fd: A drm file descriptor
-> + * @output: The output to query
-> + * @link_param: 0 for lane count, 1 for link rate
-> + *
-> + * Get the max link_rate / lane_count supported by the sink.
-> + *
-> + * Returns: max link_rate / lane_count supported by the sink.
-> + */
-> +int igt_get_dp_max_link_param(int drm_fd, igt_output_t *output, int link_param)
-> +{
-> +	char buf[512];
-> +	int dir, res;
-> +	int max_link_param;
-> +
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_DIRECTORY);
-
-Not sure why O_DIRECTORY is used here and O_RDONLY elsewhere. This and
-all the functions below could use common
-debugfs_connector_read/write helpers discussed above.
-
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +				 igt_output_name(output));
-> +	res = igt_debugfs_simple_read(dir, link_param ? "i915_dp_max_link_rate" :
-> +				      "i915_dp_max_lane_count", buf, sizeof(buf));
-> +	close(dir);
-> +	igt_require_f(res >= 0, "Couldn't read i915_dp_max_link_rate");
-> +
-> +	igt_assert(sscanf(buf, "%d", &max_link_param) == 1);
-> +
-> +	return max_link_param;
-> +}
-> +
-> +/**
-> + * igt_force_link_retrain:
-> + * @drm_fd: A drm file descriptor
-> + * @output: Target output
-> + * @retrain_count: number of retraining required
-> + *
-> + * Force link retrain on the output.
-> + */
-> +void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count)
-> +{
-> +	int dir;
-> +	char value[2];
-> +
-> +	snprintf(value, sizeof(value), "%d", retrain_count);
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +			       igt_output_name(output));
-> +	igt_sysfs_write(dir, "i915_dp_force_link_retrain", value, sizeof(value));
-> +	close(dir);
-> +}
-> +
-> +/**
-> + * igt_force_lt_failure:
-> + * @drm_fd: A drm file descriptor
-> + * @output: Target output
-> + * @failure_count: 1 for same link param and
-> + *                2 for reduced link params
-> + *
-> + * Force link training failure on the output.
-> + * @failure_count: 1 for retraining with same link params
-> + *				   2 for retraining with reduced link params
-> + */
-> +void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count)
-> +{
-> +	int dir;
-> +	char value[2];
-> +
-> +	snprintf(value, sizeof(value), "%d", failure_count);
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +			       igt_output_name(output));
-> +	igt_sysfs_write(dir, "i915_dp_force_link_training_failure",
-> +			     value, sizeof(value));
-> +	close(dir);
-> +}
-> +
-> +/**
-> + * igt_get_dp_link_retrain_disabled:
-> + * @drm_fd: A drm file descriptor
-> + * @output: Target output
-> + *
-> + * Returns: True if link retrain disabled, false otherwise
-> + */
-> +bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output)
-> +{
-> +	int dir, res;
-> +	char buf[512];
-> +
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +			       igt_output_name(output));
-> +	res = igt_debugfs_simple_read(dir,
-> +				      "i915_dp_link_retrain_disabled",
-> +				      buf, sizeof(buf));
-> +	close(dir);
-> +	igt_require(res >= 0);
-> +	return strstr(buf, "yes");
-> +}
-> +
-> +/**
-> + * Checks if the force link training failure debugfs
-> + * is available for a specific output.
-> + *
-> + * @drmfd: file descriptor of the DRM device.
-> + * @output: output to check.
-> + * Returns:
-> + *  true if the debugfs is available, false otherwise.
-> + */
-> +bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output)
-> +{
-> +	int debugfs_fd, ret;
-> +	char buf[512];
-> +
-> +	igt_assert_f(output->name, "Invalid output\n");
-> +	debugfs_fd = igt_debugfs_connector_dir(drmfd, output->name, O_RDONLY);
-> +	if (debugfs_fd < 0)
-> +		return false;
-> +	ret = igt_debugfs_simple_read(debugfs_fd,
-> +				      "i915_dp_force_link_training_failure",
-> +				      buf, sizeof(buf));
-> +	close(debugfs_fd);
-> +	return ret >= 0;
-> +}
-> +
-> +/**
-> + * igt_get_dp_pending_lt_failures:
-> + * @drm_fd: A drm file descriptor
-> + * @output: Target output
-> + *
-> + * Returns: Number of pending link training failures.
-> + */
-> +int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output)
-> +{
-> +	int dir, res, ret;
-> +	char buf[512];
-> +
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +			       igt_output_name(output));
-> +	res = igt_debugfs_simple_read(dir, "i915_dp_force_link_training_failure", buf, sizeof(buf));
-> +	close(dir);
-> +	igt_require(res >= 0);
-> +	sscanf(buf, "%d", &ret);
-> +	return ret;
-> +}
-> +
-> +/**
-> + * igt_dp_pending_retrain:
-> + * @drm_fd: A drm file descriptor
-> + * @output: Target output
-> + *
-> + * Returns: Number of pending link retrains.
-> + */
-> +int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output)
-> +{
-> +	int dir, res, ret;
-> +	char buf[512];
-> +
-> +	dir = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
-> +	igt_assert_f(dir >= 0, "Failed to open debugfs dir for connector %s\n",
-> +			       igt_output_name(output));
-> +	res = igt_debugfs_simple_read(dir, "i915_dp_force_link_retrain", buf, sizeof(buf));
-> +	close(dir);
-> +	igt_require(res >= 0);
-> +	sscanf(buf, "%d", &ret);
-> +	return ret;
-> +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 25ba50916..895bc9d04 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1224,5 +1224,15 @@ bool intel_pipe_output_combo_valid(igt_display_t *display);
->  bool igt_check_output_is_dp_mst(igt_output_t *output);
->  int igt_get_dp_mst_connector_id(igt_output_t *output);
->  int get_num_scalers(igt_display_t *display, enum pipe pipe);
-> +int igt_get_dp_link_param_set_for_output(int drm_fd, igt_output_t *output,
-> +					 int link_param);
-> +int igt_get_dp_max_link_param(int drm_fd, igt_output_t *output,
-> +			      int link_param);
-> +void igt_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
-> +void igt_force_lt_failure(int drm_fd, igt_output_t *output, int failure_count);
-> +bool igt_get_dp_link_retrain_disabled(int drm_fd, igt_output_t *output);
-> +bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output);
-> +int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output);
-> +int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
 >  
->  #endif /* __IGT_KMS_H__ */
+>  /**
 > -- 
 > 2.43.0
 > 
