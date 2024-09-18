@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFE03CCD1A0
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 12:05:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3E19CCD1A3
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Sep 2024 12:05:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 821D410E57C;
-	Wed, 18 Sep 2024 12:05:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A0B710E586;
+	Wed, 18 Sep 2024 12:05:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jpvoGpZY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EMAdywQ0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFE3F10E57C
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 12:05:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E6D910E586
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Sep 2024 12:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726661148; x=1758197148;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=yJpojAjV0Dq2AMAVB2J8lfUOtVvPOjY8+i+6j2cASjU=;
- b=jpvoGpZYqQ1j8lzP0o8UWun3hT6FcMFOOfvXUe03GrcI8fNa2DM/2rlG
- plSGihvvMh4CkG6khP8/vPafDoNGeFGe/UohjXaO8Dg/BEpQvII5rvI0x
- MRfeRR0+Ls6JyhmH7m/65Oex65Pxjs4voSCqcaRbkGyZZqYeV3MRiVH2Y
- GlBsp2eEeU7tvmZsogheJmORGWR04VgaB/S1ow43rfrzfVqqyJBqXQJAG
- 7qxvSdQDqIl+f66ZQR/iEtX4IdvEuPN1spCVcfF82CPBMG7hONghPxAL8
- 6x3JS/p34HBY2rqchqeIztGdkkE9etfq7nYd2tRk2vr1nFaBH7R/7Phq+ w==;
-X-CSE-ConnectionGUID: 7nyRrAoFTFGaOJuNNfFwPQ==
-X-CSE-MsgGUID: bQdt6fm1QluKMNCJcnFwkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25687534"
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25687534"
+ t=1726661151; x=1758197151;
+ h=from:to:subject:date:message-id:in-reply-to:references:
+ mime-version:content-transfer-encoding;
+ bh=LEWtZzBg1phW+NSGtGi0kb4gXUDw6ez0ZXDStqaiKTk=;
+ b=EMAdywQ0wn5TTKVCIrO3yfKc7fyVHW1HMqloSthCEykRJbLvSX3PzIng
+ 9IOn0jxGRANoPoE3/YUbjHeL62sCayOkWIqfhebMn+6iK3Y7qZCsFbC2Q
+ Ss2nGtaeXDEd2SOYaNnN5RUQQzvmj8PFK5D47KCQM+XaSRZYUyZDEOGm5
+ M9nwonyqlPQeoS1m9IfuA0Fch9vDS/b69nzlsCLtD8LvhmCx6nhTAUkzl
+ ZCWMF2hTkQX/wQv+nPWHjpiHq0BTiIxSBkdcO1qdHfvtACmSSxNDclagu
+ SqwiTu9Z748DD8pRXP5R+uQcfXUOZO02Ml1Qlrp7ogls1aA9t5b7NG1ss g==;
+X-CSE-ConnectionGUID: RvePufXaRrS/FxgyZ0dNig==
+X-CSE-MsgGUID: HPDrAQUrSxqE8t9s2PyRTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25687539"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="25687539"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 05:05:48 -0700
-X-CSE-ConnectionGUID: I4R9qzo3SvahD6tNxsRTng==
-X-CSE-MsgGUID: oiZxcCXKSLabI5eHubmq1Q==
+ 18 Sep 2024 05:05:51 -0700
+X-CSE-ConnectionGUID: P3IbmVU2RpOXe7bx8stiSQ==
+X-CSE-MsgGUID: MSYeD/zoRpuFwE14LbeenQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="69634450"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; d="scan'208";a="69634451"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 18 Sep 2024 05:05:46 -0700
+ by fmviesa008.fm.intel.com with SMTP; 18 Sep 2024 05:05:48 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 18 Sep 2024 15:05:44 +0300
+ Wed, 18 Sep 2024 15:05:47 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 09/18] tests/kms_plane: Skip 10bpc formats with media
+Subject: [PATCH i-g-t v2 10/18] tests/kms_ccs: Skip 10bpc formats with media
  compression
-Date: Wed, 18 Sep 2024 15:05:09 +0300
-Message-ID: <20240918120518.30258-10-ville.syrjala@linux.intel.com>
+Date: Wed, 18 Sep 2024 15:05:10 +0300
+Message-ID: <20240918120518.30258-11-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240918120518.30258-1-ville.syrjala@linux.intel.com>
 References: <20240918120518.30258-1-ville.syrjala@linux.intel.com>
@@ -76,28 +75,27 @@ The VEBOX just hangs if we try to use a 10bpc format.
 Skip 10bpc with media compression as that would require
 using the VEBOX.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/kms_plane.c | 5 +++++
+ tests/intel/kms_ccs.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index a6b5d4f8aa2a..77a669dc540b 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -1012,6 +1012,11 @@ static bool skip_format_mod(data_t *data,
- 	    modifier == DRM_FORMAT_MOD_QCOM_COMPRESSED)
- 		return true;
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 06f40e2c2175..7cda79412d94 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -845,6 +845,11 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+ 	    data->format != DRM_FORMAT_XRGB2101010)
+ 		return false;
  
 +	/* VEBOX just hangs with an actual 10bpc format */
-+	if (igt_fb_is_gen12_mc_ccs_modifier(modifier) &&
-+	    igt_reduce_format(format) == DRM_FORMAT_XRGB2101010)
-+		return true;
++	if (igt_fb_is_gen12_mc_ccs_modifier(data->ccs_modifier) &&
++	    data->format == DRM_FORMAT_XRGB2101010)
++		return false;
 +
- 	/* test each format "class" only once in non-extended tests */
- 	if (!data->extended && modifier != DRM_FORMAT_MOD_LINEAR) {
- 		struct format_mod rf = {
+ 	if ((fb_flags & FB_MISALIGN_AUX_STRIDE) ||
+ 	    (fb_flags & FB_SMALL_AUX_STRIDE))
+ 		fb_width = max(fb_width, 1536);
 -- 
 2.44.2
 
