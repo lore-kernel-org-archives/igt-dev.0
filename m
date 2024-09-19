@@ -4,71 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0AD0CE8D49
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Sep 2024 06:17:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 468E9CE8D49
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Sep 2024 06:19:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6C8E510E67B;
-	Thu, 19 Sep 2024 06:17:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECED810E22B;
+	Thu, 19 Sep 2024 06:19:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jYTXvq1V";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q8Yg1J2r";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3123810E67B
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Sep 2024 06:17:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A0A510E22B
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Sep 2024 06:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726726674; x=1758262674;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=oaDdlybtjmeHybGaXQr7BmyM0/9HcUTVUldStZNJGPA=;
- b=jYTXvq1V/AK+lbkuDHg5wGhQiD26L5pTm73bKES/AWHyBieIhoZ0mzIK
- RjCV3SjoDb4mgupIHcETXbRYx3wFeyzUiCWa76/1UFGB73QjFzL1ksjtd
- HX0RVBZjOeVDT8qhPr6cCysBGVMwd8di6eY1vK3xMLiJrjMdfVITdRYpT
- fKsqLlYCdHO0HhzG3ecUC9kSypkgHcW+YA2SpA8ItlDu0cwpSdBlRk+Th
- 8HL1nihwyt+xad29bOEJ0I1bo05IFBZgjPzL+BVubHE5tOt5MAhj0GM7w
- wurAHGczsg8Mx1K5tBIaQUJfMR7lX/vS5yfo+y+WYF3kIcm15Kz4uC0hi A==;
-X-CSE-ConnectionGUID: nnpxHASkRf+Lnh0+mmTh3A==
-X-CSE-MsgGUID: 3ekd4zjlRUqCChHjEIAqjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="29411352"
-X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; d="scan'208";a="29411352"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 23:17:53 -0700
-X-CSE-ConnectionGUID: uRTQ0M31QxmHubz0Tne3CA==
-X-CSE-MsgGUID: G0JTY0QlQhit31m42J6DGg==
+ t=1726726775; x=1758262775;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BT5G7lm9NsE8pS/hHMus4lHLOP4t4EvYPMaZla+BHN8=;
+ b=Q8Yg1J2r0waRmJkU3MhtGYx4ItV8r3poTfcmpJNLIWiXwHr6t07i21ay
+ 5JQLMc3tRF2BgYmmmMIxNFkT5ICg6dyCLUN57mwlTrATLSAR1iBnijoGu
+ 5/C6QAzCU2Rj/OBtpb3O5/3CTJ0txRcrj9IQA6vqzy5KxAxV+NipMzPUI
+ lcGc6ADBgg7G1lRbdSvyGU4BiXABZq2zgGKS3hY4DefsKdUO/3BycVJig
+ blQ6WUUZP9r+Jjy7zKIa9Cgk9scii0fQjrYhg3rSThrakKvqpHalsMumY
+ B6tSsXIwpd9naalZ40CS9HY8jnNgO358QRSa+vjY4Xv4gehUxXEIllWJf Q==;
+X-CSE-ConnectionGUID: Ps9Zl/OhQxKzgyecwy/OPg==
+X-CSE-MsgGUID: wdlgzr0fQGCgdq5OHwRfQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="29458072"
+X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; d="scan'208";a="29458072"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 23:19:35 -0700
+X-CSE-ConnectionGUID: G7VcqqJCSUazRfc9fa9HWw==
+X-CSE-MsgGUID: 2mMxF+/IQni9diFFuxpkbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; d="scan'208";a="70123966"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.32])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 23:17:49 -0700
-Date: Thu, 19 Sep 2024 08:17:45 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Maciej Patelczyk <maciej.patelczyk@intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
- Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>,
- Katarzyna Piecielska <katarzyna.piecielska@intel.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH i-g-t v7 11/16] scripts/test_list: Relax treatment of
- non-compiled tests
-Message-ID: <20240919061745.iv27nrovjzcne4it@zkempczy-mobl2>
-References: <20240918113017.144687-1-christoph.manszewski@intel.com>
- <20240918113017.144687-12-christoph.manszewski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; d="scan'208";a="69835950"
+Received: from sinjan-super-server.iind.intel.com ([10.145.169.153])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Sep 2024 23:19:33 -0700
+From: Karthik Poosa <karthik.poosa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_pm_residency: Print execution and sleep
+ times
+Date: Thu, 19 Sep 2024 12:03:52 +0530
+Message-Id: <20240919063352.1607048-1-karthik.poosa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240918113017.144687-12-christoph.manszewski@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,98 +67,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Sep 18, 2024 at 01:30:12PM +0200, Christoph Manszewski wrote:
-> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> 
-> Some tests could be added and compiled only when non-default
-> meson option is given. It will result in no testlist generated
-> for such tests but they could appear in our documentation.
-> Currently we report an error in such case.
-> 
-> Create a way to detect and report that and treat this as feature
-> and do not report it as an error.  This should allow to relax
-> processing of chamelium and other new tests.
-> 
-> Also while at this, print error information before actually
-> exiting with an error code, as previous prints were only
-> warnings.
-> 
-> Cc: Christoph Manszewski <christoph.manszewski@intel.com>
-> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
-> Cc: Katarzyna Piecielska <katarzyna.piecielska@intel.com>
-> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+Print the workload execution and sleep times of the test to help diagnose
+timeouts.
+This will show how long the workload ran and how long the test slept.
 
-Works for me:
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 0e687558b..3c3b33ab1 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -139,7 +139,7 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
+ 		elapsed = igt_nsec_elapsed(&tv);
+ 		igt_assert_eq(data->data, done[1]);
+ 
+-		igt_debug("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
++		igt_info("Execution took %.3fms (submit %.1fus, wait %.1fus)\n",
+ 			  1e-6 * elapsed,
+ 			  1e-3 * submit,
+ 			  1e-3 * (elapsed - submit));
+@@ -150,6 +150,8 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
+ 		 * Execute the above workload for ~1% of the elapsed time and sleep for
+ 		 * the rest of the time (~99%)
+ 		 */
++		igt_info("Sleeping for %ld ms\n", ((elapsed / 10)/1000));
++
+ 		usleep(elapsed / 10);
+ 	} while (!READ_ONCE(*done));
+ 
+-- 
+2.25.1
 
---
-Zbigniew
-
-> ---
->  scripts/test_list.py | 32 ++++++++++++++++++++++++--------
->  1 file changed, 24 insertions(+), 8 deletions(-)
-> 
-> diff --git a/scripts/test_list.py b/scripts/test_list.py
-> index 69c830ca1..d050687fe 100644
-> --- a/scripts/test_list.py
-> +++ b/scripts/test_list.py
-> @@ -1141,6 +1141,19 @@ class TestList:
->  
->          return sorted(tests)
->  
-> +    def get_not_compiled(self):
-> +
-> +        """ Return a list of tests which were not compiled """
-> +        no_binaries = []
-> +        for name in self.filenames:
-> +            test_basename = re.sub(r"\.c$", "", name.split('/')[-1])
-> +            fname = os.path.join(self.igt_build_path, "tests", test_basename)
-> +
-> +            if not os.path.isfile(fname):
-> +                no_binaries.append(test_basename)
-> +
-> +        return sorted(no_binaries)
-> +
->      #
->      # Validation methods
->      #
-> @@ -1177,21 +1190,24 @@ class TestList:
->          # Get a list of tests from
->          run_subtests = set(self.get_testlist())
->  
-> +        not_compiled = set(self.get_not_compiled())
-> +        for test_basename in not_compiled:
-> +            print(f"INFO: Found documentation for '{test_basename}' but no binary")
-> +
->          # Compare sets
->  
->          run_missing = list(sorted(run_subtests - doc_subtests))
->          doc_uneeded = list(sorted(doc_subtests - run_subtests))
-> +        doc_uneeded_build = [t for t in doc_uneeded if t.split('@')[1] not in not_compiled]
->  
-> -        if doc_uneeded:
-> -            for test_name in doc_uneeded:
-> -                print(f"Warning: Documented {test_name} doesn't exist on source files")
-> -
-> -        if run_missing:
-> +        if doc_uneeded_build or run_missing:
->              for test_name in run_missing:
-> -                print(f'Warning: Missing documentation for {test_name}')
-> -            print('Please refer: docs/test_documentation.md for more details')
-> +                print(f'ERROR: Missing documentation for {test_name}')
->  
-> -        if doc_uneeded or run_missing:
-> +            for test_name in doc_uneeded_build:
-> +                print(f'ERROR: Unneeded documentation for {test_name}')
-> +
-> +            print('Please refer: docs/test_documentation.md for more details')
->              sys.exit(1)
->  
->      #
-> -- 
-> 2.34.1
-> 
