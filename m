@@ -4,67 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E9C4CF3962
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Sep 2024 18:02:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C68CCF3962
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Sep 2024 18:35:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D2F5610E73F;
-	Thu, 19 Sep 2024 18:02:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 417C410E75D;
+	Thu, 19 Sep 2024 18:35:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l/EDiBML";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JW1HdwUt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A086910E73F
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Sep 2024 18:02:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89BEA10E75D
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Sep 2024 18:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726768955; x=1758304955;
- h=date:message-id:from:to:cc:subject:in-reply-to:
- references:mime-version;
- bh=7i3I7kddXMm21aUf2xvFDvIN5V9sNA5xksTUoR6Rkso=;
- b=l/EDiBMLHrd5i6uj07VG9llrrysHJTNgcOyQ2xaczZaXHpGBIz5WTp8L
- 276EwQF13twkUVX8w1aZ/ax2VTYrTiZLHL+Dm1gFP41aRNGpjcQv+tsTY
- BX33wEPVcKHas2gmMdCUM+LtDabcnXmtUk9q+9VwhLNZ8XzZPv74L9LDp
- +yfoE20zbbbmlib/Rqkwx4MCJJXQdfz74u0wQ0G4fUoA7tyWYrlTx3S6N
- LZoDdXUT4fP72EwlXrSmvbfexg3Bo6Bwlj27yBIlrRKt+c4Bn4/NyKl8B
- WFLCirs9hoFODfqm4eF9dUTY2gCUyaukQjHEdnDv9FMIRQeoJwgcexdMO A==;
-X-CSE-ConnectionGUID: X0LSIb+RTIS1gO5vAOEBcw==
-X-CSE-MsgGUID: LvQhuc14SsuJIWILpIzNNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="25277415"
-X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; d="scan'208";a="25277415"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2024 11:02:15 -0700
-X-CSE-ConnectionGUID: 83eySvD/Q86ET6/WR/PcqQ==
-X-CSE-MsgGUID: VBaZRHvqTBKyErcZxwYd3Q==
+ t=1726770952; x=1758306952;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=zUNapxNRO266JS8f8RcpD357N0lvmUXB0slYHBo3kvE=;
+ b=JW1HdwUtgoE/ki/loCXYSVZSNmgq8KVwjSoSwRgorlOoxuWnuPxqkuzX
+ PjFEUtZSZGTApDBFHKdigMeQOLMoC1/XJli6FlbbwDd7BLTZuCM8zp/t8
+ JAM6oA22He//YiIDgOEv6gpqPlu5aq8t4pVYi1b3AG1rlxi/XVApPEYqq
+ HFMstcIXrqe58iZsyc/u0D2O1pBPh7uevFf+Ohp/v75dYWrQbDk2Ns2Bs
+ ivbwVSqkKhKfXgSM2YVrD9aYyAXbLwrXrfKUVl9nyKlmui9MnWtuufWRN
+ /Smqj+W0HyquqNTBAeX4xt0Di4L4eKSg4sN3TzWKMQIa9aLh910dcjUw5 A==;
+X-CSE-ConnectionGUID: TLUZsD5qSyqFUnt9r6kCRg==
+X-CSE-MsgGUID: YPHdRJyMQPeWv2Nf4h91zQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="51168343"
+X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; d="scan'208";a="51168343"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Sep 2024 11:35:51 -0700
+X-CSE-ConnectionGUID: uuRmXYUVQ2a3Bb3tWztm8w==
+X-CSE-MsgGUID: a2x2nLvhSbW1DfembRHrZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; d="scan'208";a="100848444"
-Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
- ([10.165.21.138])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Sep 2024 11:02:13 -0700
-Date: Thu, 19 Sep 2024 11:02:12 -0700
-Message-ID: <857cb77c9n.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Zbigniew =?ISO-8859-2?Q?Kempczy=F1ski?=
- <zbigniew.kempczynski@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Dominik Grzegorzek
- <dominik.grzegorzek@intel.com>, Maciej Patelczyk
- <maciej.patelczyk@intel.com>, Dominik Karol =?ISO-8859-2?Q?Pi=B1tkowski?=
- <dominik.karol.piatkowski@intel.com>, Pawel Sikora
- <pawel.sikora@intel.com>, Andrzej Hajda <andrzej.hajda@intel.com>,
- Kolanupaka Naveena <kolanupaka.naveena@intel.com>, Mika Kuoppala
- <mika.kuoppala@intel.com>, Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>, Jan
- Sokolowski <jan.sokolowski@intel.com>, "Piecielska, Katarzyna"
- <katarzyna.piecielska@intel.com>
-Subject: Re: [PATCH i-g-t v7 00/16] Test coverage for GPU debug support
-In-Reply-To: <20240918113017.144687-1-christoph.manszewski@intel.com>
-References: <20240918113017.144687-1-christoph.manszewski@intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; d="scan'208";a="70159575"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 19 Sep 2024 11:35:49 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Thu, 19 Sep 2024 21:35:48 +0300
+Date: Thu, 19 Sep 2024 21:35:48 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Bommithi Sakeena <bommithi.sakeena@intel.com>
+Subject: Re: [PATCH i-g-t] tests/xe_pm_residency: Fix while loop in
+ toggle_gt_c6
+Message-ID: <ZuxvBL2FbkOT8OZp@intel.com>
+References: <20240919165950.50879-1-rodrigo.vivi@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240919165950.50879-1-rodrigo.vivi@intel.com>
+X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,26 +72,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 18 Sep 2024 04:30:01 -0700, Christoph Manszewski wrote:
->
-> Hi,
->
-> In this series the eudebug kernel and validation team would like to
-> add test coverage for GPU debug support recently proposed as an RFC.
-> (https://patchwork.freedesktop.org/series/136572/)
->
+On Thu, Sep 19, 2024 at 12:59:50PM -0400, Rodrigo Vivi wrote:
+> From: Bommithi Sakeena <bommithi.sakeena@intel.com>
+> 
+> Function toggle_gt_c6 has while loop iterating for (NUM_REPS +1)
+> times. Correct it to iterate to NUM_REPS times.
+> 
+> Signed-off-by: Bommithi Sakeena <bommithi.sakeena@intel.com>
+> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> ---
+>  tests/intel/xe_pm_residency.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+> index 0e687558b..f4d05889c 100644
+> --- a/tests/intel/xe_pm_residency.c
+> +++ b/tests/intel/xe_pm_residency.c
+> @@ -297,7 +297,7 @@ static void toggle_gt_c6(int fd, int n)
+>  
+>  		if (n == NUM_REPS)
+>  			measure_power(&gpu, &gt_c6_power);
+> -	} while (n--);
+> +	} while (--n);
 
-Something got merged from this series but seems there are a bunch of
-warnings. Please fix.
+Why isn't that just a canonical for loop?
 
-$ ninja -C build
-ninja: Entering directory `build'
-[427/1905] Generating lib/iga64_generated_codes.c with a custom command
-iga64 assemblies not changed, reusing pre-compiled file ../lib/iga64_generated_codes.c.
-[1899/1905] Generating docs/testplan/xe_tests.rst with a custom command
-xe_exec_sip_eudebug.testlist: Testlist file not found.
-xe_eudebug_online.testlist: Testlist file not found.
-xe_eudebug.testlist: Testlist file not found.
-INFO: Found documentation for 'xe_eudebug_online' but no binary
-INFO: Found documentation for 'xe_eudebug' but no binary
-INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
+>  
+>  	igt_power_close(&gpu);
+>  	igt_info("GPU consumed %fmW in GT C6 and %fmW in GT C0\n", gt_c6_power, gt_c0_power);
+> -- 
+> 2.46.0
+
+-- 
+Ville Syrjälä
+Intel
