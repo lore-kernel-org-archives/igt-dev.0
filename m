@@ -4,68 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99BB3CE8D4C
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Sep 2024 06:52:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3571CE8D4C
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Sep 2024 06:54:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4464F10E686;
-	Thu, 19 Sep 2024 06:52:28 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CH39036I";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39A8010E680
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Sep 2024 06:52:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1726728747; x=1758264747;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=sxEMQ3iDbLjcMEZDw2Z4H1Gwwh72DqEyYwYXvNc9JuA=;
- b=CH39036IchyDgDhBu2MocKSVuZijnpKCjiow5E0pFt6ai2e99nDA17ZO
- ThFKhB5fvc/54+4fq0ZmoS9xT3Ke9scC0EgXa+NuggiQcTUMG6Iexo/fA
- FWr5LbissthCtjfgehfPlFIvmfz0DGsWfGeRlWeGULbLbbnX1svaSDVQj
- 7xluiFz3+oVz3ZH+FZ+gw2FZFEq21fl3Fmb3PS3MXFfYSKjY1Tk4iWFc+
- +AU60KVRxIwQSqw3+WKATHT8otPSCYLLqKzqzEUEI03TxgWNSN30PXeSd
- 4HHjdMXa4Bb66n4L/DBw+r9rrjEjTfHqJ1+u5WTb/9/sG3aZ/i3opz1xb Q==;
-X-CSE-ConnectionGUID: 9qP9PtuLTquR8G7jmEwqiw==
-X-CSE-MsgGUID: VicZVVxVQJS3LbAiRgSXwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25766347"
-X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; d="scan'208";a="25766347"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 23:52:23 -0700
-X-CSE-ConnectionGUID: x4Z/leOqSH6EeU2PXwEMxA==
-X-CSE-MsgGUID: OY+/A2dfTfOSwhhjnId1Dw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; d="scan'208";a="69951147"
-Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.246.32])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Sep 2024 23:52:18 -0700
-Date: Thu, 19 Sep 2024 08:52:15 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: igt-dev@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
- Maciej Patelczyk <maciej.patelczyk@intel.com>,
- Dominik Karol =?utf-8?Q?Pi=C4=85tkowski?= <dominik.karol.piatkowski@intel.com>,
- Pawel Sikora <pawel.sikora@intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Kolanupaka Naveena <kolanupaka.naveena@intel.com>,
- Mika Kuoppala <mika.kuoppala@intel.com>,
- Gwan-gyeong Mun <gwan-gyeong.mun@intel.com>,
- Jan Sokolowski <jan.sokolowski@intel.com>
-Subject: Re: [PATCH i-g-t v7 15/16] tests/xe_eudebug_online: Debug client
- which runs workloads on EU
-Message-ID: <20240919065215.np5axrya2ftmzgfg@zkempczy-mobl2>
-References: <20240918113017.144687-1-christoph.manszewski@intel.com>
- <20240918113017.144687-16-christoph.manszewski@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B0A910E680;
+	Thu, 19 Sep 2024 06:54:57 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C772710E680;
+ Thu, 19 Sep 2024 06:54:55 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4440487667010120913=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240918113017.144687-16-christoph.manszewski@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=5Fresid?=
+ =?utf-8?q?ency=3A_Print_execution_and_sleep_times?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Karthik Poosa" <karthik.poosa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Sep 2024 06:54:55 -0000
+Message-ID: <172672889580.1029183.3721436911497198387@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240919063352.1607048-1-karthik.poosa@intel.com>
+In-Reply-To: <20240919063352.1607048-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,2379 +37,482 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Sep 18, 2024 at 01:30:16PM +0200, Christoph Manszewski wrote:
-> From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> 
-> For typical debugging under gdb one can specify two main usecases:
-> accessing and manupulating resources created by the application and
-> manipulating thread execution (interrupting and setting breakpoints).
-> 
-> This test adds coverage for the latter by checking that:
-> - EU workloads that hit a instruction with breakpoint bit set will stop
->   halt execution and the debugger will report this via attention events,
-> - the debugger is able to interrupt workload execution by issuing a
->   'interrupt_all' ioctl call,
-> - the debugger is able to resume selected workloads that are stopped.
-> 
-> Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-> Signed-off-by: Mika Kuoppala <mika.kuoppala@intel.com>
-> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
-> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> Signed-off-by: Pawel Sikora <pawel.sikora@intel.com>
-> Signed-off-by: Karolina Stolarek <karolina.stolarek@intel.com>
-> Signed-off-by: Kolanupaka Naveena <kolanupaka.naveena@intel.com>
-> Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
-> ---
->  tests/intel/xe_eudebug_online.c | 2312 +++++++++++++++++++++++++++++++
->  tests/meson.build               |    1 +
->  2 files changed, 2313 insertions(+)
->  create mode 100644 tests/intel/xe_eudebug_online.c
-> 
-> diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
-> new file mode 100644
-> index 000000000..68d1b786f
-> --- /dev/null
-> +++ b/tests/intel/xe_eudebug_online.c
-> @@ -0,0 +1,2312 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2023 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Tests for eudebug online functionality
-> + * Category: Core
-> + * Mega feature: EUdebug
-> + * Sub-category: EUdebug tests
-> + * Functionality: eu kernel debug
-> + * Test category: functionality test
-> + */
-> +
-> +#include "xe/xe_eudebug.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include "igt.h"
-> +#include "intel_pat.h"
-> +#include "intel_mocs.h"
-> +#include "gpgpu_shader.h"
-> +
-> +#define SHADER_NOP			(0 << 0)
-> +#define SHADER_BREAKPOINT		(1 << 0)
-> +#define SHADER_LOOP			(1 << 1)
-> +#define SHADER_SINGLE_STEP		(1 << 2)
-> +#define SIP_SINGLE_STEP			(1 << 3)
-> +#define DISABLE_DEBUG_MODE		(1 << 4)
-> +#define SHADER_N_NOOP_BREAKPOINT	(1 << 5)
-> +#define SHADER_CACHING_SRAM		(1 << 6)
-> +#define SHADER_CACHING_VRAM		(1 << 7)
-> +#define SHADER_MIN_THREADS		(1 << 8)
-> +#define DO_NOT_EXPECT_CANARIES		(1 << 9)
-> +#define BB_IN_SRAM			(1 << 10)
-> +#define BB_IN_VRAM			(1 << 11)
-> +#define TARGET_IN_SRAM			(1 << 12)
-> +#define TARGET_IN_VRAM			(1 << 13)
-> +#define TRIGGER_UFENCE_SET_BREAKPOINT	(1 << 24)
-> +#define TRIGGER_RESUME_SINGLE_WALK	(1 << 25)
-> +#define TRIGGER_RESUME_PARALLEL_WALK	(1 << 26)
-> +#define TRIGGER_RECONNECT		(1 << 27)
-> +#define TRIGGER_RESUME_SET_BP		(1 << 28)
-> +#define TRIGGER_RESUME_DELAYED		(1 << 29)
-> +#define TRIGGER_RESUME_DSS		(1 << 30)
-> +#define TRIGGER_RESUME_ONE		(1 << 31)
-> +
-> +#define BB_REGION_BITMASK	(BB_IN_SRAM | BB_IN_VRAM)
-> +#define TARGET_REGION_BITMASK	(TARGET_IN_SRAM | TARGET_IN_VRAM)
-> +
-> +#define DEBUGGER_REATTACHED	1
-> +
-> +#define SHADER_LOOP_N		3
-> +#define SINGLE_STEP_COUNT	16
-> +#define STEERING_SINGLE_STEP	0
-> +#define STEERING_CONTINUE	0x00c0ffee
-> +#define STEERING_END_LOOP	0xdeadca11
-> +
-> +#define CACHING_INIT_VALUE	0xcafe0000
-> +#define CACHING_POISON_VALUE	0xcafedead
-> +#define CACHING_VALUE(n)	(CACHING_INIT_VALUE + (n))
-> +
-> +#define SHADER_CANARY 0x01010101
-> +
-> +#define WALKER_X_DIM		4
-> +#define WALKER_ALIGNMENT	16
-> +#define SIMD_SIZE		16
-> +
-> +#define STARTUP_TIMEOUT_MS	3000
-> +#define WORKLOAD_DELAY_US	(5000 * 1000)
-> +
-> +#define PAGE_SIZE 4096
-> +
-> +struct dim_t {
-> +	uint32_t x;
-> +	uint32_t y;
-> +	uint32_t alignment;
-> +};
-> +
-> +static struct dim_t walker_dimensions(int threads)
-> +{
-> +	uint32_t x_dim = min_t(x_dim, threads, WALKER_X_DIM);
-> +	struct dim_t ret = {
-> +		.x = x_dim,
-> +		.y = threads / x_dim,
-> +		.alignment = WALKER_ALIGNMENT
-> +	};
-> +
-> +	return ret;
-> +}
-> +
-> +static struct dim_t surface_dimensions(int threads)
-> +{
-> +	struct dim_t ret = walker_dimensions(threads);
-> +
-> +	ret.y = max_t(ret.y, threads / ret.x, 4);
-> +	ret.x *= SIMD_SIZE;
-> +	ret.alignment *= SIMD_SIZE;
-> +
-> +	return ret;
-> +}
-> +
-> +static uint32_t steering_offset(int threads)
-> +{
-> +	struct dim_t w = walker_dimensions(threads);
-> +
-> +	return ALIGN(w.x, w.alignment) * w.y * 4;
-> +}
-> +
-> +static struct intel_buf *create_uc_buf(int fd, int width, int height, uint64_t region)
-> +{
-> +	struct intel_buf *buf;
-> +
-> +	buf = intel_buf_create_full(buf_ops_create(fd), 0, width / 4, height,
-> +				    32, 0, I915_TILING_NONE, 0, 0, 0, region,
-> +				    DEFAULT_PAT_INDEX, DEFAULT_MOCS_INDEX);
-> +
-> +	return buf;
-> +}
-> +
-> +static int get_number_of_threads(uint64_t flags)
-> +{
-> +	if (flags & SHADER_MIN_THREADS)
-> +		return 16;
-> +
-> +	if (flags & (TRIGGER_RESUME_ONE | TRIGGER_RESUME_SINGLE_WALK |
-> +		     TRIGGER_RESUME_PARALLEL_WALK | SHADER_CACHING_SRAM | SHADER_CACHING_VRAM))
-> +		return 32;
-> +
-> +	return 512;
-> +}
-> +
-> +static int caching_get_instruction_count(int fd, uint32_t s_dim__x, int flags)
-> +{
-> +	uint64_t memory;
-> +
-> +	igt_assert((flags & SHADER_CACHING_SRAM) || (flags & SHADER_CACHING_VRAM));
-> +
-> +	if (flags & SHADER_CACHING_SRAM)
-> +		memory = system_memory(fd);
-> +	else
-> +		memory = vram_memory(fd, 0);
-> +
-> +	/* each instruction writes to given y offset */
-> +	return (2 * xe_min_page_size(fd, memory)) / s_dim__x;
-> +}
-> +
-> +static struct gpgpu_shader *get_shader(int fd, const unsigned int flags)
-> +{
-> +	struct dim_t w_dim = walker_dimensions(get_number_of_threads(flags));
-> +	struct dim_t s_dim = surface_dimensions(get_number_of_threads(flags));
-> +	static struct gpgpu_shader *shader;
-> +
-> +	shader = gpgpu_shader_create(fd);
-> +
-> +	gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
-> +	if (flags & SHADER_BREAKPOINT) {
-> +		gpgpu_shader__nop(shader);
-> +		gpgpu_shader__breakpoint(shader);
-> +	} else if (flags & SHADER_LOOP) {
-> +		gpgpu_shader__label(shader, 0);
-> +		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
-> +		gpgpu_shader__jump_neq(shader, 0, w_dim.y, STEERING_END_LOOP);
-> +		gpgpu_shader__write_dword(shader, SHADER_CANARY, 0);
-> +	} else if (flags & SHADER_SINGLE_STEP) {
-> +		gpgpu_shader__nop(shader);
-> +		gpgpu_shader__breakpoint(shader);
-> +		for (int i = 0; i < SINGLE_STEP_COUNT; i++)
-> +			gpgpu_shader__nop(shader);
-> +	} else if (flags & SHADER_N_NOOP_BREAKPOINT) {
-> +		for (int i = 0; i < SHADER_LOOP_N; i++) {
-> +			gpgpu_shader__nop(shader);
-> +			gpgpu_shader__breakpoint(shader);
-> +		}
-> +	} else if ((flags & SHADER_CACHING_SRAM) || (flags & SHADER_CACHING_VRAM)) {
-> +		gpgpu_shader__nop(shader);
-> +		gpgpu_shader__breakpoint(shader);
-> +		for (int i = 0; i < caching_get_instruction_count(fd, s_dim.x, flags); i++)
-> +			gpgpu_shader__common_target_write_u32(shader, s_dim.y + i, CACHING_VALUE(i));
-> +		gpgpu_shader__nop(shader);
-> +		gpgpu_shader__breakpoint(shader);
-> +	}
-> +
-> +	gpgpu_shader__eot(shader);
-> +
-> +	return shader;
-> +}
-> +
-> +static struct gpgpu_shader *get_sip(int fd, const unsigned int flags)
-> +{
-> +	struct dim_t w_dim = walker_dimensions(get_number_of_threads(flags));
-> +	static struct gpgpu_shader *sip;
-> +
-> +	sip = gpgpu_shader_create(fd);
-> +	gpgpu_shader__write_aip(sip, 0);
-> +
-> +	gpgpu_shader__wait(sip);
-> +	if (flags & SIP_SINGLE_STEP)
-> +		gpgpu_shader__end_system_routine_step_if_eq(sip, w_dim.y, 0);
-> +	else
-> +		gpgpu_shader__end_system_routine(sip, true);
-> +
-> +	return sip;
-> +}
-> +
-> +static int count_set_bits(void *ptr, size_t size)
-> +{
-> +	uint32_t *p = ptr;
-> +	int count = 0;
-> +	int i;
-> +
-> +	igt_assert(size % 4 == 0);
-> +
-> +	for (i = 0; i < size/4; i++)
-> +		count += igt_hweight(p[i]);
-> +
-> +	return count;
-> +}
-> +
-> +static int count_canaries_eq(uint32_t *ptr, struct dim_t w_dim, uint32_t value)
-> +{
-> +	int count = 0;
-> +	int x, y;
-> +
-> +	for (x = 0; x < w_dim.x; x++)
-> +		for (y = 0; y < w_dim.y; y++)
-> +			if (READ_ONCE(ptr[x + ALIGN(w_dim.x, w_dim.alignment) * y]) == value)
-> +				count++;
-> +
-> +	return count;
-> +}
-> +
-> +static int count_canaries_neq(uint32_t *ptr, struct dim_t w_dim, uint32_t value)
-> +{
-> +	return w_dim.x * w_dim.y - count_canaries_eq(ptr, w_dim, value);
-> +}
-> +
-> +static const char *td_ctl_cmd_to_str(uint32_t cmd)
-> +{
-> +	switch (cmd) {
-> +	case DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL:
-> +		return "interrupt all";
-> +	case DRM_XE_EUDEBUG_EU_CONTROL_CMD_STOPPED:
-> +		return "stopped";
-> +	case DRM_XE_EUDEBUG_EU_CONTROL_CMD_RESUME:
-> +		return "resume";
-> +	default:
-> +		return "unknown command";
-> +	}
-> +}
-> +
-> +static int __eu_ctl(int debugfd, uint64_t client,
-> +		    uint64_t exec_queue, uint64_t lrc,
-> +		    uint8_t *bitmask, uint32_t *bitmask_size,
-> +		    uint32_t cmd, uint64_t *seqno)
-> +{
-> +	struct drm_xe_eudebug_eu_control control = {
-> +		.client_handle = lower_32_bits(client),
-> +		.exec_queue_handle = exec_queue,
-> +		.lrc_handle = lrc,
-> +		.cmd = cmd,
-> +		.bitmask_ptr = to_user_pointer(bitmask),
-> +	};
-> +	int ret;
-> +
-> +	if (bitmask_size)
-> +		control.bitmask_size = *bitmask_size;
-> +
-> +	ret = igt_ioctl(debugfd, DRM_XE_EUDEBUG_IOCTL_EU_CONTROL, &control);
-> +
-> +	if (ret < 0)
-> +		return -errno;
-> +
-> +	igt_debug("EU CONTROL[%llu]: %s\n", control.seqno, td_ctl_cmd_to_str(cmd));
-> +
-> +	if (bitmask_size)
-> +		*bitmask_size = control.bitmask_size;
-> +
-> +	if (seqno)
-> +		*seqno = control.seqno;
-> +
-> +	return 0;
-> +}
-> +
-> +static uint64_t eu_ctl(int debugfd, uint64_t client,
-> +		       uint64_t exec_queue, uint64_t lrc,
-> +		       uint8_t *bitmask, uint32_t *bitmask_size, uint32_t cmd)
-> +{
-> +	uint64_t seqno;
-> +
-> +	igt_assert_eq(__eu_ctl(debugfd, client, exec_queue, lrc, bitmask,
-> +			       bitmask_size, cmd, &seqno), 0);
-> +
-> +	return seqno;
-> +}
-> +
-> +static bool intel_gen_needs_resume_wa(int fd)
-> +{
-> +	const uint32_t id = intel_get_drm_devid(fd);
-> +
-> +	return intel_gen(id) == 12 && intel_graphics_ver(id) < IP_VER(12, 55);
-> +}
-> +
-> +static uint64_t eu_ctl_resume(int fd, int debugfd, uint64_t client,
-> +			      uint64_t exec_queue, uint64_t lrc,
-> +			      uint8_t *bitmask, uint32_t bitmask_size)
-> +{
-> +	int i;
-> +
-> +	/*  Wa_14011332042 */
-> +	if (intel_gen_needs_resume_wa(fd)) {
-> +		uint32_t *att_reg_half = (uint32_t *)bitmask;
-> +
-> +		for (i = 0; i < bitmask_size / sizeof(uint32_t); i += 2) {
-> +			att_reg_half[i] |= att_reg_half[i + 1];
-> +			att_reg_half[i + 1] |= att_reg_half[i];
-> +		}
-> +	}
-> +
-> +	return eu_ctl(debugfd, client, exec_queue, lrc, bitmask, &bitmask_size,
-> +		      DRM_XE_EUDEBUG_EU_CONTROL_CMD_RESUME);
-> +}
-> +
-> +static inline uint64_t eu_ctl_stopped(int debugfd, uint64_t client,
-> +				      uint64_t exec_queue, uint64_t lrc,
-> +				      uint8_t *bitmask, uint32_t *bitmask_size)
-> +{
-> +	return eu_ctl(debugfd, client, exec_queue, lrc, bitmask, bitmask_size,
-> +		      DRM_XE_EUDEBUG_EU_CONTROL_CMD_STOPPED);
-> +}
-> +
-> +static inline uint64_t eu_ctl_interrupt_all(int debugfd, uint64_t client,
-> +					    uint64_t exec_queue, uint64_t lrc)
-> +{
-> +	return eu_ctl(debugfd, client, exec_queue, lrc, NULL, 0,
-> +		      DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL);
-> +}
-> +
-> +struct online_debug_data {
-> +	pthread_mutex_t mutex;
-> +	/* client in */
-> +	struct drm_xe_engine_class_instance hwe;
-> +	/* client out */
-> +	int threads_count;
-> +	/* debugger internals */
-> +	uint64_t client_handle;
-> +	uint64_t exec_queue_handle;
-> +	uint64_t lrc_handle;
-> +	uint64_t target_offset;
-> +	size_t target_size;
-> +	uint64_t bb_offset;
-> +	size_t bb_size;
-> +	int vm_fd;
-> +	uint32_t kernel_offset;
-> +	uint32_t first_aip;
-> +	uint64_t *aips_offset_table;
-> +	uint32_t steps_done;
-> +	uint8_t *single_step_bitmask;
-> +	int stepped_threads_count;
-> +	struct timespec exception_arrived;
-> +	int last_eu_control_seqno;
-> +	struct drm_xe_eudebug_event *exception_event;
-> +	int att_event_counter;
-> +};
-> +
-> +static struct online_debug_data *
-> +online_debug_data_create(struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	struct online_debug_data *data;
-> +
-> +	data = mmap(0, ALIGN(sizeof(*data), PAGE_SIZE),
-> +		    PROT_WRITE, MAP_SHARED | MAP_ANON, -1, 0);
-> +	igt_assert(data);
-> +
-> +	memcpy(&data->hwe, hwe, sizeof(*hwe));
-> +	pthread_mutex_init(&data->mutex, NULL);
-> +	data->client_handle = -1ULL;
-> +	data->exec_queue_handle = -1ULL;
-> +	data->lrc_handle = -1ULL;
-> +	data->vm_fd = -1;
-> +	data->stepped_threads_count = -1;
-> +
-> +	return data;
-> +}
-> +
-> +static void online_debug_data_destroy(struct online_debug_data *data)
-> +{
-> +	free(data->aips_offset_table);
-> +	munmap(data, ALIGN(sizeof(*data), PAGE_SIZE));
-> +}
-> +
-> +static void eu_attention_debug_trigger(struct xe_eudebug_debugger *d,
-> +				       struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_eu_attention *att = (void *)e;
-> +	uint32_t *ptr = (uint32_t *)att->bitmask;
-> +
-> +	igt_debug("EVENT[%llu] eu-attenttion; threads=%d "
-> +		 "client[%llu], exec_queue[%llu], lrc[%llu], bitmask_size[%d]\n",
-> +		 att->base.seqno, count_set_bits(att->bitmask, att->bitmask_size),
-> +				att->client_handle, att->exec_queue_handle,
-> +				att->lrc_handle, att->bitmask_size);
-> +
-> +	for (uint32_t i = 0; i < att->bitmask_size / 4; i += 2)
-> +		igt_debug("bitmask[%d] = 0x%08x%08x\n", i / 2, ptr[i], ptr[i + 1]);
-> +}
-> +
-> +static void eu_attention_reset_trigger(struct xe_eudebug_debugger *d,
-> +				       struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_eu_attention *att = (void *)e;
-> +	uint32_t *ptr = (uint32_t *)att->bitmask;
-> +	struct online_debug_data *data = d->ptr;
-> +
-> +	igt_debug("EVENT[%llu] eu-attention with reset; threads=%d "
-> +		 "client[%llu], exec_queue[%llu], lrc[%llu], bitmask_size[%d]\n",
-> +		 att->base.seqno, count_set_bits(att->bitmask, att->bitmask_size),
-> +				att->client_handle, att->exec_queue_handle,
-> +				att->lrc_handle, att->bitmask_size);
-> +
-> +	for (uint32_t i = 0; i < att->bitmask_size / 4; i += 2)
-> +		igt_debug("bitmask[%d] = 0x%08x%08x\n", i / 2, ptr[i], ptr[i + 1]);
-> +
-> +	xe_force_gt_reset_async(d->master_fd, data->hwe.gt_id);
-> +}
-> +
-> +static void only_nth_set_bit(uint8_t *dst, uint8_t *src, int size, int n)
-> +{
-> +	int count = 0;
-> +
-> +	for (int i = 0; i < size; i++) {
-> +		if (count < n) {
-> +			uint8_t tmp = src[i];
-> +
-> +			for (int j = 0; j < 8; j++) {
-> +				if (tmp & (1 << j)) {
-> +					count++;
-> +					if (count == n)
-> +						dst[i] |= (1 << j);
-> +					else
-> +						dst[i] &= ~(1 << j);
-> +				} else {
-> +					dst[i] &= ~(1 << j);
-> +				}
-> +			}
-> +		} else {
-> +			dst[i] = 0;
-> +		}
-> +	}
-> +}
-> +
-> +static void only_first_set_bit(uint8_t *dst, uint8_t *src, int size)
-> +{
-> +	return only_nth_set_bit(dst, src, size, 1);
-> +}
-> +
-> +/*
-> + * Searches for the first instruction. It stands on assumption,
-> + * that shader kernel is placed before sip within the bb.
-> + */
-> +static uint32_t find_kernel_in_bb(struct gpgpu_shader *kernel,
-> +				  struct online_debug_data *data)
-> +{
-> +	uint32_t *p = kernel->code;
-> +	uint8_t *buf, *ptr;
-> +	uint32_t offset;
-> +
-> +	buf = malloc(data->bb_size);
-> +
-> +	igt_assert_eq(pread(data->vm_fd, buf, data->bb_size, data->bb_offset), data->bb_size);
-> +
-> +	ptr = memmem(buf, data->bb_size, p, kernel->size * sizeof(uint32_t));
-> +	igt_assert(ptr);
-> +
-> +	offset = ptr - buf;
-> +
-> +	free(buf);
-> +
-> +	return offset;
-> +}
-> +
-> +static bool set_breakpoint_once(struct xe_eudebug_debugger *d,
-> +				struct online_debug_data *data)
-> +{
-> +	const uint32_t breakpoint_bit = 1 << 30;
-> +	size_t sz = sizeof(uint32_t);
-> +	bool breakpoint_set = false;
-> +	struct gpgpu_shader *kernel;
-> +	uint32_t aip;
-> +
-> +	kernel = get_shader(d->master_fd, d->flags);
-> +
-> +	if (!data->kernel_offset) {
-> +		uint32_t instr_usdw;
-> +
-> +		igt_assert(data->vm_fd != -1);
-> +		igt_assert(data->target_size != 0);
-> +		igt_assert(data->bb_size != 0);
-> +
-> +		data->kernel_offset = find_kernel_in_bb(kernel, data);
-> +
-> +		/* set breakpoint on last instruction */
-> +		aip = data->kernel_offset + kernel->size * 4 - 0x10;
-> +		igt_assert_eq(pread(data->vm_fd, &instr_usdw, sz,
-> +				    data->bb_offset + aip), sz);
-> +		instr_usdw |= breakpoint_bit;
-> +		igt_assert_eq(pwrite(data->vm_fd, &instr_usdw, sz,
-> +				     data->bb_offset + aip), sz);
-> +		fsync(data->vm_fd);
-> +
-> +		breakpoint_set = true;
-> +	}
-> +
-> +	gpgpu_shader_destroy(kernel);
-> +
-> +	return breakpoint_set;
-> +}
-> +
-> +static void get_aips_offset_table(struct online_debug_data *data, int threads)
-> +{
-> +	size_t sz = sizeof(uint32_t);
-> +	uint32_t aip;
-> +	uint32_t first_aip;
-> +	int table_index = 0;
-> +
-> +	if (data->aips_offset_table)
-> +		return;
-> +
-> +	data->aips_offset_table = malloc(threads * sizeof(uint64_t));
-> +	igt_assert(data->aips_offset_table);
-> +
-> +	igt_assert_eq(pread(data->vm_fd, &first_aip, sz, data->target_offset), sz);
-> +	data->first_aip = first_aip;
-> +	data->aips_offset_table[table_index++] = 0;
-> +
-> +	fsync(data->vm_fd);
-> +	for (int i = sz; i < data->target_size; i += sz) {
-> +		igt_assert_eq(pread(data->vm_fd, &aip, sz, data->target_offset + i), sz);
-> +		if (aip == first_aip)
-> +			data->aips_offset_table[table_index++] = i;
-> +	}
-> +
-> +	igt_assert_eq(threads, table_index);
-> +
-> +	igt_debug("AIPs offset table:\n");
-> +	for (int i = 0; i < threads; i++)
-> +		igt_debug("%lx\n", data->aips_offset_table[i]);
-> +}
-> +
-> +static int get_stepped_threads_count(struct online_debug_data *data, int threads)
-> +{
-> +	int count = 0;
-> +	size_t sz = sizeof(uint32_t);
-> +	uint32_t aip;
-> +
-> +	fsync(data->vm_fd);
-> +	for (int i = 0; i < threads; i++) {
-> +		igt_assert_eq(pread(data->vm_fd, &aip, sz,
-> +				    data->target_offset + data->aips_offset_table[i]), sz);
-> +		if (aip != data->first_aip) {
-> +			igt_assert(aip == data->first_aip + 0x10);
-> +			count++;
-> +		}
-> +	}
-> +
-> +	return count;
-> +}
-> +
-> +static void save_first_exception_trigger(struct xe_eudebug_debugger *d,
-> +					 struct drm_xe_eudebug_event *e)
-> +{
-> +	struct online_debug_data *data = d->ptr;
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	if (!data->exception_event) {
-> +		igt_gettime(&data->exception_arrived);
-> +		data->exception_event = igt_memdup(e, e->len);
-> +	}
-> +	pthread_mutex_unlock(&data->mutex);
-> +}
-> +
-> +#define MAX_PREEMPT_TIMEOUT 10ull
-> +static void eu_attention_resume_trigger(struct xe_eudebug_debugger *d,
-> +					struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_eu_attention *att = (void *) e;
-> +	struct online_debug_data *data = d->ptr;
-> +	uint32_t bitmask_size = att->bitmask_size;
-> +	uint8_t *bitmask;
-> +	int i;
-> +
-> +	if (data->last_eu_control_seqno > att->base.seqno)
-> +		return;
-> +
-> +	bitmask = calloc(1, att->bitmask_size);
-> +
-> +	eu_ctl_stopped(d->fd, att->client_handle, att->exec_queue_handle,
-> +		       att->lrc_handle, bitmask, &bitmask_size);
-> +	igt_assert(bitmask_size == att->bitmask_size);
-> +	igt_assert(memcmp(bitmask, att->bitmask, att->bitmask_size) == 0);
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	if (igt_nsec_elapsed(&data->exception_arrived) < (MAX_PREEMPT_TIMEOUT + 1) * NSEC_PER_SEC &&
-> +	    d->flags & TRIGGER_RESUME_DELAYED) {
-> +		pthread_mutex_unlock(&data->mutex);
-> +		free(bitmask);
-> +		return;
-> +	} else if (d->flags & TRIGGER_RESUME_ONE) {
-> +		only_first_set_bit(bitmask, bitmask, bitmask_size);
-> +	} else if (d->flags & TRIGGER_RESUME_DSS) {
-> +		uint64_t *event = (uint64_t *)att->bitmask;
-> +		uint64_t *resume = (uint64_t *)bitmask;
-> +
-> +		memset(bitmask, 0, bitmask_size);
-> +		for (i = 0; i < att->bitmask_size / sizeof(uint64_t); i++) {
-> +			if (!event[i])
-> +				continue;
-> +
-> +			resume[i] = event[i];
-> +			break;
-> +		}
-> +	} else if (d->flags & TRIGGER_RESUME_SET_BP) {
-> +		if (!set_breakpoint_once(d, data)) {
-> +			/* breakpoint already set, check if the first thread managed to hit it */
-> +			uint32_t expected, aip;
-> +			struct gpgpu_shader *kernel;
-> +
-> +			kernel = get_shader(d->master_fd, d->flags);
-> +			expected = data->kernel_offset + kernel->size * 4 - 0x10;
-> +
-> +			igt_assert_eq(pread(data->vm_fd, &aip, sizeof(aip),
-> +					    data->target_offset), sizeof(aip));
-> +			igt_assert_eq_u32(aip, expected);
-> +
-> +			gpgpu_shader_destroy(kernel);
-> +		}
-> +	}
-> +
-> +	if (d->flags & SHADER_LOOP) {
-> +		uint32_t threads = get_number_of_threads(d->flags);
-> +		uint32_t val = STEERING_END_LOOP;
-> +
-> +		igt_assert_eq(pwrite(data->vm_fd, &val, sizeof(uint32_t),
-> +				     data->target_offset + steering_offset(threads)),
-> +			      sizeof(uint32_t));
-> +		fsync(data->vm_fd);
-> +	}
-> +	pthread_mutex_unlock(&data->mutex);
-> +
-> +	data->last_eu_control_seqno = eu_ctl_resume(d->master_fd, d->fd, att->client_handle,
-> +						    att->exec_queue_handle, att->lrc_handle,
-> +						    bitmask, att->bitmask_size);
-> +
-> +	free(bitmask);
-> +}
-> +
-> +static void eu_attention_resume_single_step_trigger(struct xe_eudebug_debugger *d,
-> +						    struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_eu_attention *att = (void *) e;
-> +	struct online_debug_data *data = d->ptr;
-> +	const int threads = get_number_of_threads(d->flags);
-> +	uint32_t val;
-> +	size_t sz = sizeof(uint32_t);
-> +
-> +	get_aips_offset_table(data, threads);
-> +
-> +	if (d->flags & TRIGGER_RESUME_PARALLEL_WALK) {
-> +		if (data->stepped_threads_count != -1)
-> +			if (data->steps_done < SINGLE_STEP_COUNT) {
-> +				int stepped_threads_count_after_resume =
-> +						get_stepped_threads_count(data, threads);
-> +				igt_debug("Stepped threads after: %d\n",
-> +					  stepped_threads_count_after_resume);
-> +
-> +				if (stepped_threads_count_after_resume == threads) {
-> +					data->first_aip += 0x10;
-> +					data->steps_done++;
-> +				}
-> +
-> +				igt_debug("Shader steps: %d\n", data->steps_done);
-> +				igt_assert(data->stepped_threads_count == 0);
-> +				igt_assert(stepped_threads_count_after_resume == threads);
-> +			}
-> +
-> +		if (data->steps_done < SINGLE_STEP_COUNT) {
-> +			data->stepped_threads_count = get_stepped_threads_count(data, threads);
-> +			igt_debug("Stepped threads before: %d\n", data->stepped_threads_count);
-> +		}
-> +
-> +		val = data->steps_done < SINGLE_STEP_COUNT ? STEERING_SINGLE_STEP :
-> +							     STEERING_CONTINUE;
-> +	} else if (d->flags & TRIGGER_RESUME_SINGLE_WALK) {
-> +		if (data->stepped_threads_count != -1)
-> +			if (data->steps_done < 2) {
-> +				int stepped_threads_count_after_resume =
-> +						get_stepped_threads_count(data, threads);
-> +				igt_debug("Stepped threads after: %d\n",
-> +					  stepped_threads_count_after_resume);
-> +
-> +				if (stepped_threads_count_after_resume == threads) {
-> +					data->first_aip += 0x10;
-> +					data->steps_done++;
-> +					free(data->single_step_bitmask);
-> +					data->single_step_bitmask = 0;
-> +				}
-> +
-> +				igt_debug("Shader steps: %d\n", data->steps_done);
-> +				igt_assert(data->stepped_threads_count +
-> +					   (intel_gen_needs_resume_wa(d->master_fd) ? 2 : 1) ==
-> +					   stepped_threads_count_after_resume);
-> +			}
-> +
-> +		if (data->steps_done < 2) {
-> +			data->stepped_threads_count = get_stepped_threads_count(data, threads);
-> +			igt_debug("Stepped threads before: %d\n", data->stepped_threads_count);
-> +			if (intel_gen_needs_resume_wa(d->master_fd)) {
-> +				if (!data->single_step_bitmask) {
-> +					data->single_step_bitmask = malloc(att->bitmask_size *
-> +									   sizeof(uint8_t));
-> +					igt_assert(data->single_step_bitmask);
-> +					memcpy(data->single_step_bitmask, att->bitmask,
-> +					       att->bitmask_size);
-> +				}
-> +
-> +				only_first_set_bit(att->bitmask, data->single_step_bitmask,
-> +						   att->bitmask_size);
-> +			} else
-> +				only_nth_set_bit(att->bitmask, att->bitmask, att->bitmask_size,
-> +						 data->stepped_threads_count + 1);
-> +		}
-> +
-> +		val = data->steps_done < 2 ? STEERING_SINGLE_STEP : STEERING_CONTINUE;
-> +	}
-> +
-> +	igt_assert_eq(pwrite(data->vm_fd, &val, sz,
-> +			     data->target_offset + steering_offset(threads)), sz);
-> +	fsync(data->vm_fd);
-> +
-> +	eu_ctl_resume(d->master_fd, d->fd, att->client_handle,
-> +		      att->exec_queue_handle, att->lrc_handle,
-> +		      att->bitmask, att->bitmask_size);
-> +
-> +	if (data->single_step_bitmask)
-> +		for (int i = 0; i < att->bitmask_size; i++)
-> +			data->single_step_bitmask[i] &= ~att->bitmask[i];
-> +}
-> +
-> +static void open_trigger(struct xe_eudebug_debugger *d,
-> +			 struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_client *client = (void *)e;
-> +	struct online_debug_data *data = d->ptr;
-> +
-> +	if (e->flags & DRM_XE_EUDEBUG_EVENT_DESTROY)
-> +		return;
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	data->client_handle = client->client_handle;
-> +	pthread_mutex_unlock(&data->mutex);
-> +}
-> +
-> +static void exec_queue_trigger(struct xe_eudebug_debugger *d,
-> +			       struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_exec_queue *eq = (void *)e;
-> +	struct online_debug_data *data = d->ptr;
-> +
-> +	if (e->flags & DRM_XE_EUDEBUG_EVENT_DESTROY)
-> +		return;
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	data->exec_queue_handle = eq->exec_queue_handle;
-> +	data->lrc_handle = eq->lrc_handle[0];
-> +	pthread_mutex_unlock(&data->mutex);
-> +}
-> +
-> +static void vm_open_trigger(struct xe_eudebug_debugger *d,
-> +			    struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_vm *vm = (void *)e;
-> +	struct online_debug_data *data = d->ptr;
-> +	struct drm_xe_eudebug_vm_open vo = {
-> +		.client_handle = vm->client_handle,
-> +		.vm_handle = vm->vm_handle,
-> +	};
-> +	int fd;
-> +
-> +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-> +		fd = igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_VM_OPEN, &vo);
-> +		igt_assert_lte(0, fd);
-> +
-> +		pthread_mutex_lock(&data->mutex);
-> +		igt_assert(data->vm_fd == -1);
-> +		data->vm_fd = fd;
-> +		pthread_mutex_unlock(&data->mutex);
-> +		return;
-> +	}
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	close(data->vm_fd);
-> +	data->vm_fd = -1;
-> +	pthread_mutex_unlock(&data->mutex);
-> +}
-> +
-> +static void read_metadata(struct xe_eudebug_debugger *d,
-> +			  uint64_t client_handle,
-> +			  uint64_t metadata_handle,
-> +			  uint64_t type,
-> +			  uint64_t len)
-> +{
-> +	struct drm_xe_eudebug_read_metadata rm = {
-> +		.client_handle = client_handle,
-> +		.metadata_handle = metadata_handle,
-> +		.size = len,
-> +	};
-> +	struct online_debug_data *data = d->ptr;
-> +	uint64_t *metadata;
-> +
-> +	metadata = malloc(len);
-> +	igt_assert(metadata);
-> +
-> +	rm.ptr = to_user_pointer(metadata);
-> +	igt_assert_eq(igt_ioctl(d->fd, DRM_XE_EUDEBUG_IOCTL_READ_METADATA, &rm), 0);
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	switch (type) {
-> +	case DRM_XE_DEBUG_METADATA_ELF_BINARY:
-> +		data->bb_offset = metadata[0];
-> +		data->bb_size = metadata[1];
-> +		break;
-> +	case DRM_XE_DEBUG_METADATA_PROGRAM_MODULE:
-> +		data->target_offset = metadata[0];
-> +		data->target_size = metadata[1];
-> +		break;
-> +	default:
-> +		break;
-> +	}
-> +	pthread_mutex_unlock(&data->mutex);
-> +
-> +	free(metadata);
-> +}
-> +
-> +static void create_metadata_trigger(struct xe_eudebug_debugger *d, struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_metadata *em = (void *)e;
-> +
-> +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE)
-> +		read_metadata(d, em->client_handle, em->metadata_handle, em->type, em->len);
-> +}
-> +
-> +static void overwrite_immediate_value_in_common_target_write(int vm_fd, uint64_t offset,
-> +							     uint32_t old_val, uint32_t new_val)
-> +{
-> +	uint64_t addr = offset;
-> +	int vals_changed = 0;
-> +	uint32_t val;
-> +
-> +	while (vals_changed < 4) {
-> +		igt_assert_eq(pread(vm_fd, &val, sizeof(uint32_t), addr), sizeof(uint32_t));
-> +		if (val == old_val) {
-> +			igt_debug("val_before_write[%d]: %08x\n", vals_changed, val);
-> +			igt_assert_eq(pwrite(vm_fd, &new_val, sizeof(uint32_t), addr),
-> +				      sizeof(uint32_t));
-> +			igt_assert_eq(pread(vm_fd, &val, sizeof(uint32_t), addr),
-> +				      sizeof(uint32_t));
-> +			igt_debug("val_before_fsync[%d]: %08x\n", vals_changed, val);
-> +			fsync(vm_fd);
-> +			igt_assert_eq(pread(vm_fd, &val, sizeof(uint32_t), addr),
-> +				      sizeof(uint32_t));
-> +			igt_debug("val_after_fsync[%d]: %08x\n", vals_changed, val);
-> +			igt_assert_eq_u32(val, new_val);
-> +			vals_changed++;
-> +		}
-> +		addr += sizeof(uint32_t);
-> +	}
-> +}
-> +
-> +static void eu_attention_resume_caching_trigger(struct xe_eudebug_debugger *d,
-> +						struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_eu_attention *att = (void *)e;
-> +	struct online_debug_data *data = d->ptr;
-> +	struct dim_t s_dim = surface_dimensions(get_number_of_threads(d->flags));
-> +	uint32_t *kernel_offset = &data->kernel_offset;
-> +	int *counter = &data->att_event_counter;
-> +	int val;
-> +	uint32_t instr_usdw;
-> +	struct gpgpu_shader *kernel;
-> +	const uint32_t breakpoint_bit = 1 << 30;
-> +	struct gpgpu_shader *shader_preamble;
-> +	struct gpgpu_shader *shader_write_instr;
-> +
-> +	shader_preamble = gpgpu_shader_create(d->master_fd);
-> +	gpgpu_shader__write_dword(shader_preamble, SHADER_CANARY, 0);
-> +	gpgpu_shader__nop(shader_preamble);
-> +	gpgpu_shader__breakpoint(shader_preamble);
-> +
-> +	shader_write_instr = gpgpu_shader_create(d->master_fd);
-> +	gpgpu_shader__common_target_write_u32(shader_write_instr, 0, 0);
-> +
-> +	if (!*kernel_offset) {
-> +		kernel = get_shader(d->master_fd, d->flags);
-> +		*kernel_offset = find_kernel_in_bb(kernel, data);
-> +		gpgpu_shader_destroy(kernel);
-> +	}
-> +
-> +	/* set breakpoint on next write instruction */
-> +	if (*counter < caching_get_instruction_count(d->master_fd, s_dim.x, d->flags)) {
-> +		igt_assert_eq(pread(data->vm_fd, &instr_usdw, sizeof(instr_usdw),
-> +				    data->bb_offset + *kernel_offset + shader_preamble->size * 4 +
-> +				    shader_write_instr->size * 4 * *counter),
-> +				    sizeof(instr_usdw));
-> +		instr_usdw |= breakpoint_bit;
-> +		igt_assert_eq(pwrite(data->vm_fd, &instr_usdw, sizeof(instr_usdw),
-> +				     data->bb_offset + *kernel_offset + shader_preamble->size * 4 +
-> +				     shader_write_instr->size * 4 * *counter),
-> +				     sizeof(instr_usdw));
-> +		fsync(data->vm_fd);
-> +	}
-> +
-> +	/* restore current instruction */
-> +	if (*counter && *counter <= caching_get_instruction_count(d->master_fd, s_dim.x, d->flags))
-> +		overwrite_immediate_value_in_common_target_write(data->vm_fd,
-> +								 data->bb_offset + *kernel_offset +
-> +								 shader_preamble->size * 4 +
-> +								 shader_write_instr->size * 4 * (*counter - 1),
-> +								 CACHING_POISON_VALUE,
-> +								 CACHING_VALUE(*counter - 1));
-> +
-> +	/* poison next instruction */
-> +	if (*counter < caching_get_instruction_count(d->master_fd, s_dim.x, d->flags))
-> +		overwrite_immediate_value_in_common_target_write(data->vm_fd,
-> +								 data->bb_offset + *kernel_offset +
-> +								 shader_preamble->size * 4 +
-> +								 shader_write_instr->size * 4 * *counter,
-> +								 CACHING_VALUE(*counter),
-> +								 CACHING_POISON_VALUE);
-> +
-> +	gpgpu_shader_destroy(shader_write_instr);
-> +	gpgpu_shader_destroy(shader_preamble);
-> +
-> +	for (int i = 0; i < data->target_size; i += sizeof(uint32_t)) {
-> +		igt_assert_eq(pread(data->vm_fd, &val, sizeof(val), data->target_offset + i),
-> +			      sizeof(val));
-> +		igt_assert_f(val != CACHING_POISON_VALUE, "Poison value found at %04d!\n", i);
-> +	}
-> +
-> +	eu_ctl_resume(d->master_fd, d->fd, att->client_handle,
-> +		      att->exec_queue_handle, att->lrc_handle,
-> +		      att->bitmask, att->bitmask_size);
-> +
-> +	(*counter)++;
-> +}
-> +
-> +static struct intel_bb *xe_bb_create_on_offset(int fd, uint32_t exec_queue, uint32_t vm,
-> +					       uint64_t offset, uint32_t size, uint64_t region)
-> +{
-> +	struct intel_bb *ibb;
-> +
-> +	ibb = intel_bb_create_with_context_in_region(fd, exec_queue, vm, NULL, size, region);
-> +
-> +	/* update intel bb offset */
-> +	intel_bb_remove_object(ibb, ibb->handle, ibb->batch_offset, ibb->size);
-> +	intel_bb_add_object(ibb, ibb->handle, ibb->size, offset, ibb->alignment, false);
-> +	ibb->batch_offset = offset;
-> +
-> +	return ibb;
-> +}
-> +
-> +static size_t get_bb_size(int flags)
-> +{
-> +	if ((flags & SHADER_CACHING_SRAM) || (flags & SHADER_CACHING_VRAM))
-> +		return 32768;
-> +
-> +	return 4096;
-> +}
-> +
-> +static uint64_t get_memory_region(int fd, int flags, int region_bitmask)
-> +{
-> +	flags &= region_bitmask;
-> +
-> +	if (flags & BB_IN_SRAM || flags & TARGET_IN_SRAM)
-> +		return system_memory(fd);
-> +	if (flags & BB_IN_VRAM || flags & TARGET_IN_VRAM)
-> +		return vram_memory(fd, 0);
-> +	return vram_if_possible(fd, 0);
-> +}
-> +
-> +static void run_online_client(struct xe_eudebug_client *c)
-> +{
-> +	int threads = get_number_of_threads(c->flags);
-> +	const uint64_t target_offset = 0x1a000000;
-> +	const uint64_t bb_offset = 0x1b000000;
-> +	const size_t bb_size = get_bb_size(c->flags);
-> +	struct online_debug_data *data = c->ptr;
-> +	struct drm_xe_engine_class_instance hwe = data->hwe;
-> +	struct drm_xe_ext_set_property ext = {
-> +		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-> +		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_EUDEBUG,
-> +		.value = DRM_XE_EXEC_QUEUE_EUDEBUG_FLAG_ENABLE,
-> +	};
-> +	struct drm_xe_exec_queue_create create = {
-> +		.instances = to_user_pointer(&hwe),
-> +		.width = 1,
-> +		.num_placements = 1,
-> +		.extensions = c->flags & DISABLE_DEBUG_MODE ? 0 : to_user_pointer(&ext)
-> +	};
-> +	struct dim_t w_dim = walker_dimensions(threads);
-> +	struct dim_t s_dim = surface_dimensions(threads);
-> +	struct timespec ts = { };
-> +	struct gpgpu_shader *sip, *shader;
-> +	uint32_t metadata_id[2];
-> +	uint64_t *metadata[2];
-> +	struct intel_bb *ibb;
-> +	struct intel_buf *buf;
-> +	uint32_t *ptr;
-> +	int fd;
-> +
-> +	metadata[0] = calloc(2, sizeof(*metadata));
-> +	metadata[1] = calloc(2, sizeof(*metadata));
-> +	igt_assert(metadata[0]);
-> +	igt_assert(metadata[1]);
-> +
-> +	fd = xe_eudebug_client_open_driver(c);
-> +
-> +	/* Additional memory for steering control */
-> +	if (c->flags & SHADER_LOOP || c->flags & SHADER_SINGLE_STEP)
-> +		s_dim.y++;
-> +	/* Additional memory for caching check */
-> +	if ((c->flags & SHADER_CACHING_SRAM) || (c->flags & SHADER_CACHING_VRAM))
-> +		s_dim.y += caching_get_instruction_count(fd, s_dim.x, c->flags);
-> +	buf = create_uc_buf(fd, s_dim.x, s_dim.y,
-> +			    get_memory_region(fd, c->flags, TARGET_REGION_BITMASK));
-> +
-> +	buf->addr.offset = target_offset;
-> +
-> +	metadata[0][0] = bb_offset;
-> +	metadata[0][1] = bb_size;
-> +	metadata[1][0] = target_offset;
-> +	metadata[1][1] = buf->size;
-> +	metadata_id[0] = xe_eudebug_client_metadata_create(c, fd, DRM_XE_DEBUG_METADATA_ELF_BINARY,
-> +							   2 * sizeof(*metadata), metadata[0]);
-> +	metadata_id[1] = xe_eudebug_client_metadata_create(c, fd,
-> +							   DRM_XE_DEBUG_METADATA_PROGRAM_MODULE,
-> +							   2 * sizeof(*metadata), metadata[1]);
-> +
-> +	create.vm_id = xe_eudebug_client_vm_create(c, fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
-> +	xe_eudebug_client_exec_queue_create(c, fd, &create);
-> +
-> +	ibb = xe_bb_create_on_offset(fd, create.exec_queue_id, create.vm_id, bb_offset, bb_size,
-> +				     get_memory_region(fd, c->flags, BB_REGION_BITMASK));
-> +	intel_bb_set_lr_mode(ibb, true);
-> +
-> +	sip = get_sip(fd, c->flags);
-> +	shader = get_shader(fd, c->flags);
-> +
-> +	igt_nsec_elapsed(&ts);
-> +	gpgpu_shader_exec(ibb, buf, w_dim.x, w_dim.y, shader, sip, 0, 0);
-> +
-> +	gpgpu_shader_destroy(sip);
-> +	gpgpu_shader_destroy(shader);
-> +
-> +	intel_bb_sync(ibb);
-> +
-> +	if (c->flags & TRIGGER_RECONNECT)
-> +		xe_eudebug_client_wait_stage(c, DEBUGGER_REATTACHED);
-> +	else
-> +		/* Make sure it wasn't the timeout. */
-> +		igt_assert(igt_nsec_elapsed(&ts) < XE_EUDEBUG_DEFAULT_TIMEOUT_SEC * NSEC_PER_SEC);
-> +
-> +	if (!(c->flags & DO_NOT_EXPECT_CANARIES)) {
-> +		ptr = xe_bo_mmap_ext(fd, buf->handle, buf->size, PROT_READ);
-> +		data->threads_count = count_canaries_neq(ptr, w_dim, 0);
-> +		igt_assert_f(data->threads_count, "No canaries found, nothing executed?\n");
-> +
-> +		if ((c->flags & SHADER_BREAKPOINT || c->flags & TRIGGER_RESUME_SET_BP ||
-> +		     c->flags & SHADER_N_NOOP_BREAKPOINT) && !(c->flags & DISABLE_DEBUG_MODE)) {
-> +			uint32_t aip = ptr[0];
-> +
-> +			igt_assert_f(aip != SHADER_CANARY,
-> +				     "Workload executed but breakpoint not hit!\n");
-> +			igt_assert_eq(count_canaries_eq(ptr, w_dim, aip), data->threads_count);
-> +			igt_debug("Breakpoint hit in %d threads, AIP=0x%08x\n", data->threads_count,
-> +				  aip);
-> +		}
-> +
-> +		munmap(ptr, buf->size);
-> +	}
-> +
-> +	intel_bb_destroy(ibb);
-> +
-> +	xe_eudebug_client_exec_queue_destroy(c, fd, &create);
-> +	xe_eudebug_client_vm_destroy(c, fd,  create.vm_id);
-> +
-> +	xe_eudebug_client_metadata_destroy(c, fd, metadata_id[0], DRM_XE_DEBUG_METADATA_ELF_BINARY,
-> +					   2 * sizeof(*metadata));
-> +	xe_eudebug_client_metadata_destroy(c, fd, metadata_id[1],
-> +					   DRM_XE_DEBUG_METADATA_PROGRAM_MODULE,
-> +					   2 * sizeof(*metadata));
-> +
-> +	xe_eudebug_client_close_driver(c, fd);
-> +}
-> +
-> +static bool intel_gen_has_lockstep_eus(int fd)
-> +{
-> +	const uint32_t id = intel_get_drm_devid(fd);
-> +
-> +	/*
-> +	 * Lockstep (or in some parlance, fused) EUs are pair of EUs
-> +	 * that work in sync, supposedly same clock and same control flow.
-> +	 * Thus for attentions, if the control has breakpoint, both will be
-> +	 * excepted into SIP. In this level, the hardware has only one attention
-> +	 * thread bit for units. PVC is the first one without lockstepping.
-> +	 */
-> +	return !(intel_graphics_ver(id) == IP_VER(12, 60) || intel_gen(id) >= 20);
-> +}
-> +
-> +static int query_attention_bitmask_size(int fd, int gt)
-> +{
-> +	const unsigned int threads = 8;
-> +	struct drm_xe_query_topology_mask *c_dss = NULL, *g_dss = NULL, *eu_per_dss = NULL;
-> +	struct drm_xe_query_topology_mask *topology;
-> +	struct drm_xe_device_query query = {
-> +		.extensions = 0,
-> +		.query = DRM_XE_DEVICE_QUERY_GT_TOPOLOGY,
-> +		.size = 0,
-> +		.data = 0,
-> +	};
-> +	int pos = 0, eus;
-> +	uint8_t *any_dss;
-> +
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +	igt_assert_neq(query.size, 0);
-> +
-> +	topology = malloc(query.size);
-> +	igt_assert(topology);
-> +
-> +	query.data = to_user_pointer(topology);
-> +	igt_assert_eq(igt_ioctl(fd, DRM_IOCTL_XE_DEVICE_QUERY, &query), 0);
-> +
-> +	while (query.size >= sizeof(struct drm_xe_query_topology_mask)) {
-> +		struct drm_xe_query_topology_mask *topo;
-> +		int sz;
-> +
-> +		topo = (struct drm_xe_query_topology_mask *)((unsigned char *)topology + pos);
-> +		sz = sizeof(struct drm_xe_query_topology_mask) + topo->num_bytes;
-> +
-> +		query.size -= sz;
-> +		pos += sz;
-> +
-> +		if (topo->gt_id != gt)
-> +			continue;
-> +
-> +		if (topo->type == DRM_XE_TOPO_DSS_GEOMETRY)
-> +			g_dss = topo;
-> +		else if (topo->type == DRM_XE_TOPO_DSS_COMPUTE)
-> +			c_dss = topo;
-> +		else if (topo->type == DRM_XE_TOPO_EU_PER_DSS ||
-> +			 topo->type == DRM_XE_TOPO_SIMD16_EU_PER_DSS)
-> +			eu_per_dss = topo;
-> +	}
-> +
-> +	igt_assert(g_dss && c_dss && eu_per_dss);
-> +	igt_assert_eq_u32(c_dss->num_bytes, g_dss->num_bytes);
-> +
-> +	any_dss = malloc(c_dss->num_bytes);
-> +	igt_assert(any_dss);
-> +
-> +	for (int i = 0; i < c_dss->num_bytes; i++)
-> +		any_dss[i] = c_dss->mask[i] | g_dss->mask[i];
-> +
-> +	eus = count_set_bits(any_dss, c_dss->num_bytes);
-> +	eus *= count_set_bits(eu_per_dss->mask, eu_per_dss->num_bytes);
-> +
-> +	if (intel_gen_has_lockstep_eus(fd))
-> +		eus /= 2;
-> +
-> +	free(any_dss);
-> +	free(topology);
-> +
-> +	return eus * threads / 8;
-> +}
-> +
-> +static struct drm_xe_eudebug_event_exec_queue *
-> +match_attention_with_exec_queue(struct xe_eudebug_event_log *log,
-> +				struct drm_xe_eudebug_event_eu_attention *ea)
-> +{
-> +	struct drm_xe_eudebug_event_exec_queue *ee;
-> +	struct drm_xe_eudebug_event *event = NULL, *current = NULL, *matching_destroy = NULL;
-> +	int lrc_idx;
-> +
-> +	xe_eudebug_for_each_event(event, log) {
-> +		if (event->type == DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE &&
-> +		    event->flags == DRM_XE_EUDEBUG_EVENT_CREATE) {
-> +			ee = (struct drm_xe_eudebug_event_exec_queue *)event;
-> +
-> +			if (ee->exec_queue_handle != ea->exec_queue_handle)
-> +				continue;
-> +
-> +			if (ee->client_handle != ea->client_handle)
-> +				continue;
-> +
-> +			for (lrc_idx = 0; lrc_idx < ee->width; lrc_idx++) {
-> +				if (ee->lrc_handle[lrc_idx] == ea->lrc_handle)
-> +					break;
-> +			}
-> +
-> +			if (lrc_idx >= ee->width) {
-> +				igt_debug("No matching lrc handle within matching exec_queue!");
-> +				continue;
-> +			}
-> +
-> +			/* event logs are sorted, every found next would not be present. */
-> +			if (ea->base.seqno < ee->base.seqno)
-> +				break;
-> +
-> +			/* sanity check whether attention did
-> +			 * not appear yet on already destroyed exec_queue
-> +			 */
-> +			current = event;
-> +			xe_eudebug_for_each_event(current, log) {
-> +				if (current->type == DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE &&
-> +				    current->flags == DRM_XE_EUDEBUG_EVENT_DESTROY) {
-> +					uint8_t offset = sizeof(struct drm_xe_eudebug_event);
-> +
-> +					if (memcmp((uint8_t *)current + offset,
-> +						   (uint8_t *)event + offset,
-> +						   current->len - offset) == 0) {
-> +						matching_destroy = current;
-> +					}
-> +				}
-> +			}
-> +
-> +			if (!matching_destroy || ea->base.seqno > matching_destroy->seqno)
-> +				continue;
-> +
-> +			return ee;
-> +		}
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static void online_session_check(struct xe_eudebug_session *s, int flags)
-> +{
-> +	struct drm_xe_eudebug_event_eu_attention *ea = NULL;
-> +	struct drm_xe_eudebug_event *event = NULL;
-> +	struct online_debug_data *data = s->client->ptr;
-> +	bool expect_exception = flags & DISABLE_DEBUG_MODE ? false : true;
-> +	int sum = 0;
-> +	int bitmask_size;
-> +
-> +	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
-> +					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
-> +					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-> +
-> +	bitmask_size = query_attention_bitmask_size(s->debugger->master_fd, data->hwe.gt_id);
-> +
-> +	xe_eudebug_for_each_event(event, s->debugger->log) {
-> +		if (event->type == DRM_XE_EUDEBUG_EVENT_EU_ATTENTION) {
-> +			ea = (struct drm_xe_eudebug_event_eu_attention *)event;
-> +
-> +			igt_assert(event->flags == DRM_XE_EUDEBUG_EVENT_STATE_CHANGE);
-> +			igt_assert_eq(ea->bitmask_size, bitmask_size);
-> +			sum += count_set_bits(ea->bitmask, bitmask_size);
-> +			igt_assert(match_attention_with_exec_queue(s->debugger->log, ea));
-> +		}
-> +	}
-> +
-> +	/*
-> +	 * We can expect attention to sum up only
-> +	 * if we have a breakpoint set and we resume all threads always.
-> +	 */
-> +	if (flags == SHADER_BREAKPOINT || flags == TRIGGER_UFENCE_SET_BREAKPOINT)
-> +		igt_assert_eq(sum, data->threads_count);
-> +
-> +	if (expect_exception)
-> +		igt_assert(sum > 0);
-> +	else
-> +		igt_assert(sum == 0);
-> +}
-> +
-> +static void ufence_ack_trigger(struct xe_eudebug_debugger *d,
-> +			       struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
-> +
-> +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE)
-> +		xe_eudebug_ack_ufence(d->fd, ef);
-> +}
-> +
-> +static void ufence_ack_set_bp_trigger(struct xe_eudebug_debugger *d,
-> +				      struct drm_xe_eudebug_event *e)
-> +{
-> +	struct drm_xe_eudebug_event_vm_bind_ufence *ef = (void *)e;
-> +	struct online_debug_data *data = d->ptr;
-> +
-> +	if (e->flags & DRM_XE_EUDEBUG_EVENT_CREATE) {
-> +		set_breakpoint_once(d, data);
-> +		xe_eudebug_ack_ufence(d->fd, ef);
-> +	}
-> +}
-> +
-> +/**
-> + * SUBTEST: basic-breakpoint
-> + * Description:
-> + *	Check whether KMD sends attention events
-> + *	for workload in debug mode stopped on breakpoint.
-> + *
-> + * SUBTEST: breakpoint-not-in-debug-mode
-> + * Description:
-> + *	Check whether KMD resets the GPU when it spots an attention
-> + *	coming from workload not in debug mode.
-> + *
-> + * SUBTEST: stopped-thread
-> + * Description:
-> + *	Hits breakpoint on runalone workload and
-> + *	reads attention for fixed time.
-> + *
-> + * SUBTEST: resume-%s
-> + * Description:
-> + *	Resumes stopped on a breakpoint workload
-> + *	with granularity of %arg[1].
-> + *
-> + *
-> + * arg[1]:
-> + *
-> + * @one:	one thread
-> + * @dss:	threads running on one subslice
-> + */
-> +static void test_basic_online(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	xe_eudebug_session_run(s);
-> +	online_session_check(s, s->flags);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +/**
-> + * SUBTEST: set-breakpoint
-> + * Description:
-> + *	Checks for attention after setting a dynamic breakpoint in the ufence event.
-> + */
-> +
-> +static void test_set_breakpoint_online(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-> +					exec_queue_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_set_bp_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +
-> +	xe_eudebug_session_run(s);
-> +	online_session_check(s, s->flags);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +/**
-> + * SUBTEST: preempt-breakpoint
-> + * Description:
-> + *	Verify that eu debugger disables preemption timeout to
-> + *	prevent reset of workload stopped on breakpoint.
-> + */
-> +static void test_preemption(int fd, struct drm_xe_engine_class_instance *hwe)
-> +{
-> +	int flags = SHADER_BREAKPOINT | TRIGGER_RESUME_DELAYED;
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +	struct xe_eudebug_client *other;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +	other = xe_eudebug_client_create(fd, run_online_client, SHADER_NOP, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
-> +	xe_eudebug_debugger_start_worker(s->debugger);
-> +
-> +	xe_eudebug_client_start(s->client);
-> +	sleep(1); /* make sure s->client starts first */
-> +	xe_eudebug_client_start(other);
-> +
-> +	xe_eudebug_client_wait_done(s->client);
-> +	xe_eudebug_client_wait_done(other);
-> +
-> +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	xe_eudebug_client_destroy(other);
-> +
-> +	igt_assert_f(data->last_eu_control_seqno != 0,
-> +		     "Workload with breakpoint has ended without resume!\n");
-> +
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +/**
-> + * SUBTEST: reset-with-attention
-> + * Description:
-> + *	Check whether GPU is usable after resetting with attention raised
-> + *	(stopped on breakpoint) by running the same workload again.
-> + */
-> +static void test_reset_with_attention_online(int fd, struct drm_xe_engine_class_instance *hwe,
-> +					     int flags)
-> +{
-> +	struct xe_eudebug_session *s1, *s2;
-> +	struct online_debug_data *data;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s1 = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s1->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_reset_trigger);
-> +	xe_eudebug_debugger_add_trigger(s1->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	xe_eudebug_session_run(s1);
-> +	xe_eudebug_session_destroy(s1);
-> +
-> +	s2 = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +	xe_eudebug_debugger_add_trigger(s2->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +	xe_eudebug_debugger_add_trigger(s2->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	xe_eudebug_session_run(s2);
-> +
-> +	online_session_check(s2, s2->flags);
-> +
-> +	xe_eudebug_session_destroy(s2);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +/**
-> + * SUBTEST: interrupt-all
-> + * Description:
-> + *	Schedules EU workload which should last about a few seconds, then
-> + *	interrupts all threads, checks whether attention event came, and
-> + *	resumes stopped threads back.
-> + *
-> + * SUBTEST: interrupt-all-set-breakpoint
-> + * Description:
-> + *	Schedules EU workload which should last about a few seconds, then
-> + *	interrupts all threads, once attention event come it sets breakpoint on
-> + *	the very next instruction and resumes stopped threads back. It expects
-> + *	that every thread hits the breakpoint.
-> + */
-> +static void test_interrupt_all(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +	uint32_t val;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-> +					exec_queue_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
-> +	xe_eudebug_debugger_start_worker(s->debugger);
-> +	xe_eudebug_client_start(s->client);
-> +
-> +	/* wait for workload to start */
-> +	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-> +		/* collect needed data from triggers */
-> +		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
-> +			continue;
-> +
-> +		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
-> +			if (val != 0)
-> +				break;
-> +	}
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	igt_assert(data->client_handle != -1);
-> +	igt_assert(data->exec_queue_handle != -1);
-> +	eu_ctl_interrupt_all(s->debugger->fd, data->client_handle,
-> +			     data->exec_queue_handle, data->lrc_handle);
-> +	pthread_mutex_unlock(&data->mutex);
-> +
-> +	xe_eudebug_client_wait_done(s->client);
-> +
-> +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
-> +
-> +	xe_eudebug_event_log_print(s->debugger->log, true);
-> +	xe_eudebug_event_log_print(s->client->log, true);
-> +
-> +	online_session_check(s, s->flags);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +static void reset_debugger_log(struct xe_eudebug_debugger *d)
-> +{
-> +	unsigned int max_size;
-> +	char log_name[80];
-> +
-> +	/* Don't pull the rug out from under an active debugger */
-> +	igt_assert(d->target_pid == 0);
-> +
-> +	max_size = d->log->max_size;
-> +	strncpy(log_name, d->log->name, sizeof(d->log->name) - 1);
-> +	log_name[79] = '\0';
-> +	xe_eudebug_event_log_destroy(d->log);
-> +	d->log = xe_eudebug_event_log_create(log_name, max_size);
-> +}
-> +
-> +/**
-> + * SUBTEST: interrupt-other-debuggable
-> + * Description:
-> + *	Schedules EU workload in runalone mode with never ending loop, while
-> + *	it is not under debug, tries to interrupt all threads using the different
-> + *	client attached to debugger.
-> + *
-> + * SUBTEST: interrupt-other
-> + * Description:
-> + *	Schedules EU workload with a never ending loop and, while it is not
-> + *	configured for debugging, tries to interrupt all threads using the client
-> + *	attached to debugger.
-> + */
-> +static void test_interrupt_other(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct online_debug_data *data;
-> +	struct online_debug_data *debugee_data;
-> +	struct xe_eudebug_session *s;
-> +	struct xe_eudebug_client *debugee;
-> +	int debugee_flags = SHADER_LOOP | DO_NOT_EXPECT_CANARIES;
-> +	int val;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN, open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-> +					exec_queue_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
-> +	xe_eudebug_debugger_start_worker(s->debugger);
-> +	xe_eudebug_client_start(s->client);
-> +
-> +	/* wait for workload to start */
-> +	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-> +		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
-> +			continue;
-> +
-> +		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
-> +			if (val != 0)
-> +				break;
-> +	}
-> +	igt_assert_f(val != 0, "Workload execution is not yet started\n");
-> +
-> +	xe_eudebug_debugger_detach(s->debugger);
-> +	reset_debugger_log(s->debugger);
-> +
-> +	debugee_data = online_debug_data_create(hwe);
-> +	s->debugger->ptr = debugee_data;
-> +	debugee = xe_eudebug_client_create(fd, run_online_client, debugee_flags, debugee_data);
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, debugee), 0);
-> +	xe_eudebug_client_start(debugee);
-> +
-> +	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-> +		if (READ_ONCE(debugee_data->vm_fd) == -1 || READ_ONCE(debugee_data->target_size) == 0)
-> +			continue;
-> +	}
-> +
-> +	pthread_mutex_lock(&debugee_data->mutex);
-> +	igt_assert(debugee_data->client_handle != -1);
-> +	igt_assert(debugee_data->exec_queue_handle != -1);
-> +
-> +	/*
-> +	 * Interrupting the other client should return invalid state
-> +	 * as it is running in runalone mode
-> +	 */
-> +	igt_assert_eq(__eu_ctl(s->debugger->fd, debugee_data->client_handle,
-> +		      debugee_data->exec_queue_handle, debugee_data->lrc_handle, NULL, 0,
-> +		      DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL, NULL), -EINVAL);
-> +	pthread_mutex_unlock(&debugee_data->mutex);
-> +
-> +	xe_force_gt_reset_async(s->debugger->master_fd, debugee_data->hwe.gt_id);
-> +
-> +	xe_eudebug_client_wait_done(debugee);
-> +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
-> +
-> +	xe_eudebug_event_log_print(s->debugger->log, true);
-> +	xe_eudebug_event_log_print(debugee->log, true);
-> +
-> +	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
-> +				 XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
-> +				 XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-> +
-> +	xe_eudebug_client_destroy(debugee);
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +	online_debug_data_destroy(debugee_data);
-> +}
-> +
-> +/**
-> + * SUBTEST: tdctl-parameters
-> + * Description:
-> + *	Schedules EU workload which should last about a few seconds, then
-> + *	checks negative scenarios of EU_THREADS ioctl usage, interrupts all threads,
-> + *	checks whether attention event came, and resumes stopped threads back.
-> + */
-> +static void test_tdctl_parameters(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +	uint32_t val;
-> +	uint32_t random_command;
-> +	uint32_t bitmask_size = query_attention_bitmask_size(fd, hwe->gt_id);
-> +	uint8_t *attention_bitmask = malloc(bitmask_size * sizeof(uint8_t));
-> +
-> +	igt_assert(attention_bitmask);
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-> +					exec_queue_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
-> +	xe_eudebug_debugger_start_worker(s->debugger);
-> +	xe_eudebug_client_start(s->client);
-> +
-> +	/* wait for workload to start */
-> +	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-> +		/* collect needed data from triggers */
-> +		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
-> +			continue;
-> +
-> +		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
-> +			if (val != 0)
-> +				break;
-> +	}
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	igt_assert(data->client_handle != -1);
-> +	igt_assert(data->exec_queue_handle != -1);
-> +	igt_assert(data->lrc_handle != -1);
-> +
-> +	/* fail on invalid lrc_handle */
-> +	igt_assert(__eu_ctl(s->debugger->fd, data->client_handle,
-> +			    data->exec_queue_handle, data->lrc_handle + 1,
-> +			    attention_bitmask, &bitmask_size,
-> +			    DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL, NULL) == -EINVAL);
-> +
-> +	/* fail on invalid exec_queue_handle */
-> +	igt_assert(__eu_ctl(s->debugger->fd, data->client_handle,
-> +			    data->exec_queue_handle + 1, data->lrc_handle,
-> +			    attention_bitmask, &bitmask_size,
-> +			    DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL, NULL) == -EINVAL);
-> +
-> +	/* fail on invalid client */
-> +	igt_assert(__eu_ctl(s->debugger->fd, data->client_handle + 1,
-> +			    data->exec_queue_handle, data->lrc_handle,
-> +			    attention_bitmask, &bitmask_size,
-> +			    DRM_XE_EUDEBUG_EU_CONTROL_CMD_INTERRUPT_ALL, NULL) == -EINVAL);
-> +
-> +	/*
-> +	 * bitmask size must be aligned to sizeof(u32) for all commands
-> +	 * and be zero for interrupt all
-> +	 */
-> +	bitmask_size = sizeof(uint32_t) - 1;
-> +	igt_assert(__eu_ctl(s->debugger->fd, data->client_handle,
-> +			    data->exec_queue_handle, data->lrc_handle,
-> +			    attention_bitmask, &bitmask_size,
-> +			    DRM_XE_EUDEBUG_EU_CONTROL_CMD_STOPPED, NULL) == -EINVAL);
-> +	bitmask_size = 0;
-> +
-> +	/* fail on invalid command */
-> +	random_command = random() | (DRM_XE_EUDEBUG_EU_CONTROL_CMD_RESUME + 1);
-> +	igt_assert(__eu_ctl(s->debugger->fd, data->client_handle,
-> +			    data->exec_queue_handle, data->lrc_handle,
-> +			    attention_bitmask, &bitmask_size, random_command, NULL) == -EINVAL);
-> +
-> +	free(attention_bitmask);
-> +
-> +	eu_ctl_interrupt_all(s->debugger->fd, data->client_handle,
-> +			     data->exec_queue_handle, data->lrc_handle);
-> +	pthread_mutex_unlock(&data->mutex);
-> +
-> +	xe_eudebug_client_wait_done(s->client);
-> +
-> +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
-> +
-> +	xe_eudebug_event_log_print(s->debugger->log, true);
-> +	xe_eudebug_event_log_print(s->client->log, true);
-> +
-> +	online_session_check(s, s->flags);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +static void eu_attention_debugger_detach_trigger(struct xe_eudebug_debugger *d,
-> +						 struct drm_xe_eudebug_event *event)
-> +{
-> +	struct online_debug_data *data = d->ptr;
-> +	uint64_t c_pid;
-> +	int ret;
-> +
-> +	c_pid = d->target_pid;
-> +
-> +	/* Reset VM data so the re-triggered VM open handler works properly */
-> +	data->vm_fd = -1;
-> +
-> +	xe_eudebug_debugger_detach(d);
-> +
-> +	/* Let the KMD scan function notice unhandled EU attention */
-> +	if (!(d->flags & SHADER_N_NOOP_BREAKPOINT))
-> +		sleep(1);
-> +
-> +	/*
-> +	 * New session that is created by EU debugger on reconnect restarts
-> +	 * seqno, causing isses with log sorting. To avoid that, create
-> +	 * a new event log.
-> +	 */
-> +	reset_debugger_log(d);
-> +
-> +	ret = xe_eudebug_connect(d->master_fd, c_pid, 0);
-> +	igt_assert(ret >= 0);
-> +	d->fd = ret;
-> +	d->target_pid = c_pid;
-> +
-> +	/* Let the discovery worker discover resources */
-> +	sleep(2);
-> +
-> +	if (!(d->flags & SHADER_N_NOOP_BREAKPOINT))
-> +		xe_eudebug_debugger_signal_stage(d, DEBUGGER_REATTACHED);
-> +}
-> +
-> +/**
-> + * SUBTEST: interrupt-reconnect
-> + * Description:
-> + *	Schedules EU workload which should last about a few seconds,
-> + *	interrupts all threads and detaches debugger when attention is
-> + *	raised. The test checks if KMD resets the workload when there's
-> + *	no debugger attached and does the event playback on discovery.
-> + */
-> +static void test_interrupt_reconnect(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct drm_xe_eudebug_event *e = NULL;
-> +	struct online_debug_data *data;
-> +	struct xe_eudebug_session *s;
-> +	uint32_t val;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EXEC_QUEUE,
-> +					exec_queue_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debugger_detach_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	igt_assert_eq(xe_eudebug_debugger_attach(s->debugger, s->client), 0);
-> +	xe_eudebug_debugger_start_worker(s->debugger);
-> +	xe_eudebug_client_start(s->client);
-> +
-> +	/* wait for workload to start */
-> +	igt_for_milliseconds(STARTUP_TIMEOUT_MS) {
-> +		/* collect needed data from triggers */
-> +		if (READ_ONCE(data->vm_fd) == -1 || READ_ONCE(data->target_size) == 0)
-> +			continue;
-> +
-> +		if (pread(data->vm_fd, &val, sizeof(val), data->target_offset) == sizeof(val))
-> +			if (val != 0)
-> +				break;
-> +	}
-> +
-> +	pthread_mutex_lock(&data->mutex);
-> +	igt_assert(data->client_handle != -1);
-> +	igt_assert(data->exec_queue_handle != -1);
-> +	eu_ctl_interrupt_all(s->debugger->fd, data->client_handle,
-> +			     data->exec_queue_handle, data->lrc_handle);
-> +	pthread_mutex_unlock(&data->mutex);
-> +
-> +	xe_eudebug_client_wait_done(s->client);
-> +
-> +	xe_eudebug_debugger_stop_worker(s->debugger, 1);
-> +
-> +	xe_eudebug_event_log_print(s->debugger->log, true);
-> +	xe_eudebug_event_log_print(s->client->log, true);
-> +
-> +	xe_eudebug_session_check(s, true, XE_EUDEBUG_FILTER_EVENT_VM_BIND |
-> +					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_OP |
-> +					  XE_EUDEBUG_FILTER_EVENT_VM_BIND_UFENCE);
-> +
-> +	/* We expect workload reset, so no attention should be raised */
-> +	xe_eudebug_for_each_event(e, s->debugger->log)
-> +		igt_assert(e->type != DRM_XE_EUDEBUG_EVENT_EU_ATTENTION);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +/**
-> + * SUBTEST: single-step
-> + * Description:
-> + *	Schedules EU workload with 16 nops after breakpoint, then single-steps
-> + *	through the shader, advances all threads each step, checking if all
-> + *	threads advanced every step.
-> + *
-> + * SUBTEST: single-step-one
-> + * Description:
-> + *	Schedules EU workload with 16 nops after breakpoint, then single-steps
-> + *	through the shader, advances one thread each step, checking if one
-> + *	thread advanced every step. Due to the time constraint, only first two
-> + *	shader instructions after breakpoint are validated.
-> + */
-> +static void test_single_step(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_single_step_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	xe_eudebug_session_run(s);
-> +	online_session_check(s, s->flags);
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +static void eu_attention_debugger_ndetach_trigger(struct xe_eudebug_debugger *d,
-> +						  struct drm_xe_eudebug_event *event)
-> +{
-> +	struct online_debug_data *data = d->ptr;
-> +	static int debugger_detach_count;
-> +
-> +	if (debugger_detach_count < (SHADER_LOOP_N - 1)) {
-> +		/* Make sure the resume command was issued before detaching the debugger */
-> +		if (data->last_eu_control_seqno > event->seqno)
-> +			return;
-> +		eu_attention_debugger_detach_trigger(d, event);
-> +		debugger_detach_count++;
-> +	} else {
-> +		igt_debug("Reached Nth breakpoint hence preventing the debugger detach\n");
-> +	}
-> +}
-> +
-> +/**
-> + * SUBTEST: debugger-reopen
-> + * Description:
-> + *	Check whether the debugger is able to reopen the connection and
-> + *	capture the events of already running client.
-> + */
-> +static void test_debugger_reopen(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +
-> +	data = online_debug_data_create(hwe);
-> +
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debugger_ndetach_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	xe_eudebug_session_run(s);
-> +
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +/**
-> + * SUBTEST: writes-caching-%s-bb-%s-target-%s
-> + * Description:
-> + *	Write incrementing values to 2-page-long target surface, poisoning the data one breakpoint
-> + *	before each write instruction and restoring it when the poisoned instruction breakpoint
-> + *	is hit. Expect to never see poison values in target surface.
-> + *
-> + *
-> + * arg[1]:
-> + *
-> + * @sram:	Use page size of SRAM
-> + * @vram:	Use page size of VRAM
-> + *
-> + * arg[2]:
-> + *
-> + * @sram:	Batchbuffer in SRAM
-> + * @vram:	Batchbuffer in VRAM
-> + *
-> + * arg[3]:
-> + *
-> + * @sram:	Target surface in SRAM
-> + * @vram:	Target surface in VRAM
-> + */
-> +static void test_caching(int fd, struct drm_xe_engine_class_instance *hwe, int flags)
-> +{
-> +	struct xe_eudebug_session *s;
-> +	struct online_debug_data *data;
-> +
-> +	if (flags & SHADER_CACHING_VRAM || flags & BB_IN_VRAM || flags & TARGET_IN_VRAM)
-> +		igt_skip_on_f(!xe_has_vram(fd), "Device does not have VRAM.\n");
-> +
-> +	data = online_debug_data_create(hwe);
-> +	s = xe_eudebug_session_create(fd, run_online_client, flags, data);
-> +
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_OPEN,
-> +					open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_debug_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +					eu_attention_resume_caching_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM, vm_open_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_METADATA,
-> +					create_metadata_trigger);
-> +	xe_eudebug_debugger_add_trigger(s->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +					ufence_ack_trigger);
-> +
-> +	xe_eudebug_session_run(s);
-> +	online_session_check(s, s->flags);
-> +	xe_eudebug_session_destroy(s);
-> +	online_debug_data_destroy(data);
-> +}
-> +
-> +#define is_compute_on_gt(__e, __gt) (((__e)->engine_class == DRM_XE_ENGINE_CLASS_RENDER || \
-> +				      (__e)->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) && \
-> +				      (__e)->gt_id == (__gt))
-> +
-> +struct xe_engine_list_entry {
-> +	struct igt_list_head link;
-> +	struct drm_xe_engine_class_instance *hwe;
-> +};
-> +
-> +#define MAX_TILES	2
-> +static int find_suitable_engines(struct drm_xe_engine_class_instance **hwes,
-> +				 int fd, bool many_tiles)
-> +{
-> +	struct xe_device *xe_dev;
-> +	struct drm_xe_engine_class_instance *e;
-> +	struct xe_engine_list_entry *en, *tmp;
-> +	struct igt_list_head compute_engines[MAX_TILES];
-> +	int gt_id;
-> +	int tile_id, i, engine_count = 0, tile_count = 0;
-> +
-> +	xe_dev = xe_device_get(fd);
-> +
-> +	for (i = 0; i < MAX_TILES; i++)
-> +		IGT_INIT_LIST_HEAD(&compute_engines[i]);
-> +
-> +	xe_for_each_gt(fd, gt_id) {
-> +		xe_for_each_engine(fd, e) {
-> +			if (is_compute_on_gt(e, gt_id)) {
-> +				tile_id = xe_dev->gt_list->gt_list[gt_id].tile_id;
-> +
-> +				en = malloc(sizeof(struct xe_engine_list_entry));
-> +				en->hwe = e;
-> +
-> +				igt_list_add_tail(&en->link, &compute_engines[tile_id]);
-> +			}
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < MAX_TILES; i++) {
-> +		if (igt_list_empty(&compute_engines[i]))
-> +			continue;
-> +
-> +		if (many_tiles) {
-> +			en = igt_list_first_entry(&compute_engines[i], en, link);
-> +			hwes[engine_count++] = en->hwe;
-> +			tile_count++;
-> +		} else {
-> +			if (igt_list_length(&compute_engines[i]) > 1) {
-> +				igt_list_for_each_entry(en, &compute_engines[i], link)
-> +					hwes[engine_count++] = en->hwe;
-> +				break;
-> +			}
-> +		}
-> +	}
-> +
-> +	for (i = 0; i < MAX_TILES; i++) {
-> +		igt_list_for_each_entry_safe(en, tmp, &compute_engines[i], link) {
-> +			igt_list_del(&en->link);
-> +			free(en);
-> +		}
-> +	}
-> +
-> +	if (many_tiles)
-> +		igt_require_f(tile_count > 1, "Mulit-tile scenario requires more tiles\n");
-> +
-> +	return engine_count;
-> +}
-> +
-> +/**
-> + * SUBTEST: breakpoint-many-sessions-single-tile
-> + * Description:
-> + *	Schedules EU workload with preinstalled breakpoint on every compute engine
-> + *	available on the tile. Checks if the contexts hit breakpoint in sequence
-> + *	and resumes them.
-> + *
-> + * SUBTEST: breakpoint-many-sessions-tiles
-> + * Description:
-> + *	Schedules EU workload with preinstalled breakpoint on selected compute
-> + *      engines, with one per tile. Checks if each context hit breakpoint and
-> + *      resumes them.
-> + */
-> +static void test_many_sessions_on_tiles(int fd, bool multi_tile)
-> +{
-> +	int n = 0, flags = SHADER_BREAKPOINT | SHADER_MIN_THREADS;
-> +	struct xe_eudebug_session **s;
-> +	struct online_debug_data **data;
-> +	struct drm_xe_engine_class_instance **hwe;
-> +	struct drm_xe_eudebug_event_eu_attention *eus;
-> +	uint64_t current_t, next_t, diff;
-> +	int attempt_mask = 0, final_mask, should_break;
-> +	int i;
-> +
-> +	s = malloc(sizeof(*s) * xe_number_engines(fd));
-> +	data = malloc(sizeof(*data) * xe_number_engines(fd));
-> +	hwe = malloc(sizeof(*hwe) * xe_number_engines(fd));
-> +	n = find_suitable_engines(hwe, fd, multi_tile);
-> +
-> +	igt_require_f(n > 1, "Test requires at least two parallel compute engines!\n");
-> +
-> +	for (i = 0; i < n; i++) {
-> +		data[i] = online_debug_data_create(hwe[i]);
-> +		s[i] = xe_eudebug_session_create(fd, run_online_client, flags, data[i]);
-> +
-> +		xe_eudebug_debugger_add_trigger(s[i]->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +						eu_attention_debug_trigger);
-> +		xe_eudebug_debugger_add_trigger(s[i]->debugger, DRM_XE_EUDEBUG_EVENT_EU_ATTENTION,
-> +						save_first_exception_trigger);
-> +		xe_eudebug_debugger_add_trigger(s[i]->debugger, DRM_XE_EUDEBUG_EVENT_VM_BIND_UFENCE,
-> +						ufence_ack_trigger);
-> +
-> +		igt_assert_eq(xe_eudebug_debugger_attach(s[i]->debugger, s[i]->client), 0);
-> +
-> +		xe_eudebug_debugger_start_worker(s[i]->debugger);
-> +		xe_eudebug_client_start(s[i]->client);
-> +	}
-> +
-> +	final_mask = pow(2, n) - 1;
-> +	igt_for_milliseconds(s[0]->client->timeout_ms) {
-> +		if (attempt_mask == final_mask)
-> +			break;
-> +
-> +		for (i = 0; i < n; i++) {
-> +			if (attempt_mask & BIT(i))
-> +				continue;
-> +
-> +			should_break = 0;
-> +
-> +			pthread_mutex_lock(&(data[i]->mutex));
-> +			if ((data[i]->exception_arrived.tv_sec |
-> +			     data[i]->exception_arrived.tv_nsec) != 0) {
-> +				attempt_mask |= BIT(i);
-> +				should_break = 1;
-> +
-> +				eus = (struct drm_xe_eudebug_event_eu_attention *)data[i]->exception_event;
-> +				eu_ctl_resume(s[i]->debugger->master_fd, s[i]->debugger->fd,
-> +					      eus->client_handle, eus->exec_queue_handle,
-> +					      eus->lrc_handle, eus->bitmask, eus->bitmask_size);
-> +				free(eus);
-> +
-> +			}
-> +			pthread_mutex_unlock(&(data[i]->mutex));
-> +
-> +			if (should_break)
-> +				break;
-> +
-> +		}
-> +	}
-> +
-> +	igt_assert_eq(attempt_mask, final_mask);
-> +
-> +	for (i = 0; i < n - 1; i++) {
-> +		/* Convert timestamps to microseconds */
-> +		current_t = data[i]->exception_arrived.tv_nsec * 1000;
-> +		next_t = data[i + 1]->exception_arrived.tv_nsec * 1000;
-> +		diff = current_t < next_t ? next_t - current_t : current_t - next_t;
-> +
-> +		if (multi_tile)
-> +			igt_assert_f(diff < WORKLOAD_DELAY_US,
-> +				     "Expected to execute workloads concurrently. Actual delay: %lu ms\n",
-> +				     diff);
-> +		else
-> +			igt_assert_f(diff >= WORKLOAD_DELAY_US,
-> +				     "Expected a serialization of workloads. Actual delay: %lu ms\n",
-> +				     diff);
-> +	}
-> +
-> +	for (i = 0; i < n; i++) {
-> +		xe_eudebug_client_wait_done(s[i]->client);
-> +		xe_eudebug_debugger_stop_worker(s[i]->debugger, 1);
-> +
-> +		xe_eudebug_event_log_print(s[i]->debugger->log, true);
-> +		online_session_check(s[i], flags);
-> +
-> +		xe_eudebug_session_destroy(s[i]);
-> +		online_debug_data_destroy(data[i]);
-> +	}
-> +
-> +	free(s);
-> +	free(data);
-> +	free(hwe);
-> +}
-> +
-> +static struct drm_xe_engine_class_instance *pick_compute(int fd, int gt)
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	int count = 0;
-> +
-> +	xe_for_each_engine(fd, hwe)
-> +		if (is_compute_on_gt(hwe, gt))
-> +			count++;
-> +
-> +	xe_for_each_engine(fd, hwe)
-> +		if (is_compute_on_gt(hwe, gt) && rand() % count-- == 0)
-> +			return hwe;
-> +
-> +	return NULL;
-> +}
-> +
-> +#define test_gt_render_or_compute(t, fd, __hwe) \
-> +	igt_subtest_with_dynamic(t) \
-> +		for (int gt = 0; (__hwe = pick_compute(fd, gt)); gt++) \
-> +			igt_dynamic_f("%s%d", xe_engine_class_string(__hwe->engine_class), \
-> +				      hwe->engine_instance)
-> +
-> +igt_main
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	bool was_enabled;
-> +	int fd;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		intel_allocator_multiprocess_start();
-> +		igt_srandom();
-> +		was_enabled = xe_eudebug_enable(fd, true);
-> +	}
-> +
-> +	test_gt_render_or_compute("basic-breakpoint", fd, hwe)
-> +		test_basic_online(fd, hwe, SHADER_BREAKPOINT);
-> +
-> +	test_gt_render_or_compute("preempt-breakpoint", fd, hwe)
-> +		test_preemption(fd, hwe);
-> +
-> +	test_gt_render_or_compute("set-breakpoint", fd, hwe)
-> +		test_set_breakpoint_online(fd, hwe, SHADER_NOP | TRIGGER_UFENCE_SET_BREAKPOINT);
-> +
-> +	test_gt_render_or_compute("breakpoint-not-in-debug-mode", fd, hwe)
-> +		test_basic_online(fd, hwe, SHADER_BREAKPOINT | DISABLE_DEBUG_MODE);
-> +
-> +	test_gt_render_or_compute("stopped-thread", fd, hwe)
-> +		test_basic_online(fd, hwe, SHADER_BREAKPOINT | TRIGGER_RESUME_DELAYED);
-> +
-> +	test_gt_render_or_compute("resume-one", fd, hwe)
-> +		test_basic_online(fd, hwe, SHADER_BREAKPOINT | TRIGGER_RESUME_ONE);
-> +
-> +	test_gt_render_or_compute("resume-dss", fd, hwe)
-> +		test_basic_online(fd, hwe, SHADER_BREAKPOINT | TRIGGER_RESUME_DSS);
-> +
-> +	test_gt_render_or_compute("interrupt-all", fd, hwe)
-> +		test_interrupt_all(fd, hwe, SHADER_LOOP);
-> +
-> +	test_gt_render_or_compute("interrupt-other-debuggable", fd, hwe)
-> +		test_interrupt_other(fd, hwe, SHADER_LOOP);
-> +
-> +	test_gt_render_or_compute("interrupt-other", fd, hwe)
-> +		test_interrupt_other(fd, hwe, SHADER_LOOP | DISABLE_DEBUG_MODE);
-> +
-> +	test_gt_render_or_compute("interrupt-all-set-breakpoint", fd, hwe)
-> +		test_interrupt_all(fd, hwe, SHADER_LOOP | TRIGGER_RESUME_SET_BP);
-> +
-> +	test_gt_render_or_compute("tdctl-parameters", fd, hwe)
-> +		test_tdctl_parameters(fd, hwe, SHADER_LOOP);
-> +
-> +	test_gt_render_or_compute("reset-with-attention", fd, hwe)
-> +		test_reset_with_attention_online(fd, hwe, SHADER_BREAKPOINT);
-> +
-> +	test_gt_render_or_compute("interrupt-reconnect", fd, hwe)
-> +		test_interrupt_reconnect(fd, hwe, SHADER_LOOP | TRIGGER_RECONNECT);
-> +
-> +	test_gt_render_or_compute("single-step", fd, hwe)
-> +		test_single_step(fd, hwe, SHADER_SINGLE_STEP | SIP_SINGLE_STEP |
-> +				 TRIGGER_RESUME_PARALLEL_WALK);
-> +
-> +	test_gt_render_or_compute("single-step-one", fd, hwe)
-> +		test_single_step(fd, hwe, SHADER_SINGLE_STEP | SIP_SINGLE_STEP |
-> +				 TRIGGER_RESUME_SINGLE_WALK);
-> +
-> +	test_gt_render_or_compute("debugger-reopen", fd, hwe)
-> +		test_debugger_reopen(fd, hwe, SHADER_N_NOOP_BREAKPOINT);
-> +
-> +	test_gt_render_or_compute("writes-caching-sram-bb-sram-target-sram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_SRAM | BB_IN_SRAM | TARGET_IN_SRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-sram-bb-sram-target-vram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_SRAM | BB_IN_SRAM | TARGET_IN_VRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-sram-bb-vram-target-sram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_SRAM | BB_IN_VRAM | TARGET_IN_SRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-sram-bb-vram-target-vram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_SRAM | BB_IN_VRAM | TARGET_IN_VRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-vram-bb-sram-target-sram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_VRAM | BB_IN_SRAM | TARGET_IN_SRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-vram-bb-sram-target-vram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_VRAM | BB_IN_SRAM | TARGET_IN_VRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-vram-bb-vram-target-sram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_VRAM | BB_IN_VRAM | TARGET_IN_SRAM);
-> +
-> +	test_gt_render_or_compute("writes-caching-vram-bb-vram-target-vram", fd, hwe)
-> +		test_caching(fd, hwe, SHADER_CACHING_VRAM | BB_IN_VRAM | TARGET_IN_VRAM);
+--===============4440487667010120913==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I think above should be executed as dynamic tests to avoid
-unnecessary skips on integrated.
+== Series Details ==
 
-However not a blocker as under the flag and it might be changed
-in the future.
+Series: tests/intel/xe_pm_residency: Print execution and sleep times
+URL   : https://patchwork.freedesktop.org/series/138850/
+State : success
 
-Acked-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+== Summary ==
 
---
-Zbigniew
+CI Bug Log - changes from IGT_8025 -> IGTPW_11761
+====================================================
 
-> +
-> +	igt_subtest("breakpoint-many-sessions-single-tile")
-> +		test_many_sessions_on_tiles(fd, false);
-> +
-> +	igt_subtest("breakpoint-many-sessions-tiles")
-> +		test_many_sessions_on_tiles(fd, true);
-> +
-> +	igt_fixture {
-> +		xe_eudebug_enable(fd, was_enabled);
-> +
-> +		intel_allocator_multiprocess_stop();
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 43e8516f4..e5d8852f3 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -321,6 +321,7 @@ intel_xe_progs = [
->  intel_xe_eudebug_progs = [
->  	'xe_eudebug',
->  	'xe_exec_sip_eudebug',
-> +	'xe_eudebug_online',
->  ]
->  
->  if build_xe_eudebug
-> -- 
-> 2.34.1
-> 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/index.html
+
+Participating hosts (38 -> 38)
+------------------------------
+
+  Additional (2): bat-dg2-11 fi-elk-e7500 
+  Missing    (2): fi-snb-2520m fi-kbl-8809g 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11761 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@read:
+    - bat-arls-1:         [PASS][1] -> [DMESG-WARN][2] ([i915#12102])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@fbdev@read.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@fbdev@read.html
+
+  * igt@gem_mmap@basic:
+    - bat-dg2-11:         NOTRUN -> [SKIP][3] ([i915#4083])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@gem_mmap@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-dg2-11:         NOTRUN -> [SKIP][4] ([i915#4079]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_fence_blits@basic:
+    - bat-dg2-11:         NOTRUN -> [SKIP][5] ([i915#4077]) +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@gem_tiled_fence_blits@basic.html
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-arls-1:         [PASS][6] -> [DMESG-WARN][7] ([i915#10341])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@i915_pm_rpm@module-reload.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-11:         NOTRUN -> [SKIP][8] ([i915#11681] / [i915#6621])
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@i915_pm_rps@basic-api.html
+
+  * igt@i915_selftest@live@gt_contexts:
+    - bat-arls-1:         [PASS][9] -> [DMESG-FAIL][10] ([i915#10262]) +37 other tests dmesg-fail
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@i915_selftest@live@gt_contexts.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@i915_selftest@live@gt_contexts.html
+
+  * igt@i915_selftest@live@gt_heartbeat:
+    - bat-arls-5:         NOTRUN -> [DMESG-WARN][11] ([i915#11637] / [i915#12133]) +4 other tests dmesg-warn
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@gt_heartbeat.html
+
+  * igt@i915_selftest@live@gt_tlb:
+    - bat-arls-5:         NOTRUN -> [DMESG-WARN][12] ([i915#11637]) +25 other tests dmesg-warn
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@gt_tlb.html
+
+  * igt@i915_selftest@live@objects:
+    - bat-arls-5:         NOTRUN -> [DMESG-WARN][13] ([i915#10341] / [i915#11637]) +2 other tests dmesg-warn
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@objects.html
+
+  * igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy:
+    - bat-dg2-11:         NOTRUN -> [SKIP][14] ([i915#4212]) +7 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-11:         NOTRUN -> [SKIP][15] ([i915#5190])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-11:         NOTRUN -> [SKIP][16] ([i915#4215] / [i915#5190])
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - bat-dg2-11:         NOTRUN -> [SKIP][17] ([i915#4103] / [i915#4213]) +1 other test skip
+   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-dg2-11:         NOTRUN -> [SKIP][18] ([i915#3555] / [i915#3840])
+   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-dg2-11:         NOTRUN -> [SKIP][19]
+   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_force_connector_basic@prune-stale-modes:
+    - bat-dg2-11:         NOTRUN -> [SKIP][20] ([i915#5274])
+   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_force_connector_basic@prune-stale-modes.html
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1:
+    - fi-elk-e7500:       NOTRUN -> [SKIP][21] +25 other tests skip
+   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/fi-elk-e7500/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-dg2-11:         NOTRUN -> [SKIP][22] ([i915#5354])
+   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-dg2-11:         NOTRUN -> [SKIP][23] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-dg2-11:         NOTRUN -> [SKIP][24] ([i915#3555])
+   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-dg2-11:         NOTRUN -> [SKIP][25] ([i915#3708])
+   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-gtt:
+    - bat-dg2-11:         NOTRUN -> [SKIP][26] ([i915#3708] / [i915#4077]) +1 other test skip
+   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@prime_vgem@basic-gtt.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-dg2-11:         NOTRUN -> [SKIP][27] ([i915#3291] / [i915#3708]) +2 other tests skip
+   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@prime_vgem@basic-write.html
+
+  
+#### Possible fixes ####
+
+  * igt@fbdev@nullptr:
+    - bat-arls-1:         [DMESG-WARN][28] ([i915#12102]) -> [PASS][29]
+   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@fbdev@nullptr.html
+   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@fbdev@nullptr.html
+
+  * igt@i915_selftest@live:
+    - bat-mtlp-8:         [ABORT][30] ([i915#12061]) -> [PASS][31] +1 other test pass
+   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-mtlp-8/igt@i915_selftest@live.html
+   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-mtlp-8/igt@i915_selftest@live.html
+    - bat-arlh-2:         [INCOMPLETE][32] ([i915#10341] / [i915#12133]) -> [PASS][33]
+   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arlh-2/igt@i915_selftest@live.html
+   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arlh-2/igt@i915_selftest@live.html
+    - bat-arls-2:         [DMESG-WARN][34] ([i915#10341] / [i915#12133]) -> [PASS][35]
+   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-2/igt@i915_selftest@live.html
+   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_pm:
+    - bat-arlh-2:         [INCOMPLETE][36] ([i915#12228]) -> [PASS][37]
+   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arlh-2/igt@i915_selftest@live@gt_pm.html
+   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arlh-2/igt@i915_selftest@live@gt_pm.html
+
+  * igt@i915_selftest@live@hangcheck:
+    - bat-arls-2:         [DMESG-WARN][38] ([i915#11349]) -> [PASS][39]
+   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-2/igt@i915_selftest@live@hangcheck.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-5:         [ABORT][40] ([i915#12061] / [i915#12133]) -> [DMESG-WARN][41] ([i915#10341] / [i915#12133])
+   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-5/igt@i915_selftest@live.html
+   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [ABORT][42] ([i915#12061]) -> [DMESG-WARN][43] ([i915#10341] / [i915#11637])
+   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10262]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+  [i915#11637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12102]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12228]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12228
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#3840]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
+  [i915#4215]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4215
+  [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
+  [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8025 -> IGTPW_11761
+
+  CI-20190529: 20190529
+  CI_DRM_15439: 2141344f9b4f0bcd6bb20a45afaef94209743c0d @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11761: 6d33e039fc4fda910d8d353f9db65875aec99f64 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8025: 74d90c5564246af558009690b26fe4c6c887cb06 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/index.html
+
+--===============4440487667010120913==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Print execution and sleep times</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138850/">https://patchwork.freedesktop.org/series/138850/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8025 -&gt; IGTPW_11761</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/index.html</p>
+<h2>Participating hosts (38 -&gt; 38)</h2>
+<p>Additional (2): bat-dg2-11 fi-elk-e7500 <br />
+  Missing    (2): fi-snb-2520m fi-kbl-8809g </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11761 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@read:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@fbdev@read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@fbdev@read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_fence_blits@basic:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@gem_tiled_fence_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_contexts:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@i915_selftest@live@gt_contexts.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@i915_selftest@live@gt_contexts.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a>) +37 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_heartbeat:</p>
+<ul>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@gt_heartbeat.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) +4 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_tlb:</p>
+<ul>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@gt_tlb.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a>) +25 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@objects:</p>
+<ul>
+<li>bat-arls-5:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@objects.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a>) +2 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212">i915#4212</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4215">i915#4215</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213">i915#4213</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3840">i915#3840</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@prune-stale-modes:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_force_connector_basic@prune-stale-modes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274">i915#5274</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1:</p>
+<ul>
+<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/fi-elk-e7500/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12@pipe-a-hdmi-a-1.html">SKIP</a> +25 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-gtt:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@prime_vgem@basic-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-dg2-11/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@fbdev@nullptr:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-1/igt@fbdev@nullptr.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12102">i915#12102</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-1/igt@fbdev@nullptr.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-mtlp-8/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arlh-2/igt@i915_selftest@live.html">PASS</a></li>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-2/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-2/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_pm:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arlh-2/igt@i915_selftest@live@gt_pm.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12228">i915#12228</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arlh-2/igt@i915_selftest@live@gt_pm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@hangcheck:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-2/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-2/igt@i915_selftest@live@hangcheck.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-5/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8025/bat-arls-5/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11761/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8025 -&gt; IGTPW_11761</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15439: 2141344f9b4f0bcd6bb20a45afaef94209743c0d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11761: 6d33e039fc4fda910d8d353f9db65875aec99f64 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8025: 74d90c5564246af558009690b26fe4c6c887cb06 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4440487667010120913==--
