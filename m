@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8EF15C78850
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Sep 2024 14:01:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5340C78849
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Sep 2024 14:04:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 51E7010E14D;
-	Fri, 20 Sep 2024 14:01:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9885610E835;
+	Fri, 20 Sep 2024 14:04:35 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6942F10E14D;
- Fri, 20 Sep 2024 14:01:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E077010E835;
+ Fri, 20 Sep 2024 14:04:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6678572561662804304=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Ffault?=
- =?utf-8?q?=5Finjection=3A_Add_new_test_for_fault_injection?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/gpu=5Fcmds=3A_Correct_numb?=
+ =?utf-8?q?er_of_threads_in_CFE=5FSTATE_instruction?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
+To: "Dominik Grzegorzek" <dominik.grzegorzek@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Sep 2024 14:01:17 -0000
-Message-ID: <172684087742.1051051.16581467922442780378@2413ebb6fbb6>
+Date: Fri, 20 Sep 2024 14:04:33 -0000
+Message-ID: <172684107391.1051085.15323523087774643834@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240920131913.3368381-1-francois.dugast@intel.com>
-In-Reply-To: <20240920131913.3368381-1-francois.dugast@intel.com>
+References: <20240920132425.226069-1-dominik.grzegorzek@intel.com>
+In-Reply-To: <20240920132425.226069-1-dominik.grzegorzek@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,149 +41,121 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============6678572561662804304==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/intel/xe_fault_injection: Add new test for fault injection
-URL   : https://patchwork.freedesktop.org/series/138923/
-State : warning
+Series: lib/gpu_cmds: Correct number of threads in CFE_STATE instruction
+URL   : https://patchwork.freedesktop.org/series/138924/
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_8030_BAT -> XEIGTPW_11777_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1275164 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/63936915):
-  [4/8] Generating kms_tests.html with a custom command.
-  [5/8] Generating intel-ci-tests with a custom command.
-  [6/8] Generating i915_tests.html with a custom command.
-  [7/8] Generating xe_tests.rst with a custom command.
-  FAILED: docs/testplan/xe_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: igt@xe_fault_injection@function-fault-injection-during-probe Functionality documentation is missing
-  INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug_online' but no binary
-  ERROR: Missing documentation for igt@xe_fault_injection@function-fault-injection
-  ERROR: Unneeded documentation for igt@xe_fault_injection@function-fault-injection-during-probe
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1726840689:step_script
-  section_start:1726840689:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1726840690:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **SUCCESS**
+
+  No regressions found.
+
   
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/63936910):
-  [3/7] Generating i915_tests.html with a custom command.
-  [4/7] Generating intel-ci-tests with a custom command.
-  [5/7] Generating kms_tests.html with a custom command.
-  [6/7] Generating xe_tests.rst with a custom command.
-  FAILED: docs/testplan/xe_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: igt@xe_fault_injection@function-fault-injection-during-probe Functionality documentation is missing
-  INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug_online' but no binary
-  INFO: Found documentation for 'xe_eudebug' but no binary
-  ERROR: Missing documentation for igt@xe_fault_injection@function-fault-injection
-  ERROR: Unneeded documentation for igt@xe_fault_injection@function-fault-injection-during-probe
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1726840692:step_script
-  section_start:1726840692:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1726840693:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Participating hosts (9 -> 9)
+------------------------------
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/63936914):
-  [2/6] Generating intel-ci-tests with a custom command.
-  [3/6] Generating i915_tests.html with a custom command.
-  [4/6] Generating kms_tests.html with a custom command.
-  [5/6] Generating xe_tests.rst with a custom command.
-  FAILED: docs/testplan/xe_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: igt@xe_fault_injection@function-fault-injection-during-probe Functionality documentation is missing
-  INFO: Found documentation for 'xe_eudebug' but no binary
-  INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug_online' but no binary
-  ERROR: Missing documentation for igt@xe_fault_injection@function-fault-injection
-  ERROR: Unneeded documentation for igt@xe_fault_injection@function-fault-injection-during-probe
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1726840715:step_script
-  section_start:1726840715:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1726840716:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  No changes in participating hosts
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/63936913):
-  [3/7] Generating i915_tests.html with a custom command.
-  [4/7] Generating intel-ci-tests with a custom command.
-  [5/7] Generating kms_tests.html with a custom command.
-  [6/7] Generating xe_tests.rst with a custom command.
-  FAILED: docs/testplan/xe_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: igt@xe_fault_injection@function-fault-injection-during-probe Functionality documentation is missing
-  INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug_online' but no binary
-  ERROR: Missing documentation for igt@xe_fault_injection@function-fault-injection
-  ERROR: Unneeded documentation for igt@xe_fault_injection@function-fault-injection-during-probe
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1726840701:step_script
-  section_start:1726840701:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1726840702:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Known issues
+------------
 
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/63936911):
-  [3/7] Generating i915_tests.html with a custom command.
-  [4/7] Generating kms_tests.html with a custom command.
-  [5/7] Generating intel-ci-tests with a custom command.
-  [6/7] Generating xe_tests.rst with a custom command.
-  FAILED: docs/testplan/xe_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: igt@xe_fault_injection@function-fault-injection-during-probe Functionality documentation is missing
-  INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug_online' but no binary
-  ERROR: Missing documentation for igt@xe_fault_injection@function-fault-injection
-  ERROR: Unneeded documentation for igt@xe_fault_injection@function-fault-injection-during-probe
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1726840695:step_script
-  section_start:1726840695:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1726840696:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  Here are the changes found in XEIGTPW_11777_BAT that come from known issues:
 
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/63936912):
-  [3/7] Generating kms_tests.html with a custom command.
-  [4/7] Generating i915_tests.html with a custom command.
-  [5/7] Generating intel-ci-tests with a custom command.
-  [6/7] Generating xe_tests.rst with a custom command.
-  FAILED: docs/testplan/xe_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --rest docs/testplan/xe_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  Warning: igt@xe_fault_injection@function-fault-injection-during-probe Functionality documentation is missing
-  INFO: Found documentation for 'xe_eudebug_online' but no binary
-  INFO: Found documentation for 'xe_exec_sip_eudebug' but no binary
-  INFO: Found documentation for 'xe_eudebug' but no binary
-  ERROR: Missing documentation for igt@xe_fault_injection@function-fault-injection
-  ERROR: Unneeded documentation for igt@xe_fault_injection@function-fault-injection-during-probe
-  Please refer: docs/test_documentation.md for more details
-  ninja: build stopped: subcommand failed.
-  section_end:1726840691:step_script
-  section_start:1726840691:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1726840704:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_mmap@cpu-caching:
+    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8030/bat-bmg-1/igt@xe_mmap@cpu-caching.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11777/bat-bmg-1/igt@xe_mmap@cpu-caching.html
+
+  
+  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8030 -> IGTPW_11777
+
+  IGTPW_11777: a2ec1264835c68029b158b2659973bcaaea94a87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8030: cb008246b0c73b2af9363c3ed0d7a3448e82953c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1973-128ccc5f71d7b9d84ce8f0651aa713ae490f4990: 128ccc5f71d7b9d84ce8f0651aa713ae490f4990
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1275164
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11777/index.html
+
+--===============6678572561662804304==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/gpu_cmds: Correct number of threads in CFE_STATE instruction</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138924/">https://patchwork.freedesktop.org/series/138924/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11777/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11777/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8030_BAT -&gt; XEIGTPW_11777_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11777_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_mmap@cpu-caching:<ul>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8030/bat-bmg-1/igt@xe_mmap@cpu-caching.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11777/bat-bmg-1/igt@xe_mmap@cpu-caching.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8030 -&gt; IGTPW_11777</li>
+</ul>
+<p>IGTPW_11777: a2ec1264835c68029b158b2659973bcaaea94a87 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8030: cb008246b0c73b2af9363c3ed0d7a3448e82953c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1973-128ccc5f71d7b9d84ce8f0651aa713ae490f4990: 128ccc5f71d7b9d84ce8f0651aa713ae490f4990</p>
+
+</body>
+</html>
+
+--===============6678572561662804304==--
