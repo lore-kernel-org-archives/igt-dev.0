@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73061CF397E
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Sep 2024 02:04:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 444C9CF397E
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Sep 2024 02:10:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E7C810E02C;
-	Fri, 20 Sep 2024 02:04:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F172A10E2AE;
+	Fri, 20 Sep 2024 02:10:57 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 173B410E02C;
- Fri, 20 Sep 2024 02:04:50 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4116591490477796097=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3DB110E02C;
+ Fri, 20 Sep 2024 02:10:56 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/kms=5Fpsr2=5Fsf=3A?=
- =?utf-8?q?_Add_eDP_check_for_Early_Transport?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBUILD=3A_failure_for_tests/kms=5Fwriteback=3A_?=
+ =?utf-8?q?Add_clone_mode_subtest_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
+To: "Jessica Zhang" <quic_jesszhan@quicinc.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Sep 2024 02:04:50 -0000
-Message-ID: <172679789008.1048260.597376251501589236@2413ebb6fbb6>
+Date: Fri, 20 Sep 2024 02:10:56 -0000
+Message-ID: <172679825672.1048260.17365208002033074350@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240919172425.1154937-1-jeevan.b@intel.com>
-In-Reply-To: <20240919172425.1154937-1-jeevan.b@intel.com>
+References: <20240919-igt-cwb-v3-0-2bb3161f1f96@quicinc.com>
+In-Reply-To: <20240919-igt-cwb-v3-0-2bb3161f1f96@quicinc.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,155 +41,67 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4116591490477796097==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/intel/kms_psr2_sf: Add eDP check for Early Transport
-URL   : https://patchwork.freedesktop.org/series/138875/
-State : success
+Series: tests/kms_writeback: Add clone mode subtest (rev3)
+URL   : https://patchwork.freedesktop.org/series/137933/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8028_BAT -> XEIGTPW_11768_BAT
-====================================================
+IGT patchset build failed on latest successful build
+c459544b7af00e4599e1ad010e9f773086cb0c19 tests/amd_queue_reset: add sdma test in queue reset
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11768_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@invalid-set-prop-any:
-    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8028/bat-bmg-1/igt@kms_addfb_basic@invalid-set-prop-any.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/bat-bmg-1/igt@kms_addfb_basic@invalid-set-prop-any.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [FAIL][3] ([Intel XE#886]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8028/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][5] ([Intel XE#1861]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8028/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
-
-
-Build changes
--------------
-
-  * IGT: IGT_8028 -> IGTPW_11768
-  * Linux: xe-1971-2141344f9b4f0bcd6bb20a45afaef94209743c0d -> xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a
-
-  IGTPW_11768: 11768
-  IGT_8028: 8028
-  xe-1971-2141344f9b4f0bcd6bb20a45afaef94209743c0d: 2141344f9b4f0bcd6bb20a45afaef94209743c0d
-  xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a: d4340c1de6d417c7b3edac187c3af011b146701a
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/index.html
-
---===============4116591490477796097==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Tail of build.log:
+[511/1771] Compiling C object 'tests/59830eb@@gem_ctx_exec@exe/intel_gem_ctx_exec.c.o'.
+[512/1771] Compiling C object 'tools/f9d35d4@@intel_reg@exe/intel_reg_decode.c.o'.
+[513/1771] Compiling C object 'tests/59830eb@@gem_ccs@exe/intel_gem_ccs.c.o'.
+[514/1771] Compiling C object 'tests/59830eb@@gem_exec_lut_handle@exe/intel_gem_exec_lut_handle.c.o'.
+[515/1771] Compiling C object 'tests/59830eb@@gem_ctx_create@exe/intel_gem_ctx_create.c.o'.
+[516/1771] Compiling C object 'tests/59830eb@@gem_exec_gttfill@exe/intel_gem_exec_gttfill.c.o'.
+[517/1771] Compiling C object 'tests/59830eb@@gem_ctx_engines@exe/intel_gem_ctx_engines.c.o'.
+[518/1771] Compiling C object 'tests/59830eb@@prime_mmap@exe/intel_prime_mmap.c.o'.
+[519/1771] Compiling C object 'tests/59830eb@@gem_exec_parallel@exe/intel_gem_exec_parallel.c.o'.
+[520/1771] Compiling C object 'tests/59830eb@@gem_evict_everything@exe/intel_gem_evict_everything.c.o'.
+[521/1771] Compiling C object 'tests/59830eb@@prime_vgem@exe/prime_vgem.c.o'.
+[522/1771] Compiling C object 'tests/59830eb@@gem_blits@exe/intel_gem_blits.c.o'.
+[523/1771] Compiling C object 'tests/59830eb@@gem_exec_alignment@exe/intel_gem_exec_alignment.c.o'.
+[524/1771] Compiling C object 'tests/59830eb@@gem_ctx_sseu@exe/intel_gem_ctx_sseu.c.o'.
+[525/1771] Compiling C object 'tests/59830eb@@gem_ctx_switch@exe/intel_gem_ctx_switch.c.o'.
+[526/1771] Compiling C object 'tests/59830eb@@kms_flip@exe/kms_flip.c.o'.
+[527/1771] Compiling C object 'tests/59830eb@@syncobj_timeline@exe/syncobj_timeline.c.o'.
+[528/1771] Compiling C object 'tests/59830eb@@kms_plane_scaling@exe/kms_plane_scaling.c.o'.
+[529/1771] Compiling C object 'tests/59830eb@@gem_exercise_blt@exe/intel_gem_exercise_blt.c.o'.
+[530/1771] Compiling C object 'tests/59830eb@@gem_busy@exe/intel_gem_busy.c.o'.
+[531/1771] Compiling C object 'tests/59830eb@@gem_ctx_isolation@exe/intel_gem_ctx_isolation.c.o'.
+[532/1771] Compiling C object 'tests/59830eb@@gen7_exec_parse@exe/intel_gen7_exec_parse.c.o'.
+[533/1771] Compiling C object 'tests/59830eb@@gem_exec_suspend@exe/intel_gem_exec_suspend.c.o'.
+[534/1771] Compiling C object 'tests/59830eb@@gem_exec_params@exe/intel_gem_exec_params.c.o'.
+[535/1771] Compiling C object 'tests/59830eb@@gem_exec_store@exe/intel_gem_exec_store.c.o'.
+[536/1771] Compiling C object 'lib/76b5a35@@igt-i915_intel_decode_c@sta/i915_intel_decode.c.o'.
+[537/1771] Compiling C object 'tests/59830eb@@drm_fdinfo@exe/intel_drm_fdinfo.c.o'.
+[538/1771] Compiling C object 'tests/59830eb@@gem_eio@exe/intel_gem_eio.c.o'.
+[539/1771] Compiling C object 'tests/59830eb@@gem_exec_fair@exe/intel_gem_exec_fair.c.o'.
+[540/1771] Compiling C object 'tests/59830eb@@gem_exec_flush@exe/intel_gem_exec_flush.c.o'.
+[541/1771] Compiling C object 'tests/59830eb@@api_intel_bb@exe/intel_api_intel_bb.c.o'.
+[542/1771] Compiling C object 'tests/59830eb@@gem_ctx_shared@exe/intel_gem_ctx_shared.c.o'.
+[543/1771] Compiling C object 'tests/59830eb@@gem_exec_latency@exe/intel_gem_exec_latency.c.o'.
+[544/1771] Compiling C object 'tests/59830eb@@gem_ctx_persistence@exe/intel_gem_ctx_persistence.c.o'.
+[545/1771] Compiling C object 'tests/59830eb@@gem_exec_whisper@exe/intel_gem_exec_whisper.c.o'.
+[546/1771] Compiling C object 'tests/59830eb@@gem_exec_capture@exe/intel_gem_exec_capture.c.o'.
+[547/1771] Compiling C object 'tests/59830eb@@kms_cursor_legacy@exe/kms_cursor_legacy.c.o'.
+[548/1771] Compiling C object 'lib/76b5a35@@igt-igt_fb_c@sta/igt_fb.c.o'.
+[549/1771] Compiling C object 'tests/59830eb@@gem_exec_reloc@exe/intel_gem_exec_reloc.c.o'.
+[550/1771] Compiling C object 'tests/59830eb@@kms_atomic@exe/kms_atomic.c.o'.
+[551/1771] Compiling C object 'tests/59830eb@@gen9_exec_parse@exe/intel_gen9_exec_parse.c.o'.
+[552/1771] Compiling C object 'tests/59830eb@@gem_exec_nop@exe/intel_gem_exec_nop.c.o'.
+[553/1771] Compiling C object 'lib/76b5a35@@igt-igt_kms_c@sta/igt_kms.c.o'.
+[554/1771] Compiling C object 'tests/59830eb@@gem_concurrent_blit@exe/intel_gem_concurrent_blit.c.o'.
+[555/1771] Compiling C object 'tools/f9d35d4@@intel_gpu_top@exe/intel_gpu_top.c.o'.
+[556/1771] Compiling C object 'tests/59830eb@@gem_exec_balancer@exe/intel_gem_exec_balancer.c.o'.
+[557/1771] Generating i915-perf-equations with a custom command.
+[558/1771] Compiling C object 'tests/59830eb@@gem_exec_fence@exe/intel_gem_exec_fence.c.o'.
+[559/1771] Compiling C object 'tests/59830eb@@gem_exec_schedule@exe/intel_gem_exec_schedule.c.o'.
+ninja: build stopped: subcommand failed.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_psr2_sf: Add eDP check for Early Transport</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138875/">https://patchwork.freedesktop.org/series/138875/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8028_BAT -&gt; XEIGTPW_11768_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11768_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_addfb_basic@invalid-set-prop-any:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8028/bat-bmg-1/igt@kms_addfb_basic@invalid-set-prop-any.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/bat-bmg-1/igt@kms_addfb_basic@invalid-set-prop-any.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8028/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8028/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11768/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8028 -&gt; IGTPW_11768</li>
-<li>Linux: xe-1971-2141344f9b4f0bcd6bb20a45afaef94209743c0d -&gt; xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a</li>
-</ul>
-<p>IGTPW_11768: 11768<br />
-  IGT_8028: 8028<br />
-  xe-1971-2141344f9b4f0bcd6bb20a45afaef94209743c0d: 2141344f9b4f0bcd6bb20a45afaef94209743c0d<br />
-  xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a: d4340c1de6d417c7b3edac187c3af011b146701a</p>
-
-</body>
-</html>
-
---===============4116591490477796097==--
