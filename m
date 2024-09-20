@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9BA6CF58F9
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Sep 2024 09:32:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57273CF58FA
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Sep 2024 09:33:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88A4E10E055;
-	Fri, 20 Sep 2024 09:32:05 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4863C10E055;
- Fri, 20 Sep 2024 09:32:04 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7527849804149758952=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C18910E06C;
+	Fri, 20 Sep 2024 09:33:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k7JF/8uF";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5AED010E06C
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Sep 2024 09:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1726824802; x=1758360802;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=T/8VsnZgFP28coNewjLQOZoHqCznMTxmuGkNTbXTdxk=;
+ b=k7JF/8uFhLrOl27N9zwEeczvDrEK7wkG6uukyYwu/XWaatO4p0Km+t30
+ Sewl8507DD2tYXV4KgIjuy+o4PAEIuifnRgtF92qbdbN77PuhQmAcVfMT
+ t+ewJOYKZzDxbtpim8vQnYh8D0tFMN5TsgcM6agoovBj01gWQYw1oaMwb
+ 7ZmpuF21y5gs+eY/CABizi2oueUBuTz90fxMxUytcqVm0D0hGpgacX5rB
+ w9S6kQq5/k+Poo1ZY8o3BsdiMm2CcXer33zr5jg0BvcE6goKUfQxFmcCj
+ cfUNodhVNy2dZc/Mc3LQOj5neb3NHHYzyHEmjlwsLBtTRFDGjDKFjZKo/ g==;
+X-CSE-ConnectionGUID: Q0/3ZoJkRLKjDKZz6WNdsQ==
+X-CSE-MsgGUID: XMvLC+HKSbm720P9ez/Q8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="28721543"
+X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; d="scan'208";a="28721543"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Sep 2024 02:33:22 -0700
+X-CSE-ConnectionGUID: bWeA9RnvRdqaKqW4LyLpfA==
+X-CSE-MsgGUID: dIl1l4EpTSm4hvKoUd5Odg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; d="scan'208";a="70276744"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 02:33:20 -0700
+From: Jeevan B <jeevan.b@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ramanaidu.naladala@intel.com, santhosh.reddy.guddati@intel.com,
+ Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/kms_vrr: Update LOBF test to resuse the
+ existing logic
+Date: Fri, 20 Sep 2024 15:15:19 +0530
+Message-Id: <20240920094521.1222304-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_git_format-patch_-o_my-series_?=
- =?utf-8?q?HEAD=2E=2E=2Eorigin/master_-v6_--cover-letter?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Sep 2024 09:32:04 -0000
-Message-ID: <172682472428.1049997.8929170712205939763@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240920075618.633792-1-santhosh.reddy.guddati@intel.com>
-In-Reply-To: <20240920075618.633792-1-santhosh.reddy.guddati@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,279 +64,25 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7527849804149758952==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Removed the test_lobf function and used test_basic instead to simplify
+the code. Improved validation and error messages to make LOBF testing
+more reliable.
 
-== Series Details ==
+v2: Added new patch to check alpm status and check before exeucting the
+    LOBF test.
 
-Series: git format-patch -o my-series HEAD...origin/master -v6 --cover-letter
-URL   : https://patchwork.freedesktop.org/series/138906/
-State : failure
+Jeevan B (2):
+  lib/igt_kms: Added library functions for aux-less ALPM status
+  tests/kms_vrr: Update LOBF test to reuse the existing logic
 
-== Summary ==
+ lib/igt_kms.c   | 23 ++++++++++++++++++++++
+ lib/igt_kms.h   |  1 +
+ tests/kms_vrr.c | 52 +++++++++++++++++++------------------------------
+ 3 files changed, 44 insertions(+), 32 deletions(-)
 
-CI Bug Log - changes from XEIGT_8029_BAT -> XEIGTPW_11772_BAT
-====================================================
+-- 
+2.25.1
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11772_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11772_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11772_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_async_flip@alternate-sync-async-flip (NEW):
-    - bat-adlp-7:         NOTRUN -> [SKIP][1] +6 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-adlp-7/igt@kms_async_flip@alternate-sync-async-flip.html
-    - bat-bmg-1:          NOTRUN -> [SKIP][2] +6 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-bmg-1/igt@kms_async_flip@alternate-sync-async-flip.html
-    - bat-adlp-vf:        NOTRUN -> [SKIP][3] +6 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-adlp-vf/igt@kms_async_flip@alternate-sync-async-flip.html
-    - bat-lnl-2:          NOTRUN -> [SKIP][4] +6 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-lnl-2/igt@kms_async_flip@alternate-sync-async-flip.html
-
-  * {igt@kms_async_flip@async-flip-suspend-resume} (NEW):
-    - bat-atsm-2:         NOTRUN -> [SKIP][5] +6 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-atsm-2/igt@kms_async_flip@async-flip-suspend-resume.html
-
-  * igt@kms_async_flip@invalid-async-flip (NEW):
-    - bat-pvc-2:          NOTRUN -> [SKIP][6] +6 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-pvc-2/igt@kms_async_flip@invalid-async-flip.html
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][7] +6 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-dg2-oem2/igt@kms_async_flip@invalid-async-flip.html
-    - bat-lnl-1:          NOTRUN -> [SKIP][8] +6 other tests skip
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-lnl-1/igt@kms_async_flip@invalid-async-flip.html
-
-  * igt@kms_async_flip@test-time-stamp (NEW):
-    - {bat-bmg-2}:        NOTRUN -> [SKIP][9] +6 other tests skip
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-bmg-2/igt@kms_async_flip@test-time-stamp.html
-
-  
-New tests
----------
-
-  New tests have been introduced between XEIGT_8029_BAT and XEIGTPW_11772_BAT:
-
-### New IGT tests (7) ###
-
-  * igt@kms_async_flip@alternate-sync-async-flip:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_async_flip@async-flip-suspend-resume:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_async_flip@async-flip-with-page-flip-events:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_async_flip@crc:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_async_flip@invalid-async-flip:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_async_flip@test-cursor:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  * igt@kms_async_flip@test-time-stamp:
-    - Statuses : 9 skip(s)
-    - Exec time: [0.0] s
-
-  
-
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-
-
-Build changes
--------------
-
-  * IGT: IGT_8029 -> IGTPW_11772
-  * Linux: xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a -> xe-1973-128ccc5f71d7b9d84ce8f0651aa713ae490f4990
-
-  IGTPW_11772: 2170372bd990c9b3e86a0b6d119e79b4bd0e3549 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8029: d22cd438e6356bd7c2ee55436553cdcadd55193a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a: d4340c1de6d417c7b3edac187c3af011b146701a
-  xe-1973-128ccc5f71d7b9d84ce8f0651aa713ae490f4990: 128ccc5f71d7b9d84ce8f0651aa713ae490f4990
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/index.html
-
---===============7527849804149758952==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>git format-patch -o my-series HEAD...origin/master -v6 --cover-letter</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138906/">https://patchwork.freedesktop.org/series/138906/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8029_BAT -&gt; XEIGTPW_11772_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11772_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11772_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11772_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@kms_async_flip@alternate-sync-async-flip (NEW):</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-adlp-7/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +6 other tests skip</li>
-<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-bmg-1/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +6 other tests skip</li>
-<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-adlp-vf/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +6 other tests skip</li>
-<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-lnl-2/igt@kms_async_flip@alternate-sync-async-flip.html">SKIP</a> +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>{igt@kms_async_flip@async-flip-suspend-resume} (NEW):</p>
-<ul>
-<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-atsm-2/igt@kms_async_flip@async-flip-suspend-resume.html">SKIP</a> +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@invalid-async-flip (NEW):</p>
-<ul>
-<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-pvc-2/igt@kms_async_flip@invalid-async-flip.html">SKIP</a> +6 other tests skip</li>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-dg2-oem2/igt@kms_async_flip@invalid-async-flip.html">SKIP</a> +6 other tests skip</li>
-<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-lnl-1/igt@kms_async_flip@invalid-async-flip.html">SKIP</a> +6 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@test-time-stamp (NEW):</p>
-<ul>
-<li>{bat-bmg-2}:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11772/bat-bmg-2/igt@kms_async_flip@test-time-stamp.html">SKIP</a> +6 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_8029_BAT and XEIGTPW_11772_BAT:</p>
-<h3>New IGT tests (7)</h3>
-<ul>
-<li>
-<p>igt@kms_async_flip@alternate-sync-async-flip:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@async-flip-suspend-resume:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@async-flip-with-page-flip-events:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@crc:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@invalid-async-flip:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@test-cursor:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_async_flip@test-time-stamp:</p>
-<ul>
-<li>Statuses : 9 skip(s)</li>
-<li>Exec time: [0.0] s</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8029 -&gt; IGTPW_11772</li>
-<li>Linux: xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a -&gt; xe-1973-128ccc5f71d7b9d84ce8f0651aa713ae490f4990</li>
-</ul>
-<p>IGTPW_11772: 2170372bd990c9b3e86a0b6d119e79b4bd0e3549 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8029: d22cd438e6356bd7c2ee55436553cdcadd55193a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1972-d4340c1de6d417c7b3edac187c3af011b146701a: d4340c1de6d417c7b3edac187c3af011b146701a<br />
-  xe-1973-128ccc5f71d7b9d84ce8f0651aa713ae490f4990: 128ccc5f71d7b9d84ce8f0651aa713ae490f4990</p>
-
-</body>
-</html>
-
---===============7527849804149758952==--
