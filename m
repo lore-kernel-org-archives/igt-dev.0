@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C51A5CF9C6F
-	for <igt-dev@archiver.kernel.org>; Sun, 22 Sep 2024 21:13:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1E39CF9C6D
+	for <igt-dev@archiver.kernel.org>; Sun, 22 Sep 2024 21:13:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 823DF10E352;
-	Sun, 22 Sep 2024 21:13:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 96C7410E354;
+	Sun, 22 Sep 2024 21:13:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HZE7VIYJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l8vDwlzE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C9DD10E352
- for <igt-dev@lists.freedesktop.org>; Sun, 22 Sep 2024 21:13:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8138D10E354
+ for <igt-dev@lists.freedesktop.org>; Sun, 22 Sep 2024 21:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727039633; x=1758575633;
+ t=1727039635; x=1758575635;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=jfPNt2aryKOvpwU5RtaBZUSrhCmtAO6IrpTkKERkIas=;
- b=HZE7VIYJeStunj5B2IwHBSRDip+v7MJ3Z0wQXbQDnMTSa5xlmtUwVluL
- n15bUvD1owGj5ZBNrK2ytkDqVC9CQBn8kmQOIb4EOuMTrsOwIYGRUAe5E
- ha3SJeW85/OD6KvLkCz9fT/7wIrwlS5mGPK3Ggsi61WDzTwqMNoZ9EgiK
- nsCRk93jsh/jZFcnZfXehQ7cpY0GtvelV+Cpuq+FEf3LqyqB7GOPvDLOy
- VTZuqwx/lFN7stq7no9vhasP1FqM7Y56KuZQuzfjbg81AqRXYefw6z9fD
- mk6Xb+aAnMGxOH29ykQ9/wz/4+uc53b2jG3IFK/E4XQIm55x8m8E5s9Rx w==;
-X-CSE-ConnectionGUID: yG37or7wQBS5jkDPCW9iGQ==
-X-CSE-MsgGUID: xWtXTX8OTuOluuoYWhY1dA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="36641010"
-X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="36641010"
+ bh=EdqdppUlNSyZUFhLtwk0GlHU45lg8izitmxl34vlKfo=;
+ b=l8vDwlzExXp1wxIMbh59cEkbv/Exg+ToIilrddQBnv53e5Xs+Tynq1Tk
+ JDXwyOuQyOEl3ijbQ6h/oKLegzng0BVspAPhSah+1d5IFqLkMjiAZkHLY
+ 8KgShK1qbpPSYLloEjvJ7y6AU1tGSvpmSsiMhAajn980GHLX8O9jXkp4k
+ awNdggIjgqMWtkvSZ5tqbRAxmTrJ+am9FWEQJ6RYiomPTpovcU7NMvyJ5
+ ZzjnnWG36rybnEJZLwh6Z2OA1tbRX64xPD3Zu103qtRDsQi8meI1GbAKX
+ xngF7Yal+24UmHI4fVkuK8rVXPVWm2A6bNkz8HTqTMYZiQl9l1NkoO5tj Q==;
+X-CSE-ConnectionGUID: rIvkKNTmRwGCoeEmPu+xEw==
+X-CSE-MsgGUID: VHRWLqMfSyeh3uUjKk4F+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="36641011"
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="36641011"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2024 14:13:53 -0700
-X-CSE-ConnectionGUID: YlyFYy8PR0Osc34W47pLJg==
-X-CSE-MsgGUID: D3GxJP54RcWgl8rqFJeM0w==
+ 22 Sep 2024 14:13:55 -0700
+X-CSE-ConnectionGUID: w7c5eS+uQr2RrsnCyITIww==
+X-CSE-MsgGUID: /lWgdyZ3R6uMcrcwYcSh2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="71188104"
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="71188107"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2024 14:13:52 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2024 14:13:53 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: imre.deak@intel.com,
 	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 2/7] lib/igt_kms: add helper to set connector link status
-Date: Mon, 23 Sep 2024 02:55:44 +0530
-Message-Id: <20240922212549.1361889-3-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 3/7] lib/igt_kms: allow set and reset value to be same
+Date: Mon, 23 Sep 2024 02:55:45 +0530
+Message-Id: <20240922212549.1361889-4-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240922212549.1361889-1-kunal1.joshi@intel.com>
 References: <20240922212549.1361889-1-kunal1.joshi@intel.com>
@@ -68,77 +68,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-add helper to set connector's link status property
+allow set and reset value to be same, let the caller handle
+this scenario instead.
 
-v2: property ID's type is uint32_t (Imre)
+example scenario where this is required.
+i915_dp_force_link_rate should be auto before starting test
+should be auto at exit
+
+v2: handle the scenario at caller side
+
+v3: rename allow_set_equals_reset -> force_reset (Imre)
 
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- lib/igt_kms.c | 37 +++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  2 ++
- 2 files changed, 39 insertions(+)
+ lib/igt_kms.c | 21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index c79d800eb..53c6db7f3 100644
+index 53c6db7f3..011f3768a 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -2214,6 +2214,43 @@ void kmstest_set_connector_dpms(int fd, drmModeConnector *connector, int mode)
- 					       dpms, mode) == 0);
+@@ -1557,7 +1557,8 @@ static void connector_attr_free(struct igt_connector_attr *c)
+ static bool connector_attr_set(int idx, drmModeConnector *connector,
+ 			       int dir, igt_connector_attr_set set,
+ 			       const char *attr, const char *value,
+-			       const char *reset_value)
++			       const char *reset_value,
++			       bool force_reset)
+ {
+ 	struct igt_connector_attr *c;
+ 
+@@ -1573,7 +1574,7 @@ static bool connector_attr_set(int idx, drmModeConnector *connector,
+ 		return false;
+ 	}
+ 
+-	if (!strcmp(c->value, c->reset_value))
++	if (!force_reset && !strcmp(c->value, c->reset_value))
+ 		connector_attr_free(c);
+ 
+ 	return true;
+@@ -1582,7 +1583,8 @@ static bool connector_attr_set(int idx, drmModeConnector *connector,
+ static bool connector_attr_set_sysfs(int drm_fd,
+ 				     drmModeConnector *connector,
+ 				     const char *attr, const char *value,
+-				     const char *reset_value)
++				     const char *reset_value,
++				     bool force_reset)
+ {
+ 	char name[80];
+ 	int idx, dir;
+@@ -1600,7 +1602,8 @@ static bool connector_attr_set_sysfs(int drm_fd,
+ 		return false;
+ 
+ 	if (!connector_attr_set(idx, connector, dir,
+-				igt_sysfs_set, attr, value, reset_value))
++				igt_sysfs_set, attr, value, reset_value,
++				force_reset))
+ 		return false;
+ 
+ 	igt_debug("Connector %s/%s is now %s\n", name, attr, value);
+@@ -1611,7 +1614,8 @@ static bool connector_attr_set_sysfs(int drm_fd,
+ static bool connector_attr_set_debugfs(int drm_fd,
+ 				       drmModeConnector *connector,
+ 				       const char *attr, const char *value,
+-				       const char *reset_value)
++				       const char *reset_value,
++				       bool force_reset)
+ {
+ 	char name[80];
+ 	int idx, dir;
+@@ -1630,7 +1634,7 @@ static bool connector_attr_set_debugfs(int drm_fd,
+ 
+ 	if (!connector_attr_set(idx, connector, dir,
+ 				igt_sysfs_set, attr,
+-				value, reset_value))
++				value, reset_value, force_reset))
+ 		return false;
+ 
+ 	igt_info("Connector %s/%s is now %s\n", name, attr, value);
+@@ -1662,7 +1666,8 @@ static bool force_connector(int drm_fd,
+ 			    const char *value)
+ {
+ 	return connector_attr_set_sysfs(drm_fd, connector,
+-					"status", value, "detect");
++					"status", value, "detect",
++					false);
  }
  
-+/**
-+ * kmstest_set_connector_link_status
-+ * @drm_fd: drm file descriptor
-+ * @connector: libdrm connector
-+ * @link_status: DRM link status value
-+ *
-+ * This function sets the link status of @connector to @link_status.
-+ */
-+void kmstest_set_connector_link_status(int drm_fd, drmModeConnector *connector,
-+				       int link_status)
-+{
-+	bool found_it = false;
-+	int i;
-+	uint32_t link_status_prop;
-+
-+	for (i = 0; i < connector->count_props; i++) {
-+		struct drm_mode_get_property prop = {
-+			.prop_id = connector->props[i],
-+		};
-+
-+		if (drmIoctl(drm_fd, DRM_IOCTL_MODE_GETPROPERTY, &prop))
-+			continue;
-+
-+		if (strcmp(prop.name, "link-status"))
-+			continue;
-+
-+		link_status_prop = prop.prop_id;
-+		found_it = true;
-+		break;
-+	}
-+	igt_assert_f(found_it, "LINK_STATUS property not found on %d\n",
-+		     connector->connector_id);
-+
-+	igt_assert(drmModeConnectorSetProperty(drm_fd, connector->connector_id,
-+					       link_status_prop, link_status) == 0);
-+}
-+
  /**
-  * kmstest_get_property:
-  * @drm_fd: drm file descriptor
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 7d9c28d81..34a671bce 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -278,6 +278,8 @@ bool kmstest_probe_connector_config(int drm_fd, uint32_t connector_id,
- void kmstest_free_connector_config(struct kmstest_connector_config *config);
+@@ -1727,7 +1732,7 @@ static bool force_connector_bigjoiner(int drm_fd,
+ {
+ 	return connector_attr_set_debugfs(drm_fd, connector,
+ 					  "i915_bigjoiner_force_enable",
+-					  value, "0");
++					  value, "0", false);
+ }
  
- void kmstest_set_connector_dpms(int fd, drmModeConnector *connector, int mode);
-+void kmstest_set_connector_link_status(int drm_fd, drmModeConnector *connector,
-+				       int link_status);
- bool kmstest_get_property(int drm_fd, uint32_t object_id, uint32_t object_type,
- 			  const char *name, uint32_t *prop_id, uint64_t *value,
- 			  drmModePropertyPtr *prop);
+ /**
 -- 
 2.43.0
 
