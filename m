@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B1A1CF9C5B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE0B9CF9C6F
 	for <igt-dev@archiver.kernel.org>; Mon, 23 Sep 2024 07:46:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1182E10E39F;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 92A3D10E3A0;
 	Mon, 23 Sep 2024 07:46:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QZy/gvCC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SXgmWMqc";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7645410E3A0
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1175A10E39F
  for <igt-dev@lists.freedesktop.org>; Mon, 23 Sep 2024 07:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1727077616; x=1758613616;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cBzO2GKZC896UeR86mfJ+ikRvVAqIr1l3epnogVlaxI=;
- b=QZy/gvCCkK5uzeqtH05V5S4pA89c02+jINtxjKKd+ViO3SfYfdNh5+te
- Q7ol65XIMGHPDBPwAuS5FIig4Sv5/aNaBuoQ3/zQOiqKtXBmmJCYQ6Jm5
- dBWc2gAAqAys2rjhVjgOgGRaHlC8BQze03TVw3ZLGPkfpFNk1dudH1NX/
- aJ8U2INhO3laYtqTyErlbPCkTYNI8bK+HJ1232F+S5KRRG/SYjf51e4Dh
- FjjwL3bpCnaa/J2lKaWtE2N6T0l2iAqWEGgupvTPpLMRKKR44hipRJvNA
- vMDConzDsnViPUTHStGBWuvdgVob7uDCt3Hj/DXYC1RSlivXxc1aVdAFR A==;
-X-CSE-ConnectionGUID: uDTGmaKkRHWN0vX1Oopk5A==
-X-CSE-MsgGUID: hi0vj0MXRmikhKPnQ3biHQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="26166217"
-X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="26166217"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0HSwxtBmLd2VDJnGuTGDtzp5TlUvZNO3nQIUkG2oDac=;
+ b=SXgmWMqcXBsTc4UxQsqAeuGOR6JdKaRnL35LfWhxgCNHiYK2cQ7d6PHn
+ cyZrm/KmJQLR73JmOHnqC+lMmBpdtqsKfw+DTzi+JUUOX3PFK2zJ5DiBC
+ Jp78aoBud606WEpAVRXsV2A5/a8TGxZCBPRAqUoHeL0lnDTsrcnXUsGdP
+ 4JuYNuIPXGJ9pvvp/J5PnRBN4R6YdpwrRndSzugo1Dvf59CJD9oagm0Lv
+ bDiDoqg5o7ehbLPMxZecHKH0UFhbGvMe3Fb4heQUrDtEz4bktsXWG+hZf
+ ySzK9ifj1yYDmPmUaeJAXGX5/3Y5ZTOxZGI7TwsEwv8W9p4ku5UySIXRj Q==;
+X-CSE-ConnectionGUID: iIKKiSRERQOB6/Bkh+4itg==
+X-CSE-MsgGUID: qDwVCcEJTw2a3FpdriuV1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="26166214"
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="26166214"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2024 00:46:56 -0700
-X-CSE-ConnectionGUID: pZlGiCvqSieMDtIvI0NESg==
-X-CSE-MsgGUID: +d0SYpY5TOegLRPZGMgSeQ==
+ 23 Sep 2024 00:46:55 -0700
+X-CSE-ConnectionGUID: SwAmtMxzTa2TRS190cwMYQ==
+X-CSE-MsgGUID: zYL4FOdAQ6Sko5Zh+oX+wQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="75541830"
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="75541826"
 Received: from cpetruta-mobl1.ger.corp.intel.com (HELO dgrzegor-mobl2..)
  ([10.245.246.83])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2024 00:46:55 -0700
+ 23 Sep 2024 00:46:53 -0700
 From: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t 2/2] lib/gpgpu_shader: Decrease maximal number of
- threads to satisfy Xe2
-Date: Mon, 23 Sep 2024 09:46:40 +0200
-Message-Id: <20240923074640.13141-2-dominik.grzegorzek@intel.com>
+Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/gpu_cmds: Correct number of threads in
+ CFE_STATE instruction
+Date: Mon, 23 Sep 2024 09:46:39 +0200
+Message-Id: <20240923074640.13141-1-dominik.grzegorzek@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240923074640.13141-1-dominik.grzegorzek@intel.com>
-References: <20240923074640.13141-1-dominik.grzegorzek@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,29 +71,37 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Since xe2 there was a change in CFE_STATE instruction format.
 Field describing maximal number of threads now has type of u16,
-not u16-1 as it used to have, however upper bound of the valid range
-has not changed and it is 2^16 - 1 as it used to be. So, to not introduce
-conditional code, decrease maximal number of threads across all
-generations (anyway the value exceeds devices capability).
+not u16-1 as it used to have.
 
+Reported-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 ---
- lib/gpgpu_shader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/gpu_cmds.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index 6d8c7ebb8..e20aa4535 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -25,7 +25,7 @@ struct label_entry {
- #define PAGE_SIZE 4096
- #define BATCH_STATE_SPLIT 2048
- /* VFE STATE params */
--#define THREADS (1 << 16) /* max value */
-+#define THREADS ((1 << 16) - 1) /* max value since Xe2 */
- #define GEN8_GPGPU_URB_ENTRIES 1
- #define GPGPU_URB_SIZE 0
- #define GPGPU_CURBE_SIZE 0
+diff --git a/lib/gpu_cmds.c b/lib/gpu_cmds.c
+index c44b24c79..2638e3791 100644
+--- a/lib/gpu_cmds.c
++++ b/lib/gpu_cmds.c
+@@ -992,6 +992,7 @@ void
+ xehp_emit_cfe_state(struct intel_bb *ibb, uint32_t threads)
+ {
+ 	bool dfeud = CFE_CAN_DISABLE_FUSED_EU_DISPATCH(ibb->devid);
++	bool u16minus1 = intel_graphics_ver(ibb->devid) < IP_VER(20, 0);
+ 
+ 	intel_bb_out(ibb, XEHP_CFE_STATE | (6 - 2));
+ 
+@@ -1001,7 +1002,8 @@ xehp_emit_cfe_state(struct intel_bb *ibb, uint32_t threads)
+ 
+ #define _LEGACY_MODE (1 << 6)
+ 	/* number of threads & urb entries */
+-	intel_bb_out(ibb, (max_t(threads, threads, 64) - 1) << 16 | (dfeud ? _LEGACY_MODE : 0));
++	threads = max_t(threads, threads, 64);
++	intel_bb_out(ibb, (u16minus1 ? threads - 1 : threads) << 16 | (dfeud ? _LEGACY_MODE : 0));
+ 
+ 	intel_bb_out(ibb, 0);
+ 	intel_bb_out(ibb, 0);
 -- 
 2.34.1
 
