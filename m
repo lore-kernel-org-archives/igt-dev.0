@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 222F1CF9C6D
-	for <igt-dev@archiver.kernel.org>; Sun, 22 Sep 2024 21:14:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E5ECF9C5B
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Sep 2024 03:51:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC74510E35C;
-	Sun, 22 Sep 2024 21:14:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1E2CB10E368;
+	Mon, 23 Sep 2024 03:51:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bH6TnXNK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H3cgR4wc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2E2B10E35B
- for <igt-dev@lists.freedesktop.org>; Sun, 22 Sep 2024 21:14:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2B1D510E368
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Sep 2024 03:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727039642; x=1758575642;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=HWjiyAaVc4UFN5mdSnOeHN+C2kN2dVBrwAy+c5I8ny4=;
- b=bH6TnXNKSb3qNeSv5FnZUZoHu29yP5uhk5bcswfyRk/hDZAlMaJihMAW
- 6txUFGM1YJs0BrXPCTi51wxpw+eCpStl8btOcf7mhB4n0unmSNgrupD6I
- wuvhS/L+9edl8QyxWZ/0KOIo0v58yFKCZxbFZCyMpSoqyt9VvzlQs5mWE
- DjJ7CGyzZOA0Wjv+RM7dsPBV/0t7X/Woesu9v23omrqGeLPFwtdNmZ1dP
- L27AahSIJ7o9LYVDDjyChda0p1YL4xkRVBJD1aKzYCxFpZ9Rs58J6yFI2
- z4JUNLzigDmx8JmodVXxSiWXUNgbFV6OOUvR8DgM1bS1Eg8cxzuasMfAc w==;
-X-CSE-ConnectionGUID: r7W9Ks7nT2GPr8TlYLuVVg==
-X-CSE-MsgGUID: cR1TjMs3SV+Rf7wRDyeWEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="36641016"
-X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="36641016"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2024 14:14:01 -0700
-X-CSE-ConnectionGUID: djwHx28wQUOXG2g4sYw5Zw==
-X-CSE-MsgGUID: bmgp27UmRs+OfMWLQTKt/g==
+ t=1727063510; x=1758599510;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4CFBG8tY6s1AXrieeJx7mj1c2f4kVrYtKb1a8UyriRw=;
+ b=H3cgR4wcr9eROJywI977A9GcHWLbJWAnDZl3ZMkgNWec0iZrLobr8+KE
+ WlKYX5R/PRDWTrsVH78+y5sjhNnKMfxRtQmJPnTZf53T/5GC1PNGgBQCz
+ k7SEQui68KtQbJuRtZ2DCeWf2+qdNtaG1GHusCC9OrBPLfJL1ZAWQDNuU
+ 96LisrXgEpBMGMmC1i4J9zHLbUTiTeNsSNgE28jVDa/ga5ScoVQ71hPEm
+ OM/o3iobug9Gs/xEdKdXEEomZwvdnt4SiGM27TYkqviIi5WYixVSA1FSS
+ jCg6vTPggilZh71XEss44yVL/2VasyOUT760GQGUpxqDBDOPMpK2NMNuT w==;
+X-CSE-ConnectionGUID: 5uZSE/avRx+IZ1EwY6bKBQ==
+X-CSE-MsgGUID: PMZWKVlyTgWzVmDGDxPHtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="25941109"
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="25941109"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2024 20:51:50 -0700
+X-CSE-ConnectionGUID: j1GsabonRLus6nJxOIRaUg==
+X-CSE-MsgGUID: T3qYf/xeQI+B0gRA47uXZg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="71188119"
-Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2024 14:14:00 -0700
-From: Kunal Joshi <kunal1.joshi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; d="scan'208";a="75882358"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2024 20:51:45 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: imre.deak@intel.com,
-	Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 7/7] HAX: Do not merge
-Date: Mon, 23 Sep 2024 02:55:49 +0530
-Message-Id: <20240922212549.1361889-8-kunal1.joshi@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240922212549.1361889-1-kunal1.joshi@intel.com>
-References: <20240922212549.1361889-1-kunal1.joshi@intel.com>
+Cc: swati2.sharma@intel.com, karthik.b.s@intel.com, vandita.kulkarni@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v4 0/2] tests/kms_async_flips: Async flips suspend
+ resume test
+Date: Mon, 23 Sep 2024 09:21:18 +0530
+Message-Id: <20240923035120.673521-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,39 +67,18 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-HAX: Do not merge
+This patch introduces a new subtest to validate async flips during
+suspend and resume cycle.
 
-Just for testing in CI
----
- tests/intel-ci/fast-feedback.testlist    | 1 +
- tests/intel-ci/xe-fast-feedback.testlist | 2 ++
- 2 files changed, 3 insertions(+)
+Santhosh Reddy Guddati (2):
+  tests/kms_async_flips: Async flips suspend resume test
+  HAX patch do not merge
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..7b84ccffc 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,6 +1,7 @@
- # Try to load the driver if it's not available yet.
- igt@i915_module_load@load
- 
-+igt@kms_fallback@dp-fallback
- # Keep alphabetically sorted by default
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 01b01dcf9..110675cd3 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,6 +1,8 @@
- # Should be the first test
- igt@xe_module_load@load
- 
-+igt@kms_fallback@dp-fallback
-+
- igt@fbdev@eof
- igt@fbdev@info
- igt@fbdev@nullptr
+ tests/intel-ci/fast-feedback.testlist    | 178 +-------------
+ tests/intel-ci/xe-fast-feedback.testlist | 284 +----------------------
+ tests/kms_async_flips.c                  |  15 ++
+ 3 files changed, 29 insertions(+), 448 deletions(-)
+
 -- 
-2.43.0
+2.34.1
 
