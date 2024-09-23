@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0399DCF9C6F
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Sep 2024 20:46:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DED13CF9C71
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Sep 2024 20:46:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1AB110E494;
-	Mon, 23 Sep 2024 20:46:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9BC7010E496;
+	Mon, 23 Sep 2024 20:46:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LOit+mcS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QVlgS7dr";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E16C10E494
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Sep 2024 20:46:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E55810E496
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Sep 2024 20:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727124363; x=1758660363;
+ t=1727124366; x=1758660366;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=5DRAhTvaT8zwDI0/no/s+yDZyrYfzxiP22GzknIz2vs=;
- b=LOit+mcSHZneTAoeY08LHSw3QqiPaNeHXrek2hHR9E9Vmb4aWkIozFS4
- xkJ5mvoHWM7BXlDTMXmpY3TcwX4qSPqF1cOUz/NwBeVxtgbCm8i405mHM
- YalZ6c9j6YaISJSHh+GQQW2uzTXoMy5YSpkMU8VeIKW0khMJX7rDSib42
- fj+Y1nXciUMwiC4zABJTR37Xh2wZk2mfqbO5iZemHmADcLLVh9TKPAAQd
- HyFDuiICwiTVpwFZh/sKjv26W7Lu0N1MAbSVWnEXr3GNMsPA1MopdHiBm
- YYbrJ6KinF1+ZJXnOkOQFjXr/lB0hPdfqN88O3ajOIU0ivWPB0n2e+42z w==;
-X-CSE-ConnectionGUID: F8R7xdGgS9WbaQAK4IpaSg==
-X-CSE-MsgGUID: LPZ+fStQS4eopXD7JxzRpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="25955980"
-X-IronPort-AV: E=Sophos;i="6.10,252,1719903600"; d="scan'208";a="25955980"
+ bh=lxeL/QHCaolTpDIczJEypmbOOXanaSwr4xRYTPOtfnk=;
+ b=QVlgS7dr/8GAwpm4ji1i9cZEOdGX/OOQqiqfpBIplWpyEmsSLmdmRvAO
+ hReLUWro8fXskRirvU9ipG/ymh1C4MEQ0luAn6127R3Pr3wWYE/ZZXFLN
+ c5BmOC59vueDwST/83brWCjBzrJu4Y5NQETGjB3HII3dYd7KZEStG91hH
+ 8ZCbvl3ZrFzQ8ojyBjjxK+ceVgKri6H0p1s3+ZMbB989+rku9Cb4K/vQq
+ JOPaGL1UC4kwtKvwSQQWDe7Efzu5gC2q/AOkn/Nc6SXVi1kZD2uQhtaq5
+ Olpond8t1q3Q5wjUSAJYfAxRK8eE8Xc7EW3RjXHV4wvgL4Q7XRxKg9EEI w==;
+X-CSE-ConnectionGUID: /qI+rxXBTUiArER43gPn3Q==
+X-CSE-MsgGUID: APHBIXshR3mQhzmQTXvTag==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="25955990"
+X-IronPort-AV: E=Sophos;i="6.10,252,1719903600"; d="scan'208";a="25955990"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2024 13:46:03 -0700
-X-CSE-ConnectionGUID: +kX0Ams+RT+rdebZ/7p3FA==
-X-CSE-MsgGUID: NY6U6GhoTNCjNZVBAhOFQw==
+ 23 Sep 2024 13:46:06 -0700
+X-CSE-ConnectionGUID: 4xKkN7enQAeSIaOJzkpIEg==
+X-CSE-MsgGUID: pfj0b/uPTC+nSd79uhLpDQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,252,1719903600"; d="scan'208";a="71326676"
+X-IronPort-AV: E=Sophos;i="6.10,252,1719903600"; d="scan'208";a="71326700"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 23 Sep 2024 13:46:01 -0700
+ by fmviesa008.fm.intel.com with SMTP; 23 Sep 2024 13:46:04 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 23 Sep 2024 23:46:00 +0300
+ Mon, 23 Sep 2024 23:46:03 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 1/6] tests/gem_ctx_engines: Fix gen6+ check
-Date: Mon, 23 Sep 2024 23:45:52 +0300
-Message-ID: <20240923204557.32123-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 2/6] tests/kms_frontbuffer_tracking: Simplify tiling vs.
+ platform tests
+Date: Mon, 23 Sep 2024 23:45:53 +0300
+Message-ID: <20240923204557.32123-3-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.44.2
 In-Reply-To: <20240923204557.32123-1-ville.syrjala@linux.intel.com>
 References: <20240923204557.32123-1-ville.syrjala@linux.intel.com>
@@ -70,29 +71,38 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Put the parens in the correct spot so that we are actually
-checking for gen6+ instead of 'intel_gen() != 0' (which is
-always true btw since intel_gen() returns -1 when it doesn't
-detect a valid device).
+The gen12+ check seems pointless when we already check for
+4tile specifically, so just get rid of it. Also drop the
+redundant comments.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/gem_ctx_engines.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/intel/kms_frontbuffer_tracking.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/tests/intel/gem_ctx_engines.c b/tests/intel/gem_ctx_engines.c
-index 94a47ecc3079..24240df66062 100644
---- a/tests/intel/gem_ctx_engines.c
-+++ b/tests/intel/gem_ctx_engines.c
-@@ -643,7 +643,7 @@ igt_main
- 		const intel_ctx_t *ctx;
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index f1bef9ab85ff..0646af62e51c 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -4766,17 +4766,13 @@ igt_main_args("", long_options, help_str, opt_handler, NULL)
  
- 		igt_require(gem_scheduler_enabled(i915));
--		igt_require(intel_gen(intel_get_drm_devid(i915) >= 6));
-+		igt_require(intel_gen(intel_get_drm_devid(i915)) >= 6);
+ 					igt_require(igt_draw_supports_method(drm.fd, t.method));
  
- 		ctx = intel_ctx_create_all_physical(i915);
- 		for_each_ctx_engine(i915, ctx, e) {
+-					/* Tiling Y is only supported on GEN9+ */
+ 					if (t.tiling == TILING_Y) {
+ 						igt_require(AT_LEAST_GEN(drm.devid, 9));
+ 						igt_require(!intel_get_device_info(drm.devid)->has_4tile);
+ 					}
+ 
+-					/* Tiling 4 is only supported on GEN12+ */
+-					if (t.tiling == TILING_4) {
+-						igt_require(AT_LEAST_GEN(drm.devid, 12));
++					if (t.tiling == TILING_4)
+ 						igt_require(intel_get_device_info(drm.devid)->has_4tile);
+-					}
+ 
+ 					if (tiling_is_valid(t.feature, t.tiling))
+ 						draw_subtest(&t);
 -- 
 2.44.2
 
