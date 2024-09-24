@@ -4,58 +4,163 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 150DCCF9C6F
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Sep 2024 12:26:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7EC0CF9C6B
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Sep 2024 14:08:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C84BF10E8A3;
-	Tue, 24 Sep 2024 12:26:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7536A10E6F6;
+	Tue, 24 Sep 2024 14:08:10 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gGpLZoGR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aCUzqMvK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93D1C10E8A3
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Sep 2024 12:26:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3464810E6F6
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Sep 2024 14:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727180763; x=1758716763;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4R06G/m50bM+9sSW/V1iPV06Hml5Iq0YQ7BGgdaD4cI=;
- b=gGpLZoGRP7k581qEsItTsYV//YoBRNTP8jNqAsU2AqxAK61YLA7Vxhwu
- iYi6+bLdZnQfB+curVjIww90m8GkdbQ6W299e9aIXE9NJn/f3o3LtrVzZ
- +AXnZxSuRd94SBU0SH3tY4kapH11ePVtz7gU0FspNMfUF91d2lYwCOFeZ
- c6yWoINT2YQI7X0oulTmOU8N081psJ7UC2OPrg6Nb8NgcQBO0LwmolEyh
- 8EI1n3ZWDzpQVsxO7V6/TxpaKJnGvlyPEB1Jw8Ey2+7sYuH+c/SnAMJy9
- AhP7MY/furu9d760cO7DicASc8VND6R9Eg4Ga1p4EFXRwOOfD35KOKWwx Q==;
-X-CSE-ConnectionGUID: T0rAN5I0TrK6oXIt83kpUA==
-X-CSE-MsgGUID: bQRZR//nSK+paj6JU49Gyg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="26122789"
-X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="26122789"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2024 05:26:03 -0700
-X-CSE-ConnectionGUID: nYXy02czTPCr9x1d8Vfr3g==
-X-CSE-MsgGUID: t/HE2zHZRN6n4hHE3dQUvQ==
+ t=1727186890; x=1758722890;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=Ph+ZTYKswRMc0kF8RYjkw1uc89fVq04NW/UXasrCfZY=;
+ b=aCUzqMvKcu21HLMyWBsWQrauinn1sXGg6vpMcH+fT6QZPVapswjGlAGU
+ 8fx7lQkwlLA5P9uNjdJMIe9dIOBZfHi08RJc5nygEZYCVRP4rqAmeiGAe
+ /FfsSbybyOrd7SxO8eY1bjgxlByz8QILz3ujR3fMz5d3c3D1B6aq6t8af
+ FTDjK5Sa8Ri4a6oNADI4b9+0dEgQzZoP90vz51cQCjUmIA6tWWK+8dPKB
+ CUoHJVHnCmIMBfiz+/XjMd77YYX2oI2KA/Evl+t2a84WtTBU6mibBAatF
+ YAcOnIcUTh3MvhYIEQndjlFQVV+IsxtVZBbNYeKUCpE0IZCnQ2WMOARa7 A==;
+X-CSE-ConnectionGUID: XojJOEjJSW+vxNvqEXJ64w==
+X-CSE-MsgGUID: 6TxeqerqQA+DnsjuPQggWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="26057709"
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="26057709"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2024 07:08:08 -0700
+X-CSE-ConnectionGUID: a0OwLPmdR3eZJIEcA9KBYw==
+X-CSE-MsgGUID: uHbglUCjSgur6gTzuQUBdQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="76170705"
-Received: from dg2adlp-alder-lake-client-platform.iind.intel.com
- ([10.145.162.161])
- by orviesa005.jf.intel.com with ESMTP; 24 Sep 2024 05:26:02 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Adarsh G M <adarsh.g.m@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t v2] tests/kms_histogram: Added IGT support to validate
- global histogram
-Date: Tue, 24 Sep 2024 17:55:33 +0530
-Message-Id: <20240924122533.494165-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240705091333.328322-2-mohammed.thasleem@intel.com>
-References: <20240705091333.328322-2-mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="71719930"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 24 Sep 2024 07:08:07 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 24 Sep 2024 07:08:06 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Tue, 24 Sep 2024 07:08:06 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.41) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 24 Sep 2024 07:08:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=S0TE3uFpGkfLFjbTd3sHB9Tfa2L71jXnOOGYZFx+Br77w2WuK7dLHlkFfPNEvNgjvnCFJXnFumsRq9R/FHAN0OMSZS/xbthcjuLXvDuy8TWI12P5GiT4JLLxaBXQofwmATxUDPgU3K0+l8bF+Lz04xijc0kW+ddTs1/ExPBFsJY5v5jRTi6yRX+1Gis1zukSnjHLQnxIsEApDPL39s6PxAGLsKjeluo18bJMRRNqRs0DBgTWbn+ijvcickVPxElhqf0fwWTzXnlrZ45QX8Dk5N2UVDHpNQcIl29jCbV5IE6n1TjHRG2MNJ60XU0iRERBObUEe9kA9OzTH7iDm2E68Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ckQQTI6BTIt2owdnd4pHaYogileXfLouj5Xa8RHV3bE=;
+ b=xvy3IRyiWlvDwoBkaKiIwkU9Y1vMkGbP0W0POmiDcEk/A0trqI2cu2U0GBHaRHipMXfqrZg6iNam0nq51uyv6P7t06RlqIP6IpmEoPRae5BfDrGqbgxytrpQ39hNHU6GPlVNjE4wv6YdRzVRZOiO4SbaLMIuKSQMtZFAJfT9jyY2OB2O62dzM8mj0rQIitSSzOFKjpzkJJSs1/xiS1A3ok2cz/F1g4WDZHKH+AipsQfeBkqe6BP4XP7WWbxGKJ0vYUPjvhLgnrR43KP/WeptCjvuE3I3WcRLuIZrsoBJqKeX1ARoUW2So7zPrbE7sJn7cxPQKC3r4EsbQyYQ+L9UIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com (2603:10b6:930:29::17)
+ by SJ0PR11MB6621.namprd11.prod.outlook.com (2603:10b6:a03:477::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.23; Tue, 24 Sep
+ 2024 14:08:04 +0000
+Received: from CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44]) by CY5PR11MB6139.namprd11.prod.outlook.com
+ ([fe80::7141:316f:77a0:9c44%5]) with mapi id 15.20.7982.022; Tue, 24 Sep 2024
+ 14:08:04 +0000
+Date: Tue, 24 Sep 2024 09:08:00 -0500
+From: Lucas De Marchi <lucas.demarchi@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, Matt Roper
+ <matthew.d.roper@intel.com>
+Subject: Re: [PATCH v2 5/5] lib/igt_gt: Stop passing fd == -1 in
+ igt_open_forcewake_handle()
+Message-ID: <mn26pszojoeuqka6cfhc7k3f6dl3xhlqibuvfuvwroxibthj2d@3r6l6xpnesun>
+References: <20240923221146.125848-1-lucas.demarchi@intel.com>
+ <20240923221146.125848-6-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240923221146.125848-6-lucas.demarchi@intel.com>
+X-ClientProxiedBy: MW4PR03CA0197.namprd03.prod.outlook.com
+ (2603:10b6:303:b8::22) To CY5PR11MB6139.namprd11.prod.outlook.com
+ (2603:10b6:930:29::17)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY5PR11MB6139:EE_|SJ0PR11MB6621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 072581d4-dfc9-40e3-0f9f-08dcdca24e88
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?j2PO358wrFO9d+4iSweukIt2Zzw7bzrBHsfO/NwxOUInORa6xmcpIRhoXcMd?=
+ =?us-ascii?Q?UqD5K4Qfw+JDK7ozh5tnNjfYfr0P1G2fDdV12n0Ldbo43Rz6FC+BMpvAmdLP?=
+ =?us-ascii?Q?+bjyaTMu6XlNJbskZ1nMc2dubOgf4yABTXKXhApLwVsv+0FPu5I8sqhPMxxH?=
+ =?us-ascii?Q?rwHMuKeQqKYyN+cFpJs5x7Lya7w7yoPRybII5zpXX7yheVuajbPAvi1yq5Op?=
+ =?us-ascii?Q?sPEiYYl6MUcDRqxJXWGUXFgLhHbCqTWETwxHHkZGLxbfaST+6H1xvGDYWZ0C?=
+ =?us-ascii?Q?2UxgRhNuWvMrv+T5CnAVIrGtDSIrCAm9vFSvMEr/q3aHrQcWx8NqMF+K5ihk?=
+ =?us-ascii?Q?jGCXX8M92TEs8RXRx7V88Xrtv0/k8p+jTfk7udDGwmkcl9lYfirDSLajl8At?=
+ =?us-ascii?Q?nYouVLk1i/IaB4VvYajJDtmpH+HqjnDuRcRsynmIgNytvoaulqAuo6xcld1b?=
+ =?us-ascii?Q?nYKBKo8MCKpGUzOVHy4kbA1nLnp+9rQRHlZ8fh0XGr0Vkpr052A9axtmZx7V?=
+ =?us-ascii?Q?hYozZhS86bwsHKDE0UguFXjixoqvmpfeAq3csyDVylDhHc2+fbW/JejrTM6M?=
+ =?us-ascii?Q?bvwJhZ1Mlb5Uesrm+9beXyVlfcqAxPK3B9nXIc+oxWuixyLIlfEHDVuER+xH?=
+ =?us-ascii?Q?yQyZU8F9h3OF5eoyMW4JkYQ3xfE6Atuh/6he1gMCIFqX6ONLMgngw9AN07el?=
+ =?us-ascii?Q?Y2hHlIrDtdQfmeCqFWLlqRiEK6VR+BwNAvh5bFO0CkYe0gHDVr0uSEzGTOWA?=
+ =?us-ascii?Q?639NU9t29HRSETDr5FhOC9gmz3BHMnfCPKogBRfwsstoC8OEErAznXkrXNZA?=
+ =?us-ascii?Q?3oguNjPa0HdvN3aKBNlm7src0AN/egR1vlm4K/DdjrMqeib56NF0E3V1odNd?=
+ =?us-ascii?Q?MBK8eaMTSrucS9QhY5D4vFYmX0XF8LspkHOLgeruNwtAjSYMzgNK7L8mS5Jq?=
+ =?us-ascii?Q?DYM6R68a5Zlzl2UUFgXQtWdbPfHfd2cY2sQc/DDos55MqWdcv3Bo8eXE6a+0?=
+ =?us-ascii?Q?/kH39hOn7fByz3oBbpC7TyzLwS2XtDPUP/V2uzfyfkJiz5ANTejOpgkCWFiW?=
+ =?us-ascii?Q?3sM3bfgymQO/hIZZZy9a4jxIbH7y01VM2XWI9ZyRFG36ApW869bgBFesc2jq?=
+ =?us-ascii?Q?AXH244QPizhXtQWLYUtO4iF9M29H+fEjCctk526X9WhbbHr4QiA/dDHoy81J?=
+ =?us-ascii?Q?1nlC8/KwTKl5URJN1WTSP0Tii2CJiKXc+oCBp9CkJTxIEPIXqEckz08lNp1x?=
+ =?us-ascii?Q?Tx567jmBdkELyYiqW8Vf6r0uq4a6dGPD9f7R2gIDyQ=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CY5PR11MB6139.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?pwepoaT3YXRuEz9gHIfDrlcmVbebKFKGlO8UGHVkTWWz9gCY75BNwaqrE5Bm?=
+ =?us-ascii?Q?blmfixfsHzWa2XMYZ+HvJNCi+OYfBINpEq6dr2K+sxCw8BELE3h7Rmd0ybHf?=
+ =?us-ascii?Q?GNELrjQMwESVTVQ6HZ3AgrQRGDA84g0N0C3E1+w3oj0vIKH3s3cMeEAZ+UEY?=
+ =?us-ascii?Q?RAuKjdAWUO+E+/70wTmcKEcew5j1E3l0mwOqysZk3vUyU+Lpw2XAvibOMGvi?=
+ =?us-ascii?Q?SqpVw0BqHgFmfFSm98agBI70Exp9SzmTnKE1SqWkmjY1uYIkFdEocxgXGRWC?=
+ =?us-ascii?Q?spSYCmULEgxJl3byx+PWNHslsl1CBReu9zNPlSsduVEt1HrXYKnTM9atQ5E7?=
+ =?us-ascii?Q?3FnnF1i3Q9pSnL4QP3UO0lQ+BcbRurjMgnKZgYMJA+BYz8PvYLotyT4mIJ3L?=
+ =?us-ascii?Q?Hf7CHh/1HWu8+qItAFs2/3VdQA9ugu2s7Cs5s6uWwFoa+f0GF6GYw9tnA4Tp?=
+ =?us-ascii?Q?bsAs7rL2DzC0RhLweieyvFmFDsXdm5vV+QmptFGa3DLm5KQusmaCjldOsnzz?=
+ =?us-ascii?Q?RSFO6e6scuKkDGkG0ZcGeBeU3j0yVfWLscfv+/k9/R50THAXqSvjnZrtYTql?=
+ =?us-ascii?Q?k0p0hZnOa0rxOLiwc3Wsm4fS/sPqkLrMDe10Nun7e6RyDzB5zuj0Qw/7QPkW?=
+ =?us-ascii?Q?GWyPNsfUiYgfUyQ5rer+pHvUZ4IKMh/NYelRNOUKJsEURCGAjGF0yCeWKx4y?=
+ =?us-ascii?Q?W8X/JXAidI9k9ITM99fZBK3iQc5ydPDOneVOWhYY0uBRx/pWVDHA9aOsFdGu?=
+ =?us-ascii?Q?Tbf+V2mgQmmy54QVJuJAbs9xzWT4fwqEJw2WYIiIdYpKRn6ALG5bZCkZ9MeK?=
+ =?us-ascii?Q?lCnYI0P72pPilgxJpqt3VhfFAHsa4+UU4n3GwfMZU1GwpHXAD7G9oXnmQj8o?=
+ =?us-ascii?Q?UxKYMyXS3nyjJINu3ywHJjy1kT3E/i40E3RJ/9pftBx9iQIcF7pUYOo+H/i/?=
+ =?us-ascii?Q?Wj6l0K9+J2CnaKKCE8+npzxhbIIuBeWFcX3toOnIkrlwUpMJ0NmTLHPKxWmF?=
+ =?us-ascii?Q?bUMKZl6HI4/URTUwyfCm42fyMr9LJ0efTkaJZisCIo1ghkFrEKvCNVXnPfK0?=
+ =?us-ascii?Q?hmNFM9k01qfJAfINg07JR09qrtvIK/mue2qDyuxGNzOYsvBSmjcbTbX2pdEQ?=
+ =?us-ascii?Q?deRTh+7cUwmccnWNvicTBrxanjEq10D+vBEV8QYZTsistIvKp0KF25iYObBA?=
+ =?us-ascii?Q?TDwEZu4u+73Qepmd6P+6/yoSv4eIFOTlt3PYynbuLPN3t4OU8eYYnfwUFNP/?=
+ =?us-ascii?Q?LYpy7UCw/JVmOk79vxfqYF0J/HS+fdU8+Af40+/Wn75hXi8JEzpoSiiPRJS8?=
+ =?us-ascii?Q?4HWLXfUBTAjZ5AfFyn9hyRXgYg/XZzbMK2xU+ZmV8FTQzkoC/jZxpQrpJ7lT?=
+ =?us-ascii?Q?DYSqwlgjEA3KpzFPMlifbewnxLiQsi31nz27/4l7hZCZ8dhKFk0nAMW815H1?=
+ =?us-ascii?Q?Kp0BocfqwvnM04ZveoWwwH1hJan2BH1V4P7aeA0EBxuqjKoJ2nUbFbvCA4V8?=
+ =?us-ascii?Q?Ad2KDb5wNdaMXtlSeiqLssVS6JcQsm0vJIJDB6YhwmIlZwP13H68rnK44s+S?=
+ =?us-ascii?Q?zm8GOckDeBXcjKpRZcwPzwmbgQpQsG8GAXIt1vrlkkRb9IWdfoiqzX6LvayX?=
+ =?us-ascii?Q?Dg=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 072581d4-dfc9-40e3-0f9f-08dcdca24e88
+X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6139.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2024 14:08:04.1842 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: EF57n3EMhZOEWaSybYgKMwwwxQOzFxk/SYMhLTLzN7RdDLT72hwvzqagQNRUrwxAJWwyX+CD2Y4qigtlP5/TVM0mp0LJbfnxjVJHB5nll+M=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB6621
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,493 +176,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The IGT changes included tests for enabling/disabling histogram.
-Validating the histogram event generation and if any One such library
-Global Histogram Enhancement(GHE) present, will feed the histogram to
-the library, get the enhanced LUT data and feed it back to the KMD.
-For histogram generation, black/white and color images are flipped.
+Next version I will do s/passing/handling/ in the commit message since
+that's what it really is doing.
 
-TODO: Extend the tests for different formats/modifiers.
+Lucas De Marchi
 
-v2: Remove eDP restriction. (Vandita)
-    Update crtc property name. (Arun)
 
-Signed-off-by: Adarsh G M <adarsh.g.m@intel.com>
-Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- lib/igt_kms.c         |  23 +++
- lib/igt_kms.h         |   5 +
- meson.build           |   7 +
- tests/kms_histogram.c | 349 ++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build     |   2 +
- 5 files changed, 386 insertions(+)
- create mode 100644 tests/kms_histogram.c
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index b40470c02..a7a990fc2 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -700,6 +700,9 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
- 	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
- 	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
- 	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
-+	[IGT_CRTC_HISTOGRAM] = "Histogram_Enable",
-+	[IGT_CRTC_GLOBAL_HISTOGRAM] = "Global Histogram",
-+	[IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR] = "Global IET",
- };
- 
- const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
-@@ -2562,6 +2565,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
- 	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SCALING_FILTER))
- 		igt_pipe_obj_set_prop_enum(pipe, IGT_CRTC_SCALING_FILTER, "Default");
- 
-+	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_HISTOGRAM))
-+		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_HISTOGRAM, 0);
-+
- 	pipe->out_fence_fd = -1;
- }
- 
-@@ -5590,6 +5596,23 @@ bool igt_lease_change_detected(struct udev_monitor *mon, int timeout_secs)
- 			      ARRAY_SIZE(props));
- }
- 
-+/**
-+ * igt_global_histogram_event_detected:
-+ * @mon: A udev monitor initialized with #igt_watch_uevents
-+ * @timeout_secs: How long to wait for a lease change event to occur.
-+ *
-+ * Detect if a global Histogram event was received since we last checked the monitor.
-+ *
-+ * Returns: true if a sysfs global Histogram event was received, false if we timed out
-+ */
-+bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs)
-+{
-+	const char *props[1] = {"HISTOGRAM"};
-+	int expected_val = 1;
-+
-+	return event_detected(mon, timeout_secs, props, &expected_val, ARRAY_SIZE(props));
-+}
-+
- /**
-  * igt_flush_uevents:
-  * @mon: A udev monitor initialized with #igt_watch_uevents
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 25ba50916..598aa4b33 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -163,6 +163,9 @@ enum igt_atomic_crtc_properties {
-        IGT_CRTC_OUT_FENCE_PTR,
-        IGT_CRTC_VRR_ENABLED,
-        IGT_CRTC_SCALING_FILTER,
-+       IGT_CRTC_HISTOGRAM,
-+       IGT_CRTC_GLOBAL_HISTOGRAM,
-+       IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
-        IGT_NUM_CRTC_PROPS
- };
- 
-@@ -1111,6 +1114,8 @@ void igt_cleanup_uevents(struct udev_monitor *mon);
- bool igt_display_has_format_mod(igt_display_t *display, uint32_t format, uint64_t modifier);
- bool igt_plane_has_format_mod(igt_plane_t *plane, uint32_t format, uint64_t modifier);
- 
-+bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs);
-+
- /**
-  * igt_vblank_after_eq:
-  * @a: First vblank sequence number.
-diff --git a/meson.build b/meson.build
-index 0d06721b4..8ee4f6edc 100644
---- a/meson.build
-+++ b/meson.build
-@@ -195,6 +195,13 @@ else
- 	chamelium = disabler()
- endif
- 
-+libghe = dependency('libghe', required : false)
-+if libghe.found()
-+      config.set('HAVE_LIBGHE', 1)
-+else
-+      warning('LIBGHE not found')
-+endif
-+
- build_info += 'Build Chamelium test: @0@'.format(chamelium.found())
- 
- pthreads = dependency('threads')
-diff --git a/tests/kms_histogram.c b/tests/kms_histogram.c
-new file mode 100644
-index 000000000..892291f1e
---- /dev/null
-+++ b/tests/kms_histogram.c
-@@ -0,0 +1,349 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms histogram
-+ * Category: Display
-+ * Description: Test to verify histogram features.
-+ * Driver requirement: i915, xe
-+ * Functionality: histogram
-+ * Mega feature: Display
-+ * Test category: functionality test
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <string.h>
-+
-+#include "igt.h"
-+#include "igt_vec.h"
-+#ifdef HAVE_LIBGHE
-+#include "ghe.h"
-+#endif
-+
-+#define GLOBAL_HIST_DISABLE		0
-+#define GLOBAL_HIST_ENABLE		1
-+#define GLOBAL_HIST_DELAY		2
-+#define FLIP_COUNT			20
-+
-+/**
-+ * SUBTEST: global-histogram-basic
-+ * Description: Test to enable histogram, flip monochrome fbs, wait for
-+ *		histogram event and then read the histogram data
-+ *
-+ * SUBTEST: global-histogram-color
-+ * Description: Test to enable histogram, flip color fbs, wait for
-+ *		histogram event and then read the histogram data
-+ *
-+ * SUBTEST: histogram-algo-basic
-+ * Description: Test to enable histogram, flip monochrome fbs, wait for
-+ *		histogram event and then read the histogram data and enhance pixels by
-+ *		multiplying by a pixel factor using algo
-+ *
-+ * SUBTEST: histogram-algo-color
-+ * Description: Test to enable histogram, flip color fbs, wait for histogram event
-+ *		and then read the histogram data and enhance pixels by multiplying
-+ *		by a pixel factor using algo
-+ */
-+
-+IGT_TEST_DESCRIPTION("This test will verify the display histogram.");
-+
-+typedef struct data {
-+	igt_display_t display;
-+	int drm_fd;
-+	igt_fb_t fb[5];
-+} data_t;
-+
-+typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, drmModePropertyBlobRes*);
-+void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size);
-+
-+static void enable_and_verify_global_histogram(data_t *data, enum pipe pipe)
-+{
-+	uint32_t global_hist_value;
-+
-+	/* Enable global_hist */
-+	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_ENABLE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	/* Verify if global_hist is enabled */
-+	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
-+	igt_assert_f(global_hist_value == GLOBAL_HIST_ENABLE, "Failed to enable global_hist\n");
-+}
-+
-+static void disable_and_verify_global_histogram(data_t *data, enum pipe pipe)
-+{
-+	uint32_t global_hist_value;
-+
-+	/* Disable global_hist */
-+	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_DISABLE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	/* Verify if global_hist is disabled */
-+	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
-+	igt_assert_f(global_hist_value == GLOBAL_HIST_DISABLE, "Failed to disable global_hist\n");
-+}
-+
-+static void cleanup_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-+{
-+	igt_plane_t *plane;
-+
-+	disable_and_verify_global_histogram(data, pipe);
-+
-+	for_each_plane_on_pipe(&data->display, pipe, plane)
-+		igt_plane_set_fb(plane, NULL);
-+	igt_output_set_pipe(output, PIPE_NONE);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[0]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[1]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[2]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[3]);
-+	igt_remove_fb(data->display.drm_fd, &data->fb[4]);
-+}
-+
-+static drmModePropertyBlobRes *get_global_histogram_data(data_t *data, enum pipe pipe)
-+{
-+	uint64_t blob_id;
-+
-+	blob_id = igt_pipe_obj_get_prop(&data->display.pipes[pipe],
-+					IGT_CRTC_GLOBAL_HISTOGRAM);
-+	if (blob_id == 0)
-+		return NULL;
-+
-+	return drmModeGetPropertyBlob(data->drm_fd, blob_id);
-+}
-+
-+static void read_global_histogram(data_t *data, enum pipe pipe,
-+			     drmModePropertyBlobRes **hist_blob_ptr)
-+{
-+	uint32_t *histogram_ptr;
-+	drmModePropertyBlobRes *global_hist_blob = NULL;
-+
-+	igt_set_timeout(GLOBAL_HIST_DELAY, "Waiting to read global histogram blob.\n");
-+	do {
-+		global_hist_blob = get_global_histogram_data(data, pipe);
-+	} while (global_hist_blob == NULL);
-+	igt_reset_timeout();
-+
-+	*hist_blob_ptr = global_hist_blob;
-+	histogram_ptr = (uint32_t *) global_hist_blob->data;
-+	for (int i = 0; i < global_hist_blob->length / sizeof(*histogram_ptr); i++)
-+		igt_debug("Histogram[%d] = %d\n", i, *(histogram_ptr++));
-+}
-+
-+void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size)
-+{
-+	uint32_t i;
-+
-+	for (i = 0; i < size; i++) {
-+		/* Displaying IET LUT */
-+		igt_debug("Pixel Factor[%d] = %d\n", i, *(dietfactor + i));
-+	}
-+	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
-+				       dietfactor, size);
-+}
-+
-+#ifdef HAVE_LIBGHE
-+static struct globalhist_args *algo_get_pixel_factor(drmModePropertyBlobRes *global_hist_blob,
-+						    igt_output_t *output)
-+{
-+	struct globalhist_args *argsPtr =
-+		(struct globalhist_args *)malloc(sizeof(struct globalhist_args));
-+
-+	drmModeModeInfo *mode;
-+
-+	mode = igt_output_get_mode(output);
-+
-+	memcpy(argsPtr->histogram, global_hist_blob->data, global_hist_blob->length);
-+	argsPtr->resolution_x = mode->hdisplay;
-+	argsPtr->resolution_y = mode->vdisplay;
-+
-+	igt_debug("Making call to global histogram algorithm.\n");
-+	set_histogram_data_bin(argsPtr);
-+
-+	return argsPtr;
-+}
-+
-+static void algo_image_enhancement_factor(data_t *data, enum pipe pipe,
-+					 igt_output_t *output,
-+					 drmModePropertyBlobRes *global_hist_blob)
-+{
-+	struct globalhist_args *args = algo_get_pixel_factor(global_hist_blob, output);
-+
-+	igt_assert(args);
-+	igt_debug("Writing pixel factor blob.\n");
-+
-+	set_pixel_factor(&data->display.pipes[pipe], args->dietfactor,
-+			 ARRAY_SIZE(args->dietfactor));
-+	free(args);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+#endif
-+
-+static void create_monochrome_fbs(data_t *data, drmModeModeInfo *mode)
-+{
-+	/* TODO: Extend the tests for different formats/modifiers. */
-+	/* These frame buffers used to flip monochrome fbs to get histogram event. */
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0, 0, 0, &data->fb[0]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       1, 1, 1, &data->fb[1]));
-+}
-+
-+static void create_color_fbs(data_t *data, drmModeModeInfo *mode)
-+{
-+	/* TODO: Extend the tests for different formats/modifiers. */
-+	/* These frame buffers used to flip color fbs to get histogram event. */
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0.5, 0, 0.5, &data->fb[0]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       1, 0, 0, &data->fb[1]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0, 1, 0, &data->fb[2]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       0, 0, 1, &data->fb[3]));
-+
-+	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+					       1, 0, 1, &data->fb[4]));
-+}
-+
-+static void flip_fb(data_t *data, enum pipe pipe, igt_output_t *output, struct igt_fb *fb)
-+{
-+	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), fb);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+}
-+
-+static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, bool color_fb)
-+{
-+	int i;
-+	struct udev_monitor *mon = igt_watch_uevents();
-+	drmModeModeInfo *mode = igt_output_get_mode(output);
-+	bool event_detected = false;
-+	int fb_count = color_fb ? 5 : 2;
-+
-+	if (color_fb)
-+		create_color_fbs(data, mode);
-+	else
-+		create_monochrome_fbs(data, mode);
-+
-+	flip_fb(data, pipe, output, &data->fb[0]);
-+	enable_and_verify_global_histogram(data, pipe);
-+
-+	igt_flush_uevents(mon);
-+	for (i = 1; i <= FLIP_COUNT; i++) {
-+		flip_fb(data, pipe, output, &data->fb[i % fb_count]);
-+
-+		/* Check for histogram event on every flip and break the loop if detected. */
-+		if (igt_global_histogram_event_detected(mon, 0)) {
-+			event_detected = true;
-+			break;
-+		}
-+	}
-+
-+	igt_cleanup_uevents(mon);
-+	igt_assert_f(event_detected, "Histogram event not generated.\n");
-+}
-+
-+static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_output_t *output,
-+				     bool color_fb, test_t test_pixel_factor)
-+{
-+	drmModePropertyBlobRes *global_hist_blob = NULL;
-+
-+	prepare_pipe(data, pipe, output, color_fb);
-+
-+	read_global_histogram(data, pipe, &global_hist_blob);
-+
-+	if (test_pixel_factor)
-+		test_pixel_factor(data, pipe, output, global_hist_blob);
-+
-+	drmModeFreePropertyBlob(global_hist_blob);
-+	cleanup_pipe(data, pipe, output);
-+}
-+
-+static void run_tests_for_global_histogram(data_t *data, bool color_fb,
-+					   test_t test_pixel_factor)
-+{
-+	enum pipe pipe;
-+	igt_output_t *output;
-+
-+	for_each_connected_output(&data->display, output) {
-+		for_each_pipe(&data->display, pipe) {
-+			if (!igt_pipe_obj_has_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM))
-+				continue;
-+
-+			igt_display_reset(&data->display);
-+
-+			igt_output_set_pipe(output, pipe);
-+			if (!intel_pipe_output_combo_valid(&data->display))
-+				continue;
-+
-+			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-+				run_global_histogram_pipeline(data, pipe, output, color_fb, test_pixel_factor);
-+		}
-+	}
-+}
-+
-+static void run_algo_test(data_t *data, bool color_fb)
-+{
-+#ifdef HAVE_LIBGHE
-+	run_tests_for_global_histogram(data, color_fb, algo_image_enhancement_factor);
-+#else
-+	igt_skip("Histogram algorithm library not found.\n");
-+#endif
-+}
-+
-+igt_main
-+{
-+	data_t data = {};
-+
-+	igt_fixture {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-+		kmstest_set_vt_graphics_mode();
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+		igt_require(data.display.is_atomic);
-+	}
-+
-+	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
-+		     "event and then read the histogram data.");
-+	igt_subtest_with_dynamic("global-histogram-basic")
-+		run_tests_for_global_histogram(&data, false, NULL);
-+
-+	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
-+		     "and then read the histogram data.");
-+	igt_subtest_with_dynamic("global-histogram-color")
-+		run_tests_for_global_histogram(&data, true, NULL);
-+
-+	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
-+		     "event and then read the histogram data and enhance pixels by multiplying "
-+		     "by a pixel factor using algo.");
-+	igt_subtest_with_dynamic("histogram-algo-basic")
-+		run_algo_test(&data, false);
-+
-+	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
-+		     "and then read the histogram data and enhance pixels by multiplying "
-+		     "by a pixel factor using algo.");
-+	igt_subtest_with_dynamic("histogram-algo-color")
-+		run_algo_test(&data, true);
-+
-+	igt_fixture {
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index e5d8852f3..0f32dec04 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -35,6 +35,7 @@ test_progs = [
- 	'kms_flip_event_leak',
- 	'kms_force_connector_basic',
- 	'kms_getfb',
-+	'kms_histogram',
- 	'kms_hdmi_inject',
- 	'kms_hdr',
- 	'kms_invalid_mode',
-@@ -375,6 +376,7 @@ extra_dependencies = {
- 	'gem_eio': [ realtime ],
- 	'gem_exec_balancer': [ lib_igt_perf ],
- 	'gem_mmap_offset': [ libatomic ],
-+	'kms_histogram': [ libghe ],
- 	'i915_pm_freq_mult': [ lib_igt_perf ],
- 	'i915_pm_rc6_residency': [ lib_igt_perf ],
- 	'perf': [ lib_igt_i915_perf ],
--- 
-2.25.1
-
+On Mon, Sep 23, 2024 at 05:11:46PM GMT, Lucas De Marchi wrote:
+>If something like -1 is needed, then
+>igt_open_forcewake_handle_for_pcidev() should be used.
+>
+>Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+>---
+> lib/igt_gt.c | 5 ++++-
+> 1 file changed, 4 insertions(+), 1 deletion(-)
+>
+>diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+>index c9fd9164f..ba4163c97 100644
+>--- a/lib/igt_gt.c
+>+++ b/lib/igt_gt.c
+>@@ -493,6 +493,7 @@ void igt_stop_hang_helper(void)
+>
+> /**
+>  * igt_open_forcewake_handle:
+>+ * @fd: drm fd - i915 or xe
+>  *
+>  * This functions opens the debugfs forcewake file and so prevents the GT from
+>  * suspending. The reference is automatically dropped when the is closed.
+>@@ -509,8 +510,10 @@ int igt_open_forcewake_handle(int fd)
+>
+> 	if (is_xe_device(fd))
+> 		fn = "forcewake_all";
+>-	else
+>+	else if (is_i915_device(fd))
+> 		fn = "i915_forcewake_user";
+>+	else
+>+		return -1;
+>
+> 	return igt_debugfs_open(fd, fn, O_RDONLY);
+> }
+>-- 
+>2.46.1
+>
