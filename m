@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5F8DCF9C6F
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Sep 2024 11:56:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEFF8CF9C73
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Sep 2024 11:56:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 60B9C10E898;
-	Tue, 24 Sep 2024 11:56:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B64B10E899;
+	Tue, 24 Sep 2024 11:56:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SjCvQy3S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QlVTCr1j";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B94610E0B9
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Sep 2024 11:56:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6BBD10E898
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Sep 2024 11:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727178988; x=1758714988;
+ t=1727178990; x=1758714990;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=jHlRzFgOdqs27Ks4nwHcU9rYlGf+f7FGUi4v8SGvwic=;
- b=SjCvQy3SOgdmODqK7OIgsXxQxuhQd8Iet9Ouu9pWFQ3YN/Qcc06yjeaM
- +qWgmPRU9o7JGSqQAosGXkgdplVFsZH8DTby8brreDpycLnXHW/18obfK
- VFoiIQfsOgKLM83w3RX8CWP2mqXpd/gF3un3PAX8VG2Nd53P6u5LwKQx0
- BuGE3jkNDQihGqWY5MhOVMelUAkQ8GOol2aTPC7ioMq83iiPQ6GAcFWK8
- /oExigm2xxKHs507NOFnuMuNxLkPouKwTCv/c3Oy4rAJPJgtTjfhNddue
- B7z9jpiXo9cHg4Iz4nETSi9/KmkGvjKYAC9onmtfmjyfrGJltcJ96EJGl Q==;
-X-CSE-ConnectionGUID: GS58swoPSrum8BmJDmSgzw==
-X-CSE-MsgGUID: PBgnUIbhReynjkav60yqog==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="37544189"
-X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="37544189"
+ bh=5CrAQzL3LlfWRbiid1aGEcZtSHcFTkVHVNhPnTvAuvg=;
+ b=QlVTCr1jszsfvv88PWtO6GTw7kJWvc2zFcqtI1Us8aZUrxjMTa+7umI4
+ H8sYSCQlgcVBYRQR9/1IzEKoZfcIAKYP+/FnUuwtnP0NLNrjtCIqlMh98
+ ilkMZ0upk73P5H5GbQUJB6Rk1/irs0AQaZ64LVx+BLGrNX2UBg7M+cwbc
+ J9o6honh0pGDUUxNMSZrK4gxqACTRhXs01TmGMQdVinnL1IgI1HOm5iv3
+ UuRv69mq1Ef7TnfiPxwqXef4QwMK3wFGGlFB7y3ZX6qpu3setuj13c9bO
+ uVjgQ5+i1JDlPaGgvuigdyOx9pAc+OgcRMD5T6X1VD24nlFTpxzBri7N/ Q==;
+X-CSE-ConnectionGUID: vBPOJ76xTP6LkOzlP9f72Q==
+X-CSE-MsgGUID: NpQQrxzkTIKjMo2uk+2Jaw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="37544194"
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="37544194"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Sep 2024 04:56:28 -0700
-X-CSE-ConnectionGUID: ZpPwqf0yQHq4GMgFF3fb4Q==
-X-CSE-MsgGUID: e94cfC4yQYOYx5+b373P0A==
+ 24 Sep 2024 04:56:29 -0700
+X-CSE-ConnectionGUID: HHyWUFtST8OELuVpu/xb2A==
+X-CSE-MsgGUID: 0v+YKrmhRvS++2bagAzKlw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="75906160"
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; d="scan'208";a="75906163"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2024 04:56:27 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2024 04:56:28 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1 1/2] tests/kms_hdr: Add brightness tests for hdr
-Date: Tue, 24 Sep 2024 17:25:54 +0530
-Message-Id: <20240924115555.773860-2-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1 2/2] HAX patch do not merge
+Date: Tue, 24 Sep 2024 17:25:55 +0530
+Message-Id: <20240924115555.773860-3-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240924115555.773860-1-santhosh.reddy.guddati@intel.com>
 References: <20240924115555.773860-1-santhosh.reddy.guddati@intel.com>
@@ -67,159 +67,494 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtests for Aux based backlight control on hdr enabled edp panels
-by changing brightness via sysfs.
-
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/kms_hdr.c | 106 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 106 insertions(+)
+ tests/intel-ci/fast-feedback.testlist    | 183 +-------------
+ tests/intel-ci/xe-fast-feedback.testlist | 289 +----------------------
+ 2 files changed, 24 insertions(+), 448 deletions(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index f123c6b36..4e6ff87b4 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -64,6 +64,18 @@
-  * Description: Tests static toggle with suspend
-  * Functionality: colorspace, static_hdr, suspend
-  *
-+ * SUBTEST: brightness-with-hdr
-+ * Description: Tests brightness with HDR
-+ * Functionality: colorspace, static_hdr
-+ *
-+ * SUBTEST: brightness-with-dpms
-+ * Description: Tests brightness with dpms
-+ * Functionality: colorspace, static_hdr, dpms
-+ *
-+ * SUBTEST: brightness-with-suspend
-+ * Description: Tests brightness with suspend
-+ * Functionality: colorspace, static_hdr, suspend
-+ *
-  * SUBTEST: static-%s
-  * Description: Tests %arg[1].
-  * Functionality: colorspace, static_hdr
-@@ -100,6 +112,9 @@ enum {
- 	TEST_SWAP = 1 << 3,
- 	TEST_INVALID_METADATA_SIZES = 1 << 4,
- 	TEST_INVALID_HDR = 1 << 5,
-+	TEST_BRIGHTNESS = 1 << 6,
-+	TEST_BRIGHTNESS_DPMS = 1 << 7,
-+	TEST_BRIGHTNESS_SUSPEND = 1 << 8,
- };
- 
- /* BPC connector state. */
-@@ -623,6 +638,80 @@ static bool has_hdr(igt_output_t *output)
- 	return igt_output_has_prop(output, IGT_CONNECTOR_HDR_OUTPUT_METADATA);
- }
- 
-+static int test_brightness_output(data_t *data, enum pipe pipe, igt_output_t *output, uint32_t flags)
-+{
-+	igt_display_t *display = &data->display;
-+	igt_fb_t afb;
-+	int afb_id;
-+	struct hdr_output_metadata hdr;
-+
-+	/* 10-bit formats are slow, so limit the size. */
-+	afb_id = igt_create_fb(data->fd, 512, 512,
-+				   DRM_FORMAT_XRGB2101010, DRM_FORMAT_MOD_LINEAR, &afb);
-+	igt_assert(afb_id);
-+
-+	draw_hdr_pattern(&afb);
-+
-+	/* Start in SDR. */
-+	igt_plane_set_fb(data->primary, &afb);
-+	igt_plane_set_size(data->primary, data->w, data->h);
-+	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
-+
-+	/* Enter HDR, a modeset is allowed here. */
-+	fill_hdr_output_metadata_st2048(&hdr);
-+	set_hdr_output_metadata(data, &hdr);
-+	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
-+
-+	/* Adjust brightness */
-+	char brightness_path[1024];
-+	int brightness_fd;
-+	char brightness_value[4];
-+
-+	snprintf(brightness_path, sizeof(brightness_path),
-+			 "/sys/class/backlight/intel_backlight/brightness");
-+
-+	brightness_fd = open(brightness_path, O_WRONLY);
-+	igt_assert_f(brightness_fd >= 0, "Failed to open %s\n", brightness_path);
-+
-+	int write_brightness = 50;
-+	snprintf(brightness_value, sizeof(brightness_value), "%d", write_brightness);
-+	igt_assert(write(brightness_fd, brightness_value, strlen(brightness_value)) > 0);
-+
-+	close(brightness_fd);
-+
-+	if (flags & TEST_BRIGHTNESS_DPMS)
-+		test_cycle_flags(data, TEST_DPMS);
-+	if (flags & TEST_BRIGHTNESS_SUSPEND)
-+		test_cycle_flags(data, TEST_SUSPEND);
-+
-+	/* Verify brightness adjustment */
-+	brightness_fd = open(brightness_path, O_RDONLY);
-+	igt_assert(brightness_fd >= 0);
-+
-+	igt_assert(read(brightness_fd, brightness_value, sizeof(brightness_value)) > 0);
-+
-+	int read_brightness = atoi(brightness_value);
-+
-+	igt_assert_eq(read_brightness, write_brightness);
-+
-+	close(brightness_fd);
-+
-+	/* Exit HDR and enter 8bpc, cleanup. */
-+	set_hdr_output_metadata(data, NULL);
-+	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 8);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 8);
-+
-+	test_fini(data);
-+	igt_remove_fb(data->fd, &afb);
-+
-+	return 0;
-+}
-+
- static void test_hdr(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
-@@ -691,6 +780,11 @@ static void test_hdr(data_t *data, uint32_t flags)
- 					test_static_swap(data, pipe, output);
- 				if (flags & TEST_INVALID_METADATA_SIZES)
- 					test_invalid_metadata_sizes(data, output);
-+				if (flags & (TEST_BRIGHTNESS | TEST_BRIGHTNESS_DPMS | TEST_BRIGHTNESS_SUSPEND)) {
-+					igt_require(output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP);
-+					igt_require_f(is_intel_device(data->fd), "Only supported on Intel devices\n");
-+					test_brightness_output(data, pipe, output, flags);
-+				}
- 			}
- 
- 			/* One pipe is enough */
-@@ -734,6 +828,18 @@ igt_main
- 	igt_subtest_with_dynamic("static-toggle-suspend")
- 		test_hdr(&data, TEST_SUSPEND);
- 
-+	igt_describe("Tests brightness while entering and exiting HDR mode");
-+	igt_subtest_with_dynamic("brightness-with-hdr")
-+		test_hdr(&data, TEST_BRIGHTNESS);
-+
-+	igt_describe("Tests brightness with dpms");
-+	igt_subtest_with_dynamic("brightness-with-dpms")
-+		test_hdr(&data, TEST_BRIGHTNESS_DPMS);
-+
-+	igt_describe("Tests brightness with suspend");
-+	igt_subtest_with_dynamic("brightness-with-suspend")
-+		test_hdr(&data, TEST_BRIGHTNESS_SUSPEND);
-+
- 	igt_describe("Tests swapping static HDR metadata");
- 	igt_subtest_with_dynamic("static-swap")
- 		test_hdr(&data, TEST_SWAP);
+diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
+index be0965110..8f4eb8a4a 100644
+--- a/tests/intel-ci/fast-feedback.testlist
++++ b/tests/intel-ci/fast-feedback.testlist
+@@ -1,171 +1,12 @@
+-# Try to load the driver if it's not available yet.
+-igt@i915_module_load@load
+-
+-# Keep alphabetically sorted by default
+-igt@core_auth@basic-auth
+-igt@debugfs_test@read_all_entries
+-igt@debugfs_test@basic-hwmon
+-igt@debugfs_test@sysfs
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-igt@gem_basic@bad-close
+-igt@gem_basic@create-close
+-igt@gem_basic@create-fd-close
+-igt@gem_busy@busy@all-engines
+-igt@gem_close_race@basic-process
+-igt@gem_close_race@basic-threads
+-igt@gem_ctx_create@basic
+-igt@gem_ctx_create@basic-files
+-igt@gem_ctx_exec@basic
+-igt@gem_exec_basic@basic
+-igt@gem_exec_create@basic
+-igt@gem_exec_fence@basic-busy
+-igt@gem_exec_fence@basic-wait
+-igt@gem_exec_fence@basic-await
+-igt@gem_exec_fence@nb-await
+-igt@gem_exec_gttfill@basic
+-igt@gem_exec_parallel@engines
+-igt@gem_exec_store@basic
+-igt@gem_flink_basic@bad-flink
+-igt@gem_flink_basic@bad-open
+-igt@gem_flink_basic@basic
+-igt@gem_flink_basic@double-flink
+-igt@gem_flink_basic@flink-lifetime
+-igt@gem_huc_copy@huc-copy
+-igt@gem_linear_blits@basic
+-igt@gem_mmap@basic
+-igt@gem_mmap_gtt@basic
+-igt@gem_render_linear_blits@basic
+-igt@gem_render_tiled_blits@basic
+-igt@gem_ringfill@basic-all
+-igt@gem_softpin@allocator-basic
+-igt@gem_softpin@allocator-basic-reserve
+-igt@gem_softpin@safe-alignment
+-igt@gem_sync@basic-all
+-igt@gem_sync@basic-each
+-igt@gem_tiled_blits@basic
+-igt@gem_tiled_fence_blits@basic
+-igt@gem_tiled_pread_basic
+-igt@gem_wait@busy@all-engines
+-igt@gem_wait@wait@all-engines
+-igt@i915_getparams_basic@basic-eu-total
+-igt@i915_getparams_basic@basic-subslice-total
+-igt@i915_hangman@error-state-basic
+-igt@i915_pciid
+-igt@kms_addfb_basic@addfb25-4-tiled
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@basic-y-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@bo-too-small-due-to-tiling
+-igt@kms_addfb_basic@clobberred-modifier
+-igt@kms_addfb_basic@framebuffer-vs-set-tiling
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@tile-pitch-mismatch
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_busy@basic
+-igt@kms_prop_blob@basic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_dsc@dsc-basic
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@force-load-detect
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_hdmi_inject@inject-audio
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_pm_backlight@basic-brightness
+-igt@kms_pm_rpm@basic-pci-d3-state
+-igt@kms_pm_rpm@basic-rte
+-igt@kms_psr@psr-primary-page-flip
+-igt@kms_psr@psr-cursor-plane-move
+-igt@kms_psr@psr-sprite-plane-onoff
+-igt@kms_psr@psr-primary-mmap-gtt
+-igt@kms_setmode@basic-clone-single-crtc
+-igt@i915_pm_rps@basic-api
+-igt@prime_self_import@basic-llseek-bad
+-igt@prime_self_import@basic-llseek-size
+-igt@prime_self_import@basic-with_fd_dup
+-igt@prime_self_import@basic-with_one_bo
+-igt@prime_self_import@basic-with_one_bo_two_files
+-igt@prime_self_import@basic-with_two_bos
+-igt@prime_vgem@basic-fence-flip
+-igt@prime_vgem@basic-fence-mmap
+-igt@prime_vgem@basic-fence-read
+-igt@prime_vgem@basic-gtt
+-igt@prime_vgem@basic-read
+-igt@prime_vgem@basic-write
+-igt@vgem_basic@setversion
+-igt@vgem_basic@create
+-igt@vgem_basic@debugfs
+-igt@vgem_basic@dmabuf-export
+-igt@vgem_basic@dmabuf-fence
+-igt@vgem_basic@dmabuf-fence-before
+-igt@vgem_basic@dmabuf-mmap
+-igt@vgem_basic@mmap
+-igt@vgem_basic@second-client
+-igt@vgem_basic@sysfs
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-
+-igt@core_hotunplug@unbind-rebind
+-igt@vgem_basic@unload
+-igt@i915_module_load@reload
+-igt@gem_lmem_swapping@basic
+-igt@gem_lmem_swapping@parallel-random-engines
+-igt@gem_lmem_swapping@random-engines
+-igt@gem_lmem_swapping@verify-random
+-igt@i915_pm_rpm@module-reload
+-
+-# Kernel selftests
+-igt@i915_selftest@live
+-igt@dmabuf@all-tests
++igt@kms_hdr@bpc-switch
++igt@kms_hdr@bpc-switch-dpms
++igt@kms_hdr@bpc-switch-suspend
++igt@kms_hdr@static-toggle
++igt@kms_hdr@static-toggle-dpms
++igt@kms_hdr@static-toggle-suspend
++igt@kms_hdr@brightness-with-hdr
++igt@kms_hdr@brightness-with-dpms
++igt@kms_hdr@brightness-with-suspend
++igt@kms_hdr@static-swap
++igt@kms_hdr@invalid-metadata-sizes
++igt@kms_hdr@invalid-hdr
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 01b01dcf9..8f4eb8a4a 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -1,277 +1,12 @@
+-# Should be the first test
+-igt@xe_module_load@load
+-
+-igt@fbdev@eof
+-igt@fbdev@info
+-igt@fbdev@nullptr
+-igt@fbdev@read
+-igt@fbdev@write
+-
+-igt@kms_addfb_basic@addfb25-4-tiled
+-igt@kms_addfb_basic@addfb25-bad-modifier
+-igt@kms_addfb_basic@addfb25-modifier-no-flag
+-igt@kms_addfb_basic@addfb25-x-tiled-legacy
+-igt@kms_addfb_basic@addfb25-yf-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-legacy
+-igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
+-igt@kms_addfb_basic@bad-pitch-0
+-igt@kms_addfb_basic@bad-pitch-1024
+-igt@kms_addfb_basic@bad-pitch-128
+-igt@kms_addfb_basic@bad-pitch-256
+-igt@kms_addfb_basic@bad-pitch-32
+-igt@kms_addfb_basic@bad-pitch-63
+-igt@kms_addfb_basic@bad-pitch-65536
+-igt@kms_addfb_basic@bad-pitch-999
+-igt@kms_addfb_basic@basic
+-igt@kms_addfb_basic@basic-x-tiled-legacy
+-igt@kms_addfb_basic@bo-too-small
+-igt@kms_addfb_basic@invalid-get-prop
+-igt@kms_addfb_basic@invalid-get-prop-any
+-igt@kms_addfb_basic@invalid-set-prop
+-igt@kms_addfb_basic@invalid-set-prop-any
+-igt@kms_addfb_basic@no-handle
+-igt@kms_addfb_basic@size-max
+-igt@kms_addfb_basic@small-bo
+-igt@kms_addfb_basic@too-high
+-igt@kms_addfb_basic@too-wide
+-igt@kms_addfb_basic@unused-handle
+-igt@kms_addfb_basic@unused-modifier
+-igt@kms_addfb_basic@unused-offsets
+-igt@kms_addfb_basic@unused-pitches
+-igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
+-igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
+-igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
+-igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
+-igt@kms_dsc@dsc-basic
+-igt@kms_flip@basic-flip-vs-dpms
+-igt@kms_flip@basic-flip-vs-modeset
+-igt@kms_flip@basic-flip-vs-wf_vblank
+-igt@kms_flip@basic-plain-flip
+-igt@kms_force_connector_basic@force-connector-state
+-igt@kms_force_connector_basic@force-edid
+-igt@kms_force_connector_basic@prune-stale-modes
+-igt@kms_frontbuffer_tracking@basic
+-igt@kms_hdmi_inject@inject-audio
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
+-igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
+-igt@kms_pipe_crc_basic@hang-read-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc
+-igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
+-igt@kms_pipe_crc_basic@read-crc
+-igt@kms_pipe_crc_basic@read-crc-frame-sequence
+-igt@kms_prop_blob@basic
+-igt@kms_psr@psr-primary-page-flip
+-igt@kms_psr@psr-cursor-plane-move
+-igt@kms_psr@psr-sprite-plane-onoff
+-igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
+-igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
+-igt@xe_compute@compute-square
+-igt@xe_create@create-execqueues-noleak
+-igt@xe_create@create-execqueues-leak
+-igt@xe_create@create-invalid-mbz
+-igt@xe_create@create-massive-size
+-igt@xe_debugfs@base
+-igt@xe_debugfs@gt
+-igt@xe_debugfs@forcewake
+-igt@xe_dma_buf_sync@export-dma-buf-once
+-igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
+-igt@xe_evict_ccs@evict-overcommit-simple
+-igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
+-igt@xe_exec_atomic@basic-dec-all
+-igt@xe_exec_atomic@basic-inc-all
+-igt@xe_exec_balancer@twice-virtual-basic
+-igt@xe_exec_balancer@no-exec-virtual-basic
+-igt@xe_exec_balancer@twice-cm-virtual-basic
+-igt@xe_exec_balancer@no-exec-cm-virtual-basic
+-igt@xe_exec_balancer@twice-virtual-userptr
+-igt@xe_exec_balancer@twice-cm-virtual-userptr
+-igt@xe_exec_balancer@twice-virtual-rebind
+-igt@xe_exec_balancer@twice-cm-virtual-rebind
+-igt@xe_exec_balancer@twice-virtual-userptr-rebind
+-igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
+-igt@xe_exec_balancer@twice-virtual-userptr-invalidate
+-igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
+-igt@xe_exec_balancer@twice-parallel-basic
+-igt@xe_exec_balancer@no-exec-parallel-basic
+-igt@xe_exec_balancer@twice-parallel-userptr
+-igt@xe_exec_balancer@twice-parallel-rebind
+-igt@xe_exec_balancer@twice-parallel-userptr-rebind
+-igt@xe_exec_balancer@twice-parallel-userptr-invalidate
+-igt@xe_exec_basic@twice-basic
+-igt@xe_exec_basic@no-exec-basic
+-igt@xe_exec_basic@twice-basic-defer-mmap
+-igt@xe_exec_basic@twice-basic-defer-bind
+-igt@xe_exec_basic@twice-userptr
+-igt@xe_exec_basic@twice-rebind
+-igt@xe_exec_basic@twice-userptr-rebind
+-igt@xe_exec_basic@twice-userptr-invalidate
+-igt@xe_exec_basic@no-exec-userptr-invalidate
+-igt@xe_exec_basic@twice-bindexecqueue
+-igt@xe_exec_basic@no-exec-bindexecqueue
+-igt@xe_exec_basic@twice-bindexecqueue-userptr
+-igt@xe_exec_basic@twice-bindexecqueue-rebind
+-igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_compute_mode@twice-basic
+-igt@xe_exec_compute_mode@twice-preempt-fence-early
+-igt@xe_exec_compute_mode@twice-userptr
+-igt@xe_exec_compute_mode@twice-rebind
+-igt@xe_exec_compute_mode@twice-userptr-rebind
+-igt@xe_exec_compute_mode@twice-userptr-invalidate
+-igt@xe_exec_compute_mode@twice-bindexecqueue
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
+-igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_queue_property@invalid-property
+-igt@xe_exec_reset@close-fd-no-exec
+-igt@xe_exec_reset@cm-close-fd-no-exec
+-igt@xe_exec_reset@virtual-close-fd-no-exec
+-igt@xe_exec_store@basic-store
+-igt@xe_gpgpu_fill@basic
+-igt@xe_gt_freq@freq_basic_api
+-igt@xe_gt_freq@freq_fixed_idle
+-igt@xe_gt_freq@freq_range_idle
+-igt@xe_huc_copy@huc_copy
+-igt@xe_intel_bb@add-remove-objects
+-igt@xe_intel_bb@bb-with-allocator
+-igt@xe_intel_bb@blit-reloc
+-igt@xe_intel_bb@blit-simple
+-igt@xe_intel_bb@create-in-region
+-igt@xe_intel_bb@delta-check
+-igt@xe_intel_bb@destroy-bb
+-igt@xe_intel_bb@intel-bb-blit-none
+-igt@xe_intel_bb@intel-bb-blit-x
+-igt@xe_intel_bb@intel-bb-blit-y
+-igt@xe_intel_bb@lot-of-buffers
+-igt@xe_intel_bb@offset-control
+-igt@xe_intel_bb@purge-bb
+-igt@xe_intel_bb@render
+-igt@xe_intel_bb@reset-bb
+-igt@xe_intel_bb@simple-bb
+-igt@xe_intel_bb@simple-bb-ctx
+-igt@xe_mmap@bad-extensions
+-igt@xe_mmap@bad-flags
+-igt@xe_mmap@bad-object
+-igt@xe_mmap@cpu-caching
+-igt@xe_mmap@system
+-igt@xe_mmap@vram
+-igt@xe_mmap@vram-system
+-igt@xe_pm_residency@gt-c6-on-idle
+-igt@xe_prime_self_import@basic-with_one_bo
+-igt@xe_prime_self_import@basic-with_fd_dup
+-#igt@xe_prime_self_import@basic-llseek-size
+-igt@xe_query@query-engines
+-igt@xe_query@query-mem-usage
+-igt@xe_query@query-gt-list
+-igt@xe_query@query-config
+-igt@xe_query@query-hwconfig
+-igt@xe_query@query-topology
+-igt@xe_query@query-invalid-extension
+-igt@xe_query@query-invalid-query
+-igt@xe_query@query-invalid-size
+-igt@xe_spin_batch@spin-basic
+-igt@xe_spin_batch@spin-batch
+-igt@xe_sysfs_defaults@engine-defaults
+-igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
+-igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
+-igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
+-igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
+-igt@xe_sysfs_scheduler@job_timeout_ms-invalid
+-igt@xe_sysfs_scheduler@job_timeout_ms-min-max
+-#igt@xe_vm@bind-once
+-#igt@xe_vm@scratch
+-igt@xe_vm@shared-pte-page
+-igt@xe_vm@shared-pde-page
+-igt@xe_vm@shared-pde2-page
+-igt@xe_vm@shared-pde3-page
+-igt@xe_vm@bind-execqueues-independent
+-igt@xe_vm@large-split-binds-268435456
+-igt@xe_vm@munmap-style-unbind-one-partial
+-igt@xe_vm@munmap-style-unbind-end
+-igt@xe_vm@munmap-style-unbind-front
+-igt@xe_vm@munmap-style-unbind-userptr-one-partial
+-igt@xe_vm@munmap-style-unbind-userptr-end
+-igt@xe_vm@munmap-style-unbind-userptr-front
+-igt@xe_vm@munmap-style-unbind-userptr-inval-end
+-igt@xe_vm@munmap-style-unbind-userptr-inval-front
+-igt@xe_pat@userptr-coh-none
+-igt@xe_pat@prime-self-import-coh
+-igt@xe_pat@prime-external-import-coh
+-igt@xe_pat@pat-index-all
+-igt@xe_pat@pat-index-xelp
+-igt@xe_pat@pat-index-xehpc
+-igt@xe_pat@pat-index-xelpg
+-igt@xe_pat@pat-index-xe2
+-igt@xe_waitfence@abstime
+-igt@xe_waitfence@engine
+-igt@xe_waitfence@reltime
+-
+-# All tests that do module unloading and reloading are executed last.
+-# They will sometimes reveal issues of earlier tests leaving the
+-# driver in a broken state that is not otherwise noticed in that test.
+-igt@core_hotunplug@unbind-rebind
+-
+-# Run KUnit tests at the end
+-igt@xe_live_ktest@xe_bo
+-igt@xe_live_ktest@xe_dma_buf
+-igt@xe_live_ktest@xe_migrate
+-
+-# Move fault_mode tests at the end to unblock execution
+-igt@xe_exec_fault_mode@twice-basic
+-igt@xe_exec_fault_mode@many-basic
+-igt@xe_exec_fault_mode@twice-userptr
+-igt@xe_exec_fault_mode@twice-rebind
+-igt@xe_exec_fault_mode@twice-userptr-rebind
+-igt@xe_exec_fault_mode@twice-userptr-invalidate
+-igt@xe_exec_fault_mode@twice-bindexecqueue
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
+-igt@xe_exec_fault_mode@twice-basic-imm
+-igt@xe_exec_fault_mode@twice-userptr-imm
+-igt@xe_exec_fault_mode@twice-rebind-imm
+-igt@xe_exec_fault_mode@twice-userptr-rebind-imm
+-igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
+-igt@xe_exec_fault_mode@twice-basic-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-prefetch
+-igt@xe_exec_fault_mode@twice-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
+-igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
+-igt@xe_exec_fault_mode@twice-invalid-fault
+-igt@xe_exec_fault_mode@twice-invalid-userptr-fault
+-igt@xe_exec_threads@threads-basic
+-igt@xe_exec_threads@threads-mixed-basic
+-igt@xe_exec_threads@threads-mixed-shared-vm-basic
+-igt@xe_exec_threads@threads-mixed-fd-basic
+-igt@xe_exec_threads@threads-mixed-userptr-invalidate
+-igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
+-igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
+-igt@xe_evict@evict-beng-small
+-igt@xe_evict@evict-beng-small-cm
+-igt@xe_evict@evict-beng-small-external
+-igt@xe_evict@evict-beng-small-external-cm
+-igt@xe_evict@evict-beng-small-multi-vm
+-igt@xe_evict@evict-cm-threads-small
+-igt@xe_evict@evict-mixed-threads-small
+-igt@xe_evict@evict-mixed-threads-small-multi-vm
+-igt@xe_evict@evict-small
+-igt@xe_evict@evict-small-cm
+-igt@xe_evict@evict-small-external
+-igt@xe_evict@evict-small-external-cm
+-igt@xe_evict@evict-small-multi-vm
+-igt@xe_evict@evict-small-multi-vm-cm
+-igt@xe_evict@evict-threads-small
++igt@kms_hdr@bpc-switch
++igt@kms_hdr@bpc-switch-dpms
++igt@kms_hdr@bpc-switch-suspend
++igt@kms_hdr@static-toggle
++igt@kms_hdr@static-toggle-dpms
++igt@kms_hdr@static-toggle-suspend
++igt@kms_hdr@brightness-with-hdr
++igt@kms_hdr@brightness-with-dpms
++igt@kms_hdr@brightness-with-suspend
++igt@kms_hdr@static-swap
++igt@kms_hdr@invalid-metadata-sizes
++igt@kms_hdr@invalid-hdr
 -- 
 2.34.1
 
