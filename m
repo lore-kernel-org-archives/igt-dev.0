@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93251CF9C71
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Sep 2024 06:34:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA9A6CF9C6B
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Sep 2024 07:49:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 485B210E1BE;
-	Tue, 24 Sep 2024 06:34:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D9CB10E59D;
+	Tue, 24 Sep 2024 07:49:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dd1/fvIG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YAnNgYWm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBB3710E1BE
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Sep 2024 06:34:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ABEF10E59D
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Sep 2024 07:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727159657; x=1758695657;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=uWldS0sCGfgQzbVRNY4gjhh49YMHHqxyPIxMpZACROw=;
- b=dd1/fvIGaDFFPl5NJEZNnODRldY+vpny1S08mtNJNiWwMo/XuQhLojBW
- yht3ctqu0owOmc4txr8VVplpXZ9f/lo5x2UZBUemaioL0JYfBph34TL/X
- LL1YQYPzR+fO40ie7aU6k4iJ0ECyC8wTtg9dDE3uIv+y4hei/SPDl2Qtl
- bid2PwWhn989ssgphfIfEVQ9Z8qu9O8WPvdmWWDTEcjV23Kbv7YPhmy12
- Bs5NhH1Qr89ikh62xBvAXNdCMHi9ZMrj9Xggke/uu9kMo86sfnnFCBCC1
- m3W5jl6n24xrpi8t8y03pAcmq+YbmIkSnQvo8Dqg6xKl6HFk7DPcDmHWu A==;
-X-CSE-ConnectionGUID: foHhQiSFRUiIgF20dhpq0Q==
-X-CSE-MsgGUID: SGdCQ2SARhufApUMWelPNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="25609639"
-X-IronPort-AV: E=Sophos;i="6.10,253,1719903600"; d="scan'208";a="25609639"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2024 23:34:17 -0700
-X-CSE-ConnectionGUID: JFo2TA9ATqSBD/8n6HlrGg==
-X-CSE-MsgGUID: gSIc1hgPQX+99AsGhZq9Fg==
+ t=1727164177; x=1758700177;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+nj3TkS3uF/EcakRqEBH2J2NJoZfPSPQkzZUWfylpxM=;
+ b=YAnNgYWmHCowT9esF7KmWya7OlNu4Myw0B8N88YcndztwYXQuYtaLn5m
+ jpMXqWhHE+wY6fz0wzDXImRKdRi8/HZdmJlmp0ijrYWlqykJiUozaP8qu
+ BeaKmLvqTRxzQjn2BitpFcgRZiMEqYCMmkoVJiq3vF29o0pVhvo2navpm
+ iOAwDr+QpDQbuxYWIAiEWnftSPpHU+RbL6v8NKdpb4Jlco9cUe1c3ARZD
+ knzuwrbn0Sl68wvlEDbdKRzv4jHjFMReHGvdD43AxQWZ37mWdZQdqWGjD
+ 9IJzTOy1HaHcvsZOTErjf6VL2xXwOjk6XOgC8O9cbWjetH1FBr/QC+18v g==;
+X-CSE-ConnectionGUID: ZGJRMwtZSaaOODzTwECymA==
+X-CSE-MsgGUID: +wsIw5pPQSee9I/4r7/dsg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="43612483"
+X-IronPort-AV: E=Sophos;i="6.10,253,1719903600"; d="scan'208";a="43612483"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2024 00:49:37 -0700
+X-CSE-ConnectionGUID: DkbvXlNGRHSeIxG08QxxbQ==
+X-CSE-MsgGUID: NOQ58aGwR3K/ZstgOF2n4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,253,1719903600"; d="scan'208";a="102054715"
-Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.146])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2024 23:34:16 -0700
-Date: Tue, 24 Sep 2024 08:34:12 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Ville Syrjala <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 4/6] tests/xe_ccs: Use logical && instead of
- bitwise &
-Message-ID: <20240924063412.u2wh2spyh4cbnugc@zkempczy-mobl2>
-References: <20240923204557.32123-1-ville.syrjala@linux.intel.com>
- <20240923204557.32123-5-ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.10,253,1719903600"; d="scan'208";a="75433776"
+Received: from sinjan-super-server.iind.intel.com ([10.145.169.153])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2024 00:49:35 -0700
+From: Karthik Poosa <karthik.poosa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, riana.tauro@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t v2] tests/intel/xe_pm_residency: Add an assertion on
+ MI_STORE execution time
+Date: Tue, 24 Sep 2024 13:33:57 +0530
+Message-Id: <20240924080357.1961472-1-karthik.poosa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240923204557.32123-5-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,52 +67,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Sep 23, 2024 at 11:45:55PM +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> The code appears to want to use a logical AND instead
-> of a bitwise AND. Make it so.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->  tests/intel/xe_ccs.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/intel/xe_ccs.c b/tests/intel/xe_ccs.c
-> index a55ee5abd5b3..e656e5123841 100644
-> --- a/tests/intel/xe_ccs.c
-> +++ b/tests/intel/xe_ccs.c
-> @@ -344,8 +344,8 @@ static void block_copy(int xe,
->  	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
->  	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
->  	uint32_t run_id = mid_tiling;
-> -	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
-> -							!xe_has_vram(xe)) ? region1 : region2;
-> +	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &&
-> +			       !xe_has_vram(xe)) ? region1 : region2;
+MI_STORE_DWORD generally completes within couple of ms.
+Assert if it takes more than 1.2 seconds, as it will cause
+IGT test to timeout due to sleep of 120 seconds which is
+the current per test timeout.
 
-Nice catch. I haven't spotted this on the review. Definitely
-I need to be more careful. Thanks for fixing this.
+v2: Correct couple of typos in patch and commit message.
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---
-Zbigniew
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 0e687558b..75cdeeeee 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -144,6 +144,15 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
+ 			  1e-3 * submit,
+ 			  1e-3 * (elapsed - submit));
+ 
++		/*
++		 * MI_STORE_DWORD generally completes within couple of ms.
++		 * Assert if it takes more than 1.2 seconds, as it will cause
++		 * IGT test to timeout due to sleep of 120 seconds which is
++		 * the current per test timeout. Currently there is no way to
++		 * read this timeout from IGT test.
++		 */
++		igt_assert((uint64_t)elapsed < (uint64_t)(1.2 * NSEC_PER_SEC));
++
+ 		syncobj_reset(fd, &syncobj, 1);
+ 
+ 		/*
+-- 
+2.25.1
 
->  	uint32_t bb;
->  	enum blt_compression mid_compression = config->compression;
->  	int mid_compression_format = param.compression_format;
-> @@ -479,8 +479,8 @@ static void block_multicopy(int xe,
->  	uint64_t bb_size = xe_bb_size(xe, SZ_4K);
->  	uint64_t ahnd = intel_allocator_open(xe, ctx->vm, INTEL_ALLOCATOR_RELOC);
->  	uint32_t run_id = mid_tiling;
-> -	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &
-> -							!xe_has_vram(xe)) ? region1 : region2;
-> +	uint32_t mid_region = (AT_LEAST_GEN(intel_get_drm_devid(xe), 20) &&
-> +			       !xe_has_vram(xe)) ? region1 : region2;
->  	uint32_t bb;
->  	enum blt_compression mid_compression = config->compression;
->  	int mid_compression_format = param.compression_format;
-> -- 
-> 2.44.2
-> 
