@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD4DC369C8
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Sep 2024 10:33:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4002AC369CA
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Sep 2024 10:33:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0120410E7E5;
-	Wed, 25 Sep 2024 10:33:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F413910E7E6;
+	Wed, 25 Sep 2024 10:33:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PWuSBP+e";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lRHr5m1D";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CCF110E7E5
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Sep 2024 10:33:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E776310E7E6
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Sep 2024 10:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727260434; x=1758796434;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=LEzYqNS13ugVwRWUY3m35YDeS860KFNB1HsNMGzrh98=;
- b=PWuSBP+eb2eDt1BuvtcAe9UEh73C1m4KtheLQmy5WPxrivZKRptjY7se
- bW0F6pToHkNBxHaNJdccrlD57LLGtWOKyfuw0G4zj383PnxcUkGGq5THr
- Q5NrfmWNmHNmXX2OfgNYtZIgLDbTufoEsTUJI8wwHQwyaO+XkjlOGpW+l
- Ne6AOIyuh5HM9J73pjEduOnzJJLk7lj7xGayZpDbNCyhSse0r8cmC4ADo
- GE94eNdzcXlCsuSjFrfffJ60k/L/QqFmIYtGsYEFGgjTAxus/IKXaPxyN
- NmxGm5oWL3CDPG0CCkIx+ZzgXMhxfemvhaAyLmFtJDHsx0168eEDbDit6 g==;
-X-CSE-ConnectionGUID: VJ4uJr7uSi+XFd7t0E9kMQ==
-X-CSE-MsgGUID: 0aVg7eDiSIiXKi5F6vYUbg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="26247940"
-X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; d="scan'208";a="26247940"
+ t=1727260436; x=1758796436;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=HghsmK2Ejzenjk1CZlXLzpEPMoN9RUG9zGYkLDxXjY8=;
+ b=lRHr5m1DRoQBe5zvwvTSr+uxh7YwiMJ6XR82eDFrG4q/inYyNGPdKEKC
+ T2DA74RWNAHITTIqi9qjpMh8+nOnSfDXOol6DKAFeFwqcM8E7DOOgiWhh
+ qbFqpnQg8XiAcokCZ/XR30TcrJ98jDcR6SqcMK1/rKEBjTlHWj+7ju0sO
+ LAyF6EBi0TE3YDU3SW9xyL+KLYaUOWWyJY15NWJSeAxYChLFzJK6o1wWC
+ elTLWk4PxY7H9iZUqxDMYUD/4uDTzvMxheDa1LvC8AYUNvyM+loB1K4ew
+ s8brVkhurKksaeY9s+KIuN4xoENQG8M+DjCV2O7hBY+cgDGnHTwrknmzc g==;
+X-CSE-ConnectionGUID: guyjy77PTsG/jdGw94HdHw==
+X-CSE-MsgGUID: /mU2h4xHQXGg++1bAF8Q6Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="26247941"
+X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; d="scan'208";a="26247941"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2024 03:33:54 -0700
-X-CSE-ConnectionGUID: GZXk4cxQRsKBU+idDTptwg==
-X-CSE-MsgGUID: VLGLIErwR7eKQrAr0Ba1fA==
+ 25 Sep 2024 03:33:56 -0700
+X-CSE-ConnectionGUID: rCb+aI+SSRidS0+4scfe+Q==
+X-CSE-MsgGUID: wicJ0CmrTe62YWug4WBu7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; d="scan'208";a="76658998"
+X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; d="scan'208";a="76659005"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.145.169.76])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 03:33:52 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 03:33:54 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 0/2] tests/kms_plane_scaling: Cdclk exceeds max Cdclk
- issue fix
-Date: Wed, 25 Sep 2024 16:03:11 +0530
-Message-ID: <20240925103313.2126359-1-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1 1/2] tests/kms_plane_scaling: Add mode override in
+ scaling test
+Date: Wed, 25 Sep 2024 16:03:12 +0530
+Message-ID: <20240925103313.2126359-2-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240925103313.2126359-1-ramanaidu.naladala@intel.com>
+References: <20240925103313.2126359-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,17 +68,31 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This change will solve the cdclk exceeds max cdclk issue.
+Add a call to igt_output_override_mode to ensure the correct mode
+is set for each connector. Modify check_scaling_pipe_plane_rot
+function to include igt_output_override_mode. This change helps
+in accurately testing the scaling functionality by explicitly
+setting the mode before running the tests.
 
-Naladala Ramanaidu (2):
-  tests/kms_plane_scaling: Add mode override in scaling test
-  HAX patch do not merge
+Fixes: 27926dd57 (tests/kms_plane_scaling: Find display mode fitting in BW for rotations)
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/kms_plane_scaling.c | 1 +
+ 1 file changed, 1 insertion(+)
 
- tests/intel-ci/fast-feedback.testlist    | 196 +++------------
- tests/intel-ci/xe-fast-feedback.testlist | 307 +++--------------------
- tests/kms_plane_scaling.c                |   1 +
- 3 files changed, 67 insertions(+), 437 deletions(-)
-
+diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
+index bc9114acd..96ceedee2 100644
+--- a/tests/kms_plane_scaling.c
++++ b/tests/kms_plane_scaling.c
+@@ -585,6 +585,7 @@ check_scaling_pipe_plane_rot(data_t *d, igt_plane_t *plane,
+ 
+ 	for_each_connector_mode(output) {
+ 		mode = &output->config.connector->modes[j__];
++		igt_output_override_mode(output, mode);
+ 		igt_debug("Trying mode %dx%d\n",
+ 			  mode->hdisplay, mode->vdisplay);
+ 
 -- 
 2.43.0
 
