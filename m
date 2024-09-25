@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92B35CCFA05
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Sep 2024 22:39:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2CB5CCFA06
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Sep 2024 23:14:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F14C888D9;
-	Wed, 25 Sep 2024 22:39:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DF3910E167;
+	Wed, 25 Sep 2024 23:14:55 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0D1B1888D9;
- Wed, 25 Sep 2024 22:39:06 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9346310E0D5;
+ Wed, 25 Sep 2024 23:14:54 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4726238961242968557=="
+ boundary="===============5663737141269449642=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/intel/xe=5Ffault=5Finjec?=
- =?utf-8?q?tion=3A_Add_new_test_for_fault_injection_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fpsr=3A_Allow_testing?=
+ =?utf-8?q?_without_checking_sink_status?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Francois Dugast" <francois.dugast@intel.com>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 25 Sep 2024 22:39:06 -0000
-Message-ID: <172730394604.1103263.4295673346128121986@2413ebb6fbb6>
+Date: Wed, 25 Sep 2024 23:14:54 -0000
+Message-ID: <172730609459.1103310.14837005167123919270@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240923084942.3839098-1-francois.dugast@intel.com>
-In-Reply-To: <20240923084942.3839098-1-francois.dugast@intel.com>
+References: <20240923102106.2228688-1-jouni.hogander@intel.com>
+In-Reply-To: <20240923102106.2228688-1-jouni.hogander@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,33 +41,28 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4726238961242968557==
+--===============5663737141269449642==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_fault_injection: Add new test for fault injection (rev2)
-URL   : https://patchwork.freedesktop.org/series/138923/
-State : failure
+Series: lib/igt_psr: Allow testing without checking sink status
+URL   : https://patchwork.freedesktop.org/series/138979/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8032_BAT -> XEIGTPW_11786_BAT
+CI Bug Log - changes from XEIGT_8032_BAT -> XEIGTPW_11787_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_11786_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11786_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
   
 
@@ -76,55 +71,52 @@ Participating hosts (9 -> 9)
 
   No changes in participating hosts
 
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11786_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-adlp-7:         [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_11786_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_11787_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
   * igt@kms_psr@psr-primary-page-flip@edp-1:
-    - bat-lnl-1:          [PASS][3] -> [FAIL][4] ([Intel XE#1649]) +5 other tests fail
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#1649]) +5 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
+
+  * igt@xe_intel_bb@blit-reloc:
+    - bat-adlp-vf:        [PASS][3] -> [DMESG-WARN][4] ([Intel XE#358])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html
+
+  * igt@xe_live_ktest@xe_bo:
+    - bat-adlp-vf:        [PASS][5] -> [SKIP][6] ([Intel XE#1192]) +2 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html
 
   
+  [Intel XE#1192]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192
   [Intel XE#1649]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649
+  [Intel XE#358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/358
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8032 -> IGTPW_11786
+  * IGT: IGT_8032 -> IGTPW_11787
   * Linux: xe-1975-abfe8cf977e1abd1f414b2a90d223cd4dd2f1f47 -> xe-1976-88d592f72f7bc508d6a027b1f96aa2e53f803e1b
 
-  IGTPW_11786: 9cf8ee80fe0e1bc238306d840b19d7ff91bd6288 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11787: 11787
   IGT_8032: 8032
   xe-1975-abfe8cf977e1abd1f414b2a90d223cd4dd2f1f47: abfe8cf977e1abd1f414b2a90d223cd4dd2f1f47
   xe-1976-88d592f72f7bc508d6a027b1f96aa2e53f803e1b: 88d592f72f7bc508d6a027b1f96aa2e53f803e1b
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/index.html
 
---===============4726238961242968557==
+--===============5663737141269449642==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -144,51 +136,51 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_fault_injection: Add new test for fault injection (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138923/">https://patchwork.freedesktop.org/series/138923/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>lib/igt_psr: Allow testing without checking sink status</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138979/">https://patchwork.freedesktop.org/series/138979/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8032_BAT -&gt; XEIGTPW_11786_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8032_BAT -&gt; XEIGTPW_11787_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11786_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11786_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
 <h2>Participating hosts (9 -&gt; 9)</h2>
 <p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11786_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11786_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_11787_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
-<li>igt@kms_psr@psr-primary-page-flip@edp-1:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11786/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649">Intel XE#1649</a>) +5 other tests fail</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip@edp-1:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649">Intel XE#1649</a>) +5 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_intel_bb@blit-reloc:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/bat-adlp-vf/igt@xe_intel_bb@blit-reloc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/358">Intel XE#358</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo:</p>
+<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8032/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11787/bat-adlp-vf/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1192">Intel XE#1192</a>) +2 other tests skip</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8032 -&gt; IGTPW_11786</li>
+<li>IGT: IGT_8032 -&gt; IGTPW_11787</li>
 <li>Linux: xe-1975-abfe8cf977e1abd1f414b2a90d223cd4dd2f1f47 -&gt; xe-1976-88d592f72f7bc508d6a027b1f96aa2e53f803e1b</li>
 </ul>
-<p>IGTPW_11786: 9cf8ee80fe0e1bc238306d840b19d7ff91bd6288 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_11787: 11787<br />
   IGT_8032: 8032<br />
   xe-1975-abfe8cf977e1abd1f414b2a90d223cd4dd2f1f47: abfe8cf977e1abd1f414b2a90d223cd4dd2f1f47<br />
   xe-1976-88d592f72f7bc508d6a027b1f96aa2e53f803e1b: 88d592f72f7bc508d6a027b1f96aa2e53f803e1b</p>
@@ -196,4 +188,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4726238961242968557==--
+--===============5663737141269449642==--
