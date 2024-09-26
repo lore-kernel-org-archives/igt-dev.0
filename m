@@ -4,55 +4,185 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AC5CCDE00C
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Sep 2024 14:09:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00261CDE00B
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Sep 2024 14:18:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0509510EB64;
-	Thu, 26 Sep 2024 14:09:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8273010E181;
+	Thu, 26 Sep 2024 14:18:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hoZ9Ldn9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JWQvGB5X";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECC7010EB64
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Sep 2024 14:09:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 29AFF10E181
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Sep 2024 14:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727359772; x=1758895772;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4wiMbjlbuxCd/rD944r8jeQs9mdjAfCHZraNDZvNexo=;
- b=hoZ9Ldn9OMudPKySLGIV24/FdiVz8aJ5JNp0xktU33D77vqTK+/ZQ7uq
- 3HnObAO5ioQCJtYY9r8paY0Yf8pmJVOIOv2q5aDPVuf8QMmIMQYmMLgAa
- nSLm8ACF0ZburO6ieb57gp1oKjNd64++rKDy6uxUqP+Zf3Z/pdOmgUYwi
- vIOfirPYxKLNcw74wBMJSUnOJ6LC6011TeeGnOJwnLtYIRqlVvXG5eNYC
- 1FrBvKR4saBfW2Mv5mCPX3w3DCNGII795HvC8iogoNtu72L7+utuYGWrs
- OndY1gQt+zUA/+u4pqGPAbbc0wxVafBwa+J9Jc3tV1bxRmr0VprzTx9HB A==;
-X-CSE-ConnectionGUID: I2fUZHoSR/SVxdZ1baNj+w==
-X-CSE-MsgGUID: +A08EfrDSGu5EEoGCQzp1Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="30251849"
-X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; d="scan'208";a="30251849"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2024 07:09:19 -0700
-X-CSE-ConnectionGUID: 5eDMa4pOQQ2vZ7/psSRHvA==
-X-CSE-MsgGUID: nvwqaIr8R+inXyQHb4YTgA==
+ t=1727360309; x=1758896309;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-id:content-transfer-encoding:mime-version;
+ bh=39jhOJJP+iV8XChjJepOsPmRpsy3OU4a6d20dBOz8aI=;
+ b=JWQvGB5X7HnSgxrW+RDJI0p9npD/C4isfVxWjWPW+J8rZ6twvafdANw1
+ mpHOagt/oVb+BuNYyTSV3r5OSD0vo2VnFJUeOSudakXhLf/eub5Moegfu
+ MAASPYoT8lXJ/VpQHets2gdkKdBL8afJXeBkl0CdCj64smj9fd/AqLHZl
+ WhtVy6GMSTdC5+mQMvmuGt0QBWYRJTlN7moA4APujsEslDqPM8CqWOTgH
+ A2vcrBc8t7DRtCX6WcuoVow5fk4GigkBQHKqpIoYurZ4TIlkQkYMw4RHi
+ +FDvvMKkls8fdH6nSAmMnYGdSqm9LTLmL+KgznTiHn1FHza9+lhsG5c9K w==;
+X-CSE-ConnectionGUID: mC14ynBlQNarIwToEJYgPA==
+X-CSE-MsgGUID: actkTAKeS8CkBaKsJR4Jqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="37126582"
+X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; d="scan'208";a="37126582"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2024 07:18:04 -0700
+X-CSE-ConnectionGUID: 1KABy6rXTAG+wVKpaNNb+A==
+X-CSE-MsgGUID: kLpQqlOYTn29Vf3cSSdBBw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; d="scan'208";a="76529114"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 07:09:17 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1 2/2] HAX patch do not merge
-Date: Thu, 26 Sep 2024 19:38:36 +0530
-Message-Id: <20240926140836.939153-3-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240926140836.939153-1-santhosh.reddy.guddati@intel.com>
-References: <20240926140836.939153-1-santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; d="scan'208";a="76668322"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 26 Sep 2024 07:18:04 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 26 Sep 2024 07:18:03 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 26 Sep 2024 07:18:03 -0700
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.175)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 26 Sep 2024 07:18:03 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BpZAaVFx2nVSzD9szf5a5z96N2GpGxkt4nF3aGR5cDRxN+I53K/YymJedKLtdFRRVnRrVg+nC4rHGhISdU4jYPF7FzbFgRztJrS7ExS2O8IVq5CpHlwGMzBY5cpzWuHOUwI9qb1Q0Z7NcBVCsz+27eaOBn5LkWipvyrNLTBscuLptykqLsQa3dz5QnZWGs/vHN3JiujLzs04kSowJiBenFwCOwmF9vo++Jtb+ZiBUyD4Zsr0/vobdX4DLmOdvhXdF4fZX2Sk4fnZCd5tIdCmkLIsRt91HyAiojt3CBYtyyP7Psrr1MWUTUX/w0MGQE4EUGSTF/XBN9bJ8i7mrZCmVA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=39jhOJJP+iV8XChjJepOsPmRpsy3OU4a6d20dBOz8aI=;
+ b=LTf0O6yv5f1Sl6XhofSWfccEFXkppoKN5mTVqIIYWnILt0gp5gJgrAuIN+QoiJN3dLiFCrs82qCpaaoQbRk3+bxQ9lbPXu3em9KDkAWEYRjHluwUD5N7NR/10NWL3FLc4mOfm7kAZR4x7X/hJ+9EDb+OSYHt9uLLPTBQ+d3DzAtaAkdJCUHeVXBF55mpmSAuEV83RmV3zyEfvStRtGYOjTr+L3gTW6UevZeQ6fF5XL+ry+S8ZWtdUBM1BiYH3dnMpkAtnrkyz+HTEeQm7bSYHVZhOG9TwQnuFz5amqU+7SnzoE1dePj0WpsoK0nf50snV1cPNJixKQM0GOFbG5pKqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA0PR11MB7864.namprd11.prod.outlook.com (2603:10b6:208:3df::14)
+ by SJ2PR11MB8568.namprd11.prod.outlook.com (2603:10b6:a03:56c::19)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.28; Thu, 26 Sep
+ 2024 14:18:01 +0000
+Received: from IA0PR11MB7864.namprd11.prod.outlook.com
+ ([fe80::9333:15de:faa8:4cf9]) by IA0PR11MB7864.namprd11.prod.outlook.com
+ ([fe80::9333:15de:faa8:4cf9%6]) with mapi id 15.20.7982.022; Thu, 26 Sep 2024
+ 14:18:01 +0000
+From: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+To: "mika.kuoppala@linux.intel.com" <mika.kuoppala@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 2/3] tests/xe_eudebug: Detect thread starvation on
+ discovery
+Thread-Topic: [PATCH i-g-t 2/3] tests/xe_eudebug: Detect thread starvation on
+ discovery
+Thread-Index: AQHbEAHkIQybe65w2kiYWcZSliMx+bJqHcOA
+Date: Thu, 26 Sep 2024 14:18:00 +0000
+Message-ID: <077daf5f29055787e9d3a8f81da724b1f0ed5e20.camel@intel.com>
+References: <20240926103939.550907-1-mika.kuoppala@linux.intel.com>
+ <20240926103939.550907-2-mika.kuoppala@linux.intel.com>
+In-Reply-To: <20240926103939.550907-2-mika.kuoppala@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA0PR11MB7864:EE_|SJ2PR11MB8568:EE_
+x-ms-office365-filtering-correlation-id: 1bb8464d-3d00-4481-ce38-08dcde36072e
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0; ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?NnJaTU85RkhBSlpLd01mb1c1THFqVHR1YlFCbFdESXhXSXJjZFZtQm0xcnRj?=
+ =?utf-8?B?OWVvU3VmZXhQeGZCVnllTm1iaGdRTnZYUkRQc3k0QjlCRm9iZkRmZFc1dFNO?=
+ =?utf-8?B?U29MSTRyMzhpcEVYUkhMaVJJWjFMSUpKSTFYZlJvakY3VDNKd0R6U3crajlx?=
+ =?utf-8?B?R1JwTXB4bUNTV1NxZGxMV3pwb1M0czdFYzlCd0tXR1duY2l2ZkpQUDVDVmgr?=
+ =?utf-8?B?Um9HM2ZIT0tBSmNodTdKVDFZQ00yZitvM2F4MDVEK1dKZ0tvRVpvZjVVMHFp?=
+ =?utf-8?B?UzVnYUM2WXFKSGxBVXlodDg1N2hpOFo1eVovUnNhbWlzYnJuY0FsMVk1TDVx?=
+ =?utf-8?B?RStoaFNnS2lkSktDRDdGTGYvbjM4MWFiS21yWFdnVDFBaWpPcW9sTi81YUYx?=
+ =?utf-8?B?MjdseDI1VEtsYVU0WWRWSHZlU0E4MXJoNnhJS1VDVmdMcjNxTGJSc1JqTHc0?=
+ =?utf-8?B?eE9sdWJDUU1iYzhhNmFBaThsdTRBeXgxKzFIK3o5SXFmL1JXamhpVURXUlln?=
+ =?utf-8?B?MTVlWi9zWVNZQ2JKdUN6Wmd1VEN5dmNzS3VnN0ZvREwwYWJqQzVyTFo2N1JZ?=
+ =?utf-8?B?OHBnZVNFa3FINzlzMFlvMmNQUUFXcGt3b3g3U0Y0dW9STkFIRFJpWitYV3ls?=
+ =?utf-8?B?dVV3R2pwOG1UeDNrcXlxc3NOTnZqVjM3RHVnaXVFV0pWYkgwV3lhQUJBZ3dH?=
+ =?utf-8?B?SG90cndpQmlyRW9NSmR5bU9YaTJqcXcvMmtFUUVGcDFKdkpVbzlPZnlGam5x?=
+ =?utf-8?B?bzVPM3ZDdEswQXk2SDNiRTdCWDJ2Y1R3RXhxMUJyWkl0Szd0cTM4YTB0dkht?=
+ =?utf-8?B?MlVoQjdsTXdMZm9KZENKdi9YYVVncTNtUWhXNGpuWTBSck1CdXBqNnh0N0sr?=
+ =?utf-8?B?NWRjRE9LVnk2cTVjbjRsL0daaEtFVzVQOUZGaTBKZHBZUmVTSGMvcmQvWVZw?=
+ =?utf-8?B?eit3UDNDbm1tTjcvV3lHaTJNbjkrS3FJcjA3Y09uSHlWc2JZbUlCZlZwa2pi?=
+ =?utf-8?B?QkMvWThmZ0VweUFUWjVPTTBzcm10NmVtZGtDdHlYRjV5TUVNcmh2Ykk2MGpF?=
+ =?utf-8?B?MGdLM2FqOFp5ZUc4U21NS25Ldkc4eTYvSUZRS2tmZXdybnJOdHpVcm52eGta?=
+ =?utf-8?B?Sk93cERRMnFBREdsaDhyQ1ljNGFpOStmeGJmZjJUdkNqU3hTUVdRQUNQRm5Z?=
+ =?utf-8?B?enJocFgyaFh0bU9ZZDQyS3ppYkNjK1Q1UmV1NTB6SkQwVk9lQUV4VFJKdURG?=
+ =?utf-8?B?VmQ0eVNmMk5CdHVFZU15THdkTkJnRFhmcmJZdzRMUEZmRnlzWlpIU2RVVnc2?=
+ =?utf-8?B?ejE4UWorR3Mxa3VGOVBCYUlUQnl3dkN6bm5scU1naFBhRWdHa0V2YzJZM3BM?=
+ =?utf-8?B?ZVgwQ3ZYQWZJVDdnOEo2V2hoV3ZIVjdJdVo0Nm9rUXgxZTdOdXB5R1dZcy9B?=
+ =?utf-8?B?cStWTUt6eUtyQlJjM0NFNjRKUXk1akpYVTVFbU16ajMrcnNlbnBlUUM0TGpy?=
+ =?utf-8?B?Z011VXNhY24weU9mbU1HRnp5Y0JCSXJPeFJwbGc4ZkpyMlkvejJwNHAyd3dY?=
+ =?utf-8?B?WDVoL0dZU3orekh3ckxkYzhNLzlBUUF1dER5RzRaNGRSMGwzRWhzSTNSU0I2?=
+ =?utf-8?B?aUJzRVRpWnQzQkxWd1N3Qm0ySlV3TVFtUVVuRVl4dERGdWVtQ0l5b0ZjVDRt?=
+ =?utf-8?B?d0VOUDZLZVBHQ3ByNlY3ejcxSUdaUHpsQ1NrTDR2T2lCUkhTQmxtaTI0S0dQ?=
+ =?utf-8?B?QkQ3WHFVc1BvTGhXRkZ0RDczeVZ3TkpaVzZCUzB4UDI3KzR5N3JLVWNydUZO?=
+ =?utf-8?B?MzlQdEc2K3FHc0g5b0tRQT09?=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA0PR11MB7864.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(38070700018); DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Q0lGSXR6Sk42TS9qSytSbWRPNC9lWmNRZmxXS1k1N2E2MDRTYnZvSnB1Rmw3?=
+ =?utf-8?B?T0FBS2ZmUmMvUkhyOHVGeDU4Si9YeUpvZEoxeEVwekVvcHBBazN0eTk4QjRn?=
+ =?utf-8?B?eXFOKzZGdEU3cHNhZ1FRZThDZTRjckxNK093TjlXcEdXVTRpZ2hhNUFMTkpX?=
+ =?utf-8?B?VG1lTXI4Zm9QVDVWbGJSdGhDZjVkdVVnVnlLK3JlZEtPL2IrSUpFWnYyMEQ5?=
+ =?utf-8?B?bUcvTjI3ZnU2dVFmc2ZuZE5VeEg5YWMwbEozbWNMTVEvZVVOcG9EYlRQUCs3?=
+ =?utf-8?B?bnFLdUZNamdYdkVnNDliRGpKN2F1VWMzM0tDTWVZVXF6ZkdjT01HUldEQ0ZB?=
+ =?utf-8?B?MFoyMU9BVnkxZlRPOGtRanVCSlpuWXE1UjlCWk5Xa1NpTUZZTTkyWTBvanlx?=
+ =?utf-8?B?TTlIdkFzT29nQmlqUWhBSEJjY25DVXh0aE9MeGhNUGFkenVyTzVNb3BGZ1pj?=
+ =?utf-8?B?WFdDZzdYc1dXVmJ4OVZEVDRZbnJIYmtHREpmNzhJMWI2TTRDWW5tZkJPTndQ?=
+ =?utf-8?B?bWhpZUpmN2FWdnVSdittZXErWHdid0Z0eG5pLysvRXlBd2srN0N4WElhZHUr?=
+ =?utf-8?B?aGJoU0FBejE5L2ZaMmtWQ3Z1QnAzaXJ3ejEzd2JjMFNIbEtrajJGK20rNW1I?=
+ =?utf-8?B?QlFTdUNZM21hTlU1QXVMalVIRjhlUlorK1B3bk1aNUc5WVpwWjBRMUd5Rzlq?=
+ =?utf-8?B?bGZqakZkeDZ2SFRWM3N4MWNua2ROekxrY3JiSU1kVE1tSHp3V3JNTW0zRmZY?=
+ =?utf-8?B?dXovU1Y3SXJDVndPazgvRHk2ZXhyRlZ0K2dIWHFhYkdFNHFkdXcwMmUyWkUv?=
+ =?utf-8?B?NnA5Y2NiVHVxSGxrUTFFUlM3Qll2cXZWRmFIbWEyN2w1N0I0MGJjSmxNSFNt?=
+ =?utf-8?B?bHY2cDBRVUVFSGxSdnpJalAxUFo1NTV2S2pkY0hkRTY3cEVLT29sS1NDMmxM?=
+ =?utf-8?B?MHRYWElOcmlNUkxHL0Q1QlpEd0J0TGZQY1FDaU9Pak1rdDRnazdBVWJ2clJF?=
+ =?utf-8?B?dklqZWYwb1B5U0RwY2dwTm92L2VwT0ZXMEovaWRuaHlpRU9ScG5LZCtYWUYr?=
+ =?utf-8?B?UGozUjBxa2tMM0VxeUlVME5tVlo2NUZQNFNHMkZMTDBrMFc5NnFxRnlHVThU?=
+ =?utf-8?B?WnVGTDNRSXpVTHBDVlJaZzBMTDN4NzNNYy80R0MzbVpUMVY0SGtMU1dnVnBa?=
+ =?utf-8?B?V09rUHFIVTRZRFlxNnNxVzhnNDdjblRuWFlLT2g4bmYyQ0F2Q0kraENKaW9T?=
+ =?utf-8?B?VTEwdG5XNytVWGhvcVpvVmxHS3RTSmRTdUpYUVFDbGN6WktuaUN6dG14RnhT?=
+ =?utf-8?B?WW1nT1pwMW96TnZvNi9meXI4OElDRGUyaFA0WjdVWHAyUmJaVHJJdmQ3dXRs?=
+ =?utf-8?B?WEpHb3FKaEt0Mmg0dVdMZmlUOUhWQkFMbnIxWCtFdDN4Tm9OZDhjaStPOTdy?=
+ =?utf-8?B?bm9Ic0hrN05YQjlaZTIrVWtLSTQxUEwwSjhDbHlpcXRIbkxoanpWQTEvSUlz?=
+ =?utf-8?B?RVlUb2J1WVdJeWJIdDFMWGZCcGZ3VmRmQUpDRWtKalBwdmtDU1ZjTU1BUCtC?=
+ =?utf-8?B?OTRTc01PUElzdXZOSVl1WXRrKyt2OGtMSllCSmRQRE9vVHlINEZ1dmZNai9V?=
+ =?utf-8?B?bzNiZlVWUFpTdzdoeVBOTGRDUkk3amdlLytzSDVNTXAzcE5FL3drRWNZNkNM?=
+ =?utf-8?B?OE9WbDJicnp5SVArQUd6MWxjaWhnQjVKbXNTbW9rbjB2bE1vcEU4eGZaUmdX?=
+ =?utf-8?B?OFZNRmxzZ1VVQ043R2NJY0k3ak92NHNoU0FPYk1GM0psZ3NoOWZLM3BKeXlX?=
+ =?utf-8?B?S1MzNXp3ZVdTOHlyczZPeGEraDl6S0liNFJhRE4yN25jSFNyN08xRmd4SVh2?=
+ =?utf-8?B?Wi9hdmxYdzQvaEJ4Y0VPajNpTW1Yc0VacFc0Lzc3ZnB1QU10czROTmhkNEdF?=
+ =?utf-8?B?ZXZyZlozZWJzYy9BWmUzaGJUYnF6dDhiQzFJVnNpSmczcnpUM0hPbzJyUmVQ?=
+ =?utf-8?B?TjdOQ0E1SThhQ2pRK0g3UXgwUmhxaFBRN2FlVDhSWkQvYlVEbldyY2luMTcz?=
+ =?utf-8?B?SlBWaFcwWFZzNWh3eEpaSG9HK3puTnkxa0N5dG43WTBCM1o0SXZGRnJQbCs2?=
+ =?utf-8?B?WFp1amJuTW9PSWFjQVMvbTdDVXJjblMxRTFxUVpPM1Z2Z0dieGdETU1oak1w?=
+ =?utf-8?Q?RauM+mvkkKwlMh1Og7IY86E=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B6D231102EB93843997F96C7D5473E51@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7864.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1bb8464d-3d00-4481-ce38-08dcde36072e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2024 14:18:00.9838 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: CkUkwna0AfVjsjsrykpViywHKSDjMLdRTDS2ebGR7VmZ/W4GuzywlKfGt+YLk7sexSTXCfiGTmgddppJ8E2ZRK6/EMmPkT8YbfCosk/bwZ0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8568
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,493 +198,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
----
- tests/intel-ci/fast-feedback.testlist    | 183 +-------------
- tests/intel-ci/xe-fast-feedback.testlist | 289 +----------------------
- 2 files changed, 24 insertions(+), 448 deletions(-)
-
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..baf43e732 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -1,171 +1,12 @@
--# Try to load the driver if it's not available yet.
--igt@i915_module_load@load
--
--# Keep alphabetically sorted by default
--igt@core_auth@basic-auth
--igt@debugfs_test@read_all_entries
--igt@debugfs_test@basic-hwmon
--igt@debugfs_test@sysfs
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--igt@gem_basic@bad-close
--igt@gem_basic@create-close
--igt@gem_basic@create-fd-close
--igt@gem_busy@busy@all-engines
--igt@gem_close_race@basic-process
--igt@gem_close_race@basic-threads
--igt@gem_ctx_create@basic
--igt@gem_ctx_create@basic-files
--igt@gem_ctx_exec@basic
--igt@gem_exec_basic@basic
--igt@gem_exec_create@basic
--igt@gem_exec_fence@basic-busy
--igt@gem_exec_fence@basic-wait
--igt@gem_exec_fence@basic-await
--igt@gem_exec_fence@nb-await
--igt@gem_exec_gttfill@basic
--igt@gem_exec_parallel@engines
--igt@gem_exec_store@basic
--igt@gem_flink_basic@bad-flink
--igt@gem_flink_basic@bad-open
--igt@gem_flink_basic@basic
--igt@gem_flink_basic@double-flink
--igt@gem_flink_basic@flink-lifetime
--igt@gem_huc_copy@huc-copy
--igt@gem_linear_blits@basic
--igt@gem_mmap@basic
--igt@gem_mmap_gtt@basic
--igt@gem_render_linear_blits@basic
--igt@gem_render_tiled_blits@basic
--igt@gem_ringfill@basic-all
--igt@gem_softpin@allocator-basic
--igt@gem_softpin@allocator-basic-reserve
--igt@gem_softpin@safe-alignment
--igt@gem_sync@basic-all
--igt@gem_sync@basic-each
--igt@gem_tiled_blits@basic
--igt@gem_tiled_fence_blits@basic
--igt@gem_tiled_pread_basic
--igt@gem_wait@busy@all-engines
--igt@gem_wait@wait@all-engines
--igt@i915_getparams_basic@basic-eu-total
--igt@i915_getparams_basic@basic-subslice-total
--igt@i915_hangman@error-state-basic
--igt@i915_pciid
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-x-tiled-mismatch-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@basic-y-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@bo-too-small-due-to-tiling
--igt@kms_addfb_basic@clobberred-modifier
--igt@kms_addfb_basic@framebuffer-vs-set-tiling
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@tile-pitch-mismatch
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_busy@basic
--igt@kms_prop_blob@basic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@force-load-detect
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_pm_backlight@basic-brightness
--igt@kms_pm_rpm@basic-pci-d3-state
--igt@kms_pm_rpm@basic-rte
--igt@kms_psr@psr-primary-page-flip
--igt@kms_psr@psr-cursor-plane-move
--igt@kms_psr@psr-sprite-plane-onoff
--igt@kms_psr@psr-primary-mmap-gtt
--igt@kms_setmode@basic-clone-single-crtc
--igt@i915_pm_rps@basic-api
--igt@prime_self_import@basic-llseek-bad
--igt@prime_self_import@basic-llseek-size
--igt@prime_self_import@basic-with_fd_dup
--igt@prime_self_import@basic-with_one_bo
--igt@prime_self_import@basic-with_one_bo_two_files
--igt@prime_self_import@basic-with_two_bos
--igt@prime_vgem@basic-fence-flip
--igt@prime_vgem@basic-fence-mmap
--igt@prime_vgem@basic-fence-read
--igt@prime_vgem@basic-gtt
--igt@prime_vgem@basic-read
--igt@prime_vgem@basic-write
--igt@vgem_basic@setversion
--igt@vgem_basic@create
--igt@vgem_basic@debugfs
--igt@vgem_basic@dmabuf-export
--igt@vgem_basic@dmabuf-fence
--igt@vgem_basic@dmabuf-fence-before
--igt@vgem_basic@dmabuf-mmap
--igt@vgem_basic@mmap
--igt@vgem_basic@second-client
--igt@vgem_basic@sysfs
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--
--igt@core_hotunplug@unbind-rebind
--igt@vgem_basic@unload
--igt@i915_module_load@reload
--igt@gem_lmem_swapping@basic
--igt@gem_lmem_swapping@parallel-random-engines
--igt@gem_lmem_swapping@random-engines
--igt@gem_lmem_swapping@verify-random
--igt@i915_pm_rpm@module-reload
--
--# Kernel selftests
--igt@i915_selftest@live
--igt@dmabuf@all-tests
-+igt@kms_async_flips@async-flip-with-page-flip-events
-+igt@kms_async_flips@async-flip-with-page-flip-events-atomic
-+igt@kms_async_flips@alternate-sync-async-flip
-+igt@kms_async_flips@alternate-sync-async-flip-atomic
-+igt@kms_async_flips@test-time-stamp
-+igt@kms_async_flips@test-time-stamp-atomic
-+igt@kms_async_flips@test-cursor
-+igt@kms_async_flips@test-cursor-atomic
-+igt@kms_async_flips@invalid-async-flip
-+igt@kms_async_flips@invalid-async-flip-atomic
-+igt@kms_async_flips@crc
-+igt@kms_async_flips@crc-atomic
-diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-index 01b01dcf9..baf43e732 100644
---- a/tests/intel-ci/xe-fast-feedback.testlist
-+++ b/tests/intel-ci/xe-fast-feedback.testlist
-@@ -1,277 +1,12 @@
--# Should be the first test
--igt@xe_module_load@load
--
--igt@fbdev@eof
--igt@fbdev@info
--igt@fbdev@nullptr
--igt@fbdev@read
--igt@fbdev@write
--
--igt@kms_addfb_basic@addfb25-4-tiled
--igt@kms_addfb_basic@addfb25-bad-modifier
--igt@kms_addfb_basic@addfb25-modifier-no-flag
--igt@kms_addfb_basic@addfb25-x-tiled-legacy
--igt@kms_addfb_basic@addfb25-yf-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-legacy
--igt@kms_addfb_basic@addfb25-y-tiled-small-legacy
--igt@kms_addfb_basic@bad-pitch-0
--igt@kms_addfb_basic@bad-pitch-1024
--igt@kms_addfb_basic@bad-pitch-128
--igt@kms_addfb_basic@bad-pitch-256
--igt@kms_addfb_basic@bad-pitch-32
--igt@kms_addfb_basic@bad-pitch-63
--igt@kms_addfb_basic@bad-pitch-65536
--igt@kms_addfb_basic@bad-pitch-999
--igt@kms_addfb_basic@basic
--igt@kms_addfb_basic@basic-x-tiled-legacy
--igt@kms_addfb_basic@bo-too-small
--igt@kms_addfb_basic@invalid-get-prop
--igt@kms_addfb_basic@invalid-get-prop-any
--igt@kms_addfb_basic@invalid-set-prop
--igt@kms_addfb_basic@invalid-set-prop-any
--igt@kms_addfb_basic@no-handle
--igt@kms_addfb_basic@size-max
--igt@kms_addfb_basic@small-bo
--igt@kms_addfb_basic@too-high
--igt@kms_addfb_basic@too-wide
--igt@kms_addfb_basic@unused-handle
--igt@kms_addfb_basic@unused-modifier
--igt@kms_addfb_basic@unused-offsets
--igt@kms_addfb_basic@unused-pitches
--igt@kms_cursor_legacy@basic-flip-after-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-after-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size
--igt@kms_cursor_legacy@basic-flip-before-cursor-atomic
--igt@kms_cursor_legacy@basic-flip-before-cursor-legacy
--igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size
--igt@kms_dsc@dsc-basic
--igt@kms_flip@basic-flip-vs-dpms
--igt@kms_flip@basic-flip-vs-modeset
--igt@kms_flip@basic-flip-vs-wf_vblank
--igt@kms_flip@basic-plain-flip
--igt@kms_force_connector_basic@force-connector-state
--igt@kms_force_connector_basic@force-edid
--igt@kms_force_connector_basic@prune-stale-modes
--igt@kms_frontbuffer_tracking@basic
--igt@kms_hdmi_inject@inject-audio
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24
--igt@kms_pipe_crc_basic@compare-crc-sanitycheck-nv12
--igt@kms_pipe_crc_basic@hang-read-crc
--igt@kms_pipe_crc_basic@nonblocking-crc
--igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence
--igt@kms_pipe_crc_basic@read-crc
--igt@kms_pipe_crc_basic@read-crc-frame-sequence
--igt@kms_prop_blob@basic
--igt@kms_psr@psr-primary-page-flip
--igt@kms_psr@psr-cursor-plane-move
--igt@kms_psr@psr-sprite-plane-onoff
--igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
--igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
--igt@xe_compute@compute-square
--igt@xe_create@create-execqueues-noleak
--igt@xe_create@create-execqueues-leak
--igt@xe_create@create-invalid-mbz
--igt@xe_create@create-massive-size
--igt@xe_debugfs@base
--igt@xe_debugfs@gt
--igt@xe_debugfs@forcewake
--igt@xe_dma_buf_sync@export-dma-buf-once
--igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
--igt@xe_evict_ccs@evict-overcommit-simple
--igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
--igt@xe_exec_atomic@basic-dec-all
--igt@xe_exec_atomic@basic-inc-all
--igt@xe_exec_balancer@twice-virtual-basic
--igt@xe_exec_balancer@no-exec-virtual-basic
--igt@xe_exec_balancer@twice-cm-virtual-basic
--igt@xe_exec_balancer@no-exec-cm-virtual-basic
--igt@xe_exec_balancer@twice-virtual-userptr
--igt@xe_exec_balancer@twice-cm-virtual-userptr
--igt@xe_exec_balancer@twice-virtual-rebind
--igt@xe_exec_balancer@twice-cm-virtual-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-cm-virtual-userptr-rebind
--igt@xe_exec_balancer@twice-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-cm-virtual-userptr-invalidate
--igt@xe_exec_balancer@twice-parallel-basic
--igt@xe_exec_balancer@no-exec-parallel-basic
--igt@xe_exec_balancer@twice-parallel-userptr
--igt@xe_exec_balancer@twice-parallel-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-rebind
--igt@xe_exec_balancer@twice-parallel-userptr-invalidate
--igt@xe_exec_basic@twice-basic
--igt@xe_exec_basic@no-exec-basic
--igt@xe_exec_basic@twice-basic-defer-mmap
--igt@xe_exec_basic@twice-basic-defer-bind
--igt@xe_exec_basic@twice-userptr
--igt@xe_exec_basic@twice-rebind
--igt@xe_exec_basic@twice-userptr-rebind
--igt@xe_exec_basic@twice-userptr-invalidate
--igt@xe_exec_basic@no-exec-userptr-invalidate
--igt@xe_exec_basic@twice-bindexecqueue
--igt@xe_exec_basic@no-exec-bindexecqueue
--igt@xe_exec_basic@twice-bindexecqueue-userptr
--igt@xe_exec_basic@twice-bindexecqueue-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_basic@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_compute_mode@twice-basic
--igt@xe_exec_compute_mode@twice-preempt-fence-early
--igt@xe_exec_compute_mode@twice-userptr
--igt@xe_exec_compute_mode@twice-rebind
--igt@xe_exec_compute_mode@twice-userptr-rebind
--igt@xe_exec_compute_mode@twice-userptr-invalidate
--igt@xe_exec_compute_mode@twice-bindexecqueue
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr
--igt@xe_exec_compute_mode@twice-bindexecqueue-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_queue_property@invalid-property
--igt@xe_exec_reset@close-fd-no-exec
--igt@xe_exec_reset@cm-close-fd-no-exec
--igt@xe_exec_reset@virtual-close-fd-no-exec
--igt@xe_exec_store@basic-store
--igt@xe_gpgpu_fill@basic
--igt@xe_gt_freq@freq_basic_api
--igt@xe_gt_freq@freq_fixed_idle
--igt@xe_gt_freq@freq_range_idle
--igt@xe_huc_copy@huc_copy
--igt@xe_intel_bb@add-remove-objects
--igt@xe_intel_bb@bb-with-allocator
--igt@xe_intel_bb@blit-reloc
--igt@xe_intel_bb@blit-simple
--igt@xe_intel_bb@create-in-region
--igt@xe_intel_bb@delta-check
--igt@xe_intel_bb@destroy-bb
--igt@xe_intel_bb@intel-bb-blit-none
--igt@xe_intel_bb@intel-bb-blit-x
--igt@xe_intel_bb@intel-bb-blit-y
--igt@xe_intel_bb@lot-of-buffers
--igt@xe_intel_bb@offset-control
--igt@xe_intel_bb@purge-bb
--igt@xe_intel_bb@render
--igt@xe_intel_bb@reset-bb
--igt@xe_intel_bb@simple-bb
--igt@xe_intel_bb@simple-bb-ctx
--igt@xe_mmap@bad-extensions
--igt@xe_mmap@bad-flags
--igt@xe_mmap@bad-object
--igt@xe_mmap@cpu-caching
--igt@xe_mmap@system
--igt@xe_mmap@vram
--igt@xe_mmap@vram-system
--igt@xe_pm_residency@gt-c6-on-idle
--igt@xe_prime_self_import@basic-with_one_bo
--igt@xe_prime_self_import@basic-with_fd_dup
--#igt@xe_prime_self_import@basic-llseek-size
--igt@xe_query@query-engines
--igt@xe_query@query-mem-usage
--igt@xe_query@query-gt-list
--igt@xe_query@query-config
--igt@xe_query@query-hwconfig
--igt@xe_query@query-topology
--igt@xe_query@query-invalid-extension
--igt@xe_query@query-invalid-query
--igt@xe_query@query-invalid-size
--igt@xe_spin_batch@spin-basic
--igt@xe_spin_batch@spin-batch
--igt@xe_sysfs_defaults@engine-defaults
--igt@xe_sysfs_scheduler@preempt_timeout_us-invalid
--igt@xe_sysfs_scheduler@preempt_timeout_us-min-max
--igt@xe_sysfs_scheduler@timeslice_duration_us-invalid
--igt@xe_sysfs_scheduler@timeslice_duration_us-min-max
--igt@xe_sysfs_scheduler@job_timeout_ms-invalid
--igt@xe_sysfs_scheduler@job_timeout_ms-min-max
--#igt@xe_vm@bind-once
--#igt@xe_vm@scratch
--igt@xe_vm@shared-pte-page
--igt@xe_vm@shared-pde-page
--igt@xe_vm@shared-pde2-page
--igt@xe_vm@shared-pde3-page
--igt@xe_vm@bind-execqueues-independent
--igt@xe_vm@large-split-binds-268435456
--igt@xe_vm@munmap-style-unbind-one-partial
--igt@xe_vm@munmap-style-unbind-end
--igt@xe_vm@munmap-style-unbind-front
--igt@xe_vm@munmap-style-unbind-userptr-one-partial
--igt@xe_vm@munmap-style-unbind-userptr-end
--igt@xe_vm@munmap-style-unbind-userptr-front
--igt@xe_vm@munmap-style-unbind-userptr-inval-end
--igt@xe_vm@munmap-style-unbind-userptr-inval-front
--igt@xe_pat@userptr-coh-none
--igt@xe_pat@prime-self-import-coh
--igt@xe_pat@prime-external-import-coh
--igt@xe_pat@pat-index-all
--igt@xe_pat@pat-index-xelp
--igt@xe_pat@pat-index-xehpc
--igt@xe_pat@pat-index-xelpg
--igt@xe_pat@pat-index-xe2
--igt@xe_waitfence@abstime
--igt@xe_waitfence@engine
--igt@xe_waitfence@reltime
--
--# All tests that do module unloading and reloading are executed last.
--# They will sometimes reveal issues of earlier tests leaving the
--# driver in a broken state that is not otherwise noticed in that test.
--igt@core_hotunplug@unbind-rebind
--
--# Run KUnit tests at the end
--igt@xe_live_ktest@xe_bo
--igt@xe_live_ktest@xe_dma_buf
--igt@xe_live_ktest@xe_migrate
--
--# Move fault_mode tests at the end to unblock execution
--igt@xe_exec_fault_mode@twice-basic
--igt@xe_exec_fault_mode@many-basic
--igt@xe_exec_fault_mode@twice-userptr
--igt@xe_exec_fault_mode@twice-rebind
--igt@xe_exec_fault_mode@twice-userptr-rebind
--igt@xe_exec_fault_mode@twice-userptr-invalidate
--igt@xe_exec_fault_mode@twice-bindexecqueue
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate
--igt@xe_exec_fault_mode@twice-basic-imm
--igt@xe_exec_fault_mode@twice-userptr-imm
--igt@xe_exec_fault_mode@twice-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-imm
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-imm
--igt@xe_exec_fault_mode@twice-basic-prefetch
--igt@xe_exec_fault_mode@twice-userptr-prefetch
--igt@xe_exec_fault_mode@twice-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-rebind-prefetch
--igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate-prefetch
--igt@xe_exec_fault_mode@twice-invalid-fault
--igt@xe_exec_fault_mode@twice-invalid-userptr-fault
--igt@xe_exec_threads@threads-basic
--igt@xe_exec_threads@threads-mixed-basic
--igt@xe_exec_threads@threads-mixed-shared-vm-basic
--igt@xe_exec_threads@threads-mixed-fd-basic
--igt@xe_exec_threads@threads-mixed-userptr-invalidate
--igt@xe_exec_threads@threads-mixed-shared-vm-userptr-invalidate-race
--igt@xe_evict@evict-beng-mixed-threads-small-multi-vm
--igt@xe_evict@evict-beng-small
--igt@xe_evict@evict-beng-small-cm
--igt@xe_evict@evict-beng-small-external
--igt@xe_evict@evict-beng-small-external-cm
--igt@xe_evict@evict-beng-small-multi-vm
--igt@xe_evict@evict-cm-threads-small
--igt@xe_evict@evict-mixed-threads-small
--igt@xe_evict@evict-mixed-threads-small-multi-vm
--igt@xe_evict@evict-small
--igt@xe_evict@evict-small-cm
--igt@xe_evict@evict-small-external
--igt@xe_evict@evict-small-external-cm
--igt@xe_evict@evict-small-multi-vm
--igt@xe_evict@evict-small-multi-vm-cm
--igt@xe_evict@evict-threads-small
-+igt@kms_async_flips@async-flip-with-page-flip-events
-+igt@kms_async_flips@async-flip-with-page-flip-events-atomic
-+igt@kms_async_flips@alternate-sync-async-flip
-+igt@kms_async_flips@alternate-sync-async-flip-atomic
-+igt@kms_async_flips@test-time-stamp
-+igt@kms_async_flips@test-time-stamp-atomic
-+igt@kms_async_flips@test-cursor
-+igt@kms_async_flips@test-cursor-atomic
-+igt@kms_async_flips@invalid-async-flip
-+igt@kms_async_flips@invalid-async-flip-atomic
-+igt@kms_async_flips@crc
-+igt@kms_async_flips@crc-atomic
--- 
-2.34.1
-
+T24gVGh1LCAyMDI0LTA5LTI2IGF0IDEzOjM5ICswMzAwLCBNaWthIEt1b3BwYWxhIHdyb3RlOg0K
+PiBEaXNjb3ZlcnkgdGVzdHMgc3Bhd25zIG11bHRpcGxlIGNsaWVudHMgYW5kIG11bHRpcGxlDQo+
+IGRlYnVnZ2VycyBhbmQgc29tZXRpbWVzLCBlc3BlY2lhbGx5IHdpdGgga2VybmVsIGRlYnVncyBv
+biwNCj4gc29tZSB0aHJlYWQgcmVhbGx5IGNhbiBzdGFydmUgbW9yZSB0aGFuIG9uZSBzZWNvbmQu
+DQo+IA0KPiBBZGQgYSBjaGVjayB0aGF0IHdlIGRvbnQgc3RhcnQgdG8gYXNzZXJ0IG1pc3NpbmcN
+Cj4gcmVzb3VyY2VzIGlmIHdlIGRpZG4ndCBnZXQgYW55Lg0KPiANCj4gQW5vdGhlciBvcHRpb24g
+d291bGQgYmUgdG8ganVzdCBza2lwIHN0YXJ2ZWQgdGhyZWFkDQo+IGNoZWNrcyBhbmQgYXNzZXJ0
+IHRoYXQgc29tZSBvZiB0aGUgdGhyZWFkcyBzdWNjZWVkZWQuDQo+IEJ1dCBsZXRzIHRyeSB0aGlz
+IGFzIGEgc3RvcGdhcCBtZWFzdXJlIGJlZm9yZSBnaXZpbmcNCj4gdXAuDQo+IA0KPiBJbmNyZWFz
+ZSB3b3JrZXIgdGltZSB1bnRpbCB3ZSBzZWUgYW4gZXZlbnQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
+OiBNaWthIEt1b3BwYWxhIDxtaWthLmt1b3BwYWxhQGxpbnV4LmludGVsLmNvbT4NCj4gLS0tDQo+
+ICB0ZXN0cy9pbnRlbC94ZV9ldWRlYnVnLmMgfCAxNSArKysrKysrKysrKysrKy0NCj4gIDEgZmls
+ZSBjaGFuZ2VkLCAxNCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0t
+Z2l0IGEvdGVzdHMvaW50ZWwveGVfZXVkZWJ1Zy5jIGIvdGVzdHMvaW50ZWwveGVfZXVkZWJ1Zy5j
+DQo+IGluZGV4IGEyYjJmMzU5Ni4uYmY1NjA0NjJlIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9pbnRl
+bC94ZV9ldWRlYnVnLmMNCj4gKysrIGIvdGVzdHMvaW50ZWwveGVfZXVkZWJ1Zy5jDQo+IEBAIC0x
+MTA3LDExICsxMTA3LDI0IEBAIHN0YXRpYyB2b2lkICpkaXNjb3ZlcnlfcmFjZV90aHJlYWQodm9p
+ZCAqZGF0YSkNCj4gIA0KPiAgCQlpZiAocmFuZG9tKCkgJSAyKSB7DQo+ICAJCQlzdHJ1Y3QgZHJt
+X3hlX2V1ZGVidWdfZXZlbnQgKmUgPSBOVUxMOw0KPiArCQkJaW50IG1heF93b3JrZXJfd2FpdHMg
+PSAzMDsNCj4gIAkJCWludCBpID0gLTE7DQo+ICANCj4gIAkJCXhlX2V1ZGVidWdfZGVidWdnZXJf
+c3RhcnRfd29ya2VyKHMtPmRlYnVnZ2VyKTsNCj4gLQkJCXNsZWVwKDEpOw0KPiArDQo+ICsJCQkv
+Kg0KPiArCQkJICogVGhyZWFkIGNhbiBzdGFydmUgZm9yIG1vcmUgdGhhbiBvbmUgc2Vjb25kLiBN
+YWtlDQo+ICsJCQkgKiBzdXJlIHdlIGdldCBhdGxlYXN0IG9uZSBldmVudCBiZWZvcmUgc3RvcHBp
+bmcuDQo+ICsJCQkgKi8NCj4gKwkJCWRvDQo+ICsJCQkJc2xlZXAoMSk7DQo+ICsJCQl3aGlsZSAo
+IVJFQURfT05DRShzLT5kZWJ1Z2dlci0+ZXZlbnRfY291bnQpICYmDQo+ICsJCQkgICAgICAgLS1t
+YXhfd29ya2VyX3dhaXRzKTsNCj4gKw0KPiArCQkJaWd0X2Fzc2VydChSRUFEX09OQ0Uocy0+ZGVi
+dWdnZXItPmV2ZW50X2NvdW50KSk7DQo+ICsNCj4gIAkJCXhlX2V1ZGVidWdfZGVidWdnZXJfc3Rv
+cF93b3JrZXIocy0+ZGVidWdnZXIsIDEpOw0KPiArDQoNClllcCwgc2xlZXAoMSkgaGFkIHNvbWUg
+cmlzayB0byBiZSBub3QgZW5vdWdoLiBZb3VyIGFwcHJvYWNoIGlzIG1vcmUgZWxlZ2FudC4NClRo
+YW5rcyBmb3IgdGhlIGZpeCENCiANClJldmlld2VkLWJ5OiBEb21pbmlrIEdyemVnb3J6ZWsgPGRv
+bWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+DQo+ICAJCQlpZ3RfZGVidWcoIlJlc291cmNlcyBk
+aXNjb3ZlcmVkOiAlbHVcbiIsIHMtPmRlYnVnZ2VyLT5ldmVudF9jb3VudCk7DQo+ICANCj4gIAkJ
+CXhlX2V1ZGVidWdfZm9yX2VhY2hfZXZlbnQoZSwgcy0+ZGVidWdnZXItPmxvZykgew0KDQo=
