@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB7DACCF9E9
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Sep 2024 09:53:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 32056CCF9E9
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Sep 2024 10:06:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7D70E10EB8A;
-	Thu, 26 Sep 2024 09:53:41 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 14CE410EB8A;
- Thu, 26 Sep 2024 09:53:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1357481691427745254=="
-MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EIGT=3A_success_for_Added_IGT_support_to_valida?=
- =?utf-8?q?te_global_histogram_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C8C3810E310;
+	Thu, 26 Sep 2024 10:06:16 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="D/AxWQep";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 298F610E310
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Sep 2024 10:06:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1727345175; x=1758881175;
+ h=date:from:to:cc:subject:message-id:reply-to:references:
+ mime-version:in-reply-to;
+ bh=c4PGz8f/5UilKPvXMivs35y3T3ehVf0S3pP1vHJdPL0=;
+ b=D/AxWQepYAvYVZW80pI1IqbOMlrTHVJmVs6qEA3rBf6CqboCFNqOOEAX
+ HcedCJ+o3K2KPDmYENn93OfmvHJRLkgWzFKcq7fUHP2dMACyBr14AeIRV
+ sThFYc3gklfTOJC853Am991Lx8+FZYYJsDA131V7hDK80j5I0S1ff2U99
+ lFxxkcoAlLjCcyoltS8UKvrVFsFWzZx6r3p5YzOkItwJnpM198TEowgan
+ YrqeVpuCAyAqVMrNKrIUo26giqnQgg5SUkRvKrZwiw57iiRD1zA50PWvo
+ 2qcemX+t4H7KtqqviN+i1Ok3n3421/BRhK8DQym9ox+e/wnnV7Smrq4vv A==;
+X-CSE-ConnectionGUID: VAE5P6XlTCi72DqVj/4u4w==
+X-CSE-MsgGUID: OuavGFiGR3qBLAaTeOopEQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="26584673"
+X-IronPort-AV: E=Sophos;i="6.10,155,1719903600"; d="scan'208";a="26584673"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2024 03:06:15 -0700
+X-CSE-ConnectionGUID: zpsbZRQCT+2doEA+PQ+FvA==
+X-CSE-MsgGUID: bLqbPoAbTi+e07inFcMWKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,155,1719903600"; d="scan'208";a="72234494"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2024 03:06:13 -0700
+Date: Thu, 26 Sep 2024 13:06:40 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Kunal Joshi <kunal1.joshi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 26 Sep 2024 09:53:41 -0000
-Message-ID: <172734442107.1106197.18181554726160329459@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240705091333.328322-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20240705091333.328322-1-mohammed.thasleem@intel.com>
+Subject: Re: [PATCH i-g-t 5/7] lib/igt_kms: Handle EINVAL error as well
+Message-ID: <ZvUyMNT5XDflL6Q3@ideak-desk.fi.intel.com>
+References: <20240925182944.1603015-1-kunal1.joshi@intel.com>
+ <20240925182944.1603015-6-kunal1.joshi@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925182944.1603015-6-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,175 +65,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: imre.deak@intel.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1357481691427745254==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Wed, Sep 25, 2024 at 11:59:42PM +0530, Kunal Joshi wrote:
+> Previously, only -ENOSPC was handled, but -EINVAL
+> can also occur under certain conditions when the
+> mode can't be set.
+> 
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+> Suggested-by: Imre Deak <imre.deak@intel.com>
 
-== Series Details ==
+Reviewed-by: Imre Deak <imre.deak@intel.com>
 
-Series: Added IGT support to validate global histogram (rev2)
-URL   : https://patchwork.freedesktop.org/series/135789/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from CI_DRM_15444_full -> IGTPW_11795_full
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11795/index.html
-
-Participating hosts (8 -> 7)
-------------------------------
-
-  Additional (2): shard-snb-0 shard-dg2-set2 
-  Missing    (3): shard-snb shard-dg2 shard-glk 
-
-New tests
----------
-
-  New tests have been introduced between CI_DRM_15444_full and IGTPW_11795_full:
-
-### New IGT tests (4) ###
-
-  * igt@kms_histogram@global-histogram-basic:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@kms_histogram@global-histogram-color:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@kms_histogram@histogram-algo-basic:
-    - Statuses :
-    - Exec time: [None] s
-
-  * igt@kms_histogram@histogram-algo-color:
-    - Statuses :
-    - Exec time: [None] s
-
-  
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8032 -> IGTPW_11795
-  * Piglit: piglit_4509 -> None
-
-  CI-20190529: 20190529
-  CI_DRM_15444: 88d592f72f7bc508d6a027b1f96aa2e53f803e1b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11795: 8bc763646a9e2f426a9a15d4ed0df4df0c1136d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8032: 8032
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11795/index.html
-
---===============1357481691427745254==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Added IGT support to validate global histogram (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135789/">https://patchwork.freedesktop.org/series/135789/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11795/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11795/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from CI_DRM_15444_full -&gt; IGTPW_11795_full</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11795/index.html</p>
-<h2>Participating hosts (8 -&gt; 7)</h2>
-<p>Additional (2): shard-snb-0 shard-dg2-set2 <br />
-  Missing    (3): shard-snb shard-dg2 shard-glk </p>
-<h2>New tests</h2>
-<p>New tests have been introduced between CI_DRM_15444_full and IGTPW_11795_full:</p>
-<h3>New IGT tests (4)</h3>
-<ul>
-<li>
-<p>igt@kms_histogram@global-histogram-basic:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_histogram@global-histogram-color:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_histogram@histogram-algo-basic:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_histogram@histogram-algo-color:</p>
-<ul>
-<li>Statuses :</li>
-<li>Exec time: [None] s</li>
-</ul>
-</li>
-</ul>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8032 -&gt; IGTPW_11795</li>
-<li>Piglit: piglit_4509 -&gt; None</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15444: 88d592f72f7bc508d6a027b1f96aa2e53f803e1b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11795: 8bc763646a9e2f426a9a15d4ed0df4df0c1136d9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8032: 8032<br />
-  piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit</p>
-
-</body>
-</html>
-
---===============1357481691427745254==--
+> ---
+>  lib/igt_kms.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index ca5fc92cd..c96008577 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -4927,7 +4927,7 @@ bool __override_all_active_output_modes_to_fit_bw(igt_display_t *display,
+>  
+>  		if (!ret)
+>  			return true;
+> -		else if (ret != -ENOSPC)
+> +		else if (ret != -ENOSPC && ret != -EINVAL)
+>  			return false;
+>  	}
+>  
+> -- 
+> 2.43.0
+> 
