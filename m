@@ -4,59 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E32CEBF8A
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 10:06:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E50CEBF8E
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 10:21:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E78B410ECAE;
-	Fri, 27 Sep 2024 10:06:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2AEAB10E1F7;
+	Fri, 27 Sep 2024 10:21:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JF3evFti";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QOsV8huf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AD2910ECAE
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 10:06:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 463C410E1F7
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 10:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727431562; x=1758967562;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=CnaVVHD1YFt6hber7HprU5YbfFowsDUDsak5eDG/ULI=;
- b=JF3evFtiS157oomL4wBDM1A4Y8BZ2RhPvaFVRQ3PYLvW5QwvbAoHeLMV
- FM1x8+T40ApFZjKdvoZ95jBzsCohMSXnK92JaLzNDVCF/2wagAkOgWGHL
- D3g9xGz4t4mMBZaPmCthrRE+3otPJ5UNW02Sd3h5+IHS5MrmVCGQac80u
- yeU/NOhzOPL2XFQ4v7XZ9HsCJAm1OD7Rga6JcKkOlXSTXbU/AI0piEAnZ
- coNW/ut20vQxS2DpAtxQa/Aevl/+x4J03flQexuNZjv/TwW+rYOmMxIIU
- DNvK7RhwZCmFkvPpg7RfibSB2IWDp4qkRplaACNuhXg24VVoILUlslUOD w==;
-X-CSE-ConnectionGUID: fPIvhLU4RLmcwim3+S7Esg==
-X-CSE-MsgGUID: 0GpqPS2HQaGJ+1/IPeufOQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="30281017"
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="30281017"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Sep 2024 03:06:01 -0700
-X-CSE-ConnectionGUID: 83LUKbDUSzKqj7y/eeH7dg==
-X-CSE-MsgGUID: /Wg2pjFsS4O+ihr9KLCRmg==
+ t=1727432482; x=1758968482;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=n2paFyV68hJQbOkS9PsY5Y7sWiW6h+WmmZHW7xLrFuY=;
+ b=QOsV8hufsfyuMohujW++lYsudqDn93bgQXGjGNtYrmB9pFXLnOnwpj8q
+ 9jeuRbwEUm3MwUTwFR+zSwXrbGBG6PI9GEtn9LEq3DlmQix++yt4veYng
+ d+0h6krHgMSvu2qVZ9nBLVaElBBPZaEgUYKeFDeHVdic2pJkG4WtfCX6t
+ kN7lvDkOF2EswoWvt2+HHSRSC0uJcPZizcc0PNUoRysKRLWwEDScX1qMM
+ v36hxHuufWTq1AAhEz+Jj9RE2vDvDp0Wpy2MaTZIf6iJ41SMZKtGRcl8j
+ IzZpBF391+eptCAul/rVj6sITJZPr3uS/lz4Tu71iASEMT3uvHEIumvse A==;
+X-CSE-ConnectionGUID: NljmJRYITR6OfZQfP5N3Ag==
+X-CSE-MsgGUID: N7sbmbXLRi+CRcCgHXVhMw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="37137189"
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="37137189"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 03:21:21 -0700
+X-CSE-ConnectionGUID: rcyLR9MlRUeBsZvec2Z7Jg==
+X-CSE-MsgGUID: Cz4T7L+yRcKDU975vpSdBg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="77322577"
-Received: from mbernato-mobl1.ger.corp.intel.com (HELO [10.246.17.24])
- ([10.246.17.24])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Sep 2024 03:06:01 -0700
-Message-ID: <05ef47a7-663a-4fc4-a069-0c3f3f4c385b@linux.intel.com>
-Date: Fri, 27 Sep 2024 12:05:45 +0200
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="73283220"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
+ by orviesa008-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2024 03:21:20 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v2 0/2] Backlight control on HDR-enabled eDP panels
+Date: Fri, 27 Sep 2024 15:50:36 +0530
+Message-Id: <20240927102038.1001578-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/xe_exec_reset: Skip syncobj_wait during
- the gt_reset
-To: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Stuart Summers <stuart.summers@intel.com>
-References: <20240925103141.3442-1-krishnaiah.bommu@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20240925103141.3442-1-krishnaiah.bommu@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,51 +65,18 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Validate backlight control by changing brightness on HDR enabled eDP
+panels via sysfs.
 
+Santhosh Reddy Guddati (2):
+  tests/kms_hdr: Add brightness tests for hdr
+  HAX patch do not merge
 
-On 9/25/2024 12:31 PM, Bommu Krishnaiah wrote:
-> From: "Bommu Krishnaiah" <krishnaiah.bommu@intel.com>
-> 
-> Skipping the syncobj_wait for the workloads which is submitted
-> before gt reset, since After gt reset There is no expectation
-> from the hardware/GuC/KMD that the workload will then
-> re-execute and complete.
-> 
-> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-> Cc: Stuart Summers <stuart.summers@intel.com>
-> ---
->   tests/intel/xe_exec_reset.c | 8 +++++---
->   1 file changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index b5d5f43ea..b1a7548c6 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -263,8 +263,9 @@ test_balancer(int fd, int gt, int class, int n_exec_queues, int n_execs,
->   	}
->   
->   	for (i = 0; i < n_exec_queues && n_execs; i++)
-> -		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
-> -					NULL));
-> +		if (!(flags & GT_RESET))
-> +			igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX,
+ tests/intel-ci/fast-feedback.testlist    | 183 +-------------
+ tests/intel-ci/xe-fast-feedback.testlist | 289 +----------------------
+ tests/kms_hdr.c                          | 144 +++++++++++
+ 3 files changed, 168 insertions(+), 448 deletions(-)
 
-What happens when the user waits on syncobj in case of GT reset ?
-Maybe there is no expectation that there will be re-execute, but 
-shouldn't the syncobj be notified or a timeout hit ?
-
-> +						0, NULL));
->   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->   
->   	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> @@ -410,7 +411,8 @@ test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
->   	}
->   
->   	for (i = 0; i < n_exec_queues && n_execs; i++)
-> -		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
-> +		if (!(flags & GT_RESET))
-> +			igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
->   					NULL));
->   	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
->   
+-- 
+2.34.1
 
