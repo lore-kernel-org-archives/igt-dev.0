@@ -4,27 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54AFDCEBF97
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 11:11:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 330C1CEBF97
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 11:27:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB81E10E1F4;
-	Fri, 27 Sep 2024 11:11:35 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0286E10E169;
- Fri, 27 Sep 2024 11:11:35 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5628380514534650502=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C54BB10E1FE;
+	Fri, 27 Sep 2024 11:27:25 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F1JcVMDp";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FB5A10E1FE
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 11:27:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1727436444; x=1758972444;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=/1gqqS4k+EDjXVbLdeXJ/A7FS2SiGtDBANjLHB8M8yY=;
+ b=F1JcVMDpr2TrQhKnF+bog7GWFZb5DyiBhEKwFeTBT4TE/Th7ZP5wlMyj
+ sUzDe7nSf5NlEDngv1MAf9V3WsnsvDL0TNvwHuRn9CMToKzsEz9WR9Hnt
+ CC/afevYry9/zviXr7NMplkph47rd9nmzWXQ84rPCn2sJxcMWUL2VrTCp
+ aAFE9bLPNLwTHELapcxEm0oieLDMdecIAWQ3nRxnEhzW1P4kgibjoug3I
+ MgINM0rIbNobu7B32yUUHx5AGVALWzDDSojCKFNViUlS8ZrcRSaJlPD4K
+ w/PsTyP3I/mzHsVaRY6NY9NouXc+OzgNw75Y6587wGnvjAsH9GtUhZ0ec w==;
+X-CSE-ConnectionGUID: 7fZgf+3iTHS8yDAqZPUE+g==
+X-CSE-MsgGUID: jS24PMH3RG6TcD/dqZjoBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="26448555"
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="26448555"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 04:27:24 -0700
+X-CSE-ConnectionGUID: 19HcnriKSqSCXE7zLQeVJw==
+X-CSE-MsgGUID: KHnxnXVBRhurVHbNGRojaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="72496147"
+Received: from bergbenj-mobl1.ger.corp.intel.com (HELO [10.245.246.201])
+ ([10.245.246.201])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 04:27:22 -0700
+Message-ID: <94b8a9e2-5b94-45a6-a991-fde38665a77f@intel.com>
+Date: Fri, 27 Sep 2024 13:27:18 +0200
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/amdgpu=3A_fix_sdma_linear_?=
- =?utf-8?q?copy_command_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Sep 2024 11:11:35 -0000
-Message-ID: <172743549500.1110826.6777508236431034377@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240927031153.3725899-1-jesse.zhang@amd.com>
-In-Reply-To: <20240927031153.3725899-1-jesse.zhang@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] lib/xe_eudebug: Introduce preempt_timeout
+ helpers
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
+Cc: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Sikora, Pawel" <pawel.sikora@intel.com>
+References: <20240926121846.5885-1-dominik.karol.piatkowski@intel.com>
+ <20240926121846.5885-2-dominik.karol.piatkowski@intel.com>
+ <7a9f1171dbe6a0a4dd0398c95b34c3e69b221635.camel@intel.com>
+ <20240927051806.jn7pvk662we6phyw@zkempczy-mobl2>
+Content-Language: en-US
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20240927051806.jn7pvk662we6phyw@zkempczy-mobl2>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,182 +76,211 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5628380514534650502==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zbigniew,
 
-== Series Details ==
+On 27.09.2024 07:18, Zbigniew Kempczyński wrote:
+> On Thu, Sep 26, 2024 at 04:54:53PM +0200, Grzegorzek, Dominik wrote:
+>> On Thu, 2024-09-26 at 14:18 +0200, Dominik Karol Piątkowski wrote:
+>>> This patch introduces preempt_timeout helpers:
+>>>   - xe_eudebug_set_preempt_timeout_to_max
+>>>     Sets preempt_timeout_us for given engine_class to maximum.
+>>>   - xe_eudebug_restore_preempt_timeout
+>>>     Sets preempt_timeout_us for given engine_class to previous value.
+>>>
+>>
+>> I think this should really go to igt_sysfs.c. And in sligtly different form:
+>> How about sth like:
+> 
+> We're compiling lib/xe_eudebug.c conditionally so I wouldn't pollute igt_sysfs.c
+> with eudebug code (at least yet).
 
-Series: lib/amdgpu: fix sdma linear copy command (rev2)
-URL   : https://patchwork.freedesktop.org/series/139135/
-State : success
+I am a little bit confused by this comment as this is not eudebug 
+specific code. The eudebug series did introduce some code to common/core 
+igt library parts (like gpgpu_shader or intel_bachbuffer) which seemed 
+to be fine (and rightly so IMO). I am not sure why this case is any 
+different.
 
-== Summary ==
+The only reason I could think of was that igt_sysfs.c might be for 
+generic and not i915/Xe specific functions but from what I see, there is 
+plenty i915/Xe specific stuff in there.
 
-CI Bug Log - changes from XEIGT_8034_BAT -> XEIGTPW_11820_BAT
-====================================================
+Thanks,
+Christoph
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11820_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:
-    - bat-bmg-1:          [PASS][1] -> [DMESG-WARN][2] ([Intel XE#877])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-bmg-1/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-bmg-1/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [FAIL][3] ([Intel XE#886]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - bat-bmg-1:          [SKIP][5] ([Intel XE#2850]) -> [SKIP][6] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-lnl-2:          [SKIP][7] ([Intel XE#979]) -> [SKIP][8] ([Intel XE#2236] / [Intel XE#979])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
-  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
-  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
-  [Intel XE#877]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/877
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
-  [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
-
-
-Build changes
--------------
-
-  * IGT: IGT_8034 -> IGTPW_11820
-  * Linux: xe-1980-ec87b409d3a9358c9a079186d528fad3f7d64334 -> xe-1983-6bd25f52157328ac4b7b09a3946281957afe3bfd
-
-  IGTPW_11820: 11820
-  IGT_8034: 73eed10d50c7d1f07df07214ae62924d4e377e12 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-1980-ec87b409d3a9358c9a079186d528fad3f7d64334: ec87b409d3a9358c9a079186d528fad3f7d64334
-  xe-1983-6bd25f52157328ac4b7b09a3946281957afe3bfd: 6bd25f52157328ac4b7b09a3946281957afe3bfd
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/index.html
-
---===============5628380514534650502==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: fix sdma linear copy command (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139135/">https://patchwork.freedesktop.org/series/139135/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8034_BAT -&gt; XEIGTPW_11820_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11820_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-bmg-1/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-bmg-1/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr-invalidate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/877">Intel XE#877</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-bmg-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8034/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11820/bat-lnl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/979">Intel XE#979</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8034 -&gt; IGTPW_11820</li>
-<li>Linux: xe-1980-ec87b409d3a9358c9a079186d528fad3f7d64334 -&gt; xe-1983-6bd25f52157328ac4b7b09a3946281957afe3bfd</li>
-</ul>
-<p>IGTPW_11820: 11820<br />
-  IGT_8034: 73eed10d50c7d1f07df07214ae62924d4e377e12 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-1980-ec87b409d3a9358c9a079186d528fad3f7d64334: ec87b409d3a9358c9a079186d528fad3f7d64334<br />
-  xe-1983-6bd25f52157328ac4b7b09a3946281957afe3bfd: 6bd25f52157328ac4b7b09a3946281957afe3bfd</p>
-
-</body>
-</html>
-
---===============5628380514534650502==--
+> 
+> --
+> Zbigniew
+> 
+>>
+>> igt_sysfs_engine_set_property(engines_fd, "preempt_timeout_us", value);
+>> igt_sysfs_engine_set_property_bound(engines_fd, "preempt_timeout_us", max);
+>>
+>> ,where max is a bool variable which tells whether it should be min or max.
+>>
+>> To find engines_fd xe_sysfs_engine_open could be used.
+>>
+>> Regards,
+>> Dominik
+>>
+>>> Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+>>> ---
+>>>   lib/xe/xe_eudebug.c | 120 ++++++++++++++++++++++++++++++++++++++++++++
+>>>   lib/xe/xe_eudebug.h |   3 ++
+>>>   2 files changed, 123 insertions(+)
+>>>
+>>> diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+>>> index 2c7cd2ae1..229f9e6a1 100644
+>>> --- a/lib/xe/xe_eudebug.c
+>>> +++ b/lib/xe/xe_eudebug.c
+>>> @@ -16,6 +16,7 @@
+>>>   #include "intel_pat.h"
+>>>   #include "xe_eudebug.h"
+>>>   #include "xe_ioctl.h"
+>>> +#include "xe_drm.h"
+>>>   
+>>>   struct event_trigger {
+>>>   	xe_eudebug_trigger_fn fn;
+>>> @@ -1717,6 +1718,125 @@ bool xe_eudebug_enable(int fd, bool enable)
+>>>   	return old;
+>>>   }
+>>>   
+>>> +/**
+>>> + * xe_eudebug_set_preempt_timeout_to_max
+>>> + * @fd: xe client
+>>> + * @engine_class: engine class to modify (drm_xe_engine_class_instance->engine_class)
+>>> + * @value: pointer to variable to store previous preempt_timeout value in, needed for restore
+>>> + *
+>>> + * Sets preempt_timeout_us for given engine_class to maximum.
+>>> + *
+>>> + * Returns: true on success, false on failure.
+>>> + */
+>>> +bool xe_eudebug_set_preempt_timeout_to_max(int fd, uint16_t engine_class, uint32_t *value)
+>>> +{
+>>> +	int engines_fd;
+>>> +	int gt_fd;
+>>> +	uint32_t max_value;
+>>> +
+>>> +	igt_assert(engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+>>> +		   engine_class == DRM_XE_ENGINE_CLASS_COMPUTE);
+>>> +
+>>> +	gt_fd = xe_sysfs_gt_open(fd, 0);
+>>> +	if (gt_fd == -1) {
+>>> +		igt_debug("Failed to open gt.\n");
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	if (engine_class == DRM_XE_ENGINE_CLASS_RENDER)
+>>> +		engines_fd = openat(gt_fd, "engines/rcs", O_RDONLY);
+>>> +	else
+>>> +		engines_fd = openat(gt_fd, "engines/ccs", O_RDONLY);
+>>> +
+>>> +	if (engines_fd == -1) {
+>>> +		igt_debug("Failed to open engine class.\n");
+>>> +		close(gt_fd);
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	if (!__igt_sysfs_get_u32(engines_fd, "preempt_timeout_us", value)) {
+>>> +		igt_debug("Failed to read preempt_timeout_us.\n");
+>>> +		close(engines_fd);
+>>> +		close(gt_fd);
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	if (!__igt_sysfs_get_u32(engines_fd, "preempt_timeout_max", &max_value)) {
+>>> +		igt_debug("Failed to read preempt_timeout_max.\n");
+>>> +		close(engines_fd);
+>>> +		close(gt_fd);
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	if (!__igt_sysfs_set_u32(engines_fd, "preempt_timeout_us", max_value)) {
+>>> +		igt_debug("Failed to write preempt_timeout_us.\n");
+>>> +		close(engines_fd);
+>>> +		close(gt_fd);
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	close(engines_fd);
+>>> +	close(gt_fd);
+>>> +
+>>> +	return true;
+>>> +}
+>>> +
+>>> +/**
+>>> + * xe_eudebug_restore_preempt_timeout
+>>> + * @fd: xe client
+>>> + * @engine_class: engine class to modify (drm_xe_engine_class_instance->engine_class)
+>>> + * @value: previous preempt_timeout value
+>>> + *
+>>> + * Sets preempt_timeout_us for given engine_class to previous value.
+>>> + *
+>>> + * Returns: true on success, false on failure.
+>>> + */
+>>> +bool xe_eudebug_restore_preempt_timeout(int fd, uint16_t engine_class, uint32_t value)
+>>> +{
+>>> +	int engines_fd;
+>>> +	int gt_fd;
+>>> +
+>>> +	igt_assert(engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+>>> +		   engine_class == DRM_XE_ENGINE_CLASS_COMPUTE);
+>>> +
+>>> +	gt_fd = xe_sysfs_gt_open(fd, 0);
+>>> +	if (gt_fd == -1) {
+>>> +		igt_debug("Failed to open gt.\n");
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	if (engine_class == DRM_XE_ENGINE_CLASS_RENDER)
+>>> +		engines_fd = openat(gt_fd, "engines/rcs", O_RDONLY);
+>>> +	else
+>>> +		engines_fd = openat(gt_fd, "engines/ccs", O_RDONLY);
+>>> +
+>>> +	if (engines_fd == -1) {
+>>> +		igt_debug("Failed to open engine class.\n");
+>>> +		close(gt_fd);
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	if (!__igt_sysfs_set_u32(engines_fd, "preempt_timeout_us", value)) {
+>>> +		igt_debug("Failed to write preempt_timeout_us.\n");
+>>> +		close(engines_fd);
+>>> +		close(gt_fd);
+>>> +
+>>> +		return false;
+>>> +	}
+>>> +
+>>> +	close(engines_fd);
+>>> +	close(gt_fd);
+>>> +
+>>> +	return true;
+>>> +}
+>>> +
+>>>   /* Eu debugger wrappers around resource creating xe ioctls. */
+>>>   
+>>>   /**
+>>> diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+>>> index 29ab68fee..144035862 100644
+>>> --- a/lib/xe/xe_eudebug.h
+>>> +++ b/lib/xe/xe_eudebug.h
+>>> @@ -167,6 +167,9 @@ void xe_eudebug_client_set_data(struct xe_eudebug_client *c, void *ptr);
+>>>   
+>>>   bool xe_eudebug_enable(int fd, bool enable);
+>>>   
+>>> +bool xe_eudebug_set_preempt_timeout_to_max(int fd, uint16_t engine_class, uint32_t *value);
+>>> +bool xe_eudebug_restore_preempt_timeout(int fd, uint16_t engine_class, uint32_t value);
+>>> +
+>>>   int xe_eudebug_client_open_driver(struct xe_eudebug_client *c);
+>>>   void xe_eudebug_client_close_driver(struct xe_eudebug_client *c, int fd);
+>>>   uint32_t xe_eudebug_client_vm_create(struct xe_eudebug_client *c, int fd,
+>>
