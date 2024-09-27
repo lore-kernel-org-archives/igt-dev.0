@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85B13CDD1B2
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 14:03:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E7BFCDD1B3
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 14:03:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C5AE10EC49;
-	Fri, 27 Sep 2024 14:03:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4350410EC5F;
+	Fri, 27 Sep 2024 14:03:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g9zwIf3t";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TePkIn17";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 857D210EC60
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 14:03:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F24FA10EC53
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 14:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727445834; x=1758981834;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=miEhk0UTNwXiaNIJHZXNKGanROu8krMRMKWpOCwLoYk=;
- b=g9zwIf3taFMjAgPWxr6bF3UPQGz2SXsRHQnYjL8r9wj3potFlsO553j/
- P1dKmum4ryC8Kd9nDoQActR5+XJBSGDuZ29grQYnAmHgAV/dFBfjrjvNz
- p3ANiNZVRhBwVpJUlRRfULW5kdozprH5wW8TVrHweYuwCDXusq03N99gP
- UcCUPJBb28ZQz3mm/mw3vZ2w1qelTRY+pnGU2A4MZZmID+uE9GrK7E6kS
- 7eOQ3dEcqiSwkMyiR9JrD6DJtbhOItLFvyGFhQMkeWj3oqvQoSrfLyYyq
- G4+0y50CZHjme4R8CXfD/+dW4wxMR4Dsc70ypPhoJ7YllTH5M2d9oSNXa Q==;
-X-CSE-ConnectionGUID: mDlkMovgQBq0NqAKU296JQ==
-X-CSE-MsgGUID: eGgZrvVSQLKIubqU5ILqcg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="30480485"
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="30480485"
+ t=1727445836; x=1758981836;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=lNooj2kRl+HglRPcQ7UOqt1AfVJ+aTkKTPOWkZte5e8=;
+ b=TePkIn17Lwi4J3c4Kkk/YFUCOboaHAZ6Zq/qSgd6R73LNhkSreKrrq6Q
+ lgE4mvBenzT3h/DFPxIdSC3ziO23hKc3GLMfjPkCddGyI54a147rMdLwv
+ CxekPYjvK9dX7w+ZY6dmdZ7o6pLdGVZ93jxsqAkUGoOhOBVKY3CIHIBbg
+ ZsFY80yTU3sPmrqAU8RrX44SUQhmRIaZ5BjW/W15VjfmNPCX787uVg9HY
+ wWrfyormXm0R3MpLX22fP/udqtx7l3v8m2MqNzKxeACvuAIDBYdlrCCvC
+ exLvVEQmhP1JO2wpKB1J5sUucxdKBS6UcLeo5LFylR+bmhGZT4UOTLvG0 w==;
+X-CSE-ConnectionGUID: tUJsSlKkTaSBwsIDtn07Xg==
+X-CSE-MsgGUID: o7coG8v7ST+tKrBtWFrLeA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="30480486"
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="30480486"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Sep 2024 07:03:53 -0700
-X-CSE-ConnectionGUID: h6vMXRE4Qwis8GPNaQZGgA==
-X-CSE-MsgGUID: zAYn62zXRm2pGX90S/5s6g==
+ 27 Sep 2024 07:03:56 -0700
+X-CSE-ConnectionGUID: FeXKVa/lQ5Sd+E2+5DQNUQ==
+X-CSE-MsgGUID: UkbLlLjLTw+heLn8l3zW7Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="72203105"
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="72203112"
 Received: from mkuoppal-desk.fi.intel.com ([10.237.72.193])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Sep 2024 07:03:51 -0700
+ 27 Sep 2024 07:03:54 -0700
 From: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mika Kuoppala <mika.kuoppala@linux.intel.com>,
- Christoph Manszewski <christoph.manszewski@intel.com>,
  Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: [PATCH i-g-t 1/4] tests/xe_eudebug: Keep engine for each client
-Date: Fri, 27 Sep 2024 16:53:32 +0300
-Message-Id: <20240927135335.1107326-1-mika.kuoppala@linux.intel.com>
+Subject: [PATCH i-g-t 2/4] tests/xe_eudebug: Detect thread starvation on
+ discovery
+Date: Fri, 27 Sep 2024 16:53:33 +0300
+Message-Id: <20240927135335.1107326-2-mika.kuoppala@linux.intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240927135335.1107326-1-mika.kuoppala@linux.intel.com>
+References: <20240927135335.1107326-1-mika.kuoppala@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,71 +69,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-If we only find hardware engine for first client,
-it can be stale for other clients, after we close
-the first client, as it was associated through the fd
-and we should not trust lib/xe internals how it handles
-the engine array.
+Discovery tests spawns multiple clients and multiple
+debuggers and sometimes, especially with kernel debugs on,
+some thread really can starve more than one second.
 
-I found this when trying to track down:
+Add a check that we dont start to assert missing
+resources if we didn't get any.
 
-[  132.467616] xe 0000:00:02.0: [drm] *ERROR* Ioctl argument check
-failed at drivers/gpu/drm/xe/xe_exec_queue.c:611:
-eci[0].gt_id >= xe->info.gt_count
+Another option would be to just skip starved thread
+checks and assert that some of the threads succeeded.
+But lets try this as a stopgap measure before giving
+up.
 
-transient error when running xe_eudebug@discovery-empty.
-Implying that a provided class_instance was corrupted/stale.
+Increase worker time until we see an event.
 
-Rediscover the engine for each opened client so that
-it points to a proper valid entry for exec_queue_create.
-
-Cc: Christoph Manszewski <christoph.manszewski@intel.com>
-Cc: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 Signed-off-by: Mika Kuoppala <mika.kuoppala@linux.intel.com>
 Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- tests/intel/xe_eudebug.c | 18 ++++++------------
- 1 file changed, 6 insertions(+), 12 deletions(-)
+ tests/intel/xe_eudebug.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_eudebug.c b/tests/intel/xe_eudebug.c
-index e28c9ab67..1c90fd16a 100644
+index 1c90fd16a..8d45d59f3 100644
 --- a/tests/intel/xe_eudebug.c
 +++ b/tests/intel/xe_eudebug.c
-@@ -1007,7 +1007,6 @@ static void test_basic_discovery(int fd, unsigned int flags, bool match_opposite
- #define DISCOVERY_VM_BIND		(1 << 3)
- static void run_discovery_client(struct xe_eudebug_client *c)
- {
--	struct drm_xe_engine_class_instance *hwe = NULL;
- 	int fd[RESOURCE_COUNT], i;
- 	bool skip_sleep = c->flags & (DISCOVERY_DESTROY_RESOURCES | DISCOVERY_CLOSE_CLIENT);
- 	uint64_t addr = 0x1a0000;
-@@ -1015,20 +1014,15 @@ static void run_discovery_client(struct xe_eudebug_client *c)
- 	srand(getpid());
+@@ -1107,11 +1107,24 @@ static void *discovery_race_thread(void *data)
  
- 	for (i = 0; i < RESOURCE_COUNT; i++) {
-+		struct drm_xe_engine_class_instance *hwe = NULL;
+ 		if (random() % 2) {
+ 			struct drm_xe_eudebug_event *e = NULL;
++			int max_worker_waits = 30;
+ 			int i = -1;
+ 
+ 			xe_eudebug_debugger_start_worker(s->debugger);
+-			sleep(1);
 +
- 		fd[i] = xe_eudebug_client_open_driver(c);
++			/*
++			 * Thread can starve for more than one second. Make
++			 * sure we get at least one event before stopping.
++			 */
++			do
++				sleep(1);
++			while (!READ_ONCE(s->debugger->event_count) &&
++			       --max_worker_waits);
++
++			igt_assert(READ_ONCE(s->debugger->event_count));
++
+ 			xe_eudebug_debugger_stop_worker(s->debugger, 1);
++
+ 			igt_debug("Resources discovered: %lu\n", s->debugger->event_count);
  
--		if (!i) {
--			bool found = false;
-+		/* Get first */
-+		xe_eudebug_for_each_engine(fd[i], hwe)
-+			break;
- 
--			xe_for_each_engine(fd[0], hwe) {
--				if (hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE ||
--				    hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER) {
--					found = true;
--					break;
--				}
--			}
--			igt_assert(found);
--		}
-+		igt_assert(hwe);
- 
- 		/*
- 		 * Give the debugger a break in event stream after every
+ 			xe_eudebug_for_each_event(e, s->debugger->log) {
 -- 
 2.34.1
 
