@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95150CEBF8A
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 09:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2FE0CEBF8C
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 09:58:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4880610ECAD;
-	Fri, 27 Sep 2024 09:44:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7FCE910ECA3;
+	Fri, 27 Sep 2024 09:58:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j6EsA9Yr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VtMj1U7E";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7010F10ECA3
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 09:44:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DF3010ECA3
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 09:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727430263; x=1758966263;
- h=message-id:date:mime-version:from:subject:to:
- content-transfer-encoding;
- bh=jZdQeBQydIgpB0BS6TtrXop7VxZnbbrar6QjQVZX1Uk=;
- b=j6EsA9YrWR7XP/iUt5eeuYWLaSeRRWdM953P/ny+WWOAmyq/uW2Kn14y
- 2xIpCJ9ISxddEnTJ4ZmZyLOZPrc9ZphiPaDKNyi+xeekMXQBpv/ea/SqY
- 9wuXskF8SChVqgz32VwWM7U7JniZx21yxfUsiw617zZQqJ8SdWb0ETD5b
- a6guUuCkOIFMw94utgtAfVYbeDDFgLZlSJgKcNN8HKxsU2z2w7CjbwuFK
- zaVXRTQRgpd3prJzpB5w7AuGGLG6so0fiWmkiu/2mx3H45apTi82oTMqO
- 6r3tootqSoCiYfbxJj3kM/peKeK65myEi4jw9HEQYR8+/tfxRu1N3k9SN Q==;
-X-CSE-ConnectionGUID: ZlfluwvARZu44ZEFE+Ax6g==
-X-CSE-MsgGUID: HyqyKSq2TXa16RHwC3uzmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="26441020"
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="26441020"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Sep 2024 02:44:23 -0700
-X-CSE-ConnectionGUID: QaohYbPsR0WygGKUfHLFVg==
-X-CSE-MsgGUID: /1N0aKzZTfywpwlp8+2EPQ==
+ t=1727431120; x=1758967120;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=xNMqifp30+y/egxBHYSvBWpq8CycmNBVXEs4RRr+A3g=;
+ b=VtMj1U7EG0/MUmVu+Sr0IEagTGiw6Po75wFEPdfovn0eVqGL8UnWjvbQ
+ vKA0+zpT6JIpVWUiOmi2PV++lf9A2MTzvX7J/o8kuzXHHfgtFSPWQHGgh
+ W/y6XihkF/dZ+8+wOV/qzrtStrj24hj7sJlNjnSo/g8PBLwjxi5gC0uwU
+ Re6M++OA64wTAYbv+NGavqPQChirh08MJNRBrN2z+pOkuEEGbYocnZ4Ch
+ AE9QdcKW8+0Ibt744NX7tV2pheLhP9POArI+H9XvugPmpERoosBXo/8Lk
+ JsvkC/gyNe2huqgbH4UJzhc1x3o+qDkmfxutp0w4tY9p44wSj3B8/oxAx g==;
+X-CSE-ConnectionGUID: Jk6KfEAXTpyLdY/Zk/2lRQ==
+X-CSE-MsgGUID: 30UZ3jH/Rim7oCTZ8rJ2mA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="51985166"
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="51985166"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 02:58:40 -0700
+X-CSE-ConnectionGUID: tKt0djBoQTCNmXfpRSyBDQ==
+X-CSE-MsgGUID: x9qx3PjXTI69i0kdij3Xig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="72891893"
-Received: from tomotoso-mobl1.amr.corp.intel.com (HELO [10.213.199.80])
- ([10.213.199.80])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Sep 2024 02:44:22 -0700
-Message-ID: <5cdb17b6-7045-40c7-89b1-b55b6eff6623@linux.intel.com>
-Date: Fri, 27 Sep 2024 11:44:19 +0200
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="77000725"
+Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.194.204])
+ ([10.245.194.204])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 02:58:38 -0700
+Message-ID: <cee2c2a5-96f5-42ee-a066-2ed76979ed49@linux.intel.com>
+Date: Fri, 27 Sep 2024 11:58:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH] tests/intel/xe_pm: one suspend/resume cycle for all xe engines
+Subject: Re: [PATCH] tests/intel/xe_tlb: Add test to check TLB invalidation
+To: sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org,
+ nirmoy.das@intel.com
+References: <20240927043544.1782340-1-sai.gowtham.ch@intel.com>
 Content-Language: en-US
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+From: Nirmoy Das <nirmoy.das@linux.intel.com>
+In-Reply-To: <20240927043544.1782340-1-sai.gowtham.ch@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,239 +70,207 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Changes the behavior from running one suspend/resume cycle for each
-xe engine to running a single suspend and resume cycle for all engines
-considerably reducing the xe_pm run time.
 
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- tests/intel/xe_pm.c | 135 ++++++++++++++++++++++++++++++++++----------
- 1 file changed, 106 insertions(+), 29 deletions(-)
+On 9/27/2024 6:35 AM, sai.gowtham.ch@intel.com wrote:
+> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+>
+> Test validates TLB invalidation by binding different buffer objects
+> with the same vma and submitting workload simultaneously, Ideally
+> expecting gpu to handle pages by invalidating and avoding page faults.
+>
+> Cc: Nirmoy Das <nirmoy.das@intel.com>
+> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> ---
+>  tests/intel/xe_tlb.c | 154 +++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build    |   1 +
+>  2 files changed, 155 insertions(+)
+>  create mode 100644 tests/intel/xe_tlb.c
+>
+> diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+> new file mode 100644
+> index 000000000..ef44a1069
+> --- /dev/null
+> +++ b/tests/intel/xe_tlb.c
+> @@ -0,0 +1,154 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> +* Copyright © 2024 Intel Corporation
+> +*
+> +* Authors:
+> +*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> +*/
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe_drm.h"
+> +#include "igt_debugfs.h"
+> +
+> +/**
+> + * TEST: Check Translation Lookaside Buffer Invalidation.
+> + * Category: Software building block
+> + * Mega feature: General Core features
+> + * Sub-category: CMD submission
+> + * Functionality: TLB invalidate
+> + * Test category: functionality test
+> + */
+> +struct data {
+> +	uint32_t batch[16];
+> +	uint32_t data;
+> +	uint64_t addr;
+> +};
+> +
+> +static void store_dword_batch(struct data *data, uint64_t addr, int value)
+> +{
+> +	int b;
+> +	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
+> +	uint64_t batch_addr = addr + batch_offset;
+> +	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
+> +	uint64_t sdi_addr = addr + sdi_offset;
+> +
+> +	b = 0;
+> +	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> +	data->batch[b++] = sdi_addr;
+> +	data->batch[b++] = sdi_addr >> 32;
+> +	data->batch[b++] = value;
+> +	data->batch[b++] = MI_BATCH_BUFFER_END;
+> +	igt_assert(b <= ARRAY_SIZE(data->batch));
+> +
+> +	data->addr = batch_addr;
+> +}
+> +
+I would move this to lib/igt_store.c  or use the one we have there.
+> +/**
+> + * SUBTEST: basic-tlb
+> + * Description: Check Translation Lookaside Buffer Invalidation.
+> + */
+> +static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
+> +{
+> +	struct drm_xe_sync sync[2] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, }
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 2,
+> +		.syncs = to_user_pointer(&sync),
+> +	};
+> +	struct data *data1;
+> +	struct data *data2;
+> +	uint32_t vm;
+> +	uint32_t exec_queue;
+> +	uint32_t bind_engine;
+> +	uint32_t syncobj;
+> +	size_t bo_size;
+> +	int value1 = 0x123456;
+> +	int value2 = 0x123465;
+> +	uint64_t addr = 0x100000;
+> +	uint32_t bo1, bo2;
+> +	char tlb_pre[4096], tlb_pos[4096];
+> +	char path[256];
+> +
+> +	syncobj = syncobj_create(fd, 0);
+> +	sync[0].handle = syncobj_create(fd, 0);
+> +	sync[1].handle = syncobj;
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	bo_size = sizeof(*data1);
+> +	bo_size = xe_bb_size(fd, bo_size);
+> +	bo1 = xe_bo_create(fd, vm, bo_size,
+> +				   vram_if_possible(fd, eci->gt_id),
+> +				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	bo2 = xe_bo_create(fd, vm, bo_size,
+> +				   vram_if_possible(fd, eci->gt_id),
+> +				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +
+> +	sprintf(path, "/sys/kernel/debug/dri/0/gt%d/stats", eci->gt_id);
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index eee89428c..0189055d2 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -54,6 +54,22 @@ typedef struct {
- uint64_t orig_threshold;
- int fw_handle = -1;
- 
-+static pthread_mutex_t suspend_lock = PTHREAD_MUTEX_INITIALIZER;
-+static pthread_cond_t suspend_cond = PTHREAD_COND_INITIALIZER;
-+static pthread_mutex_t child_ready_lock = PTHREAD_MUTEX_INITIALIZER;
-+static pthread_cond_t child_ready_cond = PTHREAD_COND_INITIALIZER;
-+static bool child_ready = false;
-+
-+typedef struct {
-+	device_t device;
-+	struct drm_xe_engine_class_instance *eci;
-+	int n_exec_queues;
-+	int n_execs;
-+	enum igt_suspend_state s_state;
-+	enum igt_acpi_d_state d_state;
-+	unsigned int flags;
-+} test_exec_args;
-+
- static void dpms_on_off(device_t device, int mode)
- {
- 	int i;
-@@ -273,6 +289,7 @@ static void close_fw_handle(int sig)
-  * @prefetch:	prefetch
-  * @unbind-all:	unbind-all
-  */
-+
- static void
- test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 	  int n_exec_queues, int n_execs, enum igt_suspend_state s_state,
-@@ -396,10 +413,16 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
- 		igt_assert_eq(data[i].data, 0xc0ffee);
- 
- 		if (i == n_execs / 2 && s_state != NO_SUSPEND) {
--			enum igt_suspend_test test = s_state == SUSPEND_STATE_DISK ?
--				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
--
--			igt_system_suspend_autoresume(s_state, test);
-+			/* Tell the parent that we are ready for a suspend and resume */
-+			pthread_mutex_lock(&child_ready_lock);
-+			child_ready = true;
-+			pthread_cond_signal(&child_ready_cond);
-+			pthread_mutex_unlock(&child_ready_lock);
-+
-+			/* Wait for the suspend and resume to finish */
-+			pthread_mutex_lock(&suspend_lock);
-+			pthread_cond_wait(&suspend_cond, &suspend_lock);
-+			pthread_mutex_unlock(&suspend_lock);
- 		}
- 	}
- 
-@@ -440,6 +463,77 @@ NULL));
- 			   active_time);
- 		igt_assert(in_d3(device, d_state));
- 	}
-+
-+	/* Tell the parent that we are ready */
-+	pthread_mutex_lock(&child_ready_lock);
-+	child_ready = true;
-+	pthread_cond_signal(&child_ready_cond);
-+	pthread_mutex_unlock(&child_ready_lock);
-+}
-+
-+/* Wrap test_exec() function arguments in a struct for pthread_create */
-+static void*
-+test_exec_wrapper(void *args)
-+{
-+	test_exec_args *exec_args = (test_exec_args *)args;
-+
-+	test_exec(exec_args->device, exec_args->eci, exec_args->n_exec_queues,
-+		exec_args->n_execs, exec_args->s_state, exec_args->d_state,
-+		exec_args->flags);
-+
-+	return NULL;
-+}
-+
-+/* Do one suspend and resume cycle for all xe engines.
-+ *  - For each xe engine: Create a thread for test_exec
-+ *  - Pause the thread where it expects to suspend and resume
-+ *  - Wait for all threads to reach the pause
-+ *  - Run one suspend and resume cycle
-+ *  - Wake up all threads
-+ *  - Wait the threads to complete
-+ */
-+static void
-+threaded_test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
-+	  int n_exec_queues, int n_execs, enum igt_suspend_state s_state,
-+	  enum igt_acpi_d_state d_state, unsigned int flags)
-+{
-+	enum igt_suspend_test test = s_state == SUSPEND_STATE_DISK ? SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
-+	int active_threads = 0;
-+	pthread_t threads[65]; /* MAX_ENGINES + 1 */
-+	test_exec_args args;
-+
-+	xe_for_each_engine(device.fd_xe, eci) {
-+		args.device = device;
-+		args.eci = eci;
-+		args.n_exec_queues = n_exec_queues;
-+		args.n_execs = n_execs;
-+		args.s_state = s_state;
-+		args.d_state = d_state;
-+		args.flags = flags;
-+
-+		pthread_create(&threads[active_threads], NULL, test_exec_wrapper, &args);
-+		active_threads++;
-+
-+		pthread_mutex_lock(&child_ready_lock);
-+		while(!child_ready)
-+			pthread_cond_wait(&child_ready_cond, &child_ready_lock);
-+		child_ready = false;
-+		pthread_mutex_unlock(&child_ready_lock);
-+	}
-+
-+	if (n_execs > 1 && s_state != NO_SUSPEND) {
-+		igt_system_suspend_autoresume(s_state, test);
-+
-+		sleep(2);
-+		pthread_mutex_lock(&suspend_lock);
-+		pthread_cond_broadcast(&suspend_cond);
-+		pthread_mutex_unlock(&suspend_lock);
-+
-+		for (int i = 0; i < active_threads; i++)
-+			pthread_join(threads[i], NULL);
-+
-+		active_threads = 0;
-+	}
- }
- 
- /**
-@@ -718,8 +812,7 @@ igt_main
- 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
- 
- 		/* Always perform initial once-basic exec checking for health */
--		xe_for_each_engine(device.fd_xe, hwe)
--			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM, 0);
-+		threaded_test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM, 0);
- 
- 		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
- 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
-@@ -731,14 +824,11 @@ igt_main
- 		igt_subtest_f("%s-basic", s->name) {
- 			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
- 				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
--
- 			igt_system_suspend_autoresume(s->state, test);
- 		}
- 
- 		igt_subtest_f("%s-basic-exec", s->name) {
--			xe_for_each_engine(device.fd_xe, hwe)
--				test_exec(device, hwe, 1, 2, s->state,
--					  NO_RPM, 0);
-+			threaded_test_exec(device, hwe, 1, 2, s->state, NO_RPM, 0);
- 		}
- 
- 		igt_subtest_f("%s-exec-after", s->name) {
-@@ -746,31 +836,23 @@ igt_main
- 				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
- 
- 			igt_system_suspend_autoresume(s->state, test);
--			xe_for_each_engine(device.fd_xe, hwe)
--				test_exec(device, hwe, 1, 2, NO_SUSPEND,
--					  NO_RPM, 0);
-+			threaded_test_exec(device, hwe, 1, 2, NO_SUSPEND, NO_RPM, 0);
- 		}
- 
- 		igt_subtest_f("%s-multiple-execs", s->name) {
--			xe_for_each_engine(device.fd_xe, hwe)
--				test_exec(device, hwe, 16, 32, s->state,
--					  NO_RPM, 0);
-+			threaded_test_exec(device, hwe, 16, 32, s->state, NO_RPM, 0);
- 		}
- 
- 		for (const struct vm_op *op = vm_op; op->name; op++) {
- 			igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
--				xe_for_each_engine(device.fd_xe, hwe)
--					test_exec(device, hwe, 16, 32, s->state,
--						  NO_RPM, op->flags);
-+				threaded_test_exec(device, hwe, 16, 32, s->state, NO_RPM, op->flags);
- 			}
- 		}
- 
- 		for (const struct d_state *d = d_states; d->name; d++) {
- 			igt_subtest_f("%s-%s-basic-exec", s->name, d->name) {
- 				igt_assert(setup_d3(device, d->state));
--				xe_for_each_engine(device.fd_xe, hwe)
--					test_exec(device, hwe, 1, 2, s->state,
--						  NO_RPM, 0);
-+				threaded_test_exec(device, hwe, 1, 2, s->state, NO_RPM, 0);
- 				cleanup_d3(device);
- 			}
- 		}
-@@ -792,17 +874,13 @@ igt_main
- 
- 		igt_subtest_f("%s-basic-exec", d->name) {
- 			igt_assert(setup_d3(device, d->state));
--			xe_for_each_engine(device.fd_xe, hwe)
--				test_exec(device, hwe, 1, 1,
--					  NO_SUSPEND, d->state, 0);
-+			threaded_test_exec(device, hwe, 1, 1, NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
- 		}
- 
- 		igt_subtest_f("%s-multiple-execs", d->name) {
- 			igt_assert(setup_d3(device, d->state));
--			xe_for_each_engine(device.fd_xe, hwe)
--				test_exec(device, hwe, 16, 32,
--					  NO_SUSPEND, d->state, 0);
-+			threaded_test_exec(device, hwe, 16, 32, NO_SUSPEND, d->state, 0);
- 			cleanup_d3(device);
- 		}
- 
-@@ -842,7 +920,6 @@ igt_main
- 			test_mocs_suspend_resume(device, NO_SUSPEND, d->state);
- 			cleanup_d3(device);
- 		}
--
- 	}
- 
- 	igt_describe("Validate whether card is limited to d3hot,"
--- 
-2.34.1
+This should go to lib as well.
 
+> +	igt_debugfs_dump(fd, path);
+> +	igt_debugfs_read(fd, path, tlb_pre);
+> +	igt_info("tlb invalidations counts before submitting worakloads\n%s\n", tlb_pre);
+
+We need to store this and compare before and after value. There should a fix number of tlb inval for a simple job submission 
+
+so may be it is worth to add a check like:
+
+igt_assert_gt(num_inval, min_expected). Otherwise looks good to me.
+
+
+Regards,
+
+Nirmoy
+
+> +
+> +	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+> +	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
+> +	xe_vm_bind_async(fd, vm, bind_engine, bo1, 0, addr, bo_size, sync, 1);
+> +	data1 = xe_bo_map(fd, bo1, bo_size);
+> +
+> +	store_dword_batch(data1, addr, value1);
+> +	exec.exec_queue_id = exec_queue;
+> +	exec.address = data1->addr;
+> +	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> +	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> +	xe_exec(fd, &exec);
+> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+> +	xe_vm_bind_async(fd, vm, bind_engine, bo2, 0, addr, bo_size, sync, 1);
+> +	data2 = xe_bo_map(fd, bo2, bo_size);
+> +
+> +	store_dword_batch(data2, addr, value2);
+> +	exec.exec_queue_id = exec_queue;
+> +	exec.address = data2->addr;
+> +	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> +	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> +	xe_exec(fd, &exec);
+> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
+> +
+> +	igt_debugfs_dump(fd, path);
+> +	igt_debugfs_read(fd, path, tlb_pos);
+> +	igt_info("tlb invalidations counts after submitting worakloads\n%s\n", tlb_pos);
+> +
+> +	igt_assert_eq(data1->data, value1);
+> +	igt_assert_eq(data2->data, value2);
+> +	igt_assert(strcmp(tlb_pre, tlb_pos) != 0);
+> +
+> +	syncobj_destroy(fd, sync[0].handle);
+> +	syncobj_destroy(fd, syncobj);
+> +	munmap(data1, bo_size);
+> +	munmap(data2, bo_size);
+> +	gem_close(fd, bo1);
+> +	gem_close(fd, bo2);
+> +	xe_exec_queue_destroy(fd, exec_queue);
+> +	xe_vm_destroy(fd, vm);
+> +}
+> +
+> +igt_main
+> +{
+> +	int fd;
+> +	struct drm_xe_engine *engine;
+> +
+> +	igt_fixture {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +	}
+> +
+> +	igt_subtest("basic-tlb") {
+> +		engine = xe_engine(fd, 0);
+> +		tlb_invalidation(fd, &engine->instance);
+> +	}
+> +
+> +	igt_fixture {
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index e5d8852f3..17c808ab6 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -316,6 +316,7 @@ intel_xe_progs = [
+>  	'xe_sysfs_defaults',
+>  	'xe_sysfs_preempt_timeout',
+>  	'xe_sysfs_scheduler',
+> +        'xe_tlb',
+>  ]
+>  
+>  intel_xe_eudebug_progs = [
