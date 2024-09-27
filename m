@@ -4,123 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABED0CEBF8A
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 09:10:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95150CEBF8A
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 09:44:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5B5A710E0AD;
-	Fri, 27 Sep 2024 09:10:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4880610ECAD;
+	Fri, 27 Sep 2024 09:44:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="rfQ/VVSV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j6EsA9Yr";
 	dkim-atps=neutral
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam11on2081.outbound.protection.outlook.com [40.107.223.81])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DEBE10E0AD
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 09:10:00 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rtY4J6TtderEfeih8Q1LshYlzvaSBJFakVaqzEvDaKVaBBwqrsLhfSseTzcjJC9ZcxyYvgN7sVY6Tn7N+sF2jSGq+ZZsWHfG9XorK8kiCn9v4sgOOPdO4YrbaxEAskz83hzy6viewOkqz+P5t1sik3Cfv1x6IvDqptsBKpvS01K0kfgH4KNqZEEy3jDzebW0ksluo6pFfwtyj+Uc/f/DQLVUP3TXPKvZ9PRARrBwHYR0nvl7n7MBpqKxzt3AuaLOhHhbHzAKyKS2yk2N9wN+rVjyyfGALEhoHJ6l6j//Zq+9VIrdnOIgGSN0addErbjNgnlwWPUDQGQU2S4CtKG1kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TIJ8HRxiw5MpjI3rLGC2pZNtwdlS4Mi8jpFdmuU8Mbs=;
- b=Wk9E/Aq3JVgO1Oh/sxlZlASf6I7HvgL2WqAV7uvtUAIPxDVCsNkBIegzo7g2pfgmcGhBztCwYo7EVkbcbdxgWOJkC878y1HuRx56uxQA4jyYzmWA027NwLgm9ZrwghkX8JifpGbTDW+Qfz4dZvUqJKmMx5no98l/z7JY39SH42SnPoUEeWbOt93eFKO0vwmj/GTFuKf0A3mdPJIJqqXEXxJ3Ax7gJGordKipAiBrCOa6Li/v3ro5XnfE9l6QH1rVA6caD87jxPnkqXuBPNMOAEjTQV06bR8BwjhUskOB7hGUi6GMfTp7hunICEUiulcfnd2WwzMvRmr/44ZO8WEbWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TIJ8HRxiw5MpjI3rLGC2pZNtwdlS4Mi8jpFdmuU8Mbs=;
- b=rfQ/VVSVmAvUjNeqsDzcovGrGEHOQdZZNM6tqqlriX5+IsEtYiU42FIy/dcOHQndITOwSIiqPJdOx+kF3ef+IwNLmKhYLAC6ZpLwahTqgLB04QPgEyOZVN7YqT8jXOE7N/2o+vZxl7/1C7Ma9Ep6SULUenrh7DdMO9No7kd9YQ8=
-Received: from SN1PR12CA0044.namprd12.prod.outlook.com (2603:10b6:802:20::15)
- by CH3PR12MB9170.namprd12.prod.outlook.com (2603:10b6:610:199::14)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.27; Fri, 27 Sep
- 2024 09:09:54 +0000
-Received: from SN1PEPF00036F3D.namprd05.prod.outlook.com
- (2603:10b6:802:20:cafe::a0) by SN1PR12CA0044.outlook.office365.com
- (2603:10b6:802:20::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.21 via Frontend
- Transport; Fri, 27 Sep 2024 09:09:54 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF00036F3D.mail.protection.outlook.com (10.167.248.21) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8005.15 via Frontend Transport; Fri, 27 Sep 2024 09:09:54 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 27 Sep
- 2024 04:09:53 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 27 Sep
- 2024 04:09:53 -0500
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Fri, 27 Sep 2024 04:09:52 -0500
-From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Jesse.zhang@amd.com"
- <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t] lib/amdgpu: enhance sdma test
-Date: Fri, 27 Sep 2024 17:09:51 +0800
-Message-ID: <20240927090951.3761844-1-jesse.zhang@amd.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7010F10ECA3
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 09:44:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1727430263; x=1758966263;
+ h=message-id:date:mime-version:from:subject:to:
+ content-transfer-encoding;
+ bh=jZdQeBQydIgpB0BS6TtrXop7VxZnbbrar6QjQVZX1Uk=;
+ b=j6EsA9YrWR7XP/iUt5eeuYWLaSeRRWdM953P/ny+WWOAmyq/uW2Kn14y
+ 2xIpCJ9ISxddEnTJ4ZmZyLOZPrc9ZphiPaDKNyi+xeekMXQBpv/ea/SqY
+ 9wuXskF8SChVqgz32VwWM7U7JniZx21yxfUsiw617zZQqJ8SdWb0ETD5b
+ a6guUuCkOIFMw94utgtAfVYbeDDFgLZlSJgKcNN8HKxsU2z2w7CjbwuFK
+ zaVXRTQRgpd3prJzpB5w7AuGGLG6so0fiWmkiu/2mx3H45apTi82oTMqO
+ 6r3tootqSoCiYfbxJj3kM/peKeK65myEi4jw9HEQYR8+/tfxRu1N3k9SN Q==;
+X-CSE-ConnectionGUID: ZlfluwvARZu44ZEFE+Ax6g==
+X-CSE-MsgGUID: HyqyKSq2TXa16RHwC3uzmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="26441020"
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="26441020"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 02:44:23 -0700
+X-CSE-ConnectionGUID: QaohYbPsR0WygGKUfHLFVg==
+X-CSE-MsgGUID: /1N0aKzZTfywpwlp8+2EPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; d="scan'208";a="72891893"
+Received: from tomotoso-mobl1.amr.corp.intel.com (HELO [10.213.199.80])
+ ([10.213.199.80])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Sep 2024 02:44:22 -0700
+Message-ID: <5cdb17b6-7045-40c7-89b1-b55b6eff6623@linux.intel.com>
+Date: Fri, 27 Sep 2024 11:44:19 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF00036F3D:EE_|CH3PR12MB9170:EE_
-X-MS-Office365-Filtering-Correlation-Id: cb15322e-42ad-41b7-3a12-08dcded426b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|36860700013|376014; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5YDayAeoGb6OVWLoSvLG/mwz4nd8d8SVRDU9KZcFLU3YLJREo8j8dONtFjrT?=
- =?us-ascii?Q?61kWyTWc0ZHKv+S8gb/CsEPzGWZYF72YZrgT+hR4DgXtUrz3vknPKX252AYb?=
- =?us-ascii?Q?9M5FxWoJ1z1tZGP9YC/wTFfLyjUY76JeBV83mkNIJssCVVCZL8r6pTSyA67I?=
- =?us-ascii?Q?677rsywfz7S21kXoB6+dILutaQMTdHcD9qRdijE2v9XCdoSvl17RXG1vr/zb?=
- =?us-ascii?Q?Tt3trdQyKDITGqY5XT0uY21j4zTDqQjlI1h6Pfhc04tLvOYbA8+zwpFfxaoz?=
- =?us-ascii?Q?l6qLUD/H2gY1cInwOicfjldsUQbA+hVQbHi89oLrD+/IyARi1c4vM6eibI7N?=
- =?us-ascii?Q?zWpw+HBkpNy1zzqf6pH9R8ymKuXusajftIYO476eCmSV6mp//8dRThVWe31q?=
- =?us-ascii?Q?tQkkJWFJKwHx6N96eXx8fIF/OjDzAp7Coc2qWG4ZXcHUdFEW6QxRdpPYPGEX?=
- =?us-ascii?Q?w7FVJvgWodHcHSiVMi/+Yj5eK7f5RlSTT5JKmhkALALIjWbIex2bEnYNLk3k?=
- =?us-ascii?Q?/uekICElK+wndUbjvAvffRyeu2dubu62auBD5IuhwtDhY4SgYynD8JcNJQai?=
- =?us-ascii?Q?kEIkN1eP5j5Nq9sI+LRL5Uo3cTRiouPgjQJ/MjtT/B9m4tEBNOnUmFX2BbFE?=
- =?us-ascii?Q?PNS4MwSWDtcCQ6VV0y+k3w5h50MDakRJT3osTgTLN/u3FdCvdiLkCskg4o24?=
- =?us-ascii?Q?Sqq7k+wSNnHO+/BDJVu12bYmX89hTCOPIoDbbpKT1Z16RAtreRA8c8LhW0bp?=
- =?us-ascii?Q?Hc61DdZDDI30M+e/KL+ClCe3rIaSCJ5UwB6ZFmqiL/eDW9oMMc0bCq8nW+9S?=
- =?us-ascii?Q?ZLLHYZ+F72zumzkDXdMsdzrA7tFgdPZxvSIjJqxtNGqVD0Un+fCIDFn5O7qc?=
- =?us-ascii?Q?bS95zsrxui/M/lyXPwQTvwNX8Zgfd2/N1h5l6h3ZtYo+3+hAT1r4/2zjC7dy?=
- =?us-ascii?Q?UtS4pOjHRpOhCGdfB2GsvRCOq4KYc0fYoeNkyZVjpvnmA5TkcjB5Gskltkd/?=
- =?us-ascii?Q?BL//2VqGJJmY56IZN4D7RF3/G6XiULsxUYJdIIchW6Vj5ATjacUrsBl3WvBl?=
- =?us-ascii?Q?HneDXRqvnBUbxsZj14OITsRywCP52SmRL77QJdrCee1MFHa1J6D+EcYpfvHI?=
- =?us-ascii?Q?2Gqtr7wthyqI3tQarhI14d/l4rXfECxyNidj3WGm2r4UP/9tg10/OF1KCqGa?=
- =?us-ascii?Q?sN109NIu32ECj1JT/XBC2KcIN96j5Ak8/FTlMlI5Z5OqlIKDBgHaslkymO5u?=
- =?us-ascii?Q?HbCvSybFU+YJayEzncVJ8D513saVD3G79oxCmObv6HuyrOaIoj/wE7bIeI2S?=
- =?us-ascii?Q?BZI0BrqH7JZ5ilN20CfHJev+UPiT+E992jL3NDw3XP3XRxc/6Tw7n/4CaK5G?=
- =?us-ascii?Q?qkLgBME=3D?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2024 09:09:54.2346 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb15322e-42ad-41b7-3a12-08dcded426b0
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF00036F3D.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9170
+User-Agent: Mozilla Thunderbird
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: [PATCH] tests/intel/xe_pm: one suspend/resume cycle for all xe engines
+Content-Language: en-US
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,207 +67,239 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The sdma may have multiple rings,
-each of which should be tested.
+Changes the behavior from running one suspend/resume cycle for each
+xe engine to running a single suspend and resume cycle for all engines
+considerably reducing the xe_pm run time.
 
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 ---
- lib/amdgpu/amd_deadlock_helpers.c | 45 +++++++++++++++++++++++++++----
- lib/amdgpu/amd_deadlock_helpers.h |  5 ++--
- tests/amdgpu/amd_deadlock.c       | 18 ++++++-------
- 3 files changed, 51 insertions(+), 17 deletions(-)
+ tests/intel/xe_pm.c | 135 ++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 106 insertions(+), 29 deletions(-)
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index c71272e58..851f096b9 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -169,8 +169,8 @@ amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_ty
- 	free_cmd_base(base_cmd);
- }
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index eee89428c..0189055d2 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -54,6 +54,22 @@ typedef struct {
+ uint64_t orig_threshold;
+ int fw_handle = -1;
  
--void
--bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type)
-+static void
-+bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type, unsigned int ring_id)
++static pthread_mutex_t suspend_lock = PTHREAD_MUTEX_INITIALIZER;
++static pthread_cond_t suspend_cond = PTHREAD_COND_INITIALIZER;
++static pthread_mutex_t child_ready_lock = PTHREAD_MUTEX_INITIALIZER;
++static pthread_cond_t child_ready_cond = PTHREAD_COND_INITIALIZER;
++static bool child_ready = false;
++
++typedef struct {
++	device_t device;
++	struct drm_xe_engine_class_instance *eci;
++	int n_exec_queues;
++	int n_execs;
++	enum igt_suspend_state s_state;
++	enum igt_acpi_d_state d_state;
++	unsigned int flags;
++} test_exec_args;
++
+ static void dpms_on_off(device_t device, int mode)
  {
+ 	int i;
+@@ -273,6 +289,7 @@ static void close_fw_handle(int sig)
+  * @prefetch:	prefetch
+  * @unbind-all:	unbind-all
+  */
++
+ static void
+ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+ 	  int n_exec_queues, int n_execs, enum igt_suspend_state s_state,
+@@ -396,10 +413,16 @@ test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
+ 		igt_assert_eq(data[i].data, 0xc0ffee);
  
- 	const struct amdgpu_ip_block_version *ip_block = NULL;
-@@ -190,7 +190,7 @@ bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, un
- 	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
- 	ring_context->pm4_size = pm4_dw;
- 	ring_context->res_cnt = 1;
--	ring_context->ring_id = 0;
-+	ring_context->ring_id = ring_id;
- 	igt_assert(ring_context->pm4);
- 	ip_block = get_ip_block(device_handle, ip_type);
- 	r = amdgpu_bo_alloc_and_map(device_handle,
-@@ -216,11 +216,27 @@ bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, un
- 	free(ring_context);
- }
- 
-+void bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type)
-+{
-+	int r;
-+	struct drm_amdgpu_info_hw_ip info;
-+	uint32_t ring_id;
-+
-+	r = amdgpu_query_hw_ip_info(device_handle, ip_type, 0, &info);
-+	igt_assert_eq(r, 0);
-+	if (!info.available_rings)
-+		igt_info("SKIP ... as there's no ring for ip %d\n", ip_type);
-+
-+	for (ring_id = 0; (1 << ring_id) & info.available_rings; ring_id++) {
-+		bad_access_helper(device_handle, cmd_error, ip_type, ring_id);
-+	}
-+}
-+
- #define MAX_DMABUF_COUNT 0x20000
- #define MAX_DWORD_COUNT 256
- 
--void
--amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
-+static void
-+amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type, unsigned int ring_id)
- {
- 	int j, r;
- 	uint32_t *ptr, offset;
-@@ -240,6 +256,7 @@ amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
- 	}
- 	ring_context->secure = false;
- 	ring_context->res_cnt = 2;
-+	ring_context->ring_id = ring_id;
- 	igt_assert(ring_context->pm4);
- 
- 	r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
-@@ -309,3 +326,21 @@ amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
- 	igt_assert_eq(r, 0);
- 	free_cmd_base(base_cmd);
- }
-+
-+void amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t hang_type)
-+{
-+	int r;
-+	struct drm_amdgpu_info_hw_ip info;
-+	uint32_t ring_id;
-+
-+	r = amdgpu_query_hw_ip_info(device_handle, AMDGPU_HW_IP_DMA, 0, &info);
-+	igt_assert_eq(r, 0);
-+	if (!info.available_rings)
-+		igt_info("SKIP ... as there's no ring for the sdma\n");
-+
-+	for (ring_id = 0; (1 << ring_id) & info.available_rings; ring_id++) {
-+		printf("%s[%d] ring_id:%d ######## \n",__func__,__LINE__,ring_id);
-+		amdgpu_hang_sdma_helper(device_handle, hang_type, ring_id);
-+	}
-+}
-+
-diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
-index 165ffb98d..7f8419280 100644
---- a/lib/amdgpu/amd_deadlock_helpers.h
-+++ b/lib/amdgpu/amd_deadlock_helpers.h
-@@ -26,11 +26,10 @@
- 
- void
- amdgpu_wait_memory_helper(amdgpu_device_handle device_handle, unsigned int ip_type);
+ 		if (i == n_execs / 2 && s_state != NO_SUSPEND) {
+-			enum igt_suspend_test test = s_state == SUSPEND_STATE_DISK ?
+-				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
 -
- void
--bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type);
-+bad_access_ring_helper(amdgpu_device_handle device_handle, unsigned int cmd_error, unsigned int ip_type);
- 
- void
--amdgpu_hang_sdma_helper(amdgpu_device_handle device_handle, uint8_t hang_type);
-+amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t hang_type);
- #endif
- 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 696fac2eb..b5d053663 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -73,7 +73,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-illegal-reg-access")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_GFX);
- 		}
- 	}
-@@ -82,7 +82,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-mem-access") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-illegal-mem-access")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_GFX);
- 		}
- 	}
-@@ -99,7 +99,7 @@ igt_main
- 	igt_describe("Test-GPU-reset-by-access-compute-illegal-mem-addr");
- 	igt_subtest("amdgpu-compute-illegal-mem-access") {
- 		igt_skip_on_f(!arr_cap[AMD_IP_COMPUTE], "SKIP, compute ring don't support\n");
--		bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+		bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 				AMDGPU_HW_IP_COMPUTE);
- 	}
- 
-@@ -115,7 +115,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-corrupted-header-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-corrupted-header-test")
--			amdgpu_hang_sdma_helper(device, DMA_CORRUPTED_HEADER_HANG);
-+			amdgpu_hang_sdma_ring_helper(device, DMA_CORRUPTED_HEADER_HANG);
+-			igt_system_suspend_autoresume(s_state, test);
++			/* Tell the parent that we are ready for a suspend and resume */
++			pthread_mutex_lock(&child_ready_lock);
++			child_ready = true;
++			pthread_cond_signal(&child_ready_cond);
++			pthread_mutex_unlock(&child_ready_lock);
++
++			/* Wait for the suspend and resume to finish */
++			pthread_mutex_lock(&suspend_lock);
++			pthread_cond_wait(&suspend_cond, &suspend_lock);
++			pthread_mutex_unlock(&suspend_lock);
  		}
  	}
  
-@@ -123,7 +123,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-slow-linear-copy") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-slow-linear-copy")
--			amdgpu_hang_sdma_helper(device, DMA_SLOW_LINEARCOPY_HANG);
-+			amdgpu_hang_sdma_ring_helper(device, DMA_SLOW_LINEARCOPY_HANG);
+@@ -440,6 +463,77 @@ NULL));
+ 			   active_time);
+ 		igt_assert(in_d3(device, d_state));
+ 	}
++
++	/* Tell the parent that we are ready */
++	pthread_mutex_lock(&child_ready_lock);
++	child_ready = true;
++	pthread_cond_signal(&child_ready_cond);
++	pthread_mutex_unlock(&child_ready_lock);
++}
++
++/* Wrap test_exec() function arguments in a struct for pthread_create */
++static void*
++test_exec_wrapper(void *args)
++{
++	test_exec_args *exec_args = (test_exec_args *)args;
++
++	test_exec(exec_args->device, exec_args->eci, exec_args->n_exec_queues,
++		exec_args->n_execs, exec_args->s_state, exec_args->d_state,
++		exec_args->flags);
++
++	return NULL;
++}
++
++/* Do one suspend and resume cycle for all xe engines.
++ *  - For each xe engine: Create a thread for test_exec
++ *  - Pause the thread where it expects to suspend and resume
++ *  - Wait for all threads to reach the pause
++ *  - Run one suspend and resume cycle
++ *  - Wake up all threads
++ *  - Wait the threads to complete
++ */
++static void
++threaded_test_exec(device_t device, struct drm_xe_engine_class_instance *eci,
++	  int n_exec_queues, int n_execs, enum igt_suspend_state s_state,
++	  enum igt_acpi_d_state d_state, unsigned int flags)
++{
++	enum igt_suspend_test test = s_state == SUSPEND_STATE_DISK ? SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
++	int active_threads = 0;
++	pthread_t threads[65]; /* MAX_ENGINES + 1 */
++	test_exec_args args;
++
++	xe_for_each_engine(device.fd_xe, eci) {
++		args.device = device;
++		args.eci = eci;
++		args.n_exec_queues = n_exec_queues;
++		args.n_execs = n_execs;
++		args.s_state = s_state;
++		args.d_state = d_state;
++		args.flags = flags;
++
++		pthread_create(&threads[active_threads], NULL, test_exec_wrapper, &args);
++		active_threads++;
++
++		pthread_mutex_lock(&child_ready_lock);
++		while(!child_ready)
++			pthread_cond_wait(&child_ready_cond, &child_ready_lock);
++		child_ready = false;
++		pthread_mutex_unlock(&child_ready_lock);
++	}
++
++	if (n_execs > 1 && s_state != NO_SUSPEND) {
++		igt_system_suspend_autoresume(s_state, test);
++
++		sleep(2);
++		pthread_mutex_lock(&suspend_lock);
++		pthread_cond_broadcast(&suspend_cond);
++		pthread_mutex_unlock(&suspend_lock);
++
++		for (int i = 0; i < active_threads; i++)
++			pthread_join(threads[i], NULL);
++
++		active_threads = 0;
++	}
+ }
+ 
+ /**
+@@ -718,8 +812,7 @@ igt_main
+ 		igt_device_get_pci_slot_name(device.fd_xe, device.pci_slot_name);
+ 
+ 		/* Always perform initial once-basic exec checking for health */
+-		xe_for_each_engine(device.fd_xe, hwe)
+-			test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM, 0);
++		threaded_test_exec(device, hwe, 1, 1, NO_SUSPEND, NO_RPM, 0);
+ 
+ 		igt_pm_get_d3cold_allowed(device.pci_slot_name, &d3cold_allowed);
+ 		igt_assert(igt_setup_runtime_pm(device.fd_xe));
+@@ -731,14 +824,11 @@ igt_main
+ 		igt_subtest_f("%s-basic", s->name) {
+ 			enum igt_suspend_test test = s->state == SUSPEND_STATE_DISK ?
+ 				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
+-
+ 			igt_system_suspend_autoresume(s->state, test);
  		}
+ 
+ 		igt_subtest_f("%s-basic-exec", s->name) {
+-			xe_for_each_engine(device.fd_xe, hwe)
+-				test_exec(device, hwe, 1, 2, s->state,
+-					  NO_RPM, 0);
++			threaded_test_exec(device, hwe, 1, 2, s->state, NO_RPM, 0);
+ 		}
+ 
+ 		igt_subtest_f("%s-exec-after", s->name) {
+@@ -746,31 +836,23 @@ igt_main
+ 				SUSPEND_TEST_DEVICES : SUSPEND_TEST_NONE;
+ 
+ 			igt_system_suspend_autoresume(s->state, test);
+-			xe_for_each_engine(device.fd_xe, hwe)
+-				test_exec(device, hwe, 1, 2, NO_SUSPEND,
+-					  NO_RPM, 0);
++			threaded_test_exec(device, hwe, 1, 2, NO_SUSPEND, NO_RPM, 0);
+ 		}
+ 
+ 		igt_subtest_f("%s-multiple-execs", s->name) {
+-			xe_for_each_engine(device.fd_xe, hwe)
+-				test_exec(device, hwe, 16, 32, s->state,
+-					  NO_RPM, 0);
++			threaded_test_exec(device, hwe, 16, 32, s->state, NO_RPM, 0);
+ 		}
+ 
+ 		for (const struct vm_op *op = vm_op; op->name; op++) {
+ 			igt_subtest_f("%s-vm-bind-%s", s->name, op->name) {
+-				xe_for_each_engine(device.fd_xe, hwe)
+-					test_exec(device, hwe, 16, 32, s->state,
+-						  NO_RPM, op->flags);
++				threaded_test_exec(device, hwe, 16, 32, s->state, NO_RPM, op->flags);
+ 			}
+ 		}
+ 
+ 		for (const struct d_state *d = d_states; d->name; d++) {
+ 			igt_subtest_f("%s-%s-basic-exec", s->name, d->name) {
+ 				igt_assert(setup_d3(device, d->state));
+-				xe_for_each_engine(device.fd_xe, hwe)
+-					test_exec(device, hwe, 1, 2, s->state,
+-						  NO_RPM, 0);
++				threaded_test_exec(device, hwe, 1, 2, s->state, NO_RPM, 0);
+ 				cleanup_d3(device);
+ 			}
+ 		}
+@@ -792,17 +874,13 @@ igt_main
+ 
+ 		igt_subtest_f("%s-basic-exec", d->name) {
+ 			igt_assert(setup_d3(device, d->state));
+-			xe_for_each_engine(device.fd_xe, hwe)
+-				test_exec(device, hwe, 1, 1,
+-					  NO_SUSPEND, d->state, 0);
++			threaded_test_exec(device, hwe, 1, 1, NO_SUSPEND, d->state, 0);
+ 			cleanup_d3(device);
+ 		}
+ 
+ 		igt_subtest_f("%s-multiple-execs", d->name) {
+ 			igt_assert(setup_d3(device, d->state));
+-			xe_for_each_engine(device.fd_xe, hwe)
+-				test_exec(device, hwe, 16, 32,
+-					  NO_SUSPEND, d->state, 0);
++			threaded_test_exec(device, hwe, 16, 32, NO_SUSPEND, d->state, 0);
+ 			cleanup_d3(device);
+ 		}
+ 
+@@ -842,7 +920,6 @@ igt_main
+ 			test_mocs_suspend_resume(device, NO_SUSPEND, d->state);
+ 			cleanup_d3(device);
+ 		}
+-
  	}
  
-@@ -131,7 +131,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-badop-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-badop-test")
--			bad_access_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
-+			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
-@@ -140,7 +140,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-mem-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-mem-test")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
-@@ -149,7 +149,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-reg-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-reg-test")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
-@@ -158,7 +158,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-length-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-length-test")
--			bad_access_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
-+			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
+ 	igt_describe("Validate whether card is limited to d3hot,"
 -- 
-2.25.1
+2.34.1
 
