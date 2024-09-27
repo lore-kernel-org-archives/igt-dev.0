@@ -4,48 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BAEBCEBF76
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 04:27:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 411D5CEBF69
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Sep 2024 05:03:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CC47610E1A3;
-	Fri, 27 Sep 2024 04:27:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E76CC10EC11;
+	Fri, 27 Sep 2024 05:03:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kEpAH8et";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ldEVsKvZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2806310E1A3
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 04:27:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DD0E710EC11
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Sep 2024 05:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727411259; x=1758947259;
+ t=1727413386; x=1758949386;
  h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=/i0ACcG4q25pES3P0gdRpV0GsFhg+mlwnumeUtEUY34=;
- b=kEpAH8et0Ii63M3+K+FATJ3DvL2Ewgm+CZYtKut9RS3JdC08Cbw3pINN
- g8Gbohhw3XYLffDZ1tFLZdHp/Q49zoRrO9/Hq9Icqn8KHA/5Pz53hLu6Y
- UY/0fURAQQQzc7YX3P5bXPztDgHy/pZk70fmmLymbWHznJPE29XKOFabh
- 4E1AFSQJifFUjYRXyKD6Jtfckvl0PCC4ZW13tzosRBBSWUcsNwmxdQdYn
- q9XH82GZVgGDdU6N4+lDkh0rc2MnjzAfEEkxpSpqVL40wYzFYO0QEfmtq
- OcqZRCP3ODYpNyPeYxs/3r7Ii8iTPhbddc7NZo76WxGgRtW00B7oe1qzQ Q==;
-X-CSE-ConnectionGUID: 5IHUcwg2T56l+uc/k3tCFg==
-X-CSE-MsgGUID: nV5IhvjPRPqT/qFOeCyf3g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="37111150"
-X-IronPort-AV: E=Sophos;i="6.11,157,1725346800"; d="scan'208";a="37111150"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Sep 2024 21:27:38 -0700
-X-CSE-ConnectionGUID: Fjn834gpS0u3I0QSbrpXBQ==
-X-CSE-MsgGUID: tG7c4I7zSQe9rxTWpi68cg==
+ bh=kO54VQtUG9ZWA0TzZyidVG4Ovl+hVkU8ph7Bv/48ByQ=;
+ b=ldEVsKvZ5hbYMFd90GVa1VY9Z8x1JehrSnD/DaDKG8CGWkMAkhPWZIet
+ TT4/96Ms6FClYeKCFw+cXN+W0xogJHdX/zxhK1uIw7USRSfaSgXr143xy
+ 9L/Ho5aIEdopQzrYDM3Uj+Y3Mc6SodJvzcINWBDWyXksh/SRbC0iXnD7u
+ x+iavlV3AMI4tW0lCL+UjcYk1pDmZok0Ral09uWPrrR1kTmXzQq3oezLF
+ aSgnE4KJM9+g33D7G7QgHwnPLA6y4UauxcyPpDzq7QOf1toWpZKTQjFfB
+ Vm1KTAXn93oFzEhvgv+wuGmv+jfc2cz7QHFGg1Uk+wG+qRMMIMApx9ymy g==;
+X-CSE-ConnectionGUID: 2/ArS3DXTGOvkTP/SDRN3A==
+X-CSE-MsgGUID: 2IlOi39kQcW0kNeZtkeCBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="26417791"
+X-IronPort-AV: E=Sophos;i="6.11,157,1725346800"; d="scan'208";a="26417791"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Sep 2024 22:03:06 -0700
+X-CSE-ConnectionGUID: gdooz1KgTZ2xZNuTazYkWg==
+X-CSE-MsgGUID: KkB81+eERrSq7bxlaOAaPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,157,1725346800"; d="scan'208";a="77222969"
+X-IronPort-AV: E=Sophos;i="6.11,157,1725346800"; d="scan'208";a="72062210"
 Received: from rahul-super-server.iind.intel.com ([10.145.169.156])
- by orviesa003.jf.intel.com with ESMTP; 26 Sep 2024 21:27:36 -0700
+ by fmviesa007.fm.intel.com with ESMTP; 26 Sep 2024 22:03:03 -0700
 From: sai.gowtham.ch@intel.com
-To: igt-dev@lists.freedesktop.org, nirmoy.das@intel.com,
- sai.gowtham.ch@intel.com
-Subject: [PATCH] tests/intel/xe_tlb: Add test to check TLB invalidation
-Date: Fri, 27 Sep 2024 10:05:44 +0530
-Message-Id: <20240927043544.1782340-1-sai.gowtham.ch@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	sai.gowtham.ch@intel.com
+Subject: [PATCH] tests/intel/xe_sysfs_timeslice_duration: Add test to validate
+ timeslice duration
+Date: Fri, 27 Sep 2024 10:41:12 +0530
+Message-Id: <20240927051112.1801791-1-sai.gowtham.ch@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -67,187 +68,224 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Test validates TLB invalidation by binding different buffer objects
-with the same vma and submitting workload simultaneously, Ideally
-expecting gpu to handle pages by invalidating and avoding page faults.
+Test checks if the execution time of a ctx is within the given timslice duration.
 
-Cc: Nirmoy Das <nirmoy.das@intel.com>
 Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/intel/xe_tlb.c | 154 +++++++++++++++++++++++++++++++++++++++++++
- tests/meson.build    |   1 +
- 2 files changed, 155 insertions(+)
- create mode 100644 tests/intel/xe_tlb.c
+ tests/intel/xe_sysfs_timeslice_duration.c | 194 ++++++++++++++++++++++
+ tests/meson.build                         |   1 +
+ 2 files changed, 195 insertions(+)
+ create mode 100644 tests/intel/xe_sysfs_timeslice_duration.c
 
-diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
 new file mode 100644
-index 000000000..ef44a1069
+index 000000000..1a5dbfe3c
 --- /dev/null
-+++ b/tests/intel/xe_tlb.c
-@@ -0,0 +1,154 @@
-+/* SPDX-License-Identifier: MIT */
++++ b/tests/intel/xe_sysfs_timeslice_duration.c
+@@ -0,0 +1,194 @@
++// SPDX-License-Identifier: MIT
 +/*
-+* Copyright © 2024 Intel Corporation
-+*
-+* Authors:
-+*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-+*/
-+#include "igt.h"
-+#include "lib/igt_syncobj.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+#include "xe_drm.h"
-+#include "igt_debugfs.h"
++ * Copyright © 2024 Intel Corporation
++ */
 +
 +/**
-+ * TEST: Check Translation Lookaside Buffer Invalidation.
-+ * Category: Software building block
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: TLB invalidate
++ * TEST: sysfs timeslice duration
++ * Category: Core
++ * Mega feature: SysMan
++ * Sub-category: SysMan tests
++ * Functionality: sysfs timslice duration
++ * Feature: SMI, context
++ * Test category: SysMan
++ *
++ * SUBTEST: timeslice_duration_us-timeout
++ * Description: Test to check if the execution time of a ctx is
++ * 		within the given timslice duration.
 + * Test category: functionality test
++ *
 + */
-+struct data {
-+	uint32_t batch[16];
-+	uint32_t data;
-+	uint64_t addr;
-+};
++#include <fcntl.h>
 +
-+static void store_dword_batch(struct data *data, uint64_t addr, int value)
++#include "igt.h"
++#include "igt_syncobj.h"
++#include "igt_sysfs.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_spin.h"
++
++#define ATTR "timeslice_duration_us"
++
++static void set_timeslice_duration(int engine, unsigned int value)
 +{
-+	int b;
-+	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-+	uint64_t batch_addr = addr + batch_offset;
-+	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
-+	uint64_t sdi_addr = addr + sdi_offset;
++	unsigned int delay;
 +
-+	b = 0;
-+	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+	data->batch[b++] = sdi_addr;
-+	data->batch[b++] = sdi_addr >> 32;
-+	data->batch[b++] = value;
-+	data->batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data->batch));
-+
-+	data->addr = batch_addr;
++	igt_assert_lte(0, igt_sysfs_printf(engine, ATTR, "%u", value));
++	igt_sysfs_scanf(engine, ATTR, "%u", &delay);
++	igt_assert_eq(delay, value);
 +}
 +
-+/**
-+ * SUBTEST: basic-tlb
-+ * Description: Check Translation Lookaside Buffer Invalidation.
-+ */
-+static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
++static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_t gt, int class)
 +{
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, }
++	struct drm_xe_sync sync = {
++		.handle = syncobj_create(fd, 0),
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
 +	};
++
 +	struct drm_xe_exec exec = {
 +		.num_batch_buffer = 1,
-+		.num_syncs = 2,
++		.num_syncs = 1,
 +		.syncs = to_user_pointer(&sync),
 +	};
-+	struct data *data1;
-+	struct data *data2;
-+	uint32_t vm;
-+	uint32_t exec_queue;
-+	uint32_t bind_engine;
-+	uint32_t syncobj;
++/* high priority property */
++	struct drm_xe_ext_set_property ext = {
++		.base.next_extension = 0,
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
++		.value = 2, /* High priority */
++	};
++	struct drm_xe_engine_class_instance *hwe = NULL, *_hwe;
++	uint32_t exec_queues[2];
++	uint32_t vm[2];
++	uint32_t bo[2];
 +	size_t bo_size;
-+	int value1 = 0x123456;
-+	int value2 = 0x123465;
-+	uint64_t addr = 0x100000;
-+	uint32_t bo1, bo2;
-+	char tlb_pre[4096], tlb_pos[4096];
-+	char path[256];
++	struct xe_spin *spin[2];
++	struct timespec ts = {};
++	uint64_t elapsed;
++	uint64_t addr1 = 0x1a0000, addr2 = 0x100000;
 +
-+	syncobj = syncobj_create(fd, 0);
-+	sync[0].handle = syncobj_create(fd, 0);
-+	sync[1].handle = syncobj;
++	xe_for_each_engine(fd, _hwe)
++		if (_hwe->engine_class == class && _hwe->gt_id == gt)
++			hwe = _hwe;
++	if (!hwe)
++		return -1;
 +
-+	vm = xe_vm_create(fd, 0, 0);
-+	bo_size = sizeof(*data1);
-+	bo_size = xe_bb_size(fd, bo_size);
-+	bo1 = xe_bo_create(fd, vm, bo_size,
-+				   vram_if_possible(fd, eci->gt_id),
-+				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	bo2 = xe_bo_create(fd, vm, bo_size,
-+				   vram_if_possible(fd, eci->gt_id),
-+				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+
-+	sprintf(path, "/sys/kernel/debug/dri/0/gt%d/stats", eci->gt_id);
-+	igt_debugfs_dump(fd, path);
-+	igt_debugfs_read(fd, path, tlb_pre);
-+	igt_info("tlb invalidations counts before submitting worakloads\n%s\n", tlb_pre);
-+
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
-+	xe_vm_bind_async(fd, vm, bind_engine, bo1, 0, addr, bo_size, sync, 1);
-+	data1 = xe_bo_map(fd, bo1, bo_size);
-+
-+	store_dword_batch(data1, addr, value1);
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = data1->addr;
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	/* set timeslice duration*/
++	set_timeslice_duration(engine, timeout);
++	vm[0] = xe_vm_create(fd, 0, 0);
++	vm[1] = xe_vm_create(fd, 0, 0);
++	exec_queues[0] = xe_exec_queue_create(fd, vm[0], hwe, 0);
++	exec_queues[1] = xe_exec_queue_create(fd, vm[1], hwe, to_user_pointer(&ext));
++	bo_size = xe_bb_size(fd, sizeof(*spin));
++	bo[0] = xe_bo_create(fd, vm[0], bo_size, vram_if_possible(fd, 0), 0);
++	spin[0] = xe_bo_map(fd, bo[0], bo_size);
++	xe_vm_bind_async(fd, vm[0], 0, bo[0], 0, addr1, bo_size, &sync, 1);
++	xe_spin_init_opts(spin[0], .addr = addr1, .preempt = false);
++	exec.address = addr1;
++	exec.exec_queue_id = exec_queues[0];
 +	xe_exec(fd, &exec);
-+	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-+	xe_vm_bind_async(fd, vm, bind_engine, bo2, 0, addr, bo_size, sync, 1);
-+	data2 = xe_bo_map(fd, bo2, bo_size);
++	xe_spin_wait_started(spin[0]);
 +
-+	store_dword_batch(data2, addr, value2);
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = data2->addr;
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	bo[1] = xe_bo_create(fd, vm[1], bo_size, vram_if_possible(fd, 0), 0);
++	spin[1] = xe_bo_map(fd, bo[1], bo_size);
++	xe_vm_bind_sync(fd, vm[1], bo[1], 0, addr2, bo_size);
++	xe_spin_init_opts(spin[1], .addr = addr2);
++	exec.address = addr2;
++	exec.exec_queue_id = exec_queues[1];
++	igt_nsec_elapsed(&ts);
 +	xe_exec(fd, &exec);
-+	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	xe_spin_wait_started(spin[1]);
++	elapsed = igt_nsec_elapsed(&ts);
++	xe_spin_end(spin[1]);
 +
-+	igt_debugfs_dump(fd, path);
-+	igt_debugfs_read(fd, path, tlb_pos);
-+	igt_info("tlb invalidations counts after submitting worakloads\n%s\n", tlb_pos);
++	xe_vm_unbind_async(fd, vm[0], 0, 0, addr1, bo_size, &sync, 1);
++	igt_assert(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL));
 +
-+	igt_assert_eq(data1->data, value1);
-+	igt_assert_eq(data2->data, value2);
-+	igt_assert(strcmp(tlb_pre, tlb_pos) != 0);
++	xe_spin_end(spin[0]);
++	xe_vm_unbind_sync(fd, vm[1], 0, addr2, bo_size);
++	syncobj_destroy(fd, sync.handle);
 +
-+	syncobj_destroy(fd, sync[0].handle);
-+	syncobj_destroy(fd, syncobj);
-+	munmap(data1, bo_size);
-+	munmap(data2, bo_size);
-+	gem_close(fd, bo1);
-+	gem_close(fd, bo2);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_vm_destroy(fd, vm);
++	xe_exec_queue_destroy(fd, exec_queues[0]);
++	xe_vm_destroy(fd, vm[0]);
++	xe_exec_queue_destroy(fd, exec_queues[1]);
++	xe_vm_destroy(fd, vm[1]);
++
++	return elapsed;
++}
++
++static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
++{
++	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
++	unsigned int saved;
++	uint64_t elapsed;
++	uint64_t epsilon;
++
++	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) == 1);
++	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
++	igt_debug("Initial %s:%u\n", property[0], saved);
++
++	elapsed = __test_timeout(fd, engine, 1000, gt, class);
++	epsilon = 2 * elapsed / 1000;
++	if (epsilon < 50000)
++		epsilon = 50000;
++	igt_info("Minimum timeout measured as %.3fus; setting error threshold to %" PRId64 "us\n",
++									elapsed * 1e-3, epsilon);
++	igt_require(epsilon < 10000000);
++
++	for (int i = 0; i < ARRAY_SIZE(delays); i++) {
++		elapsed = __test_timeout(fd, engine, delays[i], gt, class);
++		igt_info("%s:%ld, elapsed=%.3fus\n",
++				property[0], delays[i], elapsed * 1e-3);
++		igt_assert_f(elapsed / 1000  < delays[i] + epsilon,
++				"Timeslice exceeded request!!\n");
++	}
++
++	set_timeslice_duration(engine, saved);
 +}
 +
 +igt_main
 +{
-+	int fd;
-+	struct drm_xe_engine *engine;
++	static const struct {
++		const char *name;
++		void (*fn)(int, int, const char **, uint16_t, int);
++	} tests[] = {
++		{ "timeout", test_timeout },
++		{ }
++	};
++	const char *property[][3] = { {"timeslice_duration_us",
++				       "timeslice_duration_min",
++				       "timeslice_duration_max"}, };
++	int count = sizeof(property) / sizeof(property[0]);
++	int fd = -1, sys_fd, gt;
++	int engines_fd = -1, gt_fd = -1;
 +
 +	igt_fixture {
 +		fd = drm_open_driver(DRIVER_XE);
++
++		sys_fd = igt_sysfs_open(fd);
++		igt_require(sys_fd != -1);
++		close(sys_fd);
 +	}
 +
-+	igt_subtest("basic-tlb") {
-+		engine = xe_engine(fd, 0);
-+		tlb_invalidation(fd, &engine->instance);
++	for (int i = 0; i < count; i++) {
++		for (typeof(*tests) *t = tests; t->name; t++) {
++			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
++				xe_for_each_gt(fd, gt) {
++					gt_fd = xe_sysfs_gt_open(fd, gt);
++					igt_require(gt_fd != -1);
++					engines_fd = openat(gt_fd, "engines", O_RDONLY);
++					igt_require(engines_fd != -1);
++					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
++										 t->fn);
++					close(engines_fd);
++					close(gt_fd);
++				}
++			}
++		}
 +	}
-+
 +	igt_fixture {
 +		drm_close_driver(fd);
 +	}
 +}
++
++
 diff --git a/tests/meson.build b/tests/meson.build
-index e5d8852f3..17c808ab6 100644
+index e5d8852f3..62bde353b 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
 @@ -316,6 +316,7 @@ intel_xe_progs = [
  	'xe_sysfs_defaults',
  	'xe_sysfs_preempt_timeout',
  	'xe_sysfs_scheduler',
-+        'xe_tlb',
++        'xe_sysfs_timeslice_duration',
  ]
  
  intel_xe_eudebug_progs = [
