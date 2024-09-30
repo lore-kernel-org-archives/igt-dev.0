@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ABB63CE8375
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 17:06:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DDD5CE8375
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 17:17:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6474710E56C;
-	Mon, 30 Sep 2024 17:06:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hZBbFtDE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2367110E56C
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 17:06:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727715996; x=1759251996;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=A6llRIj8AKN2arSP8/gkxIofujKk6HZ/vFrfWZbHE3A=;
- b=hZBbFtDEAQOQ79/QBNZT2aPFLEhu27lBvfKQbOTgOkAKryg1jbvDllIi
- emfyPgDiwMBizJ4vt2BkwP00rGkiPlDDa5sB+u9S5zynr/e7SbfaPKttV
- TopsJZ2OYbBVC6VR4G3CEjMj7EEPfDOL7k5sOjTwBZaF4Xr57G3zXv0bB
- 3i884N24KIuiveAcDTMy5kvc5GU6uqr71GldR9h8NezrbcneI+VFDZqV9
- CUMaI+5nOuVzK5U3cdmuf21rzbtOk6pP6zQK0pI82/4cqfbFgB+Ovib5y
- izsPWV/axFmIxmyhZiBRR8r03r7Yh+sM93cnMv5tCVEe4BKPpMDsZr6XB A==;
-X-CSE-ConnectionGUID: cxfsTOBqTi6tFJ+bSX/tug==
-X-CSE-MsgGUID: XyKsWNhOQW2HLPM6Excyjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="26327392"
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="26327392"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 10:06:36 -0700
-X-CSE-ConnectionGUID: +Gx6CzT2TYC/3v0yV8NxdQ==
-X-CSE-MsgGUID: PkNP8/pKQYSJvfQ4Z02Lrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="78109289"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.194.204])
- ([10.245.194.204])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 10:06:29 -0700
-Message-ID: <56c2e6a0-7a51-4660-b9b4-2754a21ffba6@linux.intel.com>
-Date: Mon, 30 Sep 2024 19:06:25 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id 25A4310E579;
+	Mon, 30 Sep 2024 17:17:43 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBF5710E574;
+ Mon, 30 Sep 2024 17:17:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1912820962182445686=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3] tests/intel/xe_tlb: Add test to check TLB
- invalidation
-To: sai.gowtham.ch@intel.com, igt-dev@lists.freedesktop.org,
- nirmoy.das@intel.com
-References: <20240930162609.2089507-1-sai.gowtham.ch@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20240930162609.2089507-1-sai.gowtham.ch@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_lib/igt=5Ffb=3A_Fix_intel?=
+ =?utf-8?q?=5Fbuf_surface_init_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 30 Sep 2024 17:17:41 -0000
+Message-ID: <172771666196.1138037.8792553770502109960@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240923213620.12369-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240923213620.12369-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,243 +37,156 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============1912820962182445686==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 9/30/2024 6:26 PM, sai.gowtham.ch@intel.com wrote:
-> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->
-> Test validates TLB invalidation by binding different buffer objects
-> with the same vma and submitting workload simultaneously, Ideally
-> expecting gpu to handle pages by invalidating and avoding page faults.
->
-> v2: Validating tlb_invalidation counts with pre and post increment counter
->     values, rather complete stats.
->
-> v3: Move xe_tlb_count to lib making it generic to all stat entries. which returns
->     the counter of a given stat.
->
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> ---
->  lib/xe/xe_gt.c       |  25 ++++++++
->  lib/xe/xe_gt.h       |   1 +
->  tests/intel/xe_tlb.c | 148 +++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build    |   1 +
->  4 files changed, 175 insertions(+)
->  create mode 100644 tests/intel/xe_tlb.c
->
-> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-> index 36e8fde36..dfc60e2ff 100644
-> --- a/lib/xe/xe_gt.c
-> +++ b/lib/xe/xe_gt.c
-> @@ -141,3 +141,28 @@ void xe_post_hang_ring(int fd, igt_hang_t arg)
->  	xe_vm_destroy(fd, arg.spin->vm);
->  }
->  
-> +/**
-> + * xe_tlb_count:
-> + * @fd: open xe drm file descriptor
-> + * @gt: gt_id
-> + *
-> + * This function returns the counter for a given stat.
-> + */
-> +int xe_tlb_count(int fd, int gt, const char *stat)
+== Series Details ==
 
-s/xe_tlb_count()/xe_gt_stats_get_count(), with that: 
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Series: lib/igt_fb: Fix intel_buf surface init (rev3)
+URL   : https://patchwork.freedesktop.org/series/139012/
+State : success
 
-> +{
-> +	FILE *f;
-> +	char tlb_path[4096];
-> +	char path[256];
-> +	int count;
-> +
-> +	sprintf(path, "/sys/kernel/debug/dri/0/gt%d/stats", gt);
-> +	f = fopen(path, "r");
-> +
-> +	while (fgets(tlb_path, sizeof(tlb_path), f)) {
-> +		if (strstr(tlb_path, stat) != NULL) {
-> +			sscanf(tlb_path, "%*[^:]: %d", &count);
-> +			break;
-> +		}
-> +	}
-> +	return count;
-> +}
-> diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
-> index 6fa05d6a9..7910587ac 100644
-> --- a/lib/xe/xe_gt.h
-> +++ b/lib/xe/xe_gt.h
-> @@ -13,3 +13,4 @@ void xe_force_gt_reset_all(int fd);
->  igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
->  				unsigned int flags);
->  void xe_post_hang_ring(int fd, igt_hang_t arg);
-> +int xe_tlb_count(int fd, int gt, const char *stat);
-> diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
-> new file mode 100644
-> index 000000000..399384f5b
-> --- /dev/null
-> +++ b/tests/intel/xe_tlb.c
-> @@ -0,0 +1,148 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> +* Copyright © 2024 Intel Corporation
-> +*
-> +* Authors:
-> +*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
-> +*/
-> +#include "igt.h"
-> +#include "lib/igt_syncobj.h"
-> +#include "xe/xe_gt.c"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +#include "xe_drm.h"
-> +#include "igt_debugfs.h"
-> +
-> +/**
-> + * TEST: Check Translation Lookaside Buffer Invalidation.
-> + * Category: Software building block
-> + * Mega feature: General Core features
-> + * Sub-category: CMD submission
-> + * Functionality: TLB invalidate
-> + * Test category: functionality test
-> + */
-> +struct data {
-> +	uint32_t batch[16];
-> +	uint32_t data;
-> +	uint64_t addr;
-> +};
-> +
-> +static void store_dword_batch(struct data *data, uint64_t addr, int value)
-> +{
-> +	int b;
-> +	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
-> +	uint64_t batch_addr = addr + batch_offset;
-> +	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
-> +	uint64_t sdi_addr = addr + sdi_offset;
-> +
-> +	b = 0;
-> +	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-> +	data->batch[b++] = sdi_addr;
-> +	data->batch[b++] = sdi_addr >> 32;
-> +	data->batch[b++] = value;
-> +	data->batch[b++] = MI_BATCH_BUFFER_END;
-> +	igt_assert(b <= ARRAY_SIZE(data->batch));
-> +
-> +	data->addr = batch_addr;
-> +}
-> +
-> +/**
-> + * SUBTEST: basic-tlb
-> + * Description: Check Translation Lookaside Buffer Invalidation.
-> + */
-> +static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
-> +{
-> +	struct drm_xe_sync sync[2] = {
-> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
-> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, }
-> +	};
-> +	struct drm_xe_exec exec = {
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 2,
-> +		.syncs = to_user_pointer(&sync),
-> +	};
-> +	struct data *data1;
-> +	struct data *data2;
-> +	uint32_t vm;
-> +	uint32_t exec_queue;
-> +	uint32_t bind_engine;
-> +	uint32_t syncobj;
-> +	size_t bo_size;
-> +	int value1 = 0x123456;
-> +	int value2 = 0x123465;
-> +	uint64_t addr = 0x100000;
-> +	uint32_t bo1, bo2;
-> +	int tlb_pre, tlb_pos;
-> +	const char *stat = "tlb_inval_count";
-> +
-> +	syncobj = syncobj_create(fd, 0);
-> +	sync[0].handle = syncobj_create(fd, 0);
-> +	sync[1].handle = syncobj;
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	bo_size = sizeof(*data1);
-> +	bo_size = xe_bb_size(fd, bo_size);
-> +	bo1 = xe_bo_create(fd, vm, bo_size,
-> +				   vram_if_possible(fd, eci->gt_id),
-> +				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +	bo2 = xe_bo_create(fd, vm, bo_size,
-> +				   vram_if_possible(fd, eci->gt_id),
-> +				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +
-> +	tlb_pre = xe_tlb_count(fd, eci->gt_id, stat);
-> +	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-> +	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
-> +	xe_vm_bind_async(fd, vm, bind_engine, bo1, 0, addr, bo_size, sync, 1);
-> +	data1 = xe_bo_map(fd, bo1, bo_size);
-> +
-> +	store_dword_batch(data1, addr, value1);
-> +	exec.exec_queue_id = exec_queue;
-> +	exec.address = data1->addr;
-> +	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> +	xe_exec(fd, &exec);
-> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-> +	xe_vm_bind_async(fd, vm, bind_engine, bo2, 0, addr, bo_size, sync, 1);
-> +	data2 = xe_bo_map(fd, bo2, bo_size);
-> +
-> +	store_dword_batch(data2, addr, value2);
-> +	exec.exec_queue_id = exec_queue;
-> +	exec.address = data2->addr;
-> +	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> +	xe_exec(fd, &exec);
-> +	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
-> +
-> +	tlb_pos = xe_tlb_count(fd, eci->gt_id, stat);
-> +	igt_assert_eq(data1->data, value1);
-> +	igt_assert_eq(data2->data, value2);
-> +	igt_assert(tlb_pos > tlb_pre);
-> +
-> +	syncobj_destroy(fd, sync[0].handle);
-> +	syncobj_destroy(fd, syncobj);
-> +	munmap(data1, bo_size);
-> +	munmap(data2, bo_size);
-> +	gem_close(fd, bo1);
-> +	gem_close(fd, bo2);
-> +	xe_exec_queue_destroy(fd, exec_queue);
-> +	xe_vm_destroy(fd, vm);
-> +}
-> +
-> +igt_main
-> +{
-> +	int fd;
-> +	struct drm_xe_engine *engine;
-> +
-> +	igt_fixture {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +	}
-> +
-> +	igt_subtest("basic-tlb") {
-> +		engine = xe_engine(fd, 0);
-> +		tlb_invalidation(fd, &engine->instance);
-> +	}
-> +
-> +	igt_fixture {
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 0782d3cc7..b0a490ccb 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -317,6 +317,7 @@ intel_xe_progs = [
->  	'xe_sysfs_preempt_timeout',
->  	'xe_sysfs_scheduler',
->          'xe_sysfs_timeslice_duration',
-> +        'xe_tlb',
->  ]
->  
->  intel_xe_eudebug_progs = [
+== Summary ==
+
+CI Bug Log - changes from CI_DRM_15460 -> IGTPW_11836
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/index.html
+
+Participating hosts (42 -> 41)
+------------------------------
+
+  Additional (1): bat-dg2-13 
+  Missing    (2): bat-rpls-4 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11836 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@runner@aborted:
+    - bat-dg2-13:         NOTRUN -> [FAIL][1] ([i915#12292])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/bat-dg2-13/igt@runner@aborted.html
+
+  
+#### Warnings ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-kbl-7567u:       [DMESG-WARN][2] ([i915#11621] / [i915#180] / [i915#1982]) -> [DMESG-WARN][3] ([i915#11621] / [i915#180])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15460/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12292]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12292
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8043 -> IGTPW_11836
+
+  CI-20190529: 20190529
+  CI_DRM_15460: 2a8d54969ceeb99f139f89f49e8fc25f71fa5bed @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11836: 26f61625fa50ad49787ad96e30845e60414b0eda @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8043: 8043
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/index.html
+
+--===============1912820962182445686==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_fb: Fix intel_buf surface init (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139012/">https://patchwork.freedesktop.org/series/139012/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from CI_DRM_15460 -&gt; IGTPW_11836</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/index.html</p>
+<h2>Participating hosts (42 -&gt; 41)</h2>
+<p>Additional (1): bat-dg2-13 <br />
+  Missing    (2): bat-rpls-4 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11836 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>bat-dg2-13:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/bat-dg2-13/igt@runner@aborted.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12292">i915#12292</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15460/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11836/fi-kbl-7567u/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8043 -&gt; IGTPW_11836</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15460: 2a8d54969ceeb99f139f89f49e8fc25f71fa5bed @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11836: 26f61625fa50ad49787ad96e30845e60414b0eda @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8043: 8043</p>
+
+</body>
+</html>
+
+--===============1912820962182445686==--
