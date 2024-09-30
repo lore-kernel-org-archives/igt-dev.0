@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FB8DCDD1D5
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 19:29:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1233CDD1D6
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 19:47:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1EA310E149;
-	Mon, 30 Sep 2024 19:29:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AFC1E10E2F9;
+	Mon, 30 Sep 2024 19:47:21 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC9BB10E149;
- Mon, 30 Sep 2024 19:29:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D70C410E2F9;
+ Mon, 30 Sep 2024 19:47:20 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7853377975360362865=="
+ boundary="===============7908504640319900048=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/2=5D_lib/igt=5Fpsr=3A_Allow_testing_without_checking_sink_st?=
- =?utf-8?q?atus_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_series_starting_with_=5BCI=2Ci?=
+ =?utf-8?q?-g-t=2C1/5=5D_lib/igt=5Fgt=3A_Fix_forcewake_open_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 30 Sep 2024 19:29:57 -0000
-Message-ID: <172772459796.1138426.16079704521755267860@2413ebb6fbb6>
+Date: Mon, 30 Sep 2024 19:47:20 -0000
+Message-ID: <172772564087.1138507.649115329518251230@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20240926070517.1326936-1-jouni.hogander@intel.com>
-In-Reply-To: <20240926070517.1326936-1-jouni.hogander@intel.com>
+References: <20240926041651.412396-1-lucas.demarchi@intel.com>
+In-Reply-To: <20240926041651.412396-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7853377975360362865==
+--===============7908504640319900048==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/2] lib/igt_psr: Allow testing without checking sink status (rev2)
-URL   : https://patchwork.freedesktop.org/series/139129/
+Series: series starting with [CI,i-g-t,1/5] lib/igt_gt: Fix forcewake open (rev2)
+URL   : https://patchwork.freedesktop.org/series/139124/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8043_BAT -> XEIGTPW_11838_BAT
+CI Bug Log - changes from XEIGT_8043_BAT -> XEIGTPW_11839_BAT
 ====================================================
 
 Summary
@@ -75,7 +74,7 @@ Participating hosts (9 -> 9)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_11838_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_11839_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -84,7 +83,7 @@ Known issues
   * igt@kms_psr@psr-primary-page-flip@edp-1:
     - bat-lnl-1:          [FAIL][1] ([Intel XE#1649]) -> [PASS][2] +5 other tests pass
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11838/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11839/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
 
   
   [Intel XE#1649]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649
@@ -93,19 +92,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_8043 -> IGTPW_11838
+  * IGT: IGT_8043 -> IGTPW_11839
   * Linux: xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f -> xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1
 
-  IGTPW_11838: d4ce5a99a95c74462f4ef55d6614c353e638916b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11839: 11839
   IGT_8043: 8043
   xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f: 8a36a5499f143dc694afe235c6a1773421d2bd4f
   xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1: 4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11838/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11839/index.html
 
---===============7853377975360362865==
+--===============7908504640319900048==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -125,37 +124,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/igt_psr: Allow testing without checking sink status (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139129/">https://patchwork.freedesktop.org/series/139129/</a></td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [CI,i-g-t,1/5] lib/igt_gt: Fix forcewake open (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139124/">https://patchwork.freedesktop.org/series/139124/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11838/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11838/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11839/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11839/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8043_BAT -&gt; XEIGTPW_11838_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_8043_BAT -&gt; XEIGTPW_11839_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (9 -&gt; 9)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11838_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_11839_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@kms_psr@psr-primary-page-flip@edp-1:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649">Intel XE#1649</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11838/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> +5 other tests pass</li>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649">Intel XE#1649</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11839/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> +5 other tests pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8043 -&gt; IGTPW_11838</li>
+<li>IGT: IGT_8043 -&gt; IGTPW_11839</li>
 <li>Linux: xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f -&gt; xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1</li>
 </ul>
-<p>IGTPW_11838: d4ce5a99a95c74462f4ef55d6614c353e638916b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_11839: 11839<br />
   IGT_8043: 8043<br />
   xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f: 8a36a5499f143dc694afe235c6a1773421d2bd4f<br />
   xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1: 4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1</p>
@@ -163,4 +162,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============7853377975360362865==--
+--===============7908504640319900048==--
