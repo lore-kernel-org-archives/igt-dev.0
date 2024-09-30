@@ -4,55 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7F22CE8349
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 14:13:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFA1ACE8347
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 14:13:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A22A010E4FB;
-	Mon, 30 Sep 2024 14:13:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9ABBA10E3F6;
+	Mon, 30 Sep 2024 14:13:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JJvS8NzJ";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iM2nogkt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42CF610E50D
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 14:13:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F33210E4FB
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 14:13:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727705606; x=1759241606;
+ t=1727705608; x=1759241608;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dixTM1S5fhT6cKyI6466gP/yznpn03P+ilLHMS1A2W0=;
- b=JJvS8NzJrnd1qE9b098aOZXnkKb3xbmcivwfddzWFary4AEyEXDKp4dy
- UrKu4w160Ku03ZhRmOx/9VFL/FTj2yHxUih3Izs5TKrH2jnfOvhw6lHhr
- 6pBJO7KIuZQUR9/AuOTSZdZqe2RGJQ14ap/F8Bex9YJByyGB39PyDP+cs
- htTtFwdji7xHS1wPztBAbLK6j3I8HlJ2fZU6hpcXC+TRAPYXEqvRyA/y0
- ylwWCH1/PDfZGrFcD27o0VbtaPsryfdrxleVJcwPMlqfuHl1M5Czh2kGw
- MnbEvKwYyB7IlDeuZGrx0MKuJF4eLpwZNEQHxe7edtDM5XnTmRh1RF0xJ w==;
-X-CSE-ConnectionGUID: p8IopeQTQHO1uMM0p3AqYA==
-X-CSE-MsgGUID: /LWwje76T/yMEOotbwOqpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="30591116"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="30591116"
+ bh=J+2d6377+zNO/5iACoj3nYtNduyOFEqAxoj71+p/12Q=;
+ b=iM2nogkthiw0c0oTt6HBLnhFvfaGNd6r7P9+O3vwCraywJRTjSqRXA5T
+ 1xKpkeYULrMLzN7g2/MTjEIHPj9LK/o/sh1Zvvh/pjWkh9YNfoivwDYGP
+ HgJpITcj/PaT+o47mMz+pKYSMeJ2gQt612ESaNP/y9uztlCXcB3c2VMbr
+ RxWMyvz478uTlUTCNCZEFRj333HLHl/4e5pquBAvsWNeJaa+8hHu8YQQJ
+ nHXNqQ5g9QLDQoGkkvTATL9XVh2ASgRXexIYicPq/v83e2e5Zmw0zAvra
+ 71dT+4Bj6/zkwP2VLzmxBVv1Mstaa5yotwsY98I+O2pAc6PhCjRH1kyG7 A==;
+X-CSE-ConnectionGUID: WaZQCUnORZa+gkcccbzm+Q==
+X-CSE-MsgGUID: J/EHEGh8QIWSxbBbxwsoRA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="30591121"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="30591121"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 07:13:26 -0700
-X-CSE-ConnectionGUID: MhhtgRXWTfOCsdnIW/B+rQ==
-X-CSE-MsgGUID: z5s44j7qRkOmvMnGy+tTcg==
+ 30 Sep 2024 07:13:28 -0700
+X-CSE-ConnectionGUID: QeRRJRMGQa+IymsPGpG/0A==
+X-CSE-MsgGUID: zwYef3stT9Ov2904Z4lLhQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="96645239"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="96645254"
 Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
  ([10.245.246.99])
  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 07:13:25 -0700
+ 30 Sep 2024 07:13:26 -0700
 From: Francois Dugast <francois.dugast@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Francois Dugast <francois.dugast@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t,v4 1/2] lib/igt_sysfs: Promote driver rebind function
-Date: Mon, 30 Sep 2024 16:08:23 +0200
-Message-ID: <20240930141248.810483-2-francois.dugast@intel.com>
+ Lucas De Marchi <lucas.demarchi@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Michal Wajdeczko <michal.wajdeczko@intel.com>
+Subject: [PATCH i-g-t,
+ v4 2/2] tests/intel/xe_fault_injection: Add new test for fault
+ injection
+Date: Mon, 30 Sep 2024 16:08:24 +0200
+Message-ID: <20240930141248.810483-3-francois.dugast@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240930141248.810483-1-francois.dugast@intel.com>
 References: <20240930141248.810483-1-francois.dugast@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,176 +75,239 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Move the rebind function to the library so that it can be used in other
-tests without code duplication. Also extend it to support simple bind
-and unbind.
+Use the kernel fault injection infrastructure to test error handling
+of xe at probe time.
+
+Add the following test:
+    * "function-fault-injection"
+
+v2: Fix mismatch between test name and documentation
+
+v3: Use promoted function for bind, rework structure
+
+v4: Use igt_dynamic_f to have one subtest per tested function instead
+    of a single test for all (Rodrigo Vivi)
 
 Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
 ---
- lib/igt_sysfs.c         | 54 +++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h         |  9 +++++++
- tests/intel/xe_wedged.c | 36 ++++-----------------------
- 3 files changed, 68 insertions(+), 31 deletions(-)
+ tests/intel/xe_fault_injection.c | 191 +++++++++++++++++++++++++++++++
+ tests/meson.build                |   1 +
+ 2 files changed, 192 insertions(+)
+ create mode 100644 tests/intel/xe_fault_injection.c
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index aec0bb53d..f8e634f8f 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -1360,3 +1360,57 @@ int xe_sysfs_get_num_tiles(int xe_device)
- 
- 	return num_tiles;
- }
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+new file mode 100644
+index 000000000..d1c8b2530
+--- /dev/null
++++ b/tests/intel/xe_fault_injection.c
+@@ -0,0 +1,191 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2024 Intel Corporation
++ */
 +
 +/**
-+ * xe_sysfs_driver_do:
-+ * @xe_device: fd of the device
-+ * @pci_slot: PCI slot of the device
-+ * @action: the action to perform through sysfs on the driver
-+ *
-+ * Use sysfs to perform an action on the driver.
-+ *
-+ * Returns: fd of the device, which renewed if needed
++ * TEST: Check fault injection
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: driver
++ * Test category: fault injection
 + */
-+int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_action action)
-+{
-+	int sysfs;
 +
-+	sysfs = open("/sys/bus/pci/drivers/xe", O_DIRECTORY);
-+	igt_assert(sysfs);
++#include <regex.h>
++
++#include "igt.h"
++#include "igt_device.h"
++#include "igt_kmod.h"
++#include "igt_sysfs.h"
++
++#define MAX_LINE_SIZE			1024
++#define PATH_FUNCTIONS_INJECTABLE	"/sys/kernel/debug/fail_function/injectable"
++#define PATH_FUNCTIONS_INJECT		"/sys/kernel/debug/fail_function/inject"
++#define PATH_FUNCTIONS_RETVAL		"/sys/kernel/debug/fail_function/%s/retval"
++#define REGEX_XE_FUNCTIONS		"^(.+)\\[xe\\]"
++#define INJECT_ERRNO			-ENOMEM
++
++enum injection_list_action {
++	INJECTION_LIST_ADD,
++	INJECTION_LIST_REMOVE,
++};
++
++/*
++ * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
++ */
++static bool function_error_injection_enabled(void)
++{
++	FILE *file = fopen(PATH_FUNCTIONS_INJECTABLE, "rw");
++
++	if (file) {
++		fclose(file);
++		return true;
++	}
++
++	return false;
++}
++
++static void injection_list_do(enum injection_list_action action, char function_name[])
++{
++	FILE *file_inject;
++
++	file_inject = fopen(PATH_FUNCTIONS_INJECT, "w");
++	igt_assert(file_inject);
 +
 +	switch(action) {
-+	case XE_SYSFS_DRIVER_BIND:
-+		igt_assert(igt_sysfs_set(sysfs, "bind", pci_slot));
-+		close(sysfs);
++	case INJECTION_LIST_ADD:
++		fprintf(file_inject, "%s", function_name);
 +		break;
-+	case XE_SYSFS_DRIVER_TRY_BIND:
-+		igt_sysfs_set(sysfs, "bind", pci_slot);
-+		close(sysfs);
-+		break;
-+	case XE_SYSFS_DRIVER_UNBIND:
-+		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
-+		close(sysfs);
-+		break;
-+	case XE_SYSFS_DRIVER_REBIND:
-+		igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
-+
-+		/*
-+		 * We need to close the client for a proper release, before
-+		 * binding back again.
-+		 */
-+		close(xe_device);
-+
-+		igt_assert(igt_sysfs_set(sysfs, "bind", pci_slot));
-+		close(sysfs);
-+
-+		/* Renew the client connection */
-+		xe_device = drm_open_driver(DRIVER_XE);
-+		igt_assert(xe_device);
-+
++	case INJECTION_LIST_REMOVE:
++		fprintf(file_inject, "!%s", function_name);
 +		break;
 +	default:
 +		igt_assert(!"missing");
 +	}
 +
-+	return xe_device;
++	fclose(file_inject);
 +}
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 2a1e3b1bf..0ee253826 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -175,4 +175,13 @@ int xe_sysfs_get_num_tiles(int xe_device);
- char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
- int xe_sysfs_engine_open(int xe_device, int gt, int class);
- 
-+enum xe_sysfs_driver_action {
-+	XE_SYSFS_DRIVER_BIND,
-+	XE_SYSFS_DRIVER_TRY_BIND,
-+	XE_SYSFS_DRIVER_UNBIND,
-+	XE_SYSFS_DRIVER_REBIND,
-+};
 +
-+int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_action action);
++/*
++ * See https://docs.kernel.org/fault-injection/fault-injection.html#application-examples
++ */
++static void setup_injection_fault(void)
++{
++	FILE *file;
 +
- #endif /* __IGT_SYSFS_H__ */
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index a3f7a697f..ba790aa8d 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -41,34 +41,6 @@ static void force_wedged(int fd)
- 	sleep(1);
- }
- 
--static int rebind_xe(int fd)
--{
--	char pci_slot[NAME_MAX];
--	int sysfs;
--
--	igt_device_get_pci_slot_name(fd, pci_slot);
--
--	sysfs = open("/sys/bus/pci/drivers/xe", O_DIRECTORY);
--	igt_assert(sysfs);
--
--        igt_assert(igt_sysfs_set(sysfs, "unbind", pci_slot));
--
--	/*
--	 * We need to close the client for a proper release, before
--	 * binding back again.
--	 */
--	close(fd);
--
--        igt_assert(igt_sysfs_set(sysfs, "bind", pci_slot));
--	close(sysfs);
--
--	/* Renew the client connection */
--	fd = drm_open_driver(DRIVER_XE);
--	igt_assert(fd);
--
--	return fd;
--}
--
- static int simple_ioctl(int fd)
- {
- 	int ret;
-@@ -231,9 +203,11 @@ igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	int fd;
-+	char pci_slot[NAME_MAX];
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
++	file = fopen("/sys/kernel/debug/fail_function/task-filter", "w");
++	igt_assert(file);
++	fprintf(file, "N");
++	fclose(file);
++
++	file = fopen("/sys/kernel/debug/fail_function/probability", "w");
++	igt_assert(file);
++	fprintf(file, "100");
++	fclose(file);
++
++	file = fopen("/sys/kernel/debug/fail_function/interval", "w");
++	igt_assert(file);
++	fprintf(file, "0");
++	fclose(file);
++
++	file = fopen("/sys/kernel/debug/fail_function/times", "w");
++	igt_assert(file);
++	fprintf(file, "-1");
++	fclose(file);
++
++	file = fopen("/sys/kernel/debug/fail_function/space", "w");
++	igt_assert(file);
++	fprintf(file, "0");
++	fclose(file);
++
++	file = fopen("/sys/kernel/debug/fail_function/verbose", "w");
++	igt_assert(file);
++	fprintf(file, "1");
++	fclose(file);
++}
++
++static void cleanup_injection_fault(void)
++{
++	FILE *file;
++
++	file = fopen(PATH_FUNCTIONS_INJECT, "w");
++	igt_assert(file);
++	fprintf(file, "\n");
++	fclose(file);
++}
++
++static void set_retval(char function_name[], long long retval)
++{
++	FILE *file_retval;
++	char file_path[MAX_LINE_SIZE];
++
++	sprintf(file_path, PATH_FUNCTIONS_RETVAL, function_name);
++
++	file_retval = fopen(file_path, "w");
++	igt_assert(file_retval);
++
++	fprintf(file_retval, "%#016llx", retval);
++	fclose(file_retval);
++}
++
++/**
++ * SUBTEST: inject-fault-probe
++ * Description: inject an error in the injectable function then reprobe driver
++ * Functionality: fault
++ */
++static void
++inject_fault_try_bind(int fd, char pci_slot[], char function_name[])
++{
++	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
++		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
++
++	injection_list_do(INJECTION_LIST_ADD, function_name);
++	set_retval(function_name, INJECT_ERRNO);
++	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
++	igt_assert_eq(-errno, INJECT_ERRNO);
++	injection_list_do(INJECTION_LIST_REMOVE, function_name);
++}
++
++igt_main
++{
++	int fd;
++	FILE *file_injectable;
++	char line[MAX_LINE_SIZE];
++	char function_name[64];
++	char pci_slot[MAX_LINE_SIZE];
++	regex_t regex;
++	regmatch_t pmatch[2];
++
++	igt_fixture {
++		igt_require(function_error_injection_enabled());
++		fd = drm_open_driver(DRIVER_XE);
 +		igt_device_get_pci_slot_name(fd, pci_slot);
- 	}
- 
- 	igt_subtest("basic-wedged") {
-@@ -245,7 +219,7 @@ igt_main
- 
- 		force_wedged(fd);
- 		igt_assert_neq(simple_ioctl(fd), 0);
--		fd = rebind_xe(fd);
-+		fd = xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_REBIND);
- 		igt_assert_eq(simple_ioctl(fd), 0);
- 		xe_for_each_engine(fd, hwe)
- 			simple_exec(fd, hwe);
-@@ -265,7 +239,7 @@ igt_main
- 		 */
- 		sleep(1);
- 		igt_assert_neq(simple_ioctl(fd), 0);
--		fd = rebind_xe(fd);
-+		fd = xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_REBIND);
- 		igt_assert_eq(simple_ioctl(fd), 0);
- 		xe_for_each_engine(fd, hwe)
- 			simple_exec(fd, hwe);
-@@ -289,7 +263,7 @@ igt_main
- 		}
- 
- 		/* Tests might have failed, force a rebind before exiting */
--		fd = rebind_xe(fd);
-+		fd = xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_REBIND);
- 
- 		drm_close_driver(fd);
- 	}
++		setup_injection_fault();
++		file_injectable = fopen(PATH_FUNCTIONS_INJECTABLE, "r");
++		igt_assert(file_injectable);
++		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
++		igt_assert_eq(regcomp(&regex, REGEX_XE_FUNCTIONS, REG_EXTENDED), 0);
++	}
++
++	/*
++	 * Iterate over each error injectable function of the xe module
++	 */
++	igt_subtest_with_dynamic("inject-fault-probe") {
++		while ((fgets(line, MAX_LINE_SIZE, file_injectable)) != NULL) {
++			if (regexec(&regex, line, 2, pmatch, 0) == 0) {
++				strcpy(function_name, line);
++				function_name[pmatch[1].rm_eo - 1] = '\0';
++				igt_dynamic_f("function-%s", function_name)
++					inject_fault_try_bind(fd, pci_slot, function_name);
++			}
++		}
++	}
++
++	igt_fixture {
++		regfree(&regex);
++		fclose(file_injectable);
++		cleanup_injection_fault();
++		drm_close_driver(fd);
++		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 62bde353b..3ca62ff9b 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -293,6 +293,7 @@ intel_xe_progs = [
+ 	'xe_exec_store',
+ 	'xe_exec_threads',
+ 	'xe_exercise_blt',
++	'xe_fault_injection',
+ 	'xe_gpgpu_fill',
+ 	'xe_gt_freq',
+ 	'xe_huc_copy',
 -- 
 2.43.0
 
