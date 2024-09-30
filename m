@@ -4,59 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 479C2CF649D
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 10:47:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD57FCF6497
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 10:51:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B666D10E2E0;
-	Mon, 30 Sep 2024 10:47:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A8CE10E3E6;
+	Mon, 30 Sep 2024 10:51:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G5Q8l62u";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YQqO9niV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 36C6B10E0B1;
- Mon, 30 Sep 2024 10:47:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5881010E2E3;
+ Mon, 30 Sep 2024 10:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727693270; x=1759229270;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=EywysO1eN+llUtmGag2KSla9shOaZj59Tn/dzpG1SH8=;
- b=G5Q8l62uiVq5bjjh0bnbp/UQbRWM/XASmrHiemsg17tmWECGzEfvXBjv
- OstvSVDR43Sexaiiv6W2G8e88wc+qqh8+ymcBj5Of5Bo6v5mvTx/3+XvG
- 5He4QLWMUAhTM63cWB8YXQ3HDPC/VKXUT8LXNZj1bRSLb9GaqIWnCuhr8
- 8be4hYhCuCpGiBrenJ0p++US8ZPxcO4Y1QbcPD6Ud6BllmrMg6ab6dbij
- q2cIOjuhp8PKsWiw6dEHd2iAQj3qt+DNbS3DkNkrqZ3SSQPb23Z9Xc5Ic
- m0ZGFvirPUvEv5jb6oD+b2Lwjp5PxXkR2etvrVqYjBJpA3fbpblSBbKSl Q==;
-X-CSE-ConnectionGUID: B4V7Ep5gRtefkYHprBDihw==
-X-CSE-MsgGUID: hNeGcEQ8R/StXeAJRytodA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26949139"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26949139"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 03:47:49 -0700
-X-CSE-ConnectionGUID: 9wn6+rnwTMuOvloAet/bMQ==
-X-CSE-MsgGUID: TiunbXGbROO8Vfn56ZNVPA==
+ t=1727693505; x=1759229505;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=kYmgH0wWN6ijXMc4/lOK0Yl/SA9GtSNP8tAB30gmWys=;
+ b=YQqO9niVWCHVVUKznuQl/xtxehimeNahVCNOReeCrzjCkKbyWdbbnjy4
+ y9b2pfNMqQHpxpNfr91j/JEXJLdkJ9PmrgRpF52fJPC/jy/LX2l/H0nAq
+ ey/UASHNQQ+2l/vdFd9Q4Wl4yLPhH/ZvkaxWEdzacur8KVLb+WPuVaKUY
+ W2T5zmfC+b0scDj+CBrxQ6aNXf/8Y+xhBD2gbK+nRJoZSo0g80pxvrmCH
+ uF6mAW01Mth6NpvNWg0jspo4e+rQK4x5sWqd3xFSaK5llyQJWyhXS8wfX
+ 3b3OimPltJ0S2uP9OwVR3OtBLGtS2vhxymb9P8I1iVqK+QV19mAUpbKSL g==;
+X-CSE-ConnectionGUID: SMOIMGd9T+O/xu7NLd+YJA==
+X-CSE-MsgGUID: 9ZftYydTQe6yiw0fnRS40Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26283190"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26283190"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 03:51:45 -0700
+X-CSE-ConnectionGUID: YDzbyiWcRg+4CnIlr2iDSQ==
+X-CSE-MsgGUID: cQJ3w3X/TsKm8y+sIY38jQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="73227626"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="110744350"
 Received: from morganmc-mobl.ger.corp.intel.com (HELO [10.213.199.177])
  ([10.213.199.177])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 03:47:48 -0700
-Message-ID: <918f0645-c079-49e0-b17a-96dec3a35793@linux.intel.com>
-Date: Mon, 30 Sep 2024 12:47:45 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 03:51:45 -0700
+Message-ID: <cccd11e9-fe1e-4cb6-bbf7-82c4bb2b1d42@linux.intel.com>
+Date: Mon, 30 Sep 2024 12:51:41 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests: drm_fdinfo: Fix zero tolerance checks
-To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>
-References: <20240916090329.5279-1-janusz.krzysztofik@linux.intel.com>
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel/?=
+ =?UTF-8?Q?xe=5Fpm=3A_one_suspend/resume_cycle_for_all_xe_engines_=28rev4=29?=
+To: I915-ci-infra@lists.freedesktop.org,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <5cdb17b6-7045-40c7-89b1-b55b6eff6623@linux.intel.com>
+ <172751200335.1131165.9379578556745596604@2413ebb6fbb6>
 Content-Language: en-US
 From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <20240916090329.5279-1-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <172751200335.1131165.9379578556745596604@2413ebb6fbb6>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -74,147 +72,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Dear I915
 
+On 28.09.2024 10:26, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_pm: one suspend/resume cycle for all xe engines (rev4)
+> URL   : https://patchwork.freedesktop.org/series/139093/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_15454 -> IGTPW_11832
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11832 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11832, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11832/index.html
+> 
+> Participating hosts (37 -> 35)
+> ------------------------------
+> 
+>   Missing    (2): bat-dg2-13 fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11832:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live:
+>     - fi-hsw-4770:        [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15454/fi-hsw-4770/igt@i915_selftest@live.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11832/fi-hsw-4770/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@sanitycheck:
+>     - bat-dg2-9:          [PASS][3] -> [ABORT][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15454/bat-dg2-9/igt@i915_selftest@live@sanitycheck.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11832/bat-dg2-9/igt@i915_selftest@live@sanitycheck.html
+> 
 
-On 16.09.2024 11:03, Janusz Krzysztofik wrote:
-> When we expect an engine to be busy, we check if its reported busy time
-> falls within a +/-5% tolerance range of measurement time period.
-> However, when we expect the engine to be idle, we compare its reported
-> busy time against zero, still with a +/-5% tolerance range, but now
-> calculated against the zero value, then no tolerance at all.  Obviously,
-> such check fails when the reported busy time is not exactly zero.
-> 
-> Compare engine idle time against measurement time period instead of
-> comparing its busy time against zero when we expect the busy time to be
-> close to zero.  As a debugging aid, display messages with the compared
-> values when requested via --debug option or when a failure occurs.
-> 
+These are unrelated to my change. Please update the filters.
 
-Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7742
-> Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> ---
->  tests/intel/drm_fdinfo.c | 51 ++++++++++++++++++++--------------------
->  1 file changed, 25 insertions(+), 26 deletions(-)
-> 
-> diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
-> index 43216a64e..45d17aaaa 100644
-> --- a/tests/intel/drm_fdinfo.c
-> +++ b/tests/intel/drm_fdinfo.c
-> @@ -107,12 +107,18 @@ static const char *engine_map[] = {
->  };
->  
->  #define __assert_within_epsilon(x, ref, tol_up, tol_down) \
-> -	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
-> -		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
-> -		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
-> -		     #x, #ref, (double)(x), \
-> -		     (tol_up) * 100.0, (tol_down) * 100.0, \
-> -		     (double)(ref))
-> +	do { \
-> +		igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
-> +			     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
-> +			     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
-> +			     #x, #ref, (double)(x), \
-> +			     (tol_up) * 100.0, (tol_down) * 100.0, \
-> +			     (double)(ref)); \
-> +		igt_debug("%f within +%.1f%%/-%.1f%% tolerance of %f\n",\
-> +			  (double)(x), \
-> +			  (tol_up) * 100.0, (tol_down) * 100.0, \
-> +			  (double)(ref)); \
-> +	} while (0)
->  
->  #define assert_within_epsilon(x, ref, tolerance) \
->  	__assert_within_epsilon(x, ref, tolerance, tolerance)
-> @@ -241,10 +247,8 @@ single(int gem_fd, const intel_ctx_t *ctx,
->  	else
->  		end_spin(spin_fd, spin, FLAG_SYNC);
->  
-> -	assert_within_epsilon(val,
-> -			      (flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ?
-> -			      slept : 0.0f,
-> -			      tolerance);
-> +	assert_within_epsilon((flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ? val : slept - val,
-> +			      slept, tolerance);
->  
->  	/* Check for idle after hang. */
->  	if (flags & FLAG_HANG) {
-> @@ -255,7 +259,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
->  		slept = measured_usleep(batch_duration_ns / 1000);
->  		val = read_engine_time(gem_fd, e->class) - val;
->  
-> -		assert_within_epsilon(val, 0, tolerance);
-> +		assert_within_epsilon(slept - val, slept, tolerance);
->  	}
->  
->  	igt_spin_free(spin_fd, spin);
-> @@ -328,11 +332,8 @@ busy_check_all(int gem_fd, const intel_ctx_t *ctx,
->  
->  	log_busy(num_classes, val);
->  
-> -	for (i = 0; i < num_classes; i++) {
-> -		double target = i == e->class ? slept : 0.0f;
-> -
-> -		assert_within_epsilon(val[i], target, tolerance);
-> -	}
-> +	for (i = 0; i < num_classes; i++)
-> +		assert_within_epsilon(i == e->class ? val[i] : slept - val[i], slept, tolerance);
->  
->  	gem_quiescent_gpu(gem_fd);
->  }
-> @@ -405,9 +406,9 @@ most_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
->  	log_busy(num_classes, val);
->  
->  	for (i = 0; i < num_classes; i++) {
-> -		double target = slept * busy_class[i];
-> +		double target = slept * busy_class[i] ?: slept;
->  
-> -		assert_within_epsilon(val[i], target, tolerance);
-> +		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
->  	}
->  	gem_quiescent_gpu(gem_fd);
->  }
-> @@ -460,9 +461,9 @@ all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
->  	log_busy(num_classes, val);
->  
->  	for (i = 0; i < num_classes; i++) {
-> -		double target = slept * busy_class[i];
-> +		double target = slept * busy_class[i] ?: slept;
->  
-> -		assert_within_epsilon(val[i], target, tolerance);
-> +		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
->  	}
->  	gem_quiescent_gpu(gem_fd);
->  }
-> @@ -601,10 +602,8 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
->  			else
->  				end_spin(i915, spin, FLAG_SYNC);
->  
-> -			assert_within_epsilon(val,
-> -					      flags & TEST_BUSY ?
-> -					      slept : 0.0f,
-> -					      tolerance);
-> +			assert_within_epsilon(flags & TEST_BUSY ? val : slept - val,
-> +					      slept, tolerance);
->  
->  			/* Check for idle after hang. */
->  			if (flags & FLAG_HANG) {
-> @@ -616,7 +615,7 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
->  							1000);
->  				val = read_engine_time(i915, class) - val;
->  
-> -				assert_within_epsilon(val, 0, tolerance);
-> +				assert_within_epsilon(slept - val, slept, tolerance);
->  			}
->  
->  			igt_spin_free(i915, spin);
-> @@ -724,7 +723,7 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
->  						1000);
->  			val = read_engine_time(i915, class) - val;
->  
-> -			assert_within_epsilon(val, 0, tolerance);
-> +			assert_within_epsilon(slept - val, slept, tolerance);
->  		}
->  
->  		igt_spin_free(i915, spin);
+[...]
