@@ -4,51 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84E78CE835E
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 15:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59EF2CE8364
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 16:18:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4702C10E53C;
-	Mon, 30 Sep 2024 15:39:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C829D10E263;
+	Mon, 30 Sep 2024 16:18:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Q9lJ6P9P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QEth3pYt";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A226210E53C
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 15:39:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D219910E263
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 16:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727710741; x=1759246741;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=SNJ2LMBvGBbevzL9NOaqnDHdwjpVg+fqFqJCrOVHZEA=;
- b=Q9lJ6P9P5Oeq1m/06FRSKi6YxJBY/klh9R7ioaJJMZrIbrFluTp0nsw3
- gxm8IlyXjcldYjBWRr5X+RGKvHxHmWtiYr1ECC/HJXaQ5wlUqsaA7Nczl
- EZ6yu4TwrILfbqomUmYJiMPOdcI49JuuqPZMeQgfsm9pZeJa1U3GUr6nU
- A2RCui4xNgSrtvG2QCUXhxlU9bThlBhOU+SxrXmE6dWCQ8hVe15X288Yk
- wxvqH2LWx728Zh6aK1kdBWAK/9hrrP/F3d0/q4yePzr1znJQIlO/TW3db
- 5tIQFZ2k5ovjHW7IxCnl7FuZkTHcCFQF8DNFSi7vUOJ6GRdyhBlTYrSMb Q==;
-X-CSE-ConnectionGUID: W21UWNpUSfmu44FcE+AKsQ==
-X-CSE-MsgGUID: YSzT3BvpT7m3O7/kuVqgxg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="52224366"
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="52224366"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 08:39:01 -0700
-X-CSE-ConnectionGUID: 4PXT6YqKTBSwXmW3vABo4Q==
-X-CSE-MsgGUID: aXghl/dgSTS3lhfw2D0R+A==
+ t=1727713080; x=1759249080;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=LPJeWeHlaK0hyFYcVuP662R+P2HplJFKdnJNhLNOQNM=;
+ b=QEth3pYtsaHJXpyfkOWhFEfC20AxrAv0sFy3iU7Ylp9gduMVrFAbvc3M
+ DOj5kIrzryFu72H+mhE5alPJOYoq30aVu9RdEuAMa2C188YJS+K/o/SoZ
+ xfQH6E+1J6SEm/gf1GBm42xfptRgDjDo3h7a0paCLNABXUqmMwP9/fEvQ
+ UqD/wslQxIPMsUxYte6zb56ySkWI1lenSwjrmy1G+s7fkMHlET1qi5HsL
+ vKc2FoJPzdlBVy+vaAQ5v+SWvwyw1S33uxZsv63nthmxMeSsxMf8klWf/
+ QBAdBF1b5E7YZyHWxT5n/rH61f8WuRrCbLMuuCZzzsO7rf2fji1kYhmSf Q==;
+X-CSE-ConnectionGUID: GW7FbKDDT161TJFALSGVKA==
+X-CSE-MsgGUID: gx3azfq9ROW0jFTj0DQqqQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="44272302"
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="44272302"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 09:17:59 -0700
+X-CSE-ConnectionGUID: 3+c7sGl+TF+uOzI8qGhRCw==
+X-CSE-MsgGUID: CD7iDeHITnOadZkg8/5kzQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="104145513"
-Received: from priyanka.iind.intel.com ([10.145.169.174])
- by fmviesa001.fm.intel.com with ESMTP; 30 Sep 2024 08:39:00 -0700
-From: priyanka.dandamudi@intel.com
-To: janga.rahul.kumar@intel.com, igt-dev@lists.freedesktop.org,
- apoorva.singh@intel.com, priyanka.dandamudi@intel.com
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_access_counter: Access counter tests
-Date: Mon, 30 Sep 2024 21:07:50 +0530
-Message-Id: <20240930153750.1141461-3-priyanka.dandamudi@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240930153750.1141461-1-priyanka.dandamudi@intel.com>
-References: <20240930153750.1141461-1-priyanka.dandamudi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="73230298"
+Received: from rahul-super-server.iind.intel.com ([10.145.169.156])
+ by orviesa010.jf.intel.com with ESMTP; 30 Sep 2024 09:17:57 -0700
+From: sai.gowtham.ch@intel.com
+To: igt-dev@lists.freedesktop.org, nirmoy.das@intel.com,
+ sai.gowtham.ch@intel.com
+Subject: [PATCH i-g-t v3] tests/intel/xe_tlb: Add test to check TLB
+ invalidation
+Date: Mon, 30 Sep 2024 21:56:09 +0530
+Message-Id: <20240930162609.2089507-1-sai.gowtham.ch@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
@@ -67,253 +66,237 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 
-Added 2 tests to check basic functionality of access counter.
+Test validates TLB invalidation by binding different buffer objects
+with the same vma and submitting workload simultaneously, Ideally
+expecting gpu to handle pages by invalidating and avoding page faults.
 
-1.access-trigger: Set a trigger value. Store object in smem and try to store a value through gpu
-until the triggered value number of times and check if it gets migrated using trace.
-2.access-trigger-negative: It is similar to above test but try to store value through gpu less than
-triggered value and check that it is not migrated.
+v2: Validating tlb_invalidation counts with pre and post increment counter
+    values, rather complete stats.
 
-Note: It works once access counter related code is enabled.
+v3: Move xe_tlb_count to lib making it generic to all stat entries. which returns
+    the counter of a given stat.
 
-Cc: Brian Welty <brian.welty@intel.com>
-Cc: Oak Zeng <oak.zeng@intel.com>
-Signed-off-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Cc: Nirmoy Das <nirmoy.das@intel.com>
+Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
 ---
- tests/intel/xe_access_counter.c | 209 ++++++++++++++++++++++++++++++++
- tests/meson.build               |   1 +
- 2 files changed, 210 insertions(+)
- create mode 100644 tests/intel/xe_access_counter.c
+ lib/xe/xe_gt.c       |  25 ++++++++
+ lib/xe/xe_gt.h       |   1 +
+ tests/intel/xe_tlb.c | 148 +++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build    |   1 +
+ 4 files changed, 175 insertions(+)
+ create mode 100644 tests/intel/xe_tlb.c
 
-diff --git a/tests/intel/xe_access_counter.c b/tests/intel/xe_access_counter.c
-new file mode 100644
-index 000000000..8e80074ca
---- /dev/null
-+++ b/tests/intel/xe_access_counter.c
-@@ -0,0 +1,209 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2023 Intel Corporation
-+ */
-+
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+index 36e8fde36..dfc60e2ff 100644
+--- a/lib/xe/xe_gt.c
++++ b/lib/xe/xe_gt.c
+@@ -141,3 +141,28 @@ void xe_post_hang_ring(int fd, igt_hang_t arg)
+ 	xe_vm_destroy(fd, arg.spin->vm);
+ }
+ 
 +/**
-+ * TEST: Basic tests for access counter functionality
-+ * Category: Software building block
-+ * Run type: FULL
-+ * Sub-category: access counter
-+ * Functionality: access counter
-+ * Test category: functionality test
-+ * SUBTEST: invalid-param
-+ * Description: Giving invalid granularity size parameter and checks for invalid error.
-+ * SUBTEST: access-trigger
-+ * Description: Tests basic functionality of access counter.
-+ * SUBTEST: access-trigger-negative
-+ * Description: Tests if it gets migrated when number of stores is less than set triggered value.
++ * xe_tlb_count:
++ * @fd: open xe drm file descriptor
++ * @gt: gt_id
++ *
++ * This function returns the counter for a given stat.
 + */
++int xe_tlb_count(int fd, int gt, const char *stat)
++{
++	FILE *f;
++	char tlb_path[4096];
++	char path[256];
++	int count;
 +
++	sprintf(path, "/sys/kernel/debug/dri/0/gt%d/stats", gt);
++	f = fopen(path, "r");
++
++	while (fgets(tlb_path, sizeof(tlb_path), f)) {
++		if (strstr(tlb_path, stat) != NULL) {
++			sscanf(tlb_path, "%*[^:]: %d", &count);
++			break;
++		}
++	}
++	return count;
++}
+diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+index 6fa05d6a9..7910587ac 100644
+--- a/lib/xe/xe_gt.h
++++ b/lib/xe/xe_gt.h
+@@ -13,3 +13,4 @@ void xe_force_gt_reset_all(int fd);
+ igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
+ 				unsigned int flags);
+ void xe_post_hang_ring(int fd, igt_hang_t arg);
++int xe_tlb_count(int fd, int gt, const char *stat);
+diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+new file mode 100644
+index 000000000..399384f5b
+--- /dev/null
++++ b/tests/intel/xe_tlb.c
+@@ -0,0 +1,148 @@
++/* SPDX-License-Identifier: MIT */
++/*
++* Copyright © 2024 Intel Corporation
++*
++* Authors:
++*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
++*/
 +#include "igt.h"
 +#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+#include "xe_drm.h"
-+
-+#include "xe/xe_trace.h"
++#include "xe/xe_gt.c"
 +#include "xe/xe_ioctl.h"
 +#include "xe/xe_query.h"
-+#include <string.h>
++#include "xe_drm.h"
++#include "igt_debugfs.h"
 +
-+#define SIZE_64M  3
-+#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
-+#define BATCH_SIZE 1500
-+#define TRIGGER 5
++/**
++ * TEST: Check Translation Lookaside Buffer Invalidation.
++ * Category: Software building block
++ * Mega feature: General Core features
++ * Sub-category: CMD submission
++ * Functionality: TLB invalidate
++ * Test category: functionality test
++ */
++struct data {
++	uint32_t batch[16];
++	uint32_t data;
++	uint64_t addr;
++};
 +
-+static void
-+test_exec(int fd, int trigger, int num_stores, struct drm_xe_engine_class_instance *eci)
++static void store_dword_batch(struct data *data, uint64_t addr, int value)
 +{
-+	uint64_t addr = 0x1a0000;
-+	struct drm_xe_sync sync[1] = {
-+		{ .type = DRM_XE_SYNC_TYPE_USER_FENCE, .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		  .timeline_value = USER_FENCE_VALUE },
++	int b;
++	uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
++	uint64_t batch_addr = addr + batch_offset;
++	uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
++	uint64_t sdi_addr = addr + sdi_offset;
++
++	b = 0;
++	data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++	data->batch[b++] = sdi_addr;
++	data->batch[b++] = sdi_addr >> 32;
++	data->batch[b++] = value;
++	data->batch[b++] = MI_BATCH_BUFFER_END;
++	igt_assert(b <= ARRAY_SIZE(data->batch));
++
++	data->addr = batch_addr;
++}
++
++/**
++ * SUBTEST: basic-tlb
++ * Description: Check Translation Lookaside Buffer Invalidation.
++ */
++static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
++{
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, }
 +	};
 +	struct drm_xe_exec exec = {
 +		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(sync),
++		.num_syncs = 2,
++		.syncs = to_user_pointer(&sync),
 +	};
-+	struct {
-+		uint32_t batch[BATCH_SIZE];
-+		uint64_t vm_sync;
-+		uint64_t exec_sync;
-+		uint32_t data;
-+	} *data;
-+	struct drm_xe_ext_set_property ext = {
-+		.base.next_extension = 0,
-+		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_TRIGGER,
-+		.value = trigger,
-+	};
-+	uint64_t batch_offset = (char *)&data[0].batch - (char *)data;
-+	uint64_t batch_addr = addr + batch_offset;
-+	uint64_t sdi_offset = (char *)&data[0].data - (char *)data;
-+	uint64_t sdi_addr = addr + sdi_offset;
++	struct data *data1;
++	struct data *data2;
 +	uint32_t vm;
 +	uint32_t exec_queue;
++	uint32_t bind_engine;
++	uint32_t syncobj;
 +	size_t bo_size;
-+	uint32_t bo = 0;
-+	int b = 0;
++	int value1 = 0x123456;
++	int value2 = 0x123465;
++	uint64_t addr = 0x100000;
++	uint32_t bo1, bo2;
++	int tlb_pre, tlb_pos;
++	const char *stat = "tlb_inval_count";
 +
-+	xe_start_tracing();
++	syncobj = syncobj_create(fd, 0);
++	sync[0].handle = syncobj_create(fd, 0);
++	sync[1].handle = syncobj;
 +
-+	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
-+			  DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++	vm = xe_vm_create(fd, 0, 0);
++	bo_size = sizeof(*data1);
++	bo_size = xe_bb_size(fd, bo_size);
++	bo1 = xe_bo_create(fd, vm, bo_size,
++				   vram_if_possible(fd, eci->gt_id),
++				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	bo2 = xe_bo_create(fd, vm, bo_size,
++				   vram_if_possible(fd, eci->gt_id),
++				   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
 +
-+	bo_size = sizeof(*data);
-+	bo_size = ALIGN(bo_size + xe_cs_prefetch_size(fd),
-+			xe_get_default_alignment(fd));
++	tlb_pre = xe_tlb_count(fd, eci->gt_id, stat);
++	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
++	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
++	xe_vm_bind_async(fd, vm, bind_engine, bo1, 0, addr, bo_size, sync, 1);
++	data1 = xe_bo_map(fd, bo1, bo_size);
 +
-+	bo = xe_bo_create(fd, 0, bo_size,
-+			  system_memory(fd) | all_memory_regions(fd),
-+			  DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING);
-+	data = xe_bo_map(fd, bo, bo_size);
-+	memset(data, 0, bo_size);
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, to_user_pointer(&ext));
-+	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-+	xe_vm_bind_async(fd, vm, 0, bo, 0,
-+			 addr, bo_size, sync, 1);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-+	data[0].vm_sync = 0;
-+	xe_vm_prefetch_async(fd, vm, 0, 0, addr,
-+			     bo_size, sync, 1, 0);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0,
-+		       NSEC_PER_SEC);
-+	data[0].vm_sync = 0;
-+
-+	for (int store = 0; store < num_stores * 50; store++) {
-+		data[0].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
-+		data[0].batch[b++] = sdi_addr;
-+		data[0].batch[b++] = sdi_addr >> 32;
-+		data[0].batch[b++] = store;
-+	}
-+	data[0].batch[b++] = MI_BATCH_BUFFER_END;
-+	igt_assert(b <= ARRAY_SIZE(data[0].batch));
-+	sync[0].addr = addr + (char *)&data[0].exec_sync - (char *)data;
++	store_dword_batch(data1, addr, value1);
 +	exec.exec_queue_id = exec_queue;
-+	exec.address = batch_addr;
++	exec.address = data1->addr;
++	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
 +	xe_exec(fd, &exec);
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	xe_vm_bind_async(fd, vm, bind_engine, bo2, 0, addr, bo_size, sync, 1);
++	data2 = xe_bo_map(fd, bo2, bo_size);
 +
-+	/* There is race condition in that xe_vm_unbind_async() might be called
-+	 * below before KMD has even processed the hardware interrupt for access
-+	 * counter trigger.
-+	 */
-+	sleep(2);
-+	xe_wait_ufence(fd, &data[0].exec_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
++	store_dword_batch(data2, addr, value2);
++	exec.exec_queue_id = exec_queue;
++	exec.address = data2->addr;
++	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
++	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
++	xe_exec(fd, &exec);
++	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
 +
-+	sync[0].addr = to_user_pointer(&data[0].vm_sync);
-+	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size,
-+			   sync, 1);
-+	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-+	igt_assert(data[0].data == num_stores * 50 - 1);
++	tlb_pos = xe_tlb_count(fd, eci->gt_id, stat);
++	igt_assert_eq(data1->data, value1);
++	igt_assert_eq(data2->data, value2);
++	igt_assert(tlb_pos > tlb_pre);
 +
-+	if (trigger == num_stores)
-+		xe_validate_acc_trace(fd, 1);
-+	else
-+		xe_validate_acc_trace(fd, 0);
-+	xe_stop_tracing();
-+
++	syncobj_destroy(fd, sync[0].handle);
++	syncobj_destroy(fd, syncobj);
++	munmap(data1, bo_size);
++	munmap(data2, bo_size);
++	gem_close(fd, bo1);
++	gem_close(fd, bo2);
 +	xe_exec_queue_destroy(fd, exec_queue);
-+	munmap(data, bo_size);
-+	gem_close(fd, bo);
 +	xe_vm_destroy(fd, vm);
 +}
 +
 +igt_main
 +{
-+	struct drm_xe_engine_class_instance *hwe;
-+
 +	int fd;
++	struct drm_xe_engine *engine;
 +
 +	igt_fixture {
-+		struct timespec tv = {};
-+		bool supports_faults;
-+		int ret = 0;
-+		int timeout = igt_run_in_simulation() ? 20 : 2;
-+
 +		fd = drm_open_driver(DRIVER_XE);
-+		do {
-+			if (ret)
-+				usleep(5000);
-+			ret = xe_supports_faults(fd);
-+		} while (ret == -EBUSY && igt_seconds_elapsed(&tv) < timeout);
-+
-+		supports_faults = !ret;
-+		igt_require(supports_faults);
-+	}
-+	/* Pass trigger value same as number of stores */
-+	igt_subtest("access-trigger") {
-+		xe_for_each_engine(fd, hwe)
-+			test_exec(fd, TRIGGER, TRIGGER, hwe);
-+	}
-+	/* Pass trigger value much greater than number of stores */
-+	igt_subtest("access-trigger-negative") {
-+		xe_for_each_engine(fd, hwe)
-+			test_exec(fd, TRIGGER + 400, TRIGGER, hwe);
 +	}
 +
-+	igt_subtest("invalid-param") {
-+		struct drm_xe_engine_class_instance instance = {
-+			 .engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
-+		 };
-+
-+		int ret;
-+		const int expected = -EINVAL;
-+
-+		struct drm_xe_ext_set_property ext = {
-+			.base.next_extension = 0,
-+			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
-+			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_ACC_GRANULARITY,
-+			.value = SIZE_64M + 1,
-+		};
-+
-+		struct drm_xe_exec_queue_create create = {
-+			.extensions = to_user_pointer(&ext),
-+			.vm_id = xe_vm_create(fd, 0, 0),
-+			.width = 1,
-+			.num_placements = 1,
-+			.instances = to_user_pointer(&instance),
-+		};
-+
-+		if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create)) {
-+			ret = -errno;
-+			errno = 0;
-+		}
-+
-+		igt_assert_eq(ret, expected);
-+		ext.value = -1;
-+
-+		if (igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_CREATE, &create)) {
-+			ret = -errno;
-+			errno = 0;
-+		}
-+
-+		igt_assert_eq(ret, expected);
++	igt_subtest("basic-tlb") {
++		engine = xe_engine(fd, 0);
++		tlb_invalidation(fd, &engine->instance);
 +	}
 +
-+	igt_fixture
++	igt_fixture {
 +		drm_close_driver(fd);
++	}
 +}
 diff --git a/tests/meson.build b/tests/meson.build
-index e5d8852f3..4e3e11e5a 100644
+index 0782d3cc7..b0a490ccb 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
-@@ -271,6 +271,7 @@ intel_kms_progs = [
+@@ -317,6 +317,7 @@ intel_xe_progs = [
+ 	'xe_sysfs_preempt_timeout',
+ 	'xe_sysfs_scheduler',
+         'xe_sysfs_timeslice_duration',
++        'xe_tlb',
+ ]
  
- intel_xe_progs = [
- 	'xe_wedged',
-+        'xe_access_counter',
- 	'xe_ccs',
- 	'xe_create',
- 	'xe_compute',
+ intel_xe_eudebug_progs = [
 -- 
-2.34.1
+2.25.1
 
