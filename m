@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFBE4CF6499
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 11:19:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18FD5CF649D
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 11:30:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A83E210E3E7;
-	Mon, 30 Sep 2024 11:19:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AF9AC10E3F3;
+	Mon, 30 Sep 2024 11:30:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C8eSC5SH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jnvv/1NX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF3C110E311;
- Mon, 30 Sep 2024 11:19:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DEEE10E3F0;
+ Mon, 30 Sep 2024 11:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727695186; x=1759231186;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=siTFo0icVOvUbAEGgRcR9U0VjBpsY4sjyTh/d2tOBgg=;
- b=C8eSC5SHkyhHVYUj+9N18B4xWpvkl5d8IDWdyM0tuqqGaJmiBH73nd4o
- YOq+e9Bs/1A5zLmMz/MlDBv/gO0R3gwUSflze8Xmg1hnpmaTEYs80KsDL
- 5qwHleUK7Z4giG+xKXh9q9nV1ZDxMXtl/Atab5hYRJXlRXU7S6w3jRGkw
- g9GZV53QbeiEoyDmIGDgck+hck9ugCnUM8AQFFw30t44nzTWEJW6hzBwC
- 1OMRzKo2gRlihSxQcIfOGbQ2LVLXFAY6N+f6SxYJEkHEeY/ew0J61zsHy
- t4BFi0Pm1RAXA6AxIjsgudOKweyJ98mwAdEDR2PZDXnNvIZSrzjmUahlp w==;
-X-CSE-ConnectionGUID: j4VT/3NiT6aNINc+mXB0aA==
-X-CSE-MsgGUID: aYDwvLJeT7akoaV+ZHzbcQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="26901045"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="26901045"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 04:19:43 -0700
-X-CSE-ConnectionGUID: oWx9KJ6mQKStWxRwUCuSfw==
-X-CSE-MsgGUID: QD/XtnNHQ/+o1wrN7K1toQ==
+ t=1727695854; x=1759231854;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=9v+I7FLTE6iOLaDy9MMpz5M028234OIWxjk845zaj0w=;
+ b=jnvv/1NXKa088Jq2Hy+8xouQevi/aBu6f4vP1dAwwYF6CfS8EJfILKdG
+ jQjXsDJ63opSZbnGIsMJ9nQMehLTWofcmpzPQAzaOzpkL1EkMHOsXVWUC
+ oRhOxVRVnR7VHZroPWTPfMZq+P0lCdZbCAKWxMdZ8bYruX8xlKPX3V6OJ
+ 7BfjfLDFm7EbhyMStDAstqq98pVT0tJsZ4AGg9SdZP1xmAkU6QRr7Na/1
+ O1lcvYth6bnpb9hd1SOYbDsZcCHSEWdyknXQ2xn8seZZp7ZCh0vQGOABc
+ d3OG4DRrSR2SoQZXHz8oIXV4UJ9VeIfqYSCiy52twzIFMEwyA09YoJrN5 g==;
+X-CSE-ConnectionGUID: N07wvWPvRHeH9Ih6Uh9SRw==
+X-CSE-MsgGUID: UdEmlaKGRueIkhqsfHKJSg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="30575055"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="30575055"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 04:30:53 -0700
+X-CSE-ConnectionGUID: n9qpde4EQ/64D5WmCChKeg==
+X-CSE-MsgGUID: 14i014/yTeGAOeLXcZUXRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="73540754"
-Received: from morganmc-mobl.ger.corp.intel.com (HELO [10.213.199.177])
- ([10.213.199.177])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 04:19:43 -0700
-Message-ID: <517f0ee1-b775-4732-9dc0-28fbe7b3a3a6@linux.intel.com>
-Date: Mon, 30 Sep 2024 13:19:39 +0200
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="74069081"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.102])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 04:30:52 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>
+Cc: intel-gfx@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Chris Wilson <chris.p.wilson@linux.intel.com>
+Subject: Re: [PATCH] tests: drm_fdinfo: Fix zero tolerance checks
+Date: Mon, 30 Sep 2024 13:30:48 +0200
+Message-ID: <5818814.DvuYhMxLoT@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <918f0645-c079-49e0-b17a-96dec3a35793@linux.intel.com>
+References: <20240916090329.5279-1-janusz.krzysztofik@linux.intel.com>
+ <918f0645-c079-49e0-b17a-96dec3a35793@linux.intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_tests/intel/?=
- =?UTF-8?Q?xe=5Fpm=3A_one_suspend/resume_cycle_for_all_xe_engines_=28rev3=29?=
-To: I915-ci-infra@lists.freedesktop.org,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <5cdb17b6-7045-40c7-89b1-b55b6eff6623@linux.intel.com>
- <172754874629.1131615.945394936379825301@2413ebb6fbb6>
-Content-Language: en-US
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-In-Reply-To: <172754874629.1131615.945394936379825301@2413ebb6fbb6>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,131 +74,160 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Dear I915,
+Hi Peter,
+
+On Monday, 30 September 2024 12:47:45 GMT+2 Peter Senna Tschudin wrote:
+> 
+> On 16.09.2024 11:03, Janusz Krzysztofik wrote:
+> > When we expect an engine to be busy, we check if its reported busy time
+> > falls within a +/-5% tolerance range of measurement time period.
+> > However, when we expect the engine to be idle, we compare its reported
+> > busy time against zero, still with a +/-5% tolerance range, but now
+> > calculated against the zero value, then no tolerance at all.  Obviously,
+> > such check fails when the reported busy time is not exactly zero.
+> > 
+> > Compare engine idle time against measurement time period instead of
+> > comparing its busy time against zero when we expect the busy time to be
+> > close to zero.  As a debugging aid, display messages with the compared
+> > values when requested via --debug option or when a failure occurs.
+> > 
+> 
+> Reviewed-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+
+Thank you, pushed.
+
+Janusz
 
 
-On 28.09.2024 20:39, Patchwork wrote:
-> == Series Details ==
+> > Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7742
+> > Suggested-by: Chris Wilson <chris.p.wilson@linux.intel.com>
+> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > ---
+> >  tests/intel/drm_fdinfo.c | 51 ++++++++++++++++++++--------------------
+> >  1 file changed, 25 insertions(+), 26 deletions(-)
+> > 
+> > diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/drm_fdinfo.c
+> > index 43216a64e..45d17aaaa 100644
+> > --- a/tests/intel/drm_fdinfo.c
+> > +++ b/tests/intel/drm_fdinfo.c
+> > @@ -107,12 +107,18 @@ static const char *engine_map[] = {
+> >  };
+> >  
+> >  #define __assert_within_epsilon(x, ref, tol_up, tol_down) \
+> > -	igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+> > -		     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+> > -		     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
+> > -		     #x, #ref, (double)(x), \
+> > -		     (tol_up) * 100.0, (tol_down) * 100.0, \
+> > -		     (double)(ref))
+> > +	do { \
+> > +		igt_assert_f((double)(x) <= (1.0 + (tol_up)) * (double)(ref) && \
+> > +			     (double)(x) >= (1.0 - (tol_down)) * (double)(ref), \
+> > +			     "'%s' != '%s' (%f not within +%.1f%%/-%.1f%% tolerance of %f)\n",\
+> > +			     #x, #ref, (double)(x), \
+> > +			     (tol_up) * 100.0, (tol_down) * 100.0, \
+> > +			     (double)(ref)); \
+> > +		igt_debug("%f within +%.1f%%/-%.1f%% tolerance of %f\n",\
+> > +			  (double)(x), \
+> > +			  (tol_up) * 100.0, (tol_down) * 100.0, \
+> > +			  (double)(ref)); \
+> > +	} while (0)
+> >  
+> >  #define assert_within_epsilon(x, ref, tolerance) \
+> >  	__assert_within_epsilon(x, ref, tolerance, tolerance)
+> > @@ -241,10 +247,8 @@ single(int gem_fd, const intel_ctx_t *ctx,
+> >  	else
+> >  		end_spin(spin_fd, spin, FLAG_SYNC);
+> >  
+> > -	assert_within_epsilon(val,
+> > -			      (flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ?
+> > -			      slept : 0.0f,
+> > -			      tolerance);
+> > +	assert_within_epsilon((flags & TEST_BUSY) && !(flags & TEST_ISOLATION) ? val : slept - val,
+> > +			      slept, tolerance);
+> >  
+> >  	/* Check for idle after hang. */
+> >  	if (flags & FLAG_HANG) {
+> > @@ -255,7 +259,7 @@ single(int gem_fd, const intel_ctx_t *ctx,
+> >  		slept = measured_usleep(batch_duration_ns / 1000);
+> >  		val = read_engine_time(gem_fd, e->class) - val;
+> >  
+> > -		assert_within_epsilon(val, 0, tolerance);
+> > +		assert_within_epsilon(slept - val, slept, tolerance);
+> >  	}
+> >  
+> >  	igt_spin_free(spin_fd, spin);
+> > @@ -328,11 +332,8 @@ busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+> >  
+> >  	log_busy(num_classes, val);
+> >  
+> > -	for (i = 0; i < num_classes; i++) {
+> > -		double target = i == e->class ? slept : 0.0f;
+> > -
+> > -		assert_within_epsilon(val[i], target, tolerance);
+> > -	}
+> > +	for (i = 0; i < num_classes; i++)
+> > +		assert_within_epsilon(i == e->class ? val[i] : slept - val[i], slept, tolerance);
+> >  
+> >  	gem_quiescent_gpu(gem_fd);
+> >  }
+> > @@ -405,9 +406,9 @@ most_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+> >  	log_busy(num_classes, val);
+> >  
+> >  	for (i = 0; i < num_classes; i++) {
+> > -		double target = slept * busy_class[i];
+> > +		double target = slept * busy_class[i] ?: slept;
+> >  
+> > -		assert_within_epsilon(val[i], target, tolerance);
+> > +		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
+> >  	}
+> >  	gem_quiescent_gpu(gem_fd);
+> >  }
+> > @@ -460,9 +461,9 @@ all_busy_check_all(int gem_fd, const intel_ctx_t *ctx,
+> >  	log_busy(num_classes, val);
+> >  
+> >  	for (i = 0; i < num_classes; i++) {
+> > -		double target = slept * busy_class[i];
+> > +		double target = slept * busy_class[i] ?: slept;
+> >  
+> > -		assert_within_epsilon(val[i], target, tolerance);
+> > +		assert_within_epsilon(busy_class[i] ? val[i] : slept - val[i], target, tolerance);
+> >  	}
+> >  	gem_quiescent_gpu(gem_fd);
+> >  }
+> > @@ -601,10 +602,8 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+> >  			else
+> >  				end_spin(i915, spin, FLAG_SYNC);
+> >  
+> > -			assert_within_epsilon(val,
+> > -					      flags & TEST_BUSY ?
+> > -					      slept : 0.0f,
+> > -					      tolerance);
+> > +			assert_within_epsilon(flags & TEST_BUSY ? val : slept - val,
+> > +					      slept, tolerance);
+> >  
+> >  			/* Check for idle after hang. */
+> >  			if (flags & FLAG_HANG) {
+> > @@ -616,7 +615,7 @@ virtual(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+> >  							1000);
+> >  				val = read_engine_time(i915, class) - val;
+> >  
+> > -				assert_within_epsilon(val, 0, tolerance);
+> > +				assert_within_epsilon(slept - val, slept, tolerance);
+> >  			}
+> >  
+> >  			igt_spin_free(i915, spin);
+> > @@ -724,7 +723,7 @@ virtual_all(int i915, const intel_ctx_cfg_t *base_cfg, unsigned int flags)
+> >  						1000);
+> >  			val = read_engine_time(i915, class) - val;
+> >  
+> > -			assert_within_epsilon(val, 0, tolerance);
+> > +			assert_within_epsilon(slept - val, slept, tolerance);
+> >  		}
+> >  
+> >  		igt_spin_free(i915, spin);
 > 
-> Series: tests/intel/xe_pm: one suspend/resume cycle for all xe engines (rev3)
-> URL   : https://patchwork.freedesktop.org/series/139093/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_15452_full -> IGTPW_11825_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_11825_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_11825_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/index.html
-> 
-> Participating hosts (9 -> 8)
-> ------------------------------
-> 
->   Missing    (1): shard-glk 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_11825_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_pm_freq_api@freq-suspend@gt0:
->     - shard-dg2:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-dg2-8/igt@i915_pm_freq_api@freq-suspend@gt0.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-dg2-5/igt@i915_pm_freq_api@freq-suspend@gt0.html
-> 
->   * igt@kms_big_joiner@basic-force-joiner:
->     - shard-tglu:         NOTRUN -> [SKIP][3] +10 other tests skip
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-6/igt@kms_big_joiner@basic-force-joiner.html
-> 
->   * igt@kms_big_joiner@invalid-modeset-force-joiner:
->     - shard-rkl:          NOTRUN -> [SKIP][4] +10 other tests skip
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-rkl-2/igt@kms_big_joiner@invalid-modeset-force-joiner.html
-> 
->   * igt@kms_cursor_legacy@short-flip-before-cursor-atomic-transitions:
->     - shard-tglu:         [PASS][5] -> [SKIP][6] +29 other tests skip
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-7/igt@kms_cursor_legacy@short-flip-before-cursor-atomic-transitions.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_cursor_legacy@short-flip-before-cursor-atomic-transitions.html
-> 
->   * igt@kms_flip@plain-flip-ts-check@b-edp1:
->     - shard-mtlp:         [PASS][7] -> [FAIL][8]
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-mtlp-5/igt@kms_flip@plain-flip-ts-check@b-edp1.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-mtlp-6/igt@kms_flip@plain-flip-ts-check@b-edp1.html
-> 
->   * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-wc:
->     - shard-dg2:          NOTRUN -> [SKIP][9] +20 other tests skip
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-dg2-11/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-pri-shrfb-draw-mmap-wc.html
-> 
->   * igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-wc:
->     - shard-dg1:          NOTRUN -> [SKIP][10] +23 other tests skip
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-dg1-18/igt@kms_frontbuffer_tracking@fbcpsr-rgb565-draw-mmap-wc.html
-> 
->   * igt@sriov_basic@enable-vfs-bind-unbind-each-numvfs-all:
->     - shard-mtlp:         NOTRUN -> [SKIP][11] +11 other tests skip
->    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-mtlp-5/igt@sriov_basic@enable-vfs-bind-unbind-each-numvfs-all.html
 
 
-These are unrelated. Please update the filters.
 
->   
-> #### Warnings ####
-> 
->   * igt@kms_big_fb@4-tiled-addfb:
->     - shard-tglu:         [SKIP][12] ([i915#5286]) -> [SKIP][13]
->    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-6/igt@kms_big_fb@4-tiled-addfb.html
->    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_big_fb@4-tiled-addfb.html
-> 
->   * igt@kms_ccs@bad-rotation-90-y-tiled-ccs:
->     - shard-tglu:         [SKIP][14] ([i915#6095]) -> [SKIP][15] +1 other test skip
->    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-2/igt@kms_ccs@bad-rotation-90-y-tiled-ccs.html
->    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_ccs@bad-rotation-90-y-tiled-ccs.html
-> 
->   * igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs:
->     - shard-tglu:         [SKIP][16] ([i915#12042]) -> [SKIP][17]
->    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-2/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs.html
->    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_ccs@crc-sprite-planes-basic-4-tiled-lnl-ccs.html
-> 
->   * igt@kms_cursor_crc@cursor-offscreen-32x32:
->     - shard-tglu:         [SKIP][18] ([i915#3555]) -> [SKIP][19]
->    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-10/igt@kms_cursor_crc@cursor-offscreen-32x32.html
->    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_cursor_crc@cursor-offscreen-32x32.html
-> 
->   * igt@kms_cursor_crc@cursor-rapid-movement-512x512:
->     - shard-tglu:         [SKIP][20] ([i915#11453]) -> [SKIP][21]
->    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-3/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html
->    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html
-> 
->   * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
->     - shard-tglu:         [SKIP][22] ([i915#4103]) -> [SKIP][23]
->    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-10/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
->    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-> 
->   * igt@kms_dirtyfb@psr-dirtyfb-ioctl:
->     - shard-tglu:         [SKIP][24] ([i915#9723]) -> [SKIP][25]
->    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-tglu-6/igt@kms_dirtyfb@psr-dirtyfb-ioctl.html
->    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-tglu-8/igt@kms_dirtyfb@psr-dirtyfb-ioctl.html
-> 
->   * igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-gtt:
->     - shard-dg2:          [SKIP][26] ([i915#5354]) -> [SKIP][27] +6 other tests skip
->    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15452/shard-dg2-2/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-gtt.html
->    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11825/shard-dg2-5/igt@kms_frontbuffer_tracking@fbcpsr-1p-primscrn-pri-shrfb-draw-mmap-gtt.html
-> 
 
-These are also unrelated.
-
-[...]
