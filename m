@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFA1ACE8347
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 14:13:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A6AECE8349
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 14:13:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9ABBA10E3F6;
-	Mon, 30 Sep 2024 14:13:30 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iM2nogkt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5F33210E4FB
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 14:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727705608; x=1759241608;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=J+2d6377+zNO/5iACoj3nYtNduyOFEqAxoj71+p/12Q=;
- b=iM2nogkthiw0c0oTt6HBLnhFvfaGNd6r7P9+O3vwCraywJRTjSqRXA5T
- 1xKpkeYULrMLzN7g2/MTjEIHPj9LK/o/sh1Zvvh/pjWkh9YNfoivwDYGP
- HgJpITcj/PaT+o47mMz+pKYSMeJ2gQt612ESaNP/y9uztlCXcB3c2VMbr
- RxWMyvz478uTlUTCNCZEFRj333HLHl/4e5pquBAvsWNeJaa+8hHu8YQQJ
- nHXNqQ5g9QLDQoGkkvTATL9XVh2ASgRXexIYicPq/v83e2e5Zmw0zAvra
- 71dT+4Bj6/zkwP2VLzmxBVv1Mstaa5yotwsY98I+O2pAc6PhCjRH1kyG7 A==;
-X-CSE-ConnectionGUID: WaZQCUnORZa+gkcccbzm+Q==
-X-CSE-MsgGUID: J/EHEGh8QIWSxbBbxwsoRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="30591121"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="30591121"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 07:13:28 -0700
-X-CSE-ConnectionGUID: QeRRJRMGQa+IymsPGpG/0A==
-X-CSE-MsgGUID: zwYef3stT9Ov2904Z4lLhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; d="scan'208";a="96645254"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost.localdomain)
- ([10.245.246.99])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 07:13:26 -0700
-From: Francois Dugast <francois.dugast@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Francois Dugast <francois.dugast@intel.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Michal Wajdeczko <michal.wajdeczko@intel.com>
-Subject: [PATCH i-g-t,
- v4 2/2] tests/intel/xe_fault_injection: Add new test for fault
- injection
-Date: Mon, 30 Sep 2024 16:08:24 +0200
-Message-ID: <20240930141248.810483-3-francois.dugast@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240930141248.810483-1-francois.dugast@intel.com>
-References: <20240930141248.810483-1-francois.dugast@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3ACF110E3F6;
+	Mon, 30 Sep 2024 14:13:55 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60E8310E0D7;
+ Mon, 30 Sep 2024 14:13:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6563069511873691972=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fasync=5Fflips=3A_A?=
+ =?utf-8?q?sync_flips_suspend_resume_test_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 30 Sep 2024 14:13:53 -0000
+Message-ID: <172770563339.1136517.3734116904588147430@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240930120410.1023320-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20240930120410.1023320-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,242 +37,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Use the kernel fault injection infrastructure to test error handling
-of xe at probe time.
+--===============6563069511873691972==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add the following test:
-    * "function-fault-injection"
+== Series Details ==
 
-v2: Fix mismatch between test name and documentation
+Series: tests/kms_async_flips: Async flips suspend resume test (rev6)
+URL   : https://patchwork.freedesktop.org/series/138302/
+State : success
 
-v3: Use promoted function for bind, rework structure
+== Summary ==
 
-v4: Use igt_dynamic_f to have one subtest per tested function instead
-    of a single test for all (Rodrigo Vivi)
+CI Bug Log - changes from XEIGT_8041_BAT -> XEIGTPW_11835_BAT
+====================================================
 
-Signed-off-by: Francois Dugast <francois.dugast@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
----
- tests/intel/xe_fault_injection.c | 191 +++++++++++++++++++++++++++++++
- tests/meson.build                |   1 +
- 2 files changed, 192 insertions(+)
- create mode 100644 tests/intel/xe_fault_injection.c
+Summary
+-------
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-new file mode 100644
-index 000000000..d1c8b2530
---- /dev/null
-+++ b/tests/intel/xe_fault_injection.c
-@@ -0,0 +1,191 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2024 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Check fault injection
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: driver
-+ * Test category: fault injection
-+ */
-+
-+#include <regex.h>
-+
-+#include "igt.h"
-+#include "igt_device.h"
-+#include "igt_kmod.h"
-+#include "igt_sysfs.h"
-+
-+#define MAX_LINE_SIZE			1024
-+#define PATH_FUNCTIONS_INJECTABLE	"/sys/kernel/debug/fail_function/injectable"
-+#define PATH_FUNCTIONS_INJECT		"/sys/kernel/debug/fail_function/inject"
-+#define PATH_FUNCTIONS_RETVAL		"/sys/kernel/debug/fail_function/%s/retval"
-+#define REGEX_XE_FUNCTIONS		"^(.+)\\[xe\\]"
-+#define INJECT_ERRNO			-ENOMEM
-+
-+enum injection_list_action {
-+	INJECTION_LIST_ADD,
-+	INJECTION_LIST_REMOVE,
-+};
-+
-+/*
-+ * The injectable file requires CONFIG_FUNCTION_ERROR_INJECTION in kernel.
-+ */
-+static bool function_error_injection_enabled(void)
-+{
-+	FILE *file = fopen(PATH_FUNCTIONS_INJECTABLE, "rw");
-+
-+	if (file) {
-+		fclose(file);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
-+static void injection_list_do(enum injection_list_action action, char function_name[])
-+{
-+	FILE *file_inject;
-+
-+	file_inject = fopen(PATH_FUNCTIONS_INJECT, "w");
-+	igt_assert(file_inject);
-+
-+	switch(action) {
-+	case INJECTION_LIST_ADD:
-+		fprintf(file_inject, "%s", function_name);
-+		break;
-+	case INJECTION_LIST_REMOVE:
-+		fprintf(file_inject, "!%s", function_name);
-+		break;
-+	default:
-+		igt_assert(!"missing");
-+	}
-+
-+	fclose(file_inject);
-+}
-+
-+/*
-+ * See https://docs.kernel.org/fault-injection/fault-injection.html#application-examples
-+ */
-+static void setup_injection_fault(void)
-+{
-+	FILE *file;
-+
-+	file = fopen("/sys/kernel/debug/fail_function/task-filter", "w");
-+	igt_assert(file);
-+	fprintf(file, "N");
-+	fclose(file);
-+
-+	file = fopen("/sys/kernel/debug/fail_function/probability", "w");
-+	igt_assert(file);
-+	fprintf(file, "100");
-+	fclose(file);
-+
-+	file = fopen("/sys/kernel/debug/fail_function/interval", "w");
-+	igt_assert(file);
-+	fprintf(file, "0");
-+	fclose(file);
-+
-+	file = fopen("/sys/kernel/debug/fail_function/times", "w");
-+	igt_assert(file);
-+	fprintf(file, "-1");
-+	fclose(file);
-+
-+	file = fopen("/sys/kernel/debug/fail_function/space", "w");
-+	igt_assert(file);
-+	fprintf(file, "0");
-+	fclose(file);
-+
-+	file = fopen("/sys/kernel/debug/fail_function/verbose", "w");
-+	igt_assert(file);
-+	fprintf(file, "1");
-+	fclose(file);
-+}
-+
-+static void cleanup_injection_fault(void)
-+{
-+	FILE *file;
-+
-+	file = fopen(PATH_FUNCTIONS_INJECT, "w");
-+	igt_assert(file);
-+	fprintf(file, "\n");
-+	fclose(file);
-+}
-+
-+static void set_retval(char function_name[], long long retval)
-+{
-+	FILE *file_retval;
-+	char file_path[MAX_LINE_SIZE];
-+
-+	sprintf(file_path, PATH_FUNCTIONS_RETVAL, function_name);
-+
-+	file_retval = fopen(file_path, "w");
-+	igt_assert(file_retval);
-+
-+	fprintf(file_retval, "%#016llx", retval);
-+	fclose(file_retval);
-+}
-+
-+/**
-+ * SUBTEST: inject-fault-probe
-+ * Description: inject an error in the injectable function then reprobe driver
-+ * Functionality: fault
-+ */
-+static void
-+inject_fault_try_bind(int fd, char pci_slot[], char function_name[])
-+{
-+	igt_info("Injecting error \"%s\" (%d) in function \"%s\"\n",
-+		 strerror(-INJECT_ERRNO), INJECT_ERRNO, function_name);
-+
-+	injection_list_do(INJECTION_LIST_ADD, function_name);
-+	set_retval(function_name, INJECT_ERRNO);
-+	xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_TRY_BIND);
-+	igt_assert_eq(-errno, INJECT_ERRNO);
-+	injection_list_do(INJECTION_LIST_REMOVE, function_name);
-+}
-+
-+igt_main
-+{
-+	int fd;
-+	FILE *file_injectable;
-+	char line[MAX_LINE_SIZE];
-+	char function_name[64];
-+	char pci_slot[MAX_LINE_SIZE];
-+	regex_t regex;
-+	regmatch_t pmatch[2];
-+
-+	igt_fixture {
-+		igt_require(function_error_injection_enabled());
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_device_get_pci_slot_name(fd, pci_slot);
-+		setup_injection_fault();
-+		file_injectable = fopen(PATH_FUNCTIONS_INJECTABLE, "r");
-+		igt_assert(file_injectable);
-+		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_UNBIND);
-+		igt_assert_eq(regcomp(&regex, REGEX_XE_FUNCTIONS, REG_EXTENDED), 0);
-+	}
-+
-+	/*
-+	 * Iterate over each error injectable function of the xe module
-+	 */
-+	igt_subtest_with_dynamic("inject-fault-probe") {
-+		while ((fgets(line, MAX_LINE_SIZE, file_injectable)) != NULL) {
-+			if (regexec(&regex, line, 2, pmatch, 0) == 0) {
-+				strcpy(function_name, line);
-+				function_name[pmatch[1].rm_eo - 1] = '\0';
-+				igt_dynamic_f("function-%s", function_name)
-+					inject_fault_try_bind(fd, pci_slot, function_name);
-+			}
-+		}
-+	}
-+
-+	igt_fixture {
-+		regfree(&regex);
-+		fclose(file_injectable);
-+		cleanup_injection_fault();
-+		drm_close_driver(fd);
-+		xe_sysfs_driver_do(fd, pci_slot, XE_SYSFS_DRIVER_BIND);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 62bde353b..3ca62ff9b 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -293,6 +293,7 @@ intel_xe_progs = [
- 	'xe_exec_store',
- 	'xe_exec_threads',
- 	'xe_exercise_blt',
-+	'xe_fault_injection',
- 	'xe_gpgpu_fill',
- 	'xe_gt_freq',
- 	'xe_huc_copy',
--- 
-2.43.0
+  **SUCCESS**
 
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11835_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - {bat-bmg-2}:        [INCOMPLETE][1] ([Intel XE#2874]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8041/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11835/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8041 -> IGTPW_11835
+
+  IGTPW_11835: 50f1225b6c38afbc93a1ac70a3443d70eb4ef07b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8041: 007824783b6bab6b45508cece05df96d295cadd6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-1990-8ffb4ffcd9c475e88792494601785dc5d617c5f1: 8ffb4ffcd9c475e88792494601785dc5d617c5f1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11835/index.html
+
+--===============6563069511873691972==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_async_flips: Async flips suspend resume test (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138302/">https://patchwork.freedesktop.org/series/138302/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11835/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11835/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8041_BAT -&gt; XEIGTPW_11835_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11835_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>{bat-bmg-2}:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8041/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11835/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8041 -&gt; IGTPW_11835</li>
+</ul>
+<p>IGTPW_11835: 50f1225b6c38afbc93a1ac70a3443d70eb4ef07b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8041: 007824783b6bab6b45508cece05df96d295cadd6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-1990-8ffb4ffcd9c475e88792494601785dc5d617c5f1: 8ffb4ffcd9c475e88792494601785dc5d617c5f1</p>
+
+</body>
+</html>
+
+--===============6563069511873691972==--
