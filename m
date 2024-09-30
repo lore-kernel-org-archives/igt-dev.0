@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AFDDCE837B
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 17:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14899CE837D
+	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 18:19:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E732810E56D;
-	Mon, 30 Sep 2024 17:35:18 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B358410E56D;
- Mon, 30 Sep 2024 17:35:17 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7685188902166523175=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C2AF410E24E;
+	Mon, 30 Sep 2024 18:19:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lj8ZPODx";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A8DE10E24E
+ for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 18:19:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1727720343; x=1759256343;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=zqkm1HRiMl+3Wd0AxhWPTDVWlZ4r0wcxwSp9NDMa+IU=;
+ b=Lj8ZPODxKoOY12bhCINroqd0DPUsn5BFSeOpEBxcP6VfJAHGiFKpQyhU
+ lzfh+HRAkQlTI1LzPQQLDxYq0sdFciQMCvDyg2Z14HacnKUtR/7YMa4v3
+ tojH9UgYVE5NV9RMUqHhW8YGG8Q0N73GArwfEtnpeg2Y3oDHbcmPoyAx5
+ u3mCjqmnG9LmR44DjDib5UvpUTa4gaaA3uLOI/zEeLjHBSoYugXwgKSzR
+ iKoYqj6wPuvLbtgw/VzReJgtQCWFT8pIa6eM53VTbKv/HFv6RtzBJ+KPs
+ OQyG2Xt3qi8VBGw8k6YutYJQV3u5VZs1KVgrSMwsnV4IXQqcvRsBtRopb Q==;
+X-CSE-ConnectionGUID: WicKlIW0TzuojqMasHARkA==
+X-CSE-MsgGUID: 0/d70y9WSn26gID7I997dw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="27004300"
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="27004300"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2024 11:19:02 -0700
+X-CSE-ConnectionGUID: A5qyn25TTemPOEZ3W0cBng==
+X-CSE-MsgGUID: pI3M2zZzRKmTR8mDTDCMlQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="73702698"
+Received: from dg2adlp-alder-lake-client-platform.iind.intel.com
+ ([10.145.162.161])
+ by fmviesa010.fm.intel.com with ESMTP; 30 Sep 2024 11:19:02 -0700
+From: Mohammed Thasleem <mohammed.thasleem@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_pm_lpsp: Add display version check on
+ external panel
+Date: Mon, 30 Sep 2024 23:48:39 +0530
+Message-Id: <20240930181839.49977-1-mohammed.thasleem@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/igt=5Ffb=3A_Fix_intel=5Fbu?=
- =?utf-8?q?f_surface_init_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 30 Sep 2024 17:35:17 -0000
-Message-ID: <172771771772.1138088.9848357029503070232@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240923213620.12369-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20240923213620.12369-1-ville.syrjala@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,163 +63,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7685188902166523175==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+LPSP for external panel support from Gen13+ onwards.
+Skip the test if only external panel connected on less
+then gen13 platforms.
 
-== Series Details ==
+Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+---
+ tests/intel/kms_pm_lpsp.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Series: lib/igt_fb: Fix intel_buf surface init (rev3)
-URL   : https://patchwork.freedesktop.org/series/139012/
-State : failure
+diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
+index f9ac508fb..889da42de 100644
+--- a/tests/intel/kms_pm_lpsp.c
++++ b/tests/intel/kms_pm_lpsp.c
+@@ -227,6 +227,8 @@ igt_main
+ 		enum pipe pipe;
+ 
+ 		for_each_connected_output(display, output) {
++			drmModeConnectorPtr connector = output->config.connector;
++
+ 			if (!i915_output_is_lpsp_capable(data.drm_fd, output))
+ 				continue;
+ 
+@@ -238,6 +240,10 @@ igt_main
+ 				if (pipe != PIPE_A)
+ 					continue;
+ 
++				if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
++					igt_require_f(intel_display_ver(data.devid) >= 13,
++						     "LPSP support on external panel from Gen13+ platform\n");
++
+ 				data.output = output;
+ 				data.pipe = pipe;
+ 
+-- 
+2.25.1
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8043_BAT -> XEIGTPW_11836_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11836_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11836_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11836_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_exec_compute_mode@twice-userptr-invalidate:
-    - bat-lnl-1:          [PASS][1] -> [DMESG-WARN][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11836_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-
-
-Build changes
--------------
-
-  * IGT: IGT_8043 -> IGTPW_11836
-  * Linux: xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f -> xe-1992-2a8d54969ceeb99f139f89f49e8fc25f71fa5bed
-
-  IGTPW_11836: 26f61625fa50ad49787ad96e30845e60414b0eda @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8043: 8043
-  xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f: 8a36a5499f143dc694afe235c6a1773421d2bd4f
-  xe-1992-2a8d54969ceeb99f139f89f49e8fc25f71fa5bed: 2a8d54969ceeb99f139f89f49e8fc25f71fa5bed
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/index.html
-
---===============7685188902166523175==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_fb: Fix intel_buf surface init (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139012/">https://patchwork.freedesktop.org/series/139012/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8043_BAT -&gt; XEIGTPW_11836_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11836_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11836_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11836_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_exec_compute_mode@twice-userptr-invalidate:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11836_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11836/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8043 -&gt; IGTPW_11836</li>
-<li>Linux: xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f -&gt; xe-1992-2a8d54969ceeb99f139f89f49e8fc25f71fa5bed</li>
-</ul>
-<p>IGTPW_11836: 26f61625fa50ad49787ad96e30845e60414b0eda @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8043: 8043<br />
-  xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f: 8a36a5499f143dc694afe235c6a1773421d2bd4f<br />
-  xe-1992-2a8d54969ceeb99f139f89f49e8fc25f71fa5bed: 2a8d54969ceeb99f139f89f49e8fc25f71fa5bed</p>
-
-</body>
-</html>
-
---===============7685188902166523175==--
