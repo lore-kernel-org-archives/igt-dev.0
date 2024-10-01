@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5019CCEB2CD
-	for <igt-dev@archiver.kernel.org>; Mon, 30 Sep 2024 23:45:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28432CEB2CD
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Oct 2024 00:16:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DD24310E159;
-	Mon, 30 Sep 2024 23:45:51 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a8ZI3p+0";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 807ED10E159
- for <igt-dev@lists.freedesktop.org>; Mon, 30 Sep 2024 23:45:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727739950; x=1759275950;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=+u6Ri4tCZoIf1pygzOGBXYk+Da89QsqZm/Fpk3uotqw=;
- b=a8ZI3p+08/mkK1gs4XwmTlvhUsfV8OKNIJwZ2HD6K0m7ggabULbt+wZ1
- i+IBiYGv1dr4DMNsv0tebEqaHb7Yg7T9iq02g9onrcEXxIAV06Wlm2EBi
- C4qdH0giI2UfEerSr38ExK4F36tddrQVDGiEXJg5foDi2ZU/3efZiKmpB
- PA3lBfJPpdAuGCc9f+ZOwpsT3bUq9b8JrJKoie2xJCb5ope19roRuS1aC
- 5Auimy3BNLlhEr35tj2HEdSeVtty9nocKkX0LSBPUtaW9LdHFbtcdPpg+
- QIuQGqkVi0K6ztVI2B1GEJMJQKRsQLAeSYk3a0UE1mIWlK+KEFYJ4cXLV w==;
-X-CSE-ConnectionGUID: N6oViNjMQUm4VswWXh0KwA==
-X-CSE-MsgGUID: 2tuvCH9ETLm4MdaVmywATQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="37527164"
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="37527164"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 16:45:49 -0700
-X-CSE-ConnectionGUID: bw+S3hyqQM+P4y9lIGXUrg==
-X-CSE-MsgGUID: iisz46+ISoSebBqOQwkhPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; d="scan'208";a="73727477"
-Received: from jcavitt.jf.intel.com ([10.165.125.150])
- by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2024 16:45:49 -0700
-From: Jonathan-Cavitt <jonathan.cavitt@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: saurabhg.gupta@intel.com,
-	alex.zuo@intel.com,
-	jonathan.cavitt@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_pm_residency: Skip on igt_power_open
- failure
-Date: Mon, 30 Sep 2024 16:27:20 -0700
-Message-Id: <20240930232720.1496539-1-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.25.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id B0D0310E002;
+	Tue,  1 Oct 2024 00:16:44 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A52810E002;
+ Tue,  1 Oct 2024 00:16:43 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5951425424972745102=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fpm=5Fresidenc?=
+ =?utf-8?q?y=3A_Skip_on_igt=5Fpower=5Fopen_failure?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jonathan-Cavitt" <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 01 Oct 2024 00:16:43 -0000
+Message-ID: <172774180355.1139753.3610028316927347650@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20240930232720.1496539-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20240930232720.1496539-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,38 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The xe_pm_residency@toggle-gt-c6 test fails when
-gt_c6_power >= gt_c0_power.  These values are reported by
-igt_power_get_mW, which will always report 0 in the case that
-igt_power_open fails to open either the hwmon_fd or rapl.fd.  Since the
-expected result will always be a failure in this case, skip the test to
-end execution early.
+--===============5951425424972745102==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jonathan-Cavitt <jonathan.cavitt@intel.com>
----
- tests/intel/xe_pm_residency.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index 0e687558b1..36ed46cfc5 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -276,7 +276,11 @@ static void toggle_gt_c6(int fd, int n)
- 	int gt;
- 	struct igt_power gpu;
- 
--	igt_power_open(fd, &gpu, "gpu");
-+	/*
-+	 * igt_power_get_mW will always return 0 if igt_power_open fails,
-+	 * so skip the test in this case.
-+	 */
-+	igt_skip_on(igt_power_open(fd, &gpu, "gpu"));
- 
- 	do {
- 		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
--- 
-2.25.1
+Series: tests/intel/xe_pm_residency: Skip on igt_power_open failure
+URL   : https://patchwork.freedesktop.org/series/139352/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8043_BAT -> XEIGTPW_11846_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11846_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_psr@psr-primary-page-flip@edp-1:
+    - bat-lnl-1:          [FAIL][1] ([Intel XE#1649]) -> [PASS][2] +5 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11846/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html
+
+  
+  [Intel XE#1649]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8043 -> IGTPW_11846
+  * Linux: xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f -> xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1
+
+  IGTPW_11846: 11846
+  IGT_8043: 8043
+  xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f: 8a36a5499f143dc694afe235c6a1773421d2bd4f
+  xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1: 4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11846/index.html
+
+--===============5951425424972745102==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Skip on igt_power_open failure</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139352/">https://patchwork.freedesktop.org/series/139352/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11846/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11846/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8043_BAT -&gt; XEIGTPW_11846_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11846_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_psr@psr-primary-page-flip@edp-1:<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8043/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1649">Intel XE#1649</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11846/bat-lnl-1/igt@kms_psr@psr-primary-page-flip@edp-1.html">PASS</a> +5 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8043 -&gt; IGTPW_11846</li>
+<li>Linux: xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f -&gt; xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1</li>
+</ul>
+<p>IGTPW_11846: 11846<br />
+  IGT_8043: 8043<br />
+  xe-1991-8a36a5499f143dc694afe235c6a1773421d2bd4f: 8a36a5499f143dc694afe235c6a1773421d2bd4f<br />
+  xe-1993-4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1: 4e4d7873ac763aa0bd9207ea9ec2b89bb52a6fe1</p>
+
+</body>
+</html>
+
+--===============5951425424972745102==--
