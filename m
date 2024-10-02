@@ -4,52 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B03CF31B0
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 10:45:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57804CF31B6
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 11:29:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5426810E6F5;
-	Wed,  2 Oct 2024 10:45:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F130410E6F8;
+	Wed,  2 Oct 2024 11:29:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EwxCro9S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QpuS7JcK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDA3810E6F5
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 10:45:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5018010E169
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 11:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727865927; x=1759401927;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=CsY1zTAx+UAdW/HRu1yYPwq9JaE6LdgEJH9+zdoxIJo=;
- b=EwxCro9Sj3J1rpmZRvofTboZTZgTyzTNPSYI1PFtwUaajeULzQLz5OeO
- nMrd/C0VjB37qJCLilwWic4TkBANN43EPsWi6HkxF/mHPgz/8e2vXT15E
- tbm/yboITe03GjSf5+aO3+fcwXkNDwpdDqmSnJe4ObAexa1t9ZAeyumZt
- HET97hb2Q8i85Wp/SJoucxtCeB50rgMAWz8fenwi6GzJiX9I7urUNjAMK
- m5Q5oDOkS9uKb/TTwMDSsdDYzjKkNhac4hladL7PG/vOmD+/wqEM098LS
- Bps1lZ+67eLC6yFfmCXa0Fj7lNiblWxVTigf+B/HMstkqohAuAJZYqasn g==;
-X-CSE-ConnectionGUID: 9EUE2PctQXSMAAjBlEzxOg==
-X-CSE-MsgGUID: pGuuTTWpTlyCc0TttFP7iA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="38382977"
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="38382977"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 03:45:27 -0700
-X-CSE-ConnectionGUID: eJWBDzw0SU6a5ONfKwf67A==
-X-CSE-MsgGUID: y1L4TAxKTAOypkHP4edcxw==
+ t=1727868572; x=1759404572;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ihXueVqjrbnpb8lWrXla8S48StoQGrzvwcW/YqHQRtg=;
+ b=QpuS7JcKX0CyeOHM/ubGw2wAKHZ/b4mOOY2RmO9MvlZlBw/sVWFB2vva
+ n70U8OKuV3QGYbX4oypsWz8QVV1q8uQmlhS36kzDLbSMCLIw2lzn9Ge4s
+ UGgg2QBxBjQ0KIyNQ4EfICIzKM906hfsF3wdmE0iC3dfRzP3/TisdV7Fo
+ 4AG9ddoC4zxaKXOmSXk/kuNnhkzFp6s1kSf2TYw46RL2BHlmnB/eEVvhM
+ fxSc6eyKPKHbv943mr/vb94Ka10ykMd6UMMWfq+2uqVM1c1rZsTxjiAda
+ HzlLKZRDt2dNHjgJxGVvfMXMXsK1m/9O/9BDLFhdlG6UcRQ7pH2nBk1UC A==;
+X-CSE-ConnectionGUID: uAsAi9FRQvOzHSJANPIIMw==
+X-CSE-MsgGUID: zJoSOhSdRUC5Qw7BxKmT9A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="27160603"
+X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="27160603"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 04:29:32 -0700
+X-CSE-ConnectionGUID: ZSCZjgBdQ2G46shHPCX3pw==
+X-CSE-MsgGUID: ArimjZfvT3+6PblDppGT5g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="74077131"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Oct 2024 03:45:25 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 02 Oct 2024 13:45:23 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="104764478"
+Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO
+ dpiatkow-mobl1.mshome.net) ([10.245.246.33])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 04:29:30 -0700
+From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 4/4] lib/intel: Documnent gem_can_store_dword()
-Date: Wed,  2 Oct 2024 13:45:15 +0300
-Message-ID: <20241002104515.32164-4-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
-References: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v2 i-g-t 0/2] Fix xe_eudebug_online@interrupt-other test
+Date: Wed,  2 Oct 2024 13:29:12 +0200
+Message-Id: <20241002112914.5556-1-dominik.karol.piatkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,48 +74,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+xe_eudebug_online@interrupt-other test fails due to preemption
+interfering with it.
 
-Add basic docs for gem_class_can_store_dword() and
-gem_can_store_dword().
+In order to fix it, set the preempt_timeout_us for engine_class used in
+this test to maximum for the duration of the test.
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- lib/igt_gt.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+This series introduces the following engine_class helpers:
+ - xe_sysfs_engine_class_get_property
+   Convenience wrapper to get value of given property for given engine
+   class on given gt.
+ - xe_sysfs_engine_class_set_property
+   Convenience wrapper to set given property for given engine class on
+   given gt to given value.
 
-diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-index b8faf2b7bd09..a8f7f4431d1c 100644
---- a/lib/igt_gt.c
-+++ b/lib/igt_gt.c
-@@ -667,6 +667,13 @@ static bool gem_store_dword_needs_physical(const struct intel_device_info *info)
- 	}
- }
- 
-+/**
-+ * gem_class_can_store_dword:
-+ * @fd: open i915 drm file descriptor
-+ * @class: engine class
-+ *
-+ * Is the MI_STORE_DWORD instruction actually usable?
-+ */
- bool gem_class_can_store_dword(int fd, int class)
- {
- 	uint16_t devid = intel_get_drm_devid(fd);
-@@ -685,6 +692,13 @@ bool gem_class_can_store_dword(int fd, int class)
- 	return true;
- }
- 
-+/**
-+ * gem_can_store_dword:
-+ * @fd: open i915 drm file descriptor
-+ * @engine: engine
-+ *
-+ * Is the MI_STORE_DWORD instruction actually usable?
-+ */
- bool gem_can_store_dword(int fd, unsigned int engine)
- {
- 	return gem_class_can_store_dword(fd,
+v2:
+   -Move helpers from lib/xe_eudebug to lib/igt_sysfs
+   -Improve readability in xe_eudebug_online adjust commit
+   -Add justification in message of xe_eudebug_online adjust commit
+
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+
+Dominik Karol Piątkowski (2):
+  lib/igt_sysfs: Introduce engine_class property helpers
+  tests/xe_eudebug_online: Adjust interrupt-other test
+
+ lib/igt_sysfs.c                 | 85 +++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h                 |  5 ++
+ tests/intel/xe_eudebug_online.c | 45 ++++++++++++++++-
+ 3 files changed, 133 insertions(+), 2 deletions(-)
+
 -- 
-2.45.2
+2.34.1
 
