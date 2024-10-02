@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2170BCF6D3B
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 15:45:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B1D0CF6D3B
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 15:50:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6595F10E03C;
-	Wed,  2 Oct 2024 15:45:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 285AF10E76E;
+	Wed,  2 Oct 2024 15:50:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZMZLfGk1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TyXz11tB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EECCA10E03C
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 15:45:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47C4010E76C
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 15:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727883913; x=1759419913;
+ t=1727884246; x=1759420246;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Do52Df8sAkikLmwEYTJaCgs79RbAmFyzked+WUdwUqQ=;
- b=ZMZLfGk13iFayFFqV0xUjHR/qvtFe0Zi9aMlhSrzaBgY4RZPJ35PI9TS
- /x8KtrTeko1LZt/Ui3pJsqTyrvZf5HDxNtk1d5KCAyt2glZa/stOIALJF
- FopqxGxPldktYymdnotyD70dVgA+2x4uWxYZA/sZG3D/uHVCRbNxb7JL5
- B/2R2UjNqbeJ1Mypg/fi3Xlz2dbIWFMgZjflJxIT5HsliLFyDqZ1al9sF
- /pFRvrVVCfkSUUcCvNsl/op8BCKn2PORofZz75JW7Vv6njcDMUpCt4X/u
- 4MQINNqSbiKESkIyW7k4IINoq33BH86pR28ye7soInCDi0breXUKfaPrs g==;
-X-CSE-ConnectionGUID: /kV1j6ZaRsSL6AlZ/WL8yw==
-X-CSE-MsgGUID: qa5/1rfcRSqMW8x4FG1w+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="26853117"
-X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="26853117"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 08:45:13 -0700
-X-CSE-ConnectionGUID: WalBVtzJTVWeLWZSnSuG8g==
-X-CSE-MsgGUID: fzEfPkMeT1iWNPznu9SQiQ==
+ bh=MrA2Ba4M8lh6/m60ovCPrZZ6p5bS6EMeR1/wbt8bx/E=;
+ b=TyXz11tB9xuIqf72ZuHzu26s90YZ10NINqB97b+78ZIfnc/54P9mMXUs
+ 6olEUBeTiGqVN0n2Z2kOqqVfBPlTQzKTnpUfCzpvI7iTUiYwoEsyc4a0l
+ +5eeIX18EnMm/j4REDse7AmS3KEagyLeBfvyFcgpedAvwFXS48OAQAbgH
+ O3p98AACDj4sBksj3C4huwn9xA5oXa9h1jrKJg4i/4M+hA6J0dH18TbHB
+ +sdBRQq/hFQIXb4q2TJfZb9oA0tsMXYMqvgaTLICJrHc/vs+uOzotXFon
+ Z53R/Ektilx4hzEBSn2w+OowC/jWBWqD2T4KkHlHTXRlq0oNfstuZt75d w==;
+X-CSE-ConnectionGUID: 28/h1MG4Q1Oyte35Pj5MIg==
+X-CSE-MsgGUID: xg0wk+zES7Whc+WJ8KfvEA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="44519193"
+X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="44519193"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 08:50:46 -0700
+X-CSE-ConnectionGUID: 2pWWAUPFTuqI4Rhi8Cz+zA==
+X-CSE-MsgGUID: eBkSS9c9Qj6jNy3Gtpk3Vg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="73911783"
+X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="78899795"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 08:45:12 -0700
-Date: Wed, 2 Oct 2024 17:45:08 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 08:50:45 -0700
+Date: Wed, 2 Oct 2024 17:50:41 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t 3/3] lib/intel_compute: Fix compiler warnings on
- x86-32
-Message-ID: <20241002154508.nozgs4ysclyfukk7@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 2/3] tests: Shut gcc up abput _Atomic(uint64_t)
+ alignment
+Message-ID: <20241002155041.kdw5gclimpt6nfll@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Ville Syrjala <ville.syrjala@linux.intel.com>
 References: <20240927163307.10159-1-ville.syrjala@linux.intel.com>
- <20240927163307.10159-3-ville.syrjala@linux.intel.com>
+ <20240927163307.10159-2-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240927163307.10159-3-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240927163307.10159-2-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,58 +74,76 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Ville,
-On 2024-09-27 at 19:33:07 +0300, Ville Syrjala wrote:
+On 2024-09-27 at 19:33:06 +0300, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> x86-32 gcc is not happy:
-> ../lib/intel_compute.c: In function ‘xehp_compute_exec_compute’:
-> ../lib/intel_compute.c:862:48: warning: right shift count >= width of type [-Wshift-count-overflow]
->   862 |         addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
->       |                                                ^~
-> 
-> Just use ULL for all the address constants.
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+There is a typo in subject, I would also prefer 'Fix' so:
+
+[PATCH i-g-t 2/3] tests: Fix gcc warnings about _Atomic(uint64_t) alignment
+
+> x86-32 gcc keeps complaining about some alignment ABI change:
+> "note: the alignment of ‘_Atomic long long unsigned int’ fields changed in GCC 11.1"
+> 
+> State the alignment explicitly to make gcc shut up.
+
+s/to make gcc shut up/to silence gcc/
 
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->  lib/intel_compute.c | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+>  tests/dumb_buffer.c           | 2 +-
+>  tests/intel/gem_create.c      | 2 +-
+>  tests/intel/gem_mmap_offset.c | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 1cc39f645c2e..3ab9ace7932c 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -27,20 +27,20 @@
->  #define SIZE_BATCH			0x1000
->  #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
->  #define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
-> -#define ADDR_BATCH			0x100000UL
-> -#define ADDR_INPUT			0x200000UL
-> -#define ADDR_OUTPUT			0x300000UL
-> -#define ADDR_SURFACE_STATE_BASE		0x400000UL
-> -#define ADDR_DYNAMIC_STATE_BASE		0x500000UL
-> +#define ADDR_BATCH			0x100000ULL
-> +#define ADDR_INPUT			0x200000ULL
-> +#define ADDR_OUTPUT			0x300000ULL
-> +#define ADDR_SURFACE_STATE_BASE		0x400000ULL
-> +#define ADDR_DYNAMIC_STATE_BASE		0x500000ULL
->  #define ADDR_INDIRECT_OBJECT_BASE	0x100000000
->  #define OFFSET_INDIRECT_DATA_START	0xFFFD0000
->  #define OFFSET_KERNEL			0xFFFE0000
+> diff --git a/tests/dumb_buffer.c b/tests/dumb_buffer.c
+> index e1c18c70b09b..dd237467d3f6 100644
+> --- a/tests/dumb_buffer.c
+> +++ b/tests/dumb_buffer.c
+> @@ -242,7 +242,7 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
+>  }
 >  
-> -#define ADDR_GENERAL_STATE_BASE		0x80000000UL
-> -#define ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
-> +#define ADDR_GENERAL_STATE_BASE		0x80000000ULL
-> +#define ADDR_INSTRUCTION_STATE_BASE	0x90000000ULL
->  #define OFFSET_BINDING_TABLE		0x1000
+>  struct thread_clear {
+> -	_Atomic(uint64_t) max;
+> +	_Atomic(uint64_t) max __attribute__((aligned(8)));
+
+From checkpatch.pl: prefer __aligned(8)
+
+With or without this __aligned(8) change (and with above subject
+and description fixed):
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+>  	uint64_t page_size;
+>  	int timeout;
+>  	int fd;
+> diff --git a/tests/intel/gem_create.c b/tests/intel/gem_create.c
+> index ca39a8b64a62..f0749d288dcf 100644
+> --- a/tests/intel/gem_create.c
+> +++ b/tests/intel/gem_create.c
+> @@ -206,7 +206,7 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
+>  }
 >  
-> -#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000UL
-> +#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000ULL
->  #define OFFSET_STATE_SIP			0xFFFF0000
+>  struct thread_clear {
+> -	_Atomic(uint64_t) max;
+> +	_Atomic(uint64_t) max __attribute__((aligned(8)));
+>  	struct drm_i915_gem_memory_class_instance region;
+>  	int timeout;
+>  	int i915;
+> diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+> index c1a9811ff9d1..3f499abedbbb 100644
+> --- a/tests/intel/gem_mmap_offset.c
+> +++ b/tests/intel/gem_mmap_offset.c
+> @@ -716,7 +716,7 @@ static uint64_t get_npages(_Atomic(uint64_t) *global, uint64_t npages)
+>  }
 >  
->  /*
+>  struct thread_clear {
+> -	_Atomic(uint64_t) max;
+> +	_Atomic(uint64_t) max __attribute__((aligned(8)));
+>  	struct drm_i915_gem_memory_class_instance region;
+>  	int timeout;
+>  	int i915;
 > -- 
 > 2.45.2
 > 
