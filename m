@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA960CF6D2C
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 14:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08E1CF6D28
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 14:43:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 960CD10E767;
-	Wed,  2 Oct 2024 14:14:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A73B189B30;
+	Wed,  2 Oct 2024 14:43:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IQ1N6jAr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L7GcZ4yu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 95B4A10E766
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 14:14:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 60B0510E765
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 14:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727878470; x=1759414470;
+ t=1727880232; x=1759416232;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=l2A/dJ4zEbacDYdookMrUesD6n/PdLj3lq92QIpNlc8=;
- b=IQ1N6jArTu0FDmhN2lNMwUrluBcu+Ny5S4dXnBzGluV8B8F4vo2lO7Zc
- r/QykVN14/zvAncVW6OfixKiKfadKHeyhUH3siSTyYG3JKfChhXgno0Gs
- sR7ZS4ohUuc9W1gYEAGu6q+VknFb7j/vBxBMt+/WDYWgpWPmUitSCHzzy
- d3vu1ARWBRTkJBrJw4YEQyaqcrm2DJpIO0TuCtYJgR51/dQ0ofXtGSWf1
- 6nGrS6wKbYlJxX9Uk+tkJZW/rCSrEllii98iw8l1yTJGdoG7d9X7LsEoE
- 881VOO9Omte/dub8rFkGhObUEceT8zALwVCTHCvqUT6UWP4+DwHKrCSvw g==;
-X-CSE-ConnectionGUID: iYROeoOdRMSxUQPcDp40rA==
-X-CSE-MsgGUID: Y0S3k5bxSLGDF8OJZaMwaQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="26548098"
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="26548098"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 07:14:29 -0700
-X-CSE-ConnectionGUID: uRZRW+zVSraY0d0rbuqsrA==
-X-CSE-MsgGUID: Lal+ECvyQZW/kDMApbz2BQ==
+ bh=DPj6nm2RSxF+3yeOaeGiyBdGAyNXFHl3aETc4OPlHaA=;
+ b=L7GcZ4yuFl3gBWg5s3A4PBfqsfWxS2Vt+piSTt+A3dFdHf2rB0iPzQio
+ 5BVrTeO3gd0xNKJ4rZ7rmlRu89fZS/mJl1jMdAJMShrwiEU3VvvQjxd9O
+ m/snLXWSkF1ahMr71Wcx2k7NprVJvDwseFqvBLBBthl9hoID+SeWMkDgO
+ 2hAknTiQ7mk1dv4+lcn1VmrjI7JLv2j7WlKogEBWAZzGGhVDq7WTfPbI9
+ CZZG3WolxvsLNVYEkYfYm+q4R8ZhH5EsnW9LX3+wn8BDnj+2aHPKhAPYz
+ TEyRPxRkuRPpb5eqa/1fL9SAiUyKTb1mwAX1cv7RRMUUK0DRYgGO63A3G w==;
+X-CSE-ConnectionGUID: UZ4fvpayTFG/I7NWfys46w==
+X-CSE-MsgGUID: I1NdmA3hSQK5rxBg0pirrQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="27219949"
+X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="27219949"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 07:43:52 -0700
+X-CSE-ConnectionGUID: fFhqjQoATwSeSAp0p1uulQ==
+X-CSE-MsgGUID: Bhyb+n69Qi2+6zIz3NLSeQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="74035916"
+X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="73697288"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 07:14:28 -0700
-Date: Wed, 2 Oct 2024 16:14:03 +0200
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 07:43:51 -0700
+Date: Wed, 2 Oct 2024 16:43:48 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t] include/drm-uapi: Update uapi headers
-Message-ID: <20241002141403.5udwzdenyyij3xqa@kamilkon-DESK.igk.intel.com>
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 2/4] lib/intel: Unify MI_STORE_DWORD secure batch
+ checks
+Message-ID: <20241002144348.zuo7qs4k6zrn7zfc@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-References: <20240925192354.22814-1-ville.syrjala@linux.intel.com>
- <20241002101535.g7diqamdyfzfe44b@kamilkon-DESK.igk.intel.com>
- <Zv0eebOxYgj2iYca@intel.com>
+ Ville Syrjala <ville.syrjala@linux.intel.com>
+References: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
+ <20241002104515.32164-2-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zv0eebOxYgj2iYca@intel.com>
+In-Reply-To: <20241002104515.32164-2-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,48 +74,586 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Ville,
-On 2024-10-02 at 13:20:41 +0300, Ville Syrjälä wrote:
-> On Wed, Oct 02, 2024 at 12:15:35PM +0200, Kamil Konieczny wrote:
-> > Hi Ville,
-> > On 2024-09-25 at 22:23:54 +0300, Ville Syrjala wrote:
-> > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > 
-> > > Sync uapi headers with drm-next commit d7126c0cfc13
-> > > ("Merge tag 'drm-xe-next-fixes-2024-09-19' of
-> > > https://gitlab.freedesktop.org/drm/xe/kernel into drm-next")
-> > > 
-> > > Note that headers for old dri1 drivers are now gone,
-> > > and we gain a bunch of new headers for various
-> > > new drivers (gpu and accel).
-> > > 
-> > > I manually intervened on the deletion of
-> > > include/drm-uapi/xe_drm_eudebug.h because it's some
-> > > non-upstream thing. IMO that sort of stuff really
-> > > should live in a completely different place...
-> > 
-> > With this paragraph removed this is
-> > Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+On 2024-10-02 at 13:45:13 +0300, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Thanks.
+> A bunch of tests use a 'gen<6' check to determine if
+> MI_STORE_DWORD needs a secure batch or not. Other places
+> have a more correct check written in different styles.
+> Unify all of it to use a common helper.
 > 
-
-Ok, merged.
-
-> > 
-> > PS. could you add such notes in cover letter? It will ease
-> > merging later. Or if you think we should remind devs about this
-> > it could find a way in README.
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>  lib/igt_dummyload.c             |  2 +-
+>  lib/igt_gt.c                    | 20 ++++++++++++++++++++
+>  lib/igt_gt.h                    |  1 +
+>  lib/igt_store.c                 |  2 +-
+>  tests/intel/gem_ctx_shared.c    |  4 ++--
+>  tests/intel/gem_exec_async.c    |  2 +-
+>  tests/intel/gem_exec_capture.c  |  9 +++------
+>  tests/intel/gem_exec_fence.c    |  4 ++--
+>  tests/intel/gem_exec_flush.c    |  4 ++--
+>  tests/intel/gem_exec_gttfill.c  |  2 +-
+>  tests/intel/gem_exec_nop.c      |  4 ++--
+>  tests/intel/gem_exec_parallel.c |  2 +-
+>  tests/intel/gem_exec_params.c   |  2 +-
+>  tests/intel/gem_exec_reloc.c    |  8 +++++---
+>  tests/intel/gem_exec_schedule.c |  4 ++--
+>  tests/intel/gem_exec_store.c    | 16 ++++++----------
+>  tests/intel/gem_exec_suspend.c  |  2 +-
+>  tests/intel/gem_exec_whisper.c  |  2 +-
+>  tests/intel/gem_ringfill.c      |  2 +-
+>  tests/intel/gem_softpin.c       |  4 ++--
+>  tests/intel/gem_sync.c          |  8 ++++----
+>  tests/intel/gem_userptr_blits.c |  4 ++--
+>  tests/intel/i915_module_load.c  |  2 +-
+>  tests/prime_vgem.c              |  2 +-
+>  24 files changed, 64 insertions(+), 48 deletions(-)
 > 
-> There was no cover letter since this was just a single patch.
-> So not sure what you're asking me here?
+> diff --git a/lib/igt_dummyload.c b/lib/igt_dummyload.c
+> index a9a2de077698..3cf80b762921 100644
+> --- a/lib/igt_dummyload.c
+> +++ b/lib/igt_dummyload.c
+> @@ -217,7 +217,7 @@ emit_recursive_batch(igt_spin_t *spin,
+>  	} else if (opts->flags & IGT_SPIN_POLL_RUN) {
+>  		igt_assert(!opts->dependency);
+>  
+> -		if (gen == 4 || gen == 5) {
+> +		if (gem_store_dword_needs_secure(fd)) {
+>  			execbuf->flags |= I915_EXEC_SECURE;
+>  			igt_require(__igt_device_set_master(fd) == 0);
+>  		}
+> diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+> index 331783e49acf..a1075e8bbed1 100644
+> --- a/lib/igt_gt.c
+> +++ b/lib/igt_gt.c
+> @@ -691,6 +691,26 @@ bool gem_can_store_dword(int fd, unsigned int engine)
+>  				gem_execbuf_flags_to_engine_class(engine));
+>  }
+>  
+> +/**
+> + * gem_store_dword_needs_secure:
+> + * @fd: open i915 drm file descriptor
+> + *
+> + * Does the MI_STORE_DWORD need to be executed from a secure batch?
 
-I was thinking about documenting this for future but maybe
-I am overthinking this. No need for any action.
+Imho better write a statement, not a question, so:
+
+* True if the MI_STORE_DWORD needs to be executed from a secure batch
+
+> + */
+> +bool gem_store_dword_needs_secure(int fd)
+> +{
+> +	const struct intel_device_info *info =
+> +		intel_get_device_info(intel_get_drm_devid(fd));
+> +
+> +	switch (info->graphics_ver) {
+> +	case 4:
+> +	case 5:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+>  const struct intel_execution_engine2 intel_execution_engines2[] = {
+>  	{ "rcs0", I915_ENGINE_CLASS_RENDER, 0, I915_EXEC_RENDER },
+>  	{ "bcs0", I915_ENGINE_CLASS_COPY, 0, I915_EXEC_BLT },
+> diff --git a/lib/igt_gt.h b/lib/igt_gt.h
+> index 4a67cd9f038e..d3213123d6ac 100644
+> --- a/lib/igt_gt.h
+> +++ b/lib/igt_gt.h
+> @@ -76,6 +76,7 @@ unsigned intel_detect_and_clear_missed_interrupts(int fd);
+>  
+>  bool gem_can_store_dword(int fd, unsigned int engine);
+>  bool gem_class_can_store_dword(int fd, int class);
+> +bool gem_store_dword_needs_secure(int fd);
+>  
+>  extern const struct intel_execution_engine2 {
+>  	char name[16];
+> diff --git a/lib/igt_store.c b/lib/igt_store.c
+> index 538405e7f594..42ffdc5cdbe4 100644
+> --- a/lib/igt_store.c
+> +++ b/lib/igt_store.c
+> @@ -48,7 +48,7 @@ void igt_store_word(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
+>  		execbuf.flags |= I915_EXEC_FENCE_IN;
+>  		execbuf.rsvd2 = fence;
+>  	}
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+
+What about just one function returning this flag or zero?
+So it would be used like:
+
+	execbuf.flags |= gem_store_dword_secure_batch(fd);
+
+Even less code.
+
+>  
+>  	memset(obj, 0, sizeof(obj));
+> diff --git a/tests/intel/gem_ctx_shared.c b/tests/intel/gem_ctx_shared.c
+> index de06f2d54876..4b9d604f6732 100644
+> --- a/tests/intel/gem_ctx_shared.c
+> +++ b/tests/intel/gem_ctx_shared.c
+> @@ -366,7 +366,7 @@ static void exec_shared_gtt(int i915, const intel_ctx_cfg_t *cfg,
+>  	obj.handle = batch;
+>  	obj.offset += 8192; /* make sure we don't cause an eviction! */
+>  	execbuf.rsvd1 = ctx[1]->id;
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(i915))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	gem_execbuf(i915, &execbuf);
+>  
+> @@ -567,7 +567,7 @@ static void store_dword(int i915, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = to_user_pointer(obj + !cork);
+>  	execbuf.buffer_count = 2 + !!cork;
+>  	execbuf.flags = ring;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(i915))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/gem_exec_async.c b/tests/intel/gem_exec_async.c
+> index 573157add648..6d739307cfe6 100644
+> --- a/tests/intel/gem_exec_async.c
+> +++ b/tests/intel/gem_exec_async.c
+> @@ -56,7 +56,7 @@ static void store_dword(int fd, int id, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+>  	execbuf.flags = ring;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/gem_exec_capture.c b/tests/intel/gem_exec_capture.c
+> index 2340ad49520e..37c1f7255046 100644
+> --- a/tests/intel/gem_exec_capture.c
+> +++ b/tests/intel/gem_exec_capture.c
+> @@ -396,7 +396,7 @@ static void __capture1(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = (uintptr_t)obj;
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+>  	execbuf.flags = e->flags;
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.flags |= I915_EXEC_FENCE_OUT;
+>  	execbuf.rsvd1 = ctx->id;
+> @@ -586,7 +586,7 @@ __captureN(int fd, int dir, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = (uintptr_t)obj;
+>  	execbuf.buffer_count = count + 2;
+>  	execbuf.flags = e->flags;
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.flags |= I915_EXEC_FENCE_OUT;
+>  	execbuf.rsvd1 = ctx->id;
+> @@ -968,12 +968,9 @@ igt_main
+>  	uint32_t region;
+>  
+>  	igt_fixture {
+> -		int gen;
+> -
+>  		fd = drm_open_driver(DRIVER_INTEL);
+>  
+> -		gen = intel_gen(intel_get_drm_devid(fd));
+> -		if (gen > 3 && gen < 6) /* ctg and ilk need secure batches */
+> +		if (gem_store_dword_needs_secure(fd))
+>  			igt_device_set_master(fd);
+>  
+>  		igt_require_gem(fd);
+> diff --git a/tests/intel/gem_exec_fence.c b/tests/intel/gem_exec_fence.c
+> index 7f39c73d72fa..c3c462b77dc4 100644
+> --- a/tests/intel/gem_exec_fence.c
+> +++ b/tests/intel/gem_exec_fence.c
+> @@ -796,7 +796,7 @@ static void test_parallel(int i915, const intel_ctx_t *ctx,
+>  		batch[++i] = MI_BATCH_BUFFER_END;
+>  		gem_write(i915, obj[1].handle, 0, batch, sizeof(batch));
+>  
+> -		if (gen < 6)
+> +		if (gem_store_dword_needs_secure(i915))
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  		gem_execbuf(i915, &execbuf);
+> @@ -919,7 +919,7 @@ static void test_concurrent(int i915, const intel_ctx_t *ctx,
+>  	tmp_ctx = intel_ctx_create(i915, &ctx->cfg);
+>  	execbuf.rsvd1 = tmp_ctx->id;
+>  	execbuf.rsvd2 = spin->out_fence;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(i915))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  	gem_execbuf(i915, &execbuf);
+> diff --git a/tests/intel/gem_exec_flush.c b/tests/intel/gem_exec_flush.c
+> index 795be929c2e2..027510424b06 100644
+> --- a/tests/intel/gem_exec_flush.c
+> +++ b/tests/intel/gem_exec_flush.c
+> @@ -1668,7 +1668,7 @@ static void run(int fd, unsigned ring, int nchild, int timeout,
+>  		execbuf.buffers_ptr = to_user_pointer(obj);
+>  		execbuf.buffer_count = 3;
+>  		execbuf.flags = ring | (1 << 12);
+> -		if (gen < 6)
+> +		if (gem_store_dword_needs_secure(fd))
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  		obj[1].handle = gem_create(fd, 1024*64);
+> @@ -1915,7 +1915,7 @@ static void batch(int fd, unsigned ring, int nchild, int timeout,
+>  		execbuf.buffers_ptr = to_user_pointer(obj);
+>  		execbuf.buffer_count = 2;
+>  		execbuf.flags = ring | (1 << 12);
+> -		if (gen < 6)
+> +		if (gem_store_dword_needs_secure(fd))
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  		obj[1].handle = gem_create(fd, 64<<10);
+> diff --git a/tests/intel/gem_exec_gttfill.c b/tests/intel/gem_exec_gttfill.c
+> index 3f05017772af..59a3679fec07 100644
+> --- a/tests/intel/gem_exec_gttfill.c
+> +++ b/tests/intel/gem_exec_gttfill.c
+> @@ -187,7 +187,7 @@ static void fillgtt(int fd, const intel_ctx_t *ctx, unsigned ring, int timeout)
+>  
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffer_count = 1;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/gem_exec_nop.c b/tests/intel/gem_exec_nop.c
+> index 1b20cc870187..652f8deffc3d 100644
+> --- a/tests/intel/gem_exec_nop.c
+> +++ b/tests/intel/gem_exec_nop.c
+> @@ -165,7 +165,7 @@ static void poll_ring(int fd, const intel_ctx_t *ctx,
+>  	uint64_t elapsed;
+>  
+>  	flags = I915_EXEC_NO_RELOC;
+> -	if (gen == 4 || gen == 5)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		flags |= I915_EXEC_SECURE;
+>  
+>  	igt_require(gem_class_can_store_dword(fd, e->class));
+> @@ -278,7 +278,7 @@ static void poll_sequential(int fd, const intel_ctx_t *ctx,
+>  	bool cached;
+>  
+>  	flags = I915_EXEC_NO_RELOC;
+> -	if (gen == 4 || gen == 5)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		flags |= I915_EXEC_SECURE;
+>  
+>  	nengine = 0;
+> diff --git a/tests/intel/gem_exec_parallel.c b/tests/intel/gem_exec_parallel.c
+> index 90c46bf0cb17..9817bcd0ff33 100644
+> --- a/tests/intel/gem_exec_parallel.c
+> +++ b/tests/intel/gem_exec_parallel.c
+> @@ -147,7 +147,7 @@ static void *thread(void *data)
+>  	execbuf.flags = t->engine;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+> -	if (t->gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	if (t->flags & (CONTEXTS | FDS)) {
+>  		tmp_ctx = intel_ctx_create(fd, &t->ctx->cfg);
+> diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.c
+> index d0260d5f1ae6..382d4f6dc39d 100644
+> --- a/tests/intel/gem_exec_params.c
+> +++ b/tests/intel/gem_exec_params.c
+> @@ -248,7 +248,7 @@ static void test_batch_first(int fd)
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  	/* Normal mode */
+> diff --git a/tests/intel/gem_exec_reloc.c b/tests/intel/gem_exec_reloc.c
+> index 44c09c3e2941..d9afbe23a337 100644
+> --- a/tests/intel/gem_exec_reloc.c
+> +++ b/tests/intel/gem_exec_reloc.c
+> @@ -903,7 +903,7 @@ static void active(int fd, const intel_ctx_t *ctx, unsigned engine)
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> @@ -1310,14 +1310,13 @@ static void concurrent_child(int i915, const intel_ctx_t *ctx,
+>  			     uint32_t *common, int num_common,
+>  			     int in, int out)
+>  {
+> -	const unsigned int gen = intel_gen(intel_get_drm_devid(i915));
+>  	int idx = flags_to_index(e);
+>  	uint64_t relocs = concurrent_relocs(i915, idx, CONCURRENT);
+>  	struct drm_i915_gem_exec_object2 obj[num_common + 2];
+>  	struct drm_i915_gem_execbuffer2 execbuf = {
+>  		.buffers_ptr = to_user_pointer(obj),
+>  		.buffer_count = ARRAY_SIZE(obj),
+> -		.flags = e->flags | I915_EXEC_HANDLE_LUT | (gen < 6 ? I915_EXEC_SECURE : 0),
+> +		.flags = e->flags | I915_EXEC_HANDLE_LUT,
+>  		.rsvd1 = ctx->id,
+>  	};
+>  	uint32_t *batch = &obj[num_common + 1].handle;
+> @@ -1325,6 +1324,9 @@ static void concurrent_child(int i915, const intel_ctx_t *ctx,
+>  	uint32_t *x;
+>  	int err = 0;
+>  
+> +	if (gem_store_dword_needs_secure(i915))
+> +		execbuf.flags |= I915_EXEC_SECURE;
+> +
+>  	memset(obj, 0, sizeof(obj));
+>  	obj[0].handle = gem_create(i915, 64 * CONCURRENT * 4);
+>  
+> diff --git a/tests/intel/gem_exec_schedule.c b/tests/intel/gem_exec_schedule.c
+> index fdb7ebd702cd..84219b4cf5a9 100644
+> --- a/tests/intel/gem_exec_schedule.c
+> +++ b/tests/intel/gem_exec_schedule.c
+> @@ -187,7 +187,7 @@ static uint32_t __store_dword(int fd, uint64_t ahnd, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = to_user_pointer(obj + !cork);
+>  	execbuf.buffer_count = 2 + !!cork;
+>  	execbuf.flags = ring;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> @@ -2342,7 +2342,7 @@ static void reorder_wide(int fd, const intel_ctx_cfg_t *cfg, unsigned ring)
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+>  	execbuf.flags = ring;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  	execbuf.flags |= I915_EXEC_FENCE_IN;
+> diff --git a/tests/intel/gem_exec_store.c b/tests/intel/gem_exec_store.c
+> index 3b1319519107..d64cdeb6d435 100644
+> --- a/tests/intel/gem_exec_store.c
+> +++ b/tests/intel/gem_exec_store.c
+> @@ -84,7 +84,7 @@ static void store_dword(int fd, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+>  	execbuf.flags = e->flags;
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> @@ -169,7 +169,7 @@ static void store_cachelines(int fd, const intel_ctx_t *ctx,
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffer_count = flags & PAGES ? NCACHELINES + 1 : 2;
+>  	execbuf.flags = e->flags;
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> @@ -281,7 +281,7 @@ static void store_all(int fd, const intel_ctx_t *ctx)
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> @@ -414,7 +414,7 @@ static void store_all(int fd, const intel_ctx_t *ctx)
+>  	free(reloc);
+>  }
+>  
+> -static int print_welcome(int fd)
+> +static void print_welcome(int fd)
+>  {
+>  	uint16_t devid = intel_get_drm_devid(fd);
+>  	const struct intel_device_info *info = intel_get_device_info(devid);
+> @@ -430,8 +430,6 @@ static int print_welcome(int fd)
+>  		err = -errno;
+>  	igt_info("GPU operation? %s [errno=%d]\n",
+>  		 err == 0 ? "yes" : "no", err);
+> -
+> -	return info->graphics_ver;
+>  }
+
+Why do you changed this? Seems unrelated.
+
+>  
+>  #define test_each_engine(T, i915, ctx, e)  \
+> @@ -446,12 +444,10 @@ igt_main
+>  	int fd;
+>  
+>  	igt_fixture {
+> -		int gen;
+> -
+>  		fd = drm_open_driver(DRIVER_INTEL);
+>  
+> -		gen = print_welcome(fd);
+
+Even if you do not need it here it will look cleaner
+in a follow up patch.
+
+Rest looks ok.
 
 Regards,
 Kamil
 
-> 
+> -		if (gen > 3 && gen < 6) /* ctg and ilk need secure batches */
+> +		print_welcome(fd);
+> +		if (gem_store_dword_needs_secure(fd))
+>  			igt_device_set_master(fd);
+>  
+>  		igt_require_gem(fd);
+> diff --git a/tests/intel/gem_exec_suspend.c b/tests/intel/gem_exec_suspend.c
+> index 0d08e8e4428f..646c219588e4 100644
+> --- a/tests/intel/gem_exec_suspend.c
+> +++ b/tests/intel/gem_exec_suspend.c
+> @@ -176,7 +176,7 @@ static void run_test(int fd, const intel_ctx_t *ctx,
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = 2;
+>  	execbuf.flags = 1 << 11;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/gem_exec_whisper.c b/tests/intel/gem_exec_whisper.c
+> index 8d39fc0af3b6..32f7ccb2d468 100644
+> --- a/tests/intel/gem_exec_whisper.c
+> +++ b/tests/intel/gem_exec_whisper.c
+> @@ -405,7 +405,7 @@ static void whisper(int fd, const intel_ctx_t *ctx,
+>  			execbuf.buffer_count = 2;
+>  			execbuf.flags = I915_EXEC_HANDLE_LUT;
+>  			execbuf.flags |= I915_EXEC_NO_RELOC;
+> -			if (gen < 6)
+> +			if (gem_store_dword_needs_secure(fd))
+>  				execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  			execbuf.rsvd1 = ctx->id;
+> diff --git a/tests/intel/gem_ringfill.c b/tests/intel/gem_ringfill.c
+> index 298ed9c672c4..a8b9dc19cbc0 100644
+> --- a/tests/intel/gem_ringfill.c
+> +++ b/tests/intel/gem_ringfill.c
+> @@ -220,7 +220,7 @@ static void setup_execbuf(int fd, const intel_ctx_t *ctx,
+>  	execbuf->buffers_ptr = to_user_pointer(obj);
+>  	execbuf->flags = ring | I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT;
+>  
+> -	if (gen > 3 && gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf->flags |= I915_EXEC_SECURE;
+>  
+>  	execbuf->rsvd1 = ctx->id;
+> diff --git a/tests/intel/gem_softpin.c b/tests/intel/gem_softpin.c
+> index d8b99a2ae0c5..98c751439bfc 100644
+> --- a/tests/intel/gem_softpin.c
+> +++ b/tests/intel/gem_softpin.c
+> @@ -712,7 +712,7 @@ static void test_noreloc(int fd, enum sleep sleep, unsigned flags)
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffers_ptr = to_user_pointer(object);
+>  	execbuf.buffer_count = 1;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	gem_execbuf(fd, &execbuf);
+>  	gem_close(fd, object[0].handle);
+> @@ -1072,7 +1072,7 @@ static void test_allocator_evict(int fd, const intel_ctx_t *ctx,
+>  
+>  	memset(&execbuf, 0, sizeof(execbuf));
+>  	execbuf.buffer_count = 1;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/gem_sync.c b/tests/intel/gem_sync.c
+> index 21180012c7a3..0861f41d75b1 100644
+> --- a/tests/intel/gem_sync.c
+> +++ b/tests/intel/gem_sync.c
+> @@ -720,7 +720,7 @@ store_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+>  		execbuf.flags = ied_flags(&ied, child);
+>  		execbuf.flags |= I915_EXEC_NO_RELOC;
+>  		execbuf.flags |= I915_EXEC_HANDLE_LUT;
+> -		if (gen < 6)
+> +		if (gem_store_dword_needs_secure(fd))
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  		execbuf.rsvd1 = ctx->id;
+>  
+> @@ -829,7 +829,7 @@ switch_ring(int fd, const intel_ctx_t *ctx, unsigned ring,
+>  			c->execbuf.flags = ied_flags(&ied, child);
+>  			c->execbuf.flags |= I915_EXEC_NO_RELOC;
+>  			c->execbuf.flags |= I915_EXEC_HANDLE_LUT;
+> -			if (gen < 6)
+> +			if (gem_store_dword_needs_secure(fd))
+>  				c->execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  			c->ctx = intel_ctx_create(fd, &ctx->cfg);
+> @@ -997,7 +997,7 @@ __store_many(int fd, const intel_ctx_t *ctx, unsigned ring,
+>  	execbuf.flags = ring;
+>  	execbuf.flags |= I915_EXEC_NO_RELOC;
+>  	execbuf.flags |= I915_EXEC_HANDLE_LUT;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
+> @@ -1212,7 +1212,7 @@ store_all(int fd, const intel_ctx_t *ctx, int num_children, int timeout)
+>  		execbuf.buffers_ptr = to_user_pointer(object);
+>  		execbuf.flags |= I915_EXEC_NO_RELOC;
+>  		execbuf.flags |= I915_EXEC_HANDLE_LUT;
+> -		if (gen < 6)
+> +		if (gem_store_dword_needs_secure(fd))
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  		execbuf.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/gem_userptr_blits.c b/tests/intel/gem_userptr_blits.c
+> index 67283c182647..ff076dc649b5 100644
+> --- a/tests/intel/gem_userptr_blits.c
+> +++ b/tests/intel/gem_userptr_blits.c
+> @@ -463,7 +463,7 @@ static void store_dword(int fd, uint32_t target,
+>  	execbuf.buffers_ptr = to_user_pointer(obj);
+>  	execbuf.buffer_count = ARRAY_SIZE(obj);
+>  	execbuf.flags = 0;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(fd))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  
+>  	memset(obj, 0, sizeof(obj));
+> @@ -1446,7 +1446,7 @@ static void store_dword_rand(int i915, const intel_ctx_t *ctx,
+>  	exec.buffer_count = 2;
+>  	exec.buffers_ptr = to_user_pointer(obj);
+>  	exec.flags = engine;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(i915))
+>  		exec.flags |= I915_EXEC_SECURE;
+>  	exec.rsvd1 = ctx->id;
+>  
+> diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
+> index cd1ee6d10e84..b3752a19c89c 100644
+> --- a/tests/intel/i915_module_load.c
+> +++ b/tests/intel/i915_module_load.c
+> @@ -157,7 +157,7 @@ static void store_all(int i915)
+>  		batch[value] = nengine;
+>  
+>  		execbuf.flags = e->flags;
+> -		if (gen < 6)
+> +		if (gem_store_dword_needs_secure(i915))
+>  			execbuf.flags |= I915_EXEC_SECURE;
+>  		execbuf.flags |= I915_EXEC_NO_RELOC | I915_EXEC_HANDLE_LUT;
+>  		execbuf.rsvd1 = ctx->id;
+> diff --git a/tests/prime_vgem.c b/tests/prime_vgem.c
+> index 932058d2cd97..d15ea906ff7b 100644
+> --- a/tests/prime_vgem.c
+> +++ b/tests/prime_vgem.c
+> @@ -622,7 +622,7 @@ static void work(int i915, uint64_t ahnd, uint64_t scratch_offset, int dmabuf,
+>  	execbuf.buffers_ptr = (uintptr_t)obj;
+>  	execbuf.buffer_count = 2;
+>  	execbuf.flags = ring;
+> -	if (gen < 6)
+> +	if (gem_store_dword_needs_secure(i915))
+>  		execbuf.flags |= I915_EXEC_SECURE;
+>  	execbuf.rsvd1 = ctx->id;
+>  
 > -- 
-> Ville Syrjälä
-> Intel
+> 2.45.2
+> 
