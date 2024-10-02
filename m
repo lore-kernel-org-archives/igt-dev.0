@@ -4,53 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CD72CF6D3A
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 15:39:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2170BCF6D3B
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 15:45:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4AD7F89DA5;
-	Wed,  2 Oct 2024 15:39:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6595F10E03C;
+	Wed,  2 Oct 2024 15:45:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K3u7sFcT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZMZLfGk1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6C69489DA5
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 15:39:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EECCA10E03C
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 15:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727883542; x=1759419542;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=lDZGblpuVEsVO/ucD32XRwNmWw6HDFFDSbvG+gEmsCc=;
- b=K3u7sFcTY6SSAtmiIY22dXP5wyqSB9z2WarBzeHFSiqWwgo1z1Gjjd8a
- Es5XquRpXyW8CmSuHW0a1rZvzJ0zgwTHKFq28VMMs/wfRIuiZJlZ8OE0I
- 4RwDIN0VqUHln+rpb/j7UuwvQm7kbTq4EMo6+k5apb1HYOB6c9gLL+DeE
- kZlJ1GsKmF3c7nSM30gyYmS9YgxWyLBhKyLGYO76ugNNJ514zO/ZCP+Nm
- cO70cS6Tj5hVSYbvI+yML9Zgx/vo319TIqnD0ZSnLJBp5tuqc7hj4g73i
- RU8XpYW2cPEWh4PYK8NBodTFbVo+uAu9fFA4hs2pG9V84YMEQXMOp/2N9 w==;
-X-CSE-ConnectionGUID: Ibc1NnpGSD2fHcU5c40BMg==
-X-CSE-MsgGUID: u/PnY4Q7SQO2xkyCnHog1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="49577272"
-X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="49577272"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 08:38:54 -0700
-X-CSE-ConnectionGUID: wX296+49SaqyTl6LvXFRbQ==
-X-CSE-MsgGUID: p8cTKAEyTmOO7Kwp/Shc6Q==
+ t=1727883913; x=1759419913;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=Do52Df8sAkikLmwEYTJaCgs79RbAmFyzked+WUdwUqQ=;
+ b=ZMZLfGk13iFayFFqV0xUjHR/qvtFe0Zi9aMlhSrzaBgY4RZPJ35PI9TS
+ /x8KtrTeko1LZt/Ui3pJsqTyrvZf5HDxNtk1d5KCAyt2glZa/stOIALJF
+ FopqxGxPldktYymdnotyD70dVgA+2x4uWxYZA/sZG3D/uHVCRbNxb7JL5
+ B/2R2UjNqbeJ1Mypg/fi3Xlz2dbIWFMgZjflJxIT5HsliLFyDqZ1al9sF
+ /pFRvrVVCfkSUUcCvNsl/op8BCKn2PORofZz75JW7Vv6njcDMUpCt4X/u
+ 4MQINNqSbiKESkIyW7k4IINoq33BH86pR28ye7soInCDi0breXUKfaPrs g==;
+X-CSE-ConnectionGUID: /kV1j6ZaRsSL6AlZ/WL8yw==
+X-CSE-MsgGUID: qa5/1rfcRSqMW8x4FG1w+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="26853117"
+X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="26853117"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 08:45:13 -0700
+X-CSE-ConnectionGUID: WalBVtzJTVWeLWZSnSuG8g==
+X-CSE-MsgGUID: fzEfPkMeT1iWNPznu9SQiQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="104848493"
-Received: from kbommu-desk.iind.intel.com ([10.145.169.159])
- by orviesa002.jf.intel.com with ESMTP; 02 Oct 2024 08:38:53 -0700
-From: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="73911783"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 08:45:12 -0700
+Date: Wed, 2 Oct 2024 17:45:08 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
-Subject: [PATCH i-g-t v4] tests/core_setmaster: Handle the test even if cards
- are non-continuous
-Date: Wed,  2 Oct 2024 20:55:38 +0530
-Message-Id: <20241002152538.26971-1-krishnaiah.bommu@intel.com>
-X-Mailer: git-send-email 2.25.1
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 3/3] lib/intel_compute: Fix compiler warnings on
+ x86-32
+Message-ID: <20241002154508.nozgs4ysclyfukk7@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ville Syrjala <ville.syrjala@linux.intel.com>
+References: <20240927163307.10159-1-ville.syrjala@linux.intel.com>
+ <20240927163307.10159-3-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240927163307.10159-3-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,154 +73,59 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Although most of user space assumes drm cards to be populated continuously,
-this assumption may not be always true. After hot unpluging and repluging
-of card, the card may be non-continuous. To address such scenarios where
-the cards can be non-continuous Modify the tweak_perm function to loop all
-possible card numbers(card0-card255) and break after first card found.
+Hi Ville,
+On 2024-09-27 at 19:33:07 +0300, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> x86-32 gcc is not happy:
+> ../lib/intel_compute.c: In function ‘xehp_compute_exec_compute’:
+> ../lib/intel_compute.c:862:48: warning: right shift count >= width of type [-Wshift-count-overflow]
+>   862 |         addr_bo_buffer_batch[b++] = ADDR_BATCH >> 32;
+>       |                                                ^~
+> 
+> Just use ULL for all the address constants.
 
-Problem Description:
-The test fails after running the `core_hotunplug@hot*` subtest, where
-Card0 is populated as card1, This leads to a failure in the subsequent
-`master-drop-set-user` test.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Command sequence for reproducing the issue:
-- Check available cards: `ls /dev/dri/`
-        - Output: by-path  card0  renderD128
-- Run the test: `# ./core_hotunplug --r hotrebind-lateclose`
-- Check again: ‘ls /dev/dri/’
-        - Output after core_hotunplug : by-path  card1  renderD129
-- Run the test: `# ./core_setmaster --r master-drop-set-user`
-        - Output: gta@core_setmaster@master-drop-set-user failure
-
-This failures on both XE and i915 for above sequence.
-
-v2: Break the loop after first card found and check return value of chmod.
-v3: Undated comments in code.
-v4: Refactor the code in master-drop-set-user
-
-Signed-off-by: Bommu Krishnaiah krishnaiah.bommu@intel.com
-Cc: Emil Velikov emil.l.velikov@gmail.com
-Cc: Himal Prasad Ghimiray himal.prasad.ghimiray@intel.com
-Cc: Kamil Konieczny kamil.konieczny@linux.intel.com
----
- tests/core_setmaster.c | 78 +++++++++++++++++++++++-------------------
- 1 file changed, 43 insertions(+), 35 deletions(-)
-
-diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
-index 9c2083f66..137039782 100644
---- a/tests/core_setmaster.c
-+++ b/tests/core_setmaster.c
-@@ -107,40 +107,28 @@ static void check_drop_set(void)
- 	drm_close_driver(master);
- }
- 
--static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
-+static void tweak_perm(uint8_t *saved_perm, char *path, bool save)
- {
--	char path[256];
- 	struct stat st;
--	unsigned i;
--
--	for (i = 0; i < max_perm; i++) {
--		snprintf(path, sizeof(path), "/dev/dri/card%u", i);
--
--		/* Existing userspace assumes there's no gaps, do the same. */
--		if (stat(path, &st) != 0)
--			break;
--
--		if (save) {
--			/* Save and toggle */
--			saved_perm[i] = st.st_mode & (S_IROTH | S_IWOTH);
--			st.st_mode |= S_IROTH | S_IWOTH;
--		} else {
--			/* Clear and restore */
--			st.st_mode &= ~(S_IROTH | S_IWOTH);
--			st.st_mode |= saved_perm[i];
--		}
--
--		/* There's only one way for chmod to fail - race vs rmmod.
--		 * In that case, do _not_ error/skip, since:
--		 * - we need to restore the [correct] permissions
--		 * - __drm_open_driver() can open another device, aka the
--		 * failure may be irrelevant.
--		 */
--		chmod(path, st.st_mode);
-+	int ret;
-+
-+	ret = stat(path, &st);
-+	igt_assert_f(!ret, "stat failed with %d path=%s\n", errno, path);
-+
-+	if (save) {
-+		/* Save and toggle */
-+		*saved_perm = st.st_mode & (S_IROTH | S_IWOTH);
-+		st.st_mode |= S_IROTH | S_IWOTH;
-+	} else {
-+		/* Clear and restore */
-+		st.st_mode &= ~(S_IROTH | S_IWOTH);
-+		st.st_mode |= *saved_perm;
- 	}
--	return i;
--}
- 
-+	/* There's only one way for chmod to fail - race vs rmmod. */
-+	ret = chmod(path, st.st_mode);
-+	igt_assert_f(!ret, "chmod failed with %d path=%s\n", errno, path);
-+}
- 
- igt_main
- {
-@@ -160,8 +148,8 @@ igt_main
- 
- 
- 	igt_subtest_group {
--		uint8_t saved_perm[255];
--		unsigned num;
-+		uint8_t saved_perm;
-+		char buf[255];
- 
- 		/* Upon dropping root we end up as random user, which
- 		 * a) is not in the video group, and
-@@ -176,8 +164,28 @@ igt_main
- 		 * restored on skip or failure.
- 		 */
- 		igt_fixture {
--			num = tweak_perm(saved_perm, ARRAY_SIZE(saved_perm),
--					 true);
-+			char path[255];
-+			int len;
-+			int fd;
-+
-+			fd = __drm_open_driver(DRIVER_ANY);
-+			igt_assert_fd(fd);
-+
-+			snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
-+
-+			memset(buf, 0, sizeof(buf));
-+			len = readlink(path, buf, sizeof(buf) - 1);
-+			if (len <= 0)
-+				igt_assert_f(0, "readlink failed with %d path=%s\n", errno, path);
-+
-+			buf[len] = '\0';
-+			if (!(strstr(buf, "/dev/dri/card") == buf ||
-+					strstr(buf, "/dev/dri/renderD") == buf))
-+				igt_assert_f(0, "Not a card nor render, errno %d path=%s\n", errno, buf);
-+
-+			igt_assert_eq(__drm_close_driver(fd), 0);
-+
-+			tweak_perm(&saved_perm, buf, true);
- 		}
- 
- 		igt_describe("Ensure first normal user can Set/DropMaster");
-@@ -191,7 +199,7 @@ igt_main
- 
- 		/* Restore the original permissions */
- 		igt_fixture {
--			tweak_perm(saved_perm, num, false);
-+			tweak_perm(&saved_perm, buf, false);
- 		}
- 	}
- 
--- 
-2.34.1
-
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>  lib/intel_compute.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> index 1cc39f645c2e..3ab9ace7932c 100644
+> --- a/lib/intel_compute.c
+> +++ b/lib/intel_compute.c
+> @@ -27,20 +27,20 @@
+>  #define SIZE_BATCH			0x1000
+>  #define SIZE_BUFFER_INPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
+>  #define SIZE_BUFFER_OUTPUT		MAX(sizeof(float) * SIZE_DATA, 0x1000)
+> -#define ADDR_BATCH			0x100000UL
+> -#define ADDR_INPUT			0x200000UL
+> -#define ADDR_OUTPUT			0x300000UL
+> -#define ADDR_SURFACE_STATE_BASE		0x400000UL
+> -#define ADDR_DYNAMIC_STATE_BASE		0x500000UL
+> +#define ADDR_BATCH			0x100000ULL
+> +#define ADDR_INPUT			0x200000ULL
+> +#define ADDR_OUTPUT			0x300000ULL
+> +#define ADDR_SURFACE_STATE_BASE		0x400000ULL
+> +#define ADDR_DYNAMIC_STATE_BASE		0x500000ULL
+>  #define ADDR_INDIRECT_OBJECT_BASE	0x100000000
+>  #define OFFSET_INDIRECT_DATA_START	0xFFFD0000
+>  #define OFFSET_KERNEL			0xFFFE0000
+>  
+> -#define ADDR_GENERAL_STATE_BASE		0x80000000UL
+> -#define ADDR_INSTRUCTION_STATE_BASE	0x90000000UL
+> +#define ADDR_GENERAL_STATE_BASE		0x80000000ULL
+> +#define ADDR_INSTRUCTION_STATE_BASE	0x90000000ULL
+>  #define OFFSET_BINDING_TABLE		0x1000
+>  
+> -#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000UL
+> +#define XE2_ADDR_STATE_CONTEXT_DATA_BASE	0x900000ULL
+>  #define OFFSET_STATE_SIP			0xFFFF0000
+>  
+>  /*
+> -- 
+> 2.45.2
+> 
