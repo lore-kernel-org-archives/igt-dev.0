@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5263CF6D3B
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 16:01:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBE9ECF6D3C
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 16:29:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A4EAB10E0E7;
-	Wed,  2 Oct 2024 16:01:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 722E710E0E7;
+	Wed,  2 Oct 2024 16:29:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nxg6JfOa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fvTy0Ktw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA77310E0E7
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 16:01:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD80010E0E7
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 16:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727884911; x=1759420911;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=Qhbf1zOtCSlx45+BNdHhyUkHWbCRObe398yTWjBfRBA=;
- b=nxg6JfOaqNbFyucSOuv7rmMYtVGUUhFcxOmhfZo4sU2TpCOuqXdY8E2b
- SIYDHToPv/Y8lnhSeX/TPOOpvpWcnPWi1QVnJDsOmN73ipGqUcvcCdpxg
- VlfjyP/OMeJ2DulNDZVit7dxKYLpH04h8CnuiQqVPggs2bBJD4ObFV73c
- yYsWAfSPxFOswbDNfXlMVRBERp67Ysoo5UR+HUzWw1NVfdvH+MVmnUDNr
- QY2yIanhW/0wfJOpoZUPO0r7L29d/4Y9GCvkY30BV04Y4vDUYEcj+1nwB
- BXPetsf7od6cTmnagy2bPdknK1Ll4z/MeciRaG3DAigPaJ4xhoSa2xnwg w==;
-X-CSE-ConnectionGUID: vnee+sDvS7y3pXWqB+IrkQ==
-X-CSE-MsgGUID: MiRZpXMeSVevwzEwTYCwPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="52460111"
-X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="52460111"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 09:01:50 -0700
-X-CSE-ConnectionGUID: gdEET2dwRd2N0PCpIpcaKg==
-X-CSE-MsgGUID: ilCET4ugR76Q2O2WlLkONQ==
+ t=1727886570; x=1759422570;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=/jphVTUm6iubgnA3MopTPXTVHMWAn0SrtifkX14FCPc=;
+ b=fvTy0KtwChbENjS5IZfEaEYXmATt9p3bUkzvyygNY1YW4wIi1dQwPC7z
+ 2FvP7xA+69OCaZIMYLjNZQBcbKnRXvduFn4HzGqmJdrhf2+HmOkmD4J6j
+ bUJ3nX8Bsg/AYa05bS734Yiji7hAmoTMymG1ZlIA+h2iq7AF7JNC1mMeX
+ jF4OYznv6QFmTcuaaNC3Rcta34YDt+MgLXfZ1CHsP7+2FnT7azDnfIc4A
+ xuUujXpOTktnKKLSRqtmlrqQg46WV9A63W/a1sz+hKgelqvYm+ytcAOXF
+ UlHhdKrrtmAmZjRf3kdjE5A/D13DzFtTQ7n9v+0WhpbFc7iU6xYQFsYSS Q==;
+X-CSE-ConnectionGUID: +BtpvYkySviVuMHSQ8dDJw==
+X-CSE-MsgGUID: JDGmhac/QSWDSOWP0C1nTg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="27232537"
+X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="27232537"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 09:26:38 -0700
+X-CSE-ConnectionGUID: JtX3rV/FTwmK9yZemT/nMg==
+X-CSE-MsgGUID: 00tlEC4WQnq20Wf4MDmq6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="74470395"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 09:01:49 -0700
-Date: Wed, 2 Oct 2024 18:01:30 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,172,1725346800"; d="scan'208";a="74171362"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 02 Oct 2024 09:26:36 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Wed, 02 Oct 2024 19:26:35 +0300
+Date: Wed, 2 Oct 2024 19:26:35 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
 Subject: Re: [PATCH i-g-t 1/3] igt: Fix printf formats on x86-32
-Message-ID: <20241002160130.rzp5jswo5262rcst@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Ville Syrjala <ville.syrjala@linux.intel.com>
+Message-ID: <Zv10Oy1bXkQ17o6I@intel.com>
 References: <20240927163307.10159-1-ville.syrjala@linux.intel.com>
+ <20241002160130.rzp5jswo5262rcst@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240927163307.10159-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241002160130.rzp5jswo5262rcst@kamilkon-DESK.igk.intel.com>
+X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,428 +71,179 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ville,
-On 2024-09-27 at 19:33:05 +0300, Ville Syrjala wrote:
-> From: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
+On Wed, Oct 02, 2024 at 06:01:30PM +0200, Kamil Konieczny wrote:
+> Hi Ville,
+> On 2024-09-27 at 19:33:05 +0300, Ville Syrjala wrote:
+> > From: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
+> > 
+> > Use the hideous %"PRI.64" printf() stuff to silence
+> > compiler warnings on x86-32.
+> > 
+> > Thank you whoever chose the wrong type for uint64_t
+> > on x86-64...
 > 
-> Use the hideous %"PRI.64" printf() stuff to silence
-> compiler warnings on x86-32.
+> Is there a "proper" type for all? Just curious.
+
+In kernel land u64 is always ull, which is more convenient
+when it comes to printk().
+
+> Few nits below.
 > 
-> Thank you whoever chose the wrong type for uint64_t
-> on x86-64...
-
-Is there a "proper" type for all? Just curious.
-Few nits below.
-
+> > 
+> > Signed-off-by: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
+> > ---
+> >  lib/igt_pm.c                           |  4 +--
+> >  lib/igt_sysfs.c                        |  4 +--
+> >  lib/intel_compute.c                    | 46 +++++++++++++-------------
+> >  tests/intel/gem_lmem_swapping.c        |  6 ++--
+> >  tests/intel/perf.c                     |  2 +-
+> >  tests/intel/xe_copy_basic.c            |  4 +--
+> >  tests/intel/xe_create.c                |  2 +-
+> >  tests/intel/xe_drm_fdinfo.c            | 10 +++---
+> >  tests/intel/xe_evict.c                 |  2 +-
+> >  tests/intel/xe_evict_ccs.c             |  6 ++--
+> >  tests/intel/xe_oa.c                    |  4 +--
+> >  tests/intel/xe_pm.c                    |  4 +--
+> >  tests/intel/xe_query.c                 |  4 +--
+> >  tests/intel/xe_sysfs_preempt_timeout.c |  2 +-
+> >  tests/intel/xe_waitfence.c             |  2 +-
+> >  15 files changed, 51 insertions(+), 51 deletions(-)
+> > 
+> > diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> > index cfa628324a2e..1a5d9c42b26c 100644
+> > --- a/lib/igt_pm.c
+> > +++ b/lib/igt_pm.c
+> > @@ -1400,7 +1400,7 @@ uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
+> >  
+> >  	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_suspended_time");
+> >  	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
+> > -		igt_assert(sscanf(time_str, "%ld", &time) > 0);
+> > +		igt_assert(sscanf(time_str, "%"PRId64"", &time) > 0);
+> >  
+> >  		igt_debug("runtime suspended time for PCI '%04x:%02x:%02x.%01x' = %" PRIu64 "\n",
+> >  			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
+> > @@ -1425,7 +1425,7 @@ uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev)
+> >  
+> >  	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_active_time");
+> >  	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
+> > -		igt_assert(sscanf(time_str, "%ld", &time) > 0);
+> > +		igt_assert(sscanf(time_str, "%"PRId64"", &time) > 0);
+> >  
+> >  		igt_debug("runtime active time for PCI '%04x:%02x:%02x.%01x' = %" PRIu64 "\n",
+> >  			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
+> > diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> > index aec0bb53d7dd..e6904393e8b6 100644
+> > --- a/lib/igt_sysfs.c
+> > +++ b/lib/igt_sysfs.c
+> > @@ -1152,7 +1152,7 @@ static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
+> >  	while (set < UINT64_MAX / 2) {
+> >  		ret = __igt_sysfs_set_u64(rw->dir, rw->attr, set);
+> >  		__igt_sysfs_get_u64(rw->dir, rw->attr, &get);
+> > -		igt_debug("'%s': ret %d set %lu get %lu\n", rw->attr, ret, set, get);
+> > +		igt_debug("'%s': ret %d set %"PRIu64" get %"PRIu64"\n", rw->attr, ret, set, get);
+> >  		if (ret && rw_attr_equal_within_epsilon(get, set, rw->tol)) {
+> >  			igt_debug("'%s': matches\n", rw->attr);
+> >  			num_points++;
+> > @@ -1196,7 +1196,7 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
+> >  	igt_assert(rw->start);	/* cannot be 0 */
+> >  
+> >  	__igt_sysfs_get_u64(rw->dir, rw->attr, &prev);
+> > -	igt_debug("'%s': prev %lu\n", rw->attr, prev);
+> > +	igt_debug("'%s': prev %"PRIu64"\n", rw->attr, prev);
+> >  
+> >  	ret = rw_attr_sweep(rw);
+> >  
+> > diff --git a/lib/intel_compute.c b/lib/intel_compute.c
+> > index 6458f539c6c5..1cc39f645c2e 100644
+> > --- a/lib/intel_compute.c
+> > +++ b/lib/intel_compute.c
+> > @@ -774,13 +774,13 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+> >  {
+> >  	int b = 0;
+> >  
+> > -	igt_debug("general   state base: %lx\n", addr_general_state_base);
+> > -	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
+> > -	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
+> > -	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
+> > -	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
+> > -	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
+> > -	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
+> > +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
+> > +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
+> > +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
+> > +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
+> > +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
+> > +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
+> > +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
+> >  
+> >  	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
+> >  				    PIPELINE_SELECT_GPGPU;
+> > @@ -991,13 +991,13 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+> >  {
+> >  	int b = 0;
+> >  
+> > -	igt_debug("general   state base: %lx\n", addr_general_state_base);
+> > -	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
+> > -	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
+> > -	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
+> > -	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
+> > -	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
+> > -	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
+> > +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
+> > +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
+> > +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
+> > +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
+> > +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
+> > +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
+> > +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
+> >  
+> >  	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
+> >  				    PIPELINE_SELECT_GPGPU;
+> > @@ -1174,15 +1174,15 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
+> >  {
+> >  	int b = 0;
+> >  
+> > -	igt_debug("general   state base: %lx\n", addr_general_state_base);
+> > -	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
+> > -	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
+> > -	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
+> > -	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
+> > -	igt_debug("state context data base addr: %lx\n", addr_state_contect_data_base);
+> > -	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
+> > -	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
+> > -	igt_debug("sip start pointer: %lx\n", sip_start_pointer);
+> > +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
+> > +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
+> > +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
+> > +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
+> > +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
+> > +	igt_debug("state context data base addr: %"PRIx64"\n", addr_state_contect_data_base);
+> > +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
+> > +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
+> > +	igt_debug("sip start pointer: %"PRIx64"\n", sip_start_pointer);
+> >  
+> >  	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
+> >  				    PIPELINE_SELECT_GPGPU;
+> > diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
+> > index b125261519ff..8e0dac42d80d 100644
+> > --- a/tests/intel/gem_lmem_swapping.c
+> > +++ b/tests/intel/gem_lmem_swapping.c
+> > @@ -244,7 +244,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
+> >  		uint32_t val = obj->seed + x;
+> >  
+> >  		igt_assert_f(buf[x] == val,
+> > -			     "Object mismatch at offset %zu - found %08x, expected %08x; difference:%08x!\n",
+> > +			     "Object mismatch at offset %lu - found %08x, expected %08x; difference:%08x!\n",
 > 
-> Signed-off-by: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
-> ---
->  lib/igt_pm.c                           |  4 +--
->  lib/igt_sysfs.c                        |  4 +--
->  lib/intel_compute.c                    | 46 +++++++++++++-------------
->  tests/intel/gem_lmem_swapping.c        |  6 ++--
->  tests/intel/perf.c                     |  2 +-
->  tests/intel/xe_copy_basic.c            |  4 +--
->  tests/intel/xe_create.c                |  2 +-
->  tests/intel/xe_drm_fdinfo.c            | 10 +++---
->  tests/intel/xe_evict.c                 |  2 +-
->  tests/intel/xe_evict_ccs.c             |  6 ++--
->  tests/intel/xe_oa.c                    |  4 +--
->  tests/intel/xe_pm.c                    |  4 +--
->  tests/intel/xe_query.c                 |  4 +--
->  tests/intel/xe_sysfs_preempt_timeout.c |  2 +-
->  tests/intel/xe_waitfence.c             |  2 +-
->  15 files changed, 51 insertions(+), 51 deletions(-)
-> 
-> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-> index cfa628324a2e..1a5d9c42b26c 100644
-> --- a/lib/igt_pm.c
-> +++ b/lib/igt_pm.c
-> @@ -1400,7 +1400,7 @@ uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev)
->  
->  	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_suspended_time");
->  	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
-> -		igt_assert(sscanf(time_str, "%ld", &time) > 0);
-> +		igt_assert(sscanf(time_str, "%"PRId64"", &time) > 0);
->  
->  		igt_debug("runtime suspended time for PCI '%04x:%02x:%02x.%01x' = %" PRIu64 "\n",
->  			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
-> @@ -1425,7 +1425,7 @@ uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev)
->  
->  	time_fd = igt_pm_get_power_attr_fd_rdonly(pci_dev, "runtime_active_time");
->  	if (igt_pm_read_power_attr(time_fd, time_str, 64, false)) {
-> -		igt_assert(sscanf(time_str, "%ld", &time) > 0);
-> +		igt_assert(sscanf(time_str, "%"PRId64"", &time) > 0);
->  
->  		igt_debug("runtime active time for PCI '%04x:%02x:%02x.%01x' = %" PRIu64 "\n",
->  			  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, time);
-> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> index aec0bb53d7dd..e6904393e8b6 100644
-> --- a/lib/igt_sysfs.c
-> +++ b/lib/igt_sysfs.c
-> @@ -1152,7 +1152,7 @@ static int rw_attr_sweep(igt_sysfs_rw_attr_t *rw)
->  	while (set < UINT64_MAX / 2) {
->  		ret = __igt_sysfs_set_u64(rw->dir, rw->attr, set);
->  		__igt_sysfs_get_u64(rw->dir, rw->attr, &get);
-> -		igt_debug("'%s': ret %d set %lu get %lu\n", rw->attr, ret, set, get);
-> +		igt_debug("'%s': ret %d set %"PRIu64" get %"PRIu64"\n", rw->attr, ret, set, get);
->  		if (ret && rw_attr_equal_within_epsilon(get, set, rw->tol)) {
->  			igt_debug("'%s': matches\n", rw->attr);
->  			num_points++;
-> @@ -1196,7 +1196,7 @@ void igt_sysfs_rw_attr_verify(igt_sysfs_rw_attr_t *rw)
->  	igt_assert(rw->start);	/* cannot be 0 */
->  
->  	__igt_sysfs_get_u64(rw->dir, rw->attr, &prev);
-> -	igt_debug("'%s': prev %lu\n", rw->attr, prev);
-> +	igt_debug("'%s': prev %"PRIu64"\n", rw->attr, prev);
->  
->  	ret = rw_attr_sweep(rw);
->  
-> diff --git a/lib/intel_compute.c b/lib/intel_compute.c
-> index 6458f539c6c5..1cc39f645c2e 100644
-> --- a/lib/intel_compute.c
-> +++ b/lib/intel_compute.c
-> @@ -774,13 +774,13 @@ static void xehp_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  {
->  	int b = 0;
->  
-> -	igt_debug("general   state base: %lx\n", addr_general_state_base);
-> -	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
-> -	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
-> -	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
-> -	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
-> -	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
-> -	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
-> +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-> +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
-> +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
-> +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
-> +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
->  
->  	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
->  				    PIPELINE_SELECT_GPGPU;
-> @@ -991,13 +991,13 @@ static void xehpc_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  {
->  	int b = 0;
->  
-> -	igt_debug("general   state base: %lx\n", addr_general_state_base);
-> -	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
-> -	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
-> -	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
-> -	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
-> -	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
-> -	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
-> +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-> +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
-> +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
-> +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
-> +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
->  
->  	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
->  				    PIPELINE_SELECT_GPGPU;
-> @@ -1174,15 +1174,15 @@ static void xe2lpg_compute_exec_compute(uint32_t *addr_bo_buffer_batch,
->  {
->  	int b = 0;
->  
-> -	igt_debug("general   state base: %lx\n", addr_general_state_base);
-> -	igt_debug("surface   state base: %lx\n", addr_surface_state_base);
-> -	igt_debug("dynamic   state base: %lx\n", addr_dynamic_state_base);
-> -	igt_debug("instruct   base addr: %lx\n", addr_instruction_state_base);
-> -	igt_debug("bindless   base addr: %lx\n", addr_surface_state_base);
-> -	igt_debug("state context data base addr: %lx\n", addr_state_contect_data_base);
-> -	igt_debug("offset indirect addr: %lx\n", offset_indirect_data_start);
-> -	igt_debug("kernel start pointer: %lx\n", kernel_start_pointer);
-> -	igt_debug("sip start pointer: %lx\n", sip_start_pointer);
-> +	igt_debug("general   state base: %"PRIx64"\n", addr_general_state_base);
-> +	igt_debug("surface   state base: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("dynamic   state base: %"PRIx64"\n", addr_dynamic_state_base);
-> +	igt_debug("instruct   base addr: %"PRIx64"\n", addr_instruction_state_base);
-> +	igt_debug("bindless   base addr: %"PRIx64"\n", addr_surface_state_base);
-> +	igt_debug("state context data base addr: %"PRIx64"\n", addr_state_contect_data_base);
-> +	igt_debug("offset indirect addr: %"PRIx64"\n", offset_indirect_data_start);
-> +	igt_debug("kernel start pointer: %"PRIx64"\n", kernel_start_pointer);
-> +	igt_debug("sip start pointer: %"PRIx64"\n", sip_start_pointer);
->  
->  	addr_bo_buffer_batch[b++] = GEN7_PIPELINE_SELECT | GEN9_PIPELINE_SELECTION_MASK |
->  				    PIPELINE_SELECT_GPGPU;
-> diff --git a/tests/intel/gem_lmem_swapping.c b/tests/intel/gem_lmem_swapping.c
-> index b125261519ff..8e0dac42d80d 100644
-> --- a/tests/intel/gem_lmem_swapping.c
-> +++ b/tests/intel/gem_lmem_swapping.c
-> @@ -244,7 +244,7 @@ verify_object(int i915, const struct object *obj,  unsigned int flags)
->  		uint32_t val = obj->seed + x;
->  
->  		igt_assert_f(buf[x] == val,
-> -			     "Object mismatch at offset %zu - found %08x, expected %08x; difference:%08x!\n",
-> +			     "Object mismatch at offset %lu - found %08x, expected %08x; difference:%08x!\n",
+> Is this correct? %zu -> %lu ? 
 
-Is this correct? %zu -> %lu ?
-Btw this patch adds PRIx64 so this is unexpected here.
+size_t seems to be unsigned int on x86-32 so here we get
+promoted to unsigned long because that's what 'x' is. And
+despite all of them being the same size the compiler doesn't
+like when we use the wrong conversion for the printf().
+On x86-64 size_t is unsigned long, so no type mismatch there
+either way.
 
->  			     x * sizeof(*buf), buf[x], val, buf[x] ^ val);
->  	}
->  
-> @@ -442,7 +442,7 @@ static void __do_evict(int i915,
->  		}
->  	}
->  
-> -	igt_debug("obj size min/max=%lu %s/%lu %s, count=%u, seed: %u\n",
-> +	igt_debug("obj size min/max=%"PRIu64" %s/%"PRIu64" %s, count=%u, seed: %u\n",
->  		  readable_size(params->size.min), readable_unit(params->size.min),
->  		  readable_size(params->size.max), readable_unit(params->size.max),
->  		  params->count, seed);
-> @@ -591,7 +591,7 @@ static void fill_params(int i915, struct params *params,
->  		(region->probed_size >> 20);
->  	igt_info("Memory: system-total %dMiB, lmem-region %lldMiB, usage-limit %dMiB\n",
->  		 swap_mb, (region->probed_size >> 20), params->mem_limit);
-> -	igt_info("Using %u thread(s), %u loop(s), %u objects of %lu %s - %lu %s, seed: %u, oom: %s\n",
-> +	igt_info("Using %u thread(s), %u loop(s), %u objects of %"PRIu64" %s - %"PRIu64" %s, seed: %u, oom: %s\n",
->  		 params->flags & TEST_PARALLEL ? nproc : 1,
->  		 params->loops,
->  		 params->count,
-> diff --git a/tests/intel/perf.c b/tests/intel/perf.c
-> index 681d94844e69..a5a81ade7c63 100644
-> --- a/tests/intel/perf.c
-> +++ b/tests/intel/perf.c
-> @@ -3259,7 +3259,7 @@ test_enable_disable(const struct intel_execution_engine2 *e)
->  
->  		do_ioctl(stream_fd, I915_PERF_IOCTL_DISABLE, 0);
->  
-> -		igt_debug("first ts = %lu, last ts = %lu\n", first_timestamp, last_timestamp);
-> +		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
->  
->  		igt_debug("%f < %zu < %f\n",
->  			  report_size * n_full_oa_reports * 0.45,
-> diff --git a/tests/intel/xe_copy_basic.c b/tests/intel/xe_copy_basic.c
-> index aa771338e0de..a43842e39839 100644
-> --- a/tests/intel/xe_copy_basic.c
-> +++ b/tests/intel/xe_copy_basic.c
-> @@ -173,7 +173,7 @@ igt_main
->  	}
->  
->  	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> -		igt_subtest_f("mem-copy-linear-0x%lx", size[i]) {
-> +		igt_subtest_f("mem-copy-linear-0x%"PRIx64"", size[i]) {
->  			igt_require(blt_has_mem_copy(fd));
->  			for_each_variation_r(regions, 1, set) {
->  				region = igt_collection_get_value(regions, 0);
-> @@ -183,7 +183,7 @@ igt_main
->  	}
->  
->  	for (int i = 0; i < ARRAY_SIZE(size); i++) {
-> -		igt_subtest_f("mem-set-linear-0x%lx", size[i]) {
-> +		igt_subtest_f("mem-set-linear-0x%"PRIx64"", size[i]) {
->  			igt_require(blt_has_mem_set(fd));
->  			for_each_variation_r(regions, 1, set) {
->  				region = igt_collection_get_value(regions, 0);
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c
-> index 80de077895ae..07e11036d878 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -286,7 +286,7 @@ static void create_big_vram(int fd, int gt)
->  	bo_size = params.quantity ? params.quantity * 1024ULL * 1024ULL
->  		  : ALIGN_DOWN(visible_avail_size * params.percent / 100, alignment);
->  	igt_require(bo_size);
-> -	igt_info("gt%u bo_size=%lu visible_available_vram_size=%lu\n",
-> +	igt_info("gt%u bo_size=%"PRIu64" visible_available_vram_size=%"PRIu64"\n",
->  		gt, bo_size, visible_avail_size);
-
-Checkpatch complains here about aligment:
-	igt_info("gt%u bo_size=%"PRIu64" visible_available_vram_size=%"PRIu64"\n",
-  		 gt, bo_size, visible_avail_size);
-
->  
->  	bo_handle = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, gt),
-> diff --git a/tests/intel/xe_drm_fdinfo.c b/tests/intel/xe_drm_fdinfo.c
-> index 747b6155c9dd..5fd7c0416410 100644
-> --- a/tests/intel/xe_drm_fdinfo.c
-> +++ b/tests/intel/xe_drm_fdinfo.c
-> @@ -205,7 +205,7 @@ static void mem_active(int fd, struct drm_xe_engine *engine)
->  		 * N_EXEC_QUEUES active memory consumption should be
->  		 * > = bo_size
->  		 */
-> -		igt_info("total:%ld active:%ld pre_size:%ld bo_size:%ld\n",
-> +		igt_info("total:%"PRId64" active:%"PRId64" pre_size:%"PRId64" bo_size:%zd\n",
->  			 info.region_mem[memregion->instance + 1].total,
->  			 info.region_mem[memregion->instance + 1].active,
->  			 pre_size,
-> @@ -267,7 +267,7 @@ static void mem_shared(int xe)
->  		ret = igt_parse_drm_fdinfo(xe, &info, NULL, 0, NULL, 0);
->  		igt_assert_f(ret != 0, "failed with err:%d\n", errno);
->  
-> -		igt_info("total:%ld pre_size:%ld shared:%ld\n",
-> +		igt_info("total:%"PRId64" pre_size:%"PRId64" shared:%"PRId64"\n",
->  			 info.region_mem[memregion->instance + 1].total,
->  			 pre_size,
->  			 info.region_mem[memregion->instance + 1].shared);
-> @@ -308,7 +308,7 @@ static void mem_total_resident(int xe)
->  		/* currently xe KMD maps memory class system region to
->  		 * XE_PL_TT thus we need memregion->instance + 1
->  		 */
-> -		igt_info("total:%ld resident:%ld pre_size:%ld bo_size:%d\n",
-> +		igt_info("total:%"PRId64" resident:%"PRId64" pre_size:%"PRId64" bo_size:%d\n",
->  			 info.region_mem[memregion->instance + 1].total,
->  			 info.region_mem[memregion->instance + 1].resident,
->  			 pre_size, BO_SIZE);
-> @@ -501,9 +501,9 @@ check_results(struct pceu_cycles *s1, struct pceu_cycles *s2,
->  	double percent;
->  	u64 den, num;
->  
-> -	igt_debug("%s: sample 1: cycles %lu, total_cycles %lu\n",
-> +	igt_debug("%s: sample 1: cycles %"PRIu64", total_cycles %"PRIu64"\n",
->  		  engine_map[class], s1[class].cycles, s1[class].total_cycles);
-> -	igt_debug("%s: sample 2: cycles %lu, total_cycles %lu\n",
-> +	igt_debug("%s: sample 2: cycles %"PRIu64", total_cycles %"PRIu64"\n",
->  		  engine_map[class], s2[class].cycles, s2[class].total_cycles);
->  
->  	num = s2[class].cycles - s1[class].cycles;
-> diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
-> index 400ad58b430a..91533cc54aad 100644
-> --- a/tests/intel/xe_evict.c
-> +++ b/tests/intel/xe_evict.c
-> @@ -491,7 +491,7 @@ static unsigned int working_set(uint64_t vram_size, uint64_t system_size,
->  	total_size = ((vram_size - 1) / bo_size + system_size * 4 / 5 / bo_size) /
->  		num_threads - 1;
->  
-> -	igt_debug("num_threads: %d bo_size : %lu total_size : %lu\n", num_threads,
-> +	igt_debug("num_threads: %d bo_size : %"PRIu64" total_size : %"PRIu64"\n", num_threads,
->  		  bo_size, total_size);
->  
->  	if (set_size > total_size)
-> diff --git a/tests/intel/xe_evict_ccs.c b/tests/intel/xe_evict_ccs.c
-> index 68f408908349..281d270153bc 100644
-> --- a/tests/intel/xe_evict_ccs.c
-> +++ b/tests/intel/xe_evict_ccs.c
-> @@ -141,7 +141,7 @@ static struct object *create_obj(struct blt_copy_data *blt,
->  	w = max_t(int, 1024, roundup_power_of_two(sqrt(size/4)));
->  	h = size / w / 4; /* /4 - 32bpp */
->  
-> -	igt_debug("[%8d] Obj size: %ldKiB (%ldMiB) <w: %d, h: %d>\n",
-> +	igt_debug("[%8d] Obj size: %"PRId64"KiB (%"PRId64"MiB) <w: %d, h: %d>\n",
->  		  getpid(), size / SZ_1K, size / SZ_1M, w, h);
->  
->  	src = blt_create_object(blt,
-> @@ -196,7 +196,7 @@ static void check_obj(const char *check_mode,
->  
->  	if (obj->ptr[0] != start_value ||
->  	    (obj->ptr[size/4 - 1] != start_value + size/4 - 1)) {
-> -		igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (%ldMiB)\n",
-> +		igt_info("[%s] Failed object w: %d, h: %d, size: %"PRId64"KiB (%"PRId64"MiB)\n",
->  			 check_mode, obj->x2, obj->y2, obj->size / SZ_1K, obj->size / SZ_1M);
->  		dump_obj(obj, start_value);
->  	}
-> @@ -209,7 +209,7 @@ static void check_obj(const char *check_mode,
->  		idx = rand() % (size/4);
->  
->  		if (obj->ptr[idx] != start_value + idx) {
-> -			igt_info("[%s] Failed object w: %d, h: %d, size: %ldKiB (%ldMiB)\n",
-> +			igt_info("[%s] Failed object w: %d, h: %d, size: %"PRId64"KiB (%"PRId64"MiB)\n",
->  				 check_mode, obj->x2, obj->y2,
->  				 obj->size / SZ_1K, obj->size / SZ_1M);
->  			dump_obj(obj, start_value);
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index aae9be2c40c9..c12234dc1394 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -2672,7 +2672,7 @@ test_enable_disable(const struct drm_xe_engine_class_instance *hwe)
->  
->  		do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
->  
-> -		igt_debug("first ts = %lu, last ts = %lu\n", first_timestamp, last_timestamp);
-> +		igt_debug("first ts = %"PRIu64", last ts = %"PRIu64"\n", first_timestamp, last_timestamp);
->  
->  		igt_debug("%f < %zu < %f\n",
->  			  report_size * n_full_oa_reports * 0.45,
-> @@ -4044,7 +4044,7 @@ __test_mmio_triggered_reports(struct drm_xe_engine_class_instance *hwe)
->  		if (get_oa_format(test_set->perf_oa_format).report_hdr_64bit) {
->  			u64 *start64 = (u64 *)start;
->  
-> -			igt_debug("hdr: %016lx %016lx %016lx %016lx\n",
-> +			igt_debug("hdr: %016"PRIx64" %016"PRIx64" %016"PRIx64" %016"PRIx64"\n",
->  				  start64[0], start64[1], start64[2], start64[3]);
->  		} else {
->  			igt_debug("hdr: %08x %08x %08x %08x\n",
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index eee89428c7fb..ef829672b795 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -93,7 +93,7 @@ static uint64_t get_vram_d3cold_threshold(int sysfs)
->  	sprintf(path, "device/vram_d3cold_threshold");
->  	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
->  
-> -	ret = igt_sysfs_scanf(sysfs, path, "%lu", &threshold);
-> +	ret = igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
->  	igt_assert_lt(0, ret);
->  
->  	return threshold;
-> @@ -107,7 +107,7 @@ static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
->  	sprintf(path, "device/vram_d3cold_threshold");
->  
->  	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-> -		ret = igt_sysfs_printf(sysfs, path, "%lu", threshold);
-> +		ret = igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshold);
->  	else
->  		igt_warn("vram_d3cold_threshold is not present\n");
->  
-> diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-> index 732049fb0116..4c79a02b05d6 100644
-> --- a/tests/intel/xe_query.c
-> +++ b/tests/intel/xe_query.c
-> @@ -771,13 +771,13 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
->  			delta_cs = (((1 << ts2.width) - ts2.engine_cycles) + ts1.engine_cycles) *
->  				   NSEC_PER_SEC / eng_ref_clock1;
->  
-> -		igt_debug("delta_cpu[%lu], delta_cs[%lu]\n",
-> +		igt_debug("delta_cpu[%"PRIu64"], delta_cs[%"PRIu64"]\n",
->  			  delta_cpu, delta_cs);
->  
->  		delta_delta = delta_cpu > delta_cs ?
->  			       delta_cpu - delta_cs :
->  			       delta_cs - delta_cpu;
-> -		igt_debug("delta_delta %lu\n", delta_delta);
-> +		igt_debug("delta_delta %"PRIu64"\n", delta_delta);
->  
->  		if (delta_delta < 5000)
->  			usable++;
-> diff --git a/tests/intel/xe_sysfs_preempt_timeout.c b/tests/intel/xe_sysfs_preempt_timeout.c
-> index 734795a3524c..7fa0dfcdf721 100644
-> --- a/tests/intel/xe_sysfs_preempt_timeout.c
-> +++ b/tests/intel/xe_sysfs_preempt_timeout.c
-> @@ -155,7 +155,7 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
->  
->  	for (int i = 0; i < ARRAY_SIZE(delays); i++) {
->  		elapsed = __test_timeout(fd, engine, delays[i], gt, class);
-> -		igt_info("%s:%ld, elapsed=%.3fus\n",
-> +		igt_info("%s:%"PRId64", elapsed=%.3fus\n",
->  			property[0], delays[i], elapsed * 1e-3);
-
-Same here, aligment to previous line is broken, and also unrelated.
-With this fixed or not:
-
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
->  
->  		/*
-> diff --git a/tests/intel/xe_waitfence.c b/tests/intel/xe_waitfence.c
-> index c1cab64f4e5b..0981e196293b 100644
-> --- a/tests/intel/xe_waitfence.c
-> +++ b/tests/intel/xe_waitfence.c
-> @@ -111,7 +111,7 @@ waitfence(int fd, enum waittype wt)
->  
->  	if (wt == RELTIME) {
->  		timeout = xe_wait_ufence(fd, &wait_fence, 7, 0, 10 * NSEC_PER_MSEC);
-> -		igt_debug("wait type: RELTIME - timeout: %ld, timeout left: %ld\n",
-> +		igt_debug("wait type: RELTIME - timeout: %"PRId64", timeout left: %"PRId64"\n",
->  			  (int64_t)10 * NSEC_PER_MSEC, timeout);
->  	} else if (wt == ENGINE) {
->  		exec_queue = xe_exec_queue_create_class(fd, vm, DRM_XE_ENGINE_CLASS_COPY);
-> -- 
-> 2.45.2
-> 
+-- 
+Ville Syrj‰l‰
+Intel
