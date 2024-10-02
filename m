@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1327CF31AE
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 10:20:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40DB1CF31B0
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Oct 2024 10:45:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 82B4010E6EF;
-	Wed,  2 Oct 2024 10:20:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F2A0710E6EF;
+	Wed,  2 Oct 2024 10:45:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L69Vfb1U";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kt7LWai8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F226010E083
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 10:20:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA45F10E6EF
+ for <igt-dev@lists.freedesktop.org>; Wed,  2 Oct 2024 10:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727864446; x=1759400446;
- h=date:from:to:subject:message-id:references:mime-version:
- content-transfer-encoding:in-reply-to;
- bh=7Y6n0NPiZEUhH9DFzHAmmRYnjjgK2FI5Ekb9yv7hHzs=;
- b=L69Vfb1UTudNJCMbwdBeTq446df0lsq/ev87K7vzkRuP/DPPqWuLqcGT
- iGbxX4S+bsrxv2iNuo8jYZ1AlWFhTsFjXhYZL0OLgi39/x0qg5M4SEQGh
- Z4JQFqSAfD4cDEuhv6gZW8Wpk+VM0LeaXkGhLw/BwMFwd5GJKLFvj/kSA
- gDwkcpMdbLqFwDe7CI3ob9JRaRIVZxK06B15mFitOOuKMqOzyRCJx5d76
- 5AHstLclSgFi200XEX2oH8BhF/QcD3LYdZDt6HWZ95QGbWz3NsUa0W5Wk
- wVZqPOGbmd86vLZMFp/CIjlNn3wo4LuW1QMVnn8OhRRqBWH+MhfwuqGt7 A==;
-X-CSE-ConnectionGUID: 7Yur4npyTtywFeMYAdNMjw==
-X-CSE-MsgGUID: Lp+PX3o9RlmFA6T7NzH8SQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="49544684"
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="49544684"
+ t=1727865919; x=1759401919;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=/hIKjJKYh4+gzY7OPa8H4sYAsELWSSWpNAIrFloCtlc=;
+ b=kt7LWai8XolWpStZmP6wktuSmUQ8LTZergm8rsBOWNo4MB32DPuXLG1C
+ PUp/ynRqsKtkhhUDZDMC3L8dZ82EO/N9fLgQ9jrB8/6H/sE70GUGDH63/
+ bsklijolG4qYSPFLgNiqAu54gDCGB2LGIf4NRIue8ACe/aJMQSMbmlQbb
+ D7tNKmP7U8CxoN23rtjf+sMArNMj4W9u++PDIdmwbXcwge5UQNiR9j4CX
+ bvJju/Wk/2yZMVL1THPS5wNEi406w5KUwAi0jHs3yxlCFVYBMrQeabkns
+ vqG5IUiiz37m5oMujeaxB6+7/Ly8JC2VLq6AJEtmwDww02Nwb2ZkJzs/s g==;
+X-CSE-ConnectionGUID: bTO293BvTRGFfcOMyQzolA==
+X-CSE-MsgGUID: nHUawXsrSqSWbl2Vxo3njg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="38382969"
+X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="38382969"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 03:20:45 -0700
-X-CSE-ConnectionGUID: aJa9lPGbTW6uoXRxwUC4Mw==
-X-CSE-MsgGUID: qVzRNksfRhGyp0t9vZOq/w==
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2024 03:45:18 -0700
+X-CSE-ConnectionGUID: hY62A8J5T7KvE1M5dHkbGw==
+X-CSE-MsgGUID: hQVAYBcTRR+W6XNYVWcj0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="74071423"
+X-IronPort-AV: E=Sophos;i="6.11,171,1725346800"; d="scan'208";a="74077112"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 02 Oct 2024 03:20:42 -0700
+ by fmviesa008.fm.intel.com with SMTP; 02 Oct 2024 03:45:16 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 02 Oct 2024 13:20:41 +0300
-Date: Wed, 2 Oct 2024 13:20:41 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] include/drm-uapi: Update uapi headers
-Message-ID: <Zv0eebOxYgj2iYca@intel.com>
-References: <20240925192354.22814-1-ville.syrjala@linux.intel.com>
- <20241002101535.g7diqamdyfzfe44b@kamilkon-DESK.igk.intel.com>
+ Wed, 02 Oct 2024 13:45:15 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t 1/4] lib/intel: Extract gem_store_dword_needs_physical()
+Date: Wed,  2 Oct 2024 13:45:12 +0300
+Message-ID: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241002101535.g7diqamdyfzfe44b@kamilkon-DESK.igk.intel.com>
-X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,37 +66,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, Oct 02, 2024 at 12:15:35PM +0200, Kamil Konieczny wrote:
-> Hi Ville,
-> On 2024-09-25 at 22:23:54 +0300, Ville Syrjala wrote:
-> > From: Ville Syrj‰l‰ <ville.syrjala@linux.intel.com>
-> > 
-> > Sync uapi headers with drm-next commit d7126c0cfc13
-> > ("Merge tag 'drm-xe-next-fixes-2024-09-19' of
-> > https://gitlab.freedesktop.org/drm/xe/kernel into drm-next")
-> > 
-> > Note that headers for old dri1 drivers are now gone,
-> > and we gain a bunch of new headers for various
-> > new drivers (gpu and accel).
-> > 
-> > I manually intervened on the deletion of
-> > include/drm-uapi/xe_drm_eudebug.h because it's some
-> > non-upstream thing. IMO that sort of stuff really
-> > should live in a completely different place...
-> 
-> With this paragraph removed this is
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+From: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
 
-Thanks.
+Extract a small helper that can determine if MI_STORE_DWORD
+operates with physical addresses or not.
 
-> 
-> PS. could you add such notes in cover letter? It will ease
-> merging later. Or if you think we should remind devs about this
-> it could find a way in README.
+Signed-off-by: Ville Syrj√§l√§ <ville.syrjala@linux.intel.com>
+---
+ lib/igt_gt.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-There was no cover letter since this was just a single patch.
-So not sure what you're asking me here?
-
+diff --git a/lib/igt_gt.c b/lib/igt_gt.c
+index 9641a6610bf2..331783e49acf 100644
+--- a/lib/igt_gt.c
++++ b/lib/igt_gt.c
+@@ -655,21 +655,27 @@ unsigned intel_detect_and_clear_missed_interrupts(int fd)
+ 	return missed;
+ }
+ 
++static bool gem_store_dword_needs_physical(const struct intel_device_info *info)
++{
++	switch (info->graphics_ver) {
++	case 2:
++		return true;
++	case 3:
++		return info->is_grantsdale || info->is_alviso;
++	default:
++		return false;
++	}
++}
++
+ bool gem_class_can_store_dword(int fd, int class)
+ {
+ 	uint16_t devid = intel_get_drm_devid(fd);
+ 	const struct intel_device_info *info = intel_get_device_info(devid);
+ 	const int ver = info->graphics_ver;
+ 
+-	if (ver == 0) /* unknown, assume it just works */
+-		return true;
+-
+-	if (ver <= 2) /* requires physical addresses */
++	if (gem_store_dword_needs_physical(info))
+ 		return false;
+ 
+-	if (ver == 3 && (info->is_grantsdale || info->is_alviso))
+-		return false; /* only supports physical addresses */
+-
+ 	if (ver == 6 && class == I915_ENGINE_CLASS_VIDEO)
+ 		return false; /* broken, unbelievably broken */
+ 
 -- 
-Ville Syrj‰l‰
-Intel
+2.45.2
+
