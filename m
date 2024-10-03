@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D822CF854E
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Oct 2024 02:35:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66475CF855A
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Oct 2024 03:44:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 39F7C10E35D;
-	Thu,  3 Oct 2024 02:35:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fcK+J9fc";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4659010E35D
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Oct 2024 02:35:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727922937; x=1759458937;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=kSYy3HzE8jtqU8C7GLN0G9PmvoTaX76uRK6DLc2/WjA=;
- b=fcK+J9fcKpRp+GO077J/hcBFcfvsLyOviWfgA31dESAINDi8ap8GEomD
- dqgY/lMv7Dnq71BV1elOGH1p1dyzmvxUcs51DOE9aCUlZsQg8HUe/V5IL
- ygDWBrIgly8eWRLZ3dFJZFgc2YMaMJ2SK8EJenhmcTaljKw2Le7NymHK5
- hS6FLLlrOorXELkXC0UUDrlIGuVKY3nujZPKk9I/U/japPdZI/hbqmGTk
- W1ouQr3g/KKJHrIxWGDAXtgKSVXfMaUEugSHnLxsnnnxdENXdAb0pX7v/
- MMZcuaxAAUOQhkcl0kQJ1byNL/kU0Kwo1IB8qFt68hl9nQtuhUj6cZbhn A==;
-X-CSE-ConnectionGUID: Aj3VtQMiRZiFX7QH31DMZA==
-X-CSE-MsgGUID: zMpv2QZgRlK4fl3RWzt/QA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11213"; a="30902727"
-X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; d="scan'208";a="30902727"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2024 19:35:37 -0700
-X-CSE-ConnectionGUID: ifhaL0rtQ1SVG7TkqzSTIg==
-X-CSE-MsgGUID: EpIDcrJQSWmyhSHVvXKngw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,173,1725346800"; d="scan'208";a="79053336"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Oct 2024 19:35:35 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: pranay.samala@intel.com, suraj.kandpal@intel.com,
- mohammed.thasleem@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v4 1/1] tests/kms_hdr: Test brightness manipulation in
- HDR mode
-Date: Thu,  3 Oct 2024 08:04:29 +0530
-Message-Id: <20241003023429.1967339-2-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241003023429.1967339-1-santhosh.reddy.guddati@intel.com>
-References: <20241003023429.1967339-1-santhosh.reddy.guddati@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2448E10E222;
+	Thu,  3 Oct 2024 03:44:54 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73C4F10E222;
+ Thu,  3 Oct 2024 03:44:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8143970924299748999=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Backlight_control_on_HDR-enabl?=
+ =?utf-8?q?ed_eDP_panels_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Santhosh Reddy Guddati" <santhosh.reddy.guddati@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 03 Oct 2024 03:44:53 -0000
+Message-ID: <172792709346.1166328.11617695421626877088@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241003023429.1967339-1-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20241003023429.1967339-1-santhosh.reddy.guddati@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,159 +37,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add subtests for backlight control on hdr enabled edp panels
-by changing brightness via sysfs.
+--===============8143970924299748999==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v2: adjust brightness range, refactor and restore brightness (Pranay)
+== Series Details ==
 
-v3: reuse functions, add flags to avoid duplicate code (Suraj)
+Series: Backlight control on HDR-enabled eDP panels (rev4)
+URL   : https://patchwork.freedesktop.org/series/139050/
+State : success
 
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
----
- tests/kms_hdr.c | 85 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 84 insertions(+), 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index f123c6b36..1b47228d0 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -64,6 +64,10 @@
-  * Description: Tests static toggle with suspend
-  * Functionality: colorspace, static_hdr, suspend
-  *
-+ * SUBTEST: brightness-with-hdr
-+ * Description: Tests brightness with HDR
-+ * Functionality: colorspace, static_hdr
-+ *
-  * SUBTEST: static-%s
-  * Description: Tests %arg[1].
-  * Functionality: colorspace, static_hdr
-@@ -81,6 +85,8 @@ IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- #define HDR_STATIC_METADATA_BLOCK       0x06
- #define USE_EXTENDED_TAG		0x07
- 
-+#define INTEL_BACKLIGHT_PATH "/sys/class/backlight/intel_backlight"
-+
- /* DRM HDR definitions. Not in the UAPI header, unfortunately. */
- enum hdmi_metadata_type {
- 	HDMI_STATIC_METADATA_TYPE1 = 0,
-@@ -100,6 +106,7 @@ enum {
- 	TEST_SWAP = 1 << 3,
- 	TEST_INVALID_METADATA_SIZES = 1 << 4,
- 	TEST_INVALID_HDR = 1 << 5,
-+	TEST_BRIGHTNESS = 1 << 6,
- };
- 
- /* BPC connector state. */
-@@ -448,6 +455,72 @@ static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
- 	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
- }
- 
-+/* TODO: Move adjust_brightness to lib/igt_sysfs to reuse in other tests. */
-+static void adjust_brightness(data_t *data, uint32_t flags)
-+{
-+	char brightness_path[1024];
-+	int brightness_fd;
-+	char brightness_value[64];
-+	int current_brightness;
-+	int max_brightness;
-+	int read_brightness;
-+	int fd, i;
-+
-+	/* Get max brightness */
-+	snprintf(brightness_path, sizeof(brightness_path),
-+		 "%s/%s", INTEL_BACKLIGHT_PATH, "max_brightness");
-+	fd = open(brightness_path, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Failed to open %s\n", brightness_path);
-+
-+	igt_assert(read(fd, brightness_value, sizeof(brightness_value)) > 0);
-+
-+	max_brightness = atoi(brightness_value);
-+
-+	close(fd);
-+
-+	/* Get current brightness */
-+	snprintf(brightness_path, sizeof(brightness_path),
-+		 "%s/%s", INTEL_BACKLIGHT_PATH, "brightness");
-+	fd = open(brightness_path, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Failed to open %s\n", brightness_path);
-+
-+	igt_assert(read(fd, brightness_value, sizeof(brightness_value)) > 0);
-+
-+	current_brightness = atoi(brightness_value);
-+
-+	close(fd);
-+
-+	for (i = 0; i <= max_brightness; i += 50) {
-+		fd = open(brightness_path, O_WRONLY);
-+		igt_assert_f(fd >= 0, "Failed to open %s\n", brightness_path);
-+
-+		snprintf(brightness_value, sizeof(brightness_value), "%d", i);
-+		igt_assert(write(fd, brightness_value, strlen(brightness_value)) > 0);
-+
-+		close(fd);
-+
-+		/* Verify brightness adjustment */
-+		fd = open(brightness_path, O_RDONLY);
-+		igt_assert(fd >= 0);
-+
-+		igt_assert(read(fd, brightness_value, sizeof(brightness_value)) > 0);
-+
-+		read_brightness = atoi(brightness_value);
-+
-+		igt_assert_eq(read_brightness, i);
-+
-+		close(fd);
-+	}
-+
-+	fd = open(brightness_path, O_WRONLY);
-+	igt_assert_f(fd >= 0, "Failed to open %s\n", brightness_path);
-+
-+	snprintf(brightness_value, sizeof(brightness_value), "%d", current_brightness);
-+	igt_assert(write(brightness_fd, brightness_value, strlen(brightness_value)) > 0);
-+
-+	close(fd);
-+}
-+
- static void test_static_toggle(data_t *data, enum pipe pipe,
- 			       igt_output_t *output,
- 			       uint32_t flags)
-@@ -483,6 +556,11 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
- 		igt_assert_eq(system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\""), 0);
- 		goto cleanup;
- 	}
-+	if (flags & TEST_BRIGHTNESS) {
-+		igt_require_f(is_intel_device(data->fd), "Only supported on Intel devices\n");
-+		adjust_brightness(data, flags);
-+	}
-+
- 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
- 
- 	/* Verify that the CRC are equal after DPMS or suspend. */
-@@ -685,7 +763,8 @@ static void test_hdr(data_t *data, uint32_t flags)
- 
- 			igt_dynamic_f("pipe-%s-%s",
- 				      kmstest_pipe_name(pipe), output->name) {
--				if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND | TEST_INVALID_HDR))
-+				if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND |
-+					     TEST_INVALID_HDR | TEST_BRIGHTNESS))
- 					test_static_toggle(data, pipe, output, flags);
- 				if (flags & TEST_SWAP)
- 					test_static_swap(data, pipe, output);
-@@ -734,6 +813,10 @@ igt_main
- 	igt_subtest_with_dynamic("static-toggle-suspend")
- 		test_hdr(&data, TEST_SUSPEND);
- 
-+	igt_describe("Tests brightness while entering and exiting HDR mode");
-+	igt_subtest_with_dynamic("brightness-with-hdr")
-+		test_hdr(&data, TEST_BRIGHTNESS);
-+
- 	igt_describe("Tests swapping static HDR metadata");
- 	igt_subtest_with_dynamic("static-swap")
- 		test_hdr(&data, TEST_SWAP);
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_8050_BAT -> XEIGTPW_11860_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11860_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [PASS][1] -> [INCOMPLETE][2] ([Intel XE#2874]) +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8050/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8050/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8050 -> IGTPW_11860
+
+  IGTPW_11860: 939e017a1d47a186d4dbccc641f611f3a9ce69b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8050: 0000bc070385689633718cbab01ab02a524f2c61 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2007-789d5631453c3edad1988cd47db1643555e52ac9: 789d5631453c3edad1988cd47db1643555e52ac9
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/index.html
+
+--===============8143970924299748999==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Backlight control on HDR-enabled eDP panels (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139050/">https://patchwork.freedesktop.org/series/139050/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8050_BAT -&gt; XEIGTPW_11860_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11860_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8050/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8050/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11860/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8050 -&gt; IGTPW_11860</li>
+</ul>
+<p>IGTPW_11860: 939e017a1d47a186d4dbccc641f611f3a9ce69b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8050: 0000bc070385689633718cbab01ab02a524f2c61 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2007-789d5631453c3edad1988cd47db1643555e52ac9: 789d5631453c3edad1988cd47db1643555e52ac9</p>
+
+</body>
+</html>
+
+--===============8143970924299748999==--
