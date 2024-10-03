@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C354CF34B6
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Oct 2024 15:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6319ECF34B0
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Oct 2024 15:22:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0889F10E87D;
-	Thu,  3 Oct 2024 15:20:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1AF9310E87C;
+	Thu,  3 Oct 2024 15:22:50 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ED9F810E87C;
- Thu,  3 Oct 2024 15:20:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27BCC10E87C;
+ Thu,  3 Oct 2024 15:22:49 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============9027064423069279381=="
+ boundary="===============0457792794358636826=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Foa=3A_Check_g?=
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/intel/xe=5Foa=3A_Check_g?=
  =?utf-8?q?tidle_before_rc6_disable_test?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Soham Purkait" <soham.purkait@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 03 Oct 2024 15:20:25 -0000
-Message-ID: <172796882531.1168831.17205836731221401372@2413ebb6fbb6>
+Date: Thu, 03 Oct 2024 15:22:49 -0000
+Message-ID: <172796896912.1168886.8739863262281256918@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20241003115741.119720-1-soham.purkait@intel.com>
 In-Reply-To: <20241003115741.119720-1-soham.purkait@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9027064423069279381==
+--===============0457792794358636826==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,7 +50,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/intel/xe_oa: Check gtidle before rc6 disable test
 URL   : https://patchwork.freedesktop.org/series/139496/
-State : success
+State : failure
 
 == Summary ==
 
@@ -138,7 +138,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11863/index.html
 
---===============9027064423069279381==
+--===============0457792794358636826==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -160,7 +160,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/intel/xe_oa: Check gtidle before rc6 disable test</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139496/">https://patchwork.freedesktop.org/series/139496/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11863/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11863/index.html</a></td></tr>
 
@@ -237,4 +237,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============9027064423069279381==--
+--===============0457792794358636826==--
