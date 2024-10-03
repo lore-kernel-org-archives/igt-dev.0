@@ -4,170 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ED74CF34A2
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Oct 2024 12:29:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AF74CF34A9
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Oct 2024 13:27:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A352E10E236;
-	Thu,  3 Oct 2024 12:29:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 17EB310E242;
+	Thu,  3 Oct 2024 13:27:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Vj5lAXp/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Nqnfqx1D";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 659EF10E236
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Oct 2024 12:29:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE12510E242
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Oct 2024 13:27:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1727958569; x=1759494569;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=GUQfEvy1Z5nbAleTsKrINlPuAnFcgTUKHCzfeKsdSbE=;
- b=Vj5lAXp/1h2SujccTzK4nECkzV3f27l4hH+6rjzgVvvC7s18ktu3oHqF
- 1S5N5t3JIs0W5goiB2TcAslLU4OukAJ15NlZchZUDtbZKDzRPKac7cct2
- 1jzulTEHWHrFd9LEorlDmHyvbf/r9oNHsnXVmO9tAeT9nQQwZLjnlUS3+
- dkg9iLVRGAm2ZjbV4kK0LFQXdUmLdz1S3awNvkClY9hLg+agywNhgIqLO
- WtKgH4Gdm7nlZcioHOEpc755eTXO07wqQzQk9ILBu05zu11uEpUmsJ/qM
- A4H6WkoP0WZgWX2b/3NMrZFB227LERgBZrhRsP4Pgr7hBMsk9xYHMsi26 A==;
-X-CSE-ConnectionGUID: AZkvqGnAQ8isxhbfTiBNgw==
-X-CSE-MsgGUID: CshD2Y9sTH+ZuQc3nabFiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="44675658"
-X-IronPort-AV: E=Sophos;i="6.11,174,1725346800"; d="scan'208";a="44675658"
+ t=1727962062; x=1759498062;
+ h=message-id:date:mime-version:from:subject:in-reply-to:to:
+ cc:content-transfer-encoding;
+ bh=ug6FllTvJyB/l+1WJAthYNQuqpdlY0FBtunlPrX7Jm4=;
+ b=Nqnfqx1DXzIkpDjPLFpynm4h7xF0vLf0y/KyB1FKWBjLRf83z4r9QSVZ
+ FUe40fttzzygthaQ89liFzqabOFXhv+nLxXb5qOZ/SqaqQBpJl5CwkFnE
+ c5rVFfG6nSd0wJhKuyL2gdBWe56XeemJCKsVa0CGFUJiBH3yYd45Nrz5a
+ QJBLpSG5Cz15AeTjgMNAqT7qcnALDDEFEauNUJrZR1mWFM3FIu24lQkCZ
+ kTAE/ckNXYzksMQQXIghCsGtJ0Hg5SRrZDJ034YHAE7gr9Lelmht0d7EW
+ LJ3hLLSU4H2CNdy28quIC+iNcInSE6c/r+B1k5VaL2MY/EomYztYtMUk3 g==;
+X-CSE-ConnectionGUID: W6FgvlbfTD2ofmdel9sy6w==
+X-CSE-MsgGUID: yGXVxtrCQvycY7uDpPvMkQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="52561252"
+X-IronPort-AV: E=Sophos;i="6.11,174,1725346800"; d="scan'208";a="52561252"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Oct 2024 05:29:29 -0700
-X-CSE-ConnectionGUID: u13Q5bZlT227U50MMMmQmw==
-X-CSE-MsgGUID: E1pQ93xnRX2/86aM1vrARA==
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Oct 2024 06:27:41 -0700
+X-CSE-ConnectionGUID: /jYoLM2VQ0+gucjbajVHaQ==
+X-CSE-MsgGUID: Ny/v+v2nRBOk/zkxtyeggA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,174,1725346800"; d="scan'208";a="105103000"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 03 Oct 2024 05:29:29 -0700
-Received: from fmsmsx601.amr.corp.intel.com (10.18.126.81) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 3 Oct 2024 05:29:28 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 3 Oct 2024 05:29:28 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 3 Oct 2024 05:29:28 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.174)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 3 Oct 2024 05:29:27 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xRTiBnKM9Xp9oJUU1KkKAX6JB9nmIYBgQadrSWwwl8rvvnlLeiMP7in7Kh+F9XhszEq9jKCoTFhnTFuHMeYwkZXC56b96gT35dO/YRc6ME9o199/MI+8ZHfF7CiLmOLfChDpGjDguREy/6tNozx/0tfL8s5XiN7DqRs4nnWnPYeKG6neGZLBL0/XP9m1XtELjKcy6e2pLofoMMOATMsMF3DRxzPD8XSL8obr7g3NXhIEqoi2MHxz8eQAJSNz3PkVP1vq0CPO4k+m4iKHFuc3wv1Ty6BOHuEXJ1slT3vgM4IWW0+gGHJ9moR+orC84utJHNIskOKkGV9i5dWnIL1TtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ulkskLwggGAUhX1/U9noobn209FsKCjz4NiWWlsUERE=;
- b=eCGTzLmjWsT2RFQ9MeXb7xcMJ9MoIC/rE3CNsBk5X+tby60LUc1JGls3qfKfhZu4yB00ykvuTZUEhyg/DbxnQ8232NAyUaJ0EEjyRMmY06LiXdmiDYrc6UzliiamNugMcLt9rmdMZ6lwl0bXfyU+UqCx5gXKM6pFe2HY9FFqAFfbEzhCAWk0gIDeVACCTjz+bMvxdaSS2uqogqh2XOZoDBIuqHLIXbjExtDtovftq6dO5PopShoilRsTkofDUqcNNWdthLINluT7WCFYcn7H+J6LPovpV4cchsnVfA+M8ziqeNuSc5SR8SKZXxfWNYeTKOv/SAmEaC+A3BQcrLZp+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
- CO1PR11MB4929.namprd11.prod.outlook.com (2603:10b6:303:6d::19) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8026.18; Thu, 3 Oct 2024 12:29:25 +0000
-Received: from DM4PR11MB6312.namprd11.prod.outlook.com
- ([fe80::faad:f9ae:2b45:e9ba]) by DM4PR11MB6312.namprd11.prod.outlook.com
- ([fe80::faad:f9ae:2b45:e9ba%3]) with mapi id 15.20.8026.017; Thu, 3 Oct 2024
- 12:29:25 +0000
-From: "B, Jeevan" <jeevan.b@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/kms_pm_lpsp: Add display version check
- on external panel
-Thread-Topic: [PATCH i-g-t] tests/intel/kms_pm_lpsp: Add display version check
- on external panel
-Thread-Index: AQHbE2Vnwa6oue/JsUSDXyg6Q+c/O7J0+OXQ
-Date: Thu, 3 Oct 2024 12:29:25 +0000
-Message-ID: <DM4PR11MB631244045F5D4F4BD10913EF90712@DM4PR11MB6312.namprd11.prod.outlook.com>
-References: <20240930181839.49977-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20240930181839.49977-1-mohammed.thasleem@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|CO1PR11MB4929:EE_
-x-ms-office365-filtering-correlation-id: 550e2819-7726-40fa-2816-08dce3a7048f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?DO33aTs5lrxTOJXWra6zbvL8zEqFGe4HD6VKfy8BhJZmIVNtsg9Psg2N67WX?=
- =?us-ascii?Q?+6EfmQ7EkXjx9Q1yrJ/EvEWSYXQ9zVVT5gx/NbO6gKrNDYAJ3sVP9QIAJONc?=
- =?us-ascii?Q?rBhFKcPJXSQpY23Ov4KCdogLjKwuGtEkRjxiCAR7qylwW+J/eQNChzLtvFTB?=
- =?us-ascii?Q?yo9iFkgOXt/QMRZXg4tOmXnubH3KeGa6Noulcj6Vipt0P3oPQPrrIeA6Y1jk?=
- =?us-ascii?Q?bBJSCUuFvAb1wmtgh7PvXJQPwgIi8j4Y74yR8diltnas66y/czGndCRjMJ0v?=
- =?us-ascii?Q?zbm9wvCXS6srzoeAB2Qf/ApUtMTUqxhSET6kDeByASHLxj6Un8HkbiKjnxfR?=
- =?us-ascii?Q?8WlpMZmo3e60434V4ZunlJzAagxDfCHBOMpnHY6ZcgafvJoDf8XuOIl+uuYu?=
- =?us-ascii?Q?O1h1IoU3fh5qQtViKQ/Bd8xkhw9EJeH13UCsa+vY0qbH0M8REl4C4HpQ/CIu?=
- =?us-ascii?Q?9CIGpQprea//6q+zM5k6w7KVufAUPEaaIQihy58IqtwL4s004RYUbsAnu8YQ?=
- =?us-ascii?Q?nGRu4WVjrpYSMdTks6h2CftKrG4MucN4/fYMYACpdwH4IQbfB1LFsd125089?=
- =?us-ascii?Q?S0TRrM5ynBu7YeUxG8cX1KiPc3LLeB4RwGY31BibzQgXV8OsMpdcp3QVGjTL?=
- =?us-ascii?Q?ERIAO8hFJoeHE97M5yceAEeUnvwdPdEREzFGCawcesrZAbenrE16BvZt5Puy?=
- =?us-ascii?Q?LxeGaURJOQsLspZvA/IXhtJtuudFPeUYsQpbzofLBjq8rzA/kmb24n1KWgY6?=
- =?us-ascii?Q?ZH2/l8KKfRXEVxaUeOUnXNk8qVajtgzAJTpRpbPb88w+xHYX17oGDNtp0Z/M?=
- =?us-ascii?Q?vzQ8Lg3+KfRNAbjDOTd/wUPmqVRXcgdL3hxJVRCe54NFyiY0T0LLVfcHU4z6?=
- =?us-ascii?Q?AlnQEMOl4/b0CD950N7b4iiQME0J4F4RFFMUby56qbs1gSuMGw8B1FSR3Q5o?=
- =?us-ascii?Q?uSE5O002NJLwALaUPkUfb/0vBc2F+Z+csRJmr3kQ+8UHjhelxS3RZnV+wTYj?=
- =?us-ascii?Q?SKISzCPfKHB8RdMXNf0NZkgMgJGYRf5K5rZaAHmk48KuwOzNxxulB4WNrHn5?=
- =?us-ascii?Q?0TDthMZHo+MkVKz5xipBtBHpxnd4y4x4qPfIiiCOSn9Pwxslch2o7kvvNGtQ?=
- =?us-ascii?Q?YTMOE/4OhDjC0xyfzP/dYIl+M9Rd69+KQwczFAaMrfU3RzADsHmzNLMb59PN?=
- =?us-ascii?Q?C1X1ukpOW65iRlRFzJ1uTqvehmlLkcctYIk05VpCcUD2pxXfHZBPXbM5vlxG?=
- =?us-ascii?Q?+vmjO+lCpN/g2omzo9xvMDxMEfblu4eBKvo6+TkGF5WSpwiXruF65FiHphVN?=
- =?us-ascii?Q?5d9e0tQuf7GHm0ttdHG02NaW6yYBsjBJ3amOr9hiUb5+3Q=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?zFtKlmzjuIwO0oTgLzKEMPTdh/tA6ZgMU5Vf1a87OHdD3hbir9YNOsuyptus?=
- =?us-ascii?Q?nbNcaO3+NEkgp3JYq6Jn8owP8fTAwFeGqU+PZpCLTF1GvkSzXWaGFT9OuKuU?=
- =?us-ascii?Q?+xgtMl2txHGagpoZZSh1B45yekVdwBIQrN43/9uju3EmQEtp4heKc8PHZhb3?=
- =?us-ascii?Q?5CR0wBMrtW+hqmK4XsS9ZFZuKQVw+B06nqlNHLGA1wTGJbE9qarYwMBqoJnu?=
- =?us-ascii?Q?mWm+YCMSrE9WMF0TVWRdfBKuwptDjrg3QMsRt5OSnBOFSKebArFmnIBPPBqC?=
- =?us-ascii?Q?PS/ekl/K3v8hMUPfBrWiuNXTwzRHtI3iC3mmHZWwxLS9FKQ6GGqEDQL4FxcB?=
- =?us-ascii?Q?Bx3OLL2UjdEVmsCL/zZ7m92vHZCbWd+T7UWxZxtRq2irDc3Owju6nFEEeuhX?=
- =?us-ascii?Q?oz9SV1O94XeehN6G/kljzBdDB0KERBtXKii8LI47XssJ4UyPfL5KjekojWvZ?=
- =?us-ascii?Q?YioyivANnhH2ql3s6e0Lc1iKtUje/ZF5IZ93AxBX/8ZX5bTii5UhcS+oxsvB?=
- =?us-ascii?Q?/z/4O/VonSzALlpsFkc4z/y8Ru3C1LD/t6TNil0B4tRmu7NkSrudZNEXhqcA?=
- =?us-ascii?Q?vyftEt5z6EQUBjUExcIsi8u603oW/IHzMlDx5nEMma4Aiv3sFeayBf6T2Eco?=
- =?us-ascii?Q?SvIRzvwmeRuBFGAlehFy7xmlczUNVL4L0/f7uXlQejXA3R0LwCD6oxlxBcAq?=
- =?us-ascii?Q?voWfZKFWoQmqqDzn8uIdDjR4KkXxTZ57A+F80k1wSZFNAnLpUrf0HLGz8/mD?=
- =?us-ascii?Q?DjKeb77kaOO1eRvlK68VxRP1dLV+hKFS0ZnZwH4AJ8F85VPS0jarWlcxzvgA?=
- =?us-ascii?Q?Nwg3Lq1z2noho9cgqnKEQe04WadkpUXRx4wxcpsaP5ZB+6a67LU9qf8wB+gk?=
- =?us-ascii?Q?DBeLMGG08QhCCX6RjYkhpajbwr3xAunHM+jHuV0BqEmUyPcghAnPMFiXGaYw?=
- =?us-ascii?Q?BDAmRBGeGyykk4NaenZNEKrsmiwHzp7Md+QNscNYKLgyoMpzE2IyOTdKm9kH?=
- =?us-ascii?Q?cc0SrRtLqBHvPhPFjXh0qkZ+gMrqNM8n7Ir/4QmvTqa3BA2HTp3sKS0H31kZ?=
- =?us-ascii?Q?yE2FGBm/StxLxcj5qMeijdVIWsbhRlwkX/y3Us4399XIB8rXX9VEix5uUfYf?=
- =?us-ascii?Q?OegH8xI6o7yGSNscJwoSfgdu3g2voG3+gM8SKzhCYPKouC6yOzOlFqd9Ww86?=
- =?us-ascii?Q?ih+6ZMHgh7l1TMKG8E3HUDnrL7igsmtpAxfmZNfWkf0S/X3lhR5yNfr0oiS5?=
- =?us-ascii?Q?Oh0QTv2v0yvMsGP7ndMLmyTA3S985nys/KpPx+dAUQP2twg0ORWMLAwYawq4?=
- =?us-ascii?Q?aq0EYQXJNyI0u7qPQWNxgdiERiXLSp5hWjauUbid2FE4UGRVmTQgCd+geGoI?=
- =?us-ascii?Q?C48MIRTNUGZxYlpS03Uj2femnpv01pYZoyqfp9UPMScSBFehAloFcuNG5wy6?=
- =?us-ascii?Q?VTAfb5tnrNjqcRRddx4rc8pTku63qDwja6CTswA9Zo8PMK1X4h3KhYAQ6FuX?=
- =?us-ascii?Q?02Rkugf/p9C7dLMpAjohT9gTcH968peNTcSCZ/wVh6CCFA8rTFI6ZbAN6XUC?=
- =?us-ascii?Q?TumE5o8FIHBX8R9pKdI=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-IronPort-AV: E=Sophos;i="6.11,174,1725346800"; d="scan'208";a="105119388"
+Received: from amarkelo-mobl.ger.corp.intel.com (HELO [10.213.201.3])
+ ([10.213.201.3])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Oct 2024 06:27:40 -0700
+Message-ID: <999b078d-4338-4158-915e-3bc83338f4e1@linux.intel.com>
+Date: Thu, 3 Oct 2024 15:27:37 +0200
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 550e2819-7726-40fa-2816-08dce3a7048f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Oct 2024 12:29:25.5135 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: WJ88sxgS42tfE3M/SEdwKdE9udf4R31oGfA1FU+jl4ld9SV83l+EaOJNGG9XPyctmO7gi0YpV6L3n7YyS0YLPw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4929
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: [PATCH i-g-t v6] runner/executor: Abort when child process is killed
+ by a signal
+Content-Language: en-US
+In-Reply-To: <f7319a46-d6d4-4ea5-9863-99ccd7cea3a5@linux.intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -183,57 +71,122 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM
+Manually killing a test process results in igt-runner silently marking the
+test as incomplete. Change the behavior to abort verbosely when a test is
+killed.
 
-Reviewed-by: Jeevan B <jeevan.b@intel.com>
+In order for the new behavior to work, child termination is probed on
+every iteration of the while loop inside monitor_output(). Add the
+bool test_timed_out to track when igt_runner is intentionally terminating
+a test, and do not interfere with it.
 
-> -----Original Message-----
-> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of
-> Mohammed Thasleem
-> Sent: Monday, September 30, 2024 11:49 PM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>
-> Subject: [PATCH i-g-t] tests/intel/kms_pm_lpsp: Add display version check
-> on external panel
->=20
-> LPSP for external panel support from Gen13+ onwards.
-> Skip the test if only external panel connected on less then gen13 platfor=
-ms.
->=20
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  tests/intel/kms_pm_lpsp.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->=20
-> diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c index
-> f9ac508fb..889da42de 100644
-> --- a/tests/intel/kms_pm_lpsp.c
-> +++ b/tests/intel/kms_pm_lpsp.c
-> @@ -227,6 +227,8 @@ igt_main
->  		enum pipe pipe;
->=20
->  		for_each_connected_output(display, output) {
-> +			drmModeConnectorPtr connector =3D output-
-> >config.connector;
-> +
->  			if (!i915_output_is_lpsp_capable(data.drm_fd,
-> output))
->  				continue;
->=20
-> @@ -238,6 +240,10 @@ igt_main
->  				if (pipe !=3D PIPE_A)
->  					continue;
->=20
-> +				if (connector->connector_type !=3D
-> DRM_MODE_CONNECTOR_eDP)
-> +
-> 	igt_require_f(intel_display_ver(data.devid) >=3D 13,
-> +						     "LPSP support on external
-> panel from Gen13+ platform\n");
-> +
->  				data.output =3D output;
->  				data.pipe =3D pipe;
->=20
-> --
-> 2.25.1
+Tested by:
+ - using the --per-test-timeout flag and checking that results.json labels
+   the test as a timeout.
+ - manually killing a test process and checking that results.json labels
+   the test as an abort with a message stating the test was killed.
+
+ v6: - clear code comments
+     - move child termination probing closer to where sigfd is handled
+     - add a bool test_timed_out to ensure we will not interfere with
+       igt_runner intentionally killing tests.
+     - move the aborting code to outside the while loop
+
+ v5: do not use sigdescr_np() as it seems to be a fairly new lib function
+     that does not compile on older Ubuntu
+ v4: improve abort code path to not interfere with igt-runner timeouts
+ v3: do not interfere with igt-runner killing tests due to timeout and
+     diskspace
+ v2: fix race condition
+
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+---
+ runner/executor.c | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+
+diff --git a/runner/executor.c b/runner/executor.c
+index ac73e1dde..69b4ed939 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -888,12 +888,15 @@ static int monitor_output(pid_t child,
+ 	const int interval_length = 1;
+ 	int wd_timeout;
+ 	int killed = 0; /* 0 if not killed, signal number otherwise */
++	bool child_reaped = false;
++	bool child_killed_by_signal = false;
+ 	struct timespec time_beg, time_now, time_last_activity, time_last_subtest, time_killed;
+ 	unsigned long taints = 0;
+ 	bool aborting = false;
+ 	size_t disk_usage = 0;
+ 	bool socket_comms_used = false; /* whether the test actually uses comms */
+ 	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
++	bool test_timed_out = false;
+ 
+ 	igt_gettime(&time_beg);
+ 	time_last_activity = time_last_subtest = time_killed = time_beg;
+@@ -1233,6 +1236,14 @@ static int monitor_output(pid_t child,
+ 			}
+ 		}
+ 
++		/* Always check for abort conditions */
++		if (child == waitpid(child, &status, WNOHANG)) {
++			child_reaped = true;
++			if (WIFSIGNALED(status)) {
++				child_killed_by_signal = true;
++				killed = WTERMSIG(status);
++			}
++		}
+ 		if (sigfd >= 0 && FD_ISSET(sigfd, &set)) {
+ 			double time;
+ 
+@@ -1241,7 +1252,12 @@ static int monitor_output(pid_t child,
+ 				errf("Error reading from signalfd: %m\n");
+ 				continue;
+ 			} else if (siginfo.ssi_signo == SIGCHLD) {
+-				if (child != waitpid(child, &status, WNOHANG)) {
++				if (!child_reaped) {
++					/* Was child killed since we last checked? */
++					if (child == waitpid(child, &status, WNOHANG))
++						child_reaped = true;
++				}
++				if (!child_reaped) {
+ 					errf("Failed to reap child\n");
+ 					status = 9999;
+ 				} else if (WIFEXITED(status)) {
+@@ -1303,7 +1319,6 @@ static int monitor_output(pid_t child,
+ 							fdatasync(outputs[_F_JOURNAL]);
+ 					}
+ 				}
+-
+ 				aborting = true;
+ 				killed = SIGQUIT;
+ 				if (!kill_child(killed, child))
+@@ -1447,6 +1462,7 @@ static int monitor_output(pid_t child,
+ 						 disk_usage);
+ 
+ 		if (timeout_reason) {
++			test_timed_out = true;
+ 			if (killed == SIGKILL) {
+ 				/* Nothing that can be done, really. Let's tell the caller we want to abort. */
+ 
+@@ -1485,6 +1501,15 @@ static int monitor_output(pid_t child,
+ 		}
+ 	}
+ 
++	if (!test_timed_out && child_killed_by_signal) {
++		sprintf(buf, "Test terminated by a signal %s (%d).\n",
++				strsignal(killed), -killed);
++		errf("%s", buf);
++
++		*abortreason = strdup(buf);
++		aborting = true;
++	}
++
+ 	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
+ 	if (settings->sync)
+ 		fdatasync(outputs[_F_DMESG]);
+-- 
+2.34.1
 
