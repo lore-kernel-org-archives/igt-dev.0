@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA61ACFA765
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:41:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A20ACFA763
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:41:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6728310E27D;
-	Fri,  4 Oct 2024 10:41:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2475010E2B0;
+	Fri,  4 Oct 2024 10:41:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="imjjz694";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QCHJWxOi";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A007A10E27D
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 10:41:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67B3610E9D1
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 10:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728038511; x=1759574511;
+ t=1728038514; x=1759574514;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=4lfWsmjB9GFHH7M/AenCWVsTDRkPP3/k7I8tGD6j4jU=;
- b=imjjz694BVrUYRa1gMgFulj7YV3ElRVscrWFa6NREl/MIKpxMfCWTaoY
- cbjlbZ05Ses8MInJuTqurVG5bO/pYIWTXGC2BsimHycN4GC5W5p9KAzFM
- 4tDI/VSFVL+wQXo/w7QZs5HMwl2FOd54/dUcdWSHxjlSmv18Z0W3vBxo3
- gYUNhoaaCkdCqtRfgSTpGFdIDLQjWO5V6G+ljd9rajDe3QAnvMngMI/1D
- dl2BWMF58pkHVmYk1TVo9cJdbco6EOqkNs8Ov9L8kS9/VavFS53fFvJc0
- cioyphubjqD2LjhofUgZsgXIkJPFpepw0c7RLxQJRiCGMxbdZ7X4VXBg8 g==;
-X-CSE-ConnectionGUID: cQ9lPyXkQqKdOXz4G5sqyw==
-X-CSE-MsgGUID: SR1CKsVUQvCGLquJMHKx5Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="31140544"
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="31140544"
+ bh=DrAKP3sHp9z4AKCTWV9PIgwO0DAUWYs8wM8MFGYtw08=;
+ b=QCHJWxOiHvxjD9VtBfijmafSGICAopLtg42ANr/6NbymxqD3I63k3wlo
+ 9D8kqiMc/juupg+RixzqKJ+lVvOFCLHSk1JUDrSCN1gwzY+SV4oTNrLn+
+ rIMz4SfKOkBde+CQgAMCoat39MXc6FVzRdaDzYnKzVyZOnQqhFdsIhLd2
+ qFJnSpJuEnGnWKOwHl5w0QkFRN0J4RWOTHP1+XNEZH7In+4uB6P8sqm1h
+ mVawuwZr9pXfFaBUiC4LJAek9cKYkr1hjlkirOonW+UcMTAqKmPWorp2q
+ aAhMjsbXoFPLhu1HPl6XKk6dU3kiKLolUTk/A4qn8Ycyuo6X0juqg8+XJ Q==;
+X-CSE-ConnectionGUID: YeuIdTZlSKCzjQfGdU+xAA==
+X-CSE-MsgGUID: HVKbkiUtTMSA5RmpknGyrw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="31140556"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="31140556"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2024 03:41:51 -0700
-X-CSE-ConnectionGUID: 8QQI1RQRTJ+Z+sygsKkT+w==
-X-CSE-MsgGUID: WXIH1lAxSK+8Orzjg2fCrA==
+ 04 Oct 2024 03:41:54 -0700
+X-CSE-ConnectionGUID: 29M0cdGgSyGTFU1slrr3+g==
+X-CSE-MsgGUID: NISO/veLRQ2FVGL8XWSLCw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="74778391"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="74778411"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 04 Oct 2024 03:41:50 -0700
+ by fmviesa008.fm.intel.com with SMTP; 04 Oct 2024 03:41:52 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 04 Oct 2024 13:41:49 +0300
+ Fri, 04 Oct 2024 13:41:51 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 10/14] lib/intel_bufops: Provide pread/pwrite based
- fallback when we don't have WC
-Date: Fri,  4 Oct 2024 13:41:17 +0300
-Message-ID: <20241004104121.32750-11-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 11/14] lib/rendercopy: Use igt_require() to validate
+ gen2/3 surface size
+Date: Fri,  4 Oct 2024 13:41:18 +0300
+Message-ID: <20241004104121.32750-12-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
 References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
@@ -71,184 +71,68 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-The linear<->tiled conversion code currently assume that we may
-be able to use either cpu or wc mmaps. That is not true on all
-systems. As a last resort provide a pread/pwrite based fallback.
+gen2/3 render engine has a max surface size 2kx2k. That is
+pretty easy to hit accidentally. Rather than exploding with
+an assert it seems better to just gracefully skip the test.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/intel_bufops.c | 68 ++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 56 insertions(+), 12 deletions(-)
+ lib/rendercopy_i830.c | 8 ++++----
+ lib/rendercopy_i915.c | 8 ++++----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-index 619222019fd8..641f1dae91b5 100644
---- a/lib/intel_bufops.c
-+++ b/lib/intel_bufops.c
-@@ -549,10 +549,12 @@ static void __copy_ccs(struct buf_ops *bops, struct intel_buf *buf,
- 	munmap(map, size);
- }
+diff --git a/lib/rendercopy_i830.c b/lib/rendercopy_i830.c
+index 4b0ea3b859e2..ced4a84a23e8 100644
+--- a/lib/rendercopy_i830.c
++++ b/lib/rendercopy_i830.c
+@@ -139,8 +139,8 @@ static void gen2_emit_target(struct intel_bb *ibb,
+ 	uint32_t format;
  
--static void *mmap_write(int fd, struct intel_buf *buf)
-+static void *mmap_write(int fd, const struct intel_buf *buf, bool *malloced)
- {
- 	void *map = NULL;
+ 	igt_assert_lte(dst->surface[0].stride, 8192);
+-	igt_assert_lte(intel_buf_width(dst), 2048);
+-	igt_assert_lte(intel_buf_height(dst), 2048);
++	igt_require(intel_buf_width(dst) <= 2048);
++	igt_require(intel_buf_height(dst) <= 2048);
  
-+	*malloced = false;
-+
- 	if (buf->bops->driver == INTEL_DRIVER_XE)
- 		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+ 	switch (dst->bpp) {
+ 		case 8: format = COLR_BUF_8BIT; break;
+@@ -184,8 +184,8 @@ static void gen2_emit_texture(struct intel_bb *ibb,
+ 	uint32_t format;
  
-@@ -580,7 +582,7 @@ static void *mmap_write(int fd, struct intel_buf *buf)
- 				       I915_GEM_DOMAIN_CPU);
- 	}
+ 	igt_assert_lte(src->surface[0].stride, 8192);
+-	igt_assert_lte(intel_buf_width(src), 2048);
+-	igt_assert_lte(intel_buf_height(src), 2048);
++	igt_require(intel_buf_width(src) <= 2048);
++	igt_require(intel_buf_height(src) <= 2048);
  
--	if (!map) {
-+	if (!map && gem_mmap__has_wc(fd)) {
- 		map = __gem_mmap_offset__wc(fd, buf->handle, 0, buf->surface[0].size,
- 					    PROT_READ | PROT_WRITE);
- 		if (!map)
-@@ -591,13 +593,32 @@ static void *mmap_write(int fd, struct intel_buf *buf)
- 			       I915_GEM_DOMAIN_WC, I915_GEM_DOMAIN_WC);
- 	}
+ 	switch (src->bpp) {
+ 		case 8: format = MAPSURF_8BIT | MT_8BIT_L8; break;
+diff --git a/lib/rendercopy_i915.c b/lib/rendercopy_i915.c
+index 94cdfb99af9a..2095a7c14b26 100644
+--- a/lib/rendercopy_i915.c
++++ b/lib/rendercopy_i915.c
+@@ -93,8 +93,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+ 		uint32_t format_bits, tiling_bits = 0;
  
-+	if (!map) {
-+		*malloced = true;
-+
-+		map = malloc(buf->surface[0].size);
-+		igt_assert(map);
-+	}
-+
- 	return map;
- }
+ 		igt_assert_lte(src->surface[0].stride, 8192);
+-		igt_assert_lte(intel_buf_width(src), 2048);
+-		igt_assert_lte(intel_buf_height(src), 2048);
++		igt_require(intel_buf_width(src) <= 2048);
++		igt_require(intel_buf_height(src) <= 2048);
  
--static void *mmap_read(int fd, struct intel_buf *buf)
-+static void munmap_write(void *map, int fd, const struct intel_buf *buf, bool malloced)
-+{
-+	if (malloced) {
-+		igt_assert(__gem_write(fd, buf->handle, 0, map, buf->surface[0].size) == 0);
-+		free(map);
-+	} else {
-+		munmap(map, buf->surface[0].size);
-+	}
-+}
-+
-+static void *mmap_read(int fd, struct intel_buf *buf, bool *malloced)
- {
- 	void *map = NULL;
+ 		if (src->tiling != I915_TILING_NONE)
+ 			tiling_bits = MS3_TILED_SURFACE;
+@@ -136,8 +136,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+ 		uint32_t format_bits;
  
-+	*malloced = false;
-+
- 	if (buf->bops->driver == INTEL_DRIVER_XE)
- 		return xe_bo_map(fd, buf->handle, buf->surface[0].size);
+ 		igt_assert_lte(dst->surface[0].stride, 8192);
+-		igt_assert_lte(intel_buf_width(dst), 2048);
+-		igt_assert_lte(intel_buf_height(dst), 2048);
++		igt_require(intel_buf_width(dst) <= 2048);
++		igt_require(intel_buf_height(dst) <= 2048);
  
-@@ -622,7 +643,7 @@ static void *mmap_read(int fd, struct intel_buf *buf)
- 			gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU, 0);
- 	}
- 
--	if (!map) {
-+	if (!map && gem_mmap__has_wc(fd)) {
- 		map = __gem_mmap_offset__wc(fd, buf->handle, 0, buf->surface[0].size,
- 					    PROT_READ);
- 		if (!map)
-@@ -632,9 +653,24 @@ static void *mmap_read(int fd, struct intel_buf *buf)
- 		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_WC, 0);
- 	}
- 
-+	if (!map) {
-+		map = malloc(buf->surface[0].size);
-+		igt_assert(map);
-+
-+		igt_assert(__gem_read(fd, buf->handle, 0, map, buf->surface[0].size) == 0);
-+	}
-+
- 	return map;
- }
- 
-+static void munmap_read(void *map, int fd, const struct intel_buf *buf, bool malloced)
-+{
-+	if (malloced)
-+		free(map);
-+	else
-+		munmap(map, buf->surface[0].size);
-+}
-+
- static void __copy_linear_to(int fd, struct intel_buf *buf,
- 			     const uint32_t *linear,
- 			     int tiling, uint32_t swizzle)
-@@ -642,7 +678,10 @@ static void __copy_linear_to(int fd, struct intel_buf *buf,
- 	const tile_fn fn = __get_tile_fn_ptr(fd, tiling);
- 	int height = intel_buf_height(buf);
- 	int width = intel_buf_width(buf);
--	void *map = mmap_write(fd, buf);
-+	bool malloced;
-+	void *map;
-+
-+	map = mmap_write(fd, buf, &malloced);
- 
- 	for (int y = 0; y < height; y++) {
- 		for (int x = 0; x < width; x++) {
-@@ -655,7 +694,7 @@ static void __copy_linear_to(int fd, struct intel_buf *buf,
- 		}
- 	}
- 
--	munmap(map, buf->surface[0].size);
-+	munmap_write(map, fd, buf, malloced);
- }
- 
- static void copy_linear_to_none(struct buf_ops *bops, struct intel_buf *buf,
-@@ -706,7 +745,10 @@ static void __copy_to_linear(int fd, struct intel_buf *buf,
- 	const tile_fn fn = __get_tile_fn_ptr(fd, tiling);
- 	int height = intel_buf_height(buf);
- 	int width = intel_buf_width(buf);
--	void *map = mmap_write(fd, buf);
-+	bool malloced;
-+	void *map;
-+
-+	map = mmap_write(fd, buf, &malloced);
- 
- 	for (int y = 0; y < height; y++) {
- 		for (int x = 0; x < width; x++) {
-@@ -719,7 +761,7 @@ static void __copy_to_linear(int fd, struct intel_buf *buf,
- 		}
- 	}
- 
--	munmap(map, buf->surface[0].size);
-+	munmap_write(map, fd, buf, malloced);
- }
- 
- static void copy_none_to_linear(struct buf_ops *bops, struct intel_buf *buf,
-@@ -803,25 +845,27 @@ static void copy_gtt_to_linear(struct buf_ops *bops, struct intel_buf *buf,
- static void copy_linear_to_wc(struct buf_ops *bops, struct intel_buf *buf,
- 			      uint32_t *linear)
- {
-+	bool malloced;
- 	void *map;
- 
- 	DEBUGFN();
- 
--	map = mmap_write(bops->fd, buf);
-+	map = mmap_write(bops->fd, buf, &malloced);
- 	memcpy(map, linear, buf->surface[0].size);
--	munmap(map, buf->surface[0].size);
-+	munmap_write(map, bops->fd, buf, malloced);
- }
- 
- static void copy_wc_to_linear(struct buf_ops *bops, struct intel_buf *buf,
- 			      uint32_t *linear)
- {
-+	bool malloced;
- 	void *map;
- 
- 	DEBUGFN();
- 
--	map = mmap_read(bops->fd, buf);
-+	map = mmap_read(bops->fd, buf, &malloced);
- 	igt_memcpy_from_wc(linear, map, buf->surface[0].size);
--	munmap(map, buf->surface[0].size);
-+	munmap_read(map, bops->fd, buf, malloced);
- }
- 
- void intel_buf_to_linear(struct buf_ops *bops, struct intel_buf *buf,
+ 		switch (dst->bpp) {
+ 			case 8: format_bits = COLR_BUF_8BIT; break;
 -- 
 2.45.2
 
