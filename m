@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 144C6CFA774
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 12:24:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06A80CFA774
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 12:26:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B6D4810E2A4;
-	Fri,  4 Oct 2024 12:24:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC92610E2A4;
+	Fri,  4 Oct 2024 12:26:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bproZKqv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QV4bNlgx";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4124A10E2A4
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 12:24:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B6A8810E2A4
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 12:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728044694; x=1759580694;
+ t=1728044788; x=1759580788;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=sF+y9Je/wHGZXRni49xY16g1IR39aIrP96rGej1nrXk=;
- b=bproZKqvs2UjvLLxBaPHvICdVdAl442gRE9PvMABWY2JNnjtBo75OLuW
- 4KrBMWy7+2iTYteW4zqL+vfnBnt1trzrkX1iO+BF8Oa30WCuHeBPomQnU
- zhDL7cEaj0/htAQBc1sjSVfrHyvp1cUtzdZZ3EowlYP6a1+/zMc7hFpTf
- bFHI5bffamayQ5j0qp/xQHk2xuV8pKREWjducFHYQRyenW58shDXs+IRb
- V0ALoUxyU34NWoTSayb2p24caDGNukZ2oqJ+tV/17J+6ZlnDOyMK/jref
- 1t+Bm2r6jUtEhTUG1vF0PFYo6a2Nf/m9jIQ/8ERdP8Arr5GsUFL4caezo A==;
-X-CSE-ConnectionGUID: EU4OqEGtRWWJot7IMZJ3PQ==
-X-CSE-MsgGUID: wkT6yEUSQKKWn6wO3cOO4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="30140817"
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="30140817"
+ bh=If+A2gvaLP/HdEZg41dFsg7Y+zL4288zsX4TMpOHeN8=;
+ b=QV4bNlgxYNDDy4ZYx7JpYAnOL6Q/n2xEl08RwBdsO3rk2MOJiSBP2Loi
+ A8d+nSP/Cvihuya4vP3QsDcq5SbtzFv7B0lu0HV1q+CLJ2n3+L+TJRHzb
+ YIiKQF/MLkP4vp+JYgqN/BK8onwGT0E6+9M3tUiDH7/8nHtw6QQC7erpu
+ nHIVuIRuohYftzObCG73TqhjaqFQPgzJ4ZjeMW1Jy43Z95OnGB8VNWYRV
+ J7Pr1zLVlspQmeEJIXxiHYmcjmMIPcFaf15qoshC4fAcuNVqXeCIABQbu
+ rprKo/euauOQZyWghp7rHCNKbbN0hTWrbNrSEdPFtKLh5k4lSYWNw7tJl Q==;
+X-CSE-ConnectionGUID: SsDo8VTdRDqrNEKw9GdXQA==
+X-CSE-MsgGUID: kigLANV9Q/6/g5uz6gvwwQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="30141059"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="30141059"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2024 05:24:52 -0700
-X-CSE-ConnectionGUID: uCDmyBGCQ8aU5T51OrTgdQ==
-X-CSE-MsgGUID: 1EvRy5S5R9O8e2d2wXpZ8w==
+ 04 Oct 2024 05:26:28 -0700
+X-CSE-ConnectionGUID: s0WM2zQaQ+q7N/N03YvRWg==
+X-CSE-MsgGUID: CFOxJK0yQMKLpbf+Egq6rA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="112155757"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="112156669"
 Received: from carterle-desk.ger.corp.intel.com (HELO [10.245.245.140])
  ([10.245.245.140])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2024 05:24:51 -0700
-Message-ID: <330a6ec2-4065-4fbd-9b06-f5a8df683ef1@intel.com>
-Date: Fri, 4 Oct 2024 14:24:48 +0200
+ 04 Oct 2024 05:26:27 -0700
+Message-ID: <918790cf-f8e2-4ba5-93df-5e2191a9cdc2@intel.com>
+Date: Fri, 4 Oct 2024 14:26:24 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/gpgpu_shader: Add x_offset parameter for
- gpgpu_shader__write_on_exception
+Subject: Re: [PATCH i-g-t 2/2] tests/xe_exec_sip: Write on invalidinstr
 To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>
 References: <20240925133003.41959-1-christoph.manszewski@intel.com>
- <20240925133003.41959-2-christoph.manszewski@intel.com>
- <20241001150705.kysozwio55lgypsk@zkempczy-mobl2>
+ <20240925133003.41959-3-christoph.manszewski@intel.com>
+ <20241002075000.ygzmnjgytw4z4lpz@zkempczy-mobl2>
 Content-Language: en-US
 From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
  Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20241001150705.kysozwio55lgypsk@zkempczy-mobl2>
+In-Reply-To: <20241002075000.ygzmnjgytw4z4lpz@zkempczy-mobl2>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -77,118 +76,171 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Zbigniew,
 
-On 1.10.2024 17:07, Zbigniew Kempczyński wrote:
-> On Wed, Sep 25, 2024 at 03:30:02PM +0200, Christoph Manszewski wrote:
->> Currently gpgpu_shader__write_on_exception always writes the first
->> column equal to thread group ID x. Make it possible to specify an offset
->> from that value.
+On 2.10.2024 09:50, Zbigniew Kempczyński wrote:
+> On Wed, Sep 25, 2024 at 03:30:03PM +0200, Christoph Manszewski wrote:
+>> Currently we use 'gpgpu_shader__write_on_exception' only in a negative
+>> way which causes the write not happening in the default (passing) case.
+>> Change one of the usages to positive, to ensure the expected value has
+>> been written.
 >>
 >> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
 >> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 >> ---
->>   lib/gpgpu_shader.c          | 29 +++++++-------
->>   lib/gpgpu_shader.h          |  4 +-
->>   lib/iga64_generated_codes.c | 77 ++++++++++++++++++++-----------------
->>   tests/intel/xe_exec_sip.c   |  6 +--
->>   4 files changed, 62 insertions(+), 54 deletions(-)
+>>   tests/intel/xe_exec_sip.c | 80 ++++++++++++++++++++++++---------------
+>>   1 file changed, 49 insertions(+), 31 deletions(-)
 >>
->> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
->> index 6d8c7ebb8..8df8d9612 100644
->> --- a/lib/gpgpu_shader.c
->> +++ b/lib/gpgpu_shader.c
->> @@ -670,6 +670,7 @@ void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value)
->>    * gpgpu_shader__write_on_exception:
->>    * @shdr: shader to be modified
->>    * @value: dword to be written
->> + * @x_offset: write target offset within the surface in columns added to the 'thread group id x'
->>    * @y_offset: write target offset within the surface in rows
->>    * @mask: mask to be applied on exception register
->>    * @expected: expected value of exception register with @mask applied
->> @@ -678,45 +679,47 @@ void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value)
->>    * to provided ones: cr0.1 & @mask == @expected,
->>    * if yes fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
-> 
-> tg_id_x + @x_offset
-
-Sure, nice catch!
-
-> 
->>    */
->> -void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
->> +void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value, uint32_t x_offset,
->>   				      uint32_t y_offset, uint32_t mask, uint32_t expected)
+>> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+>> index ed27d9c32..2294468c2 100644
+>> --- a/tests/intel/xe_exec_sip.c
+>> +++ b/tests/intel/xe_exec_sip.c
+>> @@ -27,10 +27,12 @@
+>>   #define WIDTH 64
+>>   #define HEIGHT 64
+>>   
+>> -#define COLOR_C4 0xc4
+>> +#define COLOR_C4 0xc4c4c4c4
+>>   
+>>   #define SHADER_CANARY 0x01010101
+>> -#define SIP_CANARY 0x02020202
+>> +#define SHADER_CANARY2 0x02020202
+>> +#define SIP_CANARY 0x03030303
+>> +#define SIP_CANARY2 0x04040404
+>>   
+>>   enum shader_type {
+>>   	SHADER_HANG,
+>> @@ -71,7 +73,7 @@ create_fill_buf(int fd, int width, int height, uint8_t color)
+>>   static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
 >>   {
->>   	emit_iga64_code(shdr, write_on_exception, "					\n\
->>   	// Clear message header								\n\
->>   (W)	mov (16|M0)              r4.0<1>:ud    0x0:ud					\n\
->>   	// Payload									\n\
->> -(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud				\n\
->> +(W)	mov (1|M0)               r5.0<1>:ud    ARG(4):ud				\n\
->>   #if GEN_VER < 2000 // prepare Media Block Write						\n\
->>   	// X offset of the block in bytes := (thread group id X << ARG(0))		\n\
->> -(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
->> +(W)	add (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud	 ARG(1):ud		\n\
->> +(W)	shl (1|M0)               r4.0<1>:ud    r4.0<0;1,0>:ud    ARG(0):ud		\n\
->>   	// Y offset of the block in rows := thread group id Y				\n\
->>   (W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud				\n\
->> -(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud		\n\
->> +(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(2):ud		\n\
+>>   	static struct gpgpu_shader *shader;
+>> -	uint32_t bad;
+>> +	uint32_t expected_cr0_bit;
+>>   
+>>   	shader = gpgpu_shader_create(fd);
+>>   	if (shader_type == SHADER_INV_INSTR_WALKER_ENABLED)
+>> @@ -92,15 +94,17 @@ static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
+>>   		__attribute__ ((fallthrough));
+>>   	case SHADER_INV_INSTR_DISABLED:
+>>   	case SHADER_INV_INSTR_WALKER_ENABLED:
+>> -		bad = (shader_type == SHADER_INV_INSTR_DISABLED) ? ILLEGAL_OPCODE_ENABLE : 0;
+>> -		gpgpu_shader__write_on_exception(shader, 1, 0, 0, ILLEGAL_OPCODE_ENABLE, bad);
+>> +		expected_cr0_bit = shader_type == SHADER_INV_INSTR_DISABLED ?
+>> +				   0 : ILLEGAL_OPCODE_ENABLE;
+>> +		gpgpu_shader__write_on_exception(shader, SHADER_CANARY2, 1, 0,
+>> +						 ILLEGAL_OPCODE_ENABLE, expected_cr0_bit);
+>>   		gpgpu_shader__nop(shader);
+>>   		gpgpu_shader__nop(shader);
+>>   		/* modify second nop, set only opcode bits[6:0] */
+>>   		shader->instr[gpgpu_shader_last_instr(shader)][0] = 0x7f;
+>> -		/* SIP should clear exception bit */
+>> -		bad = ILLEGAL_OPCODE_STATUS;
+>> -		gpgpu_shader__write_on_exception(shader, 2, 0, 0, ILLEGAL_OPCODE_STATUS, bad);
+>> +		/* SIP should clear exception bit, negative check */
+>> +		gpgpu_shader__write_on_exception(shader, SHADER_CANARY2, 0, 0,
+>> +						 ILLEGAL_OPCODE_STATUS, ILLEGAL_OPCODE_STATUS);
+>>   		break;
+>>   	}
+>>   
+>> @@ -120,7 +124,8 @@ static struct gpgpu_shader *get_sip(int fd, enum sip_type sip_type, unsigned int
+>>   
+>>   	switch (sip_type) {
+>>   	case SIP_INV_INSTR:
+>> -		gpgpu_shader__write_on_exception(sip, 1, 0, y_offset, ILLEGAL_OPCODE_STATUS, 0);
+>> +		gpgpu_shader__write_on_exception(sip, SIP_CANARY2, 0, y_offset,
+>> +						 ILLEGAL_OPCODE_STATUS, 0);
+>>   		break;
+>>   	default:
+>>   		break;
+>> @@ -135,7 +140,7 @@ static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, enum shader_type shad
+>>   			     enum sip_type sip_type, unsigned int threads, unsigned int width,
+>>   			     unsigned int height)
+>>   {
+>> -	struct intel_buf *buf = create_fill_buf(fd, width, height, COLOR_C4);
+>> +	struct intel_buf *buf = create_fill_buf(fd, width, height, (uint8_t)COLOR_C4);
+>>   	struct gpgpu_shader *sip = get_sip(fd, sip_type, height / 2);
+>>   	struct gpgpu_shader *shader = get_shader(fd, shader_type);
+>>   
+>> @@ -148,59 +153,72 @@ static uint32_t gpgpu_shader(int fd, struct intel_bb *ibb, enum shader_type shad
+>>   	return buf->handle;
+>>   }
+>>   
+>> -static void check_fill_buf(uint8_t *ptr, const int width, const int x,
+>> -			   const int y, const uint8_t color)
+>> +static void check_fill_buf(uint32_t *ptr, const int dword_width, const int x, const int y,
+>> +			   const uint32_t color)
+>>   {
+>> -	const uint8_t val = ptr[y * width + x];
+>> +	const uint32_t val = ptr[y * dword_width + x];
+>>   
+>>   	igt_assert_f(val == color,
+>> -		     "Expected 0x%02x, found 0x%02x at (%d,%d)\n",
+>> +		     "Expected 0x%08x, found 0x%08x at (%d,%d)\n",
+>>   		     color, val, x, y);
+>>   }
+>>   
+>> -static void check_buf(int fd, uint32_t handle, int width, int height,
+>> -		      enum shader_type shader_type, enum sip_type sip_type, uint8_t poison_c)
+>> +static void check_buf(int fd, uint32_t handle, int width, int height, int thread_count_expected,
+>> +		      enum shader_type shader_type, enum sip_type sip_type, uint32_t poison_c)
+>>   {
+>> +	int thread_count = 0, sip_count = 0, invalidinstr_count = 0;
+>>   	unsigned int sz = ALIGN(width * height, 4096);
+>> -	int thread_count = 0, sip_count = 0;
+>> +	const uint32_t dword_width = width / 4;
+>>   	uint32_t *ptr;
+>>   	int i, j;
+>>   
+>>   	ptr = xe_bo_mmap_ext(fd, handle, sz, PROT_READ);
+>>   
+>> -	for (i = 0, j = 0; j < height / 2; ++j) {
+>> -		if (ptr[j * width / 4] == SHADER_CANARY) {
+>> +	for (i = 1, j = 0; j < height / 2; ++j) {
+>> +		if (ptr[j * dword_width] == SHADER_CANARY)
+>>   			++thread_count;
+>> -			i = 4;
+>> +		else
+>> +			check_fill_buf(ptr, dword_width, 0, j, poison_c);
+>> +
+>> +		if (ptr[j * dword_width + 1] == SHADER_CANARY2) {
+>> +			++invalidinstr_count;
+>> +			++i;
+>>   		}
+>>   
+>> -		for (; i < width; i++)
+>> -			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
+>> +		for (; i < dword_width; i++)
+>> +			check_fill_buf(ptr, dword_width, i, j, poison_c);
+>>   
+>> -		i = 0;
+>> +		i = 1;
+>>   	}
+>>   
+>>   	for (i = 0, j = height / 2; j < height; ++j) {
+>> -		if (ptr[j * width / 4] == SIP_CANARY) {
+>> +		if (ptr[j * dword_width] == SIP_CANARY) {
+>>   			++sip_count;
+>>   			i = 4;
+>>   		}
+>>   
+>> -		for (; i < width; i++)
+>> -			check_fill_buf((uint8_t *)ptr, width, i, j, poison_c);
+>> +		for (; i < dword_width; i++)
+>> +			check_fill_buf(ptr, dword_width, i, j, poison_c);
+>>   
+>>   		i = 0;
+>>   	}
 > 
-> You may drop mov and below should be enough:
-> 
-> 	add (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud    ARG(2):ud
-
-Ok, makes sense.
-
-> 
->>   	// block width [0,63] representing 1 to 64 bytes				\n\
->> -(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud				\n\
->> +(W)	mov (1|M0)               r4.2<1>:ud    ARG(3):ud				\n\
->>   	// FFTID := FFTID from R0 header						\n\
->>   (W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud				\n\
->>   #else // prepare Typed 2D Block Store							\n\
->> -	// Load r2.0-3 with tg id X << ARG(0)						\n\
->> -(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
->> -	// Load r2.4-7 with tg id Y + ARG(1):ud						\n\
->> +	// Load r2.0 with tg id (X + ARG(1)) << ARG(0)					\n\
->> +(W)	add (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud	 ARG(1):ud		\n\
->> +(W)	shl (1|M0)               r2.0<1>:ud    r2.0<0;1,0>:ud    ARG(0):ud		\n\
->> +	// Load r2.4-7 with tg id Y + ARG(2):ud						\n\
->>   (W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud				\n\
->> -(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud		\n\
->> +(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(2):ud		\n\
-> 
-> Same here.
-
-Ok
-
-> 
->>   	// Store X and Y block start (160:191 and 192:223)				\n\
->>   (W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud				\n\
->>   	// Store X and Y block max_size (224:231 and 232:239)				\n\
->> -(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud				\n\
->> +(W)	mov (1|M0)               r4.7<1>:ud    ARG(3):ud				\n\
->>   #endif											\n\
->>   	// Check if masked exception is equal to provided value and write conditionally \n\
->> -(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(4):ud		\n\
->> +(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(5):ud		\n\
->>   (W)      mov (1|M0)              f0.0<1>:ud     0x0:ud					\n\
->> -(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(5):ud		\n\
->> +(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(6):ud		\n\
-> 
-> Adding argument in the middle of the list makes a lot of noise in ARG(x)
-> changing. What a pity we don't have possibility of making definitions
-> like:
-> 
-> #define x_offset ARG(1)
-> #define y_offset ARG(2)
-> 
-> in the code. Changing definitions would keep code clear.
-> 
-> But that was my lousy thought, patch looks correct to me.
-> Feel free to incorporate my suggestions or not:
+> I thought to simplify above to avoid looping twice, especially you've
+> added x position in write_on_exception(). This would require to write
+> SHADER_CANARY on x == 0, SHADER_CANARY2 on x == 1, SHADER_SIP on x == 2
+> and SHADER_SIP2 on x == 3. I think this would make code clearer, especially
+> you wouldn't need to double the surface size. But this is not a blocker
+> for this patch, especially it is doing what I asked for (proves
+> write_on_exception() has the reflection in the memory).
 > 
 > Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Thanks, I'll allow myself to take that r-b and leave the check buf logic 
+refactor for another day =)
 
 Thanks,
 Christoph
@@ -197,198 +249,39 @@ Christoph
 > --
 > Zbigniew
 > 
->>   #if GEN_VER < 2000 // Media Block Write							\n\
->>   (W&f0.0) send.dc1 (16|M0)        null     r4   src1_null 0    0x40A8000			\n\
->>   #else // Typed 2D Block Store								\n\
->>   (W&f0.0) send.tgm (16|M0)        null     r4   null:0    0    0x64000007		\n\
->>   #endif											\n\
->> -	", 2, y_offset, 3, value, mask, expected);
->> +	", 2, x_offset, y_offset, 3, value, mask, expected);
+>>   
+>>   	igt_assert(thread_count);
+>> -	if (shader_type == SHADER_INV_INSTR_DISABLED)
+>> -		igt_assert(!sip_count);
+>> -	else if (sip_type == SIP_INV_INSTR && shader_type != SHADER_INV_INSTR_DISABLED)
+>> +
+>> +	if (shader_type >= SHADER_INV_INSTR_DISABLED &&
+>> +	    shader_type <= SHADER_INV_INSTR_WALKER_ENABLED)
+>> +		igt_assert_f(thread_count == invalidinstr_count,
+>> +			     "Thread and invalid instruction count mismatch, %d != %d\n",
+>> +			     thread_count, invalidinstr_count);
+>> +	else
+>> +		igt_assert_eq(invalidinstr_count, 0);
+>> +
+>> +	if (sip_type == SIP_INV_INSTR && shader_type != SHADER_INV_INSTR_DISABLED)
+>>   		igt_assert_f(thread_count == sip_count,
+>>   			     "Thread and SIP count mismatch, %d != %d\n",
+>>   			     thread_count, sip_count);
+>>   	else
+>> -		igt_assert(sip_count == 0);
+>> +		igt_assert_eq(sip_count, 0);
+>>   
+>>   	munmap(ptr, sz);
 >>   }
+>> @@ -270,7 +288,7 @@ static void test_sip(enum shader_type shader_type, enum sip_type sip_type,
+>>   	intel_bb_sync(ibb);
+>>   	igt_assert_lt_u64(igt_nsec_elapsed(&ts), timeout);
 >>   
->>   /**
->> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
->> index 53fe2869e..5f6260fb3 100644
->> --- a/lib/gpgpu_shader.h
->> +++ b/lib/gpgpu_shader.h
->> @@ -82,8 +82,8 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
->>   void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
->>   void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
->>   			       uint32_t y_offset);
->> -void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw,
->> -			       uint32_t y_offset, uint32_t mask, uint32_t value);
->> +void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw, uint32_t x_offset,
->> +				      uint32_t y_offset, uint32_t mask, uint32_t value);
->>   void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
->>   void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
->>   void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
->> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
->> index fe6d68b70..91adc7313 100644
->> --- a/lib/iga64_generated_codes.c
->> +++ b/lib/iga64_generated_codes.c
->> @@ -3,7 +3,7 @@
+>> -	check_buf(fd, handle, width, height, shader_type, sip_type, COLOR_C4);
+>> +	check_buf(fd, handle, width, height, threads, shader_type, sip_type, COLOR_C4);
 >>   
->>   #include "gpgpu_shader.h"
->>   
->> -#define MD5_SUM_IGA64_ASMS aa5c79b36f48404f1da21d2316e9f9f3
->> +#define MD5_SUM_IGA64_ASMS a1dfb701367264e53d0d33f53d8769e3
->>   
->>   struct iga64_template const iga64_code_gpgpu_fill[] = {
->>   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
->> @@ -193,83 +193,88 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
->>   };
->>   
->>   struct iga64_template const iga64_code_write_on_exception[] = {
->> -	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
->> +	{ .gen_ver = 2000, .size = 60, .code = (const uint32_t []) {
->>   		0x80100061, 0x04054220, 0x00000000, 0x00000000,
->> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
->> -		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
->> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
->> +		0x80000040, 0x02058220, 0x02000014, 0xc0ded001,
->> +		0x80001969, 0x02058220, 0x02000204, 0xc0ded000,
->>   		0x80000061, 0x02150220, 0x00000064, 0x00000000,
->> -		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
->> +		0x80001940, 0x02158220, 0x02000214, 0xc0ded002,
->>   		0x80041961, 0x04550220, 0x00220205, 0x00000000,
->> -		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
->> -		0x80000965, 0x03058220, 0x02008010, 0xc0ded004,
->> +		0x80000061, 0x04754220, 0x00000000, 0xc0ded003,
->> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded005,
->>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
->> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
->> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
->>   		0x84134031, 0x00000000, 0xd00e0494, 0x04000000,
->>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>   	}},
->> -	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
->> +	{ .gen_ver = 1270, .size = 64, .code = (const uint32_t []) {
->>   		0x80040061, 0x04054220, 0x00000000, 0x00000000,
->> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
->> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
->> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
->> +		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
->> +		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
->>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
->> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
->> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
->> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded002,
->> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
->>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
->> -		0x80000965, 0x03058220, 0x02008020, 0xc0ded004,
->> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded005,
->>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
->> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
->> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
->>   		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
->>   		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
->>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>   	}},
->> -	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
->> +	{ .gen_ver = 1260, .size = 60, .code = (const uint32_t []) {
->>   		0x80100061, 0x04054220, 0x00000000, 0x00000000,
->> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
->> -		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
->> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
->> +		0x80000040, 0x04058220, 0x02000014, 0xc0ded001,
->> +		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
->>   		0x80000061, 0x04150220, 0x00000064, 0x00000000,
->> -		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
->> -		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
->> +		0x80001940, 0x04158220, 0x02000414, 0xc0ded002,
->> +		0x80000061, 0x04254220, 0x00000000, 0xc0ded003,
->>   		0x80000061, 0x04450220, 0x00000054, 0x00000000,
->> -		0x80000965, 0x03058220, 0x02008010, 0xc0ded004,
->> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded005,
->>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
->> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
->> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
->>   		0x84134031, 0x00000000, 0xc0000414, 0x02a00000,
->>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>   	}},
->> -	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
->> +	{ .gen_ver = 1250, .size = 64, .code = (const uint32_t []) {
->>   		0x80040061, 0x04054220, 0x00000000, 0x00000000,
->> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
->> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
->> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
->> +		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
->> +		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
->>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
->> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
->> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
->> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded002,
->> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
->>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
->> -		0x80000965, 0x03058220, 0x02008020, 0xc0ded004,
->> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded005,
->>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
->> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
->> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
->>   		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
->>   		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
->>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
->>   	}},
->> -	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
->> +	{ .gen_ver = 0, .size = 60, .code = (const uint32_t []) {
->>   		0x80040061, 0x04054220, 0x00000000, 0x00000000,
->> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
->> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
->> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
->> +		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
->> +		0x80000169, 0x04058220, 0x02000404, 0xc0ded000,
->>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
->> -		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
->> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
->> +		0x80000140, 0x04258220, 0x02000424, 0xc0ded002,
->> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
->>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
->> -		0x80000165, 0x03058220, 0x02008020, 0xc0ded004,
->> +		0x80000165, 0x03058220, 0x02008020, 0xc0ded005,
->>   		0x80000161, 0x30014220, 0x00000000, 0x00000000,
->> -		0x80000270, 0x00018220, 0x12000304, 0xc0ded005,
->> +		0x80000270, 0x00018220, 0x12000304, 0xc0ded006,
->>   		0x8104a031, 0x00000000, 0xc0000414, 0x02a00000,
->>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
->>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
->> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
->> index ee4787d61..ed27d9c32 100644
->> --- a/tests/intel/xe_exec_sip.c
->> +++ b/tests/intel/xe_exec_sip.c
->> @@ -93,14 +93,14 @@ static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
->>   	case SHADER_INV_INSTR_DISABLED:
->>   	case SHADER_INV_INSTR_WALKER_ENABLED:
->>   		bad = (shader_type == SHADER_INV_INSTR_DISABLED) ? ILLEGAL_OPCODE_ENABLE : 0;
->> -		gpgpu_shader__write_on_exception(shader, 1, 0, ILLEGAL_OPCODE_ENABLE, bad);
->> +		gpgpu_shader__write_on_exception(shader, 1, 0, 0, ILLEGAL_OPCODE_ENABLE, bad);
->>   		gpgpu_shader__nop(shader);
->>   		gpgpu_shader__nop(shader);
->>   		/* modify second nop, set only opcode bits[6:0] */
->>   		shader->instr[gpgpu_shader_last_instr(shader)][0] = 0x7f;
->>   		/* SIP should clear exception bit */
->>   		bad = ILLEGAL_OPCODE_STATUS;
->> -		gpgpu_shader__write_on_exception(shader, 2, 0, ILLEGAL_OPCODE_STATUS, bad);
->> +		gpgpu_shader__write_on_exception(shader, 2, 0, 0, ILLEGAL_OPCODE_STATUS, bad);
->>   		break;
->>   	}
->>   
->> @@ -120,7 +120,7 @@ static struct gpgpu_shader *get_sip(int fd, enum sip_type sip_type, unsigned int
->>   
->>   	switch (sip_type) {
->>   	case SIP_INV_INSTR:
->> -		gpgpu_shader__write_on_exception(sip, 1, y_offset, ILLEGAL_OPCODE_STATUS, 0);
->> +		gpgpu_shader__write_on_exception(sip, 1, 0, y_offset, ILLEGAL_OPCODE_STATUS, 0);
->>   		break;
->>   	default:
->>   		break;
+>>   	gem_close(fd, handle);
+>>   	intel_bb_destroy(ibb);
 >> -- 
 >> 2.34.1
 >>
