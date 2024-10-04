@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80B41CFA765
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85B5FCFA765
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:33:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 40F8610E27D;
-	Fri,  4 Oct 2024 10:33:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 41B2510E295;
+	Fri,  4 Oct 2024 10:33:58 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 52AA510E27D;
- Fri,  4 Oct 2024 10:33:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C99A810E289;
+ Fri,  4 Oct 2024 10:33:57 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_series_starting_with_?=
- =?utf-8?q?=5Bi-g-t=2C1/4=5D_lib/intel=3A_Extract_gem=5Fstore=5Fdword=5Fneed?=
- =?utf-8?q?s=5Fphysical=28=29?=
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests=3A_Update_asserti?=
+ =?utf-8?q?on_in_invalid-wait-zero-handles?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: "Krzysztof Niemiec" <krzysztof.niemiec@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 04 Oct 2024 10:33:52 -0000
-Message-ID: <172803803233.1173197.7020026684160925140@2413ebb6fbb6>
+Date: Fri, 04 Oct 2024 10:33:57 -0000
+Message-ID: <172803803782.1173197.197906502456203491@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
+References: <20241002113418.24070-2-krzysztof.niemiec@intel.com>
+In-Reply-To: <20241002113418.24070-2-krzysztof.niemiec@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -44,38 +43,41 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 == Series Details ==
 
-Series: series starting with [i-g-t,1/4] lib/intel: Extract gem_store_dword_needs_physical()
-URL   : https://patchwork.freedesktop.org/series/139414/
+Series: tests: Update assertion in invalid-wait-zero-handles
+URL   : https://patchwork.freedesktop.org/series/139417/
 State : warning
 
 == Summary ==
 
 Pipeline status: FAILED.
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1282314 for the overview.
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1282371 for the overview.
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64526500):
-  section_start:1727866374:get_sources
-  Getting source from Git repository
-  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out 55f95af9 as detached HEAD (ref is intel/IGTPW_11854)...
+build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64529189):
+  Running with gitlab-runner 17.4.0 (b92ee590)
+    on fdo-equinix-m3l-32_16-23 Wf-ezYkxU, system ID: s_0bec02416a6c
+  section_start:1727871833:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 ...
+  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1: reading manifest commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64: manifest unknown: manifest unknown (manager.go:251:2s)
+  section_end:1727871836:prepare_executor
+  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1: reading manifest commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64: manifest unknown: manifest unknown (manager.go:251:2s)
   
-  Skipping Git submodules setup
-  section_end:1727866380:get_sources
-  section_start:1727866380:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64:commit-55f95af91b0f3bcbdbe0668fe3dda411d53b620e with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-arm64@sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f ...
-  section_end:1727866383:step_script
-  section_start:1727866383:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1727866386:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: container create: reading data blob size "manifest-sha256:df8438cd0e218646c3bdc2eb6abccb43c4e884bfd40a1a4dd0365f1f8031d21f" for "7360075a71dacfc66f0b49b3271b9a459904dbe51c5760efac48fe52da27946c": size is not known (docker.go:650:1s)
+
+build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64529190):
+  Running with gitlab-runner 17.4.0 (b92ee590)
+    on fdo-equinix-m3l-32_16-23 Wf-ezYkxU, system ID: s_0bec02416a6c
+  section_start:1727871853:prepare_executor
+  Preparing the "docker" executor
+  Using Docker executor with image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 ...
+  Authenticating with credentials from job payload (GitLab Registry)
+  Pulling docker image registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 ...
+  WARNING: Failed to pull image with policy "if-not-present": initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1: reading manifest commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips: manifest unknown: manifest unknown (manager.go:251:2s)
+  section_end:1727871856:prepare_executor
+  ERROR: Job failed: failed to pull image "registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1" with specified policies [if-not-present]: initializing source docker://registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips:commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1: reading manifest commit-f4ee9f6711b4c6b6a6c329fcb8bc2b584a469df1 in registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-mips: manifest unknown: manifest unknown (manager.go:251:2s)
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1282314
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1282371
