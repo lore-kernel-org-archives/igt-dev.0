@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5AFFCCFA766
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:41:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E30FCFA763
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:41:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15F3B10E290;
-	Fri,  4 Oct 2024 10:41:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BB6D10E295;
+	Fri,  4 Oct 2024 10:41:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eEkLsVnS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UU/eggWY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0BC810E289
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 10:41:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DE64610E295
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 10:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728038491; x=1759574491;
+ t=1728038501; x=1759574501;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=mWdWGH+T2GSmLI3D9xwkIyAzi/QOs9cbIjxuTh0N3Wc=;
- b=eEkLsVnS2fyz9SYZ2B0PZ7O+PMDpGeGVUotzhdHBnlEI0K5bNDCLyCEg
- vMSjf9qvkZMAQW+xX/fDVSNloyJQ1yjBH6tlpMROKGUOVLwrfcUlZ7b2k
- lULJVmHtWrNpYpZKUL4qrvwFniotjE1A4bTwOFtwzP+wrZkhR+oI7mX/l
- 4ZhRjOLA3wMCHKRqPONSfCxoBcaDL1hfPdAegFRqkTmRihwiAU6lj+/Py
- OUro33rA7X8yx2Ft/EwBsjNmp7Hf1Luc79ZzzC7kw31YBzEEe0pSGeMJv
- jrIw6n27eKXc3dxx4lYRc5OWkM4vWpyS0tZZ803AjnkN8se1QMOGMpzT0 w==;
-X-CSE-ConnectionGUID: 7qj8ebiCS02qg55TpG0QGw==
-X-CSE-MsgGUID: pZJ8uqrlS3ysTlizVfGKEA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="31140465"
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="31140465"
+ bh=srg8ZbFDZA7p7bK4HQ2TKxDL4/izcw5r+wOG2c85ViA=;
+ b=UU/eggWYh4yUhu4JSazDX9ORhfE3bnibhnoWy8urmz61yeKbK3W4RJss
+ TNlZHj07niBvUxsr2+v1MyDDmdY4OBkYSM1/UOJKlSRYnL5IYAntD+Pa8
+ UWx3t6KhnFzsGlVqt9MaqJi0ykg6w0UZqkaLfz823jZyZNj6WL8ft0Pv9
+ lu+xAwLcBRjhD97DfUIhKvsDZtaUWGNHdmgyYYGfcl2NQB/sYMBD1gu5T
+ tyuvs9Xt3N0/sajiCqdKEqfy/nYJVW4nZK8tDj6oqE7Lq1Dko5BN272VU
+ T0teOmtNSksQPPeemExTY1bP0cTwaNxeUws7arMnDDlyxw38M8ZWiQm/R w==;
+X-CSE-ConnectionGUID: iWstNhq9S2OmmTtMo7/6+A==
+X-CSE-MsgGUID: Z2GIrFciQj+f2KqWoQRl8w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="31140477"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="31140477"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2024 03:41:30 -0700
-X-CSE-ConnectionGUID: j2yFEY/ESYKn+GtPpRKcFQ==
-X-CSE-MsgGUID: Glz8xPelTC+NO+pInYWajg==
+ 04 Oct 2024 03:41:35 -0700
+X-CSE-ConnectionGUID: 8Jb3NzKURa68DXBOGy3Yfw==
+X-CSE-MsgGUID: pw/A4RlIRia3YYeuIebh/w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="74778252"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="74778293"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 04 Oct 2024 03:41:25 -0700
+ by fmviesa008.fm.intel.com with SMTP; 04 Oct 2024 03:41:33 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 04 Oct 2024 13:41:23 +0300
+ Fri, 04 Oct 2024 13:41:32 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 01/14] lib/igt_draw: Use void* where appopriate
-Date: Fri,  4 Oct 2024 13:41:08 +0300
-Message-ID: <20241004104121.32750-2-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 04/14] lib/igt_draw: Support 8bpp int the mmap/pwrite
+ paths
+Date: Fri,  4 Oct 2024 13:41:11 +0300
+Message-ID: <20241004104121.32750-5-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
 References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
@@ -70,45 +71,30 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Use void* instead of uint32_t* when we don't care about the
-element size.
+Handle 8bpp pixels formats correcly in the mmap/pwrite
+methods.
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- lib/igt_draw.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/igt_draw.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-index 97a7e6b375fb..3ebfaad6ef31 100644
+index 54c46fe6360c..b39a33dcf2cb 100644
 --- a/lib/igt_draw.c
 +++ b/lib/igt_draw.c
-@@ -446,7 +446,7 @@ static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
- static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
- 			       uint32_t tiling, uint32_t swizzle, uint32_t color)
- {
--	uint32_t *ptr;
-+	void *ptr;
+@@ -365,7 +365,10 @@ static void tile4_pos_to_x_y_linear(int tiled_pos, uint32_t stride,
  
- 	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU,
- 		       I915_GEM_DOMAIN_CPU);
-@@ -481,7 +481,7 @@ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
- static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
- 			       uint32_t color)
+ static void set_pixel(void *_ptr, int index, uint64_t color, int bpp)
  {
--	uint32_t *ptr;
-+	void *ptr;
- 
- 	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
- 		       I915_GEM_DOMAIN_GTT);
-@@ -497,7 +497,7 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
- static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
- 			      uint32_t tiling, uint32_t swizzle, uint32_t color)
- {
--	uint32_t *ptr;
-+	void *ptr;
- 
- 	if (is_i915_device(fd)) {
- 		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+-	if (bpp == 16) {
++	if (bpp == 8) {
++		uint8_t *ptr = _ptr;
++		ptr[index] = color;
++	} else if (bpp == 16) {
+ 		uint16_t *ptr = _ptr;
+ 		ptr[index] = color;
+ 	} else if (bpp == 32) {
 -- 
 2.45.2
 
