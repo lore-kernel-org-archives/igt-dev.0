@@ -4,70 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB26DCFA763
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 11:00:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 144C6CFA774
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 12:24:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7BD7B10E14A;
-	Fri,  4 Oct 2024 11:00:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B6D4810E2A4;
+	Fri,  4 Oct 2024 12:24:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="HA2Av4F/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bproZKqv";
 	dkim-atps=neutral
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
- [209.85.221.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09C7210E14A
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 11:00:54 +0000 (UTC)
-Received: by mail-wr1-f51.google.com with SMTP id
- ffacd0b85a97d-37cdac05af9so1896029f8f.0
- for <igt-dev@lists.freedesktop.org>; Fri, 04 Oct 2024 04:00:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1728039652; x=1728644452; darn=lists.freedesktop.org;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=CimjKv+/qrNe/oytqMkHPv0VRT8A+LAvewggYA+XVk0=;
- b=HA2Av4F/9q/RnDSMU5tkI43cxpd41pyTOg0FRPYutnrG/4JtIs9tHHbvjTPwlsf4Ib
- B3fvCugU+26IWqBP4yJlkGxTXHXjdzMl0lT/hG9dzCzy6LYAYydorH2mAkwzZ9hOCWTp
- E78W75pCgIuk7UUsBb5vHJokdQd7UxoWMS3k8q/d8qbpbRnMad4a+G0KrcwAYpakpYHq
- zk7Qk0OGMkN8RV4Em132nYqlVwUMRGgBPP0IvORqKXqxoMLgefTNVs6dChy0l5lh/Rdz
- cxKY8anQP+L4i/DALm5+ggPxd/k03Kkl8hNRI0QayUaDZl/snzB+hWbn0DdJLYdzNFUA
- dgjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1728039652; x=1728644452;
- h=content-transfer-encoding:in-reply-to:from:content-language
- :references:to:subject:reply-to:user-agent:mime-version:date
- :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=CimjKv+/qrNe/oytqMkHPv0VRT8A+LAvewggYA+XVk0=;
- b=MJWszFoS6ctoIY3M5JskK1hFC0bhM2KBVOGSOx7poZLWnq57nFjBQBt9b8xtiLmavu
- C64qBlyBUffKltjR9+xJG9EF1GlIA588K7GoxZiwXjVBHUSlKzFyBzEAT7klHkrFpiiF
- SAPuzgnmegVO2j5o4eAAu0n2QpTD2FzmgLXYWgJsP8ek7OZDXn0u/IxBoiMj2yn1sSBY
- tTKQ/foHMPEjhiRrh6TdXUY4DBcgWqcFP/pxzqCb0fIcFNC2dNxrQfYp72jU/YeEloAf
- LXB2xHFjU/V/5AJ5hYuciI2mOGNdxvN7YY0g/krDQ5E9m84pTJ4bEaFF1ZHa1Vwy/J+2
- Y4rg==
-X-Forwarded-Encrypted: i=1;
- AJvYcCXLSpF2/57IiKcMe4P8pE4x+/c2eGsrQHk+S8SCXoc+2PzVsVLD9mqz11o1uNWzkkoX5jjxL1sz@lists.freedesktop.org
-X-Gm-Message-State: AOJu0YziTjVhqrsFCuWZKMTEhQznmTsFHxZkqEmVupPIm/wreG3yfz4P
- gkLr7F0j+4oB5h3kMWW6n1mg3pJbSByd3r+H9sz7hChaXYjZufqBXbuE0LdDL84=
-X-Google-Smtp-Source: AGHT+IHnvhMjJV+hYADKxYEPHanoOawZ0wCB9intL0huVRh9ZOB4ocyar88NdqihJFPett8F+PZmwA==
-X-Received: by 2002:a5d:66c9:0:b0:37c:cc05:7a56 with SMTP id
- ffacd0b85a97d-37d0e6ead0emr1934883f8f.10.1728039651896; 
- Fri, 04 Oct 2024 04:00:51 -0700 (PDT)
-Received: from [0.0.0.0] ([134.134.137.72])
- by smtp.googlemail.com with ESMTPSA id
- ffacd0b85a97d-37d082a68cbsm3036538f8f.76.2024.10.04.04.00.49
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 04 Oct 2024 04:00:51 -0700 (PDT)
-Message-ID: <d8013d78-0fa7-4ede-aba9-30a6e90f27b4@gmail.com>
-Date: Fri, 4 Oct 2024 14:00:43 +0300
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4124A10E2A4
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 12:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728044694; x=1759580694;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=sF+y9Je/wHGZXRni49xY16g1IR39aIrP96rGej1nrXk=;
+ b=bproZKqvs2UjvLLxBaPHvICdVdAl442gRE9PvMABWY2JNnjtBo75OLuW
+ 4KrBMWy7+2iTYteW4zqL+vfnBnt1trzrkX1iO+BF8Oa30WCuHeBPomQnU
+ zhDL7cEaj0/htAQBc1sjSVfrHyvp1cUtzdZZ3EowlYP6a1+/zMc7hFpTf
+ bFHI5bffamayQ5j0qp/xQHk2xuV8pKREWjducFHYQRyenW58shDXs+IRb
+ V0ALoUxyU34NWoTSayb2p24caDGNukZ2oqJ+tV/17J+6ZlnDOyMK/jref
+ 1t+Bm2r6jUtEhTUG1vF0PFYo6a2Nf/m9jIQ/8ERdP8Arr5GsUFL4caezo A==;
+X-CSE-ConnectionGUID: EU4OqEGtRWWJot7IMZJ3PQ==
+X-CSE-MsgGUID: wkT6yEUSQKKWn6wO3cOO4g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="30140817"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="30140817"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Oct 2024 05:24:52 -0700
+X-CSE-ConnectionGUID: uCDmyBGCQ8aU5T51OrTgdQ==
+X-CSE-MsgGUID: 1EvRy5S5R9O8e2d2wXpZ8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="112155757"
+Received: from carterle-desk.ger.corp.intel.com (HELO [10.245.245.140])
+ ([10.245.245.140])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Oct 2024 05:24:51 -0700
+Message-ID: <330a6ec2-4065-4fbd-9b06-f5a8df683ef1@intel.com>
+Date: Fri, 4 Oct 2024 14:24:48 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/igt_fb: Fix intel_buf surface init
-To: Ville Syrjala <ville.syrjala@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20240923213620.12369-1-ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/gpgpu_shader: Add x_offset parameter for
+ gpgpu_shader__write_on_exception
+To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Andrzej Hajda <andrzej.hajda@intel.com>
+References: <20240925133003.41959-1-christoph.manszewski@intel.com>
+ <20240925133003.41959-2-christoph.manszewski@intel.com>
+ <20241001150705.kysozwio55lgypsk@zkempczy-mobl2>
 Content-Language: en-US
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20240923213620.12369-1-ville.syrjala@linux.intel.com>
+From: "Manszewski, Christoph" <christoph.manszewski@intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241001150705.kysozwio55lgypsk@zkempczy-mobl2>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -82,102 +72,323 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For flat ccs case I don't think buf->ccs[] would become filled because 
-it should later cause gpu fault if aux stuff is present in render batch 
-w/ flat ccs.
+Hi Zbigniew,
 
-Anyway the change look good
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+On 1.10.2024 17:07, Zbigniew Kempczyński wrote:
+> On Wed, Sep 25, 2024 at 03:30:02PM +0200, Christoph Manszewski wrote:
+>> Currently gpgpu_shader__write_on_exception always writes the first
+>> column equal to thread group ID x. Make it possible to specify an offset
+>> from that value.
+>>
+>> Signed-off-by: Christoph Manszewski <christoph.manszewski@intel.com>
+>> Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+>> ---
+>>   lib/gpgpu_shader.c          | 29 +++++++-------
+>>   lib/gpgpu_shader.h          |  4 +-
+>>   lib/iga64_generated_codes.c | 77 ++++++++++++++++++++-----------------
+>>   tests/intel/xe_exec_sip.c   |  6 +--
+>>   4 files changed, 62 insertions(+), 54 deletions(-)
+>>
+>> diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
+>> index 6d8c7ebb8..8df8d9612 100644
+>> --- a/lib/gpgpu_shader.c
+>> +++ b/lib/gpgpu_shader.c
+>> @@ -670,6 +670,7 @@ void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value)
+>>    * gpgpu_shader__write_on_exception:
+>>    * @shdr: shader to be modified
+>>    * @value: dword to be written
+>> + * @x_offset: write target offset within the surface in columns added to the 'thread group id x'
+>>    * @y_offset: write target offset within the surface in rows
+>>    * @mask: mask to be applied on exception register
+>>    * @expected: expected value of exception register with @mask applied
+>> @@ -678,45 +679,47 @@ void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value)
+>>    * to provided ones: cr0.1 & @mask == @expected,
+>>    * if yes fill dword in (row, column/dword) == (tg_id_y + @y_offset, tg_id_x).
+> 
+> tg_id_x + @x_offset
 
-On 24.9.2024 0.36, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> The current coed is populating buf->ccs[] and buf->surface[]
-> in a rather inconsistent way.
-> 
-> It looks like for flat CCS platforms:
-> - we populate buf->ccs[] with some nonsense even though
->    we shouldn't since the AUX stuff is completely hidden by
->    the hardware
-> - we seem to stick data about the clear color into both
->    both buf->ccs[] and buf->surfaces[] when it should be in neither
-> 
-> For non-flat CCS platforms the code seems more reasonable,
-> except it only manages to skip the clear color fumble by
-> the fact that num_planes is always odd with clear color
-> and thus the /2 will truncate it away.
-> 
-> Anyways, let's make the code make actual sense for all platforms
-> by properly calculating how many main surfaces and ccs surfaces
-> there should be.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->   lib/igt_fb.c | 42 +++++++++++++++++++++++++++++++++++-------
->   1 file changed, 35 insertions(+), 7 deletions(-)
-> 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index b8ffd7cfb261..6deb2a221df6 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2636,6 +2636,35 @@ static int yuv_semiplanar_bpp(uint32_t drm_format)
->   	}
->   }
->   
-> +static int intel_num_surfaces(const struct igt_fb *fb)
-> +{
-> +	int num_surfaces;
-> +
-> +	if (!igt_fb_is_ccs_modifier(fb->modifier))
-> +		return fb->num_planes;
-> +
-> +	num_surfaces = fb->num_planes;
-> +
-> +	if (igt_fb_is_gen12_rc_ccs_cc_modifier(fb->modifier))
-> +		num_surfaces--;
-> +
-> +	if (!HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
-> +		num_surfaces /= 2;
-> +
-> +	return num_surfaces;
-> +}
-> +
-> +static int intel_num_ccs_surfaces(const struct igt_fb *fb)
-> +{
-> +	if (!igt_fb_is_ccs_modifier(fb->modifier))
-> +		return 0;
-> +
-> +	if (HAS_FLATCCS(intel_get_drm_devid(fb->fd)))
-> +		return 0;
-> +
-> +	return intel_num_surfaces(fb);
-> +}
-> +
->   struct intel_buf *
->   igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->                           const struct igt_fb *fb,
-> @@ -2705,13 +2734,12 @@ igt_fb_create_intel_buf(int fd, struct buf_ops *bops,
->   	if (buf->format_is_yuv_semiplanar)
->   		buf->yuv_semiplanar_bpp = yuv_semiplanar_bpp(fb->drm_format);
->   
-> -	if (igt_fb_is_ccs_modifier(fb->modifier)) {
-> -		num_surfaces = fb->num_planes / (HAS_FLATCCS(intel_get_drm_devid(fb->fd)) ? 1 : 2);
-> -		for (i = 0; i < num_surfaces; i++)
-> -			init_buf_ccs(buf, i,
-> -				     fb->offsets[num_surfaces + i],
-> -				     fb->strides[num_surfaces + i]);
-> -	}
-> +	num_surfaces = intel_num_surfaces(fb);
-> +
-> +	for (i = 0; i < intel_num_ccs_surfaces(fb); i++)
-> +		init_buf_ccs(buf, i,
-> +			     fb->offsets[num_surfaces + i],
-> +			     fb->strides[num_surfaces + i]);
->   
->   	igt_assert(fb->offsets[0] == 0);
->   	for (i = 0; i < num_surfaces; i++) {
+Sure, nice catch!
 
+> 
+>>    */
+>> -void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
+>> +void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value, uint32_t x_offset,
+>>   				      uint32_t y_offset, uint32_t mask, uint32_t expected)
+>>   {
+>>   	emit_iga64_code(shdr, write_on_exception, "					\n\
+>>   	// Clear message header								\n\
+>>   (W)	mov (16|M0)              r4.0<1>:ud    0x0:ud					\n\
+>>   	// Payload									\n\
+>> -(W)	mov (1|M0)               r5.0<1>:ud    ARG(3):ud				\n\
+>> +(W)	mov (1|M0)               r5.0<1>:ud    ARG(4):ud				\n\
+>>   #if GEN_VER < 2000 // prepare Media Block Write						\n\
+>>   	// X offset of the block in bytes := (thread group id X << ARG(0))		\n\
+>> -(W)	shl (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
+>> +(W)	add (1|M0)               r4.0<1>:ud    r0.1<0;1,0>:ud	 ARG(1):ud		\n\
+>> +(W)	shl (1|M0)               r4.0<1>:ud    r4.0<0;1,0>:ud    ARG(0):ud		\n\
+>>   	// Y offset of the block in rows := thread group id Y				\n\
+>>   (W)	mov (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud				\n\
+>> -(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(1):ud		\n\
+>> +(W)	add (1|M0)               r4.1<1>:ud    r4.1<0;1,0>:ud   ARG(2):ud		\n\
+> 
+> You may drop mov and below should be enough:
+> 
+> 	add (1|M0)               r4.1<1>:ud    r0.6<0;1,0>:ud    ARG(2):ud
+
+Ok, makes sense.
+
+> 
+>>   	// block width [0,63] representing 1 to 64 bytes				\n\
+>> -(W)	mov (1|M0)               r4.2<1>:ud    ARG(2):ud				\n\
+>> +(W)	mov (1|M0)               r4.2<1>:ud    ARG(3):ud				\n\
+>>   	// FFTID := FFTID from R0 header						\n\
+>>   (W)	mov (1|M0)               r4.4<1>:ud    r0.5<0;1,0>:ud				\n\
+>>   #else // prepare Typed 2D Block Store							\n\
+>> -	// Load r2.0-3 with tg id X << ARG(0)						\n\
+>> -(W)	shl (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud    ARG(0):ud		\n\
+>> -	// Load r2.4-7 with tg id Y + ARG(1):ud						\n\
+>> +	// Load r2.0 with tg id (X + ARG(1)) << ARG(0)					\n\
+>> +(W)	add (1|M0)               r2.0<1>:ud    r0.1<0;1,0>:ud	 ARG(1):ud		\n\
+>> +(W)	shl (1|M0)               r2.0<1>:ud    r2.0<0;1,0>:ud    ARG(0):ud		\n\
+>> +	// Load r2.4-7 with tg id Y + ARG(2):ud						\n\
+>>   (W)	mov (1|M0)               r2.1<1>:ud    r0.6<0;1,0>:ud				\n\
+>> -(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(1):ud		\n\
+>> +(W)	add (1|M0)               r2.1<1>:ud    r2.1<0;1,0>:ud    ARG(2):ud		\n\
+> 
+> Same here.
+
+Ok
+
+> 
+>>   	// Store X and Y block start (160:191 and 192:223)				\n\
+>>   (W)	mov (2|M0)               r4.5<1>:ud    r2.0<2;2,1>:ud				\n\
+>>   	// Store X and Y block max_size (224:231 and 232:239)				\n\
+>> -(W)	mov (1|M0)               r4.7<1>:ud    ARG(2):ud				\n\
+>> +(W)	mov (1|M0)               r4.7<1>:ud    ARG(3):ud				\n\
+>>   #endif											\n\
+>>   	// Check if masked exception is equal to provided value and write conditionally \n\
+>> -(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(4):ud		\n\
+>> +(W)      and (1|M0)              r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(5):ud		\n\
+>>   (W)      mov (1|M0)              f0.0<1>:ud     0x0:ud					\n\
+>> -(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(5):ud		\n\
+>> +(W)      cmp (1|M0)     (eq)f0.0 null:ud        r3.0<0;1,0>:ud  ARG(6):ud		\n\
+> 
+> Adding argument in the middle of the list makes a lot of noise in ARG(x)
+> changing. What a pity we don't have possibility of making definitions
+> like:
+> 
+> #define x_offset ARG(1)
+> #define y_offset ARG(2)
+> 
+> in the code. Changing definitions would keep code clear.
+> 
+> But that was my lousy thought, patch looks correct to me.
+> Feel free to incorporate my suggestions or not:
+> 
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+
+Thanks,
+Christoph
+
+> 
+> --
+> Zbigniew
+> 
+>>   #if GEN_VER < 2000 // Media Block Write							\n\
+>>   (W&f0.0) send.dc1 (16|M0)        null     r4   src1_null 0    0x40A8000			\n\
+>>   #else // Typed 2D Block Store								\n\
+>>   (W&f0.0) send.tgm (16|M0)        null     r4   null:0    0    0x64000007		\n\
+>>   #endif											\n\
+>> -	", 2, y_offset, 3, value, mask, expected);
+>> +	", 2, x_offset, y_offset, 3, value, mask, expected);
+>>   }
+>>   
+>>   /**
+>> diff --git a/lib/gpgpu_shader.h b/lib/gpgpu_shader.h
+>> index 53fe2869e..5f6260fb3 100644
+>> --- a/lib/gpgpu_shader.h
+>> +++ b/lib/gpgpu_shader.h
+>> @@ -82,8 +82,8 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
+>>   void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset);
+>>   void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
+>>   			       uint32_t y_offset);
+>> -void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw,
+>> -			       uint32_t y_offset, uint32_t mask, uint32_t value);
+>> +void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t dw, uint32_t x_offset,
+>> +				      uint32_t y_offset, uint32_t mask, uint32_t value);
+>>   void gpgpu_shader__label(struct gpgpu_shader *shdr, int label_id);
+>>   void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id);
+>>   void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
+>> diff --git a/lib/iga64_generated_codes.c b/lib/iga64_generated_codes.c
+>> index fe6d68b70..91adc7313 100644
+>> --- a/lib/iga64_generated_codes.c
+>> +++ b/lib/iga64_generated_codes.c
+>> @@ -3,7 +3,7 @@
+>>   
+>>   #include "gpgpu_shader.h"
+>>   
+>> -#define MD5_SUM_IGA64_ASMS aa5c79b36f48404f1da21d2316e9f9f3
+>> +#define MD5_SUM_IGA64_ASMS a1dfb701367264e53d0d33f53d8769e3
+>>   
+>>   struct iga64_template const iga64_code_gpgpu_fill[] = {
+>>   	{ .gen_ver = 2000, .size = 44, .code = (const uint32_t []) {
+>> @@ -193,83 +193,88 @@ struct iga64_template const iga64_code_breakpoint_suppress[] = {
+>>   };
+>>   
+>>   struct iga64_template const iga64_code_write_on_exception[] = {
+>> -	{ .gen_ver = 2000, .size = 56, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 2000, .size = 60, .code = (const uint32_t []) {
+>>   		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000069, 0x02058220, 0x02000014, 0xc0ded000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> +		0x80000040, 0x02058220, 0x02000014, 0xc0ded001,
+>> +		0x80001969, 0x02058220, 0x02000204, 0xc0ded000,
+>>   		0x80000061, 0x02150220, 0x00000064, 0x00000000,
+>> -		0x80001940, 0x02158220, 0x02000214, 0xc0ded001,
+>> +		0x80001940, 0x02158220, 0x02000214, 0xc0ded002,
+>>   		0x80041961, 0x04550220, 0x00220205, 0x00000000,
+>> -		0x80000061, 0x04754220, 0x00000000, 0xc0ded002,
+>> -		0x80000965, 0x03058220, 0x02008010, 0xc0ded004,
+>> +		0x80000061, 0x04754220, 0x00000000, 0xc0ded003,
+>> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded005,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>>   		0x84134031, 0x00000000, 0xd00e0494, 0x04000000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1270, .size = 60, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 1270, .size = 64, .code = (const uint32_t []) {
+>>   		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> +		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
+>> +		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
+>>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded002,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80000965, 0x03058220, 0x02008020, 0xc0ded004,
+>> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded005,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>>   		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
+>>   		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1260, .size = 56, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 1260, .size = 60, .code = (const uint32_t []) {
+>>   		0x80100061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000069, 0x04058220, 0x02000014, 0xc0ded000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> +		0x80000040, 0x04058220, 0x02000014, 0xc0ded001,
+>> +		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
+>>   		0x80000061, 0x04150220, 0x00000064, 0x00000000,
+>> -		0x80001940, 0x04158220, 0x02000414, 0xc0ded001,
+>> -		0x80000061, 0x04254220, 0x00000000, 0xc0ded002,
+>> +		0x80001940, 0x04158220, 0x02000414, 0xc0ded002,
+>> +		0x80000061, 0x04254220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x04450220, 0x00000054, 0x00000000,
+>> -		0x80000965, 0x03058220, 0x02008010, 0xc0ded004,
+>> +		0x80000965, 0x03058220, 0x02008010, 0xc0ded005,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>>   		0x84134031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 1250, .size = 60, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 1250, .size = 64, .code = (const uint32_t []) {
+>>   		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> +		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
+>> +		0x80001969, 0x04058220, 0x02000404, 0xc0ded000,
+>>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80001940, 0x04258220, 0x02000424, 0xc0ded001,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80001940, 0x04258220, 0x02000424, 0xc0ded002,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80000965, 0x03058220, 0x02008020, 0xc0ded004,
+>> +		0x80000965, 0x03058220, 0x02008020, 0xc0ded005,
+>>   		0x80000961, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80001a70, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80001a70, 0x00018220, 0x12000304, 0xc0ded006,
+>>   		0x80001a01, 0x00010000, 0x00000000, 0x00000000,
+>>   		0x81044031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>>   		0x80000901, 0x00010000, 0x00000000, 0x00000000,
+>>   	}},
+>> -	{ .gen_ver = 0, .size = 56, .code = (const uint32_t []) {
+>> +	{ .gen_ver = 0, .size = 60, .code = (const uint32_t []) {
+>>   		0x80040061, 0x04054220, 0x00000000, 0x00000000,
+>> -		0x80000061, 0x05054220, 0x00000000, 0xc0ded003,
+>> -		0x80000069, 0x04058220, 0x02000024, 0xc0ded000,
+>> +		0x80000061, 0x05054220, 0x00000000, 0xc0ded004,
+>> +		0x80000040, 0x04058220, 0x02000024, 0xc0ded001,
+>> +		0x80000169, 0x04058220, 0x02000404, 0xc0ded000,
+>>   		0x80000061, 0x04250220, 0x000000c4, 0x00000000,
+>> -		0x80000140, 0x04258220, 0x02000424, 0xc0ded001,
+>> -		0x80000061, 0x04454220, 0x00000000, 0xc0ded002,
+>> +		0x80000140, 0x04258220, 0x02000424, 0xc0ded002,
+>> +		0x80000061, 0x04454220, 0x00000000, 0xc0ded003,
+>>   		0x80000061, 0x04850220, 0x000000a4, 0x00000000,
+>> -		0x80000165, 0x03058220, 0x02008020, 0xc0ded004,
+>> +		0x80000165, 0x03058220, 0x02008020, 0xc0ded005,
+>>   		0x80000161, 0x30014220, 0x00000000, 0x00000000,
+>> -		0x80000270, 0x00018220, 0x12000304, 0xc0ded005,
+>> +		0x80000270, 0x00018220, 0x12000304, 0xc0ded006,
+>>   		0x8104a031, 0x00000000, 0xc0000414, 0x02a00000,
+>>   		0x80000001, 0x00010000, 0x20000000, 0x00000000,
+>>   		0x80000001, 0x00010000, 0x30000000, 0x00000000,
+>> diff --git a/tests/intel/xe_exec_sip.c b/tests/intel/xe_exec_sip.c
+>> index ee4787d61..ed27d9c32 100644
+>> --- a/tests/intel/xe_exec_sip.c
+>> +++ b/tests/intel/xe_exec_sip.c
+>> @@ -93,14 +93,14 @@ static struct gpgpu_shader *get_shader(int fd, enum shader_type shader_type)
+>>   	case SHADER_INV_INSTR_DISABLED:
+>>   	case SHADER_INV_INSTR_WALKER_ENABLED:
+>>   		bad = (shader_type == SHADER_INV_INSTR_DISABLED) ? ILLEGAL_OPCODE_ENABLE : 0;
+>> -		gpgpu_shader__write_on_exception(shader, 1, 0, ILLEGAL_OPCODE_ENABLE, bad);
+>> +		gpgpu_shader__write_on_exception(shader, 1, 0, 0, ILLEGAL_OPCODE_ENABLE, bad);
+>>   		gpgpu_shader__nop(shader);
+>>   		gpgpu_shader__nop(shader);
+>>   		/* modify second nop, set only opcode bits[6:0] */
+>>   		shader->instr[gpgpu_shader_last_instr(shader)][0] = 0x7f;
+>>   		/* SIP should clear exception bit */
+>>   		bad = ILLEGAL_OPCODE_STATUS;
+>> -		gpgpu_shader__write_on_exception(shader, 2, 0, ILLEGAL_OPCODE_STATUS, bad);
+>> +		gpgpu_shader__write_on_exception(shader, 2, 0, 0, ILLEGAL_OPCODE_STATUS, bad);
+>>   		break;
+>>   	}
+>>   
+>> @@ -120,7 +120,7 @@ static struct gpgpu_shader *get_sip(int fd, enum sip_type sip_type, unsigned int
+>>   
+>>   	switch (sip_type) {
+>>   	case SIP_INV_INSTR:
+>> -		gpgpu_shader__write_on_exception(sip, 1, y_offset, ILLEGAL_OPCODE_STATUS, 0);
+>> +		gpgpu_shader__write_on_exception(sip, 1, 0, y_offset, ILLEGAL_OPCODE_STATUS, 0);
+>>   		break;
+>>   	default:
+>>   		break;
+>> -- 
+>> 2.34.1
+>>
