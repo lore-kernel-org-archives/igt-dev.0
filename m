@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E554CFA765
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6946CFA765
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Oct 2024 10:42:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3970F10E9D1;
-	Fri,  4 Oct 2024 10:41:58 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7047310E290;
+	Fri,  4 Oct 2024 10:42:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A13CTqa7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nllzQTAE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2CB3310E9D1
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 10:41:57 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 088B710E290
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Oct 2024 10:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728038517; x=1759574517;
+ t=1728038520; x=1759574520;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=bFlcPF5Ul7mbFVm6C/nK32tejtcVsZT7AXitWKPp9dA=;
- b=A13CTqa7b33FcY8Q6sIpMZsBHJl7asUY8LNAMF2GZB1vQjV4HJkZU2F6
- fqg5tPZA8uilR5MunS/oIg2F5OwfkmVrKOzIqREfwnE+M3zNWzHHDW6AQ
- YdG31EIKS5rlp4NwN538vtgqWGZN1NPuAd7AxRGR6UPihn7okWcTEUnKf
- FqLCDovoJAhJNFMjCFTk3wNSqH3aVuqikZl8YqKedJy6OcjNHMbDp8Kfn
- nKmEXXTnLPzcq8VCKKKcZSb+ipPDKHQDou1/m/9ihxERzvREfKzcD3NaN
- QmEqa9W0e3em643q9RKUE9ECOrEF2i/io8cz9g1j+bwUwlc0suVTRxQCJ w==;
-X-CSE-ConnectionGUID: mtw7I2/jQpuOWngWyLDxLA==
-X-CSE-MsgGUID: vGVUSXZeQxSP04lLUzBDhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="31140564"
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="31140564"
+ bh=Uk2UZRyo/Uo1xKGcbxTu4Cllisx0DgfdUYAAnnBOr1M=;
+ b=nllzQTAEEeuiwKB9xGvs0J4ORhQvXJEmfad/kgvW0PTGKnqTMoUW7lNj
+ GnlvAnUq/moPLAQ7N9RQgfCUSCHytei9t1JApqF8C721ueDfnfF46Cwf3
+ +EnhzCOW5p1TLdTpef+OuQ5fA5ADICD8/z0DaHUH+uBAsfbKWaFdSUxe0
+ 0m/Nx69w98t89SuC2LCpCs8Jd2URDz1k+a+uUggWW7hZ1ICcz7JSihD7l
+ C3WuqDLyov7o6FnQPCXOOB2fUnuj9kubutzs5bZ+xD6rpUA25zdG/jDTY
+ Mmn5OBfZswQ+bZIVABkH3AIYn9yvX5nsN+3NJlKVetOL2Aflc+lUYy3FA A==;
+X-CSE-ConnectionGUID: Fv1bJMMJS1GjHDoP539fEA==
+X-CSE-MsgGUID: NL/o0fmkTSGi2hdBiqW/3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11214"; a="31140573"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="31140573"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2024 03:41:57 -0700
-X-CSE-ConnectionGUID: pte7JHxgS6ecjT/ZrJzqCA==
-X-CSE-MsgGUID: 7TMH1SMaSWeU7ws1sCuKUA==
+ 04 Oct 2024 03:42:00 -0700
+X-CSE-ConnectionGUID: UV/r8sJ3Q8iZni+4VjjEUQ==
+X-CSE-MsgGUID: yXOfpJr0RRCUi1CCFmbVHg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="74778424"
+X-IronPort-AV: E=Sophos;i="6.11,177,1725346800"; d="scan'208";a="74778444"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 04 Oct 2024 03:41:55 -0700
+ by fmviesa008.fm.intel.com with SMTP; 04 Oct 2024 03:41:58 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 04 Oct 2024 13:41:54 +0300
+ Fri, 04 Oct 2024 13:41:57 +0300
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t 12/14] tests/kms_draw_crc: Test 64bpp
-Date: Fri,  4 Oct 2024 13:41:19 +0300
-Message-ID: <20241004104121.32750-13-ville.syrjala@linux.intel.com>
+Subject: [PATCH i-g-t 13/14] lib/igt_aux: Add igt_ror() and igt_rol()
+Date: Fri,  4 Oct 2024 13:41:20 +0300
+Message-ID: <20241004104121.32750-14-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
 References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
@@ -70,72 +70,33 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Test 64bpp formats to make sure igt_draw is working correctly.
+Add helpers to do bitwise rotate operatios.
+igt_rol(): bitwise rotate left
+igt_ror(): bitwise rotate right
 
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- tests/intel/kms_draw_crc.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ lib/igt_aux.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tests/intel/kms_draw_crc.c b/tests/intel/kms_draw_crc.c
-index e3d1c0ba9bd8..078a6f46d31a 100644
---- a/tests/intel/kms_draw_crc.c
-+++ b/tests/intel/kms_draw_crc.c
-@@ -34,6 +34,7 @@
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 4b8116dc0998..bfd83adcacb9 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -337,6 +337,13 @@ void pipewire_pulse_stop_reserve(void);
+ #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
+ #define DIV_ROUND_CLOSEST(n, d) (((n) + (d) / 2) / (d))
  
- #include "i915/gem.h"
- #include "igt.h"
-+#include "igt_halffloat.h"
++#define igt_rol(value, shift, size) \
++	(((value) << (shift)) | \
++	 ((value) >> ((size) - (shift))))
++#define igt_ror(value, shift, size) \
++	(((value) >> (shift)) | \
++	 ((value) << ((size) - (shift))))
++
+ uint64_t vfs_file_max(void);
  
- /**
-  * SUBTEST: fill-fb
-@@ -76,6 +77,7 @@ static const uint32_t formats[] = {
- 	DRM_FORMAT_XRGB8888,
- 	DRM_FORMAT_RGB565,
- 	DRM_FORMAT_XRGB2101010,
-+	DRM_FORMAT_XBGR16161616F,
- };
- 
- static const uint64_t modifiers[] = {
-@@ -109,9 +111,11 @@ static void find_modeset_params(void)
- 	}
- }
- 
--static uint32_t get_color(uint32_t drm_format, bool r, bool g, bool b)
-+static uint64_t get_color(uint32_t drm_format, bool r, bool g, bool b)
- {
--	uint32_t color = 0;
-+	uint64_t color = 0;
-+	uint16_t h[3];
-+	float f[3];
- 
- 	switch (drm_format) {
- 	case DRM_FORMAT_RGB565:
-@@ -129,6 +133,15 @@ static uint32_t get_color(uint32_t drm_format, bool r, bool g, bool b)
- 		color |= g ? 0x3FF << 10 : 0;
- 		color |= b ? 0x3FF : 0;
- 		break;
-+	case DRM_FORMAT_XBGR16161616F:
-+		f[0] = r ? 1.0f : 0.0f;
-+		f[1] = g ? 1.0f : 0.0f;
-+		f[2] = b ? 1.0f : 0.0f;
-+		igt_float_to_half(f, h, 3);
-+		color |= (uint64_t)h[2] << 32 |
-+			(uint64_t)h[1] << 16 |
-+			(uint64_t)h[0] << 0;
-+		break;
- 	default:
- 		igt_assert(false);
- 	}
-@@ -290,6 +303,8 @@ static const char *format_str(int format_index)
- 		return "xrgb8888";
- 	case DRM_FORMAT_XRGB2101010:
- 		return "xrgb2101010";
-+	case DRM_FORMAT_XBGR16161616F:
-+		return "xbgr16161616f";
- 	default:
- 		igt_assert(false);
- 	}
+ void *igt_memdup(const void *ptr, size_t len);
 -- 
 2.45.2
 
