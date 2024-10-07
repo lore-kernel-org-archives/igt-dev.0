@@ -4,63 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47A71CFB440
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 08:16:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A63CFB43F
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:26:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07DFF10E1D6;
-	Mon,  7 Oct 2024 08:16:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5636689E36;
+	Mon,  7 Oct 2024 10:26:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ERliWQKk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l9sx/AeI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4CE310E1D6
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 08:16:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D11F89E36
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728288962; x=1759824962;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=dI/i6YUTRkqATAprO9yB5j6F2sw5ytd3M4IIROV8uNo=;
- b=ERliWQKkLV+GxnVIhPDwF8BajobXYjLoo/B2L9Ms9JwPljU0LzPBe+nw
- VNt2I/5+yASlGO54XNCLdAUKcJJ7pJfU8Reb16kTnyVywNwaixpSEwNFV
- qFoIQY2A91QbCR821+o5QeXPUK6mz3YfSnl5M6sBPXP5GjsbMktKW8Vjt
- 1f7i5mH1s9nJycBm47+c4e4u5yVfb4UPAbVdcdP5QHeTLrUilVcVojcwl
- rB/qbBV41dRblINnCyvO4Xi30rVoOpEoILE8xzzJVbBDh3ujuRYKF8QBi
- M6mPCneLfklV1jpnwxfoT7atwpX9e9isEDi6YtBYMk5e9I5IiJjq+kiJn w==;
-X-CSE-ConnectionGUID: AjTBS3LBReOl+74rxPWpOg==
-X-CSE-MsgGUID: uQM6UDnlSH+rff+s6fstSg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="27598047"
-X-IronPort-AV: E=Sophos;i="6.11,183,1725346800"; d="scan'208";a="27598047"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 01:16:02 -0700
-X-CSE-ConnectionGUID: 7FRoDezGQLiTzUxYFSsExg==
-X-CSE-MsgGUID: 3rt/+GIFTBGxe601kn3h9A==
+ t=1728296793; x=1759832793;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=4wAmAG2KvOgBfvIbCtNJHqTPnGor3UTvMQlbXyndMAI=;
+ b=l9sx/AeId2S0HpO2iPnYrOzF8FAmtINdPAq8c584A7C1d/rVbd+IBgR8
+ bo+CSGneAoB8L9/P2SbDf1y1+d421meh+VQwjRYrETYPfH7osJOoDGJfN
+ gyUQVFvuKGNSC4NonrwQeGDC0/sx2umrEeZrK+usBOUwZeEpjryALCwYT
+ I/hVb3NJ+Js34W1+IYd5v2bS7MwWtiXmsF3OVl26pIkxCnoCxuhXjAG0f
+ 3x62upSHzGJ6Ac0KA5PY/mhRUQCPkFztJNQDAxMkcasIkmdOUkfRRGwjU
+ IRR5OcjBvbN+BRov37QwvNGbq9RI7QpSal6BkEn1RdxL+t/wEJ84vF4np A==;
+X-CSE-ConnectionGUID: 7UwhsKEzQsq9fHeTTauSEg==
+X-CSE-MsgGUID: b0qKkSHZR7GKa8R09z/IBg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38091296"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38091296"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 03:26:32 -0700
+X-CSE-ConnectionGUID: C1Y09/5+Q7mI2jT+FqzVkg==
+X-CSE-MsgGUID: 3JSNYv/KTKyN4Kcz6FPLqw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,183,1725346800"; d="scan'208";a="106150146"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.240])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 01:16:00 -0700
-Date: Mon, 7 Oct 2024 10:15:57 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>
-Cc: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Sikora, Pawel" <pawel.sikora@intel.com>,
- "Manszewski, Christoph" <christoph.manszewski@intel.com>,
- "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Subject: Re: [PATCH v2 i-g-t 1/2] lib/igt_sysfs: Introduce engine_class
- property helpers
-Message-ID: <20241007081557.d47tsdfrbm55f7rj@zkempczy-mobl2>
-References: <20241002112914.5556-1-dominik.karol.piatkowski@intel.com>
- <20241002112914.5556-2-dominik.karol.piatkowski@intel.com>
- <047945a8a2587de77c88ddc45146be38486aff96.camel@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80216952"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.244.158])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 03:26:31 -0700
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t v2] tests/syncobj_timeline: Update
+ invalid-wait-zero-handles test
+Date: Mon,  7 Oct 2024 12:26:12 +0200
+Message-ID: <20241007102611.23544-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <047945a8a2587de77c88ddc45146be38486aff96.camel@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,144 +67,70 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Oct 03, 2024 at 03:58:09PM +0200, Grzegorzek, Dominik wrote:
-> Hi Dominik,
-> 
-> Since you made this generic it looks good to me, and I would vote for merging it to igt_sysfs,
-> as this could be useful function for anyone who would like to manipulate/read engine params.
-> However, Zbigniew had some objections againt it under mine previous comment in which I asked you to
-> place it here. Let's hear from him if this is acceptable in a current form. If not, I would just
-> move those functions as they are to the test file.
+The behavior of DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT has been changed in [1]
+to accept empty lists of syncobj handles, but the
+invalid-wait-zero-handles test has not been updated to mirror this
+change. Fix the assert to check against 0 instead of -EINVAL.
 
-Yes, this doesn't depend on eudebug so it is fine for me.
+v2: Change the test name to wait-zero-handles (drop the invalid- prefix)
+    and correctly update the test description.
 
---
-Zbigniew
+[1] https://patchwork.freedesktop.org/patch/554042/
 
-> 
-> Regards, 
-> Dominik
-> 
-> On Wed, 2024-10-02 at 13:29 +0200, Dominik Karol Piątkowski wrote:
-> > Introduce the following engine_class helpers:
-> >  - xe_sysfs_engine_class_get_property
-> >    Convenience wrapper to get value of given property for given engine
-> >    class on given gt.
-> >  - xe_sysfs_engine_class_set_property
-> >    Convenience wrapper to set given property for given engine class on
-> >    given gt to given value.
-> > 
-> > Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
-> > ---
-> >  lib/igt_sysfs.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
-> >  lib/igt_sysfs.h |  5 +++
-> >  2 files changed, 90 insertions(+)
-> > 
-> > diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-> > index aec0bb53d..8fe6d7ede 100644
-> > --- a/lib/igt_sysfs.c
-> > +++ b/lib/igt_sysfs.c
-> > @@ -1360,3 +1360,88 @@ int xe_sysfs_get_num_tiles(int xe_device)
-> >  
-> >  	return num_tiles;
-> >  }
-> > +
-> > +/**
-> > + * xe_sysfs_engine_class_get_property
-> > + * @xe_device: fd of the device
-> > + * @gt: gt number
-> > + * @class: engine class
-> > + * @property: property of engine class to retrieve
-> > + * @value: pointer for storing read value
-> > + *
-> > + * Convenience wrapper to get value of given property for given engine class on given gt.
-> > + *
-> > + * Returns: true on success, false on failure.
-> > + */
-> > +bool xe_sysfs_engine_class_get_property(int xe_device, int gt, uint16_t class, const char *property,
-> > +					uint32_t *value)
-> > +{
-> > +	int engines_fd;
-> > +
-> > +	engines_fd = xe_sysfs_engine_open(xe_device, gt, class);
-> > +
-> > +	if (engines_fd == -1) {
-> > +		igt_debug("Failed to open %s on gt%d.\n", xe_engine_class_to_str(class), gt);
-> > +
-> > +		return false;
-> > +	}
-> > +
-> > +	if (!__igt_sysfs_get_u32(engines_fd, property, value)) {
-> > +		igt_debug("Failed to read %s property of %s on gt%d.\n", property,
-> > +			  xe_engine_class_to_str(class), gt);
-> > +		close(engines_fd);
-> > +
-> > +		return false;
-> > +	}
-> > +
-> > +	close(engines_fd);
-> > +
-> > +	return true;
-> > +}
-> > +
-> > +/**
-> > + * xe_sysfs_engine_class_set_property
-> > + * @xe_device: fd of the device
-> > + * @gt: gt number
-> > + * @class: engine class
-> > + * @property: property of engine class to be modified
-> > + * @new_value: value to be set
-> > + * @old_value: pointer for storing old value, can be NULL
-> > + *
-> > + * Convenience wrapper to set given property for given engine class on given gt to given value.
-> > + *
-> > + * Returns: true on success, false on failure.
-> > + */
-> > +bool xe_sysfs_engine_class_set_property(int xe_device, int gt, uint16_t class, const char *property,
-> > +					uint32_t new_value, uint32_t *old_value)
-> > +{
-> > +	int engines_fd;
-> > +
-> > +	engines_fd = xe_sysfs_engine_open(xe_device, gt, class);
-> > +
-> > +	if (engines_fd == -1) {
-> > +		igt_debug("Failed to open %s on gt%d.\n", xe_engine_class_to_str(class), gt);
-> > +
-> > +		return false;
-> > +	}
-> > +
-> > +	if (old_value && !__igt_sysfs_get_u32(engines_fd, property, old_value)) {
-> > +		igt_debug("Failed to read %s property of %s on gt%d.\n", property,
-> > +			  xe_engine_class_to_str(class), gt);
-> > +		close(engines_fd);
-> > +
-> > +		return false;
-> > +	}
-> > +
-> > +	if (!__igt_sysfs_set_u32(engines_fd, property, new_value)) {
-> > +		igt_debug("Failed to write %s property of %s on gt%d.\n", property,
-> > +			  xe_engine_class_to_str(class), gt);
-> > +		close(engines_fd);
-> > +
-> > +		return false;
-> > +	}
-> > +
-> > +	close(engines_fd);
-> > +
-> > +	return true;
-> > +}
-> > diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-> > index 2a1e3b1bf..3cede07f9 100644
-> > --- a/lib/igt_sysfs.h
-> > +++ b/lib/igt_sysfs.h
-> > @@ -175,4 +175,9 @@ int xe_sysfs_get_num_tiles(int xe_device);
-> >  char *xe_sysfs_engine_path(int xe_device, int gt, int class, char *path, int pathlen);
-> >  int xe_sysfs_engine_open(int xe_device, int gt, int class);
-> >  
-> > +bool xe_sysfs_engine_class_get_property(int xe_device, int gt, uint16_t class, const char *property,
-> > +					uint32_t *value);
-> > +bool xe_sysfs_engine_class_set_property(int xe_device, int gt, uint16_t class, const char *property,
-> > +					uint32_t new_value, uint32_t *old_value);
-> > +
-> >  #endif /* __IGT_SYSFS_H__ */
-> 
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+---
+ tests/syncobj_timeline.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
+index 96d5d8b45..a77896ec1 100644
+--- a/tests/syncobj_timeline.c
++++ b/tests/syncobj_timeline.c
+@@ -242,9 +242,6 @@
+  * SUBTEST: invalid-wait-illegal-handle
+  * Description: Verifies that waiting on an invalid syncobj handle is rejected
+  *
+- * SUBTEST: invalid-wait-zero-handles
+- * Description: Verifies that waiting on an empty list of invalid syncobj handles is rejected
+- *
+  * SUBTEST: multi-wait-all-available-signaled
+  * Description: Verifies waiting on a list of timeline syncobjs
+  *
+@@ -427,6 +424,9 @@
+  *
+  * SUBTEST: wait-for-submit-snapshot
+  * Description: Verifies waiting on a list of timeline syncobjs with different thread for wait/signal
++ *
++ * SUBTEST: wait-zero-handles
++ * Description: Verifies that waiting on an empty list of syncobj handles is accepted
+  */
+ 
+ IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
+@@ -558,13 +558,12 @@ test_wait_bad_flags(int fd)
+ }
+ 
+ static const char *test_wait_zero_handles_desc =
+-	"Verifies that waiting on an empty list of invalid syncobj handles is"
+-	" rejected";
++	"Verifies that waiting on an empty list of syncobj handles is accepted";
+ static void
+ test_wait_zero_handles(int fd)
+ {
+ 	struct drm_syncobj_timeline_wait wait = {};
+-	igt_assert_eq(__syncobj_timeline_wait_ioctl(fd, &wait), -EINVAL);
++	igt_assert_eq(__syncobj_timeline_wait_ioctl(fd, &wait), 0);
+ }
+ 
+ static const char *test_wait_illegal_handle_desc =
+@@ -1711,7 +1710,7 @@ igt_main
+ 		test_wait_bad_flags(fd);
+ 
+ 	igt_describe(test_wait_zero_handles_desc);
+-	igt_subtest("invalid-wait-zero-handles")
++	igt_subtest("wait-zero-handles")
+ 		test_wait_zero_handles(fd);
+ 
+ 	igt_describe(test_wait_illegal_handle_desc);
+-- 
+2.45.2
+
