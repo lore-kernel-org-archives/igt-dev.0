@@ -4,53 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0A63CFB43F
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:26:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13DE0CFB440
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:27:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5636689E36;
-	Mon,  7 Oct 2024 10:26:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C703389E36;
+	Mon,  7 Oct 2024 10:27:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l9sx/AeI";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LF8/uOQA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D11F89E36
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:26:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1CA189E36
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728296793; x=1759832793;
+ t=1728296870; x=1759832870;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=4wAmAG2KvOgBfvIbCtNJHqTPnGor3UTvMQlbXyndMAI=;
- b=l9sx/AeId2S0HpO2iPnYrOzF8FAmtINdPAq8c584A7C1d/rVbd+IBgR8
- bo+CSGneAoB8L9/P2SbDf1y1+d421meh+VQwjRYrETYPfH7osJOoDGJfN
- gyUQVFvuKGNSC4NonrwQeGDC0/sx2umrEeZrK+usBOUwZeEpjryALCwYT
- I/hVb3NJ+Js34W1+IYd5v2bS7MwWtiXmsF3OVl26pIkxCnoCxuhXjAG0f
- 3x62upSHzGJ6Ac0KA5PY/mhRUQCPkFztJNQDAxMkcasIkmdOUkfRRGwjU
- IRR5OcjBvbN+BRov37QwvNGbq9RI7QpSal6BkEn1RdxL+t/wEJ84vF4np A==;
-X-CSE-ConnectionGUID: 7UwhsKEzQsq9fHeTTauSEg==
-X-CSE-MsgGUID: b0qKkSHZR7GKa8R09z/IBg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38091296"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38091296"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:26:32 -0700
-X-CSE-ConnectionGUID: C1Y09/5+Q7mI2jT+FqzVkg==
-X-CSE-MsgGUID: 3JSNYv/KTKyN4Kcz6FPLqw==
+ bh=tAyN2VDU8wVcahzqDCGZKROTPdvBifbP9KuK0eJBNe4=;
+ b=LF8/uOQAwAfkKaO49TGlzazmNYcGgUtcO/U/JFdA5l1pSCk3ZBsF0FwD
+ PD5rkG1vRoM+k9PtDl5Zcyjtcsj9jLPaAgf24z2t1KuYi1jwJCMZuHK33
+ c121quLf5jr+k4gtatFmjwvLcIi2TjQxqijr3SfOe5aZ1SUVONxuR7w/h
+ Oq4h0uFRtsFu/JII5OYXQyfqSOQeQU2BuNtJv5XgbQOVQJWYVNZ+H3/MT
+ /fQKa4+JNd1Y5D2fA0reFqolCRqK+kNK8nRj+H+/s7zUmpJytytfEpVLo
+ 6mOEC0cE6mLYhmBodv/g6lenq4L0+oQGOpQKf8HlQn4hVsmgK6jyt9PSp w==;
+X-CSE-ConnectionGUID: ru4Q8UtfTUSfC6lAms1sXw==
+X-CSE-MsgGUID: tksnc/HYR6q3eAwdYSaH6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38565979"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38565979"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 03:27:50 -0700
+X-CSE-ConnectionGUID: vhL/vzgVQtu7e0PK8+NzXg==
+X-CSE-MsgGUID: PHBPasROTb2PaYBZVX161w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80216952"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
- ([10.245.244.158])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:26:31 -0700
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80020310"
+Received: from mklonows-mobl1.ger.corp.intel.com (HELO
+ dpiatkow-mobl1.mshome.net) ([10.245.246.244])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 03:27:47 -0700
+From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t v2] tests/syncobj_timeline: Update
- invalid-wait-zero-handles test
-Date: Mon,  7 Oct 2024 12:26:12 +0200
-Message-ID: <20241007102611.23544-2-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.45.2
+Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
+ Dominik Grzegorzek <dominik.grzegorzek@intel.com>,
+ Christoph Manszewski <christoph.manszewski@intel.com>,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
+ <dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v3 i-g-t 0/2] Fix xe_eudebug_online@interrupt-other test
+Date: Mon,  7 Oct 2024 12:27:32 +0200
+Message-Id: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -67,70 +74,39 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The behavior of DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT has been changed in [1]
-to accept empty lists of syncobj handles, but the
-invalid-wait-zero-handles test has not been updated to mirror this
-change. Fix the assert to check against 0 instead of -EINVAL.
+xe_eudebug_online@interrupt-other test fails due to preemption
+interfering with it.
 
-v2: Change the test name to wait-zero-handles (drop the invalid- prefix)
-    and correctly update the test description.
+In order to fix it, set the preempt_timeout_us for engine_class used in
+this test to maximum for the duration of the test.
 
-[1] https://patchwork.freedesktop.org/patch/554042/
+This series introduces the following engine_class helpers:
+ - xe_sysfs_engine_class_get_property
+   Convenience wrapper to get value of given property for given engine
+   class on given gt.
+ - xe_sysfs_engine_class_set_property
+   Convenience wrapper to set given property for given engine class on
+   given gt to given value.
 
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
- tests/syncobj_timeline.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+v2:
+   -Move helpers from lib/xe_eudebug to lib/igt_sysfs
+   -Improve readability in xe_eudebug_online adjust commit
+   -Add justification in message of xe_eudebug_online adjust commit
+v3:
+   -Apply nits from Dominik Grzegorzek
+    (patch "tests/xe_eudebug_online: Adjust interrupt-other test")
 
-diff --git a/tests/syncobj_timeline.c b/tests/syncobj_timeline.c
-index 96d5d8b45..a77896ec1 100644
---- a/tests/syncobj_timeline.c
-+++ b/tests/syncobj_timeline.c
-@@ -242,9 +242,6 @@
-  * SUBTEST: invalid-wait-illegal-handle
-  * Description: Verifies that waiting on an invalid syncobj handle is rejected
-  *
-- * SUBTEST: invalid-wait-zero-handles
-- * Description: Verifies that waiting on an empty list of invalid syncobj handles is rejected
-- *
-  * SUBTEST: multi-wait-all-available-signaled
-  * Description: Verifies waiting on a list of timeline syncobjs
-  *
-@@ -427,6 +424,9 @@
-  *
-  * SUBTEST: wait-for-submit-snapshot
-  * Description: Verifies waiting on a list of timeline syncobjs with different thread for wait/signal
-+ *
-+ * SUBTEST: wait-zero-handles
-+ * Description: Verifies that waiting on an empty list of syncobj handles is accepted
-  */
- 
- IGT_TEST_DESCRIPTION("Tests for the drm timeline sync object API");
-@@ -558,13 +558,12 @@ test_wait_bad_flags(int fd)
- }
- 
- static const char *test_wait_zero_handles_desc =
--	"Verifies that waiting on an empty list of invalid syncobj handles is"
--	" rejected";
-+	"Verifies that waiting on an empty list of syncobj handles is accepted";
- static void
- test_wait_zero_handles(int fd)
- {
- 	struct drm_syncobj_timeline_wait wait = {};
--	igt_assert_eq(__syncobj_timeline_wait_ioctl(fd, &wait), -EINVAL);
-+	igt_assert_eq(__syncobj_timeline_wait_ioctl(fd, &wait), 0);
- }
- 
- static const char *test_wait_illegal_handle_desc =
-@@ -1711,7 +1710,7 @@ igt_main
- 		test_wait_bad_flags(fd);
- 
- 	igt_describe(test_wait_zero_handles_desc);
--	igt_subtest("invalid-wait-zero-handles")
-+	igt_subtest("wait-zero-handles")
- 		test_wait_zero_handles(fd);
- 
- 	igt_describe(test_wait_illegal_handle_desc);
+Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+
+Dominik Karol Piątkowski (2):
+  lib/igt_sysfs: Introduce engine_class property helpers
+  tests/xe_eudebug_online: Adjust interrupt-other test
+
+ lib/igt_sysfs.c                 | 85 +++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h                 |  5 ++
+ tests/intel/xe_eudebug_online.c | 39 ++++++++++++++-
+ 3 files changed, 127 insertions(+), 2 deletions(-)
+
 -- 
-2.45.2
+2.34.1
 
