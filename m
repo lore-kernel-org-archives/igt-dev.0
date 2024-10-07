@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 072F1CFB452
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 18:58:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A76CFB453
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 19:01:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B47C210E40A;
-	Mon,  7 Oct 2024 18:58:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 233E510E40D;
+	Mon,  7 Oct 2024 19:01:02 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D97E10E40A;
- Mon,  7 Oct 2024 18:58:09 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8011499896679390183=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8754110E40A;
+ Mon,  7 Oct 2024 19:01:01 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_Fix_xe=5Feudebug=5Fonline=40in?=
- =?utf-8?q?terrupt-other_test_=28rev3=29?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/kms=5Fplane=5Fsca?=
+ =?utf-8?q?ling=3A_Cdclk_exceeds_max_Cdclk_issue_fix_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 07 Oct 2024 18:58:09 -0000
-Message-ID: <172832748931.1200032.11290458955780879178@2413ebb6fbb6>
+Date: Mon, 07 Oct 2024 19:01:01 -0000
+Message-ID: <172832766154.1200041.8534145044478145710@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
+References: <20240926181150.2148704-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20240926181150.2148704-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,139 +41,39 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8011499896679390183==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: Fix xe_eudebug_online@interrupt-other test (rev3)
-URL   : https://patchwork.freedesktop.org/series/139158/
-State : success
+Series: tests/kms_plane_scaling: Cdclk exceeds max Cdclk issue fix (rev4)
+URL   : https://patchwork.freedesktop.org/series/139049/
+State : warning
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8054_BAT -> XEIGTPW_11878_BAT
-====================================================
+Pipeline status: FAILED.
 
-Summary
--------
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1285221 for the overview.
 
-  **SUCCESS**
-
-  No regressions found.
-
+build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64753302):
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out 768a2e7a as detached HEAD (ref is intel/IGTPW_11879)...
+  Removing build/
+  Removing lib/i915/perf-configs/__pycache__/
+  Removing lib/xe/oa-configs/__pycache__/
+  Removing scripts/__pycache__/
   
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11878_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][1] ([Intel XE#1861]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_gt_freq@freq_range_idle:
-    - bat-lnl-2:          [DMESG-WARN][3] ([Intel XE#1620]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html
-
-  
-  [Intel XE#1620]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1620
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-
-
-Build changes
--------------
-
-  * IGT: IGT_8054 -> IGTPW_11878
-  * Linux: xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965 -> xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634
-
-  IGTPW_11878: 681a10e5c212d465305d5dd663b5e7c6d8ebfa52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8054: 3f627b7fd48c6ab324ceaa80dd8cf0131292bf63 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965: 92d12099cc768f36cf676ee1b014442a5c5ba965
-  xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634: 39a016b276ce8adac629cc6c31892d0b7d2af634
+  Skipping Git submodules setup
+  section_end:1728327256:get_sources
+  section_start:1728327256:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:4a4103f1a476d355d866b481ff96ac05a32a3a715cefcc1cbc1356a8959fb5f8 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf:commit-768a2e7a6a854559300231fbba8eb90e0d17fe94 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-armhf@sha256:3a0ffeb305cdc6ef081dde81d86afee76102e74f76c0f7bd5685fc2457ec707b ...
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh
+  section_end:1728327258:step_script
+  section_start:1728327258:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1728327261:cleanup_file_variables
+  ERROR: Job failed: exit code 137
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/index.html
-
---===============8011499896679390183==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Fix xe_eudebug_online@interrupt-other test (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139158/">https://patchwork.freedesktop.org/series/139158/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8054_BAT -&gt; XEIGTPW_11878_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11878_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_gt_freq@freq_range_idle:</p>
-<ul>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1620">Intel XE#1620</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11878/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8054 -&gt; IGTPW_11878</li>
-<li>Linux: xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965 -&gt; xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634</li>
-</ul>
-<p>IGTPW_11878: 681a10e5c212d465305d5dd663b5e7c6d8ebfa52 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8054: 3f627b7fd48c6ab324ceaa80dd8cf0131292bf63 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965: 92d12099cc768f36cf676ee1b014442a5c5ba965<br />
-  xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634: 39a016b276ce8adac629cc6c31892d0b7d2af634</p>
-
-</body>
-</html>
-
---===============8011499896679390183==--
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1285221
