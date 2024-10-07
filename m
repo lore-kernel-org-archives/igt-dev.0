@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0A96CFB448
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 15:39:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 285E6CFB446
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 16:03:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52EB510E322;
-	Mon,  7 Oct 2024 15:39:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD99210E0CC;
+	Mon,  7 Oct 2024 16:03:36 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C356110E322;
- Mon,  7 Oct 2024 15:39:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E082210E0CC;
+ Mon,  7 Oct 2024 16:03:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3414690652046545204=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_intel=3A_igt=5Fdraw_and?=
- =?utf-8?q?_intel=5Fbufops_improvements?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fpm=5Fresid?=
+ =?utf-8?q?ency=3A_Skip_on_igt=5Fpower=5Fopen_failure_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?b?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 07 Oct 2024 15:39:24 -0000
-Message-ID: <172831556479.1199107.12823113622696577179@2413ebb6fbb6>
+Date: Mon, 07 Oct 2024 16:03:35 -0000
+Message-ID: <172831701590.1199163.17960963865658271716@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
+References: <20241004135820.1800808-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20241004135820.1800808-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,237 +41,234 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============3414690652046545204==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: intel: igt_draw and intel_bufops improvements
-URL   : https://patchwork.freedesktop.org/series/139556/
-State : warning
+Series: tests/intel/xe_pm_residency: Skip on igt_power_open failure (rev3)
+URL   : https://patchwork.freedesktop.org/series/139352/
+State : failure
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_8054 -> IGTPW_11873
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1285113 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744864):
-  [1900/1907] Generating xe_tests.rst with a custom command.
-  [1901/1907] Generating kms_tests.rst with a custom command.
-  [1902/1907] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/848] Generating version.h with a custom command.
-  [2/8] Linking target runner/runner_test.
-  [3/8] Linking target assembler/intel-gen4asm.
-  [4/8] Generating intel-ci-tests with a custom command.
-  FAILED: docs/testplan/intel-ci-tests 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315260:step_script
-  section_start:1728315260:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315260:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_11873 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_11873, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744867):
-  [1/519] Generating version.h with a custom command.
-  [2/13] Linking static target runner/libigt_runner.a.
-  [3/13] Linking target runner/igt_runner.
-  [4/13] Linking target runner/igt_resume.
-  [5/13] Linking target runner/igt_results.
-  [6/13] Linking target runner/runner_json_test.
-  [7/13] Linking target runner/igt_comms_decoder.
-  [8/13] Linking target runner/runner_test.
-  [9/13] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315279:step_script
-  section_start:1728315279:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315280:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/index.html
+
+Participating hosts (43 -> 42)
+------------------------------
+
+  Missing    (1): bat-rpls-4 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_11873:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live:
+    - bat-adlp-9:         [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-adlp-9/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-adlp-9/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@coherency:
+    - bat-arls-1:         [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-1/igt@i915_selftest@live@coherency.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-1/igt@i915_selftest@live@coherency.html
+
   
+Known issues
+------------
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744866):
-  [1/519] Generating version.h with a custom command.
-  [2/13] Linking static target runner/libigt_runner.a.
-  [3/13] Linking target runner/igt_runner.
-  [4/13] Linking target runner/igt_resume.
-  [5/13] Linking target runner/igt_results.
-  [6/13] Linking target runner/igt_comms_decoder.
-  [7/13] Linking target runner/runner_test.
-  [8/13] Linking target runner/runner_json_test.
-  [9/13] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315258:step_script
-  section_start:1728315258:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315259:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  Here are the changes found in IGTPW_11873 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-1:         [PASS][5] -> [DMESG-FAIL][6] ([i915#10262] / [i915#10341] / [i915#12133])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-1/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@client:
+    - bat-arls-1:         [PASS][7] -> [DMESG-FAIL][8] ([i915#10262]) +17 other tests dmesg-fail
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-1/igt@i915_selftest@live@client.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-1/igt@i915_selftest@live@client.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [PASS][9] -> [ABORT][10] ([i915#12216]) +1 other test abort
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
   
+#### Warnings ####
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744868):
-  [1/519] Generating version.h with a custom command.
-  [2/13] Linking static target runner/libigt_runner.a.
-  [3/13] Linking target runner/igt_runner.
-  [4/13] Linking target runner/igt_results.
-  [5/13] Linking target runner/igt_resume.
-  [6/13] Linking target runner/igt_comms_decoder.
-  [7/13] Linking target runner/runner_test.
-  [8/13] Linking target runner/runner_json_test.
-  [9/13] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315273:step_script
-  section_start:1728315273:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315274:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  * igt@i915_selftest@live:
+    - bat-arls-5:         [DMESG-WARN][11] ([i915#10341] / [i915#12133]) -> [ABORT][12] ([i915#12061] / [i915#12133])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-5/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-5/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-5:         [DMESG-WARN][13] ([i915#10341] / [i915#11637]) -> [ABORT][14] ([i915#12061])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-5/igt@i915_selftest@live@workarounds.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-5/igt@i915_selftest@live@workarounds.html
+
   
+  [i915#10262]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#11637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216
 
-build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744865):
-  ninja: Entering directory `build'
-  [1/115] Generating version.h with a custom command.
-  [2/9] Linking target lib/libi915_perf.so.1.5.
-  [3/9] Generating symbol file 'lib/76b5a35@@i915_perf@sha/libi915_perf.so.1.5.symbols'.
-  [4/9] Linking target tools/intel_gpu_top.
-  [5/9] Linking target tools/i915-perf/i915-perf-configs.
-  [6/9] Linking target tools/i915-perf/i915-perf-recorder.
-  [7/9] Linking target tools/i915-perf/i915-perf-reader.
-  [8/9] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315192:step_script
-  section_start:1728315192:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315193:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
 
-build:tests-fedora has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744859):
-  	==> Driver requirement: i915
-  [1907/1913] Generating xe_tests.rst with a custom command.
-  [1908/1913] Generating kms_tests.rst with a custom command.
-  [1909/1913] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/850] Generating version.h with a custom command.
-  [2/7] Linking target runner/runner_test.
-  [3/7] Generating intel-ci-tests with a custom command.
-  FAILED: docs/testplan/intel-ci-tests 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315260:step_script
-  section_start:1728315260:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315261:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+Build changes
+-------------
 
-build:tests-fedora-clang has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744863):
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  [1909/1913] Generating xe_tests.rst with a custom command.
-  [1910/1913] Generating kms_tests.rst with a custom command.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/850] Generating version.h with a custom command.
-  [2/6] Generating intel-ci-tests with a custom command.
-  FAILED: docs/testplan/intel-ci-tests 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315262:step_script
-  section_start:1728315262:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315264:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8054 -> IGTPW_11873
+  * Linux: CI_DRM_15484 -> CI_DRM_15485
 
-build:tests-fedora-no-libdrm-nouveau has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744862):
-  [1737/1743] Generating xe_tests.rst with a custom command.
-  [1738/1743] Generating kms_tests.rst with a custom command.
-  [1739/1743] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/798] Generating version.h with a custom command.
-  [2/7] Linking target runner/runner_test.
-  [3/7] Generating kms_tests.html with a custom command.
-  [4/7] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315239:step_script
-  section_start:1728315239:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315241:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-no-libunwind has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744860):
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  [1908/1913] Generating kms_tests.rst with a custom command.
-  [1909/1913] Compiling C object 'runner/527aa9f@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/850] Generating version.h with a custom command.
-  [2/7] Linking target runner/runner_test.
-  [3/7] Generating intel-ci-tests with a custom command.
-  FAILED: docs/testplan/intel-ci-tests 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/kms_test_config.json /builds/gfx-ci/igt-ci-tags/tests/intel/xe_test_config.json --intelci-testlist docs/testplan/intel-ci-tests
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315256:step_script
-  section_start:1728315256:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315257:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-fedora-oldest-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/64744861):
-  	==> Driver requirement: i915
-  [1907/1913] Generating xe_tests.rst with a custom command.
-  [1908/1913] Generating kms_tests.rst with a custom command.
-  [1909/1913] Compiling C object 'runner/runner@@runner_test@exe/runner_tests.c.o'.
-  ninja: build stopped: subcommand failed.
-  ninja: Entering directory `build'
-  [1/850] Generating version.h with a custom command.
-  [2/7] Linking target runner/runner_test.
-  [3/7] Generating i915_tests.rst with a custom command.
-  FAILED: docs/testplan/i915_tests.rst 
-  /builds/gfx-ci/igt-ci-tags/scripts/igt_doc.py --config /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json --rest docs/testplan/i915_tests.rst --check-testlist --igt-build-path /builds/gfx-ci/igt-ci-tags/build
-  /builds/gfx-ci/igt-ci-tags/tests/intel/gem_draw.c:10: Error: unrecognized line. Need to add field at /builds/gfx-ci/igt-ci-tags/tests/intel/i915_test_config.json?
-  	==> Driver requirement: i915
-  ninja: build stopped: subcommand failed.
-  section_end:1728315235:step_script
-  section_start:1728315235:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1728315236:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  CI-20190529: 20190529
+  CI_DRM_15484: 92d12099cc768f36cf676ee1b014442a5c5ba965 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15485: 39a016b276ce8adac629cc6c31892d0b7d2af634 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11873: c91cee7ae2b356f0f57de7212ae84a1eeaf9c96f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8054: 3f627b7fd48c6ab324ceaa80dd8cf0131292bf63 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1285113
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/index.html
+
+--===============3414690652046545204==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Skip on igt_power_open failure (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139352/">https://patchwork.freedesktop.org/series/139352/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8054 -&gt; IGTPW_11873</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_11873 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_11873, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/index.html</p>
+<h2>Participating hosts (43 -&gt; 42)</h2>
+<p>Missing    (1): bat-rpls-4 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_11873:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-adlp-9/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-adlp-9/igt@i915_selftest@live.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@coherency:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-1/igt@i915_selftest@live@coherency.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-1/igt@i915_selftest@live@coherency.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11873 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-1/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@client:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-1/igt@i915_selftest@live@client.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-1/igt@i915_selftest@live@client.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a>) +17 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216">i915#12216</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-5/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-5/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-5:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8054/bat-arls-5/igt@i915_selftest@live@workarounds.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11637">i915#11637</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11873/bat-arls-5/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8054 -&gt; IGTPW_11873</li>
+<li>Linux: CI_DRM_15484 -&gt; CI_DRM_15485</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15484: 92d12099cc768f36cf676ee1b014442a5c5ba965 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15485: 39a016b276ce8adac629cc6c31892d0b7d2af634 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11873: c91cee7ae2b356f0f57de7212ae84a1eeaf9c96f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8054: 3f627b7fd48c6ab324ceaa80dd8cf0131292bf63 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============3414690652046545204==--
