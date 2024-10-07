@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8D10CFB44F
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 17:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49CECCFB44D
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 17:05:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 93FDA10E1DE;
-	Mon,  7 Oct 2024 17:05:03 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74BA389D56;
- Mon,  7 Oct 2024 17:05:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9061382890953954195=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0C6B710E1DE;
+	Mon,  7 Oct 2024 17:05:23 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZJgliBPh";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EABE10E1DE
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 17:05:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728320722; x=1759856722;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=lTVxn66m8iV4c+xhFcBuv5FMf648Ubu/8eh2BgKilBA=;
+ b=ZJgliBPhBamD8x1/Jzk6GRzYo+FGAPDh4U+fnnXXxlsiiZySoyCthEHj
+ IgosKMMfUUdnBwv4WMNzCaBIFIrOl+7HC/YMDehyghLbYILqtMOMV7lq+
+ REVNZSO8cX1RdpXI51Kwb2pkqJ0hOhy5ujjv4x/gYlYXzU6XQFqI9S23p
+ kNdCAgAdgIWIwTNmdfo0j8HPC9qnWnBOafwC9/Gz7tnNFPe8Hzkk+b28f
+ 9CzhcYXZX1NjeuKkYNgAw3EZVvkXwya0LxltqsB/FqaOPhyC4tufJ2cta
+ 01BAugxmKu1F9O40R1gvxal1sYAyHGENAwZ63luvK1/4Ux68PaAC8s3wn w==;
+X-CSE-ConnectionGUID: CLoH2UUiTT69d0InR0Kwqw==
+X-CSE-MsgGUID: b/HmCIODRjC6t0Jfgu4fLw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="50016036"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="50016036"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2024 10:05:22 -0700
+X-CSE-ConnectionGUID: 4Yk54c27TwGjRPdgp2Nf8w==
+X-CSE-MsgGUID: fFv/Y7wnS5aSIGipn0cjmw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="75495228"
+Received: from himal-super-server.iind.intel.com ([10.145.169.168])
+ by orviesa009.jf.intel.com with ESMTP; 07 Oct 2024 10:05:19 -0700
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
+ Badal Nilawar <badal.nilawar@intel.com>,
+ Riana Tauro <riana.tauro@intel.com>,
+ Anshuman Gupta <anshuman.gupta@intel.com>,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t 1/2] Revert "tests/intel/xe_pm_residency: Add an
+ assertion on MI_STORE execution time"
+Date: Mon,  7 Oct 2024 22:53:55 +0530
+Message-Id: <20241007172356.1747943-1-himal.prasad.ghimiray@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/vmwgfx=3A_Add_test_that_?=
- =?utf-8?q?draws_triangle_without_using_3d_commands=2E?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Maaz Mombasawala" <maaz.mombasawala@broadcom.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 07 Oct 2024 17:05:02 -0000
-Message-ID: <172832070247.1199518.16177785737679086017@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241004223053.317136-1-maaz.mombasawala@broadcom.com>
-In-Reply-To: <20241004223053.317136-1-maaz.mombasawala@broadcom.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,188 +67,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9061382890953954195==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The reported time does not reflect the completion time of
+MI_STORE_DWORD; instead, it accounts for the delay in the scheduler.
+Therefore, it represents the time taken between xe_exec and
+syncobj_wait.
 
-== Series Details ==
+This reverts commit 92825ed72be61c5419d95db944fef1c9dda2215a.
 
-Series: tests/vmwgfx: Add test that draws triangle without using 3d commands.
-URL   : https://patchwork.freedesktop.org/series/139588/
-State : success
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: Karthik Poosa <karthik.poosa@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index 772fe9b57..f4d05889c 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -144,15 +144,6 @@ static void exec_load(int fd, struct drm_xe_engine_class_instance *hwe, unsigned
+ 			  1e-3 * submit,
+ 			  1e-3 * (elapsed - submit));
+ 
+-		/*
+-		 * MI_STORE_DWORD generally completes within couple of ms.
+-		 * Assert if it takes more than 1.2 seconds, as it will cause
+-		 * IGT test to timeout due to sleep of 120 seconds which is
+-		 * the current per test timeout. Currently there is no way to
+-		 * read this timeout from IGT test.
+-		 */
+-		igt_assert((uint64_t)elapsed < (uint64_t)(1.2 * NSEC_PER_SEC));
+-
+ 		syncobj_reset(fd, &syncobj, 1);
+ 
+ 		/*
+-- 
+2.34.1
 
-CI Bug Log - changes from XEIGT_8054_BAT -> XEIGTPW_11875_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11875_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small:
-    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_evict@evict-beng-small.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
-    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#2229])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_gt_freq@freq_range_idle:
-    - bat-lnl-2:          [DMESG-WARN][4] ([Intel XE#1620]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-adlp-7:         [INCOMPLETE][6] ([Intel XE#2874]) -> [PASS][7] +1 other test pass
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1620]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1620
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-
-
-Build changes
--------------
-
-  * IGT: IGT_8054 -> IGTPW_11875
-  * Linux: xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965 -> xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634
-
-  IGTPW_11875: 11875
-  IGT_8054: 3f627b7fd48c6ab324ceaa80dd8cf0131292bf63 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965: 92d12099cc768f36cf676ee1b014442a5c5ba965
-  xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634: 39a016b276ce8adac629cc6c31892d0b7d2af634
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/index.html
-
---===============9061382890953954195==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/vmwgfx: Add test that draws triangle without using 3d commands.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139588/">https://patchwork.freedesktop.org/series/139588/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8054_BAT -&gt; XEIGTPW_11875_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11875_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@xe_gt_freq@freq_range_idle:</p>
-<ul>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1620">Intel XE#1620</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-lnl-2/igt@xe_gt_freq@freq_range_idle.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8054/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11875/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8054 -&gt; IGTPW_11875</li>
-<li>Linux: xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965 -&gt; xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634</li>
-</ul>
-<p>IGTPW_11875: 11875<br />
-  IGT_8054: 3f627b7fd48c6ab324ceaa80dd8cf0131292bf63 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2016-92d12099cc768f36cf676ee1b014442a5c5ba965: 92d12099cc768f36cf676ee1b014442a5c5ba965<br />
-  xe-2017-39a016b276ce8adac629cc6c31892d0b7d2af634: 39a016b276ce8adac629cc6c31892d0b7d2af634</p>
-
-</body>
-</html>
-
---===============9061382890953954195==--
