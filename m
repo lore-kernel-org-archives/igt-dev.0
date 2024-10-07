@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13DE0CFB440
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:27:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D1CCFB441
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:27:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C703389E36;
-	Mon,  7 Oct 2024 10:27:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E090E10E1EE;
+	Mon,  7 Oct 2024 10:27:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LF8/uOQA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sa0GWks6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1CA189E36
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:27:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF95310E1EE
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728296870; x=1759832870;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=tAyN2VDU8wVcahzqDCGZKROTPdvBifbP9KuK0eJBNe4=;
- b=LF8/uOQAwAfkKaO49TGlzazmNYcGgUtcO/U/JFdA5l1pSCk3ZBsF0FwD
- PD5rkG1vRoM+k9PtDl5Zcyjtcsj9jLPaAgf24z2t1KuYi1jwJCMZuHK33
- c121quLf5jr+k4gtatFmjwvLcIi2TjQxqijr3SfOe5aZ1SUVONxuR7w/h
- Oq4h0uFRtsFu/JII5OYXQyfqSOQeQU2BuNtJv5XgbQOVQJWYVNZ+H3/MT
- /fQKa4+JNd1Y5D2fA0reFqolCRqK+kNK8nRj+H+/s7zUmpJytytfEpVLo
- 6mOEC0cE6mLYhmBodv/g6lenq4L0+oQGOpQKf8HlQn4hVsmgK6jyt9PSp w==;
-X-CSE-ConnectionGUID: ru4Q8UtfTUSfC6lAms1sXw==
-X-CSE-MsgGUID: tksnc/HYR6q3eAwdYSaH6w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38565979"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38565979"
+ t=1728296872; x=1759832872;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=l1PeHYdxyF2qNLG8m4QlHo0QNjz8VV1aDng7Kxm+UNM=;
+ b=Sa0GWks6Ygy86rSeCD0h7IcffRfy1TAkyEElteGUu2sNA1YmOQEe901m
+ V/ybMtD1HePc1RBAYk3ZOz3QDakxoEBjo5JRmVQKwftTWR7Ptbb9MTkP2
+ 7XKRCs23DK+90nECYB+b4siHfKvmjlC8nLDGvFjVUpsZmMZJi2UXKWwfM
+ qiIlaNJoPNDnqJozU67OX06BRzbnz4Uomb4Hg2tkyR1l/shwfoDy+VP5i
+ pmrfstO2r92Ph3WS+H3dWcvRrHHuwQTqs0PHKPjf4VHVn9RQ9fXtho3O7
+ 3WmoGnsBXtq+LOu2t4sLrVDOjPRQvQoPlS34Eh4yjazBo8QuMGtJfeWRB Q==;
+X-CSE-ConnectionGUID: /xsTTF4CQASwPB6QkASLqA==
+X-CSE-MsgGUID: 8mmijiqTSNirvhUY/uTpew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38565981"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38565981"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:27:50 -0700
-X-CSE-ConnectionGUID: vhL/vzgVQtu7e0PK8+NzXg==
-X-CSE-MsgGUID: PHBPasROTb2PaYBZVX161w==
+ 07 Oct 2024 03:27:52 -0700
+X-CSE-ConnectionGUID: Wb5CBuYrRFCkdFq0Iw0ohQ==
+X-CSE-MsgGUID: zyB2qh7KRHOpcUZDqvVQcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80020310"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80020317"
 Received: from mklonows-mobl1.ger.corp.intel.com (HELO
  dpiatkow-mobl1.mshome.net) ([10.245.246.244])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:27:47 -0700
+ 07 Oct 2024 03:27:49 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -52,10 +52,13 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Jonathan Cavitt <jonathan.cavitt@intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v3 i-g-t 0/2] Fix xe_eudebug_online@interrupt-other test
-Date: Mon,  7 Oct 2024 12:27:32 +0200
-Message-Id: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v3 i-g-t 1/2] lib/igt_sysfs: Introduce engine_class property
+ helpers
+Date: Mon,  7 Oct 2024 12:27:33 +0200
+Message-Id: <20241007102734.5452-2-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
+References: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -74,13 +77,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_eudebug_online@interrupt-other test fails due to preemption
-interfering with it.
-
-In order to fix it, set the preempt_timeout_us for engine_class used in
-this test to maximum for the duration of the test.
-
-This series introduces the following engine_class helpers:
+Introduce the following engine_class helpers:
  - xe_sysfs_engine_class_get_property
    Convenience wrapper to get value of given property for given engine
    class on given gt.
@@ -88,25 +85,119 @@ This series introduces the following engine_class helpers:
    Convenience wrapper to set given property for given engine class on
    given gt to given value.
 
-v2:
-   -Move helpers from lib/xe_eudebug to lib/igt_sysfs
-   -Improve readability in xe_eudebug_online adjust commit
-   -Add justification in message of xe_eudebug_online adjust commit
-v3:
-   -Apply nits from Dominik Grzegorzek
-    (patch "tests/xe_eudebug_online: Adjust interrupt-other test")
-
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+---
+ lib/igt_sysfs.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  5 +++
+ 2 files changed, 90 insertions(+)
 
-Dominik Karol Piątkowski (2):
-  lib/igt_sysfs: Introduce engine_class property helpers
-  tests/xe_eudebug_online: Adjust interrupt-other test
-
- lib/igt_sysfs.c                 | 85 +++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h                 |  5 ++
- tests/intel/xe_eudebug_online.c | 39 ++++++++++++++-
- 3 files changed, 127 insertions(+), 2 deletions(-)
-
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index b7746a1ec..26a3aa31f 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -1414,3 +1414,88 @@ int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_acti
+ 
+ 	return xe_device;
+ }
++
++/**
++ * xe_sysfs_engine_class_get_property
++ * @xe_device: fd of the device
++ * @gt: gt number
++ * @class: engine class
++ * @property: property of engine class to retrieve
++ * @value: pointer for storing read value
++ *
++ * Convenience wrapper to get value of given property for given engine class on given gt.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool xe_sysfs_engine_class_get_property(int xe_device, int gt, uint16_t class, const char *property,
++					uint32_t *value)
++{
++	int engines_fd;
++
++	engines_fd = xe_sysfs_engine_open(xe_device, gt, class);
++
++	if (engines_fd == -1) {
++		igt_debug("Failed to open %s on gt%d.\n", xe_engine_class_to_str(class), gt);
++
++		return false;
++	}
++
++	if (!__igt_sysfs_get_u32(engines_fd, property, value)) {
++		igt_debug("Failed to read %s property of %s on gt%d.\n", property,
++			  xe_engine_class_to_str(class), gt);
++		close(engines_fd);
++
++		return false;
++	}
++
++	close(engines_fd);
++
++	return true;
++}
++
++/**
++ * xe_sysfs_engine_class_set_property
++ * @xe_device: fd of the device
++ * @gt: gt number
++ * @class: engine class
++ * @property: property of engine class to be modified
++ * @new_value: value to be set
++ * @old_value: pointer for storing old value, can be NULL
++ *
++ * Convenience wrapper to set given property for given engine class on given gt to given value.
++ *
++ * Returns: true on success, false on failure.
++ */
++bool xe_sysfs_engine_class_set_property(int xe_device, int gt, uint16_t class, const char *property,
++					uint32_t new_value, uint32_t *old_value)
++{
++	int engines_fd;
++
++	engines_fd = xe_sysfs_engine_open(xe_device, gt, class);
++
++	if (engines_fd == -1) {
++		igt_debug("Failed to open %s on gt%d.\n", xe_engine_class_to_str(class), gt);
++
++		return false;
++	}
++
++	if (old_value && !__igt_sysfs_get_u32(engines_fd, property, old_value)) {
++		igt_debug("Failed to read %s property of %s on gt%d.\n", property,
++			  xe_engine_class_to_str(class), gt);
++		close(engines_fd);
++
++		return false;
++	}
++
++	if (!__igt_sysfs_set_u32(engines_fd, property, new_value)) {
++		igt_debug("Failed to write %s property of %s on gt%d.\n", property,
++			  xe_engine_class_to_str(class), gt);
++		close(engines_fd);
++
++		return false;
++	}
++
++	close(engines_fd);
++
++	return true;
++}
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 0ee253826..852b95053 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -184,4 +184,9 @@ enum xe_sysfs_driver_action {
+ 
+ int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_action action);
+ 
++bool xe_sysfs_engine_class_get_property(int xe_device, int gt, uint16_t class, const char *property,
++					uint32_t *value);
++bool xe_sysfs_engine_class_set_property(int xe_device, int gt, uint16_t class, const char *property,
++					uint32_t new_value, uint32_t *old_value);
++
+ #endif /* __IGT_SYSFS_H__ */
 -- 
 2.34.1
 
