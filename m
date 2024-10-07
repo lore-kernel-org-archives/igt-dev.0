@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42D1CCFB441
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:27:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A852CFB440
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Oct 2024 10:27:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E090E10E1EE;
-	Mon,  7 Oct 2024 10:27:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E09E910E1F6;
+	Mon,  7 Oct 2024 10:27:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Sa0GWks6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SzYayTLR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF95310E1EE
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:27:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B31F610E1F6
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Oct 2024 10:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728296872; x=1759832872;
+ t=1728296874; x=1759832874;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=l1PeHYdxyF2qNLG8m4QlHo0QNjz8VV1aDng7Kxm+UNM=;
- b=Sa0GWks6Ygy86rSeCD0h7IcffRfy1TAkyEElteGUu2sNA1YmOQEe901m
- V/ybMtD1HePc1RBAYk3ZOz3QDakxoEBjo5JRmVQKwftTWR7Ptbb9MTkP2
- 7XKRCs23DK+90nECYB+b4siHfKvmjlC8nLDGvFjVUpsZmMZJi2UXKWwfM
- qiIlaNJoPNDnqJozU67OX06BRzbnz4Uomb4Hg2tkyR1l/shwfoDy+VP5i
- pmrfstO2r92Ph3WS+H3dWcvRrHHuwQTqs0PHKPjf4VHVn9RQ9fXtho3O7
- 3WmoGnsBXtq+LOu2t4sLrVDOjPRQvQoPlS34Eh4yjazBo8QuMGtJfeWRB Q==;
-X-CSE-ConnectionGUID: /xsTTF4CQASwPB6QkASLqA==
-X-CSE-MsgGUID: 8mmijiqTSNirvhUY/uTpew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38565981"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38565981"
+ bh=tZ/38J0BUoQc52VjwD8JJRm9NEhZaMDaGvud6QDDVMU=;
+ b=SzYayTLRJ+mtnhMSuKd2F3wxvXLap1u7NnQ2PyjQFnU1vWTGVBMS19fK
+ E/sGeH84GJ9mf/O6iKkD0VQd6XtreKcvs+ojzBhFoSGvhdfBe8xZt9TYS
+ +x692b2O3jipt+GSTOcoDNcHLESZ9y6S90eofHzOlXDTZ9SP/IBAixmyV
+ ZTH3e+MzBKMSOVQ+L7RBrVF4pc4w4MeZNg9s3Y7APlZDPtMWMnIZlZwAR
+ s1K7pQJSSRTQdu5RBrId3vUaprqgEB8e+s0QzF60zYD6cDy8nK98kQA/T
+ Pr4teEZGfjQq84yeHfLleBJyAuS9g9wEpOkQgB61rBlNPZnnkSS4BxEc3 g==;
+X-CSE-ConnectionGUID: lfZjKiTZRMKsrL7LlmQ7iw==
+X-CSE-MsgGUID: UEh1cbJGSmWCWreoY9N5JQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38565983"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="38565983"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:27:52 -0700
-X-CSE-ConnectionGUID: Wb5CBuYrRFCkdFq0Iw0ohQ==
-X-CSE-MsgGUID: zyB2qh7KRHOpcUZDqvVQcg==
+ 07 Oct 2024 03:27:54 -0700
+X-CSE-ConnectionGUID: 3dh1IyWcQ3GWEGMeRt3IAg==
+X-CSE-MsgGUID: LU2E4VZ+T32SaxOfbH1nmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80020317"
+X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; d="scan'208";a="80020321"
 Received: from mklonows-mobl1.ger.corp.intel.com (HELO
  dpiatkow-mobl1.mshome.net) ([10.245.246.244])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2024 03:27:49 -0700
+ 07 Oct 2024 03:27:51 -0700
 From: =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -52,10 +52,10 @@ Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
  Jonathan Cavitt <jonathan.cavitt@intel.com>,
  =?UTF-8?q?Dominik=20Karol=20Pi=C4=85tkowski?=
  <dominik.karol.piatkowski@intel.com>
-Subject: [PATCH v3 i-g-t 1/2] lib/igt_sysfs: Introduce engine_class property
- helpers
-Date: Mon,  7 Oct 2024 12:27:33 +0200
-Message-Id: <20241007102734.5452-2-dominik.karol.piatkowski@intel.com>
+Subject: [PATCH v3 i-g-t 2/2] tests/xe_eudebug_online: Adjust interrupt-other
+ test
+Date: Mon,  7 Oct 2024 12:27:34 +0200
+Message-Id: <20241007102734.5452-3-dominik.karol.piatkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
 References: <20241007102734.5452-1-dominik.karol.piatkowski@intel.com>
@@ -77,127 +77,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the following engine_class helpers:
- - xe_sysfs_engine_class_get_property
-   Convenience wrapper to get value of given property for given engine
-   class on given gt.
- - xe_sysfs_engine_class_set_property
-   Convenience wrapper to set given property for given engine class on
-   given gt to given value.
+This test fails due to preemption interfering with it.
+
+In order to fix it, set the preempt_timeout_us for engine_class used in
+this test to maximum for the duration of the test.
+
+It is set to maximum inside test_gt_render_or_compute. If set before,
+we would lack engine_class info. If set inside the test function, we
+would need to pass original preempt_timeout_us value from there,
+unnecessarily complicating the declaration of test function.
+
+It is restored in subsequent igt_fixture. This way, a proper cleanup
+can be assured. If restored inside the test function or even
+test_gt_render_or_compute section, any failed assert preceding cleanup
+inside test function would prevent cleanup from happening. We cannot
+allow that.
+
+In order to underline that the subsequent igt_fixture is related to
+this test, both test_gt_render_or_compute and igt_fixture sections
+were put inside igt_subtest_group, hopefully increasing readability.
 
 Signed-off-by: Dominik Karol Piątkowski <dominik.karol.piatkowski@intel.com>
+Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 ---
- lib/igt_sysfs.c | 85 +++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_sysfs.h |  5 +++
- 2 files changed, 90 insertions(+)
+ tests/intel/xe_eudebug_online.c | 39 +++++++++++++++++++++++++++++++--
+ 1 file changed, 37 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index b7746a1ec..26a3aa31f 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -1414,3 +1414,88 @@ int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_acti
- 
- 	return xe_device;
+diff --git a/tests/intel/xe_eudebug_online.c b/tests/intel/xe_eudebug_online.c
+index 68d1b786f..e5aaaea22 100644
+--- a/tests/intel/xe_eudebug_online.c
++++ b/tests/intel/xe_eudebug_online.c
+@@ -16,6 +16,7 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "igt.h"
++#include "igt_sysfs.h"
+ #include "intel_pat.h"
+ #include "intel_mocs.h"
+ #include "gpgpu_shader.h"
+@@ -2201,6 +2202,24 @@ static struct drm_xe_engine_class_instance *pick_compute(int fd, int gt)
+ 	return NULL;
  }
-+
-+/**
-+ * xe_sysfs_engine_class_get_property
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @class: engine class
-+ * @property: property of engine class to retrieve
-+ * @value: pointer for storing read value
-+ *
-+ * Convenience wrapper to get value of given property for given engine class on given gt.
-+ *
-+ * Returns: true on success, false on failure.
-+ */
-+bool xe_sysfs_engine_class_get_property(int xe_device, int gt, uint16_t class, const char *property,
-+					uint32_t *value)
+ 
++static bool set_preempt_timeout_to_max(int fd, uint16_t engine_class, uint32_t *preempt_timeout)
 +{
-+	int engines_fd;
++	uint32_t preempt_timeout_max;
 +
-+	engines_fd = xe_sysfs_engine_open(xe_device, gt, class);
-+
-+	if (engines_fd == -1) {
-+		igt_debug("Failed to open %s on gt%d.\n", xe_engine_class_to_str(class), gt);
-+
++	if (!xe_sysfs_engine_class_get_property(fd, 0, engine_class, "preempt_timeout_max",
++						&preempt_timeout_max))
 +		return false;
-+	}
 +
-+	if (!__igt_sysfs_get_u32(engines_fd, property, value)) {
-+		igt_debug("Failed to read %s property of %s on gt%d.\n", property,
-+			  xe_engine_class_to_str(class), gt);
-+		close(engines_fd);
-+
-+		return false;
-+	}
-+
-+	close(engines_fd);
-+
-+	return true;
++	return xe_sysfs_engine_class_set_property(fd, 0, engine_class, "preempt_timeout_us",
++						  preempt_timeout_max, preempt_timeout);
 +}
 +
-+/**
-+ * xe_sysfs_engine_class_set_property
-+ * @xe_device: fd of the device
-+ * @gt: gt number
-+ * @class: engine class
-+ * @property: property of engine class to be modified
-+ * @new_value: value to be set
-+ * @old_value: pointer for storing old value, can be NULL
-+ *
-+ * Convenience wrapper to set given property for given engine class on given gt to given value.
-+ *
-+ * Returns: true on success, false on failure.
-+ */
-+bool xe_sysfs_engine_class_set_property(int xe_device, int gt, uint16_t class, const char *property,
-+					uint32_t new_value, uint32_t *old_value)
++static bool restore_preempt_timeout(int fd, uint16_t engine_class, uint32_t preempt_timeout)
 +{
-+	int engines_fd;
-+
-+	engines_fd = xe_sysfs_engine_open(xe_device, gt, class);
-+
-+	if (engines_fd == -1) {
-+		igt_debug("Failed to open %s on gt%d.\n", xe_engine_class_to_str(class), gt);
-+
-+		return false;
-+	}
-+
-+	if (old_value && !__igt_sysfs_get_u32(engines_fd, property, old_value)) {
-+		igt_debug("Failed to read %s property of %s on gt%d.\n", property,
-+			  xe_engine_class_to_str(class), gt);
-+		close(engines_fd);
-+
-+		return false;
-+	}
-+
-+	if (!__igt_sysfs_set_u32(engines_fd, property, new_value)) {
-+		igt_debug("Failed to write %s property of %s on gt%d.\n", property,
-+			  xe_engine_class_to_str(class), gt);
-+		close(engines_fd);
-+
-+		return false;
-+	}
-+
-+	close(engines_fd);
-+
-+	return true;
++	return xe_sysfs_engine_class_set_property(fd, 0, engine_class, "preempt_timeout_us",
++						  preempt_timeout, NULL);
 +}
-diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
-index 0ee253826..852b95053 100644
---- a/lib/igt_sysfs.h
-+++ b/lib/igt_sysfs.h
-@@ -184,4 +184,9 @@ enum xe_sysfs_driver_action {
- 
- int xe_sysfs_driver_do(int xe_device, char pci_slot[], enum xe_sysfs_driver_action action);
- 
-+bool xe_sysfs_engine_class_get_property(int xe_device, int gt, uint16_t class, const char *property,
-+					uint32_t *value);
-+bool xe_sysfs_engine_class_set_property(int xe_device, int gt, uint16_t class, const char *property,
-+					uint32_t new_value, uint32_t *old_value);
 +
- #endif /* __IGT_SYSFS_H__ */
+ #define test_gt_render_or_compute(t, fd, __hwe) \
+ 	igt_subtest_with_dynamic(t) \
+ 		for (int gt = 0; (__hwe = pick_compute(fd, gt)); gt++) \
+@@ -2212,6 +2231,8 @@ igt_main
+ 	struct drm_xe_engine_class_instance *hwe;
+ 	bool was_enabled;
+ 	int fd;
++	uint16_t engine_class = 0xFFFF;
++	uint32_t preempt_timeout = 0xFFFFFFFF;
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -2247,8 +2268,22 @@ igt_main
+ 	test_gt_render_or_compute("interrupt-other-debuggable", fd, hwe)
+ 		test_interrupt_other(fd, hwe, SHADER_LOOP);
+ 
+-	test_gt_render_or_compute("interrupt-other", fd, hwe)
+-		test_interrupt_other(fd, hwe, SHADER_LOOP | DISABLE_DEBUG_MODE);
++	igt_subtest_group {
++		test_gt_render_or_compute("interrupt-other", fd, hwe) {
++			engine_class = hwe->engine_class;
++
++			igt_skip_on(!set_preempt_timeout_to_max(fd, engine_class,
++								&preempt_timeout));
++
++			test_interrupt_other(fd, hwe, SHADER_LOOP | DISABLE_DEBUG_MODE);
++		}
++
++		igt_fixture {
++			if ((uint16_t)~engine_class && ~preempt_timeout)
++				if (!restore_preempt_timeout(fd, engine_class, preempt_timeout))
++					igt_warn("Cleanup of preempt_timeout failed!\n");
++		}
++	}
+ 
+ 	test_gt_render_or_compute("interrupt-all-set-breakpoint", fd, hwe)
+ 		test_interrupt_all(fd, hwe, SHADER_LOOP | TRIGGER_RESUME_SET_BP);
 -- 
 2.34.1
 
