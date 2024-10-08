@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C094ACF0427
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Oct 2024 21:45:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D620CF0427
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Oct 2024 21:49:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 757D010E5F6;
-	Tue,  8 Oct 2024 21:45:39 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 063B010E5F4;
- Tue,  8 Oct 2024 21:45:39 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5890360773336852519=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F24610E5F6;
+	Tue,  8 Oct 2024 21:49:49 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SCvDbAhq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A178C10E5F6
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Oct 2024 21:49:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728424188; x=1759960188;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=VayWLnduf5y4rgFxN1CXhGRkNouqj2yWmxCz+tXnXY4=;
+ b=SCvDbAhqU8qvyAk9AdQEzcwKQd/jutDQu6hh6HD+y0b4d+SUkAoPnPkJ
+ muTLYGYOC8r6D3xkJBMuEo7eCXAUYIGNfR059eDVvq6FevfMCtfCM5KH9
+ VLkEWfHlksNwtMPlEknSq0nhUFyFZde8ETeOIKD3790z3A8n4QqK/ZUWc
+ GCspRB8Ug66CnZWjkaqSPWePCZeYQ3jwgsOV9/WgRGjQarXlCND59Erm6
+ cQBr3ViSi10IbTP22JTVwLphSAhOrBZFwFRkvbpj8+stBev3LdhVIS93u
+ ttpVJI1OVlXH0zJl19yoFKRRXe6qf5vJWXIuzWjGVf02FPeuyv6S6kGEh g==;
+X-CSE-ConnectionGUID: eGXGvOOOSq68xWdiOU+UTg==
+X-CSE-MsgGUID: Pnr2r74MTiSDzgZpzn33Zg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27832727"
+X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; d="scan'208";a="27832727"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 14:49:47 -0700
+X-CSE-ConnectionGUID: B7gizImwQhiJRR2ZuRWZhA==
+X-CSE-MsgGUID: YO+40Be2TduagnyoT5RkRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; d="scan'208";a="76114556"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 08 Oct 2024 14:49:45 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Wed, 09 Oct 2024 00:49:44 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH i-g-t] tools/intel_gpu_top: Fix intel_gpu_top for pre-snb
+Date: Wed,  9 Oct 2024 00:49:44 +0300
+Message-ID: <20241008214944.27549-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Ftlb=3A_Print_?=
- =?utf-8?q?tlb_inval_counts_on_failure?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 08 Oct 2024 21:45:39 -0000
-Message-ID: <172842393901.1205953.12015906717903031254@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241008202146.993745-1-nirmoy.das@intel.com>
-In-Reply-To: <20241008202146.993745-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,125 +63,39 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5890360773336852519==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+__I915_PMU_REQUESTED_FREQUENCY is not available on pre-snb (*)
+so checking for it breaks intel_gpu_top completely for those
+machines. Check __I915_PMU_INTERRUPTS instead, which I believe
+is available on everything. Another option would be
+__I915_PMU_SOFTWARE_GT_AWAKE_TIME.
 
-Series: tests/intel/xe_tlb: Print tlb inval counts on failure
-URL   : https://patchwork.freedesktop.org/series/139724/
-State : success
+* we do have frequency information on ilk, but we've not
+  reverse engineered the hw unit<->Hz conversion factor so
+  exposing it as is might be a bit confusing...
 
-== Summary ==
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ tools/intel_gpu_top.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CI Bug Log - changes from XEIGT_8061_BAT -> XEIGTPW_11887_BAT
-====================================================
+diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+index 9b65ae4eb941..a608b894d3de 100644
+--- a/tools/intel_gpu_top.c
++++ b/tools/intel_gpu_top.c
+@@ -563,7 +563,7 @@ static int get_num_gts(uint64_t type)
+ 
+ 	errno = 0;
+ 	for (cnt = 0; cnt < MAX_GTS; cnt++) {
+-		fd = igt_perf_open(type, __I915_PMU_REQUESTED_FREQUENCY(cnt));
++		fd = igt_perf_open(type, __I915_PMU_INTERRUPTS(cnt));
+ 		if (fd < 0)
+ 			break;
+ 
+-- 
+2.45.2
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11887_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#1861])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8061/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11887/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-
-
-Build changes
--------------
-
-  * IGT: IGT_8061 -> IGTPW_11887
-
-  IGTPW_11887: 11887
-  IGT_8061: 8061
-  xe-2026-8752b50cc6ea4e90f3caa68dd1cc169112ac4b34: 8752b50cc6ea4e90f3caa68dd1cc169112ac4b34
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11887/index.html
-
---===============5890360773336852519==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_tlb: Print tlb inval counts on failure</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139724/">https://patchwork.freedesktop.org/series/139724/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11887/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11887/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8061_BAT -&gt; XEIGTPW_11887_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11887_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8061/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11887/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8061 -&gt; IGTPW_11887</li>
-</ul>
-<p>IGTPW_11887: 11887<br />
-  IGT_8061: 8061<br />
-  xe-2026-8752b50cc6ea4e90f3caa68dd1cc169112ac4b34: 8752b50cc6ea4e90f3caa68dd1cc169112ac4b34</p>
-
-</body>
-</html>
-
---===============5890360773336852519==--
