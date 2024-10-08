@@ -4,58 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 425F3CF0423
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Oct 2024 21:00:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5ED6CF0427
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Oct 2024 21:04:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED07B10E08E;
-	Tue,  8 Oct 2024 21:00:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 788E810E08E;
+	Tue,  8 Oct 2024 21:04:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aoyXbxGW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cNHvnowG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2C22E10E08E
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Oct 2024 21:00:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3640010E08E
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Oct 2024 21:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728421250; x=1759957250;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=Jg4OvFMXp6BeJQ5hmt5rnxpJCmRYcbFGO0/6KeaJCjw=;
- b=aoyXbxGWNHR1Ohed8ZxjwANxk0jyKFoTXRHM7eoNzwT/VHt5RuZB7iQB
- jXRFjaYLFZZ37EMoXDM70cp1UT0p2yZdTlx/2tJkhhh/AAKGbVsbaplse
- ZDyTqwi7WJ84znUBtGG0hoBaKJlJA8JSuyA0CI/l+tUJ41bjvsnSeAh7w
- TdmnWLYuoZjbeSooo7qdtgKT3YOsMybIZiv+IuUYzFKZRtTcObVuQX1fV
- XyJSRnA/Pc/LsUeLhxX/yMiyeeOpIpEutkHslASjwI1TTaTcRNu0GfT/0
- 0iMfh9TEROgL+jGge9EUs2fXLR2yASvjWiKPtPH78ne1CNruYm7UJQ7Fd w==;
-X-CSE-ConnectionGUID: Lb4SSE9FSw239kCNfK8zvA==
-X-CSE-MsgGUID: AI9Ndr5pRy+9pBproCscvA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="31557134"
-X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; d="scan'208";a="31557134"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2024 14:00:50 -0700
-X-CSE-ConnectionGUID: Xx4aP9F9RfWxClY9uF2h9g==
-X-CSE-MsgGUID: gfiVNIBRT0q9+Cqly43Oqw==
+ t=1728421469; x=1759957469;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tNSJhXq5Jk1JqOE2SvVq64xpr/R65ZXngd0MG76j7lY=;
+ b=cNHvnowGYUDoyDIiRWzDCb5u9j4TQMAwygCG6M/ggy2MWQkfsDoIFLvU
+ T0Wnp0cm7q7eSwMq1zd3krw5dwBGXMmFXz4coTrYAUn7pR8xlBA6N2BWZ
+ arIo+fvMCgXtUEv/fe/I8nhyJNo2aeisy8CxN9uRxrTj8PSqclBu40l2N
+ v4HHCD511rPawnPRb78bX4MwAxsUVqLuNUDt4BYDcYxnLWpbfyIbHdtct
+ O/RSEt7ZwLH4z/Wgfbb7V1IYgwwP+v3kCl8ywjXQyTGS4uFKsUjJp5CZF
+ JaYmUXLmpST/+TXfVO4MNf5dwaLWRzPIV+uigoDrZwtihbdqCTvmK5sME w==;
+X-CSE-ConnectionGUID: DkcZehlNRoW7ib2439IBxA==
+X-CSE-MsgGUID: RG4bJbgHS8CHfTMarChNJQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27116234"
+X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; d="scan'208";a="27116234"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 14:04:29 -0700
+X-CSE-ConnectionGUID: ZY1KEByHRSm2tvKEd/yNSQ==
+X-CSE-MsgGUID: SD3HznSnT7aoFWe1fcYJjA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; d="scan'208";a="99335575"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.197.87])
- ([10.245.197.87])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2024 14:00:48 -0700
-Message-ID: <00528e0c-355c-47bb-9833-177511588c12@linux.intel.com>
-Date: Tue, 8 Oct 2024 23:00:44 +0200
+X-IronPort-AV: E=Sophos;i="6.11,188,1725346800"; d="scan'208";a="76095415"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 14:04:28 -0700
+From: Nirmoy Das <nirmoy.das@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>, kamil.konieczny@linux.intel.com,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_tlb: Print tlb inval counts on failure
+Date: Tue,  8 Oct 2024 22:21:46 +0200
+Message-ID: <20241008202146.993745-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3] tests/intel/xe_tlb: Add test to check TLB
- invalidation
-To: Matthew Auld <matthew.auld@intel.com>, sai.gowtham.ch@intel.com,
- igt-dev@lists.freedesktop.org, nirmoy.das@intel.com
-References: <20240930162609.2089507-1-sai.gowtham.ch@intel.com>
- <276fc42d-af3f-41ab-94d2-6f3a34f4856a@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <276fc42d-af3f-41ab-94d2-6f3a34f4856a@intel.com>
-Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
+ 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,254 +68,28 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Print tlb inval counts on failure with igt_assert_lt_u64()
 
-On 10/3/2024 1:03 PM, Matthew Auld wrote:
-> On 30/09/2024 17:26, sai.gowtham.ch@intel.com wrote:
->> From: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->>
->> Test validates TLB invalidation by binding different buffer objects
->> with the same vma and submitting workload simultaneously, Ideally
->> expecting gpu to handle pages by invalidating and avoding page faults.
->>
->> v2: Validating tlb_invalidation counts with pre and post increment counter
->>      values, rather complete stats.
->>
->> v3: Move xe_tlb_count to lib making it generic to all stat entries. which returns
->>      the counter of a given stat.
->>
->> Cc: Nirmoy Das <nirmoy.das@intel.com>
->> Cc: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
->> Signed-off-by: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->> ---
->>   lib/xe/xe_gt.c       |  25 ++++++++
->>   lib/xe/xe_gt.h       |   1 +
->>   tests/intel/xe_tlb.c | 148 +++++++++++++++++++++++++++++++++++++++++++
->>   tests/meson.build    |   1 +
->>   4 files changed, 175 insertions(+)
->>   create mode 100644 tests/intel/xe_tlb.c
->>
->> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
->> index 36e8fde36..dfc60e2ff 100644
->> --- a/lib/xe/xe_gt.c
->> +++ b/lib/xe/xe_gt.c
->> @@ -141,3 +141,28 @@ void xe_post_hang_ring(int fd, igt_hang_t arg)
->>       xe_vm_destroy(fd, arg.spin->vm);
->>   }
->>   +/**
->> + * xe_tlb_count:
->> + * @fd: open xe drm file descriptor
->> + * @gt: gt_id
->> + *
->> + * This function returns the counter for a given stat.
->> + */
->> +int xe_tlb_count(int fd, int gt, const char *stat)
->> +{
->> +    FILE *f;
->> +    char tlb_path[4096];
->> +    char path[256];
->> +    int count;
->> +
->> +    sprintf(path, "/sys/kernel/debug/dri/0/gt%d/stats", gt);
->> +    f = fopen(path, "r");
->> +
->> +    while (fgets(tlb_path, sizeof(tlb_path), f)) {
->> +        if (strstr(tlb_path, stat) != NULL) {
->> +            sscanf(tlb_path, "%*[^:]: %d", &count);
->> +            break;
->> +        }
->> +    }
->> +    return count;
->> +}
->> diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
->> index 6fa05d6a9..7910587ac 100644
->> --- a/lib/xe/xe_gt.h
->> +++ b/lib/xe/xe_gt.h
->> @@ -13,3 +13,4 @@ void xe_force_gt_reset_all(int fd);
->>   igt_hang_t xe_hang_ring(int fd, uint64_t ahnd, uint32_t ctx, int ring,
->>                   unsigned int flags);
->>   void xe_post_hang_ring(int fd, igt_hang_t arg);
->> +int xe_tlb_count(int fd, int gt, const char *stat);
->> diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
->> new file mode 100644
->> index 000000000..399384f5b
->> --- /dev/null
->> +++ b/tests/intel/xe_tlb.c
->> @@ -0,0 +1,148 @@
->> +/* SPDX-License-Identifier: MIT */
->> +/*
->> +* Copyright © 2024 Intel Corporation
->> +*
->> +* Authors:
->> +*    Sai Gowtham Ch <sai.gowtham.ch@intel.com>
->> +*/
->> +#include "igt.h"
->> +#include "lib/igt_syncobj.h"
->> +#include "xe/xe_gt.c"
->> +#include "xe/xe_ioctl.h"
->> +#include "xe/xe_query.h"
->> +#include "xe_drm.h"
->> +#include "igt_debugfs.h"
->> +
->> +/**
->> + * TEST: Check Translation Lookaside Buffer Invalidation.
->> + * Category: Software building block
->> + * Mega feature: General Core features
->> + * Sub-category: CMD submission
->> + * Functionality: TLB invalidate
->> + * Test category: functionality test
->> + */
->> +struct data {
->> +    uint32_t batch[16];
->> +    uint32_t data;
->> +    uint64_t addr;
->> +};
->> +
->> +static void store_dword_batch(struct data *data, uint64_t addr, int value)
->> +{
->> +    int b;
->> +    uint64_t batch_offset = (char *)&(data->batch) - (char *)data;
->> +    uint64_t batch_addr = addr + batch_offset;
->> +    uint64_t sdi_offset = (char *)&(data->data) - (char *)data;
->> +    uint64_t sdi_addr = addr + sdi_offset;
->> +
->> +    b = 0;
->> +    data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
->> +    data->batch[b++] = sdi_addr;
->> +    data->batch[b++] = sdi_addr >> 32;
->> +    data->batch[b++] = value;
->> +    data->batch[b++] = MI_BATCH_BUFFER_END;
->> +    igt_assert(b <= ARRAY_SIZE(data->batch));
->> +
->> +    data->addr = batch_addr;
->> +}
->> +
->> +/**
->> + * SUBTEST: basic-tlb
->> + * Description: Check Translation Lookaside Buffer Invalidation.
->> + */
->> +static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
->> +{
->> +    struct drm_xe_sync sync[2] = {
->> +        { .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
->> +        { .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, }
->> +    };
->> +    struct drm_xe_exec exec = {
->> +        .num_batch_buffer = 1,
->> +        .num_syncs = 2,
->> +        .syncs = to_user_pointer(&sync),
->> +    };
->> +    struct data *data1;
->> +    struct data *data2;
->> +    uint32_t vm;
->> +    uint32_t exec_queue;
->> +    uint32_t bind_engine;
->> +    uint32_t syncobj;
->> +    size_t bo_size;
->> +    int value1 = 0x123456;
->> +    int value2 = 0x123465;
->> +    uint64_t addr = 0x100000;
->> +    uint32_t bo1, bo2;
->> +    int tlb_pre, tlb_pos;
->> +    const char *stat = "tlb_inval_count";
->> +
->> +    syncobj = syncobj_create(fd, 0);
->> +    sync[0].handle = syncobj_create(fd, 0);
->> +    sync[1].handle = syncobj;
->> +
->> +    vm = xe_vm_create(fd, 0, 0);
->> +    bo_size = sizeof(*data1);
->> +    bo_size = xe_bb_size(fd, bo_size);
->> +    bo1 = xe_bo_create(fd, vm, bo_size,
->> +                   vram_if_possible(fd, eci->gt_id),
->> +                   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +    bo2 = xe_bo_create(fd, vm, bo_size,
->> +                   vram_if_possible(fd, eci->gt_id),
->> +                   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
->> +
->> +    tlb_pre = xe_tlb_count(fd, eci->gt_id, stat);
->> +    exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
->> +    bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
->> +    xe_vm_bind_async(fd, vm, bind_engine, bo1, 0, addr, bo_size, sync, 1);
->> +    data1 = xe_bo_map(fd, bo1, bo_size);
->> +
->> +    store_dword_batch(data1, addr, value1);
->> +    exec.exec_queue_id = exec_queue;
->> +    exec.address = data1->addr;
->> +    sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->> +    sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->> +    xe_exec(fd, &exec);
->> +    igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
->> +    xe_vm_bind_async(fd, vm, bind_engine, bo2, 0, addr, bo_size, sync, 1);
->> +    data2 = xe_bo_map(fd, bo2, bo_size);
->> +
->> +    store_dword_batch(data2, addr, value2);
->> +    exec.exec_queue_id = exec_queue;
->> +    exec.address = data2->addr;
->> +    sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
->> +    sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
->> +    xe_exec(fd, &exec);
->> +    igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
->> +
->> +    tlb_pos = xe_tlb_count(fd, eci->gt_id, stat);
->> +    igt_assert_eq(data1->data, value1);
->> +    igt_assert_eq(data2->data, value2);
->> +    igt_assert(tlb_pos > tlb_pre);
->
-> Can't this overflow? 
+Cc: kamil.konieczny@linux.intel.com
+Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+---
+ tests/intel/xe_tlb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+index 8104e45d8..15d89931c 100644
+--- a/tests/intel/xe_tlb.c
++++ b/tests/intel/xe_tlb.c
+@@ -116,7 +116,7 @@ static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
+ 	tlb_pos = xe_gt_stats_get_count(fd, eci->gt_id, stat);
+ 	igt_assert_eq(data1->data, value1);
+ 	igt_assert_eq(data2->data, value2);
+-	igt_assert(tlb_pos > tlb_pre);
++	igt_assert_lt_u64(tlb_pre, tlb_pos);
+ 
+ 	syncobj_destroy(fd, sync[0].handle);
+ 	syncobj_destroy(fd, syncobj);
+-- 
+2.46.0
 
-Good point, yes it can.
-
-> Should we not check for that? See here:
-> https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2922.
->
-> It is possible kmd is missing an invalidation, but seems pretty unlikely? Also strange that is only triggers on dg2.
-
-Yes, likely overflow here. I was hoping igt would print values of tlb_pos and  tlb_pre on failure that should help.
-
-
-Regards,
-
-Nirmoy
-
->
->> +
->> +    syncobj_destroy(fd, sync[0].handle);
->> +    syncobj_destroy(fd, syncobj);
->> +    munmap(data1, bo_size);
->> +    munmap(data2, bo_size);
->> +    gem_close(fd, bo1);
->> +    gem_close(fd, bo2);
->> +    xe_exec_queue_destroy(fd, exec_queue);
->> +    xe_vm_destroy(fd, vm);
->> +}
->> +
->> +igt_main
->> +{
->> +    int fd;
->> +    struct drm_xe_engine *engine;
->> +
->> +    igt_fixture {
->> +        fd = drm_open_driver(DRIVER_XE);
->> +    }
->> +
->> +    igt_subtest("basic-tlb") {
->> +        engine = xe_engine(fd, 0);
->> +        tlb_invalidation(fd, &engine->instance);
->> +    }
->> +
->> +    igt_fixture {
->> +        drm_close_driver(fd);
->> +    }
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 0782d3cc7..b0a490ccb 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -317,6 +317,7 @@ intel_xe_progs = [
->>       'xe_sysfs_preempt_timeout',
->>       'xe_sysfs_scheduler',
->>           'xe_sysfs_timeslice_duration',
->> +        'xe_tlb',
->>   ]
->>     intel_xe_eudebug_progs = [
