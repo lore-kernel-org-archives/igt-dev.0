@@ -4,28 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70F93CEF148
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Oct 2024 10:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 392F2CEF14D
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Oct 2024 10:48:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C72A10E1F5;
-	Tue,  8 Oct 2024 10:30:12 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C893D10E1F5;
- Tue,  8 Oct 2024 10:30:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5967337462383880651=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E1DE510E160;
+	Tue,  8 Oct 2024 10:48:08 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oAxadWDk";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72C5F10E160
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Oct 2024 10:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728384488; x=1759920488;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=TLRIlkQWB6sIjbj5rkWdiCInRj90SgiYxIKJnllHQ/I=;
+ b=oAxadWDkf2hW7tMMI9wBTdPRE4mTMDuR9vN5CNKAEASl7agW37GPDIlN
+ 2+H6lJadqK/duYKpSf1TKJ9S5kP+Hbw3b+YkeE0cZ6a+DJA9cvroVA+Xl
+ nasK8zuMF7zpdJvJynBu5djyqT+9Uas1a81QcMQqJ4x88FLNpiuZlPNVU
+ OnTDDJl2Z15rV6UuA21jGjYXF4oNplD4tOrkm45IOOvAMmL1u7Undifv1
+ 6dvBWK0+emGKSH/KRLmxeU21eywSstWi+I+RGEyYn3SpbH0Xk01Gdo/Vs
+ SJvFcLHOCguhMDktMNeJD12QHPEwInMY6iD7wPLbYwvBJA9qqUIf6YDRg A==;
+X-CSE-ConnectionGUID: JpgazPoHTzu6HLJFWjkF+g==
+X-CSE-MsgGUID: YMdCvjqsS42C3pmvaDRMuA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11218"; a="38167776"
+X-IronPort-AV: E=Sophos;i="6.11,186,1725346800"; d="scan'208";a="38167776"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 03:48:03 -0700
+X-CSE-ConnectionGUID: 0a3H770rS+2Tu4rCIqKNFg==
+X-CSE-MsgGUID: wrQgw9+cSjGdH9BotxulfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,186,1725346800"; d="scan'208";a="75356407"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Oct 2024 03:48:01 -0700
+Date: Tue, 8 Oct 2024 12:47:45 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
+ Emil Velikov <emil.l.velikov@gmail.com>,
+ Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+ Kamil Konieczny <kamil.konieczny@intel.com>
+Subject: Re: [i-g-t,v3] tests/core_setmaster: simplify device handling
+Message-ID: <20241008104745.tho5573nludvs6za@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Bommu Krishnaiah <krishnaiah.bommu@intel.com>,
+ Emil Velikov <emil.l.velikov@gmail.com>,
+ Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+ Kamil Konieczny <kamil.konieczny@intel.com>
+References: <20241004165745.16799-1-krishnaiah.bommu@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/xe=5Feudebug=5Fonline?=
- =?utf-8?q?=3A_Remove_redundant_space?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 08 Oct 2024 10:30:10 -0000
-Message-ID: <172838341081.1203013.913025153499090053@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241008090727.4057-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20241008090727.4057-1-dominik.karol.piatkowski@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241004165745.16799-1-krishnaiah.bommu@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,220 +74,161 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5967337462383880651==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Bommu,
+On 2024-10-04 at 22:27:45 +0530, Bommu Krishnaiah wrote:
+> Refactored test setup to dynamically determine the correct drm card
+> for testing. Instead of changing permissions for all cards,
+> change only one that will be tested.
+> 
+> Problem Description:
+> The test fails after running the `core_hotunplug@hot*` subtest, where
+> Card0 is populated as card1, This leads to a failure in the subsequent
+> `master-drop-set-user` test.
+> 
+> Command sequence for reproducing the issue:
+> - Check available cards: `ls /dev/dri/`
+>         - Output: by-path  card0  renderD128
+> - Run the test: `# ./core_hotunplug --r hotrebind-lateclose`
+> - Check again: ‘ls /dev/dri/’
+>         - Output after core_hotunplug : by-path  card1  renderD129
+> - Run the test: `# ./core_setmaster --r master-drop-set-user`
+>         - Output: gta@core_setmaster@master-drop-set-user failure
+> 
+> This failures on both XE and i915 for above sequence.
+> 
+> v2: corrected the e-mail address
+> 
 
-== Series Details ==
-
-Series: tests/xe_eudebug_online: Remove redundant space
-URL   : https://patchwork.freedesktop.org/series/139686/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8056 -> IGTPW_11886
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/index.html
-
-Participating hosts (42 -> 42)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11886 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-mtlp-8:         [PASS][1] -> [ABORT][2] ([i915#12216]) +1 other test abort
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-mtlp-8/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-mtlp-8/igt@i915_selftest@live.html
-    - bat-arls-2:         [PASS][3] -> [ABORT][4] ([i915#12061] / [i915#12133])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arls-2/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arls-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - bat-arlh-2:         NOTRUN -> [INCOMPLETE][5] ([i915#12133])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-2:         [PASS][6] -> [ABORT][7] ([i915#12061])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arls-2/igt@i915_selftest@live@workarounds.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arls-2/igt@i915_selftest@live@workarounds.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - {bat-arlh-3}:       [ABORT][8] ([i915#12061] / [i915#12133]) -> [PASS][9]
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-3/igt@i915_selftest@live.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-3/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arlh-3}:       [ABORT][10] ([i915#12061]) -> [PASS][11]
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arlh-2:         [ABORT][12] ([i915#12061]) -> [PASS][13]
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-2/igt@i915_selftest@live@workarounds.html
-    - bat-mtlp-6:         [ABORT][14] ([i915#12216]) -> [PASS][15] +1 other test pass
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-
-  
-#### Warnings ####
-
-  * igt@i915_selftest@live:
-    - bat-arlh-2:         [ABORT][16] ([i915#12133]) -> [INCOMPLETE][17] ([i915#10341] / [i915#12133])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-2/igt@i915_selftest@live.html
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-2/igt@i915_selftest@live.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216
+LGTM,
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8056 -> IGTPW_11886
-  * Linux: CI_DRM_15489 -> CI_DRM_15490
-
-  CI-20190529: 20190529
-  CI_DRM_15489: fc6867c683c18ec3ac31682fd37d418d8a8ebde1 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15490: 131a5dd267541faa13894b97d44af39b257fc887 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11886: 11886
-  IGT_8056: a327720fd57ba9f17ed8f15c6453cd2234f9398d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/index.html
-
---===============5967337462383880651==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_eudebug_online: Remove redundant space</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139686/">https://patchwork.freedesktop.org/series/139686/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8056 -&gt; IGTPW_11886</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/index.html</p>
-<h2>Participating hosts (42 -&gt; 42)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11886 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-mtlp-8:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-mtlp-8/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-mtlp-8/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216">i915#12216</a>) +1 other test abort</li>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arls-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arls-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-2/igt@i915_selftest@live@gt_heartbeat.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arls-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arls-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-3/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-3/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216">i915#12216</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8056/bat-arlh-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11886/bat-arlh-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8056 -&gt; IGTPW_11886</li>
-<li>Linux: CI_DRM_15489 -&gt; CI_DRM_15490</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15489: fc6867c683c18ec3ac31682fd37d418d8a8ebde1 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15490: 131a5dd267541faa13894b97d44af39b257fc887 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11886: 11886<br />
-  IGT_8056: a327720fd57ba9f17ed8f15c6453cd2234f9398d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5967337462383880651==--
+> Signed-off-by: Bommu Krishnaiah <krishnaiah.bommu@intel.com>
+> Cc: Emil Velikov <emil.l.velikov@gmail.com>
+> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+> Cc: Kamil Konieczny <kamil.konieczny@intel.com>
+> ---
+>  tests/core_setmaster.c | 82 ++++++++++++++++++++++++------------------
+>  1 file changed, 47 insertions(+), 35 deletions(-)
+> 
+> diff --git a/tests/core_setmaster.c b/tests/core_setmaster.c
+> index 9c2083f66..fe9993515 100644
+> --- a/tests/core_setmaster.c
+> +++ b/tests/core_setmaster.c
+> @@ -107,40 +107,31 @@ static void check_drop_set(void)
+>  	drm_close_driver(master);
+>  }
+>  
+> -static unsigned tweak_perm(uint8_t *saved_perm, unsigned max_perm, bool save)
+> +static void tweak_perm(uint8_t *saved_perm, char *path, bool save)
+>  {
+> -	char path[256];
+>  	struct stat st;
+> -	unsigned i;
+> -
+> -	for (i = 0; i < max_perm; i++) {
+> -		snprintf(path, sizeof(path), "/dev/dri/card%u", i);
+> -
+> -		/* Existing userspace assumes there's no gaps, do the same. */
+> -		if (stat(path, &st) != 0)
+> -			break;
+> -
+> -		if (save) {
+> -			/* Save and toggle */
+> -			saved_perm[i] = st.st_mode & (S_IROTH | S_IWOTH);
+> -			st.st_mode |= S_IROTH | S_IWOTH;
+> -		} else {
+> -			/* Clear and restore */
+> -			st.st_mode &= ~(S_IROTH | S_IWOTH);
+> -			st.st_mode |= saved_perm[i];
+> -		}
+> -
+> -		/* There's only one way for chmod to fail - race vs rmmod.
+> -		 * In that case, do _not_ error/skip, since:
+> -		 * - we need to restore the [correct] permissions
+> -		 * - __drm_open_driver() can open another device, aka the
+> -		 * failure may be irrelevant.
+> -		 */
+> -		chmod(path, st.st_mode);
+> +	int ret;
+> +
+> +	if (path[0] == 0)
+> +		return;
+> +
+> +	ret = stat(path, &st);
+> +	igt_assert_f(!ret, "stat failed with %d path=%s\n", errno, path);
+> +
+> +	if (save) {
+> +		/* Save and toggle */
+> +		*saved_perm = st.st_mode & (S_IROTH | S_IWOTH);
+> +		st.st_mode |= S_IROTH | S_IWOTH;
+> +	} else {
+> +		/* Clear and restore */
+> +		st.st_mode &= ~(S_IROTH | S_IWOTH);
+> +		st.st_mode |= *saved_perm;
+>  	}
+> -	return i;
+> -}
+>  
+> +	/* There's only one way for chmod to fail - race vs rmmod. */
+> +	ret = chmod(path, st.st_mode);
+> +	igt_assert_f(!ret, "chmod failed with %d path=%s\n", errno, path);
+> +}
+>  
+>  igt_main
+>  {
+> @@ -160,8 +151,8 @@ igt_main
+>  
+>  
+>  	igt_subtest_group {
+> -		uint8_t saved_perm[255];
+> -		unsigned num;
+> +		uint8_t saved_perm;
+> +		char buf[255];
+>  
+>  		/* Upon dropping root we end up as random user, which
+>  		 * a) is not in the video group, and
+> @@ -176,8 +167,29 @@ igt_main
+>  		 * restored on skip or failure.
+>  		 */
+>  		igt_fixture {
+> -			num = tweak_perm(saved_perm, ARRAY_SIZE(saved_perm),
+> -					 true);
+> +			char path[255];
+> +			int len;
+> +			int fd;
+> +
+> +			memset(buf, 0, sizeof(buf));
+> +			saved_perm = 0;
+> +
+> +			fd = __drm_open_driver(DRIVER_ANY);
+> +			igt_assert_fd(fd);
+> +
+> +			snprintf(path, sizeof(path), "/proc/self/fd/%d", fd);
+> +
+> +			len = readlink(path, buf, sizeof(buf) - 1);
+> +			igt_assert_f(len > 0, "readlink failed with %d path=%s\n", errno, path);
+> +
+> +			buf[len] = '\0';
+> +			if (!(strstr(buf, "/dev/dri/card") == buf ||
+> +					strstr(buf, "/dev/dri/renderD") == buf))
+> +				igt_assert_f(0, "Not a card nor render, path=%s\n", buf);
+> +
+> +			igt_assert_eq(__drm_close_driver(fd), 0);
+> +
+> +			tweak_perm(&saved_perm, buf, true);
+>  		}
+>  
+>  		igt_describe("Ensure first normal user can Set/DropMaster");
+> @@ -191,7 +203,7 @@ igt_main
+>  
+>  		/* Restore the original permissions */
+>  		igt_fixture {
+> -			tweak_perm(saved_perm, num, false);
+> +			tweak_perm(&saved_perm, buf, false);
+>  		}
+>  	}
+>  
