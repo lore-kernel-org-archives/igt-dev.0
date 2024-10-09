@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4888CCEDD9E
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 14:46:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A765CEE330
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 16:36:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DDB6F10E762;
-	Wed,  9 Oct 2024 14:46:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F1E2610E781;
+	Wed,  9 Oct 2024 16:36:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lgn3fzFU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ACNAPB5I";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2026D10E762
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 14:46:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 516F510E781
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 16:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728485212; x=1760021212;
+ t=1728491794; x=1760027794;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=lGSzUueLb3Czo/XZwXNjVx/fk9PQ6I1amY+evAGLw44=;
- b=Lgn3fzFUnUkKOCHIKRosNWy7eyRjBJVpHKEQ1OAkcj1D+wtJH9tCB5OM
- nH/0cVxiM2kmA2ibhrgyjKLqLbwCtNMkQmLn5EmpvB+5fRm5xKEHyAWtx
- jngc+5xBhj/D2NVFZsMouuxXq6Ptogw7ui/nYbd+S7Ivk+VFz4WdR+Ocv
- MOtBAFZhI9OpP0naDVGK1euJylE2+ShT5GBU5BL5x66VrGyu9aEeRmd63
- oqZPerT/0OOMifI6GPBtG+40Xfaf3LZOMpXTHCD4QVBfH+l0e6fmoprT3
- AlWbCsswelJO5CVchF+d7+dnBt+2pjPv6HIJr0kKS3Lk4Ml8WL/XnOcv4 w==;
-X-CSE-ConnectionGUID: 56ujaxacSnqV3DNXr36YZw==
-X-CSE-MsgGUID: 9zxdg54oQ9moHAk8bDha1w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="31488996"
-X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; d="scan'208";a="31488996"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 07:46:50 -0700
-X-CSE-ConnectionGUID: OFUG8Q2CR1SO5j1L9WNlNw==
-X-CSE-MsgGUID: Dv0EhRkfRzCyTuIrUmU86g==
+ bh=2iHViV2jPiQnsminEVbmKSxFHkwnZ51XCT/JWBxHzEY=;
+ b=ACNAPB5Igb+YA8MWMIbvB8D4/nOjoJ/00c2d/eMsEtjvz+bHrwXLXVXp
+ 9G8OHZHT6MHaAA38LyxB9De8X2j7LZUGLq4WISQ1vNqu7i2637YbGlAD7
+ OdQDJ6cGKpuhislWNsYIgRrou2X0kEDvH/O/bTj+w3erTqHyN6h3KFqC8
+ jsv9TjtXFyWFHv1qyXeMRbu9nAZUReQUzbxRLRvsquEyK3dxPPnMmi8/A
+ zrjcqmtp3+HYngvvdLiJ8la/VPZVg/9exmRtXL1MPiGmAJeWxLXuAvJBH
+ 4Yb4ji3BthD1QSyt0FIhqMgsiZ7dnW1TcbjeVn4+7CPuTgU1kK1KakxCe A==;
+X-CSE-ConnectionGUID: DPuuuYWXRmqL1beJnUOqtQ==
+X-CSE-MsgGUID: dKNCJOT7RhunZrI9jEKvdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27618043"
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; d="scan'208";a="27618043"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2024 09:36:34 -0700
+X-CSE-ConnectionGUID: cO6UdImcR6e6hMbzTsyf+g==
+X-CSE-MsgGUID: 6Sv+pgkmQ0mFroTzhzwsmg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; d="scan'208";a="80262085"
+X-IronPort-AV: E=Sophos;i="6.11,190,1725346800"; d="scan'208";a="81322668"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 07:46:48 -0700
-Date: Wed, 9 Oct 2024 16:46:36 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 09:36:33 -0700
+Date: Wed, 9 Oct 2024 18:36:17 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
  Petri Latvala <adrinael@adrinael.net>
 Subject: Re: [PATCH i-g-t v6] runner/executor: Abort when child process is
  killed by a signal
-Message-ID: <20241009144636.ukalnhlwzzk2enzp@kamilkon-desk.igk.intel.com>
+Message-ID: <20241009163617.xl2rszdpbrt4tdji@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Peter Senna Tschudin <peter.senna@linux.intel.com>,
@@ -84,11 +84,20 @@ On 2024-10-03 at 15:27:37 +0200, Peter Senna Tschudin wrote:
 > every iteration of the while loop inside monitor_output(). Add the
 > bool test_timed_out to track when igt_runner is intentionally terminating
 > a test, and do not interfere with it.
+
+One nit from CI results, with your patch any igt_assert will result in
+runner abort, see
+
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11864/shard-lnl-3/igt@xe_oa@oa-exponents@ccs-0.html
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11864/shard-lnl-3/igt_runner8.txt
+
+so there were no more tested after a first fail, and also a fail
+was turned into an abort. This is not what we want.
+
+Regards,
+Kamil
+
 > 
-
-imho you could have that behaviour also in place checking for a signal,
-you do not need separate waitpid() call.
-
 > Tested by:
 >  - using the --per-test-timeout flag and checking that results.json labels
 >    the test as a timeout.
@@ -147,14 +156,6 @@ you do not need separate waitpid() call.
 > +				killed = WTERMSIG(status);
 > +			}
 > +		}
-
-imho this waitpid() above makes a child logic based on sigfd superflous
-or at least racy, I am not sure it is correct.
-
-Petri do you remember if igt had a problems with runner waiting
-for already killed test? Or that timeout triggered after a test
-was killed long ago?
-
 >  		if (sigfd >= 0 && FD_ISSET(sigfd, &set)) {
 >  			double time;
 >  
@@ -172,28 +173,6 @@ was killed long ago?
 >  					errf("Failed to reap child\n");
 >  					status = 9999;
 >  				} else if (WIFEXITED(status)) {
-
-Here code is checking status and one of if-else checks for signal,
-you could use it for the same purpose without hunk /* Always check for...*/
-so it will be just enough to add here:
-
-	} else if (WIFSIGNALED(status)) {
-		status = -WTERMSIG(status);
-		child_killed_by_signal = true;
-	}
-
-and make a change based on this. Or just check status (avoid new var)
-for being less than zero?
-
-In summary, I am not convinced your change go in good direction.
-Instead of manually observing a bahaviour it would be better to
-write new test for igt_runner which will demonstrate why old runner
-cannot cope with incoming signals, that will prove that your patch
-solves a problem.
-
-Regards,
-Kamil
-
 > @@ -1303,7 +1319,6 @@ static int monitor_output(pid_t child,
 >  							fdatasync(outputs[_F_JOURNAL]);
 >  					}
