@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBDA8CEDD85
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 11:30:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDD14CEDD85
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 11:30:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB4B010E163;
-	Wed,  9 Oct 2024 11:30:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C46C10E111;
+	Wed,  9 Oct 2024 11:30:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XXLlegoS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KuN3sCRt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EAAA410E163
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 11:30:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0846010E111
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 11:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728473433; x=1760009433;
+ t=1728473446; x=1760009446;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=6ud1l8AaamyM15HoW3y5B7YPoCLxswULsThl683GxOE=;
- b=XXLlegoSwEn56kBRQ4zVhFMn38RQJW317G4nr44HjBQwBWstMKNYJLhP
- w4d0JKZuQEd9T9NgQyl/Puuzp8utbUiV06Lg8YPHPBTA7O/roSnJiWsT5
- h1crwhwNdIwZEQL46MigKgTPkrG9dBlv9mg+fqoTw1TNsA50QIcWucvxB
- pK3OrTq3C0RC7pRldryES2hJLE/qyFpGp2tdWD/Pf4mDmKBCHh3V3ZSKV
- 8/6OvKBY9+wAvflvAJZxDHPl0Ff0YbnvPp25ny9VPLT4H/sVNigElOcbV
- DHD8Ybai/6c6GguW1N7hcMrdWElEfeByQ2k+z5opzTRB29Aeg9zO5kqPr Q==;
-X-CSE-ConnectionGUID: 4q+8Sra6Tf2rlqW0bFD9Pg==
-X-CSE-MsgGUID: 8QJxXl4JToGjoAlP6g+Lww==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="45286183"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="45286183"
+ bh=1Doph4/Jum7LvzulOahgyNYZttHZnFcyfl2q80ZO16Q=;
+ b=KuN3sCRtqnpZJB47FmPI90rumoVI/4A2PuYnjEipnj62GNsiFK7ELLkf
+ Oh8WRgi1o3C1wnqUWx99W3Qr4DipgdYqt+qJywePtgUgpw5fdT0wCA6B8
+ 5/gL6XQjDtBMlzUZiK91pqMN5/i77Hpwe9kpvRpI10gEV4b3D5prun/A0
+ ebDCVgplLUODvTqWnrjj8zy2tbNpNCwlfhDLuUMfeJn6zuA3ORseGXJZ/
+ NtNIq3h9kyQIi9GlN43hEdH0f10vyxtuWebUaZNCFA/+BxL18dTXwOWOG
+ EL/3OZZK9Ry1em1UtTtuVzEsqOTavg2M4oKISi/rqY/jsDJ3+9E++t/VR w==;
+X-CSE-ConnectionGUID: 12kyjvb5TbCHw4taUeys9g==
+X-CSE-MsgGUID: kRgvgR+3QSm9W0BIL7hm9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="45286253"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="45286253"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 04:30:33 -0700
-X-CSE-ConnectionGUID: FtesljCqTHmO428rEWvprw==
-X-CSE-MsgGUID: +ChMh4V6T0KP/8E4Fn9iJA==
+ 09 Oct 2024 04:30:39 -0700
+X-CSE-ConnectionGUID: gddSEu0QQvGhgDkLMYEDaQ==
+X-CSE-MsgGUID: Y12CMYlMRvKPXe1swbpRpA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="113699865"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="113699910"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.16.246])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 04:30:29 -0700
+ 09 Oct 2024 04:30:36 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
@@ -54,10 +54,10 @@ Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
  =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
  Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
  Tomasz Lis <tomasz.lis@intel.com>
-Subject: [PATCH i-g-t 1/6] lib/igt_sriov_device: add helper for opening SR-IOV
- device sysfs
-Date: Wed,  9 Oct 2024 13:30:13 +0200
-Message-Id: <20241009113018.741371-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 2/6] lib/igt_sriov_device: add helper for resetting
+ SR-IOV device
+Date: Wed,  9 Oct 2024 13:30:14 +0200
+Message-Id: <20241009113018.741371-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241009113018.741371-1-marcin.bernatowicz@linux.intel.com>
 References: <20241009113018.741371-1-marcin.bernatowicz@linux.intel.com>
@@ -79,7 +79,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Helper allows to open sysfs directory corresponding to SR-IOV device.
+Reset is initiated by writing 1 to device's sysfs reset attribute.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -92,66 +92,79 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/igt_sriov_device.c | 32 ++++++++++++++++++++++++++++++++
- lib/igt_sriov_device.h |  1 +
- 2 files changed, 33 insertions(+)
+ lib/igt_sriov_device.c | 51 ++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  2 ++
+ 2 files changed, 53 insertions(+)
 
 diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-index 7c3814bf2..d20c74823 100644
+index d20c74823..2b83cd43c 100644
 --- a/lib/igt_sriov_device.c
 +++ b/lib/igt_sriov_device.c
-@@ -5,6 +5,7 @@
+@@ -413,3 +413,54 @@ int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num)
  
- #include <dirent.h>
- #include <errno.h>
-+#include <fcntl.h>
- #include <limits.h>
- #include <pciaccess.h>
- 
-@@ -381,3 +382,34 @@ void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num)
- {
- 	igt_assert(__igt_sriov_bind_vf_drm_driver(pf, vf_num, false));
+ 	return fd;
  }
 +
 +/**
-+ * igt_sriov_device_sysfs_open:
++ * igt_sriov_device_reset_exists:
 + * @pf: PF device file descriptor
 + * @vf_num: VF number (1-based to identify single VF) or 0 for PF
 + *
-+ * Open the sysfs directory corresponding to SR-IOV device.
++ * Check if reset attribute exists for a given SR-IOV device.
 + *
 + * Returns:
-+ * The SR-IOV device sysfs directory fd, -1 on failure.
++ * True if reset attribute exists, false otherwise.
 + */
-+int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num)
++bool igt_sriov_device_reset_exists(int pf, unsigned int vf_num)
 +{
-+	char path[PATH_MAX];
-+	int sysfs, fd;
++	int sysfs;
++	bool reset_exists;
 +
-+	sysfs = igt_sysfs_open(pf);
++	sysfs = igt_sriov_device_sysfs_open(pf, vf_num);
 +	if (sysfs < 0)
-+		return -1;
++		return false;
 +
-+	if (!vf_num)
-+		snprintf(path, sizeof(path), "device");
-+	else
-+		/* vf_num is 1-based, but virtfn is 0-based */
-+		snprintf(path, sizeof(path), "device/virtfn%u", vf_num - 1);
-+
-+	fd = openat(sysfs, path, O_DIRECTORY | O_RDONLY);
++	reset_exists = igt_sysfs_has_attr(sysfs, "reset");
 +	close(sysfs);
 +
-+	return fd;
++	return reset_exists;
++}
++
++/**
++ * igt_sriov_device_reset:
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF) or 0 for PF
++ *
++ * Trigger FLR on a given VF.
++ *
++ * Returns:
++ * True on success, false on failure.
++ */
++bool igt_sriov_device_reset(int pf, unsigned int vf_num)
++{
++	int sysfs;
++	bool ret;
++
++	sysfs = igt_sriov_device_sysfs_open(pf, vf_num);
++	if (sysfs < 0)
++		return false;
++
++	igt_debug("Initiating FLR on VF%d\n", vf_num);
++	ret = igt_sysfs_set(sysfs, "reset", "1");
++	close(sysfs);
++
++	return ret;
 +}
 diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-index 20ffc515f..dc95a4c78 100644
+index dc95a4c78..4b63ceb22 100644
 --- a/lib/igt_sriov_device.h
 +++ b/lib/igt_sriov_device.h
-@@ -30,6 +30,7 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
- bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
+@@ -31,6 +31,8 @@ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
  void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num);
  void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num);
-+int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
+ int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
++bool igt_sriov_device_reset_exists(int pf, unsigned int vf_num);
++bool igt_sriov_device_reset(int pf, unsigned int vf_num);
  
  /**
   * for_each_sriov_vf - Helper for running code on each VF
