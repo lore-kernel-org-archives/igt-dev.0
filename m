@@ -4,177 +4,176 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C89E9CF043E
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 04:31:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8361ECF043F
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 04:33:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8187F10E63F;
-	Wed,  9 Oct 2024 04:31:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3292210E288;
+	Wed,  9 Oct 2024 04:33:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YflhZf75";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WL+c3x/s";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8378310E288
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 04:31:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A86010E288
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 04:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728448307; x=1759984307;
+ t=1728448405; x=1759984405;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:mime-version;
- bh=ZOAnla/TgNWrnjxiRTiFdSM6s1cj9kB/DxAOS+RZluE=;
- b=YflhZf75d3vOvryAaM+egQYUND9obG5FM8oEMCgOJCMA26/+K5q9+2Mk
- Xbguhj0yOG7e1wGfOhthpn3pBYxKB7lbpQ7jOxW0oDvtqztFI7n9YLTVh
- INqV3Wv6p8MKRudtYLvMTn/JVZkq+qEnef4off9QEc03zY/MCeuRBHdli
- JgRnHFa0AtymoVPlIqHNR0zngISzyYXkncAoSo3RXbMFCxAc4Qdp3yblb
- lC5y9/bw3RNs08YQMMgRkt+UDWcvnHO+EkOY0dumhH0vZvXUaNckYDYHS
- kO1dIKwHk5qYKeyqE2dYG9YUzFEtjJ5sa1NgxvMdVAvLYCx12MzLqiPFg Q==;
-X-CSE-ConnectionGUID: ztptozjsTCmMyNXggscbrQ==
-X-CSE-MsgGUID: D5cmK5K1T4Gk6yIrMnWuuw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="38310756"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208,217";a="38310756"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2024 21:31:39 -0700
-X-CSE-ConnectionGUID: dFqdcTS4TLCWdN3dH49JYQ==
-X-CSE-MsgGUID: 80Rq2drMRB2vJjSgc0nQKA==
+ bh=6KHzundJLg+jUaQlQZpcuNTrF+4XTofBEuzD8I/sSc0=;
+ b=WL+c3x/s4zJIuj76XSoXtQWibla9SEC0bwql/vqCMhQuCdlHFVivYBTn
+ XKzz7FDSr+ADJud/aFKcIVENXxwr2uB5r9RosuWxc/VqPZRXeHSpSNCyN
+ xD+IYKuK7x6XtxuzC+kNGnYKh60ygnF+1/tNTAffRHXEHpKRnKGBFMtd7
+ NlbXE7fi2FZuASqvjb+L7AIOvwFl3/epKl6o1A1Qhd4XCCX/c0yCC2utH
+ 9r7Aa64gzMwzNBsBIf3Nkm8fLDhQHF5CM1RZrlzS2SAwDoLZdikwleanD
+ S86+viZXoRMfLNvLAw7p1N4ke48yG8MATRY8E8uaVVYSH2aNklVabglMb Q==;
+X-CSE-ConnectionGUID: DmaT7EGFQzu/PNHyA6skYQ==
+X-CSE-MsgGUID: yGF+9HHLSYy9WIQfC83JYA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27174133"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208,217";a="27174133"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2024 21:33:25 -0700
+X-CSE-ConnectionGUID: pPpddSqoRuS1BCElkVHRBQ==
+X-CSE-MsgGUID: e+qLyG7pQhaYhhMg/2fRYg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208,217";a="75783360"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
- by fmviesa007.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 08 Oct 2024 21:31:35 -0700
-Received: from orsmsx602.amr.corp.intel.com (10.22.229.15) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208,217";a="76126254"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 08 Oct 2024 21:33:25 -0700
+Received: from orsmsx611.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 8 Oct 2024 21:31:34 -0700
+ 15.1.2507.39; Tue, 8 Oct 2024 21:33:24 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX611.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 8 Oct 2024 21:33:24 -0700
 Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 8 Oct 2024 21:31:34 -0700
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.42) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Tue, 8 Oct 2024 21:33:24 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.171)
+ by edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 8 Oct 2024 21:31:33 -0700
+ 15.1.2507.39; Tue, 8 Oct 2024 21:33:23 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o/+3azbfquPuJ9CLUw8jitpM2MwUAtoSq/PMR6ZB0QsiPzD7Z7/RnOIs2rJQMOXaGauXJRzVvtmheZcwAlso5Jpe80PuaAQ5QQNzgrQQybffwaiIYecZmhm8hEL9047nA28Q0QxC/zL8+cC2IzyxcMZrZKvhyN0gk1I2VymrreqKR8LsaQk8LZZdjnPVMXIzpovlTk9fCTe7w/A2ItENn6jUI2iu2aze1xwpzHuXemv9di4zt5TbWAWPnsJFk8aGpMAF88lskI6yjFw5aErxAv6bR9c2026Y3FvbNR83So159S3p967W4NOeil7Lw1HAMdGfxztKrLjlMDZUIKwKmA==
+ b=XU01KkDedH9I5Mh+dz6QxMthRm8+3k7F8wc9n8lXoact1eiMSt3HnvnbAYKbYQlXyz9zuJl6CcFs6rxgzHtKaCLfY+RuXdEmvgqcfktt1fKZ1UzM0D7PulQU62f9KYqG4njit4zDFUkopceC0fgwptRZMUwgWaYGDgdAiSp19qHLjVAkc+NGDEMtYbMcpip0bJi6yYRr+btYLpPU+FKiVuYMwbs45wJ6LFgTy4uSrtb+ef7qBWbM6mR1s3Hn24bqk/L/P8ExP8W7vDTMTM6eqCoc1VCuxwH6cqtAcwq4lkq2yxMC3z0zVdvqjOl2MrTov5ITrP+OZDs4E8DSVeTevg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iMCPfkxCuGRsY5jE1hF6jUIEZbN2MXadPdhaQctFB3U=;
- b=xzM1Q9+C68JWgHAKzOKoXdaOfFNaSzcBKzK4nSOU9dkPhngdpNGX/5vCMK92SyXOwyDEkOQa8XFVg9g16bQvIqWmqJ2VPfi50KIy2pu8AJDGYH1M1YtkgU/nRTGIxnBJbcAS2xHdaVJAsHTdLQGeb2paSRK1j4qbfLYzW9MwNnWuvCJn9lW5s360MlBRpdeZMT0qrdv2T4mhCzGuWxdANySmzfHEocnW18vPTW9/AqCHfQ/7zpmwzqk1NWBhpBjiCJrBuk+idK4PT/y2mDzLp6KXTIjvkJd2CzcwKEy9B7K4IrOEdLrOVgxA9xX9+q/lUseD95ll/JpOFE7z/4ygnA==
+ bh=30/npnm769KFH41Tozbsja59vK90orWl772vNwSo8pg=;
+ b=o+f52MPvuuq783LUI4UbZrAZcoKFk15+FUkoiRW45slJOKU72LwBTqmlnttfmqc7szgCtAbXTdv3FFftQFg1pA4UeksmjEAWk2zbUnUdNCqql++ni0ZG9u52osmAQQCHUd8L8PiiGmED6auvpSV/MlYcInFkAeEyZOtYqbbRt9gJsyl/mHUl5koeIUtsBlUfF4gibZNDYXhscKDEerHmnxfymfiu0+E3B5vSEvcYuDRlzJxac/Vz+oB1GgNm0o9G4zw0liO5dSVq97e2LdZbSCYU5VBU/KyKePAaVE0mGyoEOQC+9KSQ1dSbtrCj+jjIwxjrnve+dzSPUshv0mwl6Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from SN6PR11MB2704.namprd11.prod.outlook.com (2603:10b6:805:53::11)
- by SJ0PR11MB5813.namprd11.prod.outlook.com (2603:10b6:a03:422::19)
+Received: from SN7PR11MB6750.namprd11.prod.outlook.com (2603:10b6:806:266::21)
+ by IA1PR11MB7891.namprd11.prod.outlook.com (2603:10b6:208:3fa::6)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.23; Wed, 9 Oct
- 2024 04:31:31 +0000
-Received: from SN6PR11MB2704.namprd11.prod.outlook.com
- ([fe80::513d:aaea:b097:afb5]) by SN6PR11MB2704.namprd11.prod.outlook.com
- ([fe80::513d:aaea:b097:afb5%6]) with mapi id 15.20.8026.016; Wed, 9 Oct 2024
- 04:31:31 +0000
-From: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>
-To: "Kandpal, Suraj" <suraj.kandpal@intel.com>,
+ 2024 04:33:21 +0000
+Received: from SN7PR11MB6750.namprd11.prod.outlook.com
+ ([fe80::9570:169d:a0d5:527]) by SN7PR11MB6750.namprd11.prod.outlook.com
+ ([fe80::9570:169d:a0d5:527%4]) with mapi id 15.20.8026.020; Wed, 9 Oct 2024
+ 04:33:21 +0000
+From: "Kandpal, Suraj" <suraj.kandpal@intel.com>
+To: "Reddy Guddati, Santhosh" <santhosh.reddy.guddati@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Modem,
  Bhanuprakash" <bhanuprakash.modem@intel.com>
 CC: "Samala, Pranay" <pranay.samala@intel.com>
-Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulation
+Subject: RE: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulation
  in HDR mode
 Thread-Topic: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulation
  in HDR mode
-Thread-Index: AQHbFNtFBHnfhdT5iEKkTUs9/AugurJ2EFIAgAAALRCAAAbAAIAHxh+k
-Date: Wed, 9 Oct 2024 04:31:30 +0000
-Message-ID: <SN6PR11MB27047F18FC2823284053C086DB7F2@SN6PR11MB2704.namprd11.prod.outlook.com>
+Thread-Index: AQHbFNtF8WL1idnY80qJByEWkXMYLbJ2EE9JgAADoYCAAALWUoAHx7wAgAAAT+A=
+Date: Wed, 9 Oct 2024 04:33:20 +0000
+Message-ID: <SN7PR11MB6750D1F3B50ECC79FA88D342E37F2@SN7PR11MB6750.namprd11.prod.outlook.com>
 References: <20241002145503.910536-1-santhosh.reddy.guddati@intel.com>
  <20241002145503.910536-2-santhosh.reddy.guddati@intel.com>
  <SN7PR11MB675059F459088B309491341EE3722@SN7PR11MB6750.namprd11.prod.outlook.com>
  <SN6PR11MB27045F424115435C60CC64D9DB722@SN6PR11MB2704.namprd11.prod.outlook.com>
  <SN7PR11MB6750A1BADDB0334F62DA5420E3722@SN7PR11MB6750.namprd11.prod.outlook.com>
-In-Reply-To: <SN7PR11MB6750A1BADDB0334F62DA5420E3722@SN7PR11MB6750.namprd11.prod.outlook.com>
+ <SN6PR11MB27047F18FC2823284053C086DB7F2@SN6PR11MB2704.namprd11.prod.outlook.com>
+In-Reply-To: <SN6PR11MB27047F18FC2823284053C086DB7F2@SN6PR11MB2704.namprd11.prod.outlook.com>
 Accept-Language: en-US
 Content-Language: en-US
-X-Mentions: bhanuprakash.modem@intel.com
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 msip_labels: 
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR11MB2704:EE_|SJ0PR11MB5813:EE_
-x-ms-office365-filtering-correlation-id: cdffa555-bc95-4390-8d82-08dce81b3faa
+x-ms-traffictypediagnostic: SN7PR11MB6750:EE_|IA1PR11MB7891:EE_
+x-ms-office365-filtering-correlation-id: ce8c76b0-0016-4cf5-0562-08dce81b813f
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info: =?Windows-1252?Q?4rpKclsjUVPVNoKG0IwfmOJJR7F4aWJZfsnqVc05Z06v93xSY8LV0KxR?=
- =?Windows-1252?Q?CUyu1/NAaTwczIwKqRbZrfDmfrB2jkOJ6W2Is4gv9dgOCTzhgn8jb55V?=
- =?Windows-1252?Q?R+RkAKOJ78Jl5n6J1zHpxk2ZDYY8poE6qO9xL97rznWU0nLpGZFXF1bg?=
- =?Windows-1252?Q?RgkXZh1s55gHrt+BSE5iouajtVopuyF7f/zcC+xaHnQtEee9rmuu8h9j?=
- =?Windows-1252?Q?MUfKBtSMQ18kX1kgE3Hq/FCCXkwGN0XizjdgSIkt94yJSXGsFi/WCSAY?=
- =?Windows-1252?Q?3fZ1VUvzC6k7LYA6StPbOuIbTmNdyQ5mWFRHiWc90OKuvE1fw9URBqWK?=
- =?Windows-1252?Q?kgZ1KmJc12uTSIWDMVDwakHfVQcN5Ug4uK6utxRxTWjHZ3ZPVrgD0A6M?=
- =?Windows-1252?Q?IQbIaykR8mI3+2b/tiUxUQfMPv4fKVegGcUs2slN+7SFO4lZ3VeHt5hE?=
- =?Windows-1252?Q?nFgZxUaBwHe8PbMNkMTa37egsOcI4BnEuP5tK9LuEoMYkt5OZDrZ43rQ?=
- =?Windows-1252?Q?r6Qthy0Ac+FMiCVWAlr+5RmkK2VqkuMj+m1l/iUpFK9IgH8KY0EG9aga?=
- =?Windows-1252?Q?VVLTRUInnf38pEEi2q1nTHD6/QRABQIiiU8fvkBmVlOejSXtW4giNu21?=
- =?Windows-1252?Q?nfF3Cttt4F21k6CJF1wsxfcfEQz+ANuoQWp2svlokjPuShDx9SCaKxXc?=
- =?Windows-1252?Q?ypgEDHaEZVn95YOF3TOg14c+aXR7ghPi7juGXgjV9nqqf+pwUaEcF2FE?=
- =?Windows-1252?Q?p/Hmc1Iuud4snxJWcAR0U0Ul3gimpbFd71r/nUfZxAe5HxxZ5oEbpf/1?=
- =?Windows-1252?Q?UTwFan6BSKx7Y6LHlxPzy0YeXZ1EAM2pABI9ed9zGf6gWUNECVxHcX/h?=
- =?Windows-1252?Q?3pMq4Uwqylv92sF2RoVRuOMYY5Wfja+A6DvOby0oUqIdXsiCEB3EHmQv?=
- =?Windows-1252?Q?z63Vx6khAo9XPcQdWngH6We2wE6Mz1YQigkm2LbSn8jzK8DdWQtcMO63?=
- =?Windows-1252?Q?5RVRGaST4DaAXxzbpRSiwVzz41BoQXyI3d/KTg8qcSqBkTsK6q5guWT0?=
- =?Windows-1252?Q?5K/7pE2Ga/fIyUf5wMHAbzQcGMR0AfM/E1dSHbyU6UddikHr/waDXQSK?=
- =?Windows-1252?Q?ULG+F5UlrinpbFt/uoELtgny1MN9hbaLpwaehAeMMXGLQtlaK4SJb5j2?=
- =?Windows-1252?Q?QcgP66ti8VrhcKsbFaZcZzpsbnHw6+12MTJYs2Q1DHALLiJB3QPOVgw5?=
- =?Windows-1252?Q?1CqYW2Q+MfO+BTvrGhwMEh92UjUy7gYuXuRh/w+noCz3tS4grpXyRMGD?=
- =?Windows-1252?Q?wUO4LIDiy54D0IBk6rI00ESDFnZuMwAzTCKZ7/ng9TYQLpeLefbk+v68?=
- =?Windows-1252?Q?CP84lBVNvZ08YfSEC0KHzTbVraK02iIgxI3Q9POVdSsSCmlP+Ml/LfE8?=
- =?Windows-1252?Q?V3NSMt4W+VRTXL7pMmMd0w=3D=3D?=
+x-microsoft-antispam: BCL:0; ARA:13230040|1800799024|376014|366016|38070700018;
+x-microsoft-antispam-message-info: =?us-ascii?Q?m01yHKEQBAHO7SYs08xvgbJ1jXM8QN33en8deVqrH1W1nZhRa9EdI/cGZnQ5?=
+ =?us-ascii?Q?chURJqf8d3HWLUS6wGzdfpIMOvuGLZSZgS0g3CRV6K3AXJNeVtk+kzrVKzdg?=
+ =?us-ascii?Q?Fwykcx0Tf0GHww6dXpb0X32U9uxV1oQPR7iUr3W/JjGEP5icA13KS5UbvZMX?=
+ =?us-ascii?Q?uW+/Lrwpih8hutib0tu88m5ecFZGB9k4aV4eJWWxH5H8SIFHdn/AgKqo9SvI?=
+ =?us-ascii?Q?MlafA0sxX6o8rsqDmiA7+aANV7eCXvmBkNxj2Wim69sPZphqUhf4SwUwXacj?=
+ =?us-ascii?Q?DL2RzYAAsKRsDR8A431dpPdjdlmXi/PPk6Dvu22g2fGawgpHANhF6XfLPlOD?=
+ =?us-ascii?Q?0615AbxBZPFf8O+H8HANuA7wNMRxGbHMBQgi6RV2dbjFKuwRa9ssAbHJcu0j?=
+ =?us-ascii?Q?7XiwgSv4EQ6/kIEL/3OjIx7ctn7z2UClQd3fsBfD4lpwbF33tUVtbRXdGMpT?=
+ =?us-ascii?Q?2thTDvoMjKNmcieoRkdRwysHn5wyAhDhA3MpDfN5HO6HFmiIhB2+SUvqgfum?=
+ =?us-ascii?Q?alwNEKUBWeq8iJy6V1iSwDXU8N/rb4/twcbhHoeH9QXYIGmfUToJYapmDab9?=
+ =?us-ascii?Q?ZQnqjLpztzUALZk8fW5x3sg2mE9hAcB9bLO+aCFc79lStUlL9fi5BS4cnjPt?=
+ =?us-ascii?Q?wuJcDSqZ2XbXNNvjwONoy97jQ2YG9w0Ymr7A3nCNijXwz6lWC/tHiGbeTk+S?=
+ =?us-ascii?Q?OslMhw2piZTwa1vasvgaPVXq+dNGRvU+zXPDwU534kHGM08BIPvQQz2hcNIP?=
+ =?us-ascii?Q?NOzz++zJQ6AH2PqgUUuM2Hl7FPTCbsr0uzqwYK4ZeiaJvdFa17yiLmoOLSqD?=
+ =?us-ascii?Q?F8n9DAWTuXAyjHZ4v3JvzIZagA49Um85y3vtZk7iTXH/JFUzqDfuvw4Pftex?=
+ =?us-ascii?Q?pYJnnBrCTSvjcPM+enJ+jveIYuw72MivIMQm19BEBoEdJa3Y5vTHHwV3+yK6?=
+ =?us-ascii?Q?xD0MgFFD78piphTmY7fhuDcx2APsv12ZqDLKpYi5VdEgBKWUZtlCNW2TRhPe?=
+ =?us-ascii?Q?Qc10O15xbkkWYp3C3jyGvtqykjWPzitgD4ilH0CKYim1VzoBnEUZHHNQHjPi?=
+ =?us-ascii?Q?2hQfYBf5U3PlzeSLVIB73uzniEkYeFW1za4xgYkni0BP7i41HApTcU/s1m3P?=
+ =?us-ascii?Q?6/HjEnEse/oJAGsGUBjRRBxtXtaRFSFMBFnjtPOOSOOZocT/XOHm55ZaG8yn?=
+ =?us-ascii?Q?ZDvp80DMgxqoYE2BKhIxPNo1sLISRJLudYAuvQEWNAl1aCp+u+Pe4sv4jufw?=
+ =?us-ascii?Q?7X3XCfoIbTxTjGrnnp/5NiPgprljFxpOHxvCVSFYTB3sAT4VU21TRuDf3bEi?=
+ =?us-ascii?Q?RU8sXmSvsyuTTAeWjjqHSiO4JaI8K9aCzrhSsSeymQSwbQ=3D=3D?=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SN6PR11MB2704.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(38070700018); DIR:OUT; SFP:1101; 
+ IPV:NLI; SFV:NSPM; H:SN7PR11MB6750.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(38070700018); DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?Windows-1252?Q?MnzDd4RdlhoTt4RCTIwtmLrrOvOJ7SMidRbAu7exJSiblcwQI2RDTbvU?=
- =?Windows-1252?Q?gt6gcGvkL5hb9TRE4pwGQ6Pnk7hYlQc6JZo4XYq2b6nYDMLFk4dC/2sf?=
- =?Windows-1252?Q?5Apl9kH2u7ZrRCtT9SV0v8DCdoX9fJk7OxhpeUdwGUVtONLo05dun+RT?=
- =?Windows-1252?Q?IstUAaBoUVvOCHUGGyO+QV8yJ8j6l+VuafktpJEfJd1Le0+fy6SPdnQI?=
- =?Windows-1252?Q?SRJ7IJILQAAfcHfBAclTDsxvoFH/Ivdxe5doHqMdj/oN7lRT56EhiXeK?=
- =?Windows-1252?Q?qL3ACSbCKlUPkDXEi24DD3VlEHpPE1cf2ThzYtvafa1vX2vNNlXDmBik?=
- =?Windows-1252?Q?jjbkwoa7+qyiBZE7LA12bjiQCcrDiV0QTpzvqFw1X8jsrgh4IAIEjDmM?=
- =?Windows-1252?Q?ASE74EF9dZjMlO8QD/qhEpX87Prk5RYBaze1Lv57pgrB0IlchHmeV7oD?=
- =?Windows-1252?Q?L6lzr/t9wN4ux/VbM8eNYJIZsr56yCN3Z71sE9RdoJRJG62mcub/vS60?=
- =?Windows-1252?Q?Ny6jvcbCd12/0KVrMIQUBzRfk/UW0Ksa+dotJIDs31Cw7S+ATD14PPGb?=
- =?Windows-1252?Q?SAbDfBMM67PVTLpBvtyuP0eVi2AX6BHd9HQCgU5N0GCsW16pvYBc/W5l?=
- =?Windows-1252?Q?dEsqW3fFtd+hvYC7zbdH11z0Q7TAX17BnL9fQ9eCUJlYZb4eX15D/oET?=
- =?Windows-1252?Q?HyTDwO+DrlaEB6Rz9kI9wENbV3o16gGLYgqKjF/AbkTLf+JShi4Jb1eN?=
- =?Windows-1252?Q?mKitxLnvaMkEENUV1n/AlUH3j65I/zYaFO8G2mjozy+Gysk/1OTf109O?=
- =?Windows-1252?Q?3eGnWLpnVodm0UebeRjFwOXXEoQ+IZkRq97JCgTZIOO+MT24zyaI07Il?=
- =?Windows-1252?Q?2WH5HXGN8LLjis9rCLmy1Nzt06Csm6v5TkfJl/EtQ3VXSBZQ6f4qcyi5?=
- =?Windows-1252?Q?nQg5g5nIY2zPB6WY83GcaexFmz3yPMQxrPfDRHaQA41K8BQfe9WalRDD?=
- =?Windows-1252?Q?iV3uYz0bGtG4FFRCn2Vjkn2W+WinZ5wak4QTlG0SwG1hhcl6BA3OxRF+?=
- =?Windows-1252?Q?79CPQOGYPNV/1HD31uMxiCphHUo4Y1MlyuaNWfujJfNUG2mbPye4xRg7?=
- =?Windows-1252?Q?4lXc/T6wOoD8L2/TZmnpQgvfL1vdEhk+BYiAeLuShDGYM14GdmqhPaqt?=
- =?Windows-1252?Q?zvrsbiMx8Zxn/CE2CNEFbyUHP/TUnNjHyTJatRcEpTaFYco/mEp1zWrx?=
- =?Windows-1252?Q?kdsPweMFyLYypisiYgtilHSwZE5o3cCwEwyuxFZbcSOp8KIDXLdIv9Q7?=
- =?Windows-1252?Q?nLck8xNH3rWr9jpgIuxIcF0Dy8aMKWGTJU1RhLpKnNnh6HqaaFYWHqqo?=
- =?Windows-1252?Q?58cFpPqwbY7a0v6fxOC07alDFomqokAjk1xQHKw+O6dXnn2nhTz2KO5T?=
- =?Windows-1252?Q?6hM/zwmYstH6NwL5OgUyf42tF+Xx5wsS+p3SXXxyGNV2huR+9w9M/Imf?=
- =?Windows-1252?Q?jamKZw2i0bXu6Sc82KnaO0RVXxZAynCVeUf2yNGtT8yAnyYn/9keEf/3?=
- =?Windows-1252?Q?t95+qYW/Jq8nv26x6kJl86NaDjHcr7b6nM01dY2ndf5+lonUZwqTcKRg?=
- =?Windows-1252?Q?n7J//q9viz23IXG6hc8uZa5b7d7vHC+MV8SuGQp0aDZgOLHw9cclxJdA?=
- =?Windows-1252?Q?ZseQHqEbVoiBxs88tbZCVh9yKaSUQygVVvVFxbDgUa2L9b0Gi/Cxzg?=
- =?Windows-1252?Q?=3D=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?k+kVx/xZFYtW9SBnugkHjiy1RoL6Li/7sbF+9oBWqyH7+l3vxVMSFhfzkxh3?=
+ =?us-ascii?Q?C/Gi+JmHipaPlWaXQW6o7lyLOyFAbe2y7HVdQihsTodhsrzATRzW9Q2sW33N?=
+ =?us-ascii?Q?+eO0EwKgsSqIXvMoC4xoOIbpxk9L/sXvVmP4QzUFVGh75cXdugQR1LBj55nj?=
+ =?us-ascii?Q?Rexpp/SOQPEWBeOyx654GhXHtFy/WvmfItkEN5DjaKOIosKa4r7j2LnE5UHg?=
+ =?us-ascii?Q?8eQtckiocKfpgxwXecbfBNZBkoN8/GeLx6ItoWxQnzDtqaBoxvQzRQQSLF8h?=
+ =?us-ascii?Q?E1a7CKDQMgBQIHBkym6SRbpTPdF+aTKRBe4Mez/hk2bjAeO80VK1nuw7WiOL?=
+ =?us-ascii?Q?MSDHxleDP+1gkrGlBVA+KGdWGRlylfSMymAJgrSIqZQvZ6h9mWLruG8rEC8y?=
+ =?us-ascii?Q?BEuloUv9UwzSUTIn7Hi3yiWQ44yU3HK4jaySLj1ya/t+6x6cwZqDacwpgeHm?=
+ =?us-ascii?Q?SWYtwA0/AipvIjpwAwIcvSkZb3pRuJixPSUo9A0Z/Dzp35vB8MG/2Q9AmcS1?=
+ =?us-ascii?Q?FeCVzBbt2epE9244Gg76Zx4bJYOdYQMuBymThD2QFJ2zodMP1PYM0CmG82Ms?=
+ =?us-ascii?Q?mcWDZK8LGJvcRe6Ci7x+tG/nj6PZKGIPwZiqOCmMgjJBU+NNbxTYx8xVscHd?=
+ =?us-ascii?Q?ytV4VB/vcYryj7PHOK+Hjz7j2c+3djXaEqrh27aCjA/EC8BB6Ya/tpIEp3rw?=
+ =?us-ascii?Q?xxkgsa0NPEbvUnhqUrXacDMzQx0ZXTE13WbK+x8kr9A61B+H49CzhHRtuHFz?=
+ =?us-ascii?Q?lZXr+DYKaoUqno4CodT+lzRrZ31umFczHKbO3Kx42lmYgqyA6Dh2d/XZ57sn?=
+ =?us-ascii?Q?DNqlrBtk2vkrcz8atL0RSxbM9iOByDPws+3LJTr+5dtUAwV5IN8VgzSxCjP1?=
+ =?us-ascii?Q?XFZL4iNDo5Ybgkdp9Ton7+9qc73kCFgUzB0tYnuCXOa2s88wy2KV8aGtDwt8?=
+ =?us-ascii?Q?6wXVt4gccgK+DwmeNW0BbXsiXPHLmeFd5+j2AMyy08bmJgVsUJiiPqZi/ENu?=
+ =?us-ascii?Q?lVTlG0eEzMCADPcuF87kYT/G7eKyXuEe4KFE1r5uHCoektVqbw8U5AXz5/aQ?=
+ =?us-ascii?Q?sW94JWtjXZiMO2U96vpRFIUoI0FF1edlSd18LVdeqqxnRbZ3NmQYGffOTJXR?=
+ =?us-ascii?Q?sBB2YzxYK2FyjJhbBtXBc5aFe6oQJz9WHa39veDbCo8xxSk8EzLiBZibW6X2?=
+ =?us-ascii?Q?XFSwddlr7Z0E/wppP/XBGcFrXmFBCOPX+/8DOq7q07rJTjbwMTaf3lUHS4wO?=
+ =?us-ascii?Q?w6d+rie7awqnSEmtatHB9dvW4Xh8ip/nUCTeBXr7l26wBPty4il9rX2xRio2?=
+ =?us-ascii?Q?6sl3DsPIoyCClwFJmgdNQ/n850ZbbkWry6XrjOLH07yNv1d+tlAEu+/NQLO4?=
+ =?us-ascii?Q?syObTM9e5r7IWrlBZFv0N8VS//Fe/cUQo4ixXVhAyiy9VvN1WZQrX2Emw1+p?=
+ =?us-ascii?Q?BrpTQCMH9h5nYOkfcNA/yaBA+gYedsAecP+6ORXwfNd3oXlm07FpSpx2At9w?=
+ =?us-ascii?Q?RYpDBd2pAOv67PCyGhnAi2Gd9RyrQ5fGUVPXuxrIAQEWBoocNEyVCP4KVYuK?=
+ =?us-ascii?Q?olzNtrZbTDUzaq7gJ5TtvWoVBRQf3EfByIeaLtgO?=
 Content-Type: multipart/alternative;
- boundary="_000_SN6PR11MB27047F18FC2823284053C086DB7F2SN6PR11MB2704namp_"
+ boundary="_000_SN7PR11MB6750D1F3B50ECC79FA88D342E37F2SN7PR11MB6750namp_"
 MIME-Version: 1.0
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR11MB2704.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cdffa555-bc95-4390-8d82-08dce81b3faa
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2024 04:31:30.9579 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB6750.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ce8c76b0-0016-4cf5-0562-08dce81b813f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2024 04:33:20.9371 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: b0BmSfPjfRx4rXmYvos+lxPwY59jNoaT4cl2EOtf7Pqt7JS5NaZMeqJKtmAPBVHvzcuwti7VV4fkvSY4Av6DczdYGcZZrmOtaK/r78bLINA+Hhtvp3VSamHNSHSWcrcN
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5813
+X-MS-Exchange-CrossTenant-userprincipalname: 13e88mnVBkg4OK69LbKVOi/sev6Zf7U77ZHxQnxOCULTFbXfmhV/PV1HXVUgUwJ8hkihcMFMfE9A5X21oV3vng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7891
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -191,9 +190,19 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_SN6PR11MB27047F18FC2823284053C086DB7F2SN6PR11MB2704namp_
-Content-Type: text/plain; charset="Windows-1252"
+--_000_SN7PR11MB6750D1F3B50ECC79FA88D342E37F2SN7PR11MB6750namp_
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
+
+
+
+From: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>
+Sent: Wednesday, October 9, 2024 10:02 AM
+To: Kandpal, Suraj <suraj.kandpal@intel.com>; igt-dev@lists.freedesktop.org=
+; Modem, Bhanuprakash <bhanuprakash.modem@intel.com>
+Cc: Samala, Pranay <pranay.samala@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulati=
+on in HDR mode
 
 ++ Bhanu
 
@@ -208,25 +217,36 @@ tup, we cannot re use with importing the header files.
 Could you please help if these functions can be moved to lib/igt_sysfs or l=
 ib/igt_kms ?
 
+Or have a separate file in /lib
+Igt_brightness
+
+
 Thanks,
 Santhosh
 ________________________________
-From: Kandpal, Suraj <suraj.kandpal@intel.com>
+From: Kandpal, Suraj <suraj.kandpal@intel.com<mailto:suraj.kandpal@intel.co=
+m>>
 Sent: Friday, October 4, 2024 11:14 AM
-To: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>; igt-dev@lis=
-ts.freedesktop.org <igt-dev@lists.freedesktop.org>
-Cc: Samala, Pranay <pranay.samala@intel.com>
+To: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com<mailto:santho=
+sh.reddy.guddati@intel.com>>; igt-dev@lists.freedesktop.org<mailto:igt-dev@=
+lists.freedesktop.org> <igt-dev@lists.freedesktop.org<mailto:igt-dev@lists.=
+freedesktop.org>>
+Cc: Samala, Pranay <pranay.samala@intel.com<mailto:pranay.samala@intel.com>=
+>
 Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulati=
 on in HDR mode
 
 
 
 ________________________________
-From: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>
+From: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com<mailto:sant=
+hosh.reddy.guddati@intel.com>>
 Sent: Friday, October 4, 2024 11:02:42 am
-To: Kandpal, Suraj <suraj.kandpal@intel.com>; igt-dev@lists.freedesktop.org=
- <igt-dev@lists.freedesktop.org>
-Cc: Samala, Pranay <pranay.samala@intel.com>
+To: Kandpal, Suraj <suraj.kandpal@intel.com<mailto:suraj.kandpal@intel.com>=
+>; igt-dev@lists.freedesktop.org<mailto:igt-dev@lists.freedesktop.org> <igt=
+-dev@lists.freedesktop.org<mailto:igt-dev@lists.freedesktop.org>>
+Cc: Samala, Pranay <pranay.samala@intel.com<mailto:pranay.samala@intel.com>=
+>
 Subject: RE: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulati=
 on in HDR mode
 
@@ -235,8 +255,8 @@ Hi Suraj,
 
 Agreed, we do have similar functionality in kms_brightness, but it requires=
  some adjustments .
-I plan to move these functions =93backlight_read=94 , =93backlight_write=94=
- to lib/igt_sysfs and make the necessary modifications at a later stage.
+I plan to move these functions "backlight_read" , "backlight_write" to lib/=
+igt_sysfs and make the necessary modifications at a later stage.
 
 
 
@@ -245,8 +265,10 @@ Please provide your thoughts on this approach.
 _____________
 
 
+
 Why not just some simple code sharing via a header file rather than the who=
 le lib/igt_sysfs complexity.
+
 
 
 Regards,
@@ -257,12 +279,15 @@ Santhosh
 
 
 
-From: Kandpal, Suraj <suraj.kandpal@intel.com>
+From: Kandpal, Suraj <suraj.kandpal@intel.com<mailto:suraj.kandpal@intel.co=
+m>>
 Sent: Friday, October 4, 2024 10:50 AM
-To: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com>; igt-dev@lis=
-ts.freedesktop.org
-Cc: Samala, Pranay <pranay.samala@intel.com>; Reddy Guddati, Santhosh <sant=
-hosh.reddy.guddati@intel.com>
+To: Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com<mailto:santho=
+sh.reddy.guddati@intel.com>>; igt-dev@lists.freedesktop.org<mailto:igt-dev@=
+lists.freedesktop.org>
+Cc: Samala, Pranay <pranay.samala@intel.com<mailto:pranay.samala@intel.com>=
+>; Reddy Guddati, Santhosh <santhosh.reddy.guddati@intel.com<mailto:santhos=
+h.reddy.guddati@intel.com>>
 Subject: Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipulati=
 on in HDR mode
 
@@ -475,22 +500,94 @@ t);
 
 
 
---_000_SN6PR11MB27047F18FC2823284053C086DB7F2SN6PR11MB2704namp_
-Content-Type: text/html; charset="Windows-1252"
+--_000_SN7PR11MB6750D1F3B50ECC79FA88D342E37F2SN7PR11MB6750namp_
+Content-Type: text/html; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 
-<html>
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
 <head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3DWindows-1=
-252">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<!--[if !mso]><style>v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style><![endif]--><style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Aptos;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:blue;
+	text-decoration:underline;}
+p.xmsonormal, li.xmsonormal, div.xmsonormal
+	{mso-style-name:x_msonormal;
+	margin:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+span.EmailStyle23
+	{mso-style-type:personal-reply;
+	font-family:"Aptos",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;
+	mso-ligatures:none;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
 </head>
-<body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 12pt; c=
-olor: rgb(0, 0, 0);">
-++ Bhanu<br>
+<body lang=3D"EN-US" link=3D"blue" vlink=3D"purple" style=3D"word-wrap:brea=
+k-word">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<div style=3D"border:none;border-left:solid blue 1.5pt;padding:0in 0in 0in =
+4.0pt">
+<div>
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif">From:</span></b><span style=3D"font-size:11.0pt;=
+font-family:&quot;Calibri&quot;,sans-serif"> Reddy Guddati, Santhosh &lt;sa=
+nthosh.reddy.guddati@intel.com&gt;
+<br>
+<b>Sent:</b> Wednesday, October 9, 2024 10:02 AM<br>
+<b>To:</b> Kandpal, Suraj &lt;suraj.kandpal@intel.com&gt;; igt-dev@lists.fr=
+eedesktop.org; Modem, Bhanuprakash &lt;bhanuprakash.modem@intel.com&gt;<br>
+<b>Cc:</b> Samala, Pranay &lt;pranay.samala@intel.com&gt;<br>
+<b>Subject:</b> Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness man=
+ipulation in HDR mode<o:p></o:p></span></p>
+</div>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal"><span style=3D"color:black">++ Bhanu<br>
 <br>
 Hi Suraj,<br>
 <br>
@@ -498,151 +595,155 @@ Thank you for&nbsp;your suggestion regarding code sharing via header file. =
 I have tried to share across the test files unfortunately in the current ig=
 t&nbsp; setup, we cannot re use with importing the header files.<br>
 <br>
-<a href=3D"mailto:bhanuprakash.modem@intel.com" id=3D"OWAAM179493" class=3D=
-"tWKOu mention ms-bgc-nlr ms-fcl-b">@Modem, Bhanuprakash</a>,<br>
+<a id=3D"OWAAM179493" href=3D"mailto:bhanuprakash.modem@intel.com"><span st=
+yle=3D"font-family:&quot;Aptos&quot;,sans-serif;text-decoration:none">@Mode=
+m, Bhanuprakash</span></a>,<br>
 <br>
 Could you please help if these functions can be moved to lib/igt_sysfs or l=
-ib/igt_kms ?<br>
+ib/igt_kms ?</span><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt"><o:p>&nbsp;</o:p></=
+span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Or have a separate =
+file in /lib<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:11.0pt">Igt_brightness <o:p=
+></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"color:black"><br>
 <br>
 Thanks,<br>
-Santhosh</div>
-<div id=3D"appendonsend"></div>
-<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
-<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
-yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Kandpal, Suraj &lt;su=
-raj.kandpal@intel.com&gt;<br>
+Santhosh<o:p></o:p></span></p>
+</div>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"2" width=3D"98%" align=3D"center">
+</div>
+<div id=3D"divRplyFwdMsg">
+<p class=3D"MsoNormal"><b><span style=3D"font-size:11.0pt;font-family:&quot=
+;Calibri&quot;,sans-serif;color:black">From:</span></b><span style=3D"font-=
+size:11.0pt;font-family:&quot;Calibri&quot;,sans-serif;color:black"> Kandpa=
+l, Suraj &lt;<a href=3D"mailto:suraj.kandpal@intel.com">suraj.kandpal@intel=
+.com</a>&gt;<br>
 <b>Sent:</b> Friday, October 4, 2024 11:14 AM<br>
-<b>To:</b> Reddy Guddati, Santhosh &lt;santhosh.reddy.guddati@intel.com&gt;=
-; igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&gt;<br>
-<b>Cc:</b> Samala, Pranay &lt;pranay.samala@intel.com&gt;<br>
+<b>To:</b> Reddy Guddati, Santhosh &lt;<a href=3D"mailto:santhosh.reddy.gud=
+dati@intel.com">santhosh.reddy.guddati@intel.com</a>&gt;;
+<a href=3D"mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.=
+org</a> &lt;<a href=3D"mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.=
+freedesktop.org</a>&gt;<br>
+<b>Cc:</b> Samala, Pranay &lt;<a href=3D"mailto:pranay.samala@intel.com">pr=
+anay.samala@intel.com</a>&gt;<br>
 <b>Subject:</b> Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness man=
-ipulation in HDR mode</font>
-<div>&nbsp;</div>
+ipulation in HDR mode</span>
+<o:p></o:p></p>
+<div>
+<p class=3D"MsoNormal">&nbsp;<o:p></o:p></p>
+</div>
 </div>
 <div>
-<div><br>
+<div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
 </div>
-<div id=3D"x_mail-editor-reference-message-container" dir=3D"auto"><br>
-<hr style=3D"display:inline-block; width:98%">
-<div id=3D"x_divRplyFwdMsg" style=3D"font-size:11pt"><strong>From:</strong>=
- Reddy Guddati, Santhosh &lt;santhosh.reddy.guddati@intel.com&gt;<br>
-<strong>Sent:</strong> Friday, October 4, 2024 11:02:42 am<br>
-<strong>To:</strong> Kandpal, Suraj &lt;suraj.kandpal@intel.com&gt;; igt-de=
-v@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&gt;<br>
-<strong>Cc:</strong> Samala, Pranay &lt;pranay.samala@intel.com&gt;<br>
-<strong>Subject:</strong> RE: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brig=
-htness manipulation in HDR mode<br>
+<div id=3D"x_mail-editor-reference-message-container">
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div class=3D"MsoNormal" align=3D"center" style=3D"text-align:center">
+<hr size=3D"2" width=3D"98%" align=3D"center">
 </div>
-<br>
-<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
-<div class=3D"x_WordSection1" dir=3D"auto">
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">Hi Suraj,<br>
+<div id=3D"x_divRplyFwdMsg">
+<p class=3D"MsoNormal"><strong><span style=3D"font-size:11.0pt;font-family:=
+&quot;Aptos&quot;,sans-serif">From:</span></strong><span style=3D"font-size=
+:11.0pt"> Reddy Guddati, Santhosh &lt;<a href=3D"mailto:santhosh.reddy.gudd=
+ati@intel.com">santhosh.reddy.guddati@intel.com</a>&gt;<br>
+<strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">Sent:</spa=
+n></strong> Friday, October 4, 2024 11:02:42 am<br>
+<strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">To:</span>=
+</strong> Kandpal, Suraj &lt;<a href=3D"mailto:suraj.kandpal@intel.com">sur=
+aj.kandpal@intel.com</a>&gt;;
+<a href=3D"mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.=
+org</a> &lt;<a href=3D"mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.=
+freedesktop.org</a>&gt;<br>
+<strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">Cc:</span>=
+</strong> Samala, Pranay &lt;<a href=3D"mailto:pranay.samala@intel.com">pra=
+nay.samala@intel.com</a>&gt;<br>
+<strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">Subject:</=
+span></strong> RE: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness mani=
+pulation in HDR mode<o:p></o:p></span></p>
+</div>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"xmsonormal">Hi Suraj,<br>
 <br>
 Agreed, we do have similar functionality in kms_brightness, but it requires=
  some adjustments .<br>
-I plan to move these functions =93backlight_read=94 , =93backlight_write=94=
- to lib/igt_sysfs and make the necessary modifications at a later stage.</s=
-pan></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">&nbsp;</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">Please provide your thoughts on this approach.</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">_____________</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D""><br>
-</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">Why not just some simple code sharing via a header file ra=
-ther than the whole lib/igt_sysfs complexity.</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D""><br>
-</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">Regards<span>,<br>
-Suraj</span><br>
+I plan to move these functions &#8220;backlight_read&#8221; , &#8220;backli=
+ght_write&#8221; to lib/igt_sysfs and make the necessary modifications at a=
+ later stage.<o:p></o:p></p>
+<p class=3D"xmsonormal">&nbsp;<o:p></o:p></p>
+<p class=3D"xmsonormal">Please provide your thoughts on this approach.<o:p>=
+</o:p></p>
+<p class=3D"xmsonormal">_____________<o:p></o:p></p>
+<p class=3D"xmsonormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"xmsonormal">Why not just some simple code sharing via a header =
+file rather than the whole lib/igt_sysfs complexity.<o:p></o:p></p>
+<p class=3D"xmsonormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"xmsonormal">Regards,<br>
+Suraj<br>
 ____________<br>
 Regards,<br>
-Santhosh</span></p>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"">&nbsp;</span></p>
+Santhosh<o:p></o:p></p>
+<p class=3D"xmsonormal">&nbsp;<o:p></o:p></p>
 <div>
-<div style=3D"border:none; border-top:solid #E1E1E1 1.0pt; padding:3.0pt 0c=
-m 0cm 0cm">
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<b><span lang=3D"EN-US" style=3D"font-size:11.0pt; font-family:&quot;Calibr=
-i&quot;,sans-serif">From:</span></b><span lang=3D"EN-US" style=3D"font-size=
-:11.0pt; font-family:&quot;Calibri&quot;,sans-serif"> Kandpal, Suraj &lt;su=
-raj.kandpal@intel.com&gt;
+<div style=3D"border:none;border-top:solid #E1E1E1 1.0pt;padding:3.0pt 0in =
+0in 0in">
+<p class=3D"xmsonormal"><b><span style=3D"font-size:11.0pt;font-family:&quo=
+t;Calibri&quot;,sans-serif">From:</span></b><span style=3D"font-size:11.0pt=
+;font-family:&quot;Calibri&quot;,sans-serif"> Kandpal, Suraj &lt;<a href=3D=
+"mailto:suraj.kandpal@intel.com">suraj.kandpal@intel.com</a>&gt;
 <br>
 <b>Sent:</b> Friday, October 4, 2024 10:50 AM<br>
-<b>To:</b> Reddy Guddati, Santhosh &lt;santhosh.reddy.guddati@intel.com&gt;=
-; igt-dev@lists.freedesktop.org<br>
-<b>Cc:</b> Samala, Pranay &lt;pranay.samala@intel.com&gt;; Reddy Guddati, S=
-anthosh &lt;santhosh.reddy.guddati@intel.com&gt;<br>
+<b>To:</b> Reddy Guddati, Santhosh &lt;<a href=3D"mailto:santhosh.reddy.gud=
+dati@intel.com">santhosh.reddy.guddati@intel.com</a>&gt;;
+<a href=3D"mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.=
+org</a><br>
+<b>Cc:</b> Samala, Pranay &lt;<a href=3D"mailto:pranay.samala@intel.com">pr=
+anay.samala@intel.com</a>&gt;; Reddy Guddati, Santhosh &lt;<a href=3D"mailt=
+o:santhosh.reddy.guddati@intel.com">santhosh.reddy.guddati@intel.com</a>&gt=
+;<br>
 <b>Subject:</b> Re: [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness man=
-ipulation in HDR mode</span></p>
+ipulation in HDR mode</span><o:p></o:p></p>
 </div>
 </div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-&nbsp;</p>
+<p class=3D"xmsonormal">&nbsp;<o:p></o:p></p>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<strong><span style=3D"font-size:11.0pt; font-family:&quot;Aptos&quot;,sans=
--serif">From:</span></strong><span style=3D"font-size:11.0pt"> Reddy Guddat=
-i, Santhosh &lt;<a href=3D"mailto:santhosh.reddy.guddati@intel.com" style=
-=3D"text-decoration:underline; color:rgb(70,120,134)">santhosh.reddy.guddat=
-i@intel.com</a>&gt;</span></p>
+<p class=3D"xmsonormal"><strong><span style=3D"font-size:11.0pt;font-family=
+:&quot;Aptos&quot;,sans-serif">From:</span></strong><span style=3D"font-siz=
+e:11.0pt"> Reddy Guddati, Santhosh &lt;<a href=3D"mailto:santhosh.reddy.gud=
+dati@intel.com"><span style=3D"color:#467886">santhosh.reddy.guddati@intel.=
+com</span></a>&gt;</span><o:p></o:p></p>
 </div>
 <div id=3D"x_mail-editor-reference-message-container">
 <div id=3D"x_divRplyFwdMsg">
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<strong><span style=3D"font-size:11.0pt; font-family:&quot;Aptos&quot;,sans=
--serif">Sent:</span></strong><span style=3D"font-size:11.0pt"> Wednesday, O=
-ctober 2, 2024 8:26:33 pm<br>
+<p class=3D"xmsonormal"><strong><span style=3D"font-size:11.0pt;font-family=
+:&quot;Aptos&quot;,sans-serif">Sent:</span></strong><span style=3D"font-siz=
+e:11.0pt"> Wednesday, October 2, 2024 8:26:33 pm<br>
 <strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">To:</span>=
-</strong> <a href=3D"mailto:igt-dev@lists.freedesktop.org" style=3D"text-de=
-coration:underline; color:rgb(70,120,134)">
-igt-dev@lists.freedesktop.org</a> &lt;<a href=3D"mailto:igt-dev@lists.freed=
-esktop.org" style=3D"text-decoration:underline; color:rgb(70,120,134)">igt-=
-dev@lists.freedesktop.org</a>&gt;<br>
+</strong> <a href=3D"mailto:igt-dev@lists.freedesktop.org">
+<span style=3D"color:#467886">igt-dev@lists.freedesktop.org</span></a> &lt;=
+<a href=3D"mailto:igt-dev@lists.freedesktop.org"><span style=3D"color:#4678=
+86">igt-dev@lists.freedesktop.org</span></a>&gt;<br>
 <strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">Cc:</span>=
-</strong> Samala, Pranay &lt;<a href=3D"mailto:pranay.samala@intel.com" sty=
-le=3D"text-decoration:underline; color:rgb(70,120,134)">pranay.samala@intel=
-.com</a>&gt;; Kandpal, Suraj &lt;<a href=3D"mailto:suraj.kandpal@intel.com"=
- style=3D"text-decoration:underline; color:rgb(70,120,134)">suraj.kandpal@i=
-ntel.com</a>&gt;;
+</strong> Samala, Pranay &lt;<a href=3D"mailto:pranay.samala@intel.com"><sp=
+an style=3D"color:#467886">pranay.samala@intel.com</span></a>&gt;; Kandpal,=
+ Suraj &lt;<a href=3D"mailto:suraj.kandpal@intel.com"><span style=3D"color:=
+#467886">suraj.kandpal@intel.com</span></a>&gt;;
  Reddy Guddati, Santhosh &lt;<a href=3D"mailto:santhosh.reddy.guddati@intel=
-.com" style=3D"text-decoration:underline; color:rgb(70,120,134)">santhosh.r=
-eddy.guddati@intel.com</a>&gt;<br>
+.com"><span style=3D"color:#467886">santhosh.reddy.guddati@intel.com</span>=
+</a>&gt;<br>
 <strong><span style=3D"font-family:&quot;Aptos&quot;,sans-serif">Subject:</=
 span></strong> [PATCH i-g-t v3 1/1] tests/kms_hdr: Test brightness manipula=
-tion in HDR mode</span></p>
+tion in HDR mode</span><o:p></o:p></p>
 </div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<br>
-<br>
-<span style=3D"font-size:11.0pt"></span></p>
+<p class=3D"xmsonormal" style=3D"margin-bottom:12.0pt"><o:p>&nbsp;</o:p></p=
+>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">Add subtest for backlight control on hdr e=
-nabled edp panels<br>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">Add subtest for ba=
+cklight control on hdr enabled edp panels<br>
 by changing brightness via sysfs.<br>
 <br>
 v2: adjust brightness range, refactor and restore brightness (Pranay)<br>
@@ -650,8 +751,8 @@ v2: adjust brightness range, refactor and restore brightness (Pranay)<br>
 v3: reuse functions, add flags to avoid duplicate code (Suraj)<br>
 <br>
 Signed-off-by: Santhosh Reddy Guddati &lt;<a href=3D"mailto:santhosh.reddy.=
-guddati@intel.com" style=3D"text-decoration:underline; color:rgb(70,120,134=
-)">santhosh.reddy.guddati@intel.com</a>&gt;<br>
+guddati@intel.com"><span style=3D"color:#467886">santhosh.reddy.guddati@int=
+el.com</span></a>&gt;<br>
 ---<br>
 &nbsp;tests/kms_hdr.c | 83 ++++++++++++++++++++++++++++++++++++++++++++++++=
 -<br>
@@ -705,49 +806,41 @@ e1.max_cll =3D 500;&nbsp;&nbsp; /* 500 nits */<br>
 &nbsp;<br>
 +/* TODO: Move adjust_brightness to lib/igt_sysfs to reuse in other tests. =
 */<br>
-+static void adjust_brightness(data_t *data, uint32_t flags)</span></p>
++static void adjust_brightness(data_t *data, uint32_t flags)</span><o:p></o=
+:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">&nbsp;</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">&nbsp;</span><o:p>=
+</o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">-----------------</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">-----------------<=
+/span><o:p></o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">&nbsp;Do we not have a function in kms_bri=
-ghtness to manipulate brightness let's reuse that rather than writing the w=
-hole function here</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">&nbsp;Do we not ha=
+ve a function in kms_brightness to manipulate brightness let's reuse that r=
+ather than writing the whole function here</span><o:p></o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">&nbsp;</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">&nbsp;</span><o:p>=
+</o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">Regards,</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">Regards,</span><o:=
+p></o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">Suraj Kandpal</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">Suraj Kandpal</spa=
+n><o:p></o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-<span style=3D"font-size:11.0pt">&nbsp;</span></p>
+<p class=3D"xmsonormal"><span style=3D"font-size:11.0pt">&nbsp;</span><o:p>=
+</o:p></p>
 </div>
 <div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif; margin-bottom:12.0pt">
-<span style=3D"font-size:11.0pt">----------------------<br>
+<p class=3D"xmsonormal" style=3D"margin-bottom:12.0pt"><span style=3D"font-=
+size:11.0pt">----------------------<br>
 +{<br>
 +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; char brightness_path[1024];<br>
 +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int brightness_fd;<br>
@@ -923,17 +1016,17 @@ quot;static-swap&quot;)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
 sp;&nbsp;&nbsp;&nbsp; test_hdr(&amp;data, TEST_SWAP);<br>
 -- <br>
-2.34.1</span></p>
+2.34.1</span><o:p></o:p></p>
 </div>
-<p class=3D"x_MsoNormal" style=3D"margin:0cm; font-size:12pt; font-family:A=
-ptos,sans-serif">
-&nbsp;</p>
+<p class=3D"xmsonormal">&nbsp;<o:p></o:p></p>
 </div>
 </div>
-<br>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+</div>
+</div>
 </div>
 </div>
 </body>
 </html>
 
---_000_SN6PR11MB27047F18FC2823284053C086DB7F2SN6PR11MB2704namp_--
+--_000_SN7PR11MB6750D1F3B50ECC79FA88D342E37F2SN7PR11MB6750namp_--
