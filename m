@@ -4,51 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3672CEDD80
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 11:30:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBDA8CEDD85
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 11:30:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6439310E111;
-	Wed,  9 Oct 2024 11:30:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AB4B010E163;
+	Wed,  9 Oct 2024 11:30:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e7iMUJlR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XXLlegoS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CE96610E111
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 11:30:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAAA410E163
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 11:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728473425; x=1760009425;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=ZMhXeR+L7C3kAvdBV4iFFJO+yXtLT3aDX5zXId58vJw=;
- b=e7iMUJlRvlf5msEfty7JOWatsc1V4yTf5dc65eWJvkBK7WBTZB0Lpkb7
- ZxcchPG0GSgdBLvfvMbLL47QUBbi7VnwfiVJyDXvgjnMs0t5k4A4pzwoP
- BULi6B/TLHM08qezMr/IMlfB6AlZZSv49by+DyFFp8nlBcr6amTplB6Ag
- 5lXH3kEn79N1WuQnuu1ZRLWm4eZ+6VSv9JKTubcNTm5PqWWSZL9XgeXEx
- 2aD/Ql26/bQDJi3e3Ch7pBjVE3DJfKFSsPBhz+Uhrs1QsnprOP9PEiEVr
- /1MSiwhtYXknWhKUwCaNAYZZPw8stNLNog/0ZdHI1NVn/OKthwkSbk2Tg Q==;
-X-CSE-ConnectionGUID: g3I+jmq7Ql6lf3mRuHt99A==
-X-CSE-MsgGUID: kqlW0alURne3NRIuQ+Ix6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="27853158"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="27853158"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 04:30:24 -0700
-X-CSE-ConnectionGUID: J/MnJ0j3SCGoP9n0oIVqmw==
-X-CSE-MsgGUID: MBdaExyDSoayBzVVDRZVBw==
+ t=1728473433; x=1760009433;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=6ud1l8AaamyM15HoW3y5B7YPoCLxswULsThl683GxOE=;
+ b=XXLlegoSwEn56kBRQ4zVhFMn38RQJW317G4nr44HjBQwBWstMKNYJLhP
+ w4d0JKZuQEd9T9NgQyl/Puuzp8utbUiV06Lg8YPHPBTA7O/roSnJiWsT5
+ h1crwhwNdIwZEQL46MigKgTPkrG9dBlv9mg+fqoTw1TNsA50QIcWucvxB
+ pK3OrTq3C0RC7pRldryES2hJLE/qyFpGp2tdWD/Pf4mDmKBCHh3V3ZSKV
+ 8/6OvKBY9+wAvflvAJZxDHPl0Ff0YbnvPp25ny9VPLT4H/sVNigElOcbV
+ DHD8Ybai/6c6GguW1N7hcMrdWElEfeByQ2k+z5opzTRB29Aeg9zO5kqPr Q==;
+X-CSE-ConnectionGUID: 4q+8Sra6Tf2rlqW0bFD9Pg==
+X-CSE-MsgGUID: 8QJxXl4JToGjoAlP6g+Lww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="45286183"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="45286183"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2024 04:30:33 -0700
+X-CSE-ConnectionGUID: FtesljCqTHmO428rEWvprw==
+X-CSE-MsgGUID: +ChMh4V6T0KP/8E4Fn9iJA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="75819429"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="113699865"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.16.246])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 04:30:22 -0700
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2024 04:30:29 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 0/6] Introduce xe_sriov_flr test
-Date: Wed,  9 Oct 2024 13:30:12 +0200
-Message-Id: <20241009113018.741371-1-marcin.bernatowicz@linux.intel.com>
+Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ Adam Miszczak <adam.miszczak@linux.intel.com>,
+ Jakub Kolakowski <jakub1.kolakowski@intel.com>,
+ Lukasz Laguna <lukasz.laguna@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Wajdeczko?= <michal.wajdeczko@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+ Narasimha C V <narasimha.c.v@intel.com>,
+ =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>,
+ Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
+ Tomasz Lis <tomasz.lis@intel.com>
+Subject: [PATCH i-g-t 1/6] lib/igt_sriov_device: add helper for opening SR-IOV
+ device sysfs
+Date: Wed,  9 Oct 2024 13:30:13 +0200
+Message-Id: <20241009113018.741371-2-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20241009113018.741371-1-marcin.bernatowicz@linux.intel.com>
+References: <20241009113018.741371-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -67,68 +79,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce VF (Virtual Function) FLR (Function Level Reset) tests to
-validate shared resource cleanup and ensure isolation across VFs (confirm
-that one VF's FLR does not affect another VF's resources). To reduce
-runtime perform a single FLR and verify all subchecks (clear-lmem,
-clear-ggtt, clear-scratch-regs, clear-media-scratch-regs) in one go.
-The proposed skeleton ensures that while one subcheck may stop due
-to failure or a skip condition, other subchecks can continue execution.
+Helper allows to open sysfs directory corresponding to SR-IOV device.
 
-The series includes:
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Michał Winiarski <michal.winiarski@intel.com>
+Cc: Narasimha C V <narasimha.c.v@intel.com>
+Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
+Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
+Cc: Tomasz Lis <tomasz.lis@intel.com>
+---
+ lib/igt_sriov_device.c | 32 ++++++++++++++++++++++++++++++++
+ lib/igt_sriov_device.h |  1 +
+ 2 files changed, 33 insertions(+)
 
-lib/igt_sriov_device: Add helper for opening SR-IOV device sysfs
-lib/igt_sriov_device: Add helper for resetting SR-IOV device
-
-tests/intel/xe_sriov_flr: Add skeleton for clear and isolation tests
-Introduce a skeleton and verify_flr method to orchestrate FLRs across VFs.
-
-tests/intel/xe_sriov_flr: Implement clear-ggtt subcheck
-Add GGTT subcheck to verify address resets post-FLR.
-
-tests/intel/xe_sriov_flr: Implement clear-lmem subcheck
-Add LMEM subcheck to validate VF memory clearing post-FLR.
-
-tests/intel/xe_sriov_flr: Implement clear-scratch-regs and
-                          clear-media-scratch-regs subchecks
-Add subchecks to verify clearing of scratch and media scratch registers
-post-FLR.
-
-Example test output:
-
-ATSM:~# xe_sriov_flr
-IGT-Version: 1.29-gf1c71392e (x86_64) (Linux: 6.11.0-rc5-xe+ x86_64)
-Using IGT_SRANDOM=1728461543 for randomisation
-Opened device: /dev/dri/card1
-Starting subtest: flr-vf1-clear
-clear-ggtt: SUCCESS
-clear-lmem: SUCCESS
-clear-scratch-regs: SUCCESS
-clear-media-scratch-regs: SKIP : No media GT
-Subtest flr-vf1-clear: SUCCESS (7.506s)
-Starting subtest: flr-each-isolation
-clear-ggtt: SUCCESS
-clear-lmem: SUCCESS
-clear-scratch-regs: SUCCESS
-clear-media-scratch-regs: SKIP : No media GT
-Subtest flr-each-isolation: SUCCESS (11.797s)
-
-Marcin Bernatowicz (6):
-  lib/igt_sriov_device: add helper for opening SR-IOV device sysfs
-  lib/igt_sriov_device: add helper for resetting SR-IOV device
-  tests/intel/xe_sriov_flr: Add skeleton for clear and isolation tests
-  tests/intel/xe_sriov_flr: Implement clear-ggtt subcheck
-  tests/intel/xe_sriov_flr: Implement clear-lmem subcheck
-  tests/intel/xe_sriov_flr: Implement clear-scratch-regs and
-    clear-media-scratch-regs subchecks
-
- lib/igt_sriov_device.c     |  83 ++++
- lib/igt_sriov_device.h     |   3 +
- tests/intel/xe_sriov_flr.c | 911 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   1 +
- 4 files changed, 998 insertions(+)
- create mode 100644 tests/intel/xe_sriov_flr.c
-
+diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+index 7c3814bf2..d20c74823 100644
+--- a/lib/igt_sriov_device.c
++++ b/lib/igt_sriov_device.c
+@@ -5,6 +5,7 @@
+ 
+ #include <dirent.h>
+ #include <errno.h>
++#include <fcntl.h>
+ #include <limits.h>
+ #include <pciaccess.h>
+ 
+@@ -381,3 +382,34 @@ void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num)
+ {
+ 	igt_assert(__igt_sriov_bind_vf_drm_driver(pf, vf_num, false));
+ }
++
++/**
++ * igt_sriov_device_sysfs_open:
++ * @pf: PF device file descriptor
++ * @vf_num: VF number (1-based to identify single VF) or 0 for PF
++ *
++ * Open the sysfs directory corresponding to SR-IOV device.
++ *
++ * Returns:
++ * The SR-IOV device sysfs directory fd, -1 on failure.
++ */
++int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num)
++{
++	char path[PATH_MAX];
++	int sysfs, fd;
++
++	sysfs = igt_sysfs_open(pf);
++	if (sysfs < 0)
++		return -1;
++
++	if (!vf_num)
++		snprintf(path, sizeof(path), "device");
++	else
++		/* vf_num is 1-based, but virtfn is 0-based */
++		snprintf(path, sizeof(path), "device/virtfn%u", vf_num - 1);
++
++	fd = openat(sysfs, path, O_DIRECTORY | O_RDONLY);
++	close(sysfs);
++
++	return fd;
++}
+diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+index 20ffc515f..dc95a4c78 100644
+--- a/lib/igt_sriov_device.h
++++ b/lib/igt_sriov_device.h
+@@ -30,6 +30,7 @@ int igt_sriov_open_vf_drm_device(int pf, unsigned int vf_num);
+ bool igt_sriov_is_vf_drm_driver_probed(int pf, unsigned int vf_num);
+ void igt_sriov_bind_vf_drm_driver(int pf, unsigned int vf_num);
+ void igt_sriov_unbind_vf_drm_driver(int pf, unsigned int vf_num);
++int igt_sriov_device_sysfs_open(int pf, unsigned int vf_num);
+ 
+ /**
+  * for_each_sriov_vf - Helper for running code on each VF
 -- 
 2.31.1
 
