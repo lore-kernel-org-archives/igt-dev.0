@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44BA3CF044A
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 10:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71730CF044A
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Oct 2024 10:40:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 070C910E6C3;
-	Wed,  9 Oct 2024 10:36:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20BA410E6D5;
+	Wed,  9 Oct 2024 10:40:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B3qPExWR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ihnprNCn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0A3310E6C3;
- Wed,  9 Oct 2024 10:36:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2932410E6CD
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Oct 2024 10:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728470172; x=1760006172;
+ t=1728470422; x=1760006422;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/1yJPIcuig1DfVUYSUgFXiHyrSGppyebBEqcdY5gqGk=;
- b=B3qPExWRSUk2Uw8equ41SMya9Nx6Ez5MbKnc86LCghDTgbzCQ1wQUK3E
- xyXf2cpuD/JYoUUNrl08lIcAEwoFGUmWdUrHIM/yZtkgibkzGxKIr17Vg
- qSmLZNewmmszgvEl0NUicmB4ORPSh5Ycptv/c7j+vVauG0BYvul79bTTx
- Y5lQWir+IPy4MLpPDa8Yw9yJiJDDcXvqk9Tled57XiJvNVsYYbVJBcsII
- LFl7eieu+49C9Ppyfgu/4QyGUp11rkWwfDmwcT1jGFcznYeo4HyR/6upg
- wDTlVMouMvBAaxxDQvUbAlfoj1/I9nMD6mAM1kAEwKzQHgXaizRvUfkJT w==;
-X-CSE-ConnectionGUID: 7njgJlfvT8yWsYy0+gDvOw==
-X-CSE-MsgGUID: cAElj41ySP6FF+CjcJ+7ag==
-X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="50296290"
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="50296290"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 03:36:11 -0700
-X-CSE-ConnectionGUID: oB6TncDJTIKfFpopOmN4Cg==
-X-CSE-MsgGUID: a1vvyXBySQmilWtOljelQQ==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=SKop8edx8nC6zsi4aiyqH+xPltDeRlWvbCIHwbife3U=;
+ b=ihnprNCnPOChK/t9LGOYKoA6rpuAB/T+S7D1c0NHGeK17TWmXc5ZftUj
+ Gugj+WCJS41ok9SzUb2KIg0P7kTksxDW9EvaMrtF6WyEf/fwiYoop9gH5
+ H3v2JGDV510LIwflcACvwcBQsDWPkpPrLK/JdiEKLa7KUqMQ4W3ff9lsC
+ AGzSRFH7h2+Lrhix6iBpmTKnWsxcCnMP7lESdZw2EFvdPCmOI/RJqlnpH
+ Id2T88wMLUZN4E+Ynv5tbKHJXB/SEY5DQEXkcDibFR1qAB0JW3R+aLImZ
+ d4Dt/Dr5d3UPaTSFITq5SfPvIIl7B+Fq8uhTWK/qWJ/PMODsqF/+yK114 w==;
+X-CSE-ConnectionGUID: 9iUYutCvTtehp0KSRIrsqg==
+X-CSE-MsgGUID: sN5HyN04QFWh0O/wPAX7rQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11219"; a="45228789"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="45228789"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2024 03:40:22 -0700
+X-CSE-ConnectionGUID: ilAXiq5BRnmhNv/JTtQ89Q==
+X-CSE-MsgGUID: RV3CDwTLTJSLIBSlOrsHAQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="76517608"
+X-IronPort-AV: E=Sophos;i="6.11,189,1725346800"; d="scan'208";a="107025379"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 03:36:10 -0700
-Date: Wed, 9 Oct 2024 12:36:08 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Oct 2024 03:40:21 -0700
+Date: Wed, 9 Oct 2024 12:40:18 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>, intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] xe: Add test to check pci memory barrier capability
-Message-ID: <20241009103608.uw7fbirmms2dfv62@kamilkon-desk.igk.intel.com>
+Cc: Zhanjun Dong <zhanjun.dong@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/1] xe_exec_capture: Add xe_exec_capture test
+Message-ID: <20241009104018.f4ffhin2fczgh6pj@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Tejas Upadhyay <tejas.upadhyay@intel.com>,
- intel-gfx@lists.freedesktop.org
-References: <20241009095608.663743-1-tejas.upadhyay@intel.com>
+ Zhanjun Dong <zhanjun.dong@intel.com>
+References: <20241007221348.3559076-1-zhanjun.dong@intel.com>
+ <20241007221348.3559076-2-zhanjun.dong@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241009095608.663743-1-tejas.upadhyay@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241007221348.3559076-2-zhanjun.dong@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,139 +72,275 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Tejas,
-On 2024-10-09 at 15:26:08 +0530, Tejas Upadhyay wrote:
-> We want to make sure that direct mmap mapping of physical
-> page at doorbell space and whole page is accessible in order
-> to use pci memory barrier effect effectively.
-> 
-> This is basic pci memory barrier test to showcase xe driver
-> support for feature. In follow up patches we will have more
-> of corner and negative tests added later.
-> 
-> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> ---
->  include/drm-uapi/xe_drm.h       |  3 ++
+Hi Zhanjun,
+On 2024-10-07 at 15:13:48 -0700, Zhanjun Dong wrote:
 
-Please send updates to drm-uapi with a separate patch.
+please add 'tests/intel/' prefix in subject, for example:
+
+tests/intel/xe_exec_capture: Add devcoredump test
+
+> Test with GuC reset, check if devcoredump register dump is within the
+> range.
+> 
+> Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+> ---
+>  tests/intel/xe_exec_capture.c | 227 ++++++++++++++++++++++++++++++++++
+>  tests/meson.build             |   1 +
+>  2 files changed, 228 insertions(+)
+>  create mode 100644 tests/intel/xe_exec_capture.c
+> 
+> diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
+> new file mode 100644
+> index 000000000..3ca137989
+> --- /dev/null
+> +++ b/tests/intel/xe_exec_capture.c
+> @@ -0,0 +1,227 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: Basic tests for GuC based register capture
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: CMD submission
+> + * Functionality: Debug
+> + * Test category: functionality test
+> + */
+> +
+> +#include <ctype.h>
+> +#include <math.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +#include "xe_drm.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +#include "xe/xe_spin.h"
+> +
+> +#define MAX_N_EXECQUEUES	16
+> +#define MAX_INSTANCE		9
+> +#define GT_RESET			(0x1 << 0)
+> +#define CLOSE_FD			(0x1 << 1)
+> +#define CLOSE_EXEC_QUEUES	(0x1 << 2)
+> +#define VIRTUAL				(0x1 << 3)
+> +#define PARALLEL			(0x1 << 4)
+> +#define CAT_ERROR			(0x1 << 5)
+> +
+> +#define CMD_BUFFER_SIZE		1024
+> +#define MAX_PATH_NAME_LEN	512
+> +static void get_cmd_output(const char *command, char *buf)
+> +{
+> +	int length;
+> +	FILE *handle = popen(command, "r");
+> +
+> +	fgets(buf, CMD_BUFFER_SIZE, handle);
+> +	pclose(handle);
+> +
+> +	/* Remove trailing space */
+> +	length = strlen(buf);
+> +	while (length > 0 && isspace(buf[length - 1]))
+> +		buf--;
+> +	buf[length] = '\0';
+> +}
+> +
+> +static void find_devcoredump(char *card_dir)
+> +{
+> +	get_cmd_output("sudo bash -c 'cd /sys/class/drm;for dir in $(ls -d card?);"
+> +		       "do if [ -e $dir/device/devcoredump/data ];then echo $dir;fi;done'",
+> +		       card_dir);
+
+Please do not use outside commands like bash, awk or other,
+use only C and parse it for yourself.
 
 Regards,
 Kamil
 
->  tests/intel/xe_pci_membarrier.c | 77 +++++++++++++++++++++++++++++++++
->  tests/meson.build               |  1 +
->  3 files changed, 81 insertions(+)
->  create mode 100644 tests/intel/xe_pci_membarrier.c
-> 
-> diff --git a/include/drm-uapi/xe_drm.h b/include/drm-uapi/xe_drm.h
-> index f0a450db9..866dc8060 100644
-> --- a/include/drm-uapi/xe_drm.h
-> +++ b/include/drm-uapi/xe_drm.h
-> @@ -823,6 +823,9 @@ struct drm_xe_gem_mmap_offset {
->  	/** @offset: The fake offset to use for subsequent mmap call */
->  	__u64 offset;
->  
-> +	/* Specific MMAP offset for PCI memory barrier */
-> +#define DRM_XE_PCI_BARRIER_MMAP_OFFSET (0x50 << PAGE_SHIFT)
+> +	igt_assert(strlen(card_dir) > 0);
+> +}
 > +
->  	/** @reserved: Reserved */
->  	__u64 reserved[2];
->  };
-> diff --git a/tests/intel/xe_pci_membarrier.c b/tests/intel/xe_pci_membarrier.c
-> new file mode 100644
-> index 000000000..a28a01d4b
-> --- /dev/null
-> +++ b/tests/intel/xe_pci_membarrier.c
-> @@ -0,0 +1,77 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright(c) 2024 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#include "xe_drm.h"
-> +#include "igt.h"
-> +
-> +/**
-> + * TEST: Test if the driver is capable of putting pci memory barrier using mmap
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: Memory management tests
-> + * Functionality: mmap with pre-defined offset
-> + */
-> +
-> +IGT_TEST_DESCRIPTION("Basic MMAP tests pci memory barrier effect with special offset");
-> +#define PAGE_SHIFT 12
-> +#define PAGE_SIZE 4096
-> +
-> +/**
-> + * SUBTEST: pci-membarrier-basic
-> + * Description: create pci memory barrier with write on defined mmap offset.
-> + * Test category: functionality test
-> + *
-> + */
-> +
-> +static void pci_membarrier(int xe)
+> +static void rm_devcoredump(void)
 > +{
-> +	uint64_t flags = MAP_SHARED;
-> +	uint64_t offset = DRM_XE_PCI_BARRIER_MMAP_OFFSET;
-> +	unsigned int prot = PROT_WRITE;
-> +	uint32_t *ptr;
-> +	uint64_t size = PAGE_SIZE;
-> +	struct timespec tv;
+> +	char command[CMD_BUFFER_SIZE];
+> +	char card_dir[MAX_PATH_NAME_LEN];
 > +
-> +	ptr = mmap(NULL, size, prot, flags, xe, offset);
-> +	igt_assert(ptr != MAP_FAILED);
+> +	find_devcoredump(card_dir);
+> +	sprintf(command, "sudo bash -c \"echo '0'>/sys/class/drm/%s/device/devcoredump/data\"",
+> +		card_dir);
+> +	get_cmd_output(command, card_dir);
+> +}
 > +
-> +	/* Check whole page for any errors, also check as
-> +	 * we should not read written values back
-> +	 */
-> +	for (int i = 0; i < size / sizeof(*ptr); i++) {
-> +		/* It is expected unconfigured doorbell space
-> +		 * will return read value 0xdeadbeef
-> +		 */
-> +		igt_assert_eq_u32(READ_ONCE(ptr[i]), 0xdeadbeef);
+> +static void check_capture_output(const char *tag, uint64_t addr_lo, uint64_t addr_hi)
+> +{
+> +	char command[CMD_BUFFER_SIZE];
+> +	char output[CMD_BUFFER_SIZE];
+> +	char card_dir[MAX_PATH_NAME_LEN];
+> +	uint64_t result;
 > +
-> +		igt_gettime(&tv);
-> +		ptr[i] = i;
-> +		if (READ_ONCE(ptr[i]) == i) {
-> +			while (READ_ONCE(ptr[i]) == i)
-> +				;
-> +			igt_info("fd:%d value retained for %"PRId64"ns pos:%d\n",
-> +				 xe, igt_nsec_elapsed(&tv), i);
+> +	find_devcoredump(card_dir);
+> +
+> +	sprintf(command, "sudo awk '/%s/{print $2}' /sys/class/drm/%s/device/devcoredump/data",
+> +		tag, card_dir);
+> +	get_cmd_output(command, output);
+> +	result = strtol(output, NULL, 16);
+> +
+> +	igt_debug("output:[%s] expected:[%lX-%lX]\n", output, addr_lo, addr_hi);
+> +
+> +	igt_assert((addr_lo <= result) && (result <= addr_hi));
+> +}
+> +
+> +/**
+> + * SUBTEST: close-fd
+> + * Description: Test close fd, check if devcoredump register dump is within the
+> + */
+> +
+> +static void
+> +test_legacy_mode(int fd, struct drm_xe_engine_class_instance *eci,
+> +		 int n_exec_queues, int n_execs, unsigned int flags)
+> +{
+> +	uint32_t vm;
+> +	const uint64_t addr = 0x1a0000;
+> +	struct drm_xe_sync sync[2] = {
+> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+> +	};
+> +	struct drm_xe_exec exec = {
+> +		.num_batch_buffer = 1,
+> +		.num_syncs = 2,
+> +		.syncs = to_user_pointer(sync),
+> +	};
+> +	uint32_t exec_queues[MAX_N_EXECQUEUES];
+> +	uint32_t syncobjs[MAX_N_EXECQUEUES];
+> +	size_t bo_size;
+> +	uint32_t bo = 0;
+> +	struct {
+> +		struct xe_spin spin;
+> +		uint32_t batch[16];
+> +		uint64_t pad;
+> +		uint32_t data;
+> +	} *data;
+> +	struct xe_spin_opts spin_opts = { .preempt = false };
+> +	int i, b;
+> +
+> +	igt_assert(n_exec_queues <= MAX_N_EXECQUEUES);
+> +
+> +	if (flags & CLOSE_FD)
+> +		fd = drm_open_driver(DRIVER_XE);
+> +
+> +	vm = xe_vm_create(fd, 0, 0);
+> +	bo_size = sizeof(*data) * n_execs;
+> +	bo_size = xe_bb_size(fd, bo_size);
+> +
+> +	bo = xe_bo_create(fd, vm, bo_size,
+> +			  vram_if_possible(fd, eci->gt_id),
+> +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	data = xe_bo_map(fd, bo, bo_size);
+> +
+> +	for (i = 0; i < n_exec_queues; i++) {
+> +		exec_queues[i] = xe_exec_queue_create(fd, vm, eci, 0);
+> +		syncobjs[i] = syncobj_create(fd, 0);
+> +	};
+> +
+> +	sync[0].handle = syncobj_create(fd, 0);
+> +	xe_vm_bind_async(fd, vm, 0, bo, 0, addr, bo_size, sync, 1);
+> +
+> +	for (i = 0; i < n_execs; i++) {
+> +		uint64_t base_addr = addr;
+> +		uint64_t batch_offset = (char *)&data[i].batch - (char *)data;
+> +		uint64_t batch_addr = base_addr + batch_offset;
+> +		uint64_t spin_offset = (char *)&data[i].spin - (char *)data;
+> +		uint64_t sdi_offset = (char *)&data[i].data - (char *)data;
+> +		uint64_t sdi_addr = base_addr + sdi_offset;
+> +		uint64_t exec_addr;
+> +		int e = i % n_exec_queues;
+> +
+> +		if (!i) {
+> +			spin_opts.addr = base_addr + spin_offset;
+> +			xe_spin_init(&data[i].spin, &spin_opts);
+> +			exec_addr = spin_opts.addr;
+> +		} else {
+> +			b = 0;
+> +			data[i].batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+> +			data[i].batch[b++] = sdi_addr;
+> +			data[i].batch[b++] = sdi_addr >> 32;
+> +			data[i].batch[b++] = 0xc0ffee;
+> +			data[i].batch[b++] = MI_BATCH_BUFFER_END;
+> +			igt_assert(b <= ARRAY_SIZE(data[i].batch));
+> +
+> +			exec_addr = batch_addr;
 > +		}
-> +		igt_assert_neq(READ_ONCE(ptr[i]), i);
+> +
+> +		sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+> +		sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> +		sync[1].handle = syncobjs[e];
+> +
+> +		exec.exec_queue_id = exec_queues[e];
+> +		exec.address = exec_addr;
+> +		if (e != i)
+> +			syncobj_reset(fd, &syncobjs[e], 1);
+> +		xe_exec(fd, &exec);
 > +	}
 > +
-> +	munmap(ptr, size);
+> +	for (i = 0; i < n_exec_queues && n_execs; i++)
+> +		igt_assert(syncobj_wait(fd, &syncobjs[i], 1, INT64_MAX, 0,
+> +					NULL));
+> +	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+> +	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+> +	igt_assert(syncobj_wait(fd, &sync[0].handle, 1, INT64_MAX, 0, NULL));
+> +
+> +	syncobj_destroy(fd, sync[0].handle);
+> +	for (i = 0; i < n_exec_queues; i++) {
+> +		syncobj_destroy(fd, syncobjs[i]);
+> +		xe_exec_queue_destroy(fd, exec_queues[i]);
+> +	}
+> +
+> +	munmap(data, bo_size);
+> +	gem_close(fd, bo);
+> +	xe_vm_destroy(fd, vm);
+> +
+> +	check_capture_output("ACTHD:", addr, addr + sizeof(data->batch));
+> +	check_capture_output("RING_BBADDR:", addr, addr + sizeof(data->batch));
+> +
+> +	rm_devcoredump();
 > +}
 > +
 > +igt_main
 > +{
-> +	int xe;
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	int fd;
 > +
-> +	igt_fixture {
-> +		xe = drm_open_driver(DRIVER_XE);
-> +	}
+> +	igt_fixture
+> +		fd = drm_open_driver(DRIVER_XE);
 > +
-> +	igt_subtest_f("pci-membarrier-basic")
-> +		pci_membarrier(xe);
+> +	igt_subtest("close-fd")
+> +		xe_for_each_engine(fd, hwe) {
+> +			igt_debug("Engine class: %x inst: %x\n", hwe->engine_class,
+> +				  hwe->engine_instance);
 > +
-> +	igt_fixture {
-> +		close(xe);
-> +	}
+> +			test_legacy_mode(fd, hwe, 1, 1, 0);
+> +		}
+> +
+> +	igt_fixture
+> +		drm_close_driver(fd);
 > +}
 > diff --git a/tests/meson.build b/tests/meson.build
-> index e5d8852f3..310ef0e0d 100644
+> index 2d8cb87d5..b724a7c6d 100644
 > --- a/tests/meson.build
 > +++ b/tests/meson.build
-> @@ -304,6 +304,7 @@ intel_xe_progs = [
->  	'xe_noexec_ping_pong',
->  	'xe_oa',
->  	'xe_pat',
-> +        'xe_pci_membarrier',
->  	'xe_peer2peer',
->  	'xe_pm',
->  	'xe_pm_residency',
+> @@ -284,6 +284,7 @@ intel_xe_progs = [
+>  	'xe_exec_atomic',
+>  	'xe_exec_balancer',
+>  	'xe_exec_basic',
+> +	'xe_exec_capture',
+>  	'xe_exec_compute_mode',
+>  	'xe_exec_fault_mode',
+>  	'xe_exec_mix_modes',
 > -- 
 > 2.34.1
 > 
