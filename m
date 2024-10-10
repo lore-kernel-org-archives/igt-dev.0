@@ -4,123 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD4EDCF07A2
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Oct 2024 04:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61713CF07A5
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Oct 2024 05:12:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 915D810E859;
-	Thu, 10 Oct 2024 04:58:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E61FE10E85D;
+	Thu, 10 Oct 2024 05:12:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="fwWGM2+L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CA4L1A4l";
 	dkim-atps=neutral
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam12on2052.outbound.protection.outlook.com [40.107.244.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96C5A10E859
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Oct 2024 04:58:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7795E10E85C
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Oct 2024 05:12:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728537164; x=1760073164;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=cVifxCGE3NlnLzhcOSMQU5jqJDi2zr5ssL+NNXSXXaE=;
+ b=CA4L1A4lRg/MfBuSLoN+yz66HDXCvNFcDC0BqtAq8O2y3DKqE2nW5uZR
+ iImqD84t22LsHC+IwUDDbFFareXqAPe7/JtKB9RDw5ZsTG7iW/ROIBSmX
+ 2GCmrX4IbkCRKf/PK8qHbhdjlPKYTtEEF5TW3AXGrEoQ4Fv6qptOJsmIv
+ Zz4TUWUr69EpTxHWTRMVgI0byfIB0GYqjvmRlLs9Y8Lxhtnp/1CGTEDpY
+ a0p3Ft3CCnz3t+bWGTvsT/u0999kNC8BJjmbWfYLd7ReMGxeTkxuDqg65
+ xEaFGDM1vkKRr0xnnNdxvcS2hAFQn3hFqj/349K2n5f7n6uTIrGUPXUd2 w==;
+X-CSE-ConnectionGUID: QMr1yDnCQIaPhLDOwv99+g==
+X-CSE-MsgGUID: cCzxssWTSWueigE+PTQATg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="27318981"
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; d="scan'208";a="27318981"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Oct 2024 22:12:43 -0700
+X-CSE-ConnectionGUID: y1lTXmtnTQaqntBJj9kxGQ==
+X-CSE-MsgGUID: yc3DuC69Rdmc5Y978endOQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; d="scan'208";a="107205075"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 09 Oct 2024 22:12:43 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 9 Oct 2024 22:12:42 -0700
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 9 Oct 2024 22:12:42 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.44) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 9 Oct 2024 22:12:42 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HQcEXYSUjV/U9ohP+RkdkU/kD8zfoTP5c4tybdsWTZ0ZV1XldRUaxvcB9qJ48uY/SE1hjkVUacuS9XjChMsoCgn4cqWcE5hvo4TA98qM9fFzrQLTH3+syXQBxM6pzBjkkGCQKlJww6CcNH6ZTzR0wRmzmgrYVkKGEuv1QB8gOa8etVdWVQxcK4pmN4aEPWPIyMzdS/GHRSO0kohmP+0ygzedTQS0b+umNDcqr9qz4eT4A10W/qvJOM9djJ4IXJLWvsyY8zVFfXsIqS3NOYReHegCNW/i5TfmF/APcedoeTnLDNs8hOxIFU9TAr7iWRmnemTeydpFelnw9nf4CY/W7Q==
+ b=ZNsmIhMFBukPz0SDfChEAmzcAq/2k2aTaUwnrqULpkGL2EiBQWVLjQG5Fjn+XpcipWYDY0lez328q9wP8Rkeg7XqjDUKLX7l1GLLTRzuO2YeogwZoa9GJh9NLyUQQ6mqhtTlCnh6CmOeh1irr2DYfj2FtumKo14KNvfk2kG//N0YCAzVeqEeBKl8fHxSVgrQjwvtdfeha7m4pooQGJORyuXeqZN2ka2PdT44zJFdtRTlbIZgVCtrJyXylKRiITL70B3NEROuKsIhht/SIMpsJnLgKrxNRtAwpbSUXym2QtOB6/ipaxC/uMqGYZvLYkj8QA3MPCTjhWDEnUuJzvQv6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LzqieM+MaD1TvbAEXEcH9w9ULwk8fTNXNbyceurB4vk=;
- b=ZlOAhmdi45mtBR0Tz0e+Ol75/ZHEMBtieToDmSBZAJHqQxF+9SIBxSshhCV/DgKq/vzdE97L2rVa4TMuyyCKcRBOw/RDX11y16gwaz1pNDSwzfhzSmUv6kYeTeof4hg/mdLBXHgjltQy06iMIaeafXf6vqGazOoKzuBbAtMR+LQSn3bScJcsIxkJA3ylNRNFEWlMbp1At9GqquN8aHB/F/PMOOyG7oWu9kT2TeYRusBijNpWW6TAeWsxx586ucb/cJVm37aeVgeo0wk7saRmxcoozYRCJK0XdxzsF3ha0M1KgBJOF/UC+cNAsehLjMzsHUY2bQQtfnWe1bChwzYPZw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LzqieM+MaD1TvbAEXEcH9w9ULwk8fTNXNbyceurB4vk=;
- b=fwWGM2+L7CqwltcKQjcyvBJrblJKG0MUJxTj+xw9LZK6Be/QkfnKEH74BVGkmGWNXMxURBkJzWfOs3a+cZR1L036lhcAqnZlLFOvHJk93r1Y7tFxM11TQhYYEL74FRTRuBMsBcWzj0u2TirSwsGRBwM4ptfa5D72tE6bvvaa0ww=
-Received: from DM6PR06CA0102.namprd06.prod.outlook.com (2603:10b6:5:336::35)
- by DM4PR12MB6158.namprd12.prod.outlook.com (2603:10b6:8:a9::20) with
+ bh=twDkgdNnnUbDfEuqI7AHdne8ONdGCQtH2FRp+YXWkSc=;
+ b=zLuyQgdBv38ncUMRYrx4hHDtfzLWFH00eK7Mv40iJu2QT8MCl7pNpPZg/luEj9wztltKuqMprXckl1ldR+oLUjWhGRvK036cFa6j4ON8wkGNhd05trc8JgBHLd/JrV+Z2elPNqqnGmmZkWJ7M7S2R9tnDQb7ianTy5usmYpjbK5XyOltvD3WCxkLYUuX1oPrjLh3WpYGxZlU4lQW4MCu0YHovInfaW+Cjnv5GZz8lJH8p0Q7KqeFGqLqDPFhsvEC5aM55tdHw6ihKBFXAsXiLaPRCOt7QdUL3R0sINFptjzHRh7PCgxXGSaIKLKgCJdvThNo1ShlnrapmgH7AzZG9w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ SA1PR11MB6895.namprd11.prod.outlook.com (2603:10b6:806:2b2::20) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Thu, 10 Oct
- 2024 04:58:26 +0000
-Received: from DS3PEPF0000C381.namprd04.prod.outlook.com
- (2603:10b6:5:336:cafe::b0) by DM6PR06CA0102.outlook.office365.com
- (2603:10b6:5:336::35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18 via Frontend
- Transport; Thu, 10 Oct 2024 04:58:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- DS3PEPF0000C381.mail.protection.outlook.com (10.167.23.11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8048.13 via Frontend Transport; Thu, 10 Oct 2024 04:58:25 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 9 Oct
- 2024 23:58:25 -0500
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Wed, 9 Oct 2024 23:58:18 -0500
-From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Jesse.zhang@amd.com"
- <jesse.zhang@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t 2/2] tests/amdgpu: enhance sdma test for deadlock
-Date: Thu, 10 Oct 2024 12:58:10 +0800
-Message-ID: <20241010045810.491920-2-jesse.zhang@amd.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241010045810.491920-1-jesse.zhang@amd.com>
-References: <20241010045810.491920-1-jesse.zhang@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.18; Thu, 10 Oct
+ 2024 05:12:35 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::a255:8030:603f:7245]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::a255:8030:603f:7245%4]) with mapi id 15.20.8048.013; Thu, 10 Oct 2024
+ 05:12:35 +0000
+Message-ID: <9cf15121-2f87-45a2-93ec-ade00d3c1c7c@intel.com>
+Date: Thu, 10 Oct 2024 10:42:28 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/xe: Add tests to validate GT coarse power
+ gating status and toggle coarse power gating states
+To: <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>,
+ <anshuman.gupta@intel.com>
+CC: <badal.nilawar@intel.com>
+References: <20241009183115.1981713-1-sk.anirban@intel.com>
+Content-Language: en-US
+From: Riana Tauro <riana.tauro@intel.com>
+In-Reply-To: <20241009183115.1981713-1-sk.anirban@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0121.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:11d::11) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB03.amd.com: jesse.zhang@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS3PEPF0000C381:EE_|DM4PR12MB6158:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0d87fa3-f813-4254-2a57-08dce8e82cc6
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|SA1PR11MB6895:EE_
+X-MS-Office365-Filtering-Correlation-Id: c18a7b38-1cdc-4332-0e31-08dce8ea268f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700013|1800799024|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?4YLkA+WAwUeHjtQv4W5b+5igvfDJaeR5SfgqOa/vyRJ0yz9v5i/ngy1fMpXU?=
- =?us-ascii?Q?chq+OMFG0aQlbdwMBFBOPRPaw+uy5/9rt1gBRyj5uE4bEPzNYEOLpMvjiR/p?=
- =?us-ascii?Q?iO1MMIyqbBtlPRxEEZ8Nhb+gxB4pjlna8LlT7ie66Q9041AIBh/CdqO4y9aq?=
- =?us-ascii?Q?fVGP56EEpaRMdgaj4lNnVm2bPlKiDEDdvJ/ir9iZuIqxBBbKzEDap/PcOBzl?=
- =?us-ascii?Q?E8Op5wtW76Y8GYxgGpagdInGmP8zkhDUpA/oiDwpMVuUOofq50TfC7Vd7/3g?=
- =?us-ascii?Q?p2ZljVmqIfmQQSjUwlu/rwr083UmGJ8cCM8ZCHYiEmCeH9L/4XKT60Vetmu4?=
- =?us-ascii?Q?CKSjZ8RomygDm/FvT4BizdH2c6D/KVxF/tSGL0QESbofVzqIhwgFDhf8yRCz?=
- =?us-ascii?Q?p0wCD8nYrcBEpt2t14tX45BVsnuS5AlAV9rAP8eCZVPXcWQpr/dck13V0wiI?=
- =?us-ascii?Q?Yh7TLUqSKmJ1XIgOC8zCUk2Q7/cxwC72HEKAxS2JgHFS0CXwZggUf3MWCoaI?=
- =?us-ascii?Q?8ofb/QebcDM6IM1lXCSm/9SJ/bB109R67XZIEF5xIr/r6Q1c9tPiViORh/Z+?=
- =?us-ascii?Q?DXvi0IYObfDDk9SSb9YpRog7xtBt3mgUbEPLoE2T52eUY6A5gsDeZtSU7I2C?=
- =?us-ascii?Q?BpJf/+gZq9uiB1KxrzIaIJRSLPlcc56YsOgoo8XojiUkTW3yu0HR8ltUZeBS?=
- =?us-ascii?Q?V5u750aiDz6bAb3dTw/y4ZyTZZjfqJhRBjVXgxcebAlsJeTrTqHvqF/K/g6c?=
- =?us-ascii?Q?YgRrTSTEF5+sJz9FA2ZdinKgGLFNVSfL9Jsv8gii8zS2/iDAFNgQI8HTF6zi?=
- =?us-ascii?Q?SWxF59nw7d1EDQ5d37/dfjtFUo6w4Zs1Kb/E1DSxY3yp986QZ1MrO46ITf5k?=
- =?us-ascii?Q?C7VbhUCKvRGyuDPVvq4iqfYfJfxV8MFbF8mvE0m4u7uED2yjCeUAunHTBCUg?=
- =?us-ascii?Q?vbmdqX2wfKV82hsGaOIY0ri2nz73WC/rX2le1+WQOlqMs0UE4eO1f7V8QQZp?=
- =?us-ascii?Q?fkkXzRf09SdEJl/F4HvP1HP+fFUpnwSKDacTpgbHi/GaCljNOwz1b3pJoQjB?=
- =?us-ascii?Q?a36zjQQVbUPWt0RZAtzss2okpLIHOPwVdhlSYnw9pldc3ONMQ/D1nNOdON/4?=
- =?us-ascii?Q?sD43LpU5j20cjt3b4jo6DJFEIm1yqHWuuW6Fd5UOpjIrSM3hTKnQiEzXR13w?=
- =?us-ascii?Q?8BwnpO8RTNOPTpCZ+UN3zUt18QGai59UZqsBU2MHGktae31Q2rL5ZHbgNjLe?=
- =?us-ascii?Q?pfHb3+htY+QTBOq9iX/dsgc+WTfZVF+HYHLsDYqi3KqXWN3FN1QGo4dtWrGX?=
- =?us-ascii?Q?BrKRKOh1wfQ3N8CLsyHXpYXCOiqRjlEbxd4XUUUf8utiErcO5CiiuJR7ppq/?=
- =?us-ascii?Q?/5O7C3TcLqLRw8nBtv/rJPJlOHrm?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB03.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 04:58:25.9915 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0d87fa3-f813-4254-2a57-08dce8e82cc6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB03.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS3PEPF0000C381.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6158
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?SmJTMXdmTUYyVW9zcWJ3Ry9NdjRxWnI0OUNFRFpkVFY4RStSQmw4SGd6SVQ1?=
+ =?utf-8?B?TndkdWNQMCtUWFExVndtOXUreHNNbndkelF0bjR6dUFTaTJITXh5K0dwTFNj?=
+ =?utf-8?B?eVdzUld1Q2NKOU05T1cvNzZSd2szWXJZN3N2bTVlZU9HbEsvOGJxVVZVb3Vv?=
+ =?utf-8?B?WXJrTTdZL0M1RzQrMzJSRHFDeG10STg1VHhmRUF4bjNyaFgvYTBhbUNPZDFW?=
+ =?utf-8?B?MzZ6dDV4aTZVVmFCQzRaRzhnL21QTVcrVGhQRUxNVFJXNU9PYm51dWdsVlFu?=
+ =?utf-8?B?Vk1JM2xkSCtCcWNFalhvMnBXKy8rRVAveG1nUUhQUHNoaUs1U2padURSbU9N?=
+ =?utf-8?B?THIvZ2pZZ1FPc3owY3N1bDJGWnYvWVZ5NDM5UkJ5UVUyTUw1ZTlBVk5TWU9X?=
+ =?utf-8?B?MHNRWXdkQVZyM3pMcWhqN09LU1JDcmZOQVBpR3hjaVZSQzRlMkZ0SCt0TENo?=
+ =?utf-8?B?KzIwQ0pLTkZCQXRZZjRlUFhxVmd5d0VhZDJ4Z1UxOWxNTWd1eGo0R1lCODls?=
+ =?utf-8?B?L01lbUlwODZFMDFqanlQWDJyajU0UG9XTTNaYyszRCs0clo1WjV5eUk0amJ5?=
+ =?utf-8?B?cVdtRU1tS0FpeC9EancrbGRrYlVJSTlrVDk1OHdJVy82VmZEdEphUjBGTUg2?=
+ =?utf-8?B?RlQ2cFplbVRGem9SMVY4T1h4Rm1kK3g4cVk5ZlJJWWpxVjBueXRCZm0yUTFv?=
+ =?utf-8?B?a1J6UnI3UGFxbTdKNm5DT2czU3AzZkozYTh4bEV5S01rVVpaNjIvbzMxcEQ3?=
+ =?utf-8?B?TFpwRFVaanNicFFxRW9RRjNHYzk3K1U2Y00vRWwxK3h4amtjMXRiS2hvTUhq?=
+ =?utf-8?B?YUFURU5kdVl6Mm1EY2lhMDgvTFF3VXRVQ2N3cjc4STZvV2RrU2ZYazZXaWw1?=
+ =?utf-8?B?NThIMXl6Z0JKVXZTbVFFeGRjSU8rQnl5Y29pS1FDYU8yZ1BHSUVueHlmQ3Uy?=
+ =?utf-8?B?M09GdG1YK0U2RWorckdsS2U5UlhZdDZFTzRTeHl2UDR0d2REaUttTXlrRnBR?=
+ =?utf-8?B?Y3VwdHp3WkFQU1RCb0UzZW1jS2F1cSsxL3QxS0dyczBjUVNHdUt0NHZLdm9h?=
+ =?utf-8?B?TjdtOVNhZGo5Um11Vlppek9YQzl1eXJmaXZlTFp5cllKbWdpY0hrblRWbUY4?=
+ =?utf-8?B?c0pUVytDT052OVRqUTRvMnR6MHNqT2llNmtOMWNML1lwMlpXcmd4c3Fsdm1F?=
+ =?utf-8?B?YjhPWmlabFpXMzFzZit2QU85Z29CYmN1WUt0VUw1RHBHMHFTWEIrZGEwWW1q?=
+ =?utf-8?B?TXZ2N2dEUlhncWgrZTQ1OUQ5KzNUbkxJQ0taYXlqTTJMeWxBTDluaHZaNzFJ?=
+ =?utf-8?B?R0Y2M2xDRU5UTzRkR1EvVmdoS1NqZHhCem81QnkvQ0cvbm84Z2p5Z1RBQTFP?=
+ =?utf-8?B?aVRiK2xIdGYrcUZZVGd1dmt0NHRRY1BUWVdvM0dEajZHQzF4TGdCSGw1MjQr?=
+ =?utf-8?B?bHhrZ2tSMVovOGVvYWdnb1UwUDdhZitSMVZQcitNRko0R2tnZm5VUUdkRUtG?=
+ =?utf-8?B?M0JWSm9YOEFuZk1YUmdkclRwRHFzV3lIWU5RczMwWkV4OTJWTFB2VTg3Mklk?=
+ =?utf-8?B?NUJFdXJYT3hGYlU1VGtLcXRIOGFjU2ZnOHI0T25MTDhvOWVoZXNOd1VtbHps?=
+ =?utf-8?B?amVFVloxSTY0Y01qNmdQNERZdU15QWpCWm1WbGthRDd5SkhCR2MzZGxCSkhY?=
+ =?utf-8?B?WkZxWUdPVUZScGhoYkhZSWcrV1RwTjBraHpNSUkvUjkxa2NPVVEwdEJBPT0=?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S1pPbkZwRnZsZEN5Z0oxVWI1ZDkzQUFoMk1KTzRpUWJYdm42azg1anZzRkJh?=
+ =?utf-8?B?QUd0bU84Y2ZETnFvTGQ4VllxNllIQVBKc0pSUkdrZVd4aHRSQjlHSXpQeFo4?=
+ =?utf-8?B?NnhBQzBGN1lZVHhDYTIyNE80dFdlaWFnby9sOFR6c2VzUEl6a2RPeXAya1Bx?=
+ =?utf-8?B?QTl5bjZBYmRIRHAvNDk1ZXJ4Q250dGl6a3Z6YUw1U3dMWWg3ZnhFc3QwUGhS?=
+ =?utf-8?B?NFl1eVVidzVBdXZkUVF2UytvSkdpRG9UMHkzQUprUklLVmw4c25ySWpybGs4?=
+ =?utf-8?B?c1Y2d0dqVTJUMnkyM1lNOUhPa1dqdHBKdHZCVEFTK2twb2N5bVZNNk0wcVVa?=
+ =?utf-8?B?MCtNTWxwZGdHMEVDVWNNeGUzN3BYdnNua2dZdEc3R0RSK2NNcnhLRkVoeFJI?=
+ =?utf-8?B?RkZYZjlNWFBmMFlhNEtvejZrd0YyTTJuRSs4M2IxSVdZSm83QnhGbE9zN0Vm?=
+ =?utf-8?B?WTFDNTVkdzZjM2w4T3M2MG1ORGlWWUZCWVRQNm16WHVWYXlEUWlOeWdlSzJL?=
+ =?utf-8?B?MkNOSFZxU1BvcnVVSjdYYk13Y3ZMWU9WVnRPZkpwcFMrK0J3dDJTSXkwM3ht?=
+ =?utf-8?B?bGVMdHJGUU0xMTlOekp4WGdFazk4UEFBbFZ4YUoyam1qamxLcnQ1WlE2ZXhr?=
+ =?utf-8?B?a3FRbG9ZbHFrdldFSFJmREl5VGEyaXhHQXUwOW85UTRZa1N3YXNGMDdpaXZT?=
+ =?utf-8?B?a3VsaHU4b1dsc0hQaXNHVDl5WklHVmZ5NGJmbE1UajZQd1FrK2RjVlZLdWlV?=
+ =?utf-8?B?cXNHaFZFOTA1R1pSMTZIU1MwWEJoQjBoWEFRZnV5WC96bk10djJyR2JUYmlF?=
+ =?utf-8?B?UGVaWUo5UG15dENVdzZHWkRZd0FxRS9YWGloUXRWdzRiK2pmdzNRNjgwWjRs?=
+ =?utf-8?B?TGNHaXNSWG9CeWp3NzdwbGNRMkdXeFY3bHVQbytVa3VBcGNycElvVTRqWWY5?=
+ =?utf-8?B?eE9GajVZeWQrWUZRbTlQNzNObXZEVWpuRkZ0Wjd1OGpZbjZjdThHcUpPRGx6?=
+ =?utf-8?B?bHUxMmxQSlJmVG9JZml1dFdDc3Zabit2TEMvYVRQODNwWVRWUHJKU3A1MFBm?=
+ =?utf-8?B?dExiZDdYUlpVR2RtNVluVjZrOGsySC9xbDZGMjN1TmNtaTI3RndLTm9YVlpa?=
+ =?utf-8?B?a3pYQkRFOUNvQ1Ayb3hkWDZONzlIbkt0WGJobkpJUWw1M2RvaFYvMlQ5Qy9o?=
+ =?utf-8?B?V3dzR2FmU25kMURWSFg2dXQydnZyOEcxS21zRjBwSkEwaElMWjU0LzBic0xO?=
+ =?utf-8?B?eWtGeXFFVy8zWnBxaWtZSFVjOThvbWRRYVJpK1lvWGJlQU9qdzVwTFBNU0Qz?=
+ =?utf-8?B?eVRNK0I5VlEwcDZOcVhzcW5KT21ma0xaWWZXYmdGOWk2ekRQc0hXMThKQ2lD?=
+ =?utf-8?B?ODVaaVh4OVRGV0VkSTJUN1h1VDg1aFlzK0JQVXdxZUd5a08wUHBoalNRSlEr?=
+ =?utf-8?B?azJXM2JOMGdEc09IaHVNOE1pb3BKbm1qRXZtb1I2cjEvV3dBSmZOK2l3amcz?=
+ =?utf-8?B?WDgvb285bnJpTEZycVgwdFBFUExmSXFpZ3h4dzhaRkdiMnh0aFVOcE1HSVFo?=
+ =?utf-8?B?OHJXSnRxdVhxUVd4TDl2VkpYNEpUTnlHUnVqdDRjSFpuWFdiQmxTQjdkaElO?=
+ =?utf-8?B?T2VuMitEc1hEZGoxVkV5T280MVluamM0WnZLUWpueDF0WUM3NEJ5cWVuY3Ey?=
+ =?utf-8?B?NE1PNHRpOHNqTnpvdUJNZ2dMYTdLSk5wMGJzcXR1dENtd0tYaXZPNXRRNENW?=
+ =?utf-8?B?ZjEzWmxSRmprcTNOUmlIb0ZLZDd1ME1IUmZwWjJjVWhoRmJpQVNUQmJqb3FM?=
+ =?utf-8?B?djdiRWU0bHBzRitqYWVTMUc5YUF1eER4OCs0US9hWEdzbytmVkVBQ2R5Wlk2?=
+ =?utf-8?B?Sk93R0tiRnluUm1hQmtYOGRTU1hsWXhYYWgrNHRBekEzYmJ5Q0pHVzljbVlN?=
+ =?utf-8?B?RVNZVVBSVVJ3OWZQbWphVWg1M3MraDA5VDZuOEs3S0RsS1pSazJTZlE4OVpG?=
+ =?utf-8?B?K01TVVplckVjemRENEl4Nm9KM2xYemZiaW9ydDRKcU0vclREMzdERkJvZkgw?=
+ =?utf-8?B?Nm56Y3J1TTZhL0N2TmhzVWkvR3FWV3l1RS9RTXlHQVdKbUZkTmR1TllsU1RH?=
+ =?utf-8?Q?+YxfdxfiVjwGOChDOKTQ59IYd?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: c18a7b38-1cdc-4332-0e31-08dce8ea268f
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 05:12:35.0007 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2wSO3AHXcoUoRNNFJLEPe5agJ8pySf5SL6CtJFDdeh5VgCSoJivTEyT2V1cyevpt+rnRaGUKxxAZoTopY2sCKg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6895
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,99 +192,172 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test all sdma rings and ensure
-all rings can be recovered by sdma queue reset.
+Hi Anirban
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- tests/amdgpu/amd_deadlock.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+On 10/10/2024 12:01 AM, sk.anirban@intel.com wrote:
+> From: Sk Anirban <sk.anirban@intel.com>
+> 
+> Implement test test-cpg-basic to validate coarse power gating status
+> using a suspend cycle.
+> Add test toggle-gt-cpg to check if GT coarse power gating is up when
+> forcewake is acquired and down when released.
+> 
+> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> ---
+>   tests/intel/xe_pm_residency.c | 104 ++++++++++++++++++++++++++++++++++
+>   1 file changed, 104 insertions(+)
+> 
+> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+> index 772fe9b57..4245ea877 100644
+> --- a/tests/intel/xe_pm_residency.c
+> +++ b/tests/intel/xe_pm_residency.c
+> @@ -40,6 +40,7 @@ int fw_handle = -1;
+>   		     (double)(ref))
+>   
+>   enum test_type {
+> +	TEST_S3IDLE,
+%s/TEST_S3IDLE/TEST_S3
+>   	TEST_S2IDLE,
+>   	TEST_IDLE,
+>   };
+> @@ -63,6 +64,12 @@ enum test_type {
+>    * SUBTEST: toggle-gt-c6
+>    * Description: toggles GT C states by acquiring/releasing forcewake,
+>    *		also validates power consumed by GPU in GT C6 is lesser than that of GT C0.
+> + *
+> + * SUBTEST: test-cpg-basic
+remove test
+> + * Description: Validate GT coarse power gating status with a suspend cycle.
+> + *
+> + * SUBTEST: toggle-gt-cpg
+> + * Description: Toggle GT coarse power gating states by acquiring/releasing forcewake.
+>    */
+>   IGT_TEST_DESCRIPTION("Tests for gtidle properties");
+>   
+> @@ -317,6 +324,94 @@ static void toggle_gt_c6(int fd, int n)
+>   			     "Power consumed in GT C6 should be lower than GT C0\n");
+>   }
+>   
+> +#define RENDER_POWER_GATING "Render Power Gating Enabled: "
+> +#define MEDIA_POWER_GATING "Media Power Gating Enabled: "
+> +#define POWER_GATE_STATUS "Power Gate Status: "
+> +
+> +static void powergate_info(int fd, int gt)
+> +{
+> +	int dir;
+> +	char *str;
+> +	char *render_substr;
+> +	char *media_substr;
+> +
+> +	dir = igt_debugfs_gt_dir(fd, gt);
+> +	igt_assert(dir >= 0);
+> +
+> +	str = igt_sysfs_get(dir, "powergate_info");
+> +	igt_assert_f(str, "Failed to read sysfs attribute\n");
+> +	render_substr = strstr(str, RENDER_POWER_GATING);
+> +	if (render_substr != NULL) {
+s/if (render_substr != NULL)/ if(render_substr)
+For all if conditions below
+> +		igt_assert_f(strncmp(render_substr + strlen(RENDER_POWER_GATING), "yes", 3) == 0,
+> +		"Render Power Gating should be enabled");
+Indentation. Should match open parenthesis
+> +	}
+> +
+> +	media_substr = strstr(str, MEDIA_POWER_GATING);
+> +	if (media_substr != NULL) {
+> +		igt_assert_f(strncmp(media_substr + strlen(MEDIA_POWER_GATING), "yes", 3) == 0,
+> +		"Media Power Gating should be enabled");
+Indentation. Should match open parenthesis
+> +	}
+> +
+> +	free(str);
+> +	close(dir);
+> +}
+> +
+> +
+> +static void powergate_status(int fd, int gt, const char *expected_status)
+> +{
+> +	int dir;
+> +	char *str;
+> +	char *status_substr;
+> +
+> +	dir = igt_debugfs_gt_dir(fd, gt);
+> +	igt_assert(dir >= 0);
+> +
+> +	str = igt_sysfs_get(dir, "powergate_info");
+> +	igt_assert_f(str, "Failed to read sysfs attribute\n");
+> +	status_substr = strstr(str, POWER_GATE_STATUS);
+> +	while (status_substr != NULL) {
+> +		igt_assert_f((strncmp(status_substr + strlen(POWER_GATE_STATUS), expected_status,
+> +		strlen(expected_status)) == 0), "Power Gate Status Should be %s\n %s\n",
+> +		expected_status, str);
+> +
+> +		status_substr = strstr(status_substr + strlen(POWER_GATE_STATUS),
+> +		POWER_GATE_STATUS);
+> +	}
+> +	close(dir);
+> +}
+> +
+> +static void test_cpg_basic(int fd, int gt, enum test_type flag)
+> +{
+> +	igt_assert_f(igt_wait(xe_is_gt_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
+not necessary
+> +	if (flag == TEST_S3IDLE) {
+you don't need a flag since there are no other conditions
+> +		powergate_info(fd, gt);
+> +		igt_system_suspend_autoresume(SUSPEND_STATE_FREEZE, SUSPEND_TEST_NONE);
+you have mentioned S3 but using s2idle. Use SUSPEND_STATE_S3
+> +		powergate_info(fd, gt);
+> +	}
+> +}
+> +
+> +static void toggle_gt_cpg(int fd, int n)
+> +{
+> +	int gt;
+> +
+> +	xe_for_each_gt(fd, gt) {
+unnecessary parenthesis
+> +		powergate_info(fd, gt);
+> +	}
+> +
+> +	do {
+> +		fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+> +		igt_assert_lte(0, fw_handle);
+> +		xe_for_each_gt(fd, gt)
+> +			powergate_status(fd, gt, "up");
+Need an exit handler for this test. The forcewake will be held
+if there is an assert
+> +
+> +		close(fw_handle);
+> +		sleep(1);
+> +		xe_for_each_gt(fd, gt)
+> +			powergate_status(fd, gt, "down");
+> +		} while (--n);
+Alignment. Remove loop. Not required
+Once should be enough
+> +
+Extra line?
+> +}
+> +
+>   igt_main
+>   {
+>   	uint32_t d3cold_allowed;
+> @@ -380,6 +475,15 @@ igt_main
+>   		toggle_gt_c6(fd, NUM_REPS);
+>   	}
+>   
+> +	igt_describe("Validate Coarse power gating status during suspend cycle");
+> +	igt_subtest("test-cpg-basic")
+> +		xe_for_each_gt(fd, gt)
+> +			test_cpg_basic(fd, gt, TEST_S3IDLE);
+> +
+> +	igt_describe("Toggle GT coarse power gating states by managing forcewake");
+> +	igt_subtest("toggle-gt-cpg")
+> +			toggle_gt_cpg(fd, NUM_REPS);Indentation
 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 696fac2eb..b5d053663 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -73,7 +73,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-illegal-reg-access")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_GFX);
- 		}
- 	}
-@@ -82,7 +82,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-mem-access") {
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-illegal-mem-access")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_GFX);
- 		}
- 	}
-@@ -99,7 +99,7 @@ igt_main
- 	igt_describe("Test-GPU-reset-by-access-compute-illegal-mem-addr");
- 	igt_subtest("amdgpu-compute-illegal-mem-access") {
- 		igt_skip_on_f(!arr_cap[AMD_IP_COMPUTE], "SKIP, compute ring don't support\n");
--		bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+		bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 				AMDGPU_HW_IP_COMPUTE);
- 	}
- 
-@@ -115,7 +115,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-corrupted-header-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-corrupted-header-test")
--			amdgpu_hang_sdma_helper(device, DMA_CORRUPTED_HEADER_HANG);
-+			amdgpu_hang_sdma_ring_helper(device, DMA_CORRUPTED_HEADER_HANG);
- 		}
- 	}
- 
-@@ -123,7 +123,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-slow-linear-copy") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-slow-linear-copy")
--			amdgpu_hang_sdma_helper(device, DMA_SLOW_LINEARCOPY_HANG);
-+			amdgpu_hang_sdma_ring_helper(device, DMA_SLOW_LINEARCOPY_HANG);
- 		}
- 	}
- 
-@@ -131,7 +131,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-badop-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-badop-test")
--			bad_access_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
-+			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
-@@ -140,7 +140,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-mem-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-mem-test")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
-@@ -149,7 +149,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-reg-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-reg-test")
--			bad_access_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
-+			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
-@@ -158,7 +158,7 @@ igt_main
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-length-test") {
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-length-test")
--			bad_access_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
-+			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
- 					AMDGPU_HW_IP_DMA);
- 		}
- 	}
--- 
-2.25.1
-
+Thanks
+Riana
+> +
+>   	igt_fixture {
+>   		close(fd);
+>   	}
