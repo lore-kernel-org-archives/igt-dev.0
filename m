@@ -4,57 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4303ECF07B7
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Oct 2024 06:58:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28F11CF07BA
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Oct 2024 07:41:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF2BB10E87D;
-	Thu, 10 Oct 2024 06:58:46 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jS5z4tpa";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0BD010E87D
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Oct 2024 06:58:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728543526; x=1760079526;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=r5q1dX0iXEBrKm6hHv0sqqX0PEQV32ZNp7iYvJ2pIPI=;
- b=jS5z4tpa1THHjLdruUg10BpGT//lMhsPSTwvjpOuXdX3isHkqnbRJNwZ
- WA22SiRl/ilNDB3oa4RaI1cPPUVNySn39Ld2paRp5qBvvaWDN53kqIdsa
- UESoAPByZj4gL2vjY+/F1oawYEYtSsJmlmAmiStN6cj5ExZwD+bEf2ekm
- y2QH3/n5BgbPZFTdHTv1+bybCUqt6DT1tJmPk5m5ukpJDK947Az5iqW9r
- KNwcZfa3VqzsTz2jFsAzyQ2uVn+ZXNuf8YfWIyZWebIYKS02VEU/t4wuJ
- 5Ymgn00tn1DJS0/t3165C0q86QcwpYo0PWR6LGkv9sI9kGtXnD/9tEFzf Q==;
-X-CSE-ConnectionGUID: getuj55sRBGHW8Z4I1x6pg==
-X-CSE-MsgGUID: WT5CEYaMTxSGMRA9bNRmiA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="31779340"
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; d="scan'208";a="31779340"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 23:58:46 -0700
-X-CSE-ConnectionGUID: g+umB+YDTL6AJQMRe7iT8Q==
-X-CSE-MsgGUID: vLA76xzmRjyMu7lizppc5Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; d="scan'208";a="76104091"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.145.169.150])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Oct 2024 23:58:43 -0700
-From: sk.anirban@intel.com
-To: igt-dev@lists.freedesktop.org,
-	anshuman.gupta@intel.com
-Cc: sk.anirban@intel.com,
-	riana.tauro@intel.com,
-	vinay.belgaumkar@intel.com
-Subject: [PATCH 2/2] HAX: Add Coarse power gating tests to fast feedback list
-Date: Thu, 10 Oct 2024 12:23:12 +0530
-Message-Id: <20241010065312.1988533-3-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241010065312.1988533-1-sk.anirban@intel.com>
-References: <20241010065312.1988533-1-sk.anirban@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1F0710E87F;
+	Thu, 10 Oct 2024 07:41:04 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FAD510E880;
+ Thu, 10 Oct 2024 07:41:03 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4006540081515756277=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/xe=3A_Add_tests_to_valid?=
+ =?utf-8?q?ate_GT_coarse_power_gating_status_and_toggle_coarse_power_gating_?=
+ =?utf-8?q?states_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sk.anirban@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 10 Oct 2024 07:41:03 -0000
+Message-ID: <172854606325.1214138.17157441258578256869@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241010065312.1988533-1-sk.anirban@intel.com>
+In-Reply-To: <20241010065312.1988533-1-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,31 +38,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Sk Anirban <sk.anirban@intel.com>
+--===============4006540081515756277==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add cpg tests cpg-basic and toggle-gt-cpg to xe-fast-feedback
+== Series Details ==
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel-ci/fast-feedback.testlist | 2 ++
- 1 file changed, 2 insertions(+)
+Series: tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev2)
+URL   : https://patchwork.freedesktop.org/series/139808/
+State : success
 
-diff --git a/tests/intel-ci/fast-feedback.testlist b/tests/intel-ci/fast-feedback.testlist
-index be0965110..3234b5b37 100644
---- a/tests/intel-ci/fast-feedback.testlist
-+++ b/tests/intel-ci/fast-feedback.testlist
-@@ -2,6 +2,8 @@
- igt@i915_module_load@load
- 
- # Keep alphabetically sorted by default
-+igt@xe_pm_residency@cpg-basic
-+igt@xe_pm_residency@toggle-gt-cpg
- igt@core_auth@basic-auth
- igt@debugfs_test@read_all_entries
- igt@debugfs_test@basic-hwmon
--- 
-2.34.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_8063_BAT -> XEIGTPW_11895_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11895_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#2496]) +31 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:
+    - bat-lnl-2:          [PASS][4] -> [FAIL][5] ([Intel XE#2754])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-lnl-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-lnl-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#288]) +32 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#2229])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [INCOMPLETE][8] ([Intel XE#2874]) -> [PASS][9] +1 other test pass
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2496]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2754]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2754
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8063 -> IGTPW_11895
+
+  IGTPW_11895: 11895
+  IGT_8063: 8063
+  xe-2042-e1aba2bf4f79f2f8ae7ce538124d445fc91df852: e1aba2bf4f79f2f8ae7ce538124d445fc91df852
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/index.html
+
+--===============4006540081515756277==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139808/">https://patchwork.freedesktop.org/series/139808/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8063_BAT -&gt; XEIGTPW_11895_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11895_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@bad-pitch-0:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496">Intel XE#2496</a>) +31 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate:</p>
+<ul>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-lnl-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-lnl-2/igt@xe_exec_compute_mode@twice-bindexecqueue-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2754">Intel XE#2754</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11895/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8063 -&gt; IGTPW_11895</li>
+</ul>
+<p>IGTPW_11895: 11895<br />
+  IGT_8063: 8063<br />
+  xe-2042-e1aba2bf4f79f2f8ae7ce538124d445fc91df852: e1aba2bf4f79f2f8ae7ce538124d445fc91df852</p>
+
+</body>
+</html>
+
+--===============4006540081515756277==--
