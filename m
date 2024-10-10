@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C338CEE323
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Oct 2024 09:42:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6BDBCF11CD
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Oct 2024 10:40:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C59610E8B2;
-	Thu, 10 Oct 2024 09:42:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kJz+CZL9";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A21BD10E8B2
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Oct 2024 09:42:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728553327; x=1760089327;
- h=message-id:date:mime-version:from:subject:to:cc:
- content-transfer-encoding;
- bh=VowxBd9yP1ZEOISpVevGhw3T6GPtEkj88SxNhM7pvEY=;
- b=kJz+CZL9r2+eGtNn9w4GzgIiwxojkDHMf8t0MIEoeDmJMfvKYdrDNqxM
- DL2eqY17eMWYdNTBpqU00MSFL9XwBRYTspzToEAMka23F+wbSI4yIcDxU
- T6XSigHeGjRaO68GjDWc+dFWCIkIwyp+h2VCj+uY3+5I4FtKGsTvb2Y0x
- DFei6ydW7JAunpA2dFuA7WRs7pvWoPsXPpiadki+Bs43EZF1lUud3Bbfr
- M2tzLjGPutiLZFfVnJJ5KorlJ++eQWpFIC1rzhHZWAYf2nTuAyA0niw9Q
- b2yi1nnTI2LufN5Y+nMJ37GIssngL4Es8vy5Bq5jz1pJ4GV62lVuuDHgC g==;
-X-CSE-ConnectionGUID: q8iCpfO5ToWjNlqQY9ohug==
-X-CSE-MsgGUID: Dydk/gGPQniNFVNnT49LdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="38485855"
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; d="scan'208";a="38485855"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Oct 2024 02:42:06 -0700
-X-CSE-ConnectionGUID: 9UK55CNJTEev8fTyVNlh7A==
-X-CSE-MsgGUID: kmmdxKeQSKCfNDW1hfGEjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; d="scan'208";a="76850368"
-Received: from rcoyle-mobl.ger.corp.intel.com (HELO [10.213.201.208])
- ([10.213.201.208])
- by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Oct 2024 02:42:05 -0700
-Message-ID: <ffa2bbcb-edb3-4610-aec8-bcd6a3b8f106@linux.intel.com>
-Date: Thu, 10 Oct 2024 11:42:02 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F71B10E8C6;
+	Thu, 10 Oct 2024 10:40:19 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6A8F510E8C6;
+ Thu, 10 Oct 2024 10:40:18 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5590665739860792564=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_module_load: Handling of snd_hda_intel
-Content-Language: en-US
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fmodule=5Fload?=
+ =?utf-8?q?=3A_Handling_of_snd=5Fhda=5Fintel?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Peter Senna Tschudin" <peter.senna@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 10 Oct 2024 10:40:18 -0000
+Message-ID: <172855681842.1214770.7728429942132229486@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <ffa2bbcb-edb3-4610-aec8-bcd6a3b8f106@linux.intel.com>
+In-Reply-To: <ffa2bbcb-edb3-4610-aec8-bcd6a3b8f106@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,39 +37,169 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The problem: Running the following test-list twice fails on the second run:
-igt@xe_module_load@load
-igt@xe_module_load@unload
+--===============5590665739860792564==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The load test will modprobe snd_hda_intel, while the unload will not rmmod
-snd_hda_intel. Then running the load test the second time will fail as
-snd_hda_intel is loaded and marked as an "unwanted_drivers".
+== Series Details ==
 
-It used to be the case that snd_hda_intel could prevent module load and unload
-and we needed to take care of it in older kernels. This is no longer the case
-so remove snd_had_intel from unwanted_drivers for this test.
+Series: tests/intel/xe_module_load: Handling of snd_hda_intel
+URL   : https://patchwork.freedesktop.org/series/139838/
+State : success
 
-cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
----
- tests/intel/xe_module_load.c | 1 -
- 1 file changed, 1 deletion(-)
+== Summary ==
 
-diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
-index 30259fc26..83e37430f 100644
---- a/tests/intel/xe_module_load.c
-+++ b/tests/intel/xe_module_load.c
-@@ -94,7 +94,6 @@ static void load_and_check_xe(const char *opts)
- static const char * const unwanted_drivers[] = {
- 	"xe",
- 	"i915",
--	"snd_hda_intel",
- 	NULL
- };
- 
--- 
-2.34.1
+CI Bug Log - changes from XEIGT_8063_BAT -> XEIGTPW_11897_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11897_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#2229])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [INCOMPLETE][4] ([Intel XE#2874]) -> [PASS][5] +1 other test pass
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8063 -> IGTPW_11897
+  * Linux: xe-2042-e1aba2bf4f79f2f8ae7ce538124d445fc91df852 -> xe-2045-40eee4a1af7598f2992f9b69bfea567074d23ea6
+
+  IGTPW_11897: 11897
+  IGT_8063: 8063
+  xe-2042-e1aba2bf4f79f2f8ae7ce538124d445fc91df852: e1aba2bf4f79f2f8ae7ce538124d445fc91df852
+  xe-2045-40eee4a1af7598f2992f9b69bfea567074d23ea6: 40eee4a1af7598f2992f9b69bfea567074d23ea6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/index.html
+
+--===============5590665739860792564==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_module_load: Handling of snd_hda_intel</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139838/">https://patchwork.freedesktop.org/series/139838/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8063_BAT -&gt; XEIGTPW_11897_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11897_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8063/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11897/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8063 -&gt; IGTPW_11897</li>
+<li>Linux: xe-2042-e1aba2bf4f79f2f8ae7ce538124d445fc91df852 -&gt; xe-2045-40eee4a1af7598f2992f9b69bfea567074d23ea6</li>
+</ul>
+<p>IGTPW_11897: 11897<br />
+  IGT_8063: 8063<br />
+  xe-2042-e1aba2bf4f79f2f8ae7ce538124d445fc91df852: e1aba2bf4f79f2f8ae7ce538124d445fc91df852<br />
+  xe-2045-40eee4a1af7598f2992f9b69bfea567074d23ea6: 40eee4a1af7598f2992f9b69bfea567074d23ea6</p>
+
+</body>
+</html>
+
+--===============5590665739860792564==--
