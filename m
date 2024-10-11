@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE7B4D0D7B8
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 15:03:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC0CD0D7B8
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 15:09:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6816F10EB17;
-	Fri, 11 Oct 2024 15:03:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3170010EB0F;
+	Fri, 11 Oct 2024 15:09:58 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D818310EB3A;
- Fri, 11 Oct 2024 15:03:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0602510EB13;
+ Fri, 11 Oct 2024 15:09:57 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1717502429542341178=="
+ boundary="===============8730701750304672587=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fflip=3A_Assert_?=
- =?utf-8?q?with_twice_of_frame_time_while_waiting_fro_vblank?=
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_series_starting_with_=5Bi-g-t?=
+ =?utf-8?q?=2C1/3=5D_tests/intel/xe=5Fquery=3A_Stop_getting_refclock_multipl?=
+ =?utf-8?q?e_times?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mitul Golani" <mitulkumar.ajitkumar.golani@intel.com>
+To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Oct 2024 15:03:00 -0000
-Message-ID: <172865898088.1240971.15359834372281413317@2413ebb6fbb6>
+Date: Fri, 11 Oct 2024 15:09:57 -0000
+Message-ID: <172865939701.1240984.4333305705450429382@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241011062147.1956995-1-mitulkumar.ajitkumar.golani@intel.com>
-In-Reply-To: <20241011062147.1956995-1-mitulkumar.ajitkumar.golani@intel.com>
+References: <20241011030507.321961-1-lucas.demarchi@intel.com>
+In-Reply-To: <20241011030507.321961-1-lucas.demarchi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,87 +42,109 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1717502429542341178==
+--===============8730701750304672587==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_flip: Assert with twice of frame time while waiting fro vblank
-URL   : https://patchwork.freedesktop.org/series/139876/
-State : success
+Series: series starting with [i-g-t,1/3] tests/intel/xe_query: Stop getting refclock multiple times
+URL   : https://patchwork.freedesktop.org/series/139871/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_8065 -> IGTPW_11901
+CI Bug Log - changes from XEIGT_8065_BAT -> XEIGTPW_11900_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_11900_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11900_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html
+  
 
-Participating hosts (45 -> 44)
+Participating hosts (9 -> 9)
 ------------------------------
 
-  Missing    (1): fi-snb-2520m 
+  No changes in participating hosts
 
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11900_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_intel_bb@intel-bb-blit-none:
+    - bat-adlp-vf:        [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html
+
+  
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_11901 that come from known issues:
+  Here are the changes found in XEIGTPW_11900_BAT that come from known issues:
 
 ### IGT changes ###
 
 #### Issues hit ####
 
-  * igt@i915_selftest@live:
-    - bat-arls-1:         [PASS][1] -> [ABORT][2] ([i915#12061] / [i915#12133])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live.html
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#1861])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-arls-1:         [PASS][3] -> [ABORT][4] ([i915#12061])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live@workarounds.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live@workarounds.html
+  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#288]) +32 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#2229])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
 
   
 #### Possible fixes ####
 
-  * igt@i915_selftest@live@workarounds:
-    - bat-mtlp-6:         [ABORT][5] ([i915#12216]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-dg2-oem2:       [INCOMPLETE][7] ([Intel XE#2874]) -> [PASS][8] +1 other test pass
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
 
   
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8065 -> IGTPW_11901
-  * Linux: CI_DRM_15514 -> CI_DRM_15517
+  * IGT: IGT_8065 -> IGTPW_11900
+  * Linux: xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16 -> xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982
 
-  CI-20190529: 20190529
-  CI_DRM_15514: f3354eab2a45420cf38a67f6d7735d5dff53eb6f @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15517: 20c57deec46e59d392ec6d4a23257f4bb5673982 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11901: 6a9a442e613e80e3f369b365fd1d5c1f48006ab8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_11900: c3a413e4c9e3613575d3be1793fe52578cef4cd7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16: 09a8c322287e106dca33e28fa7f1475255a9ef16
+  xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982: 20c57deec46e59d392ec6d4a23257f4bb5673982
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/index.html
 
---===============1717502429542341178==
+--===============8730701750304672587==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -141,60 +164,77 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_flip: Assert with twice of frame time while waiting fro vblank</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139876/">https://patchwork.freedesktop.org/series/139876/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] tests/intel/xe_query: Stop getting refclock multiple times</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139871/">https://patchwork.freedesktop.org/series/139871/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_8065 -&gt; IGTPW_11901</h1>
+    <h1>CI Bug Log - changes from XEIGT_8065_BAT -&gt; XEIGTPW_11900_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11900_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11900_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11900_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@xe_intel_bb@intel-bb-blit-none:<ul>
+<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11901 that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_11900_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Issues hit</h4>
 <ul>
 <li>
-<p>igt@i915_selftest@live:</p>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
 <ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
 </ul>
 </li>
 <li>
-<p>igt@i915_selftest@live@workarounds:</p>
+<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
 <ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
 </ul>
 </li>
 </ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@i915_selftest@live@workarounds:<ul>
-<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216">i915#12216</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8065 -&gt; IGTPW_11901</li>
-<li>Linux: CI_DRM_15514 -&gt; CI_DRM_15517</li>
+<li>IGT: IGT_8065 -&gt; IGTPW_11900</li>
+<li>Linux: xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16 -&gt; xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15514: f3354eab2a45420cf38a67f6d7735d5dff53eb6f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15517: 20c57deec46e59d392ec6d4a23257f4bb5673982 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11901: 6a9a442e613e80e3f369b365fd1d5c1f48006ab8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_11900: c3a413e4c9e3613575d3be1793fe52578cef4cd7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16: 09a8c322287e106dca33e28fa7f1475255a9ef16<br />
+  xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982: 20c57deec46e59d392ec6d4a23257f4bb5673982</p>
 
 </body>
 </html>
 
---===============1717502429542341178==--
+--===============8730701750304672587==--
