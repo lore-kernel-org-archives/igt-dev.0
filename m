@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40A76CFD2E0
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 08:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3CBDCFD2E0
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 08:46:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F220210EA87;
-	Fri, 11 Oct 2024 08:45:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6300310EA87;
+	Fri, 11 Oct 2024 08:46:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OwHcCMzy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Rc9smud/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9FCE910EA88
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 08:45:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE32910EA87
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 08:46:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728636319; x=1760172319;
+ t=1728636417; x=1760172417;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=UkKDhTL7e271KkzFMUYiFfq43E+ivjFeurAJ6JjF4ws=;
- b=OwHcCMzykQeEuPLvfcePF+VeLVTpl0LO/SuxmX4WcZAW6fvjvnVFBvuY
- eJtn07HxJWHX2lNcGI0lq5RLD1gzQivYPnyTQg1zB/1V5USNpMSEGEp/n
- m9XNUrvYa1vua2ihYfo/p1qUmXuLdG9Qcol2Fwc2EPy40WCWl1ZR4zX5q
- WOmIdJ/UzD9oi909Hp8UmTcuo65PzqV3uCzPALehDmqLoVhdYMO1H8dVb
- cRmbX2atUO4gTCGLaUIaMxnUGUGjfAp+e/TXKTmI/mMWI9UAfDq7/C4Di
- XxvvHkabtjti6MXDorBJ8si4P9mn/xNlK0Q/NVeabdoSKlKQXuJiaK460 Q==;
-X-CSE-ConnectionGUID: 59koFOweQzOLk0Vf6npJdg==
-X-CSE-MsgGUID: AHqDCqdLT5e2guvTP6UqpA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="15649992"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="15649992"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 01:45:19 -0700
-X-CSE-ConnectionGUID: 5t0ZNKiqStmyiEEm2h+j2g==
-X-CSE-MsgGUID: ClZrXybnRgW/qK1Gs/oEJA==
+ bh=mtQnt/M5sUDSrbE7G1jTJnBRIVdj80ln+85zr2RYwH8=;
+ b=Rc9smud/LaKQn4oIBQXyYjzziopRuedO6GIFMyuAe6dq0MWf/Ii6fsfw
+ FOZ1OwxZsGAfMnwlhZ3a9/SZSnfu7mxTcvpjz1kl4nW6xCyLHeE2ihqfl
+ QodKJk1qztvaQ/OGk+fxZdvJqVGouM+b0QqZM6KFKBfYAdTCpBh+VmMF0
+ 6AUi1ZJco9ohL19xI5mMdwIDE6qEV1pRUk7NiNeGj0gHYTCcJAIiIzYLD
+ cPP9sFxpuzU+YUQZaaA5T9W2BB7m2e3M9cIxOvSQ5hsg703sObnVHrM6r
+ XDwsnsWEgZT/Z/I//j6nvvErqI3i5RSYxw8W8s8eRy2hz2bZKhGuBonKM A==;
+X-CSE-ConnectionGUID: GAy7R+WkTjaAm7RnRwbP9Q==
+X-CSE-MsgGUID: r+mvzjBBTMmWSMybJxcAPQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="28170527"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="28170527"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Oct 2024 01:46:57 -0700
+X-CSE-ConnectionGUID: gAnIarKGTAuYRrR4mCZhHw==
+X-CSE-MsgGUID: 3vcUdq1wQ7KeXggNCsPvDA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76850679"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="107709342"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 01:45:18 -0700
-Date: Fri, 11 Oct 2024 10:45:16 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 01:46:56 -0700
+Date: Fri, 11 Oct 2024 10:46:53 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t 1/4] lib/intel: Extract
- gem_store_dword_needs_physical()
-Message-ID: <20241011084516.tlnk25rb73yssqec@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t 3/4] lib/intel: MI_STORE_DWORD doesn't need secure
+ batches on i965
+Message-ID: <20241011084653.jzl2rc7p6jwoack2@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Ville Syrjala <ville.syrjala@linux.intel.com>
 References: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
+ <20241002104515.32164-3-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241002104515.32164-3-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,59 +74,33 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Ville,
-On 2024-10-02 at 13:45:12 +0300, Ville Syrjala wrote:
+On 2024-10-02 at 13:45:14 +0300, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Extract a small helper that can determine if MI_STORE_DWORD
-> operates with physical addresses or not.
+> Limit the MI_STORE_DWORD secure batch usage to just g4x and ilk.
+> i965 does not need this.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 
 > ---
->  lib/igt_gt.c | 20 +++++++++++++-------
->  1 file changed, 13 insertions(+), 7 deletions(-)
+>  lib/igt_gt.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
 > diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-> index 9641a6610bf2..331783e49acf 100644
+> index a1075e8bbed1..b8faf2b7bd09 100644
 > --- a/lib/igt_gt.c
 > +++ b/lib/igt_gt.c
-> @@ -655,21 +655,27 @@ unsigned intel_detect_and_clear_missed_interrupts(int fd)
->  	return missed;
->  }
+> @@ -704,6 +704,7 @@ bool gem_store_dword_needs_secure(int fd)
 >  
-> +static bool gem_store_dword_needs_physical(const struct intel_device_info *info)
-> +{
-> +	switch (info->graphics_ver) {
-> +	case 2:
-> +		return true;
-> +	case 3:
-> +		return info->is_grantsdale || info->is_alviso;
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
->  bool gem_class_can_store_dword(int fd, int class)
->  {
->  	uint16_t devid = intel_get_drm_devid(fd);
->  	const struct intel_device_info *info = intel_get_device_info(devid);
->  	const int ver = info->graphics_ver;
->  
-> -	if (ver == 0) /* unknown, assume it just works */
-> -		return true;
-> -
-> -	if (ver <= 2) /* requires physical addresses */
-> +	if (gem_store_dword_needs_physical(info))
->  		return false;
->  
-> -	if (ver == 3 && (info->is_grantsdale || info->is_alviso))
-> -		return false; /* only supports physical addresses */
-> -
->  	if (ver == 6 && class == I915_ENGINE_CLASS_VIDEO)
->  		return false; /* broken, unbelievably broken */
->  
+>  	switch (info->graphics_ver) {
+>  	case 4:
+> +		return info->is_eaglelake || info->is_cantiga;
+>  	case 5:
+>  		return true;
+>  	default:
 > -- 
 > 2.45.2
 > 
