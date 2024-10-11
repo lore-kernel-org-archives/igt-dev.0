@@ -4,59 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F93ACFD316
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 09:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1B3BCFD316
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 10:03:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D75BC10EA85;
-	Fri, 11 Oct 2024 09:56:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 60EBC10EAA1;
+	Fri, 11 Oct 2024 10:03:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YQRQ7Q4Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c+Qc4a8Y";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C6FEB10EA85
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 09:56:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CB1C410EAA1
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 10:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728640571; x=1760176571;
+ t=1728640991; x=1760176991;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=gPMPGDSVvLvGfxl7pTMBik36dxEloczJgExw9whwJSo=;
- b=YQRQ7Q4Yp4NgYqGLFb6dc716TY+ebQP+awMLXD5dsj//Ihq0Sp1yAUKp
- d9ZKCyR85vKVPzKMIKtiJYVWtoikeIoSK1yjsahIEUlgWnkWTz1MXgUJM
- nU2yDjSgnOTuxjHkpxwYO2UefHXpnsMiKd+TE7mW++zbUQ/og3dDBgDTF
- s/F7XJrCuSoL2PUtc51/QjdvP7mtnpNeTcHHyjfCb9RsZQpZqSQvkCrxM
- kzVJo1hk7k4oxSP8FWTzjcDkhYewTawamgCWpuP3PLso3K2AfgajZq1FX
- dnmUg/0YxeLJoYlDmIgXslyE6qsVwKEulvpU2S2vI5stWPYoexOlTNwq8 Q==;
-X-CSE-ConnectionGUID: MMd+YRymQBKuZ6w8w7wKFg==
-X-CSE-MsgGUID: 1NYBXLH1RRm3mHSxg8rCRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="27927106"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="27927106"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 02:56:11 -0700
-X-CSE-ConnectionGUID: IL/jpROJRm+3UgsB5CLkAw==
-X-CSE-MsgGUID: 8YUyz+naQXmt04zw0p7wQw==
+ mime-version:in-reply-to;
+ bh=DXJUnheTNyJRpu3Fs8ICS3hLScTN1m6005iaZNvQtnE=;
+ b=c+Qc4a8Y4sd41kHgunTrhath39BGBvk//JbMo4msvYjQZm6tsdI+ziii
+ /iX51FC1Wl7ml7ZS+IzRPvjffRrgDklpqm01eLlCyC5o0HGdHazBR5YWd
+ KqSzpuOUbnHf0qa/m9nVGnrn3K9Pd8Q8qmBX2AQies59SHcdODo0Gdyzy
+ 6MVTDUkimU7aD4XbkOdhi4JnztTxmVef9eqwAA8x+Fp4UL4VwsXvRKEO0
+ xl1mK24B74rHF5GEbeOCxutvHEdnbVIXttZ6dsocF8ViPCTr1z2cYU/a+
+ HYM/UZqfnla+o3Pf6UiOK8Lk7hw/eBbUQY9Gb+239lH8n4eCV87kx7oTR w==;
+X-CSE-ConnectionGUID: gJ8b7TeFSVyt5Az+0aXOnQ==
+X-CSE-MsgGUID: sssSUFtpS1W3eLoeOxuiZA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="27980704"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="27980704"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Oct 2024 03:03:10 -0700
+X-CSE-ConnectionGUID: SB8rJBEQTMmIZdfFfJL90Q==
+X-CSE-MsgGUID: b6JOcI4QRP+vthbKKDQZqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76972278"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 11 Oct 2024 02:56:07 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 11 Oct 2024 12:56:06 +0300
-Date: Fri, 11 Oct 2024 12:56:06 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
-Cc: igt-dev@lists.freedesktop.org, bhanuprakash.modem@intel.com,
- ankit.k.nautiyal@intel.com
-Subject: Re: [PATCH v1] tests/kms_flip: Assert with twice of frame time while
- waiting fro vblank
-Message-ID: <Zwj2NjaQ4N5zH-HU@intel.com>
-References: <20241011062147.1956995-1-mitulkumar.ajitkumar.golani@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76868879"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 03:03:08 -0700
+Date: Fri, 11 Oct 2024 12:03:06 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Nirmoy Das <nirmoy.das@intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/xe_tlb: Print tlb inval counts on
+ failure
+Message-ID: <20241011100306.eubqguiqm5pt4clb@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+ Sai Gowtham Ch <sai.gowtham.ch@intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+References: <20241008202146.993745-1-nirmoy.das@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241011062147.1956995-1-mitulkumar.ajitkumar.golani@intel.com>
-X-Patchwork-Hint: comment
+In-Reply-To: <20241008202146.993745-1-nirmoy.das@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,39 +74,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Oct 11, 2024 at 11:51:46AM +0530, Mitul Golani wrote:
-> Instead of hardcoding to 500us, wait for twice of mode frame time while
-> waiting for vblank. Motivation of this change is to remove hard coding
-> of 500us, which comes out to be more stringent and ambiguous vs changing
-> modeline.
+Hi Nirmoy,
+On 2024-10-08 at 22:21:46 +0200, Nirmoy Das wrote:
+> Print tlb inval counts on failure with igt_assert_lt_u64()
+
+Looks good as it prints them but why u64? Actual type is int.
+
+Regards,
+Kamil
+
 > 
-> Signed-off-by: Mitul Golani <mitulkumar.ajitkumar.golani@intel.com>
+> Cc: kamil.konieczny@linux.intel.com
+> Cc: Sai Gowtham Ch <sai.gowtham.ch@intel.com>
+> Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
 > ---
->  tests/kms_flip.c | 2 +-
+>  tests/intel/xe_tlb.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/tests/kms_flip.c b/tests/kms_flip.c
-> index cbabbe74f..decffa961 100755
-> --- a/tests/kms_flip.c
-> +++ b/tests/kms_flip.c
-> @@ -921,7 +921,7 @@ static bool run_test_step(struct test_output *o, unsigned int *events)
->  					    0, &reply));
->  		end = gettime_us();
->  		igt_debug("Vblank took %luus\n", end - start);
-> -		igt_assert(end - start < 500);
-> +		igt_assert(end - start < 2 * mode_frame_time(o));
-
-The test is literally called TEST_VBLANK_EXPIRED_SEQ, which tells us
-that it's expecting the target vblank seq to have expired already,
-and thus the response should be "immediate". It doesn't matter at all
-what kind of mode is in use.
-
->  		if (reply.sequence != exp_seq) {
->  			igt_debug("unexpected vblank seq %u, should be %u\n",
->  				  reply.sequence, exp_seq);
+> diff --git a/tests/intel/xe_tlb.c b/tests/intel/xe_tlb.c
+> index 8104e45d8..15d89931c 100644
+> --- a/tests/intel/xe_tlb.c
+> +++ b/tests/intel/xe_tlb.c
+> @@ -116,7 +116,7 @@ static void tlb_invalidation(int fd, struct drm_xe_engine_class_instance *eci)
+>  	tlb_pos = xe_gt_stats_get_count(fd, eci->gt_id, stat);
+>  	igt_assert_eq(data1->data, value1);
+>  	igt_assert_eq(data2->data, value2);
+> -	igt_assert(tlb_pos > tlb_pre);
+> +	igt_assert_lt_u64(tlb_pre, tlb_pos);
+>  
+>  	syncobj_destroy(fd, sync[0].handle);
+>  	syncobj_destroy(fd, syncobj);
 > -- 
 > 2.46.0
-
--- 
-Ville Syrjälä
-Intel
+> 
