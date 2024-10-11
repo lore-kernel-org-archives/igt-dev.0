@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53B2DD24470
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 17:39:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F36ED24470
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 17:52:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0F07D10EBC1;
-	Fri, 11 Oct 2024 17:39:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6DEE10E182;
+	Fri, 11 Oct 2024 17:52:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fOkc4I4c";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BaUAphCX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C4C7510EBC1
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 17:39:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D25710E182
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 17:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728668380; x=1760204380;
+ t=1728669131; x=1760205131;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=Q9dNzin1TVFn5OvdjuuRoAcWFDC3X4pbsqIh2i9iy4A=;
- b=fOkc4I4cZ3xZJY7lsg+SSnl0tVxC8u73qIQWEMgulaKml/b/oHLviNSC
- 2dA1V8KcYzxaLm74aTdjmTC4lWWF/buW+4YxPQ2c88JTW0dHfYY1W/Lmc
- zUDxKVOC4ChN3nnotWjfzqhl5in/8NlEBqdRcWkvkvSA5mGLbVofWIOti
- wZAN26vLxN+SjJhBvHSXC2ShA1WYMyCvmqC1QJN6+Idle3cKlQWTbw3kl
- IWNv02zBIjekAFsOq+/SEin/e9o6odwEXB1edfQcmdxl6QBe2nlylC8D6
- w1WeGZ55fsS/qgY6asmP/z8217Ryj8Qh9RfYm57y6vH/YVqIdqGzhIl+k w==;
-X-CSE-ConnectionGUID: JzXbGirKRsqgngxEsH4aDw==
-X-CSE-MsgGUID: JonvN6ERQR+9un+gEMxU/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30954722"
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="30954722"
+ bh=CsYRGZIdx5+97ASMBZhEsHOqkrxmp7EJCQSE74ZDVEw=;
+ b=BaUAphCXgkm6kqKjrXD0W2+J2uW2f+0DyNpY0RNb/Pij9W+xqzBZbU0g
+ JyU8iECin6ejCrXnmLcD6QQG5oXuXUvSmTkQxuCYhT1gy7iBY2f6m+JBF
+ goDvheIcqQk+yRov/Z0FGSsx9ncpy3+PJTQJSopgAEAkHjzf6dcgF2qRR
+ c/GXWtFgYS3QVAFAt/B1mGh0/n4BVdmluBdNBC3/UCG/DhhIZiCemFVL9
+ /JdCaUcWtkxn9dZV/wNcnXIsAZvz9cYYBvY1bTlNx1eA6T86ti0r5wZgB
+ 8qxlz4QGnzAtdr7oJnNOdQl/rzpXSiPvB61CRNRCxIjJzdW7bACzWPl4d Q==;
+X-CSE-ConnectionGUID: TKcWGuPmTlGpZxhmIP85+w==
+X-CSE-MsgGUID: MzzyieAjRgq8YknviFWk6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30955940"
+X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="30955940"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 10:39:39 -0700
-X-CSE-ConnectionGUID: OFWXhbG/TUat8r3t0oacBQ==
-X-CSE-MsgGUID: ZP/ktPW9TWuvwWA8q3ptgw==
+ 11 Oct 2024 10:52:11 -0700
+X-CSE-ConnectionGUID: xgKMWotxRQGX9jyU6eWSCg==
+X-CSE-MsgGUID: gCSfTLPlR4yUzA398CZRgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="77441788"
+X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="77444651"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 10:39:38 -0700
-Date: Fri, 11 Oct 2024 19:39:35 +0200
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 10:52:09 -0700
+Date: Fri, 11 Oct 2024 19:52:07 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t 4/5] tools/power: Introduce a small power/energy
- measurement tool
-Message-ID: <20241011173935.qookzabccctucbxb@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t 5/5] tools/intel_display_bandwidth: Tool for
+ measuring display memory bandwidth utilization
+Message-ID: <20241011175207.lzwiaqkj5ah7lmwn@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Ville Syrjala <ville.syrjala@linux.intel.com>
 References: <20240916201841.29592-1-ville.syrjala@linux.intel.com>
- <20240916201841.29592-5-ville.syrjala@linux.intel.com>
+ <20240916201841.29592-6-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240916201841.29592-5-ville.syrjala@linux.intel.com>
+In-Reply-To: <20240916201841.29592-6-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,224 +74,213 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Ville,
-On 2024-09-16 at 23:18:40 +0300, Ville Syrjala wrote:
+On 2024-09-16 at 23:18:41 +0300, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Provide a small tool for general power/energy measurements.
+> Introduce a small tool for measing the display enging
+s/measing/measuring/
+s/enging/engins/
+
+> memory bandwidth utilization. Generally this is available
+> on SNB+, except on TGL/derivatives where the relevant
+> registers weren't updated to cope with the new ABOX layout
+> in the hardware.
 > 
-> The tool operates as follow:
-> 1. optionally sleep for a while to let the system settle
-> 2. sample from number of rapl/hwmon/battery sources
-> 3. sleep for a know amount of time
-> 4. sample again from the same sources
-> 5. calculate the results and report how much power/energy was used
+> Quite handy for confirming that FBC/CCS/etc. are doing their
+> job.
 > 
-> igt_power provides the actual power/energy measurement stuff.
-> 
-> Sample output:
-> $ power -S 30 -s 30 -d /dev/dri/card0 -b 0 -r gpu -r pkg
-> /dev/dri/card0[gpu]: energy 17.944336 mJ, power 0.597746 mW, time 30.020000 s
-> battery[0]: energy 108000.000000 mJ, power 3597.585325 mW, time 30.020136 s
-> rapl[gpu]: energy 17.944336 mJ, power 0.597824 mW, time 30.016083 s
-> rapl[pkg]: energy 24139.099121 mJ, power 804.205461 mW, time 30.016085 s
+> Not 100% sure about the required scaling factor because
+> bspec claims it's only needed for MTL, but my ADL definitely
+> needs it already.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->  tools/meson.build |   1 +
->  tools/power.c     | 179 ++++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 180 insertions(+)
->  create mode 100644 tools/power.c
+>  lib/intel_reg.h                 |   5 +
+>  tools/intel_display_bandwidth.c | 171 ++++++++++++++++++++++++++++++++
+
+Is this tool display only? What about bw for opencl computations?
+Could we have more general tool also for compute case? Then it could be
+named intel_gpu_bandwidth or even shorter intel_gpu_bw?
+
+>  tools/meson.build               |   1 +
+>  3 files changed, 177 insertions(+)
+>  create mode 100644 tools/intel_display_bandwidth.c
 > 
-> diff --git a/tools/meson.build b/tools/meson.build
-> index df26c4b95e3f..48c9a4b5089e 100644
-> --- a/tools/meson.build
-> +++ b/tools/meson.build
-> @@ -43,6 +43,7 @@ tools_progs = [
->  	'intel_gvtg_test',
->  	'dpcd_reg',
->  	'lsgpu',
-> +	'power',
->  ]
->  tool_deps = igt_deps
->  tool_deps += zlib
-> diff --git a/tools/power.c b/tools/power.c
+> diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+> index 26833c66f8e7..5e049d8b14d6 100644
+> --- a/lib/intel_reg.h
+> +++ b/lib/intel_reg.h
+> @@ -1413,6 +1413,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+>  #define PCH_3DRAMCGDIS0		0x46028
+>  #define SOUTH_DSPCLK_GATE_D	0xc2020
+>  
+> +#define DE_POWER1	0x42400
+> +#define DE_POWER2	0x42404
+> +#define DE_POWER2_ABOX0	0x42404
+> +#define DE_POWER2_ABOX1	0x42408
+> +
+>  #define CPU_eDP_A		0x64000
+>  #define PCH_DP_B		0xe4100
+>  #define PCH_DP_C		0xe4200
+> diff --git a/tools/intel_display_bandwidth.c b/tools/intel_display_bandwidth.c
 > new file mode 100644
-> index 000000000000..75c62ad39e61
+> index 000000000000..c7be3c390d08
 > --- /dev/null
-> +++ b/tools/power.c
-> @@ -0,0 +1,179 @@
+> +++ b/tools/intel_display_bandwidth.c
+> @@ -0,0 +1,171 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
 > + * Copyright © 2024 Intel Corporation
 > + */
 > +
-> +#include <fcntl.h>
 > +#include <getopt.h>
+> +#include <inttypes.h>
 > +#include <stdbool.h>
 > +#include <stdio.h>
 > +#include <stdlib.h>
+> +#include <unistd.h>
 > +
-> +#include "drmtest.h"
-> +#include "igt_power.h"
+> +#include "intel_io.h"
+> +#include "intel_chipset.h"
+> +#include "intel_reg.h"
 > +
-> +struct measurement {
-> +	int battery_index;
-> +	const char *rapl_domain;
-> +	const char *drm_device;
-> +	struct power_sample pre, post;
-> +	struct igt_power power;
-> +};
-> +
-> +static bool prepare(struct measurement *m)
+> +static bool has_de_power2(uint32_t devid)
 > +{
-> +	if (m->battery_index >= 0) {
-> +		if (igt_power_bat_open(&m->power, m->battery_index)) {
-> +			fprintf(stderr, "Unable to open battery %d\n", m->battery_index);
+> +	/*
+> +	 * TGL has DE_POWER2 but it measures the low priority traffic
+> +	 * on ABOX, not not actual display traffic on ABOX0/ABOX1.
 
-It would help in debug to print also errno.
+s/not not/not/
 
-Add new line before return.
-
-> +			return false;
-> +		}
+> +	 */
+> +	if (intel_display_ver(devid) == 12)
+> +		return false;
+> +
+> +	return intel_display_ver(devid) >= 6 &&
+> +		!IS_VALLEYVIEW(devid) && !IS_CHERRYVIEW(devid);
+> +}
+> +
+> +static bool has_de_power2_abox0_abox1(uint32_t devid)
+> +{
+> +	/*
+> +	 * Despite having ABOX0/ABOX1 TGL lacks the
+> +	 * accompanying DE_POWER2_ABOX* registers.
+> +	 */
+> +	return intel_display_ver(devid) >= 13;
+> +}
+> +
+> +static int de_power2_scale(uint32_t devid)
+> +{
+> +	/*
+> +	 * FIXME should perhaps use something like
+> +	 * is_intel_dgfx() but that one wants to open the device :(
+> +	 */
+> +	switch (intel_display_ver(devid)) {
+> +	case 13:
+> +		return IS_DG2(devid) ? 1 : 2;
+> +	case 14:
+> +		return IS_BATTLEMAGE(devid) ? 1 : 2;
+> +	default:
+> +		return 1;
 > +	}
+> +}
 > +
-> +	if (m->rapl_domain) {
-> +		int fd = -1;
+> +static int de_power2_unit(uint32_t devid)
+> +{
+> +	return 64 * de_power2_scale(devid);
+> +}
 > +
-> +		if (m->drm_device) {
-> +			fd = open(m->drm_device, O_RDONLY);
-> +			if (fd < 0) {
-> +				fprintf(stderr, "Unable to open drm device %s\n", m->drm_device);
-
-Same here.
-
-> +				return false;
-> +			}
-> +		}
+> +static float bandwidth(uint32_t devid, int duration,
+> +		       uint32_t pre, uint32_t post)
+> +{
+> +	return (float)(post - pre) * de_power2_unit(devid) / (duration << 20);
+> +}
 > +
-> +		if (igt_power_open(fd, &m->power, m->rapl_domain)) {
-> +			if (m->drm_device)
-> +				fprintf(stderr, "Unable to open hwmon/rapl for %s\n", m->drm_device);
-> +			else
-> +				fprintf(stderr, "Unable to open rapl domain %s\n", m->rapl_domain);
-
-Print errno in both cases.
-
-> +			close(fd);
-
-Add newline.
-
-> +			return false;
-> +		}
+> +static void measure_de_power2_abox0_abox1(uint32_t devid, unsigned int sleep_duration)
+> +{
+> +	uint32_t pre_abox0, post_abox0;
+> +	uint32_t pre_abox1, post_abox1;
 > +
-> +		close(fd);
+> +	pre_abox0 = INREG(DE_POWER2_ABOX0);
+> +	pre_abox1 = INREG(DE_POWER2_ABOX1);
+> +
+> +	if (sleep_duration) {
+> +		sleep(sleep_duration);
+> +
+> +		post_abox0 = INREG(DE_POWER2_ABOX0);
+> +		post_abox1 = INREG(DE_POWER2_ABOX1);
+> +
+> +		printf("DE_POWER2_ABOX0: 0x%08x->0x%08x\n",
+> +		       pre_abox0, post_abox0);
+> +		printf("DE_POWER2_ABOX1: 0x%08x->0x%08x\n",
+> +		       pre_abox1, post_abox1);
+> +
+> +		printf("ABOX0 bandwidth: %.2f MiB/s\n",
+> +		       bandwidth(devid, sleep_duration,
+> +				 pre_abox0, post_abox0));
+> +		printf("ABOX1 bandwidth: %.2f MiB/s\n",
+> +		       bandwidth(devid, sleep_duration,
+> +				 pre_abox1, post_abox1));
+> +		printf("Total bandwidth: %.2f MiB/s\n",
+> +		       bandwidth(devid, sleep_duration,
+> +				 pre_abox0 + pre_abox1, post_abox0 + post_abox1));
+> +	} else {
+> +		printf("DE_POWER2_ABOX0: 0x%08x\n", pre_abox0);
+> +		printf("DE_POWER2_ABOX1: 0x%08x\n", pre_abox1);
 > +	}
-> +
-> +	return true;
 > +}
 > +
-> +static void sample_pre(struct measurement *m)
+> +static void measure_de_power2(uint32_t devid, unsigned int sleep_duration)
 > +{
-> +	igt_power_get_energy(&m->power, &m->pre);
-> +}
+> +	uint32_t pre, post;
 > +
-> +static void sample_post(struct measurement *m)
-> +{
-> +	igt_power_get_energy(&m->power, &m->post);
-> +}
+> +	pre = INREG(DE_POWER2);
 > +
-> +static void report(struct measurement *m)
-> +{
-> +	if (m->battery_index >= 0)
-> +		printf("battery[%d]: energy %f mJ, power %f mW, time %f s\n",
-> +		       m->battery_index,
-> +		       igt_power_get_mJ(&m->power, &m->pre, &m->post),
-> +		       igt_power_get_mW(&m->power, &m->pre, &m->post),
-> +		       igt_power_get_s(&m->pre, &m->post));
-> +	else
-> +		printf("%s[%s]: energy %f mJ, power %f mW, time %f s\n",
-> +		       m->drm_device ?: "rapl", m->rapl_domain,
-> +		       igt_power_get_mJ(&m->power, &m->pre, &m->post),
-> +		       igt_power_get_mW(&m->power, &m->pre, &m->post),
-> +		       igt_power_get_s(&m->pre, &m->post));
+> +	if (sleep_duration) {
+> +		sleep(sleep_duration);
 > +
-> +	igt_power_close(&m->power);
+> +		post = INREG(DE_POWER2);
+> +
+> +		printf("DE_POWER2: 0x%08x->0x%08x\n", pre, post);
+> +
+> +		printf("Total bandwidth: %.2f MiB/s\n",
+> +		       bandwidth(devid, sleep_duration, pre, post));
+> +	} else {
+> +		printf("DE_POWER2: 0x%08x\n", pre);
+> +	}
 > +}
 > +
 > +static void __attribute__((noreturn)) usage(const char *name)
 > +{
-> +	fprintf(stderr,
-> +		"Usage: %s [[-d <device>][-r <domain>][-b <battery>]...][-S <seconds>][-s <seconds>]\n"
-> +		"  -d,--drm <device>\tDRM device (eg. /dev/dri/card0)\n"
-> +		"  -r,--rapl <domain>\trapl domain (cpu,gpu,pkg,ram)\n"
-> +		"  -b,--battery <battery>\tbattery index\n"
-> +		"  -S,--settle <seconds>\tsettling duration\n"
-> +		"  -s,--sleep <seconds>\tmeasurement duration\n",
+> +	fprintf(stderr, "Usage: %s [options]\n"
+> +		" -s,--sleep <seconds>\n",
+
+Could you also add counter -c and repeat measurement N times
+between sleeps?
+
 > +		name);
 > +	exit(1);
 > +}
 > +
 > +int main(int argc, char *argv[])
 > +{
-> +	struct measurement measurements[8];
-> +	int num_measurements = 0;
-> +	int measurement_duration = 0;
-> +	int settle_duration = 0;
+> +	struct intel_mmio_data mmio_data;
+> +	unsigned int sleep_duration = 0;
+> +	uint32_t devid;
 > +
 > +	for (;;) {
 > +		static const struct option long_options[] = {
-> +			{ .name = "drm", .has_arg = required_argument, },
-> +			{ .name = "rapl", .has_arg = required_argument, },
-> +			{ .name = "battery", .has_arg = required_argument, },
 > +			{ .name = "sleep", .has_arg = required_argument, },
-> +			{ .name = "settle", .has_arg = required_argument, },
 > +			{}
 > +		};
 > +
-> +		int opt = getopt_long(argc, argv, "d:r:b:S:s:", long_options, NULL);
-
-Add newline.
-
-With above fixed
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
+> +		int opt = getopt_long(argc, argv, "s:", long_options, NULL);
 > +		if (opt == -1)
 > +			break;
 > +
 > +		switch (opt) {
-> +		case 'd':
-> +			if (num_measurements >= ARRAY_SIZE(measurements))
-> +				usage(argv[0]);
-> +			measurements[num_measurements].battery_index = -1;
-> +			measurements[num_measurements].rapl_domain = "gpu";
-> +			measurements[num_measurements].drm_device = optarg;
-> +			num_measurements++;
-> +			break;
-> +		case 'r':
-> +			if (num_measurements >= ARRAY_SIZE(measurements))
-> +				usage(argv[0]);
-> +			measurements[num_measurements].battery_index = -1;
-> +			measurements[num_measurements].rapl_domain = optarg;
-> +			measurements[num_measurements].drm_device = NULL;
-> +			num_measurements++;
-> +			break;
-> +		case 'b':
-> +			if (num_measurements >= ARRAY_SIZE(measurements))
-> +				usage(argv[0]);
-> +			measurements[num_measurements].battery_index = atoi(optarg);
-> +			measurements[num_measurements].rapl_domain = NULL;
-> +			measurements[num_measurements].drm_device = NULL;
-> +			num_measurements++;
-> +			break;
 > +		case 's':
-> +			measurement_duration = atoi(optarg);
-> +			break;
-> +		case 'S':
-> +			settle_duration = atoi(optarg);
+> +			sleep_duration = atoi(optarg);
 > +			break;
 > +		default:
 > +			usage(argv[0]);
@@ -299,29 +288,43 @@ Kamil
 > +		}
 > +	}
 > +
-> +	if (num_measurements == 0)
-> +		usage(argv[0]);
+> +	devid = intel_get_pci_device()->device_id;
 > +
-> +	for (int i = 0; i < num_measurements; i++) {
-> +		if (!prepare(&measurements[i]))
-> +			usage(argv[0]);
+> +	if (!has_de_power2(devid)) {
+> +		fprintf(stderr, "Display bandwidth counter not available\n");
+> +		return 2;
 > +	}
 > +
-> +	sleep(settle_duration);
+> +	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, -1);
+
+This function changed recently and now this code do not compile.
+Please fix and resend.
+
+Regards,
+Kamil
+
 > +
-> +	for (int i = 0; i < num_measurements; i++)
-> +		sample_pre(&measurements[i]);
+> +	if (has_de_power2_abox0_abox1(devid))
+> +		measure_de_power2_abox0_abox1(devid, sleep_duration);
+> +	else
+> +		measure_de_power2(devid, sleep_duration);
 > +
-> +	sleep(measurement_duration);
-> +
-> +	for (int i = 0; i < num_measurements; i++)
-> +		sample_post(&measurements[i]);
-> +
-> +	for (int i = 0; i < num_measurements; i++)
-> +		report(&measurements[i]);
+> +	intel_register_access_fini(&mmio_data);
 > +
 > +	return 0;
 > +}
+> diff --git a/tools/meson.build b/tools/meson.build
+> index 48c9a4b5089e..4e9100ddb2b7 100644
+> --- a/tools/meson.build
+> +++ b/tools/meson.build
+> @@ -16,6 +16,7 @@ tools_progs = [
+>  	'intel_audio_dump',
+>  	'intel_backlight',
+>  	'intel_bios_dumper',
+> +	'intel_display_bandwidth',
+>  	'intel_display_crc',
+>  	'intel_display_poller',
+>  	'intel_dump_decode',
 > -- 
 > 2.44.2
 > 
