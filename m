@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7147CD24463
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA876D24468
 	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 03:05:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0EB4510EA1B;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1829C10EA1C;
 	Fri, 11 Oct 2024 03:05:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jswziMJ6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hwD9VK7+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 69CDE10EA1B
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8709D10EA1C
  for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 03:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1728615931; x=1760151931;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=BqIKcm1lKTdAtx97WR+3qDBZCAieebF1wh/YA865yfA=;
- b=jswziMJ6o81HG4J6smrONqLpZRhnMNq1ObWsb24MOH/xIIMeO+IaXXFO
- b8Pue3M6MIrDqwx29kuV26XOOEYACa0vTjy8oAAO17GyEeyShHCYb1yhf
- zxac8sCopBtcvnzEopMvI3+qK4V5C6L+9Sai1946qcf657Z0c/OCpP0Xe
- qUP9VpK0tf4tFTodxH2mydCclCKrWA0uGz+z3xOOOjXZhNDxsAhiC9Er+
- kZbyxt65DKZCtPgLLypeNbPy4j5pzzyeyIrPYVlvKYk/CU+i8qWFKmz1v
- AEohpUosDlckhI/tbAwr//TI9pvuCK0mSt2fJM29NhVRSzW6Fn3/09w0u g==;
-X-CSE-ConnectionGUID: 2xrAAEjwQkqG6OCSzLTmHQ==
-X-CSE-MsgGUID: OZWJ+XA3TM2md8LXEI41pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="30880142"
-X-IronPort-AV: E=Sophos;i="6.11,194,1725346800"; d="scan'208";a="30880142"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=mK3JQ5os59p99ws14op2742GbLI5TbKmrIw05Xckw5U=;
+ b=hwD9VK7+9G2JNAvcek/yZl91N5U+PeLx/f6ZbxoMDghPZZWJAzaQMwSr
+ 1YBTz/Ccd2rta0vYvXzidZ+EZUkbSH4N4B/jA81jXvfPuGzzSFt+kCB4c
+ Yj3DSSmiN+LX90/7ubwUXg0svH+8WxiYDz7ZODr10nzCtfZBrw3RTWdfq
+ nenwgNFzAMPBPMgR/E6aLeEQbUNAqf3rQyDs+7e0UCZIg9Up16cR6jaNV
+ X+AbZ0SWd/ZgZEa5/4NlPn1jwuj798BEn10Tf85dEm6yoVS6bAbvPCtRF
+ GbWV6A4tkb+kwCm0pC/6jZ8q0RwlDadZI3xePwpyqvgf8gbytjAsFMrgq Q==;
+X-CSE-ConnectionGUID: pFUsiBGPTrqpceu7o3bZ4w==
+X-CSE-MsgGUID: eext0mGeRzOeHK6hsujdbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="30880143"
+X-IronPort-AV: E=Sophos;i="6.11,194,1725346800"; d="scan'208";a="30880143"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  10 Oct 2024 20:05:30 -0700
-X-CSE-ConnectionGUID: pPrpphvpQoyq3Oyh8xU6PA==
-X-CSE-MsgGUID: J1egXFxARKyxQ41Q6avOxA==
+X-CSE-ConnectionGUID: v69N/niRRYC7oKa0OM6oKg==
+X-CSE-MsgGUID: o5uYbKwuTA2/VYk6MbLeWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,194,1725346800"; d="scan'208";a="107654641"
+X-IronPort-AV: E=Sophos;i="6.11,194,1725346800"; d="scan'208";a="107654644"
 Received: from mgoodin-mobl2.amr.corp.intel.com (HELO ldmartin-desk2.lan)
  ([10.125.111.122])
  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
@@ -45,11 +45,13 @@ Received: from mgoodin-mobl2.amr.corp.intel.com (HELO ldmartin-desk2.lan)
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 1/3] tests/intel/xe_query: Stop getting refclock
- multiple times
-Date: Thu, 10 Oct 2024 22:05:05 -0500
-Message-ID: <20241011030507.321961-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/intel/xe_query: Add debug messsage with
+ calculated refclock
+Date: Thu, 10 Oct 2024 22:05:06 -0500
+Message-ID: <20241011030507.321961-2-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241011030507.321961-1-lucas.demarchi@intel.com>
+References: <20241011030507.321961-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,65 +69,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In theory it could be different per hwe (but in practice isn't). In any
-case, it shouldn't change on multiple invocations of the query. So stop
-doing it twice per loop.
+When debugging new hardware, it's useful to check the refclock matches
+the expectation. Calculated the expected reflock and print it for quick
+check. Eventually this could be a test on its own if the err is stable.
 
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 ---
- tests/intel/xe_query.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ tests/intel/xe_query.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/xe_query.c b/tests/intel/xe_query.c
-index 4c79a02b0..9e0fa93dd 100644
+index 9e0fa93dd..87ddb58bb 100644
 --- a/tests/intel/xe_query.c
 +++ b/tests/intel/xe_query.c
-@@ -713,7 +713,7 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+@@ -708,7 +708,7 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
+ {
+ 	struct drm_xe_query_engine_cycles ts1 = {};
+ 	struct drm_xe_query_engine_cycles ts2 = {};
+-	uint64_t delta_cpu, delta_cs, delta_delta;
++	uint64_t delta_cpu, delta_cs, delta_delta, calc_freq;
+ 	unsigned int exec_queue;
  	int i, usable = 0;
  	igt_spin_t *spin;
- 	uint64_t ahnd;
--	uint32_t vm, eng_ref_clock1, eng_ref_clock2;
-+	uint32_t vm, eng_ref_clock;
- 	struct {
- 		int32_t id;
- 		const char *name;
-@@ -746,31 +746,31 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
- 		ts2.clockid = clock[index].id;
- 
- 		query_engine_cycles(fd, &ts1);
--		eng_ref_clock1 = __engine_reference_clock(fd, hwe->gt_id);
- 		query_engine_cycles(fd, &ts2);
--		eng_ref_clock2 = __engine_reference_clock(fd, hwe->gt_id);
-+		eng_ref_clock = __engine_reference_clock(fd, hwe->gt_id);
- 
- 		igt_debug("[1] cpu_ts before %llu, reg read time %llu\n",
- 			  ts1.cpu_timestamp,
- 			  ts1.cpu_delta);
--		igt_debug("[1] engine_ts %llu, freq %u Hz, width %u\n",
--			  ts1.engine_cycles, eng_ref_clock1, ts1.width);
-+		igt_debug("[1] engine_ts %llu, width %u\n",
-+			  ts1.engine_cycles, ts1.width);
- 
- 		igt_debug("[2] cpu_ts before %llu, reg read time %llu\n",
- 			  ts2.cpu_timestamp,
- 			  ts2.cpu_delta);
--		igt_debug("[2] engine_ts %llu, freq %u Hz, width %u\n",
--			  ts2.engine_cycles, eng_ref_clock2, ts2.width);
-+		igt_debug("[2] engine_ts %llu, width %u\n",
-+			  ts2.engine_cycles, ts2.width);
- 
- 		delta_cpu = ts2.cpu_timestamp - ts1.cpu_timestamp;
- 
- 		if (ts2.engine_cycles >= ts1.engine_cycles)
- 			delta_cs = (ts2.engine_cycles - ts1.engine_cycles) *
--				   NSEC_PER_SEC / eng_ref_clock1;
-+				   NSEC_PER_SEC / eng_ref_clock;
- 		else
+@@ -770,7 +770,10 @@ __engine_cycles(int fd, struct drm_xe_engine_class_instance *hwe)
  			delta_cs = (((1 << ts2.width) - ts2.engine_cycles) + ts1.engine_cycles) *
--				   NSEC_PER_SEC / eng_ref_clock1;
-+				   NSEC_PER_SEC / eng_ref_clock;
+ 				   NSEC_PER_SEC / eng_ref_clock;
  
-+		igt_debug("freq %u Hz\n", eng_ref_clock);
+-		igt_debug("freq %u Hz\n", eng_ref_clock);
++		calc_freq = (ts2.engine_cycles - ts1.engine_cycles) * NSEC_PER_SEC / delta_cpu;
++
++		igt_debug("freq %u Hz, calc_freq %"PRIu64" Hz, err %.3f%%\n", eng_ref_clock,
++			  calc_freq, fabs((double)calc_freq - eng_ref_clock) * 100 / eng_ref_clock);
  		igt_debug("delta_cpu[%"PRIu64"], delta_cs[%"PRIu64"]\n",
  			  delta_cpu, delta_cs);
  
