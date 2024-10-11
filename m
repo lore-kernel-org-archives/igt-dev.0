@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B48CCFD316
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 10:15:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 049C3CFD30C
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 10:25:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DE1510E0A3;
-	Fri, 11 Oct 2024 10:15:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B309610E0A3;
+	Fri, 11 Oct 2024 10:25:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eguoK7G+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lUSGC5aA";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FA8F10E0A3
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 10:15:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A9C710E0A3
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 10:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728641755; x=1760177755;
+ t=1728642351; x=1760178351;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=rNOBLE4G6aUs3Ub5Cj/jClS/ebwYByNfmTGudAlrwO8=;
- b=eguoK7G+Dz1qbFvesvQS/twOvjvL9lDvz6ZNF0O2A8fj6worgaYmrk0v
- azqboprZD6p13NHNvB36RMBgNAVdwQmmmFuk0SiSgLu9Aepa7pJjZJUZ4
- X1zJ/hvanGPDzSGyw0kfRZCzClo00YecS0L1nysVziaUSiXXuPMbwr2kS
- Id93BYuv/f7OGW0EwHue69hNOE6uJ0bsrd/jZOvQx/hZILiZtb+om5tNL
- I/MqCgN90p2vjHiJFzXoq2VKW+ZWc9g1ohNKmNfsQGCJPzZhs5CMqx9Ij
- fcvX6rm8hHaqZPINMe2wRKOrlUNMYoEUU/0Q5X3Ax7iPQqcd2prdA7+zR Q==;
-X-CSE-ConnectionGUID: Yo4QCD53RweVmdRrimfWfQ==
-X-CSE-MsgGUID: 0ZbjOJxMQ0GV6fOpzRwWRA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="28177610"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="28177610"
+ bh=y2oeEP+vUB7jM6BeCjPyYBq1DuvsNnVBWFDqTHxjbWo=;
+ b=lUSGC5aAa2bJPIWzzZ70fqSHHKfv4D6lbwRDXOaTZb2j96cHeAt2N2Yo
+ 3Q9hpN8pX+effEvgC1tuprqYzArRIeNaBawgf9LyBtS9i4+ZeB/bAZ9Ep
+ 1aaLC15ObkChsW8IhpTTRBL5rjNeiIDgIhfd3iw2GMA8qu4NiXjA8N1yg
+ +wGRTAPaNpP4HHg0PyH2jtWhLPqOrmaIHDUnufEiFDOHLL5yQH4YsL9eC
+ TNYlTersU7K3sdaMaEDJt473xg77IdAL/p9HuqfFzbbG71XQ9husWsco7
+ GXKAmCvjwMfRWVQeXQn4Pq/YRpWm6jaYIt8fDz586aU00xcLKDp9naOAz A==;
+X-CSE-ConnectionGUID: Igjx6+2jRrKzxh5jjqWCoQ==
+X-CSE-MsgGUID: Adbf5qoUTkOZvphXCYSI8g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="28178263"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="28178263"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 03:15:54 -0700
-X-CSE-ConnectionGUID: uoON0XQ/Q6qYHFcxSwVH3Q==
-X-CSE-MsgGUID: AN/U1wKvRleK9iGxHNLKaA==
+ 11 Oct 2024 03:25:51 -0700
+X-CSE-ConnectionGUID: vOwkx0NjSsOn9FIguxBRUA==
+X-CSE-MsgGUID: 7ets2ZdWQ7GPzj8QY7F4Yg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76978810"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76979976"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 11 Oct 2024 03:15:51 -0700
+ by fmviesa008.fm.intel.com with SMTP; 11 Oct 2024 03:25:49 -0700
 Received: by stinkbox (sSMTP sendmail emulation);
- Fri, 11 Oct 2024 13:15:50 +0300
-Date: Fri, 11 Oct 2024 13:15:50 +0300
+ Fri, 11 Oct 2024 13:25:48 +0300
+Date: Fri, 11 Oct 2024 13:25:48 +0300
 From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
 To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 Cc: igt-dev@lists.freedesktop.org
 Subject: Re: =?utf-8?Q?=E2=9C=97_GitLab=2EPipeline?= =?utf-8?Q?=3A?= warning
  for intel: igt_draw and intel_bufops improvements
-Message-ID: <Zwj61mAuOxU7EaCX@intel.com>
+Message-ID: <Zwj9LA36PvNfmzqm@intel.com>
 References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
  <172831556479.1199107.12823113622696577179@2413ebb6fbb6>
  <Zwgt2ay9A_cRL3Qn@intel.com>
- <20241011070017.f7gnnoaxi4g56b63@zkempczy-mobl2>
+ <20241011063727.wbjyxi442hpf6w34@zkempczy-mobl2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241011070017.f7gnnoaxi4g56b63@zkempczy-mobl2>
+In-Reply-To: <20241011063727.wbjyxi442hpf6w34@zkempczy-mobl2>
 X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -74,7 +74,7 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Oct 11, 2024 at 09:00:17AM +0200, Zbigniew Kempczyński wrote:
+On Fri, Oct 11, 2024 at 08:37:27AM +0200, Zbigniew Kempczyński wrote:
 > On Thu, Oct 10, 2024 at 10:41:13PM +0300, Ville Syrjälä wrote:
 > > On Mon, Oct 07, 2024 at 03:39:24PM -0000, Patchwork wrote:
 > > > == Series Details ==
@@ -111,15 +111,21 @@ On Fri, Oct 11, 2024 at 09:00:17AM +0200, Zbigniew Kempczyński wrote:
 > > spending 10% of time on actual work, and the remaining 90%
 > > is spent dealing with the idiotic "documentation" stuff.
 > 
-> I've checked gem_draw.c and it seems it is i915 specific. Instead
-> of adding 'Driver requirement' field to i915_test_config.json, remove
-> it from from gem_draw.c.
+> There're people who are using this so my personal opinion about
+> this doesn't matter.
 
-Pretty sure I tried that and it still complained about something.
-Hmm, tried it again and it does seem to help. I must have had
-something else "wrong" when I tried it the first time. It still
-warns about "mega features" (whatever that is) but at least it
-doesn't fail the build anymore. Thanks.
+Who are those people? They need to step up and fix this mess.
+
+At the *very least* the inane arg[1] stuff needs to be nuked
+from orbit and instead the test names must be made to support
+real wildcards of some sort (ie. without having to painstakingly
+list each and every value for every damn wildcard).
+
+Hmm. Seems if I stick a '*' into a test name then the
+documentation build scripts just seem to ignore it or
+something. I'll probably just start using that even if it
+doesn't do what some people want. They can come in and
+fix their crazy scripts themselves.
 
 -- 
 Ville Syrjälä
