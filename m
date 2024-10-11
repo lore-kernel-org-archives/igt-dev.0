@@ -4,65 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5FBECFC61C
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 08:21:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B7FACFD2E4
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 08:36:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9299710EA71;
-	Fri, 11 Oct 2024 08:21:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B81EB10E05B;
+	Fri, 11 Oct 2024 08:36:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A9gsPpBh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eA17M3n/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D8C910E09D;
- Fri, 11 Oct 2024 08:21:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83F4910E05B
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 08:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728634911; x=1760170911;
+ t=1728635776; x=1760171776;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=AmEGZGIaiM0AWUdpgGHPC+8awlOevRtWSnCnq4Ungnc=;
- b=A9gsPpBhCiMBcTvG9Mb1R/qkeCrssa9DxYV8njrsySnxgndoNla+uY85
- ZT6OudLtaTSZ4ewQ231Oz5KB8g43l9x7g58nBSXjiC5lpnRDaMQJ/oTxc
- rcfc2gwhUj5v53y9UVSFeApB4nRrWgzPxI5To5JWUNvE2J+0fxZFquvOT
- BIGJ635VWjFA3QcuNQLjvjBhuFJ1HLQgt5q8TRoKmty+lFni6RGYp347G
- YurAWDQbDCRQpq98ClI4d5Ir0J0yLTMsEh012MjrmDVwx8GaiuXrYQ0xV
- G6tqTZyhHdz0TJ6VA8o2nzNbB0gWCnX/k1q0IK35uLgAb7TGNEibwtFZ3 w==;
-X-CSE-ConnectionGUID: 2cRngn40RpukcqMfhgkh4w==
-X-CSE-MsgGUID: oZzy4uHwQny7TTSG0/bDoA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="15647709"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="15647709"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 01:21:51 -0700
-X-CSE-ConnectionGUID: 7hNQPzehTsKQOdV6wcHpsg==
-X-CSE-MsgGUID: LOFzj41RQCKkL/80IgN9rQ==
+ bh=qY9CnSG5MRFdGxjUO3MKDkMYYOF1YaSjTiOiBR2GhPY=;
+ b=eA17M3n/0EAL0n/YeMfTYrxQ3vNZHlm2hP/8KCwWWFj0TYMxupIhkUCK
+ DtG0stb3qluMdgIPuyDBomfbWGpihn2ybscxLYVf9NybjeFWFLqzf0uIZ
+ ttVBMra0OMqw4JSWUUCnlAgxYQMoYZuNn/jt9EH4BJp4gGXfBc+L2T8em
+ pPVl/Dezw0PQZv0j0lUKecabYMiNLyS4szT2OES+WMvJGDOJVaz6I8lE0
+ OBMqI0dxqU76uF++yWMN9XXqoJuJrphhqRMxv51LzmLHhvWdp3UwXRYps
+ NE9cmY9fJQMHN6Qau8QRu3vZNf1q4I9h/28H27dS3OrwLF3PBgeQ2K6u4 A==;
+X-CSE-ConnectionGUID: fczBeh7QToqoltXFZWpEgg==
+X-CSE-MsgGUID: X9Og/5DnSmWgfNvxIthwnQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="50570674"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="50570674"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Oct 2024 01:36:16 -0700
+X-CSE-ConnectionGUID: APYYeaYARMeeSu+vAvnABA==
+X-CSE-MsgGUID: tCJjrhGFTTWImwuOZIztHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="107573518"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76495784"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 01:21:49 -0700
-Date: Fri, 11 Oct 2024 10:21:47 +0200
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 01:36:15 -0700
+Date: Fri, 11 Oct 2024 10:36:12 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-gfx@lists.freedesktop.org, Tejas Upadhyay <tejas.upadhyay@intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-Subject: Re: [PATCH i-g-t] lib/gem_mman: Stop lying about
- I915_MMAP_OFFSET_GTT support
-Message-ID: <20241011082147.qiioekalcdqo2g44@kamilkon-desk.igk.intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>, lucas.demarchi@intel.com
+Subject: Re: [PATCH i-g-t 2/3] lib/igt_sysfs: Add igt_sysfs_{get,set}_s32
+Message-ID: <20241011083612.rxr72alhaonj5lza@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- intel-gfx@lists.freedesktop.org,
- Tejas Upadhyay <tejas.upadhyay@intel.com>,
- Chris Wilson <chris.p.wilson@linux.intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>
-References: <20241010135023.275507-2-janusz.krzysztofik@linux.intel.com>
+ Francois Dugast <francois.dugast@intel.com>,
+ lucas.demarchi@intel.com
+References: <20241009123141.86800-1-francois.dugast@intel.com>
+ <20241009123141.86800-3-francois.dugast@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241010135023.275507-2-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <20241009123141.86800-3-francois.dugast@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,42 +72,121 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Janusz,
-On 2024-10-10 at 15:49:06 +0200, Janusz Krzysztofik wrote:
-> A few tests depend on for_each_mmap_offset_type() helper used for
-> selection of device supported mmap_offset types in loops either around
-> dynamic sub-subtests or inside subtest bodies.  That helper in turn
-> calls gem_has_mmap_offset_type() to omit unsupported mmap_offset types.
-> Unfortunately, its code returns GTT as supported mmap_offset type also on
-> new platforms that no longer support that type.  Poorly coded subtests may
-> than take unexpected processing paths and return unexpected results that
-> are not easy to understand and explain.
-> 
-> Fix it.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11370
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Hi Francois,
+On 2024-10-09 at 14:28:48 +0200, Francois Dugast wrote:
+> Add this family of functions to read and write signed values in sysfs.
 
-LGTM,
+imho better:
+
+Add functions to read and write 32-bit signed values in sysfs.
+
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-> ---
->  lib/i915/gem_mman.c | 2 ++
->  1 file changed, 2 insertions(+)
 > 
-> diff --git a/lib/i915/gem_mman.c b/lib/i915/gem_mman.c
-> index 0b41ba70dd..cd0c65e213 100644
-> --- a/lib/i915/gem_mman.c
-> +++ b/lib/i915/gem_mman.c
-> @@ -90,6 +90,8 @@ bool gem_has_mmap_offset_type(int fd, const struct mmap_offset *t)
->  	if (gem_has_mmap_offset(fd))
->  		if (gem_has_lmem(fd))
->  			return t->type == I915_MMAP_OFFSET_FIXED;
-> +		else if (t->type == I915_MMAP_OFFSET_GTT)
-> +			return gem_has_mappable_ggtt(fd);
->  		else
->  			return t->type != I915_MMAP_OFFSET_FIXED;
->  	else
+> Signed-off-by: Francois Dugast <francois.dugast@intel.com>
+> ---
+>  lib/igt_sysfs.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_sysfs.h |  5 ++++
+>  2 files changed, 76 insertions(+)
+> 
+> diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+> index b7746a1ec..56279d958 100644
+> --- a/lib/igt_sysfs.c
+> +++ b/lib/igt_sysfs.c
+> @@ -873,6 +873,77 @@ void igt_sysfs_set_u32(int dir, const char *attr, uint32_t value)
+>  		     "Failed to write %u to %s attribute (%s)\n", value, attr, strerror(errno));
+>  }
+>  
+> +/**
+> + * __igt_sysfs_get_s32:
+> + * @dir: directory corresponding to attribute
+> + * @attr: name of the sysfs node to read
+> + * @value: pointer for storing read value
+> + *
+> + * Convenience wrapper to read a signed 32bit integer from a sysfs file.
+> + *
+> + * Returns:
+> + * True if value successfully read, false otherwise.
+> + */
+> +bool __igt_sysfs_get_s32(int dir, const char *attr, int32_t *value)
+> +{
+> +	if (igt_debug_on(igt_sysfs_scanf(dir, attr, "%d", value) != 1))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_sysfs_get_s32:
+> + * @dir: directory corresponding to attribute
+> + * @attr: name of the sysfs node to read
+> + *
+> + * Convenience wrapper to read a signed 32bit integer from a sysfs file.
+> + * It asserts on failure.
+> + *
+> + * Returns:
+> + * Read value.
+> + */
+> +int32_t igt_sysfs_get_s32(int dir, const char *attr)
+> +{
+> +	int32_t value;
+> +
+> +	igt_assert_f(__igt_sysfs_get_s32(dir, attr, &value),
+> +		     "Failed to read %s attribute (%s)\n", attr, strerror(errno));
+> +
+> +	return value;
+> +}
+> +
+> +/**
+> + * __igt_sysfs_set_s32:
+> + * @dir: directory corresponding to attribute
+> + * @attr: name of the sysfs node to write
+> + * @value: value to set
+> + *
+> + * Convenience wrapper to write a signed 32bit integer to a sysfs file.
+> + *
+> + * Returns:
+> + * True if successfully written, false otherwise.
+> + */
+> +bool __igt_sysfs_set_s32(int dir, const char *attr, int32_t value)
+> +{
+> +	return igt_sysfs_printf(dir, attr, "%d", value) > 0;
+> +}
+> +
+> +/**
+> + * igt_sysfs_set_s32:
+> + * @dir: directory corresponding to attribute
+> + * @attr: name of the sysfs node to write
+> + * @value: value to set
+> + *
+> + * Convenience wrapper to write a signed 32bit integer to a sysfs file.
+> + * It asserts on failure.
+> + */
+> +void igt_sysfs_set_s32(int dir, const char *attr, int32_t value)
+> +{
+> +	igt_assert_f(__igt_sysfs_set_s32(dir, attr, value),
+> +		     "Failed to write %d to %s attribute (%s)\n", value, attr, strerror(errno));
+> +}
+> +
+>  /**
+>   * __igt_sysfs_get_u64:
+>   * @dir: directory corresponding to attribute
+> diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+> index 0ee253826..1bf026bed 100644
+> --- a/lib/igt_sysfs.h
+> +++ b/lib/igt_sysfs.h
+> @@ -125,6 +125,11 @@ uint32_t igt_sysfs_get_u32(int dir, const char *attr);
+>  bool __igt_sysfs_set_u32(int dir, const char *attr, uint32_t value);
+>  void igt_sysfs_set_u32(int dir, const char *attr, uint32_t value);
+>  
+> +bool __igt_sysfs_get_s32(int dir, const char *attr, int32_t *value);
+> +int32_t igt_sysfs_get_s32(int dir, const char *attr);
+> +bool __igt_sysfs_set_s32(int dir, const char *attr, int32_t value);
+> +void igt_sysfs_set_s32(int dir, const char *attr, int32_t value);
+> +
+>  bool __igt_sysfs_get_u64(int dir, const char *attr, uint64_t *value);
+>  uint64_t igt_sysfs_get_u64(int dir, const char *attr);
+>  bool __igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
 > -- 
-> 2.46.2
+> 2.43.0
 > 
