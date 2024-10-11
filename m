@@ -4,28 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC0CD0D7B8
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 15:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AAAC3D0D7BA
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 15:18:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3170010EB0F;
-	Fri, 11 Oct 2024 15:09:58 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0602510EB13;
- Fri, 11 Oct 2024 15:09:57 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8730701750304672587=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7090610EB14;
+	Fri, 11 Oct 2024 15:18:35 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/VCqTOk";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 660BF10EB14
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 15:18:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728659913; x=1760195913;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=TZW3UjElH0Mqdg3p+NZUoR2SpTmfu+z/9vxFNfqcj80=;
+ b=A/VCqTOkoGnRa9aCiT4vORnaKSrBLk2uWWSN5GM7Mcs/UG5u1Osp7G+3
+ Np5wSZnrsnUvzERy0h2jKSlFFtZZrAXZWRv9oV74yE8ddzz5zK/QVaOIM
+ TxM0ZAtR8aNJ/Xxa0pFBXnfEkdOPdXPv00obVle1NwTXs5W5musSE5wFC
+ 3v6OuzMardQrBe36n7W/MTK41zcUxhCd3kdhwH67b28f+x/be5P/PpIyH
+ tYvJyU0mpLHZKxDDR7pt/aiyhImbh2kRf6NM9GQyS9jh2phbEiANvJJOb
+ 3+OVBCfKivZfPhd0dc14cg+gcyLD3uSPB2fLVkGcZKwv4gLONmvnVk+MX w==;
+X-CSE-ConnectionGUID: hwrGyjILRVGTwByOIU4AVg==
+X-CSE-MsgGUID: HSO51VPaToOOuTSxPC2LsA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45574207"
+X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="45574207"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Oct 2024 08:18:13 -0700
+X-CSE-ConnectionGUID: NxDzovWQSFOLH5FliYBvhw==
+X-CSE-MsgGUID: pYIuuO98RpOZl4WoG/wQyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="114400181"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Oct 2024 08:18:11 -0700
+Date: Fri, 11 Oct 2024 17:18:09 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+Subject: Re: [PATCH i-g-t v6] runner/executor: Abort when child process is
+ killed by a signal
+Message-ID: <20241011151809.2ael7a2ldjglvpu5@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+References: <f7319a46-d6d4-4ea5-9863-99ccd7cea3a5@linux.intel.com>
+ <999b078d-4338-4158-915e-3bc83338f4e1@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_series_starting_with_=5Bi-g-t?=
- =?utf-8?q?=2C1/3=5D_tests/intel/xe=5Fquery=3A_Stop_getting_refclock_multipl?=
- =?utf-8?q?e_times?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lucas De Marchi" <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Oct 2024 15:09:57 -0000
-Message-ID: <172865939701.1240984.4333305705450429382@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241011030507.321961-1-lucas.demarchi@intel.com>
-In-Reply-To: <20241011030507.321961-1-lucas.demarchi@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <999b078d-4338-4158-915e-3bc83338f4e1@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,203 +71,143 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8730701750304672587==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Peter,
+On 2024-10-03 at 15:27:37 +0200, Peter Senna Tschudin wrote:
+> Manually killing a test process results in igt-runner silently marking the
+> test as incomplete. Change the behavior to abort verbosely when a test is
+> killed.
 
-== Series Details ==
+This is how it was designed, test ends with one of SUCCESS/SKIP/FAIL and
+then runner marks it as completed. Missing this info means test was
+incomplete.
 
-Series: series starting with [i-g-t,1/3] tests/intel/xe_query: Stop getting refclock multiple times
-URL   : https://patchwork.freedesktop.org/series/139871/
-State : failure
+> 
+> In order for the new behavior to work, child termination is probed on
+> every iteration of the while loop inside monitor_output(). Add the
+> bool test_timed_out to track when igt_runner is intentionally terminating
+> a test, and do not interfere with it.
+> 
+> Tested by:
+>  - using the --per-test-timeout flag and checking that results.json labels
+>    the test as a timeout.
+>  - manually killing a test process and checking that results.json labels
+>    the test as an abort with a message stating the test was killed.
 
-== Summary ==
+We strive to have tests as programs/helpers/scripts so they can be
+repeatedly tested by CI. If you want to have your changes accepted
+you should write it.
 
-CI Bug Log - changes from XEIGT_8065_BAT -> XEIGTPW_11900_BAT
-====================================================
+Almost all signals are catched and reported by tests itself. A missing
+one is SIGKILL which only runner (parent process) can report.
 
-Summary
--------
+Regards,
+Kamil
 
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_11900_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_11900_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_11900_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@xe_intel_bb@intel-bb-blit-none:
-    - bat-adlp-vf:        [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11900_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][3] -> [FAIL][4] ([Intel XE#1861])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][5] ([Intel XE#288]) +32 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][6] ([Intel XE#2229])
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-dg2-oem2:       [INCOMPLETE][7] ([Intel XE#2874]) -> [PASS][8] +1 other test pass
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-
-
-Build changes
--------------
-
-  * IGT: IGT_8065 -> IGTPW_11900
-  * Linux: xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16 -> xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982
-
-  IGTPW_11900: c3a413e4c9e3613575d3be1793fe52578cef4cd7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16: 09a8c322287e106dca33e28fa7f1475255a9ef16
-  xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982: 20c57deec46e59d392ec6d4a23257f4bb5673982
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/index.html
-
---===============8730701750304672587==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] tests/intel/xe_query: Stop getting refclock multiple times</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139871/">https://patchwork.freedesktop.org/series/139871/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8065_BAT -&gt; XEIGTPW_11900_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_11900_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_11900_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_11900_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@xe_intel_bb@intel-bb-blit-none:<ul>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-vf/igt@xe_intel_bb@intel-bb-blit-none.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11900_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8065/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11900/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8065 -&gt; IGTPW_11900</li>
-<li>Linux: xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16 -&gt; xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982</li>
-</ul>
-<p>IGTPW_11900: c3a413e4c9e3613575d3be1793fe52578cef4cd7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2048-09a8c322287e106dca33e28fa7f1475255a9ef16: 09a8c322287e106dca33e28fa7f1475255a9ef16<br />
-  xe-2049-20c57deec46e59d392ec6d4a23257f4bb5673982: 20c57deec46e59d392ec6d4a23257f4bb5673982</p>
-
-</body>
-</html>
-
---===============8730701750304672587==--
+> 
+>  v6: - clear code comments
+>      - move child termination probing closer to where sigfd is handled
+>      - add a bool test_timed_out to ensure we will not interfere with
+>        igt_runner intentionally killing tests.
+>      - move the aborting code to outside the while loop
+> 
+>  v5: do not use sigdescr_np() as it seems to be a fairly new lib function
+>      that does not compile on older Ubuntu
+>  v4: improve abort code path to not interfere with igt-runner timeouts
+>  v3: do not interfere with igt-runner killing tests due to timeout and
+>      diskspace
+>  v2: fix race condition
+> 
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> ---
+>  runner/executor.c | 29 +++++++++++++++++++++++++++--
+>  1 file changed, 27 insertions(+), 2 deletions(-)
+> 
+> diff --git a/runner/executor.c b/runner/executor.c
+> index ac73e1dde..69b4ed939 100644
+> --- a/runner/executor.c
+> +++ b/runner/executor.c
+> @@ -888,12 +888,15 @@ static int monitor_output(pid_t child,
+>  	const int interval_length = 1;
+>  	int wd_timeout;
+>  	int killed = 0; /* 0 if not killed, signal number otherwise */
+> +	bool child_reaped = false;
+> +	bool child_killed_by_signal = false;
+>  	struct timespec time_beg, time_now, time_last_activity, time_last_subtest, time_killed;
+>  	unsigned long taints = 0;
+>  	bool aborting = false;
+>  	size_t disk_usage = 0;
+>  	bool socket_comms_used = false; /* whether the test actually uses comms */
+>  	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
+> +	bool test_timed_out = false;
+>  
+>  	igt_gettime(&time_beg);
+>  	time_last_activity = time_last_subtest = time_killed = time_beg;
+> @@ -1233,6 +1236,14 @@ static int monitor_output(pid_t child,
+>  			}
+>  		}
+>  
+> +		/* Always check for abort conditions */
+> +		if (child == waitpid(child, &status, WNOHANG)) {
+> +			child_reaped = true;
+> +			if (WIFSIGNALED(status)) {
+> +				child_killed_by_signal = true;
+> +				killed = WTERMSIG(status);
+> +			}
+> +		}
+>  		if (sigfd >= 0 && FD_ISSET(sigfd, &set)) {
+>  			double time;
+>  
+> @@ -1241,7 +1252,12 @@ static int monitor_output(pid_t child,
+>  				errf("Error reading from signalfd: %m\n");
+>  				continue;
+>  			} else if (siginfo.ssi_signo == SIGCHLD) {
+> -				if (child != waitpid(child, &status, WNOHANG)) {
+> +				if (!child_reaped) {
+> +					/* Was child killed since we last checked? */
+> +					if (child == waitpid(child, &status, WNOHANG))
+> +						child_reaped = true;
+> +				}
+> +				if (!child_reaped) {
+>  					errf("Failed to reap child\n");
+>  					status = 9999;
+>  				} else if (WIFEXITED(status)) {
+> @@ -1303,7 +1319,6 @@ static int monitor_output(pid_t child,
+>  							fdatasync(outputs[_F_JOURNAL]);
+>  					}
+>  				}
+> -
+>  				aborting = true;
+>  				killed = SIGQUIT;
+>  				if (!kill_child(killed, child))
+> @@ -1447,6 +1462,7 @@ static int monitor_output(pid_t child,
+>  						 disk_usage);
+>  
+>  		if (timeout_reason) {
+> +			test_timed_out = true;
+>  			if (killed == SIGKILL) {
+>  				/* Nothing that can be done, really. Let's tell the caller we want to abort. */
+>  
+> @@ -1485,6 +1501,15 @@ static int monitor_output(pid_t child,
+>  		}
+>  	}
+>  
+> +	if (!test_timed_out && child_killed_by_signal) {
+> +		sprintf(buf, "Test terminated by a signal %s (%d).\n",
+> +				strsignal(killed), -killed);
+> +		errf("%s", buf);
+> +
+> +		*abortreason = strdup(buf);
+> +		aborting = true;
+> +	}
+> +
+>  	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
+>  	if (settings->sync)
+>  		fdatasync(outputs[_F_DMESG]);
+> -- 
+> 2.34.1
+> 
