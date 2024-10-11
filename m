@@ -4,64 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7519D0D7B3
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 14:58:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE7B4D0D7B8
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 15:03:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 75C6010EAFA;
-	Fri, 11 Oct 2024 14:58:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jmkwYae+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08D8810EAFA
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 14:58:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728658711; x=1760194711;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=0BPHKX+v4fQGGhiBuZ2eX4YcTwxpzcmOz39gP8rFAFE=;
- b=jmkwYae+z8NSQuwlXhPe0mdmpUTuP/YaGAcCP+BX4MEgXXey57PbFP8l
- KoTEqtXr7JUYCPllIrf/1FWNcmT372yMu29cqhF1B3bfjPzolvid/sLUU
- y/ajmghQi5dvNVGRrEaVV/RUM7od9MhC8XMMiM5O6oGPcITdETHVNv1sW
- WQIZd8UVe/9KbcrXi7/iGuNZwSRb+BpF6vjCG6wJc6NTQfjJmyzkC822y
- B6ys1iTZQ7cvfOJnclvuA9sbPoRxrlRTChaNZjLaoP6P5zxUi0OT/UlxJ
- VAIq+5+0QoXdrZzuhmcoMv7N0K3/5HwC1cTZLmQR/Xc30CYbkt2zz5RgD Q==;
-X-CSE-ConnectionGUID: ywkRbV7PRMG8PVOVMme92w==
-X-CSE-MsgGUID: peuWCrGcQj+eT7XLRHY71w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="27931181"
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="27931181"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 07:58:31 -0700
-X-CSE-ConnectionGUID: NedVMWq9S3KUL6JQCC6Q0g==
-X-CSE-MsgGUID: 2eFp8WUCSSad8HvcxhnEuw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; d="scan'208";a="76848363"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 07:58:29 -0700
-Date: Fri, 11 Oct 2024 16:58:11 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Adarsh G M <adarsh.g.m@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/kms_histogram: Added IGT support to
- validate global histogram
-Message-ID: <20241011145811.4kihknivi5op3e46@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Mohammed Thasleem <mohammed.thasleem@intel.com>,
- Adarsh G M <adarsh.g.m@intel.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-References: <20240705091333.328322-2-mohammed.thasleem@intel.com>
- <20240924122533.494165-1-mohammed.thasleem@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6816F10EB17;
+	Fri, 11 Oct 2024 15:03:02 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D818310EB3A;
+ Fri, 11 Oct 2024 15:03:00 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1717502429542341178=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240924122533.494165-1-mohammed.thasleem@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fflip=3A_Assert_?=
+ =?utf-8?q?with_twice_of_frame_time_while_waiting_fro_vblank?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Mitul Golani" <mitulkumar.ajitkumar.golani@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 11 Oct 2024 15:03:00 -0000
+Message-ID: <172865898088.1240971.15359834372281413317@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241011062147.1956995-1-mitulkumar.ajitkumar.golani@intel.com>
+In-Reply-To: <20241011062147.1956995-1-mitulkumar.ajitkumar.golani@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,527 +37,164 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mohammed,
-On 2024-09-24 at 17:55:33 +0530, Mohammed Thasleem wrote:
-> The IGT changes included tests for enabling/disabling histogram.
-> Validating the histogram event generation and if any One such library
-> Global Histogram Enhancement(GHE) present, will feed the histogram to
-> the library, get the enhanced LUT data and feed it back to the KMD.
-> For histogram generation, black/white and color images are flipped.
-> 
-> TODO: Extend the tests for different formats/modifiers.
-> 
+--===============1717502429542341178==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I would prefer to have a litte more description here, maybe just
-copy some (or all) from cover letter?
+== Series Details ==
 
-Please also provide link(s) (patchwork or lore.kernel.org) to kernel
-changes.
+Series: tests/kms_flip: Assert with twice of frame time while waiting fro vblank
+URL   : https://patchwork.freedesktop.org/series/139876/
+State : success
 
-> v2: Remove eDP restriction. (Vandita)
->     Update crtc property name. (Arun)
-> 
-> Signed-off-by: Adarsh G M <adarsh.g.m@intel.com>
-> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
-> ---
->  lib/igt_kms.c         |  23 +++
->  lib/igt_kms.h         |   5 +
->  meson.build           |   7 +
->  tests/kms_histogram.c | 349 ++++++++++++++++++++++++++++++++++++++++++
+== Summary ==
 
-imho this should be tests/intel as now it is only for Intel drivers
-i195 or Xe.
+CI Bug Log - changes from IGT_8065 -> IGTPW_11901
+====================================================
 
->  tests/meson.build     |   2 +
->  5 files changed, 386 insertions(+)
->  create mode 100644 tests/kms_histogram.c
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index b40470c02..a7a990fc2 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -700,6 +700,9 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
->  	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
->  	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
->  	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
-> +	[IGT_CRTC_HISTOGRAM] = "Histogram_Enable",
-> +	[IGT_CRTC_GLOBAL_HISTOGRAM] = "Global Histogram",
-> +	[IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR] = "Global IET",
->  };
->  
->  const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
-> @@ -2562,6 +2565,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
->  	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SCALING_FILTER))
->  		igt_pipe_obj_set_prop_enum(pipe, IGT_CRTC_SCALING_FILTER, "Default");
->  
-> +	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_HISTOGRAM))
-> +		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_HISTOGRAM, 0);
-> +
->  	pipe->out_fence_fd = -1;
->  }
->  
-> @@ -5590,6 +5596,23 @@ bool igt_lease_change_detected(struct udev_monitor *mon, int timeout_secs)
->  			      ARRAY_SIZE(props));
->  }
->  
-> +/**
-> + * igt_global_histogram_event_detected:
-> + * @mon: A udev monitor initialized with #igt_watch_uevents
-> + * @timeout_secs: How long to wait for a lease change event to occur.
-> + *
-> + * Detect if a global Histogram event was received since we last checked the monitor.
-> + *
-> + * Returns: true if a sysfs global Histogram event was received, false if we timed out
-> + */
-> +bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs)
-> +{
-> +	const char *props[1] = {"HISTOGRAM"};
-> +	int expected_val = 1;
-> +
-> +	return event_detected(mon, timeout_secs, props, &expected_val, ARRAY_SIZE(props));
-> +}
-> +
->  /**
->   * igt_flush_uevents:
->   * @mon: A udev monitor initialized with #igt_watch_uevents
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 25ba50916..598aa4b33 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -163,6 +163,9 @@ enum igt_atomic_crtc_properties {
->         IGT_CRTC_OUT_FENCE_PTR,
->         IGT_CRTC_VRR_ENABLED,
->         IGT_CRTC_SCALING_FILTER,
-> +       IGT_CRTC_HISTOGRAM,
-> +       IGT_CRTC_GLOBAL_HISTOGRAM,
-> +       IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
->         IGT_NUM_CRTC_PROPS
->  };
->  
-> @@ -1111,6 +1114,8 @@ void igt_cleanup_uevents(struct udev_monitor *mon);
->  bool igt_display_has_format_mod(igt_display_t *display, uint32_t format, uint64_t modifier);
->  bool igt_plane_has_format_mod(igt_plane_t *plane, uint32_t format, uint64_t modifier);
->  
-> +bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs);
-> +
->  /**
->   * igt_vblank_after_eq:
->   * @a: First vblank sequence number.
-> diff --git a/meson.build b/meson.build
-> index 0d06721b4..8ee4f6edc 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -195,6 +195,13 @@ else
->  	chamelium = disabler()
->  endif
->  
-> +libghe = dependency('libghe', required : false)
-> +if libghe.found()
-> +      config.set('HAVE_LIBGHE', 1)
-> +else
-> +      warning('LIBGHE not found')
+Summary
+-------
 
-Why warning when you made it optional?
+  **SUCCESS**
 
-> +endif
-> +
->  build_info += 'Build Chamelium test: @0@'.format(chamelium.found())
->  
->  pthreads = dependency('threads')
-> diff --git a/tests/kms_histogram.c b/tests/kms_histogram.c
-> new file mode 100644
-> index 000000000..892291f1e
-> --- /dev/null
-> +++ b/tests/kms_histogram.c
-> @@ -0,0 +1,349 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2024 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: kms histogram
-> + * Category: Display
-> + * Description: Test to verify histogram features.
-> + * Driver requirement: i915, xe
-> + * Functionality: histogram
-> + * Mega feature: Display
-> + * Test category: functionality test
-> + */
-> +
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <limits.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <string.h>
-> +
-> +#include "igt.h"
-> +#include "igt_vec.h"
-> +#ifdef HAVE_LIBGHE
-> +#include "ghe.h"
-> +#endif
-> +
-> +#define GLOBAL_HIST_DISABLE		0
-> +#define GLOBAL_HIST_ENABLE		1
-> +#define GLOBAL_HIST_DELAY		2
-> +#define FLIP_COUNT			20
-> +
-> +/**
-> + * SUBTEST: global-histogram-basic
-> + * Description: Test to enable histogram, flip monochrome fbs, wait for
-> + *		histogram event and then read the histogram data
-> + *
-> + * SUBTEST: global-histogram-color
-> + * Description: Test to enable histogram, flip color fbs, wait for
-> + *		histogram event and then read the histogram data
-> + *
-> + * SUBTEST: histogram-algo-basic
-> + * Description: Test to enable histogram, flip monochrome fbs, wait for
-> + *		histogram event and then read the histogram data and enhance pixels by
-> + *		multiplying by a pixel factor using algo
-> + *
-> + * SUBTEST: histogram-algo-color
-> + * Description: Test to enable histogram, flip color fbs, wait for histogram event
-> + *		and then read the histogram data and enhance pixels by multiplying
-> + *		by a pixel factor using algo
-> + */
+  No regressions found.
 
-What is a difference between global-... and histogram-... tests?
-What is an effect of 'multiply by a factor using algo'?
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html
 
-imho you can use shorter names for tests:
+Participating hosts (45 -> 44)
+------------------------------
 
-global-basic
-global-color
+  Missing    (1): fi-snb-2520m 
 
-algo-basic
-algo-color
+Known issues
+------------
 
-Regards,
-Kamil
+  Here are the changes found in IGTPW_11901 that come from known issues:
 
-> +
-> +IGT_TEST_DESCRIPTION("This test will verify the display histogram.");
-> +
-> +typedef struct data {
-> +	igt_display_t display;
-> +	int drm_fd;
-> +	igt_fb_t fb[5];
-> +} data_t;
-> +
-> +typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, drmModePropertyBlobRes*);
-> +void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size);
-> +
-> +static void enable_and_verify_global_histogram(data_t *data, enum pipe pipe)
-> +{
-> +	uint32_t global_hist_value;
-> +
-> +	/* Enable global_hist */
-> +	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_ENABLE);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	/* Verify if global_hist is enabled */
-> +	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
-> +	igt_assert_f(global_hist_value == GLOBAL_HIST_ENABLE, "Failed to enable global_hist\n");
-> +}
-> +
-> +static void disable_and_verify_global_histogram(data_t *data, enum pipe pipe)
-> +{
-> +	uint32_t global_hist_value;
-> +
-> +	/* Disable global_hist */
-> +	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_DISABLE);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +
-> +	/* Verify if global_hist is disabled */
-> +	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
-> +	igt_assert_f(global_hist_value == GLOBAL_HIST_DISABLE, "Failed to disable global_hist\n");
-> +}
-> +
-> +static void cleanup_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
-> +{
-> +	igt_plane_t *plane;
-> +
-> +	disable_and_verify_global_histogram(data, pipe);
-> +
-> +	for_each_plane_on_pipe(&data->display, pipe, plane)
-> +		igt_plane_set_fb(plane, NULL);
-> +	igt_output_set_pipe(output, PIPE_NONE);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +	igt_remove_fb(data->display.drm_fd, &data->fb[0]);
-> +	igt_remove_fb(data->display.drm_fd, &data->fb[1]);
-> +	igt_remove_fb(data->display.drm_fd, &data->fb[2]);
-> +	igt_remove_fb(data->display.drm_fd, &data->fb[3]);
-> +	igt_remove_fb(data->display.drm_fd, &data->fb[4]);
-> +}
-> +
-> +static drmModePropertyBlobRes *get_global_histogram_data(data_t *data, enum pipe pipe)
-> +{
-> +	uint64_t blob_id;
-> +
-> +	blob_id = igt_pipe_obj_get_prop(&data->display.pipes[pipe],
-> +					IGT_CRTC_GLOBAL_HISTOGRAM);
-> +	if (blob_id == 0)
-> +		return NULL;
-> +
-> +	return drmModeGetPropertyBlob(data->drm_fd, blob_id);
-> +}
-> +
-> +static void read_global_histogram(data_t *data, enum pipe pipe,
-> +			     drmModePropertyBlobRes **hist_blob_ptr)
-> +{
-> +	uint32_t *histogram_ptr;
-> +	drmModePropertyBlobRes *global_hist_blob = NULL;
-> +
-> +	igt_set_timeout(GLOBAL_HIST_DELAY, "Waiting to read global histogram blob.\n");
-> +	do {
-> +		global_hist_blob = get_global_histogram_data(data, pipe);
-> +	} while (global_hist_blob == NULL);
-> +	igt_reset_timeout();
-> +
-> +	*hist_blob_ptr = global_hist_blob;
-> +	histogram_ptr = (uint32_t *) global_hist_blob->data;
-> +	for (int i = 0; i < global_hist_blob->length / sizeof(*histogram_ptr); i++)
-> +		igt_debug("Histogram[%d] = %d\n", i, *(histogram_ptr++));
-> +}
-> +
-> +void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size)
-> +{
-> +	uint32_t i;
-> +
-> +	for (i = 0; i < size; i++) {
-> +		/* Displaying IET LUT */
-> +		igt_debug("Pixel Factor[%d] = %d\n", i, *(dietfactor + i));
-> +	}
-> +	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
-> +				       dietfactor, size);
-> +}
-> +
-> +#ifdef HAVE_LIBGHE
-> +static struct globalhist_args *algo_get_pixel_factor(drmModePropertyBlobRes *global_hist_blob,
-> +						    igt_output_t *output)
-> +{
-> +	struct globalhist_args *argsPtr =
-> +		(struct globalhist_args *)malloc(sizeof(struct globalhist_args));
-> +
-> +	drmModeModeInfo *mode;
-> +
-> +	mode = igt_output_get_mode(output);
-> +
-> +	memcpy(argsPtr->histogram, global_hist_blob->data, global_hist_blob->length);
-> +	argsPtr->resolution_x = mode->hdisplay;
-> +	argsPtr->resolution_y = mode->vdisplay;
-> +
-> +	igt_debug("Making call to global histogram algorithm.\n");
-> +	set_histogram_data_bin(argsPtr);
-> +
-> +	return argsPtr;
-> +}
-> +
-> +static void algo_image_enhancement_factor(data_t *data, enum pipe pipe,
-> +					 igt_output_t *output,
-> +					 drmModePropertyBlobRes *global_hist_blob)
-> +{
-> +	struct globalhist_args *args = algo_get_pixel_factor(global_hist_blob, output);
-> +
-> +	igt_assert(args);
-> +	igt_debug("Writing pixel factor blob.\n");
-> +
-> +	set_pixel_factor(&data->display.pipes[pipe], args->dietfactor,
-> +			 ARRAY_SIZE(args->dietfactor));
-> +	free(args);
-> +
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +#endif
-> +
-> +static void create_monochrome_fbs(data_t *data, drmModeModeInfo *mode)
-> +{
-> +	/* TODO: Extend the tests for different formats/modifiers. */
-> +	/* These frame buffers used to flip monochrome fbs to get histogram event. */
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       0, 0, 0, &data->fb[0]));
-> +
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       1, 1, 1, &data->fb[1]));
-> +}
-> +
-> +static void create_color_fbs(data_t *data, drmModeModeInfo *mode)
-> +{
-> +	/* TODO: Extend the tests for different formats/modifiers. */
-> +	/* These frame buffers used to flip color fbs to get histogram event. */
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       0.5, 0, 0.5, &data->fb[0]));
-> +
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       1, 0, 0, &data->fb[1]));
-> +
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       0, 1, 0, &data->fb[2]));
-> +
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       0, 0, 1, &data->fb[3]));
-> +
-> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-> +					       1, 0, 1, &data->fb[4]));
-> +}
-> +
-> +static void flip_fb(data_t *data, enum pipe pipe, igt_output_t *output, struct igt_fb *fb)
-> +{
-> +	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), fb);
-> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +}
-> +
-> +static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, bool color_fb)
-> +{
-> +	int i;
-> +	struct udev_monitor *mon = igt_watch_uevents();
-> +	drmModeModeInfo *mode = igt_output_get_mode(output);
-> +	bool event_detected = false;
-> +	int fb_count = color_fb ? 5 : 2;
-> +
-> +	if (color_fb)
-> +		create_color_fbs(data, mode);
-> +	else
-> +		create_monochrome_fbs(data, mode);
-> +
-> +	flip_fb(data, pipe, output, &data->fb[0]);
-> +	enable_and_verify_global_histogram(data, pipe);
-> +
-> +	igt_flush_uevents(mon);
-> +	for (i = 1; i <= FLIP_COUNT; i++) {
-> +		flip_fb(data, pipe, output, &data->fb[i % fb_count]);
-> +
-> +		/* Check for histogram event on every flip and break the loop if detected. */
-> +		if (igt_global_histogram_event_detected(mon, 0)) {
-> +			event_detected = true;
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_cleanup_uevents(mon);
-> +	igt_assert_f(event_detected, "Histogram event not generated.\n");
-> +}
-> +
-> +static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_output_t *output,
-> +				     bool color_fb, test_t test_pixel_factor)
-> +{
-> +	drmModePropertyBlobRes *global_hist_blob = NULL;
-> +
-> +	prepare_pipe(data, pipe, output, color_fb);
-> +
-> +	read_global_histogram(data, pipe, &global_hist_blob);
-> +
-> +	if (test_pixel_factor)
-> +		test_pixel_factor(data, pipe, output, global_hist_blob);
-> +
-> +	drmModeFreePropertyBlob(global_hist_blob);
-> +	cleanup_pipe(data, pipe, output);
-> +}
-> +
-> +static void run_tests_for_global_histogram(data_t *data, bool color_fb,
-> +					   test_t test_pixel_factor)
-> +{
-> +	enum pipe pipe;
-> +	igt_output_t *output;
-> +
-> +	for_each_connected_output(&data->display, output) {
-> +		for_each_pipe(&data->display, pipe) {
-> +			if (!igt_pipe_obj_has_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM))
-> +				continue;
-> +
-> +			igt_display_reset(&data->display);
-> +
-> +			igt_output_set_pipe(output, pipe);
-> +			if (!intel_pipe_output_combo_valid(&data->display))
-> +				continue;
-> +
-> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
-> +				run_global_histogram_pipeline(data, pipe, output, color_fb, test_pixel_factor);
-> +		}
-> +	}
-> +}
-> +
-> +static void run_algo_test(data_t *data, bool color_fb)
-> +{
-> +#ifdef HAVE_LIBGHE
-> +	run_tests_for_global_histogram(data, color_fb, algo_image_enhancement_factor);
-> +#else
-> +	igt_skip("Histogram algorithm library not found.\n");
-> +#endif
-> +}
-> +
-> +igt_main
-> +{
-> +	data_t data = {};
-> +
-> +	igt_fixture {
-> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-> +		kmstest_set_vt_graphics_mode();
-> +		igt_display_require(&data.display, data.drm_fd);
-> +		igt_display_require_output(&data.display);
-> +		igt_require(data.display.is_atomic);
-> +	}
-> +
-> +	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
-> +		     "event and then read the histogram data.");
-> +	igt_subtest_with_dynamic("global-histogram-basic")
-> +		run_tests_for_global_histogram(&data, false, NULL);
-> +
-> +	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
-> +		     "and then read the histogram data.");
-> +	igt_subtest_with_dynamic("global-histogram-color")
-> +		run_tests_for_global_histogram(&data, true, NULL);
-> +
-> +	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
-> +		     "event and then read the histogram data and enhance pixels by multiplying "
-> +		     "by a pixel factor using algo.");
-> +	igt_subtest_with_dynamic("histogram-algo-basic")
-> +		run_algo_test(&data, false);
-> +
-> +	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
-> +		     "and then read the histogram data and enhance pixels by multiplying "
-> +		     "by a pixel factor using algo.");
-> +	igt_subtest_with_dynamic("histogram-algo-color")
-> +		run_algo_test(&data, true);
-> +
-> +	igt_fixture {
-> +		igt_display_fini(&data.display);
-> +		drm_close_driver(data.drm_fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index e5d8852f3..0f32dec04 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -35,6 +35,7 @@ test_progs = [
->  	'kms_flip_event_leak',
->  	'kms_force_connector_basic',
->  	'kms_getfb',
-> +	'kms_histogram',
->  	'kms_hdmi_inject',
->  	'kms_hdr',
->  	'kms_invalid_mode',
-> @@ -375,6 +376,7 @@ extra_dependencies = {
->  	'gem_eio': [ realtime ],
->  	'gem_exec_balancer': [ lib_igt_perf ],
->  	'gem_mmap_offset': [ libatomic ],
-> +	'kms_histogram': [ libghe ],
->  	'i915_pm_freq_mult': [ lib_igt_perf ],
->  	'i915_pm_rc6_residency': [ lib_igt_perf ],
->  	'perf': [ lib_igt_i915_perf ],
-> -- 
-> 2.25.1
-> 
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-1:         [PASS][1] -> [ABORT][2] ([i915#12061] / [i915#12133])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-1:         [PASS][3] -> [ABORT][4] ([i915#12061])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [ABORT][5] ([i915#12216]) -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8065 -> IGTPW_11901
+  * Linux: CI_DRM_15514 -> CI_DRM_15517
+
+  CI-20190529: 20190529
+  CI_DRM_15514: f3354eab2a45420cf38a67f6d7735d5dff53eb6f @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15517: 20c57deec46e59d392ec6d4a23257f4bb5673982 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11901: 6a9a442e613e80e3f369b365fd1d5c1f48006ab8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html
+
+--===============1717502429542341178==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_flip: Assert with twice of frame time while waiting fro vblank</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139876/">https://patchwork.freedesktop.org/series/139876/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8065 -&gt; IGTPW_11901</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11901 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-arls-1/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-arls-1/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live@workarounds:<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216">i915#12216</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11901/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8065 -&gt; IGTPW_11901</li>
+<li>Linux: CI_DRM_15514 -&gt; CI_DRM_15517</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15514: f3354eab2a45420cf38a67f6d7735d5dff53eb6f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15517: 20c57deec46e59d392ec6d4a23257f4bb5673982 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11901: 6a9a442e613e80e3f369b365fd1d5c1f48006ab8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8065: c727cc3fad56f16f1a9f35023ae5dd7111976fa3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1717502429542341178==--
