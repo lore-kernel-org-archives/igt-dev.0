@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A71D0CFD2E4
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 08:48:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F34DCFD30C
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Oct 2024 09:26:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4743910EA88;
-	Fri, 11 Oct 2024 08:48:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5A10F10E1E4;
+	Fri, 11 Oct 2024 09:26:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="diQSyxdh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b7SOcW4a";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17C6110EA88
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 08:48:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4FE4410E1E4
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Oct 2024 09:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728636521; x=1760172521;
+ t=1728638777; x=1760174777;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=9pRbe2TP4xmURMjxcphN/cYP+4iQKUm4oJaCxh/zbBs=;
- b=diQSyxdhDBS+iHzzKL3NPWts6eQhX5HPU0HYR0X7rdRqB+ZQbb52Y/bH
- nF+gFk7eKr21JOdMTMEMDeNiiGooyc1l16BOkQewXuHZ4RsQOl5QYYNQb
- oyLKp1Ugvr2bwgY5IXZRbX+D9fwdQVEo9Sl0WVF1EdoUPGwrRdNA09Eja
- o3tsZiP3Vuut247Cxrh3Hp56zAghDXRsNsYVSmiYWe31xx1w7BakGOqwX
- geNxjScokt217Rl2mXBV8ZYhAoWAtjW3BGsyn5Rmp3J5gJarfS7bUP2XR
- wIsnrgijIm+M5PjMaLcFeljYbVWIwFPmhr/yFb+kNUHrGXPvDBuwPG1JA A==;
-X-CSE-ConnectionGUID: 9TRCKrGWTDOJea19fczftA==
-X-CSE-MsgGUID: Fg7enKVISHWD9NOuoPTVPw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="31729152"
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="31729152"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Oct 2024 01:48:40 -0700
-X-CSE-ConnectionGUID: BLEagrfwRbukf0uHkTQo5Q==
-X-CSE-MsgGUID: iFofCdwzTD6mb3nCktk8tA==
+ bh=WRGSSxiVNBNxDSFciNKd9sovfv1238guSoLZIcNLKf4=;
+ b=b7SOcW4abKA92sh2i6dX5jmeW70qghwqz/6Zhxa/5BiO7iVsArRJ2g2Z
+ hQ/Hh2Zj6va067y1//Y0P4Ct/UUz9D1Kq37fS5GxUn9D7W8/3bZGkIUEm
+ gPRYp4SlO2zuD0UfbzME5cDHi6XLrvt2oEFV310Mn65b7TGDvG0h9SIUC
+ gdeE683o4xDom11W8i8CYL5Xw1x9qnXIQsvuakdcQwH/7sQztTDsytCD9
+ NJQYvGaRAJtkrkauGJiM6iyHOziZdD9t0tp3FhTgBWSih7rPMu2ZDNrw0
+ Mtz2zRYaA5x8R+jcGhf6d+ptBpmVoOE+YN4BnLDWGtX1Lf7lMwBhaibXN w==;
+X-CSE-ConnectionGUID: 0v8Bbw4ATMK7bHbWpFlYKQ==
+X-CSE-MsgGUID: aC9t4dxwQ8uQtfdfveDveg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11221"; a="38603496"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="38603496"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Oct 2024 02:26:17 -0700
+X-CSE-ConnectionGUID: j+yH2cH8TMSLIUIv28AhpQ==
+X-CSE-MsgGUID: iZhmTZdKSUi3UCQlCrKBcA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="76471147"
+X-IronPort-AV: E=Sophos;i="6.11,195,1725346800"; d="scan'208";a="77063547"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 01:48:37 -0700
-Date: Fri, 11 Oct 2024 10:48:35 +0200
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 02:26:16 -0700
+Date: Fri, 11 Oct 2024 11:25:59 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t 4/4] lib/intel: Documnent gem_can_store_dword()
-Message-ID: <20241011084835.bzjcs35f3zqin4bb@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH i-g-t] tools/intel_gpu_top: Fix intel_gpu_top for pre-snb
+Message-ID: <20241011092559.3iwr7vulod7vw7nf@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Ville Syrjala <ville.syrjala@linux.intel.com>
-References: <20241002104515.32164-1-ville.syrjala@linux.intel.com>
- <20241002104515.32164-4-ville.syrjala@linux.intel.com>
+References: <20241008214944.27549-1-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241002104515.32164-4-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241008214944.27549-1-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,59 +72,40 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Ville,
-On 2024-10-02 at 13:45:15 +0300, Ville Syrjala wrote:
+On 2024-10-09 at 00:49:44 +0300, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Add basic docs for gem_class_can_store_dword() and
-> gem_can_store_dword().
+> __I915_PMU_REQUESTED_FREQUENCY is not available on pre-snb (*)
+> so checking for it breaks intel_gpu_top completely for those
+> machines. Check __I915_PMU_INTERRUPTS instead, which I believe
+> is available on everything. Another option would be
+> __I915_PMU_SOFTWARE_GT_AWAKE_TIME.
+> 
+> * we do have frequency information on ilk, but we've not
+>   reverse engineered the hw unit<->Hz conversion factor so
+>   exposing it as is might be a bit confusing...
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> ---
->  lib/igt_gt.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/lib/igt_gt.c b/lib/igt_gt.c
-> index b8faf2b7bd09..a8f7f4431d1c 100644
-> --- a/lib/igt_gt.c
-> +++ b/lib/igt_gt.c
-> @@ -667,6 +667,13 @@ static bool gem_store_dword_needs_physical(const struct intel_device_info *info)
->  	}
->  }
->  
-> +/**
-> + * gem_class_can_store_dword:
-> + * @fd: open i915 drm file descriptor
-> + * @class: engine class
-> + *
-> + * Is the MI_STORE_DWORD instruction actually usable?
 
-Same here, instead of a question just write: True if ...
-or
-Returns true if ...
-
-> + */
->  bool gem_class_can_store_dword(int fd, int class)
->  {
->  	uint16_t devid = intel_get_drm_devid(fd);
-> @@ -685,6 +692,13 @@ bool gem_class_can_store_dword(int fd, int class)
->  	return true;
->  }
->  
-> +/**
-> + * gem_can_store_dword:
-> + * @fd: open i915 drm file descriptor
-> + * @engine: engine
-> + *
-> + * Is the MI_STORE_DWORD instruction actually usable?
-
-Same here. With this
 Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-
-> + */
->  bool gem_can_store_dword(int fd, unsigned int engine)
->  {
->  	return gem_class_can_store_dword(fd,
+> ---
+>  tools/intel_gpu_top.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/intel_gpu_top.c b/tools/intel_gpu_top.c
+> index 9b65ae4eb941..a608b894d3de 100644
+> --- a/tools/intel_gpu_top.c
+> +++ b/tools/intel_gpu_top.c
+> @@ -563,7 +563,7 @@ static int get_num_gts(uint64_t type)
+>  
+>  	errno = 0;
+>  	for (cnt = 0; cnt < MAX_GTS; cnt++) {
+> -		fd = igt_perf_open(type, __I915_PMU_REQUESTED_FREQUENCY(cnt));
+> +		fd = igt_perf_open(type, __I915_PMU_INTERRUPTS(cnt));
+>  		if (fd < 0)
+>  			break;
+>  
 > -- 
 > 2.45.2
 > 
