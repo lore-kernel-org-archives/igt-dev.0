@@ -4,57 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D780AD1A45F
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Oct 2024 15:00:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A0A5D1812E
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Oct 2024 16:34:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 857A010E48F;
-	Mon, 14 Oct 2024 15:00:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 254DF10E482;
+	Mon, 14 Oct 2024 16:34:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X/J1xduw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ilhv3noh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7994010E47A
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Oct 2024 15:00:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7C0A910E482
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Oct 2024 16:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728918047; x=1760454047;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Eib4DWD8QMI4tV80MqXF5e8exzIkJBs0cArb00uHlFM=;
- b=X/J1xduwh2gTKC/jbjx5oFUtJLg9GfxRC2pntxtBCfNVykbVKCH38mIH
- nUFOdT4+AGgPcV48BidXvn5jqdoK8LbSNrj8Hpmx5ZMX2vF5h2khr7y6Q
- VcwfYZ5XEg4gjM/Ja1uOZL1ye9CF7+864YHDKykh5Iw54RqMDmCPFGVBC
- O9bEKaeVm4ldw6Kwk2Si7BuZVyhUosYGsAgyRTJPhXfO+nC1670el2Q/H
- LJ6EEgrwtDRyPfpWlM6Te2s8vH4UKdQyIrh/Z4Tk19Yxq6pWsSTQAfe4H
- +a9AEfLbuKOH/Os81appJs/3BNslj0hAG9XDr37/HMSkjsw82veQvBbNt Q==;
-X-CSE-ConnectionGUID: cEjt/RLeSgGeJi13DCMPqA==
-X-CSE-MsgGUID: +Up+0IT0RzOxmUHZ7uQGJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28154034"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28154034"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2024 08:00:47 -0700
-X-CSE-ConnectionGUID: zeLKYPvGSCuztAU5eMpwSg==
-X-CSE-MsgGUID: aqfQ4QWdScKMXoW/DR/dtw==
+ t=1728923647; x=1760459647;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=zOKIdLHw9+G5sziR4gsfMhr3P9l6yzaHfaVR/anU1TI=;
+ b=Ilhv3nohc4EVGqZG5+pQs3+gmQ8vxbIDZjbb1jEFEUE/TWK2lly+WG2+
+ jtx02tk1nGQmRQ13Oi2SGYfny0pSt64TNVMXG9T44TeS3HkMJJhNntzrp
+ qsY6+pLDda7j4svvCsgoxTk9B1IoMGLUC6ojYHmAawIbtKuLJnW1RRJ1h
+ t6b+dFwUMd/BukUIvSiizOx596V6vLTI+pskalJvyhfXCO5eB55WKEa8z
+ QUwig69sRteA0vcWfmfL9K+FWSFqHKlbvP5+MVHPZvv+afUiGZTrQ10Gu
+ Bseh2WsgDi09858jRLAS26vADiIIRMacFsbxcNZRQ0XwZ59Mxo+hffq4T w==;
+X-CSE-ConnectionGUID: +JQbQjSHQ06tIRbzrXOKXw==
+X-CSE-MsgGUID: /VDwNwNpTpqZ8SjiGVQIuA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="39676953"
+X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; d="scan'208";a="39676953"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2024 09:34:07 -0700
+X-CSE-ConnectionGUID: ENIA/WRpS/CQr5CDQhfs1A==
+X-CSE-MsgGUID: a149JnSQT0OzhawGwYSL+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; d="scan'208";a="77258203"
-Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2024 08:00:45 -0700
-From: Nirmoy Das <nirmoy.das@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Nirmoy Das <nirmoy.das@intel.com>, Matthew Auld <matthew.auld@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t] tests/intel/xe_vm: Test vm bind fails with invalid
- ufence
-Date: Mon, 14 Oct 2024 16:18:39 +0200
-Message-ID: <20241014141839.1618518-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.46.0
+X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; d="scan'208";a="77725337"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+ by fmviesa008.fm.intel.com with SMTP; 14 Oct 2024 09:34:04 -0700
+Received: by stinkbox (sSMTP sendmail emulation);
+ Mon, 14 Oct 2024 19:34:03 +0300
+Date: Mon, 14 Oct 2024 19:34:03 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 5/5] tools/intel_display_bandwidth: Tool for
+ measuring display memory bandwidth utilization
+Message-ID: <Zw1H-xmKtanuPUQw@intel.com>
+References: <20240916201841.29592-1-ville.syrjala@linux.intel.com>
+ <20240916201841.29592-6-ville.syrjala@linux.intel.com>
+ <20241011175207.lzwiaqkj5ah7lmwn@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10,
- 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241011175207.lzwiaqkj5ah7lmwn@kamilkon-desk.igk.intel.com>
+X-Patchwork-Hint: comment
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,86 +73,283 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Bind ioctl accepts user addr for ufence which could be bogus.
-Add a test to make sure such calls fails.
+On Fri, Oct 11, 2024 at 07:52:07PM +0200, Kamil Konieczny wrote:
+> Hi Ville,
+> On 2024-09-16 at 23:18:41 +0300, Ville Syrjala wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > Introduce a small tool for measing the display enging
+> s/measing/measuring/
+> s/enging/engins/
+> 
+> > memory bandwidth utilization. Generally this is available
+> > on SNB+, except on TGL/derivatives where the relevant
+> > registers weren't updated to cope with the new ABOX layout
+> > in the hardware.
+> > 
+> > Quite handy for confirming that FBC/CCS/etc. are doing their
+> > job.
+> > 
+> > Not 100% sure about the required scaling factor because
+> > bspec claims it's only needed for MTL, but my ADL definitely
+> > needs it already.
+> > 
+> > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > ---
+> >  lib/intel_reg.h                 |   5 +
+> >  tools/intel_display_bandwidth.c | 171 ++++++++++++++++++++++++++++++++
+> 
+> Is this tool display only?
 
-Cc: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
----
- tests/intel/xe_vm.c | 51 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+Yes.
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 7a8740b69..234b3f98a 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -336,6 +336,54 @@ static void unbind_all(int fd, int n_vmas)
- }
- 
- #define	MAP_ADDRESS	0x00007fadeadbe000
-+#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-+
-+/**
-+ * SUBTEST: bind-invalid-ufence
-+ * Description:
-+ *	Verifies that binding with invalid ufence addr is rejected.
-+ * Functionality: userptr
-+ * Test category: negative test
-+ */
-+static void invalid_ufence(int fd)
-+{
-+	size_t size = xe_get_default_alignment(fd);
-+	uint32_t vm;
-+	int64_t fence_timeout;
-+	void *data, *unmapped_addr;
-+	struct drm_xe_sync sync[1] = {
-+		{
-+			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
-+			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+			.timeline_value = USER_FENCE_VALUE
-+		}
-+	};
-+	int ret;
-+
-+	fence_timeout = (igt_run_in_simulation() ? 100 : 1) * NSEC_PER_SEC;
-+	data = mmap((void *)MAP_ADDRESS, size, PROT_READ |
-+		    PROT_WRITE, MAP_SHARED | MAP_FIXED | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(data != MAP_FAILED);
-+
-+	vm = xe_vm_create(fd, 0, 0);
-+
-+	unmapped_addr = mmap(NULL, size, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	igt_assert(unmapped_addr != MAP_FAILED);
-+	munmap(unmapped_addr, size);
-+
-+	sync[0].addr = to_user_pointer(unmapped_addr);
-+	ret = __xe_vm_bind(fd, vm, 0, 0, to_user_pointer(data), MAP_ADDRESS,
-+			   size, DRM_XE_VM_BIND_OP_MAP_USERPTR, 0, sync, 1, 0,
-+			   DEFAULT_PAT_INDEX, 0);
-+	igt_assert(ret == -EFAULT);
-+
-+	sync[0].addr = to_user_pointer(data);
-+	xe_vm_bind_userptr_async(fd, vm, 0, to_user_pointer(data), 0x40000, size, sync, 1);
-+
-+	xe_wait_ufence(fd, data, USER_FENCE_VALUE, 0, fence_timeout);
-+
-+	xe_vm_destroy(fd, vm);
-+}
- 
- /**
-  * SUBTEST: userptr-invalid
-@@ -2373,6 +2421,9 @@ igt_main
- 	igt_subtest("userptr-invalid")
- 		userptr_invalid(fd);
- 
-+	igt_subtest("bind-invalid-ufence")
-+		invalid_ufence(fd);
-+
- 	igt_subtest("bind-flag-invalid")
- 		bind_flag_invalid(fd);
- 
+> What about bw for opencl computations?
+
+IIRC there may be some kind of total memory bandwidth counter
+exposed via perf. I'm not aware of anything more specific than
+that.
+
+No idea if there's anything for dGPUs, eg. local mem bw, PCIe
+link bw, etc. Would be nice to have I suppose.
+
+It might be intereseting to expose the display bandwidth counter
+via perf as well, but I haven't looked at what that would take
+to implement.
+
+> Could we have more general tool also for compute case? Then it could be
+> named intel_gpu_bandwidth or even shorter intel_gpu_bw?
+> 
+> >  tools/meson.build               |   1 +
+> >  3 files changed, 177 insertions(+)
+> >  create mode 100644 tools/intel_display_bandwidth.c
+> > 
+> > diff --git a/lib/intel_reg.h b/lib/intel_reg.h
+> > index 26833c66f8e7..5e049d8b14d6 100644
+> > --- a/lib/intel_reg.h
+> > +++ b/lib/intel_reg.h
+> > @@ -1413,6 +1413,11 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+> >  #define PCH_3DRAMCGDIS0		0x46028
+> >  #define SOUTH_DSPCLK_GATE_D	0xc2020
+> >  
+> > +#define DE_POWER1	0x42400
+> > +#define DE_POWER2	0x42404
+> > +#define DE_POWER2_ABOX0	0x42404
+> > +#define DE_POWER2_ABOX1	0x42408
+> > +
+> >  #define CPU_eDP_A		0x64000
+> >  #define PCH_DP_B		0xe4100
+> >  #define PCH_DP_C		0xe4200
+> > diff --git a/tools/intel_display_bandwidth.c b/tools/intel_display_bandwidth.c
+> > new file mode 100644
+> > index 000000000000..c7be3c390d08
+> > --- /dev/null
+> > +++ b/tools/intel_display_bandwidth.c
+> > @@ -0,0 +1,171 @@
+> > +// SPDX-License-Identifier: MIT
+> > +/*
+> > + * Copyright © 2024 Intel Corporation
+> > + */
+> > +
+> > +#include <getopt.h>
+> > +#include <inttypes.h>
+> > +#include <stdbool.h>
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <unistd.h>
+> > +
+> > +#include "intel_io.h"
+> > +#include "intel_chipset.h"
+> > +#include "intel_reg.h"
+> > +
+> > +static bool has_de_power2(uint32_t devid)
+> > +{
+> > +	/*
+> > +	 * TGL has DE_POWER2 but it measures the low priority traffic
+> > +	 * on ABOX, not not actual display traffic on ABOX0/ABOX1.
+> 
+> s/not not/not/
+> 
+> > +	 */
+> > +	if (intel_display_ver(devid) == 12)
+> > +		return false;
+> > +
+> > +	return intel_display_ver(devid) >= 6 &&
+> > +		!IS_VALLEYVIEW(devid) && !IS_CHERRYVIEW(devid);
+> > +}
+> > +
+> > +static bool has_de_power2_abox0_abox1(uint32_t devid)
+> > +{
+> > +	/*
+> > +	 * Despite having ABOX0/ABOX1 TGL lacks the
+> > +	 * accompanying DE_POWER2_ABOX* registers.
+> > +	 */
+> > +	return intel_display_ver(devid) >= 13;
+> > +}
+> > +
+> > +static int de_power2_scale(uint32_t devid)
+> > +{
+> > +	/*
+> > +	 * FIXME should perhaps use something like
+> > +	 * is_intel_dgfx() but that one wants to open the device :(
+> > +	 */
+> > +	switch (intel_display_ver(devid)) {
+> > +	case 13:
+> > +		return IS_DG2(devid) ? 1 : 2;
+> > +	case 14:
+> > +		return IS_BATTLEMAGE(devid) ? 1 : 2;
+> > +	default:
+> > +		return 1;
+> > +	}
+> > +}
+> > +
+> > +static int de_power2_unit(uint32_t devid)
+> > +{
+> > +	return 64 * de_power2_scale(devid);
+> > +}
+> > +
+> > +static float bandwidth(uint32_t devid, int duration,
+> > +		       uint32_t pre, uint32_t post)
+> > +{
+> > +	return (float)(post - pre) * de_power2_unit(devid) / (duration << 20);
+> > +}
+> > +
+> > +static void measure_de_power2_abox0_abox1(uint32_t devid, unsigned int sleep_duration)
+> > +{
+> > +	uint32_t pre_abox0, post_abox0;
+> > +	uint32_t pre_abox1, post_abox1;
+> > +
+> > +	pre_abox0 = INREG(DE_POWER2_ABOX0);
+> > +	pre_abox1 = INREG(DE_POWER2_ABOX1);
+> > +
+> > +	if (sleep_duration) {
+> > +		sleep(sleep_duration);
+> > +
+> > +		post_abox0 = INREG(DE_POWER2_ABOX0);
+> > +		post_abox1 = INREG(DE_POWER2_ABOX1);
+> > +
+> > +		printf("DE_POWER2_ABOX0: 0x%08x->0x%08x\n",
+> > +		       pre_abox0, post_abox0);
+> > +		printf("DE_POWER2_ABOX1: 0x%08x->0x%08x\n",
+> > +		       pre_abox1, post_abox1);
+> > +
+> > +		printf("ABOX0 bandwidth: %.2f MiB/s\n",
+> > +		       bandwidth(devid, sleep_duration,
+> > +				 pre_abox0, post_abox0));
+> > +		printf("ABOX1 bandwidth: %.2f MiB/s\n",
+> > +		       bandwidth(devid, sleep_duration,
+> > +				 pre_abox1, post_abox1));
+> > +		printf("Total bandwidth: %.2f MiB/s\n",
+> > +		       bandwidth(devid, sleep_duration,
+> > +				 pre_abox0 + pre_abox1, post_abox0 + post_abox1));
+> > +	} else {
+> > +		printf("DE_POWER2_ABOX0: 0x%08x\n", pre_abox0);
+> > +		printf("DE_POWER2_ABOX1: 0x%08x\n", pre_abox1);
+> > +	}
+> > +}
+> > +
+> > +static void measure_de_power2(uint32_t devid, unsigned int sleep_duration)
+> > +{
+> > +	uint32_t pre, post;
+> > +
+> > +	pre = INREG(DE_POWER2);
+> > +
+> > +	if (sleep_duration) {
+> > +		sleep(sleep_duration);
+> > +
+> > +		post = INREG(DE_POWER2);
+> > +
+> > +		printf("DE_POWER2: 0x%08x->0x%08x\n", pre, post);
+> > +
+> > +		printf("Total bandwidth: %.2f MiB/s\n",
+> > +		       bandwidth(devid, sleep_duration, pre, post));
+> > +	} else {
+> > +		printf("DE_POWER2: 0x%08x\n", pre);
+> > +	}
+> > +}
+> > +
+> > +static void __attribute__((noreturn)) usage(const char *name)
+> > +{
+> > +	fprintf(stderr, "Usage: %s [options]\n"
+> > +		" -s,--sleep <seconds>\n",
+> 
+> Could you also add counter -c and repeat measurement N times
+> between sleeps?
+
+Seems a bit pointless when you can just run the tool
+in a loop.
+
+> 
+> > +		name);
+> > +	exit(1);
+> > +}
+> > +
+> > +int main(int argc, char *argv[])
+> > +{
+> > +	struct intel_mmio_data mmio_data;
+> > +	unsigned int sleep_duration = 0;
+> > +	uint32_t devid;
+> > +
+> > +	for (;;) {
+> > +		static const struct option long_options[] = {
+> > +			{ .name = "sleep", .has_arg = required_argument, },
+> > +			{}
+> > +		};
+> > +
+> > +		int opt = getopt_long(argc, argv, "s:", long_options, NULL);
+> > +		if (opt == -1)
+> > +			break;
+> > +
+> > +		switch (opt) {
+> > +		case 's':
+> > +			sleep_duration = atoi(optarg);
+> > +			break;
+> > +		default:
+> > +			usage(argv[0]);
+> > +			break;
+> > +		}
+> > +	}
+> > +
+> > +	devid = intel_get_pci_device()->device_id;
+> > +
+> > +	if (!has_de_power2(devid)) {
+> > +		fprintf(stderr, "Display bandwidth counter not available\n");
+> > +		return 2;
+> > +	}
+> > +
+> > +	intel_register_access_init(&mmio_data, intel_get_pci_device(), 0, -1);
+> 
+> This function changed recently and now this code do not compile.
+> Please fix and resend.
+> 
+> Regards,
+> Kamil
+> 
+> > +
+> > +	if (has_de_power2_abox0_abox1(devid))
+> > +		measure_de_power2_abox0_abox1(devid, sleep_duration);
+> > +	else
+> > +		measure_de_power2(devid, sleep_duration);
+> > +
+> > +	intel_register_access_fini(&mmio_data);
+> > +
+> > +	return 0;
+> > +}
+> > diff --git a/tools/meson.build b/tools/meson.build
+> > index 48c9a4b5089e..4e9100ddb2b7 100644
+> > --- a/tools/meson.build
+> > +++ b/tools/meson.build
+> > @@ -16,6 +16,7 @@ tools_progs = [
+> >  	'intel_audio_dump',
+> >  	'intel_backlight',
+> >  	'intel_bios_dumper',
+> > +	'intel_display_bandwidth',
+> >  	'intel_display_crc',
+> >  	'intel_display_poller',
+> >  	'intel_dump_decode',
+> > -- 
+> > 2.44.2
+> > 
+
 -- 
-2.46.0
-
+Ville Syrjälä
+Intel
