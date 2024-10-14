@@ -4,125 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94FC5CF259D
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Oct 2024 05:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DEC03CF2590
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Oct 2024 05:22:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0E57710E0BD;
-	Mon, 14 Oct 2024 05:06:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 994F910E270;
+	Mon, 14 Oct 2024 05:22:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Gcg82z9X";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tt9bCaj2";
 	dkim-atps=neutral
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com
- (mail-mw2nam10on2051.outbound.protection.outlook.com [40.107.94.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3CCC10E0BD
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Oct 2024 05:06:10 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WOwWJmsS7jQRt3tPSyNbEhfPV9lU8GquGgtDlaZy+tdHNGt35J3lCbQ+HaE53NkFcJPTVJR4Jp5MckYncbvJeQDGVisXSS5EONllZQjMIlriQjxUAlIcesWr+a17xhPD0R2VPuGH5v4q3RebhiYpLPsvCRK2E0XAfUK/jhKpWW/ikua81kTPCBORHML65OLEiWk7R5gV10CQMGyPviJw7gSjNoyg4WM2BjX3IEw9Si+VDI41L8//2qC+OnRB2FGrgf2CcMmgHPmKCl65na0QEhASvLQG87EJVuDnteYTVT9CajxlajcqPCFSMOb1O5J07wnyvRcikxMr6DBIQIFdow==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/uj2pB0EoRYxjV07lc6qtU5iot+sbS1WklbEqSkgSAI=;
- b=ElcNKKryfIlJCvioX4YQk0vYhVa2C6iI4JTwemrnhOjWUaggDnKd3wsLD53oGqiYy3ZNAoWWI/8AWMxYUr8IdNzNOZIpTGeJQH+xMyrSaFRnOUGhOUqjxh75vpsQhgJNitWBWFR3qV5HRubP2t57qokvZjKRS06Z74xenpUy7GLdWy4/PBzkYiAoS/WoEs4FmqXAG3NQVf5flH8PHdXzzSIy/ER0dbdUdkr4XkFZ24yxjLIFyOg47Y3+7WC424vbPkf044ow0dFHoAgyl1gB9EKGNtpkeVrdfJ98tmvy8iZgY+APtixUXgvtUgoRtYB7NhSF9r5h+NKLj5fj6Djztw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/uj2pB0EoRYxjV07lc6qtU5iot+sbS1WklbEqSkgSAI=;
- b=Gcg82z9XbXGg3IY8I32QoJ9UOiV2+J04b72kgfZIpGpiSvFD42N7AKFlvdhG8uh8gb1WwpHjzhn3zLVjUKYDiSLDadXl7WMI/fPZpFhxer89Fy9ZUKqQbHT0q1pdCH9KuSWY7xrYHuFAWY0KsFn2RsKXvwmz9Ghy9xVfycMcc2c=
-Received: from BN0PR04CA0095.namprd04.prod.outlook.com (2603:10b6:408:ec::10)
- by DS0PR12MB8502.namprd12.prod.outlook.com (2603:10b6:8:15b::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.22; Mon, 14 Oct
- 2024 05:06:07 +0000
-Received: from BN2PEPF000044A8.namprd04.prod.outlook.com
- (2603:10b6:408:ec:cafe::a9) by BN0PR04CA0095.outlook.office365.com
- (2603:10b6:408:ec::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26 via Frontend
- Transport; Mon, 14 Oct 2024 05:06:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF000044A8.mail.protection.outlook.com (10.167.243.102) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8048.13 via Frontend Transport; Mon, 14 Oct 2024 05:06:06 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 14 Oct
- 2024 00:06:06 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 14 Oct
- 2024 00:06:06 -0500
-Received: from JesseDEV.guestwireless.amd.com (10.180.168.240) by
- SATLEXMB03.amd.com (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Mon, 14 Oct 2024 00:05:59 -0500
-From: "Jesse.zhang@amd.com" <jesse.zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- "Jesse.zhang@amd.com" <jesse.zhang@amd.com>, Jesse Zhang
- <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t] lib/amdgpu: change sdma limit check
-Date: Mon, 14 Oct 2024 13:05:58 +0800
-Message-ID: <20241014050558.1163562-1-jesse.zhang@amd.com>
-X-Mailer: git-send-email 2.25.1
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 234EE10E26F;
+ Mon, 14 Oct 2024 05:22:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1728883366; x=1760419366;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=D5phy4xW2HmjcIGmdiU/H6KO374RTOxixbq23ZzlLMc=;
+ b=Tt9bCaj2AZ22hpHcVD6YWs7J2nD7qs7Kv5hvmvM5B96b4T1cEfT2SJNB
+ K8P3kPpK57gUJEIrDj3khdvZURVb0teuE+8E++tNpGVBlCRxc8/YDveBN
+ r2BFvWubB8q6czqRxPsiAR1KeALy4anU/KtwEduzeLpMyAN0GgZfxwjVy
+ 3nMqZdD/VXMrJqQ5oq9XxO7Oz0HP4hJN8WJ66T7O3ccjShoPiLdGoPoXT
+ dZaUb/wAXVaJd5dGagvhoy5f+5LwbLvTXEBKcpSY7kBmSWvvGUauYnhp8
+ PCypW9MtNqQGxYf6loSH0aH82ZDww2vgRLAMEZLGmVaTKSYeObp5cIB9Z w==;
+X-CSE-ConnectionGUID: XfH+JKk4SnivzRukYX58KQ==
+X-CSE-MsgGUID: iWzctPbFTIiPqUSZR1oLHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28311705"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28311705"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2024 22:22:45 -0700
+X-CSE-ConnectionGUID: cajp9in/TfyGiUskS4Jwzw==
+X-CSE-MsgGUID: AHz49J2bRtSmGNAr68do2w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; d="scan'208";a="77398102"
+Received: from cscleary-mobl1.ger.corp.intel.com (HELO [10.213.202.134])
+ ([10.213.202.134])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2024 22:22:45 -0700
+Message-ID: <9225a1c3-e27f-4d19-9545-e7501b2b22d3@linux.intel.com>
+Date: Mon, 14 Oct 2024 07:22:42 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: jesse.zhang@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000044A8:EE_|DS0PR12MB8502:EE_
-X-MS-Office365-Filtering-Correlation-Id: d98a8188-8d3d-4aec-d655-08dcec0de910
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700013|1800799024|376014|82310400026; 
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?5gRm1wMhmTn6DCQ1VVi1q3SjIw0uTaqYmj/6bIXvFQ2LbWizNfaOoB5hNhK7?=
- =?us-ascii?Q?+qjGS7wbmS1EW7W6bqOWlw3zzLAdCI1ul6NQ/93Nb+MgYP6rOx3efWOBPcOT?=
- =?us-ascii?Q?w8+Kpc0rZDCF14kCPcGcTtCmUS76ypcD51jSVgk3mFSx/RSNfWYL45PTdkqK?=
- =?us-ascii?Q?wQ616aJtC9TJQmdoAZOj7Ch/bh6BzMV3gxakyIswN/Jzmr/Ecnp2rDMWmMg2?=
- =?us-ascii?Q?pVONhKXqHUurzuZAHEtRAxiBgnX37fWQq7DbT5hEKa0hp5Gk0rZSUhns7Kcv?=
- =?us-ascii?Q?SYKVQCMrLQ5x0kCak0mAH/6nD9PLvK66vc0a8OVBKePjUKlpXVlfGUCrw3e1?=
- =?us-ascii?Q?DY/mWGDD+2Bm9fWLLJR+JCWvWsRNe2qzsjcHF9WZPm7B/1JpbsjeloVq0tk8?=
- =?us-ascii?Q?vEdP1HYb6C57AyWv3hdiDKzfMshgFkP3WKqAptoB80TJwA5/5Jq1bLbmaFNU?=
- =?us-ascii?Q?RPpqzsQ8es4VudpNFmTCt+Rb7eGrCk9vVGnDCe0XM7CQKRw/WLlGugFe3vBh?=
- =?us-ascii?Q?uQckzueD6JcVgeWPbYun9QZE3bkxBAIBv9R2NVOYxUO5L1q44ksfGgBp2NUY?=
- =?us-ascii?Q?BLnA8ufAIbqs46WMD43+Z0cDCowiP4EK+YKtuuKhUKDDlAz/Hn98a6ZYTB+i?=
- =?us-ascii?Q?yyd6NWRcw+Pt5qisPFSqp9/+E0SaU9cuRruxobIAMS2iepf39q8sHQhB2Ucp?=
- =?us-ascii?Q?jeBjDiBdIewz9zaoFRXOcl4NaTm7grXw366wX/EaDoKx/7QaI+5j6L9sqslp?=
- =?us-ascii?Q?mKHThgxY3QaYabvc4/5pneo6eD2iZ0y6wA1RhELchOh/H2OqZunoeisMu3tS?=
- =?us-ascii?Q?xldIcRDDqBd8KOIRmUR7qjbpQyMi0n+N6v2RDKj7oBrOB+ZqOt7lRtW+zCPQ?=
- =?us-ascii?Q?YewgGsBVP5b2ePLggrNwL9UrBQkfEq2G/Y7d1KmsGaAGHJDZrnGNpMl98NDv?=
- =?us-ascii?Q?ieF3wBWGgDdjPTNFxrIUmpUDPcsiNpkZ82+pEEts3UGUp8nA4UUV9tmPwY1q?=
- =?us-ascii?Q?BNSaU4dswm3qHEUI/IND92Sv+43DxjhJidI+Kbpxa94h/rdW0lxOCY+2euHF?=
- =?us-ascii?Q?gaRPe1ZpqYu2el9lL0CIZYHqEupdwpWHwChQYlk+HNnuv4Q+t4ZLLmeCtLzH?=
- =?us-ascii?Q?zjqw5F3UbM5y752n3PAr07ebIcyFunC8MCFT7kST/FAx74Gze0hUDiXgIvO/?=
- =?us-ascii?Q?nOqtzT9ZD0GgpPhdqmlbhGoBBmTHADMgqV4a7WwCS+KsUiT6RuSSeRBiNls4?=
- =?us-ascii?Q?UUZfYPWW+Zu/ItVMSL9dDwSXmI3Rs+79q0eSZdtWWSvQauqAqdpUNRYkJIh8?=
- =?us-ascii?Q?d8qx71BQfhQY1vcd1V1o9dvDIlzePujEKtLCwl25NdWr1qEiZZQSJWbbLBRQ?=
- =?us-ascii?Q?pPKwav2KXfaPkymPPOd9Ts/qUys1?=
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:CAL; SFV:NSPM; H:SATLEXMB04.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700013)(1800799024)(376014)(82310400026); DIR:OUT;
- SFP:1101; 
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Oct 2024 05:06:06.8067 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d98a8188-8d3d-4aec-d655-08dcec0de910
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000044A8.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8502
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Fi=2ECI=2EIGT=3A_failure_for_tests/intel/?=
+ =?UTF-8?Q?xe=5Fmodule=5Fload=3A_Handling_of_snd=5Fhda=5Fintel?=
+To: igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <ffa2bbcb-edb3-4610-aec8-bcd6a3b8f106@linux.intel.com>
+ <172867115948.1241715.10112439750607543080@2413ebb6fbb6>
+Content-Language: en-US
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+In-Reply-To: <172867115948.1241715.10112439750607543080@2413ebb6fbb6>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,57 +71,82 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This sdma limit is only for mi100.
+Dear I915,
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- lib/amdgpu/amd_ip_blocks.c | 11 +++++++----
- lib/amdgpu/amd_ip_blocks.h |  2 ++
- 2 files changed, 9 insertions(+), 4 deletions(-)
+On 11.10.2024 20:25, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/intel/xe_module_load: Handling of snd_hda_intel
+> URL   : https://patchwork.freedesktop.org/series/139838/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_15513_full -> IGTPW_11897_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11897_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11897_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/index.html
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   Additional (1): shard-glk-0 
+>   Missing    (1): shard-glk 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11897_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_balancer@nop:
+>     - shard-mtlp:         [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15513/shard-mtlp-7/igt@gem_exec_balancer@nop.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/shard-mtlp-7/igt@gem_exec_balancer@nop.html
+> 
+>   * igt@gem_exercise_blt@fast-copy:
+>     - shard-dg1:          [PASS][3] -> [INCOMPLETE][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15513/shard-dg1-18/igt@gem_exercise_blt@fast-copy.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/shard-dg1-15/igt@gem_exercise_blt@fast-copy.html
+> 
+>   * igt@i915_pm_freq_api@freq-suspend@gt0:
+>     - shard-dg2:          [PASS][5] -> [INCOMPLETE][6] +1 other test incomplete
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15513/shard-dg2-3/igt@i915_pm_freq_api@freq-suspend@gt0.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/shard-dg2-7/igt@i915_pm_freq_api@freq-suspend@gt0.html
+> 
+>   * igt@kms_flip@flip-vs-suspend-interruptible:
+>     - shard-snb:          [PASS][7] -> [DMESG-WARN][8] +1 other test dmesg-warn
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15513/shard-snb7/igt@kms_flip@flip-vs-suspend-interruptible.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/shard-snb1/igt@kms_flip@flip-vs-suspend-interruptible.html
+> 
+>   * igt@kms_plane@pixel-format-source-clamping:
+>     - shard-tglu:         [PASS][9] -> [ABORT][10] +1 other test abort
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15513/shard-tglu-3/igt@kms_plane@pixel-format-source-clamping.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/shard-tglu-4/igt@kms_plane@pixel-format-source-clamping.html
+> 
+>   * igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1:
+>     - shard-mtlp:         [PASS][11] -> [FAIL][12] +1 other test fail
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15513/shard-mtlp-4/igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11897/shard-mtlp-3/igt@kms_psr2_sf@psr2-overlay-plane-update-continuous-sf@pipe-a-edp-1.html
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index f22a322e5..df603618b 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -190,8 +190,9 @@ sdma_ring_copy_linear(const struct amdgpu_ip_funcs *func,
- 				       SDMA_COPY_SUB_OPCODE_LINEAR,
- 					context->secure ? 0x4 : 0);
- 		if (func->family_id >= AMDGPU_FAMILY_AI) {
--			/* For FAMILY AI, the maximum copy range supported by sdma is 4MB */
--			if (func->family_id >= AMDGPU_FAMILY_AI && context->write_length > 0x3fffff) {
-+			/* For mi100, the maximum copy range supported by sdma is 4MB */
-+			if (func->family_id == AMDGPU_FAMILY_AI && func->chip_external_rev == 0x33
-+				&& context->write_length > 0x3fffff) {
- 				context->pm4[i++] = 0x3fffff;
- 				igt_warn("sdma copy count exceeds the maximum limit of 4MB\n");
- 			} else {
-@@ -855,9 +856,11 @@ int setup_amdgpu_ip_blocks(uint32_t major, uint32_t minor, struct amdgpu_gpu_inf
- 		 * TO DO: move family id as a parameter into IP functions and
- 		 * remove it as a field
- 		 */
--		for (int i = 0; i <  amdgpu_ips.num_ip_blocks; i++)
-+		for (int i = 0; i <  amdgpu_ips.num_ip_blocks; i++) {
- 			amdgpu_ips.ip_blocks[i]->funcs->family_id = amdinfo->family_id;
--
-+			amdgpu_ips.ip_blocks[i]->funcs->chip_external_rev = amdinfo->chip_external_rev;
-+			amdgpu_ips.ip_blocks[i]->funcs->chip_rev = amdinfo->chip_rev;
-+		}
- 		/* extra precaution if re-factor again */
- 		igt_assert_eq(gfx_v8_x_ip_block.major, 8);
- 		igt_assert_eq(compute_v8_x_ip_block.major, 8);
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 679e2ea46..109d36602 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -133,6 +133,8 @@ struct amdgpu_ring_context {
- 
- struct amdgpu_ip_funcs {
- 	uint32_t	family_id;
-+	uint32_t	chip_external_rev;
-+	uint32_t	chip_rev;
- 	uint32_t	align_mask;
- 	uint32_t	nop;
- 	uint32_t	deadbeaf;
--- 
-2.25.1
+These are unrelated to my patch.
 
+Thank you!
+
+
+[...]
