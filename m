@@ -4,58 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B89E2D16279
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Oct 2024 14:42:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7575D1627E
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Oct 2024 14:44:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5BDA310E190;
-	Mon, 14 Oct 2024 14:42:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8887610E466;
+	Mon, 14 Oct 2024 14:44:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OSXVBvw+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PjzUzKFf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9AA910E190
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Oct 2024 14:42:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9DFC210E190;
+ Mon, 14 Oct 2024 14:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1728916936; x=1760452936;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=SiMVppD90tdZqZFVaA/RecF0rf2mzwjEXpkoScGePO4=;
- b=OSXVBvw+/WCCAKDGsNHBmhTs8FKxdaBB4g8TK+9xWe+WHJ6xJDH7tpp6
- 3UxGeXdnij1DLMgxX0TGp/vwRxe2yiOCJwJD+GNQDqaPfXhMvj2n2KZs0
- 9juKZGSSKsx3A08DrhMxxBPMeuGrnOMtMLm7/r5A9xsyq08BnvvpsmJgy
- o7WDLMKjFggxpXevgeX9YsTtxSxeQKoKaXmFDBi8vC8+D071xWZPWc4zq
- 0cDj99dS6x4a6Y0539XPRlYp98ypKwUlXOH+i6uHggoXFfEquOvs+2cPq
- 0KHegW09Hp6BXu7RBZfF2R8gfGMtY5pLWJ0PkjUcM2AQZnhnUgeJOdaRj Q==;
-X-CSE-ConnectionGUID: 7VLAKe9BTTu1Yr+UV0ZZSw==
-X-CSE-MsgGUID: EkY5DhTCTECbtkqh587ogQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="15897914"
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; d="scan'208";a="15897914"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2024 07:42:15 -0700
-X-CSE-ConnectionGUID: jsT2qPGzSTmYvIb7RzvBUg==
-X-CSE-MsgGUID: jVnVTXusT9+wvl6gcMy5JA==
+ t=1728917091; x=1760453091;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=1LyhDaZFxoH6l3CzIeyIVfpYrlcWt/dL6iET358vnRQ=;
+ b=PjzUzKFfZXNtmOuLY2r1V6A7f59WT4+0z1HpgzWYK6SvrxMMZ2zMvHVS
+ vK2/XG5gb5yD+Qnebn1wnYY3cGz7DFf7uP7Igs4u8AlLWPRYr7CjiTXUR
+ kXqC4qQrImj/878fa9CkB0PDs5P8nkxq7xXTOJE5zYSv3GtYGpVsYC0jT
+ 12sm98rERuYEDuGFWSUcQz82u6QpfRW4kNnP9awSak9m5MyLs2uAcXyc7
+ tlidstMUNgrlEjEFA6Zz/x5ELiO+mrO79tJPJPAT5ZJ4N+0eq/zB9CGqi
+ xFSDfm98UiWqzWkqWhI7VEyoCRkYSmHe/gDPjBRM2DD0IyvcQMdRh/YTR Q==;
+X-CSE-ConnectionGUID: j0tp92quQG+9sOhIO7dlWw==
+X-CSE-MsgGUID: atG0HwDLSLO5O45zYYkHWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="38822488"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="38822488"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2024 07:44:51 -0700
+X-CSE-ConnectionGUID: sfedTUBOTdqLpiRO5YnGBQ==
+X-CSE-MsgGUID: IclIzJ+4Qbycvg2JQ5Jfiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; d="scan'208";a="115042186"
-Received: from nirmoyda-mobl.ger.corp.intel.com (HELO [10.245.133.207])
- ([10.245.133.207])
+X-IronPort-AV: E=Sophos;i="6.11,203,1725346800"; d="scan'208";a="108329113"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2024 07:42:14 -0700
-Message-ID: <6c287efe-a696-47e0-bd56-0513617fd829@linux.intel.com>
-Date: Mon, 14 Oct 2024 16:42:10 +0200
+ 14 Oct 2024 07:44:50 -0700
+Date: Mon, 14 Oct 2024 16:44:47 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVDogZmFpbHVyZSBmbw==?= =?utf-8?Q?r?=
+ lib/gem_mman: Stop lying about I915_MMAP_OFFSET_GTT support
+Message-ID: <20241014144447.nj75qilphwpyz5o7@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20241010135023.275507-2-janusz.krzysztofik@linux.intel.com>
+ <172870546544.1243112.9070458413069745151@2413ebb6fbb6>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel-ci/xe-fast-feedback: fixup
- xe_dma_buf_sync
-To: Matthew Auld <matthew.auld@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
-References: <20241014084710.63569-1-matthew.auld@intel.com>
-Content-Language: en-US
-From: Nirmoy Das <nirmoy.das@linux.intel.com>
-In-Reply-To: <20241014084710.63569-1-matthew.auld@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <172870546544.1243112.9070458413069745151@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,33 +74,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi igt-dev,
+On 2024-10-12 at 03:57:45 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: lib/gem_mman: Stop lying about I915_MMAP_OFFSET_GTT support
+> URL   : https://patchwork.freedesktop.org/series/139847/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8065_full -> IGTPW_11898_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11898_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11898_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11898/index.html
+> 
+> Participating hosts (8 -> 8)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11898_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@gem_exec_balancer@nop:
+>     - shard-mtlp:         NOTRUN -> [DMESG-WARN][1]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11898/shard-mtlp-1/igt@gem_exec_balancer@nop.html
 
-On 10/14/2024 10:47 AM, Matthew Auld wrote:
-> export-dma-buf-once was split into a few different subtests, but we
-> missed updating the test list here.
->
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3061
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-> ---
->  tests/intel-ci/xe-fast-feedback.testlist | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
-> index 01b01dcf9..d9fb98aab 100644
-> --- a/tests/intel-ci/xe-fast-feedback.testlist
-> +++ b/tests/intel-ci/xe-fast-feedback.testlist
-> @@ -75,8 +75,10 @@ igt@xe_create@create-massive-size
->  igt@xe_debugfs@base
->  igt@xe_debugfs@gt
->  igt@xe_debugfs@forcewake
-> -igt@xe_dma_buf_sync@export-dma-buf-once
-> +igt@xe_dma_buf_sync@export-dma-buf-once-write-sync
->  igt@xe_dma_buf_sync@export-dma-buf-once-read-sync
-> +igt@xe_dma_buf_sync@export-dma-buf-once-read-write-sync
-> +igt@xe_dma_buf_sync@export-dma-buf-once-write-read-sync
->  igt@xe_evict_ccs@evict-overcommit-simple
->  igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd
->  igt@xe_exec_atomic@basic-dec-all
+Test succeeds but there is warning in dmesg:
+<7> [423.878047] i915 0000:00:02.0: [drm:skl_enable_dc6 [i915]] Enabling DC6
+<7> [423.878154] i915 0000:00:02.0: [drm:gen9_set_dc_state.part.0 [i915]] Setting DC state from 00 to 02
+<3> [442.629081] i915 0000:00:02.0: [drm] *ERROR* GT1: GUC: TLB invalidation response timed out for seqno 80985
+
+> 
+>   * igt@gem_exec_create@forked@smem:
+>     - shard-dg2:          NOTRUN -> [INCOMPLETE][2] +1 other test incomplete
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11898/shard-dg2-11/igt@gem_exec_create@forked@smem.html
+> 
+>   * igt@gem_exec_gttfill@engines@vcs1:
+>     - shard-dg2:          [PASS][3] -> [DMESG-FAIL][4] +1 other test dmesg-fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8065/shard-dg2-4/igt@gem_exec_gttfill@engines@vcs1.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11898/shard-dg2-6/igt@gem_exec_gttfill@engines@vcs1.html
+> 
+
+These are unrelated, change couldn't cause dmesg warns.
+
+Regards,
+Kamil
+
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between IGT_8065_full and IGTPW_11898_full:
+> 
+...cut...
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11898/index.html
