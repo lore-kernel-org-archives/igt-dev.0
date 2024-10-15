@@ -4,49 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B0F2D1814B
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7BA4D1D86B
 	for <igt-dev@archiver.kernel.org>; Tue, 15 Oct 2024 14:49:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EDA210E598;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2EF3E10E599;
 	Tue, 15 Oct 2024 14:49:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VtjRuI6z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kcEArn9u";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0A48C10E06C
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Oct 2024 14:19:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E731610E06C
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Oct 2024 14:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729001976; x=1760537976;
+ t=1729001983; x=1760537983;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=N471uIFM7Wx0csF5kvXKxSHo9nXIdY87IatBTj1WFwo=;
- b=VtjRuI6zfTkij9kdIwlT3T4huMOES4f1ACTwMLgWgepnw78rEXVkCenA
- +fZy9izMd3zVBeVfKWrd/xXevXchGrSkNhQMNRSSDb+oTV0l/kGr6xk85
- 7hg6pO6seG1hvyfiP3TuU0NTXQFDe8BXH9m4c3xybbQckJOPgiiDfG99L
- jUqPfCzwB5w1V4jL9Mb9t8F/a0ljxAeJhYJvNQBkjWAGFcBRYoc4C4mMr
- PFHfwn2SrK4z2qcR+pE0W1hzqeRY2i6wy2ZoBbmjfR0PsGvH2dKLKAP3x
- C6tH4bfomUaZfsfTFxeuSg1jkejOAU6f9wQXEl6cwv5w3M4jl9cYe5+KQ A==;
-X-CSE-ConnectionGUID: ONN31ws1T9Kvea0wNJUI1A==
-X-CSE-MsgGUID: tARqjnU0QgSHZnn6rv0XAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45872735"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="45872735"
+ bh=n4WkXCiIzqDbvgtyAFKii8lheI+bg517gGlVjfesLUA=;
+ b=kcEArn9uMwD4S4AeQ3NB9XzdGH+VTTTBhMpCz93vYaaCRftKLFYbLBLK
+ AKYlUtYJKchwIgHaGBjsk0YsP8bj7vEGSZQ79FOF9w7NdukrLbdRySvsl
+ d7E5jnFnCDFIKbAeRqNZAAX/RBPOfrt0WMpKZhok7ArKTvcyHncSAFvmH
+ 7G64ZLPFYUNurVi98db9FLkK6U4mZ+9DnGNln25+46A98FtBSTZFMgKU2
+ qWHsdZtd/GkDfVokDWq+3YqZ8fHJkaCAzMp2jfKeYNjGNhHhF44ptT9Hg
+ +NYCMvOTObHDQOXSqC+Zvjo8J8SVBq29idT9UyqCAyqPj/7zQMUOYyxE7 A==;
+X-CSE-ConnectionGUID: ab6OHnCJSpaEulHco3SS1A==
+X-CSE-MsgGUID: W8O6sRAuRFCu4BiWFFAc+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45872749"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="45872749"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2024 07:19:35 -0700
-X-CSE-ConnectionGUID: hTwVZR8cSvWIiEDmkSUExg==
-X-CSE-MsgGUID: W05Mm7lURo2WSn6KATiAIA==
+ 15 Oct 2024 07:19:42 -0700
+X-CSE-ConnectionGUID: 1fUf3GpPRayzfiNizmSFsw==
+X-CSE-MsgGUID: ghbtOHEOTjyuWgxKwMfwTg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; d="scan'208";a="108642486"
+X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; d="scan'208";a="108642538"
 Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
- by fmviesa001.fm.intel.com with ESMTP; 15 Oct 2024 07:19:33 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 15 Oct 2024 07:19:39 -0700
 From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
  sai.gowtham.ch@intel.com, katarzyna.piecielska@intel.com
 Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH i-g-t 1/2] lib/xe/xe_query: xe_find_engine_by_class helper
-Date: Tue, 15 Oct 2024 19:48:25 +0530
-Message-Id: <20241015141826.4186247-2-pravalika.gurram@intel.com>
+Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_compute_mode: LR mode should
+ use command or render
+Date: Tue, 15 Oct 2024 19:48:26 +0530
+Message-Id: <20241015141826.4186247-3-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015141826.4186247-1-pravalika.gurram@intel.com>
 References: <20241015141826.4186247-1-pravalika.gurram@intel.com>
@@ -69,62 +70,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added "xe_find_engine_by_class" helper function
-to query with the required engine class
-and get the engine info.
+Spinner which has to run in LR mode should be
+executed on compute or render command streamer.
+Stop assuming engine id is equal to 1
+and use 'xe_find_engine_by_class'
+helper to find engine by its class.
+use 'xe_find_engine_by_class' with required engine class
+to get the engine info.
 
 Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- lib/xe/xe_query.c | 22 ++++++++++++++++++++++
- lib/xe/xe_query.h |  1 +
- 2 files changed, 23 insertions(+)
+ tests/intel/xe_exec_compute_mode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 8694fa3f9..ddb9d4065 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -731,6 +731,28 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
- 	return false;
- }
+diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+index 82e607848..f62859689 100644
+--- a/tests/intel/xe_exec_compute_mode.c
++++ b/tests/intel/xe_exec_compute_mode.c
+@@ -457,11 +457,18 @@ static void lr_mode_workload(int fd)
+ 	uint64_t ahnd;
+ 	uint32_t bo;
+ 	uint32_t ts_1, ts_2;
++	uint32_t num_engines;
  
-+/**
-+ * xe_find_engine_by_class
-+ * @fd: xe device fd
-+ * @engine_class: engine class
-+ *
-+ * Returns engine info of xe device @fd and @engine_class otherwise NULL.
-+ */
-+struct drm_xe_engine *xe_find_engine_by_class(int fd, uint16_t engine_class)
-+{
-+	struct xe_device *xe_dev;
+ 	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+ 	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+ 	bo_size = xe_bb_size(fd, sizeof(*spin));
+-	engine = xe_engine(fd, 1);
 +
-+	xe_dev = find_in_cache(fd);
-+	igt_assert(xe_dev);
++	num_engines = xe_number_engines(fd);
++	engine = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_COMPUTE);
++	if (engine == NULL)
++		engine = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_RENDER);
++	igt_skip_on_f((engine == NULL), "num_engines %d\n", num_engines);
 +
-+	igt_assert(engine_class >= 0 && engine_class < xe_dev->engines->num_engines);
-+	for (int i = 0; i < xe_dev->engines->num_engines; i++)
-+		if (xe_dev->engines->engines[i].instance.engine_class == engine_class)
-+			return &xe_dev->engines->engines[i];
-+
-+	return NULL;
-+
-+}
- /**
-  * xe_has_media_gt:
-  * @fd: xe device fd
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index fd1155f7f..cabb8078c 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -108,6 +108,7 @@ uint16_t xe_dev_id(int fd);
- int xe_supports_faults(int fd);
- const char *xe_engine_class_string(uint32_t engine_class);
- bool xe_has_engine_class(int fd, uint16_t engine_class);
-+struct drm_xe_engine *xe_find_engine_by_class(int fd, uint16_t engine_class);
- bool xe_has_media_gt(int fd);
- bool xe_is_media_gt(int fd, int gt);
- uint16_t xe_gt_get_tile_id(int fd, int gt);
+ 	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
+ 	spin = xe_bo_map(fd, bo, bo_size);
+ 
 -- 
 2.34.1
 
