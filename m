@@ -4,55 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7BA4D1D86B
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Oct 2024 14:49:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0F9C6D1D863
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Oct 2024 14:49:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2EF3E10E599;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BA8C10E59D;
 	Tue, 15 Oct 2024 14:49:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kcEArn9u";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Im2XAG8B";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E731610E06C
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Oct 2024 14:19:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC84E10E551
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Oct 2024 08:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729001983; x=1760537983;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=n4WkXCiIzqDbvgtyAFKii8lheI+bg517gGlVjfesLUA=;
- b=kcEArn9uMwD4S4AeQ3NB9XzdGH+VTTTBhMpCz93vYaaCRftKLFYbLBLK
- AKYlUtYJKchwIgHaGBjsk0YsP8bj7vEGSZQ79FOF9w7NdukrLbdRySvsl
- d7E5jnFnCDFIKbAeRqNZAAX/RBPOfrt0WMpKZhok7ArKTvcyHncSAFvmH
- 7G64ZLPFYUNurVi98db9FLkK6U4mZ+9DnGNln25+46A98FtBSTZFMgKU2
- qWHsdZtd/GkDfVokDWq+3YqZ8fHJkaCAzMp2jfKeYNjGNhHhF44ptT9Hg
- +NYCMvOTObHDQOXSqC+Zvjo8J8SVBq29idT9UyqCAyqPj/7zQMUOYyxE7 A==;
-X-CSE-ConnectionGUID: ab6OHnCJSpaEulHco3SS1A==
-X-CSE-MsgGUID: W8O6sRAuRFCu4BiWFFAc+g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="45872749"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="45872749"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2024 07:19:42 -0700
-X-CSE-ConnectionGUID: 1fUf3GpPRayzfiNizmSFsw==
-X-CSE-MsgGUID: ghbtOHEOTjyuWgxKwMfwTg==
+ t=1728982708; x=1760518708;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Sce2yoXVz/x8V+jjwILIzYas/jPoULhwJ8qKTlEiKhk=;
+ b=Im2XAG8BdiuNEyJorJAdKtSKVqv0MMIqYcF3Lg2l9GSWap34SOftSIgt
+ IPaIZPhXenFqwg7CRGLrWlZpVtkYkVP5sJy7tBhk651ucNu6AMDLEOawa
+ mI+egzOtcBEsBNhulyGiM8lXY5S7/8u4jCkaL+f7TF86lqtriMu1Ni7LQ
+ 6kcXSMqSty4eY0U1pIFRX+/bU0lMgoRQ5oSDaNpeUyM7OzqiMYAyrJFIJ
+ ak4DPmAU3D77GfJ14iQNl0HmvD3S83CqrZY2PS64WoJBa+s6SCu3Y0LeQ
+ 6IY1otxlZlEm/Fy5Et9i9MDkfN57zAYV4u5Lhlu83409YHlKVhTFPv8qS A==;
+X-CSE-ConnectionGUID: htFW8fMYSeG288QEDI0Z9g==
+X-CSE-MsgGUID: 6qmEOYjxQp2JEJki8SIZ/Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28246828"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28246828"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Oct 2024 01:58:27 -0700
+X-CSE-ConnectionGUID: x2c7mZ/9RjSonTHVNBtoDg==
+X-CSE-MsgGUID: TMn3ZzmHR4a/X5K0GkKlzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; d="scan'208";a="108642538"
+X-IronPort-AV: E=Sophos;i="6.11,204,1725346800"; d="scan'208";a="82458539"
 Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
- by fmviesa001.fm.intel.com with ESMTP; 15 Oct 2024 07:19:39 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 15 Oct 2024 01:58:26 -0700
 From: Pravalika Gurram <pravalika.gurram@intel.com>
 To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
- sai.gowtham.ch@intel.com, katarzyna.piecielska@intel.com
+ sai.gowtham.ch@intel.com
 Cc: Pravalika Gurram <pravalika.gurram@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_compute_mode: LR mode should
- use command or render
-Date: Tue, 15 Oct 2024 19:48:26 +0530
-Message-Id: <20241015141826.4186247-3-pravalika.gurram@intel.com>
+Subject: [PATCH i-g-t] lib/xe/xe_query: xe_find_engine_by_class helper
+Date: Tue, 15 Oct 2024 14:27:23 +0530
+Message-Id: <20241015085723.4172190-1-pravalika.gurram@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241015141826.4186247-1-pravalika.gurram@intel.com>
-References: <20241015141826.4186247-1-pravalika.gurram@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Mailman-Approved-At: Tue, 15 Oct 2024 14:49:27 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,29 +66,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Spinner which has to run in LR mode should be
-executed on compute or render command streamer.
-Stop assuming engine id is equal to 1
-and use 'xe_find_engine_by_class'
-helper to find engine by its class.
-use 'xe_find_engine_by_class' with required engine class
-to get the engine info.
+Added "xe_find_engine_by_class" helper function
+to query the required engine class instance id is available or not.
 
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Also use the compute engine first in LR mode,
+if compute engine is not available use render.
+
 Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
 ---
- tests/intel/xe_exec_compute_mode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ lib/xe/xe_query.c                  | 21 +++++++++++++++++++++
+ lib/xe/xe_query.h                  |  1 +
+ tests/intel/xe_exec_compute_mode.c | 10 +++++++++-
+ 3 files changed, 31 insertions(+), 1 deletion(-)
 
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 8694fa3f9..22f3b5329 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -731,6 +731,27 @@ bool xe_has_engine_class(int fd, uint16_t engine_class)
+ 	return false;
+ }
+ 
++/**
++ * xe_find_engine_by_class
++ * @fd: xe device fd
++ * @engine_class: engine class
++ *
++ * Returns engine @class instance id otherwise -1.
++ */
++uint32_t xe_find_engine_by_class(int fd, uint16_t engine_class)
++{
++	struct xe_device *xe_dev;
++
++	xe_dev = find_in_cache(fd);
++	igt_assert(xe_dev);
++
++	for (int i = 0; i < xe_dev->engines->num_engines; i++)
++		if (xe_dev->engines->engines[i].instance.engine_class == engine_class)
++			return xe_dev->engines->engines[i].instance.engine_class;
++
++	return -1;
++
++}
+ /**
+  * xe_has_media_gt:
+  * @fd: xe device fd
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index fd1155f7f..e96f0d648 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -108,6 +108,7 @@ uint16_t xe_dev_id(int fd);
+ int xe_supports_faults(int fd);
+ const char *xe_engine_class_string(uint32_t engine_class);
+ bool xe_has_engine_class(int fd, uint16_t engine_class);
++uint32_t xe_find_engine_by_class(int fd, uint16_t engine_class);
+ bool xe_has_media_gt(int fd);
+ bool xe_is_media_gt(int fd, int gt);
+ uint16_t xe_gt_get_tile_id(int fd, int gt);
 diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
-index 82e607848..f62859689 100644
+index 82e607848..7160b48d1 100644
 --- a/tests/intel/xe_exec_compute_mode.c
 +++ b/tests/intel/xe_exec_compute_mode.c
-@@ -457,11 +457,18 @@ static void lr_mode_workload(int fd)
+@@ -457,11 +457,19 @@ static void lr_mode_workload(int fd)
  	uint64_t ahnd;
  	uint32_t bo;
  	uint32_t ts_1, ts_2;
-+	uint32_t num_engines;
++	uint32_t num_engines, idx;
  
  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
  	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
@@ -100,10 +139,11 @@ index 82e607848..f62859689 100644
 -	engine = xe_engine(fd, 1);
 +
 +	num_engines = xe_number_engines(fd);
-+	engine = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_COMPUTE);
-+	if (engine == NULL)
-+		engine = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_RENDER);
-+	igt_skip_on_f((engine == NULL), "num_engines %d\n", num_engines);
++	idx = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_COMPUTE);
++	if (idx == -1)
++		idx = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_RENDER);
++	igt_skip_on_f((idx == -1), "idx %d num_engines %d\n", idx, num_engines);
++	engine = xe_engine(fd, idx);
 +
  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
  	spin = xe_bo_map(fd, bo, bo_size);
