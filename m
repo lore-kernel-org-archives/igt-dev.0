@@ -4,55 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B94F4D1AD55
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 13:30:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0B92D1AD5E
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 13:54:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7CCFF10E2DD;
-	Wed, 16 Oct 2024 13:30:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 74ED210E710;
+	Wed, 16 Oct 2024 13:54:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jyTXVp6S";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ejne+zl5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0259010E2DD
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Oct 2024 13:30:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 30B6A10E710
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Oct 2024 13:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729085405; x=1760621405;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=mGAZ1ZkWSYoIMnCgVeu8/dWqaNe15RtB8KxsLkD4n70=;
- b=jyTXVp6SC2mBIgDB/+g1zUZfdDNP3Mu957QNi5a+kjGUari1TAtoWhQx
- PRQc7og8uWuh4OFhePQBpr0BrGmu2LGzp7GsKnvnIZiR+sBymGtySSNqN
- 9c0OVxJIh/kFkG90BC9Z6pBU7Vv+urCPS4oViKuRfDNQ+sMcJOVFAFhua
- W7+MTR2VisuLB0WpliWj/duznBkQP86I7e2X1PiwRCjmauDXLAzCiH0tH
- m5vyNvJAKKkJysLk0sMZK7nFJ6JFOydnnd9bg/DndLd+mQltWPNPKXyAC
- XSKzJV5KrrAZRzg9pA08I4MBSs5K/Oy+kNuzwE80odbcZvp6gzjUoG7pU w==;
-X-CSE-ConnectionGUID: 82wuzM9PT8SjmiBFB4jvEQ==
-X-CSE-MsgGUID: /OuCuo0UQ4io02hQakBkHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11226"; a="39902872"
-X-IronPort-AV: E=Sophos;i="6.11,208,1725346800"; d="scan'208";a="39902872"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2024 06:30:04 -0700
-X-CSE-ConnectionGUID: nFLmBDFWRvS+1hGi5RfOog==
-X-CSE-MsgGUID: TgzExf3KTC2utchfe6/Bpw==
+ t=1729086841; x=1760622841;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=tH7XAcl1Lg621DVLPVslsPq1+GzvSQynSkXyDSOjrAk=;
+ b=Ejne+zl5tJ3hDVl65l8xSnV3Apt+izuZHakKQcoCuLLBZfPSQKNl7YUk
+ Ic49VdOz3TEN2jLScG1sb61W5213Qak9mUfgYtEXaeXOk7kr52C2+rcsq
+ jp5i+ZEl27Vh86mzQwVg6551hlNB6LypBLzf8nfcO1o/3WjTMWBnTKFRP
+ gwyNArCNmQGuq5HVl0K5vNh0mEN2nWllHQQpjyH4HgJbHdjGbvF5pnLFr
+ 43QvG/bvoZHaEwJ8kCs+OLF7TH96bM2aCtIdUOTfrveJl+aL9U/Su6qVO
+ EbohwbRAMWjvdO3wCB5iBPOaDqWmY1VU/q78eRVU2IApg0L7tD5dcZaqR g==;
+X-CSE-ConnectionGUID: hby7qLVDSyCtkEE/zXiE9A==
+X-CSE-MsgGUID: UvFp1pl+QxGqKojLYZO7/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="51073667"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="51073667"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2024 06:54:01 -0700
+X-CSE-ConnectionGUID: 3kQgUsE7TgCaWys8w9HtRw==
+X-CSE-MsgGUID: D7B33mfVTXCgwWVi7scSrg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="83041195"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
- ([10.245.246.100])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2024 06:30:02 -0700
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>
-Subject: [PATCH i-g-t] tests/intel/gem_exec_balancer: Disable parallel tests
- on execlists
-Date: Wed, 16 Oct 2024 15:27:21 +0200
-Message-ID: <20241016132718.36457-4-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.45.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.11,208,1725346800"; d="scan'208";a="78182642"
+Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com)
+ ([10.165.21.142])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2024 06:54:00 -0700
+Date: Wed, 16 Oct 2024 06:54:00 -0700
+Message-ID: <85ed4g2lxj.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: =?ISO-8859-1?Q?Jos=E9?= Roberto de Souza <jose.souza@intel.com>
+Cc: igt-dev@lists.freedesktop.org,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH i-g-t] oa/i915: Add ARL standlone oa files
+In-Reply-To: <20241015181721.52086-1-jose.souza@intel.com>
+References: <20241015181721.52086-1-jose.souza@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,29 +72,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The functionality of parallel execbuf tests is not supported in
-execlists mode. Fix the check in has_parallel_execbuf() to take that
-into account.
+On Tue, 15 Oct 2024 11:17:21 -0700, Jos=E9 Roberto de Souza wrote:
+>
+>
 
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
----
- tests/intel/gem_exec_balancer.c | 3 +++
- 1 file changed, 3 insertions(+)
+The patch is large so seems I can only see it in Outlook or download it,
+but otherwise LGTM:
 
-diff --git a/tests/intel/gem_exec_balancer.c b/tests/intel/gem_exec_balancer.c
-index 20e31baf0..30f2cb241 100644
---- a/tests/intel/gem_exec_balancer.c
-+++ b/tests/intel/gem_exec_balancer.c
-@@ -3378,6 +3378,9 @@ static bool has_parallel_execbuf(int i915)
- 	const intel_ctx_t *ctx = NULL;
- 	int err;
- 
-+	if (gem_using_execlists(i915))
-+		return false;
-+
- 	for (int class = 0; class < 32; class++) {
- 		struct i915_engine_class_instance *siblings;
- 		unsigned int count;
--- 
-2.45.2
+Reviewed-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
+Also Cc'ing Umesh.
