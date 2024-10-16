@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5758D1AD50
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 12:43:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4FDFD1AD53
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 12:57:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 934BF10E6CB;
-	Wed, 16 Oct 2024 12:43:05 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TiO/eJI4";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E5DD010E6CB
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Oct 2024 12:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729082585; x=1760618585;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Ivq7dTLpksUUEiBoofTDUJtYGhE7hkkRxwVuRZLPET0=;
- b=TiO/eJI4qHDoWfxML6+BOyStFhualeUyEa/9vilH7e43+Bb3Z6nESnOr
- lsFJ5t2zYLEFV4tOyTjCSBmXlPnFPftGwN+laPI9DQ2ka5SW0esfjvTHV
- 3brBr/1p9lSntI0uKhSMvCqbLyi7vH/o34RzuvJklwbK2lJ5AoSUB9Af6
- DgkjxFu+uPeNo9olbcipBNxfY8WLqlG8hfKVu9/OaXCTWP4SL6mLd7Yki
- GuyZ0xoj0bTWFqZGdrRZmaZI7NpmvWDrXUd+0BHHMMy6/wKOOuiM7ueCs
- YjYxtHK3RxHnf20J9k4xEeRqacU1CjsgybEaKuMV9f4U+UcrktNwolmht g==;
-X-CSE-ConnectionGUID: HUknYlMwTZaeNMq9YTdaVw==
-X-CSE-MsgGUID: VzLHJTECS9WiwqLM0044kA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11226"; a="39915915"
-X-IronPort-AV: E=Sophos;i="6.11,208,1725346800"; d="scan'208";a="39915915"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2024 05:43:04 -0700
-X-CSE-ConnectionGUID: +wHeQEzeTtKmqlXDCUTSBA==
-X-CSE-MsgGUID: Nxcp0lclSD28Qjm9ex5Qaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,208,1725346800"; d="scan'208";a="78272412"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 16 Oct 2024 05:43:02 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Wed, 16 Oct 2024 15:43:01 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Subject: [PATCH i-g-t] tests/kms_color: Move dynamic subtests even further out
-Date: Wed, 16 Oct 2024 15:43:00 +0300
-Message-ID: <20241016124301.25968-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id A018110E00C;
+	Wed, 16 Oct 2024 12:57:01 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 080EB10E00C;
+ Wed, 16 Oct 2024 12:57:01 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4538044344304070555=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/kms=5Fccs=3A_recyc?=
+ =?utf-8?q?le_framebuffers_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 16 Oct 2024 12:57:01 -0000
+Message-ID: <172908342102.1273870.4465641198704531178@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241016113453.3326272-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20241016113453.3326272-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,145 +37,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============4538044344304070555==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-In order to run this on older Intel based laptops we have to
-make it work for cases where we have just pipe B driving the
-single LVDS output. Currently the test just skips because it
-tries pipe A first which won't have a connected output. Move
-the output selection further out to remedy this.
+== Series Details ==
 
-I thought I already fixed this once with commit 766edf96979b
-("tests/kms_color: Move dynamic subtests up one level") but it
-clearly isn't working now. Either I failed there or this has
-regreressed again due to some other changes.
+Series: tests/intel/kms_ccs: recycle framebuffers (rev2)
+URL   : https://patchwork.freedesktop.org/series/140011/
+State : success
 
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- tests/kms_color.c | 78 +++++++++++++++++++++++------------------------
- 1 file changed, 38 insertions(+), 40 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_color.c b/tests/kms_color.c
-index 5f0128bcad9e..d642f561df76 100644
---- a/tests/kms_color.c
-+++ b/tests/kms_color.c
-@@ -787,12 +787,10 @@ run_gamma_degamma_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
--	if (!pipe_output_combo_valid(data, p))
--		goto out;
-+	igt_require(pipe_output_combo_valid(data, p));
-+
-+	igt_assert(test_t(data, data->primary));
- 
--	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), igt_output_name(data->output))
--		igt_assert(test_t(data, data->primary));
--out:
- 	test_cleanup(data);
- }
- 
-@@ -826,40 +824,36 @@ run_ctm_tests_for_pipe(data_t *data, enum pipe p,
- 	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
--	if (!pipe_output_combo_valid(data, p))
--		goto out;
-+	igt_require(pipe_output_combo_valid(data, p));
- 
- 	if (!iter)
- 		iter = 1;
- 
--	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(p), igt_output_name(data->output)) {
--		/*
--		 * We tests a few values around the expected result because
--		 * it depends on the hardware we're dealing with, we can either
--		 * get clamped or rounded values and we also need to account
--		 * for odd number of items in the LUTs.
--		 */
--		for (i = 0; i < iter; i++) {
--			color_t expected_colors[3] = {
--				fb_colors[0],
--				fb_colors[1],
--				fb_colors[2],
--			};
--
--			transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
--			transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
--			transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
--
--			if (test_pipe_ctm(data, data->primary, fb_colors,
--					  expected_colors, ctm)) {
--				success = true;
--				break;
--			}
-+	/*
-+	 * We tests a few values around the expected result because
-+	 * it depends on the hardware we're dealing with, we can either
-+	 * get clamped or rounded values and we also need to account
-+	 * for odd number of items in the LUTs.
-+	 */
-+	for (i = 0; i < iter; i++) {
-+		color_t expected_colors[3] = {
-+			fb_colors[0],
-+			fb_colors[1],
-+			fb_colors[2],
-+		};
-+
-+		transform_color(&expected_colors[0], ctm, delta * (i - (iter / 2)));
-+		transform_color(&expected_colors[1], ctm, delta * (i - (iter / 2)));
-+		transform_color(&expected_colors[2], ctm, delta * (i - (iter / 2)));
-+
-+		if (test_pipe_ctm(data, data->primary, fb_colors,
-+				  expected_colors, ctm)) {
-+			success = true;
-+			break;
- 		}
--		igt_assert(success);
- 	}
-+	igt_assert(success);
- 
--out:
- 	test_cleanup(data);
- }
- 
-@@ -1143,9 +1137,11 @@ run_tests_for_pipe(data_t *data)
- 	for (i = 0; i < ARRAY_SIZE(gamma_degamma_tests); i++) {
- 		igt_describe_f("%s", gamma_degamma_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", gamma_degamma_tests[i].name) {
--			for_each_pipe(&data->display, pipe) {
--				run_gamma_degamma_tests_for_pipe(data, pipe,
--								 gamma_degamma_tests[i].test_t);
-+			for_each_pipe_with_valid_output(&data->display, pipe, data->output) {
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+					      igt_output_name(data->output))
-+					run_gamma_degamma_tests_for_pipe(data, pipe,
-+									 gamma_degamma_tests[i].test_t);
- 			}
- 		}
- 	}
-@@ -1153,11 +1149,13 @@ run_tests_for_pipe(data_t *data)
- 	for (i = 0; i < ARRAY_SIZE(ctm_tests); i++) {
- 		igt_describe_f("%s", ctm_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", ctm_tests[i].name) {
--			for_each_pipe(&data->display, pipe) {
--				run_ctm_tests_for_pipe(data, pipe,
--						       ctm_tests[i].fb_colors,
--						       ctm_tests[i].ctm,
--						       ctm_tests[i].iter);
-+			for_each_pipe_with_valid_output(&data->display, pipe, data->output) {
-+				igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe),
-+					      igt_output_name(data->output))
-+					run_ctm_tests_for_pipe(data, pipe,
-+							       ctm_tests[i].fb_colors,
-+							       ctm_tests[i].ctm,
-+							       ctm_tests[i].iter);
- 			}
- 		}
- 	}
--- 
-2.45.2
+CI Bug Log - changes from XEIGT_8077_BAT -> XEIGTPW_11924_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11924_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +2 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_exec_compute_mode@twice-userptr-invalidate:
+    - bat-lnl-1:          [PASS][4] -> [FAIL][5] ([Intel XE#2754])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][6] ([Intel XE#288]) +32 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-7:         NOTRUN -> [SKIP][7] ([Intel XE#2229])
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [INCOMPLETE][8] ([Intel XE#2874]) -> [PASS][9] +1 other test pass
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2754]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2754
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8077 -> IGTPW_11924
+
+  IGTPW_11924: 11924
+  IGT_8077: 42f9e9702f74a4993318adea936baaa186084689 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519: 12e4970af1ecdeb76e94df2daf51a9c3d6b9f519
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/index.html
+
+--===============4538044344304070555==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_ccs: recycle framebuffers (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140011/">https://patchwork.freedesktop.org/series/140011/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8077_BAT -&gt; XEIGTPW_11924_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11924_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +2 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_compute_mode@twice-userptr-invalidate:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2754">Intel XE#2754</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11924/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8077 -&gt; IGTPW_11924</li>
+</ul>
+<p>IGTPW_11924: 11924<br />
+  IGT_8077: 42f9e9702f74a4993318adea936baaa186084689 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519: 12e4970af1ecdeb76e94df2daf51a9c3d6b9f519</p>
+
+</body>
+</html>
+
+--===============4538044344304070555==--
