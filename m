@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2834FD1AD3A
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 10:02:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B68B0D1AD41
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 10:20:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D49F110E011;
-	Wed, 16 Oct 2024 10:02:58 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE94B10E011;
- Wed, 16 Oct 2024 10:02:57 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============9005372946985209391=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5C08210E6F1;
+	Wed, 16 Oct 2024 10:20:41 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xs398E4a";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2057810E703
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Oct 2024 10:20:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729074040; x=1760610040;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Nq60YwS1ctZ9j2M1RCYpf+rcnE4xoEUz+jQyAvWwacY=;
+ b=Xs398E4ain5mufoRWFQIR7ISQZ0FK2yRKaLZNvI4vtKEL2Lz/sR5HJm+
+ DW/i46Ss92UO5jOtPYmxE7iu8i9LD1rAos71+0rtFlCvlSbORsVHAN3//
+ sLjZO5FARp33Bp5MzpiAkT/rYTNrqpEgXvmr1WoqBiCk4m8Z/vZyZvo8c
+ JHHPMUeYXGfrSjvsitqaeN4QRkL81sry0FFAph7zWMj3y9X/ykc4lTRXL
+ CGzfp1o1sTBnYExowl33kAcOiTsDiw0wsda7CKjPpohtmnqottxslHcY6
+ 9KMcqikwo3wX+lVKBj5raX2UxO53uIottph0ilE7jjCOzRe2TkSfNuaBB A==;
+X-CSE-ConnectionGUID: VmBRBOGASBiaIcmx5g189A==
+X-CSE-MsgGUID: ouRkeZdXTM+UUL8v4yE+PQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11226"; a="39091623"
+X-IronPort-AV: E=Sophos;i="6.11,207,1725346800"; d="scan'208";a="39091623"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2024 03:20:40 -0700
+X-CSE-ConnectionGUID: FCoP1WBLTTKXjCgKl8undA==
+X-CSE-MsgGUID: iReGUKKESD+y4w3iDqzNiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,207,1725346800"; d="scan'208";a="79018354"
+Received: from pgurram-desk.iind.intel.com ([10.145.169.87])
+ by orviesa008.jf.intel.com with ESMTP; 16 Oct 2024 03:20:38 -0700
+From: Pravalika Gurram <pravalika.gurram@intel.com>
+To: igt-dev@lists.freedesktop.org, zbigniew.kempczynski@intel.com,
+ sai.gowtham.ch@intel.com, katarzyna.piecielska@intel.com
+Cc: Pravalika Gurram <pravalika.gurram@intel.com>
+Subject: [PATCH i-g-t 0/2] xe_find_engine_by_class helper
+Date: Wed, 16 Oct 2024 15:49:31 +0530
+Message-Id: <20241016101933.4191790-1-pravalika.gurram@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Test_vm?=
- =?utf-8?q?_bind_fails_with_invalid_ufence_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Nirmoy Das" <nirmoy.das@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 16 Oct 2024 10:02:57 -0000
-Message-ID: <172907297790.1273302.9917270275702727294@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241014141839.1618518-1-nirmoy.das@intel.com>
-In-Reply-To: <20241014141839.1618518-1-nirmoy.das@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,145 +63,24 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============9005372946985209391==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Added "xe_find_engine_by_class" helper function to query with the required
+engine class and get the engine info.
 
-== Series Details ==
+Use 'xe_find_engine_by_class' helper to get the engine info with the
+required engine class.  Stop assuming engine id is equal to 1
 
-Series: tests/intel/xe_vm: Test vm bind fails with invalid ufence (rev2)
-URL   : https://patchwork.freedesktop.org/series/139961/
-State : success
+Pravalika Gurram (2):
+  lib/xe/xe_query: xe_find_engine_by_class helper
+  tests/intel/xe_exec_compute_mode: Use xe_find_engine_by_class
 
-== Summary ==
+ lib/xe/xe_query.c                  | 20 ++++++++++++++++++++
+ lib/xe/xe_query.h                  |  1 +
+ tests/intel/xe_exec_compute_mode.c |  5 ++++-
+ 3 files changed, 25 insertions(+), 1 deletion(-)
 
-CI Bug Log - changes from XEIGT_8076_BAT -> XEIGTPW_11919_BAT
-====================================================
+-- 
+2.34.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11919_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [PASS][1] -> [FAIL][2] ([Intel XE#1861])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8076/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [FAIL][3] ([Intel XE#886]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8076/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
-
-
-Build changes
--------------
-
-  * IGT: IGT_8076 -> IGTPW_11919
-  * Linux: xe-2071-0bebd793802b4eae14c71400e833cda8f91b0557 -> xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519
-
-  IGTPW_11919: f8de5db4547873dd272cd6239ed1218a750f9602 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8076: e511df10a1201d0d83c03ccbcabc3d57191e5f8e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2071-0bebd793802b4eae14c71400e833cda8f91b0557: 0bebd793802b4eae14c71400e833cda8f91b0557
-  xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519: 12e4970af1ecdeb76e94df2daf51a9c3d6b9f519
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/index.html
-
---===============9005372946985209391==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Test vm bind fails with invalid ufence (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139961/">https://patchwork.freedesktop.org/series/139961/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8076_BAT -&gt; XEIGTPW_11919_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11919_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_frontbuffer_tracking@basic:<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8076/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8076/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11919/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8076 -&gt; IGTPW_11919</li>
-<li>Linux: xe-2071-0bebd793802b4eae14c71400e833cda8f91b0557 -&gt; xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519</li>
-</ul>
-<p>IGTPW_11919: f8de5db4547873dd272cd6239ed1218a750f9602 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8076: e511df10a1201d0d83c03ccbcabc3d57191e5f8e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2071-0bebd793802b4eae14c71400e833cda8f91b0557: 0bebd793802b4eae14c71400e833cda8f91b0557<br />
-  xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519: 12e4970af1ecdeb76e94df2daf51a9c3d6b9f519</p>
-
-</body>
-</html>
-
---===============9005372946985209391==--
