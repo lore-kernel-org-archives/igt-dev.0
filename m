@@ -4,27 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A83ED37485
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 13:26:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09B2CD37489
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 13:28:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 31D2110E84C;
-	Thu, 17 Oct 2024 13:26:57 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A084110E83E;
- Thu, 17 Oct 2024 13:26:55 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============7098299764506734389=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C1FAA10E83E;
+	Thu, 17 Oct 2024 13:28:07 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="nHSDiz8u";
+	dkim-atps=neutral
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
+ [209.85.128.48])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50AE610E83E
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 13:28:06 +0000 (UTC)
+Received: by mail-wm1-f48.google.com with SMTP id
+ 5b1f17b1804b1-4315e9e9642so2864185e9.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 06:28:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1729171685; x=1729776485; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=qy3yyhUhA4/KFCW8xHOip3oOb3pjAPGkd90Lw5ZRM0Q=;
+ b=nHSDiz8u8Cj8AXNP2WoYIsE/6CiYziJnTIPtDmEfZZxzOp2EF4NKdEtjudlqiz4rmJ
+ E2xjh+Seo9O0zenBKc24OKTNSWk1I3FXzAvJuQqhzz7NIaK8gcqc+EBfauFVT/Jy5a6B
+ sY0mxeBiviUUFeEBNw0ru3CEUlB1DwRFvZgo/LL2h4ZfjMLtolecdYp6IP8WPJO1keuU
+ 1+XoR5y5QDsDJxzICbkoRsIf1vj8FzJNwJ7waWQREMY5mN6YpdAmpbYztrtit93A5IO0
+ Va8xB4fDwF8hfE5O4VDrfh9KND6gXoNwZfZQuhicf6eJWHUYsj9wUm6rS85aZHw+/+03
+ t60Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729171685; x=1729776485;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:cc:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=qy3yyhUhA4/KFCW8xHOip3oOb3pjAPGkd90Lw5ZRM0Q=;
+ b=XoE78DVgRUX0QycYhnf/cDHkj/s/GQaYJtQ3A9U82dnHeiQ9VRn9bKlrpZevYHjSbo
+ 0MLPmUh8mm9y9vQzUx0n/LAKJ7rAqDGJnLSxxkif3wxTZXbo+iNeP0zNCHlrX+4LA1AX
+ 2KSlJuIqxnf90sN1kbCmEnKl4aj6wiy/EBcTaBxts0F2wD3nn7KrwZUpo9aa1in/m+tw
+ 0GasOKKhWUgEaoWi8vN8IXOSdsv3UxaPPCeJMSvD5j2HXz9RycRg2IgwFZU6zzB8oDCc
+ rDdwyql08mZ877m+Az5/yD4ANVDOIqJldNnLSBkIc+IlUjgeycO6apyV4lI4z+mMKMQ8
+ pxJQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCXwl3pUgBHY9KjQa53Q9oa4Y/u5UpeVw9esvMjEe+6CsSbQmtIpb7VTrRKklsbSOruhDoirNwJn@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yz4r3vPLAHVsXU1VcorCnnW224ldT6em80iUNdoZkgNLlf8hK0+
+ KXp0dBwnaP7SNVWkT+fTAmTHypAyiSiFt662voBA3o3Fx+O1toup
+X-Google-Smtp-Source: AGHT+IFINkWQjOEHqAYImIEzRjt62tPtG8BCqhH57hmmw/5CBkF0JF9lmDr0rAUfQcPvl9IA0CHvcA==
+X-Received: by 2002:a05:600c:1c9e:b0:430:57f2:bae5 with SMTP id
+ 5b1f17b1804b1-4311df42aa5mr164444765e9.27.1729171684353; 
+ Thu, 17 Oct 2024 06:28:04 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.137.74])
+ by smtp.googlemail.com with ESMTPSA id
+ ffacd0b85a97d-37d7fc445fesm7260831f8f.113.2024.10.17.06.28.00
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 17 Oct 2024 06:28:03 -0700 (PDT)
+Message-ID: <45e1c657-f91c-4452-9033-90ebd0be7fd1@gmail.com>
+Date: Thu, 17 Oct 2024 16:27:55 +0300
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/kms=5Fhistogram=3A_Ad?=
- =?utf-8?q?ded_IGT_support_to_validate_global_histogram_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Mohammed Thasleem" <mohammed.thasleem@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Oct 2024 13:26:55 -0000
-Message-ID: <172917161564.1278862.15603363364588051917@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20240705091333.328322-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20240705091333.328322-1-mohammed.thasleem@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] MAINTAINERS: Change Bhanuprakash's email address
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+References: <20241017121852.45488-1-kamil.konieczny@linux.intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20241017121852.45488-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,161 +86,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7098299764506734389==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Acked-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-== Series Details ==
+On 17.10.2024 15.18, Kamil Konieczny wrote:
+> Current one will become inactive in few weeks.
+> 
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+> Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Cc: Petri Latvala <adrinael@adrinael.net>
+> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>   MAINTAINERS | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 1a310ef26..90c3c0880 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -2,5 +2,5 @@ Petri Latvala <adrinael@adrinael.net>
+>   Arkadiusz Hiler <arek@hiler.eu>
+>   Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>   Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> -Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> +Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+>   Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-Series: tests/kms_histogram: Added IGT support to validate global histogram (rev3)
-URL   : https://patchwork.freedesktop.org/series/135789/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8078 -> IGTPW_11931
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/index.html
-
-Participating hosts (43 -> 42)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11931 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - {bat-arlh-3}:       [ABORT][1] ([i915#12133]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arlh-3/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arlh-3/igt@i915_selftest@live.html
-    - bat-arls-2:         [ABORT][3] ([i915#12133]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arls-2/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arls-2/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - {bat-arlh-3}:       [ABORT][5] ([i915#12061]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-    - bat-arls-2:         [ABORT][7] ([i915#12061]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arls-2/igt@i915_selftest@live@workarounds.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arls-2/igt@i915_selftest@live@workarounds.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8078 -> IGTPW_11931
-  * Linux: CI_DRM_15543 -> CI_DRM_15544
-
-  CI-20190529: 20190529
-  CI_DRM_15543: 81420006f741f9783adea6ab5620ce54697f1b20 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15544: 94d33b0e7302cf6561e78ce47585f6f67e246206 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11931: 11931
-  IGT_8078: 175bddf20141ccad40130719ca46bde5140f4872 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/index.html
-
---===============7098299764506734389==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_histogram: Added IGT support to validate global histogram (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/135789/">https://patchwork.freedesktop.org/series/135789/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8078 -&gt; IGTPW_11931</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/index.html</p>
-<h2>Participating hosts (43 -&gt; 42)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11931 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arlh-3/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arlh-3/igt@i915_selftest@live.html">PASS</a></li>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arls-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arls-2/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8078/bat-arls-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11931/bat-arls-2/igt@i915_selftest@live@workarounds.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8078 -&gt; IGTPW_11931</li>
-<li>Linux: CI_DRM_15543 -&gt; CI_DRM_15544</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15543: 81420006f741f9783adea6ab5620ce54697f1b20 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15544: 94d33b0e7302cf6561e78ce47585f6f67e246206 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11931: 11931<br />
-  IGT_8078: 175bddf20141ccad40130719ca46bde5140f4872 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============7098299764506734389==--
