@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBAAAD2127C
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 11:44:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7BD8D37483
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 12:19:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D47110E145;
-	Thu, 17 Oct 2024 11:44:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64E9110E7FE;
+	Thu, 17 Oct 2024 12:19:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kwjZg37P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CUzGSyCC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DBD410E145
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 11:44:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 885A310E801
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 12:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729165478; x=1760701478;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=tbYmLKjk8/0vxyrddXm8YyWGEi7E48Sg5lxGrddO9dY=;
- b=kwjZg37PCGI+Nj3Gpcd4J/SMpnDLNLZz296OX3ZAkwVw7tZhL+G4hKBw
- 5eRV67YG5a0BgU4CO+OxsxQKp0C1Z1LkBIpysl5SzHG7JJXpdMWEJC8Xo
- F4hS7iGYZCfTt3KTUaR8QN4IlYQUwYTF4dy/kF2f8nG/8Qjeep8Ll42ST
- 6Ro6xCDeM/xM+wwtU4ZjfzWEPbgG5YXLJMfjk2Vgcx02PjglbZU4T+VxK
- PLpLvd1Qm1cWUyCaRxp50C2mjVueemrRU77pDvVOV3neaRY8MUYf6qkZB
- pl7T1xMUJXzoJQXpYF13DGyEocNnVPmvG3KJh2HB7W7Z2S6nF9UQZqxA4 w==;
-X-CSE-ConnectionGUID: imz0OLWKSumLF1TJk/93KA==
-X-CSE-MsgGUID: oc9F7NDBQeGZ/eMmCTE3Qg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11227"; a="28116702"
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="28116702"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2024 04:44:38 -0700
-X-CSE-ConnectionGUID: W3WavZl/QyW6WeaWcLAD/w==
-X-CSE-MsgGUID: Olr5YFg4Q0qkX+r74txPxw==
+ t=1729167547; x=1760703547;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=pb+Zy+JbH+K12/PQ1h/9/uDu/w356QHCvKLnGNM9aMk=;
+ b=CUzGSyCCtVxH+OCVoW07qbQ7H5BA/4joesVVYlgRwb6pnx7IP6yTBnqX
+ lvVKngveFT7YiNNvchiDgohFJXRN2irlwd5fLsJdh93jr8bFtNWWvRjLl
+ rUyjf1D7zFfKfJUDPRyc15mSa3KKfICUlTlLZXKUA8jHovcG2Mz1QlioO
+ Jvb+UIhMPS8mLnw3rBI+ANOyOBAznMLmKXvKeQG/j7fAzoqg7Tj3WFlQA
+ fpVTN/+vaO1GKuykKiyD7AU3+tNXVhwkh1/kQ6XHLK6spKqFiYm9FxUBq
+ 4MzJtWYWPCBoR3K/i3at0xHFojNwbR97o4cDMiV9EcOKMFxA/zT0uPiJ0 w==;
+X-CSE-ConnectionGUID: o8vM8prYQYOsi5oRfn/9jA==
+X-CSE-MsgGUID: cGyrFcqMT/W6U6HRSXS3Bw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11227"; a="39285483"
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="39285483"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 05:19:06 -0700
+X-CSE-ConnectionGUID: 1T+4VY93TMqSndiDiPggCw==
+X-CSE-MsgGUID: iLcCu6OYQ+yhczjkNV6AjQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="83599916"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
- ([10.245.246.141])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2024 04:44:36 -0700
-Date: Thu, 17 Oct 2024 13:44:32 +0200
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Andi Shyti <andi.shyti@linux.intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/gem_exec_balancer: Disable parallel
- tests on execlists
-Message-ID: <ZxD4oFUc941DoqIw@ashyti-mobl2.lan>
-References: <20241016132718.36457-4-krzysztof.niemiec@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="78569298"
+Received: from opintica-mobl1 (HELO localhost) ([10.245.244.100])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 05:19:04 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: [PATCH i-g-t] MAINTAINERS: Change Bhanuprakash's email address
+Date: Thu, 17 Oct 2024 14:18:52 +0200
+Message-ID: <20241017121852.45488-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016132718.36457-4-krzysztof.niemiec@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,16 +70,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
+Current one will become inactive in few weeks.
 
-On Wed, Oct 16, 2024 at 03:27:21PM +0200, Krzysztof Niemiec wrote:
-> The functionality of parallel execbuf tests is not supported in
-> execlists mode. Fix the check in has_parallel_execbuf() to take that
-> into account.
-> 
-> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+Cc: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1a310ef26..90c3c0880 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -2,5 +2,5 @@ Petri Latvala <adrinael@adrinael.net>
+ Arkadiusz Hiler <arek@hiler.eu>
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+-Bhanuprakash Modem <bhanuprakash.modem@intel.com>
++Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+-- 
+2.47.0
 
-Thanks,
-Andi
