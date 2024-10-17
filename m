@@ -4,26 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F263D21275
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 10:48:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FD88D21272
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 10:59:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1968B10E7EC;
-	Thu, 17 Oct 2024 10:48:24 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C30110E7EC;
- Thu, 17 Oct 2024 10:48:23 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4450287314120158082=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 25A1110E307;
+	Thu, 17 Oct 2024 10:59:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gXB4FWpe";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8ECB810E307
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 10:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729162749; x=1760698749;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=300HjiMhnqYAK17cAlva4qeMjOXwEqPr1WtUbpsxf1I=;
+ b=gXB4FWpepVwIUu/+CCZR2Y8NFFPbn+MKVfWsS80I80+sOwM2gKGkYjSp
+ mhhZkxxz488astbLuc7uJMCGBxqD6fDNsHRNvoVuKggUD+dNcgieVYDli
+ t9PxBXkOR342s+XVQDyMxtAiPnqCHtgk50cNVgeFIc+j4mj6CNTDFk5nj
+ ytQLsRbl2oWHsDD1HZK2NDM1VJenHtFjz7Yi2FZBAIqydGwYoyQLoMyc6
+ kQ18y55SnVZ8BQTTNhcQaN1XKyCeEsWQIUTdD+ekMZAJK6+8VhCGx+EqM
+ 20JcZuPxP63VBPQ/YkhVw+VYOdB8SqB2iTB9Avvm0S/bz8rPs6yOxrFLZ A==;
+X-CSE-ConnectionGUID: ZqlviHxsTPeNr8o/IOMLJw==
+X-CSE-MsgGUID: 72gHLGJKShSf6nvIBOqWFw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="32327687"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="32327687"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 03:59:09 -0700
+X-CSE-ConnectionGUID: DaMfL3mOToWhk/ImDMy/Yg==
+X-CSE-MsgGUID: wvI09rkzQJ6bnUv/1Lp6yQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="83068170"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 17 Oct 2024 03:59:09 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 17 Oct 2024 03:59:08 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Thu, 17 Oct 2024 03:59:08 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Thu, 17 Oct 2024 03:59:08 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.171)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 17 Oct 2024 03:59:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NHagaBgs1Xm91q2DK1gglvr/vxbDA/Mn3qzwD6vsdsujSODVazGYOU4f3MZxbqqFqkY8EBh+5MUeHc2JNAltsoLM9T4dhR7akuEJotFT5DdjuSuHPt3wsKdqDID+WyGSdf+Qy5lDKag5N/40IOa+Rm0tKfyWEXihjW67ntI9tsqphoJHUx7rUQyzbiZ5FEA4Y3FdCT8qXb2mIDxiASkoazgJPKxCfoN2mLnb1J58yfzefTWpp1gfZda+9VBVMfu100ukoj0UOgavbhBY2/d2EMJKzgIyo1M0pQlUPPQiV9IRSIG8NVcNqC7MExAslnZsEm/gXf5qhGehZ8i/PXzHtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=N3pVCrnpjPxS6gWRnZLrTscC2CPF5GlpSNUb9P0pyuE=;
+ b=eo2V67+6HNpXAt3itvbgelPdv6G+oWunC+/5vp9RY4LCi82OGW2/o7xkulKV4+TmlitMujkx6RkdqqGk3yehzKSfAAJ994dLZJChVrnhLZ4CcICjMJldmEy1/Y/rVJUuwFpaf5ylxM6SPrLV/IYMikx1VeSDjsRorBF4eKSk8tfIxG5gDoiaxeD5In6uDxOOskAs8dufOsVRlhD9uHOc66y5MFCgzvUNBj4O489CWNZo3+yYnU9LbzaTQOXtzxFHVC85tmeb82omXY2rZTDG4c83r/BH1guY1Y/auI0u+R9LYFjUCgdBTxH/VuNO3KsWHCYSguunTh4HYKx5n5mEPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com (2603:10b6:610:ed::9)
+ by SA1PR11MB8595.namprd11.prod.outlook.com (2603:10b6:806:3a9::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17; Thu, 17 Oct
+ 2024 10:59:05 +0000
+Received: from CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062]) by CH0PR11MB5690.namprd11.prod.outlook.com
+ ([fe80::6b98:f467:da49:e062%6]) with mapi id 15.20.8069.016; Thu, 17 Oct 2024
+ 10:59:05 +0000
+Message-ID: <a4d3beb8-c57e-46fe-a3d2-3d98a340e784@intel.com>
+Date: Thu, 17 Oct 2024 16:28:59 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/psr: update documentation
+To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20241017082335.1362814-1-swati2.sharma@intel.com>
+Content-Language: en-US
+From: Karthik B S <karthik.b.s@intel.com>
+In-Reply-To: <20241017082335.1362814-1-swati2.sharma@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA1PR01CA0180.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:d::18) To CH0PR11MB5690.namprd11.prod.outlook.com
+ (2603:10b6:610:ed::9)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_kms=5Fccs_optimization?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Oct 2024 10:48:23 -0000
-Message-ID: <172916210310.1278319.17813611287162307961@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241017101832.3471966-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20241017101832.3471966-1-juhapekka.heikkila@gmail.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH0PR11MB5690:EE_|SA1PR11MB8595:EE_
+X-MS-Office365-Filtering-Correlation-Id: b121fa9c-0d23-428f-c15e-08dcee9ab74f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?UGFWLzAxZDgwSzVSZ1pGOUZ5TzRXdFBWNmJjVDVySEEzZ3g4ak5TQ0xFbzVW?=
+ =?utf-8?B?MDF6aXhCSmxRN3FLOEp0TjJRSllLWDMvbE53amdyeVlVUUZtdXpWNkNBbEcx?=
+ =?utf-8?B?dDQ2ZFd3WXFSNG91S2Yzam9DY2VoVUM1b1lMMDh2RlZFaVh5VEQ3UzRXTTZQ?=
+ =?utf-8?B?T0o5RlBXaUNtbDNiZWsxZmk0OXR5MG44cVdmWEUrODl2T2IyeVU4bWFLZElM?=
+ =?utf-8?B?RVdXVCtLL1JLcW9HcGU3Wk1iWE5kbzJTWVFPb0lteVN6SEp6UGNhcHRIdnhE?=
+ =?utf-8?B?VWRZL2NOOU5XUmluTUtmdDBYQ2NrSURaSzE0bzR2K0lkaVRWemxjcy83aC95?=
+ =?utf-8?B?R2NpSW1hZVVRRlNYN2hZZElTanQrbFE2K2l4OCs2OEpEZlRQM2tBSEJZK0ZM?=
+ =?utf-8?B?bkRKTWFBOUJiUy8zVWNmV2JJblJUbXZnZ1dKdm4rWGdzekxNcDJiZDdDeFV2?=
+ =?utf-8?B?cS90a0FaNVdjV2FybjROMjM2ZVorUTBOdDNXK000aWxXZlA1VlRCM0g1YlY3?=
+ =?utf-8?B?TVkySGdqd3JwcmorOFY2NHUzREdsdGFPb3huUzhtaXplcmg3S0daaGNwSC9O?=
+ =?utf-8?B?ZWUvTE4ydnFKaDlNd1lqSGZwSldrL1ZTSHo1RFJQeDRERVlzYUprSjY2MDFE?=
+ =?utf-8?B?NjhXQWttdnhNdzRRckIyN3JYRlBsOHgvb3Ava3l3ZVhpOVA1SC9hci9yQnBV?=
+ =?utf-8?B?Tk4vc2E3dWVZNjAxTk1EK284NWxuRHFaN01jc1ZuNTBDZXVhdC9yS05Ga1R1?=
+ =?utf-8?B?SzQ0UEZ1YllER3F6V2s0ZUxaemk4aWhzS0IvaFVZbCs3WmI4NkZZY2lhV2Fl?=
+ =?utf-8?B?c0FrdlNNNlFkMGx3My93KytESFNXNTFVdFNDdlc1Wks4TVpuTDh1UG1Dbkg1?=
+ =?utf-8?B?RWFLdGhMaFBHaFFVMlpaRWtMNzlINHBxaFh4emN4TnhFSUtnckNlaUc2OGpy?=
+ =?utf-8?B?b2ZDcEJ4TUIrd1h1UkEvTFBKL2FwZVdGa1c5N1AwTFdnUm11TzFsWUpZc2xR?=
+ =?utf-8?B?R3hCbEVEbElLclJQTWtnUzRSa0FGTEM2bDUrTHZQdHdSQ1o4MmhHejZTQm1v?=
+ =?utf-8?B?S3F2d3JxZ0VlQmZNenNyd3FRZmtrRzJzU2E3ZytOZGxwdG1JbjNaWFFuZDVi?=
+ =?utf-8?B?czJRR3poTmY4dkljdjJ4anhPOVR4Qy9JY096NmQwdkFUQ0lSV1FXM004NkJm?=
+ =?utf-8?B?eVBsalVtYmxrQTVBRDJNRXcxK09GaktQSFIvbE9rUzNXS3VOSW91OXFaYjhv?=
+ =?utf-8?B?SFo1eE9aU0lZK3pEUnU5WTJDMEVIY3hXTlVhVk5RQXFWRjV1ZkxLV1dpY2Jm?=
+ =?utf-8?B?Lzc3b2ZHbjZSQndURVVtV25DV3Zub0VyWDFYNVkvWGcxQ21FNmJKa1p2aVY1?=
+ =?utf-8?B?THpWYzRkTmhCU3JuZ1Y3QWpmcThqL3RBNHcweldYVE1naC9LS3lWUXZYN1F2?=
+ =?utf-8?B?eUtRMkY4aHh5WWdXK2ZkTWFaNm50V3p4L0h6eURnbnpEZnliajVmUlBCbjho?=
+ =?utf-8?B?YXNTMmhZTjZYNDJyUkJiVWt4OVcwMEd0RGFlMytZMFJYYWQxTjFITUxqWlU1?=
+ =?utf-8?B?VHRwaFh5ekJ4bXY4V3hMWWZZZU9uRlA5ZFVDekNhNjIwOWl4Z2dCeXdEYjBO?=
+ =?utf-8?B?Sm5mcVZEanpPdDkvcEZMVXUzSjZEaUxDQU5NcDQ0Vmg2S3VtUVZTa09aTFM3?=
+ =?utf-8?B?SGw1UHM1eXh6dG1lVFdEWUp5ZDBPK1pNZFNidWs0clJNSklhVkxmMTRJeUdS?=
+ =?utf-8?Q?T5XxK2Cq7rqV+K3964=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5690.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Kzk5OExXTlhTVktrdFJYNEVLMmgzS1g4d3dkUXdWVWZIRm8yUHFwUG9ONnlw?=
+ =?utf-8?B?U3Z6YmUydXhvWXFneDRyVnc3V3VKcFJCcEFwKzd1TDNNNFJOUEhVNzdGbVlF?=
+ =?utf-8?B?VnNOaTkrS0ZSVThhMXFwZzhjWkFCb3d4MjBvMFhyQlg0RDJBT3d1NjMzazhF?=
+ =?utf-8?B?MUk1aU5oRlpEc3lDK0tnQlIvakhrNzd2dWV1RUdyWEI2TlFQTUdtT21GM3hi?=
+ =?utf-8?B?QmJTZ0NtMjcxMWdlTHVaOXVIV2crS2djNFlWeG84NTk4emYwZDZMbjVNVU5D?=
+ =?utf-8?B?c0pRaEdUd3Y3QjJHdXRQaHFNNlR0Wi95Rk5sK1FJVnQvczNOT0p5ZkNyU0VP?=
+ =?utf-8?B?Ym1wL3NBSGRYeUpIT0drdFh2ZEwyZ0FzUitCeVk3elVjTCtuSWVQMXhLUjJj?=
+ =?utf-8?B?dk9RQnEvanVvZ0VzVm1ZUE1pL0xZMk5Tc2tTSXY4d0Q1M0NiQ1ZRZUd0dG8w?=
+ =?utf-8?B?bkFTejQ4S0dNMHFKSHpkVmJxTnlqaFRFZmxsNHpJOFcyM2ZuOEpvOHF5RXB0?=
+ =?utf-8?B?RzlFZEhMbVhUSU1LT21EdlN1bVUySG4vaUt1d0J3a3JOQzNOS3dPeXg2Q3hT?=
+ =?utf-8?B?OTIxTEp4STByZWNpdFBROFZqc2xlN3NiY3JBeTVzcWp2b0Z3RkhjT0JlUFIx?=
+ =?utf-8?B?cXFPL04vT0JGYitJMUlhNU9mVFI0NUc5NXNGZVZHT3g0UTJEWnZEWDZJclhz?=
+ =?utf-8?B?dlJjSUtiSkNaQ1hMNm9uNDVKekVaeXM2MTdFcGFBME5QQ0pzeDFZN093bWdx?=
+ =?utf-8?B?MEE1SUx1c24ySnp1akFjeS8yMkZkeGpFY0gzaDhEWkdpMm92NzhySjlwUk9x?=
+ =?utf-8?B?MXVOVlpYczRYdysxcVkvUVJ0S0tSOWxmL3dzd3NBNmtNUXVLUWJINEJPY0Vo?=
+ =?utf-8?B?UjROVXNNQWpqUkxtR1IyQk9nZWJOdm8xd1RoY1JwRWpCKzNIVGhlbjFrZkdP?=
+ =?utf-8?B?K0NFSUxkUnJRUFlVdXZPOXNOam9kNlQ0RFRHNWZYU1NZN2RJdWo2aVFZSXRG?=
+ =?utf-8?B?djFYTTdhQWpoMkxYeHhMdGxjalJVTUdDeUIrclZWTjE3eENxYnJHK1g1RXZ6?=
+ =?utf-8?B?K1FWOEtCVEY3cWxVYmhjUjFUaThJdTBja1djOXEvSEw0VVhMUGloazc2QTNn?=
+ =?utf-8?B?elJSQ2N3REF5NVc4WWh1Z0lueGFHc3FnTnV5V0ExcEQxOE5wck5DdVhLNXR5?=
+ =?utf-8?B?cUw5amw5b29FWXlCWlEzK3B5d3A2anZJMG1IUzZlamk5UUpSQ01TbDlVWlNp?=
+ =?utf-8?B?d2xBVG50Vlg5ek9qWEtJUzhxQ0dNWklYUWZIMm5Jc2FoZE9SWG42Sm1YTmlQ?=
+ =?utf-8?B?djVFQW5BdGl0UktQVThla21lemw1M01IYWtOZmNzcFZvMWV0TjdWaTRYZGV3?=
+ =?utf-8?B?STRRRC9hLzNIM2wvUEVra3Nud0xQRFpROGJsdzUyeW5FcXdDd2pKUlEwb3VR?=
+ =?utf-8?B?ZjdRdXg4R3BuZG9tSDQ0MGFJUkwrWHcvalFRNTRHYkZMbFpqNzdhZzAxTWg1?=
+ =?utf-8?B?V2Y5V0FaR05NSnNKSjk0bnhDa1gyQ1NJb2d5ck1EZUQ0bVpIL1ExV2VQZzdQ?=
+ =?utf-8?B?RS91UE1VY3NUV3VRMHVwNlBteW83VVM5Q3RUYkk3cEFqaGVJVDYyanU1eFdF?=
+ =?utf-8?B?cCtGM0I4N2tia1BVZkdWY1pRa3FRVDE1ZFk5N0wxZnZMRVcreDJNYzhPa25x?=
+ =?utf-8?B?L0x6NzQ2Nm5WMWY5amFJTmJUeU4yYlBLMFhtTUJadmVVVnl5c2kzYjg1NDlV?=
+ =?utf-8?B?b1NZZUptNHl6a2NXYzVTNnp2cmk3OGZEaWluMlUzQXZRUWdzZ1ZQcU5FZXhJ?=
+ =?utf-8?B?MGV1RW9IK21mOTl5Y1NHVmNSMGMzam1qKzZRYkdzQVp0QndXQTNvK0tlTWp3?=
+ =?utf-8?B?b25aU25Lcmt6M1NjV2N4b2M2YU5Cdjg3cjIzMnB2K09WRTBuZUVkYmFMOGJP?=
+ =?utf-8?B?eHkxRUV1Ykk4R01TV1R4WHhIaU55WmlDMFBhRE1BVkJ6WFpwck1MdVRZRVRT?=
+ =?utf-8?B?ZU5waEljeXVYeDQ2Z0hybFQ4SGYrSXlUQ3pBTVRIaUhzcHhwQ2ZONkd6T1JL?=
+ =?utf-8?B?WUo4dzIxZEx3K3NUQ0RjdUhycGtmUHVBRDdzVVRYQVVna0JsRzFCdE9ibE4z?=
+ =?utf-8?Q?aXjXXxnKm73EzHdrlpoTk9A/F?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b121fa9c-0d23-428f-c15e-08dcee9ab74f
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5690.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Oct 2024 10:59:05.0755 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zkXEgDmg3rS9c648RaXMOOMUw4hk48Zp3muQGDvmylcmM3dYeY4INf2vTNPO0VaABdE5P6qT+IOkVSYFI1L1xQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8595
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,237 +191,289 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4450287314120158082==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
-
-Series: kms_ccs optimization
-URL   : https://patchwork.freedesktop.org/series/140106/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8077_BAT -> XEIGTPW_11930_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_11930_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_evict@evict-beng-small:
-    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_evict@evict-beng-small.html
-
-  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
-    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#2229])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlp-7:         [FAIL][4] ([Intel XE#1861]) -> [PASS][5]
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-adlp-7:         [INCOMPLETE][6] ([Intel XE#2874]) -> [PASS][7] +1 other test pass
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
-#### Warnings ####
-
-  * igt@xe_pat@pat-index-xe2:
-    - bat-atsm-2:         [SKIP][8] ([Intel XE#977]) -> [SKIP][9] ([Intel XE#2839] / [Intel XE#977])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-atsm-2/igt@xe_pat@pat-index-xe2.html
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-atsm-2/igt@xe_pat@pat-index-xe2.html
-    - bat-adlp-vf:        [SKIP][10] ([Intel XE#977]) -> [SKIP][11] ([Intel XE#2839] / [Intel XE#977])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html
-    - bat-adlp-7:         [SKIP][12] ([Intel XE#977]) -> [SKIP][13] ([Intel XE#2839] / [Intel XE#977])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_pat@pat-index-xe2.html
-    - bat-dg2-oem2:       [SKIP][14] ([Intel XE#977]) -> [SKIP][15] ([Intel XE#2839] / [Intel XE#977])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-bmg-1:          [SKIP][16] ([Intel XE#2245]) -> [SKIP][17] ([Intel XE#2237] / [Intel XE#2245])
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-bmg-1/igt@xe_pat@pat-index-xelp.html
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-bmg-1/igt@xe_pat@pat-index-xelp.html
-    - bat-lnl-2:          [SKIP][18] ([Intel XE#977]) -> [SKIP][19] ([Intel XE#2237] / [Intel XE#977])
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-lnl-2/igt@xe_pat@pat-index-xelp.html
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-lnl-2/igt@xe_pat@pat-index-xelp.html
-
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
-
-  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2237]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2237
-  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
-  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
-  [Intel XE#2839]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2839
-  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#2998]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998
-  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
-  [Intel XE#977]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/977
-
-
-Build changes
--------------
-
-  * IGT: IGT_8077 -> IGTPW_11930
-  * Linux: xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519 -> xe-2074-6f9cc21188c822a692fbbcfaa7cb40cbd8082df0
-
-  IGTPW_11930: 11930
-  IGT_8077: 42f9e9702f74a4993318adea936baaa186084689 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519: 12e4970af1ecdeb76e94df2daf51a9c3d6b9f519
-  xe-2074-6f9cc21188c822a692fbbcfaa7cb40cbd8082df0: 6f9cc21188c822a692fbbcfaa7cb40cbd8082df0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/index.html
-
---===============4450287314120158082==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>kms_ccs optimization</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140106/">https://patchwork.freedesktop.org/series/140106/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8077_BAT -&gt; XEIGTPW_11930_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_11930_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_evict@evict-beng-small:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
-<ul>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@xe_pat@pat-index-xe2:</p>
-<ul>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-atsm-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-atsm-2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2839">Intel XE#2839</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-<li>bat-adlp-vf:        <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-vf/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2839">Intel XE#2839</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-adlp-7/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2839">Intel XE#2839</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-dg2-oem2/igt@xe_pat@pat-index-xe2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2839">Intel XE#2839</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-bmg-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-bmg-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2237">Intel XE#2237</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a>)</li>
-<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8077/bat-lnl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11930/bat-lnl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2237">Intel XE#2237</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/977">Intel XE#977</a>)</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8077 -&gt; IGTPW_11930</li>
-<li>Linux: xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519 -&gt; xe-2074-6f9cc21188c822a692fbbcfaa7cb40cbd8082df0</li>
-</ul>
-<p>IGTPW_11930: 11930<br />
-  IGT_8077: 42f9e9702f74a4993318adea936baaa186084689 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2072-12e4970af1ecdeb76e94df2daf51a9c3d6b9f519: 12e4970af1ecdeb76e94df2daf51a9c3d6b9f519<br />
-  xe-2074-6f9cc21188c822a692fbbcfaa7cb40cbd8082df0: 6f9cc21188c822a692fbbcfaa7cb40cbd8082df0</p>
-
-</body>
-</html>
-
---===============4450287314120158082==--
+On 10/17/2024 1:53 PM, Swati Sharma wrote:
+> Update mega feature from DP to Panel Replay.
+> Also, update functionality.
+>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
+> ---
+>   tests/intel/kms_psr.c     | 32 ++++++++++++++++----------------
+>   tests/intel/kms_psr2_sf.c | 37 ++++++++++++++++++++++++++++++-------
+>   2 files changed, 46 insertions(+), 23 deletions(-)
+>
+> diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+> index 2badeeddd..ad49c18f0 100644
+> --- a/tests/intel/kms_psr.c
+> +++ b/tests/intel/kms_psr.c
+> @@ -182,46 +182,46 @@
+>    * SUBTEST: pr-basic
+>    * Description: Basic check for pr if it is detecting changes made in planes
+>    * Functionality: pr
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-basic
+>    * Description: Basic check for fbc with pr if it is detecting changes made in planes
+>    * Functionality: pr, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: pr-dpms
+>    * Description: Check if pr is detecting changes when rendering operation
+>    *              is performed with dpms enabled or disabled
+>    * Functionality: pr, dpms
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-dpms
+>    * Description: Check if fbc with pr is detecting changes when rendering operation
+>    *              is performed with dpms enabled or disabled
+>    * Functionality: pr, dpms, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: pr-no-drrs
+>    * Description: Check if pr is detecting changes when drrs is disabled
+>    * Functionality: pr, drrs
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-no-drrs
+>    * Description: Check if fbc with pr is detecting changes when drrs is disabled
+>    * Functionality: pr, drrs, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: pr-suspend
+>    * Description: Check if pr is detecting changes when plane operation is
+>    *              performed with suspend resume cycles
+>    * Functionality: pr, suspend
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-suspend
+>    * Description: Check if fbc with pr is detecting changes when plane operation is
+>    *              performed with suspend resume cycles
+>    * Functionality: pr, suspend, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    */
+>   
+>   /**
+> @@ -230,14 +230,14 @@
+>    * 		performed on %arg[1] planes
+>    * Driver requirement: i915
+>    * Functionality: pr, plane
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-%s-%s
+>    * Description: Check if fbc with pr is detecting memory mapping %arg[2] operations
+>    *              performed on %arg[1] planes
+>    * Driver requirement: i915
+>    * Functionality: pr, plane, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * arg[1]:
+>    *
+> @@ -256,25 +256,25 @@
+>    * Description: Check if pr is detecting page-flipping operation
+>    * 		performed on primary plane
+>    * Functionality: pr, plane
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-primary-page-flip
+>    * Description: Check if fbc with pr is detecting page-flipping operation
+>    *              performed on primary plane
+>    * Functionality: pr, plane, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: pr-primary-%s
+>    * Description: Check if pr is detecting rendering operations %arg[1]
+>    * 		when performed on primary plane
+>    * Functionality: pr, plane
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-primary-%s
+>    * Description: Check if fbc with pr is detecting rendering operations %arg[1]
+>    *              when performed on primary plane
+>    * Functionality: pr, plane, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * arg[1]:
+>    *
+> @@ -287,13 +287,13 @@
+>    * Description: Check if pr is detecting rendering and plane
+>    *              operations %arg[2] performed on %arg[1] planes
+>    * Functionality: pr, plane
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * SUBTEST: fbc-pr-%s-%s
+>    * Description: Check if fbc with pr is detecting rendering and plane
+>    *              operations %arg[2] performed on %arg[1] planes
+>    * Functionality: pr, plane, fbc
+> - * Mega feature: DP2.0
+> + * Mega feature: Panel Replay
+>    *
+>    * arg[1]:
+>    *
+> diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+> index 2381360cc..e9a8dc141 100644
+> --- a/tests/intel/kms_psr2_sf.c
+> +++ b/tests/intel/kms_psr2_sf.c
+> @@ -49,8 +49,10 @@
+>    *              visible area (no update)
+>    *
+>    * SUBTEST: pr-%s-plane-move-continuous-%s
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on moving %arg[1] plane %arg[2]
+>    *              visible area (no update)
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-%s-plane-move-continuous-%s
+>    * Description: Test that fbc with selective fetch works on moving %arg[1] plane %arg[2]
+> @@ -58,9 +60,10 @@
+>    * Functionality: plane, psr2, selective_fetch, fbc
+>    *
+>    * SUBTEST: fbc-pr-%s-plane-move-continuous-%s
+> + * Mega feature: Panel Replay
+>    * Description: Test that fbc with selective fetch works on moving %arg[1] plane %arg[2]
+>    *              visible area (no update)
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * arg[1]:
+>    *
+> @@ -79,35 +82,43 @@
+>    * Description: Test that selective fetch works on cursor plane
+>    *
+>    * SUBTEST: pr-cursor-plane-update-sf
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on cursor plane
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-cursor-plane-update-sf
+>    * Description: Test that fbc with selective fetch works on cursor plane
+>    * Functionality: plane, psr2, selective_fetch, fbc
+>    *
+>    * SUBTEST: fbc-pr-cursor-plane-update-sf
+> + * Mega feature: Panel Replay
+>    * Description: Test that fbc with selective fetch works on cursor plane
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * SUBTEST: psr2-overlay-plane-update-continuous-sf
+>    * Description: Test that selective fetch works on overlay plane
+>    *
+>    * SUBTEST: pr-overlay-plane-update-continuous-sf
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on overlay plane
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-overlay-plane-update-sf-dmg-area
+>    * Description: Test that fbc with selective fetch works on overlay plane
+>    * Functionality: plane, psr2, selective_fetch, fbc
+>    *
+>    * SUBTEST: fbc-pr-overlay-plane-update-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that fbc with selective fetch works on overlay plane
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * SUBTEST: psr2-overlay-plane-update-sf-dmg-area
+>    * Description: Test that selective fetch works on overlay plane
+>    *
+>    * SUBTEST: pr-overlay-plane-update-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on overlay plane
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-overlay-plane-update-continuous-sf
+>    * Description: Test that fbc with selective fetch works on overlay plane
+> @@ -115,15 +126,17 @@
+>    *
+>    * SUBTEST: fbc-pr-overlay-plane-update-continuous-sf
+>    * Description: Test that fbc with selective fetch works on overlay plane
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * SUBTEST: psr2-overlay-primary-update-sf-dmg-area
+>    * Description: Test that selective fetch works on primary plane with blended
+>    *              overlay plane
+>    *
+>    * SUBTEST: pr-overlay-primary-update-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on primary plane with blended
+>    *              overlay plane
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-overlay-primary-update-sf-dmg-area
+>    * Description: Test that fbc with selective fetch works on primary plane with blended
+> @@ -131,43 +144,53 @@
+>    * Functionality: plane, psr2, selective_fetch, fbc
+>    *
+>    * SUBTEST: fbc-pr-overlay-primary-update-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that fbc with selective fetch works on primary plane with blended
+>    *              overlay plane
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * SUBTEST: psr2-plane-move-sf-dmg-area
+>    * Description: Test that selective fetch works on moving overlay plane
+>    *
+>    * SUBTEST: pr-plane-move-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on moving overlay plane
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-plane-move-sf-dmg-area
+>    * Description: Test that fbc with selective fetch works on moving overlay plane
+>    * Functionality: plane, psr2, selective_fetch, fbc
+>    *
+>    * SUBTEST: fbc-pr-plane-move-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that fbc with selective fetch works on moving overlay plane
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * SUBTEST: psr2-primary-plane-update-sf-dmg-area
+>    * Description: Test that selective fetch works on primary plane
+>    *
+>    * SUBTEST: pr-primary-plane-update-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on primary plane
+> + * Functionality: plane, pr, selective_fetch
+>    *
+>    * SUBTEST: fbc-psr2-primary-plane-update-sf-dmg-area
+>    * Description: Test that fbc with selective fetch works on primary plane
+>    * Functionality: plane, psr2, selective_fetch, fbc
+>    *
+>    * SUBTEST: fbc-pr-primary-plane-update-sf-dmg-area
+> + * Mega feature: Panel Replay
+>    * Description: Test that fbc with selective fetch works on primary plane
+> - * Functionality: plane, psr2, selective_fetch, fbc
+> + * Functionality: plane, pr, selective_fetch, fbc
+>    *
+>    * SUBTEST: psr2-primary-plane-update-sf-dmg-area-big-fb
+>    * Description: Test that selective fetch works on primary plane with big fb
+> + * Functionality: plane, psr2, selective_fetch, big_fbs
+>    *
+>    * SUBTEST: pr-primary-plane-update-sf-dmg-area-big-fb
+> + * Mega feature: Panel Replay
+>    * Description: Test that selective fetch works on primary plane with big fb
+> + * Functionality: plane, pr, selective_fetch, big_fbs
+>    */
+>   
+>   IGT_TEST_DESCRIPTION("Tests to verify PSR2 selective fetch by sending multiple"
