@@ -4,55 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E44FD21272
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 11:12:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91645D2127D
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Oct 2024 11:20:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0ED6410E7EC;
-	Thu, 17 Oct 2024 11:12:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E34910E7ED;
+	Thu, 17 Oct 2024 11:20:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JdghpZ8H";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yz5TDXmc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 67B4A10E80A
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 11:12:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 079CA10E319
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Oct 2024 11:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729163562; x=1760699562;
+ t=1729164036; x=1760700036;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
  bh=49t1NzKDD3gb6ecKkf8wcfVH8BpqtFrEfawg+Zkty/k=;
- b=JdghpZ8Hq8gZZ7XLo8C1MyJeDIFhDkX4TMrx3bGBqLZEIFEzBzHkBWF/
- +tPnYYL1byM6qSK0oQjpFWDe7cez/2OUopW6qMQfYuAwDU53tsFlFgGH+
- D8cllDqYw62FZsFYZ5R0vbzgVyqGUCE8it/jWWRKix+22YPdlhtejxDGA
- RPL9VFJAxNYgLnVFCI0yIhTYzF/LGOgrN7iX58mdGriowwotcs75da3lE
- cphsOMp4eZ/eDxywg1l1QBbePpj2NKPf2MfX4iAU77sjZa0h453X+tLuo
- 0/QtEQ25p+l0cVce0GEoW2qtCKmyzy1fba5Kb+N+rbGWGvWjEtcgShA/M A==;
-X-CSE-ConnectionGUID: gEoShp5MRKGJOsNmldspXw==
-X-CSE-MsgGUID: gQKN2TrHSNuaPCgQOWbuFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39190735"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="39190735"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Oct 2024 04:12:41 -0700
-X-CSE-ConnectionGUID: aRD/OBVtRTihkH6TjZ+DNg==
-X-CSE-MsgGUID: N8j7Z8cbQKe0aLHQlJKcyw==
+ b=Yz5TDXmcys85v4jm85x32DdQMrkatvMk0QUAmAAZ7qF1gWxoQZGDCcoB
+ 6PF3MRrQ3iN/JMjeZeTLoil/89VZZeFiN7UgB57JGEyJl/aQHfoFGAIua
+ 9lQbdzWoEEiaNvZZ1FwPMzmn4D9DHAh0aZmIqobHGdH6PYw2UedaeLJj/
+ +7tKPkGkmPQeFSuPCpZ67i3HEGliF6ZvfCUHxQwtDSlreT3Zk5ACwcLvY
+ sFz2s//EuNMGIOU24t0DXcQzNRQzoVYWtfaGHX44K/MP55833KYlo13dt
+ uPIp4i+Rfj3i/w+CqlZ+5OM8PWatxT83cJ6unUUL6Z4un56Yf/Tm5+c/1 w==;
+X-CSE-ConnectionGUID: s8BcbWjGTu+ZtVEKV7jPZg==
+X-CSE-MsgGUID: yMqeRCiVTaehxzb14Rr5cQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11227"; a="28736085"
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="28736085"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Oct 2024 04:20:36 -0700
+X-CSE-ConnectionGUID: vRnsQjfsQne91CTDedWbzw==
+X-CSE-MsgGUID: rbAwYS3mRmaPDtzSteFwsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="101827562"
+X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; d="scan'208";a="78953179"
 Received: from lnl-rocket-lake-client-platform.iind.intel.com
  ([10.145.169.162])
- by fmviesa002.fm.intel.com with ESMTP; 17 Oct 2024 04:12:39 -0700
+ by orviesa007.jf.intel.com with ESMTP; 17 Oct 2024 04:20:34 -0700
 From: Mohammed Thasleem <mohammed.thasleem@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
  Adarsh G M <adarsh.g.m@intel.com>,
  Bhanuprakash Modem <bhanuprakash.modem@intel.com>
-Subject: [PATCH i-g-t] tests/kms_histogram: Added IGT support to validate
+Subject: [PATCH i-g-t v3] tests/kms_histogram: Added IGT support to validate
  global histogram
-Date: Thu, 17 Oct 2024 16:42:13 +0530
-Message-Id: <20241017111213.138474-1-mohammed.thasleem@intel.com>
+Date: Thu, 17 Oct 2024 16:50:09 +0530
+Message-Id: <20241017112009.140989-1-mohammed.thasleem@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240705091333.328322-1-mohammed.thasleem@intel.com>
-References: <20240705091333.328322-1-mohammed.thasleem@intel.com>
+In-Reply-To: <20240924122533.494165-1-mohammed.thasleem@intel.com>
+References: <20240924122533.494165-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
