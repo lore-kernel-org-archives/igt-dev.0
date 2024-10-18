@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18715D30019
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Oct 2024 16:18:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD1A4D3DEA2
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Oct 2024 17:14:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C34FD10E382;
-	Fri, 18 Oct 2024 16:18:40 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jDtmpK7i";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A1E6110E382
- for <igt-dev@lists.freedesktop.org>; Fri, 18 Oct 2024 16:18:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729268320; x=1760804320;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7HNxWQbbV7w1gt8OUW5U1yVRGBKc28GBrhmnvDyar+o=;
- b=jDtmpK7iGeAvheQH8gYUhI6g1iG6yrlM9Bvzi8zMSO4xaQId7JxvKsOU
- 0V/GwdHFbnfDSdwuJV+ZbYPi+LJAqpaKQ9WWr6S0KI0meLaPhLp0YKEeo
- TuK1D5k5TN/Fw+7UwCM60GZX+xuCnHXMK0b6g228PteWQCfEneiz44BDj
- 9ktj8B5ztbOnLT8iQaGQ2ZVuBz3QQdBDLC6G2jEY9EAWhUP5/1IkpbDfj
- JELoVwdSj5zOFiPp7PZaSuFoBi39mIbcGG4w7TXhxCAXV0teO5ReiCH+W
- VneSa8Ndu3ouQV4A/lxX8z4Mx6bzL41m4E7D19VZJ0Xe+Y1T2ILJ1LEVw A==;
-X-CSE-ConnectionGUID: mboA84qASLmRBoBUhWZjyg==
-X-CSE-MsgGUID: 5ssejbIdRz2oO922ogCQtA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="28596781"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="28596781"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 09:18:40 -0700
-X-CSE-ConnectionGUID: IMSyxubzRamUtiUmx8FkyQ==
-X-CSE-MsgGUID: BDQCQAKqQaOht6lL8uNChg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; d="scan'208";a="79320396"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.0])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Oct 2024 09:18:38 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Petri Latvala <adrinael@adrinael.net>, Karol Krol <karol.krol@intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>
-Subject: [PATCH i-g-t 2/2] runner/executor: Limit reading dmesg to chunks
-Date: Fri, 18 Oct 2024 18:18:20 +0200
-Message-ID: <20241018161820.76014-3-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241018161820.76014-1-kamil.konieczny@linux.intel.com>
-References: <20241018161820.76014-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8941210E235;
+	Fri, 18 Oct 2024 17:14:59 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19D2610E235;
+ Fri, 18 Oct 2024 17:14:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2834067508386683156=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_runner=3A_Allow_limits_at_d?=
+ =?utf-8?q?umping_dmesg?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 18 Oct 2024 17:14:58 -0000
+Message-ID: <172927169809.1282643.6974320526729631141@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241018161820.76014-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20241018161820.76014-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,125 +37,191 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-There was no disk limit checks in reading kernel dmesg and that
-could lead to writing really huge dumps longer than 400MB,
-greatly exceeding disk limits used by CI and hardly useful for
-developers. Make a dmesg dumping in chunks, size depending on
-number of CPUs present, with a minimum of 64KB.
-This could also allow to kick in disk limits checks if a driver
-starts spilling messages into dmesg.
+--===============2834067508386683156==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/issues/129
-Cc: Petri Latvala <adrinael@adrinael.net>
-Cc: Karol Krol <karol.krol@intel.com>
-Cc: Ewelina Musial <ewelina.musial@intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- runner/executor.c | 36 +++++++++++++++++++++++++++++-------
- 1 file changed, 29 insertions(+), 7 deletions(-)
+== Series Details ==
 
-diff --git a/runner/executor.c b/runner/executor.c
-index 3939f92f1..9283aad97 100644
---- a/runner/executor.c
-+++ b/runner/executor.c
-@@ -585,13 +585,14 @@ void close_outputs(int *fds)
- }
- 
- /* Returns the number of bytes written to disk, or a negative number on error */
--static long dump_dmesg(int kmsgfd, int outfd)
-+static long dump_dmesg(int kmsgfd, int outfd, ssize_t size)
- {
- 	/*
- 	 * Write kernel messages to the log file until we reach
--	 * 'now'. Unfortunately, /dev/kmsg doesn't support seeking to
--	 * -1 from SEEK_END so we need to use a second fd to read a
--	 * message to match against, or stop when we reach EAGAIN.
-+	 * 'now' or we read at least size bytes. Unfortunately,
-+	 * /dev/kmsg doesn't support seeking to -1 from SEEK_END
-+	 * so we need to use a second fd to read a message to
-+	 *  match against, or stop when we reach EAGAIN.
- 	 */
- 
- 	int comparefd;
-@@ -606,6 +607,9 @@ static long dump_dmesg(int kmsgfd, int outfd)
- 	if (kmsgfd < 0)
- 		return 0;
- 
-+	if (size <= 0)
-+		return 0;
-+
- 	comparefd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
- 	if (comparefd < 0) {
- 		errf("Error opening another fd for /dev/kmsg\n");
-@@ -690,6 +694,13 @@ static long dump_dmesg(int kmsgfd, int outfd)
- 			if (seq >= cmpseq)
- 				return written;
- 		}
-+
-+		if (written >= size) {
-+			if (comparefd >= 0)
-+				close(comparefd);
-+
-+			return written;
-+		}
- 	}
- }
- 
-@@ -883,6 +894,14 @@ static void write_packet_with_canary(int fd, struct runnerpacket *packet, bool s
- /* TODO: Refactor this macro from here and from various tests to lib */
- #define KB(x) ((x) * 1024)
- 
-+static size_t calc_last_dmesg_chunk(size_t limit, size_t disk_usage)
-+{
-+	if (!limit)
-+		return KB(128 * 1024); /* 128MB */
-+
-+	return limit > disk_usage ? limit - disk_usage : 0;
-+}
-+
- /*
-  * Returns:
-  *  =0 - Success
-@@ -915,6 +934,7 @@ static int monitor_output(pid_t child,
- 	unsigned long taints = 0;
- 	bool aborting = false;
- 	size_t disk_usage = 0;
-+	size_t dmsg_chunk_size = 4096 * max_t(size_t, sysconf(_SC_NPROCESSORS_ONLN), 16);
- 	bool socket_comms_used = false; /* whether the test actually uses comms */
- 	bool results_received = false; /* whether we already have test results that might need overriding if we detect an abort condition */
- 
-@@ -1244,7 +1264,7 @@ static int monitor_output(pid_t child,
- 
- 			time_last_activity = time_now;
- 
--			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-+			dmesgwritten = dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
- 			if (settings->sync)
- 				fdatasync(outputs[_F_DMESG]);
- 
-@@ -1482,7 +1502,8 @@ static int monitor_output(pid_t child,
- 					asprintf(abortreason, "Child refuses to die, tainted 0x%lx.", taints);
- 				}
- 
--				dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-+				dmsg_chunk_size = calc_last_dmesg_chunk(settings->disk_usage_limit, disk_usage);
-+				dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
- 				if (settings->sync)
- 					fdatasync(outputs[_F_DMESG]);
- 
-@@ -1508,7 +1529,8 @@ static int monitor_output(pid_t child,
- 		}
- 	}
- 
--	dump_dmesg(kmsgfd, outputs[_F_DMESG]);
-+	dmsg_chunk_size = calc_last_dmesg_chunk(settings->disk_usage_limit, disk_usage);
-+	dump_dmesg(kmsgfd, outputs[_F_DMESG], dmsg_chunk_size);
- 	if (settings->sync)
- 		fdatasync(outputs[_F_DMESG]);
- 
--- 
-2.47.0
+Series: runner: Allow limits at dumping dmesg
+URL   : https://patchwork.freedesktop.org/series/140182/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8080 -> IGTPW_11937
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/index.html
+
+Participating hosts (43 -> 41)
+------------------------------
+
+  Missing    (2): bat-rplp-1 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11937 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - fi-bsw-n3050:       [PASS][1] -> [DMESG-FAIL][2] ([i915#12172])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/fi-bsw-n3050/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/fi-bsw-n3050/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@active:
+    - fi-bsw-n3050:       [PASS][3] -> [DMESG-FAIL][4] ([i915#12435])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/fi-bsw-n3050/igt@i915_selftest@live@active.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/fi-bsw-n3050/igt@i915_selftest@live@active.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - {bat-arlh-3}:       [ABORT][5] ([i915#12133]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-3/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-3/igt@i915_selftest@live.html
+    - bat-arlh-2:         [ABORT][7] ([i915#12133]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-2/igt@i915_selftest@live.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - {bat-arlh-3}:       [ABORT][9] ([i915#12061]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+    - bat-arlh-2:         [ABORT][11] ([i915#12061]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12172]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12172
+  [i915#12435]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8080 -> IGTPW_11937
+  * Linux: CI_DRM_15559 -> CI_DRM_15561
+
+  CI-20190529: 20190529
+  CI_DRM_15559: c1837d4e9af4e9df3109960341105c035b441667 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15561: cebb76fe419dd92609fb86e59c9671387c5325a3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11937: 5b49646ff8c7e985065063bef5927cbb23961cc9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8080: 20fcbc59241a16c84d12f4f6ba390fb46fd65a36 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/index.html
+
+--===============2834067508386683156==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>runner: Allow limits at dumping dmesg</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140182/">https://patchwork.freedesktop.org/series/140182/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8080 -&gt; IGTPW_11937</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/index.html</p>
+<h2>Participating hosts (43 -&gt; 41)</h2>
+<p>Missing    (2): bat-rplp-1 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11937 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/fi-bsw-n3050/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/fi-bsw-n3050/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12172">i915#12172</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@active:</p>
+<ul>
+<li>fi-bsw-n3050:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/fi-bsw-n3050/igt@i915_selftest@live@active.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/fi-bsw-n3050/igt@i915_selftest@live@active.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12435">i915#12435</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-3/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-3/igt@i915_selftest@live.html">PASS</a></li>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-2/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>{bat-arlh-3}:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8080/bat-arlh-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11937/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8080 -&gt; IGTPW_11937</li>
+<li>Linux: CI_DRM_15559 -&gt; CI_DRM_15561</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15559: c1837d4e9af4e9df3109960341105c035b441667 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15561: cebb76fe419dd92609fb86e59c9671387c5325a3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11937: 5b49646ff8c7e985065063bef5927cbb23961cc9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8080: 20fcbc59241a16c84d12f4f6ba390fb46fd65a36 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============2834067508386683156==--
