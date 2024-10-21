@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08A4DD1712E
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Oct 2024 20:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FF64D1712B
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Oct 2024 20:08:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDBD110E592;
-	Mon, 21 Oct 2024 20:08:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D347010E3CD;
+	Mon, 21 Oct 2024 20:08:40 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I4GxaR4/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eZCOtewv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB1FB10E592
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Oct 2024 20:08:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA10110E3CD
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Oct 2024 20:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729541306; x=1761077306;
+ t=1729541320; x=1761077320;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3LvwysRQs2TDeGQ2mnDhlN38sHScOhNFedG7apAexW8=;
- b=I4GxaR4/RWSSK2WCxYEgriHAHyMXCFsLERH+m/GpTgBaByeBVubftVuT
- IvwFbTLCYM/mHEWKiM1An7DNzGck2rfXRYn8wkIlEP/0nxPhNfxqOofYt
- jk5lYQq8qIsLy/LYEJgnNuzLmBT0HU9hTVtIRCCqGV9uRhOyQZzIZixAX
- LN7D+XEQtU1VbjSS3zaUUKRmM+2x90j3+Hj9AjkOA8/zAA5qPvixezTwb
- cYZJ6popQM7x3WML5eNmNQxzdzUoj8nPtgWCkCK/Nl7yjV88fhl5jdd/g
- FVNrF+9JzNe4xtvpy8DrlKV5xXv2FNu3Qh2NteXH3S32PjyFJqDzXq3pK Q==;
-X-CSE-ConnectionGUID: vOZoLNBUTu+6YOWQ8CDBAg==
-X-CSE-MsgGUID: sJWEZEy3QKeqvH5WD77x+A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="39662714"
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; d="scan'208";a="39662714"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Oct 2024 13:08:25 -0700
-X-CSE-ConnectionGUID: EeGqs6rwTvOH6vWDZJMqIQ==
-X-CSE-MsgGUID: BGRcWXxVR76r7yFz76kPgA==
+ bh=XINcgGC67aZ4hTtdMUiAg5+2VEO+/Xc0i/QeWxQHgcc=;
+ b=eZCOtewvWgB6xE3C6O3EpyGH3+vZ7Vg+Uf23/25NVJHWTAIxKideC8Yi
+ 421j2USctxLkAH6QFCcjwqJCbmsHD8VA8brgDuLYOx7cSc8AEu+XhLOMm
+ mw0Bo0uqqu2l0EasZCrBkoD8mJ0A/09iQRfQ0na0WcC5di4XQ9lJMU1UE
+ Hs8lkkD0RWnk7KCEMjEIlBrLBRJTHy6+S41CEZmcbAiPXDYh7YszlWEc3
+ SwewGRFn/XNpsjgauHdXzMt/savrNXXUEoElGMQWkYgs9D5r11ixPiZT2
+ iXJ1R9+DqYivLe/VUZyClyQJbkEUZTT4zKbNg3XeJ8SMY65ltunZ2QIdE A==;
+X-CSE-ConnectionGUID: L94BnpYxQo+o5IsfURMWhA==
+X-CSE-MsgGUID: tN6Iv60kQ2eoId/j2/d49A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="39586389"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="39586389"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Oct 2024 13:08:34 -0700
+X-CSE-ConnectionGUID: tH48FyvZSPKNlZgAxWbAEg==
+X-CSE-MsgGUID: NoN4derJQfO4SFqA1Q3uZw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; d="scan'208";a="79210492"
+X-IronPort-AV: E=Sophos;i="6.11,221,1725346800"; d="scan'208";a="79554743"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.246.1.47])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Oct 2024 13:08:23 -0700
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Oct 2024 13:08:30 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
@@ -50,10 +50,10 @@ Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
  piotr.piorkowski@intel.com, satyanarayana.k.v.p@intel.com,
  tomasz.lis@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH v2 i-g-t 5/6] tests/intel/xe_sriov_flr: Implement clear-lmem
- subcheck
-Date: Mon, 21 Oct 2024 22:07:36 +0200
-Message-Id: <20241021200737.941384-6-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH v2 i-g-t 6/6] tests/intel/xe_sriov_flr: Implement
+ clear-scratch-regs and clear-media-scratch-regs subchecks
+Date: Mon, 21 Oct 2024 22:07:37 +0200
+Message-Id: <20241021200737.941384-7-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241021200737.941384-1-marcin.bernatowicz@linux.intel.com>
 References: <20241021200737.941384-1-marcin.bernatowicz@linux.intel.com>
@@ -75,17 +75,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the clear-lmem subcheck to validate the isolation and clearing of a
-Virtual Function's (VF) local memory (LMEM) after a Functional Level
-Reset (FLR).
+Add tests to verify clearing of scratch and media scratch registers in
+Virtual Functions (VFs) after a Functional Level Reset (FLR).
 
-The test maps the VF's LMEM, writes specific patterns to the memory,
-and checks whether the content is reset for the FLRed VF or retained
-for other VFs.
+This code is based on prior work of Lukasz Laguna.
 
-v2: Adjust vf_lmem_size to align VF index with array index,
-    add TODO to get_vf_lmem_size (Lukasz).
-    Use helpers for setting skip/fail reasons to improve readability.
+v2: Adjust mmio to align VF index with array index (Lukasz)
+    Use helpers for setting skip/fail reasons to improve readability
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -98,246 +94,163 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- tests/intel/xe_sriov_flr.c | 210 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 209 insertions(+), 1 deletion(-)
+ tests/intel/xe_sriov_flr.c | 122 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 121 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-index f302f5aa3..1ee724fac 100644
+index 1ee724fac..5fc1baf96 100644
 --- a/tests/intel/xe_sriov_flr.c
 +++ b/tests/intel/xe_sriov_flr.c
-@@ -3,6 +3,8 @@
-  * Copyright(c) 2024 Intel Corporation. All rights reserved.
-  */
- 
-+#include <fcntl.h>
-+#include <sys/stat.h>
+@@ -7,6 +7,7 @@
+ #include <sys/stat.h>
  #include "drmtest.h"
  #include "igt_core.h"
++#include "igt_device.h"
  #include "igt_sriov_device.h"
-@@ -541,12 +543,211 @@ static void ggtt_subcheck_cleanup(struct subcheck_data *data)
- 		xe_mmio_access_fini(gdata->mmio);
+ #include "intel_chipset.h"
+ #include "linux_scaffold.h"
+@@ -739,6 +740,95 @@ static void lmem_subcheck_cleanup(struct subcheck_data *data)
+ 	free(ldata->vf_lmem_size);
  }
  
-+struct lmem_data {
++#define SCRATCH_REG		0x190240
++#define SCRATCH_REG_COUNT	4
++#define MED_SCRATCH_REG		0x190310
++#define MED_SCRATCH_REG_COUNT	4
++
++struct regs_data {
 +	struct subcheck_data base;
-+	size_t *vf_lmem_size;
++	struct intel_mmio_data *mmio;
++	uint32_t reg_addr;
++	int reg_count;
 +};
 +
-+struct lmem_info {
-+	/* pointer to the mapped area */
-+	char *addr;
-+	/* size of mapped area */
-+	size_t size;
-+};
-+
-+const size_t STEP = SZ_1M;
-+
-+static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t offset)
++static void regs_subcheck_init(struct subcheck_data *data)
 +{
-+	int open_flags = ((prot & PROT_WRITE) != 0) ? O_RDWR : O_RDONLY;
-+	struct stat st;
-+	int sysfs, fd;
-+	void *addr;
++	struct regs_data *rdata = (struct regs_data *)data;
 +
-+	sysfs = igt_sriov_device_sysfs_open(pf_fd, vf_num);
-+	if (sysfs < 0) {
-+		igt_debug("Failed to open sysfs for VF%d: %s\n", vf_num, strerror(errno));
-+		return NULL;
++	if (!xe_has_media_gt(data->pf_fd) &&
++	    rdata->reg_addr == MED_SCRATCH_REG) {
++		set_skip_reason(data, "No media GT\n");
 +	}
-+
-+	fd = openat(sysfs, "resource2", open_flags | O_SYNC);
-+	close(sysfs);
-+	if (fd < 0) {
-+		igt_debug("Failed to open resource2 for VF%d: %s\n", vf_num, strerror(errno));
-+		return NULL;
-+	}
-+
-+	if (fstat(fd, &st)) {
-+		igt_debug("Failed to stat resource2 for VF%d: %s\n", vf_num, strerror(errno));
-+		close(fd);
-+		return NULL;
-+	}
-+
-+	if (st.st_size < length) {
-+		igt_debug("Mapping length (%lu) exceeds BAR2 size (%lu)\n", length, st.st_size);
-+		close(fd);
-+		return NULL;
-+	}
-+
-+	addr = mmap(NULL, length, prot, MAP_SHARED, fd, offset);
-+	close(fd);
-+	if (addr == MAP_FAILED) {
-+		igt_debug("Failed mmap resource2 for VF%d: %s\n", vf_num, strerror(errno));
-+		return NULL;
-+	}
-+
-+	return addr;
 +}
 +
-+static uint64_t get_vf_lmem_size(int pf_fd, int vf_num)
++static void regs_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
 +{
-+	/* limit to first two pages
-+	 * TODO: Extend to full range when the proper interface (lmem_provisioned) is added
-+	 */
-+	return SZ_4M;
-+}
-+
-+static void munmap_vf_lmem(struct lmem_info *lmem)
-+{
-+	igt_debug_on_f(munmap(lmem->addr, lmem->size),
-+		       "Failed munmap %p: %s\n", lmem->addr, strerror(errno));
-+}
-+
-+static char lmem_read(const char *addr, size_t idx)
-+{
-+	return READ_ONCE(*(addr + idx));
-+}
-+
-+static char lmem_write_readback(char *addr, size_t idx, char value)
-+{
-+	WRITE_ONCE(*(addr + idx), value);
-+	return lmem_read(addr, idx);
-+}
-+
-+static bool lmem_write_pattern(struct lmem_info *lmem, char value, size_t start, size_t step)
-+{
-+	char read;
-+
-+	for (; start < lmem->size; start += step) {
-+		read = lmem_write_readback(lmem->addr, start, value);
-+		if (igt_debug_on_f(read != value, "LMEM[%lu]=%u != %u\n", start, read, value))
-+			return false;
-+	}
-+	return true;
-+}
-+
-+static bool lmem_contains_expected_values_(struct lmem_info *lmem,
-+					   char expected, size_t start,
-+					   size_t step)
-+{
-+	char read;
-+
-+	for (; start < lmem->size; start += step) {
-+		read = lmem_read(lmem->addr, start);
-+		if (igt_debug_on_f(read != expected,
-+				   "LMEM[%lu]=%u != %u\n", start, read, expected))
-+			return false;
-+	}
-+	return true;
-+}
-+
-+static bool lmem_contains_expected_values(int pf_fd, int vf_num, size_t length,
-+					  char expected)
-+{
-+	struct lmem_info lmem = { .size = length };
-+	bool result;
-+
-+	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-+	if (igt_debug_on(!lmem.addr))
-+		return false;
-+
-+	result = lmem_contains_expected_values_(&lmem, expected, 0, STEP);
-+	munmap_vf_lmem(&lmem);
-+
-+	return result;
-+}
-+
-+static bool lmem_mmap_write_munmap(int pf_fd, int vf_num, size_t length, char value)
-+{
-+	struct lmem_info lmem;
-+	bool result;
-+
-+	lmem.size = length;
-+	lmem.addr = mmap_vf_lmem(pf_fd, vf_num, length, PROT_READ | PROT_WRITE, 0);
-+	if (igt_debug_on(!lmem.addr))
-+		return false;
-+	result = lmem_write_pattern(&lmem, value, 0, STEP);
-+	munmap_vf_lmem(&lmem);
-+
-+	return result;
-+}
-+
-+static void lmem_subcheck_init(struct subcheck_data *data)
-+{
-+	struct lmem_data *ldata = (struct lmem_data *)data;
-+
-+	igt_assert_fd(data->pf_fd);
-+	igt_assert(data->num_vfs);
-+
-+	if (!xe_has_vram(data->pf_fd)) {
-+		set_skip_reason(data, "No LMEM\n");
-+		return;
-+	}
-+
-+	ldata->vf_lmem_size = calloc(data->num_vfs + 1, sizeof(size_t));
-+	igt_assert(ldata->vf_lmem_size);
-+
-+	for (int vf_id = 1; vf_id <= data->num_vfs; ++vf_id)
-+		ldata->vf_lmem_size[vf_id] = get_vf_lmem_size(ldata->base.pf_fd, vf_id);
-+}
-+
-+static void lmem_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
-+{
-+	struct lmem_data *ldata = (struct lmem_data *)data;
++	struct regs_data *rdata = (struct regs_data *)data;
++	uint32_t reg;
++	int i;
 +
 +	if (data->stop_reason)
 +		return;
 +
-+	igt_assert(vf_id > 0 && vf_id <= data->num_vfs);
++	if (!is_intel_mmio_initialized(&rdata->mmio[vf_id])) {
++		struct pci_device *pci_dev = __igt_device_get_pci_device(data->pf_fd, vf_id);
 +
-+	if (!lmem_mmap_write_munmap(data->pf_fd, vf_id,
-+				    ldata->vf_lmem_size[vf_id], vf_id)) {
-+		set_fail_reason(data, "LMEM write failed on VF%u\n", vf_id);
++		if (!pci_dev) {
++			set_fail_reason(data, "No PCI device found for VF%u\n", vf_id);
++			return;
++		}
++
++		if (intel_register_access_init(&rdata->mmio[vf_id], pci_dev, false)) {
++			set_fail_reason(data, "Failed to get access to VF%u MMIO\n", vf_id);
++			return;
++		}
++	}
++
++	for (i = 0; i < rdata->reg_count; i++) {
++		reg = rdata->reg_addr + i * 4;
++
++		intel_register_write(&rdata->mmio[vf_id], reg, vf_id);
++		if (intel_register_read(&rdata->mmio[vf_id], reg) != vf_id) {
++			set_fail_reason(data, "Registers write/read check failed on VF%u\n", vf_id);
++			return;
++		}
 +	}
 +}
 +
-+static void lmem_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_data *data)
++static void regs_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_data *data)
 +{
-+	struct lmem_data *ldata = (struct lmem_data *)data;
-+	char expected = (vf_id == flr_vf_id) ? 0 : vf_id;
++	struct regs_data *rdata = (struct regs_data *)data;
++	uint32_t expected = (vf_id == flr_vf_id) ? 0 : vf_id;
++	uint32_t reg;
++	int i;
 +
 +	if (data->stop_reason)
 +		return;
 +
-+	if (!lmem_contains_expected_values(data->pf_fd, vf_id,
-+					   ldata->vf_lmem_size[vf_id], expected)) {
-+		set_fail_reason(data,
-+				"LMEM check after VF%u FLR failed on VF%u\n",
-+				flr_vf_id, vf_id);
++	for (i = 0; i < rdata->reg_count; i++) {
++		reg = rdata->reg_addr + i * 4;
++
++		if (intel_register_read(&rdata->mmio[vf_id], reg) != expected) {
++			set_fail_reason(data,
++					"Registers check after VF%u FLR failed on VF%u\n",
++					flr_vf_id, vf_id);
++			return;
++		}
 +	}
 +}
 +
-+static void lmem_subcheck_cleanup(struct subcheck_data *data)
++static void regs_subcheck_cleanup(struct subcheck_data *data)
 +{
-+	struct lmem_data *ldata = (struct lmem_data *)data;
++	struct regs_data *rdata = (struct regs_data *)data;
++	int i;
 +
-+	free(ldata->vf_lmem_size);
++	if (rdata->mmio)
++		for (i = 1; i <= data->num_vfs; ++i)
++			if (is_intel_mmio_initialized(&rdata->mmio[i]))
++				intel_register_access_fini(&rdata->mmio[i]);
 +}
 +
  static void clear_tests(int pf_fd, int num_vfs)
  {
  	struct xe_mmio xemmio = { };
- 	const unsigned int num_gts = xe_number_gt(pf_fd);
- 	struct ggtt_data gdata[num_gts];
--	const unsigned int num_checks = num_gts;
-+	struct lmem_data ldata = {
-+		.base = { .pf_fd = pf_fd, .num_vfs = num_vfs }
+@@ -747,10 +837,25 @@ static void clear_tests(int pf_fd, int num_vfs)
+ 	struct lmem_data ldata = {
+ 		.base = { .pf_fd = pf_fd, .num_vfs = num_vfs }
+ 	};
+-	const unsigned int num_checks = num_gts + 1;
++	struct intel_mmio_data mmio[num_vfs + 1];
++	struct regs_data scratch_data = {
++		.base = { .pf_fd = pf_fd, .num_vfs = num_vfs },
++		.mmio = mmio,
++		.reg_addr = SCRATCH_REG,
++		.reg_count = SCRATCH_REG_COUNT
 +	};
-+	const unsigned int num_checks = num_gts + 1;
++	struct regs_data media_scratch_data = {
++		.base = { .pf_fd = pf_fd, .num_vfs = num_vfs },
++		.mmio = mmio,
++		.reg_addr = MED_SCRATCH_REG,
++		.reg_count = MED_SCRATCH_REG_COUNT
++	};
++	const unsigned int num_checks = num_gts + 3;
  	struct subcheck checks[num_checks];
  	int i;
  
-@@ -564,6 +765,13 @@ static void clear_tests(int pf_fd, int num_vfs)
- 			.cleanup = ggtt_subcheck_cleanup
- 		};
- 	}
++	memset(mmio, 0, sizeof(mmio));
++
+ 	for (i = 0; i < num_gts; ++i) {
+ 		gdata[i] = (struct ggtt_data){
+ 			.base = { .pf_fd = pf_fd, .num_vfs = num_vfs, .gt = i },
+@@ -772,6 +877,21 @@ static void clear_tests(int pf_fd, int num_vfs)
+ 		.prepare_vf = lmem_subcheck_prepare_vf,
+ 		.verify_vf = lmem_subcheck_verify_vf,
+ 		.cleanup = lmem_subcheck_cleanup };
 +	checks[i++] = (struct subcheck) {
-+		.data = (struct subcheck_data *)&ldata,
-+		.name = "clear-lmem",
-+		.init = lmem_subcheck_init,
-+		.prepare_vf = lmem_subcheck_prepare_vf,
-+		.verify_vf = lmem_subcheck_verify_vf,
-+		.cleanup = lmem_subcheck_cleanup };
++		.data = (struct subcheck_data *)&scratch_data,
++		.name = "clear-scratch-regs",
++		.init = regs_subcheck_init,
++		.prepare_vf = regs_subcheck_prepare_vf,
++		.verify_vf = regs_subcheck_verify_vf,
++		.cleanup = regs_subcheck_cleanup };
++	checks[i++] = (struct subcheck) {
++		.data = (struct subcheck_data *)&media_scratch_data,
++		.name = "clear-media-scratch-regs",
++		.init = regs_subcheck_init,
++		.prepare_vf = regs_subcheck_prepare_vf,
++		.verify_vf = regs_subcheck_verify_vf,
++		.cleanup = regs_subcheck_cleanup
++	};
  	igt_assert_eq(i, num_checks);
  
  	verify_flr(pf_fd, num_vfs, checks, num_checks);
