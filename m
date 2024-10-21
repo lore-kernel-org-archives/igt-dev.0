@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44918D0E6D3
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Oct 2024 09:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF29D0E6D5
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Oct 2024 09:06:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F0C6E10E45D;
-	Mon, 21 Oct 2024 09:06:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0403B10E461;
+	Mon, 21 Oct 2024 09:06:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FFy8VAer";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OvQoSZUP";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F285610E456
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Oct 2024 09:06:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A425E10E461
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Oct 2024 09:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729501615; x=1761037615;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=hTWSKE6g1CxTO0Ywx+peglZaO/2Al3cfnZcxsIL5qW8=;
- b=FFy8VAerxQePoQ6a2/pgrws75ZWxZG/vY3cfTTW6k0sAYeZMt1GlafFJ
- i/7bd4zxhH6i5ylNfV56O/xuy0U5wwoy+R0akX/E3N+wY+ez9ZR6yJNTc
- l0NbhTyHe8FmQ1zs4HXB52j1F7z+P9ztTszy/9wRjRiLH7bQVUHsdlZst
- HECcR3xyB+0Set09NrU87Zl+6VQWRVeDtq6+QEiOgQSfG9WcubWsvexe8
- Zs61bOB+kMg1WzeYDq7bKmL31t4wIGnfiVhjzhrRoVQoBVIJHEmf8J59s
- J3jzCNxw2iAwHwGKK0nFURXSyrRV/N/9qiPVczT2Rcooa+4e5QfDey7gy A==;
-X-CSE-ConnectionGUID: XyjOWAsmQzeTMrwKazZr+Q==
-X-CSE-MsgGUID: /UqoYNEjRHuyVG/k7ortLw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="51522018"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="51522018"
+ t=1729501618; x=1761037618;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=F35c3tM3oOE0KVDMGASOOKG7Eq56/R41etpRH/3CZno=;
+ b=OvQoSZUPzrGdvKHcDxOo1AGPhKqUI4TCFncg2rZCs5xfH/lFfkUl1wiB
+ eREE/W0sfrXL0RmE8Hpw6S7j1F8Gmd6iJn5qQ3blcLsxLsbpduqux239f
+ oi9xYzmKpB+H8RLjb121lWYikHytPcWPzK7tQ+6RjeTB8tmOS9JLplQDL
+ zvWhCVX87zdM+c87m2B4yyqrTvverGAlQNLBb2t/ZoOaginGn2QHk4TBp
+ Sf+XWcIL8DxzNEwaw6qRJ6Rhcng0u0ULh6PyQHWeLGRRHhKrwk/f9V/Z5
+ 5gOq8ukO4TpGcNv6/0v36ZN7NF0VBrAXZJL2ZtJ0e2UYxG8pQrlleAUcE g==;
+X-CSE-ConnectionGUID: uly+EuCESIqrTDasMCxluQ==
+X-CSE-MsgGUID: 4KfOpLunQxWvYUo3zYXpKA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="51522023"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="51522023"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Oct 2024 02:06:55 -0700
-X-CSE-ConnectionGUID: BhS8QWlAShSk92KJQdMXuw==
-X-CSE-MsgGUID: aLO+VIlYTWimdd8QgCZa7A==
+ 21 Oct 2024 02:06:58 -0700
+X-CSE-ConnectionGUID: EGdjyHCUQjeEwj6uxu68Fw==
+X-CSE-MsgGUID: SivIju28TWinBua9oG17KQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; d="scan'208";a="79421254"
+X-IronPort-AV: E=Sophos;i="6.11,220,1725346800"; d="scan'208";a="79421262"
 Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.145.169.150])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Oct 2024 02:06:53 -0700
+ 21 Oct 2024 02:06:56 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Sk Anirban <sk.anirban@intel.com>
 Subject: [i-g-t, v3,
- 0/2] tests/xe: Add tests to validate GT coarse power gating status
- and toggle coarse power gating states
-Date: Mon, 21 Oct 2024 14:30:33 +0530
-Message-Id: <20241021090035.2088446-1-sk.anirban@intel.com>
+ 2/2] HAX: Add Coarse power gating tests to fast feedback list
+Date: Mon, 21 Oct 2024 14:30:35 +0530
+Message-Id: <20241021090035.2088446-3-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241021090035.2088446-1-sk.anirban@intel.com>
+References: <20241021090035.2088446-1-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,27 +68,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Implement test cpg-basic to validate coarse power gating status
-after S3 cycle.
-Add test cpg-gt-toggle to check if GT coarse power gating is up when
-forcewake is acquired and down when released.
+Add cpg tests cpg-basic and toggle-gt-cpg to xe-fast-feedback
 
-v2: Address cosmetic review comments (Riana)
-    Fix suspend state (Riana)
-    Add exit handler for test cpg-gt-toggle (Riana)
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel-ci/xe-fast-feedback.testlist | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v3: Address cosmetic review comments (Riana)
-    Fix commit message & test name (Konieczny)
-
-
-Sk Anirban (2):
-  tests/intel/xe_pm_residency: Add GT coarse power gating validation
-  HAX: Add Coarse power gating tests to fast feedback list
-
- tests/intel-ci/xe-fast-feedback.testlist |  2 +
- tests/intel/xe_pm_residency.c            | 92 ++++++++++++++++++++++++
- 2 files changed, 94 insertions(+)
-
+diff --git a/tests/intel-ci/xe-fast-feedback.testlist b/tests/intel-ci/xe-fast-feedback.testlist
+index 01b01dcf9..e9ae799cf 100644
+--- a/tests/intel-ci/xe-fast-feedback.testlist
++++ b/tests/intel-ci/xe-fast-feedback.testlist
+@@ -159,7 +159,9 @@ igt@xe_mmap@cpu-caching
+ igt@xe_mmap@system
+ igt@xe_mmap@vram
+ igt@xe_mmap@vram-system
++igt@xe_pm_residency@cpg-basic
+ igt@xe_pm_residency@gt-c6-on-idle
++igt@xe_pm_residency@cpg-gt-toggle
+ igt@xe_prime_self_import@basic-with_one_bo
+ igt@xe_prime_self_import@basic-with_fd_dup
+ #igt@xe_prime_self_import@basic-llseek-size
 -- 
 2.34.1
 
