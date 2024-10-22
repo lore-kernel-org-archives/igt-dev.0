@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6575CDD0E1
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 20:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEEF6CDD0E1
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 20:19:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1C0A10E1DE;
-	Tue, 22 Oct 2024 20:11:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RkdrmhoS";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A36EA10E1DE
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 20:11:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729627900; x=1761163900;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=bCCJQS2K5B3d2Tct956GY9RY3fdyDLmDuRatXMFeJ+U=;
- b=RkdrmhoS+r/W6R2Ao1EcQcaDjNzuS0nnOAR7tP6ZHIjqVnUziFAS6W0/
- ++AK/2WCcY1XqYcWytPSHJgl2/7INQeaYqp55etArd+hl96FVHr8nL1t3
- dv/kovxgh62tnhHYsSytI2DwtCjKxDAlKkc4kVZ72+F7Hz53DbBdjbCjp
- jpn/ptbQarToTvoUFZfQWNYyrVuxJHFAXAjKP4YtdhQInvcz02spPUCAk
- 2AQL5f2uMrda6v/doxs5qUgn2LLLmV+cmIdJFmdIlJHOfguIjjFBncAvv
- n7IaeFvBQ3iSTuv/he1srjgXQTvEUNz1Zl0dJpqmgLakBe2guv76/qLHD Q==;
-X-CSE-ConnectionGUID: /E2kTFgsQTa+MzSZq2nBSg==
-X-CSE-MsgGUID: 4hMzIwCBT1KlxFKlfVAThA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="46671498"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="46671498"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 13:11:39 -0700
-X-CSE-ConnectionGUID: BY+fsmn8T264I0rdd3nK/A==
-X-CSE-MsgGUID: TWVWz2aoSky8+kbcH/rMBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="83961023"
-Received: from dut1108bmgfrd.igk.intel.com ([10.211.177.147])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 13:11:38 -0700
-From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-To: 
-Cc: igt-dev@lists.freedesktop.org, jonathan.cavitt@intel.com,
- alex.zuo@intel.com, kamil.konieczny@intel.com,
- Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Subject: [PATCH] [i-g-t] tests/intel/xe_vm:Reduce n_execs for
- bind-array-enobufs
-Date: Tue, 22 Oct 2024 20:11:30 +0000
-Message-Id: <20241022201130.5724-1-jagmeet.randhawa@intel.com>
-X-Mailer: git-send-email 2.34.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C0B310E1DE;
+	Tue, 22 Oct 2024 20:19:12 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAB9610E1D4;
+ Tue, 22 Oct 2024 20:19:10 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5289906272512001437=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcaptur?=
+ =?utf-8?q?e=3A_Add_xe=5Fexec=5Fcapture_test_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Zhanjun Dong" <zhanjun.dong@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 22 Oct 2024 20:19:10 -0000
+Message-ID: <172962835075.1310194.779105722328411566@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241022163324.383145-1-zhanjun.dong@intel.com>
+In-Reply-To: <20241022163324.383145-1-zhanjun.dong@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,40 +37,139 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The bind-array-enobufs test in xe_vm.c is intended to trigger
-an -ENOBUFS error by submitting an oversized bind array.
-After encountering and handling the error, the test reduces
-n_execs by half and retries the operation. On some environments
-with stricter resource limits (e.g. simulator), halving
-n_execs isn't sufficient to prevent the ENOBUFS error on the retry.
-Reducing n_execs further to n_execs / 4 allows the test to pass
-successfully. This patch modifies the test to reduce n_execs
-to n_execs / 4 after an ENOBUFS error is handled. This ensures
-compatibility with environments that have tighter resource
-constraints while maintaining the test's integrity.
+--===============5289906272512001437==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
----
- tests/intel/xe_vm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-index 7a8740b69..e78ddd0e5 100644
---- a/tests/intel/xe_vm.c
-+++ b/tests/intel/xe_vm.c
-@@ -957,7 +957,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
- 		xe_cork_end(&cork);
- 		xe_cork_wait_done(&cork);
- 		xe_cork_fini(&cork);
--		n_execs = n_execs / 2;
-+		n_execs = n_execs / 4;
- 	}
- 
- 	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync, 1);
--- 
-2.34.1
+Series: tests/intel/xe_exec_capture: Add xe_exec_capture test (rev2)
+URL   : https://patchwork.freedesktop.org/series/140007/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8082_BAT -> XEIGTPW_11958_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11958_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [DMESG-WARN][1] ([Intel XE#2496]) -> [PASS][2] +31 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2496]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8082 -> IGTPW_11958
+
+  IGTPW_11958: fd4a608daf0002069119517c8fbc913791c0ea93 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2107-beaeaccd284ba3b69b6dbfdc18bb89441fc99a52: beaeaccd284ba3b69b6dbfdc18bb89441fc99a52
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/index.html
+
+--===============5289906272512001437==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_capture: Add xe_exec_capture test (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140007/">https://patchwork.freedesktop.org/series/140007/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8082_BAT -&gt; XEIGTPW_11958_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11958_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@bad-pitch-0:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496">Intel XE#2496</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> +31 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11958/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8082 -&gt; IGTPW_11958</li>
+</ul>
+<p>IGTPW_11958: fd4a608daf0002069119517c8fbc913791c0ea93 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2107-beaeaccd284ba3b69b6dbfdc18bb89441fc99a52: beaeaccd284ba3b69b6dbfdc18bb89441fc99a52</p>
+
+</body>
+</html>
+
+--===============5289906272512001437==--
