@@ -4,62 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1792D2CDFA
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 16:04:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 482FDD2CDF8
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 16:11:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E40410E6B3;
-	Tue, 22 Oct 2024 16:04:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ESRpoHOq";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE0F010E6B8
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 16:04:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729613080; x=1761149080;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+IDlCNryWHcj7qqec8iHUx1gO9njUPNUgpMtDRYOIVQ=;
- b=ESRpoHOqs7/0zZCBbH4WE/PUbRlv5j4dFDHT1F82sMx2hnWhCb2VZ7E/
- AJYjMw4Duj2/l80Ai+QCfTw+Meqy/Fc6iX1XZs8pvr/kefCqSK6ucN2uW
- 1c7HIp5gtmjOiDch6BeuZ4vwUBCswN8Kvt8ZCM5ULLdDQA6nuoPIlJmq2
- VgrJQ1RnWgjLC3XtkxvY9FMQy0Q49Ikp3BkkzQd197VBxkexRx9PQAx8K
- tSKJsbk29Wd+upau5J1ezgJ0xJksqCzV2AmO2qwPniVe35xQapzXq9z49
- h+fXPZ1bYE76vtSQ84+HfyuornlAxxxVacxH1tiQwHIb21O5vYCpizy9U Q==;
-X-CSE-ConnectionGUID: MITcBf/pRn2eBvpOyBqDkQ==
-X-CSE-MsgGUID: 180yArshRqS6dUVeuqXLJQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="29265613"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="29265613"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 09:04:40 -0700
-X-CSE-ConnectionGUID: I95Wrr+zT/WKtpXRhsMjzQ==
-X-CSE-MsgGUID: MimHq3YISMGXVvV36O16SA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="84992710"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 09:04:37 -0700
-Date: Tue, 22 Oct 2024 18:04:33 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH i-g-t 02/14] lib/igt_draw: Extend the API to support
- 64bpp colors
-Message-ID: <20241022160433.cxuz2vgpgunmkyog@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
- <20241004104121.32750-3-ville.syrjala@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07AFD10E6BD;
+	Tue, 22 Oct 2024 16:11:48 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 722E710E6BD;
+ Tue, 22 Oct 2024 16:11:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6962009022622622458=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241004104121.32750-3-ville.syrjala@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_tests/xe=3A_Add_tests_to_valid?=
+ =?utf-8?q?ate_GT_coarse_power_gating_status_and_toggle_coarse_power_gating_?=
+ =?utf-8?q?states_=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sk.anirban@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 22 Oct 2024 16:11:47 -0000
+Message-ID: <172961350746.1310805.14211868922580653517@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241022104918.2120652-1-sk.anirban@intel.com>
+In-Reply-To: <20241022104918.2120652-1-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,188 +38,288 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ville,
-On 2024-10-04 at 13:41:09 +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Pass the color as uint64_t to igt_draw in preparation
-> for supporting 64bpp pixel formats.
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+--===============6962009022622622458==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM but please see one nit below.
+== Series Details ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Series: tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev8)
+URL   : https://patchwork.freedesktop.org/series/139808/
+State : failure
 
-> ---
->  lib/igt_draw.c | 28 ++++++++++++++--------------
->  lib/igt_draw.h |  6 +++---
->  2 files changed, 17 insertions(+), 17 deletions(-)
-> 
-> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index 3ebfaad6ef31..917cc37a2175 100644
-> --- a/lib/igt_draw.c
-> +++ b/lib/igt_draw.c
-> @@ -363,7 +363,7 @@ static void tile4_pos_to_x_y_linear(int tiled_pos, uint32_t stride,
->  	*y = tile_origin_y + subtile_origin_y + oword_num;
->  }
->  
-> -static void set_pixel(void *_ptr, int index, uint32_t color, int bpp)
-> +static void set_pixel(void *_ptr, int index, uint64_t color, int bpp)
->  {
->  	if (bpp == 16) {
->  		uint16_t *ptr = _ptr;
-> @@ -403,7 +403,7 @@ static void switch_blt_tiling(struct intel_bb *ibb, uint32_t tiling, bool on)
->  }
->  
->  static void draw_rect_ptr_linear(void *ptr, uint32_t stride,
-> -				 struct rect *rect, uint32_t color, int bpp)
-> +				 struct rect *rect, uint64_t color, int bpp)
->  {
->  	int x, y, line_begin;
->  
-> @@ -415,7 +415,7 @@ static void draw_rect_ptr_linear(void *ptr, uint32_t stride,
->  }
->  
->  static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
-> -				int swizzle, struct rect *rect, uint32_t color,
-> +				int swizzle, struct rect *rect, uint64_t color,
->  				int bpp)
->  {
->  	int x, y, pos;
-> @@ -444,7 +444,7 @@ static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
->  }
->  
->  static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
-> -			       uint32_t tiling, uint32_t swizzle, uint32_t color)
-> +			       uint32_t tiling, uint32_t swizzle, uint64_t color)
->  {
->  	void *ptr;
->  
-> @@ -479,7 +479,7 @@ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
->  }
->  
->  static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
-> -			       uint32_t color)
-> +			       uint64_t color)
->  {
->  	void *ptr;
->  
-> @@ -495,7 +495,7 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
->  }
->  
->  static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
-> -			      uint32_t tiling, uint32_t swizzle, uint32_t color)
-> +			      uint32_t tiling, uint32_t swizzle, uint64_t color)
->  {
->  	void *ptr;
->  
-> @@ -542,7 +542,7 @@ static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
->  }
->  
->  static void draw_rect_pwrite_untiled(int fd, struct buf_data *buf,
-> -				     struct rect *rect, uint32_t color)
-> +				     struct rect *rect, uint64_t color)
->  {
->  	int i, y, offset;
->  	int pixel_size = buf->bpp / 8;
-> @@ -559,7 +559,7 @@ static void draw_rect_pwrite_untiled(int fd, struct buf_data *buf,
->  
->  static void draw_rect_pwrite_tiled(int fd, struct buf_data *buf,
->  				   uint32_t tiling, struct rect *rect,
-> -				   uint32_t color, uint32_t swizzle)
-> +				   uint64_t color, uint32_t swizzle)
+== Summary ==
 
-This one function have 'color, swizzle' while all others
-have it 'swizzle, color'. It could be misleading. It is not
-a purpose of your patch to correct this so it is not a blocker.
+CI Bug Log - changes from XEIGT_8082_BAT -> XEIGTPW_11951_BAT
+====================================================
 
-+Cc Zbigniew
+Summary
+-------
 
-Regards,
-Kamil
+  **FAILURE**
 
->  {
->  	int i;
->  	int tiled_pos, x, y, pixel_size;
-> @@ -624,7 +624,7 @@ static void draw_rect_pwrite_tiled(int fd, struct buf_data *buf,
->  
->  static void draw_rect_pwrite(int fd, struct buf_data *buf,
->  			     struct rect *rect, uint32_t tiling,
-> -			     uint32_t swizzle, uint32_t color)
-> +			     uint32_t swizzle, uint64_t color)
->  {
->  	switch (tiling) {
->  	case I915_TILING_NONE:
-> @@ -674,7 +674,7 @@ static struct intel_buf *create_buf(int fd, struct buf_ops *bops,
->  
->  static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
->  			  struct buf_data *buf, struct rect *rect,
-> -			  uint32_t tiling, uint32_t color)
-> +			  uint32_t tiling, uint64_t color)
->  {
->  	struct intel_bb *ibb;
->  	struct intel_buf *dst;
-> @@ -785,7 +785,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
->  
->  static void draw_rect_render(int fd, struct cmd_data *cmd_data,
->  			     struct buf_data *buf, struct rect *rect,
-> -			     uint32_t tiling, uint32_t color)
-> +			     uint32_t tiling, uint64_t color)
->  {
->  	struct intel_buf *src, *dst;
->  	uint32_t devid = intel_get_drm_devid(fd);
-> @@ -858,7 +858,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
->  		   int buf_width, int buf_height,
->  		   uint32_t tiling, enum igt_draw_method method,
->  		   int rect_x, int rect_y, int rect_w, int rect_h,
-> -		   uint32_t color, int bpp)
-> +		   uint64_t color, int bpp)
->  {
->  	uint32_t buf_tiling, swizzle;
->  
-> @@ -932,7 +932,7 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
->  void igt_draw_rect_fb(int fd, struct buf_ops *bops,
->  		      uint32_t ctx, struct igt_fb *fb,
->  		      enum igt_draw_method method, int rect_x, int rect_y,
-> -		      int rect_w, int rect_h, uint32_t color)
-> +		      int rect_w, int rect_h, uint64_t color)
->  {
->  	igt_draw_rect(fd, bops, ctx, fb->gem_handle, fb->size, fb->strides[0],
->  		      fb->width, fb->height,
-> @@ -949,7 +949,7 @@ void igt_draw_rect_fb(int fd, struct buf_ops *bops,
->   *
->   * This function just paints an igt_fb using the provided color.
->   */
-> -void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint32_t color)
-> +void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint64_t color)
->  {
->  	igt_draw_rect_fb(fd, NULL, 0, fb,
->  			 igt_draw_supports_method(fd, IGT_DRAW_MMAP_GTT) ?
-> diff --git a/lib/igt_draw.h b/lib/igt_draw.h
-> index 1dec95e86e0f..33763812ea4f 100644
-> --- a/lib/igt_draw.h
-> +++ b/lib/igt_draw.h
-> @@ -57,13 +57,13 @@ void igt_draw_rect(int fd, struct buf_ops *bops, uint32_t ctx,
->  		   int buf_width, int buf_height,
->  		   uint32_t tiling, enum igt_draw_method method,
->  		   int rect_x, int rect_y, int rect_w, int rect_h,
-> -		   uint32_t color, int bpp);
-> +		   uint64_t color, int bpp);
->  
->  void igt_draw_rect_fb(int fd, struct buf_ops *bops,
->  		      uint32_t ctx, struct igt_fb *fb,
->  		      enum igt_draw_method method, int rect_x, int rect_y,
-> -		      int rect_w, int rect_h, uint32_t color);
-> +		      int rect_w, int rect_h, uint64_t color);
->  
-> -void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint32_t color);
-> +void igt_draw_fill_fb(int fd, struct igt_fb *fb, uint64_t color);
->  
->  #endif /* __IGT_DRAW_H__ */
-> -- 
-> 2.45.2
-> 
+  Serious unknown changes coming with XEIGTPW_11951_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_11951_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_11951_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_pm_residency@cpg-basic (NEW):
+    - bat-lnl-2:          NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-lnl-2/igt@xe_pm_residency@cpg-basic.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][2]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-atsm-2/igt@xe_pm_residency@cpg-basic.html
+    - bat-lnl-1:          NOTRUN -> [SKIP][3]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-lnl-1/igt@xe_pm_residency@cpg-basic.html
+
+  * {igt@xe_pm_residency@cpg-gt-toggle} (NEW):
+    - bat-adlp-vf:        NOTRUN -> [SKIP][4] +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-vf/igt@xe_pm_residency@cpg-gt-toggle.html
+    - bat-pvc-2:          NOTRUN -> [SKIP][5] +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-pvc-2/igt@xe_pm_residency@cpg-gt-toggle.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_8082_BAT and XEIGTPW_11951_BAT:
+
+### New IGT tests (2) ###
+
+  * igt@xe_pm_residency@cpg-basic:
+    - Statuses : 4 pass(s) 5 skip(s)
+    - Exec time: [0.0, 6.47] s
+
+  * igt@xe_pm_residency@cpg-gt-toggle:
+    - Statuses : 7 pass(s) 2 skip(s)
+    - Exec time: [0.0, 1.00] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11951_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-adlp-7:         [PASS][6] -> [DMESG-FAIL][7] ([Intel XE#2871]) +1 other test dmesg-fail
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@xe_exec_compute_mode@twice-userptr-invalidate:
+    - bat-lnl-1:          [PASS][8] -> [DMESG-WARN][9] ([Intel XE#2687])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [PASS][10] -> [INCOMPLETE][11] ([Intel XE#2874]) +1 other test incomplete
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_addfb_basic@bad-pitch-0:
+    - bat-adlp-7:         [DMESG-WARN][12] ([Intel XE#2496]) -> [PASS][13] +31 other tests pass
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][14] ([Intel XE#1861]) -> [PASS][15]
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-bmg-2:          [INCOMPLETE][16] ([Intel XE#2874] / [Intel XE#2998]) -> [PASS][17] +1 other test pass
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2496]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496
+  [Intel XE#2687]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2687
+  [Intel XE#2871]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2871
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#2998]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8082 -> IGTPW_11951
+
+  IGTPW_11951: 11951
+  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2107-beaeaccd284ba3b69b6dbfdc18bb89441fc99a52: beaeaccd284ba3b69b6dbfdc18bb89441fc99a52
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/index.html
+
+--===============6962009022622622458==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev8)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139808/">https://patchwork.freedesktop.org/series/139808/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8082_BAT -&gt; XEIGTPW_11951_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_11951_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_11951_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_11951_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_pm_residency@cpg-basic (NEW):</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-lnl-2/igt@xe_pm_residency@cpg-basic.html">SKIP</a></li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-atsm-2/igt@xe_pm_residency@cpg-basic.html">SKIP</a></li>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-lnl-1/igt@xe_pm_residency@cpg-basic.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>{igt@xe_pm_residency@cpg-gt-toggle} (NEW):</p>
+<ul>
+<li>bat-adlp-vf:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-vf/igt@xe_pm_residency@cpg-gt-toggle.html">SKIP</a> +1 other test skip</li>
+<li>bat-pvc-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-pvc-2/igt@xe_pm_residency@cpg-gt-toggle.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_8082_BAT and XEIGTPW_11951_BAT:</p>
+<h3>New IGT tests (2)</h3>
+<ul>
+<li>
+<p>igt@xe_pm_residency@cpg-basic:</p>
+<ul>
+<li>Statuses : 4 pass(s) 5 skip(s)</li>
+<li>Exec time: [0.0, 6.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@cpg-gt-toggle:</p>
+<ul>
+<li>Statuses : 7 pass(s) 2 skip(s)</li>
+<li>Exec time: [0.0, 1.00] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11951_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@kms_psr@psr-sprite-plane-onoff.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2871">Intel XE#2871</a>) +1 other test dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_compute_mode@twice-userptr-invalidate:</p>
+<ul>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-lnl-1/igt@xe_exec_compute_mode@twice-userptr-invalidate.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2687">Intel XE#2687</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@bad-pitch-0:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2496">Intel XE#2496</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@kms_addfb_basic@bad-pitch-0.html">PASS</a> +31 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
+<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8082/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998">Intel XE#2998</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11951/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8082 -&gt; IGTPW_11951</li>
+</ul>
+<p>IGTPW_11951: 11951<br />
+  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2107-beaeaccd284ba3b69b6dbfdc18bb89441fc99a52: beaeaccd284ba3b69b6dbfdc18bb89441fc99a52</p>
+
+</body>
+</html>
+
+--===============6962009022622622458==--
