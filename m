@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D8DDD2C540
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 12:13:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EE75D2C541
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 12:13:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C29010E670;
-	Tue, 22 Oct 2024 12:13:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5CFB10E677;
+	Tue, 22 Oct 2024 12:13:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iEHxe3op";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HbOeD84U";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0CA8110E670
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 12:13:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 712AC10E672
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 12:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729599190; x=1761135190;
+ t=1729599192; x=1761135192;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/gdy3Z3pLdQ2vVEuhaVVxn/x6bCFRkxi0O6yr13PCpY=;
- b=iEHxe3op+ULyKEbWqOzsQfNtTiRwS7AyMNbEo/19n4ByaBLPXT+7cv9v
- JGiOC7jXgc9Kw+aez0PSRmFXBq4yQpLdt6BjMoIXkNMLzQ3PN5ON8SnhC
- 7MkDP55oMhgLuJc5slMH9QTh6iV9k3dUGc27QUQyQb1bQc9kFAwdfYt8B
- M2751iSFwjlfJ8dnvq9qldeilPap/WaV3TIlD+JjtTw34lIXDdGC/VRqd
- a5TbAAE9f5nTo3BEs3JJ/d53zBI/dgyLBKd0mTDcdMw4XemoYX494IK5m
- JhccQkIXWh0VGJEws/9Mt3qkeWj+cczMGCU4HN0+RiPTcVnLG1ltUMyzK w==;
-X-CSE-ConnectionGUID: x2pRNMipTR+caJLwpnbXXg==
-X-CSE-MsgGUID: Cp/p54tCQQWfqrJhefyDbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="46615812"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="46615812"
+ bh=Tv8EXxtRFTDmclDkgGA0R4AGCGybIWiCkrWV1NzV/NU=;
+ b=HbOeD84UbjJEoOqvrLmrv88c5f0SVCP5zP9zawqFE12lQwCGSH46VVZe
+ Lx3kgPbQ6OllKRmA18fmgYUvnTUiNKossi9kdKU3iFLFVpWV3joc88Bq4
+ JrCPH9as5QF4mU403But8fo5K4nA7Uzvdjf3qiBF/qjK/Gn68qtfUT1rA
+ ws3MQRqOnD9NLz/Q7VGt36gaAsXZpsbHBt1bX8Khs5zjymAwNKuSn2V2X
+ 2drpTB0ebxHYVD97tpdvvbar8G6TnNRzog5KdH52cJ1hztLawEUJU4rf9
+ /aALAQQYECbwNdE4zLBojCb08lBI92IUOu0qIYIH0FxmhscK5ePnNaHRl A==;
+X-CSE-ConnectionGUID: 4Zh+sU2nRfitjCLKDh3s+w==
+X-CSE-MsgGUID: 1zEICHj0TOuPYguNjvHvZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11232"; a="46615817"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="46615817"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 05:13:10 -0700
-X-CSE-ConnectionGUID: cMNSXatMRISMKq4s1uh5nQ==
-X-CSE-MsgGUID: GTmg32GfSxC+iiUFUOSguA==
+ 22 Oct 2024 05:13:12 -0700
+X-CSE-ConnectionGUID: W9bvUYMUQbqD1HeRGsrRew==
+X-CSE-MsgGUID: +XdEiqGMRx2dVYbAPIlDMQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="79792354"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="79792371"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 05:13:07 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 05:13:10 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mohammed.thasleem@intel.com, bhanuprakash.modem@intel.com,
  suraj.kandpal@intel.com, pranay.samala@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v3 2/3] tests/intel/kms_pm_backlight: Refactor and use
- functions from lib
-Date: Tue, 22 Oct 2024 17:40:41 +0530
-Message-Id: <20241022121042.2295042-3-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v3 3/3] tests/kms_hdr: Test brightness manipulation in
+ HDR mode
+Date: Tue, 22 Oct 2024 17:40:42 +0530
+Message-Id: <20241022121042.2295042-4-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241022121042.2295042-1-santhosh.reddy.guddati@intel.com>
 References: <20241022121042.2295042-1-santhosh.reddy.guddati@intel.com>
@@ -70,219 +70,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Refactor to use igt_backlight_read and igt_backlight_write
+Add subtests for backlight control on hdr enabled edp panels
+by changing brightness via sysfs.
 
-update struct names to maintain consistency.
-Move struct context to library
-
-V2: update backlight_dir_path with BACKLIGHT_PATH.
-
-v3: rename intel_backlight_context_t to igt_backlight_context_t (Suraj)
+use igt_backlight_read and igt_backlight_write from library
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tests/intel/kms_pm_backlight.c | 108 +++++++++------------------------
- 1 file changed, 28 insertions(+), 80 deletions(-)
+ tests/kms_hdr.c | 43 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-index 196b5af03..8b59725ac 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -72,13 +72,6 @@
-  * Functionality: backlight, dpms
-  */
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index f123c6b36..be55fe646 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -64,6 +64,10 @@
+  * Description: Tests static toggle with suspend
+  * Functionality: colorspace, static_hdr, suspend
+  *
++ * SUBTEST: brightness-with-hdr
++ * Description: Tests brightness with HDR
++ * Functionality: colorspace, static_hdr
++ *
+  * SUBTEST: static-%s
+  * Description: Tests %arg[1].
+  * Functionality: colorspace, static_hdr
+@@ -81,6 +85,8 @@ IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
+ #define HDR_STATIC_METADATA_BLOCK       0x06
+ #define USE_EXTENDED_TAG		0x07
  
--struct context {
--	int max;
--	int old;
--	igt_output_t *output;
--	char path[PATH_MAX];
--};
--
- enum {
- 	TEST_NONE = 0,
- 	TEST_DPMS,
-@@ -96,65 +89,17 @@ enum {
- 
- IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
- 
--static int backlight_read(int *result, const char *fname, struct context *context)
--{
--	int fd;
--	char full[PATH_MAX];
--	char dst[64];
--	int r, e;
--
--	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname)
--			    < PATH_MAX);
--	fd = open(full, O_RDONLY);
--	if (fd == -1)
--		return -errno;
--
--	r = read(fd, dst, sizeof(dst));
--	e = errno;
--	close(fd);
--
--	if (r < 0)
--		return -e;
--
--	errno = 0;
--	*result = strtol(dst, NULL, 10);
--	return errno;
--}
--
--static int backlight_write(int value, const char *fname, struct context *context)
--{
--	int fd;
--	char full[PATH_MAX];
--	char src[64];
--	int len;
--
--	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname)
--		   < PATH_MAX);
--	fd = open(full, O_WRONLY);
--	if (fd == -1)
--		return -errno;
--
--	len = snprintf(src, sizeof(src), "%i", value);
--	len = write(fd, src, len);
--	close(fd);
--
--	if (len < 0)
--		return len;
--
--	return 0;
--}
--
--static void test_and_verify(struct context *context, int val)
-+static void test_and_verify(igt_backlight_context_t *context, int val)
- {
- 	const int tolerance = val * TOLERANCE / 100;
- 	int result;
- 
--	igt_assert_eq(backlight_write(val, "brightness", context), 0);
--	igt_assert_eq(backlight_read(&result, "brightness", context), 0);
-+	igt_assert_eq(igt_backlight_write(val, "brightness", context), 0);
-+	igt_assert_eq(igt_backlight_read(&result, "brightness", context), 0);
- 	/* Check that the exact value sticks */
- 	igt_assert_eq(result, val);
- 
--	igt_assert_eq(backlight_read(&result, "actual_brightness", context), 0);
-+	igt_assert_eq(igt_backlight_read(&result, "actual_brightness", context), 0);
- 	/* Some rounding may happen depending on hw */
- 	igt_assert_f(result >= max(0, val - tolerance) &&
- 		     result <= min(context->max, val + tolerance),
-@@ -162,31 +107,31 @@ static void test_and_verify(struct context *context, int val)
- 		     result, val, tolerance);
- }
- 
--static void test_brightness(struct context *context)
-+static void test_brightness(igt_backlight_context_t *context)
- {
- 	test_and_verify(context, 0);
- 	test_and_verify(context, context->max);
- 	test_and_verify(context, context->max / 2);
- }
- 
--static void test_bad_brightness(struct context *context)
-+static void test_bad_brightness(igt_backlight_context_t *context)
- {
- 	int val;
- 	/* First write some sane value */
--	backlight_write(context->max / 2, "brightness", context);
-+	igt_backlight_write(context->max / 2, "brightness", context);
- 	/* Writing invalid values should fail and not change the value */
--	igt_assert_lt(backlight_write(-1, "brightness", context), 0);
--	backlight_read(&val, "brightness", context);
-+	igt_assert_lt(igt_backlight_write(-1, "brightness", context), 0);
-+	igt_backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
--	igt_assert_lt(backlight_write(context->max + 1, "brightness", context), 0);
--	backlight_read(&val, "brightness", context);
-+	igt_assert_lt(igt_backlight_write(context->max + 1, "brightness", context), 0);
-+	igt_backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
--	igt_assert_lt(backlight_write(INT_MAX, "brightness", context), 0);
--	backlight_read(&val, "brightness", context);
-+	igt_assert_lt(igt_backlight_write(INT_MAX, "brightness", context), 0);
-+	igt_backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
- }
- 
--static void test_fade(struct context *context)
-+static void test_fade(igt_backlight_context_t *context)
- {
- 	int i;
- 	static const struct timespec ts = { .tv_sec = 0, .tv_nsec = FADESPEED*1000000 };
-@@ -218,19 +163,19 @@ check_dpms(igt_output_t *output)
- 	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
- }
- 
--static void check_dpms_cycle(struct context *context)
-+static void check_dpms_cycle(igt_backlight_context_t *context)
- {
- 	int max, val_1, val_2;
- 
--	backlight_read(&max, "max_brightness", context);
-+	igt_backlight_read(&max, "max_brightness", context);
- 	igt_assert(max);
- 
--	backlight_write(max / 2, "brightness", context);
--	backlight_read(&val_1, "actual_brightness", context);
-+	igt_backlight_write(max / 2, "brightness", context);
-+	igt_backlight_read(&val_1, "actual_brightness", context);
- 
- 	check_dpms(context->output);
- 
--	backlight_read(&val_2, "actual_brightness", context);
-+	igt_backlight_read(&val_2, "actual_brightness", context);
- 	igt_assert_eq(val_1, val_2);
- }
- 
-@@ -286,11 +231,11 @@ igt_main
- 	igt_output_t *output;
- 	char file_path_n[PATH_MAX] = "";
- 	bool dual_edp = false;
--	struct context contexts[NUM_EDP_OUTPUTS];
-+	igt_backlight_context_t contexts[NUM_EDP_OUTPUTS];
- 	struct {
- 		const char *name;
- 		const char *desc;
--		void (*test_t) (struct context *);
-+		void (*test_t)(igt_backlight_context_t *context);
- 		int flags;
- 	} tests[] = {
- 		{ "basic-brightness", "test the basic brightness.", test_brightness, TEST_NONE },
-@@ -339,14 +284,17 @@ igt_main
- 
- 			close(fd);
- 
-+			snprintf(contexts[i].backlight_dir_path, PATH_MAX, "%s", BACKLIGHT_PATH);
++#define BACKLIGHT_PATH "/sys/class/backlight"
 +
- 			/* should be ../../cardX-$output */
- 			snprintf(file_path_n, PATH_MAX, "%s/%s/device", BACKLIGHT_PATH,
- 				 contexts[i].path);
- 			igt_assert_lt(16, readlink(file_path_n, full_name, sizeof(full_name) - 1));
- 			name = basename(full_name);
--			igt_assert(backlight_read(&contexts[i].max,
--						"max_brightness", &contexts[i]) > -1);
--			igt_skip_on(backlight_read(&contexts[i].old, "brightness", &contexts[i]));
-+			igt_assert(igt_backlight_read(&contexts[i].max,
-+						      "max_brightness", &contexts[i]) > -1);
-+			igt_skip_on(igt_backlight_read(&contexts[i].old,
-+						       "brightness", &contexts[i]));
+ /* DRM HDR definitions. Not in the UAPI header, unfortunately. */
+ enum hdmi_metadata_type {
+ 	HDMI_STATIC_METADATA_TYPE1 = 0,
+@@ -100,6 +106,7 @@ enum {
+ 	TEST_SWAP = 1 << 3,
+ 	TEST_INVALID_METADATA_SIZES = 1 << 4,
+ 	TEST_INVALID_HDR = 1 << 5,
++	TEST_BRIGHTNESS = 1 << 6,
+ };
  
- 			if (!strcmp(name + 6, output->name)) {
- 				contexts[i++].output = output;
-@@ -383,7 +331,7 @@ igt_main
- 	igt_fixture {
- 		/* Restore old brightness */
- 		for (i = 0; i < (dual_edp ? 2 : 1); i++)
--			backlight_write(contexts[i].old, "brightness", &contexts[i]);
-+			igt_backlight_write(contexts[i].old, "brightness", &contexts[i]);
+ /* BPC connector state. */
+@@ -448,6 +455,30 @@ static void fill_hdr_output_metadata_st2048(struct hdr_output_metadata *meta)
+ 	meta->hdmi_metadata_type1.max_cll = 500;   /* 500 nits */
+ }
  
- 		igt_display_fini(&display);
- 		igt_pm_restore_sata_link_power_management();
++static void adjust_brightness(data_t *data, uint32_t flags)
++{
++	igt_backlight_context_t context;
++	int r_bright, w_bright;
++
++	snprintf(context.path, PATH_MAX, "intel_backlight");
++	snprintf(context.backlight_dir_path, PATH_MAX, "%s", BACKLIGHT_PATH);
++
++	igt_assert(igt_backlight_read(&context.max, "max_brightness", &context) > -1);
++	igt_assert(context.max);
++
++	igt_assert(igt_backlight_read(&context.old, "brightness", &context) > -1);
++
++	for (w_bright = 0; w_bright <= context.max ; w_bright += 50) {
++		igt_assert_eq(igt_backlight_write(w_bright, "brightness", &context), 0);
++		igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++		igt_assert_eq(igt_backlight_read(&r_bright, "brightness", &context), 0);
++
++		igt_assert_eq(w_bright, r_bright);
++	}
++
++	igt_assert_eq(igt_backlight_write(context.old, "brightness", &context), 0);
++}
++
+ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 			       igt_output_t *output,
+ 			       uint32_t flags)
+@@ -483,6 +514,11 @@ static void test_static_toggle(data_t *data, enum pipe pipe,
+ 		igt_assert_eq(system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\""), 0);
+ 		goto cleanup;
+ 	}
++	if (flags & TEST_BRIGHTNESS) {
++		igt_require_f(is_intel_device(data->fd), "Only supported on Intel devices\n");
++		adjust_brightness(data, flags);
++	}
++
+ 	igt_assert_output_bpc_equal(data->fd, pipe, output->name, 10);
+ 
+ 	/* Verify that the CRC are equal after DPMS or suspend. */
+@@ -685,7 +721,8 @@ static void test_hdr(data_t *data, uint32_t flags)
+ 
+ 			igt_dynamic_f("pipe-%s-%s",
+ 				      kmstest_pipe_name(pipe), output->name) {
+-				if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND | TEST_INVALID_HDR))
++				if (flags & (TEST_NONE | TEST_DPMS | TEST_SUSPEND |
++					     TEST_INVALID_HDR | TEST_BRIGHTNESS))
+ 					test_static_toggle(data, pipe, output, flags);
+ 				if (flags & TEST_SWAP)
+ 					test_static_swap(data, pipe, output);
+@@ -734,6 +771,10 @@ igt_main
+ 	igt_subtest_with_dynamic("static-toggle-suspend")
+ 		test_hdr(&data, TEST_SUSPEND);
+ 
++	igt_describe("Tests brightness while entering and exiting HDR mode");
++	igt_subtest_with_dynamic("brightness-with-hdr")
++		test_hdr(&data, TEST_BRIGHTNESS);
++
+ 	igt_describe("Tests swapping static HDR metadata");
+ 	igt_subtest_with_dynamic("static-swap")
+ 		test_hdr(&data, TEST_SWAP);
 -- 
 2.34.1
 
