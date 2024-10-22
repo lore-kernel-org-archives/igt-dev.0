@@ -4,44 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0524D2C562
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 14:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1125D2C561
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 14:49:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7DDFD10E6AD;
-	Tue, 22 Oct 2024 14:49:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A1BCB10E1F4;
+	Tue, 22 Oct 2024 14:49:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="oF4gulfA";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="mHf3vyhv";
 	dkim-atps=neutral
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
  [217.70.183.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0EAFB10E6A2
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 14:49:41 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B5C6FF808;
- Tue, 22 Oct 2024 14:49:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A287110E69E
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 14:49:42 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 94131FF805;
+ Tue, 22 Oct 2024 14:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1729608580;
+ t=1729608581;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding;
- bh=/Ds6pGqz/aPrX29UCSui18E5GwcUWxn7sPqeAVqI4lg=;
- b=oF4gulfAMzX8tdNTsSLWqSgnnllX0lqrqb2Ck7WDIjIm6G62fE0cGxUhndMIPuUR/9JkDX
- pKFmBHaqb6TPIHdgXlTaoZ/F4pAYUj/1frCgzPtwIFv4iuWDPLd2b/YMWVN4BWOzMZ/zZH
- Qo+LKKLj0z3gBKypudWXRz421N0iGuGmy+FR4WBtDhujNZg75Ujw/RDbHwamTKo9aHX002
- RHq8xpdFY6xB5qCO1vzBEIvoQ18WTyDKxTMs9tJr7qxE53EOjxAxxgbXVibCmVsOPxniJN
- loI8eusc9bK5jqZCUKG+nNOtX1hosXLzIdwFFTYnmKiNcpTVXtgQ/vuH6mIyvg==
+ content-transfer-encoding:content-transfer-encoding:
+ in-reply-to:in-reply-to:references:references;
+ bh=AKdHUE9hCReNawyxJ2c1bWwkjoU2oSN+DM5Pzq0NuqU=;
+ b=mHf3vyhvSJxOUsI8uuuX/NBihkCt7cTliDnRD5VII5Wc+YNoAMUKF0485LFWWJPXcX2yMK
+ B9XLqjDctHaNYjd5iom7PBp6q7SXX/kde93aYQ1YdgwDgawoaJ+3VimlDodhpraHnQbpQ9
+ 1ikKpTHcu//mVop85whs4qD16CMagAf9I1iRhBbig4QmuqxeEKVuoE5F8wSK4/5UZkQuJz
+ 73uAxRYByAOO4JtZMrBaspATWwBWEceVL+1c0XRodD91OU20UT6lFPoZev387S7htyozdS
+ mK2LHGLNrznEh0DEQvq/e/tfEiwcJkCJy2cUn95IjVhiY6AAoBG2Squ+XOGVUA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: [PATCH i-g-t 0/4] lib/chamelium: Move chameliumv2 support in its
- own directory
-Date: Tue, 22 Oct 2024 16:49:32 +0200
-Message-Id: <20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com>
+Date: Tue, 22 Oct 2024 16:49:33 +0200
+Subject: [PATCH i-g-t 1/4] tests/chamelium: Extract Chamelium v2 tests into
+ a separate directory
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAH27F2cC/4WOy24DIQxFf2XEuk7BMMxj1f+osphhnKnVAAnQq
- FKUfw95KFJXXVnXls+5Z5EpMWUxNmeR6MSZY6hBvTXCfU1hJeClZoESjexxgNmAO2mQug6EfNh
- zAdNpN6BBq6gV9fOQaMe/d+qnYFihiO1jnej4Ux3leZunTOCi91zGJiZeObz7KRdKN4ynnKd7g
- 7G5+ZVEfPkV8Frg22eoNST0O9saO5i5VfpjjrHsOWwq+V8Ogo+BS0xACy9PWme16XrrUJH9Q9t
- eLlfDiCQdMwEAAA==
+Message-Id: <20241022-b4-cv3-03-cv2-split-v1-1-9f7cc8591ff9@bootlin.com>
+References: <20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com>
+In-Reply-To: <20241022-b4-cv3-03-cv2-split-v1-0-9f7cc8591ff9@bootlin.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
  Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
@@ -54,21 +52,21 @@ Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com, 
  20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3521;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4504;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=qKXGZQr3ibJJbJ8m6phVUj/ftsII+6BZ85ljiRSpWGY=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnF7uB4TN+QWPTfmaj4Seo3AUWkEP83ylnTUUDX
- +343/ehZzeJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZxe7gQAKCRAgrS7GWxAs
- 4kaMD/0YncWwzZ0ynPdlSp9Gu56XVZSyxnbPUPHdKs6GnSak417MmzGxDzjM/htcBinfUImR5xq
- v3LoNb6frxUxrQfy8b8WMjFxCK8NJfYS67kZGLikLaX8rPYnoUuahlTl/zRkcY8uz9bCJ/l0h+1
- +YHtJ52K8CHctSsTltppKSZQz2qy64SCK6Pau9ZXivezDBaU0AWvbHqGv16HfkZNasmhAP62Pf8
- O2l4B/6dlgCcC+3erQuL0qApjI5zEPVRfWX8ykziTm/iJwXxH2FtTSC5r4pGEBX+T9ZKsdHu9c8
- F7TS57i0ntiwkVDGvaUru9gPBR+06C3wW996g7CtuYjpyXZ1wDRie641fMK10rtln2As7IOVjtc
- 4wY6x89IXgzhjDLM4qyyhpPFkWp1WDd9fuKBil4blZNzVimWalX8EHIfQUChHRRqmQO8LsbmL0f
- pHksfqn5EQmKnnyL0yk3iRAf0HWICm4QSBol40TYr5/1RhtD49+UWlbkVWKhMEUXHh22Fva6xzZ
- dGV4l+Snq5+dGtdklCFmNYNL+OUp3/wxvzBDzFhNKPe9kvhIOtV0b/KFyP29IDpy6NDN1tN8Duw
- CoIGWROR6GuAa/H2F7I4NGu6OGNF3g+/HkTkfHRdk4UCSRdxSqG3IrU+DPrsPsN883+SKlqXwxC
- YUXgQP0IIz1gS6g==
+ bh=3T/E5TaHaKM+614VmfLXM/BJGizD1960ooupPYJ3oxM=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnF7uBKE3ksfqOMTC7Q8NbWKdqhYnezaKjbsAXm
+ Ggh0WHu/eSJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZxe7gQAKCRAgrS7GWxAs
+ 4r4PD/0dLvHCpJ42nVLnv+ThKtinQ4xqR/E25E9wDMx+V25TqTCRqnFyiYgvtPqsPyqqnQE1h9q
+ Th6vKNBbUJc5Un5KG4ybrvPUmdw+VeqmYU5dujY2tDivPD+DwQfdGJT1QabrmnZnnRHLKCjSOgj
+ YFXv4f5eHjJelFDWew2a5RnhgO7B49DboImxqA0IENtMLFAFYbtGjLtdYrbbTPzjRGzTZD3LPVm
+ 2kkQONnUA23dUdbAok299m8W23JNviI2H4hCDVCCQvWS/nM6QdgBWNS8uHuLGVxLhSw8nL6lAwR
+ ZmPA1Pqz8qOHOZDM2ZlpnN+YIpDCQI8MOdoBNPuJ8EXJkIsFpRlfHSP5LoJcTZct9QobZOwhO67
+ ZjT4gLnEk02mlzAMHHmCAhnwN/wHnEgJXPrrEF27Gfxj0HR3aDDH9tN7TEjThCm8XLywU9d6E99
+ bemRQQeHXUarkg27L9an8kU7klqyJWJnflos3N3g+vvRlsfSmguXKs5sj+QtO6NHmy33lwKJwXr
+ 3eglCg0liB8GRU+QHN4pDFFnXZW3fO51ytcl8b6vKCseOf2T7UzNLS7eqTVLz5oIIjjRoVVpFZ/
+ dpO7mCwTtPtPnLk0aM4n5B+5KhVUsymevsD4nGj4CUl5UKyJcphp7crNKJRF3iBl5sPdtWGVZe5
+ ikK/yNAS7PrzQAw==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -87,71 +85,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In preparation for the introduction of Chameleon v3, this series move 
-the chamelium v2 support in its own folder.
+In preparation for Chamelium v3, the Chamelium v2 tests have been moved to
+their own directory.
 
-Few rename are done to avoid confusion between chamelium v2 and chamelium 
-v3 code.
+The two Chamelium versions have different sets of functionality (audio,
+MST, CRC computation, etc.). Since most of the tests will need to be
+rewritten to work with Chamelium v3, it is simpler to create new ones for
+v3 to avoid breaking the existing tests.
 
-This series have a small conflict with [1]. If you want to reverse the 
-order of the series, let me know, I will resend a new iteration.
+The following complexities necessitate a thorough rework of the existing
+v2 tests:
 
-[1]: https://lore.kernel.org/all/20240828-b4-cv3-02-monitor-edids-v1-0-29c846bcf251@bootlin.com/
-
-In addition, this series is in conflict with at least:
--https://lore.kernel.org/igt-dev/20241018035914.1740924-1-pranay.samala@intel.com
--https://lore.kernel.org/igt-dev/20241018190627.1367970-1-swati2.sharma@intel.com
+ - Not all ports are discoverable in v3 (MST ports are not physical
+   ports, but they can have EDID, be plugged, etc.), and they can change
+   over time.
+ - The v3 is unable to perform CRC computation.
+ - Not all ports can be plugged at once, which is a feature used by the
+   existing v2 wrapper to set up the Chamelium.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
-Louis Chauvet (4):
-      tests/chamelium: Extract Chamelium v2 tests into a separate directory
-      lib/chamelium/v2: Extract chamelium v2 wrapper into its own directory
-      lib/chamelium/v2: Rename chamelium to chamelium_v2
-      lib/chamelium/v2: Rename HAVE_CHAMELIUM to HAVE_CHAMELIUM_V2
-
- .gitlab-ci.yml                                  |  2 +-
- docs/testplan/meson.build                       |  4 ++--
- lib/{ => chamelium/v2}/igt_chamelium.c          |  2 +-
- lib/{ => chamelium/v2}/igt_chamelium.h          |  0
- lib/{ => chamelium/v2}/igt_chamelium_stream.c   |  2 +-
- lib/{ => chamelium/v2}/igt_chamelium_stream.h   |  0
- lib/igt.h                                       |  6 +++---
- lib/igt_kms.c                                   |  6 +++---
- lib/meson.build                                 |  9 ++++++---
- lib/monitor_edids/monitor_edids_helper.h        |  2 +-
- lib/tests/meson.build                           |  4 ++--
- meson.build                                     | 18 +++++++++---------
- meson_options.txt                               |  4 ++--
  tests/chamelium/{ => v2}/kms_chamelium_audio.c  |  0
  tests/chamelium/{ => v2}/kms_chamelium_color.c  |  0
- tests/chamelium/{ => v2}/kms_chamelium_edid.c   |  2 +-
+ tests/chamelium/{ => v2}/kms_chamelium_edid.c   |  0
  tests/chamelium/{ => v2}/kms_chamelium_frames.c |  0
  tests/chamelium/{ => v2}/kms_chamelium_helper.c |  0
  tests/chamelium/{ => v2}/kms_chamelium_helper.h |  0
  tests/chamelium/{ => v2}/kms_chamelium_hpd.c    |  0
- tests/kms_color_helper.h                        |  2 +-
- tests/kms_feature_discovery.c                   |  6 +++---
- tests/kms_tiled_display.c                       |  6 +++---
- tests/meson.build                               | 18 +++++++++---------
- 24 files changed, 48 insertions(+), 45 deletions(-)
----
-base-commit: 9b8c0f6da8898f760bfaa2113455eb84b68a69f4
-change-id: 20240829-b4-cv3-03-cv2-split-473c924261e5
-prerequisite-message-id: 20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
-prerequisite-patch-id: 0562bbe57a0b489e7f46a51717c54ea26296cb8c
-prerequisite-patch-id: a16d6fdd238eab5a91630d0934c9186669406fc7
-prerequisite-patch-id: c7fcc64d709f283da748a0f9bbe3bd6143d76300
-prerequisite-patch-id: 09fc5e2f569fa8287e767ceb353bc0a0f94ae2e1
-prerequisite-patch-id: 63cf2f6323333bb8cbd0dbbd883b5c9fe373dea1
-prerequisite-message-id: 20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com
-prerequisite-patch-id: 90ffdddeda6dd4cd2ae64e60fb31b0bbfee0250f
-prerequisite-patch-id: d62e9d4981a68ac6e71544ab2a3dfec37dfa3299
-prerequisite-patch-id: 3d898f58702cc303e18d3afc487e46f68641989b
-prerequisite-patch-id: 57f5446073d42a01c29e6ff8a24f6609eedb49a1
-prerequisite-patch-id: e6d6ee4ecd0e738a60091b19449c8622bb8bb6ae
+ tests/meson.build                               | 10 +++++-----
+ 8 files changed, 5 insertions(+), 5 deletions(-)
 
-Best regards,
+diff --git a/tests/chamelium/kms_chamelium_audio.c b/tests/chamelium/v2/kms_chamelium_audio.c
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_audio.c
+rename to tests/chamelium/v2/kms_chamelium_audio.c
+diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/v2/kms_chamelium_color.c
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_color.c
+rename to tests/chamelium/v2/kms_chamelium_color.c
+diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/v2/kms_chamelium_edid.c
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_edid.c
+rename to tests/chamelium/v2/kms_chamelium_edid.c
+diff --git a/tests/chamelium/kms_chamelium_frames.c b/tests/chamelium/v2/kms_chamelium_frames.c
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_frames.c
+rename to tests/chamelium/v2/kms_chamelium_frames.c
+diff --git a/tests/chamelium/kms_chamelium_helper.c b/tests/chamelium/v2/kms_chamelium_helper.c
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_helper.c
+rename to tests/chamelium/v2/kms_chamelium_helper.c
+diff --git a/tests/chamelium/kms_chamelium_helper.h b/tests/chamelium/v2/kms_chamelium_helper.h
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_helper.h
+rename to tests/chamelium/v2/kms_chamelium_helper.h
+diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/v2/kms_chamelium_hpd.c
+similarity index 100%
+rename from tests/chamelium/kms_chamelium_hpd.c
+rename to tests/chamelium/v2/kms_chamelium_hpd.c
+diff --git a/tests/meson.build b/tests/meson.build
+index 34b87b125bf2..4cb199d34527 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -358,11 +358,11 @@ extra_sources = {
+ 	'dumb_buffer': ['dumb_buffer.c' ],
+ 	'testdisplay': [ 'testdisplay_hotplug.c' ],
+ 	'kms_color':  [ 'kms_color_helper.c' ],
+-	'kms_chamelium_audio': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_audio': [ join_paths ('chamelium', 'v2', 'kms_chamelium_helper.c') ],
+ 	'kms_chamelium_color':  [ 'kms_color_helper.c' ],
+-	'kms_chamelium_edid': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+-	'kms_chamelium_frames': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
+-	'kms_chamelium_hpd': [ join_paths ('chamelium', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_edid': [ join_paths ('chamelium', 'v2', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_frames': [ join_paths ('chamelium', 'v2', 'kms_chamelium_helper.c') ],
++	'kms_chamelium_hpd': [ join_paths ('chamelium', 'v2', 'kms_chamelium_helper.c') ],
+ 	'kms_dsc': [ join_paths ('intel', 'kms_dsc_helper.c') ],
+ 	'kms_psr2_sf':  [ join_paths ('intel', 'kms_dsc_helper.c') ],
+ }
+@@ -438,7 +438,7 @@ endforeach
+ if chamelium.found()
+ 	foreach prog : chamelium_progs
+ 		testexe = executable(prog,
+-				 [join_paths('chamelium', prog + '.c')] + extra_sources.get(prog, []),
++				 [join_paths('chamelium', 'v2', prog + '.c')] + extra_sources.get(prog, []),
+ 				 dependencies : test_deps + extra_dependencies.get(prog, []),
+ 				 install_dir : libexecdir,
+ 				 install_rpath : libexecdir_rpathdir,
+
 -- 
-Louis Chauvet <louis.chauvet@bootlin.com>
+2.46.2
 
