@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8AFCD2C56A
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:19:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E6CD2C56D
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:28:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A0E8910E6A3;
-	Tue, 22 Oct 2024 15:19:35 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24AF910E6A1;
- Tue, 22 Oct 2024 15:19:35 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1199371560570904274=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48C9E10E1FC;
+	Tue, 22 Oct 2024 15:28:53 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iu+9Z3R8";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 96E0010E1FC
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 15:28:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729610932; x=1761146932;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/i/74a8Vj5Bmo1O5V26oQhTKywxx4FSQR2k+wuoX6V8=;
+ b=iu+9Z3R8LdaXt+9mN95MULtMKc0MKNwmyZUtrhnbLkH6VQZy4VkRJ9wP
+ u98UPHc3ir5qee1YX+j5vBl6LQ9HkWoKQ291GQAib/4E6/A4gKx26tTXW
+ vGr7nyH4QAwcL5lZGkDQObnQCCL5ALzaerOZQCL3GjBWc4L/8AdAcRqdS
+ LpHcH2kK6ZBg6LjTG4KsbOTC+1PlSt/JDQPbwVajII8Sp0PVal2L4zmEu
+ vdM7nf+OLG8YlYRoE/ttpgLEHKZwN5qvwp8zt54yQ/KSgwRwR0rwyGlxc
+ J5z0fRKVNC1WB37RHzl1lZ0VxpmFlfIMZcKO2jmzWgrI7M/ZCG+pOCroj g==;
+X-CSE-ConnectionGUID: wrKxAv2pQ1C2regid9+Hhg==
+X-CSE-MsgGUID: W9tiTk0STXGl2dK5K06pSQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="39775573"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="39775573"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 08:19:14 -0700
+X-CSE-ConnectionGUID: 3dpKs0WSRTuKoO1vJSRJEg==
+X-CSE-MsgGUID: GaouLwvtSJOqEsBSWEjUGQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="110725179"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 08:19:12 -0700
+Date: Tue, 22 Oct 2024 17:19:10 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
+ kunal1.joshi@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t v2 1/2] tests/chamelium/kms_chamelium_edid: Use
+ extended flag to reduce the number of edid
+Message-ID: <20241022151910.exybouw7m7bj6mec@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
+ kunal1.joshi@intel.com, swati2.sharma@intel.com,
+ sameer.lattannavar@intel.com,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20241018035914.1740924-1-pranay.samala@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Frotation=5Fcrc=3A_?=
- =?utf-8?q?Intel_display_version_20_onwards_doesn=27t_do_hflip_with_tile4?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Oct 2024 15:19:35 -0000
-Message-ID: <172961037514.1309763.6655699346613017541@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241022094744.3884409-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20241022094744.3884409-1-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241018035914.1740924-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +73,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1199371560570904274==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Pranay,
+On 2024-10-18 at 09:29:13 +0530, Pranay Samala wrote:
+> This test iterates on all the available edids of HDMI.
+> Due to CI test timeut limitation, we are reducing the
+> number of edids to execute to avoid result as timeout.
+> 
+> Using extended flag to achieve this. The test will execute
+> only 25 edids when this flag is not used as CI doesnt uses
+> this flag.
+> In local execution to execute on all edids, we have to give
+> this flag at the runtime.
+> 
 
-== Series Details ==
++Cc Louis Chauvet <louis.chauvet@bootlin.com>
 
-Series: tests/kms_rotation_crc: Intel display version 20 onwards doesn't do hflip with tile4
-URL   : https://patchwork.freedesktop.org/series/140302/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_8082_BAT -> XEIGTPW_11949_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_8082 -> IGTPW_11949
-
-  IGTPW_11949: c21c63e125f00a5c719d398fcabb0b0b2988329a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2107-beaeaccd284ba3b69b6dbfdc18bb89441fc99a52: beaeaccd284ba3b69b6dbfdc18bb89441fc99a52
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11949/index.html
-
---===============1199371560570904274==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: Intel display version 20 onwards doesn&#x27;t do hflip with tile4</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140302/">https://patchwork.freedesktop.org/series/140302/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11949/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11949/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8082_BAT -&gt; XEIGTPW_11949_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8082 -&gt; IGTPW_11949</li>
-</ul>
-<p>IGTPW_11949: c21c63e125f00a5c719d398fcabb0b0b2988329a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2107-beaeaccd284ba3b69b6dbfdc18bb89441fc99a52: beaeaccd284ba3b69b6dbfdc18bb89441fc99a52</p>
-
-</body>
-</html>
-
---===============1199371560570904274==--
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+> ---
+>  tests/chamelium/kms_chamelium_edid.c | 20 +++++++++++++++++++-
+>  1 file changed, 19 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
+> index 8438f5f15..1bdde1768 100644
+> --- a/tests/chamelium/kms_chamelium_edid.c
+> +++ b/tests/chamelium/kms_chamelium_edid.c
+> @@ -122,6 +122,7 @@
+>   */
+>  
+>  #define MODE_CLOCK_ACCURACY 0.05 /* 5% */
+> +static bool extended;
+>  
+>  static void get_connectors_link_status_failed(chamelium_data_t *data,
+>  					      bool *link_status_failed)
+> @@ -273,6 +274,9 @@ static void edid_stress_resolution(chamelium_data_t *data,
+>  			      data->ports, data->port_count);
+>  
+>  
+> +	if (!extended)
+> +		edids_list_len = 25;
+> +
+>  	for (i = 0; i < edids_list_len; ++i) {
+>  		struct chamelium_edid *chamelium_edid;
+>  		drmModeModeInfo mode;
+> @@ -504,8 +508,22 @@ static void test_mode_timings(chamelium_data_t *data,
+>  	} while (++i < count_modes);
+>  }
+>  
+> +static int opt_handler(int opt, int opt_index, void *_data)
+> +{
+> +	switch (opt) {
+> +	case 'e':
+> +		extended = true;
+> +		break;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +const char *help_str =
+> +	"  -e \tExtended tests.\n";
+> +
+>  IGT_TEST_DESCRIPTION("Testing EDID with a Chamelium board");
+> -igt_main
+> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
+>  {
+>  	chamelium_data_t data;
+>  	struct chamelium_port *port;
+> -- 
+> 2.34.1
+> 
