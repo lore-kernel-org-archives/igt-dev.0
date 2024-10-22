@@ -4,63 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E6CD2C56D
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C6A7D2C56A
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:31:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48C9E10E1FC;
-	Tue, 22 Oct 2024 15:28:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iu+9Z3R8";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 96E0010E1FC
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 15:28:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729610932; x=1761146932;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=/i/74a8Vj5Bmo1O5V26oQhTKywxx4FSQR2k+wuoX6V8=;
- b=iu+9Z3R8LdaXt+9mN95MULtMKc0MKNwmyZUtrhnbLkH6VQZy4VkRJ9wP
- u98UPHc3ir5qee1YX+j5vBl6LQ9HkWoKQ291GQAib/4E6/A4gKx26tTXW
- vGr7nyH4QAwcL5lZGkDQObnQCCL5ALzaerOZQCL3GjBWc4L/8AdAcRqdS
- LpHcH2kK6ZBg6LjTG4KsbOTC+1PlSt/JDQPbwVajII8Sp0PVal2L4zmEu
- vdM7nf+OLG8YlYRoE/ttpgLEHKZwN5qvwp8zt54yQ/KSgwRwR0rwyGlxc
- J5z0fRKVNC1WB37RHzl1lZ0VxpmFlfIMZcKO2jmzWgrI7M/ZCG+pOCroj g==;
-X-CSE-ConnectionGUID: wrKxAv2pQ1C2regid9+Hhg==
-X-CSE-MsgGUID: W9tiTk0STXGl2dK5K06pSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="39775573"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="39775573"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 08:19:14 -0700
-X-CSE-ConnectionGUID: 3dpKs0WSRTuKoO1vJSRJEg==
-X-CSE-MsgGUID: GaouLwvtSJOqEsBSWEjUGQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="110725179"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 08:19:12 -0700
-Date: Tue, 22 Oct 2024 17:19:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
- kunal1.joshi@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t v2 1/2] tests/chamelium/kms_chamelium_edid: Use
- extended flag to reduce the number of edid
-Message-ID: <20241022151910.exybouw7m7bj6mec@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
- kunal1.joshi@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com,
- Louis Chauvet <louis.chauvet@bootlin.com>
-References: <20241018035914.1740924-1-pranay.samala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 49F8810E1FE;
+	Tue, 22 Oct 2024 15:31:16 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E237C10E1FC;
+ Tue, 22 Oct 2024 15:31:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241018035914.1740924-1-pranay.samala@intel.com>
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/xe=3A_Add_tests_t?=
+ =?utf-8?q?o_validate_GT_coarse_power_gating_status_and_toggle_coarse_power_?=
+ =?utf-8?q?gating_states_=28rev8=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sk.anirban@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 22 Oct 2024 15:31:15 -0000
+Message-ID: <172961107592.1310194.6823514231542865960@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241022104918.2120652-1-sk.anirban@intel.com>
+In-Reply-To: <20241022104918.2120652-1-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,75 +38,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
-On 2024-10-18 at 09:29:13 +0530, Pranay Samala wrote:
-> This test iterates on all the available edids of HDMI.
-> Due to CI test timeut limitation, we are reducing the
-> number of edids to execute to avoid result as timeout.
-> 
-> Using extended flag to achieve this. The test will execute
-> only 25 edids when this flag is not used as CI doesnt uses
-> this flag.
-> In local execution to execute on all edids, we have to give
-> this flag at the runtime.
-> 
+== Series Details ==
 
-+Cc Louis Chauvet <louis.chauvet@bootlin.com>
+Series: tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev8)
+URL   : https://patchwork.freedesktop.org/series/139808/
+State : warning
 
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
-> ---
->  tests/chamelium/kms_chamelium_edid.c | 20 +++++++++++++++++++-
->  1 file changed, 19 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-> index 8438f5f15..1bdde1768 100644
-> --- a/tests/chamelium/kms_chamelium_edid.c
-> +++ b/tests/chamelium/kms_chamelium_edid.c
-> @@ -122,6 +122,7 @@
->   */
->  
->  #define MODE_CLOCK_ACCURACY 0.05 /* 5% */
-> +static bool extended;
->  
->  static void get_connectors_link_status_failed(chamelium_data_t *data,
->  					      bool *link_status_failed)
-> @@ -273,6 +274,9 @@ static void edid_stress_resolution(chamelium_data_t *data,
->  			      data->ports, data->port_count);
->  
->  
-> +	if (!extended)
-> +		edids_list_len = 25;
-> +
->  	for (i = 0; i < edids_list_len; ++i) {
->  		struct chamelium_edid *chamelium_edid;
->  		drmModeModeInfo mode;
-> @@ -504,8 +508,22 @@ static void test_mode_timings(chamelium_data_t *data,
->  	} while (++i < count_modes);
->  }
->  
-> +static int opt_handler(int opt, int opt_index, void *_data)
-> +{
-> +	switch (opt) {
-> +	case 'e':
-> +		extended = true;
-> +		break;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +const char *help_str =
-> +	"  -e \tExtended tests.\n";
-> +
->  IGT_TEST_DESCRIPTION("Testing EDID with a Chamelium board");
-> -igt_main
-> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  {
->  	chamelium_data_t data;
->  	struct chamelium_port *port;
-> -- 
-> 2.34.1
-> 
+== Summary ==
+
+Pipeline status: FAILED.
+
+see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1295271 for the overview.
+
+build:tests-debian-minimal has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/65463030):
+  section_start:1729610723:get_sources
+  Getting source from Git repository
+  $ /host/bin/curl -s -L --cacert /host/ca-certificates.crt --retry 4 -f --retry-delay 60 https://gitlab.freedesktop.org/freedesktop/helm-gitlab-infra/-/raw/main/runner-gating/runner-gating.sh | sh -s -- pre_get_sources_script
+  Checking if the user of the pipeline is allowed...
+  Checking if the job's project is part of a well-known group...
+  Thank you for contributing to freedesktop.org
+  Fetching changes...
+  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
+  Checking out c8e4659f as detached HEAD (ref is intel/IGTPW_11951)...
+  
+  Skipping Git submodules setup
+  section_end:1729610747:get_sources
+  section_start:1729610747:step_script
+  Executing "step_script" stage of the job script
+  Using docker image sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal:commit-c8e4659f68a1548d819f53b3451ace233c4fe547 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian-minimal@sha256:8b51a86fd81e64c501c9521c37fc8ad6f2550976931c510eb0ff4f6a328d477a ...
+  section_end:1729610750:step_script
+  section_start:1729610750:cleanup_file_variables
+  Cleaning up project directory and file based variables
+  section_end:1729610751:cleanup_file_variables
+  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:08904a47f4efcc161569a9b7f88c458fc6e3e85a2225132246af9cf5cc6c4e5b: image not known (docker.go:650:0s)
+
+== Logs ==
+
+For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1295271
