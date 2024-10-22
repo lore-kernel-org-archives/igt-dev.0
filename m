@@ -4,28 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A3CBD2C56A
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:04:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D16D2C56A
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:06:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4892310E69B;
-	Tue, 22 Oct 2024 15:04:49 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB6D910E69D;
- Tue, 22 Oct 2024 15:04:47 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6055311785335168193=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6A32F10E699;
+	Tue, 22 Oct 2024 15:06:32 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wv10dbKy";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAC8210E699
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 15:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729609591; x=1761145591;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=8ZYr+JxUDjqVIt0i+HkyYWvGKn47MYljIwlRfmdRKiA=;
+ b=Wv10dbKyaPkiMzXZYW24MfW3rX5DEGcJewkQVd1V/yu3/Y2MWeuIO+Ca
+ R1J2bTz1QVfRolMBcRDfartDvDZycNpAaxxFBD+KzkQXn8U0454xOnjP9
+ mQ4T2Anq0a2KfQavJOZ8nbh7OYllwADdnP5OmVwPUJJeLHMlJhPMNaCqb
+ Boiu0XCNMc4qo1WBKF+wtUfMXkU+Wxcc/Obq49RQ4sXmKCBrmtYAKRUSN
+ aqrxIt3foulWAnGkV/CMFte7ZmTy5OCuMCv1kJFK0Wks1hdW9BvBoHoi/
+ jwr/z1GZAXBDz+1uL9UODywFmHRlYT27HNjMbjvKizEL7qln5b7pF/UXG w==;
+X-CSE-ConnectionGUID: xXZ450MTQFuTolkFiRUi+A==
+X-CSE-MsgGUID: AnGw4MLNQO+0IWo6m+unqw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="29260632"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="29260632"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 08:06:31 -0700
+X-CSE-ConnectionGUID: d2okj1l2QkGzyGU/qGsN/A==
+X-CSE-MsgGUID: R+TUwNuwTfupPcY8djtOkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="83880414"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 08:06:28 -0700
+Date: Tue, 22 Oct 2024 17:06:15 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 12/12] lib/igt_fb: Add non sub-sampled YUV formats
+Message-ID: <20241022150615.imklm36tysilf62x@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Arthur Grillo <arthurgrillo@riseup.net>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20240912-kms_fb_stress-dev-v6-0-71e9a65397e9@riseup.net>
+ <20240912-kms_fb_stress-dev-v6-12-71e9a65397e9@riseup.net>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/kms=5Frotation=5Fcrc?=
- =?utf-8?q?=3A_Intel_display_version_20_onwards_doesn=27t_do_hflip_with_tile?=
- =?utf-8?q?4?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Oct 2024 15:04:47 -0000
-Message-ID: <172960948795.1309763.17391434995192441789@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241022094744.3884409-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20241022094744.3884409-1-juhapekka.heikkila@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240912-kms_fb_stress-dev-v6-12-71e9a65397e9@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,251 +81,208 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6055311785335168193==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Arthur,
+On 2024-09-12 at 21:39:36 -0300, Arthur Grillo wrote:
+> This adds support for the formats:
+> - NV24
+> - NV42
+> - YU24
+> - YU42
+--- ^^^^
+YV24
 
-== Series Details ==
+Please add also that last two are matched into DRM YUV444/YVU444
 
-Series: tests/kms_rotation_crc: Intel display version 20 onwards doesn't do hflip with tile4
-URL   : https://patchwork.freedesktop.org/series/140302/
-State : failure
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from IGT_8082 -> IGTPW_11949
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_11949 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11949, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11949:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
-    - bat-dg2-8:          [PASS][1] -> [FAIL][2] +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11949 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-arls-1:         [PASS][3] -> [DMESG-WARN][4] ([i915#10341] / [i915#12133])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arls-1/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-arls-1/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - bat-arls-1:         [PASS][5] -> [DMESG-WARN][6] ([i915#11349])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arls-1/igt@i915_selftest@live@hangcheck.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-arls-1/igt@i915_selftest@live@hangcheck.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - bat-atsm-1:         [PASS][7] -> [ABORT][8] ([i915#12133]) +1 other test abort
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-atsm-1/igt@i915_selftest@live@late_gt_pm.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-atsm-1/igt@i915_selftest@live@late_gt_pm.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [INCOMPLETE][9] ([i915#12133] / [i915#9413]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-twl-1/igt@i915_selftest@live.html
-    - bat-dg2-9:          [ABORT][11] ([i915#12133]) -> [PASS][12]
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-dg2-9/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@client:
-    - bat-dg2-9:          [ABORT][13] ([i915#12305]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-dg2-9/igt@i915_selftest@live@client.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-twl-1:          [INCOMPLETE][15] ([i915#9413]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][17] ([i915#11621]) -> [PASS][18] +132 other tests pass
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
-  [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12305]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8082 -> IGTPW_11949
-  * Linux: CI_DRM_15576 -> CI_DRM_15578
-
-  CI-20190529: 20190529
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15578: 4456dc1cd52e3e6db4513bacc85e6982ac9e101d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11949: c21c63e125f00a5c719d398fcabb0b0b2988329a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/index.html
-
---===============6055311785335168193==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: Intel display version 20 onwards doesn&#x27;t do hflip with tile4</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140302/">https://patchwork.freedesktop.org/series/140302/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8082 -&gt; IGTPW_11949</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11949 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11949, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11949:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-dg2-8/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">FAIL</a> +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11949 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arls-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-arls-1/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>bat-arls-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arls-1/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-arls-1/igt@i915_selftest@live@hangcheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349">i915#11349</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-atsm-1/igt@i915_selftest@live@late_gt_pm.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-atsm-1/igt@i915_selftest@live@late_gt_pm.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) +1 other test abort</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-dg2-9/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305">i915#12305</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-dg2-9/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11949/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +132 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8082 -&gt; IGTPW_11949</li>
-<li>Linux: CI_DRM_15576 -&gt; CI_DRM_15578</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15578: 4456dc1cd52e3e6db4513bacc85e6982ac9e101d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11949: c21c63e125f00a5c719d398fcabb0b0b2988329a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6055311785335168193==--
+> 
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> ---
+>  lib/igt_fb.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
+> 
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 7f87d40ed3d6..b1301d08d9f8 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -257,6 +257,16 @@ static const struct format_desc_struct {
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+>  	  .hsub = 2, .vsub = 2,
+>  	},
+> +	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+> +	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> @@ -292,6 +302,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> @@ -302,6 +317,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
+>  	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
+>  	  .num_planes = 1, .plane_bpp = { 32, },
+> @@ -1166,8 +1186,10 @@ static void clear_yuv_buffer(struct igt_fb *fb)
+>  		break;
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		igt_assert(ARRAY_SIZE(plane_size) == 3);
+>  		memset(ptr + fb->offsets[0],
+>  		       full_range ? 0x00 : 0x10,
+> @@ -3495,6 +3517,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+> @@ -3505,8 +3529,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->ay_inc = 1;
+>  		params->uv_inc = 1;
+>  		break;
+> @@ -3536,11 +3562,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> @@ -3568,12 +3598,14 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	switch (fb->drm_format) {
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+> +	case DRM_FORMAT_NV24:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[1] + 1;
+>  		break;
+>  
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1] + 1;
+> @@ -3582,6 +3614,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[2];
+> @@ -3589,6 +3622,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[2];
+>  		params->v_offset = fb->offsets[1];
+> @@ -4322,14 +4356,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_yuv_to_rgb24(cvt);
+>  			return;
+> @@ -4340,14 +4378,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_rgb24_to_yuv(cvt);
+>  			return;
+> @@ -4921,11 +4963,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> 
+> -- 
+> 2.46.0
+> 
