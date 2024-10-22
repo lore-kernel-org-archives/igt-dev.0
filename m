@@ -4,40 +4,39 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 189FDD2C54B
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 12:53:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92127D2C54A
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 12:53:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEC0A10E682;
-	Tue, 22 Oct 2024 12:53:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4EDF510E683;
+	Tue, 22 Oct 2024 12:53:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="ZGkcCiNT";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="NaB0jwTZ";
 	dkim-atps=neutral
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
  [217.70.183.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B40BA10E67E
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 12:53:28 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D31C56000D;
- Tue, 22 Oct 2024 12:53:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9BF8410E67E
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 12:53:29 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 972366000F;
+ Tue, 22 Oct 2024 12:53:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1729601607;
+ t=1729601608;
  h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
  to:to:cc:cc:mime-version:mime-version:content-type:content-type:
  content-transfer-encoding:content-transfer-encoding:
  in-reply-to:in-reply-to:references:references;
- bh=W9qFf3Ick05gHQUG+nuZlQkLIl6vWI1DXcIAef1Va6k=;
- b=ZGkcCiNTmDRwePx1d/6qO2F93pGnBTWKcEviK85V5dKkWfYDxVw7KRT1aLtCFPXglJf+U/
- x0wnPBFB765lXLg39lTMPD2oWMSp/vvya9tNZBb0bYYQ+jJgDKZ6jVk1MlHv6NQ6mAxMV/
- 3Rcu1fl9y7QCygTcDsg6QIKvrAlvITn7k7ExUNcU9KbK7XP2svl6ZxQbQ67MJcCFV5ABaG
- B59NfuFH+VPxBiASSa4i/TmXIb+Rq4TZbU0kf112aDSWxOGWoBSp2lp1/KHIouKToJt2lg
- N94Ak+gQGJQ43Nyy948ALCt7Ye+RKjuLHZ6hxJNlz8ynYXjIKEeUPphldForrQ==
+ bh=D9vSvfZ2iLxhwthTF4wz1Z81e/TC5UlVKuyscLqvKhc=;
+ b=NaB0jwTZyfx+DsEz20CV2Uwezm1T9ZFb5cVhy6yEAW7OBdNkTVm7l1mimj291cm2FrG3qx
+ pl1NGuJZ8K8FHFAcieOqyyF+hBLUN+tiNJiuvddJMg6r7e9MjHIB4NmWSEgBpW1+jqe+FA
+ PC/nXQokmgHtLo6Be080bM5bIyCF4BXDDHpY8EmFBw7n69h0yVgELXMhBWUZ/wstowXahe
+ mWuvbo/dTF580rkVbTe4hOpoYY5ZPKfBu3xTyv8T4+9mVUocw0gH0uTYiEcBDMNdjmrnPV
+ 7zxBcgnis0PSwZkHgmpnnFM9icIKxJWvuI/6hfrLdXk4d+0FZee40OIKtED8uA==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 22 Oct 2024 14:53:13 +0200
-Subject: [PATCH i-g-t v2 4/5] lib/monitor_edids: Fix missing names in some
- monitor EDID
+Date: Tue, 22 Oct 2024 14:53:14 +0200
+Subject: [PATCH i-g-t v2 5/5] lib/monitor_edids: Add new EDID for HDMI 4k
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241022-b4-cv3-02-monitor-edids-v2-4-7634786c21e6@bootlin.com>
+Message-Id: <20241022-b4-cv3-02-monitor-edids-v2-5-7634786c21e6@bootlin.com>
 References: <20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com>
 In-Reply-To: <20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com>
 To: igt-dev@lists.freedesktop.org
@@ -51,21 +50,21 @@ Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Louis Chauvet <louis.chauvet@bootlin.com>, 
  20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1565;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1358;
  i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=c2Q+H4BXjR26e5k4WbZAPmvOShAm4mYHXlcXhhkeTZI=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnF6BCqGe/uvtGAfxL+X0vCNmaBz/VZFlEyozTK
- GM+v0dK1yuJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZxegQgAKCRAgrS7GWxAs
- 4qERD/4pdnsHkBBWm4CB00mHGhzmVDLCJaP2sKOjSeNTZnTERGacGR3lHwRQSaL3icwTv7C1O8i
- YMBg0sO5PEvzJ1sC6SWjrhDIhB+3UlH0iC8BCEHZFK671onipYQ67BouD+C/p9o+H7pppEnYm8U
- FtSNhQRSyA/TLUnZmgYG01rB88HmIuX7orO8THRHoeNx2sW04bbNLJWln5TB5v5rmYlzq7nf3Ay
- GpDOXMdc0J/gDdlEB8AtrQ5MleYlZ6967b7UeCHLcXRlJu1Em78kMyyt34tr4OVAR7r9ea0Ll6k
- fqQ3CQvB6dXkAUltSkju+nakKYqPLCK6INgDKvDFQTT0o7idDeXXqzuP/WLpR0oGmVI/SI3uOqJ
- c3SI8hUG1Cb6s0XFT+cZ6Rgruywlyl5FhikMYImY6MjJHOlCdBnOv+RHiZTDoQK33CYSDLx/8Te
- yiBe0I4Oj/dIOop2x9VQBPWwK4vy84qqkFLSZwcey7gQIKhZ/k2fJURC5TAguaDT1P5dsWWKrvf
- YV4g72wi1erdmjoC/vM/TyGxKw2ZEUDjLj9SZfYhLhFx7psXupybmqGK3DV8rOSjZ3BBxXDFt8E
- 6Z35UACC55kvbFx8gvgTyRTBpQNTfl+Gut6DA8T9k5EuqFXxWXw3JVJy/K2MvpRhEJyGvEdRNbF
- kobrtu6K30rYOdQ==
+ bh=yiECqOknxjsiKb2aESluLt2yPV75shzJgVTtLNi+tC8=;
+ b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnF6BCmVTig4eOsCO4+MKg8Fkl6uuLgtYy6cQJn
+ 8lxgpDSzuqJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZxegQgAKCRAgrS7GWxAs
+ 4ou5D/9Uw2j8VSnOy5b6LXVQp/bHUkLuWyczcQ92UHilo/nX2pk/ZEP4+DHdwR6fdphXNhZxWPM
+ Hu+Vz6gVC3uL3Vms8ZLrubxb2AD0EoiELtNMDMzZmHv1IQpwp/iCL3FCt/ly48+qVJWN5RIpH+H
+ Y622pZBoiASgI0neWQ28YA9IOcsYiKEd36kVxUVea7gLzytLFU58iBjeVUgJU2LJg78IEEtg6DC
+ U/TlBkoU8423GDLNEjjdo2Hl6uk1hUsy20XsexOmL8EkvqKqS/G1Dfeze275z760hnnTaWm3ugn
+ +/w5/DqYofkWVp2KVJdsLqWK5Wwr+PJBkInVWasToy7u4K4K4LBz7I1c1dtdB1vzan4DBFor77b
+ c5aDs5A31seYkbDXUF9yO47YMgRg1jmF49jbXVudbv5aFgwWCOVldea9FNWOW/d6Qmn7VjbRxAV
+ P2a2MtRJrVWwHdLHUWFPbuOIh9c94dszNIycGr6kAo1Aj2RHoklJOT8y3moESagew1VoaLcDS4B
+ wPT4m6K1TZ92v9o5j0HSXlw8AQV+v7rEqmdLdtdNF3QDedDznDpzX62rknMyUWpidi4NcxQxeR8
+ C1w9nBv8/iKFf7b1oT5Qux3e6m2HxLW3C1wIxZGrAf/8hVObpcIS+SAibxkYfGECstIxK8RkJie
+ 8X13dmWlfmNJNOA==
 X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-GND-Sasl: louis.chauvet@bootlin.com
@@ -84,45 +83,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Some HDMI EDID did not have a good name identifier. Add one to avoid
-confusion.
+Add EDID for the HDMI screen LG HDR 4K.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- lib/monitor_edids/hdmi_edids.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/monitor_edids/hdmi_edids.h | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index 573e2149d5d3..8bcd1f31b458 100644
+index 8bcd1f31b458..cc6820d96231 100644
 --- a/lib/monitor_edids/hdmi_edids.h
 +++ b/lib/monitor_edids/hdmi_edids.h
-@@ -241,7 +241,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "33333633493056465320000000fc0044"
- 		  "454c4c20323430354650570a000000fd"
- 		  "00384c1e5111000a20202020202000e9" },
--	{ .name = "`",
-+	{ .name = "DEL_DELL_2407WFP_HDMI",
- 	  .edid = "00ffffffffffff0010ac17a053575930"
- 		  "0511010380342178eeee91a3544c9926"
- 		  "0f5054a54b008180a940714fb3000101"
-@@ -438,7 +438,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "60350000003200001c011d8018711c16"
- 		  "20582c2500c48e2100009e0000000000"
- 		  "0000000000000000000000000000000a" },
--	{ .name = "",
-+	{ .name = "GSM_50294_M3704C_HDMI",
- 	  .edid = "00ffffffffffff001e6d76c401010101"
- 		  "2514010380522e78eaac27a355499b25"
- 		  "10474aa1080081807140614045403140"
-@@ -490,7 +490,7 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "5011000a202020202020000000fc0048"
- 		  "50205a5232343430770a2020000000ff"
- 		  "00434e34333132303836580a2020007f" },
--	{ .name = "",
-+	{ .name = "HWP_10582_HP_ZR2440w_HDMI",
- 	  .edid = "00ffffffffffff0022f0562901010101"
- 		  "0b170103803420782afc81a4554d9d25"
- 		  "125054210800d1c081c0814081809500"
+@@ -49,7 +49,23 @@ monitor_edid HDMI_EDIDS_4K[] = {
+ 		  "5E00A0A0A0295030203500C48F210000"
+ 		  "1EEF5100A0F070198030203500C48F21"
+ 		  "00001E000000000000000000000000A8" },
+-
++	{ .name = "4K_GSM_LG_HDR_4K_HDMI",
++	  .edid = "00ffffffffffff001e6d4f77c75f1500"
++		  "0521010380462878ea7ba1ae4f44a926"
++		  "0c5054210800d1c06140454001010101"
++		  "010101010101a0cb0046f0703e802010"
++		  "3500b9882100001a000000fd00283c1e"
++		  "873c000a202020202020000000fc004c"
++		  "472048445220344b0a202020000000ff"
++		  "003330354d414e4a43335a37350a01e4"
++		  "0203427223090707830100004d010304"
++		  "10121f202261605f5e5d6d030c001000"
++		  "b83c20006001020367d85dc401788003"
++		  "e30f0003e2006ae305c000e606050159"
++		  "5952a36600a0f0701f8030203500b988"
++		  "2100001a565e00a0a0a0295030203500"
++		  "b9882100001a023a801871382d40582c"
++		  "4500b9882100001a00000000000000af" },
+ };
+ 
+ monitor_edid HDMI_EDIDS_NON_4K[] = {
 
 -- 
 2.46.2
