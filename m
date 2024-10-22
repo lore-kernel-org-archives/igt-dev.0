@@ -4,28 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A22ED2CDFB
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 16:14:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30AC5D2CDFA
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 16:21:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB94C10E1CC;
-	Tue, 22 Oct 2024 16:14:32 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3881910E1CC;
- Tue, 22 Oct 2024 16:14:31 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1956805876128968357=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E22FB10E6BE;
+	Tue, 22 Oct 2024 16:21:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aPccr2yG";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FEAA10E6BE
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 16:21:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729614089; x=1761150089;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=+U0RvnNwaZ5uF6cwF/5mtRljVNbJffg7lLdgkBRWN4o=;
+ b=aPccr2yGhJoPmJyCOut5+olKbWMozNHuNqqrvraEpmp30rDqdfqC0yGY
+ /zH+9XDpwaVGl0bEKIEjv4t7JiX2K5juqAOSr0kTNRGqItoyuzAyNm+KB
+ 2Zxky4FG/1F47VIHEMYEYCCoUr6mGmsTMTqXZ/GD+Ge66ni4da0LOEsy5
+ 5J+yo9ov/pHxKMfs54vOETMwOOzXxlFC5RZXf/qDPOsOTNIsPp+/S6dKL
+ rea7MlPI3ZGftlVC2gNOT+0ODF1AZcguytQ6uiTvaEAlJACwLa6CyI+wB
+ zF13TjlcZiGuZKAZwdR2aH8KHy2Paf/vv2GSNJW23idvSTaSMiwG/pyQl w==;
+X-CSE-ConnectionGUID: IgLhbUfRT5Ou/5wnqXU60Q==
+X-CSE-MsgGUID: ozZKwXOWSoWehbd3/5Euuw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="40536969"
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="40536969"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 09:21:28 -0700
+X-CSE-ConnectionGUID: H0chMGhURx2nQ5IV6UPrzw==
+X-CSE-MsgGUID: PMxBXACbTFOrBWPdw8WslA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="103214890"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 09:21:27 -0700
+Date: Tue, 22 Oct 2024 18:21:25 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 11/14] lib/rendercopy: Use igt_require() to
+ validate gen2/3 surface size
+Message-ID: <20241022162125.3mghv55bznb25tpg@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ville Syrjala <ville.syrjala@linux.intel.com>
+References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
+ <20241004104121.32750-12-ville.syrjala@linux.intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/xe=3A_Add_tests_to_va?=
- =?utf-8?q?lidate_GT_coarse_power_gating_status_and_toggle_coarse_power_gati?=
- =?utf-8?q?ng_states_=28rev8=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: sk.anirban@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Oct 2024 16:14:31 -0000
-Message-ID: <172961367122.1310194.3355113630922685829@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241022104918.2120652-1-sk.anirban@intel.com>
-In-Reply-To: <20241022104918.2120652-1-sk.anirban@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241004104121.32750-12-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,176 +70,78 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1956805876128968357==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Ville,
+On 2024-10-04 at 13:41:18 +0300, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> gen2/3 render engine has a max surface size 2kx2k. That is
+> pretty easy to hit accidentally. Rather than exploding with
+> an assert it seems better to just gracefully skip the test.
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-== Series Details ==
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Series: tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev8)
-URL   : https://patchwork.freedesktop.org/series/139808/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8082 -> IGTPW_11951
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/index.html
-
-Participating hosts (45 -> 43)
-------------------------------
-
-  Missing    (2): bat-arls-2 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11951 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [INCOMPLETE][1] ([i915#12133] / [i915#9413]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-twl-1/igt@i915_selftest@live.html
-    - bat-dg2-9:          [ABORT][3] ([i915#12133]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-dg2-9/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@client:
-    - bat-dg2-9:          [ABORT][5] ([i915#12305]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-dg2-9/igt@i915_selftest@live@client.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-twl-1:          [INCOMPLETE][7] ([i915#9413]) -> [PASS][8]
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][9] ([i915#11621]) -> [PASS][10] +132 other tests pass
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12305]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8082 -> IGTPW_11951
-  * Linux: CI_DRM_15576 -> CI_DRM_15579
-
-  CI-20190529: 20190529
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15579: 2d11d2602dc35b03fd68309c96fedeea423beb42 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11951: 11951
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/index.html
-
---===============1956805876128968357==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev8)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139808/">https://patchwork.freedesktop.org/series/139808/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8082 -&gt; IGTPW_11951</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/index.html</p>
-<h2>Participating hosts (45 -&gt; 43)</h2>
-<p>Missing    (2): bat-arls-2 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11951 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-dg2-9/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305">i915#12305</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-dg2-9/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11951/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +132 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8082 -&gt; IGTPW_11951</li>
-<li>Linux: CI_DRM_15576 -&gt; CI_DRM_15579</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15579: 2d11d2602dc35b03fd68309c96fedeea423beb42 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11951: 11951<br />
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1956805876128968357==--
+> ---
+>  lib/rendercopy_i830.c | 8 ++++----
+>  lib/rendercopy_i915.c | 8 ++++----
+>  2 files changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/rendercopy_i830.c b/lib/rendercopy_i830.c
+> index 4b0ea3b859e2..ced4a84a23e8 100644
+> --- a/lib/rendercopy_i830.c
+> +++ b/lib/rendercopy_i830.c
+> @@ -139,8 +139,8 @@ static void gen2_emit_target(struct intel_bb *ibb,
+>  	uint32_t format;
+>  
+>  	igt_assert_lte(dst->surface[0].stride, 8192);
+> -	igt_assert_lte(intel_buf_width(dst), 2048);
+> -	igt_assert_lte(intel_buf_height(dst), 2048);
+> +	igt_require(intel_buf_width(dst) <= 2048);
+> +	igt_require(intel_buf_height(dst) <= 2048);
+>  
+>  	switch (dst->bpp) {
+>  		case 8: format = COLR_BUF_8BIT; break;
+> @@ -184,8 +184,8 @@ static void gen2_emit_texture(struct intel_bb *ibb,
+>  	uint32_t format;
+>  
+>  	igt_assert_lte(src->surface[0].stride, 8192);
+> -	igt_assert_lte(intel_buf_width(src), 2048);
+> -	igt_assert_lte(intel_buf_height(src), 2048);
+> +	igt_require(intel_buf_width(src) <= 2048);
+> +	igt_require(intel_buf_height(src) <= 2048);
+>  
+>  	switch (src->bpp) {
+>  		case 8: format = MAPSURF_8BIT | MT_8BIT_L8; break;
+> diff --git a/lib/rendercopy_i915.c b/lib/rendercopy_i915.c
+> index 94cdfb99af9a..2095a7c14b26 100644
+> --- a/lib/rendercopy_i915.c
+> +++ b/lib/rendercopy_i915.c
+> @@ -93,8 +93,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+>  		uint32_t format_bits, tiling_bits = 0;
+>  
+>  		igt_assert_lte(src->surface[0].stride, 8192);
+> -		igt_assert_lte(intel_buf_width(src), 2048);
+> -		igt_assert_lte(intel_buf_height(src), 2048);
+> +		igt_require(intel_buf_width(src) <= 2048);
+> +		igt_require(intel_buf_height(src) <= 2048);
+>  
+>  		if (src->tiling != I915_TILING_NONE)
+>  			tiling_bits = MS3_TILED_SURFACE;
+> @@ -136,8 +136,8 @@ void gen3_render_copyfunc(struct intel_bb *ibb,
+>  		uint32_t format_bits;
+>  
+>  		igt_assert_lte(dst->surface[0].stride, 8192);
+> -		igt_assert_lte(intel_buf_width(dst), 2048);
+> -		igt_assert_lte(intel_buf_height(dst), 2048);
+> +		igt_require(intel_buf_width(dst) <= 2048);
+> +		igt_require(intel_buf_height(dst) <= 2048);
+>  
+>  		switch (dst->bpp) {
+>  			case 8: format_bits = COLR_BUF_8BIT; break;
+> -- 
+> 2.45.2
+> 
