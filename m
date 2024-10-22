@@ -4,59 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7AF4D2CDE6
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:52:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A191FD2CDF5
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 15:52:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 743DE10E15D;
-	Tue, 22 Oct 2024 15:52:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5AFEA10E1FE;
+	Tue, 22 Oct 2024 15:52:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TSyp2Fgx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G31MgvU1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2369310E15D
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 15:52:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC76710E1FE
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 15:52:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729612355; x=1761148355;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=mxizkX8rkTcXmCRXQWT/GITN+ymJ6djBKn/M6QEeksg=;
- b=TSyp2Fgxg+0KDO5La7kJXR12YCT/YWiPO8jf7rstgj7nsK8mtdnNY7K6
- emMrJCrq+jrHfjb1J/N0JoxJOfk3FpyioZNi2cr33TJLak9dbJjmOqduV
- 9BKnmA+yKgjBIrNBH8seUaaOIyPOcqdk3csAb3waV2FM3SMAWMXUMnElq
- KxpSe0B9jDlBgbj7/XC7nmBtizbEJjvEVlup8S7Wb6W/6HZ4nmKTfDEYV
- AQyI94ZXzC5tLqMbBAssR2Mt9t+Dv+ial6yzPt0KTuGFeuJUz//LjHrhV
- KV5hV3OVsHIyIQexRy/fO/wENRXbIL6GGePHUb48zYrwO2f69HE9TpQ6E Q==;
-X-CSE-ConnectionGUID: ZJzNsz1jS4Ok+YkUR6go2Q==
-X-CSE-MsgGUID: 1p21UWMDTwejM6ENjq0IMQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="28594283"
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="28594283"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 08:52:35 -0700
-X-CSE-ConnectionGUID: pSZ2jldhSlmMvMigBmhnGQ==
-X-CSE-MsgGUID: yeuJOrJpRkSQW4iinpP7SA==
+ t=1729612360; x=1761148360;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=PckPfA4m2/wjSpFRcy5Fei6a58HsdVnKG2H5BQsEY5Y=;
+ b=G31MgvU1ICqITDavw2fobPmTZ/5pZK2WdMPG475v+PTDFaeLwKXVAfim
+ TZo+zvxHW7NVq4PmCiksIKWzqE0xD1dlWZTvL5okE+5rNekcZLkFLZ5NM
+ XSrpD+bzq2e6OfyEKOx36gXM5LYQIcpEuxTf48Uczf+5aaS4RP+Q9MmYA
+ p3ggar6spmHijeib6z9pavdoo3Ntbm6AQIlySyxTjYK7CrRa9cxFOh8to
+ VSLfsvv48CQI1rb8q3s2kNPVDZW70e1MO3lJSNwp9YoaZWFyZVfGw0KQl
+ vwJzfxPSa80goluimpeUv7jz4kXvQfVGj73U5tn8+r61DXCTd2ioJQ9U2 g==;
+X-CSE-ConnectionGUID: uc39fFWQR4KBxzGosBpdJA==
+X-CSE-MsgGUID: GE8k4EhrQmu/5bwnGAL5GQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29268523"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29268523"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 08:52:40 -0700
+X-CSE-ConnectionGUID: tkEXgp9XTLWdY1CqcgDovg==
+X-CSE-MsgGUID: RWI6hAACSqmMVVQ4TtFJgw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="79834919"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Oct 2024 08:52:33 -0700
-Date: Tue, 22 Oct 2024 17:52:31 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Ville Syrjala <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH i-g-t 13/14] lib/igt_aux: Add igt_ror() and igt_rol()
-Message-ID: <20241022155231.mc7mgq5ouv5dl2hc@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Ville Syrjala <ville.syrjala@linux.intel.com>
-References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
- <20241004104121.32750-14-ville.syrjala@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,223,1725346800"; d="scan'208";a="80248393"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 08:52:39 -0700
+From: Imre Deak <imre.deak@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+Subject: [PATCH i-g-t 0/3] tests/i915/kms_flip_tiling: Fix timeouts with low
+ vrefresh modes
+Date: Tue, 22 Oct 2024 18:53:08 +0300
+Message-ID: <20241022155311.2797257-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.44.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241004104121.32750-14-ville.syrjala@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,40 +65,25 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ville,
-On 2024-10-04 at 13:41:20 +0300, Ville Syrjala wrote:
-> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> 
-> Add helpers to do bitwise rotate operatios.
-> igt_rol(): bitwise rotate left
-> igt_ror(): bitwise rotate right
-> 
-> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+This patchset fixes the following timeout failure, when using modes with
+a low (<60Hz) vrefresh rate:
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+(kms_flip_tiling:3623) igt_kms-CRITICAL: Test assertion failure function kmstest_wait_for_pageflip, file ../../../usr/src/igt-gpu-tools/lib/igt_kms.c:2363:
+(kms_flip_tiling:3623) igt_kms-CRITICAL: Failed assertion: !(ret == 0)
+(kms_flip_tiling:3623) igt_kms-CRITICAL: Exceeded timeout (50ms) while waiting for a pageflip
 
-> ---
->  lib/igt_aux.h | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/lib/igt_aux.h b/lib/igt_aux.h
-> index 4b8116dc0998..bfd83adcacb9 100644
-> --- a/lib/igt_aux.h
-> +++ b/lib/igt_aux.h
-> @@ -337,6 +337,13 @@ void pipewire_pulse_stop_reserve(void);
->  #define DIV_ROUND_UP(n, d) (((n) + (d) - 1) / (d))
->  #define DIV_ROUND_CLOSEST(n, d) (((n) + (d) / 2) / (d))
->  
-> +#define igt_rol(value, shift, size) \
-> +	(((value) << (shift)) | \
-> +	 ((value) >> ((size) - (shift))))
-> +#define igt_ror(value, shift, size) \
-> +	(((value) >> (shift)) | \
-> +	 ((value) << ((size) - (shift))))
-> +
->  uint64_t vfs_file_max(void);
->  
->  void *igt_memdup(const void *ptr, size_t len);
-> -- 
-> 2.45.2
-> 
+Imre Deak (3):
+  lib/igt_kms: Add igt_kms_frame_time_from_vrefresh()
+  lib/igt_kms: Add kmstest_wait_for_pageflip_timeout()
+  tests/i915/kms_flip_tiling: Fix pageflip timeout for low vrefresh
+    modes
+
+ lib/igt_kms.c                 | 33 +++++++++++++++++++++++++++----
+ lib/igt_kms.h                 |  3 +++
+ tests/intel/kms_flip_tiling.c | 14 ++++++++++++-
+ tests/kms_vrr.c               | 37 ++++++++++++++++-------------------
+ 4 files changed, 62 insertions(+), 25 deletions(-)
+
+-- 
+2.44.2
+
