@@ -4,72 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82FE2D1CDD7
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 10:29:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D273FD1CDD3
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Oct 2024 10:29:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3F2F110E64F;
-	Tue, 22 Oct 2024 10:29:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8DCEA10E309;
+	Tue, 22 Oct 2024 10:29:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="Xm13Nenw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dH2/NCZv";
 	dkim-atps=neutral
-Received: from mslow1.mail.gandi.net (mslow1.mail.gandi.net [217.70.178.240])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AE79510E317
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 10:29:11 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (unknown [217.70.183.194])
- by mslow1.mail.gandi.net (Postfix) with ESMTP id 72D7BC0C08
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 10:28:44 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CBC0140008;
- Tue, 22 Oct 2024 10:28:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
- t=1729592922;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=KYCmBg7eR7IkHWQe/PoUfhGGTT+9LV/bPFx/vX4feeU=;
- b=Xm13NenwVU4PQRzfVuFUOUSw3M7wW/8rDxxKImdhla0OVbeXYGVnMgCs4Pt6zT9RFgVJ0k
- ueNOZFfvZIGYgWd8XFg9U1jPPgfeYafziJqlFEviERat+YZVi2TFMUJ15tMqzmkXbkX2YB
- 0TiQSHOj06uy3y/41jAiCdtyl1Vn1zLNOLn1QmuWXs9M0d4nvS3xe4uZ3ZWuxRGm+Fu66g
- Gx/TyquAyYYnqMtthrmUJHL+oeNE1BzU9v9Sztp8G6qlFbJGwsqe1iQ7skHn3PJKMxaukQ
- OlI/0b2eVla4eXMD/SZJBmzYOeOWb3ll8UhjhW8CNiNwb/bbW6I9OUAuzNXnxA==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Tue, 22 Oct 2024 12:28:37 +0200
-Subject: [PATCH i-g-t v2 3/5] lib/igt_kms: Add function to list connected
- connectors
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DAEC10E309
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Oct 2024 10:29:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729592994; x=1761128994;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=cWA4ih+9LsFc/TAaIh7M/JPOLzKF8TvzdagGNv2KkGU=;
+ b=dH2/NCZv7CkuhTCJWfrR7q2nuPnH6rmgDsQrcRBqqalJHRga4C+SVGey
+ nacI5ybZzjwEqab2QGVCWEIDrUR6fR6+3te6EyBY2wLwsL+oED+g5T1qL
+ 4FJOirVV7Pk9cd+cYpw9hxCnkuGhE1zsALclRdzDAUhJ119ggf0DKfThM
+ 4v4xntuFX7rqWt7mfk5vilRXu/VUEYn6EfZHj7Kk/+uj9LWnMk0XC1BXj
+ g2AfV3l/oDrapIHg3uZcZKifX1HTe9KCOZ9phqKGpk8TYIxb9YZ/4uEqz
+ qCq/eXdl2cGPYHgwz5P1kc2J1O8H5+43WMtTS8xHntRF+1pnHoYz1BgqQ Q==;
+X-CSE-ConnectionGUID: dE0V/yA8S6uzHaxAEaw5Aw==
+X-CSE-MsgGUID: /xqsb1s6SJSXydoIUXNQ1Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29276647"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29276647"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 03:29:53 -0700
+X-CSE-ConnectionGUID: HiPejnG4R7GHisNrCkYoog==
+X-CSE-MsgGUID: nfSnu7+BQo6KeeGZrhw+EA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,222,1725346800"; d="scan'208";a="79834455"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.246.7])
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 03:29:51 -0700
+Date: Tue, 22 Oct 2024 12:29:51 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Pravalika Gurram <pravalika.gurram@intel.com>,
+ sai.gowtham.ch@intel.com, katarzyna.piecielska@intel.com
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_exec_compute_mode: Use
+ xe_find_engine_by_class
+Message-ID: <20241022102951.di4ba2q7p2ooy52p@zkempczy-mobl2>
+References: <20241016101933.4191790-1-pravalika.gurram@intel.com>
+ <20241016101933.4191790-3-pravalika.gurram@intel.com>
+ <20241021154057.prfzslhuxmrbo6z4@kamilkon-desk.igk.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241022-b4-cv3-01-igt-kms-v2-3-8f654694b513@bootlin.com>
-References: <20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com>
-In-Reply-To: <20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>, 
- Ashutosh Dixit <ashutosh.dixit@intel.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, nicolejadeyee@google.com, 
- seanpaul@google.com, jeremie.dautheribes@bootlin.com, markyacoub@google.com, 
- Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2993;
- i=louis.chauvet@bootlin.com; h=from:subject:message-id;
- bh=Dnpg3zurfabLSNJcYgma8rN60L9w5S+ZSulW58IlW80=;
- b=owEBbQKS/ZANAwAIASCtLsZbECziAcsmYgBnF35WFTJvSIHnByu1aWwt+QyfHd5SMBeCf+DqV
- BIBY9mCYeOJAjMEAAEIAB0WIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCZxd+VgAKCRAgrS7GWxAs
- 4kogEACuJEj18JvhRaK0Qvz+B6UgLTAQMPgi9Nm2QMYVW0LEzN+BAuAH3gcJYlHydOPN/J/ePoQ
- IZMx1mqHlQQ8dPm8awYMvrleLIer7ymSQtAC010CK5cb6EsLFPhBzXqMBXffnrVNrZyg5bV818m
- 9xHXrgs7NdUmr1GEPN3S5o62WJOh/XIoAk7YMfQBi2tt9dhrx4/fmPkMwl1m0xYV7HtTpMQsJ2B
- Jt7pa6rLiYDZvlZOaESmhtmKkNQ+CzegGoDG/TfkYjEkKRxa9ArOE3N4th2UyBtAGtMXoO7oE2O
- eINfSe9oJGNQNw7LBbvg9dWiR0NWzCsWU1+Jt3UmUAGxlimXpYkg2CXBXnDdvTF9cITt9Bi5NqR
- AlHbS6VJbhDHVHfBsTU1WZ56KL6VoHNDIO3O13CNzvFHaOq39VFRXDadjOqj7r9b0k/xuRqE2Bv
- zJNKYuOmnTqb4BK9a66B1vkKQRBBpYYYwKRcoO955yYypchTtL+1JfSyTZ1tQ3mWY1TinR9Aux9
- sKsy9Xii1A94mn9EuPpR2gpRHMhkJMlynfjSa2U0sFg0qKutdoqI+Xye+E0KaozU817D6BTUdl0
- STbW+3VIuqj2xLRYQ/RVgHcv+m4SoYJmugqaF3C1xMQBTdU0r/8A4ZJerqmSviSLt4amXlhPtTW
- xALZ/a5RGWe+lUA==
-X-Developer-Key: i=louis.chauvet@bootlin.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
-X-GND-Sasl: louis.chauvet@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241021154057.prfzslhuxmrbo6z4@kamilkon-desk.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,94 +74,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce the igt_get_connected_connectors() function, which returns a
-list of connector IDs that are currently connected according to DRM.
+On Mon, Oct 21, 2024 at 05:40:57PM +0200, Kamil Konieczny wrote:
+> Hi Pravalika,
+> On 2024-10-16 at 15:49:33 +0530, Pravalika Gurram wrote:
+> > Use 'xe_find_engine_by_class' helper to get the engine info with the
+> > required engine class.  Stop assuming engine id is equal to 1
+> > 
+> > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Signed-off-by: Pravalika Gurram <pravalika.gurram@intel.com>
+> > ---
+> >  tests/intel/xe_exec_compute_mode.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/intel/xe_exec_compute_mode.c b/tests/intel/xe_exec_compute_mode.c
+> > index 82e607848..b238503ea 100644
+> > --- a/tests/intel/xe_exec_compute_mode.c
+> > +++ b/tests/intel/xe_exec_compute_mode.c
+> > @@ -461,7 +461,10 @@ static void lr_mode_workload(int fd)
+> >  	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE, 0);
+> >  	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
+> >  	bo_size = xe_bb_size(fd, sizeof(*spin));
+> > -	engine = xe_engine(fd, 1);
+> > +
+> > +	engine = xe_find_engine_by_class(fd, DRM_XE_ENGINE_CLASS_COPY);
+> > +	igt_assert(engine);
+> 
+> Instead of igt_assert it could be better to use
+> 	igt_skip_on(!engine, "message...\n")
+> 
+> also move that to begin of this function (before vm_create or other inits)
+> 
+> Regards,
+> Kamil
 
-This function includes a timeout mechanism because connectors can be
-unplugged at any time. Also, especially with MST, the connector can be
-listed by drmModeGetResources() but not yet accessible with
-drmModeGetConnector().
+There's no possibility there's no COPY engine. So assert is fine for me
+here.
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- lib/igt_kms.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |  1 +
- 2 files changed, 55 insertions(+)
+--
+Zbigniew
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 40c0a207cd17..44b546ae52dc 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7181,3 +7181,57 @@ bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double
- 		  connector_id);
- 	return false;
- }
-+
-+/**
-+ * igt_get_connected_connectors - List all connectors reported as CONNECTED by DRM.
-+ *
-+ * @drm_fd: DRM file description
-+ * @connector_ids: out pointer for the list of connector ids connected. It must be freed by the
-+ * caller.
-+ *
-+ * The returns value is the number of connectors
-+ */
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids)
-+{
-+	int connected_count = 0;
-+	drmModeResPtr resources;
-+	struct timespec start, end;
-+
-+	*connector_ids = NULL;
-+
-+	resources = drmModeGetResources(drm_fd);
-+	for (int j = 0; j < resources->count_connectors; j++) {
-+		drmModeConnectorPtr connector = NULL;
-+
-+		connector = drmModeGetConnector(drm_fd, resources->connectors[j]);
-+		/*
-+		 * This time is required as sometimes some id in the connector list are not totally
-+		 * ready or can disappear
-+		 */
-+		clock_gettime(CLOCK_MONOTONIC, &start);
-+		clock_gettime(CLOCK_MONOTONIC, &end);
-+		while (!connector &&
-+		       igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
-+			connector = drmModeGetConnector(drm_fd, resources->connectors[j]);
-+			clock_gettime(CLOCK_MONOTONIC, &end);
-+		}
-+
-+		if (igt_time_elapsed(&start, &end) < igt_default_detect_timeout()) {
-+			igt_assert(connector);
-+
-+			if (connector->connection == DRM_MODE_CONNECTED) {
-+				*connector_ids = reallocarray(*connector_ids,
-+							      connected_count
-+							      + 1, sizeof(**connector_ids));
-+				igt_assert(*connector_ids);
-+				(*connector_ids)[connected_count] = resources->connectors[j];
-+				connected_count++;
-+			}
-+			drmModeFreeConnector(connector);
-+		}
-+	}
-+	drmModeFreeResources(resources);
-+
-+	return
-+	    connected_count;
-+}
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 4cd4a4f65460..4674b271638a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1265,5 +1265,6 @@ float igt_default_detect_timeout(void);
- 
- bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
- 				   int drm_mode);
-+int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
- 
- #endif /* __IGT_KMS_H__ */
-
--- 
-2.46.2
-
+> 
+> > +
+> >  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, engine->instance.gt_id), 0);
+> >  	spin = xe_bo_map(fd, bo, bo_size);
+> >  
+> > -- 
+> > 2.34.1
+> > 
