@@ -4,27 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F32FECFA453
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Oct 2024 17:29:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5109CFA466
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Oct 2024 20:29:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B061C10E795;
-	Wed, 23 Oct 2024 17:29:04 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D255F10E795;
- Wed, 23 Oct 2024 17:29:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7457110E228;
+	Wed, 23 Oct 2024 20:29:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I6Rtwi5y";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1979210E228
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Oct 2024 20:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1729715354; x=1761251354;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:mime-version;
+ bh=gTENHVsHJf9ywi5iWR/n7AvRvk2kLF/qVaRRDTvxnDE=;
+ b=I6Rtwi5yT/8pKM6u90EdRqALIcY9zxVa1I5FyIeRgPUUlkvxlaxOHfYc
+ Ooeq2Y/1z98Cm6AQyHDn/EeWW89helItTLe/4r8j6BPMZVAfN4MT4uPSU
+ SI9iZYfCZmrxigeW70Zmg+117qVgfcooOloXXZUCIwG/Fxz45oADkSHg/
+ 7/hGN+krtbOxCfeGigtALmNB3u4SxOWUCKt08xF16QoRBMc6k7liy0M+x
+ XnMxEpOPJhT0StlV6O1xn76glmDlc88eqi+yNzV/LSxzbq17ty4NPbBoc
+ m/BrhBsnmGBtplYMCs4oUHSuE2EuWsNueB6oYCSzEEq9gtVXKN0TJ6MVo Q==;
+X-CSE-ConnectionGUID: 2dnc+i8gRnSGw/U3DE/huA==
+X-CSE-MsgGUID: 3DZKSdLBSfaEx9H0lps/PQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="33016768"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208,217";a="33016768"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2024 13:29:13 -0700
+X-CSE-ConnectionGUID: YN/6+4DfQPaRQMtqWh9uvw==
+X-CSE-MsgGUID: z/aqMpmTQdSpUkVz0JKOaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,227,1725346800"; 
+ d="scan'208,217";a="111176708"
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 Oct 2024 13:29:11 -0700
+Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 23 Oct 2024 13:29:10 -0700
+Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 23 Oct 2024 13:29:10 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.173)
+ by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 23 Oct 2024 13:29:10 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=biFFW8mNHxp6uHAE/AnOw55o1obe90vjBOAre/DW4GbocPKoyiedrFLX9OaAMrKKe0WBGlwAfNwrc80dKwGSo/UvryV6qeeflxYFN6d8/wFhAum5F+BNogJGk1v8xCmHBwI9Y6JhQyogu3Dz5mJlYFKgALVAB40XBCPnNUuGxQUQLuxIWHuW8Tb1qjLkdLzNyRaDXapmzUPJLxYe6Qtz893Z8lch2oy9D5l4KK3IKUlnrUSJBNMw/NapvlJI8jy+RIcDhqzpm7xo2AEkSkh0oUX3Kox5L25wx9nP1vX8CPrgoRxEKDVPUdIde5Vt+kQKl5qDHYlJnIF8s4WQm8vUWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lsVgv5U3XOCMSyHrDSAFcHJG4IBGvdjTDG5VDzF9wt0=;
+ b=rWiZ/NjzXmCO77hSiQtiHsPAZ21ve/FsT3zQUNy9YC77Rjbvr1UKL38j4xtfvAikTBIgNQhDK8xqiMq2sleFBNemS/4F1Q8MPPUbdK/DpBNvL5D3c3KcCSGvXE1QFcBSrOe22BmCyqGolhgGk1HqmRpJswGDwS8ixejZb3mguAQBNQrirTjPGHkadSZa9ReqUFaUPuC+BNVT7Gmk1CrN9KPPx9OJZEXcOkFhPYn4Y6AZkzS3f+/ra/bh3AeR71kJvaCw2USyIKDn7tpAVl0ubJ0MylfdXz9R5RWcXRFvrp97TSVih7N9Q83tCeNmkbqmiuWI9p9Bg6KJAjbqd/kHcQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB7717.namprd11.prod.outlook.com (2603:10b6:510:2b8::8)
+ by SN7PR11MB8110.namprd11.prod.outlook.com (2603:10b6:806:2e1::5)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Wed, 23 Oct
+ 2024 20:29:07 +0000
+Received: from PH7PR11MB7717.namprd11.prod.outlook.com
+ ([fe80::a546:1ad2:2379:b848]) by PH7PR11MB7717.namprd11.prod.outlook.com
+ ([fe80::a546:1ad2:2379:b848%3]) with mapi id 15.20.8069.027; Wed, 23 Oct 2024
+ 20:29:07 +0000
 Content-Type: multipart/alternative;
- boundary="===============0510421059015324872=="
+ boundary="------------ZW3008t7ux3SnSqjEi082v0V"
+Message-ID: <cacecbfd-7037-44bc-97f1-425e2626b9a1@intel.com>
+Date: Wed, 23 Oct 2024 13:29:06 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] [i-g-t] tests/intel/xe_vm:Reduce n_execs for
+ bind-array-enobufs
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20241022201130.5724-1-jagmeet.randhawa@intel.com>
+ <CH0PR11MB54441E7BEAC825A733D6B600E54D2@CH0PR11MB5444.namprd11.prod.outlook.com>
+Content-Language: en-US
+From: "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>
+In-Reply-To: <CH0PR11MB54441E7BEAC825A733D6B600E54D2@CH0PR11MB5444.namprd11.prod.outlook.com>
+X-ClientProxiedBy: SJ0PR05CA0102.namprd05.prod.outlook.com
+ (2603:10b6:a03:334::17) To PH7PR11MB7717.namprd11.prod.outlook.com
+ (2603:10b6:510:2b8::8)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_rename_drm=5Ffdinfo_into_i9?=
- =?utf-8?q?15=5Ffdinfo_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Oct 2024 17:29:03 -0000
-Message-ID: <172970454385.1324200.12138219116728473938@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241023164537.83876-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20241023164537.83876-1-kamil.konieczny@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB7717:EE_|SN7PR11MB8110:EE_
+X-MS-Office365-Filtering-Correlation-Id: de78bc31-c1bc-4aa1-dbb0-08dcf3a15831
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|8096899003;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZDk5UEMvejZoaktWaHg5RHU5T2hPbTdCaXFWSDl5eVJlUEtxWFpzSVBtaXhW?=
+ =?utf-8?B?VDNPUGw0SHdzVTdGYzluRk9WZldjRWNuSVMyUHZHbjJ6elF3dm9lek9vUDNT?=
+ =?utf-8?B?UEFjMTJMcXdOYUsxNTBYWkQyOHhYMGFCcjhLOFlhZER4clVxbmQ3N2g1V0J5?=
+ =?utf-8?B?b2gyWWhFQUc0N1JHVDhhbFAvQitDYm1CZFpEdFczcDdhTjlOSlNTUHJ4T0Rq?=
+ =?utf-8?B?L2NrZmUxUm9CL3RhSE4vZ0s3andKSVZiSnczZFdPcWJKamlDZlFMbGRocVBx?=
+ =?utf-8?B?bThYbW5iVFZESmY4VTZMU1l2UTBBZC9kSmFnL3E5VWZjMjc0YktwRHlTSS9T?=
+ =?utf-8?B?d2RuMm5iWTRlZXJYS3ZrOE8rUU1WSWRGditGSlBMbll4T0xPcGk0VGV2Qlhv?=
+ =?utf-8?B?bEV1bytpS1VoTHBzWThWeDVucU5waHpGdzNOVklaSHQ4ZUpyR2VzZlJwcHdN?=
+ =?utf-8?B?c0xZbC9kaDBOb0hpellRS2luYlNEdTlvZ21DODJKTXV2YWR1WFhUTm5jSVFh?=
+ =?utf-8?B?ZDVtbXE4OHhtYkJWUnhTT1h2WklQNGx1d2xvU1YvTVBkeG5ERlFvYko3M1Bs?=
+ =?utf-8?B?cXNYREM2N241RmVUVUE1MHZqamMxOHkrMUxoZzRpUnFwbnpSS2NxREQ5V2tT?=
+ =?utf-8?B?c1g2SEFSVW13L3hEVDNjcDhtMlRLb0hyekthWFhPNzBPV1BsOWJKdWUrQVQ5?=
+ =?utf-8?B?NDgwOFk4aTU1SWIwam5RY3NaaXlUbk9CbU1VZnFnOUhMTjhSSEVjQjZUWHIy?=
+ =?utf-8?B?SXV4TkZIYU9LNnZYWDFEY1laKzk2d2Ewbm5NTER2bVp3Ujd1a1hHelJvblNo?=
+ =?utf-8?B?OGtmVis1K3N6Y2F1dzdTcTYySnNYbVRaSkJHTFRXYS9CTDRwanEvUGtJa25G?=
+ =?utf-8?B?dGp6TnZkeEw1Vm5LKzliTURKRTE1R0l3NVgyQkMvMGJpVFNTbmNvcU9HRHVB?=
+ =?utf-8?B?TnpBSmZwNXdzVmc3TkNwaWZUSzI4R09NWnVaallPNzNiWDg5L2I5aWh4d3dS?=
+ =?utf-8?B?eUhnZnBLbnZ3cE5MYnhKdWtSY2RQbUJHOVVkTEVjOW1DMXFISkQ0cG1CZnQw?=
+ =?utf-8?B?VGhCR3JtV2p0RWd2ekdEZlBXOUQwOExZdHUzY2ZBeTFSaGM4TjVFdWNkOFEv?=
+ =?utf-8?B?MXd2emp3ZjNEMHRWOWZVbVlwTmpEYUJWc3U1Rk9vK1pVK1lZbWxuTXJZdHRN?=
+ =?utf-8?B?b3dLVjZxMXMrOVVUYWIycGVNVmpZYlFJRGxlaTNjQ2d3NTFPekprMWVKbWw4?=
+ =?utf-8?B?RTRsNGxOYmtvRjc0U3Q4SE9DeWJYM3VuTjJaM1dUd3J2RWdacEtLbFQweTV4?=
+ =?utf-8?B?UUVmaEJxejYrRldtb3gyMUFWeWtacWtubndsTFpjb2RMcnJITmQwcmZqWW1u?=
+ =?utf-8?B?RkMwYU9iajJkZFZZcDZBUWlDZlArU2NMV3hOV3VTOEwrL2pTUlBIb3dJTjNN?=
+ =?utf-8?B?M2JadE5XNmRWOGJUekRGNWx3TENwM3AvTTM1anRMRmRDaytWVEZ2ZXBEanN6?=
+ =?utf-8?B?cUdCcXlRRTRRTzlpbjJDWFRlOVBPcGRNQ2NudTBvN0Q4UG15azZCMHhPNmRJ?=
+ =?utf-8?B?NnlnQ3d1eEhOdDZSQ25xaGtCY214VTNNWjF4MDJYNnB5M2RhQjZjOGdZcUJl?=
+ =?utf-8?B?UHJwdy9yOTJrcjJ2bmtyZEJqN09DUXBiZ1V5YVBON1VlSVZvN3BIdjVtTWcv?=
+ =?utf-8?B?anRzaUx2UFgvaUNHSTFQYUliWUlzRGdlbk5za0lKOWJNUytrbXAvelZtcCtj?=
+ =?utf-8?Q?5FxKo3LpQm7DunCEL0Fzcjy+sqmc1GU8fKylYSU?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB7717.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(1800799024)(8096899003); DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dXdTUGxuNGJFOXVSb3d3Vk1JOWpoK2svNm9CYUR2eE8rMGd3TUFVT1g0MHhu?=
+ =?utf-8?B?SVA0a3FQZTFkUmhsNkZOR05Sb0g3bHNsMTFLSytwUjdBbzk0QVFMWGNJTlQ4?=
+ =?utf-8?B?dkdPcDhYSTNVcXZ4ZGFJQ0tna1ltZ3p0aWFrTHdQR0VGOTUrcjREbk90ajMz?=
+ =?utf-8?B?YTFKVTFtd251djI5Q2pDUFhOWDFtZ2xPb3JyNVVpdXA0OG5MUHUyOE1TbldE?=
+ =?utf-8?B?V0Ewb0dzdGdpdjV0emU3TmdVN3graUlPUm9iWURyQ1JWVWJ0b05WdEFXQUZi?=
+ =?utf-8?B?UGRIZE45QjhhSk13UnZlZjRyeGJGRmhBUEd6Ti8rUkVTMW1ZeXlaQkExYzlI?=
+ =?utf-8?B?enpxOTZUVmZJaG9mYlpTV3FqRm5YbmthSXJMZXlPVDNibWsyWnpPZ2hudUY4?=
+ =?utf-8?B?Sk4zWEIrb1RxdFZRYXRTa3ltNEwyaUEvQXlrRlFrVG9FT3Y0eFZEelh0R0gz?=
+ =?utf-8?B?WFlNQXRwU2lRTVZ3TVp4c2w3bDZHZFA2a09veVhzOFpyV0xKOVNEbkliYTFv?=
+ =?utf-8?B?dGVsTW45bnVCY1RqdVlKRldmTTJveS9iNHBvSXVzNS9kOGJ3TG9pN2x5V0Q5?=
+ =?utf-8?B?UTFKRW02bHh6M2hKYVllVTJZanRWQ3FOWTZ4aFJBN3dhZ0c0Vk1aOGNkM2Fv?=
+ =?utf-8?B?RFBjZWRPblFxTUc3aThGdFlwSS8xazVCR2FtcVRabmx2TUpJOGY1SzRKVERZ?=
+ =?utf-8?B?TUcxMFBKOWZHTVd0c1BxQUZseUQwdUZ1M1V3NGdLYmNWdTlLWkNDQmFHMjNZ?=
+ =?utf-8?B?RllxZUlGVWFtVTFJRHFZV2hBd25hOHVGMWZ3SVpORFhhVVhHY0RyWXBwU1pH?=
+ =?utf-8?B?aDV1dnJGUE9jWTd0K2JtZ0Y1K1RwUHBQOEJ6NmV3VHZSejE3L2toV2Jxc0Q5?=
+ =?utf-8?B?emxiUWRCcU8zN2x6Q1BmNGs2aGlBeERFcUR4dHZYdlFSZkdkbUZVMVM1bWZV?=
+ =?utf-8?B?aXJWbHovL3cxaEZIalVaWUk5UmZ5YlhDazArY092dEMxRVVSNkRWQWRGZk55?=
+ =?utf-8?B?eldyb3VOVUFGSmVZeEMwY1BVTDBIWnFLVGRncm5RUDh0OEVjL0N6aE1lK09R?=
+ =?utf-8?B?cDVDN1Q4Slh1UlpHZStHT3JBVUt3cjU0WW5pK2lneVpqK0NYbkppejQ2Smp1?=
+ =?utf-8?B?a3pLNENxSFRsZnhObVZnM1daUVFoRnZ4OVlpOGlwYnhKWkM1alhUZXVKdits?=
+ =?utf-8?B?Rm1yN1kxRlRjV3ZHcmQ5SkpIQlBUVTNhUHJZeWVSa243QXJ6UFBFSGpEUEZT?=
+ =?utf-8?B?Q0xmVHI2ZDRsUXQ4YW5GS3IwNVQ2SnVNMzRPZXZHc1ZtR1BDZkRwYVh6TE9Z?=
+ =?utf-8?B?aUl4UkdqamZhUFdrQmc5c25HeVNCMEpTeVlWTUVaK052d2h5allrUnRpSTJj?=
+ =?utf-8?B?c3BmeUx3OVpPdjRSQlpJSFBVNzA1MFVabXBqRXptUXMwVDkrdFh4Ky9GVkJm?=
+ =?utf-8?B?bUhwM2hRMUJYL2pBR25ydjZFUEt6bVViUVZqc2xYUVRkazlsbFBHaExoaC9W?=
+ =?utf-8?B?NFU3d0p3ZC9VR2cwZzNueTBPSTRnRkdqOTNlVkhQNjdiT1VKRytCMlVGdEpv?=
+ =?utf-8?B?NkJ1dUptZ3hLbGlDcllHZUZrdTl3WDVzQWtkc1JJYktDT2xzcDF2U3g3TCtJ?=
+ =?utf-8?B?T05qdEd4M2tMWjVIVStJMVNYempxbmxIcnVJMFZURkVJcUh1NmRSdkUzaHFM?=
+ =?utf-8?B?SG1mMGdkdDFmcFFvTytPendNcndrVHZCd3VNQTFlWi8zUkNSNTkxMnhrTE5z?=
+ =?utf-8?B?WWRhbkF2ajEweWZqa2syQW9UQWxPY0ROY05aVk50Nno4b052LzRGRldWTjVQ?=
+ =?utf-8?B?dVQ3VmRUb3hWby9vNmtTaXgvaEk3SmRtMUhudDVZZGRCYWloUWdJMFFOQ3U0?=
+ =?utf-8?B?RkpMejZWMFZ0ZXVuUlBNbG9pMzZ0RklTRmFmVjd0RFF0YVRPZXJhTXE2RDVU?=
+ =?utf-8?B?OUdpci9tUkgwNHBsVUVUZ0ZsT1d5UlRKUWxoMy80Q2dmTXlqNUc1OFNBNlk3?=
+ =?utf-8?B?ZzhoZkhLbjU0d0doMUhQRDRFcTlKTFdyUmN0ODREMHp4ejhObUx4L0tpQmhJ?=
+ =?utf-8?B?cTZPUFFuSjMwOEFxZ3Q5cmZ5RGpOTEdmbXFuKzdITVpaZE45bjIzN0JvN3Js?=
+ =?utf-8?B?a1JOaW92WHlpVDBDWlV6SWZLS3FmdzlBanNiYTZJdENYbzVsTW9Jdngyc29o?=
+ =?utf-8?B?Nnc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: de78bc31-c1bc-4aa1-dbb0-08dcf3a15831
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB7717.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2024 20:29:07.6120 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: nwxlknSVjlRsGbaHhwCQNL8Ttpqy5Duf0Wq0J2mqU0MJxyShu8AhnxxqjZMXtavWmLWLgNSxqHLGDUOn6nWnrxj5BOwWDC0K+4r9aAwaix4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB8110
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,306 +192,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0510421059015324872==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: rename drm_fdinfo into i915_fdinfo (rev2)
-URL   : https://patchwork.freedesktop.org/series/140053/
-State : failure
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8082 -> IGTPW_11967
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_11967 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_11967, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html
-
-Participating hosts (45 -> 46)
-------------------------------
-
-  Additional (2): fi-skl-6600u bat-dg1-6 
-  Missing    (1): fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_11967:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live:
-    - bat-jsl-1:          [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-jsl-1/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-jsl-1/igt@i915_selftest@live.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11967 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-dg1-6:          NOTRUN -> [SKIP][3] ([i915#1849])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@fbdev@info.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][4] ([i915#2190])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@i915_selftest@live:
-    - bat-arlh-3:         [PASS][6] -> [ABORT][7] ([i915#12133])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arlh-3/igt@i915_selftest@live.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-arlh-3/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@workarounds:
-    - bat-arlh-3:         [PASS][8] -> [ABORT][9] ([i915#12061])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-arlh-3/igt@i915_selftest@live@workarounds.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-dg1-6:          NOTRUN -> [SKIP][10] ([i915#12311]) +54 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  * igt@kms_dsc@dsc-basic:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][11] +9 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@kms_dsc@dsc-basic.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-dg1-6:          NOTRUN -> [SKIP][12] ([i915#11723])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [INCOMPLETE][13] ([i915#12133] / [i915#9413]) -> [PASS][14]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-twl-1/igt@i915_selftest@live.html
-    - bat-dg2-9:          [ABORT][15] ([i915#12133]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg2-9/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@client:
-    - bat-dg2-9:          [ABORT][17] ([i915#12305]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg2-9/igt@i915_selftest@live@client.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-twl-1:          [INCOMPLETE][19] ([i915#9413]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][21] ([i915#11621]) -> [PASS][22] +132 other tests pass
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
-  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12305]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+--------------ZW3008t7ux3SnSqjEi082v0V
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
 
 
-Build changes
--------------
+On 10/23/2024 7:12 AM, Cavitt, Jonathan wrote:
+> -----Original Message-----
+> From: Randhawa, Jagmeet<jagmeet.randhawa@intel.com> 
+> Sent: Tuesday, October 22, 2024 1:12 PM
+> Cc:igt-dev@lists.freedesktop.org; Cavitt, Jonathan<jonathan.cavitt@intel.com>; Zuo, Alex<alex.zuo@intel.com>; Konieczny, Kamil<kamil.konieczny@intel.com>; Randhawa, Jagmeet<jagmeet.randhawa@intel.com>
+> Subject: [PATCH] [i-g-t] tests/intel/xe_vm:Reduce n_execs for bind-array-enobufs
+>> The bind-array-enobufs test in xe_vm.c is intended to trigger
+>> an -ENOBUFS error by submitting an oversized bind array.
+>> After encountering and handling the error, the test reduces
+>> n_execs by half and retries the operation. On some environments
+>> with stricter resource limits (e.g. simulator),
+> Is it "just" simulator this is an issue on?  Because if so, we could probably
+> use igt_run_in_simulation() to narrow the scope:
+>
+> """
+> 		xe_cork_fini(&cork);
+> -		n_execs = n_execs / 2;
+> +		n_execs /= igt_run_in_simulation() ? 4 : 2;
+> }
+> """
+>
+> If not, then
+> Reviewed-by: Jonathan Cavitt<jonathan.cavitt@intel.com>
+> -Jonathan Cavitt
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8082 -> IGTPW_11967
-  * Linux: CI_DRM_15576 -> CI_DRM_15586
+Thank you for your comment and review Jonathan. Oddly when I tested the 
+following line
 
-  CI-20190529: 20190529
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15586: 790c7308eb96861950ceddfd5a0f410cc3306c2e @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11967: cbdcb770dafad19d15b79ad1b4ff91819def477e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  "n_execs /= igt_run_in_simulation() ? 4 : 2;" The test fails as it was 
+before the original patch was sent
 
-== Logs ==
+so I suspect igt_run_in_simulation() is returning false and we are 
+taking the "2" integer in this case.
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html
+I believe it is just simulator we are facing this issue on, however I 
+think leaving the code as
 
---===============0510421059015324872==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+"n_execs = n_execs / 4;" doesn't do any harm if we run it on any other platform such as hardware
+, as it does not affect the basis of the test which is to trigger enobufs error, handle it, and then
+run with less n_execs to pass on the next iterations. This patch will just accelerate the test on hardware.
+If this works with you, may I ask if I still have your reviewed-by? I can change it and investigate
+if you feel strongly about it. Thanks again.
+
+Jagmeet
+
+>
+>> halving n_execs isn't sufficient to prevent the ENOBUFS error on the retry.
+>> Reducing n_execs further to n_execs / 4 allows the test to pass
+>> successfully. This patch modifies the test to reduce n_execs
+>> to n_execs / 4 after an ENOBUFS error is handled. This ensures
+>> compatibility with environments that have tighter resource
+>> constraints while maintaining the test's integrity.
+>>
+>> Cc: Jonathan Cavitt<jonathan.cavitt@intel.com>
+>> Signed-off-by: Jagmeet Randhawa<jagmeet.randhawa@intel.com>
+>> ---
+>>   tests/intel/xe_vm.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+>> index 7a8740b69..e78ddd0e5 100644
+>> --- a/tests/intel/xe_vm.c
+>> +++ b/tests/intel/xe_vm.c
+>> @@ -957,7 +957,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+>>   		xe_cork_end(&cork);
+>>   		xe_cork_wait_done(&cork);
+>>   		xe_cork_fini(&cork);
+>> -		n_execs = n_execs / 2;
+>> +		n_execs = n_execs / 4;
+>>   	}
+>>   
+>>   	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync, 1);
+>> -- 
+>> 2.34.1
+>>
+>>
+--------------ZW3008t7ux3SnSqjEi082v0V
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p><br>
+    </p>
+    <div class="moz-cite-prefix">On 10/23/2024 7:12 AM, Cavitt, Jonathan
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:CH0PR11MB54441E7BEAC825A733D6B600E54D2@CH0PR11MB5444.namprd11.prod.outlook.com">
+      <pre wrap="" class="moz-quote-pre">-----Original Message-----
+From: Randhawa, Jagmeet <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a> 
+Sent: Tuesday, October 22, 2024 1:12 PM
+Cc: <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>; Cavitt, Jonathan <a class="moz-txt-link-rfc2396E" href="mailto:jonathan.cavitt@intel.com">&lt;jonathan.cavitt@intel.com&gt;</a>; Zuo, Alex <a class="moz-txt-link-rfc2396E" href="mailto:alex.zuo@intel.com">&lt;alex.zuo@intel.com&gt;</a>; Konieczny, Kamil <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@intel.com">&lt;kamil.konieczny@intel.com&gt;</a>; Randhawa, Jagmeet <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a>
+Subject: [PATCH] [i-g-t] tests/intel/xe_vm:Reduce n_execs for bind-array-enobufs
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">
+The bind-array-enobufs test in xe_vm.c is intended to trigger
+an -ENOBUFS error by submitting an oversized bind array.
+After encountering and handling the error, the test reduces
+n_execs by half and retries the operation. On some environments
+with stricter resource limits (e.g. simulator),
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+Is it &quot;just&quot; simulator this is an issue on?  Because if so, we could probably
+use igt_run_in_simulation() to narrow the scope:
+
+&quot;&quot;&quot;
+		xe_cork_fini(&amp;cork);
+-		n_execs = n_execs / 2;
++		n_execs /= igt_run_in_simulation() ? 4 : 2;
+}
+&quot;&quot;&quot;
+
+If not, then
+Reviewed-by: Jonathan Cavitt <a class="moz-txt-link-rfc2396E" href="mailto:jonathan.cavitt@intel.com">&lt;jonathan.cavitt@intel.com&gt;</a>
+-Jonathan Cavitt</pre>
+    </blockquote>
+    <p>Thank you for your comment and review Jonathan. Oddly when I
+      tested the following line</p>
+    <p>&nbsp;&quot;<span style="white-space: pre-wrap">n_execs /= igt_run_in_simulation() ? 4 : 2;&quot; The test fails as it was before the original patch was sent</span></p>
+    <p><span style="white-space: pre-wrap">so I suspect </span><span style="white-space: pre-wrap">igt_run_in_simulation() is returning false and we are taking the &quot;2&quot; integer in this case.</span></p>
+    <p><span style="white-space: pre-wrap">I believe it is just simulator we are facing this issue on, however I think leaving the code as </span><br>
+    </p>
+    <pre wrap="" class="moz-quote-pre">&quot;n_execs = n_execs / 4;&quot; doesn't do any harm if we run it on any other platform such as hardware
+, as it does not affect the basis of the test which is to trigger enobufs error, handle it, and then 
+run with less n_execs to pass on the next iterations. This patch will just accelerate the test on hardware.
+If this works with you, may I ask if I still have your reviewed-by? I can change it and investigate
+if you feel strongly about it. Thanks again.
+
+Jagmeet
+</pre>
+    <p><span style="white-space: pre-wrap">
+</span></p>
+    <blockquote type="cite" cite="mid:CH0PR11MB54441E7BEAC825A733D6B600E54D2@CH0PR11MB5444.namprd11.prod.outlook.com">
+      <pre wrap="" class="moz-quote-pre">
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">halving n_execs isn't sufficient to prevent the ENOBUFS error on the retry.
+Reducing n_execs further to n_execs / 4 allows the test to pass
+successfully. This patch modifies the test to reduce n_execs
+to n_execs / 4 after an ENOBUFS error is handled. This ensures
+compatibility with environments that have tighter resource
+constraints while maintaining the test's integrity.
+
+Cc: Jonathan Cavitt <a class="moz-txt-link-rfc2396E" href="mailto:jonathan.cavitt@intel.com">&lt;jonathan.cavitt@intel.com&gt;</a>
+Signed-off-by: Jagmeet Randhawa <a class="moz-txt-link-rfc2396E" href="mailto:jagmeet.randhawa@intel.com">&lt;jagmeet.randhawa@intel.com&gt;</a>
+---
+ tests/intel/xe_vm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index 7a8740b69..e78ddd0e5 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -957,7 +957,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+ 		xe_cork_end(&amp;cork);
+ 		xe_cork_wait_done(&amp;cork);
+ 		xe_cork_fini(&amp;cork);
+-		n_execs = n_execs / 2;
++		n_execs = n_execs / 4;
+ 	}
+ 
+ 	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync, 1);
+-- 
+2.34.1
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>rename drm_fdinfo into i915_fdinfo (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140053/">https://patchwork.freedesktop.org/series/140053/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8082 -&gt; IGTPW_11967</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_11967 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_11967, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html</p>
-<h2>Participating hosts (45 -&gt; 46)</h2>
-<p>Additional (2): fi-skl-6600u bat-dg1-6 <br />
-  Missing    (1): fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_11967:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-jsl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-jsl-1/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-jsl-1/igt@i915_selftest@live.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11967 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-arlh-3/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@workarounds:</p>
-<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
-<ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +54 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@kms_dsc@dsc-basic.html">SKIP</a> +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723">i915#11723</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg2-9/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305">i915#12305</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg2-9/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +132 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8082 -&gt; IGTPW_11967</li>
-<li>Linux: CI_DRM_15576 -&gt; CI_DRM_15586</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15586: 790c7308eb96861950ceddfd5a0f410cc3306c2e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11967: cbdcb770dafad19d15b79ad1b4ff91819def477e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
+</pre>
+      </blockquote>
+    </blockquote>
+  </body>
 </html>
 
---===============0510421059015324872==--
+--------------ZW3008t7ux3SnSqjEi082v0V--
