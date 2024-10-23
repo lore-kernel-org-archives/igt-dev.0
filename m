@@ -4,50 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F1C9D2E010
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E41DFD2E014
 	for <igt-dev@archiver.kernel.org>; Wed, 23 Oct 2024 05:05:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D70310E72E;
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F84410E72F;
 	Wed, 23 Oct 2024 05:05:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mgRmdPVy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i2TZfaAD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09DAC10E72E
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Oct 2024 05:05:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 168FF10E72F
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Oct 2024 05:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729659928; x=1761195928;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=gRLqeXd/LNQOXQcA3PDtfzVxKuFO+7Yqmt9omQM8vdc=;
- b=mgRmdPVyKz7pp7Azx+hJ8gAfkGG4F8AMUaEWjoGZIjXwbZB7FkTdISt9
- m/aoLG0npAU/5NVbMdJ62SIPz7HTddU2h5NTkHWomWIz2wMUgc1oSKmhs
- u31x++vnAXRm7Q6GZMF9FADHizacAXVMXjyv1JDsnBDecazdIjSAJm9tO
- 1E0qyaMUYrJEtO1xp4LM47Rk+WViIZpH+EdwgDfTB9IHS1PG044edSK48
- rS1CF7MgIBlzZRXclhzmK3FRpC+LYV4NL1B9ZtSFSm8xV4/N9/jgUuEF2
- GiNGJA7PEzRdKvKFhXQ6LCmrkL/pkhHB50vfG6dGU6Wdr67f83ZguSJNB w==;
-X-CSE-ConnectionGUID: g13ZlltzQMeH3lzYTXNfmA==
-X-CSE-MsgGUID: RJL7tqYFQfGs5wDjzFanTQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="16849310"
-X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="16849310"
+ t=1729659929; x=1761195929;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=5fuKGyaajsN0Rym/xH8/XuDZxrqRbmIGytfrNqr2ySU=;
+ b=i2TZfaAD6qVLOKj4CPHE0l+dV76mi1nhN5PVLctgSNovMmX5qkYbdvSa
+ y9oainT3NFhhi6uyoXGSCPcaVyIPZYXjuR0oaLopwwXNYGjAE5SOzbxSw
+ YxViQxRzE3lRWS0Qkb16gSdT6cRgJQvo9S4HVyOtM0N0kX6YF1T2qVvIS
+ LIbO6/p71tF0ey4H77+17J8xxwoSs1HGtChGo/QHebYBUV7qGjaqTbpW9
+ wODHaRvH0vizbJ2N4wMoYX469HqZkbvtptb/mvue69SMgm45a7wL3tMRT
+ xplui+qFsl0J68yU/YmK14anpIlQK4cGGLGjxatnzoPR92k4D9/2StUIM Q==;
+X-CSE-ConnectionGUID: 1vbcLsigQCKGLy2DXcgSgQ==
+X-CSE-MsgGUID: sSADBUCuTcOA4l2DSUUIZQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="16849311"
+X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="16849311"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 22:05:27 -0700
-X-CSE-ConnectionGUID: KBMeuuhXRBSlEUxxQHVtaA==
-X-CSE-MsgGUID: F1pa+WuLS6exEUcjII5eNw==
+ 22 Oct 2024 22:05:28 -0700
+X-CSE-ConnectionGUID: wlW5sTXiRMyBPfxP5FsOzA==
+X-CSE-MsgGUID: ssk8z4ihQZm/E7Ty8pJcLA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="84871444"
+X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="84871447"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  22 Oct 2024 22:05:27 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 0/2] Fix perf_pmu@unload
-Date: Tue, 22 Oct 2024 22:05:00 -0700
-Message-ID: <20241023050502.3049664-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 1/2] lib/igt_kmod: Export igt_kmod_unbind()
+Date: Tue, 22 Oct 2024 22:05:01 -0700
+Message-ID: <20241023050502.3049664-2-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241023050502.3049664-1-lucas.demarchi@intel.com>
+References: <20241023050502.3049664-1-lucas.demarchi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,25 +67,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is now passing for me on DG2 since it now uses the unbind + unload
-logic. Besides, this should not explode in the kernel anymore when used
-together with the patch mentioned below.
+So it can be used directly by tests and other libs.
 
-I have other changes on top to make the unbind+unload logic for all i915
-tests (just like it is for xe), but I don't want possible noises in the
-tests, so I will leave these for later.
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ lib/igt_kmod.c | 6 +++---
+ lib/igt_kmod.h | 2 ++
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-Test-with: 20241023042909.3038309-2-lucas.demarchi@intel.com
-
-Lucas De Marchi (2):
-  lib/igt_kmod: Export igt_kmod_unbind()
-  tests/intel/perf_pmu: Migrate to unbind + unload
-
- lib/igt_kmod.c         |  6 +++---
- lib/igt_kmod.h         |  2 ++
- tests/intel/perf_pmu.c | 22 ++++++++++++----------
- 3 files changed, 17 insertions(+), 13 deletions(-)
-
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 75a0d057c..039309328 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -663,7 +663,7 @@ int __igt_intel_driver_unload(char **who, const char *driver)
+ /*
+  * Unbind driver from devices. Currently supports only PCI bus
+  */
+-static int unbind(const char *driver)
++int igt_kmod_unbind(const char *mod_name)
+ {
+ 	char path[PATH_MAX];
+ 	struct dirent *de;
+@@ -671,7 +671,7 @@ static int unbind(const char *driver)
+ 	DIR *dir;
+ 
+ 	dirlen = snprintf(path, sizeof(path), "/sys/module/%s/drivers/pci:%s/",
+-			  driver, driver);
++			  mod_name, mod_name);
+ 	igt_assert(dirlen < sizeof(path));
+ 
+ 	dir = opendir(path);
+@@ -744,7 +744,7 @@ igt_intel_driver_unload(const char *driver)
+ 
+ int igt_xe_driver_unload(void)
+ {
+-	unbind("xe");
++	igt_kmod_unbind("xe");
+ 
+ 	igt_kmod_unload("xe");
+ 	if (igt_kmod_is_loaded("xe"))
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index ee1719a8f..193b95627 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -36,6 +36,8 @@ bool igt_kmod_has_param(const char *mod_name, const char *param);
+ int igt_kmod_load(const char *mod_name, const char *opts);
+ int igt_kmod_unload(const char *mod_name);
+ 
++int igt_kmod_unbind(const char *mod_name);
++
+ int igt_audio_driver_unload(char **whom);
+ 
+ int igt_intel_driver_load(const char *opts, const char *driver);
 -- 
 2.47.0
 
