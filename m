@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75857D2E015
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Oct 2024 04:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F1C9D2E010
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Oct 2024 05:05:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 303DF10E731;
-	Wed, 23 Oct 2024 04:55:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D70310E72E;
+	Wed, 23 Oct 2024 05:05:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HPNN2bHd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mgRmdPVy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9405810E72F
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Oct 2024 04:55:34 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09DAC10E72E
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Oct 2024 05:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729659335; x=1761195335;
+ t=1729659928; x=1761195928;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=niiRCPIN40PBqYWp4x0j7DaZgv7+RqbIxHXT6NoNm70=;
- b=HPNN2bHdQIwL70O+0BvPrp/N5N4l3YA1f8au5lIOfaql9ljADMDzjbL4
- imQCXW933PApbF0TS5kxwTDiHtyF1rSDoPCTRv/5mSYBbH9yfdz5cC57s
- 1lZ7IHvaNm0fY6LNlaOfimPddJVE0exXmDdmEDaJfgGe/N+ylEU2RY/Mb
- PDNRDxrJovMmBPIeFEWzTwFffDB695xWt63mjfPug+HI37kM2nVBz3+4y
- TT+skbs0clhZNFnyxTScgRodK2dkp4GI4FUJ5xFOAsbEOffyu9eeETEg/
- MYs5cgHwfRE5AfX20cwysm4131WoXGIMapBZR4wG1r5zYi7e9wqRU+WG5 w==;
-X-CSE-ConnectionGUID: gRYKXLouT4G1IBkdM83s0w==
-X-CSE-MsgGUID: qNzfuT6RTxGs1OjncjXZYQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29009107"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29009107"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 21:55:34 -0700
-X-CSE-ConnectionGUID: dWYG8kiqS+eg2DOi82ZBMg==
-X-CSE-MsgGUID: CDC5geNsTiCu9gFG4Nd8Hw==
+ bh=gRLqeXd/LNQOXQcA3PDtfzVxKuFO+7Yqmt9omQM8vdc=;
+ b=mgRmdPVyKz7pp7Azx+hJ8gAfkGG4F8AMUaEWjoGZIjXwbZB7FkTdISt9
+ m/aoLG0npAU/5NVbMdJ62SIPz7HTddU2h5NTkHWomWIz2wMUgc1oSKmhs
+ u31x++vnAXRm7Q6GZMF9FADHizacAXVMXjyv1JDsnBDecazdIjSAJm9tO
+ 1E0qyaMUYrJEtO1xp4LM47Rk+WViIZpH+EdwgDfTB9IHS1PG044edSK48
+ rS1CF7MgIBlzZRXclhzmK3FRpC+LYV4NL1B9ZtSFSm8xV4/N9/jgUuEF2
+ GiNGJA7PEzRdKvKFhXQ6LCmrkL/pkhHB50vfG6dGU6Wdr67f83ZguSJNB w==;
+X-CSE-ConnectionGUID: g13ZlltzQMeH3lzYTXNfmA==
+X-CSE-MsgGUID: RJL7tqYFQfGs5wDjzFanTQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11233"; a="16849310"
+X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="16849310"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 22:05:27 -0700
+X-CSE-ConnectionGUID: KBMeuuhXRBSlEUxxQHVtaA==
+X-CSE-MsgGUID: F1pa+WuLS6exEUcjII5eNw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="84061619"
+X-IronPort-AV: E=Sophos;i="6.11,225,1725346800"; d="scan'208";a="84871444"
 Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2024 21:55:33 -0700
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2024 22:05:27 -0700
 From: Lucas De Marchi <lucas.demarchi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [CI 0/2] Test pmu unbind (xfail)
-Date: Tue, 22 Oct 2024 21:55:09 -0700
-Message-ID: <20241023045511.3047422-1-lucas.demarchi@intel.com>
+Subject: [PATCH i-g-t 0/2] Fix perf_pmu@unload
+Date: Tue, 22 Oct 2024 22:05:00 -0700
+Message-ID: <20241023050502.3049664-1-lucas.demarchi@intel.com>
 X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,8 +65,15 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This is expected to explode on perf_pmu@unload. Later this should work
-together with the kernel patch.
+This is now passing for me on DG2 since it now uses the unbind + unload
+logic. Besides, this should not explode in the kernel anymore when used
+together with the patch mentioned below.
+
+I have other changes on top to make the unbind+unload logic for all i915
+tests (just like it is for xe), but I don't want possible noises in the
+tests, so I will leave these for later.
+
+Test-with: 20241023042909.3038309-2-lucas.demarchi@intel.com
 
 Lucas De Marchi (2):
   lib/igt_kmod: Export igt_kmod_unbind()
