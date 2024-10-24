@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3A88D0BB63
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 06:35:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 316F6D0BB64
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 06:36:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4E6B610E20D;
-	Thu, 24 Oct 2024 06:35:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD15A10E8B6;
+	Thu, 24 Oct 2024 06:36:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FNc//Ieq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ftM2EXI4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F051210E20D
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 06:35:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ADFC310E8B6
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 06:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729751724; x=1761287724;
+ t=1729751795; x=1761287795;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=01UCDo3jAtbgEQ6HbhGmLNcgzq+FnOTCjWE1JYtRAtY=;
- b=FNc//IeqRJ7JKmNvKZVFRCPJhmDScXCwXS621HI6rk7bzQX+2ldb+IEV
- 6lnAZo30c/bNYZuDM1kuvv/RRUu7QPDxVveIO6CxV0Xw05JJuRgC3W+8u
- +JNDiR4WW/ldPnLdZ4kbMg3yNDnNKlkB0PQzvlWeoeSns34VPyYI5GRvb
- 0zNGHpGJfxRzkzClvP2iN/dWFzL5zCszsG1i9SrjiqEXhNPDHJrVXqcsO
- ty4RrYU529Zqp5lZciWayG+6ztjxOOEK1Qn7EVIKD8ib4QM4Mi3HrtdMs
- JC/VK8aaRn2gTsBITDLmtV3lbmidE65gYJrs322lnJgTa0lv39RTVtS1o Q==;
-X-CSE-ConnectionGUID: A2bblv9IQqCy76LDfsZMfQ==
-X-CSE-MsgGUID: ooqDjY05Q4GDDvIgrevQKQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29491994"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29491994"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2024 23:35:24 -0700
-X-CSE-ConnectionGUID: qUELl7wfSmOapWmomd7Gkw==
-X-CSE-MsgGUID: OVddmeVnRx2Y4wwzAcO+FQ==
+ bh=Sx1KvALfwIr2y1mtCrM9dowNjPFMoDPxsAnPeuR2fHo=;
+ b=ftM2EXI43DR5/Fv0zWGWiwKtIE5CZa4LIcurpzStW+QPX5qJGNMJNWKe
+ ZhWLrda6yiQ67FrF9zC8LUNK3Ejq8H7Aan4otFBVPYBqIvEomA7QSdhQF
+ DlIbWonG+/Wo1wEK7VvGjHCGpz9KhWAfuw6590JP+PHuDGhqRdIYG1YHl
+ aM9TkX0+bcblJnPG4om83j/xHTCEMJmgSzz9SotUQCnrJ0BFgjjVXMlJt
+ 9r70zKptTS8qYAbmprlaiV0GCbXmVAxK9aJ6CMiKtzdS9CQY4G0ST6ODn
+ jq1j+p0pUhh96DuKptTtC2cqdtPyg9FosTjjSb6aSTLAIVRD4Wb8WCJsB g==;
+X-CSE-ConnectionGUID: +iuie+z8THSrIgplUgA6zw==
+X-CSE-MsgGUID: RHQ41vUGTbCo8DZyudF6Xw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="51907417"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="51907417"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Oct 2024 23:36:35 -0700
+X-CSE-ConnectionGUID: L31rGi1kSnS5pQjDesonhA==
+X-CSE-MsgGUID: PuG8st5SQvqUsnvvQBgRFw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; d="scan'208";a="80670170"
+X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; d="scan'208";a="80501667"
 Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
- by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 23 Oct 2024 23:35:23 -0700
+ by fmviesa009.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
+ 23 Oct 2024 23:36:35 -0700
 Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
  fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Wed, 23 Oct 2024 23:35:23 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
+ 15.1.2507.39; Wed, 23 Oct 2024 23:36:35 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
  fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Wed, 23 Oct 2024 23:35:23 -0700
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.46) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
+ 15.1.2507.39 via Frontend Transport; Wed, 23 Oct 2024 23:36:35 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (104.47.57.49) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 23 Oct 2024 23:35:22 -0700
+ 15.1.2507.39; Wed, 23 Oct 2024 23:36:34 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yaQYVF7VqMp2EkuCrr9H9lUUuIiQHUFrQ4tegsiucdobttJYnKNYakp/7bQ4Vv0BH6ScEUlQMIipdjAZvtFHF/ROftDLiMWnQo+n/E0ovjbYBkYpZSTGA9WOgT+uskV/NT+gQP3MiBjMXMLUlnj3Ib2TISYfPZgjAef6vYiiyOo30plffqhmuVUzrzrN2vTwYFsme+t6ajRiVRblSfevfNDDTdc7LAhJuAeBjW6YEeuE78GvkDT2g0XQrpJDoG6zQpDCZ28upmUjeJSNfUBMYRXY2h6PDD/YynVTWvqu1ppi3QnGqmAA0CXpEe0YmOcNchDQijKy3SRyUJAM8g8izA==
+ b=a69ibmXAWHb07JJCDikDdfeFfRZOMuWbuvzxgrPOxTIhAbglhoXC2hQ1PIwXzMYE4BQ7hGlqQH4caxBaclFjtn8DRuI064ltUUZjuaOyDamdAPN2X8bJwP3B3sDYWxVzAMvwAr5d/eEFsSyHQ/wjyTXnd+A9IQFNtg2Ntm4ZwuoeFNxXG2JbU2R4mRrvIA1Ett/JU+Oj/SnnWslawA6JhToF2DejbkcNyqriWBHpLX6CPB8uVrWo1JXl1XGB/z/ch7gutU9MhxCfz+EfzS/NQ/cV10/Lmt680LqO4weiEZW519914C3C+JysWCdGLJHc4+XfXW2vJtd5n+NM/6Fd/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=k6qCsFT14NT0QwZlJwFG0RvLCiiU5TF42nHJF/kDFrM=;
- b=WjOcR8KcNzv3ixdPsLK1S0A005rUbM0duFu6kWht9+5pggrVGFBtB5np/bFTDhNARHDKlgZOAO4y3Ox4W1pDWI2zpW02PWscCx5aoexs8fyitHc+6LsrAI2SgAurzIM5yuuHBNaBoLD4Iqb9W3hEEDY0SE6Cx1sWJ+VySFj0W87n+f9DMK9CEn9AHTIGVjKDDjQcvuJuNbWx2j/aqNgw5Svxh4aSMVdHUpZUBZWNSXE+x5j+QIhxudh3dDcioTsWmNb97o3TIH1UVivwcHYWFwYFYHhqfr/4DPifGvFEJwtw1B0/dsA/zCd/jHiNBA79n5UXWWF1XIuREVERcgFT2g==
+ bh=24xj847QM9gw+u1SPYP57XTvHSIdjXoN8SLEIcE93iM=;
+ b=Aw1kKWCMfY/K3xi2rgh0ugHad4Od5DMBBeWPgot9jM+5jWfpjVlyrzKF2MIp8ZLof2SS7hMLFz42pWTI6Ka+gtERrR3PTXNKea+6hr+uEy1dGkc+JesTszYFlJN4gxzJr79AJX4sg41T+RBjd5D9Nz1PCN4azt8pdDIhgF8+u1KVAtpQbBHSCCq5Bh2ZLoOQOUKVwPmzu9yxf2XFVrhhvQeuQNWo5WqMb145lfByVeNebDWXo+3e0UTBNQ0IILCZOZSg/VbqmF6NTfOiBmYmY54Mg+gRwf9Ospe6SVUfYUEUD3LWsaSQm5u2Rby29tke84O/iUUxdgkZD6tGLGi7HA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,116 +69,116 @@ Received: from SA2PR11MB4811.namprd11.prod.outlook.com (2603:10b6:806:11d::17)
  by CY8PR11MB7825.namprd11.prod.outlook.com (2603:10b6:930:71::19)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.29; Thu, 24 Oct
- 2024 06:35:19 +0000
+ 2024 06:36:27 +0000
 Received: from SA2PR11MB4811.namprd11.prod.outlook.com
  ([fe80::e790:74e2:d7b6:9fe4]) by SA2PR11MB4811.namprd11.prod.outlook.com
  ([fe80::e790:74e2:d7b6:9fe4%6]) with mapi id 15.20.8093.018; Thu, 24 Oct 2024
- 06:35:19 +0000
-Message-ID: <bbc2c90d-814d-44c9-937c-c9125fc25c4c@intel.com>
-Date: Thu, 24 Oct 2024 12:05:12 +0530
+ 06:36:27 +0000
+Message-ID: <38ae6773-8717-4250-8883-c3f99ff3ecc3@intel.com>
+Date: Thu, 24 Oct 2024 12:06:20 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v4 1/3] lib/igt_kms: Move backlight read and write
- to lib
+Subject: Re: [PATCH i-g-t v4 2/3] tests/intel/kms_pm_backlight: Refactor and
+ use functions from lib
 To: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <bhanuprakash.modem@intel.com>, <suraj.kandpal@intel.com>,
  <pranay.samala@intel.com>
 References: <20241024045212.1697869-1-santhosh.reddy.guddati@intel.com>
- <20241024045212.1697869-2-santhosh.reddy.guddati@intel.com>
+ <20241024045212.1697869-3-santhosh.reddy.guddati@intel.com>
 Content-Language: en-US
 From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-In-Reply-To: <20241024045212.1697869-2-santhosh.reddy.guddati@intel.com>
+In-Reply-To: <20241024045212.1697869-3-santhosh.reddy.guddati@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MAXPR01CA0105.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a00:5d::23) To SA2PR11MB4811.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0058.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ac::16) To SA2PR11MB4811.namprd11.prod.outlook.com
  (2603:10b6:806:11d::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SA2PR11MB4811:EE_|CY8PR11MB7825:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1aab10f4-817a-47c0-f31d-08dcf3f60773
+X-MS-Office365-Filtering-Correlation-Id: 0e6fd024-cf0d-4cdb-2ab4-08dcf3f62fbe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?TkFKQ3oyL3lsR3dCVE5pZTRjblZUcFNzcTVWdnJrYzJpWnpkVVYwenJDdW9G?=
- =?utf-8?B?anl2L3p4cFVwNDhuNVRieUN3aGJMWitaeTRMN1BlUnQ3ZytVMkhkMHhTTkZQ?=
- =?utf-8?B?NTBSeEpDL2Y3eThRdm1BNlNXNStoQ0NWSitCSnlQdEliNDJNMWlFR0ZEUmcx?=
- =?utf-8?B?a0p5TDFaUGZxaTFySkJFYnhUSElMN2kxUVg4WG9BUTBtWUFPb0d4WUw4b0Z3?=
- =?utf-8?B?MG1nS3FLOEQ0REhRWXBlMjhFbTJvOGN3SFAvVm84eHBuT1BXOGIyMmRkaE5B?=
- =?utf-8?B?T0E1dW51RzlRb1dLdmdUdElGVVcyNVhlcUFVcWJCYmlRb0w5cnB1R1B2Sm5x?=
- =?utf-8?B?cGNLaGtLVExoUEVmU01GN1BLN0dIY281VS83WDFsWW1mbmdKcVdSUXZmbUlK?=
- =?utf-8?B?V0d1ZHF6OWtUSVllV3BZVTIxSGZnUmlOK1NmS0txMEN6Ykg0MGpyVy82RzFR?=
- =?utf-8?B?bG9YclVkeDhmRzU5N2JWU21FQkhjMXovUUdldlNFUklzK3AyL0M4dkVEOTk2?=
- =?utf-8?B?OEpNcmFZVzMxZzlTMDN6dytkSkozUzN1MENCdXJ2M25vMlFFKzhoR3h0Y0E2?=
- =?utf-8?B?N3A3K3lMdWdtV3pQdFVsWWZyVmlmVjEzdzdueno4M3BsK25hODlud2pBZ2hK?=
- =?utf-8?B?Vll4TFpiaDdLNFQrQmJFS3dMVDl3ZGJoWlRZNTZWQTNyVDhHL08yMG01UE5U?=
- =?utf-8?B?WXQ5UG14M2g0eDJQM3RTa1BDKzJuQUh4aDZLNjdEVFVlYWJVQytZOWFFU1Uv?=
- =?utf-8?B?WGQwOXd3RW5NK2tGU2NMOU1lT0w5UFBaL2VZMDNuL0FuVEpvbjBOQ0FhT0xm?=
- =?utf-8?B?RTlLV0ZXelVZbzhHeGZ6QUZUNHozNHZIb3VGTEIxMHd3ZXZHY1A3M0pDTm9N?=
- =?utf-8?B?SDkwYXhMM2R4b0hkenBLby95NUlPQnZYcWRqQm10RjZ4S1dZbElzcG5xS0Ji?=
- =?utf-8?B?TlM0TUZ2NEZxVzQ5MEh6a2JLekV0UGtKaTVFdEdsRktaLzlLWmFqRy9UWHla?=
- =?utf-8?B?UTVMTEU4WktrZXUvRGFsbHlLWDB3Y1FCRko3TnJISEJTeFNvSDdaRllockdJ?=
- =?utf-8?B?TkZKeStmcXlFYks4UENVYU1jL3pvQ2dJamdXSUg3bmVGdmNpTXIxRCtzTDZa?=
- =?utf-8?B?ZkZ6Szk1S08wU1NXdDNRQkdieDl3dFU2djEvSHhUQUI5cW9GU05TRFRuTTJq?=
- =?utf-8?B?WWlObFBCdzVQTVMyVUJKUElUNTlPTU9jUWlrQ1ZOQXd2VHFJL2M0MnJZL2Zh?=
- =?utf-8?B?bVdDMFR5RjdLT2JIQ09VbElSME1NRkZqZVF2ajFabGY2RlgzU3d2dUdiRmkv?=
- =?utf-8?B?MitleEN0c0N5TzZwNmZmbG9FZWN0SmJZRVY5a0dNdDRsS0lSK0p0V0ZHTm5p?=
- =?utf-8?B?UE9TVVlrMmNZZnZ2YkwxdVJIelp1UGRnK29CU2Zhd3lMUVAvZmNYcUZvcmJS?=
- =?utf-8?B?MGx6R1BtUTVKZW9NWmRWdFB3VjRaYjYwN2xzWGYvajNXblovTjBObDY0bndu?=
- =?utf-8?B?alZKR1JTOWo3RlV3eHlmYk5aRUVtUnpwY2RMZUdaK2ZrNExLcDJ2U0NCa1NU?=
- =?utf-8?B?MlJoaUxTSE4vWWFMRTlQN3lBWjdUbDJFSzIvcU5xMmNpajIvYXh2di82eGtj?=
- =?utf-8?B?T09lSmkxelBRZUNzeDM4aFlVejFsNDNwUHhsSkhXMi94bGtVbUd2bTFVcG1t?=
- =?utf-8?B?NG9aZUM5MWpqZVR0aEIzaHo4eXorU3M0Q3lvQkMwTFJiblNOR2ZjUlBQTjBQ?=
- =?utf-8?Q?r8jzZvQdZl3aSccZnYrqr/rGkyw7uZvoN2bYd/Q?=
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?YkxrL3llQlpqTXlHWGN4R3R2Tm4xUVBQRE5VNDlEcjFGZEkvaDllb2Z4bHdm?=
+ =?utf-8?B?bG5TZFVoNGp6L1R6UVVnY3JVZTE2TnRKVVViKzRvMjNMcXpQeTl5R2h1c0FP?=
+ =?utf-8?B?TlhwZ1pHTDdCS2s1U3EvdVNiNm1JT0dvM2ZtQWhRekdHakpHZGpFS0Z3VjA2?=
+ =?utf-8?B?UjdIbSttbDA3YXE3NnVSYmFhOFJjYklnT3V6RGUvV1RxUjJ1MDFvRVlXZDlM?=
+ =?utf-8?B?NUE3Wjg2bElHSVdoeEhzQ21SdUxLNGgxczJNbjRxQW4wcVBCVjVBRnZoZmZY?=
+ =?utf-8?B?cHVNZGhYNmoxb1k4K1lQcENlaElyYzUxNnAraVhIQ0phdWt6QXc3VHRLL1VM?=
+ =?utf-8?B?VCtOTmg2ZklTMUNJNTJzL01yWDlmUm5odnR2emlYMnlId21wRjRVWEhJNU82?=
+ =?utf-8?B?NnZsNUlDQXBJdWJiN2FIWVJSMjRIa3dzcU5iRmk3V2JpQm1SRVBVdWV4TkNH?=
+ =?utf-8?B?Y1I4V1dyY0s2bVlLbzFDcUcwRU0xaUd4K01oNTNpRDB2TVN5M3FYZzBwOWdM?=
+ =?utf-8?B?dDNXSWpQM3JGRVhJNjVBNkI2b2YvWG5CdExHLytXMnNEMU9XblJibG5WS2xt?=
+ =?utf-8?B?ckJtNGswa1RGYXFOQmdOdEk0VFVGMmhlbHRQaEY4UDl3WTRQbHVweGJxUVor?=
+ =?utf-8?B?ZTQxWE0wbVkvcCtnZGxXVW5aQkNIcHo5R0RuVWJTUitmNDZzL0o5Y3NaQ2xh?=
+ =?utf-8?B?OHE0TU01TENoak95eWZRRnV1RHRDdjlTUUlVYmxQNy90SEtISTZnNmdlOXFZ?=
+ =?utf-8?B?KzZodmROMEpURVR3eVlKQ3FkQjZ5VXFKeDZzZTB4cmNEbGo3V0pOMDVxUC9J?=
+ =?utf-8?B?bzA3OVN6WWNUaTFFWTRQSkZtK1UwenYyVkZHSU5nY3ZDQ3dPcWdtVUVNZ3pM?=
+ =?utf-8?B?U0N5QTdCL0Z3UG8rZ2ltQ1NhVjgvdkhtRjhQYkhhRVR4YUp3cW5xQTNGOFNG?=
+ =?utf-8?B?c05hU042bFJ6YWpVcUhoZHVhQUYyb1J4TkZxYVpVdld1b3BKeXZ2dFRTa2t4?=
+ =?utf-8?B?WUsybzhXeEYxS3NVNklEbVllT0NsTVY5cjVQd0FKbzRmQnA3RkxIUlF0Ymlk?=
+ =?utf-8?B?VlorL1RmdlMrZU1KcDJaQWtWYkMzYTBQNjAzT1g2UCtxS2VhV0tJY20rQ2po?=
+ =?utf-8?B?aksvYmVSY29VY0RyTnlmdjZndTc5V2VYVVVKblhEQkFvYVlZZDhGeC9RYVpL?=
+ =?utf-8?B?QmxaMVhhYkFURzByYkhrTkxGTlVKNnUrd1RVZXNobGprQzhrMUJMajdTN0Zk?=
+ =?utf-8?B?RUdFdkRaemJUUG9oQ2VPL1ZySHlQWlI1d09SUUVyaGVZZm9xR0cvTllKRTM3?=
+ =?utf-8?B?bEpCZ0JWVjd3cjFDaHhFSExvaDAwUnZweEg4OXZCK2NpcENnR2xDb1RpZlRw?=
+ =?utf-8?B?YkRmRW1hTGZsS2RZNEltZWZaK1U1UWY3dDJnVTBjVjlxVUUzcG8rNjJwbXFQ?=
+ =?utf-8?B?WTNudFkxTUJKRXJleFNBQXB0VUluQ0RobmVKSDVhaEtsTWxxSkR2ZjVUQkpK?=
+ =?utf-8?B?OWc3dElWUzd6bUxBa2ZaQVFUY2JYdVdZNE9aZm5kWnNSeFJIMEd2am9tbVNj?=
+ =?utf-8?B?VnNRYjZzbFdTZFRSOHlTd0Nybk1zeUJsTDJqNjArZXlxdGllUE9oaUdjblli?=
+ =?utf-8?B?RlN5UVY0dEYyelhUbHdoOHhVbUdDTUhxcXZ0Z3k3QjJPcFE3QWYybkZDWkRO?=
+ =?utf-8?B?RFpIMmNqVTh2cVp6dHd3Q2dUVTZVWFpSVG83YmpzaURSUWE1bXJRYU5mYkNW?=
+ =?utf-8?Q?O4Aub9PTuOAo+pvrHCYbDkrbKAYNuJGu1Z539T7?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:SA2PR11MB4811.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c2Y2bjlZTFV6dUlFUnlndVlzeFd6TndCdEJtcWJjYUJsK090TXBXNlk3WTJN?=
- =?utf-8?B?SDE3YWZOZlh3SENEKzg2YXU5eGlOdFBuMlZDcVpBVm1zeGUyU0xwUElTSjE0?=
- =?utf-8?B?K1lQYXZIMklQY0RqMEhrTFcvVENnaFNxRno3aEFCL3JYS3RWM05mUE5FVjdy?=
- =?utf-8?B?STB3V050cjVzS1V6SDQvNEhJVEdXK0ZPUG1kaHR5c0V0bnQvUTJPUWpEUGhv?=
- =?utf-8?B?SVA3aWlRdUpxS0p2Vzh1dkdDQWJobGFpd0FWQXBOT21Ca1R6TGl5ZnNMdzky?=
- =?utf-8?B?WmhqUW5xRG5WbGtzNXk3UG1sMVBadmdIZU9ZMzJTbXZWRy9aZXJrR2U3WWRQ?=
- =?utf-8?B?d3hKYTRFcFBOMXdSa0tVK1dLcTFONUJWbkV3eU90SjJBMjVsL2h2em45dDFE?=
- =?utf-8?B?TzBqZkU1N1ptQVlibWtNM1JqRHNicXhSdk5EbVVTTTF6S0lGZHFBcStra0RW?=
- =?utf-8?B?V3A3bjBRbTlzaGdLeTFUdDNHNkNhVFR6QjRBTDgzOXNuV2dFeWR1ZStscGJt?=
- =?utf-8?B?bkUvbU9DY01wL0dtTEJzN0hpcEdxd3NZRzdpNTA0d0IzNlErbVJnRG5YMlgy?=
- =?utf-8?B?N0k5dXhlck50clMxVHhLZzgvMmx2Q1c2Sko3RGRUTUQ2aU5QT3Y0Nk5JOFFO?=
- =?utf-8?B?NWE3bytpZzhzZm80VS9sRjFhUmN2N0ltdlR0RHN1c3ArMWFJdW1OZmVKMVlt?=
- =?utf-8?B?OENrU2tqR2VCMVFQWTJ6SEVhd3Iwb0JyV2ZUeGxPRklWQXhFTmpVZ1NmR0NL?=
- =?utf-8?B?UTNRTWxiYk1RYlQrSlZxWlJvVHErMWtCdHRUVSthOXdWSndkcWpkbWJ4akZW?=
- =?utf-8?B?NjJoWXdqcDZPVEhDVmhKdlB6eHowTVBRbGRuRFFBT0tCR3FGOFZOcW1vWmV4?=
- =?utf-8?B?VGREUlFlNEVFNjNIcHVCSk1wOHBhSCtDQkRCa2kwT2V2OTEyTXhCNXBpeGc3?=
- =?utf-8?B?c1FqbDRLYk1WeDlVWmZqTlBsYm9VWnRQZ3NHODhyRXArb25JUi83U2JWVFN0?=
- =?utf-8?B?OEJqelQxdVdwUTcrSXFyUHM0Z1R0dXlIY0VyU2p3VDV1ZXVtNTZYWVR2R2lE?=
- =?utf-8?B?eFh0alQyS2QwQkE3QkVvY05DWTVkTW5ENlA3Qi9nMGo3ekRONllpT2F0MjVu?=
- =?utf-8?B?UU01dUJOMmFUNGkzbmVpQ1RsMVNTMVlmUyt5UTZmK0kyS21IMVVvcGRmVksr?=
- =?utf-8?B?Nm9tVkozSlVpNkpOeHkydStOZDBYY3h2WmplY0pwOE9sUWRsOWQ1enJQMFNh?=
- =?utf-8?B?bjVQWTIxS09qK2pWeXBrYkVldnU1VUtXc3ZSeUxhcXUzeDZjVjd0TUEwSGVL?=
- =?utf-8?B?ZTRkSlR2aXZZR2xlejFjYUVUNUMyOGdrOFhURTFBMGFKVEk0TjlwdXlLL1pJ?=
- =?utf-8?B?Z3k1MlhDWjFQZ2JLL3BrN1QzSXRBUm5SQkNrTEZEUEVXZlFTTU5ZVFRoVXQr?=
- =?utf-8?B?SjZSRDMxd1VQWkVHNGlIYnRpRDhpRG9MdnFNT09Da2s4R1lOOStyU0JWN1ky?=
- =?utf-8?B?NVNQWGJ5VjVOdVdYV0RBZllmR3pVQ3FNNW9ScnpJWDJVY2RiWnFTa2JjdmV4?=
- =?utf-8?B?eitHRVZqQkIvcjN2MzdqOXJkd2lsMnIvVnZRQlFtR0lRTWJuYzZjUE1aWkpw?=
- =?utf-8?B?T0lONy9NbTFaU1RKMU1ZS3gyQnJ4REFHZEtsdDVXc2xoUTRvR3M3RzhJaU5H?=
- =?utf-8?B?Z3IvaFVQL09CdythWFRNc2JTK2hrUmliNjNWUTFzTXJBOTNySXRxeWM1SlFC?=
- =?utf-8?B?dmxkK3dsalhUZi9aQjJpZ09sUkwydHMyclJaTDNPdHBZeTRJSXNwbURtaHQ1?=
- =?utf-8?B?YWhWc2xFTWRvWDc0REZubU1USVkvZk5oeGZrN1Q5RWRwWGFzMmU0TXBUd3o4?=
- =?utf-8?B?cG83dFVvMFBrcmFiT3NxOUtySDBqb0FhaGdBTTRCQXlkdmFDMkRoUHBwbklR?=
- =?utf-8?B?ZUhBYlcwYnRHNGR6aGZwbytRL3ZVeE9UbEZ4em1VZ0NGSHcrVjZFSUEweEJS?=
- =?utf-8?B?cEdmTXV1d1ZhNXU3NjJOdUFyWVB1RFVsbjkxVEJUaGxQRXU4c1V2eGJxWWJ6?=
- =?utf-8?B?SmV1ME9aV1JOYlVaVnIzayt0QXFkYWZTTGtzV2dBRnRsUzNpOXFhQnhqeHYz?=
- =?utf-8?B?ZC9DMk8xZTE4eEdvWVBSSm5KRlNWZ0xxQmxtRzZKbDZhS0Zsd1EyQUxwL2Mr?=
- =?utf-8?B?c1E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1aab10f4-817a-47c0-f31d-08dcf3f60773
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K3ZzelFoUGpxSUV0YXJCL0g2T2N5MkVydjc0bmY0UVdJRVE4bk9STmZ4REZu?=
+ =?utf-8?B?cUJjS09hSHdNaThkeFliOExqMWdpRVVOVUNheWExT1RabDk2aTVKS1Q4MGZM?=
+ =?utf-8?B?OVZRT1VxdU5sNjhad0s1eTNSN3cvT1hnQzFEbFA2K2FybTZhVCtPYTYvejJG?=
+ =?utf-8?B?Z3BNM3F4RTJEVy84U0xyeEl3UHZvdHFjMmY3OU1ZeFlKMjNrWkdGcFUwd3hU?=
+ =?utf-8?B?blJSOUxXdFUwQkg0WkpvcFlqWSt2MGcvUFlzWkhOSjJrYzBxZGJIRndZdTBJ?=
+ =?utf-8?B?NlZONUpibkRMV3VzMXA3TFNMcmVYRzRldDd5OWdHdW9yTWwxTXN0VXV0SmhB?=
+ =?utf-8?B?SFhkaUlwUHg5RHlKSlQwdW9pV29lYkc2M0FFTENwNlo1ZkZ6ci9UbXFvcmYy?=
+ =?utf-8?B?NjR6THBLdzg4SWRmbzc5K1ZzV1ZjTGVxcVI0M0J4bW5aZ1ozZjR2YU04Vnlm?=
+ =?utf-8?B?cmJpRTFzNVhlQW9XVks4aWFCRTRGU1dudHV2SjN5dWxxNGFaOE8zeGpkNEo3?=
+ =?utf-8?B?bk1yTzA5KzM5QXprd0l6V1RRZlhKTjZJZDZmQWttTExmMUtobmNNQnJHa1dN?=
+ =?utf-8?B?WHI1WUw0UWFmVW1tSTdQdmVMMFF5NHdtSjJnWEZvaFF6Wm9HZ0tUQ3p2UGxV?=
+ =?utf-8?B?S01sU3FSYmlDNUtKak1YS2ZNZm9LZ1RpYXhaMmpkanJib2xOWUR1YXJNYTBB?=
+ =?utf-8?B?NE5YS29HQVhTRm1TcVVlWUlSOHVaeUNtNDh0U3VWK3lpc1R2SWN3ZUlmVFBS?=
+ =?utf-8?B?TlZxMTkvZ2tjNlVaWXNiRDBPM1VwUTZJUVF0V1FiRGQ3VnB4SjMzZ1ZkaEVI?=
+ =?utf-8?B?LzhoSXBaenB6RG5TQTg1WUlzay9nbS90WmdYTGIvUUxxbVBJRGJsTDhTL2pJ?=
+ =?utf-8?B?dHRYZ2lHN0QwUGVZSEQvV05kOEZLVHFFVHdzaitFbVdKT2txZDJoUU9XeTFH?=
+ =?utf-8?B?TnFqWlUyV2YyU3dGY0FKMzBJOUdNL0FzaSt1UUVMNU0vSklkNlg2YXBnUFBq?=
+ =?utf-8?B?aytubG1PS1pGWmpDcExxanZhOWpkaUl0S2hoeGxGVmFRM2c1U05kb3BNazg3?=
+ =?utf-8?B?R1NhZFVZSytMZ200UjVGUVpzd20wZGdVOGx6L08wdG1WZk84NnRtb3owN25M?=
+ =?utf-8?B?ankzb2RwdVBtQWc2VUowN1NYSFltY1U1THNGbFh2TWxUR2g3S1pQNzUvZFZC?=
+ =?utf-8?B?K29pRjFzMVpwNjJmZGFValFLV1BsZkNocWhwZE9mNkF0cnVsaHlSVTFCeFlX?=
+ =?utf-8?B?RXZKQ01JQXJxaW9nd1Nqb01HU2JYbW4yUGZQOTM5RVhhOXcxTUdYNS9laXY0?=
+ =?utf-8?B?RFlOY1Vtd3BiLzFNamNsbWxwTDlqR05zdDZKY1oya1UrckNEa1B4ak83ZWpT?=
+ =?utf-8?B?NnZqaGI3ZWxnODh5OHRVa3c5bHltejR0dWhCZzdFWWtWVGh0SmdYdGpBeWt5?=
+ =?utf-8?B?MkpLanBKM2VIQmpmL3BMN0sxTE9rM1VJZVVhNEFZTFRROCtzeHJmUzcvc1Bx?=
+ =?utf-8?B?cTgrRzM0aU9jUHJ2QkFCY0Y2N3Q1dFcrK0htNFRFYjlCYmxlVllQQjBBSVZR?=
+ =?utf-8?B?R09qWE1jaTE4aFp1Q0NpTjBIUnVac3M4alZobHVNZEZMc3hNWFV1RW14a1Jx?=
+ =?utf-8?B?RjJnbmdndEMxZDY5YTdETHZrMFVOWlRTSVgyTXNLUHF0ejlPaCtiU3JDZG1l?=
+ =?utf-8?B?SlpmdG8yaHptcVNwbDRtcWNwTXExbnY3MEt5V0Uybit4eVE5K0g2bUt4UGJq?=
+ =?utf-8?B?NHp1UHhMM1craHdnMXdNVEJHTlVIYjFrc1kwdmxHNklCTGFBSUpUZGNFVDdL?=
+ =?utf-8?B?MzB6TXppTjFOSlh1U2NFYTgvT3loWEljSFlpOEYyZXFzbStsdlY5dWNpcXJa?=
+ =?utf-8?B?YmxqUmU4WXNlZHNzeGgzMkZRREw0Ykl2Vm5mM1hTeGJ2Q1FsU2w2anhxancx?=
+ =?utf-8?B?OXpSUW1idnU3aUlKUXhsK05jUUgrR0JYeU1qVk53Y2JHbE1PT2xidUNRRU9Y?=
+ =?utf-8?B?ajRRYmh5aGVuNlMzTzNzMWtoZktrZWZRak9pMnVCdk82dXBHZlBzU3NqUWlv?=
+ =?utf-8?B?MlEzTGEyY21GRlR5eEpELzJLNS9EQmpFVktOVGZvelp5WVMyQjNDdkJyaWcw?=
+ =?utf-8?B?TDF0encxMWMxLzgyMXhoanNtVUpZa1d2S2pTUkxselVzUlpNdEZZa1RaSWZB?=
+ =?utf-8?B?MGc9PQ==?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e6fd024-cf0d-4cdb-2ab4-08dcf3f62fbe
 X-MS-Exchange-CrossTenant-AuthSource: SA2PR11MB4811.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 06:35:19.3699 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 06:36:27.1629 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bJZSVPk3NPYZR8jYuOUy3pGyu+NyyOzu5L3Jeb84ZRDQC5QBFPQ9iRgPqr7IlL/kNmguYC6KYa+za2h5vE8CbKU5ag2j8J/pgqy0wF4DeYk=
+X-MS-Exchange-CrossTenant-UserPrincipalName: mGJ+VMjdTYySTvuMGqf4E9/DQuCKB+J4TLFnN2+Gy/pbnjo4aQnQdoTe4qSUe5W1WDOtMWJGwFzSQ7DOsyurrhuTv7iC96aMcFzq8xOSkYE=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7825
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -198,133 +198,216 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 10/24/2024 10:22 AM, Santhosh Reddy Guddati wrote:
-> move backlight_read and backlight_write functions from
-> kms_pm_backlight to library to reuse in other tests.
+> Refactor to use igt_backlight_read and igt_backlight_write
+> update struct names to maintain consistency.
+> move struct context to library.
+> 	-->Start new line with capital.
 >
-> move and rename struct context to intel_backlight_context_t.
-> -->Please format discription correctly and start new line with capital.
-> 	
-> v2: Rename backlight_read to igt_backlight_read and backlight_write to
-> backlight_write (Suraj).
-> Add a new member to intel_backlight_context_t to cache vendor specific
-> backlight path.
-> 	-->please allin above line with v2
->
+> V2: update backlight_dir_path with BACKLIGHT_PATH.
+> v3: rename intel_backlight_context_t to igt_backlight_context_t (Suraj)
 >
 > Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 > Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 > ---
->   lib/igt_kms.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_kms.h | 12 ++++++++++
->   2 files changed, 78 insertions(+)
+>   tests/intel/kms_pm_backlight.c | 108 +++++++++------------------------
+>   1 file changed, 28 insertions(+), 80 deletions(-)
 >
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index bb35d4b82..5d8096a17 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -7119,3 +7119,69 @@ void igt_reset_link_params(int drm_fd, igt_output_t *output)
->   	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
->   	drmModeFreeConnector(temp);
+> diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
+> index 196b5af03..8b59725ac 100644
+> --- a/tests/intel/kms_pm_backlight.c
+> +++ b/tests/intel/kms_pm_backlight.c
+> @@ -72,13 +72,6 @@
+>    * Functionality: backlight, dpms
+>    */
+>   
+> -struct context {
+> -	int max;
+> -	int old;
+> -	igt_output_t *output;
+> -	char path[PATH_MAX];
+> -};
+> -
+>   enum {
+>   	TEST_NONE = 0,
+>   	TEST_DPMS,
+> @@ -96,65 +89,17 @@ enum {
+>   
+>   IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
+>   
+> -static int backlight_read(int *result, const char *fname, struct context *context)
+> -{
+> -	int fd;
+> -	char full[PATH_MAX];
+> -	char dst[64];
+> -	int r, e;
+> -
+> -	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname)
+> -			    < PATH_MAX);
+> -	fd = open(full, O_RDONLY);
+> -	if (fd == -1)
+> -		return -errno;
+> -
+> -	r = read(fd, dst, sizeof(dst));
+> -	e = errno;
+> -	close(fd);
+> -
+> -	if (r < 0)
+> -		return -e;
+> -
+> -	errno = 0;
+> -	*result = strtol(dst, NULL, 10);
+> -	return errno;
+> -}
+> -
+> -static int backlight_write(int value, const char *fname, struct context *context)
+> -{
+> -	int fd;
+> -	char full[PATH_MAX];
+> -	char src[64];
+> -	int len;
+> -
+> -	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname)
+> -		   < PATH_MAX);
+> -	fd = open(full, O_WRONLY);
+> -	if (fd == -1)
+> -		return -errno;
+> -
+> -	len = snprintf(src, sizeof(src), "%i", value);
+> -	len = write(fd, src, len);
+> -	close(fd);
+> -
+> -	if (len < 0)
+> -		return len;
+> -
+> -	return 0;
+> -}
+> -
+> -static void test_and_verify(struct context *context, int val)
+> +static void test_and_verify(igt_backlight_context_t *context, int val)
+>   {
+>   	const int tolerance = val * TOLERANCE / 100;
+>   	int result;
+>   
+> -	igt_assert_eq(backlight_write(val, "brightness", context), 0);
+> -	igt_assert_eq(backlight_read(&result, "brightness", context), 0);
+> +	igt_assert_eq(igt_backlight_write(val, "brightness", context), 0);
+> +	igt_assert_eq(igt_backlight_read(&result, "brightness", context), 0);
+>   	/* Check that the exact value sticks */
+>   	igt_assert_eq(result, val);
+>   
+> -	igt_assert_eq(backlight_read(&result, "actual_brightness", context), 0);
+> +	igt_assert_eq(igt_backlight_read(&result, "actual_brightness", context), 0);
+>   	/* Some rounding may happen depending on hw */
+>   	igt_assert_f(result >= max(0, val - tolerance) &&
+>   		     result <= min(context->max, val + tolerance),
+> @@ -162,31 +107,31 @@ static void test_and_verify(struct context *context, int val)
+>   		     result, val, tolerance);
 >   }
-> +
-> +/**
-> + * igt_backlight_read:
-> + * @result:	Pointer to store the result
-> + * @fname:	Name of the file to read
-> + * @context:	Pointer to the context structure
-> + */
-> +int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context)
-> +{
-> +	int fd;
-> +	char full[PATH_MAX];
-> +	char dst[64];
-> +	int r, e;
-> +
-> +	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s",
-> +			    context->backlight_dir_path,
-> +			    context->path,
-> +			    fname) < PATH_MAX);
-> +
-> +	fd = open(full, O_RDONLY);
-> +	if (fd == -1)
-> +		return -errno;
-> +
-> +	r = read(fd, dst, sizeof(dst));
-> +	e = errno;
-> +	close(fd);
-> +
-> +	if (r < 0)
-> +		return -e;
-> +
-> +	errno = 0;
-> +	*result = strtol(dst, NULL, 10);
-> +	return errno;
-> +}
-> +
-> +/**
-> + * igt_backlight_write:
-> + * @value:		Value to write
-> + * @fname:		Name of the file to write
-> + * @context:	Pointer to the context structure
-> + */
-> +int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context)
-> +{
-> +	int fd;
-> +	char full[PATH_MAX];
-> +	char src[64];
-> +	int len;
-> +
-> +	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s",
-> +			    context->backlight_dir_path,
-> +			    context->path,
-> +			    fname) < PATH_MAX);
-> +
-> +	fd = open(full, O_WRONLY);
-> +	if (fd == -1)
-> +		return -errno;
-> +
-> +	len = snprintf(src, sizeof(src), "%i", value);
-> +	len = write(fd, src, len);
-> +	close(fd);
-> +
-> +	if (len < 0)
-> +		return len;
-> +
-> +	return 0;
-> +}
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 2b26d2bbf..bd154d1c1 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -33,6 +33,7 @@
->   #include <stdint.h>
->   #include <stddef.h>
->   #include <assert.h>
-> +#include <limits.h>
 >   
->   #include <xf86drmMode.h>
+> -static void test_brightness(struct context *context)
+> +static void test_brightness(igt_backlight_context_t *context)
+>   {
+>   	test_and_verify(context, 0);
+>   	test_and_verify(context, context->max);
+>   	test_and_verify(context, context->max / 2);
+>   }
 >   
-> @@ -513,6 +514,15 @@ typedef struct {
->   	uint16_t tile_h_size, tile_v_size;
->   } igt_tile_info_t;
+> -static void test_bad_brightness(struct context *context)
+> +static void test_bad_brightness(igt_backlight_context_t *context)
+>   {
+>   	int val;
+>   	/* First write some sane value */
+> -	backlight_write(context->max / 2, "brightness", context);
+> +	igt_backlight_write(context->max / 2, "brightness", context);
+>   	/* Writing invalid values should fail and not change the value */
+> -	igt_assert_lt(backlight_write(-1, "brightness", context), 0);
+> -	backlight_read(&val, "brightness", context);
+> +	igt_assert_lt(igt_backlight_write(-1, "brightness", context), 0);
+> +	igt_backlight_read(&val, "brightness", context);
+>   	igt_assert_eq(val, context->max / 2);
+> -	igt_assert_lt(backlight_write(context->max + 1, "brightness", context), 0);
+> -	backlight_read(&val, "brightness", context);
+> +	igt_assert_lt(igt_backlight_write(context->max + 1, "brightness", context), 0);
+> +	igt_backlight_read(&val, "brightness", context);
+>   	igt_assert_eq(val, context->max / 2);
+> -	igt_assert_lt(backlight_write(INT_MAX, "brightness", context), 0);
+> -	backlight_read(&val, "brightness", context);
+> +	igt_assert_lt(igt_backlight_write(INT_MAX, "brightness", context), 0);
+> +	igt_backlight_read(&val, "brightness", context);
+>   	igt_assert_eq(val, context->max / 2);
+>   }
 >   
-> +/* Backlight context*/
-> +typedef struct {
-> +	int max;
-> +	int old;
-> +	igt_output_t *output;
-> +	char path[PATH_MAX];
-> +	char backlight_dir_path[PATH_MAX];
-> +} igt_backlight_context_t;
+> -static void test_fade(struct context *context)
+> +static void test_fade(igt_backlight_context_t *context)
+>   {
+>   	int i;
+>   	static const struct timespec ts = { .tv_sec = 0, .tv_nsec = FADESPEED*1000000 };
+> @@ -218,19 +163,19 @@ check_dpms(igt_output_t *output)
+>   	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
+>   }
+>   
+> -static void check_dpms_cycle(struct context *context)
+> +static void check_dpms_cycle(igt_backlight_context_t *context)
+>   {
+>   	int max, val_1, val_2;
+>   
+> -	backlight_read(&max, "max_brightness", context);
+> +	igt_backlight_read(&max, "max_brightness", context);
+>   	igt_assert(max);
+>   
+> -	backlight_write(max / 2, "brightness", context);
+> -	backlight_read(&val_1, "actual_brightness", context);
+> +	igt_backlight_write(max / 2, "brightness", context);
+> +	igt_backlight_read(&val_1, "actual_brightness", context);
+>   
+>   	check_dpms(context->output);
+>   
+> -	backlight_read(&val_2, "actual_brightness", context);
+> +	igt_backlight_read(&val_2, "actual_brightness", context);
+>   	igt_assert_eq(val_1, val_2);
+>   }
+>   
+> @@ -286,11 +231,11 @@ igt_main
+>   	igt_output_t *output;
+>   	char file_path_n[PATH_MAX] = "";
+>   	bool dual_edp = false;
+> -	struct context contexts[NUM_EDP_OUTPUTS];
+> +	igt_backlight_context_t contexts[NUM_EDP_OUTPUTS];
+>   	struct {
+>   		const char *name;
+>   		const char *desc;
+> -		void (*test_t) (struct context *);
+> +		void (*test_t)(igt_backlight_context_t *context);
+>   		int flags;
+>   	} tests[] = {
+>   		{ "basic-brightness", "test the basic brightness.", test_brightness, TEST_NONE },
+> @@ -339,14 +284,17 @@ igt_main
+>   
+>   			close(fd);
+>   
+> +			snprintf(contexts[i].backlight_dir_path, PATH_MAX, "%s", BACKLIGHT_PATH);
 > +
->   void igt_display_reset_outputs(igt_display_t *display);
->   void igt_display_require(igt_display_t *display, int drm_fd);
->   void igt_display_fini(igt_display_t *display);
-> @@ -1253,5 +1263,7 @@ bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output
->   int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output);
->   int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
->   void igt_reset_link_params(int drm_fd, igt_output_t *output);
-> +int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
-> +int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+>   			/* should be ../../cardX-$output */
+>   			snprintf(file_path_n, PATH_MAX, "%s/%s/device", BACKLIGHT_PATH,
+>   				 contexts[i].path);
+>   			igt_assert_lt(16, readlink(file_path_n, full_name, sizeof(full_name) - 1));
+>   			name = basename(full_name);
+> -			igt_assert(backlight_read(&contexts[i].max,
+> -						"max_brightness", &contexts[i]) > -1);
+> -			igt_skip_on(backlight_read(&contexts[i].old, "brightness", &contexts[i]));
+> +			igt_assert(igt_backlight_read(&contexts[i].max,
+> +						      "max_brightness", &contexts[i]) > -1);
+> +			igt_skip_on(igt_backlight_read(&contexts[i].old,
+> +						       "brightness", &contexts[i]));
 >   
->   #endif /* __IGT_KMS_H__ */
+>   			if (!strcmp(name + 6, output->name)) {
+>   				contexts[i++].output = output;
+> @@ -383,7 +331,7 @@ igt_main
+>   	igt_fixture {
+>   		/* Restore old brightness */
+>   		for (i = 0; i < (dual_edp ? 2 : 1); i++)
+> -			backlight_write(contexts[i].old, "brightness", &contexts[i]);
+> +			igt_backlight_write(contexts[i].old, "brightness", &contexts[i]);
+>   
+>   		igt_display_fini(&display);
+>   		igt_pm_restore_sata_link_power_management();
