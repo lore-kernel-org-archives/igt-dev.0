@@ -4,27 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7952DCE8E6A
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 18:03:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92305CE8E9A
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 18:29:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B95110E98D;
-	Thu, 24 Oct 2024 18:03:01 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8102C10E989;
- Thu, 24 Oct 2024 18:03:00 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2287979643783207332=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D74A10E0AA;
+	Thu, 24 Oct 2024 18:29:18 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="DqM1OBGy";
+	dkim-atps=neutral
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com
+ [209.85.128.171])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63C9210E0AA
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 18:29:16 +0000 (UTC)
+Received: by mail-yw1-f171.google.com with SMTP id
+ 00721157ae682-6e305c2987bso11898047b3.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 11:29:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1729794555; x=1730399355; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=Ox3qHQOHr0E1Zh80wSOaVtKitJmbTKhjGnZAzqWT34s=;
+ b=DqM1OBGyInS4kutTBs3orZGRDHzVA6HmGxTloW+nXM/xnqXHT8E0CuOCO+OIbSjU8h
+ v55xAlkL00m8K6QDWAXji1BWuFsR64QmNlGHTNQabIy/01c/4wQIumRbOrGM93xzDO7Z
+ Ld7ykv3fIH0uftrh/RQ97eej9MZzZZb2lhMUTMSdjTnrX+Ptm/Ho3WCDRT3+3disbm2w
+ H2YWGSAC4iq9gJVSMU+2lnLjK5GxY3QybEmlY+MDPe13hwHUjA1JjsQ/J/ZBQ6Rq6s8i
+ 3TQYZQWdG6RE7NyEUnTlDTxoRaDiumri3wgzbCq7Frsvrtqd6x65s7zxhk0wMnuqKR+s
+ /8xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1729794555; x=1730399355;
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=Ox3qHQOHr0E1Zh80wSOaVtKitJmbTKhjGnZAzqWT34s=;
+ b=IsJPLrDmioHv9PcRBUc9ZwVxfn0BrAviKyKZVB0GI1iFjXzHrUiZsppb8QAr0t3WkZ
+ cgT6L23uCWupggZmgXCJfTR6zwOZvrO1hwk2Y17vragz9xIGaPODW0h1giWm7rcDb4Ru
+ tIFCLwqbpHBoI3W1cAJO1tLPvTka2SiUjdf0CjmEugNPGKuLj8BEzGo1kIoyLJQ2mwJL
+ DtYapmPMxGY1EV3nLmIhOl0ifyufdGeXJcL9DJ4WMyTlG4+OHjBqP+fkdB9e8GWErZgf
+ PwmBAZQMjZVNYZyokyN2oar2ERv1VCJMrDDXwa3PPPWH9v90hW519siNzNgwU7iuOXPD
+ gS1Q==
+X-Gm-Message-State: AOJu0YwDtjQc5H6SwfhqAeMbd176TJad4j0lofFYCx255FVgydZnrT3p
+ 4UDIoo/6OmkeI0YQfxdQjl1cbCh46SDnZiOedxAxiDxONeVfsVVVxCX9wDaTem4wTEUJFLrzHWe
+ aSMQjB/3vv5WBKMADGTKTMA3Lvd6K8SN9HMtngW2lMkOIRawM
+X-Google-Smtp-Source: AGHT+IG5T26Ru/bYy1bjWS0zyv1NPAGX4t05Eqp4d8x//g2Ilq9SSlO6Jn2KbQGxSVvcSHAj4bn5Bk2tCB1TJiNBrUE=
+X-Received: by 2002:a05:690c:94:b0:6e6:248:341e with SMTP id
+ 00721157ae682-6e7f0c45b93mr84323207b3.0.1729794554694; Thu, 24 Oct 2024
+ 11:29:14 -0700 (PDT)
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_intel=3A_igt=5Fdraw_and_int?=
- =?utf-8?q?el=5Fbufops_improvements_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ville Syrjala" <ville.syrjala@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Oct 2024 18:03:00 -0000
-Message-ID: <172979298052.1328167.17780292264206659189@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
-In-Reply-To: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
+References: <20241018120058.42240-1-dmitry.baryshkov@linaro.org>
+In-Reply-To: <20241018120058.42240-1-dmitry.baryshkov@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Thu, 24 Oct 2024 21:29:03 +0300
+Message-ID: <CAA8EJpqMaD0Hyjtb0M57gsOWu9fiLEDS8MDBSffuM9NXDn34UQ@mail.gmail.com>
+Subject: Re: [PATCH i-g-t v2] tests/kms_properties: rework immutability checks
+To: igt-dev@lists.freedesktop.org, Maxime Ripard <mripard@kernel.org>
+Cc: =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,490 +73,312 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2287979643783207332==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-== Series Details ==
-
-Series: intel: igt_draw and intel_bufops improvements (rev3)
-URL   : https://patchwork.freedesktop.org/series/139556/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_8082 -> IGTPW_11976
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/index.html
-
-Participating hosts (45 -> 44)
-------------------------------
-
-  Additional (2): fi-skl-6600u bat-dg1-6 
-  Missing    (3): bat-arls-1 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_11976 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - bat-dg1-6:          NOTRUN -> [SKIP][1] ([i915#12311] / [i915#1849])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg1-6/igt@fbdev@info.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][2] ([i915#2190])
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@random-engines:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html
-
-  * igt@i915_module_load@load:
-    - bat-apl-1:          [PASS][4] -> [DMESG-WARN][5] ([i915#180])
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@i915_module_load@load.html
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@i915_module_load@load.html
-
-  * igt@i915_module_load@reload:
-    - bat-apl-1:          [PASS][6] -> [DMESG-WARN][7] ([i915#180] / [i915#1982]) +2 other tests dmesg-warn
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@i915_module_load@reload.html
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@i915_module_load@reload.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - bat-apl-1:          [PASS][8] -> [DMESG-WARN][9] ([i915#11621]) +79 other tests dmesg-warn
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
-    - bat-dg1-6:          NOTRUN -> [SKIP][10] ([i915#12311]) +54 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg1-6/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
-
-  * igt@kms_dsc@dsc-basic:
-    - fi-skl-6600u:       NOTRUN -> [SKIP][11] +9 other tests skip
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-skl-6600u/igt@kms_dsc@dsc-basic.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-apl-1:          [PASS][12] -> [DMESG-WARN][13] ([i915#11621] / [i915#180] / [i915#1982]) +2 other tests dmesg-warn
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - bat-apl-1:          [PASS][14] -> [DMESG-WARN][15] ([i915#11621] / [i915#180]) +42 other tests dmesg-warn
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-dg1-6:          NOTRUN -> [SKIP][16] ([i915#11723] / [i915#12311])
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg1-6/igt@prime_vgem@basic-write.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - bat-twl-1:          [INCOMPLETE][17] ([i915#12133] / [i915#9413]) -> [PASS][18]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-twl-1/igt@i915_selftest@live.html
-    - bat-dg2-9:          [ABORT][19] ([i915#12133]) -> [PASS][20]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg2-9/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@client:
-    - bat-dg2-9:          [ABORT][21] ([i915#12305]) -> [PASS][22]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg2-9/igt@i915_selftest@live@client.html
-
-  * igt@i915_selftest@live@gt_lrc:
-    - bat-twl-1:          [INCOMPLETE][23] ([i915#9413]) -> [PASS][24]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
-
-  * igt@i915_selftest@live@late_gt_pm:
-    - fi-cfl-8109u:       [DMESG-WARN][25] ([i915#11621]) -> [PASS][26] +132 other tests pass
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-elk-e7500:       [SKIP][27] -> [PASS][28]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-elk-e7500/igt@kms_frontbuffer_tracking@basic.html
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-elk-e7500/igt@kms_frontbuffer_tracking@basic.html
-
-  
-#### Warnings ####
-
-  * igt@debugfs_test@basic-hwmon:
-    - bat-adlm-1:         [SKIP][29] ([i915#3826]) -> [SKIP][30] ([i915#3826] / [i915#9900])
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@debugfs_test@basic-hwmon.html
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@debugfs_test@basic-hwmon.html
-
-  * igt@fbdev@info:
-    - bat-adlm-1:         [SKIP][31] ([i915#1849] / [i915#2582]) -> [SKIP][32] ([i915#1849] / [i915#2582] / [i915#9900])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@fbdev@info.html
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@fbdev@info.html
-
-  * igt@fbdev@read:
-    - bat-adlm-1:         [SKIP][33] ([i915#2582]) -> [SKIP][34] ([i915#2582] / [i915#9900]) +3 other tests skip
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@fbdev@read.html
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@fbdev@read.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - bat-adlm-1:         [SKIP][35] ([i915#4613]) -> [SKIP][36] ([i915#4613] / [i915#9900]) +3 other tests skip
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@gem_tiled_pread_basic:
-    - bat-adlm-1:         [SKIP][37] ([i915#3282]) -> [SKIP][38] ([i915#3282] / [i915#9900])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@gem_tiled_pread_basic.html
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@gem_tiled_pread_basic.html
-
-  * igt@i915_pm_rps@basic-api:
-    - bat-adlm-1:         [SKIP][39] ([i915#6621]) -> [SKIP][40] ([i915#6621] / [i915#9900])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@i915_pm_rps@basic-api.html
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@i915_pm_rps@basic-api.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:
-    - bat-adlm-1:         [SKIP][41] ([i915#9875] / [i915#9900]) -> [SKIP][42] ([i915#9900]) +16 other tests skip
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-adlm-1:         [SKIP][43] ([i915#3637]) -> [SKIP][44] ([i915#3637] / [i915#9900]) +3 other tests skip
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - bat-adlm-1:         [SKIP][45] -> [SKIP][46] ([i915#9900])
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-adlm-1:         [SKIP][47] ([i915#1849] / [i915#4342]) -> [SKIP][48] ([i915#1849] / [i915#4342] / [i915#9900])
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - bat-adlm-1:         [SKIP][49] ([i915#5354]) -> [SKIP][50] ([i915#5354] / [i915#9900])
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html
-   [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - bat-adlm-1:         [SKIP][51] ([i915#1072] / [i915#9732]) -> [SKIP][52] ([i915#1072] / [i915#9732] / [i915#9900]) +3 other tests skip
-   [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html
-   [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - bat-adlm-1:         [SKIP][53] ([i915#3555]) -> [SKIP][54] ([i915#3555] / [i915#9900])
-   [53]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html
-   [54]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-write:
-    - bat-adlm-1:         [SKIP][55] ([i915#3708]) -> [SKIP][56] ([i915#3708] / [i915#9900]) +2 other tests skip
-   [55]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@prime_vgem@basic-write.html
-   [56]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@prime_vgem@basic-write.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
-  [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12305]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#2582]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582
-  [i915#3282]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282
-  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
-  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
-  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
-  [i915#3826]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3826
-  [i915#4342]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
-  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
-  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-  [i915#9875]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9875
-  [i915#9900]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8082 -> IGTPW_11976
-  * Linux: CI_DRM_15576 -> CI_DRM_15588
-
-  CI-20190529: 20190529
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15588: 121cd95da591284c97d6f9ac1c58c7a79d27b201 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_11976: 2eeba9fd54f0c56bab309e16fd2364142670fda7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/index.html
-
---===============2287979643783207332==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel: igt_draw and intel_bufops improvements (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/139556/">https://patchwork.freedesktop.org/series/139556/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8082 -&gt; IGTPW_11976</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Additional (2): fi-skl-6600u bat-dg1-6 <br />
-  Missing    (3): bat-arls-1 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_11976 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg1-6/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@random-engines:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@load:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_module_load@reload:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@i915_module_load@reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) +2 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) +79 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:</p>
-<ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg1-6/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>) +54 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-skl-6600u/igt@kms_dsc@dsc-basic.html">SKIP</a> +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>) +2 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +42 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg1-6/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723">i915#11723</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-twl-1/igt@i915_selftest@live.html">PASS</a></li>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg2-9/igt@i915_selftest@live.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@client:</p>
-<ul>
-<li>bat-dg2-9:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305">i915#12305</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-dg2-9/igt@i915_selftest@live@client.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@gt_lrc:</p>
-<ul>
-<li>bat-twl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-twl-1/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@late_gt_pm:</p>
-<ul>
-<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621">i915#11621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +132 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-elk-e7500:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-elk-e7500/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/fi-elk-e7500/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>
-<p>igt@debugfs_test@basic-hwmon:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3826">i915#3826</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@debugfs_test@basic-hwmon.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3826">i915#3826</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2582">i915#2582</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_tiled_pread_basic:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@gem_tiled_pread_basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3282">i915#3282</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_pm_rps@basic-api:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9875">i915#9875</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_cursor_legacy@basic-flip-after-cursor-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +16 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342">i915#4342</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4342">i915#4342</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-write:</p>
-<ul>
-<li>bat-adlm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-adlm-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11976/bat-adlm-1/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>) +2 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8082 -&gt; IGTPW_11976</li>
-<li>Linux: CI_DRM_15576 -&gt; CI_DRM_15588</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15588: 121cd95da591284c97d6f9ac1c58c7a79d27b201 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_11976: 2eeba9fd54f0c56bab309e16fd2364142670fda7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============2287979643783207332==--
+On Fri, 18 Oct 2024 at 15:01, Dmitry Baryshkov
+<dmitry.baryshkov@linaro.org> wrote:
+>
+> Following the discussion on IRC, it is actually an error to require that
+> properties that can not be chaged are marked as immutable.
+>
+> First of all, it creates inconsistent uAPI. Some drivers might have an
+> immutable property, while others will have it mutable. Yes, there are
+> known examples for such behaviour (e.g. zpos), but they are clearly
+> documented in this way.
+>
+> Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
+> more of the 'direction' of the property (whether it is set by the kernel
+> or it is expected to be set by the userspace) rather than simply states
+> that there is no way for the userspace to change the property.
+>
+> Rework the immutability checks to verify that the properties defined as
+> immutable have this flag set. Keep the "immutable if single value"
+> property just for the "zpos" property.
+>
+> Fixes: 29ae12bd764e ("tests/kms_properties: Validate properties harder")
+> Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+> Link: https://oftc.irclog.whitequark.org/dri-devel/2024-07-16#33374622
+> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+Gracious ping for the patch. We need it to be able to proceed with the
+HDMI rework for the drm/msm driver, otherwise IGT tests fail.
+
+>
+> ---
+> Changes since v1:
+>  - Moved GAMMA_LUT_SIZE and DEGAMMA_LUT_SIZE to DRM_MODE_OBJECT_CRTC.
+>  - Added debug print to help debugging possible issues.
+> ---
+>  tests/kms_properties.c | 110 ++++++++++++++++++++++++++++++++---------
+>  1 file changed, 87 insertions(+), 23 deletions(-)
+>
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index a93c93cccf64..57f07e69909a 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -416,16 +416,80 @@ static void test_object_invalid_properties(igt_disp=
+lay_t *display,
+>                 test_invalid_properties(display->drm_fd, id, type, output=
+->id, DRM_MODE_OBJECT_CONNECTOR, atomic);
+>  }
+>
+> +enum prop_imm_flags {
+> +       IMMUTABLE_REQ,
+> +       IMMUTABLE_IF_SINGLE_VALUE,
+> +};
+> +
+> +static const struct {
+> +       uint32_t obj_type;
+> +       const char *name;
+> +       enum prop_imm_flags flags;
+> +} prop_settings[] =3D {
+> +       /* generic */
+> +       { DRM_MODE_OBJECT_CONNECTOR, "EDID", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "PATH", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "TILE", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "WRITEBACK_PIXEL_FORMATS", IMMUTABLE=
+_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "non-desktop", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "panel orientation" ,IMMUTABLE_REQ }=
+,
+> +       { DRM_MODE_OBJECT_CONNECTOR, "privacy-screen hw-state", IMMUTABLE=
+_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "subconnector", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "suggested X", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "suggested Y", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CONNECTOR, "vrr_capable", IMMUTABLE_REQ },
+> +
+> +       { DRM_MODE_OBJECT_CRTC, "DEGAMMA_LUT_SIZE", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_CRTC, "GAMMA_LUT_SIZE", IMMUTABLE_REQ },
+> +
+> +       { DRM_MODE_OBJECT_PLANE, "IN_FORMATS", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_PLANE, "SIZE_HINTS", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_PLANE, "type", IMMUTABLE_REQ },
+> +       { DRM_MODE_OBJECT_PLANE, "zpos", IMMUTABLE_IF_SINGLE_VALUE },
+> +
+> +       /* driver-specific */
+> +       { DRM_MODE_OBJECT_CONNECTOR, "hotplug_mode_update", IMMUTABLE_REQ=
+ }, // qxl, vmwgfx
+> +       { DRM_MODE_OBJECT_CONNECTOR, "implicit_placement", IMMUTABLE_REQ =
+}, // vmwgfx
+> +       { DRM_MODE_OBJECT_PLANE, "AMD_PLANE_BLEND_LUT_SIZE", IMMUTABLE_RE=
+Q }, // amdgpu
+> +       { DRM_MODE_OBJECT_PLANE, "AMD_PLANE_DEGAMMA_LUT_SIZE", IMMUTABLE_=
+REQ }, // amdgpu
+> +       { DRM_MODE_OBJECT_PLANE, "AMD_PLANE_LUT3D_SIZE", IMMUTABLE_REQ },=
+ // amdgpu
+> +       { DRM_MODE_OBJECT_PLANE, "AMD_PLANE_SHAPER_LUT_SIZE", IMMUTABLE_R=
+EQ }, // amdgpu
+> +};
+> +
+> +static void validate_prop_immutable(const struct drm_mode_get_property *=
+prop,
+> +                                   uint32_t obj_type, bool single_value)
+> +{
+> +       bool immutable =3D prop->flags & DRM_MODE_PROP_IMMUTABLE;
+> +       int i;
+> +
+> +       igt_debug("Testing property \"%s\"\n", prop->name);
+> +
+> +       for (i =3D 0; i < ARRAY_SIZE(prop_settings); i++) {
+> +               if (prop_settings[i].obj_type =3D=3D obj_type &&
+> +                   !strcmp(prop_settings[i].name, prop->name))
+> +                       break;
+> +       }
+> +
+> +       if (i =3D=3D ARRAY_SIZE(prop_settings)) {
+> +               igt_assert(!immutable);
+> +               return;
+> +       }
+> +
+> +       igt_assert(immutable || prop_settings[i].flags !=3D IMMUTABLE_REQ=
+);
+> +       igt_assert(immutable || !single_value ||
+> +                  prop_settings[i].flags !=3D IMMUTABLE_IF_SINGLE_VALUE)=
+;
+> +}
+> +
+>  static void validate_range_prop(const struct drm_mode_get_property *prop=
+,
+> -                               uint64_t value)
+> +                               uint64_t value, uint32_t obj_type)
+>  {
+>         const uint64_t *values =3D from_user_pointer(prop->values_ptr);
+>         bool is_unsigned =3D prop->flags & DRM_MODE_PROP_RANGE;
+> -       bool immutable =3D prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>
+>         igt_assert_eq(prop->count_values, 2);
+>         igt_assert_eq(prop->count_enum_blobs, 0);
+> -       igt_assert(values[0] !=3D values[1] || immutable);
+> +
+> +       validate_prop_immutable(prop, obj_type, values[0] =3D=3D values[1=
+]);
+>
+>         if (is_unsigned) {
+>                 igt_assert_lte_u64(values[0], values[1]);
+> @@ -458,15 +522,14 @@ static void validate_enums(const struct drm_mode_ge=
+t_property *prop)
+>  }
+>
+>  static void validate_enum_prop(const struct drm_mode_get_property *prop,
+> -                              uint64_t value)
+> +                              uint64_t value, uint32_t obj_type)
+>  {
+>         const uint64_t *values =3D from_user_pointer(prop->values_ptr);
+> -       bool immutable =3D prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>         int i;
+>
+>         igt_assert_lte(1, prop->count_values);
+>         igt_assert_eq(prop->count_enum_blobs, prop->count_values);
+> -       igt_assert(prop->count_values !=3D 1 || immutable);
+> +       validate_prop_immutable(prop, obj_type, prop->count_values =3D=3D=
+ 1);
+>
+>         for (i =3D 0; i < prop->count_values; i++) {
+>                 if (value =3D=3D values[i])
+> @@ -478,15 +541,14 @@ static void validate_enum_prop(const struct drm_mod=
+e_get_property *prop,
+>  }
+>
+>  static void validate_bitmask_prop(const struct drm_mode_get_property *pr=
+op,
+> -                                 uint64_t value)
+> +                                 uint64_t value, uint32_t obj_type)
+>  {
+>         const uint64_t *values =3D from_user_pointer(prop->values_ptr);
+> -       bool immutable =3D prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>         uint64_t mask =3D 0;
+>
+>         igt_assert_lte(1, prop->count_values);
+>         igt_assert_eq(prop->count_enum_blobs, prop->count_values);
+> -       igt_assert(prop->count_values !=3D 1 || immutable);
+> +       validate_prop_immutable(prop, obj_type, prop->count_values =3D=3D=
+ 1);
+>
+>         for (int i =3D 0; i < prop->count_values; i++) {
+>                 igt_assert_lte_u64(values[i], 63);
+> @@ -501,7 +563,7 @@ static void validate_bitmask_prop(const struct drm_mo=
+de_get_property *prop,
+>
+>  static void validate_blob_prop(int fd,
+>                                const struct drm_mode_get_property *prop,
+> -                              uint64_t value)
+> +                              uint64_t value, uint32_t obj_type)
+>  {
+>         struct drm_mode_get_blob blob;
+>
+> @@ -515,6 +577,8 @@ static void validate_blob_prop(int fd,
+>
+>         igt_assert_lte_u64(value, 0xffffffff);
+>
+> +       validate_prop_immutable(prop, obj_type, false);
+> +
+>         /*
+>          * Immutable blob properties can have value=3D=3D0.
+>          * Happens for example with the "EDID" property
+> @@ -532,10 +596,9 @@ static void validate_blob_prop(int fd,
+>
+>  static void validate_object_prop(int fd,
+>                                  const struct drm_mode_get_property *prop=
+,
+> -                                uint64_t value)
+> +                                uint64_t value, uint32_t obj_type)
+>  {
+>         const uint64_t *values =3D from_user_pointer(prop->values_ptr);
+> -       bool immutable =3D prop->flags & DRM_MODE_PROP_IMMUTABLE;
+>         struct drm_mode_crtc crtc;
+>         struct drm_mode_fb_cmd fb;
+>
+> @@ -543,7 +606,7 @@ static void validate_object_prop(int fd,
+>         igt_assert_eq(prop->count_enum_blobs, 0);
+>
+>         igt_assert_lte_u64(value, 0xffffffff);
+> -       igt_assert(!immutable || value !=3D 0);
+> +       validate_prop_immutable(prop, obj_type, value =3D=3D 0);
+>
+>         switch (values[0]) {
+>         case DRM_MODE_OBJECT_CRTC:
+> @@ -568,7 +631,7 @@ static void validate_object_prop(int fd,
+>
+>  static void validate_property(int fd,
+>                               const struct drm_mode_get_property *prop,
+> -                             uint64_t value, bool atomic)
+> +                             uint64_t value, bool atomic, uint32_t obj_t=
+ype)
+>  {
+>         uint32_t flags =3D prop->flags;
+>         uint32_t legacy_type =3D flags & DRM_MODE_PROP_LEGACY_TYPE;
+> @@ -589,16 +652,16 @@ static void validate_property(int fd,
+>
+>         switch (legacy_type) {
+>         case DRM_MODE_PROP_RANGE:
+> -               validate_range_prop(prop, value);
+> +               validate_range_prop(prop, value, obj_type);
+>                 break;
+>         case DRM_MODE_PROP_ENUM:
+> -               validate_enum_prop(prop, value);
+> +               validate_enum_prop(prop, value, obj_type);
+>                 break;
+>         case DRM_MODE_PROP_BITMASK:
+> -               validate_bitmask_prop(prop, value);
+> +               validate_bitmask_prop(prop, value, obj_type);
+>                 break;
+>         case DRM_MODE_PROP_BLOB:
+> -               validate_blob_prop(fd, prop, value);
+> +               validate_blob_prop(fd, prop, value, obj_type);
+>                 break;
+>         default:
+>                 igt_assert_eq(legacy_type, 0);
+> @@ -606,17 +669,18 @@ static void validate_property(int fd,
+>
+>         switch (ext_type) {
+>         case DRM_MODE_PROP_OBJECT:
+> -               validate_object_prop(fd, prop, value);
+> +               validate_object_prop(fd, prop, value, obj_type);
+>                 break;
+>         case DRM_MODE_PROP_SIGNED_RANGE:
+> -               validate_range_prop(prop, value);
+> +               validate_range_prop(prop, value, obj_type);
+>                 break;
+>         default:
+>                 igt_assert_eq(ext_type, 0);
+>         }
+>  }
+>
+> -static void validate_prop(int fd, uint32_t prop_id, uint64_t value, bool=
+ atomic)
+> +static void validate_prop(int fd, uint32_t prop_id, uint64_t value,
+> +                         bool atomic, uint32_t obj_type)
+>  {
+>         struct drm_mode_get_property prop;
+>         struct drm_mode_property_enum *enums =3D NULL;
+> @@ -649,7 +713,7 @@ static void validate_prop(int fd, uint32_t prop_id, u=
+int64_t value, bool atomic)
+>         for (int i =3D 0; i < prop.count_enum_blobs; i++)
+>                 igt_assert_neq_u64(enums[i].value, 0x5c5c5c5c5c5c5c5cULL)=
+;
+>
+> -       validate_property(fd, &prop, value, atomic);
+> +       validate_property(fd, &prop, value, atomic, obj_type);
+>
+>         free(values);
+>         free(enums);
+> @@ -687,7 +751,7 @@ static void validate_props(int fd, uint32_t obj_type,=
+ uint32_t obj_id, bool atom
+>         igt_assert(properties.count_props =3D=3D count);
+>
+>         for (int i =3D 0; i < count; i++)
+> -               validate_prop(fd, props[i], values[i], atomic);
+> +               validate_prop(fd, props[i], values[i], atomic, obj_type);
+>
+>         free(values);
+>         free(props);
+> --
+> 2.45.2
+>
+
+
+--=20
+With best wishes
+Dmitry
