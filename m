@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4456BD0BB5E
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 04:54:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 185ABD0BB5B
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 04:54:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0285710E8A0;
+	by gabe.freedesktop.org (Postfix) with ESMTP id C640510E8A1;
 	Thu, 24 Oct 2024 04:54:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X0i2bymb";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z6KD/vru";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 483E110E8A1
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38C4810E8A0
  for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 04:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1729745691; x=1761281691;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JXXAzBR2HNG+i2Pjhjl6GD/0u7qaWQXAigxVj4Aury0=;
- b=X0i2bymbaA6tCkAM8Q2JbenuOedVm/+b3hDAl98gCzwJJqGVDgDxEdOG
- Fiu27P5VqKWKAMZRbUe5tAcyH+KHjyX+SeNdqZEzpLHjdwIcgmxebGjSh
- B9Q8vojtAqrwjGwDaLMr4T7WZBGBZmPXuyj230sWt0MF/UoLNGKGhWMeU
- 3RuwaetZsLslq/Qq374PJS7hjJYEbxgCh3qwPDR9R4sHHHYvQ/fcP9/km
- Ar7zd1ra0/jbjRuz31eqmx3uqDHy3VMr6PbsOy4RuVnRm/t3myKh3Wut1
- 1LUT1YEqUbkUK8sHeP1bTdlpKHgBRwOUTgmhrvPSFDfPTBPFkMfIykRpY g==;
-X-CSE-ConnectionGUID: IhovQhBwQnGfUHXuUF0djg==
-X-CSE-MsgGUID: uqQtzt4uSFuw4npE/bX3Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46823185"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="46823185"
+ bh=OkgE8RuL95LwUDk7T06AlXRabkID07596KLt4CtwWB8=;
+ b=Z6KD/vru7j0Ftj3YxsEoYu7VzXO+NYxvxfnALi4pyIGrsOuCF/Rf+jt4
+ yHoIi68KnRzeV+XfjAn9XVrpy+a4ikzbmX2aR116zp2e9vwfMXkzbbz3u
+ d7fF2dYYI4C6uyV3YUxaW56wbuaf63DxiQXyzgmCONxUxieE7yO+QFuzL
+ 09xW6UzEgFiXJhDfiEpm77zoDuNr9qjnUrOLpxiEvASf7u2lBm4uXkViW
+ pj/hy1TUOTEr951Z1gCZg8815pL8/cm7ZeEBSgZLhOF01fzs6B/AeL0lW
+ y5Sn5dYFhZffm1LS6M4KZZh6zDCf1PddMZTjehY1nirKWhN1lJQMAR2e7 w==;
+X-CSE-ConnectionGUID: 8ACKsjQ0Qxy/9z0zFA3hdA==
+X-CSE-MsgGUID: 6dZAj3IZQS2K+3PZpZKtBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="46823184"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="46823184"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  23 Oct 2024 21:54:51 -0700
-X-CSE-ConnectionGUID: ObSyjFPyTQq9WcT/wl95mg==
-X-CSE-MsgGUID: 8x6iJq1UQpS/3lkx9168uQ==
+X-CSE-ConnectionGUID: j/OCj4d9SXGtr8nZ/VqDAQ==
+X-CSE-MsgGUID: V99mdec9Q1CFFIPtEY42IA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; d="scan'208";a="80400831"
+X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; d="scan'208";a="80400828"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 21:54:44 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2024 21:54:42 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mohammed.thasleem@intel.com, bhanuprakash.modem@intel.com,
  suraj.kandpal@intel.com, pranay.samala@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v4 2/3] tests/intel/kms_pm_backlight: Refactor and use
- functions from lib
-Date: Thu, 24 Oct 2024 10:22:11 +0530
-Message-Id: <20241024045212.1697869-3-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v4 1/3] lib/igt_kms: Move backlight read and write to lib
+Date: Thu, 24 Oct 2024 10:22:10 +0530
+Message-Id: <20241024045212.1697869-2-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241024045212.1697869-1-santhosh.reddy.guddati@intel.com>
 References: <20241024045212.1697869-1-santhosh.reddy.guddati@intel.com>
@@ -70,218 +69,132 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Refactor to use igt_backlight_read and igt_backlight_write
-update struct names to maintain consistency.
-move struct context to library.
+move backlight_read and backlight_write functions from
+kms_pm_backlight to library to reuse in other tests.
 
-V2: update backlight_dir_path with BACKLIGHT_PATH.
-v3: rename intel_backlight_context_t to igt_backlight_context_t (Suraj)
+move and rename struct context to intel_backlight_context_t.
+v2: Rename backlight_read to igt_backlight_read and backlight_write to
+backlight_write (Suraj).
+Add a new member to intel_backlight_context_t to cache vendor specific
+backlight path.
 
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
 ---
- tests/intel/kms_pm_backlight.c | 108 +++++++++------------------------
- 1 file changed, 28 insertions(+), 80 deletions(-)
+ lib/igt_kms.c | 66 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h | 12 ++++++++++
+ 2 files changed, 78 insertions(+)
 
-diff --git a/tests/intel/kms_pm_backlight.c b/tests/intel/kms_pm_backlight.c
-index 196b5af03..8b59725ac 100644
---- a/tests/intel/kms_pm_backlight.c
-+++ b/tests/intel/kms_pm_backlight.c
-@@ -72,13 +72,6 @@
-  * Functionality: backlight, dpms
-  */
- 
--struct context {
--	int max;
--	int old;
--	igt_output_t *output;
--	char path[PATH_MAX];
--};
--
- enum {
- 	TEST_NONE = 0,
- 	TEST_DPMS,
-@@ -96,65 +89,17 @@ enum {
- 
- IGT_TEST_DESCRIPTION("Basic backlight sysfs test");
- 
--static int backlight_read(int *result, const char *fname, struct context *context)
--{
--	int fd;
--	char full[PATH_MAX];
--	char dst[64];
--	int r, e;
--
--	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname)
--			    < PATH_MAX);
--	fd = open(full, O_RDONLY);
--	if (fd == -1)
--		return -errno;
--
--	r = read(fd, dst, sizeof(dst));
--	e = errno;
--	close(fd);
--
--	if (r < 0)
--		return -e;
--
--	errno = 0;
--	*result = strtol(dst, NULL, 10);
--	return errno;
--}
--
--static int backlight_write(int value, const char *fname, struct context *context)
--{
--	int fd;
--	char full[PATH_MAX];
--	char src[64];
--	int len;
--
--	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s", BACKLIGHT_PATH, context->path, fname)
--		   < PATH_MAX);
--	fd = open(full, O_WRONLY);
--	if (fd == -1)
--		return -errno;
--
--	len = snprintf(src, sizeof(src), "%i", value);
--	len = write(fd, src, len);
--	close(fd);
--
--	if (len < 0)
--		return len;
--
--	return 0;
--}
--
--static void test_and_verify(struct context *context, int val)
-+static void test_and_verify(igt_backlight_context_t *context, int val)
- {
- 	const int tolerance = val * TOLERANCE / 100;
- 	int result;
- 
--	igt_assert_eq(backlight_write(val, "brightness", context), 0);
--	igt_assert_eq(backlight_read(&result, "brightness", context), 0);
-+	igt_assert_eq(igt_backlight_write(val, "brightness", context), 0);
-+	igt_assert_eq(igt_backlight_read(&result, "brightness", context), 0);
- 	/* Check that the exact value sticks */
- 	igt_assert_eq(result, val);
- 
--	igt_assert_eq(backlight_read(&result, "actual_brightness", context), 0);
-+	igt_assert_eq(igt_backlight_read(&result, "actual_brightness", context), 0);
- 	/* Some rounding may happen depending on hw */
- 	igt_assert_f(result >= max(0, val - tolerance) &&
- 		     result <= min(context->max, val + tolerance),
-@@ -162,31 +107,31 @@ static void test_and_verify(struct context *context, int val)
- 		     result, val, tolerance);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index bb35d4b82..5d8096a17 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7119,3 +7119,69 @@ void igt_reset_link_params(int drm_fd, igt_output_t *output)
+ 	temp = drmModeGetConnector(drm_fd, output->config.connector->connector_id);
+ 	drmModeFreeConnector(temp);
  }
- 
--static void test_brightness(struct context *context)
-+static void test_brightness(igt_backlight_context_t *context)
- {
- 	test_and_verify(context, 0);
- 	test_and_verify(context, context->max);
- 	test_and_verify(context, context->max / 2);
- }
- 
--static void test_bad_brightness(struct context *context)
-+static void test_bad_brightness(igt_backlight_context_t *context)
- {
- 	int val;
- 	/* First write some sane value */
--	backlight_write(context->max / 2, "brightness", context);
-+	igt_backlight_write(context->max / 2, "brightness", context);
- 	/* Writing invalid values should fail and not change the value */
--	igt_assert_lt(backlight_write(-1, "brightness", context), 0);
--	backlight_read(&val, "brightness", context);
-+	igt_assert_lt(igt_backlight_write(-1, "brightness", context), 0);
-+	igt_backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
--	igt_assert_lt(backlight_write(context->max + 1, "brightness", context), 0);
--	backlight_read(&val, "brightness", context);
-+	igt_assert_lt(igt_backlight_write(context->max + 1, "brightness", context), 0);
-+	igt_backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
--	igt_assert_lt(backlight_write(INT_MAX, "brightness", context), 0);
--	backlight_read(&val, "brightness", context);
-+	igt_assert_lt(igt_backlight_write(INT_MAX, "brightness", context), 0);
-+	igt_backlight_read(&val, "brightness", context);
- 	igt_assert_eq(val, context->max / 2);
- }
- 
--static void test_fade(struct context *context)
-+static void test_fade(igt_backlight_context_t *context)
- {
- 	int i;
- 	static const struct timespec ts = { .tv_sec = 0, .tv_nsec = FADESPEED*1000000 };
-@@ -218,19 +163,19 @@ check_dpms(igt_output_t *output)
- 	igt_assert(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_ACTIVE));
- }
- 
--static void check_dpms_cycle(struct context *context)
-+static void check_dpms_cycle(igt_backlight_context_t *context)
- {
- 	int max, val_1, val_2;
- 
--	backlight_read(&max, "max_brightness", context);
-+	igt_backlight_read(&max, "max_brightness", context);
- 	igt_assert(max);
- 
--	backlight_write(max / 2, "brightness", context);
--	backlight_read(&val_1, "actual_brightness", context);
-+	igt_backlight_write(max / 2, "brightness", context);
-+	igt_backlight_read(&val_1, "actual_brightness", context);
- 
- 	check_dpms(context->output);
- 
--	backlight_read(&val_2, "actual_brightness", context);
-+	igt_backlight_read(&val_2, "actual_brightness", context);
- 	igt_assert_eq(val_1, val_2);
- }
- 
-@@ -286,11 +231,11 @@ igt_main
- 	igt_output_t *output;
- 	char file_path_n[PATH_MAX] = "";
- 	bool dual_edp = false;
--	struct context contexts[NUM_EDP_OUTPUTS];
-+	igt_backlight_context_t contexts[NUM_EDP_OUTPUTS];
- 	struct {
- 		const char *name;
- 		const char *desc;
--		void (*test_t) (struct context *);
-+		void (*test_t)(igt_backlight_context_t *context);
- 		int flags;
- 	} tests[] = {
- 		{ "basic-brightness", "test the basic brightness.", test_brightness, TEST_NONE },
-@@ -339,14 +284,17 @@ igt_main
- 
- 			close(fd);
- 
-+			snprintf(contexts[i].backlight_dir_path, PATH_MAX, "%s", BACKLIGHT_PATH);
 +
- 			/* should be ../../cardX-$output */
- 			snprintf(file_path_n, PATH_MAX, "%s/%s/device", BACKLIGHT_PATH,
- 				 contexts[i].path);
- 			igt_assert_lt(16, readlink(file_path_n, full_name, sizeof(full_name) - 1));
- 			name = basename(full_name);
--			igt_assert(backlight_read(&contexts[i].max,
--						"max_brightness", &contexts[i]) > -1);
--			igt_skip_on(backlight_read(&contexts[i].old, "brightness", &contexts[i]));
-+			igt_assert(igt_backlight_read(&contexts[i].max,
-+						      "max_brightness", &contexts[i]) > -1);
-+			igt_skip_on(igt_backlight_read(&contexts[i].old,
-+						       "brightness", &contexts[i]));
++/**
++ * igt_backlight_read:
++ * @result:	Pointer to store the result
++ * @fname:	Name of the file to read
++ * @context:	Pointer to the context structure
++ */
++int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context)
++{
++	int fd;
++	char full[PATH_MAX];
++	char dst[64];
++	int r, e;
++
++	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s",
++			    context->backlight_dir_path,
++			    context->path,
++			    fname) < PATH_MAX);
++
++	fd = open(full, O_RDONLY);
++	if (fd == -1)
++		return -errno;
++
++	r = read(fd, dst, sizeof(dst));
++	e = errno;
++	close(fd);
++
++	if (r < 0)
++		return -e;
++
++	errno = 0;
++	*result = strtol(dst, NULL, 10);
++	return errno;
++}
++
++/**
++ * igt_backlight_write:
++ * @value:		Value to write
++ * @fname:		Name of the file to write
++ * @context:	Pointer to the context structure
++ */
++int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context)
++{
++	int fd;
++	char full[PATH_MAX];
++	char src[64];
++	int len;
++
++	igt_assert(snprintf(full, PATH_MAX, "%s/%s/%s",
++			    context->backlight_dir_path,
++			    context->path,
++			    fname) < PATH_MAX);
++
++	fd = open(full, O_WRONLY);
++	if (fd == -1)
++		return -errno;
++
++	len = snprintf(src, sizeof(src), "%i", value);
++	len = write(fd, src, len);
++	close(fd);
++
++	if (len < 0)
++		return len;
++
++	return 0;
++}
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 2b26d2bbf..bd154d1c1 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -33,6 +33,7 @@
+ #include <stdint.h>
+ #include <stddef.h>
+ #include <assert.h>
++#include <limits.h>
  
- 			if (!strcmp(name + 6, output->name)) {
- 				contexts[i++].output = output;
-@@ -383,7 +331,7 @@ igt_main
- 	igt_fixture {
- 		/* Restore old brightness */
- 		for (i = 0; i < (dual_edp ? 2 : 1); i++)
--			backlight_write(contexts[i].old, "brightness", &contexts[i]);
-+			igt_backlight_write(contexts[i].old, "brightness", &contexts[i]);
+ #include <xf86drmMode.h>
  
- 		igt_display_fini(&display);
- 		igt_pm_restore_sata_link_power_management();
+@@ -513,6 +514,15 @@ typedef struct {
+ 	uint16_t tile_h_size, tile_v_size;
+ } igt_tile_info_t;
+ 
++/* Backlight context*/
++typedef struct {
++	int max;
++	int old;
++	igt_output_t *output;
++	char path[PATH_MAX];
++	char backlight_dir_path[PATH_MAX];
++} igt_backlight_context_t;
++
+ void igt_display_reset_outputs(igt_display_t *display);
+ void igt_display_require(igt_display_t *display, int drm_fd);
+ void igt_display_fini(igt_display_t *display);
+@@ -1253,5 +1263,7 @@ bool igt_has_force_link_training_failure_debugfs(int drmfd, igt_output_t *output
+ int igt_get_dp_pending_lt_failures(int drm_fd, igt_output_t *output);
+ int igt_get_dp_pending_retrain(int drm_fd, igt_output_t *output);
+ void igt_reset_link_params(int drm_fd, igt_output_t *output);
++int igt_backlight_read(int *result, const char *fname, igt_backlight_context_t *context);
++int igt_backlight_write(int value, const char *fname, igt_backlight_context_t *context);
+ 
+ #endif /* __IGT_KMS_H__ */
 -- 
 2.34.1
 
