@@ -4,54 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 088ECD2E03E
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 11:13:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97BDCCE8E62
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 11:17:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B93D510E900;
-	Thu, 24 Oct 2024 11:13:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5E65710E900;
+	Thu, 24 Oct 2024 11:17:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mjNJU+YY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S/GIXU9W";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2B2B10E900
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 11:13:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13FBD10E900
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 11:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729768417; x=1761304417;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Q8MWxvt3xb0kWjHO/NDVvAzfuKbQctdZX0IIDP4B+gY=;
- b=mjNJU+YYRIJshfiWpn2i3t6E8G7StGCfLHkBo3R0w+Zh0ZCFo8J5iyMZ
- rZ2cehsBVwjA7je0McJqSajdUeZORNEAFVX5WvXLzb67p5vX4jjLN9Idi
- 5eM6T2EvnzHr+FkGOyqGIQ73PfFnNRCnG+8oVLxQjiavHitBEWp8Ykb57
- tlmEP3NKhCSpb8YECNNcDz/rXIE20lHDrzKI9C8Eysd4mSVT55X2Z5R8v
- d4Sy6uTJmCoEjuDTdDggIlyI39Ey4LaZ297qyfjhmX2JtilTte5zHeLhm
- njhMt/sjW2wL8wDdvsm6nT7U+2OJDlIsgelySUFEdoANcnBWvrxjKMWAH g==;
-X-CSE-ConnectionGUID: f2c1UOmJSly4VYEt+xuhRg==
-X-CSE-MsgGUID: yXX/Jx/SQLSoH18oqpausg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="28850073"
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; d="scan'208";a="28850073"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ t=1729768671; x=1761304671;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=opueIgpkTHtAwSkCTha2qZmOsySS4t8w/yYazeooCHU=;
+ b=S/GIXU9WpERF6YcxltX2+iInooKqeZgB9cd2ZHfqU9gLfZyxquANGubu
+ ctRUl+BydxVZjOr/OSAPaoVxP2qglTRolxq0U+am25uW/L9CkrARjU9AW
+ mMhxLkdR6T6k9JOKmyuwhcbltqBmVQvjQZftqd0y6ROwasnysDUxdYGsb
+ criDI4HjuCwEtUMv1jlH9WF5kyybMdTqv0rFoI+PtcbEAEzGcJi2kB+Ta
+ y/Z0nwP7Tuf56Rfm9vGZG1q46hS1JwQc8rVNEHCONaBZnad+trPt/oTFe
+ 9hOiGJJA20Y5orHOvKyKuaWMQMdcWOV1EnqwGoRjeer9BXUwok7RbPthu A==;
+X-CSE-ConnectionGUID: z/J6fmv/Q42led+dI/uqaA==
+X-CSE-MsgGUID: ziZZhlG9QxCA9kYpHcFNaQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11234"; a="28850464"
+X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; d="scan'208";a="28850464"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2024 04:13:37 -0700
-X-CSE-ConnectionGUID: rAwD+ETZRIqIQ4MRdPKEyw==
-X-CSE-MsgGUID: nVobTcxZR2KpXKT2pMXl5w==
+ 24 Oct 2024 04:17:51 -0700
+X-CSE-ConnectionGUID: 39n8LcMdTrWlyou0f5VXkA==
+X-CSE-MsgGUID: fQXoq7YwTJ6VUUTHoErKRw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,229,1725346800"; d="scan'208";a="80219568"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.145.162.135])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 04:13:35 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="85341089"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.130])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 04:17:49 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v2] tests/kms_async_flips: Skip Async flips on joiner
- output
-Date: Thu, 24 Oct 2024 16:41:05 +0530
-Message-Id: <20241024111105.2261777-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241023031620.3632362-1-santhosh.reddy.guddati@intel.com>
-References: <20241023031620.3632362-1-santhosh.reddy.guddati@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/intel/psr: fix documentation
+Date: Thu, 24 Oct 2024 16:50:11 +0530
+Message-Id: <20241024112011.1387980-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,67 +65,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Async flips are disallowed with joiner, but the test commit still
-goes through and causes failures. Update the tests to skip on
-joiner outputs.
+Add missing mega feature for panel replay subtest.
 
-V2: Skip tests only on joiner outputs (Kunal).
-
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Fixes: 31475ea8f ("tests/intel/psr: update documentation")
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_async_flips.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ tests/intel/kms_psr2_sf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 5dec71291..77f68b773 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -638,6 +638,27 @@ static void test_crc(data_t *data)
- 	igt_assert_lt(data->frame_count * 2, data->flip_count);
- }
- 
-+static bool is_joiner_mode(data_t *data)
-+{
-+	bool is_joiner = false;
-+	bool is_ultra_joiner = false;
-+	int max_dotclock;
-+	drmModeModeInfo mode;
-+
-+	max_dotclock = igt_get_max_dotclock(data->drm_fd);
-+	is_joiner = bigjoiner_mode_found(data->drm_fd,
-+					 data->output->config.connector,
-+					 max_dotclock, &mode);
-+	is_ultra_joiner = ultrajoiner_mode_found(data->drm_fd,
-+						 data->output->config.connector,
-+						 max_dotclock, &mode);
-+
-+	if (is_joiner || is_ultra_joiner)
-+		return true;
-+
-+	return false;
-+}
-+
- static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_display_t *display = &data->display;
-@@ -653,6 +674,8 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 		data->allow_fail = false;
- 		data->modifier = default_modifier(data);
- 		igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(data->pipe), data->output->name) {
-+			igt_skip_on_f(is_joiner_mode(data),
-+				      "Joiner mode found, skipping the test\n");
- 			test_init_fbs(data);
- 			test(data);
- 		}
-@@ -674,6 +697,8 @@ static void run_test_with_modifiers(data_t *data, void (*test)(data_t *))
- 			igt_dynamic_f("pipe-%s-%s-%s", kmstest_pipe_name(data->pipe),
- 				      data->output->name,
- 				      igt_fb_modifier_name(data->modifier)) {
-+				      igt_skip_on_f(is_joiner_mode(data),
-+						     "Joiner mode found, skipping the test\n");
- 				test_init_fbs(data);
- 				test(data);
- 			}
+diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
+index e9a8dc141..cd4226070 100644
+--- a/tests/intel/kms_psr2_sf.c
++++ b/tests/intel/kms_psr2_sf.c
+@@ -125,6 +125,7 @@
+  * Functionality: plane, psr2, selective_fetch, fbc
+  *
+  * SUBTEST: fbc-pr-overlay-plane-update-continuous-sf
++ * Mega feature: Panel Replay
+  * Description: Test that fbc with selective fetch works on overlay plane
+  * Functionality: plane, pr, selective_fetch, fbc
+  *
 -- 
-2.34.1
+2.25.1
 
