@@ -4,55 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 007F5D0BB6F
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 08:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5236D0BB6F
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Oct 2024 08:28:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 923CE10E8D4;
-	Thu, 24 Oct 2024 08:26:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90FEF10E8D1;
+	Thu, 24 Oct 2024 08:28:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m6by+ePQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cTtiUwLs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 08A8C10E8D4
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Oct 2024 08:26:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9ED2A10E8CE;
+ Thu, 24 Oct 2024 08:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729758403; x=1761294403;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=DknbfmGIX4hPnweGkZYjfuY9y+IYPCYV4qYhSDdP77M=;
- b=m6by+ePQvVFgY35+bp+9vSgW3RGmt/fBsQzAMSTYIGcLoO4WOZM8nVMz
- HTPsNWnGvgL2d428fq+GQx3rT2+hyTfrxAJqzSgUXxL/8HnihK5/Nwl7c
- NfuOpXfkcjwkwC6QC+YyMpmyJAy4/SWa84arU4FuVDPSPfMgDLDKfJFYm
- 8HuUAmIQB6R1HS569gfHj5gP4MFRWCYKkWHsNybbN8RIEUsPDs7oEjD/N
- 2abyxPSIvOO+T0/xZI6W/tPM9rkfWwxaTLp1Jet6eKBRDR6ivoCSVLZaH
- vC9WDz8uHJUVEVib/9qQb2lIAvs4jIzJnixzNpCZQz+EK4Gr9EmHAQFyt g==;
-X-CSE-ConnectionGUID: MQiOFM9WTZ+u095k30Nvew==
-X-CSE-MsgGUID: lxI96JdkRj6UWO3uM3WXsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="33063173"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="33063173"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ t=1729758495; x=1761294495;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=lFj9ZuYRYu0p74ZW4QNOQvBqv5FU5t7eHa38yeyqzkM=;
+ b=cTtiUwLsMsvC21x++POgesFdiYil7pFJjlxBs0pgTnaTIvaY6FxWgYMM
+ QDs0wdsneDadd1rDMFy7gFBpPO5pjAr+TPnuCDK9nHxMDgZjbFdjeIMsv
+ ethlrCYodIbXytcz7F7drhI3UrtPWNzzm2S7OZyWIhSoXo8eeNG+CIqir
+ E05OLx4Km0DlizuAi6+BZbYHxBOBMTkdw1KFL/Xj6rvPme0yAGx3FAubR
+ qIEopMyBcDTbAF9NS09IXuP75XOA5f+aJMeV4O8B+Ug8xbJi2Krc12JiW
+ Hzc0iohAbhCcB2rUmCVUYfGy1yFVXD8a2+Imgr3M3hQTeJhKcwYS7xI2Y g==;
+X-CSE-ConnectionGUID: JSJnuB3VQKSQF1nmlP35Bg==
+X-CSE-MsgGUID: Hx1BASqNSz6ENkOnOxWu3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="33063254"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="33063254"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Oct 2024 01:26:43 -0700
-X-CSE-ConnectionGUID: UvNMKFCAQeqeRMFJgvy9Kg==
-X-CSE-MsgGUID: osy8i5ulTJyVFfYxfAHBdA==
+ 24 Oct 2024 01:28:15 -0700
+X-CSE-ConnectionGUID: aYXrNqp0Tc2Ph/jIaGj1PQ==
+X-CSE-MsgGUID: 1g7N+dGUT9yYxtcg6fRkkw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; d="scan'208";a="80828632"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.140])
- by fmviesa010.fm.intel.com with ESMTP; 24 Oct 2024 01:26:40 -0700
-From: Pranay Samala <pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,228,1725346800"; d="scan'208";a="85315250"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2024 01:28:13 -0700
+Date: Thu, 24 Oct 2024 10:27:57 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v3 3/3] lib/monitor_edids/hdmi_edids: Shuffle edid with
- the redundant one
-Date: Thu, 24 Oct 2024 13:57:04 +0530
-Message-Id: <20241024082704.1746746-4-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241024082704.1746746-1-pranay.samala@intel.com>
-References: <20241024082704.1746746-1-pranay.samala@intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
+ rename drm_fdinfo into i915_fdinfo (rev2)
+Message-ID: <20241024082757.jsiqjysanihionwb@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20241023164537.83876-1-kamil.konieczny@linux.intel.com>
+ <172970454385.1324200.12138219116728473938@2413ebb6fbb6>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <172970454385.1324200.12138219116728473938@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,84 +71,155 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Edid of 1920x1200 59.950 Hz mode is a redundant edid, shuffling it with
-edid of 2560x1600 59.972 Hz mode to have all edid's coverage.
+Hi igt-dev,
+On 2024-10-23 at 17:29:03 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: rename drm_fdinfo into i915_fdinfo (rev2)
+> URL   : https://patchwork.freedesktop.org/series/140053/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_8082 -> IGTPW_11967
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11967 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11967, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html
+> 
+> Participating hosts (45 -> 46)
+> ------------------------------
+> 
+>   Additional (2): fi-skl-6600u bat-dg1-6 
+>   Missing    (1): fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11967:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-jsl-1:          [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-jsl-1/igt@i915_selftest@live.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-jsl-1/igt@i915_selftest@live.html
+> 
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- lib/monitor_edids/hdmi_edids.h | 52 +++++++++++++++++-----------------
- 1 file changed, 26 insertions(+), 26 deletions(-)
+This is unrelated to rename of drm_fdinfo into i915_fdinfo
 
-diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-index 9d75cfa98..f6cfe82ff 100644
---- a/lib/monitor_edids/hdmi_edids.h
-+++ b/lib/monitor_edids/hdmi_edids.h
-@@ -250,23 +250,15 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "34353732323059575320000000fc0044"
- 		  "454c4c20323430375746500a000000fd"
- 		  "00384c1e5311000a2020202020200068" },
--	{ .name = "DEL_61462_DELL_U2410_HDMI",
--	  .edid = "00ffffffffffff0010ac16f04c4e4332"
--		  "1f13010380342078ea1ec5ae4f34b126"
--		  "0e5054a54b008180a940d100714f0101"
--		  "010101010101283c80a070b023403020"
--		  "360006442100001a000000ff00463532"
--		  "354d39375332434e4c0a000000fc0044"
--		  "454c4c2055323431300a2020000000fd"
--		  "00384c1e5111000a202020202020012e"
--		  "020329f15090050403020716011f1213"
--		  "14201511062309070767030c00100038"
--		  "2d83010000e3050301023a801871382d"
--		  "40582c450006442100001e011d801871"
--		  "1c1620582c250006442100009e011d00"
--		  "7251d01e206e28550006442100001e8c"
--		  "0ad08a20e02d10103e96000644210000"
--		  "1800000000000000000000000000003e" },
-+	{ .name = "HWP_12442_HP_Z30i_HDMI",
-+	  .edid = "00ffffffffffff0022f09a3001010101"
-+		  "06180103804028782a1df5ae4f35b325"
-+		  "0d5054a10800d100b30095008100a940"
-+		  "8180d1c081c0e26800a0a0402e603020"
-+		  "360081902100001a000000fd00324618"
-+		  "621b000a202020202020000000fc0048"
-+		  "50205a3330690a2020202020000000ff"
-+		  "00434e34343036304742530a20200078" },
- 	{ .name = "DTV_0_DTV_HDMI",
- 	  .edid = "00ffffffffffff001296000001010101"
- 		  "0c180103803a20780a0dc9a057479827"
-@@ -507,15 +499,23 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
- 		  "442100001e011d00bc52d01e20b82855"
- 		  "4006442100001e8c0ad08a20e02d1010"
- 		  "3e9600064421000018000000000000c1" },
--	{ .name = "HWP_12442_HP_Z30i_HDMI",
--	  .edid = "00ffffffffffff0022f09a3001010101"
--		  "06180103804028782a1df5ae4f35b325"
--		  "0d5054a10800d100b30095008100a940"
--		  "8180d1c081c0e26800a0a0402e603020"
--		  "360081902100001a000000fd00324618"
--		  "621b000a202020202020000000fc0048"
--		  "50205a3330690a2020202020000000ff"
--		  "00434e34343036304742530a20200078" },
-+	{ .name = "DEL_61462_DELL_U2410_HDMI",
-+	  .edid = "00ffffffffffff0010ac16f04c4e4332"
-+		  "1f13010380342078ea1ec5ae4f34b126"
-+		  "0e5054a54b008180a940d100714f0101"
-+		  "010101010101283c80a070b023403020"
-+		  "360006442100001a000000ff00463532"
-+		  "354d39375332434e4c0a000000fc0044"
-+		  "454c4c2055323431300a2020000000fd"
-+		  "00384c1e5111000a202020202020012e"
-+		  "020329f15090050403020716011f1213"
-+		  "14201511062309070767030c00100038"
-+		  "2d83010000e3050301023a801871382d"
-+		  "40582c450006442100001e011d801871"
-+		  "1c1620582c250006442100009e011d00"
-+		  "7251d01e206e28550006442100001e8c"
-+		  "0ad08a20e02d10103e96000644210000"
-+		  "1800000000000000000000000000003e" },
- 	{ .name = "HWP_12447_HP_Z24i_HDMI",
- 	  .edid = "00ffffffffffff0022f09f3001010101"
- 		  "1a180103803420782e3c50a7544da226"
--- 
-2.34.1
+Regards,
+Kamil
 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11967 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@fbdev@info:
+>     - bat-dg1-6:          NOTRUN -> [SKIP][3] ([i915#1849])
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@fbdev@info.html
+> 
+>   * igt@gem_huc_copy@huc-copy:
+>     - fi-skl-6600u:       NOTRUN -> [SKIP][4] ([i915#2190])
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@gem_huc_copy@huc-copy.html
+> 
+>   * igt@gem_lmem_swapping@random-engines:
+>     - fi-skl-6600u:       NOTRUN -> [SKIP][5] ([i915#4613]) +3 other tests skip
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@gem_lmem_swapping@random-engines.html
+> 
+>   * igt@i915_selftest@live:
+>     - bat-arlh-3:         [PASS][6] -> [ABORT][7] ([i915#12133])
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arlh-3/igt@i915_selftest@live.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-arlh-3/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-arlh-3:         [PASS][8] -> [ABORT][9] ([i915#12061])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+> 
+>   * igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size:
+>     - bat-dg1-6:          NOTRUN -> [SKIP][10] ([i915#12311]) +54 other tests skip
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@kms_cursor_legacy@basic-flip-before-cursor-varying-size.html
+> 
+>   * igt@kms_dsc@dsc-basic:
+>     - fi-skl-6600u:       NOTRUN -> [SKIP][11] +9 other tests skip
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-skl-6600u/igt@kms_dsc@dsc-basic.html
+> 
+>   * igt@prime_vgem@basic-write:
+>     - bat-dg1-6:          NOTRUN -> [SKIP][12] ([i915#11723])
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg1-6/igt@prime_vgem@basic-write.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-twl-1:          [INCOMPLETE][13] ([i915#12133] / [i915#9413]) -> [PASS][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-twl-1/igt@i915_selftest@live.html
+>     - bat-dg2-9:          [ABORT][15] ([i915#12133]) -> [PASS][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg2-9/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@client:
+>     - bat-dg2-9:          [ABORT][17] ([i915#12305]) -> [PASS][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-dg2-9/igt@i915_selftest@live@client.html
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-dg2-9/igt@i915_selftest@live@client.html
+> 
+>   * igt@i915_selftest@live@gt_lrc:
+>     - bat-twl-1:          [INCOMPLETE][19] ([i915#9413]) -> [PASS][20]
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
+> 
+>   * igt@i915_selftest@live@late_gt_pm:
+>     - fi-cfl-8109u:       [DMESG-WARN][21] ([i915#11621]) -> [PASS][22] +132 other tests pass
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8082/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+> 
+>   
+>   [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+>   [i915#11723]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11723
+>   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+>   [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+>   [i915#12305]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12305
+>   [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
+>   [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
+>   [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+>   [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+>   [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8082 -> IGTPW_11967
+>   * Linux: CI_DRM_15576 -> CI_DRM_15586
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_15576: d5bac12430b0d4a980c0498b3c946772950e70ee @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_15586: 790c7308eb96861950ceddfd5a0f410cc3306c2e @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11967: cbdcb770dafad19d15b79ad1b4ff91819def477e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8082: c8379ec8b26f3c21bae5473706b23da78bd26ffa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11967/index.html
