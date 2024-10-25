@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD4C6D0C603
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Oct 2024 12:12:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A010D0C601
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Oct 2024 12:28:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E5A210E3E8;
-	Fri, 25 Oct 2024 12:12:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B35AA10EA8C;
+	Fri, 25 Oct 2024 12:28:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QNPZsMjt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CUsebDL0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1A7AF10EA7D
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Oct 2024 12:12:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 89C3D10EA85;
+ Fri, 25 Oct 2024 12:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729858349; x=1761394349;
+ t=1729859335; x=1761395335;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=D6pgGd++f9g99C4K4zIm/lVbcuSblZS01eEfg+3DJhA=;
- b=QNPZsMjtNPfSSm9XbwZ1zw7ylncWQSIl0vA6ltE/10mHdxIwIrPJUi+D
- dFqYl1KVJm0/lG6lppAzRYGPWEL4v7FM0iQMmqJEKdEuOo8fdAFz99Pxa
- FnJ3XXkevTkAagm6ZTmWKyt3miBt911yOU0nGnSBiczpRb0Jeh91iltKx
- 9DWiw4TXtUypSgxduisNYQ7Jx8xS6Yk3Tg3LfKRdw+eV/cAV+08Ysj7Je
- YTGdWhjU5Ct3foUbvt7qf9J3Wg3bFz7kUZrbJucAvw4Ft7snUB3bnCVj6
- 72q85ugK4xjodqyEW9IpLe5evek9GG5+NR4/QM5l98J62YX97ad3tyf38 A==;
-X-CSE-ConnectionGUID: BXqV+2mzT/6hr4PJe8RVQQ==
-X-CSE-MsgGUID: qIZeGZ0VQc2XJqj1GGBVbQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11236"; a="40919465"
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="40919465"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2024 05:12:29 -0700
-X-CSE-ConnectionGUID: d1ps19JKToWa8OHLT1innA==
-X-CSE-MsgGUID: SgabcaLsRom/XXSB1WGg4Q==
+ bh=2/pLOPOfEFGiuMLvPQ4qe3z7Plx5hThl+OkuIk5fyP8=;
+ b=CUsebDL0EsKCjD4bBTLAPymcwNznU6hShadvDdUmteDGmiJmZbKA3kp8
+ ipHsTjs7PuF23dvUbxn9dd78wZ/3DwctIOlzMbOoboFceaQb/VWY965Ce
+ 7vxbgR09KBTgcFQ7g3fg/pgzQ4pN6nCaj8E1YYHE7l3XZ78Mh4Rx3ikeo
+ IgOGh1OxXOPSrq0WEcagcCeZS/fKUDo65hsk6zj5KJhicKVVU/b0LSsLJ
+ C0X1vrHi04V4pX1XExusBqI8ST/dBKZsMA0JIRptDqmiwARMSNmRKIhkq
+ XhWb2lXNzi+6aZYL9i1vGh1zawGzU+g+IU/R65GgcgkBEwGSVvpYaKrpl A==;
+X-CSE-ConnectionGUID: IVuwM6cBTtmTVbYGzCTuRA==
+X-CSE-MsgGUID: ZsONqd5VQwCZQuKo/UF0kQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11236"; a="28969061"
+X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="28969061"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Oct 2024 05:28:54 -0700
+X-CSE-ConnectionGUID: wO0MB7ohRlaK4U/MAabNMQ==
+X-CSE-MsgGUID: 6CS7OyKJQPi1S036xjkR8g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="104209435"
+X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="80822757"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 05:12:27 -0700
-Date: Fri, 25 Oct 2024 14:12:12 +0200
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 05:28:52 -0700
+Date: Fri, 25 Oct 2024 14:28:50 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: george.zhang@amd.com, Leo Li <sunpeng.li@amd.com>,
- Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Subject: Re: [PATCH] scripts/run-test: Keep original prune behaviour
-Message-ID: <20241025121212.vngwdrofxl36jmyk@kamilkon-desk.igk.intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLklHVA==?= =?utf-8?Q?=3A?= failure for
+ tests/intel/psr: fix documentation
+Message-ID: <20241025122850.e3jhhvapap2x4gfs@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, george.zhang@amd.com,
- Leo Li <sunpeng.li@amd.com>, Alex Hung <alex.hung@amd.com>,
- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-References: <20241024160959.28947-1-george.zhang@amd.com>
+ igt-dev@lists.freedesktop.org,
+ Swati Sharma <swati2.sharma@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20241024112011.1387980-1-swati2.sharma@intel.com>
+ <172978580740.1328167.1570529542119447734@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241024160959.28947-1-george.zhang@amd.com>
+In-Reply-To: <172978580740.1328167.1570529542119447734@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,72 +73,114 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi George,
-On 2024-10-24 at 12:09:59 -0400, george.zhang@amd.com wrote:
-> From: George Zhang <george.zhang@amd.com>
+Hi igt-dev,
+On 2024-10-24 at 16:03:27 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> The default prune behaviour of the runner settings was changed.
-> This change is to maintain the original behaviour of this script
-> while also enabling the prune mode to be overriden.
-
-Thank you for fixing this! I have one nit, see below.
-
+> Series: tests/intel/psr: fix documentation
+> URL   : https://patchwork.freedesktop.org/series/140433/
+> State : failure
 > 
-> Fixes: 997bac8 ("runner/settings: set PRUNE_KEEP_ALL as default")
-> Cc: Leo Li <sunpeng.li@amd.com>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> Signed-off-by: George Zhang <george.zhang@amd.com>
-> Change-Id: I98cafbbaae15788a06eae8b9905615e9231d8e8e
-> ---
->  scripts/run-tests.sh | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+> == Summary ==
 > 
-> diff --git a/scripts/run-tests.sh b/scripts/run-tests.sh
-> index cd03682b4..f3ae48451 100755
-> --- a/scripts/run-tests.sh
-> +++ b/scripts/run-tests.sh
-> @@ -37,6 +37,7 @@ KERNEL_TREE=
->  USE_PIGLIT=0
->  RUNNER=
->  RESUME=
-> +PRUNE_MODE="keep-dynamic"
->  
->  find_file() # basename <possible paths>
->  {
-> @@ -154,6 +155,7 @@ print_help() {
->  	echo "                  test run with -R"
->  	echo "                  (only valid for Piglit)"
->  	echo "  -p              use Piglit instead of igt_runner"
-> +	echo "  -m              run test runner with prune mode(default: $PRUNE_MODE)"
->  	echo ""
->  	echo "Useful patterns for test filtering are described in the API documentation."
->  }
-> @@ -176,6 +178,7 @@ while getopts ":c:dhk:lPr:st:T:vx:Rnpb:" opt; do
+> CI Bug Log - changes from CI_DRM_15588_full -> IGTPW_11972_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11972_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11972_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/index.html
+> 
+> Participating hosts (9 -> 8)
+> ------------------------------
+> 
+>   Missing    (1): shard-glk 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11972_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_async_flips@crc@pipe-b-edp-1:
+>     - shard-mtlp:         [PASS][1] -> [INCOMPLETE][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15588/shard-mtlp-3/igt@kms_async_flips@crc@pipe-b-edp-1.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/shard-mtlp-1/igt@kms_async_flips@crc@pipe-b-edp-1.html
+> 
+>   * igt@kms_flip@plain-flip-fb-recreate@b-hdmi-a3:
+>     - shard-dg1:          NOTRUN -> [FAIL][3] +1 other test fail
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/shard-dg1-12/igt@kms_flip@plain-flip-fb-recreate@b-hdmi-a3.html
+> 
+>   * igt@kms_rotation_crc@multiplane-rotation:
+>     - shard-dg1:          [PASS][4] -> [INCOMPLETE][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15588/shard-dg1-17/igt@kms_rotation_crc@multiplane-rotation.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/shard-dg1-19/igt@kms_rotation_crc@multiplane-rotation.html
+>     - shard-dg2:          [PASS][6] -> [INCOMPLETE][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_15588/shard-dg2-6/igt@kms_rotation_crc@multiplane-rotation.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/shard-dg2-8/igt@kms_rotation_crc@multiplane-rotation.html
+> 
 
-imho you should add "m:" after "b:" in while loop
+These are unrelated to change in doc in intel/kms_psr2_sf.c
 
-while getopts ":b:c:dhk:lm:npPRr:st:T:vx:" opt; do
+>   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between CI_DRM_15588_full and IGTPW_11972_full:
+> 
+> ### New IGT tests (4) ###
+> 
+>   * igt@kms_async_flips@test-cursor@pipe-a-dp-3:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.25] s
+> 
+>   * igt@kms_async_flips@test-cursor@pipe-b-dp-3:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.14] s
+> 
+>   * igt@kms_async_flips@test-cursor@pipe-c-dp-3:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.12] s
+> 
+>   * igt@kms_async_flips@test-cursor@pipe-d-dp-3:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.11] s
+> 
+
+Patch didn't touch this?!
 
 Regards,
 Kamil
 
->  		n) NORETRY="--no-retry" ;;
->  		p) USE_PIGLIT=1 ;;
->  		b) FILTER="$FILTER -b $OPTARG" ;;
-> +		m) PRUNE_MODE="$OPTARG" ;;
->  		:)
->  			echo "Option -$OPTARG requires an argument."
->  			exit 1
-> @@ -253,7 +256,7 @@ if [ "x$RESUME_RUN" != "x" ]; then
->  	execute_runner 1 $RESUME $RESUME_ARGS $COV_ARGS "$RESULTS"
->  else
->  	mkdir -p "$RESULTS"
-> -	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER
-> +	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER --prune-mode $PRUNE_MODE
->  fi
->  
->  if [ "$SUMMARY" = "html" ]; then
-> -- 
-> 2.34.1
+>   
 > 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_11972_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@crc32:
+>     - shard-tglu:         NOTRUN -> [SKIP][8] ([i915#6230])
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/shard-tglu-8/igt@api_intel_bb@crc32.html
+> 
+...cut...
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11972/index.html
