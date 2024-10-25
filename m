@@ -4,52 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 421B5D0C5EB
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Oct 2024 08:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692CAD0C5EB
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Oct 2024 08:57:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECF0410EA34;
-	Fri, 25 Oct 2024 08:51:39 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LAyRwbQj";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB98010EA34
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Oct 2024 08:51:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729846299; x=1761382299;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Ee1+53WihJKuxoJj2Obd2u0wVEHp570SoB9rqWSZRSU=;
- b=LAyRwbQj2Qfu4Sn4zgzJH+Wy0lgs23p22DLP7RR/I3M6Q2gfruax3gUJ
- QGSZs922Lh65jyLZpqVs3uAyrThMPzbCPz+mb3ZPa/qNlFDBo4QAZx5ek
- Qic1tmXDCR6Nnu4vlLZ2Fk03DDTXtJX9TIoDBWYqBFfncnPAwLTt+wb9l
- PwHW382ulZunJHTDj8aef1AR/BT0iMRMjnsuB71Ojvnuxp0muRIo2g+VY
- oZvsUicQmSjm/QNNRjIRv4z8XWzatvzRuE1AS96iLSTb1b2jrDIZ9Nw1/
- tZ3kasPHlT/jnqER9oCwG8U7JkPFjQhWyY2Mpu8OweGUxxCSpk+DznxpI w==;
-X-CSE-ConnectionGUID: FQ6TIsW7RsGfX/aZQqQ3tQ==
-X-CSE-MsgGUID: mtdTRYUNTHuiYQC3KxujrQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11235"; a="28962062"
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="28962062"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2024 01:51:32 -0700
-X-CSE-ConnectionGUID: O7m7dVW3T9KK4IJU+szN6g==
-X-CSE-MsgGUID: 2PBAGFY6RgOIMLswpQwApA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,231,1725346800"; d="scan'208";a="84815279"
-Received: from sorvi2.fi.intel.com ([10.237.72.194])
- by fmviesa003.fm.intel.com with ESMTP; 25 Oct 2024 01:51:31 -0700
-From: Mika Kahola <mika.kahola@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mika Kahola <mika.kahola@intel.com>
-Subject: [PATCH i-g-t] tests/kms_plane_scaling: Require at least 30 Hz refresh
- rate
-Date: Fri, 25 Oct 2024 11:42:51 +0300
-Message-ID: <20241025084251.14116-1-mika.kahola@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2583410EA32;
+	Fri, 25 Oct 2024 08:57:29 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 51B9510EA32;
+ Fri, 25 Oct 2024 08:57:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5355273050209996893=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_tests/xe=3A_Add_tests_to_va?=
+ =?utf-8?q?lidate_GT_coarse_power_gating_status_and_toggle_coarse_power_gati?=
+ =?utf-8?q?ng_states_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: sk.anirban@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 25 Oct 2024 08:57:27 -0000
+Message-ID: <172984664732.1331322.14206615868508858441@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241025055959.2152585-1-sk.anirban@intel.com>
+In-Reply-To: <20241025055959.2152585-1-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,67 +38,201 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With HDMI dummies we may end up testing a mode that doesn't really
-resemble real life scenario like 4k mode with 17Hz refresh rate, which
-can lead issues when executing a test. Therefore, the patch proposes
-for intel-max-src-size to be tested with with real life refresh rate
-such as 30 Hz or higher.
+--===============5355273050209996893==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- tests/kms_plane_scaling.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+== Series Details ==
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index a55720ed9..c8c9aee31 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -215,6 +215,7 @@ typedef struct {
- struct invalid_paramtests {
- 	const char *testname;
- 	uint32_t planesize[2];
-+	uint32_t vrefresh;
- 	struct {
- 		enum igt_atomic_plane_properties prop;
- 		uint32_t value;
-@@ -225,6 +226,7 @@ static const struct invalid_paramtests intel_paramtests[] = {
- 	{
- 		.testname = "intel-max-src-size",
- 		.planesize = {3840, 2160},
-+		.vrefresh = 30,
- 	},
- };
- 
-@@ -1220,13 +1222,14 @@ static void invalid_parameter_tests(data_t *d)
- 	}
- }
- 
--static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const uint32_t planesize[])
-+static drmModeModeInfo *find_mode(data_t *data, igt_output_t *output, const struct invalid_paramtests *test)
- {
- 	drmModeModeInfo *mode = NULL;
- 
- 	for (int i = 0; i < output->config.connector->count_modes; i++) {
--		if (output->config.connector->modes[i].hdisplay == planesize[0] &&
--		    output->config.connector->modes[i].vdisplay == planesize[1] ) {
-+		if (output->config.connector->modes[i].hdisplay == test->planesize[0] &&
-+		    output->config.connector->modes[i].vdisplay == test->planesize[1] &&
-+		    output->config.connector->modes[i].vrefresh >= test->vrefresh) {
- 			if (mode &&
- 			    mode->vrefresh < output->config.connector->modes[i].vrefresh)
- 				continue;
-@@ -1568,7 +1571,7 @@ igt_main_args("", long_opts, help_str, opt_handler, &data)
- 						 * Need to find mode with lowest vrefresh else
- 						 * we can exceed cdclk limits.
- 						 */
--						mode = find_mode(&data, output, intel_paramtests[index].planesize);
-+						mode = find_mode(&data, output, &intel_paramtests[index]);
- 						if (mode) {
- 							igt_dynamic_f("pipe-%s-%s",
- 								       kmstest_pipe_name(pipe), igt_output_name(output))
--- 
-2.43.0
+Series: tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev3)
+URL   : https://patchwork.freedesktop.org/series/140473/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from IGT_8083 -> IGTPW_11981
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/index.html
+
+Participating hosts (46 -> 45)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_11981 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-arlh-3:         [PASS][1] -> [ABORT][2] ([i915#12061] / [i915#12133])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-arlh-3/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-arlh-3/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][3] -> [ABORT][4] ([i915#12061])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_chamelium_edid@hdmi-edid-read:
+    - bat-dg2-13:         [PASS][5] -> [DMESG-WARN][6] ([i915#12253])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:
+    - bat-dg2-11:         [PASS][7] -> [SKIP][8] ([i915#9197]) +2 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_module_load@load:
+    - bat-adlp-6:         [DMESG-WARN][9] ([i915#12253]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-adlp-6/igt@i915_module_load@load.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-adlp-6/igt@i915_module_load@load.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-mtlp-6:         [ABORT][11] ([i915#12216]) -> [PASS][12] +1 other test pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216
+  [i915#12253]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253
+  [i915#9197]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8083 -> IGTPW_11981
+  * Linux: CI_DRM_15593 -> CI_DRM_15594
+
+  CI-20190529: 20190529
+  CI_DRM_15593: 75eab7b9ee32a121d95a42ac704b679097f1fac4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15594: 8fb857e3bba9a5e5fa43d99cf5863608cde9c107 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_11981: 543e56460dbdac145fcd067d6000e0cfb0db172b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8083: 73f910ebf47fe8f379d2e233cab754e4d6091701 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/index.html
+
+--===============5355273050209996893==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/xe: Add tests to validate GT coarse power gating status and toggle coarse power gating states (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140473/">https://patchwork.freedesktop.org/series/140473/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8083 -&gt; IGTPW_11981</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/index.html</p>
+<h2>Participating hosts (46 -&gt; 45)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_11981 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-arlh-3/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_edid@hdmi-edid-read:</p>
+<ul>
+<li>bat-dg2-13:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253">i915#12253</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence:</p>
+<ul>
+<li>bat-dg2-11:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-dg2-11/igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9197">i915#9197</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_module_load@load:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-adlp-6/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253">i915#12253</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-adlp-6/igt@i915_module_load@load.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-mtlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8083/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216">i915#12216</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11981/bat-mtlp-6/igt@i915_selftest@live@workarounds.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8083 -&gt; IGTPW_11981</li>
+<li>Linux: CI_DRM_15593 -&gt; CI_DRM_15594</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15593: 75eab7b9ee32a121d95a42ac704b679097f1fac4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15594: 8fb857e3bba9a5e5fa43d99cf5863608cde9c107 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_11981: 543e56460dbdac145fcd067d6000e0cfb0db172b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8083: 73f910ebf47fe8f379d2e233cab754e4d6091701 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5355273050209996893==--
