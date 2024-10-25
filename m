@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC95D149D9
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Oct 2024 17:51:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72C58D149CD
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Oct 2024 17:56:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 354DD10EB66;
-	Fri, 25 Oct 2024 17:51:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2FDE710EB66;
+	Fri, 25 Oct 2024 17:56:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NOmre9d7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EC7ixgFc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E0EA710EB73
- for <igt-dev@lists.freedesktop.org>; Fri, 25 Oct 2024 17:51:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 021B310EB66
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Oct 2024 17:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729878696; x=1761414696;
+ t=1729878995; x=1761414995;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=pNmzH2nVl12+1B8SWD8ql9lC5BiKvI6X2rPFa9zrIC4=;
- b=NOmre9d7iz2VYvaY9NYAeznlBqxX4G9NKOdn6j7vbE85HAL9u+zN8AYQ
- 4jxYDqM4EQSSEJg7fukMVtCxwFqXe39BkRbPVmaUwXUEO4dv+ADBxLAd+
- xGO5tNlmUeDHmQhKPeAzxQu/RtyysnVNGrgneMFxrNRbD+Zac9bWBbaLb
- Qr11WbcEJeoS05Ckkq6+FxgLny9OT+T50wef9A2CokmOtTLvd2pYMBEzd
- UyUqqPqK3dxp+7cvVyYrHVRjOGFZjpgN2eqR57g48QJ1aO09807m6nIit
- TRHfK0Imw//uqJtsvd/weNZkCqBdUlmklWp6p4opPf5TL2dPd3YRO3Jmx w==;
-X-CSE-ConnectionGUID: vO/f7thKTFKmLGjWs2qx2Q==
-X-CSE-MsgGUID: WOWV49deRj+SYQoVSBQKng==
-X-IronPort-AV: E=McAfee;i="6700,10204,11236"; a="29000446"
-X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; d="scan'208";a="29000446"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2024 10:51:35 -0700
-X-CSE-ConnectionGUID: 8lHsy8mlTRiDaMLpf5H0EA==
-X-CSE-MsgGUID: 5fYjDRjYToOfI9vrI5LjMQ==
+ bh=xGrA1iFPd8GJPxraTGH5NtG3EvKbo6M2uXO7SKurLIU=;
+ b=EC7ixgFcCO8sy3UTKw1K1JJlNI4H7lt8tFV+tV1S6q6j/e1JvQgB/5FG
+ RWBz5edQysSNehs/4ENhJSbltXdo9Jt8hbmcRiCYh/kQtDs41lQsTzDA8
+ CeW2BLOhD5sCkzgfChakUPVoBskN19QYfWWVSrm+5VIBxmSSo5vOwPsoQ
+ hQqtCsG1Rj8jboWQJaUN5nEXP0FMacHA5lB3YA8CD1VKOmuj9WTDuMJzM
+ MFFMhUeeYqKrJuOOfCTEd1UqIoQgwuEf5QXkOCHweyktne+oqK3VVRfiH
+ wV421e+RYDOjGqBSW27vEH4dphgbsfzrZsXRRytIP4zOKEqTQAiAHQ6/r Q==;
+X-CSE-ConnectionGUID: CWVWXKlpSv+7qEn5pcRw2A==
+X-CSE-MsgGUID: 4lu5CwAhS3q7Yjgwi+vmUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11236"; a="17190435"
+X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; d="scan'208";a="17190435"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Oct 2024 10:56:35 -0700
+X-CSE-ConnectionGUID: rbYcpJSeTV+49aC4a84iZg==
+X-CSE-MsgGUID: K/t33NPaQ2S3isfMYGWrsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; d="scan'208";a="81079783"
+X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; d="scan'208";a="80634126"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 10:51:34 -0700
-Date: Fri, 25 Oct 2024 19:51:14 +0200
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 10:56:33 -0700
+Date: Fri, 25 Oct 2024 19:56:31 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: george.zhang@amd.com
-Cc: igt-dev@lists.freedesktop.org, Leo Li <sunpeng.li@amd.com>,
- Alex Hung <alex.hung@amd.com>, Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
- Nicholas Choi <nicholas.choi@amd.com>
-Subject: Re: [Patch v2] scripts/run-test: Keep original prune behaviour
-Message-ID: <20241025175114.y2xnkvzlvz7nn2r5@kamilkon-desk.igk.intel.com>
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>,
+ "Sokolowski, Jan" <jan.sokolowski@intel.com>
+Subject: Re: [PATCH i-g-t v2 1/2] /lib/xe/xe_eudebug: Add trigger removal
+ method
+Message-ID: <20241025175631.skug6x4jeua7jcoh@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- george.zhang@amd.com, igt-dev@lists.freedesktop.org,
- Leo Li <sunpeng.li@amd.com>, Alex Hung <alex.hung@amd.com>,
- Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
- Nicholas Choi <nicholas.choi@amd.com>
-References: <20241025151121.9160-1-george.zhang@amd.com>
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Grzegorzek, Dominik" <dominik.grzegorzek@intel.com>,
+ "Sokolowski, Jan" <jan.sokolowski@intel.com>
+References: <20241024120851.328536-1-jan.sokolowski@intel.com>
+ <5172f06ba0cc45587cf724035740bf961cd3949f.camel@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241025151121.9160-1-george.zhang@amd.com>
+In-Reply-To: <5172f06ba0cc45587cf724035740bf961cd3949f.camel@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,89 +74,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi george.zhang,
-On 2024-10-25 at 11:11:21 -0400, george.zhang@amd.com wrote:
-> From: George Zhang <george.zhang@amd.com>
+Hi Grzegorzek,,
+On 2024-10-25 at 09:55:09 +0000, Grzegorzek, Dominik wrote:
+> On Thu, 2024-10-24 at 12:08 +0000, Jan Sokolowski wrote:
+> > Add method xe_eudebug_debugger_remove_trigger to remove
+> > trigger from list of triggers.
+> > 
+> > Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+> > Reviewed-by: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
 > 
-> The default prune behaviour of the runner settings was changed.
-> This change is to maintain the original behaviour of this script
-> while also enabling the prune mode to be overriden.
+> Not sure why you add this rb beforehand, but anyway you can keep it for both. v2 looks good to me.
 > 
+> Regards,
+> Dominik
 
-Please add here what changed in version 2 of patch,
-for example how to describe look into revision 4 of patchseries
+Before merge please remove '/' from beginning of both patches,
+now it has in subject:
 
-https://patchwork.freedesktop.org/series/139352/
+/lib/xe/xe_eudebug: Add trigger removal method
 
-https://patchwork.freedesktop.org/patch/621243/?series=139352&rev=4
+but it should be:
 
-I have still one nit below.
-
-> Fixes: 997bac8 ("runner/settings: set PRUNE_KEEP_ALL as default")
-> Cc: Leo Li <sunpeng.li@amd.com>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-> Cc: Nicholas Choi <nicholas.choi@amd.com>
-> Signed-off-by: George Zhang <george.zhang@amd.com>
-> Change-Id: If379ec2fb7616af79c55cde44c49b760225a4896
-> ---
->  scripts/run-tests.sh | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/run-tests.sh b/scripts/run-tests.sh
-> index cd03682b4..4ded76df5 100755
-> --- a/scripts/run-tests.sh
-> +++ b/scripts/run-tests.sh
-> @@ -37,6 +37,7 @@ KERNEL_TREE=
->  USE_PIGLIT=0
->  RUNNER=
->  RESUME=
-> +PRUNE_MODE="keep-dynamic"
->  
->  find_file() # basename <possible paths>
->  {
-> @@ -154,11 +155,12 @@ print_help() {
->  	echo "                  test run with -R"
->  	echo "                  (only valid for Piglit)"
->  	echo "  -p              use Piglit instead of igt_runner"
-> +	echo "  -m              run test runner with prune mode(default: $PRUNE_MODE)"
->  	echo ""
->  	echo "Useful patterns for test filtering are described in the API documentation."
->  }
->  
-> -while getopts ":c:dhk:lPr:st:T:vx:Rnpb:" opt; do
-> +while getopts ":c:dhk:lPr:st:T:vx:Rnpbm:" opt; do
-
-Keep ':' after 'b', so
-
-while getopts ":c:dhk:lPr:st:T:vx:Rnpb:m:" opt; do
-
-I was thinking of sorting this string of option letters
-but lets go with simple extension now.
+lib/xe/xe_eudebug: Add trigger removal method
 
 Regards,
 Kamil
 
->  	case $opt in
->  		c) COV_ARGS="$COV_ARGS --collect-code-cov --collect-script $OPTARG " ;;
->  		d) download_piglit; exit ;;
-> @@ -176,6 +178,7 @@ while getopts ":c:dhk:lPr:st:T:vx:Rnpb:" opt; do
->  		n) NORETRY="--no-retry" ;;
->  		p) USE_PIGLIT=1 ;;
->  		b) FILTER="$FILTER -b $OPTARG" ;;
-> +		m) PRUNE_MODE="$OPTARG" ;;
->  		:)
->  			echo "Option -$OPTARG requires an argument."
->  			exit 1
-> @@ -253,7 +256,7 @@ if [ "x$RESUME_RUN" != "x" ]; then
->  	execute_runner 1 $RESUME $RESUME_ARGS $COV_ARGS "$RESULTS"
->  else
->  	mkdir -p "$RESULTS"
-> -	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER
-> +	execute_runner 1 $RUNNER $RUN_ARGS -o -s "$RESULTS" $COV_ARGS $VERBOSE $FILTER --prune-mode $PRUNE_MODE
->  fi
->  
->  if [ "$SUMMARY" = "html" ]; then
-> -- 
-> 2.34.1
+> > Signed-off-by: Dominik Grzegorzk <dominik.grzegorzek@intel.com>
+> > ---
+> >  lib/xe/xe_eudebug.c | 30 ++++++++++++++++++++++++++++++
+> >  lib/xe/xe_eudebug.h |  2 ++
+> >  2 files changed, 32 insertions(+)
+> > 
+> > diff --git a/lib/xe/xe_eudebug.c b/lib/xe/xe_eudebug.c
+> > index 36763a184..74aa26024 100644
+> > --- a/lib/xe/xe_eudebug.c
+> > +++ b/lib/xe/xe_eudebug.c
+> > @@ -1226,6 +1226,36 @@ void xe_eudebug_debugger_add_trigger(struct xe_eudebug_debugger *d,
+> >  	igt_debug("added trigger %p\n", t);
+> >  }
+> >  
+> > +/**
+> > + * xe_eudebug_debugger_remove_trigger:
+> > + * @d: pointer to the debugger
+> > + * @type: the type of the event which activates the trigger.
+> > + * @fn: function to be removed when event of @type was read by the debugger.
+> > + *
+> > + * Removes function @fn from the list of triggers activated when event of
+> > + * @type has been read by worker.
+> > + */
+> > +void xe_eudebug_debugger_remove_trigger(struct xe_eudebug_debugger *d,
+> > +					int type, xe_eudebug_trigger_fn fn)
+> > +{
+> > +	struct event_trigger *t;
+> > +	bool found = false;
+> > +
+> > +	igt_list_for_each_entry(t, &d->triggers, link) {
+> > +		if (type == t->type && fn == t->fn) {
+> > +			igt_list_del(&t->link);
+> > +			found = true;
+> > +			break;
+> > +		}
+> > +	}
+> > +	if (found) {
+> > +		igt_debug("removed trigger %p\n", t);
+> > +		free(t);
+> > +	} else {
+> > +		igt_debug("trigger of type %d was not removed as it's not in the list\n", type);
+> > +	}
+> > +}
+> > +
+> >  /**
+> >   * xe_eudebug_debugger_start_worker:
+> >   * @d: pointer to the debugger
+> > diff --git a/lib/xe/xe_eudebug.h b/lib/xe/xe_eudebug.h
+> > index 6e4666333..9aadbe847 100644
+> > --- a/lib/xe/xe_eudebug.h
+> > +++ b/lib/xe/xe_eudebug.h
+> > @@ -150,6 +150,8 @@ void xe_eudebug_debugger_detach(struct xe_eudebug_debugger *d);
+> >  void xe_eudebug_debugger_set_data(struct xe_eudebug_debugger *c, void *ptr);
+> >  void xe_eudebug_debugger_add_trigger(struct xe_eudebug_debugger *d, int type,
+> >  				     xe_eudebug_trigger_fn fn);
+> > +void xe_eudebug_debugger_remove_trigger(struct xe_eudebug_debugger *d, int type,
+> > +				     xe_eudebug_trigger_fn fn);
+> >  void xe_eudebug_debugger_signal_stage(struct xe_eudebug_debugger *d, uint64_t stage);
+> >  void xe_eudebug_debugger_wait_stage(struct xe_eudebug_session *s, uint64_t stage);
+> >  
 > 
