@@ -4,53 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77C21D149F8
-	for <igt-dev@archiver.kernel.org>; Sat, 26 Oct 2024 00:58:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43DF9D149F9
+	for <igt-dev@archiver.kernel.org>; Sat, 26 Oct 2024 00:58:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D8A310E151;
+	by gabe.freedesktop.org (Postfix) with ESMTP id F164110E2CD;
 	Sat, 26 Oct 2024 00:58:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jWwV4bC8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dATvzLF4";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9BB1510E151
- for <igt-dev@lists.freedesktop.org>; Sat, 26 Oct 2024 00:58:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0DAA510E151
+ for <igt-dev@lists.freedesktop.org>; Sat, 26 Oct 2024 00:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1729904293; x=1761440293;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Yq4/QsBOxJJZ+sWGmKeW2ZXqkM1ZMpr64NGWu9qDXVw=;
- b=jWwV4bC8+iy6ZKS3nin8XAUkEKnbCXQ0U3fh22u4FDKWW/X/sOQ+xFku
- JRPmkUYnDNeT2M4srexjBbWQ9gEeHWZLcSirboeuzJtzeosas82jFP8XF
- Iiley+s+1HvesEOZakh6xPzeBYROVFaJRZajkcoU+JEh3pjErUWkWRQ3k
- q3fSQQEGbOKD+UV0EPTyv0ywIdfr22QsjmckiLB1rb4f3/ogogNHM9Krj
- OiydpffVPkDT6NBseXsLFXWhzNrkQd5H1pfES8VkXNhPWF6ThYIa2U5L+
- T5IhYn/1yiLPNQc9X60vRBo/UDHqxtn6AkV1JuHP1/3Zc0H1sqC9xedDq w==;
-X-CSE-ConnectionGUID: n9QmrGm8TEGpBw6vJfteLA==
-X-CSE-MsgGUID: TSqLlOAsT62eAZkcki4Z2g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29770397"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29770397"
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=TGBwBAdeN+FDiiDCXBSGz7VfYrmCDY+qhqvPcCUQfvc=;
+ b=dATvzLF4oXnVypCmXzi9DijltAHm5lzK0wnWno+IcgvATKfznCcwWSRB
+ OQpcAfppoNavfgPzzslDkk9677Zd2TT6/tlz/U41/CF7Aj1qL7A13qSXB
+ RRGntoJurlS2B0DmA4HF1s0QtXJm4GcMwwrRD3tVa5Y5R8fR6wPh7nD9c
+ 5X47mjsqQYR0ZHAt80lPK5Dz6ihUx07M+d1T62QwUKIjLf4yH2gSIKtyE
+ Qj/zj5432N8GSV5tYnjQ+epG4pQZwi1KR4/7l2mJG4iCUMbFeJ6O8+yDr
+ PAz6ikRnY0uhrw0X1SHl194MDKbBmxTQ0LZ1t9xr6PC9axwQW/dfaQ0Lv g==;
+X-CSE-ConnectionGUID: V1Lep0FKS7ilBcnSPchs+A==
+X-CSE-MsgGUID: pe+hoQDeRpKYSG+MFBEfmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29770394"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29770394"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Oct 2024 17:57:29 -0700
-X-CSE-ConnectionGUID: O8EvE6CeQb+xoAIlydXzFg==
-X-CSE-MsgGUID: W81/f1ZsQ3GU81H31S5Qzw==
+X-CSE-ConnectionGUID: xIpImtU4QHy3m7VK4rCsWw==
+X-CSE-MsgGUID: HnaZv6gfSC6KIqyOrs74Yw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,233,1725346800"; d="scan'208";a="111885441"
+X-IronPort-AV: E=Sophos;i="6.11,233,1725346800"; d="scan'208";a="111885436"
 Received: from fyang16-desk.jf.intel.com ([10.165.21.214])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  25 Oct 2024 17:57:27 -0700
 From: fei.yang@intel.com
 To: igt-dev@lists.freedesktop.org
 Cc: Fei Yang <fei.yang@intel.com>
-Subject: [i-g-t 1/1] tests/intel/xe_exec_threads: wait for all submissions to
- complete
-Date: Fri, 25 Oct 2024 18:01:02 -0700
-Message-Id: <20241026010102.1470944-2-fei.yang@intel.com>
+Subject: [i-g-t 0/1] xe_exec_threads: wait for all submissions to complete
+Date: Fri, 25 Oct 2024 18:01:01 -0700
+Message-Id: <20241026010102.1470944-1-fei.yang@intel.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241026010102.1470944-1-fei.yang@intel.com>
-References: <20241026010102.1470944-1-fei.yang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -77,65 +74,13 @@ should wait for the ufence to make sure the GPU is inactive before
 unbinding the BO.
 
 Signed-off-by: Fei Yang <fei.yang@intel.com>
----
+
+Fei Yang (1):
+  tests/intel/xe_exec_threads: wait for all submissions to complete
+
  tests/intel/xe_exec_threads.c | 26 ++++++++++++++++++--------
  1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 413d6626b..b73d3df2b 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -340,7 +340,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		xe_exec(fd, &exec);
- 
- 		if (flags & REBIND && i && !(i & 0x1f)) {
--			for (j = i - 0x20; j <= i; ++j)
-+			for (j = i - 0x20; j < i; ++j)
- 				xe_wait_ufence(fd, &data[j].exec_sync,
- 					       USER_FENCE_VALUE,
- 					       exec_queues[e], fence_timeout);
-@@ -370,7 +370,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 				 * physical memory on next mmap call triggering
- 				 * an invalidate.
- 				 */
--				for (j = i == 0x20 ? 0 : i - 0x1f; j <= i; ++j)
-+				for (j = i - 0x20; j < i; ++j)
- 					xe_wait_ufence(fd, &data[j].exec_sync,
- 						       USER_FENCE_VALUE,
- 						       exec_queues[e],
-@@ -404,16 +404,26 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
- 		}
- 	}
- 
--	j = flags & INVALIDATE ?
--		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
-+	j = 0; /* wait for all submissions to complete */
-+	if (flags & INVALIDATE)
-+		/*
-+		 * For !RACE cases xe_wait_ufence has been called in above for-loop
-+		 * except the last batch of submissions (0x20 submissions in a batch).
-+		 * For RACE cases we will need to wait for all the submissions to
-+		 * complete here.
-+		 */
-+		j = (flags & RACE) ? 0 : (n_execs - 0x20);
-+	else if (flags & REBIND)
-+		/*
-+		 * For REBIND cases xe_wait_ufence has been called in above for-loop
-+		 * except the last batch of submissions (0x20 submissions in a batch).
-+		 */
-+		j = n_execs - 0x20;
-+
- 	for (i = j; i < n_execs; i++)
- 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
- 			       exec_queues[i % n_exec_queues], fence_timeout);
- 
--	/* Wait for all execs to complete */
--	if (flags & INVALIDATE)
--		sleep(1);
--
- 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
- 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
- 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
 -- 
 2.25.1
 
