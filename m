@@ -4,65 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76AFDD33998
-	for <igt-dev@archiver.kernel.org>; Mon, 28 Oct 2024 16:07:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7E58D339A0
+	for <igt-dev@archiver.kernel.org>; Mon, 28 Oct 2024 16:53:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 17A6A10E50B;
-	Mon, 28 Oct 2024 16:07:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F67710E515;
+	Mon, 28 Oct 2024 16:53:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CgBf/D+o";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Pib9gtbw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BC40F10E502
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Oct 2024 16:07:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E1D710E515
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Oct 2024 16:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730131674; x=1761667674;
+ t=1730134396; x=1761670396;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=ysTsx7KP9NpE/LRKqIjE2m5KVo145z5VbZiQ2DC7SvA=;
- b=CgBf/D+oGXsdOOjxwHlRy1Mr7N/R3bynfwzOSU0AkWUcxl4B0L+zx7h+
- gU1t69bIkAiNZ5OlncI9JIHTYvU2ISpvdJpkVZ7JfQsbbHFI8k1cR46xw
- 7gE4/0nQkFZSYaj50f/673xGCO3/O/Fe6mtK+JbBsPszfnCPTZkKs0H2+
- 1ZH7hjihSYrcYmQMDM4o4i93U8mnbilG1MtToWDrflQH2yDWt0Aw7iDAK
- yuUPlGrBHgnIWxpD5flLX69yR37jS6ioJ3L1nJA6tQ0TIFbIwy+5oLD0V
- pX4rI1RU9FAwx/NTge7GSTybuK2LDFObjU4DW6UnaVrXqKG3lyfAXMvtk g==;
-X-CSE-ConnectionGUID: CDezBEsTR/quUPIfleoeww==
-X-CSE-MsgGUID: oC7ofxjcRMquzPSh4epAdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="47216617"
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="47216617"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2024 09:07:53 -0700
-X-CSE-ConnectionGUID: +f1wqCTgRmOMxheajD50gw==
-X-CSE-MsgGUID: lWm7tcu3QoqLQ3M3Nptenw==
+ mime-version:in-reply-to;
+ bh=KeUUf5SiDnEBD6yehOr7aLc/LRBuX1cZen1F7lmZluM=;
+ b=Pib9gtbw3SR87fYmsE87EIfsQ1Bdeqv+QIwyxm/9/6A2fYhtgCE0NATh
+ BkUHrGeSwCToOPqLKvm1DIlbEErl4sAnEM/3XL0QiGLllO9hZO4Qd9gUj
+ XkEGuQ4RzxYhSHpO4OSaRKu5qHudO4unm3s6py3J/fPU1BCQhsEh0aOCw
+ CR5Ymi7mtF1Bh7OClON/afXs5iY56Eas88apf0ezFHLB2ZjxkxiRkuzY/
+ dgtzY0uJ9Jx7d0Rlba473O+u8urSxqZG0Houri7NdhLni0W/RG/iHm4f9
+ CWuIc4eXIgPG9i63y9pQxxLPgdQs4bpTwx78BMzOzljVBqWl41DypNxJI Q==;
+X-CSE-ConnectionGUID: yiGwn8UAQdSl8sY9sLSQFg==
+X-CSE-MsgGUID: 6ISOnjCERSKWq818cjkWDA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11239"; a="29950707"
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="29950707"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 09:53:16 -0700
+X-CSE-ConnectionGUID: UdA3YqTiSeu5JNwwNOEbPA==
+X-CSE-MsgGUID: oaWsmZdlR2ORzsbKgV2M8Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="81771262"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
- by fmviesa008.fm.intel.com with SMTP; 28 Oct 2024 09:07:49 -0700
-Received: by stinkbox (sSMTP sendmail emulation);
- Mon, 28 Oct 2024 18:07:49 +0200
-Date: Mon, 28 Oct 2024 18:07:49 +0200
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Arthur Grillo <arthurgrillo@riseup.net>
-Cc: igt-dev@lists.freedesktop.org, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Pekka Paalanen <pekka.paalanen@collabora.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t v6 12/12] lib/igt_fb: Add non sub-sampled YUV formats
-Message-ID: <Zx-21REAlrgC3DHs@intel.com>
-References: <20240912-kms_fb_stress-dev-v6-0-71e9a65397e9@riseup.net>
- <20240912-kms_fb_stress-dev-v6-12-71e9a65397e9@riseup.net>
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="81999365"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 09:53:14 -0700
+Date: Mon, 28 Oct 2024 17:53:11 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
+ jonathan.cavitt@intel.com, alex.zuo@intel.com, kamil.konieczny@intel.com
+Subject: Re: [PATCH] [i-g-t] tests/intel/xe_vm:Reduce n_execs for
+ bind-array-enobufs
+Message-ID: <20241028165311.q7qlo65v5fo2xoz3@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
+ jonathan.cavitt@intel.com, alex.zuo@intel.com,
+ kamil.konieczny@intel.com
+References: <20241022201130.5724-1-jagmeet.randhawa@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240912-kms_fb_stress-dev-v6-12-71e9a65397e9@riseup.net>
-X-Patchwork-Hint: comment
+In-Reply-To: <20241022201130.5724-1-jagmeet.randhawa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,210 +74,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Sep 12, 2024 at 09:39:36PM -0300, Arthur Grillo wrote:
-> This adds support for the formats:
-> - NV24
-> - NV42
-> - YU24
-> - YU42
+Hi Jagmeet,
+On 2024-10-22 at 20:11:30 +0000, Jagmeet Randhawa wrote:
 
-I would split this into two patches: 2 plane vs. 3 plane
+small nit for subject, please place space after ':'
+[i-g-t] tests/intel/xe_vm:Reduce n_execs for bind-array-enobufs
 
+should be:
+
+[i-g-t] tests/intel/xe_vm: Reduce n_execs for bind-array-enobufs
+
+> The bind-array-enobufs test in xe_vm.c is intended to trigger
+> an -ENOBUFS error by submitting an oversized bind array.
+> After encountering and handling the error, the test reduces
+> n_execs by half and retries the operation. On some environments
+> with stricter resource limits (e.g. simulator), halving
+> n_execs isn't sufficient to prevent the ENOBUFS error on the retry.
+> Reducing n_execs further to n_execs / 4 allows the test to pass
+> successfully. This patch modifies the test to reduce n_execs
+--------------- ^
+Imho you repeat your argument again here, I will take only
+what is up to 'This patch...' with Jonathan r-b.
+
+Also please replay to CI failure reports, I will do this now
+as to give you an example how to follow up with your next patches.
+
+Regards,
+Kamil
+
+> to n_execs / 4 after an ENOBUFS error is handled. This ensures
+> compatibility with environments that have tighter resource
+> constraints while maintaining the test's integrity.
 > 
-> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 > ---
->  lib/igt_fb.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 46 insertions(+)
+>  tests/intel/xe_vm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 7f87d40ed3d6..b1301d08d9f8 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -257,6 +257,16 @@ static const struct format_desc_struct {
->  	  .num_planes = 2, .plane_bpp = { 8, 16, },
->  	  .hsub = 2, .vsub = 2,
->  	},
-> +	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
-> +	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
->  	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
->  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
->  	  .num_planes = 2, .plane_bpp = { 8, 16, },
-> @@ -292,6 +302,11 @@ static const struct format_desc_struct {
->  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
->  	  .hsub = 2, .vsub = 1,
->  	},
-> +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
->  	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
->  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
->  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-> @@ -302,6 +317,11 @@ static const struct format_desc_struct {
->  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
->  	  .hsub = 2, .vsub = 1,
->  	},
-> +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
-> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
-> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
-> +	  .hsub = 1, .vsub = 1,
-> +	},
->  	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
->  	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
->  	  .num_planes = 1, .plane_bpp = { 32, },
-> @@ -1166,8 +1186,10 @@ static void clear_yuv_buffer(struct igt_fb *fb)
->  		break;
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
-
-Where's the corresponding stuff for the 2 plane formats?
-
-I was also pondering about using igt_reduce_format() to
-make the switch a bit less bloated, but I suppose that
-won't work for eg. YUYV vs. UYVY. Maybe it could be used
-in some other places though.
-
->  		igt_assert(ARRAY_SIZE(plane_size) == 3);
->  		memset(ptr + fb->offsets[0],
->  		       full_range ? 0x00 : 0x10,
-> @@ -3495,6 +3517,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV24:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  	case DRM_FORMAT_P010:
->  	case DRM_FORMAT_P012:
-> @@ -3505,8 +3529,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+> index 7a8740b69..e78ddd0e5 100644
+> --- a/tests/intel/xe_vm.c
+> +++ b/tests/intel/xe_vm.c
+> @@ -957,7 +957,7 @@ test_bind_array(int fd, struct drm_xe_engine_class_instance *eci, int n_execs,
+>  		xe_cork_end(&cork);
+>  		xe_cork_wait_done(&cork);
+>  		xe_cork_fini(&cork);
+> -		n_execs = n_execs / 2;
+> +		n_execs = n_execs / 4;
+>  	}
 >  
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  		params->ay_inc = 1;
->  		params->uv_inc = 1;
->  		break;
-> @@ -3536,11 +3562,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV24:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  	case DRM_FORMAT_P010:
->  	case DRM_FORMAT_P012:
->  	case DRM_FORMAT_P016:
-> @@ -3568,12 +3598,14 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  	switch (fb->drm_format) {
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
-> +	case DRM_FORMAT_NV24:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[1];
->  		params->v_offset = fb->offsets[1] + 1;
->  		break;
->  
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[1] + 1;
-> @@ -3582,6 +3614,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[1];
->  		params->v_offset = fb->offsets[2];
-> @@ -3589,6 +3622,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
->  
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  		params->y_offset = fb->offsets[0];
->  		params->u_offset = fb->offsets[2];
->  		params->v_offset = fb->offsets[1];
-> @@ -4322,14 +4356,18 @@ static void fb_convert(struct fb_convert *cvt)
->  		case DRM_FORMAT_NV12:
->  		case DRM_FORMAT_NV16:
->  		case DRM_FORMAT_NV21:
-> +		case DRM_FORMAT_NV24:
-> +		case DRM_FORMAT_NV42:
->  		case DRM_FORMAT_NV61:
->  		case DRM_FORMAT_UYVY:
->  		case DRM_FORMAT_VYUY:
->  		case DRM_FORMAT_YUV420:
->  		case DRM_FORMAT_YUV422:
-> +		case DRM_FORMAT_YUV444:
->  		case DRM_FORMAT_YUYV:
->  		case DRM_FORMAT_YVU420:
->  		case DRM_FORMAT_YVU422:
-> +		case DRM_FORMAT_YVU444:
->  		case DRM_FORMAT_YVYU:
->  			convert_yuv_to_rgb24(cvt);
->  			return;
-> @@ -4340,14 +4378,18 @@ static void fb_convert(struct fb_convert *cvt)
->  		case DRM_FORMAT_NV12:
->  		case DRM_FORMAT_NV16:
->  		case DRM_FORMAT_NV21:
-> +		case DRM_FORMAT_NV24:
-> +		case DRM_FORMAT_NV42:
->  		case DRM_FORMAT_NV61:
->  		case DRM_FORMAT_UYVY:
->  		case DRM_FORMAT_VYUY:
->  		case DRM_FORMAT_YUV420:
->  		case DRM_FORMAT_YUV422:
-> +		case DRM_FORMAT_YUV444:
->  		case DRM_FORMAT_YUYV:
->  		case DRM_FORMAT_YVU420:
->  		case DRM_FORMAT_YVU422:
-> +		case DRM_FORMAT_YVU444:
->  		case DRM_FORMAT_YVYU:
->  			convert_rgb24_to_yuv(cvt);
->  			return;
-> @@ -4921,11 +4963,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
->  	case DRM_FORMAT_NV12:
->  	case DRM_FORMAT_NV16:
->  	case DRM_FORMAT_NV21:
-> +	case DRM_FORMAT_NV24:
-> +	case DRM_FORMAT_NV42:
->  	case DRM_FORMAT_NV61:
->  	case DRM_FORMAT_YUV420:
->  	case DRM_FORMAT_YUV422:
-> +	case DRM_FORMAT_YUV444:
->  	case DRM_FORMAT_YVU420:
->  	case DRM_FORMAT_YVU422:
-> +	case DRM_FORMAT_YVU444:
->  	case DRM_FORMAT_P010:
->  	case DRM_FORMAT_P012:
->  	case DRM_FORMAT_P016:
-> 
+>  	xe_vm_bind_array(fd, vm, bind_exec_queue, bind_ops, n_execs, sync, 1);
 > -- 
-> 2.46.0
-
--- 
-Ville Syrjälä
-Intel
+> 2.34.1
+> 
