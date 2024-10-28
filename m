@@ -4,59 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF2C8D33998
-	for <igt-dev@archiver.kernel.org>; Mon, 28 Oct 2024 15:20:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B018AD33990
+	for <igt-dev@archiver.kernel.org>; Mon, 28 Oct 2024 15:34:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 76C8D10E4F0;
-	Mon, 28 Oct 2024 15:20:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 309AF10E4F6;
+	Mon, 28 Oct 2024 15:34:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AEiSfMN5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gi/ec2dB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13F4010E4EC;
- Mon, 28 Oct 2024 15:20:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F8EE10E4F6
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Oct 2024 15:34:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730128800; x=1761664800;
+ t=1730129693; x=1761665693;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=2NZOJzH6Nnh7jANyvmF1i5nKy8f4NoWTk1NY88eIf6g=;
- b=AEiSfMN5v1XdBow8x9AP7ozWpWkjjcehyTteUHUESXI+lw+2LANHDSr6
- rp6KuFpD2Ntba1mDxdUyK/vWLWLdCe+bcAx2J2BfcB4Q0WAgEgjv2l8wN
- Wr1xraVWrQya+bSbGExq7F9xPYJgA/hNYdidyxrCqlZ8KM7RpdPGK0Xp0
- BFt6glFLRARnAZTpuDpnLkNcEDKBK4h/tEoRLGPGab58Lu8nJJFRKkXXn
- 749Vmj7WhTtgWLoUkRRft8x5rjinu3T0WUM3j9SRMzi+SRYBdOIPGYCCy
- ErlYFdjhj09CUvMms4ylQSrZ2r1p6b/dvj26XNMxFx+wyK2jmIEp0MZsR A==;
-X-CSE-ConnectionGUID: xc9TH1qYSme1FAKCaZOxUQ==
-X-CSE-MsgGUID: CrX8H8c3STKfZ9UtMj3xjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40268108"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="40268108"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2024 08:20:00 -0700
-X-CSE-ConnectionGUID: n4EVMOINSgGA3T14zmn+uA==
-X-CSE-MsgGUID: ThL0pia8SkWbtFTDyEFysw==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=kYRP+P5SpZc8IWMlk2Y4mEcsbB5fujAGAjlQWiW8a8U=;
+ b=Gi/ec2dBHb0odsCY5u82PLRQHywyHqxC7c2zMKmzYAdDmvS53Y4HpWlT
+ kcdJzvHKvdabF51dXNdSleFTwUKjoZqSkMcIovIVvNRnkCV7JC32w13AX
+ 6bAiiQ4kCBW50hfXHAoNo4MR5sh/d5qjJcAHtxH/19qayBH9c7zi3lEby
+ gr6pQFx2N7yPlUPr2CdXN8LNVOFqyM9RhqrKa735KUd1ZvdzATqPCcM/v
+ OrP1RhXmD1UM/3u3GSMQt6CVFN+7y88ZJF0Q35SYnwMGnmuBHXumK6+DK
+ Qbb9kljnZCG71vvyW9++O+4mbC1sXFSsLoKmUfVJYMsejtcIoogWAh/8R A==;
+X-CSE-ConnectionGUID: WEyxj04NRra1YJjBx8NRag==
+X-CSE-MsgGUID: sQlRR80ZRK2AfjOI2j/vFQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29867566"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29867566"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2024 08:34:53 -0700
+X-CSE-ConnectionGUID: jtH3cYJ8QoKXQrzzGE+Atw==
+X-CSE-MsgGUID: 2fqcUrgHQTmN4b6PZRsFPA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="81263101"
+X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; d="scan'208";a="82074728"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 08:19:58 -0700
-Date: Mon, 28 Oct 2024 16:19:56 +0100
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 08:34:51 -0700
+Date: Mon, 28 Oct 2024 16:34:47 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: george.zhang@amd.com, I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIENJLnhlRlVMTDogZmFpbHVy?= =?utf-8?Q?e?= for
- scripts/run-test: Keep original prune behaviour (rev3)
-Message-ID: <20241028151956.cxmt45cqgdzqgpdb@kamilkon-desk.igk.intel.com>
+Cc: Arthur Grillo <arthurgrillo@riseup.net>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+Subject: Re: [PATCH i-g-t v6 12/12] lib/igt_fb: Add non sub-sampled YUV formats
+Message-ID: <20241028153447.ry5huwcy7nve4zwq@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, george.zhang@amd.com,
- I915-ci-infra@lists.freedesktop.org
-References: <20241025182944.866-1-george.zhang@amd.com>
- <173002680592.1352688.2232181753545810376@2413ebb6fbb6>
+ igt-dev@lists.freedesktop.org,
+ Arthur Grillo <arthurgrillo@riseup.net>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Pekka Paalanen <pekka.paalanen@collabora.com>,
+ Louis Chauvet <louis.chauvet@bootlin.com>
+References: <20240912-kms_fb_stress-dev-v6-0-71e9a65397e9@riseup.net>
+ <20240912-kms_fb_stress-dev-v6-12-71e9a65397e9@riseup.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173002680592.1352688.2232181753545810376@2413ebb6fbb6>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240912-kms_fb_stress-dev-v6-12-71e9a65397e9@riseup.net>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,130 +89,208 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2024-10-27 at 11:00:05 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: scripts/run-test: Keep original prune behaviour (rev3)
-> URL   : https://patchwork.freedesktop.org/series/140446/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_8086_full -> XEIGTPW_11986_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_11986_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_11986_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (4 -> 4)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_11986_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_vblank@query-forked-hang:
->     - shard-bmg:          [PASS][1] -> [SKIP][2] +3 other tests skip
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-5/igt@kms_vblank@query-forked-hang.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-3/igt@kms_vblank@query-forked-hang.html
-> 
->   * igt@xe_exec_balancer@many-cm-parallel-basic:
->     - shard-bmg:          [PASS][3] -> [DMESG-WARN][4] +6 other tests dmesg-warn
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-1/igt@xe_exec_balancer@many-cm-parallel-basic.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-4/igt@xe_exec_balancer@many-cm-parallel-basic.html
->     - shard-dg2-set2:     NOTRUN -> [DMESG-WARN][5]
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-dg2-463/igt@xe_exec_balancer@many-cm-parallel-basic.html
-> 
->   * igt@xe_exec_compute_mode@many-execqueues-userptr-invalidate:
->     - shard-bmg:          [PASS][6] -> [INCOMPLETE][7]
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-5/igt@xe_exec_compute_mode@many-execqueues-userptr-invalidate.html
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-2/igt@xe_exec_compute_mode@many-execqueues-userptr-invalidate.html
-> 
->   * igt@xe_exec_fault_mode@many-execqueues-userptr-invalidate-race-prefetch:
->     - shard-lnl:          [PASS][8] -> [FAIL][9] +2 other tests fail
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-lnl-5/igt@xe_exec_fault_mode@many-execqueues-userptr-invalidate-race-prefetch.html
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-lnl-8/igt@xe_exec_fault_mode@many-execqueues-userptr-invalidate-race-prefetch.html
-> 
->   * igt@xe_exec_fault_mode@many-userptr-invalidate-race:
->     - shard-bmg:          [PASS][10] -> [FAIL][11] +4 other tests fail
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-3/igt@xe_exec_fault_mode@many-userptr-invalidate-race.html
->    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-5/igt@xe_exec_fault_mode@many-userptr-invalidate-race.html
-> 
->   * igt@xe_exec_fault_mode@once-invalid-userptr-fault:
->     - shard-lnl:          [PASS][12] -> [DMESG-WARN][13] +7 other tests dmesg-warn
->    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-lnl-7/igt@xe_exec_fault_mode@once-invalid-userptr-fault.html
->    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-lnl-3/igt@xe_exec_fault_mode@once-invalid-userptr-fault.html
-> 
->   * igt@xe_exec_threads@threads-bal-mixed-userptr:
->     - shard-dg2-set2:     [PASS][14] -> [DMESG-WARN][15] +4 other tests dmesg-warn
->    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-dg2-434/igt@xe_exec_threads@threads-bal-mixed-userptr.html
->    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-dg2-463/igt@xe_exec_threads@threads-bal-mixed-userptr.html
-> 
->   * igt@xe_exec_threads@threads-cm-shared-vm-userptr:
->     - shard-dg2-set2:     [PASS][16] -> [FAIL][17]
->    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-dg2-436/igt@xe_exec_threads@threads-cm-shared-vm-userptr.html
->    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-dg2-466/igt@xe_exec_threads@threads-cm-shared-vm-userptr.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-plflip-blt:
->     - shard-bmg:          [SKIP][18] ([Intel XE#2311]) -> [SKIP][19] +2 other tests skip
->    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-4/igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-plflip-blt.html
->    [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-3/igt@kms_frontbuffer_tracking@fbcdrrs-2p-primscrn-indfb-plflip-blt.html
-> 
->   * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-fullscreen:
->     - shard-bmg:          [SKIP][20] ([Intel XE#2313]) -> [SKIP][21] +1 other test skip
->    [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-4/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-fullscreen.html
->    [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-3/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-spr-indfb-fullscreen.html
-> 
->   * igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25:
->     - shard-bmg:          [SKIP][22] ([Intel XE#2763]) -> [SKIP][23]
->    [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8086/shard-bmg-7/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
->    [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/shard-bmg-3/igt@kms_plane_scaling@planes-downscale-factor-0-25-upscale-factor-0-25.html
+Hi Arthur,
+On 2024-09-12 at 21:39:36 -0300, Arthur Grillo wrote:
+> This adds support for the formats:
+> - NV24
+> - NV42
+> - YU24
+> - YU42
 > 
 
-Unrelated to change in scripts/
+Please add here to Cc devs found with help of 'git blame':
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+
+Maybe consider also sending this patch as separate one,
+now it was 'hidden' in patchwork within a benchmark series.
 
 Regards,
 Kamil
 
->   
-> Known issues
-> ------------
+> Signed-off-by: Arthur Grillo <arthurgrillo@riseup.net>
+> ---
+>  lib/igt_fb.c | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 46 insertions(+)
 > 
->   Here are the changes found in XEIGTPW_11986_full that come from known issues:
+> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+> index 7f87d40ed3d6..b1301d08d9f8 100644
+> --- a/lib/igt_fb.c
+> +++ b/lib/igt_fb.c
+> @@ -257,6 +257,16 @@ static const struct format_desc_struct {
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+>  	  .hsub = 2, .vsub = 2,
+>  	},
+> +	{ .name = "NV24", .depth = -1, .drm_id = DRM_FORMAT_NV24,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+> +	{ .name = "NV42", .depth = -1, .drm_id = DRM_FORMAT_NV42,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "NV61", .depth = -1, .drm_id = DRM_FORMAT_NV61,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 2, .plane_bpp = { 8, 16, },
+> @@ -292,6 +302,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YU24", .depth = -1, .drm_id = DRM_FORMAT_YUV444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "YV12", .depth = -1, .drm_id = DRM_FORMAT_YVU420,
+>  	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> @@ -302,6 +317,11 @@ static const struct format_desc_struct {
+>  	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+>  	  .hsub = 2, .vsub = 1,
+>  	},
+> +	{ .name = "YV24", .depth = -1, .drm_id = DRM_FORMAT_YVU444,
+> +	  .cairo_id = CAIRO_FORMAT_RGB24, .convert = true,
+> +	  .num_planes = 3, .plane_bpp = { 8, 8, 8, },
+> +	  .hsub = 1, .vsub = 1,
+> +	},
+>  	{ .name = "Y410", .depth = -1, .drm_id = DRM_FORMAT_Y410,
+>  	  .cairo_id = CAIRO_FORMAT_RGBA128F, .convert = true,
+>  	  .num_planes = 1, .plane_bpp = { 32, },
+> @@ -1166,8 +1186,10 @@ static void clear_yuv_buffer(struct igt_fb *fb)
+>  		break;
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		igt_assert(ARRAY_SIZE(plane_size) == 3);
+>  		memset(ptr + fb->offsets[0],
+>  		       full_range ? 0x00 : 0x10,
+> @@ -3495,6 +3517,8 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+> @@ -3505,8 +3529,10 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->ay_inc = 1;
+>  		params->uv_inc = 1;
+>  		break;
+> @@ -3536,11 +3562,15 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
+> @@ -3568,12 +3598,14 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  	switch (fb->drm_format) {
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+> +	case DRM_FORMAT_NV24:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[1] + 1;
+>  		break;
+>  
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1] + 1;
+> @@ -3582,6 +3614,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[1];
+>  		params->v_offset = fb->offsets[2];
+> @@ -3589,6 +3622,7 @@ static void get_yuv_parameters(struct igt_fb *fb, struct yuv_parameters *params)
+>  
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  		params->y_offset = fb->offsets[0];
+>  		params->u_offset = fb->offsets[2];
+>  		params->v_offset = fb->offsets[1];
+> @@ -4322,14 +4356,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_yuv_to_rgb24(cvt);
+>  			return;
+> @@ -4340,14 +4378,18 @@ static void fb_convert(struct fb_convert *cvt)
+>  		case DRM_FORMAT_NV12:
+>  		case DRM_FORMAT_NV16:
+>  		case DRM_FORMAT_NV21:
+> +		case DRM_FORMAT_NV24:
+> +		case DRM_FORMAT_NV42:
+>  		case DRM_FORMAT_NV61:
+>  		case DRM_FORMAT_UYVY:
+>  		case DRM_FORMAT_VYUY:
+>  		case DRM_FORMAT_YUV420:
+>  		case DRM_FORMAT_YUV422:
+> +		case DRM_FORMAT_YUV444:
+>  		case DRM_FORMAT_YUYV:
+>  		case DRM_FORMAT_YVU420:
+>  		case DRM_FORMAT_YVU422:
+> +		case DRM_FORMAT_YVU444:
+>  		case DRM_FORMAT_YVYU:
+>  			convert_rgb24_to_yuv(cvt);
+>  			return;
+> @@ -4921,11 +4963,15 @@ bool igt_format_is_yuv(uint32_t drm_format)
+>  	case DRM_FORMAT_NV12:
+>  	case DRM_FORMAT_NV16:
+>  	case DRM_FORMAT_NV21:
+> +	case DRM_FORMAT_NV24:
+> +	case DRM_FORMAT_NV42:
+>  	case DRM_FORMAT_NV61:
+>  	case DRM_FORMAT_YUV420:
+>  	case DRM_FORMAT_YUV422:
+> +	case DRM_FORMAT_YUV444:
+>  	case DRM_FORMAT_YVU420:
+>  	case DRM_FORMAT_YVU422:
+> +	case DRM_FORMAT_YVU444:
+>  	case DRM_FORMAT_P010:
+>  	case DRM_FORMAT_P012:
+>  	case DRM_FORMAT_P016:
 > 
-...cut...
+> -- 
+> 2.46.0
 > 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_8086 -> IGTPW_11986
-> 
->   IGTPW_11986: e56435971ab28c341fbac9a6f59185125537f4f6 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   IGT_8086: 18939acec2446c6644644186b090d16e366af8bc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-2132-263b21a91964ddc599f4f85cf3511b0aafd2028e: 263b21a91964ddc599f4f85cf3511b0aafd2028e
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11986/index.html
