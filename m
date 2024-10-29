@@ -4,25 +4,25 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFDCD3A67C
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 18:33:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C3B2D3A67C
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 18:53:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3282310E6C3;
-	Tue, 29 Oct 2024 18:33:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE78310E0B9;
+	Tue, 29 Oct 2024 18:53:14 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BDC8A10E6C3;
- Tue, 29 Oct 2024 18:33:38 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D4B210E0B9;
+ Tue, 29 Oct 2024 18:53:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6605647502867017078=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/kms=5Frotation=5F?=
- =?utf-8?q?crc=3A_Intel_display_version_20_onwards_doesn=27t_do_hflip_with_t?=
- =?utf-8?q?ile4_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Frotation=5Fcrc=3A_?=
+ =?utf-8?q?Intel_display_version_20_onwards_doesn=27t_do_hflip_with_tile4_?=
+ =?utf-8?q?=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Oct 2024 18:33:38 -0000
-Message-ID: <173022681876.1360633.13943893025754357374@2413ebb6fbb6>
+Date: Tue, 29 Oct 2024 18:53:13 -0000
+Message-ID: <173022799344.1361175.16340780523607418189@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20241022094744.3884409-1-juhapekka.heikkila@gmail.com>
 In-Reply-To: <20241022094744.3884409-1-juhapekka.heikkila@gmail.com>
@@ -42,40 +42,179 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============6605647502867017078==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
 Series: tests/kms_rotation_crc: Intel display version 20 onwards doesn't do hflip with tile4 (rev4)
 URL   : https://patchwork.freedesktop.org/series/140302/
-State : warning
+State : success
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from XEIGT_8087_BAT -> XEIGTPW_11996_BAT
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1300203 for the overview.
+Summary
+-------
 
-build:tests-debian-meson has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/65822389):
-  Checking if the user of the pipeline is allowed...
-  Checking if the job's project is part of a well-known group...
-  Thank you for contributing to freedesktop.org
-  Fetching changes...
-  Reinitialized existing Git repository in /builds/gfx-ci/igt-ci-tags/.git/
-  Checking out c76d55db as detached HEAD (ref is intel/IGTPW_11996)...
-  Removing build/
-  Removing installdir/
-  Removing scripts/__pycache__/
+  **SUCCESS**
+
+  No regressions found.
+
   
-  Skipping Git submodules setup
-  section_end:1730226346:get_sources
-  section_start:1730226346:step_script
-  Executing "step_script" stage of the job script
-  Using docker image sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078 for registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian:commit-c76d55db99a5178aa02aa587b3f968635a2b5642 with digest registry.freedesktop.org/gfx-ci/igt-ci-tags/build-debian@sha256:b9fe73c6ff5d68f5692fd18b9076735679c8bfa7ed393e752dd4927a2cdf9874 ...
-  section_end:1730226348:step_script
-  section_start:1730226348:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730226349:cleanup_file_variables
-  ERROR: Job failed (system failure): Error response from daemon: no such image: docker.io/library/sha256:ca01fc804bb92e5df42a202dd7e0470610c6711c66a808525defcb8bbb774078: image not known (docker.go:650:0s)
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_11996_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_evict@evict-beng-small:
+    - bat-adlp-7:         NOTRUN -> [SKIP][1] ([Intel XE#261] / [Intel XE#688]) +15 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_evict@evict-beng-small.html
+
+  * igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:
+    - bat-adlp-7:         NOTRUN -> [SKIP][2] ([Intel XE#288]) +32 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html
+
+  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
+    - bat-adlp-7:         NOTRUN -> [SKIP][3] ([Intel XE#2229])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:
+    - bat-atsm-2:         [DMESG-WARN][4] ([Intel XE#3295]) -> [PASS][5]
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8087/bat-atsm-2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-atsm-2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [INCOMPLETE][6] ([Intel XE#2874]) -> [PASS][7] +1 other test pass
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8087/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#261]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/261
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
+  [Intel XE#3295]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3295
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8087 -> IGTPW_11996
+  * Linux: xe-2136-738c18d8599dce736da8b6958f96d2eac08a36ab -> xe-2137-95fd9af8bb5389f9b5a639d567ef5c3e43e25682
+
+  IGTPW_11996: c76d55db99a5178aa02aa587b3f968635a2b5642 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8087: 7abd9c49a49a9ff1f3300d7c51a92a5af8a789f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-2136-738c18d8599dce736da8b6958f96d2eac08a36ab: 738c18d8599dce736da8b6958f96d2eac08a36ab
+  xe-2137-95fd9af8bb5389f9b5a639d567ef5c3e43e25682: 95fd9af8bb5389f9b5a639d567ef5c3e43e25682
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1300203
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/index.html
+
+--===============6605647502867017078==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_rotation_crc: Intel display version 20 onwards doesn&#x27;t do hflip with tile4 (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140302/">https://patchwork.freedesktop.org/series/140302/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8087_BAT -&gt; XEIGTPW_11996_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_11996_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-small:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_evict@evict-beng-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/261">Intel XE#261</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +15 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_exec_fault_mode@twice-userptr-invalidate-prefetch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
+<ul>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-threads-small-multi-vm:</p>
+<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8087/bat-atsm-2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3295">Intel XE#3295</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-atsm-2/igt@xe_evict@evict-beng-mixed-threads-small-multi-vm.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:</p>
+<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8087/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_11996/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8087 -&gt; IGTPW_11996</li>
+<li>Linux: xe-2136-738c18d8599dce736da8b6958f96d2eac08a36ab -&gt; xe-2137-95fd9af8bb5389f9b5a639d567ef5c3e43e25682</li>
+</ul>
+<p>IGTPW_11996: c76d55db99a5178aa02aa587b3f968635a2b5642 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8087: 7abd9c49a49a9ff1f3300d7c51a92a5af8a789f1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-2136-738c18d8599dce736da8b6958f96d2eac08a36ab: 738c18d8599dce736da8b6958f96d2eac08a36ab<br />
+  xe-2137-95fd9af8bb5389f9b5a639d567ef5c3e43e25682: 95fd9af8bb5389f9b5a639d567ef5c3e43e25682</p>
+
+</body>
+</html>
+
+--===============6605647502867017078==--
