@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76451D3A66D
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 16:01:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD2E5D3A66D
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 16:02:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB66810E25E;
-	Tue, 29 Oct 2024 16:01:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2722E10E29D;
+	Tue, 29 Oct 2024 16:02:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="P3neb6qO";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="J2KN+nck";
 	dkim-atps=neutral
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam10on2054.outbound.protection.outlook.com [40.107.93.54])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B409210E25E
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 16:01:25 +0000 (UTC)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com
+ (mail-dm6nam11on2080.outbound.protection.outlook.com [40.107.223.80])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BDF810E29D
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 16:02:33 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Wtu3TtedfKNQw+8Wue/5pzXVa/mO6DSXeIGrVFigDHqhwdu6y9lzP7rfIoum56o7dFomU2qMufBW7Gwhdm1I/KE5E65Q3AgXjvFO0AFaAJJpOGKU/9/WKsOzWO0yFWsnGl8LV20/xsA8k4Eu/Ye3kFQv4bDv7AvTqA2t01esey/75cNjKQ1+mdsGsTUEILaAU41/UdlDVxFjw8lafb7A5C6YiOsgOh5xAFf89LfksrHEN6kkdvY8V3rbRGkGJhr24/c/Xi7kNNeVnU2UYSgWQM59N5lmSU7O+YvHX+jrjBRQljVZ3uAh1vpXTXD34nFzBa+unNyJY+4w5VJrn6ARzg==
+ b=UDAdkLFkjPJYHEZrWiasn1A6TVXFKQ1HAzuwTXDu8o/Ld27LMZ3MFrARYwHHa582yuxQW3MROdUkGPRJNp6voVi3Vxt4CgwtZB1vBySbPkUxKSGlCGgMHKuMxmlkX/DDrReVtHZgO7F8XFb/HmFf80y0AgyhQRCS+XpYGTCWQAAtVH5NSfmpV44esCdEJMbYqS0d4HPGdnaNG17sSuVpQXFChJNa9FmT+DDHfnBdBOyQFWxUsT8oYaiEDpE03Y1gkYx+cPX2xdbDCU7O6V0JbxuRQG3DOoNliVhpS1lMdweXbimtLIhx2grHfH+aJY0qAB0Os1gmsHJmVzrKmU6HZw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=shaYJRz4cI+UzjNIKUUmalXyfmh7VcflZvlYw9lq7mg=;
- b=uhLTxN61X93j45rK5Guna30nMqbNRypWhIMUAlKT0wZ33Rxz2uOFYYky0pMtSLxEZTfrOGulxj+yjP1SXQljViLaXaFPltPB3Ik0UHUfziNNLPN+x1/y9F+IBQo7nycMulYS3qxd/wFB5RpWLu7z2snIoH9ZWKeUL/KTwVQhAm3eWfUgLgA6CPnJQ1tiAHm934zgc7Q8kFg/HGJ9GZitDW36UUH6QKkCTG6DnksnpfuNQM0uFOeAk9vEfi8FSnn3gGFCy/IY0UsTV1Dr1rhZypSBrvUzrWP9puD8Pl0BnEb4EAaodXgk3qZyKVaXizQudow3z//H9NfCINTQVv/hPg==
+ bh=8ObAZLrNeQtJJYe5kSx0TWPwBl6v8GnTUc+knHzs4wM=;
+ b=l9NvDG60udAhAZuOLIwz45AHAxD/YaoKgH4Dpe12ht2hNj20GFN0RGaFwpC5WH9DpmaMS5wP2J8nkzhMTPhE8f+LAqUQK4KTSOqlXcxdUWGOKt9Sy6LJ/RwS5KOjbgDUgY/JPrvGjcQAYWs2OrJ7SSedknF0fEgriX2AWrrUmrpf7pftKDr+T6bUf+EPZxhhuc50tMvwGbcxW8Jodw1V4AJ6mJLKqkgOB/+DUCihVkoiCnARQsXdQ87oq7ynrZ4ZjP9hAR2MGXqXVtMvIm78/b2fbWc3caw4XxCLJmhULVNgiMRuISw7IfWxiM5JmYxT2CxpV0K0ziAcToEUOPx9eA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=shaYJRz4cI+UzjNIKUUmalXyfmh7VcflZvlYw9lq7mg=;
- b=P3neb6qOpiHHMqi5f5hhFQqiHboe2roE0e9X6hanekjWVxPFo+K6Ijbto1A3hwua6FnpAgwivqZh8VEsjkmRL7oDAg6zmrMKVcQIoAxDscAj1p5t1M6Pjhbmw77qYqy7T6bL5IVa2nFj46NqWO5gcmemxs16vmXAdWR7Gfrpd4Y=
+ bh=8ObAZLrNeQtJJYe5kSx0TWPwBl6v8GnTUc+knHzs4wM=;
+ b=J2KN+nck9XOmWiIFVAtTaLT/mloMgQuSnkm67vmwNQdS2YA0Oxg7kvK7xt+Kwm1q9hfIP/2MYxx80Vg8TX7bJXLqKz93ZpeOPwFOHw25ZdiScA2QCvPB2wFtXLRVRWFBVMVsj2t+wLnW92Ljf3UKY+ShIEenAZPTGhlKs0nZS6A=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from MW6PR12MB8733.namprd12.prod.outlook.com (2603:10b6:303:24c::8)
- by CH2PR12MB4328.namprd12.prod.outlook.com (2603:10b6:610:a6::14)
+ by BL1PR12MB5923.namprd12.prod.outlook.com (2603:10b6:208:39a::22)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8114.19; Tue, 29 Oct
- 2024 16:01:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Tue, 29 Oct
+ 2024 16:02:29 +0000
 Received: from MW6PR12MB8733.namprd12.prod.outlook.com
  ([fe80::71a6:a9da:c464:fa2e]) by MW6PR12MB8733.namprd12.prod.outlook.com
  ([fe80::71a6:a9da:c464:fa2e%4]) with mapi id 15.20.8093.021; Tue, 29 Oct 2024
- 16:01:16 +0000
-Message-ID: <5aa4d805-a6a1-4f06-a68d-4754286c882b@amd.com>
-Date: Tue, 29 Oct 2024 10:01:11 -0600
+ 16:02:28 +0000
+Message-ID: <f74ca930-3179-4898-948a-6a0ca7a0e52b@amd.com>
+Date: Tue, 29 Oct 2024 10:02:26 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5] tools/amd_hdmi_compliance: Additional functionalities
+Subject: Re: [PATCH 2/5] tools/amd_hdmi_compliance: Fix atomic commit failure
+Content-Language: en-US
 To: Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
 Cc: harry.wentland@amd.com, mark.broadworth@amd.com, sunpeng.li@amd.com
 References: <20241024210345.511501-1-alex.hung@amd.com>
-Content-Language: en-US
+ <20241024210345.511501-2-alex.hung@amd.com>
 From: Rodrigo Siqueira Jordao <Rodrigo.Siqueira@amd.com>
-In-Reply-To: <20241024210345.511501-1-alex.hung@amd.com>
+In-Reply-To: <20241024210345.511501-2-alex.hung@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: YTBP288CA0012.CANP288.PROD.OUTLOOK.COM
@@ -58,91 +59,91 @@ X-ClientProxiedBy: YTBP288CA0012.CANP288.PROD.OUTLOOK.COM
  (2603:10b6:303:24c::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW6PR12MB8733:EE_|CH2PR12MB4328:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4920e615-e9d4-4eae-b424-08dcf832eb39
+X-MS-TrafficTypeDiagnostic: MW6PR12MB8733:EE_|BL1PR12MB5923:EE_
+X-MS-Office365-Filtering-Correlation-Id: 01a4e8bb-7b26-4e37-81ee-08dcf83316ab
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?dVRRMGl3K1RjL0FGSFVPSFRoVytBb1RoeXlLNkNCL1puYlM4bUloRWtBeEZG?=
- =?utf-8?B?MUpORkxJQlhHakQ2TU5paVkyV1ZvcGcwa1FsS3VIZi9LNkZFQUp1TFA4eGJS?=
- =?utf-8?B?NnY4U251ekpRSHJycW82QXduckgwa3RBN1RnVC9XMXlXdk9TYjlNZER1cTNv?=
- =?utf-8?B?Vm9EWFIyQW4wTUdsNEtvdkd0UzQ4UDc4QzhOejN0T0gxN3c0TVJXcTNXV1Jk?=
- =?utf-8?B?MHBscHZJaXlKSzZXYnZzTVpJVUE0MXE1bXp4ejVSQlBidEhBaktMOGNNbkts?=
- =?utf-8?B?MkNGZTROT1VWVXA0ekZJNW5aQXNwVUZmdys1UmJmek8wNmJJUE5OVm9qMWtR?=
- =?utf-8?B?S0hhQXNGMUVZelhHT1hEdVhEOUcxWEF0N1o1TXNKQ3liSHlTby8waDYyZXZu?=
- =?utf-8?B?NHhsK0tPUmZPQnlnNXRQT3R2OXJvOFNlTkVMOEtpQ1hsL3ZoemdPUHVYYXlp?=
- =?utf-8?B?MHI4bWNKeTNob1ZsYlZLTjZEWGYwbTh6VTFtSmYrUzdEeUVRRkg5RDAvY2s4?=
- =?utf-8?B?RFN4V2wrdEhleWdqRzdVY3RMNkFpcmNtWm9HMEtiRWRVY3dVNElvcU1jMDFC?=
- =?utf-8?B?MFREeHZTODNnaUUzak04THE4UW96ZmRXM0Jnbkxvcm9IVDNSVXZwOWdCRkFz?=
- =?utf-8?B?K09iQ3JmMytqVnVNbVZqRkRGR3hZQmlaS1Y1emFTYzdjek9mbFhUVm5IMHJa?=
- =?utf-8?B?TDc5UTY4OEtoRUZKYmVrdlJtVzFxRE5QOEJzSDZtUWpHZU9yZGpxTnA0TkpO?=
- =?utf-8?B?dHU0SmhnVHAxVVNzVkZCanB4aG5WcGZqZzJPVVhSSzdiSlZuRHdsVExBbTJ3?=
- =?utf-8?B?dXBvREo2YmJrZmV1NmtqZzNGRlVVMUlXOUxsY09sTEJNSGUwVUVGNFVDZm5w?=
- =?utf-8?B?NVY3NVgybUpXMDlNZktoSUdYdXR1NlMydnE1NUF1SHdIbGRFTGx4Q0piWEIy?=
- =?utf-8?B?cjhoTW9tc3IrVlBWWU1wVkFwQmhCZWtDVU9KeTRudXRQWVpWbHhmSzd5eDJh?=
- =?utf-8?B?SGJlTVJjNHVYRXRoejVLckJwV1BZaisyMXB6OHBFOGlJOXNzQkJQcFJkaERF?=
- =?utf-8?B?QWJiUGRuY1R1VlBDSjMvcDN5ZjdCVkQraFBSNng2cWR1NWhEdXZ4MlBjL00v?=
- =?utf-8?B?b1Ywc3ROa2xDK1JyMHNVLzZzSG9FOUNMUWNEYTFtYTVpMSt4UWtmdWd1RVd3?=
- =?utf-8?B?VGJpYUJ5YkVVd2hLMkZwZXlaWCsrOGloQVd3bktOK2ZQWkVxSGtodzE2UWk2?=
- =?utf-8?B?MklHRnlENUxLdW1xeVRxRGdqYWpHU2FTc1RMdis4ZUloYW9udzhaRlBJWllw?=
- =?utf-8?B?RktIZEpYU01BeTZ4OVN5SnZwYTVWQTVXKytvcy94QTB2eVNTd0dWVE9zZzZI?=
- =?utf-8?B?TUFGT0dMUFF6YjVHMG14d0hBYmorTzRrR05nMDR3R3dUZFh5MnRmL09RR2RW?=
- =?utf-8?B?UFpRdktZdGQ4bElYbThHR1RTbm9lY0FYSG1ZcWk4dHNUNjdYS05lNlVnZjND?=
- =?utf-8?B?NnJjZ2wvbmxRY3hXenl5bXpFOVZvRWo1WEY1T1ZRbXVVNEFvSE9ZUTJRUXho?=
- =?utf-8?B?UzFSb2pDd3QyaklLMjhWZWdHYVdyeGxXTHhFQnNDSDRBakExT2doY1hlVGVG?=
- =?utf-8?B?eU9pUmd1WHlja20wRVhKTCtwMGxNdW9tNWJ3NDZlMVJTS0dzNGNVSnNqaUxa?=
- =?utf-8?B?L2xHcnlqbWRHcjVDYXk2VWNFdVJWV3owZGlqVFVvUTZiUVdBMm1HaEFQY2sw?=
- =?utf-8?Q?jv3eWaM1pWxeZKPVoys0fDRNS0lihLyOAXn2WbX?=
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?aEx4OUV3R1VKVnpGWHBPTXFaWStUYWRBU0dwdG9zU3NMdkJpZUZ0eEs5TjVV?=
+ =?utf-8?B?SDdhU0hhTGhBTUI4cHZPbnpJMi9ZNnpqd1RXTFJjSnhnM1NVSHBrdlFGOWhi?=
+ =?utf-8?B?bW5ta3BsL0tIdTMwUEJ0Z2tpc1gyekV3VGRiQS83OTMvelpQZHpwOEhBbTJP?=
+ =?utf-8?B?RFpZaFA2b2dyK0JuSVFZVm5nbHZqc3FsRnFFM2pyWDVNOGxYUHBxbmhvdXcw?=
+ =?utf-8?B?THBhOWxpaVVlTEdFQkJqejJXN0tjU2dwSjhWV3dVMmp6aFc1ZGhiYzFPbnBw?=
+ =?utf-8?B?WjVmWlVFKzFYcGRxb29rUjdBS3NXdUpUMnhBNkFTVFRObW9SMnR5bEg1MFRS?=
+ =?utf-8?B?UXdBbURhc0ZKTUhyd00vcDB5bHUrUTR0Z1NteXJLMkRaVWM3eFdPMmg5T3Bl?=
+ =?utf-8?B?Tys0VnZJOCt5ME83SEh5aEloNTNTZ2lVSHV5aGducUJSUkxSVm1Fa0pVbXBQ?=
+ =?utf-8?B?dDVqWVU5Ukp2S2NTMUVrV3RpWC9QTUtSQjRJRU5pNVZOaVlQNENXcWUybjFY?=
+ =?utf-8?B?cm5tUUNBVjNmdkdLd1RQOEp3ZG5XWGtuN2tnNExUQVhVVitudE14cklGdmhz?=
+ =?utf-8?B?QzdzU3p5NjNVMUEya3psWE80MTh1Rk1UelV6R0YrbWJZb1ZNUlYvZWNnNjZk?=
+ =?utf-8?B?NjhEN2x5UTJnNk1oRTVXN0dKN2hLcDZCQi8vb3dMVlBVZ1hqZndjSUluRVN2?=
+ =?utf-8?B?NTM3cFVwTjJQcnpzZ1ZJUEZWMkpGdXliWThYTEo4MnRIbDQ2Y3I0bUdKYjNU?=
+ =?utf-8?B?TWVhVVp3aGtib2tYYitveVZDdkttTEM2TCt4VWpiblVZSGREdjUyeHBuSjEw?=
+ =?utf-8?B?UmNxNzJXWW0rM0lCU08ycEJjKzk2cFMxUVRGQXZobzhnNmI0U2FScDRFc2FE?=
+ =?utf-8?B?U1VvWlVscUJCSG5TR3RZazNDU0p0V2prMU41Wkx3VDhDYkRUV2diOE15MStw?=
+ =?utf-8?B?bE9nNmtmbEk4Z293NGFUR2dlTDlaZ2VlQkx4M1RpTmh3MHhEdHN3MlZtTE82?=
+ =?utf-8?B?d1BYNkJHdXJLaW5RbG0yTVI2SFByZkxtZnVjeDF5aHIyeFdRSE9POHZ2NFhJ?=
+ =?utf-8?B?RVA2UDFrSmFGeHhlQy9CdjdBQVpGeDVDeFdWNUlrNmVnb2xzWDdhMWpxUThG?=
+ =?utf-8?B?alVqQlRzaGxWV2hJNzRkaEdsRUpaaXBqMDJzQU9MeXJReURqcHU2a2MxYnc4?=
+ =?utf-8?B?enBVRzRaTUR2Nk5TaXVJby9pMDFVY3RvOVJHZ2JTNWpBWUNEaDNSTjY4VGU2?=
+ =?utf-8?B?UC9QWkNscmlyZG1xY21QMXYwekdmYjBLVEQzbmZNRnBHWWw4RXhJaERiNUJ4?=
+ =?utf-8?B?VER0SXRVdVl5UmRBT3Z1R1o1aW1EZ2djMnU2aGJwY0xDMWtnd1BJSmFJcUh0?=
+ =?utf-8?B?MVdQMHFZU29xVVYwVXRuMTFjamZGcTVEL2Y0R0UxSzlVajZXWHVHdzVBK0Qy?=
+ =?utf-8?B?VmZ4anBoaGVmM2grajdZZkpwU1BISVdqM2ZaMHNhc3lkWlZLKzVYQUU3ZTRx?=
+ =?utf-8?B?L1BKQ2ExSm93Qm9VU0xHRWp3RU1RbWtYOVB0WnZCeFNtNHVKSkx6RjlVdkg1?=
+ =?utf-8?B?VVdUQjh0aTc2S28zc3hVV0V1Yzd2WFVtSmdUM09aalpHZWo3bk5Kcll3cTFC?=
+ =?utf-8?B?NFNmL0ZpdGxFaWJhN3ZRSVcxOThzWGFEQ253ZSs2TmZyMnkxSDBiYUM4V2JJ?=
+ =?utf-8?B?RnZZdDRaKzY0NTZWNnJVeXBOb0xFbUJvNENIYjdSMXo3MWhKOUJWU1VWYzZ3?=
+ =?utf-8?Q?nHHS0C/0UniuSFOreIZRLKnjxd0/sb5V92v3ocO?=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:MW6PR12MB8733.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(366016)(1800799024); DIR:OUT; SFP:1101; 
+ SFS:(13230040)(1800799024)(376014)(366016); DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bTNHcHc1WjJYNHNZL3dKT29UU2VVVDR6dy96c1NsMmtlVjd6cU5xL2svOXQ4?=
- =?utf-8?B?azhQVFBkT1FGSnJZaXhlMXFzcmZvNzlRNWo1eFBmS2dhVEprYlU4NDdKeTRO?=
- =?utf-8?B?dlZZTkdWWlBuYXNKVFQ2MXB3d1g1Z1RuU29XaG1MUFVRMEV3SUhFN2U2UGJI?=
- =?utf-8?B?MWNKYkFEWmxBQkNTMHZ4alc0RFlTTEtXMmRkTE5ab2dkUGgvNnJTUmdIYk55?=
- =?utf-8?B?UThLZFUzc2hLa3RUV3k0cXFiRUQ5cmVNQlhHRXlXR01LdU4vTyt4NGdSRmZM?=
- =?utf-8?B?ZE5wZ01RTk5xOHlkUkVBQVJKNmFQaEJBejVZbjV4S3lBWjF5Y1FuMG1sZGRL?=
- =?utf-8?B?Yk9RTXNhSVE0UDBqNjVRaHExakNZWUdvbEY3QndRMTRTSXQ2K3Btd2lKeFZp?=
- =?utf-8?B?dUJ4L2swWm1sOTNibXVMM1lrUTNUY3BjKzFvUE82VEZ0OFZIRmg0TUVuVmRJ?=
- =?utf-8?B?T0pZUkFVbG41NXBGK205WE1lRWZKTE5kTjFhSkgzdGZOOHNQNm56UndFQlZp?=
- =?utf-8?B?cHlvOWRROUlVNURTQ0NQVCtWTVJNUjJvUXlBWWhZcjYxRU9TQmc0cUphQ3FB?=
- =?utf-8?B?MnZRM0FyZVl3OXg5aHhKL1Y3angyZ2dqWnF3b0hIVS9FMjBqemY1a0hBOUY0?=
- =?utf-8?B?MTdkaDduY2o1ZG9aSFYzUWJyQW5PTkFpQUs5dStLTW85N1dLZVk3TW1qK1Uz?=
- =?utf-8?B?aHlqUGxha05oMTRUdWVsaXlqUDV5TjBiNUNkL3pFUXI0U3B2OFBoZmo3a0ZT?=
- =?utf-8?B?Z2Nwa1RHRnRKUUJQRkxpbUszbEVqZGZ1QmdzSDBqTWtRblk4WnpDN1hjSVlV?=
- =?utf-8?B?SEcxeEJxVzNVeUxNS3doUGluaGJBdHVtWEEzVXY5c2drWHF2SXBoZVZWYzFO?=
- =?utf-8?B?N1JBM2ZnUGRxa3I2YnZGVTNOVjZsTzFkT3ZrSm9rYnI5TmpBWnd2eG9DVkRl?=
- =?utf-8?B?NDh2bHlHQytZT3Z4eG9xaEE0THhiQzNLYlVsM2Q5V0p5b2xCWXo4bmg3NW9Y?=
- =?utf-8?B?YUtYSXUwblNxa3RSRnlSdGdzbFAxckxDZ0NnUmk5TUZ1ZXRncU9QS2tVTjhS?=
- =?utf-8?B?L0FvNmYwZFRxRWhnWWVPSTh0OGs0RmxYazVIMitYZFZuenlRZkErUU5Nc1Zv?=
- =?utf-8?B?alhwMHhIRkZ6bDgvcFJ0TzlVa1pTa0p2ZGU5SEFIZnV3RXZ1WExQSHZEOHZ1?=
- =?utf-8?B?bk1Jc0puTTgrbkhYVlNid3hnL3R2ZXFlMXdCaGw1bHdwUStPWXp3VmlKaDc1?=
- =?utf-8?B?VVQwVlNVM3dpOWtmeE96amFCbDErTDh2OFFuL2F6Sm5XSTZ1V3R0WndwU05R?=
- =?utf-8?B?Wm1GN1hSaVdSNDdmUVRIRmNHR0E0MVlqMEhFRGpKenU2UVlkdDlIZlBiekMw?=
- =?utf-8?B?c0JwQUxISzBLMjF2RVdQZzc5TXdBTjhkN2UvNXdlZEt4L2ZsZ2hzbDNLL3Fr?=
- =?utf-8?B?RTcvU0JUQmlwenhSRlRjTW80Y3pEcU9ZZzR2S1BaNHVBNXlacjIvWVpsdUJu?=
- =?utf-8?B?ZFRpeERYalUveVlMTnNINVBXZHdXQWhEc29RZWFEbThqNEhBYXkvVmE2UGkv?=
- =?utf-8?B?RTA4b3VjZmpuZlFqbnlLbklZWmVXVVRWbjdzVVVFWnhKVDRYRnE3M3VDbEtF?=
- =?utf-8?B?SU1rb0V2bjhYRHB0OFc5cEhFL0IxWFpqRHNOZnFpc3FlU2xMYldOSldQOFhr?=
- =?utf-8?B?c1dRT2xzSkJqWDZ1TnBhTWE3elNSTk9qQitvenZVMFJzZ0ovcnYvZDBGemlF?=
- =?utf-8?B?N3dNb0hZTHVoL254aXBXQW9MNTNiTGVqenFTajNRM09YODVFbGhyYnBuWHVj?=
- =?utf-8?B?M2FHRldSdDMzTXRTZWNkZ0J0cjQxOGwrT1hHRDVkekMwZWNUbHR3MWRjeXJR?=
- =?utf-8?B?SzVISTczb3gxWnhTN0FDd1o1U2JsRDhEZlBaNzZMMXdtWmlGdHZtSHJEdEx0?=
- =?utf-8?B?cUFiWGI3Z2FKRVViUUdsZDJudDRQWEp1b2YrN2M2TlJzam5Pdnd2R1JnRFJi?=
- =?utf-8?B?LytHZzE4SFdhRExDcWltUTI5MzhMb1VTcCs0U1VSTTBteHhqVGRiMGdZUWd5?=
- =?utf-8?B?b3duSlhuUHQyNzhIK0YySWpiTlJPRG9lT3U4Q2N4c05TV2JSRFczbE5HT3Np?=
- =?utf-8?Q?ergucjMJAFgqb9e0/K8yJ7HXs?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?anBiS2svUlM5eEpyZXRPVjIyMlQ0L2JTTDJuWi9xU0VPYUlwcUx4aklTZVlm?=
+ =?utf-8?B?QzNxNllSb2p5SmdGa2xWVHBNWlBUaWt4Vm9MM0hLYWRsbHVOMm5pNXZBelZx?=
+ =?utf-8?B?YWlCckt0RmJzSVgrWUFmZlR6c3laSHR5bjh4VlRZc3g2NjF0MXlIODVxVTZn?=
+ =?utf-8?B?ZlJZVTZJRndmY1FHdTVhcTA1Zk5JcVhDamNvWWE3ck9vLy9vdFBhK1JQRC9X?=
+ =?utf-8?B?MnNmRWlSdVpkRE1md2xjbmtuZGxJdEgxZ1YvMDJtanZTRUZmVjNBMUk3YStJ?=
+ =?utf-8?B?dmNuT0s4eHFIN0V0aFo4MHE3S2pWSVpyYmFoaHNaRG9DcS9WdFZ0QU0wUExn?=
+ =?utf-8?B?ck1qT0ZFK2d6YVJmalVGd24zV2dkYXFCbmY1djEwNHJiN2h1d2g1bnovamRj?=
+ =?utf-8?B?VWJBdVZHazljYmRXejJEUzZmVElXZDBiaGs0aVdaSWlIeUJHdEhMWDdpV3Ux?=
+ =?utf-8?B?QjVDemdyTnBMUTdVZG5FcVkzbzIxQ2t2dXU3VEFybXAzUndRbnVqNWlzaElE?=
+ =?utf-8?B?eWVxK2xzTGdxV0J4U1lwdUFZSXZhNkN0KzZHQi9xeisybFVzV051TzhBQ3g1?=
+ =?utf-8?B?NDBEdHA1d2FQanpLdGZxWno4UnE3Wjk1RzNWUWNrVHBrRnR3TEZQRUtadXlI?=
+ =?utf-8?B?NlBRTFFNS0hDQkFXdFZCaHUrR0tMY3EzcXhlbHozS0Vsck8vM3VjcDZzY2dI?=
+ =?utf-8?B?am5ESVhSVE9Uc1N3cDIwWXR3L3lKOUtVU1R2VzUxRDk5NHNNdFFlUEpNMnlQ?=
+ =?utf-8?B?emtvU1NsYjcxWHIvKy9FVmMxUFltM1o2T0RlL2duTVB5V3QxWm5kUEVNSXox?=
+ =?utf-8?B?U3crdXMvMDZ0OGc2OHNHL3VjaDBudTdiRlV1MURSMENYNldsaml4SEozTjlm?=
+ =?utf-8?B?QXdBTVBFeHp6WkE0WWlyaHkrRWZmdzVYc2JnSlgvazhjUHJiRW5IR0E1SU1Y?=
+ =?utf-8?B?Qk9MNGY1eVZDb3cvVytkbUx0UVBnQXZ3VHFYQ2d2WjlVaHAwWkc3ODVxOHFC?=
+ =?utf-8?B?MlNvamlrbTNkMlVQOEFCTzN4TXFzb1Y4cUxDc0crWHZ4SGhZc1FSQUlSZWdP?=
+ =?utf-8?B?elVIcXNBd05Zb0taTHFmQUtGWWh2ajRQZFgyZlRxYVpJRkFHdkk2MUdNL3l4?=
+ =?utf-8?B?dk1BSmxnSldRdmlqZnZTcnBKS1MxcTQ1UVl2QXMxdXE2NGUwUE9qQ2l5VlEz?=
+ =?utf-8?B?TXBzUnNtemcyUzRFMnM2NlAyZTlqQzRXdkJ1N1FndW9TdGJ3czIwcHNoMjRt?=
+ =?utf-8?B?VmlleTQrQVNTNmN0RUovaVJDeVJWN2J6ZkhPRkFMeElZenJlRUNKeUQ4d0xE?=
+ =?utf-8?B?eVpFOEx1aHVUdlRlWGdvYmpJUVpBMVZKb29Za3NMa0Y2MVJ3UmhEZVFDYXVj?=
+ =?utf-8?B?VFZVc0hmOG0xYzQ4cEFUZVErNXdPU1l2WkdRMVpFMUdDbnhuU1ErUXZ2SVl5?=
+ =?utf-8?B?eVprMkFtZHkzSTQ3OGtrdUduR3ZUMTZ4NVBSREE2NkN4b05adGNiUFZuRUdB?=
+ =?utf-8?B?aGwxb2tHakc1aFpRSitjeVQzTzVneVJzWHltb1lsWnVsWEl5VzJNTDFuZFdH?=
+ =?utf-8?B?QmVFWFBuNm4yNGdNbE5KSm9ldUw4QXpkLytnYXNuVkd1aG1KbnVuN3ZsSXda?=
+ =?utf-8?B?NTNJK2MzTFpwUzRKV1RUSFEvRHBhT3Qxc2hmbTM1UW5Rak1WOTFSQk1sbDhu?=
+ =?utf-8?B?L3dkaEZrelorNXhReUNwQTVjVXV4Q1RudTNYVWhGSTRtNnJPcHh3UVRuSVAy?=
+ =?utf-8?B?T09uMU80Nkx2NnFaYmxXQUpidkpaOGRFQnJrTU1LN09udTJ4SGZhMmU1Vnpj?=
+ =?utf-8?B?RTFOK0hXQW9ON1FhaWdDT0xubVh5d2crRHdpQVFuSVlZZjhUL003Ris3R2Fu?=
+ =?utf-8?B?bzdsdlpRcmdkcTB5WHVwUEROcmRFVDZ2bjJhRENyb1B1TEwvSEdlSkNpUVBE?=
+ =?utf-8?B?QmlnOFgzVEM4ZjJGTU5wbW9jMTJaV2NYMkRwclA3QzZaa1VBUFVsL0Vxc1pD?=
+ =?utf-8?B?UUdkM2FNQzhqMnZKVThhL0tURFpTMU81YTRqQVhmMXZjbmY0VzltMy9TRWlF?=
+ =?utf-8?B?TElVeGVPaEZIZ04zbWZiNzNrdDY2ZUhVeTBtYVdycjNLMEtUeFBEaDVSUmpm?=
+ =?utf-8?Q?xc65dQ6762v19Cn/pBWgJOif2?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4920e615-e9d4-4eae-b424-08dcf832eb39
+X-MS-Exchange-CrossTenant-Network-Message-Id: 01a4e8bb-7b26-4e37-81ee-08dcf83316ab
 X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8733.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 16:01:16.2859 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2024 16:02:28.9013 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Lhy6zXZ2PJ8FmyFt3HA/57noOAlpcaycaKAVY2GxPtigdACfjbuP8NcCslN6+3TN8kTawUi8WCLbjmFX8Z8jeA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4328
+X-MS-Exchange-CrossTenant-UserPrincipalName: myThlq8JVjxlj63ytGbAggWBWLJ/9uIG8eYP/PJJS/tc5B2Bqe3wxY/175411kh+BJkNwJhmcjy8CWQXxaZ2Kg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5923
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -161,575 +162,39 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 10/24/24 3:03 PM, Alex Hung wrote:
-> From: Wayne Lin <Wayne.Lin@amd.com>
+> From: Stylon Wang <stylon.wang@amd.com>
 > 
-> It needs different timings, pixel format and color depth combination
-> to pass CTS under different HDMI versions. As the result, we extend
-> this to:
+> [WHY]
+> Atomic commits without active planes are now invalid commits.
 > 
-> - Add additional timings and info. Especially aspect ratio which
->    will impact the VIC code.
-> - Can specify the connector to display the test pattern.
-> - Set connector property "max bpc" to force bpc.
-> - Set connector debugfs entry "force_yuv420_output" to enable
->    using yuv420 pixel format.
+> [HOW]
+> Activate primary plane while setting 'max bpc' property.
 > 
-> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 > Signed-off-by: Alex Hung <alex.hung@amd.com>
 > Signed-off-by: Stylon Wang <stylon.wang@amd.com>
 > ---
->   tools/amd_hdmi_compliance.c | 422 ++++++++++++++++++++++++++++++++----
->   1 file changed, 380 insertions(+), 42 deletions(-)
+>   tools/amd_hdmi_compliance.c | 3 +++
+>   1 file changed, 3 insertions(+)
 > 
 > diff --git a/tools/amd_hdmi_compliance.c b/tools/amd_hdmi_compliance.c
-> index 1a7592995..633d980bc 100644
+> index 633d980bc..c0a324eb9 100644
 > --- a/tools/amd_hdmi_compliance.c
 > +++ b/tools/amd_hdmi_compliance.c
-> @@ -21,6 +21,8 @@
->    */
->   
->   #include "igt.h"
-> +#include "igt_sysfs.h"
-> +#include <fcntl.h>
->   
->   /* Common test data */
->   typedef struct data {
-> @@ -36,52 +38,328 @@ typedef struct data {
->   
->   /* Video modes indexed by VIC */
->   static drmModeModeInfo test_modes[] = {
-> -	[1] = { 25175,
-> +	[0] = { 25175,
->   		640, 656, 752, 800, 0,
->   		480, 489, 492, 525, 0,
-> -		60, 0xa, 0x40,
-> -		"640x480",	/* VIC 1 */
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_4_3,
-> +		0x40, "640x480",	/* VIC 0 */
-> +	},
-> +	[1] = { 25175,
-> +		640, 656, 752, 800, 0,
-> +		480, 490, 492, 525, 0,
-> +		60, DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PIC_AR_4_3,
-> +		0x40, "640x480",	/* VIC 1 */
-> +	},
-> +	[2] = { 27000,
-> +		720, 736, 798, 858, 0,
-> +		480, 489, 495, 525, 0,
-> +		60, DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PIC_AR_4_3,
-> +		0x40, "720x480",	/* VIC 2 */
-> +	},
-> +	[3] = { 27000,
-> +		720, 736, 798, 858, 0,
-> +		480, 489, 495, 525, 0,
-> +		60, DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "720x480",	/* VIC 3 */
-> +	},
-> +	[4] = { 74250,
-> +		1280, 1390, 1430, 1650, 0,
-> +		720, 725, 730, 750, 0,
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "1280x720",	/* VIC 4 */
-> +	},
-> +	[16] = { 148500,
-> +		1920, 2008, 2052, 2200, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "1920x1080",	/* VIC 16 */
-> +	},
-> +	[17] = { 27000,
-> +		720, 732, 796, 864, 0,
-> +		576, 581, 586, 625, 0,
-> +		60, DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PIC_AR_4_3,
-> +		0x40, "720x576",	/* VIC 17 */
-> +	},
-> +	[18] = { 27000,
-> +		720, 732, 796, 864, 0,
-> +		576, 581, 586, 625, 0,
-> +		60, DRM_MODE_FLAG_NHSYNC | DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "720x576",	/* VIC 18 */
-> +	},
-> +	[19] = { 74250,
-> +		1280, 1720, 1760, 1980, 0,
-> +		720, 725, 730, 750, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "1280x720",	/* VIC 19 */
-> +	},
-> +	[31] = { 148500,
-> +		1920, 2448, 2492, 2640, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "1920x1080",	/* VIC 31 */
-> +	},
-> +	[63] = { 297000,
-> +		1920, 2008, 2052, 2200, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		120, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "1920x1080",	/* VIC 63 */
-> +	},
-> +	[64] = { 297000,
-> +		1920, 2448, 2492, 2640, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		100, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "1920x1080",	/* VIC 64 */
-> +	},
-> +	[65] = { 59400,
-> +		1280, 3040, 3080, 3300, 0,
-> +		720, 725, 730, 750, 0,
-> +		24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 65 */
-> +	},
-> +	[66] = { 74250,
-> +		1280, 3700, 3740, 3960, 0,
-> +		720, 725, 730, 750, 0,
-> +		25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 66 */
-> +	},
-> +	[67] = { 74250,
-> +		1280, 3040, 3080, 3300, 0,
-> +		720, 725, 730, 750, 0,
-> +		30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 67 */
-> +	},
-> +	[68] = { 74250,
-> +		1280, 1720, 1760, 1980, 0,
-> +		720, 725, 730, 750, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 68 */
-> +	},
-> +	[69] = { 74250,
-> +		1280, 1390, 1430, 1650, 0,
-> +		720, 725, 730, 750, 0,
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 69 */
-> +	},
-> +	[70] = { 148500,
-> +		1280, 1720, 1760, 1980, 0,
-> +		720, 725, 730, 750, 0,
-> +		100, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 70 */
-> +	},
-> +	[71] = { 148500,
-> +		1280, 1390, 1430, 1650, 0,
-> +		720, 725, 730, 750, 0,
-> +		120, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1280x720",	/* VIC 71 */
-> +	},
-> +	[72] = { 74250,
-> +		1920, 2558, 2602, 2750, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 72 */
-> +	},
-> +	[73] = { 74250,
-> +		1920, 2448, 2492, 2640, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 74 */
-> +	},
-> +	[74] = { 74250,
-> +		1920, 2008, 2052, 2200, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 74 */
-> +	},
-> +	[75] = { 148500,
-> +		1920, 2448, 2492, 2640, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 75 */
-> +	},
-> +	[76] = { 148500,
-> +		1920, 2008, 2052, 2200, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 76 */
-> +	},
-> +	[77] = { 297000,
-> +		1920, 2448, 2492, 2640, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 77 */
-> +	},
-> +	[78] = { 297000,
-> +		1920, 2008, 2052, 2200, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1920x1080",	/* VIC 78 */
-> +	},
-> +	[79] = { 59400,
-> +		1680, 3040, 3080, 3300, 0,
-> +		720, 725, 730, 750, 0,
-> +		24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 79 */
-> +	},
-> +	[80] = { 59400,
-> +		1680, 2908, 2948, 3168, 0,
-> +		720, 725, 730, 750, 0,
-> +		25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 80 */
-> +	},
-> +	[81] = { 59400,
-> +		1680, 2380, 2420, 2640, 0,
-> +		720, 725, 730, 750, 0,
-> +		30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 81 */
-> +	},
-> +	[82] = { 82500,
-> +		1680, 1940, 1980, 2200, 0,
-> +		720, 725, 730, 750, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 82 */
-> +	},
-> +	[83] = { 99000,
-> +		1680, 1940, 1980, 2200, 0,
-> +		720, 725, 730, 750, 0,
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 83 */
-> +	},
-> +	[84] = { 165000,
-> +		1680, 1740, 1780, 2000, 0,
-> +		720, 725, 730, 825, 0,
-> +		100, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 84 */
-> +	},
-> +	[85] = { 198000,
-> +		1680, 1740, 1780, 2000, 0,
-> +		720, 725, 730, 825, 0,
-> +		120, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "1680x720",	/* VIC 85 */
-> +	},
-> +	[86] = { 99000,
-> +		2560, 3558, 3602, 3750, 0,
-> +		1080, 1084, 1089, 1100, 0,
-> +		24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "2560x1080",	/* VIC 86 */
-> +	},
-> +	[87] = { 90000,
-> +		2560, 3008, 3052, 3200, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "2560x1080",	/* VIC 87 */
-> +	},
-> +	[88] = { 118800,
-> +		2560, 3328, 3372, 3520, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "2560x1080",	/* VIC 88 */
-> +	},
-> +	[89] = { 185625,
-> +		2560, 3108, 3152, 3300, 0,
-> +		1080, 1084, 1089, 1125, 0,
-> +		50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "2560x1080",	/* VIC 89 */
-> +	},
-> +	[90] = { 198000,
-> +		2560, 2808, 2852, 3000, 0,
-> +		1080, 1084, 1089, 1100, 0,
-> +		60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		0x40, "2560x1080",	/* VIC 90 */
-> +	},
-> +	[93] = { 297000,
-> +		3840, 5116, 5204, 5500, 0,
-> +		2160, 2168, 2178, 2250, 0,
-> +		24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "4096x2160",	/* VIC 93 */
-> +	},
-> +	[94] = { 297000,
-> +		3840, 4896, 4984, 5280, 0,
-> +		2160, 2168, 2178, 2250, 0,
-> +		25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "3840x2160",	/* VIC 94 */
-> +	},
-> +	[95] = { 297000,
-> +		3840, 4016, 4104, 4400, 0,
-> +		2160, 2168, 2178, 2250, 0,
-> +		30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		0x40, "3840x2160",	/* VIC 95 */
->   	},
->   	[96] = { 594000,
->   		 3840, 4896, 4984, 5280, 0,
->   		 2160, 2168, 2178, 2250, 0,
-> -		 50, 0x5|DRM_MODE_FLAG_PIC_AR_16_9, 0x40,
-> -		 "3840x2160",	/* VIC 96 */
-> +		 50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		 0x40, "3840x2160",	/* VIC 96 */
->   	},
->   	[97] = { 594000,
->   		 3840, 4016, 4104, 4400, 0,
->   		 2160, 2168, 2178, 2250, 0,
-> -		 60, 0x5|DRM_MODE_FLAG_PIC_AR_16_9, 0x40,
-> -		 "3840x2160",	/* VIC 97 */
-> +		 60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_16_9,
-> +		 0x40, "3840x2160",	/* VIC 97 */
-> +	},
-> +	[98] = { 297000,
-> +		 4096, 5116, 5204, 5500, 0,
-> +		 2160, 2168, 2178, 2250, 0,
-> +		 24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_256_135,
-> +		 0x40, "4096x2160",	/* VIC 98 */
-> +	},
-> +	[99] = { 297000,
-> +		 4096, 5064, 5152, 5280, 0,
-> +		 2160, 2168, 2178, 2250, 0,
-> +		 25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_256_135,
-> +		 0x40, "4096x2160",	/* VIC 99 */
-> +	},
-> +	[100] = { 297000,
-> +		 4096, 4184, 4272, 4400, 0,
-> +		 2160, 2168, 2178, 2250, 0,
-> +		 30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_256_135,
-> +		 0x40, "4096x2160",	/* VIC 100 */
->   	},
->   	[101] = { 594000,
->   		  4096, 5064, 5152, 5280, 0,
->   		  2160, 2168, 2178, 2250, 0,
-> -		  50, 0x5|DRM_MODE_FLAG_PIC_AR_256_135, 0x40,
-> -		  "4096x2160",	/* VIC 101 */
-> +		  50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_256_135,
-> +		  0x40, "4096x2160",	/* VIC 101 */
->   	},
->   	[102] = { 594000,
->   		  4096, 4184, 4272, 4400, 0,
->   		  2160, 2168, 2178, 2250, 0,
-> -		  60, 0x5|DRM_MODE_FLAG_PIC_AR_256_135, 0x40,
-> -		  "4096x2160",	/* VIC 102 */
-> +		  60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_256_135,
-> +		  0x40, "4096x2160",	/* VIC 102 */
-> +	},
-> +	[103] = { 297000,
-> +		  3840, 5116, 5204, 5500, 0,
-> +		  2160, 2168, 2178, 2250, 0,
-> +		  24, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		  0x40, "4096x2160",	/* VIC 103 */
-> +	},
-> +	[104] = { 297000,
-> +		  3840, 4896, 4984, 5280, 0,
-> +		  2160, 2168, 2178, 2250, 0,
-> +		  25, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		  0x40, "3840x2160",	/* VIC 104 */
-> +	},
-> +	[105] = { 297000,
-> +		  3840, 4016, 4104, 4400, 0,
-> +		  2160, 2168, 2178, 2250, 0,
-> +		  30, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		  0x40, "3840x2160",	/* VIC 105 */
->   	},
->   	[106] = { 594000,
->   		  3840, 4896, 4984, 5280, 0,
->   		  2160, 2168, 2178, 2250, 0,
-> -		  50, 0x5|DRM_MODE_FLAG_PIC_AR_64_27, 0x40,
-> -		  "3840x2160",	/* VIC 106 */
-> +		  50, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		  0x40, "3840x2160",	/* VIC 106 */
->   	},
->   	[107] = { 594000,
->   		  3840, 4016, 4104, 4400, 0,
->   		  2160, 2168, 2178, 2250, 0,
-> -		  60, 0x5|DRM_MODE_FLAG_PIC_AR_64_27, 0x40,
-> -		  "3840x2160",	/* VIC 107 */
-> +		  60, DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC | DRM_MODE_FLAG_PIC_AR_64_27,
-> +		  0x40, "3840x2160",	/* VIC 107 */
->   	},
->   };
->   
->   /* Common test setup. */
-> -static void test_init(data_t *data)
-> +static void test_init(data_t *data, int conn_id)
+> @@ -428,11 +428,14 @@ static void set_force_yuv420(data_t *data, int force, int conn_id)
+>   static void set_max_bpc(data_t *data, int max_bpc, int conn_id)
 >   {
 >   	igt_display_t *display = &data->display;
+> +	igt_fb_t afb;
 >   
-> @@ -90,19 +368,22 @@ static void test_init(data_t *data)
+>   	test_init(data, conn_id);
 >   
->   	igt_display_reset(display);
->   
-> -	/* find a connected HDMI output */
-> +	/* find a connected output */
->   	data->output = NULL;
->   	for (int i=0; i < data->display.n_outputs; ++i) {
-> -		drmModeConnector *connector = data->display.outputs[i].config.connector;
-> -		if (connector->connection == DRM_MODE_CONNECTED &&
-> -				(connector->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
-> -				 (data->use_virtual_connector &&
-> -				  connector->connector_type == DRM_MODE_CONNECTOR_VIRTUAL))) {
-> +		drmModeConnector *conn = data->display.outputs[i].config.connector;
-> +
-> +		if ((data->use_virtual_connector &&
-> +		     conn->connector_type == DRM_MODE_CONNECTOR_VIRTUAL) ||
-> +		    (conn->connector_type == DRM_MODE_CONNECTOR_HDMIA &&
-> +		     conn->connection == DRM_MODE_CONNECTED &&
-> +		     (conn_id == 0 || conn->connector_id == conn_id))) {
->   			data->output = &data->display.outputs[i];
-> +			break;
->   		}
->   	}
->   
-> -	igt_require(data->output);
-> +	igt_require_f(data->output, "No valid connectors found\n");
->   
->   	data->primary =
->   		igt_pipe_get_plane_type(data->pipe, DRM_PLANE_TYPE_PRIMARY);
-> @@ -123,22 +404,57 @@ static void wait_for_keypress(void)
->   		;
->   }
->   
-> -static void test_vic_mode(data_t *data, int vic)
-> +/* Write 0 or 1 to debugfs entry "force_yuv420_output" of connector */
-> +static void set_force_yuv420(data_t *data, int force, int conn_id)
-> +{
-> +	int fd, res;
-> +
-> +	test_init(data, conn_id);
-> +
-> +	igt_info("Setting force_yuv420_output to %d on connector id %d\n",
-> +		 force ? 1 : 0, data->output->config.connector->connector_id);
-> +
-> +	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
-> +	igt_assert(fd >= 0);
-> +
-> +	res = igt_sysfs_write(fd, "force_yuv420_output", force ? "1" : "0", 2);
-> +	igt_require(res > 0);
-> +
-> +	close(fd);
-> +	test_fini(data);
-> +}
-> +
-> +/* Set "max bpc" property of connector */
-> +static void set_max_bpc(data_t *data, int max_bpc, int conn_id)
-> +{
-> +	igt_display_t *display = &data->display;
-> +
-> +	test_init(data, conn_id);
-> +
-> +	igt_info("Setting max bpc to %d on connector id %d\n",
-> +		 max_bpc, data->output->config.connector->connector_id);
-> +	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, max_bpc);
-> +	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-> +
-> +	test_fini(data);
-> +}
-> +
-> +/* Override video mode with specified VIC. */
-> +static void test_vic_mode(data_t *data, int vic, int conn_id)
->   {
->   	igt_display_t *display = &data->display;
->   	drmModeModeInfo *mode;
->   	igt_fb_t afb;
->   
-> -	test_init(data);
-> +	test_init(data, conn_id);
->   
->   	mode = &test_modes[vic];
->   
-> +	igt_info("Setting mode %s on connector id %d\n",
-> +		 mode->name, data->output->config.connector->connector_id);
->   	igt_output_override_mode(data->output, mode);
-> -
->   	igt_create_pattern_fb(data->fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888, 0, &afb);
-> -
->   	igt_plane_set_fb(data->primary, &afb);
-> -
+>   	igt_info("Setting max bpc to %d on connector id %d\n",
+>   		 max_bpc, data->output->config.connector->connector_id);
+> +	igt_create_fb(data->fd, 128, 128, DRM_FORMAT_XRGB8888, 0, &afb);
+> +	igt_plane_set_fb(data->primary, &afb);
+>   	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, max_bpc);
 >   	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
 >   
->   	igt_info("Press [Enter] to finish\n");
-> @@ -147,20 +463,27 @@ static void test_vic_mode(data_t *data, int vic)
->   	test_fini(data);
->   }
->   
-> -const char *optstr = "hvt:";
-> +const char *optstr = "hvt:i:b:y:";
->   static void usage(const char *name)
->   {
-> -	igt_info("Usage: %s [options]\n", name);
-> -	igt_info("-h      Show help\n");
-> -	igt_info("-t vic  Select video mode based on VIC\n");
-> -	igt_info("-v      Test on 'Virtual' connector as well, for debugging.\n");
-> +	igt_info("Usage: %s options\n", name);
-> +	igt_info("-h		Show help\n");
-> +	igt_info("-t vic	Select video mode based on VIC\n");
-> +	igt_info("-v		Test on 'Virtual' connector as well, for debugging.\n");
-> +	igt_info("-i conn_id	Use connector by ID\n");
-> +	igt_info("-b max_bpc	Set \"max bpc\" connector property\n");
-> +	igt_info("-y 0|1	Write 0 or 1 to connector's debugfs force_yuv420_output\n");
-> +	igt_info("NOTE: if -i is not specified, first connected HDMI connector will be used for -t, -b and -y\n");
->   }
->   
->   int main(int argc, char **argv)
->   {
->   	data_t data;
->   	int c;
-> -	int vic = 1; /* default to VIC 1 (640x480) */
-> +	int vic = 0;
-> +	int conn_id = 0;
-> +	int max_bpc = 0;
-> +	int force_yuv_420 = -1;
->   
->   	memset(&data, 0, sizeof(data));
->   
-> @@ -169,9 +492,18 @@ int main(int argc, char **argv)
->   		case 't':
->   			vic = atoi(optarg);
->   			break;
-> +		case 'i':
-> +			conn_id = atoi(optarg);
-> +			break;
->   		case 'v':
->   			data.use_virtual_connector = true;
->   			break;
-> +		case 'b':
-> +			max_bpc = atoi(optarg);
-> +			break;
-> +		case 'y':
-> +			force_yuv_420 = atoi(optarg);
-> +			break;
->   		default:
->   		case 'h':
->   			usage(argv[0]);
-> @@ -179,13 +511,6 @@ int main(int argc, char **argv)
->   		}
->   	}
->   
-> -	if (vic < 1 ||
-> -		vic > ARRAY_SIZE(test_modes) ||
-> -		!test_modes[vic].name[0]) {
-> -		igt_warn("VIC %d is not supported\n", vic);
-> -		exit(EXIT_FAILURE);
-> -	}
-> -
->   	data.fd = drm_open_driver_master(DRIVER_ANY);
->   	kmstest_set_vt_graphics_mode();
->   
-> @@ -193,7 +518,20 @@ int main(int argc, char **argv)
->   	igt_require(data.display.is_atomic);
->   	igt_display_require_output(&data.display);
->   
-> -	test_vic_mode(&data, vic);
-> +	if (force_yuv_420 >= 0)
-> +		set_force_yuv420(&data, force_yuv_420, conn_id);
-> +
-> +	if (max_bpc)
-> +		set_max_bpc(&data, max_bpc, conn_id);
-> +
-> +	if (vic) {
-> +		if (vic > ARRAY_SIZE(test_modes) ||
-> +		!test_modes[vic].name[0]) {
-
-I think it would be more readable if this check were in the same line. 
-Also, you can drop all braces in these conditions.
-
-With those changes:
 
 Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-
-> +			igt_warn("VIC %d is not supported\n", vic);
-> +		} else {
-> +			test_vic_mode(&data, vic, conn_id);
-> +		}
-> +	}
-
-
-
->   
->   	igt_display_fini(&data.display);
->   }
 
