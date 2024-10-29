@@ -4,27 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68FA5D3A660
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 14:31:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3B35D3A662
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 14:44:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C5BD10E28A;
-	Tue, 29 Oct 2024 14:31:35 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD2DD10E28A;
- Tue, 29 Oct 2024 14:31:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A05F10E284;
+	Tue, 29 Oct 2024 14:44:29 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lhrHM2iY";
+	dkim-atps=neutral
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com
+ [209.85.218.52])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD94E10E284
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 14:44:27 +0000 (UTC)
+Received: by mail-ej1-f52.google.com with SMTP id
+ a640c23a62f3a-a9a0c7abaa6so669797266b.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 07:44:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730213066; x=1730817866; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:from:to:cc:subject:date:message-id:reply-to;
+ bh=h2FPN6MqVoSksmWF1dyZnH+p6hfxtiqX/48NnJkgrr4=;
+ b=lhrHM2iYyucxf/+P4RlXqox3W28fotA5yp9vlnxcuGnAsSQ6dFDytpjKLGF3AR/unY
+ aBTulgxq/3jj/uWB4XwFIPU9/m0HeKcTdxOISw+wnZ74LeiK1KFTwS0xC7f2Y2yzXUs4
+ sOShNwAz8N6fRUf6fQBOAgcZNwE51jvvnlomEm1RYuFcw75uoKK2mu/SMwqEJAJ5wuSB
+ Z21M1y5UUzJlUQ4N5CrKpS//nW+CQoFsugsN1ulC0uWuQlUNxwNrRfhgjBshNctGQCLz
+ /ONICDQ4raOdTNEiYGRHbs1nSaNWyCGPw0fMNh+CIKDPxir5Y8qW+Bwxvx1zsGlpQjbJ
+ HfOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730213066; x=1730817866;
+ h=content-transfer-encoding:in-reply-to:from:content-language
+ :references:to:subject:reply-to:user-agent:mime-version:date
+ :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=h2FPN6MqVoSksmWF1dyZnH+p6hfxtiqX/48NnJkgrr4=;
+ b=WhUKTViMlh9U0dbw2UWdQQWt3wO+Ob9eaEFet346NBsVDcGxiQ5nSCfK+KzqC2HFqR
+ B3aMguNVx0MRLAj/dkh30W2iKPX2rYes1oFvLCHlN05gMlckr7LNlRYa7maNuZCfMSjq
+ +tBEbfaw15WvqbcMQKKSpHBKwL1L0EZlBmfcXpJAc064Ik8gNaqcCSddKk+OTfn4L9gP
+ E/7lkgPYUhZZBWCUim1Y18jGFFHfV94QvL6oxyhCF8LycfcPBgl2NG3PiwOrqAwI2F8t
+ O7OR7FvXVDQfO/COHAlx+uA3V59R3CqLkGNukUuKQIbxrpm1f18NTjcj8MCuFPaKaz3q
+ EZYQ==
+X-Gm-Message-State: AOJu0YyVMYvrGb6ljGwGAorSxe8tE/gxJJQuWMmeF07njYQ8S/5Q0KSl
+ 8ZuuLN0jWR4dhwWJf9xGVwblmlwcp9gSH/Zty31JPYrnVeKPs6c+fe42LxJdS6kljg==
+X-Google-Smtp-Source: AGHT+IHZMnu4fXzozd4bcsetkOEb3vVobq0l8Mw4+fPaeh6iVGqr6aihKslcTGvDGOXjm/AkRHNMGg==
+X-Received: by 2002:a17:906:f59a:b0:a9d:e022:38d8 with SMTP id
+ a640c23a62f3a-a9de615ae47mr1066525166b.51.1730213065463; 
+ Tue, 29 Oct 2024 07:44:25 -0700 (PDT)
+Received: from [0.0.0.0] ([134.134.139.69])
+ by smtp.googlemail.com with ESMTPSA id
+ a640c23a62f3a-a9b1f29a430sm482045966b.139.2024.10.29.07.44.23
+ for <igt-dev@lists.freedesktop.org>
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Tue, 29 Oct 2024 07:44:25 -0700 (PDT)
+Message-ID: <bd9f4a70-940b-44ac-9db3-cbd7f972584e@gmail.com>
+Date: Tue, 29 Oct 2024 16:44:18 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 01/14] lib/igt_draw: Use void* where appopriate
+To: igt-dev@lists.freedesktop.org
+References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
+ <20241004104121.32750-2-ville.syrjala@linux.intel.com>
+Content-Language: en-US
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20241004104121.32750-2-ville.syrjala@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Fexec?=
- =?utf-8?q?=5Freset=3A_Add_mocs_reset_test?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Oct 2024 14:31:33 -0000
-Message-ID: <173021229370.1359386.6475827283558319259@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241028104748.3507388-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20241028104748.3507388-1-janga.rahul.kumar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,87 +81,52 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
+Reply-To: juhapekka.heikkila@gmail.com
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Series: tests/intel/xe_exec_reset: Add mocs reset test
-URL   : https://patchwork.freedesktop.org/series/140575/
-State : warning
+On 4.10.2024 13.41, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> Use void* instead of uint32_t* when we don't care about the
+> element size.
+> 
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> ---
+>   lib/igt_draw.c | 6 +++---
+>   1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_draw.c b/lib/igt_draw.c
+> index 97a7e6b375fb..3ebfaad6ef31 100644
+> --- a/lib/igt_draw.c
+> +++ b/lib/igt_draw.c
+> @@ -446,7 +446,7 @@ static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
+>   static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
+>   			       uint32_t tiling, uint32_t swizzle, uint32_t color)
+>   {
+> -	uint32_t *ptr;
+> +	void *ptr;
+>   
+>   	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU,
+>   		       I915_GEM_DOMAIN_CPU);
+> @@ -481,7 +481,7 @@ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
+>   static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
+>   			       uint32_t color)
+>   {
+> -	uint32_t *ptr;
+> +	void *ptr;
+>   
+>   	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+>   		       I915_GEM_DOMAIN_GTT);
+> @@ -497,7 +497,7 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
+>   static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
+>   			      uint32_t tiling, uint32_t swizzle, uint32_t color)
+>   {
+> -	uint32_t *ptr;
+> +	void *ptr;
+>   
+>   	if (is_i915_device(fd)) {
+>   		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
 
-== Summary ==
-
-Pipeline status: FAILED.
-
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1299997 for the overview.
-
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/65806029):
-  ../tests/intel/xe_exec_reset.c: In function ‘gt_mocs_reset’:
-  ../tests/intel/xe_exec_reset.c:734:42: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ../tests/intel/xe_exec_reset.c:734:42: note: each undeclared identifier is reported only once for each function it appears in
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1730211901:step_script
-  section_start:1730211901:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730211902:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/65806028):
-  ../tests/intel/xe_exec_reset.c: In function ‘gt_mocs_reset’:
-  ../tests/intel/xe_exec_reset.c:734:42: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ../tests/intel/xe_exec_reset.c:734:42: note: each undeclared identifier is reported only once for each function it appears in
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1730211888:step_script
-  section_start:1730211888:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730211888:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-  
-
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/65806030):
-  ../tests/intel/xe_exec_reset.c: In function ‘gt_mocs_reset’:
-  ../tests/intel/xe_exec_reset.c:734:42: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ../tests/intel/xe_exec_reset.c:734:42: note: each undeclared identifier is reported only once for each function it appears in
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1730211915:step_script
-  section_start:1730211915:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730211916:cleanup_file_variables
-  ERROR: Job failed: exit code 1
-
-== Logs ==
-
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1299997
