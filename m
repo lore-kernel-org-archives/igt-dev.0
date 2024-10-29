@@ -4,69 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3B35D3A662
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 14:44:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33FEBD3A66B
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Oct 2024 15:02:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A05F10E284;
-	Tue, 29 Oct 2024 14:44:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4396710E680;
+	Tue, 29 Oct 2024 15:02:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lhrHM2iY";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="F8njOLEA";
 	dkim-atps=neutral
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com
- [209.85.218.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD94E10E284
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 14:44:27 +0000 (UTC)
-Received: by mail-ej1-f52.google.com with SMTP id
- a640c23a62f3a-a9a0c7abaa6so669797266b.2
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 07:44:27 -0700 (PDT)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com
+ [209.85.208.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1BF9E10E680
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 15:02:42 +0000 (UTC)
+Received: by mail-ed1-f54.google.com with SMTP id
+ 4fb4d7f45d1cf-5c935d99dc5so6354800a12.1
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Oct 2024 08:02:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730213066; x=1730817866; darn=lists.freedesktop.org;
+ d=gmail.com; s=20230601; t=1730214160; x=1730818960; darn=lists.freedesktop.org;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to;
- bh=h2FPN6MqVoSksmWF1dyZnH+p6hfxtiqX/48NnJkgrr4=;
- b=lhrHM2iYyucxf/+P4RlXqox3W28fotA5yp9vlnxcuGnAsSQ6dFDytpjKLGF3AR/unY
- aBTulgxq/3jj/uWB4XwFIPU9/m0HeKcTdxOISw+wnZ74LeiK1KFTwS0xC7f2Y2yzXUs4
- sOShNwAz8N6fRUf6fQBOAgcZNwE51jvvnlomEm1RYuFcw75uoKK2mu/SMwqEJAJ5wuSB
- Z21M1y5UUzJlUQ4N5CrKpS//nW+CQoFsugsN1ulC0uWuQlUNxwNrRfhgjBshNctGQCLz
- /ONICDQ4raOdTNEiYGRHbs1nSaNWyCGPw0fMNh+CIKDPxir5Y8qW+Bwxvx1zsGlpQjbJ
- HfOQ==
+ bh=17cr4X08oavRQYkaNNk6a8k5YlUVWNYpcdctmVG560g=;
+ b=F8njOLEAMeefMsp21JS/rIow2OK9tsgfvU00mlCiHFn2tCA46QnN13CJX3XMekROW6
+ BV1GXGEKq4jnFZ4bIqft/LSkQLxHegZgYjgMx/NZzE6mJPJp+3BUWvdV3uKwer8F+f1t
+ vFrmabFwUvQIs4X0RhTjmPDafHWW+RRbEvkDa4cEFCvgfPZf8v8jR50sU83pUEOMpjDo
+ OUB/De/N/c46JigP0n68HVFRGMfaJYVIEuLXhvG4rpvjeNSs5QL9QAE8z2DVRklPNTFt
+ 3EEfBVkvy8bkz8SEJdureCFjeWnEkeaCmbovKLHgC/xZ3aIbMylKF/7TcDa6ZfnJagTx
+ +X9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730213066; x=1730817866;
+ d=1e100.net; s=20230601; t=1730214160; x=1730818960;
  h=content-transfer-encoding:in-reply-to:from:content-language
  :references:to:subject:reply-to:user-agent:mime-version:date
  :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
  :reply-to;
- bh=h2FPN6MqVoSksmWF1dyZnH+p6hfxtiqX/48NnJkgrr4=;
- b=WhUKTViMlh9U0dbw2UWdQQWt3wO+Ob9eaEFet346NBsVDcGxiQ5nSCfK+KzqC2HFqR
- B3aMguNVx0MRLAj/dkh30W2iKPX2rYes1oFvLCHlN05gMlckr7LNlRYa7maNuZCfMSjq
- +tBEbfaw15WvqbcMQKKSpHBKwL1L0EZlBmfcXpJAc064Ik8gNaqcCSddKk+OTfn4L9gP
- E/7lkgPYUhZZBWCUim1Y18jGFFHfV94QvL6oxyhCF8LycfcPBgl2NG3PiwOrqAwI2F8t
- O7OR7FvXVDQfO/COHAlx+uA3V59R3CqLkGNukUuKQIbxrpm1f18NTjcj8MCuFPaKaz3q
- EZYQ==
-X-Gm-Message-State: AOJu0YyVMYvrGb6ljGwGAorSxe8tE/gxJJQuWMmeF07njYQ8S/5Q0KSl
- 8ZuuLN0jWR4dhwWJf9xGVwblmlwcp9gSH/Zty31JPYrnVeKPs6c+fe42LxJdS6kljg==
-X-Google-Smtp-Source: AGHT+IHZMnu4fXzozd4bcsetkOEb3vVobq0l8Mw4+fPaeh6iVGqr6aihKslcTGvDGOXjm/AkRHNMGg==
-X-Received: by 2002:a17:906:f59a:b0:a9d:e022:38d8 with SMTP id
- a640c23a62f3a-a9de615ae47mr1066525166b.51.1730213065463; 
- Tue, 29 Oct 2024 07:44:25 -0700 (PDT)
+ bh=17cr4X08oavRQYkaNNk6a8k5YlUVWNYpcdctmVG560g=;
+ b=eZNvSJ2rjKNV3BAOcOQOcmRzYdpsMHy1na5/7HfFiO2HhJYBQQoGFv5biVMrRBAKdA
+ WdUEiYqpP5I5NE1/cgPSxlabVhwOpl8HaWEoeIJMKgMKESUqTg7hTRVR/+UXClRG0Rtz
+ OHwu0doiRQdCc1LKJavHeX0ofn5FY4KRk3EAZNPiiT5ze9ST4gZWO8SCyfgiKvlzj1s1
+ qz+AFb5b7/D8S1y1OGirh+okAvN6nn+0HyXUa14GCJW2KL97aUXPIBcypi8k1lOfgBsr
+ 4JVGJ595WpaQ3W3385TNd/2/TsSumF4kHJPRAScdB+oUsEmWndnRab2h7ijrOm8uGc4a
+ jdPQ==
+X-Forwarded-Encrypted: i=1;
+ AJvYcCU5ImaERC2Toh4AhWFQJWa3TKPpqcGT3Jf+WcYZOAT+CTosapZFNE0lxDgRynvSGMPfTvUviVbj@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YymcKyuvA635TPeiqTBf61R8uVSuFo2Nt3k+z/mCR2OAstJKHDB
+ 8D9YyZzvRJOJOCIjieVF4RyI/N7o8fo7DT/28npKrQ85xz/45Its
+X-Google-Smtp-Source: AGHT+IFmmWzj/BClIRZajQVunNkIikuUpptQ70z5HIKp4j0XJfS3PwNj7DdXTzyKBCmGTEl6BBxH2g==
+X-Received: by 2002:a17:907:6d0d:b0:a9a:147d:fe9c with SMTP id
+ a640c23a62f3a-a9de61d5d59mr1187907266b.43.1730214160065; 
+ Tue, 29 Oct 2024 08:02:40 -0700 (PDT)
 Received: from [0.0.0.0] ([134.134.139.69])
  by smtp.googlemail.com with ESMTPSA id
- a640c23a62f3a-a9b1f29a430sm482045966b.139.2024.10.29.07.44.23
- for <igt-dev@lists.freedesktop.org>
+ a640c23a62f3a-a9b1f298319sm475601066b.105.2024.10.29.08.02.37
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Tue, 29 Oct 2024 07:44:25 -0700 (PDT)
-Message-ID: <bd9f4a70-940b-44ac-9db3-cbd7f972584e@gmail.com>
-Date: Tue, 29 Oct 2024 16:44:18 +0200
+ Tue, 29 Oct 2024 08:02:39 -0700 (PDT)
+Message-ID: <fd63c0e9-ad41-41f4-b5df-bfc20f0ad84a@gmail.com>
+Date: Tue, 29 Oct 2024 17:02:32 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 01/14] lib/igt_draw: Use void* where appopriate
-To: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 07/14] lib/igt_draw: Add 64bpp support to the
+ XY_FAST_COLOR_BLT path
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
 References: <20241004104121.32750-1-ville.syrjala@linux.intel.com>
- <20241004104121.32750-2-ville.syrjala@linux.intel.com>
+ <20241004104121.32750-8-ville.syrjala@linux.intel.com>
 Content-Language: en-US
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20241004104121.32750-2-ville.syrjala@linux.intel.com>
+In-Reply-To: <20241004104121.32750-8-ville.syrjala@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -90,43 +93,34 @@ Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 On 4.10.2024 13.41, Ville Syrjala wrote:
 > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > 
-> Use void* instead of uint32_t* when we don't care about the
-> element size.
+> XY_FAST_COLOR_BLT supports 64bpp natively. Simply enable it.
 > 
 > Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 > ---
->   lib/igt_draw.c | 6 +++---
->   1 file changed, 3 insertions(+), 3 deletions(-)
+>   lib/igt_draw.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
 > 
 > diff --git a/lib/igt_draw.c b/lib/igt_draw.c
-> index 97a7e6b375fb..3ebfaad6ef31 100644
+> index 93924ece8250..2312a0c71030 100644
 > --- a/lib/igt_draw.c
 > +++ b/lib/igt_draw.c
-> @@ -446,7 +446,7 @@ static void draw_rect_ptr_tiled(void *ptr, uint32_t stride, uint32_t tiling,
->   static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
->   			       uint32_t tiling, uint32_t swizzle, uint32_t color)
->   {
-> -	uint32_t *ptr;
-> +	void *ptr;
->   
->   	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_CPU,
->   		       I915_GEM_DOMAIN_CPU);
-> @@ -481,7 +481,7 @@ static void draw_rect_mmap_cpu(int fd, struct buf_data *buf, struct rect *rect,
->   static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
->   			       uint32_t color)
->   {
-> -	uint32_t *ptr;
-> +	void *ptr;
->   
->   	gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
->   		       I915_GEM_DOMAIN_GTT);
-> @@ -497,7 +497,7 @@ static void draw_rect_mmap_gtt(int fd, struct buf_data *buf, struct rect *rect,
->   static void draw_rect_mmap_wc(int fd, struct buf_data *buf, struct rect *rect,
->   			      uint32_t tiling, uint32_t swizzle, uint32_t color)
->   {
-> -	uint32_t *ptr;
-> +	void *ptr;
->   
->   	if (is_i915_device(fd)) {
->   		gem_set_domain(fd, buf->handle, I915_GEM_DOMAIN_GTT,
+> @@ -789,7 +789,8 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>   			blt_cmd_depth = 2 << 19;
+>   			break;
+>   		case 64:
+> -			/* Not used or supported yet */
+> +			blt_cmd_depth = 3 << 19;
+> +			break;
+>   		default:
+>   			igt_assert(false);
+>   		}
+> @@ -824,7 +825,7 @@ static void draw_rect_blt(int fd, struct cmd_data *cmd_data,
+>   					   dst->addr.offset);
+>   		intel_bb_out(ibb, 0);	/* TODO: Pass down enough info for target memory hint */
+>   		intel_bb_out(ibb, color);
+> -		intel_bb_out(ibb, 0);	/* 64 bit color */
+> +		intel_bb_out(ibb, color >> 32);	/* 64 bit color */
+>   		intel_bb_out(ibb, 0);	/* 96 bit color */
+>   		intel_bb_out(ibb, 0);	/* 128 bit color */
+>   		intel_bb_out(ibb, 0);	/* clear address */
 
