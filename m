@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CA4DD6B6DE
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 23:00:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C3ABD5CCAC
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 23:00:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 252F110E814;
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA69710E815;
 	Wed, 30 Oct 2024 23:00:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fa8VM7va";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R2QvR5UV";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3C5910E821
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B657B10E822
  for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 23:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1730329228; x=1761865228;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=c1qSI7279QcItpLkyOyzJJAA5hS6Uqt0s3VvvZZXW00=;
- b=fa8VM7vaihWsIsxhDdT5tgeCGjwXPf4yJXcsif0NOBEZNU+/cNJCsL//
- V0zlk3AYML2TMcrrS7o+0hbozd2MZnZ+fO1udw6G5tYAfuvJLt529PdYV
- 9HPh/IE15L7ReMFpQnHxjRfEE1Bp41LA0TrfcLh7I0taz/CNSeFzZkWjw
- 8+R0VWcehR+8y9cQcnx62uRuOVn/AkVtEYUXNepjAPGoB2wOowl60hMYQ
- B5vGfyfdgI3Yrie4PFV6ZCNxaaUq0SchGTFJJQafTkkJkpBwHoRo0nTYM
- ayXGvZi4VczNE+p7mgpUbAXw5HK6Bku6IomzgQQrDNVWINY6GKUJcP1wq Q==;
-X-CSE-ConnectionGUID: 7sx/eopKTa+IGKrQG8S5SQ==
-X-CSE-MsgGUID: pHXt/L/hQ/WgQZRbENkm7A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="33748299"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="33748299"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ZuLxOvzNFQZldPS/xNzp6tOphGKEEHrDZFMaecFb/Ys=;
+ b=R2QvR5UVxrxaPzTwasZtpxRZqW7dZOG+N1PxTmT4I3Z/O/BqugVytd1w
+ papD000kLfu/IA/d18CErt7RNUn0yl6Dn52iddPAOcjGBdBPTgs3qUYsi
+ jnIUaIgmHRnra1v7RC0aHwBlwg8H8zcZ+RFLW/CPYTPE3qu3q37wUkbUw
+ W2Fgr0yy4eVWZ5b+aB68dfXtR6oYmc+iZb1FytfQGoEpGpVPvnvTAGCnF
+ M8lG8SxI4qCVVRpFReK0YAvKPTVl/JeOA5lv+9FEPgQ3RMaZgZAh0O5Ay
+ HASIkt656le+utkDXKtBBDsLahEHM/VFrwMoQAJdBfDg+qWphlYxRWrdV g==;
+X-CSE-ConnectionGUID: jPl3jDWAR7+xtM8oTXVBpA==
+X-CSE-MsgGUID: RklU0JuRRTqpcCFoj36b3w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="33748298"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="33748298"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  30 Oct 2024 16:00:28 -0700
-X-CSE-ConnectionGUID: jhEBbOYSQJugE+jeRk9+SQ==
-X-CSE-MsgGUID: LPLfNUgUQWC5L02iRYi8tA==
+X-CSE-ConnectionGUID: /bLiYVRfQyqsH3BAh41bSQ==
+X-CSE-MsgGUID: XZsVvo6wQzyqmFopVetKDQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,246,1725346800"; d="scan'208";a="87015276"
+X-IronPort-AV: E=Sophos;i="6.11,246,1725346800"; d="scan'208";a="87015286"
 Received: from fyang16-desk.jf.intel.com ([10.165.21.214])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 16:00:21 -0700
+ 30 Oct 2024 16:00:22 -0700
 From: fei.yang@intel.com
 To: igt-dev@lists.freedesktop.org
 Cc: Fei Yang <fei.yang@intel.com>
-Subject: [i-g-t 0/4] separate sync data and batch buffer
-Date: Wed, 30 Oct 2024 16:03:46 -0700
-Message-Id: <20241030230350.1681757-1-fei.yang@intel.com>
+Subject: [i-g-t 3/4] tests/intel/xe_exec_threads: wait for all submissions to
+ complete
+Date: Wed, 30 Oct 2024 16:03:49 -0700
+Message-Id: <20241030230350.1681757-4-fei.yang@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20241030230350.1681757-1-fei.yang@intel.com>
+References: <20241030230350.1681757-1-fei.yang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,27 +70,59 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Fei Yang <fei.yang@intel.com>
 
-In INVALIDATE cases the test purposely remap the data buffer to a
-different physical location in the midle of execution to exercise the
-page fault handling flow. After the remapping we lose access to the old
-physical location, and that would cause a problem for verifying stored
-data and comparing ufence value at the end of the execution. To fix this
-the data used for synchronization purpose needs to be separated from the
-batch buffer for instructions, and during the execution we remap the
-batch buffer only.
+In test_compute_mode, there is an one second sleep waiting for all the
+submissions to complete, but a hardcode wait is not reliable for test
+that could have thousands of xe_execs submissions. Instead we should
+wait for the ufence to make sure the GPU is inactive before unbinding
+the BO.
 
 Signed-off-by: Fei Yang <fei.yang@intel.com>
+---
+ tests/intel/xe_exec_threads.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
 
-Fei Yang (4):
-  tests/intel/xe_exec_fault_mode: separate sync data and batch buffer
-  tests/intel/xe_exec_threads: remove redundant wait
-  tests/intel/xe_exec_threads: wait for all submissions to complete
-  tests/intel/xe_exec_threads: separate sync data and batch buffer
-
- tests/intel/xe_exec_fault_mode.c | 70 ++++++++++++++++++---------
- tests/intel/xe_exec_threads.c    | 83 +++++++++++++++++++++-----------
- 2 files changed, 103 insertions(+), 50 deletions(-)
-
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 962957cd7..03043c53e 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -404,16 +404,31 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		}
+ 	}
+ 
+-	j = flags & INVALIDATE ?
+-		(flags & RACE ? n_execs / 2 + 1 : n_execs - 1) : 0;
++	j = 0; /* wait for all submissions to complete */
++	if (flags & INVALIDATE)
++		/*
++		 * For !RACE cases xe_wait_ufence has been called in above for-loop
++		 * except the last batch of submissions. For RACE cases we will need
++		 * to wait for the second half of the submissions to complete. There
++		 * is a potential race here because the first half submissions might
++		 * have updated the fence in the old physical location while the test
++		 * is remapping the buffer from a different physical location, but the
++		 * wait_ufence only checks the fence from the new location which would
++		 * never be updated. We have to assume the first half of the submissions
++		 * complete before the second half.
++		 */
++		j = (flags & RACE) ? (n_execs / 2 + 1) : (((n_execs - 1) & ~0x1f) + 1);
++	else if (flags & REBIND)
++		/*
++		 * For REBIND cases xe_wait_ufence has been called in above for-loop
++		 * except the last batch of submissions.
++		 */
++		j = ((n_execs - 1) & ~0x1f) + 1;
++
+ 	for (i = j; i < n_execs; i++)
+ 		xe_wait_ufence(fd, &data[i].exec_sync, USER_FENCE_VALUE,
+ 			       exec_queues[i % n_exec_queues], fence_timeout);
+ 
+-	/* Wait for all execs to complete */
+-	if (flags & INVALIDATE)
+-		sleep(1);
+-
+ 	sync[0].addr = to_user_pointer(&data[0].vm_sync);
+ 	xe_vm_unbind_async(fd, vm, 0, 0, addr, bo_size, sync, 1);
+ 	xe_wait_ufence(fd, &data[0].vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
 -- 
 2.25.1
 
