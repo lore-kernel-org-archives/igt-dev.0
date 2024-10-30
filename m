@@ -4,58 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E772D5CCA8
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 12:54:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869CAD5CCA9
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 12:58:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 250FC10E0C2;
-	Wed, 30 Oct 2024 12:54:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1F1A710E2CE;
+	Wed, 30 Oct 2024 12:58:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WreXcKkc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P7hVSbr0";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 432A610E0C2
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 12:54:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E18C10E2CE;
+ Wed, 30 Oct 2024 12:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730292855; x=1761828855;
+ t=1730293098; x=1761829098;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=9e+tLqW+YsQcxASKTGaTCavgW4rX+xng+hj2KOManWg=;
- b=WreXcKkcUmiFB/il7MG+zMVF3TLdVhCS662dDdFpobqWk2AbCIxFlD2Z
- dbthQRWXtKnCgF+O29QsscmP2aIL+aq75WgM33mfhO8qfuyvFl+Ec65w/
- 6XteSRfCmb/Usly1rUZHi7ROOe+oLoP5xNk7MPcmqli6FaZiFwpNuI3yj
- k0Nz5sePFS5bCK35tNDoqYOPavoy/WdkaS/MG64kgiDlCODhx/wMFEL0j
- OwCTA5Lz4GMxqBtEFhgeI2ewqnsGY0WuDtPeVd/Ggbh+F5TUO/Ri5jQFg
- uc7zv2yO7oZlj5RAR1yrNzjIlpUc6gmk+pQ4rK2bQf4dewRqVUGcLUz8+ g==;
-X-CSE-ConnectionGUID: 7wITossESlSjxfbPKTSOow==
-X-CSE-MsgGUID: s3cDH/L4QMCcOC0ks7tRMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="29437215"
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="29437215"
+ bh=pfYK8kL9ZIdy7YUPiytewBLDuGv/5ynkBjXz+CizS74=;
+ b=P7hVSbr07cPn2cRvkEXcEBY5aSEM+ufgFCK68vFMFi32yK7j3D/j/xOT
+ 5LZv+JinHd3RtuaRrCq0256QkQ9WYFyKiGTSskWHMxWRiQFo8pUVeeRcj
+ oHZ580QhNwR1ZTMlEj9x4R5TVSOmu8TLERK6eXv27ynpl5EWr+auY1qz2
+ SL2+glVozX4SKGU6gSHRTFgjqBJBK6ZHiOHuc2k9UT8Fiwqvl3MmybO7S
+ L9zDE/sTZYw1zGPCeryWLcO4HL15AeIHfgrJlFF5HpFJGyFFULinQ341H
+ DeHPa6YxajUBxkVr6B6ZAFa0Cv3Zy8Q9y7yAYtxbAr2ApJfZ75N4d8jL1 g==;
+X-CSE-ConnectionGUID: unYXoP9XTbuWAwU0kj0hjw==
+X-CSE-MsgGUID: qD6aAfVjTIOrQ2BeEC372Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="29437513"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="29437513"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 05:54:15 -0700
-X-CSE-ConnectionGUID: zySndyEtTlSt4A9eNap0wQ==
-X-CSE-MsgGUID: QvkQcZXERy65B1yzKg2m6A==
+ 30 Oct 2024 05:58:17 -0700
+X-CSE-ConnectionGUID: OE7x2wEAS5+anwEoR4ObkA==
+X-CSE-MsgGUID: L4831dS8SOq4LerrLW5wbA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82240294"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82241040"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
  by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 05:54:14 -0700
-Date: Wed, 30 Oct 2024 13:54:11 +0100
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 05:58:15 -0700
+Date: Wed, 30 Oct 2024 13:58:13 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_oa: Tests for OA syncs
-Message-ID: <20241030125411.cocpywc7o4yigob5@kamilkon-desk.igk.intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
+ Ignore more warns in xe_wedged tests (rev2)
+Message-ID: <20241030125813.yd7et7pkzdae2gxq@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <20241030025327.1487897-1-ashutosh.dixit@intel.com>
- <20241030025327.1487897-3-ashutosh.dixit@intel.com>
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20241029182259.125117-1-kamil.konieczny@linux.intel.com>
+ <173025397467.1362048.17792868325139902408@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241030025327.1487897-3-ashutosh.dixit@intel.com>
+In-Reply-To: <173025397467.1362048.17792868325139902408@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,380 +71,139 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ashutosh,
-On 2024-10-29 at 19:53:27 -0700, Ashutosh Dixit wrote:
-> Verify OA syncs signal correctly in open and change config code
-> paths. Verify with different types of sync objects as well as by both
-> waiting and skipping the wait for syncs to signal.
+Hi igt-dev,
+On 2024-10-30 at 02:06:14 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> v2: Significantly expand oa syncs testing as described above
-> v3: Always wait in userptr/ufence cases to avoid -EFAULT errors
+> Series: Ignore more warns in xe_wedged tests (rev2)
+> URL   : https://patchwork.freedesktop.org/series/140511/
+> State : failure
 > 
-> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  lib/xe/xe_oa.c      |   6 +-
->  lib/xe/xe_oa.h      |   2 +
->  tests/intel/xe_oa.c | 282 ++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 287 insertions(+), 3 deletions(-)
+> == Summary ==
 > 
-> diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
-> index 4fdd0b8c95..c168669c5d 100644
-> --- a/lib/xe/xe_oa.c
-> +++ b/lib/xe/xe_oa.c
-> @@ -1025,8 +1025,8 @@ const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
->  	return "unknown";
->  }
+> CI Bug Log - changes from IGT_8088 -> IGTPW_11997
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_11997 absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_11997, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/index.html
+> 
+> Participating hosts (47 -> 45)
+> ------------------------------
+> 
+>   Missing    (2): bat-arls-1 fi-snb-2520m 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_11997:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-apl-1:          [PASS][1] -> [DMESG-FAIL][2] +1 other test dmesg-fail
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-apl-1/igt@i915_selftest@live.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-apl-1/igt@i915_selftest@live.html
 > 
 
-Please describe public lib function here.
+Unrelated to Xe test, no need for respin imho.
 
 Regards,
 Kamil
 
-> -static void xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
-> -			      struct drm_xe_ext_set_property *extn)
-> +void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
-> +			     struct drm_xe_ext_set_property *extn)
->  {
->  	__u64 *prop = from_user_pointer(properties->properties_ptr);
->  	struct drm_xe_ext_set_property *ext = extn;
-> @@ -1063,7 +1063,7 @@ int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg)
->  		struct intel_xe_oa_open_prop *oprop = (struct intel_xe_oa_open_prop *)arg;
->  
->  		igt_assert_lte(oprop->num_properties, XE_OA_MAX_SET_PROPERTIES);
-> -		xe_oa_prop_to_ext(oprop, ext);
-> +		intel_xe_oa_prop_to_ext(oprop, ext);
->  	}
->  
->  	return igt_ioctl(fd, DRM_IOCTL_XE_OBSERVATION, &p);
-> diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
-> index 962f9dddcc..7d3d074560 100644
-> --- a/lib/xe/xe_oa.h
-> +++ b/lib/xe/xe_oa.h
-> @@ -398,6 +398,8 @@ uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *per
->  const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
->  					     const struct intel_xe_perf_record_header *record);
->  
-> +void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
-> +			     struct drm_xe_ext_set_property *extn);
->  int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg);
->  void intel_xe_perf_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err);
->  
-> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> index 92f5828c79..33e978a488 100644
-> --- a/tests/intel/xe_oa.c
-> +++ b/tests/intel/xe_oa.c
-> @@ -22,6 +22,7 @@
->  #include "drm.h"
->  #include "igt.h"
->  #include "igt_device.h"
-> +#include "igt_syncobj.h"
->  #include "igt_sysfs.h"
->  #include "xe/xe_ioctl.h"
->  #include "xe/xe_query.h"
-> @@ -4463,6 +4464,255 @@ static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
->  	__perf_close(stream_fd);
->  }
->  
-> +
-> +/* Return alternative config_id if available, else just return config_id */
-> +static void find_alt_oa_config(u32 config_id, u32 *alt_config_id)
-> +{
-> +	struct dirent *entry;
-> +	int metrics_fd, dir_fd;
-> +	DIR *metrics_dir;
-> +	bool ret;
-> +
-> +	metrics_fd = openat(sysfs, "metrics", O_DIRECTORY);
-> +	igt_assert_lte(0, metrics_fd);
-> +
-> +	metrics_dir = fdopendir(metrics_fd);
-> +	igt_assert(metrics_dir);
-> +
-> +	while ((entry = readdir(metrics_dir))) {
-> +		if (entry->d_type != DT_DIR)
-> +			continue;
-> +
-> +		dir_fd = openat(metrics_fd, entry->d_name, O_RDONLY);
-> +		ret = __igt_sysfs_get_u32(dir_fd, "id", alt_config_id);
-> +		close(dir_fd);
-> +		if (!ret)
-> +			continue;
-> +
-> +		if (config_id != *alt_config_id)
-> +			goto exit;
-> +	}
-> +
-> +	*alt_config_id = config_id;
-> +exit:
-> +	closedir(metrics_dir);
-> +}
-> +
-> +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-> +
-> +#define WAIT		(0x1 << 0)
-> +#define CONFIG		(0x1 << 1)
-> +
-> +enum oa_sync_type {
-> +	OA_SYNC_TYPE_SYNCOBJ,
-> +	OA_SYNC_TYPE_USERPTR,
-> +	OA_SYNC_TYPE_UFENCE,
-> +};
-> +
-> +struct oa_sync {
-> +	enum oa_sync_type sync_type;
-> +	u32 syncobj;
-> +	u32 vm;
-> +	u32 bo;
-> +	size_t bo_size;
-> +	struct {
-> +		uint64_t vm_sync;
-> +		uint64_t pad;
-> +		uint64_t oa_sync;
-> +	} *data;
-> +};
-> +
-> +static void
-> +oa_sync_init(enum oa_sync_type sync_type, const struct drm_xe_engine_class_instance *hwe,
-> +	     struct oa_sync *osync, struct drm_xe_sync *sync)
-> +{
-> +	uint64_t addr = 0x1a0000;
-> +
-> +	osync->sync_type = sync_type;
-> +	sync->flags = DRM_XE_SYNC_FLAG_SIGNAL;
-> +
-> +	switch (osync->sync_type) {
-> +	case OA_SYNC_TYPE_SYNCOBJ:
-> +		osync->syncobj = syncobj_create(drm_fd, 0);
-> +		sync->handle = osync->syncobj;
-> +		sync->type = DRM_XE_SYNC_TYPE_SYNCOBJ;
-> +		break;
-> +	case OA_SYNC_TYPE_USERPTR:
-> +	case OA_SYNC_TYPE_UFENCE:
-> +		sync->type = DRM_XE_SYNC_TYPE_USER_FENCE;
-> +		sync->timeline_value = USER_FENCE_VALUE;
-> +
-> +		osync->vm = xe_vm_create(drm_fd, 0, 0);
-> +		osync->bo_size = xe_bb_size(drm_fd, sizeof(*osync->data));
-> +		if (osync->sync_type == OA_SYNC_TYPE_USERPTR) {
-> +			osync->data = aligned_alloc(xe_get_default_alignment(drm_fd),
-> +						    osync->bo_size);
-> +			igt_assert(osync->data);
-> +		} else {
-> +			osync->bo = xe_bo_create(drm_fd, osync->vm, osync->bo_size,
-> +						 vram_if_possible(drm_fd, hwe->gt_id),
-> +						 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +			osync->data = xe_bo_map(drm_fd, osync->bo, osync->bo_size);
-> +		}
-> +		memset(osync->data, 0, osync->bo_size);
-> +
-> +		sync->addr = to_user_pointer(&osync->data[0].vm_sync);
-> +		if (osync->bo)
-> +			xe_vm_bind_async(drm_fd, osync->vm, 0, osync->bo, 0,
-> +					 addr, osync->bo_size, sync, 1);
-> +		else
-> +			xe_vm_bind_userptr_async(drm_fd, osync->vm, 0,
-> +						 to_user_pointer(osync->data),
-> +						 addr, osync->bo_size, sync, 1);
-> +		xe_wait_ufence(drm_fd, &osync->data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-> +
-> +		sync->addr = to_user_pointer(&osync->data[0].oa_sync);
-> +		break;
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static void oa_sync_wait(struct oa_sync *osync)
-> +{
-> +	switch (osync->sync_type) {
-> +	case OA_SYNC_TYPE_SYNCOBJ:
-> +		igt_assert(syncobj_wait(drm_fd, &osync->syncobj, 1, INT64_MAX, 0, NULL));
-> +		syncobj_reset(drm_fd, &osync->syncobj, 1);
-> +		break;
-> +	case OA_SYNC_TYPE_USERPTR:
-> +	case OA_SYNC_TYPE_UFENCE:
-> +		xe_wait_ufence(drm_fd, &osync->data[0].oa_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
-> +		osync->data[0].oa_sync = 0;
-> +		break;
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +static void oa_sync_free(struct oa_sync *osync)
-> +{
-> +	switch (osync->sync_type) {
-> +	case OA_SYNC_TYPE_SYNCOBJ:
-> +		syncobj_destroy(drm_fd, osync->syncobj);
-> +		break;
-> +	case OA_SYNC_TYPE_USERPTR:
-> +	case OA_SYNC_TYPE_UFENCE:
-> +		if (osync->bo) {
-> +			munmap(osync->data, osync->bo_size);
-> +			gem_close(drm_fd, osync->bo);
-> +		} else {
-> +			free(osync->data);
-> +		}
-> +		xe_vm_destroy(drm_fd, osync->vm);
-> +		break;
-> +	default:
-> +		igt_assert(false);
-> +	}
-> +}
-> +
-> +/**
-> + * SUBTEST: syncs-%s-%s
-> + *
-> + * Description: Test OA syncs (with %arg[1] sync types and %arg[2] wait and
-> + *		reconfig flags) signal correctly in open and reconfig code
-> + *		paths
-> + *
-> + * arg[1]:
-> + *
-> + * @syncobj:	sync type syncobj
-> + *
-> + * arg[2]:
-> + *
-> + * @wait-cfg:	Exercise reconfig path and wait for syncs to signal
-> + * @wait:	Don't exercise reconfig path and wait for syncs to signal
-> + * @cfg:	Exercise reconfig path but don't wait for syncs to signal
-> + * @none:	Don't exercise reconfig path and don't wait for syncs to signal
-> + */
-> +
-> +/**
-> + * SUBTEST: syncs-%s-%s
-> + *
-> + * Description: Test OA syncs (with %arg[1] sync types and %arg[2] wait and
-> + *		reconfig flags) signal correctly in open and reconfig code
-> + *		paths
-> + *
-> + * arg[1]:
-> + *
-> + * @userptr:	sync type userptr
-> + * @ufence:	sync type ufence
-> + *
-> + * arg[2]:
-> + *
-> + * @wait-cfg:	Exercise reconfig path and wait for syncs to signal
-> + * @wait:	Don't exercise reconfig path and wait for syncs to signal
-> + */
-> +static void test_syncs(const struct drm_xe_engine_class_instance *hwe,
-> +		       enum oa_sync_type sync_type, int flags)
-> +{
-> +	struct drm_xe_ext_set_property extn[XE_OA_MAX_SET_PROPERTIES] = {};
-> +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
-> +	struct drm_xe_sync sync = {};
-> +	struct oa_sync osync = {};
-> +	uint64_t open_properties[] = {
-> +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
-> +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
-> +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
-> +		DRM_XE_OA_PROPERTY_NUM_SYNCS, 1,
-> +		DRM_XE_OA_PROPERTY_SYNCS, to_user_pointer(&sync),
-> +	};
-> +	struct intel_xe_oa_open_prop open_param = {
-> +		.num_properties = ARRAY_SIZE(open_properties) / 2,
-> +		.properties_ptr = to_user_pointer(open_properties),
-> +	};
-> +	uint64_t config_properties[] = {
-> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0, /* Filled later */
-> +		DRM_XE_OA_PROPERTY_NUM_SYNCS, 1,
-> +		DRM_XE_OA_PROPERTY_SYNCS, to_user_pointer(&sync),
-> +	};
-> +	struct intel_xe_oa_open_prop config_param = {
-> +		.num_properties = ARRAY_SIZE(config_properties) / 2,
-> +		.properties_ptr = to_user_pointer(config_properties),
-> +	};
-> +	uint32_t alt_config_id;
-> +	int ret;
-> +
-> +	/*
-> +	 * Necessarily wait in userptr/ufence cases, otherwise IGT process can exit
-> +	 * after calling oa_sync_free, which results in -EFAULT when kernel signals
-> +	 * the userptr/ufence
-> +	 */
-> +	if (sync_type == OA_SYNC_TYPE_USERPTR || sync_type == OA_SYNC_TYPE_UFENCE)
-> +		flags |= WAIT;
-> +
-> +	oa_sync_init(sync_type, hwe, &osync, &sync);
-> +
-> +	stream_fd = __perf_open(drm_fd, &open_param, false);
-> +
-> +	/* Reset the sync object if we are going to reconfig the stream */
-> +	if (flags & (WAIT | CONFIG))
-> +		oa_sync_wait(&osync);
-> +
-> +	if (!(flags & CONFIG))
-> +		goto exit;
-> +
-> +	/* Change stream configuration */
-> +	find_alt_oa_config(test_set->perf_oa_metrics_set, &alt_config_id);
-> +
-> +	config_properties[1] = alt_config_id;
-> +	intel_xe_oa_prop_to_ext(&config_param, extn);
-> +
-> +	ret = igt_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_CONFIG, extn);
-> +	igt_assert_eq(ret, test_set->perf_oa_metrics_set);
-> +
-> +	if (flags & WAIT)
-> +		oa_sync_wait(&osync);
-> +exit:
-> +	__perf_close(stream_fd);
-> +	oa_sync_free(&osync);
-> +}
-> +
->  static const char *xe_engine_class_name(uint32_t engine_class)
->  {
->  	switch (engine_class) {
-> @@ -4511,6 +4761,22 @@ static const char *xe_engine_class_name(uint32_t engine_class)
->  
->  igt_main
->  {
-> +	const struct sync_section {
-> +		const char *name;
-> +		enum oa_sync_type sync_type;
-> +		unsigned int flags;
-> +	} sync_sections[] = {
-> +		{ "syncobj-wait-cfg", OA_SYNC_TYPE_SYNCOBJ, WAIT | CONFIG},
-> +		{ "syncobj-wait", OA_SYNC_TYPE_SYNCOBJ, WAIT },
-> +		{ "syncobj-cfg", OA_SYNC_TYPE_SYNCOBJ, CONFIG },
-> +		{ "syncobj-none", OA_SYNC_TYPE_SYNCOBJ, 0 },
-> +		/* userptr/ufence cases always set WAIT (see test_syncs) */
-> +		{ "userptr-wait-cfg", OA_SYNC_TYPE_USERPTR, WAIT | CONFIG},
-> +		{ "userptr-wait", OA_SYNC_TYPE_USERPTR, WAIT },
-> +		{ "ufence-wait-cfg", OA_SYNC_TYPE_UFENCE, WAIT | CONFIG},
-> +		{ "ufence-wait", OA_SYNC_TYPE_UFENCE, WAIT },
-> +		{ NULL },
-> +	};
->  	struct drm_xe_engine_class_instance *hwe = NULL;
->  	struct xe_device *xe_dev;
->  
-> @@ -4713,6 +4979,22 @@ igt_main
->  		}
->  	}
->  
-> +	igt_subtest_group {
-> +		igt_fixture {
-> +			struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
-> +			struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
-> +
-> +			igt_require(oau->capabilities & DRM_XE_OA_CAPS_SYNCS);
-> +		}
-> +
-> +		for (const struct sync_section *s = sync_sections; s->name; s++) {
-> +			igt_subtest_with_dynamic_f("syncs-%s", s->name)
-> +				__for_one_render_engine(hwe)
-> +					test_syncs(hwe, s->sync_type, s->flags);
-> +
-> +		}
-> +	}
-> +
->  	igt_fixture {
->  		/* leave sysctl options in their default state... */
->  		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
-> -- 
-> 2.41.0
+>   
+> Known issues
+> ------------
 > 
+>   Here are the changes found in IGTPW_11997 that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@i915_module_load@load:
+>     - bat-apl-1:          [PASS][3] -> [DMESG-WARN][4] ([i915#180] / [i915#1982]) +2 other tests dmesg-warn
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-apl-1/igt@i915_module_load@load.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-apl-1/igt@i915_module_load@load.html
+> 
+>   * igt@i915_module_load@reload:
+>     - bat-apl-1:          [PASS][5] -> [DMESG-WARN][6] ([i915#180])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-apl-1/igt@i915_module_load@reload.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-apl-1/igt@i915_module_load@reload.html
+> 
+>   * igt@i915_selftest@live:
+>     - bat-dg2-8:          [PASS][7] -> [ABORT][8] ([i915#12133]) +1 other test abort
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-dg2-8/igt@i915_selftest@live.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-dg2-8/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@sanitycheck:
+>     - bat-apl-1:          [PASS][9] -> [DMESG-WARN][10] ([i915#11621]) +77 other tests dmesg-warn
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
+> 
+>   * igt@kms_flip@basic-flip-vs-wf_vblank:
+>     - bat-apl-1:          [PASS][11] -> [DMESG-WARN][12] ([i915#11621] / [i915#180] / [i915#1982]) +2 other tests dmesg-warn
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-apl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
+> 
+>   * igt@kms_pm_rpm@basic-pci-d3-state:
+>     - bat-apl-1:          [PASS][13] -> [DMESG-WARN][14] ([i915#11621] / [i915#180]) +42 other tests dmesg-warn
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@i915_selftest@live:
+>     - bat-arlh-3:         [ABORT][15] ([i915#12133]) -> [PASS][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-arlh-3/igt@i915_selftest@live.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-arlh-3/igt@i915_selftest@live.html
+>     - bat-mtlp-6:         [ABORT][17] ([i915#12133] / [i915#12216]) -> [PASS][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-mtlp-6/igt@i915_selftest@live.html
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-mtlp-6/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@workarounds:
+>     - bat-arlh-3:         [ABORT][19] ([i915#12061]) -> [PASS][20]
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+>     - bat-mtlp-6:         [ABORT][21] ([i915#12216]) -> [PASS][22]
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8088/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/bat-mtlp-6/igt@i915_selftest@live@workarounds.html
+> 
+>   
+>   [i915#11621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11621
+>   [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+>   [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+>   [i915#12216]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12216
+>   [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+>   [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_8088 -> IGTPW_11997
+>   * Linux: CI_DRM_15607 -> CI_DRM_15608
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_15607: fb2691707e2d5a8c704ae5e48bc5a314a308b0e0 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_15608: b97473387ce132222c9b71f7cf39c2cd814cbb6f @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_11997: 9156a7b175d9a24154d8ced92e5e8170aab14fe1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_8088: 0030d5bc92b8e4ac991db1c88af1f0ad7593812a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_11997/index.html
