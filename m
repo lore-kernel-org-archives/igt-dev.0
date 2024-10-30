@@ -4,61 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D175DD5CCA6
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 12:51:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E772D5CCA8
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 12:54:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8782510E0C2;
-	Wed, 30 Oct 2024 12:51:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 250FC10E0C2;
+	Wed, 30 Oct 2024 12:54:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IY5ZG8SD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WreXcKkc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F262E10E0C2
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 12:51:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 432A610E0C2
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 12:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730292689; x=1761828689;
+ t=1730292855; x=1761828855;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=DGqSwvxLVkx66vO5ciQJmLLh5nKY68Sw7nMm6wMl3Hk=;
- b=IY5ZG8SDnyaq8MtsyA7bes9xkO8QOrSGtZ0KpNMlwH3y8p29fYb3Nww2
- KvSVv609T3WhAPh/FyPtF+C7hAWCN6/BxJ5pZKh5+koPAiGQ4BoLvnaCN
- qXkYiSLYigwA5YI1WOwXMA6DBTGAj64SzieAjfSP6TthDn1LDc7sez4Nq
- J8mvHmUZK88YqtcMfBYtentxyYOzanoV7Q75YPPhPe7trMDqDHv86774l
- ADqNK3B04wRtGqBtzQ/5jyGxnH86QSkf9vzuhZFEoCm5rbTWtwdkRoiRf
- r2wjw4vtkV2Pyih/SimJqDy8AGGkGhQJGztVuqhdt62tK7G2tmNneKyl2 Q==;
-X-CSE-ConnectionGUID: fWIwLQnZTu63joxsk4dflA==
-X-CSE-MsgGUID: BBPOOzjeRaeRuTgQgw/6Mw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40523205"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="40523205"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 05:51:28 -0700
-X-CSE-ConnectionGUID: f0B+ilSQTfmHIN+Z7UyMTw==
-X-CSE-MsgGUID: HJs2L6HFQz2KJg3Wh02IHw==
+ bh=9e+tLqW+YsQcxASKTGaTCavgW4rX+xng+hj2KOManWg=;
+ b=WreXcKkcUmiFB/il7MG+zMVF3TLdVhCS662dDdFpobqWk2AbCIxFlD2Z
+ dbthQRWXtKnCgF+O29QsscmP2aIL+aq75WgM33mfhO8qfuyvFl+Ec65w/
+ 6XteSRfCmb/Usly1rUZHi7ROOe+oLoP5xNk7MPcmqli6FaZiFwpNuI3yj
+ k0Nz5sePFS5bCK35tNDoqYOPavoy/WdkaS/MG64kgiDlCODhx/wMFEL0j
+ OwCTA5Lz4GMxqBtEFhgeI2ewqnsGY0WuDtPeVd/Ggbh+F5TUO/Ri5jQFg
+ uc7zv2yO7oZlj5RAR1yrNzjIlpUc6gmk+pQ4rK2bQf4dewRqVUGcLUz8+ g==;
+X-CSE-ConnectionGUID: 7wITossESlSjxfbPKTSOow==
+X-CSE-MsgGUID: s3cDH/L4QMCcOC0ks7tRMw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="29437215"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="29437215"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2024 05:54:15 -0700
+X-CSE-ConnectionGUID: zySndyEtTlSt4A9eNap0wQ==
+X-CSE-MsgGUID: QvkQcZXERy65B1yzKg2m6A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82388424"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82240294"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 05:51:27 -0700
-Date: Wed, 30 Oct 2024 13:51:24 +0100
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2024 05:54:14 -0700
+Date: Wed, 30 Oct 2024 13:54:11 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
- alex.zuo@intel.com, vinay.belgaumkar@intel.com
-Subject: Re: [PATCH] tests/intel/xe_sysfs_timeslice_duration: Restore preempt
- timeout
-Message-ID: <20241030125124.234xdbbvwqfirvl7@kamilkon-desk.igk.intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/xe_oa: Tests for OA syncs
+Message-ID: <20241030125411.cocpywc7o4yigob5@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- saurabhg.gupta@intel.com, alex.zuo@intel.com,
- vinay.belgaumkar@intel.com
-References: <20241029213621.170938-1-jonathan.cavitt@intel.com>
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+References: <20241030025327.1487897-1-ashutosh.dixit@intel.com>
+ <20241030025327.1487897-3-ashutosh.dixit@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241029213621.170938-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20241030025327.1487897-3-ashutosh.dixit@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,62 +71,380 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2024-10-29 at 21:36:21 +0000, Jonathan Cavitt wrote:
-> The subtests of sysfs_timeslice_duration modify the preempt_timeout_us
-> and timeslice_duration_us values.  However, while the test does restore
-> the timeslice_duration_us value at the end of execution, it does not do
-> the same for preempt_timeout_us.  Because the value is not properly
-> restored, future tests can end up using the unexpected preempt timeout
-> value and thus have unexpected behavior.
+Hi Ashutosh,
+On 2024-10-29 at 19:53:27 -0700, Ashutosh Dixit wrote:
+> Verify OA syncs signal correctly in open and change config code
+> paths. Verify with different types of sync objects as well as by both
+> waiting and skipping the wait for syncs to signal.
 > 
-> Save and restore the preempt_timeout_us value during the test.
+> v2: Significantly expand oa syncs testing as described above
+> v3: Always wait in userptr/ufence cases to avoid -EFAULT errors
 > 
-> This fix does not apply to xe_sysfs_preempt_timeout because only the
-> preempt_timeout_us is modified during those tests, and the value is
-> correcty restored before the tests end.
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2976
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> Reviewed-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 > ---
->  tests/intel/xe_sysfs_timeslice_duration.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+>  lib/xe/xe_oa.c      |   6 +-
+>  lib/xe/xe_oa.h      |   2 +
+>  tests/intel/xe_oa.c | 282 ++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 287 insertions(+), 3 deletions(-)
 > 
-> diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
-> index cf95a3ac1c..6912f166b4 100644
-> --- a/tests/intel/xe_sysfs_timeslice_duration.c
-> +++ b/tests/intel/xe_sysfs_timeslice_duration.c
-> @@ -115,10 +115,11 @@ static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_
->  static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
->  {
->  	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
-> -	unsigned int saved;
-> +	unsigned int saved, old_pt;
->  	uint64_t elapsed;
->  	uint64_t epsilon;
->  
-> +	igt_assert(igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &old_pt) == 1);
->  	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) == 1);
->  	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
->  	igt_debug("Initial %s:%u\n", property[0], saved);
-> @@ -140,6 +141,9 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
->  	}
->  
->  	set_timeslice_duration(engine, saved);
-> +	igt_assert_lte(0, igt_sysfs_printf(engine, "preempt_timeout_us", "%u", old_pt));
+> diff --git a/lib/xe/xe_oa.c b/lib/xe/xe_oa.c
+> index 4fdd0b8c95..c168669c5d 100644
+> --- a/lib/xe/xe_oa.c
+> +++ b/lib/xe/xe_oa.c
+> @@ -1025,8 +1025,8 @@ const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
+>  	return "unknown";
+>  }
+> 
 
-Looks good but it will not reach this line if any
-igt_assert/require triggers before.
+Please describe public lib function here.
 
 Regards,
 Kamil
 
-> +	igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &saved);
-> +	igt_assert_eq(saved, old_pt);
+> -static void xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
+> -			      struct drm_xe_ext_set_property *extn)
+> +void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
+> +			     struct drm_xe_ext_set_property *extn)
+>  {
+>  	__u64 *prop = from_user_pointer(properties->properties_ptr);
+>  	struct drm_xe_ext_set_property *ext = extn;
+> @@ -1063,7 +1063,7 @@ int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg)
+>  		struct intel_xe_oa_open_prop *oprop = (struct intel_xe_oa_open_prop *)arg;
+>  
+>  		igt_assert_lte(oprop->num_properties, XE_OA_MAX_SET_PROPERTIES);
+> -		xe_oa_prop_to_ext(oprop, ext);
+> +		intel_xe_oa_prop_to_ext(oprop, ext);
+>  	}
+>  
+>  	return igt_ioctl(fd, DRM_IOCTL_XE_OBSERVATION, &p);
+> diff --git a/lib/xe/xe_oa.h b/lib/xe/xe_oa.h
+> index 962f9dddcc..7d3d074560 100644
+> --- a/lib/xe/xe_oa.h
+> +++ b/lib/xe/xe_oa.h
+> @@ -398,6 +398,8 @@ uint64_t intel_xe_perf_read_record_timestamp_raw(const struct intel_xe_perf *per
+>  const char *intel_xe_perf_read_report_reason(const struct intel_xe_perf *perf,
+>  					     const struct intel_xe_perf_record_header *record);
+>  
+> +void intel_xe_oa_prop_to_ext(struct intel_xe_oa_open_prop *properties,
+> +			     struct drm_xe_ext_set_property *extn);
+>  int intel_xe_perf_ioctl(int fd, enum drm_xe_observation_op op, void *arg);
+>  void intel_xe_perf_ioctl_err(int fd, enum drm_xe_observation_op op, void *arg, int err);
+>  
+> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
+> index 92f5828c79..33e978a488 100644
+> --- a/tests/intel/xe_oa.c
+> +++ b/tests/intel/xe_oa.c
+> @@ -22,6 +22,7 @@
+>  #include "drm.h"
+>  #include "igt.h"
+>  #include "igt_device.h"
+> +#include "igt_syncobj.h"
+>  #include "igt_sysfs.h"
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+> @@ -4463,6 +4464,255 @@ static void test_mapped_oa_buffer(map_oa_buffer_test_t test_with_fd_open,
+>  	__perf_close(stream_fd);
 >  }
 >  
+> +
+> +/* Return alternative config_id if available, else just return config_id */
+> +static void find_alt_oa_config(u32 config_id, u32 *alt_config_id)
+> +{
+> +	struct dirent *entry;
+> +	int metrics_fd, dir_fd;
+> +	DIR *metrics_dir;
+> +	bool ret;
+> +
+> +	metrics_fd = openat(sysfs, "metrics", O_DIRECTORY);
+> +	igt_assert_lte(0, metrics_fd);
+> +
+> +	metrics_dir = fdopendir(metrics_fd);
+> +	igt_assert(metrics_dir);
+> +
+> +	while ((entry = readdir(metrics_dir))) {
+> +		if (entry->d_type != DT_DIR)
+> +			continue;
+> +
+> +		dir_fd = openat(metrics_fd, entry->d_name, O_RDONLY);
+> +		ret = __igt_sysfs_get_u32(dir_fd, "id", alt_config_id);
+> +		close(dir_fd);
+> +		if (!ret)
+> +			continue;
+> +
+> +		if (config_id != *alt_config_id)
+> +			goto exit;
+> +	}
+> +
+> +	*alt_config_id = config_id;
+> +exit:
+> +	closedir(metrics_dir);
+> +}
+> +
+> +#define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
+> +
+> +#define WAIT		(0x1 << 0)
+> +#define CONFIG		(0x1 << 1)
+> +
+> +enum oa_sync_type {
+> +	OA_SYNC_TYPE_SYNCOBJ,
+> +	OA_SYNC_TYPE_USERPTR,
+> +	OA_SYNC_TYPE_UFENCE,
+> +};
+> +
+> +struct oa_sync {
+> +	enum oa_sync_type sync_type;
+> +	u32 syncobj;
+> +	u32 vm;
+> +	u32 bo;
+> +	size_t bo_size;
+> +	struct {
+> +		uint64_t vm_sync;
+> +		uint64_t pad;
+> +		uint64_t oa_sync;
+> +	} *data;
+> +};
+> +
+> +static void
+> +oa_sync_init(enum oa_sync_type sync_type, const struct drm_xe_engine_class_instance *hwe,
+> +	     struct oa_sync *osync, struct drm_xe_sync *sync)
+> +{
+> +	uint64_t addr = 0x1a0000;
+> +
+> +	osync->sync_type = sync_type;
+> +	sync->flags = DRM_XE_SYNC_FLAG_SIGNAL;
+> +
+> +	switch (osync->sync_type) {
+> +	case OA_SYNC_TYPE_SYNCOBJ:
+> +		osync->syncobj = syncobj_create(drm_fd, 0);
+> +		sync->handle = osync->syncobj;
+> +		sync->type = DRM_XE_SYNC_TYPE_SYNCOBJ;
+> +		break;
+> +	case OA_SYNC_TYPE_USERPTR:
+> +	case OA_SYNC_TYPE_UFENCE:
+> +		sync->type = DRM_XE_SYNC_TYPE_USER_FENCE;
+> +		sync->timeline_value = USER_FENCE_VALUE;
+> +
+> +		osync->vm = xe_vm_create(drm_fd, 0, 0);
+> +		osync->bo_size = xe_bb_size(drm_fd, sizeof(*osync->data));
+> +		if (osync->sync_type == OA_SYNC_TYPE_USERPTR) {
+> +			osync->data = aligned_alloc(xe_get_default_alignment(drm_fd),
+> +						    osync->bo_size);
+> +			igt_assert(osync->data);
+> +		} else {
+> +			osync->bo = xe_bo_create(drm_fd, osync->vm, osync->bo_size,
+> +						 vram_if_possible(drm_fd, hwe->gt_id),
+> +						 DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +			osync->data = xe_bo_map(drm_fd, osync->bo, osync->bo_size);
+> +		}
+> +		memset(osync->data, 0, osync->bo_size);
+> +
+> +		sync->addr = to_user_pointer(&osync->data[0].vm_sync);
+> +		if (osync->bo)
+> +			xe_vm_bind_async(drm_fd, osync->vm, 0, osync->bo, 0,
+> +					 addr, osync->bo_size, sync, 1);
+> +		else
+> +			xe_vm_bind_userptr_async(drm_fd, osync->vm, 0,
+> +						 to_user_pointer(osync->data),
+> +						 addr, osync->bo_size, sync, 1);
+> +		xe_wait_ufence(drm_fd, &osync->data[0].vm_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
+> +
+> +		sync->addr = to_user_pointer(&osync->data[0].oa_sync);
+> +		break;
+> +	default:
+> +		igt_assert(false);
+> +	}
+> +}
+> +
+> +static void oa_sync_wait(struct oa_sync *osync)
+> +{
+> +	switch (osync->sync_type) {
+> +	case OA_SYNC_TYPE_SYNCOBJ:
+> +		igt_assert(syncobj_wait(drm_fd, &osync->syncobj, 1, INT64_MAX, 0, NULL));
+> +		syncobj_reset(drm_fd, &osync->syncobj, 1);
+> +		break;
+> +	case OA_SYNC_TYPE_USERPTR:
+> +	case OA_SYNC_TYPE_UFENCE:
+> +		xe_wait_ufence(drm_fd, &osync->data[0].oa_sync, USER_FENCE_VALUE, 0, NSEC_PER_SEC);
+> +		osync->data[0].oa_sync = 0;
+> +		break;
+> +	default:
+> +		igt_assert(false);
+> +	}
+> +}
+> +
+> +static void oa_sync_free(struct oa_sync *osync)
+> +{
+> +	switch (osync->sync_type) {
+> +	case OA_SYNC_TYPE_SYNCOBJ:
+> +		syncobj_destroy(drm_fd, osync->syncobj);
+> +		break;
+> +	case OA_SYNC_TYPE_USERPTR:
+> +	case OA_SYNC_TYPE_UFENCE:
+> +		if (osync->bo) {
+> +			munmap(osync->data, osync->bo_size);
+> +			gem_close(drm_fd, osync->bo);
+> +		} else {
+> +			free(osync->data);
+> +		}
+> +		xe_vm_destroy(drm_fd, osync->vm);
+> +		break;
+> +	default:
+> +		igt_assert(false);
+> +	}
+> +}
+> +
+> +/**
+> + * SUBTEST: syncs-%s-%s
+> + *
+> + * Description: Test OA syncs (with %arg[1] sync types and %arg[2] wait and
+> + *		reconfig flags) signal correctly in open and reconfig code
+> + *		paths
+> + *
+> + * arg[1]:
+> + *
+> + * @syncobj:	sync type syncobj
+> + *
+> + * arg[2]:
+> + *
+> + * @wait-cfg:	Exercise reconfig path and wait for syncs to signal
+> + * @wait:	Don't exercise reconfig path and wait for syncs to signal
+> + * @cfg:	Exercise reconfig path but don't wait for syncs to signal
+> + * @none:	Don't exercise reconfig path and don't wait for syncs to signal
+> + */
+> +
+> +/**
+> + * SUBTEST: syncs-%s-%s
+> + *
+> + * Description: Test OA syncs (with %arg[1] sync types and %arg[2] wait and
+> + *		reconfig flags) signal correctly in open and reconfig code
+> + *		paths
+> + *
+> + * arg[1]:
+> + *
+> + * @userptr:	sync type userptr
+> + * @ufence:	sync type ufence
+> + *
+> + * arg[2]:
+> + *
+> + * @wait-cfg:	Exercise reconfig path and wait for syncs to signal
+> + * @wait:	Don't exercise reconfig path and wait for syncs to signal
+> + */
+> +static void test_syncs(const struct drm_xe_engine_class_instance *hwe,
+> +		       enum oa_sync_type sync_type, int flags)
+> +{
+> +	struct drm_xe_ext_set_property extn[XE_OA_MAX_SET_PROPERTIES] = {};
+> +	struct intel_xe_perf_metric_set *test_set = metric_set(hwe);
+> +	struct drm_xe_sync sync = {};
+> +	struct oa_sync osync = {};
+> +	uint64_t open_properties[] = {
+> +		DRM_XE_OA_PROPERTY_OA_UNIT_ID, 0,
+> +		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
+> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+> +		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(test_set->perf_oa_format),
+> +		DRM_XE_OA_PROPERTY_NUM_SYNCS, 1,
+> +		DRM_XE_OA_PROPERTY_SYNCS, to_user_pointer(&sync),
+> +	};
+> +	struct intel_xe_oa_open_prop open_param = {
+> +		.num_properties = ARRAY_SIZE(open_properties) / 2,
+> +		.properties_ptr = to_user_pointer(open_properties),
+> +	};
+> +	uint64_t config_properties[] = {
+> +		DRM_XE_OA_PROPERTY_OA_METRIC_SET, 0, /* Filled later */
+> +		DRM_XE_OA_PROPERTY_NUM_SYNCS, 1,
+> +		DRM_XE_OA_PROPERTY_SYNCS, to_user_pointer(&sync),
+> +	};
+> +	struct intel_xe_oa_open_prop config_param = {
+> +		.num_properties = ARRAY_SIZE(config_properties) / 2,
+> +		.properties_ptr = to_user_pointer(config_properties),
+> +	};
+> +	uint32_t alt_config_id;
+> +	int ret;
+> +
+> +	/*
+> +	 * Necessarily wait in userptr/ufence cases, otherwise IGT process can exit
+> +	 * after calling oa_sync_free, which results in -EFAULT when kernel signals
+> +	 * the userptr/ufence
+> +	 */
+> +	if (sync_type == OA_SYNC_TYPE_USERPTR || sync_type == OA_SYNC_TYPE_UFENCE)
+> +		flags |= WAIT;
+> +
+> +	oa_sync_init(sync_type, hwe, &osync, &sync);
+> +
+> +	stream_fd = __perf_open(drm_fd, &open_param, false);
+> +
+> +	/* Reset the sync object if we are going to reconfig the stream */
+> +	if (flags & (WAIT | CONFIG))
+> +		oa_sync_wait(&osync);
+> +
+> +	if (!(flags & CONFIG))
+> +		goto exit;
+> +
+> +	/* Change stream configuration */
+> +	find_alt_oa_config(test_set->perf_oa_metrics_set, &alt_config_id);
+> +
+> +	config_properties[1] = alt_config_id;
+> +	intel_xe_oa_prop_to_ext(&config_param, extn);
+> +
+> +	ret = igt_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_CONFIG, extn);
+> +	igt_assert_eq(ret, test_set->perf_oa_metrics_set);
+> +
+> +	if (flags & WAIT)
+> +		oa_sync_wait(&osync);
+> +exit:
+> +	__perf_close(stream_fd);
+> +	oa_sync_free(&osync);
+> +}
+> +
+>  static const char *xe_engine_class_name(uint32_t engine_class)
+>  {
+>  	switch (engine_class) {
+> @@ -4511,6 +4761,22 @@ static const char *xe_engine_class_name(uint32_t engine_class)
+>  
 >  igt_main
+>  {
+> +	const struct sync_section {
+> +		const char *name;
+> +		enum oa_sync_type sync_type;
+> +		unsigned int flags;
+> +	} sync_sections[] = {
+> +		{ "syncobj-wait-cfg", OA_SYNC_TYPE_SYNCOBJ, WAIT | CONFIG},
+> +		{ "syncobj-wait", OA_SYNC_TYPE_SYNCOBJ, WAIT },
+> +		{ "syncobj-cfg", OA_SYNC_TYPE_SYNCOBJ, CONFIG },
+> +		{ "syncobj-none", OA_SYNC_TYPE_SYNCOBJ, 0 },
+> +		/* userptr/ufence cases always set WAIT (see test_syncs) */
+> +		{ "userptr-wait-cfg", OA_SYNC_TYPE_USERPTR, WAIT | CONFIG},
+> +		{ "userptr-wait", OA_SYNC_TYPE_USERPTR, WAIT },
+> +		{ "ufence-wait-cfg", OA_SYNC_TYPE_UFENCE, WAIT | CONFIG},
+> +		{ "ufence-wait", OA_SYNC_TYPE_UFENCE, WAIT },
+> +		{ NULL },
+> +	};
+>  	struct drm_xe_engine_class_instance *hwe = NULL;
+>  	struct xe_device *xe_dev;
+>  
+> @@ -4713,6 +4979,22 @@ igt_main
+>  		}
+>  	}
+>  
+> +	igt_subtest_group {
+> +		igt_fixture {
+> +			struct drm_xe_query_oa_units *qoa = xe_oa_units(drm_fd);
+> +			struct drm_xe_oa_unit *oau = (struct drm_xe_oa_unit *)&qoa->oa_units[0];
+> +
+> +			igt_require(oau->capabilities & DRM_XE_OA_CAPS_SYNCS);
+> +		}
+> +
+> +		for (const struct sync_section *s = sync_sections; s->name; s++) {
+> +			igt_subtest_with_dynamic_f("syncs-%s", s->name)
+> +				__for_one_render_engine(hwe)
+> +					test_syncs(hwe, s->sync_type, s->flags);
+> +
+> +		}
+> +	}
+> +
+>  	igt_fixture {
+>  		/* leave sysctl options in their default state... */
+>  		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
 > -- 
-> 2.43.0
+> 2.41.0
 > 
