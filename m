@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 155D6D6B6CE
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 19:37:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 897E4D6B6CE
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Oct 2024 19:37:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C616D10E7F5;
-	Wed, 30 Oct 2024 19:36:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4532710E7F7;
+	Wed, 30 Oct 2024 19:37:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QlicODMj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cBXqmQU2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2822310E7F5
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 19:36:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4B9B10E7F7
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 19:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730317019; x=1761853019;
+ t=1730317025; x=1761853025;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ALsYtxbP4QjIlcGKtSYY1BrzwIqx4UTrgkFrta7TT/c=;
- b=QlicODMjUvlManYHGEtYz5Ob4TOYPoPlTtd9O5ZSCxA5WPz7B7xZEpjF
- FA4hIUNqpanaj2flMIB7VvU9VsqUh9SQjWsQqeOgWr9f1ImQhY6srBkfF
- gVJbCHG7Ojp8NFnRCQxXyEpsTsQeP6DyYQHg3oygQ37I5VJndUvZAHLQj
- UM+Gkapginhua7r2Y0wZJGgnjzf1ipPQr0YOpz+ceEIZbwxtRiYTu8qsk
- UrHXAb7hjWTKyA5OIPD9FHZHo8BUYfVnThogFmgLL0BJX/cjuTxl2tITe
- TO72ib0fv+4uEwQ1o7ceWdoFDy4sUzh5j/nYUj2hFIbzHFVKxthYwGkWE A==;
-X-CSE-ConnectionGUID: AIVY6GhgT+aCFAsEr6WlMQ==
-X-CSE-MsgGUID: 5sKG1bcySoa4hKWt+ufbjQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="47499966"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="47499966"
+ bh=LrQWSdRCxql89JLcr0IvzKJVSp9U/OjiP+lh5CD0o+k=;
+ b=cBXqmQU2r174zDYa0DcJWrkzu1P+p1sVkks5NpsZFeVEsR3ZIAX/TKTP
+ ImRtSo17gMI3no4TKEWNb7mHGe4KteqbQJSXT9BuAAHKpXOKMskzizQCt
+ /xFpKllAU86h0JAfLd15OQZniTNb1YxrrJ+1q9yXELKUrSrJeA4gbzBMx
+ dKkuKwgaBmLbfK0/05Ny5ZasmcbiL7B7qRM2OClhhiZeTS6/P9bYbyJzF
+ 2gSwbiyYRmcRlNODT+PU2D+7w/wxSIFZxaGoq7bD220CR18KGCL17V6UI
+ FB2/eYq9aOifL2aXb1qwjxJMYuerJnj/2Wkt2H/fb4gdwlj7h+sPrwyLb Q==;
+X-CSE-ConnectionGUID: pDphWqU9TRS5KNR2l8paMQ==
+X-CSE-MsgGUID: Y0IaMBxjTu+yUWZn5h3Zmg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="47499974"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="47499974"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 12:36:59 -0700
-X-CSE-ConnectionGUID: PeGgMGpfS82HuTKxwEqjug==
-X-CSE-MsgGUID: lLvTlIgPQy+5SeLZ9yHo4g==
+ 30 Oct 2024 12:37:05 -0700
+X-CSE-ConnectionGUID: 7P+UkiDPQy+L7NJhEb9udQ==
+X-CSE-MsgGUID: CI8ILrRGTfyvQl/lcX7cUg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82578444"
+X-IronPort-AV: E=Sophos;i="6.11,245,1725346800"; d="scan'208";a="82578449"
 Received: from mbernato-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.84.149])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2024 12:36:55 -0700
+ 30 Oct 2024 12:37:02 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
@@ -50,10 +50,9 @@ Cc: adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
  piotr.piorkowski@intel.com, satyanarayana.k.v.p@intel.com,
  tomasz.lis@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 3/5] lib/xe/xe_sriov_debugfs: Add function to read
- provisioned ranges
-Date: Wed, 30 Oct 2024 20:36:27 +0100
-Message-Id: <20241030193629.1238637-4-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 4/5] tests/intel/xe_sriov_flr: Verify full LMEM range
+Date: Wed, 30 Oct 2024 20:36:28 +0100
+Message-Id: <20241030193629.1238637-5-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20241030193629.1238637-1-marcin.bernatowicz@linux.intel.com>
 References: <20241030193629.1238637-1-marcin.bernatowicz@linux.intel.com>
@@ -75,10 +74,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Implement xe_sriov_pf_debugfs_read_provisioned_ranges() to read and
-parse VFs provisioned ranges from the debug filesystem. Introduce
-xe_sriov_debugfs_provisioned_attr_name() to get the debugfs attribute
-name for a given shared resource type.
+Read provisioned LMEM ranges from debugfs lmem_provisioned attribute
+and verify full LMEM ranges in clear-lmem subcheck.
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
@@ -91,186 +88,103 @@ Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
 Cc: Tomasz Lis <tomasz.lis@intel.com>
 ---
- lib/xe/xe_sriov_debugfs.c | 139 +++++++++++++++++++++++++++++++++++++-
- lib/xe/xe_sriov_debugfs.h |   8 ++-
- 2 files changed, 145 insertions(+), 2 deletions(-)
+ tests/intel/xe_sriov_flr.c | 59 +++++++++++++++++++++++++++++---------
+ 1 file changed, 45 insertions(+), 14 deletions(-)
 
-diff --git a/lib/xe/xe_sriov_debugfs.c b/lib/xe/xe_sriov_debugfs.c
-index dc6ef9da3..84fd08c3c 100644
---- a/lib/xe/xe_sriov_debugfs.c
-+++ b/lib/xe/xe_sriov_debugfs.c
-@@ -9,8 +9,9 @@
- #include "drmtest.h"
- #include "igt_debugfs.h"
- #include "igt_sriov_device.h"
--#include "xe/xe_sriov_debugfs.h"
+diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
+index 5fc1baf96..f698eaf3d 100644
+--- a/tests/intel/xe_sriov_flr.c
++++ b/tests/intel/xe_sriov_flr.c
+@@ -13,6 +13,8 @@
+ #include "linux_scaffold.h"
+ #include "xe/xe_mmio.h"
  #include "xe/xe_query.h"
-+#include "xe/xe_sriov_debugfs.h"
 +#include "xe/xe_sriov_provisioning.h"
++#include "xe/xe_sriov_debugfs.h"
  
- #define SRIOV_DEBUGFS_PATH_MAX 96
- 
-@@ -67,3 +68,139 @@ int xe_sriov_pf_debugfs_attr_open(int pf, unsigned int vf_num, unsigned int gt_n
- 
- 	return debugfs;
+ /**
+  * TEST: xe_sriov_flr
+@@ -600,14 +602,6 @@ static void *mmap_vf_lmem(int pf_fd, int vf_num, size_t length, int prot, off_t
+ 	return addr;
  }
+ 
+-static uint64_t get_vf_lmem_size(int pf_fd, int vf_num)
+-{
+-	/* limit to first two pages
+-	 * TODO: Extend to full range when the proper interface (lmem_provisioned) is added
+-	 */
+-	return SZ_4M;
+-}
+-
+ static void munmap_vf_lmem(struct lmem_info *lmem)
+ {
+ 	igt_debug_on_f(munmap(lmem->addr, lmem->size),
+@@ -683,10 +677,49 @@ static bool lmem_mmap_write_munmap(int pf_fd, int vf_num, size_t length, char va
+ 	return result;
+ }
+ 
+-static void lmem_subcheck_init(struct subcheck_data *data)
++static int populate_vf_lmem_sizes(struct subcheck_data *data)
+ {
+ 	struct lmem_data *ldata = (struct lmem_data *)data;
++	struct xe_sriov_provisioned_range *ranges;
++	unsigned int nr_ranges, gt;
++	int ret;
 +
-+/**
-+ * xe_sriov_debugfs_provisioned_attr_name:
-+ * @res: The shared resource type
-+ *
-+ * Returns the name of the debugfs provisioned attribute corresponding
-+ * to the given shared resource type.
-+ *
-+ * Return: A string representing the debugfs provisioned attribute name if the
-+ *         resource type is valid, otherwise NULL.
-+ */
-+const char *xe_sriov_debugfs_provisioned_attr_name(enum xe_sriov_shared_res res)
-+{
-+	switch (res) {
-+	case XE_SRIOV_SHARED_RES_CONTEXTS:
-+		return "contexts_provisioned";
-+	case XE_SRIOV_SHARED_RES_DOORBELLS:
-+		return "doorbells_provisioned";
-+	case XE_SRIOV_SHARED_RES_GGTT:
-+		return "ggtt_provisioned";
-+	case XE_SRIOV_SHARED_RES_LMEM:
-+		return "lmem_provisioned";
-+	}
++	ldata->vf_lmem_size = calloc(data->num_vfs + 1, sizeof(size_t));
++	igt_assert(ldata->vf_lmem_size);
 +
-+	return NULL;
-+}
-+
-+static int parse_provisioned_range(const char *line,
-+				   struct xe_sriov_provisioned_range *range,
-+				   enum xe_sriov_shared_res res)
-+{
-+	int ret = -1;
-+
-+	switch (res) {
-+	case XE_SRIOV_SHARED_RES_CONTEXTS:
-+	case XE_SRIOV_SHARED_RES_DOORBELLS:
-+		if (sscanf(line, "VF%u: %lu-%lu", &range->vf_id, &range->start, &range->end) == 3)
-+			ret = 0;
-+		break;
-+	case XE_SRIOV_SHARED_RES_GGTT:
-+		if (sscanf(line, "VF%u: %lx-%lx", &range->vf_id, &range->start, &range->end) == 3)
-+			ret = 0;
-+		break;
-+	case XE_SRIOV_SHARED_RES_LMEM:
-+		/* Convert to an inclusive range as is the case for other resources.
-+		 * The start is always 0 and the end is the value read - 1.
-+		 */
-+		if (sscanf(line, "VF%u: %lu", &range->vf_id, &range->end) == 2)
-+			ret = 0;
-+		if (!range->end)
-+			return -1;
-+		range->end -= 1;
-+		range->start = 0;
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+/**
-+ * xe_sriov_debugfs_pf_read_provisioned_ranges:
-+ * @pf_fd: PF device file descriptor
-+ * @res: resource
-+ * @gt_id: GT number
-+ * @ranges: pointer to array of provisioned ranges
-+ * @nr_ranges: pointer to number of read provisioned VFs
-+ *
-+ * Read provisioned ranges of shared resources.
-+ * Allocates the space for ranges and updates
-+ * the nr_ranges to the number of read ranges.
-+ * The caller should free the allocated space.
-+ *
-+ * Return: 0 if successful in reading ranges, otherwise negative error code.
-+ */
-+int xe_sriov_pf_debugfs_read_provisioned_ranges(int pf_fd, enum xe_sriov_shared_res res,
-+						unsigned int gt_id,
-+						struct xe_sriov_provisioned_range **ranges,
-+						unsigned int *nr_ranges)
-+{
-+	struct xe_sriov_provisioned_range *new_ranges;
-+	struct xe_sriov_provisioned_range range;
-+	FILE *file;
-+	size_t n = 0;
-+	const char *fname;
-+	char *line = NULL;
-+	int fd, ret = 0;
-+	ssize_t nread;
-+
-+	*nr_ranges = 0;
-+	*ranges = NULL;
-+
-+	fname = xe_sriov_debugfs_provisioned_attr_name(res);
-+	if (!fname)
-+		return -EINVAL;
-+
-+	fd = xe_sriov_pf_debugfs_attr_open(pf_fd, 0, gt_id, fname, O_RDONLY);
-+	if (fd < 0)
-+		return -ENOENT;
-+	file = fdopen(fd, "r");
-+	if (!file) {
-+		close(fd);
-+		return -errno;
-+	}
-+
-+	while ((nread = getline(&line, &n, file)) != -1) {
-+		ret = parse_provisioned_range(line, &range, res);
++	xe_for_each_gt(data->pf_fd, gt) {
++		ret = xe_sriov_pf_debugfs_read_provisioned_ranges(data->pf_fd,
++								  XE_SRIOV_SHARED_RES_LMEM,
++								  gt, &ranges, &nr_ranges);
 +		if (ret) {
-+			igt_debug("Failed to parse line: %s\n", line);
-+			goto cleanup;
++			set_skip_reason(data, "Failed read %s on gt%u (%d)\n",
++					xe_sriov_debugfs_provisioned_attr_name(XE_SRIOV_SHARED_RES_LMEM),
++					gt, ret);
++			return -1;
 +		}
 +
-+		new_ranges = realloc(*ranges, sizeof(range) * (*nr_ranges + 1));
-+		if (!new_ranges) {
-+			ret = -ENOMEM;
-+			goto cleanup;
++		for (unsigned int i = 0; i < nr_ranges; ++i) {
++			const unsigned int vf_id = ranges[i].vf_id;
++
++			igt_assert(vf_id >= 1 && vf_id <= data->num_vfs);
++			/* Sum the allocation for vf_id (inclusive range) */
++			ldata->vf_lmem_size[vf_id] += ranges[i].end - ranges[i].start + 1;
 +		}
-+		*ranges = new_ranges;
-+		memcpy(&(*ranges)[*nr_ranges], &range, sizeof(range));
-+		(*nr_ranges)++;
++
++		free(ranges);
 +	}
 +
-+	if (ferror(file))
-+		ret = -EIO;
-+
-+cleanup:
-+	free(line);
-+	fclose(file);
-+
-+	if (ret < 0) {
-+		free(*ranges);
-+		*ranges = NULL;
-+		*nr_ranges = 0;
-+	}
-+
-+	return ret;
++	for (int vf_id = 1; vf_id <= data->num_vfs; ++vf_id)
++		if (!ldata->vf_lmem_size[vf_id]) {
++			set_skip_reason(data, "No LMEM provisioned for VF%u\n", vf_id);
++			return -1;
++		}
+ 
++	return 0;
 +}
-diff --git a/lib/xe/xe_sriov_debugfs.h b/lib/xe/xe_sriov_debugfs.h
-index e859ff5b2..856445e76 100644
---- a/lib/xe/xe_sriov_debugfs.h
-+++ b/lib/xe/xe_sriov_debugfs.h
-@@ -6,9 +6,15 @@
- #ifndef __XE_SRIOV_DEBUGFS_H__
- #define __XE_SRIOV_DEBUGFS_H__
++
++static void lmem_subcheck_init(struct subcheck_data *data)
++{
+ 	igt_assert_fd(data->pf_fd);
+ 	igt_assert(data->num_vfs);
  
--#include <stdint.h>
-+enum xe_sriov_shared_res;
-+struct xe_sriov_provisioned_range;
+@@ -695,11 +728,9 @@ static void lmem_subcheck_init(struct subcheck_data *data)
+ 		return;
+ 	}
  
- int xe_sriov_pf_debugfs_attr_open(int pf, unsigned int vf_num, unsigned int gt_num,
- 				  const char *attr, int mode);
-+const char *xe_sriov_debugfs_provisioned_attr_name(enum xe_sriov_shared_res res);
-+int xe_sriov_pf_debugfs_read_provisioned_ranges(int pf_fd, enum xe_sriov_shared_res res,
-+						unsigned int gt_id,
-+						struct xe_sriov_provisioned_range **ranges,
-+						unsigned int *nr_ranges);
+-	ldata->vf_lmem_size = calloc(data->num_vfs + 1, sizeof(size_t));
+-	igt_assert(ldata->vf_lmem_size);
+-
+-	for (int vf_id = 1; vf_id <= data->num_vfs; ++vf_id)
+-		ldata->vf_lmem_size[vf_id] = get_vf_lmem_size(ldata->base.pf_fd, vf_id);
++	if (populate_vf_lmem_sizes(data))
++		/* skip reason set in populate_vf_lmem_sizes */
++		return;
+ }
  
- #endif /* __XE_SRIOV_DEBUGFS_H__ */
+ static void lmem_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
 -- 
 2.31.1
 
