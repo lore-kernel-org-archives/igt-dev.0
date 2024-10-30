@@ -4,58 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3820AD767D8
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 14:58:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BED90D767DA
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 15:02:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E20DA10E8BD;
-	Thu, 31 Oct 2024 14:58:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6B64010E8BD;
+	Thu, 31 Oct 2024 15:02:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hmuOErhx";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="VAiIe9Oo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D2D4010E8BD
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 14:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730386696; x=1761922696;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=zEhAd/uDk8xCwfTzKLkjmQ7vBVgjJDp1itJHI5Bk3Nk=;
- b=hmuOErhx476flLbJkfelN7RS0eqAN1IP6URgAN+VHixb0+ZhdkBitZkP
- rUPlajGNaiPvAC0Qv/5WX+tkob61fhQ8bp+RbMfGEu+Oi8Gk7Eus9zBZc
- mGHvh7AghETuNwtPgpNcClcSTqwh0jBEynO9FTT+HRCE1ZdpU8qEbgd1b
- j+mvWDUyqScWdW/pWnItNW9Pc99M2+B959F4JHNMYsGBwZCBioCbBux+k
- MIb0E7h0m8dE0HhTxDW6dL+7Oin2HZR+Rpy9QJ1h58oJK4w3j4XDskILa
- 099bsEoVW+lYW18qvUH6kQWHpo7VXsEMoSC7TQ9s8IqznonEJSXMsEpV4 A==;
-X-CSE-ConnectionGUID: N73DEKDqSKO6Lndm9hBdyQ==
-X-CSE-MsgGUID: mtzG/GDdQOqb0etuOSWxPg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="34059827"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="34059827"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 07:58:15 -0700
-X-CSE-ConnectionGUID: AFNZPK0nR/mWIdZw1xEE8g==
-X-CSE-MsgGUID: KRNzarp5ROCfA14qLQEVcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="87785085"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.202])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 07:58:14 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t 1/2] lib/igt_kmod: Drop legacy kunit fallback
-Date: Thu, 31 Oct 2024 15:58:11 +0100
-Message-ID: <2672104.tIAgqjz4sF@jkrzyszt-mobl2.ger.corp.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <t5p33w3s2bzaddakwcagzaab7ys2epo2bile3ubtanzuuqh4fb@5ypkaql3wtn7>
-References: <20241031003142.863437-1-lucas.demarchi@intel.com>
- <3310304.N7aMVyhfb1@jkrzyszt-mobl2.ger.corp.intel.com>
- <t5p33w3s2bzaddakwcagzaab7ys2epo2bile3ubtanzuuqh4fb@5ypkaql3wtn7>
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com
+ [209.85.160.180])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11D0910E7E2
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 18:41:02 +0000 (UTC)
+Received: by mail-qt1-f180.google.com with SMTP id
+ d75a77b69052e-4609c96b2e5so1433471cf.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Oct 2024 11:41:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20230601; t=1730313660; x=1730918460; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=Auy6yH1CdVRTOgnUPCkOQKny+q+AZCV2Tod3FIFCjT4=;
+ b=VAiIe9OoYeIK6F3gHaD4Gy7SS8/JJZ1M0dOu86np50VOsrKu6oXG2vyM3DLIZd7OtT
+ znquTnMGwmCf+Dt+WfTCvkqZzIhpmP19cjGDePcGRVYPCvipEWj0YPjgWTgmPGBHdVWv
+ 58GSz0w9+8mwaZSX9zRp/EUKqxCV3cX3xmBLCAKwsJgn8WgmYsTddfUPEivAC9379OrC
+ tG+9f/sOn02rt1TZGJbxbdYBuL725dq2x6qVpjWFrguNU/JpQq9t7ICR+AE8ZBYvxvch
+ Mvu5t+SK3Y9JDogFVFvw33FDwMsUTrhxcQQ0+oEccpPMPNeLU+wxAo7NGwaSoUKaQv26
+ x/jA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730313660; x=1730918460;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=Auy6yH1CdVRTOgnUPCkOQKny+q+AZCV2Tod3FIFCjT4=;
+ b=YQsobCRTqjt4DNUzZzOOzH36WMGPC1bdoawN3Bgz2jRI2KAD9g6/IrYqcrZWrsRa9p
+ cqDaLyH785X+NRv77OiSimdi5aQVF+TdShASsFXoBT77W5viHfhHL1UFQYF2iRnK8c5x
+ l73emTt/+cR3o2yR9D7TyJ2iifDICYG0QiwkY6r1V4yRC7TMpKsOhoCopR+vGAlhodFO
+ TTJl05yHYjEUpcUt/igqHqOM2y3qQV6n+C4heSsB6+/kp4uNjBQNPKWpTr23UU5j0Cti
+ yAsDItvHFxYLmSnU9XYv071eRDrXyyaBUr5qWifRQcPJ44WVGceuRXSnKeAxV+VcuZ0P
+ m/Eg==
+X-Gm-Message-State: AOJu0YyrL1AxMV204x0jNLwsA4PpoMOA/mOghp0eDWe87KVON/hCfBBb
+ /+Zxt5bQXodWS/8L4HB/jcy13dwwhAGX5hk8wAnCRFX0OO+Zda2/YdRMRtBnBUc=
+X-Google-Smtp-Source: AGHT+IHkR8PiLGiIA7gHUvz6o0/byT95JXAqBxGZ9GkChRQgHB2XZOCsH0riSIo2rIOpJVzkfTKLzQ==
+X-Received: by 2002:ac8:58ce:0:b0:461:20b0:9909 with SMTP id
+ d75a77b69052e-4613c0541d7mr259647291cf.29.1730313660289; 
+ Wed, 30 Oct 2024 11:41:00 -0700 (PDT)
+Received: from LUSKPV4LC6K37.teslamotors.com ([136.226.78.81])
+ by smtp.gmail.com with ESMTPSA id
+ d75a77b69052e-461323a1c20sm56976731cf.84.2024.10.30.11.40.59
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Wed, 30 Oct 2024 11:40:59 -0700 (PDT)
+From: Jeff Dagenais <jeff.dagenais@gmail.com>
+X-Google-Original-From: Jeff Dagenais <jdagenais@tesla.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jeff Dagenais <jdagenais@tesla.com>,
+ Jeff Dagenais <jeff.dagenais@gmail.com>
+Subject: [PATCH i-g-t] scripts/generate_iga64_codes: prevent objcopy from
+ modifying the input file
+Date: Wed, 30 Oct 2024 11:40:54 -0700
+Message-ID: <20241030184054.73065-1-jdagenais@tesla.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailman-Approved-At: Thu, 31 Oct 2024 15:02:54 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,129 +81,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thursday, 31 October 2024 14:18:25 CET Lucas De Marchi wrote:
-> On Thu, Oct 31, 2024 at 11:42:58AM +0100, Janusz Krzysztofik wrote:
-> >Hi Lucas,
-> >
-> >On Thursday, 31 October 2024 01:31:41 CET Lucas De Marchi wrote:
-> >> Kunit has support for listing tests with debugfs for quite some time,
-> >> there's no need for the fallback to be happening: let's just start
-> >> failing the tests if we can't get the list of tests from debugfs.
-> >
-> >We must not fail, we may skip, see below.
-> >
-> >>
-> >> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-> >> ---
-> >>  lib/igt_kmod.c | 278 ++-----------------------------------------------
-> >>  1 file changed, 10 insertions(+), 268 deletions(-)
-> >>
-> >> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
-> >> index 75a0d057c..4cb9e886d 100644
-> >> --- a/lib/igt_kmod.c
-> >> +++ b/lib/igt_kmod.c
-> >...
-> >> @@ -1523,25 +1268,22 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
-> >>
-> >>  	/*
-> >>  	 * We need to use igt_subtest here, as otherwise it may crash with:
-> >> -	 *  skipping is allowed only in fixtures, subtests or igt_simple_main
-> >> +	 * "skipping is allowed only in fixtures, subtests or igt_simple_main"
-> >>  	 * if used on igt_main. This is also needed in order to provide
-> >>  	 * proper namespace for dynamic subtests, with is required for CI
-> >>  	 * and for documentation.
-> >>  	 */
-> >>  	igt_subtest_with_dynamic(subtest) {
-> >> -		/*
-> >> -		 * TODO: As soon as no longer needed by major Linux
-> >> -		 *	 distributions, replace the fallback to
-> >> -		 *	 __igt_kunit_legacy() processing path, required by
-> >> -		 *	 LTS kernels not capable of using KUnit filters for
-> >> -		 *	 listing test cases in KTAP format, with igt_require.
-> >> -		 */
-> >> +		bool has_tests;
-> >> +
-> >>  		kunit_debugfs_path(debugfs_path);
-> >> -		if (igt_debug_on(!*debugfs_path) ||
-> >> -		    !kunit_get_tests(&tests, &tst, suite, opts, debugfs_path, &debugfs_dir, &ktap))
-> >> -			__igt_kunit_legacy(&tst, subtest, opts);
-> >> -		else
-> >> -			__igt_kunit(&tst, subtest, opts, debugfs_path, &tests, &ktap);
-> >> +		igt_assert(*debugfs_path);
-> >
-> >According to a comment followed by respective assert() inside
-> >lib/igt_core.c:igt_fail():
-> >
-> >	/* Dynamic subtest containers must not fail explicitly */
-> >
-> >that's why I suggested replacing the fallback with igt_require(), not with
-> >igt_assert().
-> 
-> where did you suggest that?
+This script uses objcopy in order to dump a section. Objcopy is meant
+for copying and expects a second argument. Failing that, it uses the
+input file as output. Even though there's no intented change to the
+file, this operation still re-writes the file completely.
 
-In the above TODO comment you are addressing with this patch.
+In most cases, this re-writes the file as it was before. But in
+cross-compilation cases, the "objcopy" program in the PATH used here
+might be different than the toolchain which generated the ELF file.
 
-Janusz
+In all cases, this causes a racy re-build of the .a, and in the worst
+case, the objcopy re-written .o and .a files are actually incompatible
+with the cross-linker used downstream in the ninja build causing failure
+to find all symbols from the libs passed to this script.
 
-> 
-> >
-> >But maybe we could go a step forward and replace all
-> >
-> >	if (igt_debug_on(...))
-> >		return;
-> >
-> >inside kunit_debugfs_path() with
-> >
-> >	igt_skip_on(...);
-> 
-> 
-> I'd rather not skip and have a big red FAIL since it's not a valid
-> setup.
-> 
-> >
-> >then we needed neither igt_require() nor igt_assert() here.
-> >
-> >> +
-> >> +		has_tests = kunit_get_tests(&tests, &tst, suite, opts,
-> >> +					    debugfs_path, &debugfs_dir, &ktap);
-> >> +		igt_assert(has_tests);
-> >
-> >Ditto, optionally with all
-> >
-> >	if (igt_debug_on(...))
-> >		return false;
-> >
-> >inside kunit_get_tests() replaced with
-> >
-> >	igt_skip_on(...);
-> 
-> if those writes fail for whatever reason, I don't want the test to skip,
-> I want them to fail so we can fix them.
-> 
-> a skip is a valid thing when there's difference in behavior from
-> platform to platform or when it's a valid difference in env setup. Here
-> it's not.
-> 
-> Lucas De Marchi
-> 
-> >
-> >and kunit_get_tests() returning void.
-> >
-> >Thanks,
-> >Janusz
-> >
-> >> +
-> >> +		__igt_kunit(&tst, subtest, opts, debugfs_path, &tests, &ktap);
-> >>  	}
-> >>
-> >>  	igt_fixture {
-> >>
-> >
-> >
-> >
-> >
-> 
+```
+../lib/intel_batchbuffer.c:763: undefined reference to
+`gen8_gpgpu_fillfunc'
+../lib/intel_batchbuffer.c:762: undefined reference to
+`xehp_gpgpu_fillfunc'
+[...]
+```
 
+The intent of the command was just to extract info from the LIBS, not
+modify them. Using /dev/null as output file ensures the input files will
+not be modified.
 
+Signed-off-by: Jeff Dagenais <jeff.dagenais@gmail.com>
+---
+ scripts/generate_iga64_codes | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
+index d1e40b600..bbf1f7008 100755
+--- a/scripts/generate_iga64_codes
++++ b/scripts/generate_iga64_codes
+@@ -37,7 +37,7 @@ ASMS=()
+ while  read -d $'\0' asm; do
+     test -z "$asm" && continue
+     ASMS+=( "$asm" )
+-done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o; done)
++done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o /dev/null; done)
+ 
+ # check if we need to recompile - checksum difference and compiler present
+ MD5_ASMS="$(md5sum <<< "${ASMS[@]}" | cut -b1-32)"
+-- 
+2.43.0
 
