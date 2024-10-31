@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68255D767D8
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0ABBD767E1
 	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 16:31:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E81AF10E0A6;
-	Thu, 31 Oct 2024 16:31:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B88810E419;
+	Thu, 31 Oct 2024 16:31:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OC8OMTDK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GtM0rzga";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 35F1410E0A6
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 71B7E10E0A6
  for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 16:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
  t=1730392283; x=1761928283;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=T/noB5pMvS+HzkNBqL2hZWzXemrvXXdZzC6UkZGGw9Q=;
- b=OC8OMTDK90kbKp5jYaFrpuHfiIRyVd0opg5AlsyTtbHIuq7mUhXdUogV
- zL9M34Y5vPiUxsGJuxx2jipNZIU8BKHNLjrmjBUt7nX3tD7Bo+ZUcBuse
- SOKBpbfBl+VXeWa0c3yFrWrHuFkw5dewhs+Hx6w4sJL3UFlDxbL9hP6MV
- /5GYG4ksUqd7bOGdYTYI1uYthWQYYFCJLLI6nI/Pca2lyKFQIpJLzN6cf
- yDn7CLvUMtZhE29pW8a/ZSnD4TYUJr5lUVrss52gJkiL4M/ewm7NJZUIV
- FJgs8bxXH9Eob1fX1SkDp0dXgvifgXSU2OZOfRwRn0NxWr7ijE8KzJtmB w==;
-X-CSE-ConnectionGUID: Hy4Lczk8QYW3HIN24r2Agg==
-X-CSE-MsgGUID: hZEg61vNQ7KH8J+wmuQ/2A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17782502"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="17782502"
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=x3Upi8ELAFww07TGFkgcPJEdhOq/ShmSDnYXJboEeWI=;
+ b=GtM0rzgauawuLLTYP2SLpibIHRlzTVo5heHiZtS9fmWyoFTnnBs6vegD
+ R9AaDfd/DXOENR+EDBaxYDUrdzpcZL2cdr0LmWSvDRYZCI2xPcVl5Imxx
+ ZLLvzMG1YJR3Tvk1FmP3OHPXg0eWw69++qbisMo8rkRPdudjJEiw97Dsf
+ 7gNAbLd8IlOfOXBtsiylVGCh1Jjj3IlDIGCwTbOXksHMyKO+StNvsIgKl
+ kyUKI/siAUXe+Luk2GzYXs57f8yoIxbZJt9SrmvDI7+x2L2xH98AZMfuT
+ b36SeHA1ZqTixP1TKY2FZkQWiqC/jfYgCoJ9QwecWyhTaJDajoN3SbdBA g==;
+X-CSE-ConnectionGUID: JvCnVqITSHmA3/HU+NOgMQ==
+X-CSE-MsgGUID: jSKqRWAtQ0+FbHdavg+chA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17782504"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="17782504"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 09:31:22 -0700
-X-CSE-ConnectionGUID: fadaFQT7QeGaPGFb2pW9Kw==
-X-CSE-MsgGUID: a16+Tc5OSdW5pfpI2g+GjA==
+ 31 Oct 2024 09:31:23 -0700
+X-CSE-ConnectionGUID: 0VgV7vrTSHyCktMUOKOjJw==
+X-CSE-MsgGUID: he3QSVdiShORV0J2yKfLPg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82804805"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82804811"
 Received: from dut138lnl.fm.intel.com ([10.105.23.14])
  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  31 Oct 2024 09:31:23 -0700
@@ -45,10 +45,13 @@ From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
  kamil.konieczny@linux.intel.com, vinay.belgaumkar@intel.com
-Subject: [PATCH v2 0/2] test/intel/xe_sysfs: Restore sysfs params correctly
-Date: Thu, 31 Oct 2024 16:31:20 +0000
-Message-ID: <20241031163122.37356-1-jonathan.cavitt@intel.com>
+Subject: [PATCH v2 2/2] tests/intel/xe_sysfs_timeslice_duration: Restore
+ preempt timeout
+Date: Thu, 31 Oct 2024 16:31:22 +0000
+Message-ID: <20241031163122.37356-3-jonathan.cavitt@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241031163122.37356-1-jonathan.cavitt@intel.com>
+References: <20241031163122.37356-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,19 +69,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The xe_sysfs_timeslice_duration and xe_sysfs_preempt_timeout tests do
-not correctly restore modified sysfs params on test failure.
-Additionally, xe_sysfs_timeslice_duration modifies but does not restore
-preempt_timeout_us.  Repair these issues.
+The subtests of sysfs_timeslice_duration modify the preempt_timeout_us
+and timeslice_duration_us values.  However, while the test does restore
+the timeslice_duration_us value at the end of execution, it does not do
+the same for preempt_timeout_us.  Because the value is not properly
+restored, future tests can end up using the unexpected preempt timeout
+value and thus have unexpected behavior.
 
-Jonathan Cavitt (2):
-  tests/intel/sysfs: Restore sysfs values on test failure
-  tests/intel/xe_sysfs_timeslice_duration: Restore preempt timeout
+Save and restore the preempt_timeout_us value during the test.
 
- tests/intel/xe_sysfs_preempt_timeout.c    | 34 ++++++++++++------
- tests/intel/xe_sysfs_timeslice_duration.c | 44 +++++++++++++++++------
- 2 files changed, 58 insertions(+), 20 deletions(-)
+This fix does not apply to xe_sysfs_preempt_timeout because only the
+preempt_timeout_us is modified during those tests, and the value is
+correcty restored before the tests end.
 
+v2: Also restore preempt_timeout_us on test failure (Kamil)
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2976
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel/xe_sysfs_timeslice_duration.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
+index 914575a282..576be98ede 100644
+--- a/tests/intel/xe_sysfs_timeslice_duration.c
++++ b/tests/intel/xe_sysfs_timeslice_duration.c
+@@ -115,10 +115,11 @@ static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_
+ static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
+ {
+ 	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
+-	unsigned int saved;
++	unsigned int saved, old_pt;
+ 	uint64_t elapsed;
+ 	uint64_t epsilon;
+ 
++	igt_assert(igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &old_pt) == 1);
+ 	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) == 1);
+ 	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
+ 	igt_debug("Initial %s:%u\n", property[0], saved);
+@@ -140,6 +141,9 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
+ 	}
+ 
+ 	set_timeslice_duration(engine, saved);
++	igt_assert_lte(0, igt_sysfs_printf(engine, "preempt_timeout_us", "%u", old_pt));
++	igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &saved);
++	igt_assert_eq(saved, old_pt);
+ }
+ 
+ igt_main
+@@ -158,7 +162,7 @@ igt_main
+ 	int gt_count = 0;
+ 	int fd = -1, sys_fd, gt;
+ 	int engines_fd[8], gt_fd[8];
+-	unsigned int tds[8];
++	unsigned int tds[8], pts[8];
+ 
+ 	igt_fixture {
+ 		fd = drm_open_driver(DRIVER_XE);
+@@ -176,6 +180,9 @@ igt_main
+ 			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
+ 						   "timeslice_duration_us",
+ 						   "%u", &tds[gt_count]) == 1);
++			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
++						   "preempt_timeout_us",
++						   "%u", &pts[gt_count]) == 1);
+ 			gt_count++;
+ 		}
+ 	}
+@@ -194,6 +201,8 @@ igt_main
+ 	}
+ 	igt_fixture {
+ 		for (int i = gt_count - 1; i >= 0; i--) {
++			igt_assert_lte(0, igt_sysfs_printf(engines_fd[i], "preempt_timeout_us",
++							   "%u", pts[i]));
+ 			set_timeslice_duration(engines_fd[i], tds[i]);
+ 			close(engines_fd[i]);
+ 			close(gt_fd[i]);
 -- 
 2.43.0
 
