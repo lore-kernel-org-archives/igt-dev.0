@@ -4,55 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F89AD767E2
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 16:31:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34998D767E3
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 16:51:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8267410E8DF;
-	Thu, 31 Oct 2024 16:31:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E9AD010E075;
+	Thu, 31 Oct 2024 16:51:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="auAh6FVE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Zn8bGC9b";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5349110E414
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 16:31:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54AAE10E075
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 16:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730392283; x=1761928283;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FCgzTbyXImUHpdiwm8QWn9//dsD9U9JAAuOaMncnYRw=;
- b=auAh6FVEQ94rki7T2zxikyXErvDD8PnUQZeUWBCEVxVvD9KgbF4XseuT
- CUEY9vz7CqwHELb9dwAjaen7SOwr+KWepdBLgPHyFehnd8PBHK/CTr2SI
- MZNIiiuNOYTVmuuea382beQN9npg8huBVUhODJfX96CeCEimtemyBF9cw
- dF29j1z0DSnEcc+YFPHKXOPDiT7HuWlrtoWkH9eTa7Ytw4eNLf69Oae5k
- M84tz85nKRyVq+6PAsPK21If2A1zfaJZotYyqX+TFmvP5sHpWEnYS1oZ+
- V+dA03CTZjb9qyIVbrS1ABjc9zmQdnlqo8DcepPNAWUu+FV3jBV2r7h83 A==;
-X-CSE-ConnectionGUID: hkzD6qAVQ8W7SWd7OvFpaQ==
-X-CSE-MsgGUID: yL6jih1XQkSfSUfEUvchyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17782503"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="17782503"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 09:31:23 -0700
-X-CSE-ConnectionGUID: xt3mjs0zQBix4nX7W2d81g==
-X-CSE-MsgGUID: l24JerZ3R4SzNlA9DAYxHA==
+ t=1730393479; x=1761929479;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=9V/mjDamu4V4Ghjvlk2TQCjU+qQMXFh3rFQMjexJ+o4=;
+ b=Zn8bGC9blFBM+7iOeQf06kMWRbLIGK6Aulf7MdEmtR/QHOFTiInpt/I/
+ kGfntzZV8ob0BRENmucbeZmU54YfhCp/AWsgdK9bfXqBPA0d9OZONOtmL
+ eSwXCAhmT0wI7TdnVQRmm4B5QiA69ch0f/OvjJeAK+DNeEyMu81Ida27V
+ mhhnup0Yg9/cBqGga62tZS6UpdmESMgDKT8tKN2Ygh3+ePs8b61Zf5NKk
+ 9DmB2lr0NHMiwd2T/UV4kOEqH7Lbby5VW53m2rfr3EcPPFYeoOCfczJw9
+ Xc8OmLDL5YKBlqt14TXVbVG7/Zkih6/sgq5+b/pFk8EIIticIqzwKslqe A==;
+X-CSE-ConnectionGUID: 6YDY4WzwQKObuQ4wWFohrQ==
+X-CSE-MsgGUID: 8zFiJgPCT5uZIf1CP2wx1g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52709368"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="52709368"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 09:51:19 -0700
+X-CSE-ConnectionGUID: rzzqzHtCQR6ffJBcwf/Ihw==
+X-CSE-MsgGUID: VyDXq8o2RcOnqeCwcXWGOQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82804808"
-Received: from dut138lnl.fm.intel.com ([10.105.23.14])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 09:31:23 -0700
-From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="87234856"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 09:51:17 -0700
+Date: Thu, 31 Oct 2024 17:51:00 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
- kamil.konieczny@linux.intel.com, vinay.belgaumkar@intel.com
-Subject: [PATCH v2 1/2] tests/intel/sysfs: Restore sysfs values on test failure
-Date: Thu, 31 Oct 2024 16:31:21 +0000
-Message-ID: <20241031163122.37356-2-jonathan.cavitt@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241031163122.37356-1-jonathan.cavitt@intel.com>
-References: <20241031163122.37356-1-jonathan.cavitt@intel.com>
+Cc: Jeff Dagenais <jeff.dagenais@gmail.com>,
+ Jeff Dagenais <jdagenais@tesla.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+Subject: Re: [PATCH i-g-t] scripts/generate_iga64_codes: prevent objcopy from
+ modifying the input file
+Message-ID: <20241031165100.43wkx3chdjwxnjgj@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Jeff Dagenais <jeff.dagenais@gmail.com>,
+ Jeff Dagenais <jdagenais@tesla.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>
+References: <20241030184054.73065-1-jdagenais@tesla.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241030184054.73065-1-jdagenais@tesla.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,150 +75,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The tests xe_sysfs_preempt_timeout and xe_sysfs_timeslice_duration
-modify the values of preempt_timeout_us and timeslice_duration_us,
-respectively.  However, on a test failure, it is possible that these
-values may remain in their modified states, resulting in the values
-being used in future tests and causing unexpected behavior.
+Hi Jeff,
+On 2024-10-30 at 11:40:54 -0700, Jeff Dagenais wrote:
+> This script uses objcopy in order to dump a section. Objcopy is meant
+> for copying and expects a second argument. Failing that, it uses the
+> input file as output. Even though there's no intented change to the
+> file, this operation still re-writes the file completely.
+> 
+> In most cases, this re-writes the file as it was before. But in
+> cross-compilation cases, the "objcopy" program in the PATH used here
+> might be different than the toolchain which generated the ELF file.
+> 
+> In all cases, this causes a racy re-build of the .a, and in the worst
+> case, the objcopy re-written .o and .a files are actually incompatible
+> with the cross-linker used downstream in the ninja build causing failure
+> to find all symbols from the libs passed to this script.
+> 
+> ```
+> ../lib/intel_batchbuffer.c:763: undefined reference to
+> `gen8_gpgpu_fillfunc'
+> ../lib/intel_batchbuffer.c:762: undefined reference to
+> `xehp_gpgpu_fillfunc'
+> [...]
+> ```
+> 
+> The intent of the command was just to extract info from the LIBS, not
+> modify them. Using /dev/null as output file ensures the input files will
+> not be modified.
+> 
 
-Save the respective modified values before starting the test and attempt
-to restore the values on test exit.
+Thank you for a patch, if possible please subscribe to ML or expect
+some delay between sending e-mail and delivering it to mailing list.
 
-Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
----
- tests/intel/xe_sysfs_preempt_timeout.c    | 34 ++++++++++++++++-------
- tests/intel/xe_sysfs_timeslice_duration.c | 33 ++++++++++++++++------
- 2 files changed, 48 insertions(+), 19 deletions(-)
++cc Andrzej Hajda <andrzej.hajda@intel.com>
 
-diff --git a/tests/intel/xe_sysfs_preempt_timeout.c b/tests/intel/xe_sysfs_preempt_timeout.c
-index 7fa0dfcdf7..1b9c26bfdc 100644
---- a/tests/intel/xe_sysfs_preempt_timeout.c
-+++ b/tests/intel/xe_sysfs_preempt_timeout.c
-@@ -183,8 +183,10 @@ igt_main
- 				       "preempt_timeout_min",
- 				       "preempt_timeout_max"}, };
- 	int count = sizeof(property) / sizeof(property[0]);
-+	int gt_count = 0;
- 	int fd = -1, sys_fd, gt;
--	int engines_fd = -1, gt_fd = -1;
-+	int engines_fd[8], gt_fd[8];
-+	unsigned int pts[8];
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -192,26 +194,38 @@ igt_main
- 		sys_fd = igt_sysfs_open(fd);
- 		igt_require(sys_fd != -1);
- 		close(sys_fd);
-+
-+		xe_for_each_gt(fd, gt) {
-+			gt_fd[gt_count] = xe_sysfs_gt_open(fd, gt);
-+			igt_require(gt_fd[gt_count] != -1);
-+			engines_fd[gt_count] = openat(gt_fd[gt_count], "engines", O_RDONLY);
-+			igt_require(engines_fd[gt_count] != -1);
-+			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
-+						   "preempt_timeout_us",
-+						   "%u", &pts[gt_count]) == 1);
-+			gt_count++;
-+		}
-+
- 	}
- 
- 	for (int i = 0; i < count; i++) {
- 		for (typeof(*tests) *t = tests; t->name; t++) {
- 			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-+				int j = 0;
- 				xe_for_each_gt(fd, gt) {
--					gt_fd = xe_sysfs_gt_open(fd, gt);
--					igt_require(gt_fd != -1);
--					engines_fd = openat(gt_fd, "engines", O_RDONLY);
--					igt_require(engines_fd != -1);
--
--					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
--									  t->fn);
--					close(engines_fd);
--					close(gt_fd);
-+					igt_sysfs_engines(fd, engines_fd[j], gt, 1, property[i],
-+										    t->fn);
-+					j++;
- 				}
- 			}
- 		}
- 	}
- 	igt_fixture {
-+		for (int i = gt_count - 1; i >= 0; i--) {
-+			set_preempt_timeout(engines_fd[i], pts[i]);
-+			close(engines_fd[i]);
-+			close(gt_fd[i]);
-+		}
- 		drm_close_driver(fd);
- 	}
- }
-diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
-index cf95a3ac1c..914575a282 100644
---- a/tests/intel/xe_sysfs_timeslice_duration.c
-+++ b/tests/intel/xe_sysfs_timeslice_duration.c
-@@ -155,8 +155,10 @@ igt_main
- 				       "timeslice_duration_min",
- 				       "timeslice_duration_max"}, };
- 	int count = sizeof(property) / sizeof(property[0]);
-+	int gt_count = 0;
- 	int fd = -1, sys_fd, gt;
--	int engines_fd = -1, gt_fd = -1;
-+	int engines_fd[8], gt_fd[8];
-+	unsigned int tds[8];
- 
- 	igt_fixture {
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -164,25 +166,38 @@ igt_main
- 		sys_fd = igt_sysfs_open(fd);
- 		igt_require(sys_fd != -1);
- 		close(sys_fd);
-+
-+		xe_for_each_gt(fd, gt) {
-+			gt_fd[gt_count] = xe_sysfs_gt_open(fd, gt);
-+			igt_require(gt_fd[gt_count] != -1);
-+			engines_fd[gt_count] = openat(gt_fd[gt_count],
-+					                  "engines", O_RDONLY);
-+			igt_require(engines_fd[gt_count] != -1);
-+			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
-+						   "timeslice_duration_us",
-+						   "%u", &tds[gt_count]) == 1);
-+			gt_count++;
-+		}
- 	}
- 
- 	for (int i = 0; i < count; i++) {
- 		for (typeof(*tests) *t = tests; t->name; t++) {
- 			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-+				int j = 0;
- 				xe_for_each_gt(fd, gt) {
--					gt_fd = xe_sysfs_gt_open(fd, gt);
--					igt_require(gt_fd != -1);
--					engines_fd = openat(gt_fd, "engines", O_RDONLY);
--					igt_require(engines_fd != -1);
--					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
--										 t->fn);
--					close(engines_fd);
--					close(gt_fd);
-+					igt_sysfs_engines(fd, engines_fd[j], gt, 1, property[i],
-+										    t->fn);
-+					j++;
- 				}
- 			}
- 		}
- 	}
- 	igt_fixture {
-+		for (int i = gt_count - 1; i >= 0; i--) {
-+			set_timeslice_duration(engines_fd[i], tds[i]);
-+			close(engines_fd[i]);
-+			close(gt_fd[i]);
-+		}
- 		drm_close_driver(fd);
- 	}
- }
--- 
-2.43.0
-
+> Signed-off-by: Jeff Dagenais <jeff.dagenais@gmail.com>
+> ---
+>  scripts/generate_iga64_codes | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/scripts/generate_iga64_codes b/scripts/generate_iga64_codes
+> index d1e40b600..bbf1f7008 100755
+> --- a/scripts/generate_iga64_codes
+> +++ b/scripts/generate_iga64_codes
+> @@ -37,7 +37,7 @@ ASMS=()
+>  while  read -d $'\0' asm; do
+>      test -z "$asm" && continue
+>      ASMS+=( "$asm" )
+> -done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o; done)
+> +done < <(for f in $LIBS; do objcopy --dump-section .iga64_assembly=/dev/stdout $f.p/*.o /dev/null; done)
+>  
+>  # check if we need to recompile - checksum difference and compiler present
+>  MD5_ASMS="$(md5sum <<< "${ASMS[@]}" | cut -b1-32)"
+> -- 
+> 2.43.0
+> 
