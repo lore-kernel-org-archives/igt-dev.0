@@ -4,63 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4024D767D8
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 15:05:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66059D767DB
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 15:39:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 644CA10E8BD;
-	Thu, 31 Oct 2024 15:05:19 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="PuV1kOhN";
-	dkim-atps=neutral
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
- [209.85.214.169])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 334F810E8BD
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 15:05:18 +0000 (UTC)
-Received: by mail-pl1-f169.google.com with SMTP id
- d9443c01a7336-210e5369b7dso10222895ad.3
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 08:05:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730387117; x=1730991917; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=rdulfMtJpuEnHM5yzZnRzlp1Z6g1sD56m0XpbQi0+3w=;
- b=PuV1kOhNunHCAjphRcj0U6od4hCgZyzjAOX9iE682dACsERgoVpHl5ukWI+0yaiRhO
- lf5bcsiZMl4/kz7nTOTv9t0faN72jMd94ggGnyf9v94rWDSsLUklwZXTjOiL3b35wPU4
- uw+f8gLW+8W8HOw7L6o1T3F4N1sqQrhFy2hP+A+1xDV5p0rL/e01SE8FZzFK7IYkJxAs
- szoADpb+6JvHStSH10Ft9OYjlDheSaDrQYa7qYF1Nj9/2g6oFc2j1lE9sujTSdtFEJhw
- y1isgkpWkNWHAMkMrdNfJ/KlLCev+ueVZCaQHsK4Vpy+nOBWTC99DdhodtdDAlgUJtm2
- KGkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730387117; x=1730991917;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=rdulfMtJpuEnHM5yzZnRzlp1Z6g1sD56m0XpbQi0+3w=;
- b=DhD6rxnI5SskkuOR4QxVguZZINGtaXSDfWIu33uSeJKjh017UQlXl9y2szQM+zNXTA
- +aHGdvKVJOnoMDJK7tIgAyfcevXsIEsCJRkI9vm2IRwgbZuvnALeh49dJJKBbhgBmEXV
- 7dg5LFalFP2bmJdf45uTnHGko2V1VDd0uZ0LHNgEAi0EcaY6CfpLeEbpiKK4qlXqoVpx
- 7d+dCJLRWismfNrFhzrFROyXbOAizgNLoxI2K5DyvbjDoCZn7krdhPd0+XyH7fb6jmsO
- EwthBK9XKhyoL91Ki44jrm/+jeEvPh+qiFITg/cB30k4Ph2cSwxFZqo7Hkwdz5E3kxMI
- KXGg==
-X-Gm-Message-State: AOJu0Yzn2/tcutXNzP7DkFmhdfjz9Rb6I7r1Kqu9pHwG7DrjtLOusmzt
- fqGw9gZRoJFPK6K0CzZGEUD/C8J4xDGli4rrLKLaGMD2DA0469EOaybBYIQAxmw=
-X-Google-Smtp-Source: AGHT+IHhptYLIn0o6x5qyTN7WUjiJy/ab+FYze1C3Xpjj2eGK9EnLT13dJy75RYZRrOvwAMGFQQt0Q==
-X-Received: by 2002:a17:903:124b:b0:20c:ab33:f8b8 with SMTP id
- d9443c01a7336-210c68d4a96mr220499525ad.15.1730387116482; 
- Thu, 31 Oct 2024 08:05:16 -0700 (PDT)
-Received: from localhost ([192.55.55.48]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211057c9afasm9637325ad.235.2024.10.31.08.05.15
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 08:05:16 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2] tests/intel/kms_ccs: add suspend tests
-Date: Thu, 31 Oct 2024 17:09:01 +0200
-Message-ID: <20241031150901.325042-1-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14C6810E8D1;
+	Thu, 31 Oct 2024 15:39:03 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D097910E8D0;
+ Thu, 31 Oct 2024 15:39:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7706101512686324696=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/kms=5Fvrr=3A_data-=3Eswi?=
+ =?utf-8?q?tch_modes=5BLOW=5FRR=5FMODE=5D_not_initialized_for_lobf_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Jouni_H=C3=B6gander?= <jouni.hogander@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 31 Oct 2024 15:39:02 -0000
+Message-ID: <173038914284.1385187.8940060836563870763@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241031121355.3419367-1-jouni.hogander@intel.com>
+In-Reply-To: <20241031121355.3419367-1-jouni.hogander@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,78 +37,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add crc testing for suspend/resume while compressed framebuffer is on screen.
-Test use only XR24 and P016 formats for testing. After resume is checked
-framebuffer did stay compressed.
+--===============7706101512686324696==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/intel/kms_ccs.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index a5d3ff5e6..13103d4d5 100644
---- a/tests/intel/kms_ccs.c
-+++ b/tests/intel/kms_ccs.c
-@@ -96,6 +96,7 @@
-  * arg[1]:
-  *
-  * @crc-primary-basic:           Primary plane CRC compatibility
-+ * @crc-primary-suspend:         Primary plane CRC after suspend
-  * @crc-sprite-planes-basic:     Sprite plane CRC compatability
-  * @random-ccs-data:             Random CCS data
-  *
-@@ -159,6 +160,7 @@ enum test_flags {
- 	TEST_BAD_AUX_STRIDE		= 1 << 7,
- 	TEST_RANDOM			= 1 << 8,
- 	TEST_ALL_PLANES			= 1 << 9,
-+	TEST_SUSPEND			= 1 << 10,
- };
- 
- #define TEST_BAD_CCS_PLANE	(TEST_NO_AUX_BUFFER | TEST_BAD_CCS_HANDLE | \
-@@ -252,6 +254,7 @@ static const struct {
- 	{TEST_BAD_CCS_HANDLE, "ccs-on-another-bo", "Test CCS with different BO with given modifier"},
- 	{TEST_BAD_AUX_STRIDE, "bad-aux-stride", "Test with bad AUX stride with given CCS modifier"},
- 	{TEST_CRC | TEST_ALL_PLANES, "crc-sprite-planes-basic", "Test sprite plane CRC compatibility with given CCS modifier"},
-+	{TEST_CRC | TEST_SUSPEND, "crc-primary-suspend", "Test primary plane CRC with suspend on XR24 and P016 formats"},
- };
- 
- /*
-@@ -817,8 +820,18 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
- 
- 	ret = igt_display_try_commit2(display, data->commit);
- 
--	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc)
-+	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc) {
-+		if (data->flags & TEST_SUSPEND && fb_flags & FB_COMPRESSED) {
-+			igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
-+						      SUSPEND_TEST_NONE);
-+
-+			/* on resume check flat ccs is still compressed */
-+			if (is_xe_device(data->drm_fd) &&
-+			    HAS_FLATCCS(intel_get_drm_devid(data->drm_fd)))
-+				access_flat_ccs_surface(&fb, true);
-+		}
- 		igt_pipe_crc_collect_crc(data->pipe_crc, crc);
-+	}
- 
- 	igt_debug_wait_for_keypress("ccs");
- 
-@@ -846,6 +859,11 @@ static int test_ccs(data_t *data)
- 	igt_crc_t crc, ref_crc;
- 	enum test_fb_flags fb_flags = 0;
- 
-+	if (data->flags & TEST_SUSPEND &&
-+	    !(data->format == DRM_FORMAT_XRGB8888 ||
-+	      data->format == DRM_FORMAT_P016))
-+	      return 0;
-+
- 	igt_info("Testing format " IGT_FORMAT_FMT " / modifier " IGT_MODIFIER_FMT "\n",
- 		 IGT_FORMAT_ARGS(data->format), IGT_MODIFIER_ARGS(data->ccs_modifier));
- 
--- 
-2.45.2
+Series: tests/kms_vrr: data->switch modes[LOW_RR_MODE] not initialized for lobf test
+URL   : https://patchwork.freedesktop.org/series/140767/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_8091_BAT -> XEIGTPW_12014_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (9 -> 9)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_12014_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
+    - bat-adlp-7:         [PASS][1] -> [INCOMPLETE][2] ([Intel XE#2874]) +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-adlp-7:         [FAIL][3] ([Intel XE#1861]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html
+
+  
+  [Intel XE#1861]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861
+  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
+
+
+Build changes
+-------------
+
+  * IGT: IGT_8091 -> IGTPW_12014
+  * Linux: xe-2149-54ceaf112b111612f3a7430132b2395fcce62414 -> xe-2151-fa53c85519aa642bf10aa1692a1b99d1930d2809
+
+  IGTPW_12014: 12014
+  IGT_8091: 8091
+  xe-2149-54ceaf112b111612f3a7430132b2395fcce62414: 54ceaf112b111612f3a7430132b2395fcce62414
+  xe-2151-fa53c85519aa642bf10aa1692a1b99d1930d2809: fa53c85519aa642bf10aa1692a1b99d1930d2809
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/index.html
+
+--===============7706101512686324696==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_vrr: data-&gt;switch modes[LOW_RR_MODE] not initialized for lobf test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140767/">https://patchwork.freedesktop.org/series/140767/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_8091_BAT -&gt; XEIGTPW_12014_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (9 -&gt; 9)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_12014_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/bat-adlp-7/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@kms_frontbuffer_tracking@basic:<ul>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1861">Intel XE#1861</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12014/bat-adlp-7/igt@kms_frontbuffer_tracking@basic.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_8091 -&gt; IGTPW_12014</li>
+<li>Linux: xe-2149-54ceaf112b111612f3a7430132b2395fcce62414 -&gt; xe-2151-fa53c85519aa642bf10aa1692a1b99d1930d2809</li>
+</ul>
+<p>IGTPW_12014: 12014<br />
+  IGT_8091: 8091<br />
+  xe-2149-54ceaf112b111612f3a7430132b2395fcce62414: 54ceaf112b111612f3a7430132b2395fcce62414<br />
+  xe-2151-fa53c85519aa642bf10aa1692a1b99d1930d2809: fa53c85519aa642bf10aa1692a1b99d1930d2809</p>
+
+</body>
+</html>
+
+--===============7706101512686324696==--
