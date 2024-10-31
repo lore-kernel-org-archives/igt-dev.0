@@ -4,70 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2AF6EE68972
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 10:28:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C2FAE68974
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 10:35:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D71D110E85B;
-	Thu, 31 Oct 2024 10:28:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF2A510E842;
+	Thu, 31 Oct 2024 10:35:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oxpkwo3C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WMiZuMoY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E34CE10E856
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 10:28:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1F0610E842
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 10:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730370511; x=1761906511;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+dvue7gunrRDyffSx1qm5hMxQhugvHAwBevFh1ZCHpw=;
- b=Oxpkwo3CXXbLSC7TSMWErJzjMlTZ5mg05xv2a9Bl9etJSuN5OcMXk0kN
- qlx3SOOIX1sHfBVtcHwYFCeHwHJ79Ym8/68I1FsKs9QxCHX0TuPtDSBK6
- 3LKq7imhUIigP9OxYQ4g0819ZfSbOqmW/c0QnPF/DRH6cSMDbUuMl/Mnu
- cW6dCSr26uWEtY873kOCiYUj4sx9Yt0lF8ZFueuGy6o1lGL+dU3PPrEN6
- IiZZPNF/USTWxxh2FfQUAD/sjahVlPunHnYLu8jQXDvdy/nziOXx144sD
- YgqzkFxfbcNCts2cxpiMKpYfDksSub77zAvUSHTw64d6PhVAQIQX+FI+G Q==;
-X-CSE-ConnectionGUID: er3V75XQRjK4P0qgmyipHQ==
-X-CSE-MsgGUID: cbiEX9GSQ5+rcGPNPy/8Fw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="29958230"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="29958230"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 03:28:30 -0700
-X-CSE-ConnectionGUID: XLOSRFAdRuWsFA0xFmb3jg==
-X-CSE-MsgGUID: Osr56oZMTde6ZKHkQkG9JA==
+ t=1730370949; x=1761906949;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=tAV/laTyLVh4PGzaL1qmkJuLVsHu1i/6qQYRW6HbYD8=;
+ b=WMiZuMoYNabzLRmCyKnnC7eT6eZMAZGJ2Ml5w3nGODZ8ZqnsGv6/FjBt
+ k4Ue6mfUycieQ/6tkNYGQsA0ssLfkY0OlVWqc5NrgTvsiIhm/SqbejneX
+ zGi26S4Ujy9TgupBBX0dFHqDeRqdVtA7W6xvRQcUBgUywG+kTnEisSMpq
+ ZWu597MCWnlPK0IoQkBktL3JBc8WDUp36nzVWX9VZ/vUnUSrL9INemEwy
+ XQsrN4BuesHDaarYNRBpoDZk2Jzc5zG30BF9iI9kWXlxTq0lhvf8zXnh/
+ UzZz3otN+XhJ3RPgAbdyRzz6IY7fgWVCf2cfvf01cymyMsGRMP9E9KmNs w==;
+X-CSE-ConnectionGUID: 5t5PxgdNQoGUmuKQuoAOJw==
+X-CSE-MsgGUID: 1AGf+IIsTJG0YcNnOrbuBQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="30208883"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="30208883"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 03:35:49 -0700
+X-CSE-ConnectionGUID: vmU54mPsRYi6bELE4Zt/oQ==
+X-CSE-MsgGUID: 9ajyfDQJRD2Xzlh7i1e8Jg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82510584"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 03:28:28 -0700
-Date: Thu, 31 Oct 2024 11:28:25 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
- michal.winiarski@intel.com, narasimha.c.v@intel.com,
- piotr.piorkowski@intel.com, satyanarayana.k.v.p@intel.com,
- tomasz.lis@intel.com
-Subject: Re: [PATCH i-g-t 1/5] lib/xe_sriov_debugfs: add helper for opening
- attributes
-Message-ID: <20241031102825.jdqn46cb2jxranr4@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- adam.miszczak@linux.intel.com, jakub1.kolakowski@intel.com,
- lukasz.laguna@intel.com, michal.wajdeczko@intel.com,
- michal.winiarski@intel.com, narasimha.c.v@intel.com,
- piotr.piorkowski@intel.com, satyanarayana.k.v.p@intel.com,
- tomasz.lis@intel.com
-References: <20241030193629.1238637-1-marcin.bernatowicz@linux.intel.com>
- <20241030193629.1238637-2-marcin.bernatowicz@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82709933"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.187])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 03:35:47 -0700
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 2/2] lib/igt_kmod: Simplify kunit_set_filtering()
+Date: Thu, 31 Oct 2024 11:35:44 +0100
+Message-ID: <18607894.sWSEgdgrri@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241031003142.863437-3-lucas.demarchi@intel.com>
+References: <20241031003142.863437-1-lucas.demarchi@intel.com>
+ <20241031003142.863437-3-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241030193629.1238637-2-marcin.bernatowicz@linux.intel.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,144 +71,88 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Marcin,
-On 2024-10-30 at 20:36:25 +0100, Marcin Bernatowicz wrote:
-> From: Lukasz Laguna <lukasz.laguna@intel.com>
+Hi Lucas,
+
+On Thursday, 31 October 2024 01:31:42 CET Lucas De Marchi wrote:
+> igt_sysfs_set() already supports setting a 0-length value since commit
+> 1c0b492a0b5c ("lib/igt_sysfs: make sure to write empty strings").
+> Remove workaround in kunit_set_filtering() and simplify.
 > 
-> Helper allows to open SR-IOV debugfs attributes corresponding to
-> specified PF device, VF number and GT number.
-> 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Jakub Kolakowski <jakub1.kolakowski@intel.com>
-> Cc: Michał Wajdeczko <michal.wajdeczko@intel.com>
-> Cc: Michał Winiarski <michal.winiarski@intel.com>
-> Cc: Narasimha C V <narasimha.c.v@intel.com>
-> Cc: Piotr Piórkowski <piotr.piorkowski@intel.com>
-> Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-> Cc: Tomasz Lis <tomasz.lis@intel.com>
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+
+Reviewed-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+
 > ---
->  lib/meson.build           |  1 +
->  lib/xe/xe_sriov_debugfs.c | 69 +++++++++++++++++++++++++++++++++++++++
->  lib/xe/xe_sriov_debugfs.h | 14 ++++++++
->  3 files changed, 84 insertions(+)
->  create mode 100644 lib/xe/xe_sriov_debugfs.c
->  create mode 100644 lib/xe/xe_sriov_debugfs.h
+>  lib/igt_kmod.c | 40 +++++-----------------------------------
+>  1 file changed, 5 insertions(+), 35 deletions(-)
 > 
-> diff --git a/lib/meson.build b/lib/meson.build
-> index c3556a921..3d5d68b75 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -116,6 +116,7 @@ lib_sources = [
->  	'xe/xe_mmio.c',
->  	'xe/xe_query.c',
->  	'xe/xe_spin.c',
-> +	'xe/xe_sriov_debugfs.c',
->  	'xe/xe_util.c',
->  ]
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 4cb9e886d..5fd500384 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -939,7 +939,7 @@ static bool kunit_set_filtering(const char *filter_glob, const char *filter,
+>  				const char *filter_action)
+>  {
+>  	int params;
+> -	bool ret;
+> +	bool ret = true;
+
+NIT: Preserve Christmas tree order.
+
+Thanks,
+Janusz
+
 >  
-> diff --git a/lib/xe/xe_sriov_debugfs.c b/lib/xe/xe_sriov_debugfs.c
-> new file mode 100644
-> index 000000000..dc6ef9da3
-> --- /dev/null
-> +++ b/lib/xe/xe_sriov_debugfs.c
-> @@ -0,0 +1,69 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright(c) 2024 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#include <dirent.h>
-> +#include <fcntl.h>
-> +
-> +#include "drmtest.h"
-> +#include "igt_debugfs.h"
-> +#include "igt_sriov_device.h"
-> +#include "xe/xe_sriov_debugfs.h"
-> +#include "xe/xe_query.h"
-> +
-> +#define SRIOV_DEBUGFS_PATH_MAX 96
-> +
-> +static char *xe_sriov_pf_debugfs_path(int pf, unsigned int vf_num, unsigned int gt_num, char *path,
-> +				      int pathlen)
-> +{
-> +	char sriov_path[SRIOV_DEBUGFS_PATH_MAX];
-> +
-> +	if (!igt_debugfs_path(pf, path, pathlen))
-> +		return NULL;
-> +
-> +	if (vf_num)
-> +		snprintf(sriov_path, SRIOV_DEBUGFS_PATH_MAX, "/gt%u/vf%u/", gt_num, vf_num);
-> +	else
-> +		snprintf(sriov_path, SRIOV_DEBUGFS_PATH_MAX, "/gt%u/pf/", gt_num);
-> +
-> +	strncat(path, sriov_path, pathlen - strlen(path));
-> +
-> +	if (access(path, F_OK))
-> +		return NULL;
-> +
-> +	return path;
-> +}
-> +
-> +/**
-> + * xe_sriov_pf_debugfs_attr_open:
-> + * @pf: PF device file descriptor
-> + * @vf_num: VF number (1-based) or 0 for PF
-> + * @gt_num: GT number
-> + * @attr: debugfs attribute name
-> + * @mode: mode bits as used by open()
-> + *
-> + * Opens SR-IOV debugfs attribute @attr for given PF device @pf, VF number @vf_num on GT @gt_num.
-> + *
-> + * Returns:
-> + * File descriptor or -1 on failure.
-> + */
-> +int xe_sriov_pf_debugfs_attr_open(int pf, unsigned int vf_num, unsigned int gt_num,
-> +				  const char *attr, int mode)
-> +{
-> +	char path[PATH_MAX];
-> +	int debugfs;
-> +
-> +	igt_assert(igt_sriov_is_pf(pf) && is_xe_device(pf));
-> +	igt_assert(gt_num < xe_number_gt(pf));
-> +
-> +	if (!xe_sriov_pf_debugfs_path(pf, vf_num, gt_num, path, sizeof(path)))
-> +		return -1;
-> +
-> +	strncat(path, attr, sizeof(path) - strlen(path));
-> +
-> +	debugfs = open(path, mode);
-> +	igt_debug_on(debugfs < 0);
-> +
-> +	return debugfs;
-> +}
-> diff --git a/lib/xe/xe_sriov_debugfs.h b/lib/xe/xe_sriov_debugfs.h
-> new file mode 100644
-> index 000000000..e859ff5b2
-> --- /dev/null
-> +++ b/lib/xe/xe_sriov_debugfs.h
-> @@ -0,0 +1,14 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright(c) 2024 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#ifndef __XE_SRIOV_DEBUGFS_H__
-> +#define __XE_SRIOV_DEBUGFS_H__
-> +
-> +#include <stdint.h>
-
-You do not need this include here, please remove it.
-
-Regards,
-Kamil
-
-> +
-> +int xe_sriov_pf_debugfs_attr_open(int pf, unsigned int vf_num, unsigned int gt_num,
-> +				  const char *attr, int mode);
-> +
-> +#endif /* __XE_SRIOV_DEBUGFS_H__ */
-> -- 
-> 2.31.1
+>  	params = open_parameters("kunit");
+>  	if (igt_debug_on(params < 0))
+> @@ -952,41 +952,11 @@ static bool kunit_set_filtering(const char *filter_glob, const char *filter,
+>  	 * As a workaround, we use non-NULL strings that exhibit
+>  	 * the same behaviour as if default NULLs were in place.
+>  	 */
+> -	ret = !igt_debug_on(!igt_sysfs_set(params, "filter_glob",
+> -					   filter_glob ?: "*"));
+> -	if (!ret)
+> -		goto close;
+> +	if (igt_debug_on(!igt_sysfs_set(params, "filter_glob", filter_glob ?: "*")) ||
+> +	    igt_debug_on(!igt_sysfs_set(params, "filter", filter ?: "module!=none")) ||
+> +	    igt_debug_on(!igt_sysfs_set(params, "filter_action", filter_action ?: "")))
+> +		ret = false;
+>  
+> -	ret = !igt_debug_on(!igt_sysfs_set(params, "filter",
+> -					   filter ?: "module!=none"));
+> -	if (!ret)
+> -		goto close;
+> -
+> -	ret = !igt_debug_on(!igt_sysfs_set(params, "filter_action",
+> -					   filter_action ?: ""));
+> -
+> -	/*
+> -	 * TODO: Drop the extra check below as soon as igt_sysfs_set()
+> -	 *	 can correctly process empty strings which we are using
+> -	 *	 as filter_action NULL equivalent.
+> -	 *
+> -	 * We need this check only when NULL is requested for "filter_action"
+> -	 * and not for "filter" parameter, otherwise, even if "filter_action"
+> -	 * was previously set to "skip", we don't care since our
+> -	 * "module!=none" default filter guarantees that no test cases are
+> -	 * filtered out to be processed as "filter_action" says.
+> -	 */
+> -	if (ret && !filter_action && filter) {
+> -		filter_action = igt_sysfs_get(params, "filter_action");
+> -
+> -		ret = !(igt_debug_on_f(!filter_action,
+> -				       "open() failed\n") ||
+> -			igt_debug_on_f(strlen(filter_action),
+> -				       "empty string not applied\n"));
+> -		free((char *)filter_action);
+> -	}
+> -
+> -close:
+>  	close(params);
+>  
+>  	return ret;
 > 
+
+
+
+
