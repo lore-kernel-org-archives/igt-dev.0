@@ -4,62 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6CA8D767F7
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 18:30:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52C38D767F9
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 18:53:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 843D610E430;
-	Thu, 31 Oct 2024 18:30:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0132610E90E;
+	Thu, 31 Oct 2024 18:53:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JNsTjfZ4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PTTBmcyK";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39FDB10E430
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 18:30:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 95B5210E90E
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 18:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730399419; x=1761935419;
+ t=1730400812; x=1761936812;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=YJRP9FYcy1czCYGOyKFgwM4nLgj/QfBp3GUtyh9fR/o=;
- b=JNsTjfZ4zZMqRZYwWfo1CbNowu3lgxXiPCESlvNAxDGoOK3dC6gJD4Fg
- FJWRDUARBqf1L1SLKkbQNM4Zc9MEk8ujrwLE0QW1BFiCJcJupjrM2yKHA
- f+SM35qgg6YK6hOd7CjEHCIqi+q4cdeqj1mEkAU6PpDcI1/be/l3s/DOd
- mcAW78jpa5DtQrxh20uEz2pDGtxLi0mdaRfwP23QqCa2jS9P2/7nOerDZ
- H8SKif8GZzB37wpBnntOYl46M0p1EpPFecffo97ikLTnTK+pG5J7O8AHD
- Y2cNJE4TMtQqYej2qbnsTeGazevRuHbW1ROtqhNNYT44YgGdZ9mHS/oMs A==;
-X-CSE-ConnectionGUID: EJJjs56ORGWbTWfcXi7qJQ==
-X-CSE-MsgGUID: vF0v+UIORa+VkmznYcV1Lg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="33847417"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="33847417"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 11:30:19 -0700
-X-CSE-ConnectionGUID: /3pXhpqQS5y/qAz+CESvRw==
-X-CSE-MsgGUID: rRQIqDmTQ0adqcTXqHUBzA==
+ bh=gtvul2FrpEc2rMyNJKyFoMG74/+oPH/C3Wz3fnuXurI=;
+ b=PTTBmcyKzL9eLwSAh+FbwTVobHS4WBV14SgtT2ad44jz48/k8kVtZcIl
+ dK0qrKbQcuHV01UeWYmvcpHrWBG5fG34K8hf9TzMTNUjqhAL88yHFQKMr
+ dOKU2btAXfA6oTWsQWNqFo/wwsjzE0gt6CCdsJNtAEJ4+lSPZJ14JeKoj
+ m88v5UXSmNyQHhohl030B+WE7tlec7Pph+HzoU4NxtDrhmD9bSBNKqvkO
+ cm2+th8WmdbHC0Xyo2IRYC1NlXJ60OBoNej7aqsDgAyvArJcvsRDN71D0
+ DSeL9ZY5wqJ308cujdBfRQZTeWGx/4Y7i2XY/b3qK5Og5isNXd9bd7ioG Q==;
+X-CSE-ConnectionGUID: saOy7bjXTiODwL9x0CqCaQ==
+X-CSE-MsgGUID: 2rU5ng2BTjKq5Wxzjxfkbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="29593044"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="29593044"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 11:53:32 -0700
+X-CSE-ConnectionGUID: 01SQqo8lTWC0DTzvAQaqRw==
+X-CSE-MsgGUID: gQ4X6CdCRLGzwKsLCKFBEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="113490209"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="86652079"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 11:30:17 -0700
-Date: Thu, 31 Oct 2024 19:30:14 +0100
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 11:53:29 -0700
+Date: Thu, 31 Oct 2024 19:53:13 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
- alex.zuo@intel.com, vinay.belgaumkar@intel.com
-Subject: Re: [PATCH v2 2/2] tests/intel/xe_sysfs_timeslice_duration: Restore
- preempt timeout
-Message-ID: <20241031183014.ljgijkh7pnvk76m6@kamilkon-desk.igk.intel.com>
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
+ Mark Yacoub <markyacoub@chromium.org>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ nicolejadeyee@google.com, seanpaul@google.com,
+ jeremie.dautheribes@bootlin.com, markyacoub@google.com,
+ 20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
+Subject: Re: [PATCH i-g-t v2 1/5] lib/monitor_edids: Add helper functions for
+ using monitor_edid objects
+Message-ID: <20241031185313.mh74kmwz5iwgq64j@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- saurabhg.gupta@intel.com, alex.zuo@intel.com,
- vinay.belgaumkar@intel.com
-References: <20241031163122.37356-1-jonathan.cavitt@intel.com>
- <20241031163122.37356-3-jonathan.cavitt@intel.com>
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ Mark Yacoub <markyacoub@chromium.org>,
+ Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ nicolejadeyee@google.com, seanpaul@google.com,
+ jeremie.dautheribes@bootlin.com, markyacoub@google.com,
+ 20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
+References: <20241022-b4-cv3-02-monitor-edids-v2-0-7634786c21e6@bootlin.com>
+ <20241022-b4-cv3-02-monitor-edids-v2-1-7634786c21e6@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241031163122.37356-3-jonathan.cavitt@intel.com>
+In-Reply-To: <20241022-b4-cv3-02-monitor-edids-v2-1-7634786c21e6@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,110 +91,161 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jonathan,
-On 2024-10-31 at 16:31:22 +0000, Jonathan Cavitt wrote:
-> The subtests of sysfs_timeslice_duration modify the preempt_timeout_us
-> and timeslice_duration_us values.  However, while the test does restore
-> the timeslice_duration_us value at the end of execution, it does not do
-> the same for preempt_timeout_us.  Because the value is not properly
-> restored, future tests can end up using the unexpected preempt timeout
-> value and thus have unexpected behavior.
+Hi Louis,
+On 2024-10-22 at 14:53:10 +0200, Louis Chauvet wrote:
+
+in you e-mail header I found in cc:
+
+	20241022-b4-cv3-01-igt-kms-v2-0-8f654694b513@bootlin.com
+
+Is it correct?
+
+> Introduce the functions edid_from_monitor_edid() and
+> get_edids_for_connector_type(). The former converts a monitor_edid object
+> to a struct edid, which can then be utilized by igt_kms helpers. The
+> latter returns a list of monitor_edid objects for a specific connector
+> with certain characteristics
 > 
-> Save and restore the preempt_timeout_us value during the test.
-> 
-> This fix does not apply to xe_sysfs_preempt_timeout because only the
-> preempt_timeout_us is modified during those tests, and the value is
-> correcty restored before the tests end.
-> 
-> v2: Also restore preempt_timeout_us on test failure (Kamil)
-> 
-> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2976
-> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Add here to Cc developer e-mails, found with 'git blame', so +cc
+
+Cc: Mark Yacoub <markyacoub@chromium.org>
+Cc: Mark Yacoub <markyacoub@google.com>
+
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 > ---
->  tests/intel/xe_sysfs_timeslice_duration.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
+>  lib/monitor_edids/monitor_edids_helper.c | 61 +++++++++++++++++++++++++++++++-
+>  lib/monitor_edids/monitor_edids_helper.h |  5 +++
+>  2 files changed, 65 insertions(+), 1 deletion(-)
 > 
-> diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
-> index 914575a282..576be98ede 100644
-> --- a/tests/intel/xe_sysfs_timeslice_duration.c
-> +++ b/tests/intel/xe_sysfs_timeslice_duration.c
-> @@ -115,10 +115,11 @@ static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_
->  static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
+> diff --git a/lib/monitor_edids/monitor_edids_helper.c b/lib/monitor_edids/monitor_edids_helper.c
+> index 1cbf1c22f0bb..0e0c2a9badcf 100644
+> --- a/lib/monitor_edids/monitor_edids_helper.c
+> +++ b/lib/monitor_edids/monitor_edids_helper.c
+> @@ -14,7 +14,10 @@
+>  #include <string.h>
+>  #include <assert.h>
+>  
+> -#include "igt_core.h"
+
+Nice! igt_core here could be an overkill.
+
+> +#include "igt.h"
+> +#include "igt_edid.h"
+> +#include "dp_edids.h"
+> +#include "hdmi_edids.h"
+>  
+>  static uint8_t convert_hex_char_to_byte(char c)
 >  {
->  	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
-> -	unsigned int saved;
-> +	unsigned int saved, old_pt;
->  	uint64_t elapsed;
->  	uint64_t epsilon;
->  
-> +	igt_assert(igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &old_pt) == 1);
->  	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) == 1);
->  	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
->  	igt_debug("Initial %s:%u\n", property[0], saved);
-> @@ -140,6 +141,9 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
->  	}
->  
->  	set_timeslice_duration(engine, saved);
-> +	igt_assert_lte(0, igt_sysfs_printf(engine, "preempt_timeout_us", "%u", old_pt));
-
-Imho '_lt' - zero is an error?!
-
-> +	igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &saved);
-> +	igt_assert_eq(saved, old_pt);
+> @@ -90,3 +93,59 @@ void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid)
+>  	free(edid);
+>  	edid = NULL;
 >  }
+> +
+
+Add description to each new lib function.
+
+> +struct edid *edid_from_monitor_edid(const monitor_edid *mon_edid)
+> +{
+> +	uint8_t *raw_edid;
+> +	size_t edid_size;
+> +	int i;
+> +
+> +	edid_size = strlen(mon_edid->edid) / 2; /* each ascii is a nibble. */
+> +	raw_edid = malloc(edid_size);
+> +	igt_assert(raw_edid);
+> +
+> +	for (i = 0; i < edid_size; i++) {
+> +		raw_edid[i] = convert_hex_char_to_byte(mon_edid->edid[i * 2]) << 4 |
+> +			      convert_hex_char_to_byte(mon_edid->edid[i * 2 + 1]);
+> +	}
+> +
+> +	if (edid_get_size((struct edid *)raw_edid) > edid_size) {
+> +		uint8_t *new_edid;
+> +
+> +		igt_warn("The edid size stored in the raw edid is shorter than the edid stored in the table.");
+
+Warn could result in test failure, why not igt_debug()?
+
+> +		new_edid = realloc(raw_edid, edid_get_size((struct edid *)raw_edid));
+> +		igt_assert(new_edid);
+> +		raw_edid = new_edid;
+> +	}
+> +
+> +	return (struct edid *)raw_edid;
+> +}
+> +
+
+Same here, add description.
+
+> +struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k)
+> +{
+> +	if (four_k) {
+
+Do you really need function with 'bool' param?
+Why not two functions, one for 4K display and second for non-4K-capable?
+
+> +		switch (type) {
+> +		case DRM_MODE_CONNECTOR_DisplayPort:
+> +			*count = ARRAY_SIZE(DP_EDIDS_4K);
+> +			return DP_EDIDS_4K;
+
+instead of returning here, add
+
+	return *count;
+
+at function end.
+
+> +		case DRM_MODE_CONNECTOR_HDMIA:
+> +			*count = ARRAY_SIZE(HDMI_EDIDS_4K);
+> +			return HDMI_EDIDS_4K;
+> +		default:
+> +			igt_assert_f(0, "No 4k EDID for the connector %s\n",
+> +				     kmstest_connector_type_str(type));
+> +		}
+> +	} else {
+> +		switch (type) {
+> +		case DRM_MODE_CONNECTOR_DisplayPort:
+> +			*count = ARRAY_SIZE(DP_EDIDS_NON_4K);
+> +			return DP_EDIDS_NON_4K;
+> +		case DRM_MODE_CONNECTOR_HDMIA:
+> +			*count = ARRAY_SIZE(HDMI_EDIDS_NON_4K);
+> +			return HDMI_EDIDS_NON_4K;
+> +		default:
+> +			igt_assert_f(0, "No EDID for the connector %s\n",
+> +				     kmstest_connector_type_str(type));
+> +		}
+> +	}
+> +}
+> diff --git a/lib/monitor_edids/monitor_edids_helper.h b/lib/monitor_edids/monitor_edids_helper.h
+> index 05679f0897f3..2ec7aee5f13f 100644
+> --- a/lib/monitor_edids/monitor_edids_helper.h
+> +++ b/lib/monitor_edids/monitor_edids_helper.h
+> @@ -12,6 +12,8 @@
+>  #define TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_
 >  
->  igt_main
-> @@ -158,7 +162,7 @@ igt_main
->  	int gt_count = 0;
->  	int fd = -1, sys_fd, gt;
->  	int engines_fd[8], gt_fd[8];
-> -	unsigned int tds[8];
-> +	unsigned int tds[8], pts[8];
+>  #include <stdint.h>
+> +#include <stddef.h>
+> +#include <stdbool.h>
 >  
->  	igt_fixture {
->  		fd = drm_open_driver(DRIVER_XE);
-> @@ -176,6 +180,9 @@ igt_main
->  			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
->  						   "timeslice_duration_us",
->  						   "%u", &tds[gt_count]) == 1);
-> +			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
+>  #include "igt_chamelium.h"
+>  
+> @@ -30,4 +32,7 @@ get_chameleon_edid_from_monitor_edid(struct chamelium *chamelium,
+>  				     const monitor_edid *edid);
+>  void free_chamelium_edid_from_monitor_edid(struct chamelium_edid *edid);
+>  
+> +struct edid *edid_from_monitor_edid(const monitor_edid *monitor_edid);
+> +struct monitor_edid *get_edids_for_connector_type(uint32_t type, size_t *count, bool four_k);
+> +
+>  #endif /* TESTS_CHAMELIUM_MONITOR_EDIDS_MONITOR_EDIDS_HELPER_H_ */
+> \ No newline at end of file
 
-imho igt_require should be enough.
-
-> +						   "preempt_timeout_us",
-> +						   "%u", &pts[gt_count]) == 1);
->  			gt_count++;
->  		}
->  	}
-> @@ -194,6 +201,8 @@ igt_main
->  	}
->  	igt_fixture {
->  		for (int i = gt_count - 1; i >= 0; i--) {
-> +			igt_assert_lte(0, igt_sysfs_printf(engines_fd[i], "preempt_timeout_us",
-
-This should be '> 0' as printf return number of bytes written,
-also in case of error imho better use igt_abort()
-We do not want proceed with any test after a failure.
-
-Maybe add also check here if old value was really restored?
-
-> +							   "%u", pts[i]));
->  			set_timeslice_duration(engines_fd[i], tds[i]);
-
-Same problem is here, function makes checks and uses igt_assert(),
-instead of calling it, open code restoration and abort on error.
-
-Or code that function to return bool instead of asserting?
-
-Same goes for restoration in patch 1.
+Add newline.
 
 Regards,
 Kamil
 
->  			close(engines_fd[i]);
->  			close(gt_fd[i]);
+> 
 > -- 
-> 2.43.0
+> 2.46.2
 > 
