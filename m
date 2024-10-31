@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8DECD767F2
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 17:33:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDB12D767F1
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 17:33:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A099910E16B;
-	Thu, 31 Oct 2024 17:33:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C60010E41F;
+	Thu, 31 Oct 2024 17:33:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tb/PS1jW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XvqV9TIE";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0190010E16B
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 17:33:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EECC010E41F
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 17:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730396001; x=1761932001;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0P6c6HYfQsi85HfNu0fWKo7xKVoWzoEbLuxPMW/X0yA=;
- b=Tb/PS1jWmxEBIHCBqdSDDAE79dWUZEXhJDrNYfmtK3CgZEJ3+CEAJKY+
- q9JATBaBrxxboIbn6wlwo4vzEBcghjTQ1GMpIHb62g4c6JWin/xMBdWxD
- Mlzu+Q32mhScErlKPFYUbuiGybfdqU0o4tA/fsAkkwbNu1V5zqcdiANXs
- t6saZdctMIAyDJWWS09kIotsBpzhOH5vfIeh8x7FTBKalCsFLDI1vZL5P
- cjzpbfsHiz7t+W0y6fXMkx4ls6FCiOfzXV0UnzMLXjgslfnMmlTIaWH3W
- Z6snG4Ph3FTWKwNml3T79kwpf11OHEDt1oCOoo6TlzpZg4JmfYebl4Wso g==;
-X-CSE-ConnectionGUID: xeuw7rIkSLeHU4PKCFRTwg==
-X-CSE-MsgGUID: nOXQO3k/R5m7dm9m442Hjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17789932"
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="17789932"
+ t=1730396005; x=1761932005;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=QMEULkuzyYXNh/TUBMK4izZtuLwVRQ3Y3Yv8eDhkQts=;
+ b=XvqV9TIETA0AI8+7N79VTxHu/H66C3P3avZ0rCo03YMhdwhgvrk9IABU
+ 2iiLT/FoPiqbcTMhv/ce22KMKNn/Pr5TBci5MBiJWAiXUrRNU5XIXX2PZ
+ YY4BqikAzf9G7I0Q++poLR3j+ipeqtVTRHymN0KN5OfVbcrAqljddq5uf
+ FKKjuSVv5ZFWIK3jbLxTxXhi7qLMtg0j0Gzf/NnuC4u5prFLUjYsXkv+n
+ 0pTfc6JdpnGSQ6ukJrsVwsKYQBBGFI8boX0HJWtI4/BK0aznhIN2It1IR
+ /Re8xGwI9oavO6vEvhp7Qhu3u0Kl/JbwRMTXzRhvgq6cR7wH+8yPnS+5v g==;
+X-CSE-ConnectionGUID: 3kF9iXx2RpSN7sm3jJWt4A==
+X-CSE-MsgGUID: XLEi46IVT1yXfe6eRW3ZSw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11242"; a="17789935"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="17789935"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 10:33:20 -0700
-X-CSE-ConnectionGUID: YjGKSnT9QfWDgNoewYAF1A==
-X-CSE-MsgGUID: ZhpTdOdLTga3wg1XuR3L3w==
+ 31 Oct 2024 10:33:24 -0700
+X-CSE-ConnectionGUID: 0QnEtEvcTfWyraxOkOCS7g==
+X-CSE-MsgGUID: q/tNGxw1Tm2hkK7fZnXHtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="87476096"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="87476121"
 Received: from ettammin-desk.ger.corp.intel.com (HELO localhost)
  ([10.245.245.144])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 10:33:18 -0700
+ 31 Oct 2024 10:33:23 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
  Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
- Jari Tahvanainen <jari.tahvanainen@intel.com>,
  Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t v4 0/2] rename drm_fdinfo into i915_fdinfo
-Date: Thu, 31 Oct 2024 18:32:52 +0100
-Message-ID: <20241031173306.73864-1-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v4 1/2] tests/intel: rename drm_fdinfo into i915_fdinfo
+Date: Thu, 31 Oct 2024 18:32:53 +0100
+Message-ID: <20241031173306.73864-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241031173306.73864-1-kamil.konieczny@linux.intel.com>
+References: <20241031173306.73864-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,35 +72,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test opens i915 drm card and will not work for other drivers.
-Hence rename it to avoid confusion.
+This test works only for i915 driver and also uses i915 specific
+workload to validate fdinfo so rename it to avoid confusion.
 
-See also discussion at
-https://patchwork.freedesktop.org/series/139451/
-i915/drm_fdinfo: Quiesce GPU prior to running some tests
+Also while at this, sort out few i915 build names in meson.
 
-v2: corrected Tvrtko e-mail and corrected xe.blocklist
-v3: squashed patch 2 into 1, resulting in removing drm_fdinfo
-  from xe.blocklist, added r-b (Lucas)
-v4: corrected dependency for lib in meson.build (Kamil)
+v2: correct Tvrto address (Kamil)
+v3: removed from xe.blocklist and squashed into one patch (Lucas)
+v4: corrected lib dependency in meson.build (Kamil)
 
 Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc: Jari Tahvanainen <jari.tahvanainen@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt             |  1 -
+ tests/intel/{drm_fdinfo.c => i915_fdinfo.c} |  2 +-
+ tests/meson.build                           | 10 +++++-----
+ 3 files changed, 6 insertions(+), 7 deletions(-)
+ rename tests/intel/{drm_fdinfo.c => i915_fdinfo.c} (99%)
 
-Kamil Konieczny (2):
-  tests/intel: rename drm_fdinfo into i915_fdinfo
-  HAX/DO_NOT_MERGE: test drm/i915_fdinfo
-
- tests/intel-ci/fast-feedback.testlist |   56 ++
- tests/intel-ci/xe.blocklist.txt       |    1 -
- tests/intel/i915_fdinfo.c             | 1146 +++++++++++++++++++++++++
- tests/meson.build                     |   12 +-
- 4 files changed, 1209 insertions(+), 6 deletions(-)
- create mode 100644 tests/intel/i915_fdinfo.c
-
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index f9ef612c4..6fe893f7a 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -33,7 +33,6 @@ igt@kms_selftest.*
+ ##################################################################
+ igt@debugfs.*
+ igt@device_reset
+-igt@drm_fdinfo
+ igt@drm_read
+ igt@dumb.*
+ igt@prime_.*
+diff --git a/tests/intel/drm_fdinfo.c b/tests/intel/i915_fdinfo.c
+similarity index 99%
+rename from tests/intel/drm_fdinfo.c
+rename to tests/intel/i915_fdinfo.c
+index b66ac9e1b..c26ae9737 100644
+--- a/tests/intel/drm_fdinfo.c
++++ b/tests/intel/i915_fdinfo.c
+@@ -34,7 +34,7 @@
+ #include "i915/gem_vm.h"
+ #include "intel_ctx.h"
+ /**
+- * TEST: drm fdinfo
++ * TEST: i915 fdinfo
+  * Description: Test the i915 drm fdinfo data
+  * Category: Core
+  * Mega feature: General Core features
+diff --git a/tests/meson.build b/tests/meson.build
+index 2724c7a9a..393963093 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -88,7 +88,6 @@ intel_i915_xe_progs = [
+ intel_i915_progs = [
+ 	'api_intel_bb',
+ 	'debugfs_test',
+-	'drm_fdinfo',
+ 	'gen3_mixed_blits',
+ 	'gen3_render_linear_blits',
+ 	'gen3_render_mixed_blits',
+@@ -211,15 +210,14 @@ intel_i915_progs = [
+ 	'gem_wait',
+ 	'gem_watchdog',
+ 	'gem_workarounds',
+-	'perf',
+-	'perf_pmu',
+ 	'i915_fb_tiling',
++	'i915_fdinfo',
+ 	'i915_getparams_basic',
+-	'i915_pm_freq_api',
+ 	'i915_hangman',
+ 	'i915_module_load',
+ 	'i915_pciid',
+ 	'i915_pipe_stress',
++	'i915_pm_freq_api',
+ 	'i915_pm_freq_mult',
+ 	'i915_pm_rpm',
+ 	'i915_pm_rc6_residency',
+@@ -229,6 +227,8 @@ intel_i915_progs = [
+ 	'i915_query',
+ 	'i915_selftest',
+ 	'i915_suspend',
++	'perf',
++	'perf_pmu',
+ 	'prime_busy',
+ 	'prime_mmap',
+ 	'prime_mmap_coherency',
+@@ -371,7 +371,6 @@ extra_sources = {
+ # Extra dependencies used on core and Intel drivers
+ extra_dependencies = {
+ 	'core_hotunplug': [ lib_igt_i915_perf ],
+-	'drm_fdinfo': [ lib_igt_drm_fdinfo ],
+ 	'dumb_buffer':  [ libatomic ],
+ 	'gem_barrier_race': [ lib_igt_i915_perf ],
+ 	'gem_create': [ libatomic ],
+@@ -380,6 +379,7 @@ extra_dependencies = {
+ 	'gem_eio': [ realtime ],
+ 	'gem_exec_balancer': [ lib_igt_perf ],
+ 	'gem_mmap_offset': [ libatomic ],
++	'i915_fdinfo': [ lib_igt_drm_fdinfo ],
+ 	'i915_pm_freq_mult': [ lib_igt_perf ],
+ 	'i915_pm_rc6_residency': [ lib_igt_perf ],
+ 	'perf': [ lib_igt_i915_perf ],
 -- 
 2.47.0
 
