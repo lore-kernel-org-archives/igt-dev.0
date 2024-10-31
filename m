@@ -4,79 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0414BE6748F
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 23:14:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15891E67490
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 23:14:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9D3910E0B4;
-	Thu, 31 Oct 2024 23:14:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C6BD510E948;
+	Thu, 31 Oct 2024 23:14:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="hjBXMYBI";
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="e4hhb1ZV";
 	dkim-atps=neutral
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
- [209.85.167.42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3288E10E0B4
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 23:14:13 +0000 (UTC)
-Received: by mail-lf1-f42.google.com with SMTP id
- 2adb3069b0e04-539fb49c64aso2155298e87.0
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 16:14:13 -0700 (PDT)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com
+ [209.85.167.41])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 028B010E949
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 23:14:16 +0000 (UTC)
+Received: by mail-lf1-f41.google.com with SMTP id
+ 2adb3069b0e04-539f4d8ef66so1916488e87.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 16:14:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=linaro.org; s=google; t=1730416451; x=1731021251; darn=lists.freedesktop.org;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:from:to:cc:subject:date:message-id:reply-to;
- bh=NnSY6PDouz6KDuWuMVsprwXscKSidaz81teE0ishBnk=;
- b=hjBXMYBIzhJjxBkcNgkyRjylwRbEiZgpDwGsRjTosggQGT1HZKF5XJl3BVqK5J2Fsi
- 6kI1855zTVmqUkbGUWa3Gdphb3yMJIR/H+NDZBKX3a9T4m6R5JPKcrRK+oRZUzQlij4o
- 6M3PQcl0S3eMxK95efpiU8JCD8n9yKduwatyR9/Nb94A8868dA4NRzp5Wvd9+yU0eW4o
- ruGmMd8DWpoztvgZ5HCxUYAvfY4TLfISDeinXdgLKF73WNBaf39PCf/mNDeXhYgv5zYz
- RgIyfve9ilA2jPAMQCiqfWSQhI84sAwsIHFq8v6yN1nfr1H8DBlguOg09HSyeqc4QTHt
- T4Ew==
+ d=linaro.org; s=google; t=1730416454; x=1731021254; darn=lists.freedesktop.org;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+ :reply-to; bh=uHmsnQijfluj+wb0yjjbokfY9uXEXR6u2XGVPhvhTzs=;
+ b=e4hhb1ZVOiwHUR22RhgjRmWMkaX9J5wwKkHav87cW/v7FRA0YRSZo45C2YX/4sQXtn
+ TqnhZ5i9b2rTrSy582FpPcjYohpf3gTljAnm2hi/RMGBP5skmOcgW2jweTgBHnPL2xvv
+ DVZaVOkjsa23UEPYa23dh1oL73TY0k2A3mELgK9DNlwJNkUGl0RJUhcU6iWMOvy1Qzs+
+ jVHLSspVxQlBMOJFlHey2SbSfUO85zJXLSingzngddupU7wBmgqPwL9X0jjTlN4sOuXu
+ L7F4c/76dLzURAcO3dQa/WxFUOJ84KGUB1kjDt3aISbGS3cM8XGKJ5gzhmE//ZXNkBoZ
+ nwmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730416451; x=1731021251;
- h=cc:to:content-transfer-encoding:mime-version:message-id:date
- :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=NnSY6PDouz6KDuWuMVsprwXscKSidaz81teE0ishBnk=;
- b=XEGekhrqir4ioY0Uke9sGIor5FhrKz1chpOm7Rb0SI2n5TtzfdEVYaCABOX3bH3Gpg
- ztGYB9ROatK2iRG3mWgyXWAad8kfD25kcGm+gGJJ8VPJXN0r2ldWer3VssadlqA7neCi
- kystHRxrFkxymHNcGtwVKBoAGGpOXJupwE3kUZz7XL07CaMK2bElVKnX1hOGL+qDEJiG
- IGuejxiabtmqrDSLGpsdmAdwgCh/eB+oWiwaKM6G7n4w0eDUpY6gcd3vfPE44Ny1q5qt
- sdVvugywYZT/jY66Beic4e8/pNgkscFmMt2MnBBPwNZfmkj0pAdr+C/BaQM0zapXTc7l
- x3Ow==
-X-Gm-Message-State: AOJu0YzY2dgbf11TbyX2cyj0HD+zxMOd7E/Uli5K35EmRw9d6SrVhr7v
- lbG9KJUcntv0nvl4771RorJEJ1ZqoK7jnmP7vHP7b7AZpcU2opE1ulVLNsl+7mwKvJMrJ2BUiJQ
- O
-X-Google-Smtp-Source: AGHT+IHG9QU+LRi6BWjnyDTBypD0IAmYFpZ9m53OTr8z5zXxB7X7W5lnlLNWY8lpRdP8gO1+Ip6wrw==
-X-Received: by 2002:a05:6512:1149:b0:539:e0e6:cf42 with SMTP id
- 2adb3069b0e04-53d65e0b4a4mr1627052e87.43.1730416450930; 
- Thu, 31 Oct 2024 16:14:10 -0700 (PDT)
+ d=1e100.net; s=20230601; t=1730416454; x=1731021254;
+ h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+ :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=uHmsnQijfluj+wb0yjjbokfY9uXEXR6u2XGVPhvhTzs=;
+ b=DaK75qJa3ejjPYu7E2lhfPxOtioEhaY7wuiKJb31ZqyQoyWSSNVERPpnh1WnnNYxYK
+ pbxjuhKoF3AJNgjYhMkgbJzmSls6GAiY0nj9Nr7gDCsMT/nMhO37ONq5oYvDeUdgMNXD
+ 77W/7NWhZpohBGNDdvBc6JX7I53kCCzFwtXDtmXWsHhOCeY+dfYv8JuNKIrXB3KMhSg3
+ XpcnLZyaz/myMuxa27ffDDnbutpMK5H9VR47OeiJAcLBsnPhJxOt5B7CmbADTlfRDoFa
+ FdxFDxy6ak/lQrMNUlx446Z+e+gd7ev/+dWoGJE+++qmyuMAY98nDjUHf0yGtBh4Yjsk
+ FG6Q==
+X-Gm-Message-State: AOJu0YxlMxDzxtZE9NWAaVRIVv8TyIPJbHdnirRhG3AxMdTKfxKOcnX8
+ WGXd/M+wwZZ38buga7HaJq0k1GWu9tQb9r20bg+ybSjvUmZ9KznO7LNl8c1iTUXtoYlX31FHer8
+ I
+X-Google-Smtp-Source: AGHT+IE2edZ1VQXwfAE7tmIX+OrXRd+Wnup1q56sMp7rnfnWSmatx7PdXkHwgu9w6hINhN8bFhP9qA==
+X-Received: by 2002:a05:6512:3b27:b0:539:de9c:c890 with SMTP id
+ 2adb3069b0e04-53b34c5f9b5mr10404705e87.42.1730416453598; 
+ Thu, 31 Oct 2024 16:14:13 -0700 (PDT)
 Received: from rohan.lan ([192.130.178.90]) by smtp.gmail.com with ESMTPSA id
- 2adb3069b0e04-53c7bc9580bsm358117e87.34.2024.10.31.16.14.08
+ 2adb3069b0e04-53c7bc9580bsm358117e87.34.2024.10.31.16.14.11
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 31 Oct 2024 16:14:09 -0700 (PDT)
+ Thu, 31 Oct 2024 16:14:12 -0700 (PDT)
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH i-g-t v3 0/2] tests/kms_properties: rework immutability checks
-Date: Fri, 01 Nov 2024 01:14:04 +0200
-Message-Id: <20241101-rework-imm-check-v3-0-707c290572c6@linaro.org>
+Date: Fri, 01 Nov 2024 01:14:05 +0200
+Subject: [PATCH i-g-t v3 1/2] tests/kms_properties: drop immutability
+ checks
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADwPJGcC/4WNzQ6CMBAGX8X0bMm2/FVPvofxUGCBDULNllQJ4
- d0tHLx6nG8zs6vwyIReXE+rYAzkyU0R0vNJ1L2dOpTURBYadKZAl5Lx7XiQNI6y7rEeZBsPWFk
- slS1E1F6MLX2O5P0RuSc/O16OD0Ht6xGDC2itoMzzJDNQpEYq2Yw085JUlhffDy7cnjRZdonjT
- uypoH+6AmWUBshNkulY+2dv2/YFUrrh5ewAAAA=
+Content-Transfer-Encoding: 8bit
+Message-Id: <20241101-rework-imm-check-v3-1-707c290572c6@linaro.org>
+References: <20241101-rework-imm-check-v3-0-707c290572c6@linaro.org>
+In-Reply-To: <20241101-rework-imm-check-v3-0-707c290572c6@linaro.org>
 To: igt-dev@lists.freedesktop.org
 Cc: =?utf-8?q?Ville_Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1480;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3266;
  i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=fFHPyYa0Tp+oYL8XGolF64Qd8by+Cf5f18ZnhMTEvNE=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBnJA8+ArOPgqgwcR7dAmvyj9gGdeVqjJCPD1sNO
- YzqWk2v5ueJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZyQPPgAKCRCLPIo+Aiko
- 1fNHB/9nLx8qa/HtjVKMg0vSDfQu3m3TqKoKRp05V8Ir9F8MYBPvk/k6OiHgYSRC/fVaRvDGTa2
- ExAPgr3/MMmkHWUHxRThLSKf62xjeDRLaJHmJ4QbzG9EEv+mUTIZ4DqlU98e3bPdRhjnQ3pWzgG
- 5j5bXQI3Gnw/oHYKFq3X5nCVZwLD4VrfjpT1ch/8kfQQ1yuCgONMjaAmN9r/ATutbRcs8kbOSF0
- 9EoM7aECbhC1VpQU2JCg3cCIAJv6xHdZMyPMPRoKq4FgIRucbtTPd8EIjcBWt7MP1GwKqrjbWwz
- ptw7xGTiQ5WS6fX0zCdmQ94+G7Rk2MJ07S+63tmcDnY2IOlC
+ bh=6BgmgdWBrGGdEdduY5+9gDdmxOSI57DDFtnoiSWRtH4=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBnJA8/jthKv1SzDq8ti93c34/rik75Iu72dJcNC
+ bvzkPyNcO6JATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZyQPPwAKCRCLPIo+Aiko
+ 1Q8qB/9AXqll+2qxZuJ9KUdMRPLAqJWJtcTyYP5bni7Y4E08+GBZY21+fIQvrE4fNmSrecy+lxq
+ BmKfey9k/v8u/LnEPDz3WG4B0Y4Z4xyxMjQl9jOd9e3rHILDLOlNuy6ciXPn/aziwqO1g5mqOtV
+ 7OvCzBv199QOfS9Nhv24nGKCgd/M1PqkGvUOwi517+AW1ZRnvCbiDjI4v4EWmqgYrjoCe3+AB9Q
+ H8WGoN31o3EnS0/B7ZKwYHmb7Exad65iTqHm8X2taLIXlctRGhDjhQkNaKTITjmntQpvrR7f+Wc
+ kW6n9CKyQt+Q7DrJNSgxF9OAf0PAmmSSVVRY3uOh2/afhzd+
 X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
  fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -97,39 +96,85 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Following the discussion on IRC, it is actually an error to require that
 properties that can not be chaged are marked as immutable.
 
-The DRM_MODE_PROP_IMMUTABLE defines more of the 'direction' of the
-property (whether it is set by the kernel or it is expected to be set by
-the userspace) rather than simply states that there is no way for the
-userspace to change the property.
+First of all, it creates inconsistent uAPI. Some drivers might have an
+immutable property, while others will have it mutable. Yes, there are
+known examples for such behaviour (e.g. zpos), but they are clearly
+documented in this way.
 
-Drop the existing immutability test and spawn (as an RFC) new sanity
-checker for properties.
+Second, by the nature of the flag, the DRM_MODE_PROP_IMMUTABLE defines
+more of the 'direction' of the property (whether it is set by the kernel
+or it is expected to be set by the userspace) rather than simply states
+that there is no way for the userspace to change the property.
 
+Drop the single-value-is-immutable tests.
+
+Fixes: 29ae12bd764e ("tests/kms_properties: Validate properties harder")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://oftc.irclog.whitequark.org/dri-devel/2024-07-16#33374622
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-
 ---
-Changes in v3:
-- Split implementation into two patches, one to remove the immutability
-  check and another one to add sanity checks.
-- Link to v2: https://lore.kernel.org/r/20241018120058.42240-1-dmitry.baryshkov@linaro.org
+ tests/kms_properties.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-Changes in v2:
-- Moved GAMMA_LUT_SIZE and DEGAMMA_LUT_SIZE to DRM_MODE_OBJECT_CRTC.
-- Added debug print to help debugging possible issues.
-- Link to v1: https://lore.kernel.org/r/20240902210755.480638-1-dmitry.baryshkov@linaro.org
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index a93c93cccf64..be62e522166f 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -421,11 +421,9 @@ static void validate_range_prop(const struct drm_mode_get_property *prop,
+ {
+ 	const uint64_t *values = from_user_pointer(prop->values_ptr);
+ 	bool is_unsigned = prop->flags & DRM_MODE_PROP_RANGE;
+-	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+ 
+ 	igt_assert_eq(prop->count_values, 2);
+ 	igt_assert_eq(prop->count_enum_blobs, 0);
+-	igt_assert(values[0] != values[1] || immutable);
+ 
+ 	if (is_unsigned) {
+ 		igt_assert_lte_u64(values[0], values[1]);
+@@ -461,12 +459,10 @@ static void validate_enum_prop(const struct drm_mode_get_property *prop,
+ 			       uint64_t value)
+ {
+ 	const uint64_t *values = from_user_pointer(prop->values_ptr);
+-	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+ 	int i;
+ 
+ 	igt_assert_lte(1, prop->count_values);
+ 	igt_assert_eq(prop->count_enum_blobs, prop->count_values);
+-	igt_assert(prop->count_values != 1 || immutable);
+ 
+ 	for (i = 0; i < prop->count_values; i++) {
+ 		if (value == values[i])
+@@ -481,12 +477,10 @@ static void validate_bitmask_prop(const struct drm_mode_get_property *prop,
+ 				  uint64_t value)
+ {
+ 	const uint64_t *values = from_user_pointer(prop->values_ptr);
+-	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+ 	uint64_t mask = 0;
+ 
+ 	igt_assert_lte(1, prop->count_values);
+ 	igt_assert_eq(prop->count_enum_blobs, prop->count_values);
+-	igt_assert(prop->count_values != 1 || immutable);
+ 
+ 	for (int i = 0; i < prop->count_values; i++) {
+ 		igt_assert_lte_u64(values[i], 63);
+@@ -535,7 +529,6 @@ static void validate_object_prop(int fd,
+ 				 uint64_t value)
+ {
+ 	const uint64_t *values = from_user_pointer(prop->values_ptr);
+-	bool immutable = prop->flags & DRM_MODE_PROP_IMMUTABLE;
+ 	struct drm_mode_crtc crtc;
+ 	struct drm_mode_fb_cmd fb;
+ 
+@@ -543,7 +536,6 @@ static void validate_object_prop(int fd,
+ 	igt_assert_eq(prop->count_enum_blobs, 0);
+ 
+ 	igt_assert_lte_u64(value, 0xffffffff);
+-	igt_assert(!immutable || value != 0);
+ 
+ 	switch (values[0]) {
+ 	case DRM_MODE_OBJECT_CRTC:
 
----
-Dmitry Baryshkov (2):
-      tests/kms_properties: drop immutability checks
-      tests/kms_properties: add sanity checks for properties
-
- tests/kms_properties.c | 110 ++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 87 insertions(+), 23 deletions(-)
----
-base-commit: 31475ea8fdeef38b5ae6b4b8ca6d4e42f8285b42
-change-id: 20241027-rework-imm-check-f241ebae71a6
-
-Best regards,
 -- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+2.45.2
 
