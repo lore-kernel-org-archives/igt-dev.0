@@ -4,170 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B99E67480
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 21:08:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0414BE6748F
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 23:14:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0AF6310E938;
-	Thu, 31 Oct 2024 21:08:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9D3910E0B4;
+	Thu, 31 Oct 2024 23:14:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RXcKdvIq";
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.b="hjBXMYBI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1D1110E938
- for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 21:08:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730408899; x=1761944899;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=T56SCqAaNeHW5vUNXFofbc5fxlTkIaYVOI9EbIPt0lI=;
- b=RXcKdvIq2w+WQO+kUz6ACSSX/fIsrUTi+HUAkmmPcOmvLnrCsKLzthFC
- ue3HWt9gc9jDblB5bxp7j/N56vDtyrc61ea+El1g+EpTWUJMNBEvxyNTy
- MEpvYVPtBErJhIcsm7z8RLpUC2DMcL6tC2AGaoMicjfVmpWdr+n4nnkcY
- GBsBdcO8tKy16ZlWm064zsIb5xW8arWBVMDTH1sBtkstXnRlL+5ITpuE7
- shoHSc65d4OK7SFEqSMIEGDga5hRBO7UW9JjYANjrfyyAhnu7EDHf0MWc
- s1g7Hlea7vYRLkIsNxLA13+2i1SivRFvNDtUh7ddWXEqmdNn2l3aOQZc1 w==;
-X-CSE-ConnectionGUID: fG8LYy7EQL+jtw2nynPpYQ==
-X-CSE-MsgGUID: X9BfC9fiSQ2uhqMvdGQ0DQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="52738913"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="52738913"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 14:08:19 -0700
-X-CSE-ConnectionGUID: 2bPjcSzuRd+06DrFj7oFtw==
-X-CSE-MsgGUID: kBLPVECNR16A6vP0CC0Phw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="113541063"
-Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
- by orviesa002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384;
- 31 Oct 2024 14:08:19 -0700
-Received: from fmsmsx603.amr.corp.intel.com (10.18.126.83) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 31 Oct 2024 14:08:18 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 31 Oct 2024 14:08:18 -0700
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (104.47.55.173)
- by edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 31 Oct 2024 14:08:18 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iHU2VbOpcWcT4xLioiwl0LPZxUg0tTn6E3PamjuJEmzh22QXhjtKXUU1wEMpBk0DeezuaWM6xnB+AQHJqvHMz9nNyu+A8qzZbcPyWW2zBs0aFEuIpsZPGzLuYzQaR6Hx1QcPJ0P9JEOFPIFOfFbHWVZ/g+ljRUp2O7piYatMorDgBMQvYV7VlqFs1aIMyKmd0Jz8Vqk02ead2CWRuXtlTrGX40DRl4NWtMC3tsFnMzVC6iytr8ktZa1mi6R6FVaaEANxDoy2PWKBCK0royvBhTLv6N2fQDkbTVOQiH2d2LZvqll0QeweahugQ4sAAFK3B5AJOgkG+qH5HcuY13x8sQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xN0xj5Js1N8pc0fSvW8L0v+LI5NyX6odpDUgRGKRR/M=;
- b=rFmHonbs3mCT+rn1Fqu313XJRL/U8x/V6zX46fc+IZeXeL3Gne7/CD6uoJ9RplieuE6mrs6Svv1Bxp/cRalT/pT3jO8QdmeZo20/vWmhKrzSB29SaPJQ0PHtaFruxsi92VZmAs+hNuhNqw3mUEHJLmU1v5PSuLDOUVw+chbz1Pj05JmQAaZofbqfYSG6dvMFLKCkoxEM6kRTSqnJ4o2KWDQrcDJjkApYHlW4DYlmWIG3Ecg4wGxhpD85Z+bBj0RGrAgR0nUZ+yFT1ozWZdoP05zbIHZE0hpxInM/oOR0OAEcwTjWV0UA5j+1ISbDnk1yIjK2wwf/jH9+SNN7cerBZA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH0PR11MB5444.namprd11.prod.outlook.com (2603:10b6:610:d3::13)
- by PH7PR11MB7550.namprd11.prod.outlook.com (2603:10b6:510:27d::21)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Thu, 31 Oct
- 2024 21:08:14 +0000
-Received: from CH0PR11MB5444.namprd11.prod.outlook.com
- ([fe80::5f89:ba81:ff70:bace]) by CH0PR11MB5444.namprd11.prod.outlook.com
- ([fe80::5f89:ba81:ff70:bace%4]) with mapi id 15.20.8114.015; Thu, 31 Oct 2024
- 21:08:13 +0000
-From: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Gupta, saurabhg" <saurabhg.gupta@intel.com>, "Zuo, Alex"
- <alex.zuo@intel.com>, "Belgaumkar, Vinay" <vinay.belgaumkar@intel.com>,
- "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
-Subject: RE: [PATCH v2 2/2] tests/intel/xe_sysfs_timeslice_duration: Restore
- preempt timeout
-Thread-Topic: [PATCH v2 2/2] tests/intel/xe_sysfs_timeslice_duration: Restore
- preempt timeout
-Thread-Index: AQHbK7Jm2Ea/2FZaSEq1L+yROo3evrKhLnUAgAAlb/A=
-Date: Thu, 31 Oct 2024 21:08:13 +0000
-Message-ID: <CH0PR11MB5444CF021534C2508AF6A812E5552@CH0PR11MB5444.namprd11.prod.outlook.com>
-References: <20241031163122.37356-1-jonathan.cavitt@intel.com>
- <20241031163122.37356-3-jonathan.cavitt@intel.com>
- <20241031183014.ljgijkh7pnvk76m6@kamilkon-desk.igk.intel.com>
-In-Reply-To: <20241031183014.ljgijkh7pnvk76m6@kamilkon-desk.igk.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH0PR11MB5444:EE_|PH7PR11MB7550:EE_
-x-ms-office365-filtering-correlation-id: 6b89ca65-b3b8-454d-f0c4-08dcf9f02211
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0; ARA:13230040|366016|376014|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?us-ascii?Q?ekYaiPtmHXo+Fs8uiHU6IQPHXv4HiqaXhqeZ5YfrWRjVY73PMJGDnNBBzYkO?=
- =?us-ascii?Q?j6m0EJAn2J27IcrVj66pVD5LBSXfqcr48ijptEEnwlxXNqsyG2G+EgzRWa1q?=
- =?us-ascii?Q?u+k5f9jz3pKDrTn/AZt6JimhDHipi7ooREnf9qhSVsTbLli6gRH+XPRqqXRE?=
- =?us-ascii?Q?T5zWt0lUypxk4UvKMClGIx1PhPOhFmVdWSL4Zl0APxvxhQTw+HKTBUXxhPFv?=
- =?us-ascii?Q?/Xs+gAsa3wTVBBjlz4++cscVtc9Ml6g4nYBDebyG8WqHXv9LrHxhHXHZfz7e?=
- =?us-ascii?Q?ONjdRd/WdFSUpaYB8gBBUajOX0wiFSObWnWSQExPK/GPKtZCUgOzz5vZ1zHs?=
- =?us-ascii?Q?V2epLMBNRNq/N6swlx6EgRpjcyWnh2F3fHW8jKUx5SmkChbvGaGiOUXzGc2c?=
- =?us-ascii?Q?XXqG19/w1waZeUcinQtxKyHQ85Y7zrnR20FgpcAkxi6K+ZbslkynhoVgHonf?=
- =?us-ascii?Q?rHMltj9PeRru9QAdGdmyxXrixRBQntdDBj6rBzHeTW3sgGB9cauM25zol1O9?=
- =?us-ascii?Q?xRpYXn/tOEWTs1FNdRVZksCx1QGAV3eSZgmWCK4N7ggmRzoBr9R47e6/r64H?=
- =?us-ascii?Q?+OWMaZzBFujkBPATe+IecUh74LXByEMlADmO8Fbh8UqhfWb3bKh2wo8MbGjD?=
- =?us-ascii?Q?shoeBq/+vNGIgcXgQltqmfp/wpGGP7PdwMaujnlDXmFPiX3+2Yq669gODu6W?=
- =?us-ascii?Q?MxG/XSZtwf6SAstPXsefJEjcdOGeTvM3LHdmZay5v4bYMgbbfl9DcKcfB9Qm?=
- =?us-ascii?Q?JuMHZmjb3RRCvl8yLjxvuU8lb0TtatsfDedFlP77mwMoXifVgoFEUXegsXYZ?=
- =?us-ascii?Q?BHclKrXIBnLAzVGz+wbxXceEr6RWpR5YfamHI5OUT9B6TWSCztUXRzfpBeAb?=
- =?us-ascii?Q?z1yfHsMzBt6RHhT3lVaR4U4jZJb97BBKnpgZ/9r8D0TKmt8o9mh4gYjbQHTi?=
- =?us-ascii?Q?1L/qkK7bc3KtolttOclpL1pl6SXA3a47dnBS3RyVXQAr50Ft020QtPnUxCft?=
- =?us-ascii?Q?Qf7d0YF47LwP5FiPDxOR0/kj23WfOOXZO6LsBNNjcuypbPYDYapNHlDp7gdC?=
- =?us-ascii?Q?08w9LXFn/D0fB678g+6TmMfhueYaPEl8HbSKCKbtcyceQj7GRXhE0IYgR0MV?=
- =?us-ascii?Q?9GkoriV0BK1mIzLxNSgXRgnrx9nejTxQGWF6bVNt7Nx+odVbzRltrbmDohzm?=
- =?us-ascii?Q?15dWauq+d+S0L1S3XL/OETNpBgaJpP5KM1SNrLFfW/xTYKbMWbYqireBY+nM?=
- =?us-ascii?Q?mfTfwaG4juX9nZOUeayr3Y9fwsrHtKFMrFDgWyMzVjnk+a6Vx9QrLwHRp2Tp?=
- =?us-ascii?Q?pXXwlWv8CygA88Fy4q1pIEYR?=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5444.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(38070700018); DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Orrsu/fBEaQ9+8u+3wzyrv2m6rOvRdK9WyZ9YupKw39yoszkPT0LviAnmwZa?=
- =?us-ascii?Q?OjNpDNcNLxRsWdw9c7/oRlRJX9OnA3gQb5CaD9UmGEyy/OjztqI6L0mU0iGv?=
- =?us-ascii?Q?rF5gixHRpKOc8avl6iXsklWCeOqAJxL/3Fr0puFhu46s5Rs5AkzJ/DYRXjtT?=
- =?us-ascii?Q?hTZjgWqiip5jd1+s1GEHf/x4fe2GRgaIpOY3NW3rkJCXuUcP6yOECf1DRmFq?=
- =?us-ascii?Q?vBOZEhLEo4Fb/Dvkh2ssVIRnnDJLGmR8EOy6x0nqKI42wR21HTvuIj9HwpfV?=
- =?us-ascii?Q?hKUKeUYirdJ+YipYebnDpY16+l8jW4YdvqmORGJw4us21wOi8/q5MIJwAmj3?=
- =?us-ascii?Q?U46wffnaEDo2wrB0Ae5PiZ0vDdcA0hovnM8NJmflfsRxrC+JJF6N6ZA17Pc7?=
- =?us-ascii?Q?YyLXb+zQOR44TIBeQ9tpLwWw/hEOi+6NBq4dNs+mZRHBOOjGAw5NFpw4/SvX?=
- =?us-ascii?Q?vi9mY33JEaXxDkKqeud2aWweVDm8XVB/OpavLbKXsor/IC4KqveuzU8bkXVu?=
- =?us-ascii?Q?FA+/JVRMUlxtZ1v5+dC2Hv9Oqr1jWJPmSwL9JQav2H1lSvrA5ShhH1hlv0Jb?=
- =?us-ascii?Q?N7gRTbtOmpJT0BM40DWpN0Ymws6ql12+T8r47FWQJy2CF+gv6uI02GYQ7euR?=
- =?us-ascii?Q?3xeZQDUKyOcGiJw2EwnSUufeM69q/v4zl4eeR3ZtV7tSrf1+z0JHRwosfZHh?=
- =?us-ascii?Q?6n42aXR/g/0ThfzHmDkRfoMICWYpLPgO5MPylOB4qcGL6SnZN6e/4Bypp9Fl?=
- =?us-ascii?Q?p5bfEseVmUvd6XcbXh/5I2K/6sO50GIdOqb0/H1Bg46Qi8UDJyVsZiVWVU5O?=
- =?us-ascii?Q?3ZHXYgcBal61jtnBb/6UL0/M15u29DukVSMPNSXce434fI9DN9OTs/Ou/jFc?=
- =?us-ascii?Q?PWc4QlDtSGPstFhRguNwKwFkkcYugoYNdpFT1jM7HU7p8ea++m5sdffGwmD3?=
- =?us-ascii?Q?31u/XH/9bY06fbcquBGdEi/BRL+RtTxDhXOLUH6sbcmHE3y0+JeTwlQetN86?=
- =?us-ascii?Q?w0Q4DQY6Oo+Jy2iEA+a2bXch3I8ItojPw0tIyZ4bMOXaISnuUrHzDcdCgtHT?=
- =?us-ascii?Q?JtAFX76PfPvLimqNDkhGoHax4lnpJoCqDcI5AVD3y8OevmbxyYTjW78u5Qut?=
- =?us-ascii?Q?alyikB9UnHN5+NBUpKK2S6EYR8uFLluI3VWlAqOWlV8u58mdQ62nbdVnGx1W?=
- =?us-ascii?Q?VE37s2PGEZ1chcY6mHOy74tx8Ee6OtF7gIHKW1AFehu7UG6ZtO7/qbFxcsza?=
- =?us-ascii?Q?59bHmfLPqGumLao++0uoq1FKpqJInsS+pQMtehbMlrIFw00MYtwuMzGmHv/1?=
- =?us-ascii?Q?99ISXVd0I5omKBjlrXU6CGf+qNDbAOcnVcpMJgrw/sPWfBnkiYTKq+ktLSr8?=
- =?us-ascii?Q?JsS/M54t/352W0lWRBGTBNKnV+ZWyuaw7LItbDt99RMX/QNJ9pumPGZnlMkM?=
- =?us-ascii?Q?lzJUga0v2bCrW4fHAVlK/e3+GYVW4DzH4BaddLApmZKZ9cm9w6BtLoE3JwCY?=
- =?us-ascii?Q?npZWCJ5OqJ16JDFSdRqcDdyOXLmUKboCmya/nTIlimsDn4Um4Fir3IlA8yIC?=
- =?us-ascii?Q?+ZX1rW29xMSFGZsos5glcqCRutZ3sq54pSQK3cnY?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com
+ [209.85.167.42])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3288E10E0B4
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 23:14:13 +0000 (UTC)
+Received: by mail-lf1-f42.google.com with SMTP id
+ 2adb3069b0e04-539fb49c64aso2155298e87.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 16:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=linaro.org; s=google; t=1730416451; x=1731021251; darn=lists.freedesktop.org;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:from:to:cc:subject:date:message-id:reply-to;
+ bh=NnSY6PDouz6KDuWuMVsprwXscKSidaz81teE0ishBnk=;
+ b=hjBXMYBIzhJjxBkcNgkyRjylwRbEiZgpDwGsRjTosggQGT1HZKF5XJl3BVqK5J2Fsi
+ 6kI1855zTVmqUkbGUWa3Gdphb3yMJIR/H+NDZBKX3a9T4m6R5JPKcrRK+oRZUzQlij4o
+ 6M3PQcl0S3eMxK95efpiU8JCD8n9yKduwatyR9/Nb94A8868dA4NRzp5Wvd9+yU0eW4o
+ ruGmMd8DWpoztvgZ5HCxUYAvfY4TLfISDeinXdgLKF73WNBaf39PCf/mNDeXhYgv5zYz
+ RgIyfve9ilA2jPAMQCiqfWSQhI84sAwsIHFq8v6yN1nfr1H8DBlguOg09HSyeqc4QTHt
+ T4Ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20230601; t=1730416451; x=1731021251;
+ h=cc:to:content-transfer-encoding:mime-version:message-id:date
+ :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+ :reply-to;
+ bh=NnSY6PDouz6KDuWuMVsprwXscKSidaz81teE0ishBnk=;
+ b=XEGekhrqir4ioY0Uke9sGIor5FhrKz1chpOm7Rb0SI2n5TtzfdEVYaCABOX3bH3Gpg
+ ztGYB9ROatK2iRG3mWgyXWAad8kfD25kcGm+gGJJ8VPJXN0r2ldWer3VssadlqA7neCi
+ kystHRxrFkxymHNcGtwVKBoAGGpOXJupwE3kUZz7XL07CaMK2bElVKnX1hOGL+qDEJiG
+ IGuejxiabtmqrDSLGpsdmAdwgCh/eB+oWiwaKM6G7n4w0eDUpY6gcd3vfPE44Ny1q5qt
+ sdVvugywYZT/jY66Beic4e8/pNgkscFmMt2MnBBPwNZfmkj0pAdr+C/BaQM0zapXTc7l
+ x3Ow==
+X-Gm-Message-State: AOJu0YzY2dgbf11TbyX2cyj0HD+zxMOd7E/Uli5K35EmRw9d6SrVhr7v
+ lbG9KJUcntv0nvl4771RorJEJ1ZqoK7jnmP7vHP7b7AZpcU2opE1ulVLNsl+7mwKvJMrJ2BUiJQ
+ O
+X-Google-Smtp-Source: AGHT+IHG9QU+LRi6BWjnyDTBypD0IAmYFpZ9m53OTr8z5zXxB7X7W5lnlLNWY8lpRdP8gO1+Ip6wrw==
+X-Received: by 2002:a05:6512:1149:b0:539:e0e6:cf42 with SMTP id
+ 2adb3069b0e04-53d65e0b4a4mr1627052e87.43.1730416450930; 
+ Thu, 31 Oct 2024 16:14:10 -0700 (PDT)
+Received: from rohan.lan ([192.130.178.90]) by smtp.gmail.com with ESMTPSA id
+ 2adb3069b0e04-53c7bc9580bsm358117e87.34.2024.10.31.16.14.08
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Thu, 31 Oct 2024 16:14:09 -0700 (PDT)
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Subject: [PATCH i-g-t v3 0/2] tests/kms_properties: rework immutability checks
+Date: Fri, 01 Nov 2024 01:14:04 +0200
+Message-Id: <20241101-rework-imm-check-v3-0-707c290572c6@linaro.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5444.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b89ca65-b3b8-454d-f0c4-08dcf9f02211
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2024 21:08:13.8699 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1kalmQ5FBkpTMkmVHnv4f47Pmet6KJ3tACHxlw9Voth91l4WXY6r/H75EhLelJEX7yH7I6wBoZPGtDLX1uX0fUallH5V/AtRJv7w0qp0Uvc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7550
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADwPJGcC/4WNzQ6CMBAGX8X0bMm2/FVPvofxUGCBDULNllQJ4
+ d0tHLx6nG8zs6vwyIReXE+rYAzkyU0R0vNJ1L2dOpTURBYadKZAl5Lx7XiQNI6y7rEeZBsPWFk
+ slS1E1F6MLX2O5P0RuSc/O16OD0Ht6xGDC2itoMzzJDNQpEYq2Yw085JUlhffDy7cnjRZdonjT
+ uypoH+6AmWUBshNkulY+2dv2/YFUrrh5ewAAAA=
+To: igt-dev@lists.freedesktop.org
+Cc: =?utf-8?q?Ville_Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1480;
+ i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
+ bh=fFHPyYa0Tp+oYL8XGolF64Qd8by+Cf5f18ZnhMTEvNE=;
+ b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBnJA8+ArOPgqgwcR7dAmvyj9gGdeVqjJCPD1sNO
+ YzqWk2v5ueJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZyQPPgAKCRCLPIo+Aiko
+ 1fNHB/9nLx8qa/HtjVKMg0vSDfQu3m3TqKoKRp05V8Ir9F8MYBPvk/k6OiHgYSRC/fVaRvDGTa2
+ ExAPgr3/MMmkHWUHxRThLSKf62xjeDRLaJHmJ4QbzG9EEv+mUTIZ4DqlU98e3bPdRhjnQ3pWzgG
+ 5j5bXQI3Gnw/oHYKFq3X5nCVZwLD4VrfjpT1ch/8kfQQ1yuCgONMjaAmN9r/ATutbRcs8kbOSF0
+ 9EoM7aECbhC1VpQU2JCg3cCIAJv6xHdZMyPMPRoKq4FgIRucbtTPd8EIjcBWt7MP1GwKqrjbWwz
+ ptw7xGTiQ5WS6fX0zCdmQ94+G7Rk2MJ07S+63tmcDnY2IOlC
+X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
+ fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -183,140 +94,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
------Original Message-----
-> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>=20
-> Sent: Thursday, October 31, 2024 11:30 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Cavitt, Jonathan <jonathan.cavitt@intel.com>; Gupta, saurabhg <saurab=
-hg.gupta@intel.com>; Zuo, Alex <alex.zuo@intel.com>; Belgaumkar, Vinay <vin=
-ay.belgaumkar@intel.com>
-> Subject: Re: [PATCH v2 2/2] tests/intel/xe_sysfs_timeslice_duration: Rest=
-ore preempt timeout
->=20
-> Hi Jonathan,
-> On 2024-10-31 at 16:31:22 +0000, Jonathan Cavitt wrote:
-> > The subtests of sysfs_timeslice_duration modify the preempt_timeout_us
-> > and timeslice_duration_us values.  However, while the test does restore
-> > the timeslice_duration_us value at the end of execution, it does not do
-> > the same for preempt_timeout_us.  Because the value is not properly
-> > restored, future tests can end up using the unexpected preempt timeout
-> > value and thus have unexpected behavior.
-> >=20
-> > Save and restore the preempt_timeout_us value during the test.
-> >=20
-> > This fix does not apply to xe_sysfs_preempt_timeout because only the
-> > preempt_timeout_us is modified during those tests, and the value is
-> > correcty restored before the tests end.
-> >=20
-> > v2: Also restore preempt_timeout_us on test failure (Kamil)
-> >=20
-> > Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2976
-> > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
-> > CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-> > CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  tests/intel/xe_sysfs_timeslice_duration.c | 13 +++++++++++--
-> >  1 file changed, 11 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe=
-_sysfs_timeslice_duration.c
-> > index 914575a282..576be98ede 100644
-> > --- a/tests/intel/xe_sysfs_timeslice_duration.c
-> > +++ b/tests/intel/xe_sysfs_timeslice_duration.c
-> > @@ -115,10 +115,11 @@ static uint64_t __test_timeout(int fd, int engine=
-, unsigned int timeout, uint16_
-> >  static void test_timeout(int fd, int engine, const char **property, ui=
-nt16_t class, int gt)
-> >  {
-> >  	uint64_t delays[] =3D { 1000, 50000, 100000, 500000 };
-> > -	unsigned int saved;
-> > +	unsigned int saved, old_pt;
-> >  	uint64_t elapsed;
-> >  	uint64_t epsilon;
-> > =20
-> > +	igt_assert(igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &old_p=
-t) =3D=3D 1);
-> >  	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) =
-=3D=3D 1);
-> >  	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) =3D=3D =
-1);
-> >  	igt_debug("Initial %s:%u\n", property[0], saved);
-> > @@ -140,6 +141,9 @@ static void test_timeout(int fd, int engine, const =
-char **property, uint16_t cla
-> >  	}
-> > =20
-> >  	set_timeslice_duration(engine, saved);
-> > +	igt_assert_lte(0, igt_sysfs_printf(engine, "preempt_timeout_us", "%u"=
-, old_pt));
->=20
-> Imho '_lt' - zero is an error?!
+Following the discussion on IRC, it is actually an error to require that
+properties that can not be chaged are marked as immutable.
 
-This is what is done in set_timeslice_duration.  I'm fairly certain it's be=
-cause
-zero can be returned in cases where the sysfs printf does not need to modif=
-y
-the value, though if that is not correct, do you also want me to change it =
-in
-set_timeslice_duration?
--Jonathan Cavitt
+The DRM_MODE_PROP_IMMUTABLE defines more of the 'direction' of the
+property (whether it is set by the kernel or it is expected to be set by
+the userspace) rather than simply states that there is no way for the
+userspace to change the property.
 
->=20
-> > +	igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &saved);
-> > +	igt_assert_eq(saved, old_pt);
-> >  }
-> > =20
-> >  igt_main
-> > @@ -158,7 +162,7 @@ igt_main
-> >  	int gt_count =3D 0;
-> >  	int fd =3D -1, sys_fd, gt;
-> >  	int engines_fd[8], gt_fd[8];
-> > -	unsigned int tds[8];
-> > +	unsigned int tds[8], pts[8];
-> > =20
-> >  	igt_fixture {
-> >  		fd =3D drm_open_driver(DRIVER_XE);
-> > @@ -176,6 +180,9 @@ igt_main
-> >  			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
-> >  						   "timeslice_duration_us",
-> >  						   "%u", &tds[gt_count]) =3D=3D 1);
-> > +			igt_assert(igt_sysfs_scanf(engines_fd[gt_count],
->=20
-> imho igt_require should be enough.
->=20
-> > +						   "preempt_timeout_us",
-> > +						   "%u", &pts[gt_count]) =3D=3D 1);
-> >  			gt_count++;
-> >  		}
-> >  	}
-> > @@ -194,6 +201,8 @@ igt_main
-> >  	}
-> >  	igt_fixture {
-> >  		for (int i =3D gt_count - 1; i >=3D 0; i--) {
-> > +			igt_assert_lte(0, igt_sysfs_printf(engines_fd[i], "preempt_timeout_=
-us",
->=20
-> This should be '> 0' as printf return number of bytes written,
-> also in case of error imho better use igt_abort()
-> We do not want proceed with any test after a failure.
->=20
-> Maybe add also check here if old value was really restored?
->=20
-> > +							   "%u", pts[i]));
-> >  			set_timeslice_duration(engines_fd[i], tds[i]);
->=20
-> Same problem is here, function makes checks and uses igt_assert(),
-> instead of calling it, open code restoration and abort on error.
->=20
-> Or code that function to return bool instead of asserting?
->=20
-> Same goes for restoration in patch 1.
->=20
-> Regards,
-> Kamil
->=20
-> >  			close(engines_fd[i]);
-> >  			close(gt_fd[i]);
-> > --=20
-> > 2.43.0
-> >=20
->=20
+Drop the existing immutability test and spawn (as an RFC) new sanity
+checker for properties.
+
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
+---
+Changes in v3:
+- Split implementation into two patches, one to remove the immutability
+  check and another one to add sanity checks.
+- Link to v2: https://lore.kernel.org/r/20241018120058.42240-1-dmitry.baryshkov@linaro.org
+
+Changes in v2:
+- Moved GAMMA_LUT_SIZE and DEGAMMA_LUT_SIZE to DRM_MODE_OBJECT_CRTC.
+- Added debug print to help debugging possible issues.
+- Link to v1: https://lore.kernel.org/r/20240902210755.480638-1-dmitry.baryshkov@linaro.org
+
+---
+Dmitry Baryshkov (2):
+      tests/kms_properties: drop immutability checks
+      tests/kms_properties: add sanity checks for properties
+
+ tests/kms_properties.c | 110 ++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 87 insertions(+), 23 deletions(-)
+---
+base-commit: 31475ea8fdeef38b5ae6b4b8ca6d4e42f8285b42
+change-id: 20241027-rework-imm-check-f241ebae71a6
+
+Best regards,
+-- 
+Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+
