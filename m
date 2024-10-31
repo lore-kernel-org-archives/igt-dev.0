@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DE1AE6896A
-	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 09:58:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 435BDE68972
+	for <igt-dev@archiver.kernel.org>; Thu, 31 Oct 2024 10:23:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F15C210E856;
-	Thu, 31 Oct 2024 09:58:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CC98B10E856;
+	Thu, 31 Oct 2024 10:23:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OqmTDdzZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZkwV7ZhR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F28CC10E856;
- Thu, 31 Oct 2024 09:58:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E580D10E856
+ for <igt-dev@lists.freedesktop.org>; Thu, 31 Oct 2024 10:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730368697; x=1761904697;
+ t=1730370183; x=1761906183;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=88xemjQFUsdzNjIwtfhqOPOxBz4oyDaxyAp6gqL8nkA=;
- b=OqmTDdzZViz3KSsPzPGsqXmVZL1iwZxEJ+uew8Z6auPhWNUmClfw0L5J
- uKtWW2cSawmj1Fn9+cEZpoN1tSwjvA6TfGaGozmVa6dpOA1tVXpdAz2kq
- xuLnam3M58q70lQxGlKZGigEr0gttti+HQhq1xTIDHb/idruvGTkW/GSl
- V2VI/5gp+E5ZCvwf28vWXLlTzq2dL2wPetC0WzkiYfeUAKqTcWisIWzYw
- yDLnOM6lSF0qKhAGCxdiqegZXX2lfHi/xt9st1uW6PUH7CHNIk7nOdSva
- 6Hj9Mg/KztssZxfgq3BWLz5ELoOfE3JYpZaDFWFrOw1okbPgBEmozGjJg g==;
-X-CSE-ConnectionGUID: klLIu8NmSCuaSAwoKdkYGA==
-X-CSE-MsgGUID: DdThIHBESk+mnvb0h+ZARg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40645796"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="40645796"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 02:58:17 -0700
-X-CSE-ConnectionGUID: T+9xqGgiTUCo4l1FzAF+Rw==
-X-CSE-MsgGUID: 5L2bbIPJTWW2Ms8shUOwTg==
+ bh=A+Be6rLBOtv2CWZg/goc7GkFXgbt/1RLmOeugRRKsNU=;
+ b=ZkwV7ZhRVbVMvWNmnaqIleP+9GowGJbG4Z7isTZwfhphgloTRpCLeqpn
+ lntCFK47GOyVJrdtii994LGNeVo3TcWa0BTq7uPMwQ4Wmts/5zbPuYcLv
+ cxz7024ZewjBP2r65P7NX0N6xE/xis4fGMUYZswfv8CAWwqBZssMwuXAj
+ pijHHY/G2WhEHcEox1tjxoO6C7et+VkPc5Dd8KlszbTqtDAzrJZi6+by1
+ bfgK2E3ZLmJoUSJ9ZZGNisNh8zzgI8ZvDJ5rgJIsRuEtGW4SQqFNkj8Pr
+ YREuaQZXPlF0fn8ERRw29M4AuaGhmiPDLD2ONICPrfzwd6VKvdRV2wlxy Q==;
+X-CSE-ConnectionGUID: 5DA+xZkHSXqnymJB8MJKLA==
+X-CSE-MsgGUID: xp6ECAMdQUyJTMPGs6EELA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11241"; a="33890970"
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="33890970"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Oct 2024 03:23:02 -0700
+X-CSE-ConnectionGUID: PTR8vxEVSCCbpv+DHLOCVQ==
+X-CSE-MsgGUID: 2OQt5sCiRM2FydTcGGU/8A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="83384929"
-Received: from ksztyber-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.246.165])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Oct 2024 02:58:15 -0700
-Date: Thu, 31 Oct 2024 10:58:12 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,247,1725346800"; d="scan'208";a="82241252"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by fmviesa007-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2024 03:23:01 -0700
+Date: Thu, 31 Oct 2024 11:22:40 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIEZpLkNJLkJBVDogZmFpbHVy?= =?utf-8?Q?e?= for
- tests/xe_exec_comput_mode: Use valid exec queue for bind
-Message-ID: <20241031095812.fg4zp3bur325bcs4@zkempczy-mobl2>
-References: <20241031073604.35976-1-zbigniew.kempczynski@intel.com>
- <173036681772.1365305.11372994320704010202@2413ebb6fbb6>
+Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: Re: [PATCH i-g-t] tests/syncobj_wait: Update
+ invalid-wait-zero-handles test
+Message-ID: <20241031102240.vvxvej4iyk4vilzv@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+References: <20241030144821.35043-2-krzysztof.niemiec@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173036681772.1365305.11372994320704010202@2413ebb6fbb6>
+In-Reply-To: <20241030144821.35043-2-krzysztof.niemiec@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,96 +71,67 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Oct 31, 2024 at 09:26:57AM +0000, Patchwork wrote:
->    Patch Details
+Hi Krzysztof,
+On 2024-10-30 at 15:48:22 +0100, Krzysztof Niemiec wrote:
+> The behavior of DRM_IOCTL_SYNCOBJ_TIMELINE_WAIT has been changed in [1]
+> to accept empty lists of syncobj handles, but the
+> invalid-wait-zero-handles test has not been updated to mirror this
+> change. Fix the assert to check against 0 instead of -EINVAL, and rename
+> the test to wait-zero-handles as this is no longer an invalid scenario.
 > 
->    Series:  tests/xe_exec_comput_mode: Use valid exec queue for bind        
->    URL:     https://patchwork.freedesktop.org/series/140752/                
->    State:   failure                                                         
->    Details: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12012/index.html 
+> This change mirrors [2], but for the syncobj_wait test.
 > 
->                CI Bug Log - changes from IGT_8090 -> IGTPW_12012
+> [1] https://patchwork.freedesktop.org/patch/554042/
+> [2] https://patchwork.freedesktop.org/patch/618483/
 > 
-> Summary
-> 
->    FAILURE
-> 
->    Serious unknown changes coming with IGTPW_12012 absolutely need to be
->    verified manually.
-> 
->    If you think the reported changes have nothing to do with the changes
->    introduced in IGTPW_12012, please notify your bug team
->    (I915-ci-infra@lists.freedesktop.org) to allow them
->    to document this new failure mode, which will reduce false positives in
->    CI.
-> 
->    External URL:
->    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12012/index.html
-> 
-> Participating hosts (46 -> 46)
-> 
->    Additional (1): bat-dg2-13
->    Missing (1): fi-snb-2520m
-> 
-> Possible new issues
-> 
->    Here are the unknown changes that may have been introduced in IGTPW_12012:
-> 
->   IGT changes
-> 
->     Possible regressions
-> 
->      * igt@kms_flip@basic-flip-vs-dpms@a-dp1:
-> 
->           * fi-cfl-8109u: PASS -> DMESG-WARN +3 other tests dmesg-warn
->      * igt@kms_flip@basic-flip-vs-dpms@b-dp1:
-> 
->           * fi-cfl-8109u: PASS -> INCOMPLETE +1 other test incomplete
+> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
 
-Unrelated to the change.
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
---
-Zbigniew
-
+> ---
+>  tests/syncobj_wait.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> Known issues
+> diff --git a/tests/syncobj_wait.c b/tests/syncobj_wait.c
+> index be7e67163..e5f251205 100644
+> --- a/tests/syncobj_wait.c
+> +++ b/tests/syncobj_wait.c
+> @@ -80,8 +80,6 @@
+>   *
+>   * SUBTEST: invalid-wait-illegal-handle
+>   *
+> - * SUBTEST: invalid-wait-zero-handles
+> - *
+>   * SUBTEST: multi-wait-all-for-submit-signaled
+>   *
+>   * SUBTEST: multi-wait-all-for-submit-submitted
+> @@ -177,6 +175,8 @@
+>   * SUBTEST: wait-for-submit-delayed-submit
+>   *
+>   * SUBTEST: wait-for-submit-snapshot
+> + *
+> + * SUBTEST: wait-zero-handles
+>   */
+>  
+>  IGT_TEST_DESCRIPTION("Tests for the drm sync object wait API");
+> @@ -297,7 +297,7 @@ static void
+>  test_wait_zero_handles(int fd)
+>  {
+>  	struct drm_syncobj_wait wait = { 0 };
+> -	igt_assert_eq(__syncobj_wait(fd, &wait), -EINVAL);
+> +	igt_assert_eq(__syncobj_wait(fd, &wait), 0);
+>  }
+>  
+>  static void
+> @@ -918,7 +918,7 @@ igt_main
+>  	igt_subtest("invalid-wait-bad-flags")
+>  		test_wait_bad_flags(fd);
+>  
+> -	igt_subtest("invalid-wait-zero-handles")
+> +	igt_subtest("wait-zero-handles")
+>  		test_wait_zero_handles(fd);
+>  
+>  	igt_subtest("invalid-wait-illegal-handle")
+> -- 
+> 2.45.2
 > 
->    Here are the changes found in IGTPW_12012 that come from known issues:
-> 
->   IGT changes
-> 
->     Issues hit
-> 
->      * igt@i915_selftest@live:
-> 
->           * bat-mtlp-6: PASS -> ABORT (i915#12133 / i915#12216)
->      * igt@i915_selftest@live@workarounds:
-> 
->           * bat-mtlp-6: PASS -> ABORT (i915#12216)
->      * igt@kms_chamelium_edid@hdmi-edid-read:
-> 
->           * bat-dg2-13: NOTRUN -> DMESG-WARN (i915#12253)
->      * igt@kms_chamelium_edid@vga-edid-read:
-> 
->           * bat-dg2-13: NOTRUN -> SKIP (Intel XE#484 / i915#4550) +1 other
->             test skip
-> 
->     Warnings
-> 
->      * igt@i915_selftest@live:
->           * bat-arlh-3: ABORT (i915#12061 / i915#12133) -> ABORT (i915#12133)
-> 
-> Build changes
-> 
->      * CI: CI-20190529 -> None
->      * IGT: IGT_8090 -> IGTPW_12012
->      * Linux: CI_DRM_15615 -> CI_DRM_15616
-> 
->    CI-20190529: 20190529
->    CI_DRM_15615: c245557007af0a1c23da00c47732ae1dadda7dd3 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    CI_DRM_15616: baf0f5492ee64d9edaa4a9aae47c7dc6dc3e2c31 @
->    git://anongit.freedesktop.org/gfx-ci/linux
->    IGTPW_12012: 12012
->    IGT_8090: ef818fb3a73d6d69d09d573c2a6d071b2c7dc84a @
->    https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
