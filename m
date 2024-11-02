@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2D38E6F06D
-	for <igt-dev@archiver.kernel.org>; Fri,  1 Nov 2024 15:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2C6E677F5
+	for <igt-dev@archiver.kernel.org>; Sat,  2 Nov 2024 11:38:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3E28710E2EF;
-	Fri,  1 Nov 2024 15:35:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE5FA10E0E8;
+	Sat,  2 Nov 2024 11:38:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MjZNln9Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IuCoK00r";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD87510E2EF
- for <igt-dev@lists.freedesktop.org>; Fri,  1 Nov 2024 15:35:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5885B10E0E8
+ for <igt-dev@lists.freedesktop.org>; Sat,  2 Nov 2024 11:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730475352; x=1762011352;
- h=from:to:cc:subject:date:message-id:mime-version:
+ t=1730547483; x=1762083483;
+ h=message-id:date:mime-version:from:subject:to:cc:
  content-transfer-encoding;
- bh=nW6R+qQvGnzmwf/B6yik3Z8EwD31CDvnw5vAJ1DGGD0=;
- b=MjZNln9YD+rnxtioIzZj/Q5pCkQydd3pSkljMrZ6JJFtf6yqMbkIGeIF
- DqYlkhoO5Nx5tb0Hk3o/oOY+cvvGcNHKV7nurhTx2bieJ1vUO/u131DrG
- DnVzI82cOgHeTZviEwk1hIDoFRLp/yYsn5DXWJpGmRUc6AgoPRtGkNhwO
- ffnRzjk0QPMNQmKM4RO19iapRvCP+2W70Z2iK4RiRAfyILCs6Q0YfGAU7
- tBIZ1vvb0wN0iWJLzWhqLQ71b36PUW/MJH8if6V4lCd0Vmegf4pynCZ7e
- /Cza+2Vpyw0JOW/Tr3Mt2VcwXSkAZ7ddPUHdEoF4mp3m6p8bFFqAri0uz w==;
-X-CSE-ConnectionGUID: O0n7IsTqSUiicYY3MPikEQ==
-X-CSE-MsgGUID: CdBX6r61S0e1O2u4g3mU3Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40788269"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="40788269"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Nov 2024 08:35:52 -0700
-X-CSE-ConnectionGUID: /sIOXqrVTdKjxOhOsIfI1A==
-X-CSE-MsgGUID: ei0R0mjAQJGxJGqeuP/QLw==
+ bh=OqVI8sJak2jdrvDwOZt2EPCRgv4hdcf3cqEnflusFvU=;
+ b=IuCoK00rkVNp3RkNfVUu2SsZ2a9Nc3X2gtqc4ZeZex5nEcJ4JMjSJ3ws
+ 4LUjJCRxv+RAwDlZxB4+WprWvRS/r13fO6nd74C5U4mqQL1ePOs0q8Joi
+ fQHuVG0soc+Uz2YDH+3pPZ+WHZfZ957KvKbMGqW6lAlmAo9EDlR5/ITyF
+ 6UZDMcU4vCKMIhHK+fR/Yx7EEZAc3tj5supumOvkbfZsLZBLetCYB6KfP
+ cffkbFMVdr9RScLh3YWF8tdPwsZqbCGzexfpSH9/KxCrRhFPn0TNbe0sq
+ Nhzs0uoy6K48AI8qUQUK7BpNK6Qt+DQbiUCQAzgrqGktLdF32Fu9F5Q0G A==;
+X-CSE-ConnectionGUID: gr+flmZvRQqkIfA8mVCc2w==
+X-CSE-MsgGUID: 86d6JrehQaOgaAeuo/aotw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="30404831"
+X-IronPort-AV: E=Sophos;i="6.11,252,1725346800"; d="scan'208";a="30404831"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Nov 2024 04:38:03 -0700
+X-CSE-ConnectionGUID: iTqm3JSGSpO1CKIM/nC3gQ==
+X-CSE-MsgGUID: r9f9uxExQmCrVWrInsLBhQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="87784841"
-Received: from rahul-super-server.iind.intel.com ([10.145.169.156])
- by orviesa003.jf.intel.com with ESMTP; 01 Nov 2024 08:35:49 -0700
-From: janga.rahul.kumar@intel.com
-To: igt-dev@lists.freedesktop.org, ramadevi.gandi@intel.com,
- janga.rahul.kumar@intel.com
-Cc: matthew.d.roper@intel.com,
-	lucas.demarchi@intel.com
-Subject: [PATCH i-g-t v2] tests/intel/xe_exec_reset: Add mocs reset test
-Date: Fri,  1 Nov 2024 21:14:32 +0530
-Message-Id: <20241101154432.3679065-1-janga.rahul.kumar@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.11,252,1725346800"; d="scan'208";a="88333115"
+Received: from ileshem-mobl2.ger.corp.intel.com (HELO [10.213.194.61])
+ ([10.213.194.61])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Nov 2024 04:38:02 -0700
+Message-ID: <136a49f8-8173-47a8-ac5d-e62e972e1005@linux.intel.com>
+Date: Sat, 2 Nov 2024 12:37:59 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: [PATCH i-g-t] igt-runner fact checking
+Content-Language: en-US
+To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,79 +68,617 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+On igt-runner, before each test, and after the last test collect and report
+facts, such as:
+ - hardware.pci.gpu_at_addr.0000:03:00.0 = 8086:e20b Intel Battlemage (Gen20)
+ - hardware.pci.drm_card_at_addr.0000:03:00.0 = card1
+ - kernel.kmod_is_loaded.i915 = true
 
-Check mocs configuration over GT reset.
+Reports new, deleted and changed facts. Here is an example:
+ $ cat test-list
+ igt@core_hotunplug@hotrebind
+ igt@xe_module_load@reload-no-display
 
-v2: Address review comments. (Matt Roper)
+ $ ... ./build/runner/igt_runner ...
+ [51.225490] [FACT before any test] new hardware.pci.gpu_at_addr.0000:03:00.0 = 8086:e20b Intel Battlemage (Gen20)
+ [51.225700] [FACT before any test] new hardware.pci.gpu_at_addr.0000:00:02.0 = 8086:a782 Intel Raptorlake_s (Gen12)
+ [51.227334] [1/2] core_hotunplug (hotrebind)
+ [59.429470] [FACT core_hotunplug (hotrebind)] new hardware.pci.drm_card_at_addr.0000:03:00.0 = card1
+ [59.429486] [FACT core_hotunplug (hotrebind)] new hardware.pci.drm_card_at_addr.0000:00:02.0 = card2
+ [59.430002] [FACT core_hotunplug (hotrebind)] new kernel.kmod_is_loaded.amdgpu = true
+ [59.430011] [FACT core_hotunplug (hotrebind)] new kernel.kmod_is_loaded.i915 = true
+ [59.430014] [FACT core_hotunplug (hotrebind)] new kernel.kmod_is_loaded.xe = true
+ [59.430456] [2/2] xe_module_load (reload-no-display)
+ [61.521348] [FACT xe_module_load (reload-no-display)] deleted hardware.pci.drm_card_at_addr.0000:03:00.0 = card1
+ [61.521834] [FACT xe_module_load (reload-no-display)] deleted kernel.kmod_is_loaded.xe = true
+ Done.
 
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Janga Rahul Kumar <janga.rahul.kumar@intel.com>
+As igt@core_hotunplug@hotrebind makes changes to the system, running the same
+test-list again produces different results:
+
+ $ ... ./build/runner/igt_runner ...
+ [141.870776] [FACT before any test] new hardware.pci.gpu_at_addr.0000:03:00.0 = 8086:e20b Intel Battlemage (Gen20)
+ [141.870820] [FACT before any test] new hardware.pci.gpu_at_addr.0000:00:02.0 = 8086:a782 Intel Raptorlake_s (Gen12)
+ [141.872987] [FACT before any test] new hardware.pci.drm_card_at_addr.0000:00:02.0 = card2
+ [141.874137] [FACT before any test] new kernel.kmod_is_loaded.amdgpu = true
+ [141.874144] [FACT before any test] new kernel.kmod_is_loaded.i915 = true
+ [141.874596] [1/2] core_hotunplug (hotrebind)
+ [146.662913] [FACT core_hotunplug (hotrebind)] changed hardware.pci.drm_card_at_addr.0000:00:02.0: card2 -> card0
+ [146.663850] [2/2] xe_module_load (reload-no-display)
+ Done.
+
+TODO
+ - Save logs to disk.
+
+Signed-off-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
 ---
- tests/intel/xe_exec_reset.c | 43 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ lib/igt_facts.c   | 443 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_facts.h   |  51 ++++++
+ lib/meson.build   |   1 +
+ runner/executor.c |   9 +
+ 4 files changed, 504 insertions(+)
+ create mode 100644 lib/igt_facts.c
+ create mode 100644 lib/igt_facts.h
 
-diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-index 43ef1e334..953b5be28 100644
---- a/tests/intel/xe_exec_reset.c
-+++ b/tests/intel/xe_exec_reset.c
-@@ -715,6 +715,45 @@ gt_reset(int fd, int n_threads, int n_sec)
- 	free(threads);
- }
- 
-+/**
-+ * SUBTEST: gt-mocs-reset
-+ * Description: Validate mocs register contents over GT reset
-+ * Test category: mocs
-+ * Functionality: mocs
+diff --git a/lib/igt_facts.c b/lib/igt_facts.c
+new file mode 100644
+index 000000000..90b362c5e
+--- /dev/null
++++ b/lib/igt_facts.c
+@@ -0,0 +1,443 @@
++// SPDX-License-Identifier: MIT
++
++/*
++ * Copyright © 2024 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
 + *
 + */
-+static void
-+gt_mocs_reset(int fd, int gt)
++
++#include <stdio.h>
++#include <glib.h>
++#include <libudev.h>
++#include "igt_core.h"
++#include "igt_kmod.h"
++#include "igt_facts.h"
++#include "igt_device_scan.h"
++
++
++/* Report new facts and fact changes
++ * - new: new_value is NULL
++ * - change: new_value is not NULL
++ * - delete: delete is true
++ */
++static void report_fact_change(igt_fact *fact, const char *new_value,
++							   const char *last_test, bool delete)
 +{
-+	char path[256];
++	struct timespec uptime_ts;
++	char *uptime = NULL;
 +
-+	/* Mocs debugfs contents before and after suspend-resume.
-+	 * Allocate memory to store 10k characters sufficient enough
-+	 * to store global mocs and lncf mocs data.
-+	 */
-+	char *mocs_content_pre = (char *)malloc(10000 * sizeof(char));
-+	char *mocs_contents_post = (char *)malloc(10000 * sizeof(char));
++	if (last_test == NULL)
++		last_test = g_strdup("before any test");
 +
-+	igt_assert(mocs_content_pre);
-+	igt_assert(mocs_contents_post);
++	if (clock_gettime(CLOCK_BOOTTIME, &uptime_ts) != 0)
++		return;
 +
-+	sprintf(path, "gt%d/mocs", gt);
-+	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-+	igt_debugfs_dump(fd, path);
-+	igt_debugfs_read(fd, path, mocs_content_pre);
++	uptime = g_strdup_printf("%ld.%06ld",
++							 uptime_ts.tv_sec,
++							 uptime_ts.tv_nsec / 1000);
 +
-+	xe_force_gt_reset_sync(fd, gt);
++	/* If delete is true, the fact was deleted */
++	if (delete) {
++		igt_info("[%s] [FACT %s] deleted %s = %s\n",
++			 uptime, last_test, fact->name, fact->value);
++		return;
++	}
 +
-+	igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-+	igt_debugfs_dump(fd, path);
-+	igt_debugfs_read(fd, path, mocs_contents_post);
++	/* If new_value is NULL, it is a new fact */
++	if (new_value == NULL) {
++		igt_info("[%s] [FACT %s] new %s = %s\n",
++			 uptime, last_test, fact->name, fact->value);
++		return;
++	}
 +
-+	igt_assert(strcmp(mocs_content_pre, mocs_contents_post) == 0);
-+
-+	free(mocs_content_pre);
-+	free(mocs_contents_post);
++	/* Check if the value changed */
++	if (strcmp(fact->value, new_value) != 0) {
++		igt_info("[%s] [FACT %s] changed %s: %s -> %s\n",
++		       uptime, last_test, fact->name, fact->value, new_value);
++	}
++	g_free(uptime);
 +}
 +
- igt_main
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -820,6 +859,10 @@ igt_main
- 	igt_subtest("gt-reset-stress")
- 		gt_reset(fd, 4, 1);
- 
-+	igt_subtest("gt-mocs-reset")
-+		xe_for_each_gt(fd, gt)
-+			gt_mocs_reset(fd, gt);
++/* Get a fact by name. Return NULL if fact is not found. */
++static igt_fact *get_fact(igt_fact_list *list, const char *name)
++{
++	if (!list || list->facts == NULL || list->num_facts == 0)
++		return NULL;
 +
- 	igt_fixture
- 		drm_close_driver(fd);
- }
++	for (int i = 0; i < list->num_facts; i++) {
++		if (list->facts[i].name == NULL)
++			continue;
++
++		if (strcmp(list->facts[i].name, name) == 0)
++			return &list->facts[i];
++	}
++	return NULL;
++}
++
++static bool delete_fact(igt_fact_list *list, const char *name, const char *last_test)
++{
++	igt_fact *fact = NULL;
++	int i;
++
++	fact = get_fact(list, name);
++	if (fact == NULL)
++		return false;
++
++	/* Report the deletion */
++	report_fact_change(fact, NULL, last_test, true);
++
++	/* Move all facts after the one to be deleted one step back */
++	for (i = 0; i < list->num_facts; i++) {
++		if (strcmp(list->facts[i].name, name) == 0) {
++			g_free(list->facts[i].name);
++			g_free(list->facts[i].value);
++
++			for (int j = i; j < list->num_facts - 1; j++)
++				list->facts[j] = list->facts[j + 1];
++			break;
++		}
++	}
++	list->num_facts--;
++	list->facts = realloc(list->facts, list->num_facts * sizeof(igt_fact));
++
++	return true;
++}
++
++/* Only used while creating the new_list. Not intended to add facts to the
++ * global fact list.
++ */
++static bool set_fact(igt_fact_list *list, const char *name,
++						 const char *value, const char *last_test)
++{
++	igt_fact *fact = NULL;
++
++	/* Check that name and value are not null */
++	if (name == NULL || value == NULL)
++		return false;
++
++	fact = get_fact(list, name);
++	if (fact != NULL)
++		return false; /* Should not happen */
++
++	/* Add a new fact */
++	list->num_facts++;
++	list->facts = realloc(list->facts, list->num_facts * sizeof(igt_fact));
++	list->facts[list->num_facts - 1].name = g_strdup(name);
++	list->facts[list->num_facts - 1].value = g_strdup(value);
++
++	if (last_test)
++		list->facts[list->num_facts - 1].last_test = g_strdup(last_test);
++	else
++		list->facts[list->num_facts - 1].last_test = NULL;
++
++	return true;
++}
++
++/* Add a new fact or update the value of an existing fact. Return false if
++ * the value is the same as the existing one.
++ */
++static bool update_list(igt_fact_list *list, const char *name,
++						const char *value, const char *last_test)
++{
++	igt_fact *fact = NULL;
++
++	/* Check that name and value are not null */
++	if (name == NULL || value == NULL)
++		return false;
++
++	fact = get_fact(list, name);
++	if (fact != NULL) {
++		/* Return false if fact->value equals value */
++		if (strcmp(fact->value, value) == 0)
++			return false; /* Not changed */
++
++		report_fact_change(fact, value, last_test, false);
++
++		/* Update the value */
++		fact->value = g_strdup(value);
++		return true;
++	}
++
++	/* Add a new fact */
++	list->num_facts++;
++	list->facts = realloc(list->facts, list->num_facts * sizeof(igt_fact));
++	list->facts[list->num_facts - 1].name = g_strdup(name);
++	list->facts[list->num_facts - 1].value = g_strdup(value);
++
++	/* Report new fact */
++	report_fact_change(&list->facts[list->num_facts - 1], NULL,
++					   last_test, false);
++
++	return true;
++}
++
++/* Merge list and new_list. fact_group is used to filer entries on list
++ * that should be deleted. For example, if fact_group is "pci_gpu", we
++ * can delete the fact hardware.pci.gpu_at.0000:00:02.0 if it doesn't
++ * exist in new_list.
++ */
++static void merge_facts(igt_fact_list *list, igt_fact_list *new_list,
++						const char *fact_group, const char *last_test)
++{
++	/* Filter by fact_group and delete facts that exist on list
++	 * but not on new_list
++	 */
++	for (int i = 0; i < list->num_facts; i++) {
++		if (strstr(list->facts[i].name, fact_group) == NULL)
++			continue;
++		if (get_fact(new_list, list->facts[i].name) == NULL)
++			delete_fact(list, list->facts[i].name, last_test);
++	}
++
++	/* Add and update facts from new_list to list */
++	for (int i = 0; i < new_list->num_facts; i++) {
++		if (strstr(new_list->facts[i].name, fact_group) == NULL)
++			continue; /* Should never happen */
++		update_list(list, new_list->facts[i].name, new_list->facts[i].value,
++				 new_list->facts[i].last_test);
++	}
++}
++
++static void scan_pci_for_gpus(igt_fact_list *list, const char *last_test)
++{
++	struct udev *udev = NULL;
++	struct udev_enumerate *enumerate = NULL;
++	struct udev_list_entry *devices, *dev_list_entry;
++	struct igt_device_card card;
++	char pcistr[10];
++	int ret;
++	char *factname = NULL;
++	char *factvalue = NULL;
++	igt_fact_list new_list = {0};
++
++	udev = udev_new();
++	if (!udev) {
++		igt_warn("Failed to create udev context\n");
++		return;
++	}
++
++	enumerate = udev_enumerate_new(udev);
++	if (!enumerate) {
++		igt_warn("Failed to create udev enumerate\n");
++		udev_unref(udev);
++		return;
++	}
++
++	ret = udev_enumerate_add_match_subsystem(enumerate, "pci");
++	if (ret < 0)
++		goto out;
++
++	ret = udev_enumerate_add_match_property(enumerate, "PCI_CLASS", "30000");
++	if (ret < 0)
++		goto out;
++
++	ret = udev_enumerate_add_match_property(enumerate, "PCI_CLASS", "38000");
++	if (ret < 0)
++		goto out;
++
++	ret = udev_enumerate_scan_devices(enumerate);
++	if (ret < 0)
++		goto out;
++
++	devices = udev_enumerate_get_list_entry(enumerate);
++	if (!devices)
++		goto out;
++
++	udev_list_entry_foreach(dev_list_entry, devices) {
++		const char *path;
++		struct udev_device *udev_dev;
++		struct udev_list_entry *entry;
++		char *model = NULL;
++		char *codename = NULL;
++
++		path = udev_list_entry_get_name(dev_list_entry);
++		udev_dev = udev_device_new_from_syspath(udev, path);
++		if (!udev_dev)
++			continue;
++
++		/* Strip path to only the content after the last / */
++		path = strrchr(path, '/');
++		if (path)
++			path++;
++		else
++			path = "unknown";
++
++		strcpy(card.pci_slot_name, "-");
++
++		entry = udev_device_get_properties_list_entry(udev_dev);
++		while (entry) {
++			const char *name = udev_list_entry_get_name(entry);
++			const char *value = udev_list_entry_get_value(entry);
++
++			entry = udev_list_entry_get_next(entry);
++			if (!strcmp(name, "ID_MODEL_FROM_DATABASE"))
++				model = g_strdup(value);
++			else if (!strcmp(name, "PCI_ID"))
++				igt_assert_eq(sscanf(value, "%hx:%hx",
++						     &card.pci_vendor, &card.pci_device), 2);
++		}
++		snprintf(pcistr, sizeof(pcistr), "%04x:%04x",
++				 card.pci_vendor, card.pci_device);
++		codename = igt_device_get_pretty_name(&card, false);
++
++		factname = g_strdup_printf("%s.%s", pci_gpu_fact, path);
++		factvalue = g_strdup_printf("%s %s %s",
++				 pcistr,
++				 codename ? codename : "",
++				 model ? model : "");
++
++		set_fact(&new_list, factname, factvalue, last_test);
++
++		free(codename);
++		free(model);
++		udev_device_unref(udev_dev);
++	}
++	merge_facts(list, &new_list, pci_gpu_fact, last_test);
++
++out:
++	udev_enumerate_unref(enumerate);
++	udev_unref(udev);
++}
++
++static void scan_pci_drm_cards(igt_fact_list *list, const char *last_test)
++{
++	struct udev *udev = NULL;
++	struct udev_enumerate *enumerate = NULL;
++	struct udev_list_entry *devices, *dev_list_entry;
++	int ret;
++	char *factname = NULL;
++	char *factvalue = NULL;
++	igt_fact_list new_list = {0};
++
++	udev = udev_new();
++	if (!udev)
++		return;
++
++	enumerate = udev_enumerate_new(udev);
++	if (!enumerate) {
++		udev_unref(udev);
++		return;
++	}
++
++	ret = udev_enumerate_add_match_subsystem(enumerate, "drm");
++	if (ret < 0)
++		goto out;
++
++	ret = udev_enumerate_scan_devices(enumerate);
++	if (ret < 0)
++		goto out;
++
++	devices = udev_enumerate_get_list_entry(enumerate);
++	if (!devices)
++		goto out;
++
++	ret = udev_enumerate_add_match_subsystem(enumerate, "drm");
++	if (ret < 0)
++		goto out;
++
++	ret = udev_enumerate_scan_devices(enumerate);
++	if (ret < 0)
++		goto out;
++
++	devices = udev_enumerate_get_list_entry(enumerate);
++	if (!devices)
++		goto out;
++
++	udev_list_entry_foreach(dev_list_entry, devices) {
++		const char *path;
++		struct udev_device *drm_dev, *pci_dev;
++		const char *drm_name, *pci_addr;
++
++		path = udev_list_entry_get_name(dev_list_entry);
++		drm_dev = udev_device_new_from_syspath(udev, path);
++		if (!drm_dev)
++			continue;
++
++		drm_name = udev_device_get_sysname(drm_dev);
++		/* Filter the device by name. Want devices such as card0 and card1.
++		 * If the device has '-' in the name, contine
++		 */
++		if (strncmp(drm_name, "card", 4) != 0 || strchr(drm_name, '-') != NULL) {
++			udev_device_unref(drm_dev);
++			continue;
++		}
++
++		/* Get the pci address of the gpu associated with the drm_dev*/
++		pci_dev = udev_device_get_parent_with_subsystem_devtype(drm_dev, "pci", NULL);
++		if (pci_dev) {
++			pci_addr = udev_device_get_sysattr_value(pci_dev, "address");
++			if (!pci_addr)
++				pci_addr = udev_device_get_sysname(pci_dev);
++		} else {
++			/* Some GPUs are platform devices. Ignore them. */
++			pci_addr = NULL;
++			udev_device_unref(drm_dev);
++			continue;
++		}
++
++		factname = g_strdup_printf("%s.%s", drm_card_fact, pci_addr);
++		factvalue = g_strdup_printf("%s", drm_name);
++		set_fact(&new_list, factname, factvalue, last_test);
++
++		udev_device_unref(drm_dev);
++	}
++	if (new_list.num_facts > 0)
++		merge_facts(list, &new_list, drm_card_fact, last_test);
++
++out:
++	udev_enumerate_unref(enumerate);
++	udev_unref(udev);
++}
++
++static void scan_kernel_loaded_kmods(igt_fact_list *list, const char *last_test)
++{
++	char *name = NULL;
++	igt_fact_list new_list = {0};
++
++	/* Iterate over igt_fact_kmod_list[] until the element contains "\0" */
++	for (int i = 0; strcmp(igt_fact_kmod_list[i], "\0") != 0; i++) {
++		name = g_strdup_printf("%s.%s", kmod_fact, igt_fact_kmod_list[i]);
++		if (igt_kmod_is_loaded(igt_fact_kmod_list[i]))
++			set_fact(&new_list, name, "true", last_test);
++
++		g_free(name);
++	}
++	merge_facts(list, &new_list, kmod_fact, last_test);
++}
++
++void igt_facts(igt_fact_list *list, const char *last_test)
++{
++	scan_pci_for_gpus(list, last_test);
++	scan_pci_drm_cards(list, last_test);
++	scan_kernel_loaded_kmods(list, last_test);
++
++	/* Flush stdout and stderr */
++	fflush(stdout);
++	fflush(stderr);
++}
++
++/* print_all_facts: pretty print all facts */
++void print_all_facts(igt_fact_list *list)
++{
++	igt_info("Number of facts: %d\n", list->num_facts);
++	for (int i = 0; i < list->num_facts; i++)
++		igt_info(" - %s: %s\n", list->facts[i].name, list->facts[i].value);
++}
+diff --git a/lib/igt_facts.h b/lib/igt_facts.h
+new file mode 100644
+index 000000000..289530cce
+--- /dev/null
++++ b/lib/igt_facts.h
+@@ -0,0 +1,51 @@
++/* SPDX-License-Identifier: MIT
++ *
++ * Copyright © 2024 Intel Corporation
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the "Software"),
++ * to deal in the Software without restriction, including without limitation
++ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ * and/or sell copies of the Software, and to permit persons to whom the
++ * Software is furnished to do so, subject to the following conditions:
++ *
++ * The above copyright notice and this permission notice (including the next
++ * paragraph) shall be included in all copies or substantial portions of the
++ * Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
++ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
++ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
++ * IN THE SOFTWARE.
++ *
++ */
++
++typedef struct {
++	char *name;
++	char *value;
++	char *last_test;
++} igt_fact;
++
++typedef struct {
++	igt_fact *facts;
++	int num_facts;
++} igt_fact_list;
++
++const char *igt_fact_kmod_list[] = {
++	"amdgpu",
++	"i915",
++	"nouveau",
++	"radeon",
++	"xe",
++	"\0"
++};
++
++const char *kmod_fact     = "kernel.kmod_is_loaded"; /* true or false */
++const char *pci_gpu_fact  = "hardware.pci.gpu_at_addr"; /* id vendor model */
++const char *drm_card_fact = "hardware.pci.drm_card_at_addr"; /* cardX */
++
++void igt_facts(igt_fact_list *list, const char *last_test);
++void print_all_facts(igt_fact_list *list);
+diff --git a/lib/meson.build b/lib/meson.build
+index c3556a921..c44ca2b5a 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -18,6 +18,7 @@ lib_sources = [
+ 	'i915/i915_crc.c',
+ 	'igt_collection.c',
+ 	'igt_color_encoding.c',
++	'igt_facts.c',
+ 	'igt_crc.c',
+ 	'igt_debugfs.c',
+ 	'igt_device.c',
+diff --git a/runner/executor.c b/runner/executor.c
+index ac73e1dde..6ff252174 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -35,6 +35,7 @@
+ #include "executor.h"
+ #include "output_strings.h"
+ #include "runnercomms.h"
++#include "igt_facts.h"
+ 
+ #define KMSG_HEADER "[IGT] "
+ #define KMSG_WARN 4
+@@ -2306,6 +2307,8 @@ bool execute(struct execute_state *state,
+ 	sigset_t sigmask;
+ 	double time_spent = 0.0;
+ 	bool status = true;
++	igt_fact_list fact_list = {0};
++	char *last_test = NULL;
+ 
+ 	if (state->dry) {
+ 		outf("Dry run, not executing. Invoke igt_resume if you want to execute.\n");
+@@ -2438,6 +2441,10 @@ bool execute(struct execute_state *state,
+ 		int result;
+ 		bool already_written = false;
+ 
++		/* Calls before running each test */
++		igt_facts(&fact_list, last_test);
++		last_test = entry_display_name(&job_list->entries[state->next]);
++
+ 		if (should_die_because_signal(sigfd)) {
+ 			status = false;
+ 			goto end;
+@@ -2526,6 +2533,8 @@ bool execute(struct execute_state *state,
+ 			return execute(state, settings, job_list);
+ 		}
+ 	}
++	/* Last call to collect facts after the last test runs */
++	igt_facts(&fact_list, last_test);
+ 
+ 	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
+ 		dprintf(timefd, "%f\n", timeofday_double());
 -- 
-2.25.1
+2.34.1
 
