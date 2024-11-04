@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69085D1BDD0
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Nov 2024 17:19:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4F5BD1BDD0
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Nov 2024 17:31:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2284D10E297;
-	Mon,  4 Nov 2024 17:19:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 64C6210E48E;
+	Mon,  4 Nov 2024 17:31:29 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF9FF10E093;
- Mon,  4 Nov 2024 17:19:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA22510E48E;
+ Mon,  4 Nov 2024 17:31:27 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7729146103463467905=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: =?utf-8?q?=E2=9C=97_GitLab=2EPipeline=3A_warning_for_tests/intel/xe=5Fexec?=
- =?utf-8?q?=5Freset=3A_Add_mocs_reset_test_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/kms=5Fproperties=3A_r?=
+ =?utf-8?q?ework_immutability_checks_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
+To: "Dmitry Baryshkov" <dmitry.baryshkov@linaro.org>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 04 Nov 2024 17:19:18 -0000
-Message-ID: <173074075897.1400537.4116385602692519086@2413ebb6fbb6>
+Date: Mon, 04 Nov 2024 17:31:27 -0000
+Message-ID: <173074148795.1400593.16719289386558245904@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241101154432.3679065-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20241101154432.3679065-1-janga.rahul.kumar@intel.com>
+References: <20241101-rework-imm-check-v3-0-707c290572c6@linaro.org>
+In-Reply-To: <20241101-rework-imm-check-v3-0-707c290572c6@linaro.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,83 +41,237 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7729146103463467905==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/intel/xe_exec_reset: Add mocs reset test (rev2)
-URL   : https://patchwork.freedesktop.org/series/140575/
-State : warning
+Series: tests/kms_properties: rework immutability checks (rev3)
+URL   : https://patchwork.freedesktop.org/series/138114/
+State : failure
 
 == Summary ==
 
-Pipeline status: FAILED.
+CI Bug Log - changes from IGT_8094 -> IGTPW_12019
+====================================================
 
-see https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1303803 for the overview.
+Summary
+-------
 
-build:tests-debian-meson-arm64 has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66078285):
-  ../tests/intel/xe_exec_reset.c: In function ‘gt_mocs_reset’:
-  ../tests/intel/xe_exec_reset.c:741:42: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ../tests/intel/xe_exec_reset.c:741:42: note: each undeclared identifier is reported only once for each function it appears in
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1730740351:step_script
-  section_start:1730740351:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730740351:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_12019 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12019, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-build:tests-debian-meson-armhf has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66078284):
-  ../tests/intel/xe_exec_reset.c: In function ‘gt_mocs_reset’:
-  ../tests/intel/xe_exec_reset.c:741:42: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ../tests/intel/xe_exec_reset.c:741:42: note: each undeclared identifier is reported only once for each function it appears in
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1730740374:step_script
-  section_start:1730740374:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730740375:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/index.html
+
+Participating hosts (45 -> 44)
+------------------------------
+
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12019:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@gt_timelines:
+    - fi-glk-j4005:       [PASS][1] -> [DMESG-FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/fi-glk-j4005/igt@i915_selftest@live@gt_timelines.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/fi-glk-j4005/igt@i915_selftest@live@gt_timelines.html
+
   
+Known issues
+------------
 
-build:tests-debian-meson-mips has failed (https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/jobs/66078286):
-  ../tests/intel/xe_exec_reset.c: In function ‘gt_mocs_reset’:
-  ../tests/intel/xe_exec_reset.c:741:42: error: ‘O_RDONLY’ undeclared (first use in this function); did you mean ‘STA_RONLY’?
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ../tests/intel/xe_exec_reset.c:741:42: note: each undeclared identifier is reported only once for each function it appears in
-    igt_assert(igt_debugfs_exists(fd, path, O_RDONLY));
-                                            ^~~~~~~~
-  ../lib/igt_core.h:676:13: note: in definition of macro ‘igt_assert’
-    do { if (!(expr)) \
-               ^~~~
-  ninja: build stopped: subcommand failed.
-  section_end:1730740363:step_script
-  section_start:1730740363:cleanup_file_variables
-  Cleaning up project directory and file based variables
-  section_end:1730740364:cleanup_file_variables
-  ERROR: Job failed: exit code 1
+  Here are the changes found in IGTPW_12019 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-arlh-3:         [PASS][3] -> [ABORT][4] ([i915#12133])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-arlh-3/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-arlh-3/igt@i915_selftest@live.html
+    - fi-glk-j4005:       [PASS][5] -> [DMESG-FAIL][6] ([i915#12133])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/fi-glk-j4005/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/fi-glk-j4005/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-3:         [PASS][7] -> [ABORT][8] ([i915#12061])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-arlh-3/igt@i915_selftest@live@workarounds.html
+
+  * igt@kms_chamelium_edid@hdmi-edid-read:
+    - bat-dg2-13:         [PASS][9] -> [DMESG-WARN][10] ([i915#12253])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-2:          [INCOMPLETE][11] ([i915#12133] / [i915#9413]) -> [PASS][12]
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-twl-2/igt@i915_selftest@live.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_lrc:
+    - bat-twl-2:          [INCOMPLETE][13] ([i915#12445] / [i915#9413]) -> [PASS][14]
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-twl-2/igt@i915_selftest@live@gt_lrc.html
+
+  
+#### Warnings ####
+
+  * igt@i915_module_load@reload:
+    - bat-apl-1:          [DMESG-WARN][15] ([i915#180]) -> [DMESG-WARN][16] ([i915#180] / [i915#1982])
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-apl-1/igt@i915_module_load@reload.html
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-apl-1/igt@i915_module_load@reload.html
+
+  
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#12253]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253
+  [i915#12445]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+  [i915#1982]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982
+  [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8094 -> IGTPW_12019
+
+  CI-20190529: 20190529
+  CI_DRM_15627: 0a6cc4357ae4d824f909468ca1deed28ae5ac96f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12019: 10dbabc9323bf2c8915d4ea48127ecc1e7807698 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_8094: 19b8958a209f1ea14a3ae06b31d76179fed5733a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://gitlab.freedesktop.org/gfx-ci/igt-ci-tags/-/pipelines/1303803
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/index.html
+
+--===============7729146103463467905==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_properties: rework immutability checks (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/138114/">https://patchwork.freedesktop.org/series/138114/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8094 -&gt; IGTPW_12019</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12019 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12019, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/index.html</p>
+<h2>Participating hosts (45 -&gt; 44)</h2>
+<p>Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12019:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@gt_timelines:<ul>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/fi-glk-j4005/igt@i915_selftest@live@gt_timelines.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/fi-glk-j4005/igt@i915_selftest@live@gt_timelines.html">DMESG-FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12019 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-arlh-3/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+<li>fi-glk-j4005:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/fi-glk-j4005/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/fi-glk-j4005/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-arlh-3/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-arlh-3/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_edid@hdmi-edid-read:</p>
+<ul>
+<li>bat-dg2-13:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253">i915#12253</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-twl-2/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-twl-2/igt@i915_selftest@live.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_lrc:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12445">i915#12445</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413">i915#9413</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-twl-2/igt@i915_selftest@live@gt_lrc.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_module_load@reload:<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8094/bat-apl-1/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12019/bat-apl-1/igt@i915_module_load@reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1982">i915#1982</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8094 -&gt; IGTPW_12019</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15627: 0a6cc4357ae4d824f909468ca1deed28ae5ac96f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12019: 10dbabc9323bf2c8915d4ea48127ecc1e7807698 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8094: 19b8958a209f1ea14a3ae06b31d76179fed5733a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7729146103463467905==--
