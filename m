@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B54BD1BDC0
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Nov 2024 18:37:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC582D1BDE5
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Nov 2024 19:05:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3B65A10E4AC;
-	Mon,  4 Nov 2024 18:37:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6800610E4B6;
+	Mon,  4 Nov 2024 19:05:34 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 325B410E4AC;
- Mon,  4 Nov 2024 18:37:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FC2810E3F7;
+ Mon,  4 Nov 2024 19:05:33 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0814729386878192914=="
+ boundary="===============8968463581384471096=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fexec=5Freset?=
- =?utf-8?q?=3A_Add_mocs_reset_test_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_lib/amdgpu=5Fpci=5Funplug?=
+ =?utf-8?q?=3A_fix_bo_mapping_to_CPU?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: janga.rahul.kumar@intel.com
+To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 04 Nov 2024 18:37:13 -0000
-Message-ID: <173074543319.1408314.13699113226474081452@2413ebb6fbb6>
+Date: Mon, 04 Nov 2024 19:05:33 -0000
+Message-ID: <173074713358.1408486.2607387145725785861@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
-References: <20241101154432.3679065-1-janga.rahul.kumar@intel.com>
-In-Reply-To: <20241101154432.3679065-1-janga.rahul.kumar@intel.com>
+References: <20241104035653.146383-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20241104035653.146383-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,85 +41,66 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0814729386878192914==
+--===============8968463581384471096==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_exec_reset: Add mocs reset test (rev2)
-URL   : https://patchwork.freedesktop.org/series/140575/
-State : success
+Series: lib/amdgpu_pci_unplug: fix bo mapping to CPU
+URL   : https://patchwork.freedesktop.org/series/140852/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_8094_BAT -> XEIGTPW_12021_BAT
+CI Bug Log - changes from IGT_8094 -> IGTPW_12023
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_12023 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_12023, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (9 -> 9)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12023/index.html
+
+Participating hosts (45 -> 1)
 ------------------------------
 
-  No changes in participating hosts
+  ERROR: It appears as if the changes made in IGTPW_12023 prevented too many machines from booting.
 
-Known issues
-------------
+  Missing    (44): bat-adlp-6 fi-snb-2520m bat-atsm-1 fi-pnv-d510 fi-blb-e6850 bat-arls-1 bat-arls-2 fi-skl-6600u bat-dg2-8 bat-adlm-1 bat-dg2-9 fi-ilk-650 fi-hsw-4770 fi-ivb-3770 bat-rpls-4 fi-elk-e7500 bat-jsl-3 bat-rplp-1 bat-apl-1 bat-dg2-11 bat-twl-1 fi-bsw-nick bat-arlh-2 bat-twl-2 fi-kbl-7567u bat-dg1-7 bat-kbl-2 bat-arlh-3 bat-adlp-9 fi-cfl-8700k fi-glk-j4005 bat-dg1-6 bat-jsl-1 bat-mtlp-6 bat-mtlp-8 bat-adlp-11 fi-tgl-1115g4 fi-cfl-guc fi-kbl-guc fi-kbl-x1275 fi-cfl-8109u fi-kbl-8809g bat-dg2-14 bat-dg2-13 
 
-  Here are the changes found in XEIGTPW_12021_BAT that come from known issues:
 
-### IGT changes ###
+Changes
+-------
 
-#### Issues hit ####
-
-  * igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][1] ([Intel XE#288]) +32 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-dg2-oem2:       NOTRUN -> [SKIP][2] ([Intel XE#2229])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  
-#### Possible fixes ####
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:
-    - bat-bmg-2:          [INCOMPLETE][3] ([Intel XE#2874] / [Intel XE#2998]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8094/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-    - bat-dg2-oem2:       [INCOMPLETE][5] ([Intel XE#2874]) -> [PASS][6] +1 other test pass
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8094/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html
-
-  
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2874]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874
-  [Intel XE#288]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/288
-  [Intel XE#2998]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_8094 -> IGTPW_12021
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8094 -> IGTPW_12023
 
-  IGTPW_12021: a21ee97edb196a6e5c07d35e066914d35961247b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  CI-20190529: 20190529
+  CI_DRM_15627: 0a6cc4357ae4d824f909468ca1deed28ae5ac96f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12023: a88bf191dcb28ca6b0cec89681d1ddc5f8f9d460 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_8094: 19b8958a209f1ea14a3ae06b31d76179fed5733a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2159-0a6cc4357ae4d824f909468ca1deed28ae5ac96f: 0a6cc4357ae4d824f909468ca1deed28ae5ac96f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12023/index.html
 
---===============0814729386878192914==
+--===============8968463581384471096==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -139,56 +120,40 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_reset: Add mocs reset test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140575/">https://patchwork.freedesktop.org/series/140575/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>lib/amdgpu_pci_unplug: fix bo mapping to CPU</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140852/">https://patchwork.freedesktop.org/series/140852/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12023/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12023/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_8094_BAT -&gt; XEIGTPW_12021_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_8094 -&gt; IGTPW_12023</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12021_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_exec_fault_mode@twice-bindexecqueue-userptr:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-dg2-oem2/igt@xe_exec_fault_mode@twice-bindexecqueue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/288">Intel XE#288</a>) +32 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-dg2-oem2:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-dg2-oem2/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8094/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2998">Intel XE#2998</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
-<li>bat-dg2-oem2:       <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8094/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2874">Intel XE#2874</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12021/bat-dg2-oem2/igt@xe_live_ktest@xe_bo@xe_bo_shrink_kunit.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_12023 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_12023, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12023/index.html</p>
+<h2>Participating hosts (45 -&gt; 1)</h2>
+<p>ERROR: It appears as if the changes made in IGTPW_12023 prevented too many machines from booting.</p>
+<p>Missing    (44): bat-adlp-6 fi-snb-2520m bat-atsm-1 fi-pnv-d510 fi-blb-e6850 bat-arls-1 bat-arls-2 fi-skl-6600u bat-dg2-8 bat-adlm-1 bat-dg2-9 fi-ilk-650 fi-hsw-4770 fi-ivb-3770 bat-rpls-4 fi-elk-e7500 bat-jsl-3 bat-rplp-1 bat-apl-1 bat-dg2-11 bat-twl-1 fi-bsw-nick bat-arlh-2 bat-twl-2 fi-kbl-7567u bat-dg1-7 bat-kbl-2 bat-arlh-3 bat-adlp-9 fi-cfl-8700k fi-glk-j4005 bat-dg1-6 bat-jsl-1 bat-mtlp-6 bat-mtlp-8 bat-adlp-11 fi-tgl-1115g4 fi-cfl-guc fi-kbl-guc fi-kbl-x1275 fi-cfl-8109u fi-kbl-8809g bat-dg2-14 bat-dg2-13 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_8094 -&gt; IGTPW_12021</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8094 -&gt; IGTPW_12023</li>
 </ul>
-<p>IGTPW_12021: a21ee97edb196a6e5c07d35e066914d35961247b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8094: 19b8958a209f1ea14a3ae06b31d76179fed5733a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2159-0a6cc4357ae4d824f909468ca1deed28ae5ac96f: 0a6cc4357ae4d824f909468ca1deed28ae5ac96f</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15627: 0a6cc4357ae4d824f909468ca1deed28ae5ac96f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12023: a88bf191dcb28ca6b0cec89681d1ddc5f8f9d460 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_8094: 19b8958a209f1ea14a3ae06b31d76179fed5733a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============0814729386878192914==--
+--===============8968463581384471096==--
