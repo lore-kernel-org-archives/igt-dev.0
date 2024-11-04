@@ -4,62 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53F4AD1BDE7
-	for <igt-dev@archiver.kernel.org>; Mon,  4 Nov 2024 19:40:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61A88D1BDE5
+	for <igt-dev@archiver.kernel.org>; Mon,  4 Nov 2024 19:40:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1343C10E0CA;
-	Mon,  4 Nov 2024 19:40:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1529F10E3DA;
+	Mon,  4 Nov 2024 19:40:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="SM+PFLwl";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="TzhcyoIU";
 	dkim-atps=neutral
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com
- [209.85.214.176])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9D42510E0CA
- for <igt-dev@lists.freedesktop.org>; Mon,  4 Nov 2024 19:40:39 +0000 (UTC)
-Received: by mail-pl1-f176.google.com with SMTP id
- d9443c01a7336-20ca388d242so45682045ad.2
- for <igt-dev@lists.freedesktop.org>; Mon, 04 Nov 2024 11:40:39 -0800 (PST)
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com
+ [209.85.210.179])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3408710E3DA
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Nov 2024 19:40:43 +0000 (UTC)
+Received: by mail-pf1-f179.google.com with SMTP id
+ d2e1a72fcca58-720d14c8dbfso3467000b3a.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 04 Nov 2024 11:40:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20230601; t=1730749239; x=1731354039; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to;
- bh=L2dFA1x/Tri/zTdqXBLfvdW/WSiuPTeXdLXjNu62esU=;
- b=SM+PFLwljpYKjRR8AMxkbvfbfBZ1QRQSb+31Se8gocj3GmNiSr/QEVsR1GE7DEza4+
- YjYoP4WeD7XcDddpaQLMCHSD5kb31pu2m6TJHKhQ6z05rfaxinvFcj0VNrCMXmeLheZD
- yPi88J2T/T1f7LOr8NlK8f30ZbFNC+tYcm8FnmP/2jDv3mpX4HUbnFbKZXO9dShqAER9
- Xw1kGiWodvBJq8oyO8p3ySE/Qpp5AFHRTDpB93TO+VdSBu1/7VDcNilh3eTwnrz6VaXc
- sKamm4eZGxAruuJ9FW7KfyqHICijHGuoYYOzyv4IcYH2orzVxFZekkGUOlEsPGMDsdzJ
- /TSA==
+ d=gmail.com; s=20230601; t=1730749242; x=1731354042; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to;
+ bh=8n19EYsOvzQo6z7qNdyf1KJqL5mD/i4Pc3KFbWDJuDg=;
+ b=TzhcyoIUYWKvnSoFPi9Jb99+SaEJMmu5/+KwuZK2NHv0Ukn7Qj1sGMu99OORIZGnu7
+ 0xV9XJx4rka9UWioGVzqPtcH5zMGLdwg77zUn+3gsnKtSDJGovA4Sls3+8NBBTWV7czR
+ OyIZpG9KgVxsTx1L5SB17qtF+v5yiBYei4McNeIliV9W3ILsvB69AUJqaIiSweQi14T+
+ rPMEMSXtpDP2BaNeRseeTgDVVswTiR/XltPXhfEAjQMNVJMV4cxoT+Qqd8a28TCB7qY5
+ ij+9kxAqWn1TPU3JwfPYkuzxPuXfjhRF2OvDop4/7a5kcetws8UT4PEFuzmqWNoXB1fJ
+ 2FEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20230601; t=1730749239; x=1731354039;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to;
- bh=L2dFA1x/Tri/zTdqXBLfvdW/WSiuPTeXdLXjNu62esU=;
- b=PbXY7D+EN/6xlLMb5vYiRA983ZbD9Yg5du864dqZ2J0MtWoqEeiYKOAec46xuhKUmW
- jFhJTjDOPUOiRzXIIZK39JFdm4xhhXMQ+dhdAES6FZaUHzAX6n3L7HquNtFAu5hAgHB8
- O1cj05vQE9z6D+4adZwfS8XGJ/+vZtESB/6VRWnUAWHQdisyh+GECF4IblXnHKWIidAU
- nT5ZE3odNvqMXWB5B7aXMRvWOiNN7jDHuze0EHI2yTeoep9c8WQtrRCiocJq1FoyzH+S
- /2Yknc88NZQGRiKVwtnhHOERGxsILRedxi1Z9tYWkviwnvnAHXJPQpLa52+w5bJJjoiZ
- YJXg==
-X-Gm-Message-State: AOJu0YxLYDiN9BEqFILli+hql/54L/kAhpc0SdDNijpRAeTZ959UXTp4
- kmf+m0xPHJkEVJaPHpho8EyEE0TnsmSls3czthxKjqKiw2Ra6fulxAVbJMfjLP8=
-X-Google-Smtp-Source: AGHT+IH1Wk6mZL4srRKIjn5Zhe2mhuieYxXUX6SoJ1lIg3KhCD+3OmGsPn6tJwaeaKEFx1TAaZyhAg==
-X-Received: by 2002:a17:902:d50c:b0:20b:5046:35b with SMTP id
- d9443c01a7336-2111b02286emr184754375ad.57.1730749238578; 
- Mon, 04 Nov 2024 11:40:38 -0800 (PST)
+ d=1e100.net; s=20230601; t=1730749242; x=1731354042;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+ :subject:date:message-id:reply-to;
+ bh=8n19EYsOvzQo6z7qNdyf1KJqL5mD/i4Pc3KFbWDJuDg=;
+ b=VAM7OuvS8EUW8QOstDPCQN7B7zIgpcmG+Hjo0RhjYjWGMAEpKvTPuWNinyViUmb8Q0
+ NJQ38lk0UMNGmG/gMyPk3TA8HZtL70KL4Ip4Ilk+rA0jIyCVZ4c4oCgBGJbjGSMUiIw6
+ QDky3easZNZMs1xkEg+TizGNed5iJeJqJuzDTrIG1RXTPBZ1BwsNA2NF6W44fm/Bt9xK
+ uVQPSPLf/q7xUtE7EB/qiIpAu31oOs0scsYUQnEz0vvI6moyexQNjS44H6QyTuJaTXPx
+ q50xbeu4oOkgtD+tXRyNESuVTuDvrcsETmVI6/nVf9+VlEa875ZHCeH9iEcv/NH5z5m0
+ Exbg==
+X-Gm-Message-State: AOJu0YxdBL5+jjF71IuHCxdCXcClbC2tplFpz8ZN3CkMlq+DALe1oLq7
+ WmEoEZc8NXAR9GUhAAGiai+D7K9Ia8EuTPDa0Yl5bSnxyp67lmuGrITxEOg+ucg=
+X-Google-Smtp-Source: AGHT+IHm6ijlXRKB7u0X4gR+Nhz7MW2PlmcR+NocxUF1NL12YvNKdAV9/s1T7uTOVUYZmKmhiMmUYA==
+X-Received: by 2002:a05:6a20:748c:b0:1db:e4c3:99f0 with SMTP id
+ adf61e73a8af0-1dbe4c39a83mr3029764637.32.1730749242401; 
+ Mon, 04 Nov 2024 11:40:42 -0800 (PST)
 Received: from localhost ([192.55.54.43]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-211057d44c3sm65303555ad.258.2024.11.04.11.40.37
+ d2e1a72fcca58-720bc2c58f7sm8169991b3a.140.2024.11.04.11.40.41
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 04 Nov 2024 11:40:38 -0800 (PST)
+ Mon, 04 Nov 2024 11:40:42 -0800 (PST)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t v2 1/2] tests/kms_rotation_crc: move plane rotation
- requirements into helper
-Date: Mon,  4 Nov 2024 21:44:14 +0200
-Message-ID: <20241104194415.563277-1-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t v2 2/2] tests/kms_rotation_crc: Intel display version 20
+ onwards doesn't do hflip with tile4
+Date: Mon,  4 Nov 2024 21:44:15 +0200
+Message-ID: <20241104194415.563277-2-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241104194415.563277-1-juhapekka.heikkila@gmail.com>
+References: <20241104194415.563277-1-juhapekka.heikkila@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -77,53 +80,33 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-move plane rotation requirement block into helper function.
+On Intel display version 20 Tile4 no longer can be used with horizontal
+flip.
+
+Bspec: 69853
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_rotation_crc.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ tests/kms_rotation_crc.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
 diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
-index 9888ac6ac..e8b6e4ff2 100644
+index e8b6e4ff2..22fb5383b 100644
 --- a/tests/kms_rotation_crc.c
 +++ b/tests/kms_rotation_crc.c
-@@ -564,6 +564,22 @@ static bool test_format(data_t *data,
+@@ -577,6 +577,13 @@ static bool plane_rotation_requirements(data_t *data, igt_plane_t *plane)
+ 	    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X)))
+ 		return false;
+ 
++	/* Intel display version 20 onwards cannot do reflect-x with tile4 */
++	if (!(!is_intel_device(data->gfx_fd) ||
++	    intel_display_ver(data->devid) < 20 ||
++	    !(data->override_modifier == I915_FORMAT_MOD_4_TILED &&
++	    data->rotation & IGT_REFLECT_X)))
++		return false;
++
  	return true;
  }
- 
-+static bool plane_rotation_requirements(data_t *data, igt_plane_t *plane)
-+{
-+	if (!igt_plane_has_prop(plane, IGT_PLANE_ROTATION))
-+		return false;
-+
-+	if (!igt_plane_has_rotation(plane, data->rotation))
-+		return false;
-+
-+	/* CHV can't rotate and reflect simultaneously */
-+	if (!(!is_intel_device(data->gfx_fd) || !IS_CHERRYVIEW(data->devid) ||
-+	    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X)))
-+		return false;
-+
-+	return true;
-+}
-+
- static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_format)
- {
- 	igt_display_t *display = &data->display;
-@@ -632,12 +648,7 @@ static void test_plane_rotation(data_t *data, int plane_type, bool test_bad_form
- 		igt_output_set_pipe(output, pipe);
- 
- 		plane = igt_output_get_plane_type(output, plane_type);
--		igt_require(igt_plane_has_prop(plane, IGT_PLANE_ROTATION));
--		igt_require(igt_plane_has_rotation(plane, data->rotation));
--		/* CHV can't rotate and reflect simultaneously */
--		igt_require(!is_intel_device(data->gfx_fd) ||
--			    !IS_CHERRYVIEW(data->devid) ||
--			    data->rotation != (IGT_ROTATION_180 | IGT_REFLECT_X));
-+		igt_require(plane_rotation_requirements(data, plane));
- 
- 		prepare_crtc(data, output, pipe, plane, true);
  
 -- 
 2.45.2
