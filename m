@@ -2,54 +2,57 @@ Return-Path: <igt-dev-bounces@lists.freedesktop.org>
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B892DD1AD46
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Oct 2024 10:47:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A1A4D1266B
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 08:49:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F3F1410E0A3;
-	Wed, 16 Oct 2024 10:47:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9C5A10E534;
+	Tue,  5 Nov 2024 08:49:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HiV2dgIY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uou+WlFc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F95E10E5D6
- for <igt-dev@lists.freedesktop.org>; Tue, 15 Oct 2024 18:17:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AD5210E0E3
+ for <igt-dev@lists.freedesktop.org>; Mon,  4 Nov 2024 20:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1729016261; x=1760552261;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=4mdzaXlhWYnent84wpKoeggeH1/xr0im6OdscY/P7S8=;
- b=HiV2dgIYYUiANeKGghrAIjhBCkXqMD33Of3dFC2fSuoVy2EAIWZjD5OG
- l8qOe1weii9KHbs5QCk8Ag1f41+YBzWviN2hBTLc4tQ9jd9eHhK2e/U9C
- M9tlzAosP5uAuxdsCcH91zU5hRblt1BJEgNvZjKl7AAG2JYUz13P3F7Sb
- Llz4mRBtet1ggSjtHwEIeCwT56IobE8lK9USBpD4AhJmnVju9MWYEySmb
- D+1K0RqVct8V8fA7bwqd3kNWpNbcGXyXcTIOuAa6HzTnvzh0HOQZdzSSz
- CTpulF1UEGplus7vFEP3TLAbMnmuFvs95u9HHBFHdCHFy1/TX5talkRBM Q==;
-X-CSE-ConnectionGUID: OMWOkYyTR2ei8e30oaUAHQ==
-X-CSE-MsgGUID: SCH59wcuSy+uIyavVQplkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11225"; a="32229840"
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; d="scan'208";a="32229840"
+ t=1730753543; x=1762289543;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=UH4vP33Ul1xHpotQ1xfSMpG9hgYPBs+4EYscijigaC4=;
+ b=Uou+WlFcNyqR7UHhMsOF/o3JnCG3QoJ+QEKdV3NakHHGWHVUWIKvVOwE
+ nT8GJfnj0Eq5tTMuNtzUnubnvIhzvvbaJYOIjKj5kBp9zZ0NdEAmkK45+
+ XJqoTlmxlOZfejlI68TXlYb4lStlRxVMjHVF38HanfixZVAe1zddhe+Jn
+ Ovb4rO+Hlh6yhaGN9ryap9N19Zyhrn2VEwH7SjKb89g6+v6sFz9hiPf1E
+ KDjcDuFzabvkWpMl46dGKiXVufDmeVC34C3jxwPwK/8xK6tT8BAwcrvTY
+ kV5i9LOhGhkKbDkdoYb1CzvmCyRDOVULbDcPp6z/VHIq4cnv7cDhL2K65 Q==;
+X-CSE-ConnectionGUID: jyq8uQouQHiRDvf+pSdfrQ==
+X-CSE-MsgGUID: nLWlYHRhSyClW86vbKBBhg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="30583554"
+X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; d="scan'208";a="30583554"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2024 11:17:37 -0700
-X-CSE-ConnectionGUID: YgW/lyz/SAOLxLswODRqnQ==
-X-CSE-MsgGUID: NsSvZ8teRe+LXwDeriyHrA==
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2024 12:52:19 -0800
+X-CSE-ConnectionGUID: IKh9DrMmS7i/jK8lMQGnTg==
+X-CSE-MsgGUID: 9OAqq99ZQzyip4EzSW6wrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,205,1725346800"; d="scan'208";a="82633060"
+X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; d="scan'208";a="88345632"
 Received: from josouza-mobl2.bz.intel.com ([10.87.243.88])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2024 11:17:32 -0700
+ 04 Nov 2024 12:52:11 -0800
 From: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
-Subject: [PATCH i-g-t] oa/i915: Add ARL standlone oa files
-Date: Tue, 15 Oct 2024 11:17:21 -0700
-Message-ID: <20241015181721.52086-1-jose.souza@intel.com>
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ =?UTF-8?q?Jos=C3=A9=20Roberto=20de=20Souza?= <jose.souza@intel.com>
+Subject: [PATCH i-g-t v2 2/2] oa/i915: Add ARL standlone oa files
+Date: Mon,  4 Nov 2024 12:52:00 -0800
+Message-ID: <20241104205201.175541-2-jose.souza@intel.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241104205201.175541-1-jose.souza@intel.com>
+References: <20241104205201.175541-1-jose.souza@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Mailman-Approved-At: Wed, 16 Oct 2024 10:47:51 +0000
+X-Mailman-Approved-At: Tue, 05 Nov 2024 08:49:15 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,17 +71,22 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 There is suficient differences between generated ARL OA files and
 MTL ones for us to generated and split ARL to its own files.
 
+v2:
+- add missing arl check in perf-metricset-codegen.py
+
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
 Signed-off-by: José Roberto de Souza <jose.souza@intel.com>
 ---
- lib/i915/perf-configs/guids.xml            |   435 +
- lib/i915/perf-configs/mdapi-xml-convert.py |     5 +-
- lib/i915/perf-configs/oa-arlgt1.xml        | 34793 +++++++++++
- lib/i915/perf-configs/oa-arlgt2.xml        | 58762 +++++++++++++++++++
- lib/i915/perf-configs/oa_guid_registry.py  |     3 +-
- lib/i915/perf-configs/update-guids.py      |     1 +
- lib/i915/perf.c                            |     6 +-
- lib/meson.build                            |     1 +
- 8 files changed, 94001 insertions(+), 5 deletions(-)
+ lib/i915/perf-configs/guids.xml               |   435 +
+ lib/i915/perf-configs/mdapi-xml-convert.py    |     5 +-
+ lib/i915/perf-configs/oa-arlgt1.xml           | 34793 +++++++++
+ lib/i915/perf-configs/oa-arlgt2.xml           | 58762 ++++++++++++++++
+ lib/i915/perf-configs/oa_guid_registry.py     |     3 +-
+ .../perf-configs/perf-metricset-codegen.py    |     2 +-
+ lib/i915/perf-configs/update-guids.py         |     1 +
+ lib/i915/perf.c                               |     6 +-
+ lib/meson.build                               |     1 +
+ 9 files changed, 94002 insertions(+), 6 deletions(-)
  create mode 100644 lib/i915/perf-configs/oa-arlgt1.xml
  create mode 100644 lib/i915/perf-configs/oa-arlgt2.xml
 
@@ -527,7 +535,7 @@ index 510450f87a..ce874b93b0 100644
 +    <guid config_hash="44bcb438bea8b46b57779739bebfbd69" mdapi_config_hash="afa4177bc2255ee04cd3ab00feb51d01" id="7439dde0-cc82-4ca8-acce-94b618971359" chipset="arlgt2" name="TestOam" />
  </guids>
 diff --git a/lib/i915/perf-configs/mdapi-xml-convert.py b/lib/i915/perf-configs/mdapi-xml-convert.py
-index ba0b7ba473..9660c964c5 100755
+index db093b60f6..8826ee22b6 100755
 --- a/lib/i915/perf-configs/mdapi-xml-convert.py
 +++ b/lib/i915/perf-configs/mdapi-xml-convert.py
 @@ -201,9 +201,10 @@ chipsets = {
@@ -94132,6 +94140,19 @@ index f520f817fa..1623abe090 100644
          if name in known_chipsets:
              return name
  
+diff --git a/lib/i915/perf-configs/perf-metricset-codegen.py b/lib/i915/perf-configs/perf-metricset-codegen.py
+index 57d777bcb1..d1718349aa 100644
+--- a/lib/i915/perf-configs/perf-metricset-codegen.py
++++ b/lib/i915/perf-configs/perf-metricset-codegen.py
+@@ -144,7 +144,7 @@ def generate_metric_sets(args, gen):
+                 metric_set->perfcnt_offset = metric_set->c_offset + 8;
+ 
+             """))
+-        elif gen.chipset.startswith("acm") or gen.chipset.startswith("mtl"):
++        elif gen.chipset.startswith("acm") or gen.chipset.startswith("mtl") or gen.chipset.startswith("arl"):
+             if set.oa_format == "128B_MPEC8_NOA16":
+                 c(textwrap.dedent("""\
+                     metric_set->perf_oa_format = I915_OAM_FORMAT_MPEC8u32_B8_C8;
 diff --git a/lib/i915/perf-configs/update-guids.py b/lib/i915/perf-configs/update-guids.py
 index b3a3f9ad6a..240a13eb99 100755
 --- a/lib/i915/perf-configs/update-guids.py
