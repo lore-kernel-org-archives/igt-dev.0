@@ -4,27 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C2EFD3176B
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 17:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 738EBD3176B
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 17:22:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F378310E2DD;
-	Tue,  5 Nov 2024 17:18:47 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D769210E2DD;
- Tue,  5 Nov 2024 17:18:46 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5728030856638120555=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 225FB10E2DD;
+	Tue,  5 Nov 2024 17:22:44 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aiZ4X6lM";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 623EB10E154
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 17:22:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730827362; x=1762363362;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=tyrp/j51HynWAlbuNfG1N6kMk54oBvDcPN3ZpV1hFPo=;
+ b=aiZ4X6lMkW7LadPQ3lcteC7MbmWbjcaqNpjQgwrxn6FqIJnOmVeavN9E
+ jaUwr0iZirDriJNYFGFQJ3nBhEh6xG1g5yHj35I/Who99SwRZyOMVe3PP
+ xq57MiWMRKKxMOG6STiiE4E1+HGXZLDzOS/jhBgAfeLOr38aEj2kLojvO
+ hx3X4m8dmmTqoyfpvM04lF1WlDKhAGeOkVjQOgA/XUTf89WYddVdIEd/e
+ NlIDkcjDAp94sBBebFxyzjmuwXxV7VZymCi1gPrSi+BykE4oBoFxWnr5e
+ VPoI85a2FJ0GmdHGJFNj/+SGQ9VUYoBuuFhII6GYeZOWT2QHPnp1uEOWF w==;
+X-CSE-ConnectionGUID: 1jbnbihdTbW7V3qbOeILJg==
+X-CSE-MsgGUID: 1y4cEey7SsCLBKTSBbLZVg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="41184026"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="41184026"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 09:22:41 -0800
+X-CSE-ConnectionGUID: /d7TzT7nRiqnxcgzu8tXmQ==
+X-CSE-MsgGUID: xZAkcYyyQ6eoVMS6ncxWag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="84042554"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
+ by orviesa010-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 09:22:40 -0800
+Date: Tue, 5 Nov 2024 18:22:37 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Adarsh G M <adarsh.g.m@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+Subject: Re: [PATCH i-g-t v4] tests/kms_histogram: Added IGT support to
+ validate global histogram
+Message-ID: <20241105172237.zzk7mlripiybrzci@kamilkon-desk.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ Adarsh G M <adarsh.g.m@intel.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+References: <20241017112009.140989-1-mohammed.thasleem@intel.com>
+ <20241105052413.60951-1-mohammed.thasleem@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/chamelium=3A_Reduce_e?=
- =?utf-8?q?did_count_to_avoid_timeout_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Pranay Samala" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 05 Nov 2024 17:18:46 -0000
-Message-ID: <173082712687.1412890.12006975321164803518@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241105161026.1819884-1-pranay.samala@intel.com>
-In-Reply-To: <20241105161026.1819884-1-pranay.samala@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241105052413.60951-1-mohammed.thasleem@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,356 +74,587 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5728030856638120555==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Mohammed,
+On 2024-11-05 at 10:54:13 +0530, Mohammed Thasleem wrote:
+> The IGT changes included tests for enabling/disabling histogram.
+> Validating the histogram event generation and if any One such library
+> Global Histogram Enhancement(GHE) present, will feed the histogram to
+> the library, get the enhanced LUT data and feed it back to the KMD.
+> For histogram generation, black/white and color images are flipped.
+> 
+>    Display histogram is a hardware functionality where a statistics for 'x'
+> number of frames is generated to form a histogram data. This is notified
+> to the user via histogram event. Compositor then upon sensing the histogram
+> event will read the histogram data from KMD via crtc property.
+> 
+> A library can be developed to take this generated histogram as an input and
+> apply some algorithm to generate an Image Enhancement(IET).
+> 
+> This is further fed back to the KMD via crtc property. KMD will feed this
+> bask to the hardware. Hardware will use this as a multiplicand factor to
+> multiply with the incoming pixels at the end of the pipe which is then
+> pushed onto the display.
+> 
+> One such library Global Histogram Enhancement(GHE) will take the histogram
+> as input and applied the algorithm to enhance the density and then return
+> the enhanced factor.
+> "This library can be located https://github.com/intel/ghe"
 
-== Series Details ==
+imho you could remove '"'
 
-Series: tests/chamelium: Reduce edid count to avoid timeout (rev4)
-URL   : https://patchwork.freedesktop.org/series/140426/
-State : failure
+> "KMD changes at https://patchwork.freedesktop.org/series/135793/"
 
-== Summary ==
+Same here, it could also help if you cite subject ("subject of patch")
+as links sometimes goes away.
 
-CI Bug Log - changes from IGT_8097 -> IGTPW_12040
-====================================================
+> 
+> TODO: Extend the tests for different formats/modifiers.
+> 
+> v2: Remove eDP restriction. (Vandita)
+>     Update crtc property name. (Arun)
+> v3: Update discription and test names. (Kamil)
+>     Remove warning message from meson build. (Kamil)
+> v4: Fixed some nits. (Kamil)
+> 
+> Signed-off-by: Adarsh G M <adarsh.g.m@intel.com>
+> Signed-off-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
+> Reviewed-by: Bhanuprakash Modem <bhanuprakash.modem@intel.com>
+> ---
+>  lib/igt_kms.c         |  23 +++
+>  lib/igt_kms.h         |   5 +
+>  meson.build           |   5 +
+>  tests/kms_histogram.c | 348 ++++++++++++++++++++++++++++++++++++++++++
+>  tests/meson.build     |   2 +
+>  5 files changed, 383 insertions(+)
+>  create mode 100644 tests/kms_histogram.c
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 5d8096a17..6e71ac045 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -702,6 +702,9 @@ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+>  	[IGT_CRTC_OUT_FENCE_PTR] = "OUT_FENCE_PTR",
+>  	[IGT_CRTC_VRR_ENABLED] = "VRR_ENABLED",
+>  	[IGT_CRTC_SCALING_FILTER] = "SCALING_FILTER",
+> +	[IGT_CRTC_HISTOGRAM] = "Histogram_Enable",
+> +	[IGT_CRTC_GLOBAL_HISTOGRAM] = "Global Histogram",
+> +	[IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR] = "Global IET",
+>  };
+>  
+>  const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
+> @@ -2587,6 +2590,9 @@ static void igt_pipe_reset(igt_pipe_t *pipe)
+>  	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_SCALING_FILTER))
+>  		igt_pipe_obj_set_prop_enum(pipe, IGT_CRTC_SCALING_FILTER, "Default");
+>  
+> +	if (igt_pipe_obj_has_prop(pipe, IGT_CRTC_HISTOGRAM))
+> +		igt_pipe_obj_set_prop_value(pipe, IGT_CRTC_HISTOGRAM, 0);
+> +
+>  	pipe->out_fence_fd = -1;
+>  }
+>  
+> @@ -5615,6 +5621,23 @@ bool igt_lease_change_detected(struct udev_monitor *mon, int timeout_secs)
+>  			      ARRAY_SIZE(props));
+>  }
+>  
+> +/**
+> + * igt_global_histogram_event_detected:
+> + * @mon: A udev monitor initialized with #igt_watch_uevents
+> + * @timeout_secs: How long to wait for a lease change event to occur.
+> + *
+> + * Detect if a global Histogram event was received since we last checked the monitor.
+> + *
+> + * Returns: true if a sysfs global Histogram event was received, false if we timed out
+> + */
+> +bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs)
+> +{
+> +	const char *props[1] = {"HISTOGRAM"};
+> +	int expected_val = 1;
+> +
+> +	return event_detected(mon, timeout_secs, props, &expected_val, ARRAY_SIZE(props));
+> +}
+> +
+>  /**
+>   * igt_flush_uevents:
+>   * @mon: A udev monitor initialized with #igt_watch_uevents
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index bd154d1c1..f776e71a4 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -164,6 +164,9 @@ enum igt_atomic_crtc_properties {
+>         IGT_CRTC_OUT_FENCE_PTR,
+>         IGT_CRTC_VRR_ENABLED,
+>         IGT_CRTC_SCALING_FILTER,
+> +       IGT_CRTC_HISTOGRAM,
+> +       IGT_CRTC_GLOBAL_HISTOGRAM,
+> +       IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
+>         IGT_NUM_CRTC_PROPS
+>  };
+>  
+> @@ -1136,6 +1139,8 @@ void igt_cleanup_uevents(struct udev_monitor *mon);
+>  bool igt_display_has_format_mod(igt_display_t *display, uint32_t format, uint64_t modifier);
+>  bool igt_plane_has_format_mod(igt_plane_t *plane, uint32_t format, uint64_t modifier);
+>  
+> +bool igt_global_histogram_event_detected(struct udev_monitor *mon, int timeout_secs);
+> +
+>  /**
+>   * igt_vblank_after_eq:
+>   * @a: First vblank sequence number.
+> diff --git a/meson.build b/meson.build
+> index 64f57f232..cd8d35145 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -195,6 +195,11 @@ else
+>  	chamelium = disabler()
+>  endif
+>  
+> +libghe = dependency('libghe', required : false)
+> +if libghe.found()
+> +      config.set('HAVE_LIBGHE', 1)
+> +endif
+> +
+>  build_info += 'Build Chamelium test: @0@'.format(chamelium.found())
+>  
+>  pthreads = dependency('threads')
+> diff --git a/tests/kms_histogram.c b/tests/kms_histogram.c
+> new file mode 100644
+> index 000000000..b2bd777ab
+> --- /dev/null
+> +++ b/tests/kms_histogram.c
+> @@ -0,0 +1,348 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2024 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: kms histogram
+> + * Category: Display
+> + * Description: Test to verify histogram features.
+> + * Driver requirement: i915, xe
 
-Summary
--------
+Remove 'Driver requirement:' line as this should not be
+driver specific.
 
-  **FAILURE**
+> + * Functionality: histogram
+> + * Mega feature: Display
+> + * Test category: functionality test
+> + */
+> +
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <limits.h>
+> +#include <stdbool.h>
+> +#include <stdio.h>
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +#include "igt_vec.h"
+> +#ifdef HAVE_LIBGHE
+> +#include "ghe.h"
+> +#endif
+> +
+> +#define GLOBAL_HIST_DISABLE		0
+> +#define GLOBAL_HIST_ENABLE		1
+> +#define GLOBAL_HIST_DELAY		2
+> +#define FLIP_COUNT			20
+> +
+> +/**
+> + * SUBTEST: global-basic
+> + * Description: Test to enable histogram, flip monochrome fbs, wait for
+> + *		histogram event and then read the histogram data
+> + *
+> + * SUBTEST: global-color
+> + * Description: Test to enable histogram, flip color fbs, wait for
+> + *		histogram event and then read the histogram data
+> + *
+> + * SUBTEST: algo-basic
+> + * Description: Test to enable histogram, flip monochrome fbs, wait for
+> + *		histogram event and then read the histogram data and enhance pixels by
+> + *		multiplying by a pixel factor using algo
+> + *
+> + * SUBTEST: algo-color
+> + * Description: Test to enable histogram, flip color fbs, wait for histogram event
+> + *		and then read the histogram data and enhance pixels by multiplying
+> + *		by a pixel factor using algo
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("This test will verify the display histogram.");
+> +
+> +typedef struct data {
+> +	igt_display_t display;
+> +	int drm_fd;
+> +	igt_fb_t fb[5];
+> +} data_t;
+> +
+> +typedef void (*test_t)(data_t*, enum pipe, igt_output_t*, drmModePropertyBlobRes*);
+> +
+> +static void enable_and_verify_global_histogram(data_t *data, enum pipe pipe)
+> +{
+> +	uint32_t global_hist_value;
+> +
+> +	/* Enable global_hist */
+> +	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_ENABLE);
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +	/* Verify if global_hist is enabled */
+> +	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
+> +	igt_assert_f(global_hist_value == GLOBAL_HIST_ENABLE, "Failed to enable global_hist\n");
+> +}
+> +
+> +static void disable_and_verify_global_histogram(data_t *data, enum pipe pipe)
+> +{
+> +	uint32_t global_hist_value;
+> +
+> +	/* Disable global_hist */
+> +	igt_pipe_set_prop_value(&data->display, pipe, IGT_CRTC_HISTOGRAM, GLOBAL_HIST_DISABLE);
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +
+> +	/* Verify if global_hist is disabled */
+> +	global_hist_value = igt_pipe_obj_get_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM);
+> +	igt_assert_f(global_hist_value == GLOBAL_HIST_DISABLE, "Failed to disable global_hist\n");
+> +}
+> +
+> +static void cleanup_pipe(data_t *data, enum pipe pipe, igt_output_t *output)
+> +{
+> +	igt_plane_t *plane;
+> +
+> +	disable_and_verify_global_histogram(data, pipe);
+> +
+> +	for_each_plane_on_pipe(&data->display, pipe, plane)
+> +		igt_plane_set_fb(plane, NULL);
+> +	igt_output_set_pipe(output, PIPE_NONE);
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +	igt_remove_fb(data->display.drm_fd, &data->fb[0]);
+> +	igt_remove_fb(data->display.drm_fd, &data->fb[1]);
+> +	igt_remove_fb(data->display.drm_fd, &data->fb[2]);
+> +	igt_remove_fb(data->display.drm_fd, &data->fb[3]);
+> +	igt_remove_fb(data->display.drm_fd, &data->fb[4]);
+> +}
+> +
+> +static drmModePropertyBlobRes *get_global_histogram_data(data_t *data, enum pipe pipe)
+> +{
+> +	uint64_t blob_id;
+> +
+> +	blob_id = igt_pipe_obj_get_prop(&data->display.pipes[pipe],
+> +					IGT_CRTC_GLOBAL_HISTOGRAM);
+> +	if (blob_id == 0)
+> +		return NULL;
+> +
+> +	return drmModeGetPropertyBlob(data->drm_fd, blob_id);
+> +}
+> +
+> +static void read_global_histogram(data_t *data, enum pipe pipe,
+> +			     drmModePropertyBlobRes **hist_blob_ptr)
+-----------------------------^
 
-  Serious unknown changes coming with IGTPW_12040 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_12040, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+Align.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/index.html
+> +{
+> +	uint32_t *histogram_ptr;
+> +	drmModePropertyBlobRes *global_hist_blob = NULL;
+> +
+> +	igt_set_timeout(GLOBAL_HIST_DELAY, "Waiting to read global histogram blob.\n");
+> +	do {
+> +		global_hist_blob = get_global_histogram_data(data, pipe);
+> +	} while (global_hist_blob == NULL);
 
-Participating hosts (45 -> 44)
-------------------------------
+Add newline, also this could be:
+	} while (!global_hist_blob);
 
-  Additional (1): bat-mtlp-9 
-  Missing    (2): bat-arls-2 fi-snb-2520m 
+> +	igt_reset_timeout();
+> +
+> +	*hist_blob_ptr = global_hist_blob;
+> +	histogram_ptr = (uint32_t *) global_hist_blob->data;
 
-Possible new issues
--------------------
+No need for space after cast.
 
-  Here are the unknown changes that may have been introduced in IGTPW_12040:
+> +	for (int i = 0; i < global_hist_blob->length / sizeof(*histogram_ptr); i++)
+> +		igt_debug("Histogram[%d] = %d\n", i, *(histogram_ptr++));
+> +}
 
-### IGT changes ###
+How big is this dump? If very long, consider using more compact form.
 
-#### Possible regressions ####
+> +
+> +static void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size)
+> +{
+> +	uint32_t i;
+> +
+> +	for (i = 0; i < size; i++) {
+> +		/* Displaying IET LUT */
+> +		igt_debug("Pixel Factor[%d] = %d\n", i, *(dietfactor + i));
+> +	}
 
-  * igt@gem_exec_fence@nb-await@vecs0:
-    - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-rpls-4/igt@gem_exec_fence@nb-await@vecs0.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-rpls-4/igt@gem_exec_fence@nb-await@vecs0.html
+Add newline, same question here about size of this dump.
 
-  * igt@i915_selftest@live:
-    - fi-tgl-1115g4:      [PASS][3] -> [DMESG-FAIL][4] +1 other test dmesg-fail
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/fi-tgl-1115g4/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-tgl-1115g4/igt@i915_selftest@live.html
+> +	igt_pipe_obj_replace_prop_blob(pipe, IGT_CRTC_GLOBAL_HIST_PIXEL_FACTOR,
+> +				       dietfactor, size);
+> +}
+> +
+> +#ifdef HAVE_LIBGHE
 
-  
-#### Suppressed ####
+Please make this function compile, now I got warning from gcc:
 
-  The following results come from untrusted machines, tests, or statuses.
-  They do not affect the overall result.
+../tests/kms_histogram.c:137:13: warning: 'set_pixel_factor' defined but not used [-Wunused-function]
+  137 | static void set_pixel_factor(igt_pipe_t *pipe, uint32_t *dietfactor, size_t size)
+        |             ^~~~~~~~~~~~~~~~
 
-  * igt@debugfs_test@read_all_entries:
-    - {bat-mtlp-9}:       NOTRUN -> [DMESG-WARN][5]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-mtlp-9/igt@debugfs_test@read_all_entries.html
+For example:
 
-  
-Known issues
-------------
+static struct globalhist_args *algo_get_pixel_factor(drmModePropertyBlobRes *global_hist_blob, igt_output_t *output)
+{
+	struct globalhist_args *argsPtr;
+	drmModeModeInfo *mode;
 
-  Here are the changes found in IGTPW_12040 that come from known issues:
+#ifdef HAVE_LIBGHE
+	argsPtr = (struct globalhist_args *)malloc(sizeof(struct globalhist_args));
+#else
+	argsPtr = NULL;
+#fi
 
-### IGT changes ###
+	if (!argsPtr)
+		return NULL;
 
-#### Issues hit ####
+In this way function would compile.
 
-  * igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k:
-    - bat-apl-1:          NOTRUN -> [SKIP][6]
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-apl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-rplp-1:         NOTRUN -> [SKIP][7] ([i915#7828])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-rplp-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-arlh-2:         NOTRUN -> [SKIP][8] ([i915#11151] / [i915#11346])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-arlh-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-rkl-11600:       NOTRUN -> [SKIP][9] ([i915#7828])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-rkl-11600/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-arlh-3:         NOTRUN -> [SKIP][10] ([i915#11151])
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-arlh-3/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg1-7:          NOTRUN -> [SKIP][11] ([i915#7828])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg1-7/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-9:          NOTRUN -> [SKIP][12] ([i915#7828])
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-x1275:       NOTRUN -> [SKIP][13]
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-x1275/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlp-11:        NOTRUN -> [SKIP][14] ([i915#7828])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlp-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-rpls-4:         NOTRUN -> [SKIP][15] ([i915#7828])
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-rpls-4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-cfl-8109u:       NOTRUN -> [SKIP][16]
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-cfl-8109u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-7567u:       NOTRUN -> [SKIP][17]
-   [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-7567u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-8809g:       NOTRUN -> [SKIP][18]
-   [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-8809g/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-ilk-650:         NOTRUN -> [SKIP][19]
-   [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-ilk-650/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-tgl-1115g4:      NOTRUN -> [SKIP][20] ([i915#7828])
-   [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-tgl-1115g4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-cfl-guc:         NOTRUN -> [SKIP][21]
-   [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-cfl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-mtlp-6:         NOTRUN -> [SKIP][22] ([i915#7828] / [i915#9792])
-   [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-mtlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-skl-6600u:       NOTRUN -> [SKIP][23]
-   [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-skl-6600u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg1-6:          NOTRUN -> [SKIP][24] ([i915#12311])
-   [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg1-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-twl-2:          NOTRUN -> [SKIP][25] ([i915#11151])
-   [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-twl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-cfl-8700k:       NOTRUN -> [SKIP][26]
-   [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-cfl-8700k/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-blb-e6850:       NOTRUN -> [SKIP][27]
-   [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-blb-e6850/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-14:         NOTRUN -> [SKIP][28] ([i915#7828])
-   [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-14/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-bsw-nick:        NOTRUN -> [SKIP][29]
-   [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-bsw-nick/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-kbl-2:          NOTRUN -> [SKIP][30]
-   [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-kbl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlp-6:         NOTRUN -> [SKIP][31] ([i915#7828])
-   [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-atsm-1:         NOTRUN -> [SKIP][32] ([i915#6078])
-   [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-atsm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-jsl-3:          NOTRUN -> [SKIP][33] ([i915#7828])
-   [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-jsl-3/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-11:         NOTRUN -> [SKIP][34] ([i915#7828])
-   [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-hsw-4770:        NOTRUN -> [SKIP][35]
-   [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-hsw-4770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-ivb-3770:        NOTRUN -> [SKIP][36]
-   [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-ivb-3770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-mtlp-8:         NOTRUN -> [SKIP][37] ([i915#7828])
-   [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-mtlp-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-elk-e7500:       NOTRUN -> [SKIP][38]
-   [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-elk-e7500/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-dg2-8:          NOTRUN -> [SKIP][39] ([i915#7828])
-   [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-kbl-guc:         NOTRUN -> [SKIP][40]
-   [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlm-1:         NOTRUN -> [SKIP][41] ([i915#7828] / [i915#9900])
-   [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-jsl-1:          NOTRUN -> [SKIP][42] ([i915#7828])
-   [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-jsl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-arls-1:         NOTRUN -> [SKIP][43] ([i915#7828])
-   [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-arls-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-pnv-d510:        NOTRUN -> [SKIP][44]
-   [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-pnv-d510/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - fi-glk-j4005:       NOTRUN -> [SKIP][45]
-   [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-glk-j4005/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-adlp-9:         NOTRUN -> [SKIP][46] ([i915#7828])
-   [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlp-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
-    - bat-twl-1:          NOTRUN -> [SKIP][47] ([i915#11151])
-   [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-twl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html
+> +static struct globalhist_args *algo_get_pixel_factor(drmModePropertyBlobRes *global_hist_blob,
+> +						    igt_output_t *output)
+> +{
+> +	struct globalhist_args *argsPtr =
+> +		(struct globalhist_args *)malloc(sizeof(struct globalhist_args));
+> +
+> +	drmModeModeInfo *mode;
+> +
+> +	mode = igt_output_get_mode(output);
+> +
+> +	memcpy(argsPtr->histogram, global_hist_blob->data, global_hist_blob->length);
+> +	argsPtr->resolution_x = mode->hdisplay;
+> +	argsPtr->resolution_y = mode->vdisplay;
+> +
+> +	igt_debug("Making call to global histogram algorithm.\n");
+> +	set_histogram_data_bin(argsPtr);
+> +
+> +	return argsPtr;
+> +}
+> +
+> +static void algo_image_enhancement_factor(data_t *data, enum pipe pipe,
+> +					 igt_output_t *output,
+> +					 drmModePropertyBlobRes *global_hist_blob)
 
-  
-#### Possible fixes ####
+Align.
 
-  * igt@i915_selftest@live@gt_tlb:
-    - bat-apl-1:          [ABORT][48] ([i915#12133]) -> [PASS][49] +1 other test pass
-   [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-apl-1/igt@i915_selftest@live@gt_tlb.html
-   [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-apl-1/igt@i915_selftest@live@gt_tlb.html
+> +{
+> +	struct globalhist_args *args = algo_get_pixel_factor(global_hist_blob, output);
+> +
+> +	igt_assert(args);
+> +	igt_debug("Writing pixel factor blob.\n");
 
-  
-  {name}: This element is suppressed. This means it is ignored when computing
-          the status of the difference (SUCCESS, WARNING, or FAILURE).
+Same here, use #ifdef/#else/#endif
+for call to lib function.
 
-  [i915#11151]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151
-  [i915#11346]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346
-  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
-  [i915#12311]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311
-  [i915#12695]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12695
-  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
-  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
-  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
-  [i915#6078]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078
-  [i915#7828]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828
-  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
-  [i915#9792]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792
-  [i915#9900]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900
+> +
+> +	set_pixel_factor(&data->display.pipes[pipe], args->dietfactor,
+> +			 ARRAY_SIZE(args->dietfactor));
+> +	free(args);
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +#endif
+> +
+> +static void create_monochrome_fbs(data_t *data, drmModeModeInfo *mode)
+> +{
+> +	/* TODO: Extend the tests for different formats/modifiers. */
+> +	/* These frame buffers used to flip monochrome fbs to get histogram event. */
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       0, 0, 0, &data->fb[0]));
+> +
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       1, 1, 1, &data->fb[1]));
+> +}
+> +
+> +static void create_color_fbs(data_t *data, drmModeModeInfo *mode)
+> +{
+> +	/* TODO: Extend the tests for different formats/modifiers. */
+> +	/* These frame buffers used to flip color fbs to get histogram event. */
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       0.5, 0, 0.5, &data->fb[0]));
+> +
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       1, 0, 0, &data->fb[1]));
+> +
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       0, 1, 0, &data->fb[2]));
+> +
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       0, 0, 1, &data->fb[3]));
+> +
+> +	igt_assert(igt_create_color_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+> +					       DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +					       1, 0, 1, &data->fb[4]));
+> +}
+> +
+> +static void flip_fb(data_t *data, enum pipe pipe, igt_output_t *output, struct igt_fb *fb)
+> +{
+> +	igt_plane_set_fb(igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY), fb);
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +}
+> +
+> +static void prepare_pipe(data_t *data, enum pipe pipe, igt_output_t *output, bool color_fb)
+> +{
+> +	int i;
+> +	struct udev_monitor *mon = igt_watch_uevents();
+> +	drmModeModeInfo *mode = igt_output_get_mode(output);
+> +	bool event_detected = false;
+> +	int fb_count = color_fb ? 5 : 2;
+> +
+> +	if (color_fb)
+> +		create_color_fbs(data, mode);
+> +	else
+> +		create_monochrome_fbs(data, mode);
+> +
+> +	flip_fb(data, pipe, output, &data->fb[0]);
+> +	enable_and_verify_global_histogram(data, pipe);
+> +
+> +	igt_flush_uevents(mon);
+> +	for (i = 1; i <= FLIP_COUNT; i++) {
+> +		flip_fb(data, pipe, output, &data->fb[i % fb_count]);
+> +
+> +		/* Check for histogram event on every flip and break the loop if detected. */
+> +		if (igt_global_histogram_event_detected(mon, 0)) {
+> +			event_detected = true;
+> +			break;
+> +		}
+> +	}
+> +
+> +	igt_cleanup_uevents(mon);
+> +	igt_assert_f(event_detected, "Histogram event not generated.\n");
+> +}
+> +
+> +static void run_global_histogram_pipeline(data_t *data, enum pipe pipe, igt_output_t *output,
+> +				     bool color_fb, test_t test_pixel_factor)
 
+Align.
 
-Build changes
--------------
+> +{
+> +	drmModePropertyBlobRes *global_hist_blob = NULL;
+> +
+> +	prepare_pipe(data, pipe, output, color_fb);
+> +
+> +	read_global_histogram(data, pipe, &global_hist_blob);
+> +
+> +	if (test_pixel_factor)
+> +		test_pixel_factor(data, pipe, output, global_hist_blob);
+> +
+> +	drmModeFreePropertyBlob(global_hist_blob);
+> +	cleanup_pipe(data, pipe, output);
+> +}
+> +
+> +static void run_tests_for_global_histogram(data_t *data, bool color_fb,
+> +					   test_t test_pixel_factor)
+> +{
+> +	enum pipe pipe;
+> +	igt_output_t *output;
+> +
+> +	for_each_connected_output(&data->display, output) {
+> +		for_each_pipe(&data->display, pipe) {
+> +			if (!igt_pipe_obj_has_prop(&data->display.pipes[pipe], IGT_CRTC_HISTOGRAM))
+> +				continue;
+> +
+> +			igt_display_reset(&data->display);
+> +
+> +			igt_output_set_pipe(output, pipe);
+> +			if (!intel_pipe_output_combo_valid(&data->display))
+> +				continue;
+> +
+> +			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), igt_output_name(output))
+> +				run_global_histogram_pipeline(data, pipe, output, color_fb, test_pixel_factor);
+> +		}
+> +	}
+> +}
+> +
+> +static void run_algo_test(data_t *data, bool color_fb)
+> +{
+> +#ifdef HAVE_LIBGHE
+> +	run_tests_for_global_histogram(data, color_fb, algo_image_enhancement_factor);
+> +#else
+> +	igt_skip("Histogram algorithm library not found.\n");
+> +#endif
+> +}
+> +
+> +igt_main
+> +{
+> +	data_t data = {};
+> +
+> +	igt_fixture {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> +		kmstest_set_vt_graphics_mode();
+> +		igt_display_require(&data.display, data.drm_fd);
+> +		igt_display_require_output(&data.display);
+> +		igt_require(data.display.is_atomic);
+> +	}
+> +
+> +	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
+> +		     "event and then read the histogram data.");
+> +	igt_subtest_with_dynamic("global-basic")
+> +		run_tests_for_global_histogram(&data, false, NULL);
+> +
+> +	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
+> +		     "and then read the histogram data.");
+> +	igt_subtest_with_dynamic("global-color")
+> +		run_tests_for_global_histogram(&data, true, NULL);
+> +
+> +	igt_describe("Test to enable histogram, flip monochrome fbs, wait for histogram "
+> +		     "event and then read the histogram data and enhance pixels by multiplying "
+> +		     "by a pixel factor using algo.");
+> +	igt_subtest_with_dynamic("algo-basic")
+> +		run_algo_test(&data, false);
+> +
+> +	igt_describe("Test to enable histogram, flip color fbs, wait for histogram event "
+> +		     "and then read the histogram data and enhance pixels by multiplying "
+> +		     "by a pixel factor using algo.");
+> +	igt_subtest_with_dynamic("algo-color")
+> +		run_algo_test(&data, true);
+> +
+> +	igt_fixture {
+> +		igt_display_fini(&data.display);
+> +		drm_close_driver(data.drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 34b87b125..91044de84 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -35,6 +35,7 @@ test_progs = [
+>  	'kms_flip_event_leak',
+>  	'kms_force_connector_basic',
+>  	'kms_getfb',
+> +	'kms_histogram',
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_8097 -> IGTPW_12040
-  * Linux: CI_DRM_15628 -> CI_DRM_15636
+This should be after 'kms_hdr'.
 
-  CI-20190529: 20190529
-  CI_DRM_15628: a4532bcf5eea0cfdb56fbdc3195a2d15d193727b @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_15636: b925cb281e79b763990ed64267ef82a87ace5060 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_12040: 12040
-  IGT_8097: 2e7c8e4b88a50e33e10d6c13286818aa833bef9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+Regards,
+Kamil
 
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/index.html
-
---===============5728030856638120555==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/chamelium: Reduce edid count to avoid timeout (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140426/">https://patchwork.freedesktop.org/series/140426/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_8097 -&gt; IGTPW_12040</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_12040 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_12040, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/index.html</p>
-<h2>Participating hosts (45 -&gt; 44)</h2>
-<p>Additional (1): bat-mtlp-9 <br />
-  Missing    (2): bat-arls-2 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_12040:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@gem_exec_fence@nb-await@vecs0:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-rpls-4/igt@gem_exec_fence@nb-await@vecs0.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-rpls-4/igt@gem_exec_fence@nb-await@vecs0.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/fi-tgl-1115g4/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-tgl-1115g4/igt@i915_selftest@live.html">DMESG-FAIL</a> +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
-<h4>Suppressed</h4>
-<p>The following results come from untrusted machines, tests, or statuses.<br />
-  They do not affect the overall result.</p>
-<ul>
-<li>igt@debugfs_test@read_all_entries:<ul>
-<li>{bat-mtlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-mtlp-9/igt@debugfs_test@read_all_entries.html">DMESG-WARN</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_12040 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k:<ul>
-<li>bat-apl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-apl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-rplp-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-rplp-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-arlh-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-arlh-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11346">i915#11346</a>)</li>
-<li>fi-rkl-11600:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-rkl-11600/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-arlh-3:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-arlh-3/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a>)</li>
-<li>bat-dg1-7:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg1-7/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-kbl-x1275:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-x1275/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlp-11:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlp-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-rpls-4:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-rpls-4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-cfl-8109u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-cfl-8109u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-kbl-7567u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-7567u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-kbl-8809g:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-8809g/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-ilk-650:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-ilk-650/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-tgl-1115g4/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-cfl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-cfl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-mtlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-mtlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9792">i915#9792</a>)</li>
-<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-skl-6600u/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-dg1-6:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg1-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12311">i915#12311</a>)</li>
-<li>bat-twl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-twl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a>)</li>
-<li>fi-cfl-8700k:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-cfl-8700k/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-blb-e6850:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-blb-e6850/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-dg2-14:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-14/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-bsw-nick/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-kbl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-kbl-2/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlp-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlp-6/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-atsm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-atsm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6078">i915#6078</a>)</li>
-<li>bat-jsl-3:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-jsl-3/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-dg2-11:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-11/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-hsw-4770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-hsw-4770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-ivb-3770:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-ivb-3770/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-mtlp-8:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-mtlp-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-elk-e7500:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-elk-e7500/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-dg2-8:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-dg2-8/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-kbl-guc:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-kbl-guc/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlm-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlm-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9900">i915#9900</a>)</li>
-<li>bat-jsl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-jsl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-arls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-arls-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>fi-pnv-d510:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-pnv-d510/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/fi-glk-j4005/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a></li>
-<li>bat-adlp-9:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-adlp-9/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7828">i915#7828</a>)</li>
-<li>bat-twl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-twl-1/igt@kms_chamelium_edid@hdmi-edid-stress-resolution-non-4k.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11151">i915#11151</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@gt_tlb:<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-apl-1/igt@i915_selftest@live@gt_tlb.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12040/bat-apl-1/igt@i915_selftest@live@gt_tlb.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-</ul>
-<p>{name}: This element is suppressed. This means it is ignored when computing<br />
-          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_8097 -&gt; IGTPW_12040</li>
-<li>Linux: CI_DRM_15628 -&gt; CI_DRM_15636</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_15628: a4532bcf5eea0cfdb56fbdc3195a2d15d193727b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_15636: b925cb281e79b763990ed64267ef82a87ace5060 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_12040: 12040<br />
-  IGT_8097: 2e7c8e4b88a50e33e10d6c13286818aa833bef9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5728030856638120555==--
+>  	'kms_hdmi_inject',
+>  	'kms_hdr',
+>  	'kms_invalid_mode',
+> @@ -379,6 +380,7 @@ extra_dependencies = {
+>  	'gem_eio': [ realtime ],
+>  	'gem_exec_balancer': [ lib_igt_perf ],
+>  	'gem_mmap_offset': [ libatomic ],
+> +	'kms_histogram': [ libghe ],
+>  	'i915_pm_freq_mult': [ lib_igt_perf ],
+>  	'i915_pm_rc6_residency': [ lib_igt_perf ],
+>  	'perf': [ lib_igt_i915_perf ],
+> -- 
+> 2.25.1
+> 
