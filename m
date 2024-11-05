@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D956FD31769
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 17:50:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25198D3176D
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 17:54:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 937F610E418;
-	Tue,  5 Nov 2024 17:50:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C323C10E418;
+	Tue,  5 Nov 2024 17:54:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZDfrHndU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YnQ2bMQ9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C13010E418
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 17:50:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6C12910E418
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 17:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730829003; x=1762365003;
+ t=1730829259; x=1762365259;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=vIIXiUJb++2Vn50NjcX/RAki/nDSyj5o/AcJEYlUZ+k=;
- b=ZDfrHndUsOEyZf5prE5Dq6gq0Unq9rO1AibvfT7A0T8LauDyTydo09EP
- OyCosmCdS9QmTWbC9eSRU6+M/uA5KCD7Pv6qBXXOIPBmnUHhHZnATX2In
- 4OWxV/uyKyIebB51hrS9/NYNTAU3uvnX1c1q/YNDCxR3YOJGCq5T71WxP
- Vv++qALYHMDDQikHmqLFcVOG1x7rMPQo1jW9VSK9tYMBv/aZuhuTBWfIe
- C0PVcICAsI59s9hpnXzuNc8OhBj/ORMmBC4q3OjpupuhGBwun9P0eRbNs
- ao+OSRuicH2Z8tjuvCSJ/E+cmGDQXIdsqkPVO8gRJgYXES77RZNYtdgkF w==;
-X-CSE-ConnectionGUID: uwQw9sS+SIS6RRdoVPGeoA==
-X-CSE-MsgGUID: dDG3qhe6QHSDDTgEPBGpig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="55991064"
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="55991064"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2024 09:50:03 -0800
-X-CSE-ConnectionGUID: cADbmEbSTaeSadHOL03C5Q==
-X-CSE-MsgGUID: 5iBlakgNQTG/Lcy+YAlXbQ==
+ bh=3cVEItq5IRdYArRJ898Gms6mhD8fOaD4XOt2isVGJd4=;
+ b=YnQ2bMQ9YbZAFd+8hJUGehcPmUslGVjD0oO1F8qs+vZqvDxKqiCTS0e2
+ 3GAxWZGUTNwaeQKYhTRt4DGr8iMEmt+OTS5HXIjAlygEj8oAODedpG7Ah
+ SG7x+E9upC20MdmoTLSzMLox7I9hecNz4//B+P25As9d7cm7mvcGy6L7v
+ Sgi3+DIsUe4C6Qn5PEtvCdbmjtfOMJyyw3LTHaVzUipAMKL9FqAIC8vme
+ QTPX5Wox/LHY7Ac3p65HKG9ej/oQWtr8PPkpNUQ7LXs/fXjJ+suH9JpE+
+ mwASSupDf27nLJSGAt/TCFfdYH7m1mDCE1q7BJ+UrCJIQC+i1HFUldul8 Q==;
+X-CSE-ConnectionGUID: nh+e9pT0SKKyfu1GZfrmJA==
+X-CSE-MsgGUID: IAReIqxqRWWbmCL014/RmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30472817"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="30472817"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 09:54:19 -0800
+X-CSE-ConnectionGUID: EgiUw+CFQsCN8XZ+DV6PLQ==
+X-CSE-MsgGUID: ZVe3gbqHSI6Aiglz11ZveA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="107425769"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="84230580"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 09:50:01 -0800
-Date: Tue, 5 Nov 2024 18:49:46 +0100
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 09:54:18 -0800
+Date: Tue, 5 Nov 2024 18:54:15 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>, saurabhg.gupta@intel.com,
  alex.zuo@intel.com, vinay.belgaumkar@intel.com
-Subject: Re: [PATCH v3 1/2] tests/intel/sysfs: Restore sysfs values on test
- failure
-Message-ID: <20241105174946.6zldfd2n5vykcpnt@kamilkon-desk.igk.intel.com>
+Subject: Re: [PATCH v3 2/2] tests/intel/xe_sysfs_timeslice_duration: Restore
+ preempt timeout
+Message-ID: <20241105175415.7uy4fxqsenus35pd@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Jonathan Cavitt <jonathan.cavitt@intel.com>,
  saurabhg.gupta@intel.com, alex.zuo@intel.com,
  vinay.belgaumkar@intel.com
 References: <20241105154823.66078-1-jonathan.cavitt@intel.com>
- <20241105154823.66078-2-jonathan.cavitt@intel.com>
+ <20241105154823.66078-3-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241105154823.66078-2-jonathan.cavitt@intel.com>
+In-Reply-To: <20241105154823.66078-3-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,207 +76,101 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Jonathan,
-On 2024-11-05 at 15:48:22 +0000, Jonathan Cavitt wrote:
-
-please add 'xe_' in subject, instead of:
-
-[PATCH v3 1/2] tests/intel/sysfs: Restore sysfs values on test failure
-
-better:
-
-[PATCH v3 1/2] tests/intel/xe_sysfs*: Restore values on test failure
-
-> The tests xe_sysfs_preempt_timeout and xe_sysfs_timeslice_duration
-> modify the values of preempt_timeout_us and timeslice_duration_us,
-> respectively.  However, on a test failure, it is possible that these
-> values may remain in their modified states, resulting in the values
-> being used in future tests and causing unexpected behavior.
+On 2024-11-05 at 15:48:23 +0000, Jonathan Cavitt wrote:
+> The subtests of sysfs_timeslice_duration modify the preempt_timeout_us
+> and timeslice_duration_us values.  However, while the test does restore
+> the timeslice_duration_us value at the end of execution, it does not do
+> the same for preempt_timeout_us.  Because the value is not properly
+> restored, future tests can end up using the unexpected preempt timeout
+> value and thus have unexpected behavior.
 > 
-> Save the respective modified values before starting the test and attempt
-> to restore the values on test exit.
+> Save and restore the preempt_timeout_us value during the test.
 > 
-> v2:
-> - Fix some formatting issues (Kamil)
-> - Abort if value restore fails (Kamil)
-> - Directly call igt_sysfs_printf on exit to avoid duplicating on helper
->   (Kamil)
+> This fix does not apply to xe_sysfs_preempt_timeout because only the
+> preempt_timeout_us is modified during those tests, and the value is
+> correcty restored before the tests end.
 > 
-> Suggested-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> v2: Also restore preempt_timeout_us on test failure (Kamil)
+> 
+> v3: Abort on restore failure (Kamil)
+> 
+> Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2976
 > Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 > CC: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+> CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  tests/intel/xe_sysfs_preempt_timeout.c    | 43 +++++++++++++++++------
->  tests/intel/xe_sysfs_timeslice_duration.c | 42 +++++++++++++++++-----
->  2 files changed, 66 insertions(+), 19 deletions(-)
+>  tests/intel/xe_sysfs_timeslice_duration.c | 16 ++++++++++++++--
+>  1 file changed, 14 insertions(+), 2 deletions(-)
 > 
-> diff --git a/tests/intel/xe_sysfs_preempt_timeout.c b/tests/intel/xe_sysfs_preempt_timeout.c
-> index 7fa0dfcdf7..3bfda826d4 100644
-> --- a/tests/intel/xe_sysfs_preempt_timeout.c
-> +++ b/tests/intel/xe_sysfs_preempt_timeout.c
-> @@ -170,6 +170,7 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
->  	set_preempt_timeout(engine, saved);
+> diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
+> index b34d78a784..ef11acca13 100644
+> --- a/tests/intel/xe_sysfs_timeslice_duration.c
+> +++ b/tests/intel/xe_sysfs_timeslice_duration.c
+> @@ -115,10 +115,11 @@ static uint64_t __test_timeout(int fd, int engine, unsigned int timeout, uint16_
+>  static void test_timeout(int fd, int engine, const char **property, uint16_t class, int gt)
+>  {
+>  	uint64_t delays[] = { 1000, 50000, 100000, 500000 };
+> -	unsigned int saved;
+> +	unsigned int saved, old_pt;
+>  	uint64_t elapsed;
+>  	uint64_t epsilon;
+>  
+> +	igt_assert(igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &old_pt) == 1);
+>  	igt_require(igt_sysfs_printf(engine, "preempt_timeout_us", "%u", 1) == 1);
+>  	igt_assert(igt_sysfs_scanf(engine, property[0], "%u", &saved) == 1);
+>  	igt_debug("Initial %s:%u\n", property[0], saved);
+> @@ -140,6 +141,9 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
+>  	}
+>  
+>  	set_timeslice_duration(engine, saved);
+> +	igt_assert_lte(0, igt_sysfs_printf(engine, "preempt_timeout_us", "%u", old_pt));
+> +	igt_sysfs_scanf(engine, "preempt_timeout_us", "%u", &saved);
+> +	igt_assert_eq(saved, old_pt);
 >  }
 >  
-> +#define	MAX_GTS	8
->  igt_main
->  {
->  	static const struct {
-> @@ -183,8 +184,10 @@ igt_main
->  				       "preempt_timeout_min",
->  				       "preempt_timeout_max"}, };
->  	int count = sizeof(property) / sizeof(property[0]);
-> +	int gt_count = 0;
+>  #define	MAX_GTS	8
+> @@ -159,7 +163,7 @@ igt_main
+>  	int gt_count = 0;
 >  	int fd = -1, sys_fd, gt;
-> -	int engines_fd = -1, gt_fd = -1;
-> +	int engines_fd[MAX_GTS], gt_fd[MAX_GTS];
-> +	unsigned int pts[MAX_GTS];
+>  	int engines_fd[MAX_GTS], gt_fd[MAX_GTS];
+> -	unsigned int tds[MAX_GTS];
+> +	unsigned int tds[MAX_GTS], pts[MAX_GTS];
 >  
 >  	igt_fixture {
 >  		fd = drm_open_driver(DRIVER_XE);
-> @@ -192,26 +195,46 @@ igt_main
->  		sys_fd = igt_sysfs_open(fd);
->  		igt_require(sys_fd != -1);
->  		close(sys_fd);
-> +
-> +		xe_for_each_gt(fd, gt) {
-> +			igt_require(gt_count < MAX_GTS);
-> +
-> +			gt_fd[gt_count] = xe_sysfs_gt_open(fd, gt);
-> +			igt_require(gt_fd[gt_count] != -1);
-> +			engines_fd[gt_count] = openat(gt_fd[gt_count], "engines", O_RDONLY);
-> +			igt_require(engines_fd[gt_count] != -1);
+> @@ -178,6 +182,9 @@ igt_main
+>  			igt_require(igt_sysfs_scanf(engines_fd[gt_count],
+>  						    "timeslice_duration_us",
+>  						    "%u", &tds[gt_count]) == 1);
 > +			igt_require(igt_sysfs_scanf(engines_fd[gt_count],
 > +						    "preempt_timeout_us",
 > +						    "%u", &pts[gt_count]) == 1);
-> +			gt_count++;
-> +		}
->  	}
->  
->  	for (int i = 0; i < count; i++) {
->  		for (typeof(*tests) *t = tests; t->name; t++) {
->  			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-> +				int j = 0;
->  				xe_for_each_gt(fd, gt) {
-> -					gt_fd = xe_sysfs_gt_open(fd, gt);
-> -					igt_require(gt_fd != -1);
-> -					engines_fd = openat(gt_fd, "engines", O_RDONLY);
-> -					igt_require(engines_fd != -1);
-> -
-> -					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
-> -									  t->fn);
-> -					close(engines_fd);
-> -					close(gt_fd);
-> +					int e = engines_fd[j];
-
-Add newline.
-
-> +					igt_sysfs_engines(fd, e, gt, 1, property[i], t->fn);
-> +					j++;
->  				}
->  			}
+>  			gt_count++;
 >  		}
 >  	}
->  	igt_fixture {
-> +		for (int i = gt_count - 1; i >= 0; i--) {
-> +			int store;
-> +
+> @@ -198,6 +205,11 @@ igt_main
+>  		for (int i = gt_count - 1; i >= 0; i--) {
+>  			unsigned int store;
+>  
 > +			igt_assert_lte(0, igt_sysfs_printf(engines_fd[i], "preempt_timeout_us",
+
+Imho better abort.
+
 > +							   "%u", pts[i]));
+
+What about setting first:
+			store = pts[i] - 1;
+so it will differ in case scanf didn't read anything?
+
+With or without above
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 > +			igt_sysfs_scanf(engines_fd[i], "preempt_timeout_us", "%u", &store);
 > +			igt_abort_on_f(store != pts[i], "preempt_timeout_us not restored!\n");
 > +
-> +			close(engines_fd[i]);
-> +			close(gt_fd[i]);
-> +		}
-> +
->  		drm_close_driver(fd);
->  	}
->  }
-> diff --git a/tests/intel/xe_sysfs_timeslice_duration.c b/tests/intel/xe_sysfs_timeslice_duration.c
-> index cf95a3ac1c..b34d78a784 100644
-> --- a/tests/intel/xe_sysfs_timeslice_duration.c
-> +++ b/tests/intel/xe_sysfs_timeslice_duration.c
-> @@ -142,6 +142,7 @@ static void test_timeout(int fd, int engine, const char **property, uint16_t cla
->  	set_timeslice_duration(engine, saved);
->  }
->  
-> +#define	MAX_GTS	8
->  igt_main
->  {
->  	static const struct {
-> @@ -155,8 +156,10 @@ igt_main
->  				       "timeslice_duration_min",
->  				       "timeslice_duration_max"}, };
->  	int count = sizeof(property) / sizeof(property[0]);
-> +	int gt_count = 0;
->  	int fd = -1, sys_fd, gt;
-> -	int engines_fd = -1, gt_fd = -1;
-> +	int engines_fd[MAX_GTS], gt_fd[MAX_GTS];
-> +	unsigned int tds[MAX_GTS];
->  
->  	igt_fixture {
->  		fd = drm_open_driver(DRIVER_XE);
-> @@ -164,25 +167,46 @@ igt_main
->  		sys_fd = igt_sysfs_open(fd);
->  		igt_require(sys_fd != -1);
->  		close(sys_fd);
-> +
-> +		xe_for_each_gt(fd, gt) {
-> +			igt_require(gt_count < MAX_GTS);
-> +
-> +			gt_fd[gt_count] = xe_sysfs_gt_open(fd, gt);
-> +			igt_require(gt_fd[gt_count] != -1);
-> +			engines_fd[gt_count] = openat(gt_fd[gt_count], "engines", O_RDONLY);
-> +			igt_require(engines_fd[gt_count] != -1);
-> +			igt_require(igt_sysfs_scanf(engines_fd[gt_count],
-> +						    "timeslice_duration_us",
-> +						    "%u", &tds[gt_count]) == 1);
-> +			gt_count++;
-> +		}
->  	}
->  
->  	for (int i = 0; i < count; i++) {
->  		for (typeof(*tests) *t = tests; t->name; t++) {
->  			igt_subtest_with_dynamic_f("%s-%s", property[i][0], t->name) {
-> +				int j = 0;
->  				xe_for_each_gt(fd, gt) {
-> -					gt_fd = xe_sysfs_gt_open(fd, gt);
-> -					igt_require(gt_fd != -1);
-> -					engines_fd = openat(gt_fd, "engines", O_RDONLY);
-> -					igt_require(engines_fd != -1);
-> -					igt_sysfs_engines(fd, engines_fd, gt, 1, property[i],
-> -										 t->fn);
-> -					close(engines_fd);
-> -					close(gt_fd);
-> +					int e = engines_fd[j];
-
-Add newline.
-
-With above fixed
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-> +					igt_sysfs_engines(fd, e, gt, 1, property[i], t->fn);
-> +					j++;
->  				}
->  			}
->  		}
->  	}
->  	igt_fixture {
-> +		for (int i = gt_count - 1; i >= 0; i--) {
-> +			unsigned int store;
-> +
-> +			igt_assert_lte(0, igt_sysfs_printf(engines_fd[i], "timeslice_duration_us",
-> +							   "%u", tds[i]));
-> +			igt_sysfs_scanf(engines_fd[i], "timeslice_duration_us", "%u", &store);
-> +			igt_abort_on_f(store != tds[i], "timeslice_duration_us not restored!\n");
-> +
-> +			close(engines_fd[i]);
-> +			close(gt_fd[i]);
-> +		}
-> +
->  		drm_close_driver(fd);
->  	}
->  }
+>  			igt_assert_lte(0, igt_sysfs_printf(engines_fd[i], "timeslice_duration_us",
+>  							   "%u", tds[i]));
+>  			igt_sysfs_scanf(engines_fd[i], "timeslice_duration_us", "%u", &store);
 > -- 
 > 2.43.0
 > 
