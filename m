@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52F82D2C122
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 15:11:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C991ED2B941
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 15:48:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0CA6310E5D3;
-	Tue,  5 Nov 2024 15:11:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7133B10E12C;
+	Tue,  5 Nov 2024 15:48:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=adrian.larumbe@collabora.com header.b="DdvIWKW3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KYchKUmX";
 	dkim-atps=neutral
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com
- [136.143.188.112])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB70510E5CD
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 15:11:22 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; t=1730819480; cv=none; 
- d=zohomail.com; s=zohoarc; 
- b=TyBxAW0AztFoYtHTa40UbZVWzJcp+VIaCeZNBSN0InNefe6lsoQQ2ios8KLccWxxC/LblD+tJKtqMKUlSkgZnVuPlioEHDIdb3m/P9QzP7mwyO1zOdzI0AkXN/TyJigRKldkOCEJdmL858tt4+WV4QbclUdp8TsCt8/UxZ3YQ9A=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
- s=zohoarc; t=1730819480;
- h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To;
- bh=J5C0rU+gpkUsKjcNEcB1DR78gTpFkD7PbBWLlZ7IOsU=; 
- b=cuZMVY20/woSPuRH79X+M6ot96IYL3bOYg2yEU3JllvBy6opTbtJctDwEL7M5dRZnGCnixgOmG6vHvFTlAV4kBzSaBuw33+7oTFs10LPqlmfFmpkqGkwrmu1oRWeMSBuTXr7Oed0WVe2WMAiNrzv032vPIph/UpWnwQ2jNjr+kU=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
- dkim=pass  header.i=collabora.com;
- spf=pass  smtp.mailfrom=adrian.larumbe@collabora.com;
- dmarc=pass header.from=<adrian.larumbe@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1730819480; 
- s=zohomail; d=collabora.com; i=adrian.larumbe@collabora.com;
- h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
- bh=J5C0rU+gpkUsKjcNEcB1DR78gTpFkD7PbBWLlZ7IOsU=;
- b=DdvIWKW3gi7PM7LAoKjoJ6KAP75GZ3eRQrCManKY5jXhSvwz8Xq2ImXbDfoKp1vA
- jvShB+bRSsfrE3u8AsY63HAQVYGF+JX9l/S/+M6pTd6SWnp5NA2oSiFFKPfFZgPw+Qw
- XRDX4XHVKY8ak81aQL/1jO5nf4+BWVXEgpuuPkj0=
-Received: by mx.zohomail.com with SMTPS id 1730819478425866.8616106594219;
- Tue, 5 Nov 2024 07:11:18 -0800 (PST)
-Date: Tue, 5 Nov 2024 15:11:15 +0000
-From: =?utf-8?Q?Adri=C3=A1n?= Larumbe <adrian.larumbe@collabora.com>
-To: Petr =?utf-8?B?VmFuxJtr?= <arkamar@atlas.cz>
-Cc: igt-dev@lists.freedesktop.org, 
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t] lib/igt_profiling: add include for PATH_MAX constant
-Message-ID: <odzaaliyr2d7fuz4u7izrtw2yfw2uqp23uxyyqs6uq6zlb7rpg@52qx6p4bpsqn>
-References: <20241103171806.10248-1-arkamar@atlas.cz>
- <202411583120-ZynX2Bpb672E8EEZ-arkamar@atlas.cz>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3BBF10E12C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 15:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730821704; x=1762357704;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=dULjQXbmBtvYwyAoFBPZAFIzwoVJuhO77vyldZ+z6xE=;
+ b=KYchKUmXFtg9e1LIHXBTx1mbuFbNQV2l0wwiujAjOKjWMgNRwftXd8LP
+ mzIgNbNKPVQFdv6cengbx1Vd7G4GriNQDD9o3s9qluhMUx/lhOwH93U3B
+ FU1NbLfD8fTuL+OBTzf8oU6rKsJwOhmNlkmt70BYtUpSMFqDx3ViaxB8q
+ fRCWgM+xuAR2EgS/E677X3WMRORHE7GQENAuN79XaFfSj4bBHBF83OP6g
+ XaH53Uk4kpufo2xfZcZBzbe4+6jRi+pYYlD8vV1L8Li8R04kKf1YebHgp
+ jC/l/s+4sdjxNkiPgohMUAQzAdaJKf5KdECaD7aSvdD3wVhmgnfsmwBjk Q==;
+X-CSE-ConnectionGUID: 0GNdPH/6RVG8BSFa5lovDQ==
+X-CSE-MsgGUID: JdwFkaHlTa6rcXqq3t1bvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11247"; a="30801890"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="30801890"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 07:48:23 -0800
+X-CSE-ConnectionGUID: 2ucj7quWR6aGa8lCR2ObCw==
+X-CSE-MsgGUID: XwizTnoFTg6eSuLvd0IBFw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="87996321"
+Received: from dut138lnl.fm.intel.com ([10.105.23.14])
+ by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 07:48:23 -0800
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com, saurabhg.gupta@intel.com, alex.zuo@intel.com,
+ kamil.konieczny@linux.intel.com, vinay.belgaumkar@intel.com
+Subject: [PATCH v3 0/2] test/intel/xe_sysfs: Restore sysfs params correctly
+Date: Tue,  5 Nov 2024 15:48:21 +0000
+Message-ID: <20241105154823.66078-1-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <202411583120-ZynX2Bpb672E8EEZ-arkamar@atlas.cz>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,35 +66,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 05.11.2024 09:31, Petr Vaněk wrote:
-> PATH_MAX constant is defined in limits.h header file. It needs to be
-> explicitly included in musl environment as it is not transitively
-> available for any of available includes.
-> 
-> Fixes: 9366bee04d16 ("lib: Add DRM driver sysfs profiling knob toggling functions")
-> Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
-> Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+The xe_sysfs_timeslice_duration and xe_sysfs_preempt_timeout tests do
+not correctly restore modified sysfs params on test failure.
+Additionally, xe_sysfs_timeslice_duration modifies but does not restore
+preempt_timeout_us.  Repair these issues.
 
-Reviewed-by: Adrian Larumbe <adrian.larumbe@collabora.com>
+v3: Fix several formatting issues (Kamil)
 
-> ---
-> Resending the patch as it seems it did not make it to the list last
-> time.
-> 
->  lib/igt_profiling.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
-> index b61506742..e1526ad98 100644
-> --- a/lib/igt_profiling.c
-> +++ b/lib/igt_profiling.c
-> @@ -10,6 +10,7 @@
->  #include <assert.h>
->  #include <dirent.h>
->  #include <fcntl.h>
-> +#include <limits.h>
->  #include <stdbool.h>
->  #include <stdio.h>
->  #include <stdlib.h>
-> -- 
-> 2.45.2
+Jonathan Cavitt (2):
+  tests/intel/sysfs: Restore sysfs values on test failure
+  tests/intel/xe_sysfs_timeslice_duration: Restore preempt timeout
+
+ tests/intel/xe_sysfs_preempt_timeout.c    | 43 +++++++++++++----
+ tests/intel/xe_sysfs_timeslice_duration.c | 56 +++++++++++++++++++----
+ 2 files changed, 79 insertions(+), 20 deletions(-)
+
+-- 
+2.43.0
+
