@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8746D1266A
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 08:31:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34815D1266A
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 08:32:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8994C10E229;
-	Tue,  5 Nov 2024 08:31:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E217010E534;
+	Tue,  5 Nov 2024 08:32:40 +0000 (UTC)
 Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E1BA10E229;
- Tue,  5 Nov 2024 08:31:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFB8D10E229;
+ Tue,  5 Nov 2024 08:32:39 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4957496486565652012=="
+ boundary="===============7564945056035573626=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_lib/igt=5Fkmod=3A_Drop_legacy_?=
+Subject: =?utf-8?q?=E2=9C=97_CI=2ExeBAT=3A_failure_for_lib/igt=5Fkmod=3A_Drop_legacy_?=
  =?utf-8?q?kunit_integration_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Lucas De Marchi" <lucas.demarchi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 05 Nov 2024 08:31:57 -0000
-Message-ID: <173079551743.1410832.11929352580834206292@2413ebb6fbb6>
+Date: Tue, 05 Nov 2024 08:32:39 -0000
+Message-ID: <173079555990.1410822.13229110920130969677@2413ebb6fbb6>
 X-Patchwork-Hint: ignore
 References: <20241105055255.2466236-1-lucas.demarchi@intel.com>
 In-Reply-To: <20241105055255.2466236-1-lucas.demarchi@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4957496486565652012==
+--===============7564945056035573626==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,7 +50,7 @@ Content-Transfer-Encoding: 7bit
 
 Series: lib/igt_kmod: Drop legacy kunit integration (rev2)
 URL   : https://patchwork.freedesktop.org/series/140746/
-State : success
+State : failure
 
 == Summary ==
 
@@ -93,7 +93,7 @@ Build changes
 
 For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12030/index.html
 
---===============4957496486565652012==
+--===============7564945056035573626==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -115,7 +115,7 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>lib/igt_kmod: Drop legacy kunit integration (rev2)</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140746/">https://patchwork.freedesktop.org/series/140746/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
     <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12030/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12030/index.html</a></td></tr>
 
@@ -143,4 +143,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4957496486565652012==--
+--===============7564945056035573626==--
