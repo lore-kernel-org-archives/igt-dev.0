@@ -4,27 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78618D1267D
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 10:48:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7B40D1267E
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 10:50:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 330B910E2D5;
-	Tue,  5 Nov 2024 10:48:23 +0000 (UTC)
-Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B3A2510E2D5;
- Tue,  5 Nov 2024 10:48:21 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3797443647823980865=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7459B10E123;
+	Tue,  5 Nov 2024 10:50:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lnrlhSvF";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CEB7910E123
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 10:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1730803810; x=1762339810;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Hrz5pgFB6usjyv0TYABCuHkR6k7kX9O7u99FeFfiIH8=;
+ b=lnrlhSvFJxAudW2EiD8BH5bni1+pL1POcHjGi2KLZSd+1UR/4zWjaHr3
+ 5VRuF3MsTfBIL3pTNdFhI/WaCTpcvz7XMyVoUQKjldL0j1MpdWeBUuMvY
+ 57QeHheakX+okryy3L+BfX8AGsOF8NbcvxjOD1DVz5SWyrJ3Cn4UifYTO
+ BCInaW76KyK991dD/I8iI5hZhm3T/ccvNNlKvp2zMgpeMiA1zuBoG7sMe
+ uZzgDLq9SW43yBBgefYP3xC8/T3n1+bnhBcplvwASYWNUGsSejwlHwS+p
+ PX6fJUZFOh/kS1s4Z/yihdIZsbx5LQEIKcq7yMkMKXj6rAZusvdjOxv9X Q==;
+X-CSE-ConnectionGUID: /jGg9+RoStm8MIy5o2doOQ==
+X-CSE-MsgGUID: CBVtIGQ7S7a3XzRNbY+WiA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="29961574"
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="29961574"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 02:50:09 -0800
+X-CSE-ConnectionGUID: 7xLA0sqZQdqhtHKZmhdFiQ==
+X-CSE-MsgGUID: y4U30+k4RpShhR0/Jcq/RA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="88741529"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.89])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 02:50:08 -0800
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To: igt-dev@lists.freedesktop.org, Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Subject: Re: [PATCH i-g-t 2/3] lib/igt_kmod: Stop handling _kunit suffix
+Date: Tue, 05 Nov 2024 11:50:05 +0100
+Message-ID: <6684395.tM3a2QDmDi@jkrzyszt-mobl2.ger.corp.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20241105055255.2466236-3-lucas.demarchi@intel.com>
+References: <20241105055255.2466236-1-lucas.demarchi@intel.com>
+ <20241105055255.2466236-3-lucas.demarchi@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_CI=2ExeBAT=3A_success_for_tests/intel/xe=5Fgt=5Ffreq=3A_?=
- =?utf-8?q?Change_basic_throttle_API_test_criteria?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Raag Jadav" <raag.jadav@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 05 Nov 2024 10:48:21 -0000
-Message-ID: <173080370172.1411459.6263389156592437932@2413ebb6fbb6>
-X-Patchwork-Hint: ignore
-References: <20241105063228.452559-1-raag.jadav@intel.com>
-In-Reply-To: <20241105063228.452559-1-raag.jadav@intel.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,129 +67,54 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3797443647823980865==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Lucas,
 
-== Series Details ==
+On Tuesday, 5 November 2024 06:52:54 CET Lucas De Marchi wrote:
+> It's not used anywhere anymore. Remove it.
 
-Series: tests/intel/xe_gt_freq: Change basic throttle API test criteria
-URL   : https://patchwork.freedesktop.org/series/140921/
-State : success
+I'm not sure.  I added this option based on KUnit documentation.  Has the 
+documentation changed since then?  I haven't been watching it.  Have you 
+checked if core drm doesn't use that suffix?   If it is still documented then 
+what if we decide to run kunit tests from other subsytems (dma-buf? iommu?) 
+and it occurs they still use it?
 
-== Summary ==
+Thanks,
+Janusz
 
-CI Bug Log - changes from XEIGT_8097_BAT -> XEIGTPW_12032_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (9 -> 9)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_12032_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - bat-lnl-1:          [PASS][1] -> [FAIL][2] ([Intel XE#886]) +1 other test fail
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8097/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12032/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  
-  [Intel XE#886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/886
+> 
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> ---
+>  lib/igt_kmod.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+> index 4eeab79ec..58edac8fa 100644
+> --- a/lib/igt_kmod.c
+> +++ b/lib/igt_kmod.c
+> @@ -1189,7 +1189,7 @@ static void __igt_kunit(struct igt_ktest *tst,
+>   *	   if NULL then test cases from all test suites provided by the module
+>   *	   are executed as dynamic sub-subtests of one IGT subtest, which name
+>   *	   is derived from the module name by cutting off its optional trailing
+> - *	   _test or _kunit suffix
+> + *	   _test suffix
+>   * @opts: options to load the module
+>   *
+>   * Loads the test module, parses its (k)tap dmesg output, then unloads it
+> @@ -1213,9 +1213,6 @@ void igt_kunit(const char *module_name, const char *suite, const char *opts)
+>  		if (!igt_debug_on(!subtest)) {
+>  			char *suffix = strstr(subtest, "_test");
+>  
+> -			if (!suffix)
+> -				suffix = strstr(subtest, "_kunit");
+> -
+>  			if (suffix)
+>  				*suffix = '\0';
+>  		}
+> 
 
 
-Build changes
--------------
-
-  * IGT: IGT_8097 -> IGTPW_12032
-  * Linux: xe-2160-a4532bcf5eea0cfdb56fbdc3195a2d15d193727b -> xe-2164-caa2b9acb44792908e9418d1faf890d72fb327e1
-
-  IGTPW_12032: 7cb8434d0ae97d3543e7dd08e509f64a9dd472e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_8097: 2e7c8e4b88a50e33e10d6c13286818aa833bef9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-2160-a4532bcf5eea0cfdb56fbdc3195a2d15d193727b: a4532bcf5eea0cfdb56fbdc3195a2d15d193727b
-  xe-2164-caa2b9acb44792908e9418d1faf890d72fb327e1: caa2b9acb44792908e9418d1faf890d72fb327e1
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12032/index.html
-
---===============3797443647823980865==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_gt_freq: Change basic throttle API test criteria</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140921/">https://patchwork.freedesktop.org/series/140921/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12032/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12032/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_8097_BAT -&gt; XEIGTPW_12032_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (9 -&gt; 9)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_12032_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@kms_flip@basic-flip-vs-wf_vblank:<ul>
-<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8097/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12032/bat-lnl-1/igt@kms_flip@basic-flip-vs-wf_vblank.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/886">Intel XE#886</a>) +1 other test fail</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_8097 -&gt; IGTPW_12032</li>
-<li>Linux: xe-2160-a4532bcf5eea0cfdb56fbdc3195a2d15d193727b -&gt; xe-2164-caa2b9acb44792908e9418d1faf890d72fb327e1</li>
-</ul>
-<p>IGTPW_12032: 7cb8434d0ae97d3543e7dd08e509f64a9dd472e9 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_8097: 2e7c8e4b88a50e33e10d6c13286818aa833bef9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-2160-a4532bcf5eea0cfdb56fbdc3195a2d15d193727b: a4532bcf5eea0cfdb56fbdc3195a2d15d193727b<br />
-  xe-2164-caa2b9acb44792908e9418d1faf890d72fb327e1: caa2b9acb44792908e9418d1faf890d72fb327e1</p>
-
-</body>
-</html>
-
---===============3797443647823980865==--
