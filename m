@@ -4,65 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2281DD31765
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 16:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A3AD31767
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 16:52:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D09BE10E5F3;
-	Tue,  5 Nov 2024 16:51:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YNpleszF";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E52C10E5F2
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 16:51:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730825510; x=1762361510;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=GkOvuk6vTBp/mZRAOXmR1lc4t3uWY4dzmjeTrSCY5tY=;
- b=YNpleszF5F3PSeVrEYgunjQOqgvsDoBHN/zUqRdIlxv6UJ2bMN5WiJBW
- 6oi9B/2wfgcJ2DEjypNdmAAl9d+XatgKDlPfMlf96GFAZO8u4EQ7U7qkJ
- m7Orn+8cxyPbWiEJ70xGY++Z/Q9F89whpDt2H22zqF8/8rZE+c3fOeKcx
- P/DdOc0MGBVMQTNI8Ie+lmJ3VHcelUUBkiKWhq4UXCor4Wf01nHCGwGiC
- K0CgG9FSnIp/KnKxi0m7V0KpRKfVuxuH0/RL2+FmztnV5owmwZUpsgtVY
- ckE1B1onICRypSimU1UD6SbxQQH0D23n2Uq2Cugn4OK/WUanqhH2lRNbq A==;
-X-CSE-ConnectionGUID: Zotfq/59R4+NRqmszH+8JA==
-X-CSE-MsgGUID: Dv/pXaXYQaCMvlyFbI9+Zw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="48047465"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="48047465"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2024 08:51:50 -0800
-X-CSE-ConnectionGUID: YvZn1yj/StWh3z5dqMu+wg==
-X-CSE-MsgGUID: c3lwulW6S3WDIaLcpyQEHg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="84409329"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 08:51:48 -0800
-Date: Tue, 5 Nov 2024 17:51:45 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
- kunal1.joshi@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, Mark Yacoub <markyacoub@chromium.org>,
- Mark Yacoub <markyacoub@google.com>
-Subject: Re: [PATCH i-g-t v6 1/2] tests/chamelium/kms_chamelium_edid: Use
- extended flag to reduce the number of edid
-Message-ID: <20241105165145.yy2qtmi5hksym2zz@kamilkon-desk.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Pranay Samala <pranay.samala@intel.com>, karthik.b.s@intel.com,
- kunal1.joshi@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, Mark Yacoub <markyacoub@chromium.org>,
- Mark Yacoub <markyacoub@google.com>
-References: <20241105161026.1819884-1-pranay.samala@intel.com>
- <20241105161026.1819884-2-pranay.samala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF28810E5F1;
+	Tue,  5 Nov 2024 16:52:29 +0000 (UTC)
+Received: from 2413ebb6fbb6 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 133F410E5F1;
+ Tue,  5 Nov 2024 16:52:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5267016513796699506=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20241105161026.1819884-2-pranay.samala@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Fi=2ECI=2EBAT=3A_success_for_test/intel/xe=5Fsysfs=3A_Re?=
+ =?utf-8?q?store_sysfs_params_correctly_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jonathan Cavitt" <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 05 Nov 2024 16:52:28 -0000
+Message-ID: <173082554806.1412876.13679849784348722760@2413ebb6fbb6>
+X-Patchwork-Hint: ignore
+References: <20241105154823.66078-1-jonathan.cavitt@intel.com>
+In-Reply-To: <20241105154823.66078-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,174 +37,256 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Pranay,
-On 2024-11-05 at 21:40:25 +0530, Pranay Samala wrote:
-> This test iterates on all the available edids of HDMI.
-> Due to CI test timeut limitation, we are reducing the
-> number of edids to execute to avoid result as timeout.
-> 
-> Using extended flag to achieve this. The test will execute
-> only 25 edids when this flag is not used as CI doesnt uses
-> this flag.
-> In local execution to execute on all edids, we have to give
-> this flag at the runtime.
-> 
-> Edid of 1920x1200 59.950 Hz mode is a redundant edid, shuffling
-> it with edid of 2560x1600 59.972 Hz mode to have all edid's coverage.
+--===============5267016513796699506==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Please do not mix this, rather send it in separate patch,
-also add to Cc devs found from 'git blame', here +cc Mark
+== Series Details ==
 
-Cc: Mark Yacoub <markyacoub@chromium.org>
-Cc: Mark Yacoub <markyacoub@google.com>
-> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+Series: test/intel/xe_sysfs: Restore sysfs params correctly (rev2)
+URL   : https://patchwork.freedesktop.org/series/140780/
+State : success
 
-Regards,
-Kamil
+== Summary ==
 
-> ---
->  lib/monitor_edids/hdmi_edids.h       | 52 ++++++++++++++--------------
->  tests/chamelium/kms_chamelium_edid.c | 28 ++++++++++++++-
->  2 files changed, 53 insertions(+), 27 deletions(-)
-> 
-> diff --git a/lib/monitor_edids/hdmi_edids.h b/lib/monitor_edids/hdmi_edids.h
-> index 9d75cfa98..f6cfe82ff 100644
-> --- a/lib/monitor_edids/hdmi_edids.h
-> +++ b/lib/monitor_edids/hdmi_edids.h
-> @@ -250,23 +250,15 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
->  		  "34353732323059575320000000fc0044"
->  		  "454c4c20323430375746500a000000fd"
->  		  "00384c1e5311000a2020202020200068" },
-> -	{ .name = "DEL_61462_DELL_U2410_HDMI",
-> -	  .edid = "00ffffffffffff0010ac16f04c4e4332"
-> -		  "1f13010380342078ea1ec5ae4f34b126"
-> -		  "0e5054a54b008180a940d100714f0101"
-> -		  "010101010101283c80a070b023403020"
-> -		  "360006442100001a000000ff00463532"
-> -		  "354d39375332434e4c0a000000fc0044"
-> -		  "454c4c2055323431300a2020000000fd"
-> -		  "00384c1e5111000a202020202020012e"
-> -		  "020329f15090050403020716011f1213"
-> -		  "14201511062309070767030c00100038"
-> -		  "2d83010000e3050301023a801871382d"
-> -		  "40582c450006442100001e011d801871"
-> -		  "1c1620582c250006442100009e011d00"
-> -		  "7251d01e206e28550006442100001e8c"
-> -		  "0ad08a20e02d10103e96000644210000"
-> -		  "1800000000000000000000000000003e" },
-> +	{ .name = "HWP_12442_HP_Z30i_HDMI",
-> +	  .edid = "00ffffffffffff0022f09a3001010101"
-> +		  "06180103804028782a1df5ae4f35b325"
-> +		  "0d5054a10800d100b30095008100a940"
-> +		  "8180d1c081c0e26800a0a0402e603020"
-> +		  "360081902100001a000000fd00324618"
-> +		  "621b000a202020202020000000fc0048"
-> +		  "50205a3330690a2020202020000000ff"
-> +		  "00434e34343036304742530a20200078" },
->  	{ .name = "DTV_0_DTV_HDMI",
->  	  .edid = "00ffffffffffff001296000001010101"
->  		  "0c180103803a20780a0dc9a057479827"
-> @@ -507,15 +499,23 @@ monitor_edid HDMI_EDIDS_NON_4K[] = {
->  		  "442100001e011d00bc52d01e20b82855"
->  		  "4006442100001e8c0ad08a20e02d1010"
->  		  "3e9600064421000018000000000000c1" },
-> -	{ .name = "HWP_12442_HP_Z30i_HDMI",
-> -	  .edid = "00ffffffffffff0022f09a3001010101"
-> -		  "06180103804028782a1df5ae4f35b325"
-> -		  "0d5054a10800d100b30095008100a940"
-> -		  "8180d1c081c0e26800a0a0402e603020"
-> -		  "360081902100001a000000fd00324618"
-> -		  "621b000a202020202020000000fc0048"
-> -		  "50205a3330690a2020202020000000ff"
-> -		  "00434e34343036304742530a20200078" },
-> +	{ .name = "DEL_61462_DELL_U2410_HDMI",
-> +	  .edid = "00ffffffffffff0010ac16f04c4e4332"
-> +		  "1f13010380342078ea1ec5ae4f34b126"
-> +		  "0e5054a54b008180a940d100714f0101"
-> +		  "010101010101283c80a070b023403020"
-> +		  "360006442100001a000000ff00463532"
-> +		  "354d39375332434e4c0a000000fc0044"
-> +		  "454c4c2055323431300a2020000000fd"
-> +		  "00384c1e5111000a202020202020012e"
-> +		  "020329f15090050403020716011f1213"
-> +		  "14201511062309070767030c00100038"
-> +		  "2d83010000e3050301023a801871382d"
-> +		  "40582c450006442100001e011d801871"
-> +		  "1c1620582c250006442100009e011d00"
-> +		  "7251d01e206e28550006442100001e8c"
-> +		  "0ad08a20e02d10103e96000644210000"
-> +		  "1800000000000000000000000000003e" },
->  	{ .name = "HWP_12447_HP_Z24i_HDMI",
->  	  .edid = "00ffffffffffff0022f09f3001010101"
->  		  "1a180103803420782e3c50a7544da226"
-> diff --git a/tests/chamelium/kms_chamelium_edid.c b/tests/chamelium/kms_chamelium_edid.c
-> index 8438f5f15..ca1f82227 100644
-> --- a/tests/chamelium/kms_chamelium_edid.c
-> +++ b/tests/chamelium/kms_chamelium_edid.c
-> @@ -38,6 +38,7 @@
->  #include <string.h>
->  #include <stdatomic.h>
->  #include <xf86drmMode.h>
-> +#include "drmtest.h"
->  
->  #include "config.h"
->  #include "igt.h"
-> @@ -121,7 +122,9 @@
->   * @suspend:      suspend
->   */
->  
-> +#define CI_LIMIT 25
->  #define MODE_CLOCK_ACCURACY 0.05 /* 5% */
-> +static bool extended;
->  
->  static void get_connectors_link_status_failed(chamelium_data_t *data,
->  					      bool *link_status_failed)
-> @@ -269,9 +272,18 @@ static void edid_stress_resolution(chamelium_data_t *data,
->  	int i;
->  	struct chamelium *chamelium = data->chamelium;
->  	struct udev_monitor *mon = igt_watch_uevents();
-> +	enum intel_driver driver = get_intel_driver(data->drm_fd);
-> +
->  	chamelium_reset_state(&data->display, data->chamelium, port,
->  			      data->ports, data->port_count);
->  
-> +	if (!extended && (driver == INTEL_DRIVER_XE || driver == INTEL_DRIVER_I915) &&
-> +	    is_intel_device(data->drm_fd))
-> +		edids_list_len = CI_LIMIT;
-> +
-> +	/* TODO: Make changes to check if we can get rid of extended flag and explore
-> +	 * if there is environment variable in CI when executing with igt_runner
-> +	 */
->  
->  	for (i = 0; i < edids_list_len; ++i) {
->  		struct chamelium_edid *chamelium_edid;
-> @@ -504,8 +516,22 @@ static void test_mode_timings(chamelium_data_t *data,
->  	} while (++i < count_modes);
->  }
->  
-> +static int opt_handler(int opt, int opt_index, void *_data)
-> +{
-> +	switch (opt) {
-> +	case 'e':
-> +		extended = true;
-> +		break;
-> +	}
-> +
-> +	return IGT_OPT_HANDLER_SUCCESS;
-> +}
-> +
-> +const char *help_str =
-> +	"  -e \tExtended tests.\n";
-> +
->  IGT_TEST_DESCRIPTION("Testing EDID with a Chamelium board");
-> -igt_main
-> +igt_main_args("e", NULL, help_str, opt_handler, NULL)
->  {
->  	chamelium_data_t data;
->  	struct chamelium_port *port;
-> -- 
-> 2.34.1
-> 
+CI Bug Log - changes from IGT_8097 -> IGTPW_12039
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/index.html
+
+Participating hosts (45 -> 45)
+------------------------------
+
+  Additional (1): bat-mtlp-9 
+  Missing    (1): fi-snb-2520m 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_12039:
+
+### IGT changes ###
+
+#### Suppressed ####
+
+  The following results come from untrusted machines, tests, or statuses.
+  They do not affect the overall result.
+
+  * igt@gem_close_race@basic-threads:
+    - {bat-mtlp-9}:       NOTRUN -> [DMESG-WARN][1] +3 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-mtlp-9/igt@gem_close_race@basic-threads.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_12039 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         [PASS][2] -> [ABORT][3] ([i915#12133])
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arlh-2/igt@i915_selftest@live.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arlh-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@gt_engines:
+    - bat-arls-2:         NOTRUN -> [DMESG-WARN][4] ([i915#10341] / [i915#12133])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live@gt_engines.html
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - bat-arls-2:         NOTRUN -> [DMESG-FAIL][5] ([i915#10262]) +32 other tests dmesg-fail
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arlh-2:         [PASS][6] -> [ABORT][7] ([i915#12061])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arlh-2/igt@i915_selftest@live@workarounds.html
+
+  
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@gt_tlb:
+    - bat-apl-1:          [ABORT][8] ([i915#12133]) -> [PASS][9] +1 other test pass
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-apl-1/igt@i915_selftest@live@gt_tlb.html
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-apl-1/igt@i915_selftest@live@gt_tlb.html
+
+  * igt@i915_selftest@live@workarounds:
+    - bat-arls-2:         [ABORT][10] ([i915#12061]) -> [PASS][11]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arls-2/igt@i915_selftest@live@workarounds.html
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live@workarounds.html
+
+  
+#### Warnings ####
+
+  * igt@i915_selftest@live:
+    - bat-arls-2:         [ABORT][12] ([i915#12133]) -> [DMESG-FAIL][13] ([i915#10262] / [i915#10341] / [i915#12133])
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arls-2/igt@i915_selftest@live.html
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live.html
+
+  
+  {name}: This element is suppressed. This means it is ignored when computing
+          the status of the difference (SUCCESS, WARNING, or FAILURE).
+
+  [i915#10262]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262
+  [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+  [i915#12061]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061
+  [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
+  [i915#4213]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4213
+  [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
+  [i915#9318]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9318
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_8097 -> IGTPW_12039
+  * Linux: CI_DRM_15628 -> CI_DRM_15636
+
+  CI-20190529: 20190529
+  CI_DRM_15628: a4532bcf5eea0cfdb56fbdc3195a2d15d193727b @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_15636: b925cb281e79b763990ed64267ef82a87ace5060 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_12039: 12039
+  IGT_8097: 2e7c8e4b88a50e33e10d6c13286818aa833bef9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/index.html
+
+--===============5267016513796699506==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/intel/xe_sysfs: Restore sysfs params correctly (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/140780/">https://patchwork.freedesktop.org/series/140780/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_8097 -&gt; IGTPW_12039</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/index.html</p>
+<h2>Participating hosts (45 -&gt; 45)</h2>
+<p>Additional (1): bat-mtlp-9 <br />
+  Missing    (1): fi-snb-2520m </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_12039:</p>
+<h3>IGT changes</h3>
+<h4>Suppressed</h4>
+<p>The following results come from untrusted machines, tests, or statuses.<br />
+  They do not affect the overall result.</p>
+<ul>
+<li>igt@gem_close_race@basic-threads:<ul>
+<li>{bat-mtlp-9}:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-mtlp-9/igt@gem_close_race@basic-threads.html">DMESG-WARN</a> +3 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_12039 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arlh-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arlh-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@gt_engines:</p>
+<ul>
+<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live@gt_engines.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>bat-arls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live@late_gt_pm.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a>) +32 other tests dmesg-fail</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arlh-2/igt@i915_selftest@live@workarounds.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arlh-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@gt_tlb:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-apl-1/igt@i915_selftest@live@gt_tlb.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-apl-1/igt@i915_selftest@live@gt_tlb.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@workarounds:</p>
+<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arls-2/igt@i915_selftest@live@workarounds.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12061">i915#12061</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live@workarounds.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-arls-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8097/bat-arls-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12039/bat-arls-2/igt@i915_selftest@live.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10262">i915#10262</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341">i915#10341</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133">i915#12133</a>)</li>
+</ul>
+</li>
+</ul>
+<p>{name}: This element is suppressed. This means it is ignored when computing<br />
+          the status of the difference (SUCCESS, WARNING, or FAILURE).</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_8097 -&gt; IGTPW_12039</li>
+<li>Linux: CI_DRM_15628 -&gt; CI_DRM_15636</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_15628: a4532bcf5eea0cfdb56fbdc3195a2d15d193727b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_15636: b925cb281e79b763990ed64267ef82a87ace5060 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_12039: 12039<br />
+  IGT_8097: 2e7c8e4b88a50e33e10d6c13286818aa833bef9b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5267016513796699506==--
