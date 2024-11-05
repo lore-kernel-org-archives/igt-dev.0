@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D599CD31761
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 16:30:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8713D31764
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 16:32:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 955BB10E41B;
-	Tue,  5 Nov 2024 16:30:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8EB9D10E079;
+	Tue,  5 Nov 2024 16:32:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Loncqn8i";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LxKHlBrN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4B0210E5EF;
- Tue,  5 Nov 2024 16:30:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BAB7010E079;
+ Tue,  5 Nov 2024 16:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730824245; x=1762360245;
+ t=1730824342; x=1762360342;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=mACVOhseIJ9IAGiYjko9h7dyDRiF2VGUDHrGq71OH9o=;
- b=Loncqn8i2JlUAoVWHmp0JCYO3uvKpRaFfrl3Ozgm7wJUqC6JZPMaG4ig
- BSHJOkH0DBcNN4GOHARLRKwF4cOIDGwdyXGTqw6nIrLN0T3CZBMYK9PMl
- r9a/I5OY08r6NY16XyjJgkdvLKoYU0Aggd2O8PO1A/eiCAgPxjnC0Ml12
- cmhJHjYidQfcnD9pARxJ7BJhrrBEacINJFDmbCE6/mx5PAELoYgyICSSl
- BB/HhpmU/a5qq3/wTgbLVec4nw9lFwZfEsesJP2SNH0r3QLzLfARFM5+v
- ao7i1lThGvV0xMzdELf28l57Gi1BwsZMmDZ7e8UVc70OKfe9wDaoDkNZv g==;
-X-CSE-ConnectionGUID: TTYTsOS6RSCnidFHXlqpig==
-X-CSE-MsgGUID: yXR1QuRUSx6wAPViFUwL+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30539121"
-X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30539121"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2024 08:30:45 -0800
-X-CSE-ConnectionGUID: kPA/mIfbSTKxHs/70FDeEQ==
-X-CSE-MsgGUID: bdsSr4G7QTuKKLCQcoOZEQ==
+ bh=nzjJ3OCzAKqdqfgxInNTfIqDBSZySx801aAktiaeQ3c=;
+ b=LxKHlBrN6Eb8wX+JMMeCFj2+M3SLhYfLu463xW4+ZEChujXT4i/55SW6
+ jhvD4hJQX+ANjmKl6Q1LgQndk4MOtsCeltm1CFc33A2IUs0uwsDBqUp4I
+ zUVUYsiUna68Yc1gNZWj8XK8ILrFoHULOkuOhkNlVkN9SrpQrFiVjWjKj
+ EXN2aMpCzzOmjaDNaDnEx9Z33s6JdN3IcN4W8PnmwZ7EyYUfdlPYzJsnu
+ AKcFJlV3oAXrwZXm1KgTcQjayV7JcAxrOr0kEHQ2KkYmB5MSXMz+qot7c
+ BR5cGTfpEGnuljd92aktaAMKeVSUqEGkb+BDNon/xJQ08gvDZebQZF8m6 Q==;
+X-CSE-ConnectionGUID: P6ygRzpXSC+3f16iK3xZLw==
+X-CSE-MsgGUID: xZCva9g9TmezJJE4i8HxSA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30756338"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30756338"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 08:32:21 -0800
+X-CSE-ConnectionGUID: WXl126fuTg2iUWT8plxGDQ==
+X-CSE-MsgGUID: /FLLOF9SR8iHF0VPiiOp0A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="84895495"
+X-IronPort-AV: E=Sophos;i="6.11,260,1725346800"; d="scan'208";a="114873876"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.102.138.187])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2024 08:30:45 -0800
-Date: Tue, 5 Nov 2024 17:30:41 +0100
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2024 08:32:20 -0800
+Date: Tue, 5 Nov 2024 17:32:18 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Jeff Dagenais <jeff.dagenais@gmail.com>,
  I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_CI=2ExeFULL=3A_failure_for_scripts=2Fgene?=
- =?utf-8?Q?rate=5Figa64=5Fcodes?= =?utf-8?Q?=3A?= prevent objcopy from
+Subject: Re: =?utf-8?Q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_scripts=2Fge?=
+ =?utf-8?Q?nerate=5Figa64=5Fcodes?= =?utf-8?Q?=3A?= prevent objcopy from
  modifying the input file
-Message-ID: <20241105163041.oxrnvivf4cjyzwjs@kamilkon-desk.igk.intel.com>
+Message-ID: <20241105163218.7r7cs26sb7usmqe5@kamilkon-desk.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Jeff Dagenais <jeff.dagenais@gmail.com>,
  I915-ci-infra@lists.freedesktop.org
 References: <20241030184054.73065-1-jdagenais@tesla.com>
- <173070790861.1390508.5993238575932317076@2413ebb6fbb6>
+ <173070239306.1390299.1888583966717986023@2413ebb6fbb6>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <173070790861.1390508.5993238575932317076@2413ebb6fbb6>
+In-Reply-To: <173070239306.1390299.1888583966717986023@2413ebb6fbb6>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,7 +76,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2024-11-04 at 08:11:48 -0000, Patchwork wrote:
+On 2024-11-04 at 06:39:53 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: scripts/generate_iga64_codes: prevent objcopy from modifying the input file
@@ -85,7 +85,7 @@ On 2024-11-04 at 08:11:48 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_8091_full -> XEIGTPW_12015_full
+> CI Bug Log - changes from IGT_8091 -> IGTPW_12015
 > ====================================================
 > 
 > Summary
@@ -93,116 +93,124 @@ On 2024-11-04 at 08:11:48 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_12015_full absolutely need to be
+>   Serious unknown changes coming with IGTPW_12015 absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_12015_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_12015, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/index.html
 > 
-> Participating hosts (4 -> 4)
+> Participating hosts (46 -> 44)
 > ------------------------------
 > 
->   No changes in participating hosts
+>   Missing    (2): fi-snb-2520m bat-adls-6 
 > 
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_12015_full:
+>   Here are the unknown changes that may have been introduced in IGTPW_12015:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-downscaling:
->     - shard-bmg:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/shard-bmg-5/igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-downscaling.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-bmg-6/igt@kms_flip_scaled_crc@flip-64bpp-4tile-to-32bpp-4tile-downscaling.html
+>   * igt@gem_exec_fence@nb-await@vecs0:
+>     - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-rpls-4/igt@gem_exec_fence@nb-await@vecs0.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-rpls-4/igt@gem_exec_fence@nb-await@vecs0.html
 > 
->   * igt@kms_hdr@brightness-with-hdr@pipe-a-dp-4:
->     - shard-dg2-set2:     NOTRUN -> [FAIL][3]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-dg2-466/igt@kms_hdr@brightness-with-hdr@pipe-a-dp-4.html
-> 
->   * igt@xe_exec_fault_mode@once-userptr-imm:
->     - shard-lnl:          [PASS][4] -> [FAIL][5]
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/shard-lnl-5/igt@xe_exec_fault_mode@once-userptr-imm.html
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-lnl-2/igt@xe_exec_fault_mode@once-userptr-imm.html
-> 
->   * igt@xe_module_load@many-reload:
->     - shard-lnl:          [PASS][6] -> [ABORT][7]
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/shard-lnl-5/igt@xe_module_load@many-reload.html
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-lnl-5/igt@xe_module_load@many-reload.html
-> 
->   * igt@xe_sriov_flr@flr-vf1-clear:
->     - shard-dg2-set2:     NOTRUN -> [SKIP][8] +2 other tests skip
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-dg2-433/igt@xe_sriov_flr@flr-vf1-clear.html
-> 
->   * igt@xe_vm@bind-array-enobufs:
->     - shard-dg2-set2:     [PASS][9] -> [FAIL][10]
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_8091/shard-dg2-466/igt@xe_vm@bind-array-enobufs.html
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-dg2-464/igt@xe_vm@bind-array-enobufs.html
-> 
-
-These are unrelated to change in scripts.
-
 >   
-> New tests
-> ---------
-> 
->   New tests have been introduced between XEIGT_8091_full and XEIGTPW_12015_full:
-> 
-> ### New IGT tests (2) ###
-> 
->   * igt@fbdev@pan:
->     - Statuses : 3 pass(s)
->     - Exec time: [0.05] s
-> 
->   * igt@kms_pm_lpsp@kms-lpsp@pipe-a-edp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.18] s
-> 
 
-This definitly do not come from this patch.
+This is unrelated to change in scripts, no need for respin
+as I will merge this soon.
 
 Regards,
 Kamil
 
+> New tests
+> ---------
+> 
+>   New tests have been introduced between IGT_8091 and IGTPW_12015:
+> 
+> ### New IGT tests (1) ###
+> 
+>   * igt@debugfs_test@basic-hwmon:
+>     - Statuses : 7 pass(s) 36 skip(s)
+>     - Exec time: [0.0, 0.00] s
+> 
 >   
 > 
 > Known issues
 > ------------
 > 
->   Here are the changes found in XEIGTPW_12015_full that come from known issues:
+>   Here are the changes found in IGTPW_12015 that come from known issues:
 > 
 > ### IGT changes ###
 > 
 > #### Issues hit ####
 > 
->   * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
->     - shard-lnl:          NOTRUN -> [SKIP][11] ([Intel XE#1466])
->    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/shard-lnl-8/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+>   * igt@i915_selftest@live:
+>     - bat-twl-1:          [PASS][3] -> [INCOMPLETE][4] ([i915#12133] / [i915#9413])
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-twl-1/igt@i915_selftest@live.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-twl-1/igt@i915_selftest@live.html
 > 
-
-...cut...
-
->   [Intel XE#979]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/979
->   [i915#2575]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2575
->   [i915#5274]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5274
+>   * igt@i915_selftest@live@gt_lrc:
+>     - bat-twl-1:          [PASS][5] -> [INCOMPLETE][6] ([i915#9413])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-twl-1/igt@i915_selftest@live@gt_lrc.html
+> 
+>   * igt@i915_selftest@live@reset:
+>     - bat-atsm-1:         [PASS][7] -> [ABORT][8] ([i915#12133])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-atsm-1/igt@i915_selftest@live@reset.html
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-atsm-1/igt@i915_selftest@live@reset.html
+> 
+>   * igt@kms_chamelium_edid@hdmi-edid-read:
+>     - bat-dg2-13:         [PASS][9] -> [DMESG-WARN][10] ([i915#12253])
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-dg2-13/igt@kms_chamelium_edid@hdmi-edid-read.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@gem_exec_fence@basic-await:
+>     - bat-dg2-14:         [FAIL][11] ([i915#12660]) -> [PASS][12] +1 other test pass
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-dg2-14/igt@gem_exec_fence@basic-await.html
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-dg2-14/igt@gem_exec_fence@basic-await.html
+> 
+>   * igt@i915_selftest@live:
+>     - bat-mtlp-6:         [DMESG-WARN][13] ([i915#10341] / [i915#12133]) -> [PASS][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-mtlp-6/igt@i915_selftest@live.html
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-mtlp-6/igt@i915_selftest@live.html
+> 
+>   * igt@i915_selftest@live@hangcheck:
+>     - bat-mtlp-6:         [DMESG-WARN][15] ([i915#11349] / [i915#12133]) -> [PASS][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_8091/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/bat-mtlp-6/igt@i915_selftest@live@hangcheck.html
+> 
+>   
+>   [i915#10341]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10341
+>   [i915#11349]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11349
+>   [i915#12133]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12133
+>   [i915#12253]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12253
+>   [i915#12660]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12660
+>   [i915#9413]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9413
 > 
 > 
 > Build changes
 > -------------
 > 
+>   * CI: CI-20190529 -> None
 >   * IGT: IGT_8091 -> IGTPW_12015
->   * Linux: xe-2149-54ceaf112b111612f3a7430132b2395fcce62414 -> xe-2152-9c4962db90300e1d8daca8ed54195bc31d0ee932
+>   * Linux: CI_DRM_15616 -> CI_DRM_15620
 > 
+>   CI-20190529: 20190529
+>   CI_DRM_15616: baf0f5492ee64d9edaa4a9aae47c7dc6dc3e2c31 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   CI_DRM_15620: 9c4962db90300e1d8daca8ed54195bc31d0ee932 @ git://anongit.freedesktop.org/gfx-ci/linux
 >   IGTPW_12015: 12015
 >   IGT_8091: 8091
->   xe-2149-54ceaf112b111612f3a7430132b2395fcce62414: 54ceaf112b111612f3a7430132b2395fcce62414
->   xe-2152-9c4962db90300e1d8daca8ed54195bc31d0ee932: 9c4962db90300e1d8daca8ed54195bc31d0ee932
 > 
 > == Logs ==
 > 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_12015/index.html
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_12015/index.html
