@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CBB0D1CA3E
-	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 06:19:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A87D6D1CA38
+	for <igt-dev@archiver.kernel.org>; Tue,  5 Nov 2024 06:33:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07C7D10E52B;
-	Tue,  5 Nov 2024 06:19:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 631DF10E51C;
+	Tue,  5 Nov 2024 06:33:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IsXgX8Fx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ccFaruIx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 58D4010E523
- for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 06:19:17 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E242410E51C
+ for <igt-dev@lists.freedesktop.org>; Tue,  5 Nov 2024 06:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1730787558; x=1762323558;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=FoZA0ML1dAk9a9t586if+4yjKSUyPDkuCIbFnieZX54=;
- b=IsXgX8FxezNZGS7EVcIdD+143gyf5X9t6/AM4UqXrGpoon0laZ6w0e0R
- cBxj2AfPjP6xdnRJdXtc4TVOBv7NE8xcSf9pjQMPFRzgpUyQJMt7rjk/Q
- N0kEgsTGvJ+mSV4Z/naTD4jxwRsdewSKAahHs52sLZsXbs59JAPG5M142
- tEsheqbtp+yYLneLOZTrcFVoY+f0CTv4KdJ4Fg2FtIy8PpOElOc5pUOnB
- jBL6f7bIqwFOTOCPSncGsNVZz5sBqZCA+kM/5JqYffHUdvE1ImM87o/YH
- dqmjUHOS2YOWCW75oyxbi5HQ234+w5lemJ0iKag37BVMJlfh8LKuVceXZ w==;
-X-CSE-ConnectionGUID: Z3OWxjVFQhuO8IPkQXPE0A==
-X-CSE-MsgGUID: M01ayPEWQiSzRMvyc0xC/A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="18133571"
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="18133571"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:19:16 -0800
-X-CSE-ConnectionGUID: j9mAaVqXQiquyvUtn/2Kqw==
-X-CSE-MsgGUID: 6EaPMLvBR9ui4cdt9/Abtw==
+ t=1730788385; x=1762324385;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=5BGbhezOgVeK2DzoXDQ9QYynRIjjcOybkCzCDP13HSk=;
+ b=ccFaruIx7vQe9uOsPlFxODjDunmAZU4ZFS2ERSmRjuTs9tXxNmzq/9Og
+ zGFpA8VtXpB0+66Bqu14BJC6ZqNkzglJeMutsXa4KFm0yOq445yIcozRG
+ zxXkuQKuIVx/ml9fJ/EOJV043ljihRCHKZTOUW1N8IQUPquyDuKZixk8a
+ GDQ8xttOFIDJRFrbvQ7JazIy8rZkIajWG2QXuGxrtoVGha77RCs9otuDt
+ jQqjTnKWai4HUcR4jUCVXRtvfUmHH1IyIL1eDYeioGUBfgqprHucpFCgd
+ rpwtBrvGbcM6gz+mO0j7gA2K3WyNDjqWAgqMoiwRTctWi/OT5a4Ldw2YM Q==;
+X-CSE-ConnectionGUID: rKu0L5ZOQ5e0Ayabmn+uOQ==
+X-CSE-MsgGUID: Izwcu8STTQShpJzCKxuE2g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="30470556"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; d="scan'208";a="30470556"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2024 22:33:04 -0800
+X-CSE-ConnectionGUID: MQ/vhTSSTr29n4F/LsXfrQ==
+X-CSE-MsgGUID: rjBqG1BrRwSVfnvev9F7Qw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="83781743"
-Received: from lucas-s2600cw.jf.intel.com ([10.165.21.196])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2024 22:19:16 -0800
-From: Lucas De Marchi <lucas.demarchi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH i-g-t 8/9] i915_module_load: Stop caring about snd
-Date: Mon,  4 Nov 2024 22:18:44 -0800
-Message-ID: <20241105061845.2486557-9-lucas.demarchi@intel.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241105061845.2486557-1-lucas.demarchi@intel.com>
-References: <20241105061845.2486557-1-lucas.demarchi@intel.com>
+X-IronPort-AV: E=Sophos;i="6.11,259,1725346800"; d="scan'208";a="121368002"
+Received: from jraag-nuc8i7beh.iind.intel.com ([10.145.169.79])
+ by orviesa001.jf.intel.com with ESMTP; 04 Nov 2024 22:33:01 -0800
+From: Raag Jadav <raag.jadav@intel.com>
+To: lucas.demarchi@intel.com, John.C.Harrison@Intel.com,
+ sujaritha.sundaresan@intel.com, rodrigo.vivi@intel.com,
+ matthew.d.roper@intel.com, andi.shyti@linux.intel.com
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH i-g-t v1] tests/intel/xe_gt_freq: Change basic throttle API
+ test criteria
+Date: Tue,  5 Nov 2024 12:02:28 +0530
+Message-Id: <20241105063228.452559-1-raag.jadav@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,69 +69,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Just handle i915 and it should work.
+Basic throttle API test is implemented in a way that expects multiple
+sysfs reads to provide atomic results. Since atomicity is never guaranteed
+between multiple sysfs reads, this is an incorrect expection from the test.
+Change the test criteria to check for boolean value from throttle status
+and throttle reasons sysfs entries.
 
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3254
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/3147
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2810
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
 ---
- tests/intel/i915_module_load.c | 32 --------------------------------
- 1 file changed, 32 deletions(-)
+ tests/intel/xe_gt_freq.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
-index b3752a19c..c78b843f9 100644
---- a/tests/intel/i915_module_load.c
-+++ b/tests/intel/i915_module_load.c
-@@ -271,41 +271,12 @@ static void gem_sanitycheck(void)
- 	igt_assert_eq(err, expected);
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index de4d111ea..632415d33 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -121,10 +121,8 @@ static void test_throttle_basic_api(int fd, int gt_id)
+ 	reasons |= get_throttle(fd, gt_id, "reason_vr_tdc");
+ 	reasons |= get_throttle(fd, gt_id, "reason_vr_thermalert");
+ 
+-	if (status)
+-		igt_assert(reasons);
+-	else
+-		igt_assert(!reasons);
++	igt_assert(status == true || status == false);
++	igt_assert(reasons == true || reasons == false);
  }
  
--static void
--hda_dynamic_debug(bool enable)
--{
--	FILE *fp;
--	const char snd_hda_intel_on[] = "module snd_hda_intel +pf";
--	const char snd_hda_core_on[] = "module snd_hda_core +pf";
--
--	const char snd_hda_intel_off[] = "module snd_hda_core =_";
--	const char snd_hda_core_off[] = "module snd_hda_intel =_";
--
--	fp = fopen("/sys/kernel/debug/dynamic_debug/control", "w");
--	if (!fp) {
--		igt_debug("hda dynamic debug not available\n");
--		return;
--	}
--
--	if (enable) {
--		fwrite(snd_hda_intel_on, 1, sizeof(snd_hda_intel_on), fp);
--		fwrite(snd_hda_core_on, 1, sizeof(snd_hda_core_on), fp);
--	} else {
--		fwrite(snd_hda_intel_off, 1, sizeof(snd_hda_intel_off), fp);
--		fwrite(snd_hda_core_off, 1, sizeof(snd_hda_core_off), fp);
--	}
--
--	fclose(fp);
--}
--
- static void load_and_check_i915(void)
- {
- 	int error;
- 	int drm_fd;
- 
--	hda_dynamic_debug(true);
- 	error = igt_i915_driver_load(NULL);
--	hda_dynamic_debug(false);
- 
- 	igt_assert_eq(error, 0);
- 
-@@ -367,9 +338,6 @@ igt_main
- 	igt_subtest("load") {
- 		const char * unwanted_drivers[] = {
- 			"i915",
--			"intel-gtt",
--			"snd_hda_intel",
--			"snd_hdmi_lpe_audio",
- 			NULL
- 		};
- 
+ /**
 -- 
-2.47.0
+2.34.1
 
